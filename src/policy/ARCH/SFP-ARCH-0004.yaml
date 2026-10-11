@@ -257,6 +257,46 @@
           "active_policy_effect": "NONE_UNTIL_AUTHORIZED_AND_VERIFIED_TRANSITION",
           "engine_runtime_activation": "NOT_AUTHORIZED",
           "physical_implementation": "NOT_AUTHORIZED"
+        },
+        "validation_vpms_legacy_to_generic_validator_mapping": {
+          "choice": "C_INDEPENDENT_RUST_VALIDATION_CAPABILITIES_WITH_EXPLICIT_MACHINE_VERIFIABLE_LEGACY_CONTRACT_MAPPING",
+          "source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "scope": "OFFICIAL_RUST_VALIDATION_ENGINE_RESPONSIBILITY_AND_LEGACY_VPMS_CONTRACT_RELATIONSHIPS",
+          "canonical_semantic_owner": "SINGLE_RUST_VALIDATION_ENGINE",
+          "new_capability_design": "DERIVE_INDEPENDENTLY_FROM_EFFECTIVE_VALIDATION_RESPONSIBILITIES_AND_LANGUAGE_NEUTRAL_CONTRACTS",
+          "existing_vpms_module_structure": "NON_NORMATIVE_FOR_NEW_RUST_CAPABILITY_DECOMPOSITION",
+          "legacy_contract_identities": {
+            "VPMS_PRODUCT_PROTOCOL": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "VPMS_CASE_SELECTION": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "VPMS_EXECUTION_COMPOSITION": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          },
+          "required_legacy_to_new_relationships": "EXPLICIT_VERSIONED_MACHINE_VERIFIABLE_CONTRACT_MAPPING",
+          "allowed_mapping_cardinalities": [
+            "ONE_TO_ONE",
+            "ONE_TO_MANY",
+            "MANY_TO_ONE"
+          ],
+          "mapping_inference_from_name_path_or_python_module": "FORBIDDEN",
+          "ambiguous_missing_conflicting_or_unverified_mapping": "UNRESOLVED_FAIL_CLOSED_NO_OWNER_HANDOFF",
+          "mapped_capability_semantics": "NO_IMPLICIT_CHANGE_TO_LEGACY_CONTRACT_MEANING_OR_CURRENT_ACTIVE_PUBLIC_BEHAVIOR",
+          "generic_validator_responsibilities": [
+            "CONTRACT_VALIDATION",
+            "SCHEMA_VALIDATION",
+            "TYPED_IO_VALIDATION",
+            "PRECONDITION_VALIDATION",
+            "VERIFICATION_CASE_VALIDATION"
+          ],
+          "generic_validator_relation_to_vpms": "EXPLICIT_CAPABILITY_RELATIONS_WITHOUT_INFERRED_SEMANTIC_EQUIVALENCE",
+          "existing_python_vpms_implementation_reuse": "FORBIDDEN_MOVE_COPY_PORT_WRAP_SHARE_RUNTIME_DEPENDENCY",
+          "existing_vpms_contract_status": "ACTIVE_UNTIL_SEPARATELY_AUTHORIZED_AND_VERIFIED_HANDOFF",
+          "legacy_public_api_retirement": "SEPARATE_EXPLICIT_OWNER_AUTHORIZATION_REQUIRED",
+          "ptsip_assure_conformance_owner": "SFP-ASSURE-0001_UNCHANGED",
+          "detailed_capability_ids_operations_schemas_and_cross_contract_bridge": "SFP-CNTR-0005_UNRESOLVED_CONTRACT_DESIGN",
+          "machine_mapping_evidence": "REQUIRED_BEFORE_RUNTIME_ELIGIBILITY_OR_AUTHORITY_HANDOFF",
+          "policy_status": "DRAFT_UNCHANGED",
+          "physical_implementation": "NOT_AUTHORIZED",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -415,14 +455,14 @@
         "legacy_vpms_active_contracts_are_not_replaced_before_verified_authorized_transition": true,
         "legacy_vpms_retirement_is_not_implicitly_approved_by_final_target_selection": true,
         "legacy_vpms_implementation_reuse_permissibility_does_not_apply_to_seven_official_rust_engines": true,
-        "validation_public_contract_migration_must_preserve_assure_normative_verdict_ownership": true
+        "validation_public_contract_migration_must_preserve_assure_normative_verdict_ownership": true,
+        "rust_validation_capability_decomposition_must_not_be_inferred_from_legacy_vpms_module_layout": true,
+        "legacy_vpms_to_rust_validation_mapping_must_be_explicit_versioned_and_machine_verified": true,
+        "no_unverified_mapping_can_transfer_vpms_public_or_execution_authority": true,
+        "generic_validation_capability_must_not_infer_vpms_protocol_selection_execution_equivalence": true,
+        "rust_validation_must_not_reuse_move_port_or_wrap_legacy_vpms_python_implementation": true
       },
       "unresolved_decisions": [
-        {
-          "id": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
-          "kind": "RESPONSIBILITY_ANALYSIS",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
           "kind": "RESPONSIBILITY_ANALYSIS",
@@ -865,6 +905,27 @@
           "remaining_contract_design": "SFP-CNTR-0005#VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
           "draft_status_and_KEEP_PRIOR_gate": "PRESERVED",
           "implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
+          "kind": "USER_POLICY_DECISION",
+          "status": "RESOLVED_POLICY_DIRECTION",
+          "selected_option": "C_INDEPENDENT_RUST_VALIDATION_WITH_EXPLICIT_CONTRACT_MAPPING",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_active_vpms_contracts": [
+            "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          ],
+          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "canonical_owner": "OFFICIAL_RUST_VALIDATION_ENGINE_AFTER_VERIFIED_AUTHORIZED_HANDOFF",
+          "exact_capability_map": "PENDING_MACHINE_CONTRACT_AND_RESPONSIBILITY_EVIDENCE",
+          "old_contracts": "ACTIVE_UNCHANGED",
+          "original_KEEP_PRIOR_gate": "PRESERVED",
+          "separate_legacy_retirement_approval": "REQUIRED",
+          "physical_implementation": "NOT_AUTHORIZED",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [

@@ -168,6 +168,33 @@
           "existing_python_code_reuse": "FORBIDDEN_FOR_SEVEN_OFFICIAL_RUST_ENGINES",
           "active_contract_modification": "NOT_AUTHORIZED",
           "engine_runtime_activation": "NOT_AUTHORIZED"
+        },
+        "validation_vpms_contract_mapping_direction": {
+          "decision": "C_INDEPENDENT_RUST_CAPABILITY_MODEL_WITH_EXPLICIT_MACHINE_CONTRACT_MAPPING",
+          "source_policy": "SFP-ARCH-0004#VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "legacy_active_contract_ids": {
+            "VPMS_PRODUCT_PROTOCOL": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "VPMS_CASE_SELECTION": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "VPMS_EXECUTION_COMPOSITION": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          },
+          "new_validation_capabilities": "INDEPENDENT_FROM_LEGACY_MODULE_SHAPE",
+          "relation_cardinalities": [
+            "ONE_TO_ONE",
+            "ONE_TO_MANY",
+            "MANY_TO_ONE"
+          ],
+          "mapping": "DECLARED_VERSIONED_MACHINE_VERIFIABLE_WITH_CURRENT_EVIDENCE",
+          "inferred_mapping": "FORBIDDEN",
+          "unresolved_mapping": "FAIL_CLOSED_NO_HANDOFF",
+          "generic_validator": "CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_RESPONSIBILITIES",
+          "legacy_python_implementation_reuse": "FORBIDDEN_FOR_OFFICIAL_RUST_VALIDATION",
+          "old_public_contracts": "UNCHANGED_UNTIL_SEPARATE_AUTHORIZED_VERIFIED_HANDOFF",
+          "detailed_mapping_schema_ids_operation_contracts_runtime_bridge": "UNRESOLVED",
+          "active_assure_conformance": "UNCHANGED",
+          "implementation": "NOT_AUTHORIZED",
+          "engine_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -331,7 +358,11 @@
         "context_public_api_change_requires_versioned_verified_separately_authorized_transition": true,
         "rust_validation_public_target_does_not_override_current_vpms_active_contracts_before_cutover": true,
         "vpms_legacy_public_interface_retirement_must_be_independently_approved": true,
-        "no_legacy_python_vpms_runtime_dependency_in_official_rust_validation_engine": true
+        "no_legacy_python_vpms_runtime_dependency_in_official_rust_validation_engine": true,
+        "old_vpms_module_structure_does_not_force_new_rust_validation_capability_shape": true,
+        "legacy_vpms_contract_mapping_requires_explicit_identity_version_evidence_and_compatibility": true,
+        "unresolved_legacy_to_rust_mapping_cannot_authorize_public_api_handoff": true,
+        "generic_validation_is_not_automatically_equivalent_to_vpms_case_protocol_selection_or_composition": true
       },
       "unresolved_decisions": [
         {
@@ -657,6 +688,16 @@
           "retirement_authorized": false,
           "remaining_bridge_contract": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
           "draft_only": true
+        },
+        {
+          "id": "VALIDATION_VPMS_LEGACY_TO_RUST_CAPABILITY_MAPPING_DIRECTION",
+          "selected_option": "C",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source": "SFP-ARCH-0004#VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
+          "detailed_contract_design": "REMAINING_UNRESOLVED",
+          "legacy_public_contract": "ACTIVE_UNCHANGED",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
