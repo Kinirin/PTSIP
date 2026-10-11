@@ -1,6 +1,5 @@
 # Check: pp-transition; migrated from pp-transition
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Resolve introduced commit baseline
 $base = $env:PUSH_BEFORE

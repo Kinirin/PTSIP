@@ -35,6 +35,7 @@ jobs:
       checks: ${{ steps.select.outputs.checks }}
       required: ${{ steps.select.outputs.required }}
       preset: ${{ steps.select.outputs.preset }}
+      scope: ${{ steps.select.outputs.scope }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -141,5 +142,6 @@ jobs:
         env:
           REQUIRED_CHECKS: ${{ needs.resolve.outputs.required }}
           VERIFICATION_MODE: ${{ needs.resolve.outputs.preset }}
+          SELECTION_SCOPE: ${{ needs.resolve.outputs.scope }}
           GITHUB_TOKEN: ${{ github.token }}
-        run: python .github/scripts/check_execution.py coverage --required "$REQUIRED_CHECKS" --preset "$VERIFICATION_MODE"
+        run: python .github/scripts/check_execution.py coverage --required "$REQUIRED_CHECKS" --preset "$VERIFICATION_MODE" --scope "$SELECTION_SCOPE"

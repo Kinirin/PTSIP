@@ -299,7 +299,6 @@ if ($packageViolations.Count -ne 0) {
 
 Write-Host "WU-06 Product Artifact evidence passed for wheel SHA-256 $wheelHash"
 Write-Host "Artifact-aware conformance outcome: $($report.outcome)"
-exit 0
 
 # Reinstall built wheel and smoke public surfaces
 $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1

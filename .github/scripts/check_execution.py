@@ -171,7 +171,7 @@ def run_check(checks,identifier):
         mark_status(check["status_context"],sha)
     return 0 if outcome=="PASS" else 1
 
-def coverage(required,preset):
+def coverage(required,preset,scope):
     expected=json.loads(required)
     if not isinstance(expected,list) or any(not isinstance(x,str) for x in expected):
         raise ValueError("invalid required Check list")
@@ -192,7 +192,10 @@ def coverage(required,preset):
             failures.append(id+":"+(e.get("outcome","INVALID") if e else "MISSING"))
     print(json.dumps({"required":len(expected),"blocking":failures,"source_sha":source}))
     if failures: return 1
-    mark_status("ci/tooling-test" if preset in ("full","a3-prerelease") else "ci/change-verification",source)
+    if preset in ("full","a3-prerelease") and scope != "explicit":
+        mark_status("ci/tooling-test",source)
+    elif scope == "auto":
+        mark_status("ci/change-verification",source)
     return 0
 
 def main():
@@ -202,7 +205,7 @@ def main():
     plan=sub.add_parser("plan")
     for flag in ("event","preset","checks","modes"): plan.add_argument("--"+flag,default="")
     run=sub.add_parser("run");run.add_argument("identifier")
-    cv=sub.add_parser("coverage");cv.add_argument("--required",required=True);cv.add_argument("--preset",default="auto")
+    cv=sub.add_parser("coverage");cv.add_argument("--required",required=True);cv.add_argument("--preset",default="auto");cv.add_argument("--scope",default="unknown")
     a=p.parse_args()
     try:
         r,m,c=registry()
@@ -214,9 +217,10 @@ def main():
             append_output("checks",json.dumps(selected if selected else ["__no_check__"],separators=(",",":")))
             append_output("required",json.dumps(selected,separators=(",",":")))
             append_output("preset",preset)
+            append_output("scope", "push" if a.event=="push" else "explicit" if a.checks or a.modes else "auto" if a.preset=="auto" else "preset")
             print(json.dumps({"required":selected,"preset":preset}));return 0
         if a.action=="run": return run_check(c,a.identifier)
-        if a.action=="coverage": return coverage(a.required,a.preset)
+        if a.action=="coverage": return coverage(a.required,a.preset,a.scope)
     except (ValueError,KeyError,OSError,subprocess.SubprocessError) as exc:
         print("FAIL_CLOSED: "+str(exc),file=sys.stderr)
         return 2
