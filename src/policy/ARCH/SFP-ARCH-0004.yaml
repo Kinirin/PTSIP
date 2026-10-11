@@ -148,7 +148,18 @@
         "official_projection_engine_subdirectory_decision": "USER_EXPLICIT_APPROVAL",
         "official_projection_engine_subdirectory_approved_at": "2026-10-11",
         "official_projection_engine_subdirectory_physical_creation": "NOT_AUTHORIZED",
-        "official_projection_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE"
+        "official_projection_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
+        "concrete_physical_package_layout_authority_choice": "A_USER_EXPLICIT",
+        "concrete_physical_package_layout_authority_decided_at": "2026-10-11",
+        "concrete_physical_package_layout_authority": "PLAN_DERIVED_FROM_EFFECTIVE_ARCH_CNTR_AND_RELEVANT_RESPONSIBILITY_CONTRACTS",
+        "concrete_physical_package_layout_concrete_shape": "PLAN_WITH_MACHINE_VALIDATION_NOT_POLICY_FIXED",
+        "per_engine_internal_hierarchy": "VARIABLE_PER_DECLARED_RESPONSIBILITY",
+        "internal_management_layout": "ENGINE_OWNED_OPTIONAL_AND_NONSTANDARDIZED",
+        "seven_official_engine_source_and_name_contract": "IMMUTABLE_UNLESS_SEPARATE_OWNER_POLICY_APPROVAL",
+        "internal_layout_validation": "MACHINE_VERIFIED_CONTRACT_AND_OWNER_MAPPING",
+        "internal_layout_missing_or_conflicting_responsibility_proof": "BLOCK_UNVERIFIED_PLAN_IMPLEMENTATION",
+        "internal_layout_plan_approval": "NO_SEPARATE_PER_LAYOUT_USER_APPROVAL_REQUIRED_BY_THIS_DECISION",
+        "internal_layout_decision_does_not_authorize_physical_mutation": true
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -275,14 +286,23 @@
         "all_seven_directory_approvals_do_not_activate_draft_engine_runtime": true,
         "all_seven_directory_approvals_preserve_registered_contract_based_discovery": true,
         "all_seven_directory_approvals_preserve_original_engine_responsibility_boundaries": true,
-        "user_or_external_engine_package_naming_remains_outside_official_engine_naming_policy": true
+        "user_or_external_engine_package_naming_remains_outside_official_engine_naming_policy": true,
+        "concrete_internal_layout_design_may_be_derived_by_plan_without_per_layout_policy_decision": true,
+        "internal_layout_plan_must_machine_verify_arch_and_cntr_contract_conformance": true,
+        "internal_layout_plan_must_machine_verify_explicit_single_owner_and_dependencies": true,
+        "internal_layout_plan_must_respect_independent_engine_version_build_deploy_patch_boundaries": true,
+        "internal_layout_plan_must_preserve_engine_local_management_ownership_and_optional_functions": true,
+        "internal_layout_plan_must_not_change_any_of_seven_approved_official_engine_names": true,
+        "internal_layout_plan_must_not_infer_identity_execution_authorization_or_entrypoints_from_directory_names": true,
+        "internal_layout_plan_must_not_reassign_context_projection_storage_or_validation_vpms_authorities": true,
+        "internal_layout_plan_cannot_approve_unresolved_active_authority_handoffs": true,
+        "internal_layout_plan_must_fail_closed_when_effective_responsibility_compatibility_not_proven": true,
+        "no_standardized_internal_directory_depth_or_management_subdirectory_forced": true,
+        "physical_layout_delegation_is_not_permission_to_create_directories_relocate_code_or_activate_runtime": true,
+        "plan_level_internal_path_selection_is_not_seven_official_directory_policy_change": true,
+        "approved_layout_authority_does_not_change_existing_active_policy_roles": true
       },
       "unresolved_decisions": [
-        {
-          "id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
-          "kind": "USER_DECISION",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "EXISTING_MODULE_DIRECT_MOVE_OR_REUSE_MAPPING",
           "kind": "RESPONSIBILITY_ANALYSIS",
@@ -642,6 +662,29 @@
           "physical_directories_or_module_migration": "NOT_AUTHORIZED",
           "current_policy_state": "DRAFT_ONLY",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT_AUTHORITY",
+          "source_unresolved_id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
+          "selected_option": "A_PLAN_DERIVED_MACHINE_VERIFIED_INTERNAL_LAYOUT",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "DECISION_AUTHORITY_ONLY_NOT_PHYSICAL_LAYOUT_VALUES",
+          "policy_fixed_root": "src/ptsip/engines/",
+          "policy_fixed_seven_official_names": {
+            "CONTEXT": "context/",
+            "STORAGE": "storage/",
+            "VALIDATION": "validation/",
+            "DISCOVERY": "discovery/",
+            "PLANNING": "planning/",
+            "EXECUTION": "execution/",
+            "PROJECTION": "projection/"
+          },
+          "internal_layout_design": "PLAN_AND_MACHINE_CONTRACT",
+          "constraints": "ALL_EFFECTIVE_ARCH_CNTR_AND_DECLARED_RESPONSIBILITY_BOUNDARIES",
+          "actual_layout_or_directory_materialization": "NOT_APPROVED_BY_THIS_DECISION",
+          "code_migration": "NOT_APPROVED_BY_THIS_DECISION",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
@@ -651,7 +694,48 @@
           "status": "DRAFT",
           "authority": "PLAN_NOT_POLICY"
         }
-      ]
+      ],
+      "physical_package_layout_decision_boundary": {
+        "policy_subject": "OFFICIAL_ENGINE_INTERNAL_PHYSICAL_PACKAGE_LAYOUT_DECISION_AUTHORITY",
+        "selected_option": "A_POLICY_CONSTRAINED_PLAN_WITH_MACHINE_VALIDATION",
+        "explicit_owner_policy_preserves": {
+          "official_source_root": "src/ptsip/engines/",
+          "official_directory_names": {
+            "CONTEXT": "context/",
+            "STORAGE": "storage/",
+            "VALIDATION": "validation/",
+            "DISCOVERY": "discovery/",
+            "PLANNING": "planning/",
+            "EXECUTION": "execution/",
+            "PROJECTION": "projection/"
+          },
+          "official_engine_kinds": [
+            "CONTEXT",
+            "STORAGE",
+            "VALIDATION",
+            "DISCOVERY",
+            "PLANNING",
+            "EXECUTION",
+            "PROJECTION"
+          ]
+        },
+        "internal_package_layout_owner": "PLAN",
+        "applicable_policy_constraints": [
+          "ARCH",
+          "CNTR",
+          "REGISTERED_ENGINE_RESPONSIBILITY_MAP",
+          "ALL_EFFECTIVE_DEPENDENT_AUTHORITIES"
+        ],
+        "machine_validation_required": true,
+        "per_engine_variable_hierarchy_and_management_optional": true,
+        "explicit_single_owner_mapping_required": true,
+        "independent_engine_version_dependency_build_deploy_patch": true,
+        "registered_identity_and_entrypoint_binding": "NOT_DERIVED_FROM_DIRECTORY_NAME",
+        "unresolved_active_authority_reconciliation": "MUST_NOT_BE_ASSUMED",
+        "actual_internal_module_paths_and_serialization": "UNSPECIFIED_PLAN",
+        "directory_creation_or_code_move": "NOT_AUTHORIZED_BY_THIS_DECISION",
+        "policy_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
+      }
     }
   },
   "relations": {
