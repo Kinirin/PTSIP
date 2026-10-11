@@ -1,0 +1,224 @@
+{
+  "schema_version": "ptsip-vpms-caller-transition-plan/v1",
+  "plan_owner": "developer/planning/0.3.8/WU-02/WU-02.yaml",
+  "scope_confirmation": "PRESERVE_EXISTING_PUBLIC_APIS_IMPLEMENT_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLAN",
+  "current_source_catalog_ref": "src/vpms/contracts/index.json",
+  "scope_mapping_ref": "src/ptsip/engines/contracts/vpms-scope-mapping.json",
+  "profile_ref": ".ptsip/profiles/main.ptsip.yaml",
+  "mode_registry_ref": ".github/test_modes.yaml",
+  "caller_contract_relations": [
+    {
+      "source_contract_id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+      "source_contract_version": "2.0",
+      "api": "load_registry_snapshot",
+      "implementation_ref": "src/vpms/domain/snapshot.py",
+      "current_availability": "IMPLEMENTED_ACTIVE",
+      "transition": "PRESERVE_CURRENT_PUBLIC_API",
+      "new_validation_relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE",
+      "consumer_cutover_authorized": false,
+      "implementation_component_ref": "vpms-product-protocol-handoff",
+      "source_contract_component_ref": "vpms-product-protocol-contract",
+      "candidate_validation_contract": {
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
+        "path": "src/ptsip/engines/validation/contract.json",
+        "relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE"
+      },
+      "verification_routes": [
+        {
+          "test_mode_id": "vpms",
+          "component_ref": "vpms-verification",
+          "verifies_component_ref": "vpms-product-protocol-handoff"
+        },
+        {
+          "test_mode_id": "vpms-contract-plane",
+          "component_ref": "vpms-contract-plane-verification",
+          "verifies_component_ref": "vpms-product-protocol-contract"
+        }
+      ]
+    },
+    {
+      "source_contract_id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+      "source_contract_version": "2.0",
+      "api": "VerificationCase",
+      "implementation_ref": "src/vpms/domain/model.py",
+      "current_availability": "CURRENT_EVIDENCE",
+      "transition": "PRESERVE_CURRENT_PUBLIC_API",
+      "new_validation_relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE",
+      "consumer_cutover_authorized": false,
+      "implementation_component_ref": "vpms",
+      "source_contract_component_ref": "vpms-product-protocol-contract",
+      "candidate_validation_contract": {
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
+        "path": "src/ptsip/engines/validation/contract.json",
+        "relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE"
+      },
+      "verification_routes": [
+        {
+          "test_mode_id": "vpms",
+          "component_ref": "vpms-verification",
+          "verifies_component_ref": "vpms"
+        },
+        {
+          "test_mode_id": "vpms-contract-plane",
+          "component_ref": "vpms-contract-plane-verification",
+          "verifies_component_ref": "vpms-product-protocol-contract"
+        }
+      ]
+    },
+    {
+      "source_contract_id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+      "source_contract_version": "2.0",
+      "api": "load_registry",
+      "implementation_ref": "src/vpms/domain/registry.py",
+      "current_availability": "CURRENT_EVIDENCE",
+      "transition": "PRESERVE_CURRENT_PUBLIC_API",
+      "new_validation_relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE",
+      "consumer_cutover_authorized": false,
+      "implementation_component_ref": "vpms",
+      "source_contract_component_ref": "vpms-product-protocol-contract",
+      "candidate_validation_contract": {
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
+        "path": "src/ptsip/engines/validation/contract.json",
+        "relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE"
+      },
+      "verification_routes": [
+        {
+          "test_mode_id": "vpms",
+          "component_ref": "vpms-verification",
+          "verifies_component_ref": "vpms"
+        },
+        {
+          "test_mode_id": "vpms-contract-plane",
+          "component_ref": "vpms-contract-plane-verification",
+          "verifies_component_ref": "vpms-product-protocol-contract"
+        }
+      ]
+    },
+    {
+      "source_contract_id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+      "source_contract_version": "2.0",
+      "api": "run_case",
+      "implementation_ref": "src/vpms/execution/runner.py",
+      "current_availability": "CURRENT_EVIDENCE",
+      "transition": "PRESERVE_CURRENT_PUBLIC_API",
+      "new_validation_relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE",
+      "consumer_cutover_authorized": false,
+      "implementation_component_ref": "vpms",
+      "source_contract_component_ref": "vpms-product-protocol-contract",
+      "candidate_validation_contract": {
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
+        "path": "src/ptsip/engines/validation/contract.json",
+        "relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE"
+      },
+      "verification_routes": [
+        {
+          "test_mode_id": "vpms",
+          "component_ref": "vpms-verification",
+          "verifies_component_ref": "vpms"
+        },
+        {
+          "test_mode_id": "vpms-contract-plane",
+          "component_ref": "vpms-contract-plane-verification",
+          "verifies_component_ref": "vpms-product-protocol-contract"
+        }
+      ]
+    },
+    {
+      "source_contract_id": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+      "source_contract_version": "2.0",
+      "api": "run_cases",
+      "implementation_ref": "src/vpms/execution/composition.py",
+      "current_availability": "IMPLEMENTED_ACTIVE",
+      "transition": "PRESERVE_CURRENT_PUBLIC_API",
+      "new_validation_relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE",
+      "consumer_cutover_authorized": false,
+      "implementation_component_ref": "vpms-execution-composition",
+      "source_contract_component_ref": "vpms-execution-composition-contract",
+      "candidate_validation_contract": {
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
+        "path": "src/ptsip/engines/validation/contract.json",
+        "relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE"
+      },
+      "verification_routes": [
+        {
+          "test_mode_id": "vpms",
+          "component_ref": "vpms-verification",
+          "verifies_component_ref": "vpms-execution-composition"
+        },
+        {
+          "test_mode_id": "vpms-contract-plane",
+          "component_ref": "vpms-contract-plane-verification",
+          "verifies_component_ref": "vpms-execution-composition-contract"
+        }
+      ]
+    },
+    {
+      "source_contract_id": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+      "source_contract_version": "2.0",
+      "api": "run_selected_cases",
+      "implementation_ref": "src/vpms/execution/runner.py",
+      "current_availability": "RETIRED",
+      "transition": "PRESERVE_RETIRED_STATE",
+      "new_validation_relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE",
+      "consumer_cutover_authorized": false,
+      "implementation_component_ref": "vpms",
+      "source_contract_component_ref": "vpms-execution-composition-contract",
+      "candidate_validation_contract": {
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
+        "path": "src/ptsip/engines/validation/contract.json",
+        "relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE"
+      },
+      "verification_routes": [
+        {
+          "test_mode_id": "vpms",
+          "component_ref": "vpms-verification",
+          "verifies_component_ref": "vpms"
+        },
+        {
+          "test_mode_id": "vpms-contract-plane",
+          "component_ref": "vpms-contract-plane-verification",
+          "verifies_component_ref": "vpms-execution-composition-contract"
+        }
+      ]
+    },
+    {
+      "source_contract_id": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+      "source_contract_version": "2.0",
+      "api": "resolve_selection",
+      "implementation_ref": "src/vpms/selection/resolver.py",
+      "current_availability": "IMPLEMENTED_ACTIVE",
+      "transition": "PRESERVE_CURRENT_PUBLIC_API",
+      "new_validation_relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE",
+      "consumer_cutover_authorized": false,
+      "implementation_component_ref": "vpms-case-selection",
+      "source_contract_component_ref": "vpms-selection-contract",
+      "candidate_validation_contract": {
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
+        "path": "src/ptsip/engines/validation/contract.json",
+        "relation": "VALIDATION_COVERAGE_ONLY_NOT_RUNTIME_EQUIVALENCE"
+      },
+      "verification_routes": [
+        {
+          "test_mode_id": "vpms",
+          "component_ref": "vpms-verification",
+          "verifies_component_ref": "vpms-case-selection"
+        },
+        {
+          "test_mode_id": "vpms-contract-plane",
+          "component_ref": "vpms-contract-plane-verification",
+          "verifies_component_ref": "vpms-selection-contract"
+        }
+      ]
+    }
+  ],
+  "unmapped_or_ambiguous": "BLOCK_CUTOVER",
+  "public_api_retirement": false,
+  "cutover_performed": false
+}

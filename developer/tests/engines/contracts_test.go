@@ -299,6 +299,13 @@ func TestNativeIndependentRustEnginePackages(t *testing.T) {
 				"EXECUTION":  {"attempt": object{"attempt_id": "a", "status": "FAILED", "cause": "RESOURCE_EXHAUSTION", "effect_evidence_refs": []any{}}, "effects": []any{}},
 				"PROJECTION": {"context_id": "c", "content": object{"x": 1}, "pointers": []any{"/x"}},
 			}
+			if e["kind"] == "STORAGE" {
+				inputs["STORAGE"] = storageInput(t, e, contract)
+			}
+			if e["kind"] == "DISCOVERY" {
+				inputs["DISCOVERY"] = object{"root": testrepo.Root(t), "index_ref": "src/ptsip/engines/index.json", "expected_revision": nil, "engine_id": e["engine_id"], "capability_id": contract["contract_id"], "version": e["version"], "contract_id": contract["contract_id"]}
+			}
+			inputs["EXECUTION"]["root"] = testrepo.Root(t)
 			request := object{"engine_id": e["engine_id"], "engine_version": e["version"], "contract_id": contract["contract_id"], "contract_version": contract["version"], "operation_id": e["operations"].([]any)[0], "input": inputs[e["kind"].(string)]}
 			encoded, err := json.Marshal(request)
 			if err != nil {

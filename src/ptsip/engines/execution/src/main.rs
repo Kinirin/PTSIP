@@ -3,6 +3,7 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
+mod effect;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     if operation == "execution.assess-stop" {
         if input["ack"]["correlation_id"] != input["result"]["correlation_id"] {
@@ -25,18 +26,22 @@ fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     {
         return Err("effect attempt correlation mismatch".into());
     }
-    // This capability interprets submitted observations. It never authenticates their source or issues eligibility.
-    let effect = if effects.is_empty() {
+    let refs = attempt["effect_evidence_refs"]
+        .as_array()
+        .ok_or("effect reference closure required")?;
+    let mut observations = Vec::new();
+    for record in effects {
+        if !refs.iter().any(|r| r == &record["source_ref"]) {
+            return Err("attempt/effect reference closure mismatch".into());
+        }
+        observations
+            .push(effect::observation(input, record).unwrap_or_else(|_| "UNVERIFIED".into()));
+    }
+    let effect = if observations.is_empty() {
         "UNKNOWN"
-    } else if effects
-        .iter()
-        .any(|e| e["observation"] == "OBSERVED_EFFECT")
-    {
+    } else if observations.iter().any(|o| o == "OBSERVED_EFFECT") {
         "OBSERVED_EFFECT"
-    } else if effects
-        .iter()
-        .all(|e| e["observation"] == "VERIFIED_NO_EFFECT")
-    {
+    } else if observations.iter().all(|o| o == "VERIFIED_NO_EFFECT") {
         "VERIFIED_NO_EFFECT"
     } else {
         "UNVERIFIED"
@@ -76,7 +81,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
         "execution.assess-attempt" => {
-            "ATTEMPT_OUTCOME_INDEPENDENT_FROM_CORRELATED_EFFECT_EVIDENCE_NO_PERMISSION_GRANT"
+            "VERIFY_CURRENT_REFERENCED_EFFECT_PROVENANCE_WITHOUT_INFERRING_ABSENCE_FROM_ATTEMPT_FAILURE"
         }
         "execution.assess-stop" => {
             "ACK_NOT_STOP_CONFIRMATION_AND_STOP_NOT_ORIGINAL_SUCCESS_OR_EFFECT_REVERSAL"
@@ -154,7 +159,7 @@ mod tests {
     }
     #[test]
     fn exhaustion_does_not_imply_no_effect() {
-        let v = json!({"attempt":{"attempt_id":"a","status":"FAILED","cause":"RESOURCE_EXHAUSTION","effect_evidence_refs":[]},"effects":[]});
+        let v = json!({"root":".","attempt":{"attempt_id":"a","status":"FAILED","cause":"RESOURCE_EXHAUSTION","effect_evidence_refs":[]},"effects":[]});
         assert_eq!(
             dispatch(&request(v, "execution.assess-attempt")).unwrap()["effect_status"],
             "UNKNOWN"

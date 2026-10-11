@@ -34,7 +34,10 @@
         "validation.schema",
         "validation.typed-io",
         "validation.precondition",
-        "validation.case"
+        "validation.case",
+        "validation.compose",
+        "validation.verify-handoff",
+        "validation.verify-context-handoff"
       ],
       "source_root": "src/ptsip/engines/validation",
       "legacy_owner_transfer": false
@@ -45,7 +48,8 @@
       "contract_ref": "src/ptsip/engines/discovery/contract.json",
       "implementation_ref": "src/ptsip/engines/discovery/Cargo.toml",
       "operation_ids": [
-        "discovery.resolve"
+        "discovery.resolve",
+        "discovery.verify-registry"
       ],
       "source_root": "src/ptsip/engines/discovery",
       "legacy_owner_transfer": false
@@ -56,7 +60,9 @@
       "contract_ref": "src/ptsip/engines/planning/contract.json",
       "implementation_ref": "src/ptsip/engines/planning/Cargo.toml",
       "operation_ids": [
-        "planning.order"
+        "planning.order",
+        "planning.impact",
+        "planning.select-installation"
       ],
       "source_root": "src/ptsip/engines/planning",
       "legacy_owner_transfer": false

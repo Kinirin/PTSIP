@@ -3,26 +3,11 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
-fn evaluate(_operation: &str, input: &Value) -> Result<Value, String> {
-    let matching: Vec<&Value> = input["registrations"]
-        .as_array()
-        .ok_or("registrations required")?
-        .iter()
-        .filter(|r| {
-            r["engine_id"] == input["engine_id"]
-                && r["capability_id"] == input["capability_id"]
-                && r["version"] == input["version"]
-                && r["contract_id"] == input["contract_id"]
-        })
-        .collect();
-    if matching.len() != 1 {
-        return Err("registered binding missing or ambiguous".into());
-    }
-    if matching[0]["current"] != true || matching[0]["eligible"] != true {
-        return Err("required current registration evidence missing".into());
-    }
-    Ok(matching[0].clone())
+mod registry;
+fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    registry::verify(input, operation == "discovery.resolve")
 }
+
 fn dispatch(request: &Value) -> Result<Value, String> {
     let contract: Value = serde_json::from_str(CONTRACT).map_err(|e| e.to_string())?;
     let manifest: Value = serde_json::from_str(MANIFEST).map_err(|e| e.to_string())?;
@@ -51,7 +36,10 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
         "discovery.resolve" => {
-            "EXACT_UNIQUE_CURRENT_ELIGIBLE_REGISTERED_IDENTITY_NO_PATH_INFERENCE"
+            "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_THEN_EXACT_REGISTERED_CAPABILITY"
+        }
+        "discovery.verify-registry" => {
+            "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_WITHOUT_AUTHORIZATION"
         }
         _ => return Err("unsupported registered adapter operation".into()),
     };
@@ -125,13 +113,8 @@ mod tests {
         assert!(dispatch(&r).is_err());
     }
     #[test]
-    fn stale_and_ambiguous_registration_rejected() {
-        let r = json!({"engine_id":"e","capability_id":"c","version":"1","contract_id":"k","entrypoint":"exe","origin":"CONSUMER","current":true,"eligible":true});
-        let mut v = json!({"engine_id":"e","capability_id":"c","version":"1","contract_id":"k","registrations":[r.clone()]});
-        assert!(dispatch(&request(v.clone(), "discovery.resolve")).is_ok());
-        v["registrations"][0]["current"] = json!(false);
-        assert!(dispatch(&request(v.clone(), "discovery.resolve")).is_err());
-        v["registrations"] = json!([r.clone(), r]);
-        assert!(dispatch(&request(v, "discovery.resolve")).is_err());
+    fn self_reported_current_flags_are_not_source_proof() {
+        let input = json!({"engine_id":"e","capability_id":"c","version":"1","contract_id":"k","registrations":[{"current":true,"eligible":true}]});
+        assert!(dispatch(&request(input, "discovery.resolve")).is_err());
     }
 }

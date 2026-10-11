@@ -3,7 +3,19 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
-fn evaluate(_operation: &str, input: &Value) -> Result<Value, String> {
+mod composition;
+mod handoff;
+fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "validation.verify-context-handoff" {
+        return handoff::verify_context(input);
+    }
+    if operation == "validation.verify-handoff" {
+        let contract: Value = serde_json::from_str(CONTRACT).map_err(|e| e.to_string())?;
+        return handoff::verify(input, &contract);
+    }
+    if operation == "validation.compose" {
+        return composition::validate(input);
+    }
     fn closed_schema(v: &Value) -> bool {
         match v {
             Value::Object(o) => {
@@ -71,6 +83,9 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         "validation.case" => {
             "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE"
         }
+        "validation.compose" => "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE",
+        "validation.verify-handoff" => "VERIFY_CURRENT_VERSIONED_VPMS_RELATIONS_AND_FULL_RESPONSIBILITY_CLASSIFICATION_WITHOUT_PUBLIC_API_CUTOVER",
+        "validation.verify-context-handoff" => "VERIFY_EXPLICIT_CONTEXT_SOURCE_AND_PROJECTION_OUTPUT_OWNERS_WITH_PRESERVED_PUBLIC_API",
         _ => return Err("unsupported registered adapter operation".into()),
     };
     if definition["machine_semantics"]["algorithm"] != algorithm {

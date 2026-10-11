@@ -1,0 +1,116 @@
+{
+  "schema_version": "ptsip-engine-preserved-api-mapping/v1",
+  "id": "urn:ptsip:vpms-validation-scope-mapping:v1",
+  "version": "1.0.0",
+  "source_catalog_ref": "src/vpms/contracts/index.json",
+  "relations": [
+    {
+      "source_refs": [
+        {
+          "id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+          "version": "2.0",
+          "path": "src/vpms/contracts/protocol.json",
+          "sha256": "67df51fc929f51b965386ffc7b4df13e3cae1ae9ee1189c616e21c02a4ec46af"
+        }
+      ],
+      "target_operations": [
+        "validation.case",
+        "validation.typed-io"
+      ],
+      "relation_kind": "VALIDATION_COVERAGE_ONLY",
+      "cardinality": "ONE_TO_MANY",
+      "target_contract_id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+      "target_contract_version": "2.0.0",
+      "source_responsibility_classification": {
+        "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b": {
+          "CASE_DEFINITION": "VALIDATION_ONLY_PARTIAL",
+          "EXPLICIT_REFERENCE_BINDING": "VALIDATION_ONLY_PARTIAL",
+          "FORMULA_REUSE": "PRESERVED_LEGACY_RUNTIME",
+          "SINGLE_CASE_EXECUTION": "PRESERVED_LEGACY_RUNTIME",
+          "RESULT_NORMALIZATION": "PRESERVED_LEGACY_RUNTIME"
+        }
+      },
+      "public_api_equivalence": false
+    },
+    {
+      "source_refs": [
+        {
+          "id": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+          "version": "2.0",
+          "path": "src/vpms/contracts/execution-composition.json",
+          "sha256": "c6436ac503f608b8baa3299d48c2f09d87dd5ca2b09182a77ea78a1b874b64fe"
+        }
+      ],
+      "target_operations": [
+        "validation.precondition"
+      ],
+      "relation_kind": "VALIDATION_COVERAGE_ONLY",
+      "cardinality": "ONE_TO_ONE",
+      "target_contract_id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+      "target_contract_version": "2.0.0",
+      "source_responsibility_classification": {
+        "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06": {
+          "VALIDATED_SELECTION_TO_EXECUTION_HANDOFF": "PRESERVED_LEGACY_RUNTIME",
+          "ALL_SELECTED_ADAPTER_PREFLIGHT": "VALIDATION_ONLY_PARTIAL",
+          "CASE_EXECUTION_COMPOSITION": "PRESERVED_LEGACY_RUNTIME",
+          "EXECUTION_COMPATIBILITY": "PRESERVED_LEGACY_RUNTIME"
+        }
+      },
+      "public_api_equivalence": false
+    },
+    {
+      "source_refs": [
+        {
+          "id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+          "version": "2.0",
+          "path": "src/vpms/contracts/protocol.json",
+          "sha256": "67df51fc929f51b965386ffc7b4df13e3cae1ae9ee1189c616e21c02a4ec46af"
+        },
+        {
+          "id": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+          "version": "2.0",
+          "path": "src/vpms/contracts/execution-composition.json",
+          "sha256": "c6436ac503f608b8baa3299d48c2f09d87dd5ca2b09182a77ea78a1b874b64fe"
+        },
+        {
+          "id": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+          "version": "2.0",
+          "path": "src/vpms/contracts/selection.json",
+          "sha256": "37e73c7bed4e514617113f1cf49541c2a5013c5fd1d78cb7d8c17c491ef7f3cc"
+        }
+      ],
+      "target_operations": [
+        "validation.contract"
+      ],
+      "relation_kind": "VALIDATION_COVERAGE_ONLY",
+      "cardinality": "MANY_TO_ONE",
+      "target_contract_id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+      "target_contract_version": "2.0.0",
+      "source_responsibility_classification": {
+        "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b": {
+          "CASE_DEFINITION": "VALIDATION_ONLY_PARTIAL",
+          "EXPLICIT_REFERENCE_BINDING": "VALIDATION_ONLY_PARTIAL",
+          "FORMULA_REUSE": "PRESERVED_LEGACY_RUNTIME",
+          "SINGLE_CASE_EXECUTION": "PRESERVED_LEGACY_RUNTIME",
+          "RESULT_NORMALIZATION": "PRESERVED_LEGACY_RUNTIME"
+        },
+        "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06": {
+          "VALIDATED_SELECTION_TO_EXECUTION_HANDOFF": "PRESERVED_LEGACY_RUNTIME",
+          "ALL_SELECTED_ADAPTER_PREFLIGHT": "VALIDATION_ONLY_PARTIAL",
+          "CASE_EXECUTION_COMPOSITION": "PRESERVED_LEGACY_RUNTIME",
+          "EXECUTION_COMPATIBILITY": "PRESERVED_LEGACY_RUNTIME"
+        },
+        "urn:uuid:e6707543-f052-4035-bb86-166701e06362": {
+          "EXPLICIT_SELECTION_REQUEST": "PRESERVED_LEGACY_RUNTIME",
+          "REGISTERED_SELECTION_RULE_RESOLUTION": "VALIDATION_ONLY_PARTIAL",
+          "DETERMINISTIC_SELECTED_CASE_SET": "PRESERVED_LEGACY_RUNTIME",
+          "SELECTION_DIAGNOSTICS": "PRESERVED_LEGACY_RUNTIME"
+        }
+      },
+      "public_api_equivalence": false
+    }
+  ],
+  "public_api_cutover": false,
+  "legacy_retirement": false,
+  "consumer_bindings": []
+}

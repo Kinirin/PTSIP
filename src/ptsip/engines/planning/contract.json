@@ -1,6 +1,6 @@
 {
-  "contract_id": "urn:uuid:802a8cc6-77c6-4651-a84f-bfb21ce3fc69",
-  "version": "1.0.0",
+  "contract_id": "urn:uuid:ec5613f9-b0fc-4810-9c2c-cb5f99a37077",
+  "version": "2.0.0",
   "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
   "semantic_owner": "PLANNING",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -88,6 +88,257 @@
       },
       "machine_semantics": {
         "algorithm": "EXPLICIT_DEPENDENCY_DAG_LEXICAL_TOPOLOGICAL_ORDER_FAIL_UNKNOWN_DUPLICATE_OR_CYCLE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "planning.impact",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "graph_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_graph_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "changed_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "root",
+          "graph_ref",
+          "expected_graph_sha256",
+          "changed_id"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "changed_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "affected_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "status": {
+            "enum": [
+              "VERIFIED_COMPATIBLE_UNAFFECTED",
+              "VERIFIED_AFFECTED",
+              "UNCERTAIN_UNVERIFIED"
+            ]
+          },
+          "verification_eligible": {
+            "type": "boolean"
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "changed_id",
+          "affected_ids",
+          "status",
+          "verification_eligible",
+          "execution_authorized"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "UNCERTAIN_UNVERIFIED"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "verification_eligible": {
+                  "const": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "2.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_CURRENT_TYPED_DEPENDENCY_DAG_AND_TWO_SIDED_EVIDENCE_THEN_FAIL_CLOSED_IMPACT_CLOSURE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "planning.select-installation",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "plan_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_plan_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "host_target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "root",
+          "plan_ref",
+          "expected_plan_sha256",
+          "host_target",
+          "evidence_refs"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "plan_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "selected_packages": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "unverified_packages": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "installation_authorized": {
+            "const": false
+          },
+          "external_installation_performed": {
+            "const": false
+          },
+          "verification_report_authenticity": {
+            "const": "SELECTED_OWNER_SOURCE_NOT_SELF_ISSUED_BY_ENGINE"
+          }
+        },
+        "required": [
+          "plan_revision",
+          "ready",
+          "selected_packages",
+          "unverified_packages",
+          "installation_authorized",
+          "external_installation_performed",
+          "verification_report_authenticity"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "2.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "SELECT_SEVEN_CURRENT_INDEPENDENT_PACKAGE_ARTIFACTS_BY_EXPLICIT_HOST_AND_OWNER_VERIFICATION_EVIDENCE_WITHOUT_INSTALLATION",
         "normative_authority_from_runtime_result": false
       }
     }

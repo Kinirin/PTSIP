@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:registry-snapshot:v1",
+  "type": "object",
+  "properties": {
+    "source_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "registered_engines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "engine_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "origin": {
+            "enum": [
+              "OFFICIAL",
+              "CONSUMER",
+              "EXTERNAL"
+            ]
+          },
+          "implementation_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "capability_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contract_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "entrypoint": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "registration_eligible": {
+            "const": true
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "engine_id",
+          "origin",
+          "implementation_version",
+          "capability_id",
+          "contract_version",
+          "entrypoint",
+          "registration_eligible",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "selected": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "engine_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "origin": {
+              "enum": [
+                "OFFICIAL",
+                "CONSUMER",
+                "EXTERNAL"
+              ]
+            },
+            "implementation_version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "capability_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contract_version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "entrypoint": {
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "registration_eligible": {
+              "const": true
+            },
+            "execution_authorized": {
+              "const": false
+            }
+          },
+          "required": [
+            "engine_id",
+            "origin",
+            "implementation_version",
+            "capability_id",
+            "contract_version",
+            "entrypoint",
+            "registration_eligible",
+            "execution_authorized"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "derived_authority": {
+      "const": false
+    },
+    "owner_legitimacy_asserted": {
+      "const": false
+    },
+    "execution_authorized": {
+      "const": false
+    }
+  },
+  "required": [
+    "source_revision",
+    "registered_engines",
+    "source_refs",
+    "selected",
+    "derived_authority",
+    "owner_legitimacy_asserted",
+    "execution_authorized"
+  ],
+  "additionalProperties": false
+}

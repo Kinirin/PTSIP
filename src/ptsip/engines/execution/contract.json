@@ -1,6 +1,6 @@
 {
-  "contract_id": "urn:uuid:d3766711-e7a1-431c-a42d-48afa3cafc7c",
-  "version": "1.0.0",
+  "contract_id": "urn:uuid:c7b8ab34-585d-44f9-882e-c9516f179200",
+  "version": "2.0.0",
   "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
   "semantic_owner": "EXECUTION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -134,11 +134,16 @@
               ],
               "additionalProperties": false
             }
+          },
+          "root": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
           "attempt",
-          "effects"
+          "effects",
+          "root"
         ],
         "additionalProperties": false
       },
@@ -198,11 +203,11 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "1.0.0",
+        "contract_version": "2.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "ATTEMPT_OUTCOME_INDEPENDENT_FROM_CORRELATED_EFFECT_EVIDENCE_NO_PERMISSION_GRANT",
+        "algorithm": "VERIFY_CURRENT_REFERENCED_EFFECT_PROVENANCE_WITHOUT_INFERRING_ABSENCE_FROM_ATTEMPT_FAILURE",
         "normative_authority_from_runtime_result": false
       }
     },
@@ -344,7 +349,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "1.0.0",
+        "contract_version": "2.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:registry-verification-input:v1",
+  "type": "object",
+  "properties": {
+    "root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "index_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_revision": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "root",
+    "index_ref",
+    "expected_revision"
+  ],
+  "additionalProperties": false
+}

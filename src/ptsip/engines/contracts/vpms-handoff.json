@@ -10,8 +10,8 @@
         "status": "ACTIVE"
       },
       "target_contract": {
-        "id": "urn:uuid:24e54093-45d4-410a-b4fb-2398f6502a75",
-        "version": "1.0.0",
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
         "path": "src/ptsip/engines/validation/contract.json"
       },
       "relation": "REQUIRES_EXPLICIT_SEMANTIC_COMPATIBILITY_MAPPING",
@@ -29,8 +29,8 @@
         "status": "ACTIVE"
       },
       "target_contract": {
-        "id": "urn:uuid:24e54093-45d4-410a-b4fb-2398f6502a75",
-        "version": "1.0.0",
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
         "path": "src/ptsip/engines/validation/contract.json"
       },
       "relation": "REQUIRES_EXPLICIT_SEMANTIC_COMPATIBILITY_MAPPING",
@@ -48,8 +48,8 @@
         "status": "ACTIVE"
       },
       "target_contract": {
-        "id": "urn:uuid:24e54093-45d4-410a-b4fb-2398f6502a75",
-        "version": "1.0.0",
+        "id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+        "version": "2.0.0",
         "path": "src/ptsip/engines/validation/contract.json"
       },
       "relation": "REQUIRES_EXPLICIT_SEMANTIC_COMPATIBILITY_MAPPING",
@@ -65,7 +65,10 @@
     "validation.schema",
     "validation.typed-io",
     "validation.precondition",
-    "validation.case"
+    "validation.case",
+    "validation.compose",
+    "validation.verify-handoff",
+    "validation.verify-context-handoff"
   ],
   "generic_validation_implies_vpms_protocol_equivalence": false,
   "automatic_resolver_registry_ref": ".github/test_modes.yaml",
@@ -76,5 +79,6 @@
   ],
   "caller_cutover": "BLOCKED_UNTIL_BEHAVIOR_AND_VERSIONED_MAPPING_VERIFIED",
   "legacy_retirement": false,
-  "assure_owner": "SFP-ASSURE-0001_UNCHANGED"
+  "assure_owner": "SFP-ASSURE-0001_UNCHANGED",
+  "verified_scope_mapping_ref": "src/ptsip/engines/contracts/vpms-scope-mapping.json"
 }

@@ -1,6 +1,6 @@
 {
-  "contract_id": "urn:uuid:7ae9d2fa-539c-49ba-badf-31d4fd38c406",
-  "version": "1.0.0",
+  "contract_id": "urn:uuid:c1b1c532-40ef-47b0-b395-3666637f780a",
+  "version": "2.0.0",
   "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
   "semantic_owner": "STORAGE",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -12,6 +12,18 @@
       "typed_input": {
         "type": "object",
         "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provider_registry_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_registry_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
           "capability_id": {
             "type": "string",
             "minLength": 1
@@ -23,58 +35,15 @@
           "contract_version": {
             "type": "string",
             "minLength": 1
-          },
-          "providers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "capability_id": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "provider_id": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "operation_id": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "provider_operation_id": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "contract_version": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "compatible": {
-                  "type": "boolean"
-                },
-                "provider_owner": {
-                  "type": "string",
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "capability_id",
-                "provider_id",
-                "operation_id",
-                "provider_operation_id",
-                "contract_version",
-                "compatible",
-                "provider_owner"
-              ],
-              "additionalProperties": false
-            }
           }
         },
         "required": [
+          "root",
+          "provider_registry_ref",
+          "expected_registry_sha256",
           "capability_id",
           "operation_id",
-          "contract_version",
-          "providers"
+          "contract_version"
         ],
         "additionalProperties": false
       },
@@ -93,7 +62,14 @@
             "type": "string",
             "minLength": 1
           },
+          "registry_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
           "execution_authorized": {
+            "const": false
+          },
+          "provider_invoked": {
             "const": false
           }
         },
@@ -101,7 +77,9 @@
           "provider_id",
           "provider_owner",
           "provider_operation_id",
-          "execution_authorized"
+          "registry_revision",
+          "execution_authorized",
+          "provider_invoked"
         ],
         "additionalProperties": false
       },
@@ -126,11 +104,11 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "1.0.0",
+        "contract_version": "2.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "EXACT_UNIQUE_CURRENT_COMPATIBLE_PROVIDER_OPERATION_MAPPING_NO_INVOCATION",
+        "algorithm": "VERIFY_STORAGE_OWNER_PROVIDER_AND_CURRENT_TWO_SIDED_COMPATIBILITY_EVIDENCE_THEN_MEDIATION_PLAN",
         "normative_authority_from_runtime_result": false
       }
     }

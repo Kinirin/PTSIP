@@ -3,7 +3,15 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
-fn evaluate(_operation: &str, input: &Value) -> Result<Value, String> {
+mod impact;
+mod installation;
+fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "planning.select-installation" {
+        return installation::select(input);
+    }
+    if operation == "planning.impact" {
+        return impact::analyze(input);
+    }
     use std::collections::{BTreeMap, BTreeSet};
     let mut deps: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for node in input["nodes"].as_array().ok_or("nodes required")? {
@@ -73,6 +81,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         "planning.order" => {
             "EXPLICIT_DEPENDENCY_DAG_LEXICAL_TOPOLOGICAL_ORDER_FAIL_UNKNOWN_DUPLICATE_OR_CYCLE"
         }
+        "planning.impact" => "VERIFY_CURRENT_TYPED_DEPENDENCY_DAG_AND_TWO_SIDED_EVIDENCE_THEN_FAIL_CLOSED_IMPACT_CLOSURE",
+        "planning.select-installation" => "SELECT_SEVEN_CURRENT_INDEPENDENT_PACKAGE_ARTIFACTS_BY_EXPLICIT_HOST_AND_OWNER_VERIFICATION_EVIDENCE_WITHOUT_INSTALLATION",
         _ => return Err("unsupported registered adapter operation".into()),
     };
     if definition["machine_semantics"]["algorithm"] != algorithm {

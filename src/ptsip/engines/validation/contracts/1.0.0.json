@@ -1,0 +1,356 @@
+{
+  "contract_id": "urn:uuid:24e54093-45d4-410a-b4fb-2398f6502a75",
+  "version": "1.0.0",
+  "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+  "semantic_owner": "VALIDATION",
+  "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "normative_language": "JSON",
+  "execution_permission_from_declaration": false,
+  "operations": [
+    {
+      "operation_id": "validation.contract",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "1.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.schema",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "1.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.typed-io",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "1.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.precondition",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "1.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.case",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "1.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    }
+  ]
+}

@@ -20,7 +20,9 @@
     "contract-relation": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
     "dependency-graph": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
     "impact-result": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
-    "execution-binding": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json"
+    "execution-binding": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
+    "registry-snapshot": "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
+    "registry-verification-input": "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json"
   },
   "transport_contract_ref": "src/ptsip/engines/contracts/stdio-transport.json",
   "official_engine_entries": [
@@ -36,7 +38,8 @@
       "version": "0.1.0",
       "operations": [
         "context.snapshot"
-      ]
+      ],
+      "capability_id": "urn:uuid:88eb87fe-cca0-4c3a-9be4-d02c134adb65"
     },
     {
       "kind": "STORAGE",
@@ -47,10 +50,12 @@
       "cargo_manifest_ref": "src/ptsip/engines/storage/Cargo.toml",
       "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
       "runtime_language": "RUST",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "operations": [
         "storage.mediate"
-      ]
+      ],
+      "capability_id": "urn:uuid:c1b1c532-40ef-47b0-b395-3666637f780a",
+      "previous_candidate_contract_ref": "src/ptsip/engines/storage/contracts/1.0.0.json"
     },
     {
       "kind": "VALIDATION",
@@ -61,14 +66,19 @@
       "cargo_manifest_ref": "src/ptsip/engines/validation/Cargo.toml",
       "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
       "runtime_language": "RUST",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "operations": [
         "validation.contract",
         "validation.schema",
         "validation.typed-io",
         "validation.precondition",
-        "validation.case"
-      ]
+        "validation.case",
+        "validation.compose",
+        "validation.verify-handoff",
+        "validation.verify-context-handoff"
+      ],
+      "capability_id": "urn:uuid:160c1a12-a013-4daf-96be-3c6ecd6cceb2",
+      "previous_candidate_contract_ref": "src/ptsip/engines/validation/contracts/1.0.0.json"
     },
     {
       "kind": "DISCOVERY",
@@ -79,10 +89,13 @@
       "cargo_manifest_ref": "src/ptsip/engines/discovery/Cargo.toml",
       "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
       "runtime_language": "RUST",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "operations": [
-        "discovery.resolve"
-      ]
+        "discovery.resolve",
+        "discovery.verify-registry"
+      ],
+      "capability_id": "urn:uuid:077c083e-7593-4766-ae9d-bdfb22ac51d0",
+      "previous_candidate_contract_ref": "src/ptsip/engines/discovery/contracts/1.0.0.json"
     },
     {
       "kind": "PLANNING",
@@ -93,10 +106,14 @@
       "cargo_manifest_ref": "src/ptsip/engines/planning/Cargo.toml",
       "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
       "runtime_language": "RUST",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "operations": [
-        "planning.order"
-      ]
+        "planning.order",
+        "planning.impact",
+        "planning.select-installation"
+      ],
+      "capability_id": "urn:uuid:ec5613f9-b0fc-4810-9c2c-cb5f99a37077",
+      "previous_candidate_contract_ref": "src/ptsip/engines/planning/contracts/1.0.0.json"
     },
     {
       "kind": "EXECUTION",
@@ -107,11 +124,13 @@
       "cargo_manifest_ref": "src/ptsip/engines/execution/Cargo.toml",
       "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
       "runtime_language": "RUST",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "operations": [
         "execution.assess-attempt",
         "execution.assess-stop"
-      ]
+      ],
+      "capability_id": "urn:uuid:c7b8ab34-585d-44f9-882e-c9516f179200",
+      "previous_candidate_contract_ref": "src/ptsip/engines/execution/contracts/1.0.0.json"
     },
     {
       "kind": "PROJECTION",
@@ -125,7 +144,8 @@
       "version": "0.1.0",
       "operations": [
         "projection.select"
-      ]
+      ],
+      "capability_id": "urn:uuid:dcbb3895-c526-4aba-9d30-5e415e97ddc1"
     }
   ],
   "federation": {

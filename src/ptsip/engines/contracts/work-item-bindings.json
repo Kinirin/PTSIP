@@ -31,7 +31,8 @@
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
         "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
-        "src/ptsip/engines/registries/official-static.json"
+        "src/ptsip/engines/registries/official-static.json",
+        "src/ptsip/engines/discovery/contract.json"
       ]
     },
     "ENGINE_REGISTRATION_AND_STATE_SCHEMA": {
@@ -48,7 +49,8 @@
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
         "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
-        "src/ptsip/engines/registries/derived-snapshot.json"
+        "src/ptsip/engines/registries/derived-snapshot.json",
+        "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json"
       ]
     },
     "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP": {
@@ -66,7 +68,8 @@
       ],
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
-        "src/ptsip/engines/contracts/installation-plan.json"
+        "src/ptsip/engines/contracts/installation-plan.json",
+        "src/ptsip/engines/planning/contract.json"
       ]
     },
     "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP": {
@@ -172,7 +175,8 @@
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
         "src/ptsip/engines/contracts/context-projection-handoff.json",
-        "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json"
+        "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
+        "src/ptsip/engines/validation/contract.json"
       ]
     },
     "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE": {
@@ -190,7 +194,8 @@
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
         "src/ptsip/engines/contracts/vpms-handoff.json",
-        "src/ptsip/engines/contracts/schemas/contract-relation.schema.json"
+        "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
+        "src/ptsip/engines/contracts/vpms-scope-mapping.json"
       ]
     },
     "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT": {
@@ -223,7 +228,9 @@
       ],
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
-        "src/ptsip/engines/contracts/vpms-handoff.json"
+        "src/ptsip/engines/contracts/vpms-handoff.json",
+        "src/ptsip/engines/contracts/vpms-scope-mapping.json",
+        "src/ptsip/engines/contracts/vpms-caller-transition-plan.json"
       ]
     },
     "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE": {
@@ -257,7 +264,8 @@
       "deliverable_refs": [
         "src/ptsip/engines/contracts/dependency-graph.json",
         "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
-        "src/ptsip/engines/contracts/schemas/impact-result.schema.json"
+        "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
+        "src/ptsip/engines/planning/contract.json"
       ]
     },
     "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE": {

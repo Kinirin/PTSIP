@@ -22,7 +22,57 @@
     "operations": {
       "type": "array",
       "items": {
-        "type": "object"
+        "type": "object",
+        "required": [
+          "operation_id",
+          "typed_input",
+          "typed_output",
+          "preconditions",
+          "postconditions",
+          "side_effects",
+          "declared_permission_requirements",
+          "failure_semantics",
+          "verification_evidence",
+          "compatibility",
+          "machine_semantics"
+        ],
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "typed_input": {
+            "type": "object"
+          },
+          "typed_output": {
+            "type": "object"
+          },
+          "preconditions": {
+            "type": "array"
+          },
+          "postconditions": {
+            "type": "array"
+          },
+          "side_effects": {
+            "type": "array"
+          },
+          "declared_permission_requirements": {
+            "type": "array"
+          },
+          "failure_semantics": {
+            "type": "object"
+          },
+          "verification_evidence": {
+            "type": "object"
+          },
+          "compatibility": {
+            "type": "object"
+          },
+          "machine_semantics": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
       }
     },
     "authority_ref": {
