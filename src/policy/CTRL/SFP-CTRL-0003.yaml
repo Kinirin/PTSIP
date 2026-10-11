@@ -130,7 +130,12 @@
       "cleanup_regrant_restoration_grants_execution_retry_or_write_permission": false,
       "cleanup_regrant_restoration_mutates_authoritative_registry_or_original_evidence": false,
       "cleanup_regrant_restoration_preserves_record_revocation_audit": true,
-      "cleanup_regrant_restoration_machine_contract": "PLAN_AND_MACHINE_VERIFICATION"
+      "cleanup_regrant_restoration_machine_contract": "PLAN_AND_MACHINE_VERIFICATION",
+      "cleanup_regrant_eligibility_revalidation_trigger_choice": "A_USER_EXPLICIT",
+      "cleanup_regrant_eligibility_revalidation_trigger": "IMMEDIATE_ON_MACHINE_DETECTED_EXPLICIT_REGRANT_CHANGE",
+      "cleanup_regrant_eligibility_revalidation_scope": "AFFECTED_REGISTERED_TARGETS_WITHIN_CURRENT_DELEGATED_SCOPE",
+      "cleanup_regrant_eligibility_detection_or_proof_failure": "FAIL_CLOSED_KEEP_BLOCKED",
+      "cleanup_regrant_eligibility_revalidation_implementation_contract": "PLAN_UNRESOLVED"
     },
     "unit_consumer_analysis_invariants": {
       "project_must_explicitly_delegate_cleanup_scope": true,
@@ -287,7 +292,16 @@
       "if_eligibility_state_persistence_requires_write_use_existing_fresh_ctrl_real_gates": true,
       "regrant_eligibility_restoration_requires_machine_verified_proof_not_agent_assumption": true,
       "regrant_proof_schema_and_recheck_delivery_are_plan_responsibility": true,
-      "regrant_restoration_policy_remains_draft_only": true
+      "regrant_restoration_policy_remains_draft_only": true,
+      "machine_detected_explicit_regrant_triggers_immediate_eligibility_recheck": true,
+      "recheck_requires_current_registration_contract_target_eligibility_and_consumer_ctrl_authority": true,
+      "undetected_or_unverifiable_regrant_cannot_restore_eligibility": true,
+      "recheck_failure_keeps_affected_target_blocked": true,
+      "recheck_does_not_expand_revocation_impact_or_consumer_delegation_scope": true,
+      "recheck_does_not_resume_previous_operation_or_authorize_retry": true,
+      "recheck_does_not_grant_execution_or_write_authority": true,
+      "recheck_preserves_current_ctrl_real_execution_gates_and_record_history": true,
+      "recheck_detection_delivery_and_proof_details_belong_to_plan": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "CLEANUP_OPERATION_EXACT_ID_SCHEMA_AND_REGISTRATION_PLAN",
@@ -465,6 +479,20 @@
         "revocation_audit_original_registry_and_evidence": "PRESERVED",
         "sole_approved_semantic_class": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION_ONLY",
         "plan_owned_proof_contract": "UNCHANGED",
+        "implementation": "NOT_AUTHORIZED",
+        "active_transition": "NOT_AUTHORIZED"
+      },
+      {
+        "id": "DELEGATION_REGRANT_ELIGIBILITY_REVALIDATION_TRIGGER",
+        "selected_option": "A_IMMEDIATE_ON_MACHINE_DETECTED_EXPLICIT_REGRANT",
+        "approval_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "scope": "ELIGIBILITY_RECHECK_ONLY_FOR_AFFECTED_REGISTERED_TARGETS",
+        "proof": "CURRENT_REGISTRATION_CONTRACT_ELIGIBILITY_CONSUMER_AND_CTRL",
+        "failure": "FAIL_CLOSED_KEEP_BLOCKED",
+        "stopped_execution": "NEVER_AUTOMATICALLY_RESUMED",
+        "execution_write_retry_authority": "UNCHANGED_NOT_GRANTED",
+        "record_and_provenance": "PRESERVED",
         "implementation": "NOT_AUTHORIZED",
         "active_transition": "NOT_AUTHORIZED"
       }
