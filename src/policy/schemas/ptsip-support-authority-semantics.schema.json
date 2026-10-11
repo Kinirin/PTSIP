@@ -25,7 +25,7 @@
         }
       },
       "patternProperties": {
-        "^unit_[a-z0-9_]+$": {}
+        "^(?:unit_|semantic_unit_)[a-z0-9_]+$": {}
       },
       "additionalProperties": false
     },
@@ -104,7 +104,7 @@
         }
       },
       "patternProperties": {
-        "^unit_[a-z0-9_]+$": {}
+        "^(?:unit_|semantic_unit_)[a-z0-9_]+$": {}
       },
       "additionalProperties": false
     },
