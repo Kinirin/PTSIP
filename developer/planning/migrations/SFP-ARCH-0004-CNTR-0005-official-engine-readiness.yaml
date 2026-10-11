@@ -5,7 +5,7 @@
   "identity": {
     "plan_id": "SFP-ARCH-0004-CNTR-0005-OFFICIAL-ENGINE-ACTIVATION-READINESS",
     "title": "Official Engine Policy Activation Readiness and Machine Contract Materialization",
-    "status": "BLOCKED_PENDING_REQUIRED_GATES",
+    "status": "DRAFT",
     "integration_branch": "dev/0.3.8",
     "governing_policy_refs": [
       "src/policy/ARCH/SFP-ARCH-0004.yaml",
@@ -35,7 +35,8 @@
       "requested_by_user": true,
       "status": "BLOCKED_BY_UNSATISFIED_MANDATORY_GATES",
       "requires_new_explicit_approval_after_verified_readiness": true
-    }
+    },
+    "readiness_status": "BLOCKED_PENDING_REQUIRED_GATES"
   },
   "baseline": {
     "source_ref": "dev/0.3.8",
