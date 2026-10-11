@@ -734,6 +734,23 @@
         "actual_internal_module_paths_and_serialization": "UNSPECIFIED_PLAN",
         "directory_creation_or_code_move": "NOT_AUTHORIZED_BY_THIS_DECISION",
         "policy_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
+      },
+      "activation_conflict_resolution": {
+        "decision": "KEEP_PRIOR",
+        "decision_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "approval_scope": "APPROVED_ARCHITECTURAL_DIRECTION_WITHOUT_ACTIVE_PROMOTION",
+        "conflicting_proposal": "IMMEDIATE_ACTIVE_PROMOTION_BEFORE_REQUIRED_RESOLUTION",
+        "preserved_active_policy": "SFP-ARCH-0001",
+        "preserved_engine_state_contract": "DEFERRED",
+        "preserved_engine_schema_contract": "DEFERRED",
+        "preserved_engine_runtime_activation": "DEFERRED",
+        "current_draft_status": "DRAFT",
+        "immediate_active_promotion": "REJECTED",
+        "unresolved_responsibility_and_contract_items": "PRESERVED_UNTIL_REQUIRED_VERIFICATION",
+        "active_promotion_requires_existing_activation_requirements": true,
+        "physical_engine_creation_authorized": false,
+        "plan_creation_authorized": false
       }
     }
   },
