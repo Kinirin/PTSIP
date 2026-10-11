@@ -1,0 +1,16 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261011-VPMS-VERI-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "KEEP_LATEST 으로 합니다. developer/policy/legacy/MPD-VERI-0007.yaml 는 지금 새로운 정책 파일로 구분 예정입니다. Historical source ACTIVE metadata is preserved; existing canonical VPMS policy registration is withdrawn pending independently approved successor."
+  approval_scope: FINAL_POLICY
+  target_status: RETIRED
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-VERI-0007
+  affected_policy_ids:
+  - MPD-VERI-0007
+  recorded_at: '2026-10-11'
