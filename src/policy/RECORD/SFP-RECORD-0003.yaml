@@ -58,7 +58,19 @@
         "startup_reporting_is_not_complete_engine_runtime_state": false,
         "startup_reporting_result_semantics_owner": "SFP-CTRL-0002",
         "mandatory_operation_provenance_unchanged": true,
-        "error_report_payload_contract": "PLAN_AND_MACHINE_CONTRACT"
+        "error_report_payload_contract": "PLAN_AND_MACHINE_CONTRACT",
+        "startup_failure_report_information_choice": "B_USER_EXPLICIT",
+        "startup_failure_report_information_decision_recorded_at": "2026-10-11",
+        "startup_reporting_required_information": [
+          "REGISTERED_ENGINE_IDENTITY",
+          "ACTIVATION_OR_ELIGIBILITY_FAILURE_TYPE",
+          "UNMET_REGISTERED_CONTRACT_OR_VERIFICATION_CONDITION_REFERENCE"
+        ],
+        "failure_reference_semantic_scope": "CURRENT_APPLICABLE_REGISTERED_CONTRACT_OR_MACHINE_VERIFICATION_CONDITION",
+        "failure_reference_provenance": "MACHINE_VERIFIED_SOURCE_AND_OBSERVED_ACTIVATION_CONTEXT",
+        "unverified_reference_cannot_be_claimed_as_verified": true,
+        "failure_report_payload_format_authority": "PLAN_AND_MACHINE_CONTRACT",
+        "startup_reporting_success_inventory_requirement": "NOT_REQUIRED_UNCHANGED"
       },
       "invariants": {
         "every_record_keeps_origin_and_observation_context": true,
@@ -73,7 +85,18 @@
         "per_engine_outcome_and_identity_preservation_unaffected": true,
         "source_bound_record_provenance_and_retention_unchanged": true,
         "failure_report_cannot_create_execution_write_or_retry_authority": true,
-        "report_visibility_choice_does_not_activate_draft_runtime": true
+        "report_visibility_choice_does_not_activate_draft_runtime": true,
+        "each_reported_startup_failure_requires_registered_engine_identity": true,
+        "each_reported_startup_failure_requires_failure_type": true,
+        "each_reported_startup_failure_requires_unmet_contract_or_verification_condition_reference": true,
+        "reference_must_resolve_to_applicable_registered_contract_or_verification_gate": true,
+        "failed_condition_reference_must_correspond_to_observed_failure_context": true,
+        "ai_inferred_or_fabricated_failure_condition_reference": "FORBIDDEN",
+        "invalid_or_unverifiable_reference_must_not_be_reported_as_verified": true,
+        "engine_identity_and_reference_scope_must_not_be_silently_cross_bound": true,
+        "new_required_report_information_does_not_require_success_engine_inventory": true,
+        "required_failure_report_information_does_not_grant_execution_retry_or_write_authority": true,
+        "reporting_contract_decision_does_not_activate_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -85,6 +108,12 @@
           "id": "EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "STARTUP_FAILED_CONDITION_REFERENCE_UNAVAILABLE_HANDLING",
+          "kind": "USER_DECISION",
+          "status": "UNRESOLVED",
+          "reason": "REPORT_REQUIRED_REFERENCE_CANNOT_BE_VERIFIED_WITHOUT_FABRICATION"
         }
       ],
       "activation_requirements": {
@@ -117,7 +146,17 @@
         "retained_engine_identity_and_activation_outcome": "PRESERVE_EXISTING_INTERNAL_RESPONSIBILITY",
         "existing_operation_provenance_reporting_and_receipt_obligations": "UNCHANGED",
         "unrelated_mandatory_validation_report_requirements": "UNCHANGED",
-        "no_runtime_activation": "DRAFT_ONLY"
+        "no_runtime_activation": "DRAFT_ONLY",
+        "required_information": [
+          "REGISTERED_ENGINE_IDENTITY",
+          "FAILURE_TYPE",
+          "UNMET_REGISTERED_CONTRACT_OR_MACHINE_VERIFICATION_CONDITION_REF"
+        ],
+        "reference_requirement": "EXISTING_REGISTERED_AND_MACHINE_RESOLVABLE",
+        "reference_validation": "CURRENT_APPLICABLE_GATE_AND_OBSERVED_FAILURE_BOUND",
+        "no_inferred_references": true,
+        "missing_or_unresolvable_reference_handling": "UNRESOLVED_SEPARATE_POLICY",
+        "payload_serialization_and_field_names": "PLAN_AND_MACHINE_CONTRACT"
       }
     }
   },
