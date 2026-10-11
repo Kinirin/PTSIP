@@ -414,6 +414,45 @@ func TestGoStateAndPlanningExactEntryParity(t *testing.T) {
 		for identity, raw := range mapping(t, values) {
 			t.Run(category+"/"+identity, func(t *testing.T) {
 				want := mapping(t, raw)
+				if category == "planning" && identity == "dev/0.3.8" {
+					// The frozen Python-era vector is historical protocol evidence, not
+					// current release routing authority. Do not rewrite that fixture.
+					frozen := mapping(t, want["record"])
+					if frozen["plan_version"] != "0.3.8a3" {
+						t.Fatal("historical pre-retirement planning vector changed")
+					}
+					root := read(t, filepath.Join(repository(t), "developer/planning/index.yaml"))
+					matched := []map[string]any{}
+					for _, rawPlan := range sequence(t, root["plans"]) {
+						plan := mapping(t, rawPlan)
+						if plan["integration_branch"] == identity {
+							matched = append(matched, plan)
+						}
+					}
+					if len(matched) != 1 || matched[0]["status"] != "ACTIVE" {
+						t.Fatal("expected one active exact release branch registration")
+					}
+					current := matched[0]
+					routing := mapping(t, current["entry_routing"])
+					if routing["model"] != "RELEASE_SINGLE_CONTROL_PLANE" {
+						t.Fatal("current release routing model changed")
+					}
+					entrypoints := []map[string]any{}
+					for _, rawEntry := range sequence(t, routing["branch_entrypoints"]) {
+						entry := mapping(t, rawEntry)
+						if entry["branch"] == identity {
+							entrypoints = append(entrypoints, entry)
+						}
+					}
+					if len(entrypoints) != 1 || entrypoints[0]["role"] != "INTEGRATION_CONTROL_PLANE" || entrypoints[0]["entry_document"] != current["path"] {
+						t.Fatal("registered current release entrypoint is not unique and canonical")
+					}
+					want = map[string]any{"accepted": true, "record": map[string]any{
+						"status": "RESOLVED", "branch": identity,
+						"plan_version": current["plan_version"], "entry_document": entrypoints[0]["entry_document"],
+						"role": entrypoints[0]["role"], "work_unit": nil,
+					}}
+				}
 				args := []string{"repository-state", "resolve", "--domain", identity}
 				if category == "planning" {
 					args = []string{"planning-entry", "resolve", "--branch", identity}
