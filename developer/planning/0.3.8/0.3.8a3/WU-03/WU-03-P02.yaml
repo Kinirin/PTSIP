@@ -1,0 +1,851 @@
+{
+  "schema_version": "ptsip-plan-extension/v1",
+  "schema_ref": "developer/planning/schemas/plan-extension.schema.json",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "plan_version": "0.3.8",
+  "extension": {
+    "id": "WU-03-P02",
+    "parent": "WU-03",
+    "title": "Context Evidence P2-P5 policy-complete contracts and gated continuation",
+    "classification": "CORE",
+    "lifecycle": {
+      "status": "DRAFT"
+    }
+  },
+  "approval": {
+    "status": "PENDING"
+  },
+  "implementation_authorization": {
+    "status": "HOLD_NOT_AUTHORIZED"
+  },
+  "depends_on": [
+    "WU-03",
+    "WU-05",
+    "WU-03-P01"
+  ],
+  "proposal": {
+    "authority": false,
+    "stage": "POLICY_DERIVED_DRAFT_UNREGISTERED",
+    "source_branch": "dev/0.3.8",
+    "source_sha": "73eea72cb1560b965a59cb168aef681a73346632",
+    "exact_path": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P02.yaml",
+    "parent_plan_ref": "developer/planning/0.3.8/0.3.8a3/index.yaml",
+    "completed_input_ref": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
+    "future_scope": [
+      "P2_PROVIDER_OBSERVATION_EVENT_PROOF",
+      "P3_ANALYSIS_REFERENCE_AND_RESOLVER",
+      "P4_REPOSITORY_SCOPE_AND_REQUEST_ONLY_FORK_AUDIT",
+      "P5_CONFORMANCE_INTEGRATION_AND_COST_EVIDENCE"
+    ],
+    "new_plan_binding_state": "UNREGISTERED_REQUIRES_EXACT_POLICY_PLAN_BINDING_TRANSITION",
+    "formal_plan_identity_state": "NOT_ALLOCATED_IN_UNAPPROVED_DRAFT",
+    "entrypoint_registration": "PENDING_SEPARATE_EXPLICIT_APPROVAL",
+    "implementation_changes_authorized": false,
+    "policy_changes_authorized": false,
+    "workflow_changes_authorized": false,
+    "branch_creation_authorized": false,
+    "current_parent_gate": "WU-08_BLOCKED",
+    "may_replace_parent_gate": false,
+    "excluded_domains": [
+      "ENGINE_STATE_PERSISTENCE_RUNTIME",
+      "PRODUCT_ENGINE_ACTIVATION",
+      "GO_TESTS_GLOBAL_MIGRATION_IMPLEMENTATION",
+      "VPMS_VALIDATION_ENGINE_HANDOFF",
+      "POLICY_STATUS_PROMOTION"
+    ],
+    "objective": "Define complete policy-derived P2-P5 candidate contracts, verification, and deterministic next-step gates without granting new semantic, implementation, or runtime authority."
+  },
+  "policy_precedence": {
+    "order": [
+      "EFFECTIVE_ACTIVE_POLICY",
+      "EXPLICITLY_APPROVED_DRAFT_DIRECTION_AS_CANDIDATE_SCOPE_ONLY",
+      "APPROVED_PLAN",
+      "IMPLEMENTATION"
+    ],
+    "draft_policy_is_runtime_authority": false,
+    "plan_is_normative_authority": false,
+    "semantic_inference_instead_of_explicit_binding": "FORBIDDEN",
+    "unresolved_normative_meaning": "STOP_AND_ESCALATE"
+  },
+  "policy_coverage_audit": {
+    "review_source_sha": "73eea72cb1560b965a59cb168aef681a73346632",
+    "coverage_standard": "EACH_APPLICABLE_POLICY_OBLIGATION_HAS_EXACT_WORK_PACKAGE_AND_MACHINE_CHECK",
+    "source_policy_changes_during_execution": "INVALIDATE_AND_RERESOLVE",
+    "relevant_policies": [
+      {
+        "id": "SFP-INFO-0007",
+        "ref": "src/policy/INFO/SFP-INFO-0007.yaml",
+        "status_at_review": "DRAFT",
+        "required_coverage": [
+          "OPAQUE_CONSUMER_SCOPED_ID",
+          "NEVER_REASSIGN_TO_DISTINCT_EVENT",
+          "PROVEN_SAME_EVENT_REUSE",
+          "REGISTERED_PROVIDER_AND_SOURCE_BINDING",
+          "FORK_RELOCATION_IDENTITY_SCOPE",
+          "REQUEST_ONLY_AUDIT"
+        ],
+        "work_packages": [
+          "P2-01",
+          "P2-02",
+          "P4-01",
+          "P4-02"
+        ]
+      },
+      {
+        "id": "SFP-INFO-0005",
+        "ref": "src/policy/INFO/SFP-INFO-0005.yaml",
+        "status_at_review": "DRAFT",
+        "required_coverage": [
+          "ANALYSIS_OWNED_INDIVIDUAL_EVIDENCE_REFERENCES",
+          "EXPLICIT_ANALYSIS_RECORD_REGISTRY_AND_PATH",
+          "CONTEXT_FIRST_DERIVED_REVERSE_INDEX",
+          "WORKING_VS_REUSABLE_BOUNDARY"
+        ],
+        "work_packages": [
+          "P3-01",
+          "P3-02"
+        ]
+      },
+      {
+        "id": "SFP-CNTR-0006",
+        "ref": "src/policy/CNTR/SFP-CNTR-0006.yaml",
+        "status_at_review": "DRAFT",
+        "required_coverage": [
+          "EXACT_CONTRACT_RESOLVER",
+          "REGISTERED_RELATION_CLOSURE",
+          "CONTEXT_FIRST_NON_AUTHORITATIVE_REVERSE_LOOKUP",
+          "NO_FORK_OR_RELOCATION_PRIOR_ANALYSIS_REUSE",
+          "AUDIT_DERIVATION_ONLY_ON_REQUEST"
+        ],
+        "work_packages": [
+          "P3-01",
+          "P3-02",
+          "P4-01",
+          "P4-02"
+        ]
+      },
+      {
+        "id": "SFP-ASSURE-0005",
+        "ref": "src/policy/ASSURE/SFP-ASSURE-0005.yaml",
+        "status_at_review": "DRAFT",
+        "required_coverage": [
+          "EVIDENCE_VERIFIED_PROMOTION",
+          "DEPENDENCY_AND_CHANGE_IMPACT_PROOF",
+          "NO_UNPROVEN_EQUIVALENCE",
+          "FRESH_FORK_RELOCATION_QUALIFICATION",
+          "OPTIONAL_AUDIT_NOT_REUSE"
+        ],
+        "work_packages": [
+          "P2-02",
+          "P3-02",
+          "P4-01",
+          "P4-02",
+          "P5-01"
+        ]
+      },
+      {
+        "id": "SFP-RECORD-0001",
+        "ref": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "SOURCE_BOUND_PROVENANCE",
+          "IMMUTABLE_ORIGINAL_RECEIPTS",
+          "MANDATORY_HISTORY_AND_RETENTION_PRESERVED"
+        ],
+        "work_packages": [
+          "P2-01",
+          "P2-02",
+          "P3-02",
+          "P4-02",
+          "P5-01"
+        ]
+      },
+      {
+        "id": "SFP-RECORD-0004",
+        "ref": "src/policy/RECORD/SFP-RECORD-0004.yaml",
+        "status_at_review": "DRAFT",
+        "required_coverage": [
+          "WORKING_SELECTIVE_RETENTION_PROOF",
+          "REUSABLE_DELEGATED_LONG_TERM_RETENTION",
+          "MANDATORY_RECORD_RETENTION_PRECEDENCE",
+          "CLEANUP_ELIGIBILITY_NOT_DELETION_PERMISSION"
+        ],
+        "work_packages": [
+          "P3-02",
+          "P5-01"
+        ]
+      },
+      {
+        "id": "SFP-ARCH-0001",
+        "ref": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "NO_UNAUTHORIZED_ENGINE_RUNTIME_ACTIVATION",
+          "DECLARED_ARCHITECTURE_SCOPE"
+        ],
+        "work_packages": [
+          "P0-REVIEW",
+          "P5-02"
+        ]
+      },
+      {
+        "id": "MPD-PLAN-0001",
+        "ref": "developer/policy/legacy/MPD-PLAN-0001.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "REGISTERED_MACHINE_CHECKS_BEFORE_AUTO_COMPLETE",
+          "POST_PROMOTION_PLANNING_VALIDATION"
+        ],
+        "work_packages": [
+          "P0-REVIEW",
+          "P5-02"
+        ]
+      },
+      {
+        "id": "MPD-0015",
+        "ref": "developer/policy/legacy/MPD-0015.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "EXACT_MACHINE_BINDINGS_FIRST",
+          "MACHINE_DERIVED_PLAN",
+          "FEEDBACK_AND_RERESOLUTION",
+          "NO_NORMATIVE_INFERENCE"
+        ],
+        "work_packages": [
+          "P0-REVIEW",
+          "P5-02"
+        ]
+      },
+      {
+        "id": "MPD-WORK-0002",
+        "ref": "developer/policy/legacy/MPD-WORK-0002.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "VERIFIED_PASS_CONTINUATION_WITHIN_EXISTING_AUTHORIZATION",
+          "DEVIATION_RETURNS_TO_RESOLUTION"
+        ],
+        "work_packages": [
+          "P5-02"
+        ]
+      },
+      {
+        "id": "MPD-WORK-0004",
+        "ref": "developer/policy/legacy/MPD-WORK-0004.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "EXACT_SCOPE_PRECONDITION_FRESHNESS_CONFLICT_AUTHORIZATION",
+          "UNKNOWN_DENIES_MUTATION"
+        ],
+        "work_packages": [
+          "P0-REVIEW",
+          "P5-02"
+        ]
+      },
+      {
+        "id": "MPD-ASSURE-0001",
+        "ref": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "PRESERVE_EXISTING_REQUIRED_VERIFICATIONS",
+          "EXACT_SHA_AND_EVIDENCE_ADMISSIBILITY",
+          "NO_REQUIREMENT_WAIVER_OR_UNVERIFIED_REPLACEMENT"
+        ],
+        "work_packages": [
+          "P0-REVIEW",
+          "P5-01",
+          "P5-02"
+        ]
+      },
+      {
+        "id": "MPD-REAL-0003",
+        "ref": "developer/policy/REAL/MPD-REAL-0003.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "NEW_SRC_TESTS_EXECUTABLE_TESTS_GO",
+          "RETAIN_REQUIRED_LEGACY_TESTS_UNTIL_VERIFIED_GO_PARITY"
+        ],
+        "work_packages": [
+          "P5-01"
+        ]
+      },
+      {
+        "id": "MPD-REAL-0004",
+        "ref": "developer/policy/REAL/MPD-REAL-0004.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "NEUTRAL_JSON_YAML_MACHINE_SEMANTICS",
+          "GO_TEST_IMPL_NOT_NORMATIVE_AUTHORITY"
+        ],
+        "work_packages": [
+          "P2-01",
+          "P3-01",
+          "P5-01"
+        ]
+      },
+      {
+        "id": "MPD-SPEC-0023",
+        "ref": "developer/policy/legacy/MPD-SPEC-0023.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "POLICY_PLAN_IMPLEMENTATION_SEPARATION",
+          "EXACT_POLICY_PLAN_BINDING_IDENTITY",
+          "AUTOMATION_CANNOT_INVENT_APPROVAL"
+        ],
+        "work_packages": [
+          "P0-REVIEW",
+          "P5-02"
+        ]
+      },
+      {
+        "id": "MPD-VERI-0004",
+        "ref": "developer/policy/legacy/MPD-VERI-0004.yaml",
+        "status_at_review": "ACTIVE",
+        "required_coverage": [
+          "REQUIRED_SEMANTIC_VERIFICATION",
+          "FAIL_OR_UNKNOWN_BLOCKS_AUTO_PROMOTION",
+          "PROJECT_PROFILE_TEST_MODE_RESOLUTION"
+        ],
+        "work_packages": [
+          "P5-01",
+          "P5-02"
+        ]
+      }
+    ],
+    "excluded_policy_domains": [
+      {
+        "policy_id": "SFP-INFO-0008",
+        "status": "DRAFT",
+        "reason": "ENGINE_DERIVED_STATE_IS_INDEPENDENT_POLICY_DOMAIN",
+        "unresolved": [
+          "INVALID_OR_STALE_STATE_EXECUTION_BEHAVIOR",
+          "REUSE_ELIGIBILITY_SCOPE_AND_INVALIDATION_BOUNDARY"
+        ],
+        "requires_user_policy_direction_before_engine_state_contract": true
+      },
+      {
+        "policy_id": "SFP-ARCH-0004",
+        "status": "DRAFT",
+        "reason": "PHYSICAL_ENGINE_REFACTORING_AND_ACTIVATION_ARE_OUT_OF_SCOPE"
+      },
+      {
+        "policy_id": "MPD-REAL-0006",
+        "status": "APPROVED_NOT_ACTIVE",
+        "reason": "ENGINE_LANGUAGE_BINDING_NOT_AN_AUTHORIZATION_FOR_RUNTIME_ACTIVATION"
+      }
+    ],
+    "audit_gates": [
+      "POLICY_CATALOG_AND_STATUS_EXACT_CURRENT_HEAD_CHECK",
+      "EACH_NORMATIVE_OBLIGATION_COVERED_BY_STAGE_AND_MACHINE_ASSERTION",
+      "NO_DRAFT_POLICY_SILENT_ACTIVATION",
+      "NO_DUPLICATE_AUTHORITATIVE_RESOLVER_OR_CONTRACT_OWNER",
+      "NO_REQUIRED_VERIFICATION_DROPPED_BY_PROFILE_OR_TEST_MODE_CHANGE",
+      "NO_NEW_RECORD_RETENTION_OR_GLOBAL_REGISTRY_AUTHORITY",
+      "NO_HIDDEN_POLICY_DECISION_IN_IMPLEMENTATION_OR_PLAN",
+      "UNRESOLVED_ITEMS_HAVE_EXACT_STAGE_DISPOSITION_AND_ESCALATION"
+    ],
+    "audit_conclusion": "APPLICABLE_DIRECTION_MAPPED_BUT_REQUIRED_PROOF_INTERFACES_AND_DRAFT_AUTHORITY_ARE_NOT_YET_CLOSED",
+    "audit_pass_definition": "MAPPING_COMPLETENESS_ONLY_NOT_RUNTIME_OR_POLICY_APPROVAL"
+  },
+  "unresolved_obligation_register": {
+    "disposition_vocabulary": [
+      "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY",
+      "REVIEW_EXISTING_POLICY_BOUNDARY",
+      "ESCALATE_IF_NEW_NORMATIVE_DECISION",
+      "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+    ],
+    "entries": [
+      {
+        "owner": "SFP-INFO-0007",
+        "item": "CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT",
+        "stage": "P0-REVIEW",
+        "disposition": "REVIEW_EXISTING_POLICY_BOUNDARY",
+        "evidence_ref": "WU-03-P01",
+        "existing_candidate_completion_does_not_activate_policy": true
+      },
+      {
+        "owner": "SFP-INFO-0007",
+        "item": "CONTEXT_ISSUED_ID_HISTORY_PROOF_AND_NON_REASSIGNMENT_INTERFACE",
+        "stage": "P0-REVIEW",
+        "disposition": "REVIEW_EXISTING_POLICY_BOUNDARY",
+        "evidence_ref": "WU-03-P01"
+      },
+      {
+        "owner": "SFP-INFO-0007",
+        "item": "MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE",
+        "stage": "P2-01",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-INFO-0007",
+        "item": "PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE",
+        "stage": "P2-02",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-INFO-0007",
+        "item": "CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE",
+        "stage": "P4-01",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-INFO-0007",
+        "item": "CONTEXT_EXISTING_VERIFIED_RECORD_FORK_AUDIT_DERIVATION_PROOF_INTERFACE",
+        "stage": "P4-02",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-INFO-0005",
+        "item": "RECORD_ID_PHYSICAL_FORMAT_AND_COLLISION_CHECK_CONTRACT",
+        "stage": "P3-01",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-INFO-0005",
+        "item": "COMMON_AND_TYPE_SPECIFIC_SCHEMA_FIELD_CONTRACT",
+        "stage": "P3-01",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-INFO-0005",
+        "item": "REUSABLE_RETENTION_SCOPE",
+        "stage": "P3-02",
+        "disposition": "ESCALATE_IF_NEW_NORMATIVE_DECISION"
+      },
+      {
+        "owner": "SFP-INFO-0005",
+        "item": "CONTEXT_OBSERVATION_EVIDENCE_REFERENCE_INTERFACE",
+        "stage": "P3-01",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-CNTR-0006",
+        "item": "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
+        "stage": "P3-01",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-CNTR-0006",
+        "item": "SELECTION_CONTRACT_COMPARISON_DIMENSIONS",
+        "stage": "P3-02",
+        "disposition": "ESCALATE_IF_NEW_NORMATIVE_DECISION"
+      },
+      {
+        "owner": "SFP-CNTR-0006",
+        "item": "EQUIVALENCE_PROOF_INTERFACE",
+        "stage": "P3-02",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-ASSURE-0005",
+        "item": "DEPENDENCY_AND_RELATION_EVIDENCE_PROOF_INTERFACE",
+        "stage": "P3-02",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-ASSURE-0005",
+        "item": "CONTRACT_CHANGE_IMPACT_PROOF_INTERFACE",
+        "stage": "P3-02",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-ASSURE-0005",
+        "item": "EQUIVALENCE_TYPE_EXTENSION_VERIFICATION_INTERFACE",
+        "stage": "P3-02",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-RECORD-0004",
+        "item": "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
+        "stage": "P3-02",
+        "disposition": "DERIVE_MACHINE_CONTRACT_FROM_EXISTING_POLICY"
+      },
+      {
+        "owner": "SFP-RECORD-0004",
+        "item": "REUSABLE_RETENTION_DELEGATION_CONTRACT_SHAPE",
+        "stage": "P3-02",
+        "disposition": "ESCALATE_IF_NEW_NORMATIVE_DECISION"
+      },
+      {
+        "owner": "SFP-INFO-0008",
+        "item": "INVALID_OR_STALE_STATE_EXECUTION_BEHAVIOR",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      },
+      {
+        "owner": "SFP-INFO-0008",
+        "item": "REUSE_ELIGIBILITY_SCOPE_AND_INVALIDATION_BOUNDARY",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      }
+    ],
+    "normative_gaps_automatically_fixed": false,
+    "active_policies_unmodified": true
+  },
+  "work_packages": [
+    {
+      "id": "P0-REVIEW",
+      "title": "Latest authority, P0/P1 and WU-08 preflight",
+      "depends_on": [],
+      "governing_policies": [
+        "MPD-PLAN-0001",
+        "MPD-0015",
+        "MPD-WORK-0004",
+        "MPD-SPEC-0023",
+        "MPD-ASSURE-0001"
+      ],
+      "plan_outputs": [
+        "EXACT_APPLICABLE_POLICY_GRAPH",
+        "P0_P1_CANDIDATE_REUSE_AND_VALIDATION_BASELINE",
+        "AUTHORITATIVE_BINDING_AND_APPROVAL_PREFLIGHT"
+      ],
+      "required_machine_checks": [
+        "BRANCH_HEAD_AND_POLICY_REVISIONS_RECONFIRMED",
+        "P0_P1_CANDIDATE_COMPLETION_EVIDENCE_VERIFIED",
+        "DRAFT_POLICY_ONLY_USED_AS_NON_AUTHORITATIVE_CANDIDATE_DIRECTION",
+        "UNREGISTERED_PLAN_HAS_NO_EXECUTION_AUTHORITY",
+        "WU08_BLOCKED_NOT_BYPASSED"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "P2-01",
+      "title": "Verified provider source and observation without event ID",
+      "depends_on": [
+        "P0-REVIEW"
+      ],
+      "governing_policies": [
+        "SFP-INFO-0007",
+        "SFP-RECORD-0001"
+      ],
+      "plan_outputs": [
+        "SOURCE_OBSERVATION_TYPED_IO_CANDIDATE",
+        "SOURCE_REVISION_AND_PROVENANCE_PROOF_VECTORS",
+        "MISSING_EVENT_ID_FAILURE_MATRIX"
+      ],
+      "required_machine_checks": [
+        "PROVIDER_AND_SOURCE_MACHINE_PROOF_REQUIRED",
+        "INDIVIDUAL_OBSERVATION_VERIFIABLE_WITHOUT_PROVIDER_EVENT_ID",
+        "PROVIDER_EVENT_ID_NEVER_FABRICATED",
+        "AMBIGUOUS_SOURCE_OR_OBSERVATION_FAIL_CLOSED",
+        "HISTORICAL_SOURCE_RECEIPTS_NOT_MUTATED"
+      ],
+      "blocked_by": [
+        "MISSING_REGISTERED_PROVIDER_PROOF_CONTRACT"
+      ]
+    },
+    {
+      "id": "P2-02",
+      "title": "Distinct, same, unknown event identity proof and provider extensions",
+      "depends_on": [
+        "P2-01"
+      ],
+      "governing_policies": [
+        "SFP-INFO-0007",
+        "SFP-ASSURE-0005"
+      ],
+      "plan_outputs": [
+        "COMMON_EVENT_PROOF_OBLIGATIONS",
+        "REGISTERED_PROVIDER_TYPE_EXTENSION_INTERFACE",
+        "SAME_DISTINCT_UNKNOWN_VECTOR_SET"
+      ],
+      "required_machine_checks": [
+        "SAME_EVENT_ONLY_WITH_REGISTERED_MACHINE_PROOF_REUSES_ID",
+        "DISTINCT_EVENT_NEW_ID_ONLY_AFTER_VALID_ISSUANCE_PROOF",
+        "UNKNOWN_PROOF_NO_MERGE_OR_REUSE",
+        "PROVIDER_ID_EQUALITY_OR_PAYLOAD_SIMILARITY_NOT_PROOF",
+        "PROVIDER_EXTENSION_CANNOT_WEAKEN_PTSIP_COMMON_PROOF"
+      ],
+      "blocked_by": [
+        "UNVERIFIED_EXTENSION_SEMANTICS_OR_NEW_NORMATIVE_REQUIREMENT"
+      ]
+    },
+    {
+      "id": "P3-01",
+      "title": "Analysis registry, individual evidence references and context-first derived lookup",
+      "depends_on": [
+        "P2-02"
+      ],
+      "governing_policies": [
+        "SFP-INFO-0005",
+        "SFP-CNTR-0006",
+        "SFP-INFO-0007"
+      ],
+      "plan_outputs": [
+        "ANALYSIS_REGISTERED_ID_AND_PATH_TYPED_CONTRACT",
+        "ANALYSIS_OWNED_EVIDENCE_REFERENCE_SCHEMA",
+        "NON_AUTHORITATIVE_CONTEXT_TO_ANALYSIS_REVERSE_INDEX"
+      ],
+      "required_machine_checks": [
+        "ANALYSIS_RECORD_PATH_FROM_EXPLICIT_REGISTRY_ONLY",
+        "OBSERVATION_AND_EVIDENCE_GRANULARITY_REQUIRED",
+        "NO_FILENAME_AI_OR_WHOLE_CONTEXT_SNAPSHOT_REFERENCE_INFERENCE",
+        "REVERSE_LOOKUP_COMPLETE_ONLY_FROM_REGISTERED_RELATIONS",
+        "AMBIGUOUS_MISSING_REFERENCES_FAIL_CLOSED"
+      ],
+      "blocked_by": [
+        "UNRESOLVED_ANALYSIS_RECORD_SCHEMA_AUTHORITY"
+      ]
+    },
+    {
+      "id": "P3-02",
+      "title": "Dependency proof, qualification, equivalence and retention boundary",
+      "depends_on": [
+        "P3-01"
+      ],
+      "governing_policies": [
+        "SFP-ASSURE-0005",
+        "SFP-CNTR-0006",
+        "SFP-RECORD-0004",
+        "SFP-RECORD-0001"
+      ],
+      "plan_outputs": [
+        "DEPENDENCY_CLOSURE_AND_CHANGE_IMPACT_VECTOR_PLAN",
+        "WORKING_AND_REUSABLE_QUALIFICATION_PROOF",
+        "RETENTION_RELEASE_AND_DELEGATION_INTERFACE_CANDIDATE"
+      ],
+      "required_machine_checks": [
+        "NO_REUSE_WITHOUT_VERIFIED_EVIDENCE_AND_DEPENDENCIES",
+        "NO_UNPROVEN_TRANSITIVE_EQUIVALENCE_OR_IMPACT_EXCLUSION",
+        "NO_REFERENCE_FOUND_NOT_RETENTION_RELEASE_PROOF",
+        "MANDATORY_RECORD_RETENTION_PRECEDES_CONSUMER_DELEGATION",
+        "CLEANUP_ELIGIBLE_IS_NOT_DELETE_PERMISSION"
+      ],
+      "blocked_by": [
+        "NEW_RETENTION_OR_EQUIVALENCE_NORMATIVE_BOUNDARY"
+      ]
+    },
+    {
+      "id": "P4-01",
+      "title": "Fork and relocation independent analysis and scope reset",
+      "depends_on": [
+        "P3-02"
+      ],
+      "governing_policies": [
+        "SFP-INFO-0007",
+        "SFP-CNTR-0006",
+        "SFP-ASSURE-0005",
+        "SFP-RECORD-0001"
+      ],
+      "plan_outputs": [
+        "REPOSITORY_SCOPE_RESET_VECTOR_PLAN",
+        "ORIGINAL_AND_NEW_ID_SCOPE_PROOF",
+        "FRESH_FORK_RELOCATION_QUALIFICATION_CASES"
+      ],
+      "required_machine_checks": [
+        "ORIGINAL_HISTORICAL_ID_AND_RECEIPTS_PRESERVED",
+        "NEW_OBSERVATIONS_REPOSITORY_LOCAL_IDS",
+        "CURRENT_CONTEXT_INDEPENDENT_ANALYSIS_REQUIRED",
+        "ORIGIN_ANALYSIS_NOT_AUTOMATIC_REUSE_CANDIDATE",
+        "OLD_REPOSITORY_LOOKUP_NOT_REQUIRED"
+      ],
+      "blocked_by": [
+        "UNVERIFIED_SOURCE_SCOPE_OR_ID_HISTORY"
+      ]
+    },
+    {
+      "id": "P4-02",
+      "title": "Requested-only read-only fork audit projection contract",
+      "depends_on": [
+        "P4-01"
+      ],
+      "governing_policies": [
+        "SFP-INFO-0007",
+        "SFP-CNTR-0006",
+        "SFP-ASSURE-0005",
+        "SFP-RECORD-0001"
+      ],
+      "plan_outputs": [
+        "ON_DEMAND_AUDIT_PROOF_INTERFACE",
+        "AUDIT_REQUEST_PRESENT_ABSENT_NEGATIVE_VECTORS",
+        "NON_AUTHORITATIVE_VERIFIED_LOCAL_RECORD_PROJECTION"
+      ],
+      "required_machine_checks": [
+        "NO_AUDIT_DERIVATION_ON_NORMAL_COLLECTION_ANALYSIS_OR_LOOKUP",
+        "AUDIT_ONLY_ON_EXPLICIT_AUDIT_INFORMATION_REQUEST",
+        "NO_EXTERNAL_ORIGIN_REPOSITORY_ACCESS",
+        "NO_AUDIT_ASSERTION_WHEN_VERIFIED_LOCAL_SOURCE_PROOF_ABSENT",
+        "MISSING_AUDIT_PROOF_DOES_NOT_BLOCK_LOCAL_ANALYSIS_OR_GRANT_REUSE"
+      ],
+      "blocked_by": [
+        "MISSING_REGISTERED_AUDIT_PROOF_INTERFACE"
+      ]
+    },
+    {
+      "id": "P5-01",
+      "title": "Conformance and exact required verification continuity",
+      "depends_on": [
+        "P2-02",
+        "P3-02",
+        "P4-02"
+      ],
+      "governing_policies": [
+        "MPD-VERI-0004",
+        "MPD-ASSURE-0001",
+        "MPD-REAL-0003",
+        "MPD-REAL-0004"
+      ],
+      "plan_outputs": [
+        "GO_EXECUTABLE_TEST_COVERAGE_PLAN",
+        "JSON_YAML_NEUTRAL_CONFORMANCE_VECTORS",
+        "VERIFICATION_MODE_SELECTION_AND_SOURCE_SHA_EVIDENCE",
+        "NEGATIVE_AND_FAILURE_VECTOR_REPORT"
+      ],
+      "required_machine_checks": [
+        "EXISTING_REQUIRED_VERIFICATION_UNDIMINISHED",
+        "EXACT_PROJECT_PROFILE_AND_REGISTERED_MODE_SELECTION",
+        "NO_UNMAPPED_CHANGED_PATH_AND_NO_FULL_FALLBACK",
+        "NO_LEGACY_REQUIRED_TEST_REMOVAL_BEFORE_VERIFIED_GO_PARITY",
+        "ALL_REQUIRED_CHECKS_PASS_NO_WAIVER",
+        "NO_NEW_NORMATIVE_SEMANTICS_FROM_TESTS"
+      ],
+      "blocked_by": [
+        "FAIL_OR_UNKNOWN_IN_REQUIRED_CHECKS"
+      ]
+    },
+    {
+      "id": "P5-02",
+      "title": "Automatic gated continuation, read-only readiness and handoff",
+      "depends_on": [
+        "P5-01"
+      ],
+      "governing_policies": [
+        "MPD-PLAN-0001",
+        "MPD-WORK-0002",
+        "MPD-WORK-0004",
+        "MPD-0015",
+        "MPD-SPEC-0023",
+        "MPD-ASSURE-0001"
+      ],
+      "plan_outputs": [
+        "REGISTERED_STAGE_GATE_AND_TRANSITION_SPEC",
+        "SOURCE_FRESHNESS_AND_RESULT_EVIDENCE_SNAPSHOT",
+        "POLICY_COVERAGE_DIFFERENCE_REPORT",
+        "NEXT_APPROVED_ACTION_RESOLUTION"
+      ],
+      "required_machine_checks": [
+        "COMPLETE_ONLY_ON_REGISTERED_MACHINE_CHECK_ALL_PASS",
+        "REVALIDATE_PLANNING_AFTER_AUTOMATIC_PROMOTION",
+        "ADVANCE_ONLY_WITH_UNEXPIRED_SCOPE_SPECIFIC_AUTHORIZATION",
+        "NEW_POLICY_APPROVAL_RUNTIME_ACTIVATION_AND_PLAN_EXPANSION_NEVER_AUTO_GRANTED",
+        "PARENT_WU08_BLOCKERS_REMAIN_INDEPENDENT"
+      ],
+      "blocked_by": [
+        "ABSENT_EXACT_POLICY_PLAN_BINDING",
+        "MISSING_IMPLEMENTATION_AUTHORIZATION",
+        "ANY_REQUIRED_VERIFICATION_FAIL_OR_UNKNOWN",
+        "DRAFT_POLICY_PROMOTION_REQUIRED",
+        "WU08_CUTOVER_GATE_UNRESOLVED"
+      ]
+    }
+  ],
+  "workflow_design": {
+    "state_source": "REGISTERED_MACHINE_EVIDENCE_PLUS_CURRENT_POLICY_AND_PLAN_BINDINGS",
+    "no_background_execution_authorized_by_this_document": true,
+    "existing_policy_logic": {
+      "plan_completion": "MPD-PLAN-0001#rules.planning_boundary.completion_transition",
+      "verified_state_continuation": "MPD-WORK-0002#rules.work_execution_lifecycle.verified_pass_continuation",
+      "machine_plan_and_reresolution": "MPD-0015#rules.mechanized_resolution_cycle",
+      "mutation_authorization": "MPD-WORK-0004#rules.mutation_authorization_gate",
+      "required_checks": "MPD-VERI-0004#rules.required_verification",
+      "evidence_admissibility": "MPD-ASSURE-0001#rules.developer_test_verification_boundary"
+    },
+    "exact_mode_selector": {
+      "profile": ".ptsip/profiles/main.ptsip.yaml",
+      "registry": ".github/test_modes.yaml",
+      "workflow": ".github/workflows/tooling-test.yml",
+      "select": "EFFECTIVE_PROFILE_RESOLVER",
+      "default_all_tests": false,
+      "unmapped_required_change_path": "FAIL_CLOSED",
+      "targeted_debug_replaces_required_modes": false
+    },
+    "authorization_preflight": {
+      "require": [
+        "EXPLICIT_PLAN_APPROVAL",
+        "SEPARATE_IMPLEMENTATION_AUTHORIZATION",
+        "REGISTERED_POLICY_PLAN_BINDING",
+        "DECLARED_EXACT_WORK_PACKAGE_SCOPE",
+        "CURRENT_POLICY_HEAD_AND_SOURCE_SHA",
+        "NO_BLOCKING_POLICY_CONFLICT",
+        "REGISTERED_ACCEPTANCE_AND_TEST_MODE_COVERAGE"
+      ],
+      "unknown_or_missing": "NOT_AUTHORIZED",
+      "current_plan_authorized": false
+    },
+    "stages": [
+      "P0-REVIEW",
+      "P2-01",
+      "P2-02",
+      "P3-01",
+      "P3-02",
+      "P4-01",
+      "P4-02",
+      "P5-01",
+      "P5-02"
+    ],
+    "transition_conditions": {
+      "before_start": "REQUIRE_AUTHORITY_SCOPE_PRECONDITION_FRESHNESS_CONFLICT_ALL_PASS",
+      "on_registered_required_checks_all_pass": "AUTO_COMPLETE_CURRENT_AND_RESOLVE_NEXT_DEPENDENCY_SATISFIED_STAGE",
+      "after_auto_complete": "REVALIDATE_PLAN_AND_RESOLVE_LATEST_EVIDENCE",
+      "next_stage_authorization": "REVALIDATE_EXISTING_SCOPE_AND_AUTHORIZATION_NO_NEW_HUMAN_CONFIRMATION_IF_STILL_VALID",
+      "on_fail": "BLOCK_DO_NOT_MUTATE_RECORD_DEVIATION_AND_RERESOLVE",
+      "on_unknown": "BLOCK_USER_REVIEW_REQUIRED",
+      "on_stale": "BLOCK_REEVALUATE_FRESH_INPUTS",
+      "on_missing_binding": "FAIL_CLOSED_NO_SEMANTIC_SCOPE_GUESS",
+      "on_unapproved_policy_decision": "ESCALATE_INDEPENDENT_POLICY_OPTIONS",
+      "on_next_stage_out_of_scope": "STOP_AWAIT_EXPLICIT_AUTHORIZATION",
+      "on_all_stage_pass": "CANDIDATE_READINESS_ONLY_NO_RUNTIME_CUTOVER"
+    },
+    "machine_transition_matrix": [
+      {
+        "observed": "REQUIRED_ALL_PASS",
+        "decision": "AUTO_COMPLETE_AND_NEXT_RESOLVE",
+        "mutation_allowed": "ONLY_IF_ALREADY_AUTHORIZED"
+      },
+      {
+        "observed": "REQUIRED_ANY_FAIL",
+        "decision": "BLOCK_AND_RERESOLVE",
+        "mutation_allowed": false
+      },
+      {
+        "observed": "REQUIRED_UNKNOWN_NO_FAIL",
+        "decision": "USER_REVIEW_REQUIRED",
+        "mutation_allowed": false
+      },
+      {
+        "observed": "REQUIRED_EVIDENCE_STALE",
+        "decision": "REVALIDATE",
+        "mutation_allowed": false
+      },
+      {
+        "observed": "AUTHORIZATION_OR_BINDING_MISSING",
+        "decision": "NOT_AUTHORIZED",
+        "mutation_allowed": false
+      },
+      {
+        "observed": "NEW_POLICY_SCOPE_OR_NORMATIVE_MEANING",
+        "decision": "ESCALATE",
+        "mutation_allowed": false
+      }
+    ],
+    "no_automatic_go_runtime_activation": true,
+    "request_only_audit_not_triggered_by_stage_progress": true,
+    "implementation_plan_contains_spec_but_implementation_is_not_performed": true
+  },
+  "planning_validation_gates": {
+    "required": [
+      "PLAN_EXTENSION_SCHEMA_VALID",
+      "ALL_APPLICABLE_POLICY_REF_AND_STATUS_VERIFIED",
+      "NO_MISSING_NORMATIVE_POLICY_OBLIGATION_IN_COVERAGE_MAP",
+      "ALL_UNRESOLVED_INTERFACE_IDS_MAPPED_AND_UNRESOLVED_STAYS_UNRESOLVED",
+      "EXACT_WORK_PACKAGE_DEPENDENCIES_ACYCLIC",
+      "EVERY_WORK_PACKAGE_HAS_MACHINE_CHECKS",
+      "AUTO_CONTINUATION_PRESERVES_EXISTING_APPROVAL_AND_STOP_RULES",
+      "NO_POLICY_PLAN_IMPLEMENTATION_AUTHORITY_COLLAPSE",
+      "NO_VERIFICATION_WAIVER_OR_COVERAGE_REDUCTION",
+      "NO_CHANGE_TO_BRANCH_POLICY_CODE_TEST_WORKFLOW_OR_REGISTRY"
+    ],
+    "approval_current": "PENDING",
+    "implementation_current": "HOLD_NOT_AUTHORIZED",
+    "plan_registration_current": "NOT_REGISTERED"
+  }
+}
