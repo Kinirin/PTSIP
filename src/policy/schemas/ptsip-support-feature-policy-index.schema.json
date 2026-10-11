@@ -17,7 +17,7 @@
     },
     "policies": {
       "type": "array",
-      "minItems": 24,
+      "minItems": 1,
       "uniqueItems": true,
       "items": {
         "type": "object",
@@ -29,11 +29,11 @@
         "properties": {
           "id": {
             "type": "string",
-            "pattern": "^SFP-(?:[0-9]{4}|(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4})$"
+            "pattern": "^SFP-(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$"
           },
           "path": {
             "type": "string",
-            "pattern": "^(?:legacy/SFP-[0-9]{4}\\.yaml|SFP-[0-9]{4}\\.yaml|(?:NORM/SFP-NORM|GOV/SFP-GOV|INTENT/SFP-INTENT|ARCH/SFP-ARCH|INFO/SFP-INFO|CNTR/SFP-CNTR|RISK/SFP-RISK|SUPPLY/SFP-SUPPLY|REAL/SFP-REAL|ASSURE/SFP-ASSURE|CTRL/SFP-CTRL|CHANGE/SFP-CHANGE|OPS/SFP-OPS|RECORD/SFP-RECORD)-[0-9]{4}\\.yaml)$"
+            "pattern": "^(?:NORM/SFP-NORM|GOV/SFP-GOV|INTENT/SFP-INTENT|ARCH/SFP-ARCH|INFO/SFP-INFO|CNTR/SFP-CNTR|RISK/SFP-RISK|SUPPLY/SFP-SUPPLY|REAL/SFP-REAL|ASSURE/SFP-ASSURE|CTRL/SFP-CTRL|CHANGE/SFP-CHANGE|OPS/SFP-OPS|RECORD/SFP-RECORD)-[0-9]{4}\\.yaml$"
           },
           "status": {
             "enum": [
@@ -45,40 +45,12 @@
           },
           "authority_role": {
             "enum": [
-              "CANONICAL_AUTHORITY",
-              "MIGRATION_SOURCE"
+              "CANONICAL_AUTHORITY"
             ]
           }
         },
-        "additionalProperties": false,
-        "allOf": [
-          {
-            "if": {
-              "properties": {
-                "authority_role": {
-                  "const": "MIGRATION_SOURCE"
-                }
-              },
-              "required": [
-                "authority_role"
-              ]
-            },
-            "then": {
-              "properties": {
-                "status": {
-                  "const": "RETIRED"
-                }
-              }
-            }
-          }
-        ]
+        "additionalProperties": false
       }
-    },
-    "migration_registry_ref": {
-      "const": "registries/root-family-migration.json"
-    },
-    "projection_module_ref": {
-      "const": "registries/root-family-projection.module.json"
     }
   },
   "additionalProperties": false
