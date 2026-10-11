@@ -149,12 +149,13 @@
     "workflow_mutation": "FORBIDDEN",
     "new_implementation_permission_from_this_draft_plan": false,
     "existing_p0_p1_candidate_runtime_state": "CANDIDATE_ONLY_NO_MUTATION",
-    "last_result": "USER_APPROVED_PLAN_RV01_PASS_VERIFICATION_REMEDIATION_AUTHORIZED_RUNTIME_FORBIDDEN",
+    "last_result": "RV01_RV05_VERIFICATION_SATISFIED_AT_SOURCE_SHA_PARENT_AND_EXTENSION_STILL_BLOCKED_RUNTIME_FORBIDDEN",
     "plan_index_mutation": "NO_TOP_LEVEL_CHANGE_NEEDED_FOR_CHILD_REVIEW_REGISTRATION",
     "plan_schema_mutation": "NOT_REQUIRED",
     "prerelease_plan_mutation": "FORBIDDEN",
     "approved_plan_implementation_scope": "POLICY_BOUND_READ_ONLY_CONTEXT_EVIDENCE_CANDIDATE_VERIFICATION_AND_REQUIRED_TEST_REMEDIATION_ONLY",
-    "approval_does_not_override_blockers": true
+    "approval_does_not_override_blockers": true,
+    "runtime_activation_after_validation": "NOT_AUTHORIZED_BY_VERIFICATION"
   },
   "routing": {
     "branch": "dev/0.3.8",
@@ -225,7 +226,7 @@
     }
   },
   "remaining_validation": {
-    "status": "RV01_PASS_RV03_APPROVED_RV02_RV04_AND_RV05_REQUIRED_VALIDATION_BLOCKED",
+    "status": "ALL_FIVE_RV_GATE_RESPONSIBILITIES_SATISFIED_AT_VERIFIED_SOURCE_SHA_PLAN_AND_WORK_UNIT_REMAIN_BLOCKED",
     "verification_owner": "CURRENT_0_3_8_RELEASE_PLANNING",
     "completed_reference_update_must_not_be_repeated": true,
     "tasks": [
@@ -251,7 +252,7 @@
       {
         "id": "RV-02",
         "responsibility": "CANDIDATE_SCHEMA_INVENTORY_CURRENTNESS",
-        "state": "CORRECTION_APPLIED_CI_PENDING",
+        "state": "PASS_AT_VERIFIED_CI_SOURCE_SHA",
         "action": "Verify candidate schema now requires no legacy plan_ref and exact-matches the current candidate inventory; strict closed schema preserved; run Go positive and negative cases and required CI.",
         "evidence": {
           "previous_failure": "JSONSCHEMA_CONST_MISMATCH_AT_INVENTORY",
@@ -260,8 +261,11 @@
           "candidate_schema_inventory_exact_match": true,
           "strict_closed_schema": true,
           "all_six_current_policy_fingerprints_preserved": true,
-          "ci_run": "https://github.com/Kinirin/PTSIP/actions/runs/38128849734",
-          "ci_result": "NOT_YET_VERIFIED"
+          "ci_run": "https://github.com/Kinirin/PTSIP/actions/runs/38131146170",
+          "ci_result": "SUCCESS",
+          "ci_source_sha": "768ebf8bc6fb594cf32441e3561853a239f3ff1b",
+          "strict_candidate_schema_inventory_equals_contract": true,
+          "read_only_go_positive_and_negative_conformance_passed_in_static_validation": true
         },
         "pass_condition": "CANDIDATE_SCHEMA_EXACT_CURRENT_INVENTORY_AND_GO_POSITIVE_NEGATIVE_CONFORMANCE_PASS",
         "failure": "FAIL_CLOSED_BLOCK_REGISTRATION"
@@ -269,7 +273,7 @@
       {
         "id": "RV-03",
         "responsibility": "CURRENT_RELEASE_AUTHORITY_AND_PARENT_REGISTRATION",
-        "state": "PARENT_AND_CHILD_APPROVED_REGISTRATION_CONFIRMED_VERIFICATION_BLOCKED",
+        "state": "PASS_APPROVED_REGISTERED_BLOCKED",
         "action": "Confirm the current release WU-01 is registered with explicit user approval and WU-01-P01 is explicitly user-approved and registered as its unique extension. Keep the parent and child BLOCKED while RV-02/RV-05 validation and normative policy restrictions remain unmet.",
         "pass_condition": "APPROVED_REGISTERED_PARENT_AND_APPROVED_REGISTERED_CHILD_WITH_NO_RUNTIME_OR_NORMATIVE_AUTHORITY",
         "failure": "REVIEW_ONLY_NOT_EXECUTABLE",
@@ -284,13 +288,16 @@
           "registered_work_units": 1,
           "child_is_top_level_work_unit": false,
           "implementation_scope": "VERIFICATION_ONLY",
-          "runtime_activation": "FORBIDDEN"
+          "runtime_activation": "FORBIDDEN",
+          "verification_source_sha": "768ebf8bc6fb594cf32441e3561853a239f3ff1b",
+          "registration_consistency": "PASS",
+          "execution_lifecycle": "BLOCKED_RETAINED"
         }
       },
       {
         "id": "RV-04",
         "responsibility": "CANDIDATE_PLAN_REF_REMOVAL_WITHOUT_AUTHORITY_EXPANSION",
-        "state": "REMOVED_APPLIED_CI_PENDING",
+        "state": "PASS_AT_VERIFIED_CI_SOURCE_SHA",
         "action": "Verify plan_ref is absent from candidate, required schema fields, and native Go plan-fetch/authorization binding path. Candidate verification is read-only, closed-schema, policy-bound and fails closed on untrusted source or invalid proof. Do not follow prerelease plan.",
         "evidence": {
           "candidate_ref": "src/agent_contracts/contracts/context-evidence-identity.json",
@@ -303,7 +310,11 @@
           "legacy_plan_document_lookup": "NOT_USED",
           "candidate_status": "CANDIDATE",
           "runtime_activation": "FORBIDDEN",
-          "normative_authority": false
+          "normative_authority": false,
+          "ci_run": "https://github.com/Kinirin/PTSIP/actions/runs/38131146170",
+          "ci_result": "SUCCESS",
+          "ci_source_sha": "768ebf8bc6fb594cf32441e3561853a239f3ff1b",
+          "plan_ref_absent_and_fail_closed_regression_passed": true
         },
         "pass_condition": "NO_PLAN_REF_IN_CANDIDATE_SCHEMA_OR_VERIFIER_AND_NO_CROSS_VERSION_PLAN_LOOKUP_AND_REQUIRED_GO_CONFORMANCE_PASS",
         "failure": "FAIL_CLOSED_KEEP_CANDIDATE_NON_EXECUTABLE"
@@ -311,18 +322,32 @@
       {
         "id": "RV-05",
         "responsibility": "MANDATORY_TESTS_AND_RECORD_PROTECTION",
-        "state": "PENDING_REQUIRED_CI",
+        "state": "PASS_APPLICABLE_REQUIRED_CI_AT_SOURCE_SHA",
         "action": "Run repository-required native Go Context/Evidence positive and fail-closed negative vectors, planning/index validity, policy schema/registry checks, and required GitHub Actions without skipping or weakening verification",
         "pass_condition": "ALL_APPLICABLE_REQUIRED_CHECKS_PASS_WITH_SOURCE_BOUND_EVIDENCE",
         "failure": "NO_COMPLETE_OR_RUNTIME_PROMOTION",
         "evidence": {
-          "workflow_run": "https://github.com/Kinirin/PTSIP/actions/runs/38128849734",
-          "workflow_result": "NOT_YET_VERIFIED",
-          "test_build_not_assumed_passed": true
+          "workflow_run": "https://github.com/Kinirin/PTSIP/actions/runs/38131146170",
+          "workflow_result": "SUCCESS",
+          "source_sha": "768ebf8bc6fb594cf32441e3561853a239f3ff1b",
+          "jobs": {
+            "pp-transition": "SUCCESS",
+            "static-validation": "SUCCESS",
+            "pra-registry-validation": "SUCCESS",
+            "test-build": "SKIPPED_BY_PUSH_EVENT_JOB_CONDITION"
+          },
+          "test_build_not_assumed_passed": true,
+          "required_jobs_success": true,
+          "build_job_skipped_is_not_a_test_pass": true,
+          "pass_scope": "REQUIRED_PUSH_WORKFLOW_ON_EXACT_SOURCE_SHA",
+          "runtime_activation": "FORBIDDEN",
+          "no_completion_promotion": true
         }
       }
     ],
-    "required_release_approval_and_implementation_remain_separate": true
+    "required_release_approval_and_implementation_remain_separate": true,
+    "last_verified_source_sha": "768ebf8bc6fb594cf32441e3561853a239f3ff1b",
+    "last_verified_run": "https://github.com/Kinirin/PTSIP/actions/runs/38131146170"
   },
   "approval_evidence": {
     "decision": "USER_EXPLICIT_FULL_PLAN_APPROVAL",
