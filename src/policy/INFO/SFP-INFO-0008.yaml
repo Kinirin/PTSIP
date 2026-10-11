@@ -1,0 +1,78 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0008
+  title: PTSIP Engine non-authoritative derived execution state
+  status: DRAFT
+authority_subject:
+  id: SUP_ENGINE_DERIVED_EXECUTION_STATE_INFORMATION
+  statement: Engine 실행 상태의 비권위적 정보 의미와 검증을 거친 재사용 자격 표시를 소유하며, 정책·원본·검증 책임을 대체하지 않는다.
+exclusive_kernel:
+  - SUP_ENGINE_STATE_NON_AUTHORITATIVE_DERIVATION
+  - SUP_ENGINE_STATE_VERIFIED_REUSE_ELIGIBILITY_INFORMATION
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  family_definition:
+    kernel_definitions:
+      - id: SUP_ENGINE_STATE_NON_AUTHORITATIVE_DERIVATION
+        statement: 보존된 엔진 실행 상태는 현재의 규범 계약과 검증된 원본으로부터 도출한 비권위적 정보로만 해석한다.
+        non_substitutability: 저장된 실행 상태의 존재나 과거 결과는 NORM의 계약 및 INFO의 현행 원본 의미를 대신하지 않는다.
+      - id: SUP_ENGINE_STATE_VERIFIED_REUSE_ELIGIBILITY_INFORMATION
+        statement: 엔진 상태의 재사용 자격은 현행 기계 검증이 충족된 경우에만 부여하며, 자격 정보 자체는 검증 절차나 권위를 소유하지 않는다.
+        non_substitutability: INFO가 표시하는 재사용 자격은 ASSURE의 검증 책임 또는 REAL의 안전한 실행·쓰기 절차를 대체하지 않는다.
+    source_scope: []
+  engine_state_approved_direction:
+    decision: OPTION_B
+    decision_source: PROJECT_OWNER_EXPLICIT
+    decision_recorded_at: '2026-10-11'
+    state_role: PERSISTED_NON_AUTHORITATIVE_DERIVED_EXECUTION_STATE
+    reuse_eligibility: REQUIRE_CURRENT_MACHINE_VERIFIED_VALIDITY
+    persisted_state_alone_grants_reuse_authority: false
+    unverified_stale_or_invalid_state: NOT_REUSABLE
+    semantic_authority: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+    engine_implementation_language_restriction: NONE
+    repository_state_path_ref: SFP-ARCH-0001
+    repository_state_path: .ptsip/engine/state.json
+    existing_arch_state_and_schema_contracts: DEFERRED_UNTIL_SEPARATELY_RESOLVED
+    existing_arch_runtime_activation: DEFERRED
+  engine_state_authority_boundaries:
+    cannot_create_or_override_normative_rules: true
+    cannot_replace_authoritative_source_information: true
+    cannot_grant_mutation_or_execution_authorization: true
+    does_not_activate_engine_runtime: true
+    does_not_authorize_engine_implementation_or_schema_mutation: true
+    cannot_relax_existing_read_only_operation_boundary: true
+    existing_go_test_implementation_policy_unchanged: true
+    invalid_or_unverified_state_must_not_be_reused: true
+  engine_state_responsibility_partition:
+    INFO: DERIVED_STATE_INFORMATION_ROLE_AND_REUSE_QUALIFICATION_STATUS
+    ARCH: ENGINE_PLANE_PATH_ROLE_AND_ACTIVATION_BOUNDARY
+    NORM: LANGUAGE_NEUTRAL_NORMATIVE_SEMANTICS
+    ASSURE: MACHINE_VALIDATION_EVIDENCE_AND_ACCEPTANCE
+    REAL: AUTHORIZED_STATE_MATERIALIZATION_AND_WRITE_INTEGRITY
+    CNTR: TYPED_STATE_OPERATION_INTERFACE_AND_ERROR_CONTRACT
+    PLAN: SERIALIZATION_SCHEMA_VALIDATION_ALGORITHM_AND_RECOVERY_DESIGN
+  engine_state_unresolved_policy_decisions:
+    - INVALID_OR_STALE_STATE_EXECUTION_BEHAVIOR
+    - REUSE_ELIGIBILITY_SCOPE_AND_INVALIDATION_BOUNDARY
+  engine_state_unresolved_plan_contract_details:
+    - STATE_SCHEMA_FIELDS_AND_SERIALIZATION
+    - VALIDATION_PROOF_INTERFACE
+    - STATE_WRITE_ATOMICITY_AND_RETRIEVAL
+relations:
+  supersedes: []
+  amends: []
+  extends:
+    - policy: SFP-INFO-0001
+      scope: NON_AUTHORITATIVE_DERIVED_INFORMATION_SOURCE_BOUNDARY
+  depends_on:
+    - policy: SFP-ARCH-0001
+      scope: EXISTING_ENGINE_PLANE_LOCATION_AND_DEFERRED_RUNTIME_CONTRACTS
+    - policy: SFP-NORM-0001
+      scope: LANGUAGE_NEUTRAL_NORMATIVE_SEMANTICS
+    - policy: SFP-REAL-0001
+      scope: MATERIALIZATION_AND_READ_ONLY_WRITE_BOUNDARY
