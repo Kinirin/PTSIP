@@ -66,6 +66,28 @@ rules:
     canonical_root_transition_owned_by_this_policy: false
     current_repository_migration_authorized_by_this_policy: false
     note: MPD-PLAN-0001_OWNS_PLANNING_BOUNDARY
+  approved_work_unit_registry_admission:
+    resolution: KEEP_LATEST
+    approval_source: USER_EXPLICIT
+    approval_ref: developer/policy/approvals/MPA-20261011-PLAN-WORK-UNIT-KEEP-LATEST.yaml
+    approval_date: '2026-10-11'
+    subject: DEVELOPER_RELEASE_PLANNING_WORK_UNITS_REGISTRY
+    registration_precondition: USER_REVIEWED_AND_APPROVED_PLAN_WORK_UNIT
+    unapproved_plan: REVIEW_ONLY_NOT_WORK_UNITS_REGISTRY_MEMBER
+    provisional_work_unit_registry_placeholder: FORBIDDEN
+    registered_work_unit_lifecycle_excludes:
+    - NOT_CREATED
+    - DRAFT
+    registered_work_unit_approval_excludes:
+    - PENDING
+    - REJECTED
+    registered_work_unit_approval_requires: USER_EXPLICIT_APPROVED
+    plan_review_alone_is_approval: false
+    plan_review_or_plan_document_creation_grants_implementation_authority: false
+    absent_registered_work_units: VALID_WHEN_NO_APPROVED_WORK_UNIT
+    legacy_policy_plan_relationship_NOT_CREATED_semantics: PRESERVED_IN_BINDING_PLANE
+    other_plan_lifecycle_and_approval_history: PRESERVE
+    no_branch_or_runtime_activation_authorized: true
   unit_mpd_plan_0001_50410dc74c9f:
     root: developer/planning/
     control_plane_entry: developer/planning/index.yaml
