@@ -243,22 +243,22 @@ func TestCurrentPolicyIndexesCoverCanonicalCorpusAndKeepHistoricalSourcesAuditOn
 		t.Fatal(index)
 	}
 	seen = map[string]bool{}
-	for i, raw := range rows {
+	for _, raw := range rows {
 		entry := Map(raw)
 		id := Text(entry["id"])
 		if seen[id] {
 			t.Fatal("duplicate Support identity", id)
 		}
 		seen[id] = true
-		if i < 24 {
-			if id != fmt.Sprintf("SFP-%04d", i+1) || entry["authority_role"] != "MIGRATION_SOURCE" {
-				t.Fatal(entry)
-			}
-			// Migration-source entries are archival evidence, never current policy authority.
-			if entry["status"] != "RETIRED" || entry["path"] != fmt.Sprintf("legacy/SFP-%04d.yaml", i+1) {
+		if entry["authority_role"] == "MIGRATION_SOURCE" {
+			// Historical sources may remain indexed only as retired audit evidence.
+			if entry["status"] != "RETIRED" || entry["path"] != "legacy/"+id+".yaml" {
 				t.Fatal(entry)
 			}
 			continue
+		}
+		if entry["authority_role"] != "CANONICAL_AUTHORITY" || strings.HasPrefix(Text(entry["path"]), "legacy/") {
+			t.Fatal("Support historical policy promoted as current authority", entry)
 		}
 		payload, err := r.Read("src/policy/" + Text(entry["path"]))
 		if err != nil || Map(payload["policy"])["id"] != id || Map(payload["policy"])["status"] != entry["status"] {
@@ -272,6 +272,12 @@ func TestCurrentPolicyIndexesCoverCanonicalCorpusAndKeepHistoricalSourcesAuditOn
 			if strings.Contains(string(data), `"`+forbidden+`"`) {
 				t.Fatal("repository-specific authority wrapper", id, forbidden)
 			}
+		}
+	}
+	for i := 1; i <= 24; i++ {
+		id := fmt.Sprintf("SFP-%04d", i)
+		if !iwpPathExists(r, "src/policy/legacy/"+id+".yaml") {
+			t.Fatal("missing historical Support audit source", id)
 		}
 	}
 }
