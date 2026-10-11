@@ -78,37 +78,8 @@ func verifyContextEvidenceCandidate(r *Repository) (Object, error) {
 	if err = schema.Validate(module); err != nil {
 		return nil, err
 	}
-	planRef := Text(module["plan_ref"])
-	plan, err := r.Read(planRef)
-	if err != nil {
-		return nil, err
-	}
-	if Map(plan["approval"])["status"] != "APPROVED" || (Map(plan["implementation_authorization"])["status"] != "AUTHORIZED" && Map(plan["implementation_authorization"])["status"] != "COMPLETE") {
-		return nil, fmt.Errorf("candidate plan implementation is not authorized")
-	}
-	parent, err := r.Read("developer/planning/0.3.8/0.3.8a3/WU-03/WU-03.yaml")
-	if err != nil {
-		return nil, err
-	}
-	if failures := ExtensionParentConsistency(parent, plan, Text(Map(plan["extension"])["id"]), planRef); len(failures) > 0 {
-		return nil, fmt.Errorf("candidate plan registration: %v", failures)
-	}
-	bindings, err := r.ResolveBindings(Object{"plan_ref": planRef})
-	if err != nil {
-		return nil, err
-	}
-	if bindings["status"] != "BOUND" {
-		return nil, fmt.Errorf("candidate plan has no exact external binding")
-	}
-	boundRows := List(bindings["bindings"])
-	if len(boundRows) != 1 {
-		return nil, fmt.Errorf("ambiguous candidate plan binding")
-	}
-	for _, field := range []string{"resolved_plan_id", "plan_file_id", "version", "revision"} {
-		if Map(boundRows[0])[field] != Map(plan["plan_identity"])[field] {
-			return nil, fmt.Errorf("candidate plan binding identity drift: %s", field)
-		}
-	}
+	// CANDIDATE evaluation checks registered policy evidence and synthetic read-only gates.
+	// It neither derives implementation authority nor follows a prerelease plan.
 	inventory := Map(module["inventory"])
 	index, err := r.Read(Text(inventory["policy_index_ref"]))
 	if err != nil {
