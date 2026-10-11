@@ -250,6 +250,50 @@
           "detailed_interoperability_contract_and_registry_schema": "UNRESOLVED",
           "no_new_authority": "NO_ACTIVATION_EXECUTION_OR_WRITE_PERMISSION",
           "draft_policy_activation": "NOT_AUTHORIZED"
+        },
+        "common_engine_transport_policy_direction": {
+          "decision": "RECONCILE_COMMON_SEMANTIC_CONTRACT_INDEPENDENT_TRANSPORT_BINDINGS",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "scope": "FUTURE_LANGUAGE_NEUTRAL_REGISTERED_ENGINE_INTEROPERABILITY",
+          "common_normative_layer": "CONTRACT_SEMANTICS_INDEPENDENT_OF_TRANSPORT_IMPLEMENTATION",
+          "preserved_contract_dimensions": [
+            "ENGINE_IDENTITY",
+            "CAPABILITIES",
+            "TYPED_INPUT_OUTPUT",
+            "PRECONDITIONS",
+            "POSTCONDITIONS",
+            "SIDE_EFFECTS",
+            "DECLARED_PERMISSION_REQUIREMENTS",
+            "FAILURE_SEMANTICS",
+            "VERIFICATION_EVIDENCE",
+            "COMPATIBILITY"
+          ],
+          "transport_choice": "PER_ENGINE_AND_CAPABILITY_DECLARED_INDEPENDENT_ADAPTER_BINDING",
+          "mandatory_single_transport_or_shared_abi": "FORBIDDEN",
+          "transport_implementation_ownership": "ENGINE_OR_REGISTERED_EXTERNAL_PROVIDER",
+          "adapter_binding_authority": "REGISTERED_MACHINE_VERIFIED_ENGINE_IDENTITY_VERSION_CAPABILITY_CONTRACT_AND_TRANSPORT_ADAPTER",
+          "allowed_transport_tech": "NOT_SPECIFIED_BY_THIS_POLICY",
+          "transport_bindings_for_noninvocable_capabilities": "NOT_REQUIRED",
+          "external_invocation": "CONDITIONAL_ON_VERIFIED_REGISTERED_ENTRYPOINT_AND_CURRENT_GOV_CTRL_PERMISSIONS",
+          "engine_internal_runtime_and_management_code_sharing": "FORBIDDEN_FOR_SEVEN_OFFICIAL_RUST_ENGINES",
+          "transport_adapter_cannot_redefine": [
+            "CAPABILITY_SEMANTICS",
+            "TYPED_INPUT_OUTPUT",
+            "PRECONDITION_POSTCONDITION",
+            "SIDE_EFFECTS",
+            "FAILURE_SEMANTICS",
+            "PERMISSIONS",
+            "COMPATIBILITY"
+          ],
+          "ambiguity_or_missing_applicable_binding": "FAIL_CLOSED_AFFECTED_CAPABILITY",
+          "previously_approved_registration_change_reevaluation": "PRESERVED",
+          "active_registered_cli_contract": "SFP-CNTR-0007_UNCHANGED",
+          "active_0_3_8_transport_scope": "REGISTERED_CLI_INVOCATION_ONLY_NO_GENERALIZED_TRANSPORT_ACTIVATION",
+          "active_shipped_operation_contract": "SFP-CNTR-0001_UNCHANGED",
+          "concrete_transport_adapter_manifest_io_error_encoding": "REMAIN_UNRESOLVED_CONTRACT_DESIGN",
+          "implementation_authorization": "NOT_GRANTED",
+          "draft_runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -428,7 +472,13 @@
         "entrypoint_topology_choice_does_not_bypass_registration_binding_or_fresh_ctrl_gates": true,
         "external_interoperability_cntr_defines_machine_contract_dimensions_not_arch_implementation_layout": true,
         "arch_engine_interoperability_scope_must_reference_cntr_normative_semantics": true,
-        "interoperability_contract_scope_split_does_not_activate_draft_engine_runtime": true
+        "interoperability_contract_scope_split_does_not_activate_draft_engine_runtime": true,
+        "transport_adapter_cannot_redefine_normative_capability_operation_semantics": true,
+        "no_single_transport_abi_or_shared_compiled_runtime_is_required_for_interoperability": true,
+        "externally_invocable_capability_transport_binding_must_be_registered_identity_version_and_contract_bound": true,
+        "transport_independence_never_waives_current_ctrl_permission_or_registration_gate": true,
+        "active_0_3_8_registered_cli_scope_is_not_generalized_by_draft_transport_policy": true,
+        "official_rust_engine_transport_implementations_must_remain_independent": true
       },
       "unresolved_decisions": [
         {
@@ -459,7 +509,10 @@
         {
           "id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "RECONCILE_COMMON_SEMANTIC_CONTRACT_INDEPENDENT_TRANSPORT_BINDINGS",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_AND_ADAPTER_BINDING_SHAPES",
+          "requires_new_policy_choice_only_if_new_novel_normative_boundary": true
         },
         {
           "id": "RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY",
@@ -798,6 +851,25 @@
           "exact_schema": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE_REMAINS_UNRESOLVED",
           "active_policy": "UNCHANGED",
           "draft_only": true
+        },
+        {
+          "id": "COMMON_ENGINE_TRANSPORT_POLICY_DIRECTION",
+          "selected_option": "RECONCILE",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source_unresolved_id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
+          "conflict_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "active_policy": "SFP-CNTR-0007",
+          "existing_active_rule": "GENERALIZED_TRANSPORT_IN_0_3_8_OUT_OF_SCOPE",
+          "active_rule_preserved": "TRUE",
+          "common_semantics": "CANONICAL_TRANSPORT_NEUTRAL",
+          "implementation_binding": "INDEPENDENT_REGISTERED_TRANSPORT_ADAPTER_PER_DECLARED_INVOCABLE_CAPABILITY",
+          "exact_transport_contract_design": "UNRESOLVED",
+          "remaining_unresolved_id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
+          "user_approved_direction_resolved": "TRUE",
+          "contract_design_completion": "NOT_CLAIMED",
+          "policy_status": "DRAFT_UNCHANGED",
+          "runtime_implementation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
@@ -915,6 +987,10 @@
       {
         "policy": "SFP-CNTR-0001",
         "scope": "ENGINE_DRAFT_COMPATIBILITY"
+      },
+      {
+        "policy": "SFP-CNTR-0007",
+        "scope": "REGISTERED_CLI_ACTIVE_BOUNDARY_AND_0_3_8_GENERALIZED_TRANSPORT_EXCLUSION"
       }
     ]
   }
