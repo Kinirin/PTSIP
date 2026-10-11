@@ -146,6 +146,27 @@
           },
           "uniqueItems": true
         },
+        "resolved_decisions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": ["id", "selected_option", "approval_source", "decision_date"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "selected_option": {"type": "string", "minLength": 1},
+              "approval_source": {"const": "USER_EXPLICIT"},
+              "decision_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+              "resolution_scope": {"type": "string", "minLength": 1},
+              "concrete_algorithm": {"type": "string", "minLength": 1},
+              "policy_constraints": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+              "machine_verification": {"type": "string", "minLength": 1},
+              "actual_grouping_and_source_MUTATION": {"type": "string", "minLength": 1},
+              "active_transition": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        },
         "implementation_detail_authority": {
           "const": "PLAN"
         },
