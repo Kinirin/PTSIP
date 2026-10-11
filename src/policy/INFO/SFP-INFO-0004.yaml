@@ -48,6 +48,10 @@ authority_semantics:
     missing_source_recovery_authorization: AUTHORIZED_AUTOMATED_RECOVERY
     source_change_atomicity: LOGICAL_AUTHORITY_ATOMICITY
     automatic_grouping_determinism: DETERMINISTIC_GROUPING
+    automatic_grouping_strategy_authority_choice: A_USER_EXPLICIT
+    automatic_grouping_strategy_authority: POLICY_CONSTRAINED_PLAN_WITH_MACHINE_VERIFICATION
+    automatic_grouping_strategy_concrete_algorithm: PLAN_NOT_POLICY_FIXED
+    automatic_grouping_strategy_validation: MACHINE_VERIFIED_APPROVED_POLICY_RULES
   invariants:
     logical_profile_identity: SINGLE
     physical_source_artifacts: ONE_OR_MORE
@@ -63,6 +67,15 @@ authority_semantics:
       grouping_changes_responsibility_map_semantics: false
       same_authoritative_profile_rules_and_overrides_yield_same_grouping: true
       global_reoptimization_must_be_deterministic: true
+      concrete_grouping_strategy_may_be_selected_by_plan_without_per_strategy_policy_approval: true
+      plan_strategy_requires_machine_verifiable_declaration_and_validation: true
+      plan_strategy_must_optimize_manageability_under_effective_policy_constraints: true
+      plan_strategy_must_support_global_reoptimization_and_respect_project_override: true
+      plan_strategy_must_produce_deterministic_results_for_same_authoritative_inputs: true
+      plan_strategy_must_not_reassign_registered_source_membership_or_component_owner: true
+      plan_strategy_must_not_redefine_responsibility_map_semantic_authority: true
+      missing_ambiguous_or_unverified_strategy_conformance: FAIL_CLOSED_NO_AUTHORITY_MUTATION
+      strategy_delegation_does_not_activate_draft_or_implement_grouping: true
     relationship_source:
       ownership_scope: LOGICAL_PROFILE
       component_source_ownership: FORBIDDEN
@@ -95,8 +108,24 @@ authority_semantics:
       intermediate_storage_state_confers_authority: false
       failed_or_partial_change_can_activate_new_profile: false
       intermediate_physical_storage_state_permitted: true
-  unresolved_decisions:
-    - AUTOMATED_GROUPING_STRATEGY
+  unresolved_decisions: []
+  resolved_decisions:
+    - id: AUTOMATED_GROUPING_STRATEGY
+      selected_option: A_POLICY_CONSTRAINED_PLAN_AND_MACHINE_VERIFICATION
+      approval_source: USER_EXPLICIT
+      decision_date: '2026-10-11'
+      resolution_scope: GROUPING_STRATEGY_DESIGN_AUTHORITY_ONLY
+      concrete_algorithm: PLAN_NOT_DECIDED_IN_POLICY
+      policy_constraints:
+        - MANAGEABILITY_FIRST
+        - DETERMINISTIC_GROUPING
+        - GLOBAL_REOPTIMIZATION
+        - PROJECT_EXPLICIT_OVERRIDE
+        - REGISTERED_SOURCE_MEMBERSHIP_AUTHORITY
+        - RESPONSIBILITY_MAP_SEMANTIC_AUTHORITY_SEPARATION
+      machine_verification: REQUIRED
+      actual_grouping_and_source_MUTATION: NOT_AUTHORIZED_BY_THIS_DECISION
+      active_transition: NOT_AUTHORIZED
   implementation_detail_authority: PLAN
 relations:
   supersedes: []
