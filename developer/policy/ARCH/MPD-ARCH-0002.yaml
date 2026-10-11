@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.6'
+  version: '2.7'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -127,6 +127,77 @@ rules:
       developer_assure_evidence_and_coverage_judgment: PRESERVED
       repository_release_requirements_and_gates: PRESERVED
       existing_mandatory_verification: PRESERVED
+    minimum_execution_contracts:
+      id: TOOLING_TEST_REFACTOR_MINIMUM_EXECUTION_CONTRACTS
+      version: '1.0'
+      approved_contract_count: 11
+      approval_ref: developer/policy/approvals/MPA-20261011-TOOLING-TEST-11-CONTRACTS.yaml
+      scope: WORKFLOW_EXECUTION_AND_MIGRATION
+      authority_limits:
+        verification_obligations: CONSUME_EXISTING_AUTHORITY_ONLY
+        check_evidence_judgment_transfer: NOT_AUTHORIZED_BY_THIS_APPROVAL
+        mode_required_coverage_transfer: NOT_AUTHORIZED_BY_THIS_APPROVAL
+        gate_history_and_revocation: OUT_OF_SCOPE
+      contracts:
+      - id: WEC-01
+        name: CHECK_SELECTION
+        automatic_selection: REQUIRED
+        explicit_single_selection: REQUIRED
+        explicit_multiple_selection: REQUIRED
+        unregistered_selection: REJECT
+      - id: WEC-02
+        name: INDEPENDENT_CHECK_EXECUTION
+        independently_executable_check: REQUIRED
+        exact_source_sha_binding: REQUIRED
+      - id: WEC-03
+        name: EXECUTION_ISOLATION
+        unrelated_check_failure_blocks_execution: FORBIDDEN
+        shared_workflow_wide_concurrency_bottleneck: FORBIDDEN
+      - id: WEC-04
+        name: CHECK_OUTCOME_INTERFACE
+        check_outcomes:
+        - PASS
+        - FAIL
+        - UNRESOLVED
+        check_pass_implies_mode_pass: false
+        normative_admissibility_authority: MPD-ASSURE-0001_UNTIL_AUTHORIZED_TRANSFER
+      - id: WEC-05
+        name: REQUIRED_COVERAGE
+        required_checks_source: DECLARED_PROJECT_PROFILE_AND_EFFECTIVE_POLICY
+        missing_required_check_allows_mode_pass: false
+        evidence_admissibility_source: MPD-ASSURE-0001_UNTIL_AUTHORIZED_TRANSFER
+      - id: WEC-06
+        name: EVIDENCE_PROVENANCE
+        required_fields:
+        - check_id
+        - source_sha
+        - execution_identity
+        - outcome
+        - evidence_reference
+        historical_evidence_retention_authority: MPD-RECORD-0001
+      - id: WEC-07
+        name: TRIGGER_PRESERVATION
+        preserve_existing_mandatory_push_dispatch_and_release_verifications: REQUIRED
+        required_applicability_may_be_silently_dropped: false
+      - id: WEC-08
+        name: REGISTRY_DRIVEN_EXTENSIBILITY
+        new_registered_check_requires_workflow_yaml_change: false
+        workflow_hardcodes_individual_check_ids: false
+      - id: WEC-09
+        name: REQUIRED_VERIFICATION_INVENTORY
+        identify_effective_policy_and_project_profile_obligations: REQUIRED
+        inventory_all_four_legacy_jobs_and_conditional_verification_paths: REQUIRED
+        legacy_job_presence_alone_creates_new_policy_obligation: false
+      - id: WEC-10
+        name: RESPONSIBILITY_MAPPING_COMPLETENESS
+        mapping_chain: PROJECT_PROFILE_TO_MODE_TO_CHECK_TO_EXECUTION_TARGET
+        every_required_obligation_must_be_mapped: true
+        unmapped_or_unowned_required_obligation: REJECT
+      - id: WEC-11
+        name: MIGRATION_EQUIVALENCE
+        require_machine_checkable_old_to_new_verification_mapping: true
+        preserve_required_coverage_triggers_source_identity_and_result_semantics: true
+        missing_or_unproven_equivalence: REJECT
     plan_boundary:
       workflow_dispatch_input_mechanism: PLAN
       registry_execution_contract_shape: PLAN_SUBORDINATE_TO_POLICY
