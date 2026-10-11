@@ -685,6 +685,15 @@
       "target": "developer/tests/engines",
       "evidence_claim": "repository-architecture.go.engines",
       "required": true
+    },
+    {
+      "id": "ptsip-contract--go--ptsip-contracts",
+      "mode": "ptsip-contract",
+      "component_ref": "ptsip-contract-verification",
+      "kind": "go",
+      "target": "src/tests/ptsip/contracts",
+      "evidence_claim": "ptsip-contract.go.ptsip-contracts",
+      "required": true
     }
   ]
 }

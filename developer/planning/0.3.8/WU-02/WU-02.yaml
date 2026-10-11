@@ -416,6 +416,39 @@
           "engine_contract_data_included": true,
           "rust_source_and_build_output_excluded": true,
           "profile_history_excluded": true
+        },
+        {
+          "command": "go -C src/tests/ptsip/contracts test -count=1 -v ./...; pytest contract and test-mode regression",
+          "result": "PASS",
+          "python_regression_test_count": 70,
+          "native_denied_ids": [
+            "MPD-0012",
+            "MPD-SPEC-0001"
+          ],
+          "current_support_positive_control": "SFP-GOV-0001",
+          "legacy_body_expectation_source": false
+        }
+      ],
+      "observed_remote": [
+        {
+          "source_sha": "d268a095db345b2816e9b707eb6413d16cd9bbfd",
+          "run_id": 38157024211,
+          "event": "push",
+          "result": "PASS"
+        },
+        {
+          "source_sha": "d268a095db345b2816e9b707eb6413d16cd9bbfd",
+          "run_id": 38157083929,
+          "event": "workflow_dispatch",
+          "preset": "full",
+          "result": "FAIL",
+          "failed_checks": [
+            "ptsip-contract--pytest--ptsip-contracts",
+            "release-full-regression"
+          ],
+          "cause": "PREEXISTING_TEST_REQUIRED_HISTORY_ONLY_MPD_0012_IN_CURRENT_CATALOG",
+          "native_engine_check": "PASS",
+          "remediation": "REPLACED_HISTORICAL_GATE_WITH_CURRENT_NATIVE_GO_LOOKUP_AND_EXPLICIT_CONTRACT_MODE_CHECK"
         }
       ]
     },

@@ -61,15 +61,3 @@ def test_extension_contract_uses_only_current_support_authority() -> None:
     assert unit["initial_execution"]["mechanism"] == "REGISTERED_COMMAND_INVOCATION"
     assert unit["lifecycle"] == "ACTIVE_NORMATIVE_CONTRACT_ONLY_RUNTIME_IMPLEMENTATION_NOT_AUTHORIZED"
     assert "RUNTIME_IMPLEMENTATION_AUTHORIZATION" in unit["explicit_exclusions"]
-
-
-def test_live_reference_gate_rejects_historical_policy_identity() -> None:
-    developer = _catalog("developer/policy/index.yaml")
-    historic = {
-        identity for identity, entry in developer.items()
-        if entry.get("authority_role") == "MIGRATION_SOURCE"
-    }
-    # Guard regression: an archived policy may exist but must never be a live owner.
-    assert "MPD-0012" in historic
-    assert _invalid_refs({"authority_ref": "MPD-0012"}, historic) == {"MPD-0012"}
-    assert _invalid_refs({"authority_ref": "SFP-GOV-0001"}, historic) == set()

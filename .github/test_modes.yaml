@@ -108,6 +108,8 @@ modes:
   - id: ptsip-contract
     component_ref: ptsip-contract-verification
     execution:
+      go:
+        - src/tests/ptsip/contracts
       pytest:
         - src/tests/ptsip/contracts
         - src/tests/ptsip/agent_contracts/test_contract_plane.py
