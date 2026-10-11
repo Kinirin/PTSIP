@@ -42,6 +42,8 @@ rules:
       historical_approval_and_execution_evidence_mutation: FORBIDDEN
     authorization_boundary:
       policy_approval_is_new_plan_approval: false
+      prior_plan_approval_may_be_preserved_only_if_scope_and_semantic_equivalence_proven: true
+      prior_plan_approval_preservation_interpreted_as_effective_scope_not_recorded_status: true
       prior_plan_approval_effective_for_revised_scope_only_if_scope_and_semantic_equivalence_proven: true
       recorded_prior_plan_approval_status_is_not_automatically_revoked_by_review: true
       new_or_expanded_plan_approval_by_automation: FORBIDDEN
