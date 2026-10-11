@@ -158,7 +158,11 @@
         "internal_layout_validation": "MACHINE_VERIFIED_CONTRACT_AND_OWNER_MAPPING",
         "internal_layout_missing_or_conflicting_responsibility_proof": "BLOCK_UNVERIFIED_PLAN_IMPLEMENTATION",
         "internal_layout_plan_approval": "NO_SEPARATE_PER_LAYOUT_USER_APPROVAL_REQUIRED_BY_THIS_DECISION",
-        "internal_layout_decision_does_not_authorize_physical_mutation": true
+        "internal_layout_decision_does_not_authorize_physical_mutation": true,
+        "official_engine_implementation_language": "RUST",
+        "official_engine_implementation_language_scope": "SEVEN_OFFICIAL_ENGINES_ONLY",
+        "official_engine_language_neutral_contract": "PRESERVED",
+        "consumer_user_external_engine_language_policy": "UNCHANGED"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -683,6 +687,19 @@
           "constraints": "ALL_EFFECTIVE_ARCH_CNTR_AND_DECLARED_RESPONSIBILITY_BOUNDARIES",
           "actual_layout_or_directory_materialization": "NOT_APPROVED_BY_THIS_DECISION",
           "code_migration": "NOT_APPROVED_BY_THIS_DECISION",
+          "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "OFFICIAL_ENGINE_IMPLEMENTATION_LANGUAGE",
+          "selected_option": "RUST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "SEVEN_OFFICIAL_ENGINE_IMPLEMENTATIONS_ONLY",
+          "machine_contract_language": "LANGUAGE_NEUTRAL_UNCHANGED",
+          "consumer_and_external_engine_languages": "UNCHANGED",
+          "existing_module_move_reuse_and_shared_implementation_policy": "UNRESOLVED_SEPARATE_DECISION",
+          "policy_status": "DRAFT_UNCHANGED",
+          "implementation_authorization": "NOT_GRANTED",
           "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
