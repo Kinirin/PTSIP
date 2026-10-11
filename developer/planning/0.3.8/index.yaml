@@ -1,0 +1,29 @@
+schema_version: ptsip-developer-planning-index/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+
+plan_identity:
+  resolved_plan_id: PLN.POLI.PLAN.30b8f69a
+  plan_file_id: PLANFILE.MAIN.73ab4a9a3446
+  version: "1.0"
+  revision: "Rev.0001"
+
+plan:
+  plan_version: "0.3.8"
+  revision: "01"
+  integration_branch: dev/0.3.8
+  classification: CORE
+  status: DRAFT
+  control_plane: developer/planning/0.3.8/index.yaml
+  current_gate: WU-01
+
+# Structural entry only: no inherited scope, binding or execution authority.
+work_units:
+  - id: WU-01
+    lifecycle:
+      status: NOT_CREATED
+    approval:
+      status: PENDING
+      inherited_from: []
+    implementation_authorization:
+      status: NOT_AUTHORIZED
+    depends_on: []

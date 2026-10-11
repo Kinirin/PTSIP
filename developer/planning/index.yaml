@@ -16,7 +16,14 @@ plans:
           entry_document: developer/planning/0.3.8/0.3.8a3/index.yaml
           role: INTEGRATION_CONTROL_PLANE
           state: ACTIVE
+  - plan_version: "0.3.8"
+    path: developer/planning/0.3.8/index.yaml
+    status: DRAFT
+    integration_branch: dev/0.3.8
+    entry_routing:
+      model: RELEASE_SINGLE_CONTROL_PLANE
+      branch_entrypoints:
         - branch: dev/0.3.8
-          entry_document: developer/planning/0.3.8/0.3.8a3/index.yaml
+          entry_document: developer/planning/0.3.8/index.yaml
           role: INTEGRATION_CONTROL_PLANE
           state: ACTIVE

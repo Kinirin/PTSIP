@@ -150,7 +150,7 @@ func ValidatePlanning(r Repository) []string {
 			if err := validatePlanningFormalIdentity(r, Map(plan["plan_identity"])); err != nil {
 				errors = append(errors, path+": "+err.Error())
 			}
-		} else if routing != nil {
+		} else if routing != nil && routing["model"] != "RELEASE_SINGLE_CONTROL_PLANE" {
 			if planRouting == nil {
 				errors = append(errors, path+": responsibility_routing missing")
 			} else {
@@ -182,7 +182,11 @@ func ValidatePlanning(r Repository) []string {
 			}
 		}
 		if routing != nil {
-			errors = append(errors, planningRoutingErrors(entry, plan, indexed)...)
+			if routing["model"] == "RELEASE_SINGLE_CONTROL_PLANE" {
+				errors = append(errors, planningReleaseSingleRoutingErrors(r, entry, plan)...)
+			} else {
+				errors = append(errors, planningRoutingErrors(entry, plan, indexed)...)
+			}
 		}
 		gateResolved := false
 		for _, raw := range List(plan["work_units"]) {
@@ -452,6 +456,41 @@ func planningPrereleaseDependencies(plan Object, docs map[string]Object) []strin
 		if planningStatus(Map(docs[Text(dep)]["work_unit"])) != "COMPLETE" {
 			errors = append(errors, "current gate dependency incomplete: "+Text(dep))
 		}
+	}
+	return errors
+}
+
+func planningReleaseSingleRoutingErrors(r Repository, entry, plan Object) []string {
+	path := Text(entry["path"])
+	identity := Map(plan["plan"])
+	routing := Map(entry["entry_routing"])
+	errors := []string{}
+	for _, key := range []string{"plan_version", "integration_branch", "status"} {
+		if entry[key] != identity[key] {
+			errors = append(errors, path+": release "+key+" registration mismatch")
+		}
+	}
+	if identity["control_plane"] != path {
+		errors = append(errors, path+": release control plane mismatch")
+	}
+	if plan["responsibility_routing"] != nil {
+		errors = append(errors, path+": single control plane must not claim parallel responsibility routing")
+	}
+	entries := List(routing["branch_entrypoints"])
+	if len(entries) != 1 {
+		errors = append(errors, path+": single control plane requires exactly one branch entrypoint")
+	} else {
+		route := Map(entries[0])
+		if route["branch"] != entry["integration_branch"] || route["entry_document"] != path ||
+			route["role"] != "INTEGRATION_CONTROL_PLANE" || route["state"] != "ACTIVE" {
+			errors = append(errors, path+": single control plane entrypoint mismatch")
+		}
+	}
+	formal := Map(plan["plan_identity"])
+	if formal == nil {
+		errors = append(errors, path+": release plan_identity missing")
+	} else if err := validatePlanningFormalIdentity(r, formal); err != nil {
+		errors = append(errors, path+": "+err.Error())
 	}
 	return errors
 }

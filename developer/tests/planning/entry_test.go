@@ -45,9 +45,12 @@ func TestRegisteredPrereleaseAndContinuationResolveExactly(t *testing.T) {
 	if failures := planning.ValidatePlanning(repo); len(failures) != 0 {
 		t.Fatal(failures)
 	}
-	for _, branch := range []string{"dev/0.3.8", "dev/0.3.8a3"} {
-		result, err := planning.ResolvePlanningEntry(repo, branch)
-		if err != nil || result["entry_document"] != prereleasePlan || result["plan_version"] != "0.3.8a3" || result["role"] != "INTEGRATION_CONTROL_PLANE" {
+	for _, check := range []struct{ branch, path, version string }{
+		{"dev/0.3.8", "developer/planning/0.3.8/index.yaml", "0.3.8"},
+		{"dev/0.3.8a3", prereleasePlan, "0.3.8a3"},
+	} {
+		result, err := planning.ResolvePlanningEntry(repo, check.branch)
+		if err != nil || result["entry_document"] != check.path || result["plan_version"] != check.version || result["role"] != "INTEGRATION_CONTROL_PLANE" {
 			t.Fatalf("%#v %v", result, err)
 		}
 	}
@@ -68,7 +71,7 @@ func TestDuplicateBranchRegistrationIsAmbiguous(t *testing.T) {
 	if failures := planning.ValidatePlanning(repo); len(failures) == 0 {
 		t.Fatal("duplicate branch registration passed validation")
 	}
-	if _, err := planning.ResolvePlanningEntry(repo, "dev/0.3.8"); err == nil || !strings.Contains(err.Error(), "ambiguous planning entry") {
+	if _, err := planning.ResolvePlanningEntry(repo, "dev/0.3.8a3"); err == nil || !strings.Contains(err.Error(), "ambiguous planning entry") {
 		t.Fatal(err)
 	}
 }
@@ -198,5 +201,34 @@ func TestEmergencyPrereleaseResolvesExactOverlay(t *testing.T) {
 	result, err := planning.ResolvePlanningEntry(repo, "dev/0.3.8a1")
 	if err != nil || result["status"] != "RESOLVED" || result["branch"] != "dev/0.3.8a1" || result["plan_version"] != "0.3.8a1" || result["entry_document"] != ref || result["role"] != "EMERGENCY_RELEASE_OVERLAY" || result["work_unit"] != nil {
 		t.Fatalf("%#v %v", result, err)
+	}
+}
+
+func TestReleaseDraftDoesNotInheritPrereleaseAuthorization(t *testing.T) {
+	repo := prereleaseFixture(t)
+	plan := readPlanning(t, repo, "developer/planning/0.3.8/index.yaml")
+	units := plan["work_units"].([]any)
+	if len(units) != 1 {
+		t.Fatalf("expected single uncreated work unit, got %d", len(units))
+	}
+	unit := units[0].(object)
+	if plan["plan"].(object)["status"] != "DRAFT" || unit["path"] != nil ||
+		unit["lifecycle"].(object)["status"] != "NOT_CREATED" ||
+		unit["approval"].(object)["status"] != "PENDING" ||
+		unit["implementation_authorization"].(object)["status"] != "NOT_AUTHORIZED" {
+		t.Fatal("new release plan must not inherit prerelease authority")
+	}
+}
+
+func TestReleaseSingleRouteRejectsMismatchedEntry(t *testing.T) {
+	repo := prereleaseFixture(t)
+	root := readPlanning(t, repo, "developer/planning/index.yaml")
+	plans := root["plans"].([]any)
+	entry := plans[len(plans)-1].(object)
+	route := entry["entry_routing"].(object)["branch_entrypoints"].([]any)[0].(object)
+	route["entry_document"] = prereleasePlan
+	testrepo.Write(t, repo.Repository, "developer/planning/index.yaml", root)
+	if len(planning.ValidatePlanning(repo)) == 0 {
+		t.Fatal("mismatched release route must be rejected")
 	}
 }
