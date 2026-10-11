@@ -41,10 +41,16 @@
       "release_target": "0.3.8",
       "lifecycle": "DRAFT_NO_RUNTIME_OR_ACTIVATION_AUTHORITY",
       "reconciliation": {
-        "original_developer_policy": "MPD-0012",
-        "prior_external_resolution_environment_scope": "NOT_PTSIP_0_3_8_SUPPORT_RESPONSIBILITY",
-        "prior_scope_preserved": true,
+        "authority_source": "CURRENT_SUPPORT_ROOT_FAMILY",
+        "current_authority_policy_refs": [
+          "SFP-CNTR-0001",
+          "SFP-GOV-0001",
+          "SFP-CTRL-0001"
+        ],
+        "legacy_migration_sources_are_runtime_authority": false,
+        "developer_policy_authority_inheritance": "FORBIDDEN",
         "limited_addition": "REGISTERED_EXTERNAL_CLI_INVOCATION_ADAPTER_ONLY",
+        "external_resolution_environment_in_ptsip_support_scope": false,
         "external_engine_resolution_and_runtime_owner": "USER_OR_EXTERNAL_PROVIDER",
         "official_core_semantics_impersonation": "FORBIDDEN"
       },
@@ -127,6 +133,14 @@
       {
         "policy": "SFP-CNTR-0001",
         "scope": "ACTIVE_SHIPPED_OPERATION_INTERFACE_BOUNDARY"
+      },
+      {
+        "policy": "SFP-GOV-0001",
+        "scope": "CONSUMER_PROJECT_AUTHORITY_LEGITIMACY"
+      },
+      {
+        "policy": "SFP-CTRL-0001",
+        "scope": "ACTION_TIME_EXECUTION_ELIGIBILITY"
       }
     ]
   }
