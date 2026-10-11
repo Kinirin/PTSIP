@@ -16,14 +16,5 @@ plan:
   control_plane: developer/planning/0.3.8/index.yaml
   current_gate: WU-01
 
-# Structural entry only: no inherited scope, binding or execution authority.
-work_units:
-  - id: WU-01
-    lifecycle:
-      status: NOT_CREATED
-    approval:
-      status: PENDING
-      inherited_from: []
-    implementation_authorization:
-      status: NOT_AUTHORIZED
-    depends_on: []
+# Review-only plans are outside work_units until explicitly approved and registered.
+work_units: []
