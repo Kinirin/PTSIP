@@ -45,7 +45,7 @@ ptsip-app = "ptsip.app.server:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["ptsip*", "vpms*", "agent_contracts*"]
-exclude = ["tests*", "ptsip.profiles.history*"]
+exclude = ["tests*", "ptsip.profiles.history*", "ptsip.engines*"]
 
 [tool.setuptools.package-data]
 "ptsip.profiles" = ["index.yaml", "*.ptsip.yaml"]
@@ -54,6 +54,11 @@ vpms = [
   "contracts/schemas/*.json",
 ]
 ptsip = [
+  "engines/index.json",
+  "engines/*/*.json",
+  "engines/contracts/*.json",
+  "engines/contracts/schemas/*.json",
+  "engines/registries/*.json",
   "specdata/*.json",
   "specdata/*.yaml",
   "repository/schemas/*.json",

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:stop-ack:v1",
+  "type": "object",
+  "properties": {
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "ACCEPTED",
+        "REJECTED",
+        "UNKNOWN"
+      ]
+    },
+    "cause": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "correlation_id",
+    "status",
+    "cause"
+  ],
+  "additionalProperties": false
+}

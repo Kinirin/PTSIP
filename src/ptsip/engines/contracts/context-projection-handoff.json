@@ -1,0 +1,12 @@
+{
+  "schema_version": "ptsip-context-projection-handoff/v1",
+  "source_semantics_owner": "CONTEXT",
+  "output_transformation_owner": "PROJECTION",
+  "new_operation": "projection.select",
+  "legacy_public_contract_ref": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+  "new_context_contract_ref": "src/ptsip/engines/context/contract.json",
+  "new_projection_contract_ref": "src/ptsip/engines/projection/contract.json",
+  "consumer_cutovers": [],
+  "unknown_consumer": "INELIGIBLE_FAIL_CLOSED",
+  "legacy_contract_retired": false
+}

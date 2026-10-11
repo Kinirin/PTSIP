@@ -1,0 +1,86 @@
+{
+  "contract_id": "urn:uuid:88eb87fe-cca0-4c3a-9be4-d02c134adb65",
+  "version": "1.0.0",
+  "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
+  "semantic_owner": "CONTEXT",
+  "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "normative_language": "JSON",
+  "execution_permission_from_declaration": false,
+  "operations": [
+    {
+      "operation_id": "context.snapshot",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {},
+          "source_revision": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "context_id",
+          "content",
+          "source_revision"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {},
+          "source_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "semantic_owner": {
+            "const": "CONTEXT"
+          }
+        },
+        "required": [
+          "context_id",
+          "content",
+          "source_revision",
+          "semantic_owner"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "1.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "SNAPSHOT_EXPLICIT_SOURCE_WITHOUT_REINTERPRETATION",
+        "normative_authority_from_runtime_result": false
+      }
+    }
+  ]
+}

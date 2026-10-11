@@ -1,0 +1,145 @@
+{
+  "schema_version": "ptsip-official-engine-index/v1",
+  "policy_class": "PTSIP_SUPPORT_FEATURE",
+  "architecture_owner": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+  "contract_owner": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "authority_role": "REGISTERED_OFFICIAL_ENGINE_CONTRACT_ROUTE",
+  "engine_schema_refs": {
+    "core-manifest": "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
+    "capability-contract": "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
+    "federated-source": "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
+    "derived-state": "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
+    "transport-binding": "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
+    "attempt-result": "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
+    "effect-evidence": "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
+    "stop-request": "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
+    "stop-ack": "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
+    "stop-result": "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
+    "storage-mediation": "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
+    "consumer-handoff": "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
+    "contract-relation": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
+    "dependency-graph": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
+    "impact-result": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
+    "execution-binding": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json"
+  },
+  "transport_contract_ref": "src/ptsip/engines/contracts/stdio-transport.json",
+  "official_engine_entries": [
+    {
+      "kind": "CONTEXT",
+      "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
+      "manifest_ref": "src/ptsip/engines/context/manifest.json",
+      "contract_ref": "src/ptsip/engines/context/contract.json",
+      "execution_binding_ref": "src/ptsip/engines/context/execution-bindings.json",
+      "cargo_manifest_ref": "src/ptsip/engines/context/Cargo.toml",
+      "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
+      "runtime_language": "RUST",
+      "version": "0.1.0",
+      "operations": [
+        "context.snapshot"
+      ]
+    },
+    {
+      "kind": "STORAGE",
+      "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
+      "manifest_ref": "src/ptsip/engines/storage/manifest.json",
+      "contract_ref": "src/ptsip/engines/storage/contract.json",
+      "execution_binding_ref": "src/ptsip/engines/storage/execution-bindings.json",
+      "cargo_manifest_ref": "src/ptsip/engines/storage/Cargo.toml",
+      "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
+      "runtime_language": "RUST",
+      "version": "0.1.0",
+      "operations": [
+        "storage.mediate"
+      ]
+    },
+    {
+      "kind": "VALIDATION",
+      "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+      "manifest_ref": "src/ptsip/engines/validation/manifest.json",
+      "contract_ref": "src/ptsip/engines/validation/contract.json",
+      "execution_binding_ref": "src/ptsip/engines/validation/execution-bindings.json",
+      "cargo_manifest_ref": "src/ptsip/engines/validation/Cargo.toml",
+      "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
+      "runtime_language": "RUST",
+      "version": "0.1.0",
+      "operations": [
+        "validation.contract",
+        "validation.schema",
+        "validation.typed-io",
+        "validation.precondition",
+        "validation.case"
+      ]
+    },
+    {
+      "kind": "DISCOVERY",
+      "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+      "manifest_ref": "src/ptsip/engines/discovery/manifest.json",
+      "contract_ref": "src/ptsip/engines/discovery/contract.json",
+      "execution_binding_ref": "src/ptsip/engines/discovery/execution-bindings.json",
+      "cargo_manifest_ref": "src/ptsip/engines/discovery/Cargo.toml",
+      "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
+      "runtime_language": "RUST",
+      "version": "0.1.0",
+      "operations": [
+        "discovery.resolve"
+      ]
+    },
+    {
+      "kind": "PLANNING",
+      "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
+      "manifest_ref": "src/ptsip/engines/planning/manifest.json",
+      "contract_ref": "src/ptsip/engines/planning/contract.json",
+      "execution_binding_ref": "src/ptsip/engines/planning/execution-bindings.json",
+      "cargo_manifest_ref": "src/ptsip/engines/planning/Cargo.toml",
+      "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
+      "runtime_language": "RUST",
+      "version": "0.1.0",
+      "operations": [
+        "planning.order"
+      ]
+    },
+    {
+      "kind": "EXECUTION",
+      "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
+      "manifest_ref": "src/ptsip/engines/execution/manifest.json",
+      "contract_ref": "src/ptsip/engines/execution/contract.json",
+      "execution_binding_ref": "src/ptsip/engines/execution/execution-bindings.json",
+      "cargo_manifest_ref": "src/ptsip/engines/execution/Cargo.toml",
+      "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
+      "runtime_language": "RUST",
+      "version": "0.1.0",
+      "operations": [
+        "execution.assess-attempt",
+        "execution.assess-stop"
+      ]
+    },
+    {
+      "kind": "PROJECTION",
+      "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
+      "manifest_ref": "src/ptsip/engines/projection/manifest.json",
+      "contract_ref": "src/ptsip/engines/projection/contract.json",
+      "execution_binding_ref": "src/ptsip/engines/projection/execution-bindings.json",
+      "cargo_manifest_ref": "src/ptsip/engines/projection/Cargo.toml",
+      "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
+      "runtime_language": "RUST",
+      "version": "0.1.0",
+      "operations": [
+        "projection.select"
+      ]
+    }
+  ],
+  "federation": {
+    "owner_id": "Kinirin/PTSIP_OFFICIAL_ENGINE_CONTRACTS",
+    "static_registry_ref": "src/ptsip/engines/registries/official-static.json",
+    "execution_registry_ref": "src/ptsip/engines/registries/official-execution.json",
+    "consumer_external_owners": "INDEPENDENT_NO_AUTO_IMPORT",
+    "derived_index_authority": false
+  },
+  "runtime_guards": {
+    "registration_is_execution_authorization": false,
+    "source_copy_to_consumer_engine_state": "FORBIDDEN",
+    "legacy_public_api_retirement": false,
+    "implicit_owner_transfer": false,
+    "unsupported_unverified_required_contract": "FAIL_CLOSED"
+  }
+}

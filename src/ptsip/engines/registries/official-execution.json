@@ -1,0 +1,34 @@
+{
+  "owner_id": "Kinirin/PTSIP_OFFICIAL_ENGINE_CONTRACTS",
+  "bindings": [
+    {
+      "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
+      "binding_ref": "src/ptsip/engines/context/execution-bindings.json"
+    },
+    {
+      "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
+      "binding_ref": "src/ptsip/engines/storage/execution-bindings.json"
+    },
+    {
+      "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+      "binding_ref": "src/ptsip/engines/validation/execution-bindings.json"
+    },
+    {
+      "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+      "binding_ref": "src/ptsip/engines/discovery/execution-bindings.json"
+    },
+    {
+      "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
+      "binding_ref": "src/ptsip/engines/planning/execution-bindings.json"
+    },
+    {
+      "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
+      "binding_ref": "src/ptsip/engines/execution/execution-bindings.json"
+    },
+    {
+      "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
+      "binding_ref": "src/ptsip/engines/projection/execution-bindings.json"
+    }
+  ],
+  "execution_permission": false
+}

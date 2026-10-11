@@ -3,3 +3,12 @@ recursive-include src/policy *.yaml *.json
 recursive-include src/ptsip/profiles *.ptsip.yaml
 include src/ptsip/profiles/index.yaml
 include registry/project-profile-contracts.yaml
+
+recursive-include src/ptsip/engines *.json
+prune src/ptsip/engines/context/target
+prune src/ptsip/engines/storage/target
+prune src/ptsip/engines/validation/target
+prune src/ptsip/engines/discovery/target
+prune src/ptsip/engines/planning/target
+prune src/ptsip/engines/execution/target
+prune src/ptsip/engines/projection/target

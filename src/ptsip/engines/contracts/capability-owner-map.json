@@ -1,0 +1,88 @@
+{
+  "schema_version": "ptsip-engine-capability-owner-map/v1",
+  "authority_ref": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+  "entries": [
+    {
+      "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
+      "semantic_owner": "CONTEXT",
+      "contract_ref": "src/ptsip/engines/context/contract.json",
+      "implementation_ref": "src/ptsip/engines/context/Cargo.toml",
+      "operation_ids": [
+        "context.snapshot"
+      ],
+      "source_root": "src/ptsip/engines/context",
+      "legacy_owner_transfer": false
+    },
+    {
+      "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
+      "semantic_owner": "STORAGE",
+      "contract_ref": "src/ptsip/engines/storage/contract.json",
+      "implementation_ref": "src/ptsip/engines/storage/Cargo.toml",
+      "operation_ids": [
+        "storage.mediate"
+      ],
+      "source_root": "src/ptsip/engines/storage",
+      "legacy_owner_transfer": false
+    },
+    {
+      "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+      "semantic_owner": "VALIDATION",
+      "contract_ref": "src/ptsip/engines/validation/contract.json",
+      "implementation_ref": "src/ptsip/engines/validation/Cargo.toml",
+      "operation_ids": [
+        "validation.contract",
+        "validation.schema",
+        "validation.typed-io",
+        "validation.precondition",
+        "validation.case"
+      ],
+      "source_root": "src/ptsip/engines/validation",
+      "legacy_owner_transfer": false
+    },
+    {
+      "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+      "semantic_owner": "DISCOVERY",
+      "contract_ref": "src/ptsip/engines/discovery/contract.json",
+      "implementation_ref": "src/ptsip/engines/discovery/Cargo.toml",
+      "operation_ids": [
+        "discovery.resolve"
+      ],
+      "source_root": "src/ptsip/engines/discovery",
+      "legacy_owner_transfer": false
+    },
+    {
+      "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
+      "semantic_owner": "PLANNING",
+      "contract_ref": "src/ptsip/engines/planning/contract.json",
+      "implementation_ref": "src/ptsip/engines/planning/Cargo.toml",
+      "operation_ids": [
+        "planning.order"
+      ],
+      "source_root": "src/ptsip/engines/planning",
+      "legacy_owner_transfer": false
+    },
+    {
+      "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
+      "semantic_owner": "EXECUTION",
+      "contract_ref": "src/ptsip/engines/execution/contract.json",
+      "implementation_ref": "src/ptsip/engines/execution/Cargo.toml",
+      "operation_ids": [
+        "execution.assess-attempt",
+        "execution.assess-stop"
+      ],
+      "source_root": "src/ptsip/engines/execution",
+      "legacy_owner_transfer": false
+    },
+    {
+      "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
+      "semantic_owner": "PROJECTION",
+      "contract_ref": "src/ptsip/engines/projection/contract.json",
+      "implementation_ref": "src/ptsip/engines/projection/Cargo.toml",
+      "operation_ids": [
+        "projection.select"
+      ],
+      "source_root": "src/ptsip/engines/projection",
+      "legacy_owner_transfer": false
+    }
+  ]
+}

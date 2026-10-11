@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:transport-binding:v1",
+  "type": "object",
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entrypoint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transport": {
+      "type": "string",
+      "minLength": 1
+    },
+    "permission_grant": {
+      "const": false
+    }
+  },
+  "required": [
+    "binding_id",
+    "engine_id",
+    "engine_version",
+    "capability_id",
+    "contract_version",
+    "entrypoint",
+    "transport",
+    "permission_grant"
+  ],
+  "additionalProperties": false
+}

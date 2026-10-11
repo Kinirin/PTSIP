@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:impact-result:v1",
+  "type": "object",
+  "properties": {
+    "changed_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "affected_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "enum": [
+        "VERIFIED_COMPATIBLE_UNAFFECTED",
+        "VERIFIED_AFFECTED",
+        "UNCERTAIN_UNVERIFIED"
+      ]
+    },
+    "verification_eligible": {
+      "type": "boolean"
+    },
+    "execution_authorized": {
+      "const": false
+    }
+  },
+  "required": [
+    "changed_id",
+    "affected_ids",
+    "status",
+    "verification_eligible",
+    "execution_authorized"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "UNCERTAIN_UNVERIFIED"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "verification_eligible": {
+            "const": false
+          }
+        }
+      }
+    }
+  ]
+}

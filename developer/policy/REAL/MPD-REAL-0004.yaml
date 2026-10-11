@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: REAL
 policy:
   id: MPD-REAL-0004
-  version: '2.1'
+  version: '2.2'
   title: Language-neutral root and src module creation
   status: ACTIVE
 authority_subject:
@@ -38,6 +38,19 @@ rules:
       neutral_module_semantic_authority_preserved: true
       exact_declared_artifact_role_required: true
       ambiguous_artifact_role: FAIL_CLOSED
+    official_engine_runtime_implementation_exception:
+      artifact_role: OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION
+      scope_root: src/ptsip/engines/
+      implementation_language: RUST
+      applicability: EXACT_ACTIVE_SUPPORT_ARCH_CNTR_CONTRACT_AND_APPROVED_PLAN_BINDING_REQUIRED
+      support_arch_ref: src/policy/ARCH/SFP-ARCH-0004.yaml
+      support_cntr_ref: src/policy/CNTR/SFP-CNTR-0005.yaml
+      neutral_contract_semantic_authority: PRESERVED
+      developer_policy_defines_support_semantics: false
+      legacy_python_reuse: FORBIDDEN
+      cross_official_engine_implementation_sharing: FORBIDDEN
+      unknown_artifact_role: FAIL_CLOSED
+      approval_ref: developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml
     new_module_definition_language: LANGUAGE_NEUTRAL_MACHINE_MODULE
     canonical_representations:
     - JSON_MACHINE_PROGRAM

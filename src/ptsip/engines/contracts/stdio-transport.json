@@ -1,0 +1,113 @@
+{
+  "contract_id": "urn:ptsip:engine-transport:json-stdio:v1",
+  "version": "1.0.0",
+  "semantic_owner": "DECLARED_ENGINE_ADAPTER",
+  "request_encoding": "ONE_UTF8_JSON_OBJECT_ON_STDIN_EOF",
+  "response_encoding": "ONE_UTF8_JSON_OBJECT_ON_STDOUT",
+  "max_request_bytes": 1048576,
+  "exit_codes": {
+    "PASS": 0,
+    "FAIL": 2
+  },
+  "errors_are_structured": true,
+  "multiple_requests_per_process": "FORBIDDEN",
+  "does_not_redefine_capability_semantics": true,
+  "execution_permission_from_binding": false,
+  "request_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "engine_id",
+      "engine_version",
+      "contract_id",
+      "contract_version",
+      "operation_id",
+      "input"
+    ],
+    "properties": {
+      "engine_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "engine_version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "contract_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "contract_version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "operation_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "input": {
+        "type": "object"
+      }
+    }
+  },
+  "response_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "engine_id",
+      "engine_version",
+      "contract_id",
+      "contract_version",
+      "status",
+      "output",
+      "error",
+      "normative_authority",
+      "execution_authorized",
+      "evidence_authentication"
+    ],
+    "properties": {
+      "schema_version": {
+        "const": "ptsip-engine-operation-result/v1"
+      },
+      "engine_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "engine_version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "contract_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "contract_version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "status": {
+        "enum": [
+          "PASS",
+          "FAIL"
+        ]
+      },
+      "output": {},
+      "error": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "normative_authority": {
+        "const": false
+      },
+      "execution_authorized": {
+        "const": false
+      },
+      "evidence_authentication": {
+        "const": "NOT_PROVIDED_BY_RESULT"
+      }
+    }
+  }
+}

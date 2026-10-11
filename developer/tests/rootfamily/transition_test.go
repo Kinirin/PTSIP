@@ -235,6 +235,17 @@ func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 				entries[id] = row
 			}
 			used := map[string]bool{}
+			baselineSources := map[string]map[string]any{}
+			if p.PolicyClass == "PTSIP_DEVELOPER_POLICY" {
+				baseline := read(t, filepath.Join(root, "registries/root-family-approved-baseline.json"))
+				if baseline["authority"] != "HISTORICAL_EVIDENCE_ONLY" {
+					t.Fatal("frozen source metadata cannot be current authority")
+				}
+				for _, raw := range sequence(t, baseline["source_records"]) {
+					record := mapping(t, raw)
+					baselineSources[record["id"].(string)] = record
+				}
+			}
 			for _, raw := range sequence(t, graph["sources"]) {
 				source := mapping(t, raw)
 				id := source["source_policy_id"].(string)
@@ -257,8 +268,21 @@ func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 					t.Fatalf("old physical authority reappeared: %s", id)
 				}
 				if p.PolicyClass == "PTSIP_DEVELOPER_POLICY" {
-					if entries[id]["authority_role"] != "MIGRATION_SOURCE" {
-						t.Fatal("developer migration source lost audit-only registration")
+					record := baselineSources[id]
+					if record == nil || record["source_sha256"] != source["source_sha256"] || record["record_sha256"] != source["record_sha256"] {
+						t.Fatal("developer historical source lost its approved frozen metadata binding")
+					}
+					switch record["role"] {
+					case "HISTORICAL_ONLY":
+						if _, indexed := entries[id]; indexed {
+							t.Fatal("history-only source reentered the current catalog")
+						}
+					case "AUDIT_ONLY_CATALOG":
+						if entries[id]["authority_role"] != "MIGRATION_SOURCE" {
+							t.Fatal("approved catalog audit route is not non-executable")
+						}
+					default:
+						t.Fatal("unregistered source role in approved frozen baseline")
 					}
 				} else if _, indexed := entries[id]; indexed {
 					t.Fatal("support historical identity is still indexed as current authority")
@@ -519,7 +543,7 @@ func TestGoExecutionUsesOwnedDomainsAndConsumerSDKRegression(t *testing.T) {
 		t.Fatal("unexpected execution selection")
 	}
 	mode := mapping(t, plan[0])
-	expectedGo := []any{"developer/tests/planning", "developer/tests/policy", "developer/tests/pp", "developer/tests/repository", "developer/tests/rootfamily", "developer/tests/workflows"}
+	expectedGo := []any{"developer/tests/planning", "developer/tests/policy", "developer/tests/pp", "developer/tests/repository", "developer/tests/rootfamily", "developer/tests/workflows", "developer/tests/engines"}
 	if !reflect.DeepEqual(mode["go"], expectedGo) || !reflect.DeepEqual(mode["pytest"], []any{"src/tests/ptsip/repository/test_self_profile.py"}) {
 		t.Fatal("owned Go domains or consumer SDK regression missing", mode)
 	}

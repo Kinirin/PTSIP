@@ -30,3 +30,16 @@ work_units:
       status: AUTHORIZED
       authorization_source: USER_EXPLICIT
     depends_on: []
+
+  - id: WU-02
+    path: developer/planning/0.3.8/WU-02/WU-02.yaml
+    lifecycle:
+      status: ACTIVE
+    approval:
+      status: APPROVED
+      inherited_from: []
+      approval_source: USER_EXPLICIT
+    implementation_authorization:
+      status: AUTHORIZED
+      authorization_source: USER_EXPLICIT
+    depends_on: []

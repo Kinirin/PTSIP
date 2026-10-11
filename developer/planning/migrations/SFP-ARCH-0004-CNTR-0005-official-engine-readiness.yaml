@@ -5,7 +5,7 @@
   "identity": {
     "plan_id": "SFP-ARCH-0004-CNTR-0005-OFFICIAL-ENGINE-ACTIVATION-READINESS",
     "title": "Official Engine Policy Activation Readiness and Machine Contract Materialization",
-    "status": "DRAFT",
+    "status": "ACTIVE",
     "integration_branch": "dev/0.3.8",
     "governing_policy_refs": [
       "src/policy/ARCH/SFP-ARCH-0004.yaml",
@@ -25,18 +25,22 @@
       "scope": "CREATE_POLICY_DERIVED_PLAN_IN_CURRENT_BRANCH"
     },
     "plan_review": {
-      "status": "PENDING_USER_AUDIT",
-      "full_approval": "NOT_CLAIMED"
+      "status": "APPROVED",
+      "approval_source": "USER_EXPLICIT",
+      "scope": "POLICY_RECONCILIATION_AND_POLICY_DERIVED_IMPLEMENTATION"
     },
     "implementation_authorization": {
-      "status": "NOT_AUTHORIZED_BY_PLAN_CREATION"
+      "status": "AUTHORIZED",
+      "authorization_source": "USER_EXPLICIT",
+      "execution_plan_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml"
     },
     "active_promotion_authorization": {
-      "requested_by_user": true,
-      "status": "BLOCKED_BY_UNSATISFIED_MANDATORY_GATES",
-      "requires_new_explicit_approval_after_verified_readiness": true
+      "status": "APPROVED",
+      "approval_source": "USER_EXPLICIT",
+      "approval_ref": "developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml",
+      "verification_does_not_create_approval": true
     },
-    "readiness_status": "BLOCKED_PENDING_REQUIRED_GATES"
+    "readiness_status": "FOUNDATION_IMPLEMENTED_REMOTE_VERIFICATION_PENDING"
   },
   "baseline": {
     "source_ref": "dev/0.3.8",
@@ -94,7 +98,7 @@
     }
   },
   "objective": {
-    "core": "MATERIALIZE_MACHINE_CONTRACTS_OWNER_MAP_AND_VERIFIED_POLICY_COMPLIANT_PLANS_BEFORE_ACTIVE_PROMOTION",
+    "core": "IMPLEMENT_ACTIVE_ENGINE_CONTRACTS_AND_INDEPENDENT_RUST_CAPABILITIES_WITH_VERIFIED_RUNTIME_BOUNDARIES",
     "support_model": "POLICY_GREATER_THAN_PLAN_GREATER_THAN_IMPLEMENTATION",
     "stable_policy_semantics": "REUSE_ALL_24_APPROVED_ARCH_AND_CNTR_DIRECTION_ITEMS_WITHOUT_REDECISION",
     "nonintrusion": "PRESERVE_CONSUMER_PROJECT_OWNERSHIP_AND_FEDERATED_REGISTRIES",
@@ -111,9 +115,9 @@
     "cross_official_engine_implementation_code_sharing": "FORBIDDEN",
     "reuse_legacy_python_implementation": "FORBIDDEN",
     "user_owned_or_external_engine_language_restriction": "NONE_FROM_OFFICIAL_RUST_POLICY",
-    "runtime_activation": "NOT_AUTHORIZED",
+    "runtime_activation": "CURRENT_CONTRACT_AND_GOV_CTRL_GATES_REQUIRED",
     "active_public_api_change": "NOT_AUTHORIZED",
-    "policy_state_update": "BLOCKED_UNTIL_ALL_GATES_VERIFIED"
+    "policy_state_update": "AUTHORIZED_EXPLICIT_POLICY_RECONCILIATION"
   },
   "stages": [
     {
@@ -214,12 +218,10 @@
       "depends_on": [
         "P4_FULL_VALIDATION_AND_RECONCILIATION"
       ],
-      "gate": "EXPLICIT_PROJECT_OWNER_APPROVAL_AFTER_EVIDENCE_FOR_EACH_POLICY_AND_ANY_ACTIVE_AUTHORITY_HANDOFF",
+      "gate": "USER_EXPLICIT_ACTIVATION_APPROVAL_RECORDED_2026_10_12_RUNTIME_VERIFICATION_REMAINS_REQUIRED",
       "actions": [
-        "PRESENT_PASS_FAILURE_EVIDENCE_AND_CONFLICT_RESOLUTION_OPTIONS",
-        "REQUEST_EXPLICIT_POLICY_ACTIVATION_APPROVAL",
-        "ONLY_THEN_UPDATE_POLICY_AND_CANONICAL_INDEX_STATUSES_ON_CURRENT_HEAD",
-        "VERIFY_NEW_ACTIVE_POLICY_AND_REGISTRY_CONSISTENCY_BY_GITHUB_ACTIONS"
+        "VERIFY_ACTIVE_SOURCE_INDEX_SCHEMA_AND_RECONCILED_BOUNDARY",
+        "VERIFY_NO_UNAUTHORIZED_RUNTIME_OR_PUBLIC_API_RETIREMENT"
       ],
       "exit_checks": [
         "NO_PREMATURE_ACTIVE_STATE",
@@ -232,7 +234,7 @@
     {
       "id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "B_INDEPENDENT_FULL_CAPABILITY_OPERATION_CONTRACTS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -250,7 +252,7 @@
     {
       "id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -268,7 +270,7 @@
     {
       "id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_REGISTERED_NORMATIVE_CONTRACT_SEPARATE_FROM_NONAUTHORITATIVE_DERIVED_STATE",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -287,7 +289,7 @@
     {
       "id": "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP",
       "kind": "PLAN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_ENVIRONMENT_AWARE_HYBRID_BUNDLE_OR_INDEPENDENT_PACKAGE_INSTALLATION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -308,7 +310,7 @@
     {
       "id": "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP",
       "kind": "RESPONSIBILITY_ANALYSIS",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "B_CAPABILITY_CENTRIC_CANONICAL_OWNER_AND_PROVIDING_ENGINE_MAP",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -330,7 +332,7 @@
     {
       "id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "RECONCILE_COMMON_SEMANTIC_CONTRACT_INDEPENDENT_TRANSPORT_BINDINGS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -349,7 +351,7 @@
     {
       "id": "RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "B_SEPARATE_ATTEMPT_RESULT_AND_WORK_EFFECT_EVIDENCE_CONTRACTS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -367,7 +369,7 @@
     {
       "id": "REVOCATION_STOP_RESULT_INTERFACE",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_SEPARATE_STOP_REQUEST_ACK_FINAL_STOP_RESULT_AND_WORK_EFFECT_EVIDENCE",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -386,7 +388,7 @@
     {
       "id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "B_EXPLICIT_STORAGE_ENGINE_MEDIATION_FOR_REGISTERED_STORAGE_CAPABILITY_OPERATIONS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -406,7 +408,7 @@
     {
       "id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_CONSUMER_SCOPED_VERSIONED_CONTEXT_TO_PROJECTION_PUBLIC_CONTRACT_TRANSITION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -426,7 +428,7 @@
     {
       "id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_VERSIONED_MACHINE_VERIFIABLE_VPMS_TO_RUST_VALIDATION_CAPABILITY_RELATION_GRAPH",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -446,7 +448,7 @@
     {
       "id": "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_INDEPENDENT_GENERIC_VALIDATION_CAPABILITIES_WITH_EXPLICIT_OPTIONAL_COMPOSITION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -464,7 +466,7 @@
     {
       "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
       "kind": "PLAN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_CONTRACT_CALLER_VERIFICATION_RESPONSIBILITY_TEST_MODE_SCOPED_TRANSITION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -485,7 +487,7 @@
     {
       "id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -501,7 +503,7 @@
     {
       "id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_EVIDENCE_LINKED_DEPENDENCY_GRAPH_COMPATIBILITY_AND_VERIFICATION_ELIGIBILITY",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -522,7 +524,7 @@
     {
       "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
       "kind": "CONTRACT_DESIGN",
-      "status": "BLOCKED_PENDING_CONTRACT_PLAN_OR_ANALYSIS_EVIDENCE",
+      "status": "AUTHORIZED_IMPLEMENTATION_PENDING_VERIFICATION",
       "selected_policy_direction": "C_FEDERATED_STATIC_REGISTRATION_AND_SEPARATE_EXECUTION_BINDING_REGISTRIES",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -554,7 +556,7 @@
     ],
     "no_unverified_status_changes": true,
     "external_ci_evidence_consumed_not_edited": true,
-    "machine_contract_paths": "DERIVE_FROM_APPLICABLE_CONTRACT_REGISTRY_AND_EFFECTIVE_POLICY_NO_AUTO_INVENTED_ROOT",
+    "machine_contract_paths": "REGISTERED_SRC_PTSIP_ENGINES_INDEX_JSON_WITH_EXACT_POLICY_OWNER",
     "unresolved_new_policy_domain": "ESCALATE_INDEPENDENT_OPTIONS_TO_PROJECT_OWNER",
     "plan_level_details": "MAY_REFINE_WITHOUT_POLICY_CHANGE",
     "approval_does_not_activate_engine_or_retire_public_contract": true
@@ -575,12 +577,13 @@
       "REGISTRY_CI_REMEDIATION_EVIDENCE_FROM_OTHER_SESSION"
     ],
     "evidence_binding": "COMMIT_SHA_CONTRACT_IDENTITY_VERSION_OWNER_AND_VERIFICATION_REPORT",
-    "on_failure": "HOLD_DRAFT_FAIL_CLOSED"
+    "on_failure": "BLOCK_AFFECTED_IMPLEMENTATION_AND_RUNTIME_NO_UNVERIFIED_COMPLETION"
   },
   "completion": {
     "status": "NOT_CLAIMED",
     "completed_items": 0,
     "total_items": 16,
-    "active_promotion_eligibility": "NOT_MET"
-  }
+    "active_promotion_eligibility": "EXPLICIT_USER_APPROVAL_RECORDED_NOT_RUNTIME_ELIGIBILITY"
+  },
+  "execution_checkpoint_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.implementation_checkpoint"
 }

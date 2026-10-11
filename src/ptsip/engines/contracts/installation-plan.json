@@ -1,0 +1,111 @@
+{
+  "schema_version": "ptsip-engine-installation-plan/v1",
+  "plan_owner": "developer/planning/0.3.8/WU-02/WU-02.yaml",
+  "selection": "EXPLICIT_ENVIRONMENT_AND_REGISTERED_COMPATIBILITY_ONLY",
+  "default_available_engine_ids": [
+    "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
+    "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
+    "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+    "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+    "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
+    "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
+    "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0"
+  ],
+  "packages": [
+    {
+      "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
+      "version": "0.1.0",
+      "cargo_manifest_ref": "src/ptsip/engines/context/Cargo.toml",
+      "distribution": "INDEPENDENT_CARGO_PACKAGE",
+      "build_targets": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "aarch64-apple-darwin"
+      ],
+      "permission_from_availability": false,
+      "installation": "EXPLICIT_LOCAL_OPERATOR_INSTALL_ONLY_NO_AUTOMATIC_EXTERNAL_INSTALL"
+    },
+    {
+      "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
+      "version": "0.1.0",
+      "cargo_manifest_ref": "src/ptsip/engines/storage/Cargo.toml",
+      "distribution": "INDEPENDENT_CARGO_PACKAGE",
+      "build_targets": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "aarch64-apple-darwin"
+      ],
+      "permission_from_availability": false,
+      "installation": "EXPLICIT_LOCAL_OPERATOR_INSTALL_ONLY_NO_AUTOMATIC_EXTERNAL_INSTALL"
+    },
+    {
+      "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+      "version": "0.1.0",
+      "cargo_manifest_ref": "src/ptsip/engines/validation/Cargo.toml",
+      "distribution": "INDEPENDENT_CARGO_PACKAGE",
+      "build_targets": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "aarch64-apple-darwin"
+      ],
+      "permission_from_availability": false,
+      "installation": "EXPLICIT_LOCAL_OPERATOR_INSTALL_ONLY_NO_AUTOMATIC_EXTERNAL_INSTALL"
+    },
+    {
+      "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+      "version": "0.1.0",
+      "cargo_manifest_ref": "src/ptsip/engines/discovery/Cargo.toml",
+      "distribution": "INDEPENDENT_CARGO_PACKAGE",
+      "build_targets": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "aarch64-apple-darwin"
+      ],
+      "permission_from_availability": false,
+      "installation": "EXPLICIT_LOCAL_OPERATOR_INSTALL_ONLY_NO_AUTOMATIC_EXTERNAL_INSTALL"
+    },
+    {
+      "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
+      "version": "0.1.0",
+      "cargo_manifest_ref": "src/ptsip/engines/planning/Cargo.toml",
+      "distribution": "INDEPENDENT_CARGO_PACKAGE",
+      "build_targets": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "aarch64-apple-darwin"
+      ],
+      "permission_from_availability": false,
+      "installation": "EXPLICIT_LOCAL_OPERATOR_INSTALL_ONLY_NO_AUTOMATIC_EXTERNAL_INSTALL"
+    },
+    {
+      "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
+      "version": "0.1.0",
+      "cargo_manifest_ref": "src/ptsip/engines/execution/Cargo.toml",
+      "distribution": "INDEPENDENT_CARGO_PACKAGE",
+      "build_targets": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "aarch64-apple-darwin"
+      ],
+      "permission_from_availability": false,
+      "installation": "EXPLICIT_LOCAL_OPERATOR_INSTALL_ONLY_NO_AUTOMATIC_EXTERNAL_INSTALL"
+    },
+    {
+      "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
+      "version": "0.1.0",
+      "cargo_manifest_ref": "src/ptsip/engines/projection/Cargo.toml",
+      "distribution": "INDEPENDENT_CARGO_PACKAGE",
+      "build_targets": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "aarch64-apple-darwin"
+      ],
+      "permission_from_availability": false,
+      "installation": "EXPLICIT_LOCAL_OPERATOR_INSTALL_ONLY_NO_AUTOMATIC_EXTERNAL_INSTALL"
+    }
+  ],
+  "host_compatibility": "BUILD_AND_RUN_VERIFICATION_REQUIRED_PER_HOST",
+  "bundle_selection": "ONLY_IF_ALL_SELECTED_PACKAGES_CURRENTLY_VERIFIED",
+  "unknown_environment": "INELIGIBLE_FAIL_CLOSED",
+  "public_release": "NOT_PERFORMED"
+}

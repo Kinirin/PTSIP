@@ -1,0 +1,284 @@
+{
+  "schema_version": "ptsip-engine-work-item-bindings/v1",
+  "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "plan_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml",
+  "items": {
+    "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES": {
+      "selected_policy_direction": "B_INDEPENDENT_FULL_CAPABILITY_OPERATION_CONTRACTS",
+      "depends_on": [
+        "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE"
+      ],
+      "acceptance": [
+        "EACH_CAPABILITY_OPERATION_CONTRACT_COMPLETE_AND_VERSIONED",
+        "NO_CROSS_CAPABILITY_NORMATIVE_INFERENCE",
+        "TYPED_IO_PRE_POST_PERMISSION_SIDE_EFFECT_FAILURE_EVIDENCE_COMPATIBILITY_VALID"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/schemas/capability-contract.schema.json"
+      ]
+    },
+    "REGISTRY_AND_NAMESPACE_SOURCE_BINDING": {
+      "selected_policy_direction": "C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX",
+      "depends_on": [
+        "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE"
+      ],
+      "acceptance": [
+        "FEDERATED_OWNER_ORIGIN_REVISION_PROVENANCE_BOUND",
+        "DERIVED_DISCOVERY_INDEX_NONAUTHORITATIVE",
+        "STALE_UNKNOWN_AMBIGUOUS_BINDING_FAILS_CLOSED"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
+        "src/ptsip/engines/registries/official-static.json"
+      ]
+    },
+    "ENGINE_REGISTRATION_AND_STATE_SCHEMA": {
+      "selected_policy_direction": "C_REGISTERED_NORMATIVE_CONTRACT_SEPARATE_FROM_NONAUTHORITATIVE_DERIVED_STATE",
+      "depends_on": [
+        "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
+        "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE"
+      ],
+      "acceptance": [
+        "REGISTRATION_CONTRACT_AND_NONAUTHORITATIVE_DERIVED_STATE_SEPARATE",
+        "CURRENT_EXACT_REUSE_PROOF_AND_FAIL_CLOSED_INELIGIBILITY",
+        "EXISTING_DEFERRED_RUNTIME_PRESERVED"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
+        "src/ptsip/engines/registries/derived-snapshot.json"
+      ]
+    },
+    "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP": {
+      "selected_policy_direction": "C_ENVIRONMENT_AWARE_HYBRID_BUNDLE_OR_INDEPENDENT_PACKAGE_INSTALLATION",
+      "depends_on": [
+        "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
+        "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
+        "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP"
+      ],
+      "acceptance": [
+        "SEVEN_OFFICIAL_DEFAULT_AVAILABILITY_VERIFIED",
+        "BUNDLE_OR_INDEPENDENT_INSTALL_BASED_ON_CURRENT_COMPATIBILITY_EVIDENCE",
+        "INDEPENDENT_ENGINE_VERSION_BUILD_PATCH_BOUNDARIES",
+        "NO_SILENT_EXTERNAL_AUTO_INSTALL_OR_EXECUTION"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/installation-plan.json"
+      ]
+    },
+    "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP": {
+      "selected_policy_direction": "B_CAPABILITY_CENTRIC_CANONICAL_OWNER_AND_PROVIDING_ENGINE_MAP",
+      "depends_on": [
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+        "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
+        "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
+        "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
+        "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF"
+      ],
+      "acceptance": [
+        "SEVEN_OFFICIAL_RUST_ENGINE_CAPABILITY_OWNER_MAP_EXPLICIT_AND_UNAMBIGUOUS",
+        "ACTIVE_AUTHORITY_HANDOFF_ONLY_WITH_SEPARATE_APPROVAL",
+        "RUST_IMPL_SOURCE_AND_CROSS_ENGINE_ISOLATION_MACHINE_VERIFIED"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/capability-owner-map.json"
+      ]
+    },
+    "COMMON_ENGINE_TRANSPORT_CONTRACT": {
+      "selected_policy_direction": "RECONCILE_COMMON_SEMANTIC_CONTRACT_INDEPENDENT_TRANSPORT_BINDINGS",
+      "depends_on": [
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+        "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE"
+      ],
+      "acceptance": [
+        "TRANSPORT_NEUTRAL_SEMANTICS_VERIFIED",
+        "INDEPENDENT_ADAPTER_BINDING_MACHINE_RESOLVABLE",
+        "ACTIVE_0_3_8_CLI_ONLY_BOUNDARY_UNCHANGED"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/stdio-transport.json",
+        "src/ptsip/engines/contracts/schemas/transport-binding.schema.json"
+      ]
+    },
+    "RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY": {
+      "selected_policy_direction": "B_SEPARATE_ATTEMPT_RESULT_AND_WORK_EFFECT_EVIDENCE_CONTRACTS",
+      "depends_on": [
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES"
+      ],
+      "acceptance": [
+        "RESOURCE_EXHAUSTION_ATTEMPT_FAILURE_SEPARATE_FROM_WORK_EFFECT",
+        "INDEPENDENT_EFFECT_EVIDENCE_REFERENCES_VERSIONED",
+        "UNKNOWN_EFFECT_NOT_TREATED_AS_NO_EFFECT"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
+        "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json"
+      ]
+    },
+    "REVOCATION_STOP_RESULT_INTERFACE": {
+      "selected_policy_direction": "C_SEPARATE_STOP_REQUEST_ACK_FINAL_STOP_RESULT_AND_WORK_EFFECT_EVIDENCE",
+      "depends_on": [
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+        "RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY"
+      ],
+      "acceptance": [
+        "STOP_REQUEST_ACK_FINAL_RESULT_AND_EFFECT_EVIDENCE_SEPARATE",
+        "ACK_NOT_PROOF_OF_STOP",
+        "STOP_NOT_PROOF_OF_ORIGINAL_SUCCESS_OR_REVERSED_EFFECT"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-result.schema.json"
+      ]
+    },
+    "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP": {
+      "selected_policy_direction": "B_EXPLICIT_STORAGE_ENGINE_MEDIATION_FOR_REGISTERED_STORAGE_CAPABILITY_OPERATIONS",
+      "depends_on": [
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+        "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE"
+      ],
+      "acceptance": [
+        "STORAGE_MEDIATED_PROVIDER_OPERATION_BINDINGS_EXPLICIT",
+        "INDEPENDENT_PROVIDER_DATA_OWNERSHIP_PRESERVED",
+        "NO_GLOBAL_FILE_IO_INTERCEPTION",
+        "EXISTING_WRITE_AND_READ_AUTHORITY_UNCHANGED"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/storage/contract.json",
+        "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json"
+      ]
+    },
+    "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF": {
+      "selected_policy_direction": "C_CONSUMER_SCOPED_VERSIONED_CONTEXT_TO_PROJECTION_PUBLIC_CONTRACT_TRANSITION",
+      "depends_on": [
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+        "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE"
+      ],
+      "acceptance": [
+        "CONTEXT_SOURCE_SEMANTICS_UNCHANGED",
+        "PROJECTION_OUTPUT_SCHEMA_AND_TRANSFORM_OWNER_EXPLICIT",
+        "CONSUMER_VERSION_BOUND_CUTOVER_GATE_SEPARATELY_AUTHORIZED",
+        "LEGACY_CONTEXT_PUBLIC_CONTRACT_UNCHANGED_BEFORE_CUTOVER"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/context-projection-handoff.json",
+        "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json"
+      ]
+    },
+    "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE": {
+      "selected_policy_direction": "C_VERSIONED_MACHINE_VERIFIABLE_VPMS_TO_RUST_VALIDATION_CAPABILITY_RELATION_GRAPH",
+      "depends_on": [
+        "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
+        "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE"
+      ],
+      "acceptance": [
+        "THREE_EXISTING_ACTIVE_VPMS_CONTRACT_IDS_MAPPED_WITH_TYPED_VERSIONED_EDGES",
+        "ONE_TO_ONE_ONE_TO_MANY_MANY_TO_ONE_EVIDENCE_VERIFIED",
+        "LEGACY_PYTHON_IMPLEMENTATION_REUSE_FORBIDDEN",
+        "PUBLIC_API_RETIREMENT_NOT_PERFORMED"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/vpms-handoff.json",
+        "src/ptsip/engines/contracts/schemas/contract-relation.schema.json"
+      ]
+    },
+    "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT": {
+      "selected_policy_direction": "C_INDEPENDENT_GENERIC_VALIDATION_CAPABILITIES_WITH_EXPLICIT_OPTIONAL_COMPOSITION",
+      "depends_on": [
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES"
+      ],
+      "acceptance": [
+        "GENERIC_VALIDATION_CAPABILITY_CONTRACTS_INDEPENDENT_COMPLETE",
+        "COMPOSITION_OPTIONAL_TYPED_AND_MACHINE_VERIFIED",
+        "ASSURE_NORMATIVE_CONFORMANCE_AUTHORITY_UNCHANGED"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/validation/contract.json"
+      ]
+    },
+    "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN": {
+      "selected_policy_direction": "C_CONTRACT_CALLER_VERIFICATION_RESPONSIBILITY_TEST_MODE_SCOPED_TRANSITION",
+      "depends_on": [
+        "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
+        "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP",
+        "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE"
+      ],
+      "acceptance": [
+        "CALLSITE_CAPABILITY_PROFILE_VERIFICATION_RESPONSIBILITY_MODE_LINKS_COMPLETE",
+        "AUTOMATIC_TEST_MODE_RESOLVER_V2_NO_UNMAPPED_SILENT_DEFAULT",
+        "PUBLIC_API_BEHAVIOR_PARITY_AND_PACKAGING_PROVEN",
+        "LEGACY_API_RETIREMENT_PENDING_SEPARATE_OWNER_APPROVAL"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/vpms-handoff.json"
+      ]
+    },
+    "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE": {
+      "selected_policy_direction": "C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT",
+      "depends_on": [],
+      "acceptance": [
+        "CORE_FIVE_STATIC_DIMENSIONS_MACHINE_VALID",
+        "VERSIONED_ENGINE_EXTENSIONS_INDEPENDENT",
+        "DERIVED_SNAPSHOT_PROVEN_NONAUTHORITATIVE_AND_FRESH"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
+        "src/ptsip/engines/registries/derived-snapshot.json"
+      ]
+    },
+    "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE": {
+      "selected_policy_direction": "C_EVIDENCE_LINKED_DEPENDENCY_GRAPH_COMPATIBILITY_AND_VERIFICATION_ELIGIBILITY",
+      "depends_on": [
+        "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+        "REGISTRY_AND_NAMESPACE_SOURCE_BINDING"
+      ],
+      "acceptance": [
+        "DIRECT_TRANSITIVE_TYPED_GRAPH_EDGES_VALID",
+        "PROVIDER_CONSUMER_CURRENT_EVIDENCE_LINKABLE",
+        "UNVERIFIED_NOT_MISCLASSIFIED_UNAFFECTED",
+        "VERIFICATION_QUALIFICATION_NOT_EXECUTION_AUTHORIZATION"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/contracts/dependency-graph.json",
+        "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
+        "src/ptsip/engines/contracts/schemas/impact-result.schema.json"
+      ]
+    },
+    "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE": {
+      "selected_policy_direction": "C_FEDERATED_STATIC_REGISTRATION_AND_SEPARATE_EXECUTION_BINDING_REGISTRIES",
+      "depends_on": [
+        "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
+        "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+        "REGISTRY_AND_NAMESPACE_SOURCE_BINDING"
+      ],
+      "acceptance": [
+        "STATIC_VS_EXECUTION_BINDING_REGISTRIES_DISTINCT_WITHIN_FEDERATED_OWNER",
+        "EXTERNALLY_INVOCABLE_BINDING_REGISTRATION_GATE_VERIFIED",
+        "STATIC_ONLY_ENGINE_NO_EXECUTION_ENTRY",
+        "REGISTRATION_NOT_EXECUTION_OR_WRITE_PERMISSION"
+      ],
+      "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
+      "deliverable_refs": [
+        "src/ptsip/engines/registries/official-static.json",
+        "src/ptsip/engines/registries/official-execution.json",
+        "src/ptsip/engines/contracts/schemas/execution-binding.schema.json"
+      ]
+    }
+  }
+}

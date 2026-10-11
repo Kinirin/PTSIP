@@ -119,9 +119,11 @@ authority_semantics:
       future_migration: SEPARATE_APPROVED_PLAN_AND_CONFORMANCE_REQUIRED
     shipped_repository_module: src/ptsip/repository/namespace.py
     shipped_engine_state_schema: src/ptsip/repository/schemas/engine-state.schema.json
-    state_contract: DEFERRED
-    schema_contract: DEFERRED
-    runtime_activation: DEFERRED
+    state_contract: REGISTERED_VERSIONED_ENGINE_CONTRACT
+    schema_contract: SFP-CNTR-0005
+    runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+    current_engine_contract_ref: src/ptsip/engines/index.json
+    existing_repository_namespace_contract: PRESERVED_NO_LEGACY_RUNTIME_REPLACEMENT
 relations:
   supersedes: []
   amends: []

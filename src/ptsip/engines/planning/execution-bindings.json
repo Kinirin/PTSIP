@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "binding_id": "urn:uuid:bba59c59-85ce-414e-b448-af66ae73b148",
+      "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
+      "engine_version": "0.1.0",
+      "capability_id": "urn:uuid:802a8cc6-77c6-4651-a84f-bfb21ce3fc69",
+      "contract_version": "1.0.0",
+      "entrypoint": "ptsip-engine-planning",
+      "transport_ref": {
+        "id": "urn:ptsip:engine-transport:json-stdio:v1",
+        "version": "1.0.0",
+        "path": "src/ptsip/engines/contracts/stdio-transport.json",
+        "sha256": "faa3ba325a637ec82ffcdbf2e42b0044814033467a5a7729da6fdd1e526df4ce"
+      },
+      "permission_grant": false
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": "ptsip-vpms-validation-contract-handoff/v1",
+  "source_catalog_ref": "src/vpms/contracts/index.json",
+  "relations": [
+    {
+      "source_contract": {
+        "id": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+        "version": "2.0",
+        "path": "src/vpms/contracts/protocol.json",
+        "status": "ACTIVE"
+      },
+      "target_contract": {
+        "id": "urn:uuid:24e54093-45d4-410a-b4fb-2398f6502a75",
+        "version": "1.0.0",
+        "path": "src/ptsip/engines/validation/contract.json"
+      },
+      "relation": "REQUIRES_EXPLICIT_SEMANTIC_COMPATIBILITY_MAPPING",
+      "compatibility": "UNVERIFIED_NOT_EQUIVALENT",
+      "eligible_for_cutover": false,
+      "runtime_bridge": false,
+      "current_source_contract_remains_active": true,
+      "retirement_approval": "REQUIRED_NOT_GRANTED"
+    },
+    {
+      "source_contract": {
+        "id": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06",
+        "version": "2.0",
+        "path": "src/vpms/contracts/execution-composition.json",
+        "status": "ACTIVE"
+      },
+      "target_contract": {
+        "id": "urn:uuid:24e54093-45d4-410a-b4fb-2398f6502a75",
+        "version": "1.0.0",
+        "path": "src/ptsip/engines/validation/contract.json"
+      },
+      "relation": "REQUIRES_EXPLICIT_SEMANTIC_COMPATIBILITY_MAPPING",
+      "compatibility": "UNVERIFIED_NOT_EQUIVALENT",
+      "eligible_for_cutover": false,
+      "runtime_bridge": false,
+      "current_source_contract_remains_active": true,
+      "retirement_approval": "REQUIRED_NOT_GRANTED"
+    },
+    {
+      "source_contract": {
+        "id": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+        "version": "2.0",
+        "path": "src/vpms/contracts/selection.json",
+        "status": "ACTIVE"
+      },
+      "target_contract": {
+        "id": "urn:uuid:24e54093-45d4-410a-b4fb-2398f6502a75",
+        "version": "1.0.0",
+        "path": "src/ptsip/engines/validation/contract.json"
+      },
+      "relation": "REQUIRES_EXPLICIT_SEMANTIC_COMPATIBILITY_MAPPING",
+      "compatibility": "UNVERIFIED_NOT_EQUIVALENT",
+      "eligible_for_cutover": false,
+      "runtime_bridge": false,
+      "current_source_contract_remains_active": true,
+      "retirement_approval": "REQUIRED_NOT_GRANTED"
+    }
+  ],
+  "new_independent_capabilities": [
+    "validation.contract",
+    "validation.schema",
+    "validation.typed-io",
+    "validation.precondition",
+    "validation.case"
+  ],
+  "generic_validation_implies_vpms_protocol_equivalence": false,
+  "automatic_resolver_registry_ref": ".github/test_modes.yaml",
+  "transition_mode_ids": [
+    "vpms",
+    "vpms-contract-plane",
+    "repository-architecture"
+  ],
+  "caller_cutover": "BLOCKED_UNTIL_BEHAVIOR_AND_VERSIONED_MAPPING_VERIFIED",
+  "legacy_retirement": false,
+  "assure_owner": "SFP-ASSURE-0001_UNCHANGED"
+}

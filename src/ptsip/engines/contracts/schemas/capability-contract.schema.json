@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:capability-contract:v1",
+  "type": "object",
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "authority_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normative_language": {
+      "const": "JSON"
+    },
+    "execution_permission_from_declaration": {
+      "const": false
+    }
+  },
+  "required": [
+    "contract_id",
+    "version",
+    "engine_id",
+    "semantic_owner",
+    "operations",
+    "authority_ref",
+    "normative_language",
+    "execution_permission_from_declaration"
+  ],
+  "additionalProperties": false
+}

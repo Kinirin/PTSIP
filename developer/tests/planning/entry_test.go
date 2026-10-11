@@ -214,10 +214,19 @@ func TestApprovedReleaseMaintainsIndependentCurrentAuthority(t *testing.T) {
 	repo := prereleaseFixture(t)
 	root := readPlanning(t, repo, "developer/planning/0.3.8/index.yaml")
 	units := root["work_units"].([]any)
-	if len(units) != 1 {
-		t.Fatalf("expected exactly one approved current release work unit, got %d", len(units))
+	var unit object
+	for _, raw := range units {
+		candidate := raw.(object)
+		if candidate["id"] == "WU-01" {
+			if unit != nil {
+				t.Fatal("duplicate current candidate work unit")
+			}
+			unit = candidate
+		}
 	}
-	unit := units[0].(object)
+	if unit == nil {
+		t.Fatal("approved candidate work unit missing")
+	}
 	if root["plan"].(object)["status"] != "ACTIVE" || root["plan"].(object)["current_gate"] != "WU-01" ||
 		unit["id"] != "WU-01" ||
 		unit["approval"].(object)["status"] != "APPROVED" ||
@@ -259,11 +268,11 @@ func TestUnapprovedReleaseWorkUnitRegistryPlaceholderIsRejected(t *testing.T) {
 	planRef := "developer/planning/0.3.8/index.yaml"
 	plan := readPlanning(t, repo, planRef)
 	plan["work_units"] = []any{object{
-		"id": "WU-01",
-		"lifecycle": object{"status": "NOT_CREATED"},
-		"approval": object{"status": "PENDING", "inherited_from": []any{}},
+		"id":                           "WU-01",
+		"lifecycle":                    object{"status": "NOT_CREATED"},
+		"approval":                     object{"status": "PENDING", "inherited_from": []any{}},
 		"implementation_authorization": object{"status": "NOT_AUTHORIZED"},
-		"depends_on": []any{},
+		"depends_on":                   []any{},
 	}}
 	testrepo.Write(t, repo.Repository, planRef, plan)
 	if failures := planning.ValidatePlanning(repo); len(failures) == 0 {

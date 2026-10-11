@@ -676,6 +676,15 @@
       "target": "src/tests/ptsip/test_modes",
       "evidence_claim": "test-mode-control-plane.pytest.ptsip-test-modes",
       "required": true
+    },
+    {
+      "id": "repository-architecture--go--engines",
+      "mode": "repository-architecture",
+      "component_ref": "repository-architecture-verification",
+      "kind": "go",
+      "target": "developer/tests/engines",
+      "evidence_claim": "repository-architecture.go.engines",
+      "required": true
     }
   ]
 }
