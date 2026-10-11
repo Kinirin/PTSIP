@@ -215,7 +215,10 @@
         "cleanup_failure_must_preserve_mandatory_record_and_original_evidence": true,
         "cleanup_failure_cannot_be_reclassified_as_success_due_to_other_successful_operations": true,
         "cleanup_failure_record_information_does_not_grant_recovery_or_write_permission": true,
-        "cleanup_failure_unknown_effect_requires_ops_safety_classification": true
+        "cleanup_failure_unknown_effect_requires_ops_safety_classification": true,
+        "cleanup_retry_must_preserve_original_evidence_and_mandatory_records": true,
+        "cleanup_retry_may_not_infer_rollback_from_failed_attempt": true,
+        "cleanup_retry_policy_does_not_grant_deletion_authority": true
       },
       "unresolved_decisions": [
         {
@@ -379,7 +382,10 @@
         "failure_scope": "FAILED_CLEANUP_ATTEMPT_AND_PROVEN_AFFECTED_DEPENDENCY_BOUNDARY",
         "unknown_impact_disposition": "FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK",
         "proven_independent_work": "MAY_CONTINUE_WITH_EXISTING_GATES",
-        "record_and_original_evidence_preservation_on_failure": "REQUIRED"
+        "record_and_original_evidence_preservation_on_failure": "REQUIRED",
+        "failed_cleanup_retry_policy_owner": "SFP-OPS-0002",
+        "retry_eligibility_requires_rechecked_record_retention_and_source_preservation": true,
+        "retry_status_only_after_verified_mutation_effect": true
       }
     }
   },

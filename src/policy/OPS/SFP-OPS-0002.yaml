@@ -67,8 +67,20 @@
         "evidence_cache_cleanup_unknown_effect_or_dependency": "FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK",
         "evidence_cache_cleanup_failed_attempt_outcome": "FAILED_SEPARATE_FROM_OBSERVED_EFFECT_STATE",
         "evidence_cache_cleanup_recovery_permission": "EXISTING_CTRL_REAL_OPS_AUTHORITY_ONLY",
-        "evidence_cache_cleanup_automatic_retry_policy": "NOT_DECIDED_SEPARATE_OWNER_POLICY",
-        "evidence_cache_cleanup_failure_policy_record_ref": "SFP-RECORD-0003"
+        "evidence_cache_cleanup_automatic_retry_policy": "B_AUTOMATIC_RETRY_AFTER_MACHINE_VERIFIED_SAME_OPERATION_SAFETY_EFFECTS_AND_CURRENT_AUTHORITY",
+        "evidence_cache_cleanup_failure_policy_record_ref": "SFP-RECORD-0003",
+        "evidence_cache_cleanup_automatic_retry_choice": "B_USER_EXPLICIT",
+        "evidence_cache_cleanup_automatic_retry_decided_at": "2026-10-11",
+        "evidence_cache_cleanup_retry_required_proofs": [
+          "FAILED_ATTEMPT_WORK_EFFECT_STATE_AND_AFFECTED_SCOPE_VERIFIED",
+          "SAME_OPERATION_IDENTITY_EXPECTED_REVISION_AND_RETRY_SAFETY_CONTRACT_VERIFIED",
+          "CURRENT_EFFECTIVE_CTRL_AUTHORITY_AND_OPERATION_SPECIFIC_RETRY_DELEGATION",
+          "CURRENT_RETENTION_RELEASE_AND_TARGET_NON_AUTHORITATIVE_CACHE_BOUNDARY",
+          "CURRENT_REAL_PREPARED_MUTATION_INTEGRITY_AND_APPLICABLE_RESOURCE_BUDGET"
+        ],
+        "evidence_cache_cleanup_retry_unknown_unsafe_or_unverified": "FAIL_CLOSED_NO_RETRY",
+        "evidence_cache_cleanup_retry_creates_new_execution_authority": false,
+        "evidence_cache_cleanup_retry_exhaustion_and_scheduling": "PLAN_WITH_EXISTING_RESOURCE_AND_AUTHORITY_GATES"
       },
       "invariants": {
         "no_success_from_partial_failed_composition": true,
@@ -114,7 +126,24 @@
         "cleanup_failure_containment_cannot_create_recovery_retry_deletion_or_write_authority": true,
         "cleanup_resumption_requires_current_ctrl_and_real_preconditions": true,
         "fail_closed_on_unresolved_effects_does_not_require_global_shutdown_of_proven_unaffected_work": true,
-        "cleanup_failure_direction_does_not_activate_draft_runtime": true
+        "cleanup_failure_direction_does_not_activate_draft_runtime": true,
+        "evidence_cache_cleanup_auto_retry_requires_machine_verified_prior_effect_state": true,
+        "cleanup_retry_does_not_assume_failed_attempt_rolled_back": true,
+        "cleanup_retry_must_prove_safe_same_operation_semantics_and_expected_revision": true,
+        "cleanup_retry_must_not_duplicate_unverified_mutating_effect": true,
+        "cleanup_retry_requires_fresh_current_ctrl_authority_and_retry_scope": true,
+        "cleanup_retry_revoked_or_stale_authority": "FAIL_CLOSED_NO_RETRY",
+        "cleanup_retry_requires_current_record_retention_release_and_cache_target_separation": true,
+        "cleanup_retry_requires_real_prepared_write_integrity": true,
+        "cleanup_retry_requires_existing_resource_and_task_budget_eligibility": true,
+        "cleanup_retry_effect_or_operation_identity_unknown": "FAIL_CLOSED_NO_RETRY",
+        "cleanup_retry_unknown_dependent_impact_stays_blocked": true,
+        "cleanup_retry_does_not_block_machine_proven_independent_work": true,
+        "cleanup_retry_eligibility_does_not_grant_write_authority": true,
+        "cleanup_retry_protects_original_evidence_and_mandatory_record_provenance": true,
+        "cleanup_retry_cannot_reclassify_partial_effects_or_failed_attempt_as_success": true,
+        "cleanup_retry_count_delay_and_machine_proof_interface_are_plan_level_details": true,
+        "cleanup_retry_direction_does_not_activate_draft_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -200,9 +229,31 @@
         "eligibility_and_mutation_permission_owner": "CTRL",
         "cache_retention_provenance_owner": "RECORD",
         "recovery_or_retry": "REQUIRES_EXISTING_SEPARATE_AUTHORIZATION",
-        "automatic_retry_direction": "UNRESOLVED_SEPARATE_POLICY",
+        "automatic_retry_direction": "MACHINE_VERIFIED_SAFE_SAME_OPERATION_RETRY_WITH_FRESH_EXISTING_AUTHORITY",
         "evidence_impact_proof_interface": "PLAN_AND_MACHINE_CONTRACT",
-        "policy_effect": "DRAFT_ONLY_NO_ACTIVE_RUNTIME_OR_AUTO_RETRY"
+        "policy_effect": "DRAFT_ONLY_NO_ACTIVE_RUNTIME_OR_AUTO_RETRY_EXECUTION",
+        "retry_policy_ref": "evidence_cache_cleanup_retry_policy"
+      },
+      "evidence_cache_cleanup_retry_policy": {
+        "policy_subject": "EVIDENCE_CACHE_AUTOMATED_CLEANUP_FAILURE_RETRY",
+        "selected_option": "B_VERIFIED_AUTOMATIC_RETRY",
+        "permitted": "ONLY_AFTER_MACHINE_VERIFIED_EFFECT_STATE_SAFE_SAME_OPERATION_RETRY_AND_CURRENT_AUTHORITY",
+        "identity_constraints": "PRESERVE_OPERATION_ID_EXPECTED_REVISION_AND_REGISTERED_RETRY_SEMANTICS",
+        "effect_proof": "NO_UNKNOWN_UNACCOUNTED_MUTATION_OR_UNVERIFIED_ROLLBACK",
+        "impact_constraints": "RETAIN_FAILED_ATTEMPT_AND_VERIFIED_AFFECTED_SCOPE_ISOLATION",
+        "required_gates": [
+          "MACHINE_VERIFIED_EFFECT_STATE_AND_RETRY_SAFETY",
+          "FRESH_CTRL_SPECIFIC_RETRY_AND_CLEANUP_AUTHORITY",
+          "RECORD_RETENTION_RELEASE_AND_PROTECTED_ORIGINAL_EXCLUSION",
+          "REAL_PREPARED_WRITE_AND_FAILURE_INTEGRITY",
+          "APPROVED_TASK_AND_RESOURCE_BUDGET"
+        ],
+        "when_unverified_revoked_or_unsafe": "NO_AUTOMATIC_RETRY_FAIL_CLOSED",
+        "independently_proven_safe_work": "CONTINUE_UNDER_EXISTING_GATES",
+        "retry_is_not_new_permission": true,
+        "protected_sources_and_records": "PRESERVED",
+        "retry_count_timing_and_idempotency_contract": "PLAN_AND_MACHINE_CONTRACT",
+        "current_effect": "DRAFT_ONLY_NO_RUNTIME_RETRY_OR_ACTIVE_TRANSITION"
       }
     }
   },
