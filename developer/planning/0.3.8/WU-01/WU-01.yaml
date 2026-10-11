@@ -32,17 +32,23 @@
     ],
     "review_only_unregistered_extension": {
       "identity": "WU-01-P01",
-      "path": "developer/planning/0.3.8/WU-01-P01.yaml",
+      "path": "developer/planning/0.3.8/WU-01/WU-01-P01.yaml",
       "approval": "PENDING_SEPARATE_USER_REVIEW",
       "implementation_authorization": "NOT_AUTHORIZED",
-      "formal_extension_registration": "NOT_AUTHORIZED"
+      "formal_extension_registration": "REGISTERED_REVIEW_ONLY"
     },
     "acceptance": [
       "CURRENT_POLICY_AND_CANDIDATE_CONFORMANCE_PROVEN_BY_REQUIRED_TESTS",
       "REGISTRATION_AND_APPROVAL_DO_NOT_GRANT_IMPLEMENTATION_OR_RUNTIME_AUTHORITY",
       "NO_PRERELEASE_PLAN_REF_LOOKUP_REQUIRED",
-      "NO_UNAPPROVED_EXTENSION_IS_REGISTERED"
+      "UNAPPROVED_EXTENSION_MAY_BE_REGISTERED_FOR_REVIEW_ONLY_NOT_EXECUTION"
     ]
   },
-  "extensions": []
+  "extensions": [
+    {
+      "id": "WU-01-P01",
+      "path": "developer/planning/0.3.8/WU-01/WU-01-P01.yaml",
+      "status": "DRAFT"
+    }
+  ]
 }
