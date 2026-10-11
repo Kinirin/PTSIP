@@ -105,7 +105,14 @@
         "startup_report_scope": "FAILED_OR_INELIGIBLE_ENGINE_ONLY",
         "startup_success_inventory_report_required": false,
         "startup_failure_report_owner": "SFP-RECORD-0003",
-        "startup_report_decision": "A_USER_EXPLICIT"
+        "startup_report_decision": "A_USER_EXPLICIT",
+        "evidence_cache_cleanup_execution_scope": "NON_AUTHORITATIVE_DERIVED_EVIDENCE_CACHE_WITH_SEPARATELY_VERIFIED_RETENTION_RELEASE",
+        "evidence_cache_automatic_cleanup_decision": "B_USER_EXPLICIT_CONDITIONAL_PERMISSION",
+        "evidence_cache_cleanup_current_permission": "REQUIRE_FRESH_EXISTING_OPERATION_SPECIFIC_DELEGATION",
+        "evidence_cache_cleanup_requires_real_write_integrity": true,
+        "evidence_cache_reuse_denial_is_execution_authorization": false,
+        "evidence_cache_cleanup_read_only_operation_mutation": "FORBIDDEN",
+        "evidence_cache_cleanup_policy_owner": "SFP-RECORD-0003"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -197,7 +204,16 @@
         "failure_only_report_does_not_override_task_capability_availability_gates": true,
         "startup_report_filtering_does_not_erase_per_engine_outcomes": true,
         "successful_engine_status_listing_not_required_for_current_release": true,
-        "failure_report_policy_does_not_grant_retry_or_execution_authority": true
+        "failure_report_policy_does_not_grant_retry_or_execution_authority": true,
+        "automated_evidence_cache_cleanup_requires_current_effective_ctrl_eligibility": true,
+        "cleanup_delegation_must_specifically_cover_operation_kind_and_target": true,
+        "no_delegation_or_revocation_or_stale_authority": "FAIL_CLOSED_NO_CLEANUP",
+        "stale_expected_revision_must_not_authorize_cache_cleanup": true,
+        "reuse_ineligibility_does_not_grant_delete_permission": true,
+        "read_only_execution_does_not_permit_cleanup_write": true,
+        "cleanup_operation_must_preserve_mandatory_records_and_original_evidence": true,
+        "cleanup_validation_alone_does_not_authorize_materialization": true,
+        "cleanup_permission_direction_does_not_activate_draft_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -368,6 +384,21 @@
         "successful_engine_inventory_reporting_required": false,
         "external_report_policy_ref": "SFP-RECORD-0003",
         "internal_per_engine_activation_outcome_preserved": true
+      },
+      "evidence_cache_cleanup_execution_authority": {
+        "policy_subject": "ENGINE_EVIDENCE_CACHE_AUTOMATED_CLEANUP_EXECUTION_GATE",
+        "record_policy_ref": "SFP-RECORD-0003",
+        "approved_direction": "AUTOMATION_ALLOWED_WITHIN_EFFECTIVE_OPERATION_SPECIFIC_CLEANUP_PERMISSION",
+        "existing_authority_required": [
+          "FRESH_CTRL",
+          "REAL_PREPARED_WRITE_INTEGRITY",
+          "RECORD_MANDATORY_RETENTION"
+        ],
+        "missing_or_unverified_delegation": "FAIL_CLOSED",
+        "activation_or_reuse_permission_implies_cleanup_permission": false,
+        "read_only_operation_effect": "NO_CLEANUP_MUTATION",
+        "plan_contract": "OPERATION_ID_TARGET_IDENTITY_EXPECTED_REVISION_AND_PROOF_BINDINGS",
+        "effect": "DRAFT_ONLY_NO_RUNTIME_MUTATION"
       }
     }
   },

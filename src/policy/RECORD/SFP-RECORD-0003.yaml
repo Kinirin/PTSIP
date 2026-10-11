@@ -100,7 +100,25 @@
         "eager_change_triggered_cache_invalidation": "DEFERRED_NOT_CURRENT_RELEASE_REQUIRED",
         "eager_change_triggered_cache_invalidation_future_authorization": "SEPARATE_USER_POLICY_APPROVAL_REQUIRED",
         "cache_reuse_verdict_authority": "SFP-ASSURE-0004",
-        "mandatory_evidence_provenance_retention": "UNCHANGED_SFP_RECORD_0001"
+        "mandatory_evidence_provenance_retention": "UNCHANGED_SFP_RECORD_0001",
+        "evidence_cache_cleanup_policy_choice": "B_USER_EXPLICIT",
+        "evidence_cache_cleanup_policy_decision_date": "2026-10-11",
+        "evidence_cache_cleanup_direction": "AUTOMATIC_CLEANUP_ALLOWED_AFTER_MACHINE_VERIFIED_RETENTION_RELEASE_AND_SEPARATE_EXECUTION_AUTHORIZATION",
+        "evidence_cache_cleanup_candidate_scope": "PROVEN_DISPOSABLE_NON_AUTHORITATIVE_DERIVED_EVIDENCE_CACHE_ONLY",
+        "evidence_cache_cleanup_prerequisites": [
+          "ASSURE_VERIFIED_REUSE_INELIGIBILITY",
+          "MACHINE_VERIFIED_NO_APPLICABLE_RETENTION_OR_REFERENCE_OBLIGATION",
+          "VERIFIED_DISJOINT_FROM_ORIGINAL_EVIDENCE_AND_MANDATORY_RECORDS",
+          "FRESH_EFFECTIVE_CTRL_OPERATION_SPECIFIC_CLEANUP_AUTHORIZATION",
+          "REAL_COMPLIANT_MUTATION_INTEGRITY_AND_READ_ONLY_BOUNDARY"
+        ],
+        "cache_reuse_ineligibility_alone_grants_cleanup_authorization": false,
+        "cleanup_without_machine_verified_retention_release": "FORBIDDEN",
+        "cleanup_without_fresh_effective_mutation_authority": "FORBIDDEN",
+        "cleanup_target_is_original_evidence_or_mandatory_record": "FORBIDDEN",
+        "cleanup_trigger_or_schedule": "UNRESOLVED_SEPARATE_POLICY",
+        "cleanup_execution_and_failure_contract": "PLAN_AND_MACHINE_CONTRACT_WITH_EXISTING_CTRL_REAL_OPS",
+        "no_new_record_retention_override": true
       },
       "invariants": {
         "every_record_keeps_origin_and_observation_context": true,
@@ -161,7 +179,21 @@
         "prior_approved_engine_state_exact_match_policy_scope_unchanged": true,
         "missing_evidence_reuse_does_not_authorize_unverified_automatic_recomputation": true,
         "cached_evidence_plan_contract_methods_not_resolved_by_policy_choice": true,
-        "cache_reuse_timing_direction_does_not_activate_engine_runtime": true
+        "cache_reuse_timing_direction_does_not_activate_engine_runtime": true,
+        "cache_cleanup_may_be_automated_only_after_separate_cleanup_eligibility_and_execution_authorization": true,
+        "cache_reuse_denial_is_not_proof_of_retention_release": true,
+        "cache_record_absence_of_reference_is_not_proof_of_release": true,
+        "unknown_ambiguous_or_unverified_retention_obligation": "FAIL_CLOSED_KEEP",
+        "unknown_ambiguous_or_unverified_cleanup_permission": "FAIL_CLOSED_NO_MUTATION",
+        "derived_cache_classification_must_be_machine_verified": true,
+        "original_evidence_cannot_be_targeted_by_cache_cleanup": true,
+        "mandatory_record_receipts_provenance_and_history_cannot_be_targeted_by_cache_cleanup": true,
+        "retention_protection_precedes_cleanup_optimization": true,
+        "cleanup_does_not_create_new_retention_deletion_or_authorization_authority": true,
+        "cleanup_eligibility_judgment_is_not_execution_or_write_permission": true,
+        "cleanup_must_not_modify_read_only_operation_side_effects": true,
+        "separately_approved_activation_draft_not_automatically_activated": true,
+        "cleanup_trigger_not_silently_decided_by_permission_direction": true
       },
       "unresolved_decisions": [
         {
@@ -173,6 +205,12 @@
           "id": "EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "EVIDENCE_CACHE_AUTOMATIC_CLEANUP_TRIGGER",
+          "kind": "USER_DECISION",
+          "status": "UNRESOLVED",
+          "reason": "AUTOMATION_PERMISSION_DOES_NOT_SELECT_EXECUTION_TRIGGER_OR_SCHEDULE"
         }
       ],
       "activation_requirements": {
@@ -281,7 +319,40 @@
         "REUSE_CHECK_IDENTITY_AND_DEPENDENCY_SNAPSHOT_BINDING",
         "REUSE_VALIDATION_EVIDENCE_AND_ASSURE_HANDOFF",
         "RECORD_RETENTION_AND_CACHE_INVALIDATION_STATUS_HANDOFF"
-      ]
+      ],
+      "evidence_cache_cleanup_direction": {
+        "policy_subject": "EVIDENCE_CACHE_AUTOMATED_CLEANUP_ELIGIBILITY",
+        "approved_option": "B_CONDITIONAL_AUTOMATIC_CLEANUP",
+        "scope": "DISPOSABLE_DERIVED_NON_AUTHORITATIVE_EVIDENCE_CACHE_COPIES",
+        "not_in_scope": [
+          "ORIGINAL_EVIDENCE",
+          "MANDATORY_RECORD_RECEIPTS",
+          "REQUIRED_PROVENANCE_AND_HISTORY",
+          "OTHER_PROTECTED_ARTIFACTS"
+        ],
+        "eligibility": [
+          "CURRENT_ASSURE_REUSE_INELIGIBILITY",
+          "MACHINE_VERIFIED_RETENTION_RELEASE_AND_REFERENCE_CLOSURE",
+          "MACHINE_VERIFIED_TARGET_SEPARATION_FROM_PRESERVED_ORIGINALS"
+        ],
+        "execution_gates": [
+          "FRESH_EFFECTIVE_CTRL_OPERATION_SPECIFIC_AUTHORIZATION",
+          "REAL_PREPARED_MUTATION_INTEGRITY",
+          "APPLICABLE_OPS_FAILURE_PRESERVATION"
+        ],
+        "if_any_proof_missing": "KEEP_TARGET_FAIL_CLOSED",
+        "automatic_cleanup": "PERMITTED_ONLY_WITH_ALL_GATES_VERIFIED",
+        "cleanup_authorization_created_by_this_draft": false,
+        "cache_invalidity_alone_authorizes_deletion": false,
+        "source_and_mandatory_records": "MUST_PRESERVE",
+        "cleanup_trigger": "UNRESOLVED_USER_POLICY_DECISION",
+        "proof_interface_cleanup_operation_and_failure_details": "PLAN_AND_MACHINE_CONTRACT",
+        "record_responsibility": "PROVENANCE_AND_RETENTION_ELIGIBILITY_BOUNDARY",
+        "ctrl_responsibility": "FRESH_EXECUTION_AUTHORIZATION",
+        "real_responsibility": "MUTATION_INTEGRITY",
+        "assure_responsibility": "VERIFIED_REUSE_INELIGIBILITY",
+        "current_effect": "DRAFT_ONLY_NO_CLEANUP_EXECUTION_OR_ACTIVE_TRANSITION"
+      }
     }
   },
   "relations": {
