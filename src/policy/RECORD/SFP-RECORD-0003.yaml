@@ -70,7 +70,14 @@
         "failure_reference_provenance": "MACHINE_VERIFIED_SOURCE_AND_OBSERVED_ACTIVATION_CONTEXT",
         "unverified_reference_cannot_be_claimed_as_verified": true,
         "failure_report_payload_format_authority": "PLAN_AND_MACHINE_CONTRACT",
-        "startup_reporting_success_inventory_requirement": "NOT_REQUIRED_UNCHANGED"
+        "startup_reporting_success_inventory_requirement": "NOT_REQUIRED_UNCHANGED",
+        "startup_unverifiable_failure_reference_handling": "A_EMIT_SEPARATE_INCOMPLETE_DIAGNOSTIC",
+        "startup_unverifiable_failure_reference_approval": "USER_EXPLICIT_OPTION_A",
+        "startup_unverifiable_failure_reference_decided_at": "2026-10-11",
+        "startup_incomplete_diagnostic_disposition": "REPORT_ONLY_VERIFIED_FACTS_AND_EXPLICITLY_MARK_REFERENCE_UNVERIFIED",
+        "startup_complete_failure_report_requires_validated_condition_reference": true,
+        "startup_incomplete_diagnostic_status_authority": "RECORD_REPORT_COMPLETENESS_ONLY_NOT_ASSURE_CONFORMANCE",
+        "startup_diagnostic_report_payload_shape": "PLAN_AND_MACHINE_CONTRACT"
       },
       "invariants": {
         "every_record_keeps_origin_and_observation_context": true,
@@ -96,7 +103,18 @@
         "engine_identity_and_reference_scope_must_not_be_silently_cross_bound": true,
         "new_required_report_information_does_not_require_success_engine_inventory": true,
         "required_failure_report_information_does_not_grant_execution_retry_or_write_authority": true,
-        "reporting_contract_decision_does_not_activate_engine_runtime": true
+        "reporting_contract_decision_does_not_activate_engine_runtime": true,
+        "missing_or_unverifiable_condition_reference_requires_incomplete_diagnostic": true,
+        "incomplete_diagnostic_only_contains_verified_facts": true,
+        "incomplete_diagnostic_must_explicitly_identify_reference_as_unverified": true,
+        "incomplete_diagnostic_must_not_be_marked_complete_failure_report": true,
+        "missing_reference_must_not_be_fabricated_or_synthetically_resolved": true,
+        "incomplete_report_status_does_not_override_assure_conformance_judgment": true,
+        "incompleteness_does_not_grant_execution_or_reuse_eligibility": true,
+        "failed_or_ineligible_engine_remains_inactive_unless_fresh_eligibility_passes": true,
+        "independent_eligible_engines_can_remain_active": true,
+        "existing_mandatory_record_provenance_preserved": true,
+        "incomplete_diagnostic_policy_does_not_activate_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -108,12 +126,6 @@
           "id": "EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
-        },
-        {
-          "id": "STARTUP_FAILED_CONDITION_REFERENCE_UNAVAILABLE_HANDLING",
-          "kind": "USER_DECISION",
-          "status": "UNRESOLVED",
-          "reason": "REPORT_REQUIRED_REFERENCE_CANNOT_BE_VERIFIED_WITHOUT_FABRICATION"
         }
       ],
       "activation_requirements": {
@@ -155,8 +167,27 @@
         "reference_requirement": "EXISTING_REGISTERED_AND_MACHINE_RESOLVABLE",
         "reference_validation": "CURRENT_APPLICABLE_GATE_AND_OBSERVED_FAILURE_BOUND",
         "no_inferred_references": true,
-        "missing_or_unresolvable_reference_handling": "UNRESOLVED_SEPARATE_POLICY",
-        "payload_serialization_and_field_names": "PLAN_AND_MACHINE_CONTRACT"
+        "missing_or_unresolvable_reference_handling": "SEPARATE_INCOMPLETE_DIAGNOSTIC_VERIFIED_FACTS_ONLY",
+        "payload_serialization_and_field_names": "PLAN_AND_MACHINE_CONTRACT",
+        "complete_report_requires_verifiable_condition_reference": true,
+        "incomplete_diagnostic_ref": "startup_incomplete_diagnostic_handling"
+      },
+      "startup_incomplete_diagnostic_handling": {
+        "decision": "A_SEPARATE_INCOMPLETE_DIAGNOSTIC",
+        "trigger": "REQUIRED_FAILED_CONDITION_REFERENCE_MISSING_OR_UNVERIFIABLE",
+        "report_class": "ENGINE_STARTUP_FAILURE_DIAGNOSTIC",
+        "report_completeness": "INCOMPLETE",
+        "confirmed_information_policy": "VERIFIED_FACTS_ONLY",
+        "reference_status": "EXPLICITLY_UNVERIFIED",
+        "completed_failure_report_status": "NOT_GRANTED",
+        "required_full_report_reference_policy": "UNCHANGED_VERIFIED_REGISTERED_CONTRACT_OR_CONDITION_REF",
+        "incomplete_reference_must_not_be_fabricated": true,
+        "assure_conformance_result": "NOT_INFERRED_FROM_REPORT_COMPLETENESS",
+        "target_engine_activation_eligibility": "UNCHANGED_FAIL_CLOSED",
+        "independent_engine_activation": "UNCHANGED",
+        "failure_report_reference_restoration_and_resolution": "PLAN_OR_SEPARATE_POLICY",
+        "concrete_schema": "PLAN_AND_MACHINE_CONTRACT",
+        "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
       }
     }
   },
