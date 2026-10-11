@@ -1,6 +1,7 @@
 package workflows_test
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,24 +20,112 @@ func workflow(t *testing.T, name string) string {
 	return string(raw)
 }
 
+// readLegacyCheck follows the executable registry binding rather than requiring
+// per-Check commands to be hardcoded into the generic workflow.
+func readLegacyCheck(t *testing.T, id string) (string, []string) {
+	t.Helper()
+	var registry struct {
+		LegacyChecks []struct {
+			ID       string   `json:"id"`
+			Mode     string   `json:"mode"`
+			Script   string   `json:"script"`
+			Triggers []string `json:"triggers"`
+		} `json:"legacy_checks"`
+	}
+	raw, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github", "checks.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(raw, &registry); err != nil {
+		t.Fatal(err)
+	}
+	for _, check := range registry.LegacyChecks {
+		if check.ID != id {
+			continue
+		}
+		if check.Mode == "" || !strings.HasPrefix(check.Script, ".github/checks/") || len(check.Triggers) == 0 {
+			t.Fatal("Check has no registered owner or executable applicability", id)
+		}
+		code, err := os.ReadFile(filepath.Join(testrepo.Root(t), filepath.FromSlash(check.Script)))
+		if err != nil {
+			t.Fatal("registered Check script cannot be resolved", id, err)
+		}
+		return string(code), check.Triggers
+	}
+	t.Fatal("unregistered required Check", id)
+	return "", nil
+}
+
+func hasTrigger(triggers []string, want string) bool {
+	for _, trigger := range triggers {
+		if trigger == want {
+			return true
+		}
+	}
+	return false
+}
+
 func TestStaticAndReleaseVerificationAreNotPinnedToOneVersionBranch(t *testing.T) {
 	text := workflow(t, "tooling-test.yml")
-	for _, expected := range []string{"(github.event_name == 'push' && github.event.deleted == false) || (github.event_name == 'workflow_dispatch'", "startsWith(github.event.head_commit.message, 'release:')"} {
-		if !strings.Contains(text, expected) {
-			t.Fatalf("verification route missing: %s", expected)
+	var document map[string]any
+	if err := yaml.Unmarshal([]byte(text), &document); err != nil {
+		t.Fatal(err)
+	}
+	jobs := document["jobs"].(map[string]any)
+	for _, job := range []string{"resolve", "check", "coverage"} {
+		if jobs[job] == nil {
+			t.Fatal("generic Check orchestration stage absent", job)
+		}
+	}
+	for _, marker := range []string{"github.event.deleted == false", "check_execution.py plan", "fromJSON(needs.resolve.outputs.checks)", "check_execution.py coverage"} {
+		if !strings.Contains(text, marker) {
+			t.Fatal("generic verification route missing", marker)
 		}
 	}
 	if strings.Contains(text, "github.ref_name == 'dev/0.3.8'") {
 		t.Fatal("verification pinned to one development branch")
 	}
+	runner, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/scripts/check_execution.py"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, marker := range []string{`if event == "push":`, `startswith("release:")`, `preset = "full"`} {
+		if !strings.Contains(string(runner), marker) {
+			t.Fatal("push/release routing was not preserved in Check selector", marker)
+		}
+	}
+	for _, id := range []string{"policy-lifecycle", "release-contract"} {
+		_, triggers := readLegacyCheck(t, id)
+		if id == "policy-lifecycle" && !hasTrigger(triggers, "push") {
+			t.Fatal("push policy validation obligation omitted")
+		}
+		if id == "release-contract" && !hasTrigger(triggers, "full") {
+			t.Fatal("release verification obligation omitted")
+		}
+	}
 }
 
 func TestWU02RoutingConsumesNativeControlContextAndExplicitExecutionBranch(t *testing.T) {
-	text := workflow(t, "tooling-test.yml")
-	for _, expected := range []string{"./cmd/ptsip-dev wu02 control-context", "$controlBranch = $controlContext.control_branch", "steps.wu02-route.outputs.required == 'true'", "./cmd/ptsip-dev wu02 validate --execution-branch \"$env:PTSIP_EXECUTION_BRANCH\""} {
-		if !strings.Contains(text, expected) {
-			t.Fatalf("native control route missing: %s", expected)
+	script, triggers := readLegacyCheck(t, "wu02-control")
+	if !hasTrigger(triggers, "push") {
+		t.Fatal("WU-02 control verification not selected on push")
+	}
+	for _, expected := range []string{
+		"./cmd/ptsip-dev wu02 control-context",
+		"$controlBranch = $controlContext.control_branch",
+		"$env:PTSIP_EXECUTION_BRANCH -eq $controlBranch",
+		"./cmd/ptsip-dev wu02 validate --execution-branch \"$env:PTSIP_EXECUTION_BRANCH\"",
+	} {
+		if !strings.Contains(script, expected) {
+			t.Fatalf("native WU-02 Check contract missing: %s", expected)
 		}
+	}
+	code, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/scripts/check_execution.py"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(code), "PTSIP_EXECUTION_BRANCH") {
+		t.Fatal("generic Check runner does not supply the execution branch to WU-02")
 	}
 }
 
@@ -93,9 +182,14 @@ func TestRepositoryEntryPointsShareNativeInstallerAndDoNotStageUserFiles(t *test
 }
 
 func TestContextMigrationAndDeveloperTestModeUseRetiredGoTestSurface(t *testing.T) {
-	text := workflow(t, "tooling-test.yml")
-	if strings.Contains(text, "developer/tests/test_agent_context_migration.py") || !strings.Contains(text, "-run '^TestAgent(Profile|OperationReferences|ContextNative)' ./internal/machine") || !strings.Contains(text, "src/tests/ptsip/test_modes/test_agent_context_routing.py") {
-		t.Fatal("bounded context migration does not invoke the preserved native and routing regressions")
+	script, triggers := readLegacyCheck(t, "agent-context-migration")
+	if !hasTrigger(triggers, "push") || !hasTrigger(triggers, "agent-context-migration") {
+		t.Fatal("agent context verification dispatch applicability was lost")
+	}
+	if strings.Contains(script, "developer/tests/test_agent_context_migration.py") ||
+		!strings.Contains(script, "-run '^TestAgent(Profile|OperationReferences|ContextNative)' ./internal/machine") ||
+		!strings.Contains(script, "src/tests/ptsip/test_modes/test_agent_context_routing.py") {
+		t.Fatal("registered context migration Check lost native or routing regression")
 	}
 	raw, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/test_modes.yaml"))
 	if err != nil {

@@ -142,14 +142,16 @@ func NewResolver(repo Repository) (*Resolver, error) {
 	return resolver, nil
 }
 
-// Policy reads only the indexed canonical record. Migration source identities are rejected.
+// Policy reads only indexed canonical records. Missing and migration-source
+// identities share one non-executable rejection boundary; archived status never
+// authorizes a policy lookup.
 func (r *Resolver) Policy(id string) (Object, error) {
 	entry, ok := r.Index[id]
 	if !ok {
-		return nil, fmt.Errorf("unknown developer policy identity: %s", id)
+		return nil, fmt.Errorf("developer policy identity is unknown or audit-only (not executable): %s", id)
 	}
 	if entry["authority_role"] == "MIGRATION_SOURCE" {
-		return nil, fmt.Errorf("legacy policy identity is audit-only: %s", id)
+		return nil, fmt.Errorf("developer policy identity is unknown or audit-only (not executable): %s", id)
 	}
 	if entry["policy_class"] == DeveloperClass {
 		match := rootID.FindStringSubmatch(id)

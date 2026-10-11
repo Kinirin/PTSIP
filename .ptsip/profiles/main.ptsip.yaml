@@ -969,6 +969,10 @@ components:
       - CONFIGURATION
     include:
       - ".github/test_modes.yaml"
+      - ".github/checks.yaml"
+      - ".github/checks-legacy-inventory.json"
+      - ".github/checks/**"
+      - ".github/scripts/check_execution.py"
       - ".github/scripts/validate_test_modes.py"
       - ".github/scripts/resolve_test_modes.py"
       - "src/tests/ptsip/test_modes/**"

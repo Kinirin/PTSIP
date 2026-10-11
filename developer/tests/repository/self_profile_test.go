@@ -1,6 +1,7 @@
 package repository_test
 
 import (
+	"encoding/json"
 	"os"
 	"regexp"
 	"strings"
@@ -149,10 +150,63 @@ func TestConsumerDefaultProfilePathRemainsRootPtsipYAML(t *testing.T) {
 }
 
 func TestFullCISelfManagementCommandsSelectDeveloperProfile(t *testing.T) {
-	source := repositoryText(t, ".github/workflows/tooling-test.yml")
-	for _, command := range []string{"ptsip validate . --profile .ptsip/profiles/main.ptsip.yaml --json", "ptsip clarify . --profile .ptsip/profiles/main.ptsip.yaml --json", "ptsip gate . --profile .ptsip/profiles/main.ptsip.yaml --coordination local --json", "ptsip conform . --profile .ptsip/profiles/main.ptsip.yaml --artifact-evidence $evidencePath --json"} {
-		if !strings.Contains(source, command) {
-			t.Fatal("explicit self-profile CI command missing", command)
+	// The workflow is a generic executor. The required verification commands
+	// live in registered Checks, not inline in tooling-test.yml.
+	root := testrepo.Root(t)
+	var registry struct {
+		LegacyChecks []struct {
+			ID       string   `json:"id"`
+			Script   string   `json:"script"`
+			Triggers []string `json:"triggers"`
+		} `json:"legacy_checks"`
+	}
+	if err := json.Unmarshal([]byte(repositoryText(t, ".github/checks.yaml")), &registry); err != nil {
+		t.Fatal(err)
+	}
+	requireCheck := func(id string) string {
+		t.Helper()
+		for _, check := range registry.LegacyChecks {
+			if check.ID != id {
+				continue
+			}
+			if !strings.HasPrefix(check.Script, ".github/checks/") {
+				t.Fatal("registered Check does not reference the owned execution plane", check)
+			}
+			found := false
+			for _, trigger := range check.Triggers {
+				found = found || trigger == "full"
+			}
+			if !found {
+				t.Fatal("release Check is not selected by full verification", id)
+			}
+			if _, err := os.Stat(root + "/" + check.Script); err != nil {
+				t.Fatal("registered Check script missing", err)
+			}
+			return repositoryText(t, check.Script)
 		}
+		t.Fatal("required release Check is not registered", id)
+		return ""
+	}
+	profile := requireCheck("release-profile")
+	distribution := requireCheck("release-distribution")
+	for _, command := range []string{
+		"ptsip validate . --profile .ptsip/profiles/main.ptsip.yaml --json",
+		"ptsip clarify . --profile .ptsip/profiles/main.ptsip.yaml --json",
+		"ptsip gate . --profile .ptsip/profiles/main.ptsip.yaml --coordination local --json",
+	} {
+		if !strings.Contains(profile, command) {
+			t.Fatal("explicit self-profile Check command missing", command)
+		}
+	}
+	if !strings.Contains(distribution, "ptsip conform . --profile .ptsip/profiles/main.ptsip.yaml --artifact-evidence $evidencePath --json") {
+		t.Fatal("artifact-aware conformance Check command missing")
+	}
+	workflow := repositoryText(t, ".github/workflows/tooling-test.yml")
+	runner := repositoryText(t, ".github/scripts/check_execution.py")
+	if !strings.Contains(workflow, "check_execution.py plan") ||
+		!strings.Contains(workflow, "check_execution.py run") ||
+		!strings.Contains(workflow, "fromJSON(needs.resolve.outputs.checks)") ||
+		!strings.Contains(runner, `if preset == "full":`) {
+		t.Fatal("registry-driven full verification execution route is incomplete")
 	}
 }
