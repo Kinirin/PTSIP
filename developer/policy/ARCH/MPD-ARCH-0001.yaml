@@ -5,7 +5,7 @@ policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.1'
+  version: '2.2'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -256,11 +256,28 @@ rules:
       lifecycle: DEVELOPMENT_TOOLING
       implementation_language: GO
       current_implementation_root: developer/automation/
-      target_implementation_root: .ptsip/engine/
+      target_implementation_root: .ptsip/engine/developer/
+      parent_repository_local_engine_root: .ptsip/engine/
+      parent_root_status: CONSUMER_ENGINE_STATE_NAMESPACE
+      eligibility: PTSIP_DEVELOPER_WORKSPACE_WITH_EXPLICIT_REGISTERED_BINDING
+      source_role: DEVELOPER_TOOL_NOT_INSTALLED_PRODUCT_ENGINE
+      consumer_project_propagation: FORBIDDEN
+      source_copy_of_installed_product_engine: FORBIDDEN
       target_root_activation: AFTER_COMMON_ENGINE_CONFORMANCE_AND_APPROVED_DEVELOPER_MIGRATION
       common_engine_role: CONTRACT_CONSUMER
       product_distribution: FORBIDDEN
     existing_dot_ptsip_engine_state: PRESERVE_UNTIL_APPROVED_MIGRATION
+    engine_root_namespace_reconciliation:
+      resolution: RECONCILE
+      approved_scope_ref: developer/policy/approvals/MPA-20261011-ENGINE-ROOT-RECONCILE.yaml
+      consumer_engine_state_policy_ref: SFP-ARCH-0001#authority_semantics.engine_plane_boundary
+      consumer_project_state_and_runtime_semantics: PRESERVE
+      product_engine_executable_owner: INSTALLED_PTSIP_PACKAGE
+      developer_workspace_exception: EXPLICIT_BINDING_ONLY
+      target_developer_subnamespace: .ptsip/engine/developer/
+      concrete_go_package_move: DEFER_TO_SEPARATE_PLAN
+      existing_common_engine_plan: PRESERVE
+      implementation_authorized: false
 relations:
   supersedes: []
   amends: []

@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0004
-  version: '2.1'
+  version: '2.2'
   title: Developer legacy policy and Python automation retirement
   status: ACTIVE
 authority_subject:
@@ -55,7 +55,13 @@ rules:
     conflict_resolution: RECONCILE
     approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
     from_root: developer/automation/
-    to_root: .ptsip/engine/
+    to_root: .ptsip/engine/developer/
+    product_engine_repository_state_root: .ptsip/engine/
+    source_workspace_scope: PTSIP_DEVELOPER_REPOSITORY_ONLY
+    explicit_developer_workspace_binding_required: true
+    ordinary_consumer_project_migration: FORBIDDEN
+    installed_product_engine_source_copy: FORBIDDEN
+    engine_root_reconciliation_approval_ref: developer/policy/approvals/MPA-20261011-ENGINE-ROOT-RECONCILE.yaml
     common_engine_plan: PRESERVE_EXISTING_SEPARATE_PLAN
     ordering:
     - KEEP_CURRENT_DEVELOPER_GO_TOOL_OPERATIONAL

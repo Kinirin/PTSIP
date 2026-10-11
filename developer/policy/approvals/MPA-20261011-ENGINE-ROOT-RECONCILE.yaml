@@ -1,0 +1,24 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261011-ENGINE-ROOT-RECONCILE
+  decision: APPROVED
+  conflict_resolution: RECONCILE
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: ".ptsip/engine 경로 정책 충돌은 RECONCILE으로 해결하도록 승인합니다. dev/0.3.8의 현재 정책을 확인해 승인 범위의 정책만 동기화해 주세요. 기존 공통 엔진 구축 작업은 우선 유지하고 개발자 도구의 실제 이전은 하지 마세요."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  policy_content_review_scope: DIRECTION
+  implementation_authorized: false
+  common_engine_plan_mutation_authorized: false
+  developer_tool_migration_authorized: false
+  branch_creation_authorized: false
+  preserved_consumer_engine_state_policy: SFP-ARCH-0001#authority_semantics.engine_plane_boundary
+  approved_developer_implementation_target: .ptsip/engine/developer/
+  affected_policy_ids:
+  - SFP-ARCH-0001
+  - MPD-ARCH-0001
+  - MPD-REAL-0005
+  - MPD-CHANGE-0004
+  recorded_at: '2026-10-11'

@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: REAL
 policy:
   id: MPD-REAL-0005
-  version: '2.1'
+  version: '2.2'
   title: Mandatory Go implementation for all Developer automation
   status: ACTIVE
 authority_subject:
@@ -41,7 +41,14 @@ rules:
     conflict_resolution: RECONCILE
     approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
     existing_implementation_root: developer/automation/
-    future_implementation_root: .ptsip/engine/
+    future_implementation_root: .ptsip/engine/developer/
+    parent_engine_state_root: .ptsip/engine/
+    future_root_role: PTSIP_REPOSITORY_ONLY_DEVELOPER_GO_SOURCE
+    explicit_developer_workspace_binding_required: true
+    ordinary_consumer_projects: FORBIDDEN
+    installed_product_engine_source_copy: FORBIDDEN
+    future_root_is_common_product_engine: false
+    engine_root_reconciliation_approval_ref: developer/policy/approvals/MPA-20261011-ENGINE-ROOT-RECONCILE.yaml
     implementation_language: GO
     current_go_migration_scope: UNCHANGED
     neutral_semantic_authority: PRESERVE

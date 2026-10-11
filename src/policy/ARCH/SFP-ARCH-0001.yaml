@@ -101,6 +101,22 @@ authority_semantics:
     physical_path_name_is_semantic_role_authority: false
     executable_implementation_owner: INSTALLED_PTSIP_PACKAGE
     executable_source_copy_into_repository_engine_root: FORBIDDEN
+    executable_source_copy_prohibition_subject: INSTALLED_PTSIP_PRODUCT_ENGINE_SOURCE
+    ptsip_developer_workspace_reconciliation:
+      decision: RECONCILE
+      scope: PTSIP_SOURCE_DEVELOPMENT_WORKSPACE_ONLY
+      eligibility: EXPLICIT_REGISTERED_DEVELOPER_WORKSPACE_BINDING_REQUIRED
+      path_name_alone_grants_developer_authority: false
+      reserved_developer_subnamespace: .ptsip/engine/developer/
+      developer_subnamespace_role: NON_PRODUCT_GO_DEVELOPER_TOOL_SOURCE
+      installed_product_engine_source_copy: FORBIDDEN
+      installed_product_engine_execution_owner: INSTALLED_PTSIP_PACKAGE
+      consumer_repository_developer_source_permission: FORBIDDEN
+      automatic_subnamespace_materialization: FORBIDDEN
+      common_engine_machine_contract_authority: PRESERVE
+      developer_source_distribution_with_product: FORBIDDEN
+      active_developer_tool_migration: NOT_AUTHORIZED
+      future_migration: SEPARATE_APPROVED_PLAN_AND_CONFORMANCE_REQUIRED
     shipped_repository_module: src/ptsip/repository/namespace.py
     shipped_engine_state_schema: src/ptsip/repository/schemas/engine-state.schema.json
     state_contract: DEFERRED
