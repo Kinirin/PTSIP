@@ -268,6 +268,11 @@ func ValidatePlanning(r Repository) []string {
 				}
 			}
 		}
+		// An unapproved release draft can exist without any registered work unit.
+		// UNASSIGNED is never an executable gate and is invalid once a unit is registered.
+		if !prerelease && identity["status"] == "DRAFT" && len(List(plan["work_units"])) == 0 && gate == "UNASSIGNED" {
+			gateResolved = true
+		}
 		if !gateResolved {
 			errors = append(errors, path+": current gate does not resolve to registered work unit or extension")
 		}
