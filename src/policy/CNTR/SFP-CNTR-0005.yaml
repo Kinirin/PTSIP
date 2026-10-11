@@ -92,7 +92,16 @@
           "DECLARED_DEPENDENCY_RELATIONS",
           "CAPABILITY_CONTRACT_AND_COMPATIBILITY_REFERENCES"
         ],
-        "engine_static_interoperability_detail_placement": "DETAILED_CAPABILITY_SEMANTICS_IMPLEMENTATION_BUILD_ENVIRONMENT_AND_EVIDENCE_BY_SEPARATE_CONTRACT_REFERENCE"
+        "engine_static_interoperability_detail_placement": "DETAILED_CAPABILITY_SEMANTICS_IMPLEMENTATION_BUILD_ENVIRONMENT_AND_EVIDENCE_BY_SEPARATE_CONTRACT_REFERENCE",
+        "external_execution_binding_registration_gate_choice": "A_USER_EXPLICIT",
+        "external_execution_binding_registration_gate_decided_at": "2026-10-11",
+        "externally_invocable_capability_registration_requirement": "REGISTERED_VALID_MACHINE_VERIFIED_EXECUTION_BINDING_REQUIRED_AT_REGISTRATION",
+        "externally_invocable_capability_binding_missing_invalid_ambiguous_unverifiable": "REGISTRATION_INELIGIBLE_FAIL_CLOSED",
+        "external_execution_binding_required_for_static_only_engines_without_externally_invocable_capability": false,
+        "external_execution_binding_registration_verification_scope": "DECLARED_EXTERNALLY_INVOCABLE_CAPABILITY_IDENTITY_VERSION_CONTRACT_AND_ENTRYPOINT_BINDING",
+        "external_execution_binding_early_verification_not_runtime_invocation": true,
+        "external_execution_binding_registration_is_execution_authorization": false,
+        "external_execution_binding_registration_proof_method": "PLAN_AND_MACHINE_CONTRACT"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -190,7 +199,20 @@
         "static_contract_registration_does_not_grant_activation_execution_or_write_authority": true,
         "static_contract_information_scope_does_not_change_conditional_execution_binding_policy": true,
         "static_contract_information_scope_does_not_reassign_assure_normative_conformance_authority": true,
-        "static_contract_information_scope_preserves_provider_consumer_evidence_responsibility": true
+        "static_contract_information_scope_preserves_provider_consumer_evidence_responsibility": true,
+        "declared_externally_invocable_capability_must_have_verified_registration_time_binding": true,
+        "engine_registration_with_unverified_required_execution_binding": "FAIL_CLOSED_NO_QUALIFIED_REGISTRATION",
+        "declaration_of_external_invocability_cannot_be_silently_accepted_as_noninvocable_to_bypass_binding_gate": true,
+        "missing_or_unverified_binding_cannot_be_treated_as_registered_executable_capability": true,
+        "binding_must_be_identity_version_and_capability_contract_bound": true,
+        "invalid_registration_binding_does_not_block_unrelated_independently_valid_existing_registrations": true,
+        "registration_binding_verification_does_not_require_executing_capability": true,
+        "static_only_engine_without_external_invocation_declared_must_not_be_forced_to_define_runtime_entrypoint": true,
+        "successful_registration_does_not_authorize_activation_or_execution": true,
+        "runtime_invocation_requires_fresh_binding_applicability_and_current_ctrl_authority": true,
+        "registration_binding_cannot_infer_entrypoint_from_directory_name": true,
+        "registration_time_gate_cannot_reassign_active_assure_vpms_or_ctrl_authority": true,
+        "registration_binding_policy_does_not_activate_draft_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -272,11 +294,6 @@
         {
           "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "ENGINE_CONDITIONAL_EXECUTION_BINDING_APPLICABILITY_BOUNDARY",
-          "kind": "USER_DECISION",
           "status": "UNRESOLVED"
         }
       ],
@@ -421,6 +438,25 @@
           "exact_schema": "NOT_DECIDED",
           "physical_implementation": "NOT_AUTHORIZED",
           "active_transition": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_CONDITIONAL_EXECUTION_BINDING_APPLICABILITY_BOUNDARY",
+          "selected_option": "A_REGISTRATION_TIME_BINDING_REQUIRED",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "EXTERNAL_INVOCABILITY_REGISTRATION_ELIGIBILITY_ONLY",
+          "applies_when": "DECLARED_EXTERNALLY_INVOCABLE_CAPABILITY",
+          "validation_moment": "ENGINE_REGISTRATION",
+          "binding_verdict": "MACHINE_VERIFIED_VERSIONED_IDENTITY_CAPABILITY_CONTRACT_AND_ENTRYPOINT",
+          "unverifiable_binding": "REGISTRATION_INELIGIBLE_FAIL_CLOSED",
+          "when_no_external_capability": "NO_EXECUTION_BINDING_REQUIRED",
+          "static_declaration": "UNCHANGED",
+          "execution_authority": "EXISTING_CTRL_UNCHANGED_AND_RECHECK_AT_EXECUTION",
+          "directory_lookup": "REGISTERED_IDENTITY_AND_ENTRYPOINT_NO_NAME_INFERENCE",
+          "active_policy_and_public_interface_authorities": "PRESERVED",
+          "exact_schema": "PLAN_AND_MACHINE_CONTRACT",
+          "implementation": "NOT_AUTHORIZED_BY_THIS_DECISION",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
@@ -430,7 +466,29 @@
           "status": "DRAFT",
           "authority": "PLAN_NOT_POLICY"
         }
-      ]
+      ],
+      "external_execution_binding_applicability_direction": {
+        "policy_subject": "ENGINE_CONDITIONAL_EXECUTION_BINDING_APPLICABILITY_BOUNDARY",
+        "selected_option": "A_REGISTRATION_TIME_BINDING_VERIFICATION",
+        "trigger": "ENGINE_REGISTRATION_DECLARING_EXTERNALLY_INVOCABLE_CAPABILITY",
+        "requirement": "REQUIRED_EXECUTION_BINDING_MACHINE_VERIFIED_BEFORE_REGISTRATION_ELIGIBLE",
+        "required_binding_validation": [
+          "REGISTERED_ENGINE_IDENTITY_AND_ORIGIN",
+          "DECLARED_EXTERNALLY_INVOCABLE_CAPABILITY_IDENTITY",
+          "APPLICABLE_VERSIONED_CAPABILITY_CONTRACT_AND_COMPATIBILITY",
+          "EXPLICIT_REGISTERED_ENTRYPOINT_BINDING"
+        ],
+        "invalid_or_unavailable_proof": "DENY_AFFECTED_REGISTRATION_ELIGIBILITY_FAIL_CLOSED",
+        "no_external_invocable_capability": "STATIC_REGISTRATION_WITHOUT_EXECUTION_BINDING_ALLOWED_IF_OTHER_GATES_PASS",
+        "applies_only_to_declared_external_invocation": true,
+        "static_core_contract": "UNCHANGED_REQUIRED",
+        "runtime_call_conditions": "RECHECK_CURRENT_BINDING_AND_FRESH_EFFECTIVE_CTRL_AUTHORITY",
+        "discovery_binding_resolution": "REGISTERED_CONTRACT_NOT_DIRECTORY_NAME_INFERENCE",
+        "registration_binding_conveys_activation_execution_or_write_rights": false,
+        "existing_registered_unrelated_engine_state": "NO_AUTOMATIC_INVALIDATION_OR_POLICY_REWRITE",
+        "schema_validation_proof_format": "PLAN_AND_MACHINE_CONTRACT",
+        "draft_effect": "DRAFT_ONLY_NO_IMPLEMENTATION_OR_ACTIVE_TRANSITION"
+      }
     }
   },
   "relations": {
