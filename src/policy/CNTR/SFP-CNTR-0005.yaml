@@ -418,6 +418,97 @@
           "result_provenance": "CURRENT_EVENT_AND_OBSERVATION_EVIDENCE_MUST_BE_LINKED",
           "authority": "EXISTING_CTRL_REAL_OPS_ASSURE_AND_PUBLIC_CONTRACT_AUTHORITIES_UNCHANGED",
           "detailed_schema": "UNRESOLVED_CONTRACT_DESIGN"
+        },
+        "storage_provider_operation_contract_mediation_direction": {
+          "decision": "B_EXPLICIT_STORAGE_ENGINE_MEDIATION_FOR_REGISTERED_STORAGE_CAPABILITY_OPERATIONS",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "scope": "DECLARED_OFFICIAL_STORAGE_ENGINE_CAPABILITY_OPERATIONS_ONLY",
+          "normative_storage_contract": "STORAGE_ENGINE_OWNS_CONTRACT_MEDIATION_AND_CAPABILITY_OPERATION_BINDING",
+          "provider_implementation_and_data_owner": "INDEPENDENT_EXPLICIT_PROVIDER_OWNER",
+          "mediation_rule": "REGISTERED_STORAGE_CAPABILITY_OPERATION_TO_EXPLICIT_PROVIDER_OPERATION_CONTRACT",
+          "provider_selection": "ONLY_BY_DECLARED_COMPATIBILITY_PERMISSIONS_AND_VERSIONED_BINDING",
+          "direct_provider_operations_outside_mediated_capabilities": "UNCHANGED_NOT_FORCED_THROUGH_STORAGE_ENGINE",
+          "global_file_io_interception": "NOT_REQUIRED_OR_AUTHORIZED",
+          "storage_provider_move_copy_or_takeover": "NOT_AUTHORIZED",
+          "read_write_permission": "EXISTING_GOV_CTRL_REAL_GATES_UNCHANGED",
+          "ambiguous_missing_or_incompatible_binding": "FAIL_CLOSED_AFFECTED_OPERATION",
+          "machine_mapping_schema_and_provider_operation_evidence": "UNRESOLVED_CONTRACT_DESIGN",
+          "legacy_python_reuse_for_official_rust": "FORBIDDEN",
+          "runtime_activation": "NOT_AUTHORIZED"
+        },
+        "context_projection_consumer_scoped_handoff_direction": {
+          "decision": "C_CONSUMER_SCOPED_VERSIONED_CONTEXT_TO_PROJECTION_PUBLIC_CONTRACT_TRANSITION",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "canonical_future_source_semantics_owner": "CONTEXT",
+          "canonical_future_output_format_and_transform_owner": "PROJECTION",
+          "previous_active_public_contract": "SFP-CNTR-0001#CONTEXT_PLANE_MIGRATION_REPAIR_PRESERVED",
+          "consumer_selection": "EXPLICIT_CONSUMER_AND_VERSION_BOUND_CONTRACT_TRANSITION",
+          "handoff": "ONLY_FOR_MACHINE_VERIFIED_COMPATIBLE_CONSUMER_SCOPE_AND_APPLICABLE_CONTRACT_VERSION",
+          "pre_cutover": "CURRENT_ACTIVE_CONTEXT_PUBLIC_API_UNCHANGED",
+          "versioned_cutover": "SEPARATE_EXPLICIT_AUTHORIZED_TRANSITION_AFTER_COMPATIBILITY_AND_BEHAVIOR_VERIFICATION",
+          "legacy_output_format_parity_after_cutover": "NOT_AUTOMATICALLY_REQUIRED",
+          "old_contract_retirement": "NOT_IMPLICITLY_AUTHORIZED",
+          "source_content_or_constraint_redefinition": "FORBIDDEN",
+          "inferred_consumer_binding": "FORBIDDEN",
+          "unknown_stale_missing_or_conflicting_handoff_evidence": "FAIL_CLOSED_NO_CONSUMER_CUTOVER",
+          "detailed_output_schema_version_mapping_handoff_evidence": "UNRESOLVED_CONTRACT_DESIGN",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        "validation_vpms_versioned_relation_graph_direction": {
+          "decision": "C_VERSIONED_MACHINE_VERIFIABLE_VPMS_TO_RUST_VALIDATION_CAPABILITY_RELATION_GRAPH",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "scope": "NORMATIVE_CONTRACT_RELATION_GRAPH_NOT_LEGACY_RUNTIME_CODE_BRIDGE",
+          "existing_active_vpms_contract_ids": {
+            "VPMS_PRODUCT_PROTOCOL": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "VPMS_CASE_SELECTION": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "VPMS_EXECUTION_COMPOSITION": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          },
+          "new_capability_owner": "SINGLE_OFFICIAL_RUST_VALIDATION_ENGINE",
+          "new_capability_model": "INDEPENDENT_VERSIONED_CAPABILITY_CONTRACTS",
+          "allowed_mapping_cardinalities": [
+            "ONE_TO_ONE",
+            "ONE_TO_MANY",
+            "MANY_TO_ONE"
+          ],
+          "graph_nodes": "VERSIONED_VPMS_CONTRACT_IDENTITIES_AND_NEW_VALIDATION_CAPABILITY_IDENTITIES",
+          "graph_edges": "EXPLICIT_TYPED_SEMANTIC_AND_COMPATIBILITY_RELATIONS_WITH_EVIDENCE_REFERENCES",
+          "implicit_equivalence_or_mapping_by_module_path": "FORBIDDEN",
+          "source_contracts_before_cutover": "ACTIVE_OLD_VPMS_PUBLIC_API_PRESERVED",
+          "compatibility_transition": "NEW_API_CONFORMANCE_AND_BEHAVIOR_VERIFIED_THEN_COMPATIBILITY_HANDOFF",
+          "separate_owner_retirement_approval": "REQUIRED_NOT_GRANTED_NOW",
+          "ptsip_conformance_verdict_owner": "SFP-ASSURE-0001_UNCHANGED_VPMS_PASS_NOT_PTSIP_CONFORMANCE",
+          "legacy_python_implementation_runtime_reuse": "FORBIDDEN_MOVE_COPY_PORT_WRAP_LINK_BRIDGE_SHARE_OR_DELEGATE",
+          "unclear_invalid_unverifiable_compatibility_relation": "FAIL_CLOSED_NO_OWNER_OR_API_HANDOFF",
+          "detailed_graph_schema_operation_identity_migration_contract": "UNRESOLVED_CONTRACT_DESIGN",
+          "runtime_activation": "NOT_AUTHORIZED"
+        },
+        "generic_validation_independent_composition_direction": {
+          "decision": "C_INDEPENDENT_GENERIC_VALIDATION_CAPABILITIES_WITH_EXPLICIT_OPTIONAL_COMPOSITION",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "owner": "SINGLE_OFFICIAL_RUST_VALIDATION_ENGINE",
+          "capability_granularity": "INDEPENDENT_VERSIONED_COMPLETE_CAPABILITY_CONTRACT",
+          "generic_responsibility_set": [
+            "CONTRACT_VALIDATION",
+            "SCHEMA_VALIDATION",
+            "TYPED_IO_VALIDATION",
+            "PRECONDITION_VALIDATION",
+            "VERIFICATION_CASE_VALIDATION"
+          ],
+          "capability_composition": "EXPLICIT_TYPED_CONTRACT_RELATIONS_FOR_REQUESTED_COMBINATIONS",
+          "composition_is_global_mandatory_pipeline": false,
+          "composition_has_implicit_runtime_or_permission_authority": false,
+          "capability_contract_required_dimensions": "SFP-CNTR-0005#ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES_POLICY_DIRECTION",
+          "legacy_vpms_protocol_execution_automatically_equivalent": false,
+          "ptsip_conformance_verdict": "SFP-ASSURE-0001_UNCHANGED",
+          "unknown_incompatible_missing_composition_dependency": "FAIL_CLOSED_AFFECTED_COMPOSITION",
+          "individual_supported_capability": "MAY_REMAIN_USABLE_ONLY_WHEN_CURRENT_INDEPENDENCE_AND_ELIGIBILITY_MACHINE_VERIFIED",
+          "exact_capability_operation_ids_io_schemas_composition_graph": "UNRESOLVED_CONTRACT_DESIGN",
+          "cross_official_rust_engine_code_sharing": "FORBIDDEN",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -621,7 +712,18 @@
         "attempt_and_work_effect_records_require_machine_verified_identity_and_evidence_linkage": true,
         "accepted_stop_request_does_not_prove_stop_completion": true,
         "confirmed_stop_does_not_prove_original_attempt_success_or_reversal_of_effects": true,
-        "revocation_request_stop_result_and_effect_evidence_have_distinct_contract_records": true
+        "revocation_request_stop_result_and_effect_evidence_have_distinct_contract_records": true,
+        "storage_contract_mediation_cannot_transfer_independent_provider_data_or_runtime_ownership": true,
+        "declared_storage_capability_mediation_is_not_mandatory_interception_of_all_file_io": true,
+        "storage_provider_operation_binding_requires_explicit_versioned_contract_and_existing_permissions": true,
+        "context_consumer_scoped_projection_cutover_requires_explicit_version_binding_and_separate_approved_verified_transition": true,
+        "context_source_semantics_and_existing_active_public_api_preserved_before_cutover": true,
+        "vpms_relation_graph_cannot_import_or_delegate_legacy_python_runtime_implementation": true,
+        "vpms_mapping_graph_edges_require_explicit_versioned_semantics_and_machine_evidence": true,
+        "old_vpms_public_api_retirement_still_requires_separate_owner_approval": true,
+        "generic_validation_capability_contracts_must_remain_independent_and_complete": true,
+        "generic_validation_composition_requires_explicit_relationship_and_no_implicit_execution_permission": true,
+        "generic_validation_vpms_case_result_cannot_impersonate_ptsip_assure_conformance": true
       },
       "unresolved_decisions": [
         {
@@ -684,23 +786,31 @@
         {
           "id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "B_EXPLICIT_STORAGE_ENGINE_MEDIATION_FOR_REGISTERED_STORAGE_CAPABILITY_OPERATIONS",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_BINDING_COMPATIBILITY_EVIDENCE_AND_VALIDATION"
         },
         {
           "id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED",
-          "reason": "CONTEXT_SOURCE_SEMANTICS_PRESERVED_ACTIVE_PUBLIC_CONTEXT_CONTRACT_UNCHANGED_UNTIL_SEPARATELY_AUTHORIZED_VERSIONED_CUTOVER; NEW_PROJECTION_OUTPUT_NORMATIVE_PRIORITY_APPROVED"
+          "reason": "CONTEXT_SOURCE_SEMANTICS_PRESERVED_ACTIVE_PUBLIC_CONTEXT_CONTRACT_UNCHANGED_UNTIL_SEPARATELY_AUTHORIZED_VERSIONED_CUTOVER; NEW_PROJECTION_OUTPUT_NORMATIVE_PRIORITY_APPROVED",
+          "approved_policy_direction": "C_CONSUMER_SCOPED_VERSIONED_CONTEXT_TO_PROJECTION_PUBLIC_CONTRACT_TRANSITION",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_BINDING_COMPATIBILITY_EVIDENCE_AND_VALIDATION"
         },
         {
           "id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_VERSIONED_MACHINE_VERIFIABLE_VPMS_TO_RUST_VALIDATION_CAPABILITY_RELATION_GRAPH",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_BINDING_COMPATIBILITY_EVIDENCE_AND_VALIDATION"
         },
         {
           "id": "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_INDEPENDENT_GENERIC_VALIDATION_CAPABILITIES_WITH_EXPLICIT_OPTIONAL_COMPOSITION",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_BINDING_COMPATIBILITY_EVIDENCE_AND_VALIDATION"
         },
         {
           "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
@@ -1151,6 +1261,78 @@
           "proof_or_exact_schema": "PENDING",
           "active_public_authority": "UNCHANGED",
           "separate_implementation_or_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP_POLICY_DIRECTION",
+          "source_unresolved_id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
+          "selected_option": "B",
+          "selected_rule": "B_EXPLICIT_STORAGE_ENGINE_MEDIATION_FOR_REGISTERED_STORAGE_CAPABILITY_OPERATIONS",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "preserved_active_policies": [
+            "SFP-ARCH-0001",
+            "SFP-CNTR-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "exact_contract_and_machine_evidence": "PENDING",
+          "full_contract_design_complete": false,
+          "existing_public_api_and_owner_authorities": "UNCHANGED",
+          "engine_runtime_implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF_POLICY_DIRECTION",
+          "source_unresolved_id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
+          "selected_option": "C",
+          "selected_rule": "C_CONSUMER_SCOPED_VERSIONED_CONTEXT_TO_PROJECTION_PUBLIC_CONTRACT_TRANSITION",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "preserved_active_policies": [
+            "SFP-ARCH-0001",
+            "SFP-CNTR-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "exact_contract_and_machine_evidence": "PENDING",
+          "full_contract_design_complete": false,
+          "existing_public_api_and_owner_authorities": "UNCHANGED",
+          "engine_runtime_implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE_POLICY_DIRECTION",
+          "source_unresolved_id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
+          "selected_option": "C",
+          "selected_rule": "C_VERSIONED_MACHINE_VERIFIABLE_VPMS_TO_RUST_VALIDATION_CAPABILITY_RELATION_GRAPH",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "preserved_active_policies": [
+            "SFP-ARCH-0001",
+            "SFP-CNTR-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "exact_contract_and_machine_evidence": "PENDING",
+          "full_contract_design_complete": false,
+          "existing_public_api_and_owner_authorities": "UNCHANGED",
+          "engine_runtime_implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT_POLICY_DIRECTION",
+          "source_unresolved_id": "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
+          "selected_option": "C",
+          "selected_rule": "C_INDEPENDENT_GENERIC_VALIDATION_CAPABILITIES_WITH_EXPLICIT_OPTIONAL_COMPOSITION",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "preserved_active_policies": [
+            "SFP-ARCH-0001",
+            "SFP-CNTR-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "exact_contract_and_machine_evidence": "PENDING",
+          "full_contract_design_complete": false,
+          "existing_public_api_and_owner_authorities": "UNCHANGED",
+          "engine_runtime_implementation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
