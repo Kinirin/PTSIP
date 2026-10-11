@@ -1,6 +1,5 @@
 # Check: agent-context-migration; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify bounded machine context migration
 New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null

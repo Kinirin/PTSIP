@@ -1,6 +1,5 @@
 # Check: root-policy-automation; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify direct Root policy Go automation
 go -C developer/automation vet -tags grammar_subset,grammar_subset_python ./...

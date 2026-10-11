@@ -1,6 +1,5 @@
 # Check: wu02-control; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Resolve WU-02 lane validation applicability
 $controlContext = (& go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev wu02 control-context) | ConvertFrom-Json

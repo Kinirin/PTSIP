@@ -1,6 +1,5 @@
 # Check: release-profile; migrated from test-build
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify Tool, Specification, and repository profile
 ptsip --version

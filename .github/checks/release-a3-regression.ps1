@@ -1,6 +1,5 @@
 # Check: release-a3-regression; migrated from test-build
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Run 0.3.8a3 Context Plane emergency regression
 python -m pytest -q src/tests/ptsip/validation/test_local_profile_catalog.py

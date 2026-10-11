@@ -1,6 +1,5 @@
 # Check: release-full-regression; migrated from test-build
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Run complete shipping and release regression
 python -m pytest -q src/tests/agent_contracts

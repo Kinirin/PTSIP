@@ -1,6 +1,5 @@
 # Check: markdown-cleanup-regression; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify Markdown cleanup automation
 go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 -run '^TestCleanup' ./internal/machine

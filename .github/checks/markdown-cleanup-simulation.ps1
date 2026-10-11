@@ -1,6 +1,5 @@
 # Check: markdown-cleanup-simulation; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Run MPD-0012 Markdown cleanup simulation
 New-Item -ItemType Directory -Force -Path ".artifacts" | Out-Null

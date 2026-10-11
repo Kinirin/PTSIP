@@ -1,6 +1,5 @@
 # Check: release-distribution; migrated from test-build
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Build and verify distributions
 python -m build

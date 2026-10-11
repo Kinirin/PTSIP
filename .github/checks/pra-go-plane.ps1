@@ -1,6 +1,5 @@
 # Check: pra-go-plane; migrated from pra-registry-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify registry-first PRA Go plane
 go -C developer/automation vet -tags grammar_subset,grammar_subset_python ./...

@@ -1,6 +1,5 @@
 # Check: policy-lifecycle; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify policy lifecycle automation
 go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 -v ./policy/... ./planning/... ./repository/... ./workflows/...

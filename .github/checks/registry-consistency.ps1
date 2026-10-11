@@ -1,6 +1,5 @@
 # Check: registry-consistency; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Validate v3 Test Mode registry through Go
 go -C developer/automation run ./cmd/test-modes

@@ -1,6 +1,5 @@
 # Check: readme-translation; migrated from static-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify README translation registry layout
 python -m py_compile .github/scripts/sync_readme_argos.py

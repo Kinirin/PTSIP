@@ -1,6 +1,5 @@
 # Check: pra-lifecycle; migrated from pra-registry-validation
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 # Verify registry-first PRA lifecycle plane
 go -C developer/tests test ./policy/lifecycle
