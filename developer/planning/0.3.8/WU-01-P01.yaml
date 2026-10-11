@@ -1,0 +1,187 @@
+{
+  "schema_version": "ptsip-plan-extension/v1",
+  "schema_ref": "developer/planning/schemas/plan-extension.schema.json",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "plan_version": "0.3.8",
+  "extension": {
+    "id": "WU-01-P01",
+    "parent": "WU-01",
+    "title": "0.3.8 release Context Evidence candidate policy revision revalidation",
+    "classification": "DEVELOPMENT",
+    "lifecycle": {
+      "status": "DRAFT"
+    }
+  },
+  "approval": {
+    "status": "PENDING"
+  },
+  "implementation_authorization": {
+    "status": "NOT_AUTHORIZED"
+  },
+  "depends_on": [
+    "WU-01"
+  ],
+  "identity_and_registration": {
+    "formal_plan_identity": "NOT_ALLOCATED",
+    "exact_plan_path": "developer/planning/0.3.8/WU-01-P01.yaml",
+    "parent_ref": "developer/planning/0.3.8/index.yaml",
+    "parent_extension_registration": "UNREGISTERED_DRAFT_WAIT_FOR_RELEASE_WU_01",
+    "entrypoint_or_policy_plan_binding_mutation": "NOT_AUTHORIZED_BY_DRAFT_PLAN"
+  },
+  "objective": {
+    "source_review_branch": "dev/0.3.8",
+    "policy_review_head": "e2368498d5d543e26c53216ee7d4248619746e43",
+    "scope": "EXACT_SOURCE_REVALIDATION_FOR_EXISTING_P0_P1_CONTEXT_EVIDENCE_READ_ONLY_CANDIDATE",
+    "candidate_ref": "src/agent_contracts/contracts/context-evidence-identity.json",
+    "candidate_owner": "SFP-INFO-0007",
+    "parent_completed_approved_plan": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
+    "scope_expansion": "FORBIDDEN",
+    "new_policy_semantics": "NONE",
+    "runtime_activation": "FORBIDDEN",
+    "release_control_plane_ref": "developer/planning/0.3.8/index.yaml",
+    "release_work_unit": "WU-01",
+    "release_parent_work_unit_state_at_review": "NOT_CREATED",
+    "historical_candidate_approval_plan_ref": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
+    "historical_candidate_plan_ref_role": "PREVIOUS_PRERELEASE_APPROVED_P0_P1_CANDIDATE_PROVENANCE_ONLY_NOT_RELEASE_PLAN_AUTHORITY"
+  },
+  "comparison": {
+    "policy_count": 6,
+    "direct_policy_binding_count": 41,
+    "direct_binding_value_drift": 0,
+    "source_revision_role": "PRE_COMMIT_REVIEWED_HEAD_SNAPSHOT",
+    "canonical_fingerprint_method": "SHA256_GO_CANONICAL_JSON_YAML_PARSED_POLICY",
+    "baseline_fingerprint_recomputed_and_matched": true,
+    "policies": [
+      {
+        "id": "SFP-INFO-0007",
+        "path": "src/policy/INFO/SFP-INFO-0007.yaml",
+        "status": "UNCHANGED",
+        "prior_source_blob": "d9a2501f5f396bd2548bfd01970e6929de14c83c",
+        "current_source_blob": "4cc11e5bf200f66d0d3eaf45b9c3e9b0fcb30966",
+        "prior_canonical_sha256": "60696d57332ff0463fa4cc7d347223c1b0eab7ce308ced688ed36cf50fea418c",
+        "current_canonical_sha256": "32eceebcb47a6dd0eba9fc24d9eceab30973e15e6e70940b1e6580ae0884fe3a",
+        "change_class": "EMPTY_SOURCE_SCOPE_REMOVAL",
+        "p0_p1_impact": "NO_BINDING_VALUE_CHANGE"
+      },
+      {
+        "id": "SFP-CNTR-0006",
+        "path": "src/policy/CNTR/SFP-CNTR-0006.yaml",
+        "status": "UNCHANGED",
+        "prior_source_blob": "c41bad97f4c2b6da57d8aa801bb5b715436c8555",
+        "current_source_blob": "e6dd6a8fd0dc2d2986f7aed7859b7b8c8569e04a",
+        "prior_canonical_sha256": "92051dc0ea2a01ce9c48e30c1eb765859c16d21ca72bc2fcc117a339b312154b",
+        "current_canonical_sha256": "ed4876d964c7d2ccb93795c61482c4df6fcc7cf3ffece2bcf6cb51e04c429696",
+        "change_class": "EMPTY_SOURCE_SCOPE_REMOVAL",
+        "p0_p1_impact": "NO_P0_P1_CONTRACT_SEMANTIC_DELTA"
+      },
+      {
+        "id": "SFP-ASSURE-0005",
+        "path": "src/policy/ASSURE/SFP-ASSURE-0005.yaml",
+        "status": "UNCHANGED",
+        "prior_source_blob": "13f02153a7e7b84d822823c34067d0dbdb849417",
+        "current_source_blob": "e76199dd7e0774fb26c82a2a9668638dc15f7247",
+        "prior_canonical_sha256": "8b1d6f3bb605f5a6bb3acbaafa722f352c0da89ef2b86405120f661450848ac4",
+        "current_canonical_sha256": "99365b6af214ba76f9582a58be163ba6ae5557b10e18c66c8842e81527496565",
+        "change_class": "EMPTY_SOURCE_SCOPE_REMOVAL",
+        "p0_p1_impact": "NO_P0_P1_CONTRACT_SEMANTIC_DELTA"
+      },
+      {
+        "id": "SFP-RECORD-0001",
+        "path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+        "status": "UNCHANGED",
+        "prior_source_blob": "1cbf48518f0163e36ffbc1cb46a4d5e0891e318e",
+        "current_source_blob": "a385dc5d56f3b92c7245df4bc0140f31388378aa",
+        "prior_canonical_sha256": "6c2a53e3a4003478edb9f9c6fcc820b7ad3882a05c2f7569a4449bdda520a539",
+        "current_canonical_sha256": "3254e2bb8b82a8ed2f1f60d613c98da220fd0b21918577a4ad8a0928a8da0164",
+        "change_class": "LEGACY_SOURCE_SCOPE_REMOVAL_AND_VALUE_PRESERVING_SEMANTIC_KEY_MIGRATION",
+        "p0_p1_impact": "RECORD_PROVENANCE_SOURCE_BOUNDARY_UNCHANGED"
+      },
+      {
+        "id": "SFP-INFO-0005",
+        "path": "src/policy/INFO/SFP-INFO-0005.yaml",
+        "status": "UNCHANGED",
+        "prior_source_blob": "11231c7dff9de2511c2458837c48123bb4d88bdd",
+        "current_source_blob": "dc92f5be868e22991de37495f6808556d1b08d5b",
+        "prior_canonical_sha256": "e62f0ccd17ff06689c01aa1c18623473d5a9038c80bcbb072d2facf2beebfb4f",
+        "current_canonical_sha256": "c29f51b49c66cd3a92c4dc9155c2fa453a69d9077f4b6edcc2b47778e851f762",
+        "change_class": "REUSABLE_LONG_TERM_RETENTION_TYPE_DELEGATION_POLICY_ADDED",
+        "p0_p1_impact": "OUTSIDE_P0_P1_IDENTITY_CANDIDATE_EXECUTION_AND_RETENTION_WRITE_SCOPE"
+      },
+      {
+        "id": "SFP-RECORD-0004",
+        "path": "src/policy/RECORD/SFP-RECORD-0004.yaml",
+        "status": "UNCHANGED",
+        "prior_source_blob": "2bcd261ba4f69d0aed83c84e905aecf945e97cb8",
+        "current_source_blob": "e6acd513b579e714730bf9df5f900214e12afdf2",
+        "prior_canonical_sha256": "d672505814193a29765b0bc3b21492fee66747fc197cb1d55b8689daf7a0900d",
+        "current_canonical_sha256": "7e652d601494f56cee9b475bafbe3237454da05636d4e6e7c9144028d4eacb9d",
+        "change_class": "PER_TYPE_REUSABLE_RETENTION_AND_WORKING_RECORD_PROOF_DIRECTION_ADDED",
+        "p0_p1_impact": "OUTSIDE_P0_P1_IDENTITY_CANDIDATE_RETENTION_OR_CLEANUP_AUTHORITY"
+      }
+    ]
+  },
+  "resolution": {
+    "action": "REVALIDATION_ALREADY_APPLIED_ONLY_WITHIN_EXISTING_P0_P1_CANDIDATE_SCOPE",
+    "candidate_inventory_source_revision": "SET_TO_REVIEWED_POLICY_HEAD",
+    "preserve_41_bindings": true,
+    "preserve_candidate_operations_schemas_and_vectors": true,
+    "retain_freshness_and_fail_closed_verification": true,
+    "activate_runtime": false,
+    "change_plan_authority": false,
+    "record_changing_policy_semantics": "OUT_OF_SCOPE_P0_P1_WITH_NO_REUSE_RETENTION_OR_CLEANUP_PERMISSION",
+    "future_p2_p5_handoff": "EXISTING_APPROVED_PLAN_SCOPE_REQUIRES_OWN_POLICY_IMPACT_CHECK",
+    "applied_candidate_revision_commit": "554c1e87a0751dd287ec35ed363a74bfad803eba"
+  },
+  "obligations": [
+    "VERIFY_CURRENT_HEAD_AND_EXACT_REGISTERED_POLICY_PATH_STATUS",
+    "RECOMPUTE_EACH_POLICY_CANONICAL_JSON_SHA256_FROM_REGISTERED_SOURCE",
+    "ASSERT_ALL_41_JSON_POINTER_EXPECTATIONS_STILL_EQUAL_CURRENT_POLICY",
+    "DISTINGUISH_STRUCTURE_ONLY_DELTAS_FROM_TYPE_RETENTION_POLICY_DELTAS",
+    "ASSERT_REUSABLE_TYPE_DELEGATION_OR_WORKING_RELEASE_NEVER_GRANTS_CONTEXT_EVIDENCE_ID_REUSE_CLEANUP_OR_WRITE_AUTHORITY",
+    "UPDATE_ONLY_INVENTORY_SOURCE_REVISION_AND_SIX_POLICY_REVISION_MAP_ENTRIES",
+    "PRESERVE_STATUS_CANDIDATE_AND_RUNTIME_ACTIVATION_FORBIDDEN",
+    "PRESERVE_NO_IDENTITY_ASSIGNMENT_AND_NO_MUTATION_FROM_CANDIDATE_VERIFICATION",
+    "KEEP_NEW_POLICY_DELTA_OUTSIDE_P0_P1_AS_RECORDED_IMPACT_NOT_SILENTLY_INHERITED",
+    "VERIFY_GO_READ_ONLY_CANDIDATE_AND_EXISTING_FAIL_CLOSED_NEGATIVE_VECTORS",
+    "RUN_EXISTING_REQUIRED_AUTOMATED_TESTS_WITHOUT_WAIVERS"
+  ],
+  "block_conditions": [
+    "ANY_POLICY_ID_PATH_STATUS_OR_SOURCE_REVISION_CHANGED",
+    "ANY_OF_41_BINDING_VALUES_CHANGED",
+    "P0_P1_OPERATION_CLASS_OR_READ_ONLY_EFFECT_CHANGED",
+    "UNKNOWN_OR_AMBIGUOUS_RETENTION_OR_RECORD_PROVENANCE_IMPACT",
+    "NEW_NORMATIVE_DECISION_REQUIRED",
+    "ANY_RUNTIME_OR_IMPLEMENTATION_PERMISSION_EXPANSION"
+  ],
+  "policy_and_execution_boundaries": {
+    "policy_mutation": "FORBIDDEN",
+    "original_record_registry_or_evidence_write": "FORBIDDEN",
+    "retention_delegation_implicitly_granted": false,
+    "draft_policy_promotion": "FORBIDDEN",
+    "branch_creation": "FORBIDDEN",
+    "workflow_mutation": "FORBIDDEN",
+    "new_implementation_permission_from_this_draft_plan": false,
+    "existing_p0_p1_candidate_runtime_state": "CANDIDATE_ONLY_NO_MUTATION",
+    "last_result": "REVALIDATION_PLAN_ONLY_NOT_RUNTIME_AUTHORITY",
+    "plan_index_mutation": "NOT_AUTHORIZED_BY_THIS_DRAFT",
+    "plan_schema_mutation": "NOT_REQUIRED",
+    "prerelease_plan_mutation": "FORBIDDEN_EXCEPT_REMOVAL_OF_THIS_MISPLACED_DRAFT"
+  },
+  "routing": {
+    "branch": "dev/0.3.8",
+    "release_plan_root": "developer/planning/0.3.8",
+    "release_entrypoint": "developer/planning/0.3.8/index.yaml",
+    "entrypoint_status_at_review": "DRAFT",
+    "parent_release_work_unit": "WU-01",
+    "parent_release_work_unit_status_at_review": "NOT_CREATED",
+    "plan_admission": "PENDING_EXPLICIT_CURRENT_RELEASE_PLAN_REGISTRATION",
+    "historical_prerelease_plan_refs": [
+      "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
+      "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P02.yaml"
+    ],
+    "historical_prerelease_refs_are_current_release_authority": false,
+    "prerelease_plan_registry_schema_or_index_mutation": "FORBIDDEN",
+    "release_plan_schema_mutation": "NOT_REQUIRED",
+    "candidate_historical_plan_ref": "PRESERVE_ORIGINAL_APPROVED_P0_P1_PROVENANCE"
+  }
+}
