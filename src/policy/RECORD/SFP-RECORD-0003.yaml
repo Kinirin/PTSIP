@@ -77,7 +77,15 @@
         "startup_incomplete_diagnostic_disposition": "REPORT_ONLY_VERIFIED_FACTS_AND_EXPLICITLY_MARK_REFERENCE_UNVERIFIED",
         "startup_complete_failure_report_requires_validated_condition_reference": true,
         "startup_incomplete_diagnostic_status_authority": "RECORD_REPORT_COMPLETENESS_ONLY_NOT_ASSURE_CONFORMANCE",
-        "startup_diagnostic_report_payload_shape": "PLAN_AND_MACHINE_CONTRACT"
+        "startup_diagnostic_report_payload_shape": "PLAN_AND_MACHINE_CONTRACT",
+        "startup_failure_diagnostic_history_retention": "EXISTING_MANDATORY_RECORD_ONLY_NO_ADDITIONAL_STARTUP_DIAGNOSTIC_HISTORY",
+        "startup_failure_diagnostic_history_retention_choice": "A_USER_EXPLICIT",
+        "startup_failure_diagnostic_history_retention_decided_at": "2026-10-11",
+        "startup_failure_diagnostic_separate_history_required_for_current_release": false,
+        "startup_incomplete_diagnostic_separate_history_required_for_current_release": false,
+        "existing_mandatory_record_retention_policy_ref": "SFP-RECORD-0001",
+        "current_release_diagnostic_reporting_not_conditional_on_separate_history_persistence": true,
+        "separate_diagnostic_history_future_requirement": "NOT_APPROVED_REQUIRES_SEPARATE_POLICY_DECISION"
       },
       "invariants": {
         "every_record_keeps_origin_and_observation_context": true,
@@ -114,7 +122,17 @@
         "failed_or_ineligible_engine_remains_inactive_unless_fresh_eligibility_passes": true,
         "independent_eligible_engines_can_remain_active": true,
         "existing_mandatory_record_provenance_preserved": true,
-        "incomplete_diagnostic_policy_does_not_activate_engine_runtime": true
+        "incomplete_diagnostic_policy_does_not_activate_engine_runtime": true,
+        "no_extra_startup_diagnostic_history_retention_obligation_current_release": true,
+        "failure_or_incomplete_diagnostic_report_does_not_imply_separate_history_persistence": true,
+        "preexisting_mandatory_receipts_and_provenance_requirements_remain_binding": true,
+        "diagnostic_reporting_scope_and_required_failure_information_unchanged": true,
+        "incompleteness_diagnostic_resolution_unchanged": true,
+        "absence_of_separate_diagnostic_history_must_not_erase_mandatory_record": true,
+        "retention_scope_choice_does_not_authorize_record_deletion": true,
+        "retention_scope_choice_does_not_authorize_new_writes": true,
+        "future_separate_history_requirement_needs_separate_user_policy_authorization": true,
+        "retention_scope_decision_does_not_activate_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -188,6 +206,23 @@
         "failure_report_reference_restoration_and_resolution": "PLAN_OR_SEPARATE_POLICY",
         "concrete_schema": "PLAN_AND_MACHINE_CONTRACT",
         "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
+      },
+      "startup_failure_diagnostic_retention_boundary": {
+        "policy_subject": "ENGINE_STARTUP_FAILURE_DIAGNOSTIC_SEPARATE_HISTORY_RETENTION",
+        "current_release": "NO_EXTRA_DIAGNOSTIC_HISTORY_RETENTION_OBLIGATION",
+        "existing_authority": "SFP-RECORD-0001",
+        "mandatory_record_and_source_provenance": "PRESERVED",
+        "covers_diagnostic_completeness": [
+          "COMPLETE_FAILURE_REPORT",
+          "INCOMPLETE_DIAGNOSTIC"
+        ],
+        "report_emission_obligation": "UNCHANGED",
+        "report_completeness_semantics": "UNCHANGED",
+        "separate_diagnostic_persistence_required": false,
+        "absence_of_extra_history_not_sufficient_to_discard_existing_mandatory_receipt": true,
+        "optional_future_history_policy": "SEPARATE_USER_APPROVAL_REQUIRED",
+        "retention_execution_and_serialization": "PLAN_SUBJECT_TO_ACTIVE_RECORD_AND_REAL_AUTHORITY",
+        "implementation_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
       }
     }
   },
