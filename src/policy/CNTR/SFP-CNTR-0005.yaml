@@ -131,7 +131,22 @@
         "restoration_scope": "ONLY_MACHINE_VERIFIED_RECOVERED_CAPABILITY_AND_REVERIFIED_AFFECTED_DEPENDENCIES",
         "restoration_candidate_observation_trigger": "VERIFIED_CURRENT_REGISTRATION_ELIGIBILITY_PROOF_AVAILABLE",
         "restoration_write_or_persistence_authority": "EXISTING_SEPARATE_CTRL_REAL_GATES_NO_IMPLICIT_WRITE",
-        "restoration_proof_state_schema_and_delivery": "PLAN_AND_MACHINE_CONTRACT"
+        "restoration_proof_state_schema_and_delivery": "PLAN_AND_MACHINE_CONTRACT",
+        "context_projection_public_contract_transition_priority": {
+          "decision": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source_policy": "SFP-ARCH-0004#CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION",
+          "normative_source_meaning_owner": "CONTEXT",
+          "normative_output_schema_format_transformation_owner": "PROJECTION",
+          "priority": "NEW_RUST_PROJECTION_OUTPUT_CONTRACT_IS_TARGET_NORMATIVE_AUTHORITY",
+          "legacy_public_contract": "ACTIVE_UNTIL_SEPARATELY_APPROVED_VERSIONED_VERIFIED_CUTOVER",
+          "after_cutover_legacy_format_parity": "NOT_AUTOMATICALLY_REQUIRED",
+          "exact_output_contract_and_handoff": "UNRESOLVED_CONTRACT_DESIGN",
+          "existing_assure_and_runtime_authority": "UNCHANGED",
+          "concrete_public_api_change": "NOT_AUTHORIZED_BY_THIS_DIRECTION_ALONE",
+          "implementation": "NOT_AUTHORIZED"
+        }
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -288,7 +303,10 @@
         "restoration_must_not_infer_engine_binding_from_directory_names": true,
         "restoration_does_not_transfer_active_arch_cntr_ctrl_assure_or_vpms_authority": true,
         "restoration_proof_schema_and_detection_mechanics_belong_to_plan": true,
-        "restoration_policy_is_draft_only_not_active_runtime_behavior": true
+        "restoration_policy_is_draft_only_not_active_runtime_behavior": true,
+        "context_source_semantics_preserved_under_new_projection_priority": true,
+        "new_projection_output_format_not_bound_to_legacy_parity_after_separately_authorized_cutover": true,
+        "context_public_api_change_requires_versioned_verified_separately_authorized_transition": true
       },
       "unresolved_decisions": [
         {
@@ -340,7 +358,7 @@
           "id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED",
-          "reason": "PRESERVE_EXISTING_CONTEXT_FORMAT_COMPATIBILITY_AND_SOURCE_SEMANTICS"
+          "reason": "CONTEXT_SOURCE_SEMANTICS_PRESERVED_ACTIVE_PUBLIC_CONTEXT_CONTRACT_UNCHANGED_UNTIL_SEPARATELY_AUTHORIZED_VERSIONED_CUTOVER; NEW_PROJECTION_OUTPUT_NORMATIVE_PRIORITY_APPROVED"
         },
         {
           "id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
@@ -585,6 +603,19 @@
           "mutation_if_required": "SEPARATELY_AUTHORIZED_CTRL_REAL_OPS_GATES",
           "exact_proof_interface_and_implementation": "PLAN",
           "current_effect": "DRAFT_ONLY"
+        },
+        {
+          "id": "CONTEXT_PROJECTION_NEW_OUTPUT_NORMATIVE_AUTHORITY_PRIORITY",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source": "SFP-ARCH-0004#CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION",
+          "prior_active_policy": "SFP-CNTR-0001",
+          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "active_contract_status": "UNCHANGED",
+          "exact_contract_handoff": "UNRESOLVED",
+          "draft_only": true,
+          "implementation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
