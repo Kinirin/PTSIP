@@ -446,9 +446,10 @@ dependencies = [
 
 [[package]]
 name = "ptsip-engine-storage"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "jsonschema",
+ "serde",
  "serde_json",
  "sha2",
 ]

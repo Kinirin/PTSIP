@@ -1,6 +1,6 @@
 {
-  "contract_id": "urn:uuid:c7b8ab34-585d-44f9-882e-c9516f179200",
-  "version": "2.0.0",
+  "contract_id": "urn:uuid:0a525fa7-7ce8-443c-b7d8-7885fadaf8e2",
+  "version": "3.0.0",
   "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
   "semantic_owner": "EXECUTION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -203,7 +203,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.0.0",
+        "contract_version": "3.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -349,11 +349,257 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.0.0",
+        "contract_version": "3.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "ACK_NOT_STOP_CONFIRMATION_AND_STOP_NOT_ORIGINAL_SUCCESS_OR_EFFECT_REVERSAL",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "execution.invoke",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "registry_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "invocation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "authority_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "profile_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "actor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "attempt_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "budget_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60000
+          }
+        },
+        "required": [
+          "root",
+          "registry_ref",
+          "invocation_id",
+          "authority_ref",
+          "profile_ref",
+          "actor_id",
+          "attempt_id",
+          "budget_ms"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "attempt_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "invocation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "invoked": {
+            "type": "boolean"
+          },
+          "attempt_status": {
+            "enum": [
+              "SUCCEEDED",
+              "FAILED"
+            ]
+          },
+          "cause": {
+            "enum": [
+              "COMPLETED",
+              "PROVIDER_FAILED",
+              "TIMEOUT",
+              "AUTHORITY_REVOKED",
+              "INVALID_PROVIDER_RESPONSE",
+              "OUTPUT_LIMIT"
+            ]
+          },
+          "exit_code": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "response": {},
+          "effect_status": {
+            "const": "UNKNOWN"
+          },
+          "authority_consumed": {
+            "type": "boolean"
+          },
+          "authority_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "request_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "stop_ack": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "stop_result": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "descendant_stop": {
+            "const": "NOT_ASSERTED"
+          },
+          "normative_permission_created": {
+            "const": false
+          },
+          "os_sandbox": {
+            "const": "NOT_PROVIDED"
+          }
+        },
+        "required": [
+          "attempt_id",
+          "invocation_id",
+          "invoked",
+          "attempt_status",
+          "cause",
+          "exit_code",
+          "response",
+          "effect_status",
+          "authority_consumed",
+          "authority_sha256",
+          "request_sha256",
+          "artifact_sha256",
+          "stop_ack",
+          "stop_result",
+          "descendant_stop",
+          "normative_permission_created",
+          "os_sandbox"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_OWNER_ROOT",
+        "CURRENT_REGISTERED_SOURCE_REFERENCE_CLOSURE"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [
+        "REGISTERED_CHILD_PROCESS_EXECUTION_AND_DECLARED_TARGET_EFFECTS"
+      ],
+      "declared_permission_requirements": [
+        "CURRENT_CALLER_ADMITTED_LOCAL_GOV_CTRL_AUTHORITY_FOR_EXACT_INVOCATION"
+      ],
+      "failure_semantics": {
+        "invalid_or_stale_source": "FAIL_CLOSED",
+        "ambiguous_registration": "FAIL_CLOSED",
+        "missing_or_revoked_authority": "DENY_OR_STOP_AFFECTED_NATIVE_INVOCATION",
+        "attempt_failure_proves_no_effect": false
+      },
+      "verification_evidence": {
+        "required": "ISOLATED_NATIVE_POSITIVE_NEGATIVE_EXECUTION_AND_CURRENT_OWNER_SOURCE_EVIDENCE",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "CONSUME_CURRENT_CALLER_ADMITTED_LOCAL_AUTHORITY_AND_INVOKE_EXACT_BOUND_NATIVE_REQUEST_WITH_BOUNDED_IO_REVOCATION_AND_DIRECT_CHILD_STOP",
         "normative_authority_from_runtime_result": false
       }
     }

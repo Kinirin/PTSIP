@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:runtime-authority-consumption:v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-engine-authority-consumption/v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_source": {
+      "const": "USER_EXPLICIT"
+    },
+    "status": {
+      "const": "APPROVED"
+    },
+    "profile_ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "invocation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifact_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "not_before_unix_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expires_unix_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "required_remote_sources": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "grant_is_engine_issued": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "version",
+    "repository_id",
+    "owner_id",
+    "approval_source",
+    "status",
+    "profile_ref",
+    "actor_id",
+    "engine_id",
+    "capability_id",
+    "contract_version",
+    "operation_id",
+    "invocation_id",
+    "request_sha256",
+    "artifact_sha256",
+    "not_before_unix_ms",
+    "expires_unix_ms",
+    "required_remote_sources",
+    "grant_is_engine_issued"
+  ],
+  "additionalProperties": false
+}

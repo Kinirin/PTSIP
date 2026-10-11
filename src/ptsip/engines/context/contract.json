@@ -1,6 +1,6 @@
 {
-  "contract_id": "urn:uuid:88eb87fe-cca0-4c3a-9be4-d02c134adb65",
-  "version": "1.0.0",
+  "contract_id": "urn:uuid:965ee856-a9cd-4326-bfd6-d23638b9cb2c",
+  "version": "2.0.0",
   "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
   "semantic_owner": "CONTEXT",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -74,11 +74,143 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "1.0.0",
+        "contract_version": "2.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "SNAPSHOT_EXPLICIT_SOURCE_WITHOUT_REINTERPRETATION",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "context.load",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "root",
+          "source_ref"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {},
+          "source_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "semantic_owner": {
+            "const": "CONTEXT"
+          },
+          "source_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "constraints": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "context_id",
+          "content",
+          "source_revision",
+          "semantic_owner",
+          "source_ref",
+          "constraints"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_OWNER_ROOT",
+        "CURRENT_REGISTERED_SOURCE_REFERENCE_CLOSURE"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_or_stale_source": "FAIL_CLOSED",
+        "ambiguous_registration": "FAIL_CLOSED",
+        "missing_or_revoked_authority": "DENY_OR_STOP_AFFECTED_NATIVE_INVOCATION",
+        "attempt_failure_proves_no_effect": false
+      },
+      "verification_evidence": {
+        "required": "ISOLATED_NATIVE_POSITIVE_NEGATIVE_EXECUTION_AND_CURRENT_OWNER_SOURCE_EVIDENCE",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "2.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_BOUND_JSON_SOURCE_AND_INLINE_CONSTRAINTS_THEN_PRESERVE_CONTEXT_CONTENT",
         "normative_authority_from_runtime_result": false
       }
     }

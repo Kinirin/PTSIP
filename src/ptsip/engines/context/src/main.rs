@@ -3,7 +3,12 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
-fn evaluate(_operation: &str, input: &Value) -> Result<Value, String> {
+mod loading;
+mod source;
+fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "context.load" {
+        return loading::load(input);
+    }
     Ok(
         json!({"context_id":input["context_id"],"content":input["content"],"source_revision":input["source_revision"],"semantic_owner":"CONTEXT"}),
     )
@@ -35,6 +40,10 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+        "context.load" => {
+            "VERIFY_BOUND_JSON_SOURCE_AND_INLINE_CONSTRAINTS_THEN_PRESERVE_CONTEXT_CONTENT"
+        }
+
         "context.snapshot" => "SNAPSHOT_EXPLICIT_SOURCE_WITHOUT_REINTERPRETATION",
         _ => return Err("unsupported registered adapter operation".into()),
     };
@@ -64,7 +73,7 @@ fn main() {
                 if bytes.len() > 1048576 {
                     return Err("request exceeds registered byte limit".into());
                 }
-                let request: Value = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+                let request = source::parse(&bytes)?;
                 dispatch(&request)
             })
     };

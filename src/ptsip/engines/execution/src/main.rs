@@ -3,8 +3,16 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
+mod authority;
 mod effect;
+mod invocation;
+mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "execution.invoke" {
+        let manifest: Value = serde_json::from_str(MANIFEST).map_err(|e| e.to_string())?;
+        let contract: Value = serde_json::from_str(CONTRACT).map_err(|e| e.to_string())?;
+        return invocation::invoke(input, &manifest, &contract);
+    }
     if operation == "execution.assess-stop" {
         if input["ack"]["correlation_id"] != input["result"]["correlation_id"] {
             return Err("stop correlation mismatch".into());
@@ -80,6 +88,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+"execution.invoke" => "CONSUME_CURRENT_CALLER_ADMITTED_LOCAL_AUTHORITY_AND_INVOKE_EXACT_BOUND_NATIVE_REQUEST_WITH_BOUNDED_IO_REVOCATION_AND_DIRECT_CHILD_STOP",
+
         "execution.assess-attempt" => {
             "VERIFY_CURRENT_REFERENCED_EFFECT_PROVENANCE_WITHOUT_INFERRING_ABSENCE_FROM_ATTEMPT_FAILURE"
         }
@@ -114,7 +124,7 @@ fn main() {
                 if bytes.len() > 1048576 {
                     return Err("request exceeds registered byte limit".into());
                 }
-                let request: Value = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+                let request = source::parse(&bytes)?;
                 dispatch(&request)
             })
     };

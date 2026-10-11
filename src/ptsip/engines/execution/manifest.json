@@ -1,15 +1,22 @@
 {
   "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
   "origin": "OFFICIAL",
-  "implementation_version": "0.2.0",
+  "implementation_version": "0.3.0",
   "capabilities": [
     {
-      "id": "urn:uuid:c7b8ab34-585d-44f9-882e-c9516f179200",
-      "version": "2.0.0",
+      "id": "urn:uuid:0a525fa7-7ce8-443c-b7d8-7885fadaf8e2",
+      "version": "3.0.0",
       "path": "src/ptsip/engines/execution/contract.json",
-      "sha256": "6431631581464e71b9669c21512d227964378b10437dfa22444af1ca71ee6000"
+      "sha256": "0d1534f08f907b7cacde3604fde9152b459093939a32e3be33c74000c520f1f1"
     }
   ],
   "dependencies": [],
-  "extensions": []
+  "extensions": [
+    {
+      "id": "urn:uuid:3e902bc2-b77f-46eb-a49e-366b41503649",
+      "version": "1.0.0",
+      "path": "src/ptsip/engines/execution/runtime-contracts.json",
+      "sha256": "92d55c3b39b719e7863cf613938f7da00fab1c88e3840c066580594d4a411074"
+    }
+  ]
 }

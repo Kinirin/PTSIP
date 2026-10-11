@@ -1,0 +1,361 @@
+{
+  "contract_id": "urn:uuid:c7b8ab34-585d-44f9-882e-c9516f179200",
+  "version": "2.0.0",
+  "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
+  "semantic_owner": "EXECUTION",
+  "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "normative_language": "JSON",
+  "execution_permission_from_declaration": false,
+  "operations": [
+    {
+      "operation_id": "execution.assess-attempt",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "attempt": {
+            "type": "object",
+            "properties": {
+              "attempt_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "SUCCEEDED",
+                  "FAILED",
+                  "PENDING",
+                  "UNKNOWN"
+                ]
+              },
+              "cause": {
+                "enum": [
+                  "NONE",
+                  "RESOURCE_EXHAUSTION",
+                  "REVOKED",
+                  "CONTRACT_INVALID",
+                  "UNKNOWN"
+                ]
+              },
+              "effect_evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "attempt_id",
+              "status",
+              "cause",
+              "effect_evidence_refs"
+            ],
+            "additionalProperties": false
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "evidence_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "attempt_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "observation": {
+                  "enum": [
+                    "OBSERVED_EFFECT",
+                    "VERIFIED_NO_EFFECT",
+                    "UNKNOWN",
+                    "UNVERIFIED"
+                  ]
+                },
+                "source_ref": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "evidence_id",
+                "attempt_id",
+                "observation",
+                "source_ref"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "root": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "attempt",
+          "effects",
+          "root"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "attempt_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "attempt_status": {
+            "enum": [
+              "SUCCEEDED",
+              "FAILED",
+              "PENDING",
+              "UNKNOWN"
+            ]
+          },
+          "effect_status": {
+            "enum": [
+              "OBSERVED_EFFECT",
+              "VERIFIED_NO_EFFECT",
+              "UNKNOWN",
+              "UNVERIFIED"
+            ]
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "attempt_id",
+          "attempt_status",
+          "effect_status",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "2.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_CURRENT_REFERENCED_EFFECT_PROVENANCE_WITHOUT_INFERRING_ABSENCE_FROM_ATTEMPT_FAILURE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "execution.assess-stop",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "ack": {
+            "type": "object",
+            "properties": {
+              "correlation_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "ACCEPTED",
+                  "REJECTED",
+                  "UNKNOWN"
+                ]
+              },
+              "cause": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "correlation_id",
+              "status",
+              "cause"
+            ],
+            "additionalProperties": false
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "correlation_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "attempt_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "STOP_CONFIRMED",
+                  "STOP_FAILED",
+                  "PENDING",
+                  "UNKNOWN"
+                ]
+              },
+              "effect_evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "correlation_id",
+              "attempt_id",
+              "status",
+              "effect_evidence_refs"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "ack",
+          "result"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "stop_confirmed": {
+            "type": "boolean"
+          },
+          "original_operation_succeeded": {
+            "const": false
+          },
+          "effects_reversed": {
+            "const": false
+          }
+        },
+        "required": [
+          "stop_confirmed",
+          "original_operation_succeeded",
+          "effects_reversed"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "2.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "ACK_NOT_STOP_CONFIRMATION_AND_STOP_NOT_ORIGINAL_SUCCESS_OR_EFFECT_REVERSAL",
+        "normative_authority_from_runtime_result": false
+      }
+    }
+  ]
+}

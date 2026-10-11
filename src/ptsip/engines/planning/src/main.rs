@@ -5,7 +5,12 @@ const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
 mod impact;
 mod installation;
+mod preparation;
+mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "planning.prepare" {
+        return preparation::prepare(input);
+    }
     if operation == "planning.select-installation" {
         return installation::select(input);
     }
@@ -78,6 +83,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+"planning.prepare" => "VERIFY_ALL_EXPLICIT_NATIVE_INVOCATION_SOURCE_REFS_BEFORE_ORDERING_PREPARED_DAG_WITHOUT_EXECUTION",
+
         "planning.order" => {
             "EXPLICIT_DEPENDENCY_DAG_LEXICAL_TOPOLOGICAL_ORDER_FAIL_UNKNOWN_DUPLICATE_OR_CYCLE"
         }
@@ -111,7 +118,7 @@ fn main() {
                 if bytes.len() > 1048576 {
                     return Err("request exceeds registered byte limit".into());
                 }
-                let request: Value = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+                let request = source::parse(&bytes)?;
                 dispatch(&request)
             })
     };

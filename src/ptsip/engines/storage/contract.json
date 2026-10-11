@@ -1,6 +1,6 @@
 {
-  "contract_id": "urn:uuid:c1b1c532-40ef-47b0-b395-3666637f780a",
-  "version": "2.0.0",
+  "contract_id": "urn:uuid:6c16fe73-53a0-4d39-8cd4-3fc2bc96ca3b",
+  "version": "3.0.0",
   "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
   "semantic_owner": "STORAGE",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -104,11 +104,277 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.0.0",
+        "contract_version": "3.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "VERIFY_STORAGE_OWNER_PROVIDER_AND_CURRENT_TWO_SIDED_COMPATIBILITY_EVIDENCE_THEN_MEDIATION_PLAN",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "storage.invoke",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provider_registry_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_registry_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "capability_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contract_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "authority_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "profile_ref": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "actor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "attempt_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "budget_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60000
+          }
+        },
+        "required": [
+          "root",
+          "provider_registry_ref",
+          "expected_registry_sha256",
+          "capability_id",
+          "operation_id",
+          "contract_version",
+          "request_ref",
+          "authority_ref",
+          "profile_ref",
+          "actor_id",
+          "attempt_id",
+          "budget_ms"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "attempt_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "invocation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "invoked": {
+            "type": "boolean"
+          },
+          "attempt_status": {
+            "enum": [
+              "SUCCEEDED",
+              "FAILED"
+            ]
+          },
+          "cause": {
+            "enum": [
+              "COMPLETED",
+              "PROVIDER_FAILED",
+              "TIMEOUT",
+              "AUTHORITY_REVOKED",
+              "INVALID_PROVIDER_RESPONSE",
+              "OUTPUT_LIMIT"
+            ]
+          },
+          "exit_code": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "response": {},
+          "effect_status": {
+            "const": "UNKNOWN"
+          },
+          "authority_consumed": {
+            "type": "boolean"
+          },
+          "authority_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "request_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "stop_ack": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "stop_result": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "descendant_stop": {
+            "const": "NOT_ASSERTED"
+          },
+          "normative_permission_created": {
+            "const": false
+          },
+          "os_sandbox": {
+            "const": "NOT_PROVIDED"
+          }
+        },
+        "required": [
+          "attempt_id",
+          "invocation_id",
+          "invoked",
+          "attempt_status",
+          "cause",
+          "exit_code",
+          "response",
+          "effect_status",
+          "authority_consumed",
+          "authority_sha256",
+          "request_sha256",
+          "artifact_sha256",
+          "stop_ack",
+          "stop_result",
+          "descendant_stop",
+          "normative_permission_created",
+          "os_sandbox"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_OWNER_ROOT",
+        "CURRENT_REGISTERED_SOURCE_REFERENCE_CLOSURE"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [
+        "REGISTERED_PROVIDER_PROCESS_AND_PROVIDER_OWNED_EFFECTS"
+      ],
+      "declared_permission_requirements": [
+        "CURRENT_CALLER_ADMITTED_LOCAL_GOV_CTRL_AUTHORITY_FOR_EXACT_PROVIDER_OPERATION"
+      ],
+      "failure_semantics": {
+        "invalid_or_stale_source": "FAIL_CLOSED",
+        "ambiguous_registration": "FAIL_CLOSED",
+        "missing_or_revoked_authority": "DENY_OR_STOP_AFFECTED_NATIVE_INVOCATION",
+        "attempt_failure_proves_no_effect": false
+      },
+      "verification_evidence": {
+        "required": "ISOLATED_NATIVE_POSITIVE_NEGATIVE_EXECUTION_AND_CURRENT_OWNER_SOURCE_EVIDENCE",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "MEDIATE_REGISTERED_PROVIDER_AND_CONSUME_CURRENT_CALLER_ADMITTED_AUTHORITY_BEFORE_ISOLATED_NATIVE_PROVIDER_INVOCATION",
         "normative_authority_from_runtime_result": false
       }
     }

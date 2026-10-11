@@ -695,7 +695,7 @@
       },
       "registered_engine_count": 7,
       "initial_read_only_operation_count": 12,
-      "contract_data_schema_count": 18,
+      "contract_data_schema_count": 20,
       "standalone_native_packages_verified": 7,
       "current_public_api_handoffs": "UNVERIFIED_NOT_AUTHORIZED_FOR_CUTOVER",
       "automatic_installation": "NOT_PERFORMED",
@@ -712,7 +712,7 @@
         "FULL_VPMS_RUNTIME_SEMANTIC_EQUIVALENCE_BEFORE_ANY_LEGACY_API_RETIREMENT",
         "MACOS_NATIVE_RUNTIME_VERIFICATION"
       ],
-      "read_only_operation_count": 18,
+      "read_only_operation_count": 25,
       "public_api_scope": "PRESERVED_EXISTING_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS_ONLY",
       "consumer_cutover_authorized": false,
       "legacy_retirement_authorized": false,
@@ -723,7 +723,8 @@
       "implementation_remote_result": "PASS_EXACT_SHA",
       "implementation_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
       "implementation_verification_run_id": 38168943031,
-      "approved_scope_verified_work_item_count": 16
+      "approved_scope_verified_work_item_count": 16,
+      "registered_operation_count": 27
     },
     "implementation_approval_record": {
       "approval_source": "USER_EXPLICIT",
@@ -735,6 +736,76 @@
       "legacy_public_api_retirement_authorized": false,
       "public_api_scope_confirmation": "기존 공개 API를 보존하고 새 계약·검증·전환 계획까지 구현",
       "consumer_cutover_authorized": false
+    },
+    "native_runtime_implementation": {
+      "status": "IMPLEMENTED_LOCAL_VERIFICATION_PASS_REMOTE_PENDING",
+      "approval_source": "USER_EXPLICIT",
+      "source_reference": "실제엔진 7개 구현의 완료 목표로 계속해서 작업하도록 하겠습니다",
+      "scope_confirmation": "격리된 검증 저장소에서 실행 연동 구현",
+      "source_baseline": "f0607201cb645b24f2816d756e23e9b0871883e5",
+      "scope": "SEVEN_INDEPENDENT_NATIVE_ENGINES_IN_ISOLATED_CALLER_OWNER_ADMITTED_VERIFICATION_REPOSITORIES",
+      "registered_engine_count": 7,
+      "registered_operation_count": 27,
+      "native_contract_ref": "src/ptsip/engines/contracts/native-runtime.json",
+      "canonical_capability_index_ref": "src/ptsip/engines/index.json",
+      "permission_issuance": false,
+      "real_consumer_runtime_activation": false,
+      "existing_public_api_cutover": false,
+      "legacy_api_retirement": false,
+      "os_sandbox": "NOT_PROVIDED",
+      "global_gov_legitimacy_verification": "NOT_PROVIDED_BY_ENGINE_PERMISSION_CONSUMPTION_ADAPTER",
+      "remote_authority_consumption": "UNSUPPORTED_FAIL_CLOSED",
+      "engine_completion_checks": {
+        "CONTEXT": "TestNativeContextProjectionCurrentSourceAndOutputPipeline",
+        "PROJECTION": "TestNativeContextProjectionCurrentSourceAndOutputPipeline",
+        "VALIDATION": "TestNativeValidationCatalogSelectionAndAllSelectedAdapterPreflight",
+        "DISCOVERY": "TestNativeDiscoveryPlanningAndActualEngineInvocation",
+        "PLANNING": "TestNativeDiscoveryPlanningAndActualEngineInvocation",
+        "EXECUTION": "TestNativeDiscoveryPlanningAndActualEngineInvocation",
+        "STORAGE": "TestNativeStorageActualProviderEffectAndAuthorityDenial"
+      },
+      "execution_safety_checks": [
+        "TestNativeStorageTimeoutRevocationAndFailedAttemptPreserveUnknownEffects",
+        "TestNativeRuntimeInputCannotSelfIssueAuthority"
+      ],
+      "observed_local": [
+        {
+          "command": "go -C developer/tests test -count=1 -v -run TestNative(Context|Validation|Discovery|Storage|Runtime)|TestRegisteredManifest ./engines",
+          "result": "PASS",
+          "duration_seconds": 35.431,
+          "scope": "ACTUAL_NATIVE_READ_TRANSFORM_SELECTION_PREPARATION_EXECUTION_PROVIDER_EFFECT_TIMEOUT_REVOCATION_AND_OUTPUT_LIMIT"
+        },
+        {
+          "command": "go -C developer/tests test -count=1 -v ./engines",
+          "result": "PASS",
+          "duration_seconds": 74.37,
+          "scope": "FINAL_SEVEN_INDEPENDENT_CARGO_TEST_BUILD_PACKAGE_STDIO_AND_ISOLATED_NATIVE_RUNTIME_SUITE"
+        },
+        {
+          "command": "pytest -q src/tests/vpms/contracts src/tests/ptsip/contracts src/tests/ptsip/repository/test_self_profile.py",
+          "result": "PASS",
+          "test_count": 56
+        },
+        {
+          "command": "planning validate; policy-plan-consistency verify; go vet ./engines; Check registry validate; go test ./workflows",
+          "result": "PASS",
+          "policy_plan_binding_count": 21
+        },
+        {
+          "command": "pip wheel . --no-deps; wheel archive inspection",
+          "result": "PASS",
+          "native_contract_data_packages": 7,
+          "rust_source_and_binary_excluded": true,
+          "profile_history_excluded": true
+        }
+      ],
+      "required_remote": [
+        "FULL_EXACT_SHA_REGISTERED_CHECK_COVERAGE",
+        "NATIVE_ENGINES_LINUX_X64",
+        "NATIVE_ENGINES_WINDOWS_X64",
+        "NATIVE_ENGINES_MACOS_ARM64"
+      ],
+      "observed_remote": []
     }
   }
 }

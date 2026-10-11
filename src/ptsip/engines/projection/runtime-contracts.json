@@ -1,0 +1,62 @@
+{
+  "projection_definition": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "semantic_owner": {
+        "const": "PROJECTION"
+      },
+      "format": {
+        "enum": [
+          "JSON_OBJECT",
+          "TEXT_LINES"
+        ]
+      },
+      "fields": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "pointer": {
+              "type": "string",
+              "pattern": "^(/|$)"
+            }
+          },
+          "required": [
+            "name",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "maxItems": 256
+      },
+      "output_schema": {
+        "type": "object"
+      }
+    },
+    "required": [
+      "id",
+      "version",
+      "semantic_owner",
+      "format",
+      "fields",
+      "output_schema"
+    ],
+    "additionalProperties": false
+  },
+  "id": "urn:uuid:1ce60645-efcb-492e-8c13-6e4237769af4",
+  "version": "1.0.0",
+  "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
+  "schema_version": "ptsip-engine-local-runtime-source-shapes/v1"
+}

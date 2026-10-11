@@ -121,9 +121,51 @@ jobs:
             .artifacts/markdown-cleanup-simulation.json
           if-no-files-found: ignore
           retention-days: 14
+  native-platform:
+    name: Native engines (${{ matrix.os }})
+    needs: resolve
+    if: ${{ contains(fromJSON(needs.resolve.outputs.required), 'repository-architecture--go--engines') }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-15]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: |
+            developer/automation/go.sum
+            developer/tests/go.sum
+      - name: Prepare native verification tools
+        run: |
+          python -m pip install PyYAML
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+      - name: Run registered native engine Check
+        env:
+          VERIFICATION_MODE: ${{ needs.resolve.outputs.preset }}
+        run: python .github/scripts/check_execution.py run repository-architecture--go--engines
+      - name: Upload platform-bound Check evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ptsip-native-${{ runner.os }}-${{ runner.arch }}
+          path: .artifacts/check-results/repository-architecture--go--engines.json
+          if-no-files-found: error
+          retention-days: 14
   coverage:
     if: ${{ always() && needs.resolve.result == 'success' }}
-    needs: [resolve, check]
+    needs: [resolve, check, native-platform]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -134,6 +176,12 @@ jobs:
         with:
           python-version: '3.14'
       - run: python -m pip install PyYAML
+      - name: Require selected native platforms to pass
+        if: ${{ contains(fromJSON(needs.resolve.outputs.required), 'repository-architecture--go--engines') }}
+        env:
+          NATIVE_PLATFORM_RESULT: ${{ needs.native-platform.result }}
+        run: |
+          test "$NATIVE_PLATFORM_RESULT" = success
       - uses: actions/download-artifact@v4
         if: ${{ needs.resolve.outputs.required != '[]' }}
         with:

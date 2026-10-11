@@ -1,0 +1,116 @@
+{
+  "contract_id": "urn:uuid:c1b1c532-40ef-47b0-b395-3666637f780a",
+  "version": "2.0.0",
+  "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
+  "semantic_owner": "STORAGE",
+  "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "normative_language": "JSON",
+  "execution_permission_from_declaration": false,
+  "operations": [
+    {
+      "operation_id": "storage.mediate",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provider_registry_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_registry_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "capability_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contract_version": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "root",
+          "provider_registry_ref",
+          "expected_registry_sha256",
+          "capability_id",
+          "operation_id",
+          "contract_version"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "provider_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provider_owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provider_operation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "registry_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "execution_authorized": {
+            "const": false
+          },
+          "provider_invoked": {
+            "const": false
+          }
+        },
+        "required": [
+          "provider_id",
+          "provider_owner",
+          "provider_operation_id",
+          "registry_revision",
+          "execution_authorized",
+          "provider_invoked"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "2.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_STORAGE_OWNER_PROVIDER_AND_CURRENT_TWO_SIDED_COMPATIBILITY_EVIDENCE_THEN_MEDIATION_PLAN",
+        "normative_authority_from_runtime_result": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "ptsip-native-runtime-consumption/v1",
+  "permission_authority_owners": [
+    "SFP-GOV-0001",
+    "SFP-CTRL-0001"
+  ],
+  "source_admission": "EXPLICIT_CALLER_PROJECT_AUTHORITY_REQUIRED_NOT_PROVIDED_BY_ENGINE",
+  "supported_authority_sources": "CURRENT_ADMITTED_LOCAL_SOURCE_ONLY_REMOTE_REQUIREMENTS_FAIL_CLOSED",
+  "scope": "ISOLATED_OWNER_ADMITTED_NATIVE_VERIFICATION_BEFORE_CONSUMER_ACTIVATION",
+  "permission_issuance": false,
+  "existing_public_api_cutover": false,
+  "process_isolation": "SEPARATE_PROCESS_CLEARED_ENVIRONMENT_BOUNDED_STDIO_AND_DIRECT_CHILD_STOP",
+  "os_sandbox": "NOT_PROVIDED",
+  "descendant_stop": "NOT_ASSERTED",
+  "effect_assessment": "UNKNOWN_UNTIL_INDEPENDENT_CURRENT_PROVENANCE_OBSERVATIONS",
+  "authority_schema_ref": "src\\ptsip\\engines\\contracts\\schemas\\runtime-authority-consumption.schema.json",
+  "invocation_registry_schema_ref": "src\\ptsip\\engines\\contracts\\schemas\\native-invocation-registry.schema.json",
+  "plan_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.native_runtime_implementation",
+  "id": "urn:ptsip:engine-native-runtime-consumption:v1",
+  "version": "1.0.0"
+}

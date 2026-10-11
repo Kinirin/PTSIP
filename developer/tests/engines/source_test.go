@@ -104,6 +104,9 @@ func copyRegisteredSource(t *testing.T) string {
 		for _, key := range []string{"manifest_ref", "contract_ref", "execution_binding_ref"} {
 			refs = append(refs, e[key].(string))
 		}
+		for _, rawExtension := range document(t, e["manifest_ref"].(string))["extensions"].([]any) {
+			refs = append(refs, rawExtension.(object)["path"].(string))
+		}
 	}
 	for _, ref := range refs {
 		bytes, err := os.ReadFile(filepath.Join(testrepo.Root(t), filepath.FromSlash(ref)))

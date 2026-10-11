@@ -1,0 +1,34 @@
+{
+  "source": {
+    "type": "object",
+    "properties": {
+      "schema_version": {
+        "const": "ptsip-native-context-source/v1"
+      },
+      "id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "content": {},
+      "constraints": {
+        "type": "object"
+      }
+    },
+    "required": [
+      "schema_version",
+      "id",
+      "version",
+      "content",
+      "constraints"
+    ],
+    "additionalProperties": false
+  },
+  "id": "urn:uuid:9520ce3d-52d6-4439-aef5-396a34309c2f",
+  "version": "1.0.0",
+  "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
+  "schema_version": "ptsip-engine-local-runtime-source-shapes/v1"
+}

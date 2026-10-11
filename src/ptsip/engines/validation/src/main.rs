@@ -3,9 +3,17 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
+mod cases;
 mod composition;
 mod handoff;
+mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if matches!(
+        operation,
+        "validation.prepare-cases" | "validation.select-cases" | "validation.prepare-composition"
+    ) {
+        return cases::prepare(operation, input);
+    }
     if operation == "validation.verify-context-handoff" {
         return handoff::verify_context(input);
     }
@@ -68,6 +76,10 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+"validation.prepare-cases" => "VERIFY_CURRENT_CASE_CATALOG_REFERENCE_CLOSURE_AND_INDEPENDENT_INLINE_CASE_CONTRACTS",
+"validation.select-cases" => "SELECT_EXPLICIT_CASE_IDS_OR_CURRENT_REGISTERED_SELECTOR_WITH_NO_EXECUTION",
+"validation.prepare-composition" => "VERIFY_ALL_SELECTED_CASE_ADAPTERS_AND_CONTRACT_INPUTS_BEFORE_ANY_INVOCATION",
+
         "validation.contract" => {
             "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE"
         }
@@ -114,7 +126,7 @@ fn main() {
                 if bytes.len() > 1048576 {
                     return Err("request exceeds registered byte limit".into());
                 }
-                let request: Value = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+                let request = source::parse(&bytes)?;
                 dispatch(&request)
             })
     };

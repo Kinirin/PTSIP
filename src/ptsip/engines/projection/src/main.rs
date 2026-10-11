@@ -3,7 +3,12 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
-fn evaluate(_operation: &str, input: &Value) -> Result<Value, String> {
+mod rendering;
+mod source;
+fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "projection.render" {
+        return rendering::render(input);
+    }
     let mut selected = serde_json::Map::new();
     for pointer in input["pointers"].as_array().ok_or("pointers required")? {
         let key = pointer.as_str().ok_or("pointer must be a string")?;
@@ -48,6 +53,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+"projection.render" => "VERIFY_CURRENT_CONTEXT_SNAPSHOT_AND_SOURCE_THEN_APPLY_REGISTERED_PROJECTION_FIELDS_AND_OUTPUT_SCHEMA",
+
         "projection.select" => {
             "EXPLICIT_JSON_POINTER_SELECTION_WITHOUT_SOURCE_MUTATION_OR_LEGACY_OUTPUT_PARITY"
         }
@@ -79,7 +86,7 @@ fn main() {
                 if bytes.len() > 1048576 {
                     return Err("request exceeds registered byte limit".into());
                 }
-                let request: Value = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+                let request = source::parse(&bytes)?;
                 dispatch(&request)
             })
     };

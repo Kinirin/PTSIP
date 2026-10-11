@@ -3,8 +3,13 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
+mod invocation;
 mod registry;
+mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "discovery.verify-invocation" {
+        return invocation::verify(input);
+    }
     registry::verify(input, operation == "discovery.resolve")
 }
 
@@ -35,6 +40,10 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+        "discovery.verify-invocation" => {
+            "VERIFY_REGISTERED_CURRENT_ENGINE_BINDING_REQUEST_AND_NATIVE_ARTIFACT_WITHOUT_GRANT"
+        }
+
         "discovery.resolve" => {
             "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_THEN_EXACT_REGISTERED_CAPABILITY"
         }
@@ -69,7 +78,7 @@ fn main() {
                 if bytes.len() > 1048576 {
                     return Err("request exceeds registered byte limit".into());
                 }
-                let request: Value = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+                let request = source::parse(&bytes)?;
                 dispatch(&request)
             })
     };
