@@ -460,6 +460,20 @@ func ValidateResponsibilityAnalysis(r Repository, analysisID string, currentLook
 		if err != nil {
 			return nil, err
 		}
+		registry, err := r.Read(policyAnalysisRegistry)
+		if err != nil {
+			return nil, err
+		}
+		// A materialized policy's creation record remains provenance after its
+		// current catalog registration is withdrawn. It cannot re-admit authority.
+		for _, raw := range List(registry["bindings"]) {
+			row := Map(raw)
+			if row["analysis_id"] == analysisID && row["policy_id"] == record["subject_id"] {
+				if _, registered := resolver.Index[Text(row["policy_id"])]; !registered {
+					errors = append(errors, "withdrawn policy creation analysis is historical evidence only")
+				}
+			}
+		}
 		for _, raw := range List(analysis["responsibilities"]) {
 			unit := Map(raw)
 			if unit["authority_relation"] != "OWN" {

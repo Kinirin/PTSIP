@@ -149,13 +149,32 @@
     "workflow_mutation": "FORBIDDEN",
     "new_implementation_permission_from_this_draft_plan": false,
     "existing_p0_p1_candidate_runtime_state": "CANDIDATE_ONLY_NO_MUTATION",
-    "last_result": "CURRENT_SOURCE_REQUIRED_PUSH_AND_IMPACT_TEST_BUILD_PASS_BLOCKED_RUNTIME_BOUNDARY_RETAINED",
+    "last_result": "PRIOR_SOURCE_REQUIRED_CI_PASS_NEW_REMOTE_POLICY_ARCHIVAL_REQUIRES_CURRENT_SOURCE_VERIFICATION",
     "plan_index_mutation": "NO_TOP_LEVEL_CHANGE_NEEDED_FOR_CHILD_REVIEW_REGISTRATION",
     "plan_schema_mutation": "NOT_REQUIRED",
     "prerelease_plan_mutation": "FORBIDDEN",
     "approved_plan_implementation_scope": "POLICY_BOUND_READ_ONLY_CONTEXT_EVIDENCE_CANDIDATE_VERIFICATION_AND_REQUIRED_TEST_REMEDIATION_ONLY",
     "approval_does_not_override_blockers": true,
-    "runtime_activation_after_validation": "NOT_AUTHORIZED_BY_VERIFICATION"
+    "runtime_activation_after_validation": "NOT_AUTHORIZED_BY_VERIFICATION",
+    "explicit_user_approved_exception": {
+      "approval_ref": "developer/policy/approvals/MPA-20261011-VPMS-VERI-KEEP-LATEST.yaml",
+      "requested_policy_id": "MPD-VERI-0007",
+      "approved_at": "2026-10-11",
+      "allowed_scope": [
+        "WITHDRAWN_VPMS_CURRENT_AUTHORITY_VERIFICATION",
+        "HISTORICAL_VPMS_TEST_SOURCE_PATH_RECONCILIATION",
+        "GO_CREATION_PROVENANCE_FAIL_CLOSED_CHECK",
+        "REQUIRED_TEST_REMEDIATION"
+      ],
+      "historical_source_bytes_and_status": "PRESERVE",
+      "current_authority": "FORBIDDEN",
+      "vpms_runtime_implementation_change": "FORBIDDEN",
+      "replacement_policy_authority": "NOT_CREATED",
+      "consumer_support_policy_mutation": "FORBIDDEN",
+      "unrelated_policy_or_registry_mutation": "FORBIDDEN",
+      "session_implementation_approval": "legacy 보관으로 전환하도록 승인 — VPMS 권위·index·계약의 전환 범위도 확인",
+      "policy_and_registry_decision_source": "PRESERVE_REMOTE_KEEP_LATEST_CANONICAL_WITHDRAWAL"
+    }
   },
   "routing": {
     "branch": "dev/0.3.8",
@@ -176,7 +195,7 @@
     "review_registration_is_approval": true,
     "approval_source": "USER_EXPLICIT",
     "implementation_scope": "APPROVED_P0_P1_CANDIDATE_VERIFICATION_ONLY",
-    "implementation_remains_blocked_by_required_validation": false,
+    "implementation_remains_blocked_by_required_validation": true,
     "release_entrypoint_status_source": "developer/planning/0.3.8/index.yaml#plan.status",
     "runtime_remains_blocked_by_policy_boundary": true,
     "verification_permission": "AUTHORIZED_POLICY_BOUND_READ_ONLY_SCOPE_ONLY"
@@ -229,7 +248,7 @@
     }
   },
   "remaining_validation": {
-    "status": "ALL_REQUIRED_CURRENT_RELEASE_VERIFICATION_RESPONSIBILITIES_SATISFIED_AT_SOURCE_SHA_BLOCKED_RUNTIME_BOUNDARY_RETAINED",
+    "status": "APPROVED_VPMS_ARCHIVAL_REMEDIATION_PENDING_EXACT_SOURCE_CI_BLOCKED_RUNTIME_BOUNDARY_RETAINED",
     "verification_owner": "CURRENT_0_3_8_RELEASE_PLANNING",
     "completed_reference_update_must_not_be_repeated": true,
     "tasks": [
@@ -325,7 +344,7 @@
       {
         "id": "RV-05",
         "responsibility": "MANDATORY_TESTS_AND_RECORD_PROTECTION",
-        "state": "PASS_APPLICABLE_REQUIRED_CI_AT_SOURCE_SHA",
+        "state": "PRIOR_SOURCE_PASS_CURRENT_POLICY_ARCHIVAL_REMEDIATION_PENDING_REQUIRED_CI",
         "action": "Run repository-required native Go Context/Evidence positive and fail-closed negative vectors, planning/index validity, policy schema/registry checks, and required GitHub Actions without skipping or weakening verification",
         "pass_condition": "ALL_APPLICABLE_REQUIRED_CHECKS_PASS_WITH_SOURCE_BOUND_EVIDENCE",
         "failure": "NO_COMPLETE_OR_RUNTIME_PROMOTION",
@@ -510,6 +529,43 @@
       "test_build_was_executed": true,
       "scope": "FIVE_EFFECTIVE_PROFILE_SELECTED_IMPACT_MODES",
       "branch": "dev/0.3.8"
+    },
+    "vpms_policy_archival": {
+      "remote_move_commit": "6f1ad55bfbda77d17c1a9283fa0d6ff61a62bb2c",
+      "reviewed_remote_sha": "36e73ffdf10262e1674e4a27078fa2e9cabd49b8",
+      "failed_remote_run": "https://github.com/Kinirin/PTSIP/actions/runs/38136095010",
+      "failure": "ACTIVE_VPMS_POLICY_MOVED_TO_LEGACY_WITHOUT_INDEX_OR_AUTHORITY_ROLE_RECONCILIATION",
+      "approval_ref": "developer/policy/approvals/MPA-20261011-VPMS-VERI-KEEP-LATEST.yaml",
+      "authority_role": "NOT_REGISTERED_IN_CURRENT_CATALOG",
+      "historical_policy_class": "VPMS_DEVELOPER_POLICY",
+      "historical_status": "ACTIVE",
+      "historical_version": "2.0",
+      "historical_source_lf_sha256": "e5557fda8564db439e81c6295f3452354f5cc2ae4e632ab8dcb8d061b27914f4",
+      "digest_source": "UNCHANGED_ADMITTED_VPMS_IMPLEMENTATION_AND_CONTRACT_MATERIALIZATION_EVIDENCE",
+      "current_policy_body_lookup": "EXCLUDED",
+      "archived_body_runtime_lookup": "FORBIDDEN",
+      "historical_pra_and_activation_approval": "PRESERVED",
+      "vpms_runtime_sources": "UNCHANGED",
+      "support_feature_policy_semantics": "UNCHANGED",
+      "current_required_ci": "PENDING_NEW_SOURCE_SHA",
+      "current_registered_vpms_policy_count": 0,
+      "subject_identity_registration": "WITHDRAWN_BY_KEEP_LATEST",
+      "separate_archived_policy_role_registration": "NOT_CREATED_REMOTE_CANONICAL_WITHDRAWAL_PRESERVED",
+      "historical_pra_current_authority_reuse": "FAIL_CLOSED",
+      "runtime_implementation_authorization_from_keep_latest": false,
+      "local_verification": {
+        "policy_validator": "PASS",
+        "policy_plan_consistency": "PASS_21_BINDINGS",
+        "planning_validate": "PASS",
+        "go_policy_lifecycle_tests": "PASS",
+        "go_policy_binding_tests": "PASS",
+        "go_rootfamily_historical_source_and_neutral_module_checks": "PASS_BOTH_PLANES",
+        "go_automation_vet": "PASS",
+        "withdrawn_authority_lookup_without_archive_body": "PASS",
+        "archived_source_admitted_lf_digest": "PASS",
+        "historical_creation_analysis_current_authority_rejection": "PASS",
+        "registered_trust_hashes_changed": false
+      }
     }
   }
 }

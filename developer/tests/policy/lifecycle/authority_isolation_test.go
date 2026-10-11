@@ -235,7 +235,9 @@ func vpmsPolicy(t *testing.T, repo *testrepo.Repository) object {
 		t.Fatal(err)
 	}
 	id := contract["application_execution"].(object)["registered_vpms_policy_id"].(string)
-	payload, err := repo.Read("developer/policy/VERI/" + id + ".yaml")
+	// The catalog execution record is historical provenance. KEEP_LATEST withdrew
+	// this policy from current registration; only this test reads its frozen body.
+	payload, err := repo.Read("developer/policy/legacy/" + id + ".yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -243,11 +245,13 @@ func vpmsPolicy(t *testing.T, repo *testrepo.Repository) object {
 }
 
 func TestFirstVPMSPolicyIsActiveWithExplicitOwnerApproval(t *testing.T) {
+	// ACTIVE describes the frozen historical source. Current lookup must exclude it.
 	repo := testrepo.Open(testrepo.Root(t))
 	payload := vpmsPolicy(t, repo)
 	id := payload["policy"].(object)["id"].(string)
 	inspected, err := lifecycle.InspectPolicy(repo, id)
-	if err != nil || payload["schema_version"] != "developer-policy/v2" || payload["policy_class"] != vpmsClass || inspected["policy_status"] != "ACTIVE" || inspected["index_status"] != "ACTIVE" || inspected["policy_version"] != "2.0" || inspected["subject_identity_registered"] != true || inspected["operationally_resolvable"] != true {
+	policyIdentity := payload["policy"].(object)
+	if err != nil || payload["schema_version"] != "developer-policy/v2" || payload["policy_class"] != vpmsClass || policyIdentity["status"] != "ACTIVE" || policyIdentity["version"] != "2.0" || inspected["status"] != "NOT_FOUND" {
 		t.Fatalf("%#v %v", inspected, err)
 	}
 	transition := payload["transition"].(object)
@@ -265,7 +269,7 @@ func TestFirstVPMSPolicyIsActiveWithExplicitOwnerApproval(t *testing.T) {
 		t.Fatal(identity)
 	}
 	ids, err := lifecycle.ActiveFamilyIDs(repo, vpmsClass, "VERI")
-	if err != nil || !reflect.DeepEqual(ids, []string{id}) {
+	if err != nil || len(ids) != 0 {
 		t.Fatal(ids, err)
 	}
 	legacy, err := lifecycle.ActiveFamilyIDs(repo, lifecycle.DeveloperClass, "VERI")
@@ -356,6 +360,9 @@ func TestVPMSCreationAnalysisIsRegisteredClassAwareAndNotReusedAsLiveLookup(t *t
 		}
 		_, err = lifecycle.ValidateResponsibilityAnalysis(repo, analysisID, true)
 		lifecycleCode(t, err, "RESPONSIBILITY_ANALYSIS_BLOCKED")
+		if !strings.Contains(err.Error(), "withdrawn policy creation analysis is historical evidence only") {
+			t.Fatal("historical creation record was not rejected by the withdrawal boundary", err)
+		}
 		return
 	}
 	t.Fatal("VPMS creation analysis binding missing")
