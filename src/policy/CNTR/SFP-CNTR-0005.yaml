@@ -509,6 +509,104 @@
           "exact_capability_operation_ids_io_schemas_composition_graph": "UNRESOLVED_CONTRACT_DESIGN",
           "cross_official_rust_engine_code_sharing": "FORBIDDEN",
           "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        "vpms_public_api_test_mode_transition_direction": {
+          "decision": "C_CONTRACT_CALLER_VERIFICATION_RESPONSIBILITY_TEST_MODE_SCOPED_TRANSITION",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "transition_subject": "VERSIONED_PUBLIC_API_CALLSITE_CAPABILITY_CONTRACT_VERIFICATION_RESPONSIBILITY_TEST_MODE_RELATION",
+          "new_validation_target": "OFFICIAL_INDEPENDENT_RUST_VALIDATION_ENGINE_LANGUAGE_NEUTRAL_CONTRACT",
+          "mapping_authority": "EXPLICIT_CANONICAL_PROJECT_PROFILE_VERIFICATION_RESPONSIBILITY_AND_REGISTERED_TEST_MODE_IDS",
+          "mapping_discovery": "MACHINE_DECLARED_RELATIONS_ONLY_NO_INFERENCE_FROM_SOURCE_PATH_OR_TEST_NAME",
+          "migration_unit": "MACHINE_VERIFIED_COMPATIBLE_APPLICABLE_CALLSITE_CAPABILITY_RESPONSIBILITY_TEST_MODE_CLOSURE",
+          "cutover_preconditions": [
+            "NEW_CAPABILITY_CONFORMANCE_VERIFIED",
+            "VPMS_BEHAVIOR_AND_PUBLIC_API_CALLSITE_COMPATIBILITY_PROVEN",
+            "CANONICAL_PROFILE_TEST_MODE_RESOLVER_OWNER_MAP_VERIFIED",
+            "CURRENT_ACTIVE_PUBLIC_COMPATIBILITY_PRESERVED",
+            "SEPARATE_AUTHORIZED_VERSIONED_HANDOFF"
+          ],
+          "fallback": "UNVERIFIED_UNMAPPED_OR_AMBIGUOUS_CALLSITES_AND_VERIFICATION_SCOPE_FAIL_CLOSED_NO_CUTOVER",
+          "test_mode_authority": "CANONICAL_PROFILE_VERIFICATION_RESPONSIBILITY_AND_AUTOMATIC_RESOLVER_V2_UNCHANGED",
+          "current_test_mode_registry": ".github/test_modes.yaml",
+          "existing_migration_plan": "developer/planning/migrations/validation-vpms-staged-handoff.yaml_DRAFT_SEPARATE",
+          "legacy_vpms_public_api": "ACTIVE_UNTIL_SEPARATE_OWNER_APPROVED_VERIFIED_HANDOFF",
+          "legacy_api_retirement": "NOT_APPROVED_SEPARATE_EXPLICIT_OWNER_DECISION_REQUIRED",
+          "legacy_python_code_to_rust": "FORBIDDEN",
+          "contract_schema_and_concrete_caller_test_mode_map": "UNRESOLVED_PLAN_AND_RESPONSIBILITY_EVIDENCE",
+          "registry_ci_mutation": "NOT_AUTHORIZED_BY_THIS_DIRECTION",
+          "runtime_or_implementation_activation": "NOT_AUTHORIZED"
+        },
+        "engine_core_extension_snapshot_manifest_direction": {
+          "decision": "C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "common_core_owner": "CANONICAL_REGISTERED_ENGINE_IDENTITY_AND_ORIGIN",
+          "common_core_static_required_dimensions": [
+            "ENGINE_IDENTITY_AND_ORIGIN",
+            "ENGINE_IMPLEMENTATION_VERSION",
+            "DECLARED_CAPABILITY_IDENTITIES",
+            "DECLARED_DEPENDENCY_RELATIONS",
+            "CAPABILITY_CONTRACT_AND_COMPATIBILITY_REFERENCES"
+          ],
+          "engine_extension_contract": "INDEPENDENT_VERSIONED_REFERENCED_ENGINE_OWNED_MACHINE_CONTRACT",
+          "dependency_declaration": "EXPLICIT_VERSIONED_ENGINE_CAPABILITY_CONTRACT_DEPENDENCY_REFERENCE",
+          "derived_snapshot": "MACHINE_VERIFIED_NONAUTHORITATIVE_CURRENT_REFERENCES_AND_COMPARABLE_DISCOVERY_VIEW",
+          "derived_snapshot_canonical_source": "REGISTERED_FEDERATED_OWNER_CORE_AND_EXTENSION_MANIFESTS",
+          "derived_snapshot_write_or_authority": "NONE",
+          "snapshot_validity": "REQUIRE_CURRENT_SOURCE_IDENTITY_VERSION_CONTRACT_DEPENDENCY_AND_PROOF_FRESHNESS",
+          "stale_invalid_unverifiable_required_reference": "FAIL_CLOSED_AFFECTED_DISCOVERY_OR_ELIGIBILITY_NO_AUTOMATIC_AUTHORITY",
+          "common_core_flexibility": "ENGINE_EXTENSIONS_CANNOT_REDEFINE_COMMON_IDENTITY_OTHER_ENGINE_SEMANTICS_OR_ACTIVE_CONTRACT",
+          "version_independence": "ENGINE_IMPLEMENTATION_VERSION_INDEPENDENT_OF_PTSIP_TOOL_SCHEMA_AND_EXTENSION_CONTRACT_VERSIONS",
+          "implementation_build_environment_and_evidence_details": "MAY_LIVE_IN_VERSIONED_MACHINE_RESOLVABLE_REFERENCED_CONTRACTS",
+          "cross_official_rust_implementation_sharing": "FORBIDDEN",
+          "detailed_core_extension_snapshot_manifest_schema": "UNRESOLVED_CONTRACT_DESIGN",
+          "current_active_runtime": "UNCHANGED_NOT_AUTHORIZED"
+        },
+        "engine_dependency_impact_verification_eligibility_direction": {
+          "decision": "C_EVIDENCE_LINKED_DEPENDENCY_GRAPH_COMPATIBILITY_AND_VERIFICATION_ELIGIBILITY",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "graph": "EXPLICIT_VERSIONED_DIRECT_AND_TRANSITIVE_ENGINE_CAPABILITY_CONTRACT_DEPENDENCIES",
+          "edges": "DECLARED_TYPED_DEPENDENCY_RELATIONS_WITH_SOURCE_AND_COMPATIBILITY_EVIDENCE",
+          "impact_verdicts": [
+            "VERIFIED_COMPATIBLE_UNAFFECTED",
+            "VERIFIED_AFFECTED",
+            "UNCERTAIN_UNVERIFIED"
+          ],
+          "eligibility_result": "DERIVED_MACHINE_VERIFIED_SCOPED_VALIDATION_QUALIFICATION_NOT_EXECUTION_PERMISSION",
+          "verification_selection": "REQUIRES_CURRENT_PROVEN_DEPENDENCY_CLOSURE_AND_PROVIDER_CONSUMER_APPLICABLE_COMPATIBILITY_EVIDENCE",
+          "provider_responsibility": "PUBLISHED_CONTRACT_VERSION_CHANGE_AND_SUPPORTING_EVIDENCE",
+          "consumer_responsibility": "DECLARED_DEPENDENCY_ENVIRONMENT_AND_APPLICABLE_COMPATIBILITY_VERIFICATION",
+          "missing_stale_ambiguous_or_unverifiable_evidence": "FAIL_CLOSED_POTENTIALLY_AFFECTED_VERIFICATION_SCOPE",
+          "unaffected_continuation": "ONLY_MACHINE_VERIFIED_INDEPENDENT_UNAFFECTED_CURRENTLY_ELIGIBLE_CAPABILITIES",
+          "no_global_rebuild_on_proven_compatibility": "PRESERVED",
+          "normative_conformance_owner": "SFP-ASSURE-0001_UNCHANGED",
+          "current_execution_authorization": "EXISTING_GOV_CTRL_REAL_GATES_UNCHANGED",
+          "exact_graph_status_taxonomy_evidence_and_result_schema": "UNRESOLVED_CONTRACT_DESIGN",
+          "activation_or_runtime_change": "NOT_AUTHORIZED"
+        },
+        "engine_federated_static_and_execution_binding_registry_direction": {
+          "decision": "C_FEDERATED_STATIC_REGISTRATION_AND_SEPARATE_EXECUTION_BINDING_REGISTRIES",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "ownership": "OFFICIAL_CONSUMER_EXTERNAL_REGISTRY_OWNERS_RETAIN_FEDERATED_CANONICAL_AUTHORITY",
+          "registry_topology": "LOGICALLY_SEPARATE_STATIC_DISCOVERY_AND_EXECUTION_BINDING_REGISTRIES_WITHIN_EXPLICIT_OWNER_SCOPE",
+          "canonical_static_register": "VERSIONED_ENGINE_IDENTITY_ORIGIN_CAPABILITY_DEPENDENCY_AND_COMPATIBILITY_REFERENCE",
+          "executable_register": "ONLY_EXTERNALLY_INVOCABLE_CAPABILITY_HAS_EXPLICIT_VERSIONED_ENGINE_CAPABILITY_CONTRACT_ENTRYPOINT_TRANSPORT_BINDING",
+          "static_only_engine": "NO_RUNTIME_BINDING_REQUIRED",
+          "registration_time_gate": "VALID_MACHINE_VERIFIED_REQUIRED_BINDING_FOR_EXTERNALLY_INVOCABLE_CAPABILITY_BEFORE_QUALIFIED_REGISTRATION",
+          "registration_binds_authority": "NONE_NO_ACTIVATION_EXECUTION_OR_WRITE_GRANT",
+          "binding_and_contract_change": "DETECT_AND_IMMEDIATELY_REEVALUATE_MACHINE_VERIFIED_AFFECTED_DEPENDENCY_SCOPE",
+          "revoked_or_invalid_binding": "FAIL_CLOSED_AFFECTED_AND_POTENTIALLY_AFFECTED_SCOPES",
+          "independent_unaffected_continuation": "CURRENT_PROVEN_INDEPENDENCE_AND_REGISTRATION_ELIGIBILITY_REQUIRED",
+          "automatic_restoration": "ONLY_WHEN_FRESH_COMPLETE_REGISTERED_CONTRACT_BINDING_DEPENDENCY_EVIDENCE_VERIFIED",
+          "binding_entrypoint_discovery": "NO_PATH_DIRECTORY_NAME_GUESSING",
+          "interface_transport": "PRESERVE_APPROVED_SEMANTICS_NEUTRAL_INDEPENDENT_TRANSPORT_BINDINGS",
+          "active_0_3_8_registered_cli": "SFP-CNTR-0007_UNCHANGED_GENERALIZED_TRANSPORT_OUT_OF_SCOPE",
+          "external_engine_runtime_ownership": "EXTERNAL_OWNER_UNCHANGED",
+          "exact_registry_manifest_entrypoint_and_proof_schema": "UNRESOLVED_CONTRACT_DESIGN",
+          "current_runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -723,7 +821,19 @@
         "old_vpms_public_api_retirement_still_requires_separate_owner_approval": true,
         "generic_validation_capability_contracts_must_remain_independent_and_complete": true,
         "generic_validation_composition_requires_explicit_relationship_and_no_implicit_execution_permission": true,
-        "generic_validation_vpms_case_result_cannot_impersonate_ptsip_assure_conformance": true
+        "generic_validation_vpms_case_result_cannot_impersonate_ptsip_assure_conformance": true,
+        "vpms_test_mode_transition_must_use_explicit_current_caller_capability_profile_responsibility_mapping": true,
+        "vpms_test_mode_mapping_or_adapter_handoff_must_not_retire_current_api_without_separate_owner_approval": true,
+        "engine_common_identity_extension_snapshot_is_derived_non_authoritative_and_version_verified": true,
+        "engine_extension_manifest_cannot_override_canonical_engine_identity_or_other_engine_contracts": true,
+        "engine_dependency_impact_verdict_requires_fresh_declared_graph_and_applicable_provider_consumer_evidence": true,
+        "unknown_impact_or_compatibility_must_not_count_as_verified_unaffected": true,
+        "impact_based_verification_qualification_is_not_runtime_authorization": true,
+        "static_engine_registry_and_execution_binding_registry_have_distinct_contract_responsibilities": true,
+        "federated_owner_remains_canonical_for_both_static_and_execution_binding_registry_sources": true,
+        "externally_invocable_capability_binding_requires_registration_time_verification_even_with_separate_registry": true,
+        "static_only_registered_engine_must_not_require_execution_binding": true,
+        "registry_separation_does_not_expand_active_0_3_8_cli_runtime_authority": true
       },
       "unresolved_decisions": [
         {
@@ -815,22 +925,30 @@
         {
           "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
           "kind": "PLAN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_CONTRACT_CALLER_VERIFICATION_RESPONSIBILITY_TEST_MODE_SCOPED_TRANSITION",
+          "remaining_scope": "VERSIONED_CALLSITE_CAPABILITY_PROFILE_TEST_MODE_PLAN_MAPPING_AND_MACHINE_EVIDENCE"
         },
         {
           "id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_REFERENCES_BINDING_AND_VALIDATION_EVIDENCE"
         },
         {
           "id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_EVIDENCE_LINKED_DEPENDENCY_GRAPH_COMPATIBILITY_AND_VERIFICATION_ELIGIBILITY",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_REFERENCES_BINDING_AND_VALIDATION_EVIDENCE"
         },
         {
           "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_FEDERATED_STATIC_REGISTRATION_AND_SEPARATE_EXECUTION_BINDING_REGISTRIES",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_REFERENCES_BINDING_AND_VALIDATION_EVIDENCE"
         }
       ],
       "activation_requirements": {
@@ -1333,6 +1451,86 @@
           "full_contract_design_complete": false,
           "existing_public_api_and_owner_authorities": "UNCHANGED",
           "engine_runtime_implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN_POLICY_DIRECTION",
+          "source_unresolved_id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
+          "selected_option": "C",
+          "selected_rule": "C_CONTRACT_CALLER_VERIFICATION_RESPONSIBILITY_TEST_MODE_SCOPED_TRANSITION",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "base_comparison_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "current_ACTIVE_authorities": [
+            "SFP-CNTR-0001",
+            "SFP-CNTR-0007",
+            "SFP-ARCH-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "confirmed_direction_only": true,
+          "full_machine_contract_and_plan": "STILL_UNRESOLVED",
+          "legacy_public_api_retirement": "NOT_APPROVED",
+          "active_authority_mutation": "NOT_AUTHORIZED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE_POLICY_DIRECTION",
+          "source_unresolved_id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
+          "selected_option": "C",
+          "selected_rule": "C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "base_comparison_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "current_ACTIVE_authorities": [
+            "SFP-CNTR-0001",
+            "SFP-CNTR-0007",
+            "SFP-ARCH-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "confirmed_direction_only": true,
+          "full_machine_contract_and_plan": "STILL_UNRESOLVED",
+          "legacy_public_api_retirement": "NOT_APPROVED",
+          "active_authority_mutation": "NOT_AUTHORIZED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE_POLICY_DIRECTION",
+          "source_unresolved_id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
+          "selected_option": "C",
+          "selected_rule": "C_EVIDENCE_LINKED_DEPENDENCY_GRAPH_COMPATIBILITY_AND_VERIFICATION_ELIGIBILITY",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "base_comparison_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "current_ACTIVE_authorities": [
+            "SFP-CNTR-0001",
+            "SFP-CNTR-0007",
+            "SFP-ARCH-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "confirmed_direction_only": true,
+          "full_machine_contract_and_plan": "STILL_UNRESOLVED",
+          "legacy_public_api_retirement": "NOT_APPROVED",
+          "active_authority_mutation": "NOT_AUTHORIZED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE_POLICY_DIRECTION",
+          "source_unresolved_id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
+          "selected_option": "C",
+          "selected_rule": "C_FEDERATED_STATIC_REGISTRATION_AND_SEPARATE_EXECUTION_BINDING_REGISTRIES",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-12",
+          "base_comparison_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "current_ACTIVE_authorities": [
+            "SFP-CNTR-0001",
+            "SFP-CNTR-0007",
+            "SFP-ARCH-0001",
+            "SFP-ASSURE-0001"
+          ],
+          "confirmed_direction_only": true,
+          "full_machine_contract_and_plan": "STILL_UNRESOLVED",
+          "legacy_public_api_retirement": "NOT_APPROVED",
+          "active_authority_mutation": "NOT_AUTHORIZED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
