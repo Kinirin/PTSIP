@@ -86,7 +86,18 @@
         "lazy_on_demand_automatically_authorized": false,
         "lazy_on_demand_future_policy_review_required": true,
         "ineligible_engine_startup_result": "NOT_ACTIVATED",
-        "automatic_activation_still_not_operation_execution_authorization": true
+        "automatic_activation_still_not_operation_execution_authorization": true,
+        "startup_partial_failure_choice": "OPTION_A_PROJECT_OWNER_EXPLICIT",
+        "startup_partial_failure_decision_recorded_at": "2026-10-11",
+        "startup_partial_failure_policy": "ISOLATE_INELIGIBLE_ENGINE_AND_CONTINUE_WITH_ELIGIBLE_ENGINES",
+        "startup_eligibility_granularity": "PER_ENGINE_AND_REQUIRED_CAPABILITY",
+        "failed_or_unverified_engine_activation": "EXCLUDE_FROM_ACTIVE_SET",
+        "unaffected_eligible_engine_activation": "CONTINUE",
+        "task_missing_required_capability": "BLOCK_TASK_FAIL_CLOSED",
+        "task_eligibility_requires_registered_contract_and_fresh_ctrl_gate": true,
+        "implicit_substitution_for_missing_required_capability": "FORBIDDEN_WITHOUT_EXISTING_CONTRACT_APPROVED_RESOLUTION",
+        "startup_global_success_from_individual_partial_success": "FORBIDDEN",
+        "partial_startup_does_not_weaken_seven_official_engine_default_availability_commitment": true
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -156,7 +167,18 @@
         "startup_activation_no_per_engine_prompt_when_predelegation_is_verified": true,
         "startup_automatic_activation_does_not_imply_automatic_operation_invocation": true,
         "startup_policy_alone_does_not_activate_current_draft_runtime": true,
-        "delayed_lazy_activation_is_not_current_release_requirement": true
+        "delayed_lazy_activation_is_not_current_release_requirement": true,
+        "partial_startup_failure_must_not_block_independent_eligible_engines": true,
+        "failed_or_ineligible_engine_cannot_be_marked_activated": true,
+        "ineligible_engine_capabilities_must_not_be_reported_as_executable": true,
+        "startup_partial_activation_must_preserve_each_engine_identity_and_outcome": true,
+        "task_requiring_unavailable_capability_cannot_begin": true,
+        "task_block_must_not_be_bypassed_by_missing_or_ambiguous_capability_binding": true,
+        "availability_not_equal_to_execution_authorization": true,
+        "partial_startup_does_not_make_unknown_activation_side_effect_safe": true,
+        "partial_startup_cannot_override_existing_canonical_source_and_recovery_gates": true,
+        "startup_partial_failure_direction_does_not_activate_draft_runtime": true,
+        "default_official_engine_distribution_obligation_not_silently_redefined": true
       },
       "unresolved_decisions": [
         {
@@ -301,6 +323,24 @@
         },
         "concrete_startup_hook_and_activation_sequence": "PLAN_AND_MACHINE_CONTRACT",
         "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
+      },
+      "startup_partial_failure_direction": {
+        "policy_subject": "ENGINE_STARTUP_PARTIAL_ACTIVATION_FAILURE",
+        "resolution": "A_PARTIAL_ACTIVATION",
+        "scope": "PER_ENGINE_ACTIVATION_ELIGIBILITY_AND_TASK_GATES",
+        "on_eligible_engine": "ACTIVATE_INDEPENDENTLY_AT_STARTUP",
+        "on_ineligible_or_unverified_engine": "DO_NOT_ACTIVATE_EXCLUDE_FROM_ACTIVE_SET",
+        "startup_continuation": "CONTINUE_WITH_ELIGIBLE_ENGINES",
+        "capability_availability_authority": "EXISTING_REGISTERED_CAPABILITY_CONTRACTS",
+        "required_task_capability_unavailable": "BLOCK_AFFECTED_TASK_FAIL_CLOSED",
+        "partial_startup_not_equal_to_full_feature_readiness": true,
+        "activation_outcome_does_not_grant_execution_permission": true,
+        "unknown_partial_effect_recovery": "EXISTING_CTRL_REAL_OPS_GATES",
+        "official_engine_default_availability_ref": "SFP-CNTR-0005",
+        "official_engine_default_availability_changed": false,
+        "future_automatic_retry_policy": "NOT_DECIDED",
+        "implementation_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION",
+        "validation_and_status_report_interface": "PLAN_AND_MACHINE_CONTRACT"
       }
     }
   },
