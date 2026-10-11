@@ -116,9 +116,18 @@
         "cleanup_without_machine_verified_retention_release": "FORBIDDEN",
         "cleanup_without_fresh_effective_mutation_authority": "FORBIDDEN",
         "cleanup_target_is_original_evidence_or_mandatory_record": "FORBIDDEN",
-        "cleanup_trigger_or_schedule": "UNRESOLVED_SEPARATE_POLICY",
+        "cleanup_trigger_or_schedule": "REUSE_INELIGIBILITY_EVENT_AS_CLEANUP_CANDIDATE_ONLY",
         "cleanup_execution_and_failure_contract": "PLAN_AND_MACHINE_CONTRACT_WITH_EXISTING_CTRL_REAL_OPS",
-        "no_new_record_retention_override": true
+        "no_new_record_retention_override": true,
+        "evidence_cache_cleanup_trigger_choice": "A_USER_EXPLICIT",
+        "evidence_cache_cleanup_trigger_decision_date": "2026-10-11",
+        "cleanup_attempt_boundary": "SEPARATE_FRESHLY_AUTHORIZED_MUTATING_OPERATION",
+        "cleanup_trigger_grants_execution_authority": false,
+        "cleanup_trigger_grants_retention_release": false,
+        "cleanup_trigger_alone_requires_inline_deletion": false,
+        "cleanup_independent_periodic_scan_required_for_current_release": false,
+        "cleanup_read_only_reuse_validation_side_effect": "NONE",
+        "cleanup_retry_or_secondary_scheduling": "PLAN_WITHOUT_NEW_AUTHORITY"
       },
       "invariants": {
         "every_record_keeps_origin_and_observation_context": true,
@@ -193,7 +202,16 @@
         "cleanup_eligibility_judgment_is_not_execution_or_write_permission": true,
         "cleanup_must_not_modify_read_only_operation_side_effects": true,
         "separately_approved_activation_draft_not_automatically_activated": true,
-        "cleanup_trigger_not_silently_decided_by_permission_direction": true
+        "cleanup_trigger_not_silently_decided_by_permission_direction": true,
+        "evidence_cache_reuse_denial_may_identify_cleanup_candidate": true,
+        "cleanup_candidate_recognition_is_not_cleanable_proof": true,
+        "no_inline_mutation_from_read_only_reuse_check": true,
+        "candidate_trigger_does_not_bypass_retention_reference_or_source_separation_proof": true,
+        "candidate_trigger_does_not_bypass_fresh_ctrl_delegation_and_real_write_integrity": true,
+        "no_cleanup_of_uncertain_or_incomplete_evidence_without_verified_release": true,
+        "standalone_cleanup_sweep_not_required_for_current_release": true,
+        "automatic_cleanup_attempt_rechecks_all_gates_at_actual_execution": true,
+        "cleanup_trigger_selection_does_not_activate_draft_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -205,12 +223,6 @@
           "id": "EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
-        },
-        {
-          "id": "EVIDENCE_CACHE_AUTOMATIC_CLEANUP_TRIGGER",
-          "kind": "USER_DECISION",
-          "status": "UNRESOLVED",
-          "reason": "AUTOMATION_PERMISSION_DOES_NOT_SELECT_EXECUTION_TRIGGER_OR_SCHEDULE"
         }
       ],
       "activation_requirements": {
@@ -345,13 +357,20 @@
         "cleanup_authorization_created_by_this_draft": false,
         "cache_invalidity_alone_authorizes_deletion": false,
         "source_and_mandatory_records": "MUST_PRESERVE",
-        "cleanup_trigger": "UNRESOLVED_USER_POLICY_DECISION",
+        "cleanup_trigger": "ON_EVIDENCE_CACHE_REUSE_INELIGIBILITY_VERDICT",
         "proof_interface_cleanup_operation_and_failure_details": "PLAN_AND_MACHINE_CONTRACT",
         "record_responsibility": "PROVENANCE_AND_RETENTION_ELIGIBILITY_BOUNDARY",
         "ctrl_responsibility": "FRESH_EXECUTION_AUTHORIZATION",
         "real_responsibility": "MUTATION_INTEGRITY",
         "assure_responsibility": "VERIFIED_REUSE_INELIGIBILITY",
-        "current_effect": "DRAFT_ONLY_NO_CLEANUP_EXECUTION_OR_ACTIVE_TRANSITION"
+        "current_effect": "DRAFT_ONLY_NO_CLEANUP_EXECUTION_OR_ACTIVE_TRANSITION",
+        "trigger_effect": "CANDIDATE_IDENTIFICATION_ONLY",
+        "attempt_execution_boundary": "SEPARATE_EFFECTIVE_CTRL_AUTHORIZED_REAL_MUTATION",
+        "if_verification_is_read_only": "NO_MUTATION_OR_STATE_MATERIALIZATION",
+        "check_all_existing_gates_again_at_cleanup_execution": true,
+        "background_independent_sweep_current_release_requirement": false,
+        "event_buffering_scheduling_and_idempotency": "PLAN_AND_MACHINE_CONTRACT",
+        "no_new_execution_rights_from_event": true
       }
     }
   },
