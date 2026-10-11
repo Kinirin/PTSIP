@@ -1,0 +1,13 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261011-PLAN-REVIEW-RECONCILE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "RECONCILE 방식으로 하도록 하겠습니다. 현재 WU-03-P02.yaml 및 그 이후 후속 계획을 사용자가 검토하되 검토나 부분 수정만으로 기존 계획 승인 상태를 자동 변경하지 않습니다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  recorded_at: '2026-10-11'
