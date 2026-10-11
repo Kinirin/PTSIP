@@ -294,6 +294,66 @@
           "concrete_transport_adapter_manifest_io_error_encoding": "REMAIN_UNRESOLVED_CONTRACT_DESIGN",
           "implementation_authorization": "NOT_GRANTED",
           "draft_runtime_activation": "NOT_AUTHORIZED"
+        },
+        "capability_operation_contract_granularity": {
+          "selected_option": "B_INDEPENDENT_FULL_CAPABILITY_OPERATION_CONTRACTS",
+          "scope": "EACH_EXTERNALLY_SUPPORTED_CAPABILITY_AND_DECLARED_OPERATION_OWNS_COMPLETE_VERSIONED_NORMATIVE_SEMANTIC_CONTRACT",
+          "contract_granularity": "CAPABILITY_SELF_CONTAINED_WITH_EXPLICIT_OPERATION_IDENTITIES_AND_OPERATION_SPECIFIC_OBLIGATIONS",
+          "required_contract_dimensions": [
+            "ENGINE_IDENTITY",
+            "CAPABILITIES",
+            "TYPED_INPUT_OUTPUT",
+            "PRECONDITIONS",
+            "POSTCONDITIONS",
+            "SIDE_EFFECTS",
+            "DECLARED_PERMISSION_REQUIREMENTS",
+            "FAILURE_SEMANTICS",
+            "VERIFICATION_EVIDENCE",
+            "COMPATIBILITY"
+          ],
+          "declared_operation_fields": "EACH_DECLARED_OPERATION_TIED_TO_TYPED_IO_PRE_POST_SIDE_EFFECT_PERMISSION_FAILURE_EVIDENCE_COMPATIBILITY",
+          "normative_ownership": "CAPABILITY_PROVIDER_SINGLE_DECLARED_SEMANTIC_OWNER",
+          "contract_version": "EACH_CAPABILITY_HAS_INDEPENDENT_MACHINE_VERIFIABLE_CONTRACT_VERSION_AND_COMPATIBILITY_EVIDENCE",
+          "independent_contract": "MUST_NOT_INFER_SEMANTICS_FROM_ANOTHER_CAPABILITY_IMPLEMENTATION_OR_OPERATION",
+          "engine_identity": "REUSE_REGISTERED_COMMON_ENGINE_IDENTITY_REFERENCE_WITHOUT_MERGING_CAPABILITY_SEMANTICS",
+          "allowed_shared_machine_meta_schema": "VALIDATION_VOCABULARY_AND_IDENTITY_REFERENCES_ONLY_NOT_SHARED_CAPABILITY_SEMANTIC_OWNER",
+          "unsupported_or_unregistered_operation": "FAIL_CLOSED",
+          "active_shipped_operation_contract": "SFP-CNTR-0001_UNCHANGED",
+          "activation_execution_or_write_permission": "NOT_GRANTED_BY_CONTRACT_DECLARATION",
+          "detailed_schema_and_operation_shape": "UNRESOLVED_CONTRACT_DESIGN"
+        },
+        "registry_namespace_authority_and_derived_discovery": {
+          "selected_option": "C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX",
+          "registry_ownership": "OFFICIAL_CONSUMER_EXTERNAL_EACH_RETAINS_OWN_CANONICAL_SOURCE",
+          "source_registry_binding": "EXPLICIT_REGISTERED_OWNER_NAMESPACE_ORIGIN_IDENTITY_VERSION_AND_PROVENANCE",
+          "authoritative_registry": "THE_REGISTERED_SOURCE_OWNER_NOT_THE_DERIVED_INDEX",
+          "discovery_index": "DERIVED_NONAUTHORITATIVE_MACHINE_VERIFIED_SOURCE_BOUND_VIEW",
+          "discovery_index_write_authority": "NONE",
+          "index_refresh_eligibility": "REQUIRE_CURRENT_SOURCE_IDENTITY_REVISION_AND_APPLICABLE_CONTRACT_EVIDENCE",
+          "stale_ambiguous_conflicting_unknown_registry_binding": "FAIL_CLOSED_AFFECTED_DISCOVERY_REGISTRATION_AND_SELECTION",
+          "source_or_namespace_inference_from_folder": "FORBIDDEN",
+          "global_single_owner_registry": "FORBIDDEN",
+          "unrelated_independent_valid_registrations": "PRESERVED_WHEN_AFFECTED_SCOPE_MACHINE_PROVEN",
+          "registry_registration_is_execution_permission": false,
+          "current_repository_policy_catalog_or_ci_subject_registry_mutation": "NOT_AUTHORIZED_BY_THIS_POLICY_CHOICE",
+          "active_consumer_and_external_ownership": "PRESERVED",
+          "exact_federation_index_schema_namespace_resolution_and_reconciliation": "UNRESOLVED_CONTRACT_DESIGN"
+        },
+        "engine_registration_and_derived_state_separation": {
+          "selected_option": "C_REGISTERED_NORMATIVE_CONTRACT_SEPARATE_FROM_NONAUTHORITATIVE_DERIVED_STATE",
+          "registration_source": "CANONICAL_DECLARED_ENGINE_IDENTITY_VERSION_CAPABILITY_CONTRACTS_AND_PROVEN_BINDINGS",
+          "registry_status": "VERIFIED_CURRENT_ELIGIBILITY_NOT_RUNTIME_EXECUTION_AUTHORIZATION",
+          "state_plane": "SEPARATE_PERSISTED_OR_COMPUTED_NONAUTHORITATIVE_DERIVED_STATE",
+          "cached_execution_and_verification_state": "MUST_NOT_BE_TREATED_AS_CONTRACT_OR_PERMISSIONS_AUTHORITY",
+          "reuse": "ONLY_WHEN_CURRENT_SOURCE_NORMATIVE_CONTRACT_DEPENDENCIES_AND_REQUIRED_EVIDENCE_MACHINE_VERIFIED",
+          "failure_or_unknown_staleness": "INELIGIBLE_FOR_REUSE_AND_FAIL_CLOSED_WHEN_REUSE_REQUIRED",
+          "binding_change": "PRESERVE_IMMEDIATE_AFFECTED_SCOPE_REEVALUATION_AND_CURRENT_ELIGIBILITY_PROOF",
+          "explicit_registered_invocation_binding": "REQUIRED_FOR_EXTERNALLY_INVOCABLE_CAPABILITY_ONLY",
+          "state_reuse_relation_to_info_draft": "SFP-INFO-0008_DRAFT_DIRECTION_COMPATIBLE_NOT_IMPORTED_AS_ACTIVE_AUTHORITY",
+          "existing_arch_engine_state_schema_runtime": "SFP-ARCH-0001_DEFERRED_UNCHANGED",
+          "current_execution_authority": "CURRENT_GOV_CTRL_REAL_ASSURE_GATES_UNCHANGED",
+          "registration_or_derived_state_is_grant": false,
+          "exact_registration_schema_state_serialization_ttl_invalidation_and_recovery": "UNRESOLVED_CONTRACT_DESIGN"
         }
       },
       "invariants": {
@@ -478,23 +538,39 @@
         "externally_invocable_capability_transport_binding_must_be_registered_identity_version_and_contract_bound": true,
         "transport_independence_never_waives_current_ctrl_permission_or_registration_gate": true,
         "active_0_3_8_registered_cli_scope_is_not_generalized_by_draft_transport_policy": true,
-        "official_rust_engine_transport_implementations_must_remain_independent": true
+        "official_rust_engine_transport_implementations_must_remain_independent": true,
+        "capability_contracts_are_complete_independently_versioned_normative_units": true,
+        "capability_operation_semantics_cannot_be_inferred_from_other_capabilities": true,
+        "common_engine_identity_schema_does_not_merge_capability_contract_owners": true,
+        "registry_discovery_index_cannot_be_canonical_registration_or_namespace_source": true,
+        "federated_registry_owner_provenance_and_source_revision_must_be_verifiable": true,
+        "stale_unknown_or_ambiguous_index_entries_fail_closed_with_proven_affected_scope": true,
+        "registered_engine_contract_and_non_authoritative_derived_state_have_distinct_authority": true,
+        "persisted_or_cached_state_cannot_grant_reuse_activation_execution_or_write_authority": true,
+        "current_reuse_eligibility_requires_machine_verified_applicable_contract_source_and_dependency_evidence": true,
+        "existing_deferred_engine_state_and_runtime_remain_deferred": true
       },
       "unresolved_decisions": [
         {
           "id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "B_INDEPENDENT_FULL_CAPABILITY_OPERATION_CONTRACTS",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_BINDING_AND_VERIFICATION_DESIGN"
         },
         {
           "id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_BINDING_AND_VERIFICATION_DESIGN"
         },
         {
           "id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
           "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
+          "status": "UNRESOLVED",
+          "approved_policy_direction": "C_REGISTERED_NORMATIVE_CONTRACT_SEPARATE_FROM_NONAUTHORITATIVE_DERIVED_STATE",
+          "remaining_scope": "EXACT_MACHINE_CONTRACT_SCHEMA_BINDING_AND_VERIFICATION_DESIGN"
         },
         {
           "id": "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP",
@@ -870,6 +946,58 @@
           "contract_design_completion": "NOT_CLAIMED",
           "policy_status": "DRAFT_UNCHANGED",
           "runtime_implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES_POLICY_DIRECTION",
+          "source_unresolved_id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+          "selected_option": "B",
+          "selected_rule": "B_INDEPENDENT_FULL_CAPABILITY_OPERATION_CONTRACTS",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_active_policies": [
+            "SFP-CNTR-0001"
+          ],
+          "conflict_comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "policy_granularity": "APPROVED_DIRECTION_ONLY",
+          "full_machine_contract_schema": "NOT_YET_RESOLVED",
+          "remaining_unresolved_id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
+          "active_policy_mutation": "NOT_AUTHORIZED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING_POLICY_DIRECTION",
+          "source_unresolved_id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
+          "selected_option": "C",
+          "selected_rule": "C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_active_policies": [
+            "SFP-CNTR-0001"
+          ],
+          "conflict_comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "policy_granularity": "APPROVED_DIRECTION_ONLY",
+          "full_machine_contract_schema": "NOT_YET_RESOLVED",
+          "remaining_unresolved_id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
+          "active_policy_mutation": "NOT_AUTHORIZED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA_POLICY_DIRECTION",
+          "source_unresolved_id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
+          "selected_option": "C",
+          "selected_rule": "C_REGISTERED_NORMATIVE_CONTRACT_SEPARATE_FROM_NONAUTHORITATIVE_DERIVED_STATE",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_active_policies": [
+            "SFP-ARCH-0001",
+            "SFP-CNTR-0001"
+          ],
+          "conflict_comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "policy_granularity": "APPROVED_DIRECTION_ONLY",
+          "full_machine_contract_schema": "NOT_YET_RESOLVED",
+          "remaining_unresolved_id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
+          "active_policy_mutation": "NOT_AUTHORIZED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
