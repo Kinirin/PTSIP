@@ -9,14 +9,17 @@
     "title": "0.3.8 Context Evidence candidate: completed revision refresh and outstanding validation",
     "classification": "DEVELOPMENT",
     "lifecycle": {
-      "status": "DRAFT"
+      "status": "BLOCKED"
     }
   },
   "approval": {
-    "status": "PENDING"
+    "status": "APPROVED",
+    "approval_source": "USER_EXPLICIT",
+    "authority": "PROJECT_OWNER_FULL_PLAN_APPROVAL_2026_10_11"
   },
   "implementation_authorization": {
-    "status": "NOT_AUTHORIZED"
+    "status": "AUTHORIZED",
+    "authorization_source": "USER_EXPLICIT"
   },
   "depends_on": [],
   "identity_and_registration": {
@@ -25,11 +28,11 @@
     "parent_ref": "developer/planning/0.3.8/WU-01/WU-01.yaml",
     "intended_parent_work_unit": "WU-01",
     "intended_parent_registration": "APPROVED_REGISTERED",
-    "parent_extension_registration": "REGISTERED_FOR_REVIEW_ONLY",
+    "parent_extension_registration": "REGISTERED_APPROVED_BUT_BLOCKED_BY_PENDING_VERIFICATION",
     "proposal_is_registered_executable_work_unit": false,
     "approval_does_not_implicitly_register_missing_parent": false,
     "registration_requires_explicit_current_release_parent_approval_and_registration": false,
-    "entrypoint_or_policy_plan_binding_mutation": "NO_POLICY_BINDING_OR_IMPLEMENTATION_AUTHORITY_FROM_REVIEW_REGISTRATION"
+    "entrypoint_or_policy_plan_binding_mutation": "APPROVED_PLAN_ONLY_NO_POLICY_OR_RUNTIME_AUTHORITY"
   },
   "objective": {
     "source_review_branch": "dev/0.3.8",
@@ -146,10 +149,12 @@
     "workflow_mutation": "FORBIDDEN",
     "new_implementation_permission_from_this_draft_plan": false,
     "existing_p0_p1_candidate_runtime_state": "CANDIDATE_ONLY_NO_MUTATION",
-    "last_result": "PARENT_REGISTERED_CHILD_REVIEW_ONLY_RV01_PASS_VALIDATION_PENDING",
+    "last_result": "USER_APPROVED_PLAN_RV01_PASS_VERIFICATION_REMEDIATION_AUTHORIZED_RUNTIME_FORBIDDEN",
     "plan_index_mutation": "NO_TOP_LEVEL_CHANGE_NEEDED_FOR_CHILD_REVIEW_REGISTRATION",
     "plan_schema_mutation": "NOT_REQUIRED",
-    "prerelease_plan_mutation": "FORBIDDEN"
+    "prerelease_plan_mutation": "FORBIDDEN",
+    "approved_plan_implementation_scope": "POLICY_BOUND_READ_ONLY_CONTEXT_EVIDENCE_CANDIDATE_VERIFICATION_AND_REQUIRED_TEST_REMEDIATION_ONLY",
+    "approval_does_not_override_blockers": true
   },
   "routing": {
     "branch": "dev/0.3.8",
@@ -160,14 +165,17 @@
     "current_gate": "WU-01",
     "intended_parent_work_unit": "WU-01",
     "parent_work_unit_registered": true,
-    "plan_admission": "REGISTERED_EXTENSION_FOR_USER_REVIEW_NOT_APPROVED",
+    "plan_admission": "APPROVED_EXTENSION_CURRENT_RELEASE_PENDING_VERIFICATION",
     "current_plan_lookup": "CURRENT_RELEASE_PLAN_CONTENT_ONLY",
     "historical_plan_lookup": "FORBIDDEN_THIS_PLAN_NO_CROSS_VERSION_LOOKUP",
-    "release_plan_registration": "REVIEW_ONLY_EXTENSION_REGISTERED",
+    "release_plan_registration": "REGISTERED_APPROVED_EXTENSION",
     "work_units_registration_requires_user_approved_work_unit": true,
     "plan_schema_mutation": "NOT_REQUIRED_BY_THIS_PLAN_CORRECTION",
     "review_registration_is_execution_authority": false,
-    "review_registration_is_approval": false
+    "review_registration_is_approval": true,
+    "approval_source": "USER_EXPLICIT",
+    "implementation_scope": "APPROVED_P0_P1_CANDIDATE_VERIFICATION_ONLY",
+    "implementation_remains_blocked_by_required_validation": true
   },
   "completed_changes": {
     "status": "APPLIED_EVIDENCE_NOT_OUTSTANDING_IMPLEMENTATION",
@@ -217,7 +225,7 @@
     }
   },
   "remaining_validation": {
-    "status": "RV01_PASS_RV02_AND_RV04_CI_PENDING_RV03_BLOCKED_RV05_PENDING",
+    "status": "RV01_PASS_RV03_APPROVED_RV02_RV04_AND_RV05_REQUIRED_VALIDATION_BLOCKED",
     "verification_owner": "CURRENT_0_3_8_RELEASE_PLANNING",
     "completed_reference_update_must_not_be_repeated": true,
     "tasks": [
@@ -261,22 +269,22 @@
       {
         "id": "RV-03",
         "responsibility": "CURRENT_RELEASE_AUTHORITY_AND_PARENT_REGISTRATION",
-        "state": "PARENT_APPROVED_CHILD_REVIEW_REGISTRATION_CONFIRMED_APPROVAL_PENDING",
-        "action": "Confirm WU-01 is registered with USER_EXPLICIT approval and no implementation authority, WU-01-P01 is listed exactly once in the parent extensions as DRAFT, and keep child approval PENDING and runtime forbidden until separately reviewed and approved.",
-        "pass_condition": "REGISTERED_APPROVED_PARENT_AND_REGISTERED_REVIEW_ONLY_CHILD_WITHOUT_CHILD_APPROVAL_OR_EXECUTION_AUTHORITY",
+        "state": "PARENT_AND_CHILD_APPROVED_REGISTRATION_CONFIRMED_VERIFICATION_BLOCKED",
+        "action": "Confirm the current release WU-01 is registered with explicit user approval and WU-01-P01 is explicitly user-approved and registered as its unique extension. Keep the parent and child BLOCKED while RV-02/RV-05 validation and normative policy restrictions remain unmet.",
+        "pass_condition": "APPROVED_REGISTERED_PARENT_AND_APPROVED_REGISTERED_CHILD_WITH_NO_RUNTIME_OR_NORMATIVE_AUTHORITY",
         "failure": "REVIEW_ONLY_NOT_EXECUTABLE",
         "evidence": {
           "index_ref": "developer/planning/0.3.8/index.yaml",
           "parent_ref": "developer/planning/0.3.8/WU-01/WU-01.yaml",
           "child_ref": "developer/planning/0.3.8/WU-01/WU-01-P01.yaml",
-          "parent_registered_approved": true,
-          "parent_lifecycle": "BLOCKED",
-          "child_registration_authorized_by": "USER_EXPLICIT_REVIEW_REGISTRATION_ONLY",
-          "child_approval": "PENDING",
-          "implementation_authorization": "NOT_AUTHORIZED",
+          "parent_approval": "APPROVED_USER_EXPLICIT",
+          "child_approval": "APPROVED_USER_EXPLICIT_2026_10_11",
+          "child_lifecycle": "BLOCKED",
           "current_gate": "WU-01",
           "registered_work_units": 1,
-          "child_is_top_level_work_unit": false
+          "child_is_top_level_work_unit": false,
+          "implementation_scope": "VERIFICATION_ONLY",
+          "runtime_activation": "FORBIDDEN"
         }
       },
       {
@@ -315,5 +323,13 @@
       }
     ],
     "required_release_approval_and_implementation_remain_separate": true
+  },
+  "approval_evidence": {
+    "decision": "USER_EXPLICIT_FULL_PLAN_APPROVAL",
+    "date": "2026-10-11",
+    "scope": "CURRENT_RELEASE_WU_01_P01",
+    "policy_change_permission": false,
+    "runtime_activation_permission": false,
+    "completion_claim": false
   }
 }
