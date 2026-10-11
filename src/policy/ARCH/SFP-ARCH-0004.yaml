@@ -162,7 +162,29 @@
         "official_engine_implementation_language": "RUST",
         "official_engine_implementation_language_scope": "SEVEN_OFFICIAL_ENGINES_ONLY",
         "official_engine_language_neutral_contract": "PRESERVED",
-        "consumer_user_external_engine_language_policy": "UNCHANGED"
+        "consumer_user_external_engine_language_policy": "UNCHANGED",
+        "official_engine_legacy_python_implementation_boundary": {
+          "scope": "SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY",
+          "prohibited_source": "EXISTING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION",
+          "prohibition": "ALL_LEGACY_PYTHON_IMPLEMENTATION_RELOCATION_REUSE_AND_SHARING_FORBIDDEN",
+          "prohibited_operations": [
+            "MOVE_LEGACY_PYTHON_SOURCE_INTO_OFFICIAL_ENGINE",
+            "COPY_LEGACY_PYTHON_SOURCE_INTO_OFFICIAL_ENGINE",
+            "TRANSLATE_OR_PORT_LEGACY_PYTHON_IMPLEMENTATION_AS_ENGINE_IMPLEMENTATION",
+            "REUSE_LEGACY_PYTHON_MODULE_OR_IMPLEMENTATION",
+            "SHARE_LEGACY_PYTHON_IMPLEMENTATION_WITH_OFFICIAL_ENGINE",
+            "LINK_WRAP_BRIDGE_OR_DELEGATE_OFFICIAL_ENGINE_IMPLEMENTATION_TO_LEGACY_PYTHON_RUNTIME"
+          ],
+          "implementation_source": "NEW_INDEPENDENT_RUST_IMPLEMENTATION_DERIVED_FROM_EFFECTIVE_POLICY_AND_LANGUAGE_NEUTRAL_MACHINE_CONTRACT",
+          "runtime_dependency_on_legacy_ptsip_python_implementation": "FORBIDDEN",
+          "normative_contract_reuse": "PRESERVED_LANGUAGE_NEUTRAL_CONTRACTS_NOT_LEGACY_PYTHON_IMPLEMENTATIONS",
+          "existing_active_public_api_and_vpms_transition": "PRESERVED_UNTIL_SEPARATELY_AUTHORIZED_AND_VERIFIED",
+          "existing_legacy_implementation_modification": "NOT_AUTHORIZED_BY_THIS_DECISION",
+          "consumer_and_registered_external_engine_language_scope": "UNAFFECTED",
+          "unrelated_rust_sharing_policy": "UNCHANGED_SEPARATE_POLICY_DECISION",
+          "new_engine_implementation_authorization": "NOT_GRANTED",
+          "draft_runtime_activation": "NOT_AUTHORIZED"
+        }
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -303,14 +325,13 @@
         "no_standardized_internal_directory_depth_or_management_subdirectory_forced": true,
         "physical_layout_delegation_is_not_permission_to_create_directories_relocate_code_or_activate_runtime": true,
         "plan_level_internal_path_selection_is_not_seven_official_directory_policy_change": true,
-        "approved_layout_authority_does_not_change_existing_active_policy_roles": true
+        "approved_layout_authority_does_not_change_existing_active_policy_roles": true,
+        "official_rust_engines_must_not_relocate_copy_translate_reuse_or_share_existing_ptsip_python_implementations": true,
+        "official_rust_engines_must_not_depend_on_legacy_ptsip_python_runtime_or_wrappers": true,
+        "language_neutral_contract_reuse_does_not_allow_reuse_of_legacy_python_implementation": true,
+        "previous_active_public_interface_and_vpms_migration_boundaries_remain_in_force": true
       },
       "unresolved_decisions": [
-        {
-          "id": "EXISTING_MODULE_DIRECT_MOVE_OR_REUSE_MAPPING",
-          "kind": "RESPONSIBILITY_ANALYSIS",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "CURRENT_DECLARED_COMPONENT_BOUNDARY_RECONCILIATION",
           "kind": "RESPONSIBILITY_ANALYSIS",
@@ -701,6 +722,25 @@
           "policy_status": "DRAFT_UNCHANGED",
           "implementation_authorization": "NOT_GRANTED",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "LEGACY_PYTHON_MODULE_MOVE_REUSE_SHARING_POLICY",
+          "source_unresolved_id": "EXISTING_MODULE_DIRECT_MOVE_OR_REUSE_MAPPING",
+          "selected_option": "FORBID_ALL_LEGACY_PYTHON_IMPLEMENTATION_MOVE_REUSE_SHARING",
+          "decision_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "conflicting_prior_policy": "SFP-ARCH-0004",
+          "conflicting_prior_at_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "conflicting_prior_rule": "EXPLICIT_SINGLE_OWNER_SHARING_AND_FLEXIBLE_IMPLEMENTATION_REUSE_PERMITTED",
+          "scope_of_override": "SEVEN_OFFICIAL_RUST_ENGINES_REUSING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION_ONLY",
+          "resolution": "KEEP_LATEST_SCOPED_LEGACY_PROHIBITION",
+          "prior_permission_outside_target_scope": "PRESERVED",
+          "mapping_resolution": "NO_LEGACY_PYTHON_MODULE_MOVE_OR_REUSE_MAPPING_REQUIRED",
+          "remaining_component_and_capability_ownership_reconciliation": "PRESERVED_UNRESOLVED",
+          "language_neutral_contracts": "PRESERVED",
+          "active_policy": "UNCHANGED",
+          "policy_status": "DRAFT_UNCHANGED",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
