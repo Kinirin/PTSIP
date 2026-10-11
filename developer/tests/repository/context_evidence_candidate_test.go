@@ -14,7 +14,6 @@ import (
 const identityCandidate = "src/agent_contracts/contracts/context-evidence-identity.json"
 const identityVectors = "src/agent_contracts/conformance/context-evidence-identity.json"
 const identitySchema = "src/agent_contracts/schemas/candidate-context-evidence.schema.json"
-const identityPlan = "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml"
 
 func candidateDocument(t *testing.T, r *testrepo.Repository, ref string) testrepo.Object {
 	t.Helper()
@@ -28,7 +27,7 @@ func candidateDocument(t *testing.T, r *testrepo.Repository, ref string) testrep
 func identityCandidateFixture(t *testing.T) *testrepo.Repository {
 	t.Helper()
 	r := testrepo.Open(t.TempDir())
-	testrepo.CopyTree(t, r, "developer/policy", "developer/planning", "developer/bindings", "src/policy")
+	testrepo.CopyTree(t, r, "developer/policy", "src/policy")
 	testrepo.CopyFiles(t, r, "pyproject.toml", identityCandidate, identityVectors, identitySchema)
 	return r
 }
@@ -46,7 +45,7 @@ func TestNativeContextEvidenceCandidate(t *testing.T) {
 		t.Fatal("source composition specialization changed the common kernel definition shape")
 	}
 	before := map[string]string{}
-	for _, ref := range []string{identityCandidate, identityVectors, identitySchema, identityPlan, "src/policy/INFO/SFP-INFO-0007.yaml"} {
+	for _, ref := range []string{identityCandidate, identityVectors, identitySchema, "src/policy/INFO/SFP-INFO-0007.yaml"} {
 		path, _ := r.Path(ref)
 		raw, err := os.ReadFile(path)
 		if err != nil {
@@ -93,7 +92,7 @@ func TestNativeContextEvidenceCandidate(t *testing.T) {
 
 func TestNativeContextEvidenceCandidateFailsClosed(t *testing.T) {
 	binary := testrepo.BuildCLI(t)
-	for _, change := range []string{"activate", "four_roles", "weaken_history", "dangling_gate", "semantic_id", "wrong_proof_type", "vector_mismatch", "current_policy_change", "missing_policy_registration", "plan_unapproved"} {
+	for _, change := range []string{"activate", "four_roles", "weaken_history", "dangling_gate", "semantic_id", "wrong_proof_type", "vector_mismatch", "current_policy_change", "missing_policy_registration", "legacy_plan_ref", "stale_inventory"} {
 		t.Run(change, func(t *testing.T) {
 			r := identityCandidateFixture(t)
 			module := testrepo.ReadJSON(t, r, identityCandidate)
@@ -143,9 +142,10 @@ func TestNativeContextEvidenceCandidateFailsClosed(t *testing.T) {
 						row["path"] = "INFO/unregistered.yaml"
 					}
 				}
-			case "plan_unapproved":
-				ref, value = identityPlan, candidateDocument(t, r, identityPlan)
-				value["approval"].(map[string]any)["status"] = "PENDING"
+			case "legacy_plan_ref":
+				module["plan_ref"] = "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml"
+			case "stale_inventory":
+				module["inventory"].(map[string]any)["source_revision"] = "stale-revision"
 			}
 			testrepo.WriteJSON(t, r, ref, value)
 			_, err, output := testrepo.CLI(t, binary, r.Root, "agent-context-migration", "verify", "--stage", "CONTEXT_EVIDENCE_CANDIDATE")
