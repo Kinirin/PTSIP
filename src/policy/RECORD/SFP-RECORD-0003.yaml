@@ -211,7 +211,11 @@
         "no_cleanup_of_uncertain_or_incomplete_evidence_without_verified_release": true,
         "standalone_cleanup_sweep_not_required_for_current_release": true,
         "automatic_cleanup_attempt_rechecks_all_gates_at_actual_execution": true,
-        "cleanup_trigger_selection_does_not_activate_draft_runtime": true
+        "cleanup_trigger_selection_does_not_activate_draft_runtime": true,
+        "cleanup_failure_must_preserve_mandatory_record_and_original_evidence": true,
+        "cleanup_failure_cannot_be_reclassified_as_success_due_to_other_successful_operations": true,
+        "cleanup_failure_record_information_does_not_grant_recovery_or_write_permission": true,
+        "cleanup_failure_unknown_effect_requires_ops_safety_classification": true
       },
       "unresolved_decisions": [
         {
@@ -370,7 +374,12 @@
         "check_all_existing_gates_again_at_cleanup_execution": true,
         "background_independent_sweep_current_release_requirement": false,
         "event_buffering_scheduling_and_idempotency": "PLAN_AND_MACHINE_CONTRACT",
-        "no_new_execution_rights_from_event": true
+        "no_new_execution_rights_from_event": true,
+        "failure_scope_policy": "SFP-OPS-0002",
+        "failure_scope": "FAILED_CLEANUP_ATTEMPT_AND_PROVEN_AFFECTED_DEPENDENCY_BOUNDARY",
+        "unknown_impact_disposition": "FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK",
+        "proven_independent_work": "MAY_CONTINUE_WITH_EXISTING_GATES",
+        "record_and_original_evidence_preservation_on_failure": "REQUIRED"
       }
     }
   },

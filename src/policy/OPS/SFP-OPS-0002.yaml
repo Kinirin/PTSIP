@@ -59,7 +59,16 @@
         "startup_failed_engine_revalidation_recorded_at": "2026-10-11",
         "startup_failed_engine_environment_change_watch": "DEFERRED_NOT_RELEASE_REQUIRED",
         "startup_failed_engine_revalidation_requires_fresh_gates": true,
-        "startup_failed_engine_same_session_retry": "NOT_AUTHORIZED_BY_THIS_POLICY"
+        "startup_failed_engine_same_session_retry": "NOT_AUTHORIZED_BY_THIS_POLICY",
+        "evidence_cache_cleanup_failure_scope_choice": "A_USER_EXPLICIT",
+        "evidence_cache_cleanup_failure_scope_decided_at": "2026-10-11",
+        "evidence_cache_cleanup_failure_containment": "ISOLATE_FAILED_ATTEMPT_AND_MACHINE_VERIFIED_AFFECTED_DEPENDENCY_SCOPE",
+        "evidence_cache_cleanup_independent_work_continuation": "ALLOW_ONLY_AFTER_MACHINE_VERIFIED_INDEPENDENCE_AND_EXISTING_ELIGIBILITY",
+        "evidence_cache_cleanup_unknown_effect_or_dependency": "FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK",
+        "evidence_cache_cleanup_failed_attempt_outcome": "FAILED_SEPARATE_FROM_OBSERVED_EFFECT_STATE",
+        "evidence_cache_cleanup_recovery_permission": "EXISTING_CTRL_REAL_OPS_AUTHORITY_ONLY",
+        "evidence_cache_cleanup_automatic_retry_policy": "NOT_DECIDED_SEPARATE_OWNER_POLICY",
+        "evidence_cache_cleanup_failure_policy_record_ref": "SFP-RECORD-0003"
       },
       "invariants": {
         "no_success_from_partial_failed_composition": true,
@@ -92,7 +101,20 @@
         "retry_revalidation_cannot_grant_execute_or_write_authority": true,
         "activation_failure_does_not_imply_no_work_effect": true,
         "revalidation_policy_does_not_modify_existing_recovery_or_authorization_gates": true,
-        "revalidation_direction_does_not_activate_draft_engine_runtime": true
+        "revalidation_direction_does_not_activate_draft_engine_runtime": true,
+        "evidence_cache_cleanup_failed_attempt_must_not_be_reported_successful": true,
+        "evidence_cache_cleanup_failure_isolated_to_machine_proven_impact_boundary": true,
+        "affected_or_potentially_affected_operations_must_not_continue_without_reverified_safety": true,
+        "independently_verified_safe_operations_may_continue_under_existing_authority": true,
+        "unknown_or_unverified_impact_scope_blocks_all_potentially_affected_operations": true,
+        "operation_independence_cannot_be_inferred_from_distinct_engine_or_path_only": true,
+        "cleanup_failure_does_not_prove_no_mutation_or_successful_rollback": true,
+        "cleanup_partial_effects_require_explicit_provenance_and_effect_state_classification": true,
+        "cleanup_failure_containment_must_preserve_original_evidence_and_mandatory_record_receipts": true,
+        "cleanup_failure_containment_cannot_create_recovery_retry_deletion_or_write_authority": true,
+        "cleanup_resumption_requires_current_ctrl_and_real_preconditions": true,
+        "fail_closed_on_unresolved_effects_does_not_require_global_shutdown_of_proven_unaffected_work": true,
+        "cleanup_failure_direction_does_not_activate_draft_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -161,6 +183,26 @@
         "existing_recovery_effect_state_and_revocation_gates": "PRESERVED",
         "implementation_mechanics": "PLAN_AND_MACHINE_CONTRACT",
         "current_effect": "DRAFT_ONLY_NO_RUNTIME_REVALIDATION"
+      },
+      "evidence_cache_cleanup_failure_scope": {
+        "policy_subject": "EVIDENCE_CACHE_AUTOMATIC_CLEANUP_FAILURE_CONTAINMENT",
+        "selected_option": "A_VERIFIED_SCOPE_ISOLATION",
+        "scope": "AUTHORIZED_DERIVED_EVIDENCE_CACHE_CLEANUP_ATTEMPT",
+        "failed_attempt_result": "FAILED_NOT_COMPOSITION_SUCCESS",
+        "work_effect_evaluation": "SEPARATE_VERIFIED_ATTEMPT_AND_MUTATION_EFFECT_CLASSIFICATION",
+        "isolation_boundary": "FAILED_ATTEMPT_AND_MACHINE_VERIFIED_AFFECTED_DEPENDENCY_CLOSURE",
+        "unknown_effect_or_dependency": "FAIL_CLOSED_FOR_ALL_POTENTIALLY_AFFECTED_WORK",
+        "allow_other_work": "ONLY_WITH_MACHINE_PROVEN_INDEPENDENCE_AND_CURRENT_ELIGIBILITY",
+        "no_implicit_global_shutdown_for_proven_independent_work": true,
+        "mandatory_original_evidence_and_record_provenance": "PRESERVED",
+        "state_mutation_integrity_owner": "REAL",
+        "operation_effect_recovery_owner": "OPS",
+        "eligibility_and_mutation_permission_owner": "CTRL",
+        "cache_retention_provenance_owner": "RECORD",
+        "recovery_or_retry": "REQUIRES_EXISTING_SEPARATE_AUTHORIZATION",
+        "automatic_retry_direction": "UNRESOLVED_SEPARATE_POLICY",
+        "evidence_impact_proof_interface": "PLAN_AND_MACHINE_CONTRACT",
+        "policy_effect": "DRAFT_ONLY_NO_ACTIVE_RUNTIME_OR_AUTO_RETRY"
       }
     }
   },
