@@ -146,6 +146,31 @@
         "verification_test_paths": {"$ref": "#/$defs/paths"}
       }
     },
+    "vpms_verification_candidate": {
+      "const": {
+        "policy_ref": "MPD-ASSURE-0004",
+        "policy_class": "VPMS_DEVELOPER_POLICY",
+        "contract_ref": "developer/policy/contracts/vpms-current-verification.v1.json",
+        "normative_authority": false,
+        "runtime_activation": "FORBIDDEN"
+      }
+    },
+    "vpms_family_allocation": {
+      "const": {
+        "allowed_current_families": [
+          "ASSURE"
+        ],
+        "legacy_family_allocation": "FORBIDDEN",
+        "authority_lookup_key": [
+          "policy_class",
+          "responsibility_family"
+        ],
+        "materialization_authorized": true,
+        "materialization_scope": "CURRENT_DRAFT_CREATION_AND_GO_CONFORMANCE_ONLY",
+        "approval_ref": "developer/policy/approvals/MPA-20261011-VPMS-SUCCESSOR-DRAFT.yaml",
+        "runtime_activation": "FORBIDDEN"
+      }
+    },
     "$defs": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "object"}}
   },
   "$defs": {

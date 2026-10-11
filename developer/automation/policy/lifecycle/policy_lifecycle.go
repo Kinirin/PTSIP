@@ -238,12 +238,15 @@ func policyRequireFamilyClass(r Repository, class, family string) error {
 		return policyFailure("LEGACY_FAMILY_NEW_ALLOCATION_FORBIDDEN", family)
 	}
 	if class == "VPMS_DEVELOPER_POLICY" {
-		if !policyContains(policyLegacyFamilies, family) {
+		if !policyContains(policyRootFamilies, family) {
+			return policyFailure("LEGACY_FAMILY_NEW_ALLOCATION_FORBIDDEN", family)
+		}
+		allocation := Map(contract["vpms_family_allocation"])
+		if allocation["legacy_family_allocation"] != "FORBIDDEN" || !policyContains(policyStrings(allocation["allowed_current_families"]), family) {
 			return policyFailure("VPMS_ROOT_FAMILY_NOT_AUTHORIZED", family)
 		}
-		execution, gate := Map(contract["application_execution"]), Map(contract["application_gate"])
-		if gate["vpms_policy_materialization_authorized"] != true || execution["vpms_class_materialization_enabled"] != true || execution["m1_m7_verified"] != true {
-			return policyFailure("VPMS_CLASS_MATERIALIZATION_NOT_ENABLED", "M1-M7 verification and explicit owner approval required")
+		if allocation["materialization_authorized"] != true || allocation["materialization_scope"] != "CURRENT_DRAFT_CREATION_AND_GO_CONFORMANCE_ONLY" || allocation["runtime_activation"] != "FORBIDDEN" {
+			return policyFailure("VPMS_CLASS_MATERIALIZATION_NOT_ENABLED", "current namespace admission is required")
 		}
 	}
 	return nil
@@ -292,6 +295,32 @@ func policyAnalysisGroup(r Repository, class, family, reference, groupID string)
 	}
 	return result, selected, nil
 }
+
+// Materialized identities remain reserved by the current PRA registry after
+// authority withdrawal. Allocation never reads a retired policy body.
+func policyAllocationIDs(r Repository, current []string) ([]string, error) {
+	registry, err := r.Read(policyAnalysisRegistry)
+	if err != nil {
+		return nil, err
+	}
+	if err := r.Validate(policyAnalysisRegistrySchema, registry); err != nil {
+		return nil, policyFailure("INVALID_ANALYSIS_REGISTRY", err.Error())
+	}
+	reserved := map[string]bool{}
+	for _, id := range current {
+		reserved[id] = true
+	}
+	for _, raw := range List(registry["bindings"]) {
+		reserved[Text(Map(raw)["policy_id"])] = true
+	}
+	ids := []string{}
+	for id := range reserved {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+	return ids, nil
+}
+
 func PreflightFamilyPolicy(r Repository, class, family, approvalRef, analysisID, groupID string) (Object, error) {
 	if err := policyRequireFamilyClass(r, class, family); err != nil {
 		return nil, err
@@ -314,7 +343,11 @@ func PreflightFamilyPolicy(r Repository, class, family, approvalRef, analysisID,
 	if err != nil {
 		return nil, err
 	}
-	id, err := policyNextFamilyID(state.IDs, family)
+	allocationIDs, err := policyAllocationIDs(r, state.IDs)
+	if err != nil {
+		return nil, err
+	}
+	id, err := policyNextFamilyID(allocationIDs, family)
 	if err != nil {
 		return nil, err
 	}
@@ -447,7 +480,11 @@ func RegisterFamilyPolicy(r Repository, class, family, approvalRef, analysisID, 
 	if err != nil {
 		return nil, err
 	}
-	id, err := policyNextFamilyID(state.IDs, family)
+	allocationIDs, err := policyAllocationIDs(r, state.IDs)
+	if err != nil {
+		return nil, err
+	}
+	id, err := policyNextFamilyID(allocationIDs, family)
 	if err != nil {
 		return nil, err
 	}
@@ -472,6 +509,9 @@ func RegisterFamilyPolicy(r Repository, class, family, approvalRef, analysisID, 
 	if err != nil {
 		return nil, policyFailure("POLICY_FILE_NOT_FOUND", expected)
 	}
+	if payload["policy_class"] != class {
+		return nil, policyFailure("POLICY_CLASS_MISMATCH", id)
+	}
 	schema := "developer/policy/schemas/management-policy.schema.json"
 	if class == DeveloperClass {
 		schema = "developer/policy/schemas/root-family-policy.schema.json"
@@ -480,9 +520,6 @@ func RegisterFamilyPolicy(r Repository, class, family, approvalRef, analysisID, 
 		return nil, policyFailure("INVALID_POLICY_FILE", err.Error())
 	}
 	identity := Map(payload["policy"])
-	if payload["policy_class"] != class {
-		return nil, policyFailure("POLICY_CLASS_MISMATCH", id)
-	}
 	if class == DeveloperClass && payload["responsibility_family"] != family {
 		return nil, policyFailure("RESPONSIBILITY_FAMILY_MISMATCH", family)
 	}

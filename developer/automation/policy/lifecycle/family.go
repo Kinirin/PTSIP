@@ -64,9 +64,6 @@ func FamilyEntry(r Repository, policyClass, family string) (Object, error) {
 		if match == nil || match[1] != route["id_prefix"] {
 			continue
 		}
-		if policyClass == DeveloperClass && entry["policy_class"] != policyClass {
-			return nil, fmt.Errorf("%s: class route mismatch", id)
-		}
 		expected := plane + "/" + match[2] + "/" + id + ".yaml"
 		indexedPath := Text(entry["path"])
 		if policyClass == "PTSIP_SUPPORT_FEATURE" {
@@ -80,6 +77,25 @@ func FamilyEntry(r Repository, policyClass, family string) (Object, error) {
 			return nil, err
 		}
 		identity := Map(record["policy"])
+		if policyClass == DeveloperClass && entry["policy_class"] != policyClass {
+			if entry["policy_class"] != "VPMS_DEVELOPER_POLICY" || record["policy_class"] != entry["policy_class"] || identity["id"] != id || identity["status"] != entry["status"] {
+				return nil, fmt.Errorf("%s: class route mismatch", id)
+			}
+			if err := policyRequireFamilyClass(r, Text(entry["policy_class"]), match[2]); err != nil {
+				return nil, err
+			}
+			if err := r.Validate("developer/policy/schemas/management-policy.schema.json", record); err != nil {
+				return nil, err
+			}
+			// Identity sequence is shared; class-local authority is not inherited.
+			if match[2] == family {
+				number, _ := strconv.Atoi(match[3])
+				if number > maximum {
+					maximum = number
+				}
+			}
+			continue
+		}
 		if record["policy_class"] != policyClass || record["responsibility_family"] != match[2] || identity["id"] != id || identity["status"] != entry["status"] {
 			return nil, fmt.Errorf("%s: Root metadata mismatch", id)
 		}

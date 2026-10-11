@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vpms:current-verification-case:v1",
+  "type": "object",
+  "required": [
+    "case_id",
+    "target",
+    "formula",
+    "variables",
+    "policy",
+    "runner"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "TargetRef"
+        },
+        "ref": {
+          "const": "CURRENT_DEVELOPER_CATALOG"
+        }
+      }
+    },
+    "formula": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "FormulaRef"
+        },
+        "ref": {
+          "const": "CURRENT_REGISTERED_CASE_SCHEMA"
+        }
+      }
+    },
+    "variables": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "VariablesRef"
+        },
+        "ref": {
+          "const": "CURRENT_CASE_INPUT"
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "PolicyRef"
+        },
+        "ref": {
+          "const": "MPD-ASSURE-0004#current_contract_verification"
+        }
+      }
+    },
+    "runner": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "RunnerRef"
+        },
+        "ref": {
+          "const": "GO_SCHEMA_CONFORMANCE"
+        }
+      }
+    }
+  }
+}

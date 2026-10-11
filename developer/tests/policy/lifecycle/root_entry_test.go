@@ -40,6 +40,21 @@ func TestLegacyDeveloperFamilyCannotResolveAsNewRootEntry(t *testing.T) {
 	}
 }
 
+func TestRootFamilyAllocationSharesSequenceWithoutInheritingVPMSAuthority(t *testing.T) {
+	entry, err := lifecycle.FamilyEntry(testrepo.Open(testrepo.Root(t)), lifecycle.DeveloperClass, "ASSURE")
+	if err != nil || entry["allocated_policy_id"] != "MPD-ASSURE-0005" {
+		t.Fatal(entry, err)
+	}
+	for _, raw := range entry["registered_policies"].([]any) {
+		if raw.(object)["policy_id"] == "MPD-ASSURE-0004" {
+			t.Fatal("VPMS class entered Developer authority lookup")
+		}
+	}
+	if entry["semantic_inheritance"] != "FORBIDDEN" {
+		t.Fatal(entry)
+	}
+}
+
 func TestRootFamilyIDInspectionIsExactAndClassScoped(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
 	for _, test := range []struct{ id, class, path string }{{"MPD-ARCH-0001", lifecycle.DeveloperClass, "developer/policy/ARCH/MPD-ARCH-0001.yaml"}, {"SFP-ARCH-0001", "PTSIP_SUPPORT_FEATURE", "src/policy/ARCH/SFP-ARCH-0001.yaml"}} {

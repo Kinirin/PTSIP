@@ -27,7 +27,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^MPD-(?:[0-9]{4}|BOUND-[0-9]{4}|(?:SPEC|PLAN|WORK|VERI|MIGR|RELS)-[0-9]{4})$"
+          "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_id"
         },
         "title": {
           "type": "string",
@@ -510,7 +510,7 @@
       "if": {"properties": {"policy_class": {"const": "VPMS_DEVELOPER_POLICY"}}, "required": ["policy_class"]},
       "then": {"properties": {
         "schema_version": {"const": "developer-policy/v2"},
-        "policy": {"properties": {"id": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/family_policy_id"}}}
+        "policy": {"properties": {"id": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/root_family_policy_id"}}}
       }}
     },
     {

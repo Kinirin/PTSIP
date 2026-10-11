@@ -1,0 +1,105 @@
+{
+  "schema_version": "developer-policy-responsibility-analysis/v3",
+  "artifact_class": "PTSIP_POLICY_RESPONSIBILITY_ANALYSIS",
+  "analysis": {
+    "analysis_id": "PRA-0018",
+    "source_ref": "developer/policy/approvals/MPA-20261011-VPMS-SUCCESSOR-DRAFT.yaml",
+    "responsibilities": [
+      {
+        "responsibility_id": "R01",
+        "statement": "Define closed verification cases against current registered machine contracts without legacy policy body or source reconstruction.",
+        "authority_relation": "OWN",
+        "authority_subject": "VPMS_CURRENT_CONTRACT_CASES",
+        "lifecycle_scope": "DRAFT_CURRENT_CONTRACT_CONFORMANCE",
+        "cohesion_key": "VPMS_CURRENT_CONTRACT_VERIFICATION",
+        "policy_class": "VPMS_DEVELOPER_POLICY",
+        "family": "ASSURE",
+        "referenced_policy_class": null,
+        "referenced_family": null,
+        "existing_authority_lookup": {
+          "searched_policy_class": "VPMS_DEVELOPER_POLICY",
+          "searched_family": "ASSURE",
+          "searched_policy_ids": [],
+          "lookup_outcome": "NO_MATCH",
+          "candidate_comparisons": []
+        },
+        "materialization_action": "CREATE_NEW_POLICY",
+        "target_group_id": "G01"
+      },
+      {
+        "responsibility_id": "R02",
+        "statement": "Define candidate verification result and fail-closed diagnostics independently of runtime activation.",
+        "authority_relation": "OWN",
+        "authority_subject": "VPMS_CURRENT_CONTRACT_RESULTS",
+        "lifecycle_scope": "DRAFT_CURRENT_CONTRACT_CONFORMANCE",
+        "cohesion_key": "VPMS_CURRENT_CONTRACT_VERIFICATION",
+        "policy_class": "VPMS_DEVELOPER_POLICY",
+        "family": "ASSURE",
+        "referenced_policy_class": null,
+        "referenced_family": null,
+        "existing_authority_lookup": {
+          "searched_policy_class": "VPMS_DEVELOPER_POLICY",
+          "searched_family": "ASSURE",
+          "searched_policy_ids": [],
+          "lookup_outcome": "NO_MATCH",
+          "candidate_comparisons": []
+        },
+        "materialization_action": "CREATE_NEW_POLICY",
+        "target_group_id": "G01"
+      },
+      {
+        "responsibility_id": "R03",
+        "statement": "Consume the current Root machine interface without owning or redefining Developer or Support authority.",
+        "authority_relation": "REFERENCE",
+        "authority_subject": "CURRENT_ROOT_MACHINE_INTERFACE",
+        "lifecycle_scope": "CURRENT_CONTRACT_REFERENCE_ONLY",
+        "cohesion_key": "VPMS_CURRENT_CONTRACT_VERIFICATION",
+        "policy_class": null,
+        "family": null,
+        "referenced_policy_class": "PTSIP_DEVELOPER_POLICY",
+        "referenced_family": "CNTR",
+        "existing_authority_lookup": null,
+        "materialization_action": "USE_EXISTING_AUTHORITY",
+        "target_group_id": null
+      },
+      {
+        "responsibility_id": "R04",
+        "statement": "Reference Go implementation obligations while neutral contracts remain semantic owners.",
+        "authority_relation": "REFERENCE",
+        "authority_subject": "GO_VERIFICATION_IMPLEMENTATION",
+        "lifecycle_scope": "CURRENT_CONTRACT_REFERENCE_ONLY",
+        "cohesion_key": "VPMS_CURRENT_CONTRACT_VERIFICATION",
+        "policy_class": null,
+        "family": null,
+        "referenced_policy_class": "PTSIP_DEVELOPER_POLICY",
+        "referenced_family": "REAL",
+        "existing_authority_lookup": null,
+        "materialization_action": "USE_EXISTING_AUTHORITY",
+        "target_group_id": null
+      }
+    ],
+    "decision": {
+      "owned_authority_family_set": [
+        {
+          "policy_class": "VPMS_DEVELOPER_POLICY",
+          "family": "ASSURE"
+        }
+      ],
+      "split_required": false,
+      "materialization_allowed": true,
+      "materialization_groups": [
+        {
+          "group_id": "G01",
+          "policy_class": "VPMS_DEVELOPER_POLICY",
+          "family": "ASSURE",
+          "cohesion_key": "VPMS_CURRENT_CONTRACT_VERIFICATION",
+          "responsibility_ids": [
+            "R01",
+            "R02"
+          ],
+          "cohesion_rationale": "Current candidate case/result conformance is one bounded VPMS verification contract; implementation and shared machine authority remain referenced responsibilities."
+        }
+      ]
+    }
+  }
+}

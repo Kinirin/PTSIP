@@ -1,0 +1,21 @@
+{
+  "source_kind": "CURRENT_CANONICAL_POLICY_AND_MACHINE_CONTRACT",
+  "legacy_body_or_source_reconstruction": "FORBIDDEN",
+  "source_policy_ids": [
+    "MPD-ASSURE-0004"
+  ],
+  "expected_edges": [
+    [
+      "MPD-ASSURE-0004",
+      "depends_on",
+      "MPD-CNTR-0004",
+      "CURRENT_ROOT_MACHINE_INTERFACE_REFERENCE_ONLY"
+    ],
+    [
+      "MPD-ASSURE-0004",
+      "depends_on",
+      "MPD-REAL-0005",
+      "GO_VERIFICATION_IMPLEMENTATION_REFERENCE_ONLY"
+    ]
+  ]
+}

@@ -125,78 +125,50 @@ func TestMigrationOnlyToolingAndEvidenceRemainRetired(t *testing.T) {
 	}
 }
 
-func TestHistoricalMigrationPreservesRelationEvidenceAndClassBoundary(t *testing.T) {
+func TestCurrentVerificationRelationsUseCanonicalOwners(t *testing.T) {
 	r, err := Open(".")
 	if err != nil {
 		t.Fatal(err)
 	}
-	vectors, err := r.Read("developer/automation/internal/machine/testdata/control_plane_vectors.json")
+	vectors, err := r.Read("developer/automation/internal/machine/testdata/current_verification_relations.json")
 	if err != nil {
 		t.Fatal(err)
 	}
 	expected, actual := []string{}, []string{}
-	for _, raw := range List(vectors["relation_edges"]) {
+	for _, raw := range List(vectors["expected_edges"]) {
 		row := List(raw)
 		expected = append(expected, fmt.Sprintf("%v|%v|%v|%v", row[0], row[1], row[2], row[3]))
 	}
-	for _, plane := range []string{"developer/policy", "src/policy"} {
-		graph, err := r.Read(plane + "/registries/root-family-migration.json")
-		if err != nil {
-			t.Fatal(err)
-		}
-		for _, raw := range List(graph["sources"]) {
-			source := Map(raw)
-			id := Text(source["source_policy_id"])
-			// Sparse canonical sources may omit empty relation structures. Do not
-			// turn an absent optional relation into an unregistered unit lookup.
-			hasRelations := false
-			for _, raw := range List(source["units"]) {
-				if Map(raw)["source_pointer"] == "/relations" {
-					hasRelations = true
-				}
-			}
-			if !hasRelations {
-				continue
-			}
-			relations := Map(historicalSourceValue(t, r, id, "/relations"))
-			for _, kind := range []string{"supersedes", "amends", "extends", "depends_on"} {
-				for _, raw := range List(relations[kind]) {
-					edge := Map(raw)
-					target := Text(edge["policy"])
-					if strings.HasPrefix(id, "SFP-") && strings.HasPrefix(target, "MPD-") {
-						t.Fatal("Support inherited Developer authority", id, target)
-					}
-					actual = append(actual, fmt.Sprintf("%s|%s|%s|%v", id, kind, target, edge["scope"]))
-				}
-			}
-		}
-	}
-	// Boundary and VPMS records belong to independent current classes outside
-	// the Developer Root migration graph. Include their registered relations too.
-	index, err := r.Read(policyIndex)
+	resolver, err := NewResolver(r)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, raw := range List(index["policies"]) {
-		entry := Map(raw)
-		if entry["authority_role"] == "MIGRATION_SOURCE" || entry["policy_class"] == DeveloperClass {
-			continue
-		}
-		policy, err := r.Read(Text(entry["path"]))
+	for _, id := range policyStrings(vectors["source_policy_ids"]) {
+		owner, err := resolver.Policy(id)
 		if err != nil {
 			t.Fatal(err)
 		}
-		for kind, raw := range Map(policy["relations"]) {
+		if owner["policy_class"] != "VPMS_DEVELOPER_POLICY" {
+			t.Fatal("current VPMS source class changed", id)
+		}
+		for kind, raw := range Map(owner["relations"]) {
 			for _, raw := range List(raw) {
 				edge := Map(raw)
-				actual = append(actual, fmt.Sprintf("%s|%s|%s|%v", Text(entry["id"]), kind, Text(edge["policy"]), edge["scope"]))
+				target, err := resolver.Policy(Text(edge["policy"]))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if target["policy_class"] != DeveloperClass || Map(target["policy"])["status"] != "ACTIVE" {
+					t.Fatal("relation lacks an active current Developer owner", edge)
+				}
+				actual = append(actual, fmt.Sprintf("%s|%s|%s|%v", id, kind, Text(edge["policy"]), edge["scope"]))
 			}
 		}
 	}
 	sort.Strings(expected)
 	sort.Strings(actual)
 	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("materialized relation set changed\nactual=%v\nexpected=%v", actual, expected)
+		t.Fatalf("current relation contract changed: actual=%v expected=%v", actual, expected)
 	}
 }
 
@@ -283,7 +255,7 @@ func TestCurrentPolicyIndexesCoverCanonicalCorpusAndKeepHistoricalSourcesAuditOn
 }
 
 func TestCanonicalPolicyPathsDistinguishBoundaryAndRejectUnregisteredFamilies(t *testing.T) {
-	for _, test := range [][2]string{{"MPD-BOUND-0001", "developer/policy/MPD-BOUND-0001.yaml"}, {"MPD-NORM-0001", "developer/policy/NORM/MPD-NORM-0001.yaml"}, {"MPD-ARCH-0001", "developer/policy/ARCH/MPD-ARCH-0001.yaml"}, {"MPD-VERI-0007", "developer/policy/VERI/MPD-VERI-0007.yaml"}} {
+	for _, test := range [][2]string{{"MPD-BOUND-0001", "developer/policy/MPD-BOUND-0001.yaml"}, {"MPD-NORM-0001", "developer/policy/NORM/MPD-NORM-0001.yaml"}, {"MPD-ARCH-0001", "developer/policy/ARCH/MPD-ARCH-0001.yaml"}, {"MPD-ASSURE-0004", "developer/policy/ASSURE/MPD-ASSURE-0004.yaml"}} {
 		got, err := policyCanonicalPath(test[0])
 		if err != nil || got != test[1] {
 			t.Fatal(got, err)

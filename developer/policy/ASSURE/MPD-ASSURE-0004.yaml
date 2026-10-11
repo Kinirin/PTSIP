@@ -1,0 +1,51 @@
+{
+  "schema_version": "developer-policy/v2",
+  "policy_class": "VPMS_DEVELOPER_POLICY",
+  "policy": {
+    "id": "MPD-ASSURE-0004",
+    "version": "0.0",
+    "title": "VPMS current neutral contract verification candidate",
+    "status": "DRAFT"
+  },
+  "rules": {
+    "current_contract_verification": {
+      "responsibility": "VPMS_CURRENT_CONTRACT_CASES",
+      "contract_ref": "developer/policy/contracts/vpms-current-verification.v1.json",
+      "case_schema_ref": "developer/policy/schemas/vpms-current-verification-case.schema.json",
+      "source_resolution": "EXACT_CURRENT_CANONICAL_REGISTRATION",
+      "legacy_policy_body_read": "FORBIDDEN",
+      "legacy_source_reconstruction": "FORBIDDEN",
+      "unknown_or_cross_class_reference": "FAIL_CLOSED"
+    },
+    "candidate_result_contract": {
+      "responsibility": "VPMS_CURRENT_CONTRACT_RESULTS",
+      "result_schema_ref": "developer/policy/schemas/vpms-current-verification-result.schema.json",
+      "result_preserves_case_id": true,
+      "normative_authority": false,
+      "runtime_activation": "FORBIDDEN"
+    },
+    "implementation_boundary": {
+      "go_implementation_role": "NON_NORMATIVE_CANDIDATE_CONFORMANCE_VERIFIER",
+      "go_source_owns_normative_semantics": false,
+      "consumer_runtime_policy_dependency": "FORBIDDEN",
+      "support_authority_inheritance": "FORBIDDEN",
+      "vpms_runtime_replacement": "NOT_AUTHORIZED",
+      "successor_activation": "SEPARATE_EXPLICIT_OWNER_APPROVAL_REQUIRED"
+    }
+  },
+  "relations": {
+    "depends_on": [
+      {
+        "policy": "MPD-CNTR-0004",
+        "scope": "CURRENT_ROOT_MACHINE_INTERFACE_REFERENCE_ONLY"
+      },
+      {
+        "policy": "MPD-REAL-0005",
+        "scope": "GO_VERIFICATION_IMPLEMENTATION_REFERENCE_ONLY"
+      }
+    ],
+    "supersedes": [],
+    "amends": [],
+    "extends": []
+  }
+}

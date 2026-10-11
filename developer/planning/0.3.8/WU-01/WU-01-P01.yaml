@@ -157,14 +157,15 @@
     "approval_does_not_override_blockers": true,
     "runtime_activation_after_validation": "NOT_AUTHORIZED_BY_VERIFICATION",
     "explicit_user_approved_exception": {
-      "approval_ref": "developer/policy/approvals/MPA-20261011-VPMS-VERI-KEEP-LATEST.yaml",
-      "requested_policy_id": "MPD-VERI-0007",
+      "approval_ref": "developer/policy/approvals/MPA-20261011-VPMS-SUCCESSOR-DRAFT.yaml",
+      "requested_policy_id": "MPD-ASSURE-0004",
       "approved_at": "2026-10-11",
       "allowed_scope": [
-        "WITHDRAWN_VPMS_CURRENT_AUTHORITY_VERIFICATION",
-        "HISTORICAL_VPMS_TEST_SOURCE_PATH_RECONCILIATION",
-        "GO_CREATION_PROVENANCE_FAIL_CLOSED_CHECK",
-        "REQUIRED_TEST_REMEDIATION"
+        "FRESH_VPMS_DRAFT_POLICY_AND_PRA_REGISTRATION",
+        "CURRENT_ASSURE_NAMESPACE_AND_CLASS_BOUND_ALLOCATION_CONTRACT",
+        "NEUTRAL_CURRENT_CASE_AND_RESULT_CONTRACTS",
+        "GO_CONFORMANCE_AND_FAIL_CLOSED_VERIFICATION",
+        "REPLACE_LEGACY_DERIVED_VPMS_TEST_EXPECTATIONS"
       ],
       "historical_source_bytes_and_status": "PRESERVE",
       "current_authority": "FORBIDDEN",
@@ -172,8 +173,29 @@
       "replacement_policy_authority": "NOT_CREATED",
       "consumer_support_policy_mutation": "FORBIDDEN",
       "unrelated_policy_or_registry_mutation": "FORBIDDEN",
-      "session_implementation_approval": "legacy 보관으로 전환하도록 승인 — VPMS 권위·index·계약의 전환 범위도 확인",
-      "policy_and_registry_decision_source": "PRESERVE_REMOTE_KEEP_LATEST_CANONICAL_WITHDRAWAL"
+      "session_implementation_approval": "새 VPMS 후속 정책과 그 Go 검증까지 / MPD-VERI legacy namespace 사용 금지",
+      "policy_and_registry_decision_source": "EXPLICIT_OWNER_SUCCESSOR_AND_CURRENT_NAMESPACE_INSTRUCTIONS",
+      "policy_creation_status": "DRAFT_0_0_ONLY",
+      "legacy_policy_body_read": "FORBIDDEN",
+      "legacy_source_reconstruction": "FORBIDDEN",
+      "runtime_activation": "FORBIDDEN",
+      "approved_current_family_vocabulary": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ],
+      "expired_families_new_creation_or_current_authority_lookup": "FORBIDDEN_SPEC_PLAN_WORK_VERI_MIGR_RELS"
     }
   },
   "routing": {
@@ -248,7 +270,7 @@
     }
   },
   "remaining_validation": {
-    "status": "APPROVED_VPMS_ARCHIVAL_REMEDIATION_PENDING_EXACT_SOURCE_CI_BLOCKED_RUNTIME_BOUNDARY_RETAINED",
+    "status": "CURRENT_ASSURE_VPMS_DRAFT_AND_GO_VERIFICATION_PENDING_FINAL_SOURCE_CI",
     "verification_owner": "CURRENT_0_3_8_RELEASE_PLANNING",
     "completed_reference_update_must_not_be_repeated": true,
     "tasks": [
@@ -536,35 +558,90 @@
       "failed_remote_run": "https://github.com/Kinirin/PTSIP/actions/runs/38136095010",
       "failure": "ACTIVE_VPMS_POLICY_MOVED_TO_LEGACY_WITHOUT_INDEX_OR_AUTHORITY_ROLE_RECONCILIATION",
       "approval_ref": "developer/policy/approvals/MPA-20261011-VPMS-VERI-KEEP-LATEST.yaml",
-      "authority_role": "NOT_REGISTERED_IN_CURRENT_CATALOG",
+      "authority_role": "CURRENT_DRAFT_SUCCESSOR_WITHDRAWN_LEGACY_EXCLUDED",
       "historical_policy_class": "VPMS_DEVELOPER_POLICY",
       "historical_status": "ACTIVE",
       "historical_version": "2.0",
       "historical_source_lf_sha256": "e5557fda8564db439e81c6295f3452354f5cc2ae4e632ab8dcb8d061b27914f4",
       "digest_source": "UNCHANGED_ADMITTED_VPMS_IMPLEMENTATION_AND_CONTRACT_MATERIALIZATION_EVIDENCE",
-      "current_policy_body_lookup": "EXCLUDED",
+      "current_policy_body_lookup": "FRESH_ASSURE_SUCCESSOR_ONLY",
       "archived_body_runtime_lookup": "FORBIDDEN",
       "historical_pra_and_activation_approval": "PRESERVED",
       "vpms_runtime_sources": "UNCHANGED",
       "support_feature_policy_semantics": "UNCHANGED",
       "current_required_ci": "PENDING_NEW_SOURCE_SHA",
-      "current_registered_vpms_policy_count": 0,
+      "current_registered_vpms_policy_count": 1,
       "subject_identity_registration": "WITHDRAWN_BY_KEEP_LATEST",
       "separate_archived_policy_role_registration": "NOT_CREATED_REMOTE_CANONICAL_WITHDRAWAL_PRESERVED",
       "historical_pra_current_authority_reuse": "FAIL_CLOSED",
       "runtime_implementation_authorization_from_keep_latest": false,
+      "first_required_push": {
+        "source_sha": "3410ddd8fc8b8b22a3eeb2010ccb7f71d08639b0",
+        "run": "https://github.com/Kinirin/PTSIP/actions/runs/38137508454",
+        "result": "FAILURE",
+        "static_validation": "SUCCESS",
+        "pp_transition": "SUCCESS",
+        "pra_registry_validation": "FAILURE_HISTORICAL_RELATION_TEST_DEPENDED_ON_CURRENT_VPMS_REGISTRATION"
+      },
+      "historical_relation_test_remediation": {
+        "path": "developer/automation/internal/machine/control_plane_regression_test.go",
+        "registered_go_selector": "TestCurrentVerificationRelationsUseCanonicalOwners",
+        "current_fixture_ref": "developer/automation/internal/machine/testdata/current_verification_relations.json",
+        "legacy_body_or_source_reconstruction": "FORBIDDEN",
+        "expected_relation_owner_refs": [
+          "MPD-CNTR-0004",
+          "MPD-REAL-0005"
+        ]
+      },
+      "current_registered_vpms_policy": "MPD-ASSURE-0004",
+      "current_registered_vpms_policy_status": "DRAFT",
+      "current_active_vpms_policy_count": 0,
+      "historical_vpms_body_or_relation_read": "REMOVED_FROM_CURRENT_VERIFICATION",
+      "legacy_read_proposal": "WITHDRAWN_ON_EXPLICIT_OWNER_INSTRUCTION_NOT_PUSHED",
+      "successor": {
+        "policy_ref": "developer/policy/ASSURE/MPD-ASSURE-0004.yaml",
+        "policy_class": "VPMS_DEVELOPER_POLICY",
+        "family": "ASSURE",
+        "version": "0.0",
+        "status": "DRAFT",
+        "analysis_id": "PRA-0018",
+        "creation": "NATIVE_FAMILY_PREFLIGHT_AND_REGISTER",
+        "neutral_contract_ref": "developer/policy/contracts/vpms-current-verification.v1.json",
+        "go_verifier_ref": "developer/automation/policy/lifecycle/vpms_verification.go",
+        "legacy_family_new_allocation": "FORBIDDEN",
+        "class_authority_lookup": "ISOLATED",
+        "family_identity_sequence": "SHARED_AND_RESERVED_BY_CURRENT_PRA_BINDINGS",
+        "policy_activation": "NOT_AUTHORIZED",
+        "vpms_runtime_replacement": "NOT_AUTHORIZED",
+        "namespace_authority": "CURRENT_ROOT_FAMILY_ONLY",
+        "legacy_namespace_draft_attempt": "WITHDRAWN_UNPUBLISHED_NOT_EXECUTION_AUTHORITY",
+        "current_namespace_admission": "FRESH_EXPLICIT_DRAFT_AND_GO_SCOPE_NOT_HISTORICAL_M1_M7_GATE"
+      },
+      "prior_impact_test_build": {
+        "source_sha": "3410ddd8fc8b8b22a3eeb2010ccb7f71d08639b0",
+        "run": "https://github.com/Kinirin/PTSIP/actions/runs/38137509163",
+        "result": "SUCCESS",
+        "proof_scope": "PRIOR_SOURCE_ONLY_NOT_SUCCESSOR_VERIFICATION"
+      },
+      "latest_remote_policy_review": {
+        "sha": "769290e19382e848b3fef33ae8f0818d80f964ef",
+        "policy": "MPD-CHANGE-0004",
+        "change": "INDEPENDENT_PROFILE_REPLACEMENT_PROOF_REQUIRED_BEFORE_RETIREMENT",
+        "related_scope_mutated": false,
+        "existing_profile_and_support_authorities_preserved": true
+      },
       "local_verification": {
         "policy_validator": "PASS",
         "policy_plan_consistency": "PASS_21_BINDINGS",
         "planning_validate": "PASS",
         "go_policy_lifecycle_tests": "PASS",
         "go_policy_binding_tests": "PASS",
-        "go_rootfamily_historical_source_and_neutral_module_checks": "PASS_BOTH_PLANES",
+        "current_relation_and_class_materialization_go_tests": "PASS",
         "go_automation_vet": "PASS",
-        "withdrawn_authority_lookup_without_archive_body": "PASS",
-        "archived_source_admitted_lf_digest": "PASS",
-        "historical_creation_analysis_current_authority_rejection": "PASS",
-        "registered_trust_hashes_changed": false
+        "whole_automation_regression": "ONE_EXPIRED_NAMESPACE_FIXTURE_FAILED_THEN_TARGETED_REPAIR_PASS_REMOTE_COMPLETE_RERUN_REQUIRED",
+        "new_vpms_current_case_and_negative_conformance": "PASS",
+        "expired_family_creation_and_current_lookup": "REJECTED",
+        "legacy_body_or_source_reconstruction": "NOT_USED"
       }
     }
   }

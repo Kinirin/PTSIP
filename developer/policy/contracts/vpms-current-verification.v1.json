@@ -1,0 +1,47 @@
+{
+  "schema_version": "vpms-current-verification-candidate/v1",
+  "policy_ref": "MPD-ASSURE-0004",
+  "policy_class": "VPMS_DEVELOPER_POLICY",
+  "status": "DRAFT",
+  "normative_authority": false,
+  "runtime_activation": "FORBIDDEN",
+  "legacy_policy_body_read": "FORBIDDEN",
+  "legacy_source_reconstruction": "FORBIDDEN",
+  "case_schema_ref": "developer/policy/schemas/vpms-current-verification-case.schema.json",
+  "result_schema_ref": "developer/policy/schemas/vpms-current-verification-result.schema.json",
+  "registered_reference_bindings": {
+    "target": {
+      "kind": "TargetRef",
+      "ref": "CURRENT_DEVELOPER_CATALOG",
+      "canonical_ref": "developer/policy/index.yaml"
+    },
+    "formula": {
+      "kind": "FormulaRef",
+      "ref": "CURRENT_REGISTERED_CASE_SCHEMA",
+      "canonical_ref": "developer/policy/schemas/vpms-current-verification-case.schema.json"
+    },
+    "variables": {
+      "kind": "VariablesRef",
+      "ref": "CURRENT_CASE_INPUT"
+    },
+    "policy": {
+      "kind": "PolicyRef",
+      "ref": "MPD-ASSURE-0004#current_contract_verification"
+    },
+    "runner": {
+      "kind": "RunnerRef",
+      "ref": "GO_SCHEMA_CONFORMANCE",
+      "path": "developer/automation/policy/lifecycle/vpms_verification.go",
+      "symbol": "ValidateVPMSVerificationCase"
+    }
+  },
+  "result_contract": {
+    "valid_case": "PASS",
+    "invalid_case": "FAIL",
+    "diagnostics": {
+      "invalid_case": "VPMS-CASE-CONTRACT-INVALID"
+    }
+  },
+  "implementation_scope": "GO_CONFORMANCE_ONLY_NO_VPMS_RUNTIME_EXECUTION",
+  "approval_ref": "developer/policy/approvals/MPA-20261011-VPMS-SUCCESSOR-DRAFT.yaml"
+}

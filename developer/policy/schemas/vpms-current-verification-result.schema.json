@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vpms:current-verification-result:v1",
+  "type": "object",
+  "required": [
+    "case_id",
+    "outcome",
+    "diagnostics",
+    "normative_authority",
+    "runtime_activation"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "PASS",
+        "FAIL"
+      ]
+    },
+    "diagnostics": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "VPMS-CASE-CONTRACT-INVALID"
+        ]
+      }
+    },
+    "normative_authority": {
+      "const": false
+    },
+    "runtime_activation": {
+      "const": "FORBIDDEN"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "PASS"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "diagnostics": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "FAIL"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "diagnostics": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

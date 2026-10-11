@@ -116,7 +116,7 @@ func (r *Repository) Validate(input string, value any) error {
 			return err
 		}
 		id := document["$id"].(string)
-		if input != "developer/policy/schemas/developer-policy-catalog.schema.json" && input != "developer/policy/schemas/developer-policy-subject-catalog.schema.json" {
+		if input != "developer/policy/schemas/developer-policy-catalog.schema.json" && input != "developer/policy/schemas/developer-policy-subject-catalog.schema.json" && input != "developer/policy/schemas/developer-policy-catalog-contracts.schema.json" {
 			if err := r.compiler.AddResource(id, document); err != nil {
 				return err
 			}

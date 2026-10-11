@@ -1,7 +1,6 @@
 package lifecycle_test
 
 import (
-	"os"
 	"reflect"
 	"regexp"
 	"sort"
@@ -18,12 +17,16 @@ func isolationFixture(t *testing.T) *testrepo.Repository {
 	t.Helper()
 	repo := identityFixture(t)
 	testrepo.CopyFiles(t, repo, "developer/policy/schemas/management-policy.schema.json")
-	testrepo.Write(t, repo, "developer/policy/VERI/MPD-VERI-0002.yaml", object{"schema_version": "developer-policy/v2", "policy_class": vpmsClass, "policy": object{"id": "MPD-VERI-0002", "status": "ACTIVE", "version": "2.0", "title": "VPMS fixture"}, "rules": object{"fixture": object{"enabled": true}}})
+	testrepo.Write(t, repo, "developer/policy/ASSURE/MPD-ASSURE-0002.yaml", object{"schema_version": "developer-policy/v2", "policy_class": vpmsClass, "policy": object{"id": "MPD-ASSURE-0002", "status": "ACTIVE", "version": "2.0", "title": "VPMS fixture"}, "rules": object{"fixture": object{"enabled": true}}})
 	index, err := repo.Read(lifecycle.PolicyIndex)
 	if err != nil {
 		t.Fatal(err)
 	}
-	index["policies"] = append(index["policies"].([]any), object{"id": "MPD-VERI-0002", "policy_class": vpmsClass, "path": "developer/policy/VERI/MPD-VERI-0002.yaml", "status": "ACTIVE"})
+	index["policies"] = append(index["policies"].([]any), object{"id": "MPD-ASSURE-0002", "policy_class": vpmsClass, "path": "developer/policy/ASSURE/MPD-ASSURE-0002.yaml", "status": "ACTIVE"})
+	sort.Slice(index["policies"].([]any), func(i, j int) bool {
+		rows := index["policies"].([]any)
+		return rows[i].(object)["id"].(string) < rows[j].(object)["id"].(string)
+	})
 	testrepo.Write(t, repo, lifecycle.PolicyIndex, index)
 	subject, err := repo.Read(lifecycle.PolicySubjectRegistry)
 	if err != nil {
@@ -62,7 +65,7 @@ func TestAuthorityFamilyLookupIsIsolatedByClassAndExcludesMigrationSources(t *te
 	for _, test := range []struct {
 		class, family string
 		expected      []string
-	}{{lifecycle.DeveloperClass, "NORM", []string{"MPD-NORM-0013"}}, {vpmsClass, "VERI", []string{"MPD-VERI-0002"}}, {lifecycle.DeveloperClass, "VERI", []string{}}} {
+	}{{lifecycle.DeveloperClass, "NORM", []string{"MPD-NORM-0013"}}, {vpmsClass, "ASSURE", []string{"MPD-ASSURE-0002"}}, {lifecycle.DeveloperClass, "ASSURE", []string{}}} {
 		t.Run(test.class+"/"+test.family, func(t *testing.T) {
 			got, err := lifecycle.ActiveFamilyIDs(repo, test.class, test.family)
 			if err != nil || !reflect.DeepEqual(got, test.expected) {
@@ -74,7 +77,7 @@ func TestAuthorityFamilyLookupIsIsolatedByClassAndExcludesMigrationSources(t *te
 
 func TestAuthorityFamilyCompositeKeyCannotBeMissingOrUnknown(t *testing.T) {
 	repo := isolationFixture(t)
-	for _, test := range [][2]string{{"", "VERI"}, {"UNKNOWN", "VERI"}, {lifecycle.DeveloperClass, "BOUND"}} {
+	for _, test := range [][2]string{{"", "ASSURE"}, {"UNKNOWN", "ASSURE"}, {lifecycle.DeveloperClass, "BOUND"}} {
 		_, err := lifecycle.ActiveFamilyIDs(repo, test[0], test[1])
 		lifecycleCode(t, err, "INVALID_AUTHORITY_FAMILY_KEY")
 	}
@@ -103,7 +106,7 @@ func TestAuthorityProjectionMetadataDriftFailsBeforeDomainFiltering(t *testing.T
 
 func TestCrossClassComparisonCannotEnterCollisionDomain(t *testing.T) {
 	repo := isolationFixture(t)
-	classAnalysis(t, repo, vpmsClass, "VERI", "MPD-NORM-0013", false)
+	classAnalysis(t, repo, vpmsClass, "ASSURE", "MPD-NORM-0013", false)
 	_, err := lifecycle.ValidateResponsibilityAnalysis(repo, fixtureAnalysis, true)
 	lifecycleCode(t, err, "RESPONSIBILITY_ANALYSIS_BLOCKED")
 	if !strings.Contains(err.Error(), "must exactly cover") {
@@ -112,7 +115,7 @@ func TestCrossClassComparisonCannotEnterCollisionDomain(t *testing.T) {
 }
 
 func TestSameClassFamilyCollisionUsesExistingAuthority(t *testing.T) {
-	for _, test := range [][3]string{{lifecycle.DeveloperClass, "NORM", "MPD-NORM-0013"}, {vpmsClass, "VERI", "MPD-VERI-0002"}} {
+	for _, test := range [][3]string{{lifecycle.DeveloperClass, "NORM", "MPD-NORM-0013"}, {vpmsClass, "ASSURE", "MPD-ASSURE-0002"}} {
 		t.Run(test[0], func(t *testing.T) {
 			repo := isolationFixture(t)
 			classAnalysis(t, repo, test[0], test[1], test[2], true)
@@ -164,7 +167,7 @@ func TestFamilyAllocationIgnoresOtherNamespacesAndPreservesSharedSequence(t *tes
 		family   string
 		ids      []string
 		expected string
-	}{{"NORM", []string{"MPD-NORM-0001", "MPD-BOUND-9999", "MPD-VERI-9999"}, "MPD-NORM-0002"}, {"VERI", []string{"MPD-VERI-0001", "MPD-VERI-0002", "MPD-BOUND-9999"}, "MPD-VERI-0003"}} {
+	}{{"NORM", []string{"MPD-NORM-0001", "MPD-BOUND-9999", "MPD-VERI-9999"}, "MPD-NORM-0002"}, {"ASSURE", []string{"MPD-VERI-0001", "MPD-ASSURE-0002", "MPD-BOUND-9999"}, "MPD-ASSURE-0003"}} {
 		got, err := lifecycle.NextFamilyID(test.ids, test.family)
 		if err != nil || got != test.expected {
 			t.Fatal(got, err)
@@ -172,16 +175,16 @@ func TestFamilyAllocationIgnoresOtherNamespacesAndPreservesSharedSequence(t *tes
 	}
 }
 
-func TestVPMSMaterializationRequiresCompletedIsolationVerification(t *testing.T) {
+func TestVPMSMaterializationRequiresCurrentNamespaceAdmission(t *testing.T) {
 	repo := isolationFixture(t)
 	ref := "developer/policy/registries/developer-policy-catalog-contracts.json"
 	record, err := repo.Read(ref)
 	if err != nil {
 		t.Fatal(err)
 	}
-	record["application_execution"].(object)["m1_m7_verified"] = false
+	record["vpms_family_allocation"].(object)["materialization_authorized"] = false
 	testrepo.WriteJSON(t, repo, ref, record)
-	lifecycleCode(t, lifecycle.RequireFamilyClass(repo, vpmsClass, "VERI"), "VPMS_CLASS_MATERIALIZATION_NOT_ENABLED")
+	lifecycleCode(t, lifecycle.RequireFamilyClass(repo, vpmsClass, "ASSURE"), "VPMS_CLASS_MATERIALIZATION_NOT_ENABLED")
 }
 
 func TestCurrentPRARegistryPreservesCreationProvenanceAndHistoricalDigestRecords(t *testing.T) {
@@ -228,144 +231,30 @@ func TestCurrentPRARegistryPreservesCreationProvenanceAndHistoricalDigestRecords
 	}
 }
 
-func vpmsPolicy(t *testing.T, repo *testrepo.Repository) object {
-	t.Helper()
-	contract, err := repo.Read("developer/policy/registries/developer-policy-catalog-contracts.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	id := contract["application_execution"].(object)["registered_vpms_policy_id"].(string)
-	// The catalog execution record is historical provenance. KEEP_LATEST withdrew
-	// this policy from current registration; only this test reads its frozen body.
-	payload, err := repo.Read("developer/policy/legacy/" + id + ".yaml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	return payload
-}
-
-func TestFirstVPMSPolicyIsActiveWithExplicitOwnerApproval(t *testing.T) {
-	// ACTIVE describes the frozen historical source. Current lookup must exclude it.
+func TestCurrentVPMSPolicyIsRegisteredAsDraftWithoutRuntimeAuthority(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
-	payload := vpmsPolicy(t, repo)
-	id := payload["policy"].(object)["id"].(string)
-	inspected, err := lifecycle.InspectPolicy(repo, id)
-	policyIdentity := payload["policy"].(object)
-	if err != nil || payload["schema_version"] != "developer-policy/v2" || payload["policy_class"] != vpmsClass || policyIdentity["status"] != "ACTIVE" || policyIdentity["version"] != "2.0" || inspected["status"] != "NOT_FOUND" {
-		t.Fatalf("%#v %v", inspected, err)
+	inspected, err := lifecycle.InspectPolicy(repo, "MPD-ASSURE-0004")
+	if err != nil || inspected["policy_status"] != "DRAFT" || inspected["policy_version"] != "0.0" || inspected["operationally_resolvable"] != false || inspected["subject_identity_registered"] != true {
+		t.Fatal(inspected, err)
 	}
-	transition := payload["transition"].(object)
-	requirement := transition["requirements"].([]any)[0].(object)
-	ref := "developer/policy/approvals/MPA-20261005-VPMS-VERI-ACTIVE.yaml"
-	if transition["state"] != "COMPLETE" || requirement["state"] != "SATISFIED" || !lifecycle.Contains(lifecycle.Strings(requirement["refs"]), ref) {
-		t.Fatal(transition)
-	}
-	approval, err := repo.Read(ref)
-	if err != nil {
-		t.Fatal(err)
-	}
-	identity := approval["approval"].(object)
-	if identity["decision_source"] != "USER_EXPLICIT" || identity["target_status"] != "ACTIVE" || identity["requested_policy_id"] != id {
-		t.Fatal(identity)
-	}
-	ids, err := lifecycle.ActiveFamilyIDs(repo, vpmsClass, "VERI")
-	if err != nil || len(ids) != 0 {
-		t.Fatal(ids, err)
-	}
-	legacy, err := lifecycle.ActiveFamilyIDs(repo, lifecycle.DeveloperClass, "VERI")
-	if err != nil || len(legacy) != 0 {
-		t.Fatal("historical Developer Family activated", legacy, err)
+	for _, class := range []string{vpmsClass, lifecycle.DeveloperClass} {
+		ids, err := lifecycle.ActiveFamilyIDs(repo, class, "ASSURE")
+		if err != nil || (class == vpmsClass && len(ids) != 0) || lifecycle.Contains(ids, "MPD-ASSURE-0004") {
+			t.Fatal("candidate or withdrawn policy became active authority", ids, err)
+		}
 	}
 }
 
-func TestVPMSOwnsOnlyDeclaredSourceResponsibilitiesAndSymbols(t *testing.T) {
+func TestCurrentVPMSAnalysisUsesRegisteredClassAndCurrentLookup(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
-	rules := vpmsPolicy(t, repo)["rules"].(object)
-	bindings := rules["source_bindings"].(object)
-	owned := map[string]string{}
-	definition := regexp.MustCompile(`(?m)^(?:class|(?:async\s+)?def)\s+([A-Za-z_][A-Za-z_0-9]*)\b`)
-	for _, raw := range bindings["own_sources"].([]any) {
-		row := raw.(object)
-		ref := row["path"].(string)
-		owned[ref] = row["responsibility"].(string)
-		path, err := repo.Path(ref)
-		if err != nil {
-			t.Fatal(err)
-		}
-		source, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatal(err)
-		}
-		names := map[string]bool{}
-		for _, match := range definition.FindAllSubmatch(source, -1) {
-			names[string(match[1])] = true
-		}
-		for _, symbol := range lifecycle.Strings(row["symbols"]) {
-			if !names[symbol] || lifecycle.Contains(lifecycle.Strings(row["excluded_symbols"]), symbol) {
-				t.Fatal("invalid declared source symbol", ref, symbol)
-			}
-		}
-		if ref == "src/vpms/execution/runner.py" && (!reflect.DeepEqual(lifecycle.Strings(row["symbols"]), []string{"RunnerExecution", "CaseExecutor", "run_case"}) || !reflect.DeepEqual(lifecycle.Strings(row["excluded_symbols"]), []string{"run_selected_cases"})) {
-			t.Fatal(row)
-		}
+	record, err := lifecycle.ResolveAnalysisRecord(repo, "", "POLICY", "MPD-ASSURE-0004", "VPMS_CURRENT_CONTRACT_SUCCESSOR")
+	if err != nil || record["analysis_id"] != "PRA-0018" || record["analysis_ref"] != "developer/policy/analysis/records/PRA-0018.yaml" {
+		t.Fatal(record, err)
 	}
-	want := map[string]string{"src/vpms/domain/model.py": "VPMS_CASE_AND_OUTCOME_PROTOCOL", "src/vpms/domain/registry.py": "VPMS_EXPLICIT_REFERENCE_BINDING", "src/vpms/execution/runner.py": "VPMS_RUNNER_EXECUTION_AND_NORMALIZATION"}
-	if !reflect.DeepEqual(owned, want) {
-		t.Fatal(owned)
+	result, err := lifecycle.ValidateResponsibilityAnalysis(repo, "PRA-0018", true)
+	if err != nil || result["status"] != "PASS" || !reflect.DeepEqual(result["owned_authority_family_set"], []any{object{"policy_class": vpmsClass, "family": "ASSURE"}}) || !reflect.DeepEqual(result["materialization_groups"].([]any)[0].(object)["responsibility_ids"], []any{"R01", "R02"}) {
+		t.Fatal(result, err)
 	}
-	evidence := bindings["implementation_evidence"].([]any)[0].(object)
-	if evidence["path"] != "src/vpms/execution/adapters/command.py" || evidence["normative_ownership_created_by_evidence"] != false {
-		t.Fatal(evidence)
-	}
-	legacy := bindings["legacy_boundary_references"].([]any)[0].(object)
-	if legacy["policy_id"] != "SFP-0006" || legacy["normative_semantics_changed"] != false || legacy["consumer_policy_authority_replaced"] != false {
-		t.Fatal(legacy)
-	}
-	retirement := bindings["retirement_evidence"].([]any)[0].(object)
-	if retirement["path"] != "src/vpms/domain/selector.py" || retirement["owned_by_this_policy"] != false || retirement["physical_retirement_authorized"] != false || retirement["current_runtime_dependency_present"] != true {
-		t.Fatal(retirement)
-	}
-	boundary := rules["responsibility_boundary"].(object)
-	values := []string{}
-	for _, value := range owned {
-		values = append(values, value)
-	}
-	sort.Strings(values)
-	owns := lifecycle.Strings(boundary["owns"])
-	sort.Strings(owns)
-	if !reflect.DeepEqual(owns, values) || !lifecycle.Contains(lifecycle.Strings(boundary["does_not_own"]), "CASE_SELECTION") || rules["case_and_outcome_protocol"].(object)["purpose_vocabulary_owned"] != false || rules["verification_protocol_scope"].(object)["consumer_runtime_policy_dependency"] != "FORBIDDEN" {
-		t.Fatal(rules)
-	}
-}
-
-func TestVPMSCreationAnalysisIsRegisteredClassAwareAndNotReusedAsLiveLookup(t *testing.T) {
-	repo := testrepo.Open(testrepo.Root(t))
-	id := vpmsPolicy(t, repo)["policy"].(object)["id"]
-	registry, err := repo.Read(lifecycle.PolicyAnalysisRegistry)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, raw := range registry["bindings"].([]any) {
-		row := raw.(object)
-		if row["policy_id"] != id {
-			continue
-		}
-		if row["policy_class"] != vpmsClass || row["family"] != "VERI" {
-			t.Fatal(row)
-		}
-		analysisID := row["analysis_id"].(string)
-		result, err := lifecycle.ValidateResponsibilityAnalysis(repo, analysisID, false)
-		if err != nil || result["status"] != "PASS" || !reflect.DeepEqual(result["owned_authority_family_set"], []any{object{"policy_class": vpmsClass, "family": "VERI"}}) || !reflect.DeepEqual(result["materialization_groups"].([]any)[0].(object)["responsibility_ids"], []any{"R01", "R02", "R03"}) {
-			t.Fatalf("%#v %v", result, err)
-		}
-		_, err = lifecycle.ValidateResponsibilityAnalysis(repo, analysisID, true)
-		lifecycleCode(t, err, "RESPONSIBILITY_ANALYSIS_BLOCKED")
-		if !strings.Contains(err.Error(), "withdrawn policy creation analysis is historical evidence only") {
-			t.Fatal("historical creation record was not rejected by the withdrawal boundary", err)
-		}
-		return
-	}
-	t.Fatal("VPMS creation analysis binding missing")
 }
 
 func TestM8OpeningRetainsCompletedPreM8VerificationProvenance(t *testing.T) {
@@ -384,15 +273,15 @@ func TestClassAwareVPMSRegistrationChecksExactSourceClass(t *testing.T) {
 	for _, candidateClass := range []string{vpmsClass, lifecycle.DeveloperClass} {
 		t.Run(candidateClass, func(t *testing.T) {
 			repo := isolationFixture(t)
-			classAnalysis(t, repo, vpmsClass, "VERI", "MPD-VERI-0002", false)
-			writeApproval(t, repo, "MPD-VERI-0003", "DRAFT")
-			result, err := lifecycle.PreflightFamilyPolicy(repo, vpmsClass, "VERI", fixtureApproval, fixtureAnalysis, "G01")
-			if err != nil || result["allocated_policy_id"] != "MPD-VERI-0003" || result["policy_class"] != vpmsClass {
+			classAnalysis(t, repo, vpmsClass, "ASSURE", "MPD-ASSURE-0002", false)
+			writeApproval(t, repo, "MPD-ASSURE-0003", "DRAFT")
+			result, err := lifecycle.PreflightFamilyPolicy(repo, vpmsClass, "ASSURE", fixtureApproval, fixtureAnalysis, "G01")
+			if err != nil || result["allocated_policy_id"] != "MPD-ASSURE-0003" || result["policy_class"] != vpmsClass {
 				t.Fatalf("%#v %v", result, err)
 			}
-			path := "developer/policy/VERI/MPD-VERI-0003.yaml"
-			testrepo.Write(t, repo, path, object{"schema_version": "developer-policy/v2", "policy_class": candidateClass, "policy": object{"id": "MPD-VERI-0003", "version": "0.0", "title": "VPMS fixture", "status": "DRAFT"}, "rules": object{"fixture": object{"enabled": true}}})
-			result, err = lifecycle.RegisterFamilyPolicy(repo, vpmsClass, "VERI", fixtureApproval, fixtureAnalysis, "G01", path)
+			path := "developer/policy/ASSURE/MPD-ASSURE-0003.yaml"
+			testrepo.Write(t, repo, path, object{"schema_version": "developer-policy/v2", "policy_class": candidateClass, "policy": object{"id": "MPD-ASSURE-0003", "version": "0.0", "title": "VPMS fixture", "status": "DRAFT"}, "rules": object{"fixture": object{"enabled": true}}})
+			result, err = lifecycle.RegisterFamilyPolicy(repo, vpmsClass, "ASSURE", fixtureApproval, fixtureAnalysis, "G01", path)
 			if candidateClass != vpmsClass {
 				lifecycleCode(t, err, "POLICY_CLASS_MISMATCH")
 				index, readErr := repo.Read(lifecycle.PolicyIndex)
@@ -400,7 +289,7 @@ func TestClassAwareVPMSRegistrationChecksExactSourceClass(t *testing.T) {
 					t.Fatal(readErr)
 				}
 				for _, raw := range index["policies"].([]any) {
-					if raw.(object)["id"] == "MPD-VERI-0003" {
+					if raw.(object)["id"] == "MPD-ASSURE-0003" {
 						t.Fatal("wrong class registration mutated catalog")
 					}
 				}

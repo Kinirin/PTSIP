@@ -103,6 +103,12 @@ records:
   subject_id: PTSIP_PRODUCT_ENGINE
   analysis_kind: ENGINE_IMPLEMENTATION_LANGUAGE_SELECTION
   recorded_at: "2026-10-08"
+- analysis_id: PRA-0018
+  analysis_kind: VPMS_CURRENT_CONTRACT_SUCCESSOR
+  analysis_ref: developer/policy/analysis/records/PRA-0018.yaml
+  recorded_at: '2026-10-11'
+  subject_id: MPD-ASSURE-0004
+  subject_type: POLICY
 bindings:
 - policy_id: MPD-ARCH-0001
   policy_class: PTSIP_DEVELOPER_POLICY
@@ -134,6 +140,11 @@ bindings:
   family: ASSURE
   analysis_id: PRA-0012
   group_id: G01
+- analysis_id: PRA-0018
+  family: ASSURE
+  group_id: G01
+  policy_class: VPMS_DEVELOPER_POLICY
+  policy_id: MPD-ASSURE-0004
 - policy_id: MPD-CHANGE-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   family: CHANGE

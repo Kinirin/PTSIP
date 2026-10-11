@@ -90,8 +90,7 @@ func ActiveFamilyIDs(r Repository, class, family string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	families := append(append([]string{}, policyRootFamilies...), policyLegacyFamilies...)
-	if !policyContains(classes, class) || !policyContains(families, family) {
+	if !policyContains(classes, class) || !policyContains(policyRootFamilies, family) {
 		return nil, policyFailure("INVALID_AUTHORITY_FAMILY_KEY", "registered class and Family are required")
 	}
 	resolver, err := binding.NewResolver(r)
