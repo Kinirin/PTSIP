@@ -75,7 +75,18 @@
         "external_engine_activation_isolation": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY",
         "activation_fresh_permission_requirement": "EXISTING_PREDELEGATED_SCOPE_AND_FRESH_EXECUTION_GATE",
         "target_engine_unverified_or_incompatible": "NOT_ELIGIBLE_FOR_AUTOMATIC_ACTIVATION",
-        "activation_target_scope_no_new_authority": true
+        "activation_target_scope_no_new_authority": true,
+        "current_release_activation_timing": "PTSIP_STARTUP_EAGER_ELIGIBLE_ENGINE_ACTIVATION",
+        "current_release_activation_timing_option": "A_USER_EXPLICIT",
+        "current_release_activation_timing_recorded_at": "2026-10-11",
+        "current_release_activation_scope": "ALL_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE",
+        "activation_trigger": "PTSIP_RUNTIME_STARTUP",
+        "activation_triggers_repeated_manual_approval": false,
+        "lazy_on_demand_activation_future_extension": "DEFERRED_NOT_CURRENT_RELEASE_REQUIRED",
+        "lazy_on_demand_automatically_authorized": false,
+        "lazy_on_demand_future_policy_review_required": true,
+        "ineligible_engine_startup_result": "NOT_ACTIVATED",
+        "automatic_activation_still_not_operation_execution_authorization": true
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -135,7 +146,17 @@
         "auto_activation_without_predelegation_or_fresh_eligibility": "FAIL_CLOSED",
         "isolation_or_resource_enforcement_unverifiable": "FAIL_CLOSED",
         "target_scope_selection_does_not_activate_engine_draft_runtime": true,
-        "active_engine_plane_runtime_activation_deferred_unchanged": true
+        "active_engine_plane_runtime_activation_deferred_unchanged": true,
+        "every_startup_eligible_engine_within_authorized_scope_is_activated": true,
+        "startup_ineligible_unverified_or_ambiguous_engine_is_not_activated": true,
+        "startup_activation_never_bypasses_registered_contract_environment_predelegation_and_isolation_gates": true,
+        "startup_activation_may_not_override_explicit_consumer_engine_binding": true,
+        "startup_activation_does_not_grant_execution_write_or_new_permission": true,
+        "starting_ptsip_cannot_activate_unregistered_engine": true,
+        "startup_activation_no_per_engine_prompt_when_predelegation_is_verified": true,
+        "startup_automatic_activation_does_not_imply_automatic_operation_invocation": true,
+        "startup_policy_alone_does_not_activate_current_draft_runtime": true,
+        "delayed_lazy_activation_is_not_current_release_requirement": true
       },
       "unresolved_decisions": [
         {
@@ -257,6 +278,29 @@
         "common_eligibility": "ALL_REGISTERED_CONTRACT_ENVIRONMENT_PREDELEGATED_SCOPE_AND_APPLICABLE_ISOLATION_GATES",
         "no_implicit_nonisolated_exception_for_user_external_engines": true,
         "engine_origin_alone_never_grants_execution_write_or_activation_authority": true
+      },
+      "startup_activation_direction": {
+        "policy_subject": "ENGINE_AUTOMATIC_ACTIVATION_TIMING",
+        "current_release": "EAGER_AT_PTSIP_STARTUP",
+        "eligible_population": "ALL_REGISTERED_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE",
+        "origins": [
+          "OFFICIAL_PTSIP_ENGINE",
+          "CONSUMER_USER_ENGINE",
+          "REGISTERED_EXTERNAL_ENGINE"
+        ],
+        "apply_existing_gates_ref": "automatic_activation_direction_boundary.machine_verified_predicates",
+        "when_gate_verified": "ACTIVATE_AT_STARTUP_WITHOUT_SEPARATE_PROMPT",
+        "when_gate_not_verified": "NO_ACTIVATION_FAIL_CLOSED_FOR_INELIGIBLE_ENGINE",
+        "existing_engine_registration_origin_and_isolation_boundary": "UNCHANGED",
+        "activation_is_not_execution_or_write_authorization": true,
+        "future_optional_alternative": {
+          "mode": "LAZY_ON_DEMAND_ACTIVATION",
+          "status": "DEFERRED",
+          "current_release_required": false,
+          "separate_owner_authorization_required": true
+        },
+        "concrete_startup_hook_and_activation_sequence": "PLAN_AND_MACHINE_CONTRACT",
+        "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
       }
     }
   },
