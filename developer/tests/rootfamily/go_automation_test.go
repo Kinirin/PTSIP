@@ -137,8 +137,12 @@ func frozenFamilyCatalog(t *testing.T, families map[string]any) string {
 	t.Helper()
 	root := copyDeveloperWithoutLegacy(t)
 	wanted := map[string]map[string]any{}
+	capturedNamespaces := map[string]bool{}
 	for _, raw := range families {
-		for _, item := range sequence(t, mapping(t, raw)["registered_policies"]) {
+		vector := mapping(t, raw)
+		parts := strings.Split(vector["allocated_policy_id"].(string), "-")
+		capturedNamespaces[parts[0]+"|"+parts[1]] = true
+		for _, item := range sequence(t, vector["registered_policies"]) {
 			policy := mapping(t, item)
 			wanted[policy["policy_id"].(string)] = policy
 		}
@@ -152,15 +156,13 @@ func frozenFamilyCatalog(t *testing.T, families map[string]any) string {
 			entry := mapping(t, raw)
 			id := entry["id"].(string)
 			parts := strings.Split(id, "-")
-			class, _ := entry["policy_class"].(string)
-			if class == "" {
-				class, _ = index["policy_class"].(string)
-			}
 			if entry["authority_role"] == "MIGRATION_SOURCE" || len(parts) != 3 {
 				entries = append(entries, entry)
 				continue
 			}
-			if _, captured := families[class+"|"+parts[1]]; !captured {
+			// Ordinals are shared across classes in one ID namespace. Remove all
+			// current additions absent from this snapshot, including sibling classes.
+			if !capturedNamespaces[parts[0]+"|"+parts[1]] {
 				entries = append(entries, entry)
 				continue
 			}

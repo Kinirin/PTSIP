@@ -642,6 +642,24 @@
         "new_vpms_current_case_and_negative_conformance": "PASS",
         "expired_family_creation_and_current_lookup": "REJECTED",
         "legacy_body_or_source_reconstruction": "NOT_USED"
+      },
+      "current_assure_first_ci": {
+        "source_sha": "ea1336f4c4e53360b2e229e4ab45c055dda13a69",
+        "push_run": "https://github.com/Kinirin/PTSIP/actions/runs/38141331046",
+        "pra_registry_validation": "SUCCESS",
+        "pp_transition": "SUCCESS",
+        "static_validation": "FAILURE_FROZEN_FIXTURE_CURRENT_SIBLING_CLASS_LEAK",
+        "impact_test_build_run": "https://github.com/Kinirin/PTSIP/actions/runs/38141331145",
+        "impact_test_build_result": "FAILURE_SAME_FROZEN_FIXTURE_LEAK"
+      },
+      "frozen_parity_fixture_repair": {
+        "path": "developer/tests/rootfamily/go_automation_test.go",
+        "scope": "TEMPORARY_SNAPSHOT_INPUT_ONLY",
+        "namespace_membership": "ID_PREFIX_AND_FAMILY_SHARED_ACROSS_CLASSES",
+        "frozen_expected_vectors": "UNCHANGED",
+        "frozen_trust_hashes": "UNCHANGED",
+        "current_catalog_allocation": "SEPARATELY_VERIFIED_NEXT_ASSURE_0005_CLASS_AUTHORITY_ISOLATED",
+        "local_go_parity_and_current_allocation": "PASS"
       }
     }
   }
