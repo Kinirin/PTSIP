@@ -64,7 +64,7 @@
         },
         "current_gate": {
           "type": "string",
-          "pattern": "^WU-[0-9]{2}(?:-P[0-9]{2})?$"
+          "pattern": "^(?:WU-[0-9]{2}(?:-P[0-9]{2})?|UNASSIGNED)$"
         },
         "architecture_milestone": {
           "type": "string",
