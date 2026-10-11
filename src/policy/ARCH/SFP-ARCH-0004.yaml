@@ -91,7 +91,7 @@
         "seven_official_engine_subdirectory_name_authority_choice": "B_USER_EXPLICIT",
         "seven_official_engine_subdirectory_name_authority_decided_at": "2026-10-11",
         "seven_official_engine_subdirectory_name_authority": "PROJECT_OWNER_APPROVED_POLICY",
-        "seven_official_engine_subdirectory_exact_names": "PARTIALLY_RESOLVED_CONTEXT_STORAGE_VALIDATION_ONLY_FOUR_UNRESOLVED",
+        "seven_official_engine_subdirectory_exact_names": "PARTIALLY_RESOLVED_FOUR_ONLY_THREE_UNRESOLVED",
         "seven_official_engine_subdirectory_name_determination_by_plan": "FORBIDDEN_WITHOUT_SEPARATE_POLICY_APPROVAL",
         "seven_official_engine_subdirectory_unapproved_name_materialization": "FORBIDDEN",
         "official_source_root_and_seven_engine_identities": "UNCHANGED",
@@ -102,10 +102,10 @@
           "approved": {
             "CONTEXT": "context/",
             "STORAGE": "storage/",
-            "VALIDATION": "validation/"
+            "VALIDATION": "validation/",
+            "DISCOVERY": "discovery/"
           },
           "pending_engine_kinds": [
-            "DISCOVERY",
             "PLANNING",
             "EXECUTION",
             "PROJECTION"
@@ -127,7 +127,12 @@
         "official_validation_engine_subdirectory_decision": "A_USER_EXPLICIT",
         "official_validation_engine_subdirectory_approved_at": "2026-10-11",
         "official_validation_engine_subdirectory_physical_creation": "NOT_AUTHORIZED",
-        "official_validation_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE"
+        "official_validation_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
+        "official_discovery_engine_subdirectory_name": "discovery/",
+        "official_discovery_engine_subdirectory_decision": "A_USER_EXPLICIT",
+        "official_discovery_engine_subdirectory_approved_at": "2026-10-11",
+        "official_discovery_engine_subdirectory_physical_creation": "NOT_AUTHORIZED",
+        "official_discovery_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -230,7 +235,6 @@
         "storage_subdirectory_approval_does_not_activate_engine_runtime": true,
         "validation_engine_subdirectory_name_approved_by_owner": true,
         "validation_engine_approved_subdirectory_is_exactly_validation": true,
-        "remaining_four_official_engine_subdirectory_names_require_separate_owner_approval": true,
         "approved_context_storage_validation_subdirectories_are_distinct": true,
         "validation_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
         "validation_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
@@ -238,15 +242,24 @@
         "validation_subdirectory_approval_does_not_modify_existing_public_vpms_interfaces": true,
         "validation_subdirectory_approval_does_not_retire_legacy_vpms_or_bypass_staged_migration": true,
         "validation_subdirectory_approval_does_not_change_assure_normative_conformance_authority": true,
-        "validation_subdirectory_approval_does_not_activate_engine_runtime": true
+        "validation_subdirectory_approval_does_not_activate_engine_runtime": true,
+        "discovery_engine_subdirectory_name_approved_by_owner": true,
+        "discovery_engine_approved_subdirectory_is_exactly_discovery": true,
+        "remaining_three_official_engine_subdirectory_names_require_separate_owner_approval": true,
+        "approved_context_storage_validation_discovery_subdirectories_are_distinct": true,
+        "discovery_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
+        "discovery_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
+        "discovery_subdirectory_approval_does_not_change_existing_semantic_or_execution_authorities": true,
+        "discovery_subdirectory_approval_does_not_modify_existing_public_interfaces": true,
+        "discovery_subdirectory_approval_does_not_activate_engine_runtime": true
       },
       "unresolved_decisions": [
         {
           "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES",
           "kind": "USER_DECISION",
           "status": "UNRESOLVED",
-          "reason": "CONTEXT_STORAGE_VALIDATION_NAMES_APPROVED_REMAINING_FOUR_REQUIRE_INDEPENDENT_OWNER_POLICY_APPROVAL",
-          "scope": "REMAINING_FOUR_OFFICIAL_ENGINE_NAME_VALUES_ONLY_CONTEXT_STORAGE_VALIDATION_APPROVED"
+          "reason": "FOUR_OFFICIAL_NAMES_APPROVED_REMAINING_THREE_REQUIRE_OWNER_POLICY_APPROVAL",
+          "scope": "REMAINING_THREE_OFFICIAL_ENGINE_NAME_VALUES_ONLY_DISCOVERY_AND_PRIOR_NAMES_APPROVED"
         },
         {
           "id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
@@ -514,6 +527,29 @@
           "existing_validation_and_vpms_active_authority": "UNCHANGED",
           "existing_validation_and_vpms_public_interfaces": "UNCHANGED",
           "existing_staged_vpms_transition": "UNCHANGED",
+          "directory_creation": "NOT_AUTHORIZED",
+          "existing_module_migration": "NOT_AUTHORIZED",
+          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
+          "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "OFFICIAL_DISCOVERY_ENGINE_SUBDIRECTORY_NAME",
+          "selected_option": "A_DISCOVERY_DIRECTORY",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "DISCOVERY_ENGINE_NAME_VALUE_ONLY",
+          "official_engine_kind": "DISCOVERY",
+          "approved_subdirectory": "discovery/",
+          "approved_parent_source_root": "src/ptsip/engines/",
+          "planned_path_not_materialized": "src/ptsip/engines/discovery/",
+          "previously_approved_names": {
+            "CONTEXT": "context/",
+            "STORAGE": "storage/",
+            "VALIDATION": "validation/"
+          },
+          "other_three_official_engine_names": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
+          "physical_package_layout": "UNRESOLVED",
+          "active_authority_and_public_interfaces": "UNCHANGED",
           "directory_creation": "NOT_AUTHORIZED",
           "existing_module_migration": "NOT_AUTHORIZED",
           "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
