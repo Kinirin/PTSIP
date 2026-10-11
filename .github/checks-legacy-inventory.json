@@ -1,0 +1,38 @@
+{
+  "format": "ptsip-workflow-verification-inventory/v1",
+  "source_sha": "346dd05030f71fefdf37087dc2a773f06bae6391",
+  "source_workflow": ".github/workflows/tooling-test.yml",
+  "required_execution_steps": [
+    "static-validation/Validate v3 Test Mode registry through Go",
+    "static-validation/Verify policy lifecycle automation",
+    "static-validation/Verify direct Root policy Go automation",
+    "static-validation/Verify README translation registry layout",
+    "static-validation/Resolve WU-02 lane validation applicability",
+    "static-validation/Validate WU-02 control branch from explicit workflow context",
+    "static-validation/Verify bounded machine context migration",
+    "static-validation/Verify Markdown cleanup automation",
+    "static-validation/Run MPD-0012 Markdown cleanup simulation",
+    "pp-transition/Resolve introduced commit baseline",
+    "pp-transition/Verify every introduced PP transition commit",
+    "pra-registry-validation/Verify registry-first PRA lifecycle plane",
+    "pra-registry-validation/Verify registry-first PRA Go plane",
+    "test-build/Verify Go contracts during full verification",
+    "test-build/Verify Tool, PP, and Specification release contract",
+    "test-build/Run 0.3.8a3 Context Plane emergency regression",
+    "test-build/Run complete shipping and release regression",
+    "test-build/Verify Tool, Specification, and repository profile",
+    "test-build/Build and verify distributions",
+    "test-build/Verify wheel and sdist embedded contracts",
+    "test-build/Verify Product Artifact evidence and exact snapshot binding",
+    "test-build/Reinstall built wheel and smoke public surfaces"
+  ],
+  "source_job_count": 4,
+  "tracked_status_contexts": [
+    "ci/agent-context-migration",
+    "ci/markdown-cleanup-simulation",
+    "ci/pp-transition",
+    "ci/change-verification",
+    "ci/tooling-test"
+  ],
+  "non_execution_steps": "Setup, checkout, artifact upload, status emission and applicability routing incorporated in new runner"
+}
