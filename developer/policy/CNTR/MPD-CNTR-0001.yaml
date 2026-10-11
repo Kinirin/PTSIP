@@ -5,7 +5,7 @@ policy:
   id: MPD-CNTR-0001
   title: CNTR authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.0'
+  version: '2.1'
 authority_subject:
   id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
   statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를
@@ -36,20 +36,10 @@ rules:
     - MPD-SPEC-0025
     - MPD-VERI-0004
   unit_mpd_0001_394f16f8e8c8:
-    loader: developer/automation/policy_loader.py
-    policy_validator: developer/automation/policy_validator.py
     planning:
       root: developer/automation/planning/
-      entry_resolver: developer/automation/planning/planning_entry_resolver.py
-      validator: developer/automation/planning/planning_validator.py
-      stage_finalizer: developer/automation/planning/planning_stage_finalizer.py
-      extension_finalizer: developer/automation/planning/planning_extension_finalizer.py
-      leaf_merge: developer/automation/planning/planning_leaf_merge.py
-      merge_reconciler: developer/automation/planning/planning_merge_reconciler.py
     policy_plan_binding:
       root: developer/automation/policy_plan_binding/
-    current_dependency_gate: developer/automation/current_dependency_gate.py
-    transition_evaluator: developer/automation/transition_evaluator.py
   unit_mpd_0010_a352aeef1624: APPROVED
   unit_mpd_0010_d3321af4d08d: REPOSITORY_TRIAL
   unit_mpd_0010_6a8bfa4fc46a: REDUCE_CODING_AGENT_ENTRY_INFERENCE_WITH_LOW_DIFFICULTY_MACHINE_ROUTING

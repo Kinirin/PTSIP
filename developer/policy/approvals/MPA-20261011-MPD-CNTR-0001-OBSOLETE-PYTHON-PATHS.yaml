@@ -1,0 +1,17 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261011-MPD-CNTR-0001-OBSOLETE-PYTHON-PATHS
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "현재 존재하지 않는 Python 파일 목록부터 정리하는 것에 승인합니다."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-CNTR-0001
+  conflict_resolution: RECONCILE
+  affected_policy_ids:
+  - MPD-CNTR-0001
+  recorded_at: '2026-10-11'
