@@ -172,10 +172,14 @@ func TestNeutralModuleExecutesInGoForBothPlanes(t *testing.T) {
 		t.Run(p.PolicyClass, func(t *testing.T) {
 			root := filepath.Join(repository(t), p.Path)
 			index := read(t, filepath.Join(root, "index.yaml"))
-			if index["projection_module_ref"] != acceptance.ModuleRef {
-				t.Fatal("neutral module is not admitted")
+			if p.PolicyClass == "PTSIP_DEVELOPER_POLICY" {
+				if index["projection_module_ref"] != acceptance.ModuleRef {
+					t.Fatal("developer neutral module is not admitted")
+				}
+			} else if _, indexed := index["projection_module_ref"]; indexed {
+				t.Fatal("support current index depends on historical neutral module")
 			}
-			module := read(t, filepath.Join(root, index["projection_module_ref"].(string)))
+			module := read(t, filepath.Join(root, acceptance.ModuleRef))
 			if module["policy_class"] != p.PolicyClass || module["language_neutral"] != true || module["program_language"] != acceptance.ProgramLanguage {
 				t.Fatal("neutral module identity mismatch")
 			}

@@ -211,10 +211,14 @@ func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 		t.Run(p.PolicyClass, func(t *testing.T) {
 			root := filepath.Join(repository(t), p.Path)
 			index := read(t, filepath.Join(root, "index.yaml"))
-			if index["migration_registry_ref"] != "registries/root-family-migration.json" {
-				t.Fatal("graph is not explicitly admitted")
+			if p.PolicyClass == "PTSIP_DEVELOPER_POLICY" {
+				if index["migration_registry_ref"] != "registries/root-family-migration.json" {
+					t.Fatal("developer historical graph is not explicitly admitted")
+				}
+			} else if _, indexed := index["migration_registry_ref"]; indexed {
+				t.Fatal("support current index still depends on historical migration evidence")
 			}
-			graph := read(t, filepath.Join(root, index["migration_registry_ref"].(string)))
+			graph := read(t, filepath.Join(root, "registries/root-family-migration.json"))
 			if graph["policy_class"] != p.PolicyClass {
 				t.Fatal("foreign graph authority")
 			}
@@ -252,8 +256,12 @@ func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 				if _, err := os.Stat(filepath.Join(root, source["original_path"].(string))); !os.IsNotExist(err) {
 					t.Fatalf("old physical authority reappeared: %s", id)
 				}
-				if entries[id]["authority_role"] != "MIGRATION_SOURCE" {
-					t.Fatal("legacy source is current authority")
+				if p.PolicyClass == "PTSIP_DEVELOPER_POLICY" {
+					if entries[id]["authority_role"] != "MIGRATION_SOURCE" {
+						t.Fatal("developer migration source lost audit-only registration")
+					}
+				} else if _, indexed := entries[id]; indexed {
+					t.Fatal("support historical identity is still indexed as current authority")
 				}
 				var reconstructed map[string]any
 				if err := json.Unmarshal(canonicalJSON(t, source["header"]), &reconstructed); err != nil {
