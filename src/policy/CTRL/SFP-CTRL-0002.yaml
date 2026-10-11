@@ -97,7 +97,11 @@
         "task_eligibility_requires_registered_contract_and_fresh_ctrl_gate": true,
         "implicit_substitution_for_missing_required_capability": "FORBIDDEN_WITHOUT_EXISTING_CONTRACT_APPROVED_RESOLUTION",
         "startup_global_success_from_individual_partial_success": "FORBIDDEN",
-        "partial_startup_does_not_weaken_seven_official_engine_default_availability_commitment": true
+        "partial_startup_does_not_weaken_seven_official_engine_default_availability_commitment": true,
+        "failed_engine_revalidation_timing": "NEXT_PTSIP_STARTUP_ONLY",
+        "failed_engine_environment_change_revalidation": "DEFERRED_NO_CURRENT_RELEASE_OBLIGATION",
+        "failed_engine_revalidation_policy_owner": "SFP-OPS-0002",
+        "failed_engine_revalidation_current_release_choice": "A_USER_EXPLICIT"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -178,7 +182,13 @@
         "partial_startup_does_not_make_unknown_activation_side_effect_safe": true,
         "partial_startup_cannot_override_existing_canonical_source_and_recovery_gates": true,
         "startup_partial_failure_direction_does_not_activate_draft_runtime": true,
-        "default_official_engine_distribution_obligation_not_silently_redefined": true
+        "default_official_engine_distribution_obligation_not_silently_redefined": true,
+        "old_startup_failure_not_permanent_disqualification": true,
+        "failed_engine_may_activate_only_after_fresh_subsequent_startup_eligibility_pass": true,
+        "startup_revalidation_does_not_authorize_in_session_background_retry": true,
+        "environment_change_revalidation_not_required_for_current_release": true,
+        "revalidation_schedule_does_not_expand_activation_or_operation_permission": true,
+        "existing_partial_startup_and_task_block_rules_unaffected": true
       },
       "unresolved_decisions": [
         {
@@ -338,9 +348,13 @@
         "unknown_partial_effect_recovery": "EXISTING_CTRL_REAL_OPS_GATES",
         "official_engine_default_availability_ref": "SFP-CNTR-0005",
         "official_engine_default_availability_changed": false,
-        "future_automatic_retry_policy": "NOT_DECIDED",
+        "future_automatic_retry_policy": "NEXT_PTSIP_STARTUP_REVALIDATION_ONLY",
         "implementation_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION",
-        "validation_and_status_report_interface": "PLAN_AND_MACHINE_CONTRACT"
+        "validation_and_status_report_interface": "PLAN_AND_MACHINE_CONTRACT",
+        "failed_engine_revalidation_policy_ref": "SFP-OPS-0002",
+        "environment_change_auto_revalidation": "DEFERRED",
+        "environment_change_watch_required_for_current_release": false,
+        "subsequent_startup_revalidation_requires_fresh_eligibility": true
       }
     }
   },

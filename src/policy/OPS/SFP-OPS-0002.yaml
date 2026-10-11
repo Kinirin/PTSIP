@@ -53,7 +53,13 @@
         "normative_contract_validation": "REQUIRED_BEFORE_RECOMPUTATION",
         "invalid_authoritative_source_or_contract": "FAIL_CLOSED_NO_RECOMPUTATION",
         "owner_recovery_direction": "OPTION_A",
-        "owner_recovery_direction_recorded_at": "2026-10-11"
+        "owner_recovery_direction_recorded_at": "2026-10-11",
+        "startup_failed_engine_revalidation_timing": "NEXT_PTSIP_STARTUP_ONLY",
+        "startup_failed_engine_revalidation_option": "A_USER_EXPLICIT",
+        "startup_failed_engine_revalidation_recorded_at": "2026-10-11",
+        "startup_failed_engine_environment_change_watch": "DEFERRED_NOT_RELEASE_REQUIRED",
+        "startup_failed_engine_revalidation_requires_fresh_gates": true,
+        "startup_failed_engine_same_session_retry": "NOT_AUTHORIZED_BY_THIS_POLICY"
       },
       "invariants": {
         "no_success_from_partial_failed_composition": true,
@@ -75,7 +81,18 @@
         "unknown_mutation_effect_must_not_be_treated_as_cache_only_failure": true,
         "no_automatic_discard_of_conflicting_sources_locks_or_ambiguous_journals": true,
         "recomputation_does_not_alone_authorize_state_persistence": true,
-        "recovery_policy_is_draft_only_until_owner_active_approval": true
+        "recovery_policy_is_draft_only_until_owner_active_approval": true,
+        "failed_engine_reconsidered_at_subsequent_ptsip_startup": true,
+        "previous_startup_failure_not_permanent_exclusion": true,
+        "previous_eligibility_evidence_not_inherited_as_current_eligibility": true,
+        "no_current_release_environment_change_monitoring_requirement": true,
+        "environment_change_does_not_implicitly_trigger_activation": true,
+        "revalidation_requires_current_registered_contract_environment_predelegation_and_isolation": true,
+        "failed_or_unknown_revalidation_remains_ineligible": true,
+        "retry_revalidation_cannot_grant_execute_or_write_authority": true,
+        "activation_failure_does_not_imply_no_work_effect": true,
+        "revalidation_policy_does_not_modify_existing_recovery_or_authorization_gates": true,
+        "revalidation_direction_does_not_activate_draft_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -123,6 +140,27 @@
         ],
         "execution_mechanics": "PLAN_AND_MACHINE_CONTRACT",
         "runtime_activation": "NOT_AUTHORIZED_BY_DRAFT"
+      },
+      "startup_failed_engine_revalidation_policy": {
+        "policy_subject": "ENGINE_STARTUP_FAILED_ACTIVATION_REVALIDATION_CADENCE",
+        "decision": "A_NEXT_STARTUP",
+        "current_release_trigger": "SUBSEQUENT_PTSIP_RUNTIME_STARTUP",
+        "eligible_subject": "PREVIOUSLY_INELIGIBLE_OR_FAILED_ENGINES_STILL_REGISTERED",
+        "revalidation": "RERUN_CURRENT_REGISTERED_CONTRACT_ENVIRONMENT_AUTHORITY_AND_APPLICABLE_ISOLATION_GATES",
+        "on_qualified": "ACTIVATE_UNDER_EXISTING_PREDELEGATED_SCOPE",
+        "on_unqualified_or_unknown": "REMAIN_INACTIVE_FAIL_CLOSED_FOR_AFFECTED_CAPABILITIES",
+        "activation_is_not_execution_authorization": true,
+        "automatic_revalidation_from_environment_change": {
+          "status": "DEFERRED",
+          "current_release_required": false,
+          "implementation_not_authorized_by_this_decision": true
+        },
+        "same_session_repeated_retry_policy": "NOT_AUTHORIZED_BY_THIS_DECISION",
+        "preserve_independent_eligible_engines": true,
+        "applicable_authority_policy_ref": "SFP-CTRL-0002",
+        "existing_recovery_effect_state_and_revocation_gates": "PRESERVED",
+        "implementation_mechanics": "PLAN_AND_MACHINE_CONTRACT",
+        "current_effect": "DRAFT_ONLY_NO_RUNTIME_REVALIDATION"
       }
     }
   },
