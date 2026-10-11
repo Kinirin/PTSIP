@@ -52,7 +52,11 @@ func TestPolicyDiscoveryRejectsCatalogAndSubjectOmissions(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				err = lifecycle.CheckMigrationSourceCatalog(index, graph)
+				err = lifecycle.CheckMigrationSourceCatalog(index, graph, func() lifecycle.Object {
+					v, err := r.Read("developer/policy/registries/root-family-approved-baseline.json")
+					if err != nil { t.Fatal(err) }
+					return v
+				}())
 				if err == nil || !strings.Contains(err.Error(), id) {
 					t.Fatal("historical omission was not detected", err)
 				}

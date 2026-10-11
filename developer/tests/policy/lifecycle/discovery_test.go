@@ -135,7 +135,11 @@ func TestHistoricalDiscoveryIsIndependentFromCurrentRootCorpus(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			lifecycleCode(t, lifecycle.CheckMigrationSourceCatalog(index, graph), "MIGRATION_SOURCE_CATALOG_MISMATCH")
+			lifecycleCode(t, lifecycle.CheckMigrationSourceCatalog(index, graph, func() lifecycle.Object {
+				v, err := repo.Read("developer/policy/registries/root-family-approved-baseline.json")
+				if err != nil { t.Fatal(err) }
+				return v
+			}()), "MIGRATION_SOURCE_CATALOG_MISMATCH")
 		})
 	}
 }

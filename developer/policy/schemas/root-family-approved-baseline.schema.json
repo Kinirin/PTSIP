@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:root-family-approved-migration-baseline:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_class",
+    "authority",
+    "approval_ref",
+    "migration_registry_ref",
+    "approved_migration_base_head",
+    "approved_pre_migration_catalog_git_blob",
+    "approved_migration_graph_git_blob",
+    "source_classification",
+    "source_records"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-root-family-approved-migration-baseline/v1"
+    },
+    "policy_class": {
+      "const": "PTSIP_DEVELOPER_POLICY"
+    },
+    "authority": {
+      "const": "HISTORICAL_EVIDENCE_ONLY"
+    },
+    "approval_ref": {
+      "const": "developer/policy/approvals/MPA-20261012-ROOT-MIGRATION-BASELINE-C2.yaml"
+    },
+    "migration_registry_ref": {
+      "const": "developer/policy/registries/root-family-migration.json"
+    },
+    "approved_migration_base_head": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "approved_pre_migration_catalog_git_blob": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "approved_migration_graph_git_blob": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "source_classification": {
+      "const": "APPROVED_PRE_MIGRATION_CATALOG_PATH_AND_FROZEN_MIGRATION_GRAPH"
+    },
+    "source_records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "role",
+          "original_path",
+          "archive_path",
+          "source_status",
+          "source_sha256",
+          "record_sha256"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "enum": [
+              "AUDIT_ONLY_CATALOG",
+              "HISTORICAL_ONLY"
+            ]
+          },
+          "original_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "archive_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_status": {
+            "enum": [
+              "DRAFT",
+              "APPROVED",
+              "ACTIVE",
+              "RETIRED",
+              "DEPRECATED",
+              "SUPERSEDED"
+            ]
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "record_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ policy:
   id: MPD-CHANGE-0001
   title: CHANGE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.2'
+  version: '2.3'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -349,6 +349,21 @@ rules:
       semantic_decomposition_required: true
       existing_policy_identity_preservation_required: true
       legacy_family_policy_read_role: MIGRATION_SOURCE_ONLY
+      migration_source_baseline_contract:
+        classification: APPROVED_IMMUTABLE_MIGRATION_BASELINE
+        registry_ref: developer/policy/registries/root-family-approved-baseline.json
+        schema_ref: developer/policy/schemas/root-family-approved-baseline.schema.json
+        approved_graph_ref: developer/policy/registries/root-family-migration.json
+        source_partition: FROZEN_PRE_MIGRATION_CATALOG_AND_GRAPH
+        original_catalog_snapshot_binding: EXACT_GIT_BLOB
+        current_catalog_migration_source_role: AUDIT_ONLY_CATALOG
+        historical_only_role: HISTORICAL_EVIDENCE_ONLY
+        historical_only_sources_gain_current_policy_authority: false
+        unapproved_reclassification: REJECT
+        missing_or_unknown_source: FAIL_CLOSED
+        audit_only_catalog_coverage: EXACT
+        migration_graph_integrity: EXACT_APPROVED_SNAPSHOT
+        archive_body_runtime_fallback: FORBIDDEN
       new_policy_materialization_into_legacy_family: FORBIDDEN_AFTER_TARGET_ROUTING_ACTIVATION
     cross_policy_class_boundary:
       shared_element: ROOT_FAMILY_TOKEN_VOCABULARY_ONLY
