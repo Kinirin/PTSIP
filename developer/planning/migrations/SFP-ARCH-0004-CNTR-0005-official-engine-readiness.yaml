@@ -40,7 +40,7 @@
       "approval_ref": "developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml",
       "verification_does_not_create_approval": true
     },
-    "readiness_status": "FOUNDATION_IMPLEMENTED_REMOTE_VERIFICATION_PENDING"
+    "readiness_status": "FOUNDATION_VERIFIED_RUNTIME_TRANSITIONS_PENDING"
   },
   "baseline": {
     "source_ref": "dev/0.3.8",
@@ -585,5 +585,14 @@
     "total_items": 16,
     "active_promotion_eligibility": "EXPLICIT_USER_APPROVAL_RECORDED_NOT_RUNTIME_ELIGIBILITY"
   },
-  "execution_checkpoint_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.implementation_checkpoint"
+  "execution_checkpoint_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.implementation_checkpoint",
+  "verification_checkpoint": {
+    "status": "PASS_FOUNDATION_ONLY",
+    "source_sha": "be3e1bc8ad5491a92cf04680b01452c0e7563676",
+    "run_id": 38157748296,
+    "required_check_count": 57,
+    "runtime_or_public_api_cutover": "NOT_PERFORMED",
+    "completion_owner": "developer/planning/0.3.8/WU-02/WU-02.yaml",
+    "unverified_remaining_contract_acceptance": "KEEP_VISIBLE_NOT_AUTOMATICALLY_COMPLETE"
+  }
 }

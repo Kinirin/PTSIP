@@ -449,11 +449,32 @@
           "cause": "PREEXISTING_TEST_REQUIRED_HISTORY_ONLY_MPD_0012_IN_CURRENT_CATALOG",
           "native_engine_check": "PASS",
           "remediation": "REPLACED_HISTORICAL_GATE_WITH_CURRENT_NATIVE_GO_LOOKUP_AND_EXPLICIT_CONTRACT_MODE_CHECK"
+        },
+        {
+          "source_sha": "be3e1bc8ad5491a92cf04680b01452c0e7563676",
+          "run_id": 38157748277,
+          "event": "push",
+          "result": "PASS"
+        },
+        {
+          "source_sha": "be3e1bc8ad5491a92cf04680b01452c0e7563676",
+          "run_id": 38157748296,
+          "event": "workflow_dispatch",
+          "preset": "full",
+          "result": "PASS",
+          "required_check_count": 57,
+          "job_count_including_resolve_and_coverage": 59,
+          "coverage_result": "PASS",
+          "native_engine_check": "PASS",
+          "native_contract_history_gate_check": "PASS",
+          "remaining_failed_checks": []
         }
-      ]
+      ],
+      "foundation_result": "PASS_COMMIT_BOUND_LOCAL_AND_REMOTE",
+      "full_runtime_transition_result": "NOT_CLAIMED"
     },
     "implementation_checkpoint": {
-      "status": "FOUNDATION_IMPLEMENTED_REMOTE_VERIFICATION_PENDING",
+      "status": "FOUNDATION_VERIFIED_RUNTIME_TRANSITIONS_PENDING",
       "normative_policy_statuses": {
         "SFP-ARCH-0004": "ACTIVE",
         "SFP-CNTR-0005": "ACTIVE"
@@ -464,7 +485,18 @@
       "standalone_native_packages_verified": 7,
       "current_public_api_handoffs": "UNVERIFIED_NOT_AUTHORIZED_FOR_CUTOVER",
       "automatic_installation": "NOT_PERFORMED",
-      "full_runtime_transition_completion": "NOT_CLAIMED"
+      "full_runtime_transition_completion": "NOT_CLAIMED",
+      "verified_platforms": [
+        "WINDOWS_LOCAL_MSVC",
+        "LINUX_GITHUB_ACTIONS"
+      ],
+      "macos_runtime_evidence": "NOT_OBSERVED",
+      "remaining_work": [
+        "CURRENT_OWNER_SOURCE_AND_COMPATIBILITY_EVIDENCE_FOR_INSTALLATION_INTEGRATION",
+        "FULL_RUNTIME_CAPABILITY_AND_PERMISSION_GATE_INTEGRATION",
+        "VERSIONED_CONSUMER_SCOPED_CONTEXT_PROJECTION_HANDOFF",
+        "EXPLICIT_VPMS_SEMANTIC_MAPPING_BEHAVIOR_COMPATIBILITY_AND_CALLER_HANDOFF"
+      ]
     }
   }
 }
