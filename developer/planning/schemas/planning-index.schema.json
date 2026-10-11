@@ -83,12 +83,13 @@
     },
     "work_units": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 0,
       "uniqueItems": true,
       "items": {
         "type": "object",
         "required": [
           "id",
+          "path",
           "lifecycle",
           "approval",
           "implementation_authorization",
@@ -111,8 +112,6 @@
             "properties": {
               "status": {
                 "enum": [
-                  "NOT_CREATED",
-                  "DRAFT",
                   "ACTIVE",
                   "BLOCKED",
                   "COMPLETE",
@@ -127,15 +126,13 @@
             "type": "object",
             "required": [
               "status",
-              "inherited_from"
+              "inherited_from",
+              "approval_source"
             ],
             "properties": {
               "status": {
                 "enum": [
-                  "NOT_REQUIRED",
-                  "PENDING",
-                  "APPROVED",
-                  "REJECTED"
+                  "APPROVED"
                 ]
               },
               "inherited_from": {
