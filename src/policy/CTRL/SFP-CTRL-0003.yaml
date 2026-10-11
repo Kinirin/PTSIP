@@ -53,7 +53,7 @@
       "authorized_cleanup_operation_class_authority": "PTSIP_OWNER_APPROVED_POLICY_CLASS_SET_ONLY",
       "authorized_cleanup_operation_class_consumer_delegation": "ONLY_FOR_CURRENT_EXPLICITLY_POLICY_APPROVED_OPERATION_CLASSES",
       "authorized_cleanup_operation_class_consumer_extension": "NOT_AUTHORIZED_WITHOUT_SEPARATE_PTSIP_OWNER_POLICY_APPROVAL",
-      "authorized_cleanup_operation_class_set": "UNRESOLVED_SEPARATE_USER_POLICY_DECISION",
+      "authorized_cleanup_operation_class_set": "ONE_SEMANTIC_CLASS_APPROVED_EXACT_OPERATION_ID_PENDING",
       "unauthorized_unapproved_or_unknown_operation_class": "FAIL_CLOSED",
       "approved_operation_class_does_not_grant_cleanup_execution_or_write_authority": true,
       "physical_deletion_still_requires_specific_separate_consumer_delegation": true,
@@ -61,9 +61,20 @@
       "initial_cleanup_operation_class_scope_decided_at": "2026-10-11",
       "initial_cleanup_operation_class_scope": "NON_PHYSICAL_DELETION_ONLY_PRESERVE_ORIGINAL_RECORDS_AND_MANDATORY_EVIDENCE",
       "initial_cleanup_operation_physical_deletion_class_policy": "SEPARATE_PTSIP_OWNER_POLICY_APPROVAL_REQUIRED",
-      "initial_cleanup_operation_class_identity_set": "UNRESOLVED_SEPARATE_USER_POLICY_DECISION",
+      "initial_cleanup_operation_class_identity_set": "ONE_SEMANTIC_CLASS_APPROVED_EXACT_OPERATION_ID_PENDING",
       "initial_cleanup_operation_class_scope_is_class_approval": false,
-      "initial_cleanup_operation_scope_does_not_grant_cleanup_write_or_execution_authority": true
+      "initial_cleanup_operation_scope_does_not_grant_cleanup_write_or_execution_authority": true,
+      "initial_cleanup_semantic_class_choice": "A_USER_EXPLICIT",
+      "initial_cleanup_semantic_class_approved_at": "2026-10-11",
+      "initial_cleanup_semantic_class": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION_ONLY",
+      "initial_cleanup_semantic_class_count": 1,
+      "initial_cleanup_semantic_class_expected_source": "CURRENT_REGISTERED_AUTHORITATIVE_SOURCE_AND_VERIFIABLE_DERIVATION",
+      "initial_cleanup_semantic_class_may_change_original_analysis_records": false,
+      "initial_cleanup_semantic_class_may_change_authoritative_registry": false,
+      "initial_cleanup_semantic_class_may_delete_original_or_mandatory_evidence": false,
+      "initial_cleanup_semantic_class_machine_operation_id": "UNRESOLVED_SEPARATE_SUBORDINATE_POLICY_APPROVAL",
+      "initial_cleanup_semantic_class_execution_contract": "PLAN_DERIVED_FROM_EFFECTIVE_POLICY_UNRESOLVED",
+      "initial_cleanup_other_semantic_classes": "NOT_APPROVED"
     },
     "unit_consumer_analysis_invariants": {
       "project_must_explicitly_delegate_cleanup_scope": true,
@@ -111,10 +122,26 @@
       "cleanup_operation_class_selection_requires_machine_verified_non_destructive_effect_scope": true,
       "class_scope_does_not_downgrade_mandatory_retention_release_or_fresh_ctrl_real_authority_gates": true,
       "class_scope_never_grants_mutation_operation_or_retry_authority": true,
-      "initial_class_scope_policy_remains_draft_and_non_operative": true
+      "initial_class_scope_policy_remains_draft_and_non_operative": true,
+      "initial_non_authoritative_derived_index_reconciliation_semantic_class_approved_by_owner": true,
+      "initial_semantic_class_is_not_machine_executable_operation_identifier": true,
+      "class_approval_does_not_authorize_registry_original_record_or_evidence_mutation": true,
+      "derived_index_must_remain_non_authoritative_projection_of_registered_sources": true,
+      "no_unregistered_file_discovery_can_create_authoritative_record_membership": true,
+      "index_reconciliation_must_not_modify_canonical_registry_or_original_record": true,
+      "index_reconciliation_must_not_delete_protected_record_receipt_evidence_or_provenance": true,
+      "source_binding_and_current_revision_required_before_reconciliation_eligibility": true,
+      "unverified_source_to_derived_index_consistency": "FAIL_CLOSED_NO_OPERATION",
+      "unapproved_other_cleanup_classes_must_remain_ineligible": true,
+      "machine_executable_operation_identifier_requires_separate_policy_approval": true,
+      "required_execution_contracts_and_effect_coverage_require_plan_and_machine_validation": true,
+      "approved_semantic_class_alone_does_not_authorize_execution_write_recovery_or_deletion": true,
+      "current_consumer_operation_kind_delegation_and_ctrl_real_write_gates_required_for_any_reconciliation_mutation": true,
+      "existing_mandatory_record_retention_and_provenance_unchanged": true,
+      "class_kind_approval_does_not_activate_draft_policy": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
-      "AUTHORIZED_CLEANUP_OPERATION_CLASS_SET",
+      "AUTHORIZED_CLEANUP_OPERATION_EXACT_IDENTITY_AND_REGISTRATION_BOUNDARY",
       "DELEGATION_SCOPE_AND_REVOCATION_CONTRACT",
       "CLEANUP_EXECUTION_AND_FAILURE_PLAN"
     ],
@@ -123,7 +150,7 @@
       "policy_subject": "AUTHORIZED_CLEANUP_OPERATION_CLASSES",
       "selected_option": "A_PTSIP_POLICY_APPROVED_CLASSES_ONLY",
       "authority_owner": "PTSIP_PROJECT_OWNER_POLICY",
-      "current_allowed_class_set": "UNRESOLVED_USER_POLICY_APPROVAL_REQUIRED",
+      "current_allowed_class_set": "ONE_OWNER_APPROVED_SEMANTIC_CLASS_EXACT_MACHINE_IDENTIFIER_PENDING",
       "consumer_delegation": "EXPLICIT_PER_POLICY_APPROVED_OPERATION_CLASS",
       "consumer_extension_of_class_set": "FORBIDDEN_WITHOUT_NEW_EXPLICIT_PTSIP_POLICY_APPROVAL",
       "unknown_unapproved_or_ambiguous_class": "FAIL_CLOSED",
@@ -137,7 +164,8 @@
       "implementation": "NOT_AUTHORIZED",
       "active_transition": "NOT_AUTHORIZED",
       "initial_class_scope_policy_ref": "AUTHORIZED_CLEANUP_OPERATION_CLASS_INITIAL_SCOPE",
-      "initial_approved_class_set": "UNRESOLVED_NO_APPROVED_CLASS_IDENTITIES"
+      "initial_approved_class_set": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION_SEMANTIC_ONLY",
+      "initial_class_semantic_policy_ref": "AUTHORIZED_CLEANUP_OPERATION_CLASS_SET"
     },
     "unit_consumer_analysis_resolved_decisions": [
       {
@@ -170,6 +198,27 @@
         "record_retention_and_provenance": "PRESERVED",
         "implementation": "NOT_AUTHORIZED",
         "activation": "NOT_AUTHORIZED"
+      },
+      {
+        "id": "AUTHORIZED_CLEANUP_OPERATION_CLASS_SET_SEMANTIC_KIND",
+        "source_unresolved_id": "AUTHORIZED_CLEANUP_OPERATION_CLASS_SET",
+        "selected_option": "A_NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION",
+        "approval_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "resolution_scope": "FIRST_SEMANTIC_OPERATION_CLASS_ONLY_NOT_MACHINE_IDENTIFIER_OR_EXECUTION_CONTRACT",
+        "sole_approved_semantic_class": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION",
+        "excluded_authoritative_targets": [
+          "CANONICAL_REGISTRY",
+          "ORIGINAL_ANALYSIS_RECORDS",
+          "MANDATORY_EVIDENCE_AND_PROVENANCE"
+        ],
+        "other_semantic_operation_classes": "NOT_APPROVED",
+        "executable_operation_id": "UNRESOLVED_SEPARATE_USER_POLICY_DECISION",
+        "execution_and_verification_contract": "PLAN",
+        "owner_delegation_and_fresh_ctrl_real_checks": "UNCHANGED_REQUIRED",
+        "authorization_from_semantic_class_approval": "NONE",
+        "implementation": "NOT_AUTHORIZED",
+        "active_transition": "NOT_AUTHORIZED"
       }
     ],
     "unit_consumer_analysis_cleanup_initial_class_scope_direction": {
@@ -184,7 +233,7 @@
         "RECEIPTS_AND_SOURCE_PROVENANCE"
       ],
       "future_physical_deletion_class": "REQUIRES_SEPARATE_PTSIP_OWNER_POLICY_APPROVAL_BEFORE_CLASS_ELIGIBLE",
-      "class_identities_and_initial_approved_class_set": "UNRESOLVED_SEPARATE_POLICY_DECISION",
+      "class_identities_and_initial_approved_class_set": "ONE_SEMANTIC_CLASS_APPROVED_MACHINE_ID_UNRESOLVED",
       "applicability": "INITIAL_PTSIP_OWNER_APPROVED_CLEANUP_OPERATION_CLASSES_ONLY",
       "no_automatic_class_approval": true,
       "undeclared_unknown_or_unverifiable_effect": "FAIL_CLOSED",
@@ -193,6 +242,32 @@
       "later_physical_deletion_if_policy_approved": "STILL_REQUIRES_SEPARATE_EXPLICIT_CONSUMER_OPERATION_SPECIFIC_DELETION_DELEGATION",
       "protected_record_retention": "UNCHANGED_PRECEDENCE",
       "actual_filesystem_operation": "NOT_AUTHORIZED",
+      "active_transition": "NOT_AUTHORIZED"
+    },
+    "unit_consumer_analysis_cleanup_first_semantic_class_direction": {
+      "policy_subject": "AUTHORIZED_CLEANUP_OPERATION_CLASS_SET",
+      "selected_option": "A_NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION_ONLY",
+      "approval_source": "USER_EXPLICIT",
+      "decision_date": "2026-10-11",
+      "approved_semantic_class": "NON_AUTHORITATIVE_DERIVED_INDEX_RECONCILIATION",
+      "approved_semantic_class_count": 1,
+      "authoritative_source": "EXPLICIT_REGISTERED_CURRENT_SOURCE_AND_VERIFIABLE_DERIVATION_ONLY",
+      "allowed_mutation_semantics": "NON_AUTHORITATIVE_DERIVED_INDEX_ONLY_IF_SEPARATELY_AUTHORIZED",
+      "prohibited_mutations": [
+        "AUTHORITATIVE_REGISTRY",
+        "ORIGINAL_ANALYSIS_RECORDS",
+        "MANDATORY_RECORD_AND_EVIDENCE",
+        "PROVENANCE_AND_RECEIPTS"
+      ],
+      "not_approved": "ALL_OTHER_CLEANUP_SEMANTIC_OPERATION_CLASSES",
+      "class_identifier": "UNRESOLVED_IN_SEPARATE_SUBORDINATE_POLICY",
+      "execution_interface_and_machine_verification": "PLAN_REQUIRED_AFTER_POLICY_APPROVAL",
+      "unresolved_machine_contract_is_not_eligible_for_execution": true,
+      "requires_consumer_operation_kind_scope_delegation": true,
+      "requires_fresh_ctrl_real_execution_write_permission": true,
+      "mandatory_retention_and_unknown_effect": "FAIL_CLOSED",
+      "no_implicit_deletion_or_source_mutation": true,
+      "implementation": "NOT_AUTHORIZED",
       "active_transition": "NOT_AUTHORIZED"
     }
   },
