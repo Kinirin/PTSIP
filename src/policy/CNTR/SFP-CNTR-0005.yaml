@@ -101,7 +101,19 @@
         "external_execution_binding_registration_verification_scope": "DECLARED_EXTERNALLY_INVOCABLE_CAPABILITY_IDENTITY_VERSION_CONTRACT_AND_ENTRYPOINT_BINDING",
         "external_execution_binding_early_verification_not_runtime_invocation": true,
         "external_execution_binding_registration_is_execution_authorization": false,
-        "external_execution_binding_registration_proof_method": "PLAN_AND_MACHINE_CONTRACT"
+        "external_execution_binding_registration_proof_method": "PLAN_AND_MACHINE_CONTRACT",
+        "external_execution_binding_change_reevaluation_choice": "A_USER_EXPLICIT",
+        "external_execution_binding_change_reevaluation_decided_at": "2026-10-11",
+        "registered_external_binding_change_reevaluation_trigger": "MACHINE_VERIFIED_REGISTERED_BINDING_OR_APPLICABLE_CONTRACT_CHANGE",
+        "registered_external_binding_change_reevaluation_timing": "IMMEDIATE_ON_VERIFIED_CHANGE_DETECTION",
+        "changed_binding_eligibility_verdict": "REASSESS_CURRENT_REGISTRATION_ELIGIBILITY_BEFORE_FURTHER_USE",
+        "change_detection_while_eligibility_unknown": "FAIL_CLOSED_BLOCK_AFFECTED_SELECTION_AND_EXECUTION",
+        "previously_verified_registration_is_not_current_proof": true,
+        "initial_registration_execution_binding_gate": "UNCHANGED_REQUIRED",
+        "runtime_binding_and_ctrl_authority_check": "UNCHANGED_FRESH_REQUIRED",
+        "registered_binding_change_detection_evidence_contract": "PLAN_AND_MACHINE_CONTRACT",
+        "registered_binding_change_detection_mechanism": "PLAN_AND_MACHINE_CONTRACT",
+        "registered_binding_change_reevaluation_scope_of_propagation": "UNRESOLVED_SEPARATE_USER_POLICY"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -212,7 +224,21 @@
         "runtime_invocation_requires_fresh_binding_applicability_and_current_ctrl_authority": true,
         "registration_binding_cannot_infer_entrypoint_from_directory_name": true,
         "registration_time_gate_cannot_reassign_active_assure_vpms_or_ctrl_authority": true,
-        "registration_binding_policy_does_not_activate_draft_engine_runtime": true
+        "registration_binding_policy_does_not_activate_draft_engine_runtime": true,
+        "machine_verified_registered_external_binding_or_contract_change_triggers_immediate_eligibility_reevaluation": true,
+        "previous_registered_binding_eligibility_does_not_substitute_changed_contract_proof": true,
+        "affected_selection_and_execution_blocked_while_reevaluation_unverifiable_or_failed": true,
+        "changed_binding_reevaluation_requires_current_engine_capability_identity_version_and_applicable_contract": true,
+        "missing_ambiguous_or_stale_change_evidence_cannot_be_treated_as_verified_eligibility": true,
+        "successful_registration_does_not_bypass_current_selection_and_execution_binding_checks": true,
+        "reevaluation_does_not_implicitly_activate_or_grant_ctrl_execution_or_write_rights": true,
+        "stale_entrypoint_must_not_be_selected_or_executed_based_only_on_prior_registration": true,
+        "binding_change_detection_does_not_infer_entrypoint_from_directory_name": true,
+        "binding_change_reevaluation_preserves_all_required_static_interoperability_fields": true,
+        "nonexternally_invocable_capability_does_not_gain_runtime_binding_requirement": true,
+        "engine_binding_change_reevaluation_does_not_reassign_active_authority": true,
+        "binding_change_event_type_evidence_transport_and_debounce_are_plan_level_contracts": true,
+        "binding_change_detection_does_not_automatically_authorize_active_runtime_or_mutation": true
       },
       "unresolved_decisions": [
         {
@@ -295,6 +321,12 @@
           "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "kind": "CONTRACT_DESIGN",
           "status": "UNRESOLVED"
+        },
+        {
+          "id": "ENGINE_REGISTERED_BINDING_CHANGE_REEVALUATION_FAILURE_SCOPE",
+          "kind": "USER_DECISION",
+          "status": "UNRESOLVED",
+          "reason": "DETERMINE_WHOLE_ENGINE_VS_VERIFIED_AFFECTED_CAPABILITY_REGISTRATION_SCOPE_AFTER_CHANGE_REEVALUATION_FAILURE"
         }
       ],
       "activation_requirements": {
@@ -457,6 +489,24 @@
           "exact_schema": "PLAN_AND_MACHINE_CONTRACT",
           "implementation": "NOT_AUTHORIZED_BY_THIS_DECISION",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_REGISTERED_BINDING_CHANGE_REEVALUATION_TIMING",
+          "selected_option": "A_IMMEDIATE_ON_VERIFIED_BINDING_OR_CONTRACT_CHANGE",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "POST_REGISTRATION_CHANGE_REEVALUATION_TIMING_AND_FAIL_CLOSED_ELIGIBILITY_USE",
+          "preserved_registration_gate": "A_REGISTRATION_TIME_BINDING_REQUIRED",
+          "triggering_change": "MACHINE_VERIFIED_APPLICABLE_REGISTERED_BINDING_OR_CONTRACT_CHANGE",
+          "reevaluation": "IMMEDIATE_BEFORE_REUSE_OF_OLD_REGISTRATION_ELIGIBILITY",
+          "unverified_or_failed_result": "NO_AFFECTED_SELECTION_OR_EXECUTION",
+          "execution_authority": "EXISTING_FRESH_CTRL_EXECUTION_GATE_UNCHANGED",
+          "source_contract_and_engine_identity": "UNCHANGED",
+          "entrypoint_discovery": "REGISTERED_MACHINE_BINDING_NOT_DIRECTORY_NAME",
+          "exact_change_detection_and_reevaluation_interface": "PLAN_AND_MACHINE_CONTRACT",
+          "failure_impact_scope": "UNRESOLVED_SEPARATE_USER_POLICY",
+          "implementation": "NOT_AUTHORIZED_BY_THIS_DECISION",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
@@ -488,6 +538,34 @@
         "existing_registered_unrelated_engine_state": "NO_AUTOMATIC_INVALIDATION_OR_POLICY_REWRITE",
         "schema_validation_proof_format": "PLAN_AND_MACHINE_CONTRACT",
         "draft_effect": "DRAFT_ONLY_NO_IMPLEMENTATION_OR_ACTIVE_TRANSITION"
+      },
+      "external_execution_binding_change_reevaluation_direction": {
+        "policy_subject": "ENGINE_REGISTERED_EXTERNAL_EXECUTION_BINDING_CHANGE_REEVALUATION",
+        "selected_option": "A_IMMEDIATE_REEVALUATION_ON_MACHINE_VERIFIED_CHANGE",
+        "covered_changes": [
+          "REGISTERED_EXECUTION_ENTRYPOINT_BINDING",
+          "APPLICABLE_VERSIONED_CAPABILITY_CONTRACT",
+          "IDENTITY_VERSION_OR_DECLARED_DEPENDENCY_AFFECTING_BINDING_APPLICABILITY"
+        ],
+        "trigger": "MACHINE_VERIFIED_CHANGE_AFFECTING_DECLARED_EXTERNALLY_INVOCABLE_CAPABILITY",
+        "timing": "REASSESS_REGISTRATION_ELIGIBILITY_IMMEDIATELY_ON_DETECTION",
+        "current_verification": [
+          "CURRENT_REGISTERED_ENGINE_AND_CAPABILITY_IDENTITY",
+          "CURRENT_VERSION_AND_APPLICABLE_CAPABILITY_CONTRACT",
+          "CURRENT_REGISTERED_EXECUTION_BINDING_AND_COMPATIBILITY",
+          "CURRENT_REGISTERED_DEPENDENCY_APPLICABILITY"
+        ],
+        "reevaluation_failed_missing_or_unverifiable": "AFFECTED_REGISTRATION_ELIGIBILITY_NOT_VERIFIED",
+        "eligibility_use_during_unknown_or_failed_reevaluation": "DENY_AFFECTED_SELECTION_AND_EXECUTION_FAIL_CLOSED",
+        "unchanged_initial_registration_gate": "SFP-CNTR-0005_REGISTRATION_TIME_VERIFICATION",
+        "runtime_execution_gate": "RECHECK_FRESH_BINDING_AND_EFFECTIVE_CTRL_AUTHORITY",
+        "no_declared_external_invocation": "NO_ADDED_RUNTIME_BINDING_REQUIREMENT",
+        "directory_name_is_binding_authority": false,
+        "static_interoperability_core": "PRESERVED",
+        "registration_or_reevaluation_is_execution_permission": false,
+        "failure_impact_scope_owner_decision": "UNRESOLVED_SEPARATE_USER_POLICY",
+        "detection_source_watcher_frequency_revalidation_proof_schema": "PLAN_AND_MACHINE_CONTRACT",
+        "effect": "DRAFT_ONLY_NO_ENGINE_RUNTIME_ACTIVATION_OR_REAL_IMPLEMENTATION"
       }
     }
   },
