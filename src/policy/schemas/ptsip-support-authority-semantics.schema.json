@@ -88,6 +88,73 @@
             "executable_source_copy_into_repository_engine_root": {
               "const": "FORBIDDEN"
             },
+            "executable_source_copy_prohibition_subject": {
+              "const": "INSTALLED_PTSIP_PRODUCT_ENGINE_SOURCE"
+            },
+            "ptsip_developer_workspace_reconciliation": {
+              "type": "object",
+              "required": [
+                "decision",
+                "scope",
+                "eligibility",
+                "path_name_alone_grants_developer_authority",
+                "reserved_developer_subnamespace",
+                "developer_subnamespace_role",
+                "installed_product_engine_source_copy",
+                "installed_product_engine_execution_owner",
+                "consumer_repository_developer_source_permission",
+                "automatic_subnamespace_materialization",
+                "common_engine_machine_contract_authority",
+                "developer_source_distribution_with_product",
+                "active_developer_tool_migration",
+                "future_migration"
+              ],
+              "properties": {
+                "decision": {
+                  "const": "RECONCILE"
+                },
+                "scope": {
+                  "const": "PTSIP_SOURCE_DEVELOPMENT_WORKSPACE_ONLY"
+                },
+                "eligibility": {
+                  "const": "EXPLICIT_REGISTERED_DEVELOPER_WORKSPACE_BINDING_REQUIRED"
+                },
+                "path_name_alone_grants_developer_authority": {
+                  "const": false
+                },
+                "reserved_developer_subnamespace": {
+                  "const": ".ptsip/engine/developer/"
+                },
+                "developer_subnamespace_role": {
+                  "const": "NON_PRODUCT_GO_DEVELOPER_TOOL_SOURCE"
+                },
+                "installed_product_engine_source_copy": {
+                  "const": "FORBIDDEN"
+                },
+                "installed_product_engine_execution_owner": {
+                  "const": "INSTALLED_PTSIP_PACKAGE"
+                },
+                "consumer_repository_developer_source_permission": {
+                  "const": "FORBIDDEN"
+                },
+                "automatic_subnamespace_materialization": {
+                  "const": "FORBIDDEN"
+                },
+                "common_engine_machine_contract_authority": {
+                  "const": "PRESERVE"
+                },
+                "developer_source_distribution_with_product": {
+                  "const": "FORBIDDEN"
+                },
+                "active_developer_tool_migration": {
+                  "const": "NOT_AUTHORIZED"
+                },
+                "future_migration": {
+                  "const": "SEPARATE_APPROVED_PLAN_AND_CONFORMANCE_REQUIRED"
+                }
+              },
+              "additionalProperties": false
+            },
             "shipped_repository_module": {
               "const": "src/ptsip/repository/namespace.py"
             },
@@ -183,6 +250,10 @@
             "kernel_definitions": {
               "type": "array",
               "minItems": 1
+            },
+            "source_scope": {
+              "type": "array",
+              "maxItems": 0
             }
           },
           "additionalProperties": false
