@@ -1,6 +1,7 @@
 package machine
 
 import (
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -233,8 +234,16 @@ func TestNeutralCatalogPreservedContractsStayIndependentFromGoSelectors(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(Strings(Map(contract["change_scope"])["preserved_contracts"]), []string{"developer/policy/schemas/developer-policy-index.schema.json", "developer/policy/schemas/developer-governance-registry.schema.json", "developer/policy/schemas/management-policy.schema.json"}) {
+	if !reflect.DeepEqual(Strings(Map(contract["change_scope"])["preserved_contracts"]), []string{"developer/policy/schemas/developer-governance-registry.schema.json", "developer/policy/schemas/management-policy.schema.json"}) {
 		t.Fatal(contract)
+	}
+	// KEEP_LATEST: the retired legacy schema must not reappear as current authority.
+	obsoleteSchema, err := r.Path("developer/policy/schemas/developer-policy-index.schema.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(obsoleteSchema); !os.IsNotExist(err) {
+		t.Fatalf("retired legacy index schema still exists or is inaccessible: %v", err)
 	}
 	for _, raw := range List(Map(contract["change_scope"])["materialization_targets"]) {
 		row := Map(raw)

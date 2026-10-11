@@ -97,15 +97,15 @@ func TestActiveTransitionHistoryRequiresCompleteSatisfiedRequirements(t *testing
 func TestRelatedStatusSchemasIncludeApproved(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
 	for _, test := range []struct {
-		schema string
-		path   []string
+		file string
+		path []string
 	}{
-		{"developer-policy-index.schema.json", []string{"properties", "policies", "items", "properties", "status", "enum"}},
-		{"policy-approval-provenance.schema.json", []string{"properties", "approval", "properties", "target_status", "enum"}},
-		{"source-application-review.schema.json", []string{"properties", "policy_query_list", "items", "properties", "expected_status", "enum"}},
+		{"developer/policy/registries/developer-policy-catalog-contracts.json", []string{"$defs", "policy_status", "enum"}},
+		{"developer/policy/schemas/policy-approval-provenance.schema.json", []string{"properties", "approval", "properties", "target_status", "enum"}},
+		{"developer/policy/schemas/source-application-review.schema.json", []string{"properties", "policy_query_list", "items", "properties", "expected_status", "enum"}},
 	} {
-		t.Run(test.schema, func(t *testing.T) {
-			value, err := repo.Read("developer/policy/schemas/" + test.schema)
+		t.Run(test.file, func(t *testing.T) {
+			value, err := repo.Read(test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
