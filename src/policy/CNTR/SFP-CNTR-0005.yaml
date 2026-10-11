@@ -232,6 +232,24 @@
           "exact_contract_schema_and_entrypoint_shape": "PENDING_MACHINE_CONTRACT_PLAN",
           "active_public_authority": "UNCHANGED",
           "implementation_and_runtime": "NOT_AUTHORIZED"
+        },
+        "engine_external_interoperability_arch_cntr_authority_split": {
+          "decision": "C_ARCH_APPLICABILITY_CNTR_NORMATIVE_MACHINE_CONTRACT",
+          "source": "SFP-ARCH-0004#ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "arch_scope_owner": "SFP-ARCH-0004",
+          "cntr_contract_owner": "SFP-CNTR-0005",
+          "existing_active_cntr_authority": "SFP-CNTR-0001_UNCHANGED",
+          "static_core": "EXISTING_APPROVED_FIVE_DIMENSIONS_UNCHANGED",
+          "contract_details": "VERSIONED_REFERENCED_MACHINE_CONTRACTS",
+          "external_execution_binding": "CONDITIONAL_ON_EXTERNALLY_INVOCABLE_CAPABILITY",
+          "registration_and_binding_verification": "EXISTING_VERIFIED_FAIL_CLOSED_GATES_UNCHANGED",
+          "provider_and_consumer_evidence": "EXISTING_SHARED_EVIDENCE_PRODUCTION_AND_LINKAGE_RULE_UNCHANGED",
+          "implementation_sharing": "NO_SHARED_RUST_IMPLEMENTATION_BETWEEN_SEVEN_OFFICIAL_ENGINES",
+          "detailed_interoperability_contract_and_registry_schema": "UNRESOLVED",
+          "no_new_authority": "NO_ACTIVATION_EXECUTION_OR_WRITE_PERMISSION",
+          "draft_policy_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -407,7 +425,10 @@
         "multiple_management_capabilities_can_share_entrypoint_without_implied_permission_or_semantic_owner_merger": true,
         "management_capabilities_may_use_distinct_entrypoints_without_common_single_entry_mandate": true,
         "internal_only_or_absent_management_must_not_force_external_entrypoint_registration": true,
-        "entrypoint_topology_choice_does_not_bypass_registration_binding_or_fresh_ctrl_gates": true
+        "entrypoint_topology_choice_does_not_bypass_registration_binding_or_fresh_ctrl_gates": true,
+        "external_interoperability_cntr_defines_machine_contract_dimensions_not_arch_implementation_layout": true,
+        "arch_engine_interoperability_scope_must_reference_cntr_normative_semantics": true,
+        "interoperability_contract_scope_split_does_not_activate_draft_engine_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -764,6 +785,18 @@
           "scope": "CARDINALITY_OF_REGISTERED_MANAGEMENT_CAPABILITY_TO_ENTRYPOINT_RELATION",
           "external_interoperability_contract_shape": "UNRESOLVED_SEPARATE",
           "active_authority": "UNCHANGED",
+          "draft_only": true
+        },
+        {
+          "id": "ENGINE_EXTERNAL_INTEROPERABILITY_ARCH_CNTR_POLICY_OWNER_SPLIT",
+          "selected_option": "C",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source_policy": "SFP-ARCH-0004",
+          "arch_owner": "ENGINE_INTEROPERABILITY_APPLICABILITY",
+          "cntr_owner": "ENGINE_INTEROPERABILITY_CONTRACT_SEMANTICS",
+          "exact_schema": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE_REMAINS_UNRESOLVED",
+          "active_policy": "UNCHANGED",
           "draft_only": true
         }
       ],
