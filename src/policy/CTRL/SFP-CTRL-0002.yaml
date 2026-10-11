@@ -101,7 +101,11 @@
         "failed_engine_revalidation_timing": "NEXT_PTSIP_STARTUP_ONLY",
         "failed_engine_environment_change_revalidation": "DEFERRED_NO_CURRENT_RELEASE_OBLIGATION",
         "failed_engine_revalidation_policy_owner": "SFP-OPS-0002",
-        "failed_engine_revalidation_current_release_choice": "A_USER_EXPLICIT"
+        "failed_engine_revalidation_current_release_choice": "A_USER_EXPLICIT",
+        "startup_report_scope": "FAILED_OR_INELIGIBLE_ENGINE_ONLY",
+        "startup_success_inventory_report_required": false,
+        "startup_failure_report_owner": "SFP-RECORD-0003",
+        "startup_report_decision": "A_USER_EXPLICIT"
       },
       "invariants": {
         "unknown_delegation": "FAIL_CLOSED",
@@ -188,7 +192,12 @@
         "startup_revalidation_does_not_authorize_in_session_background_retry": true,
         "environment_change_revalidation_not_required_for_current_release": true,
         "revalidation_schedule_does_not_expand_activation_or_operation_permission": true,
-        "existing_partial_startup_and_task_block_rules_unaffected": true
+        "existing_partial_startup_and_task_block_rules_unaffected": true,
+        "startup_failure_only_external_report_does_not_reclassify_eligible_engines": true,
+        "failure_only_report_does_not_override_task_capability_availability_gates": true,
+        "startup_report_filtering_does_not_erase_per_engine_outcomes": true,
+        "successful_engine_status_listing_not_required_for_current_release": true,
+        "failure_report_policy_does_not_grant_retry_or_execution_authority": true
       },
       "unresolved_decisions": [
         {
@@ -354,7 +363,11 @@
         "failed_engine_revalidation_policy_ref": "SFP-OPS-0002",
         "environment_change_auto_revalidation": "DEFERRED",
         "environment_change_watch_required_for_current_release": false,
-        "subsequent_startup_revalidation_requires_fresh_eligibility": true
+        "subsequent_startup_revalidation_requires_fresh_eligibility": true,
+        "external_startup_report_scope": "FAILED_OR_INELIGIBLE_ENGINE_ONLY",
+        "successful_engine_inventory_reporting_required": false,
+        "external_report_policy_ref": "SFP-RECORD-0003",
+        "internal_per_engine_activation_outcome_preserved": true
       }
     }
   },
