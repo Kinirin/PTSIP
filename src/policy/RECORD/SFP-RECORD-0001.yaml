@@ -29,12 +29,9 @@ authority_semantics:
         global authority나 live canonical source가 되지 않는다.
       non_substitutability: GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와
         원본 receipt를 대체하지 못한다.
-    source_scope:
-    - SFP-0012
-    - SFP-0016
-  unit_sfp_0012_81a0ebb3712b: true
-  unit_sfp_0012_ebb600e2a407: INFERRED
-  unit_sfp_0016_d4d97d2d2932: APPEND_ONLY_DIGEST_CHAINED
+  semantic_unit_81a0ebb3712b: true
+  semantic_unit_ebb600e2a407: INFERRED
+  semantic_unit_d4d97d2d2932: APPEND_ONLY_DIGEST_CHAINED
 relations:
   supersedes: []
   amends: []
