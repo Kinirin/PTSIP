@@ -34,15 +34,15 @@
     "scope": "EXACT_SOURCE_REVALIDATION_FOR_EXISTING_P0_P1_CONTEXT_EVIDENCE_READ_ONLY_CANDIDATE",
     "candidate_ref": "src/agent_contracts/contracts/context-evidence-identity.json",
     "candidate_owner": "SFP-INFO-0007",
-    "parent_completed_approved_plan": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
     "scope_expansion": "FORBIDDEN",
     "new_policy_semantics": "NONE",
     "runtime_activation": "FORBIDDEN",
     "release_control_plane_ref": "developer/planning/0.3.8/index.yaml",
     "release_work_unit": "WU-01",
     "release_parent_work_unit_state_at_review": "NOT_CREATED",
-    "historical_candidate_approval_plan_ref": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
-    "historical_candidate_plan_ref_role": "PREVIOUS_PRERELEASE_APPROVED_P0_P1_CANDIDATE_PROVENANCE_ONLY_NOT_RELEASE_PLAN_AUTHORITY"
+    "proof_authority": "CURRENT_REGISTERED_SIX_POLICY_BLOBS_AND_DIRECT_41_BINDING_COMPARISON_ONLY",
+    "current_plan_lookup": "LOCAL_RELEASE_ROOT_ONLY",
+    "prerelease_plan_lookup": "NOT_REQUIRED"
   },
   "comparison": {
     "policy_count": 6,
@@ -129,7 +129,7 @@
     "activate_runtime": false,
     "change_plan_authority": false,
     "record_changing_policy_semantics": "OUT_OF_SCOPE_P0_P1_WITH_NO_REUSE_RETENTION_OR_CLEANUP_PERMISSION",
-    "future_p2_p5_handoff": "EXISTING_APPROVED_PLAN_SCOPE_REQUIRES_OWN_POLICY_IMPACT_CHECK",
+    "future_p2_p5_handoff": "OUTSIDE_THIS_PLAN_REQUIRES_SEPARATE_CURRENT_POLICY_IMPACT_AND_AUTHORITY_VERIFICATION",
     "applied_candidate_revision_commit": "554c1e87a0751dd287ec35ed363a74bfad803eba"
   },
   "obligations": [
@@ -165,7 +165,7 @@
     "last_result": "REVALIDATION_PLAN_ONLY_NOT_RUNTIME_AUTHORITY",
     "plan_index_mutation": "NOT_AUTHORIZED_BY_THIS_DRAFT",
     "plan_schema_mutation": "NOT_REQUIRED",
-    "prerelease_plan_mutation": "FORBIDDEN_EXCEPT_REMOVAL_OF_THIS_MISPLACED_DRAFT"
+    "prerelease_plan_mutation": "FORBIDDEN"
   },
   "routing": {
     "branch": "dev/0.3.8",
@@ -175,13 +175,9 @@
     "parent_release_work_unit": "WU-01",
     "parent_release_work_unit_status_at_review": "NOT_CREATED",
     "plan_admission": "PENDING_EXPLICIT_CURRENT_RELEASE_PLAN_REGISTRATION",
-    "historical_prerelease_plan_refs": [
-      "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
-      "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P02.yaml"
-    ],
-    "historical_prerelease_refs_are_current_release_authority": false,
-    "prerelease_plan_registry_schema_or_index_mutation": "FORBIDDEN",
     "release_plan_schema_mutation": "NOT_REQUIRED",
-    "candidate_historical_plan_ref": "PRESERVE_ORIGINAL_APPROVED_P0_P1_PROVENANCE"
+    "policy_evidence_lookup": "DIRECT_REGISTERED_POLICY_SOURCE_AND_CANONICAL_FINGERPRINT_ONLY",
+    "dependent_plan_lookup": "NONE_FOR_THIS_STANDALONE_REVALIDATION",
+    "release_plan_registration": "NOT_REGISTERED"
   }
 }
