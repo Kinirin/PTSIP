@@ -24,7 +24,6 @@ authority_semantics:
       - id: SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
         statement: PTSIP 공통 ID와 원본 제공자 ID 및 출처 간 연결은 검증된 등록 관계로만 인정한다.
         non_substitutability: 공통 참조 ID의 발급은 RECORD가 소유하는 원본 출처와 이력 보존을 대체하거나 신규 관측 사실을 창설하지 않는다.
-    source_scope: []
   unit_context_evidence_identity_approved_decisions:
     policy_direction: PTSIP_COMMON_ID_WITH_VERIFIED_PROVIDER_ID_BINDING
     common_reference_identity_issuer: PTSIP_AUTOMATED

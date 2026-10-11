@@ -29,20 +29,15 @@ authority_semantics:
         안에서 정한다.
       non_substitutability: ASSURE의 zero findings나 관측된 관행이 누락된 규범 의미를 생성하거나 미지원 해석을
         승인하지 않는다.
-    source_scope:
-    - SFP-0001
-    - SFP-0002
-    - SFP-0003
-    - SFP-0023
-  unit_sfp_0001_ba407fddada8: PTSIP
-  unit_sfp_0001_555df7fa00c4: PRODUCT_TOOLCHAIN_SDK_ISOLATION_POLICY
-  unit_sfp_0001_9d24b2d72987: PURPOSE_BEFORE_REUSE
-  unit_sfp_0001_26f16d98b1bc: true
-  unit_sfp_0002_e45eff8c2dd7: true
-  unit_sfp_0003_ce3d0fb4b13c: IMMUTABLE_GIT_REVISION
-  unit_sfp_0003_f4c463515592: INDEPENDENT
-  unit_sfp_0023_7e275603ca7a: false
-  unit_sfp_0023_024f8944b27a: false
+  semantic_unit_ba407fddada8: PTSIP
+  semantic_unit_555df7fa00c4: PRODUCT_TOOLCHAIN_SDK_ISOLATION_POLICY
+  semantic_unit_9d24b2d72987: PURPOSE_BEFORE_REUSE
+  semantic_unit_26f16d98b1bc: true
+  semantic_unit_e45eff8c2dd7: true
+  semantic_unit_ce3d0fb4b13c: IMMUTABLE_GIT_REVISION
+  semantic_unit_f4c463515592: INDEPENDENT
+  semantic_unit_7e275603ca7a: false
+  semantic_unit_024f8944b27a: false
 relations:
   supersedes: []
   amends: []

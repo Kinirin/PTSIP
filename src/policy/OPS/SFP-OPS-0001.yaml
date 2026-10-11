@@ -30,13 +30,9 @@ authority_semantics:
         않는다.
       non_substitutability: CTRL의 한 번의 실행 허용이나 CHANGE의 migration 경로는 반복 시도의 동일성 및
         운영 연속성을 대신 정의하지 않는다.
-    source_scope:
-    - SFP-0002
-    - SFP-0005
-    - SFP-0016
-  unit_sfp_0002_8e3ccfbcb110: OUTSIDE_CONSUMER_REPOSITORY
-  unit_sfp_0005_61e22a21ee9a: ACTION_TIME
-  unit_sfp_0016_76dff9bdc94a: false
+  semantic_unit_8e3ccfbcb110: OUTSIDE_CONSUMER_REPOSITORY
+  semantic_unit_61e22a21ee9a: ACTION_TIME
+  semantic_unit_76dff9bdc94a: false
 relations:
   supersedes: []
   amends: []

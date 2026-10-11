@@ -29,24 +29,17 @@ authority_semantics:
         repository-local state를 materialize하지 않는다.
       non_substitutability: CTRL의 fresh eligibility나 GOV의 승인은 쓰기 중 partial mutation과
         실패 보존의 실행 mechanics를 대신 보장하지 않는다.
-    source_scope:
-    - SFP-0002
-    - SFP-0009
-    - SFP-0015
-    - SFP-0016
-    - SFP-0022
-    - SFP-0023
-  unit_sfp_0002_eb63277527b8: READ_ONLY
-  unit_sfp_0009_73587b4e12a6: NON_AUTHORITATIVE
-  unit_sfp_0009_eb98fb99bd83: false
-  unit_sfp_0009_4a7fe2226218: false
-  unit_sfp_0009_1986452d2389: false
-  unit_sfp_0015_a108e978a3d7: true
-  unit_sfp_0016_1c3b027c20b5: ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS
-  unit_sfp_0022_de28528b9b4f:
+  semantic_unit_eb63277527b8: READ_ONLY
+  semantic_unit_73587b4e12a6: NON_AUTHORITATIVE
+  semantic_unit_eb98fb99bd83: false
+  semantic_unit_4a7fe2226218: false
+  semantic_unit_1986452d2389: false
+  semantic_unit_a108e978a3d7: true
+  semantic_unit_1c3b027c20b5: ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS
+  semantic_unit_de28528b9b4f:
     coding_agent_authorization: PREAUTHORIZED
     user_decision_required: false
-  unit_sfp_0023_2e6408da3841: false
+  semantic_unit_2e6408da3841: false
 relations:
   supersedes: []
   amends: []

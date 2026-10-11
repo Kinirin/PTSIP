@@ -20,7 +20,6 @@ authority_semantics:
       - id: SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
         statement: provider_binding.section의 현행 식별자는 불투명한 명시적 Registry 구성원으로 결정된다. 과거 정책 ID와 이로부터 유래한 섹션 이름은 현재 식별자 권위를 부여하지 않는다.
         non_substitutability: CNTR의 조회 성공, Legacy migration 기록 또는 구현의 이름 유추는 INFO의 식별자 등록 권위를 대신하지 않는다.
-    source_scope: []
   unit_provider_section_approved_decisions:
     identity_model: OPAQUE_REGISTERED_IDENTIFIER
     authority_split: INFO_IDENTITY_AND_REGISTRY_CNTR_LOOKUP_AND_FAILURE
