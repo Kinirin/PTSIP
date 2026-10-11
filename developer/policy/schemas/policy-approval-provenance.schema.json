@@ -86,6 +86,48 @@
         "recorded_at": {
           "type": "string",
           "minLength": 1
+        },
+        "conflict_resolution": {
+          "const": "RECONCILE"
+        },
+        "branch_creation_authorized": {
+          "const": false
+        },
+        "existing_common_engine_plan_mutation_authorized": {
+          "const": false
+        },
+        "common_engine_plan_mutation_authorized": {
+          "const": false
+        },
+        "developer_tool_migration_authorized": {
+          "const": false
+        },
+        "preserved_consumer_engine_state_policy": {
+          "const": "SFP-ARCH-0001#authority_semantics.engine_plane_boundary"
+        },
+        "approved_developer_implementation_target": {
+          "const": ".ptsip/engine/developer/"
+        },
+        "affected_policy_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(?:SFP|MPD)-(?:[A-Z]+-)?[0-9]{4}$"
+          }
+        },
+        "correction": {
+          "const": "REMOVE_POLICY_EXECUTION_ORDER_AND_DEFER_PRIORITY_TO_WU_PLAN"
+        },
+        "policy_may_define_durable_safety_preconditions": {
+          "const": true
+        },
+        "work_unit_creation_authorized": {
+          "const": false
+        },
+        "work_unit_priority_assignment_authorized": {
+          "const": false
         }
       },
       "additionalProperties": false
