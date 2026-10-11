@@ -33,6 +33,10 @@ authority_semantics:
     reuse_eligibility: REQUIRE_CURRENT_MACHINE_VERIFIED_VALIDITY
     persisted_state_alone_grants_reuse_authority: false
     unverified_stale_or_invalid_state: NOT_REUSABLE
+    invalid_state_reuse_classification: INELIGIBLE_FOR_REUSE
+    invalid_state_recovery_owner_ref: SFP-OPS-0002
+    fallback_recovery_direction: AUTOMATIC_RECOMPUTE_FROM_VERIFIED_SOURCE_AND_NORMATIVE_CONTRACT
+    source_or_normative_contract_unverified: FAIL_CLOSED
     semantic_authority: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
     engine_implementation_language_restriction: NONE
     repository_state_path_ref: SFP-ARCH-0001
@@ -55,9 +59,9 @@ authority_semantics:
     ASSURE: MACHINE_VALIDATION_EVIDENCE_AND_ACCEPTANCE
     REAL: AUTHORIZED_STATE_MATERIALIZATION_AND_WRITE_INTEGRITY
     CNTR: TYPED_STATE_OPERATION_INTERFACE_AND_ERROR_CONTRACT
+    OPS: NON_AUTHORITATIVE_ENGINE_STATE_FAILURE_RECOVERY_BEHAVIOR
     PLAN: SERIALIZATION_SCHEMA_VALIDATION_ALGORITHM_AND_RECOVERY_DESIGN
   engine_state_unresolved_policy_decisions:
-    - INVALID_OR_STALE_STATE_EXECUTION_BEHAVIOR
     - REUSE_ELIGIBILITY_SCOPE_AND_INVALIDATION_BOUNDARY
   engine_state_unresolved_plan_contract_details:
     - STATE_SCHEMA_FIELDS_AND_SERIALIZATION
@@ -76,3 +80,5 @@ relations:
       scope: LANGUAGE_NEUTRAL_NORMATIVE_SEMANTICS
     - policy: SFP-REAL-0001
       scope: MATERIALIZATION_AND_READ_ONLY_WRITE_BOUNDARY
+    - policy: SFP-OPS-0002
+      scope: ENGINE_DERIVED_STATE_INVALIDITY_RECOVERY_DRAFT

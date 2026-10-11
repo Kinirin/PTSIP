@@ -46,7 +46,14 @@
         "recovery_must_preserve_operation_identity": true,
         "irreversible_or_mutating_failure_requires_existing_ctrl_real_ops_gates": true,
         "resource_failure_recovery_boundary": "EFFECT_STATE_AWARE_AUTHORIZED_RECOVERY",
-        "in_flight_revocation_recovery_boundary": "AUTHORIZED_SAFE_STOP_WITH_INDEPENDENT_EFFECT_ASSESSMENT"
+        "in_flight_revocation_recovery_boundary": "AUTHORIZED_SAFE_STOP_WITH_INDEPENDENT_EFFECT_ASSESSMENT",
+        "invalid_derived_state_recovery": "EXCLUDE_INVALID_STATE_AND_AUTOMATICALLY_RECOMPUTE_FROM_VERIFIED_SOURCE_AND_NORMATIVE_CONTRACT",
+        "invalid_derived_state_reuse": "FORBIDDEN",
+        "authoritative_source_validation": "REQUIRED_BEFORE_RECOMPUTATION",
+        "normative_contract_validation": "REQUIRED_BEFORE_RECOMPUTATION",
+        "invalid_authoritative_source_or_contract": "FAIL_CLOSED_NO_RECOMPUTATION",
+        "owner_recovery_direction": "OPTION_A",
+        "owner_recovery_direction_recorded_at": "2026-10-11"
       },
       "invariants": {
         "no_success_from_partial_failed_composition": true,
@@ -60,7 +67,15 @@
         "revocation_stop_outcome_requires_work_effect_evaluation": true,
         "revocation_stop_does_not_prove_rollback": true,
         "safe_stop_does_not_create_retry_or_compensation_authority": true,
-        "incomplete_or_unknown_effect_state_requires_existing_recovery_gate": true
+        "incomplete_or_unknown_effect_state_requires_existing_recovery_gate": true,
+        "invalid_derived_execution_state_cannot_be_treated_as_authoritative": true,
+        "invalid_derived_state_does_not_automatically_invalidate_verified_source": true,
+        "recomputation_may_not_use_unverified_authoritative_inputs": true,
+        "recomputation_does_not_bypass_existing_execution_or_mutation_authorization": true,
+        "unknown_mutation_effect_must_not_be_treated_as_cache_only_failure": true,
+        "no_automatic_discard_of_conflicting_sources_locks_or_ambiguous_journals": true,
+        "recomputation_does_not_alone_authorize_state_persistence": true,
+        "recovery_policy_is_draft_only_until_owner_active_approval": true
       },
       "unresolved_decisions": [
         {
@@ -91,7 +106,24 @@
         "EXISTING_ACTIVE_POLICY_MUTATION",
         "UNAPPROVED_DIRECTORY_NAMES",
         "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ]
+      ],
+      "engine_derived_state_recovery_boundary": {
+        "scope": "NON_AUTHORITATIVE_ENGINE_DERIVED_EXECUTION_STATE",
+        "state_validation_failure": "INELIGIBLE_FOR_REUSE",
+        "when_source_and_normative_contract_are_valid": "AUTOMATIC_DETERMINISTIC_RECOMPUTATION",
+        "when_source_or_normative_contract_not_verified": "FAIL_CLOSED",
+        "invalid_state_not_equal_to_authoritative_source_error": true,
+        "affected_policy_ref": "SFP-INFO-0008",
+        "authority_boundary": "DO_NOT_OVERRIDE_ACTIVE_CTRL_REAL_ASSURE_AND_OPS_REQUIREMENTS",
+        "excluded_from_policy_scope": [
+          "AUTHORITATIVE_SOURCE_CONFLICT",
+          "STALE_LOCK",
+          "AMBIGUOUS_JOURNAL",
+          "UNKNOWN_MUTATION_EFFECT"
+        ],
+        "execution_mechanics": "PLAN_AND_MACHINE_CONTRACT",
+        "runtime_activation": "NOT_AUTHORIZED_BY_DRAFT"
+      }
     }
   },
   "relations": {
