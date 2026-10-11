@@ -322,6 +322,34 @@
           "active_contracts_and_authorities": "PRESERVED",
           "runtime_activation": "NOT_AUTHORIZED",
           "physical_implementation": "NOT_AUTHORIZED"
+        },
+        "engine_local_management_entrypoint_capability_mapping": {
+          "decision": "C_FLEXIBLE_ENTRYPOINT_TO_EXPLICIT_CAPABILITY_BINDINGS",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "scope": "OFFICIAL_RUST_ENGINE_LOCAL_MANAGEMENT_EXTERNAL_INVOCABILITY",
+          "ownership": "ENGINE_SELF_OWNED_INDEPENDENT_OPTIONAL_MANAGEMENT",
+          "entrypoint_count": "ENGINE_DEFINED_ZERO_ONE_OR_MANY",
+          "management_capability_count": "ENGINE_DEFINED_OPTIONAL_NO_MANDATORY_COMMON_SET",
+          "mapping_rule": "EACH_DECLARED_EXTERNALLY_INVOCABLE_MANAGEMENT_CAPABILITY_HAS_EXPLICIT_REGISTERED_VERSIONED_ENGINE_IDENTITY_AND_CAPABILITY_BOUND_ENTRYPOINT",
+          "many_capabilities_to_one_entrypoint": "ALLOWED",
+          "different_capabilities_to_different_entrypoints": "ALLOWED",
+          "internal_only_management": "NO_EXTERNAL_BINDING_MANDATE_UNLESS_DECLARED_EXTERNALLY_INVOCABLE",
+          "absent_management": "NO_MANAGEMENT_ENTRYPOINT_REQUIRED",
+          "entrypoint_discovery": "REGISTERED_MACHINE_DECLARATION_ONLY",
+          "directory_name_and_internal_path_inference": "FORBIDDEN_AS_ENTRYPOINT_AUTHORITY",
+          "ambiguous_missing_invalid_or_unverifiable_required_binding": "FAIL_CLOSED_AFFECTED_CAPABILITIES",
+          "initial_binding_verification": "REQUIRED_AT_REGISTRATION_FOR_EXTERNALLY_INVOCABLE_CAPABILITIES",
+          "changed_binding": "REVERIFY_CURRENT_ELIGIBILITY_BEFORE_USE",
+          "invocation": "FRESH_APPLICABLE_BINDING_AND_EXISTING_CTRL_AUTHORITY_REQUIRED",
+          "registration_or_discovery": "NO_AUTOMATIC_EXECUTION_ACTIVATION_OR_WRITE_AUTHORITY",
+          "cross_official_rust_engine_management_runtime_or_module_sharing": "FORBIDDEN",
+          "no_fixed_management_directory_name_or_internal_hierarchy": true,
+          "exact_manifest_schema_binding_encoding_and_validation_plan": "DEFERRED_TO_SFP_CNTR_0005_AND_POLICY_COMPLIANT_PLAN",
+          "existing_ACTIVE_policies": "UNCHANGED",
+          "policy_status": "DRAFT_UNCHANGED",
+          "physical_implementation": "NOT_AUTHORIZED",
+          "runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -490,14 +518,15 @@
         "seven_official_rust_engine_implementations_and_optional_management_are_independently_owned": true,
         "cross_engine_normative_machine_contract_use_does_not_create_implementation_sharing_permission": true,
         "engine_management_owner_must_be_declared_and_verified_without_path_inference": true,
-        "existing_single_owner_sharing_invariants_apply_only_outside_this_official_rust_no_sharing_scope": true
+        "existing_single_owner_sharing_invariants_apply_only_outside_this_official_rust_no_sharing_scope": true,
+        "management_external_capabilities_must_resolve_via_explicit_registered_engine_identity_version_and_capability_entrypoint": true,
+        "each_engine_may_group_multiple_management_capabilities_in_one_entrypoint_or_split_across_multiple": true,
+        "engine_without_declared_external_management_operations_requires_no_management_entrypoint": true,
+        "unknown_or_ambiguous_required_management_capability_binding_is_fail_closed": true,
+        "management_binding_does_not_grant_execution_activation_or_write_authority": true,
+        "management_entrypoint_layout_does_not_allow_cross_engine_rust_implementation_sharing": true
       },
       "unresolved_decisions": [
-        {
-          "id": "ENGINE_LOCAL_MANAGEMENT_ENTRYPOINT_DECLARATION_BINDING",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
           "kind": "CONTRACT_DESIGN",
@@ -971,6 +1000,24 @@
           "exact_management_entrypoint_binding": "REMAINS_SEPARATE_UNRESOLVED_POLICY_ITEM",
           "existing_ACTIVE_policies": "UNCHANGED",
           "draft_keeping_prior_gate": "PRESERVED",
+          "implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_LOCAL_MANAGEMENT_ENTRYPOINT_DECLARATION_BINDING",
+          "kind": "USER_POLICY_DECISION",
+          "status": "RESOLVED_POLICY_DIRECTION",
+          "selected_option": "C_FLEXIBLE_ENGINE_MANAGEMENT_ENTRYPOINT_EXPLICIT_CAPABILITY_MAPPING",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "current_active_authority": "SFP-ARCH-0001",
+          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "prior_draft_management_direction": "REGISTERED_IDENTITY_TO_DECLARED_ENTRYPOINT_NO_NAME_INFERENCE",
+          "responsibility_scope": "ENTRYPOINT_CARDINALITY_AND_EXTERNAL_MANAGEMENT_CAPABILITY_BINDING",
+          "selected_mapping_rule_ref": "authority_semantics.unit_ptsip_engine_draft.approved_decisions.engine_local_management_entrypoint_capability_mapping",
+          "existing_registry_and_permission_gates": "PRESERVED",
+          "exact_contract_schema": "UNRESOLVED_SFP_CNTR_0005",
+          "remaining_arch_item": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
+          "keep_prior_activation_gate": "PRESERVED",
           "implementation": "NOT_AUTHORIZED"
         }
       ],
