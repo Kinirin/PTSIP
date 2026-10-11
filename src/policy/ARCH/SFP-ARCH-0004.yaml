@@ -229,6 +229,34 @@
           "active_promotion": "BLOCKED_UNTIL_ALL_EXISTING_GATES_VERIFIED",
           "physical_implementation": "NOT_AUTHORIZED",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        "validation_vpms_public_contract_final_target": {
+          "decision": "KEEP_LATEST",
+          "decision_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "scope": "SEVEN_OFFICIAL_RUST_VALIDATION_ENGINE_TARGET_PUBLIC_CONTRACT_AND_LEGACY_VPMS_API_COMPATIBILITY",
+          "target_canonical_public_contract": "RUST_VALIDATION_ENGINE_LANGUAGE_NEUTRAL_CAPABILITY_CONTRACT",
+          "target_semantic_owner": "SINGLE_OFFICIAL_VALIDATION_ENGINE_INCLUDING_VPMS_PROTOCOL_SELECTION_AND_EXECUTION_COMPOSITION_CAPABILITIES",
+          "existing_active_vpms_contract_ids": {
+            "VPMS_PRODUCT_PROTOCOL": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "VPMS_CASE_SELECTION": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "VPMS_EXECUTION_COMPOSITION": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          },
+          "previous_active_owner_contracts": "PRESERVED_BEFORE_AUTHORIZED_VERIFIED_CUTOVER",
+          "active_contract_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "old_public_api": "TRANSITIONAL_COMPATIBILITY_ONLY_AFTER_NEW_API_VERIFIED",
+          "migration": "NEW_RUST_VALIDATION_CONTRACT_VERIFIED_THEN_VERSIONED_COMPATIBILITY_HANDOFF_THEN_SEPARATELY_AUTHORIZED_RETIREMENT",
+          "compatibility_verification": "MACHINE_VERIFIED_BEHAVIOR_CONFORMANCE_AND_CALLSITE_COMPATIBILITY_BEFORE_SWITCH",
+          "old_api_indefinite_support": "NOT_MANDATORY_AFTER_SEPARATELY_APPROVED_RETIREMENT",
+          "legacy_public_api_retirement": "SEPARATE_EXPLICIT_PROJECT_OWNER_APPROVAL_REQUIRED",
+          "retirement_approval_by_this_decision": "NOT_GRANTED",
+          "implementation_boundary": "NEW_RUST_ONLY_NO_EXISTING_PYTHON_VPMS_MOVE_PORT_WRAP_REUSE_OR_RUNTIME_DEPENDENCY",
+          "exact_capability_and_public_api_mapping": "UNRESOLVED_CONTRACT_DESIGN_AND_RESPONSIBILITY_ANALYSIS",
+          "existing_assure_conformance_authority": "PRESERVED_DISTINCT_FROM_VPMS_OUTCOME",
+          "other_active_authority_and_consumer_profile_ownership": "UNCHANGED",
+          "active_policy_effect": "NONE_UNTIL_AUTHORIZED_AND_VERIFIED_TRANSITION",
+          "engine_runtime_activation": "NOT_AUTHORIZED",
+          "physical_implementation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -382,14 +410,14 @@
         "projection_is_canonical_new_output_normative_owner_when_effective": true,
         "legacy_context_output_format_parity_not_inherited_by_new_projection_after_authorized_versioned_transition": true,
         "existing_context_public_api_remains_effective_until_separately_authorized_verified_transition": true,
-        "projection_authority_does_not_transfer_context_source_or_assure_conformance_authority": true
+        "projection_authority_does_not_transfer_context_source_or_assure_conformance_authority": true,
+        "rust_validation_is_target_canonical_public_contract_owner_after_authorized_cutover": true,
+        "legacy_vpms_active_contracts_are_not_replaced_before_verified_authorized_transition": true,
+        "legacy_vpms_retirement_is_not_implicitly_approved_by_final_target_selection": true,
+        "legacy_vpms_implementation_reuse_permissibility_does_not_apply_to_seven_official_rust_engines": true,
+        "validation_public_contract_migration_must_preserve_assure_normative_verdict_ownership": true
       },
       "unresolved_decisions": [
-        {
-          "id": "VALIDATION_VPMS_ACTIVE_CONTRACT_AND_PUBLIC_COMPATIBILITY_RECONCILIATION",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
           "kind": "RESPONSIBILITY_ANALYSIS",
@@ -815,6 +843,28 @@
           "exact_contract_handoff": "REMAINS_UNRESOLVED_IN_SFP_CNTR_0005",
           "separate_new_engine_runtime_activation": "NOT_AUTHORIZED",
           "original_KEEP_PRIOR_gate": "PRESERVED"
+        },
+        {
+          "id": "VALIDATION_VPMS_ACTIVE_CONTRACT_AND_PUBLIC_COMPATIBILITY_RECONCILIATION",
+          "kind": "USER_POLICY_DECISION",
+          "status": "RESOLVED_POLICY_DIRECTION",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_active_contracts": [
+            "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          ],
+          "prior_active_contract_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "canonical_target": "OFFICIAL_RUST_VALIDATION_LANGUAGE_NEUTRAL_PUBLIC_CONTRACT",
+          "existing_public_compatibility": "TRANSITIONAL_WITH_MACHINE_VERIFIED_VERSIONED_HANDOFF",
+          "future_legacy_retirement": "REQUIRES_SEPARATE_EXPLICIT_OWNER_APPROVAL",
+          "existing_legacy_retirement": "NOT_AUTHORIZED_NOW",
+          "remaining_mapping": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
+          "remaining_contract_design": "SFP-CNTR-0005#VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
+          "draft_status_and_KEEP_PRIOR_gate": "PRESERVED",
+          "implementation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
