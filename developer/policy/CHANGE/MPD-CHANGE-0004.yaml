@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0004
-  version: '2.4'
+  version: '2.5'
   title: Developer legacy policy and Python automation retirement
   status: ACTIVE
 authority_subject:
@@ -72,6 +72,31 @@ rules:
     delete_before_complete_coverage_and_consumer_cutover: FORBIDDEN
     historical_provenance: AUDIT_ONLY_NO_RUNTIME_AUTHORITY
     runtime_legacy_policy_projection: REMOVE
+    profile_boundary_conditional_retirement:
+      approved_direction: VERIFY_INDEPENDENT_REPLACEMENT_THEN_RETIRE
+      approval_ref: developer/policy/approvals/MPA-20261011-MPD-0001-PROFILE-REPLACEMENT-RETIRE.yaml
+      exact_current_responsibility:
+        policy_id: MPD-ARCH-0001
+        section: unit_mpd_0001_bd42d96859af
+      replacement_model: INDEPENDENT_EXISTING_CANONICAL_POLICY_AUTHORITIES_ONLY
+      historical_source_role: AUDIT_ONLY_NO_NORMATIVE_FALLBACK
+      preconditions:
+      - INDEPENDENT_DEVELOPER_PROFILE_BOUNDARY_OWNER_VERIFIED
+      - INDEPENDENT_SUPPORT_PROFILE_AUTHORITY_IN_OWN_CLASS_VERIFIED
+      - COMPLETE_SEMANTIC_COVERAGE_WITHOUT_DUPLICATE_OWNER
+      - DEVELOPER_EXPLICIT_PROFILE_SELECTION_VERIFIED
+      - TEMPORARY_COMPATIBILITY_OBLIGATION_RESOLVED
+      - ALL_AFFECTED_POLICY_AND_RUNTIME_CALLERS_CUT_OVER
+      - ZERO_RUNTIME_LEGACY_POLICY_AUTHORITY_DEPENDENCY
+      - REQUIRED_EXACT_HEAD_VERIFICATION_PASS
+      failed_or_unverified_precondition: PRESERVE_EXISTING_RESPONSIBILITY
+      verified_disposition: RETIRE_ONLY_FULLY_REPLACED_RESPONSIBILITY
+      direction_approval_is_retirement_verification: false
+      consumer_profile_compatibility: PRESERVE_UNLESS_SEPARATELY_APPROVED
+      support_feature_policy_authority: PRESERVE
+      unrelated_existing_policy_rules: PRESERVE
+      other_unreviewed_legacy_responsibilities: PRESERVE_EXISTING
+      create_new_policy_or_branch_by_this_decision: FORBIDDEN
     completion_contract_ref: developer/policy/contracts/go-automation-cutover.v1.json
   developer_go_engine_post_common_engine_migration:
     conflict_resolution: RECONCILE
