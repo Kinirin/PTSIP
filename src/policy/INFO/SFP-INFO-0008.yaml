@@ -31,6 +31,19 @@ authority_semantics:
     decision_recorded_at: '2026-10-11'
     state_role: PERSISTED_NON_AUTHORITATIVE_DERIVED_EXECUTION_STATE
     reuse_eligibility: REQUIRE_CURRENT_MACHINE_VERIFIED_VALIDITY
+    reuse_scope_decision: OPTION_A_EXACT_MATCH_ONLY
+    current_release_reuse_policy: EXACT_MATCH_ONLY
+    reuse_match_scope: COMPLETE_REGISTERED_REUSE_RELEVANT_INPUT_AND_NORMATIVE_CONTRACT_DEPENDENCIES
+    reuse_requires_machine_verified_exact_match: true
+    missing_unknown_or_mismatched_dependency: NOT_REUSABLE
+    semantic_equivalence_alone_may_grant_current_release_reuse: false
+    semantic_equivalence_reuse_extension:
+      status: DEFERRED
+      current_release_requirement: false
+      automatically_authorized: false
+      future_policy_approval_required: true
+      future_machine_verifiable_contract_required: true
+    exact_match_validation_method: PLAN_AND_MACHINE_CONTRACT
     persisted_state_alone_grants_reuse_authority: false
     unverified_stale_or_invalid_state: NOT_REUSABLE
     invalid_state_reuse_classification: INELIGIBLE_FOR_REUSE
@@ -52,6 +65,9 @@ authority_semantics:
     cannot_relax_existing_read_only_operation_boundary: true
     existing_go_test_implementation_policy_unchanged: true
     invalid_or_unverified_state_must_not_be_reused: true
+    insufficient_exact_match_proof_must_not_grant_reuse: true
+    registered_machine_equivalence_not_current_release_reuse_permission: true
+    unrelated_consumer_analysis_reuse_policies_unchanged: true
   engine_state_responsibility_partition:
     INFO: DERIVED_STATE_INFORMATION_ROLE_AND_REUSE_QUALIFICATION_STATUS
     ARCH: ENGINE_PLANE_PATH_ROLE_AND_ACTIVATION_BOUNDARY
@@ -61,11 +77,11 @@ authority_semantics:
     CNTR: TYPED_STATE_OPERATION_INTERFACE_AND_ERROR_CONTRACT
     OPS: NON_AUTHORITATIVE_ENGINE_STATE_FAILURE_RECOVERY_BEHAVIOR
     PLAN: SERIALIZATION_SCHEMA_VALIDATION_ALGORITHM_AND_RECOVERY_DESIGN
-  engine_state_unresolved_policy_decisions:
-    - REUSE_ELIGIBILITY_SCOPE_AND_INVALIDATION_BOUNDARY
+  engine_state_unresolved_policy_decisions: []
   engine_state_unresolved_plan_contract_details:
     - STATE_SCHEMA_FIELDS_AND_SERIALIZATION
     - VALIDATION_PROOF_INTERFACE
+    - EXACT_REUSE_DEPENDENCY_IDENTITY_AND_REVISION_PROOF
     - STATE_WRITE_ATOMICITY_AND_RETRIEVAL
 relations:
   supersedes: []
