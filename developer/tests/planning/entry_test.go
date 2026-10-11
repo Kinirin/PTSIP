@@ -182,6 +182,12 @@ func TestRegisteredPrereleaseRequiresFormalPlanIdentity(t *testing.T) {
 
 func TestPlanningIdentityGrammarComesFromRegisteredBindingContract(t *testing.T) {
 	repo := prereleaseFixture(t)
+	// This test changes the formal identity contract for the prerelease only.
+	// Keep the independent 0.3.8 release plan out of this isolated fixture.
+	rootRef := "developer/planning/index.yaml"
+	root := readPlanning(t, repo, rootRef)
+	root["plans"] = root["plans"].([]any)[:1]
+	testrepo.Write(t, repo.Repository, rootRef, root)
 	ref := "developer/bindings/schemas/policy-plan-bindings.schema.json"
 	schema := readPlanning(t, repo, ref)
 	schema["$defs"].(object)["binding"].(object)["properties"].(object)["resolved_plan_id"].(object)["pattern"] = "^REGISTERED_ID$"

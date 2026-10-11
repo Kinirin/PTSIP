@@ -479,11 +479,11 @@
       "properties": {
         "resolved_plan_id": {
           "type": "string",
-          "pattern": "^PLN\\.[A-Z]{4}\\.[A-Z]{4}\\.[A-Za-z0-9]{8}$"
+          "minLength": 1
         },
         "plan_file_id": {
           "type": "string",
-          "pattern": "^PLANFILE\\.[A-Z]{4}\\.[A-Za-z0-9]{12}$"
+          "minLength": 1
         },
         "version": {
           "type": "string",
@@ -491,7 +491,7 @@
         },
         "revision": {
           "type": "string",
-          "pattern": "^Rev\\.[0-9]{4}$"
+          "minLength": 1
         }
       },
       "additionalProperties": false
