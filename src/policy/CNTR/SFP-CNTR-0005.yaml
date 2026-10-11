@@ -121,7 +121,18 @@
         "unknown_dependency_or_registration_boundary": "FAIL_CLOSED_POTENTIALLY_AFFECTED_OPERATIONS",
         "post_registration_scoped_failure_is_not_initial_registration_exception": true,
         "no_whole_engine_block_without_affected_dependency_or_indivisibility_proof": true,
-        "no_new_activation_execution_write_or_registration_authority_from_scope_choice": true
+        "no_new_activation_execution_write_or_registration_authority_from_scope_choice": true,
+        "registered_binding_eligibility_restoration_choice": "A_USER_EXPLICIT",
+        "registered_binding_eligibility_restoration_decided_at": "2026-10-11",
+        "blocked_registered_capability_eligibility_restoration": "AUTOMATIC_ON_MACHINE_VERIFIED_CURRENT_BINDING_VERSION_CONTRACT_DEPENDENCY_AND_ELIGIBILITY",
+        "eligibility_restore_missing_stale_ambiguous_or_failed_proof": "REMAIN_BLOCKED_FAIL_CLOSED",
+        "restored_registration_eligibility_is_activation_or_execution_authority": false,
+        "restoration_requires_manual_re_registration_by_default": false,
+        "restoration_may_rely_on_previous_registration_verdict_alone": false,
+        "restoration_scope": "ONLY_MACHINE_VERIFIED_RECOVERED_CAPABILITY_AND_REVERIFIED_AFFECTED_DEPENDENCIES",
+        "restoration_candidate_observation_trigger": "VERIFIED_CURRENT_REGISTRATION_ELIGIBILITY_PROOF_AVAILABLE",
+        "restoration_write_or_persistence_authority": "EXISTING_SEPARATE_CTRL_REAL_GATES_NO_IMPLICIT_WRITE",
+        "restoration_proof_state_schema_and_delivery": "PLAN_AND_MACHINE_CONTRACT"
       },
       "invariants": {
         "operations_require_explicit_supported_identity": true,
@@ -261,7 +272,24 @@
         "affected_scope_may_expand_to_whole_engine_only_when_dependency_or_indivisible_contract_proof_requires_it": true,
         "failure_scope_reevaluation_grants_no_activation_execution_or_write_rights": true,
         "failure_scope_reevaluation_preserves_registered_identity_and_contract_based_entrypoint_discovery": true,
-        "failure_scope_selection_does_not_activate_draft_runtime": true
+        "failure_scope_selection_does_not_activate_draft_runtime": true,
+        "blocked_external_capability_may_restore_registration_eligibility_automatically_only_with_current_complete_proof": true,
+        "restoration_requires_current_engine_capability_identity_and_origin": true,
+        "restoration_requires_current_binding_entrypoint_and_versioned_contract_compatibility": true,
+        "restoration_requires_machine_verified_current_direct_and_transitive_dependency_applicability": true,
+        "prior_registration_or_prior_success_does_not_prove_current_eligibility": true,
+        "uncertain_incomplete_stale_or_conflicting_restoration_proof_must_keep_affected_capability_blocked": true,
+        "restoring_one_capability_does_not_implicitly_restore_unverified_dependents": true,
+        "independently_verified_unaffected_capabilities_remain_eligible_under_existing_gates": true,
+        "restoration_preserves_initial_registration_time_execution_binding_validation": true,
+        "restoration_preserves_immediate_post_registration_change_reevaluation": true,
+        "restoration_preserves_fail_closed_affected_scope_isolation": true,
+        "restoration_verdict_does_not_activate_engine_or_authorize_execution_write_or_access": true,
+        "restoration_requires_fresh_ctrl_authority_for_execution_and_separate_authority_for_any_state_mutation": true,
+        "restoration_must_not_infer_engine_binding_from_directory_names": true,
+        "restoration_does_not_transfer_active_arch_cntr_ctrl_assure_or_vpms_authority": true,
+        "restoration_proof_schema_and_detection_mechanics_belong_to_plan": true,
+        "restoration_policy_is_draft_only_not_active_runtime_behavior": true
       },
       "unresolved_decisions": [
         {
@@ -542,6 +570,22 @@
           "detailed_contract_and_schema": "PLAN",
           "implementation": "NOT_AUTHORIZED_BY_THIS_DECISION",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "ENGINE_REGISTERED_BINDING_ELIGIBILITY_RESTORATION",
+          "selected_option": "A_MACHINE_VERIFIED_AUTOMATIC_ELIGIBILITY_RESTORATION",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "POST_REGISTRATION_BLOCKED_CAPABILITY_ELIGIBILITY_RECOVERY_ONLY",
+          "automatic_restoration": "AFTER_COMPLETE_CURRENT_MACHINE_VERIFIED_BINDING_VERSION_CONTRACT_DEPENDENCIES_AND_ELIGIBILITY",
+          "failure_or_uncertainty": "KEEP_BLOCKED_FAIL_CLOSED",
+          "initial_registration_gate": "UNCHANGED",
+          "immediate_change_reevaluation": "UNCHANGED",
+          "independent_capability_failure_scope": "UNCHANGED",
+          "activation_execution_or_write_permission": "NOT_GRANTED",
+          "mutation_if_required": "SEPARATELY_AUTHORIZED_CTRL_REAL_OPS_GATES",
+          "exact_proof_interface_and_implementation": "PLAN",
+          "current_effect": "DRAFT_ONLY"
         }
       ],
       "dependent_plans": [
@@ -621,6 +665,33 @@
         "dependency_closure_proof_and_status_model": "PLAN_AND_MACHINE_CONTRACT",
         "no_new_runtime_rights_or_active_transition": true,
         "current_effect": "DRAFT_ONLY_NO_IMPLEMENTATION"
+      },
+      "registered_binding_eligibility_restoration_direction": {
+        "policy_subject": "ENGINE_REGISTERED_BINDING_ELIGIBILITY_RESTORATION",
+        "selected_option": "A_AUTOMATIC_AFTER_VERIFIED_CURRENT_REGISTRATION_ELIGIBILITY",
+        "precondition": "PREVIOUSLY_BLOCKED_BY_POST_REGISTRATION_EXTERNAL_BINDING_CHANGE_REEVALUATION",
+        "eligible_target": "AFFECTED_EXTERNALLY_INVOCABLE_CAPABILITY_ONLY",
+        "required_machine_proofs": [
+          "CURRENT_REGISTERED_ENGINE_AND_CAPABILITY_IDENTITY_AND_ORIGIN",
+          "CURRENT_VERSIONED_EXECUTION_BINDING_ENTRYPOINT_AND_CAPABILITY_CONTRACT_COMPATIBILITY",
+          "CURRENT_REGISTERED_DEPENDENCY_CLOSURE_AND_APPLICABILITY",
+          "CURRENT_REGISTRATION_ELIGIBILITY_WITHOUT_AMBIGUITY"
+        ],
+        "proof_result_sufficient": "RESTORE_REGISTRATION_ELIGIBILITY_AUTOMATICALLY_NO_NEW_PER_CASE_APPROVAL",
+        "proof_missing_stale_conflicting_or_incomplete": "KEEP_AFFECTED_CAPABILITY_BLOCKED_FAIL_CLOSED",
+        "dependent_capabilities": "RESTORE_ONLY_AFTER_OWN_VERIFIED_CURRENT_APPLICABILITY",
+        "proven_independent_capabilities": "UNCHANGED_ELIGIBLE_UNDER_EXISTING_GATES",
+        "registration_eligibility_distinct_from_runtime_activation": true,
+        "registration_eligibility_distinct_from_operation_execution_permission": true,
+        "runtime_invocation": "RECHECK_CURRENT_BINDING_CONTRACT_AND_FRESH_EFFECTIVE_CTRL_AUTHORITY",
+        "if_eligibility_state_requires_mutating_persistence": "EXISTING_SEPARATE_CTRL_REAL_WRITE_AUTHORITY_REQUIRED",
+        "read_only_eligibility_check": "NO_MATERIALIZATION_OR_NEW_WRITE_AUTHORITY",
+        "initial_registration_contract_gate": "UNCHANGED",
+        "changed_binding_immediate_reevaluation": "UNCHANGED",
+        "fail_closed_scope_isolation": "UNCHANGED",
+        "machine_entrypoint_discovery": "REGISTERED_IDENTITY_BOUND_NOT_DIRECTORY_NAME",
+        "exact_evidence_schema_monitoring_and_idempotency": "PLAN_AND_MACHINE_CONTRACT",
+        "runtime_effect": "DRAFT_ONLY_NO_IMPLEMENTATION_OR_ACTIVE_TRANSITION"
       }
     }
   },
