@@ -704,7 +704,9 @@
     "active_promotion_eligibility": "EXPLICIT_USER_APPROVAL_RECORDED_NOT_RUNTIME_ELIGIBILITY",
     "implementation_scope": "CONTRACT_VERIFICATION_AND_PLANS_NOT_PUBLIC_API_CUTOVER_OR_INSTALLATION_EXECUTION",
     "approved_scope_verified_items": 16,
-    "completed_items_semantics": "FULL_ORIGINAL_ACCEPTANCE_INCLUDING_UNPERFORMED_RUNTIME_INTEGRATION"
+    "completed_items_semantics": "FULL_ORIGINAL_ACCEPTANCE_INCLUDING_UNPERFORMED_RUNTIME_INTEGRATION",
+    "native_engine_implementation_verified_count": 7,
+    "native_implementation_scope": "ISOLATED_OWNER_ADMITTED_VERIFICATION_REPOSITORIES"
   },
   "execution_checkpoint_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.implementation_checkpoint",
   "verification_checkpoint": {
@@ -720,5 +722,23 @@
     "skipped_job_count": 0,
     "public_api_regression": "PASS_PRESERVED_EXISTING_API",
     "new_validation_runtime_equivalence": "NOT_ASSERTED"
+  },
+  "native_runtime_verification_checkpoint": {
+    "status": "PASS_SEVEN_ENGINE_NATIVE_IMPLEMENTATION_IN_ISOLATED_OWNER_ADMITTED_SCOPE",
+    "source_sha": "704106b78be4c5cb2296a84c51be97feec1c1494",
+    "run_id": 38184145188,
+    "required_check_count": 57,
+    "total_job_count": 61,
+    "failed_job_count": 0,
+    "skipped_job_count": 0,
+    "verified_platforms": [
+      "LINUX_X64",
+      "WINDOWS_X64_MSVC",
+      "MACOS_ARM64"
+    ],
+    "runtime_implementation_record_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.native_runtime_implementation",
+    "real_consumer_activation": false,
+    "existing_public_api_cutover": false,
+    "legacy_public_api_retirement": false
   }
 }

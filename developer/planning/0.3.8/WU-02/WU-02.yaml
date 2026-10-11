@@ -688,7 +688,7 @@
       "approved_scope_result": "PASS_COMMIT_BOUND_LOCAL_AND_REMOTE"
     },
     "implementation_checkpoint": {
-      "status": "APPROVED_CONTRACT_VERIFICATION_SCOPE_VERIFIED_RUNTIME_TRANSITION_PENDING",
+      "status": "SEVEN_ENGINE_NATIVE_IMPLEMENTATION_VERIFIED_ISOLATED_SCOPE_CONSUMER_TRANSITION_PENDING",
       "normative_policy_statuses": {
         "SFP-ARCH-0004": "ACTIVE",
         "SFP-CNTR-0005": "ACTIVE"
@@ -702,15 +702,16 @@
       "full_runtime_transition_completion": "NOT_CLAIMED",
       "verified_platforms": [
         "WINDOWS_LOCAL_MSVC",
-        "LINUX_GITHUB_ACTIONS"
+        "LINUX_GITHUB_ACTIONS_X64",
+        "WINDOWS_GITHUB_ACTIONS_X64_MSVC",
+        "MACOS_GITHUB_ACTIONS_ARM64"
       ],
-      "macos_runtime_evidence": "NOT_OBSERVED",
+      "macos_runtime_evidence": "PASS_EXACT_SHA_704106B7",
       "remaining_work": [
-        "REAL_OWNER_ADMITTED_PROVIDER_AND_COMPATIBILITY_EVIDENCE_FOR_OPERATIONAL_INSTALLATION",
-        "FULL_RUNTIME_CAPABILITY_AND_ACTION_TIME_PERMISSION_GATE_INTEGRATION",
-        "SEPARATELY_AUTHORIZED_CONSUMER_AND_CALLSITE_VERSION_BOUND_CUTOVER",
-        "FULL_VPMS_RUNTIME_SEMANTIC_EQUIVALENCE_BEFORE_ANY_LEGACY_API_RETIREMENT",
-        "MACOS_NATIVE_RUNTIME_VERIFICATION"
+        "REAL_CONSUMER_PROJECT_AUTHORITY_ADMISSION_AND_REQUIRED_DISTRIBUTED_AUTHORITY_ADAPTER",
+        "OPERATOR_APPROVED_PRODUCTION_INSTALLATION_AND_ACTIVATION",
+        "SEPARATELY_AUTHORIZED_VERSIONED_CONSUMER_CALLSITE_CUTOVER",
+        "LEGACY_API_RETIREMENT_AFTER_SEPARATE_OWNER_APPROVAL_AND_FULL_BEHAVIOR_COMPATIBILITY"
       ],
       "read_only_operation_count": 25,
       "public_api_scope": "PRESERVED_EXISTING_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS_ONLY",
@@ -718,11 +719,13 @@
       "legacy_retirement_authorized": false,
       "implementation_validation_platforms": [
         "WINDOWS_LOCAL_MSVC",
-        "LINUX_GITHUB_ACTIONS"
+        "LINUX_GITHUB_ACTIONS_X64",
+        "WINDOWS_GITHUB_ACTIONS_X64_MSVC",
+        "MACOS_GITHUB_ACTIONS_ARM64"
       ],
       "implementation_remote_result": "PASS_EXACT_SHA",
-      "implementation_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
-      "implementation_verification_run_id": 38168943031,
+      "implementation_source_sha": "704106b78be4c5cb2296a84c51be97feec1c1494",
+      "implementation_verification_run_id": 38184145188,
       "approved_scope_verified_work_item_count": 16,
       "registered_operation_count": 27
     },
@@ -738,7 +741,7 @@
       "consumer_cutover_authorized": false
     },
     "native_runtime_implementation": {
-      "status": "IMPLEMENTED_LOCAL_VERIFICATION_PASS_REMOTE_PENDING",
+      "status": "COMPLETE_VERIFIED_ISOLATED_SEVEN_ENGINE_NATIVE_IMPLEMENTATION",
       "approval_source": "USER_EXPLICIT",
       "source_reference": "실제엔진 7개 구현의 완료 목표로 계속해서 작업하도록 하겠습니다",
       "scope_confirmation": "격리된 검증 저장소에서 실행 연동 구현",
@@ -805,7 +808,68 @@
         "NATIVE_ENGINES_WINDOWS_X64",
         "NATIVE_ENGINES_MACOS_ARM64"
       ],
-      "observed_remote": []
+      "observed_remote": [
+        {
+          "source_sha": "704106b78be4c5cb2296a84c51be97feec1c1494",
+          "run_id": 38184145407,
+          "event": "push",
+          "result": "PASS",
+          "successful_job_count": 13,
+          "failed_job_count": 0,
+          "skipped_job_count": 1,
+          "skipped_scope": "ADDITIONAL_NATIVE_PLATFORM_JOB_NOT_SELECTED_BY_PUSH_AUTO_CHECK_SET_NOT_COUNTED_AS_PASS"
+        },
+        {
+          "source_sha": "704106b78be4c5cb2296a84c51be97feec1c1494",
+          "run_id": 38184145188,
+          "event": "workflow_dispatch",
+          "preset": "full",
+          "result": "PASS",
+          "required_check_count": 57,
+          "job_count_including_native_platforms_resolve_and_coverage": 61,
+          "successful_job_count": 61,
+          "failed_job_count": 0,
+          "skipped_job_count": 0,
+          "coverage_result": "PASS",
+          "all_developer_go_regression": "PASS",
+          "preserved_public_api_regression": "PASS",
+          "platform_evidence": [
+            {
+              "platform": "LINUX_X64",
+              "job_id": 114602804401,
+              "result": "PASS",
+              "native_suite_duration_seconds": 202.445
+            },
+            {
+              "platform": "WINDOWS_X64_MSVC",
+              "job_id": 114602801781,
+              "result": "PASS",
+              "native_suite_duration_seconds": 296.512
+            },
+            {
+              "platform": "MACOS_ARM64",
+              "job_id": 114602801867,
+              "result": "PASS",
+              "native_suite_duration_seconds": 164.725
+            }
+          ]
+        }
+      ],
+      "verified_source_sha": "704106b78be4c5cb2296a84c51be97feec1c1494",
+      "verification_run_id": 38184145188,
+      "verified_engine_count": 7,
+      "verified_platforms": [
+        "LINUX_X64",
+        "WINDOWS_X64_MSVC",
+        "MACOS_ARM64"
+      ],
+      "implementation_completion_scope": "REGISTERED_NATIVE_CAPABILITIES_AND_ISOLATED_OWNER_ADMITTED_EXECUTION_NOT_REAL_CONSUMER_ACTIVATION_OR_PUBLIC_API_CUTOVER",
+      "remaining_outside_implementation_scope": [
+        "REAL_CONSUMER_PROJECT_AUTHORITY_ADMISSION_AND_REQUIRED_DISTRIBUTED_AUTHORITY_ADAPTER",
+        "OPERATOR_APPROVED_PRODUCTION_INSTALLATION_AND_ACTIVATION",
+        "SEPARATELY_AUTHORIZED_VERSIONED_CONSUMER_CALLSITE_CUTOVER",
+        "LEGACY_API_RETIREMENT_AFTER_SEPARATE_OWNER_APPROVAL_AND_FULL_BEHAVIOR_COMPATIBILITY"
+      ]
     }
   }
 }
