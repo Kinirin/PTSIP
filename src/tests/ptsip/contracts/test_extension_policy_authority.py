@@ -35,7 +35,7 @@ def test_extension_contract_uses_only_current_support_authority() -> None:
     historic = {
         identity for index in (current, developer)
         for identity, entry in index.items()
-        if entry["authority_role"] == "MIGRATION_SOURCE"
+        if entry.get("authority_role") == "MIGRATION_SOURCE"
     }
     policy = json.loads((ROOT / POLICY).read_text(encoding="utf-8"))
     assert policy["policy"]["status"] == "ACTIVE"
@@ -67,7 +67,7 @@ def test_live_reference_gate_rejects_historical_policy_identity() -> None:
     developer = _catalog("developer/policy/index.yaml")
     historic = {
         identity for identity, entry in developer.items()
-        if entry["authority_role"] == "MIGRATION_SOURCE"
+        if entry.get("authority_role") == "MIGRATION_SOURCE"
     }
     # Guard regression: an archived policy may exist but must never be a live owner.
     assert "MPD-0012" in historic

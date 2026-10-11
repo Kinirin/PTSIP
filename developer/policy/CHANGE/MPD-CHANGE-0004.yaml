@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0004
-  version: '2.3'
+  version: '2.4'
   title: Developer legacy policy and Python automation retirement
   status: ACTIVE
 authority_subject:
@@ -47,6 +47,28 @@ rules:
     target_policy_reference_model: EXACT_ROOT_POLICY_ID_AND_SECTION
     target_removed_path: developer/policy/legacy
     original_responsibility_lifecycle: PRESERVE
+    subsequent_manual_responsibility_review:
+      conflict_resolution: RECONCILE
+      approval_ref: developer/policy/approvals/MPA-20261011-ROOT-FAMILY-MANUAL-RECONCILE.yaml
+      prior_materialization_state_rule: PRESERVE_AS_HISTORICAL_DECISION
+      historical_legacy_source_status: PRESERVE_UNCHANGED
+      historical_legacy_source_authority: AUDIT_ONLY
+      current_authority_source: REGISTERED_ROOT_FAMILY_POLICY_AND_EXACT_SECTION
+      eligible_for_activation: USER_REVIEWED_AND_EXPLICITLY_APPROVED_RESPONSIBILITY_ONLY
+      required_review:
+      - LEGACY_SOURCE_CONTENT
+      - ALL_EXISTING_RELEVANT_FAMILY_POLICY_RULES
+      - CONFLICT_AND_DUPLICATE_AUTHORITY
+      - RUNTIME_LEGACY_AUTHORITY_DEPENDENCIES
+      - EXACT_RESPONSIBILITY_OWNER_AND_BOUNDARY
+      approved_responsibility_target_status: ACTIVE
+      unreviewed_responsibility_status: PRESERVE_EXISTING
+      family_policy_active_does_not_prove_all_units_reviewed: true
+      source_status_does_not_auto_promote_target: true
+      approval_of_review_process_does_not_approve_individual_migrations: true
+      unresolved_conflict_or_owner: USER_DECISION_REQUIRED
+      duplicate_canonical_ownership: FORBIDDEN
+      unrelated_existing_policy_rules: PRESERVE
     delete_before_complete_coverage_and_consumer_cutover: FORBIDDEN
     historical_provenance: AUDIT_ONLY_NO_RUNTIME_AUTHORITY
     runtime_legacy_policy_projection: REMOVE
