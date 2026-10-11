@@ -869,7 +869,275 @@
         "OPERATOR_APPROVED_PRODUCTION_INSTALLATION_AND_ACTIVATION",
         "SEPARATELY_AUTHORIZED_VERSIONED_CONSUMER_CALLSITE_CUTOVER",
         "LEGACY_API_RETIREMENT_AFTER_SEPARATE_OWNER_APPROVAL_AND_FULL_BEHAVIOR_COMPATIBILITY"
-      ]
+      ],
+      "remaining_scope_policy_routing_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.remaining_consumer_scope_policy_routing"
+    },
+    "remaining_consumer_scope_policy_routing": {
+      "record_role": "DERIVED_PLANNING_ROUTING_NOT_POLICY_AUTHORITY",
+      "canonical_entry": "src/policy/index.yaml",
+      "policy_root": "src/policy/",
+      "excluded_roots": [
+        "src/policy/legacy/"
+      ],
+      "user_source_confirmation": "consumer의 Project Authority 정당성 확인과 분산 authority 연동, 운영 설치·활성화, 기존 API의 전환·폐기는 별도 남은 범위로 src\\policy\\legacy을 제외한 src\\policy 경로 정책입니다",
+      "recorded_at": "2026-10-12",
+      "resolution_rules": {
+        "index_registration": "REQUIRED",
+        "index_source_id_and_status_match": "REQUIRED",
+        "execution_authority_status": "ACTIVE_ONLY",
+        "draft_policy": "DESIGN_DIRECTION_ONLY_NO_IMPLICIT_ACTIVATION",
+        "retired_policy": "NO_CURRENT_EXECUTION_AUTHORITY",
+        "legacy_source": "EXCLUDED_NO_CURRENT_SEMANTIC_EXPECTATION_OR_AUTHORITY",
+        "developer_policy_support_semantic_inheritance": "FORBIDDEN",
+        "missing_exact_contract_or_implementation_binding": "UNRESOLVED_FAIL_CLOSED_NOT_POLICY_ABSENCE",
+        "planning_record_creates_normative_authority": false,
+        "directory_selection_is_runtime_grant": false
+      },
+      "remaining_scope_routes": {
+        "CONSUMER_PROJECT_AUTHORITY_LEGITIMACY": {
+          "policy_basis": "CURRENT_REGISTERED_POLICY_EXISTS_IMPLEMENTATION_AND_CONFORMANCE_REMAIN",
+          "active_policy_refs": [
+            {
+              "policy_id": "SFP-GOV-0001",
+              "path": "src/policy/GOV/SFP-GOV-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_PROJECT_AUTHORITY_LEGITIMACY",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-ARCH-0001",
+              "path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-NORM-0001",
+              "path": "src/policy/NORM/SFP-NORM-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_CONSUMER_REQUIREMENT_MEANING",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            }
+          ]
+        },
+        "DISTRIBUTED_AUTHORITY_FRESHNESS_AND_OPERATION_ELIGIBILITY": {
+          "policy_basis": "CURRENT_REGISTERED_POLICY_EXISTS_IMPLEMENTATION_AND_CONFORMANCE_REMAIN",
+          "active_policy_refs": [
+            {
+              "policy_id": "SFP-CTRL-0001",
+              "path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-GOV-0001",
+              "path": "src/policy/GOV/SFP-GOV-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_PROJECT_AUTHORITY_LEGITIMACY",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-RECORD-0001",
+              "path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_OBSERVATION_AND_OPERATION_PROVENANCE",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            }
+          ]
+        },
+        "OPERATIONAL_INSTALLATION_AND_ACTIVATION": {
+          "policy_basis": "CURRENT_ACTIVE_BOUNDARIES_EXIST_EXACT_SUPPORTED_INSTALLATION_AND_ACTIVATION_BINDINGS_REMAIN",
+          "active_policy_refs": [
+            {
+              "policy_id": "SFP-ARCH-0004",
+              "path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION",
+              "section_refs": [
+                "#/authority_semantics/unit_ptsip_engine_draft/policy_activation",
+                "#/authority_semantics/unit_ptsip_engine_draft/implementation_admission"
+              ]
+            },
+            {
+              "policy_id": "SFP-CNTR-0005",
+              "path": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
+              "section_refs": [
+                "#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_package_installation_plan_direction",
+                "#/authority_semantics/unit_ptsip_engine_draft/policy_activation"
+              ]
+            },
+            {
+              "policy_id": "SFP-CNTR-0007",
+              "path": "src/policy/CNTR/SFP-CNTR-0007.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
+              "section_refs": [
+                "#/authority_semantics/unit_registered_cli_extension_activation/activation",
+                "#/authority_semantics/unit_registered_cli_extension_activation/explicit_exclusions"
+              ]
+            },
+            {
+              "policy_id": "SFP-CTRL-0001",
+              "path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-REAL-0001",
+              "path": "src/policy/REAL/SFP-REAL-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_DETERMINISTIC_CONSUMER_STATE_REALIZATION",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-ASSURE-0001",
+              "path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_DECLARATION_EVIDENCE_CONFORMANCE_JUDGMENT",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-OPS-0001",
+              "path": "src/policy/OPS/SFP-OPS-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_AVAILABLE_CAPABILITY_CONTINUITY_AND_RECOVERY",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            }
+          ],
+          "draft_direction_refs": [
+            {
+              "policy_id": "SFP-CTRL-0002",
+              "path": "src/policy/CTRL/SFP-CTRL-0002.yaml",
+              "observed_status": "DRAFT",
+              "sections": [
+                "#/authority_semantics/unit_ptsip_engine_draft/approved_decisions"
+              ],
+              "purpose": "STARTUP_PREDELEGATED_AUTOMATIC_ACTIVATION_DIRECTION",
+              "runtime_authority": false
+            },
+            {
+              "policy_id": "SFP-SUPPLY-0001",
+              "path": "src/policy/SUPPLY/SFP-SUPPLY-0001.yaml",
+              "observed_status": "DRAFT",
+              "sections": [
+                "#/authority_subject"
+              ],
+              "purpose": "DECLARED_SOURCE_DEPENDENCY_AND_DISTRIBUTION_SUPPLY_DIRECTION",
+              "runtime_authority": false
+            }
+          ]
+        },
+        "EXISTING_API_VERSIONED_TRANSITION_AND_RETIREMENT": {
+          "policy_basis": "CURRENT_REGISTERED_POLICY_EXISTS_BEHAVIOR_CALLSITE_COMPATIBILITY_AND_SEPARATE_OWNER_AUTHORIZATION_REMAIN",
+          "active_policy_refs": [
+            {
+              "policy_id": "SFP-CHANGE-0001",
+              "path": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_EXPLICIT_PROFILE_AUTHORITY_MIGRATION",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-CNTR-0001",
+              "path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-CNTR-0005",
+              "path": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
+              "section_refs": [
+                "#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/context_projection_consumer_scoped_handoff_direction",
+                "#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/validation_vpms_public_contract_final_target"
+              ]
+            },
+            {
+              "policy_id": "SFP-ASSURE-0001",
+              "path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_DECLARATION_EVIDENCE_CONFORMANCE_JUDGMENT",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-GOV-0001",
+              "path": "src/policy/GOV/SFP-GOV-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_PROJECT_AUTHORITY_LEGITIMACY",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            },
+            {
+              "policy_id": "SFP-CTRL-0001",
+              "path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+              "required_status": "ACTIVE",
+              "authority_subject_id": "SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY",
+              "section_refs": [
+                "#/authority_subject",
+                "#/authority_semantics/family_definition/kernel_definitions"
+              ]
+            }
+          ],
+          "existing_public_api": "PRESERVED_BEFORE_AUTHORIZED_VERIFIED_VERSIONED_CUTOVER",
+          "legacy_api_retirement": "SEPARATE_EXPLICIT_OWNER_APPROVAL_REQUIRED"
+        }
+      },
+      "observed_current_policy_inventory": {
+        "registered_policy_count": 42,
+        "active_count": 17,
+        "draft_count": 21,
+        "retired_count": 4,
+        "unindexed_policy_records_outside_legacy": 0,
+        "source_snapshot_sha": "dd9399eba37294c7e0f73b50bd36064a7b707885"
+      },
+      "actual_remaining_scope_activation_authorized_by_this_source_confirmation": false
     }
   }
 }
