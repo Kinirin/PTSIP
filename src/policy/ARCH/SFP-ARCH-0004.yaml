@@ -91,7 +91,7 @@
         "seven_official_engine_subdirectory_name_authority_choice": "B_USER_EXPLICIT",
         "seven_official_engine_subdirectory_name_authority_decided_at": "2026-10-11",
         "seven_official_engine_subdirectory_name_authority": "PROJECT_OWNER_APPROVED_POLICY",
-        "seven_official_engine_subdirectory_exact_names": "PARTIALLY_RESOLVED_CONTEXT_ONLY_SIX_UNRESOLVED",
+        "seven_official_engine_subdirectory_exact_names": "PARTIALLY_RESOLVED_CONTEXT_STORAGE_ONLY_FIVE_UNRESOLVED",
         "seven_official_engine_subdirectory_name_determination_by_plan": "FORBIDDEN_WITHOUT_SEPARATE_POLICY_APPROVAL",
         "seven_official_engine_subdirectory_unapproved_name_materialization": "FORBIDDEN",
         "official_source_root_and_seven_engine_identities": "UNCHANGED",
@@ -100,10 +100,10 @@
           "root": "src/ptsip/engines/",
           "naming_authority": "PROJECT_OWNER_POLICY_APPROVAL",
           "approved": {
-            "CONTEXT": "context/"
+            "CONTEXT": "context/",
+            "STORAGE": "storage/"
           },
           "pending_engine_kinds": [
-            "STORAGE",
             "VALIDATION",
             "DISCOVERY",
             "PLANNING",
@@ -117,7 +117,12 @@
         "official_context_engine_subdirectory_decision": "A_USER_EXPLICIT",
         "official_context_engine_subdirectory_approved_at": "2026-10-11",
         "official_context_engine_subdirectory_physical_creation": "NOT_AUTHORIZED",
-        "official_context_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE"
+        "official_context_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
+        "official_storage_engine_subdirectory_name": "storage/",
+        "official_storage_engine_subdirectory_decision": "A_USER_EXPLICIT",
+        "official_storage_engine_subdirectory_approved_at": "2026-10-11",
+        "official_storage_engine_subdirectory_physical_creation": "NOT_AUTHORIZED",
+        "official_storage_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE"
       },
       "invariants": {
         "physical_parent_co_location_does_not_merge_semantic_owners": true,
@@ -202,7 +207,6 @@
         "naming_authority_decision_does_not_activate_draft_engine_runtime": true,
         "context_engine_subdirectory_name_approved_by_owner": true,
         "context_engine_approved_subdirectory_is_exactly_context": true,
-        "remaining_six_official_engine_subdirectory_names_require_separate_owner_approval": true,
         "all_seven_official_engine_subdirectory_names_not_yet_approved": true,
         "seven_engine_subdirectory_approval_cannot_be_inferred_from_one_engine_approval": true,
         "management_subdirectory_and_remaining_module_names_unapproved": true,
@@ -210,15 +214,24 @@
         "context_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
         "context_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
         "context_subdirectory_approval_does_not_change_ownership_of_context_source_or_projection_rules": true,
-        "context_subdirectory_approval_does_not_activate_engine_runtime": true
+        "context_subdirectory_approval_does_not_activate_engine_runtime": true,
+        "storage_engine_subdirectory_name_approved_by_owner": true,
+        "storage_engine_approved_subdirectory_is_exactly_storage": true,
+        "remaining_five_official_engine_subdirectory_names_require_separate_owner_approval": true,
+        "both_approved_context_and_storage_subdirectories_remain_distinct": true,
+        "storage_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
+        "storage_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
+        "storage_subdirectory_approval_does_not_reassign_storage_provider_or_data_ownership": true,
+        "storage_engine_contract_mediation_boundary_remains_separate_from_storage_provider_implementation": true,
+        "storage_subdirectory_approval_does_not_activate_engine_runtime": true
       },
       "unresolved_decisions": [
         {
           "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES",
           "kind": "USER_DECISION",
           "status": "UNRESOLVED",
-          "reason": "CONTEXT_CONTEXT_DIRECTORY_APPROVED_REMAINING_SIX_REQUIRE_INDEPENDENT_OWNER_POLICY_APPROVAL",
-          "scope": "REMAINING_SIX_OFFICIAL_ENGINE_NAME_VALUES_ONLY_CONTEXT_APPROVED"
+          "reason": "CONTEXT_AND_STORAGE_SUBDIRECTORY_NAMES_APPROVED_REMAINING_FIVE_REQUIRE_INDEPENDENT_OWNER_POLICY_APPROVAL",
+          "scope": "REMAINING_FIVE_OFFICIAL_ENGINE_NAME_VALUES_ONLY_CONTEXT_AND_STORAGE_APPROVED"
         },
         {
           "id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
@@ -443,6 +456,25 @@
           "planned_path_not_materialized": "src/ptsip/engines/context/",
           "other_six_official_engine_names": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
           "physical_package_layout": "UNRESOLVED",
+          "directory_creation": "NOT_AUTHORIZED",
+          "existing_module_migration": "NOT_AUTHORIZED",
+          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
+          "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "OFFICIAL_STORAGE_ENGINE_SUBDIRECTORY_NAME",
+          "selected_option": "A_STORAGE_DIRECTORY",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "resolution_scope": "STORAGE_ENGINE_NAME_VALUE_ONLY",
+          "official_engine_kind": "STORAGE",
+          "approved_subdirectory": "storage/",
+          "approved_parent_source_root": "src/ptsip/engines/",
+          "planned_path_not_materialized": "src/ptsip/engines/storage/",
+          "previously_approved_context_subdirectory": "context/",
+          "other_five_official_engine_names": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
+          "physical_package_layout": "UNRESOLVED",
+          "storage_provider_and_data_ownership": "INDEPENDENT_UNCHANGED",
           "directory_creation": "NOT_AUTHORIZED",
           "existing_module_migration": "NOT_AUTHORIZED",
           "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
