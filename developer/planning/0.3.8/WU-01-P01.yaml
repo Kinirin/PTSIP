@@ -6,7 +6,7 @@
   "extension": {
     "id": "WU-01-P01",
     "parent": "WU-01",
-    "title": "0.3.8 release Context Evidence candidate policy revision revalidation",
+    "title": "0.3.8 Context Evidence candidate: completed revision refresh and outstanding validation",
     "classification": "DEVELOPMENT",
     "lifecycle": {
       "status": "DRAFT"
@@ -18,20 +18,23 @@
   "implementation_authorization": {
     "status": "NOT_AUTHORIZED"
   },
-  "depends_on": [
-    "WU-01"
-  ],
+  "depends_on": [],
   "identity_and_registration": {
     "formal_plan_identity": "NOT_ALLOCATED",
     "exact_plan_path": "developer/planning/0.3.8/WU-01-P01.yaml",
     "parent_ref": "developer/planning/0.3.8/index.yaml",
-    "parent_extension_registration": "UNREGISTERED_DRAFT_WAIT_FOR_RELEASE_WU_01",
-    "entrypoint_or_policy_plan_binding_mutation": "NOT_AUTHORIZED_BY_DRAFT_PLAN"
+    "intended_parent_work_unit": "WU-01",
+    "intended_parent_registration": "ABSENT",
+    "parent_extension_registration": "UNREGISTERED_REVIEW_ONLY",
+    "proposal_is_registered_executable_work_unit": false,
+    "approval_does_not_implicitly_register_missing_parent": true,
+    "registration_requires_explicit_current_release_parent_approval_and_registration": true,
+    "entrypoint_or_policy_plan_binding_mutation": "NOT_AUTHORIZED_BY_UNAPPROVED_REVIEW_DOCUMENT"
   },
   "objective": {
     "source_review_branch": "dev/0.3.8",
     "policy_review_head": "e2368498d5d543e26c53216ee7d4248619746e43",
-    "scope": "EXACT_SOURCE_REVALIDATION_FOR_EXISTING_P0_P1_CONTEXT_EVIDENCE_READ_ONLY_CANDIDATE",
+    "scope": "AUDIT_COMPLETED_SIX_POLICY_REFERENCE_REFRESH_AND_VERIFY_CURRENT_P0_P1_READ_ONLY_CANDIDATE_IN_RELEASE_0_3_8",
     "candidate_ref": "src/agent_contracts/contracts/context-evidence-identity.json",
     "candidate_owner": "SFP-INFO-0007",
     "scope_expansion": "FORBIDDEN",
@@ -39,10 +42,11 @@
     "runtime_activation": "FORBIDDEN",
     "release_control_plane_ref": "developer/planning/0.3.8/index.yaml",
     "release_work_unit": "WU-01",
-    "release_parent_work_unit_state_at_review": "NOT_CREATED",
-    "proof_authority": "CURRENT_REGISTERED_SIX_POLICY_BLOBS_AND_DIRECT_41_BINDING_COMPARISON_ONLY",
-    "current_plan_lookup": "LOCAL_RELEASE_ROOT_ONLY",
-    "prerelease_plan_lookup": "NOT_REQUIRED"
+    "release_parent_work_unit_state_at_review": "ABSENT_UNREGISTERED",
+    "proof_authority": "DIRECT_CURRENT_REGISTERED_POLICY_SOURCES_AND_41_BINDINGS_NOT_HISTORICAL_PLAN_LOOKUP",
+    "current_plan_lookup": "CURRENT_RELEASE_ROOT_ONLY",
+    "prerelease_plan_lookup": "FORBIDDEN_AS_EXECUTION_AUTHORITY",
+    "policy_review_head_role": "HISTORICAL_REVIEW_BASELINE_ONLY_REVERIFY_LATEST_HEAD_BEFORE_ANY_REGISTRATION"
   },
   "comparison": {
     "policy_count": 6,
@@ -120,38 +124,18 @@
       }
     ]
   },
-  "resolution": {
-    "action": "REVALIDATION_ALREADY_APPLIED_ONLY_WITHIN_EXISTING_P0_P1_CANDIDATE_SCOPE",
-    "candidate_inventory_source_revision": "SET_TO_REVIEWED_POLICY_HEAD",
-    "preserve_41_bindings": true,
-    "preserve_candidate_operations_schemas_and_vectors": true,
-    "retain_freshness_and_fail_closed_verification": true,
-    "activate_runtime": false,
-    "change_plan_authority": false,
-    "record_changing_policy_semantics": "OUT_OF_SCOPE_P0_P1_WITH_NO_REUSE_RETENTION_OR_CLEANUP_PERMISSION",
-    "future_p2_p5_handoff": "OUTSIDE_THIS_PLAN_REQUIRES_SEPARATE_CURRENT_POLICY_IMPACT_AND_AUTHORITY_VERIFICATION",
-    "applied_candidate_revision_commit": "554c1e87a0751dd287ec35ed363a74bfad803eba"
-  },
-  "obligations": [
-    "VERIFY_CURRENT_HEAD_AND_EXACT_REGISTERED_POLICY_PATH_STATUS",
-    "RECOMPUTE_EACH_POLICY_CANONICAL_JSON_SHA256_FROM_REGISTERED_SOURCE",
-    "ASSERT_ALL_41_JSON_POINTER_EXPECTATIONS_STILL_EQUAL_CURRENT_POLICY",
-    "DISTINGUISH_STRUCTURE_ONLY_DELTAS_FROM_TYPE_RETENTION_POLICY_DELTAS",
-    "ASSERT_REUSABLE_TYPE_DELEGATION_OR_WORKING_RELEASE_NEVER_GRANTS_CONTEXT_EVIDENCE_ID_REUSE_CLEANUP_OR_WRITE_AUTHORITY",
-    "UPDATE_ONLY_INVENTORY_SOURCE_REVISION_AND_SIX_POLICY_REVISION_MAP_ENTRIES",
-    "PRESERVE_STATUS_CANDIDATE_AND_RUNTIME_ACTIVATION_FORBIDDEN",
-    "PRESERVE_NO_IDENTITY_ASSIGNMENT_AND_NO_MUTATION_FROM_CANDIDATE_VERIFICATION",
-    "KEEP_NEW_POLICY_DELTA_OUTSIDE_P0_P1_AS_RECORDED_IMPACT_NOT_SILENTLY_INHERITED",
-    "VERIFY_GO_READ_ONLY_CANDIDATE_AND_EXISTING_FAIL_CLOSED_NEGATIVE_VECTORS",
-    "RUN_EXISTING_REQUIRED_AUTOMATED_TESTS_WITHOUT_WAIVERS"
-  ],
   "block_conditions": [
     "ANY_POLICY_ID_PATH_STATUS_OR_SOURCE_REVISION_CHANGED",
     "ANY_OF_41_BINDING_VALUES_CHANGED",
     "P0_P1_OPERATION_CLASS_OR_READ_ONLY_EFFECT_CHANGED",
     "UNKNOWN_OR_AMBIGUOUS_RETENTION_OR_RECORD_PROVENANCE_IMPACT",
     "NEW_NORMATIVE_DECISION_REQUIRED",
-    "ANY_RUNTIME_OR_IMPLEMENTATION_PERMISSION_EXPANSION"
+    "ANY_RUNTIME_OR_IMPLEMENTATION_PERMISSION_EXPANSION",
+    "CANDIDATE_SCHEMA_INVENTORY_CONST_MISMATCH",
+    "RELEASE_PARENT_NOT_REGISTERED_OR_NOT_APPROVED",
+    "MISSING_EXPLICIT_CURRENT_RELEASE_PLAN_APPROVAL",
+    "LEGACY_PLAN_REF_USED_AS_RELEASE_EXECUTION_AUTHORITY",
+    "MANDATORY_CHECK_FAILED_OR_STALE"
   ],
   "policy_and_execution_boundaries": {
     "policy_mutation": "FORBIDDEN",
@@ -162,8 +146,8 @@
     "workflow_mutation": "FORBIDDEN",
     "new_implementation_permission_from_this_draft_plan": false,
     "existing_p0_p1_candidate_runtime_state": "CANDIDATE_ONLY_NO_MUTATION",
-    "last_result": "REVALIDATION_PLAN_ONLY_NOT_RUNTIME_AUTHORITY",
-    "plan_index_mutation": "NOT_AUTHORIZED_BY_THIS_DRAFT",
+    "last_result": "REFERENCE_REFRESH_APPLIED_VALIDATION_AND_RELEASE_AUTHORITY_PENDING",
+    "plan_index_mutation": "FORBIDDEN_BEFORE_EXPLICIT_APPROVAL",
     "plan_schema_mutation": "NOT_REQUIRED",
     "prerelease_plan_mutation": "FORBIDDEN"
   },
@@ -171,13 +155,117 @@
     "branch": "dev/0.3.8",
     "release_plan_root": "developer/planning/0.3.8",
     "release_entrypoint": "developer/planning/0.3.8/index.yaml",
-    "entrypoint_status_at_review": "DRAFT",
-    "parent_release_work_unit": "WU-01",
-    "parent_release_work_unit_status_at_review": "NOT_CREATED",
-    "plan_admission": "PENDING_EXPLICIT_CURRENT_RELEASE_PLAN_REGISTRATION",
-    "release_plan_schema_mutation": "NOT_REQUIRED",
-    "policy_evidence_lookup": "DIRECT_REGISTERED_POLICY_SOURCE_AND_CANONICAL_FINGERPRINT_ONLY",
-    "dependent_plan_lookup": "NONE_FOR_THIS_STANDALONE_REVALIDATION",
-    "release_plan_registration": "NOT_REGISTERED"
+    "release_entrypoint_status": "DRAFT",
+    "registered_work_units_count": 0,
+    "current_gate": "UNASSIGNED",
+    "intended_parent_work_unit": "WU-01",
+    "parent_work_unit_registered": false,
+    "plan_admission": "REVIEW_ONLY_UNTIL_USER_APPROVAL_AND_VALID_PARENT_REGISTRATION",
+    "current_plan_lookup": "CURRENT_RELEASE_PLAN_CONTENT_ONLY",
+    "historical_plan_lookup": "NOT_REQUIRED_FOR_THIS_REVALIDATION",
+    "release_plan_registration": "NOT_REGISTERED",
+    "work_units_registration_requires_user_approved_work_unit": true,
+    "plan_schema_mutation": "NOT_REQUIRED_BY_THIS_PLAN_CORRECTION"
+  },
+  "completed_changes": {
+    "status": "APPLIED_EVIDENCE_NOT_OUTSTANDING_IMPLEMENTATION",
+    "candidate_revision_refresh": {
+      "state": "COMMITTED",
+      "commit": "554c1e87a0751dd287ec35ed363a74bfad803eba",
+      "contract_ref": "src/agent_contracts/contracts/context-evidence-identity.json",
+      "modified_fields": [
+        "inventory.source_revision",
+        "inventory.policy_revisions[6].source_blob_oid",
+        "inventory.policy_revisions[6].validation_fingerprint"
+      ],
+      "pinned_policy_review_revision": "e2368498d5d543e26c53216ee7d4248619746e43",
+      "six_policies_referenced_in_comparison": true,
+      "source_versions_match_candidate_inventory_at_this_review": true,
+      "registration_or_runtime_authority_granted": false
+    },
+    "binding_comparison": {
+      "state": "RECORDED_AT_REFERENCE_REFRESH",
+      "policy_pointer_count": 41,
+      "observed_mismatches": 0,
+      "evidence_requires_fresh_recheck": true
+    },
+    "policy_change_classification": {
+      "structure_only": [
+        "SFP-INFO-0007",
+        "SFP-CNTR-0006",
+        "SFP-ASSURE-0005"
+      ],
+      "provenance_semantic_key_migration": [
+        "SFP-RECORD-0001"
+      ],
+      "retention_policy_direction_addition": [
+        "SFP-INFO-0005",
+        "SFP-RECORD-0004"
+      ],
+      "preservation_of_existing_P0_P1_read_only_scope": "VERIFIED_BY_RECORDED_41_BINDINGS_NOT_NEW_RETENTION_OR_CLEANUP_PERMISSION"
+    }
+  },
+  "remaining_validation": {
+    "status": "OPEN_REQUIRED_BEFORE_REGISTRATION_OR_COMPLETION",
+    "verification_owner": "CURRENT_0_3_8_RELEASE_PLANNING",
+    "completed_reference_update_must_not_be_repeated": true,
+    "tasks": [
+      {
+        "id": "RV-01",
+        "responsibility": "FRESH_SOURCE_AND_BINDING_CONFORMANCE",
+        "state": "REVALIDATION_REQUIRED",
+        "action": "Recheck current branch HEAD, six current registered policy IDs, exact paths, policy statuses, source blobs, canonical SHA256, and all 41 JSON pointers against the current candidate without assuming snapshot HEAD is latest",
+        "pass_condition": "SIX_SOURCE_REFERENCES_MATCH_AND_41_BINDING_VALUES_MATCH_AND_NO_UNRESOLVED_POLICY_IMPACT",
+        "failure": "FAIL_CLOSED_BLOCK_REGISTRATION"
+      },
+      {
+        "id": "RV-02",
+        "responsibility": "CANDIDATE_SCHEMA_INVENTORY_CURRENTNESS",
+        "state": "KNOWN_FAILURE_UNRESOLVED",
+        "action": "Bring the candidate-context-evidence schema exact inventory snapshot into agreement with the already-updated candidate after confirming current policy provenance; do not loosen candidate authority or allow arbitrary inventory",
+        "evidence": {
+          "latest_observed_ci_run": "https://github.com/Kinirin/PTSIP/actions/runs/38126767444",
+          "failed_tests": [
+            "TestNativeContextEvidenceCandidate",
+            "TestContextEvidenceRepositoryScopePolicyConformance"
+          ],
+          "failure": "JSONSCHEMA_CONST_MISMATCH_AT_INVENTORY",
+          "candidate_ref": "src/agent_contracts/contracts/context-evidence-identity.json",
+          "schema_ref": "src/agent_contracts/schemas/candidate-context-evidence.schema.json"
+        },
+        "pass_condition": "CANDIDATE_SCHEMA_EXACT_CURRENT_INVENTORY_AND_GO_POSITIVE_NEGATIVE_CONFORMANCE_PASS",
+        "failure": "FAIL_CLOSED_BLOCK_REGISTRATION"
+      },
+      {
+        "id": "RV-03",
+        "responsibility": "CURRENT_RELEASE_AUTHORITY_AND_PARENT_REGISTRATION",
+        "state": "BLOCKED_UNAPPROVED_PARENT",
+        "action": "Review and approve the current release plan and WU-01 under current 0.3.8 control-plane policy, then register a valid work unit with explicit user approval evidence before considering WU-01-P01 admission; do not inherit approvals from previous prerelease plans",
+        "pass_condition": "CURRENT_RELEASE_APPROVAL_SOURCE_AND_REGISTERED_APPROVED_PARENT_AND_VALID_WORK_UNIT_SCHEMA",
+        "failure": "REVIEW_ONLY_NOT_EXECUTABLE"
+      },
+      {
+        "id": "RV-04",
+        "responsibility": "CANDIDATE_PLAN_REFERENCE_AUTHORITY_SEPARATION",
+        "state": "UNRESOLVED_LEGACY_BINDING",
+        "action": "Independently verify the candidate plan_ref authority and its schema exact binding; any replacement with current-release authority requires a matching explicitly approved current-release plan and legitimate binding mutation, not a path substitution",
+        "evidence": {
+          "candidate_plan_ref_at_review": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
+          "candidate_schema_plan_ref_at_review": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
+          "current_release_plan_ref": "developer/planning/0.3.8/WU-01-P01.yaml"
+        },
+        "pass_condition": "NO_UNAPPROVED_PRERELEASE_APPROVAL_INHERITANCE_AND_ANY_REBIND_APPROVED_AND_MACHINE_VERIFIED",
+        "failure": "KEEP_ORIGINAL_CANDIDATE_PROTECTED_BLOCK_RELEASE_AUTHORITY_CLAIM"
+      },
+      {
+        "id": "RV-05",
+        "responsibility": "MANDATORY_TESTS_AND_RECORD_PROTECTION",
+        "state": "VALIDATION_REQUIRED",
+        "action": "Run repository-required native Go Context/Evidence positive and fail-closed negative vectors, planning/index validity, policy schema/registry checks, and required GitHub Actions without skipping or weakening verification",
+        "pass_condition": "ALL_APPLICABLE_REQUIRED_CHECKS_PASS_WITH_SOURCE_BOUND_EVIDENCE",
+        "failure": "NO_COMPLETE_OR_RUNTIME_PROMOTION"
+      }
+    ],
+    "required_release_approval_and_implementation_remain_separate": true
   }
 }
