@@ -214,15 +214,33 @@ func TestReleaseDraftDoesNotInheritPrereleaseAuthorization(t *testing.T) {
 	repo := prereleaseFixture(t)
 	plan := readPlanning(t, repo, "developer/planning/0.3.8/index.yaml")
 	units := plan["work_units"].([]any)
-	if len(units) != 1 {
-		t.Fatalf("expected single uncreated work unit, got %d", len(units))
+	if len(units) != 0 {
+		t.Fatalf("unapproved release work units must not be registered, got %d", len(units))
 	}
-	unit := units[0].(object)
-	if plan["plan"].(object)["status"] != "DRAFT" || unit["path"] != nil ||
-		unit["lifecycle"].(object)["status"] != "NOT_CREATED" ||
-		unit["approval"].(object)["status"] != "PENDING" ||
-		unit["implementation_authorization"].(object)["status"] != "NOT_AUTHORIZED" {
-		t.Fatal("new release plan must not inherit prerelease authority")
+	if plan["plan"].(object)["status"] != "DRAFT" || plan["plan"].(object)["current_gate"] != "UNASSIGNED" {
+		t.Fatal("unapproved release must keep a non-executable unassigned gate")
+	}
+	review := readPlanning(t, repo, "developer/planning/0.3.8/WU-01-P01.yaml")
+	if review["approval"].(object)["status"] != "PENDING" ||
+		review["implementation_authorization"].(object)["status"] != "NOT_AUTHORIZED" {
+		t.Fatal("review-only release plan must not inherit prerelease approval or execution authority")
+	}
+}
+
+func TestUnapprovedReleaseWorkUnitRegistryPlaceholderIsRejected(t *testing.T) {
+	repo := prereleaseFixture(t)
+	planRef := "developer/planning/0.3.8/index.yaml"
+	plan := readPlanning(t, repo, planRef)
+	plan["work_units"] = []any{object{
+		"id": "WU-01",
+		"lifecycle": object{"status": "NOT_CREATED"},
+		"approval": object{"status": "PENDING", "inherited_from": []any{}},
+		"implementation_authorization": object{"status": "NOT_AUTHORIZED"},
+		"depends_on": []any{},
+	}}
+	testrepo.Write(t, repo.Repository, planRef, plan)
+	if failures := planning.ValidatePlanning(repo); len(failures) == 0 {
+		t.Fatal("unapproved work unit registry placeholder must not be accepted")
 	}
 }
 
