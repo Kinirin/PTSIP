@@ -56,7 +56,14 @@
       "authorized_cleanup_operation_class_set": "UNRESOLVED_SEPARATE_USER_POLICY_DECISION",
       "unauthorized_unapproved_or_unknown_operation_class": "FAIL_CLOSED",
       "approved_operation_class_does_not_grant_cleanup_execution_or_write_authority": true,
-      "physical_deletion_still_requires_specific_separate_consumer_delegation": true
+      "physical_deletion_still_requires_specific_separate_consumer_delegation": true,
+      "initial_cleanup_operation_class_scope_choice": "A_USER_EXPLICIT",
+      "initial_cleanup_operation_class_scope_decided_at": "2026-10-11",
+      "initial_cleanup_operation_class_scope": "NON_PHYSICAL_DELETION_ONLY_PRESERVE_ORIGINAL_RECORDS_AND_MANDATORY_EVIDENCE",
+      "initial_cleanup_operation_physical_deletion_class_policy": "SEPARATE_PTSIP_OWNER_POLICY_APPROVAL_REQUIRED",
+      "initial_cleanup_operation_class_identity_set": "UNRESOLVED_SEPARATE_USER_POLICY_DECISION",
+      "initial_cleanup_operation_class_scope_is_class_approval": false,
+      "initial_cleanup_operation_scope_does_not_grant_cleanup_write_or_execution_authority": true
     },
     "unit_consumer_analysis_invariants": {
       "project_must_explicitly_delegate_cleanup_scope": true,
@@ -93,7 +100,18 @@
       "physical_deletion_remains_separately_delegated_per_operation_kind_and_scope": true,
       "approved_operation_class_does_not_grant_cleanup_execution_retry_write_or_physical_deletion": true,
       "existing_ctrl_real_fresh_operation_authority_and_record_retention_still_gate_cleanup": true,
-      "class_authority_policy_does_not_activate_draft_runtime": true
+      "class_authority_policy_does_not_activate_draft_runtime": true,
+      "initial_cleanup_operation_class_cannot_have_physical_deletion_effect": true,
+      "initial_cleanup_classes_must_preserve_original_records_mandatory_evidence_and_provenance": true,
+      "first_allowed_cleanup_classes_require_separate_explicit_ptsip_owner_policy_identity_set_approval": true,
+      "physical_deletion_cleanup_class_requires_new_separate_ptsip_owner_policy_approval": true,
+      "physical_deletion_class_must_not_be_inferred_from_existing_consumer_delegation": true,
+      "non_deleting_cleanup_scope_does_not_automatically_qualify_any_operation_class": true,
+      "undeclared_or_unknown_operation_side_effect_classification": "FAIL_CLOSED_NO_CLEANUP",
+      "cleanup_operation_class_selection_requires_machine_verified_non_destructive_effect_scope": true,
+      "class_scope_does_not_downgrade_mandatory_retention_release_or_fresh_ctrl_real_authority_gates": true,
+      "class_scope_never_grants_mutation_operation_or_retry_authority": true,
+      "initial_class_scope_policy_remains_draft_and_non_operative": true
     },
     "unit_consumer_analysis_unresolved_decisions": [
       "AUTHORIZED_CLEANUP_OPERATION_CLASS_SET",
@@ -117,7 +135,9 @@
       "cleanup_execution_recovery_and_authority": "CURRENT_EFFECTIVE_CTRL_REAL_AND_RECORD_CONTRACTS",
       "machine_registry_and_schema": "PLAN_ONLY_AFTER_POLICY_CLASS_APPROVAL",
       "implementation": "NOT_AUTHORIZED",
-      "active_transition": "NOT_AUTHORIZED"
+      "active_transition": "NOT_AUTHORIZED",
+      "initial_class_scope_policy_ref": "AUTHORIZED_CLEANUP_OPERATION_CLASS_INITIAL_SCOPE",
+      "initial_approved_class_set": "UNRESOLVED_NO_APPROVED_CLASS_IDENTITIES"
     },
     "unit_consumer_analysis_resolved_decisions": [
       {
@@ -135,8 +155,46 @@
         "registered_class_not_execution_write_or_deletion_authority": true,
         "implementation": "NOT_AUTHORIZED",
         "active_transition": "NOT_AUTHORIZED"
+      },
+      {
+        "id": "AUTHORIZED_CLEANUP_OPERATION_CLASS_INITIAL_SCOPE",
+        "selected_option": "A_NON_DELETING_INITIAL_OPERATION_CLASS_SCOPE",
+        "approval_source": "USER_EXPLICIT",
+        "decision_date": "2026-10-11",
+        "resolution_scope": "INITIAL_ALLOWABLE_OPERATION_CLASS_DIRECTION_ONLY_NOT_CLASS_IDENTITIES",
+        "initial_allowable_scope": "NON_PHYSICAL_DELETION_CLEANUP_PRESERVING_ORIGINAL_AND_MANDATORY_EVIDENCE",
+        "physical_deletion_class": "SEPARATE_OWNER_POLICY_APPROVAL_REQUIRED",
+        "first_class_identifiers_and_list": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
+        "previously_approved_ptsip_only_class_authority": "PRESERVED",
+        "existing_consumer_delegation_and_fresh_ctrl_real_gates": "PRESERVED",
+        "record_retention_and_provenance": "PRESERVED",
+        "implementation": "NOT_AUTHORIZED",
+        "activation": "NOT_AUTHORIZED"
       }
-    ]
+    ],
+    "unit_consumer_analysis_cleanup_initial_class_scope_direction": {
+      "policy_subject": "AUTHORIZED_CLEANUP_OPERATION_CLASS_INITIAL_SCOPE",
+      "selected_option": "A_INITIAL_NON_DELETING_CLEANUP_CLASSES_ONLY",
+      "approval_source": "USER_EXPLICIT",
+      "decision_date": "2026-10-11",
+      "initial_class_scope": "NO_PHYSICAL_DELETION_OPERATION_CLASSES",
+      "mandatory_preservation": [
+        "ORIGINAL_ANALYSIS_RECORDS",
+        "MANDATORY_RECORD_EVIDENCE",
+        "RECEIPTS_AND_SOURCE_PROVENANCE"
+      ],
+      "future_physical_deletion_class": "REQUIRES_SEPARATE_PTSIP_OWNER_POLICY_APPROVAL_BEFORE_CLASS_ELIGIBLE",
+      "class_identities_and_initial_approved_class_set": "UNRESOLVED_SEPARATE_POLICY_DECISION",
+      "applicability": "INITIAL_PTSIP_OWNER_APPROVED_CLEANUP_OPERATION_CLASSES_ONLY",
+      "no_automatic_class_approval": true,
+      "undeclared_unknown_or_unverifiable_effect": "FAIL_CLOSED",
+      "consumer_cleanup_delegation": "EXPLICIT_PER_APPROVED_CLASS_AND_REQUESTED_OPERATION_SCOPE",
+      "runtime_authority": "EXISTING_FRESH_CTRL_REAL_GATES_SEPARATE_AND_REQUIRED",
+      "later_physical_deletion_if_policy_approved": "STILL_REQUIRES_SEPARATE_EXPLICIT_CONSUMER_OPERATION_SPECIFIC_DELETION_DELEGATION",
+      "protected_record_retention": "UNCHANGED_PRECEDENCE",
+      "actual_filesystem_operation": "NOT_AUTHORIZED",
+      "active_transition": "NOT_AUTHORIZED"
+    }
   },
   "relations": {
     "supersedes": [],
