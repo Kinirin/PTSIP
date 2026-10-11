@@ -14,7 +14,18 @@ plan:
   classification: CORE
   status: DRAFT
   control_plane: developer/planning/0.3.8/index.yaml
-  current_gate: UNASSIGNED
+  current_gate: WU-01
 
-# Review-only plans are outside work_units until explicitly approved and registered.
-work_units: []
+# Only user-approved WU-01 is registered; unapproved review extensions remain outside execution.
+work_units:
+  - id: WU-01
+    path: developer/planning/0.3.8/WU-01/WU-01.yaml
+    lifecycle:
+      status: BLOCKED
+    approval:
+      status: APPROVED
+      inherited_from: []
+      approval_source: USER_EXPLICIT
+    implementation_authorization:
+      status: NOT_AUTHORIZED
+    depends_on: []
