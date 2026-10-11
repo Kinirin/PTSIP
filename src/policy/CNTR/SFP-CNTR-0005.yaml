@@ -195,6 +195,22 @@
           "active_assure_conformance": "UNCHANGED",
           "implementation": "NOT_AUTHORIZED",
           "engine_activation": "NOT_AUTHORIZED"
+        },
+        "official_rust_engine_implementation_isolation": {
+          "decision": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source": "SFP-ARCH-0004#PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
+          "scope": "SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY",
+          "cross_engine_source_crate_compiled_runtime_management_sharing": "FORBIDDEN",
+          "per_engine_optional_management_implementation": "INDEPENDENT_SELF_OWNED",
+          "common_engine_identity_and_interoperability_contract": "PRESERVED_LANGUAGE_NEUTRAL_NON_IMPLEMENTATION_SHARING",
+          "version_dependency_build_distribution_patch": "PER_ENGINE_INDEPENDENT",
+          "declared_contract_dependencies": "ALLOWED_AND_MACHINE_VERIFIED",
+          "engine_to_engine_rust_runtime_dependency": "FORBIDDEN",
+          "consumer_external_engine_implementation_rules": "UNCHANGED",
+          "exact_machine_owner_bindings_and_entrypoint_shapes": "REMAIN_UNRESOLVED",
+          "activation_and_implementation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -362,7 +378,10 @@
         "old_vpms_module_structure_does_not_force_new_rust_validation_capability_shape": true,
         "legacy_vpms_contract_mapping_requires_explicit_identity_version_evidence_and_compatibility": true,
         "unresolved_legacy_to_rust_mapping_cannot_authorize_public_api_handoff": true,
-        "generic_validation_is_not_automatically_equivalent_to_vpms_case_protocol_selection_or_composition": true
+        "generic_validation_is_not_automatically_equivalent_to_vpms_case_protocol_selection_or_composition": true,
+        "seven_official_rust_engines_have_no_shared_internal_rust_implementation_or_management_runtime": true,
+        "cross_engine_capability_contract_dependency_does_not_allow_importing_other_engine_rust_code": true,
+        "language_neutral_interoperability_contract_is_not_shared_rust_runtime": true
       },
       "unresolved_decisions": [
         {
@@ -698,6 +717,17 @@
           "detailed_contract_design": "REMAINING_UNRESOLVED",
           "legacy_public_contract": "ACTIVE_UNCHANGED",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "OFFICIAL_RUST_ENGINE_IMPLEMENTATION_SHARING_ISOLATION",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source_policy": "SFP-ARCH-0004#PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
+          "cross_engine_implementation": "FORBIDDEN",
+          "existing_active_policy": "UNCHANGED",
+          "exact_contract_shape": "UNRESOLVED",
+          "draft_only": true
         }
       ],
       "dependent_plans": [
