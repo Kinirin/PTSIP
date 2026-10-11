@@ -123,7 +123,7 @@
   "stages": [
     {
       "id": "P0_BASELINE_AUTHORITY_AND_GATES",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "VERIFIED_APPROVED_SCOPE",
       "depends_on": [],
       "action_ids": [
         "VERIFY_ACTIVE_POLICY_CONTRACT_AND_INDEX_BASELINE",
@@ -135,11 +135,12 @@
         "BASELINE_MACHINE_VERIFIED",
         "NO_SILENT_POLICY_CONFLICT_RESOLUTION",
         "REGISTRY_CI_EXTERNALLY_TRACKED_ONLY"
-      ]
+      ],
+      "verification_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.verification"
     },
     {
       "id": "P1_COMMON_CONTRACT_FOUNDATION",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "VERIFIED_APPROVED_SCOPE",
       "depends_on": [
         "P0_BASELINE_AUTHORITY_AND_GATES"
       ],
@@ -154,11 +155,12 @@
       "exit_checks": [
         "COMMON_IDENTITY_CAPABILITY_REGISTRY_BINDING_TRANSPORT_SCHEMAS_AND_TESTS_PASS",
         "ACTIVE_0_3_8_CLI_SCOPE_UNCHANGED"
-      ]
+      ],
+      "verification_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.verification"
     },
     {
       "id": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "VERIFIED_APPROVED_SCOPE",
       "depends_on": [
         "P1_COMMON_CONTRACT_FOUNDATION"
       ],
@@ -174,11 +176,12 @@
       "exit_checks": [
         "RESOURCE_STOP_STORAGE_CONTEXT_VALIDATION_VPMS_CONTRACTS_MACHINE_VERIFIED",
         "LEGACY_PUBLIC_AND_ASSURE_AUTHORITIES_UNCHANGED"
-      ]
+      ],
+      "verification_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.verification"
     },
     {
       "id": "P3_OWNERSHIP_AND_PLANS",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "VERIFIED_APPROVED_SCOPE",
       "depends_on": [
         "P2_DOMAIN_AND_EFFECT_CONTRACTS"
       ],
@@ -191,11 +194,12 @@
         "SEVEN_ENGINE_CAPABILITY_OWNER_MAP_VALID",
         "INSTALLATION_COMPATIBILITY_PLAN_MACHINE_VALID",
         "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN_VALID"
-      ]
+      ],
+      "verification_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.verification"
     },
     {
       "id": "P4_FULL_VALIDATION_AND_RECONCILIATION",
-      "status": "NOT_STARTED",
+      "status": "PARTIALLY_VERIFIED_RUNTIME_AND_CUTOVER_ACCEPTANCE_PENDING",
       "depends_on": [
         "P3_OWNERSHIP_AND_PLANS"
       ],
@@ -211,7 +215,8 @@
       ],
       "external_dependencies": [
         "REGISTRY_CI_REMEDIATION_EVIDENCE_FROM_SEPARATE_CONVERSATION"
-      ]
+      ],
+      "approved_scope_result": "PASS_FULL_CI_CURRENT_CONTRACT_VERIFICATION_AND_PRESERVED_PUBLIC_API_REGRESSION"
     },
     {
       "id": "P5_SEPARATE_ACTIVE_APPROVAL_AND_PROMOTION",
@@ -235,7 +240,7 @@
     {
       "id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "B_INDEPENDENT_FULL_CAPABILITY_OPERATION_CONTRACTS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -248,12 +253,19 @@
         "NO_CROSS_CAPABILITY_NORMATIVE_INFERENCE",
         "TYPED_IO_PRE_POST_PERMISSION_SIDE_EFFECT_FAILURE_EVIDENCE_COMPATIBILITY_VALID"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -266,12 +278,19 @@
         "DERIVED_DISCOVERY_INDEX_NONAUTHORITATIVE",
         "STALE_UNKNOWN_AMBIGUOUS_BINDING_FAILS_CLOSED"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_REGISTERED_NORMATIVE_CONTRACT_SEPARATE_FROM_NONAUTHORITATIVE_DERIVED_STATE",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -285,12 +304,19 @@
         "CURRENT_EXACT_REUSE_PROOF_AND_FAIL_CLOSED_INELIGIBILITY",
         "EXISTING_DEFERRED_RUNTIME_PRESERVED"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP",
       "kind": "PLAN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_ENVIRONMENT_AWARE_HYBRID_BUNDLE_OR_INDEPENDENT_PACKAGE_INSTALLATION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -306,12 +332,19 @@
         "INDEPENDENT_ENGINE_VERSION_BUILD_PATCH_BOUNDARIES",
         "NO_SILENT_EXTERNAL_AUTO_INSTALL_OR_EXECUTION"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP",
       "kind": "RESPONSIBILITY_ANALYSIS",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "B_CAPABILITY_CENTRIC_CANONICAL_OWNER_AND_PROVIDING_ENGINE_MAP",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -328,12 +361,19 @@
         "ACTIVE_AUTHORITY_HANDOFF_ONLY_WITH_SEPARATE_APPROVAL",
         "RUST_IMPL_SOURCE_AND_CROSS_ENGINE_ISOLATION_MACHINE_VERIFIED"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "RECONCILE_COMMON_SEMANTIC_CONTRACT_INDEPENDENT_TRANSPORT_BINDINGS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -347,12 +387,19 @@
         "INDEPENDENT_ADAPTER_BINDING_MACHINE_RESOLVABLE",
         "ACTIVE_0_3_8_CLI_ONLY_BOUNDARY_UNCHANGED"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "B_SEPARATE_ATTEMPT_RESULT_AND_WORK_EFFECT_EVIDENCE_CONTRACTS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -365,12 +412,19 @@
         "INDEPENDENT_EFFECT_EVIDENCE_REFERENCES_VERSIONED",
         "UNKNOWN_EFFECT_NOT_TREATED_AS_NO_EFFECT"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "REVOCATION_STOP_RESULT_INTERFACE",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_SEPARATE_STOP_REQUEST_ACK_FINAL_STOP_RESULT_AND_WORK_EFFECT_EVIDENCE",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -384,12 +438,19 @@
         "ACK_NOT_PROOF_OF_STOP",
         "STOP_NOT_PROOF_OF_ORIGINAL_SUCCESS_OR_REVERSED_EFFECT"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "B_EXPLICIT_STORAGE_ENGINE_MEDIATION_FOR_REGISTERED_STORAGE_CAPABILITY_OPERATIONS",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -404,12 +465,19 @@
         "NO_GLOBAL_FILE_IO_INTERCEPTION",
         "EXISTING_WRITE_AND_READ_AUTHORITY_UNCHANGED"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_CONSUMER_SCOPED_VERSIONED_CONTEXT_TO_PROJECTION_PUBLIC_CONTRACT_TRANSITION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -424,12 +492,19 @@
         "CONSUMER_VERSION_BOUND_CUTOVER_GATE_SEPARATELY_AUTHORIZED",
         "LEGACY_CONTEXT_PUBLIC_CONTRACT_UNCHANGED_BEFORE_CUTOVER"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_VERSIONED_MACHINE_VERIFIABLE_VPMS_TO_RUST_VALIDATION_CAPABILITY_RELATION_GRAPH",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -444,12 +519,19 @@
         "LEGACY_PYTHON_IMPLEMENTATION_REUSE_FORBIDDEN",
         "PUBLIC_API_RETIREMENT_NOT_PERFORMED"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_INDEPENDENT_GENERIC_VALIDATION_CAPABILITIES_WITH_EXPLICIT_OPTIONAL_COMPOSITION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -462,12 +544,19 @@
         "COMPOSITION_OPTIONAL_TYPED_AND_MACHINE_VERIFIED",
         "ASSURE_NORMATIVE_CONFORMANCE_AUTHORITY_UNCHANGED"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
       "kind": "PLAN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_CONTRACT_CALLER_VERIFICATION_RESPONSIBILITY_TEST_MODE_SCOPED_TRANSITION",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -483,12 +572,19 @@
         "PUBLIC_API_BEHAVIOR_PARITY_AND_PACKAGING_PROVEN",
         "LEGACY_API_RETIREMENT_PENDING_SEPARATE_OWNER_APPROVAL"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -499,12 +595,19 @@
         "VERSIONED_ENGINE_EXTENSIONS_INDEPENDENT",
         "DERIVED_SNAPSHOT_PROVEN_NONAUTHORITATIVE_AND_FRESH"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_EVIDENCE_LINKED_DEPENDENCY_GRAPH_COMPATIBILITY_AND_VERIFICATION_ELIGIBILITY",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -520,12 +623,19 @@
         "UNVERIFIED_NOT_MISCLASSIFIED_UNAFFECTED",
         "VERIFICATION_QUALIFICATION_NOT_EXECUTION_AUTHORIZATION"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     },
     {
       "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
       "kind": "CONTRACT_DESIGN",
-      "status": "IMPLEMENTED_VALIDATION_PENDING",
+      "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
       "selected_policy_direction": "C_FEDERATED_STATIC_REGISTRATION_AND_SEPARATE_EXECUTION_BINDING_REGISTRIES",
       "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
       "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -541,7 +651,14 @@
         "STATIC_ONLY_ENGINE_NO_EXECUTION_ENTRY",
         "REGISTRATION_NOT_EXECUTION_OR_WRITE_PERMISSION"
       ],
-      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT"
+      "completion_evidence": "WU_02_COMMIT_BOUND_IMPLEMENTATION_VERIFICATION_CHECKPOINT",
+      "approved_scope_verification": {
+        "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+        "run_id": 38168943031,
+        "result": "PASS",
+        "scope": "PRESERVED_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS",
+        "full_runtime_acceptance": "NOT_CLAIMED"
+      }
     }
   ],
   "integration_rules": {
@@ -581,20 +698,27 @@
     "on_failure": "BLOCK_AFFECTED_IMPLEMENTATION_AND_RUNTIME_NO_UNVERIFIED_COMPLETION"
   },
   "completion": {
-    "status": "IMPLEMENTED_VALIDATION_PENDING",
+    "status": "APPROVED_SCOPE_VERIFIED_ORIGINAL_RUNTIME_ACCEPTANCE_PENDING",
     "completed_items": 0,
     "total_items": 16,
     "active_promotion_eligibility": "EXPLICIT_USER_APPROVAL_RECORDED_NOT_RUNTIME_ELIGIBILITY",
-    "implementation_scope": "CONTRACT_VERIFICATION_AND_PLANS_NOT_PUBLIC_API_CUTOVER_OR_INSTALLATION_EXECUTION"
+    "implementation_scope": "CONTRACT_VERIFICATION_AND_PLANS_NOT_PUBLIC_API_CUTOVER_OR_INSTALLATION_EXECUTION",
+    "approved_scope_verified_items": 16,
+    "completed_items_semantics": "FULL_ORIGINAL_ACCEPTANCE_INCLUDING_UNPERFORMED_RUNTIME_INTEGRATION"
   },
   "execution_checkpoint_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.implementation_checkpoint",
   "verification_checkpoint": {
-    "status": "PASS_FOUNDATION_ONLY",
-    "source_sha": "be3e1bc8ad5491a92cf04680b01452c0e7563676",
-    "run_id": 38157748296,
+    "status": "PASS_APPROVED_CONTRACT_VERIFICATION_AND_TRANSITION_PLAN_SCOPE",
+    "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+    "run_id": 38168943031,
     "required_check_count": 57,
     "runtime_or_public_api_cutover": "NOT_PERFORMED",
     "completion_owner": "developer/planning/0.3.8/WU-02/WU-02.yaml",
-    "unverified_remaining_contract_acceptance": "KEEP_VISIBLE_NOT_AUTOMATICALLY_COMPLETE"
+    "unverified_remaining_contract_acceptance": "KEEP_VISIBLE_NOT_AUTOMATICALLY_COMPLETE",
+    "job_count_including_resolve_and_coverage": 59,
+    "failed_job_count": 0,
+    "skipped_job_count": 0,
+    "public_api_regression": "PASS_PRESERVED_EXISTING_API",
+    "new_validation_runtime_equivalence": "NOT_ASSERTED"
   }
 }

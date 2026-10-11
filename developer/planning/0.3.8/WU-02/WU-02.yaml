@@ -35,7 +35,7 @@
       {
         "id": "ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "B_INDEPENDENT_FULL_CAPABILITY_OPERATION_CONTRACTS",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -51,15 +51,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_CAPABILITY_OPERATION_CONTRACT_SHAPES"
       },
       {
         "id": "REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -75,15 +78,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#REGISTRY_AND_NAMESPACE_SOURCE_BINDING",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#REGISTRY_AND_NAMESPACE_SOURCE_BINDING"
       },
       {
         "id": "ENGINE_REGISTRATION_AND_STATE_SCHEMA",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_REGISTERED_NORMATIVE_CONTRACT_SEPARATE_FROM_NONAUTHORITATIVE_DERIVED_STATE",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -100,15 +106,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_REGISTRATION_AND_STATE_SCHEMA",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_REGISTRATION_AND_STATE_SCHEMA"
       },
       {
         "id": "OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP",
         "kind": "PLAN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_ENVIRONMENT_AWARE_HYBRID_BUNDLE_OR_INDEPENDENT_PACKAGE_INSTALLATION",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -127,15 +136,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#OFFICIAL_PACKAGE_INSTALLATION_COMPATIBILITY_MAP"
       },
       {
         "id": "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP",
         "kind": "RESPONSIBILITY_ANALYSIS",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "B_CAPABILITY_CENTRIC_CANONICAL_OWNER_AND_PROVIDING_ENGINE_MAP",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -155,15 +167,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP"
       },
       {
         "id": "COMMON_ENGINE_TRANSPORT_CONTRACT",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "RECONCILE_COMMON_SEMANTIC_CONTRACT_INDEPENDENT_TRANSPORT_BINDINGS",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -180,15 +195,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#COMMON_ENGINE_TRANSPORT_CONTRACT",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#COMMON_ENGINE_TRANSPORT_CONTRACT"
       },
       {
         "id": "RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "B_SEPARATE_ATTEMPT_RESULT_AND_WORK_EFFECT_EVIDENCE_CONTRACTS",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -204,15 +222,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#RESOURCE_EXHAUSTION_RESULT_SCHEMA_AND_EFFECT_TAXONOMY"
       },
       {
         "id": "REVOCATION_STOP_RESULT_INTERFACE",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_SEPARATE_STOP_REQUEST_ACK_FINAL_STOP_RESULT_AND_WORK_EFFECT_EVIDENCE",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -229,15 +250,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#REVOCATION_STOP_RESULT_INTERFACE",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#REVOCATION_STOP_RESULT_INTERFACE"
       },
       {
         "id": "STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "B_EXPLICIT_STORAGE_ENGINE_MEDIATION_FOR_REGISTERED_STORAGE_CAPABILITY_OPERATIONS",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -255,15 +279,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#STORAGE_CAPABILITY_PROVIDER_AND_OPERATION_CONTRACT_MAP"
       },
       {
         "id": "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_CONSUMER_SCOPED_VERSIONED_CONTEXT_TO_PROJECTION_PUBLIC_CONTRACT_TRANSITION",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -281,15 +308,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF"
       },
       {
         "id": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_VERSIONED_MACHINE_VERIFIABLE_VPMS_TO_RUST_VALIDATION_CAPABILITY_RELATION_GRAPH",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -307,15 +337,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE"
       },
       {
         "id": "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_INDEPENDENT_GENERIC_VALIDATION_CAPABILITIES_WITH_EXPLICIT_OPTIONAL_COMPOSITION",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -331,15 +364,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT"
       },
       {
         "id": "VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
         "kind": "PLAN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_CONTRACT_CALLER_VERIFICATION_RESPONSIBILITY_TEST_MODE_SCOPED_TRANSITION",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P3_OWNERSHIP_AND_PLANS",
@@ -358,15 +394,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN"
       },
       {
         "id": "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -380,15 +419,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE"
       },
       {
         "id": "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_EVIDENCE_LINKED_DEPENDENCY_GRAPH_COMPATIBILITY_AND_VERIFICATION_ELIGIBILITY",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P2_DOMAIN_AND_EFFECT_CONTRACTS",
@@ -407,15 +449,18 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE"
       },
       {
         "id": "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
         "kind": "CONTRACT_DESIGN",
-        "status": "IMPLEMENTED_VALIDATION_PENDING",
+        "status": "IMPLEMENTED_VERIFIED_APPROVED_SCOPE",
         "selected_policy_direction": "C_FEDERATED_STATIC_REGISTRATION_AND_SEPARATE_EXECUTION_BINDING_REGISTRIES",
         "owner_authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
         "stage": "P1_COMMON_CONTRACT_FOUNDATION",
@@ -434,8 +479,11 @@
         "completion_evidence": {
           "implementation_contract_routes": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE",
           "local_native_verification": "PASS",
-          "remote_exact_sha_verification": "PENDING",
-          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API"
+          "remote_exact_sha_verification": "PASS",
+          "scope": "CONTRACT_SCHEMA_NATIVE_VERIFIER_OR_EXPLICIT_TRANSITION_PLAN_WITH_PRESERVED_PUBLIC_API",
+          "verified_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "verification_run_id": 38168943031,
+          "original_runtime_or_consumer_cutover_acceptance": "NOT_CLAIMED_BY_APPROVED_SCOPE_VERIFICATION"
         },
         "deliverable_ref": "src/ptsip/engines/contracts/work-item-bindings.json#ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE"
       }
@@ -544,6 +592,12 @@
           "engine_contract_data_included": true,
           "rust_source_and_build_output_excluded": true,
           "profile_history_excluded": true
+        },
+        {
+          "command": "go -C developer/tests test -count=1 -v ./engines",
+          "result": "PASS",
+          "duration_seconds": 38.108,
+          "scope": "FINAL_SOURCE_BOUND_IMPLEMENTATION_WITH_NINE_NATIVE_GO_REGRESSION_CASES_AND_SEVEN_CARGO_TEST_BUILD_PACKAGE_STDIO_CHECKS"
         }
       ],
       "observed_remote": [
@@ -585,6 +639,37 @@
           "native_engine_check": "PASS",
           "native_contract_history_gate_check": "PASS",
           "remaining_failed_checks": []
+        },
+        {
+          "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "run_id": 38168943366,
+          "event": "push",
+          "result": "PASS",
+          "job_count": 13,
+          "failed_job_count": 0,
+          "skipped_job_count": 0
+        },
+        {
+          "source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+          "run_id": 38168943031,
+          "event": "workflow_dispatch",
+          "preset": "full",
+          "result": "PASS",
+          "required_check_count": 57,
+          "job_count_including_resolve_and_coverage": 59,
+          "failed_job_count": 0,
+          "skipped_job_count": 0,
+          "coverage_result": "PASS",
+          "native_engine_check": "PASS",
+          "native_all_go_regression": "PASS",
+          "preserved_public_api_regression": "PASS",
+          "public_api_pytest_invocation_counts": [
+            654,
+            200
+          ],
+          "public_api_cutover": false,
+          "new_validation_api_equivalence": "NOT_ASSERTED",
+          "remaining_failed_checks": []
         }
       ],
       "foundation_result": "PASS_COMMIT_BOUND_LOCAL_AND_REMOTE",
@@ -599,10 +684,11 @@
         "effect_evidence": "TestExecutionEffectObservationCannotUseStaleOrUnlinkedEvidence",
         "context_projection_scope": "TestContextProjectionPlanPreservesOwnersAndBlocksImplicitConsumerCutover",
         "caller_profile_and_mode_routes": "TestPreservedVPMSCallerPlanResolvesCurrentBindingsAndVerificationRoutes"
-      }
+      },
+      "approved_scope_result": "PASS_COMMIT_BOUND_LOCAL_AND_REMOTE"
     },
     "implementation_checkpoint": {
-      "status": "APPROVED_CONTRACT_VERIFICATION_IMPLEMENTED_REMOTE_VALIDATION_PENDING",
+      "status": "APPROVED_CONTRACT_VERIFICATION_SCOPE_VERIFIED_RUNTIME_TRANSITION_PENDING",
       "normative_policy_statuses": {
         "SFP-ARCH-0004": "ACTIVE",
         "SFP-CNTR-0005": "ACTIVE"
@@ -620,19 +706,24 @@
       ],
       "macos_runtime_evidence": "NOT_OBSERVED",
       "remaining_work": [
-        "CURRENT_OWNER_SOURCE_AND_COMPATIBILITY_EVIDENCE_FOR_INSTALLATION_INTEGRATION",
-        "FULL_RUNTIME_CAPABILITY_AND_PERMISSION_GATE_INTEGRATION",
-        "VERSIONED_CONSUMER_SCOPED_CONTEXT_PROJECTION_HANDOFF",
-        "EXPLICIT_VPMS_SEMANTIC_MAPPING_BEHAVIOR_COMPATIBILITY_AND_CALLER_HANDOFF"
+        "REAL_OWNER_ADMITTED_PROVIDER_AND_COMPATIBILITY_EVIDENCE_FOR_OPERATIONAL_INSTALLATION",
+        "FULL_RUNTIME_CAPABILITY_AND_ACTION_TIME_PERMISSION_GATE_INTEGRATION",
+        "SEPARATELY_AUTHORIZED_CONSUMER_AND_CALLSITE_VERSION_BOUND_CUTOVER",
+        "FULL_VPMS_RUNTIME_SEMANTIC_EQUIVALENCE_BEFORE_ANY_LEGACY_API_RETIREMENT",
+        "MACOS_NATIVE_RUNTIME_VERIFICATION"
       ],
       "read_only_operation_count": 18,
       "public_api_scope": "PRESERVED_EXISTING_PUBLIC_API_NEW_CONTRACT_VERIFICATION_AND_TRANSITION_PLANS_ONLY",
       "consumer_cutover_authorized": false,
       "legacy_retirement_authorized": false,
       "implementation_validation_platforms": [
-        "WINDOWS_LOCAL_MSVC"
+        "WINDOWS_LOCAL_MSVC",
+        "LINUX_GITHUB_ACTIONS"
       ],
-      "implementation_remote_result": "PENDING_EXACT_SHA"
+      "implementation_remote_result": "PASS_EXACT_SHA",
+      "implementation_source_sha": "4048373fef17be7fb893970f64fd5596ee2cbbbd",
+      "implementation_verification_run_id": 38168943031,
+      "approved_scope_verified_work_item_count": 16
     },
     "implementation_approval_record": {
       "approval_source": "USER_EXPLICIT",
