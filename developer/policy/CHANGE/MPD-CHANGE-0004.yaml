@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0004
-  version: '2.0'
+  version: '2.1'
   title: Developer legacy policy and Python automation retirement
   status: ACTIVE
 authority_subject:
@@ -51,6 +51,27 @@ rules:
     historical_provenance: AUDIT_ONLY_NO_RUNTIME_AUTHORITY
     runtime_legacy_policy_projection: REMOVE
     completion_contract_ref: developer/policy/contracts/go-automation-cutover.v1.json
+  developer_go_engine_post_common_engine_migration:
+    conflict_resolution: RECONCILE
+    approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
+    from_root: developer/automation/
+    to_root: .ptsip/engine/
+    common_engine_plan: PRESERVE_EXISTING_SEPARATE_PLAN
+    ordering:
+    - KEEP_CURRENT_DEVELOPER_GO_TOOL_OPERATIONAL
+    - COMPLETE_AND_VERIFY_COMMON_NEUTRAL_ENGINE_INDEPENDENTLY
+    - APPROVE_SEPARATE_DEVELOPER_GO_INTEGRATION_PLAN
+    - INTEGRATE_GO_ADAPTER_AGAINST_STABLE_COMMON_ENGINE_CONTRACT
+    - VERIFY_RESPONSIBILITY_AND_CONFORMANCE_EQUIVALENCE
+    - REBIND_ACTIVE_CALLERS_CI_AND_HOOKS
+    - RETIRE_PRIOR_IMPLEMENTATION_ROOT_AFTER_VERIFIED_CUTOVER
+    existing_go_automation_cutover_contract: REMAINS_EFFECTIVE_UNTIL_AUTHORIZED_REPLACEMENT
+    no_early_path_move_or_implicit_activation: true
+    existing_dot_ptsip_engine_data: PRESERVE
+    no_existing_common_engine_plan_mutation: true
+    no_implicit_shared_normative_authority_from_developer_tools: true
+    implementation_authorization_granted_by_policy_sync: false
+    branch_creation_authorized: false
 relations:
   supersedes: []
   amends: []

@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: REAL
 policy:
   id: MPD-REAL-0005
-  version: '2.0'
+  version: '2.1'
   title: Mandatory Go implementation for all Developer automation
   status: ACTIVE
 authority_subject:
@@ -37,6 +37,21 @@ rules:
     root_and_src_neutral_module_policy_ref: MPD-REAL-0004
     existing_python_regression_coverage: PRESERVE_SEMANTIC_COVERAGE
     migration_contract_ref: developer/policy/contracts/go-automation-cutover.v1.json
+  future_developer_go_engine_extension:
+    conflict_resolution: RECONCILE
+    approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
+    existing_implementation_root: developer/automation/
+    future_implementation_root: .ptsip/engine/
+    implementation_language: GO
+    current_go_migration_scope: UNCHANGED
+    neutral_semantic_authority: PRESERVE
+    common_engine_interface_role: CONSUME_VERIFIED_PRODUCT_CONTRACT
+    common_engine_is_implemented_from_developer_go: false
+    early_common_engine_bridge_required: false
+    implementation_path_migration_now_authorized: false
+    path_cutover_requires: APPROVED_PLAN_AND_VERIFIED_CONFORMANCE
+    existing_python_delegation_prohibition: PRESERVE
+    existing_regression_responsibility: PRESERVE
 relations:
   supersedes: []
   amends: []

@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CNTR
 policy:
   id: MPD-CNTR-0004
-  version: '2.0'
+  version: '2.1'
   title: Direct Root policy Go automation interface
   status: ACTIVE
 authority_subject:
@@ -35,6 +35,19 @@ rules:
     authority_owner: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
     go_source_owns_normative_semantics: false
     support_authority_inheritance: FORBIDDEN
+  common_engine_developer_adapter_interface:
+    conflict_resolution: RECONCILE
+    approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
+    common_engine_contract_authority: PTSIP_SUPPORT_FEATURE_LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+    developer_tool_contract_authority: PTSIP_DEVELOPER_POLICY
+    developer_go_implementation_role: NON_NORMATIVE_CONSUMER_EXTENSION
+    go_adapter_may_redefine_common_semantics: false
+    developer_commands_may_become_product_standard_implicitly: false
+    product_runtime_may_require_developer_go_tool: false
+    integration_protocol_selection: DEFER_TO_APPROVED_PLAN
+    integration_precondition: VERIFIED_STABLE_COMMON_ENGINE_INTERFACE
+    existing_go_command_contract_until_cutover: PRESERVE
+    absent_common_engine_adapter: NO_IMPLICIT_FALLBACK_OR_STANDARD_INFERENCE
 relations:
   supersedes: []
   amends: []

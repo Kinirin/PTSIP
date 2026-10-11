@@ -5,7 +5,7 @@ policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.0'
+  version: '2.1'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -242,6 +242,25 @@ rules:
     same_family_does_not_imply_same_policy_identity: true
     merge_requires_same_cohesion_key: true
     cohesion_rationale_required: true
+  common_and_developer_engine_responsibility_boundary:
+    conflict_resolution: RECONCILE
+    approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
+    common_engine:
+      authority_plane: PTSIP_SUPPORT_FEATURE
+      normative_semantics: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+      product_distribution: SITE_PACKAGES
+      current_engine_plan: PRESERVE_INDEPENDENTLY
+      developer_go_tool_defines_product_standard: false
+      product_runtime_depends_on_developer_tool: false
+    developer_extension:
+      lifecycle: DEVELOPMENT_TOOLING
+      implementation_language: GO
+      current_implementation_root: developer/automation/
+      target_implementation_root: .ptsip/engine/
+      target_root_activation: AFTER_COMMON_ENGINE_CONFORMANCE_AND_APPROVED_DEVELOPER_MIGRATION
+      common_engine_role: CONTRACT_CONSUMER
+      product_distribution: FORBIDDEN
+    existing_dot_ptsip_engine_state: PRESERVE_UNTIL_APPROVED_MIGRATION
 relations:
   supersedes: []
   amends: []
