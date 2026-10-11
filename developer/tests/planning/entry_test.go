@@ -210,20 +210,47 @@ func TestEmergencyPrereleaseResolvesExactOverlay(t *testing.T) {
 	}
 }
 
-func TestReleaseDraftDoesNotInheritPrereleaseAuthorization(t *testing.T) {
+func TestApprovedReleaseMaintainsIndependentCurrentAuthority(t *testing.T) {
 	repo := prereleaseFixture(t)
-	plan := readPlanning(t, repo, "developer/planning/0.3.8/index.yaml")
-	units := plan["work_units"].([]any)
-	if len(units) != 0 {
-		t.Fatalf("unapproved release work units must not be registered, got %d", len(units))
+	root := readPlanning(t, repo, "developer/planning/0.3.8/index.yaml")
+	units := root["work_units"].([]any)
+	if len(units) != 1 {
+		t.Fatalf("expected exactly one approved current release work unit, got %d", len(units))
 	}
-	if plan["plan"].(object)["status"] != "DRAFT" || plan["plan"].(object)["current_gate"] != "UNASSIGNED" {
-		t.Fatal("unapproved release must keep a non-executable unassigned gate")
+	unit := units[0].(object)
+	if root["plan"].(object)["status"] != "ACTIVE" || root["plan"].(object)["current_gate"] != "WU-01" ||
+		unit["id"] != "WU-01" ||
+		unit["approval"].(object)["status"] != "APPROVED" ||
+		unit["approval"].(object)["approval_source"] != "USER_EXPLICIT" ||
+		unit["lifecycle"].(object)["status"] != "BLOCKED" ||
+		unit["implementation_authorization"].(object)["status"] != "AUTHORIZED" ||
+		unit["implementation_authorization"].(object)["authorization_source"] != "USER_EXPLICIT" {
+		t.Fatal("current release approval must be explicit and blocked until verification")
 	}
-	review := readPlanning(t, repo, "developer/planning/0.3.8/WU-01-P01.yaml")
-	if review["approval"].(object)["status"] != "PENDING" ||
-		review["implementation_authorization"].(object)["status"] != "NOT_AUTHORIZED" {
-		t.Fatal("review-only release plan must not inherit prerelease approval or execution authority")
+	parent := readPlanning(t, repo, "developer/planning/0.3.8/WU-01/WU-01.yaml")
+	if parent["work_unit"].(object)["schema_version"] != nil {
+		t.Fatal("schema_version belongs to the work unit document, not work_unit metadata")
+	}
+	if parent["schema_version"] != "ptsip-work-unit/v1" {
+		t.Fatal("current release work unit schema version mismatch")
+	}
+	extensions := parent["extensions"].([]any)
+	if len(extensions) != 1 {
+		t.Fatalf("expected one approved current release extension, got %d", len(extensions))
+	}
+	row := extensions[0].(object)
+	ref := "developer/planning/0.3.8/WU-01/WU-01-P01.yaml"
+	if row["id"] != "WU-01-P01" || row["path"] != ref || row["status"] != "BLOCKED" {
+		t.Fatal("approved extension must be registered with blocked lifecycle")
+	}
+	review := readPlanning(t, repo, ref)
+	if review["approval"].(object)["status"] != "APPROVED" ||
+		review["approval"].(object)["approval_source"] != "USER_EXPLICIT" ||
+		review["implementation_authorization"].(object)["status"] != "AUTHORIZED" ||
+		review["implementation_authorization"].(object)["authorization_source"] != "USER_EXPLICIT" ||
+		review["extension"].(object)["lifecycle"].(object)["status"] != "BLOCKED" ||
+		review["objective"].(object)["runtime_activation"] != "FORBIDDEN" {
+		t.Fatal("approved extension must remain blocked from runtime activation pending verification")
 	}
 }
 
