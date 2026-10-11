@@ -146,6 +146,28 @@
           "existing_assure_and_runtime_authority": "UNCHANGED",
           "concrete_public_api_change": "NOT_AUTHORIZED_BY_THIS_DIRECTION_ALONE",
           "implementation": "NOT_AUTHORIZED"
+        },
+        "validation_vpms_public_contract_final_target": {
+          "decision": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source_policy": "SFP-ARCH-0004#VALIDATION_VPMS_ACTIVE_CONTRACT_AND_PUBLIC_COMPATIBILITY_RECONCILIATION",
+          "canonical_public_contract_target": "OFFICIAL_RUST_VALIDATION_LANGUAGE_NEUTRAL_CAPABILITY_CONTRACT",
+          "legacy_vpms_active_contract_ids": {
+            "VPMS_PRODUCT_PROTOCOL": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "VPMS_CASE_SELECTION": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "VPMS_EXECUTION_COMPOSITION": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          },
+          "old_public_contract_availability": "PRESERVED_UNTIL_SEPARATELY_AUTHORIZED_VERIFIED_VERSIONED_HANDOFF",
+          "new_api_gate": "MACHINE_VERIFIED_CONFORMANCE_BEHAVIOR_PARITY_AND_PUBLIC_CALLSITE_COMPATIBILITY",
+          "legacy_api_purpose": "TRANSITIONAL_COMPATIBILITY_NOT_PERMANENT_CANONICAL_AUTHORITY",
+          "legacy_retirement": "EXPLICIT_SEPARATE_OWNER_APPROVAL_REQUIRED",
+          "this_decision_grants_retirement": false,
+          "detailed_mapping_and_bridge": "UNRESOLVED",
+          "assured_normative_conformance_judgment": "SFP-ASSURE-0001_UNCHANGED",
+          "existing_python_code_reuse": "FORBIDDEN_FOR_SEVEN_OFFICIAL_RUST_ENGINES",
+          "active_contract_modification": "NOT_AUTHORIZED",
+          "engine_runtime_activation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -306,7 +328,10 @@
         "restoration_policy_is_draft_only_not_active_runtime_behavior": true,
         "context_source_semantics_preserved_under_new_projection_priority": true,
         "new_projection_output_format_not_bound_to_legacy_parity_after_separately_authorized_cutover": true,
-        "context_public_api_change_requires_versioned_verified_separately_authorized_transition": true
+        "context_public_api_change_requires_versioned_verified_separately_authorized_transition": true,
+        "rust_validation_public_target_does_not_override_current_vpms_active_contracts_before_cutover": true,
+        "vpms_legacy_public_interface_retirement_must_be_independently_approved": true,
+        "no_legacy_python_vpms_runtime_dependency_in_official_rust_validation_engine": true
       },
       "unresolved_decisions": [
         {
@@ -616,6 +641,22 @@
           "exact_contract_handoff": "UNRESOLVED",
           "draft_only": true,
           "implementation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "VALIDATION_VPMS_PUBLIC_CONTRACT_FINAL_TARGET",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "source_policy": "SFP-ARCH-0004",
+          "existing_active_contracts": [
+            "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
+            "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
+            "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
+          ],
+          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "retirement_authorized": false,
+          "remaining_bridge_contract": "VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
+          "draft_only": true
         }
       ],
       "dependent_plans": [
