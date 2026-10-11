@@ -29,31 +29,23 @@ authority_semantics:
         따라 어느 적법한 결정이 해당 subject의 winner인지 정한다.
       non_substitutability: CTRL의 fresh read 성공이나 RECORD의 가장 최근 기록이라는 사실만으로 authority
         winner가 바뀌지 않는다.
-    source_scope:
-    - SFP-0003
-    - SFP-0005
-    - SFP-0007
-    - SFP-0008
-    - SFP-0015
-    - SFP-0020
-    - SFP-0022
-  unit_sfp_0003_db5fcfdfb9f1: false
-  unit_sfp_0005_a9e64b2f374b: true
-  unit_sfp_0005_497b5224a8b6: STABLE
-  unit_sfp_0005_544177a069c5: FIRST_VALID_RESOLUTION_WINS
-  unit_sfp_0005_f4ecc779cdbf: false
-  unit_sfp_0005_138d6488f191: true
-  unit_sfp_0007_335c13787166: false
-  unit_sfp_0008_f0fcd9e4583e: false
-  unit_sfp_0015_e5e68017d47f:
+  semantic_unit_db5fcfdfb9f1: false
+  semantic_unit_a9e64b2f374b: true
+  semantic_unit_497b5224a8b6: STABLE
+  semantic_unit_544177a069c5: FIRST_VALID_RESOLUTION_WINS
+  semantic_unit_f4ecc779cdbf: false
+  semantic_unit_138d6488f191: true
+  semantic_unit_335c13787166: false
+  semantic_unit_f0fcd9e4583e: false
+  semantic_unit_e5e68017d47f:
   - PROPOSAL_BUNDLE
   - ACCEPTED_DELTA_BUNDLE
   - UNRESOLVED_BUNDLE
-  unit_sfp_0015_729a3aad608d: true
-  unit_sfp_0015_1008b206be76: false
-  unit_sfp_0020_633f58c56305: false
-  unit_sfp_0020_7cba43b51776: OWNER_DECISION_REQUIRED
-  unit_sfp_0022_e5a99b5ac3bd:
+  semantic_unit_729a3aad608d: true
+  semantic_unit_1008b206be76: false
+  semantic_unit_633f58c56305: false
+  semantic_unit_7cba43b51776: OWNER_DECISION_REQUIRED
+  semantic_unit_e5a99b5ac3bd:
     authorization: USER_EXPLICIT
     silent_agent_selection: FORBIDDEN
 relations:

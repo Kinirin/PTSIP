@@ -24,7 +24,6 @@ authority_semantics:
       - id: SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
         statement: Consumer Analysis의 기록 구성원과 정확한 record_ref는 명시적 Registry에서 결정하며 파일 시스템 발견은 등록 권위를 만들지 않는다.
         non_substitutability: 파일명 규칙, AI 추측 또는 저장된 분석 결과는 Registry의 명시적 경로 결정을 대체하지 않는다.
-    source_scope: []
   unit_consumer_analysis_approved_decisions:
     policy_direction: CONSUMER_REPOSITORY_LOCAL_ANALYSIS_OWNERSHIP
     repository_root: .ptsip/analysis/
