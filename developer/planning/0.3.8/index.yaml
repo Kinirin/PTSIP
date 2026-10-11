@@ -12,11 +12,11 @@ plan:
   revision: "01"
   integration_branch: dev/0.3.8
   classification: CORE
-  status: DRAFT
+  status: ACTIVE
   control_plane: developer/planning/0.3.8/index.yaml
   current_gate: WU-01
 
-# Only user-approved WU-01 is registered; unapproved review extensions remain outside execution.
+# WU-01 and its extension are explicitly approved; failed required checks keep both blocked.
 work_units:
   - id: WU-01
     path: developer/planning/0.3.8/WU-01/WU-01.yaml
@@ -27,5 +27,6 @@ work_units:
       inherited_from: []
       approval_source: USER_EXPLICIT
     implementation_authorization:
-      status: NOT_AUTHORIZED
+      status: AUTHORIZED
+      authorization_source: USER_EXPLICIT
     depends_on: []
