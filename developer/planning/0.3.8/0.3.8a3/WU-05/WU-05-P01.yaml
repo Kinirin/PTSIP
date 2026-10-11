@@ -1,0 +1,158 @@
+schema_version: ptsip-plan-extension/v1
+schema_ref: developer/planning/schemas/plan-extension.schema.json
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: "0.3.8"
+extension:
+  id: WU-05-P01
+  parent: WU-05
+  title: Policy-to-plan impact, semantic rederivation and verification workflow
+  classification: DEVELOPMENT
+  lifecycle:
+    status: DRAFT
+approval:
+  status: PENDING
+implementation_authorization:
+  status: HOLD_NOT_AUTHORIZED
+depends_on: [WU-05]
+
+proposal:
+  state: UNREGISTERED_DRAFT
+  reference_revision: e684407618efe2a266187e663d706b6fc4f3898b
+  approved_policy_revision: 2d92a6467b25c0d65d91eb79c40a92a736581279
+  source_work_unit: developer/planning/0.3.8/0.3.8a3/WU-05/WU-05.yaml
+  registration: PENDING_MACHINE_IDENTITY_AND_BINDING_CONTRACT
+  creates_new_normative_authority: false
+
+normative_sources:
+  - MPD-CHANGE-0001#rules.policy_plan_semantic_change_reconciliation
+  - MPD-SPEC-0023#rules.authority_separation
+  - MPD-SPEC-0023#rules.policy_plan_binding_authority
+  - MPD-PLAN-0001#rules.planning_boundary
+  - MPD-VERI-0001#rules.policy_plan_consistency_verification
+  - MPD-ASSURE-0001#rules.developer_test_verification_boundary
+  - MPD-CTRL-0001#rules.family_definition
+  - MPD-ARCH-0002#rules.tooling_test_registry_driven_executor_boundary
+
+responsibility:
+  policy_change_semantics: MPD-CHANGE-0001
+  plan_content_and_lifecycle: MPD-PLAN-0001
+  binding_identity_and_relationship: MPD-SPEC-0023
+  policy_plan_consistency_read_only: MPD-VERI-0001
+  required_verification_and_evidence_judgment: MPD-ASSURE-0001
+  execution_preconditions: MPD-CTRL-0001
+  approval_provenance: MPD-GOV-0001
+  event_record_provenance: MPD-RECORD-0001
+
+input_contract:
+  required:
+  - base_policy_revision_and_effective_snapshot
+  - current_policy_revision_and_effective_snapshot
+  - canonical_policy_plan_binding_registry
+  - affected_plan_documents_and_identity
+  - prior_approval_scope_and_authorized_execution_scope
+  - current_test_mode_registry_and_project_profile
+
+result_contract_candidate:
+  format: JSON
+  required:
+  - base_sha
+  - target_sha
+  - policy_semantic_delta
+  - exact_impacted_policy_plan_relations
+  - plan_file_id_to_obligation_impact
+  - generated_plan_candidate
+  - existing_approval_scope_equivalence
+  - required_verification_coverage
+  - observed_verification_evidence
+  - disposition
+  - unresolved_reasons
+  disposition:
+  - NO_IMPACT_PROVEN
+  - DETERMINISTIC_CHANGE_ELIGIBLE
+  - CHANGE_PENDING_USER_REVIEW
+  - BLOCKED_UNRESOLVED
+  - FAILED_VALIDATION
+
+impact_rules:
+  exact_binding_source: developer/bindings/policy-plan-bindings.yaml
+  compare_policy_sections_at_exact_base_and_target_sha: true
+  multiple_policies_per_plan_supported: true
+  missing_or_ambiguous_binding: BLOCK_AND_ESCALATE
+  silent_no_impact_without_evidence: FORBIDDEN
+  infer_binding_from_file_path_or_semantic_similarity: FORBIDDEN
+  automatic_plan_derivation_requires_resolved_policy_meaning: true
+
+workflow:
+  proposed_actions_entry: .github/workflows/policy-plan-reconcile.yml
+  required_test_executor: .github/workflows/tooling-test.yml
+  test_mode_registry: .github/test_modes.yaml
+  candidate_generation_mode: READ_ONLY
+  steps:
+  - {id: D01, operation: VERIFY_BASE_TARGET_POLICY_SNAPSHOTS}
+  - {id: D02, operation: DERIVE_EFFECTIVE_POLICY_SEMANTIC_DELTA, after: D01}
+  - {id: D03, operation: RESOLVE_IMPACTED_PLANS_BY_EXACT_BINDINGS, after: D02}
+  - {id: D04, operation: GENERATE_POLICY_CONFORMANT_PLAN_CANDIDATES, after: D03}
+  - {id: D05, operation: VERIFY_EXISTING_APPROVAL_SCOPE_EQUIVALENCE, after: D04}
+  - {id: D06, operation: RESOLVE_AND_RUN_REQUIRED_REGISTERED_VERIFICATION, after: D05}
+  - {id: D07, operation: ATOMIC_APPLY_IF_APPROVED_SCOPE_AND_VERIFICATION_PASS, after: D06}
+  - {id: D08, operation: REVALIDATE_AND_RECORD_PROVENANCE_OR_ROLLBACK, after: D07}
+  write_preconditions:
+  - EXACT_PLAN_IDENTITY_AND_BINDING_MATCH
+  - CURRENT_HEAD_EQUALS_VERIFIED_TARGET_SHA
+  - NO_NEW_NORMATIVE_AUTHORITY
+  - EXISTING_APPROVAL_SCOPE_EQUIVALENCE_PROVEN
+  - VALID_IMPLEMENTATION_AUTHORIZATION_FOR_TARGET_MUTATION
+  - ALL_REQUIRED_VERIFICATION_PASSED
+  fail_closed:
+  - POLICY_DELTA_OR_BINDING_UNRESOLVED
+  - SEMANTIC_PLAN_DERIVATION_AMBIGUOUS
+  - PLAN_APPROVAL_OR_EXECUTION_AUTHORIZATION_EXPANDED
+  - REQUIRED_TEST_MISSING_OR_FAILED
+  - STALE_HEAD_OR_PLAN_IDENTITY_MISMATCH
+  - POST_MUTATION_CONFORMANCE_FAILED
+  preserved:
+  - REQUIRED_TESTS_AND_FAIL_CLOSED_RULES
+  - ORIGINAL_PLAN_APPROVAL_AND_AUTHORIZATION_SOURCES
+  - HISTORICAL_EVIDENCE_AND_SOURCE_SHA
+  - BINDING_REGISTRY_AUTHORITY_SEPARATE_FROM_PLAN
+  - TOOLING_TEST_AS_GENERIC_TEST_EXECUTOR
+
+work_packages:
+  - id: P0-01
+    goal: REGISTERED_POLICY_DELTA_TO_PLAN_IMPACT_GRAPH_AND_NO_IMPACT_PROOFS
+  - id: P0-02
+    goal: MACHINE_READABLE_IMPACT_RESULT_SCHEMA_AND_NEGATIVE_VECTORS
+    depends_on: [P0-01]
+  - id: P1-01
+    goal: IMPLEMENT_EXACT_BINDING_IMPACT_RESOLVER
+    depends_on: [P0-02]
+  - id: P1-02
+    goal: IMPLEMENT_POLICY_CONFORMANT_PLAN_PROJECTION_AND_APPROVAL_GATE
+    depends_on: [P1-01]
+  - id: P1-03
+    goal: REQUIRED_VERIFICATION_TEST_MODE_RESOLUTION_AND_ATOMIC_APPLY
+    depends_on: [P1-02]
+  - id: P1-04
+    goal: POLICY_CHANGE_ACTIONS_ORCHESTRATION_AND_AUDIT_REPORT
+    depends_on: [P1-03]
+  - id: P1-05
+    goal: DRY_RUN_HISTORICAL_POLICY_CHANGES_AND_ROLLBACK_FAILURE_VECTORS
+    depends_on: [P1-04]
+
+acceptance:
+- EXACT_CHANGED_POLICY_SECTION_RESOLVES_ALL_REGISTERED_AFFECTED_PLANS_OR_ESCALATES
+- NO_IMPACT_RESULT_HAS_MACHINE_VERIFIABLE_EVIDENCE
+- DETERMINISTIC_PLAN_REDERIVATION_DOES_NOT_REINTERPRET_NORMATIVE_POLICY
+- NEW_APPROVAL_OR_IMPLEMENTATION_AUTHORIZATION_IS_NEVER_FABRICATED
+- APPROVAL_REUSE_REQUIRES_PREEXISTING_VALID_SCOPE_EQUIVALENCE
+- REQUIRED_VERIFICATION_COVERAGE_AND_EXACT_SOURCE_EVIDENCE_ARE_PRESERVED
+- PLAN_REF_IDENTITY_VERSION_REVISION_AND_BINDINGS_REMAIN_CONSISTENT
+- FAILED_OR_STALE_APPLY_ROLLS_BACK_WITHOUT_PARTIAL_COMMIT
+- AUTOMATIC_TEST_MODES_ARE_PROFILE_OWNED_AND_REGISTRY_REGISTERED
+- GENERIC_TOOLING_TEST_EXECUTOR_DOES_NOT_HARDCODE_MODES
+
+disposition:
+  plan_status: DRAFT
+  new_binding_and_identity: NOT_CREATED
+  workflow_implementation: NOT_STARTED
+  execution_authorization: HOLD_NOT_AUTHORIZED
