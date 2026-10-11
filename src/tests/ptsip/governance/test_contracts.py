@@ -145,7 +145,8 @@ def test_consumer_analysis_cleanup_delegation_is_operation_specific_and_nonactiv
     assert invariants["operation_delegation_cannot_override_record_retention"] is True
     assert invariants["unknown_or_undelegated_operation_kind"] == "FAIL_CLOSED"
     assert invariants["cleanup_execution_requires_fresh_valid_delegation"] is True
-    assert "AUTHORIZED_CLEANUP_OPERATION_CLASSES" in semantics["unit_consumer_analysis_unresolved_decisions"]
+    assert "AUTHORIZED_CLEANUP_OPERATION_CLASSES" not in semantics["unit_consumer_analysis_unresolved_decisions"]
+    assert "CLEANUP_OPERATION_EXACT_ID_SCHEMA_AND_REGISTRATION_PLAN" in semantics["unit_consumer_analysis_unresolved_decisions"]
     record = _json("src/policy/RECORD/SFP-RECORD-0004.yaml")
     assert record["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["mandatory_record_retention"] == "PRESERVED_WITH_PRECEDENCE"
     schema = _json("src/policy/schemas/ptsip-support-root-family-policy.schema.json")
@@ -161,7 +162,7 @@ def test_consumer_analysis_context_evidence_references_and_cleanup_boundaries() 
     cntr = _json("src/policy/CNTR/SFP-CNTR-0006.yaml")
     assert cntr["authority_semantics"]["unit_consumer_analysis_invariants"]["reverse_index_is_non_authoritative_projection"] is True
     record = _json("src/policy/RECORD/SFP-RECORD-0004.yaml")
-    assert record["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["reusable_long_term_retention_scope"] == "CONSUMER_DELEGATED_LONG_TERM_RETENTION"
+    assert record["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["reusable_long_term_retention_scope"] == "CONSUMER_DELEGATED_PER_REGISTERED_ANALYSIS_TYPE_LONG_TERM_RETENTION"
     ctrl = _json("src/policy/CTRL/SFP-CTRL-0003.yaml")
     assert ctrl["authority_semantics"]["unit_consumer_analysis_approved_decisions"]["cleanup_completion_consistency"] == "CONTRACT_PROVEN_LOGICAL_COMPLETION"
     assert ctrl["authority_semantics"]["unit_consumer_analysis_invariants"]["cleanup_execution_precondition_recheck_required"] is True

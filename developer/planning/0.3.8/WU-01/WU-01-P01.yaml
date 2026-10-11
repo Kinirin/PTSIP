@@ -437,7 +437,7 @@
       "native_targeted_integrity_and_tamper_checks": "PASS",
       "native_full_root_family_regression": "PASS"
     },
-    "required_test_remediation": "REGISTERED_FROZEN_ARCHIVE_RESTORED_FULL_GO_ROOT_FAMILY_PASS_REMOTE_PENDING",
+    "required_test_remediation": "FROZEN_ARCHIVE_RESTORED_AND_EXISTING_REQUIRED_TEST_EXPECTATIONS_MAINTAINED_REMOTE_PENDING",
     "impact_scope_selected_modes": [
       "repository-architecture",
       "ptsip-contract",
@@ -450,6 +450,41 @@
       "source_sha": "60733928c84924b503adfa34da58229422ee4a29",
       "result": "FAILURE",
       "same_pre_remediation_archive_boundary": true
+    },
+    "required_legacy_verification_maintenance": {
+      "authority": "MPD-REAL-0003#rules.src_tests_go_implementation.existing_non_go_test_maintenance",
+      "scope": "PRESERVE_EXISTING_MANDATORY_VERIFICATION_DURING_MIGRATION",
+      "failed_run": "https://github.com/Kinirin/PTSIP/actions/runs/38134651402",
+      "source_sha": "4df34ecb28f4186444eb0475e6f80865d973d3ad",
+      "existing_function_count_preserved": true,
+      "new_non_go_test_implementation": false,
+      "test_nodes_skipped_or_removed": false,
+      "fixes": [
+        "EXPLICIT_MIGRATION_ROLE_FILTER_ACCEPTS_SPARSE_CURRENT_INDEX_WITHOUT_CONFERRING_AUTHORITY",
+        "CLEANUP_DECISION_ALREADY_RESOLVED_EXACT_OPERATION_SCHEMA_REGISTRATION_REMAINS_PENDING",
+        "LONG_TERM_RETENTION_EXPECTATION_MATCHES_REGISTERED_ANALYSIS_TYPE_DELEGATION"
+      ],
+      "canonical_policy_mutation": false,
+      "runtime_activation": false,
+      "result": "PASS_51_REQUIRED_CONTRACT_TESTS"
+    },
+    "post_archive_restore_ci": {
+      "run": "https://github.com/Kinirin/PTSIP/actions/runs/38134650710",
+      "source_sha": "4df34ecb28f4186444eb0475e6f80865d973d3ad",
+      "result": "SUCCESS",
+      "required_push_jobs": [
+        "static-validation",
+        "pra-registry-validation",
+        "pp-transition"
+      ],
+      "test_build_not_assumed_passed": true
+    },
+    "post_archive_restore_impact_test_build": {
+      "run": "https://github.com/Kinirin/PTSIP/actions/runs/38134651402",
+      "source_sha": "4df34ecb28f4186444eb0475e6f80865d973d3ad",
+      "result": "FAILURE_STALE_REQUIRED_TEST_EXPECTATIONS",
+      "historical_integrity_failures_resolved": true,
+      "required_contract_tests_preserved": true
     }
   }
 }
