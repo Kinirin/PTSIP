@@ -4,7 +4,7 @@ responsibility_family: REAL
 policy:
   id: MPD-REAL-0006
   version: '1.0'
-  title: PTSIP product engine Go implementation language selection
+  title: PTSIP product engine language-neutral execution binding
   status: APPROVED
 authority_subject:
   id: DEV_APPROVED_ARTIFACT_REALIZATION
@@ -24,10 +24,19 @@ rules:
     source_scope: []
   engine_implementation_language:
     scope: PTSIP_PRODUCT_ENGINE_RUNTIME_BINDING
-    implementation_language: GO
-    language_selection: APPROVED
+    initial_implementation_language: GO
+    initial_implementation_selection: APPROVED
+    implementation_language_exclusivity: FORBIDDEN
+    future_language_implementations: ALLOWED_WITH_EXPLICIT_CONTRACT_BINDING
+    consumer_project_language_restriction: FORBIDDEN
+    cross_platform_contract_semantics: PRESERVE
     decision_source: USER_EXPLICIT
-    approval_ref: developer/policy/approvals/MPA-20261008-ENGINE-REAL-0006-APPROVED.yaml
+    original_approval_ref: developer/policy/approvals/MPA-20261008-ENGINE-REAL-0006-APPROVED.yaml
+    reconciliation:
+      resolution: RECONCILE
+      approval_ref: developer/policy/approvals/MPA-20261011-ENGINE-REAL-0006-RECONCILE.yaml
+      preserve_original_go_decision_as_initial_binding: true
+      prior_go_only_interpretation: REJECTED
     confirmed_environment_scope:
       operating_systems: [WINDOWS, LINUX, MACOS]
       execution_environments: [LOCAL_CLI, CI, SERVER]
@@ -35,6 +44,8 @@ rules:
       owner: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
       implementation_may_create_normative_semantics: false
       neutral_module_declaration_authority_ref: MPD-REAL-0004
+      every_engine_implementation_must_preserve_machine_contract_semantics: true
+      implementation_language_may_define_normative_rules: false
     developer_automation_boundary:
       developer_automation_language_policy_ref: MPD-REAL-0005
       developer_automation_scope_inherited_by_product_engine: false
@@ -51,6 +62,9 @@ rules:
       language_selection_implies_implementation_authorization: false
       language_selection_implies_runtime_activation: false
       language_selection_implies_python_engine_retirement: false
+      go_initial_binding_implies_existing_python_engine_replacement: false
+      go_initial_binding_implies_other_language_prohibition: false
+      engine_runtime_binding_does_not_modify_test_implementation_policy: true
       module_location_selected_by_this_policy: false
       architecture_distribution_and_activation_design: PLAN_OWNED
 relations:
@@ -85,6 +99,7 @@ transition:
     state: OPEN
     refs:
     - developer/policy/approvals/MPA-20261008-ENGINE-REAL-0006-APPROVED.yaml
+    - developer/policy/approvals/MPA-20261011-ENGINE-REAL-0006-RECONCILE.yaml
     next_action:
       action: CONFIRM_POLICY_ACTIVE_STATUS
       execution: OWNER_DECISION_REQUIRED
