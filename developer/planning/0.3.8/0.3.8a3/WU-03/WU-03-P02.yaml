@@ -27,7 +27,7 @@
     "authority": false,
     "stage": "POLICY_DERIVED_DRAFT_UNREGISTERED",
     "source_branch": "dev/0.3.8",
-    "source_sha": "5b773642d6e88a99352f89938bdf89b75a1cde02",
+    "source_sha": "2af874dc93394295d0d33359dae11b8d70f492db",
     "exact_path": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P02.yaml",
     "parent_plan_ref": "developer/planning/0.3.8/0.3.8a3/index.yaml",
     "completed_input_ref": "developer/planning/0.3.8/0.3.8a3/WU-03/WU-03-P01.yaml",
@@ -68,7 +68,7 @@
     "unresolved_normative_meaning": "STOP_AND_ESCALATE"
   },
   "policy_coverage_audit": {
-    "review_source_sha": "5b773642d6e88a99352f89938bdf89b75a1cde02",
+    "review_source_sha": "2af874dc93394295d0d33359dae11b8d70f492db",
     "coverage_standard": "EACH_APPLICABLE_POLICY_OBLIGATION_HAS_EXACT_WORK_PACKAGE_AND_MACHINE_CHECK",
     "source_policy_changes_during_execution": "INVALIDATE_AND_RERESOLVE",
     "relevant_policies": [
@@ -316,21 +316,70 @@
         "policy_id": "SFP-INFO-0008",
         "status": "DRAFT",
         "reason": "ENGINE_DERIVED_STATE_IS_INDEPENDENT_POLICY_DOMAIN",
-        "unresolved": [
-          "INVALID_OR_STALE_STATE_EXECUTION_BEHAVIOR",
-          "REUSE_ELIGIBILITY_SCOPE_AND_INVALIDATION_BOUNDARY"
+        "unresolved": [],
+        "policy_ref": "src/policy/INFO/SFP-INFO-0008.yaml",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "unresolved_plan_contract_details": [
+          "STATE_SCHEMA_FIELDS_AND_SERIALIZATION",
+          "VALIDATION_PROOF_INTERFACE",
+          "EXACT_REUSE_DEPENDENCY_IDENTITY_AND_REVISION_PROOF",
+          "STATE_WRITE_ATOMICITY_AND_RETRIEVAL"
         ],
-        "requires_user_policy_direction_before_engine_state_contract": true
+        "requires_separate_engine_policy_activation_and_plan_authorization": true,
+        "explicit_policy_relation_refs": [
+          "SFP-ARCH-0001",
+          "SFP-NORM-0001",
+          "SFP-REAL-0001",
+          "SFP-OPS-0002"
+        ]
       },
       {
         "policy_id": "SFP-ARCH-0004",
         "status": "DRAFT",
-        "reason": "PHYSICAL_ENGINE_REFACTORING_AND_ACTIVATION_ARE_OUT_OF_SCOPE"
+        "reason": "PHYSICAL_ENGINE_REFACTORING_AND_ACTIVATION_ARE_OUT_OF_SCOPE",
+        "policy_ref": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+        "policy_class": "PTSIP_SUPPORT_FEATURE"
       },
       {
         "policy_id": "MPD-REAL-0006",
-        "status": "APPROVED_NOT_ACTIVE",
-        "reason": "ENGINE_LANGUAGE_BINDING_NOT_AN_AUTHORIZATION_FOR_RUNTIME_ACTIVATION"
+        "status": "APPROVED",
+        "reason": "ENGINE_LANGUAGE_BINDING_NOT_AN_AUTHORIZATION_FOR_RUNTIME_ACTIVATION",
+        "policy_ref": "developer/policy/REAL/MPD-REAL-0006.yaml",
+        "policy_class": "PTSIP_DEVELOPER_POLICY"
+      },
+      {
+        "policy_id": "SFP-OPS-0002",
+        "policy_ref": "src/policy/OPS/SFP-OPS-0002.yaml",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "status": "DRAFT",
+        "reason": "ENGINE_COMPOSITION_AND_NON_AUTHORITATIVE_DERIVED_STATE_RECOVERY_IS_SEPARATE_POLICY_DOMAIN",
+        "unresolved": [
+          "COMPOSITION_RECOVERY_AND_FAILURE_PROPAGATION_INTERFACE",
+          "RESOURCE_FAILURE_RECOVERY_HANDOFF_CONTRACT",
+          "REVOCATION_SAFE_STOP_RECOVERY_HANDOFF_CONTRACT"
+        ],
+        "explicit_policy_relation_refs": [
+          "SFP-OPS-0001"
+        ],
+        "runtime_activation_authorized_by_exclusion": false
+      },
+      {
+        "policy_id": "SFP-CTRL-0002",
+        "policy_ref": "src/policy/CTRL/SFP-CTRL-0002.yaml",
+        "policy_class": "PTSIP_SUPPORT_FEATURE",
+        "status": "DRAFT",
+        "reason": "ENGINE_ACTIVATION_DELEGATION_ISOLATION_AND_RESOURCE_GATES_ARE_OUT_OF_SCOPE",
+        "unresolved": [
+          "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_INTERFACE",
+          "ISOLATION_MECHANISM_AND_BUDGET_ENFORCEMENT_PLAN",
+          "RESOURCE_FAILURE_AND_WORK_EFFECT_CONTRACT_SHAPE",
+          "OFFICIAL_CAPABILITY_ISOLATION_MODE_DECLARATION_CONTRACT",
+          "OFFICIAL_CAPABILITY_ISOLATION_MODE_MAPPING"
+        ],
+        "explicit_policy_relation_refs": [
+          "SFP-CTRL-0001"
+        ],
+        "runtime_activation_authorized_by_exclusion": false
       }
     ],
     "audit_gates": [
@@ -341,10 +390,69 @@
       "NO_REQUIRED_VERIFICATION_DROPPED_BY_PROFILE_OR_TEST_MODE_CHANGE",
       "NO_NEW_RECORD_RETENTION_OR_GLOBAL_REGISTRY_AUTHORITY",
       "NO_HIDDEN_POLICY_DECISION_IN_IMPLEMENTATION_OR_PLAN",
-      "UNRESOLVED_ITEMS_HAVE_EXACT_STAGE_DISPOSITION_AND_ESCALATION"
+      "UNRESOLVED_ITEMS_HAVE_EXACT_STAGE_DISPOSITION_AND_ESCALATION",
+      "EXCLUDED_POLICY_ID_PATH_STATUS_AND_DECLARED_RELATION_EXACT_MATCH",
+      "EXCLUDED_POLICY_SCOPE_NO_IMPACT_PROOF_OR_ESCALATION",
+      "NO_ENGINE_RUNTIME_OR_NORMATIVE_AUTHORITY_FROM_EXCLUSION_SYNC"
     ],
     "audit_conclusion": "APPLICABLE_DIRECTION_MAPPED_BUT_REQUIRED_PROOF_INTERFACES_AND_DRAFT_AUTHORITY_ARE_NOT_YET_CLOSED",
-    "audit_pass_definition": "MAPPING_COMPLETENESS_ONLY_NOT_RUNTIME_OR_POLICY_APPROVAL"
+    "audit_pass_definition": "MAPPING_COMPLETENESS_ONLY_NOT_RUNTIME_OR_POLICY_APPROVAL",
+    "excluded_policy_sync": {
+      "option": "B_EXACT_RELATION_BASED_AUTOMATIC_SYNC_DESIGN",
+      "scope": "OUT_OF_SCOPE_ENGINE_POLICIES_ONLY",
+      "policy_discovery_authority": {
+        "support_catalog_ref": "src/policy/index.yaml",
+        "developer_catalog_ref": "developer/policy/index.yaml",
+        "explicit_plan_exclusion_registry_ref": "policy_coverage_audit.excluded_policy_domains",
+        "exact_policy_id_path_class_and_status_match": "REQUIRED",
+        "follow_declared_relation_edges_only": true,
+        "new_exclusion_membership_without_explicit_policy_or_plan_scope_authority": "FORBIDDEN",
+        "semantic_name_similarity_or_sibling_path_discovery": "FORBIDDEN",
+        "policy_relations_do_not_imply_plan_inclusion_or_new_normative_authority": true,
+        "unresolved_or_ambiguous_relation": "FAIL_CLOSED_AND_ESCALATE"
+      },
+      "verified_snapshot": {
+        "source_branch": "dev/0.3.8",
+        "reviewed_head_sha": "2af874dc93394295d0d33359dae11b8d70f492db",
+        "semantics": "PRE_COMMIT_VERIFIED_POLICY_SNAPSHOT_NOT_SELF_REFERENTIAL_COMMIT_HEAD",
+        "initial_binding": "MANUAL_EXACT_DECLARATION_BY_APPROVED_REVIEW_OPTION_B"
+      },
+      "inputs": [
+        "EXACT_POLICY_CATALOG_AND_CURRENT_BLOBS",
+        "REGISTERED_RELATION_EDGES",
+        "CURRENT_PLAN_EXCLUDED_POLICY_IDS",
+        "EXACT_CURRENT_STATUS_AND_OPEN_POLICY_DECISIONS",
+        "DECLARED_POLICY_CLASS_AND_RESPONSIBILITY_SCOPE"
+      ],
+      "change_detection": {
+        "mode": "MACHINE_COMPARE_EXACT_REGISTERED_ID_AND_SOURCE_BLOB",
+        "watch": "EXPLICIT_REGISTERED_EXCLUSIONS_AND_THEIR_DECLARED_RELATION_REFS",
+        "unregistered_new_policy": "OWNER_REVIEW_REQUIRED",
+        "no_unbounded_semantic_policy_discovery": true
+      },
+      "statuses": {
+        "proven_out_of_scope_change": "RECORD_NO_IMPACT_WITH_EXACT_SOURCE_EVIDENCE",
+        "exact_excluded_policy_changed": "REFRESH_DECLARED_EXCLUSION_STATUS_AND_OPEN_DECISION_REFERENCES_AFTER_MACHINE_COMPARISON",
+        "declared_relation_changed": "REVALIDATE_EXCLUSION_BOUNDARY_AND_AFFECTED_PLAN_POLICY_COVERAGE",
+        "scope_or_normative_ownership_change": "BLOCK_AND_ESCALATE",
+        "unknown_or_missing_source": "FAIL_CLOSED"
+      },
+      "projection": {
+        "target": "PLAN_EXCLUSION_AUDIT_PROJECTION_ONLY",
+        "new_approved_policy_or_plan_authority": false,
+        "existing_approval_and_implementation_authorization_states": "PRESERVE",
+        "current_plan_unregistered_draft_unchanged": true,
+        "automatic_write_requires_existing_valid_plan_mutation_authorization": true,
+        "required_plan_schema_and_policy_coverage_validation_after_any_projection": true,
+        "implementation_provisioned_by_this_plan_revision": false
+      },
+      "fixed_separation": {
+        "engine_runtime_activation": "FORBIDDEN",
+        "excluded_engine_state_policy_is_normative_authority_for_context_evidence": false,
+        "mandatory_verification_loss": "FORBIDDEN",
+        "existing_plan_work_packages_and_requirements": "UNCHANGED"
+      }
+    }
   },
   "unresolved_obligation_register": {
     "disposition_vocabulary": [
@@ -466,14 +574,50 @@
         "disposition": "ESCALATE_IF_NEW_NORMATIVE_DECISION"
       },
       {
-        "owner": "SFP-INFO-0008",
-        "item": "INVALID_OR_STALE_STATE_EXECUTION_BEHAVIOR",
+        "owner": "SFP-OPS-0002",
+        "item": "COMPOSITION_RECOVERY_AND_FAILURE_PROPAGATION_INTERFACE",
         "stage": "OUT_OF_SCOPE",
         "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
       },
       {
-        "owner": "SFP-INFO-0008",
-        "item": "REUSE_ELIGIBILITY_SCOPE_AND_INVALIDATION_BOUNDARY",
+        "owner": "SFP-OPS-0002",
+        "item": "RESOURCE_FAILURE_RECOVERY_HANDOFF_CONTRACT",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      },
+      {
+        "owner": "SFP-OPS-0002",
+        "item": "REVOCATION_SAFE_STOP_RECOVERY_HANDOFF_CONTRACT",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      },
+      {
+        "owner": "SFP-CTRL-0002",
+        "item": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_INTERFACE",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      },
+      {
+        "owner": "SFP-CTRL-0002",
+        "item": "ISOLATION_MECHANISM_AND_BUDGET_ENFORCEMENT_PLAN",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      },
+      {
+        "owner": "SFP-CTRL-0002",
+        "item": "RESOURCE_FAILURE_AND_WORK_EFFECT_CONTRACT_SHAPE",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      },
+      {
+        "owner": "SFP-CTRL-0002",
+        "item": "OFFICIAL_CAPABILITY_ISOLATION_MODE_DECLARATION_CONTRACT",
+        "stage": "OUT_OF_SCOPE",
+        "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
+      },
+      {
+        "owner": "SFP-CTRL-0002",
+        "item": "OFFICIAL_CAPABILITY_ISOLATION_MODE_MAPPING",
         "stage": "OUT_OF_SCOPE",
         "disposition": "OUT_OF_SCOPE_REQUIRES_SEPARATE_POLICY"
       }
