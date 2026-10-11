@@ -28,7 +28,7 @@ func TestWithdrawnVPMSAuthorityDoesNotRequireArchivedBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := resolver.Policy("MPD-VERI-0007"); err == nil || !strings.Contains(err.Error(), "unknown developer policy identity") {
+	if _, err := resolver.Policy("MPD-VERI-0007"); err == nil || !strings.Contains(err.Error(), "unknown or audit-only (not executable)") {
 		t.Fatal("archived ACTIVE source became current authority", err)
 	}
 	result, err := lifecycle.InspectPolicy(repo, "MPD-VERI-0007")
