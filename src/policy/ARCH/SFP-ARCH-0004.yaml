@@ -56,7 +56,7 @@
         "directory_policy_P2": "RESPONSIBILITY_BOUNDARY_STRUCTURED",
         "physical_organization_P3": "SINGLE_UPPER_ENGINE_AREA",
         "common_management_P4": "PER_ENGINE_SELF_OWNED_FUNCTION_BY_FUNCTION_MANAGEMENT",
-        "implementation_sharing_P5": "EXPLICIT_SINGLE_OWNER_SHARING",
+        "implementation_sharing_P5": "NO_CROSS_OFFICIAL_RUST_ENGINE_IMPLEMENTATION_SHARING",
         "capability_implementation_P6": "INDEPENDENT_CONTRACT_FLEXIBLE_IMPLEMENTATION",
         "user_external_isolation_P7": "MANDATORY_ISOLATION",
         "common_management_function_examples": [
@@ -297,6 +297,31 @@
           "policy_status": "DRAFT_UNCHANGED",
           "physical_implementation": "NOT_AUTHORIZED",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        "implementation_sharing_P5_scope": "SEVEN_OFFICIAL_RUST_ENGINES_ONLY",
+        "implementation_sharing_P5_precedence": "KEEP_LATEST_OVERRIDES_PRIOR_SINGLE_OWNER_SHARING_PERMISSION_WITHIN_SEVEN_OFFICIAL_RUST_ENGINES",
+        "per_engine_management_and_shared_implementation_owner_policy": {
+          "decision": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "policy_scope": "SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY",
+          "engine_implementation_ownership": "ENGINE_SELF_OWNED_ISOLATED",
+          "management_implementation_ownership": "ENGINE_SELF_OWNED_OPTIONAL",
+          "cross_official_engine_rust_source_module_crate_import": "FORBIDDEN",
+          "cross_official_engine_shared_compiled_runtime_or_management_library": "FORBIDDEN",
+          "cross_official_engine_implementation_copy_move_reuse_port_or_link": "FORBIDDEN",
+          "engine_internal_management_capability_set": "ENGINE_DECLARED_OPTIONAL_NO_GLOBAL_MANDATORY_SET",
+          "shared_ptsip_rust_implementation_between_official_engines": "FORBIDDEN",
+          "independent_engine_version_dependency_build_distribution_patch": "REQUIRED_UNCHANGED",
+          "normative_language_neutral_machine_contract_sharing": "ALLOWED",
+          "explicit_cross_engine_capability_and_dependency_contracts": "ALLOWED_WITHOUT_IMPLEMENTATION_SHARING",
+          "independently_versioned_external_toolchain_or_third_party_dependency_rules": "UNCHANGED_NO_NEW_PERMISSION_OR_GLOBAL_PROHIBITION",
+          "consumer_and_external_engine_implementation_policy": "UNCHANGED",
+          "prior_conditional_implementation_sharing_policy": "SUPERSEDED_IN_SCOPE_ONLY",
+          "exact_per_engine_internal_management_owner_map": "PLAN_DERIVED_AND_MACHINE_VERIFIED_NO_INFERRED_OWNER",
+          "active_contracts_and_authorities": "PRESERVED",
+          "runtime_activation": "NOT_AUTHORIZED",
+          "physical_implementation": "NOT_AUTHORIZED"
         }
       },
       "invariants": {
@@ -460,14 +485,14 @@
         "legacy_vpms_to_rust_validation_mapping_must_be_explicit_versioned_and_machine_verified": true,
         "no_unverified_mapping_can_transfer_vpms_public_or_execution_authority": true,
         "generic_validation_capability_must_not_infer_vpms_protocol_selection_execution_equivalence": true,
-        "rust_validation_must_not_reuse_move_port_or_wrap_legacy_vpms_python_implementation": true
+        "rust_validation_must_not_reuse_move_port_or_wrap_legacy_vpms_python_implementation": true,
+        "seven_official_rust_engines_must_not_share_internal_source_crates_compiled_runtime_or_management_code": true,
+        "seven_official_rust_engine_implementations_and_optional_management_are_independently_owned": true,
+        "cross_engine_normative_machine_contract_use_does_not_create_implementation_sharing_permission": true,
+        "engine_management_owner_must_be_declared_and_verified_without_path_inference": true,
+        "existing_single_owner_sharing_invariants_apply_only_outside_this_official_rust_no_sharing_scope": true
       },
       "unresolved_decisions": [
-        {
-          "id": "PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
-          "kind": "RESPONSIBILITY_ANALYSIS",
-          "status": "UNRESOLVED"
-        },
         {
           "id": "ENGINE_LOCAL_MANAGEMENT_ENTRYPOINT_DECLARATION_BINDING",
           "kind": "CONTRACT_DESIGN",
@@ -926,6 +951,27 @@
           "separate_legacy_retirement_approval": "REQUIRED",
           "physical_implementation": "NOT_AUTHORIZED",
           "runtime_activation": "NOT_AUTHORIZED"
+        },
+        {
+          "id": "PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
+          "kind": "USER_POLICY_DECISION",
+          "status": "RESOLVED_POLICY_DIRECTION",
+          "selected_option": "KEEP_LATEST",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-11",
+          "prior_policy": "SFP-ARCH-0004",
+          "prior_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
+          "prior_rule": "EXPLICIT_SINGLE_OWNER_SHARING",
+          "replacement_rule": "NO_CROSS_OFFICIAL_RUST_ENGINE_IMPLEMENTATION_SHARING",
+          "conflicting_sharing_permission": "REPLACED_WITHIN_SEVEN_OFFICIAL_RUST_ENGINE_SCOPE_ONLY",
+          "conditional_single_owner_sharing_rules": "NOT_APPLICABLE_WITHIN_SEVEN_OFFICIAL_RUST_ENGINE_SCOPE",
+          "runtime_and_source_module_shared_dependencies": "FORBIDDEN_BETWEEN_OFFICIAL_RUST_ENGINES",
+          "external_machine_contract_interoperability": "PRESERVED",
+          "concrete_engine_management_implementation_map": "PLAN_AND_MACHINE_VERIFICATION_ONLY",
+          "exact_management_entrypoint_binding": "REMAINS_SEPARATE_UNRESOLVED_POLICY_ITEM",
+          "existing_ACTIVE_policies": "UNCHANGED",
+          "draft_keeping_prior_gate": "PRESERVED",
+          "implementation": "NOT_AUTHORIZED"
         }
       ],
       "dependent_plans": [
