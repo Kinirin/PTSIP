@@ -29,47 +29,34 @@ authority_semantics:
         조건을 정한다. 문서나 인접 version에서 누락된 hop을 추론하지 않는다.
       non_substitutability: CNTR의 호환 약속이나 OPS의 회복 절차만으로 semantic replacement와 legacy
         deletion이 허용되지 않는다.
-    source_scope:
-    - SFP-0002
-    - SFP-0010
-    - SFP-0011
-    - SFP-0013
-    - SFP-0014
-    - SFP-0015
-    - SFP-0018
-    - SFP-0019
-    - SFP-0020
-    - SFP-0022
-    - SFP-0023
-    - SFP-0024
-  unit_sfp_0002_a917c21c1554: true
-  unit_sfp_0010_88d1b74c572f: ptsip.yaml
-  unit_sfp_0010_6d61a486d5cf: ptsip_<major>.<minor>.<micro>.yaml
-  unit_sfp_0010_2d338a3f2a67: true
-  unit_sfp_0010_c9513ecf3d06: true
-  unit_sfp_0010_63ae4c96373e:
+  semantic_unit_a917c21c1554: true
+  semantic_unit_88d1b74c572f: ptsip.yaml
+  semantic_unit_6d61a486d5cf: ptsip_<major>.<minor>.<micro>.yaml
+  semantic_unit_2d338a3f2a67: true
+  semantic_unit_c9513ecf3d06: true
+  semantic_unit_63ae4c96373e:
   - REQUIRED_WORK_ELEMENT
   - REMOVAL_MIGRATION_ELEMENT
   - ASYNCHRONOUS_WORK_TARGET
-  unit_sfp_0010_c077a0567524: REQUIRED_WORK_ELEMENTS_ONLY
-  unit_sfp_0010_dedc8f14a80f: false
-  unit_sfp_0010_8fb014b64fb7: false
-  unit_sfp_0010_7f4315f52e68: false
-  unit_sfp_0010_bd1065d22657: HIGHEST_SELECTED_TARGET_DRAFT
-  unit_sfp_0010_da249435e4d0: DESCENDING_DRAFT_VERSION_CLOSEST_TO_FINAL_POINT_FIRST
-  unit_sfp_0010_3b7c4c806d38: LAST
-  unit_sfp_0010_97fa887327a5: false
-  unit_sfp_0010_db01ca63c71a: false
-  unit_sfp_0010_abf67434d919: true
-  unit_sfp_0010_18c059d95fc4: true
-  unit_sfp_0011_e6f02d5586a1:
+  semantic_unit_c077a0567524: REQUIRED_WORK_ELEMENTS_ONLY
+  semantic_unit_dedc8f14a80f: false
+  semantic_unit_8fb014b64fb7: false
+  semantic_unit_7f4315f52e68: false
+  semantic_unit_bd1065d22657: HIGHEST_SELECTED_TARGET_DRAFT
+  semantic_unit_da249435e4d0: DESCENDING_DRAFT_VERSION_CLOSEST_TO_FINAL_POINT_FIRST
+  semantic_unit_3b7c4c806d38: LAST
+  semantic_unit_97fa887327a5: false
+  semantic_unit_db01ca63c71a: false
+  semantic_unit_abf67434d919: true
+  semantic_unit_18c059d95fc4: true
+  semantic_unit_e6f02d5586a1:
   - PRODUCT
   - DEVELOPMENT_TOOLING
   - DELIVERY
   - OPERATIONS
   - NEUTRAL_CONTRACT
-  unit_sfp_0011_06a40c5efc67: false
-  unit_sfp_0011_1b4fdbc82719:
+  semantic_unit_06a40c5efc67: false
+  semantic_unit_1b4fdbc82719:
   - PTSIP-MIG-004
   - PTSIP-MIG-005
   - PTSIP-MIG-006
@@ -82,22 +69,22 @@ authority_semantics:
   - PTSIP-MIG-013
   - PTSIP-MIG-014
   - PTSIP-MIG-015
-  unit_sfp_0013_4d07b4c07711: src/ptsip/source_compat
-  unit_sfp_0013_649a7e4396a7: false
-  unit_sfp_0013_43c1bea34a6a: SOURCE_DECLARATION_ONLY
-  unit_sfp_0013_803ad099c8f2:
+  semantic_unit_4d07b4c07711: src/ptsip/source_compat
+  semantic_unit_649a7e4396a7: false
+  semantic_unit_43c1bea34a6a: SOURCE_DECLARATION_ONLY
+  semantic_unit_803ad099c8f2:
   - V034_SOURCE_SEMANTICS
   - V036_SOURCE_SEMANTICS
-  unit_sfp_0013_0c6dc8442cd3:
+  semantic_unit_0c6dc8442cd3:
   - family: 0.3.4-draft
     revision: b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
   - family: 0.3.6-draft
     revision: d6995ed232e845b88d8235b851e80ab54b7804ea
-  unit_sfp_0013_30d3cbd93acd: true
-  unit_sfp_0013_b382624a5359: false
-  unit_sfp_0013_cbfcf841e527: false
-  unit_sfp_0013_f2c91cfe073b: false
-  unit_sfp_0014_1eac40ba6659:
+  semantic_unit_30d3cbd93acd: true
+  semantic_unit_b382624a5359: false
+  semantic_unit_cbfcf841e527: false
+  semantic_unit_f2c91cfe073b: false
+  semantic_unit_1eac40ba6659:
   - SOURCE_COVERAGE_PROJECTION
   - REPOSITORY_ELEMENT_RESOLUTION
   - OBLIGATION_TAXONOMY
@@ -105,71 +92,71 @@ authority_semantics:
   - NORMALIZED_EVIDENCE_CORRELATION
   - ACCEPTED_TARGET_STATE_COMPATIBILITY
   - SOURCE_MIGRATION_COMPLETION
-  unit_sfp_0014_f7eae46f125d: true
-  unit_sfp_0014_8ef1ca842b10: NON_AUTHORITATIVE
-  unit_sfp_0014_e5d54af8e34d: true
-  unit_sfp_0014_6f0f47a8f932: false
-  unit_sfp_0014_c01914b8ab6c: SHA256
-  unit_sfp_0015_e1e1d0ee8de9: SEMANTIC_DELTA_BUNDLE_DETERMINISTIC_RECONCILIATION_PLANNER
-  unit_sfp_0015_8945ec159362:
+  semantic_unit_f7eae46f125d: true
+  semantic_unit_8ef1ca842b10: NON_AUTHORITATIVE
+  semantic_unit_e5d54af8e34d: true
+  semantic_unit_6f0f47a8f932: false
+  semantic_unit_c01914b8ab6c: SHA256
+  semantic_unit_e1e1d0ee8de9: SEMANTIC_DELTA_BUNDLE_DETERMINISTIC_RECONCILIATION_PLANNER
+  semantic_unit_8945ec159362:
   - EXISTING
   - PLANNED
-  unit_sfp_0015_dc689e7c3ea9:
+  semantic_unit_dc689e7c3ea9:
   - NO_CHANGE_REQUIRED
   - ADD_TARGET_DECLARATION
   - REPLACE_WITH_EXPLICIT_OWNER_DECISION
   - CONFLICT_REQUIRES_CONFIRMATION
   - UNRESOLVED
-  unit_sfp_0015_206396750604: true
-  unit_sfp_0018_95e9883df12a: GOVERNING_LIFECYCLE_CLASSIFICATION_SET_OR_SEMANTICS_CHANGE
-  unit_sfp_0018_60f19ff4759b: PROFILE_CONTRACT_STRUCTURE_OR_SEMANTICS_CHANGE_WITHIN_LIFECYCLE_GENERATION
-  unit_sfp_0018_fb34cbfee3ca: false
-  unit_sfp_0019_888faa0f428f:
+  semantic_unit_206396750604: true
+  semantic_unit_95e9883df12a: GOVERNING_LIFECYCLE_CLASSIFICATION_SET_OR_SEMANTICS_CHANGE
+  semantic_unit_60f19ff4759b: PROFILE_CONTRACT_STRUCTURE_OR_SEMANTICS_CHANGE_WITHIN_LIFECYCLE_GENERATION
+  semantic_unit_fb34cbfee3ca: false
+  semantic_unit_888faa0f428f:
   - TOOL_VERSION
   - PROJECT_PROFILE_CONTRACT_VERSION
   - SPECIFICATION_FAMILY_REVISION
-  unit_sfp_0019_3e1fa8a4994f: 0.3.6-draft
-  unit_sfp_0019_b0ef0899e325: pp.1.01
-  unit_sfp_0019_c15a6e08d6f5: IDENTITY_ONLY
-  unit_sfp_0019_628a7210495b:
+  semantic_unit_3e1fa8a4994f: 0.3.6-draft
+  semantic_unit_b0ef0899e325: pp.1.01
+  semantic_unit_c15a6e08d6f5: IDENTITY_ONLY
+  semantic_unit_628a7210495b:
     components: NONE
     relationships: NONE
     associated_artifacts: NONE
     policies: NONE
     responsibility_map: NONE
     lifecycle_classification: NONE
-  unit_sfp_0019_3b3475448de9: pp.1.01
-  unit_sfp_0019_0a0c524a1df7: pp1.01
-  unit_sfp_0019_56ed0147687f: ptsip_pp1.01.yaml
-  unit_sfp_0019_c67ecb46da27: ptsip_0.3.6.yaml
-  unit_sfp_0019_4a21a243e9ff: false
-  unit_sfp_0020_0eba39b83adc: DIRECT_LATEST_TARGET_CONVERGENCE
-  unit_sfp_0020_812e5dc7f2d3: false
-  unit_sfp_0020_7686528227da: SOURCE_SPECIFIC_COMPATIBILITY_READER
-  unit_sfp_0020_b1ec5c286800: NORMALIZED_SOURCE_SEMANTICS
-  unit_sfp_0020_efb69996f600:
+  semantic_unit_3b3475448de9: pp.1.01
+  semantic_unit_0a0c524a1df7: pp1.01
+  semantic_unit_56ed0147687f: ptsip_pp1.01.yaml
+  semantic_unit_c67ecb46da27: ptsip_0.3.6.yaml
+  semantic_unit_4a21a243e9ff: false
+  semantic_unit_0eba39b83adc: DIRECT_LATEST_TARGET_CONVERGENCE
+  semantic_unit_812e5dc7f2d3: false
+  semantic_unit_7686528227da: SOURCE_SPECIFIC_COMPATIBILITY_READER
+  semantic_unit_b1ec5c286800: NORMALIZED_SOURCE_SEMANTICS
+  semantic_unit_efb69996f600:
   - IDENTITY_ONLY
   - SEMANTIC_MIGRATION
-  unit_sfp_0020_f29712312f8c: true
-  unit_sfp_0020_f678fbef7f57: true
-  unit_sfp_0020_4d0e204edd1d: false
-  unit_sfp_0020_0d1e1005d61e: false
-  unit_sfp_0022_d2ee41455ab2:
+  semantic_unit_f29712312f8c: true
+  semantic_unit_f678fbef7f57: true
+  semantic_unit_4d0e204edd1d: false
+  semantic_unit_0d1e1005d61e: false
+  semantic_unit_d2ee41455ab2:
     legacy_memory_read_scope: MIGRATION_ONLY
     deterministic_conversion_authorization: PREAUTHORIZED
     semantic_ambiguity: OWNER_DECISION_REQUIRED
-  unit_sfp_0022_a498c7f0ff7e:
+  semantic_unit_a498c7f0ff7e:
     before_context_validation: FORBIDDEN
     after_context_validation: PREAUTHORIZED
     migration_failure_preserves_legacy_memory: true
-  unit_sfp_0023_da1751e6820f:
+  semantic_unit_da1751e6820f:
     canonical_fallback: false
     retirement: SEPARATE_OWNER_APPROVAL_REQUIRED
-  unit_sfp_0024_96036f84abf9: PTSIP_SUPPORT_FEATURE_ROOT_FAMILY_TRANSITION
-  unit_sfp_0024_d4e5c3d8137b: Establish the Root Responsibility Family transition
+  semantic_unit_96036f84abf9: PTSIP_SUPPORT_FEATURE_ROOT_FAMILY_TRANSITION
+  semantic_unit_d4e5c3d8137b: Establish the Root Responsibility Family transition
     authority for PTSIP_SUPPORT_FEATURE while preserving policy-class-specific authority
     semantics and avoiding implicit inheritance from developer policy.
-  unit_sfp_0024_f8b550795058:
+  semantic_unit_f8b550795058:
     status: CANONICAL_COORDINATE_VOCABULARY
     values:
     - NORM
@@ -188,7 +175,7 @@ authority_semantics:
     - RECORD
     vocabulary_identity_is_semantic_authority: false
     family_token_alone_is_authority_identity: false
-  unit_sfp_0024_d15858a2df3e:
+  semantic_unit_d15858a2df3e:
     canonical_key_fields:
     - policy_class
     - responsibility_family
@@ -200,7 +187,7 @@ authority_semantics:
     class_specific_semantics_required:
     - authority_subject
     - exclusive_kernel
-  unit_sfp_0024_2a2643a897d6:
+  semantic_unit_2a2643a897d6:
     profile: CONSERVATIVE_MINIMUM_KERNEL
     authority_subject_role: ROOT_AUTHORITY_SUBJECT_FOR_THIS_POLICY_CLASS
     exclusive_kernel_role: MINIMUM_NON_SUBSTITUTABLE_AUTHORITY
@@ -208,7 +195,7 @@ authority_semantics:
     extension_space: OPEN
     unresolved_future_authority_assignment: ALLOWED_AT_DESIGN_TIME
     unresolved_authority_may_authorize_execution: false
-  unit_sfp_0024_0c99d4d62e27:
+  semantic_unit_0c99d4d62e27:
     recognized_root_families:
     - NORM
     - GOV
@@ -231,26 +218,26 @@ authority_semantics:
     unmaterialized_slot_default: RESERVED
     reserved_slot_has_implicit_authority_subject: false
     reserved_slot_has_implicit_exclusive_kernel: false
-  unit_sfp_0024_2e8b6c771301:
+  semantic_unit_2e8b6c771301:
     shared_element: ROOT_FAMILY_TOKEN_VOCABULARY_ONLY
     shared_authority_subject: false
     shared_exclusive_kernel: false
     implicit_cross_class_bridge: FORBIDDEN
     explicit_bridge_required_for_cross_class_semantics: true
-  unit_sfp_0024_9b4ef2e22a47:
+  semantic_unit_9b4ef2e22a47:
     existing_sfp_identity_preservation_required: true
     existing_sfp_policy_is_automatic_root_family_assignment: false
     one_to_one_mapping_assumption: FORBIDDEN
     rename_as_migration: FORBIDDEN
     semantic_decomposition_required: true
     family_aware_policy_identity_requires_new_schema_and_resolver_support: true
-  unit_sfp_0024_c7032a35ea1d:
+  semantic_unit_c7032a35ea1d:
   - CREATE_CLASS_SCOPED_ROOT_FAMILY_POLICY
   - CHANGE_REPOSITORY_POLICY_ENTRY
   - MATERIALIZE_FAMILY_AWARE_SCHEMAS
   - MATERIALIZE_FAMILY_AWARE_RESOLUTION
   - DECOMPOSE_LEGACY_POLICIES
-  unit_sfp_0024_452807860927:
+  semantic_unit_452807860927:
     owns:
     - PTSIP_SUPPORT_FEATURE_ROOT_FAMILY_TRANSITION_MODEL
     - PTSIP_SUPPORT_FEATURE_FOURTEEN_ROOT_FAMILY_COORDINATE_SET

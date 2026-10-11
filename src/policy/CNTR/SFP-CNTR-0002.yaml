@@ -29,13 +29,11 @@ authority_semantics:
         미등록 alias나 capability는 실행 계약이 아니다.
       non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime
         persistence를 활성 지원 계약으로 바꾸지 못한다.
-    source_scope:
-    - SFP-0004
-  unit_sfp_0004_571db38c09b9:
+  semantic_unit_571db38c09b9:
     shipped: true
     runtime_surface:
     - src/ptsip/**
-  unit_sfp_0004_afbfbdc1cc69:
+  semantic_unit_afbfbdc1cc69:
     authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
     schema_id: ptsip.governance/evidence-artifact-conformance-model
     schema_version: 1
