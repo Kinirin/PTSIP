@@ -6,7 +6,7 @@ policy:
   title: CHANGE authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '3.2'
+  version: '4.0'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -14,6 +14,25 @@ exclusive_kernel:
 - DEV_CHANGE_IMPACT_AND_COMPATIBILITY
 - DEV_MIGRATION_ORDER_AND_CONTINUITY
 rules:
+  planning_policy_delta_and_legacy_reconciliation:
+    decision: KEEP_LATEST
+    approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
+    scope: PLANNING_CREATION_RULE_CHANGE_AND_LEGACY_PLAN_IMPACT
+    existing_plan_refs_are_not_new_creation_authority: true
+    previous_planning_path_does_not_establish_new_canonical_subpath: true
+    existing_plan_format_does_not_establish_new_universal_schema: true
+    effective_policy_change_requires_exact_bound_plan_impact_analysis: true
+    plan_binding_source: developer/bindings/policy-plan-bindings.yaml
+    semantic_similarity_is_binding_proof: false
+    unknown_or_ambiguous_relation: FAIL_CLOSED_REQUEST_USER_DIRECTION
+    missing_registered_path_or_format: NO_AUTO_MIGRATION_NO_PLAN_CREATION
+    do_not_reinterpret_old_plan_approval_as_new_plan_approval: true
+    preserve_recorded_prior_approval_and_execution_evidence: true
+    prior_approval_reuse: ONLY_WITH_MACHINE_PROVEN_SCOPE_AND_SEMANTIC_EQUIVALENCE
+    new_or_expanded_scope_requires_fresh_user_decision: true
+    affected_current_plans: BLOCK_USE_UNTIL_RECONCILED_AND_VERIFIED
+    unrelated_policy_change_and_migration_rules: PRESERVED_UNTIL_SEPARATE_OWNER_DIRECTED_CHANGE
+
   policy_status_reform_legacy_semantics_replacement:
     primary_lifecycle_owner_policy: MPD-GOV-0001
     primary_lifecycle_contract_ref: developer/contracts/lifecycle/policy_status.json
@@ -54,81 +73,6 @@ rules:
       other_legacy_statuses_and_substatus_rules: CONSUME_GOV_CANONICAL_CONTRACT
       implementation_plan: SEPARATE
       scope_approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-DEV-SCOPE.yaml
-  policy_plan_semantic_change_reconciliation:
-    decision: RECONCILE
-    scope: EFFECTIVE_POLICY_DELTA_TO_BOUND_PLANNING
-    policy_precedence: POLICY_OVER_PLAN_AND_IMPLEMENTATION
-    triggering_change: NORMATIVE_POLICY_REVISION_OR_EFFECTIVE_AUTHORITY_TRANSITION
-    impact_discovery:
-      relationship_authority: MPD-SPEC-0023
-      binding_registry: developer/bindings/policy-plan-bindings.yaml
-      exact_binding_and_policy_section_resolution: REQUIRED
-      semantic_similarity_creates_relationship: FORBIDDEN
-      missing_or_ambiguous_impact_relationship: FAIL_CLOSED_ESCALATE
-      unchanged_plan_must_have_NO_IMPACT_evidence: true
-    responsibility_separation:
-      change_impact_and_compatibility: MPD-CHANGE-0001
-      plan_content_and_lifecycle: MPD-PLAN-0001
-      binding_identity_and_relationship: MPD-SPEC-0023
-      consistency_verification_read_only: MPD-VERI-0001
-      verification_coverage_and_evidence: MPD-ASSURE-0001
-      action_time_eligibility: MPD-CTRL-0001
-      approval_legitimacy: MPD-GOV-0001
-    derived_plan:
-      deterministic_projection_of_resolved_semantics: ALLOWED
-      plan_semantics_may_override_policy: false
-      automatic_unapproved_normative_semantic_repair: FORBIDDEN
-      revised_plan_requires_policy_coverage_and_verification: true
-      mandatory_verification_deletion_or_weakening: FORBIDDEN
-      historical_approval_and_execution_evidence_mutation: FORBIDDEN
-    authorization_boundary:
-      policy_approval_is_new_plan_approval: false
-      prior_plan_approval_may_be_preserved_only_if_scope_and_semantic_equivalence_proven: true
-      prior_plan_approval_preservation_interpreted_as_effective_scope_not_recorded_status: true
-      prior_plan_approval_effective_for_revised_scope_only_if_scope_and_semantic_equivalence_proven: true
-      recorded_prior_plan_approval_status_is_not_automatically_revoked_by_review: true
-      new_or_expanded_plan_approval_by_automation: FORBIDDEN
-      new_or_expanded_implementation_authorization_by_automation: FORBIDDEN
-      existing_approval_ambiguity_or_scope_expansion: BLOCK_AND_REQUIRE_USER_DECISION
-      missing_exact_source_or_stale_state: FAIL_CLOSED
-    verification:
-      binding_consistency_required: true
-      plan_content_currentness_and_policy_conformance_required: true
-      registered_required_tests_and_exact_source_evidence_required: true
-      independent_result_cannot_self_authorize_plan: true
-      failed_or_unknown_required_check: NO_PROMOTION
-    execution_boundary:
-      plan_workflow_and_adapters: PLAN_THEN_IMPLEMENTATION
-      implementation_may_redefine_policy_or_binding_authority: false
-  user_plan_review_impact_reconciliation:
-    decision: RECONCILE
-    approval_ref: developer/policy/approvals/MPA-20261011-PLAN-REVIEW-RECONCILE.yaml
-    applies_to: EXISTING_POLICY_DERIVED_PLAN_USER_REVIEW_AND_LOCALIZED_REVISION
-    scope_owner: MPD-PLAN-0001
-    impact_owner: MPD-CHANGE-0001
-    exact_changed_sections_only: true
-    dependent_impact_requires_machine_proof: true
-    no_impact_sections_must_remain_unchanged: true
-    source_policy_and_binding_freshness_required: true
-    recorded_plan_approval_status_auto_reset: FORBIDDEN
-    recorded_plan_implementation_authorization_status_auto_reset: FORBIDDEN
-    existing_approval_source_record_mutation: FORBIDDEN
-    approved_scope_semantic_equivalence_required_for_reuse: true
-    changed_scope_execution_eligibility_requires_current_authority: true
-    missing_equivalence_or_expanded_scope: BLOCK_EXECUTION_AND_ESCALATE_WITHOUT_APPROVAL_STATUS_MUTATION
-    registered_required_coverage_and_machine_checks: PRESERVE
-    result_states:
-      NO_SEMANTIC_CHANGE: PRESERVE_APPROVAL_AND_EXISTING_EXECUTION_ELIGIBILITY
-      VERIFIED_WITHIN_APPROVED_SCOPE: PRESERVE_APPROVAL_AND_REVERIFY_AFFECTED_CHECKS
-      NEW_OR_EXPANDED_SCOPE: PRESERVE_RECORDED_APPROVAL_BUT_REQUIRE_SEPARATE_AUTHORIZATION_FOR_NEW_SCOPE
-      UNRESOLVED_OR_UNKNOWN_IMPACT: PRESERVE_RECORDED_APPROVAL_BUT_BLOCK_EXECUTION
-    applies_to_pending_plan:
-      review_does_not_grant_approval: true
-      existing_pending_status_preserved: true
-    continuation:
-      existing_authorization_remains_valid_and_required_checks_pass: AUTOMATED_RESOLUTION_MAY_CONTINUE
-      fresh_approval_from_automation: FORBIDDEN
-      required_verification_waiver_from_review: FORBIDDEN
   family_definition:
     kernel_definitions:
     - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
@@ -534,29 +478,6 @@ rules:
     applies_to_behavior_not_yet_extracted_to_machine_contract: true
     role: MIGRATION_REFERENCE
     permanent_normative_authority: false
-  unit_mpd_plan_0003_ed96f54b9558:
-    ordered_work_units:
-    - WU-08
-    - WU-09
-    - WU-10
-    - WU-11
-    responsibilities:
-      WU-08: REPOSITORY_SELF_ANALYSIS_AND_PACKAGE_BASELINE
-      WU-09: INDEPENDENT_PROJECT_PROFILE_IDENTITY_CORE
-      WU-10: PROJECT_PROFILE_COMPATIBILITY_MIGRATION_AND_ADOPTION
-      WU-11: FINAL_REGRESSION_SPECIFICATION_FREEZE_AND_RELEASE_READINESS
-    maintainability_rules:
-    - TYPED_BOUNDARIES
-    - STABLE_OWNERSHIP
-    - INDEPENDENT_VERIFICATION
-    - FAIL_CLOSED_COMPATIBILITY
-    - EXTENSIBLE_REGISTRIES
-    - NO_TOOL_PP_COUPLING
-    - NO_PREMATURE_ADOPTION
-    architecture_acceptance_separate_from_identity_implementation: true
-    identity_implementation_separate_from_migration_capability: true
-    migration_capability_separate_from_repository_adoption: true
-    repository_adoption_separate_from_release_readiness: true
   unit_mpd_spec_0020_51f1aa67e63a:
     revision_sensitive_paths:
     - versions.*
