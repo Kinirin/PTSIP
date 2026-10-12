@@ -6,7 +6,7 @@ policy:
   title: ARCH authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.0'
+  version: '5.0'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -16,14 +16,24 @@ exclusive_kernel:
 rules:
   planning_generation_authority_boundary:
     decision: KEEP_LATEST
-    approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
+    approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-POLICY-ROOT-DERIVED-PATH.yaml
+    prior_approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
     normative_scope: PLANNING_ARTIFACT_CREATION_AND_AUTHORITY_BOUNDARIES
     policy_over_plan_over_implementation: true
     planning_artifact_root: developer/planning/
+    planning_root_authority: USER_APPROVED_REPOSITORY_POLICY_CONFIGURATION
+    planning_root_change: SEPARATE_EXPLICIT_USER_POLICY_DECISION_ONLY
+    planning_root_is_repository_specific: true
     planning_contract_root: developer/contracts/planning/
     artifact_root_is_complete_output_location: false
-    canonical_plan_subpath: UNRESOLVED_USER_POLICY_DECISION_REQUIRED
-    unregistered_or_ambiguous_path: BLOCK_ARTIFACT_CREATION_AND_REQUEST_OWNER_DECISION
+    canonical_plan_subpath: DERIVE_AT_CREATION_FROM_OWNER_APPROVED_MACHINE_ROUTING_CONTRACT
+    canonical_subpath_must_not_be_preassigned: true
+    per_plan_path_selection_not_required_when_contract_derivation_is_deterministic: true
+    subpath_derivation_inputs: CURRENT_EFFECTIVE_POLICY_AND_REGISTERED_MACHINE_FACTS
+    subordinate_routing_contract_status: UNRESOLVED_SEPARATE_USER_APPROVAL_REQUIRED
+    unapproved_missing_or_ambiguous_routing_rule: BLOCK_CREATION_AND_REQUEST_USER_RULE_DECISION
+    derivation_produces_no_unique_canonical_path: BLOCK_CREATION_AND_REQUEST_USER_DECISION
+    arbitrary_agent_path_choice: FORBIDDEN
     policy_approval_does_not_authorize_plan_generation: true
     plan_discussion_does_not_authorize_artifact_creation: true
     user_explicit_plan_creation_request_required: true
