@@ -405,6 +405,12 @@ rules:
       - DOMAIN_SPECIFIC_SCOPE_DEFINITION
       - DOMAIN_SPECIFIC_PRECONDITION_SEMANTICS
       - DOMAIN_SPECIFIC_CONFLICT_SEMANTICS
+  unit_mpd_plan_0001_6560d943f53d:
+    pending_status: IMPLEMENTED_VALIDATION_PENDING
+    complete_status: COMPLETE
+    rule: REGISTERED_MACHINE_CHECKS_MUST_PASS_BEFORE_AUTOMATIC_PROMOTION
+    failed_validation_mutation: FORBIDDEN
+    post_promotion_planning_validation_required: true
 relations:
   supersedes: []
   amends: []
