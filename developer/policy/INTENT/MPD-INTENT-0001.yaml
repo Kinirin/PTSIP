@@ -6,7 +6,7 @@ policy:
   title: INTENT authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '2.1'
+  version: '2.2'
 authority_subject:
   id: DEV_WORK_OUTCOME_INTENT
   statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
@@ -14,6 +14,26 @@ exclusive_kernel:
 - DEV_OUTCOME_SCOPE_AND_NON_GOALS
 - DEV_ACCEPTANCE_PURPOSE
 rules:
+  local_release_bounded_planning_intent:
+    approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-RELEASE-BOUNDED-PLANNING-SCOPE.yaml
+    scope: CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY
+    general_ptsip_or_consumer_project_requirement: false
+    default_plan_scope: SINGLE_TARGET_RELEASE
+    plan_outcome: COMPLETABLE_WITHIN_TARGET_RELEASE
+    oversized_unbounded_plan_creation: FORBIDDEN
+    oversized_plan_threshold: NOT_SPECIFIED_BY_POLICY
+    scope_cannot_be_bounded: REQUIRE_USER_SCOPE_DECISION_BEFORE_ARTIFACT_CREATION
+    cross_release_long_term_plan_default: NOT_PREFERRED
+    handoff_minimization: PREFERRED
+    policy_change:
+      may_require_existing_bound_plan_revision: true
+      automatically_creates_new_plan: false
+      separate_mandatory_plan_class: false
+    work_unit_priority_and_order: DEFER_TO_PLANNING_NOT_NORMATIVE_POLICY
+    logical_plan_identity_independent_of_branch: PRESERVE_EXISTING_ARCH_AND_INFO_POLICY
+    target_release_resolution_rule: SEPARATELY_UNRESOLVED
+    planning_subpath_routing_rule: SEPARATELY_UNRESOLVED
+    new_plan_file_creation_approval: NOT_GRANTED
   family_definition:
     kernel_definitions:
     - id: DEV_OUTCOME_SCOPE_AND_NON_GOALS
