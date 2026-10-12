@@ -57,3 +57,21 @@ def test_cli_pilot_json(tmp_path: Path, monkeypatch, capsys) -> None:
     assert payload["format"] == "ptsip-pilot-report/v2"
     assert payload["tool"]["version"] == "0.3.8a5"
     assert payload["non_intrusion"]["status"] == "VERIFIED_NO_OBSERVED_CHANGE"
+
+
+
+def test_cli_engines_status_reports_incomplete_consumer_install(monkeypatch, capsys) -> None:
+    from ptsip import cli
+
+    report = {
+        "schema_version": "ptsip-official-engine-consumer-status/v1",
+        "status": "INCOMPLETE",
+        "all_installed": False,
+        "execution_authorized": False,
+        "entries": [{"engine": "CONTEXT", "status": "NOT_INSTALLED"}],
+    }
+    monkeypatch.setattr(cli, "official_engine_installation_status", lambda: (report, 4))
+    assert cli.main(["engines", "status", "--json"]) == 4
+    value = json.loads(capsys.readouterr().out)
+    assert value["status"] == "INCOMPLETE"
+    assert value["execution_authorized"] is False
