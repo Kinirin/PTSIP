@@ -1,0 +1,17 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-REMOVABLE-CLEANUP-GLOBAL-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: 'KEEP_LATEST: RETIRED.Removable cleanup must not be restricted to developer/policy/legacy/; make the explicit-request Git-pinned cleanup operation available to all registered policy classes and policy paths, without inventing unsupported per-class lifecycle substatuses. Discuss and derive an implementation plan in chat; create no planning artifact while planning routing remains unresolved.'
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-CHANGE-0001
+  affected_policy_ids:
+  - MPD-CHANGE-0001
+  recorded_at: '2026-10-12'

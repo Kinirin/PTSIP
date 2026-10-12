@@ -6,7 +6,7 @@ policy:
   title: CHANGE authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.1'
+  version: '5.0'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -14,14 +14,26 @@ exclusive_kernel:
 - DEV_CHANGE_IMPACT_AND_COMPATIBILITY
 - DEV_MIGRATION_ORDER_AND_CONTINUITY
 rules:
-  legacy_removable_cleanup:
-    approval_ref: developer/policy/approvals/MPA-20261012-LEGACY-REMOVABLE-CLEANUP-MODE.yaml
-    scope:
+  removable_policy_cleanup:
+    conflict_resolution: KEEP_LATEST
+    approval_ref: developer/policy/approvals/MPA-20261012-REMOVABLE-CLEANUP-GLOBAL-KEEP-LATEST.yaml
+    prior_approval_ref: developer/policy/approvals/MPA-20261012-LEGACY-REMOVABLE-CLEANUP-MODE.yaml
+    replaced_prior_scope:
       policy_class: PTSIP_DEVELOPER_POLICY
       path_prefix: developer/policy/legacy/
+      phase: LEGACY_CLEANUP_ONLY
+    scope:
+      repository: CURRENT_REPOSITORY
+      policy_classes: ALL_REGISTERED_POLICY_CLASSES
+      policy_paths: ALL_REGISTERED_POLICY_RECORDS
+      path_prefix_restriction: NONE
+    eligibility:
       required_status: RETIRED
       required_substatus: Removable
-      phase: LEGACY_CLEANUP_ONLY
+      lifecycle_authority: EACH_TARGET_POLICY_CLASS_EFFECTIVE_CONTRACT
+      missing_or_unrecognized_substatus: BLOCK
+      implicit_cross_class_status_equivalence: FORBIDDEN
+      target_policy_class_lifecycle_mutation: NOT_AUTHORIZED
     execution:
       trigger: EXPLICIT_USER_CLEANUP_REQUEST_ONLY
       automatic_execution_on_removable_transition: FORBIDDEN
@@ -29,20 +41,28 @@ rules:
       future_transition_triggered_automation: REQUIRES_SEPARATE_POLICY_DECISION
     historical_evidence:
       source: APPROVED_PINNED_GIT_OBJECTS
-      baseline_ref: developer/policy/registries/root-family-approved-baseline.json
-      migration_graph_ref: developer/policy/registries/root-family-migration.json
-      approved_revision_field: approved_migration_base_head
-      original_catalog_blob_field: approved_pre_migration_catalog_git_blob
-      migration_graph_blob_field: approved_migration_graph_git_blob
+      pin_verification: REQUIRED
       original_evidence_identity: IMMUTABLE
       independent_history_archive_creation: NOT_REQUIRED
       unavailable_or_unverifiable_git_evidence: BLOCK
+      legacy_migration_evidence:
+        applies_when: TARGET_IS_FROZEN_ROOT_FAMILY_MIGRATION_SOURCE
+        baseline_ref: developer/policy/registries/root-family-approved-baseline.json
+        migration_graph_ref: developer/policy/registries/root-family-migration.json
+        approved_revision_field: approved_migration_base_head
+        original_catalog_blob_field: approved_pre_migration_catalog_git_blob
+        migration_graph_blob_field: approved_migration_graph_git_blob
+        existing_migration_baseline_mutation: FORBIDDEN
+      non_legacy_evidence:
+        applies_when: TARGET_NOT_FROZEN_ROOT_FAMILY_MIGRATION_SOURCE
+        exact_approved_git_object_pin: REQUIRED
+        missing_pin: BLOCK
     execution_boundary:
       unresolved_normative_owner_or_reference: BLOCK_AND_ESCALATE
-      existing_migration_baseline_mutation: FORBIDDEN
+      unregistered_or_ambiguous_target: BLOCK
       current_cleanup_request_required: true
       implementation_details_authority: PLAN
-      status_policy_owner: MPD-GOV-0001
+      target_lifecycle_authority_preserved: true
 
   planning_policy_delta_and_legacy_reconciliation:
     decision: KEEP_LATEST
