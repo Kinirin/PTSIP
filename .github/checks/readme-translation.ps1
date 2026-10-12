@@ -1,34 +1,23 @@
-# Check: readme-translation; migrated from static-validation
+# Check: readme-translation. Registry-driven; no fixed target language or Python script.
 $ErrorActionPreference = 'Stop'
 
-# Verify README translation registry layout
-python -m py_compile .github/scripts/sync_readme_argos.py
+go -C developer/automation run ./cmd/readme-translate --action list-targets
 if ($LASTEXITCODE -ne 0) {
-  throw "README translation script syntax validation failed."
+  throw 'README translation registry cannot be resolved by Go.'
 }
 
-$targets = @(
-  python .github/scripts/sync_readme_argos.py --registry docs/translated/index.yaml --list-targets
-)
-if ($LASTEXITCODE -ne 0) {
-  throw "README translation registry resolution failed."
-}
-if ($targets.Count -ne 1 -or $targets[0] -ne "docs/translated/README.ko.md") {
-  throw "README translation registry must resolve exactly the Korean translation target."
-}
-if (-not (Test-Path -LiteralPath "docs/translated/README.ko.md")) {
-  throw "Registered Korean README translation is missing."
-}
-if (Test-Path -LiteralPath "README.ko.md") {
-  throw "Legacy root README.ko.md must remain retired."
+$targets = @(go -C developer/automation run ./cmd/readme-translate --action list-targets)
+if ($LASTEXITCODE -ne 0 -or $targets.Count -lt 1) {
+  throw 'README translation registry has no valid targets.'
 }
 
-$rootReadme = Get-Content -LiteralPath "README.md" -Raw
-if ($rootReadme -notlike '*href="docs/translated/README.ko.md"*') {
-  throw "README.md does not link to the registered Korean translation."
+foreach ($target in $targets) {
+  if (-not (Test-Path -LiteralPath $target -PathType Leaf)) {
+    throw "Registered README translation is missing: $target"
+  }
 }
-$localized = Get-Content -LiteralPath "docs/translated/README.ko.md" -Raw
-if ($localized -notlike '*href="../../README.md"*') {
-  throw "Localized README does not link back to the canonical root README."
+
+go -C developer/automation run ./cmd/readme-translate --action validate
+if ($LASTEXITCODE -ne 0) {
+  throw 'README translation structure, inline code or links are invalid.'
 }
-if ($LASTEXITCODE -ne 0) { throw 'readme-translation failed' }
