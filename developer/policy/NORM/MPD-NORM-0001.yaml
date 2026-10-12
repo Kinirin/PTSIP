@@ -4,7 +4,8 @@ responsibility_family: NORM
 policy:
   id: MPD-NORM-0001
   title: NORM authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '2.0'
 authority_subject:
   id: DEV_RULE_NORMATIVITY
@@ -83,7 +84,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

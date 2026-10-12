@@ -26,8 +26,8 @@ func (r *Repository) registeredCommand(positional []string) (Object, error) {
 		return nil, err
 	}
 	obligation := Map(Map(owner["rules"])["direct_root_automation_contract"])
-	if Map(owner["policy"])["status"] != "ACTIVE" || obligation["contract_ref"] != "developer/policy/contracts/go-automation-cutover.v1.json" {
-		return nil, fmt.Errorf("automation command contract has no exact active owner")
+	if Map(owner["policy"])["status"] != "APPROVED" || obligation["contract_ref"] != "developer/policy/contracts/go-automation-cutover.v1.json" {
+		return nil, fmt.Errorf("automation command contract has no exact approved owner")
 	}
 	matches := []Object{}
 	for _, raw := range List(contract["runtime_commands"]) {

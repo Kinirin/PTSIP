@@ -4,7 +4,8 @@ responsibility_family: GOV
 policy:
   id: MPD-GOV-0001
   title: GOV authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '2.2'
 authority_subject:
   id: DEV_DECISION_LEGITIMACY
@@ -36,8 +37,11 @@ rules:
       conflict_recovery_ref: developer/contracts/lifecycle/policy_status.json#/automatic_recovery
       normalization_requires_additional_user_approval: false
       implementation_authorization_and_policy_lifecycle_status_are_independent: true
-      existing_policy_record_bulk_rewrite: NOT_PERFORMED
-      existing_validator_cutover: SEPARATE_IMPLEMENTATION
+      existing_policy_record_bulk_rewrite: CURRENT_REGISTERED_POLICIES_EXCLUDING_LEGACY
+      existing_validator_cutover: GOV_CONTRACT_ADMITTED
+      application_approval_ref: developer/policy/approvals/MPA-20261012-GOV-CURRENT-LIFECYCLE-APPLY.yaml
+      approved_inherits_former_active_resolution_effect: true
+      integrity_activate_inferred_from_former_active: false
     policy_version:
       primary_owner_family: GOV
       record_field: policy.version
@@ -45,7 +49,10 @@ rules:
       approval_ref: developer/policy/approvals/MPA-20261012-GOV-POLICY-LIFECYCLE-STRUCTURE.yaml
       definition_state: DEFINED
       validation_implementation: developer/automation/policy/lifecycle/version_contract.go#ValidatePolicyLifecycleVersion
-      existing_validator_cutover: SEPARATE_IMPLEMENTATION
+      existing_validator_cutover: GOV_CONTRACT_ADMITTED
+      approved_minimum_major: 1
+      existing_major_at_least_one: PRESERVE_EXACT_VERSION
+      application_approval_ref: developer/policy/approvals/MPA-20261012-GOV-CURRENT-LIFECYCLE-APPLY.yaml
   family_definition:
     kernel_definitions:
     - id: DEV_DECISION_OWNER_AND_MANDATE
@@ -534,7 +541,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

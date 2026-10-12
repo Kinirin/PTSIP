@@ -312,7 +312,7 @@ func agentSection(r *Repository, id, section string) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	if Map(policy["policy"])["status"] != "ACTIVE" {
+	if Map(policy["policy"])["status"] != "APPROVED" {
 		return nil, fmt.Errorf("agent contract owner is not ACTIVE: %s", id)
 	}
 	value, ok := Map(policy["rules"])[section]

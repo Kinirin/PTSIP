@@ -9,37 +9,104 @@
     "policy_section": "rules.policy_lifecycle.policy_status",
     "approval_ref": "developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml",
     "policy_scope": "PTSIP_DEVELOPER_POLICY",
-    "repository_path_scope": "developer/**"
+    "repository_path_scope": "developer/**",
+    "excluded_paths": [
+      "developer/policy/legacy/**"
+    ]
   },
   "type": "object",
-  "required": ["status", "substatus"],
+  "required": [
+    "status",
+    "substatus"
+  ],
   "additionalProperties": false,
   "properties": {
-    "status": {"$ref": "#/$defs/status"},
-    "substatus": {"type": "string"}
-  },
-  "oneOf": [
-    {
-      "properties": {
-        "status": {"const": "DRAFT"},
-        "substatus": {"enum": ["Default", "Reviewed", "Denied", "Pass"]}
-      }
+    "status": {
+      "$ref": "#/$defs/status"
     },
-    {
-      "properties": {
-        "status": {"const": "APPROVED"},
-        "substatus": {"enum": ["Default", "Applying", "Application_Problems", "Unresolved", "Activate"]}
-      }
-    },
-    {
-      "properties": {
-        "status": {"const": "RETIRED"},
-        "substatus": {"enum": ["Default", "Removable", "Waiting"]}
-      }
+    "substatus": {
+      "type": "string"
     }
-  ],
+  },
   "$defs": {
-    "status": {"enum": ["DRAFT", "APPROVED", "RETIRED"]}
+    "status": {
+      "enum": [
+        "DRAFT",
+        "APPROVED",
+        "RETIRED"
+      ]
+    },
+    "policy_fields": {
+      "type": "object",
+      "required": [
+        "status",
+        "substatus"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "substatus": {
+          "type": "string"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "const": "DRAFT"
+            },
+            "substatus": {
+              "enum": [
+                "Default",
+                "Reviewed",
+                "Denied",
+                "Pass"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "APPROVED"
+            },
+            "substatus": {
+              "enum": [
+                "Default",
+                "Applying",
+                "Application_Problems",
+                "Unresolved",
+                "Activate"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "RETIRED"
+            },
+            "substatus": {
+              "enum": [
+                "Default",
+                "Removable",
+                "Waiting"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "approved_substatus": {
+      "enum": [
+        "Default",
+        "Applying",
+        "Application_Problems",
+        "Unresolved",
+        "Activate"
+      ]
+    }
   },
   "meanings": {
     "DRAFT": {
@@ -62,24 +129,42 @@
     }
   },
   "automatic_normalization": {
-    "from": {"status": "DRAFT", "substatus": "Pass"},
-    "to": {"status": "APPROVED", "substatus": "Default"},
+    "from": {
+      "status": "DRAFT",
+      "substatus": "Pass"
+    },
+    "to": {
+      "status": "APPROVED",
+      "substatus": "Default"
+    },
     "automatic": true,
     "semantic_equivalence": true,
     "additional_user_approval_required": false,
     "creates_new_authority": false
   },
   "automatic_recovery": {
-    "from": {"status": "APPROVED", "substatus": "Application_Problems"},
-    "to": {"status": "APPROVED", "substatus": "Default"},
+    "from": {
+      "status": "APPROVED",
+      "substatus": "Application_Problems"
+    },
+    "to": {
+      "status": "APPROVED",
+      "substatus": "Default"
+    },
     "condition": "The policy conflict has been resolved.",
     "automatic": true
   },
   "boundaries": {
     "catalog_status_schema": "EMPTY_NON_OWNING_SLOT",
     "implementation_authorization_is_independent": true,
-    "existing_policy_record_bulk_rewrite": "NOT_PERFORMED",
-    "existing_validator_cutover": "SEPARATE_IMPLEMENTATION",
+    "existing_policy_record_bulk_rewrite": "CURRENT_REGISTERED_POLICY_FILES_EXCLUDING_LEGACY",
+    "existing_validator_cutover": "GOV_CONTRACT_ADMITTED",
     "retired_removable_automatically_deletes_files": false
+  },
+  "$ref": "#/$defs/policy_fields",
+  "resolution_authority": {
+    "DRAFT": false,
+    "APPROVED": true,
+    "RETIRED": false
   }
 }

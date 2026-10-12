@@ -214,7 +214,7 @@ func TestNeutralClassRecognitionDoesNotBypassMaterializationSchema(t *testing.T)
 	if !Has(Strings(Map(Map(contract["$defs"])["developer_policy_class"])["enum"]), "VPMS_DEVELOPER_POLICY") || Map(contract["vpms_family_allocation"])["materialization_authorized"] != true || Map(contract["vpms_family_allocation"])["legacy_family_allocation"] != "FORBIDDEN" {
 		t.Fatal(contract)
 	}
-	candidate := Object{"schema_version": "ptsip-developer-policy/v1", "policy_class": "VPMS_DEVELOPER_POLICY", "policy": Object{"id": "MPD-ASSURE-0009", "version": "0.0", "status": "DRAFT", "title": "fixture"}, "rules": Object{"fixture": Object{"enabled": true}}}
+	candidate := Object{"schema_version": "ptsip-developer-policy/v1", "policy_class": "VPMS_DEVELOPER_POLICY", "policy": Object{"id": "MPD-ASSURE-0009", "version": "0.0", "status": "DRAFT", "substatus": "Default", "title": "fixture"}, "rules": Object{"fixture": Object{"enabled": true}}}
 	schema := Text(Map(contract["application_gate"])["existing_policy_materialization_schema_ref"])
 	if err := r.Validate(schema, candidate); err == nil {
 		t.Fatal("v1 class opening bypassed materialization schema")

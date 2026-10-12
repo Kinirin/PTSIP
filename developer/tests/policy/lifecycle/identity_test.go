@@ -20,13 +20,13 @@ func identityFixture(t *testing.T) *testrepo.Repository {
 	testrepo.CopyCatalogContracts(t, repo)
 	testrepo.CopyFiles(t, repo, "developer/policy/schemas/root-family-policy.schema.json", "developer/policy/schemas/policy-approval-provenance.schema.json", "developer/policy/registries/root-family-entry-registry.json", "developer/policy/contracts/go-policy-resolver.v1.yaml", "developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json", "developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json", "developer/policy/registries/authority-subject-registry.yaml")
 	testrepo.CopyFiles(t, repo, "developer/policy/CNTR/MPD-CNTR-0004.yaml", "developer/policy/policy-resolver-bindings/registry.yaml", "developer/policy/policy-resolver-bindings/bindings.jsonl", "developer/policy/schemas/policy-resolver-binding.schema.json")
-	index := object{"schema_version": "developer-policy-catalog/v1", "artifact_class": "DEVELOPER_POLICY_CATALOG", "policies": []any{object{"id": "MPD-CNTR-0004", "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml", "status": "ACTIVE", "policy_class": lifecycle.DeveloperClass}}}
-	for _, test := range []struct{ id, status, version string }{{"MPD-NORM-0012", "DRAFT", "0.0"}, {"MPD-NORM-0013", "ACTIVE", "2.0"}} {
+	index := object{"schema_version": "developer-policy-catalog/v1", "artifact_class": "DEVELOPER_POLICY_CATALOG", "policies": []any{object{"id": "MPD-CNTR-0004", "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml", "status": "APPROVED", "substatus": "Applying", "policy_class": lifecycle.DeveloperClass}}}
+	for _, test := range []struct{ id, status, version string }{{"MPD-NORM-0012", "DRAFT", "0.0"}, {"MPD-NORM-0013", "APPROVED", "2.0"}} {
 		path, err := lifecycle.CanonicalPath(test.id)
 		if err != nil {
 			t.Fatal(err)
 		}
-		index["policies"] = append(index["policies"].([]any), object{"id": test.id, "path": path, "status": test.status, "policy_class": lifecycle.DeveloperClass})
+		index["policies"] = append(index["policies"].([]any), object{"id": test.id, "path": path, "status": test.status, "substatus": "Default", "policy_class": lifecycle.DeveloperClass})
 		payload := rootFixturePolicy(t, test.id, test.version, test.status)
 		testrepo.Write(t, repo, path, payload)
 	}
@@ -54,11 +54,9 @@ func rootFixturePolicy(t *testing.T, id, version, status string) object {
 	if err != nil {
 		t.Fatal(err)
 	}
-	payload["policy"] = object{"id": id, "version": version, "title": "Fixture", "status": status}
+	payload["policy"] = object{"id": id, "version": version, "title": "Fixture", "status": status, "substatus": "Default"}
 	payload["rules"] = object{"fixture": object{"enabled": true}}
-	if status == "DRAFT" {
-		delete(payload, "transition")
-	}
+	delete(payload, "transition")
 	return payload
 }
 
@@ -177,7 +175,7 @@ func TestStatusPreflightRequiresExactExistingPolicyAndApprovalIdentity(t *testin
 	repo := identityFixture(t)
 	writeApproval(t, repo, "MPD-NORM-0013", "DRAFT")
 	result, err := lifecycle.StatusPreflight(repo, "MPD-NORM-0013", fixtureApproval)
-	want := object{"status": "READY", "policy_id": "MPD-NORM-0013", "current_status": "ACTIVE", "target_status": "DRAFT", "approval_id": "MPA-test", "implementation_authorized": true}
+	want := object{"status": "READY", "policy_id": "MPD-NORM-0013", "current_status": "APPROVED", "target_status": "DRAFT", "approval_id": "MPA-test", "implementation_authorized": true}
 	if err != nil || !reflect.DeepEqual(result, want) {
 		t.Fatalf("%#v %v", result, err)
 	}
@@ -189,5 +187,8 @@ func TestNewPolicyPreflightRequiresDraftInitialStatus(t *testing.T) {
 	repo := identityFixture(t)
 	writeApproval(t, repo, "MPD-NORM-0014", "ACTIVE")
 	_, err := lifecycle.PreflightNewPolicy(repo, fixtureApproval, fixtureAnalysis, "G01")
+	lifecycleCode(t, err, "INVALID_APPROVAL_TARGET_STATUS")
+	writeApproval(t, repo, "MPD-NORM-0014", "APPROVED")
+	_, err = lifecycle.PreflightNewPolicy(repo, fixtureApproval, fixtureAnalysis, "G01")
 	lifecycleCode(t, err, "NEW_POLICY_MUST_START_DRAFT")
 }

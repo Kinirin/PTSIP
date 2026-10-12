@@ -4,7 +4,8 @@ responsibility_family: INFO
 policy:
   id: MPD-INFO-0001
   title: INFO authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '3.1'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
@@ -6260,7 +6261,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

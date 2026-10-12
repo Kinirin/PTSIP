@@ -5,6 +5,7 @@ policy:
   id: MPD-INFO-0003
   title: Canonical management next-action information contract
   status: APPROVED
+  substatus: Default
   version: '1.0'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
@@ -146,7 +147,8 @@ relations:
   depends_on: []
 
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: PENDING
   requirements:
   - id: TR-001

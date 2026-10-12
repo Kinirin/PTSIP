@@ -27,8 +27,8 @@ func (r *Repository) CutoverStatus() (Object, error) {
 		if err != nil {
 			return nil, err
 		}
-		if Map(record["policy"])["status"] != "ACTIVE" || Map(record["rules"])[spec.Section] == nil {
-			return nil, fmt.Errorf("cutover policy not active: %s", spec.ID)
+		if Map(record["policy"])["status"] != "APPROVED" || Map(record["rules"])[spec.Section] == nil {
+			return nil, fmt.Errorf("cutover policy not approved: %s", spec.ID)
 		}
 	}
 	if contract["schema_version"] != "ptsip-go-automation-cutover/v1" || contract["policy_class"] != DeveloperClass {

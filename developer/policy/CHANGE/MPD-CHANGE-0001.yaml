@@ -4,7 +4,8 @@ responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0001
   title: CHANGE authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '3.2'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
@@ -45,8 +46,11 @@ rules:
     transition_boundary:
       approved_legacy_mapping_semantics: true
       target_lifecycle_model_complete: true
-      status_record_bulk_rewrite_authorized: false
-      current_schema_and_runtime_enforcement_change: NOT_AUTHORIZED
+      status_record_bulk_rewrite_authorized: true
+      current_schema_and_runtime_enforcement_change: GOV_CONTRACT_ADMITTED
+      current_application_approval_ref: developer/policy/approvals/MPA-20261012-GOV-CURRENT-LIFECYCLE-APPLY.yaml
+      excluded_paths:
+      - developer/policy/legacy/**
       other_legacy_statuses_and_substatus_rules: CONSUME_GOV_CANONICAL_CONTRACT
       implementation_plan: SEPARATE
       scope_approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-DEV-SCOPE.yaml
@@ -197,11 +201,9 @@ rules:
   unit_mpd_0010_2e2a5cf2092b: UNBOUNDED
   unit_mpd_0010_073d2c96dd58: '0.0'
   unit_mpd_0010_41e3282f2074:
-    DRAFT: 0
-    APPROVED: 1
-    ACTIVE_MINIMUM: 2
-    SUPERSEDED_PRESERVE_VERSION: true
-    RETIRED_PRESERVE_VERSION: true
+    primary_owner_policy: MPD-GOV-0001
+    contract_ref: developer/contracts/lifecycle/policy_version.json#/status_major_rules
+    local_status_version_definition: NOT_AUTHORITY
   unit_mpd_0010_35419208fc3e:
     status_inference_from_version: FORBIDDEN
     version_inference_from_status: FORBIDDEN
@@ -217,19 +219,15 @@ rules:
     NON_NORMATIVE: KEEP
     DRAFT_NORMATIVE: INCREMENT_MINOR_KEEP_MAJOR_0
     DRAFT_TO_APPROVED: PRESERVE_MINOR_SET_MAJOR_1
-    APPROVED_TO_ACTIVE: PRESERVE_MINOR_SET_MAJOR_2
-    ACTIVE_COMPATIBLE_NORMATIVE: INCREMENT_MINOR_KEEP_MAJOR
-    ACTIVE_INCOMPATIBLE_NORMATIVE: INCREMENT_MAJOR_RESET_MINOR_0
-    ACTIVE_TO_SUPERSEDED: KEEP
-    ACTIVE_TO_RETIRED: KEEP
+    APPROVED_COMPATIBLE_NORMATIVE: INCREMENT_MINOR_KEEP_MAJOR
+    APPROVED_INCOMPATIBLE_NORMATIVE: INCREMENT_MAJOR_RESET_MINOR_0
+    APPROVED_TO_RETIRED: KEEP
   unit_mpd_0010_c4d2cd9c17aa: FAIL_CLOSED
   unit_mpd_0010_897dd3a69317: NOT_REQUIRED
   unit_mpd_0010_ef12227034c2:
-    DRAFT: '0.0'
-    APPROVED: '1.0'
-    ACTIVE: '2.0'
-    SUPERSEDED: '2.0'
-    RETIRED: '2.0'
+    primary_owner_policy: MPD-GOV-0001
+    contract_ref: developer/contracts/lifecycle/policy_version.json
+    local_status_version_examples: NOT_AUTHORITY
   unit_mpd_0011_8b9a13c6427c:
     decision: APPROVED
     approval_date: '2026-09-19'
@@ -618,7 +616,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

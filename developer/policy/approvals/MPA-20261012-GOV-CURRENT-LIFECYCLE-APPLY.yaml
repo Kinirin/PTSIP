@@ -1,0 +1,24 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-GOV-CURRENT-LIFECYCLE-APPLY
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Apply the new canonical GOV lifecycle record structure to current policies
+    under developer/policy, excluding developer/policy/legacy. APPROVED is changed
+    to 1.x or higher and inherits the former ACTIVE effect. Do not force major
+    to 1; if it is already at least 1, preserve the version without change.
+    Former ACTIVE policies become APPROVED.Applying, without an inferred
+    integrity-verification promotion to APPROVED.Activate.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-GOV-0001
+  affected_policy_ids:
+  - MPD-GOV-0001
+  - MPD-CHANGE-0001
+  recorded_at: '2026-10-12'

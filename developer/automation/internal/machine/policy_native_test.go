@@ -15,7 +15,7 @@ func policyTestRepo(t *testing.T) *Repository {
 		t.Fatal(err)
 	}
 	destination := t.TempDir()
-	for _, relative := range []string{"developer/policy", "developer/planning", "developer/bindings", "src/policy", "developer/automation", "developer/tests", ".github", "docs/releasenote"} {
+	for _, relative := range []string{"developer/policy", "developer/contracts", "developer/planning", "developer/bindings", "src/policy", "developer/automation", "developer/tests", ".github", "docs/releasenote"} {
 		root := filepath.Join(source.Root, filepath.FromSlash(relative))
 		err := filepath.WalkDir(root, func(path string, entry os.DirEntry, walkErr error) error {
 			if walkErr != nil {
@@ -125,6 +125,7 @@ func policyTestMaterialization(t *testing.T, r *Repository) (string, string, str
 	identity["id"] = id
 	identity["version"] = "0.0"
 	identity["status"] = "DRAFT"
+	identity["substatus"] = "Default"
 	identity["title"] = "Native Go materialization fixture"
 	template["rules"] = Object{"family_definition": Map(template["rules"])["family_definition"]}
 	template["relations"] = Object{"supersedes": []any{}, "amends": []any{}, "extends": []any{}, "depends_on": []any{}}
@@ -177,8 +178,8 @@ func TestPolicyVersionNativeTransitions(t *testing.T) {
 		version, status, change, target, next string
 		valid                                 bool
 	}{
-		{"0.0", "DRAFT", "DRAFT_NORMATIVE", "", "0.1", true}, {"0.9", "DRAFT", "LIFECYCLE_TRANSITION", "APPROVED", "1.9", true}, {"1.9", "APPROVED", "LIFECYCLE_TRANSITION", "ACTIVE", "2.9", true}, {"2.8", "ACTIVE", "COMPATIBLE_NORMATIVE", "", "2.9", true}, {"2.8", "ACTIVE", "INCOMPATIBLE_NORMATIVE", "", "3.0", true}, {"2.8", "ACTIVE", "LIFECYCLE_TRANSITION", "RETIRED", "2.8", true}, {"3.2", "ACTIVE", "LIFECYCLE_TRANSITION", "SUPERSEDED", "3.2", true}, {"1.3", "APPROVED", "NON_NORMATIVE", "", "1.3", true},
-		{"01.0", "DRAFT", "NON_NORMATIVE", "", "", false}, {"0.0", "DRAFT", "LIFECYCLE_TRANSITION", "ACTIVE", "", false}, {"2.0", "ACTIVE", "LIFECYCLE_TRANSITION", "APPROVED", "", false}, {"1.1", "APPROVED", "COMPATIBLE_NORMATIVE", "", "", false}, {"2.0", "ACTIVE", "DRAFT_NORMATIVE", "", "", false}, {"0.0", "DRAFT", "NON_NORMATIVE", "ACTIVE", "", false}, {"2.0", "ACTIVE", "UNREGISTERED", "", "", false},
+		{"0.0", "DRAFT", "DRAFT_NORMATIVE", "", "0.1", true}, {"0.9", "DRAFT", "LIFECYCLE_TRANSITION", "APPROVED", "1.9", true}, {"2.8", "APPROVED", "COMPATIBLE_NORMATIVE", "", "2.9", true}, {"2.8", "APPROVED", "INCOMPATIBLE_NORMATIVE", "", "3.0", true}, {"2.8", "APPROVED", "LIFECYCLE_TRANSITION", "RETIRED", "2.8", true}, {"1.3", "APPROVED", "NON_NORMATIVE", "", "1.3", true},
+		{"01.0", "DRAFT", "NON_NORMATIVE", "", "", false}, {"0.0", "DRAFT", "LIFECYCLE_TRANSITION", "ACTIVE", "", false}, {"2.0", "ACTIVE", "LIFECYCLE_TRANSITION", "APPROVED", "", false}, {"2.0", "ACTIVE", "NON_NORMATIVE", "", "", false}, {"2.0", "ACTIVE", "DRAFT_NORMATIVE", "", "", false}, {"0.0", "DRAFT", "NON_NORMATIVE", "ACTIVE", "", false}, {"2.0", "ACTIVE", "UNREGISTERED", "", "", false},
 	}
 	for _, test := range cases {
 		t.Run(test.status+"_"+test.change+"_"+test.target+"_"+test.version, func(t *testing.T) {
@@ -356,7 +357,7 @@ func TestPolicyAnalysisBackfillPreservesMeaning(t *testing.T) {
 	}
 }
 func TestPolicyTransitionDependencyValidation(t *testing.T) {
-	valid := Object{"policy": Object{"status": "ACTIVE"}, "transition": Object{"state": "COMPLETE", "requirements": []any{Object{"id": "A", "state": "SATISFIED", "next_action": Object{"after": []any{}}}, Object{"id": "B", "state": "SATISFIED", "next_action": Object{"after": []any{"A"}}}}}}
+	valid := Object{"policy": Object{"status": "APPROVED", "substatus": "Activate"}, "transition": Object{"state": "COMPLETE", "requirements": []any{Object{"id": "A", "state": "SATISFIED", "next_action": Object{"after": []any{}}}, Object{"id": "B", "state": "SATISFIED", "next_action": Object{"after": []any{"A"}}}}}}
 	if errors := ValidatePolicyTransitionSemantics("MPD-CTRL-0001", valid); len(errors) > 0 {
 		t.Fatal(errors)
 	}

@@ -17,9 +17,10 @@ type Object = map[string]any
 
 // A Repository instance is an operation-local read snapshot, never an authority cache.
 type Repository struct {
-	Root     string
-	compiler *jsonschema.Compiler
-	schemas  map[string]*jsonschema.Schema
+	Root                  string
+	compiler              *jsonschema.Compiler
+	schemas               map[string]*jsonschema.Schema
+	registeredSchemaPaths map[string]bool
 }
 
 func Open(start string) (*Repository, error) {
@@ -188,6 +189,7 @@ func (r *Repository) Compiler() (*jsonschema.Compiler, error) {
 		return r.compiler, nil
 	}
 	compiler := jsonschema.NewCompiler()
+	r.registeredSchemaPaths = map[string]bool{}
 	compiler.UseRegexpEngine(compileSchemaRegexp)
 	compiler.UseLoader(closedLoader{})
 	contracts, err := r.Read("developer/policy/registries/developer-policy-catalog-contracts.json")
@@ -210,6 +212,16 @@ func (r *Repository) Compiler() (*jsonschema.Compiler, error) {
 	}
 	if err := admitted.Validate(contracts); err != nil {
 		return nil, err
+	}
+	for _, reference := range Map(contracts["lifecycle_schema_resources"]) {
+		resource, err := r.Read(Text(reference))
+		if err != nil {
+			return nil, err
+		}
+		if err := compiler.AddResource(Text(resource["$id"]), resource); err != nil {
+			return nil, err
+		}
+		r.registeredSchemaPaths[Text(reference)] = true
 	}
 	for _, raw := range Map(contracts["contracts"]) {
 		schema, err := r.Read(Text(Map(raw)["schema_ref"]))
@@ -244,7 +256,7 @@ func (r *Repository) Validate(schemaPath string, value any) error {
 		identity = "urn:ptsip:registered-schema-path:" + SHA256([]byte(schemaPath))
 	}
 	// The shared catalog schemas were already admitted by Compiler.
-	if schemaPath != "developer/policy/schemas/developer-policy-catalog.schema.json" && schemaPath != "developer/policy/schemas/developer-policy-subject-catalog.schema.json" {
+	if !r.registeredSchemaPaths[schemaPath] && schemaPath != "developer/policy/schemas/developer-policy-catalog.schema.json" && schemaPath != "developer/policy/schemas/developer-policy-subject-catalog.schema.json" {
 		if err := compiler.AddResource(identity, schema); err != nil {
 			return err
 		}

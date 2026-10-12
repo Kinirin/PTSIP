@@ -5,7 +5,8 @@ policy:
   id: MPD-REAL-0003
   version: '2.1'
   title: Root Family transition Go test implementation
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
 authority_subject:
   id: DEV_APPROVED_ARTIFACT_REALIZATION
   statement: 선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다.
@@ -76,7 +77,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

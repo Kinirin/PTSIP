@@ -49,6 +49,8 @@ func TestGOVVersionContractJoinsNewStatusWithoutLegacyPolicyReuse(t *testing.T) 
 		{"status": "APPROVED", "substatus": "Default", "version": "1.0"},
 		{"status": "APPROVED", "substatus": "Applying", "version": "1.137"},
 		{"status": "APPROVED", "substatus": "Activate", "version": "1.8"},
+		{"status": "APPROVED", "substatus": "Activate", "version": "2.0"},
+		{"status": "APPROVED", "substatus": "Applying", "version": "12.248"},
 		{"status": "RETIRED", "substatus": "Default", "version": "0.7"},
 		{"status": "RETIRED", "substatus": "Waiting", "version": "1.4"},
 		{"status": "RETIRED", "substatus": "Removable", "version": "4.0"},
@@ -59,7 +61,7 @@ func TestGOVVersionContractJoinsNewStatusWithoutLegacyPolicyReuse(t *testing.T) 
 	}
 	for _, identity := range []object{
 		{"status": "DRAFT", "substatus": "Default", "version": "1.0"},
-		{"status": "APPROVED", "substatus": "Activate", "version": "2.0"},
+		{"status": "APPROVED", "substatus": "Activate", "version": "0.8"},
 		{"status": "ACTIVE", "version": "1.9"},
 		{"status": "ACTIVE", "version": "2.0"},
 		{"status": "ACTIVE", "version": "02.0"},

@@ -86,6 +86,9 @@ func expectedMigratedRefs(t *testing.T, scope, operation string) []any {
 		}
 	}
 	result := []any{}
+	if scope == ".github/workflows/tooling-release.yml" {
+		return []any{object{"policy_id": "MPD-CTRL-0001", "path": "developer/policy/CTRL/MPD-CTRL-0001.yaml", "status": "APPROVED", "substatus": "Applying", "sections": []any{"release_execution_suspension"}}}
+	}
 	byID := map[string]object{}
 	for _, raw := range refs {
 		ref := raw.(object)
@@ -106,7 +109,7 @@ func expectedMigratedRefs(t *testing.T, scope, operation string) []any {
 				id := unit["policy_id"].(string)
 				entry := byID[id]
 				if entry == nil {
-					entry = object{"policy_id": id, "path": "developer/policy/" + unit["policy_path"].(string), "status": "ACTIVE", "sections": []any{}}
+					entry = object{"policy_id": id, "path": "developer/policy/" + unit["policy_path"].(string), "status": "APPROVED", "substatus": "Applying", "sections": []any{}}
 					byID[id] = entry
 					result = append(result, entry)
 				}
@@ -168,7 +171,7 @@ func expectedMigratedRefs(t *testing.T, scope, operation string) []any {
 				if !reflect.DeepEqual(ref["sections"], []any{section}) {
 					t.Fatal("neutral module contract routing drift", ref)
 				}
-				result = append(result, object{"policy_id": id, "path": "developer/policy/" + family + "/" + id.(string) + ".yaml", "status": "ACTIVE", "sections": []any{section}})
+				result = append(result, object{"policy_id": id, "path": "developer/policy/" + family + "/" + id.(string) + ".yaml", "status": "APPROVED", "substatus": "Applying", "sections": []any{section}})
 			}
 		}
 		if err := scanner.Err(); err != nil {
@@ -330,7 +333,7 @@ func TestPolicyExplainReturnsCompactMetadataWithoutPolicyBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result["policy_id"] != "MPD-INFO-0001" || result["status"] != "ACTIVE" {
+	if result["policy_id"] != "MPD-INFO-0001" || result["status"] != "APPROVED" {
 		t.Fatal(result)
 	}
 	if _, exists := result["record"]; exists {

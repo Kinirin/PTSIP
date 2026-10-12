@@ -11,6 +11,11 @@ func CopyTree(t *testing.T, destination *Repository, refs ...string) {
 	t.Helper()
 	source := Open(Root(t))
 	for _, ref := range refs {
+		if ref == "developer/policy" {
+			CopyFiles(t, destination, "developer/contracts/lifecycle/policy_status.json", "developer/contracts/lifecycle/policy_version.json")
+		}
+	}
+	for _, ref := range refs {
 		root, err := source.Path(ref)
 		if err != nil {
 			t.Fatal(err)

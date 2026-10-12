@@ -4,7 +4,8 @@ responsibility_family: RECORD
 policy:
   id: MPD-RECORD-0001
   title: RECORD authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '2.0'
 authority_subject:
   id: DEV_DECISION_AND_EXECUTION_PROVENANCE
@@ -87,7 +88,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

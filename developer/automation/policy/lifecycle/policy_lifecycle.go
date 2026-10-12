@@ -32,7 +32,7 @@ func ValidatePolicyVersionSemantics(id string, payload Object) []string {
 		return []string{id + ": " + err.Error()}
 	}
 	status := Text(identity["status"])
-	valid := status == "DRAFT" && major == 0 || status == "APPROVED" && major == 1 || policyContains([]string{"ACTIVE", "SUPERSEDED", "RETIRED"}, status) && major >= 2
+	valid := status == "DRAFT" && major == 0 || status == "APPROVED" && major >= 1 || status == "RETIRED"
 	if !valid {
 		return []string{id + ": POLICY_VERSION_STATUS_MISMATCH version=" + version + " status=" + status}
 	}
@@ -64,6 +64,9 @@ func ResolvePolicyVersionTransition(version, status, changeClass, target string)
 	if target == "" {
 		target = status
 	}
+	if !policyContains([]string{"DRAFT", "APPROVED", "RETIRED"}, status) || !policyContains([]string{"DRAFT", "APPROVED", "RETIRED"}, target) {
+		return nil, policyFailure("UNSUPPORTED_POLICY_VERSION_TRANSITION", "current GOV lifecycle states are required")
+	}
 	nextMajor, nextMinor := major, minor
 	valid := true
 	switch changeClass {
@@ -75,17 +78,15 @@ func ResolvePolicyVersionTransition(version, status, changeClass, target string)
 	case "LIFECYCLE_TRANSITION":
 		if status == "DRAFT" && target == "APPROVED" && major == 0 {
 			nextMajor = 1
-		} else if status == "APPROVED" && target == "ACTIVE" && major == 1 {
-			nextMajor = 2
-		} else if status == "ACTIVE" && policyContains([]string{"SUPERSEDED", "RETIRED"}, target) && major >= 2 {
+		} else if status == "APPROVED" && target == "RETIRED" && major >= 1 {
 		} else {
 			valid = false
 		}
 	case "COMPATIBLE_NORMATIVE":
-		valid = status == "ACTIVE" && target == "ACTIVE" && major >= 2
+		valid = status == "APPROVED" && target == "APPROVED" && major >= 1
 		nextMinor++
 	case "INCOMPATIBLE_NORMATIVE":
-		valid = status == "ACTIVE" && target == "ACTIVE" && major >= 2
+		valid = status == "APPROVED" && target == "APPROVED" && major >= 1
 		nextMajor++
 		nextMinor = 0
 	}
@@ -151,7 +152,7 @@ func LoadConsistentPolicyCorpus(r Repository) (*PolicyCorpus, error) {
 		if identity["id"] != id {
 			return nil, policyFailure("POLICY_FILE_ID_MISMATCH", id)
 		}
-		if identity["status"] != entry["status"] {
+		if identity["status"] != entry["status"] || identity["substatus"] != entry["substatus"] {
 			return nil, policyFailure("POLICY_STATUS_MISMATCH", id)
 		}
 		if payload["policy_class"] != entry["policy_class"] {
@@ -224,6 +225,15 @@ func policyApproval(r Repository, reference string) (Object, error) {
 	if approval["decision"] != "APPROVED" {
 		return nil, policyFailure("APPROVAL_NOT_GRANTED", "approval.decision must be APPROVED")
 	}
+	approval = policyClone(approval)
+	if approval["target_substatus"] == nil {
+		approval["target_substatus"] = "Default"
+	}
+	state, err := NormalizePolicyStatus(r, Object{"status": approval["target_status"], "substatus": approval["target_substatus"]})
+	if err != nil {
+		return nil, policyFailure("INVALID_APPROVAL_TARGET_STATUS", err.Error())
+	}
+	approval["target_status"], approval["target_substatus"] = state["status"], state["substatus"]
 	return approval, nil
 }
 func policyRequireFamilyClass(r Repository, class, family string) error {
@@ -375,7 +385,7 @@ func InspectPolicy(r Repository, id string) (Object, error) {
 		}
 	}
 	identity := Map(payload["policy"])
-	return Object{"status": "FOUND", "policy_id": id, "title": identity["title"], "policy_status": identity["status"], "policy_version": identity["version"], "index_status": entry["status"], "subject_identity_registered": true, "operationally_resolvable": identity["status"] == "ACTIVE", "declared_runtime_authority": Map(Map(payload["rules"])["authority_semantics"])["runtime_authority"], "transition": payload["transition"], "path": entry["path"]}, nil
+	return Object{"status": "FOUND", "policy_id": id, "title": identity["title"], "policy_status": identity["status"], "policy_substatus": identity["substatus"], "policy_version": identity["version"], "index_status": entry["status"], "subject_identity_registered": true, "operationally_resolvable": identity["status"] == "APPROVED", "declared_runtime_authority": Map(Map(payload["rules"])["authority_semantics"])["runtime_authority"], "transition": payload["transition"], "path": entry["path"]}, nil
 }
 func StatusPreflight(r Repository, id, approvalRef string) (Object, error) {
 	approval, err := policyApproval(r, approvalRef)
@@ -526,7 +536,7 @@ func RegisterFamilyPolicy(r Repository, class, family, approvalRef, analysisID, 
 	if identity["id"] != id {
 		return nil, policyFailure("POLICY_FILE_ID_MISMATCH", id)
 	}
-	if identity["status"] != approval["target_status"] {
+	if identity["status"] != approval["target_status"] || identity["substatus"] != approval["target_substatus"] {
 		return nil, policyFailure("APPROVED_STATUS_MISMATCH", id)
 	}
 	if identity["version"] != InitialPolicyVersion() {
@@ -545,7 +555,7 @@ func RegisterFamilyPolicy(r Repository, class, family, approvalRef, analysisID, 
 		}
 	}
 	index := policyClone(state.Index)
-	entries := append(List(index["policies"]), Object{"id": id, "policy_class": class, "path": expected, "status": approval["target_status"]})
+	entries := append(List(index["policies"]), Object{"id": id, "policy_class": class, "path": expected, "status": approval["target_status"], "substatus": identity["substatus"]})
 	sort.Slice(entries, func(i, j int) bool { return Text(Map(entries[i])["id"]) < Text(Map(entries[j])["id"]) })
 	index["policies"] = entries
 	subject := policyClone(state.Subject)

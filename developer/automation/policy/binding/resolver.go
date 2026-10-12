@@ -81,7 +81,11 @@ func NewResolver(repo Repository) (*Resolver, error) {
 			return nil, err
 		}
 		section := Map(Map(owner["rules"])[Text(config["owner_section"])])
-		if Map(owner["policy"])["status"] != "ACTIVE" || section["resolver_contract_ref"] != ResolverContract || section["policy_reference_model"] != "EXACT_ROOT_POLICY_ID_AND_SECTION" || section["legacy_policy_id_fallback"] != "FORBIDDEN" {
+		allowed, err := resolver.resolutionAllowed(Map(owner["policy"]))
+		if err != nil {
+			return nil, err
+		}
+		if !allowed || section["resolver_contract_ref"] != ResolverContract || section["policy_reference_model"] != "EXACT_ROOT_POLICY_ID_AND_SECTION" || section["legacy_policy_id_fallback"] != "FORBIDDEN" {
 			return nil, fmt.Errorf("resolver owner contract not admitted")
 		}
 	} else {
@@ -168,7 +172,7 @@ func (r *Resolver) Policy(id string) (Object, error) {
 		return nil, err
 	}
 	identity := Map(record["policy"])
-	if identity["id"] != id || identity["status"] != entry["status"] || record["policy_class"] != entry["policy_class"] {
+	if identity["id"] != id || identity["status"] != entry["status"] || identity["substatus"] != entry["substatus"] || record["policy_class"] != entry["policy_class"] {
 		return nil, fmt.Errorf("%s: catalog metadata mismatch", id)
 	}
 	if record["policy_class"] == DeveloperClass {
@@ -179,6 +183,8 @@ func (r *Resolver) Policy(id string) (Object, error) {
 		if err := r.Repo.Validate("developer/policy/schemas/root-family-policy.schema.json", record); err != nil {
 			return nil, err
 		}
+	} else if err := r.Repo.Validate("developer/policy/schemas/management-policy.schema.json", record); err != nil {
+		return nil, err
 	}
 	return record, nil
 }
@@ -190,8 +196,12 @@ func (r *Resolver) reference(value any) (Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	if Map(record["policy"])["status"] != "ACTIVE" {
-		return nil, fmt.Errorf("binding references non-active policy %s", id)
+	allowed, err := r.resolutionAllowed(Map(record["policy"]))
+	if err != nil {
+		return nil, err
+	}
+	if !allowed {
+		return nil, fmt.Errorf("binding references non-approved policy %s", id)
 	}
 	rules := Map(record["rules"])
 	sections := List(reference["sections"])
@@ -207,7 +217,20 @@ func (r *Resolver) reference(value any) (Object, error) {
 		seen[section] = true
 	}
 	entry := r.Index[id]
-	return Object{"policy_id": id, "path": entry["path"], "status": entry["status"], "sections": sections}, nil
+	return Object{"policy_id": id, "path": entry["path"], "status": entry["status"], "substatus": entry["substatus"], "sections": sections}, nil
+}
+
+func (r *Resolver) resolutionAllowed(identity Object) (bool, error) {
+	const reference = "developer/contracts/lifecycle/policy_status.json"
+	state := Object{"status": identity["status"], "substatus": identity["substatus"]}
+	if err := r.Repo.Validate(reference, state); err != nil {
+		return false, err
+	}
+	contract, err := r.Repo.Read(reference)
+	if err != nil {
+		return false, err
+	}
+	return Map(contract["resolution_authority"])[Text(identity["status"])] == true, nil
 }
 
 func (r *Resolver) Resolve(scope, operation string) (Object, error) {

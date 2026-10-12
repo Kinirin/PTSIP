@@ -4,7 +4,8 @@ responsibility_family: ASSURE
 policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '4.1'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
@@ -452,7 +453,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

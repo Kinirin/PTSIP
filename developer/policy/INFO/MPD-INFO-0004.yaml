@@ -5,7 +5,8 @@ policy:
   id: MPD-INFO-0004
   version: '2.0'
   title: Policy Analysis registry-first information identity
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
   statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의 구분을 소유한다.
@@ -46,7 +47,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

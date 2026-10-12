@@ -5,6 +5,7 @@ policy:
   id: MPD-CHANGE-0002
   title: CHANGE authority (APPROVED source responsibilities)
   status: APPROVED
+  substatus: Default
   version: '1.0'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
@@ -121,7 +122,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: PENDING
   requirements:
   - id: TR-001

@@ -84,7 +84,7 @@ func ValidateCurrentRootContracts(r CurrentRootRepository, class string) (Object
 			return nil, err
 		}
 		policy := Map(owner["policy"])
-		if owner["policy_class"] != class || owner["responsibility_family"] != family || policy["id"] != id || policy["status"] != entry["status"] {
+		if owner["policy_class"] != class || owner["responsibility_family"] != family || policy["id"] != id || policy["status"] != entry["status"] || (class == DeveloperClass && policy["substatus"] != entry["substatus"]) {
 			return nil, fmt.Errorf("ROOT_CURRENT_METADATA_MISMATCH: %s", id)
 		}
 		if err := r.Validate(Text(route["schema_ref"]), owner); err != nil {
@@ -103,7 +103,10 @@ func ValidateCurrentRootContracts(r CurrentRootRepository, class string) (Object
 			return nil, fmt.Errorf("ROOT_CURRENT_KERNEL_MISMATCH: %s", id)
 		}
 		if class == DeveloperClass {
-			failures := append(ValidatePolicyVersionSemantics(id, owner), ValidatePolicyTransitionSemantics(id, owner)...)
+			if err := ValidatePolicyLifecycleVersion(r, policy); err != nil {
+				return nil, fmt.Errorf("ROOT_CURRENT_LIFECYCLE_INVALID: %s: %w", id, err)
+			}
+			failures := ValidatePolicyTransitionSemantics(id, owner)
 			if len(failures) > 0 {
 				return nil, fmt.Errorf("ROOT_CURRENT_LIFECYCLE_INVALID: %s", strings.Join(failures, "; "))
 			}

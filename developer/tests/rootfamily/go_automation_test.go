@@ -101,7 +101,7 @@ func copyDeveloperWithoutLegacy(t *testing.T) string {
 	if err := os.WriteFile(filepath.Join(target, "pyproject.toml"), nil, 0600); err != nil {
 		t.Fatal(err)
 	}
-	for _, plane := range []string{"developer/policy", "src/policy", "registry"} {
+	for _, plane := range []string{"developer/policy", "developer/contracts", "src/policy", "registry"} {
 		origin := filepath.Join(repository(t), plane)
 		err := filepath.WalkDir(origin, func(name string, entry fs.DirEntry, err error) error {
 			if err != nil {

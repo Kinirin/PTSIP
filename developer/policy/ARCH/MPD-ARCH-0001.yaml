@@ -4,7 +4,8 @@ responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '3.3'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
@@ -399,7 +400,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

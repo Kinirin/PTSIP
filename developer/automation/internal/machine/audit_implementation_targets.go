@@ -21,8 +21,8 @@ func (r *Repository) VerifyAuditImplementationTarget(reference string) error {
 			return err
 		}
 		const contractRef = "developer/policy/contracts/go-automation-cutover.v1.json"
-		if Map(owner["policy"])["status"] != "ACTIVE" || Map(Map(owner["rules"])["direct_root_automation_contract"])["contract_ref"] != contractRef {
-			return fmt.Errorf("Go implementation mapping contract is not active")
+		if Map(owner["policy"])["status"] != "APPROVED" || Map(Map(owner["rules"])["direct_root_automation_contract"])["contract_ref"] != contractRef {
+			return fmt.Errorf("Go implementation mapping contract is not approved")
 		}
 		contract, err := r.Read(contractRef)
 		if err != nil {

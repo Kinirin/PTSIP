@@ -4,7 +4,8 @@ responsibility_family: CTRL
 policy:
   id: MPD-CTRL-0001
   title: CTRL authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '2.1'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
@@ -389,7 +390,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

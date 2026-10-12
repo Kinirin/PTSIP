@@ -4,7 +4,8 @@ responsibility_family: OPS
 policy:
   id: MPD-OPS-0001
   title: OPS authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '2.0'
 authority_subject:
   id: DEV_SERVICE_CONTINUITY_AND_RECOVERY
@@ -51,7 +52,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

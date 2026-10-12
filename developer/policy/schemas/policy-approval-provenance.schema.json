@@ -88,7 +88,53 @@
           "minLength": 1
         },
         "conflict_resolution": {
-          "const": "RECONCILE"
+          "oneOf": [
+            {
+              "enum": [
+                "RECONCILE",
+                "KEEP_LATEST",
+                "KEEP_PRIOR"
+              ]
+            },
+            {
+              "type": "object",
+              "required": [
+                "strategy"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "strategy": {
+                  "enum": [
+                    "RECONCILE",
+                    "KEEP_LATEST",
+                    "KEEP_PRIOR"
+                  ]
+                },
+                "prior_approval_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "previous_engine_version_owner_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "superseded_rule": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "replacement_rule": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "preserved_rules": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
         },
         "branch_creation_authorized": {
           "const": false
@@ -128,6 +174,9 @@
         },
         "work_unit_priority_assignment_authorized": {
           "const": false
+        },
+        "target_substatus": {
+          "type": "string"
         }
       },
       "additionalProperties": false

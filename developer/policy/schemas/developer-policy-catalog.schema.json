@@ -48,7 +48,26 @@
               "MIGRATION_SOURCE"
             ]
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "not": {
+                "properties": {
+                  "authority_role": {
+                    "const": "MIGRATION_SOURCE"
+                  }
+                },
+                "required": [
+                  "authority_role"
+                ]
+              }
+            },
+            "then": {
+              "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/policy_fields"
+            }
+          }
+        ]
       }
     },
     "migration_registry_ref": {

@@ -5,7 +5,8 @@ policy:
   id: MPD-ARCH-0002
   version: '3.1'
   title: Developer Automation responsibility-domain package boundary
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
 authority_subject:
   id: DEV_AUTOMATION_RESPONSIBILITY_DOMAIN_STRUCTURE
   statement: Developer Automation 구현을 독립적인 responsibility domain 경계로 분리하고 각 구현 단위의 소유 책임이 package 경로에서 기계적으로 식별되도록 한다.
@@ -173,7 +174,8 @@ relations:
   - policy: MPD-REAL-0005
     scope: GO_AUTOMATION_IMPLEMENTATION_LANGUAGE
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

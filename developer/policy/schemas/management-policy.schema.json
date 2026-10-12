@@ -11,7 +11,10 @@
   ],
   "properties": {
     "schema_version": {
-      "enum": ["ptsip-developer-policy/v1", "developer-policy/v2"]
+      "enum": [
+        "ptsip-developer-policy/v1",
+        "developer-policy/v2"
+      ]
     },
     "policy_class": {
       "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/policy_class"
@@ -22,7 +25,8 @@
         "id",
         "version",
         "title",
-        "status"
+        "status",
+        "substatus"
       ],
       "properties": {
         "id": {
@@ -34,20 +38,24 @@
           "minLength": 1
         },
         "status": {
-          "enum": [
-            "DRAFT",
-            "APPROVED",
-            "ACTIVE",
-            "SUPERSEDED",
-            "RETIRED"
-          ]
+          "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/status"
         },
         "version": {
-          "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "$ref": "urn:developer-policy:lifecycle-version:v1#/$defs/policy_version"
+        },
+        "substatus": {
+          "type": "string"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/policy_fields"
+        },
+        {
+          "$ref": "urn:developer-policy:lifecycle-version:v1#/$defs/policy_fields"
+        }
+      ]
     },
     "rules": {
       "type": "object",
@@ -174,7 +182,7 @@
       ],
       "properties": {
         "target_status": {
-          "const": "ACTIVE"
+          "const": "APPROVED"
         },
         "state": {
           "enum": [
@@ -189,6 +197,9 @@
           "items": {
             "$ref": "#/$defs/transition_requirement"
           }
+        },
+        "target_substatus": {
+          "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/approved_substatus"
         }
       },
       "additionalProperties": false
@@ -278,133 +289,22 @@
   "allOf": [
     {
       "if": {
-        "required": [
-          "policy"
-        ],
         "properties": {
-          "policy": {
-            "required": [
-              "status"
-            ],
-            "properties": {
-              "status": {
-                "const": "APPROVED"
-              }
-            }
-          }
-        }
-      },
-      "then": {
-        "required": [
-          "transition"
-        ],
-        "properties": {
-          "transition": {
-            "properties": {
-              "target_status": {
-                "const": "ACTIVE"
-              },
-              "state": {
-                "enum": [
-                  "PENDING",
-                  "READY"
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "required": [
-          "policy",
-          "transition"
-        ],
-        "properties": {
-          "policy": {
-            "required": [
-              "status"
-            ],
-            "properties": {
-              "status": {
-                "const": "ACTIVE"
-              }
-            }
-          }
-        }
-      },
-      "then": {
-        "properties": {
-          "transition": {
-            "properties": {
-              "target_status": {
-                "const": "ACTIVE"
-              },
-              "state": {
-                "const": "COMPLETE"
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "required": [
-          "policy"
-        ],
-        "properties": {
-          "policy": {
-            "required": [
-              "status"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "DRAFT",
-                  "SUPERSEDED",
-                  "RETIRED"
-                ]
-              }
-            }
-          }
-        }
-      },
-      "then": {
-        "not": {
-          "required": [
-            "transition"
-          ]
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "policy": {
-            "properties": {
-              "status": {
-                "const": "DRAFT"
-              }
-            },
-            "required": [
-              "status"
-            ]
+          "schema_version": {
+            "const": "ptsip-developer-policy/v1"
           }
         },
         "required": [
-          "policy"
+          "schema_version"
         ]
       },
       "then": {
         "properties": {
-          "policy": {
-            "properties": {
-              "version": {
-                "pattern": "^0\\.(0|[1-9][0-9]*)$"
-              }
-            }
+          "policy_class": {
+            "enum": [
+              "PTSIP_DEVELOPER_POLICY",
+              "PTSIP_BOUND_POLICY"
+            ]
           }
         }
       }
@@ -412,106 +312,28 @@
     {
       "if": {
         "properties": {
-          "policy": {
-            "properties": {
-              "status": {
-                "const": "APPROVED"
-              }
-            },
-            "required": [
-              "status"
-            ]
+          "policy_class": {
+            "const": "VPMS_DEVELOPER_POLICY"
           }
         },
         "required": [
-          "policy"
+          "policy_class"
         ]
       },
       "then": {
         "properties": {
+          "schema_version": {
+            "const": "developer-policy/v2"
+          },
           "policy": {
             "properties": {
-              "version": {
-                "pattern": "^1\\.(0|[1-9][0-9]*)$"
+              "id": {
+                "$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/root_family_policy_id"
               }
             }
           }
         }
       }
-    },
-    {
-      "if": {
-        "properties": {
-          "policy": {
-            "properties": {
-              "status": {
-                "const": "ACTIVE"
-              }
-            },
-            "required": [
-              "status"
-            ]
-          }
-        },
-        "required": [
-          "policy"
-        ]
-      },
-      "then": {
-        "properties": {
-          "policy": {
-            "properties": {
-              "version": {
-                "pattern": "^(?:[2-9]|[1-9][0-9]+)\\.(0|[1-9][0-9]*)$"
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "policy": {
-            "properties": {
-              "status": {
-                "enum": [
-                  "SUPERSEDED",
-                  "RETIRED"
-                ]
-              }
-            },
-            "required": [
-              "status"
-            ]
-          }
-        },
-        "required": [
-          "policy"
-        ]
-      },
-      "then": {
-        "properties": {
-          "policy": {
-            "properties": {
-              "version": {
-                "pattern": "^(?:[2-9]|[1-9][0-9]+)\\.(0|[1-9][0-9]*)$"
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "if": {"properties": {"schema_version": {"const": "ptsip-developer-policy/v1"}}, "required": ["schema_version"]},
-      "then": {"properties": {"policy_class": {"enum": ["PTSIP_DEVELOPER_POLICY", "PTSIP_BOUND_POLICY"]}}}
-    },
-    {
-      "if": {"properties": {"policy_class": {"const": "VPMS_DEVELOPER_POLICY"}}, "required": ["policy_class"]},
-      "then": {"properties": {
-        "schema_version": {"const": "developer-policy/v2"},
-        "policy": {"properties": {"id": {"$ref": "urn:developer-policy:catalog-contracts:v1#/$defs/root_family_policy_id"}}}
-      }}
     },
     {
       "if": {

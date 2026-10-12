@@ -4,7 +4,8 @@ authority: false
 canonical_source_registry_ref: developer/policy/registries/governance-source-registry.yaml
 policy_query_list:
 - policy_id: MPD-ARCH-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_work_0003_6c611ebb841f
   - unit_mpd_work_0003_409ccab39a04
@@ -15,7 +16,8 @@ policy_query_list:
   reason: Requires responsibility decomposition and existing-authority reconciliation
     before Family policy materialization.
 - policy_id: MPD-CTRL-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_work_0003_fc836a4c0e34
   - unit_mpd_work_0003_b59d60bb36a6
@@ -24,19 +26,22 @@ policy_query_list:
   reason: Requires responsibility decomposition and existing-authority reconciliation
     before Family policy materialization.
 - policy_id: MPD-INFO-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_work_0003_51d952085149
   reason: Requires responsibility decomposition and existing-authority reconciliation
     before Family policy materialization.
 - policy_id: MPD-REAL-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_work_0003_b742e02ef576
   reason: Requires responsibility decomposition and existing-authority reconciliation
     before Family policy materialization.
 - policy_id: MPD-ARCH-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_plan_0001_50410dc74c9f
   - unit_mpd_plan_0001_7f56c7fed0e5
@@ -46,19 +51,22 @@ policy_query_list:
   reason: Canonical owner of developer planning authority, planning structure, Work
     Unit identity, and planning lifecycle boundaries.
 - policy_id: MPD-INFO-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_plan_0001_2045fc60ef62
   reason: Canonical owner of developer planning authority, planning structure, Work
     Unit identity, and planning lifecycle boundaries.
 - policy_id: MPD-CTRL-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_plan_0001_6560d943f53d
   reason: Canonical owner of developer planning authority, planning structure, Work
     Unit identity, and planning lifecycle boundaries.
 - policy_id: MPD-GOV-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0010_e5b59f852d65
   - unit_mpd_0010_8c571a585cc6
@@ -70,18 +78,21 @@ policy_query_list:
   - unit_mpd_0010_a71704961691
   reason: Owns developer policy lifecycle preflight and provisional operational resolution.
 - policy_id: MPD-CTRL-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0010_3c286438d94d
   reason: Owns developer policy lifecycle preflight and provisional operational resolution.
 - policy_id: MPD-INFO-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0010_d4c43b1cd85b
   - unit_mpd_0010_8cff0d8ec14e
   reason: Owns developer policy lifecycle preflight and provisional operational resolution.
 - policy_id: MPD-CHANGE-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0010_2e2a5cf2092b
   - unit_mpd_0010_073d2c96dd58
@@ -94,46 +105,54 @@ policy_query_list:
   - unit_mpd_0010_ef12227034c2
   reason: Owns developer policy lifecycle preflight and provisional operational resolution.
 - policy_id: MPD-RECORD-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0010_b72085fb0868
   reason: Owns developer policy lifecycle preflight and provisional operational resolution.
 - policy_id: MPD-INFO-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_spec_0006_d25095d9c02a
   reason: Canonical owner of identity and exact resolution semantics.
 - policy_id: MPD-GOV-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_spec_0010_61ea7f414674
   reason: Canonical owner of governance source vocabulary and source authority semantics.
 - policy_id: MPD-INTENT-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_plan_0004_acd66447ea97
   reason: Canonical owner of deferred Agent Contract work and pending materialization
     planning state.
 - policy_id: MPD-CHANGE-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0011_8b9a13c6427c
   reason: Contains the explicit project-owner decision baseline for Project Profile
     transition automation.
 - policy_id: MPD-CHANGE-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_migr_0004_7aabef629d43
   reason: Canonical owner of Project Profile transition generation and reconciliation
     mechanics.
 - policy_id: MPD-CTRL-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_migr_0004_c6d84e07b661
   reason: Canonical owner of Project Profile transition generation and reconciliation
     mechanics.
 - policy_id: MPD-GOV-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0012_8b9a13c6427c
   - unit_mpd_0012_e0cfe7d01329
@@ -141,19 +160,22 @@ policy_query_list:
   reason: Approved decisions are operational authority; provisional and deferred decisions
     remain explicitly non-authoritative.
 - policy_id: MPD-ARCH-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_spec_0023_7795cd9b8dbc
   reason: Canonical owner of Policy-Plan authority separation, identity, cardinality,
     and existence-state contracts.
 - policy_id: MPD-GOV-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_spec_0023_1a5323523839
   reason: Canonical owner of Policy-Plan authority separation, identity, cardinality,
     and existence-state contracts.
 - policy_id: MPD-INFO-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_spec_0023_87eece45f479
   - unit_mpd_spec_0023_759e9dad168d
@@ -161,25 +183,29 @@ policy_query_list:
   reason: Canonical owner of Policy-Plan authority separation, identity, cardinality,
     and existence-state contracts.
 - policy_id: MPD-REAL-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0013_6a876b8f6996
   reason: Owns operational binding automation and the explicit boundary that additional
     relation lifecycle states are not modeled by the current policy.
 - policy_id: MPD-INFO-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_0013_a9f56e3465ea
   reason: Owns operational binding automation and the explicit boundary that additional
     relation lifecycle states are not modeled by the current policy.
 - policy_id: MPD-NORM-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_spec_0024_ffdffc01d053
   - unit_mpd_spec_0024_96089904dda7
   reason: Canonical owner of agent-contract normative authority boundaries.
 - policy_id: MPD-CNTR-0001
-  expected_status: ACTIVE
+  expected_status: APPROVED
+  expected_substatus: Applying
   sections:
   - unit_mpd_spec_0025_60134fd764b9
   - unit_mpd_spec_0025_38fd80009165

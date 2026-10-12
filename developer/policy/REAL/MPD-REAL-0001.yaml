@@ -4,7 +4,8 @@ responsibility_family: REAL
 policy:
   id: MPD-REAL-0001
   title: REAL authority (ACTIVE source responsibilities)
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
   version: '2.0'
 authority_subject:
   id: DEV_APPROVED_ARTIFACT_REALIZATION
@@ -109,7 +110,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

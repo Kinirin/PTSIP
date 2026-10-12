@@ -292,7 +292,7 @@ func (r *Repository) ValidateNeutralCatalogSnapshot(catalog, subject Object, rec
 		if entry["policy_class"] != source["policy_class"] {
 			errors = append(errors, id+": class projection mismatch")
 		}
-		if entry["status"] != identity["status"] {
+		if entry["authority_role"] != "MIGRATION_SOURCE" && (entry["status"] != identity["status"] || entry["substatus"] != identity["substatus"]) {
 			errors = append(errors, id+": status projection mismatch")
 		}
 	}
@@ -364,10 +364,10 @@ func (r *Repository) ValidateDeveloperPolicy() []string {
 		}
 		add(reference, r.Validate(schema, payload))
 		identity := Map(payload["policy"])
-		if identity["id"] != id || identity["status"] != entry["status"] || payload["policy_class"] != entry["policy_class"] {
+		if identity["id"] != id || identity["status"] != entry["status"] || identity["substatus"] != entry["substatus"] || payload["policy_class"] != entry["policy_class"] {
 			errors = append(errors, reference+": class/status/identity mismatch")
 		}
-		errors = append(errors, ValidatePolicyVersionSemantics(id, payload)...)
+		add(reference+" lifecycle", policylifecycle.ValidatePolicyLifecycleVersion(r, identity))
 		errors = append(errors, ValidatePolicyTransitionSemantics(id, payload)...)
 	}
 	discovered, err := r.policyDiscoveredIDs()

@@ -47,7 +47,10 @@ func (r *Repository) policyValidateGovernanceSources(records map[string]Object) 
 			if identity["status"] != query["expected_status"] {
 				errors = append(errors, id+": source review status mismatch")
 			}
-			if identity["status"] != "ACTIVE" && query["review_role"] != "REVIEW_ONLY_NOT_AUTHORITY" {
+			if query["expected_substatus"] != nil && identity["substatus"] != query["expected_substatus"] {
+				errors = append(errors, id+": source review substatus mismatch")
+			}
+			if identity["status"] != "APPROVED" && query["review_role"] != "REVIEW_ONLY_NOT_AUTHORITY" {
 				errors = append(errors, id+": inactive source review must be non-authority")
 			}
 			for _, section := range policyStrings(query["sections"]) {

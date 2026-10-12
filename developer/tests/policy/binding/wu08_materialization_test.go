@@ -27,16 +27,16 @@ func equalWU08JSON(t *testing.T, left, right any) bool {
 	return bytes.Equal(leftJSON, rightJSON)
 }
 
-func TestWU08MutationGateUsesActiveRootOwnerAndPreservesExplicitApprovalEvidence(t *testing.T) {
+func TestWU08MutationGateUsesApprovedRootOwnerAndPreservesExplicitApprovalEvidence(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
 	result, err := lifecycle.InspectPolicy(repo, "MPD-CTRL-0001")
-	if err != nil || result["policy_status"] != "ACTIVE" || result["index_status"] != "ACTIVE" || result["operationally_resolvable"] != true {
+	if err != nil || result["policy_status"] != "APPROVED" || result["policy_substatus"] != "Applying" || result["index_status"] != "APPROVED" || result["operationally_resolvable"] != true {
 		t.Fatal(result, err)
 	}
 	if len(contractRule(t, repo, "MPD-CTRL-0001", "unit_mpd_work_0004_b413e855fd78")) == 0 {
 		t.Fatal("canonical mutation authorization section missing")
 	}
-	for _, target := range []string{"APPROVED", "ACTIVE"} {
+	for _, target := range []string{"APPROVED"} {
 		ref := "developer/policy/approvals/MPA-20261004-WU08-MUTATION-GATE-" + target + ".yaml"
 		record, err := repo.Read(ref)
 		if err != nil {

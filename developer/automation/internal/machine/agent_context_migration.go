@@ -259,7 +259,7 @@ func VerifyAgentContextMigration(r *Repository, stage string) (Object, error) {
 	if Map(policy["rules"])["unit_mpd_0012_e0cfe7d01329"] == nil {
 		return nil, fmt.Errorf("exact machine migration authority section missing")
 	}
-	active := Map(policy["policy"])["status"] == "ACTIVE"
+	active := Map(policy["policy"])["status"] == "APPROVED"
 	if stage == "AUTO" {
 		stage = "M5"
 		if active && contractSet["status"] == "CURRENT" {

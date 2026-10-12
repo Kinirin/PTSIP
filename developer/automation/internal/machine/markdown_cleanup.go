@@ -362,7 +362,7 @@ func (r *Repository) ApplyMarkdownPlan(plan Object) (Object, error) {
 	if err != nil {
 		return nil, err
 	}
-	if Map(policy["policy"])["status"] != "ACTIVE" {
+	if Map(policy["policy"])["status"] != "APPROVED" {
 		return nil, Fail("CLEANUP_POLICY_NOT_ACTIVE", "Root cleanup policy is not ACTIVE")
 	}
 	if plan["schema_version"] != "ptsip-markdown-cleanup-plan/v1" || plan["state"] != "READY" || plan["apply_authorized"] != true {

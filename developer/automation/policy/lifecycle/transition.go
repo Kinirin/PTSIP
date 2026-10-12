@@ -70,20 +70,17 @@ func ValidatePolicyTransitionSemantics(id string, payload Object) []string {
 		}
 	}
 	status := Map(payload["policy"])["status"]
-	if status == "APPROVED" {
+	if status == "APPROVED" && Map(payload["policy"])["substatus"] == "Activate" {
+		if !satisfied || transition["state"] != "COMPLETE" {
+			errors = append(errors, id+": APPROVED.Activate requires COMPLETE transition with all requirements SATISFIED")
+		}
+	} else if status == "APPROVED" && Map(payload["policy"])["substatus"] == "Default" {
 		expected := "PENDING"
 		if satisfied {
 			expected = "READY"
 		}
 		if transition["state"] != expected {
 			errors = append(errors, id+": APPROVED transition state must be "+expected)
-		}
-	} else if status == "ACTIVE" {
-		if !satisfied {
-			errors = append(errors, id+": ACTIVE transition history requires all requirements SATISFIED")
-		}
-		if transition["state"] != "COMPLETE" {
-			errors = append(errors, id+": ACTIVE transition history must be COMPLETE")
 		}
 	}
 	return errors

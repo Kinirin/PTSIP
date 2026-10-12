@@ -5,7 +5,8 @@ policy:
   id: MPD-CNTR-0005
   version: '2.0'
   title: Policy Analysis registry-only discovery interface
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
 authority_subject:
   id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
   statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를 소유한다.
@@ -35,7 +36,8 @@ relations:
   - policy: MPD-INFO-0004
     scope: POLICY_ANALYSIS_INFORMATION_IDENTITY
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

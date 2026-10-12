@@ -17,12 +17,12 @@ func isolationFixture(t *testing.T) *testrepo.Repository {
 	t.Helper()
 	repo := identityFixture(t)
 	testrepo.CopyFiles(t, repo, "developer/policy/schemas/management-policy.schema.json")
-	testrepo.Write(t, repo, "developer/policy/ASSURE/MPD-ASSURE-0002.yaml", object{"schema_version": "developer-policy/v2", "policy_class": vpmsClass, "policy": object{"id": "MPD-ASSURE-0002", "status": "ACTIVE", "version": "2.0", "title": "VPMS fixture"}, "rules": object{"fixture": object{"enabled": true}}})
+	testrepo.Write(t, repo, "developer/policy/ASSURE/MPD-ASSURE-0002.yaml", object{"schema_version": "developer-policy/v2", "policy_class": vpmsClass, "policy": object{"id": "MPD-ASSURE-0002", "status": "APPROVED", "substatus": "Default", "version": "2.0", "title": "VPMS fixture"}, "rules": object{"fixture": object{"enabled": true}}})
 	index, err := repo.Read(lifecycle.PolicyIndex)
 	if err != nil {
 		t.Fatal(err)
 	}
-	index["policies"] = append(index["policies"].([]any), object{"id": "MPD-ASSURE-0002", "policy_class": vpmsClass, "path": "developer/policy/ASSURE/MPD-ASSURE-0002.yaml", "status": "ACTIVE"})
+	index["policies"] = append(index["policies"].([]any), object{"id": "MPD-ASSURE-0002", "policy_class": vpmsClass, "path": "developer/policy/ASSURE/MPD-ASSURE-0002.yaml", "status": "APPROVED", "substatus": "Default"})
 	sort.Slice(index["policies"].([]any), func(i, j int) bool {
 		rows := index["policies"].([]any)
 		return rows[i].(object)["id"].(string) < rows[j].(object)["id"].(string)
@@ -280,7 +280,7 @@ func TestClassAwareVPMSRegistrationChecksExactSourceClass(t *testing.T) {
 				t.Fatalf("%#v %v", result, err)
 			}
 			path := "developer/policy/ASSURE/MPD-ASSURE-0003.yaml"
-			testrepo.Write(t, repo, path, object{"schema_version": "developer-policy/v2", "policy_class": candidateClass, "policy": object{"id": "MPD-ASSURE-0003", "version": "0.0", "title": "VPMS fixture", "status": "DRAFT"}, "rules": object{"fixture": object{"enabled": true}}})
+			testrepo.Write(t, repo, path, object{"schema_version": "developer-policy/v2", "policy_class": candidateClass, "policy": object{"id": "MPD-ASSURE-0003", "version": "0.0", "title": "VPMS fixture", "status": "DRAFT", "substatus": "Default"}, "rules": object{"fixture": object{"enabled": true}}})
 			result, err = lifecycle.RegisterFamilyPolicy(repo, vpmsClass, "ASSURE", fixtureApproval, fixtureAnalysis, "G01", path)
 			if candidateClass != vpmsClass {
 				lifecycleCode(t, err, "POLICY_CLASS_MISMATCH")

@@ -5,7 +5,8 @@ policy:
   id: MPD-ASSURE-0003
   version: '3.0'
   title: Root Family transition verification contract
-  status: ACTIVE
+  status: APPROVED
+  substatus: Applying
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: 개발 결과와 release 후보에 대한 증거의 적합성, 필요한 검증 coverage 및 정확한 source snapshot에 구속된 검증 판정을 소유한다.
@@ -44,7 +45,8 @@ relations:
   extends: []
   depends_on: []
 transition:
-  target_status: ACTIVE
+  target_status: APPROVED
+  target_substatus: Applying
   state: COMPLETE
   requirements:
   - id: TR-001

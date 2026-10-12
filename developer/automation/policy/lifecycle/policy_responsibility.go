@@ -107,7 +107,7 @@ func ActiveFamilyIDs(r Repository, class, family string) ([]string, error) {
 		if _, err := resolver.Policy(id); err != nil {
 			return nil, policyFailure("AUTHORITY_METADATA_MISMATCH", err.Error())
 		}
-		if entry["policy_class"] != class || entry["status"] != "ACTIVE" {
+		if entry["policy_class"] != class || entry["status"] != "APPROVED" {
 			continue
 		}
 		parts := strings.Split(id, "-")
