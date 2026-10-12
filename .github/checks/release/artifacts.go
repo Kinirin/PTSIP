@@ -269,13 +269,9 @@ func BuildComponent(repo *machine.Repository, selection, id, platform, output st
 		if len(m.Packages) != 1 {
 			return receipt, fmt.Errorf("engine must have an independent Cargo package")
 		}
-		want, e := CargoVersion(c.Version)
-		if e != nil {
-			catalog, _ := loadCatalog(repo)
-			if catalog.BootstrapEngineVersions[id] != c.Version {
-				return receipt, e
-			}
-			want = c.Version
+		want, versionErr := CargoVersion(c.Version)
+		if versionErr != nil {
+			return receipt, versionErr
 		}
 		if m.Packages[0].Version != want {
 			return receipt, fmt.Errorf("Cargo version projection mismatch: %s != %s", m.Packages[0].Version, want)

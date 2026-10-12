@@ -4,7 +4,7 @@
   "package_base": "0.3.8",
   "version_rules": {
     "tool": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:(a|b|rc)([1-9][0-9]*))?$",
-    "engine": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:(a|b|rc)([1-9][0-9]*))?$",
+    "engine": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
     "profile": "^pp\\.[0-9]+\\.[0-9]+$",
     "package_base": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
   },
@@ -48,5 +48,6 @@
     "selection",
     "sync-versions"
   ],
-  "engine_version_file": "version.yaml"
+  "engine_version_file": "version.yaml",
+  "engine_version_resolution_ref": "developer/policy/approvals/MPA-20261012-ENGINE-VERSION-THREE-SEGMENT-KEEP-LATEST.yaml"
 }

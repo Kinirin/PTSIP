@@ -111,8 +111,7 @@ func SyncEngineVersions(repo *machine.Repository, targets string) (machine.Objec
         if !selected[id] { continue }
         version, err := loadEngineVersion(repo, catalog, id)
         if err != nil { return nil, err }
-        if !regexp.MustCompile(catalog.VersionRules["engine"]).MatchString(version) &&
-            version != catalog.BootstrapEngineVersions[id] {
+        if !regexp.MustCompile(catalog.VersionRules["engine"]).MatchString(version) {
             return nil, fmt.Errorf("invalid canonical public engine version: %s %s", id, version)
         }
         cargoVersion, err := projectedCargoVersion(catalog, id, version)

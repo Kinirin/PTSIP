@@ -11,7 +11,7 @@ import (
 )
 
 func vector() map[string]string {
-	return map[string]string{"tool": "0.3.8a5", "profile": "pp.1.02", "context": "0.2", "storage": "0.3", "validation": "0.3", "discovery": "0.3", "planning": "0.3", "execution": "0.3", "projection": "0.2"}
+	return map[string]string{"tool": "0.3.8a5", "profile": "pp.1.02", "context": "0.2.0", "storage": "0.3.0", "validation": "0.3.0", "discovery": "0.3.0", "planning": "0.3.0", "execution": "0.3.0", "projection": "0.2.0"}
 }
 func TestPackageVersionMapsEveryIndependentVersionWithoutNumericBump(t *testing.T) {
 	v := vector()
@@ -24,7 +24,14 @@ func TestPackageVersionMapsEveryIndependentVersionWithoutNumericBump(t *testing.
 	}
 	for id := range v {
 		next := vector()
-		next[id] += "a1"
+		switch id {
+		case "tool":
+			next[id] = "0.3.8a6"
+		case "profile":
+			next[id] = "pp.1.03"
+		default:
+			next[id] = "9.9.9"
+		}
 		version, newHash, err := PackageIdentity("0.3.8", next)
 		if err != nil || version == first || newHash == hash || !strings.HasPrefix(version, "0.3.8.") {
 			t.Fatalf("%s change was coupled or omitted: %s %v", id, version, err)
@@ -43,16 +50,16 @@ func TestPackageVersionMapsEveryIndependentVersionWithoutNumericBump(t *testing.
 		t.Fatal("incomplete composition admitted")
 	}
 }
-func TestPublicEngineVersionAndCargoProjectionAreSeparate(t *testing.T) {
-	for public, want := range map[string]string{"0.2": "0.2.0", "0.2a1": "0.2.0-alpha.1", "2.5b12": "2.5.0-beta.12", "1.4rc3": "1.4.0-rc.3"} {
+func TestEngineVersionRequiresMajorMinorPatch(t *testing.T) {
+	for public, want := range map[string]string{"0.2.0": "0.2.0", "0.3.0": "0.3.0", "2.5.12": "2.5.12", "1.4.3": "1.4.3"} {
 		got, err := CargoVersion(public)
 		if err != nil || got != want {
 			t.Fatal(public, got, err)
 		}
 	}
-	for _, bad := range []string{"0.2.0", "0.2a", "0.2a0", "01.2", "0.2.alpha1", "0.2.1a1"} {
+	for _, bad := range []string{"0.2", "0.2a1", "0.2b1", "0.2rc1", "0.2.0-alpha.1", "0.2.0rc1", "0.2.0.1", "01.2.3", "0.02.3", "0.2.03", "-1.2.3"} {
 		if _, err := CargoVersion(bad); err == nil {
-			t.Fatalf("unapproved public version accepted: %s", bad)
+			t.Fatalf("unapproved engine version accepted: %s", bad)
 		}
 	}
 }
@@ -70,15 +77,15 @@ func TestSelectionDoesNotInferOtherEngineOrToolReleases(t *testing.T) {
 }
 func TestArtifactVerificationRejectsTamperingAndMissingPlatforms(t *testing.T) {
 	dir := t.TempDir()
-	p := filepath.Join(dir, "context-0.2-windows-x64.zip")
+	p := filepath.Join(dir, "context-0.2.0-windows-x64.zip")
 	if err := os.WriteFile(p, []byte("verified build"), 0600); err != nil {
 		t.Fatal(err)
 	}
 	a, _ := digest(p)
-	c := Component{ID: "context", Version: "0.2", Tag: "engine-context-v0.2", SourceSHA: strings.Repeat("a", 40), Fingerprint: strings.Repeat("b", 64), Platforms: []string{"windows-x64", "linux-x64"}}
+	c := Component{ID: "context", Version: "0.2.0", Tag: "engine-context-v0.2.0", SourceSHA: strings.Repeat("a", 40), Fingerprint: strings.Repeat("b", 64), Platforms: []string{"windows-x64", "linux-x64"}}
 	s := Selection{SourceSHA: c.SourceSHA, Components: []Component{c}}
 	r := Receipt{Format: "ptsip-component-release-receipt/v1", Component: c.ID, Version: c.Version, Tag: c.Tag, SourceSHA: c.SourceSHA, Fingerprint: c.Fingerprint, Platform: "windows-x64", Verification: "PASS", Artifacts: []Artifact{a}}
-	if err := writeJSON(filepath.Join(dir, "context-0.2-windows-x64.receipt.json"), r); err != nil {
+	if err := writeJSON(filepath.Join(dir, "context-0.2.0-windows-x64.receipt.json"), r); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := VerifyReceipts(s, "context", dir, false); err != nil {

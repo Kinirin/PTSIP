@@ -13,24 +13,26 @@ through explicit module replacements; the physical owner is this directory.
 
 - Tool: `0.3.8a5`, `0.3.8b1`, `0.3.8rc1`, or stable `0.3.8`.
 - Profile: `pp.1.02`, selected from the canonical Profile registry.
-- Each of seven engines: `0.2a1`, `0.2b1`, `0.2rc1`, or stable `0.2`.
+- Each of seven engines: independent `MAJOR.MINOR.PATCH` versions (e.g. `0.2.0`, `0.3.0`).
 - Package: `0.3.8.<six hexadecimal characters>`. Its numeric base changes only by
   explicit owner input. The suffix maps the canonical Tool/Profile/seven-engine
   version vector. It has no ordering or compatibility meaning. The complete
   SHA-256 and vector are recorded; a suffix collision fails closed.
 
-Existing engine IDs `0.2.0` and `0.3.0` are preserved as exact bootstrap IDs.
-Future public engine versions use the approved two-number format. Cargo's
-build projection is explicit: `0.2a1` maps to `0.2.0-alpha.1`, `0.2rc1` to
-`0.2.0-rc.1`, and stable `0.2` to `0.2.0`. Update the public manifest/index/binding
-and its Cargo projection together. Release execution never bumps a component.
+Engine version strings have exactly three numeric segments. Two-segment
+versions, aN/bN/rcN suffixes and Cargo prerelease translations are not engine
+identities. Cargo uses the same three-segment version. The original Context
+and Projection identities are `0.2.0`; Storage, Validation, Discovery,
+Planning and Execution are `0.3.0`. The retained bootstrap version registry
+records these historic starting values. Release execution never bumps a component.
 
 ## Canonical per-engine versions
 
 Each engine owns its manually editable public version in
-`src/ptsip/engines/<engine>/version.yaml`. The approved first public engine
-version is `0.2a1`, projected as Cargo `0.2.0-alpha.1`.
-The release workflow never increments versions automatically.
+`src/ptsip/engines/<engine>/version.yaml`. The canonical form is
+`MAJOR.MINOR.PATCH` (for example `0.2.0` or `0.3.0`). No version
+is inferred from other engines and the release workflow never increments
+versions automatically.
 
 After changing a version file, synchronize the derived records:
 

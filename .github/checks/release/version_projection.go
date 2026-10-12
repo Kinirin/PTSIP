@@ -29,10 +29,7 @@ func loadEngineVersion(repo *machine.Repository, catalog Catalog, id string) (st
     return version, nil
 }
 
-func projectedCargoVersion(catalog Catalog, id, version string) (string, error) {
-    if catalog.BootstrapEngineVersions[id] == version {
-        return version, nil
-    }
+func projectedCargoVersion(_ Catalog, _ string, version string) (string, error) {
     return CargoVersion(version)
 }
 

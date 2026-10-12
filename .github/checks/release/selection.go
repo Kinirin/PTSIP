@@ -25,6 +25,7 @@ type Catalog struct {
 	Platforms               []string          `json:"platforms"`
 	EngineIndex             string            `json:"engine_index"`
 	EngineVersionFile       string            `json:"engine_version_file"`
+	EngineVersionResolutionRef string         `json:"engine_version_resolution_ref"`
 	EngineIDs               []string          `json:"engine_ids"`
 	BootstrapEngineVersions map[string]string `json:"bootstrap_engine_versions"`
 	Commands                []string          `json:"commands"`
@@ -94,6 +95,12 @@ func loadCatalog(repo *machine.Repository) (Catalog, error) {
 			return c, err
 		}
 	}
+    ownerFields := machine.Map(owner)
+    if machine.Text(ownerFields["engine_public_version"]) != "MAJOR_MINOR_PATCH" ||
+        machine.Text(ownerFields["engine_public_version_pattern"]) != c.VersionRules["engine"] ||
+        machine.Text(ownerFields["engine_public_version_resolution_ref"]) != c.EngineVersionResolutionRef {
+        return c, fmt.Errorf("engine release contract does not match current KEEP_LATEST policy")
+    }
 	return c, nil
 }
 
