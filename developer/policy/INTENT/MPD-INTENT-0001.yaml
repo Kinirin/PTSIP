@@ -6,7 +6,7 @@ policy:
   title: INTENT authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '2.2'
+  version: '2.3'
 authority_subject:
   id: DEV_WORK_OUTCOME_INTENT
   statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
@@ -31,7 +31,41 @@ rules:
       separate_mandatory_plan_class: false
     work_unit_priority_and_order: DEFER_TO_PLANNING_NOT_NORMATIVE_POLICY
     logical_plan_identity_independent_of_branch: PRESERVE_EXISTING_ARCH_AND_INFO_POLICY
-    target_release_resolution_rule: SEPARATELY_UNRESOLVED
+    target_release_resolution_rule:
+      decision: B_VERSION_BRANCH_FIRST_APPROVED_RELEASE_FACT_FALLBACK
+      approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-BRANCH-FIRST.yaml
+      scope: CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY
+      subject: PLANNING_TARGET_RELEASE_SELECTION_NOT_PLAN_IDENTITY
+      ordered_sources:
+      - priority: 1
+        source: CURRENT_VERIFIED_DEVELOPMENT_VERSION_BRANCH
+        branch_name_contract_ref: MPD-GOV-0001#rules.unit_mpd_0014_d04f6a56972a.DEVELOPMENT_VERSION.exact_name_pattern
+        matching: EXACT_APPROVED_VERSION_BRANCH_PATTERN
+        target_release_extraction: REMOVE_EXACT_DEV_SLASH_PREFIX
+        nonmatching_branch_must_not_be_parsed_as_version: true
+      - priority: 2
+        source: USER_APPROVED_CANONICAL_TARGET_RELEASE_MACHINE_FACT
+        only_when: NO_MATCHING_VERSION_BRANCH
+        required_approval_proof: USER_EXPLICIT
+        required_fact_state: CURRENT_EFFECTIVE_AND_VERIFIABLE
+        required_identity_match: EXACT_RELEASE_VERSION
+        candidate_cardinality: EXACTLY_ONE
+        concrete_fallback_source_contract: UNRESOLVED_SEPARATE_USER_DECISION
+        unregistered_or_unapproved_source: REJECT
+      conflict_and_failure:
+        no_primary_and_no_approved_fallback: BLOCK_AND_REQUEST_USER_DECISION
+        fallback_zero_or_multiple_eligible_releases: BLOCK_AND_REQUEST_USER_DECISION
+        invalid_or_untrusted_version_branch: BLOCK
+        stale_or_unverifiable_approval_evidence: BLOCK
+        inferred_latest_or_highest_release: FORBIDDEN
+        planning_registry_or_prior_path_as_automatic_new_release_approval: FORBIDDEN
+        published_package_or_engine_version_as_implicit_plan_target_authority: FORBIDDEN
+      authority_boundaries:
+        planning_artifact_creation_approval: SEPARATE_EXPLICIT_USER_REQUEST
+        branch_creation_from_release_resolution: FORBIDDEN
+        logical_plan_identity_independent_of_branch: PRESERVED
+        approved_planning_root_and_unresolved_subpath_routing: PRESERVED
+        generator_or_runtime_materialization: NOT_AUTHORIZED
     planning_subpath_routing_rule: SEPARATELY_UNRESOLVED
     new_plan_file_creation_approval: NOT_GRANTED
   family_definition:
