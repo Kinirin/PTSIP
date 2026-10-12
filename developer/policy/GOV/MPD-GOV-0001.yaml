@@ -440,7 +440,7 @@ rules:
       request_kind: DEVELOPMENT_VERSION_BRANCH
       exact_name_pattern: ^dev/[0-9]+\.[0-9]+\.[0-9]+(?:(?:a|b|rc)[0-9]+)?$
       prerelease_naming_approval_ref: developer/policy/approvals/MPA-20261013-DEV-PRERELEASE-BRANCH-NAMING.yaml
-      prerelease_pattern_source: developer/planning/schemas/prerelease-planning-index.schema.json
+      planning_schema_alignment_ref: developer/planning/schemas/prerelease-planning-index.schema.json
       authorized_suffixes: [a, b, rc]
       exact_user_approved_branch_name_required: true
       creation_trigger: USER_EXPLICIT_REQUEST
