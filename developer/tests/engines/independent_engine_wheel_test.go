@@ -93,6 +93,27 @@ func TestIndependentEngineWheel(t *testing.T) {
 			if err := verifyIndependentWheel(wheel, receipt, wrong); err == nil {
 				t.Fatal("source SHA mismatch was accepted")
 			}
+			// A receipt or ZIP changed after packaging is never evidence of PASS.
+			receiptBytes, err := os.ReadFile(receipt)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var altered map[string]any
+			if err := json.Unmarshal(receiptBytes, &altered); err != nil {
+				t.Fatal(err)
+			}
+			altered["wheel_sha256"] = strings.Repeat("0", 64)
+			alteredBytes, err := json.Marshal(altered)
+			if err != nil {
+				t.Fatal(err)
+			}
+			tamperedReceipt := filepath.Join(t.TempDir(), "tampered-receipt.json")
+			if err := os.WriteFile(tamperedReceipt, alteredBytes, 0600); err != nil {
+				t.Fatal(err)
+			}
+			if err := verifyIndependentWheel(wheel, tamperedReceipt, expected); err == nil {
+				t.Fatal("modified wheel digest receipt was accepted")
+			}
 			if err := installAndProbeWheel(t, wheel, expected); err != nil {
 				t.Fatalf("isolated consumer wheel installation failed: %v", err)
 			}
