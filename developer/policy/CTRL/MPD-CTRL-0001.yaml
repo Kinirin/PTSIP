@@ -6,7 +6,7 @@ policy:
   title: CTRL authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '3.0'
+  version: '4.0'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
   statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
@@ -17,7 +17,8 @@ exclusive_kernel:
 rules:
   planning_artifact_precreation_eligibility:
     decision: KEEP_LATEST
-    approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
+    approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-POLICY-ROOT-DERIVED-PATH.yaml
+    prior_approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
     scope: ANY_NEW_OR_REVISED_PLANNING_ARTIFACT_INCLUDING_DRAFTS
     creation_trigger: EXPLICIT_USER_REQUEST_TO_CREATE_OR_REVISE_PLAN_ARTIFACT
     background_or_inferred_creation: FORBIDDEN
@@ -25,16 +26,26 @@ rules:
     required_before_artifact_generation_or_write:
     - USER_PLAN_ARTIFACT_CREATION_INTENT_VERIFIED
     - CURRENT_EFFECTIVE_POLICY_AND_SCOPE_VERIFIED
-    - CANONICAL_COMPLETE_OUTPUT_PATH_REGISTERED_AND_VERIFIED
+    - OWNER_APPROVED_PLANNING_ROOT_RESOLVED_FROM_EFFECTIVE_POLICY
+    - OWNER_APPROVED_SUBPATH_ROUTING_RULE_AND_CURRENT_FACTS_VERIFIED
+    - UNIQUE_EXACT_OUTPUT_PATH_DETERMINISTICALLY_DERIVED_AT_CREATION
     - PLAN_CONTRACT_AND_FORMAT_VERIFIED
     - APPLICABLE_PLAN_INPUTS_AND_POLICY_EVIDENCE_CURRENT
     - ALL_NORMATIVE_AND_SUBORDINATE_DECISIONS_RESOLVED_OR_USER_APPROVED
     - AUTHORIZATION_AND_CONFLICT_GATES_SATISFIED
-    path_root: developer/planning/
-    unresolved_subpath_is_valid_creation_path: false
+    path_root_current_repository_value: developer/planning/
+    path_root_source: OWNER_APPROVED_EFFECTIVE_POLICY_NOT_GENERATOR_CONSTANT
+    subpath_source: APPROVED_VERSIONED_MACHINE_ROUTING_CONTRACT
+    complete_path_resolution_time: ON_EXPLICIT_PLAN_CREATION_REQUEST_BEFORE_ANY_FILE_WRITE
+    preassigned_per_plan_path_required: false
+    manual_path_selection_if_deterministically_derivable: FORBIDDEN
+    subpath_routing_contract_current_status: UNRESOLVED
+    unresolved_subpath_or_rule_is_valid_creation_path: false
+    unresolved_rule_request_type: USER_DECISION_ON_RULE_NOT_ARBITRARY_PLAN_PATH
     user_must_be_asked_for_unresolved_normative_or_implementation_choices: true
     ai_may_resolve_non_normative_deterministic_decisions_only_when_registered_contract_suffices: true
-    user_approval_request_must_precede_materialization: true
+    user_decision_request_required_when_rule_or_policy_is_unresolved: true
+    approval_is_not_repeated_for_already_resolved_deterministic_path: true
     unknown_missing_ambiguous_or_conflicting_condition: BLOCK_NO_PLAN_FILE
     may_create_placeholder_or_draft_when_blocked: false
     approval_of_policy_is_approval_of_plan_or_implementation: false
