@@ -16,7 +16,6 @@ import (
     "path"
     "path/filepath"
     "regexp"
-    "sort"
     "strings"
     "time"
 
@@ -353,51 +352,21 @@ func run(root, action, registryFile string) error {
             if err := runExternal("argospm", "install", pkg); err != nil { return err }
         }
         return nil
-    case "validate", "sync":
+    case "verify":
+        return verifyTranslations(root, r, false)
+    case "verify-strict":
+        return verifyTranslations(root, r, true)
+    case "apply":
+        return applyTranslations(root, r)
     default:
         return fmt.Errorf("unsupported action %q", action)
     }
-    source, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(r.Canonical.Path)))
-    if err != nil { return err }
-    pending := make(map[string]string)
-    for _, target := range r.Translations {
-        dst := filepath.Join(root, filepath.FromSlash(target.Path))
-        current, readErr := os.ReadFile(dst)
-        if readErr != nil && !os.IsNotExist(readErr) { return readErr }
-        if action == "validate" {
-            if os.IsNotExist(readErr) { return fmt.Errorf("missing registered target: %s", target.Path) }
-            if err := validate(string(source), string(current), r, target); err != nil {
-                return fmt.Errorf("%s: %w", target.Path, err)
-            }
-            continue
-        }
-        rendered, err := render(string(source), string(current), r, target)
-        if err != nil { return fmt.Errorf("%s: %w", target.Path, err) }
-        if rendered != string(current) { pending[dst] = rendered }
-    }
-    if action == "validate" {
-        fmt.Printf("Validated %d registered translation(s)\n", len(r.Translations))
-        return nil
-    }
-    paths := make([]string, 0, len(pending))
-    for p := range pending { paths = append(paths, p) }
-    sort.Strings(paths)
-    for _, filename := range paths {
-        if err := os.MkdirAll(filepath.Dir(filename), 0755); err != nil { return err }
-        tmp, err := os.CreateTemp(filepath.Dir(filename), ".readme-translate-*")
-        if err != nil { return err }
-        if _, err = tmp.WriteString(pending[filename]); err == nil { err = tmp.Close() } else { _ = tmp.Close() }
-        if err != nil { _ = os.Remove(tmp.Name()); return err }
-        if err = os.Rename(tmp.Name(), filename); err != nil { _ = os.Remove(tmp.Name()); return err }
-        fmt.Printf("Synchronized %s\n", filepath.ToSlash(filename))
-    }
-    fmt.Printf("README translations: %d registered, %d updated\n", len(r.Translations), len(paths))
-    return nil
 }
+
 func main() {
     root := flag.String("root", "../..", "repository root relative to Go module")
     registry := flag.String("registry", "docs/translated/index.yaml", "registered translation source")
-    action := flag.String("action", "sync", "list-targets | models | validate | sync")
+    action := flag.String("action", "verify", "list-targets | models | verify | verify-strict | apply")
     flag.Parse()
     if err := run(*root, *action, *registry); err != nil {
         fmt.Fprintln(os.Stderr, "readme-translate:", err)

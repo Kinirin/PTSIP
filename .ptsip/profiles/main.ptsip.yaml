@@ -1078,10 +1078,7 @@ components:
       - CONFIGURATION
     include:
       - ".github/test_modes.yaml"
-      - ".github/checks.yaml"
-      - ".github/checks-legacy-inventory.json"
       - ".github/checks/**"
-      - ".github/scripts/check_execution.py"
       - ".github/scripts/validate_test_modes.py"
       - ".github/scripts/resolve_test_modes.py"
       - "src/tests/ptsip/test_modes/**"
@@ -1127,7 +1124,6 @@ components:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
       - ".github/workflows/static.yml"
-      - ".github/checks/readme-translation.ps1"
       - "developer/automation/cmd/readme-translate/**"
       - ".github/scripts/wu04g_guard.py"
       - ".github/scripts/wu04g_track_tests.py"

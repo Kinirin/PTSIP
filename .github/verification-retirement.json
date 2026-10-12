@@ -1,0 +1,63 @@
+{
+  "format": "ptsip-verification-gap/v1",
+  "decision": "KEEP_LATEST",
+  "approval_ref": "developer/policy/approvals/MPA-20261012-TOOLING-LEGACY-KEEP-LATEST.yaml",
+  "source_base_revision": "f1dae296ba84ee0591c1243b445a86fc287b4a44",
+  "state": "OPEN",
+  "requested_retirement": {
+    "common_workflow": ".github/workflows/tooling-test.yml",
+    "workflow_execution": "DISABLED_PUSH; MANUAL_FAIL_CLOSED",
+    "deleted_artifacts": [
+      ".github/checks.yaml",
+      ".github/checks-legacy-inventory.json",
+      ".github/scripts/check_execution.py",
+      ".github/checks/readme-translation.ps1"
+    ]
+  },
+  "independent_capability": {
+    "readme_translation_workflow": ".github/workflows/readme-translation.yml",
+    "language_registry": "docs/translated/index.yaml",
+    "validation": "Go tests and structural checks in the independent translation workflow",
+    "automation_push_scope": "main"
+  },
+  "verification_gap": {
+    "cause": "User-authorized retirement before successor common verifier is implemented",
+    "successor_common_runner": "NOT_IMPLEMENTED",
+    "affected_prior_checks": [
+      "registry-consistency",
+      "policy-lifecycle",
+      "root-policy-automation",
+      "wu02-control",
+      "agent-context-migration",
+      "markdown-cleanup-regression",
+      "markdown-cleanup-simulation",
+      "pp-transition",
+      "pra-lifecycle",
+      "pra-go-plane",
+      "release-go-contracts",
+      "release-contract",
+      "release-a3-regression",
+      "release-full-regression",
+      "release-profile",
+      "release-distribution",
+      "registered mode-specific pytest and Go checks"
+    ],
+    "not_automatically_executed_on_push": true,
+    "verification_not_produced_for_current_sha": true,
+    "release_and_merge_readiness": "NOT_ESTABLISHED",
+    "former_status_contexts_not_reemitted": [
+      "ci/agent-context-migration",
+      "ci/markdown-cleanup-simulation",
+      "ci/pp-transition",
+      "ci/change-verification",
+      "ci/tooling-test"
+    ],
+    "do_not_promote_old_pass": true,
+    "manual_or_external_evidence_must_be_evaluated_separately": true
+  },
+  "reinstatement": {
+    "requires": "USER_AUTHORIZED_SUCCESSOR_POLICY_AND_VERIFIED_EXECUTION",
+    "status": "UNRESOLVED"
+  },
+  "note": "Implementation-state disclosure only, not canonical policy or PASS evidence."
+}
