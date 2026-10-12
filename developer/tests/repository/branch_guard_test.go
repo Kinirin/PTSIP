@@ -55,7 +55,7 @@ func branchAutomation(t *testing.T, binary string, args ...string) (map[string]a
 
 func TestBranchGuardAdmitsOnlyExactApprovedDevelopmentIdentity(t *testing.T) {
 	binary := branchBuildAutomation(t)
-	for _, branch := range []string{"dev/0.4.0", "dev/0.10.0", "dev/123.456.789"} {
+	for _, branch := range []string{"dev/0.4.0", "dev/0.10.0", "dev/123.456.789", "dev/0.3.8a3", "dev/0.3.8b2", "dev/0.3.8rc1"} {
 		result, err, output := branchAutomation(
 			t,
 			binary,
