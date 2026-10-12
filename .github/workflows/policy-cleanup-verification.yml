@@ -30,4 +30,15 @@ jobs:
           go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./internal/machine -run '^TestCleanup(IDValidationRejectsNonPolicyIdentity|ApplyRequiresExpectedHeadBeforeGitAccess|MissingSubstatusFailsClosed)$'
       - name: Frozen migration audit verification
         run: |
-          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run '^TestHistoricalSourceEvidencePreservesArchiveAndRouting$'
+          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run '^TestHistoricalSourceEvidencePreservesArchiveAndRouting
+      - name: Cleanup command smoke test (non-destructive)
+        shell: bash
+        run: |
+          go -C developer/automation build -tags grammar_subset,grammar_subset_python -o "$RUNNER_TEMP/ptsip-dev" ./cmd/ptsip-dev
+          set +e
+          "$RUNNER_TEMP/ptsip-dev" --repository . policy-cleanup inspect MPD-VERI-0006 > "$RUNNER_TEMP/cleanup-inspection.json"
+          result=$?
+          set -e
+          cat "$RUNNER_TEMP/cleanup-inspection.json"
+          test "$result" -eq 2
+          python -c 'import json, os; p=json.load(open(os.environ["RUNNER_TEMP"]+"/cleanup-inspection.json")); assert p["status"] == "BLOCKED" and p["blockers"]'

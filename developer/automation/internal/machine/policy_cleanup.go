@@ -125,6 +125,10 @@ func (r *Repository) cleanupEvidence(id, path string, frozen Object) error {
     if len(revision) != 40 || revision != Text(graph["base_head"]) {
         return fmt.Errorf("untrusted frozen revision")
     }
+    catalogBlob, err := r.cleanupGit("rev-parse", revision+":developer/policy/index.yaml")
+    if err != nil || string(catalogBlob) != Text(baseline["approved_pre_migration_catalog_git_blob"]) {
+        return fmt.Errorf("approved pre-migration catalog Git blob mismatch")
+    }
     checked := false
     for _, row := range cleanupRows(baseline["source_records"]) {
         if row["id"] != id { continue }
