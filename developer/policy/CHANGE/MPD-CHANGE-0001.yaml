@@ -5,7 +5,7 @@ policy:
   id: MPD-CHANGE-0001
   title: CHANGE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.1'
+  version: '3.2'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -14,6 +14,9 @@ exclusive_kernel:
 - DEV_MIGRATION_ORDER_AND_CONTINUITY
 rules:
   policy_status_reform_legacy_semantics_replacement:
+    primary_lifecycle_owner_policy: MPD-GOV-0001
+    primary_lifecycle_contract_ref: developer/contracts/lifecycle/policy_status.json
+    owned_scope: LEGACY_TO_NEW_STATUS_MIGRATION_RELATIONSHIP_ONLY
     decision: KEEP_LATEST
     approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-MEANING-REPLACEMENT.yaml
     policy_scope: PTSIP_DEVELOPER_POLICY
@@ -41,10 +44,10 @@ rules:
       unrelated_migration_preservation: UNAFFECTED
     transition_boundary:
       approved_legacy_mapping_semantics: true
-      target_lifecycle_model_complete: false
+      target_lifecycle_model_complete: true
       status_record_bulk_rewrite_authorized: false
       current_schema_and_runtime_enforcement_change: NOT_AUTHORIZED
-      other_legacy_statuses_and_substatus_rules: NOT_DECIDED
+      other_legacy_statuses_and_substatus_rules: CONSUME_GOV_CANONICAL_CONTRACT
       implementation_plan: SEPARATE
       scope_approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-DEV-SCOPE.yaml
   policy_plan_semantic_change_reconciliation:

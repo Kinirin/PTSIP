@@ -1,0 +1,19 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-RELEASE-VERIFICATION-GAP
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Remove verification-contract.json as an artifact of the previous policy
+    and intentionally leave a release deployment capability gap. The user
+    explicitly confirmed that workflow execution and direct release commands
+    are blocked until a successor contract is established.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  affected_policy_ids:
+  - MPD-CTRL-0001
+  recorded_at: '2026-10-12'

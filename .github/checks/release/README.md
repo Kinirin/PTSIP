@@ -1,13 +1,17 @@
 # Independent PTSIP releases
 
+Release execution is currently BLOCKED by the project owner's explicit decision.
+`release-availability.json` records the implementation state. The release
+workflow, PowerShell entrypoint, native CLI and `ptsip-dev release` commands
+reject execution. No successor release verification is implemented.
+
 `tooling-release.yml` consumes the admitted contract in `release-contract.json`.
 `run_release.ps1` selects and invokes target scripts. Native Go owns selection,
 version consumption, source fingerprints, compilation checks, artifact hashes,
 immutable publication and Package assembly. PowerShell owns process orchestration.
 
-The release Go module moved from `developer/automation/release/`. Its existing Go
-import path and `ptsip-dev release ...` command compatibility remain available
-through explicit module replacements; the physical owner is this directory.
+The following architecture describes retained implementation only. It does not
+grant release execution permission or establish current verification readiness.
 
 ## Independent identities
 
@@ -101,44 +105,14 @@ The Python wheel remains a Tool distribution. Native executables ship in their
 independent engine archives and the aggregate Package. Engine installation,
 consumer discovery/activation and public API retirement are separate scopes.
 
-## Verification boundaries
+## Verification gap
 
-The retired common `tooling-test` gap remains OPEN. These selected release
-component jobs do not reissue former common CI contexts or claim repository-wide
-verification. Publication requires observed exact-SHA jobs from this workflow;
-a local receipt saying PASS is insufficient. Existing Tool artifact boundary,
-snapshot binding, installed-wheel, Specification, Profile transition, metadata
-and distribution checks are preserved in the Tool target.
+The previous verification execution map and the test enforcing its legacy
+migration table have been removed. Their historical test lists do not establish
+the successor release verification requirements. The common verification gap
+and the release deployment gap remain OPEN. Previous PASS results must not be
+used to assert readiness for the current source.
 
-## Verification script migration
-
-The six former flat `release-*.ps1` scripts were checks of the retired common CI,
-not independent publication entrypoints. Their current execution mapping is
-recorded in `verification-contract.json`; that file does not create policy.
-
-Tool selection runs the current shipping test corpus, the Go release-readiness
-suite, Tool/Profile/Specification contract verification, actual distribution and
-artifact/snapshot checks, and installed CLI/Context/VPMS compatibility checks.
-The former `0.3.8a3` label and removed Python readiness test are retired. The
-approved readiness replacement is `developer/tests/release`.
-
-Repository-wide Go regression and repository self-profile validation remain
-explicit manual checks, separate from Profile artifact publication and from an
-individual engine release. They can be invoked with:
-
-```powershell
-./.github/checks/release/run_release.ps1 -Action VerifyRepository
-```
-
-Selecting one engine continues to run that engine's tests, compiled identity,
-registered capability-contract operation cases, required platforms and artifact
-hash checks. It does not invoke Tool shipping or repository-wide regressions.
-Any current canonical release dependency, including Profile transition admission,
-continues to apply. The existing common verification gap remains OPEN.
-
-The restored shipping checks currently expose two outside-scope blockers. The
-repository Profile still selects the former `developer/automation/release/**`
-location, and the VPMS repository-adoption test registers a Go test name absent
-from the current Go suite. Tool publication remains blocked. This `.github`
-migration does not edit those owners or suppress their regressions; observations
-are recorded in the execution map for separate owner reconciliation.
+Release execution can resume only through a separately approved successor
+policy and contract with its own verified implementation. Changing an execution
+state projection alone cannot reactivate the retained release implementation.

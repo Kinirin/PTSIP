@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:developer-policy:lifecycle-status:v1",
+  "schema_version": "developer-policy-lifecycle-status/v1",
+  "artifact_class": "DEVELOPER_POLICY_LIFECYCLE_STATUS_CONTRACT",
+  "authority": {
+    "primary_owner_family": "GOV",
+    "policy_ref": "developer/policy/GOV/MPD-GOV-0001.yaml",
+    "policy_section": "rules.policy_status_lifecycle",
+    "approval_ref": "developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml",
+    "policy_scope": "PTSIP_DEVELOPER_POLICY",
+    "repository_path_scope": "developer/**"
+  },
+  "type": "object",
+  "required": ["status", "substatus"],
+  "additionalProperties": false,
+  "properties": {
+    "status": {"$ref": "#/$defs/status"},
+    "substatus": {"type": "string"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "status": {"const": "DRAFT"},
+        "substatus": {"enum": ["Default", "Reviewed", "Denied", "Pass"]}
+      }
+    },
+    {
+      "properties": {
+        "status": {"const": "APPROVED"},
+        "substatus": {"enum": ["Default", "Applying", "Application_Problems", "Unresolved", "Activate"]}
+      }
+    },
+    {
+      "properties": {
+        "status": {"const": "RETIRED"},
+        "substatus": {"enum": ["Default", "Removable", "Waiting"]}
+      }
+    }
+  ],
+  "$defs": {
+    "status": {"enum": ["DRAFT", "APPROVED", "RETIRED"]}
+  },
+  "meanings": {
+    "DRAFT": {
+      "Default": "Pre-review draft.",
+      "Reviewed": "Reviewed by the user; final response is pending.",
+      "Denied": "Draft denied by the user.",
+      "Pass": "User-approved draft; automatically normalize to APPROVED.Default."
+    },
+    "APPROVED": {
+      "Default": "User policy approval; equivalent to DRAFT.Pass.",
+      "Applying": "Implementation in accordance with the approved policy is in progress.",
+      "Application_Problems": "A policy conflict occurred during application; return to Default when the conflict is resolved.",
+      "Unresolved": "Policy implementation is incomplete.",
+      "Activate": "Policy integrity verification completed without errors."
+    },
+    "RETIRED": {
+      "Default": "Expired policy retained for historical purposes.",
+      "Removable": "Historical cleanup is complete and deletion permission is approved.",
+      "Waiting": "Unresolved problems prevent policy removal."
+    }
+  },
+  "automatic_normalization": {
+    "from": {"status": "DRAFT", "substatus": "Pass"},
+    "to": {"status": "APPROVED", "substatus": "Default"},
+    "automatic": true,
+    "semantic_equivalence": true,
+    "additional_user_approval_required": false,
+    "creates_new_authority": false
+  },
+  "automatic_recovery": {
+    "from": {"status": "APPROVED", "substatus": "Application_Problems"},
+    "to": {"status": "APPROVED", "substatus": "Default"},
+    "condition": "The policy conflict has been resolved.",
+    "automatic": true
+  },
+  "boundaries": {
+    "catalog_status_schema": "EMPTY_NON_OWNING_SLOT",
+    "implementation_authorization_is_independent": true,
+    "existing_policy_record_bulk_rewrite": "NOT_PERFORMED",
+    "existing_validator_cutover": "SEPARATE_IMPLEMENTATION",
+    "retired_removable_automatically_deletes_files": false
+  }
+}

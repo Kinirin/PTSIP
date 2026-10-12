@@ -4,6 +4,9 @@ import "github.com/Kinirin/PTSIP/developer/automation/internal/machine"
 
 func init() {
 	machine.RegisterOperations("release", func(repo *machine.Repository, command string, options map[string]string, args []string) (any, error) {
+		if err := requireReleaseExecution(repo); err != nil {
+			return nil, err
+		}
 		switch command {
 		case "prepare":
 			return Prepare(repo, options["--dispatched-sha"], options["--dispatched-ref"])

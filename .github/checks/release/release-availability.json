@@ -1,0 +1,14 @@
+{
+  "format": "ptsip-release-execution-state/v1",
+  "authority": "IMPLEMENTATION_STATE_ONLY",
+  "policy_ref": "developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.release_execution_suspension",
+  "approval_ref": "developer/policy/approvals/MPA-20261012-RELEASE-VERIFICATION-GAP.yaml",
+  "state": "BLOCKED",
+  "verification_contract": null,
+  "reason": "The previous verification contract was removed by user instruction; no successor release verifier is admitted.",
+  "workflow_execution": "BLOCKED",
+  "direct_release_commands": "BLOCKED",
+  "legacy_fallback": false,
+  "successor_verification": "NOT_IMPLEMENTED",
+  "reinstatement": "SEPARATE_USER_APPROVED_SUCCESSOR_POLICY_AND_CONTRACT"
+}

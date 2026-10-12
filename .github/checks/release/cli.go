@@ -40,6 +40,9 @@ func CLI(args []string) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := requireReleaseExecution(repo); err != nil {
+		return nil, err
+	}
 	catalog, err := loadCatalog(repo)
 	if err != nil {
 		return nil, err

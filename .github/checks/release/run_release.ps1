@@ -1,10 +1,6 @@
 [CmdletBinding()]
 param(
-<<<<<<< Updated upstream
-    [ValidateSet('Plan','Build','Verify','Publish','Package','Dispatch','SyncVersions')][string]$Action = 'Plan',
-=======
     [ValidateSet('Plan','Build','Verify','Publish','Package','Dispatch','VerifyRepository')][string]$Action = 'Plan',
->>>>>>> Stashed changes
     [string]$Targets = 'all', [string]$DisabledTargets = '', [string]$Target = '',
     [string]$PackageBase = '', [string]$Platform = '', [string]$ReleaseTag = '',
     [string]$GitHubRepository = $(if ($env:GITHUB_REPOSITORY) { $env:GITHUB_REPOSITORY } else { 'Kinirin/PTSIP' }),
@@ -14,19 +10,15 @@ param(
     [switch]$Offline, [switch]$PublishPackage
 )
 $ErrorActionPreference = 'Stop'
+throw 'RELEASE_EXECUTION_BLOCKED: release deployment is suspended until a separately approved successor policy and verification contract are implemented.'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $native = Join-Path $repo '.github/checks/release'
 $argsNative = @('-C', $native, 'run', '-tags', 'grammar_subset,grammar_subset_python', './cmd/ptsip-release')
 switch ($Action) {
-<<<<<<< Updated upstream
-    'SyncVersions' {
-        $argsNative += @('sync-versions','--root',$repo,'--targets',$Targets)
-=======
     'VerifyRepository' {
         & (Join-Path $PSScriptRoot 'verification/Repository_regression_verify.ps1')
         & (Join-Path $PSScriptRoot 'verification/Repository_profile_verify.ps1')
         return
->>>>>>> Stashed changes
     }
     'Dispatch' {
         $dispatch = @('workflow','run','tooling-release.yml','--ref','main','-f',"phase=$ReleasePhase",'-f',"targets=$Targets",'-f',"disabled_targets=$DisabledTargets")

@@ -5,7 +5,7 @@ policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.2'
+  version: '3.3'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -51,7 +51,13 @@ rules:
       support_feature_authority_unchanged: true
     deferred_subordinate_decisions:
       schema_document_serialization: RESOLVED_KEEP_PRIOR
-      policy_status_lifecycle_reform: NOT_APPROVED_AS_CORE_POLICY
+      policy_status_lifecycle_reform: APPROVED_GOV_OWNED_CONTRACT
+    policy_status_field_semantics:
+      primary_owner_family: GOV
+      contract_ref: developer/contracts/lifecycle/policy_status.json
+      approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml
+      family_schema_owns_record_representation: true
+      family_schema_redefines_lifecycle_vocabulary: false
     implementation_authorization: NOT_GRANTED
     existing_validator_cutover_authorized: false
   fsd_file_serialization_contract:

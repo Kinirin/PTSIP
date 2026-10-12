@@ -60,10 +60,14 @@
     "status": "UNRESOLVED"
   },
   "note": "Implementation-state disclosure only, not canonical policy or PASS evidence.",
-  "release_verification_reorganization": {
+  "release_verification_gap": {
     "scope": ".github",
     "decision_source": "USER_EXPLICIT",
-    "execution_map": ".github/checks/release/verification-contract.json",
+    "verification_contract": null,
+    "state": "OPEN",
+    "release_execution": "BLOCKED",
+    "execution_state_ref": ".github/checks/release/release-availability.json",
+    "successor_verifier": "NOT_IMPLEMENTED",
     "legacy_scripts_retired": [
       "release-a3-regression.ps1",
       "release-contract.ps1",

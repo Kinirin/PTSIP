@@ -1,0 +1,23 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-POLICY-STATUS-GOV-CONTRACT
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    DRAFT.Pass and APPROVED.Default have the same meaning and DRAFT.Pass
+    automatically changes to APPROVED.Default. GOV is the primary owner of
+    policy_status. Clear the catalog's policy_status schema and manage the new
+    status model in developer/contracts/lifecycle/policy_status.json.
+    The user confirmed that the new file contains the complete status model.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-GOV-0001
+  affected_policy_ids:
+  - MPD-GOV-0001
+  - MPD-CHANGE-0001
+  - MPD-ARCH-0001
+  recorded_at: '2026-10-12'
