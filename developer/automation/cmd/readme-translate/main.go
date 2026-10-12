@@ -36,7 +36,7 @@ var languageID = regexp.MustCompile(`^[a-z]{2,3}(?:-[a-z0-9]+)*$`)
 var shaMarker = regexp.MustCompile(`^<!-- ptsip-readme-i18n: ([0-9a-f]{64}) -->$`)
 var fenceStart = regexp.MustCompile("^[ \t]*("+ "\x60\x60\x60"+ "+|~~~+)")
 var heading = regexp.MustCompile(`^(#{1,6})[ \t]+(.*)$`)
-var protected = regexp.MustCompile("(\x60+[^\x60\\n]*\x60+|\\[[^\\]\\n]*\\]\\([^)]+\\)|https?://[^\\s<>)]+|</?[^>\\n]+>|\\b(?:MUST NOT|SHOULD NOT|MUST|SHOULD|MAY|PTSIP|VPMS)\\b)")
+var protected = regexp.MustCompile("(\x60+[^\x60\\n]*\x60+|\\[[^\\]\\n]*\\]\\([^)]+\\)|https?://[^\\s<>)]+|</?[^>\\n]+>|\\*\\*|__|~~|\\*|\\b(?:MUST NOT|SHOULD NOT|MUST|SHOULD|MAY|PTSIP|VPMS)\\b)")
 var inlineCode = regexp.MustCompile("\x60+[^\x60\\n]*\x60+")
 var mdLink = regexp.MustCompile(`(!?)\[([^\]\n]*)\]\(([^)]+)\)`)
 var mdLinkTarget = regexp.MustCompile(`\]\(([^)]+)\)`)
@@ -326,9 +326,8 @@ func render(source, old string, r translationRegistry, target languageEntry) (st
     if err != nil { return "", err }
     backlink = filepath.ToSlash(backlink)
     nav := fmt.Sprintf("<p align=\"right\">\n  <a href=\"%s\">%s</a> | %s\n</p>", backlink, r.Canonical.Language, target.Language)
-    notice := fmt.Sprintf("> Translation projection of [%s](%s); the canonical source and machine-readable policy govern when meanings conflict.", r.Canonical.Path, backlink)
     output := "<!-- AUTO-GENERATED: registry-driven Go projection; edit canonical README.md instead. -->\n"+
-        nav+"\n\n"+parts[0]+"\n\n"+notice+"\n\n"+strings.Join(parts[1:], "\n\n")+"\n"
+        nav+"\n\n"+parts[0]+"\n\n"+strings.Join(parts[1:], "\n\n")+"\n"
     if err := validate(source, output, r, target); err != nil { return "", err }
     return output, nil
 }
