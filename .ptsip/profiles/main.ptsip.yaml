@@ -1127,7 +1127,8 @@ components:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
       - ".github/workflows/static.yml"
-      - ".github/scripts/sync_readme_argos.py"
+      - ".github/checks/readme-translation.ps1"
+      - "developer/automation/cmd/readme-translate/**"
       - ".github/scripts/wu04g_guard.py"
       - ".github/scripts/wu04g_track_tests.py"
       - ".github/scripts/wu04g_bridge_log.ps1"
@@ -1142,7 +1143,7 @@ components:
       - "src/tests/**"
       - "src/**"
       - "README.md"
-      - "README.ko.md"
+      - "docs/translated/index.yaml"
       - "src/ptsip/specdata/**"
       - "developer/policy/**"
 
