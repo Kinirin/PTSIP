@@ -4,8 +4,9 @@ responsibility_family: CNTR
 policy:
   id: MPD-CNTR-0002
   title: CNTR authority (DRAFT source responsibilities)
-  status: DRAFT
-  version: '0.0'
+  status: APPROVED
+  substatus: Applying
+  version: '1.0'
 authority_subject:
   id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
   statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를
@@ -125,7 +126,7 @@ rules:
   unit_mpd_veri_0006_6beb693dae2a:
     responsibility: POLICY_PLAN_CONSISTENCY_VERIFICATION_OUTPUT_CONTRACT
     verification_semantics_ref: MPD-VERI-0001
-    management_next_action_control_plane_ref: MPD-0017
+    management_next_action_control_plane_ref: MPD-CNTR-0002
     schema_artifact:
       path: developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
       instance_schema_version: ptsip-management-verification-policy-plan-consistency-report/v1
@@ -169,7 +170,7 @@ rules:
           - action
           - execution
           - completion_check
-          field_contract_owner: MPD-0017
+          field_contract_owner: MPD-INFO-0003
     authority_boundary:
       verification_semantics_owner: MPD-VERI-0001
       verification_output_semantics_owner: MPD-VERI-0006
@@ -214,7 +215,9 @@ rules:
     - POLICY_PLAN_BINDING_AUTHORITY
     - IMPLEMENTATION_AUTHORIZATION
 relations:
-  supersedes: []
+  supersedes:
+  - policy: MPD-0017
+    scope: MANAGEMENT_NEXT_ACTION_EXECUTION_INTERFACE_RESPONSIBILITIES
   amends: []
   extends: []
   depends_on: []
