@@ -9,7 +9,7 @@
     "title": "Active official engine contracts and independent Rust implementation",
     "classification": "CORE",
     "lifecycle": {
-      "status": "ACTIVE"
+      "status": "COMPLETE"
     },
     "approval": {
       "status": "APPROVED",
@@ -18,7 +18,7 @@
       "authority": "USER_EXPLICIT_ENGINE_ACTIVATION_RECONCILIATION_AND_IMPLEMENTATION_2026_10_12"
     },
     "implementation_authorization": {
-      "status": "AUTHORIZED",
+      "status": "COMPLETE",
       "authorization_source": "USER_EXPLICIT"
     },
     "integration_branch": "dev/0.3.8",
@@ -1138,6 +1138,48 @@
         "source_snapshot_sha": "dd9399eba37294c7e0f73b50bd36064a7b707885"
       },
       "actual_remaining_scope_activation_authorized_by_this_source_confirmation": false
+    },
+    "foundation_closeout": {
+      "status": "COMPLETE_APPROVED_FOUNDATION_AND_ISOLATED_NATIVE_IMPLEMENTATION_SCOPE",
+      "approval_source": "USER_EXPLICIT",
+      "source_reference": "현재 변경의 기반 작업을 완료 조치를 거의 하면서 릴리스 노트 작성과 메인브런치 병합작업을 하도록 하겠습니다",
+      "recorded_at": "2026-10-12",
+      "scope": "SIXTEEN_APPROVED_CONTRACT_VERIFICATION_AND_TRANSITION_PLAN_ITEMS_AND_SEVEN_INDEPENDENT_ISOLATED_NATIVE_ENGINE_IMPLEMENTATIONS",
+      "evidence": {
+        "implementation_source_sha": "704106b78be4c5cb2296a84c51be97feec1c1494",
+        "full_verification_run_id": 38184145188,
+        "required_check_count": 57,
+        "total_successful_job_count": 61,
+        "failed_job_count": 0,
+        "skipped_job_count": 0,
+        "latest_document_source_sha": "5b422ea1fbf1202adb13f6082fe10c6a98d82f12",
+        "latest_document_verification_run_id": 38185721078,
+        "current_candidate_local_verification": {
+          "command": "go -C developer/tests test -count=1 -v -run TestNativeContextEvidenceCandidate|TestContextEvidenceRepositoryScopePolicyConformance ./repository",
+          "result": "PASS",
+          "duration_seconds": 26.358
+        },
+        "source_policy_and_implementation_unchanged_after_verified_code_commit": true
+      },
+      "real_consumer_activation": false,
+      "existing_public_api_cutover": false,
+      "legacy_api_retirement": false,
+      "deferred_consumer_scope_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml#work_unit.remaining_consumer_scope_policy_routing",
+      "deferred_scope_is_executable_approved_plan": false,
+      "deferred_scope_requires_own_plan_and_current_support_policy_gates": true
     }
-  }
+  },
+  "completion_evidence": [
+    {
+      "type": "TEST",
+      "revision": "704106b78be4c5cb2296a84c51be97feec1c1494",
+      "id": "tooling-test/38184145188/full-required-and-native-platforms",
+      "result": "PASS"
+    },
+    {
+      "type": "MACHINE_VALIDATION",
+      "id": "CURRENT_POLICY_PLAN_AND_CANDIDATE_CONFORMANCE",
+      "result": "PASS"
+    }
+  ]
 }

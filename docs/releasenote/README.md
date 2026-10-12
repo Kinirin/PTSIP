@@ -30,6 +30,7 @@ docs/releasenote/tool/0.3.8a1.md
 docs/releasenote/tool/0.3.8a2.md
 docs/releasenote/tool/0.3.8a3.md
 docs/releasenote/tool/0.3.8a4.md
+docs/releasenote/tool/0.3.8a5.md
 docs/releasenote/project-profile/pp.1.01.md
 docs/releasenote/project-profile/pp.1.02.md
 docs/releasenote/specification/0.3.7-draft.md
@@ -68,7 +69,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.8a4` | Go-native developer automation and release-verification consolidation prerelease candidate | [`tool/0.3.8a4.md`](tool/0.3.8a4.md) |
+| Tool | `0.3.8a5` | Policy, verification, and seven-native-engine foundation prerelease candidate; publication pending | [`tool/0.3.8a5.md`](tool/0.3.8a5.md) |
 | Project Profile | `pp.1.02` | Current contract / repository adopted | [`project-profile/pp.1.02.md`](project-profile/pp.1.02.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
 

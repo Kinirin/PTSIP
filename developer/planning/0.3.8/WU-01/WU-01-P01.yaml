@@ -9,7 +9,7 @@
     "title": "0.3.8 Context Evidence candidate: completed revision refresh and outstanding validation",
     "classification": "DEVELOPMENT",
     "lifecycle": {
-      "status": "BLOCKED"
+      "status": "COMPLETE"
     }
   },
   "approval": {
@@ -18,7 +18,7 @@
     "authority": "PROJECT_OWNER_FULL_PLAN_APPROVAL_2026_10_11"
   },
   "implementation_authorization": {
-    "status": "AUTHORIZED",
+    "status": "COMPLETE",
     "authorization_source": "USER_EXPLICIT"
   },
   "depends_on": [],
@@ -28,7 +28,7 @@
     "parent_ref": "developer/planning/0.3.8/WU-01/WU-01.yaml",
     "intended_parent_work_unit": "WU-01",
     "intended_parent_registration": "APPROVED_REGISTERED",
-    "parent_extension_registration": "REGISTERED_APPROVED_BUT_BLOCKED_BY_PENDING_VERIFICATION",
+    "parent_extension_registration": "REGISTERED_APPROVED_COMPLETED_VERIFICATION",
     "proposal_is_registered_executable_work_unit": false,
     "approval_does_not_implicitly_register_missing_parent": false,
     "registration_requires_explicit_current_release_parent_approval_and_registration": false,
@@ -203,11 +203,11 @@
     "release_plan_root": "developer/planning/0.3.8",
     "release_entrypoint": "developer/planning/0.3.8/index.yaml",
     "release_entrypoint_status": "ACTIVE",
-    "registered_work_units_count": 1,
-    "current_gate": "WU-01",
+    "registered_work_units_count": 2,
+    "current_gate": "WU-02",
     "intended_parent_work_unit": "WU-01",
     "parent_work_unit_registered": true,
-    "plan_admission": "APPROVED_EXTENSION_CURRENT_RELEASE_PENDING_VERIFICATION",
+    "plan_admission": "APPROVED_EXTENSION_VERIFICATION_COMPLETE",
     "current_plan_lookup": "CURRENT_RELEASE_PLAN_CONTENT_ONLY",
     "historical_plan_lookup": "FORBIDDEN_THIS_PLAN_NO_CROSS_VERSION_LOOKUP",
     "release_plan_registration": "REGISTERED_APPROVED_EXTENSION",
@@ -270,7 +270,7 @@
     }
   },
   "remaining_validation": {
-    "status": "REQUIRED_CURRENT_ASSURE_VPMS_AND_P0_P1_VERIFICATION_PASS_AT_CODE_SOURCE_SHA_RUNTIME_AND_LIFECYCLE_BOUNDARIES_RETAINED",
+    "status": "COMPLETE_CURRENT_POLICY_BOUND_READ_ONLY_VERIFICATION",
     "verification_owner": "CURRENT_0_3_8_RELEASE_PLANNING",
     "completed_reference_update_must_not_be_repeated": true,
     "tasks": [
@@ -291,7 +291,8 @@
           "up_to_date_six_source_revisions": true,
           "source_review_head_is_historical_snapshot_not_latest": true,
           "check_method": "DIRECT_READ_REGISTERED_POLICY_SOURCES_CANONICAL_SHA256_AND_41_POINTER_COMPARISON"
-        }
+        },
+        "final_closeout_state": "PASS_VERIFIED_APPROVED_SCOPE"
       },
       {
         "id": "RV-02",
@@ -312,7 +313,8 @@
           "read_only_go_positive_and_negative_conformance_passed_in_static_validation": true
         },
         "pass_condition": "CANDIDATE_SCHEMA_EXACT_CURRENT_INVENTORY_AND_GO_POSITIVE_NEGATIVE_CONFORMANCE_PASS",
-        "failure": "FAIL_CLOSED_BLOCK_REGISTRATION"
+        "failure": "FAIL_CLOSED_BLOCK_REGISTRATION",
+        "final_closeout_state": "PASS_VERIFIED_APPROVED_SCOPE"
       },
       {
         "id": "RV-03",
@@ -336,7 +338,8 @@
           "verification_source_sha": "768ebf8bc6fb594cf32441e3561853a239f3ff1b",
           "registration_consistency": "PASS",
           "execution_lifecycle": "BLOCKED_RETAINED"
-        }
+        },
+        "final_closeout_state": "PASS_VERIFIED_APPROVED_SCOPE"
       },
       {
         "id": "RV-04",
@@ -361,7 +364,8 @@
           "plan_ref_absent_and_fail_closed_regression_passed": true
         },
         "pass_condition": "NO_PLAN_REF_IN_CANDIDATE_SCHEMA_OR_VERIFIER_AND_NO_CROSS_VERSION_PLAN_LOOKUP_AND_REQUIRED_GO_CONFORMANCE_PASS",
-        "failure": "FAIL_CLOSED_KEEP_CANDIDATE_NON_EXECUTABLE"
+        "failure": "FAIL_CLOSED_KEEP_CANDIDATE_NON_EXECUTABLE",
+        "final_closeout_state": "PASS_VERIFIED_APPROVED_SCOPE"
       },
       {
         "id": "RV-05",
@@ -406,7 +410,8 @@
           "expired_family_creation_and_current_authority_lookup": "FORBIDDEN",
           "runtime_activation": "FORBIDDEN",
           "lifecycle_promotion": "NOT_PERFORMED"
-        }
+        },
+        "final_closeout_state": "PASS_VERIFIED_APPROVED_SCOPE"
       }
     ],
     "required_release_approval_and_implementation_remain_separate": true,
@@ -687,5 +692,45 @@
         "local_go_parity_and_current_allocation": "PASS"
       }
     }
-  }
+  },
+  "foundation_closeout": {
+    "status": "COMPLETE",
+    "approval_source": "USER_EXPLICIT",
+    "source_reference": "현재 변경의 기반 작업을 완료 조치를 거의 하면서 릴리스 노트 작성과 메인브런치 병합작업을 하도록 하겠습니다",
+    "recorded_at": "2026-10-12",
+    "evidence": {
+      "implementation_source_sha": "704106b78be4c5cb2296a84c51be97feec1c1494",
+      "full_verification_run_id": 38184145188,
+      "required_check_count": 57,
+      "total_successful_job_count": 61,
+      "failed_job_count": 0,
+      "skipped_job_count": 0,
+      "latest_document_source_sha": "5b422ea1fbf1202adb13f6082fe10c6a98d82f12",
+      "latest_document_verification_run_id": 38185721078,
+      "current_candidate_local_verification": {
+        "command": "go -C developer/tests test -count=1 -v -run TestNativeContextEvidenceCandidate|TestContextEvidenceRepositoryScopePolicyConformance ./repository",
+        "result": "PASS",
+        "duration_seconds": 26.358
+      },
+      "source_policy_and_implementation_unchanged_after_verified_code_commit": true
+    },
+    "scope": "APPROVED_VERIFICATION_REMEDIATION_ONLY",
+    "runtime_activation": false,
+    "policy_status_mutation": false,
+    "historical_execution_reviews_are_current_state": false,
+    "native_stage_finalizer_applicability": "NOT_APPLICABLE_THIS_EXTENSION_HAS_NO_MIGRATION_STAGE_EXECUTION_ORDER"
+  },
+  "completion_evidence": [
+    {
+      "type": "TEST",
+      "revision": "704106b78be4c5cb2296a84c51be97feec1c1494",
+      "id": "tooling-test/38184145188",
+      "result": "PASS"
+    },
+    {
+      "type": "MACHINE_VALIDATION",
+      "id": "CURRENT_P0_P1_AND_CURRENT_POLICY_NATIVE_GO_CONFORMANCE",
+      "result": "PASS"
+    }
+  ]
 }

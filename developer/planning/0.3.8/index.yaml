@@ -1,45 +1,49 @@
 schema_version: ptsip-developer-planning-index/v1
 policy_class: PTSIP_DEVELOPER_POLICY
-
 plan_identity:
   resolved_plan_id: PLN.POLI.PLAN.30b8f69a
   plan_file_id: PLANFILE.MAIN.73ab4a9a3446
-  version: "1.0"
-  revision: "Rev.0001"
-
+  version: '1.0'
+  revision: Rev.0001
 plan:
-  plan_version: "0.3.8"
-  revision: "01"
+  plan_version: 0.3.8
+  revision: '02'
   integration_branch: dev/0.3.8
   classification: CORE
   status: ACTIVE
   control_plane: developer/planning/0.3.8/index.yaml
-  current_gate: WU-01
-
-# WU-01 and its extension are explicitly approved; failed required checks keep both blocked.
+  current_gate: WU-02
 work_units:
-  - id: WU-01
-    path: developer/planning/0.3.8/WU-01/WU-01.yaml
-    lifecycle:
-      status: BLOCKED
-    approval:
-      status: APPROVED
-      inherited_from: []
-      approval_source: USER_EXPLICIT
-    implementation_authorization:
-      status: AUTHORIZED
-      authorization_source: USER_EXPLICIT
-    depends_on: []
-
-  - id: WU-02
-    path: developer/planning/0.3.8/WU-02/WU-02.yaml
-    lifecycle:
-      status: ACTIVE
-    approval:
-      status: APPROVED
-      inherited_from: []
-      approval_source: USER_EXPLICIT
-    implementation_authorization:
-      status: AUTHORIZED
-      authorization_source: USER_EXPLICIT
-    depends_on: []
+- id: WU-01
+  path: developer/planning/0.3.8/WU-01/WU-01.yaml
+  lifecycle:
+    status: COMPLETE
+  approval:
+    status: APPROVED
+    inherited_from: []
+    approval_source: USER_EXPLICIT
+  implementation_authorization:
+    status: COMPLETE
+    authorization_source: USER_EXPLICIT
+  depends_on: []
+  completion_evidence: &id001
+  - type: TEST
+    revision: 704106b78be4c5cb2296a84c51be97feec1c1494
+    id: tooling-test/38184145188/full-required-and-native-platforms
+    result: PASS
+  - type: MACHINE_VALIDATION
+    id: CURRENT_POLICY_PLAN_AND_CANDIDATE_CONFORMANCE
+    result: PASS
+- id: WU-02
+  path: developer/planning/0.3.8/WU-02/WU-02.yaml
+  lifecycle:
+    status: COMPLETE
+  approval:
+    status: APPROVED
+    inherited_from: []
+    approval_source: USER_EXPLICIT
+  implementation_authorization:
+    status: COMPLETE
+    authorization_source: USER_EXPLICIT
+  depends_on: []
+  completion_evidence: *id001

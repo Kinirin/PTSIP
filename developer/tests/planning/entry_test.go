@@ -2,6 +2,7 @@ package planning_test
 
 import (
 	"os"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -227,14 +228,14 @@ func TestApprovedReleaseMaintainsIndependentCurrentAuthority(t *testing.T) {
 	if unit == nil {
 		t.Fatal("approved candidate work unit missing")
 	}
-	if root["plan"].(object)["status"] != "ACTIVE" || root["plan"].(object)["current_gate"] != "WU-01" ||
+	if root["plan"].(object)["status"] != "ACTIVE" || root["plan"].(object)["current_gate"] != "WU-02" ||
 		unit["id"] != "WU-01" ||
 		unit["approval"].(object)["status"] != "APPROVED" ||
 		unit["approval"].(object)["approval_source"] != "USER_EXPLICIT" ||
-		unit["lifecycle"].(object)["status"] != "BLOCKED" ||
-		unit["implementation_authorization"].(object)["status"] != "AUTHORIZED" ||
+		unit["lifecycle"].(object)["status"] != "COMPLETE" ||
+		unit["implementation_authorization"].(object)["status"] != "COMPLETE" ||
 		unit["implementation_authorization"].(object)["authorization_source"] != "USER_EXPLICIT" {
-		t.Fatal("current release approval must be explicit and blocked until verification")
+		t.Fatal("verified foundation completion must preserve explicit approval and execution authority sources")
 	}
 	parent := readPlanning(t, repo, "developer/planning/0.3.8/WU-01/WU-01.yaml")
 	if parent["work_unit"].(object)["schema_version"] != nil {
@@ -243,23 +244,30 @@ func TestApprovedReleaseMaintainsIndependentCurrentAuthority(t *testing.T) {
 	if parent["schema_version"] != "ptsip-work-unit/v1" {
 		t.Fatal("current release work unit schema version mismatch")
 	}
+	if !reflect.DeepEqual(parent["completion_evidence"], unit["completion_evidence"]) || len(unit["completion_evidence"].([]any)) == 0 {
+		t.Fatal("completed work unit and index must carry matching verification evidence")
+	}
 	extensions := parent["extensions"].([]any)
 	if len(extensions) != 1 {
 		t.Fatalf("expected one approved current release extension, got %d", len(extensions))
 	}
 	row := extensions[0].(object)
 	ref := "developer/planning/0.3.8/WU-01/WU-01-P01.yaml"
-	if row["id"] != "WU-01-P01" || row["path"] != ref || row["status"] != "BLOCKED" {
-		t.Fatal("approved extension must be registered with blocked lifecycle")
+	if row["id"] != "WU-01-P01" || row["path"] != ref || row["status"] != "COMPLETE" {
+		t.Fatal("verified extension must preserve its exact registration at completion")
 	}
 	review := readPlanning(t, repo, ref)
 	if review["approval"].(object)["status"] != "APPROVED" ||
 		review["approval"].(object)["approval_source"] != "USER_EXPLICIT" ||
-		review["implementation_authorization"].(object)["status"] != "AUTHORIZED" ||
+		review["implementation_authorization"].(object)["status"] != "COMPLETE" ||
 		review["implementation_authorization"].(object)["authorization_source"] != "USER_EXPLICIT" ||
-		review["extension"].(object)["lifecycle"].(object)["status"] != "BLOCKED" ||
+		review["extension"].(object)["lifecycle"].(object)["status"] != "COMPLETE" ||
 		review["objective"].(object)["runtime_activation"] != "FORBIDDEN" {
-		t.Fatal("approved extension must remain blocked from runtime activation pending verification")
+		t.Fatal("verification completion cannot authorize runtime activation")
+	}
+	closeout := review["foundation_closeout"].(object)
+	if closeout["approval_source"] != "USER_EXPLICIT" || closeout["runtime_activation"] != false || closeout["policy_status_mutation"] != false {
+		t.Fatal("closeout changed policy or runtime authority")
 	}
 }
 
