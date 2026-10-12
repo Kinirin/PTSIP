@@ -39,14 +39,14 @@ func Admit(root string) error {
 		return err
 	}
 	scope, ok := ctrl["engine_verification_only"].(map[string]any)
-	if !ok || ctrl["state"] != "BLOCKED" || ctrl["direct_release_commands"] != "BLOCKED" || ctrl["workflow_execution"] != "ENGINE_VERIFICATION_ONLY" || scope["state"] != "ALLOWED" || scope["operation"] != "VERIFY" || scope["contract_ref"] != VerificationContract || scope["release_gate"] != "BLOCKED" || scope["engine_pass_is_release_authorization"] != false {
+	if !ok || ctrl["state"] != "BLOCKED" || ctrl["direct_release_commands"] != "BLOCKED" || ctrl["workflow_execution"] != "ENGINE_VERIFICATION_ONLY" || scope["state"] != "ALLOWED" || scope["operation"] != "VERIFY" || scope["contract_ref"] != VerificationContract || scope["release_gate"] != "ENABLED" || scope["release_gate_scope"] != "SELECTED_ENGINE_VERIFICATION" || scope["tag_release_and_pypi_publication"] != "BLOCKED" || scope["engine_pass_is_release_authorization"] != false {
 		return fmt.Errorf("engine verification exception not admitted")
 	}
 	assure, err := policySection(root, "MPD-ASSURE-0001", "engine_verification_only")
 	if err != nil {
 		return err
 	}
-	if assure["contract_ref"] != VerificationContract || assure["result_scope"] != "ENGINE_VERIFICATION_ONLY" || assure["engine_pass_is_release_gate_pass"] != false {
+	if assure["contract_ref"] != VerificationContract || assure["result_scope"] != "ENGINE_VERIFICATION_ONLY" || assure["engine_pass_is_release_gate_pass"] != true || assure["release_gate_scope"] != "SELECTED_ENGINE_VERIFICATION" || assure["full_release_authorization_from_engine_gate"] != false {
 		return fmt.Errorf("verification owner contract mismatch")
 	}
 	var contract map[string]any
@@ -57,8 +57,16 @@ func Admit(root string) error {
 	for _, kind := range kinds {
 		expected = append(expected, kind)
 	}
-	if contract["schema_version"] != "ptsip-engine-verification/v1" || contract["operation"] != "VERIFY" || contract["release_gate"] != "BLOCKED" || contract["publication"] != "BLOCKED" || contract["engine_pass_is_release_authorization"] != false || contract["legacy_verification_fallback"] != false || !reflect.DeepEqual(contract["engines"], expected) || !reflect.DeepEqual(contract["platforms"], []any{"windows-x64", "linux-x64", "macos-arm64"}) || !reflect.DeepEqual(contract["required_checks"], assure["required_checks"]) {
+	if contract["schema_version"] != "ptsip-engine-verification/v1" || contract["operation"] != "VERIFY" || contract["release_gate"] != "ENABLED" || contract["release_gate_scope"] != "SELECTED_ENGINE_VERIFICATION" || contract["publication"] != "BLOCKED" || contract["engine_pass_is_release_authorization"] != false || contract["legacy_verification_fallback"] != false || !reflect.DeepEqual(contract["engines"], expected) || !reflect.DeepEqual(contract["platforms"], []any{"windows-x64", "linux-x64", "macos-arm64"}) || !reflect.DeepEqual(contract["required_checks"], assure["required_checks"]) {
 		return fmt.Errorf("unregistered or expanded engine verification contract")
+	}
+	if contract["approval_ref"] != scope["approval_ref"] || contract["approval_ref"] != assure["approval_ref"] || !reflect.DeepEqual(contract["gate_required_checks"], []any{"CANONICAL_ADMISSION", "ALL_SELECTED_PLATFORM_JOBS_SUCCESS", "ONE_UNEXPIRED_ARTIFACT_PER_SELECTED_ENGINE_PLATFORM", "EXACT_WORKFLOW_RUN_SOURCE_SHA"}) {
+		return fmt.Errorf("gate approval or required evidence contract mismatch")
+	}
+	cache, ok := contract["rust_cache"].(map[string]any)
+	policyCache, policyOK := assure["rust_build_cache"].(map[string]any)
+	if !ok || !policyOK || cache["role"] != "NON_AUTHORITATIVE_BUILD_ACCELERATION" || cache["partition"] != policyCache["partition"] || cache["source_change_restore"] != policyCache["source_change_restore"] || cache["cached_result_is_verification_evidence"] != false || policyCache["cached_result_is_verification_evidence"] != false || cache["rerun_locked_test_build_and_artifact_verification"] != true || policyCache["rerun_locked_test_build_and_artifact_verification"] != "REQUIRED" {
+		return fmt.Errorf("compilation cache must not replace verification")
 	}
 	return nil
 }

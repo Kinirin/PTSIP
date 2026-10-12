@@ -1,5 +1,5 @@
 # Engine verification is admitted by the scoped CTRL/ASSURE contract.
-# Publication remains BLOCKED. Deferred components never produce PASS evidence.
+# The selected-engine Release Gate is enabled; publication remains separate.
 name: tooling-release
 
 on:
@@ -33,7 +33,11 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: developer/tests/go.mod
-          cache: false
+          cache: true
+          cache-dependency-path: |
+            developer/automation/go.sum
+            developer/tests/go.sum
+            .github/checks/release/engine-verification/go.mod
       - name: Resolve current verification admission from canonical policy
         shell: bash
         run: go -C .github/checks/release/engine-verification run ./cmd/engine-wheel admit --root "$GITHUB_WORKSPACE"
@@ -76,7 +80,11 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: developer/tests/go.mod
-          cache: false
+          cache: true
+          cache-dependency-path: |
+            developer/automation/go.sum
+            developer/tests/go.sum
+            .github/checks/release/engine-verification/go.mod
 
       - name: Set up isolated consumer package installer
         uses: actions/setup-python@v6
@@ -84,13 +92,37 @@ jobs:
           python-version: '3.12'
 
       - name: Reject unexpected Rust host toolchain
+        id: rust
         shell: bash
         run: |
           set -euo pipefail
           rustc -vV > rust-host.txt
           cat rust-host.txt
           grep -Fqx "host: ${{ matrix.platform.target }}" rust-host.txt
-          echo "Engine verification evidence only; Release Gate remains blocked."
+          awk '/^commit-hash:/ {print "toolchain=" $2}' rust-host.txt >> "$GITHUB_OUTPUT"
+
+      - name: Restore Cargo dependencies and selected engine compilation
+        id: rust-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/registry/src
+            ~/.cargo/git/db
+            ~/.cargo/git/checkouts
+            ${{ env.CARGO_TARGET_DIR }}
+          key: rust-engine-v1-${{ matrix.platform.runner }}-${{ matrix.platform.target }}-${{ steps.rust.outputs.toolchain }}-${{ matrix.engine }}-${{ hashFiles(format('src/ptsip/engines/{0}/Cargo.toml', matrix.engine), format('src/ptsip/engines/{0}/Cargo.lock', matrix.engine)) }}-${{ hashFiles(format('src/ptsip/engines/{0}/**', matrix.engine)) }}
+          restore-keys: |
+            rust-engine-v1-${{ matrix.platform.runner }}-${{ matrix.platform.target }}-${{ steps.rust.outputs.toolchain }}-${{ matrix.engine }}-${{ hashFiles(format('src/ptsip/engines/{0}/Cargo.toml', matrix.engine), format('src/ptsip/engines/{0}/Cargo.lock', matrix.engine)) }}-
+
+      - name: Record compilation cache result
+        shell: bash
+        env:
+          CACHE_HIT: ${{ steps.rust-cache.outputs.cache-hit }}
+          RUST_COMPILER: ${{ steps.rust.outputs.toolchain }}
+        run: |
+          printf 'Exact cache hit: %s\nRust compiler: %s\nTests and artifact verification run regardless of cache hit.\n' "$CACHE_HIT" "$RUST_COMPILER" | tee rust-cache.txt
 
       - name: Run only the selected engine's Rust tests
         shell: bash
@@ -131,6 +163,7 @@ jobs:
             ${{ env.PTSIP_ENGINE_WHEEL_DIR }}/*
             engine-verification.log
             rust-host.txt
+            rust-cache.txt
           if-no-files-found: error
 
   tool-verification:
@@ -155,12 +188,40 @@ jobs:
       - run: exit 1
 
   release-gate:
-    name: Release Gate (BLOCKED)
-    needs: [verification-admission, engine-verification, tool-verification, profile-verification, package-verification]
+    name: Release Gate
+    needs: [verification-admission, engine-verification]
     if: ${{ always() }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
-      - name: Preserve the release publication suspension
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+          cache: true
+          cache-dependency-path: |
+            developer/automation/go.sum
+            developer/tests/go.sum
+            .github/checks/release/engine-verification/go.mod
+      - name: Verify exact-source selected engine jobs and artifacts
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SELECTED_ENGINE: ${{ inputs.engine }}
         run: |
-          echo '::error::RELEASE_EXECUTION_BLOCKED: Engine verification alone is insufficient. Tool, Profile, Package and successor release admission remain unresolved.'
-          exit 1
+          set -euo pipefail
+          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel gate \
+            --root "$GITHUB_WORKSPACE" --kind "$SELECTED_ENGINE" \
+            --repository "$GITHUB_REPOSITORY" --run-id "$GITHUB_RUN_ID" \
+            --source-sha "$GITHUB_SHA" | tee release-gate.json
+          printf 'Selected engine verification gate: PASS\nPublication was not executed.\n' >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve selected-engine gate result
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-gate-${{ inputs.engine }}-${{ github.sha }}
+          path: release-gate.json
+          if-no-files-found: error

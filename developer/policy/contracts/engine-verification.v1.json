@@ -5,7 +5,7 @@
     "execution": "developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.release_execution_suspension.engine_verification_only",
     "verification": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml#rules.engine_verification_only"
   },
-  "approval_ref": "developer/policy/approvals/MPA-20261013-ENGINE-VERIFICATION-ONLY.yaml",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml",
   "workflow_ref": ".github/workflows/tooling-release.yml",
   "result_scope": "ENGINE_VERIFICATION_ONLY",
   "engine_registry_ref": "src/ptsip/engines/index.json",
@@ -30,7 +30,16 @@
   "tool_verification": "NOT_IMPLEMENTED",
   "profile_verification": "NOT_IMPLEMENTED",
   "package_verification": "NOT_IMPLEMENTED",
-  "release_gate": "BLOCKED",
+  "release_gate": "ENABLED",
+  "release_gate_scope": "SELECTED_ENGINE_VERIFICATION",
+  "gate_required_checks": ["CANONICAL_ADMISSION", "ALL_SELECTED_PLATFORM_JOBS_SUCCESS", "ONE_UNEXPIRED_ARTIFACT_PER_SELECTED_ENGINE_PLATFORM", "EXACT_WORKFLOW_RUN_SOURCE_SHA"],
+  "rust_cache": {
+    "role": "NON_AUTHORITATIVE_BUILD_ACCELERATION",
+    "partition": "ENGINE_RUNNER_NATIVE_TARGET_AND_RUST_COMPILER",
+    "source_change_restore": "SAME_ENGINE_TOOLCHAIN_AND_DEPENDENCY_KEY_ONLY",
+    "cached_result_is_verification_evidence": false,
+    "rerun_locked_test_build_and_artifact_verification": true
+  },
   "publication": "BLOCKED",
   "legacy_verification_fallback": false,
   "engine_pass_is_release_authorization": false,

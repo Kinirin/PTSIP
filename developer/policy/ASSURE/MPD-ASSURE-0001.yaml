@@ -6,7 +6,7 @@ policy:
   title: ASSURE authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.2'
+  version: '4.3'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의 검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
@@ -448,7 +448,7 @@ rules:
     common_verification_gap: PRESERVE_OPEN_NO_FORMER_STATUS_REEMISSION
     operational_installation_and_activation: NOT_GRANTED
   engine_verification_only:
-    approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-VERIFICATION-ONLY.yaml
+    approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml
     contract_ref: developer/policy/contracts/engine-verification.v1.json
     scope: SELECTED_REGISTERED_ENGINE_AND_ITS_EXPLICIT_CONTRACTS
     required_platforms: [WINDOWS_X64, LINUX_X64, MACOS_ARM64]
@@ -464,7 +464,16 @@ rules:
     result_scope: ENGINE_VERIFICATION_ONLY
     full_release_required_verification: PRESERVE_AS_SEPARATE_GATE_REQUIREMENTS
     tool_profile_package_verification: NOT_IMPLEMENTED
-    engine_pass_is_release_gate_pass: false
+    engine_pass_is_release_gate_pass: true
+    release_gate_scope: SELECTED_ENGINE_VERIFICATION
+    full_release_authorization_from_engine_gate: false
+    rust_build_cache:
+      role: NON_AUTHORITATIVE_BUILD_ACCELERATION
+      partition: ENGINE_RUNNER_NATIVE_TARGET_AND_RUST_COMPILER
+      exact_key_inputs: CARGO_MANIFEST_LOCKFILE_AND_ENGINE_SOURCE
+      source_change_restore: SAME_ENGINE_TOOLCHAIN_AND_DEPENDENCY_KEY_ONLY
+      cached_result_is_verification_evidence: false
+      rerun_locked_test_build_and_artifact_verification: REQUIRED
 relations:
   supersedes: []
   amends: []

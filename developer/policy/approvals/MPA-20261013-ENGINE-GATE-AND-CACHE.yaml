@@ -1,0 +1,23 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-ENGINE-GATE-AND-CACHE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The user lifted the Release Gate BLOCKED state and requested GitHub Actions
+    environment caching, especially for selected engine Rust tests and release
+    builds, referring to run 38292554253. Enable the gate for the implemented
+    selected-engine verification scope after all platform jobs and exact-source
+    artifacts pass. Cache Cargo dependencies and native compilation outputs;
+    always rerun tests, build and wheel verification. Tool/Profile/Package remain
+    deferred; this instruction does not request tag, GitHub Release or PyPI
+    publication execution.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  affected_policy_ids: [MPD-CTRL-0001, MPD-ASSURE-0001]
+  recorded_at: '2026-10-13'

@@ -4,8 +4,19 @@ Publication is currently BLOCKED by the project owner's explicit decision.
 `tooling-release.yml` admits Engine Verification only, using the scoped
 `developer/policy/contracts/engine-verification.v1.json` contract. Seven engines
 can be selected independently on Windows x64, Linux x64 and macOS arm64.
-Tool, Profile and Package verification are deferred. Release Gate intentionally
-fails; PowerShell and native publication entrypoints remain blocked.
+Tool, Profile and Package verification are deferred. Release Gate passes only
+when canonical admission, all selected engine/platform jobs and their unexpired
+artifacts belong to the exact workflow source SHA. This gate reports selected
+engine verification readiness; PowerShell and native publication entrypoints
+remain blocked.
+
+Rust dependencies and debug/release compilation outputs are cached per engine,
+runner, native target, compiler commit and Cargo dependency fingerprint. Exact
+keys also include engine source; source changes may reuse only a compatible
+dependency cache. Cargo test/build and wheel verification always run, including
+on an exact cache hit. Wheels, receipts, consumer environments and prior PASS
+results are never restored from the cache. The first run populates caches;
+subsequent compatible runs restore them.
 
 The retained publication implementation describes `release-contract.json`.
 `run_release.ps1` selects and invokes target scripts. Native Go owns selection,
