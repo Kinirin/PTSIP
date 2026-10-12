@@ -6,7 +6,7 @@ policy:
   title: GOV authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '2.2'
+  version: '2.3'
 authority_subject:
   id: DEV_DECISION_LEGITIMACY
   statement: 개발 정책, 개발 작업 및 개발 control plane에서 누가 어떤 subject에 대해 결정을 내리고 승인할 수 있는지와
@@ -438,7 +438,11 @@ rules:
   unit_mpd_0014_d04f6a56972a:
     DEVELOPMENT_VERSION:
       request_kind: DEVELOPMENT_VERSION_BRANCH
-      exact_name_pattern: ^dev/[0-9]+\.[0-9]+\.[0-9]+$
+      exact_name_pattern: ^dev/[0-9]+\.[0-9]+\.[0-9]+(?:(?:a|b|rc)[0-9]+)?$
+      prerelease_naming_approval_ref: developer/policy/approvals/MPA-20261013-DEV-PRERELEASE-BRANCH-NAMING.yaml
+      prerelease_pattern_source: developer/planning/schemas/prerelease-planning-index.schema.json
+      authorized_suffixes: [a, b, rc]
+      exact_user_approved_branch_name_required: true
       creation_trigger: USER_EXPLICIT_REQUEST
   unit_mpd_0014_7e0709f8a82b: FORBIDDEN
   unit_mpd_0015_c35e38d46280:
