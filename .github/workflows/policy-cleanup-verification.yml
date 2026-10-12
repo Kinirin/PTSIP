@@ -1,0 +1,29 @@
+name: Policy Cleanup Verification
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'developer/automation/internal/machine/policy_cleanup*'
+      - 'developer/automation/internal/machine/operations_policy.go'
+      - 'developer/automation/policy/lifecycle/discovery.go'
+      - 'developer/tests/rootfamily/transition_test.go'
+      - 'developer/policy/contracts/go-automation-cutover.v1.json'
+      - '.github/workflows/policy-cleanup-verification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cleanup-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+      - name: Cleanup checks and native Go compilation
+        run: go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./internal/machine -run 'TestCleanup'
+      - name: Frozen migration audit verification
+        run: go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run 'TestHistoricalSourceEvidencePreservesArchiveAndRouting'

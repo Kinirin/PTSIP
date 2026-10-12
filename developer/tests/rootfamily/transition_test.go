@@ -249,15 +249,20 @@ func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 			for _, raw := range sequence(t, graph["sources"]) {
 				source := mapping(t, raw)
 				id := source["source_policy_id"].(string)
-				archive := filepath.Join(root, source["archive_path"].(string))
-				data, err := os.ReadFile(archive)
+				// Frozen history is read from approved Git, not removable worktree bodies.
+				revision := graph["base_head"].(string)
+				origin := filepath.ToSlash(filepath.Join(p.Path, source["original_path"].(string)))
+				command := exec.Command("git", "show", revision+":"+origin)
+				command.Dir = repository(t)
+				data, err := command.Output()
 				if err != nil {
-					t.Fatal(err)
+					t.Fatalf("approved historical Git source unavailable %s: %v", id, err)
 				}
 				if digest(bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n"))) != source["source_sha256"] {
-					t.Fatalf("source bytes changed: %s", id)
+					t.Fatalf("approved Git source bytes changed: %s", id)
 				}
-				original := read(t, archive)
+				var original map[string]any
+				if err := yaml.Unmarshal(data, &original); err != nil { t.Fatal(err) }
 				if digest(canonicalJSON(t, original)) != source["record_sha256"] {
 					t.Fatalf("source record changed: %s", id)
 				}

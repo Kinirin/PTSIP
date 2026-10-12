@@ -31,6 +31,8 @@ func (r *Repository) cleanupGit(args ...string) ([]byte, error) {
     command := exec.Command("git", append([]string{"-C", r.Root}, args...)...)
     result, err := command.Output()
     if err != nil { return nil, fmt.Errorf("git %s: %w", strings.Join(args, " "), err) }
+    // Git object content must retain trailing bytes for exact SHA-256 proof.
+    if len(args) > 0 && args[0] == "show" { return result, nil }
     return bytes.TrimSpace(result), nil
 }
 

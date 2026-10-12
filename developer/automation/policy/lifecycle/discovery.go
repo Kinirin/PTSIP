@@ -84,8 +84,12 @@ func CheckMigrationSourceCatalog(index, graph, baseline Object) error {
 		if entry == nil {
 			return fail(id + ": required audit-only catalog identity omitted")
 		}
+		status := Text(entry["status"])
+		original := status == Text(item["source_status"])
+		retired := status == "RETIRED" &&
+			(entry["substatus"] == "Waiting" || entry["substatus"] == "Removable" || entry["substatus"] == "Default")
 		if entry["policy_class"] != header["policy_class"] ||
-			entry["status"] != item["source_status"] ||
+			(!original && !retired) ||
 			entry["path"] != "developer/policy/"+Text(item["archive_path"]) {
 			return fail(id + ": audit-only catalog membership differs from frozen source")
 		}
