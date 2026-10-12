@@ -31,6 +31,8 @@ environment `pypi`. Tool/Profile/Package are not publication targets of this flo
 
 The Linux wheel uses `manylinux_2_39_x86_64`; native Go inspects ELF architecture,
 external library closure and GLIBC requirements before admitting that tag.
+Packaged License bytes come from the exact source SHA's Git blob, preserving
+canonical content across Windows CRLF and Unix LF worktree materialization.
 
 Rust dependencies and debug/release compilation outputs are cached per engine,
 runner, native target, compiler commit and Cargo dependency fingerprint. Exact

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -55,7 +56,17 @@ func fixture(t *testing.T, target string) (string, Options) {
 	if err := os.WriteFile(binary, append(append([]byte{}, h.Magic[0]...), bytes.Repeat([]byte("X"), 300)...), 0755); err != nil {
 		t.Fatal(err)
 	}
-	return root, Options{Kind: "context", Target: target, Binary: binary, Output: filepath.Join(root, "wheelhouse"), SourceSHA: strings.Repeat("a", 40)}
+	for _, args := range [][]string{{"init", "-q"}, {"add", "--all"}, {"-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=", "commit", "-q", "-m", "Fixture"}} {
+		cmd := exec.Command("git", append([]string{"-C", root}, args...)...)
+		if data, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("fixture source commit failed: %v: %s", err, data)
+		}
+	}
+	source, err := exec.Command("git", "-C", root, "rev-parse", "HEAD").Output()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return root, Options{Kind: "context", Target: target, Binary: binary, Output: filepath.Join(root, "wheelhouse"), SourceSHA: strings.TrimSpace(string(source))}
 }
 func TestIndependentWheelForEveryDeclaredPlatform(t *testing.T) {
 	for target := range hosts {
@@ -131,6 +142,40 @@ func TestIndependentWheelForEveryDeclaredPlatform(t *testing.T) {
 				t.Fatal("same source composition produced unstable wheel bytes")
 			}
 		})
+	}
+}
+
+func TestWheelUsesCanonicalLicenseBlobDespiteWorktreeLineEndings(t *testing.T) {
+	root, opts := fixture(t, "x86_64-pc-windows-msvc")
+	if err := os.WriteFile(filepath.Join(root, "License-Authority/LICENSE.md"), []byte("fixture license\r\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	result, err := Build(root, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	archive, err := zip.OpenReader(result.Wheel)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer archive.Close()
+	found := false
+	for _, file := range archive.File {
+		if strings.HasSuffix(file.Name, "/licenses/LICENSE.md") {
+			r, err := file.Open()
+			if err != nil {
+				t.Fatal(err)
+			}
+			data, err := io.ReadAll(r)
+			r.Close()
+			if err != nil || string(data) != "fixture license" {
+				t.Fatalf("worktree replaced canonical license blob: %q, %v", data, err)
+			}
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("canonical license missing from wheel")
 	}
 }
 func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {

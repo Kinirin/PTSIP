@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -227,13 +228,12 @@ func Build(root string, opts Options) (Result, error) {
 	filename := wd + "-" + selected.Version + "-py3-none-" + h.Platform + ".whl"
 	di := wd + "-" + selected.Version + ".dist-info/"
 	script := wd + "-" + selected.Version + ".data/scripts/" + distribution + h.Suffix
-	licensePath, err := inside(root, "License-Authority/LICENSE.md")
-	if err != nil {
+	if _, err := inside(root, "License-Authority/LICENSE.md"); err != nil {
 		return Result{}, err
 	}
-	license, err := os.ReadFile(licensePath)
+	license, err := exec.Command("git", "-C", root, "cat-file", "blob", opts.SourceSHA+":License-Authority/LICENSE.md").Output()
 	if err != nil {
-		return Result{}, err
+		return Result{}, fmt.Errorf("canonical source license Git blob unavailable: %w", err)
 	}
 	metadata := fmt.Sprintf("Metadata-Version: 2.4\nName: %s\nVersion: %s\nSummary: Independently versioned official PTSIP native engine\nRequires-Python: >=3.11\nLicense-Expression: LicenseRef-PTSIP-Community-Reciprocity-1.0\nLicense-File: LICENSE.md\nDescription-Content-Type: text/markdown\n\n# PTSIP Engine %s\n\nIndependent native engine version `%s`.\n\nEngine identity: `%s`\n\nSource revision: `%s`\n\nSource, platform and binary digests are bound by the packaged origin and release receipt. Installed availability does not grant runtime authorization.\n", distribution, selected.Version, kind, selected.Version, selected.ID, opts.SourceSHA)
 	wheelMetadata := fmt.Sprintf("Wheel-Version: 1.0\nGenerator: ptsip-independent-engine-wheel-go/1\nRoot-Is-Purelib: false\nTag: py3-none-%s\n", h.Platform)
