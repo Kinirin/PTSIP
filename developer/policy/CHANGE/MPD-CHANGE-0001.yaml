@@ -5,7 +5,7 @@ policy:
   id: MPD-CHANGE-0001
   title: CHANGE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.3'
+  version: '3.0'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -13,6 +13,37 @@ exclusive_kernel:
 - DEV_CHANGE_IMPACT_AND_COMPATIBILITY
 - DEV_MIGRATION_ORDER_AND_CONTINUITY
 rules:
+  policy_status_reform_legacy_semantics_replacement:
+    decision: KEEP_LATEST
+    approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-MEANING-REPLACEMENT.yaml
+    policy_scope: PTSIP_DEVELOPER_POLICY
+    subject: POLICY_LIFECYCLE_STATUS_REFORM
+    legacy_state_transitions:
+      ACTIVE:
+        target_status: APPROVED
+        target_substatus: Applying
+      SUPERSEDED:
+        target_status: RETIRED
+        target_substatus: Waiting
+    legacy_status_meaning_preservation: NOT_REQUIRED
+    legacy_status_effect_inheritance: NOT_REQUIRED
+    legacy_supersession_meaning_preservation: NOT_REQUIRED
+    supplementary_legacy_semantics_projection: NOT_REQUIRED
+    preserved_semantic_equivalence_check: FORBIDDEN_AS_STATUS_REFORM_GATE
+    rationale: LEGACY_POLICY_STATUSES_NOT_RELIABLE_REFLECTION_OF_CURRENT_POLICY_LIFECYCLE
+    conflicting_prior_rule:
+      policy_id: MPD-CHANGE-0001
+      authority: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
+      resolution: KEEP_LATEST
+      override_scope: POLICY_LIFECYCLE_STATUS_REFORM_LEGACY_TO_NEW_STATUS
+      unrelated_migration_preservation: UNAFFECTED
+    transition_boundary:
+      approved_legacy_mapping_semantics: true
+      target_lifecycle_model_complete: false
+      status_record_bulk_rewrite_authorized: false
+      current_schema_and_runtime_enforcement_change: NOT_AUTHORIZED
+      other_legacy_statuses_and_substatus_rules: NOT_DECIDED
+      implementation_plan: SEPARATE
   policy_plan_semantic_change_reconciliation:
     decision: RECONCILE
     scope: EFFECTIVE_POLICY_DELTA_TO_BOUND_PLANNING
@@ -593,3 +624,12 @@ transition:
       action: VERIFY_SOURCE_PROJECTION
       execution: SERIAL_REQUIRED
       completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  - id: TR-002
+    type: PROJECT_OWNER_POLICY_STATUS_REFORM_LEGACY_SEMANTICS_REPLACEMENT_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261012-POLICY-STATUS-MEANING-REPLACEMENT.yaml
+    next_action:
+      action: RESOLVE_REMAINING_LIFECYCLE_MODEL_BEFORE_IMPLEMENTATION
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: EXACT_STATUS_MAPPING_WITHOUT_LEGACY_SEMANTIC_INHERITANCE
