@@ -1,23 +1,71 @@
-<p align="right">
-  English | <a href="docs/translated/README.ko.md">한국어</a>
-</p>
+<p align="right">English | <a href="docs/translated/README.ko.md">한국어</a></p>
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-**Status:** Tool `0.3.8a5` policy, verification, and seven-native-engine foundation prerelease candidate — publication pending<br>
-**Tool/package version:** `0.3.8a5`<br>
-**Project Profile contract:** `pp.1.02`<br>
-**Specification family:** `0.3.7-draft`<br>
-**Bound immutable Specification revision:** `3c47816770d194ae42f98faedc911d980db0e62a`<br>
-**License authority:** [`License-Authority/`](License-Authority/) (closed authority boundary; references elsewhere are non-authoritative)<br>
-**License effective time:** `2026-09-15T00:00:00Z` (UTC)<br>
-**Localized documentation:** `README.md` is canonical. Localized README files are regenerated on `main` by the self-hosted Argos Translate workflow; if a translation conflicts with this file, this file governs.
+**PTSIP records architecture responsibility as explicit, machine-readable project intent, then verifies it against repository evidence.** It separates Product, development, delivery, and operations lifecycles without forcing a specific folder layout or programming language.
 
-PTSIP is a project-defined architecture policy for separating project responsibilities by **primary lifecycle ownership** while preserving explicit architecture intent, lifecycle isolation, reproducible conformance, verification-purpose separation, and multi-environment decision consistency.
+> **Purpose precedes reuse.** Determine why a responsibility exists and which lifecycle owns it before optimizing how code is shared.
 
-> **Purpose precedes reuse.** Classify a coherent responsibility by why it exists and which lifecycle owns it before optimizing for code sharing.
+## Current versions and publication status
 
-Tool `0.3.8a5` consolidates the current Root Family policy plane, Go developer automation and verification, independent Rust implementations of seven official engines, and exact-source cross-platform CI. The existing Consumer Context Plane and VPMS APIs remain available. The Specification family and Project Profile contract identities remain unchanged.
+| Identity | Source-tree value |
+| --- | --- |
+| Tool | `0.3.8a5` — **unpublished prerelease candidate** |
+| Latest published Tool prerelease | `0.3.8a4` |
+| Project Profile | `pp.1.02` |
+| Specification family | `0.3.7-draft` |
+| Bound immutable `SPEC_REVISION` | `3c47816770d194ae42f98faedc911d980db0e62a` |
+
+Tool, Project Profile and Specification identities are independent. Read [what changed in `0.3.8a5`](docs/releasenote/tool/0.3.8a5.md), the [Tool release history](docs/releasenote/tool/README.md), or [the release workflow](.github/workflows/tooling-release.yml) for the exact publication gates.
+
+## Quick start
+
+Requires Python **3.11 or newer**. These commands use PowerShell; the basic CLI commands also work in other shells.
+
+Install the latest normally selected published release, then inspect its identities:
+
+```powershell
+python -m pip install --upgrade PTSIP
+ptsip --version
+ptsip spec
+```
+
+To install the published `0.3.8a4` prerelease specifically (ordinary pip resolution might select the latest stable version instead):
+
+```powershell
+python -m pip install "PTSIP==0.3.8a4"
+```
+
+To develop this repository directly:
+
+```powershell
+git clone https://github.com/Kinirin/PTSIP.git
+cd PTSIP
+python -m pip install -e ".[dev]"
+```
+
+Start with read-only or diagnostic operations before changing a Project Profile:
+
+```powershell
+ptsip doctor .
+ptsip inspect .
+ptsip pilot .
+ptsip validate .
+ptsip conform .
+```
+
+`validate` checks declarations. `conform` evaluates applicable architecture requirements against observed evidence. A valid profile is not proof of conformance; consult the installed CLI help for exact supported options.
+
+## What the system keeps separate
+
+| Authority/evidence plane | Responsibility |
+| --- | --- |
+| Specification | Normative requirements and their immutable revision |
+| Decision Authority | Explicit approved architectural answers and their coordination |
+| Source Project Profile / Responsibility Map | Project-owned architecture declarations |
+| Observations and conformance | Actual repository/artifact behavior and rule evaluation |
+
+**Evidence is not architecture authority.** File paths, packages, heuristics, templates, AI confidence and observed imports can inform review; none may silently create lifecycle ownership. The tool never treats an `INCOMPLETE` result as a pass.
 
 ## Primary lifecycle ownership
 
@@ -179,82 +227,13 @@ PROJECT_REMOVAL
 
 and has deterministic digest identity for reproducibility. Neither provenance nor digest becomes a replacement architecture authority.
 
-## Install and use
+## Profile selection and adoption
 
-PTSIP requires Python 3.11 or newer.
+When repository-local PTSIP configuration is persisted, [`.ptsip/index.json`](.ptsip/index.json) routes the canonical `.ptsip/` namespaces and [`.ptsip/profiles/index.json`](.ptsip/profiles/index.json) selects the active `*.ptsip.yaml` Project Profile through `default_profile`. Repository-root `ptsip.yaml` is a historical migration/compatibility input, not a second active declaration authority.
 
-Install the latest **published** release:
+`explicit`, `template`, and `hybrid` declarations all materialize to a Canonical Effective Responsibility Map. The materializer may resolve registered structures and provenance; it must **not** auto-select a template, invent a component owner, or fix conflicting project intent.
 
-```powershell
-python -m pip install PTSIP
-```
-
-Upgrade to the latest **published** release:
-
-```powershell
-python -m pip install --upgrade PTSIP
-```
-
-Tool `0.3.8a5` is a prerelease candidate awaiting publication. The following command installs the currently published `0.3.8a4` prerelease. A normal `pip install PTSIP` may continue to select the latest stable release unless prereleases are explicitly requested.
-
-Install the currently published prerelease explicitly with:
-
-```powershell
-python -m pip install "PTSIP==0.3.8a4"
-```
-
-For source development on this release line:
-
-```powershell
-python -m pip install -e ".[dev]"
-```
-
-Common commands:
-
-```powershell
-ptsip --version
-ptsip spec
-ptsip doctor .
-ptsip inspect .
-ptsip pilot .
-ptsip adopt --help
-ptsip validate .
-ptsip clarify .
-ptsip gate .
-ptsip resolve --help
-ptsip conform .
-ptsip context status . --json
-ptsip context check . --json
-```
-
-New project-owned profiles are selected through `.ptsip/profiles/index.json`; the catalog's `default_profile` resolves the active `*.ptsip.yaml` resource. Repository-root `ptsip.yaml` remains a compatibility/migration input, and an explicit `--profile` path still takes precedence.
-
-PTSIP developers use that same local catalog and `.ptsip/profiles/main.ptsip.yaml`.
-Profile implementation modules and distributed examples live in
-`src/ptsip/profiles/`. The public catalog is `src/ptsip/profiles/index.yaml`;
-`registry/project-profile-contracts.yaml` explicitly binds this source layout.
-Historical PP baselines under `src/ptsip/profiles/history/` are preserved in
-source distributions for verification and are excluded from wheels. Moving
-storage preserves PP identity and historical bytes; public profile or schema
-semantic changes still require the native Go PP transition gates.
-
-## Adoption and decision authority
-
-Repository evidence is not architecture authority. Candidate discovery, path names, templates, heuristics, and agent confidence can support review but cannot manufacture project intent.
-
-Canonical Tool `0.3.8a5` explicit adoption facts center on `classification` as lifecycle ownership authority. New canonical decisions use facts such as:
-
-```text
-classification
-purpose
-shipped
-runtime_required
-executable
-```
-
-The historical `lifecycle_owner` field is legacy migration evidence, not a second Tool `0.3.8a5` ownership authority.
-
-Example dry-run:
+For an existing component, inspect the declaration change without applying it:
 
 ```powershell
 ptsip adopt . `
@@ -267,240 +246,67 @@ ptsip adopt . `
   --json
 ```
 
-Apply only after reviewing the planned declaration change:
+Apply only an owner-reviewed change by adding `--apply`. This is an illustrative command, not a rule classifying every directory named `tools`. Canonical ownership is `classification`; the historical `lifecycle_owner` field is migration evidence only.
 
-```powershell
-ptsip adopt . `
-  --component tools `
-  --classification DEVELOPMENT_TOOLING `
-  --purpose "Repository-local generation tooling" `
-  --shipped no `
-  --runtime-required no `
-  --executable yes `
-  --apply `
-  --json
-```
+Optional GitHub-coordinated decision authority uses `refs/heads/ptsip-policy` **when configured**. It relies on fresh authority reads and conditional mutations to reject stale writers. Coordination failures block new architecture-authority writes rather than silently falling back to an unrelated local decision store; GitHub is not a universal Specification dependency.
 
-Prepared writes must reject stale repository/profile state.
+## Native foundation and consumer boundaries
 
-PTSIP distinguishes four things that must not be collapsed:
+Seven independently built **Rust engines** have versioned, language-neutral contracts and registered entrypoint bindings under [`src/ptsip/engines/`](src/ptsip/engines/). See the [official engine index](src/ptsip/engines/index.json).
 
-```text
-Specification
-    -> normative rules
-
-Decision Authority
-    -> which explicit coordinated architecture answer won
-
-Project Profile / Responsibility Map
-    -> durable project-owned declaration
-
-Observed evidence
-    -> what the repository and artifacts actually do
-```
-
-A Decision Authority does not replace the Project Profile selected by `.ptsip/profiles/index.json` and does not prove conformance. Legacy root `ptsip.yaml` remains compatibility input only.
-
-## Distributed decision coordination
-
-The Reference Tool supports repository-distributed decision coordination through:
-
-```text
-refs/heads/ptsip-policy
-```
-
-GitHub is a Tool backend, not a universal Specification dependency. The coordination model preserves stable decision identity, first-valid-resolution-wins, stale-writer-safe conditional mutation, authority freshness, deterministic reconciliation, fail-closed behavior, and separation of global decision state from clone-local application state.
-
-PTSIP uses action-time synchronization rather than continuous background polling.
-
-## Product Artifact boundary
-
-Artifact ownership is independent from producer ownership. A `DEVELOPMENT_TOOLING` or `DELIVERY` component may validly build a `PRODUCT` artifact, but the resulting artifact must still satisfy the Product package boundary.
-
-Tool `0.3.8a5` supports snapshot-bound Product Artifact evidence. Release verification checks actual built distribution content rather than treating packaging configuration as proof. Product distribution verification rejects definite non-Product implementation leakage under `PTSIP-PKG-001`.
-
-## VPMS — Verification Protocol Management System
-
-PTSIP and VPMS answer different questions:
-
-```text
-PTSIP
-    Who owns this responsibility across its lifecycle?
-
-VPMS
-    How are explicit Verification Cases bound, executed, and reported?
-```
-
-PTSIP classification and the historical VPMS Verification Purpose remain separate axes. The Case `purpose` field is compatibility-only: it does not decide selection, runner binding, or PTSIP classification. PTSIP core does not depend on VPMS.
-
-The repository's three product contracts are ACTIVE and separately own the Case/reference/runner protocol, explicit Case selection, and execution composition. The public API is:
-
-```python
-from vpms import load_registry_snapshot, resolve_selection, run_cases
-
-loaded = load_registry_snapshot(case_definitions, references=reference_registrations)
-if not loaded.ok:
-    raise ValueError(loaded.diagnostics)
-selection = resolve_selection(
-    loaded.snapshot, {"kind": "CASE_IDS", "case_ids": ["explicit.case.id"]}
-)
-if not selection.ok:
-    raise ValueError(selection.diagnostics)
-results = run_cases(loaded.snapshot, selection, executors=runner_adapters)
-```
-
-`case_definitions`, `reference_registrations`, and `runner_adapters` are explicit caller-owned inputs. Selection fails closed on invalid, duplicate, or unknown IDs. Execution accepts selection bound to the same validated snapshot and preflights every selected adapter before executing the first Case. `SelectionScope`, `select_cases`, and `run_selected_cases` are retired, not compatibility aliases.
-
-Optional PTSIP integration uses `ptsip.validation.handoff.load_validated_effective_map` followed by `vpms.integration.ptsip_bridge.metadata_from_effective_map`. ACTIVE `SFP-0023` owns only this read-only boundary: the projection exposes exact component ID and classification from a genuinely validated immutable effective map. A raw dict, a `validated=True` assertion, and the historical `load_ptsip_metadata` compatibility reader are not canonical validation proof or implicit fallbacks. `SFP-0006` is RETIRED with its historical meaning preserved; VPMS product protocol authority resides in the separate product contracts.
-
-The current VPMS compatibility vocabulary may still contain `PRODUCT | TOOLCHAIN`. VPMS `TOOLCHAIN` is not a canonical Tool `0.3.8a5` PTSIP classification.
-
-VPMS verification PASS does not imply PTSIP `CONFORMANT`, and PTSIP `CONFORMANT` does not imply functional verification PASS.
-
-## Conformance
-
-`ptsip conform` evaluates declared architecture and observed evidence against applicable PTSIP rules after source declarations are resolved to the Effective Responsibility Map.
-
-Completed outcomes are:
-
-| Exit code | Outcome |
+| Engine | Owned capability |
 | --- | --- |
-| `0` | `CONFORMANT` |
-| `5` | `NON_CONFORMANT` |
-| `6` | `INCOMPLETE` |
+| Context | Load validated, identity/source-bound Context snapshots |
+| Storage | Mediate provider operations without taking provider ownership |
+| Validation | Check schemas, contracts, typed I/O, preconditions and Cases |
+| Discovery | Resolve registered source closures and invocation bindings |
+| Planning | Order dependencies, assess changes and prepare native invocation |
+| Execution | Perform bounded caller-admitted requests and record effects/stops |
+| Projection | Render validated Context into declared output formats |
 
-A valid profile does not prove conformance. Missing evidence that could hide an applicable mandatory rule remains fail-closed as `INCOMPLETE`; the Tool does not force an uncertain repository green.
+`0.3.8a5` verifies the native foundation on Linux, Windows and macOS; it **does not** implicitly grant consumer production installation, authority admission, activation, or versioned cutover. The Python wheel carries neutral engine contract data, **not** the Rust sources, native binaries or build outputs. Existing consumer APIs remain available; see the [release-scope boundary](docs/releasenote/tool/0.3.8a5.md).
 
-## Dependency analysis and bounded review
+PTSIP controls **who owns lifecycle responsibilities**. The independent [`src/vpms/`](src/vpms/) Verification Protocol Management System (VPMS) controls **how explicit Verification Cases are registered, selected, run and reported**. VPMS purpose/verification status is separate from PTSIP classification and conformance.
 
-The WU-13 development CLI reconciles dependency evidence before presenting items for review:
+VPMS public composition uses `load_registry_snapshot`, `resolve_selection`, and `run_cases`, with explicit caller-owned definitions, references and adapters. The optional PTSIP bridge consumes only validated immutable Effective Responsibility Map data; it does not establish project authority. VPMS PASS does not imply PTSIP `CONFORMANT`, or vice versa.
+
+PTSIP conformance completes with `CONFORMANT` (exit `0`), `NON_CONFORMANT` (`5`), or `INCOMPLETE` (`6`). Missing required evidence is fail-closed. Product distribution verification inspects actual snapshot-bound built artifacts; the producer component owning a build step is not automatically the owner of the resulting Product artifact.
+
+## Developer workflow and repository map
+
+| Path | Responsibility |
+| --- | --- |
+| [`.ptsip/`](.ptsip/) | Consumer-repository indexes, profiles, Context; Task/runtime are reserved |
+| [`src/policy/index.yaml`](src/policy/index.yaml) | Current Support Feature policy registry (`ACTIVE`/`DRAFT`/`RETIRED`) |
+| [`developer/policy/`](developer/policy/) | Developer machine policy and bindings |
+| [`developer/planning/`](developer/planning/) and [`planning/`](planning/) | Policy-derived execution plans, work units and historical records |
+| [`developer/automation/`](developer/automation/) | Native Go developer tooling, policy/planning/release controls |
+| [`src/ptsip/`](src/ptsip/) | Python Consumer Tool, conformance, profile materialization and engines contracts |
+| [`src/ptsip/engines/`](src/ptsip/engines/) | Seven independently owned native engine implementations/contracts |
+| [`src/vpms/`](src/vpms/) | Independent verification subsystem |
+| [`src/tests/`](src/tests/) and [`developer/tests/`](developer/tests/) | Consumer, developer and native verification |
+| [`registry/`](registry/) and [`schemas/`](schemas/) | Specification registries and schemas |
+| [`.github/workflows/`](.github/workflows/) | Test, release and README translation workflows |
+| [`docs/releasenote/`](docs/releasenote/) | Tool, Project Profile and Specification release records |
+
+For coding agents, [`AGENTS.md`](AGENTS.md) is an entry projection **not** an alternative policy authority. Policies govern plans, plans govern implementation; lower levels must not silently change an authoritative decision. See [CONTRIBUTING.md](CONTRIBUTING.md) and the [developer automation guide](developer/automation/README.md).
+
+Bounded dependency analysis and validation planning are advisory and do not replace current architecture declarations or exact-source release validation:
 
 ```powershell
 ptsip dependency analyze .
-ptsip dependency analyze . --component ptsip-core --json
 ptsip dependency review-pack . --max-items 8 --max-context-bytes 12000
 ptsip dependency validation-plan . --changed src/ptsip/dependency_analysis.py --json
 ```
 
-`--component` requires a component ID declared in the selected Project Profile. All three commands accept `--profile`; omit `--component` to analyze the repository. The examples using `ptsip-core` and `src/ptsip/dependency_analysis.py` apply to this repository and must be replaced with consumer-owned component IDs and tracked paths elsewhere.
+Release PREPARE and PUBLISH are independent, exact-source-verification phases in [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml). Documentation, tests, workflow or Tool-only changes do not themselves change the immutable Specification revision.
 
-Analysis reports four advisory actionability buckets:
+## Release notes and background
 
-| Bucket | Next action |
-| --- | --- |
-| `AUTO_RESOLVED` | Reuse the recorded mechanical evidence. |
-| `REPOSITORY_DEFECT` | Review the evidence-backed remediation candidate; application remains explicit. |
-| `REVIEW_REQUIRED` | Review bounded source context and the unresolved support or ownership question. |
-| `RESOLVER_LIMITATION` | Retain incomplete evidence and address the resolver or supply authoritative evidence. |
-
-The default human output is concise. `--json` preserves the detailed machine report; keep large reports in an external working directory instead of placing the entire report in an AI prompt. A Review Pack includes only `REVIEW_REQUIRED` items, defaults to at most eight items and 12,000 UTF-8 bytes per item, and limits each item to four source files. Its summary distinguishes selected and deferred items. An item is deferred when its import snippet cannot fit the context budget. Generation does not perform AI review; record actual review counts separately from the generator's `ai_reviewed_items: 0`.
-
-Review Packs and reusable Python source evidence are stored in external Tool-owned state by default. `review-pack --output <new-report.json>` chooses an explicit report path; it rejects overwriting tracked repository content. Source evidence is reused only when its cache identity matches, while repository snapshots are checked freshly. Corrupt or stale cache entries are recomputed.
-
-`validation-plan` proposes focused and component commands from declared verification ownership and observed import reachability. Repeat `--changed` for multiple tracked paths. It does not execute the commands or replace the repository's full regression and exact-SHA verification requirements.
-
-Dependency analysis and Review Packs do not evaluate conformance or establish architecture authority. Run `ptsip conform .` for the strict outcome. Unresolved verification dependencies remain blocking in a separate verification bucket; dynamic or ambiguous local imports remain unresolved when their targets cannot be established mechanically. A support-contract decision and any consumer change remain explicit.
-
-## Tool and Specification lifecycle
-
-The PTSIP Tool and PTSIP Specification are independently versioned.
-
-- `pyproject.toml` owns Tool/package source version;
-- `ptsip --version` reports installed Tool version;
-- `ptsip spec` reports the exact Specification family and immutable revision bound to the Tool;
-- `spec/`, `schemas/`, and `registry/` contain canonical Specification assets;
-- `src/ptsip/specdata/` contains matching embedded machine-readable assets.
-
-The current source tree exposes independent PP and Specification identities:
-
-```text
-Project Profile pp.1.02
-Specification 0.3.7-draft
-SPEC_REVISION 3c47816770d194ae42f98faedc911d980db0e62a
-```
-
-The already-published Tool `0.3.8a1` release retains its historical PP binding
-in its Tool release note; advancing the PP contract does not rewrite that Tool history.
-
-A new immutable revision is required only for a genuine normative change. Release workflow, test, planning, status, or documentation-only changes do not move `SPEC_REVISION` by themselves.
-
-## Tool 0.3.8a5 release identity
-
-Tool `0.3.8a5` prepares the policy, verification, and independent native-engine foundations completed after the published `0.3.8a4` baseline. Seven official engines use independent Rust packages and language-neutral contracts; Go verification exercises their registered capabilities on Linux, Windows, and macOS. Existing consumer APIs remain available while production authority admission, installation/activation, and versioned consumer cutover remain separately gated.
-
-```text
-Tool:             0.3.8a5
-Project Profile:  pp.1.02
-Specification:    0.3.7-draft
-SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
-Release state:    prerelease candidate; publication pending
-```
-
-The canonical change record is [`docs/releasenote/tool/0.3.8a5.md`](docs/releasenote/tool/0.3.8a5.md). PREPARE and PUBLISH use `tooling-release.yml` with independent exact-source verification.
-
-## Tool 0.3.8a4 release identity
-
-Tool `0.3.8a4` consolidates native Go developer automation, Root Family policy lifecycle enforcement, canonical Project Profile storage, Test Mode routing, and release verification without changing the bound Specification family or Project Profile contract.
-
-```text
-Tool:             0.3.8a4
-Project Profile:  pp.1.02
-Specification:    0.3.7-draft
-SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
-Release scope:    Go-native developer control plane + responsibility-separated release verification
-```
-
-Release preparation and publication use the single `.github/workflows/tooling-release.yml` surface. PREPARE and PUBLISH retain independent exact-source verification. Release readiness is owned by the Go tests under `developer/tests/release/`.
-
-## Tool 0.3.8a3 release identity
-
-Tool `0.3.8a3` is an emergency Context Plane migration-semantics patch over the published `0.3.8a2` repository-namespace release.
-
-```text
-Tool:             0.3.8a3
-Project Profile:  pp.1.02
-Specification:    0.3.7-draft
-SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
-Release scope:    deterministic MEMORY.md -> Context Plane migration and projection repair
-```
-
-The canonical semantic write target is `.ptsip/context/source/context.source.json`. Generated `context.json`, `context.jsonl`, and `context.schema.json` are repaired from that source. Semantic ambiguity remains user-owned; deterministic projection repair is preauthorized for coding agents. Unlike Tool `0.3.8a2`, Tool `0.3.8a3` ships this implementation inside the Consumer Tool as `ptsip/context_plane.py`; a release build is invalid if that module or the `ptsip context` CLI surface is absent from the built wheel.
-
-## Tool 0.3.8a2 release identity
-
-Tool `0.3.8a2` is a repository-namespace stabilization prerelease with a deliberately narrow compatibility goal.
-
-```text
-Tool:             0.3.8a2
-Project Profile:  pp.1.02
-Specification:    0.3.7-draft
-SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
-Release scope:    canonical .ptsip repository namespace + JSON index routing
-```
-
-This Tool release does not introduce a new Specification family or Project Profile contract. It establishes `.ptsip/` as the canonical repository-local PTSIP ownership boundary and `.ptsip/index.json` as the root machine-routing entry point. `.ptsip/profiles/index.json` is the canonical local Project Profile catalog representation. The former `.ptsip/profiles/index.yaml` form is accepted only as compatibility input for migration.
-
-`.ptsip/tasks/` and `.ptsip/runtime/` are reserved namespaces in this release. Reservation does not claim a complete generic Repository Task Engine or finalized runtime persistence semantics, and the absence of those capabilities does not authorize a coding agent to establish another PTSIP control-plane root under `tools/`, `scripts/`, or another repository path.
-
-Release scope is recorded in [`docs/releasenote/tool/0.3.8a2.md`](docs/releasenote/tool/0.3.8a2.md).
-
-## Tool 0.3.8a1 release identity
-
-Tool `0.3.8a1` is an emergency bridge prerelease with an intentionally narrow scope.
-
-```text
-Tool:             0.3.8a1
-Project Profile:  pp.1.01
-Specification:    0.3.7-draft
-SPEC_REVISION:    3c47816770d194ae42f98faedc911d980db0e62a
-Release scope:    explicit proposed candidate bridge
-```
-
-This Tool release does not introduce a new Specification family or Project Profile contract.
-
-It adds support for representing a not-yet-existing component as an explicit proposed candidate and resolving that proposal without silently materializing it as an active component. It does not claim completion of the broader Tool `0.4.0` capability-recovery architecture.
-
-Release scope and verification history are recorded in [`docs/releasenote/tool/0.3.8a1.md`](docs/releasenote/tool/0.3.8a1.md). The release gate is defined by [`developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml`](developer/planning/0.3.8/0.3.8a1/0.3.8a1-emergency-release-gate.yaml).
+- [Current `0.3.8a5` release candidate](docs/releasenote/tool/0.3.8a5.md): current-policy validation, registered Check coverage and seven-engine foundation; **publication pending**.
+- [Published `0.3.8a4` baseline](docs/releasenote/tool/0.3.8a4.md): Go-native developer automation, Project Profile and release verification.
+- [Historical Tool notes](docs/releasenote/tool/README.md): earlier releases, namespace and Context Plane migrations.
+- [Specification/Project Profile/Tool release records](docs/releasenote/README.md): independently versioned lifecycle histories.
 
 ## License authority
 
@@ -511,14 +317,8 @@ The canonical effective time currently declared by the License Authority is `202
 License-related wording elsewhere in this repository is informational or contextual only. It does not become part of the License, modify it, or become incorporated by reference.
 
 Normal Tool releases, Specification validation, Tool version changes, documentation mentions, keyword matches, and AI semantic guesses do not authorize License Authority entry. Entry uses only the triggers declared by `License-Authority/license-authority.yaml`.
-## Consumer Repository canonical namespace
 
-Read-only inspection and Pilot operations remain read-only and do not create repository state merely by being invoked. When a Consumer Repository persists repository-local contracts, registries, configuration, task/operation metadata, or execution state whose semantic owner is PTSIP, `.ptsip/` is the canonical ownership boundary.
+## Language and project status
 
-Repository tooling implementations may physically live under `tools/`, `scripts/`, `src/`, or another project-owned path. Their PTSIP-owned registration, policy bindings, task/operation contracts, indexes, and lifecycle state must not establish an alternative repository-local PTSIP control-plane root.
+This English README is the canonical project overview. [Localized documentation](docs/translated/) is regenerated on `main` using the registered Argos Translate workflow; translations do not override the English overview or machine-readable policy. PTSIP remains experimental and release claims are bounded to their exact source and verification evidence.
 
-Canonical machine indexes under `.ptsip/` use JSON. Tool `0.3.8a5` uses `.ptsip/index.json` as the root router and `.ptsip/profiles/index.json` for local Project Profile selection. The Task and runtime namespaces are reserved; runtime persistence details remain future work. A reserved or unavailable Task capability must fail closed for the dependent operation rather than causing an agent to invent a new Task Engine elsewhere in the repository.
-
-## Project status
-
-PTSIP remains experimental. Tool `0.3.8a5` is the current policy, verification, and seven-native-engine foundation prerelease candidate; its publication boundary is tracked in [`docs/releasenote/tool/0.3.8a5.md`](docs/releasenote/tool/0.3.8a5.md). Historical Tool releases, including `0.3.8a1`, and Specification notes are preserved under [`docs/releasenote/`](docs/releasenote/).
