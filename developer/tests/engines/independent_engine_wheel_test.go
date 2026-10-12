@@ -29,6 +29,14 @@ func TestIndependentEngineWheel(t *testing.T) {
 		t.Fatal(err)
 	}
 	root := testrepo.Root(t)
+	// A revision label alone is not enough if tracked sources were edited.
+	workingTree, err := exec.Command("git", "-C", root, "status", "--porcelain", "--untracked-files=no").Output()
+	if err != nil {
+		t.Fatalf("tracked source status unavailable: %v", err)
+	}
+	if len(bytes.TrimSpace(workingTree)) != 0 {
+		t.Fatalf("tracked source differs from HEAD; rebuild from a clean revision")
+	}
 	sourceOutput, err := exec.Command("git", "-C", root, "rev-parse", "HEAD").Output()
 	if err != nil {
 		t.Fatalf("exact source revision unavailable: %v", err)
