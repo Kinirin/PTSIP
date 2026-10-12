@@ -11,9 +11,27 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+
+	"go.yaml.in/yaml/v3"
 )
 
 const PublicationContract = "developer/policy/contracts/engine-publication.v1.json"
+
+func validateCanonicalVersion(root, kind, projected string) error {
+	p, err := inside(root, "src/ptsip/engines/"+kind+"/version.yaml")
+	if err != nil {
+		return err
+	}
+	data, err := os.ReadFile(p)
+	if err != nil || len(data) > 65536 {
+		return fmt.Errorf("canonical engine version is missing or oversized")
+	}
+	var version map[string]any
+	if err := yaml.Unmarshal(data, &version); err != nil || len(version) != 3 || version["schema_version"] != "ptsip-engine-version/v1" || version["engine"] != kind || version["version"] != projected || !versionPattern.MatchString(projected) {
+		return fmt.Errorf("canonical version.yaml and registered engine projection diverged")
+	}
+	return nil
+}
 
 type PublicationOptions struct {
 	GateOptions
@@ -89,6 +107,9 @@ func validatePublicationBundle(root string, opts PublicationOptions) (Publicatio
 	}
 	if selected.ID == "" || !versionPattern.MatchString(selected.Version) {
 		return bundle, fmt.Errorf("engine identity/version is not registered")
+	}
+	if err := validateCanonicalVersion(root, opts.Kind, selected.Version); err != nil {
+		return bundle, err
 	}
 	var catalog struct {
 		Prefixes map[string]string `json:"tag_prefixes"`

@@ -38,6 +38,7 @@ func fixture(t *testing.T, target string) (string, Options) {
 		entries = append(entries, map[string]any{"kind": strings.ToUpper(kind), "engine_id": id, "version": "0.2.0", "manifest_ref": manifest, "execution_binding_ref": binding})
 		packages = append(packages, map[string]any{"engine_id": id, "version": "0.2.0", "package_distribution": "ptsip-engine-" + kind, "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL", "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY", "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
 		writeFixture(t, root, manifest, map[string]any{"engine_id": id, "implementation_version": "0.2.0"})
+		writeFixture(t, root, "src/ptsip/engines/"+kind+"/version.yaml", map[string]any{"schema_version": "ptsip-engine-version/v1", "engine": kind, "version": "0.2.0"})
 		writeFixture(t, root, binding, map[string]any{"bindings": []map[string]any{{"engine_id": id, "engine_version": "0.2.0", "entrypoint": "ptsip-engine-" + kind}}})
 	}
 	writeFixture(t, root, "src/ptsip/engines/index.json", map[string]any{"official_engine_entries": entries})

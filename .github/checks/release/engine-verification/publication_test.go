@@ -80,3 +80,32 @@ func TestLinuxABIRejectsOtherExecutableFormats(t *testing.T) {
 		}
 	}
 }
+
+func TestCanonicalVersionOwnerIsRequiredBeforePublication(t *testing.T) {
+	for _, name := range []string{"valid", "changed-version", "wrong-owner", "duplicate-field", "unknown-field"} {
+		t.Run(name, func(t *testing.T) {
+			root, _ := fixture(t, "x86_64-pc-windows-msvc")
+			content := "schema_version: ptsip-engine-version/v1\nengine: context\nversion: 0.2.0\n"
+			switch name {
+			case "changed-version":
+				content = strings.ReplaceAll(content, "0.2.0", "0.3.0")
+			case "wrong-owner":
+				content = strings.ReplaceAll(content, "engine: context", "engine: storage")
+			case "duplicate-field":
+				content += "version: 0.2.0\n"
+			case "unknown-field":
+				content += "automatic_bump: true\n"
+			}
+			if err := os.WriteFile(filepath.Join(root, "src/ptsip/engines/context/version.yaml"), []byte(content), 0644); err != nil {
+				t.Fatal(err)
+			}
+			err := validateCanonicalVersion(root, "context", "0.2.0")
+			if name == "valid" && err != nil {
+				t.Fatal(err)
+			}
+			if name != "valid" && err == nil {
+				t.Fatal("noncanonical engine version was accepted")
+			}
+		})
+	}
+}
