@@ -58,6 +58,12 @@ pub fn select(input: &Value) -> Result<Value, String> {
     {
         return Err("current installation plan proof missing".into());
     }
+    if plan["selection"] != "REGISTERED_INDEPENDENT_AUTO_INSTALLED_PACKAGES_CURRENT_HOST_ONLY"
+        || plan["default_installation"] != "SEVEN_OFFICIAL_PACKAGES_AS_PYTHON_DISTRIBUTION_DEPENDENCIES"
+        || plan.get("bundle_selection").is_some()
+    {
+        return Err("manual or bundled official engine installation contract is obsolete".into());
+    }
     let target = text(input, "host_target")?;
     let package_ids: BTreeSet<_> = plan["packages"]
         .as_array()
@@ -86,6 +92,19 @@ pub fn select(input: &Value) -> Result<Value, String> {
             return Err("ambiguous default package identity".into());
         }
         let proof = (|| -> Result<Value, String> {
+            let package_name = text(package, "package_distribution")?;
+            let cargo_manifest = text(package, "cargo_manifest_ref")?;
+            let kind = cargo_manifest
+                .strip_prefix("src/ptsip/engines/")
+                .and_then(|s| s.strip_suffix("/Cargo.toml"))
+                .ok_or("unregistered engine package cargo ownership")?;
+            if package_name != format!("ptsip-engine-{kind}")
+                || package["distribution"] != "INDEPENDENT_VERSIONED_NATIVE_WHEEL"
+                || package["installation"] != "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY"
+                || package["installed_is_execution_authorization"] != false
+            {
+                return Err("official engine requires independent auto-installed wheel".into());
+            }
             if package["permission_from_availability"] != false
                 || !package["build_targets"]
                     .as_array()
@@ -159,7 +178,7 @@ pub fn select(input: &Value) -> Result<Value, String> {
                 return Err("artifact platform does not match the declared host target".into());
             }
             Ok(
-                json!({"engine_id":id,"version":package["version"],"distribution":package["distribution"],"host_target":target,"artifact_ref":artifact,"installation_authorized":false}),
+                json!({"engine_id":id,"version":package["version"],"distribution":package["distribution"],"package_distribution":package_name,"host_target":target,"artifact_ref":artifact,"installation_authorized":false,"execution_authorized":false}),
             )
         })();
         match proof {
