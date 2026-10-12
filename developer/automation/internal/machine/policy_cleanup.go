@@ -74,6 +74,8 @@ func (r *Repository) cleanupFind(id string) (Object, string, Object, error) {
         if err != nil { return nil, "", nil, err }
         for _, row := range cleanupRows(index["policies"]) {
             if Text(row["id"]) != id { continue }
+            // Support index declares policy_class at the catalog root, not per row.
+            if row["policy_class"] == nil { row["policy_class"] = index["policy_class"] }
             if found != nil { return nil, "", nil, fmt.Errorf("ambiguous registered policy") }
             found, manifest = row, indexPath
         }
