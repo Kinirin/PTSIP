@@ -6,7 +6,7 @@ policy:
   title: CHANGE authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.0'
+  version: '4.1'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -14,6 +14,36 @@ exclusive_kernel:
 - DEV_CHANGE_IMPACT_AND_COMPATIBILITY
 - DEV_MIGRATION_ORDER_AND_CONTINUITY
 rules:
+  legacy_removable_cleanup:
+    approval_ref: developer/policy/approvals/MPA-20261012-LEGACY-REMOVABLE-CLEANUP-MODE.yaml
+    scope:
+      policy_class: PTSIP_DEVELOPER_POLICY
+      path_prefix: developer/policy/legacy/
+      required_status: RETIRED
+      required_substatus: Removable
+      phase: LEGACY_CLEANUP_ONLY
+    execution:
+      trigger: EXPLICIT_USER_CLEANUP_REQUEST_ONLY
+      automatic_execution_on_removable_transition: FORBIDDEN
+      eligibility_does_not_trigger_deletion: true
+      future_transition_triggered_automation: REQUIRES_SEPARATE_POLICY_DECISION
+    historical_evidence:
+      source: APPROVED_PINNED_GIT_OBJECTS
+      baseline_ref: developer/policy/registries/root-family-approved-baseline.json
+      migration_graph_ref: developer/policy/registries/root-family-migration.json
+      approved_revision_field: approved_migration_base_head
+      original_catalog_blob_field: approved_pre_migration_catalog_git_blob
+      migration_graph_blob_field: approved_migration_graph_git_blob
+      original_evidence_identity: IMMUTABLE
+      independent_history_archive_creation: NOT_REQUIRED
+      unavailable_or_unverifiable_git_evidence: BLOCK
+    execution_boundary:
+      unresolved_normative_owner_or_reference: BLOCK_AND_ESCALATE
+      existing_migration_baseline_mutation: FORBIDDEN
+      current_cleanup_request_required: true
+      implementation_details_authority: PLAN
+      status_policy_owner: MPD-GOV-0001
+
   planning_policy_delta_and_legacy_reconciliation:
     decision: KEEP_LATEST
     approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml

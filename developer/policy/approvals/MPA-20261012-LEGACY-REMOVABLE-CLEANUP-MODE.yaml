@@ -1,0 +1,17 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-LEGACY-REMOVABLE-CLEANUP-MODE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: 'Legacy 정리 목적: RETIRED.Removable 정책 제거는 명시적 실행 요청으로 시작하며, 역사 증거는 승인된 고정 Git 원본 객체를 사용한다. Removable 전환 직후 자동 실행은 후속 범위에서 검토한다.'
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-CHANGE-0001
+  affected_policy_ids:
+  - MPD-CHANGE-0001
+  recorded_at: '2026-10-12'
