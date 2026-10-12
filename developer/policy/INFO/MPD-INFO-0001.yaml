@@ -6,7 +6,7 @@ policy:
   title: INFO authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '3.1'
+  version: '3.2'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
   statement: 개발 정책, planning, self-profile 및 Context Plane의 canonical 정보 모델과 source/projection 관계를 소유한다. 단, PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 전체 필드 스키마 정의권은 해당 Family에 귀속한다.
@@ -6217,6 +6217,34 @@ rules:
     amends: []
     extends: []
     depends_on: []
+  planning_release_candidate_version_evidence:
+    decision: C_RELEASE_STATE_AWARE_AUTHORITATIVE_EVIDENCE_INTEGRATION
+    approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-CANDIDATE-STATE-EVIDENCE-OPTION-C.yaml
+    scope: CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY
+    purpose: READ_ONLY_NON_AUTHORITATIVE_NEXT_RELEASE_CANDIDATE_BASIS
+    version_observation_classes:
+      published_release: COMPLETED_PUBLIC_RELEASE_EVIDENCE
+      active_development: CURRENT_DEVELOPMENT_VERSION_EVIDENCE
+      approved_planned_release: OWNER_APPROVED_PLANNING_RELEASE_EVIDENCE
+    integration:
+      sources: EXISTING_VERIFIABLE_AUTHORITATIVE_STATE_OWNERS
+      distinguish_version_identity_and_lifecycle_state: REQUIRED
+      preserve_independent_package_tool_profile_and_engine_version_authority: true
+      require_source_identity_provenance_and_currentness: true
+      do_not_infer_state_or_approval_from_version_sort_or_file_presence: true
+      cross_state_observations_are_not_mutual_authority_substitutes: true
+      consistent_evidence_may_support_advisory_candidate_analysis: true
+      conflicting_missing_or_unverifiable_required_evidence: REQUIRE_USER_REVIEW_NO_AUTHORITATIVE_PROMOTION
+      never_relabel_observed_version_as_approved_new_plan_target: true
+      use_existing_authoritative_sources_before_new_registry: true
+      new_canonical_release_registry_required: false
+    subordinate_unresolved:
+      exact_source_bindings_and_precedence: SEPARATE_USER_DECISION
+      successor_version_calculation: SEPARATE_USER_DECISION
+      user_confirmed_target_registration: SEPARATE_USER_DECISION
+      planning_subpath_routing: SEPARATE_USER_DECISION
+    authority_ref: MPD-INTENT-0001#rules.local_release_bounded_planning_intent.target_release_resolution_rule
+    plan_creation_or_directories_authorized: false
   independent_release_versioning:
     approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
     contract_ref: .github/checks/release/release-contract.json
