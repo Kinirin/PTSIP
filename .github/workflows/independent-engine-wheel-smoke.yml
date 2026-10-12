@@ -75,6 +75,12 @@ jobs:
           rustc -vV | grep -Fqx "host: ${{ matrix.platform.target }}"
           echo "Candidate evidence only; does not authorize release."
 
+      - name: Run only the selected engine's Rust tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo test --locked --manifest-path "src/ptsip/engines/${{ matrix.engine }}/Cargo.toml"
+
       - name: Build only the selected independent Rust engine
         shell: bash
         run: |
