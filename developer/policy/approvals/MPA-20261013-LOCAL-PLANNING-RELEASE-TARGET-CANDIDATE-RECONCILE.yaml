@@ -1,0 +1,31 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-CANDIDATE-RECONCILE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User explicitly selected RECONCILE for the current repository's Developer
+    Planning target release policy conflict. Preserve the confirmed development
+    version branch as first source and previously approved exact release facts
+    as the next authoritative source. On main or a non-version branch without
+    a unique approved target, allow read-only, non-authoritative next-release
+    candidate proposals using version observations, and request the user's
+    exact target-release choice. A proposed version never authorizes a release
+    target, new plan, branch, planning directory, or any mutation.
+    Preserve the approved plan creation gate, independent plan identity,
+    and unresolved canonical planning subpath routing and generator contracts.
+    Historical conflicting base: 8491f6e930f6edeb3c990b75bc9898987be8fd43.
+    Inspected latest active main HEAD: 6cd0eee4b0c4f77b717cdb04c734a3752fc47bc8.
+    Concrete candidate-fact source, version successor algorithm, and
+    recording of confirmed selections remain separately unresolved.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: RECONCILE
+  requested_policy_id: MPD-INTENT-0001
+  affected_policy_ids:
+  - MPD-INTENT-0001
+  recorded_at: '2026-10-13'
