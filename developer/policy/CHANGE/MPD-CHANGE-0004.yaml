@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: CHANGE
 policy:
   id: MPD-CHANGE-0004
-  version: '2.5'
+  version: '2.6'
   title: Developer legacy policy and Python automation retirement
   status: APPROVED
   substatus: Applying
@@ -70,6 +70,27 @@ rules:
       unresolved_conflict_or_owner: USER_DECISION_REQUIRED
       duplicate_canonical_ownership: FORBIDDEN
       unrelated_existing_policy_rules: PRESERVE
+    mpd_0001_reconciliation:
+      decision: RECONCILE
+      approval_ref: developer/policy/approvals/MPA-20261013-MPD-0001-RECONCILE.yaml
+      historical_source: developer/policy/legacy/MPD-0001.yaml
+      historical_source_status: PRESERVE_UNCHANGED
+      root_family_responsibility_partition:
+        state: COMPLETE_AS_RECORDED
+        evidence_ref: developer/policy/registries/root-family-migration.json
+      change_policy_transition:
+        policy_ref: MPD-CHANGE-0004
+        state: COMPLETE
+        implies_profile_retirement_verified: false
+      remaining_responsibility:
+        policy_ref: MPD-ARCH-0001
+        section: unit_mpd_0001_bd42d96859af
+        disposition: PRESERVE_UNTIL_INDEPENDENT_REPLACEMENT_VERIFIED
+        preconditions_ref: MPD-CHANGE-0004#rules.developer_legacy_retirement.profile_boundary_conditional_retirement.preconditions
+      review_state: PARTIALLY_RESOLVED
+      legacy_file_deletion_authorized: false
+      automatic_legacy_status_transition: FORBIDDEN
+      unrelated_rules: PRESERVE
     delete_before_complete_coverage_and_consumer_cutover: FORBIDDEN
     historical_provenance: AUDIT_ONLY_NO_RUNTIME_AUTHORITY
     runtime_legacy_policy_projection: REMOVE

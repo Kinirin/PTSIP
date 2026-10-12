@@ -1,0 +1,19 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-MPD-0001-RECONCILE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: 'RECONCILE MPD-0001: accept completed Root Family responsibility partition and MPD-CHANGE-0004 policy transition; preserve MPD-ARCH-0001 temporary Profile responsibility until independent replacement verification.'
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-CHANGE-0004
+  conflict_resolution: RECONCILE
+  affected_policy_ids:
+  - MPD-CHANGE-0004
+  - MPD-ARCH-0001
+  recorded_at: '2026-10-13'
