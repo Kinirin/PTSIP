@@ -7,6 +7,7 @@ on:
       - README.md
       - .github/workflows/readme-translation.yml
       - developer/automation/cmd/readme-translate/**
+      - .github/workflows/readme-verification.yml
       - docs/translated/index.yaml
   workflow_dispatch:
 
@@ -72,12 +73,12 @@ jobs:
           & ./.artifacts/readme-translate --root . --action models
           if ($LASTEXITCODE -ne 0) { throw 'Argos model preparation failed.' }
 
-      - name: Synchronize and validate registered translations
+      - name: Apply registered translations and strictly verify generated source hashes
         shell: pwsh
         run: |
-          & ./.artifacts/readme-translate --root . --action sync
+          & ./.artifacts/readme-translate --root . --action apply
           if ($LASTEXITCODE -ne 0) { throw 'README synchronization failed.' }
-          & ./.artifacts/readme-translate --root . --action validate
+          & ./.artifacts/readme-translate --root . --action verify-strict
           if ($LASTEXITCODE -ne 0) { throw 'README translation validation failed.' }
 
       - name: Commit only registered translation targets
