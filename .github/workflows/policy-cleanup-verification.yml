@@ -9,6 +9,8 @@ on:
       - 'developer/tests/rootfamily/transition_test.go'
       - 'developer/policy/contracts/go-automation-cutover.v1.json'
       - '.github/workflows/policy-cleanup-verification.yml'
+      - 'developer/policy/legacy/**'
+      - 'developer/policy/*/*.yaml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,9 +26,8 @@ jobs:
           go-version-file: developer/automation/go.mod
           cache-dependency-path: developer/automation/go.sum
       - name: Cleanup checks and native Go compilation
-        run: go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./internal/machine -run '^TestCleanup(IDValidationRejectsNonPolicyIdentity|ApplyRequiresExpectedHeadBeforeGitAccess|MissingSubstatusFailsClosed)
+        run: |
+          go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./internal/machine -run '^TestCleanup(IDValidationRejectsNonPolicyIdentity|ApplyRequiresExpectedHeadBeforeGitAccess|MissingSubstatusFailsClosed)$'
       - name: Frozen migration audit verification
-        run: go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run 'TestHistoricalSourceEvidencePreservesArchiveAndRouting'
-
-      - name: Frozen migration audit verification
-        run: go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run 'TestHistoricalSourceEvidencePreservesArchiveAndRouting'
+        run: |
+          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run '^TestHistoricalSourceEvidencePreservesArchiveAndRouting$'
