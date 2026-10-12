@@ -178,7 +178,10 @@ func (r *Repository) cleanupReferences(id, target string) ([]string, error) {
                 strings.Contains(normalized, "/approvals/") ||
                 strings.Contains(normalized, "/analysis/") ||
                 strings.Contains(normalized, "/evidence/") ||
-                normalized == cleanupGraph || normalized == cleanupBaseline { return nil }
+                normalized == cleanupGraph || normalized == cleanupBaseline ||
+                normalized == "developer/policy/index.yaml" ||
+                normalized == "src/policy/index.yaml" ||
+                normalized == "developer/policy/registries/authority-subject-registry.yaml" { return nil }
             switch filepath.Ext(path) {
             case ".yaml", ".yml", ".json", ".go", ".py", ".toml":
             default:
@@ -244,50 +247,125 @@ func (r *Repository) CleanupInspect(id string) (Object, error) {
 }
 
 func (r *Repository) CleanupApply(id, expectedHead string) (Object, error) {
-    if len(expectedHead) != 40 {
-        return Object{"status": "BLOCKED", "policy_id": id, "blockers": []string{"EXACT_EXPECTED_HEAD_REQUIRED"}}, nil
+    blocked := func(reason string) Object {
+        return Object{"status": "BLOCKED", "policy_id": id, "blockers": []string{reason}}
     }
-    actual, err := r.cleanupGit("rev-parse", "HEAD")
+    if len(expectedHead) != 40 { return blocked("EXACT_EXPECTED_HEAD_REQUIRED"), nil }
+    current, err := r.cleanupGit("rev-parse", "HEAD")
     if err != nil { return nil, err }
-    if string(actual) != expectedHead {
-        return Object{"status": "BLOCKED", "policy_id": id, "blockers": []string{"STALE_HEAD"}}, nil
-    }
+    if string(current) != expectedHead { return blocked("STALE_HEAD"), nil }
     dirty, err := r.cleanupGit("status", "--porcelain", "--untracked-files=all")
     if err != nil { return nil, err }
-    if len(dirty) != 0 {
-        return Object{"status": "BLOCKED", "policy_id": id, "blockers": []string{"WORKTREE_NOT_CLEAN"}}, nil
-    }
+    if len(dirty) != 0 { return blocked("WORKTREE_NOT_CLEAN"), nil }
+
     report, err := r.CleanupInspect(id)
     if err != nil || report["status"] != "ELIGIBLE" { return report, err }
-    path := Text(report["path"])
-    target, err := r.Path(path)
-    if err != nil { return nil, err }
-    previous, err := os.ReadFile(target)
-    if err != nil { return nil, err }
-    info, err := os.Stat(target)
+    entry, relative, _, err := r.cleanupFind(id)
+    if err != nil { return blocked("TARGET_RESOLUTION: "+err.Error()), nil }
+    isMigrationSource := entry["authority_role"] == "MIGRATION_SOURCE"
+    policyClass := Text(entry["policy_class"])
+    if relative != Text(report["path"]) { return blocked("TARGET_CHANGED"), nil }
+
+    // Prepare all changes from the same inspected source snapshot, never infer
+    // a new path or silently remove an active policy reference.
+    updates := map[string]Object{}
+    if !isMigrationSource {
+        indexPath := "developer/policy/index.yaml"
+        if policyClass == "PTSIP_SUPPORT_FEATURE" { indexPath = "src/policy/index.yaml" }
+        index, err := r.Read(indexPath)
+        if err != nil { return blocked("CATALOG_READ_FAILED: "+err.Error()), nil }
+        rows := List(index["policies"])
+        remaining := []any{}
+        matches := 0
+        for _, raw := range rows {
+            row := Map(raw)
+            if row["id"] == id { matches++; continue }
+            remaining = append(remaining, raw)
+        }
+        if matches != 1 { return blocked("CATALOG_MEMBERSHIP_NOT_UNIQUE"), nil }
+        index["policies"] = remaining
+        updates[indexPath] = index
+        if policyClass == "PTSIP_DEVELOPER_POLICY" {
+            constSubjects := "developer/policy/registries/authority-subject-registry.yaml"
+            subjects, err := r.Read(constSubjects)
+            if err != nil { return blocked("SUBJECT_REGISTRY_READ_FAILED: "+err.Error()), nil }
+            scheme := Map(Map(subjects["subject_identity_schemes"])["MANAGEMENT_POLICY_ID"])
+            values := List(scheme["registered_values"])
+            kept := []any{}
+            count := 0
+            for _, raw := range values {
+                if raw == id { count++; continue }
+                kept = append(kept, raw)
+            }
+            if count != 1 { return blocked("SUBJECT_REGISTRY_MEMBERSHIP_NOT_UNIQUE"), nil }
+            scheme["registered_values"] = kept
+            updates[constSubjects] = subjects
+        }
+    }
+    // Snapshot every mutated path so a failed postcondition restores exact bytes.
+    type snapshot struct {
+        name string
+        bytes []byte
+        mode os.FileMode
+    }
+    backups := []snapshot{}
+    capture := func(name string) error {
+        resolved, err := r.Path(name)
+        if err != nil { return err }
+        info, err := os.Lstat(resolved)
+        if err != nil { return err }
+        if !info.Mode().IsRegular() { return fmt.Errorf("unsafe non-regular cleanup target %s", name) }
+        data, err := os.ReadFile(resolved)
+        if err != nil { return err }
+        backups = append(backups, snapshot{name: name, bytes: data, mode: info.Mode()})
+        return nil
+    }
+    if err := capture(relative); err != nil { return blocked("INVALID_TARGET: "+err.Error()), nil }
+    names := []string{}
+    for name := range updates { names = append(names, name) }
+    sort.Strings(names)
+    for _, name := range names {
+        if err := capture(name); err != nil { return blocked("INVALID_REGISTRY: "+err.Error()), nil }
+    }
+    now, err := r.cleanupGit("rev-parse", "HEAD")
+    if err != nil || string(now) != expectedHead { return blocked("STALE_HEAD"), nil }
+    dirty, err = r.cleanupGit("status", "--porcelain", "--untracked-files=all")
+    if err != nil || len(dirty) != 0 { return blocked("WORKTREE_CHANGED_BEFORE_APPLY"), nil }
+    target, err := r.Path(relative)
     if err != nil { return nil, err }
     if err := os.Remove(target); err != nil { return nil, err }
-    restore := func() { _ = os.WriteFile(target, previous, info.Mode()) }
-    // A migration-source catalog identity is retained for immutable audit coverage.
-    // Canonical removal needs a separate registered Git pin and catalog projection;
-    // these are rejected by CleanupInspect until independently admitted.
-    if Text(report["policy_class"]) != "PTSIP_DEVELOPER_POLICY" || !strings.Contains(path, "/legacy/") {
-        restore()
-        report["status"] = "BLOCKED"
-        report["blockers"] = []string{"UNSUPPORTED_CATALOG_RECONCILIATION"}
-        return report, nil
+    successful := false
+    defer func() {
+        if successful { return }
+        for _, item := range backups {
+            resolved, err := r.Path(item.name)
+            if err == nil { _ = os.WriteFile(resolved, item.bytes, item.mode) }
+        }
+    }()
+    for _, name := range names {
+        var previous []byte
+        for _, item := range backups { if item.name == name { previous = item.bytes; break } }
+        digest := SHA256(previous)
+        if err := r.WriteYAML(name, updates[name], &digest); err != nil {
+            return blocked("CATALOG_UPDATE_FAILED: "+err.Error()), nil
+        }
     }
     corpus, err := r.LoadConsistentPolicyCorpus()
     if err == nil { err = r.policyCheckDiscovery(corpus, "") }
-    if err != nil {
-        restore()
-        report["status"] = "BLOCKED"
-        report["blockers"] = []string{"POST_DELETE_CATALOG_VALIDATION: "+err.Error()}
-        return report, nil
+    if err != nil { return blocked("POST_DELETE_CATALOG_VALIDATION: "+err.Error()), nil }
+    if policyClass == "PTSIP_DEVELOPER_POLICY" {
+        if problems := r.ValidateDeveloperPolicy(); len(problems) != 0 {
+            return blocked("POST_DELETE_POLICY_VALIDATION: "+strings.Join(problems, "; ")), nil
+        }
+    } else {
+        result, err := r.ValidateCurrentRootContracts(policyClass)
+        if err != nil || Map(result)["status"] == "FAIL" {
+            return blocked("POST_DELETE_CLASS_VALIDATION_FAILED"), nil
+        }
     }
-    report["status"] = "APPLIED"
-    report["removed_path"] = path
-    report["source_head"] = expectedHead
+    successful = true
+    report["status"], report["removed_path"], report["source_head"] = "APPLIED", relative, expectedHead
+    if !isMigrationSource { report["catalog_projection_updated"] = true }
     return report, nil
 }
 
