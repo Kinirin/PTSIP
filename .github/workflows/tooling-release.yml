@@ -5,6 +5,21 @@ name: tooling-release
 on:
   workflow_dispatch:
     inputs:
+      phase:
+        description: "Verify engines or publish original verified engine artifacts"
+        type: choice
+        required: true
+        default: verify
+        options: [verify, publish]
+      verification_run_id:
+        description: "Completed successful verification run at this exact source (publish only)"
+        type: string
+        default: ''
+      destination:
+        description: "Independent engine publication destination (publish only)"
+        type: choice
+        default: github-pypi
+        options: [github-pypi, github]
       engine:
         description: "Selected engine verification only; publication remains blocked"
         required: true
@@ -40,10 +55,17 @@ jobs:
             .github/checks/release/engine-verification/go.mod
       - name: Resolve current verification admission from canonical policy
         shell: bash
-        run: go -C .github/checks/release/engine-verification run ./cmd/engine-wheel admit --root "$GITHUB_WORKSPACE"
+        env:
+          RELEASE_PHASE: ${{ inputs.phase }}
+        run: |
+          set -euo pipefail
+          mode=admit
+          if [ "$RELEASE_PHASE" = publish ]; then mode=admit-publication; fi
+          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel "$mode" --root "$GITHUB_WORKSPACE"
 
   engine-verification:
     needs: verification-admission
+    if: ${{ inputs.phase == 'verify' }}
     name: "Engine Verification / ${{ matrix.engine }} / ${{ matrix.platform.name }}"
     runs-on: ${{ matrix.platform.runner }}
     timeout-minutes: 40
@@ -149,6 +171,14 @@ jobs:
             --output "$GITHUB_WORKSPACE/$PTSIP_ENGINE_WHEEL_DIR" \
             --source-sha "$GITHUB_SHA"
 
+      - name: Verify Linux wheel ABI
+        if: ${{ matrix.platform.name == 'linux-x64' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel abi-check \
+            --binary "$GITHUB_WORKSPACE/$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}" | tee linux-abi.json
+
       - name: Verify the wheel in Go and install into isolated consumer
         shell: bash
         run: |
@@ -164,6 +194,7 @@ jobs:
             engine-verification.log
             rust-host.txt
             rust-cache.txt
+            linux-abi.json
           if-no-files-found: error
 
   tool-verification:
@@ -190,7 +221,7 @@ jobs:
   release-gate:
     name: Release Gate
     needs: [verification-admission, engine-verification]
-    if: ${{ always() }}
+    if: ${{ always() && inputs.phase == 'verify' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -224,4 +255,83 @@ jobs:
         with:
           name: release-gate-${{ inputs.engine }}-${{ github.sha }}
           path: release-gate.json
+          if-no-files-found: error
+
+  engine-publication:
+    name: "Engine Publication / ${{ matrix.engine }}"
+    needs: verification-admission
+    if: ${{ inputs.phase == 'publish' }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        engine: ${{ fromJSON(inputs.engine == 'all' && '["context","storage","validation","discovery","planning","execution","projection"]' || format('["{0}"]', inputs.engine)) }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
+      VERIFIED_RUN: ${{ inputs.verification_run_id }}
+      VERIFIED_ENGINES: ${{ inputs.engine }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+          cache: true
+          cache-dependency-path: |
+            developer/automation/go.sum
+            developer/tests/go.sum
+            .github/checks/release/engine-verification/go.mod
+      - name: Require original verification run identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$VERIFIED_RUN" =~ ^[1-9][0-9]*$ ]]
+      - name: Download only the original selected engine artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.verification_run_id }}
+          pattern: engine-verification-${{ matrix.engine }}-*-${{ github.sha }}
+          path: .artifacts/engine-publication/input/${{ matrix.engine }}
+      - name: Admit original wheels and publish immutable engine GitHub Release
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel publish-github \
+            --root "$GITHUB_WORKSPACE" --kind "${{ matrix.engine }}" \
+            --repository "$GITHUB_REPOSITORY" --run-id "$VERIFIED_RUN" \
+            --verified-engines "$VERIFIED_ENGINES" --source-sha "$GITHUB_SHA" \
+            --input ".artifacts/engine-publication/input/${{ matrix.engine }}" \
+            --output ".artifacts/engine-publication/output/${{ matrix.engine }}"
+      - name: Upload admitted independent engine wheels to PyPI
+        if: ${{ inputs.destination == 'github-pypi' && steps.release.outputs.pypi_pending == 'true' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: .artifacts/engine-publication/output/${{ matrix.engine }}/pypi
+      - name: Verify all published PyPI wheel digests
+        if: ${{ inputs.destination == 'github-pypi' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel verify-pypi \
+            --root "$GITHUB_WORKSPACE" --kind "${{ matrix.engine }}" \
+            --repository "$GITHUB_REPOSITORY" --run-id "$VERIFIED_RUN" \
+            --verified-engines "$VERIFIED_ENGINES" --source-sha "$GITHUB_SHA" \
+            --input ".artifacts/engine-publication/input/${{ matrix.engine }}" \
+            --output ".artifacts/engine-publication/output/${{ matrix.engine }}"
+      - name: Preserve independent engine publication receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: engine-publication-${{ matrix.engine }}-${{ github.sha }}
+          path: .artifacts/engine-publication/output/${{ matrix.engine }}/publication-receipt.json
           if-no-files-found: error

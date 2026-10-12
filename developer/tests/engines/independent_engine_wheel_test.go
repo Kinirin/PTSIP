@@ -130,7 +130,7 @@ func wheelHost() (target, platform, suffix, label string, err error) {
 	case runtime.GOOS == "windows" && runtime.GOARCH == "amd64":
 		return "x86_64-pc-windows-msvc", "win_amd64", ".exe", "windows-x64", nil
 	case runtime.GOOS == "linux" && runtime.GOARCH == "amd64":
-		return "x86_64-unknown-linux-gnu", "linux_x86_64", "", "linux-x64", nil
+		return "x86_64-unknown-linux-gnu", "manylinux_2_39_x86_64", "", "linux-x64", nil
 	case runtime.GOOS == "darwin" && runtime.GOARCH == "arm64":
 		return "aarch64-apple-darwin", "macosx_11_0_arm64", "", "macos-arm64", nil
 	default:
@@ -258,7 +258,7 @@ func verifyIndependentWheel(wheelPath, receiptPath string, expected wheelExpecta
 		if !bytes.HasPrefix(binaryData, []byte("MZ")) {
 			return fmt.Errorf("not a PE binary")
 		}
-	case "linux_x86_64":
+	case "manylinux_2_39_x86_64":
 		if !bytes.HasPrefix(binaryData, []byte{0x7f, 'E', 'L', 'F'}) {
 			return fmt.Errorf("not an ELF binary")
 		}

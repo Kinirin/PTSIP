@@ -1,0 +1,26 @@
+{
+  "schema_version": "ptsip-engine-publication/v1",
+  "operation": "RELEASE",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml",
+  "authority_refs": {
+    "execution": "developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.release_execution_suspension.engine_publication",
+    "verification": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml#rules.independent_engine_publication",
+    "identity": "developer/policy/INFO/MPD-INFO-0001.yaml#rules.independent_release_versioning"
+  },
+  "workflow_ref": ".github/workflows/tooling-release.yml",
+  "workflow_phase": "publish",
+  "scope": "SELECTED_REGISTERED_ENGINES_ONLY",
+  "verification_contract_ref": "developer/policy/contracts/engine-verification.v1.json",
+  "engine_registry_ref": "src/ptsip/engines/index.json",
+  "release_catalog_ref": ".github/checks/release/release-contract.json",
+  "required_platforms": ["windows-x64", "linux-x64", "macos-arm64"],
+  "linux_wheel_tag": "manylinux_2_39_x86_64",
+  "linux_glibc_maximum": "2.39",
+  "pypi_transport": "pypa/gh-action-pypi-publish@release/v1",
+  "pypi_environment": "pypi",
+  "implementation": ".github/checks/release/engine-verification/cmd/engine-wheel",
+  "source_artifact_rebuild_during_publication": false,
+  "existing_tag_or_distribution_overwrite": false,
+  "tool_profile_package_publication": false,
+  "runtime_activation_from_publication": false
+}

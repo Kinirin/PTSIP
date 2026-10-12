@@ -93,6 +93,17 @@ func validateGate(opts GateOptions, run gateRun, jobs []gateJob, artifacts []gat
 				return GateResult{}, fmt.Errorf("required check not passed: %s / %s", job.Name, required)
 			}
 		}
+		if strings.HasSuffix(job.Name, " / linux-x64") {
+			passed := 0
+			for _, step := range job.Steps {
+				if step.Name == "Verify Linux wheel ABI" && step.Conclusion == "success" {
+					passed++
+				}
+			}
+			if passed != 1 {
+				return GateResult{}, fmt.Errorf("Linux wheel ABI check not passed")
+			}
+		}
 		seen[job.Name] = true
 	}
 	if admission != 1 || len(seen) != len(expected) {

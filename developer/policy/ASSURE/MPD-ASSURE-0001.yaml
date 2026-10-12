@@ -6,7 +6,7 @@ policy:
   title: ASSURE authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.3'
+  version: '4.4'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의 검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
@@ -474,6 +474,21 @@ rules:
       source_change_restore: SAME_ENGINE_TOOLCHAIN_AND_DEPENDENCY_KEY_ONLY
       cached_result_is_verification_evidence: false
       rerun_locked_test_build_and_artifact_verification: REQUIRED
+  independent_engine_publication:
+    approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
+    contract_ref: developer/policy/contracts/engine-publication.v1.json
+    required:
+    - USER_APPROVED_ENGINE_ONLY_PUBLICATION
+    - COMPLETED_SUCCESSFUL_EXACT_SOURCE_VERIFICATION_RUN_AND_GATE
+    - THREE_PLATFORM_WHEEL_RECEIPTS_AND_FULL_FILE_DIGEST_MATCH
+    - LINUX_MANYLINUX_GLIBC_AND_EXTERNAL_LIBRARY_CHECK
+    - FRESH_MAIN_SOURCE_AND_REGISTERED_COMPONENT_VERSION
+    - IMMUTABLE_EXISTING_TAG_RELEASE_AND_PYPI_FILE_CHECK
+    reuse: ORIGINAL_VERIFIED_RUN_ARTIFACTS_NO_REBUILD_DURING_PUBLICATION
+    publication_transport: GO_GITHUB_PUBLICATION_AND_PYPA_OFFICIAL_PYPI_UPLOAD
+    publisher_implementation_authority: NATIVE_GO_POLICY_IDENTITY_SELECTION_AND_ARTIFACT_ADMISSION
+    external_pypa_action_role: TRUSTED_PUBLISHING_UPLOAD_TRANSPORT_ONLY
+    runtime_activation_from_publication: false
 relations:
   supersedes: []
   amends: []

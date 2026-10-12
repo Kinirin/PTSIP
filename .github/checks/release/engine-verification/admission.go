@@ -39,7 +39,7 @@ func Admit(root string) error {
 		return err
 	}
 	scope, ok := ctrl["engine_verification_only"].(map[string]any)
-	if !ok || ctrl["state"] != "BLOCKED" || ctrl["direct_release_commands"] != "BLOCKED" || ctrl["workflow_execution"] != "ENGINE_VERIFICATION_ONLY" || scope["state"] != "ALLOWED" || scope["operation"] != "VERIFY" || scope["contract_ref"] != VerificationContract || scope["release_gate"] != "ENABLED" || scope["release_gate_scope"] != "SELECTED_ENGINE_VERIFICATION" || scope["tag_release_and_pypi_publication"] != "BLOCKED" || scope["engine_pass_is_release_authorization"] != false {
+	if !ok || ctrl["state"] != "BLOCKED" || ctrl["direct_release_commands"] != "BLOCKED" || ctrl["workflow_execution"] != "ENGINE_VERIFICATION_AND_ADMITTED_ENGINE_PUBLICATION" || scope["state"] != "ALLOWED" || scope["operation"] != "VERIFY" || scope["contract_ref"] != VerificationContract || scope["release_gate"] != "ENABLED" || scope["release_gate_scope"] != "SELECTED_ENGINE_VERIFICATION" || scope["tag_release_and_pypi_publication"] != "NOT_GRANTED_BY_VERIFICATION" || scope["engine_pass_is_release_authorization"] != false {
 		return fmt.Errorf("engine verification exception not admitted")
 	}
 	assure, err := policySection(root, "MPD-ASSURE-0001", "engine_verification_only")
@@ -57,7 +57,7 @@ func Admit(root string) error {
 	for _, kind := range kinds {
 		expected = append(expected, kind)
 	}
-	if contract["schema_version"] != "ptsip-engine-verification/v1" || contract["operation"] != "VERIFY" || contract["release_gate"] != "ENABLED" || contract["release_gate_scope"] != "SELECTED_ENGINE_VERIFICATION" || contract["publication"] != "BLOCKED" || contract["engine_pass_is_release_authorization"] != false || contract["legacy_verification_fallback"] != false || !reflect.DeepEqual(contract["engines"], expected) || !reflect.DeepEqual(contract["platforms"], []any{"windows-x64", "linux-x64", "macos-arm64"}) || !reflect.DeepEqual(contract["required_checks"], assure["required_checks"]) {
+	if contract["schema_version"] != "ptsip-engine-verification/v1" || contract["operation"] != "VERIFY" || contract["release_gate"] != "ENABLED" || contract["release_gate_scope"] != "SELECTED_ENGINE_VERIFICATION" || contract["publication_authority"] != "NOT_GRANTED_BY_VERIFICATION" || contract["engine_pass_is_release_authorization"] != false || contract["legacy_verification_fallback"] != false || !reflect.DeepEqual(contract["engines"], expected) || !reflect.DeepEqual(contract["platforms"], []any{"windows-x64", "linux-x64", "macos-arm64"}) || !reflect.DeepEqual(contract["required_checks"], assure["required_checks"]) {
 		return fmt.Errorf("unregistered or expanded engine verification contract")
 	}
 	if contract["approval_ref"] != scope["approval_ref"] || contract["approval_ref"] != assure["approval_ref"] || !reflect.DeepEqual(contract["gate_required_checks"], []any{"CANONICAL_ADMISSION", "ALL_SELECTED_PLATFORM_JOBS_SUCCESS", "ONE_UNEXPIRED_ARTIFACT_PER_SELECTED_ENGINE_PLATFORM", "EXACT_WORKFLOW_RUN_SOURCE_SHA"}) {

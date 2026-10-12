@@ -6,7 +6,7 @@ policy:
   title: CTRL authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.2'
+  version: '4.3'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
   statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
@@ -58,7 +58,8 @@ rules:
     approval_ref: developer/policy/approvals/MPA-20261012-RELEASE-VERIFICATION-GAP.yaml
     execution_state_ref: .github/checks/release/release-availability.json
     state: BLOCKED
-    workflow_execution: ENGINE_VERIFICATION_ONLY
+    state_scope: FULL_RELEASE_AND_LEGACY_DIRECT_COMMANDS
+    workflow_execution: ENGINE_VERIFICATION_AND_ADMITTED_ENGINE_PUBLICATION
     direct_release_commands: BLOCKED
     missing_verification_contract_result: FAIL_CLOSED
     legacy_verification_fallback: FORBIDDEN
@@ -73,9 +74,23 @@ rules:
       release_gate: ENABLED
       release_gate_scope: SELECTED_ENGINE_VERIFICATION
       release_gate_requires: ALL_SELECTED_PLATFORM_JOBS_AND_EXACT_SOURCE_ARTIFACTS
-      tag_release_and_pypi_publication: BLOCKED
+      tag_release_and_pypi_publication: NOT_GRANTED_BY_VERIFICATION
       tool_profile_package_verification: DEFERRED
       engine_pass_is_release_authorization: false
+    engine_publication:
+      state: ALLOWED
+      operation: RELEASE
+      approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
+      contract_ref: developer/policy/contracts/engine-publication.v1.json
+      workflow_ref: .github/workflows/tooling-release.yml
+      workflow_phase: publish
+      scope: SELECTED_REGISTERED_ENGINES_ONLY
+      tag_github_release_and_pypi_publication: ALLOWED_AFTER_EXACT_SOURCE_GATE
+      tool_0_3_8a5_republication: FORBIDDEN_PRESERVE_EXISTING_PUBLICATION
+      tool_profile_package_publication: NOT_AUTHORIZED_BY_THIS_EXCEPTION
+      version_auto_increment: FORBIDDEN
+      existing_tag_or_distribution_overwrite: FORBIDDEN
+      runtime_activation_from_publication: false
     successor_verification_reactivation_direction:
       decision: B_SUCCESSOR_VERIFICATION_POLICY_APPROVAL_BEFORE_RESUMPTION
       release_scope_decision: FULL_INDEPENDENT_RELEASE

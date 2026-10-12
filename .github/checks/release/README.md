@@ -1,6 +1,7 @@
 # Independent PTSIP releases
 
-Publication is currently BLOCKED by the project owner's explicit decision.
+Independent engine publication is admitted by the project owner's explicit
+decision. The already published Tool 0.3.8a5 remains unchanged.
 `tooling-release.yml` admits Engine Verification only, using the scoped
 `developer/policy/contracts/engine-verification.v1.json` contract. Seven engines
 can be selected independently on Windows x64, Linux x64 and macOS arm64.
@@ -8,7 +9,28 @@ Tool, Profile and Package verification are deferred. Release Gate passes only
 when canonical admission, all selected engine/platform jobs and their unexpired
 artifacts belong to the exact workflow source SHA. This gate reports selected
 engine verification readiness; PowerShell and native publication entrypoints
-remain blocked.
+remain blocked for Tool/Profile/Package and the retained legacy release surface.
+
+`tooling-release.yml` has separate `verify` and `publish` phases. Verification
+tests/builds the selected engines on all three hosts and saves original wheels
+and receipts. Publication requires that completed successful verification run
+ID at the exact current main SHA; it downloads those original artifacts without
+rebuilding. Native Go reassembles and byte-compares every wheel, checks its
+receipt, fresh source and immutable version, then creates each engine tag and
+GitHub Release. The external official PyPA action uploads only Go-admitted wheels
+through Trusted Publishing. Native Go confirms the public PyPI file digests.
+
+Publication input `destination=github` creates GitHub releases while PyPI setup
+is pending. Repeating publication with `destination=github-pypi` and the same
+verification run reuses the exact wheel set and does not overwrite release files.
+Register Pending Trusted Publishers for `ptsip-engine-context`,
+`ptsip-engine-storage`, `ptsip-engine-validation`, `ptsip-engine-discovery`,
+`ptsip-engine-planning`, `ptsip-engine-execution` and `ptsip-engine-projection`:
+GitHub owner `Kinirin`, repository `PTSIP`, workflow `tooling-release.yml`,
+environment `pypi`. Tool/Profile/Package are not publication targets of this flow.
+
+The Linux wheel uses `manylinux_2_39_x86_64`; native Go inspects ELF architecture,
+external library closure and GLIBC requirements before admitting that tag.
 
 Rust dependencies and debug/release compilation outputs are cached per engine,
 runner, native target, compiler commit and Cargo dependency fingerprint. Exact

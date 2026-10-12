@@ -22,6 +22,9 @@ func gateFixture(t *testing.T, kind string) (GateOptions, gateRun, []gateJob, []
 			for _, name := range []string{"Run only the selected engine's Rust tests", "Build only the selected independent Rust engine", "Assemble local native wheel (unreleased)", "Verify the wheel in Go and install into isolated consumer", "Preserve engine verification evidence"} {
 				job.Steps = append(job.Steps, struct{ Name, Conclusion string }{name, "success"})
 			}
+			if platform == "linux-x64" {
+				job.Steps = append(job.Steps, struct{ Name, Conclusion string }{"Verify Linux wheel ABI", "success"})
+			}
 			jobs = append(jobs, job)
 			artifact := gateArtifact{Name: "engine-verification-" + engine + "-" + platform + "-" + opts.SourceSHA, Size: 100}
 			artifact.WorkflowRun.ID = opts.RunID

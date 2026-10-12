@@ -1,0 +1,21 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The user requested tag, GitHub Release and PyPI publication, then selected
+    preservation of the already published Tool 0.3.8a5 and independent publication
+    of the seven engines only. Publish the registered engine versions and their
+    Windows, Linux and macOS wheels after exact-source verification. Preserve
+    the existing Tool tag, Release and PyPI files. Use original verified artifacts
+    during publication; do not rebuild or overwrite an existing component version.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  affected_policy_ids: [MPD-CTRL-0001, MPD-ASSURE-0001]
+  recorded_at: '2026-10-13'

@@ -49,7 +49,7 @@ type host struct {
 
 var hosts = map[string]host{
 	"x86_64-pc-windows-msvc":   {"win_amd64", ".exe", [][]byte{[]byte("MZ")}},
-	"x86_64-unknown-linux-gnu": {"linux_x86_64", "", [][]byte{[]byte("\x7fELF")}},
+	"x86_64-unknown-linux-gnu": {"manylinux_2_39_x86_64", "", [][]byte{[]byte("\x7fELF")}},
 	"aarch64-apple-darwin":     {"macosx_11_0_arm64", "", [][]byte{{0xcf, 0xfa, 0xed, 0xfe}, {0xfe, 0xed, 0xfa, 0xcf}}},
 }
 var sourcePattern = regexp.MustCompile(`^[0-9a-f]{40}$`)
