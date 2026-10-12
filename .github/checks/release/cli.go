@@ -52,6 +52,8 @@ func CLI(args []string) (any, error) {
 		return nil, fmt.Errorf("unregistered release command: %s", command)
 	}
 	switch command {
+	case "sync-versions":
+		return SyncEngineVersions(repo, *targets)
 	case "selection":
 		return readSelection(repo, *selection)
 	case "contracts":

@@ -10,6 +10,7 @@
     "tag_prefixes",
     "platforms",
     "engine_index",
+    "engine_version_file",
     "engine_ids",
     "bootstrap_engine_versions",
     "commands"
@@ -164,6 +165,9 @@
       "items": {
         "type": "string"
       }
+    },
+    "engine_version_file": {
+      "const": "version.yaml"
     }
   }
 }

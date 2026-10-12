@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('Plan','Build','Verify','Publish','Package','Dispatch')][string]$Action = 'Plan',
+    [ValidateSet('Plan','Build','Verify','Publish','Package','Dispatch','SyncVersions')][string]$Action = 'Plan',
     [string]$Targets = 'all', [string]$DisabledTargets = '', [string]$Target = '',
     [string]$PackageBase = '', [string]$Platform = '', [string]$ReleaseTag = '',
     [string]$GitHubRepository = $(if ($env:GITHUB_REPOSITORY) { $env:GITHUB_REPOSITORY } else { 'Kinirin/PTSIP' }),
@@ -14,6 +14,9 @@ $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $native = Join-Path $repo '.github/checks/release'
 $argsNative = @('-C', $native, 'run', '-tags', 'grammar_subset,grammar_subset_python', './cmd/ptsip-release')
 switch ($Action) {
+    'SyncVersions' {
+        $argsNative += @('sync-versions','--root',$repo,'--targets',$Targets)
+    }
     'Dispatch' {
         $dispatch = @('workflow','run','tooling-release.yml','--ref','main','-f',"phase=$ReleasePhase",'-f',"targets=$Targets",'-f',"disabled_targets=$DisabledTargets")
         if ($PackageBase) { $dispatch += @('-f',"package_base=$PackageBase") }

@@ -25,6 +25,25 @@ build projection is explicit: `0.2a1` maps to `0.2.0-alpha.1`, `0.2rc1` to
 `0.2.0-rc.1`, and stable `0.2` to `0.2.0`. Update the public manifest/index/binding
 and its Cargo projection together. Release execution never bumps a component.
 
+## Canonical per-engine versions
+
+Each engine owns its manually editable public version in
+`src/ptsip/engines/<engine>/version.yaml`. The approved first public engine
+version is `0.2a1`, projected as Cargo `0.2.0-alpha.1`.
+The release workflow never increments versions automatically.
+
+After changing a version file, synchronize the derived records:
+
+```powershell
+./.github/checks/release/run_release.ps1 -Action SyncVersions -Targets context
+./.github/checks/release/run_release.ps1 -Action SyncVersions -Targets all
+```
+
+This operation updates the engine index, runtime manifest, execution bindings,
+Cargo.toml, and Cargo.lock. Commit the version file and projections together.
+The release Plan verifies exact agreement and fails closed on divergence.
+The historical bootstrap versions are preserved separately in the release catalog.
+
 ## Selection and execution
 
 Preview one engine locally without asserting that it has been published:

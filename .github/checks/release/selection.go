@@ -24,6 +24,7 @@ type Catalog struct {
 	TagPrefixes             map[string]string `json:"tag_prefixes"`
 	Platforms               []string          `json:"platforms"`
 	EngineIndex             string            `json:"engine_index"`
+	EngineVersionFile       string            `json:"engine_version_file"`
 	EngineIDs               []string          `json:"engine_ids"`
 	BootstrapEngineVersions map[string]string `json:"bootstrap_engine_versions"`
 	Commands                []string          `json:"commands"`
@@ -85,7 +86,7 @@ func loadCatalog(repo *machine.Repository) (Catalog, error) {
 	if err = d.Decode(&c); err != nil {
 		return c, err
 	}
-	if c.Format != "ptsip-independent-release/v1" || len(c.EngineIDs) != 7 || len(c.Platforms) == 0 {
+	if c.Format != "ptsip-independent-release/v1" || c.EngineVersionFile != "version.yaml" || len(c.EngineIDs) != 7 || len(c.Platforms) == 0 {
 		return c, fmt.Errorf("invalid admitted release catalog")
 	}
 	for _, pattern := range c.VersionRules {
@@ -229,6 +230,9 @@ func Plan(repo *machine.Repository, targets, disabled, packageBase, repository, 
 		e := machine.Map(raw)
 		id := strings.ToLower(machine.Text(e["kind"]))
 		version := machine.Text(e["version"])
+		canonical, canonicalErr := loadEngineVersion(repo, catalog, id)
+		if canonicalErr != nil { return out, canonicalErr }
+		if version != canonical { return out, fmt.Errorf("engine index version diverges from canonical version.yaml: %s", id) }
 		if !expected[id] || seen[id] {
 			return out, fmt.Errorf("unregistered or duplicate official engine: %s", id)
 		}
@@ -253,6 +257,7 @@ func Plan(repo *machine.Repository, targets, disabled, packageBase, repository, 
 		if m["implementation_version"] != version || m["engine_id"] != e["engine_id"] {
 			return out, fmt.Errorf("engine manifest identity mismatch: %s", id)
 		}
+		if err = verifyEngineVersionProjections(repo, catalog, id, machine.Text(e["engine_id"]), cargo, binding, version); err != nil { return out, err }
 		shared := machine.Map(index["engine_schema_refs"])
 		roots := []string{filepath.ToSlash(filepath.Dir(cargo)), machine.Text(index["transport_contract_ref"])}
 		for _, key := range []string{"core-manifest", "capability-contract", "execution-binding"} {
