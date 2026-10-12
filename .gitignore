@@ -21,3 +21,6 @@ htmlcov/
 # Independent release build and selection outputs
 .artifacts/release/
 pypi-dist/
+
+# Shared Cargo compilation cache used only by Go integration tests
+.artifacts/native-engine-test-target/
