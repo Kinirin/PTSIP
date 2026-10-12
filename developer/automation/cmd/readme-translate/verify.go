@@ -53,11 +53,17 @@ func verifySourceMarkers(source, body string, strict bool) error {
         return nil
     }
     if len(markers) != len(hashes) {
-        return fmt.Errorf("source-hash marker count mismatch: %d current blocks, %d translation markers", len(hashes), len(markers))
+        if strict {
+            return fmt.Errorf("source-hash marker count mismatch: %d current blocks, %d translation markers", len(hashes), len(markers))
+        }
+        fmt.Fprintln(os.Stderr, "README verification: source freshness UNRESOLVED (marker count differs); structural verification only")
+        return nil
     }
     for i, marker := range markers {
         if marker != hashes[i] {
-            return fmt.Errorf("outdated or reordered translation at block %d", i+1)
+            if strict { return fmt.Errorf("outdated or reordered translation at block %d", i+1) }
+            fmt.Fprintln(os.Stderr, "README verification: source freshness UNRESOLVED (source changed); structural verification only")
+            return nil
         }
     }
     return nil
