@@ -6,7 +6,7 @@ policy:
   title: INTENT authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '2.4'
+  version: '2.5'
 authority_subject:
   id: DEV_WORK_OUTCOME_INTENT
   statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
@@ -57,6 +57,15 @@ rules:
       advisory_candidate_proposal:
         availability: ALLOWED_WHEN_NO_VERSION_BRANCH_AND_NO_UNIQUE_APPROVED_TARGET
         scope: NON_AUTHORITATIVE_READ_ONLY_USER_REVIEW
+        version_evidence_basis_decision: C_RELEASE_STATE_AWARE_AUTHORITATIVE_EVIDENCE_INTEGRATION
+        version_evidence_basis_approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-CANDIDATE-STATE-EVIDENCE-OPTION-C.yaml
+        version_evidence_basis_policy_ref: MPD-INFO-0001#rules.planning_release_candidate_version_evidence
+        consider_distinct_observation_classes:
+        - PUBLISHED_RELEASE
+        - ACTIVE_DEVELOPMENT
+        - APPROVED_PLANNED_RELEASE
+        cross_state_inconsistency: REQUEST_USER_REVIEW_DO_NOT_PROMOTE_CANDIDATE
+        release_identity_domains_remain_distinct: true
         may_observe_last_known_version: true
         observation_is_release_target_approval: false
         latest_or_successor_version_candidate_may_be_suggested: true
