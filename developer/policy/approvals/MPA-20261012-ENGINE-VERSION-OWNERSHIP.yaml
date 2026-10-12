@@ -1,0 +1,15 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-ENGINE-VERSION-OWNERSHIP
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "Per-engine individual version files selected (option B); each engine owns its independently editable public version, with deterministic projections and no automatic version bump. Initial public prerelease direction: 0.2a1."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  affected_policy_ids:
+  - MPD-INFO-0001
+  recorded_at: '2026-10-12'

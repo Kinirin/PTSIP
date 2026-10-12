@@ -6231,6 +6231,22 @@ rules:
     suffix_collision: FAIL_CLOSED_FULL_COMPOSITION_SHA256_REQUIRED
     tool_engine_profile_version_coupling: FORBIDDEN
     engine_public_version: MAJOR_MINOR_OPTIONAL_aN_bN_rcN
+    engine_version_owner: EACH_ENGINE_LOCAL_CANONICAL_VERSION_CONTRACT
+    engine_version_path_pattern: src/ptsip/engines/{engine_id}/version.yaml
+    engine_version_schema: ptsip-engine-version/v1
+    engine_version_change_authority: USER_EXPLICIT_OR_AUTHORIZED_POLICY_COMPLIANT_CHANGE
+    engine_version_auto_increment: FORBIDDEN
+    engine_version_projections:
+      source: ENGINE_LOCAL_CANONICAL_VERSION_CONTRACT
+      targets:
+      - OFFICIAL_ENGINE_INDEX
+      - ENGINE_MANIFEST
+      - ENGINE_EXECUTION_BINDINGS
+      - CARGO_MANIFEST
+      - CARGO_LOCK
+      synchronization: EXPLICIT_DETERMINISTIC_AUTOMATION
+      divergence: FAIL_CLOSED
+    engine_version_ownership_approval_ref: developer/policy/approvals/MPA-20261012-ENGINE-VERSION-OWNERSHIP.yaml
     cargo_version: EXPLICIT_BUILD_PROJECTION_NOT_PUBLIC_ENGINE_IDENTITY
     existing_identifiers: PRESERVE_EXACT_BOOTSTRAP_IDENTIFIERS
     unchanged_component_republication: SKIP
