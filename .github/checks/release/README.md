@@ -107,3 +107,36 @@ verification. Publication requires observed exact-SHA jobs from this workflow;
 a local receipt saying PASS is insufficient. Existing Tool artifact boundary,
 snapshot binding, installed-wheel, Specification, Profile transition, metadata
 and distribution checks are preserved in the Tool target.
+
+## Verification script migration
+
+The six former flat `release-*.ps1` scripts were checks of the retired common CI,
+not independent publication entrypoints. Their current execution mapping is
+recorded in `verification-contract.json`; that file does not create policy.
+
+Tool selection runs the current shipping test corpus, the Go release-readiness
+suite, Tool/Profile/Specification contract verification, actual distribution and
+artifact/snapshot checks, and installed CLI/Context/VPMS compatibility checks.
+The former `0.3.8a3` label and removed Python readiness test are retired. The
+approved readiness replacement is `developer/tests/release`.
+
+Repository-wide Go regression and repository self-profile validation remain
+explicit manual checks, separate from Profile artifact publication and from an
+individual engine release. They can be invoked with:
+
+```powershell
+./.github/checks/release/run_release.ps1 -Action VerifyRepository
+```
+
+Selecting one engine continues to run that engine's tests, compiled identity,
+registered capability-contract operation cases, required platforms and artifact
+hash checks. It does not invoke Tool shipping or repository-wide regressions.
+Any current canonical release dependency, including Profile transition admission,
+continues to apply. The existing common verification gap remains OPEN.
+
+The restored shipping checks currently expose two outside-scope blockers. The
+repository Profile still selects the former `developer/automation/release/**`
+location, and the VPMS repository-adoption test registers a Go test name absent
+from the current Go suite. Tool publication remains blocked. This `.github`
+migration does not edit those owners or suppress their regressions; observations
+are recorded in the execution map for separate owner reconciliation.

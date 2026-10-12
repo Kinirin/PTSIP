@@ -59,5 +59,21 @@
     "requires": "USER_AUTHORIZED_SUCCESSOR_POLICY_AND_VERIFIED_EXECUTION",
     "status": "UNRESOLVED"
   },
-  "note": "Implementation-state disclosure only, not canonical policy or PASS evidence."
+  "note": "Implementation-state disclosure only, not canonical policy or PASS evidence.",
+  "release_verification_reorganization": {
+    "scope": ".github",
+    "decision_source": "USER_EXPLICIT",
+    "execution_map": ".github/checks/release/verification-contract.json",
+    "legacy_scripts_retired": [
+      "release-a3-regression.ps1",
+      "release-contract.ps1",
+      "release-distribution.ps1",
+      "release-full-regression.ps1",
+      "release-go-contracts.ps1",
+      "release-profile.ps1"
+    ],
+    "single_engine_scope": "SELECTED_ENGINE_AND_EXPLICIT_CONTRACT_DEPENDENCIES",
+    "repository_regression_scope": "EXPLICIT_MANUAL",
+    "common_verification_gap": "OPEN_NO_FORMER_CONTEXT_REEMISSION"
+  }
 }

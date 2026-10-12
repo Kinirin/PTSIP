@@ -9,9 +9,10 @@ Push-Location $repo
 try {
     & go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev pp release --sha HEAD
     if ($LASTEXITCODE -ne 0) { throw 'Exact-source Profile transition verification failed.' }
-    & python .github/scripts/verify_release_contract.py
-    if ($LASTEXITCODE -ne 0) { throw 'Specification release contract failed.' }
+    & (Join-Path $PSScriptRoot 'verification/Tool_contract_verify.ps1')
+    & (Join-Path $PSScriptRoot 'verification/Tool_regression_verify.ps1')
     & (Join-Path $PSScriptRoot 'Tool_artifact_verify.ps1') -DistPath $OutputDirectory
     & python .github/scripts/verify_distribution_contracts.py
     if ($LASTEXITCODE -ne 0) { throw 'Wheel/sdist registry projection verification failed.' }
+    & (Join-Path $PSScriptRoot 'verification/Tool_runtime_verify.ps1')
 } finally { Pop-Location }
