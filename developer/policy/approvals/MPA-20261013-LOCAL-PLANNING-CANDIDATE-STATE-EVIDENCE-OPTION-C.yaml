@@ -1,0 +1,28 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-LOCAL-PLANNING-CANDIDATE-STATE-EVIDENCE-OPTION-C
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    사용자가 현재 PTSIP 저장소의 Developer Planning 릴리스 후보 산출에
+    사용할 버전 정보 기준으로 C 방향(릴리스 상태별 권위 정보 통합)을
+    명시적으로 승인했다. 공개 완료, 개발 중, 승인된 계획 상태를
+    구분하고 검증 가능한 기존 정보를 통합하여 비권위 후보를 제안한다.
+    릴리스 종류와 증거 출처의 권위를 혼동하거나 최신 버전을 자동
+    릴리스 승인으로 승격하지 않는다. 기존 유효 브랜치 우선 및 승인된
+    대상 릴리스 확인, 사용자 계획 생성 승인 조건은 유지한다.
+    후속 버전 계산 알고리즘, 구체적인 출처 연결, 승인된 릴리스
+    등록 방식, 새 계획 및 디렉터리 생성은 이번 승인의 범위 밖이다.
+    직전 정책 기준 커밋 32d7d00bcff78e51731e6dcdfafbe4afdac7e640 및
+    변경 전 활성 main HEAD cb198fb178bd347002f4c4c1fdc1a04ca1cf149c에서
+    관련 정책의 내용이 일치하며 이 방향과 직접적인 충돌은 확인되지 않았다.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  affected_policy_ids:
+  - MPD-INFO-0001
+  - MPD-INTENT-0001
+  recorded_at: '2026-10-13'
