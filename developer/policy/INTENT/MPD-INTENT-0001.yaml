@@ -6,7 +6,7 @@ policy:
   title: INTENT authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '2.3'
+  version: '2.4'
 authority_subject:
   id: DEV_WORK_OUTCOME_INTENT
   statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
@@ -32,8 +32,10 @@ rules:
     work_unit_priority_and_order: DEFER_TO_PLANNING_NOT_NORMATIVE_POLICY
     logical_plan_identity_independent_of_branch: PRESERVE_EXISTING_ARCH_AND_INFO_POLICY
     target_release_resolution_rule:
-      decision: B_VERSION_BRANCH_FIRST_APPROVED_RELEASE_FACT_FALLBACK
-      approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-BRANCH-FIRST.yaml
+      decision: RECONCILE_BRANCH_FIRST_APPROVED_FACT_AND_USER_CONFIRMED_CANDIDATE
+      conflict_resolution: RECONCILE
+      prior_approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-BRANCH-FIRST.yaml
+      approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-CANDIDATE-RECONCILE.yaml
       scope: CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY
       subject: PLANNING_TARGET_RELEASE_SELECTION_NOT_PLAN_IDENTITY
       ordered_sources:
@@ -52,12 +54,26 @@ rules:
         candidate_cardinality: EXACTLY_ONE
         concrete_fallback_source_contract: UNRESOLVED_SEPARATE_USER_DECISION
         unregistered_or_unapproved_source: REJECT
+      advisory_candidate_proposal:
+        availability: ALLOWED_WHEN_NO_VERSION_BRANCH_AND_NO_UNIQUE_APPROVED_TARGET
+        scope: NON_AUTHORITATIVE_READ_ONLY_USER_REVIEW
+        may_observe_last_known_version: true
+        observation_is_release_target_approval: false
+        latest_or_successor_version_candidate_may_be_suggested: true
+        proposal_is_approved_target_release: false
+        candidate_selection_requires_explicit_user_decision: true
+        proposal_may_generate_new_plan_or_directory: false
+        proposal_may_create_or_select_branch: false
+        selected_target_registration: REQUIRE_APPROVED_MACHINE_FACT_BEFORE_MATERIALIZATION
+        observed_version_source_contract: SEPARATELY_UNRESOLVED
+        next_version_candidate_derivation_contract: SEPARATELY_UNRESOLVED
+        confirmed_target_recording_contract: SEPARATELY_UNRESOLVED
       conflict_and_failure:
-        no_primary_and_no_approved_fallback: BLOCK_AND_REQUEST_USER_DECISION
-        fallback_zero_or_multiple_eligible_releases: BLOCK_AND_REQUEST_USER_DECISION
+        no_primary_and_no_approved_fallback: BLOCK_PLAN_MATERIALIZATION_ALLOW_ADVISORY_CANDIDATES_AND_REQUEST_USER_DECISION
+        fallback_zero_or_multiple_eligible_releases: BLOCK_PLAN_MATERIALIZATION_AND_REQUEST_EXACT_TARGET_SELECTION
         invalid_or_untrusted_version_branch: BLOCK
         stale_or_unverifiable_approval_evidence: BLOCK
-        inferred_latest_or_highest_release: FORBIDDEN
+        inferred_latest_or_highest_release_as_authoritative_target: FORBIDDEN
         planning_registry_or_prior_path_as_automatic_new_release_approval: FORBIDDEN
         published_package_or_engine_version_as_implicit_plan_target_authority: FORBIDDEN
       authority_boundaries:
