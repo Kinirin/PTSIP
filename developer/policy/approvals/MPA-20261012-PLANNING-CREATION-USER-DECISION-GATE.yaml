@@ -1,0 +1,23 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User chose KEEP_LATEST for planning policy conflict and rejected the proposed generator pipeline.
+    Planning artifact creation must not occur on implicit intent or an unresolved output path,
+    implementation detail, user decision, or approval. Ask the project owner and do not
+    materialize even a draft until requisite decisions and exact path are resolved.
+    The fixed root is developer/planning/; subordinate path choice remains unresolved.
+    Planning responsibilities are split across ARCH INTENT INFO GOV CTRL REAL CNTR ASSURE CHANGE.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  affected_policy_ids:
+  - MPD-ARCH-0001
+  - MPD-CHANGE-0001
+  - MPD-CTRL-0001
+  recorded_at: '2026-10-12'
