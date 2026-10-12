@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:developer-policy:lifecycle-version:v1",
+  "schema_version": "developer-policy-lifecycle-version/v1",
+  "artifact_class": "DEVELOPER_POLICY_LIFECYCLE_VERSION_CONTRACT",
+  "authority": {
+    "primary_owner_family": "GOV",
+    "policy_ref": "developer/policy/GOV/MPD-GOV-0001.yaml",
+    "policy_section": "rules.policy_lifecycle.policy_version",
+    "approval_ref": "developer/policy/approvals/MPA-20261012-GOV-POLICY-LIFECYCLE-STRUCTURE.yaml",
+    "policy_scope": "PTSIP_DEVELOPER_POLICY",
+    "repository_path_scope": "developer/**"
+  },
+  "definition_state": "DEFINED",
+  "type": "object",
+  "required": ["status", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "status": {"type": "string"},
+    "version": {"$ref": "#/$defs/policy_version"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "status": {"const": "DRAFT"},
+        "version": {"pattern": "^0\\."}
+      }
+    },
+    {
+      "properties": {
+        "status": {"const": "APPROVED"},
+        "version": {"pattern": "^1\\."}
+      }
+    },
+    {"properties": {"status": {"const": "RETIRED"}}}
+  ],
+  "$defs": {
+    "policy_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    }
+  },
+  "format": "MAJOR.MINOR",
+  "initial_value": "0.0",
+  "status_major_rules": {
+    "DRAFT": {"major": 0},
+    "APPROVED": {"major": 1},
+    "RETIRED": {"version_effect": "PRESERVE_PREVIOUS_VERSION"}
+  },
+  "status_contract_ref": "developer/contracts/lifecycle/policy_status.json",
+  "validation": {
+    "status_and_substatus": "VALIDATE_WITH_GOV_STATUS_CONTRACT",
+    "version_and_major_stage": "VALIDATE_WITH_THIS_CONTRACT",
+    "status_inference_from_version": false,
+    "version_inference_from_status": false
+  },
+  "source_boundary": {
+    "decision_source": "USER_EXPLICIT",
+    "retained_numeric_method": ["DRAFT=0.x", "APPROVED=1.x"],
+    "withdrawn_rule": "ACTIVE=2.x",
+    "approved_activate_is_top_level_active": false,
+    "legacy_policy_reuse": false,
+    "legacy_source_fallback": false
+  },
+  "existing_validator_cutover": "SEPARATE_IMPLEMENTATION"
+}

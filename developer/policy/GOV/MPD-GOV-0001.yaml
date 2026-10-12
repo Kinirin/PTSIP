@@ -5,7 +5,7 @@ policy:
   id: MPD-GOV-0001
   title: GOV authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.1'
+  version: '2.2'
 authority_subject:
   id: DEV_DECISION_LEGITIMACY
   statement: 개발 정책, 개발 작업 및 개발 control plane에서 누가 어떤 subject에 대해 결정을 내리고 승인할 수 있는지와
@@ -14,21 +14,38 @@ exclusive_kernel:
 - DEV_DECISION_OWNER_AND_MANDATE
 - DEV_APPROVAL_AND_LIFECYCLE_LEGITIMACY
 rules:
-  policy_status_lifecycle:
-    primary_owner_family: GOV
-    contract_ref: developer/contracts/lifecycle/policy_status.json
-    approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml
-    policy_scope: PTSIP_DEVELOPER_POLICY
-    repository_path_scope: developer/**
-    lifecycle_vocabulary_owner: CANONICAL_GOV_CONTRACT
-    catalog_status_schema: EMPTY_NON_OWNING_SLOT
-    normalization_ref: developer/contracts/lifecycle/policy_status.json#/automatic_normalization
-    normalization_implementation: developer/automation/policy/lifecycle/status.go#NormalizePolicyStatus
-    conflict_recovery_ref: developer/contracts/lifecycle/policy_status.json#/automatic_recovery
-    normalization_requires_additional_user_approval: false
-    implementation_authorization_and_policy_lifecycle_status_are_independent: true
-    existing_policy_record_bulk_rewrite: NOT_PERFORMED
-    existing_validator_cutover: SEPARATE_IMPLEMENTATION
+  policy_lifecycle:
+    policy_id:
+      record_field: policy.id
+      identity_contract_ref: developer/policy/registries/root-family-entry-registry.json
+      membership_projection_ref: developer/policy/index.yaml
+    policy_title:
+      record_field: policy.title
+      value_source: DECLARED_POLICY_RECORD
+      representation_schema_ref: developer/policy/schemas/root-family-policy.schema.json#/properties/policy/properties/title
+    policy_status:
+      primary_owner_family: GOV
+      contract_ref: developer/contracts/lifecycle/policy_status.json
+      approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml
+      policy_scope: PTSIP_DEVELOPER_POLICY
+      repository_path_scope: developer/**
+      lifecycle_vocabulary_owner: CANONICAL_GOV_CONTRACT
+      catalog_status_schema: EMPTY_NON_OWNING_SLOT
+      normalization_ref: developer/contracts/lifecycle/policy_status.json#/automatic_normalization
+      normalization_implementation: developer/automation/policy/lifecycle/status.go#NormalizePolicyStatus
+      conflict_recovery_ref: developer/contracts/lifecycle/policy_status.json#/automatic_recovery
+      normalization_requires_additional_user_approval: false
+      implementation_authorization_and_policy_lifecycle_status_are_independent: true
+      existing_policy_record_bulk_rewrite: NOT_PERFORMED
+      existing_validator_cutover: SEPARATE_IMPLEMENTATION
+    policy_version:
+      primary_owner_family: GOV
+      record_field: policy.version
+      contract_ref: developer/contracts/lifecycle/policy_version.json
+      approval_ref: developer/policy/approvals/MPA-20261012-GOV-POLICY-LIFECYCLE-STRUCTURE.yaml
+      definition_state: DEFINED
+      validation_implementation: developer/automation/policy/lifecycle/version_contract.go#ValidatePolicyLifecycleVersion
+      existing_validator_cutover: SEPARATE_IMPLEMENTATION
   family_definition:
     kernel_definitions:
     - id: DEV_DECISION_OWNER_AND_MANDATE

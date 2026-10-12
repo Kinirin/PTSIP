@@ -40,6 +40,7 @@ func TestGOVPolicyStatusContractRejectsOldAndCrossStatusValues(t *testing.T) {
 		}
 	}
 	for _, state := range []object{
+		{"status": "ACTIVE"},
 		{"status": "ACTIVE", "substatus": "Default"},
 		{"status": "SUPERSEDED", "substatus": "Default"},
 		{"status": "DRAFT", "substatus": "Activate"},
