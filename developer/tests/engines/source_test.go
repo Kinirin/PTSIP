@@ -30,15 +30,25 @@ func entry(t *testing.T, kind string) object {
 func native(t *testing.T, kind string) string {
 	t.Helper()
 	e := entry(t, kind)
+	// All seven independently versioned engines use the same dependency set.
+	// A shared *test-only* Cargo target directory reuses compiled dependencies
+	// across engine crates; it does not combine their binaries or releases.
+	// Cargo still verifies source freshness on every requested build.
+	targetDir := filepath.Join(testrepo.Root(t), ".artifacts", "native-engine-test-target")
 	cmd := exec.Command("cargo", "build", "--locked", "--manifest-path", e["cargo_manifest_ref"].(string))
 	cmd.Dir = testrepo.Root(t)
+	cmd.Env = append(os.Environ(), "CARGO_TARGET_DIR="+targetDir)
+	t.Logf("building %s using shared native-test Cargo cache", kind)
 	if out, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("native build required: %v\n%s", err, out)
+		t.Fatalf("native build required (%s): %v\n%s", kind, err, out)
 	}
 	binding := document(t, e["execution_binding_ref"].(string))["bindings"].([]any)[0].(object)
-	binary := filepath.Join(testrepo.Root(t), filepath.Dir(filepath.FromSlash(e["cargo_manifest_ref"].(string))), "target", "debug", binding["entrypoint"].(string))
+	binary := filepath.Join(targetDir, "debug", binding["entrypoint"].(string))
 	if runtime.GOOS == "windows" {
 		binary += ".exe"
+	}
+	if _, err := os.Stat(binary); err != nil {
+		t.Fatalf("independent native binary missing after build (%s): %v", kind, err)
 	}
 	return binary
 }
