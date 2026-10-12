@@ -14,8 +14,7 @@ func TestIndependentVerifierDetectsFreshnessWithoutMutation(t *testing.T) {
     source := "# Title\n\n## Detail\n\nUse `--check`."
     target := languageEntry{Language:"fr",Path:"docs/translated/README.fr.md"}
     r := translationRegistry{Canonical:languageEntry{Language:"en",Path:"README.md"}, Translations:[]languageEntry{target}}
-    document := "<p align="right"><a href="../../README.md">en</a> | fr</p>
-" + source
+    document := "<p align=\"right\"><a href=\"../../README.md\">en</a> | fr</p>\n" + source
     if err := os.WriteFile(filepath.Join(root,"README.md"), []byte(source), 0644); err != nil { t.Fatal(err) }
     dest := filepath.Join(root, filepath.FromSlash(target.Path))
     if err := os.WriteFile(dest, []byte(document), 0644); err != nil { t.Fatal(err) }
@@ -23,23 +22,12 @@ func TestIndependentVerifierDetectsFreshnessWithoutMutation(t *testing.T) {
     if err := verifyTranslations(root, r, true); err == nil {
         t.Fatal("strict verifier accepted unmarked legacy projection")
     }
-    marker := "<!-- ptsip-readme-i18n: "+hashBlock("## Detail")+" -->
-
-## Detail
-
-"
-    marker2 := "<!-- ptsip-readme-i18n: "+hashBlock("Use `--check`.")+" -->
-
-Use `--check`."
-    documented := "<p align="right"><a href="../../README.md">en</a> | fr</p>
-# Title
-
-"+marker+marker2
+    marker := "<!-- ptsip-readme-i18n: "+hashBlock("## Detail")+" -->\n\n## Detail\n\n"
+    marker2 := "<!-- ptsip-readme-i18n: "+hashBlock("Use `--check`.")+" -->\n\nUse `--check`."
+    documented := "<p align=\"right\"><a href=\"../../README.md\">en</a> | fr</p>\n# Title\n\n"+marker+marker2
     if err := os.WriteFile(dest, []byte(documented), 0644); err != nil { t.Fatal(err) }
     if err := verifyTranslations(root, r, true); err != nil { t.Fatal(err) }
-    if err := os.WriteFile(filepath.Join(root,"README.md"), []byte(source+"
-
-Extra"), 0644); err != nil { t.Fatal(err) }
+    if err := os.WriteFile(filepath.Join(root,"README.md"), []byte(source+"\n\nExtra"), 0644); err != nil { t.Fatal(err) }
     if err := verifyTranslations(root, r, true); err == nil { t.Fatal("outdated projection accepted") }
     actual, err := os.ReadFile(dest)
     if err != nil || string(actual) != documented { t.Fatal("verifier mutated document", err) }
@@ -60,17 +48,10 @@ func TestApplyPreparesAllLanguagesBeforeMutation(t *testing.T) {
     root := t.TempDir()
     bin := filepath.Join(root,"bin")
     if err := os.MkdirAll(bin,0755); err != nil { t.Fatal(err) }
-    mock := "#!/bin/sh
-for a in "$@"; do if [ "$a" = fr ]; then exit 13; fi; done
-cat
-"
+    mock := "#!/bin/sh\nfor a in \"$@\"; do if [ \"$a\" = fr ]; then exit 13; fi; done\ncat\n"
     if err := os.WriteFile(filepath.Join(bin,"argos-translate"),[]byte(mock),0755); err != nil { t.Fatal(err) }
     t.Setenv("PATH",bin+string(os.PathListSeparator)+os.Getenv("PATH"))
-    source := "# Title
-
-## Section
-
-Hello, world."
+    source := "# Title\n\n## Section\n\nHello, world."
     if err := os.WriteFile(filepath.Join(root,"README.md"),[]byte(source),0644); err != nil { t.Fatal(err) }
     if err := os.MkdirAll(filepath.Join(root,"docs/translated"),0755); err != nil { t.Fatal(err) }
     de := filepath.Join(root,"docs/translated/README.de.md")
