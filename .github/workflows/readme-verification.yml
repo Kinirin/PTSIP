@@ -1,0 +1,38 @@
+name: readme-verification
+
+on:
+  push:
+    branches: [main, "dev/**"]
+    paths:
+      - README.md
+      - docs/translated/**
+      - .github/workflows/readme-translation.yml
+      - .github/workflows/readme-verification.yml
+      - developer/automation/cmd/readme-translate/**
+  pull_request:
+    paths:
+      - README.md
+      - docs/translated/**
+      - .github/workflows/readme-translation.yml
+      - .github/workflows/readme-verification.yml
+      - developer/automation/cmd/readme-translate/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-readme-translations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go for README verifier
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+      - name: Run Go regression tests
+        run: go -C developer/automation test ./cmd/readme-translate
+      - name: Verify registered translations without mutation
+        run: go -C developer/automation run ./cmd/readme-translate --action verify
