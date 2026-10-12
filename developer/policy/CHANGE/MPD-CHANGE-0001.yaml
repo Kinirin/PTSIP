@@ -5,7 +5,7 @@ policy:
   id: MPD-CHANGE-0001
   title: CHANGE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.0'
+  version: '3.1'
 authority_subject:
   id: DEV_VERSIONED_TRANSITION_SEMANTICS
   statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
@@ -17,6 +17,8 @@ rules:
     decision: KEEP_LATEST
     approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-MEANING-REPLACEMENT.yaml
     policy_scope: PTSIP_DEVELOPER_POLICY
+    repository_path_scope: developer/**
+    external_paths: EXCLUDED
     subject: POLICY_LIFECYCLE_STATUS_REFORM
     legacy_state_transitions:
       ACTIVE:
@@ -44,6 +46,7 @@ rules:
       current_schema_and_runtime_enforcement_change: NOT_AUTHORIZED
       other_legacy_statuses_and_substatus_rules: NOT_DECIDED
       implementation_plan: SEPARATE
+      scope_approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-DEV-SCOPE.yaml
   policy_plan_semantic_change_reconciliation:
     decision: RECONCILE
     scope: EFFECTIVE_POLICY_DELTA_TO_BOUND_PLANNING
@@ -633,3 +636,12 @@ transition:
       action: RESOLVE_REMAINING_LIFECYCLE_MODEL_BEFORE_IMPLEMENTATION
       execution: OWNER_DECISION_REQUIRED
       completion_check: EXACT_STATUS_MAPPING_WITHOUT_LEGACY_SEMANTIC_INHERITANCE
+  - id: TR-003
+    type: PROJECT_OWNER_DEVELOPER_SCOPE_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261012-POLICY-STATUS-DEV-SCOPE.yaml
+    next_action:
+      action: LIMIT_STATUS_REFORM_TO_DEVELOPER
+      execution: SERIAL_REQUIRED
+      completion_check: NO_OUT_OF_SCOPE_STATUS_REFORM
