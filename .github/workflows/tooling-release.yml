@@ -1,7 +1,26 @@
+# Release execution intentionally remains BLOCKED by MPD-CTRL-0001.
+# The independent engine verification job below is staged, not executable.
+# Tool, Profile and Package verification responsibilities remain separate and
+# require a successor verification contract; no PASS is inferred.
 name: tooling-release
 
 on:
   workflow_dispatch:
+    inputs:
+      engine:
+        description: "Future per-engine verification selection (currently blocked)"
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - context
+          - storage
+          - validation
+          - discovery
+          - planning
+          - execution
+          - projection
 
 permissions:
   contents: read
@@ -15,3 +34,87 @@ jobs:
         run: |
           echo '::error::RELEASE_EXECUTION_BLOCKED: The previous verification contract has been removed. A separately approved successor policy and contract are required before release deployment resumes.'
           exit 1
+
+  candidate-engine-wheel-verification:
+    # The policy and successor contract are unresolved. Do not execute here.
+    # Test implementation is retained for later, separate policy approval.
+    if: ${{ false }}
+    name: "${{ matrix.engine }} / ${{ matrix.platform.name }}"
+    runs-on: ${{ matrix.platform.runner }}
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        engine: ${{ fromJSON(inputs.engine == 'all' && '["context","storage","validation","discovery","planning","execution","projection"]' || format('["{0}"]', inputs.engine)) }}
+        platform:
+          - name: windows-x64
+            runner: windows-2025
+            target: x86_64-pc-windows-msvc
+            suffix: .exe
+          - name: linux-x64
+            runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            suffix: ''
+          - name: macos-arm64
+            runner: macos-15
+            target: aarch64-apple-darwin
+            suffix: ''
+
+    env:
+      CARGO_TARGET_DIR: .artifacts/native-engine-test-target
+      PTSIP_ENGINE_WHEEL_DIR: .artifacts/release/engine-wheels/${{ matrix.platform.name }}
+
+    steps:
+      - name: Checkout exact requested source revision
+        uses: actions/checkout@v4
+
+      - name: Set up Go from repository module
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+          cache: false
+
+      - name: Set up packaging Python (not the test implementation)
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Reject unexpected Rust host toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustc -vV
+          rustc -vV | grep -Fqx "host: ${{ matrix.platform.target }}"
+          echo "Candidate evidence only; does not authorize release."
+
+      - name: Run only the selected engine's Rust tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo test --locked --manifest-path "src/ptsip/engines/${{ matrix.engine }}/Cargo.toml"
+
+      - name: Build only the selected independent Rust engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo build --release --locked --manifest-path "src/ptsip/engines/${{ matrix.engine }}/Cargo.toml"
+          test -f "$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}${{ matrix.platform.suffix }}"
+
+      - name: Assemble local native wheel (unreleased)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python developer/automation/engine_wheels.py \
+            --root . \
+            --kind "${{ matrix.engine }}" \
+            --target "${{ matrix.platform.target }}" \
+            --binary "$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}${{ matrix.platform.suffix }}" \
+            --output "$PTSIP_ENGINE_WHEEL_DIR" \
+            --source-sha "$(git rev-parse HEAD)"
+
+      - name: Verify the wheel in Go and install into isolated consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C developer/tests test ./engines -run '^TestIndependentEngineWheel/${{ matrix.engine }}$' -count=1 -v -timeout=15m
