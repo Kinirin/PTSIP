@@ -65,6 +65,24 @@ rules:
     reinstatement: SEPARATE_USER_APPROVED_SUCCESSOR_POLICY_AND_CONTRACT
     successor_verification_reactivation_direction:
       decision: B_SUCCESSOR_VERIFICATION_POLICY_APPROVAL_BEFORE_RESUMPTION
+      release_scope_decision: FULL_INDEPENDENT_RELEASE
+      release_scope_approval_ref: developer/policy/approvals/MPA-20261013-FULL-INDEPENDENT-RELEASE-SCOPE.yaml
+      release_scope_registry_ref: .github/checks/release/release-contract.json
+      release_scope_components:
+        - TOOL
+        - PROFILE
+        - CONTEXT
+        - STORAGE
+        - VALIDATION
+        - DISCOVERY
+        - PLANNING
+        - EXECUTION
+        - PROJECTION
+        - PACKAGE
+      independent_component_build_version_and_publication: PRESERVED
+      package_assembly_does_not_replace_component_verification: true
+      existing_assure_required_verification: PRESERVED
+      exact_successor_required_checks: UNRESOLVED
       decision_source: USER_EXPLICIT
       approval_ref: developer/policy/approvals/MPA-20261013-SUCCESSOR-RELEASE-VERIFICATION-DIRECTION.yaml
       approval_scope: DIRECTION_ONLY
