@@ -1,0 +1,16 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-FSD-FAMILY-SCHEMA-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: 'FSD 상위 정책 방향을 KEEP_LATEST으로 승인합니다. 현재 dev/0.3.8의 기존 정책과 대조하고 정책 충돌을 처리한 뒤, 승인된 정책을 활성 브랜치 HEAD에 동기화해 주세요. 구현 계획은 별도 단계에서 진행합니다.'
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  affected_policy_ids:
+  - MPD-ARCH-0001
+  - MPD-INFO-0001
+  recorded_at: '2026-10-12'

@@ -5,7 +5,7 @@ policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.3'
+  version: '3.0'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -13,6 +13,46 @@ exclusive_kernel:
 - DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
 - DEV_EXPLICIT_COMPONENT_RELATIONSHIPS
 rules:
+  fsd_root_family_full_schema_authority:
+    resolution: KEEP_LATEST
+    change_class: INCOMPATIBLE_NORMATIVE
+    approval_ref: developer/policy/approvals/MPA-20261012-FSD-FAMILY-SCHEMA-KEEP-LATEST.yaml
+    applies_to:
+      policy_class: PTSIP_DEVELOPER_POLICY
+      artifact_kind: ROOT_FAMILY_POLICY_RECORD
+      owner_identity: [policy_class, responsibility_family]
+    independent_owner: MATCHING_RESPONSIBILITY_FAMILY
+    ownership_scope:
+    - COMPLETE_RECORD_FIELD_STRUCTURE
+    - REQUIRED_AND_OPTIONAL_FIELDS
+    - FIELD_TYPES_AND_VALUE_CONSTRAINTS
+    - FAMILY_SPECIFIC_RULE_PAYLOAD
+    - COMMON_NAMED_FIELDS_WITHIN_FAMILY_RECORD
+    each_family_owns_entire_schema: true
+    cross_family_schema_normative_inheritance: FORBIDDEN
+    info_global_field_schema_authority_for_other_families: REPLACED
+    shared_primitives_transfer_field_authority: false
+    target_schema_directory: developer/policy/schemas/FSD/
+    target_family_schema_pattern: '{FAMILY}.schema.json'
+    target_catalog_schema: developer/policy/schemas/FSD/index.schema.json
+    catalog_contract_owner: PROJECT_OWNER_SHARED_DEVELOPER_CATALOG
+    catalog_not_a_root_family_policy_record: true
+    excluded_scopes:
+    - PTSIP_SUPPORT_FEATURE
+    - POLICY_ANALYSIS_LOCAL_SCHEMA_OWNERSHIP
+    - NON_FAMILY_DEVELOPER_CATALOG_AUTHORITY
+    implementation_state:
+      family_schema_materialization: NOT_IMPLEMENTED
+      validator_registry_rebinding: NOT_IMPLEMENTED
+      current_shared_schema_is_not_new_family_authority: true
+      implementation_authorized_by_this_decision: false
+      separate_plan_approval_required: true
+    prior_conflict_resolution:
+      KEEP_PRIOR: REJECTED
+      KEEP_LATEST: SELECTED
+      RECONCILE: REJECTED
+      resolved_against: MPD-INFO-0001#rules.family_definition.kernel_definitions
+      preserve_unrelated_authority: true
   family_definition:
     kernel_definitions:
     - id: DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
@@ -306,3 +346,12 @@ transition:
       action: VERIFY_SOURCE_PROJECTION
       execution: SERIAL_REQUIRED
       completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  - id: TR-002
+    type: PROJECT_OWNER_FSD_FAMILY_SCHEMA_AUTHORITY_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261012-FSD-FAMILY-SCHEMA-KEEP-LATEST.yaml
+    next_action:
+      action: DERIVE_FSD_IMPLEMENTATION_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: NO_SCHEMA_OR_RESOLVER_CUTOVER_WITHOUT_SEPARATE_APPROVED_PLAN

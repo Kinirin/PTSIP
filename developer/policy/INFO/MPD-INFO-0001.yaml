@@ -5,20 +5,39 @@ policy:
   id: MPD-INFO-0001
   title: INFO authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '2.0'
+  version: '3.0'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
-  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic
-    source 및 projection의 구분을 소유한다.
+  statement: 개발 정책, planning, self-profile 및 Context Plane의 canonical 정보 모델과 source/projection 관계를 소유한다.
+    단, PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 전체 필드 스키마 정의권은 해당 Family에 귀속한다.
 exclusive_kernel:
 - DEV_CANONICAL_INFORMATION_AND_IDENTITY
 - DEV_SOURCE_PROJECTION_SEMANTICS
 rules:
+  fsd_family_schema_authority_scope:
+    resolution: KEEP_LATEST
+    approval_ref: developer/policy/approvals/MPA-20261012-FSD-FAMILY-SCHEMA-KEEP-LATEST.yaml
+    replaced_prior_authority: DEV_CANONICAL_INFORMATION_AND_IDENTITY_GLOBAL_ROOT_FAMILY_FIELD_SCHEMA_OWNERSHIP
+    affected_policy_class: PTSIP_DEVELOPER_POLICY
+    affected_artifact_kind: ROOT_FAMILY_POLICY_RECORD
+    schema_definition_owner: MATCHING_RESPONSIBILITY_FAMILY
+    full_field_schema_ownership: PER_FAMILY_EXCLUSIVE
+    info_cross_family_field_schema_ownership: FORBIDDEN
+    shared_schema_definition_authority_by_info: FORBIDDEN
+    preserved_info_authority:
+    - NON_ROOT_FAMILY_DEVELOPER_INFORMATION
+    - CANONICAL_SEMANTIC_SOURCE_AND_PROJECTION
+    - POLICY_ANALYSIS_INFORMATION_CONTRACT
+    non_family_catalog_contract_authority: PRESERVE
+    support_feature_policy_authority: NOT_AFFECTED
+    physical_schema_materialization: DEFER_TO_SEPARATE_APPROVED_PLAN
+    current_validator_rebinding: NOT_AUTHORIZED_BY_THIS_POLICY_CHANGE
   family_definition:
     kernel_definitions:
     - id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
-      statement: 개발 레코드의 필드, 식별자, 상태 표현 및 canonical 정보 단위의 의미를 정의한다. 식별자 할당 승인의 적법성은
-        GOV가 소유한다.
+      statement: 개발 canonical 정보 모델과 비 Root Family 레코드의 필드, 식별자 및 상태 표현 의미를 소유한다.
+        PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 필드 스키마 전체는 각 Family가 독립 소유하며 INFO는 INFO Family 자신의 스키마만 소유한다.
+        식별자 할당 승인의 적법성은 GOV가 소유한다.
       non_substitutability: GOV의 승인 기록은 정보 필드의 해석과 schema 의미를 대신 정의하지 못한다.
     - id: DEV_SOURCE_PROJECTION_SEMANTICS
       statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가
@@ -6226,3 +6245,12 @@ transition:
       action: VERIFY_SOURCE_PROJECTION
       execution: SERIAL_REQUIRED
       completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  - id: TR-002
+    type: PROJECT_OWNER_FSD_FAMILY_SCHEMA_AUTHORITY_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261012-FSD-FAMILY-SCHEMA-KEEP-LATEST.yaml
+    next_action:
+      action: DERIVE_FSD_IMPLEMENTATION_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: NO_SCHEMA_OR_RESOLVER_CUTOVER_WITHOUT_SEPARATE_APPROVED_PLAN
