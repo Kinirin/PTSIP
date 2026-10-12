@@ -30,7 +30,7 @@ func branchGuardErrorCode(t *testing.T, err error) string {
 
 func TestBranchGuardExactApprovedDevelopmentBranch(t *testing.T) {
 	repo := branchGuardTestRepo(t)
-	for _, branch := range []string{"dev/0.4.0", "dev/0.10.0", "dev/12.3.45", "dev/123.456.789"} {
+	for _, branch := range []string{"dev/0.4.0", "dev/0.10.0", "dev/12.3.45", "dev/123.456.789", "dev/0.3.8a3", "dev/0.3.8b2", "dev/0.3.8rc1"} {
 		result, err := branchcontrol.ValidateCreation(repo,
 			branch,
 			branch,
@@ -63,6 +63,9 @@ func TestBranchGuardFailsClosedForUnauthorizedInputs(t *testing.T) {
 		{"substituted-name", "verify/context-plane-20260925", "dev/0.4.0", "USER_EXPLICIT", "DEVELOPMENT_VERSION_BRANCH", "GITHUB_CREATE_BRANCH_API", "BRANCH_NAME_NOT_EXACTLY_APPROVED"},
 		{"inferred-authorization", "dev/0.4.0", "dev/0.4.0", "AGENT_INFERRED", "DEVELOPMENT_VERSION_BRANCH", "GITHUB_CREATE_BRANCH_API", "BRANCH_CREATION_REQUIRES_USER_EXPLICIT"},
 		{"unregistered-shape", "fix/js-ts-dependency-resolution", "fix/js-ts-dependency-resolution", "USER_EXPLICIT", "DEVELOPMENT_VERSION_BRANCH", "GITHUB_CREATE_BRANCH_API", "UNAUTHORIZED_BRANCH_NAME"},
+		{"prerelease-suffix-without-number", "dev/0.3.8a", "dev/0.3.8a", "USER_EXPLICIT", "DEVELOPMENT_VERSION_BRANCH", "GITHUB_CREATE_BRANCH_API", "UNAUTHORIZED_BRANCH_NAME"},
+		{"unregistered-prerelease-suffix", "dev/0.3.8dev1", "dev/0.3.8dev1", "USER_EXPLICIT", "DEVELOPMENT_VERSION_BRANCH", "GITHUB_CREATE_BRANCH_API", "UNAUTHORIZED_BRANCH_NAME"},
+		{"prerelease-requires-exact-approved-name", "dev/0.3.8a4", "dev/0.3.8a3", "USER_EXPLICIT", "DEVELOPMENT_VERSION_BRANCH", "GITHUB_CREATE_BRANCH_API", "BRANCH_NAME_NOT_EXACTLY_APPROVED"},
 		{"unregistered-request", "dev/0.4.1", "dev/0.4.1", "USER_EXPLICIT", "UNREGISTERED", "GITHUB_CREATE_BRANCH_API", "UNREGISTERED_BRANCH_REQUEST_KIND"},
 		{"missing-approved-name", "dev/0.4.1", "", "USER_EXPLICIT", "DEVELOPMENT_VERSION_BRANCH", "GITHUB_CREATE_BRANCH_API", "APPROVED_BRANCH_NAME_REQUIRED"},
 	}
@@ -129,6 +132,10 @@ func TestBranchGuardClassifiesExistingBranches(t *testing.T) {
 	repo := branchGuardTestRepo(t)
 	cases := map[string]string{
 		"dev/12.3.45":                       "AUTHORIZED_DEVELOPMENT_VERSION",
+		"dev/0.3.8a3":                      "AUTHORIZED_DEVELOPMENT_VERSION",
+		"dev/0.3.8b2":                      "AUTHORIZED_DEVELOPMENT_VERSION",
+		"dev/0.3.8rc1":                     "AUTHORIZED_DEVELOPMENT_VERSION",
+		"dev/0.3.8a":                       "UNREGISTERED_SHAPE",
 		"tool-0.3.4-authority-consistency":  "GRANDFATHERED_RETENTION",
 		"feature/unregistered-branch-shape": "UNREGISTERED_SHAPE",
 	}
