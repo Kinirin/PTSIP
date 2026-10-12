@@ -41,6 +41,7 @@ from .dependency_analysis import analyze_dependencies
 from .dependency_review import write_review_pack
 from .dependency_validation import validation_plan
 from .doctor import doctor
+from .engine_installation import emit_status as official_engine_installation_status
 from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
@@ -264,6 +265,11 @@ def _parser() -> argparse.ArgumentParser:
     p_spec = sub.add_parser("spec", help="Show the canonical specification binding embedded in this tool")
     p_spec.add_argument("--json", action="store_true")
 
+    p_engines = sub.add_parser("engines", help="Inspect registered independent official engine installations")
+    engine_commands = p_engines.add_subparsers(dest="engine_command", required=True)
+    p_engine_status = engine_commands.add_parser("status", help="Read-only seven-engine package/entrypoint availability")
+    p_engine_status.add_argument("--json", action="store_true")
+
     p_doctor = sub.add_parser("doctor", help="Check the local environment without modifying the target repository")
     p_doctor.add_argument("path", nargs="?", default=".")
     p_doctor.add_argument("--json", action="store_true")
@@ -484,6 +490,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "spec":
             _emit(current_spec_identity().as_dict(), args.json)
             return 0
+        if args.command == "engines":
+            result, code = official_engine_installation_status()
+            _emit(result, args.json)
+            return code
         if args.command == "doctor":
             result = doctor(args.path)
             _emit(result, args.json)
