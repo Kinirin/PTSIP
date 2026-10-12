@@ -49,8 +49,8 @@ jobs:
             suffix: ''
 
     env:
-      CARGO_TARGET_DIR: ${{ github.workspace }}/.artifacts/native-engine-test-target
-      PTSIP_ENGINE_WHEEL_DIR: ${{ github.workspace }}/.artifacts/release/engine-wheels/${{ matrix.platform.name }}
+      CARGO_TARGET_DIR: .artifacts/native-engine-test-target
+      PTSIP_ENGINE_WHEEL_DIR: .artifacts/release/engine-wheels/${{ matrix.platform.name }}
 
     steps:
       - name: Checkout exact requested source revision
