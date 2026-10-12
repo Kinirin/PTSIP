@@ -119,6 +119,8 @@ func (r *Repository) LegacyDependencyHits() ([]DependencyHit, error) {
 func legacyDependencyCurrentSurface(ref string) bool {
 	name := filepath.Base(ref)
 	switch {
+	case strings.HasPrefix(ref, ".github/checks/release/"):
+		return !strings.Contains(ref, "/testdata/") && !strings.HasSuffix(ref, "_test.go") && (strings.HasSuffix(ref, ".go") || strings.HasSuffix(ref, ".ps1"))
 	case strings.HasPrefix(ref, "developer/automation/"):
 		return !strings.Contains(ref, "/testdata/") && !strings.HasSuffix(ref, "_test.go") && (strings.HasSuffix(ref, ".py") || strings.HasSuffix(ref, ".go"))
 	case strings.HasPrefix(ref, "developer/policy/"):

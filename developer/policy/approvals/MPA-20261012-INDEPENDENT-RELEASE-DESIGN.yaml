@@ -1,0 +1,19 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-INDEPENDENT-RELEASE-DESIGN
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: Separate .github/checks/release orchestration, independent Tool/Profile/seven engine/Package versions, parallel selected releases, unchanged/off target omission; Tool 0.3.8a5, engines 0.2a1 or stable 0.2 with sequence; Package manual base 0.3.8 and automatically changing six-character mapping only.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-INFO-0001
+  affected_policy_ids:
+  - MPD-INFO-0001
+  - MPD-ARCH-0002
+  - MPD-REAL-0005
+  - MPD-ASSURE-0001
+  recorded_at: '2026-10-12'

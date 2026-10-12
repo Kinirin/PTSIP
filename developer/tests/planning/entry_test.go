@@ -47,7 +47,7 @@ func TestRegisteredPrereleaseAndContinuationResolveExactly(t *testing.T) {
 		t.Fatal(failures)
 	}
 	for _, check := range []struct{ branch, path, version string }{
-		{"dev/0.3.8", "developer/planning/0.3.8/index.yaml", "0.3.8"},
+		{"main", "developer/planning/0.3.8/index.yaml", "0.3.8"},
 		{"dev/0.3.8a3", prereleasePlan, "0.3.8a3"},
 	} {
 		result, err := planning.ResolvePlanningEntry(repo, check.branch)
@@ -228,7 +228,7 @@ func TestApprovedReleaseMaintainsIndependentCurrentAuthority(t *testing.T) {
 	if unit == nil {
 		t.Fatal("approved candidate work unit missing")
 	}
-	if root["plan"].(object)["status"] != "ACTIVE" || root["plan"].(object)["current_gate"] != "WU-02" ||
+	if root["plan"].(object)["status"] != "ACTIVE" || root["plan"].(object)["current_gate"] != "WU-03" ||
 		unit["id"] != "WU-01" ||
 		unit["approval"].(object)["status"] != "APPROVED" ||
 		unit["approval"].(object)["approval_source"] != "USER_EXPLICIT" ||

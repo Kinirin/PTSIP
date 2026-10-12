@@ -1,14 +1,21 @@
 package release_test
 
 import (
+	"github.com/Kinirin/PTSIP/developer/tests/internal/testrepo"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
 
 func TestPublicationArtifactVerificationRemainsBoundToExactProductArtifact(t *testing.T) {
-	text := releaseWorkflowText(t)
+	source, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github", "checks", "release", "Tool_artifact_verify.ps1"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(source)
 	for _, required := range []string{
-		"Verify publication Product Artifact evidence and exact snapshot binding",
+		"Product Artifact boundary evaluator did not run",
 		"ptsip-artifact-evidence/v1",
 		"ptsip-artifact-evidence-binding/v1",
 		"producer_component = 'repository-release-automation'",
@@ -28,9 +35,11 @@ func TestPublicationConsumesOnlyVerifiedBuildArtifactWithTrustedPublishing(t *te
 	for _, required := range []string{
 		"actions/upload-artifact@v4",
 		"actions/download-artifact@v4",
-		"needs: build",
+		"needs: [prepare, build]",
 		"environment: pypi",
 		"id-token: write",
+		"packages-dir: pypi-dist/",
+		"release-tool-any",
 		"pypa/gh-action-pypi-publish@release/v1",
 	} {
 		if !strings.Contains(text, required) {

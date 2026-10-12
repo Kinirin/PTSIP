@@ -1,0 +1,50 @@
+{
+  "format": "ptsip-independent-release/v1",
+  "approval_ref": "developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml",
+  "package_base": "0.3.8",
+  "version_rules": {
+    "tool": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:(a|b|rc)([1-9][0-9]*))?$",
+    "engine": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:(a|b|rc)([1-9][0-9]*))?$",
+    "profile": "^pp\\.[0-9]+\\.[0-9]+$",
+    "package_base": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+  },
+  "tag_prefixes": {
+    "tool": "tool-v",
+    "profile": "profile-",
+    "engine": "engine-",
+    "package": "package-v"
+  },
+  "platforms": [
+    "linux-x64",
+    "windows-x64",
+    "macos-arm64"
+  ],
+  "engine_index": "src/ptsip/engines/index.json",
+  "engine_ids": [
+    "context",
+    "storage",
+    "validation",
+    "discovery",
+    "planning",
+    "execution",
+    "projection"
+  ],
+  "bootstrap_engine_versions": {
+    "context": "0.2.0",
+    "storage": "0.3.0",
+    "validation": "0.3.0",
+    "discovery": "0.3.0",
+    "planning": "0.3.0",
+    "execution": "0.3.0",
+    "projection": "0.2.0"
+  },
+  "commands": [
+    "plan",
+    "build",
+    "verify",
+    "publish",
+    "assemble",
+    "contracts",
+    "selection"
+  ]
+}

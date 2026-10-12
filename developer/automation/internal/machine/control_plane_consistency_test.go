@@ -54,6 +54,7 @@ func TestLegacyDependencyCurrentSurfacePreservesFrozenBoundaryAndNativeCoverage(
 		{"schemas/ptsip-profile-pp-1.01.schema.json", false},
 		{"src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json", false},
 		{"developer/automation/release/identity.go", true},
+		{".github/checks/release/identity.go", true},
 		{"developer/automation/internal/machine/maintenance.go", true},
 		{"developer/automation/internal/machine/control_plane_regression_test.go", false},
 		{"developer/automation/internal/machine/testdata/control_plane_vectors.json", false},

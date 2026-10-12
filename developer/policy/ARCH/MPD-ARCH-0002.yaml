@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '3.0'
+  version: '3.1'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -33,7 +33,7 @@ rules:
         root: developer/automation/branch/
         responsibility: BRANCH_CONTROL
       RELEASE:
-        root: developer/automation/release/
+        root: .github/checks/release/
         responsibility: REPOSITORY_RELEASE_AUTOMATION
         responsibility_scope:
         - RELEASE_IDENTITY_CONSUMPTION
@@ -44,6 +44,8 @@ rules:
         - PUBLICATION_EXECUTION
         - RELEASE_GATE_INVOCATION
         scope_extension: PROJECT_OWNER_APPROVAL_REQUIRED
+        relocation_approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
+        former_root: developer/automation/release/
       TEST_MODE:
         root: developer/automation/testmode/
         responsibility: REPOSITORY_TEST_MODE_CONTROL_PLANE
@@ -103,6 +105,8 @@ rules:
       file_move_mapping: PLAN_OWNED
       package_dependency_graph: PLAN_OWNED
       migration_sequence: PLAN_OWNED
+    admitted_external_domain_roots:
+    - .github/checks/release/
   tooling_test_registry_driven_executor_boundary:
     lifecycle: RETIRED
     normative_execution_contracts_effective: false
@@ -113,7 +117,18 @@ rules:
     prior_policy_version: '2.7'
     prior_minimum_execution_contracts:
       source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
-      identities: [WEC-01, WEC-02, WEC-03, WEC-04, WEC-05, WEC-06, WEC-07, WEC-08, WEC-09, WEC-10, WEC-11]
+      identities:
+      - WEC-01
+      - WEC-02
+      - WEC-03
+      - WEC-04
+      - WEC-05
+      - WEC-06
+      - WEC-07
+      - WEC-08
+      - WEC-09
+      - WEC-10
+      - WEC-11
       status: SUPERSEDED_NOT_ACTIVE
     retirement:
       common_workflow: .github/workflows/tooling-test.yml
@@ -148,7 +163,6 @@ rules:
       historical_evidence_owner: MPD-RECORD-0001
       verified_evidence_claim_waiver: FORBIDDEN
       successor_policy_or_execution_identity_approval: SEPARATE_DECISION
-
 relations:
   supersedes: []
   amends: []

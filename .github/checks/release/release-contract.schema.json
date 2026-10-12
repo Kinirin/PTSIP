@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:independent-release:v1",
+  "type": "object",
+  "required": [
+    "format",
+    "approval_ref",
+    "package_base",
+    "version_rules",
+    "tag_prefixes",
+    "platforms",
+    "engine_index",
+    "engine_ids",
+    "bootstrap_engine_versions",
+    "commands"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "const": "ptsip-independent-release/v1"
+    },
+    "approval_ref": {
+      "type": "string"
+    },
+    "package_base": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "version_rules": {
+      "type": "object",
+      "required": [
+        "tool",
+        "engine",
+        "profile",
+        "package_base"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "package_base": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "tag_prefixes": {
+      "type": "object",
+      "required": [
+        "tool",
+        "profile",
+        "engine",
+        "package"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine": {
+          "type": "string",
+          "minLength": 1
+        },
+        "package": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "linux-x64",
+          "windows-x64",
+          "macos-arm64"
+        ]
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "engine_index": {
+      "type": "string"
+    },
+    "engine_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "context",
+          "storage",
+          "validation",
+          "discovery",
+          "planning",
+          "execution",
+          "projection"
+        ]
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "bootstrap_engine_versions": {
+      "type": "object",
+      "required": [
+        "context",
+        "storage",
+        "validation",
+        "discovery",
+        "planning",
+        "execution",
+        "projection"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "type": "string",
+          "minLength": 1
+        },
+        "storage": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "discovery": {
+          "type": "string",
+          "minLength": 1
+        },
+        "planning": {
+          "type": "string",
+          "minLength": 1
+        },
+        "execution": {
+          "type": "string",
+          "minLength": 1
+        },
+        "projection": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+schema_version: ptsip-work-unit/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.3.8
+planning_contract: ptsip-planning/v1
+work_unit:
+  id: WU-03
+  kind: WORK_UNIT
+  title: Independent component release orchestration and native engine distributions
+  classification: CORE
+  lifecycle:
+    status: ACTIVE
+  approval:
+    status: APPROVED
+    inherited_from: []
+    approval_source: USER_EXPLICIT
+    authority: MPA-20261012-INDEPENDENT-RELEASE-DESIGN
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
+  integration_branch: main
+  entry_baseline: 41954d44f50525307db7a09189fd45384064ebbe
+  depends_on: []
+  policy_refs:
+  - developer/policy/INFO/MPD-INFO-0001.yaml
+  - developer/policy/ARCH/MPD-ARCH-0002.yaml
+  - developer/policy/REAL/MPD-REAL-0005.yaml
+  - developer/policy/ASSURE/MPD-ASSURE-0001.yaml
+  objective: INDEPENDENT_SELECTED_PARALLEL_RELEASES_WITH_NATIVE_ARTIFACTS_AND_SEPARATE_PACKAGE_IDENTITY
+  file_move_mapping:
+    developer/automation/release/identity.go: .github/checks/release/identity.go
+    developer/automation/release/github.go: .github/checks/release/github.go
+    developer/automation/release/build.go: .github/checks/release/build.go
+    developer/automation/release/operations.go: .github/checks/release/operations.go
+  implementation_boundaries:
+    powershell: TARGET_PROCESS_ORCHESTRATION
+    go: RELEASE_SEMANTICS_AND_ARTIFACT_VERIFICATION
+    rust: SEVEN_INDEPENDENT_ENGINE_IMPLEMENTATIONS
+    contracts_release: NEUTRAL_CONTRACT_PACKAGING_HELPER_NOT_AN_EIGHTH_ENGINE
+    package: JOIN_VERIFIED_COMPONENT_ARTIFACTS_ONLY
+    existing_tool_tag: IMMUTABLE_0.3.8a5
+    publication_this_implementation_turn: NOT_REQUESTED
+    consumer_installation_activation: SEPARATE_SCOPE
+  acceptance:
+  - SINGLE_ENGINE_RELEASE_DOES_NOT_BUILD_OR_BUMP_TOOL_PROFILE_OTHER_ENGINES
+  - PACKAGE_BASE_REMAINS_MANUAL_AND_SUFFIX_MAPS_VERSION_VECTOR
+  - UNCHANGED_OFF_TARGETS_SKIP
+  - SOURCE_OR_ARTIFACT_TAMPERING_FAILS_CLOSED
+  - REQUIRED_PLATFORM_ARTIFACTS_AND_COMPILED_VERSIONS_VERIFIED
+  - NO_OLD_COMMON_CI_PASS_PROMOTION
+  - EXISTING_REQUIRED_TOOL_PUBLICATION_CHECKS_PRESERVED
+  verification:
+    local: PASS_RELEASE_MODULE_AND_PRESERVED_RELEASE_PLANNING_TESTS_SYNTAX_LINT_AND_WINDOWS_CONTEXT_RELEASE_BUILD
+    remote_exact_sha: PENDING
+    broader_existing_windows_automation_suite: TIMED_OUT_AFTER_10_MINUTES_NOT_PASS

@@ -16,7 +16,10 @@
     ],
     "remove_python_automation_entrypoints": true,
     "python_automation_delegation": "FORBIDDEN",
-    "support_plane_inheritance": "FORBIDDEN"
+    "support_plane_inheritance": "FORBIDDEN",
+    "admitted_relocated_scope_roots": [
+      ".github/checks/release"
+    ]
   },
   "completion_requirements": [
     "EVERY_INVENTORIED_IMPLEMENTATION_HAS_VERIFIED_GO_EQUIVALENCE",

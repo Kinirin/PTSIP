@@ -61,7 +61,11 @@ func (r *Repository) VerifyAuditImplementationTarget(reference string) error {
 			}
 			for _, target := range targets {
 				scope, err := r.Scope(target)
-				if err != nil || scope != target || !strings.HasPrefix(target, "developer/automation/") || !strings.HasSuffix(target, ".go") {
+				allowed := strings.HasPrefix(target, "developer/automation/")
+				for _, root := range Strings(Map(contract["target"])["admitted_relocated_scope_roots"]) {
+					allowed = allowed || strings.HasPrefix(target, strings.TrimSuffix(root, "/")+"/")
+				}
+				if err != nil || scope != target || !allowed || !strings.HasSuffix(target, ".go") {
 					return fmt.Errorf("audit implementation target is outside Go automation: %s", target)
 				}
 			}

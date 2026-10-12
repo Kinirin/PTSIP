@@ -5,11 +5,10 @@ policy:
   id: MPD-INFO-0001
   title: INFO authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.0'
+  version: '3.1'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
-  statement: 개발 정책, planning, self-profile 및 Context Plane의 canonical 정보 모델과 source/projection 관계를 소유한다.
-    단, PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 전체 필드 스키마 정의권은 해당 Family에 귀속한다.
+  statement: 개발 정책, planning, self-profile 및 Context Plane의 canonical 정보 모델과 source/projection 관계를 소유한다. 단, PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 전체 필드 스키마 정의권은 해당 Family에 귀속한다.
 exclusive_kernel:
 - DEV_CANONICAL_INFORMATION_AND_IDENTITY
 - DEV_SOURCE_PROJECTION_SEMANTICS
@@ -35,15 +34,11 @@ rules:
   family_definition:
     kernel_definitions:
     - id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
-      statement: 개발 canonical 정보 모델과 비 Root Family 레코드의 필드, 식별자 및 상태 표현 의미를 소유한다.
-        PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 필드 스키마 전체는 각 Family가 독립 소유하며 INFO는 INFO Family 자신의 스키마만 소유한다.
-        식별자 할당 승인의 적법성은 GOV가 소유한다.
+      statement: 개발 canonical 정보 모델과 비 Root Family 레코드의 필드, 식별자 및 상태 표현 의미를 소유한다. PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 필드 스키마 전체는 각 Family가 독립 소유하며 INFO는 INFO Family 자신의 스키마만 소유한다. 식별자 할당 승인의 적법성은 GOV가 소유한다.
       non_substitutability: GOV의 승인 기록은 정보 필드의 해석과 schema 의미를 대신 정의하지 못한다.
     - id: DEV_SOURCE_PROJECTION_SEMANTICS
-      statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가
-        될 수 없는 조건을 정한다.
-      non_substitutability: REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지
-        못한다.
+      statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가 될 수 없는 조건을 정한다.
+      non_substitutability: REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지 못한다.
     source_scope:
     - MPD-0001
     - MPD-0010
@@ -810,16 +805,10 @@ rules:
           unlisted_collection_fallback: FORBIDDEN
           set_member_selection: EXACT_DECLARED_LOGICAL_ID_NOT_ARRAY_POSITION
         excluded_projection_proof:
-          migration_sources: Generator-retained migration file locations are provenance,
-            not rule meaning.
-          derived_routing: Index schemas, primitives, rule_index and resource references
-            are reproducible locators; exact candidate parity and identity checks
-            remain mandatory.
-          candidate_administration: Only outer candidate/activation/digest-placeholder
-            wrappers are excluded; payload status and x-ptsip-status remain included.
-          conformance_vectors: The MIGRATION_PARITY asset is a reproducible exact
-            copy of already-included group expectations; candidate validation must
-            still reject vector drift.
+          migration_sources: Generator-retained migration file locations are provenance, not rule meaning.
+          derived_routing: Index schemas, primitives, rule_index and resource references are reproducible locators; exact candidate parity and identity checks remain mandatory.
+          candidate_administration: Only outer candidate/activation/digest-placeholder wrappers are excluded; payload status and x-ptsip-status remain included.
+          conformance_vectors: The MIGRATION_PARITY asset is a reproducible exact copy of already-included group expectations; candidate validation must still reject vector drift.
         collection_identity_fields:
           RULE: /rule_id
           VOCABULARY_ENTRY: /id
@@ -6227,6 +6216,25 @@ rules:
     amends: []
     extends: []
     depends_on: []
+  independent_release_versioning:
+    approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
+    contract_ref: .github/checks/release/release-contract.json
+    schema_ref: .github/checks/release/release-contract.schema.json
+    identities:
+    - PACKAGE
+    - TOOL
+    - PROFILE
+    - SEVEN_INDEPENDENT_ENGINES
+    package_numeric_base_change: USER_EXPLICIT_ONLY
+    package_suffix: FIRST_SIX_SHA256_HEX_OF_CANONICAL_COMPONENT_VERSION_VECTOR
+    suffix_semantics: OPAQUE_MAPPING_ONLY_NO_ORDER_OR_COMPATIBILITY
+    suffix_collision: FAIL_CLOSED_FULL_COMPOSITION_SHA256_REQUIRED
+    tool_engine_profile_version_coupling: FORBIDDEN
+    engine_public_version: MAJOR_MINOR_OPTIONAL_aN_bN_rcN
+    cargo_version: EXPLICIT_BUILD_PROJECTION_NOT_PUBLIC_ENGINE_IDENTITY
+    existing_identifiers: PRESERVE_EXACT_BOOTSTRAP_IDENTIFIERS
+    unchanged_component_republication: SKIP
+    changed_source_same_component_version: FAIL_CLOSED
 relations:
   supersedes: []
   amends: []

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:developer-planning-index:v1",
+  "$id": "urn:ptsip:developer-planning-index:v2",
   "title": "PTSIP Developer Planning Version Index v1",
   "type": "object",
   "required": [
@@ -38,7 +38,7 @@
         },
         "integration_branch": {
           "type": "string",
-          "pattern": "^dev/[0-9]+\\.[0-9]+\\.[0-9]+$"
+          "pattern": "^(?:main|dev/[0-9]+\\.[0-9]+\\.[0-9]+)$"
         },
         "classification": {
           "enum": [

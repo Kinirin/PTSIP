@@ -5,11 +5,10 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '4.0'
+  version: '4.1'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
-  statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
-    검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
+  statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의 검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
 exclusive_kernel:
 - DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
 - DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
@@ -17,15 +16,11 @@ rules:
   family_definition:
     kernel_definitions:
     - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
-      statement: 기계적으로 선택된 Test Mode와 규범상 필요한 검증 항목의 coverage 및 증거의 admissibility를
-        평가한다.
-      non_substitutability: CTRL의 gate 목록이나 RECORD의 로그 존재만으로 필요한 검증 coverage와 증거 적합성이
-        충족되지 않는다.
+      statement: 기계적으로 선택된 Test Mode와 규범상 필요한 검증 항목의 coverage 및 증거의 admissibility를 평가한다.
+      non_substitutability: CTRL의 gate 목록이나 RECORD의 로그 존재만으로 필요한 검증 coverage와 증거 적합성이 충족되지 않는다.
     - id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
-      statement: 검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와
-        PTSIP conformance 및 VPMS purpose를 구별한다.
-      non_substitutability: RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도
-        미검증 SHA를 PASS로 만들 수 없다.
+      statement: 검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와 PTSIP conformance 및 VPMS purpose를 구별한다.
+      non_substitutability: RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도 미검증 SHA를 PASS로 만들 수 없다.
     source_scope:
     - MPD-0011
     - MPD-0012
@@ -435,6 +430,22 @@ rules:
     observable_evidence_required: true
     expected_vs_observed_required: true
     verification_result_must_be_machine_readable: true
+  independent_release_component_verification:
+    approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
+    contract_ref: .github/checks/release/release-contract.json
+    verification_scope: EXACT_SOURCE_SELECTED_RELEASE_COMPONENTS
+    required:
+    - REGISTERED_IDENTITY_AND_VERSION
+    - UNCHANGED_SOURCE_OR_NEW_COMPONENT_VERSION
+    - REQUIRED_NATIVE_PLATFORM_TESTS
+    - COMPILED_MANIFEST_IDENTITY
+    - ALL_ARTIFACT_HASHES
+    - PROFILE_TRANSITION_EXACT_SOURCE
+    - TOOL_PRODUCT_ARTIFACT_BOUNDARY_WHEN_SELECTED
+    parallel_component_failure_scope: FAILED_COMPONENT_AND_DEPENDENT_PACKAGE
+    reuse: IMMUTABLE_PUBLISHED_COMPONENT_TAG_FINGERPRINT_AND_ARTIFACT_DIGEST_MATCH
+    common_verification_gap: PRESERVE_OPEN_NO_FORMER_STATUS_REEMISSION
+    operational_installation_and_activation: NOT_GRANTED
 relations:
   supersedes: []
   amends: []
