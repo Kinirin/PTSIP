@@ -6,7 +6,6 @@ on:
     paths:
       - README.md
       - .github/workflows/readme-translation.yml
-      - .github/checks/readme-translation.ps1
       - developer/automation/cmd/readme-translate/**
       - docs/translated/index.yaml
   workflow_dispatch:
@@ -34,6 +33,12 @@ jobs:
         with:
           go-version-file: developer/automation/go.mod
           cache-dependency-path: developer/automation/go.sum
+
+      - name: Verify README translation controller independently
+        shell: pwsh
+        run: |
+          go -C developer/automation test ./cmd/readme-translate
+          if ($LASTEXITCODE -ne 0) { throw 'Independent Go README translation regression failed.' }
 
       - name: Build registered-language translator
         shell: pwsh
