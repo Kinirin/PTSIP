@@ -8,14 +8,14 @@ work_unit:
   title: Independent component release orchestration and native engine distributions
   classification: CORE
   lifecycle:
-    status: ACTIVE
+    status: COMPLETE
   approval:
     status: APPROVED
     inherited_from: []
     approval_source: USER_EXPLICIT
     authority: MPA-20261012-INDEPENDENT-RELEASE-DESIGN
   implementation_authorization:
-    status: AUTHORIZED
+    status: COMPLETE
     authorization_source: USER_EXPLICIT
   integration_branch: main
   entry_baseline: 41954d44f50525307db7a09189fd45384064ebbe
@@ -50,5 +50,21 @@ work_unit:
   - EXISTING_REQUIRED_TOOL_PUBLICATION_CHECKS_PRESERVED
   verification:
     local: PASS_RELEASE_MODULE_AND_PRESERVED_RELEASE_PLANNING_TESTS_SYNTAX_LINT_AND_WINDOWS_CONTEXT_RELEASE_BUILD
-    remote_exact_sha: PENDING
+    remote_exact_sha:
+      source_sha: dace803d8ea9f0a37ccd2c15569cc042c0fd3315
+      run_id: 38219860648
+      result: PASS
+      successful_jobs: 24
+      intentional_publication_skips: 2
+      native_platform_artifacts: 21
+      package_version: 0.3.8.c78e9c
+      publication_performed: false
     broader_existing_windows_automation_suite: TIMED_OUT_AFTER_10_MINUTES_NOT_PASS
+completion_evidence:
+- type: TEST
+  revision: dace803d8ea9f0a37ccd2c15569cc042c0fd3315
+  id: tooling-release/38219860648/verify-selected-native-platforms-and-package
+  result: PASS
+- type: MACHINE_VALIDATION
+  id: PACKAGE_0.3.8.c78e9c_ALL_COMPONENT_ARTIFACT_DIGESTS
+  result: PASS
