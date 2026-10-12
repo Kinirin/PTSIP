@@ -11,6 +11,8 @@ import (
     "regexp"
     "sort"
     "strings"
+
+    policylifecycle "github.com/Kinirin/PTSIP/developer/automation/policy/lifecycle"
 )
 
 const cleanupOwner = "developer/policy/CHANGE/MPD-CHANGE-0001.yaml"
@@ -141,14 +143,8 @@ func (r *Repository) cleanupEvidence(id, path string, frozen Object) error {
     if cleanupGitBlob(graphBytes) != Text(baseline["approved_migration_graph_git_blob"]) {
         return fmt.Errorf("approved migration graph Git blob mismatch")
     }
-    origin := Text(frozen["original_path"])
-    if strings.HasPrefix(origin, "/") || strings.Contains(origin, "..") || origin == "" {
-        return fmt.Errorf("invalid pinned original path")
-    }
-    source, err := r.cleanupGit("show", revision+":developer/policy/"+origin)
-    if err != nil { return fmt.Errorf("approved Git source unavailable: %w", err) }
-    if LFDigest(source) != Text(frozen["source_sha256"]) {
-        return fmt.Errorf("approved historical Git source digest mismatch")
+    if _, _, err := policylifecycle.ResolvePinnedMigrationSource(r.Root, graph, baseline, frozen); err != nil {
+        return fmt.Errorf("approved Git source unavailable: %w", err)
     }
     // Both the immutable source and the current deletion target must have exact identities.
     target, err := r.Path(path)

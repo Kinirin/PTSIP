@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"go.yaml.in/yaml/v3"
+	policylifecycle "github.com/Kinirin/PTSIP/developer/automation/policy/lifecycle"
 )
 
 // The admitted JSON contract owns expectations. Go is an independent verifier;
@@ -235,9 +236,11 @@ func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 				entries[id] = row
 			}
 			used := map[string]bool{}
+			var approvedBaseline map[string]any
 			baselineSources := map[string]map[string]any{}
 			if p.PolicyClass == "PTSIP_DEVELOPER_POLICY" {
 				baseline := read(t, filepath.Join(root, "registries/root-family-approved-baseline.json"))
+				approvedBaseline = baseline
 				if baseline["authority"] != "HISTORICAL_EVIDENCE_ONLY" {
 					t.Fatal("frozen source metadata cannot be current authority")
 				}
@@ -249,15 +252,8 @@ func TestHistoricalSourceEvidencePreservesArchiveAndRouting(t *testing.T) {
 			for _, raw := range sequence(t, graph["sources"]) {
 				source := mapping(t, raw)
 				id := source["source_policy_id"].(string)
-				// Frozen history is read from approved Git, not removable worktree bodies.
-				revision := graph["base_head"].(string)
-				origin := filepath.ToSlash(filepath.Join(p.Path, source["original_path"].(string)))
-				command := exec.Command("git", "show", revision+":"+origin)
-				command.Dir = repository(t)
-				data, err := command.Output()
-				if err != nil {
-					t.Fatalf("approved historical Git source unavailable %s: %v", id, err)
-				}
+				data, _, err := policylifecycle.ResolvePinnedMigrationSource(repository(t), graph, approvedBaseline, source)
+				if err != nil { t.Fatalf("approved Git source unavailable %s: %v", id, err) }
 				if digest(bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n"))) != source["source_sha256"] {
 					t.Fatalf("approved Git source bytes changed: %s", id)
 				}
