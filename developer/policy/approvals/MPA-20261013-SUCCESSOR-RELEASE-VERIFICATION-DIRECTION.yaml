@@ -1,0 +1,20 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-SUCCESSOR-RELEASE-VERIFICATION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "B. 후속 릴리스 검증 정책 승인 후 재개 옵션으로 승인하도록 하겠습니다"
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  target_status: ACTIVE
+  implementation_authorized: false
+  affected_policy_ids:
+    - MPD-CTRL-0001
+  scope: SUCCESSOR_RELEASE_VERIFICATION_DIRECTION_ONLY
+  successor_policy_content: UNRESOLVED
+  successor_verification_contract: UNRESOLVED
+  publication_reactivation: NOT_AUTHORIZED
+  current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-13'
