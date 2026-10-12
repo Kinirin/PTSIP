@@ -87,8 +87,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rustc -vV
-          rustc -vV | grep -Fqx "host: ${{ matrix.platform.target }}"
+          rustc -vV > rust-host.txt
+          cat rust-host.txt
+          grep -Fqx "host: ${{ matrix.platform.target }}" rust-host.txt
           echo "Engine verification evidence only; Release Gate remains blocked."
 
       - name: Run only the selected engine's Rust tests
@@ -129,6 +130,7 @@ jobs:
           path: |
             ${{ env.PTSIP_ENGINE_WHEEL_DIR }}/*
             engine-verification.log
+            rust-host.txt
           if-no-files-found: error
 
   tool-verification:
