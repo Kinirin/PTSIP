@@ -85,8 +85,19 @@ func TestActivePolicyAndPlanReconcileDeferredEngineBoundary(t *testing.T) {
 		t.Fatal("consumer source boundary changed")
 	}
 	wu := document(t, "developer/planning/0.3.8/WU-02/WU-02.yaml")["work_unit"].(object)
-	if wu["approval"].(object)["approval_source"] != "USER_EXPLICIT" || wu["implementation_authorization"].(object)["status"] != "AUTHORIZED" {
+	authorization := wu["implementation_authorization"].(object)
+	if wu["approval"].(object)["approval_source"] != "USER_EXPLICIT" || authorization["authorization_source"] != "USER_EXPLICIT" || (authorization["status"] != "AUTHORIZED" && authorization["status"] != "COMPLETE") {
 		t.Fatal("plan authority must be explicit")
+	}
+	if authorization["status"] == "COMPLETE" {
+		plan := document(t, "developer/planning/0.3.8/WU-02/WU-02.yaml")
+		if len(plan["completion_evidence"].([]any)) == 0 || wu["lifecycle"].(object)["status"] != "COMPLETE" {
+			t.Fatal("completed implementation must have recorded completion evidence")
+		}
+		closeout := wu["foundation_closeout"].(object)
+		if closeout["approval_source"] != "USER_EXPLICIT" || closeout["real_consumer_activation"] != false || closeout["existing_public_api_cutover"] != false || closeout["legacy_api_retirement"] != false {
+			t.Fatal("foundation completion cannot authorize consumer activation or API retirement")
+		}
 	}
 }
 
