@@ -30,7 +30,7 @@ jobs:
           go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./internal/machine -run '^TestCleanup(IDValidationRejectsNonPolicyIdentity|ApplyRequiresExpectedHeadBeforeGitAccess|MissingSubstatusFailsClosed)$'
       - name: Frozen migration audit verification
         run: |
-          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run '^TestHistoricalSourceEvidencePreservesArchiveAndRouting
+          go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./rootfamily -run TestHistoricalSourceEvidencePreservesArchiveAndRouting
       - name: Cleanup command smoke test (non-destructive)
         shell: bash
         run: |
