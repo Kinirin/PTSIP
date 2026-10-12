@@ -6,7 +6,7 @@ policy:
   title: CTRL authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '2.1'
+  version: '3.0'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
   statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
@@ -15,6 +15,33 @@ exclusive_kernel:
 - DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
 - DEV_TRANSITION_GATE_COMPOSITION
 rules:
+  planning_artifact_precreation_eligibility:
+    decision: KEEP_LATEST
+    approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
+    scope: ANY_NEW_OR_REVISED_PLANNING_ARTIFACT_INCLUDING_DRAFTS
+    creation_trigger: EXPLICIT_USER_REQUEST_TO_CREATE_OR_REVISE_PLAN_ARTIFACT
+    background_or_inferred_creation: FORBIDDEN
+    conversation_analysis_discussion_or_policy_change_is_creation_request: false
+    required_before_artifact_generation_or_write:
+    - USER_PLAN_ARTIFACT_CREATION_INTENT_VERIFIED
+    - CURRENT_EFFECTIVE_POLICY_AND_SCOPE_VERIFIED
+    - CANONICAL_COMPLETE_OUTPUT_PATH_REGISTERED_AND_VERIFIED
+    - PLAN_CONTRACT_AND_FORMAT_VERIFIED
+    - APPLICABLE_PLAN_INPUTS_AND_POLICY_EVIDENCE_CURRENT
+    - ALL_NORMATIVE_AND_SUBORDINATE_DECISIONS_RESOLVED_OR_USER_APPROVED
+    - AUTHORIZATION_AND_CONFLICT_GATES_SATISFIED
+    path_root: developer/planning/
+    unresolved_subpath_is_valid_creation_path: false
+    user_must_be_asked_for_unresolved_normative_or_implementation_choices: true
+    ai_may_resolve_non_normative_deterministic_decisions_only_when_registered_contract_suffices: true
+    user_approval_request_must_precede_materialization: true
+    unknown_missing_ambiguous_or_conflicting_condition: BLOCK_NO_PLAN_FILE
+    may_create_placeholder_or_draft_when_blocked: false
+    approval_of_policy_is_approval_of_plan_or_implementation: false
+    default_decision_inference_from_example_or_prior_plan: FORBIDDEN
+    implementation_from_plan_requires_separate_effective_authority: true
+    previous_unrelated_release_execution_suspension: PRESERVED
+
   release_execution_suspension:
     decision_source: USER_EXPLICIT
     approval_ref: developer/policy/approvals/MPA-20261012-RELEASE-VERIFICATION-GAP.yaml
@@ -252,12 +279,6 @@ rules:
     unstaged_user_change_on_automation_owned_output: AUTOMATION_WRITE_CONFLICT
     post_write_validation: REQUIRED
     partial_authoritative_state_after_failure: FORBIDDEN
-  unit_mpd_plan_0001_6560d943f53d:
-    pending_status: IMPLEMENTED_VALIDATION_PENDING
-    complete_status: COMPLETE
-    rule: REGISTERED_MACHINE_CHECKS_MUST_PASS_BEFORE_AUTOMATIC_PROMOTION
-    failed_validation_mutation: FORBIDDEN
-    post_promotion_planning_validation_required: true
   unit_mpd_rels_0002_e782809fbb27:
     release_publication_with_invalid_pp_transition: FORBIDDEN
     project_profile_transition_verification_ref: MPD-VERI-0003
