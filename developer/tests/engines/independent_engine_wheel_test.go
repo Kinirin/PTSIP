@@ -206,10 +206,13 @@ func verifyIndependentWheel(wheelPath, receiptPath string, expected wheelExpecta
 	if err != nil {
 		return err
 	}
-	for _, field := range []string{"Name: " + expected.distribution, "Version: " + expected.version, "X-PTSIP-Engine-Id: " + expected.engineID, "X-PTSIP-Source-Sha: " + expected.sourceSHA} {
+	for _, field := range []string{"Metadata-Version: 2.4", "Name: " + expected.distribution, "Version: " + expected.version, "Requires-Python: >=3.11", "Description-Content-Type: text/markdown"} {
 		if !hasMetadataLine(meta, field) {
 			return fmt.Errorf("wheel metadata mismatch: %s", field)
 		}
+	}
+	if bytes.Contains(meta, []byte("\nX-PTSIP-")) {
+		return fmt.Errorf("unregistered custom Core Metadata field")
 	}
 	wheelMeta, err := read(di + "WHEEL")
 	if err != nil {
