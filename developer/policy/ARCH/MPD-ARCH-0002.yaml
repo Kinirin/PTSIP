@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '2.7'
+  version: '3.0'
   title: Developer Automation responsibility-domain package boundary
   status: ACTIVE
 authority_subject:
@@ -104,105 +104,51 @@ rules:
       package_dependency_graph: PLAN_OWNED
       migration_sequence: PLAN_OWNED
   tooling_test_registry_driven_executor_boundary:
-    policy_scope: DEVELOPER_REPOSITORY_TEST_MODE_ORCHESTRATION
-    workflow_ref: .github/workflows/tooling-test.yml
-    registry_ref: .github/test_modes.yaml
-    verification_responsibility_ref: .ptsip/profiles/main.ptsip.yaml
-    authority:
-      verification_responsibility: DECLARED_PROJECT_PROFILE
-      registered_modes_and_mode_specific_execution: TEST_MODE_REGISTRY
-      workflow: GENERIC_EXECUTION_ORCHESTRATOR_AND_RESULT_REPORTER
-    invariants:
-      mode_addition_requires_workflow_change: false
-      mode_removal_requires_workflow_change: false
-      registered_verification_addition_requires_workflow_change: false
-      registered_verification_change_requires_workflow_change: false
-      workflow_hardcodes_mode_ids_or_mode_specific_steps: false
-      workflow_redefines_project_profile_verification_ownership: false
-      unregistered_mode_execution: REJECT
-      unsupported_execution_contract: REJECT
-      required_verification_omission: REJECT
-      success_without_executed_required_evidence: FORBIDDEN
-    existing_authority_preservation:
-      developer_assure_evidence_and_coverage_judgment: PRESERVED
-      repository_release_requirements_and_gates: PRESERVED
-      existing_mandatory_verification: PRESERVED
-    minimum_execution_contracts:
-      id: TOOLING_TEST_REFACTOR_MINIMUM_EXECUTION_CONTRACTS
-      version: '1.0'
-      approved_contract_count: 11
-      approval_ref: developer/policy/approvals/MPA-20261011-TOOLING-TEST-11-CONTRACTS.yaml
-      scope: WORKFLOW_EXECUTION_AND_MIGRATION
-      authority_limits:
-        verification_obligations: CONSUME_EXISTING_AUTHORITY_ONLY
-        check_evidence_judgment_transfer: NOT_AUTHORIZED_BY_THIS_APPROVAL
-        mode_required_coverage_transfer: NOT_AUTHORIZED_BY_THIS_APPROVAL
-        gate_history_and_revocation: OUT_OF_SCOPE
-      contracts:
-      - id: WEC-01
-        name: CHECK_SELECTION
-        automatic_selection: REQUIRED
-        explicit_single_selection: REQUIRED
-        explicit_multiple_selection: REQUIRED
-        unregistered_selection: REJECT
-      - id: WEC-02
-        name: INDEPENDENT_CHECK_EXECUTION
-        independently_executable_check: REQUIRED
-        exact_source_sha_binding: REQUIRED
-      - id: WEC-03
-        name: EXECUTION_ISOLATION
-        unrelated_check_failure_blocks_execution: FORBIDDEN
-        shared_workflow_wide_concurrency_bottleneck: FORBIDDEN
-      - id: WEC-04
-        name: CHECK_OUTCOME_INTERFACE
-        check_outcomes:
-        - PASS
-        - FAIL
-        - UNRESOLVED
-        check_pass_implies_mode_pass: false
-        normative_admissibility_authority: MPD-ASSURE-0001_UNTIL_AUTHORIZED_TRANSFER
-      - id: WEC-05
-        name: REQUIRED_COVERAGE
-        required_checks_source: DECLARED_PROJECT_PROFILE_AND_EFFECTIVE_POLICY
-        missing_required_check_allows_mode_pass: false
-        evidence_admissibility_source: MPD-ASSURE-0001_UNTIL_AUTHORIZED_TRANSFER
-      - id: WEC-06
-        name: EVIDENCE_PROVENANCE
-        required_fields:
-        - check_id
-        - source_sha
-        - execution_identity
-        - outcome
-        - evidence_reference
-        historical_evidence_retention_authority: MPD-RECORD-0001
-      - id: WEC-07
-        name: TRIGGER_PRESERVATION
-        preserve_existing_mandatory_push_dispatch_and_release_verifications: REQUIRED
-        required_applicability_may_be_silently_dropped: false
-      - id: WEC-08
-        name: REGISTRY_DRIVEN_EXTENSIBILITY
-        new_registered_check_requires_workflow_yaml_change: false
-        workflow_hardcodes_individual_check_ids: false
-      - id: WEC-09
-        name: REQUIRED_VERIFICATION_INVENTORY
-        identify_effective_policy_and_project_profile_obligations: REQUIRED
-        inventory_all_four_legacy_jobs_and_conditional_verification_paths: REQUIRED
-        legacy_job_presence_alone_creates_new_policy_obligation: false
-      - id: WEC-10
-        name: RESPONSIBILITY_MAPPING_COMPLETENESS
-        mapping_chain: PROJECT_PROFILE_TO_MODE_TO_CHECK_TO_EXECUTION_TARGET
-        every_required_obligation_must_be_mapped: true
-        unmapped_or_unowned_required_obligation: REJECT
-      - id: WEC-11
-        name: MIGRATION_EQUIVALENCE
-        require_machine_checkable_old_to_new_verification_mapping: true
-        preserve_required_coverage_triggers_source_identity_and_result_semantics: true
-        missing_or_unproven_equivalence: REJECT
-    plan_boundary:
-      workflow_dispatch_input_mechanism: PLAN
-      registry_execution_contract_shape: PLAN_SUBORDINATE_TO_POLICY
-      runner_and_adapter_design: PLAN
-      migration_and_equivalence_verification: PLAN
+    lifecycle: RETIRED
+    normative_execution_contracts_effective: false
+    resolution: KEEP_LATEST
+    approval_ref: developer/policy/approvals/MPA-20261012-TOOLING-LEGACY-KEEP-LATEST.yaml
+    change_class: INCOMPATIBLE_NORMATIVE
+    prior_revision: f1dae296ba84ee0591c1243b445a86fc287b4a44
+    prior_policy_version: '2.7'
+    prior_minimum_execution_contracts:
+      source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+      identities: [WEC-01, WEC-02, WEC-03, WEC-04, WEC-05, WEC-06, WEC-07, WEC-08, WEC-09, WEC-10, WEC-11]
+      status: SUPERSEDED_NOT_ACTIVE
+    retirement:
+      common_workflow: .github/workflows/tooling-test.yml
+      workflow_state: MANUAL_FAIL_CLOSED_NOTICE_ONLY
+      automatic_push_execution: DISABLED
+      retired_artifacts:
+      - .github/checks.yaml
+      - .github/checks-legacy-inventory.json
+      - .github/scripts/check_execution.py
+      - .github/checks/readme-translation.ps1
+      implementation_removal_authorized: true
+      new_common_executor: NOT_IMPLEMENTED
+    independent_readme_translation:
+      workflow: .github/workflows/readme-translation.yml
+      registry: docs/translated/index.yaml
+      execution_owner: developer/automation/cmd/readme-translate/
+      common_check_registration: FORBIDDEN
+    verification_gap:
+      record: .github/verification-retirement.json
+      state: OPEN
+      user_acknowledged: true
+      prior_automatic_verification_coverage: NOT_AVAILABLE
+      required_evidence_for_retired_common_checks: NOT_PRODUCED
+      former_success_contexts: NOT_REEMITTED
+      release_or_merge_readiness_from_retired_executor: NOT_ESTABLISHED
+      prior_pass_is_not_current_pass: true
+      unknown_or_missing_gate_evidence: FAIL_CLOSED
+    retained_authority:
+      project_profile_verification_ownership: UNCHANGED
+      test_mode_registry: .github/test_modes.yaml
+      assurance_judgment_owner: MPD-ASSURE-0001
+      historical_evidence_owner: MPD-RECORD-0001
+      verified_evidence_claim_waiver: FORBIDDEN
+      successor_policy_or_execution_identity_approval: SEPARATE_DECISION
+
 relations:
   supersedes: []
   amends: []

@@ -1,7 +1,6 @@
 package workflows_test
 
 import (
-	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,113 +19,42 @@ func workflow(t *testing.T, name string) string {
 	return string(raw)
 }
 
-// readLegacyCheck follows the executable registry binding rather than requiring
-// per-Check commands to be hardcoded into the generic workflow.
-func readLegacyCheck(t *testing.T, id string) (string, []string) {
-	t.Helper()
-	var registry struct {
-		LegacyChecks []struct {
-			ID       string   `json:"id"`
-			Mode     string   `json:"mode"`
-			Script   string   `json:"script"`
-			Triggers []string `json:"triggers"`
-		} `json:"legacy_checks"`
-	}
-	raw, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github", "checks.yaml"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := json.Unmarshal(raw, &registry); err != nil {
-		t.Fatal(err)
-	}
-	for _, check := range registry.LegacyChecks {
-		if check.ID != id {
-			continue
-		}
-		if check.Mode == "" || !strings.HasPrefix(check.Script, ".github/checks/") || len(check.Triggers) == 0 {
-			t.Fatal("Check has no registered owner or executable applicability", id)
-		}
-		code, err := os.ReadFile(filepath.Join(testrepo.Root(t), filepath.FromSlash(check.Script)))
-		if err != nil {
-			t.Fatal("registered Check script cannot be resolved", id, err)
-		}
-		return string(code), check.Triggers
-	}
-	t.Fatal("unregistered required Check", id)
-	return "", nil
+// The former shared executor is explicitly retired. Its absence is not PASS.
+func TestRetiredCommonVerificationIsExplicitlyFailClosed(t *testing.T) {
+    text := workflow(t, "tooling-test.yml")
+    if strings.Contains(text, "check_execution.py") || strings.Contains(text, "  push:") {
+        t.Fatal("retired workflow still invokes common legacy verification")
+    }
+    if !strings.Contains(text, "workflow_dispatch:") || !strings.Contains(text, "exit 1") {
+        t.Fatal("manual execution must fail closed")
+    }
+    root := testrepo.Root(t)
+    for _, file := range []string{
+        ".github/checks.yaml", ".github/checks-legacy-inventory.json",
+        ".github/scripts/check_execution.py", ".github/checks/readme-translation.ps1",
+    } {
+        if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(file))); !os.IsNotExist(err) {
+            t.Fatalf("retired artifact remains: %s (%v)", file, err)
+        }
+    }
+    raw, err := os.ReadFile(filepath.Join(root, ".github/verification-retirement.json"))
+    if err != nil { t.Fatal(err) }
+    for _, s := range []string{"\"state\": \"OPEN\"", "\"successor_common_runner\": \"NOT_IMPLEMENTED\"", "\"release_and_merge_readiness\": \"NOT_ESTABLISHED\""} {
+        if !strings.Contains(string(raw), s) { t.Fatal("gap record incomplete", s) }
+    }
 }
 
-func hasTrigger(triggers []string, want string) bool {
-	for _, trigger := range triggers {
-		if trigger == want {
-			return true
-		}
-	}
-	return false
-}
-
-func TestStaticAndReleaseVerificationAreNotPinnedToOneVersionBranch(t *testing.T) {
-	text := workflow(t, "tooling-test.yml")
-	var document map[string]any
-	if err := yaml.Unmarshal([]byte(text), &document); err != nil {
-		t.Fatal(err)
-	}
-	jobs := document["jobs"].(map[string]any)
-	for _, job := range []string{"resolve", "check", "coverage"} {
-		if jobs[job] == nil {
-			t.Fatal("generic Check orchestration stage absent", job)
-		}
-	}
-	for _, marker := range []string{"github.event.deleted == false", "check_execution.py plan", "fromJSON(needs.resolve.outputs.checks)", "check_execution.py coverage"} {
-		if !strings.Contains(text, marker) {
-			t.Fatal("generic verification route missing", marker)
-		}
-	}
-	if strings.Contains(text, "github.ref_name == 'dev/0.3.8'") {
-		t.Fatal("verification pinned to one development branch")
-	}
-	runner, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/scripts/check_execution.py"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, marker := range []string{`if event == "push":`, `startswith("release:")`, `preset = "full"`} {
-		if !strings.Contains(string(runner), marker) {
-			t.Fatal("push/release routing was not preserved in Check selector", marker)
-		}
-	}
-	for _, id := range []string{"policy-lifecycle", "release-contract"} {
-		_, triggers := readLegacyCheck(t, id)
-		if id == "policy-lifecycle" && !hasTrigger(triggers, "push") {
-			t.Fatal("push policy validation obligation omitted")
-		}
-		if id == "release-contract" && !hasTrigger(triggers, "full") {
-			t.Fatal("release verification obligation omitted")
-		}
-	}
-}
-
-func TestWU02RoutingConsumesNativeControlContextAndExplicitExecutionBranch(t *testing.T) {
-	script, triggers := readLegacyCheck(t, "wu02-control")
-	if !hasTrigger(triggers, "push") {
-		t.Fatal("WU-02 control verification not selected on push")
-	}
-	for _, expected := range []string{
-		"./cmd/ptsip-dev wu02 control-context",
-		"$controlBranch = $controlContext.control_branch",
-		"$env:PTSIP_EXECUTION_BRANCH -eq $controlBranch",
-		"./cmd/ptsip-dev wu02 validate --execution-branch \"$env:PTSIP_EXECUTION_BRANCH\"",
-	} {
-		if !strings.Contains(script, expected) {
-			t.Fatalf("native WU-02 Check contract missing: %s", expected)
-		}
-	}
-	code, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/scripts/check_execution.py"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !strings.Contains(string(code), "PTSIP_EXECUTION_BRANCH") {
-		t.Fatal("generic Check runner does not supply the execution branch to WU-02")
-	}
+func TestRetiredWU02LegacyScriptIsHistoricalOnly(t *testing.T) {
+    raw, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/checks/wu02-control.ps1"))
+    if err != nil { t.Fatal(err) }
+    for _, s := range []string{
+        "./cmd/ptsip-dev wu02 control-context",
+        "$controlBranch = $controlContext.control_branch",
+        "$env:PTSIP_EXECUTION_BRANCH -eq $controlBranch",
+        "./cmd/ptsip-dev wu02 validate --execution-branch \"$env:PTSIP_EXECUTION_BRANCH\"",
+    } {
+        if !strings.Contains(string(raw), s) { t.Fatal("historical WU02 script changed", s) }
+    }
 }
 
 func TestGoToolchainPrecedesEveryDeveloperAutomationConsumer(t *testing.T) {
@@ -182,10 +110,9 @@ func TestRepositoryEntryPointsShareNativeInstallerAndDoNotStageUserFiles(t *test
 }
 
 func TestContextMigrationAndDeveloperTestModeUseRetiredGoTestSurface(t *testing.T) {
-	script, triggers := readLegacyCheck(t, "agent-context-migration")
-	if !hasTrigger(triggers, "push") || !hasTrigger(triggers, "agent-context-migration") {
-		t.Fatal("agent context verification dispatch applicability was lost")
-	}
+	rawScript, err := os.ReadFile(filepath.Join(testrepo.Root(t), ".github/checks/agent-context-migration.ps1"))
+	if err != nil { t.Fatal(err) }
+	script := string(rawScript)
 	if strings.Contains(script, "developer/tests/test_agent_context_migration.py") ||
 		!strings.Contains(script, "-run '^TestAgent(Profile|OperationReferences|ContextNative)' ./internal/machine") ||
 		!strings.Contains(script, "src/tests/ptsip/test_modes/test_agent_context_routing.py") {

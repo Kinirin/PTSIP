@@ -5,7 +5,7 @@ policy:
   id: MPD-ASSURE-0001
   title: ASSURE authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.7'
+  version: '4.0'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의
@@ -72,11 +72,30 @@ rules:
       source_sha_evidence_and_result_semantics_remain_binding: true
       ownership_transfer_state: NOT_AUTHORIZED
       reassignment_requires_explicit_owner_and_policy_transition: true
-      deletion_or_weakening_before_verified_transfer: FORBIDDEN
+      deletion_or_weakening_before_verified_transfer: FORBIDDEN_EXCEPT_EXPLICIT_EXECUTOR_RETIREMENT_WITH_OPEN_GAP
       historical_evidence_records_remain_unchanged: true
     plan_authority:
       execution_adapter_and_migration_details: PLAN
       plan_may_redefine_required_verification_or_authority: false
+  explicitly_approved_legacy_executor_retirement:
+    resolution: KEEP_LATEST
+    approval_ref: developer/policy/approvals/MPA-20261012-TOOLING-LEGACY-KEEP-LATEST.yaml
+    applies_to: RETIRED_COMMON_CHECK_EXECUTOR_ARTIFACTS_ONLY
+    exception_scope:
+    - .github/checks.yaml
+    - .github/checks-legacy-inventory.json
+    - .github/scripts/check_execution.py
+    - .github/checks/readme-translation.ps1
+    retired_workflow: .github/workflows/tooling-test.yml
+    gap_evidence: .github/verification-retirement.json
+    executable_required_checks_coverage: NOT_AVAILABLE
+    source_sha_bound_new_pass: NOT_ESTABLISHED
+    assurance_pass_may_be_inferred_from_retirement: false
+    preexisting_verification_obligations: STILL_BINDING_UNVERIFIED
+    coverage_downgrade_is_not_a_pass: true
+    no_automatic_authority_transfer: true
+    release_or_merge_approval_from_retired_execution: FORBIDDEN
+    successor_replacement: NOT_IMPLEMENTED
   approved_required_verification_responsibility_split:
     decision: C_RESPONSIBILITY_BY_RESPONSIBILITY_SPLIT
     decision_authority: PROJECT_OWNER_EXPLICIT

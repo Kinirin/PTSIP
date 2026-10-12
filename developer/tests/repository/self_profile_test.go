@@ -1,7 +1,6 @@
 package repository_test
 
 import (
-	"encoding/json"
 	"os"
 	"regexp"
 	"strings"
@@ -149,64 +148,25 @@ func TestConsumerDefaultProfilePathRemainsRootPtsipYAML(t *testing.T) {
 	}
 }
 
-func TestFullCISelfManagementCommandsSelectDeveloperProfile(t *testing.T) {
-	// The workflow is a generic executor. The required verification commands
-	// live in registered Checks, not inline in tooling-test.yml.
-	root := testrepo.Root(t)
-	var registry struct {
-		LegacyChecks []struct {
-			ID       string   `json:"id"`
-			Script   string   `json:"script"`
-			Triggers []string `json:"triggers"`
-		} `json:"legacy_checks"`
-	}
-	if err := json.Unmarshal([]byte(repositoryText(t, ".github/checks.yaml")), &registry); err != nil {
-		t.Fatal(err)
-	}
-	requireCheck := func(id string) string {
-		t.Helper()
-		for _, check := range registry.LegacyChecks {
-			if check.ID != id {
-				continue
-			}
-			if !strings.HasPrefix(check.Script, ".github/checks/") {
-				t.Fatal("registered Check does not reference the owned execution plane", check)
-			}
-			found := false
-			for _, trigger := range check.Triggers {
-				found = found || trigger == "full"
-			}
-			if !found {
-				t.Fatal("release Check is not selected by full verification", id)
-			}
-			if _, err := os.Stat(root + "/" + check.Script); err != nil {
-				t.Fatal("registered Check script missing", err)
-			}
-			return repositoryText(t, check.Script)
-		}
-		t.Fatal("required release Check is not registered", id)
-		return ""
-	}
-	profile := requireCheck("release-profile")
-	distribution := requireCheck("release-distribution")
-	for _, command := range []string{
-		"ptsip validate . --profile .ptsip/profiles/main.ptsip.yaml --json",
-		"ptsip clarify . --profile .ptsip/profiles/main.ptsip.yaml --json",
-		"ptsip gate . --profile .ptsip/profiles/main.ptsip.yaml --coordination local --json",
-	} {
-		if !strings.Contains(profile, command) {
-			t.Fatal("explicit self-profile Check command missing", command)
-		}
-	}
-	if !strings.Contains(distribution, "ptsip conform . --profile .ptsip/profiles/main.ptsip.yaml --artifact-evidence $evidencePath --json") {
-		t.Fatal("artifact-aware conformance Check command missing")
-	}
-	workflow := repositoryText(t, ".github/workflows/tooling-test.yml")
-	runner := repositoryText(t, ".github/scripts/check_execution.py")
-	if !strings.Contains(workflow, "check_execution.py plan") ||
-		!strings.Contains(workflow, "check_execution.py run") ||
-		!strings.Contains(workflow, "fromJSON(needs.resolve.outputs.checks)") ||
-		!strings.Contains(runner, `if preset == "full":`) {
-		t.Fatal("registry-driven full verification execution route is incomplete")
-	}
+func TestCommonExecutorRetirementHasOpenVerificationGap(t *testing.T) {
+    root := testrepo.Root(t)
+    for _, file := range []string{".github/checks.yaml", ".github/checks-legacy-inventory.json",
+        ".github/scripts/check_execution.py", ".github/checks/readme-translation.ps1"} {
+        if _, err := os.Stat(root+"/"+file); !os.IsNotExist(err) {
+            t.Fatalf("retired common Check source still exists: %s (%v)", file, err)
+        }
+    }
+    shared := repositoryText(t, ".github/workflows/tooling-test.yml")
+    if strings.Contains(shared, "  push:") || !strings.Contains(shared, "exit 1") {
+        t.Fatal("shared verifier retirement can falsely produce PASS")
+    }
+    gap := repositoryText(t, ".github/verification-retirement.json")
+    for _, marker := range []string{"\"state\": \"OPEN\"", "\"do_not_promote_old_pass\": true"} {
+        if !strings.Contains(gap, marker) { t.Fatal("explicit gap evidence missing", marker) }
+    }
+    translator := repositoryText(t, ".github/workflows/readme-translation.yml")
+    if !strings.Contains(translator, "go -C developer/automation test ./cmd/readme-translate") ||
+        !strings.Contains(translator, "--action validate") {
+        t.Fatal("translation verification not independent")
+    }
 }
