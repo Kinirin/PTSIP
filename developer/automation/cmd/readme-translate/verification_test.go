@@ -67,3 +67,39 @@ func TestApplyPreparesAllLanguagesBeforeMutation(t *testing.T) {
     if _,err := os.Stat(filepath.Join(root,"docs/translated/README.fr.md")); !os.IsNotExist(err) { t.Fatal("failed target was written") }
     if !strings.Contains(err.Error(),"fr") { t.Fatal("failed language not in diagnostic",err) }
 }
+
+func TestApplyChangesOnlyRegisteredTargetsAndIsIdempotent(t *testing.T) {
+    if runtime.GOOS == "windows" { t.Skip("Unix shell fixture") }
+    root := t.TempDir()
+    bin := filepath.Join(root,"bin")
+    if err := os.MkdirAll(bin,0755); err != nil { t.Fatal(err) }
+    if err := os.WriteFile(filepath.Join(bin,"argos-translate"),[]byte("#!/bin/sh\ncat\n"),0755); err != nil { t.Fatal(err) }
+    t.Setenv("PATH",bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+    if err := os.MkdirAll(filepath.Join(root,"docs/translated"),0755); err != nil { t.Fatal(err) }
+    source := "# Title\n\n## Note\n\nUse `--flag` and [guide](docs/guide.md)."
+    if err := os.WriteFile(filepath.Join(root,"README.md"),[]byte(source),0644); err != nil { t.Fatal(err) }
+    unrelated := filepath.Join(root,"docs/translated/README.other.md")
+    if err := os.WriteFile(unrelated,[]byte("KEEP"),0644); err != nil { t.Fatal(err) }
+    r := translationRegistry{Canonical:languageEntry{Language:"en",Path:"README.md"}, Translations:[]languageEntry{
+        {Language:"de",Path:"docs/translated/README.de.md"},
+        {Language:"fr",Path:"docs/translated/README.fr.md"},
+    }}
+    if err := applyTranslations(root,r); err != nil { t.Fatal(err) }
+    first := map[string]string{}
+    for _, language := range r.Translations {
+        filename := filepath.Join(root,filepath.FromSlash(language.Path))
+        data,err := os.ReadFile(filename)
+        if err != nil { t.Fatal(err) }
+        first[filename] = string(data)
+    }
+    if err := verifyTranslations(root,r,true); err != nil { t.Fatal(err) }
+    if err := applyTranslations(root,r); err != nil { t.Fatal(err) }
+    for filename, previous := range first {
+        actual,err := os.ReadFile(filename)
+        if err != nil || string(actual)!=previous { t.Fatalf("not idempotent %s: %v",filename,err) }
+    }
+    data,err := os.ReadFile(unrelated)
+    if err!=nil || string(data)!="KEEP" { t.Fatal("unregistered target was changed",err) }
+    data,err = os.ReadFile(filepath.Join(root,"README.md"))
+    if err!=nil || string(data)!=source { t.Fatal("canonical README was changed",err) }
+}
