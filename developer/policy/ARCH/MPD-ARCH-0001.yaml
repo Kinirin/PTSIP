@@ -5,7 +5,7 @@ policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.1'
+  version: '3.2'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -50,10 +50,28 @@ rules:
       policy_class_owner_merging: FORBIDDEN
       support_feature_authority_unchanged: true
     deferred_subordinate_decisions:
-      schema_document_serialization: PENDING_USER_RESOLUTION
+      schema_document_serialization: RESOLVED_KEEP_PRIOR
       policy_status_lifecycle_reform: NOT_APPROVED_AS_CORE_POLICY
     implementation_authorization: NOT_GRANTED
     existing_validator_cutover_authorized: false
+  fsd_file_serialization_contract:
+    approval_ref: developer/policy/approvals/MPA-20261012-FSD-SERIALIZATION-KEEP-PRIOR.yaml
+    resolution: KEEP_PRIOR
+    scope_root: developer/policy/
+    bindings:
+      policy_yaml:
+        extension: '.yaml'
+        encoding_format: YAML
+      fsd_schema_json:
+        extension: '.schema.json'
+        encoding_format: JSON
+        schema_language: JSON_SCHEMA
+        root: developer/policy/schemas/FSD/
+    schema_json_yaml_serialization: FORBIDDEN
+    existing_canonical_schema_paths: PRESERVE
+    independent_src_policy_boundary: PRESERVE
+    content_format_must_match_declared_extension: true
+    parser_rebinding_and_file_materialization: DEFER_TO_SEPARATE_PLAN
   fsd_root_family_full_schema_authority:
     resolution: KEEP_LATEST
     change_class: INCOMPATIBLE_NORMATIVE
@@ -405,3 +423,12 @@ transition:
       action: DERIVE_POLICY_CONFORMANT_FSD_PLAN_AFTER_SERIALIZATION_DECISION
       execution: OWNER_DECISION_REQUIRED
       completion_check: FSD_FAMILY_SCHEMA_LAYOUT_OWNERSHIP_AND_SEPARATION_PRESERVED
+  - id: TR-004
+    type: PROJECT_OWNER_FSD_FILE_SERIALIZATION_KEEP_PRIOR_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261012-FSD-SERIALIZATION-KEEP-PRIOR.yaml
+    next_action:
+      action: DERIVE_FSD_SCHEMA_AND_PARSER_CONFORMANT_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: YAML_FOR_YAML_FILES_AND_JSON_FOR_SCHEMA_JSON_FILES
