@@ -1,0 +1,16 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-FSD-FAMILY-LAYOUT-INDEPENDENCE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: '핵심 정책: 각 Family는 자신의 전체 스키마를 독립적으로 정의한다. FSD 아래 index.schema.json 및 14개 Family.schema.json 고정 구조를 사용한다. src/policy와 공유하지 않는다. YAML 직렬화와 .schema.json 확장자 간 충돌 및 정책 lifecycle 상태 개혁은 별도로 결정한다.'
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: FULL
+  requested_policy_id: MPD-ARCH-0001
+  affected_policy_ids:
+  - MPD-ARCH-0001
+  recorded_at: '2026-10-12'

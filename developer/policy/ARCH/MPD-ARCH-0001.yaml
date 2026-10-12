@@ -5,7 +5,7 @@ policy:
   id: MPD-ARCH-0001
   title: ARCH authority (ACTIVE source responsibilities)
   status: ACTIVE
-  version: '3.0'
+  version: '3.1'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -13,6 +13,47 @@ exclusive_kernel:
 - DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
 - DEV_EXPLICIT_COMPONENT_RELATIONSHIPS
 rules:
+  fsd_family_layout_and_isolation:
+    decision: APPROVED_CORE_POLICY
+    approval_ref: developer/policy/approvals/MPA-20261012-FSD-FAMILY-LAYOUT-INDEPENDENCE.yaml
+    policy_scope: PTSIP_DEVELOPER_POLICY
+    root_family_policy_schema_ownership:
+      owner: MATCHING_RESPONSIBILITY_FAMILY
+      scope: ENTIRE_POLICY_RECORD_FIELD_SCHEMA
+      each_family_independent_schema: true
+      shared_cross_family_normative_schema: FORBIDDEN
+      field_schema_authority_inferred_from_filename_only: FORBIDDEN
+    canonical_fsd_layout:
+      root: developer/policy/schemas/FSD/
+      index_schema: developer/policy/schemas/FSD/index.schema.json
+      family_schema_paths:
+      NORM: developer/policy/schemas/FSD/NORM.schema.json
+      GOV: developer/policy/schemas/FSD/GOV.schema.json
+      INTENT: developer/policy/schemas/FSD/INTENT.schema.json
+      ARCH: developer/policy/schemas/FSD/ARCH.schema.json
+      INFO: developer/policy/schemas/FSD/INFO.schema.json
+      CNTR: developer/policy/schemas/FSD/CNTR.schema.json
+      RISK: developer/policy/schemas/FSD/RISK.schema.json
+      SUPPLY: developer/policy/schemas/FSD/SUPPLY.schema.json
+      REAL: developer/policy/schemas/FSD/REAL.schema.json
+      ASSURE: developer/policy/schemas/FSD/ASSURE.schema.json
+      CTRL: developer/policy/schemas/FSD/CTRL.schema.json
+      CHANGE: developer/policy/schemas/FSD/CHANGE.schema.json
+      OPS: developer/policy/schemas/FSD/OPS.schema.json
+      RECORD: developer/policy/schemas/FSD/RECORD.schema.json
+      exact_family_membership: REQUIRED
+      schema_binding_must_be_machine_discoverable: true
+    policy_class_isolation:
+      isolated_from: src/policy
+      schema_file_sharing: FORBIDDEN
+      normative_schema_definition_sharing: FORBIDDEN
+      policy_class_owner_merging: FORBIDDEN
+      support_feature_authority_unchanged: true
+    deferred_subordinate_decisions:
+      schema_document_serialization: PENDING_USER_RESOLUTION
+      policy_status_lifecycle_reform: NOT_APPROVED_AS_CORE_POLICY
+    implementation_authorization: NOT_GRANTED
+    existing_validator_cutover_authorized: false
   fsd_root_family_full_schema_authority:
     resolution: KEEP_LATEST
     change_class: INCOMPATIBLE_NORMATIVE
@@ -355,3 +396,12 @@ transition:
       action: DERIVE_FSD_IMPLEMENTATION_PLAN
       execution: OWNER_DECISION_REQUIRED
       completion_check: NO_SCHEMA_OR_RESOLVER_CUTOVER_WITHOUT_SEPARATE_APPROVED_PLAN
+  - id: TR-003
+    type: PROJECT_OWNER_FSD_CANONICAL_LAYOUT_AND_SEPARATION_APPROVAL
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261012-FSD-FAMILY-LAYOUT-INDEPENDENCE.yaml
+    next_action:
+      action: DERIVE_POLICY_CONFORMANT_FSD_PLAN_AFTER_SERIALIZATION_DECISION
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: FSD_FAMILY_SCHEMA_LAYOUT_OWNERSHIP_AND_SEPARATION_PRESERVED
