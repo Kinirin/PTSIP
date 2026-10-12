@@ -1,0 +1,25 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-PLANNING-POLICY-ROOT-DERIVED-PATH
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User rejected all three alternatives that treated subpath authority as a choice
+    between manual location selection and fixed schemes. The owner defines the nearly
+    stable planning root through policy; the current repository root is developer/planning/.
+    Subsequent plan locations must not be preassigned: derive the full location automatically
+    from user-approved routing rules and machine-readable contracts at creation time.
+    If the rule itself or its required input is missing, ambiguous or unapproved,
+    request the user's decision about the unresolved rule, not an arbitrary per-plan path;
+    do not create even a draft in the meantime. Plan generation still requires
+    separate explicit user creation intent. Contract/routing algorithm remains unresolved.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  affected_policy_ids:
+  - MPD-ARCH-0001
+  - MPD-CTRL-0001
+  recorded_at: '2026-10-12'
