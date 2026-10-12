@@ -360,6 +360,69 @@ rules:
       concrete_go_package_move: DEFER_TO_SEPARATE_PLAN
       existing_common_engine_plan: PRESERVE
       implementation_authorized: false
+  approved_work_unit_registry_admission:
+    resolution: KEEP_LATEST
+    approval_source: USER_EXPLICIT
+    approval_ref: developer/policy/approvals/MPA-20261011-PLAN-WORK-UNIT-KEEP-LATEST.yaml
+    approval_date: '2026-10-11'
+    subject: DEVELOPER_RELEASE_PLANNING_WORK_UNITS_REGISTRY
+    registration_precondition: USER_REVIEWED_AND_APPROVED_PLAN_WORK_UNIT
+    unapproved_plan: REVIEW_ONLY_NOT_WORK_UNITS_REGISTRY_MEMBER
+    provisional_work_unit_registry_placeholder: FORBIDDEN
+    registered_work_unit_lifecycle_excludes:
+    - NOT_CREATED
+    - DRAFT
+    registered_work_unit_approval_excludes:
+    - PENDING
+    - REJECTED
+    registered_work_unit_approval_requires: USER_EXPLICIT_APPROVED
+    plan_review_alone_is_approval: false
+    plan_review_or_plan_document_creation_grants_implementation_authority: false
+    absent_registered_work_units: VALID_WHEN_NO_APPROVED_WORK_UNIT
+    legacy_policy_plan_relationship_NOT_CREATED_semantics: PRESERVED_IN_BINDING_PLANE
+    other_plan_lifecycle_and_approval_history: PRESERVE
+    no_branch_or_runtime_activation_authorized: true
+  unit_mpd_plan_0001_50410dc74c9f:
+    root: developer/planning/
+    control_plane_entry: developer/planning/index.yaml
+    ownership: PLANNING_AUTHORITY
+  unit_mpd_plan_0001_7f56c7fed0e5:
+    root: developer/planning/schemas/
+    ownership: PLANNING_AUTHORITY
+    canonical_schema_files:
+    - planning-root-index.schema.json
+    - planning-index.schema.json
+    - work-unit.schema.json
+    - plan-extension.schema.json
+  unit_mpd_plan_0001_dfacd421d3a0:
+    policy_plan_binding:
+      authority_ref: developer/bindings/policy-plan-bindings.yaml
+      automation_ref: developer/automation/policy_plan_binding/
+      ownership: EXTERNAL_TO_PLANNING
+      authority_owner: POLICY_PLAN_BINDING
+      planning_may_directly_mutate_binding_authority: false
+      mutation_interface_required: true
+  unit_mpd_plan_0001_edc33d7514e8:
+    planning_authority:
+      owns:
+      - PLAN_CONTENT
+      - PLAN_STRUCTURE
+      - PLAN_LIFECYCLE
+      - PLAN_APPROVAL_STATE
+      - PLAN_IMPLEMENTATION_PROGRESS
+      - PLAN_COMPLETION_STATE
+      - PLAN_VERIFICATION_EVIDENCE
+    policy_plan_binding:
+      external_to_planning: true
+      owns:
+      - POLICY_PLAN_RELATIONSHIP
+      - BINDING_IDENTITY
+      - PLAN_EXISTENCE_RELATION_STATE
+      - PLAN_ID_AND_PLAN_REF_BINDING
+  unit_mpd_plan_0001_3297aa85e519:
+    suffix: -explanation.yaml
+    machine_authority: false
+    allowed_for_ambiguous_or_unsupported_definition: true
 relations:
   supersedes: []
   amends: []
