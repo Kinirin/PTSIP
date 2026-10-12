@@ -6,7 +6,7 @@ policy:
   title: CTRL authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.0'
+  version: '4.1'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
   statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
@@ -58,11 +58,22 @@ rules:
     approval_ref: developer/policy/approvals/MPA-20261012-RELEASE-VERIFICATION-GAP.yaml
     execution_state_ref: .github/checks/release/release-availability.json
     state: BLOCKED
-    workflow_execution: BLOCKED
+    workflow_execution: ENGINE_VERIFICATION_ONLY
     direct_release_commands: BLOCKED
     missing_verification_contract_result: FAIL_CLOSED
     legacy_verification_fallback: FORBIDDEN
     reinstatement: SEPARATE_USER_APPROVED_SUCCESSOR_POLICY_AND_CONTRACT
+    engine_verification_only:
+      state: ALLOWED
+      operation: VERIFY
+      approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-VERIFICATION-ONLY.yaml
+      contract_ref: developer/policy/contracts/engine-verification.v1.json
+      workflow_ref: .github/workflows/tooling-release.yml
+      implementation_work_in_this_scope: ALLOWED
+      release_gate: BLOCKED
+      tag_release_and_pypi_publication: BLOCKED
+      tool_profile_package_verification: DEFERRED
+      engine_pass_is_release_authorization: false
     successor_verification_reactivation_direction:
       decision: B_SUCCESSOR_VERIFICATION_POLICY_APPROVAL_BEFORE_RESUMPTION
       release_scope_decision: FULL_INDEPENDENT_RELEASE

@@ -177,6 +177,53 @@
         },
         "target_substatus": {
           "type": "string"
+        },
+        "approved_direction": {
+          "const": "FULL_INDEPENDENT_RELEASE_VERIFICATION_SCOPE"
+        },
+        "required_check_details": {
+          "const": "UNRESOLVED"
+        },
+        "successor_verification_contract": {
+          "const": "UNRESOLVED"
+        },
+        "publication_reactivation": {
+          "const": "NOT_AUTHORIZED"
+        },
+        "existing_release_execution_suspension": {
+          "const": "PRESERVED"
+        },
+        "existing_component_release_independence": {
+          "const": "PRESERVED"
+        },
+        "existing_required_verification": {
+          "const": "PRESERVED"
+        },
+        "scope_registry_ref": {
+          "const": ".github/checks/release/release-contract.json"
+        },
+        "scope": {
+          "const": "SUCCESSOR_RELEASE_VERIFICATION_DIRECTION_ONLY"
+        },
+        "successor_policy_content": {
+          "const": "UNRESOLVED"
+        },
+        "current_release_execution_suspension": {
+          "const": "PRESERVED"
+        },
+        "component_scope": {
+          "const": [
+            "TOOL",
+            "PROFILE",
+            "CONTEXT",
+            "STORAGE",
+            "VALIDATION",
+            "DISCOVERY",
+            "PLANNING",
+            "EXECUTION",
+            "PROJECTION",
+            "PACKAGE"
+          ]
         }
       },
       "additionalProperties": false

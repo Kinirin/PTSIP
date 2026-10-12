@@ -6,7 +6,7 @@ policy:
   title: ASSURE authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.1'
+  version: '4.2'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의 검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
@@ -447,6 +447,24 @@ rules:
     reuse: IMMUTABLE_PUBLISHED_COMPONENT_TAG_FINGERPRINT_AND_ARTIFACT_DIGEST_MATCH
     common_verification_gap: PRESERVE_OPEN_NO_FORMER_STATUS_REEMISSION
     operational_installation_and_activation: NOT_GRANTED
+  engine_verification_only:
+    approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-VERIFICATION-ONLY.yaml
+    contract_ref: developer/policy/contracts/engine-verification.v1.json
+    scope: SELECTED_REGISTERED_ENGINE_AND_ITS_EXPLICIT_CONTRACTS
+    required_platforms: [WINDOWS_X64, LINUX_X64, MACOS_ARM64]
+    required_checks:
+    - LOCKED_SELECTED_ENGINE_RUST_TESTS
+    - LOCKED_SELECTED_ENGINE_NATIVE_BUILD
+    - EXACT_SOURCE_SHA_AND_CLEAN_TRACKED_SOURCE
+    - REGISTERED_ENGINE_ID_VERSION_BINDING_AND_HOST
+    - WHEEL_MEMBERS_RECORD_AND_ARTIFACT_DIGESTS
+    - RECEIPT_TAMPER_AND_SOURCE_MISMATCH_REJECTION
+    - ISOLATED_NO_DEPENDENCY_CONSUMER_INSTALL_AND_NATIVE_MANIFEST
+    wheel_assembler_language: GO
+    result_scope: ENGINE_VERIFICATION_ONLY
+    full_release_required_verification: PRESERVE_AS_SEPARATE_GATE_REQUIREMENTS
+    tool_profile_package_verification: NOT_IMPLEMENTED
+    engine_pass_is_release_gate_pass: false
 relations:
   supersedes: []
   amends: []

@@ -1,0 +1,38 @@
+{
+  "schema_version": "ptsip-engine-verification/v1",
+  "operation": "VERIFY",
+  "authority_refs": {
+    "execution": "developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.release_execution_suspension.engine_verification_only",
+    "verification": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml#rules.engine_verification_only"
+  },
+  "approval_ref": "developer/policy/approvals/MPA-20261013-ENGINE-VERIFICATION-ONLY.yaml",
+  "workflow_ref": ".github/workflows/tooling-release.yml",
+  "result_scope": "ENGINE_VERIFICATION_ONLY",
+  "engine_registry_ref": "src/ptsip/engines/index.json",
+  "installation_contract_ref": "src/ptsip/engines/contracts/installation-plan.json",
+  "engines": ["context", "storage", "validation", "discovery", "planning", "execution", "projection"],
+  "platforms": ["windows-x64", "linux-x64", "macos-arm64"],
+  "required_checks": [
+    "LOCKED_SELECTED_ENGINE_RUST_TESTS",
+    "LOCKED_SELECTED_ENGINE_NATIVE_BUILD",
+    "EXACT_SOURCE_SHA_AND_CLEAN_TRACKED_SOURCE",
+    "REGISTERED_ENGINE_ID_VERSION_BINDING_AND_HOST",
+    "WHEEL_MEMBERS_RECORD_AND_ARTIFACT_DIGESTS",
+    "RECEIPT_TAMPER_AND_SOURCE_MISMATCH_REJECTION",
+    "ISOLATED_NO_DEPENDENCY_CONSUMER_INSTALL_AND_NATIVE_MANIFEST"
+  ],
+  "implementation": {
+    "wheel_module": ".github/checks/release/engine-verification",
+    "wheel_command": ["go", "run", "./cmd/engine-wheel"],
+    "verifier_module": "developer/tests",
+    "verifier_selection": "^TestIndependentEngineWheel/<selected-engine>$"
+  },
+  "tool_verification": "NOT_IMPLEMENTED",
+  "profile_verification": "NOT_IMPLEMENTED",
+  "package_verification": "NOT_IMPLEMENTED",
+  "release_gate": "BLOCKED",
+  "publication": "BLOCKED",
+  "legacy_verification_fallback": false,
+  "engine_pass_is_release_authorization": false,
+  "real_consumer_installation_or_activation": "NOT_AUTHORIZED"
+}

@@ -1,11 +1,13 @@
 # Independent PTSIP releases
 
-Release execution is currently BLOCKED by the project owner's explicit decision.
-`release-availability.json` records the implementation state. The release
-workflow, PowerShell entrypoint, native CLI and `ptsip-dev release` commands
-reject execution. No successor release verification is implemented.
+Publication is currently BLOCKED by the project owner's explicit decision.
+`tooling-release.yml` admits Engine Verification only, using the scoped
+`developer/policy/contracts/engine-verification.v1.json` contract. Seven engines
+can be selected independently on Windows x64, Linux x64 and macOS arm64.
+Tool, Profile and Package verification are deferred. Release Gate intentionally
+fails; PowerShell and native publication entrypoints remain blocked.
 
-`tooling-release.yml` consumes the admitted contract in `release-contract.json`.
+The retained publication implementation describes `release-contract.json`.
 `run_release.ps1` selects and invokes target scripts. Native Go owns selection,
 version consumption, source fingerprints, compilation checks, artifact hashes,
 immutable publication and Package assembly. PowerShell owns process orchestration.
@@ -106,6 +108,11 @@ independent engine archives and the aggregate Package. Engine installation,
 consumer discovery/activation and public API retirement are separate scopes.
 
 ## Verification gap
+
+The engine verification exception uses native Rust test/build, a Go wheel
+assembler under `engine-verification/`, and the independent Go wheel verifier.
+Python is used only for the isolated consumer package installer. Verification
+artifacts and successful engine jobs do not grant publication or runtime authority.
 
 The previous verification execution map and the test enforcing its legacy
 migration table have been removed. Their historical test lists do not establish

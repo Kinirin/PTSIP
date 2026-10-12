@@ -1,0 +1,21 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-ENGINE-VERIFICATION-ONLY
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The user selected Engine Verification execution only: seven independent
+    engines on Windows, Linux and macOS; selected Rust test/build, exact source,
+    identity/version/platform, wheel hashes/receipt, isolated consumer installation
+    and native manifest checks. Use a Go wheel assembler. Tool/Profile/Package
+    verification remains future work; Release Gate, tags, publication and PyPI
+    commands remain BLOCKED.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  affected_policy_ids: [MPD-CTRL-0001, MPD-ASSURE-0001]
+  recorded_at: '2026-10-13'

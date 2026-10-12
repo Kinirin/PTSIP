@@ -326,9 +326,8 @@ func hexSHA(data []byte) string {
 }
 
 func hasMetadataLine(content []byte, line string) bool {
-	for _, row := range strings.Split(string(content), "
-") {
-		if strings.TrimSuffix(row, "") == line {
+	for _, row := range strings.Split(string(content), "\n") {
+		if strings.TrimSuffix(row, "\r") == line {
 			return true
 		}
 	}

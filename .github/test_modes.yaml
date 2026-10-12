@@ -127,7 +127,6 @@ modes:
         - developer/tests/workflows
         - developer/tests/engines
       pytest:
-        - developer/tests/engines/test_engine_wheels.py
         - src/tests/ptsip/repository/test_self_profile.py
   - id: repository-release
     component_ref: repository-release-verification

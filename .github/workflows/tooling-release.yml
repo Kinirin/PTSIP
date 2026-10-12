@@ -1,14 +1,12 @@
-# Release execution intentionally remains BLOCKED by MPD-CTRL-0001.
-# The independent engine verification job below is staged, not executable.
-# Tool, Profile and Package verification responsibilities remain separate and
-# require a successor verification contract; no PASS is inferred.
+# Engine verification is admitted by the scoped CTRL/ASSURE contract.
+# Publication remains BLOCKED. Deferred components never produce PASS evidence.
 name: tooling-release
 
 on:
   workflow_dispatch:
     inputs:
       engine:
-        description: "Future per-engine verification selection (currently blocked)"
+        description: "Selected engine verification only; publication remains blocked"
         required: true
         type: choice
         default: all
@@ -26,20 +24,23 @@ permissions:
   contents: read
 
 jobs:
-  release-unavailable:
+  verification-admission:
     runs-on: ubuntu-latest
     steps:
-      - name: Report the intentional release deployment gap
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+          cache: false
+      - name: Resolve current verification admission from canonical policy
         shell: bash
-        run: |
-          echo '::error::RELEASE_EXECUTION_BLOCKED: The previous verification contract has been removed. A separately approved successor policy and contract are required before release deployment resumes.'
-          exit 1
+        run: go -C .github/checks/release/engine-verification run ./cmd/engine-wheel admit --root "$GITHUB_WORKSPACE"
 
-  candidate-engine-wheel-verification:
-    # The policy and successor contract are unresolved. Do not execute here.
-    # Test implementation is retained for later, separate policy approval.
-    if: ${{ false }}
-    name: "${{ matrix.engine }} / ${{ matrix.platform.name }}"
+  engine-verification:
+    needs: verification-admission
+    name: "Engine Verification / ${{ matrix.engine }} / ${{ matrix.platform.name }}"
     runs-on: ${{ matrix.platform.runner }}
     timeout-minutes: 40
     strategy:
@@ -68,6 +69,8 @@ jobs:
     steps:
       - name: Checkout exact requested source revision
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
 
       - name: Set up Go from repository module
         uses: actions/setup-go@v6
@@ -75,7 +78,7 @@ jobs:
           go-version-file: developer/tests/go.mod
           cache: false
 
-      - name: Set up packaging Python (not the test implementation)
+      - name: Set up isolated consumer package installer
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -86,7 +89,7 @@ jobs:
           set -euo pipefail
           rustc -vV
           rustc -vV | grep -Fqx "host: ${{ matrix.platform.target }}"
-          echo "Candidate evidence only; does not authorize release."
+          echo "Engine verification evidence only; Release Gate remains blocked."
 
       - name: Run only the selected engine's Rust tests
         shell: bash
@@ -105,16 +108,57 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python developer/automation/engine_wheels.py \
-            --root . \
+          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel \
+            --root "$GITHUB_WORKSPACE" \
             --kind "${{ matrix.engine }}" \
             --target "${{ matrix.platform.target }}" \
-            --binary "$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}${{ matrix.platform.suffix }}" \
-            --output "$PTSIP_ENGINE_WHEEL_DIR" \
-            --source-sha "$(git rev-parse HEAD)"
+            --binary "$GITHUB_WORKSPACE/$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}${{ matrix.platform.suffix }}" \
+            --output "$GITHUB_WORKSPACE/$PTSIP_ENGINE_WHEEL_DIR" \
+            --source-sha "$GITHUB_SHA"
 
       - name: Verify the wheel in Go and install into isolated consumer
         shell: bash
         run: |
           set -euo pipefail
-          go -C developer/tests test ./engines -run '^TestIndependentEngineWheel/${{ matrix.engine }}$' -count=1 -v -timeout=15m
+          go -C developer/tests test ./engines -run '^TestIndependentEngineWheel/${{ matrix.engine }}$' -count=1 -v -timeout=15m | tee engine-verification.log
+
+      - name: Preserve engine verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: engine-verification-${{ matrix.engine }}-${{ matrix.platform.name }}-${{ github.sha }}
+          path: |
+            ${{ env.PTSIP_ENGINE_WHEEL_DIR }}/*
+            engine-verification.log
+          if-no-files-found: error
+
+  tool-verification:
+    name: Tool Verification (deferred)
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+
+  profile-verification:
+    name: Profile Verification (deferred)
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+
+  package-verification:
+    name: Package Verification (deferred)
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+
+  release-gate:
+    name: Release Gate (BLOCKED)
+    needs: [verification-admission, engine-verification, tool-verification, profile-verification, package-verification]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preserve the release publication suspension
+        run: |
+          echo '::error::RELEASE_EXECUTION_BLOCKED: Engine verification alone is insufficient. Tool, Profile, Package and successor release admission remain unresolved.'
+          exit 1
