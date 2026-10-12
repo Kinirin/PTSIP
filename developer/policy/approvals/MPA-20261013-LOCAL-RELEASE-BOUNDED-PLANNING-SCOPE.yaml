@@ -1,0 +1,21 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-LOCAL-RELEASE-BOUNDED-PLANNING-SCOPE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    현재 PTSIP 저장소의 작업계획서는 특정 릴리스에서 완료 가능한 범위가 기본이며,
+    지나치게 큰 계획을 생성하지 않는다. 여러 버전을 가로지르는 장기 계획은
+    반복 핸드오프 부담으로 선호하지 않는다. 정책 변경이 발생하면 드물게
+    기존 계획서를 수정할 수 있으나 이를 별도의 필수 계획 종류로 보지 않는다.
+    이 설명은 사용자 저장소 환경의 Developer Planning 운영 방식이다.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-INTENT-0001
+  affected_policy_ids:
+  - MPD-INTENT-0001
+  recorded_at: '2026-10-13'
