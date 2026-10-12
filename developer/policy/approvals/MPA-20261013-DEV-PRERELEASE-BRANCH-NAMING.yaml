@@ -1,0 +1,21 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-DEV-PRERELEASE-BRANCH-NAMING
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    사용자는 기존 정식 개발 버전 브랜치 형식을 유지하면서 dev/0.3.8a3 같은
+    프리릴리스 브랜치 명명 형식도 공식 허용하도록 명시적으로 승인했다.
+    기존 Planning 프리릴리스 스키마에 등록된 a, b, rc 접미부와 숫자 패턴을
+    재사용한다. 브랜치명 자동 발명·생성 또는 계획서 생성 권한은 부여하지 않는다.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-GOV-0001
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+  - MPD-GOV-0001
+  recorded_at: '2026-10-13'
