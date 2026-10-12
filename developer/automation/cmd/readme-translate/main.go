@@ -144,6 +144,18 @@ func rebaseLinks(text, source, target string) string {
         return "](" + rel + suffix + ")"
     })
 }
+func normalizeLink(ref, owner string) string {
+    if ref == "" || strings.HasPrefix(ref, "#") || strings.HasPrefix(ref, "/") ||
+        strings.Contains(ref, "://") || strings.HasPrefix(ref, "mailto:") {
+        return ref
+    }
+    suffix := ""
+    if i := strings.IndexAny(ref, "?#"); i >= 0 {
+        suffix, ref = ref[i:], ref[:i]
+    }
+    if ref == "" { return suffix }
+    return path.Clean(path.Join(path.Dir(owner), ref)) + suffix
+}
 func codeTokens(s string) []string { return inlineCode.FindAllString(s, -1) }
 func fenced(s string) []string {
     out := []string{}
@@ -181,9 +193,17 @@ func validate(source, localized string, r translationRegistry, target languageEn
         if counts[v] == 0 { return fmt.Errorf("missing inline code token %q", v) }
         counts[v]--
     }
+    targetLinks := mdLinkTarget.FindAllStringSubmatch(localized, -1)
     for _, m := range mdLinkTarget.FindAllStringSubmatch(src, -1) {
-        expected := rebaseLinks("]("+m[1]+")", r.Canonical.Path, target.Path)
-        if !strings.Contains(localized, expected) { return fmt.Errorf("missing rebased link %q", expected) }
+        expected := normalizeLink(m[1], r.Canonical.Path)
+        found := false
+        for _, candidate := range targetLinks {
+            if normalizeLink(candidate[1], target.Path) == expected {
+                found = true
+                break
+            }
+        }
+        if !found { return fmt.Errorf("missing canonical link target %q", expected) }
     }
     expectedBack, err := filepath.Rel(filepath.Dir(filepath.FromSlash(target.Path)), filepath.FromSlash(r.Canonical.Path))
     if err != nil { return err }
@@ -204,16 +224,21 @@ type argos struct {
 func (a *argos) translate(s string) (string, error) {
     if strings.TrimSpace(s) == "" || !regexp.MustCompile(`[A-Za-z]`).MatchString(s) { return s, nil }
     if translated, ok := a.cache[s]; ok { return translated, nil }
+    leading := s[:len(s)-len(strings.TrimLeft(s, " \t"))]
+    trailing := s[len(strings.TrimRight(s, " \t")):]
+    core := strings.TrimSpace(s)
+    if core == "" { return s, nil }
     ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
     defer cancel()
     cmd := exec.CommandContext(ctx, "argos-translate", "--from-lang", a.from, "--to-lang", a.to)
-    cmd.Stdin = strings.NewReader(s)
+    cmd.Stdin = strings.NewReader(core)
     var errBuf bytes.Buffer
     cmd.Stderr = &errBuf
     raw, err := cmd.Output()
     if err != nil { return "", fmt.Errorf("Argos %s -> %s: %w: %s", a.from, a.to, err, errBuf.String()) }
     value := strings.TrimSpace(string(raw))
     if value == "" { return "", errors.New("Argos returned empty translation") }
+    value = leading + value + trailing
     a.cache[s] = value
     return value, nil
 }
