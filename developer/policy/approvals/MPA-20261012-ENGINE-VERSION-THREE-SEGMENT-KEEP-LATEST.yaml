@@ -1,0 +1,27 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261012-ENGINE-VERSION-THREE-SEGMENT-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: "KEEP_LATEST: engine version format is MAJOR.MINOR.PATCH (examples 0.2.0, 0.3.0); supersede prior two-segment public engine version and prerelease projection format. Preserve each independent engine version file as the canonical owner and restore existing per-engine version identities."
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  requested_policy_id: MPD-INFO-0001
+  affected_policy_ids:
+  - MPD-INFO-0001
+  recorded_at: '2026-10-12'
+  conflict_resolution:
+    strategy: KEEP_LATEST
+    prior_approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
+    previous_engine_version_owner_ref: developer/policy/approvals/MPA-20261012-ENGINE-VERSION-OWNERSHIP.yaml
+    superseded_rule: MAJOR_MINOR_OPTIONAL_aN_bN_rcN
+    replacement_rule: MAJOR_MINOR_PATCH
+    preserved_rules:
+    - SEVEN_INDEPENDENT_ENGINES
+    - EACH_ENGINE_LOCAL_CANONICAL_VERSION_CONTRACT
+    - ENGINE_VERSION_AUTO_INCREMENT_FORBIDDEN
+    - PACKAGE_VERSION_HASH_COMPOSITION
