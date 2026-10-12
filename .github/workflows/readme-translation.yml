@@ -6,7 +6,8 @@ on:
     paths:
       - README.md
       - .github/workflows/readme-translation.yml
-      - .github/scripts/sync_readme_argos.py
+      - .github/checks/readme-translation.ps1
+      - developer/automation/cmd/readme-translate/**
       - docs/translated/index.yaml
   workflow_dispatch:
 
@@ -14,93 +15,97 @@ permissions:
   contents: write
 
 concurrency:
-  group: readme-translation-main
+  group: readme-translation-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   sync-localized-readmes:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    timeout-minutes: 45
     steps:
-      - name: Checkout current main
+      - name: Checkout exact requested revision
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Set up Python 3.14
+      - name: Set up Go translation controller
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+
+      - name: Build registered-language translator
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force .artifacts | Out-Null
+          go -C developer/automation build -o ../../.artifacts/readme-translate ./cmd/readme-translate
+          if ($LASTEXITCODE -ne 0) { throw 'Go README translator build failed.' }
+          & ./.artifacts/readme-translate --root . --action list-targets
+          if ($LASTEXITCODE -ne 0) { throw 'README translation registry validation failed.' }
+
+      # Argos itself is a third-party CLI backed by Python. No PTSIP Python
+      # translation script executes; the Go controller owns all document logic.
+      - name: Install offline Argos command-line engine
         uses: actions/setup-python@v7
         with:
-          python-version: "3.14"
+          python-version: '3.14'
 
-      - name: Prepare Argos runtime
+      - name: Prepare Argos models from registry
         shell: pwsh
         run: |
-          python -m pip install --upgrade pip
-          if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip for Argos runtime." }
-          python -m pip install --upgrade "argostranslate==1.11.0" "PyYAML>=6.0,<7"
-          if ($LASTEXITCODE -ne 0) { throw "Failed to install Argos Translate and PyYAML runtime dependencies." }
-
-          python -c "import argostranslate, importlib.metadata; print('Argos Translate ' + importlib.metadata.version('argostranslate'))"
-          if ($LASTEXITCODE -ne 0) { throw "Argos runtime verification failed." }
-
-          $runtimeRoot = Join-Path $HOME ".ptsip/readme-translation"
-          $modelRoot = Join-Path $runtimeRoot "argos-packages"
-          New-Item -ItemType Directory -Force -Path $modelRoot | Out-Null
-
+          python -m pip install --disable-pip-version-check 'argostranslate==1.11.0'
+          if ($LASTEXITCODE -ne 0) { throw 'Argos CLI installation failed.' }
+          $modelRoot = Join-Path $HOME '.ptsip/readme-translation/argos-packages'
+          New-Item -ItemType Directory -Force $modelRoot | Out-Null
           "ARGOS_PACKAGES_DIR=$modelRoot" >> $env:GITHUB_ENV
+          $env:ARGOS_PACKAGES_DIR = $modelRoot
+          $env:ARGOS_DEVICE_TYPE = 'cpu'
+          $env:ARGOS_CHUNK_TYPE = 'MINISBD'
           "ARGOS_DEVICE_TYPE=cpu" >> $env:GITHUB_ENV
           "ARGOS_CHUNK_TYPE=MINISBD" >> $env:GITHUB_ENV
-          "TRANSLATION_PYTHON=python" >> $env:GITHUB_ENV
+          & ./.artifacts/readme-translate --root . --action models
+          if ($LASTEXITCODE -ne 0) { throw 'Argos model preparation failed.' }
 
-      - name: Generate localized README files
+      - name: Synchronize and validate registered translations
         shell: pwsh
         run: |
-          & $env:TRANSLATION_PYTHON .github/scripts/sync_readme_argos.py --registry docs/translated/index.yaml
-          if ($LASTEXITCODE -ne 0) {
-            throw "README translation or validation failed."
-          }
+          & ./.artifacts/readme-translate --root . --action sync
+          if ($LASTEXITCODE -ne 0) { throw 'README synchronization failed.' }
+          & ./.artifacts/readme-translate --root . --action validate
+          if ($LASTEXITCODE -ne 0) { throw 'README translation validation failed.' }
 
-      - name: Commit synchronized translations
+      - name: Commit only registered translation targets
         shell: pwsh
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
         run: |
           git diff --check
-          if ($LASTEXITCODE -ne 0) {
-            throw "Generated translation contains whitespace errors."
-          }
+          if ($LASTEXITCODE -ne 0) { throw 'Translation whitespace validation failed.' }
 
-          $targets = & $env:TRANSLATION_PYTHON .github/scripts/sync_readme_argos.py --registry docs/translated/index.yaml --list-targets
-          if ($LASTEXITCODE -ne 0) {
-            throw "Unable to resolve registered translation targets."
-          }
-          if (-not $targets) {
-            throw "Translation registry contains no active targets."
+          $targets = @(& ./.artifacts/readme-translate --root . --action list-targets)
+          if ($LASTEXITCODE -ne 0 -or $targets.Count -eq 0) {
+            throw 'No valid registered translation target was resolved.'
           }
           foreach ($target in $targets) {
             git add -- $target
-            if ($LASTEXITCODE -ne 0) {
-              throw "Unable to stage registered translation target: $target"
-            }
+            if ($LASTEXITCODE -ne 0) { throw "Failed to stage $target" }
           }
           git diff --cached --quiet
           if ($LASTEXITCODE -eq 0) {
-            Write-Host "Localized README files are already synchronized."
+            Write-Host 'Registered translations are already synchronized.'
             exit 0
           }
-
-          git fetch origin main
-          if ($LASTEXITCODE -ne 0) {
-            throw "Unable to refresh origin/main before committing translation."
-          }
-
+          git fetch origin $env:TARGET_BRANCH
+          if ($LASTEXITCODE -ne 0) { throw 'Unable to refresh current source branch.' }
           $localSha = (git rev-parse HEAD).Trim()
-          $remoteSha = (git rev-parse origin/main).Trim()
+          $remoteSha = (git rev-parse "origin/$env:TARGET_BRANCH").Trim()
           if ($localSha -ne $remoteSha) {
-            throw "main moved from $localSha to $remoteSha while translation was running; rerun against the new main instead of overwriting newer work."
+            throw "Source branch advanced during translation ($localSha -> $remoteSha); rerun without overwriting."
           }
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "docs: sync localized README via Argos"
-          git push origin HEAD:main
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(i18n): synchronize registry translations via Go'
+          if ($LASTEXITCODE -ne 0) { throw 'README translation commit failed.' }
+          git push origin "HEAD:$env:TARGET_BRANCH"
+          if ($LASTEXITCODE -ne 0) { throw 'README translation push failed.' }
