@@ -63,6 +63,16 @@ rules:
     missing_verification_contract_result: FAIL_CLOSED
     legacy_verification_fallback: FORBIDDEN
     reinstatement: SEPARATE_USER_APPROVED_SUCCESSOR_POLICY_AND_CONTRACT
+    successor_verification_reactivation_direction:
+      decision: B_SUCCESSOR_VERIFICATION_POLICY_APPROVAL_BEFORE_RESUMPTION
+      decision_source: USER_EXPLICIT
+      approval_ref: developer/policy/approvals/MPA-20261013-SUCCESSOR-RELEASE-VERIFICATION-DIRECTION.yaml
+      approval_scope: DIRECTION_ONLY
+      successor_policy_content: UNRESOLVED
+      successor_verification_contract: UNRESOLVED
+      verification_implementation: NOT_VERIFIED
+      publication_reactivation: NOT_AUTHORIZED
+      release_suspension: PRESERVED
   family_definition:
     kernel_definitions:
     - id: DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
