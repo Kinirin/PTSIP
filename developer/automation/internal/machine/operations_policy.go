@@ -9,6 +9,16 @@ func init() {
 		}
 		return r.SeedPP102Transition(BoolOption(options, "apply"))
 	})
+	RegisterOperations("policy-cleanup", func(r *Repository, command string, options map[string]string, args []string) (any, error) {
+		switch command {
+		case "inspect":
+			return r.CleanupInspect(args[0])
+		case "apply":
+			return r.CleanupApply(args[0], options["--expected-head"])
+		default:
+			return nil, fmt.Errorf("unregistered policy cleanup command: %s", command)
+		}
+	})
 	RegisterOperations("policy-lifecycle", func(r *Repository, command string, options map[string]string, args []string) (any, error) {
 		switch command {
 		case "inspect":

@@ -1346,6 +1346,32 @@
       ],
       "optional_options": [],
       "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-cleanup",
+        "inspect"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ],
+      "required_options": [],
+      "optional_options": [],
+      "boolean_options": []
+    },
+    {
+      "command": [
+        "policy-cleanup",
+        "apply"
+      ],
+      "required_arguments": [
+        "policy_id"
+      ],
+      "required_options": [
+        "expected_head"
+      ],
+      "optional_options": [],
+      "boolean_options": []
     }
   ],
   "normative_semantics_owner": "LANGUAGE_NEUTRAL_MACHINE_CONTRACT",

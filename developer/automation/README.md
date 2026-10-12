@@ -52,3 +52,22 @@ Run native regression checks with:
 go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./...
 go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./...
 ```
+
+
+### Policy cleanup (explicit invocation only)
+
+The registered native Go cleanup surface reuses policy catalogs, the GOV status
+contract, and approved pinned Git migration evidence. It never deletes on status
+transition. Both commands return machine-readable JSON; BLOCKED exits nonzero.
+
+```powershell
+go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-cleanup inspect MPD-VERI-0006
+go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-cleanup apply MPD-VERI-0006 --expected-head <EXACT_40_CHARACTER_GIT_HEAD>
+```
+
+The apply command requires a clean Git worktree, an unchanged HEAD, exact
+RETIRED.Removable authority, reproducible pinned Git evidence, and zero ambiguous
+references. It fails closed; it does not commit, push, or remove any policy unless
+explicitly invoked with the apply command. Support policies without an approved
+Removable lifecycle contract and canonical policies without an approved Git pin
+remain blocked. Historical migration index membership is preserved.
