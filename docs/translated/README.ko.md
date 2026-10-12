@@ -1,33 +1,49 @@
-<!-- LOCALIZED PROJECTION: README.md is canonical. This dev-branch translation is synchronized to the English source; the main-branch Argos workflow may regenerate it. -->
+<!-- AUTO-GENERATED: registry-driven Go projection; edit canonical README.md instead. -->
 <p align="right">
-  <a href="../../README.md">English</a> | 한국어
+  <a href="../../README.md">en</a> | ko
 </p>
 
 # PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy
 
-> 이 문서는 정본인 [`README.md`](../../README.md)의 한국어 번역본입니다. 번역과 영문 원문의 의미가 다른 경우 영문 원문을 우선합니다. 정책 권위는 기계 판독 정책 계약에 있으며 이 번역 문서가 정책을 새로 정의하지 않습니다.
+<!-- ptsip-readme-i18n: 36a873876498dc99dc4942643a58fab357c954a6ef8e5090b7d3e02ece388145 -->
 
-**PTSIP는 아키텍처 책임을 명시적이고 기계가 읽을 수 있는 프로젝트 의도로 기록한 다음, 저장소에서 관측한 증거를 통해 검증합니다.** 특정 디렉터리 구조나 프로그래밍 언어를 강제하지 않으면서 Product, 개발, 전달, 운영 생명주기의 책임을 분리합니다.
+**PTSIP 명시된 것과 같이 건축 책임을 기록하십시오, 기계 읽기 쉬운 프로젝트 intent, 그 후에 저장소 증거에 대하여 그것을 verifies.** 특정 폴더 레이아웃 또는 프로그래밍 언어를 강제하지 않고 제품, 개발, 배달 및 작업 수명주기를 분리합니다.
 
-> **재사용보다 목적이 우선합니다.** 코드 공유를 최적화하기 전에 책임이 왜 존재하는지, 어느 생명주기가 그 책임을 소유하는지 먼저 판단합니다.
+<!-- ptsip-readme-i18n: fe184ad78fd5bd25b5b56d2ec2d68723f1b74501546513df51f70b0d887526ef -->
 
-## 현재 버전 및 배포 상태
+> **목적은 재사용합니다.** 책임이 존재하고 수명주기가 코드를 공유하기 전에 그것을 소유하는 것을 결정합니다.
 
-| 식별 항목 | 현재 소스 트리의 값 |
+<!-- ptsip-readme-i18n: bba81f74e9129ce0beafa7b2677e266fd2909dd0a93188af9315a0687bc5c81a -->
+
+## 현재 버전 및 출판 상태
+
+<!-- ptsip-readme-i18n: 1657a14c36053f906ccd6e85897524097eb27587131ea16968aa2ceacd824d6f -->
+
+| 이름 * | 소스 트리 값 |
 | --- | --- |
-| Tool | `0.3.8a5` — **아직 배포되지 않은 프리릴리스 후보** |
-| 마지막으로 배포된 Tool 프리릴리스 | `0.3.8a4` |
-| Project Profile | `pp.1.02` |
-| Specification 패밀리 | `0.3.7-draft` |
-| 바인딩된 불변 `SPEC_REVISION` | `3c47816770d194ae42f98faedc911d980db0e62a` |
+| 제품 정보 | `0.3.8a5` — **unpublished 사전 릴리스 후보** |
+| 최근 게시된 도구 prerelease | `0.3.8a4` |
+| 사업영역 | `pp.1.02` |
+| 명세 가족 | `0.3.7-draft` |
+| 경계 immutable `SPEC_REVISION` | `3c47816770d194ae42f98faedc911d980db0e62a` |
 
-Tool, Project Profile, Specification의 식별자는 서로 독립적입니다. 정확한 배포 게이트는 [`0.3.8a5` 변경 사항](../../docs/releasenote/tool/0.3.8a5.md), [Tool 릴리스 이력](../../docs/releasenote/tool/README.md), [릴리스 워크플로](../../.github/workflows/tooling-release.yml)를 참고하세요.
+<!-- ptsip-readme-i18n: a24fd8ca5c76344071ff1820a615a45c1a5ca5c3f064234c1ca34c56fd5ffc93 -->
+
+도구, 프로젝트 프로필 및 사양 식별자는 독립적입니다. ...에서 [자주 묻는 질문 `0.3.8a5`](../releasenote/tool/0.3.8a5.md)· [Tool 출시](../releasenote/tool/README.md), 또는 [릴리스 워크플로우](../../.github/workflows/tooling-release.yml) 정확한 간행물 문을 위해.
+
+<!-- ptsip-readme-i18n: 9535b10be9abb7a87788c3f5107c21822734a4507aeb464f8710fb8c4866b965 -->
 
 ## 빠른 시작
 
-Python **3.11 이상**이 필요합니다. 아래 명령은 PowerShell 기준이지만 기본 CLI 명령은 다른 셸에서도 사용할 수 있습니다.
+<!-- ptsip-readme-i18n: f242b713166dd6bacc6a19f93ccb3bbae69c453cf1153cd6da20f00bef99f73f -->
 
-일반적인 버전 선택 규칙에 따라 공개된 최신 릴리스를 설치하거나 업그레이드하고 식별자를 확인합니다.
+Python을 요구합니다 **3.11 또는 더 새로운**. 이 명령은 PowerShell을 사용합니다. 기본 CLI 명령은 다른 쉘에서도 작동합니다.
+
+<!-- ptsip-readme-i18n: 450fa203dde1e07be1879bb3d82689ac61853f7ac8979364b94e3a59128d711f -->
+
+최근 일반적으로 선택한 출판 된 릴리스를 설치 한 다음 identities를 검사하십시오.
+
+<!-- ptsip-readme-i18n: fcde07b23764806188c438e5686eb83d8f1f878cd522fe314c066d3b7e847990 -->
 
 ```powershell
 python -m pip install --upgrade PTSIP
@@ -35,13 +51,21 @@ ptsip --version
 ptsip spec
 ```
 
-공개된 프리릴리스 `0.3.8a4`를 명시적으로 설치하려면 다음 명령을 사용합니다. 일반적인 pip 버전 선택에서는 프리릴리스보다 최신 안정 릴리스가 선택될 수 있습니다.
+<!-- ptsip-readme-i18n: e72c8367bcb1802278a84e7a2adb8a539ef8fad764a95fcffbadc52fef63fd72 -->
+
+출판물 설치 `0.3.8a4` 특별히 사전 릴리스 (일반적인 pip 해상도 대신 최신 안정 버전을 선택할 수 있습니다):
+
+<!-- ptsip-readme-i18n: dcd804999eb7b050f699f2a9a09293ea395582395c440115d1f55c114c44a3d4 -->
 
 ```powershell
 python -m pip install "PTSIP==0.3.8a4"
 ```
 
-이 저장소의 소스로 직접 개발하려면 다음 명령을 사용합니다.
+<!-- ptsip-readme-i18n: eeb5b10629d40c38fe851ec3b201220313d0abdf230abe498265d788fcc7c847 -->
+
+이 저장소를 직접 개발하려면:
+
+<!-- ptsip-readme-i18n: b40f2830b196ea5d9cd199b4d0d41e4b913ac34accb5fdae5c6a25ab576de114 -->
 
 ```powershell
 git clone https://github.com/Kinirin/PTSIP.git
@@ -49,7 +73,11 @@ cd PTSIP
 python -m pip install -e ".[dev]"
 ```
 
-Project Profile을 변경하기 전에 읽기 전용 또는 진단 작업으로 현재 상태를 확인합니다.
+<!-- ptsip-readme-i18n: 948ebd3fe11235737df4956edb43c78a321418b123066d80c4d109fc6eeb5b56 -->
+
+Project Profile을 변경하기 전에 읽기 전용 또는 진단 작업을 시작하십시오.
+
+<!-- ptsip-readme-i18n: 3889dfcdd346e61f21dcfe7a6df5d7ac36b0961c3e4ba95e748ab0e0b160188c -->
 
 ```powershell
 ptsip doctor .
@@ -59,36 +87,58 @@ ptsip validate .
 ptsip conform .
 ```
 
-`validate`는 선언을 검증하고, `conform`은 관측 증거를 토대로 적용 가능한 아키텍처 요구사항을 평가합니다. 유효한 프로파일이라는 사실만으로 적합성이 증명되지는 않습니다. 정확한 옵션은 설치된 CLI의 도움말을 확인하세요.
+<!-- ptsip-readme-i18n: e5c71eb869d6011586372874957ed00276b169f59fde7095ed0b9f94330b0473 -->
 
-## 시스템이 구분하는 책임
+`validate` 확인 선언. `conform` 관찰 된 증거에 대한 적용 가능한 아키텍처 요구 사항을 평가합니다. 유효한 단면도는 적합의 증거가 아닙니다; 정확한 지원된 선택권을 위한 설치된 CLI 도움을 상담하십시오.
 
-| 권위/증거 계층 | 담당 책임 |
+<!-- ptsip-readme-i18n: 172930755fd531ee7adc8673d3f14e63d822f2964c1f9eb80379b4fe640941b2 -->
+
+## 시스템은 별도의 유지
+
+<!-- ptsip-readme-i18n: d4c2a5bf97a6a96934b61e47a4a802f4c3185bcead3a3b597520c8d38864a9f5 -->
+
+| 기관/비공개 비행기 | 책임 |
 | --- | --- |
-| Specification | 규범적 요구사항과 해당 불변 리비전 |
-| Decision Authority | 명시적으로 승인된 아키텍처 결정과 그 조정 |
-| Source Project Profile / Responsibility Map | 프로젝트가 소유하는 아키텍처 선언 |
-| 관측 및 적합성 평가 | 실제 저장소·산출물 동작과 규칙 평가 |
+| 제품 사양 | Normative 필요조건 및 그들의 immutable 개정 |
+| 결정 기관 | Explicit는 건축 대답과 그들의 coordination를 찬성했습니다 |
+| Source Project Profile / 책임 지도 | 프로젝트 소유 건축 선언 |
+| 관찰 및 준수 | 실제 저장소/artifact 행동과 규칙 평가 |
 
-**증거는 아키텍처 권위가 아닙니다.** 파일 경로, 패키지, 휴리스틱, 템플릿, AI 신뢰도 및 관측된 import는 검토에 사용할 수 있지만 어느 것도 생명주기 소유권을 암묵적으로 생성할 수 없습니다. Tool은 `INCOMPLETE`를 통과로 취급하지 않습니다.
+<!-- ptsip-readme-i18n: d2503344087ea9e2e7c533369ac204caf739dddfe4a4e0e55623756fc841006b -->
 
-## 주요 생명주기 소유권
+**Evidence는 건축 권한이 없습니다.** 파일 경로, 패키지, heuristics, 템플릿, AI 신뢰 및 관찰 된 수입은 검토를 알 수 있습니다. 아무도 조용히 Lifecycle 소유권을 만들 수 있습니다. 도구는 결코 치료 `INCOMPLETE` 패스로 결과.
 
-Tool `0.3.8a5`의 정규 분류는 정확히 다음 다섯 가지입니다.
+<!-- ptsip-readme-i18n: 59d315379e83c74a959d6a47ede5d780cd5a696508215697029ba9b2a982a083 -->
 
-| 분류 | 의미 |
+## 생명주기 소유권
+
+<!-- ptsip-readme-i18n: 95fd662c19fb6d736995808187c17691c2b3b4a5a8a2eae72c69e5e9bc8f92ec -->
+
+Canonical 공구 `0.3.8a5` 분류는 정확히 남아:
+
+<!-- ptsip-readme-i18n: 94cf51ba65b485288ddf459b2ce39b0e58cdbb1d0dd13e6a2e6503abc1e549e4 -->
+
+| 회사연혁 | 이름 * |
 | --- | --- |
-| `PRODUCT` | Product 생명주기가 주로 소유하는 책임입니다. |
-| `DEVELOPMENT_TOOLING` | 개발 과정에서 생성, 검사, 검증, 변환, 코드 생성, 마이그레이션, 분석, 테스트 등을 지원하는 개발 생명주기 책임입니다. |
-| `DELIVERY` | 릴리스 준비, 패키징, 공개, 승격, 배포 또는 전달 대상에 배치하는 책임입니다. |
-| `OPERATIONS` | 전달 이후 상태 확인, 복구, 조정, 유지보수 및 지속적 운영을 담당하는 책임입니다. |
-| `NEUTRAL_CONTRACT` | 실행하지 않고 특정 생명주기의 소유권도 갖지 않는, 생명주기 독립적인 계약 책임입니다. |
+| `PRODUCT` | 제품 수명주기에 의해 주로 소유 된 책임. |
+| `DEVELOPMENT_TOOLING` | 개발 수명주기 책임 생성, 검사, 검증, 변환, 생성, 마이그레이션, 분석, 테스트, 또는 그렇지 않으면 지원 개발. |
+| `DELIVERY` | 출시 준비, 포장, 출판, 프로모션, 배포, 또는 배송 대상에 대한 책임. |
+| `OPERATIONS` | 건강, 회복, 재조합, 유지 보수 및 운영에 대한 후 배달 책임. |
+| `NEUTRAL_CONTRACT` | Lifecycle-independentGovernance와 비결 계약 책임. |
 
-`UNKNOWN`, `CONFLICT`, `INCOMPLETE`, `PENDING`, 신뢰도 값 및 마이그레이션 상태는 워크플로·평가 상태이며 추가적인 아키텍처 분류가 아닙니다.
+<!-- ptsip-readme-i18n: cc7afa4a273d81e296ba3978187bd60e489ba0eebbfdf84413e3e43f6ba716d9 -->
 
-### Tool 0.3.5 호환성 경계
+`UNKNOWN`, `CONFLICT`, `INCOMPLETE`, `PENDING`, 신뢰 값 및 마이그레이션 상태는 작업 흐름/평가 상태, 추가 분류 되지.
 
-Tool `0.3.5`에서는 과거에 다음 분류를 사용했습니다.
+<!-- ptsip-readme-i18n: 15e1604255153cdc9d26507c6f060adc9919778a00205e9f435349aaf362d027 -->
+
+### 도구 0.3.5 호환성 경계
+
+<!-- ptsip-readme-i18n: e4db6f0d9ca63e5a1eecaa5ff84663e1dbd07197a732ad0116d897ad93a05ea8 -->
+
+제품 정보 `0.3.5` 관련 제품:
+
+<!-- ptsip-readme-i18n: 17278f1429d5f3bccfddf7dd59e0566accaaf1724f288eddd7ccfbe242e082d3 -->
 
 ```text
 PRODUCT
@@ -96,15 +146,27 @@ TOOLCHAIN
 NEUTRAL_CONTRACT
 ```
 
-Tool `0.3.8a5`는 Tool `0.3.6`에서 확립한 다섯 가지 분류 모델을 유지합니다. 따라서 `TOOLCHAIN`은 **Tool `0.3.5`의 과거 입력값**이며 현재의 정규 별칭이 아닙니다. 과거 Toolchain 책임은 실제 생명주기 소유권에 따라 `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`으로 바뀌거나 분리가 필요할 수 있습니다. `TOOLCHAIN -> DEVELOPMENT_TOOLING`을 일괄 치환하는 것은 금지됩니다.
+<!-- ptsip-readme-i18n: cec6f91da6aa3da228d14e6a2bfaccf7f7afa4b7be00711eebbe1b2b624be99a -->
 
-Tool `0.3.8a5`는 명시적으로 지원하는 과거 소스에 대해 증거에 결합된 현재 대상 직접 마이그레이션을 제공합니다. 마이그레이션 기능은 저장소 도입 권위와 별개이며, 추론 결과를 프로젝트 의도로 바꾸지 않습니다.
+제품 정보 `0.3.8a5` Tool에 의해 설치된 5등급 모델 유지 `0.3.6`. `TOOLCHAIN` 견적 요청 **관련 상품 `0.3.5` 이름 ***, 현재 canonical 별명으로. 법적 책임은 될 수있다 `DEVELOPMENT_TOOLING`, `DELIVERY`, `OPERATIONS`, 또는 실제 수명주기 소유권에 따라 분할이 필요합니다. 팟캐스트 `TOOLCHAIN -> DEVELOPMENT_TOOLING` 관련 상품
 
-## 분류는 경로나 기술로 결정되지 않습니다
+<!-- ptsip-readme-i18n: b1b4be02ba068cbca057f453affa716d53574825c2d1c9e5913daa36ee2d50cd -->
 
-분류의 기준은 파일명, 디렉터리, 언어, 프레임워크, 실행 가능 여부, 워크플로 제공자, 컴파일 방식, 실행 시간, 테스트 상태, 신뢰도 점수가 아니라 **해당 책임을 지배하는 생명주기 의무**입니다.
+제품 정보 `0.3.8a5` 명시적으로 지원되는 역사적 소스에 대한 증거 반 방향 직접 현재 표적 이동을 제공합니다. Migration 기능은 저장소 채택 권위에서 분리되고 프로젝트 intent로 방해하지 않습니다.
 
-예시:
+<!-- ptsip-readme-i18n: 302df01bc949d7d5f580f763ce382813a0620dae3e80c17bf253306eb36d0596 -->
+
+## 분류는 경로 또는 기술이 아닙니다.
+
+<!-- ptsip-readme-i18n: ec0f168b034d4b884cee7a43ae19b48896f18cf35af5f6298c0023eadfef79c1 -->
+
+Classification은 파일명, 디렉토리, 언어, 프레임 워크, 실행 가능한 상태, 워크플로우 공급자, 컴파일 동작, 런타임 기간, 테스트 상태, 또는 신뢰 점수를 지칭합니다.
+
+<!-- ptsip-readme-i18n: 1889f03338b79bbad8bdcdc925ef5e83069569c17e433174ef9a49f62e7d5ee7 -->
+
+예제:
+
+<!-- ptsip-readme-i18n: 8ee2d47784ef1adcce8f3485025a59909853b741545b7573328e2b1989347088 -->
 
 ```text
 Product-specific verification responsibility       -> PRODUCT
@@ -115,11 +177,19 @@ Post-deployment health or recovery automation       -> OPERATIONS
 Independent non-executable shared contract          -> NEUTRAL_CONTRACT
 ```
 
-`tests/`, `tools/`, `deploy/`, `ops/`, `.github/workflows/` 등의 경로는 증거를 이해하기 위한 맥락이지 아키텍처 권위가 아닙니다.
+<!-- ptsip-readme-i18n: ff895fa8816bc8d326470bcca3e86ee5d076051d0352b03507cae37ee7b22c61 -->
 
-## Responsibility Map v2
+같은 길 `tests/`, `tools/`, `deploy/`, `ops/`, 또는 `.github/workflows/` 증거 컨텍스트만 있습니다. 그들은 권위가되지 않습니다.
 
-Tool `0.3.8a5`에서는 Responsibility Map v2를 프로젝트 소유 아키텍처 선언 모델로 사용합니다. 다음 차원은 서로 독립적으로 유지됩니다.
+<!-- ptsip-readme-i18n: a5232d5b2f89fc212656886f2cfd0b144bdb4ede49424f5364c0f3dacd8690f8 -->
+
+## 책임 지도 v2
+
+<!-- ptsip-readme-i18n: 497953fa1961cd0bea655c4d409d4a9ddda31aae80e971607471137eb0fd9ea1 -->
+
+제품 정보 `0.3.8a5` Responsibility Map v2를 프로젝트 소유 건축 선언 모델로 사용합니다. 그것은 몇몇 axes를 자주 지킵니다:
+
+<!-- ptsip-readme-i18n: e40dcc8e1b877770a26bfdbb25399ccf24ce934a29574b1eae45746f1bb53209 -->
 
 ```text
 classification
@@ -138,7 +208,11 @@ VPMS Verification Purpose
     = why verification exists and what it protects
 ```
 
-정규 역할(roles)은 다음과 같습니다.
+<!-- ptsip-readme-i18n: 6e360f7614ef2f8dfd0af219f2b5bbb9dbf68588e938602bc5d35facf256b499 -->
+
+Canonical 역할은:
+
+<!-- ptsip-readme-i18n: 54a1beccb3d169d1c140133a6160e633a0a184e70cc28ae38685dd4d4c8e9e3e -->
 
 ```text
 IMPLEMENTATION
@@ -149,7 +223,11 @@ DOCUMENTATION
 GOVERNANCE
 ```
 
-정규 유형 관계(typed relationships)는 다음과 같습니다.
+<!-- ptsip-readme-i18n: 67be0ad2ea1f402876f36e863ca58ca74b51e443ffbe6dca4f2633bb7356edd1 -->
+
+Canonical 유형 관계는:
+
+<!-- ptsip-readme-i18n: 7509c363a6f5bbcfaf05e27575a8a5ef61140abd8520e65ae7196ae60c841a94 -->
 
 ```text
 IMPORTS
@@ -169,11 +247,19 @@ SPECIFIES
 GOVERNS
 ```
 
-연관 산출물(associated artifact)은 하나의 분류된 기준 컴포넌트에 종속되는 프로젝트 소유의 비컴포넌트 지원 영역입니다. 이를 독립적으로 관리해야 할 실행 책임이나 생명주기 책임을 숨기는 데 사용해서는 안 됩니다.
+<!-- ptsip-readme-i18n: e5b969455ea611406a9c950a16a7ac9e0d429d0e22fe4c71ca17eb2bbee0e244 -->
 
-## 명시적·템플릿·하이브리드 선언
+관련 artifact는 1개의 분류한 닻 성분에 프로젝트 소유한 비 성분 지원 표면 이하입니다. 그것은 독립적으로 지배 가능한 실행 또는 수명주기 책임을 숨길 수 없습니다.
 
-정규 소스 모드는 다음과 같습니다.
+<!-- ptsip-readme-i18n: 886eb33764e429a661eb5cc7844d1f62762431228823e429e804cf607ba7e626 -->
+
+## Explicit, 템플릿 및 하이브리드 선언
+
+<!-- ptsip-readme-i18n: 44484dc156ad8584283e1a3f1862bfe5ab305434d4cfafc22071971623144d84 -->
+
+Canonical 근원 형태는:
+
+<!-- ptsip-readme-i18n: 7c542e4fe8bc92fa464896b33aef9c6463f7e5c4067fb42ef365df41ac04f79c -->
 
 ```text
 explicit
@@ -187,7 +273,11 @@ hybrid
     overrides, extensions, or removals
 ```
 
-초기 템플릿 카탈로그에는 다음 항목이 포함됩니다.
+<!-- ptsip-readme-i18n: dd8b7fb992486ea1429984b577b0063a5bd31c55f698b002c646f1f3eec5b949 -->
+
+초기 템플릿 카탈로그는 다음과 같습니다 :
+
+<!-- ptsip-readme-i18n: ed00056918a2d5a86ebe3b23c6bba2197109cb00664ea36b03703fb5b3256bbd -->
 
 ```text
 python-package-library
@@ -195,11 +285,19 @@ python-cli-application
 mixed-product-development-delivery
 ```
 
-템플릿은 명시적으로 선택해야 합니다. PTSIP는 저장소 구조, 언어, 프레임워크 탐지, 매니페스트 또는 신뢰도를 근거로 템플릿을 자동 선택하지 않습니다.
+<!-- ptsip-readme-i18n: 1e5cc5f775f4f0dc770ea90841a72fe145aa3d66b5d47a77d1fdf95dc70f9e49 -->
 
-## 소스 선언과 Effective Responsibility Map
+템플릿 선택은 명시되어 있습니다. PTSIP 저장소 레이아웃, 언어, 프레임 워크 감지, 표시, 또는 신뢰에서 템플릿을 자동으로 선택하지 않습니다.
 
-모든 소스 모드는 권위가 없는 결정적 구체화(deterministic materialization)를 통해 해석됩니다.
+<!-- ptsip-readme-i18n: 0803a2a6aa0786b91b5499217ba9be58bad206f1068629fc3e25acebd3271ae9 -->
+
+## Source 선언 및 효과적인 책임 지도
+
+<!-- ptsip-readme-i18n: c89060fb5b0ce92d5a9046549eba7969eb06f89b7b5f7010928aefd92ef07487 -->
+
+모든 근원 형태는 deterministic, non-authoritative materialization를 통해 해결합니다:
+
+<!-- ptsip-readme-i18n: 68ebf09697daa8afbcbd35d82fab6cdb3f85a65eacb0985df91445bae33a8188 -->
 
 ```text
 Source Project Profile
@@ -218,9 +316,15 @@ Canonical Effective Responsibility Map
         +--> narrow VPMS read-only projection
 ```
 
-Source Project Profile은 계속 프로젝트 소유의 아키텍처 권위로 남습니다. 구체화 과정은 템플릿을 선택하거나, 소유권을 추론하거나, 잘못된 아키텍처를 복구하거나, 원본 선언을 암묵적으로 다시 작성할 수 없습니다.
+<!-- ptsip-readme-i18n: 3b4101827be9d09adf839fb91daca3c8a35535a125c56570d9f5273dd1f1c285 -->
 
-해석된 결과에는 다음과 같은 선언 출처 정보가 보존됩니다.
+Source Project Profile은 프로젝트 소유 건축 권한을 유지한다. 재료화는 템플릿, 인페 소유권, 수리 잘못된 아키텍처를 선택하거나, 조용히 소스 선언을 다시 작성해야합니다.
+
+<!-- ptsip-readme-i18n: 65089781b08d2d6eb6102ff3c4c86d31f5cd1e38e1eab3a0b4be8e8649df30b5 -->
+
+해결된 전망은 다음과 같은 선언 입증을 유지합니다:
+
+<!-- ptsip-readme-i18n: b4c370ea8bf5d7645b939ba3e0a795db92470cde552bebaad816e5f040beefa0 -->
 
 ```text
 PROJECT_EXPLICIT
@@ -230,15 +334,27 @@ PROJECT_EXTENSION
 PROJECT_REMOVAL
 ```
 
-재현성을 위해 결정적 다이제스트 식별자도 사용합니다. 그러나 출처 정보와 다이제스트 어느 것도 아키텍처 권위를 대신하지는 않습니다.
+<!-- ptsip-readme-i18n: 24ff169af9d0f0935a17ddce17bc5feac4d5725bf0711b2deb11b03474e3e90b -->
 
-## 프로파일 선택과 도입
+and has deterministic digest identity for reproducibility. Neither 입증 또는 digest는 대체 아키텍처 권한을 부여합니다.
 
-저장소 로컬 PTSIP 설정을 영속화하는 경우 [`.ptsip/index.json`](../../.ptsip/index.json)은 정규 `.ptsip/` 네임스페이스를 라우팅하고, [`.ptsip/profiles/index.json`](../../.ptsip/profiles/index.json)은 `default_profile`을 통해 활성 `*.ptsip.yaml` Project Profile을 선택합니다. 저장소 루트의 `ptsip.yaml`은 과거 마이그레이션·호환성 입력이며 두 번째 활성 선언 권위가 아닙니다.
+<!-- ptsip-readme-i18n: dcaa281031e97283191553132c54f1e871bb5575d4bbf6b2c24615b4984d1532 -->
 
-`explicit`, `template`, `hybrid` 선언은 모두 Canonical Effective Responsibility Map으로 구체화됩니다. 구체화기는 등록된 구조와 출처를 해석할 수 있지만 **템플릿 자동 선택, 컴포넌트 소유자 창작, 상충하는 프로젝트 의도의 임의 수정은 금지**됩니다.
+## 단면도 선택과 채택
 
-기존 컴포넌트의 선언 변경은 적용하기 전에 다음 명령으로 검토합니다.
+<!-- ptsip-readme-i18n: 24cf16af287dfddb4f096617de286be6e836f1d0713a7b3a407a213edd9b5f4f -->
+
+repository-local의 경우 PTSIP 구성은 persisted, [`.ptsip/index.json`](../../.ptsip/index.json) 운하의 길 `.ptsip/` 네임스페이스 및 [`.ptsip/profiles/index.json`](../../.ptsip/profiles/index.json) 활동 선택 `*.ptsip.yaml` 사업소개 `default_profile`. 저장소 뿌리 `ptsip.yaml` 역사적인 마이그레이션 / 호환성 입력, 두 번째 활성 선언 기관이 아닙니다.
+
+<!-- ptsip-readme-i18n: 3d6269f0d481d12db999f171a5882d7e5b3e9c9120e73ce7ef6127b17925441f -->
+
+`explicit`, `template`· `hybrid` Canonical 효과적인 책임 지도에 모든 물자를 선언합니다. Materializer는 등록 된 구조와 검증을 해결할 수 있습니다. 그것은해야합니다 **아니다.** 자동 선택 템플릿, 구성 요소 소유자를 발명, 또는 분쟁 해결 프로젝트 의도.
+
+<!-- ptsip-readme-i18n: dff283f8c6a9f673b792d492b35188fc94de5ca91350f87e72d8b8ec91861e07 -->
+
+기존 구성 요소의 경우, 적용하지 않고 선언 변경을 검사:
+
+<!-- ptsip-readme-i18n: be7f1072bf1036e6ff7d9bee95297f296a3a664d618cfe06641dbb43759a7cde -->
 
 ```powershell
 ptsip adopt . `
@@ -251,52 +367,80 @@ ptsip adopt . `
   --json
 ```
 
-프로젝트 소유자가 변경을 검토하고 승인한 뒤에만 `--apply`를 추가합니다. 위 예시는 모든 `tools` 디렉터리를 같은 분류로 처리하라는 규칙이 아닙니다. 현재 정규 소유권 필드는 `classification`이며 과거 `lifecycle_owner`는 마이그레이션 증거로만 사용합니다.
+<!-- ptsip-readme-i18n: d8fef10237172227d3a4851ad9deb50c2c36afae3ba56bc8e555c5306ced69f5 -->
 
-선택적 GitHub 조정 Decision Authority는 **해당 모드가 설정된 경우** `refs/heads/ptsip-policy`를 사용합니다. 권위의 최신 상태를 조회하고 조건부 변경을 적용하여 오래된 작성자의 변경을 거부합니다. 조정에 실패하면 다른 로컬 Decision Store로 암묵적으로 전환하지 않고 새 아키텍처 권위 쓰기를 차단합니다. GitHub는 모든 Specification에 필수인 의존성이 아닙니다.
+추가하여 소유자 검토 변경 만 적용 `--apply`. 이것은 illustrative 명령이며, 지정된 모든 디렉토리를 분류하지 않습니다. `tools`. Canonical 소유권은 `classification`; 역사 `lifecycle_owner` 필드는 마이그레이션 증거입니다.
 
-## 네이티브 기반과 Consumer 경계
+<!-- ptsip-readme-i18n: e9e0a8607ce9d67dfa7e972445f525f22fd4d9605d14a100d4f86f3dce2ed7f0 -->
 
-독립적으로 빌드되는 **일곱 개의 Rust 엔진**은 버전이 부여된 언어 중립 계약과 등록된 진입점 바인딩을 [`src/ptsip/engines/`](../../src/ptsip/engines/) 아래에 보유합니다. [공식 엔진 인덱스](../../src/ptsip/engines/index.json)를 참고하세요.
+GitHub 좌표 결정 권한 사용 `refs/heads/ptsip-policy` **설정하기**. 그것은 신선한 권위를 읽고 stale 작가를 거부하는 조건부 mutations에 의존합니다. Coordination failures block new Architecture-authority writes 오히려 침묵적으로 관련 지역 결정점으로 떨어지는; GitHub는 보편적인 명세 의존성 아닙니다.
 
-| 엔진 | 담당 기능 |
+<!-- ptsip-readme-i18n: a0f828429acdffc13f8c6b00ff58c657f0b47181eac4d2e6ed0f5aaf4ccb0e5f -->
+
+## 기초 및 소비자 경계
+
+<!-- ptsip-readme-i18n: 2a1ac3b007368a8e02ee202c6c506a40777123786567d638a283f5ca13039c0f -->
+
+7 독립적으로 내장 **Rust 엔진** 버전, 언어 중립 계약 및 등록 된 엔트리 포인트 바인딩 [`src/ptsip/engines/`](../../src/ptsip/engines/). 참조 [공식적인 엔진 색인](../../src/ptsip/engines/index.json).
+
+<!-- ptsip-readme-i18n: 8842cd10ccec0902c8ab9d79dbecec3ca123514236ca59efe9a19453c9f9a8eb -->
+
+| 제품 정보 | 공급 능력 |
 | --- | --- |
-| Context | 식별자와 원본에 결합된 검증된 Context 스냅샷 로드 |
-| Storage | 제공자 소유권을 가져오지 않고 제공자 연산 중개 |
-| Validation | 스키마, 계약, 타입 지정 입출력, 사전조건, Case 검증 |
-| Discovery | 등록된 소스 범위와 호출 바인딩 해석 |
-| Planning | 의존성 순서 결정, 변경 영향 평가, 네이티브 호출 준비 |
-| Execution | 호출자가 허용한 요청을 제한된 조건에서 실행하고 효과·중지 결과 기록 |
-| Projection | 검증된 Context를 선언된 출력 형식으로 렌더링 |
+| 설정하기 | 유효성 검사, ID/source-bound Context 스냅샷 |
+| 제품 정보 | 공급자 소유권을 가지고 없는 Mediate 공급자 가동 |
+| 인증 및 인증 | schemas, 계약, 유형 I / O, 사전 조건 및 사례 확인 |
+| 팟캐스트 | 등록된 근원 마감 및 invocation 바인딩을 해결하십시오 |
+| 회사연혁 | 주문 의존도, 변화 평가 및 네이티브 invocation 준비 |
+| 계정 관리 | bounded caller-admitted 요청 및 기록 효과/스톱 |
+| 사업소개 | Render validated Context에 선언된 출력 형식 |
 
-`0.3.8a5`는 Linux, Windows, macOS에서 네이티브 기반을 검증하지만 이것이 Consumer의 프로덕션 설치, 권위 승인, 활성화, 버전별 전환을 암묵적으로 허용하지는 않습니다. Python wheel에는 중립적인 엔진 계약 데이터가 포함되며 **Rust 소스, 네이티브 바이너리, 빌드 산출물은 포함되지 않습니다.** 기존 Consumer API는 계속 사용할 수 있습니다. 자세한 범위는 [릴리스 경계](../../docs/releasenote/tool/0.3.8a5.md)를 확인하세요.
+<!-- ptsip-readme-i18n: 6dc4d46672b3abaaceb9d21357db2f73b6d76fe881227467c0b3823e6b76d4bc -->
 
-PTSIP는 **어느 생명주기가 책임을 소유하는가**를 다룹니다. 별도 [`src/vpms/`](../../src/vpms/)에 있는 Verification Protocol Management System(VPMS)은 **명시적 Verification Case를 어떻게 등록·선택·실행·보고하는가**를 다룹니다. VPMS의 목적 및 검증 상태는 PTSIP 분류·적합성과 분리됩니다.
+`0.3.8a5` Linux, Windows 및 macOS의 기본 기반을 검증합니다. **없음** implicitly 보조 소비자 생산 임명, 권위 입원, 활성화, 또는 versioned cutover. 파이썬 휠은 중립 엔진 계약 데이터를 운반합니다. **아니다.** Rust 소스, native binaries 또는 build 출력. 기존 소비자 API는 사용할 수 있습니다. [공지사항](../releasenote/tool/0.3.8a5.md).
 
-VPMS 공개 조합 API는 호출자가 명시적으로 제공하는 정의, 참조 및 어댑터와 함께 `load_registry_snapshot`, `resolve_selection`, `run_cases`를 사용합니다. 선택적 PTSIP 브리지는 검증된 불변 Effective Responsibility Map 데이터만 소비하며 새로운 프로젝트 권위를 만들지 않습니다. VPMS의 PASS는 PTSIP의 `CONFORMANT`를 의미하지 않으며, 그 반대도 마찬가지입니다.
+<!-- ptsip-readme-i18n: 16237957bf45b9495cd88af15fbc6968d93cb312c35004ad238924423610e07e -->
 
-PTSIP의 적합성 평가 결과는 `CONFORMANT`(종료 코드 `0`), `NON_CONFORMANT`(`5`), `INCOMPLETE`(`6`)입니다. 필수 증거가 없으면 실패 폐쇄 원칙을 적용합니다. Product 배포판 검증은 실제 스냅샷에 결합된 빌드 산출물을 검사합니다. 빌드 단계를 담당하는 컴포넌트가 그 결과물의 Product 소유자라는 뜻은 아닙니다.
+PTSIP 제품정보 **lifecycle 책임 소유**. 독립 [`src/vpms/`](../../src/vpms/) 검증 프로토콜 관리 시스템 (Vertification Protocol Management System)VPMS) 통제 **명시된 Verification Cases가 등록, 선택, 실행 및 보고된 방법**. VPMS 목적/verification 상태는 분리됩니다 PTSIP 분류 및 준수.
 
-## 개발 워크플로와 저장소 책임 지도
+<!-- ptsip-readme-i18n: 6adb8874ce50a04b8eecdde8da719038cc931a19c246101c6351c41ad70ac705 -->
 
-| 경로 | 책임 |
+VPMS 공공 조성 용도 `load_registry_snapshot`, `resolve_selection`· `run_cases`명시된 콜러 소유 정의, 참고 및 어댑터와 함께. 선택 사항 PTSIP 브리지는 유효성 검사 가능한 효과적인 책임 지도 자료를 소비합니다; 그것은 프로젝트 권위를 수립하지 않습니다. VPMS PASS는 불완전하지 않습니다 PTSIP `CONFORMANT`, 또는 부 versa.
+
+<!-- ptsip-readme-i18n: 2bac3c0822e391b501ffcee913f39f9c9bdd592209e4675b3a78a743ae9c8038 -->
+
+PTSIP 적합성 `CONFORMANT` (예) `0`), `NON_CONFORMANT` (`5`), 또는 `INCOMPLETE` (`6`). 필요한 증거를 미끄러운 것은 실패합니다. 제품 유통 검증은 실제 스냅 샷-바운드 내장 된 artifacts를 검사합니다. 빌드 단계를 소유하는 생산품 구성 요소는 결과 제품 artifact의 소유자를 자동으로하지 않습니다.
+
+<!-- ptsip-readme-i18n: 44b4c80bf0e32e26be3a57fbe31563cafda7fe2bda0406787ace36140fa6e190 -->
+
+## 개발자 워크플로우 및 저장소 맵
+
+<!-- ptsip-readme-i18n: 4e65bcaaafc5058626617215e0d8eb5886684f38a986ff276a832289c9b61023 -->
+
+| 오시는길 | 책임 |
 | --- | --- |
-| [`.ptsip/`](../../.ptsip/) | Consumer 저장소 인덱스, 프로파일, Context 관리. Task/runtime은 예약 상태 |
-| [`src/policy/index.yaml`](../../src/policy/index.yaml) | 현재 Support Feature 정책 레지스트리(`ACTIVE`/`DRAFT`/`RETIRED`) |
-| [`developer/policy/`](../../developer/policy/) | 개발자용 기계 판독 정책과 바인딩 |
-| [`developer/planning/`](../../developer/planning/) 및 [`planning/`](../../planning/) | 정책에서 도출된 실행 계획, 작업 단위, 과거 기록 |
-| [`developer/automation/`](../../developer/automation/) | Go 기반 개발 도구와 정책·계획·릴리스 제어 |
-| [`src/ptsip/`](../../src/ptsip/) | Python Consumer Tool, 적합성 평가, 프로파일 구체화, 엔진 계약 |
-| [`src/ptsip/engines/`](../../src/ptsip/engines/) | 독립적으로 소유되는 일곱 네이티브 엔진의 구현과 계약 |
-| [`src/vpms/`](../../src/vpms/) | 독립 검증 서브시스템 |
-| [`src/tests/`](../../src/tests/) 및 [`developer/tests/`](../../developer/tests/) | Consumer, 개발자, 네이티브 검증 |
-| [`registry/`](../../registry/) 및 [`schemas/`](../../schemas/) | Specification 레지스트리와 스키마 |
-| [`.github/workflows/`](../../.github/workflows/) | 테스트, 릴리스, README 번역 워크플로 |
-| [`docs/releasenote/`](../../docs/releasenote/) | Tool, Project Profile, Specification 릴리스 기록 |
+| [`.ptsip/`](../../.ptsip/) | Consumer-repository indexes, 프로파일, 컨텍스트; 작업/시간은 예약 |
+| [`src/policy/index.yaml`](../../src/policy/index.yaml) | 현재 지원 특징 정책 등록 (`ACTIVE`/`DRAFT`/`RETIRED`) |
+| [`developer/policy/`](../../developer/policy/) | 개발자 기계 정책 및 바인딩 |
+| [`developer/planning/`](../../developer/planning/) · [`planning/`](../../planning/) | 정책 실행 계획, 작업 단위 및 역사 기록 |
+| [`developer/automation/`](../../developer/automation/) | 이름 * 개발자 툴링, 정책/계획/출판 제어 |
+| [`src/ptsip/`](../../src/ptsip/) | Python Consumer Tool, 적합성, 프로파일 재료화 및 엔진 계약 |
+| [`src/ptsip/engines/`](../../src/ptsip/engines/) | 7개의 독립적으로 소유된 네이티브 엔진 구현/계약 |
+| [`src/vpms/`](../../src/vpms/) | 독립적 인 검증 subsystem |
+| [`src/tests/`](../../src/tests/) · [`developer/tests/`](../../developer/tests/) | 소비자, 개발자 및 네이티브 검증 |
+| [`registry/`](../../registry/) · [`schemas/`](../../schemas/) | 사양 등록 및 스키마 |
+| [`.github/workflows/`](../../.github/workflows/) | 테스트, 릴리즈 및 README 번역 워크플로우 |
+| [`docs/releasenote/`](../releasenote/) | 도구, 프로젝트 프로필 및 사양 릴리스 기록 |
 
-코딩 에이전트용 [`AGENTS.md`](../../AGENTS.md)는 **정책 권위의 대체물이 아니라** 실행 지침을 제공하는 진입 프로젝션입니다. 정책이 계획을 지배하고 계획이 구현을 지배하므로 하위 계층이 상위의 권위 있는 결정을 암묵적으로 변경할 수 없습니다. [CONTRIBUTING.md](../../CONTRIBUTING.md)와 [개발 자동화 안내](../../developer/automation/README.md)를 참고하세요.
+<!-- ptsip-readme-i18n: e2dea99f3cc943476fb0100fdf4d5a615503cc2eda5871849ef79b74253d474c -->
 
-범위를 제한한 의존성 분석과 검증 계획은 참고용이며 현재의 아키텍처 선언이나 정확한 소스 기준 릴리스 검증을 대신하지 않습니다.
+코딩 대리인을 위해, [`AGENTS.md`](../../AGENTS.md) 입학 계획 **아니다.** 관련 기관 정책 거버넌스 계획, 계획 거버넌스 구현; 낮은 수준은 침묵적으로 권한 결정을 변경해야합니다. 이름 * [협력.md](../../CONTRIBUTING.md) 그리고 [개발자 자동화 가이드](../../developer/automation/README.md).
+
+<!-- ptsip-readme-i18n: 72000d513a1151051d5f5393615fa1885113fae106ac0896d27bb082b1b65c32 -->
+
+Bounded Dependency analysis and validation Planning are advisory and do not replace current Architecture 선언 or exact-source release validation:
+
+<!-- ptsip-readme-i18n: 0423f61b0b43ac93ee8929965e85aee75574e7a2a48269c0502baa0e87aa67f1 -->
 
 ```powershell
 ptsip dependency analyze .
@@ -304,25 +448,45 @@ ptsip dependency review-pack . --max-items 8 --max-context-bytes 12000
 ptsip dependency validation-plan . --changed src/ptsip/dependency_analysis.py --json
 ```
 
-[`.github/workflows/tooling-release.yml`](../../.github/workflows/tooling-release.yml)의 PREPARE와 PUBLISH는 각각 정확한 소스에 대한 검증을 요구하는 별개의 단계입니다. 문서, 테스트, 워크플로 또는 Tool 구현만 변경했다고 해서 불변 Specification 리비전이 자동으로 바뀌지 않습니다.
+<!-- ptsip-readme-i18n: 11518e667820b411755a9cbfcc3f633252809a646cc0c928eaaf26f1875bfdb7 -->
 
-## 릴리스 노트 및 참고 자료
+PREPARE 및 PUBLISH는 독립적으로, 정확한 자원 검증 단계 [`.github/workflows/tooling-release.yml`](../../.github/workflows/tooling-release.yml). 문서, 테스트, 워크플로우 또는 도구 전용 변경은 immutable Specification을 변경하지 않습니다.
 
-- [현재 `0.3.8a5` 릴리스 후보](../../docs/releasenote/tool/0.3.8a5.md): 현재 정책 검증, 등록된 Check 범위, 일곱 엔진의 기반. **배포 대기 중**.
-- [공개된 `0.3.8a4` 기준선](../../docs/releasenote/tool/0.3.8a4.md): Go 기반 개발 자동화, Project Profile, 릴리스 검증.
-- [과거 Tool 릴리스 노트](../../docs/releasenote/tool/README.md): 이전 릴리스와 네임스페이스 및 Context Plane 마이그레이션.
-- [Specification/Project Profile/Tool 릴리스 기록](../../docs/releasenote/README.md): 각각 독립적으로 버전이 관리되는 생명주기 기록.
+<!-- ptsip-readme-i18n: bc857e872269efb32e78bc6bffa445c5226891a9128b0dc08c14b839f4892a84 -->
 
-## 라이선스 권위
+## 노트 및 배경
 
-PTSIP의 라이선스 권위는 [`License-Authority/`](../../License-Authority/)에만 존재합니다. 기계 판독 진입점은 [`License-Authority/license-authority.yaml`](../../License-Authority/license-authority.yaml), 법적 효력이 있는 본문은 [`License-Authority/LICENSE.md`](../../License-Authority/LICENSE.md)입니다.
+<!-- ptsip-readme-i18n: 9b64e2d1fe992d064953141ce8b6ea96db3c9384a48531559512ac6cbc876218 -->
 
-License Authority에 명시된 현재 효력 발생 시점은 UTC 기준 `2026-09-15T00:00:00Z`입니다.
+- [현재 위치 `0.3.8a5` 공지사항](../releasenote/tool/0.3.8a5.md): 현재 승인, 등록 확인 적용 및 7 엔진 기반; **간행물**.
+- [이름 * `0.3.8a4` 기본 정보](../releasenote/tool/0.3.8a4.md): Go-native 개발자 자동화, 프로젝트 프로필 및 릴리스 검증.
+- [역사 도구 노트](../releasenote/tool/README.md): 이전 릴리스, namespace 및 Context Plane 마이그레이션.
+- [Specification/Project Profile/Tool 릴리즈 레코드](../releasenote/README.md): 독립적으로 versioned Lifecycle 역사.
 
-이 저장소의 다른 위치에 있는 라이선스 관련 문구는 정보 제공 또는 맥락 설명을 위한 것일 뿐입니다. 그러한 문구는 라이선스의 일부가 되거나 라이선스를 변경하거나 참조를 통해 자동 편입되지 않습니다.
+<!-- ptsip-readme-i18n: e0775e6d76d74833cd954ea3f8f1e7e939f92246af5b0f1c2c3e92d4d041620d -->
 
-일반 Tool 릴리스, Specification 검증, Tool 버전 변경, 문서의 언급, 키워드 일치, AI의 의미 추정은 License Authority 진입을 승인하지 않습니다. 진입은 `License-Authority/license-authority.yaml`에서 선언한 트리거로만 허용됩니다.
+## 라이센스 기관
+
+<!-- ptsip-readme-i18n: 0ed51af0b127bcc59078a0f13e688d71bca4941a69fe58ca5653c6765bce3e14 -->
+
+PTSIP 라이센스 당국은 아래에서 독점적으로 포함됩니다. [`License-Authority/`](../../License-Authority/). 기계 읽기 쉬운 입장 점은 입니다 [`License-Authority/license-authority.yaml`](../../License-Authority/license-authority.yaml), 그리고 통제 법적인 원본은 입니다 [`License-Authority/LICENSE.md`](../../License-Authority/LICENSE.md).
+
+<!-- ptsip-readme-i18n: 14628a6a0ca002f678cd9fc046145f14ab421c0c95ae817ae40c007e19a7267e -->
+
+현재 라이센스 당국에 의해 선언 된 수의 효과적인 시간은 `2026-09-15T00:00:00Z` (UTC).
+
+<!-- ptsip-readme-i18n: 273f757fbd6cb2dda56295c1a077a2b63225e0b98e5e1227d557f0d3d7498ab9 -->
+
+이 저장소에 다른 언어의 라이센스 관련 단어는 정보 또는 문맥에만 있습니다. 그것은 라이센스의 일부가되지 않습니다, 수정, 또는 참조에 의해 통합됩니다.
+
+<!-- ptsip-readme-i18n: 1cef3355258f760015285ad4d0f18a62e29b628f2b34417cc2aad74150f106ca -->
+
+일반 도구 릴리스, 사양 검증, 도구 버전 변경, 문서 언급, 키워드 일치, 및 AI semantic 추측은 라이센스 기관 항목을 승인하지 않습니다. Entry는 선언된 트리거만 사용합니다. `License-Authority/license-authority.yaml`.
+
+<!-- ptsip-readme-i18n: 22ddfe0f8e6abeb1ef8baf20648a42115c4c957eeebfb6ac72520fb1d163c561 -->
 
 ## 언어 및 프로젝트 상태
 
-영문 README가 프로젝트 개요의 정본입니다. [번역 문서](../../docs/translated/)는 등록된 Argos Translate 워크플로를 사용해 `main`에서 다시 생성됩니다. 번역은 영문 개요나 기계 판독 정책보다 우선하지 않습니다. PTSIP는 현재 실험적 프로젝트이며 릴리스 관련 주장은 정확한 소스 및 검증 증거에 결합됩니다.
+<!-- ptsip-readme-i18n: 363cb44c9dc5e13a7b09566f187af0b6c87e8af231e5e8e8ab8f0e01f642f717 -->
+
+이 영어 README는 운하 프로젝트 개요입니다. [관련 문서](./) 관련 상품 `main` 등록 된 Argos 번역 워크플로우를 사용; 번역은 영어 개요 또는 기계 학습 정책을 무시하지 않습니다. PTSIP 실험 및 출시 주장은 정확한 소스 및 검증 증거에 바인딩됩니다.
