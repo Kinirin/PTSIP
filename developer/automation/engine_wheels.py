@@ -135,7 +135,7 @@ def build(
     dist_info = f"{wheel_dist}-{version}.dist-info"
     script = f"{wheel_dist}-{version}.data/scripts/{command}{extension}"
     metadata = (
-        "Metadata-Version: 2.3\n"
+        "Metadata-Version: 2.4\n"
         f"Name: {distribution}\n"
         f"Version: {version}\n"
         "Summary: Independently versioned official PTSIP native engine\n"
