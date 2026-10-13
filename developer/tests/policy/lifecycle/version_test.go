@@ -25,22 +25,18 @@ func versionPolicy(version, status string) object {
 	return payload
 }
 
-func TestPolicyVersionSchemaPreservesLifecycleAndNumericSyntax(t *testing.T) {
+func TestVersionSyntaxIndependentOfPolicyStatus(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
-	for _, test := range []struct {
-		version, status string
-		valid           bool
-	}{
-		{"0.0", "DRAFT", true}, {"0.137", "DRAFT", true}, {"1.0", "APPROVED", true}, {"1.137", "APPROVED", true},
-		{"2.0", "APPROVED", true}, {"2.105", "APPROVED", true}, {"12.248", "APPROVED", true}, {"3.7", "SUPERSEDED", false}, {"4.0", "RETIRED", true},
-		{"1.0", "DRAFT", false}, {"0.1", "APPROVED", false}, {"1.9", "ACTIVE", false}, {"0.9", "RETIRED", true},
-		{"01.2", "DRAFT", false}, {"1.02", "APPROVED", false}, {"1.0-draft", "APPROVED", false}, {"1.0.0", "APPROVED", false}, {"draft-1", "DRAFT", false},
+	for _, tc := range []struct{ version, status string; valid bool }{
+		{"0.0", "DRAFT", true}, {"1.0", "DRAFT", true},
+		{"0.1", "APPROVED", true}, {"2.0", "APPROVED", true},
+		{"0.9", "RETIRED", true}, {"12.248", "DRAFT", true},
+		{"01.2", "DRAFT", false}, {"1.02", "APPROVED", false},
+		{"1.0.0", "APPROVED", false}, {"draft-1", "DRAFT", false},
 	} {
-		t.Run(test.status+"/"+test.version, func(t *testing.T) {
-			err := repo.Validate("developer/policy/schemas/root-family-policy.schema.json", versionPolicy(test.version, test.status))
-			if (err == nil) != test.valid {
-				t.Fatalf("valid=%v, error=%v", test.valid, err)
-			}
+		t.Run(tc.status+"/"+tc.version, func(t *testing.T) {
+			err := repo.Validate(lifecycle.PolicyVersionContract, object{"status": tc.status, "version": tc.version})
+			if (err == nil) != tc.valid { t.Fatalf("valid=%v error=%v", tc.valid, err) }
 		})
 	}
 }
@@ -49,16 +45,20 @@ func TestPolicyVersionSemanticMismatchAndInitialValue(t *testing.T) {
 	if got := lifecycle.InitialPolicyVersion(); got != "0.0" {
 		t.Fatalf("initial version=%s", got)
 	}
-	errors := lifecycle.ValidatePolicyVersionSemantics("MPD-REAL-0005", versionPolicy("1.4", "ACTIVE"))
-	if len(errors) != 1 || !strings.Contains(errors[0], "POLICY_VERSION_STATUS_MISMATCH") {
-		t.Fatalf("mismatch not detected: %v", errors)
+	for _, tc := range []struct{ version, status string }{{"1.4", "DRAFT"}, {"0.4", "APPROVED"}, {"0.4", "RETIRED"}} {
+		if errors := lifecycle.ValidatePolicyVersionSemantics("MPD-REAL-0005", versionPolicy(tc.version, tc.status)); len(errors) != 0 {
+			t.Fatalf("status-major coupling persists: %v", errors)
+		}
+	}
+	if errors := lifecycle.ValidatePolicyVersionSemantics("MPD-REAL-0005", versionPolicy("1.4.0", "DRAFT")); len(errors) != 1 {
+		t.Fatalf("invalid numeric version accepted: %v", errors)
 	}
 }
 
 func TestPolicyVersionTransitionsPreserveApprovedChangeClasses(t *testing.T) {
 	for _, test := range []struct{ version, status, change, target, want string }{
 		{"0.12", "DRAFT", "DRAFT_NORMATIVE", "DRAFT", "0.13"},
-		{"0.12", "DRAFT", "LIFECYCLE_TRANSITION", "APPROVED", "1.12"},
+		{"0.12", "DRAFT", "LIFECYCLE_TRANSITION", "APPROVED", "0.12"},
 		{"2.99", "APPROVED", "COMPATIBLE_NORMATIVE", "APPROVED", "2.100"},
 		{"2.99", "APPROVED", "INCOMPATIBLE_NORMATIVE", "APPROVED", "3.0"},
 		{"3.7", "APPROVED", "LIFECYCLE_TRANSITION", "RETIRED", "3.7"},

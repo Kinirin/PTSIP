@@ -54,14 +54,14 @@ func TestGOVPolicyStatusContractRejectsOldAndCrossStatusValues(t *testing.T) {
 	}
 }
 
-func TestPolicyDraftPassAutomaticallyNormalizesWithoutMutatingInput(t *testing.T) {
+func TestPolicyDraftPassDoesNotAutomaticallyPromote(t *testing.T) {
 	repo := testrepo.Open(testrepo.Root(t))
 	input := object{"status": "DRAFT", "substatus": "Pass"}
 	got, err := lifecycle.NormalizePolicyStatus(repo, input)
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := object{"status": "APPROVED", "substatus": "Default"}
+	want := object{"status": "DRAFT", "substatus": "Pass"}
 	if !reflect.DeepEqual(got, want) || input["status"] != "DRAFT" || input["substatus"] != "Pass" {
 		t.Fatalf("normalization result %v, input %v", got, input)
 	}

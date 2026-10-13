@@ -27,14 +27,9 @@ func ValidatePolicyVersionSemantics(id string, payload Object) []string {
 		return []string{}
 	}
 	version := Text(identity["version"])
-	major, _, err := policyParseVersion(version)
+	_, _, err := policyParseVersion(version)
 	if err != nil {
 		return []string{id + ": " + err.Error()}
-	}
-	status := Text(identity["status"])
-	valid := status == "DRAFT" && major == 0 || status == "APPROVED" && major >= 1 || status == "RETIRED"
-	if !valid {
-		return []string{id + ": POLICY_VERSION_STATUS_MISMATCH version=" + version + " status=" + status}
 	}
 	return []string{}
 }
@@ -73,20 +68,20 @@ func ResolvePolicyVersionTransition(version, status, changeClass, target string)
 	case "NON_NORMATIVE":
 		valid = target == status
 	case "DRAFT_NORMATIVE":
-		valid = status == "DRAFT" && target == "DRAFT" && major == 0
+		valid = status == "DRAFT" && target == "DRAFT"
 		nextMinor++
 	case "LIFECYCLE_TRANSITION":
-		if status == "DRAFT" && target == "APPROVED" && major == 0 {
-			nextMajor = 1
-		} else if status == "APPROVED" && target == "RETIRED" && major >= 1 {
+		if status == "DRAFT" && target == "APPROVED" {
+			// Approval never imposes an implicit version-major change.
+		} else if status == "APPROVED" && target == "RETIRED" {
 		} else {
 			valid = false
 		}
 	case "COMPATIBLE_NORMATIVE":
-		valid = status == "APPROVED" && target == "APPROVED" && major >= 1
+		valid = status == "APPROVED" && target == "APPROVED"
 		nextMinor++
 	case "INCOMPATIBLE_NORMATIVE":
-		valid = status == "APPROVED" && target == "APPROVED" && major >= 1
+		valid = status == "APPROVED" && target == "APPROVED"
 		nextMajor++
 		nextMinor = 0
 	}

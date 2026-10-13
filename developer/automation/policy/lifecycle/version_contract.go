@@ -20,7 +20,7 @@ func ValidatePolicyLifecycleVersion(r Repository, identity Object) error {
 		return policyFailure("INVALID_POLICY_STATUS", err.Error())
 	}
 	if err := r.Validate(PolicyVersionContract, Object{"status": identity["status"], "version": identity["version"]}); err != nil {
-		return policyFailure("POLICY_VERSION_STATUS_MISMATCH", err.Error())
+		return policyFailure("INVALID_POLICY_VERSION", err.Error())
 	}
 	return nil
 }

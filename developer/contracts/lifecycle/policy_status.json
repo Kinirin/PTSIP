@@ -5,14 +5,15 @@
   "artifact_class": "DEVELOPER_POLICY_LIFECYCLE_STATUS_CONTRACT",
   "authority": {
     "primary_owner_family": "GOV",
-    "policy_ref": "developer/policy/GOV/MPD-GOV-0001.yaml",
-    "policy_section": "rules.policy_lifecycle.policy_status",
-    "approval_ref": "developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml",
+    "approval_ref": "developer/policy/approvals/MPA-20261013-LIFECYCLE-STAGE-DECOUPLING-KEEP-LATEST.yaml",
     "policy_scope": "PTSIP_DEVELOPER_POLICY",
     "repository_path_scope": "developer/**",
     "excluded_paths": [
       "developer/policy/legacy/**"
-    ]
+    ],
+    "policy_authority_ref": "developer/policy/registries/family-schema-rebuild.json#/lifecycle_contract_usage/decisions",
+    "successor_governance_policy": "PENDING_INDEPENDENT_GOV_DECLARATION",
+    "retired_GOV_normative_fallback": false
   },
   "type": "object",
   "required": [
@@ -113,10 +114,10 @@
       "Default": "Pre-review draft.",
       "Reviewed": "Reviewed by the user; final response is pending.",
       "Denied": "Draft denied by the user.",
-      "Pass": "User-approved draft; automatically normalize to APPROVED.Default."
+      "Pass": "Draft review marker; no automatic approval or status change."
     },
     "APPROVED": {
-      "Default": "User policy approval; equivalent to DRAFT.Pass.",
+      "Default": "Explicitly approved policy; not equivalent to DRAFT.Pass.",
       "Applying": "Implementation in accordance with the approved policy is in progress.",
       "Application_Problems": "A policy conflict occurred during application; return to Default when the conflict is resolved.",
       "Unresolved": "Policy implementation is incomplete.",
@@ -127,20 +128,6 @@
       "Removable": "Historical cleanup is complete and deletion permission is approved.",
       "Waiting": "Unresolved problems prevent policy removal."
     }
-  },
-  "automatic_normalization": {
-    "from": {
-      "status": "DRAFT",
-      "substatus": "Pass"
-    },
-    "to": {
-      "status": "APPROVED",
-      "substatus": "Default"
-    },
-    "automatic": true,
-    "semantic_equivalence": true,
-    "additional_user_approval_required": false,
-    "creates_new_authority": false
   },
   "automatic_recovery": {
     "from": {
@@ -159,7 +146,9 @@
     "implementation_authorization_is_independent": true,
     "existing_policy_record_bulk_rewrite": "CURRENT_REGISTERED_POLICY_FILES_EXCLUDING_LEGACY",
     "existing_validator_cutover": "GOV_CONTRACT_ADMITTED",
-    "retired_removable_automatically_deletes_files": false
+    "retired_removable_automatically_deletes_files": false,
+    "draft_pass_automatic_promotion": "REMOVED",
+    "policy_authority_ref": "developer/policy/approvals/MPA-20261013-LIFECYCLE-STAGE-DECOUPLING-KEEP-LATEST.yaml"
   },
   "$ref": "#/$defs/policy_fields",
   "resolution_authority": {
