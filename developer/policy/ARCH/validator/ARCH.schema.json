@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "",
+  "title": "ARCH schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_class",
+    "policy",
+    "authority_subject",
+    "exclusive_kernel",
+    "rules",
+    "relations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "ptsip-developer-root-family-policy/v1"},
+    "policy_class": {
+        [
+            "const": "PTSIP_DEVELOPER_POLICY",
+            "responsibility_family": "ARCH"
+        ]
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "title",
+        "status",
+        "authority_subject"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^MPD-ARCH-[0-9]{4}$"
+        },
+        "version": {
+          "$ref": "urn:developer-policy:lifecycle-version:v1#/$defs/policy_version"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": [
+            {
+                "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/status",
+                "substatus": {
+                    "type": "string"
+                }
+            },
+        ],
+        "authority_subject":[
+            {
+                "type": "object",
+                "required": [
+                "id",
+                "statement"
+                ]
+            } 
+        ]
+        
+
+      }
+  }
+}
