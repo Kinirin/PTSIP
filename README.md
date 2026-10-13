@@ -6,18 +6,16 @@
 
 > **Purpose precedes reuse.** Determine why a responsibility exists and which lifecycle owns it before optimizing how code is shared.
 
-## Current versions and publication status
+## Component versions
 
 | Identity | Source-tree value |
 | --- | --- |
 | PTSIP_Package | `0.3.8.<SHA6>` — composition assigned after successful publication |
-| textTool | `0.3.8a6` — **unpublished prerelease candidate** |
-| Latest published Tool prerelease | `0.3.8a5` |
+| PTSIP_Tool | `0.3.8b1` |
 | Project Profile | `pp.1.02` |
 | Engine | Context/Projection `0.2.0`; Storage/Validation/Discovery/Planning/Execution `0.3.0` |
-| Bound immutable `SPEC_REVISION` | `3c47816770d194ae42f98faedc911d980db0e62a` |
 
-Package composition, Tool, each engine, Project Profile and immutable Specification revision remain independent. Read [what changed in `0.3.8a6`](docs/releasenote/tool/0.3.8a6.md), the [Tool release history](docs/releasenote/tool/README.md), or [the release workflow](.github/workflows/tooling-release.yml). Release verification is selected from `.github/test_modes.yaml` and runs exclusively in `tooling-test.yml`; publication consumes that exact-source evidence in `tooling-release.yml`.
+Package composition, Tool, each engine and Project Profile retain independent versions. The immutable Specification binding is recorded in the canonical composition and shipping manifest. Read [what changed in `0.3.8b1`](docs/releasenote/tool/0.3.8b1.md), the [Tool release history](docs/releasenote/tool/README.md), or [the release workflow](.github/workflows/tooling-release.yml). Release verification is selected from `.github/test_modes.yaml` and runs exclusively in `tooling-test.yml`; publication consumes that exact-source evidence in `tooling-release.yml`. Actual publication state and exact Package composition are recorded in the version-specific release assets.
 
 ## Quick start
 
@@ -31,10 +29,10 @@ ptsip --version
 ptsip spec
 ```
 
-To install the published `0.3.8a5` prerelease specifically (ordinary pip resolution might select the latest stable version instead):
+To install Tool `0.3.8b1` specifically (ordinary pip resolution might select a stable version instead):
 
 ```powershell
-python -m pip install "PTSIP==0.3.8a5"
+python -m pip install "PTSIP==0.3.8b1"
 ```
 
 To develop this repository directly:

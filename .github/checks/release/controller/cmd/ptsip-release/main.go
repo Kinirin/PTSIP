@@ -28,6 +28,7 @@ func main() {
 	selectionRef := f.String("selection", ".artifacts/release/selection.json", "verified selection")
 	runID := f.Int64("run-id", 0, "original tooling-test run")
 	resumeID := f.Int64("release-id", 0, "existing verified-source GitHub release ID")
+	destination := f.String("destination", "github-pypi", "registered publication destination")
 	inputRef := f.String("input", ".artifacts/release/verified", "original verified artifacts")
 	f.Parse(os.Args[2:])
 	var value any
@@ -76,6 +77,12 @@ func main() {
 		} else if command == "prepare-shipping" {
 			value, err = release.PrepareShipping(*root, s, *runID, *inputRef, *output)
 		} else if command == "pypi-stage" || command == "pypi-verify" {
+			if command == "pypi-stage" {
+				err = release.AdmitPublisherScope(*root, s, *destination)
+				if err != nil {
+					break
+				}
+			}
 			err = release.PyPIStage(*root, s, *output, command == "pypi-verify")
 			if err == nil && command == "pypi-stage" && os.Getenv("GITHUB_OUTPUT") != "" {
 				matrix := struct {
@@ -87,7 +94,7 @@ func main() {
 						err = e
 						break
 					}
-					if len(entries) > 0 {
+					if len(entries) > 0 && *destination == "github-pypi" {
 						environment, e := release.PublisherEnvironment(*root, c)
 						if e != nil {
 							err = e

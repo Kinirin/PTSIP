@@ -13,24 +13,22 @@
 
 > **목적은 재사용합니다.** 책임이 존재하고 수명주기가 코드를 공유하기 전에 그것을 소유하는 것을 결정합니다.
 
-<!-- ptsip-readme-i18n: bba81f74e9129ce0beafa7b2677e266fd2909dd0a93188af9315a0687bc5c81a -->
+<!-- ptsip-readme-i18n: 2326fa36ed3b50d8502638bc070c7a1166c6a7b36fa1b48e83ca40212d5f30d0 -->
 
-## 현재 버전 및 출판 상태
+## 구성요소 버전
 
-<!-- ptsip-readme-i18n: de4e8e6bd5a9662247c3ab56423d7e4f47784cb74e0c32c80ede361fb811e84b -->
+<!-- ptsip-readme-i18n: c367e12d1b55e1c2e875b6380530816503c574f885f8c2d962f2c2a8e11bb4a5 -->
 
-| 이름 * | 소스 트리 값 |
+| 식별자 | 소스 트리 값 |
 | --- | --- |
-| PTSIP 패키지 | `0.3.8.<SHA6>` — 성공적인 출판 후 할당된 구성 |
-| 텍스트 도구 | `0.3.8a6` — **unpublished 사전 릴리스 후보** |
-| 최근 게시된 도구 prerelease | `0.3.8a5` |
-| 사업영역 | `pp.1.02` |
-| 제품 정보 | Context/프로젝트 `0.2.0`; 저장/밸런스/Discovery/Planning/Execution `0.3.0` |
-| 경계 immutable `SPEC_REVISION` | `3c47816770d194ae42f98faedc911d980db0e62a` |
+| PTSIP_Package | `0.3.8.<SHA6>` — 게시 완료 후 결정되는 구성 식별자 |
+| PTSIP_Tool | `0.3.8b1` |
+| Project Profile | `pp.1.02` |
+| Engine | Context/Projection `0.2.0`; Storage/Validation/Discovery/Planning/Execution `0.3.0` |
 
-<!-- ptsip-readme-i18n: eb723fc5ca1044b732ccbb1159f0de6874ad5fe1ea316b3a55d8a065414dad6f -->
+<!-- ptsip-readme-i18n: 1b5e6c193ce4a49f1fb453b3c05c9006e0f7431f820a9e86f038656d72da9768 -->
 
-패키지 구성, 도구, 각 엔진, 프로젝트 프로필 및 immutable 사양 개정은 독립적으로 유지. ...에서 [자주 묻는 질문 `0.3.8a6`](../releasenote/tool/0.3.8a6.md)· [Tool 출시](../releasenote/tool/README.md), 또는 [릴리스 워크플로우](../../.github/workflows/tooling-release.yml). 릴리스 검증은 선택 `.github/test_modes.yaml` 그리고 독점적으로 실행 `tooling-test.yml`; 출판은 정확한 소스 증거를 소비 `tooling-release.yml`.
+Package 구성, Tool, 각 엔진과 Project Profile은 독립적인 버전을 유지합니다. 변경 불가능한 Specification 바인딩은 canonical 구성과 shipping manifest에 기록됩니다. [Tool `0.3.8b1` 변경 내용](../releasenote/tool/0.3.8b1.md), [Tool 릴리스 이력](../releasenote/tool/README.md), [릴리스 workflow](../../.github/workflows/tooling-release.yml)를 참조하세요. 릴리스 검증은 `.github/test_modes.yaml`의 모드로 선택하여 `tooling-test.yml`에서만 수행하고, `tooling-release.yml`은 정확한 source의 검증 증거를 소비하여 게시합니다. 실제 게시 상태와 정확한 Package 구성은 버전별 릴리스 산출물에 기록됩니다.
 
 <!-- ptsip-readme-i18n: 9535b10be9abb7a87788c3f5107c21822734a4507aeb464f8710fb8c4866b965 -->
 
@@ -52,14 +50,14 @@ ptsip --version
 ptsip spec
 ```
 
-<!-- ptsip-readme-i18n: 8a3f2b3a2ba39bed4427b4d72bc528e8391c933d38ed204c91634891e76fb9e7 -->
+<!-- ptsip-readme-i18n: 7278b556e430da33c3958ee8d688408d287478586bf3973deaf94104540f5438 -->
 
-출판물 설치 `0.3.8a5` 특별히 사전 릴리스 (일반적인 pip 해상도 대신 최신 안정 버전을 선택할 수 있습니다):
+Tool `0.3.8b1`을 명시하여 설치하려면 다음 명령을 사용합니다. 일반적인 pip 버전 선택은 안정 버전을 선택할 수 있습니다:
 
-<!-- ptsip-readme-i18n: 22930aed19054422e5ddca2f6ebe533bdf397a79afa759b88946b7e10fd4fb43 -->
+<!-- ptsip-readme-i18n: 0a66fc01621beb4beec85223a0b244e94545e97f2afabfd5688c003c11b92223 -->
 
 ```powershell
-python -m pip install "PTSIP==0.3.8a5"
+python -m pip install "PTSIP==0.3.8b1"
 ```
 
 <!-- ptsip-readme-i18n: eeb5b10629d40c38fe851ec3b201220313d0abdf230abe498265d788fcc7c847 -->

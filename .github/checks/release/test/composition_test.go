@@ -16,7 +16,7 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 		t.Fatal(err)
 	}
 	c, err := release.ParseComposition(data)
-	if err != nil || c.Tool != "0.3.8a6" || c.Profile != "pp.1.02" || len(c.Engines) != 7 {
+	if err != nil || c.Tool == "" || c.Profile != "pp.1.02" || len(c.Engines) != 7 {
 		t.Fatalf("canonical declaration: %v", err)
 	}
 	noDeclaration := strings.Split(string(data), "[tool.ptsip.release]")[0]
@@ -43,6 +43,10 @@ func TestPublishedDeclarationDoesNotRewriteCurrentVersions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	before, err := release.ParseComposition(data)
+	if err != nil {
+		t.Fatal(err)
+	}
 	fixture := t.TempDir()
 	if err := os.WriteFile(filepath.Join(fixture, "pyproject.toml"), data, 0644); err != nil {
 		t.Fatal(err)
@@ -52,7 +56,7 @@ func TestPublishedDeclarationDoesNotRewriteCurrentVersions(t *testing.T) {
 		t.Fatal(err)
 	}
 	c, err := release.ReadComposition(fixture)
-	if err != nil || c.Tool != "0.3.8a6" || c.Engines["context"] != "0.2.0" || c.Published == nil || c.Published.Source != s.SourceSHA {
+	if err != nil || c.Tool != before.Tool || c.Engines["context"] != before.Engines["context"] || c.Published == nil || c.Published.Source != s.SourceSHA {
 		t.Fatalf("publication record replaced current composition: %v", err)
 	}
 	if err := release.RecordPublishedDeclaration(fixture, s); err != nil {

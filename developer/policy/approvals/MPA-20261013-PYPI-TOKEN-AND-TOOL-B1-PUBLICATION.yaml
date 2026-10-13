@@ -1,0 +1,26 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-PYPI-TOKEN-AND-TOOL-B1-PUBLICATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User requested switching the release workflow to the registered API token
+    and publishing version 0.3.8b1 as a trial release. User confirmed that the
+    token is scoped to PTSIP only. This authorizes real Tool 0.3.8b1 publication
+    using the pypi environment secret PYPI_API_TOKEN, exact-source verification,
+    GitHub publication and PyPI upload. Engine and Profile versions and Package
+    numeric base remain unchanged. Engine PyPI project publication is outside
+    this token's declared authority and must fail before publication. No secret
+    value is read, logged or committed. Existing releases remain immutable.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  requested_policy_id: MPD-CTRL-0001
+  affected_policy_ids:
+  - MPD-CTRL-0001
+  - MPD-INFO-0005
+  recorded_at: '2026-10-13'

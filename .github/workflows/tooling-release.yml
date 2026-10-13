@@ -33,6 +33,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       TARGETS: ${{ inputs.targets }}
       OPTIONAL: ${{ inputs.optional_platforms }}
+      DESTINATION: ${{ inputs.destination }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -51,7 +52,7 @@ jobs:
       - name: Consume immutable PyPI file identities before publication
         id: preflight
         shell: bash
-        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-stage --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-stage --root "$GITHUB_WORKSPACE" --destination "$DESTINATION" --output .artifacts/release/shipping
       - uses: actions/upload-artifact@v7
         with:
           name: admitted-publication-${{ github.sha }}
@@ -89,7 +90,6 @@ jobs:
     environment: ${{ matrix.environment }}
     permissions:
       contents: read
-      id-token: write
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.release-admission.outputs.publication_matrix) }}
@@ -101,6 +101,9 @@ jobs:
       - name: Upload the admitted original wheel set
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          attestations: false
           packages-dir: .artifacts/release/shipping/pypi/${{ matrix.component }}
   package-record:
     needs: [release-admission, github-publication, pypi-publication]

@@ -400,7 +400,12 @@ func PyPIStage(root string, s Selection, output string, verify bool) error {
 
 func PublisherEnvironment(root string, c Component) (string, error) {
 	var routing struct {
-		Schema string `json:"schema_version"`
+		Schema         string `json:"schema_version"`
+		Authentication struct {
+			Mode, Environment, Secret, Username string
+			Scope                               []string `json:"declared_project_scope"`
+			Fallback                            bool     `json:"oidc_fallback"`
+		} `json:"authentication"`
 		Tool   struct{ Project, Environment string }
 		Engine struct {
 			Project     string `json:"project_pattern"`
@@ -410,16 +415,45 @@ func PublisherEnvironment(root string, c Component) (string, error) {
 	if err := ReadJSON(root, ".github/checks/release/pypi-publishers.json", &routing); err != nil {
 		return "", err
 	}
-	if routing.Schema != "ptsip-pypi-publisher-routing/v1" {
+	if routing.Schema != "ptsip-pypi-publisher-routing/v2" || routing.Authentication.Mode != "API_TOKEN" || routing.Authentication.Environment != "pypi" || routing.Authentication.Secret != "PYPI_API_TOKEN" || routing.Authentication.Username != "__token__" || routing.Authentication.Fallback {
 		return "", fmt.Errorf("publisher routing contract unsupported")
 	}
+	project, environment := "", ""
 	if c.Kind == "tool" {
-		return routing.Tool.Environment, nil
+		project, environment = routing.Tool.Project, routing.Tool.Environment
 	}
 	if c.Kind == "engine" && c.ID != "" {
-		return strings.ReplaceAll(routing.Engine.Environment, "{engine}", c.ID), nil
+		project = strings.ReplaceAll(routing.Engine.Project, "{engine}", c.ID)
+		environment = strings.ReplaceAll(routing.Engine.Environment, "{engine}", c.ID)
 	}
-	return "", fmt.Errorf("component has no PyPI publisher route")
+	if project == "" || environment != routing.Authentication.Environment {
+		return "", fmt.Errorf("component has no admitted PyPI publisher route")
+	}
+	for _, admitted := range routing.Authentication.Scope {
+		if admitted == project || admitted == "*" {
+			return environment, nil
+		}
+	}
+	return "", fmt.Errorf("PyPI token scope does not admit project %s; current declared scope is PTSIP only", project)
+}
+
+// Authentication scope gates only PyPI mutations. GitHub-only component releases
+// continue to consume the same original artifact and hash evidence.
+func AdmitPublisherScope(root string, s Selection, destination string) error {
+	if destination == "github" {
+		return nil
+	}
+	if destination != "github-pypi" {
+		return fmt.Errorf("unregistered publication destination")
+	}
+	for _, c := range s.Components {
+		if c.Kind != "profiles" {
+			if _, err := PublisherEnvironment(root, c); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func RecordPackage(root string, s Selection, output string) error {

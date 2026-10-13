@@ -45,14 +45,20 @@ publisher SHA is recorded separately. It regenerates presentation assets and
 does not rebuild already published Tool files or treat old tests as current-source
 verification. An existing live carrier is never overwritten by this recovery.
 
-The PyPA action is an upload adapter. Native Go compares existing version-specific PyPI file hashes before any mutation, stages only missing files, and confirms public file hashes after upload. A conflicting filename fails and requires a new component version. Tool 0.3.8a6 is published; 0.3.8a5 remains immutable. Engine Pending Trusted Publishers must match their exact project and component environment in `pypi-publishers.json` before the PyPI phase can succeed.
+The PyPA action is an upload adapter. Native Go compares existing version-specific PyPI file hashes before any mutation, stages only missing files, and confirms public file hashes after upload. A conflicting filename fails and requires a new component version. Previous published Tool versions remain immutable.
 
-Publisher environment routing now comes from `pypi-publishers.json`: Tool uses
-`pypi`; each engine uses `pypi-engine-<kind>`. Pending publishers have a unique
-owner/repository/workflow/environment tuple, so different new projects cannot all
-use the Tool's tuple. Register each engine's exact project name and matching
-environment under the same single `tooling-release.yml` workflow. PyPI account
-registration is an external prerequisite; the release code does not fabricate it.
+Publisher authentication and project admission come from `pypi-publishers.json`.
+The owner selected API-token authentication through the `pypi` Environment Secret
+`PYPI_API_TOKEN` and confirmed that its scope is the existing `PTSIP` project only.
+Tool publication uses that environment and the explicit `__token__` password
+adapter. OIDC fallback and OIDC attestations are disabled. No token value is
+stored in the repository or emitted in logs.
+
+Engine PyPI selections fail admission before GitHub publication because they are
+outside this token's declared project scope. GitHub-only engine publication
+retains its existing verification and original-artifact gates. A future token
+scope change requires an explicit owner declaration and matching contract update;
+the controller never infers authority from the presence of a secret.
 
 ## Package history and installation
 

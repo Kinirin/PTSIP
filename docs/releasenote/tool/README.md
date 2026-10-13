@@ -28,5 +28,7 @@ Historical Tool notes that previously lived directly under `docs/releasenote/` h
 | `0.3.8a3` | Emergency Consumer Context Plane packaging and migration-semantics prerelease candidate | [`0.3.8a3.md`](0.3.8a3.md) |
 | `0.3.8a4` | Go-native developer automation and release-verification consolidation prerelease candidate | [`0.3.8a4.md`](0.3.8a4.md) |
 | `0.3.8a5` | Policy, verification, and seven-native-engine foundation prerelease candidate; publication pending | [`0.3.8a5.md`](0.3.8a5.md) |
+| `0.3.8a6` | Published Tool prerelease; original distributions remain immutable | [`0.3.8a6.md`](0.3.8a6.md) |
+| `0.3.8b1` | Owner-authorized beta release for API-token Tool publication | [`0.3.8b1.md`](0.3.8b1.md) |
 
 Tool `0.3.4` is represented by immutable GitHub Release history rather than a retained repository release-note file.

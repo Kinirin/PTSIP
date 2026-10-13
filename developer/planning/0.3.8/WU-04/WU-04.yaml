@@ -102,3 +102,14 @@ work_unit:
         package_record_commit: cc226263c6c2cc6591259f67ef0ced022527a576
         pypi_in_this_run: SKIPPED_GITHUB_DESTINATION
       engine_pypi: EXTERNAL_PENDING_PUBLISHER_REGISTRATION_NOT_CONFIRMED
+    token_beta_publication:
+      authorization: USER_EXPLICIT_API_TOKEN_SWITCH_AND_TOOL_0_3_8B1_TRIAL
+      approval_ref: developer/policy/approvals/MPA-20261013-PYPI-TOKEN-AND-TOOL-B1-PUBLICATION.yaml
+      authentication_contract: .github/checks/release/pypi-publishers.json
+      declared_token_scope: PTSIP_PROJECT_ONLY
+      selection: TOOL_ONLY
+      tool_version: 0.3.8b1
+      package_numeric_base: 0.3.8
+      engine_and_profile_versions: PRESERVED
+      engine_pypi: OUTSIDE_DECLARED_TOKEN_SCOPE
+      state: PREPARING_EXACT_SOURCE_VERIFICATION

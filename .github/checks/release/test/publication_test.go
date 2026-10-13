@@ -133,14 +133,25 @@ func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T
 	}
 }
 
-func TestDistinctPendingPublisherEnvironmentsPreserveSingleWorkflow(t *testing.T) {
+func TestProjectTokenScopeAllowsToolAndRejectsEnginePyPIBeforePublication(t *testing.T) {
 	root := repoRoot(t)
-	seen := map[string]bool{}
-	for _, c := range []release.Component{{ID: "tool", Kind: "tool"}, {ID: "context", Kind: "engine"}, {ID: "storage", Kind: "engine"}, {ID: "validation", Kind: "engine"}, {ID: "discovery", Kind: "engine"}, {ID: "planning", Kind: "engine"}, {ID: "execution", Kind: "engine"}, {ID: "projection", Kind: "engine"}} {
-		environment, err := release.PublisherEnvironment(root, c)
-		if err != nil || environment == "" || seen[environment] {
-			t.Fatalf("ambiguous pending publisher identity: %s %v", environment, err)
+	tool := release.Component{ID: "tool", Kind: "tool"}
+	if environment, err := release.PublisherEnvironment(root, tool); err != nil || environment != "pypi" {
+		t.Fatalf("registered token route unavailable: %s %v", environment, err)
+	}
+	if err := release.AdmitPublisherScope(root, release.Selection{Components: []release.Component{tool}}, "github-pypi"); err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"} {
+		s := release.Selection{Components: []release.Component{{ID: id, Kind: "engine"}}}
+		if err := release.AdmitPublisherScope(root, s, "github-pypi"); err == nil {
+			t.Fatalf("PTSIP-only token admitted engine project %s", id)
 		}
-		seen[environment] = true
+		if err := release.AdmitPublisherScope(root, s, "github"); err != nil {
+			t.Fatal("token scope blocked an authorized GitHub-only release")
+		}
+	}
+	if err := release.AdmitPublisherScope(root, release.Selection{}, "unknown"); err == nil {
+		t.Fatal("unregistered destination bypassed authentication admission")
 	}
 }

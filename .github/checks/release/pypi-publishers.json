@@ -1,11 +1,22 @@
 {
-  "schema_version": "ptsip-pypi-publisher-routing/v1",
+  "schema_version": "ptsip-pypi-publisher-routing/v2",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-PYPI-TOKEN-AND-TOOL-B1-PUBLICATION.yaml",
   "repository_owner": "Kinirin",
   "repository": "PTSIP",
   "workflow": "tooling-release.yml",
+  "authentication": {
+    "mode": "API_TOKEN",
+    "environment": "pypi",
+    "secret": "PYPI_API_TOKEN",
+    "username": "__token__",
+    "declared_project_scope": ["PTSIP"],
+    "scope_source": "USER_CONFIRMED_PTSIP_PROJECT_ONLY",
+    "unadmitted_project": "FAIL_BEFORE_PUBLICATION",
+    "oidc_fallback": false,
+    "oidc_attestations": false,
+    "secret_value_read_or_log": false
+  },
   "tool": {"project": "PTSIP", "environment": "pypi"},
-  "engine": {"project_pattern": "ptsip-engine-{engine}", "environment_pattern": "pypi-engine-{engine}"},
-  "pending_publisher_identity": "OWNER_REPOSITORY_WORKFLOW_ENVIRONMENT",
-  "distinct_new_project_environments": true,
+  "engine": {"project_pattern": "ptsip-engine-{engine}", "environment_pattern": "pypi"},
   "automatic_pypi_account_configuration": false
 }
