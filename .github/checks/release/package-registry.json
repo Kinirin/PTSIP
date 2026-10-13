@@ -1,6 +1,273 @@
 {
   "schema_version": "ptsip-package-registry/v1",
   "numeric_base": "0.3.8",
-  "latest": null,
-  "snapshots": []
+  "latest": "0.3.8.42d9e6",
+  "snapshots": [
+    {
+      "version": "0.3.8.42d9e6",
+      "composition_sha256": "42d9e6d2393efa3ce71dce852bf3231d23b2e785f9e4613d717d6d8c8e3bbcc2",
+      "source_sha": "6febd3480d6e6c857e9b8a4553bb7a32ecb2c813",
+      "sequence": 1,
+      "components": [
+        {
+          "id": "context",
+          "kind": "engine",
+          "version": "0.2.0",
+          "source_sha": "58ff98ecc97769b5fb97631e2d8e89fcfdaf0243",
+          "files": [
+            {
+              "name": "ptsip_engine_context-0.2.0-py3-none-manylinux_2_39_x86_64.whl",
+              "sha256": "0536d9dd5281004d7fc20afd69f6416d0be9e17165a419992fcc4c07ee53ca35",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-context-v0.2.0/ptsip_engine_context-0.2.0-py3-none-manylinux_2_39_x86_64.whl",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_context-0.2.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "sha256": "09946a99d27fbbf12d6da27271b70eec645ede59e9832d37fcdfc98c458b1d65",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-context-v0.2.0/ptsip_engine_context-0.2.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_context-0.2.0-py3-none-win_amd64.whl",
+              "sha256": "d53766467887ecdcfde7be46ba1dfe5ebfc17a5107c4e13fe274ec1b39e87bff",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-context-v0.2.0/ptsip_engine_context-0.2.0-py3-none-win_amd64.whl",
+              "platform": "windows-x64"
+            },
+            {
+              "name": "ptsip_engine_context-0.2.0-py3-none-win_amd64.whl.receipt.json",
+              "sha256": "cdbceb47135823e8b7a7f1219a979302d2f3a01ff373beed2392a9d250e3aa8a",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-context-v0.2.0/ptsip_engine_context-0.2.0-py3-none-win_amd64.whl.receipt.json",
+              "platform": "windows-x64"
+            }
+          ]
+        },
+        {
+          "id": "discovery",
+          "kind": "engine",
+          "version": "0.3.0",
+          "source_sha": "58ff98ecc97769b5fb97631e2d8e89fcfdaf0243",
+          "files": [
+            {
+              "name": "ptsip_engine_discovery-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "sha256": "2a43282d099ac7bc73afc0aee988a2c8e1e71519911e67880522216cf424dfbe",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-discovery-v0.3.0/ptsip_engine_discovery-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_discovery-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "sha256": "205e433f4aa207d9e71b23be2b70f73d96381314e44bf4e0597a46fd8b75ff70",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-discovery-v0.3.0/ptsip_engine_discovery-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_discovery-0.3.0-py3-none-win_amd64.whl",
+              "sha256": "1a3e23b356ce8d69df61e2194414f9b1abe55ef7d82b754a6e64775426ea3eac",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-discovery-v0.3.0/ptsip_engine_discovery-0.3.0-py3-none-win_amd64.whl",
+              "platform": "windows-x64"
+            },
+            {
+              "name": "ptsip_engine_discovery-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "sha256": "453cdfd46eaab1b193fcc9f301ba52dcfe2f4091b311e40531a52d632b8bbcc2",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-discovery-v0.3.0/ptsip_engine_discovery-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "platform": "windows-x64"
+            }
+          ]
+        },
+        {
+          "id": "execution",
+          "kind": "engine",
+          "version": "0.3.0",
+          "source_sha": "58ff98ecc97769b5fb97631e2d8e89fcfdaf0243",
+          "files": [
+            {
+              "name": "ptsip_engine_execution-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "sha256": "cd15f9b500bc5e0d24af4fd9666c80b9473db85a6f002292180c9e8fb717bb77",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-execution-v0.3.0/ptsip_engine_execution-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_execution-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "sha256": "e35acfe16bd15a6cd8dec2810a497e723e5b0f10d49f6872efefba9784c2579c",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-execution-v0.3.0/ptsip_engine_execution-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_execution-0.3.0-py3-none-win_amd64.whl",
+              "sha256": "0404b43ccde2b3d329aef7859fcd8c81bff28c04861cc4df86452c517c7c18c4",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-execution-v0.3.0/ptsip_engine_execution-0.3.0-py3-none-win_amd64.whl",
+              "platform": "windows-x64"
+            },
+            {
+              "name": "ptsip_engine_execution-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "sha256": "35e516cf46d8e1e7b46ed5e1d8202d7ebb5e8e6c67bbbc3c4c42bf5dbf26bb78",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-execution-v0.3.0/ptsip_engine_execution-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "platform": "windows-x64"
+            }
+          ]
+        },
+        {
+          "id": "planning",
+          "kind": "engine",
+          "version": "0.3.0",
+          "source_sha": "58ff98ecc97769b5fb97631e2d8e89fcfdaf0243",
+          "files": [
+            {
+              "name": "ptsip_engine_planning-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "sha256": "3a0c1cdfa6784b281995462c816f94c6b29d8f501b1f68e670a1d1e46b77c378",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-planning-v0.3.0/ptsip_engine_planning-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_planning-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "sha256": "ca7fce612fecf5b3e14733ce122af6abd3480b9fefdbbb2e5fa2eeb062c592be",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-planning-v0.3.0/ptsip_engine_planning-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_planning-0.3.0-py3-none-win_amd64.whl",
+              "sha256": "30b08b373c17aaa52bc6eb2ddd3c419c34dc1873ad6c338b26678d3aac01be50",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-planning-v0.3.0/ptsip_engine_planning-0.3.0-py3-none-win_amd64.whl",
+              "platform": "windows-x64"
+            },
+            {
+              "name": "ptsip_engine_planning-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "sha256": "8fd78f9d2000539c546f6d083fe268adb2d416404c7f64c6bc42ce3371f9024b",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-planning-v0.3.0/ptsip_engine_planning-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "platform": "windows-x64"
+            }
+          ]
+        },
+        {
+          "id": "profiles",
+          "kind": "profiles",
+          "version": "pp.1.02",
+          "source_sha": "6febd3480d6e6c857e9b8a4553bb7a32ecb2c813",
+          "files": [
+            {
+              "name": "profiles-pp.1.02.zip",
+              "sha256": "cfc8b48964841bcac70a67d63649b78e19b97bc9587114d3368cab7f7b20a357",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/ptsip-release-6febd3480d6e6c857e9b8a4553bb7a32ecb2c813/profiles-pp.1.02.zip",
+              "platform": "any"
+            }
+          ]
+        },
+        {
+          "id": "projection",
+          "kind": "engine",
+          "version": "0.2.0",
+          "source_sha": "58ff98ecc97769b5fb97631e2d8e89fcfdaf0243",
+          "files": [
+            {
+              "name": "ptsip_engine_projection-0.2.0-py3-none-manylinux_2_39_x86_64.whl",
+              "sha256": "ba12aaa332f3465c9a9ec4bd5a436e8f0bb460e65165abdca3a3770916ef3b20",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-projection-v0.2.0/ptsip_engine_projection-0.2.0-py3-none-manylinux_2_39_x86_64.whl",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_projection-0.2.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "sha256": "961c82fde20841d289c4734ee1e3173565c5ff56e19360cefc9ba811464a3183",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-projection-v0.2.0/ptsip_engine_projection-0.2.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_projection-0.2.0-py3-none-win_amd64.whl",
+              "sha256": "adc42e970028bd84a911ce621d79adbf4d78e75a1f99755c016b05a6bad3a162",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-projection-v0.2.0/ptsip_engine_projection-0.2.0-py3-none-win_amd64.whl",
+              "platform": "windows-x64"
+            },
+            {
+              "name": "ptsip_engine_projection-0.2.0-py3-none-win_amd64.whl.receipt.json",
+              "sha256": "9cae64cb623cb4d885f28bee34c2e82af6119de5dff102de59476cba9edaf49f",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-projection-v0.2.0/ptsip_engine_projection-0.2.0-py3-none-win_amd64.whl.receipt.json",
+              "platform": "windows-x64"
+            }
+          ]
+        },
+        {
+          "id": "storage",
+          "kind": "engine",
+          "version": "0.3.0",
+          "source_sha": "58ff98ecc97769b5fb97631e2d8e89fcfdaf0243",
+          "files": [
+            {
+              "name": "ptsip_engine_storage-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "sha256": "a965b2eb7963b34eb769fe77b2f805916ee19bc3c8822f111042fe912436c63f",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-storage-v0.3.0/ptsip_engine_storage-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_storage-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "sha256": "a3b75175594bb63645f287478af4b711780818ef99ac2d06c7ef88bba2ee1b0c",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-storage-v0.3.0/ptsip_engine_storage-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_storage-0.3.0-py3-none-win_amd64.whl",
+              "sha256": "663cd21565876cbc0bde41a01774b510e3e117c0a65959425d9682f93ff290e3",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-storage-v0.3.0/ptsip_engine_storage-0.3.0-py3-none-win_amd64.whl",
+              "platform": "windows-x64"
+            },
+            {
+              "name": "ptsip_engine_storage-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "sha256": "d2c18cfe5a31cc6e4f7718c93f72c26704fa3d7891276fe35133e4d7a78f3f55",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-storage-v0.3.0/ptsip_engine_storage-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "platform": "windows-x64"
+            }
+          ]
+        },
+        {
+          "id": "tool",
+          "kind": "tool",
+          "version": "0.3.8a6",
+          "source_sha": "6febd3480d6e6c857e9b8a4553bb7a32ecb2c813",
+          "files": [
+            {
+              "name": "ptsip-0.3.8a6-py3-none-any.whl",
+              "sha256": "03b64237210e64379edbdeb24e4a5a58c0c49b8472b16d600ab87dee820c50c9",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/ptsip-release-6febd3480d6e6c857e9b8a4553bb7a32ecb2c813/ptsip-0.3.8a6-py3-none-any.whl",
+              "platform": "any"
+            },
+            {
+              "name": "ptsip-0.3.8a6.tar.gz",
+              "sha256": "af1c9c02ef46ccd1d92282d1a38d7cb7a4fdbd16f60c01c9773fa9b2c8b084a6",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/ptsip-release-6febd3480d6e6c857e9b8a4553bb7a32ecb2c813/ptsip-0.3.8a6.tar.gz",
+              "platform": "any"
+            }
+          ]
+        },
+        {
+          "id": "validation",
+          "kind": "engine",
+          "version": "0.3.0",
+          "source_sha": "58ff98ecc97769b5fb97631e2d8e89fcfdaf0243",
+          "files": [
+            {
+              "name": "ptsip_engine_validation-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "sha256": "941240d5b41b5d6e2561672dd42b0b8291abf29ec710b152703a48cbbcf80b32",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-validation-v0.3.0/ptsip_engine_validation-0.3.0-py3-none-manylinux_2_39_x86_64.whl",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_validation-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "sha256": "b1782cf146c1c917b7bdfc97c89e5fe24bb25768daafd8c83519b88fa8b12883",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-validation-v0.3.0/ptsip_engine_validation-0.3.0-py3-none-manylinux_2_39_x86_64.whl.receipt.json",
+              "platform": "linux-x64"
+            },
+            {
+              "name": "ptsip_engine_validation-0.3.0-py3-none-win_amd64.whl",
+              "sha256": "48a8583b1b4ad51fd218fe9028430fc7bd33ac02adcd7e05277af9657d08e514",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-validation-v0.3.0/ptsip_engine_validation-0.3.0-py3-none-win_amd64.whl",
+              "platform": "windows-x64"
+            },
+            {
+              "name": "ptsip_engine_validation-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "sha256": "561b0f5725e0d8a17a5110acb06fa1022e5b65ca42a81400a6edf5d80388bcf2",
+              "url": "https://github.com/Kinirin/PTSIP/releases/download/engine-validation-v0.3.0/ptsip_engine_validation-0.3.0-py3-none-win_amd64.whl.receipt.json",
+              "platform": "windows-x64"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
