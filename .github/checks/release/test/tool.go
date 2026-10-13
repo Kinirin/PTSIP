@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"net/mail"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -118,14 +119,14 @@ func verifyTool(root, out, version, source string) error {
 				return e
 			}
 			if strings.HasSuffix(f.Name, ".dist-info/METADATA") {
-				foundMetadata = bytes.Contains(b, []byte("Version: "+version+"\n"))
+				foundMetadata = toolMetadataMatches(b, version)
 			} else {
 				foundLicense = bytes.Equal(b, license)
 			}
 		}
 	}
 	if !foundMetadata || !foundLicense {
-		return fmt.Errorf("Tool version or canonical license bytes differ")
+		return fmt.Errorf("Tool metadata or canonical license bytes differ (metadata=%t license=%t)", foundMetadata, foundLicense)
 	}
 	env, err := os.MkdirTemp("", "ptsip-tool-consumer-")
 	if err != nil {
@@ -156,4 +157,9 @@ func verifyTool(root, out, version, source string) error {
 
 func forbiddenToolMember(name string) bool {
 	return strings.HasPrefix(name, "ptsip/profiles/history/") || strings.HasSuffix(name, ".exe") || (strings.HasPrefix(name, "ptsip/engines/") && strings.Contains(name, "/target/"))
+}
+
+func toolMetadataMatches(data []byte, version string) bool {
+	message, err := mail.ReadMessage(bytes.NewReader(data))
+	return err == nil && strings.EqualFold(message.Header.Get("Name"), "PTSIP") && message.Header.Get("Version") == version
 }

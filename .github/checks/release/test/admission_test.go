@@ -98,6 +98,15 @@ func TestToolDistinguishesProductTargetNamespaceFromRustBuildOutput(t *testing.T
 	}
 }
 
+func TestToolMetadataHeadersAcceptLFAndCRLFWithoutWeakeningVersionMatch(t *testing.T) {
+	for _, newline := range []string{"\n", "\r\n"} {
+		data := []byte(strings.Join([]string{"Metadata-Version: 2.4", "Name: PTSIP", "Version: 0.3.8a6", "", "Description"}, newline))
+		if !toolMetadataMatches(data, "0.3.8a6") || toolMetadataMatches(data, "0.3.8a5") {
+			t.Fatalf("metadata version handling differs for %q", newline)
+		}
+	}
+}
+
 func TestPackageTamperAndIncompleteInstallationFailBeforeAdapter(t *testing.T) {
 	r := release.Registry{NumericBase: "0.3.8"}
 	c := release.PublishedComponent{ID: "context", Kind: "engine", Version: "0.2.0", SourceSHA: strings.Repeat("a", 40), Files: []release.File{{Name: "engine.whl", SHA256: strings.Repeat("b", 64), URL: "https://example.invalid/engine.whl", Platform: "linux-x64"}}}
