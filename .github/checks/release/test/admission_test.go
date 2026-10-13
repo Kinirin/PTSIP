@@ -107,6 +107,31 @@ func TestToolMetadataHeadersAcceptLFAndCRLFWithoutWeakeningVersionMatch(t *testi
 	}
 }
 
+func TestToolBuildStagePreservesPinnedGitLicenseBytes(t *testing.T) {
+	root := repoRoot(t)
+	head, err := release.Run(root, "git", "rev-parse", "HEAD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source := strings.TrimSpace(string(head))
+	stage, cleanup, err := toolSource(root, source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cleanup()
+	expected, err := release.Run(root, "git", "show", source+":License-Authority/LICENSE.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	actual, err := os.ReadFile(filepath.Join(stage, "License-Authority/LICENSE.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(actual, expected) {
+		t.Fatal("derived Tool build stage changed canonical Git license bytes")
+	}
+}
+
 func TestPackageTamperAndIncompleteInstallationFailBeforeAdapter(t *testing.T) {
 	r := release.Registry{NumericBase: "0.3.8"}
 	c := release.PublishedComponent{ID: "context", Kind: "engine", Version: "0.2.0", SourceSHA: strings.Repeat("a", 40), Files: []release.File{{Name: "engine.whl", SHA256: strings.Repeat("b", 64), URL: "https://example.invalid/engine.whl", Platform: "linux-x64"}}}

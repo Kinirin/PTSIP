@@ -21,7 +21,7 @@ func toolSource(root, source string) (string, func(), error) {
 	}
 	cleanup := func() { os.RemoveAll(dir) }
 	archivePath := filepath.Join(dir, "source.zip")
-	if err = command(root, nil, "git", "archive", "--format=zip", "--output", archivePath, source); err != nil {
+	if err = command(root, nil, "git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "archive", "--format=zip", "--output", archivePath, source); err != nil {
 		cleanup()
 		return "", func() {}, err
 	}
@@ -68,6 +68,33 @@ func toolSource(root, source string) (string, func(), error) {
 				}
 				e = os.WriteFile(p, b, 0644)
 			}
+		}
+		if e != nil {
+			cleanup()
+			return "", func() {}, e
+		}
+	}
+	// Archive materialization and build hosts cannot own license identity.
+	// Materialize this owner plane directly from the pinned Git blobs, including
+	// on Windows with a checkout configured for automatic CRLF conversion.
+	refs, err := release.Run(root, "git", "ls-tree", "-r", "--name-only", source, "--", "License-Authority")
+	if err != nil {
+		cleanup()
+		return "", func() {}, err
+	}
+	for _, ref := range strings.Fields(string(refs)) {
+		p, e := release.SafePath(stage, ref)
+		if e != nil {
+			cleanup()
+			return "", func() {}, e
+		}
+		b, e := release.Run(root, "git", "show", source+":"+ref)
+		if e != nil {
+			cleanup()
+			return "", func() {}, e
+		}
+		if e = os.MkdirAll(filepath.Dir(p), 0755); e == nil {
+			e = os.WriteFile(p, b, 0644)
 		}
 		if e != nil {
 			cleanup()
