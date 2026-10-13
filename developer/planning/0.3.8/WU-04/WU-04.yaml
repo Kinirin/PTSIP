@@ -112,4 +112,25 @@ work_unit:
       package_numeric_base: 0.3.8
       engine_and_profile_versions: PRESERVED
       engine_pypi: OUTSIDE_DECLARED_TOKEN_SCOPE
-      state: PREPARING_EXACT_SOURCE_VERIFICATION
+      state: PUBLISHED_GITHUB_AND_PYPI
+      verification:
+        source_sha: 7c493c0484614885c6d92b9f41562b16273c6682
+        run_id: 38387285145
+        result: PASS
+        successful_jobs: 3
+        selected_platforms: [windows-x64, linux-x64]
+      publication:
+        run_id: 38387625797
+        result: SUCCESS
+        successful_jobs: 4
+        github_release_id: 411582303
+        package_identity: 0.3.8.fa660a
+        package_record_commit: f3b23eb510f6c9a14e7c4f1ef59228c5906b5e9b
+        github_asset_count: 7
+        pypi_project: PTSIP
+        pypi_version: 0.3.8b1
+        public_file_digests_match_github: true
+        wheel_sha256: ec0ce218c4565563221bc5a2d639c1e5df2f61b4da4df331c2ef0b684730c14b
+        sdist_sha256: b3c62621a64019bd1c379ae90e06ccdcd0cda591a1055abac5ecb0816c2d6655
+        selected_publication: TOOL_ONLY
+        retained_package_components: 9
