@@ -45,7 +45,7 @@ jobs:
           set -euo pipefail
           go -C .github/checks/release/test run ./cmd/ptsip-release-test plan --root "$GITHUB_WORKSPACE" --mode "$MODE" --targets "$TARGETS" --optional-platforms "$OPTIONAL"
           go -C .github/checks/release/test run ./cmd/ptsip-release-test validate --root "$GITHUB_WORKSPACE"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: verification-selection-${{ github.sha }}
           path: .artifacts/release/selection.json
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ needs.mode-selection.outputs.python }}
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: verification-selection-${{ github.sha }}
           path: .artifacts/release
@@ -84,7 +84,7 @@ jobs:
         id: environment
         shell: bash
         run: go -C .github/checks/release/test run ./cmd/ptsip-release-test environment --root "$GITHUB_WORKSPACE" --component "${{ matrix.component }}" --platform "${{ matrix.platform }}"
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ steps.environment.outputs.cache_paths }}
           key: ${{ steps.environment.outputs.cache_key }}
@@ -92,7 +92,7 @@ jobs:
       - name: Execute registered verification
         shell: bash
         run: go -C .github/checks/release/test run ./cmd/ptsip-release-test execute --root "$GITHUB_WORKSPACE" --component "${{ matrix.component }}" --platform "${{ matrix.platform }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: verification-${{ matrix.component }}-${{ matrix.platform }}-${{ github.sha }}
           path: .artifacts/release/components/${{ matrix.component }}/${{ matrix.platform }}

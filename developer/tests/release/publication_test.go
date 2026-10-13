@@ -1,11 +1,12 @@
 package release_test
 
 import (
-	"github.com/Kinirin/PTSIP/developer/tests/internal/testrepo"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/Kinirin/PTSIP/developer/tests/internal/testrepo"
 )
 
 func TestPublicationArtifactVerificationRemainsBoundToExactProductArtifact(t *testing.T) {
@@ -33,8 +34,8 @@ func TestPublicationArtifactVerificationRemainsBoundToExactProductArtifact(t *te
 func TestPublicationConsumesOnlyVerifiedBuildArtifactWithTrustedPublishing(t *testing.T) {
 	text := releaseWorkflowText(t)
 	for _, required := range []string{
-		"actions/upload-artifact@v4",
-		"actions/download-artifact@v4",
+		"actions/upload-artifact@v7",
+		"actions/download-artifact@v8",
 		"needs: [prepare, build]",
 		"environment: pypi",
 		"id-token: write",
