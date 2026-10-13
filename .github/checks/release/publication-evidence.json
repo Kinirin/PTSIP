@@ -20,6 +20,8 @@
     "publisher_control_sha": "SEPARATE_FRESH_MAIN_SHA",
     "changed_producer": "FAIL_NO_HISTORICAL_PASS_PROMOTION",
     "existing_live_carrier": "NO_RECOVERY_OR_ASSET_OVERWRITE",
+    "existing_same_source_draft": "RESUME_BY_MACHINE_ID_WITH_IDENTICAL_ASSET_DIGESTS_ONLY",
+    "release_create_target": "PREVERIFIED_EXISTING_TAG_WITHOUT_REDUNDANT_TARGET_COMMITISH",
     "expired_original_artifact": "FAIL_NO_CACHE_FALLBACK",
     "component_rebuild_or_version_increment": "FORBIDDEN",
     "presentation_assets": "REGENERATE_FROM_CURRENT_APPROVED_PRESENTATION_CONTRACT"

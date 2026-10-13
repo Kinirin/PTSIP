@@ -92,7 +92,10 @@ func ResolveCarrier(tag, source, title, body string, resumeID int64, api Release
 		return read(matching.ID)
 	}
 	var created Carrier
-	payload := map[string]any{"tag_name": tag, "target_commitish": source, "name": title, "body": body, "draft": true, "prerelease": true, "make_latest": "false"}
+	// PublishCarrier has already verified or created this exact-source tag.
+	// Sending its historical SHA as target_commitish unnecessarily invokes the
+	// workflow-file permission check; the API ignores this field for existing tags.
+	payload := map[string]any{"tag_name": tag, "name": title, "body": body, "draft": true, "prerelease": true, "make_latest": "false"}
 	if err := api("POST", base, payload, &created); err != nil {
 		return Carrier{}, err
 	}

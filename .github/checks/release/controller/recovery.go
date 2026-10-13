@@ -209,7 +209,7 @@ func RecoverDeletedPublication(root string, current Selection, output string) (S
 		}
 		exists := false
 		for _, r := range carriers {
-			exists = exists || r.Tag == "ptsip-release-"+run.Head
+			exists = exists || (!r.Draft && r.Tag == "ptsip-release-"+run.Head)
 		}
 		if exists {
 			continue

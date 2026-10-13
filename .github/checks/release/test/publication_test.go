@@ -24,6 +24,9 @@ func TestNewDraftUsesReturnedIDWithoutRediscoveringItInList(t *testing.T) {
 			if p["tag_name"] != tag || p["draft"] != true {
 				t.Fatal("creation not bound to verified draft tag")
 			}
+			if _, ok := p["target_commitish"]; ok {
+				t.Fatal("verified historical tag redundantly requested workflow mutation permission")
+			}
 			data, _ := json.Marshal(release.Carrier{ID: 42, Tag: tag, Draft: true})
 			return json.Unmarshal(data, out)
 		case method == "GET" && strings.HasSuffix(endpoint, "/42"):
