@@ -200,9 +200,20 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 	if err != nil {
 		return Snapshot{}, err
 	}
+	components, err = ReusePublishedComponents(root, s, registry, components, locations)
+	if err != nil {
+		return Snapshot{}, err
+	}
 	registry.NumericBase = s.PackageBase
 	snapshot, err := RefreshPackage(&registry, s.SourceSHA, components)
 	if err != nil {
+		return Snapshot{}, err
+	}
+	composition, err := ReadComposition(root)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	if err := CompletePackage(snapshot, composition.Engines); err != nil {
 		return Snapshot{}, err
 	}
 	for _, c := range components {

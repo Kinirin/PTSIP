@@ -6,7 +6,7 @@ policy:
   title: CTRL authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.7'
+  version: '4.8'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
   statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
@@ -34,6 +34,8 @@ rules:
     publication_authorization: EXACT_SOURCE_SELECTED_COMPONENT_VERIFICATION_AND_USER_APPROVED_PUBLICATION
     automatic_package_refresh_after_component_publication: REQUIRED
     component_version_auto_increment: FORBIDDEN
+    package_request_inventory: TOOL_PROFILES_AND_ALL_REGISTERED_ENGINES
+    package_request_credential_downgrade: FORBIDDEN_FAIL_ORIGINAL_REQUEST
     legacy_engine_publication_surface: SUPERSEDED_BY_UNIFIED_SOURCE_SHA_CARRIER
   planning_artifact_precreation_eligibility:
     decision: KEEP_LATEST

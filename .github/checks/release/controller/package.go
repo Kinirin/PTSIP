@@ -240,23 +240,18 @@ func ProfileResources(data []byte) (map[string][]byte, error) {
 	return resources, nil
 }
 
-func InstallPackage(snapshot Snapshot, platform, python string) error {
+func InstallPackage(snapshot Snapshot, platform, python string, registered map[string]string) error {
 	if python == "" {
 		return fmt.Errorf("explicit Python environment required")
 	}
 	if err := ValidateSnapshot(snapshot); err != nil {
 		return err
 	}
-	tool, profiles, engines := false, false, 0
-	for _, c := range snapshot.Components {
-		tool = tool || c.Kind == "tool"
-		profiles = profiles || c.Kind == "profiles"
-		if c.Kind == "engine" {
-			engines++
-		}
+	if len(registered) == 0 {
+		return fmt.Errorf("Package engine inventory is empty")
 	}
-	if !tool || !profiles || engines < 7 {
-		return fmt.Errorf("Package baseline lacks Tool, Profiles or seven default engines; publish the initial full Package first")
+	if err := CompletePackage(snapshot, registered); err != nil {
+		return err
 	}
 	dir, err := os.MkdirTemp("", "ptsip-package-install-")
 	if err != nil {
@@ -306,7 +301,8 @@ func InstallPackage(snapshot Snapshot, platform, python string) error {
 	if len(wheels) == 0 {
 		return fmt.Errorf("Package has no installable wheels")
 	}
-	args := append([]string{"-m", "pip", "install"}, wheels...)
+	// Restore every component even after removal or a damaged same-version install.
+	args := append([]string{"-m", "pip", "install", "--upgrade", "--force-reinstall"}, wheels...)
 	cmd := exec.Command(python, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -337,7 +333,44 @@ func InstallPackage(snapshot Snapshot, platform, python string) error {
 	if err := os.WriteFile(filepath.Join(contractDir, "project-profile-contracts.yaml"), profileContract, 0644); err != nil {
 		return err
 	}
-	return nil
+	for name, expected := range profileResources {
+		actual, err := os.ReadFile(filepath.Join(profileDir, name))
+		if err != nil || !bytes.Equal(actual, expected) {
+			return fmt.Errorf("installed Profile catalog differs: %s", name)
+		}
+	}
+	return VerifyInstalledComponents(snapshot, python)
+}
+
+// Python is the installation adapter only. Inventory, artifact selection and
+// completion remain governed by the Go Package controller.
+func VerifyInstalledComponents(snapshot Snapshot, python string) error {
+	adapter := `import hashlib, importlib.metadata as metadata, json, pathlib, sys, sysconfig
+snapshot = json.load(sys.stdin)
+for component in snapshot['components']:
+    if component['kind'] == 'profiles':
+        continue
+    project = 'PTSIP' if component['kind'] == 'tool' else 'ptsip-engine-' + component['id']
+    distribution = metadata.distribution(project)
+    if distribution.version != component['version']:
+        raise RuntimeError('installed component version differs: ' + project)
+    if component['kind'] == 'engine':
+        origin = json.loads(distribution.read_text('ptsip-origin.json'))
+        if origin['source_sha'] != component['source_sha'] or origin['engine_version'] != component['version']:
+            raise RuntimeError('installed engine origin differs: ' + project)
+        binary = pathlib.Path(sysconfig.get_path('scripts')) / origin['entrypoint']
+        if not binary.is_file() or hashlib.sha256(binary.read_bytes()).hexdigest() != origin['binary_sha256']:
+            raise RuntimeError('installed native executable missing or changed: ' + project)
+print('Complete Package installed: Tool, Profiles and all registered native engines')
+`
+	payload, err := json.Marshal(snapshot)
+	if err != nil {
+		return err
+	}
+	cmd := exec.Command(python, "-c", adapter)
+	cmd.Stdin = bytes.NewReader(payload)
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	return cmd.Run()
 }
 
 func IdentityText(snapshot Snapshot, specRevision, specSource string) string {

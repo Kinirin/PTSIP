@@ -19,6 +19,14 @@
     "projection_mismatch": "FAIL_CLOSED"
   },
   "default_engine_count": 7,
+  "package_request": {
+    "workflow_input": "release_type",
+    "default": "PTSIP_PACKAGE",
+    "components": "TOOL_AND_PROFILES_AND_ALL_REGISTERED_ENGINES",
+    "component_subset_or_exclusion": "FORBIDDEN",
+    "credential_scope_downgrade": "FORBIDDEN_FAIL_ORIGINAL_REQUEST",
+    "official_release_or_specification_version_gate": false
+  },
   "engine_addition": "CANONICAL_REGISTRY_ONLY",
   "profile_addition": "CANONICAL_REGISTRY_ONLY",
   "release_types": [
@@ -60,6 +68,17 @@
     "publication_transport_or_policy_route_change": "OUTSIDE_ENGINE_ARTIFACT_PRODUCER_BOUNDARY",
     "changed_source_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_VERSION",
     "current_source_verification": "REQUIRED_EVEN_WHEN_REUSING_ORIGINAL_PUBLISHED_ARTIFACTS"
+  },
+  "component_reuse": {
+    "tool": {
+      "source_boundaries": ["src", "registry", "License-Authority", "README.md", ".github/checks/release/test/tool.go", ".github/checks/release/test/runner.go"],
+      "pyproject_comparison": "FULL_DOCUMENT_EXCEPT_PUBLISHED_SNAPSHOT_TABLE"
+    },
+    "profiles": {
+      "source_boundaries": ["src/ptsip/profiles", "registry/project-profile-contracts.yaml", ".github/checks/release/test/runner.go"]
+    },
+    "unchanged_version": "REUSE_ORIGINAL_PUBLISHED_SOURCE_FILES_AND_DIGESTS",
+    "changed_producer_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_COMPONENT_VERSION"
   },
   "notes": {
     "tool": "docs/releasenote/tool/{version}.md",

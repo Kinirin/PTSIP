@@ -1,0 +1,26 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-COMPLETE-PACKAGE-RELEASE-AND-INSTALLATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User reaffirmed that selecting Package in the release workflow means Tool,
+    Profiles and every engine, and that Package installation must install the
+    complete latest composition without omissions. Engine omission is allowed
+    only through a separate explicit removal or ban command. User instructed
+    workflow correction. Credential scope must not downgrade Package to a Tool
+    release; insufficient authority fails the original request. Official release
+    status and the immutable Specification version do not gate this inventory.
+    Existing exact-SHA Package pinning and independent component versions remain
+    preserved. The Package base selector chooses the complete latest published
+    composition, not unpublished drafts or a fixed seven-engine count.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  requested_policy_id: MPD-CTRL-0001
+  affected_policy_ids: [MPD-CTRL-0001, MPD-INFO-0005]
+  recorded_at: '2026-10-13'

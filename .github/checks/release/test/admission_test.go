@@ -139,7 +139,7 @@ func TestPackageTamperAndIncompleteInstallationFailBeforeAdapter(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	if e := release.InstallPackage(s, "linux-x64", "must-never-execute"); e == nil {
+	if e := release.InstallPackage(s, "linux-x64", "must-never-execute", map[string]string{"context": "0.2.0", "storage": "0.3.0"}); e == nil {
 		t.Fatal("partial bootstrap installed")
 	}
 	r.Snapshots[0].Components[0].Files[0].SHA256 = strings.Repeat("c", 64)

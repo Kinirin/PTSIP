@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	release "github.com/Kinirin/PTSIP/.github/checks/release/controller"
 )
@@ -21,6 +22,8 @@ func main() {
 	root := f.String("root", ".", "repository root")
 	targets := f.String("targets", "package", "registered component selection")
 	optional := f.String("optional-platforms", "", "explicit optional hosts")
+	releaseType := f.String("release-type", "", "explicit registered release type")
+	components := f.String("components", "", "explicit engine names for a component release")
 	output := f.String("output", "", "derived selection output")
 	selector := f.String("version", "", "Package base or exact identity")
 	registryPath := f.String("registry", ".github/checks/release/package-registry.json", "Package registry")
@@ -35,6 +38,22 @@ func main() {
 	var err error
 	switch command {
 	case "prepare-publication":
+		if *releaseType != "" {
+			var requested release.Selection
+			requested, err = release.ReleaseRequest(*root, *releaseType, *components, *optional)
+			if err != nil {
+				break
+			}
+			ids := []string{}
+			for _, c := range requested.Components {
+				if c.Kind == "engine" {
+					ids = append(ids, "engine:"+c.ID)
+				} else {
+					ids = append(ids, c.ID)
+				}
+			}
+			*targets = strings.Join(ids, ",")
+		}
 		value, err = release.PreparePublication(*root, *targets, *optional, *output)
 	case "admit", "prepare-shipping", "publish-carrier", "pypi-stage", "pypi-verify", "record-package":
 		var s release.Selection
@@ -130,7 +149,11 @@ func main() {
 			value = map[string]string{"status": "PUBLISHED", "tag": s.Tag}
 		}
 	case "select":
-		value, err = release.Select(*root, *targets, *optional)
+		if *releaseType != "" {
+			value, err = release.ReleaseRequest(*root, *releaseType, *components, *optional)
+		} else {
+			value, err = release.Select(*root, *targets, *optional)
+		}
 	case "resolve-package", "install-package", "identities":
 		var registry release.Registry
 		registry, err = release.PublishedRegistry(*root, *registryPath, "")
@@ -144,6 +167,14 @@ func main() {
 		}
 		value = snapshot
 		if command == "install-package" {
+			var composition release.Composition
+			composition, err = release.ReadComposition(*root)
+			if err != nil {
+				break
+			}
+			if err = release.CompletePackage(snapshot, composition.Engines); err != nil {
+				break
+			}
 			platform := runtime.GOOS + "-x64"
 			if runtime.GOARCH != "amd64" && !(runtime.GOOS == "darwin" && runtime.GOARCH == "arm64") {
 				err = fmt.Errorf("unregistered native Package installation host")
@@ -152,7 +183,7 @@ func main() {
 			if runtime.GOOS == "darwin" && runtime.GOARCH == "arm64" {
 				platform = "macos-arm64"
 			}
-			err = release.InstallPackage(snapshot, platform, *python)
+			err = release.InstallPackage(snapshot, platform, *python, composition.Engines)
 		}
 		if command == "identities" {
 			composition, e := release.ReadComposition(*root)

@@ -13,7 +13,18 @@ original-source publication separately from the current source declaration.
 
 Only `tooling-release.yml` publishes. Only `tooling-test.yml` executes verification, through modes registered in `.github/test_modes.yaml`. The test runner, test cases and mechanical verification contract are owned by `test/`. Publication downloads the original verified artifacts and does not invoke Cargo, build a wheel, or run a test suite.
 
-Selection supports `package`, `tool`, `profiles`, and comma-separated `engine:<registered-kind>` values. Package selects Tool, Profiles and all current canonical engine registrations. The eight contract release types cover the full Package, each single component kind, and the approved mixed selections. Adding an engine changes canonical registration and its admitted implementation; it does not require another workflow.
+The workflow's `release_type` choice selects one of the eight registered release
+types, with `PTSIP_PACKAGE` as the default. Package always selects Tool, Profiles
+and every canonical engine registration. Its `components` field must be empty:
+an engine subset or exclusion is rejected. Component releases require an explicit
+different type; engine names are entered only for those types. Credentials cannot
+downgrade the selected type. A Package request outside the token's project scope
+fails the original request before publication. It never becomes a Tool-only run.
+
+PowerShell selection supports `package`, `tool`, `profiles`, and comma-separated
+`engine:<registered-kind>` values, and resolves them to the same explicit workflow
+type. Adding an engine changes canonical registration and its admitted
+implementation; it does not require another workflow.
 
 Windows x64 and Linux x64 run in parallel and both must pass for every selected component. macOS arm64 is opt-in through `-OptionalPlatforms macos-arm64`. An omitted host produces no PASS evidence. Rust target and dependency caches are partitioned by component, host, compiler and Cargo dependency digest. Exact keys include the source SHA; compatible source changes restore only a dependency-compatible prefix. Tests and builds run on cache hits.
 
@@ -72,7 +83,19 @@ Published source carriers contain the cumulative `package-registry.json` and exa
 ./.github/checks/release/run_release.ps1 -Action Install -PackageVersion 0.3.8.<SHA6> -PythonExecutable C:/consumer/.venv/Scripts/python.exe
 ```
 
-The base chooses its latest published composition; an exact suffix pins its snapshot. Unknown selectors fail before installation. This is a dedicated Package command, not an extension to pip version syntax. All selected artifacts are hash-checked before pip runs. Profile distributions contain only the public catalog resources and contract registry, excluding history and Python implementation. Catalog resources are installed into the explicitly chosen Python environment. Local `.ptsip/profiles` declarations and runtime activation remain consumer-owned and are not inferred by this installer.
+The base chooses its complete latest published composition; an exact suffix pins
+its snapshot. Package installation verifies exact Tool/Profile identities and
+every registered engine identity, including newly added engines. A missing or
+substituted engine fails before installation. There are no Package exclusion
+flags; removal or banning belongs to separate explicit commands. Every wheel is
+restored even at the same version, then installed versions and native executable
+hashes are verified. Official release status and the immutable Specification
+version do not gate installation completeness.
+
+Unknown selectors fail before installation. All artifacts are hash-checked before
+pip runs. Profile distributions contain only the public catalog resources and
+contract registry, excluding history and implementation. Local `.ptsip/profiles`
+declarations and runtime activation remain consumer-owned.
 
 ## Notes and verification scope
 

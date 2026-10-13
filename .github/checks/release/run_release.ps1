@@ -17,7 +17,12 @@ switch ($Action) {
         & gh workflow run tooling-test.yml --repo Kinirin/PTSIP --ref main -f "targets=$Targets" -f "optional_platforms=$OptionalPlatforms"
     }
     'DispatchRelease' {
-        & gh workflow run tooling-release.yml --repo Kinirin/PTSIP --ref main -f "targets=$Targets" -f "optional_platforms=$OptionalPlatforms" -f "destination=$Destination"
+        $selectionText = & go -C $controller run ./cmd/ptsip-release select --root $repo --targets $Targets --optional-platforms $OptionalPlatforms
+        if ($LASTEXITCODE -ne 0) { throw 'Release request could not be resolved from the canonical inventory.' }
+        $selection = ($selectionText -join "`n") | ConvertFrom-Json
+        $engines = ($selection.components | Where-Object kind -eq 'engine' | ForEach-Object { $_.id }) -join ','
+        if ($selection.release_type -eq 'PTSIP_PACKAGE') { $engines = '' }
+        & gh workflow run tooling-release.yml --repo Kinirin/PTSIP --ref main -f "release_type=$($selection.release_type)" -f "components=$engines" -f "optional_platforms=$OptionalPlatforms" -f "destination=$Destination"
     }
     default {
         $command = switch ($Action) {

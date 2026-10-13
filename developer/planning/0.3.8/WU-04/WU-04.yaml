@@ -113,6 +113,27 @@ work_unit:
       engine_and_profile_versions: PRESERVED
       engine_pypi: OUTSIDE_DECLARED_TOKEN_SCOPE
       state: PUBLISHED_GITHUB_AND_PYPI
+    complete_package_correction:
+      authorization: USER_REAFFIRMED_FULL_PACKAGE_AND_PIP_INSTALL_ENTRY
+      approval_ref: developer/policy/approvals/MPA-20261013-COMPLETE-PACKAGE-RELEASE-AND-INSTALLATION.yaml
+      workflow_release_type: EXPLICIT_REGISTERED_CHOICE_DEFAULT_PTSIP_PACKAGE
+      mandatory_inventory: TOOL_PROFILES_AND_ALL_REGISTERED_ENGINES_BY_ID
+      credential_downgrade: FORBIDDEN_FAIL_REQUEST
+      local_regressions: PASS_COMPLETENESS_REUSE_AND_MANDATORY_PIP_DEPENDENCY_ASSEMBLY
+      local_installation:
+        package_identity: 0.3.8.fa660a
+        target: .venv
+        tool: 0.3.8b1
+        profiles: pp.1.02
+        engine_count: 7
+        native_origin_and_executable_hashes: PASS
+        consumer_diagnostic_all_installed: true
+        runtime_execution_authorized: false
+      pip_distribution_cutover:
+        direction: PTSIP_PYPI_PROJECT_IS_COMPLETE_PACKAGE
+        version_projection: AWAITING_OWNER_POST_N_OR_EXPLICIT_PYPI_VERSION_DECISION
+        root_project_metadata_mutation: PENDING_VERSION_DECISION
+        engine_project_publication: REQUIRES_AUTHORITY_BEYOND_CURRENT_PTSIP_ONLY_TOKEN
       verification:
         source_sha: 7c493c0484614885c6d92b9f41562b16273c6682
         run_id: 38387285145

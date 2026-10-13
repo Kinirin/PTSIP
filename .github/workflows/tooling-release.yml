@@ -2,10 +2,15 @@ name: tooling-release
 on:
   workflow_dispatch:
     inputs:
-      targets:
-        description: 'Components: package, tool, profiles, engine:context or comma-separated selections'
+      release_type:
+        description: 'Package always includes Tool, Profiles and ALL registered engines'
+        type: choice
+        default: PTSIP_PACKAGE
+        options: [PTSIP_PACKAGE, TOOL_ONLY, ENGINE_ONLY, PROFILES_ONLY, TOOL_ENGINES, TOOL_PROFILES, ENGINES_PROFILES, MULTIPLE_ENGINES]
+      components:
+        description: 'Engine names for an explicit component release; leave empty for Package'
         type: string
-        default: package
+        default: ''
       optional_platforms:
         description: 'Optional macOS verification artifacts (leave empty for Windows and Linux)'
         type: string
@@ -31,7 +36,8 @@ jobs:
       actions: read
     env:
       GH_TOKEN: ${{ github.token }}
-      TARGETS: ${{ inputs.targets }}
+      RELEASE_TYPE: ${{ inputs.release_type }}
+      COMPONENTS: ${{ inputs.components }}
       OPTIONAL: ${{ inputs.optional_platforms }}
       DESTINATION: ${{ inputs.destination }}
     steps:
@@ -48,7 +54,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          go -C .github/checks/release/controller run ./cmd/ptsip-release prepare-publication --root "$GITHUB_WORKSPACE" --targets "$TARGETS" --optional-platforms "$OPTIONAL" --output .artifacts/release/shipping
+          go -C .github/checks/release/controller run ./cmd/ptsip-release prepare-publication --root "$GITHUB_WORKSPACE" --release-type "$RELEASE_TYPE" --components "$COMPONENTS" --optional-platforms "$OPTIONAL" --output .artifacts/release/shipping
       - name: Consume immutable PyPI file identities before publication
         id: preflight
         shell: bash

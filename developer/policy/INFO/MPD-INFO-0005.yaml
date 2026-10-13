@@ -6,7 +6,7 @@ policy:
   title: Independent release version identity and canonical Package composition information
   status: APPROVED
   substatus: Applying
-  version: '1.1'
+  version: '1.2'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
   statement: PTSIP Developer release identities and canonical information source/projection semantics.
@@ -89,6 +89,9 @@ rules:
     package_exact_identity: NUMERIC_BASE_DOT_SIX_HEXADECIMAL_MAPPING
     package_install_selector: BASE_SELECTS_LATEST_EXACT_SUFFIX_SELECTS_PINNED_UNKNOWN_SUFFIX_FAILS
     package_install_contract_ref: .github/checks/release/package-installation-contract.json
+    package_install_inventory: TOOL_PROFILES_AND_ALL_REGISTERED_ENGINES_NO_OMISSIONS
+    package_latest_resolution: COMPLETE_LATEST_PUBLISHED_COMPOSITION_INDEPENDENT_OF_OFFICIAL_OR_SPECIFICATION_VERSION
+    engine_omission_authority: SEPARATE_EXPLICIT_REMOVAL_OR_BAN_COMMAND
     identity_display_order: [PTSIP_Package, textTool, Project_Profile, Engine, SPEC_REVISION, Specification_source]
     suffix_semantics: OPAQUE_MAPPING_ONLY_NO_ORDER_OR_COMPATIBILITY
     suffix_collision: FAIL_CLOSED_FULL_COMPOSITION_SHA256_REQUIRED
