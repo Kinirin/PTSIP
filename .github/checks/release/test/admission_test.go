@@ -43,6 +43,19 @@ func TestRegisteredSelectionRejectsAliasesAndTamper(t *testing.T) {
 	}
 }
 
+func TestCanonicalMachineOutputExcludesSuccessfulProcessDiagnostics(t *testing.T) {
+	root := t.TempDir()
+	source := filepath.Join(root, "main.go")
+	fixture := "package main\nimport (\"fmt\"; \"os\")\nfunc main(){fmt.Fprintln(os.Stderr,\"dependency download diagnostic\");fmt.Print(`{\"record\":{\"status\":\"PASS\"}}`)}\n"
+	if err := os.WriteFile(source, []byte(fixture), 0644); err != nil {
+		t.Fatal(err)
+	}
+	data, err := release.Run(root, "go", "run", source)
+	if err != nil || string(data) != `{"record":{"status":"PASS"}}` {
+		t.Fatalf("canonical JSON contaminated by stderr: %s, %v", data, err)
+	}
+}
+
 func archive(t *testing.T, names []string) []byte {
 	t.Helper()
 	var b bytes.Buffer

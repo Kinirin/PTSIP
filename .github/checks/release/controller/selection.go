@@ -1,6 +1,7 @@
 package releasecontroller
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -76,9 +77,11 @@ func Digest(data []byte) string { sum := sha256.Sum256(data); return hex.EncodeT
 func Run(root string, args ...string) ([]byte, error) {
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Dir = root
-	data, err := cmd.CombinedOutput()
+	var diagnostic bytes.Buffer
+	cmd.Stderr = &diagnostic
+	data, err := cmd.Output()
 	if err != nil {
-		return nil, fmt.Errorf("%s failed: %s", args[0], data)
+		return nil, fmt.Errorf("%s failed (%v): %s%s", args[0], err, data, diagnostic.Bytes())
 	}
 	return data, nil
 }
