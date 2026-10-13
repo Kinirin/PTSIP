@@ -237,10 +237,6 @@ artifact_review_list:
   classification: SOURCE_KEY_HAS_NON_GOVERNANCE_MEANING
   target_role: NONE
 excluded_existing_source_semantics:
-- location: developer/policy/MPD-0010.yaml#rules.agent_instruction_entry_taxonomy_trial.level_1_bootstrap.source
-  meaning: FILE_SOURCE
-- location: developer/policy/MPD-0010.yaml#rules.agent_instruction_entry_taxonomy_trial.unresolved_reassessment.source
-  meaning: FILE_SOURCE
 - location: developer/policy/MIGR/MPD-MIGR-0004.yaml#rules.commit_candidate_trigger.release.source
   meaning: VERIFICATION_REVISION_SOURCE
 - location: developer/automation/implementation_workflows.yaml#tasks.*.watch_inputs.*.source
