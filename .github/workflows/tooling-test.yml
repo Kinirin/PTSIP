@@ -24,7 +24,7 @@ jobs:
       python: ${{ steps.mode.outputs.python }}
       fetch_depth: ${{ steps.mode.outputs.fetch_depth }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
       - uses: actions/setup-go@v6
@@ -60,7 +60,7 @@ jobs:
       max-parallel: 7
       matrix: ${{ fromJSON(needs.mode-selection.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
           fetch-depth: ${{ needs.mode-selection.outputs.fetch_depth }}

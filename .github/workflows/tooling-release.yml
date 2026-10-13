@@ -39,7 +39,7 @@ jobs:
       TARGETS: ${{ inputs.targets }}
       OPTIONAL: ${{ inputs.optional_platforms }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
@@ -90,7 +90,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       VERIFIED_RUN: ${{ inputs.verification_run_id }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
       - uses: actions/setup-go@v6
@@ -141,7 +141,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
       - uses: actions/setup-go@v6
