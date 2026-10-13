@@ -68,7 +68,7 @@ func AdmitPublication(root string) error {
 	if err != nil || assure["contract_ref"] != PublicationContract || assure["approval_ref"] != scope["approval_ref"] {
 		return fmt.Errorf("engine publication verification owner mismatch")
 	}
-	identity, err := policySection(root, "MPD-INFO-0001", "independent_release_versioning")
+	identity, err := policySection(root, "MPD-INFO-0005", "independent_release_versioning")
 	if err != nil || identity["contract_ref"] != ".github/checks/release/release-contract.json" || identity["changed_source_same_component_version"] != "FAIL_CLOSED" {
 		return fmt.Errorf("immutable component version owner mismatch")
 	}

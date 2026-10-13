@@ -1,0 +1,31 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-INFO-INDEPENDENT-RELEASE-VERSION-OWNER-SPLIT-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The user explicitly approved KEEP_LATEST relocation of the entire
+    independent_release_versioning authority from MPD-INFO-0001 to a separate
+    canonical MPD-INFO-0005 policy file. Preserve the entire approved rule
+    unchanged, including the prior KEEP_LATEST root pyproject.toml Package
+    composition authority; do not create duplicate normative owners.
+    Register the new INFO policy in both canonical policy and subject catalogs;
+    rebind exact runtime and machine-contract pointers affected by the move.
+    Preserve unrelated INFO rules and existing historical approval records.
+    Planning path, development branch rules and plan/directory creation
+    are excluded from this approval.
+    Prior policy release owner baseline: b131ed216a636100b52b450329c948582a2a421e;
+    latest active main before sync: 990d792de79e27359ea39b375c986220bce315d2.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: false
+  policy_content_review_scope: FULL
+  conflict_resolution: KEEP_LATEST
+  requested_policy_id: MPD-INFO-0005
+  affected_policy_ids:
+  - MPD-INFO-0001
+  - MPD-INFO-0005
+  recorded_at: '2026-10-13'

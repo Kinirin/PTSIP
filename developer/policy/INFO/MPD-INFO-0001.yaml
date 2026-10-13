@@ -6,7 +6,7 @@ policy:
   title: INFO authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.0'
+  version: '5.0'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
   statement: 개발 정책, planning, self-profile 및 Context Plane의 canonical 정보 모델과 source/projection 관계를 소유한다. 단, PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 전체 필드 스키마 정의권은 해당 Family에 귀속한다.
@@ -6169,7 +6169,7 @@ rules:
       approved_planned_release: OWNER_APPROVED_PLANNING_RELEASE_EVIDENCE
     integration:
       sources: CANONICAL_PYPROJECT_COMPOSITION_AND_INDEPENDENT_STATE_EVIDENCE
-      current_component_version_declaration_authority_ref: MPD-INFO-0001#rules.independent_release_versioning.central_package_composition_declaration
+      current_component_version_declaration_authority_ref: MPD-INFO-0005#rules.independent_release_versioning.central_package_composition_declaration
       distinguish_version_identity_and_lifecycle_state: REQUIRED
       preserve_independent_package_tool_profile_and_engine_version_authority: true
       require_source_identity_provenance_and_currentness: true
@@ -6187,109 +6187,6 @@ rules:
       planning_subpath_routing: SEPARATE_USER_DECISION
     authority_ref: MPD-INTENT-0001#rules.local_release_bounded_planning_intent.target_release_resolution_rule
     plan_creation_or_directories_authorized: false
-  independent_release_versioning:
-    central_package_composition_declaration:
-      decision: KEEP_LATEST
-      approval_ref: developer/policy/approvals/MPA-20261013-PYPROJECT-CANONICAL-PACKAGE-COMPOSITION-KEEP-LATEST.yaml
-      prior_engine_version_ownership_approval_ref: developer/policy/approvals/MPA-20261012-ENGINE-VERSION-OWNERSHIP.yaml
-      prior_independent_release_design_approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
-      scope: CURRENT_PTSIP_REPOSITORY_RELEASE_COMPOSITION_AND_COMPONENT_VERSION_DECLARATIONS
-      canonical_file: pyproject.toml
-      canonical_location: REPOSITORY_ROOT_AT_VERIFIED_SOURCE_REVISION
-      canonical_owner_of:
-      - CURRENT_PTSIP_PACKAGE_COMPOSITION
-      - CURRENT_PTSIP_PACKAGE_COMPOSITION_IDENTITY_DECLARATION
-      - CURRENT_TOOL_VERSION_DECLARATION
-      - CURRENT_PROJECT_PROFILE_VERSION_DECLARATION
-      - CURRENT_VERSION_OF_EACH_REGISTERED_ENGINE
-      - SPECIFICATION_SOURCE_AND_IMMUTABLE_REVISION_BINDINGS
-      exactly_one_current_composition_declaration: REQUIRED
-      duplicate_component_current_version_declaration_authority: FORBIDDEN
-      independent_component_version_identifiers_and_change_approval: PRESERVED
-      component_version_auto_increment: FORBIDDEN
-      current_composition_vs_published_package_snapshot: DISTINCT_STATES
-      published_package_digest_algorithm_and_immutable_history: PRESERVED
-      package_numeric_base_change_authority: USER_EXPLICIT_ONLY
-      declared_published_package_identity_requires_verified_composition_digest: true
-      unverified_or_absent_published_package_suffix_is_current_publication: false
-      tool_python_distribution:
-        canonical_field: project.version
-        semantic_identity: PTSIP_TOOL
-        package_composite_version_as_pep440_project_version: FORBIDDEN
-        duplicated_tool_value_in_composition_must_be_exact_binding: true
-      prior_canonical_version_sources_become_projections:
-        tool_runtime_constant: src/ptsip/constants.py#TOOL_VERSION
-        profile_registry_current: registry/project-profile-contracts.yaml#current
-        engine_local_version_files: src/ptsip/engines/{engine_id}/version.yaml#version
-        engine_official_index: src/ptsip/engines/index.json
-        engine_manifests_bindings_and_cargo: DERIVED_AND_EXACTLY_VERIFIED
-      retained_external_evidence:
-        published_package_registry: .github/checks/release/package-registry.json
-        package_composition_contract: .github/checks/release/composition-contract.json
-        released_artifact_source_and_digest_provenance: IMMUTABLE
-        profile_schema_history_and_validity: PRESERVED
-        specification_normative_revision_source_authority: PRESERVED
-      binding_consistency:
-        current_component_versions: EXACT_MATCH_TO_CANONICAL_COMPOSITION
-        bound_specification: EXACT_REFERENCE_MATCH
-        published_package_record: VERIFY_CALCULATED_DIGEST_AND_PUBLICATION_STATE
-        missing_ambiguous_conflicting_or_stale_projection: FAIL_CLOSED
-        projection_may_approve_version_change: false
-      transition:
-        policy_authority: APPROVED
-        machine_contract_and_implementation_cutover: PENDING_SEPARATE_PLAN_AND_VALIDATION
-        existing_release_readers_use_legacy_distributed_sources: UNMIGRATED_NOT_CANONICAL_AUTHORITY
-        cutover_requires_exact_source_binding_and_full_CONTRACT_CONFORMANCE: true
-        existing_component_versions_are_not_AUTOMATICALLY_CHANGED: true
-      explicitly_excluded:
-      - DEVELOPER_PLANNING_CANONICAL_SUBPATH_RULES
-      - DEVELOPMENT_BRANCH_NAMING_OR_CREATION_AUTHORITY
-      - NEW_PLAN_OR_DIRECTORY_CREATION
-    composition_contract_ref: .github/checks/release/composition-contract.json
-    approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
-    contract_ref: .github/checks/release/composition-contract.json
-    retained_version_syntax_catalog: .github/checks/release/release-contract.json
-    identities:
-    - PACKAGE
-    - TOOL
-    - PROFILE
-    - SEVEN_INDEPENDENT_ENGINES
-    package_numeric_base_change: USER_EXPLICIT_ONLY
-    package_suffix: FIRST_SIX_SHA256_HEX_OF_CANONICAL_PUBLISHED_COMPONENT_ARTIFACT_MANIFEST
-    package_refresh_trigger: EACH_SUCCESSFUL_NON_PACKAGE_COMPONENT_RELEASE
-    package_exact_identity: NUMERIC_BASE_DOT_SIX_HEXADECIMAL_MAPPING
-    package_install_selector: BASE_SELECTS_LATEST_EXACT_SUFFIX_SELECTS_PINNED_UNKNOWN_SUFFIX_FAILS
-    package_install_contract_ref: .github/checks/release/package-installation-contract.json
-    identity_display_order: [PTSIP_Package, textTool, Project_Profile, Engine, SPEC_REVISION, Specification_source]
-    suffix_semantics: OPAQUE_MAPPING_ONLY_NO_ORDER_OR_COMPATIBILITY
-    suffix_collision: FAIL_CLOSED_FULL_COMPOSITION_SHA256_REQUIRED
-    tool_engine_profile_version_coupling: FORBIDDEN
-    engine_public_version: MAJOR_MINOR_PATCH
-    engine_public_version_pattern: '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
-    engine_public_version_conflict_resolution: KEEP_LATEST
-    engine_public_version_resolution_ref: developer/policy/approvals/MPA-20261012-ENGINE-VERSION-THREE-SEGMENT-KEEP-LATEST.yaml
-    engine_version_owner: PYPROJECT_TOML_CANONICAL_PACKAGE_COMPOSITION
-    engine_version_path_pattern: src/ptsip/engines/{engine_id}/version.yaml
-    engine_version_path_role: DERIVED_COMPATIBILITY_PROJECTION_NOT_CANONICAL_VERSION_AUTHORITY
-    engine_version_schema: ptsip-engine-version/v1
-    engine_version_change_authority: USER_EXPLICIT_OR_AUTHORIZED_POLICY_COMPLIANT_CHANGE
-    engine_version_auto_increment: FORBIDDEN
-    engine_version_projections:
-      source: PYPROJECT_TOML_CANONICAL_PACKAGE_COMPOSITION
-      targets:
-      - ENGINE_LOCAL_VERSION_YAML
-      - OFFICIAL_ENGINE_INDEX
-      - ENGINE_MANIFEST
-      - ENGINE_EXECUTION_BINDINGS
-      - CARGO_MANIFEST
-      - CARGO_LOCK
-      synchronization: EXPLICIT_DETERMINISTIC_AUTOMATION
-      divergence: FAIL_CLOSED
-    engine_version_ownership_approval_ref: developer/policy/approvals/MPA-20261013-PYPROJECT-CANONICAL-PACKAGE-COMPOSITION-KEEP-LATEST.yaml
-    cargo_version: EXPLICIT_BUILD_PROJECTION_NOT_PUBLIC_ENGINE_IDENTITY
-    existing_identifiers: PRESERVE_EXACT_BOOTSTRAP_IDENTIFIERS
-    unchanged_component_republication: SKIP
-    changed_source_same_component_version: FAIL_CLOSED
 relations:
   supersedes: []
   amends: []
