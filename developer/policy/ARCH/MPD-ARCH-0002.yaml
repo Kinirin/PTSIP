@@ -3,7 +3,7 @@ policy_class: PTSIP_DEVELOPER_POLICY
 responsibility_family: ARCH
 policy:
   id: MPD-ARCH-0002
-  version: '3.1'
+  version: '4.0'
   title: Developer Automation responsibility-domain package boundary
   status: APPROVED
   substatus: Applying
@@ -108,6 +108,20 @@ rules:
       migration_sequence: PLAN_OWNED
     admitted_external_domain_roots:
     - .github/checks/release/
+  family_local_policy_validator_domain:
+    approval_ref: developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml
+    applies_to_policy_class: PTSIP_DEVELOPER_POLICY
+    family_validator_root_pattern: 'developer/policy/{FAMILY}/validator/'
+    family_go_validator_pattern: 'developer/policy/{FAMILY}/validator/{FAMILY}_validator.go'
+    ownership_key: [policy_class, responsibility_family]
+    exact_owner_per_validator: REQUIRED
+    developer_automation_root_exception: FAMILY_LOCAL_VALIDATION_ONLY
+    other_developer_automation_domains: PRESERVE
+    cross_family_validator_normative_ownership: FORBIDDEN
+    legacy_resolver_or_bound_runtime_dependency: FORBIDDEN_FOR_NEW_FAMILY_VALIDATORS
+    product_validation_engine_normative_override: FORBIDDEN
+    materialization_authorized: false
+    existing_go_validator_cutover_authorized: false
   tooling_test_registry_driven_executor_boundary:
     lifecycle: RETIRED
     normative_execution_contracts_effective: false
@@ -232,3 +246,12 @@ transition:
       action: MATERIALIZE_REPOSITORY_TEST_MODE_CONTROL_PLANE_PACKAGE
       execution: SERIAL_REQUIRED
       completion_check: TEST_MODE_IMPLEMENTATION_MATCHES_APPROVED_DOMAIN_ROOT_SCOPE_AND_AUTHORITY_BOUNDARY
+  - id: TR-007
+    type: PROJECT_OWNER_FAMILY_LOCAL_GO_VALIDATOR_DOMAIN
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml
+    next_action:
+      action: DERIVE_FAMILY_LOCAL_VALIDATOR_DOMAIN_MIGRATION_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: EXISTING_AUTOMATION_DOMAINS_PRESERVED_AND_NEW_VALIDATORS_NOT_YET_MATERIALIZED

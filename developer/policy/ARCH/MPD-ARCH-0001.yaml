@@ -6,7 +6,7 @@ policy:
   title: ARCH authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '5.1'
+  version: '6.0'
 authority_subject:
   id: DEV_TOOL_RESPONSIBILITY_STRUCTURE
   statement: Reference Tool과 개발 체계의 lifecycle 책임 소유, 구성 요소 경계 및 명시적인 typed 관계를 소유한다.
@@ -74,7 +74,8 @@ rules:
 
   fsd_family_layout_and_isolation:
     decision: APPROVED_CORE_POLICY
-    approval_ref: developer/policy/approvals/MPA-20261012-FSD-FAMILY-LAYOUT-INDEPENDENCE.yaml
+    approval_ref: developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml
+    superseded_layout_approval_ref: developer/policy/approvals/MPA-20261012-FSD-FAMILY-LAYOUT-INDEPENDENCE.yaml
     policy_scope: PTSIP_DEVELOPER_POLICY
     root_family_policy_schema_ownership:
       owner: MATCHING_RESPONSIBILITY_FAMILY
@@ -83,25 +84,14 @@ rules:
       shared_cross_family_normative_schema: FORBIDDEN
       field_schema_authority_inferred_from_filename_only: FORBIDDEN
     canonical_fsd_layout:
-      root: developer/policy/schemas/FSD/
-      index_schema: developer/policy/schemas/FSD/index.schema.json
-      family_schema_paths:
-      NORM: developer/policy/schemas/FSD/NORM.schema.json
-      GOV: developer/policy/schemas/FSD/GOV.schema.json
-      INTENT: developer/policy/schemas/FSD/INTENT.schema.json
-      ARCH: developer/policy/schemas/FSD/ARCH.schema.json
-      INFO: developer/policy/schemas/FSD/INFO.schema.json
-      CNTR: developer/policy/schemas/FSD/CNTR.schema.json
-      RISK: developer/policy/schemas/FSD/RISK.schema.json
-      SUPPLY: developer/policy/schemas/FSD/SUPPLY.schema.json
-      REAL: developer/policy/schemas/FSD/REAL.schema.json
-      ASSURE: developer/policy/schemas/FSD/ASSURE.schema.json
-      CTRL: developer/policy/schemas/FSD/CTRL.schema.json
-      CHANGE: developer/policy/schemas/FSD/CHANGE.schema.json
-      OPS: developer/policy/schemas/FSD/OPS.schema.json
-      RECORD: developer/policy/schemas/FSD/RECORD.schema.json
+      root: developer/policy/
+      family_validator_root_pattern: 'developer/policy/{FAMILY}/validator/'
+      family_schema_pattern: 'developer/policy/{FAMILY}/validator/{FAMILY}.schema.json'
+      family_go_validator_pattern: 'developer/policy/{FAMILY}/validator/{FAMILY}_validator.go'
+      family_count: 14
       exact_family_membership: REQUIRED
       schema_binding_must_be_machine_discoverable: true
+      prior_central_fsd_schema_layout: SUPERSEDED
     policy_class_isolation:
       isolated_from: src/policy
       schema_file_sharing: FORBIDDEN
@@ -131,9 +121,10 @@ rules:
         extension: '.schema.json'
         encoding_format: JSON
         schema_language: JSON_SCHEMA
-        root: developer/policy/schemas/FSD/
+        root_pattern: 'developer/policy/{FAMILY}/validator/'
     schema_json_yaml_serialization: FORBIDDEN
-    existing_canonical_schema_paths: PRESERVE
+    existing_canonical_schema_paths: PRESERVE_UNTIL_APPROVED_CUTOVER
+    layout_override_approval_ref: developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml
     independent_src_policy_boundary: PRESERVE
     content_format_must_match_declared_extension: true
     parser_rebinding_and_file_materialization: DEFER_TO_SEPARATE_PLAN
@@ -156,9 +147,11 @@ rules:
     cross_family_schema_normative_inheritance: FORBIDDEN
     info_global_field_schema_authority_for_other_families: REPLACED
     shared_primitives_transfer_field_authority: false
-    target_schema_directory: developer/policy/schemas/FSD/
+    target_schema_directory_pattern: 'developer/policy/{FAMILY}/validator/'
     target_family_schema_pattern: '{FAMILY}.schema.json'
-    target_catalog_schema: developer/policy/schemas/FSD/index.schema.json
+    target_go_validator_pattern: '{FAMILY}_validator.go'
+    family_schema_catalog_dependency: FORBIDDEN
+    layout_override_approval_ref: developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml
     catalog_contract_owner: PROJECT_OWNER_SHARED_DEVELOPER_CATALOG
     catalog_not_a_root_family_policy_record: true
     excluded_scopes:
@@ -177,6 +170,52 @@ rules:
       RECONCILE: REJECTED
       resolved_against: MPD-INFO-0001#rules.family_definition.kernel_definitions
       preserve_unrelated_authority: true
+  root_family_local_validation_and_bound_reconciliation:
+    approval_ref: developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml
+    root_family_layout_resolution: KEEP_LATEST
+    bound_retirement_resolution: RECONCILE
+    policy_class: PTSIP_DEVELOPER_POLICY
+    family_validation_ownership: MATCHING_RESPONSIBILITY_FAMILY
+    local_schema_scope: COMPLETE_FAMILY_POLICY_RECORD
+    local_validator_implementation_language: GO
+    local_schema_and_validator_colocation: REQUIRED
+    first_migration_family: ARCH
+    remaining_family_rollout: DEFER_TO_APPROVED_PLAN
+    initial_schema_strategy:
+      mode: SELF_CONTAINED
+      repeat_common_fields_locally: true
+      initial_shared_base_schema: FORBIDDEN
+      cross_family_normative_schema_reference: FORBIDDEN
+      future_common_schema_extraction: SEPARATE_USER_POLICY_DECISION_REQUIRED
+    reference_only_legacy_schema:
+      path: developer/policy/schemas/root-family-policy.schema.json
+      normative_import: FORBIDDEN
+      runtime_dependency: FORBIDDEN
+    new_family_validation_runtime_dependency_exclusions:
+    - developer/policy/MPD-BOUND-0001.yaml
+    - developer/policy/contracts/go-policy-resolver.v1.yaml
+    - developer/policy/schemas/root-family-policy.schema.json
+    legacy_resolver_and_source_review_cutover_scope:
+    - developer/policy/policy-resolver-contract.yaml
+    - developer/policy/source-application-review.yaml
+    - developer/policy/policy-resolver-bindings/
+    - developer/policy/contracts/go-policy-resolver.v1.yaml
+    existing_resolver_runtime_mutation: NOT_AUTHORIZED
+    legacy_bound:
+      record: developer/policy/MPD-BOUND-0001.yaml
+      file_retention: REQUIRED_DURING_MIGRATION
+      present_policy_status: PRESERVE_UNTIL_SEPARATE_LIFECYCLE_DECISION
+      automatic_retirement_or_deletion: FORBIDDEN
+      interim_arch_normative_ownership: FORBIDDEN
+      responsibility_transfer: DIRECT_TO_CORRECT_OWNER_FAMILY
+      family_owner_inference_without_authority: FORBIDDEN
+      unresolved_rule_ownership: USER_DECISION_REQUIRED
+      unrelated_current_rules: PRESERVE
+    execution_boundary:
+      family_schema_materialization: NOT_AUTHORIZED_BY_POLICY_DECISION
+      family_go_validator_materialization: NOT_AUTHORIZED_BY_POLICY_DECISION
+      existing_validator_cutover: NOT_AUTHORIZED
+      required_plan: SEPARATELY_APPROVED
   family_definition:
     kernel_definitions:
     - id: DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
@@ -492,3 +531,12 @@ transition:
       action: DERIVE_FSD_SCHEMA_AND_PARSER_CONFORMANT_PLAN
       execution: OWNER_DECISION_REQUIRED
       completion_check: YAML_FOR_YAML_FILES_AND_JSON_FOR_SCHEMA_JSON_FILES
+  - id: TR-005
+    type: PROJECT_OWNER_FAMILY_LOCAL_VALIDATION_BOUND_RECONCILE
+    state: SATISFIED
+    refs:
+    - developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml
+    next_action:
+      action: DERIVE_FAMILY_LOCAL_VALIDATION_AND_LEGACY_DECOUPLING_PLAN
+      execution: OWNER_DECISION_REQUIRED
+      completion_check: NO_FAMILY_VALIDATOR_CUTOVER_OR_LEGACY_RETIREMENT_WITHOUT_APPROVED_PLAN

@@ -1,0 +1,27 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE
+  decision: APPROVED
+  conflict_resolution: RECONCILE
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner selected KEEP_LATEST for 14 family-local self-contained schemas
+    and Go validators with initially duplicated common fields, reference-only
+    use of the former root-family-policy.schema.json, and no new ARCH validation
+    dependency on MPD-BOUND or go-policy-resolver.v1.yaml. Project Owner retained
+    BOUND as legacy without deleting it and explicitly selected RECONCILE:
+    assign responsibilities directly to their authoritative families rather
+    than provisionally concentrating BOUND semantics in ARCH.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  policy_content_review_scope: DIRECTION
+  implementation_authorized: false
+  existing_validator_cutover_authorized: false
+  legacy_policy_removal_authorized: false
+  branch_creation_authorized: false
+  affected_policy_ids:
+  - MPD-ARCH-0001
+  - MPD-ARCH-0002
+  recorded_at: '2026-10-13'
