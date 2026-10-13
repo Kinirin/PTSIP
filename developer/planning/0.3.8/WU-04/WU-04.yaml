@@ -83,5 +83,22 @@ work_unit:
       publisher_source: SEPARATE_FRESH_MAIN_SHA
       manual_run_and_release_inputs: REMOVED_AUTOMATIC_MACHINE_RESOLUTION
       local: PASS_GO_PRESENTATION_EXACT_SELECTION_AND_REISSUE_BOUNDARY_REGRESSIONS
-      github_republication: PENDING_EXACT_SOURCE_ACTIONS_AND_OBSERVED_PUBLICATION
+      github_republication: PUBLISHED_AND_PUBLIC_ASSET_DIGESTS_OBSERVED
+      remote_control_verification:
+        source_sha: 77b077456a3ff8e432febb3a7e5020739737f365
+        run_id: 38377663064
+        result: PASS
+        successful_jobs: 19
+      publication:
+        run_id: 38378109816
+        result: SUCCESS_GITHUB_DESTINATION
+        github_release_id: 411515534
+        title: PTSIP_Package 0.3.8.42d9e6
+        draft: false
+        asset_count: 36
+        public_content_asset_digests_observed: 35
+        original_artifact_source: 6febd3480d6e6c857e9b8a4553bb7a32ecb2c813
+        publisher_control_source: 77b077456a3ff8e432febb3a7e5020739737f365
+        package_record_commit: cc226263c6c2cc6591259f67ef0ced022527a576
+        pypi_in_this_run: SKIPPED_GITHUB_DESTINATION
       engine_pypi: EXTERNAL_PENDING_PUBLISHER_REGISTRATION_NOT_CONFIRMED
