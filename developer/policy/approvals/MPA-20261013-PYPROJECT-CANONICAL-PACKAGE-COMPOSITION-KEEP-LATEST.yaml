@@ -1,0 +1,35 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-PYPROJECT-CANONICAL-PACKAGE-COMPOSITION-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    사용자 KEEP_LATEST 승인: PTSIP_Package 집합과 그 하위의 Tool, Profile,
+    등록된 각 Engine의 현재 버전 선언 권위를 저장소 루트 pyproject.toml로
+    통합한다. 분산된 Engine version.yaml, Profile current registry 및
+    기타 중복 버전 선언은 정규 권위가 아닌 기계적 projection/binding으로
+    전환한다. Tool의 Python 배포용 project.version은 PEP 440 호환을
+    유지하며, 별도의 PTSIP_Package 복합 식별자를 동일 필드에 넣지 않는다.
+    기존 Package 공개 아티팩트 기반 해시 산출·기록, 구성요소의 독립
+    버전 변경, 명시적 사용자 승인, 릴리스 불변성, Specification
+    source/revision 권위 및 릴리스 노트 경로를 보존한다. 기존 정규
+    원본과 충돌하는 버전 관리 의미를 KEEP_LATEST로 대체한다.
+    이번 승인은 INFO 정책 동기화에 한정하며, 기계적 계약/런타임
+    전환과 pyproject.toml 구성 선언의 구현은 별도 계획·검증 대상으로
+    남긴다. Planning 경로, 개발 브랜치 규칙, 계획서 및 디렉터리는
+    변경하거나 생성하지 않는다.
+    original_engine_owner_base: ed19a9d083a376596b4d686b3898b1bc9ca5bc3f;
+    unified_release_base: 15ed3d9deef29f57cbfc4096ac50fb94f2fbe15d;
+    latest_active_main_before_change: caf4ce4af8a3fc4a44a1bcfba7f039d76a88a7ad.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  requested_policy_id: MPD-INFO-0001
+  affected_policy_ids:
+  - MPD-INFO-0001
+  recorded_at: '2026-10-13'
