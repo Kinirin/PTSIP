@@ -17,19 +17,20 @@
 
 ## 현재 버전 및 출판 상태
 
-<!-- ptsip-readme-i18n: 1657a14c36053f906ccd6e85897524097eb27587131ea16968aa2ceacd824d6f -->
+<!-- ptsip-readme-i18n: de4e8e6bd5a9662247c3ab56423d7e4f47784cb74e0c32c80ede361fb811e84b -->
 
 | 이름 * | 소스 트리 값 |
 | --- | --- |
-| 제품 정보 | `0.3.8a5` — **unpublished 사전 릴리스 후보** |
-| 최근 게시된 도구 prerelease | `0.3.8a4` |
+| PTSIP 패키지 | `0.3.8.<SHA6>` — 성공적인 출판 후 할당된 구성 |
+| 텍스트 도구 | `0.3.8a6` — **unpublished 사전 릴리스 후보** |
+| 최근 게시된 도구 prerelease | `0.3.8a5` |
 | 사업영역 | `pp.1.02` |
-| 명세 가족 | `0.3.7-draft` |
+| 제품 정보 | Context/프로젝트 `0.2.0`; 저장/밸런스/Discovery/Planning/Execution `0.3.0` |
 | 경계 immutable `SPEC_REVISION` | `3c47816770d194ae42f98faedc911d980db0e62a` |
 
-<!-- ptsip-readme-i18n: a24fd8ca5c76344071ff1820a615a45c1a5ca5c3f064234c1ca34c56fd5ffc93 -->
+<!-- ptsip-readme-i18n: eb723fc5ca1044b732ccbb1159f0de6874ad5fe1ea316b3a55d8a065414dad6f -->
 
-도구, 프로젝트 프로필 및 사양 식별자는 독립적입니다. ...에서 [자주 묻는 질문 `0.3.8a5`](../releasenote/tool/0.3.8a5.md)· [Tool 출시](../releasenote/tool/README.md), 또는 [릴리스 워크플로우](../../.github/workflows/tooling-release.yml) 정확한 간행물 문을 위해.
+패키지 구성, 도구, 각 엔진, 프로젝트 프로필 및 immutable 사양 개정은 독립적으로 유지. ...에서 [자주 묻는 질문 `0.3.8a6`](../releasenote/tool/0.3.8a6.md)· [Tool 출시](../releasenote/tool/README.md), 또는 [릴리스 워크플로우](../../.github/workflows/tooling-release.yml). 릴리스 검증은 선택 `.github/test_modes.yaml` 그리고 독점적으로 실행 `tooling-test.yml`; 출판은 정확한 소스 증거를 소비 `tooling-release.yml`.
 
 <!-- ptsip-readme-i18n: 9535b10be9abb7a87788c3f5107c21822734a4507aeb464f8710fb8c4866b965 -->
 
@@ -51,14 +52,14 @@ ptsip --version
 ptsip spec
 ```
 
-<!-- ptsip-readme-i18n: e72c8367bcb1802278a84e7a2adb8a539ef8fad764a95fcffbadc52fef63fd72 -->
+<!-- ptsip-readme-i18n: 8a3f2b3a2ba39bed4427b4d72bc528e8391c933d38ed204c91634891e76fb9e7 -->
 
-출판물 설치 `0.3.8a4` 특별히 사전 릴리스 (일반적인 pip 해상도 대신 최신 안정 버전을 선택할 수 있습니다):
+출판물 설치 `0.3.8a5` 특별히 사전 릴리스 (일반적인 pip 해상도 대신 최신 안정 버전을 선택할 수 있습니다):
 
-<!-- ptsip-readme-i18n: dcd804999eb7b050f699f2a9a09293ea395582395c440115d1f55c114c44a3d4 -->
+<!-- ptsip-readme-i18n: 22930aed19054422e5ddca2f6ebe533bdf397a79afa759b88946b7e10fd4fb43 -->
 
 ```powershell
-python -m pip install "PTSIP==0.3.8a4"
+python -m pip install "PTSIP==0.3.8a5"
 ```
 
 <!-- ptsip-readme-i18n: eeb5b10629d40c38fe851ec3b201220313d0abdf230abe498265d788fcc7c847 -->
