@@ -34,7 +34,8 @@
   },
   "engine_reuse": {
     "mode": "IMMUTABLE_ORIGINAL_ARTIFACTS_WHEN_BOUNDARY_UNCHANGED",
-    "source_boundaries": ["src/ptsip/engines/{engine}", "src/ptsip/engines/contracts", ".github/checks/release/engine-verification", "License-Authority"],
+    "source_boundaries": ["src/ptsip/engines/{engine}", "src/ptsip/engines/contracts", ".github/checks/release/engine-verification/wheel.go", ".github/checks/release/engine-verification/linux_abi.go", ".github/checks/release/engine-verification/go.mod", ".github/checks/release/engine-verification/go.sum", "License-Authority"],
+    "publication_transport_or_policy_route_change": "OUTSIDE_ENGINE_ARTIFACT_PRODUCER_BOUNDARY",
     "changed_source_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_VERSION",
     "current_source_verification": "REQUIRED_EVEN_WHEN_REUSING_ORIGINAL_PUBLISHED_ARTIFACTS"
   },

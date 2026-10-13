@@ -167,15 +167,31 @@ func PublishedRegistry(root, ref, excludeSource string) (Registry, error) {
 	return registry, ValidateRegistry(registry)
 }
 
-func EngineReuse(root string, s Selection, components []PublishedComponent, locations map[string]string) ([]PublishedComponent, error) {
+func EngineSourceChanges(root, origin, target, id string) (string, error) {
 	var contract struct {
 		Reuse struct {
 			Boundaries []string `json:"source_boundaries"`
 		} `json:"engine_reuse"`
 	}
 	if err := ReadJSON(root, ContractPath, &contract); err != nil {
-		return nil, err
+		return "", err
 	}
+	args := []string{"git", "diff", "--name-only", origin, target, "--"}
+	if len(contract.Reuse.Boundaries) == 0 {
+		return "", fmt.Errorf("engine reuse source contract missing")
+	}
+	for _, ref := range contract.Reuse.Boundaries {
+		ref = strings.ReplaceAll(ref, "{engine}", id)
+		if _, err := SafePath(root, ref); err != nil {
+			return "", err
+		}
+		args = append(args, ref)
+	}
+	delta, err := Run(root, args...)
+	return strings.TrimSpace(string(delta)), err
+}
+
+func EngineReuse(root string, s Selection, components []PublishedComponent, locations map[string]string) ([]PublishedComponent, error) {
 	carriers, err := Carriers()
 	if err != nil {
 		return nil, err
@@ -193,23 +209,12 @@ func EngineReuse(root string, s Selection, components []PublishedComponent, loca
 				return nil, err
 			}
 			origin := strings.TrimSpace(string(source))
-			args := []string{"git", "diff", "--name-only", origin, s.SourceSHA, "--"}
-			if len(contract.Reuse.Boundaries) == 0 {
-				return nil, fmt.Errorf("engine reuse source contract missing")
-			}
-			for _, ref := range contract.Reuse.Boundaries {
-				ref = strings.ReplaceAll(ref, "{engine}", c.ID)
-				if _, e := SafePath(root, ref); e != nil {
-					return nil, e
-				}
-				args = append(args, ref)
-			}
-			delta, err := Run(root, args...)
+			delta, err := EngineSourceChanges(root, origin, s.SourceSHA, c.ID)
 			if err != nil {
 				return nil, err
 			}
 			if len(delta) != 0 {
-				return nil, fmt.Errorf("published engine %s %s changed; explicit new engine version required", c.ID, c.Version)
+				return nil, fmt.Errorf("published engine %s %s changed (%s); explicit new engine version required", c.ID, c.Version, delta)
 			}
 			reused := c
 			reused.SourceSHA = origin

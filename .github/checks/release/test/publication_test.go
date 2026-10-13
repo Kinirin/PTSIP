@@ -3,6 +3,8 @@ package releasetest
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -74,5 +76,56 @@ func TestDuplicateSourceCarriersFailWithoutMutation(t *testing.T) {
 	}
 	if _, err := release.ResolveCarrier(tag, strings.Repeat("a", 40), "title", "body", 0, api); err == nil {
 		t.Fatal("ambiguous source carrier admitted")
+	}
+}
+
+func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T) {
+	root := t.TempDir()
+	contract, err := os.ReadFile(filepath.Join(repoRoot(t), release.ContractPath))
+	if err != nil {
+		t.Fatal(err)
+	}
+	write := func(ref, text string) {
+		t.Helper()
+		p := filepath.Join(root, filepath.FromSlash(ref))
+		if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(p, []byte(text), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	write(release.ContractPath, string(contract))
+	producer := ".github/checks/release/engine-verification/wheel.go"
+	publisher := ".github/checks/release/engine-verification/publication_bundle.go"
+	write(producer, "producer-v1")
+	write(publisher, "policy-owner-1")
+	run := func(args ...string) string {
+		t.Helper()
+		data, err := release.Run(root, args...)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return strings.TrimSpace(string(data))
+	}
+	run("git", "init", "--quiet")
+	run("git", "config", "user.name", "fixture")
+	run("git", "config", "user.email", "fixture@example.invalid")
+	run("git", "add", ".")
+	run("git", "commit", "--quiet", "-m", "fixture")
+	origin := run("git", "rev-parse", "HEAD")
+	write(publisher, "policy-owner-5")
+	run("git", "add", ".")
+	run("git", "commit", "--quiet", "-m", "route")
+	delta, err := release.EngineSourceChanges(root, origin, "HEAD", "context")
+	if err != nil || delta != "" {
+		t.Fatalf("publication routing changed engine identity: %s %v", delta, err)
+	}
+	write(producer, "producer-v2")
+	run("git", "add", ".")
+	run("git", "commit", "--quiet", "-m", "producer")
+	delta, err = release.EngineSourceChanges(root, origin, "HEAD", "context")
+	if err != nil || !strings.Contains(delta, "wheel.go") {
+		t.Fatalf("artifact producer change was ignored: %s %v", delta, err)
 	}
 }
