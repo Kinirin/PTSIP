@@ -16,7 +16,8 @@ type TestContract struct {
 	Schema  string            `json:"schema_version"`
 	Runners map[string]string `json:"runners"`
 	Runtime struct {
-		Python string `json:"python_version"`
+		Python     string `json:"python_version"`
+		FetchDepth int    `json:"git_fetch_depth"`
 	} `json:"runtime"`
 }
 type Execution struct {
@@ -24,7 +25,8 @@ type Execution struct {
 	Matrix    struct {
 		Include []release.MatrixEntry `json:"include"`
 	} `json:"matrix"`
-	Python string `json:"python"`
+	Python     string `json:"python"`
+	FetchDepth int    `json:"git_fetch_depth"`
 }
 type Receipt struct {
 	Schema       string         `json:"schema_version"`
@@ -88,12 +90,23 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	if contract.Schema != "ptsip-release-test/v1" {
 		return result, fmt.Errorf("verification contract not admitted")
 	}
+	policyData, err := release.Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-ASSURE-0001", "--section", "release_mode_verification")
+	if err != nil {
+		return result, err
+	}
+	var policy struct {
+		Record map[string]any `json:"record"`
+	}
+	if json.Unmarshal(policyData, &policy) != nil || policy.Record["contract_ref"] != contractRef || policy.Record["execution_workflow"] != ".github/workflows/tooling-test.yml" || policy.Record["mode_registry"] != ".github/test_modes.yaml" || policy.Record["release_test_change_root"] != ".github/checks/release/test/" {
+		return result, fmt.Errorf("registered release mode lacks canonical ASSURE admission")
+	}
 	result.Selection, err = release.Select(root, targets, optional)
 	if err != nil {
 		return result, err
 	}
 	result.Matrix.Include, err = release.Matrix(result.Selection, contract.Runners)
 	result.Python = contract.Runtime.Python
+	result.FetchDepth = contract.Runtime.FetchDepth
 	return result, err
 }
 

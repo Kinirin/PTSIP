@@ -46,7 +46,7 @@ func main() {
 			if e != nil {
 				fail(e)
 			}
-			fmt.Fprintf(file, "matrix=%s\npython=%s\n", test.Encode(p.Matrix), p.Python)
+			fmt.Fprintf(file, "matrix=%s\npython=%s\nfetch_depth=%d\n", test.Encode(p.Matrix), p.Python, p.FetchDepth)
 			file.Close()
 		}
 		result = p

@@ -1,6 +1,9 @@
 [CmdletBinding()]
-param([string]$SelectionFile = '.artifacts/release/selection.json', [string]$Platform = 'any', [string]$OutputDirectory)
-$ErrorActionPreference = 'Stop'
-$repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../../..'))
-& go -C (Join-Path $repo '.github/checks/release') run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-release build --root $repo --selection $SelectionFile --target 'execution' --platform $Platform --output $OutputDirectory
-if ($LASTEXITCODE -ne 0) { throw 'execution release build failed.' }
+param(
+    [ValidateSet('Select','DispatchTest','DispatchRelease')][string]$Action='Select',
+    [string]$VerificationRunId='',
+    [ValidateSet('github','github-pypi')][string]$Destination='github-pypi',
+    [string]$OptionalPlatforms=''
+)
+$ErrorActionPreference='Stop'
+& (Join-Path $PSScriptRoot '../run_release.ps1') -Action $Action -Targets 'engine:execution' -VerificationRunId $VerificationRunId -Destination $Destination -OptionalPlatforms $OptionalPlatforms

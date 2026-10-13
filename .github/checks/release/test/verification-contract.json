@@ -18,7 +18,7 @@
   "macos_not_requested": "NO_JOB_NO_PASS_EVIDENCE",
   "publication_operations": false,
   "external_packaging_tools": ["cargo", "pip", "build", "twine"],
-  "runtime": {"go_version_file": ".github/checks/release/test/go.mod", "python_version": "3.12"},
+  "runtime": {"go_version_file": ".github/checks/release/test/go.mod", "python_version": "3.12", "git_fetch_depth": 0, "git_history_requirement": "EXACT_SOURCE_PARENTS_AND_IMMUTABLE_COMPONENT_TAGS"},
   "production_helpers": {
     "engine_wheel": ".github/checks/release/engine-verification/cmd/engine-wheel",
     "controller": ".github/checks/release/controller/cmd/ptsip-release"

@@ -192,6 +192,9 @@ func Select(root, targets, optional string) (Selection, error) {
 				return result, fmt.Errorf("unregistered component: %s", id)
 			}
 			c.ID, c.Kind, c.Version = name, "engine", v
+			if err := ValidateEngineVersion(root, name, v); err != nil {
+				return result, err
+			}
 			count++
 		}
 		if seen[c.ID] {
@@ -233,6 +236,45 @@ func Select(root, targets, optional string) (Selection, error) {
 	canonical, _ := json.Marshal(result)
 	result.SelectionSHA = Digest(canonical)
 	return result, nil
+}
+
+func ValidateEngineVersion(root, id, projected string) error {
+	if !regexp.MustCompile(`^[a-z][a-z0-9-]*$`).MatchString(id) {
+		return fmt.Errorf("invalid registered engine kind")
+	}
+	var contract struct {
+		Schema          string `yaml:"schema_version"`
+		Engine, Version string
+	}
+	p, err := SafePath(root, "src/ptsip/engines/"+id+"/version.yaml")
+	if err != nil {
+		return err
+	}
+	b, err := os.ReadFile(p)
+	if err != nil {
+		return err
+	}
+	if yaml.Unmarshal(b, &contract) != nil || contract.Schema != "ptsip-engine-version/v1" || contract.Engine != id || contract.Version != projected {
+		return fmt.Errorf("engine canonical version and index diverge: %s", id)
+	}
+	manifest, err := os.ReadFile(filepath.Join(root, "src/ptsip/engines", id, "Cargo.toml"))
+	if err != nil {
+		return err
+	}
+	v := regexp.MustCompile(`(?m)^version\s*=\s*"([^"]+)"`).FindSubmatch(manifest)
+	if len(v) != 2 || string(v[1]) != projected {
+		return fmt.Errorf("engine Cargo version projection differs: %s", id)
+	}
+	var compiled struct {
+		Version string `json:"implementation_version"`
+	}
+	if err := ReadJSON(root, "src/ptsip/engines/"+id+"/manifest.json", &compiled); err != nil {
+		return err
+	}
+	if compiled.Version != projected {
+		return fmt.Errorf("engine manifest version projection differs: %s", id)
+	}
+	return nil
 }
 
 // ValidateSelection rejects edits to a derived execution selection, including its
