@@ -83,7 +83,19 @@
       ],
       "current_schema_materialization": "NOT_AUTHORIZED_UNTIL_SUBORDINATE_DECISIONS",
       "current_go_validator_materialization": "NOT_AUTHORIZED",
-      "other_family_schema_materialization": "OUT_OF_SCOPE"
+      "other_family_schema_materialization": "OUT_OF_SCOPE",
+      "attachment": {
+        "direction": "STRUCTURE_CENTERED",
+        "rule_context": "ARCH_MODULE_OR_COMPONENT",
+        "decision_scope": "ARCH_ONLY",
+        "prior_hybrid_direction": "PRESERVED",
+        "rule_representation": "UNDECIDED",
+        "cross_component_semantics": "UNDECIDED",
+        "document_identity": "UNDECIDED",
+        "old_common_policy_skeleton": "FORBIDDEN",
+        "legacy_BOUND_inheritance": "FORBIDDEN",
+        "schema_materialization": "NOT_YET_AUTHORIZED"
+      }
     }
   },
   "shared_transition_notice": {
@@ -101,7 +113,8 @@
     "refuse_unresolved_semantic_defaults": "REQUIRED",
     "arch_schema_design_candidate": "C_HYBRID_STRUCTURAL_RELATIONS_AND_NORMATIVE_RULES",
     "arch_schema_shared_policy_skeleton_reconstruction": "FORBIDDEN",
-    "arch_schema_candidate_is_final_schema": false
+    "arch_schema_candidate_is_final_schema": false,
+    "arch_rule_anchoring": "STRUCTURE_CENTERED"
   },
   "scope_exclusions": [
     "src/policy/**",
