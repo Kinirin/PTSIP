@@ -62,7 +62,29 @@
     "rewrite_from_example": "NOT_REQUIRED",
     "schema_authoring_before_policy_record_declaration": "ALLOWED",
     "new_arch_schema_materialization": "PENDING_SCHEMA_DESIGN_DECISION",
-    "new_arch_go_validator_materialization": "NOT_AUTHORIZED_BY_THIS_DECISION"
+    "new_arch_go_validator_materialization": "NOT_AUTHORIZED_BY_THIS_DECISION",
+    "arch_schema_design_direction": {
+      "approval_ref": "developer/policy/approvals/MPA-20261014-ARCH-HYBRID-SCHEMA-DIRECTION.yaml",
+      "status": "USER_SELECTED_DESIGN_CANDIDATE",
+      "candidate": "C_HYBRID_STRUCTURAL_RELATIONS_AND_NORMATIVE_RULES",
+      "structural_dimension": "ARCHITECTURE_COMPONENTS_AND_EXPLICIT_RELATIONSHIPS",
+      "normative_dimension": "ARCHITECTURAL_OBLIGATIONS_AND_CONSTRAINTS",
+      "direction_only": true,
+      "candidate_not_final_field_schema": true,
+      "common_policy_document_skeleton": "FORBIDDEN",
+      "inherited_legacy_policy_identity": "NOT_REQUIRED",
+      "legacy_BOUND_or_shared_schema_as_authority": "FORBIDDEN",
+      "no_preassigned_top_level_fields": true,
+      "independently_resolve_next": [
+        "ARCH_POLICY_DECLARATION_SEMANTIC_UNIT",
+        "ARCH_STRUCTURAL_AND_NORMATIVE_BOUNDARY",
+        "ARCH_DOCUMENT_IDENTITY_AND_LIFECYCLE_FIELDS",
+        "ARCH_SCHEMA_STRUCTURE"
+      ],
+      "current_schema_materialization": "NOT_AUTHORIZED_UNTIL_SUBORDINATE_DECISIONS",
+      "current_go_validator_materialization": "NOT_AUTHORIZED",
+      "other_family_schema_materialization": "OUT_OF_SCOPE"
+    }
   },
   "shared_transition_notice": {
     "reader_requirement": "READ_RETIREMENT_REGISTRY_AND_THIS_CONTRACT_BEFORE_DEVELOPER_ROOT_FAMILY_SCHEMA_OR_VALIDATOR_WORK",
@@ -76,7 +98,10 @@
     "manual_policy_review_during_gap": "ONLY_NON_AUTOMATIC_REVIEW",
     "machine_policy_pass_during_gap": "NOT_AVAILABLE",
     "historical_documents": "AUDIT_ONLY",
-    "refuse_unresolved_semantic_defaults": "REQUIRED"
+    "refuse_unresolved_semantic_defaults": "REQUIRED",
+    "arch_schema_design_candidate": "C_HYBRID_STRUCTURAL_RELATIONS_AND_NORMATIVE_RULES",
+    "arch_schema_shared_policy_skeleton_reconstruction": "FORBIDDEN",
+    "arch_schema_candidate_is_final_schema": false
   },
   "scope_exclusions": [
     "src/policy/**",
