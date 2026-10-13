@@ -1,0 +1,56 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: INFO
+policy:
+  id: SFP-INFO-0009
+  title: Agent bootstrap canonical-source and Markdown projection semantics
+  status: ACTIVE
+authority_subject:
+  id: SUP_AGENT_BOOTSTRAP_SOURCE_PROJECTION
+  statement: Canonical machine meaning and non-normative agent bootstrap presentation remain distinct.
+exclusive_kernel:
+  - SUP_BOOTSTRAP_SEMANTIC_SOURCE_PROJECTION_BOUNDARY
+authority_contract:
+  authority_type: ROOT_FAMILY_INFO
+  schema_id: ptsip.governance/root-family/info
+  schema_version: 1
+authority_semantics:
+  agent_bootstrap_information:
+    architecture_owner_ref: SFP-ARCH-0005
+    canonical_semantic_source: APPROVED_MACHINE_CONTRACT
+    routing_index:
+      path: .ptsip/index.json
+      authority_role: ROUTING_ONLY
+    projection:
+      path: AGENTS.md
+      format: NATURAL_MARKDOWN
+      role: NON_NORMATIVE_AGENT_ENTRY
+      allowed_information_roles:
+        - ENTRYPOINT
+        - AUTHORITY_LOCATOR
+        - COMMAND
+        - BOUNDED_SCOPE
+        - FAIL_CLOSED_CONDITION
+      excluded_information_roles:
+        - HISTORICAL_STATE
+        - VERSION_SPECIFIC_REASONING
+        - DUPLICATED_NORMATIVE_SEMANTICS
+      source_to_projection_direction: MACHINE_CONTRACT_TO_AGENTS_MD
+      reverse_authority_extraction: FORBIDDEN
+      normative_authority_from_markdown: FORBIDDEN
+      old_level1_agent_taxonomy_as_input: FORBIDDEN
+    equivalence:
+      different_agents_may_choose_distinct_markdown: true
+      contract_conformance_not_exact_text_equivalence: true
+      changed_machine_contract_may_change_projection: true
+      prior_markdown_as_correctness_baseline: FORBIDDEN
+    unresolved:
+      governance_namespace: UNDECIDED
+      contract_location_beyond_routing_index: UNDECIDED
+      projection_structure_and_selection_algorithm: UNDECIDED
+      existing_document_merge_or_replacement_behavior: UNDECIDED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

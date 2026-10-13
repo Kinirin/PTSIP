@@ -1,0 +1,57 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: CNTR
+policy:
+  id: SFP-CNTR-0008
+  title: Bootstrap Integrated Engine machine-contract boundary
+  status: ACTIVE
+authority_subject:
+  id: SUP_BOOTSTRAP_MACHINE_CONTRACT_INTERFACE
+  statement: Machine-contract obligations and interoperability boundary for agent bootstrap, independent of agent and runtime adapters.
+exclusive_kernel:
+  - SUP_BOOTSTRAP_CONTRACT_INTERFACE_SEMANTICS
+authority_contract:
+  authority_type: ROOT_FAMILY_CNTR
+  schema_id: ptsip.governance/root-family/cntr
+  schema_version: 1
+authority_semantics:
+  bootstrap_machine_contract:
+    responsibility_owner_ref: SFP-ARCH-0005
+    policy_scope: AGENT_BOOTSTRAP_MANAGEMENT
+    machine_contract_authority: REQUIRED
+    engine_implementation_language: RUST
+    contract_representation_language: LANGUAGE_NEUTRAL
+    mandatory_legacy_python_binding: FORBIDDEN
+    agent_specific_normative_forks: FORBIDDEN
+    engine_owned_capability_domains:
+      - CONTRACT_REGISTRATION
+      - CONTRACT_RESOLUTION
+      - CONTRACT_VALIDATION
+      - BOOTSTRAP_PROJECTION
+      - CONTRACT_CONFORMANT_CHANGE
+      - COMPATIBILITY_ASSESSMENT
+    semantics:
+      eligible_rules: APPROVED_CURRENT_APPLICABLE_MACHINE_CONTRACTS_ONLY
+      missing_or_ambiguous_normative_contract: UNRESOLVED_NO_AGENT_INFERENCE
+      permission_from_contract_registration: NOT_GRANTED
+      no_legacy_contract_auto_inheritance: true
+      no_markdown_to_machine_authority_promotion: true
+    version_boundary:
+      engine_identity_and_version: IDENTIFIABLE
+      applied_contract_identity_and_revision: IDENTIFIABLE
+      incompatibility: REPORT_UNRESOLVED
+      automatic_engine_version_rollback: NOT_AUTHORIZED
+      fixed_markdown_across_versions: NOT_REQUIRED
+    unresolved:
+      governance_namespace: UNDECIDED
+      contract_storage_namespace: UNDECIDED
+      exact_contract_schema: UNDECIDED
+      operation_names_and_typed_io: UNDECIDED
+      invocation_transport: UNDECIDED
+      persistence_and_lifecycle: UNDECIDED
+      activation_and_distribution: SEPARATE_POLICY_DECISION
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

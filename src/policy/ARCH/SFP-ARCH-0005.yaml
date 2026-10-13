@@ -30,6 +30,16 @@ authority_semantics:
       - COMPATIBILITY_DECISION
     python_legacy_runtime_dependency: FORBIDDEN
     legacy_agent_instruction_contract_inheritance: FORBIDDEN
+    normative_management_boundary:
+      contract_authority_owner: BOOTSTRAP_INTEGRATED_ENGINE
+      agent_specific_parallel_bootstrap_authority: FORBIDDEN
+      mandatory_cross_engine_bootstrap_decision_chain: FORBIDDEN
+      internal_design: UNDECIDED
+      external_engine_interoperability: SEPARATE_DECISION
+    accepted_variability:
+      coding_agent_output_expression: CONTRACT_BOUNDED_VARIATION_ALLOWED
+      current_contract_change_may_change_markdown: true
+      historical_markdown_equality_as_correctness_gate: FORBIDDEN
     bootstrap_surface:
       path: AGENTS.md
       role: NON_NORMATIVE_MARKDOWN_BOOTSTRAP
