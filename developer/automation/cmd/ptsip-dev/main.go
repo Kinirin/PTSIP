@@ -56,6 +56,18 @@ func runCommand(arguments []string, metadata *commandMetadata) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+	// Former developer policy tooling cannot validate or reconstitute retired authority.
+	if len(positional) > 0 {
+		switch positional[0] {
+		case "policy-resolver", "policy-validator", "policy-lifecycle",
+			"policy-responsibility", "policy-plan-consistency":
+			return nil, fmt.Errorf("LEGACY_DEVELOPER_POLICY_CONTROL_PLANE_RETIRED: manual review only; no automatic policy validation PASS")
+		case "root-family-entry":
+			if options["--policy-class"] != "PTSIP_SUPPORT_FEATURE" {
+				return nil, fmt.Errorf("LEGACY_DEVELOPER_ROOT_FAMILY_ENTRY_RETIRED: new developer family validators not implemented")
+			}
+		}
+	}
 	if err := repo.NormalizeCommandOptions(positional, options, repetitions); err != nil {
 		return nil, err
 	}

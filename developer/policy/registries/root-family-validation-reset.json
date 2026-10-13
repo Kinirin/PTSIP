@@ -1,0 +1,73 @@
+{
+  "schema_version": "ptsip-developer-root-family-validation-reset/v1",
+  "artifact_class": "OWNER_APPROVED_LEGACY_VALIDATION_DECOMMISSION",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-DEVELOPER-ROOT-VALIDATION-RESET.yaml",
+  "conflict_resolution": "KEEP_LATEST",
+  "scope": {
+    "families": [
+      "NORM",
+      "GOV",
+      "INTENT",
+      "ARCH",
+      "INFO",
+      "CNTR",
+      "RISK",
+      "SUPPLY",
+      "REAL",
+      "ASSURE",
+      "CTRL",
+      "CHANGE",
+      "OPS",
+      "RECORD"
+    ],
+    "retired_root_records": 35,
+    "retired_boundary_records": 1,
+    "excluded_classes": [
+      "PTSIP_SUPPORT_FEATURE",
+      "VPMS_DEVELOPER_POLICY"
+    ],
+    "historical_migration_source_records": "UNCHANGED"
+  },
+  "legacy": {
+    "policy_status": "RETIRED",
+    "policy_substatus": "Waiting",
+    "existing_policy_records": "HISTORICAL_NON_NORMATIVE",
+    "old_rules_auto_inheritance": "FORBIDDEN",
+    "old_rules_manual_inheritance_as_default": "FORBIDDEN",
+    "old_policy_transition_sections": "HISTORICAL_ONLY",
+    "old_validation_pass_evidence": "INVALID_FOR_SUCCESSOR",
+    "automatic_legacy_fallback": "FORBIDDEN"
+  },
+  "deprecated_validation": {
+    "developer_policy_go_validator": "DISABLED_FAIL_CLOSED",
+    "developer_go_policy_resolver_cli": "DISABLED_FAIL_CLOSED",
+    "developer_policy_lifecycle_cli": "DISABLED_FAIL_CLOSED",
+    "former_root_family_schema": "ARCHIVED_NOT_ACTIVE",
+    "former_schema_archive": "developer/policy/legacy/schemas/root-family-policy.schema.json",
+    "developer_schema_registry_ref": null
+  },
+  "reconstruction": {
+    "each_family_complete_policy_declaration": "REQUIRED",
+    "full_family_declarations_before_new_validators": "REQUIRED",
+    "schema_ownership": "INDEPENDENT_PER_FAMILY",
+    "initial_shared_schema": "FORBIDDEN",
+    "duplicated_fields": "ALLOWED",
+    "cross_family_schema_inheritance": "FORBIDDEN",
+    "prior_schema_as_normative_reference": "FORBIDDEN",
+    "per_family_go_validator": "REQUIRED",
+    "successor_validator_state": "NOT_IMPLEMENTED",
+    "user_approval_required_for_new_authority": true
+  },
+  "interim": {
+    "review_method": "HUMAN_MANUAL_POLICY_REVIEW_ONLY",
+    "policy_automated_verification": "NOT_AVAILABLE",
+    "policy_verification_gap": "OPEN_ACKNOWLEDGED",
+    "manual_review_is_machine_pass": false,
+    "unsupported_machine_policy_authorization": "FAIL_CLOSED"
+  },
+  "audit": {
+    "source_head": "781a0a46764734a98707662af1a3a2fbd6a88cf7",
+    "branch": "main"
+  }
+}

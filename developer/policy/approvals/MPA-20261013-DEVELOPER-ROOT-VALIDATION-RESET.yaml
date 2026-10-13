@@ -1,0 +1,59 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-DEVELOPER-ROOT-VALIDATION-RESET
+  decision: APPROVED
+  conflict_resolution: KEEP_LATEST
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner decided to retire former PTSIP developer Root Family
+    and BOUND records, disable legacy Go validators and shared schema,
+    and manually review new independent declarations for all 14 families.
+    Old records are historical only; inherited legacy validation,
+    schema-driven fallback, and inferred policy authority are forbidden.
+    The interim absence of automatic policy verification is accepted.
+  approval_scope: FINAL_POLICY
+  target_status: RETIRED
+  target_substatus: Waiting
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  branch_creation_authorized: false
+  affected_policy_ids:
+  - MPD-ARCH-0001
+  - MPD-ARCH-0002
+  - MPD-ARCH-0003
+  - MPD-ASSURE-0001
+  - MPD-ASSURE-0002
+  - MPD-ASSURE-0003
+  - MPD-BOUND-0001
+  - MPD-CHANGE-0001
+  - MPD-CHANGE-0002
+  - MPD-CHANGE-0003
+  - MPD-CHANGE-0004
+  - MPD-CNTR-0001
+  - MPD-CNTR-0002
+  - MPD-CNTR-0003
+  - MPD-CNTR-0004
+  - MPD-CNTR-0005
+  - MPD-CTRL-0001
+  - MPD-GOV-0001
+  - MPD-GOV-0002
+  - MPD-INFO-0001
+  - MPD-INFO-0002
+  - MPD-INFO-0003
+  - MPD-INFO-0004
+  - MPD-INFO-0005
+  - MPD-INTENT-0001
+  - MPD-NORM-0001
+  - MPD-OPS-0001
+  - MPD-REAL-0001
+  - MPD-REAL-0002
+  - MPD-REAL-0003
+  - MPD-REAL-0004
+  - MPD-REAL-0005
+  - MPD-REAL-0006
+  - MPD-RECORD-0001
+  - MPD-RISK-0001
+  - MPD-SUPPLY-0001
+  recorded_at: '2026-10-13'

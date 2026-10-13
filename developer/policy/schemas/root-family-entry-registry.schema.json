@@ -47,7 +47,7 @@
       "additionalProperties": false,
       "properties": {
         "PTSIP_DEVELOPER_POLICY": {
-          "$ref": "#/$defs/route"
+          "$ref": "#/$defs/retired_route"
         },
         "PTSIP_SUPPORT_FEATURE": {
           "$ref": "#/$defs/route"
@@ -142,6 +142,72 @@
         "migration_registry_ref": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "retired_route": {
+      "type": "object",
+      "required": [
+        "id_prefix",
+        "canonical_root",
+        "schema_ref",
+        "recognized_root_families",
+        "unmaterialized_slot_default",
+        "schema_state",
+        "legacy_schema_archive_path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id_prefix": {
+          "enum": [
+            "MPD",
+            "SFP"
+          ]
+        },
+        "canonical_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_ref": {
+          "type": "null"
+        },
+        "recognized_root_families": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "NORM",
+              "GOV",
+              "INTENT",
+              "ARCH",
+              "INFO",
+              "CNTR",
+              "RISK",
+              "SUPPLY",
+              "REAL",
+              "ASSURE",
+              "CTRL",
+              "CHANGE",
+              "OPS",
+              "RECORD"
+            ]
+          }
+        },
+        "unmaterialized_slot_default": {
+          "const": "RESERVED"
+        },
+        "migration_registry_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_state": {
+          "const": "RETIRED_NO_VALIDATION_BINDING"
+        },
+        "legacy_schema_archive_path": {
+          "type": "string",
+          "pattern": "^developer/policy/legacy/schemas/[A-Za-z0-9_.-]+\\.schema\\.json$"
         }
       }
     }

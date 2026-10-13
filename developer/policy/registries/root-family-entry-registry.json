@@ -20,7 +20,7 @@
     "PTSIP_DEVELOPER_POLICY": {
       "id_prefix": "MPD",
       "canonical_root": "developer/policy",
-      "schema_ref": "developer/policy/schemas/root-family-policy.schema.json",
+      "schema_ref": null,
       "recognized_root_families": [
         "NORM",
         "GOV",
@@ -38,7 +38,9 @@
         "RECORD"
       ],
       "unmaterialized_slot_default": "RESERVED",
-      "migration_registry_ref": "developer/policy/registries/root-family-migration.json"
+      "migration_registry_ref": "developer/policy/registries/root-family-migration.json",
+      "schema_state": "RETIRED_NO_VALIDATION_BINDING",
+      "legacy_schema_archive_path": "developer/policy/legacy/schemas/root-family-policy.schema.json"
     },
     "PTSIP_SUPPORT_FEATURE": {
       "id_prefix": "SFP",
