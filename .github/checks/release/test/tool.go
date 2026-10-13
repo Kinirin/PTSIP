@@ -104,8 +104,8 @@ func verifyTool(root, out, version, source string) error {
 	}
 	foundMetadata, foundLicense := false, false
 	for _, f := range r.File {
-		if strings.Contains(f.Name, "ptsip/profiles/history/") || strings.HasSuffix(f.Name, ".exe") || strings.Contains(f.Name, "/target/") {
-			return fmt.Errorf("Tool contains history or native build output")
+		if forbiddenToolMember(f.Name) {
+			return fmt.Errorf("Tool contains history or native build output: %s", f.Name)
 		}
 		if strings.HasSuffix(f.Name, ".dist-info/METADATA") || strings.HasSuffix(f.Name, "/licenses/License-Authority/LICENSE.md") {
 			stream, e := f.Open()
@@ -152,4 +152,8 @@ func verifyTool(root, out, version, source string) error {
 	}
 	_, err = release.Run(env, cli, "spec")
 	return err
+}
+
+func forbiddenToolMember(name string) bool {
+	return strings.HasPrefix(name, "ptsip/profiles/history/") || strings.HasSuffix(name, ".exe") || (strings.HasPrefix(name, "ptsip/engines/") && strings.Contains(name, "/target/"))
 }

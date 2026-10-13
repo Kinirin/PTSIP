@@ -74,6 +74,17 @@ func TestProfileDistributionRejectsHistoryCodeAndTraversal(t *testing.T) {
 	}
 }
 
+func TestToolDistinguishesProductTargetNamespaceFromRustBuildOutput(t *testing.T) {
+	if forbiddenToolMember("ptsip/migration/analysis/target/semantics.py") {
+		t.Fatal("existing product API namespace rejected as Cargo output")
+	}
+	for _, name := range []string{"ptsip/engines/context/target/release/binary", "ptsip/profiles/history/pp.1.01/example.ptsip.yaml", "ptsip/engines/context/binary.exe"} {
+		if !forbiddenToolMember(name) {
+			t.Fatalf("forbidden wheel member accepted: %s", name)
+		}
+	}
+}
+
 func TestPackageTamperAndIncompleteInstallationFailBeforeAdapter(t *testing.T) {
 	r := release.Registry{NumericBase: "0.3.8"}
 	c := release.PublishedComponent{ID: "context", Kind: "engine", Version: "0.2.0", SourceSHA: strings.Repeat("a", 40), Files: []release.File{{Name: "engine.whl", SHA256: strings.Repeat("b", 64), URL: "https://example.invalid/engine.whl", Platform: "linux-x64"}}}
