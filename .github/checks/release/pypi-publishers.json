@@ -1,0 +1,11 @@
+{
+  "schema_version": "ptsip-pypi-publisher-routing/v1",
+  "repository_owner": "Kinirin",
+  "repository": "PTSIP",
+  "workflow": "tooling-release.yml",
+  "tool": {"project": "PTSIP", "environment": "pypi"},
+  "engine": {"project_pattern": "ptsip-engine-{engine}", "environment_pattern": "pypi-engine-{engine}"},
+  "pending_publisher_identity": "OWNER_REPOSITORY_WORKFLOW_ENVIRONMENT",
+  "distinct_new_project_environments": true,
+  "automatic_pypi_account_configuration": false
+}

@@ -80,7 +80,12 @@ func main() {
 						break
 					}
 					if len(entries) > 0 {
-						matrix.Include = append(matrix.Include, map[string]string{"component": c.ID})
+						environment, e := release.PublisherEnvironment(*root, c)
+						if e != nil {
+							err = e
+							break
+						}
+						matrix.Include = append(matrix.Include, map[string]string{"component": c.ID, "environment": environment})
 					}
 				}
 				if err == nil {

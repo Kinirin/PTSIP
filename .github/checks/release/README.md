@@ -36,7 +36,14 @@ publication. The publisher does not wait for the new draft to appear in a list.
 `-ReleaseId` can resume an existing draft only when its tag matches the verified
 source exactly. A source change before publication keeps the carrier as a draft.
 
-The PyPA action is an upload adapter. Native Go compares existing version-specific PyPI file hashes before any mutation, stages only missing files, and confirms public file hashes after upload. A conflicting filename fails and requires a new component version. Tool 0.3.8a5 remains published; the current Tool candidate is 0.3.8a6. Engine Pending Trusted Publishers must be registered for owner `Kinirin`, repository `PTSIP`, workflow `tooling-release.yml`, environment `pypi` before the PyPI phase can succeed.
+The PyPA action is an upload adapter. Native Go compares existing version-specific PyPI file hashes before any mutation, stages only missing files, and confirms public file hashes after upload. A conflicting filename fails and requires a new component version. Tool 0.3.8a6 is published; 0.3.8a5 remains immutable. Engine Pending Trusted Publishers must match their exact project and component environment in `pypi-publishers.json` before the PyPI phase can succeed.
+
+Publisher environment routing now comes from `pypi-publishers.json`: Tool uses
+`pypi`; each engine uses `pypi-engine-<kind>`. Pending publishers have a unique
+owner/repository/workflow/environment tuple, so different new projects cannot all
+use the Tool's tuple. Register each engine's exact project name and matching
+environment under the same single `tooling-release.yml` workflow. PyPI account
+registration is an external prerequisite; the release code does not fabricate it.
 
 ## Package history and installation
 

@@ -120,7 +120,7 @@ jobs:
     needs: [release-admission, github-publication]
     if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.pypi_count != '0' }}
     runs-on: ubuntu-latest
-    environment: pypi
+    environment: ${{ matrix.environment }}
     permissions:
       contents: read
       id-token: write

@@ -383,6 +383,30 @@ func PyPIStage(root string, s Selection, output string, verify bool) error {
 	return nil
 }
 
+func PublisherEnvironment(root string, c Component) (string, error) {
+	var routing struct {
+		Schema string `json:"schema_version"`
+		Tool   struct{ Project, Environment string }
+		Engine struct {
+			Project     string `json:"project_pattern"`
+			Environment string `json:"environment_pattern"`
+		}
+	}
+	if err := ReadJSON(root, ".github/checks/release/pypi-publishers.json", &routing); err != nil {
+		return "", err
+	}
+	if routing.Schema != "ptsip-pypi-publisher-routing/v1" {
+		return "", fmt.Errorf("publisher routing contract unsupported")
+	}
+	if c.Kind == "tool" {
+		return routing.Tool.Environment, nil
+	}
+	if c.Kind == "engine" && c.ID != "" {
+		return strings.ReplaceAll(routing.Engine.Environment, "{engine}", c.ID), nil
+	}
+	return "", fmt.Errorf("component has no PyPI publisher route")
+}
+
 func RecordPackage(root string, s Selection, output string) error {
 	m, err := Shipping(root, s, output)
 	if err != nil {

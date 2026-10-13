@@ -129,3 +129,15 @@ func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T
 		t.Fatalf("artifact producer change was ignored: %s %v", delta, err)
 	}
 }
+
+func TestDistinctPendingPublisherEnvironmentsPreserveSingleWorkflow(t *testing.T) {
+	root := repoRoot(t)
+	seen := map[string]bool{}
+	for _, c := range []release.Component{{ID: "tool", Kind: "tool"}, {ID: "context", Kind: "engine"}, {ID: "storage", Kind: "engine"}, {ID: "validation", Kind: "engine"}, {ID: "discovery", Kind: "engine"}, {ID: "planning", Kind: "engine"}, {ID: "execution", Kind: "engine"}, {ID: "projection", Kind: "engine"}} {
+		environment, err := release.PublisherEnvironment(root, c)
+		if err != nil || environment == "" || seen[environment] {
+			t.Fatalf("ambiguous pending publisher identity: %s %v", environment, err)
+		}
+		seen[environment] = true
+	}
+}
