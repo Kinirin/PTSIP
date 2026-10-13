@@ -1,0 +1,25 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-FAMILY-DOCUMENT-FORMAT-INDEPENDENCE
+  decision: APPROVED
+  conflict_resolution: KEEP_LATEST
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner approved completely independent Root Family policy document
+    formats, with ARCH schema design first and GOV/INFO separated into later
+    work. The only fixed file location boundary is developer/policy/{FAMILY}/;
+    a validator subdirectory is optional rather than mandatory. Filenames
+    follow {FAMILY}.schema.json and {FAMILY}_validator.go. Former ARCH schema
+    and Go files are examples only. Legacy policy identity fields and formats
+    need not be preserved, and the new ARCH identity and document structure
+    must be separately discussed. Other work must not restore the retired
+    BOUND policy, shared schema, or old resolver on encountering missing
+    validation machinery.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  branch_creation_authorized: false
+  recorded_at: '2026-10-13'

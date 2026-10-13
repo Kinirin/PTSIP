@@ -1,0 +1,94 @@
+{
+  "schema_version": "ptsip-developer-family-schema-rebuild/v1",
+  "artifact_class": "OWNER_APPROVED_FAMILY_DOCUMENT_FORMAT_BOUNDARY",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-FAMILY-DOCUMENT-FORMAT-INDEPENDENCE.yaml",
+  "supersedes_layout_basis": [
+    "developer/policy/approvals/MPA-20261013-ROOT-FAMILY-LOCAL-VALIDATION-BOUND-RECONCILE.yaml",
+    "developer/policy/approvals/MPA-20261012-FSD-FAMILY-LAYOUT-INDEPENDENCE.yaml"
+  ],
+  "retirement_registry_ref": "developer/policy/registries/root-family-validation-reset.json",
+  "decision": {
+    "conflict_resolution": "KEEP_LATEST",
+    "format_model": "PER_FAMILY_FULLY_INDEPENDENT",
+    "policy_document_shared_skeleton": "FORBIDDEN",
+    "cross_family_normative_field_template": "FORBIDDEN",
+    "common_schema_file_and_ref_in_initial_design": "FORBIDDEN",
+    "family_schema_owns_its_complete_document_structure": true,
+    "legacy_policy_record_shape_as_requirement": "FORBIDDEN",
+    "old_policy_identity_field_preservation": "NOT_REQUIRED",
+    "old_approval_or_status_fields_as_new_schema_requirements": "UNDECIDED",
+    "scope_applies_to": "PTSIP_DEVELOPER_POLICY_ROOT_FAMILIES_ONLY"
+  },
+  "placement": {
+    "fixed_root_pattern": "developer/policy/{FAMILY}/",
+    "fixed_path_scope": "FAMILY_ROOT_ONLY",
+    "example_optional_subdirectory": "validator",
+    "optional_subdirectory_required": false,
+    "validator_subdirectory": "OPTIONAL",
+    "schema_filename_pattern": "{FAMILY}.schema.json",
+    "go_validator_filename_pattern": "{FAMILY}_validator.go",
+    "schema_and_validator_colocation": "NOT_DECIDED",
+    "family_path_separation": "REQUIRED",
+    "root_family_membership": [
+      "NORM",
+      "GOV",
+      "INTENT",
+      "ARCH",
+      "INFO",
+      "CNTR",
+      "RISK",
+      "SUPPLY",
+      "REAL",
+      "ASSURE",
+      "CTRL",
+      "CHANGE",
+      "OPS",
+      "RECORD"
+    ]
+  },
+  "current_work": {
+    "selected_family": "ARCH",
+    "current_focus": "NEW_ARCH_SCHEMA_DESIGN",
+    "other_families": [
+      "GOV",
+      "INFO"
+    ],
+    "other_families_state": "SEPARATE_FUTURE_WORK_NOT_AUTHORIZED_IN_THIS_SESSION",
+    "arch_schema_identity_and_field_contract": "UNRESOLVED_USER_DISCUSSION",
+    "example_schema_path": "developer/policy/ARCH/validator/ARCH.schema.json",
+    "example_go_file_path": "developer/policy/ARCH/validator/ARCH_validator.go",
+    "existing_example_file_authority": "NONE",
+    "rewrite_from_example": "NOT_REQUIRED",
+    "schema_authoring_before_policy_record_declaration": "ALLOWED",
+    "new_arch_schema_materialization": "PENDING_SCHEMA_DESIGN_DECISION",
+    "new_arch_go_validator_materialization": "NOT_AUTHORIZED_BY_THIS_DECISION"
+  },
+  "shared_transition_notice": {
+    "reader_requirement": "READ_RETIREMENT_REGISTRY_AND_THIS_CONTRACT_BEFORE_DEVELOPER_ROOT_FAMILY_SCHEMA_OR_VALIDATOR_WORK",
+    "legacy_bound_status": "RETIRED_WAITING",
+    "old_developer_root_policies": "RETIRED_WAITING",
+    "former_shared_schema_state": "ARCHIVED_NOT_ACTIVE",
+    "former_go_policy_resolver_state": "RETIRED_FAIL_CLOSED",
+    "legacy_reactivation_on_missing_schema_or_validator": "FORBIDDEN",
+    "legacy_policy_schema_as_new_default": "FORBIDDEN",
+    "legacy_validator_fallback": "FORBIDDEN",
+    "manual_policy_review_during_gap": "ONLY_NON_AUTOMATIC_REVIEW",
+    "machine_policy_pass_during_gap": "NOT_AVAILABLE",
+    "historical_documents": "AUDIT_ONLY",
+    "refuse_unresolved_semantic_defaults": "REQUIRED"
+  },
+  "scope_exclusions": [
+    "src/policy/**",
+    "PTSIP_SUPPORT_FEATURE",
+    "VPMS_DEVELOPER_POLICY",
+    "historical_migration_source_records"
+  ],
+  "successor_activation": {
+    "existing_verification_gap": "OPEN",
+    "family_schema_definition": "USER_POLICY_DECISION_REQUIRED",
+    "policy_record_new_format": "NOT_YET_DEFINED",
+    "go_validation": "NOT_YET_IMPLEMENTED",
+    "automatic_validation_success": "NOT_ALLOWED_UNTIL_VERIFIED_SUCCESSOR"
+  }
+}

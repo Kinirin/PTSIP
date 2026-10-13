@@ -56,16 +56,22 @@ other developer-control-plane behavior, enter:
 
 `developer/policy/`
 
-Use the canonical developer Policy Resolver before loading broader policy or planning context:
+**Developer Root Family transition entry:** Read the current machine contracts in this order:
 
-```text
-go -C developer/automation run ./cmd/ptsip-dev policy-resolver resolve --scope <repository-path> --operation <READ|MODIFY|PLAN|VERIFY|RELEASE>
-```
+1. `developer/policy/registries/root-family-validation-reset.json`
+2. `developer/policy/registries/family-schema-rebuild.json`
 
-Use only the exact policies, sections, contracts, and implementation bindings returned by the
-machine path. If the required developer operation cannot be resolved exactly, fail closed rather
-than reconstructing the rule from this file, historical documents, naming similarity, or model
-confidence.
+These sources govern the ongoing reconstruction boundary, not this AGENTS.md projection. The
+previous developer Policy Resolver and common Root Family schema were retired. Do **not** invoke
+the former `policy-resolver` or `policy-validator` command as a fallback or restore old BOUND
+rules, old schema definitions, or old validators when a successor is absent. The successor's
+automated policy validation is not available; manual review is not a machine PASS.
+
+For new developer Root Family documents, apply the independently approved family format and
+fixed family root from the schema rebuild contract. The former `policy:` identity block is
+not a mandatory template. ARCH is the current schema design focus; GOV and INFO have separate
+unstarted schema design work. If a developer operation requires a still-unavailable authoritative
+resolution or validator, fail closed rather than infer or reactivate former authority.
 
 ### 3. Kinirin/PTSIP consumer-facing feature semantics
 

@@ -57,14 +57,24 @@
     "prior_schema_as_normative_reference": "FORBIDDEN",
     "per_family_go_validator": "REQUIRED",
     "successor_validator_state": "NOT_IMPLEMENTED",
-    "user_approval_required_for_new_authority": true
+    "user_approval_required_for_new_authority": true,
+    "design_contract_ref": "developer/policy/registries/family-schema-rebuild.json",
+    "full_document_format_independence": "PER_FAMILY",
+    "only_fixed_family_root_pattern": "developer/policy/{FAMILY}/",
+    "schema_filename_pattern": "{FAMILY}.schema.json",
+    "go_validator_filename_pattern": "{FAMILY}_validator.go",
+    "validator_subdirectory_required": false,
+    "legacy_identity_field_preservation": "NOT_REQUIRED",
+    "current_focus_family": "ARCH",
+    "GOV_and_INFO_schema_creation_in_current_scope": "NOT_AUTHORIZED"
   },
   "interim": {
     "review_method": "HUMAN_MANUAL_POLICY_REVIEW_ONLY",
     "policy_automated_verification": "NOT_AVAILABLE",
     "policy_verification_gap": "OPEN_ACKNOWLEDGED",
     "manual_review_is_machine_pass": false,
-    "unsupported_machine_policy_authorization": "FAIL_CLOSED"
+    "unsupported_machine_policy_authorization": "FAIL_CLOSED",
+    "cross_task_notice_ref": "developer/policy/registries/family-schema-rebuild.json"
   },
   "audit": {
     "source_head": "781a0a46764734a98707662af1a3a2fbd6a88cf7",
