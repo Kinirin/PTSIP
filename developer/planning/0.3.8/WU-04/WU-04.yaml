@@ -50,6 +50,28 @@ work_unit:
   - ACTUAL_GITHUB_RELEASE_ASSETS_AND_PYPI_FILE_DIGESTS_OBSERVED
   - PACKAGE_RECORD_WRITTEN_ONLY_AFTER_PUBLICATION
   verification:
-    local: PENDING
-    remote_exact_sha: PENDING
-    publication: PENDING
+    local: PASS_GO_CONTRACT_REGRESSIONS_PLANNING_VALIDATION_AND_WORKFLOW_SYNTAX
+    remote_exact_sha:
+      full_components:
+        source_sha: 6febd3480d6e6c857e9b8a4553bb7a32ecb2c813
+        run_id: 38369103809
+        result: PASS
+        successful_jobs: 19
+      engine_publisher_environment_fix:
+        source_sha: 2e0c136967debf7c787e8c2e9e2fa5f255ee4b77
+        run_id: 38371473033
+        result: PASS
+        successful_jobs: 15
+    publication:
+      state: PARTIAL_EXTERNAL_PUBLISHER_CONFIGURATION_REQUIRED
+      source_sha: 6febd3480d6e6c857e9b8a4553bb7a32ecb2c813
+      run_id: 38369775576
+      github_release: PUBLISHED
+      github_release_id: 411456680
+      verified_asset_hashes: 36
+      package_snapshot: 0.3.8.42d9e6
+      tool_pypi: PUBLISHED_0.3.8a6_EXACT_WHEEL_AND_SDIST_HASHES
+      engine_pypi: FAILED_HTTP_400_NON_USER_PROJECT_CREATION
+      package_record_job: SKIPPED_AFTER_ENGINE_PUBLICATION_FAILURE
+      next_required_action: REGISTER_DISTINCT_PENDING_PUBLISHER_ENVIRONMENTS
+      publisher_routing_contract: .github/checks/release/pypi-publishers.json
