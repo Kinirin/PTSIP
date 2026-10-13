@@ -41,44 +41,6 @@ rules:
       root: developer/automation/planning/
     policy_plan_binding:
       root: developer/automation/policy_plan_binding/
-  unit_mpd_0010_a352aeef1624: APPROVED
-  unit_mpd_0010_d3321af4d08d: REPOSITORY_TRIAL
-  unit_mpd_0010_6a8bfa4fc46a: REDUCE_CODING_AGENT_ENTRY_INFERENCE_WITH_LOW_DIFFICULTY_MACHINE_ROUTING
-  unit_mpd_0010_951f7d0a9910: FORBIDDEN
-  unit_mpd_0010_84d3056c0f72: NOT_AUTHORIZED
-  unit_mpd_0010_e3648d889e5e: true
-  unit_mpd_0010_1a1ded8f6e50: LOCAL_CLI_ONLY
-  unit_mpd_0010_cf1cf677bb81: true
-  unit_mpd_0010_8c4943001024: STDIO
-  unit_mpd_0010_2f902a371ae6: false
-  unit_mpd_0010_2fc2f0184767: false
-  unit_mpd_0010_cd2d703ea855: false
-  unit_mpd_0010_dcf4d9aa4edb: true
-  unit_mpd_0010_b9dc8d1b0f13: FORBIDDEN
-  unit_mpd_0010_e1b3d9d451a5: NOT_AVAILABLE
-  unit_mpd_0010_495d6dd54d4f: ABSENT
-  unit_mpd_0010_1dd36e23033b: false
-  unit_mpd_0010_bef56b8c5b40: python -m developer.automation.agent_integration install-mcp
-    --user-approved
-  unit_mpd_0010_4af236e21b78:
-    state: READY
-    resolver_command: python -m developer.automation.agent_instruction_entry_resolver
-      <READ|MODIFY|PLAN|VERIFY|RELEASE>
-  unit_mpd_0010_643f3ad3e527: true
-  unit_mpd_0010_166beaafa334: true
-  unit_mpd_0010_4fba394eb019:
-    next_level_input: CURRENT_LEVEL_PASS_SUBSET_ONLY
-    next_level_payload: PASS_HEADER_PLUS_MACHINE_FIELDS_PLUS_REMAINING_NATURAL_RESIDUAL
-    rerun_previous_passed_level: FORBIDDEN
-    machine_resolved_fragments_must_not_remain_in_next_natural_reasoning_input: true
-    unresolved_remains_natural_language_at_current_level: true
-    unresolved_is_direct_next_level_candidate: false
-    unresolved_may_transition_to_pass_when_current_level_becomes_exactly_classifiable: true
-    pass_transition_immediately_creates_next_level_candidate: true
-    unresolved_blocks_other_passed_atoms: false
-    current_level_unresolved_zero_required_for_next_level: false
-    next_level_candidate_set_is_dynamic: true
-  unit_mpd_0010_804417a00130: false
   unit_mpd_0014_2636c6da29a8:
     allowed: GITHUB_CREATE_BRANCH_API
     direct_api_use_authorized: true

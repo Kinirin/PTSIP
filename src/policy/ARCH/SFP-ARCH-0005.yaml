@@ -1,0 +1,66 @@
+schema_version: ptsip-support-root-family-policy/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+responsibility_family: ARCH
+policy:
+  id: SFP-ARCH-0005
+  title: Agent Bootstrap Integrated Engine responsibility
+  status: ACTIVE
+authority_subject:
+  id: SUP_AGENT_BOOTSTRAP_INTEGRATED_MANAGEMENT
+  statement: Single-owner management of machine-contract-driven agent bootstrap.
+exclusive_kernel:
+  - SUP_AGENT_BOOTSTRAP_CONTRACT_MANAGEMENT
+authority_contract:
+  authority_type: ROOT_FAMILY_ARCH
+  schema_id: ptsip.governance/root-family/arch
+  schema_version: 1
+authority_semantics:
+  bootstrap_integrated_engine:
+    intent: SINGLE_CONTRACT_AUTHORITY_ACROSS_CODING_AGENTS
+    implementation_root: src/ptsip/engines/
+    runtime_language: RUST
+    external_contract_language: LANGUAGE_NEUTRAL
+    management_owner: SINGLE_INTEGRATED_ENGINE
+    responsibilities:
+      - CONTRACT_REGISTRATION
+      - CONTRACT_RESOLUTION
+      - CONTRACT_VALIDATION
+      - BOOTSTRAP_MATERIALIZATION
+      - CONTRACT_CONFORMANT_CHANGE
+      - COMPATIBILITY_DECISION
+    python_legacy_runtime_dependency: FORBIDDEN
+    legacy_agent_instruction_contract_inheritance: FORBIDDEN
+    bootstrap_surface:
+      path: AGENTS.md
+      role: NON_NORMATIVE_MARKDOWN_BOOTSTRAP
+      normative_source: MACHINE_CONTRACT
+      generation_direction: MACHINE_CONTRACT_TO_AGENTS_MD
+      markdown_to_machine_authority_extraction: FORBIDDEN
+      representation: NATURAL_MARKDOWN
+      single_machine_entry: REQUIRED
+      routing_index: .ptsip/index.json
+      permitted_content:
+        - ENTRYPOINT
+        - AUTHORITY_LOCATOR
+        - COMMAND
+        - BOUNDED_SCOPE
+        - FAIL_CLOSED_CONDITION
+      prohibited_content:
+        - HISTORICAL_STATE
+        - VERSION_SPECIFIC_REASONING
+        - DUPLICATED_NORMATIVE_SEMANTICS
+      conformance_basis: CURRENT_APPLICABLE_MACHINE_CONTRACT
+      byte_identical_output_across_agents: NOT_REQUIRED
+    unresolved:
+      governance_namespace: UNDECIDED
+      contract_storage_namespace: UNDECIDED
+      contract_schema: UNDECIDED
+      command_interface: UNDECIDED
+      engine_registration_and_activation: SEPARATE_DECISION
+      migration_or_legacy_deletion_plan: SEPARATE_PLAN
+    prior_agent_taxonomy_level1_semantics: NOT_INHERITED
+relations:
+  supersedes: []
+  amends: []
+  extends: []
+  depends_on: []

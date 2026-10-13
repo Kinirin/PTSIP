@@ -154,32 +154,6 @@ rules:
   unit_mpd_0001_0a4061c5017f: MPD-MIGR-0001
   unit_mpd_0001_0547471e8a71:
     authority_ref: MPD-MIGR-0001
-  unit_mpd_0010_e2c914d20bcd:
-    activation: EXPLICIT
-    activation_precondition: CURRENT_LEVEL_1_STAGE
-    level_1_pass_destination: .agent/stages/level1.json
-    level_1_unresolved_destination: .agent/unresolved/level1.json
-    registry_role_after_activation: IDENTITY_AND_ROUTING_METADATA_ONLY
-    natural_language_payload_in_registry_after_activation: FORBIDDEN
-    provenance_markdown_as_reasoning_input: FORBIDDEN
-    unresolved_state_after_activation: UNRESOLVED
-    unresolved_must_remain_unclassified: true
-    root_agents_role_after_activation: MACHINE_ENTRY_PLUS_UNRESOLVED_ONLY
-    level_2_during_transition: FORBIDDEN
-  unit_mpd_0010_2e1eb70ce19d:
-    LOCAL_CLI_ONLY_to_MCP_STDIO_READY_requires:
-    - MCP_IMPLEMENTATION_READY
-    - EXPLICIT_USER_APPROVAL
-    - SUCCESSFUL_LOCAL_CONFIGURATION
-    - SUCCESSFUL_CONNECTION_CHECK
-    failed_or_unavailable_mcp_install_preserves_mode: LOCAL_CLI_ONLY
-  unit_mpd_0010_8caf613c64d2:
-    unresolved_may_persist_without_forced_classification: true
-    new_level_1_category_may_be_added_when_distinct_semantics_are_evidenced: true
-    taxonomy_extension_may_re_evaluate_unresolved_atoms_only: true
-    newly_passed_unresolved_atom_becomes_next_level_candidate: true
-    adding_category_does_not_force_existing_pass_reclassification: true
-    existing_category_semantic_change_requires_explicit_revalidation: true
   unit_mpd_0010_cbabcbbb55d3:
     strategy: EVIDENCE_DRIVEN_CONTRACT_REFINEMENT
     refinement_signals:
