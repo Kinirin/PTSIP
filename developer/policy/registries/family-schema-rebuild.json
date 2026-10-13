@@ -90,5 +90,66 @@
     "policy_record_new_format": "NOT_YET_DEFINED",
     "go_validation": "NOT_YET_IMPLEMENTED",
     "automatic_validation_success": "NOT_ALLOWED_UNTIL_VERIFIED_SUCCESSOR"
+  },
+  "lifecycle_contract_usage": {
+    "approval_ref": "developer/policy/approvals/MPA-20261013-POLICY-FIRST-LIFECYCLE-CONTRACT-REUSE.yaml",
+    "conflict_resolution": "RECONCILE",
+    "authoritative_order": [
+      "USER_APPROVED_POLICY",
+      "POLICY_DERIVED_MACHINE_CONTRACT",
+      "IMPLEMENTATION"
+    ],
+    "retention": "PRESERVE_EXISTING_LIFECYCLE_CONTRACT_FILES",
+    "new_family_policy_adoption": "NOT_AUTOMATIC",
+    "previous_GOV_policy_status": "RETIRED_WAITING",
+    "previous_GOV_policy_is_new_normative_source": false,
+    "new_GOV_policy_work": "SEPARATE_FROM_CURRENT_ARCH_SCHEMA_DESIGN",
+    "contract_use": "POLICY_AUTHORIZED_MECHANICAL_OPERATIONS_ONLY",
+    "contract_driven_policy_decision": "FORBIDDEN",
+    "existing_contract_functions_as_analysis_input": "PERMITTED_NON_NORMATIVE",
+    "status": {
+      "file": "developer/contracts/lifecycle/policy_status.json",
+      "current_functions": [
+        "STATUS_SUBSTATUS_VALIDATION",
+        "STATUS_VOCABULARY",
+        "DRAFT_PASS_TO_APPROVED_DEFAULT_NORMALIZATION",
+        "APPROVED_APPLICATION_PROBLEMS_RECOVERY",
+        "RETIRED_RESOLUTION_AUTHORITY_FALSE"
+      ],
+      "current_semantics_auto_adopted_by_new_family": false,
+      "new_arch_status_field_requirement": "UNRESOLVED",
+      "new_policy_status_vocabulary": "UNRESOLVED",
+      "normalization_and_recovery_authorization": "SEPARATE_POLICY_DECISION_REQUIRED"
+    },
+    "version": {
+      "file": "developer/contracts/lifecycle/policy_version.json",
+      "current_functions": [
+        "MAJOR_MINOR_SYNTAX",
+        "DRAFT_MAJOR_ZERO",
+        "APPROVED_MAJOR_AT_LEAST_ONE",
+        "RETIRED_VERSION_PRESERVATION",
+        "STATUS_VERSION_PAIR_VALIDATION"
+      ],
+      "current_semantics_auto_adopted_by_new_family": false,
+      "new_arch_version_field_requirement": "UNRESOLVED",
+      "new_policy_version_format": "UNRESOLVED",
+      "status_major_mapping_authorization": "SEPARATE_POLICY_DECISION_REQUIRED"
+    },
+    "prohibitions": {
+      "new_family_schema_direct_ref_to_existing_contract": "FORBIDDEN",
+      "old_contract_field_structure_forced_on_new_family": "FORBIDDEN",
+      "old_GOV_policy_authority_reactivation": "FORBIDDEN",
+      "inferred_approval_or_status_from_contract_behavior": "FORBIDDEN",
+      "adjust_contract_to_fit_unapproved_policy": "FORBIDDEN",
+      "contract_change_without_policy_authority": "FORBIDDEN",
+      "automatic_policy_validation_claim_from_contract_presence": "FORBIDDEN"
+    },
+    "future_modification": {
+      "first": "DEFINE_APPROVED_POLICY_SEMANTICS",
+      "then": "ADAPT_MECHANICAL_CONTRACT_TO_POLICY",
+      "then_validate": "VERIFY_CONTRACT_CONFORMANCE",
+      "implementation_change_authorized_by_this_decision": false
+    },
+    "existing_contract_files_modified": false
   }
 }

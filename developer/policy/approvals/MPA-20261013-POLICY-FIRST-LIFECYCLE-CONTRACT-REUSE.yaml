@@ -1,0 +1,22 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-POLICY-FIRST-LIFECYCLE-CONTRACT-REUSE
+  decision: APPROVED
+  conflict_resolution: RECONCILE
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Retain developer/contracts/lifecycle/policy_status.json and
+    developer/contracts/lifecycle/policy_version.json as machine mechanisms.
+    New Family policy is not to be defined from these existing contracts.
+    Interpret useful functionality first and make independent policy decisions
+    before any change or adaptation of a contract. Retired GOV policy and
+    historical lifecycle semantics do not automatically become new authority.
+    Current scope remains ARCH schema definition; GOV and INFO are separate.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  branch_creation_authorized: false
+  recorded_at: '2026-10-13'
