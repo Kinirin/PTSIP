@@ -1,160 +1,45 @@
-# Independent PTSIP releases
+# PTSIP release control
 
-Independent engine publication is admitted by the project owner's explicit
-decision. The already published Tool 0.3.8a5 remains unchanged.
-`tooling-release.yml` admits Engine Verification only, using the scoped
-`developer/policy/contracts/engine-verification.v1.json` contract. Seven engines
-can be selected independently on Windows x64, Linux x64 and macOS arm64.
-Tool, Profile and Package verification are deferred. Release Gate passes only
-when canonical admission, all selected engine/platform jobs and their unexpired
-artifacts belong to the exact workflow source SHA. This gate reports selected
-engine verification readiness; PowerShell and native publication entrypoints
-remain blocked for Tool/Profile/Package and the retained legacy release surface.
+`composition-contract.json` is the current release selection and Package composition contract. CTRL owns publication admission, ASSURE owns the verification contract in `test/`, INFO owns independent version identities, and RECORD owns release-note routes. `release-contract.json` retains historical version syntax and bootstrap metadata; it does not reactivate the old publication surface.
 
-`tooling-release.yml` has separate `verify` and `publish` phases. Verification
-tests/builds the selected engines on all three hosts and saves original wheels
-and receipts. Publication requires that completed successful verification run
-ID at the exact current main SHA; it downloads those original artifacts without
-rebuilding. Native Go reassembles and byte-compares every wheel, checks its
-receipt, fresh source and immutable version, then creates each engine tag and
-GitHub Release. The external official PyPA action uploads only Go-admitted wheels
-through Trusted Publishing. Native Go confirms the public PyPI file digests.
+Only `tooling-release.yml` publishes. Only `tooling-test.yml` executes verification, through modes registered in `.github/test_modes.yaml`. The test runner, test cases and mechanical verification contract are owned by `test/`. Publication downloads the original verified artifacts and does not invoke Cargo, build a wheel, or run a test suite.
 
-Publication input `destination=github` creates GitHub releases while PyPI setup
-is pending. Repeating publication with `destination=github-pypi` and the same
-verification run reuses the exact wheel set and does not overwrite release files.
-Register Pending Trusted Publishers for `ptsip-engine-context`,
-`ptsip-engine-storage`, `ptsip-engine-validation`, `ptsip-engine-discovery`,
-`ptsip-engine-planning`, `ptsip-engine-execution` and `ptsip-engine-projection`:
-GitHub owner `Kinirin`, repository `PTSIP`, workflow `tooling-release.yml`,
-environment `pypi`. Tool/Profile/Package are not publication targets of this flow.
+Selection supports `package`, `tool`, `profiles`, and comma-separated `engine:<registered-kind>` values. Package selects Tool, Profiles and all current canonical engine registrations. The eight contract release types cover the full Package, each single component kind, and the approved mixed selections. Adding an engine changes canonical registration and its admitted implementation; it does not require another workflow.
 
-The Linux wheel uses `manylinux_2_39_x86_64`; native Go inspects ELF architecture,
-external library closure and GLIBC requirements before admitting that tag.
-Packaged License bytes come from the exact source SHA's Git blob, preserving
-canonical content across Windows CRLF and Unix LF worktree materialization.
+Windows x64 and Linux x64 run in parallel and both must pass for every selected component. macOS arm64 is opt-in through `-OptionalPlatforms macos-arm64`. An omitted host produces no PASS evidence. Rust target and dependency caches are partitioned by component, host, compiler and Cargo dependency digest. Exact keys include the source SHA; compatible source changes restore only a dependency-compatible prefix. Tests and builds run on cache hits.
 
-Rust dependencies and debug/release compilation outputs are cached per engine,
-runner, native target, compiler commit and Cargo dependency fingerprint. Exact
-keys also include engine source; source changes may reuse only a compatible
-dependency cache. Cargo test/build and wheel verification always run, including
-on an exact cache hit. Wheels, receipts, consumer environments and prior PASS
-results are never restored from the cache. The first run populates caches;
-subsequent compatible runs restore them.
+## Commands
 
-The retained publication implementation describes `release-contract.json`.
-`run_release.ps1` selects and invokes target scripts. Native Go owns selection,
-version consumption, source fingerprints, compilation checks, artifact hashes,
-immutable publication and Package assembly. PowerShell owns process orchestration.
-
-The following architecture describes retained implementation only. It does not
-grant release execution permission or establish current verification readiness.
-
-## Independent identities
-
-- Tool: `0.3.8a5`, `0.3.8b1`, `0.3.8rc1`, or stable `0.3.8`.
-- Profile: `pp.1.02`, selected from the canonical Profile registry.
-- Each of seven engines: independent `MAJOR.MINOR.PATCH` versions (e.g. `0.2.0`, `0.3.0`).
-- Package: `0.3.8.<six hexadecimal characters>`. Its numeric base changes only by
-  explicit owner input. The suffix maps the canonical Tool/Profile/seven-engine
-  version vector. It has no ordering or compatibility meaning. The complete
-  SHA-256 and vector are recorded; a suffix collision fails closed.
-
-Engine version strings have exactly three numeric segments. Two-segment
-versions, aN/bN/rcN suffixes and Cargo prerelease translations are not engine
-identities. Cargo uses the same three-segment version. The original Context
-and Projection identities are `0.2.0`; Storage, Validation, Discovery,
-Planning and Execution are `0.3.0`. The retained bootstrap version registry
-records these historic starting values. Release execution never bumps a component.
-
-## Canonical per-engine versions
-
-Each engine owns its manually editable public version in
-`src/ptsip/engines/<engine>/version.yaml`. The canonical form is
-`MAJOR.MINOR.PATCH` (for example `0.2.0` or `0.3.0`). No version
-is inferred from other engines and the release workflow never increments
-versions automatically.
-
-After changing a version file, synchronize the derived records:
+Run from the checkout with Go and GitHub CLI available:
 
 ```powershell
-./.github/checks/release/run_release.ps1 -Action SyncVersions -Targets context
-./.github/checks/release/run_release.ps1 -Action SyncVersions -Targets all
+./.github/checks/release/run_release.ps1 -Action Select -Targets package
+./.github/checks/release/run_release.ps1 -Action DispatchTest -Targets engine:context,engine:projection
+./.github/checks/release/run_release.ps1 -Action DispatchRelease -Targets engine:context,engine:projection -VerificationRunId <successful-exact-SHA-run> -Destination github-pypi
 ```
 
-This operation updates the engine index, runtime manifest, execution bindings,
-Cargo.toml, and Cargo.lock. Commit the version file and projections together.
-The release Plan verifies exact agreement and fails closed on divergence.
-The historical bootstrap versions are preserved separately in the release catalog.
+The release run consumes the exact source, selection digest, component versions, host receipts and file hashes from the specified tooling-test run. Different requested selections, expired artifacts and advanced main source fail admission. An unchanged historical engine version reuses its original immutable files only after comparing its registered source boundaries. Changed engine source requires an explicitly assigned new version.
 
-## Selection and execution
+One source SHA has one GitHub carrier, tagged `ptsip-release-<full-source-SHA>`. Select all desired components before publishing that carrier. A retry reuses identical assets; another selection at that same source cannot replace the published carrier. Existing historical engine tags and Releases remain immutable.
 
-Preview one engine locally without asserting that it has been published:
+The PyPA action is an upload adapter. Native Go compares existing version-specific PyPI file hashes before any mutation, stages only missing files, and confirms public file hashes after upload. A conflicting filename fails and requires a new component version. Tool 0.3.8a5 remains published; the current Tool candidate is 0.3.8a6. Engine Pending Trusted Publishers must be registered for owner `Kinirin`, repository `PTSIP`, workflow `tooling-release.yml`, environment `pypi` before the PyPI phase can succeed.
+
+## Package history and installation
+
+The approved numeric base is `0.3.8`. Each changed successful component composition produces an opaque six-hex mapping of canonical component versions, original sources and artifact digests. The numeric base is never incremented automatically. Identical composition is idempotent; a suffix collision fails closed using the full SHA256.
+
+Published source carriers contain the cumulative `package-registry.json` and exact snapshot. Draft carriers do not participate in latest resolution. The publication record job writes the derived registry and a separate `docs/releasenote/PTSIP_Package/<version>.md` note after observing publication. The initial installable Package requires Tool, Profiles and all seven default engines; an incomplete bootstrap composition fails installation.
 
 ```powershell
-./.github/checks/release/run_release.ps1 -Action Plan -Targets context -Offline
+./.github/checks/release/run_release.ps1 -Action ResolvePackage -PackageVersion 0.3.8
+./.github/checks/release/run_release.ps1 -Action Install -PackageVersion 0.3.8 -PythonExecutable C:/consumer/.venv/Scripts/python.exe
+./.github/checks/release/run_release.ps1 -Action Install -PackageVersion 0.3.8.<SHA6> -PythonExecutable C:/consumer/.venv/Scripts/python.exe
 ```
 
-Compile the selected engine for the local host:
+The base chooses its latest published composition; an exact suffix pins its snapshot. Unknown selectors fail before installation. This is a dedicated Package command, not an extension to pip version syntax. All selected artifacts are hash-checked before pip runs. Profile distributions contain only the public catalog resources and contract registry, excluding history and Python implementation. Catalog resources are installed into the explicitly chosen Python environment. Local `.ptsip/profiles` declarations and runtime activation remain consumer-owned and are not inferred by this installer.
 
-```powershell
-./.github/checks/release/run_release.ps1 -Action Build -Target context
-```
+## Notes and verification scope
 
-`-Action Build` without a single `-Target` builds the selected components in
-parallel on the local host. This is local build evidence; publishing an engine
-requires all admitted platform receipts and observed successful workflow jobs.
+Tool notes use `docs/releasenote/tool/<version>.md`; Profile notes use `docs/releasenote/project-profile/<version>.md`. Each engine owns `docs/releasenote/engine/<kind>/<kind>-engine-<version>.md`, without a draft suffix. Multiple engines retain separate note files; the single carrier body presents their sections. Historical Specification notes retain their original content under the renamed `PTSIP_Package/` directory and are not evidence of Package publication.
 
-Dispatch exact-main verification, or explicitly select publication:
-
-```powershell
-./.github/checks/release/run_release.ps1 -Action Dispatch -ReleasePhase verify -Targets context
-./.github/checks/release/run_release.ps1 -Action Dispatch -ReleasePhase publish -Targets context
-./.github/checks/release/run_release.ps1 -Action Dispatch -ReleasePhase verify -Targets all -DisabledTargets tool
-```
-
-Changed selected components build independently in the Actions matrix. Linux
-x64, Windows x64 and macOS arm64 are currently admitted engine platforms.
-Unselected, disabled and unchanged published components do not build. An existing
-component version with changed source fails closed instead of overwriting a tag
-or silently incrementing Tool/Profile/another engine. Individual publications
-proceed only after that component's required platform jobs succeed. A failed
-component blocks itself and any Package requiring it.
-
-`contracts_release.ps1` projects the selected engine's neutral contracts; it is
-a packaging helper and does not define an eighth engine.
-
-## Distribution and Package join
-
-Engine GitHub Releases contain platform ZIP files, native release executables,
-their registered neutral contracts and source/hash/platform receipts. Profile
-Releases contain the current schema, registry and public examples; history is
-excluded. Tool publication retains wheel/sdist verification and PyPI Trusted
-Publishing, and consumes exactly the already verified build artifact.
-
-The Package job joins the verified component artifacts after their independent
-work. Unchanged components are reused from immutable releases; the historical
-Tool bootstrap is also checked against the version-specific PyPI hashes. A
-Package never silently compiles an unselected missing component. Publication
-also requires each referenced component publication to have completed.
-
-The Python wheel remains a Tool distribution. Native executables ship in their
-independent engine archives and the aggregate Package. Engine installation,
-consumer discovery/activation and public API retirement are separate scopes.
-
-## Verification gap
-
-The engine verification exception uses native Rust test/build, a Go wheel
-assembler under `engine-verification/`, and the independent Go wheel verifier.
-Python is used only for the isolated consumer package installer. Verification
-artifacts and successful engine jobs do not grant publication or runtime authority.
-
-The previous verification execution map and the test enforcing its legacy
-migration table have been removed. Their historical test lists do not establish
-the successor release verification requirements. The common verification gap
-and the release deployment gap remain OPEN. Previous PASS results must not be
-used to assert readiness for the current source.
-
-Release execution can resume only through a separately approved successor
-policy and contract with its own verified implementation. Changing an execution
-state projection alone cannot reactivate the retained release implementation.
+The retired common verification gap remains separately open. Passing the registered release mode establishes only its selected component/source scope. Legacy scripts and their old PASS records do not become successor verification authority.

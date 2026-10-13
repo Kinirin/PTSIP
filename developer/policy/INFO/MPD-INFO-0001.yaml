@@ -6,7 +6,7 @@ policy:
   title: INFO authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '3.2'
+  version: '3.3'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
   statement: 개발 정책, planning, self-profile 및 Context Plane의 canonical 정보 모델과 source/projection 관계를 소유한다. 단, PTSIP_DEVELOPER_POLICY Root Family 정책 레코드의 전체 필드 스키마 정의권은 해당 Family에 귀속한다.
@@ -6246,16 +6246,22 @@ rules:
     authority_ref: MPD-INTENT-0001#rules.local_release_bounded_planning_intent.target_release_resolution_rule
     plan_creation_or_directories_authorized: false
   independent_release_versioning:
+    composition_contract_ref: .github/checks/release/composition-contract.json
     approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
-    contract_ref: .github/checks/release/release-contract.json
-    schema_ref: .github/checks/release/release-contract.schema.json
+    contract_ref: .github/checks/release/composition-contract.json
+    retained_version_syntax_catalog: .github/checks/release/release-contract.json
     identities:
     - PACKAGE
     - TOOL
     - PROFILE
     - SEVEN_INDEPENDENT_ENGINES
     package_numeric_base_change: USER_EXPLICIT_ONLY
-    package_suffix: FIRST_SIX_SHA256_HEX_OF_CANONICAL_COMPONENT_VERSION_VECTOR
+    package_suffix: FIRST_SIX_SHA256_HEX_OF_CANONICAL_PUBLISHED_COMPONENT_ARTIFACT_MANIFEST
+    package_refresh_trigger: EACH_SUCCESSFUL_NON_PACKAGE_COMPONENT_RELEASE
+    package_exact_identity: NUMERIC_BASE_DOT_SIX_HEXADECIMAL_MAPPING
+    package_install_selector: BASE_SELECTS_LATEST_EXACT_SUFFIX_SELECTS_PINNED_UNKNOWN_SUFFIX_FAILS
+    package_install_contract_ref: .github/checks/release/package-installation-contract.json
+    identity_display_order: [PTSIP_Package, textTool, Project_Profile, Engine, SPEC_REVISION, Specification_source]
     suffix_semantics: OPAQUE_MAPPING_ONLY_NO_ORDER_OR_COMPATIBILITY
     suffix_collision: FAIL_CLOSED_FULL_COMPOSITION_SHA256_REQUIRED
     tool_engine_profile_version_coupling: FORBIDDEN

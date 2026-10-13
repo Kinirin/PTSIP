@@ -1,0 +1,381 @@
+package releasecontroller
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strconv"
+	"strings"
+)
+
+func GitHub(endpoint string, out any) error {
+	data, err := exec.Command("gh", "api", endpoint).Output()
+	if err != nil {
+		return fmt.Errorf("GitHub evidence read failed: %w", err)
+	}
+	return json.Unmarshal(data, out)
+}
+
+func AdmitVerification(root string, s Selection, run int64) error {
+	if err := ValidateSelection(root, s); err != nil {
+		return err
+	}
+	policyData, err := Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-CTRL-0001", "--section", "release_orchestration")
+	if err != nil {
+		return err
+	}
+	var policy struct {
+		Record map[string]any `json:"record"`
+	}
+	if json.Unmarshal(policyData, &policy) != nil || policy.Record["publication_workflow"] != ".github/workflows/tooling-release.yml" || policy.Record["verification_workflow"] != ".github/workflows/tooling-test.yml" || policy.Record["one_github_release_per_source_sha"] != "REQUIRED" {
+		return fmt.Errorf("unified publication authority unresolved")
+	}
+	head, err := Run(root, "git", "rev-parse", "HEAD")
+	if err != nil || strings.TrimSpace(string(head)) != s.SourceSHA {
+		return fmt.Errorf("checkout source does not match selection")
+	}
+	tracked, err := Run(root, "git", "status", "--porcelain", "--untracked-files=no")
+	if err != nil || len(tracked) != 0 {
+		return fmt.Errorf("tracked source changed before publication")
+	}
+	if run <= 0 {
+		return fmt.Errorf("original verification run required")
+	}
+	var current struct {
+		Head                     string `json:"head_sha"`
+		Path, Status, Conclusion string
+	}
+	if err := GitHub("repos/Kinirin/PTSIP/actions/runs/"+strconv.FormatInt(run, 10), &current); err != nil {
+		return err
+	}
+	if current.Head != s.SourceSHA || current.Path != ".github/workflows/tooling-test.yml" || current.Status != "completed" || current.Conclusion != "success" {
+		return fmt.Errorf("exact-source tooling-test admission missing")
+	}
+	type job struct{ Name, Status, Conclusion string }
+	var jobs struct {
+		Jobs []job
+	}
+	for page := 1; ; page++ {
+		var batch struct{ Jobs []job }
+		if err := GitHub(fmt.Sprintf("repos/Kinirin/PTSIP/actions/runs/%d/jobs?per_page=100&page=%d", run, page), &batch); err != nil {
+			return err
+		}
+		jobs.Jobs = append(jobs.Jobs, batch.Jobs...)
+		if len(batch.Jobs) < 100 {
+			break
+		}
+	}
+	for _, c := range s.Components {
+		for _, platform := range s.Platforms {
+			name := "Registered verification / " + c.ID + " / " + platform
+			count := 0
+			for _, job := range jobs.Jobs {
+				if job.Name == name && job.Status == "completed" && job.Conclusion == "success" {
+					count++
+				}
+			}
+			if count != 1 {
+				return fmt.Errorf("required component/host verification missing: %s", name)
+			}
+		}
+	}
+	return nil
+}
+
+func Gather(root string, s Selection, input string) ([]PublishedComponent, map[string]string, error) {
+	dir, err := SafePath(root, input)
+	if err != nil {
+		return nil, nil, err
+	}
+	type receipt struct {
+		Schema                                     string `json:"schema_version"`
+		SourceSHA                                  string `json:"source_sha"`
+		SelectionSHA                               string `json:"selection_sha256"`
+		Component, Kind, Version, Platform, Status string
+		Files                                      []File
+	}
+	rows := map[string]receipt{}
+	locations := map[string]string{}
+	err = filepath.WalkDir(dir, func(p string, entry os.DirEntry, e error) error {
+		if e != nil {
+			return e
+		}
+		if entry.Type()&os.ModeSymlink != 0 {
+			return fmt.Errorf("symlinked shipping artifact")
+		}
+		if entry.Name() != "test-receipt.json" || entry.IsDir() {
+			return nil
+		}
+		data, e := os.ReadFile(p)
+		if e != nil {
+			return e
+		}
+		var r receipt
+		if e := json.Unmarshal(data, &r); e != nil {
+			return e
+		}
+		if r.Schema != "ptsip-release-test-receipt/v1" || r.SourceSHA != s.SourceSHA || r.SelectionSHA != s.SelectionSHA || r.Status != "PASS" {
+			return fmt.Errorf("receipt source or selection mismatch")
+		}
+		allowed := false
+		for _, c := range s.Components {
+			for _, platform := range s.Platforms {
+				allowed = allowed || (c.ID == r.Component && c.Kind == r.Kind && c.Version == r.Version && platform == r.Platform)
+			}
+		}
+		if !allowed || len(r.Files) == 0 {
+			return fmt.Errorf("receipt outside selected component/host set")
+		}
+		key := r.Component + "/" + r.Platform
+		if _, ok := rows[key]; ok {
+			return fmt.Errorf("duplicate component/host receipt")
+		}
+		rows[key] = r
+		for _, file := range r.Files {
+			if filepath.Base(file.Name) != file.Name {
+				return fmt.Errorf("invalid artifact filename")
+			}
+			asset := filepath.Join(filepath.Dir(p), file.Name)
+			b, e := os.ReadFile(asset)
+			if e != nil || Digest(b) != file.SHA256 {
+				return fmt.Errorf("artifact digest mismatch: %s", file.Name)
+			}
+			locations[key+"/"+file.Name] = asset
+		}
+		locations[key+"/receipt"] = p
+		return nil
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+	components := []PublishedComponent{}
+	for _, c := range s.Components {
+		published := PublishedComponent{ID: c.ID, Kind: c.Kind, Version: c.Version, SourceSHA: s.SourceSHA, Files: []File{}}
+		for _, platform := range s.Platforms {
+			key := c.ID + "/" + platform
+			r, ok := rows[key]
+			if !ok || r.Version != c.Version || r.Kind != c.Kind {
+				return nil, nil, fmt.Errorf("missing receipt for %s", key)
+			}
+			if c.Kind != "engine" && platform != "linux-x64" {
+				continue
+			}
+			for _, file := range r.Files {
+				file.Platform = platform
+				if c.Kind != "engine" {
+					file.Platform = "any"
+				}
+				file.URL = "https://github.com/Kinirin/PTSIP/releases/download/" + s.Tag + "/" + file.Name
+				published.Files = append(published.Files, file)
+			}
+		}
+		components = append(components, published)
+	}
+	return components, locations, nil
+}
+
+func PrepareShipping(root string, s Selection, run int64, input, output string) (Snapshot, error) {
+	if err := AdmitVerification(root, s, run); err != nil {
+		return Snapshot{}, err
+	}
+	components, locations, err := Gather(root, s, input)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	out, err := SafePath(root, output)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	if err := os.MkdirAll(out, 0755); err != nil {
+		return Snapshot{}, err
+	}
+	components, err = EngineReuse(root, s, components, locations)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	registry, err := PublishedRegistry(root, ".github/checks/release/package-registry.json", s.SourceSHA)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	snapshot, err := RefreshPackage(&registry, s.SourceSHA, components)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	for _, c := range components {
+		for _, file := range c.Files {
+			platform := file.Platform
+			if platform == "any" {
+				platform = "linux-x64"
+			}
+			p := locations[c.ID+"/"+platform+"/"+file.Name]
+			b, err := os.ReadFile(p)
+			if err != nil {
+				return Snapshot{}, err
+			}
+			if err := os.WriteFile(filepath.Join(out, file.Name), b, 0644); err != nil {
+				return Snapshot{}, err
+			}
+			if strings.HasSuffix(file.Name, ".whl") || strings.HasSuffix(file.Name, ".tar.gz") {
+				pypi := filepath.Join(out, "pypi", c.ID)
+				if err := os.MkdirAll(pypi, 0755); err != nil {
+					return Snapshot{}, err
+				}
+				if err := os.WriteFile(filepath.Join(pypi, file.Name), b, 0644); err != nil {
+					return Snapshot{}, err
+				}
+			}
+		}
+	}
+	if err := WriteJSON(filepath.Join(out, "package-registry.json"), registry); err != nil {
+		return Snapshot{}, err
+	}
+	if err := WriteJSON(filepath.Join(out, "package-"+snapshot.Version+".json"), snapshot); err != nil {
+		return Snapshot{}, err
+	}
+	body := "# PTSIP Release\n\n" + IdentityText(snapshot, "3c47816770d194ae42f98faedc911d980db0e62a", "https://github.com/Kinirin/PTSIP") + "\nSource: `" + s.SourceSHA + "`\n\n"
+	for _, c := range s.Components {
+		p, e := SafePath(root, c.Note)
+		if e != nil {
+			return Snapshot{}, e
+		}
+		note, e := os.ReadFile(p)
+		if e != nil {
+			return Snapshot{}, fmt.Errorf("component release note missing: %s", c.Note)
+		}
+		body += "\n## " + c.ID + " " + c.Version + "\n\n" + string(note) + "\n"
+	}
+	if err := os.WriteFile(filepath.Join(out, "release-body.md"), []byte(body), 0644); err != nil {
+		return Snapshot{}, err
+	}
+	if err := os.WriteFile(filepath.Join(out, snapshot.Version+".md"), []byte(body), 0644); err != nil {
+		return Snapshot{}, err
+	}
+	manifest := ShippingManifest{Schema: "ptsip-shipping-manifest/v1", Selection: s, VerificationRun: run, Snapshot: snapshot, Assets: []File{}}
+	entries, err := os.ReadDir(out)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	for _, entry := range entries {
+		if entry.IsDir() || entry.Name() == "shipping-manifest.json" {
+			continue
+		}
+		b, e := os.ReadFile(filepath.Join(out, entry.Name()))
+		if e != nil {
+			return Snapshot{}, e
+		}
+		manifest.Assets = append(manifest.Assets, File{Name: entry.Name(), SHA256: Digest(b)})
+	}
+	if err := WriteJSON(filepath.Join(out, "shipping-manifest.json"), manifest); err != nil {
+		return Snapshot{}, err
+	}
+	return snapshot, nil
+}
+
+func PublishCarrier(root string, s Selection, output string) error {
+	m, err := Shipping(root, s, output)
+	if err != nil {
+		return err
+	}
+	var main struct{ Object struct{ SHA string } }
+	if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != s.SourceSHA {
+		return fmt.Errorf("main advanced beyond shipping source")
+	}
+	out, err := SafePath(root, output)
+	if err != nil {
+		return err
+	}
+	releases, err := Carriers()
+	if err != nil {
+		return err
+	}
+	found := false
+	for _, r := range releases {
+		found = found || r.Tag == s.Tag
+	}
+	if !found {
+		refs, err := Run(root, "git", "ls-remote", "origin", "refs/tags/"+s.Tag)
+		if err != nil {
+			return err
+		}
+		if strings.TrimSpace(string(refs)) != "" && !strings.HasPrefix(string(refs), s.SourceSHA+"\t") {
+			return fmt.Errorf("existing source tag mismatch")
+		}
+		args := []string{"api", "repos/Kinirin/PTSIP/git/refs", "--method", "POST", "-f", "ref=refs/tags/" + s.Tag, "-f", "sha=" + s.SourceSHA}
+		if strings.TrimSpace(string(refs)) == "" {
+			if _, err := Run(root, append([]string{"gh"}, args...)...); err != nil {
+				return err
+			}
+		}
+		if _, err := Run(root, "gh", "release", "create", s.Tag, "--repo", "Kinirin/PTSIP", "--verify-tag", "--draft", "--latest=false", "--title", "PTSIP "+s.Type, "--notes-file", filepath.Join(out, "release-body.md")); err != nil {
+			return err
+		}
+	}
+	releases, err = Carriers()
+	if err != nil {
+		return err
+	}
+	var existing map[string]string
+	var draft bool
+	var releaseID int64
+	for _, r := range releases {
+		if r.Tag == s.Tag {
+			existing = map[string]string{}
+			for _, a := range r.Assets {
+				existing[a.Name] = a.Digest
+			}
+			draft = r.Draft
+			releaseID = r.ID
+		}
+	}
+	if existing == nil {
+		return fmt.Errorf("source-SHA release carrier unavailable")
+	}
+	assets := append([]File{}, m.Assets...)
+	bm, err := os.ReadFile(filepath.Join(out, "shipping-manifest.json"))
+	if err != nil {
+		return err
+	}
+	assets = append(assets, File{Name: "shipping-manifest.json", SHA256: Digest(bm)})
+	for _, entry := range assets {
+		p := filepath.Join(out, entry.Name)
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return err
+		}
+		if old := existing[entry.Name]; old != "" {
+			if old != "sha256:"+Digest(b) {
+				return fmt.Errorf("immutable carrier asset mismatch")
+			}
+			continue
+		}
+		if !draft {
+			return fmt.Errorf("cannot add unreviewed assets to published source carrier")
+		}
+		if _, err := Run(root, "gh", "release", "upload", s.Tag, p, "--repo", "Kinirin/PTSIP"); err != nil {
+			return err
+		}
+	}
+	var uploaded struct {
+		Assets []struct{ Name, Digest string }
+	}
+	if err := GitHub("repos/Kinirin/PTSIP/releases/"+strconv.FormatInt(releaseID, 10), &uploaded); err != nil {
+		return err
+	}
+	for _, expected := range assets {
+		found := false
+		for _, a := range uploaded.Assets {
+			if a.Name == expected.Name {
+				found = a.Digest == "sha256:"+expected.SHA256
+			}
+		}
+		if !found {
+			return fmt.Errorf("carrier uploaded artifact missing or hash mismatch: %s", expected.Name)
+		}
+	}
+	if draft {
+		_, err = Run(root, "gh", "release", "edit", s.Tag, "--repo", "Kinirin/PTSIP", "--draft=false", "--latest=false")
+	}
+	return err
+}

@@ -4,7 +4,13 @@
 # Selection and targets must be resolved, validated and executed fail-closed.
 version: '3.0'
 
+defaults:
+  workflow_mode: release-verification
+  release_targets: package
+
 groups:
+  RELEASE:
+    - release-verification
   SUPPLY:
     - agent-contract-plane
     - agent-contract-runtime
@@ -24,6 +30,11 @@ groups:
     - test-mode-control-plane
 
 modes:
+  - id: release-verification
+    component_ref: repository-release-verification
+    execution:
+      contract_ref: .github/checks/release/test/verification-contract.json
+      runner_ref: .github/checks/release/test/cmd/ptsip-release-test
   - id: agent-contract-plane
     component_ref: agent-contract-plane-verification
     execution:

@@ -1,0 +1,25 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-UNIFIED-RELEASE-SPECIFICATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The user specified Package, Tool-only, one-engine, Profiles-only and mixed
+    release selections through tooling-release.yml alone; all tests run through
+    tooling-test.yml and test_modes.yaml, with mutable release verification
+    confined to .github/checks/release/test. Windows and Linux are mandatory,
+    macOS is opt-in. One GitHub Release is produced per source SHA. Package
+    composition refreshes after each component release without automatic numeric
+    version increments. Package notes use PTSIP_Package after renaming the former
+    specification folder; engine notes use engine/<name>/<name>-engine-<version>.md.
+    The user approved a dedicated Package installer for latest-base and exact-SHA6
+    selection, and selected Tool 0.3.8a6 for subsequent new Tool publication.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  policy_content_review_scope: FULL
+  affected_policy_ids: [MPD-CTRL-0001, MPD-ASSURE-0001, MPD-INFO-0001, MPD-RECORD-0001]
+  recorded_at: '2026-10-13'

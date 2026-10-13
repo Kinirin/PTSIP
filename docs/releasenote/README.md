@@ -1,16 +1,19 @@
 # PTSIP Release Notes
 
-This directory is the canonical repository history for three independently versioned authorities:
+This directory is the canonical repository history for independently versioned components and Package compositions:
 
 ```text
 PTSIP Reference Tool
 Project Profile Contract
-PTSIP Specification family / immutable revision
+Independent engines
+PTSIP_Package composition / immutable Specification revision
 ```
 
 Its canonical root is `docs/releasenote/`, relocated from repository-root `releasenote/`. The authority namespaces and the contents of versioned release notes are preserved.
 
 Root-level `CHANGELOG.md` and `TOOLING-CHANGELOG.md` are no longer maintained. Version history is separated by authority so Tool, Project Profile, and Specification identities are not collapsed into one sequence.
+
+Current Package numeric base is `0.3.8`; its six-hex suffix is assigned from a published composition. Historical Specification records keep their recorded identity and content under the renamed Package directory. Engine notes remain separate and are included as sections in one source-SHA carrier.
 
 ## Namespace policy
 
@@ -19,7 +22,8 @@ The release-note directory is normalized by authority:
 ```text
 docs/releasenote/tool/<tool-version>.md
 docs/releasenote/project-profile/<pp-contract-version>.md
-docs/releasenote/specification/<spec-note>.md
+docs/releasenote/PTSIP_Package/<package-version>.md
+docs/releasenote/engine/<engine>/<engine>-engine-<version>.md
 ```
 
 Historical flat Tool and Specification release-note files have been relocated into these authority namespaces. This is a repository-organization change only; it does not rewrite the historical Tool/Specification identity or publication state recorded inside each note.
@@ -33,7 +37,7 @@ docs/releasenote/tool/0.3.8a4.md
 docs/releasenote/tool/0.3.8a5.md
 docs/releasenote/project-profile/pp.1.01.md
 docs/releasenote/project-profile/pp.1.02.md
-docs/releasenote/specification/0.3.7-draft.md
+docs/releasenote/PTSIP_Package/0.3.7-draft.md
 ```
 
 Published or historical flat files already stored directly under `docs/releasenote/` remain in place. They are not bulk-moved merely to make the directory visually uniform or to rewrite old identity conventions.
@@ -42,7 +46,7 @@ Namespace indexes:
 
 - [`tool/README.md`](tool/README.md)
 - [`project-profile/README.md`](project-profile/README.md)
-- [`specification/README.md`](specification/README.md)
+- [`PTSIP_Package/README.md`](PTSIP_Package/README.md)
 
 ## Project Profile contract history
 
@@ -69,9 +73,9 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.8a5` | Policy, verification, and seven-native-engine foundation prerelease candidate; publication pending | [`tool/0.3.8a5.md`](tool/0.3.8a5.md) |
+| Tool | `0.3.8a6` | Unified release candidate; publication pending | [`tool/0.3.8a6.md`](tool/0.3.8a6.md) |
 | Project Profile | `pp.1.02` | Current contract / repository adopted | [`project-profile/pp.1.02.md`](project-profile/pp.1.02.md) |
-| Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
+| Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`PTSIP_Package/0.3.7-draft.md`](PTSIP_Package/0.3.7-draft.md) |
 
 ## Historical Reference Tool history
 
@@ -154,13 +158,13 @@ Historical flat Specification note basenames are preserved under the `specificat
 
 | Family | State | Document |
 | --- | --- | --- |
-| `0.1.0-draft` | Historical initial public draft | [`specification/spec-0.1.0-draft.md`](specification/spec-0.1.0-draft.md) |
-| `0.2.0-draft` | Historical experimental draft family | [`specification/spec-0.2.0-draft.md`](specification/spec-0.2.0-draft.md) |
-| `0.3.3-draft` | Historical draft record | [`specification/spec-0.3.3-draft.md`](specification/spec-0.3.3-draft.md) |
-| `0.3.4-draft` | Published Tool 0.3.5 baseline family | [`specification/spec-0.3.4-draft.md`](specification/spec-0.3.4-draft.md) |
-| `0.3.6-draft` | Tool 0.3.6 bound release-candidate family | [`specification/spec-0.3.6-draft.md`](specification/spec-0.3.6-draft.md) |
-| `0.3.7-draft` | Historical initial activation snapshot `b648d9e026f502b14481ba2d0606d9acc88a31fc` | [`specification/spec-0.3.7-draft.md`](specification/spec-0.3.7-draft.md) |
-| `0.3.7-draft` | Final WU-12 freeze at `3c47816770d194ae42f98faedc911d980db0e62a` | [`specification/0.3.7-draft.md`](specification/0.3.7-draft.md) |
+| `0.1.0-draft` | Historical initial public draft | [`specification/spec-0.1.0-draft.md`](PTSIP_Package/spec-0.1.0-draft.md) |
+| `0.2.0-draft` | Historical experimental draft family | [`specification/spec-0.2.0-draft.md`](PTSIP_Package/spec-0.2.0-draft.md) |
+| `0.3.3-draft` | Historical draft record | [`specification/spec-0.3.3-draft.md`](PTSIP_Package/spec-0.3.3-draft.md) |
+| `0.3.4-draft` | Published Tool 0.3.5 baseline family | [`specification/spec-0.3.4-draft.md`](PTSIP_Package/spec-0.3.4-draft.md) |
+| `0.3.6-draft` | Tool 0.3.6 bound release-candidate family | [`specification/spec-0.3.6-draft.md`](PTSIP_Package/spec-0.3.6-draft.md) |
+| `0.3.7-draft` | Historical initial activation snapshot `b648d9e026f502b14481ba2d0606d9acc88a31fc` | [`specification/spec-0.3.7-draft.md`](PTSIP_Package/spec-0.3.7-draft.md) |
+| `0.3.7-draft` | Final WU-12 freeze at `3c47816770d194ae42f98faedc911d980db0e62a` | [`PTSIP_Package/0.3.7-draft.md`](PTSIP_Package/0.3.7-draft.md) |
 
 Draft family labels are not immutable normative identity by themselves. Exact normative claims remain bound to the immutable Git revision recorded by the relevant Tool, release, evaluation, or Specification note.
 
@@ -195,7 +199,7 @@ A Tool package version bump does not authorize PP migration by itself.
 
 ## Specification note policy
 
-Specification notes live under `docs/releasenote/specification/`.
+Specification notes live under `docs/releasenote/PTSIP_Package/`.
 
 Historical relocated records preserve their `spec-<family>.md` basename. Current/new-generation family records use the canonical namespace naming selected for that family and bind normative claims to immutable revisions.
 

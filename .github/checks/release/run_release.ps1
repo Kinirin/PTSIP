@@ -1,75 +1,44 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('Plan','Build','Verify','Publish','Package','Dispatch','VerifyRepository')][string]$Action = 'Plan',
-    [string]$Targets = 'all', [string]$DisabledTargets = '', [string]$Target = '',
-    [string]$PackageBase = '', [string]$Platform = '', [string]$ReleaseTag = '',
-    [string]$GitHubRepository = $(if ($env:GITHUB_REPOSITORY) { $env:GITHUB_REPOSITORY } else { 'Kinirin/PTSIP' }),
-    [string]$SelectionFile = '.artifacts/release/selection.json',
-    [string]$OutputDirectory = '', [string]$InputDirectory = '.artifacts/release/components',
-    [ValidateSet('verify','publish')][string]$ReleasePhase = 'verify',
-    [switch]$Offline, [switch]$PublishPackage
+    [ValidateSet('Select','DispatchTest','DispatchRelease','ResolvePackage','Install','Identities')]
+    [string]$Action = 'Select',
+    [string]$Targets = 'package',
+    [string]$OptionalPlatforms = '',
+    [string]$VerificationRunId = '',
+    [ValidateSet('github','github-pypi')][string]$Destination = 'github-pypi',
+    [string]$PackageVersion = '',
+    [string]$PythonExecutable = '',
+    [string]$PackageRegistry = '.github/checks/release/package-registry.json'
 )
 $ErrorActionPreference = 'Stop'
-throw 'RELEASE_EXECUTION_BLOCKED: release deployment is suspended until a separately approved successor policy and verification contract are implemented.'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
-$native = Join-Path $repo '.github/checks/release'
-$argsNative = @('-C', $native, 'run', '-tags', 'grammar_subset,grammar_subset_python', './cmd/ptsip-release')
+$controller = Join-Path $PSScriptRoot 'controller'
 switch ($Action) {
-    'VerifyRepository' {
-        & (Join-Path $PSScriptRoot 'verification/Repository_regression_verify.ps1')
-        & (Join-Path $PSScriptRoot 'verification/Repository_profile_verify.ps1')
-        return
+    'DispatchTest' {
+        & gh workflow run tooling-test.yml --repo Kinirin/PTSIP --ref main -f "targets=$Targets" -f "optional_platforms=$OptionalPlatforms"
     }
-    'Dispatch' {
-        $dispatch = @('workflow','run','tooling-release.yml','--ref','main','-f',"phase=$ReleasePhase",'-f',"targets=$Targets",'-f',"disabled_targets=$DisabledTargets")
-        if ($PackageBase) { $dispatch += @('-f',"package_base=$PackageBase") }
-        & gh @dispatch
-        if ($LASTEXITCODE -ne 0) { throw 'Independent release dispatch failed.' }
-        return
+    'DispatchRelease' {
+        if ($VerificationRunId -notmatch '^[1-9][0-9]*$') { throw 'A completed exact-source tooling-test run is required.' }
+        & gh workflow run tooling-release.yml --repo Kinirin/PTSIP --ref main -f "targets=$Targets" -f "verification_run_id=$VerificationRunId" -f "optional_platforms=$OptionalPlatforms" -f "destination=$Destination"
     }
-    'Plan' {
-        $argsNative += @('plan','--root',$repo,'--targets',$Targets,'--selection',$SelectionFile,'--github-repository',$GitHubRepository)
-        if ($DisabledTargets) { $argsNative += @('--disabled',$DisabledTargets) }
-        if ($PackageBase) { $argsNative += @('--package-base',$PackageBase) }
-        if ($ReleaseTag) { $argsNative += @('--release-tag',$ReleaseTag) }
-        if ($Offline) { $argsNative += '--offline' }
-    }
-    'Build' {
-        if (-not $Target) {
-            $selectionText = (& go -C $native run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-release selection --root $repo --selection $SelectionFile | Out-String)
-        if ($LASTEXITCODE -ne 0) { throw 'Selected release binding is stale or modified.' }
-        $selection = $selectionText | ConvertFrom-Json
-            $selected = @($selection.components | Where-Object { $_.state -eq 'BUILD' })
-            if ($Targets -ne 'all') { $names = $Targets.Split(','); $selected = @($selected | Where-Object { $_.id -in $names }) }
-            $selected | ForEach-Object -Parallel {
-                $component = $_
-                $releaseRoot = $using:native
-                $output = if ($component.id -eq 'tool') { 'dist' } else { ".artifacts/release/build/$($component.id)/native" }
-                & (Join-Path $releaseRoot $component.script) -SelectionFile $using:SelectionFile -Platform $(if($component.kind -eq 'ENGINE'){$using:Platform}else{'any'}) -OutputDirectory $output
-                if ($LASTEXITCODE -ne 0) { throw "Parallel release build failed: $($component.id)" }
-            } -ThrottleLimit 9
-            return
+    default {
+        $command = switch ($Action) {
+            'Select' { 'select' }
+            'ResolvePackage' { 'resolve-package' }
+            'Install' { 'install-package' }
+            'Identities' { 'identities' }
         }
-        $selectionText = (& go -C $native run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-release selection --root $repo --selection $SelectionFile | Out-String)
-        if ($LASTEXITCODE -ne 0) { throw 'Selected release binding is stale or modified.' }
-        $selection = $selectionText | ConvertFrom-Json
-        $component = @($selection.components | Where-Object { $_.id -eq $Target })
-        if ($component.Count -ne 1) { throw "Unregistered release target: $Target" }
-        if ($component[0].state -ne 'BUILD') { throw "Target is switched off or unchanged: $Target" }
-        $script = Join-Path $PSScriptRoot $component[0].script
-        if (-not (Test-Path -LiteralPath $script -PathType Leaf)) { throw "Registered target script missing: $script" }
-        if (-not $OutputDirectory) { $OutputDirectory = if ($Target -eq 'tool') { 'dist' } else { ".artifacts/release/build/$Target/$Platform" } }
-        & $script -SelectionFile $SelectionFile -Platform $Platform -OutputDirectory $OutputDirectory
-        if ($LASTEXITCODE -ne 0) { throw "Target build failed: $Target" }
-        return
-    }
-    'Verify' { $argsNative += @('verify','--root',$repo,'--selection',$SelectionFile,'--target',$Target,'--output',$OutputDirectory,'--github-repository',$GitHubRepository) }
-    'Publish' { $argsNative += @('publish','--root',$repo,'--selection',$SelectionFile,'--target',$Target,'--output',$OutputDirectory,'--github-repository',$GitHubRepository) }
-    'Package' {
-        & (Join-Path $PSScriptRoot 'Package_release.ps1') -SelectionFile $SelectionFile -InputDirectory $InputDirectory -OutputDirectory $OutputDirectory -Publish:$PublishPackage
-        if ($LASTEXITCODE -ne 0) { throw 'Package assembly failed.' }
-        return
+        $arguments = @('-C',$controller,'run','./cmd/ptsip-release',$command,'--root',$repo)
+        if ($Action -eq 'Select') { $arguments += @('--targets',$Targets,'--optional-platforms',$OptionalPlatforms) }
+        else {
+            if (-not $PackageVersion) { throw 'PackageVersion must be a numeric base or an exact base.SHA6 identity.' }
+            $arguments += @('--version',$PackageVersion,'--registry',$PackageRegistry)
+            if ($Action -eq 'Install') {
+                if (-not $PythonExecutable) { throw 'An explicit existing target Python environment is required.' }
+                $arguments += @('--python',$PythonExecutable)
+            }
+        }
+        & go @arguments
     }
 }
-& go @argsNative
-if ($LASTEXITCODE -ne 0) { throw "Native release $Action failed." }
+if ($LASTEXITCODE -ne 0) { throw "Registered release action failed: $Action" }

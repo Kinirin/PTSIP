@@ -1030,6 +1030,7 @@ components:
     roles:
       - VERIFICATION
     include:
+      - ".github/checks/release/test/**"
       - "developer/tests/release/*.go"
       - ".github/scripts/verify_release_contract.py"
       - ".github/scripts/verify_distribution_contracts.py"
@@ -1047,7 +1048,7 @@ components:
       - "src/policy/**"
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/tooling-release.yml"
-      - "developer/automation/release/**"
+      - ".github/checks/release/**"
       - ".github/scripts/verify_release_contract.py"
       - "src/ptsip/specdata/**"
       - "src/ptsip/agent_contracts/**"
@@ -1078,7 +1079,7 @@ components:
       - CONFIGURATION
     include:
       - ".github/test_modes.yaml"
-      - ".github/checks/**"
+      - ".github/checks/*"
       - ".github/scripts/validate_test_modes.py"
       - ".github/scripts/resolve_test_modes.py"
       - "src/tests/ptsip/test_modes/**"
@@ -1098,8 +1099,10 @@ components:
     roles:
       - AUTOMATION
     include:
-      - "developer/automation/release/**"
+      - ".github/checks/release/**"
       - ".github/workflows/tooling-release.yml"
+    exclude:
+      - ".github/checks/release/test/**"
     purpose: tool_release_build_contract_tagging_and_publication_automation
     shipped: false
     runtime_required: false

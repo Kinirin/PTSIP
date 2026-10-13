@@ -6,7 +6,7 @@ policy:
   title: RECORD authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '2.0'
+  version: '2.1'
 authority_subject:
   id: DEV_DECISION_AND_EXECUTION_PROVENANCE
   statement: 개발 결정, 승인, 작업 실행 및 검증 사건의 출처와 exact revision 결합, 감사 가능성과 역사적 보존을 소유한다.
@@ -74,10 +74,17 @@ rules:
     current_legacy_markdown_physical_presence: ABSENT
     implementation_work_from_this_ledger: AGENT_CONTRACT_MACHINE_PLANE_M0_M5_VERIFIED
   unit_mpd_rels_0001_8b9a13c6427c:
+    approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
+    release_note_contract_ref: .github/checks/release/composition-contract.json
+    package_note_pattern: docs/releasenote/PTSIP_Package/{package_version}.md
+    engine_note_pattern: docs/releasenote/engine/{engine}/{engine}-engine-{version}.md
+    merged_multi_engine_note_file: FORBIDDEN
+    grouped_release_body: COMPONENT_NOTE_SECTIONS_IN_ONE_SOURCE_SHA_RELEASE
     release_note_namespaces:
     - tool
     - project-profile
-    - specification
+    - PTSIP_Package
+    - engine
     historical_flat_release_notes_bulk_moved: false
   unit_mpd_work_0002_a794e002b8bd:
     structured_result_required: true

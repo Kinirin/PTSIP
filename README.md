@@ -10,13 +10,14 @@
 
 | Identity | Source-tree value |
 | --- | --- |
-| Tool | `0.3.8a5` — **unpublished prerelease candidate** |
-| Latest published Tool prerelease | `0.3.8a4` |
+| PTSIP_Package | `0.3.8.<SHA6>` — composition assigned after successful publication |
+| textTool | `0.3.8a6` — **unpublished prerelease candidate** |
+| Latest published Tool prerelease | `0.3.8a5` |
 | Project Profile | `pp.1.02` |
-| Specification family | `0.3.7-draft` |
+| Engine | Context/Projection `0.2.0`; Storage/Validation/Discovery/Planning/Execution `0.3.0` |
 | Bound immutable `SPEC_REVISION` | `3c47816770d194ae42f98faedc911d980db0e62a` |
 
-Tool, Project Profile and Specification identities are independent. Read [what changed in `0.3.8a5`](docs/releasenote/tool/0.3.8a5.md), the [Tool release history](docs/releasenote/tool/README.md), or [the release workflow](.github/workflows/tooling-release.yml) for the exact publication gates.
+Package composition, Tool, each engine, Project Profile and immutable Specification revision remain independent. Read [what changed in `0.3.8a6`](docs/releasenote/tool/0.3.8a6.md), the [Tool release history](docs/releasenote/tool/README.md), or [the release workflow](.github/workflows/tooling-release.yml). Release verification is selected from `.github/test_modes.yaml` and runs exclusively in `tooling-test.yml`; publication consumes that exact-source evidence in `tooling-release.yml`.
 
 ## Quick start
 
@@ -30,10 +31,10 @@ ptsip --version
 ptsip spec
 ```
 
-To install the published `0.3.8a4` prerelease specifically (ordinary pip resolution might select the latest stable version instead):
+To install the published `0.3.8a5` prerelease specifically (ordinary pip resolution might select the latest stable version instead):
 
 ```powershell
-python -m pip install "PTSIP==0.3.8a4"
+python -m pip install "PTSIP==0.3.8a5"
 ```
 
 To develop this repository directly:

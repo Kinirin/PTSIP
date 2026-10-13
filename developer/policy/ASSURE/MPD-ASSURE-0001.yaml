@@ -6,7 +6,7 @@ policy:
   title: ASSURE authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.4'
+  version: '4.5'
 authority_subject:
   id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
   statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의 검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
@@ -14,6 +14,19 @@ exclusive_kernel:
 - DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
 - DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
 rules:
+  release_mode_verification:
+    approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
+    contract_ref: .github/checks/release/test/verification-contract.json
+    execution_workflow: .github/workflows/tooling-test.yml
+    mode_registry: .github/test_modes.yaml
+    release_test_change_root: .github/checks/release/test/
+    required_platforms: [WINDOWS_X64, LINUX_X64]
+    platform_results_join: ALL_REQUIRED_HOSTS_FOR_EACH_SELECTED_COMPONENT
+    optional_platforms: [MACOS_ARM64]
+    macos_default: NOT_REQUESTED_NO_JOB_NO_PASS_EVIDENCE
+    exact_source_and_selection_binding: REQUIRED
+    publication_workflow_role: CONSUME_VERIFIED_ARTIFACTS_AND_ADMISSION_ONLY
+    prior_common_verification_gap: PRESERVE_AS_SEPARATE_UNRESOLVED_SCOPE
   family_definition:
     kernel_definitions:
     - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
@@ -433,7 +446,7 @@ rules:
     verification_result_must_be_machine_readable: true
   independent_release_component_verification:
     approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
-    contract_ref: .github/checks/release/release-contract.json
+    contract_ref: .github/checks/release/composition-contract.json
     verification_scope: EXACT_SOURCE_SELECTED_RELEASE_COMPONENTS
     required:
     - REGISTERED_IDENTITY_AND_VERSION
@@ -448,10 +461,12 @@ rules:
     common_verification_gap: PRESERVE_OPEN_NO_FORMER_STATUS_REEMISSION
     operational_installation_and_activation: NOT_GRANTED
   engine_verification_only:
+    current_surface: SUPERSEDED_BY_RELEASE_MODE_VERIFICATION
     approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml
     contract_ref: developer/policy/contracts/engine-verification.v1.json
     scope: SELECTED_REGISTERED_ENGINE_AND_ITS_EXPLICIT_CONTRACTS
-    required_platforms: [WINDOWS_X64, LINUX_X64, MACOS_ARM64]
+    required_platforms: [WINDOWS_X64, LINUX_X64]
+    optional_platforms: [MACOS_ARM64]
     required_checks:
     - LOCKED_SELECTED_ENGINE_RUST_TESTS
     - LOCKED_SELECTED_ENGINE_NATIVE_BUILD
@@ -475,12 +490,13 @@ rules:
       cached_result_is_verification_evidence: false
       rerun_locked_test_build_and_artifact_verification: REQUIRED
   independent_engine_publication:
+    current_surface: SUPERSEDED_BY_UNIFIED_RELEASE_ORCHESTRATION
     approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
     contract_ref: developer/policy/contracts/engine-publication.v1.json
     required:
     - USER_APPROVED_ENGINE_ONLY_PUBLICATION
     - COMPLETED_SUCCESSFUL_EXACT_SOURCE_VERIFICATION_RUN_AND_GATE
-    - THREE_PLATFORM_WHEEL_RECEIPTS_AND_FULL_FILE_DIGEST_MATCH
+    - REQUIRED_AND_EXPLICIT_OPTIONAL_PLATFORM_WHEEL_RECEIPTS_AND_FULL_FILE_DIGEST_MATCH
     - LINUX_MANYLINUX_GLIBC_AND_EXTERNAL_LIBRARY_CHECK
     - FRESH_MAIN_SOURCE_AND_REGISTERED_COMPONENT_VERSION
     - IMMUTABLE_EXISTING_TAG_RELEASE_AND_PYPI_FILE_CHECK

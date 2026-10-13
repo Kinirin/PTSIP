@@ -1,0 +1,18 @@
+{
+  "schema_version": "ptsip-package-installation/v1",
+  "entry": ".github/checks/release/run_release.ps1",
+  "action": "Install",
+  "version_argument": "PackageVersion",
+  "registry": ".github/checks/release/package-registry.json",
+  "base_selector": "LATEST_SUCCESSFUL_PUBLISHED_COMPOSITION_FOR_EXACT_NUMERIC_BASE",
+  "exact_selector": "EXACT_NUMERIC_BASE_AND_SIX_HEX_SUFFIX",
+  "missing_base_or_suffix": "FAIL_NO_INSTALLATION",
+  "artifact_hashes": "VERIFY_BEFORE_INSTALLATION",
+  "target_environment": "EXPLICIT_EXISTING_PYTHON_ENVIRONMENT",
+  "profile_destination": "EXPLICIT_PYTHON_ENVIRONMENT_PUBLIC_PROFILE_CATALOG_RESOURCES",
+  "consumer_profile_materialization": "SEPARATE_CONSUMER_AUTHORITY_NOT_PERFORMED_BY_INSTALLER",
+  "history_in_distribution": false,
+  "incomplete_initial_composition": "FAIL_NO_INSTALLATION",
+  "runtime_activation_from_installation": false,
+  "pip_version_syntax_override": false
+}

@@ -79,5 +79,14 @@
     "single_engine_scope": "SELECTED_ENGINE_AND_EXPLICIT_CONTRACT_DEPENDENCIES",
     "repository_regression_scope": "EXPLICIT_MANUAL",
     "common_verification_gap": "OPEN_NO_FORMER_CONTEXT_REEMISSION"
+  },
+  "successor_release_modes": {
+    "approval_ref": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml",
+    "workflow": ".github/workflows/tooling-test.yml",
+    "registry": ".github/test_modes.yaml",
+    "contract": ".github/checks/release/test/verification-contract.json",
+    "implementation": "REGISTERED_RELEASE_MODES_ONLY",
+    "common_verification_gap": "OPEN",
+    "current_sha_remote_evidence": "PENDING"
   }
 }

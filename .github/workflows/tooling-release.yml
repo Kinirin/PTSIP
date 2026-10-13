@@ -1,337 +1,168 @@
-# Engine verification is admitted by the scoped CTRL/ASSURE contract.
-# The selected-engine Release Gate is enabled; publication remains separate.
 name: tooling-release
-
 on:
   workflow_dispatch:
     inputs:
-      phase:
-        description: "Verify engines or publish original verified engine artifacts"
-        type: choice
-        required: true
-        default: verify
-        options: [verify, publish]
+      targets:
+        description: Registered publication selection
+        type: string
+        default: package
       verification_run_id:
-        description: "Completed successful verification run at this exact source (publish only)"
+        description: Successful exact-source tooling-test run
+        type: string
+        required: true
+      optional_platforms:
+        description: Explicit optional platform selection
         type: string
         default: ''
       destination:
-        description: "Independent engine publication destination (publish only)"
+        description: Publication destination
         type: choice
         default: github-pypi
-        options: [github-pypi, github]
-      engine:
-        description: "Selected engine verification only; publication remains blocked"
-        required: true
-        type: choice
-        default: all
-        options:
-          - all
-          - context
-          - storage
-          - validation
-          - discovery
-          - planning
-          - execution
-          - projection
-
+        options: [github, github-pypi]
 permissions:
   contents: read
-
+concurrency:
+  group: ptsip-component-publication
+  cancel-in-progress: false
 jobs:
-  verification-admission:
+  release-admission:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: developer/tests/go.mod
-          cache: true
-          cache-dependency-path: |
-            developer/automation/go.sum
-            developer/tests/go.sum
-            .github/checks/release/engine-verification/go.mod
-      - name: Resolve current verification admission from canonical policy
-        shell: bash
-        env:
-          RELEASE_PHASE: ${{ inputs.phase }}
-        run: |
-          set -euo pipefail
-          mode=admit
-          if [ "$RELEASE_PHASE" = publish ]; then mode=admit-publication; fi
-          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel "$mode" --root "$GITHUB_WORKSPACE"
-
-  engine-verification:
-    needs: verification-admission
-    if: ${{ inputs.phase == 'verify' }}
-    name: "Engine Verification / ${{ matrix.engine }} / ${{ matrix.platform.name }}"
-    runs-on: ${{ matrix.platform.runner }}
-    timeout-minutes: 40
-    strategy:
-      fail-fast: false
-      max-parallel: 7
-      matrix:
-        engine: ${{ fromJSON(inputs.engine == 'all' && '["context","storage","validation","discovery","planning","execution","projection"]' || format('["{0}"]', inputs.engine)) }}
-        platform:
-          - name: windows-x64
-            runner: windows-2025
-            target: x86_64-pc-windows-msvc
-            suffix: .exe
-          - name: linux-x64
-            runner: ubuntu-24.04
-            target: x86_64-unknown-linux-gnu
-            suffix: ''
-          - name: macos-arm64
-            runner: macos-15
-            target: aarch64-apple-darwin
-            suffix: ''
-
-    env:
-      CARGO_TARGET_DIR: .artifacts/native-engine-test-target
-      PTSIP_ENGINE_WHEEL_DIR: .artifacts/release/engine-wheels/${{ matrix.platform.name }}
-
-    steps:
-      - name: Checkout exact requested source revision
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Set up Go from repository module
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: developer/tests/go.mod
-          cache: true
-          cache-dependency-path: |
-            developer/automation/go.sum
-            developer/tests/go.sum
-            .github/checks/release/engine-verification/go.mod
-
-      - name: Set up isolated consumer package installer
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-
-      - name: Reject unexpected Rust host toolchain
-        id: rust
-        shell: bash
-        run: |
-          set -euo pipefail
-          rustc -vV > rust-host.txt
-          cat rust-host.txt
-          grep -Fqx "host: ${{ matrix.platform.target }}" rust-host.txt
-          awk '/^commit-hash:/ {print "toolchain=" $2}' rust-host.txt >> "$GITHUB_OUTPUT"
-
-      - name: Restore Cargo dependencies and selected engine compilation
-        id: rust-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/registry/src
-            ~/.cargo/git/db
-            ~/.cargo/git/checkouts
-            ${{ env.CARGO_TARGET_DIR }}
-          key: rust-engine-v1-${{ matrix.platform.runner }}-${{ matrix.platform.target }}-${{ steps.rust.outputs.toolchain }}-${{ matrix.engine }}-${{ hashFiles(format('src/ptsip/engines/{0}/Cargo.toml', matrix.engine), format('src/ptsip/engines/{0}/Cargo.lock', matrix.engine)) }}-${{ hashFiles(format('src/ptsip/engines/{0}/**', matrix.engine)) }}
-          restore-keys: |
-            rust-engine-v1-${{ matrix.platform.runner }}-${{ matrix.platform.target }}-${{ steps.rust.outputs.toolchain }}-${{ matrix.engine }}-${{ hashFiles(format('src/ptsip/engines/{0}/Cargo.toml', matrix.engine), format('src/ptsip/engines/{0}/Cargo.lock', matrix.engine)) }}-
-
-      - name: Record compilation cache result
-        shell: bash
-        env:
-          CACHE_HIT: ${{ steps.rust-cache.outputs.cache-hit }}
-          RUST_COMPILER: ${{ steps.rust.outputs.toolchain }}
-        run: |
-          printf 'Exact cache hit: %s\nRust compiler: %s\nTests and artifact verification run regardless of cache hit.\n' "$CACHE_HIT" "$RUST_COMPILER" | tee rust-cache.txt
-
-      - name: Run only the selected engine's Rust tests
-        shell: bash
-        run: |
-          set -euo pipefail
-          cargo test --locked --manifest-path "src/ptsip/engines/${{ matrix.engine }}/Cargo.toml"
-
-      - name: Build only the selected independent Rust engine
-        shell: bash
-        run: |
-          set -euo pipefail
-          cargo build --release --locked --manifest-path "src/ptsip/engines/${{ matrix.engine }}/Cargo.toml"
-          test -f "$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}${{ matrix.platform.suffix }}"
-
-      - name: Assemble local native wheel (unreleased)
-        shell: bash
-        run: |
-          set -euo pipefail
-          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel \
-            --root "$GITHUB_WORKSPACE" \
-            --kind "${{ matrix.engine }}" \
-            --target "${{ matrix.platform.target }}" \
-            --binary "$GITHUB_WORKSPACE/$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}${{ matrix.platform.suffix }}" \
-            --output "$GITHUB_WORKSPACE/$PTSIP_ENGINE_WHEEL_DIR" \
-            --source-sha "$GITHUB_SHA"
-
-      - name: Verify Linux wheel ABI
-        if: ${{ matrix.platform.name == 'linux-x64' }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel abi-check \
-            --binary "$GITHUB_WORKSPACE/$CARGO_TARGET_DIR/release/ptsip-engine-${{ matrix.engine }}" | tee linux-abi.json
-
-      - name: Verify the wheel in Go and install into isolated consumer
-        shell: bash
-        run: |
-          set -euo pipefail
-          go -C developer/tests test ./engines -run '^TestIndependentEngineWheel/${{ matrix.engine }}$' -count=1 -v -timeout=15m | tee engine-verification.log
-
-      - name: Preserve engine verification evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: engine-verification-${{ matrix.engine }}-${{ matrix.platform.name }}-${{ github.sha }}
-          path: |
-            ${{ env.PTSIP_ENGINE_WHEEL_DIR }}/*
-            engine-verification.log
-            rust-host.txt
-            rust-cache.txt
-            linux-abi.json
-          if-no-files-found: error
-
-  tool-verification:
-    name: Tool Verification (deferred)
-    if: ${{ false }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: exit 1
-
-  profile-verification:
-    name: Profile Verification (deferred)
-    if: ${{ false }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: exit 1
-
-  package-verification:
-    name: Package Verification (deferred)
-    if: ${{ false }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: exit 1
-
-  release-gate:
-    name: Release Gate
-    needs: [verification-admission, engine-verification]
-    if: ${{ always() && inputs.phase == 'verify' }}
-    runs-on: ubuntu-latest
+    outputs:
+      publication_matrix: ${{ steps.preflight.outputs.publication_matrix }}
+      pypi_count: ${{ steps.preflight.outputs.pypi_count }}
     permissions:
       contents: read
       actions: read
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: developer/tests/go.mod
-          cache: true
-          cache-dependency-path: |
-            developer/automation/go.sum
-            developer/tests/go.sum
-            .github/checks/release/engine-verification/go.mod
-      - name: Verify exact-source selected engine jobs and artifacts
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          SELECTED_ENGINE: ${{ inputs.engine }}
-        run: |
-          set -euo pipefail
-          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel gate \
-            --root "$GITHUB_WORKSPACE" --kind "$SELECTED_ENGINE" \
-            --repository "$GITHUB_REPOSITORY" --run-id "$GITHUB_RUN_ID" \
-            --source-sha "$GITHUB_SHA" | tee release-gate.json
-          printf 'Selected engine verification gate: PASS\nPublication was not executed.\n' >> "$GITHUB_STEP_SUMMARY"
-      - name: Preserve selected-engine gate result
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-gate-${{ inputs.engine }}-${{ github.sha }}
-          path: release-gate.json
-          if-no-files-found: error
-
-  engine-publication:
-    name: "Engine Publication / ${{ matrix.engine }}"
-    needs: verification-admission
-    if: ${{ inputs.phase == 'publish' }}
-    runs-on: ubuntu-latest
-    environment: pypi
-    timeout-minutes: 30
-    permissions:
-      contents: write
-      actions: read
-      id-token: write
-    strategy:
-      fail-fast: false
-      max-parallel: 7
-      matrix:
-        engine: ${{ fromJSON(inputs.engine == 'all' && '["context","storage","validation","discovery","planning","execution","projection"]' || format('["{0}"]', inputs.engine)) }}
     env:
       GH_TOKEN: ${{ github.token }}
-      GITHUB_TOKEN: ${{ github.token }}
       VERIFIED_RUN: ${{ inputs.verification_run_id }}
-      VERIFIED_ENGINES: ${{ inputs.engine }}
+      TARGETS: ${{ inputs.targets }}
+      OPTIONAL: ${{ inputs.optional_platforms }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-go@v6
         with:
-          go-version-file: developer/tests/go.mod
+          go-version-file: .github/checks/release/controller/go.mod
           cache: true
-          cache-dependency-path: |
-            developer/automation/go.sum
-            developer/tests/go.sum
-            .github/checks/release/engine-verification/go.mod
-      - name: Require original verification run identity
-        shell: bash
-        run: |
-          set -euo pipefail
-          [[ "$VERIFIED_RUN" =~ ^[1-9][0-9]*$ ]]
-      - name: Download only the original selected engine artifacts
-        uses: actions/download-artifact@v4
+          cache-dependency-path: .github/checks/release/controller/go.sum
+      - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
           run-id: ${{ inputs.verification_run_id }}
-          pattern: engine-verification-${{ matrix.engine }}-*-${{ github.sha }}
-          path: .artifacts/engine-publication/input/${{ matrix.engine }}
-      - name: Admit original wheels and publish immutable engine GitHub Release
-        id: release
+          name: verification-selection-${{ github.sha }}
+          path: .artifacts/release
+      - name: Resolve publication selection and consume verification evidence
+        id: selection
         shell: bash
         run: |
           set -euo pipefail
-          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel publish-github \
-            --root "$GITHUB_WORKSPACE" --kind "${{ matrix.engine }}" \
-            --repository "$GITHUB_REPOSITORY" --run-id "$VERIFIED_RUN" \
-            --verified-engines "$VERIFIED_ENGINES" --source-sha "$GITHUB_SHA" \
-            --input ".artifacts/engine-publication/input/${{ matrix.engine }}" \
-            --output ".artifacts/engine-publication/output/${{ matrix.engine }}"
-      - name: Upload admitted independent engine wheels to PyPI
-        if: ${{ inputs.destination == 'github-pypi' && steps.release.outputs.pypi_pending == 'true' }}
+          go -C .github/checks/release/controller run ./cmd/ptsip-release admit --root "$GITHUB_WORKSPACE" --run-id "$VERIFIED_RUN" --targets "$TARGETS" --optional-platforms "$OPTIONAL"
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.verification_run_id }}
+          pattern: verification-*-${{ github.sha }}
+          path: .artifacts/release/verified
+      - name: Prepare original artifacts for publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .github/checks/release/controller run ./cmd/ptsip-release prepare-shipping --root "$GITHUB_WORKSPACE" --run-id "$VERIFIED_RUN" --output .artifacts/release/shipping
+      - name: Consume immutable PyPI file identities before publication
+        id: preflight
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-stage --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+      - uses: actions/upload-artifact@v4
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+          if-no-files-found: error
+  github-publication:
+    needs: release-admission
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERIFIED_RUN: ${{ inputs.verification_run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .github/checks/release/controller/go.mod
+          cache: true
+          cache-dependency-path: .github/checks/release/controller/go.sum
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.verification_run_id }}
+          name: verification-selection-${{ github.sha }}
+          path: .artifacts/release
+      - uses: actions/download-artifact@v4
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+      - name: Publish one source-SHA GitHub carrier
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --run-id "$VERIFIED_RUN" --output .artifacts/release/shipping
+  pypi-publication:
+    needs: [release-admission, github-publication]
+    if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.pypi_count != '0' }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.release-admission.outputs.publication_matrix) }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+      - name: Upload the admitted original wheel set
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: .artifacts/engine-publication/output/${{ matrix.engine }}/pypi
-      - name: Verify all published PyPI wheel digests
+          packages-dir: .artifacts/release/shipping/pypi/${{ matrix.component }}
+  package-record:
+    needs: [release-admission, github-publication, pypi-publication]
+    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .github/checks/release/controller/go.mod
+          cache: true
+          cache-dependency-path: .github/checks/release/controller/go.sum
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.verification_run_id }}
+          name: verification-selection-${{ github.sha }}
+          path: .artifacts/release
+      - uses: actions/download-artifact@v4
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+      - name: Confirm public PyPI digests
         if: ${{ inputs.destination == 'github-pypi' }}
         shell: bash
-        run: |
-          set -euo pipefail
-          go -C .github/checks/release/engine-verification run ./cmd/engine-wheel verify-pypi \
-            --root "$GITHUB_WORKSPACE" --kind "${{ matrix.engine }}" \
-            --repository "$GITHUB_REPOSITORY" --run-id "$VERIFIED_RUN" \
-            --verified-engines "$VERIFIED_ENGINES" --source-sha "$GITHUB_SHA" \
-            --input ".artifacts/engine-publication/input/${{ matrix.engine }}" \
-            --output ".artifacts/engine-publication/output/${{ matrix.engine }}"
-      - name: Preserve independent engine publication receipt
-        uses: actions/upload-artifact@v4
-        with:
-          name: engine-publication-${{ matrix.engine }}-${{ github.sha }}
-          path: .artifacts/engine-publication/output/${{ matrix.engine }}/publication-receipt.json
-          if-no-files-found: error
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-verify --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+      - name: Record the published Package composition and separate Package note
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release record-package --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping

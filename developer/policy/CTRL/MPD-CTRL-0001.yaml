@@ -6,7 +6,7 @@ policy:
   title: CTRL authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.3'
+  version: '4.4'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
   statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
@@ -15,6 +15,24 @@ exclusive_kernel:
 - DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
 - DEV_TRANSITION_GATE_COMPOSITION
 rules:
+  release_orchestration:
+    approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
+    contract_ref: .github/checks/release/composition-contract.json
+    state: APPROVED_FOR_IMPLEMENTATION
+    publication_workflow: .github/workflows/tooling-release.yml
+    verification_workflow: .github/workflows/tooling-test.yml
+    verification_registry: .github/test_modes.yaml
+    verification_contract_root: .github/checks/release/test/
+    verification_in_publication_workflow: FORBIDDEN
+    publication_in_verification_workflow: FORBIDDEN
+    workflow_inline_verification_cases: FORBIDDEN
+    one_github_release_per_source_sha: REQUIRED
+    historic_published_component_releases: PRESERVE_IMMUTABLE
+    release_types: [PTSIP_PACKAGE, TOOL_ONLY, ENGINE_ONLY, PROFILES_ONLY, TOOL_ENGINES, TOOL_PROFILES, ENGINES_PROFILES, MULTIPLE_ENGINES]
+    publication_authorization: EXACT_SOURCE_SELECTED_COMPONENT_VERIFICATION_AND_USER_APPROVED_PUBLICATION
+    automatic_package_refresh_after_component_publication: REQUIRED
+    component_version_auto_increment: FORBIDDEN
+    legacy_engine_publication_surface: SUPERSEDED_BY_UNIFIED_SOURCE_SHA_CARRIER
   planning_artifact_precreation_eligibility:
     decision: KEEP_LATEST
     approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-POLICY-ROOT-DERIVED-PATH.yaml
@@ -58,14 +76,14 @@ rules:
     approval_ref: developer/policy/approvals/MPA-20261012-RELEASE-VERIFICATION-GAP.yaml
     execution_state_ref: .github/checks/release/release-availability.json
     state: BLOCKED
-    state_scope: FULL_RELEASE_AND_LEGACY_DIRECT_COMMANDS
-    workflow_execution: ENGINE_VERIFICATION_AND_ADMITTED_ENGINE_PUBLICATION
+    state_scope: SUPERSEDED_LEGACY_RELEASE_COMMANDS_ONLY
+    workflow_execution: GOVERNED_BY_RELEASE_ORCHESTRATION
     direct_release_commands: BLOCKED
     missing_verification_contract_result: FAIL_CLOSED
     legacy_verification_fallback: FORBIDDEN
     reinstatement: SEPARATE_USER_APPROVED_SUCCESSOR_POLICY_AND_CONTRACT
     engine_verification_only:
-      state: ALLOWED
+      state: SUPERSEDED_BY_RELEASE_MODE_VERIFICATION
       operation: VERIFY
       approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml
       contract_ref: developer/policy/contracts/engine-verification.v1.json
@@ -78,7 +96,7 @@ rules:
       tool_profile_package_verification: DEFERRED
       engine_pass_is_release_authorization: false
     engine_publication:
-      state: ALLOWED
+      state: SUPERSEDED_BY_RELEASE_ORCHESTRATION
       operation: RELEASE
       approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
       contract_ref: developer/policy/contracts/engine-publication.v1.json
@@ -92,6 +110,7 @@ rules:
       existing_tag_or_distribution_overwrite: FORBIDDEN
       runtime_activation_from_publication: false
     successor_verification_reactivation_direction:
+      current_surface: SUPERSEDED_BY_RELEASE_ORCHESTRATION_AND_RELEASE_MODE_VERIFICATION
       decision: B_SUCCESSOR_VERIFICATION_POLICY_APPROVAL_BEFORE_RESUMPTION
       release_scope_decision: FULL_INDEPENDENT_RELEASE
       release_scope_approval_ref: developer/policy/approvals/MPA-20261013-FULL-INDEPENDENT-RELEASE-SCOPE.yaml

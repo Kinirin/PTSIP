@@ -1,0 +1,53 @@
+{
+  "schema_version": "ptsip-release-composition/v1",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml",
+  "publication_workflow": ".github/workflows/tooling-release.yml",
+  "verification_workflow": ".github/workflows/tooling-test.yml",
+  "mode_registry": ".github/test_modes.yaml",
+  "test_contract": ".github/checks/release/test/verification-contract.json",
+  "engine_registry": "src/ptsip/engines/index.json",
+  "profile_registry": "registry/project-profile-contracts.yaml",
+  "package_base": "0.3.8",
+  "default_engine_count": 7,
+  "engine_addition": "CANONICAL_REGISTRY_ONLY",
+  "profile_addition": "CANONICAL_REGISTRY_ONLY",
+  "release_types": ["PTSIP_PACKAGE", "TOOL_ONLY", "ENGINE_ONLY", "PROFILES_ONLY", "TOOL_ENGINES", "TOOL_PROFILES", "ENGINES_PROFILES", "MULTIPLE_ENGINES"],
+  "required_platforms": ["windows-x64", "linux-x64"],
+  "optional_platforms": ["macos-arm64"],
+  "default_optional_platforms": [],
+  "github_release": {
+    "group_by": "FULL_SOURCE_SHA",
+    "tag_pattern": "ptsip-release-{source_sha}",
+    "one_release_per_source_sha": true,
+    "historic_component_releases": "PRESERVE",
+    "asset_overwrite": false
+  },
+  "engine_reuse": {
+    "mode": "IMMUTABLE_ORIGINAL_ARTIFACTS_WHEN_BOUNDARY_UNCHANGED",
+    "source_boundaries": ["src/ptsip/engines/{engine}", "src/ptsip/engines/contracts", ".github/checks/release/engine-verification", "License-Authority"],
+    "changed_source_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_VERSION",
+    "current_source_verification": "REQUIRED_EVEN_WHEN_REUSING_ORIGINAL_PUBLISHED_ARTIFACTS"
+  },
+  "notes": {
+    "tool": "docs/releasenote/tool/{version}.md",
+    "profiles": "docs/releasenote/project-profile/{version}.md",
+    "engine": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md",
+    "package": "docs/releasenote/PTSIP_Package/{version}.md",
+    "merged_multi_engine_note_file": false,
+    "engine_draft_suffix": false
+  },
+  "package": {
+    "registry": ".github/checks/release/package-registry.json",
+    "identity": "NUMERIC_BASE_DOT_SIX_HEX",
+    "refresh_on": "EACH_SUCCESSFUL_COMPONENT_PUBLICATION",
+    "numeric_auto_increment": false,
+    "digest_input": "CANONICAL_PUBLISHED_COMPONENT_VERSIONS_SOURCE_AND_FILE_DIGESTS",
+    "repeat_same_publication": "IDEMPOTENT",
+    "suffix_collision": "FAIL_CLOSED_FULL_SHA256_MATCH_REQUIRED",
+    "published_history": "PUBLISHED_SOURCE_CARRIER_REGISTRY_ASSETS",
+    "initial_installable_baseline": "FULL_TOOL_PROFILE_AND_REGISTERED_ENGINE_COMPOSITION_REQUIRED",
+    "publication_record": "UPDATE_REGISTRY_AND_PACKAGE_NOTE_AFTER_OBSERVED_PUBLICATION",
+    "installation_contract": ".github/checks/release/package-installation-contract.json"
+  },
+  "identity_order": ["PTSIP_Package", "textTool", "Project Profile", "Engine", "SPEC_REVISION", "Specification source"]
+}
