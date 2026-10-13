@@ -21,9 +21,23 @@
   "default_engine_count": 7,
   "engine_addition": "CANONICAL_REGISTRY_ONLY",
   "profile_addition": "CANONICAL_REGISTRY_ONLY",
-  "release_types": ["PTSIP_PACKAGE", "TOOL_ONLY", "ENGINE_ONLY", "PROFILES_ONLY", "TOOL_ENGINES", "TOOL_PROFILES", "ENGINES_PROFILES", "MULTIPLE_ENGINES"],
-  "required_platforms": ["windows-x64", "linux-x64"],
-  "optional_platforms": ["macos-arm64"],
+  "release_types": [
+    "PTSIP_PACKAGE",
+    "TOOL_ONLY",
+    "ENGINE_ONLY",
+    "PROFILES_ONLY",
+    "TOOL_ENGINES",
+    "TOOL_PROFILES",
+    "ENGINES_PROFILES",
+    "MULTIPLE_ENGINES"
+  ],
+  "required_platforms": [
+    "windows-x64",
+    "linux-x64"
+  ],
+  "optional_platforms": [
+    "macos-arm64"
+  ],
   "default_optional_platforms": [],
   "github_release": {
     "group_by": "FULL_SOURCE_SHA",
@@ -34,7 +48,15 @@
   },
   "engine_reuse": {
     "mode": "IMMUTABLE_ORIGINAL_ARTIFACTS_WHEN_BOUNDARY_UNCHANGED",
-    "source_boundaries": ["src/ptsip/engines/{engine}", "src/ptsip/engines/contracts", ".github/checks/release/engine-verification/wheel.go", ".github/checks/release/engine-verification/linux_abi.go", ".github/checks/release/engine-verification/go.mod", ".github/checks/release/engine-verification/go.sum", "License-Authority"],
+    "source_boundaries": [
+      "src/ptsip/engines/{engine}",
+      "src/ptsip/engines/contracts",
+      ".github/checks/release/engine-verification/wheel.go",
+      ".github/checks/release/engine-verification/linux_abi.go",
+      ".github/checks/release/engine-verification/go.mod",
+      ".github/checks/release/engine-verification/go.sum",
+      "License-Authority"
+    ],
     "publication_transport_or_policy_route_change": "OUTSIDE_ENGINE_ARTIFACT_PRODUCER_BOUNDARY",
     "changed_source_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_VERSION",
     "current_source_verification": "REQUIRED_EVEN_WHEN_REUSING_ORIGINAL_PUBLISHED_ARTIFACTS"
@@ -60,5 +82,12 @@
     "publication_record": "UPDATE_REGISTRY_AND_PACKAGE_NOTE_AFTER_OBSERVED_PUBLICATION",
     "installation_contract": ".github/checks/release/package-installation-contract.json"
   },
-  "identity_order": ["PTSIP_Package", "textTool", "Project Profile", "Engine", "SPEC_REVISION", "Specification source"]
+  "identity_order": [
+    "PTSIP_Package",
+    "PTSIP_Tool",
+    "Project Profile",
+    "Engine"
+  ],
+  "presentation_contract": ".github/checks/release/release-presentation.json",
+  "evidence_resolution_contract": ".github/checks/release/publication-evidence.json"
 }

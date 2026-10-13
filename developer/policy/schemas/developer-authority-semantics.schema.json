@@ -31,17 +31,47 @@
     },
     "RELEASE_NOTE_LAYOUT_V2": {
       "type": "object",
-      "required": ["approval_ref", "release_note_contract_ref", "package_note_pattern", "engine_note_pattern", "merged_multi_engine_note_file", "grouped_release_body", "release_note_namespaces", "historical_flat_release_notes_bulk_moved"],
+      "required": [
+        "approval_ref",
+        "release_note_contract_ref",
+        "package_note_pattern",
+        "engine_note_pattern",
+        "merged_multi_engine_note_file",
+        "grouped_release_body",
+        "release_note_namespaces",
+        "historical_flat_release_notes_bulk_moved"
+      ],
       "additionalProperties": false,
       "properties": {
-        "approval_ref": {"const": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml"},
-        "release_note_contract_ref": {"const": ".github/checks/release/composition-contract.json"},
-        "package_note_pattern": {"const": "docs/releasenote/PTSIP_Package/{package_version}.md"},
-        "engine_note_pattern": {"const": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md"},
-        "merged_multi_engine_note_file": {"const": "FORBIDDEN"},
-        "grouped_release_body": {"const": "COMPONENT_NOTE_SECTIONS_IN_ONE_SOURCE_SHA_RELEASE"},
-        "release_note_namespaces": {"const": ["tool", "project-profile", "PTSIP_Package", "engine"]},
-        "historical_flat_release_notes_bulk_moved": {"const": false}
+        "approval_ref": {
+          "const": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml"
+        },
+        "release_note_contract_ref": {
+          "const": ".github/checks/release/composition-contract.json"
+        },
+        "package_note_pattern": {
+          "const": "docs/releasenote/PTSIP_Package/{package_version}.md"
+        },
+        "engine_note_pattern": {
+          "const": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md"
+        },
+        "merged_multi_engine_note_file": {
+          "const": "FORBIDDEN"
+        },
+        "grouped_release_body": {
+          "const": "COMPONENT_NOTE_SECTIONS_IN_ONE_SOURCE_SHA_RELEASE"
+        },
+        "release_note_namespaces": {
+          "const": [
+            "tool",
+            "project-profile",
+            "PTSIP_Package",
+            "engine"
+          ]
+        },
+        "historical_flat_release_notes_bulk_moved": {
+          "const": false
+        }
       }
     },
     "MPD_0011_V1": {
@@ -147,6 +177,55 @@
           "ptsip-migration:IMPORTS:ptsip-evidence",
           "ptsip-migration:IMPORTS:ptsip-source-compat"
         ]
+      }
+    },
+    "RELEASE_NOTE_LAYOUT_V3": {
+      "type": "object",
+      "required": [
+        "approval_ref",
+        "release_note_contract_ref",
+        "package_note_pattern",
+        "engine_note_pattern",
+        "merged_multi_engine_note_file",
+        "grouped_release_body",
+        "release_note_namespaces",
+        "historical_flat_release_notes_bulk_moved",
+        "presentation_contract_ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "approval_ref": {
+          "const": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml"
+        },
+        "release_note_contract_ref": {
+          "const": ".github/checks/release/composition-contract.json"
+        },
+        "package_note_pattern": {
+          "const": "docs/releasenote/PTSIP_Package/{package_version}.md"
+        },
+        "engine_note_pattern": {
+          "const": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md"
+        },
+        "merged_multi_engine_note_file": {
+          "const": "FORBIDDEN"
+        },
+        "grouped_release_body": {
+          "const": "COMPONENT_NOTE_SECTIONS_IN_ONE_SOURCE_SHA_RELEASE"
+        },
+        "release_note_namespaces": {
+          "const": [
+            "tool",
+            "project-profile",
+            "PTSIP_Package",
+            "engine"
+          ]
+        },
+        "historical_flat_release_notes_bulk_moved": {
+          "const": false
+        },
+        "presentation_contract_ref": {
+          "const": ".github/checks/release/release-presentation.json"
+        }
       }
     }
   }

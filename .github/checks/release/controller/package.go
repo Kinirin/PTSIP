@@ -353,9 +353,9 @@ func IdentityText(snapshot Snapshot, specRevision, specSource string) string {
 			engines = append(engines, c)
 		}
 	}
-	text := fmt.Sprintf("PTSIP_Package: %s\ntextTool: %s\nProject Profile: %s\nEngine:\n", snapshot.Version, tool, profile)
+	text := fmt.Sprintf("PTSIP_Package: %s\nPTSIP_Tool: %s\nProject Profile: %s\nEngine:\n", snapshot.Version, tool, profile)
 	for _, e := range engines {
 		text += fmt.Sprintf("  %s: %s\n", strings.ToUpper(e.ID[:1])+e.ID[1:], e.Version)
 	}
-	return text + fmt.Sprintf("SPEC_REVISION: %s\nSpecification source: %s\n", specRevision, specSource)
+	return text
 }

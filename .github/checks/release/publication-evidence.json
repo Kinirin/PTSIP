@@ -1,0 +1,27 @@
+{
+  "schema_version": "ptsip-publication-evidence/v1",
+  "authority_ref": "developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.release_orchestration",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-RELEASE-PRESENTATION-AND-DELETED-CARRIER-REISSUE.yaml",
+  "verification_run_id": "AUTOMATIC_NEWEST_SUCCESSFUL_EXACT_SOURCE_AND_SELECTION",
+  "release_id": "AUTOMATIC_UNIQUE_SOURCE_TAG_THEN_RETURNED_NUMERIC_ID",
+  "missing_verification": "FAIL_WITH_SEPARATE_TOOLING_TEST_DISPATCH_INSTRUCTION",
+  "verification_lookback_pages": 3,
+  "deleted_carrier_reissue": {
+    "authorization": "USER_REQUESTED_REPLACEMENT_OF_DELETED_RELEASE_RESULTS",
+    "lookback_runs": 30,
+    "required_original_job": "github-publication:success",
+    "artifact": "admitted-publication-{original_source_sha}",
+    "archive_and_file_digests": "REQUIRED",
+    "original_verification": "RECHECK_SUCCESSFUL_EXACT_ORIGINAL_SOURCE_SELECTION_AND_ALL_REQUIRED_HOSTS",
+    "current_versions_and_selection": "MUST_EQUAL_ORIGINAL_ADMISSION",
+    "source_boundaries": ["src", "registry", "License-Authority", "README.md", ".github/checks/release/test/tool.go", ".github/checks/release/test/runner.go", ".github/checks/release/engine-verification/wheel.go", ".github/checks/release/engine-verification/linux_abi.go", ".github/checks/release/engine-verification/go.mod", ".github/checks/release/engine-verification/go.sum"],
+    "pyproject_comparison": "FULL_PARSED_DOCUMENT_EXCEPT_OBSERVED_PUBLISHED_SNAPSHOT_TABLE",
+    "original_source_tag_and_package_identity": "PRESERVE",
+    "publisher_control_sha": "SEPARATE_FRESH_MAIN_SHA",
+    "changed_producer": "FAIL_NO_HISTORICAL_PASS_PROMOTION",
+    "existing_live_carrier": "NO_RECOVERY_OR_ASSET_OVERWRITE",
+    "expired_original_artifact": "FAIL_NO_CACHE_FALLBACK",
+    "component_rebuild_or_version_increment": "FORBIDDEN",
+    "presentation_assets": "REGENERATE_FROM_CURRENT_APPROVED_PRESENTATION_CONTRACT"
+  }
+}

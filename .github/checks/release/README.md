@@ -24,17 +24,26 @@ Run from the checkout with Go and GitHub CLI available:
 ```powershell
 ./.github/checks/release/run_release.ps1 -Action Select -Targets package
 ./.github/checks/release/run_release.ps1 -Action DispatchTest -Targets engine:context,engine:projection
-./.github/checks/release/run_release.ps1 -Action DispatchRelease -Targets engine:context,engine:projection -VerificationRunId <successful-exact-SHA-run> -Destination github-pypi
+./.github/checks/release/run_release.ps1 -Action DispatchRelease -Targets engine:context,engine:projection -Destination github-pypi
 ```
 
-The release run consumes the exact source, selection digest, component versions, host receipts and file hashes from the specified tooling-test run. Different requested selections, expired artifacts and advanced main source fail admission. An unchanged historical engine version reuses its original immutable files only after comparing its registered source boundaries. Changed engine source requires an explicitly assigned new version.
+The release run finds the newest successful tooling-test run with the exact source and requested selection. Run IDs and Release IDs are internal evidence, not workflow inputs. The controller verifies original Actions archive digests, selection digest, component versions, host receipts and file hashes. Different selections, expired artifacts and advanced publisher source fail admission. If no matching test exists, the action reports the separate tooling-test dispatch required. Publication does not run tests. An unchanged historical engine version reuses its original immutable files only after comparing its registered source boundaries. Changed engine source requires an explicitly assigned new version.
 
 One source SHA has one GitHub carrier, tagged `ptsip-release-<full-source-SHA>`. Select all desired components before publishing that carrier. A retry reuses identical assets; another selection at that same source cannot replace the published carrier. Existing historical engine tags and Releases remain immutable.
 
 Release creation returns the numeric ID used for direct reads, asset uploads and
 publication. The publisher does not wait for the new draft to appear in a list.
-`-ReleaseId` can resume an existing draft only when its tag matches the verified
-source exactly. A source change before publication keeps the carrier as a draft.
+The controller resolves an existing same-source draft automatically. A publisher
+source change before publication keeps the carrier as a draft.
+
+The owner-requested replacement of the deleted grouped Release is defined by
+`publication-evidence.json`. It restores the original admitted Actions bundle
+only after rechecking its successful GitHub publication, exact original test
+selection, current versions, unchanged artifact producer boundaries and file
+hashes. The original source tag and Package identity are preserved; the current
+publisher SHA is recorded separately. It regenerates presentation assets and
+does not rebuild already published Tool files or treat old tests as current-source
+verification. An existing live carrier is never overwritten by this recovery.
 
 The PyPA action is an upload adapter. Native Go compares existing version-specific PyPI file hashes before any mutation, stages only missing files, and confirms public file hashes after upload. A conflicting filename fails and requires a new component version. Tool 0.3.8a6 is published; 0.3.8a5 remains immutable. Engine Pending Trusted Publishers must match their exact project and component environment in `pypi-publishers.json` before the PyPI phase can succeed.
 
@@ -62,5 +71,12 @@ The base chooses its latest published composition; an exact suffix pins its snap
 ## Notes and verification scope
 
 Tool notes use `docs/releasenote/tool/<version>.md`; Profile notes use `docs/releasenote/project-profile/<version>.md`. Each engine owns `docs/releasenote/engine/<kind>/<kind>-engine-<version>.md`, without a draft suffix. Multiple engines retain separate note files; the single carrier body presents their sections. Historical Specification notes retain their original content under the renamed `PTSIP_Package/` directory and are not evidence of Package publication.
+
+`release-presentation.json` fixes the public title to `PTSIP_Package <version>`
+and the section order to Release, Tool, Profile, Engine. The summary uses
+`PTSIP_Tool`; each engine section includes its registered Engine ID, Capability,
+Purpose and Contract changes. The new public summary omits SPEC_REVISION rather
+than inventing a numeric replacement for an immutable Git revision. Full source
+SHA provenance remains in the selection and shipping manifest.
 
 The retired common verification gap remains separately open. Passing the registered release mode establishes only its selected component/source scope. Legacy scripts and their old PASS records do not become successor verification authority.

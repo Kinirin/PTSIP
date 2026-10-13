@@ -1,17 +1,22 @@
-# PTSIP projection Engine 0.2.0
+# PTSIP Projection Engine 0.2.0
 
-The independently versioned engine is registered in `src/ptsip/engines/index.json`.
+Engine ID: `urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0`
+Capability: `urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45`
 
-Engine ID: urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0
+### Purpose
 
-Capability: urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45
+The registered Projection engine implements `projection.select`, `projection.render`. Its machine contract declares
+`EXPLICIT_JSON_POINTER_SELECTION_WITHOUT_SOURCE_MUTATION_OR_LEGACY_OUTPUT_PARITY`, `VERIFY_CURRENT_CONTEXT_SNAPSHOT_AND_SOURCE_THEN_APPLY_REGISTERED_PROJECTION_FIELDS_AND_OUTPUT_SCHEMA`. It consumes explicit inputs through its registered native interface.
 
-The initial native GitHub publication is bound to commit
-`58ff98ecc97769b5fb97631e2d8e89fcfdaf0243` and verification run
-[38323106217](https://github.com/Kinirin/PTSIP/actions/runs/38323106217).
+### Contract changes
 
-The initial historical component release is preserved. Subsequent publication
-uses one source-SHA carrier for the selected components. Windows and Linux are
-mandatory under the current specification; macOS is opt-in. PyPI availability
-must be confirmed separately. Published availability does not grant runtime
-activation or Project Authority.
+This release distributes the existing registered contract `urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45`,
+version `2.0.0`. The presentation correction introduces no engine
+contract or implementation change. Existing public API and consumer authority
+admission remain governed by their registered contracts.
+
+Windows x64 and Linux x64 artifacts are included. macOS remains opt-in.
+The original native artifacts are preserved from source
+`58ff98ecc97769b5fb97631e2d8e89fcfdaf0243`; source and file hashes are recorded
+in the Package manifest. GitHub artifact availability and PyPI publication are
+verified separately.

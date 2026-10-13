@@ -66,7 +66,7 @@ work_unit:
       state: PARTIAL_EXTERNAL_PUBLISHER_CONFIGURATION_REQUIRED
       source_sha: 6febd3480d6e6c857e9b8a4553bb7a32ecb2c813
       run_id: 38369775576
-      github_release: PUBLISHED
+      github_release: PUBLISHED_THEN_DELETED_BY_PROJECT_OWNER
       github_release_id: 411456680
       verified_asset_hashes: 36
       package_snapshot: 0.3.8.42d9e6
@@ -75,3 +75,13 @@ work_unit:
       package_record_job: SKIPPED_AFTER_ENGINE_PUBLICATION_FAILURE
       next_required_action: REGISTER_DISTINCT_PENDING_PUBLISHER_ENVIRONMENTS
       publisher_routing_contract: .github/checks/release/pypi-publishers.json
+    presentation_recovery:
+      authorization: OWNER_REQUESTED_CORRECTION_AND_REPUBLICATION_OF_DELETED_RESULTS
+      presentation_contract: .github/checks/release/release-presentation.json
+      evidence_contract: .github/checks/release/publication-evidence.json
+      original_component_artifacts: PRESERVE_EXACT_ORIGINAL_FILES_AND_SOURCE
+      publisher_source: SEPARATE_FRESH_MAIN_SHA
+      manual_run_and_release_inputs: REMOVED_AUTOMATIC_MACHINE_RESOLUTION
+      local: PASS_GO_PRESENTATION_EXACT_SELECTION_AND_REISSUE_BOUNDARY_REGRESSIONS
+      github_republication: PENDING_EXACT_SOURCE_ACTIONS_AND_OBSERVED_PUBLICATION
+      engine_pypi: EXTERNAL_PENDING_PUBLISHER_REGISTRATION_NOT_CONFIRMED

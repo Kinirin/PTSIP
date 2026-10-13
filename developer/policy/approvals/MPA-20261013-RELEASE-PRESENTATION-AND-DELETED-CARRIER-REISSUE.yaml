@@ -1,0 +1,29 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-RELEASE-PRESENTATION-AND-DELETED-CARRIER-REISSUE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User deleted both unwanted Release results and instructed that they be fixed
+    and posted again. User specified the recognizable Package-version title,
+    PTSIP_Tool label, Release/Tool/Profile/Engine section order and per-engine
+    identity, purpose and contract-change sections. User requested machine linking
+    instead of manually entering verification_run_id and release_id. This record
+    admits presentation replacement of the deleted carrier using its original
+    verified artifacts, exact original source and unchanged component versions.
+    The current publisher source is recorded separately and must be fresh main;
+    unchanged producer boundaries and original Actions archive/file digests are
+    rechecked. It does not authorize rebuilding immutable Tool 0.3.8a6 files,
+    inventing a numeric SPEC_REVISION, or claiming pending engine PyPI publication.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  requested_policy_id: MPD-RECORD-0001
+  affected_policy_ids:
+  - MPD-RECORD-0001
+  - MPD-CTRL-0001
+  recorded_at: '2026-10-13'

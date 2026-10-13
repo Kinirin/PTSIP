@@ -236,21 +236,9 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 	if err := WriteJSON(filepath.Join(out, "package-"+snapshot.Version+".json"), snapshot); err != nil {
 		return Snapshot{}, err
 	}
-	composition, err := ReadComposition(root)
+	_, body, err := ReleasePresentation(root, s, snapshot)
 	if err != nil {
 		return Snapshot{}, err
-	}
-	body := "# PTSIP Release\n\n" + IdentityText(snapshot, composition.SpecRevision, composition.SpecSource) + "\nSource: `" + s.SourceSHA + "`\n\n"
-	for _, c := range s.Components {
-		p, e := SafePath(root, c.Note)
-		if e != nil {
-			return Snapshot{}, e
-		}
-		note, e := os.ReadFile(p)
-		if e != nil {
-			return Snapshot{}, fmt.Errorf("component release note missing: %s", c.Note)
-		}
-		body += "\n## " + c.ID + " " + c.Version + "\n\n" + string(note) + "\n"
 	}
 	if err := os.WriteFile(filepath.Join(out, "release-body.md"), []byte(body), 0644); err != nil {
 		return Snapshot{}, err
@@ -285,7 +273,11 @@ func PublishCarrier(root string, s Selection, output string, resumeID int64) err
 		return err
 	}
 	var main struct{ Object struct{ SHA string } }
-	if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != s.SourceSHA {
+	controlSource := m.PublicationSource
+	if controlSource == "" {
+		controlSource = s.SourceSHA
+	}
+	if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != controlSource {
 		return fmt.Errorf("main advanced beyond shipping source")
 	}
 	out, err := SafePath(root, output)
@@ -309,7 +301,14 @@ func PublishCarrier(root string, s Selection, output string, resumeID int64) err
 	if err != nil {
 		return err
 	}
-	carrier, err := ResolveCarrier(s.Tag, s.SourceSHA, "PTSIP "+s.Type, string(body), resumeID, GitHubReleaseAPI)
+	title, expectedBody, err := ReleasePresentation(root, s, m.Snapshot)
+	if err != nil {
+		return err
+	}
+	if string(body) != expectedBody {
+		return fmt.Errorf("release body differs from the admitted presentation contract")
+	}
+	carrier, err := ResolveCarrier(s.Tag, s.SourceSHA, title, string(body), resumeID, GitHubReleaseAPI)
 	if err != nil {
 		return err
 	}
@@ -366,7 +365,7 @@ func PublishCarrier(root string, s Selection, output string, resumeID int64) err
 		}
 	}
 	if draft {
-		if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != s.SourceSHA {
+		if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != controlSource {
 			return fmt.Errorf("main advanced before draft publication")
 		}
 		var published Carrier

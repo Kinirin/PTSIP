@@ -33,9 +33,17 @@ func main() {
 	var value any
 	var err error
 	switch command {
+	case "prepare-publication":
+		value, err = release.PreparePublication(*root, *targets, *optional, *output)
 	case "admit", "prepare-shipping", "publish-carrier", "pypi-stage", "pypi-verify", "record-package":
 		var s release.Selection
-		err = release.ReadJSON(*root, *selectionRef, &s)
+		if command != "admit" && command != "prepare-shipping" {
+			var manifest release.ShippingManifest
+			err = release.ReadJSON(*root, *output+"/shipping-manifest.json", &manifest)
+			s = manifest.Selection
+		} else {
+			err = release.ReadJSON(*root, *selectionRef, &s)
+		}
 		if err != nil {
 			break
 		}
@@ -104,7 +112,11 @@ func main() {
 			err = release.RecordPackage(*root, s, *output)
 			value = map[string]string{"status": "RECORDED"}
 		} else {
-			err = release.AdmitVerification(*root, s, *runID)
+			var manifest release.ShippingManifest
+			manifest, err = release.Shipping(*root, s, *output)
+			if err == nil {
+				err = release.AdmitShipping(*root, manifest)
+			}
 			if err == nil {
 				err = release.PublishCarrier(*root, s, *output, *resumeID)
 			}

@@ -254,11 +254,15 @@ func EngineReuse(root string, s Selection, components []PublishedComponent, loca
 }
 
 type ShippingManifest struct {
-	Schema          string    `json:"schema_version"`
-	Selection       Selection `json:"selection"`
-	VerificationRun int64     `json:"verification_run"`
-	Snapshot        Snapshot  `json:"package"`
-	Assets          []File    `json:"assets"`
+	Schema                 string    `json:"schema_version"`
+	Selection              Selection `json:"selection"`
+	VerificationRun        int64     `json:"verification_run"`
+	Snapshot               Snapshot  `json:"package"`
+	Assets                 []File    `json:"assets"`
+	PublicationSource      string    `json:"publication_source_sha,omitempty"`
+	ReissueRun             int64     `json:"reissue_from_run,omitempty"`
+	OriginalArtifactID     int64     `json:"original_artifact_id,omitempty"`
+	OriginalArtifactDigest string    `json:"original_artifact_digest,omitempty"`
 }
 
 func Shipping(root string, s Selection, output string) (ShippingManifest, error) {
@@ -290,14 +294,22 @@ func Shipping(root string, s Selection, output string) (ShippingManifest, error)
 		}
 	}
 	for _, c := range m.Selection.Components {
+		found := false
 		for _, component := range m.Snapshot.Components {
 			if component.ID == c.ID {
+				if component.Kind != c.Kind || component.Version != c.Version {
+					return m, fmt.Errorf("shipping component version differs")
+				}
+				found = true
 				for _, f := range component.Files {
 					if !names[f.Name] {
 						return m, fmt.Errorf("selected artifact missing from shipping admission")
 					}
 				}
 			}
+		}
+		if !found {
+			return m, fmt.Errorf("selected component absent from shipping snapshot")
 		}
 	}
 	return m, nil
