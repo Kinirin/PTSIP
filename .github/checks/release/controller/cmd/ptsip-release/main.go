@@ -27,6 +27,7 @@ func main() {
 	python := f.String("python", "", "explicit target Python executable")
 	selectionRef := f.String("selection", ".artifacts/release/selection.json", "verified selection")
 	runID := f.Int64("run-id", 0, "original tooling-test run")
+	resumeID := f.Int64("release-id", 0, "existing verified-source GitHub release ID")
 	inputRef := f.String("input", ".artifacts/release/verified", "original verified artifacts")
 	f.Parse(os.Args[2:])
 	var value any
@@ -100,7 +101,7 @@ func main() {
 		} else {
 			err = release.AdmitVerification(*root, s, *runID)
 			if err == nil {
-				err = release.PublishCarrier(*root, s, *output)
+				err = release.PublishCarrier(*root, s, *output, *resumeID)
 			}
 			value = map[string]string{"status": "PUBLISHED", "tag": s.Tag}
 		}
@@ -130,7 +131,12 @@ func main() {
 			err = release.InstallPackage(snapshot, platform, *python)
 		}
 		if command == "identities" {
-			fmt.Print(release.IdentityText(snapshot, "3c47816770d194ae42f98faedc911d980db0e62a", "https://github.com/Kinirin/PTSIP"))
+			composition, e := release.ReadComposition(*root)
+			if e != nil {
+				err = e
+				break
+			}
+			fmt.Print(release.IdentityText(snapshot, composition.SpecRevision, composition.SpecSource))
 			return
 		}
 	default:

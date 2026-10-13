@@ -1,0 +1,55 @@
+schema_version: ptsip-work-unit/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+plan_version: 0.3.8
+planning_contract: ptsip-planning/v1
+work_unit:
+  id: WU-04
+  kind: WORK_UNIT
+  title: Canonical Package composition cutover and source-bound release recovery
+  classification: CORE/RELEASE-BLOCKING
+  lifecycle:
+    status: ACTIVE
+  approval:
+    status: APPROVED
+    inherited_from: []
+    approval_source: USER_EXPLICIT
+    authority: MPA-20261013-CANONICAL-COMPOSITION-CUTOVER-AND-RELEASE-REPAIR
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
+  integration_branch: main
+  entry_baseline: b131ed216a636100b52b450329c948582a2a421e
+  depends_on: []
+  routing_contract: developer/planning/contracts/release-work-unit-routing.v1.json
+  policy_refs:
+  - developer/policy/INFO/MPD-INFO-0005.yaml
+  - developer/policy/CTRL/MPD-CTRL-0001.yaml
+  - developer/policy/ASSURE/MPD-ASSURE-0001.yaml
+  - developer/policy/RECORD/MPD-RECORD-0001.yaml
+  - developer/policy/REAL/MPD-REAL-0005.yaml
+  objective: CANONICAL_CURRENT_COMPOSITION_AND_OBSERVED_IMMUTABLE_PUBLICATION
+  implementation_boundaries:
+    canonical_current_composition: pyproject.toml#tool.ptsip.release
+    tool_version: pyproject.toml#project.version
+    published_snapshot: SEPARATE_ORIGINAL_SOURCE_AND_DIGEST_RECORD
+    existing_component_versions: PRESERVE
+    release_policy_and_selection: NATIVE_GO
+    verification_implementation_root: .github/checks/release/test/
+    publication_workflow: .github/workflows/tooling-release.yml
+    verification_workflow: .github/workflows/tooling-test.yml
+    consumer_runtime_authority_or_activation: SEPARATE_SCOPE
+    existing_published_releases: IMMUTABLE
+    prior_empty_draft: PRESERVE_UNLESS_EXPLICITLY_RETIRED
+  acceptance:
+  - CURRENT_VERSIONS_CONSUMED_ONLY_FROM_CANONICAL_PYPROJECT
+  - DISTRIBUTED_PROJECTION_MISMATCH_REJECTED
+  - MISSING_CANONICAL_DECLARATION_HAS_NO_LEGACY_FALLBACK
+  - CREATED_RELEASE_ID_USED_FOR_DIRECT_READ_AND_UPLOAD
+  - WRONG_SOURCE_DRAFT_AND_ASSET_OVERWRITE_REJECTED
+  - EXACT_SOURCE_WINDOWS_LINUX_COMPONENT_TESTS_PASS
+  - ACTUAL_GITHUB_RELEASE_ASSETS_AND_PYPI_FILE_DIGESTS_OBSERVED
+  - PACKAGE_RECORD_WRITTEN_ONLY_AFTER_PUBLICATION
+  verification:
+    local: PENDING
+    remote_exact_sha: PENDING
+    publication: PENDING

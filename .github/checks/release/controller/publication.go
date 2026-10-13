@@ -1,11 +1,13 @@
 package releasecontroller
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -22,6 +24,86 @@ type Carrier struct {
 	Draft     bool
 	Published string `json:"published_at"`
 	Assets    []Asset
+}
+
+// ReleaseAPI keeps creation and the returned numeric release identity together.
+// Listing a newly created draft is not a publication readiness signal.
+type ReleaseAPI func(method, endpoint string, payload any, result any) error
+
+func GitHubReleaseAPI(method, endpoint string, payload any, result any) error {
+	args := []string{"api", endpoint, "--method", method}
+	var input []byte
+	if payload != nil {
+		var err error
+		input, err = json.Marshal(payload)
+		if err != nil {
+			return err
+		}
+		args = append(args, "--input", "-")
+	}
+	cmd := exec.Command("gh", args...)
+	if input != nil {
+		cmd.Stdin = bytes.NewReader(input)
+	}
+	var diagnostic bytes.Buffer
+	cmd.Stderr = &diagnostic
+	data, err := cmd.Output()
+	if err != nil {
+		return fmt.Errorf("GitHub release %s failed (%v): %s", method, err, diagnostic.String())
+	}
+	return json.Unmarshal(data, result)
+}
+
+func ResolveCarrier(tag, source, title, body string, resumeID int64, api ReleaseAPI) (Carrier, error) {
+	const base = "repos/Kinirin/PTSIP/releases"
+	read := func(id int64) (Carrier, error) {
+		var c Carrier
+		if err := api("GET", fmt.Sprintf("%s/%d", base, id), nil, &c); err != nil {
+			return c, err
+		}
+		if c.ID != id || c.Tag != tag {
+			return Carrier{}, fmt.Errorf("release ID does not match the verified source tag")
+		}
+		return c, nil
+	}
+	if resumeID > 0 {
+		return read(resumeID)
+	}
+	var matching *Carrier
+	for page := 1; ; page++ {
+		var rows []Carrier
+		if err := api("GET", fmt.Sprintf("%s?per_page=100&page=%d", base, page), nil, &rows); err != nil {
+			return Carrier{}, err
+		}
+		for _, c := range rows {
+			if c.Tag == tag {
+				if matching != nil {
+					return Carrier{}, fmt.Errorf("duplicate source release carrier")
+				}
+				candidate := c
+				matching = &candidate
+			}
+		}
+		if len(rows) < 100 {
+			break
+		}
+	}
+	if matching != nil {
+		return read(matching.ID)
+	}
+	var created Carrier
+	payload := map[string]any{"tag_name": tag, "target_commitish": source, "name": title, "body": body, "draft": true, "prerelease": true, "make_latest": "false"}
+	if err := api("POST", base, payload, &created); err != nil {
+		return Carrier{}, err
+	}
+	if created.ID <= 0 || created.Tag != tag || !created.Draft {
+		return Carrier{}, fmt.Errorf("release creation returned an invalid draft identity")
+	}
+	c, err := read(created.ID)
+	if err != nil {
+		return Carrier{}, fmt.Errorf("created draft %d could not be read: %w; resume with its verified release ID", created.ID, err)
+	}
+	return c, nil
 }
 
 func Carriers() ([]Carrier, error) {
@@ -53,6 +135,11 @@ func PublishedRegistry(root, ref, excludeSource string) (Registry, error) {
 	if err != nil {
 		return registry, err
 	}
+	composition, err := ReadComposition(root)
+	if err != nil {
+		return registry, err
+	}
+	registry.NumericBase = composition.PackageBase
 	sort.Slice(rows, func(i, j int) bool { return rows[i].Published > rows[j].Published })
 	for _, r := range rows {
 		if r.Draft || !strings.HasPrefix(r.Tag, "ptsip-release-") || r.Tag == "ptsip-release-"+excludeSource {
@@ -333,6 +420,9 @@ func RecordPackage(root string, s Selection, output string) error {
 	if err = WriteJSON(filepath.Join(root, ".github/checks/release/package-registry.json"), registry); err != nil {
 		return err
 	}
+	if err = RecordPublishedDeclaration(root, m.Snapshot); err != nil {
+		return err
+	}
 	noteRef := "docs/releasenote/PTSIP_Package/" + m.Snapshot.Version + ".md"
 	p, err := SafePath(root, noteRef)
 	if err != nil {
@@ -341,7 +431,7 @@ func RecordPackage(root string, s Selection, output string) error {
 	if err = os.WriteFile(p, noteBytes, 0644); err != nil {
 		return err
 	}
-	if _, err = Run(root, "git", "add", "--", ".github/checks/release/package-registry.json", noteRef); err != nil {
+	if _, err = Run(root, "git", "add", "--", ".github/checks/release/package-registry.json", noteRef, "pyproject.toml"); err != nil {
 		return err
 	}
 	delta, err := Run(root, "git", "diff", "--cached", "--name-only")

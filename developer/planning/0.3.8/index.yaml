@@ -7,13 +7,25 @@ plan_identity:
   revision: Rev.0001
 plan:
   plan_version: 0.3.8
-  revision: '03'
+  revision: '04'
   integration_branch: main
   classification: CORE
   status: ACTIVE
   control_plane: developer/planning/0.3.8/index.yaml
-  current_gate: WU-03
+  current_gate: WU-04
 work_units:
+- id: WU-04
+  path: developer/planning/0.3.8/WU-04/WU-04.yaml
+  lifecycle:
+    status: ACTIVE
+  approval:
+    status: APPROVED
+    inherited_from: []
+    approval_source: USER_EXPLICIT
+  implementation_authorization:
+    status: AUTHORIZED
+    authorization_source: USER_EXPLICIT
+  depends_on: []
 - id: WU-01
   path: developer/planning/0.3.8/WU-01/WU-01.yaml
   lifecycle:

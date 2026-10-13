@@ -6,7 +6,7 @@ policy:
   title: CTRL authority (ACTIVE source responsibilities)
   status: APPROVED
   substatus: Applying
-  version: '4.4'
+  version: '4.5'
 authority_subject:
   id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
   statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
@@ -57,7 +57,10 @@ rules:
     complete_path_resolution_time: ON_EXPLICIT_PLAN_CREATION_REQUEST_BEFORE_ANY_FILE_WRITE
     preassigned_per_plan_path_required: false
     manual_path_selection_if_deterministically_derivable: FORBIDDEN
-    subpath_routing_contract_current_status: UNRESOLVED
+    subpath_routing_contract_current_status: RESOLVED_FOR_RELEASE_WORK_UNITS
+    subpath_routing_contract_ref: developer/planning/contracts/release-work-unit-routing.v1.json
+    subpath_routing_approval_ref: developer/policy/approvals/MPA-20261013-CANONICAL-COMPOSITION-CUTOVER-AND-RELEASE-REPAIR.yaml
+    unsupported_planning_scope: FAIL_CLOSED
     unresolved_subpath_or_rule_is_valid_creation_path: false
     unresolved_rule_request_type: USER_DECISION_ON_RULE_NOT_ARBITRARY_PLAN_PATH
     user_must_be_asked_for_unresolved_normative_or_implementation_choices: true

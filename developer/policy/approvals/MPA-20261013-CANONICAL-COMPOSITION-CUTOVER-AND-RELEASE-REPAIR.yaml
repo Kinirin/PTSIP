@@ -1,0 +1,25 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261013-CANONICAL-COMPOSITION-CUTOVER-AND-RELEASE-REPAIR
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User approved plan creation and implementation of the canonical pyproject
+    composition declaration, machine contract and Go reader cutover while
+    repairing the failed release run 38355173561. User separately approved
+    release work-unit routing by Package numeric base, then maximum registered
+    WU number plus one, then the WU document. This resolves this work unit to
+    developer/planning/0.3.8/WU-04/WU-04.yaml. Existing component versions and
+    publication immutability remain unchanged. Test success is not publication.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  target_status: APPROVED
+  target_substatus: Applying
+  implementation_authorized: true
+  requested_policy_id: MPD-INFO-0005
+  affected_policy_ids:
+  - MPD-INFO-0005
+  - MPD-CTRL-0001
+  recorded_at: '2026-10-13'

@@ -7,7 +7,17 @@
   "test_contract": ".github/checks/release/test/verification-contract.json",
   "engine_registry": "src/ptsip/engines/index.json",
   "profile_registry": "registry/project-profile-contracts.yaml",
-  "package_base": "0.3.8",
+  "canonical_current_composition": {
+    "owner_ref": "developer/policy/INFO/MPD-INFO-0005.yaml#rules.independent_release_versioning",
+    "file": "pyproject.toml",
+    "table": "tool.ptsip.release",
+    "schema_version": "ptsip-current-composition/v1",
+    "tool_version_ref": "project.version",
+    "published_snapshot_table": "tool.ptsip.release.published",
+    "distributed_current_version_authority": false,
+    "missing_declaration": "FAIL_NO_LEGACY_FALLBACK",
+    "projection_mismatch": "FAIL_CLOSED"
+  },
   "default_engine_count": 7,
   "engine_addition": "CANONICAL_REGISTRY_ONLY",
   "profile_addition": "CANONICAL_REGISTRY_ONLY",

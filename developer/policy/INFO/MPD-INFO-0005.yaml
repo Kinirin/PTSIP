@@ -6,7 +6,7 @@ policy:
   title: Independent release version identity and canonical Package composition information
   status: APPROVED
   substatus: Applying
-  version: '1.0'
+  version: '1.1'
 authority_subject:
   id: DEV_CONTROL_INFORMATION_MEANING
   statement: PTSIP Developer release identities and canonical information source/projection semantics.
@@ -64,8 +64,10 @@ rules:
         projection_may_approve_version_change: false
       transition:
         policy_authority: APPROVED
-        machine_contract_and_implementation_cutover: PENDING_SEPARATE_PLAN_AND_VALIDATION
-        existing_release_readers_use_legacy_distributed_sources: UNMIGRATED_NOT_CANONICAL_AUTHORITY
+        machine_contract_and_implementation_cutover: IMPLEMENTED_VALIDATION_PENDING
+        implementation_approval_ref: developer/policy/approvals/MPA-20261013-CANONICAL-COMPOSITION-CUTOVER-AND-RELEASE-REPAIR.yaml
+        plan_ref: developer/planning/0.3.8/WU-04/WU-04.yaml
+        existing_release_readers_use_legacy_distributed_sources: REPLACED_CANONICAL_READER_NO_FALLBACK
         cutover_requires_exact_source_binding_and_full_CONTRACT_CONFORMANCE: true
         existing_component_versions_are_not_AUTOMATICALLY_CHANGED: true
       explicitly_excluded:

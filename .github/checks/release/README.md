@@ -2,6 +2,15 @@
 
 `composition-contract.json` is the current release selection and Package composition contract. CTRL owns publication admission, ASSURE owns the verification contract in `test/`, INFO owns independent version identities, and RECORD owns release-note routes. `release-contract.json` retains historical version syntax and bootstrap metadata; it does not reactivate the old publication surface.
 
+Root `pyproject.toml` owns the current composition in `[tool.ptsip.release]`.
+Tool binds exactly to `[project].version`; Profile and registered engine versions,
+Package numeric base and immutable Specification bindings are declared centrally.
+The engine-local version files, Cargo metadata, engine index, runtime constants
+and Profile current registries are checked projections. Missing declarations and
+conflicting projections fail; the reader never selects an old distributed source
+as a substitute authority. `[tool.ptsip.release.published]` records an observed
+original-source publication separately from the current source declaration.
+
 Only `tooling-release.yml` publishes. Only `tooling-test.yml` executes verification, through modes registered in `.github/test_modes.yaml`. The test runner, test cases and mechanical verification contract are owned by `test/`. Publication downloads the original verified artifacts and does not invoke Cargo, build a wheel, or run a test suite.
 
 Selection supports `package`, `tool`, `profiles`, and comma-separated `engine:<registered-kind>` values. Package selects Tool, Profiles and all current canonical engine registrations. The eight contract release types cover the full Package, each single component kind, and the approved mixed selections. Adding an engine changes canonical registration and its admitted implementation; it does not require another workflow.
@@ -21,6 +30,11 @@ Run from the checkout with Go and GitHub CLI available:
 The release run consumes the exact source, selection digest, component versions, host receipts and file hashes from the specified tooling-test run. Different requested selections, expired artifacts and advanced main source fail admission. An unchanged historical engine version reuses its original immutable files only after comparing its registered source boundaries. Changed engine source requires an explicitly assigned new version.
 
 One source SHA has one GitHub carrier, tagged `ptsip-release-<full-source-SHA>`. Select all desired components before publishing that carrier. A retry reuses identical assets; another selection at that same source cannot replace the published carrier. Existing historical engine tags and Releases remain immutable.
+
+Release creation returns the numeric ID used for direct reads, asset uploads and
+publication. The publisher does not wait for the new draft to appear in a list.
+`-ReleaseId` can resume an existing draft only when its tag matches the verified
+source exactly. A source change before publication keeps the carrier as a draft.
 
 The PyPA action is an upload adapter. Native Go compares existing version-specific PyPI file hashes before any mutation, stages only missing files, and confirms public file hashes after upload. A conflicting filename fails and requires a new component version. Tool 0.3.8a5 remains published; the current Tool candidate is 0.3.8a6. Engine Pending Trusted Publishers must be registered for owner `Kinirin`, repository `PTSIP`, workflow `tooling-release.yml`, environment `pypi` before the PyPI phase can succeed.
 

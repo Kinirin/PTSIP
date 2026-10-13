@@ -5,6 +5,7 @@ param(
     [string]$Targets = 'package',
     [string]$OptionalPlatforms = '',
     [string]$VerificationRunId = '',
+    [string]$ReleaseId = '0',
     [ValidateSet('github','github-pypi')][string]$Destination = 'github-pypi',
     [string]$PackageVersion = '',
     [string]$PythonExecutable = '',
@@ -19,7 +20,8 @@ switch ($Action) {
     }
     'DispatchRelease' {
         if ($VerificationRunId -notmatch '^[1-9][0-9]*$') { throw 'A completed exact-source tooling-test run is required.' }
-        & gh workflow run tooling-release.yml --repo Kinirin/PTSIP --ref main -f "targets=$Targets" -f "verification_run_id=$VerificationRunId" -f "optional_platforms=$OptionalPlatforms" -f "destination=$Destination"
+        if ($ReleaseId -notmatch '^[0-9]+$') { throw 'ReleaseId must be a numeric existing same-source Release ID or zero.' }
+        & gh workflow run tooling-release.yml --repo Kinirin/PTSIP --ref main -f "targets=$Targets" -f "verification_run_id=$VerificationRunId" -f "optional_platforms=$OptionalPlatforms" -f "release_id=$ReleaseId" -f "destination=$Destination"
     }
     default {
         $command = switch ($Action) {

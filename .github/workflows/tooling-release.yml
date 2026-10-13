@@ -14,6 +14,10 @@ on:
         description: Explicit optional platform selection
         type: string
         default: ''
+      release_id:
+        description: Optional existing same-source GitHub Draft Release ID
+        type: string
+        default: '0'
       destination:
         description: Publication destination
         type: choice
@@ -89,6 +93,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       VERIFIED_RUN: ${{ inputs.verification_run_id }}
+      RELEASE_ID: ${{ inputs.release_id }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -110,7 +115,7 @@ jobs:
           path: .artifacts/release/shipping
       - name: Publish one source-SHA GitHub carrier
         shell: bash
-        run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --run-id "$VERIFIED_RUN" --output .artifacts/release/shipping
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --run-id "$VERIFIED_RUN" --release-id "$RELEASE_ID" --output .artifacts/release/shipping
   pypi-publication:
     needs: [release-admission, github-publication]
     if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.pypi_count != '0' }}

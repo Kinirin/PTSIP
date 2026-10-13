@@ -137,39 +137,15 @@ func Select(root, targets, optional string) (Selection, error) {
 	if !regexp.MustCompile(`^[0-9a-f]{40}$`).MatchString(result.SourceSHA) {
 		return result, fmt.Errorf("exact source SHA required")
 	}
-	var index struct {
-		Entries []struct{ Kind, Version string } `json:"official_engine_entries"`
-	}
-	if err := ReadJSON(root, contract.EngineRegistry, &index); err != nil {
-		return result, err
-	}
-	engines := map[string]string{}
-	for _, e := range index.Entries {
-		id := strings.ToLower(e.Kind)
-		if id == "" || engines[id] != "" {
-			return result, fmt.Errorf("duplicate engine registration")
-		}
-		engines[id] = e.Version
-	}
-	var profile struct {
-		Current string `yaml:"current"`
-	}
-	profilePath, err := SafePath(root, contract.ProfileRegistry)
+	composition, err := ReadComposition(root)
 	if err != nil {
 		return result, err
 	}
-	profileData, err := os.ReadFile(profilePath)
-	if err != nil || yaml.Unmarshal(profileData, &profile) != nil || profile.Current == "" {
-		return result, fmt.Errorf("current Profile identity unavailable")
-	}
-	project, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
-	if err != nil {
+	if err := VerifyCompositionProjections(root, composition, contract); err != nil {
 		return result, err
 	}
-	version := regexp.MustCompile(`(?m)^version\s*=\s*"([^"]+)"`).FindSubmatch(project)
-	if len(version) != 2 {
-		return result, fmt.Errorf("Tool version unavailable")
-	}
+	result.PackageBase = composition.PackageBase
+	engines := composition.Engines
 	full := targets == "package" || targets == "all" || targets == ""
 	requested := strings.Split(targets, ",")
 	if full {
@@ -185,9 +161,9 @@ func Select(root, targets, optional string) (Selection, error) {
 		c := Component{ID: id}
 		switch id {
 		case "tool":
-			c.Kind, c.Version, tool = "tool", string(version[1]), true
+			c.Kind, c.Version, tool = "tool", composition.Tool, true
 		case "profiles", "profile":
-			c.ID, c.Kind, c.Version, profiles = "profiles", "profiles", profile.Current, true
+			c.ID, c.Kind, c.Version, profiles = "profiles", "profiles", composition.Profile, true
 		default:
 			name := strings.TrimPrefix(id, "engine:")
 			v, ok := engines[name]

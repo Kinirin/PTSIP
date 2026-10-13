@@ -1,0 +1,15 @@
+{
+  "schema_version": "ptsip-release-work-unit-routing/v1",
+  "owner_ref": "developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.planning_artifact_precreation_eligibility",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-CANONICAL-COMPOSITION-CUTOVER-AND-RELEASE-REPAIR.yaml",
+  "scope": "USER_REQUESTED_RELEASE_WORK_UNITS_ONLY",
+  "root": "developer/planning/",
+  "version_source": "pyproject.toml#tool.ptsip.release.package_base",
+  "version_index_pattern": "developer/planning/{package_base}/index.yaml",
+  "number_source": "MAX_REGISTERED_WU_NUMBER_PLUS_ONE",
+  "work_unit_id_pattern": "WU-{number:02}",
+  "output_pattern": "developer/planning/{package_base}/{work_unit_id}/{work_unit_id}.yaml",
+  "existing_destination": "FAIL_NO_OVERWRITE",
+  "unresolved_other_planning_scope": "FAIL_CLOSED",
+  "new_branch_creation": false
+}

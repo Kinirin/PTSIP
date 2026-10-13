@@ -3,6 +3,7 @@ package releasecontroller
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -199,6 +200,7 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 	if err != nil {
 		return Snapshot{}, err
 	}
+	registry.NumericBase = s.PackageBase
 	snapshot, err := RefreshPackage(&registry, s.SourceSHA, components)
 	if err != nil {
 		return Snapshot{}, err
@@ -234,7 +236,11 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 	if err := WriteJSON(filepath.Join(out, "package-"+snapshot.Version+".json"), snapshot); err != nil {
 		return Snapshot{}, err
 	}
-	body := "# PTSIP Release\n\n" + IdentityText(snapshot, "3c47816770d194ae42f98faedc911d980db0e62a", "https://github.com/Kinirin/PTSIP") + "\nSource: `" + s.SourceSHA + "`\n\n"
+	composition, err := ReadComposition(root)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	body := "# PTSIP Release\n\n" + IdentityText(snapshot, composition.SpecRevision, composition.SpecSource) + "\nSource: `" + s.SourceSHA + "`\n\n"
 	for _, c := range s.Components {
 		p, e := SafePath(root, c.Note)
 		if e != nil {
@@ -273,7 +279,7 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 	return snapshot, nil
 }
 
-func PublishCarrier(root string, s Selection, output string) error {
+func PublishCarrier(root string, s Selection, output string, resumeID int64) error {
 	m, err := Shipping(root, s, output)
 	if err != nil {
 		return err
@@ -286,52 +292,32 @@ func PublishCarrier(root string, s Selection, output string) error {
 	if err != nil {
 		return err
 	}
-	releases, err := Carriers()
+	refs, err := Run(root, "git", "ls-remote", "origin", "refs/tags/"+s.Tag)
 	if err != nil {
 		return err
 	}
-	found := false
-	for _, r := range releases {
-		found = found || r.Tag == s.Tag
+	if strings.TrimSpace(string(refs)) != "" && !strings.HasPrefix(string(refs), s.SourceSHA+"\t") {
+		return fmt.Errorf("existing source tag mismatch")
 	}
-	if !found {
-		refs, err := Run(root, "git", "ls-remote", "origin", "refs/tags/"+s.Tag)
-		if err != nil {
-			return err
-		}
-		if strings.TrimSpace(string(refs)) != "" && !strings.HasPrefix(string(refs), s.SourceSHA+"\t") {
-			return fmt.Errorf("existing source tag mismatch")
-		}
-		args := []string{"api", "repos/Kinirin/PTSIP/git/refs", "--method", "POST", "-f", "ref=refs/tags/" + s.Tag, "-f", "sha=" + s.SourceSHA}
-		if strings.TrimSpace(string(refs)) == "" {
-			if _, err := Run(root, append([]string{"gh"}, args...)...); err != nil {
-				return err
-			}
-		}
-		if _, err := Run(root, "gh", "release", "create", s.Tag, "--repo", "Kinirin/PTSIP", "--verify-tag", "--draft", "--latest=false", "--title", "PTSIP "+s.Type, "--notes-file", filepath.Join(out, "release-body.md")); err != nil {
+	args := []string{"api", "repos/Kinirin/PTSIP/git/refs", "--method", "POST", "-f", "ref=refs/tags/" + s.Tag, "-f", "sha=" + s.SourceSHA}
+	if strings.TrimSpace(string(refs)) == "" {
+		if _, err := Run(root, append([]string{"gh"}, args...)...); err != nil {
 			return err
 		}
 	}
-	releases, err = Carriers()
+	body, err := os.ReadFile(filepath.Join(out, "release-body.md"))
 	if err != nil {
 		return err
 	}
-	var existing map[string]string
-	var draft bool
-	var releaseID int64
-	for _, r := range releases {
-		if r.Tag == s.Tag {
-			existing = map[string]string{}
-			for _, a := range r.Assets {
-				existing[a.Name] = a.Digest
-			}
-			draft = r.Draft
-			releaseID = r.ID
-		}
+	carrier, err := ResolveCarrier(s.Tag, s.SourceSHA, "PTSIP "+s.Type, string(body), resumeID, GitHubReleaseAPI)
+	if err != nil {
+		return err
 	}
-	if existing == nil {
-		return fmt.Errorf("source-SHA release carrier unavailable")
+	existing := map[string]string{}
+	for _, a := range carrier.Assets {
+		existing[a.Name] = a.Digest
 	}
+	draft, releaseID := carrier.Draft, carrier.ID
 	assets := append([]File{}, m.Assets...)
 	bm, err := os.ReadFile(filepath.Join(out, "shipping-manifest.json"))
 	if err != nil {
@@ -353,8 +339,13 @@ func PublishCarrier(root string, s Selection, output string) error {
 		if !draft {
 			return fmt.Errorf("cannot add unreviewed assets to published source carrier")
 		}
-		if _, err := Run(root, "gh", "release", "upload", s.Tag, p, "--repo", "Kinirin/PTSIP"); err != nil {
+		response, err := Run(root, "gh", "api", fmt.Sprintf("https://uploads.github.com/repos/Kinirin/PTSIP/releases/%d/assets?name=%s", releaseID, url.QueryEscape(entry.Name)), "--method", "POST", "--header", "Content-Type: application/octet-stream", "--input", p)
+		if err != nil {
 			return err
+		}
+		var asset Asset
+		if json.Unmarshal(response, &asset) != nil || asset.Name != entry.Name || asset.Digest != "sha256:"+entry.SHA256 {
+			return fmt.Errorf("uploaded release asset identity/hash differs")
 		}
 	}
 	var uploaded struct {
@@ -375,7 +366,14 @@ func PublishCarrier(root string, s Selection, output string) error {
 		}
 	}
 	if draft {
-		_, err = Run(root, "gh", "release", "edit", s.Tag, "--repo", "Kinirin/PTSIP", "--draft=false", "--latest=false")
+		if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != s.SourceSHA {
+			return fmt.Errorf("main advanced before draft publication")
+		}
+		var published Carrier
+		err = GitHubReleaseAPI("PATCH", fmt.Sprintf("repos/Kinirin/PTSIP/releases/%d", releaseID), map[string]any{"draft": false, "make_latest": "false"}, &published)
+		if err == nil && (published.ID != releaseID || published.Tag != s.Tag || published.Draft) {
+			return fmt.Errorf("GitHub publication state not observed")
+		}
 	}
 	return err
 }

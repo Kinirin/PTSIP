@@ -105,3 +105,22 @@ dev = [
 
 [tool.setuptools.exclude-package-data]
 "ptsip.profiles" = ["history/*", "history/**"]
+
+# Canonical current composition. Published snapshots are recorded separately
+# after their original-source artifacts and publication state are verified.
+[tool.ptsip.release]
+schema_version = "ptsip-current-composition/v1"
+package_base = "0.3.8"
+tool_version_ref = "project.version"
+profile_version = "pp.1.02"
+specification_source = "https://github.com/Kinirin/PTSIP"
+spec_revision = "3c47816770d194ae42f98faedc911d980db0e62a"
+
+[tool.ptsip.release.engines]
+context = "0.2.0"
+storage = "0.3.0"
+validation = "0.3.0"
+discovery = "0.3.0"
+planning = "0.3.0"
+execution = "0.3.0"
+projection = "0.2.0"
