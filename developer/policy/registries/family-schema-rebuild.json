@@ -207,5 +207,41 @@
       "contract_is_not_family_policy_authority": true,
       "old_GOV_policy_reactivation": false
     }
+  },
+  "lifecycle_operation_design": {
+    "approval_ref": "developer/policy/approvals/MPA-20261015-LIFECYCLE-EXECUTION-STATE-PHASED-DESIGN.yaml",
+    "policy_domain": "CROSS_FAMILY_HIERARCHY_CHANGE_EXECUTION_STATE",
+    "responsibility": "SHARED_MACHINE_LIFECYCLE_OPERATION; FAMILY_POLICY_DOCUMENTS_RETAIN_OWN_FIELD_DEFINITIONS",
+    "current": {
+      "model": "A_EXECUTION_STATE_AND_TRANSITIONS",
+      "status": "SELECTED_CURRENT_POLICY_DIRECTION",
+      "includes": [
+        "SHARED_OPERATION_STATE_SEMANTICS",
+        "SHARED_TRANSITION_RULES"
+      ],
+      "shared_policy_field_format": "NOT_AUTHORIZED",
+      "new_contract_path_root": "developer/contracts/lifecycle/",
+      "contract_filename": "UNRESOLVED",
+      "schema_fields": "UNRESOLVED",
+      "authority_owner": "UNRESOLVED"
+    },
+    "future": {
+      "model": "B_EXECUTION_STATE_TRANSITIONS_AND_COMMON_FIELD_FORMAT",
+      "status": "USER_SELECTED_DEFERRED_MIGRATION_TARGET",
+      "automatic_cutover": false,
+      "date_or_trigger": "UNDECIDED",
+      "shared_field_scope": "EXECUTION_STATE_ONLY",
+      "change_requires": "SEPARATE_USER_APPROVAL_AND_CONFLICT_RESOLUTION",
+      "existing_family_independence": "PRESERVE_UNTIL_APPROVED_CHANGE",
+      "migration_validation": "NOT_YET_SPECIFIED"
+    },
+    "guardrails": {
+      "draft_is_not_schema_approval": true,
+      "no_schema_or_go_validator_materialization": true,
+      "no_new_lifecycle_contract_materialization": true,
+      "no_legacy_BOUND_or_shared_root_schema_restore": true,
+      "no_reactivation_of_retired_policy": true,
+      "do_not_modify_policy_status_or_policy_version": true
+    }
   }
 }

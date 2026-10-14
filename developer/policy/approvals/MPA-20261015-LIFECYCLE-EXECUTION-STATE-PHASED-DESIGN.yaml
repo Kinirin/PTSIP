@@ -1,0 +1,21 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261015-LIFECYCLE-EXECUTION-STATE-PHASED-DESIGN
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The project owner selected shared mechanical lifecycle operation state and
+    transitions (A) as the current contract direction, with a later migration
+    goal of adding a common execution-state field format (B). Do not unify
+    family policy document skeletons or materialize common fields now. B is
+    deferred; its collision with the current family-owned complete schema
+    boundary must be resolved through a later explicit user policy decision.
+    Existing policy-status and policy-version contracts remain separate.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  policy_content_review_scope: DIRECTION
+  implementation_authorized: false
+  branch_creation_authorized: false
+  recorded_at: '2026-10-15'
