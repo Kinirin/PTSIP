@@ -1,0 +1,62 @@
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:identity:v1",
+  "title": "PTSIP Policy Identity",
+  "type": "object",
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "responsibility_family": {
+      "type": "string",
+      "enum": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ]
+    },
+
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "Keywords": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+
+    "policy_class": {
+      "type": "string",
+      "enum": [
+        "PTSIP_DEVELOPER_POLICY",
+        "PTSIP_SUPPORT_FEATURE"
+      ]
+    }
+  },
+
+  "required": [
+    "id",
+    "responsibility_family",
+    "policy_class"
+  ]
+}

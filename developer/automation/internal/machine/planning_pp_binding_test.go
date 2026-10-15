@@ -22,7 +22,7 @@ func planningFixture(t *testing.T, includePlanning bool) *Repository {
 		t.Fatal(err)
 	}
 	target := &Repository{Root: t.TempDir()}
-	paths := []string{"developer/policy", "developer/bindings"}
+	paths := []string{"developer/policy", "developer/bindings", "developer/contracts/lifecycle"}
 	if includePlanning {
 		paths = append(paths, "developer/planning")
 	}

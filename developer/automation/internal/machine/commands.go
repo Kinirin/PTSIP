@@ -10,6 +10,18 @@ func (r *Repository) registeredCommand(positional []string) (Object, error) {
 	if len(positional) < 2 {
 		return nil, fmt.Errorf("registered command and subcommand are required")
 	}
+	// The commit hook checks PP content and transitions, not developer-policy
+	// authority. Keep its closed interface independent of the retired resolver,
+	// including the exit-status lookup after a successful PP verification.
+	if positional[0] == "pp" && positional[1] == "pre-commit" {
+		return Object{
+			"command":            []any{"pp", "pre-commit"},
+			"required_arguments": []any{},
+			"required_options":   []any{},
+			"optional_options":   []any{},
+			"boolean_options":    []any{},
+		}, nil
+	}
 	contract, err := r.Read("developer/policy/contracts/go-automation-cutover.v1.json")
 	if err != nil {
 		return nil, err
