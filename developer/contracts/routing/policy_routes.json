@@ -1,0 +1,17 @@
+{
+  "schema_version": "ptsip-policy-routing/v1",
+  "routes": {
+    "PTSIP_DEVELOPER_POLICY": {
+      "ARCH": {
+        "output": {
+          "directory": "developer/policy/ARCH"
+        },
+        "schema_refs": {
+          "public": "developer/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": "developer/contracts/schemas/Authority/root-family/ARCH_authority.schema.json",
+          "rules": "developer/contracts/schemas/Policy_Rules/root-family/ARCH_rules.schema.json"
+        }
+      }
+    }
+  }
+}
