@@ -249,6 +249,9 @@ func EngineReuse(root string, s Selection, components []PublishedComponent, loca
 					return nil, fmt.Errorf("original immutable engine artifact missing: %s", f.Name)
 				}
 			}
+			if err := NormalizeEngineArchives(root, s, &reused, locations); err != nil {
+				return nil, err
+			}
 			components[i] = reused
 			break
 		}

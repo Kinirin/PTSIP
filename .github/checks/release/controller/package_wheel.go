@@ -171,5 +171,5 @@ func PackageWheel(toolWheel, profileArchive []byte, s Snapshot, registered map[s
 	if err := zipWriter.Close(); err != nil {
 		return nil, err
 	}
-	return output.Bytes(), nil
+	return PyPIArchive(output.Bytes())
 }

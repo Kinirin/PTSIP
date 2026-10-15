@@ -33,8 +33,8 @@ func BuildPackageReceipt(root string, s Selection, input, output, platform strin
 	if err != nil {
 		return PackageReceipt{}, err
 	}
-	var registry Registry
-	if err := ReadJSON(root, ".github/checks/release/package-registry.json", &registry); err != nil {
+	registry, err := PublishedRegistry(root, ".github/checks/release/package-registry.json", s.SourceSHA)
+	if err != nil {
 		return PackageReceipt{}, err
 	}
 	components, err = ReusePublishedComponents(root, s, registry, components, locations)

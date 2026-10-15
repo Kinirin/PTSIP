@@ -58,6 +58,9 @@ func TestPipPackageHasEveryMandatoryEngineAndProfilePayload(t *testing.T) {
 	}
 	contents := map[string]string{}
 	for _, f := range z.File {
+		if f.Flags&8 != 0 {
+			t.Fatal("Package wheel contains a PyPI-forbidden streaming ZIP descriptor")
+		}
 		r, err := f.Open()
 		if err != nil {
 			t.Fatal(err)

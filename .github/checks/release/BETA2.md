@@ -37,3 +37,11 @@ No secret value is read, stored or printed by the controller.
 
 Record commits target `dev/0.3.8b2` explicitly. Source branch guards reject a
 changed branch head before publication. No workflow command pushes to `main`.
+
+PyPI rejects ZIP streaming data descriptors. Shipping normalizes only ZIP local
+headers while preserving every member byte, engine binary, RECORD and original
+source. The new wheel hash and original wheel hash are linked in the transport
+receipt; historical GitHub files are not overwritten. Complete Package upload
+waits for every engine project upload so an incomplete PyPI dependency set is
+never advertised as an installable Package. New-project HTTP 429 remains an
+external service limit and must not be bypassed or treated as publication PASS.

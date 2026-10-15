@@ -98,6 +98,7 @@ func main() {
 		} else if command == "pypi-stage" || command == "pypi-verify" {
 			err = release.PyPIStage(*root, s, *output, command == "pypi-verify")
 			if err == nil && command == "pypi-stage" {
+				packageCount := 0
 				matrix := struct {
 					Include []map[string]string `json:"include"`
 				}{Include: []map[string]string{}}
@@ -105,6 +106,15 @@ func main() {
 				manifest, err = release.Shipping(*root, s, *output)
 				if err == nil {
 					matrix.Include, err = release.PublicationTargets(*root, manifest, *output, *destination)
+					engines := []map[string]string{}
+					for _, entry := range matrix.Include {
+						if entry["component"] == "package" {
+							packageCount++
+						} else {
+							engines = append(engines, entry)
+						}
+					}
+					matrix.Include = engines
 				}
 				if err == nil && os.Getenv("GITHUB_OUTPUT") != "" {
 					b, _ := json.Marshal(matrix)
@@ -112,7 +122,7 @@ func main() {
 					if e != nil {
 						err = e
 					} else {
-						fmt.Fprintf(file, "publication_matrix=%s\npypi_count=%d\n", b, len(matrix.Include))
+						fmt.Fprintf(file, "publication_matrix=%s\npypi_count=%d\npackage_count=%d\n", b, len(matrix.Include), packageCount)
 						file.Close()
 					}
 				}

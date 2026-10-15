@@ -31,6 +31,7 @@ jobs:
     outputs:
       publication_matrix: ${{ steps.preflight.outputs.publication_matrix }}
       pypi_count: ${{ steps.preflight.outputs.pypi_count }}
+      package_count: ${{ steps.preflight.outputs.package_count }}
     permissions:
       contents: read
       actions: read
@@ -111,9 +112,28 @@ jobs:
           password: ${{ secrets.ENTIRE_ACCOUNT }}
           attestations: false
           packages-dir: .artifacts/release/shipping/pypi/${{ matrix.component }}
-  package-record:
+  package-publication:
     needs: [release-admission, github-publication, pypi-publication]
-    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') }}
+    if: ${{ always() && inputs.destination == 'github-pypi' && needs.github-publication.result == 'success' && needs.release-admission.outputs.package_count != '0' && (needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+      - name: Publish complete Package only after every engine upload succeeds
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.ENTIRE_ACCOUNT }}
+          attestations: false
+          packages-dir: .artifacts/release/shipping/pypi/package
+  package-record:
+    needs: [release-admission, github-publication, pypi-publication, package-publication]
+    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || ((needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') && (needs.release-admission.outputs.package_count == '0' || needs.package-publication.result == 'success'))) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
