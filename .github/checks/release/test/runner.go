@@ -27,6 +27,9 @@ type Execution struct {
 	} `json:"matrix"`
 	Python     string `json:"python"`
 	FetchDepth int    `json:"git_fetch_depth"`
+	Join       struct {
+		Include []release.MatrixEntry `json:"include"`
+	} `json:"join_matrix"`
 }
 type Receipt struct {
 	Schema       string         `json:"schema_version"`
@@ -90,21 +93,24 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	if contract.Schema != "ptsip-release-test/v1" {
 		return result, fmt.Errorf("verification contract not admitted")
 	}
-	policyData, err := release.Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-ASSURE-0001", "--section", "release_mode_verification")
-	if err != nil {
-		return result, err
-	}
-	var policy struct {
-		Record map[string]any `json:"record"`
-	}
-	if json.Unmarshal(policyData, &policy) != nil || policy.Record["contract_ref"] != contractRef || policy.Record["execution_workflow"] != ".github/workflows/tooling-test.yml" || policy.Record["mode_registry"] != ".github/test_modes.yaml" || policy.Record["release_test_change_root"] != ".github/checks/release/test/" {
-		return result, fmt.Errorf("registered release mode lacks canonical ASSURE admission")
-	}
 	result.Selection, err = release.Select(root, targets, optional)
 	if err != nil {
 		return result, err
 	}
+	if err := release.AdmitBeta2(root, result.Selection); err != nil {
+		return result, err
+	}
 	result.Matrix.Include, err = release.Matrix(result.Selection, contract.Runners)
+	result.Join.Include = []release.MatrixEntry{}
+	c, e := release.ReadComposition(root)
+	if e != nil {
+		return result, e
+	}
+	if c.PackagePyPI != "" && result.Selection.Type == "PTSIP_PACKAGE" {
+		for _, p := range result.Selection.Platforms {
+			result.Join.Include = append(result.Join.Include, release.MatrixEntry{Component: "package", Kind: "package", Version: c.PackagePyPI, Platform: p, Runner: contract.Runners[p]})
+		}
+	}
 	result.Python = contract.Runtime.Python
 	result.FetchDepth = contract.Runtime.FetchDepth
 	return result, err
@@ -193,6 +199,9 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 			return result, err
 		}
 		defer cleanup()
+		if err := release.MaterializeToolProject(stage); err != nil {
+			return result, err
+		}
 		if err := command(root, nil, "python", "-m", "pip", "install", "build>=1.2,<2", "twine>=6,<8", "PyYAML>=6,<7", "jsonschema>=4.23,<5"); err != nil {
 			return result, err
 		}

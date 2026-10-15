@@ -351,8 +351,20 @@ for component in snapshot['components']:
     if component['kind'] == 'profiles':
         continue
     project = 'PTSIP' if component['kind'] == 'tool' else 'ptsip-engine-' + component['id']
+    expected = component['version']
+    if component['kind'] == 'tool' and expected.startswith('T.'):
+        from ptsip.constants import TOOL_VERSION
+        if TOOL_VERSION != expected:
+            raise RuntimeError('installed Tool identity differs')
+        expected = expected[2:].rsplit('.', 1)
+        expected = ''.join(expected)
+        try:
+            metadata.distribution('ptsip-tool')
+            project = 'ptsip-tool'
+        except metadata.PackageNotFoundError:
+            pass
     distribution = metadata.distribution(project)
-    if distribution.version != component['version']:
+    if distribution.version != expected:
         raise RuntimeError('installed component version differs: ' + project)
     if component['kind'] == 'engine':
         origin = json.loads(distribution.read_text('ptsip-origin.json'))

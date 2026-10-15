@@ -134,10 +134,8 @@ func PreparePublication(root, targets, optional, output string) (ShippingManifes
 	if err != nil {
 		return ShippingManifest{}, err
 	}
-	// A deleted carrier with already published component files is restored from
-	// its original admission. Rebuilding those files would violate PyPI immutability.
-	if m, found, err := RecoverDeletedPublication(root, s, output); err != nil || found {
-		return m, err
+	if err := AdmitBeta2(root, s); err != nil {
+		return ShippingManifest{}, err
 	}
 	var selectionDir string
 	run, err := FindVerification(s, GitHubReleaseAPI, func(run WorkflowRun) (Selection, error) {

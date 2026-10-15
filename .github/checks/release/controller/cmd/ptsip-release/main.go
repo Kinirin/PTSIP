@@ -96,33 +96,17 @@ func main() {
 		} else if command == "prepare-shipping" {
 			value, err = release.PrepareShipping(*root, s, *runID, *inputRef, *output)
 		} else if command == "pypi-stage" || command == "pypi-verify" {
-			if command == "pypi-stage" {
-				err = release.AdmitPublisherScope(*root, s, *destination)
-				if err != nil {
-					break
-				}
-			}
 			err = release.PyPIStage(*root, s, *output, command == "pypi-verify")
-			if err == nil && command == "pypi-stage" && os.Getenv("GITHUB_OUTPUT") != "" {
+			if err == nil && command == "pypi-stage" {
 				matrix := struct {
 					Include []map[string]string `json:"include"`
 				}{Include: []map[string]string{}}
-				for _, c := range s.Components {
-					entries, e := os.ReadDir(filepath.Join(*root, *output, "pypi", c.ID))
-					if e != nil && !os.IsNotExist(e) {
-						err = e
-						break
-					}
-					if len(entries) > 0 && *destination == "github-pypi" {
-						environment, e := release.PublisherEnvironment(*root, c)
-						if e != nil {
-							err = e
-							break
-						}
-						matrix.Include = append(matrix.Include, map[string]string{"component": c.ID, "environment": environment})
-					}
-				}
+				var manifest release.ShippingManifest
+				manifest, err = release.Shipping(*root, s, *output)
 				if err == nil {
+					matrix.Include, err = release.PublicationTargets(*root, manifest, *output, *destination)
+				}
+				if err == nil && os.Getenv("GITHUB_OUTPUT") != "" {
 					b, _ := json.Marshal(matrix)
 					file, e := os.OpenFile(os.Getenv("GITHUB_OUTPUT"), os.O_WRONLY|os.O_APPEND, 0600)
 					if e != nil {

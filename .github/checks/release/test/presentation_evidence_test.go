@@ -60,7 +60,7 @@ func TestReleasePresentationUsesPackageTitleAndOrderedTypedSections(t *testing.T
 	if err != nil {
 		t.Fatal(err)
 	}
-	if title != "PTSIP_Package 0.3.8.42d9e6" || !strings.Contains(body, "PTSIP_Tool: "+composition.Tool) || strings.Contains(body, "textTool:") || strings.Contains(body, "SPEC_REVISION:") {
+	if title != "PTSIP_Package 0.3.8b2 (0.3.8.42d9e6)" || !strings.Contains(body, "PTSIP==0.3.8b2") || !strings.Contains(body, "PTSIP_Tool: "+composition.Tool) || strings.Contains(body, "textTool:") || strings.Contains(body, "SPEC_REVISION:") {
 		t.Fatal("release identity projection differs from requested template")
 	}
 	previous := -1

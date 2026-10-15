@@ -1,0 +1,16 @@
+{
+  "schema_version": "ptsip-owner-bounded-release/v1",
+  "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_15",
+  "instruction": "Publish 0.3.8b2 with Tool, Profiles and all seven independently installed engines; an isolated dev/0.3.8b2 branch is authorized and must never merge to main.",
+  "branch": "dev/0.3.8b2",
+  "package_pypi_version": "0.3.8b2",
+  "tool_identity": "T.0.3.8.b2",
+  "mandatory_engines": ["context", "storage", "validation", "discovery", "planning", "execution", "projection"],
+  "merge_to_main": false,
+  "retired_developer_policy_restore": false,
+  "automated_policy_validation_available": false,
+  "family_schema_or_validator_creation": false,
+  "verification_workflow": ".github/workflows/tooling-test.yml",
+  "publication_workflow": ".github/workflows/tooling-release.yml",
+  "runtime_activation": false
+}

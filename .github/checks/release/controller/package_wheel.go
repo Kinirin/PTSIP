@@ -24,7 +24,7 @@ func PackageWheel(toolWheel, profileArchive []byte, s Snapshot, registered map[s
 	if err := CompletePackage(s, registered); err != nil {
 		return nil, err
 	}
-	if !regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+(?:(?:a|b|rc)[1-9][0-9]*|\.post[1-9][0-9]*)?$`).MatchString(pypiVersion) {
+	if !regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?(?:(?:a|b|rc)[1-9][0-9]*)?$`).MatchString(pypiVersion) {
 		return nil, fmt.Errorf("explicit valid Package PyPI version required")
 	}
 	archive, err := zip.NewReader(bytes.NewReader(toolWheel), int64(len(toolWheel)))
@@ -84,7 +84,11 @@ func PackageWheel(toolWheel, profileArchive []byte, s Snapshot, registered map[s
 			engineDeps = append(engineDeps, "ptsip-engine-"+c.ID+"=="+c.Version)
 		}
 	}
-	if (message.Header.Get("Name") != "PTSIP" && message.Header.Get("Name") != "ptsip-tool") || message.Header.Get("Version") != toolVersion {
+	toolPEP, err := ToolDistributionVersion(toolVersion)
+	if err != nil {
+		return nil, err
+	}
+	if (message.Header.Get("Name") != "PTSIP" && message.Header.Get("Name") != "ptsip-tool") || message.Header.Get("Version") != toolPEP {
 		return nil, fmt.Errorf("Tool payload identity differs from complete composition")
 	}
 	resources, err := ProfileResources(profileArchive)

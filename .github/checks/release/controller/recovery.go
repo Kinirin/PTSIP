@@ -122,15 +122,11 @@ func OriginalVerification(root string, s Selection, run int64) error {
 }
 
 func AdmitShipping(root string, m ShippingManifest) error {
-	policyData, err := Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-CTRL-0001", "--section", "release_orchestration")
-	if err != nil {
+	if err := AdmitBeta2(root, m.Selection); err != nil {
 		return err
 	}
-	var policy struct {
-		Record map[string]any `json:"record"`
-	}
-	if json.Unmarshal(policyData, &policy) != nil || policy.Record["evidence_resolution_contract_ref"] != EvidenceContractPath {
-		return fmt.Errorf("current publication evidence authority unresolved")
+	if m.ReissueRun != 0 {
+		return fmt.Errorf("historical publication recovery is outside beta2 authorization")
 	}
 	tracked, err := Run(root, "git", "status", "--porcelain", "--untracked-files=no")
 	if err != nil || len(tracked) != 0 {

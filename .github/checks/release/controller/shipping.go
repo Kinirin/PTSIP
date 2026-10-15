@@ -23,15 +23,8 @@ func AdmitVerification(root string, s Selection, run int64) error {
 	if err := ValidateSelection(root, s); err != nil {
 		return err
 	}
-	policyData, err := Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-CTRL-0001", "--section", "release_orchestration")
-	if err != nil {
+	if err := AdmitBeta2(root, s); err != nil {
 		return err
-	}
-	var policy struct {
-		Record map[string]any `json:"record"`
-	}
-	if json.Unmarshal(policyData, &policy) != nil || policy.Record["publication_workflow"] != ".github/workflows/tooling-release.yml" || policy.Record["verification_workflow"] != ".github/workflows/tooling-test.yml" || policy.Record["one_github_release_per_source_sha"] != "REQUIRED" {
-		return fmt.Errorf("unified publication authority unresolved")
 	}
 	head, err := Run(root, "git", "rev-parse", "HEAD")
 	if err != nil || strings.TrimSpace(string(head)) != s.SourceSHA {
@@ -80,6 +73,18 @@ func AdmitVerification(root string, s Selection, run int64) error {
 			if count != 1 {
 				return fmt.Errorf("required component/host verification missing: %s", name)
 			}
+		}
+	}
+	for _, platform := range s.Platforms {
+		name := "Registered join / package / " + platform
+		count := 0
+		for _, job := range jobs.Jobs {
+			if job.Name == name && job.Status == "completed" && job.Conclusion == "success" {
+				count++
+			}
+		}
+		if count != 1 {
+			return fmt.Errorf("complete Package installation verification missing: %s", name)
 		}
 	}
 	return nil
@@ -258,6 +263,12 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 		return Snapshot{}, err
 	}
 	manifest := ShippingManifest{Schema: "ptsip-shipping-manifest/v1", Selection: s, VerificationRun: run, Snapshot: snapshot, Assets: []File{}}
+	if composition.PackagePyPI != "" && s.Type == "PTSIP_PACKAGE" {
+		manifest.PackageDistribution, err = ConsumePackageReceipt(root, s, snapshot, input, output, composition.PackagePyPI)
+		if err != nil {
+			return Snapshot{}, err
+		}
+	}
 	entries, err := os.ReadDir(out)
 	if err != nil {
 		return Snapshot{}, err
@@ -283,13 +294,17 @@ func PublishCarrier(root string, s Selection, output string, resumeID int64) err
 	if err != nil {
 		return err
 	}
-	var main struct{ Object struct{ SHA string } }
+	var branchHead struct{ Object struct{ SHA string } }
+	branch, err := Beta2Branch(root)
+	if err != nil {
+		return err
+	}
 	controlSource := m.PublicationSource
 	if controlSource == "" {
 		controlSource = s.SourceSHA
 	}
-	if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != controlSource {
-		return fmt.Errorf("main advanced beyond shipping source")
+	if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/"+branch, &branchHead); err != nil || branchHead.Object.SHA != controlSource {
+		return fmt.Errorf("beta2 branch advanced beyond shipping source")
 	}
 	out, err := SafePath(root, output)
 	if err != nil {
@@ -376,8 +391,8 @@ func PublishCarrier(root string, s Selection, output string, resumeID int64) err
 		}
 	}
 	if draft {
-		if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/main", &main); err != nil || main.Object.SHA != controlSource {
-			return fmt.Errorf("main advanced before draft publication")
+		if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/"+branch, &branchHead); err != nil || branchHead.Object.SHA != controlSource {
+			return fmt.Errorf("beta2 branch advanced before draft publication")
 		}
 		var published Carrier
 		err = GitHubReleaseAPI("PATCH", fmt.Sprintf("repos/Kinirin/PTSIP/releases/%d", releaseID), map[string]any{"draft": false, "make_latest": "false"}, &published)

@@ -23,7 +23,7 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 	if _, err := release.ParseComposition([]byte(noDeclaration)); err == nil {
 		t.Fatal("missing canonical declaration used legacy fallback")
 	}
-	duplicate := strings.Replace(string(data), "tool_version_ref = \"project.version\"", "tool_version_ref = \"project.version\"\ntool_version = \"0.3.8a5\"", 1)
+	duplicate := strings.Replace(string(data), "profile_version =", "tool_version = \"0.3.8a5\"\nprofile_version =", 1)
 	if _, err := release.ParseComposition([]byte(duplicate)); err == nil {
 		t.Fatal("duplicate Tool declaration authority admitted")
 	}

@@ -133,23 +133,29 @@ func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T
 	}
 }
 
-func TestProjectTokenScopeAllowsToolAndRejectsEnginePyPIBeforePublication(t *testing.T) {
+func TestOwnerTokenScopeAllowsCompletePackageAndOnlyApprovedEngineProjects(t *testing.T) {
 	root := repoRoot(t)
-	tool := release.Component{ID: "tool", Kind: "tool"}
-	if environment, err := release.PublisherEnvironment(root, tool); err != nil || environment != "pypi" {
+	packageComponent := release.Component{ID: "package", Kind: "package"}
+	if environment, err := release.PublisherEnvironment(root, packageComponent); err != nil || environment != "pypi" {
 		t.Fatalf("registered token route unavailable: %s %v", environment, err)
 	}
-	if err := release.AdmitPublisherScope(root, release.Selection{Components: []release.Component{tool}}, "github-pypi"); err != nil {
+	if err := release.AdmitPublisherScope(root, release.Selection{Components: []release.Component{packageComponent}}, "github-pypi"); err != nil {
 		t.Fatal(err)
+	}
+	if _, err := release.PublisherEnvironment(root, release.Component{ID: "tool", Kind: "tool"}); err == nil {
+		t.Fatal("beta2 instruction claimed an unrequested standalone Tool publication")
 	}
 	for _, id := range []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"} {
 		s := release.Selection{Components: []release.Component{{ID: id, Kind: "engine"}}}
-		if err := release.AdmitPublisherScope(root, s, "github-pypi"); err == nil {
-			t.Fatalf("PTSIP-only token admitted engine project %s", id)
+		if err := release.AdmitPublisherScope(root, s, "github-pypi"); err != nil {
+			t.Fatalf("approved engine project %s rejected: %v", id, err)
 		}
 		if err := release.AdmitPublisherScope(root, s, "github"); err != nil {
 			t.Fatal("token scope blocked an authorized GitHub-only release")
 		}
+	}
+	if _, err := release.PublisherEnvironment(root, release.Component{ID: "unapproved-engine", Kind: "engine"}); err == nil {
+		t.Fatal("account token granted an unapproved project")
 	}
 	if err := release.AdmitPublisherScope(root, release.Selection{}, "unknown"); err == nil {
 		t.Fatal("unregistered destination bypassed authentication admission")

@@ -25,6 +25,13 @@ func ReleasePresentation(root string, s Selection, snapshot Snapshot) (string, s
 		return "", "", fmt.Errorf("release presentation contract unresolved")
 	}
 	body := "# " + contract.Sections[0] + "\n\n```yaml\n" + IdentityText(snapshot, "", "") + "```\n\n"
+	composition, err := ReadComposition(root)
+	if err != nil {
+		return "", "", err
+	}
+	if composition.PackagePyPI != "" {
+		body += "PyPI Package: `PTSIP==" + composition.PackagePyPI + "`. This installs Tool, Profiles and every registered engine.\n\n"
+	}
 	selected := map[string]Component{}
 	for _, c := range s.Components {
 		selected[c.ID] = c
@@ -108,5 +115,9 @@ func ReleasePresentation(root string, s Selection, snapshot Snapshot) (string, s
 	if len(engines) == 0 {
 		body += "No engine changes are included in this release.\n"
 	}
-	return strings.ReplaceAll(contract.Title, "{package_version}", snapshot.Version), strings.TrimSpace(body) + "\n", nil
+	title := strings.ReplaceAll(contract.Title, "{package_version}", snapshot.Version)
+	if composition.PackagePyPI != "" {
+		title = "PTSIP_Package " + composition.PackagePyPI + " (" + snapshot.Version + ")"
+	}
+	return title, strings.TrimSpace(body) + "\n", nil
 }

@@ -16,18 +16,22 @@ type PublishedDeclaration struct {
 	Digest   string `toml:"composition_sha256"`
 	Source   string `toml:"source_sha"`
 	Tag      string `toml:"release_tag"`
+	PyPI     string `toml:"pypi_version,omitempty"`
 }
 
 type Composition struct {
-	Schema       string                `toml:"schema_version"`
-	PackageBase  string                `toml:"package_base"`
-	ToolRef      string                `toml:"tool_version_ref"`
-	Profile      string                `toml:"profile_version"`
-	SpecSource   string                `toml:"specification_source"`
-	SpecRevision string                `toml:"spec_revision"`
-	Engines      map[string]string     `toml:"engines"`
-	Published    *PublishedDeclaration `toml:"published"`
-	Tool         string                `toml:"-"`
+	Schema          string                `toml:"schema_version"`
+	PackageBase     string                `toml:"package_base"`
+	ToolRef         string                `toml:"tool_version_ref"`
+	Profile         string                `toml:"profile_version"`
+	SpecSource      string                `toml:"specification_source"`
+	SpecRevision    string                `toml:"spec_revision"`
+	Engines         map[string]string     `toml:"engines"`
+	Published       *PublishedDeclaration `toml:"published"`
+	Tool            string                `toml:"tool_version"`
+	PackageRevision int                   `toml:"package_revision"`
+	PackageState    string                `toml:"package_state"`
+	PackagePyPI     string                `toml:"-"`
 }
 
 func ParseComposition(data []byte) (Composition, error) {
@@ -53,6 +57,11 @@ func ParseComposition(data []byte) (Composition, error) {
 		if ptsip, ok := tool["ptsip"].(map[string]any); ok {
 			if section, ok := ptsip["release"].(map[string]any); ok {
 				allowed := map[string]bool{"schema_version": true, "package_base": true, "tool_version_ref": true, "profile_version": true, "specification_source": true, "spec_revision": true, "engines": true, "published": true}
+				if document.Tool.PTSIP.Release.Schema == "ptsip-current-composition/v2" || document.Tool.PTSIP.Release.Schema == "ptsip-current-composition/v3" {
+					allowed["tool_version"] = true
+					allowed["package_revision"] = true
+					allowed["package_state"] = true
+				}
 				for key := range section {
 					if !allowed[key] {
 						return Composition{}, fmt.Errorf("unregistered canonical composition field: %s", key)
@@ -62,11 +71,36 @@ func ParseComposition(data []byte) (Composition, error) {
 		}
 	}
 	c := document.Tool.PTSIP.Release
-	c.Tool = document.Project.Version
-	if document.Project.Name != "PTSIP" || c.Schema != "ptsip-current-composition/v1" || c.ToolRef != "project.version" {
+	if c.Schema == "ptsip-current-composition/v1" {
+		c.Tool = document.Project.Version
+		if c.ToolRef != "project.version" {
+			return c, fmt.Errorf("legacy Tool version binding invalid")
+		}
+	} else if c.Schema == "ptsip-current-composition/v2" {
+		if c.ToolRef != "tool.ptsip.release.tool_version" {
+			return c, fmt.Errorf("Tool canonical version binding invalid")
+		}
+		pypi, err := PackageDistributionVersion(c.PackageBase, c.PackageRevision, c.PackageState)
+		if err != nil {
+			return c, err
+		}
+		if document.Project.Version != pypi {
+			return c, fmt.Errorf("project.version must be the Package projection, not the Tool version")
+		}
+		c.PackagePyPI = pypi
+	} else if c.Schema == "ptsip-current-composition/v3" {
+		if c.ToolRef != "tool.ptsip.release.tool_version" || document.Project.Version != "0.3.8b2" || c.Tool != "T.0.3.8.b2" {
+			return c, fmt.Errorf("explicit beta2 Package/Tool projection differs")
+		}
+		c.PackagePyPI = document.Project.Version
+	} else {
+		return c, fmt.Errorf("unregistered current composition schema")
+	}
+	if document.Project.Name != "PTSIP" {
 		return c, fmt.Errorf("canonical Package composition declaration missing or unsupported")
 	}
-	if !regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+$`).MatchString(c.PackageBase) || !regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+(?:(a|b|rc)[1-9][0-9]*)?$`).MatchString(c.Tool) || !regexp.MustCompile(`^pp\.[0-9]+\.[0-9]+$`).MatchString(c.Profile) || len(c.Engines) == 0 {
+	_, toolErr := ToolDistributionVersion(c.Tool)
+	if !regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+$`).MatchString(c.PackageBase) || toolErr != nil || !regexp.MustCompile(`^pp\.[0-9]+\.[0-9]+$`).MatchString(c.Profile) || len(c.Engines) == 0 {
 		return c, fmt.Errorf("canonical component version declaration invalid")
 	}
 	if !strings.HasPrefix(c.SpecSource, "https://") || !regexp.MustCompile(`^[0-9a-f]{40}$`).MatchString(c.SpecRevision) {
@@ -95,6 +129,39 @@ func ReadComposition(root string) (Composition, error) {
 }
 
 func VerifyCompositionProjections(root string, c Composition, contract Contract) error {
+	if c.PackagePyPI != "" {
+		data, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
+		if err != nil {
+			return err
+		}
+		var project struct {
+			Project struct {
+				Dependencies []string `toml:"dependencies"`
+			} `toml:"project"`
+		}
+		if err := toml.Unmarshal(data, &project); err != nil {
+			return err
+		}
+		deps := map[string]bool{}
+		for _, d := range project.Project.Dependencies {
+			if strings.HasPrefix(d, "ptsip-engine-") {
+				if deps[d] {
+					return fmt.Errorf("duplicate native dependency")
+				}
+				deps[d] = true
+			}
+		}
+		for id, v := range c.Engines {
+			key := "ptsip-engine-" + id + "==" + v
+			if !deps[key] {
+				return fmt.Errorf("mandatory Package engine dependency missing or optional: %s", id)
+			}
+			delete(deps, key)
+		}
+		if len(deps) != 0 {
+			return fmt.Errorf("unregistered or stale Package engine dependency")
+		}
+	}
 	var index struct {
 		Entries []struct{ Kind, Version string } `json:"official_engine_entries"`
 	}
@@ -160,6 +227,9 @@ func RecordPublishedDeclaration(root string, s Snapshot) error {
 	section := regexp.MustCompile(`(?ms)^\[tool\.ptsip\.release\.published\][^\[]*`)
 	text = section.ReplaceAllString(text, "")
 	block := fmt.Sprintf("\n[tool.ptsip.release.published]\nidentity = %q\ncomposition_sha256 = %q\nsource_sha = %q\nrelease_tag = %q\n", s.Version, s.Digest, s.SourceSHA, "ptsip-release-"+s.SourceSHA)
+	if c.PackagePyPI != "" {
+		block += fmt.Sprintf("pypi_version = %q\n", c.PackagePyPI)
+	}
 	text = strings.TrimRight(text, "\r\n") + "\n" + block
 	if _, err := ParseComposition([]byte(text)); err != nil {
 		return err

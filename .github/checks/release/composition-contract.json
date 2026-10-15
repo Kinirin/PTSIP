@@ -1,6 +1,6 @@
 {
   "schema_version": "ptsip-release-composition/v1",
-  "approval_ref": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml",
+  "approval_ref": ".github/checks/release/beta2-authorization.json",
   "publication_workflow": ".github/workflows/tooling-release.yml",
   "verification_workflow": ".github/workflows/tooling-test.yml",
   "mode_registry": ".github/test_modes.yaml",
@@ -8,11 +8,15 @@
   "engine_registry": "src/ptsip/engines/index.json",
   "profile_registry": "registry/project-profile-contracts.yaml",
   "canonical_current_composition": {
-    "owner_ref": "developer/policy/INFO/MPD-INFO-0005.yaml#rules.independent_release_versioning",
+    "owner_ref": ".github/checks/release/beta2-authorization.json",
     "file": "pyproject.toml",
     "table": "tool.ptsip.release",
-    "schema_version": "ptsip-current-composition/v1",
-    "tool_version_ref": "project.version",
+    "schema_version": "ptsip-current-composition/v3",
+    "package_pypi_version_ref": "project.version",
+    "tool_version_ref": "tool.ptsip.release.tool_version",
+    "tool_identifier": "T.MAJOR.MINOR.MICRO.STATE",
+    "tool_distribution_version": "STRIP_T_PREFIX_AND_JOIN_PRERELEASE_STATE",
+    "package_pypi_version": "EXPLICIT_0_3_8B2_OWNER_RELEASE_INSTRUCTION",
     "published_snapshot_table": "tool.ptsip.release.published",
     "distributed_current_version_authority": false,
     "missing_declaration": "FAIL_NO_LEGACY_FALLBACK",
@@ -71,11 +75,21 @@
   },
   "component_reuse": {
     "tool": {
-      "source_boundaries": ["src", "registry", "License-Authority", "README.md", ".github/checks/release/test/tool.go", ".github/checks/release/test/runner.go"],
+      "source_boundaries": [
+        "src",
+        "registry",
+        "License-Authority",
+        "README.md",
+        ".github/checks/release/test/tool.go",
+        ".github/checks/release/test/runner.go"
+      ],
       "pyproject_comparison": "FULL_DOCUMENT_EXCEPT_PUBLISHED_SNAPSHOT_TABLE"
     },
     "profiles": {
-      "source_boundaries": ["src/ptsip/profiles", "registry/project-profile-contracts.yaml", ".github/checks/release/test/runner.go"]
+      "source_boundaries": [
+        "src/ptsip/profiles",
+        "registry/project-profile-contracts.yaml"
+      ]
     },
     "unchanged_version": "REUSE_ORIGINAL_PUBLISHED_SOURCE_FILES_AND_DIGESTS",
     "changed_producer_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_COMPONENT_VERSION"

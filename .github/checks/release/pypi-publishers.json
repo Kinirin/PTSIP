@@ -1,22 +1,41 @@
 {
-  "schema_version": "ptsip-pypi-publisher-routing/v2",
-  "approval_ref": "developer/policy/approvals/MPA-20261013-PYPI-TOKEN-AND-TOOL-B1-PUBLICATION.yaml",
+  "schema_version": "ptsip-pypi-publisher-routing/v3",
+  "approval_ref": ".github/checks/release/beta2-authorization.json",
   "repository_owner": "Kinirin",
   "repository": "PTSIP",
   "workflow": "tooling-release.yml",
   "authentication": {
     "mode": "API_TOKEN",
     "environment": "pypi",
-    "secret": "PYPI_API_TOKEN",
+    "secret": "ENTIRE_ACCOUNT",
     "username": "__token__",
-    "declared_project_scope": ["PTSIP"],
-    "scope_source": "USER_CONFIRMED_PTSIP_PROJECT_ONLY",
+    "declared_project_scope": [
+      "PTSIP",
+      "ptsip-engine-context",
+      "ptsip-engine-storage",
+      "ptsip-engine-validation",
+      "ptsip-engine-discovery",
+      "ptsip-engine-planning",
+      "ptsip-engine-execution",
+      "ptsip-engine-projection"
+    ],
+    "scope_source": "USER_CONFIRMED_ENTIRE_ACCOUNT_2026_10_15_BOUND_TO_APPROVED_RELEASE_PROJECTS",
     "unadmitted_project": "FAIL_BEFORE_PUBLICATION",
     "oidc_fallback": false,
     "oidc_attestations": false,
     "secret_value_read_or_log": false
   },
-  "tool": {"project": "PTSIP", "environment": "pypi"},
-  "engine": {"project_pattern": "ptsip-engine-{engine}", "environment_pattern": "pypi"},
+  "package": {
+    "project": "PTSIP",
+    "environment": "pypi"
+  },
+  "tool": {
+    "project": "ptsip-tool",
+    "environment": "pypi"
+  },
+  "engine": {
+    "project_pattern": "ptsip-engine-{engine}",
+    "environment_pattern": "pypi"
+  },
   "automatic_pypi_account_configuration": false
 }

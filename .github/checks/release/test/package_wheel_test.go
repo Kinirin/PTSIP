@@ -48,7 +48,7 @@ func TestPipPackageHasEveryMandatoryEngineAndProfilePayload(t *testing.T) {
 	}
 	tool := makeZip(map[string]string{"ptsip/__init__.py": "existing Tool payload", "ptsip-0.3.8b1.dist-info/METADATA": "Metadata-Version: 2.4\nName: PTSIP\nVersion: 0.3.8b1\nRequires-Dist: PyYAML>=6\n\nTool description\n", "ptsip-0.3.8b1.dist-info/entry_points.txt": "[console_scripts]\nptsip=ptsip.cli:main\n"})
 	profiles := makeZip(map[string]string{"src/ptsip/profiles/index.yaml": "catalog", "src/ptsip/profiles/example.ptsip.yaml": "example", "registry/project-profile-contracts.yaml": "current: pp.1.02\n"})
-	wheel, err := release.PackageWheel(tool, profiles, snapshot, registered, "0.3.8.post1")
+	wheel, err := release.PackageWheel(tool, profiles, snapshot, registered, "0.3.8.1b1")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -69,7 +69,7 @@ func TestPipPackageHasEveryMandatoryEngineAndProfilePayload(t *testing.T) {
 		}
 		contents[f.Name] = string(b)
 	}
-	metadata := contents["ptsip-0.3.8.post1.dist-info/METADATA"]
+	metadata := contents["ptsip-0.3.8.1b1.dist-info/METADATA"]
 	for id, v := range registered {
 		if !strings.Contains(metadata, "Requires-Dist: ptsip-engine-"+id+"=="+v+"\n") {
 			t.Fatalf("pip Package omitted mandatory engine %s", id)
@@ -78,10 +78,10 @@ func TestPipPackageHasEveryMandatoryEngineAndProfilePayload(t *testing.T) {
 	if strings.Contains(metadata, "extra ==") || strings.Contains(metadata, "sys_platform") {
 		t.Fatal("Package permits engine omission")
 	}
-	if contents["ptsip/profiles/index.yaml"] == "" || contents["ptsip/package-composition.json"] == "" || !strings.Contains(metadata, "Version: 0.3.8.post1") {
+	if contents["ptsip/profiles/index.yaml"] == "" || contents["ptsip/package-composition.json"] == "" || !strings.Contains(metadata, "Version: 0.3.8.1b1") {
 		t.Fatal("Package payload or independent version projection absent")
 	}
-	if _, err := release.PackageWheel(tool, profiles, snapshot, map[string]string{"context": "0.2.0"}, "0.3.8.post1"); err == nil {
+	if _, err := release.PackageWheel(tool, profiles, snapshot, map[string]string{"context": "0.2.0"}, "0.3.8.1b1"); err == nil {
 		t.Fatal("Package wheel assembly accepted a subset of registered engines")
 	}
 }

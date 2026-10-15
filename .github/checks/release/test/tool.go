@@ -188,5 +188,6 @@ func forbiddenToolMember(name string) bool {
 
 func toolMetadataMatches(data []byte, version string) bool {
 	message, err := mail.ReadMessage(bytes.NewReader(data))
-	return err == nil && strings.EqualFold(message.Header.Get("Name"), "PTSIP") && message.Header.Get("Version") == version
+	pep, versionErr := release.ToolDistributionVersion(version)
+	return err == nil && versionErr == nil && (strings.EqualFold(message.Header.Get("Name"), "PTSIP") || strings.EqualFold(message.Header.Get("Name"), "ptsip-tool")) && message.Header.Get("Version") == pep
 }

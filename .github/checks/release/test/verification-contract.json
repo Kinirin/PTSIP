@@ -1,24 +1,53 @@
 {
   "schema_version": "ptsip-release-test/v1",
-  "authority_ref": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml#rules.release_mode_verification",
+  "authority_ref": ".github/checks/release/beta2-authorization.json",
   "workflow": ".github/workflows/tooling-test.yml",
   "mode_registry": ".github/test_modes.yaml",
   "test_change_root": ".github/checks/release/test/",
   "production_contract": ".github/checks/release/composition-contract.json",
   "release_matrix": "SELECTED_COMPONENTS_JOINED_WITH_REQUIRED_AND_EXPLICIT_OPTIONAL_HOSTS",
+  "joined_verification": {
+    "selection": "PTSIP_PACKAGE_WITH_EXPLICIT_BETA2_COMPOSITION",
+    "command": "join",
+    "matrix": "REGISTERED_HOSTS_AFTER_ALL_COMPONENT_RECEIPTS_PASS",
+    "required": "PIP_INSTALL_COMPLETE_PACKAGE_AND_VERIFY_ALL_NATIVE_EXECUTABLE_HASHES",
+    "artifact_pattern": "verification-package-{platform}-{source_sha}"
+  },
   "runners": {
     "windows-x64": "windows-2025",
     "linux-x64": "ubuntu-24.04",
     "macos-arm64": "macos-15"
   },
-  "required_platforms": ["windows-x64", "linux-x64"],
-  "optional_platforms": ["macos-arm64"],
+  "required_platforms": [
+    "windows-x64",
+    "linux-x64"
+  ],
+  "optional_platforms": [
+    "macos-arm64"
+  ],
   "default_optional_platforms": [],
-  "result_binding": ["source_sha", "selection_sha256", "component", "version", "platform", "artifact_sha256"],
+  "result_binding": [
+    "source_sha",
+    "selection_sha256",
+    "component",
+    "version",
+    "platform",
+    "artifact_sha256"
+  ],
   "macos_not_requested": "NO_JOB_NO_PASS_EVIDENCE",
   "publication_operations": false,
-  "external_packaging_tools": ["cargo", "pip", "build", "twine"],
-  "runtime": {"go_version_file": ".github/checks/release/test/go.mod", "python_version": "3.12", "git_fetch_depth": 0, "git_history_requirement": "EXACT_SOURCE_PARENTS_AND_IMMUTABLE_COMPONENT_TAGS"},
+  "external_packaging_tools": [
+    "cargo",
+    "pip",
+    "build",
+    "twine"
+  ],
+  "runtime": {
+    "go_version_file": ".github/checks/release/test/go.mod",
+    "python_version": "3.12",
+    "git_fetch_depth": 0,
+    "git_history_requirement": "EXACT_SOURCE_PARENTS_AND_IMMUTABLE_COMPONENT_TAGS"
+  },
   "production_helpers": {
     "engine_wheel": ".github/checks/release/engine-verification/cmd/engine-wheel",
     "controller": ".github/checks/release/controller/cmd/ptsip-release"
