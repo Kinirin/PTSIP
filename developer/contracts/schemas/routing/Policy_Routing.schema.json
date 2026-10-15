@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:contract:policy-routing:v1",
+  "title": "PTSIP Policy Routing Contract",
+  "description": "Validates explicit routes from policy_kind and root_family to policy output directories and schema references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "routes"],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-policy-routing/v1"
+    },
+    "routes": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "enum": [
+          "PTSIP_DEVELOPER_POLICY",
+          "PTSIP_SUPPORT_FEATURE"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "propertyNames": {
+          "enum": [
+            "NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK",
+            "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD"
+          ]
+        },
+        "additionalProperties": {
+          "$ref": "#/$defs/route"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "schemaReference": {
+      "type": "string",
+      "minLength": 1,
+      "format": "uri-reference"
+    },
+    "repositoryDirectory": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+$"
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output", "schema_refs"],
+      "properties": {
+        "output": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["directory"],
+          "properties": {
+            "directory": {
+              "$ref": "#/$defs/repositoryDirectory"
+            }
+          }
+        },
+        "schema_refs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["public", "authority", "rules"],
+          "properties": {
+            "public": { "$ref": "#/$defs/schemaReference" },
+            "authority": { "$ref": "#/$defs/schemaReference" },
+            "rules": { "$ref": "#/$defs/schemaReference" }
+          }
+        }
+      }
+    }
+  }
+}
