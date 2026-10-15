@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PTSIP"
-version = "0.3.8b1"
+version = "0.3.8.1b1"
 description = "Reference tooling for primary lifecycle ownership and responsibility isolation"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -31,6 +31,13 @@ classifiers = [
 dependencies = [
   "PyYAML>=6.0,<7",
   "jsonschema>=4.23,<5",
+  "ptsip-engine-context==0.2.0",
+  "ptsip-engine-storage==0.3.0",
+  "ptsip-engine-validation==0.3.0",
+  "ptsip-engine-discovery==0.3.0",
+  "ptsip-engine-planning==0.3.0",
+  "ptsip-engine-execution==0.3.0",
+  "ptsip-engine-projection==0.2.0",
 ]
 
 [project.urls]
@@ -45,7 +52,8 @@ ptsip-app = "ptsip.app.server:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["ptsip*", "vpms*", "agent_contracts*"]
-exclude = ["tests*", "ptsip.profiles.history*", "ptsip.engines*"]
+exclude = ["tests*", "ptsip.profiles.history*"]
+namespaces = false
 
 [tool.setuptools.package-data]
 "ptsip.profiles" = ["index.yaml", "*.ptsip.yaml"]
@@ -109,9 +117,12 @@ dev = [
 # Canonical current composition. Published snapshots are recorded separately
 # after their original-source artifacts and publication state are verified.
 [tool.ptsip.release]
-schema_version = "ptsip-current-composition/v1"
+schema_version = "ptsip-current-composition/v2"
 package_base = "0.3.8"
-tool_version_ref = "project.version"
+package_revision = 1
+package_state = "b1"
+tool_version_ref = "tool.ptsip.release.tool_version"
+tool_version = "T.0.3.8.b1"
 profile_version = "pp.1.02"
 specification_source = "https://github.com/Kinirin/PTSIP"
 spec_revision = "3c47816770d194ae42f98faedc911d980db0e62a"
