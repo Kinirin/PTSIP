@@ -225,6 +225,19 @@ func PrepareContainer(root, output string) (ShippingManifest, error) {
 	if err := os.MkdirAll(filepath.Join(out, "wheels"), 0755); err != nil {
 		return m, err
 	}
+	allowed := map[string]bool{}
+	for _, f := range files {
+		allowed[f.Name] = true
+	}
+	cached, err := os.ReadDir(filepath.Join(out, "wheels"))
+	if err != nil {
+		return m, err
+	}
+	for _, entry := range cached {
+		if !entry.Type().IsRegular() || !allowed[entry.Name()] {
+			return m, fmt.Errorf("unadmitted container build input: %s", entry.Name())
+		}
+	}
 	for _, f := range files {
 		target := filepath.Join(out, "wheels", f.Name)
 		data, e := os.ReadFile(target)

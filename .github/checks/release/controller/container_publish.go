@@ -111,6 +111,12 @@ func PublishContainer(root string) (map[string]any, error) {
 			}
 		}
 	}
+	if err := GitHub("repos/Kinirin/PTSIP/git/ref/heads/"+c.Branch, &current); err != nil {
+		return nil, err
+	}
+	if current.Object.SHA != s.SourceSHA {
+		return nil, fmt.Errorf("remote branch changed before container push")
+	}
 	for _, tag := range c.Tags {
 		target := c.Image + ":" + tag
 		if _, err := Run(root, "docker", "tag", receipt.ImageID, target); err != nil {
