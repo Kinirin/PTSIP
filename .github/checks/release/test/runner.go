@@ -13,9 +13,10 @@ import (
 )
 
 type TestContract struct {
-	Schema  string            `json:"schema_version"`
-	Runners map[string]string `json:"runners"`
-	Runtime struct {
+	Schema        string            `json:"schema_version"`
+	ExecutionKind string            `json:"execution_kind"`
+	Runners       map[string]string `json:"runners"`
+	Runtime       struct {
 		Python     string `json:"python_version"`
 		FetchDepth int    `json:"git_fetch_depth"`
 	} `json:"runtime"`
@@ -93,6 +94,16 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	if contract.Schema != "ptsip-release-test/v1" {
 		return result, fmt.Errorf("verification contract not admitted")
 	}
+	if contract.ExecutionKind == "TEMPORARY_CONTAINER" {
+		if mode != release.ContainerMode || contractRef != ".github/checks/release/test/container-verification.json" || (targets != "package" && targets != "container") || optional != "" || contract.Runners["linux-x64"] != "ubuntu-24.04" {
+			return result, fmt.Errorf("temporary container mode selection differs")
+		}
+		result.Selection, err = release.ContainerSelection(root)
+		result.Matrix.Include = []release.MatrixEntry{{Component: "container", Kind: "container", Version: "0.3.8b3", Platform: "linux-x64", Runner: contract.Runners["linux-x64"]}}
+		result.Join.Include = []release.MatrixEntry{}
+		result.Python, result.FetchDepth = contract.Runtime.Python, contract.Runtime.FetchDepth
+		return result, err
+	}
 	result.Selection, err = release.Select(root, targets, optional)
 	if err != nil {
 		return result, err
@@ -130,6 +141,9 @@ func Validate(root string) error {
 }
 
 func Execute(root string, selection release.Selection, id, platform string) (Receipt, error) {
+	if selection.Type == "TEMPORARY_CONTAINER" {
+		return ExecuteContainer(root, selection, id, platform)
+	}
 	if err := release.ValidateSelection(root, selection); err != nil {
 		return Receipt{}, err
 	}
@@ -282,6 +296,12 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 }
 
 func Environment(root, id, platform string) (string, string, error) {
+	if id == "container" {
+		if platform != "linux-x64" {
+			return "", "", fmt.Errorf("unregistered container platform")
+		}
+		return "release-container-v1-" + release.ContainerSource, filepath.ToSlash(filepath.Join(root, ".artifacts/release/container/build/wheels")), nil
+	}
 	paths := []string{filepath.ToSlash(filepath.Join(root, ".artifacts/native-engine-test-target", id, platform))}
 	if id == "tool" || id == "profiles" {
 		return "release-adapter-v1-" + platform + "-" + id, strings.Join(paths, "\n"), nil

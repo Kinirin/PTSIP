@@ -1,0 +1,11 @@
+{
+  "schema_version": "ptsip-release-test/v1",
+  "execution_kind": "TEMPORARY_CONTAINER",
+  "workflow": ".github/workflows/tooling-test.yml",
+  "production_contract": ".github/checks/release/container/contract.json",
+  "publication_operations": false,
+  "runners": {"linux-x64": "ubuntu-24.04"},
+  "runtime": {"python_version": "3.12", "git_fetch_depth": 0},
+  "required_checks": ["PUBLISHED_SOURCE_MANIFEST_AND_EIGHT_WHEEL_HASHES", "TOOL_PROFILE_AND_SEVEN_ENGINE_INSTALLATION", "ENGINE_BINARY_ORIGIN_VERSION_AND_SHA256", "PROFILE_HISTORY_EXCLUDED", "PIP_CHECK_AND_TOOL_VERSION", "NON_ROOT_LINUX_AMD64_IMAGE", "ARCHIVE_OF_EXACT_TESTED_IMAGE"],
+  "successor_policy_validation_available": false
+}

@@ -18,15 +18,52 @@ on:
       destination:
         description: Publication destination
         type: choice
-        default: github-pypi
-        options: [github, github-pypi]
+        default: ghcr
+        options: [ghcr, github]
 permissions:
   contents: read
 concurrency:
   group: ptsip-component-publication
   cancel-in-progress: false
 jobs:
+  container-publication:
+    if: ${{ inputs.destination == 'ghcr' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+      packages: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TYPE: ${{ inputs.release_type }}
+      COMPONENTS: ${{ inputs.components }}
+      OPTIONAL: ${{ inputs.optional_platforms }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .github/checks/release/controller/go.mod
+          cache: true
+          cache-dependency-path: .github/checks/release/controller/go.sum
+      - name: Authenticate the repository publisher to GHCR
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish the exact image admitted by the registered test mode
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-container --root "$GITHUB_WORKSPACE" --release-type "$RELEASE_TYPE" --components "$COMPONENTS" --optional-platforms "$OPTIONAL"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: container-publication-${{ github.sha }}
+          path: .artifacts/release/container/container-publication-*.json
+          if-no-files-found: error
   release-admission:
+    if: ${{ inputs.destination == 'github' }}
     runs-on: ubuntu-latest
     outputs:
       pypi_count: ${{ steps.preflight.outputs.pypi_count }}
@@ -91,7 +128,7 @@ jobs:
         run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
   pypi-publication:
     needs: [release-admission, github-publication]
-    if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.pypi_count != '0' }}
+    if: ${{ false }} # PyPI publication is on hold by owner instruction.
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -110,7 +147,7 @@ jobs:
           packages-dir: .artifacts/release/shipping/pypi/engines
   package-publication:
     needs: [release-admission, github-publication, pypi-publication]
-    if: ${{ always() && inputs.destination == 'github-pypi' && needs.github-publication.result == 'success' && needs.release-admission.outputs.package_count != '0' && (needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') }}
+    if: ${{ false }} # PyPI publication is on hold by owner instruction.
     runs-on: ubuntu-latest
     environment: pypi
     permissions:

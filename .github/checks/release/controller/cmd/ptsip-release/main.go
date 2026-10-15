@@ -37,6 +37,14 @@ func main() {
 	var value any
 	var err error
 	switch command {
+	case "prepare-container":
+		value, err = release.PrepareContainer(*root, *output)
+	case "publish-container":
+		if *releaseType != "PTSIP_PACKAGE" || *components != "" || *optional != "" {
+			err = fmt.Errorf("temporary container requires the full Package and its registered platform")
+		} else {
+			value, err = release.PublishContainer(*root)
+		}
 	case "prepare-publication":
 		if *releaseType != "" {
 			var requested release.Selection

@@ -1,0 +1,20 @@
+{
+  "schema_version": "ptsip-temporary-container-delivery/v1",
+  "artifact_class": "BOUNDED_DELIVERY_OF_EXISTING_PUBLISHED_ARTIFACTS",
+  "authorization": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_15_TEMPORARY_0_3_8B3_CONTAINER",
+  "branch": "dev/0.3.8b2",
+  "image": "ghcr.io/kinirin/ptsip",
+  "tags": ["0.3.8b3", "0.3.8.b3", "0.3.8.f87bfe"],
+  "platform": "linux/amd64",
+  "base_image": "ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55",
+  "source_release": "ptsip-release-916333f9aa0f9589272911818d8352fb0cae09e1",
+  "shipping_manifest_sha256": "72eb4b0a443294dcd54480c7458353675e4494599a9110bab9957611bddc2a86",
+  "original_verification_run": 38677942975,
+  "mandatory_engines": ["context", "storage", "validation", "discovery", "planning", "execution", "projection"],
+  "canonical_current_composition_owner": false,
+  "successor_info_implementation_cutover": false,
+  "automated_policy_validation_available": false,
+  "pypi_publication": false,
+  "merge_to_main": false,
+  "runtime_activation": false
+}

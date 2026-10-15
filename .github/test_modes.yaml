@@ -11,6 +11,7 @@ defaults:
 groups:
   RELEASE:
     - release-verification
+    - release-container
   SUPPLY:
     - agent-contract-plane
     - agent-contract-runtime
@@ -30,6 +31,11 @@ groups:
     - test-mode-control-plane
 
 modes:
+  - id: release-container
+    component_ref: repository-release-verification
+    execution:
+      contract_ref: .github/checks/release/test/container-verification.json
+      runner_ref: .github/checks/release/test/cmd/ptsip-release-test
   - id: release-verification
     component_ref: repository-release-verification
     execution:
