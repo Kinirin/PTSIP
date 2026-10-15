@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:policy:Status:v1",
+  "title": "PTSIP Status Policy Structure",
+  "type": "object",
+  "required": ["Schema"],
+  "properties": {
+    "Schema":{
+        "type": "object",
+        "minLength": 1,
+        "required": ["schema_version"],
+        "properties": {
+            "Policy_Identity_version": {"$ref": "urn:ptsip:policy:identity-version:v1"},
+            "Policy_Status_version": {"$ref":"urn:ptsip:policy:Status-version:v1"},
+            "Authority_version": {"$ref":"urn:ptsip:policy:Authority-version:v1"},
+            "Policy_Rules_version": {"$ref":"urn:ptsip:policy:Policy_Rules_version:v1"}
+        }
+
+    }
+  }
+
+
+}

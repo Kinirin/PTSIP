@@ -8,17 +8,9 @@
 
   "properties": {
     "Policy_Identity": {"$ref": "urn:ptsip:policy:identity:v1"},
-
     "Policy_Status": {"$ref": "urn:ptsip:policy:Status:v1"},
-
-    "Authority": {"$ref": "urn:ptsip:policy:authority:v1"},
-
-    "Policy_Rules": {
-      "type": "object"
-    },
-
-    "Extensions": {
-      "type": "object"
+    "Authority": {"$ref": "urn:ptsip:policy:Policy_Authority:v1"},
+    "Policy_Rules":  {"$ref": "urn:ptsip:policy:Public_Structure_Rules:v1"}
     }
   }
 }
