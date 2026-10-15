@@ -17,13 +17,13 @@ func TestToolIdentityAndCompletePackageHaveIndependentMetadata(t *testing.T) {
 		t.Fatal(err)
 	}
 	c, err := release.ParseComposition(b)
-	if err != nil || c.Tool != "T.0.3.8.b2" || c.PackagePyPI != "0.3.8b2" {
+	if err != nil || c.Tool != "T.0.3.8.b3" || c.PackagePyPI != "0.3.8b3" || c.PackageDisplay != "0.3.8.b3" {
 		t.Fatalf("beta2 identity: %+v %v", c, err)
 	}
-	if v, err := release.ToolDistributionVersion(c.Tool); err != nil || v != "0.3.8b2" {
+	if v, err := release.ToolDistributionVersion(c.Tool); err != nil || v != "0.3.8b3" {
 		t.Fatalf("Tool projection: %s %v", v, err)
 	}
-	if _, err := release.ParseComposition([]byte(strings.Replace(string(b), `version = "0.3.8b2"`, `version = "T.0.3.8.b2"`, 1))); err == nil {
+	if _, err := release.ParseComposition([]byte(strings.Replace(string(b), `version = "0.3.8b3"`, `version = "T.0.3.8.b3"`, 1))); err == nil {
 		t.Fatal("T prefix admitted as PyPI version")
 	}
 	fixture := t.TempDir()
@@ -46,7 +46,7 @@ func TestToolIdentityAndCompletePackageHaveIndependentMetadata(t *testing.T) {
 	if err := toml.Unmarshal(b, &d); err != nil {
 		t.Fatal(err)
 	}
-	if d.Project.Name != "ptsip-tool" || d.Project.Version != "0.3.8b2" || len(d.Project.Dependencies) != 2 {
+	if d.Project.Name != "ptsip-tool" || d.Project.Version != "0.3.8b3" || len(d.Project.Dependencies) != 2 {
 		t.Fatalf("standalone Tool metadata: %+v", d)
 	}
 }

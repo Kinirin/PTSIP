@@ -249,11 +249,13 @@ func EngineReuse(root string, s Selection, components []PublishedComponent, loca
 					return nil, fmt.Errorf("original immutable engine artifact missing: %s", f.Name)
 				}
 			}
-			if err := NormalizeEngineArchives(root, s, &reused, locations); err != nil {
-				return nil, err
-			}
 			components[i] = reused
 			break
+		}
+		// Newly versioned engines need the same PyPI-compatible ZIP headers as
+		// reused engines. Normalize before either install joins or publication.
+		if err := NormalizeEngineArchives(root, s, &components[i], locations); err != nil {
+			return nil, err
 		}
 	}
 	return components, nil
@@ -321,7 +323,7 @@ func Shipping(root string, s Selection, output string) (ShippingManifest, error)
 	}
 	if m.PackageDistribution != nil {
 		c := m.PackageDistribution
-		if c.ID != "package" || c.Kind != "package" || c.SourceSHA != s.SourceSHA || c.Version != "0.3.8b2" || len(c.Files) != 1 {
+		if c.ID != "package" || c.Kind != "package" || c.SourceSHA != s.SourceSHA || c.Version != "0.3.8b3" || len(c.Files) != 1 {
 			return m, fmt.Errorf("Package distribution admission differs")
 		}
 		for _, f := range c.Files {

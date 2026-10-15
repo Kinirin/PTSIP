@@ -117,7 +117,11 @@ func ReleasePresentation(root string, s Selection, snapshot Snapshot) (string, s
 	}
 	title := strings.ReplaceAll(contract.Title, "{package_version}", snapshot.Version)
 	if composition.PackagePyPI != "" {
-		title = "PTSIP_Package " + composition.PackagePyPI + " (" + snapshot.Version + ")"
+		display := composition.PackageDisplay
+		if display == "" {
+			display = composition.PackagePyPI
+		}
+		title = "PTSIP_Package " + display + " (" + snapshot.Version + ")"
 	}
 	return title, strings.TrimSpace(body) + "\n", nil
 }

@@ -115,6 +115,9 @@ func main() {
 						}
 					}
 					matrix.Include = engines
+					if err == nil && *destination == "github-pypi" {
+						_, err = release.StageEngineUploads(*root, manifest, *output)
+					}
 				}
 				if err == nil && os.Getenv("GITHUB_OUTPUT") != "" {
 					b, _ := json.Marshal(matrix)

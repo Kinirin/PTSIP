@@ -1,11 +1,19 @@
 {
   "schema_version": "ptsip-owner-bounded-release/v1",
   "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_15",
-  "instruction": "Publish 0.3.8b2 with Tool, Profiles and all seven independently installed engines; an isolated dev/0.3.8b2 branch is authorized and must never merge to main.",
+  "instruction": "Publish 0.3.8.b3 (PyPI normalized 0.3.8b3) with Tool, Profiles and all seven engines; increment each engine micro by one and upload engines sequentially in one PyPI job. Continue isolated dev/0.3.8b2; never merge to main.",
   "branch": "dev/0.3.8b2",
-  "package_pypi_version": "0.3.8b2",
-  "tool_identity": "T.0.3.8.b2",
-  "mandatory_engines": ["context", "storage", "validation", "discovery", "planning", "execution", "projection"],
+  "package_pypi_version": "0.3.8b3",
+  "tool_identity": "T.0.3.8.b3",
+  "mandatory_engines": [
+    "context",
+    "storage",
+    "validation",
+    "discovery",
+    "planning",
+    "execution",
+    "projection"
+  ],
   "merge_to_main": false,
   "retired_developer_policy_restore": false,
   "branch_only_profile_schema_loader_dependency_restore": {
@@ -19,5 +27,16 @@
   "family_schema_or_validator_creation": false,
   "verification_workflow": ".github/workflows/tooling-test.yml",
   "publication_workflow": ".github/workflows/tooling-release.yml",
-  "runtime_activation": false
+  "runtime_activation": false,
+  "package_release_version": "0.3.8.b3",
+  "engine_versions": {
+    "context": "0.2.1",
+    "storage": "0.3.1",
+    "validation": "0.3.1",
+    "discovery": "0.3.1",
+    "planning": "0.3.1",
+    "execution": "0.3.1",
+    "projection": "0.2.1"
+  },
+  "engine_pypi_publication": "ONE_JOB_SEQUENTIAL_UPLOADS"
 }

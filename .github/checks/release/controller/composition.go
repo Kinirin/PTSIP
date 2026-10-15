@@ -22,6 +22,7 @@ type PublishedDeclaration struct {
 type Composition struct {
 	Schema          string                `toml:"schema_version"`
 	PackageBase     string                `toml:"package_base"`
+	PackageDisplay  string                `toml:"package_release_version,omitempty"`
 	ToolRef         string                `toml:"tool_version_ref"`
 	Profile         string                `toml:"profile_version"`
 	SpecSource      string                `toml:"specification_source"`
@@ -61,6 +62,7 @@ func ParseComposition(data []byte) (Composition, error) {
 					allowed["tool_version"] = true
 					allowed["package_revision"] = true
 					allowed["package_state"] = true
+					allowed["package_release_version"] = true
 				}
 				for key := range section {
 					if !allowed[key] {
@@ -89,8 +91,8 @@ func ParseComposition(data []byte) (Composition, error) {
 		}
 		c.PackagePyPI = pypi
 	} else if c.Schema == "ptsip-current-composition/v3" {
-		if c.ToolRef != "tool.ptsip.release.tool_version" || document.Project.Version != "0.3.8b2" || c.Tool != "T.0.3.8.b2" {
-			return c, fmt.Errorf("explicit beta2 Package/Tool projection differs")
+		if c.ToolRef != "tool.ptsip.release.tool_version" || document.Project.Version != "0.3.8b3" || c.Tool != "T.0.3.8.b3" || c.PackageDisplay != "0.3.8.b3" {
+			return c, fmt.Errorf("explicit beta3 Package/Tool projection differs")
 		}
 		c.PackagePyPI = document.Project.Version
 	} else {

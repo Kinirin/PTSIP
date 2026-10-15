@@ -1,4 +1,4 @@
-# Bounded PTSIP 0.3.8b2 release
+# Bounded PTSIP 0.3.8.b3 release on the isolated beta2 branch
 
 The Project Owner authorized this release on 2026-10-15. Work is isolated on
 `dev/0.3.8b2`; this branch must not merge to `main`. Current policy retirement
@@ -16,15 +16,15 @@ successor policy or an automated policy-validation PASS. Release code does not
 invoke the retired Developer Policy Resolver. Software verification still binds
 the exact source SHA, complete selection, two required hosts and file digests.
 
-`PTSIP==0.3.8b2` is the complete pip Package. It contains the Tool code and public
+`PTSIP==0.3.8b3` is the complete pip Package. It contains the Tool code and public
 Profile catalog, and requires all seven independent engine wheels with exact
-versions. Context/Projection are 0.2.0; Storage/Validation/Discovery/Planning/
-Execution are 0.3.0. Native executables install into the environment's scripts
+versions. Context/Projection are 0.2.1; Storage/Validation/Discovery/Planning/
+Execution are 0.3.1. Native executables install into the environment's scripts
 directory. Profile history is excluded. Installation grants no runtime authority.
 
-The Tool display identity is `T.0.3.8.b2`, with numeric distribution projection
-`0.3.8b2`. The Package's opaque composition identity remains `0.3.8.<SHA6>`;
-the owner explicitly selected `0.3.8b2` for this PyPI publication. Independent
+The Tool display identity is `T.0.3.8.b3`, with numeric distribution projection
+`0.3.8b3`. The Package's opaque composition identity remains `0.3.8.<SHA6>`;
+the owner explicitly selected `0.3.8.b3` (PyPI `0.3.8b3`) for this PyPI publication. Independent
 future version design is not decided by this bounded release.
 
 `tooling-test.yml` runs the registered mode, 9 components x 2 hosts and two
@@ -45,3 +45,7 @@ receipt; historical GitHub files are not overwritten. Complete Package upload
 waits for every engine project upload so an incomplete PyPI dependency set is
 never advertised as an installable Package. New-project HTTP 429 remains an
 external service limit and must not be bypassed or treated as publication PASS.
+
+All seven engine micro versions are incremented for this release. Engine PyPI
+uploads share one job and one setup, with sequential file upload. Package
+publication waits for every engine. Existing public file hashes remain immutable.

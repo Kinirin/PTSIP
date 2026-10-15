@@ -29,7 +29,6 @@ jobs:
   release-admission:
     runs-on: ubuntu-latest
     outputs:
-      publication_matrix: ${{ steps.preflight.outputs.publication_matrix }}
       pypi_count: ${{ steps.preflight.outputs.pypi_count }}
       package_count: ${{ steps.preflight.outputs.package_count }}
     permissions:
@@ -94,24 +93,21 @@ jobs:
     needs: [release-admission, github-publication]
     if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.pypi_count != '0' }}
     runs-on: ubuntu-latest
-    environment: ${{ matrix.environment }}
+    environment: pypi
     permissions:
       contents: read
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.release-admission.outputs.publication_matrix) }}
     steps:
       - uses: actions/download-artifact@v8
         with:
           name: admitted-publication-${{ github.sha }}
           path: .artifacts/release/shipping
-      - name: Upload the admitted original wheel set
+      - name: Upload all admitted engine wheels sequentially with one publisher setup
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.ENTIRE_ACCOUNT }}
           attestations: false
-          packages-dir: .artifacts/release/shipping/pypi/${{ matrix.component }}
+          packages-dir: .artifacts/release/shipping/pypi/engines
   package-publication:
     needs: [release-admission, github-publication, pypi-publication]
     if: ${{ always() && inputs.destination == 'github-pypi' && needs.github-publication.result == 'success' && needs.release-admission.outputs.package_count != '0' && (needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') }}

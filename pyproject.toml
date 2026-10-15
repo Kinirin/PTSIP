@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PTSIP"
-version = "0.3.8b2"
+version = "0.3.8b3"
 description = "Reference tooling for primary lifecycle ownership and responsibility isolation"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -31,13 +31,13 @@ classifiers = [
 dependencies = [
   "PyYAML>=6.0,<7",
   "jsonschema>=4.23,<5",
-  "ptsip-engine-context==0.2.0",
-  "ptsip-engine-storage==0.3.0",
-  "ptsip-engine-validation==0.3.0",
-  "ptsip-engine-discovery==0.3.0",
-  "ptsip-engine-planning==0.3.0",
-  "ptsip-engine-execution==0.3.0",
-  "ptsip-engine-projection==0.2.0",
+  "ptsip-engine-context==0.2.1",
+  "ptsip-engine-storage==0.3.1",
+  "ptsip-engine-validation==0.3.1",
+  "ptsip-engine-discovery==0.3.1",
+  "ptsip-engine-planning==0.3.1",
+  "ptsip-engine-execution==0.3.1",
+  "ptsip-engine-projection==0.2.1",
 ]
 
 [project.urls]
@@ -119,20 +119,21 @@ dev = [
 [tool.ptsip.release]
 schema_version = "ptsip-current-composition/v3"
 package_base = "0.3.8"
+package_release_version = "0.3.8.b3"
 tool_version_ref = "tool.ptsip.release.tool_version"
-tool_version = "T.0.3.8.b2"
+tool_version = "T.0.3.8.b3"
 profile_version = "pp.1.02"
 specification_source = "https://github.com/Kinirin/PTSIP"
 spec_revision = "3c47816770d194ae42f98faedc911d980db0e62a"
 
 [tool.ptsip.release.engines]
-context = "0.2.0"
-storage = "0.3.0"
-validation = "0.3.0"
-discovery = "0.3.0"
-planning = "0.3.0"
-execution = "0.3.0"
-projection = "0.2.0"
+context = "0.2.1"
+storage = "0.3.1"
+validation = "0.3.1"
+discovery = "0.3.1"
+planning = "0.3.1"
+execution = "0.3.1"
+projection = "0.2.1"
 
 [tool.ptsip.release.published]
 identity = "0.3.8.fa660a"
