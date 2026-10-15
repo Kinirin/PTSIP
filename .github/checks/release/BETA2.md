@@ -6,6 +6,9 @@ and Family reconstruction records are retained. The owner subsequently authorize
 restoring the historical common schema loading dependency for existing Profile
 verification on this branch only. It is copied from 781a0a46764734a98707662af1a3a2fbd6a88cf7;
 retired policy statuses and the disabled Developer Policy Resolver are preserved.
+Existing read-only Profile registry and PP commit/range/release checks use a
+branch-scoped adapter instead of resolving a retired command owner. Profile
+reconciliation, policy commands and other mutations are excluded from that adapter.
 No successor Family policy, schema or validator is introduced.
 
 `beta2-authorization.json` records the bounded release instruction, not a

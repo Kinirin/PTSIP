@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 
 	_ "github.com/Kinirin/PTSIP/developer/automation/branch"
@@ -12,8 +13,9 @@ import (
 )
 
 type commandMetadata struct {
-	repo       *machine.Repository
-	positional []string
+	repo         *machine.Repository
+	positional   []string
+	beta2Profile bool
 }
 
 func run(arguments []string) (any, error) { return runCommand(arguments, nil) }
@@ -66,6 +68,26 @@ func runCommand(arguments []string, metadata *commandMetadata) (any, error) {
 			if options["--policy-class"] != "PTSIP_SUPPORT_FEATURE" {
 				return nil, fmt.Errorf("LEGACY_DEVELOPER_ROOT_FAMILY_ENTRY_RETIRED: new developer family validators not implemented")
 			}
+		}
+	}
+	// Owner-authorized, branch-only compatibility for the existing read-only PP
+	// verification suite. It does not revive the retired policy resolver or apply
+	// its former command-admission semantics to the new Developer policy plane.
+	if len(positional) == 2 && beta2ProfileCommand(positional[0], positional[1]) {
+		approval, readErr := repo.Read(".github/checks/release/beta2-authorization.json")
+		branch := os.Getenv("GITHUB_REF_NAME")
+		if branch == "" {
+			b, _ := exec.Command("git", "-C", repo.Root, "symbolic-ref", "--short", "HEAD").Output()
+			branch = strings.TrimSpace(string(b))
+		}
+		if readErr == nil && approval["schema_version"] == "ptsip-owner-bounded-release/v1" && approval["branch"] == "dev/0.3.8b2" && approval["merge_to_main"] == false && branch == "dev/0.3.8b2" {
+			if len(repetitions) != 0 {
+				return nil, fmt.Errorf("duplicate Profile verification option")
+			}
+			if metadata != nil {
+				metadata.repo, metadata.positional, metadata.beta2Profile = repo, positional, true
+			}
+			return repo.DispatchOperation(positional[0], positional[1], options, nil)
 		}
 	}
 	if err := repo.NormalizeCommandOptions(positional, options, repetitions); err != nil {
@@ -152,6 +174,12 @@ func main() {
 	}
 	if object, ok := result.(map[string]any); ok {
 		status, _ := object["status"].(string)
+		if metadata.beta2Profile {
+			if status == "FAIL" || status == "BLOCKED" || status == "UNRESOLVED" {
+				os.Exit(2)
+			}
+			return
+		}
 		code, err := metadata.repo.CommandStatusExitCode(metadata.positional, status)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -161,4 +189,11 @@ func main() {
 			os.Exit(code)
 		}
 	}
+}
+
+func beta2ProfileCommand(namespace, command string) bool {
+	if namespace == "profile-registry" {
+		return command == "current" || command == "catalog" || command == "contracts" || command == "validate"
+	}
+	return namespace == "pp" && (command == "release" || command == "commit" || command == "range")
 }
