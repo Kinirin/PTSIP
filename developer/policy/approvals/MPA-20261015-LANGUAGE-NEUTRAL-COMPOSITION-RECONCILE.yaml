@@ -24,9 +24,10 @@ approval:
     no automatic version increments, published release immutability,
     evidence/provenance, and fail-closed mismatch handling. Do not reopen
     NuGet deployment. This approval establishes durable policy direction;
-    it does not authorize a new INFO family schema, a replacement policy
-    record, implementation cutover, publication, or restoration of retired
-    MPD-INFO-0005. Preserve the isolated dev/0.3.8b2 branch and do not
+    it does not itself materialize or activate a successor INFO policy
+    record before its independent family format and identity are resolved,
+    and it does not authorize implementation cutover, publication, or
+    restoration of retired MPD-INFO-0005. Preserve the isolated dev/0.3.8b2 branch and do not
     merge into main.
   approval_scope: FINAL_POLICY
   target_status: APPROVED
