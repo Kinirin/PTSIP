@@ -1,0 +1,28 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261015-PUBLIC-POLICY-STRUCTURE-RECONCILE
+  decision: APPROVED
+  conflict_resolution: RECONCILE
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The owner approved a new independent common top-level policy structure for
+    both PTSIP_DEVELOPER_POLICY and PTSIP_SUPPORT_FEATURE, preserving the four
+    required sections Policy_Identity, Policy_Status, Authority, Policy_Rules.
+    Public structure is shared; Authority and Policy_Rules internals may remain
+    independently family-owned. Start with Developer ARCH, without migrating
+    other families or Support Feature now. Use fixed contract entrypoint first;
+    registry-based entrypoint is deferred. New schema locations are
+    developer/schemas/public_structure/ and developer/schemas/root_family/ARCH/.
+    Prior flat-layout schema design records remain audit/reference inputs only
+    and must not become normative dependencies of the new schema.
+    Preserve unrelated lifecycle and verification-gap decisions.
+    Keywords search/index contract is explicitly deferred. No new schema or
+    validator implementation is authorized by this direction approval.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  policy_content_review_scope: DIRECTION
+  implementation_authorized: false
+  branch_creation_authorized: false
+  recorded_at: '2026-10-15'

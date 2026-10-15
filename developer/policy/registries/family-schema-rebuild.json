@@ -243,5 +243,29 @@
       "no_reactivation_of_retired_policy": true,
       "do_not_modify_policy_status_or_policy_version": true
     }
+  },
+  "successor_public_structure_governance": {
+    "change_class": "SCOPED_RECONCILIATION",
+    "scope": "NEW_PUBLIC_STRUCTURE_AND_FAMILY_SCHEMA_DESIGN",
+    "prior_design_role": "HISTORICAL_REFERENCE_ONLY",
+    "successor_policy_ref": "developer/policy/registries/public-policy-structure-governance.json",
+    "approval_ref": "developer/policy/approvals/MPA-20261015-PUBLIC-POLICY-STRUCTURE-RECONCILE.yaml",
+    "superseded_prior_design_rule_paths": [
+      "decision.format_model",
+      "decision.policy_document_shared_skeleton",
+      "decision.cross_family_normative_field_template",
+      "decision.common_schema_file_and_ref_in_initial_design",
+      "decision.family_schema_owns_its_complete_document_structure",
+      "placement.fixed_root_pattern",
+      "placement.schema_filename_pattern",
+      "current_work.arch_schema_design_direction.common_policy_document_skeleton",
+      "shared_transition_notice.arch_schema_shared_policy_skeleton_reconstruction"
+    ],
+    "prior_rules_retained_for_historical_analysis": true,
+    "prior_design_fields_not_normative_for_new_schema": true,
+    "new_schema_contract_must_not_import_this_record": true,
+    "unrelated_lifecycle_decisions_preserved": true,
+    "unrelated_retired_validator_and_verification_gap_guards_preserved": true,
+    "implementation_cutover": "NOT_AUTHORIZED"
   }
 }

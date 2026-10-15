@@ -1,0 +1,93 @@
+{
+  "schema_version": "ptsip-public-policy-structure-governance/v1",
+  "artifact_class": "OWNER_APPROVED_PUBLIC_POLICY_STRUCTURE_GOVERNANCE",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "approval_ref": "developer/policy/approvals/MPA-20261015-PUBLIC-POLICY-STRUCTURE-RECONCILE.yaml",
+  "policy_authority": {
+    "source": "PROJECT_OWNER_EXPLICIT_RECONCILE",
+    "normative_for_new_public_policy_structure": true,
+    "self_contained": true,
+    "previous_schema_layout_registry_dependency": "FORBIDDEN",
+    "previous_layout_and_format_rules": "HISTORICAL_REFERENCE_ONLY_FOR_NEW_STRUCTURE",
+    "archived_provenance_preservation": "REQUIRED"
+  },
+  "applicability": {
+    "target_policy_classes": [
+      "PTSIP_DEVELOPER_POLICY",
+      "PTSIP_SUPPORT_FEATURE"
+    ],
+    "root_families": [
+      "NORM",
+      "GOV",
+      "INTENT",
+      "ARCH",
+      "INFO",
+      "CNTR",
+      "RISK",
+      "SUPPLY",
+      "REAL",
+      "ASSURE",
+      "CTRL",
+      "CHANGE",
+      "OPS",
+      "RECORD"
+    ],
+    "current_design_focus": {
+      "policy_class": "PTSIP_DEVELOPER_POLICY",
+      "responsibility_family": "ARCH"
+    },
+    "other_developer_families": "FUTURE_SEPARATE_WORK",
+    "support_feature_materialization": "FUTURE_SEPARATE_WORK",
+    "no_automatic_migration": true
+  },
+  "required_public_structure": {
+    "sections": [
+      "Policy_Identity",
+      "Policy_Status",
+      "Authority",
+      "Policy_Rules"
+    ],
+    "Policy_Identity": "SHARED_POLICY_DOCUMENT_IDENTIFICATION",
+    "Policy_Status": "SHARED_SCHEMA_STATUS_VERSION_AND_SCOPE_ENVELOPE",
+    "Authority": "COMMON_SECTION_WITH_FAMILY_INDEPENDENT_INTERNAL_SEMANTICS",
+    "Policy_Rules": "COMMON_SECTION_WITH_FAMILY_INDEPENDENT_INTERNAL_SEMANTICS",
+    "family_internal_normative_ownership": "PRESERVED",
+    "common_section_structure_does_not_unify_policy_authority": true
+  },
+  "selected_arch_schema_header": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id_scheme": "URN",
+    "title": "PTSIP Developer ARCH Policy",
+    "type": "object",
+    "required": [
+      "Policy_Identity",
+      "Policy_Status",
+      "Authority",
+      "Policy_Rules"
+    ],
+    "exact_schema_urn": "UNRESOLVED",
+    "legacy_schema_version_inheritance": "FORBIDDEN"
+  },
+  "structural_contract": {
+    "common_schema_root": "developer/schemas/public_structure/",
+    "root_family_schema_root": "developer/schemas/root_family/",
+    "initial_family_schema_root": "developer/schemas/root_family/ARCH/",
+    "schema_discovery_current": "FIXED_ENTRYPOINT",
+    "fixed_entrypoint_file": "UNRESOLVED",
+    "schema_discovery_future": "REGISTRY_BASED_DEFERRED",
+    "references": "LOGICAL_CONTRACT_IDENTITIES_WITH_RECURSIVE_DISCOVERY",
+    "recursive_contract_file_layout": "NOT_YET_SPECIFIED",
+    "arbitrary_location_inference": "FORBIDDEN",
+    "historical_validator_or_resolver_reuse": "FORBIDDEN"
+  },
+  "other_current_policy_decisions": {
+    "legacy_bound_policy_reactivation": "FORBIDDEN",
+    "current_lifecycle_operation_contract": "UNCHANGED",
+    "existing_policy_status_and_policy_version_contracts": "UNCHANGED",
+    "existing_verification_gap": "PRESERVED",
+    "schema_materialization": "NOT_YET_AUTHORIZED",
+    "validator_materialization": "NOT_YET_AUTHORIZED",
+    "keywords_search_contract": "DEFERRED",
+    "full_internal_authority_and_rules_fields": "UNRESOLVED"
+  }
+}
