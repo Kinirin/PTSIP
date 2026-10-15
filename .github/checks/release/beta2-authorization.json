@@ -8,6 +8,13 @@
   "mandatory_engines": ["context", "storage", "validation", "discovery", "planning", "execution", "projection"],
   "merge_to_main": false,
   "retired_developer_policy_restore": false,
+  "branch_only_profile_schema_loader_dependency_restore": {
+    "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_15",
+    "file": "developer/policy/schemas/root-family-policy.schema.json",
+    "historical_source_sha": "781a0a46764734a98707662af1a3a2fbd6a88cf7",
+    "scope": "EXISTING_PROFILE_VERIFICATION_LOADING_ON_DEV_0_3_8B2_ONLY",
+    "merge_to_main": false
+  },
   "automated_policy_validation_available": false,
   "family_schema_or_validator_creation": false,
   "verification_workflow": ".github/workflows/tooling-test.yml",

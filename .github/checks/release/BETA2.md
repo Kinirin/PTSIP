@@ -1,9 +1,12 @@
 # Bounded PTSIP 0.3.8b2 release
 
 The Project Owner authorized this release on 2026-10-15. Work is isolated on
-`dev/0.3.8b2`; this branch must not merge to `main`. The current policy retirement
-and Family reconstruction records are retained without restoration or amendment.
-No new Family policy, policy schema or policy validator is introduced.
+`dev/0.3.8b2`; this branch must not merge to `main`. Current policy retirement
+and Family reconstruction records are retained. The owner subsequently authorized
+restoring the historical common schema loading dependency for existing Profile
+verification on this branch only. It is copied from 781a0a46764734a98707662af1a3a2fbd6a88cf7;
+retired policy statuses and the disabled Developer Policy Resolver are preserved.
+No successor Family policy, schema or validator is introduced.
 
 `beta2-authorization.json` records the bounded release instruction, not a
 successor policy or an automated policy-validation PASS. Release code does not
