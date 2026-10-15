@@ -96,6 +96,11 @@ jobs:
   registered-verification:
     name: "Registered verification / ${{ matrix.component }} / ${{ matrix.platform }}"
     needs: mode-selection
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 40
     strategy:
