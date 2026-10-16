@@ -1,0 +1,37 @@
+{
+  "schema_version": "ptsip-lifecycle-status-contract-authority/v1",
+  "artifact_class": "CURRENT_POLICY_AUTHORITY",
+  "authority_source": "CURRENT_USER_EXPLICIT",
+  "historical_approvals": {
+    "path_pattern": "developer/policy/approvals/*",
+    "authority": "HISTORICAL_EVIDENCE_ONLY",
+    "normative_application": "FORBIDDEN",
+    "new_policy_inference": "FORBIDDEN"
+  },
+  "status": {
+    "superseded_contract": "developer/contracts/lifecycle/policy_status.json",
+    "superseded_contract_retention": "INVALIDATED",
+    "disposition": "REPLACE_AND_REMOVE",
+    "new_status_contracts": [
+      "developer/contracts/lifecycle/status_constant/status_DRAFT.json",
+      "developer/contracts/lifecycle/status_constant/status_APPROVED.json",
+      "developer/contracts/lifecycle/status_constant/status_RETIRED.json"
+    ],
+    "composite_schema": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    "old_contract_as_normative_source": "FORBIDDEN",
+    "historical_content_for_migration": "PERMITTED_NON_NORMATIVE",
+    "missing_status_semantics": "USER_DECISION_REQUIRED",
+    "dangling_contract_references": "FORBIDDEN"
+  },
+  "version": {
+    "contract": "developer/contracts/lifecycle/policy_version.json",
+    "independent_version_semantics": "PRESERVE",
+    "old_status_contract_dependency": "MIGRATE",
+    "new_status_inference_from_version": "FORBIDDEN"
+  },
+  "implementation": {
+    "contract_changes": "POLICY_DERIVED",
+    "previous_validation_success_as_new_success": "FORBIDDEN",
+    "legacy_fallback": "FORBIDDEN"
+  }
+}

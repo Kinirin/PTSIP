@@ -9,7 +9,8 @@
     "self_contained": true,
     "previous_schema_layout_registry_dependency": "FORBIDDEN",
     "previous_layout_and_format_rules": "HISTORICAL_REFERENCE_ONLY_FOR_NEW_STRUCTURE",
-    "archived_provenance_preservation": "REQUIRED"
+    "archived_provenance_preservation": "REQUIRED",
+    "current_status_policy_ref": "developer/policy/registries/lifecycle-status-contract-authority.json"
   },
   "applicability": {
     "target_policy_classes": [
@@ -83,11 +84,13 @@
   "other_current_policy_decisions": {
     "legacy_bound_policy_reactivation": "FORBIDDEN",
     "current_lifecycle_operation_contract": "UNCHANGED",
-    "existing_policy_status_and_policy_version_contracts": "UNCHANGED",
+    "existing_policy_status_and_policy_version_contracts": "STATUS_REPLACEMENT_AUTHORIZED_VERSION_PRESERVED",
     "existing_verification_gap": "PRESERVED",
     "schema_materialization": "NOT_YET_AUTHORIZED",
     "validator_materialization": "NOT_YET_AUTHORIZED",
     "keywords_search_contract": "DEFERRED",
-    "full_internal_authority_and_rules_fields": "UNRESOLVED"
+    "full_internal_authority_and_rules_fields": "UNRESOLVED",
+    "historical_approval_files": "HISTORICAL_EVIDENCE_ONLY",
+    "status_contract_authority_ref": "developer/policy/registries/lifecycle-status-contract-authority.json"
   }
 }

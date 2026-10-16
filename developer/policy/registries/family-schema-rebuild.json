@@ -137,7 +137,7 @@
       "POLICY_DERIVED_MACHINE_CONTRACT",
       "IMPLEMENTATION"
     ],
-    "retention": "PRESERVE_EXISTING_LIFECYCLE_CONTRACT_FILES",
+    "retention": "PRESERVE_VERSION_CONTRACT_ONLY_STATUS_REPLACEMENT_AUTHORIZED",
     "new_family_policy_adoption": "NOT_AUTOMATIC",
     "previous_GOV_policy_status": "RETIRED_WAITING",
     "previous_GOV_policy_is_new_normative_source": false,
@@ -146,7 +146,7 @@
     "contract_driven_policy_decision": "FORBIDDEN",
     "existing_contract_functions_as_analysis_input": "PERMITTED_NON_NORMATIVE",
     "status": {
-      "file": "developer/contracts/lifecycle/policy_status.json",
+      "file": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
       "current_functions": [
         "STATUS_SUBSTATUS_VALIDATION",
         "STATUS_VOCABULARY",
@@ -156,7 +156,15 @@
       "current_semantics_auto_adopted_by_new_family": false,
       "new_arch_status_field_requirement": "UNRESOLVED",
       "new_policy_status_vocabulary": "UNRESOLVED",
-      "normalization_and_recovery_authorization": "DRAFT_PASS_PROMOTION_REMOVED; OTHER_RECOVERY_UNCHANGED"
+      "normalization_and_recovery_authorization": "DRAFT_PASS_PROMOTION_REMOVED; OTHER_RECOVERY_UNCHANGED",
+      "superseded_file": "developer/contracts/lifecycle/policy_status.json",
+      "superseded_retention": "INVALIDATED",
+      "replacement_contracts": [
+        "developer/contracts/lifecycle/status_constant/status_DRAFT.json",
+        "developer/contracts/lifecycle/status_constant/status_APPROVED.json",
+        "developer/contracts/lifecycle/status_constant/status_RETIRED.json"
+      ],
+      "previous_content_role": "NON_NORMATIVE_MIGRATION_REFERENCE"
     },
     "version": {
       "file": "developer/contracts/lifecycle/policy_version.json",
@@ -205,8 +213,12 @@
       ],
       "independent_ARCH_identity_and_field_schema": "UNRESOLVED",
       "contract_is_not_family_policy_authority": true,
-      "old_GOV_policy_reactivation": false
-    }
+      "old_GOV_policy_reactivation": false,
+      "approval_ref_role": "HISTORICAL_EVIDENCE_ONLY",
+      "current_authority_ref": "developer/policy/registries/lifecycle-status-contract-authority.json"
+    },
+    "historical_approval_authority": "HISTORICAL_EVIDENCE_ONLY",
+    "current_authority_ref": "developer/policy/registries/lifecycle-status-contract-authority.json"
   },
   "lifecycle_operation_design": {
     "approval_ref": "developer/policy/approvals/MPA-20261015-LIFECYCLE-EXECUTION-STATE-PHASED-DESIGN.yaml",
