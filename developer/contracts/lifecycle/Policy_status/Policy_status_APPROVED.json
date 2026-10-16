@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:constant:status_draft:v1",
-  "title": "PTSIP DRAFT Status Contract",
+  "$id": "urn:ptsip:contract:constant:policy_status_approved:v1",
+  "title": "PTSIP APPROVED Status Contract",
   "schema_version": "ptsip-lifecycle-status-constant/v1",
   "type": "object",
   "required": [
@@ -11,15 +11,16 @@
   "additionalProperties": false,
   "properties": {
     "status": {
-      "const": "DRAFT"
+      "const": "APPROVED"
     },
     "substatus": {
       "type": "string",
       "enum": [
         "Default",
-        "Reviewed",
-        "Denied",
-        "Pass"
+        "Applying",
+        "Application_Problems",
+        "Unresolved",
+        "Activate"
       ]
     }
   }

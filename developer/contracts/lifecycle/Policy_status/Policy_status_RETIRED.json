@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:constant:status_approved:v1",
-  "title": "PTSIP APPROVED Status Contract",
+  "$id": "urn:ptsip:contract:constant:policy_status_retired:v1",
+  "title": "PTSIP RETIRED Status Contract",
   "schema_version": "ptsip-lifecycle-status-constant/v1",
   "type": "object",
   "required": [
@@ -11,16 +11,14 @@
   "additionalProperties": false,
   "properties": {
     "status": {
-      "const": "APPROVED"
+      "const": "RETIRED"
     },
     "substatus": {
       "type": "string",
       "enum": [
         "Default",
-        "Applying",
-        "Application_Problems",
-        "Unresolved",
-        "Activate"
+        "Removable",
+        "Waiting"
       ]
     }
   }

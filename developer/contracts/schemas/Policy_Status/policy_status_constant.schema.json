@@ -21,18 +21,18 @@
     "status": {
       "oneOf": [
         {
-          "$ref": "urn:ptsip:contract:constant:status_draft:v1#/properties/status"
+          "$ref": "urn:ptsip:contract:constant:policy_status_draft:v1#/properties/status"
         },
         {
-          "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/status"
+          "$ref": "urn:ptsip:contract:constant:policy_status_approved:v1#/properties/status"
         },
         {
-          "$ref": "urn:ptsip:contract:constant:status_retired:v1#/properties/status"
+          "$ref": "urn:ptsip:contract:constant:policy_status_retired:v1#/properties/status"
         }
       ]
     },
     "approved_substatus": {
-      "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/substatus"
+      "$ref": "urn:ptsip:contract:constant:policy_status_approved:v1#/properties/substatus"
     },
     "policy_fields": {
       "type": "object",
@@ -44,30 +44,30 @@
         {
           "properties": {
             "status": {
-              "$ref": "urn:ptsip:contract:constant:status_draft:v1#/properties/status"
+              "$ref": "urn:ptsip:contract:constant:policy_status_draft:v1#/properties/status"
             },
             "substatus": {
-              "$ref": "urn:ptsip:contract:constant:status_draft:v1#/properties/substatus"
+              "$ref": "urn:ptsip:contract:constant:policy_status_draft:v1#/properties/substatus"
             }
           }
         },
         {
           "properties": {
             "status": {
-              "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/status"
+              "$ref": "urn:ptsip:contract:constant:policy_status_approved:v1#/properties/status"
             },
             "substatus": {
-              "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/substatus"
+              "$ref": "urn:ptsip:contract:constant:policy_status_approved:v1#/properties/substatus"
             }
           }
         },
         {
           "properties": {
             "status": {
-              "$ref": "urn:ptsip:contract:constant:status_retired:v1#/properties/status"
+              "$ref": "urn:ptsip:contract:constant:policy_status_retired:v1#/properties/status"
             },
             "substatus": {
-              "$ref": "urn:ptsip:contract:constant:status_retired:v1#/properties/substatus"
+              "$ref": "urn:ptsip:contract:constant:policy_status_retired:v1#/properties/substatus"
             }
           }
         }
