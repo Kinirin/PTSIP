@@ -258,6 +258,12 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 		return Snapshot{}, err
 	}
 	manifest := ShippingManifest{Schema: "ptsip-shipping-manifest/v1", Selection: s, VerificationRun: run, Snapshot: snapshot, Assets: []File{}}
+	if composition.PackagePyPI != "" && s.Type == "PTSIP_PACKAGE" {
+		manifest.PackageDistribution, err = ConsumePackageReceipt(root, s, snapshot, input, output, composition.PackagePyPI)
+		if err != nil {
+			return Snapshot{}, err
+		}
+	}
 	entries, err := os.ReadDir(out)
 	if err != nil {
 		return Snapshot{}, err

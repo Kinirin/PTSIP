@@ -1,5 +1,5 @@
 {
-  "schema_version": "ptsip-pypi-publisher-routing/v2",
+  "schema_version": "ptsip-pypi-publisher-routing/v3",
   "approval_ref": "developer/policy/approvals/MPA-20261013-PYPI-TOKEN-AND-TOOL-B1-PUBLICATION.yaml",
   "repository_owner": "Kinirin",
   "repository": "PTSIP",
@@ -16,7 +16,8 @@
     "oidc_attestations": false,
     "secret_value_read_or_log": false
   },
-  "tool": {"project": "PTSIP", "environment": "pypi"},
+  "package": {"project": "PTSIP", "environment": "pypi"},
+  "tool": {"project": "ptsip-tool", "environment": "pypi"},
   "engine": {"project_pattern": "ptsip-engine-{engine}", "environment_pattern": "pypi"},
   "automatic_pypi_account_configuration": false
 }

@@ -133,14 +133,17 @@ func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T
 	}
 }
 
-func TestProjectTokenScopeAllowsToolAndRejectsEnginePyPIBeforePublication(t *testing.T) {
+func TestProjectTokenScopeAllowsPackageAndRejectsStandaloneProjects(t *testing.T) {
 	root := repoRoot(t)
-	tool := release.Component{ID: "tool", Kind: "tool"}
-	if environment, err := release.PublisherEnvironment(root, tool); err != nil || environment != "pypi" {
+	packageComponent := release.Component{ID: "package", Kind: "package"}
+	if environment, err := release.PublisherEnvironment(root, packageComponent); err != nil || environment != "pypi" {
 		t.Fatalf("registered token route unavailable: %s %v", environment, err)
 	}
-	if err := release.AdmitPublisherScope(root, release.Selection{Components: []release.Component{tool}}, "github-pypi"); err != nil {
+	if err := release.AdmitPublisherScope(root, release.Selection{Components: []release.Component{packageComponent}}, "github-pypi"); err != nil {
 		t.Fatal(err)
+	}
+	if _, err := release.PublisherEnvironment(root, release.Component{ID: "tool", Kind: "tool"}); err == nil {
+		t.Fatal("PTSIP-only token claimed the new standalone Tool project")
 	}
 	for _, id := range []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"} {
 		s := release.Selection{Components: []release.Component{{ID: id, Kind: "engine"}}}

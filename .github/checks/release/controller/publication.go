@@ -257,15 +257,16 @@ func EngineReuse(root string, s Selection, components []PublishedComponent, loca
 }
 
 type ShippingManifest struct {
-	Schema                 string    `json:"schema_version"`
-	Selection              Selection `json:"selection"`
-	VerificationRun        int64     `json:"verification_run"`
-	Snapshot               Snapshot  `json:"package"`
-	Assets                 []File    `json:"assets"`
-	PublicationSource      string    `json:"publication_source_sha,omitempty"`
-	ReissueRun             int64     `json:"reissue_from_run,omitempty"`
-	OriginalArtifactID     int64     `json:"original_artifact_id,omitempty"`
-	OriginalArtifactDigest string    `json:"original_artifact_digest,omitempty"`
+	Schema                 string              `json:"schema_version"`
+	Selection              Selection           `json:"selection"`
+	VerificationRun        int64               `json:"verification_run"`
+	Snapshot               Snapshot            `json:"package"`
+	Assets                 []File              `json:"assets"`
+	PublicationSource      string              `json:"publication_source_sha,omitempty"`
+	ReissueRun             int64               `json:"reissue_from_run,omitempty"`
+	OriginalArtifactID     int64               `json:"original_artifact_id,omitempty"`
+	OriginalArtifactDigest string              `json:"original_artifact_digest,omitempty"`
+	PackageDistribution    *PublishedComponent `json:"pypi_package,omitempty"`
 }
 
 func Shipping(root string, s Selection, output string) (ShippingManifest, error) {
@@ -353,6 +354,9 @@ func PyPIStage(root string, s Selection, output string, verify bool) error {
 		return err
 	}
 	for _, c := range m.Snapshot.Components {
+		if m.PackageDistribution != nil && c.Kind == "tool" {
+			continue
+		}
 		selected := false
 		for _, v := range s.Components {
 			selected = selected || v.ID == c.ID
@@ -360,11 +364,17 @@ func PyPIStage(root string, s Selection, output string, verify bool) error {
 		if !selected || c.Kind == "profiles" {
 			continue
 		}
-		project := "PTSIP"
+		project := "ptsip-tool"
+		version := c.Version
 		if c.Kind == "engine" {
 			project = "ptsip-engine-" + c.ID
+		} else {
+			version, err = ToolDistributionVersion(c.Version)
+			if err != nil {
+				return err
+			}
 		}
-		existing, e := PyPIFiles(project, c.Version)
+		existing, e := PyPIFiles(project, version)
 		if e != nil {
 			return e
 		}
@@ -395,6 +405,35 @@ func PyPIStage(root string, s Selection, output string, verify bool) error {
 			}
 		}
 	}
+	if m.PackageDistribution != nil {
+		files, err := PyPIFiles("PTSIP", m.PackageDistribution.Version)
+		if err != nil {
+			return err
+		}
+		for _, f := range m.PackageDistribution.Files {
+			matched := false
+			for _, old := range files {
+				if old.Name == f.Name {
+					if old.Digests.SHA256 != f.SHA256 {
+						return fmt.Errorf("immutable complete Package wheel differs")
+					}
+					matched = true
+				}
+			}
+			if verify && !matched {
+				return fmt.Errorf("complete Package publication not observed")
+			}
+			if !verify && matched {
+				p, err := SafePath(root, output+"/pypi/package/"+f.Name)
+				if err != nil {
+					return err
+				}
+				if err := os.Remove(p); err != nil && !os.IsNotExist(err) {
+					return err
+				}
+			}
+		}
+	}
 	return nil
 }
 
@@ -406,8 +445,9 @@ func PublisherEnvironment(root string, c Component) (string, error) {
 			Scope                               []string `json:"declared_project_scope"`
 			Fallback                            bool     `json:"oidc_fallback"`
 		} `json:"authentication"`
-		Tool   struct{ Project, Environment string }
-		Engine struct {
+		Tool    struct{ Project, Environment string }
+		Package struct{ Project, Environment string }
+		Engine  struct {
 			Project     string `json:"project_pattern"`
 			Environment string `json:"environment_pattern"`
 		}
@@ -415,10 +455,13 @@ func PublisherEnvironment(root string, c Component) (string, error) {
 	if err := ReadJSON(root, ".github/checks/release/pypi-publishers.json", &routing); err != nil {
 		return "", err
 	}
-	if routing.Schema != "ptsip-pypi-publisher-routing/v2" || routing.Authentication.Mode != "API_TOKEN" || routing.Authentication.Environment != "pypi" || routing.Authentication.Secret != "PYPI_API_TOKEN" || routing.Authentication.Username != "__token__" || routing.Authentication.Fallback {
+	if routing.Schema != "ptsip-pypi-publisher-routing/v3" || routing.Authentication.Mode != "API_TOKEN" || routing.Authentication.Environment != "pypi" || routing.Authentication.Secret != "PYPI_API_TOKEN" || routing.Authentication.Username != "__token__" || routing.Authentication.Fallback {
 		return "", fmt.Errorf("publisher routing contract unsupported")
 	}
 	project, environment := "", ""
+	if c.Kind == "package" {
+		project, environment = routing.Package.Project, routing.Package.Environment
+	}
 	if c.Kind == "tool" {
 		project, environment = routing.Tool.Project, routing.Tool.Environment
 	}
@@ -454,6 +497,45 @@ func AdmitPublisherScope(root string, s Selection, destination string) error {
 		}
 	}
 	return nil
+}
+
+func PublicationTargets(root string, m ShippingManifest, output, destination string) ([]map[string]string, error) {
+	if destination == "github" {
+		return []map[string]string{}, nil
+	}
+	if destination != "github-pypi" {
+		return nil, fmt.Errorf("unregistered publication destination")
+	}
+	components := append([]Component{}, m.Selection.Components...)
+	if m.PackageDistribution != nil {
+		components = append(components, Component{ID: "package", Kind: "package", Version: m.PackageDistribution.Version})
+	}
+	result := []map[string]string{}
+	for _, c := range components {
+		if c.Kind == "profiles" || (m.PackageDistribution != nil && c.Kind == "tool") {
+			continue
+		}
+		p, err := SafePath(root, output+"/pypi/"+c.ID)
+		if err != nil {
+			return nil, err
+		}
+		entries, err := os.ReadDir(p)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return nil, err
+		}
+		if len(entries) == 0 {
+			continue
+		}
+		env, err := PublisherEnvironment(root, c)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, map[string]string{"component": c.ID, "environment": env})
+	}
+	return result, nil
 }
 
 func RecordPackage(root string, s Selection, output string) error {

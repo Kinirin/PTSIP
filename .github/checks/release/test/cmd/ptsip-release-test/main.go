@@ -26,6 +26,7 @@ func main() {
 	component := f.String("component", "", "selected component")
 	platform := f.String("platform", "", "selected host")
 	selection := f.String("selection", ".artifacts/release/selection.json", "derived selection")
+	input := f.String("input", ".artifacts/release/verified", "verified original component artifacts")
 	f.Parse(os.Args[2:])
 	abs, err := filepath.Abs(*root)
 	if err != nil {
@@ -46,7 +47,7 @@ func main() {
 			if e != nil {
 				fail(e)
 			}
-			fmt.Fprintf(file, "matrix=%s\npython=%s\nfetch_depth=%d\n", test.Encode(p.Matrix), p.Python, p.FetchDepth)
+			fmt.Fprintf(file, "matrix=%s\njoin_matrix=%s\njoin_count=%d\npython=%s\nfetch_depth=%d\n", test.Encode(p.Matrix), test.Encode(p.Join), len(p.Join.Include), p.Python, p.FetchDepth)
 			file.Close()
 		}
 		result = p
@@ -79,6 +80,16 @@ func main() {
 			fail(e)
 		}
 		v, e := test.Execute(abs, s, *component, *platform)
+		if e != nil {
+			fail(e)
+		}
+		result = v
+	case "join":
+		s, e := test.ReadSelection(abs, *selection)
+		if e != nil {
+			fail(e)
+		}
+		v, e := test.VerifyPackageJoin(abs, s, *input, *platform)
 		if e != nil {
 			fail(e)
 		}

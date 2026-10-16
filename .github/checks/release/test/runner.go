@@ -27,6 +27,9 @@ type Execution struct {
 	} `json:"matrix"`
 	Python     string `json:"python"`
 	FetchDepth int    `json:"git_fetch_depth"`
+	Join       struct {
+		Include []release.MatrixEntry `json:"include"`
+	} `json:"join_matrix"`
 }
 type Receipt struct {
 	Schema       string         `json:"schema_version"`
@@ -105,6 +108,16 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 		return result, err
 	}
 	result.Matrix.Include, err = release.Matrix(result.Selection, contract.Runners)
+	result.Join.Include = []release.MatrixEntry{}
+	c, e := release.ReadComposition(root)
+	if e != nil {
+		return result, e
+	}
+	if c.PackagePyPI != "" && result.Selection.Type == "PTSIP_PACKAGE" {
+		for _, p := range result.Selection.Platforms {
+			result.Join.Include = append(result.Join.Include, release.MatrixEntry{Component: "package", Kind: "package", Version: c.PackagePyPI, Platform: p, Runner: contract.Runners[p]})
+		}
+	}
 	result.Python = contract.Runtime.Python
 	result.FetchDepth = contract.Runtime.FetchDepth
 	return result, err
@@ -193,6 +206,9 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 			return result, err
 		}
 		defer cleanup()
+		if err := release.MaterializeToolProject(stage); err != nil {
+			return result, err
+		}
 		if err := command(root, nil, "python", "-m", "pip", "install", "build>=1.2,<2", "twine>=6,<8", "PyYAML>=6,<7", "jsonschema>=4.23,<5"); err != nil {
 			return result, err
 		}

@@ -23,6 +23,8 @@ jobs:
       matrix: ${{ steps.mode.outputs.matrix }}
       python: ${{ steps.mode.outputs.python }}
       fetch_depth: ${{ steps.mode.outputs.fetch_depth }}
+      join_matrix: ${{ steps.mode.outputs.join_matrix }}
+      join_count: ${{ steps.mode.outputs.join_count }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -49,6 +51,47 @@ jobs:
         with:
           name: verification-selection-${{ github.sha }}
           path: .artifacts/release/selection.json
+          if-no-files-found: error
+  registered-join:
+    name: "Registered join / ${{ matrix.component }} / ${{ matrix.platform }}"
+    needs: [mode-selection, registered-verification]
+    if: ${{ needs.mode-selection.outputs.join_count != '0' }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.mode-selection.outputs.join_matrix) }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: ${{ needs.mode-selection.outputs.fetch_depth }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .github/checks/release/test/go.mod
+          cache: true
+          cache-dependency-path: |
+            .github/checks/release/test/go.sum
+            .github/checks/release/controller/go.sum
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ needs.mode-selection.outputs.python }}
+      - uses: actions/download-artifact@v8
+        with:
+          name: verification-selection-${{ github.sha }}
+          path: .artifacts/release
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: verification-*-${{ github.sha }}
+          path: .artifacts/release/verified
+      - name: Execute registered join contract
+        shell: bash
+        run: go -C .github/checks/release/test run ./cmd/ptsip-release-test join --root "$GITHUB_WORKSPACE" --platform "${{ matrix.platform }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: verification-package-${{ matrix.platform }}-${{ github.sha }}
+          path: .artifacts/release/package/${{ matrix.platform }}
           if-no-files-found: error
   registered-verification:
     name: "Registered verification / ${{ matrix.component }} / ${{ matrix.platform }}"
