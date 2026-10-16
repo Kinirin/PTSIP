@@ -7,7 +7,7 @@
   "contract_status": "REGISTERED",
   "catalog_application_status": "APPLIED",
   "maintenance_authority": "PROJECT_OWNER_SHARED_DEVELOPER_CATALOG",
-  "policy_status_contract_ref": "developer/contracts/lifecycle/policy_status.json",
+  "policy_status_contract_ref": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
   "approval": {
     "decision": "APPROVED",
     "decision_source": "USER_EXPLICIT",
@@ -595,7 +595,10 @@
     "runtime_activation": "FORBIDDEN"
   },
   "lifecycle_schema_resources": {
-    "status": "developer/contracts/lifecycle/policy_status.json",
-    "version": "developer/contracts/lifecycle/policy_version.json"
+    "status": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    "version": "developer/contracts/lifecycle/policy_version.json",
+    "status_draft": "developer/contracts/lifecycle/status_constant/status_DRAFT.json",
+    "status_approved": "developer/contracts/lifecycle/status_constant/status_APPROVED.json",
+    "status_retired": "developer/contracts/lifecycle/status_constant/status_RETIRED.json"
   }
 }

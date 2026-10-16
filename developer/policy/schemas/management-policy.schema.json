@@ -38,7 +38,7 @@
           "minLength": 1
         },
         "status": {
-          "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/status"
+          "$ref": "urn:ptsip:policy:policy-status-constant:v1#/$defs/status"
         },
         "version": {
           "$ref": "urn:developer-policy:lifecycle-version:v1#/$defs/policy_version"
@@ -50,7 +50,7 @@
       "additionalProperties": false,
       "allOf": [
         {
-          "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/policy_fields"
+          "$ref": "urn:ptsip:policy:policy-status-constant:v1#/$defs/policy_fields"
         },
         {
           "$ref": "urn:developer-policy:lifecycle-version:v1#/$defs/policy_fields"
@@ -199,7 +199,7 @@
           }
         },
         "target_substatus": {
-          "$ref": "urn:developer-policy:lifecycle-status:v1#/$defs/approved_substatus"
+          "$ref": "urn:ptsip:policy:policy-status-constant:v1#/$defs/approved_substatus"
         }
       },
       "additionalProperties": false

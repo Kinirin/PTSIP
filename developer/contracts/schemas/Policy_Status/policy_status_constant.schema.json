@@ -1,64 +1,77 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:policy:policy-status-constant:v1",
-  "title": "PTSIP Status Policy Structure",
+  "title": "PTSIP Policy Status Constants",
   "type": "object",
-  "schema_version":"",
-  "required": [],
-  "oneOf": [
+  "required": [
+    "status",
+    "substatus"
+  ],
+  "properties": {
+    "status": {},
+    "substatus": {}
+  },
+  "additionalProperties": false,
+  "allOf": [
     {
-        "properties": {
-            "const": "DRAFT.Default",
-            "$ref":"urn:ptsip:contract:constant:status_draft:v1"
-        },
-        "properties": {
-            "const": "DRAFT.Reviewed",
-            "$ref":"urn:ptsip:contract:constant:status_draft:v1"
-        },
-        "properties": {
-            "const": "DRAFT.Denied",
-            "$ref":"urn:ptsip:contract:constant:status_draft:v1"
-        },
-        "properties": {
-            "const": "DRAFT.Pass",
-            "$ref":"urn:ptsip:contract:constant:status_draft:v1"
-        },
-    },
-    {
-        "properties": {
-            "const": "APPROVED.Default",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
-        "properties": {
-            "const": "APPROVED.Applying",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
-        "properties": {
-            "const": "APPROVED.Application_Problems",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
-        "properties": {
-            "const": "APPROVED.Unresolved",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
-        "properties": {
-            "const": "APPROVED.Activate",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
-    },
-    {
-        "properties": {
-            "const": "RETIRED.Default",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
-        "properties": {
-            "const": "RETIRED.Removable",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
-        "properties": {
-            "const": "RETIRED.Waiting",
-            "$ref":"urn:ptsip:contract:constant:status_approved:v1"
-        },
+      "$ref": "#/$defs/policy_fields"
     }
   ],
+  "$defs": {
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "urn:ptsip:contract:constant:status_draft:v1#/properties/status"
+        },
+        {
+          "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/status"
+        },
+        {
+          "$ref": "urn:ptsip:contract:constant:status_retired:v1#/properties/status"
+        }
+      ]
+    },
+    "approved_substatus": {
+      "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/substatus"
+    },
+    "policy_fields": {
+      "type": "object",
+      "required": [
+        "status",
+        "substatus"
+      ],
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "$ref": "urn:ptsip:contract:constant:status_draft:v1#/properties/status"
+            },
+            "substatus": {
+              "$ref": "urn:ptsip:contract:constant:status_draft:v1#/properties/substatus"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/status"
+            },
+            "substatus": {
+              "$ref": "urn:ptsip:contract:constant:status_approved:v1#/properties/substatus"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "$ref": "urn:ptsip:contract:constant:status_retired:v1#/properties/status"
+            },
+            "substatus": {
+              "$ref": "urn:ptsip:contract:constant:status_retired:v1#/properties/substatus"
+            }
+          }
+        }
+      ]
+    }
+  }
 }

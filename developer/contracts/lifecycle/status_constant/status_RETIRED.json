@@ -1,5 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:contract:constant:status_retired:v1",
-  "schema_version":
+  "title": "PTSIP RETIRED Status Contract",
+  "schema_version": "ptsip-lifecycle-status-constant/v1",
+  "type": "object",
+  "required": [
+    "status",
+    "substatus"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "const": "RETIRED"
+    },
+    "substatus": {
+      "type": "string",
+      "enum": [
+        "Default",
+        "Removable",
+        "Waiting"
+      ]
+    }
+  }
 }
