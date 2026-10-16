@@ -1,14 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:policy-routing:v1",
+  "$id": "urn:ptsip:contract:policy-routing:v2",
   "title": "PTSIP Policy Routing Contract",
   "description": "Validates explicit routes from policy_kind and root_family to policy output directories and schema references.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "routes"],
+  "required": [
+    "schema_version",
+    "identity_sources",
+    "routes"
+  ],
   "properties": {
     "schema_version": {
-      "const": "ptsip-policy-routing/v1"
+      "const": "ptsip-policy-routing/v2"
     },
     "routes": {
       "type": "object",
@@ -23,13 +27,23 @@
         "type": "object",
         "minProperties": 1,
         "propertyNames": {
-          "enum": [
-            "NORM", "GOV", "INTENT", "ARCH", "INFO", "CNTR", "RISK",
-            "SUPPLY", "REAL", "ASSURE", "CTRL", "CHANGE", "OPS", "RECORD"
-          ]
+          "type": "string",
+          "minLength": 1
         },
         "additionalProperties": {
           "$ref": "#/$defs/route"
+        }
+      }
+    },
+    "identity_sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_family"
+      ],
+      "properties": {
+        "root_family": {
+          "$ref": "#/$defs/repositoryFile"
         }
       }
     }
@@ -48,12 +62,17 @@
     "route": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["output", "schema_refs"],
+      "required": [
+        "output",
+        "schema_refs"
+      ],
       "properties": {
         "output": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["directory"],
+          "required": [
+            "directory"
+          ],
           "properties": {
             "directory": {
               "$ref": "#/$defs/repositoryDirectory"
@@ -63,14 +82,29 @@
         "schema_refs": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["public", "authority", "rules"],
+          "required": [
+            "public",
+            "authority",
+            "rules"
+          ],
           "properties": {
-            "public": { "$ref": "#/$defs/schemaReference" },
-            "authority": { "$ref": "#/$defs/schemaReference" },
-            "rules": { "$ref": "#/$defs/schemaReference" }
+            "public": {
+              "$ref": "#/$defs/schemaReference"
+            },
+            "authority": {
+              "$ref": "#/$defs/schemaReference"
+            },
+            "rules": {
+              "$ref": "#/$defs/schemaReference"
+            }
           }
         }
       }
+    },
+    "repositoryFile": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+\\.json$"
     }
   }
 }

@@ -1,5 +1,8 @@
 {
-  "schema_version": "ptsip-policy-routing/v1",
+  "schema_version": "ptsip-policy-routing/v2",
+  "identity_sources": {
+    "root_family": "developer/contracts/identity/root_family.json"
+  },
   "routes": {
     "PTSIP_DEVELOPER_POLICY": {
       "ARCH": {
