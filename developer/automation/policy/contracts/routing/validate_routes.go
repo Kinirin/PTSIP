@@ -92,23 +92,31 @@ func compilePattern(pattern string) (jsonschema.Regexp, error) {
 	expr.MatchTimeout = 5 * time.Second
 	return &schemaRegexp{expression: expr}, nil
 }
-func validate(root, schemaPath string, value any, code string) error {
+func compileSchema(root, schemaPath, code string) (*jsonschema.Schema, error) {
 	schema, err := load(root, schemaPath, code, false)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	id := asString(schema["$id"])
 	if id == "" {
-		return invalid(code, schemaPath+": missing $id")
+		return nil, invalid(code, schemaPath+": missing $id")
 	}
 	c := jsonschema.NewCompiler()
 	c.UseRegexpEngine(compilePattern)
 	if err := c.AddResource(id, schema); err != nil {
-		return invalid(code, err.Error())
+		return nil, invalid(code, err.Error())
 	}
 	compiled, err := c.Compile(id)
 	if err != nil {
-		return invalid(code, err.Error())
+		return nil, invalid(code, err.Error())
+	}
+	return compiled, nil
+}
+
+func validate(root, schemaPath string, value any, code string) error {
+	compiled, err := compileSchema(root, schemaPath, code)
+	if err != nil {
+		return err
 	}
 	if err := compiled.Validate(value); err != nil {
 		return invalid(code, err.Error())
@@ -182,20 +190,10 @@ func inspectReferences(root string, selected map[string]any) error {
 	refs := asObject(selected["schema_refs"])
 	for _, field := range []string{"public", "authority", "rules"} {
 		path := asString(refs[field])
-		document, err := load(root, path, "SCHEMA_REF_UNRESOLVED", false)
-		if err != nil {
-			return err
-		}
-		if asString(document["$id"]) == "" {
-			return invalid("SCHEMA_REF_UNRESOLVED", field+": missing schema $id: "+path)
-		}
-		// Compile verifies schema syntax; full recursive references are a separate boundary.
-		if err := validate(root, path, map[string]any{}, "SCHEMA_REF_UNRESOLVED"); err != nil {
-			// A valid schema need not accept the empty instance.
-			if strings.Contains(err.Error(), "valid against") {
-				continue
-			}
-			return err
+		// A referenced schema must exist and compile, but it need not accept
+		// an empty policy instance. No recursive discovery or activation here.
+		if _, err := compileSchema(root, path, "SCHEMA_REF_UNRESOLVED"); err != nil {
+			return invalid("SCHEMA_REF_UNRESOLVED", field+": "+err.Error())
 		}
 	}
 	return nil
