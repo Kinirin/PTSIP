@@ -15,8 +15,15 @@
           "minLength": 1
         },
         "Authority_Major_Category": {
-          "$ref": "urn:ptsip:policy:authority:major-category:v1"
-        }
+          "$ref": "urn:ptsip:policy:authority_category:authority_major:v1"
+        },
+        "Authority_Minor_Category": {
+          "$ref": "urn:ptsip:policy:authority_category:authority_minor:v1"
+        },
+        "Authority_Minor_Category": {
+          "$ref": "urn:ptsip:policy:authority_category:authority_micro:v1"
+        },
+
       }
     }
   }

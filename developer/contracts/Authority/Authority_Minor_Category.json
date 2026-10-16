@@ -1,14 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:authority:mainal-category:v1",
-  "title": "PTSIP Authority Mainal Category",
+  "$id": "urn:ptsip:policy:authority:minor-category:v1",
+  "title": "PTSIP Authority Minor Category",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "mainal"
+    "minor"
   ],
   "properties": {
-    "mainal": {
+    "minor": {
       "type": "string",
       "minLength": 1
     },
