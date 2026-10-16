@@ -18,10 +18,8 @@
       "type": "object",
       "minProperties": 1,
       "propertyNames": {
-        "enum": [
-          "PTSIP_DEVELOPER_POLICY",
-          "PTSIP_SUPPORT_FEATURE"
-        ]
+        "type": "string",
+        "minLength": 1
       },
       "additionalProperties": {
         "type": "object",
@@ -43,6 +41,9 @@
       ],
       "properties": {
         "root_family": {
+          "$ref": "#/$defs/repositoryFile"
+        },
+        "policy_kind": {
           "$ref": "#/$defs/repositoryFile"
         }
       }
@@ -106,5 +107,9 @@
       "minLength": 1,
       "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+\\.json$"
     }
+  },
+  "x-ptsip-contract-binding": {
+    "policy_kind": "developer/contracts/identity/policy_kind.json",
+    "root_family": "developer/contracts/identity/root_family.json"
   }
 }

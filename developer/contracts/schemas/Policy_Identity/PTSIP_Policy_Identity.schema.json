@@ -15,10 +15,7 @@
     },
     "policy_kind": {
       "type": "string",
-      "enum": [
-        "PTSIP_DEVELOPER_POLICY",
-        "PTSIP_SUPPORT_FEATURE"
-      ]
+      "minLength": 1
     },
     "root_family": {
       "type": "string",
@@ -39,6 +36,7 @@
   },
   "x-ptsip-contract-binding": {
     "routing": "developer/contracts/routing/policy_routes.json",
-    "root_family": "developer/contracts/identity/root_family.json"
+    "root_family": "developer/contracts/identity/root_family.json",
+    "policy_kind": "developer/contracts/identity/policy_kind.json"
   }
 }
