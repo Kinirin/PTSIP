@@ -17,6 +17,9 @@ import (
 
 const identitySchemaPath = "developer/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json"
 const routingSchemaPath = "developer/contracts/schemas/Policy_Identity/Routing/Policy_Routing.schema.json"
+const routingDataPath = "developer/contracts/routing/policy_routes.json"
+const policyKindSchemaID = "urn:ptsip:identity:policy-kind:v1"
+const rootFamilySchemaID = "urn:ptsip:identity:root-family:v1"
 
 type contractError struct {
 	Code   string
@@ -92,6 +95,12 @@ func compilePattern(pattern string) (jsonschema.Regexp, error) {
 	expr.MatchTimeout = 5 * time.Second
 	return &schemaRegexp{expression: expr}, nil
 }
+type closedLoader struct{}
+
+func (closedLoader) Load(url string) (any, error) {
+	return nil, fmt.Errorf("unregistered schema resource: %s", url)
+}
+
 func compileSchema(root, schemaPath, code string) (*jsonschema.Schema, error) {
 	schema, err := load(root, schemaPath, code, false)
 	if err != nil {
@@ -101,8 +110,40 @@ func compileSchema(root, schemaPath, code string) (*jsonschema.Schema, error) {
 	if id == "" {
 		return nil, invalid(code, schemaPath+": missing $id")
 	}
+
+	// The routing document provides explicit paths for local schema resources.
+	// JSON Schema references are resolved by $id, not by custom x-* keywords.
+	routes, err := load(root, routingDataPath, "ROUTING_CONTRACT_INVALID", false)
+	if err != nil {
+		return nil, err
+	}
+	sources := asObject(routes["identity_sources"])
+	resources := []struct {
+		key string
+		id  string
+	}{
+		{"policy_kind", policyKindSchemaID},
+		{"root_family", rootFamilySchemaID},
+	}
 	c := jsonschema.NewCompiler()
 	c.UseRegexpEngine(compilePattern)
+	c.UseLoader(closedLoader{})
+	for _, resource := range resources {
+		path := asString(sources[resource.key])
+		if path == "" {
+			return nil, invalid("CONTRACT_BINDING_INVALID", "missing "+resource.key+" schema source")
+		}
+		document, err := load(root, path, "IDENTITY_SOURCE_INVALID", false)
+		if err != nil {
+			return nil, err
+		}
+		if asString(document["$id"]) != resource.id {
+			return nil, invalid("IDENTITY_SOURCE_INVALID", "wrong $id in "+path)
+		}
+		if err := c.AddResource(resource.id, document); err != nil {
+			return nil, invalid("IDENTITY_SOURCE_INVALID", err.Error())
+		}
+	}
 	if err := c.AddResource(id, schema); err != nil {
 		return nil, invalid(code, err.Error())
 	}
@@ -124,66 +165,69 @@ func validate(root, schemaPath string, value any, code string) error {
 	return nil
 }
 
-func loadContracts(root string) (map[string]any, map[string]bool, error) {
-	identitySchema, err := load(root, identitySchemaPath, "IDENTITY_SCHEMA_INVALID", false)
+func schemaVocabulary(root, path, expectedID string) (map[string]bool, error) {
+	document, err := load(root, path, "IDENTITY_SOURCE_INVALID", false)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	binding := asObject(identitySchema["x-ptsip-contract-binding"])
-	routePath := asString(binding["routing"])
-	familyPath := asString(binding["root_family"])
-	if routePath == "" || familyPath == "" {
-		return nil, nil, invalid("CONTRACT_BINDING_INVALID", "Policy_Identity must declare routing and root_family contracts")
+	if asString(document["$id"]) != expectedID ||
+		asString(document["$schema"]) != "https://json-schema.org/draft/2020-12/schema" ||
+		asString(document["type"]) != "string" {
+		return nil, invalid("IDENTITY_SOURCE_INVALID", "invalid vocabulary schema "+path)
 	}
-	routes, err := load(root, routePath, "ROUTING_CONTRACT_INVALID", false)
+	raw, ok := document["enum"].([]any)
+	if !ok || len(raw) == 0 {
+		return nil, invalid("IDENTITY_SOURCE_INVALID", "empty vocabulary "+path)
+	}
+	allowed := make(map[string]bool, len(raw))
+	for _, entry := range raw {
+		name := asString(entry)
+		if name == "" || allowed[name] {
+			return nil, invalid("IDENTITY_SOURCE_INVALID", "invalid or duplicated value in "+path)
+		}
+		allowed[name] = true
+	}
+	return allowed, nil
+}
+
+func loadContracts(root string) (map[string]any, map[string]bool, map[string]bool, error) {
+	routes, err := load(root, routingDataPath, "ROUTING_CONTRACT_INVALID", false)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 	if err := validate(root, routingSchemaPath, routes, "ROUTING_CONTRACT_INVALID"); err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
-	fromRoutes := asString(asObject(routes["identity_sources"])["root_family"])
-	if fromRoutes != familyPath {
-		return nil, nil, invalid("CONTRACT_BINDING_INVALID", "Policy_Identity and routing disagree on root_family source")
-	}
-	familyDocument, err := load(root, familyPath, "IDENTITY_SOURCE_INVALID", false)
+	sources := asObject(routes["identity_sources"])
+	kinds, err := schemaVocabulary(root, asString(sources["policy_kind"]), policyKindSchemaID)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
-	if asString(familyDocument["schema_version"]) != "ptsip-root-family/v1" ||
-		len(familyDocument) != 2 {
-		return nil, nil, invalid("IDENTITY_SOURCE_INVALID", "unexpected Root Family source contract")
-	}
-	rawFamilies, ok := familyDocument["root_families"].([]any)
-	if !ok || len(rawFamilies) != 14 {
-		return nil, nil, invalid("IDENTITY_SOURCE_INVALID", "expected 14 Root Family entries")
-	}
-	families := map[string]bool{}
-	for _, value := range rawFamilies {
-		name := asString(value)
-		if name == "" || strings.ToUpper(name) != name || families[name] {
-			return nil, nil, invalid("IDENTITY_SOURCE_INVALID", "invalid or duplicate Root Family entry")
-		}
-		families[name] = true
+	families, err := schemaVocabulary(root, asString(sources["root_family"]), rootFamilySchemaID)
+	if err != nil {
+		return nil, nil, nil, err
 	}
 	routeKinds := asObject(routes["routes"])
 	developer := asObject(routeKinds["PTSIP_DEVELOPER_POLICY"])
 	if len(developer) != len(families) {
-		return nil, nil, invalid("ROUTING_COVERAGE_INCOMPLETE", "Developer routes must cover all 14 Root Families")
+		return nil, nil, nil, invalid("ROUTING_COVERAGE_INCOMPLETE", "Developer routes must cover every Root Family")
 	}
 	for name := range families {
-		if _, ok := developer[name]; !ok {
-			return nil, nil, invalid("ROUTING_COVERAGE_INCOMPLETE", "missing Developer Family "+name)
+		if _, exists := developer[name]; !exists {
+			return nil, nil, nil, invalid("ROUTING_COVERAGE_INCOMPLETE", "missing Developer Family "+name)
 		}
 	}
 	for kind, raw := range routeKinds {
-		for name := range asObject(raw) {
-			if !families[name] {
-				return nil, nil, invalid("INVALID_ROOT_FAMILY", kind+"/"+name)
+		if !kinds[kind] {
+			return nil, nil, nil, invalid("INVALID_POLICY_KIND", kind)
+		}
+		for family := range asObject(raw) {
+			if !families[family] {
+				return nil, nil, nil, invalid("INVALID_ROOT_FAMILY", kind+"/"+family)
 			}
 		}
 	}
-	return routes, families, nil
+	return routes, kinds, families, nil
 }
 
 func inspectReferences(root string, selected map[string]any) error {
@@ -200,7 +244,7 @@ func inspectReferences(root string, selected map[string]any) error {
 }
 
 func execute(root, identityFile, kind, family string, checkFiles bool) (map[string]any, error) {
-	routes, families, err := loadContracts(root)
+	routes, kinds, families, err := loadContracts(root)
 	if err != nil {
 		return nil, err
 	}
@@ -222,6 +266,9 @@ func execute(root, identityFile, kind, family string, checkFiles bool) (map[stri
 			return nil, err
 		}
 		currentKind, currentFamily := asString(identity["policy_kind"]), asString(identity["root_family"])
+		if !kinds[currentKind] {
+			return nil, invalid("INVALID_POLICY_KIND", currentKind)
+		}
 		if !families[currentFamily] {
 			return nil, invalid("INVALID_ROOT_FAMILY", currentFamily)
 		}
@@ -235,6 +282,9 @@ func execute(root, identityFile, kind, family string, checkFiles bool) (map[stri
 		return nil, invalid("ROUTE_UNREGISTERED", "both policy-kind and root-family are required")
 	}
 	if kind != "" {
+		if !kinds[kind] {
+			return nil, invalid("INVALID_POLICY_KIND", kind)
+		}
 		if !families[family] {
 			return nil, invalid("INVALID_ROOT_FAMILY", family)
 		}

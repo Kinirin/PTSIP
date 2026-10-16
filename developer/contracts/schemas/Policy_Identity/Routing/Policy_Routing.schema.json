@@ -18,15 +18,13 @@
       "type": "object",
       "minProperties": 1,
       "propertyNames": {
-        "type": "string",
-        "minLength": 1
+        "$ref": "urn:ptsip:identity:policy-kind:v1"
       },
       "additionalProperties": {
         "type": "object",
         "minProperties": 1,
         "propertyNames": {
-          "type": "string",
-          "minLength": 1
+          "$ref": "urn:ptsip:identity:root-family:v1"
         },
         "additionalProperties": {
           "$ref": "#/$defs/route"
@@ -37,6 +35,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "policy_kind",
         "root_family"
       ],
       "properties": {
@@ -107,9 +106,5 @@
       "minLength": 1,
       "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+\\.json$"
     }
-  },
-  "x-ptsip-contract-binding": {
-    "policy_kind": "developer/contracts/identity/policy_kind.json",
-    "root_family": "developer/contracts/identity/root_family.json"
   }
 }

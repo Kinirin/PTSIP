@@ -1,6 +1,9 @@
 {
-  "schema_version": "ptsip-root-family/v1",
-  "root_families": [
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:identity:root-family:v1",
+  "title": "PTSIP Root Family",
+  "type": "string",
+  "enum": [
     "NORM",
     "GOV",
     "INTENT",

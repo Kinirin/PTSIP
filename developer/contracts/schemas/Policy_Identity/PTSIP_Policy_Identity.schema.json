@@ -14,12 +14,10 @@
       "minLength": 1
     },
     "policy_kind": {
-      "type": "string",
-      "minLength": 1
+      "$ref": "urn:ptsip:identity:policy-kind:v1"
     },
     "root_family": {
-      "type": "string",
-      "minLength": 1
+      "$ref": "urn:ptsip:identity:root-family:v1"
     },
     "title": {
       "type": "string",
@@ -33,10 +31,5 @@
       },
       "uniqueItems": true
     }
-  },
-  "x-ptsip-contract-binding": {
-    "routing": "developer/contracts/routing/policy_routes.json",
-    "root_family": "developer/contracts/identity/root_family.json",
-    "policy_kind": "developer/contracts/identity/policy_kind.json"
   }
 }
