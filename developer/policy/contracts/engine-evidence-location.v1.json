@@ -1,0 +1,12 @@
+{
+  "schema_version": "ptsip-developer-engine-evidence-location/v1",
+  "contract_role": "ENGINE_EVIDENCE_STORAGE_LOCATION",
+  "scope": "PTSIP_SOURCE_DEVELOPMENT_WORKSPACE_ONLY",
+  "evidence_root": ".ptsip/engine/evidence/",
+  "evidence_kinds": [
+    "ENGINE_VALIDATION_EVIDENCE",
+    "ENGINE_DEFECT_EVIDENCE"
+  ],
+  "authority_role": "EVIDENCE_ONLY",
+  "policy_generation_authority": "NOT_GRANTED"
+}
