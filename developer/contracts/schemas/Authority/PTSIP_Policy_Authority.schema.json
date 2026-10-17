@@ -1,27 +1,30 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:policy:Policy_Authority:v1",
-  "title": "PTSIP Policy authority",
+  "title": "PTSIP Policy Authority",
   "type": "object",
   "required": [
-    "authority_Identity"
+    "authority_Identity",
+    "Authority_Category"
   ],
   "properties": {
     "authority_Identity": {
       "type": "object",
+      "required": [
+        "authority_id"
+      ],
       "properties": {
         "authority_id": {
           "type": "string",
           "minLength": 1
-        },
+        }
+      }
+    },
+    "Authority_Category": {
+      "type": "object",
+      "properties": {
         "Authority_Major_Category": {
           "$ref": "urn:ptsip:policy:authority_category:authority_major:v1"
-        },
-        "Authority_Minor_Category": {
-          "$ref": "urn:ptsip:policy:authority_category:authority_minor:v1"
-        },
-        "Authority_Micro_Category": {
-          "$ref": "urn:ptsip:policy:authority_category:authority_micro:v1"
         }
       }
     }
