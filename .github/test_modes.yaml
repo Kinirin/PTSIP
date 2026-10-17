@@ -26,6 +26,7 @@ groups:
     - agent-contract-candidate
     - policy-responsibility-analysis
     - ptsip-contract
+    - developer-schema-contracts
     - repository-architecture
     - repository-release
     - test-mode-control-plane
@@ -132,6 +133,11 @@ modes:
         - src/tests/ptsip/agent_contracts/test_contract_plane.py
         - src/tests/ptsip/agent_contracts/test_operation_loading.py
         - src/tests/ptsip/governance/test_contracts.py
+  - id: developer-schema-contracts
+    component_ref: developer-contract-schema-verification
+    execution:
+      go:
+        - developer/tests/schema_validation
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:
