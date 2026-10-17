@@ -12,4 +12,5 @@ steps:
     execution_mode: "ON_DEMAND"
     user_decision_required: true
     title_ko: "과거 참조·호출을 신규 구조에 이식하기 전 의존성 위험과 미결정 사항을 사용자에게 제시"
-pending_tasks: null
+pending_tasks:
+  - "LG-03: 도구를 만들지 않고 기존 파일을 읽기 전용으로 간단히 조회한 뒤, 신규 계약에 이어질 참조 위험과 미결정 사항만 수동 정리한다. 변경은 사용자 승인 후 수행한다."
