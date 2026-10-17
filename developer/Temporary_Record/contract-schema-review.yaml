@@ -32,6 +32,7 @@ approved_directions_ko:
   - "기존 스키마의 외형을 무조건 보존하지 않는다."
   - "실제 수정 코드, 필드별 목적·자료형·검증 동작·참조 이유를 설명한다."
   - "미결정 사항은 사용자에게 질문하고 정식 계약은 승인 후 수정한다."
+  - "2026-10-17 사용자 승인: Policy_Status.Schema의 네 계약 버전 필드를 Schema 바로 아래에 독립적으로 둔다(B안). 중복 메타데이터를 허용하며 공용 버전 계층을 강제하지 않는다."
 
 review_findings:
   - id: JSON_SYNTAX
@@ -46,13 +47,17 @@ review_findings:
 
 last_checkpoint:
   date: "2026-10-17"
-  confirmation_type: READ_ONLY_REVIEW_AND_DISCUSSION
-  machine_validation: NOT_CONFIRMED
-  user_approved_schema_change: false
+  confirmation_type: USER_APPROVED_SCHEMA_CHANGE
+  machine_validation: JSON_PARSE_AND_STRUCTURE_CHECK_ONLY
+  user_approved_schema_change: true
   note_ko: >-
-    Public_Policy_Status.schema.json 구조 수정안이 채팅에서 제시되었으나
-    스키마 자체에 대한 사용자 승인이나 실제 변경은 확인되지 않았다.
-    전체 신규 계약 검증 PASS를 의미하지 않는다.
+    사용자 승인에 따라 Public_Policy_Status.schema.json의 JSON 구문과
+    properties 계층을 수정하고 네 버전 필드를 Schema 직속으로 배치하였다.
+    적용 커밋: 3a0e9d60eb49c05cdeb20fdc348e403b7762b945.
+    원격 파일 재조회 결과 JSON 파싱 및 승인 구조 확인만 완료하였다.
+    외부 $ref 전체 해소 및 통합 검증은 미완료이며,
+    상위 PTSIP_Public_Structure.schema.json의 Policy_Status $ref 불일치는 남아 있다.
+    CR-01 전체 검토나 Root Family 정책 구현이 완료되었다는 뜻은 아니다.
 
 pending_tasks: null
 
