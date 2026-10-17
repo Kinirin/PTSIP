@@ -139,7 +139,7 @@
       "preserve_four_common_policy_sections": true,
       "preserve_family_specific_schema_ownership": true,
       "preserve_common_rules_object_only_schema": true,
-      "policy_rule_approval_status_owner": "UNRESOLVED_USER_DECISION",
+      "policy_rule_approval_status_owner": "INDEPENDENT_RULE_CONTRACT",
       "policy_rule_reference_field_name": "UNRESOLVED_USER_DECISION",
       "rule_identity_format": "UNRESOLVED_USER_DECISION",
       "contract_requirement_fields_and_values": "UNRESOLVED_USER_DECISION",
@@ -147,7 +147,21 @@
       "shared_identifiers_or_duplicated_metadata": "UNRESOLVED_USER_DECISION",
       "physical_contract_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION",
       "arch_schema_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION",
-      "validator_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION"
+      "validator_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION",
+      "rule_approval_metadata": {
+        "owner": "INDEPENDENT_RULE_CONTRACT",
+        "applies_to": "INDIVIDUAL_ARCH_RULE_CONTRACT",
+        "described_fields": [
+          "status.approval",
+          "status.approval_ref"
+        ],
+        "approved_scope": "DATA_OWNERSHIP_ONLY",
+        "field_names_and_nesting": "UNRESOLVED_USER_DECISION",
+        "field_requiredness_and_types": "UNRESOLVED_USER_DECISION",
+        "approval_reference_format_and_validation": "UNRESOLVED_USER_DECISION",
+        "approval_decision_authority_and_transition": "UNRESOLVED_USER_DECISION",
+        "policy_document_approval_metadata": "NON_OWNING"
+      }
     }
   },
   "selected_arch_schema_header": {
