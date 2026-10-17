@@ -47,6 +47,8 @@ approved_directions_ko:
 
   - "2026-10-17 사용자 승인: 공통 Policy_Rules 스키마는 type: object만 요구하고 공통 필드·필수 속성·최소 속성 개수를 강제하지 않는다. Family별 규칙 참조와 본문 구조는 해당 Family가 독립 결정한다. 정식 developer/policy/registries/public-policy-structure-governance.json에 기계 계약을 반영(782e304f3e5f5bcc9890a131808819d217be684c), developer/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json에 유효한 JSON Schema 및 type: object만 반영(443ebe30b10f6a0395641a03706172abd97f609e). Draft 2020-12 테스트 7/7 및 원격 ID 참조 일치 확인. 개별 Family의 필드/Schema, Resolver, 규칙 계약 본문은 별도 미결정."
 
+  - "2026-10-18 사용자 확정: ARCH Policy_Rules의 RECONCILE 채택. 개발 정책 YAML은 규칙 식별 및 독립 규칙 계약 참조 역할, developer/contracts/Policy_Rules/root-family/ARCH/ 의 독립 계약 YAML은 실제 requirements 규범 본문 소유. 기존 공통 4개 섹션과 Family 독립 검증 소유, 공통 Rules type: object는 보존한다. 이는 기존 독립 계약 참조(B)와 사용자의 rule/requirements YAML 제안의 조정이며 필드 이름, 식별자 형식, 승인 상태 소유, 계약 본문 필드/자료형, 참조 해소 및 물리 파일 생성은 미결정. 정식 결정 developer/policy/registries/public-policy-structure-governance.json (커밋 917bb311a9781441148f0959a43f06630be21a3a). 설계 방향만 동기화하고 스키마·검증기는 미변경."
+
 review_findings:
   - id: POLICY_RULES_PRIORITY_BLOCKER
     result: PUBLIC_MINIMUM_OBJECT_SCHEMA_APPLIED_FAMILY_SCHEMAS_OPEN
