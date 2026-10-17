@@ -1,0 +1,63 @@
+# 한국어 설명을 포함한 임시 작업 단위 기록. 정식 정책/스키마가 아님.
+record_type: TEMPORARY_WORK_RECORD
+work_id: CONTRACT_SCHEMA_REVIEW
+created_at: "2026-10-17"
+work_status: IN_REVIEW
+
+purpose_ko: >-
+  developer/contracts/의 신규 계약 및 JSON Schema를 사용자 의도에 맞게 검토한다.
+  기존 구조를 자동으로 재사용하지 않고 데이터 구조·검증 스키마의 책임을 구분한다.
+
+scope:
+  root: developer/contracts/
+  root_family: null
+  schema_targets:
+    - developer/contracts/schemas/Authority/
+    - developer/contracts/schemas/Policy_Identity/
+    - developer/contracts/schemas/Policy_Rules/
+    - developer/contracts/schemas/Policy_Status/
+    - developer/contracts/schemas/PTSIP_Public_Structure.schema.json
+  related_contract_roots:
+    - developer/contracts/identity/
+    - developer/contracts/Authority/
+    - developer/contracts/routing/
+    - developer/contracts/lifecycle/
+  not_approved_as_new_baseline:
+    - developer/contracts/lifecycle/policy_status.json
+    - developer/contracts/lifecycle/policy_version.json
+
+approved_directions_ko:
+  - "사용자의 저장 의도와 책임을 먼저 확인한다."
+  - "데이터 구조와 검증 스키마의 역할을 분리해 검토한다."
+  - "기존 스키마의 외형을 무조건 보존하지 않는다."
+  - "실제 수정 코드, 필드별 목적·자료형·검증 동작·참조 이유를 설명한다."
+  - "미결정 사항은 사용자에게 질문하고 정식 계약은 승인 후 수정한다."
+
+review_findings:
+  - id: JSON_SYNTAX
+    result: OBSERVATION_ONLY
+    description_ko: "일부 스키마에서 JSON 문법 문제가 지적됨."
+  - id: SCHEMA_PROPERTIES
+    result: OBSERVATION_ONLY
+    description_ko: "일부 스키마의 properties 계층 오류가 지적됨."
+  - id: REFERENCE_MISMATCH
+    result: OBSERVATION_ONLY
+    description_ko: "$ref 식별자 또는 실제 참조 경로 불일치 가능성이 지적됨."
+
+last_checkpoint:
+  date: "2026-10-17"
+  confirmation_type: READ_ONLY_REVIEW_AND_DISCUSSION
+  machine_validation: NOT_CONFIRMED
+  user_approved_schema_change: false
+  note_ko: >-
+    Public_Policy_Status.schema.json 구조 수정안이 채팅에서 제시되었으나
+    스키마 자체에 대한 사용자 승인이나 실제 변경은 확인되지 않았다.
+    전체 신규 계약 검증 PASS를 의미하지 않는다.
+
+pending_tasks:
+  file: developer/Temporary_Record/pending-work.json
+  select_by_work_id: CONTRACT_SCHEMA_REVIEW
+
+temporary_lifecycle_ko: >-
+  임시 작업 기록은 전체 폴더를 사용자 요청으로 삭제할 때 함께 정리한다.
+  개별 규칙의 부분 만료 상태는 관리하지 않는다.
