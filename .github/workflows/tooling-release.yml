@@ -241,7 +241,7 @@ jobs:
           packages-dir: .artifacts/release/shipping/pypi/package
   package-record:
     needs: [release-admission, github-publication, package-publication]
-    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || (inputs.destination == 'github-pypi' && (needs.release-admission.outputs.package_count == '0' || needs.package-publication.result == 'success')))) }}
+    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || (inputs.destination == 'github-pypi' && (needs.release-admission.outputs.package_count == '0' || needs.package-publication.result == 'success'))) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
