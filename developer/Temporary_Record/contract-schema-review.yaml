@@ -33,6 +33,7 @@ approved_directions_ko:
   - "실제 수정 코드, 필드별 목적·자료형·검증 동작·참조 이유를 설명한다."
   - "미결정 사항은 사용자에게 질문하고 정식 계약은 승인 후 수정한다."
   - "2026-10-17 사용자 승인: Policy_Status.Schema의 네 계약 버전 필드를 Schema 바로 아래에 독립적으로 둔다(B안). 중복 메타데이터를 허용하며 공용 버전 계층을 강제하지 않는다."
+  - "2026-10-17 사용자 승인: Authority의 authority_Identity와 Authority_Category는 최상위 필수, authority_id는 내부 필수. Category는 Major → Minor → Micro 중첩이며 Identity와 분리한다. Major 필수 여부는 별도 미결정."
 
 review_findings:
   - id: JSON_SYNTAX
@@ -44,6 +45,10 @@ review_findings:
   - id: REFERENCE_MISMATCH
     result: OBSERVATION_ONLY
     description_ko: "$ref 식별자 또는 실제 참조 경로 불일치 가능성이 지적됨."
+
+  - id: AUTHORITY_ACTION_SEMANTICS_OPEN
+    result: POLICY_DECISION_REQUIRED
+    description_ko: "권위를 통해 허용되는 후속 행동을 기계적으로 연결할 필수 계약 책임이 제안되었으나, 허가·의무·금지의 의미와 계약 경계·필드 구조는 미확정."
 
 last_checkpoint:
   date: "2026-10-17"
@@ -63,6 +68,9 @@ last_checkpoint:
     JSON 파싱과 해당 $ref/$id 문자열 일치는 확인했으나 전체 외부 참조의
     해소 및 통합 스키마 검증 완료로 간주하지 않는다.
     CR-01 전체 검토나 Root Family 정책 구현이 완료되었다는 뜻은 아니다.
+    Authority 스키마 변경 커밋: 88ac0c42b73d9673b2bea6229db85be0afcf1100.
+    Identity 및 Category 필수와 Major 계층 참조를 반영했으며,
+    Major 내부 필수 여부와 Authority 후속 행동 계약은 미결정이다.
 
 pending_tasks: null
 
