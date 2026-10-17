@@ -49,6 +49,7 @@ approved_directions_ko:
 
   - "2026-10-18 사용자 확정: ARCH Policy_Rules의 RECONCILE 채택. 개발 정책 YAML은 규칙 식별 및 독립 규칙 계약 참조 역할, developer/contracts/Policy_Rules/root-family/ARCH/ 의 독립 계약 YAML은 실제 requirements 규범 본문 소유. 기존 공통 4개 섹션과 Family 독립 검증 소유, 공통 Rules type: object는 보존한다. 이는 기존 독립 계약 참조(B)와 사용자의 rule/requirements YAML 제안의 조정이며 필드 이름, 식별자 형식, 승인 상태 소유, 계약 본문 필드/자료형, 참조 해소 및 물리 파일 생성은 미결정. 정식 결정 developer/policy/registries/public-policy-structure-governance.json (커밋 917bb311a9781441148f0959a43f06630be21a3a). 설계 방향만 동기화하고 스키마·검증기는 미변경."
 
+  - "2026-10-18 사용자 확정: ARCH 독립 규칙 계약이 개별 규칙의 승인 상태와 승인 근거를 소유한다. 사용자 제안 YAML의 status.approval 및 status.approval_ref는 이 소유 대상의 설명 예시이며, 최종 필드명·중첩·자료형·필수 여부·검증 방식 및 실제 승인 권한·전이 절차는 아직 별도 결정할 사항이다. 정책 YAML은 규칙 식별 및 독립 계약 참조 책임만 유지하고, 실제 requirements 본문과 규칙 승인 메타데이터는 독립 계약이 소유한다. 정책 자체 Policy_Status 생명주기와는 구분한다. 정식 정책 변경 커밋: ebe87b70043035ae6955ffb562ddae65d583c1e0. 스키마·독립 계약 본문·검증기 미변경."
 review_findings:
   - id: POLICY_RULES_PRIORITY_BLOCKER
     result: PUBLIC_MINIMUM_OBJECT_SCHEMA_APPLIED_FAMILY_SCHEMAS_OPEN
