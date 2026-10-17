@@ -101,6 +101,29 @@
       "rule_reference_resolution": "UNRESOLVED_USER_DECISION",
       "schema_materialization": "NOT_AUTHORIZED_BY_RESPONSIBILITY_BOUNDARY_DECISION",
       "validator_implementation": "NOT_AUTHORIZED_BY_RESPONSIBILITY_BOUNDARY_DECISION"
+    },
+    "policy_status_contract_and_version": {
+      "conflict_resolution": "KEEP_LATEST",
+      "contract": {
+        "owner": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+        "field": "contract",
+        "required": true,
+        "type": "string",
+        "approved_urn_pattern": "PRESERVE_PREVIOUSLY_APPROVED_CONTRACT_PATTERN"
+      },
+      "version": {
+        "owner_root": "developer/contracts/lifecycle/Policy_version/",
+        "field": "version",
+        "required": true,
+        "type": "string",
+        "format": "UNRESOLVED_DO_NOT_AUTOMATICALLY_ADOPT_MAJORMINOR"
+      },
+      "policy_status_schema_version_entry": "REQUIRED",
+      "independent_of_lifecycle_status": true,
+      "status_based_major_or_minor_inference": "FORBIDDEN",
+      "automatic_version_increment": "FORBIDDEN",
+      "plan_version_implementation": "DEFERRED",
+      "previous_combined_contract_version_schema": "SUPERSEDED_KEEP_LATEST"
     }
   },
   "selected_arch_schema_header": {
@@ -132,7 +155,7 @@
   "other_current_policy_decisions": {
     "legacy_bound_policy_reactivation": "FORBIDDEN",
     "current_lifecycle_operation_contract": "UNCHANGED",
-    "existing_policy_status_and_policy_version_contracts": "STATUS_REPLACEMENT_AUTHORIZED_VERSION_PRESERVED",
+    "existing_policy_status_and_policy_version_contracts": "STATUS_REPLACEMENT_AUTHORIZED_LEGACY_VERSION_DELETION_TARGET",
     "existing_verification_gap": "PRESERVED",
     "schema_materialization": "NOT_YET_AUTHORIZED",
     "validator_materialization": "NOT_YET_AUTHORIZED",
