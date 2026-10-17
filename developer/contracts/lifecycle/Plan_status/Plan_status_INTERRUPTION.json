@@ -1,3 +1,15 @@
-```
-approvals, analysis, contracts, policy-resolver-bindings, legacy, registries, schemas, MPD-BOUND-0001.yaml, policy-resolver-contract.yaml, source-application-review.yaml, state, verification, bindings, policy_status.json , policy_version.json
-```
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:contract:constant:plan_status_interruption:v1",
+  "title": "PTSIP INTERRUPTION Plan Status Contract",
+  "type": "object",
+  "required": [
+    "status"
+  ],
+  "properties": {
+    "status": {
+      "const": "INTERRUPTION"
+    }
+  },
+  "additionalProperties": false
+}
