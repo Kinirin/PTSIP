@@ -39,6 +39,7 @@ approved_directions_ko:
   - "2026-10-17 사용자 승인: authority action URN의 target-domain은 policy, plan, avatar를 포함한다. urn:ptsip:authority:action:<target-domain>:<action-name> 패턴을 채택한다. 동일한 URN을 실제 독립 행동 계약의 식별자와 해당 행동 검증 JSON Schema의 $id로 공동 사용한다. action_keyword는 도입하지 않는다."
   - "2026-10-17 사용자 결정: Authority_Action은 정확히 하나의 독립 행동 계약만 action_ref로 참조한다. 순차적인 여러 내부 행동을 필요로 하면 순서를 소유하는 복합/패키지 행동 계약 하나를 별도의 행동 식별자로 참조한다. Authority_Action은 순서 목록이나 여러 action_ref를 직접 소유하지 않는다. 복합 계약의 내부 수행 제약, 실패/중단 처리 및 실행 승인 의미는 별도 후속 결정 사항이다."
   - "2026-10-17 사용자 승인: Authority_Category 아래 Major 필수, Minor/Micro 선택; Authority 전체 객체 계층에 추가 미정의 필드 전면 금지; action_ref 행동 이름은 소문자·숫자·하이픈 표준으로 제한. Authority_Action은 최상위 필수·단일 action_ref 필수. 정식 스키마에 적용."
+  - "2026-10-17 사용자 방향: 개발자 검증기는 src/policy/index.yaml에서 ACTIVE 엔진 정책을 찾고 그 정책이 지정하는 적용 버전의 Capability Contract를 기준으로 지원 범위를 판단한다. 정책상 지원을 요구한 기능이 설치 엔진에서 실패하면 중복 구현하지 않고 재현 증거를 수집하여 엔진 개발자에게 긴급 패치 필요성을 보고한다. 사양 미지원과 사양 대비 구현 누락은 구분한다."
 
 review_findings:
   - id: JSON_SYNTAX
@@ -50,6 +51,10 @@ review_findings:
   - id: REFERENCE_MISMATCH
     result: OBSERVATION_ONLY
     description_ko: "$ref 식별자 또는 실제 참조 경로 불일치 가능성이 지적됨."
+
+  - id: ENGINE_SPEC_IMPLEMENTATION_BOUNDARY
+    result: USER_DIRECTION_RECORDED
+    description_ko: "적용 버전의 ACTIVE src/policy 규범 및 연결 엔진 Capability Contract가 지원을 요구하는데 설치 엔진에서 미작동한 경우 개발자 검증기의 자체 보완 구현 금지, 재현 증거 수집 및 엔진 결함/패치 요청으로 에스컬레이션. 미지원 사양·버전 바인딩 실패·실제 구현 결함을 구분. 현재 특정 엔진 결함은 재현되지 않았으며, 외부 $ref가 구현 계약 범위에 포함되는지 설치 0.3.1 계약 확인 필요."
 
   - id: AUTHORITY_ACTION_SEMANTICS_OPEN
     result: PARTIALLY_DECIDED
