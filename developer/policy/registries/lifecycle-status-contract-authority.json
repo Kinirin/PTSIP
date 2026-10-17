@@ -24,10 +24,20 @@
     "dangling_contract_references": "FORBIDDEN"
   },
   "version": {
-    "contract": "developer/contracts/lifecycle/policy_version.json",
-    "independent_version_semantics": "PRESERVE",
-    "old_status_contract_dependency": "MIGRATE",
-    "new_status_inference_from_version": "FORBIDDEN"
+    "contract": "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+    "version_field": "version",
+    "version_field_type": "string",
+    "version_field_required": true,
+    "contract_identity_owner": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    "contract_identity_required": true,
+    "independent_version_semantics": "POLICY_VERSION_CONTRACT_ONLY_NO_STATUS_MAPPING",
+    "status_to_version_inference": "FORBIDDEN",
+    "version_to_status_inference": "FORBIDDEN",
+    "automatic_major_minor_increment": "FORBIDDEN",
+    "format_pattern": "UNRESOLVED",
+    "superseded_contract": "developer/contracts/lifecycle/policy_version.json",
+    "superseded_disposition": "DELETE_AFTER_CALLSITE_AND_VALIDATOR_DEPENDENCIES_REMOVED",
+    "conflict_resolution": "KEEP_LATEST"
   },
   "implementation": {
     "contract_changes": "POLICY_DERIVED",
