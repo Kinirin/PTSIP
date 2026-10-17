@@ -36,6 +36,7 @@ approved_directions_ko:
   - "2026-10-17 사용자 승인: Authority의 authority_Identity와 Authority_Category는 최상위 필수, authority_id는 내부 필수. Category는 Major → Minor → Micro 중첩이며 Identity와 분리한다. Major 필수 여부는 별도 미결정."
   - "2026-10-17 사용자 결정: Authority는 별도의 독립 행동 계약을 필수 참조하는 B 방향을 채택한다. 독립 계약 자체와 로컬 권위 정보는 분리한다. 실제 필드·식별자·검증 방식은 미확정."
   - "2026-10-17 사용자 결정: 별도 action_keyword는 만들지 않고 action_ref만으로 행동을 식별하고 사람이 의미를 유추할 수 있게 한다. 행동 URN은 urn:ptsip:authority:action:<target-domain>:<action-name> 구조를 사용하며 승인된 예시는 urn:ptsip:authority:action:policy:policy-modification이다. 향후 target-domain에는 plan, avatar도 예상되나 실제 계약·필드·등록 규칙은 미정이다."
+  - "2026-10-17 사용자 승인: authority action URN의 target-domain은 policy, plan, avatar를 포함한다. urn:ptsip:authority:action:<target-domain>:<action-name> 패턴을 채택한다. 동일한 URN을 실제 독립 행동 계약의 식별자와 해당 행동 검증 JSON Schema의 $id로 공동 사용한다. action_keyword는 도입하지 않는다."
 
 review_findings:
   - id: JSON_SYNTAX
@@ -50,7 +51,7 @@ review_findings:
 
   - id: AUTHORITY_ACTION_SEMANTICS_OPEN
     result: PARTIALLY_DECIDED
-    description_ko: "독립 행동 계약 필수 참조(B안) 및 action_ref 단일 식별 정보 사용 방향은 사용자 결정. 별도 action_keyword는 제외한다. URN 구조: urn:ptsip:authority:action:<target-domain>:<action-name> (policy 예시: urn:ptsip:authority:action:policy:policy-modification). plan/avatar는 향후 후보 대상. 구체적 필드 자료형/다중 행동 배열 구조, 식별자 등록·해소, 계약 인스턴스 ID와 JSON Schema $id의 관계, 버전 표현, 허가·금지·의무 해석은 미결정. 정식 스키마 개정은 별도 설계/승인 필요."
+    description_ko: "2026-10-17 승인: 독립 행동 계약 필수 참조(B안); action_ref 단독 표기; target-domain policy/plan/avatar; urn:ptsip:authority:action:<target-domain>:<action-name>; 행동 계약 ID와 해당 검증 JSON Schema의 $id는 동일 URN으로 사용. 미결정: 동일 URN에 대한 단일 리소스/레지스트리 조회 책임, 실제 계약 데이터와 스키마 자원의 물리적 분리·연결, 다중 행동 표현, 추가 검증 규칙, 허가·금지·의무, 버전 정책. 표준 JSON Schema의 $ref가 인스턴스 문자열 action_ref를 자동 역참조하지 않는다는 구현 제약은 후속 설계에 반영. 정식 파일은 구체 스키마 코드 승인 후 수정."
 
 last_checkpoint:
   date: "2026-10-17"
