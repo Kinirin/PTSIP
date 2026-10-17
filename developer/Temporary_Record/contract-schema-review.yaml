@@ -43,6 +43,10 @@ approved_directions_ko:
   - "2026-10-17 사용자 승인: 엔진 검증·결함 증거의 정식 저장 위치는 .ptsip/engine/evidence/이다. developer/verification/evidence/는 이 목적의 새 저장 위치로 사용하지 않는다. 정책 초안 생성·권위 승격, 증거 서식, 보존 정책 등은 이번 경로 승인에 포함되지 않는다. 정식 최소 경로 계약은 developer/policy/contracts/engine-evidence-location.v1.json으로 생성했고 디렉터리는 .gitkeep으로 물리화했다. 정책 패밀리 및 등록·조회 바인딩은 아직 확정하지 않는다."
 
 review_findings:
+  - id: POLICY_RULES_PRIORITY_BLOCKER
+    result: URGENT_UNRESOLVED_USER_DECISION
+    description_ko: "2026-10-17 사용자 우선순위 지시: 새 정책 생성에 필요한 네 공통 섹션 중 Policy_Rules의 구조 결정이 현재 최우선 CR-01 정책 검토 항목. Public_Structure_Rules.schema.json은 끝 쉼표로 JSON 파싱 실패, $id만 있고 규칙 데이터·필수 제약은 미정. Root Family별 Rules 스키마는 대부분 $id 골격만 존재. 2026-10-15 승인된 공통 4개 섹션 및 패밀리 독립 내부 규칙 소유 경계를 보존하며 구조 방향을 사용자에게 제시하고 결정받을 것. 스키마 코드는 미승인으로 수정하지 않음. routing/policy_routes.json의 ARCH rules 경로(ARCH_rules.schema.json)가 현재 실재 파일(ARCH_rules.schemas.json)과 불일치하며 후속 CR-02 대조 필요. 사용자 확정 이전에 보편 규칙 포맷을 임의 결정하지 않음."
+
   - id: JSON_SYNTAX
     result: OBSERVATION_ONLY
     description_ko: "일부 스키마에서 JSON 문법 문제가 지적됨."
