@@ -1,0 +1,61 @@
+{
+  "schema_version": "ptsip-developer-validator-domain-reconciliation/v1",
+  "artifact_class": "USER_APPROVED_POLICY_DERIVED_MACHINE_CONTRACT",
+  "decision": {
+    "resolution": "RECONCILE",
+    "approval": "USER_EXPLICIT",
+    "policy_scope": "DEVELOPER_VALIDATOR_POLICY_DOMAIN",
+    "selected_direction": "REUSE_LEGACY_RESPONSIBILITY_BOUNDARIES_WITHOUT_LEGACY_IMPLEMENTATION_OR_SEMANTIC_INHERITANCE"
+  },
+  "responsibility": {
+    "location": ".ptsip/engine/developer/policy/domain.go",
+    "orchestrator": ".ptsip/engine/developer/main.go",
+    "role": "CONTRACT_BACKED_DOMAIN_MEMBERSHIP",
+    "engine_implementation": false
+  },
+  "data_contract": {
+    "routing_source": "developer/contracts/routing/policy_routes.json",
+    "routing_identity_reference": "identity_sources",
+    "family_ref_key": "root_family",
+    "policy_kind_ref_key": "policy_kind",
+    "enumeration_source": "REFERENCED_CONTRACT_ENUM",
+    "source_of_truth": "CURRENT_APPROVED_CONTRACT_DATA",
+    "hardcoded_family_membership": "FORBIDDEN",
+    "arbitrary_path_inference": "FORBIDDEN"
+  },
+  "legacy_boundary": {
+    "source": "developer/automation/policy/domain.go",
+    "allow": "READ_ONLY_RESPONSIBILITY_SEPARATION_REFERENCE",
+    "source_copy": "FORBIDDEN",
+    "direct_import": "FORBIDDEN",
+    "prior_policy_semantics_inheritance": "FORBIDDEN",
+    "former_root_id_regular_expression_copy": "FORBIDDEN",
+    "legacy_policy_fallback": "FORBIDDEN"
+  },
+  "behavior": {
+    "unknown_membership": "NOT_RECOGNIZED",
+    "duplicate_or_malformed_sources": "FAIL_CLOSED",
+    "source_paths_outside_repository": "FAIL_CLOSED",
+    "missing_or_ambiguous_sources": "FAIL_CLOSED",
+    "policy_conformance": "NOT_ASSERTED",
+    "routing_complete_for_all_families": "NOT_ASSERTED",
+    "existing_policy_document_verification": "OUT_OF_SCOPE",
+    "schema_structure_validation": "OUT_OF_SCOPE",
+    "formal_policy_identity_issuance": "OUT_OF_SCOPE",
+    "new_validator_registry_admission": "OUT_OF_SCOPE"
+  },
+  "guardrails": {
+    "no_new_family_semantics": true,
+    "no_unspecified_schema_structure": true,
+    "no_product_engine_reimplementation": true,
+    "no_temporary_record_runtime_dependency": true,
+    "no_change_to_retired_policy_state": true,
+    "unrelated_policies_preserved": true,
+    "implementation_may_use_go_standard_library_for_data_loading": true
+  },
+  "implementation_status": {
+    "machine_contract": "APPROVED",
+    "domain_module": "TO_BE_IMPLEMENTED_AND_VERIFIED",
+    "runtime_authorization_from_contract": false
+  }
+}
