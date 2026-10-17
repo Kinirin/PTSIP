@@ -145,6 +145,16 @@ func authorizedSingleProjectToolRebuild(root string, s Selection, current, old P
 	}
 	allowed := map[string]bool{"pyproject.toml": true, "MANIFEST.in": true, "ptsip_build_backend.py": true, "src/ptsip/engine_installation.py": true, "src/ptsip/package-distribution.json": true, "src/policy/CNTR/SFP-CNTR-0005.yaml": true, "src/tests/ptsip/cli/test_engine_installation.py": true}
 	for _, ref := range strings.Fields(delta) {
+		if ref == ".github/checks/release/test/runner.go" {
+			// The approved branch already contained the frozen GHCR verifier route
+			// before this migration. Admit only that exact preexisting runner;
+			// subsequent runner edits still require a new Tool version.
+			change, err := Run(root, "git", "diff", "--name-only", "04f2170d7e240efde8df7179df690de0ee9a10a1", s.SourceSHA, "--", ref)
+			if err != nil || len(bytes.TrimSpace(change)) != 0 {
+				return false
+			}
+			continue
+		}
 		if !allowed[ref] {
 			return false
 		}
