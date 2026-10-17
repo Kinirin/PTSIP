@@ -8,8 +8,15 @@ steps:
     work_id: "LEGACY_DEPENDENCY_REPLACEMENT"
     work_file: "developer/Temporary_Record/legacy-dependency-replacement.yaml"
     priority: 80
-    status: "OPEN"
+    status: "IN_PROGRESS"
     execution_mode: "NORMAL"
     user_decision_required: false
     title_ko: "전체 대체를 가로막는 남은 기존 참조를 확인하고 대체 작업에 집중"
-pending_tasks: null
+pending_tasks:
+  - "잔존 의존성 범위를 실행 코드·검증 도구·안내 문서로 구분하여 확인한다. 정적 참조 발견과 실제 실행 여부는 별도 판정한다."
+  - "정책 카탈로그·Family 식별 차단요인: developer/automation/internal/machine/repository.go 및 developer/automation/policy/lifecycle/{identity,family}.go가 폐기 예정 developer/policy/registries/ 와 developer/policy/schemas/ 를 참조한다. 신규 진입 계약 결정 전 변경하지 않는다."
+  - "Resolver 차단요인: developer/automation/policy/binding/resolver.go가 developer/policy/contracts/go-policy-resolver.v1.yaml 및 developer/contracts/lifecycle/policy_status.json을 참조한다. 별도 진행 중인 Resolver·상태 계약 설계의 결정과 충돌하지 않도록 교체는 보류한다."
+  - "상태·계획 바인딩 차단요인: developer/automation/internal/machine/state.go 및 developer/automation/policy/binding/registry.go가 폐기 예정 developer/state/ 와 developer/bindings/ 를 참조한다. 신규 책임 및 대체 계약을 확인한다."
+  - "버전·테스트 차단요인: developer/automation/policy/lifecycle/version_contract.go 와 developer/tests/internal/testrepo/copy.go에서 이전 lifecycle 파일을 참조한다. 정책 상태/버전 설계 결과를 기다려 변경 대상과 테스트 영향을 구분한다."
+  - "검증·에이전트 진입 차단요인: .github/checks/release/engine-verification/admission.go가 구 계약과 policy-resolver 명령을 호출하고, AGENTS.md는 구 registry를 안내한다. 실제 사용 여부와 대체 검증 경로를 확인한다."
+  - "대체 계약의 위치·권위·호환성 및 검증 기준이 사용자 승인으로 확정된 항목만 순차적으로 전환한다. 미확정 항목은 유지하고, 폐기 대상의 물리적 삭제는 사용자 명시 요청 전 수행하지 않는다."
