@@ -127,6 +127,17 @@ developer_validator_engine_use:
 - **작업 그룹 구분:** `SCHEMA_AND_FAMILY_POLICY`와 `LEGACY_REPLACEMENT_BLOCKERS`의 상태·소유자·미결정 정책은 변경하지 않음. 각 담당 세션은 실제 소스·계약·테스트를 현재 HEAD에서 조회하며 이 알림을 규범 권위나 런타임 의존성으로 사용하지 않음.
 
 
+
+### Policy Domain RECONCILE 구현 알림 — 2026-10-17
+
+- **사용자 선택:** `RECONCILE` — 기존 `developer/automation/policy/domain.go`의 *책임 분리 방식*만 참고하고, 이전 정책 의미·하드코딩된 Root Family 정규식·구 구현을 복사하거나 호출하지 않는다.
+- **승인 경계의 독립 기계 계약:** `developer/policy/contracts/developer-validator-domain-reconciliation.v1.json`. 이 임시 기록은 해당 계약의 권위 원본이나 런타임 의존성이 아니다.
+- **현재 구현:** `.ptsip/engine/developer/policy/domain.go`; `developer/contracts/routing/policy_routes.json`에서 `identity_sources.root_family` 및 `identity_sources.policy_kind`로 선언된 계약만 읽어 목록과 소속 여부를 판단한다. 14개 Family 값은 Go 코드에 하드코딩하지 않는다.
+- **확인 및 자동 선택:** `.ptsip/engine/developer/policy/domain_test.go`, `developer/tests/schema_validation/domain_contract_test.go`; 기존 `developer-schema-contracts` Test Mode와 `.ptsip/profiles/main.ptsip.yaml`의 변경 영향 입력에 연결했다.
+- **현재 확인 범위:** GitHub HEAD에 파일 및 연결 등록까지 확인. 실제 Go 테스트 및 GitHub Actions PASS는 별도 검증 필요. 소속 확인은 경로 완전성·정식 정책 적합성·스키마 구조 검증·정책 ID 발급을 승인하거나 수행하지 않는다.
+- **작업 그룹:** `SCHEMA_AND_FAMILY_POLICY`, `LEGACY_REPLACEMENT_BLOCKERS`의 독점 소유·상태·미결정 정책을 변경하지 않았다.
+
+
 ## 구 검증기 참고 범위 — 사용자 승인
 
 신규 개발 정책 검증기는 **승인된 신규 `developer/policy/` 정책·신규 스키마·계약만을 기준으로 독립 설계·구현**한다. 구 검증기의 호환성 확보·기존 구조 마이그레이션은 신규 검증기의 전제 조건으로 요구하지 않는다.
