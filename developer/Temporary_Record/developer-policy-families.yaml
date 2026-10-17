@@ -43,9 +43,10 @@ last_checkpoint:
     신규 개발 정책의 상위 목표와 14개 Root Family 설계 보류 상태만
     확인했다. 각 패밀리 YAML 정책의 구현·검증 성공을 확인한 것은 아니다.
 
-pending_tasks:
-  file: developer/Temporary_Record/pending-work.json
-  select_groups_containing_step_work_id: DEVELOPER_POLICY_FAMILIES
+pending_tasks: null
+
+work:
+  group_id: SCHEMA_AND_FAMILY_POLICY
 
 temporary_lifecycle_ko: >-
   이 파일은 정식 패밀리 정책을 대신하지 않는다. 대체 가능 여부는

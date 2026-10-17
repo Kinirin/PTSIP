@@ -1,0 +1,63 @@
+# Group-local canonical state; migrated by the owning session. Prior queue remains a historical snapshot.
+group_id: "SCHEMA_AND_FAMILY_POLICY"
+title_ko: "신규 계약 및 개발 정책"
+priority: 10
+owner_session_id: null
+steps:
+  - id: "CR-01"
+    work_id: "CONTRACT_SCHEMA_REVIEW"
+    work_file: "developer/Temporary_Record/contract-schema-review.yaml"
+    priority: 10
+    status: "IN_PROGRESS"
+    execution_mode: "NORMAL"
+    user_decision_required: true
+    title_ko: "네 계약 영역의 저장 의도, 데이터 구조, 필드와 허용 값의 의미를 사용자와 검토"
+  - id: "FM-01"
+    work_id: "DEVELOPER_POLICY_FAMILIES"
+    work_file: "developer/Temporary_Record/developer-policy-families.yaml"
+    priority: 20
+    status: "OPEN"
+    execution_mode: "NORMAL"
+    user_decision_required: true
+    title_ko: "신규 계약에 따른 스키마 책임 경계를 사용자와 확정"
+  - id: "FM-02"
+    work_id: "DEVELOPER_POLICY_FAMILIES"
+    work_file: "developer/Temporary_Record/developer-policy-families.yaml"
+    priority: 30
+    status: "OPEN"
+    execution_mode: "NORMAL"
+    user_decision_required: true
+    title_ko: "패밀리별 정식 개발 정책의 구현 범위를 사용자와 검토"
+  - id: "CR-02"
+    work_id: "CONTRACT_SCHEMA_REVIEW"
+    work_file: "developer/Temporary_Record/contract-schema-review.yaml"
+    priority: 40
+    status: "OPEN"
+    execution_mode: "NORMAL"
+    user_decision_required: false
+    title_ko: "상위 구조와 하위 스키마의 $ref 식별자 및 실제 경로 대조"
+  - id: "CR-03"
+    work_id: "CONTRACT_SCHEMA_REVIEW"
+    work_file: "developer/Temporary_Record/contract-schema-review.yaml"
+    priority: 50
+    status: "OPEN"
+    execution_mode: "NORMAL"
+    user_decision_required: true
+    title_ko: "기존 코드와 수정 제안을 구분하여 설명하고 정식 계약 변경 승인을 확인"
+  - id: "CR-04"
+    work_id: "CONTRACT_SCHEMA_REVIEW"
+    work_file: "developer/Temporary_Record/contract-schema-review.yaml"
+    priority: 60
+    status: "OPEN"
+    execution_mode: "NORMAL"
+    user_decision_required: false
+    title_ko: "사용자 승인된 계약 변경 이후 수행한 검증과 결과만 기록"
+  - id: "FM-03"
+    work_id: "DEVELOPER_POLICY_FAMILIES"
+    work_file: "developer/Temporary_Record/developer-policy-families.yaml"
+    priority: 70
+    status: "OPEN"
+    execution_mode: "NORMAL"
+    user_decision_required: false
+    title_ko: "패밀리 정책 구현 시 기존 파일과 신규 계약에 따른 파일을 구별하여 진행 기록에 반영"
+pending_tasks: null

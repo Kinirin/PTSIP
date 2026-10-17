@@ -1,0 +1,15 @@
+# Group-local canonical state; explicitly assigned by the user to the current session.
+group_id: "LEGACY_REFERENCE_RISK"
+title_ko: "구정책 참조 위험 검토"
+priority: 1
+owner_session_id: "6ad1e5ec-493c-83e8-b14a-87ed1c351b15"
+steps:
+  - id: "LG-03"
+    work_id: "LEGACY_DEPENDENCY_REPLACEMENT"
+    work_file: "developer/Temporary_Record/legacy-dependency-replacement.yaml"
+    priority: 55
+    status: "OPEN"
+    execution_mode: "ON_DEMAND"
+    user_decision_required: true
+    title_ko: "과거 참조·호출을 신규 구조에 이식하기 전 의존성 위험과 미결정 사항을 사용자에게 제시"
+pending_tasks: null
