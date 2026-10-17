@@ -128,14 +128,14 @@ developer_validator_engine_use:
 
 
 
-### Policy Domain RECONCILE 구현 알림 — 2026-10-17
+### Policy Domain 구현 철회 및 계약 권위 정정 — 2026-10-18
 
-- **사용자 선택:** `RECONCILE` — 기존 `developer/automation/policy/domain.go`의 *책임 분리 방식*만 참고하고, 이전 정책 의미·하드코딩된 Root Family 정규식·구 구현을 복사하거나 호출하지 않는다.
-- **승인 경계의 독립 기계 계약:** `developer/policy/contracts/developer-validator-domain-reconciliation.v1.json`. 이 임시 기록은 해당 계약의 권위 원본이나 런타임 의존성이 아니다.
-- **현재 구현:** `.ptsip/engine/developer/policy/domain.go`; `developer/contracts/routing/policy_routes.json`에서 `identity_sources.root_family` 및 `identity_sources.policy_kind`로 선언된 계약만 읽어 목록과 소속 여부를 판단한다. 14개 Family 값은 Go 코드에 하드코딩하지 않는다.
-- **확인 및 자동 선택:** `.ptsip/engine/developer/policy/domain_test.go`, `developer/tests/schema_validation/domain_contract_test.go`; 기존 `developer-schema-contracts` Test Mode와 `.ptsip/profiles/main.ptsip.yaml`의 변경 영향 입력에 연결했다.
-- **현재 확인 범위:** GitHub HEAD에 파일 및 연결 등록까지 확인. 실제 Go 테스트 및 GitHub Actions PASS는 별도 검증 필요. 소속 확인은 경로 완전성·정식 정책 적합성·스키마 구조 검증·정책 ID 발급을 승인하거나 수행하지 않는다.
-- **작업 그룹:** `SCHEMA_AND_FAMILY_POLICY`, `LEGACY_REPLACEMENT_BLOCKERS`의 독점 소유·상태·미결정 정책을 변경하지 않았다.
+- **결정과 구현 구분:** 사용자의 C. RECONCILE 선택은 구 검증기에서 책임 분리 방식만 참고한다는 방향이었다. 별도 정식 계약 파일의 생성·저장 위치·규범 권위, 또는 새 도메인 검증기 동작의 독립 승인으로 취급하지 않는다.
+- **철회된 무단 산출물:** `developer/policy/contracts/developer-validator-domain-reconciliation.v1.json`은 구현 방향 승인을 정식 계약 생성 승인으로 잘못 확대 해석해 작성됐으므로 삭제했다. `.ptsip/engine/developer/policy/domain.go`, `.ptsip/engine/developer/policy/domain_test.go`, `developer/tests/schema_validation/domain_contract_test.go`도 구현 권위 선후관계를 잘못 적용한 작업 결과로 삭제했다.
+- **연결 정리:** `.ptsip/profiles/main.ptsip.yaml`의 위 무단 계약 및 도메인 구현을 위한 추가 `analysis_inputs`를 제거했다. 기존 `developer-schema-contracts` 모드와 `schema_check/`는 이 정리 작업에서 수정하지 않았다.
+- **다른 세션 보호:** 이미 별도로 생성된 `.ptsip/engine/developer/policy/lifecycle/`은 이번 도메인 구현과 다른 작업이므로 삭제·수정하지 않았다. 기존 그룹의 담당자·작업 단계 및 정식 개발 정책의 다른 규칙은 변경하지 않았다.
+- **권위 경계:** POLICY > PLAN > IMPLEMENTATION. 검증기를 근거로 신규 정책이나 계약의 필드·경로·권위를 역산해 생성하지 않는다. 미정의된 검증기 책임은 승인된 상위 정책·계약이 정해지기 전까지 미해결로 둔다. 재구현 여부와 세부 범위는 별도로 결정한다.
+- **검증 상태:** 파일 제거 및 잔존 참조 정리의 GitHub HEAD 재조회만 수행. 새로운 Go 테스트·Actions PASS로 주장하지 않는다.
 
 
 ## 구 검증기 참고 범위 — 사용자 승인
