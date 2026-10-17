@@ -17,7 +17,46 @@ on:
 permissions:
   contents: read
 jobs:
+  ptsip-validation-runtime:
+    name: "Installed PTSIP VALIDATION smoke / ${{ matrix.runner }}"
+    if: ${{ inputs.mode == 'ptsip-validation-runtime' }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install exact released PTSIP engine and test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b3" "pytest>=8,<10" "PyYAML>=6,<7"
+      - name: Validate test registry and execute selected VALIDATION mode
+        shell: bash
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
+        run: |
+          set -euo pipefail
+          python .github/scripts/validate_test_modes.py
+          python .github/scripts/resolve_test_modes.py manual --mode ptsip-validation-runtime | python -c '
+          import json, subprocess, sys
+          selected = json.load(sys.stdin)
+          assert selected["selected_ids"] == ["ptsip-validation-runtime"], selected
+          plan = selected["plan"]
+          assert len(plan) == 1 and plan[0]["component_ref"] == "ptsip-validation-runtime-verification", plan
+          targets = plan[0]["pytest"]
+          assert targets and all(item.startswith("src/tests/ptsip/engine_runtime_validation") for item in targets), targets
+          sys.exit(subprocess.call([sys.executable, "-m", "pytest", "-q", *targets]))
+          '
   mode-selection:
+    if: ${{ inputs.mode != 'ptsip-validation-runtime' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.mode.outputs.matrix }}
