@@ -137,7 +137,7 @@
       "POLICY_DERIVED_MACHINE_CONTRACT",
       "IMPLEMENTATION"
     ],
-    "retention": "PRESERVE_VERSION_CONTRACT_ONLY_STATUS_REPLACEMENT_AUTHORIZED",
+    "retention": "POLICY_VERSION_CONTRACT_REPLACED_OLD_CONTRACT_DELETE_TARGET",
     "new_family_policy_adoption": "NOT_AUTOMATIC",
     "previous_GOV_policy_status": "RETIRED_WAITING",
     "previous_GOV_policy_is_new_normative_source": false,
@@ -167,15 +167,23 @@
       "previous_content_role": "NON_NORMATIVE_MIGRATION_REFERENCE"
     },
     "version": {
-      "file": "developer/contracts/lifecycle/policy_version.json",
+      "file": "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
       "current_functions": [
-        "MAJOR_MINOR_SYNTAX",
-        "RETIRED_VERSION_PRESERVATION"
+        "REQUIRED_VERSION_STRING_SCHEMA"
       ],
       "current_semantics_auto_adopted_by_new_family": false,
       "new_arch_version_field_requirement": "UNRESOLVED",
       "new_policy_version_format": "UNRESOLVED",
-      "status_major_mapping_authorization": "REMOVED_KEEP_LATEST"
+      "status_major_mapping_authorization": "REMOVED_KEEP_LATEST",
+      "superseded_file": "developer/contracts/lifecycle/policy_version.json",
+      "previous_content_role": "NON_NORMATIVE_REFERENCE_ONLY",
+      "historical_functions": [
+        "MAJOR_MINOR_SYNTAX",
+        "RETIRED_VERSION_PRESERVATION"
+      ],
+      "contract_identity_owner": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+      "status_version_coupling": "FORBIDDEN",
+      "automatic_version_increment": "FORBIDDEN"
     },
     "prohibitions": {
       "new_family_schema_direct_ref_to_existing_contract": "FORBIDDEN",
@@ -204,11 +212,12 @@
         "DRAFT_PASS_AUTO_NORMALIZATION",
         "DRAFT_MAJOR_ZERO_REQUIREMENT",
         "APPROVED_MAJOR_AT_LEAST_ONE_REQUIREMENT",
-        "STATUS_DERIVED_MAJOR_VERSION_UPDATE"
+        "STATUS_DERIVED_MAJOR_VERSION_UPDATE",
+        "RETIRED_VERSION_PRESERVATION",
+        "AUTOMATIC_MAJOR_MINOR_VERSION_INCREMENT"
       ],
       "retained": [
         "STATUS_VOCABULARY",
-        "MAJOR_MINOR_SYNTAX",
         "APPROVED_APPLICATION_PROBLEMS_RECOVERY"
       ],
       "independent_ARCH_identity_and_field_schema": "UNRESOLVED",
