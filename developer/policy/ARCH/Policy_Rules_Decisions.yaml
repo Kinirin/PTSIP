@@ -54,6 +54,16 @@ rule_contract_boundary:
   contract_storage_root: developer/contracts/Policy_Rules/root-family/ARCH/
   approval_metadata_in_policy_document: NON_OWNING
   policy_lifecycle_status_vs_rule_approval: DISTINCT
+  multi_rule_reference_decision:
+    decision_id: P1
+    user_selected_option: B
+    authorization: PROJECT_OWNER_EXPLICIT
+    policy_document_rule_cardinality: MULTIPLE_INDEPENDENT_CONTRACT_REFERENCES_ALLOWED
+    actual_rule_body_owner: EACH_REFERENCED_INDEPENDENT_CONTRACT
+    rule_grouping_criterion: UNRESOLVED_USER_DECISION
+    exact_reference_fields_and_shape: UNRESOLVED_USER_DECISION
+    minimum_and_maximum_rule_count: UNRESOLVED_USER_DECISION
+    duplicate_reference_handling: UNRESOLVED_USER_DECISION
 
 unresolved:
   rule_identity_format: UNRESOLVED
