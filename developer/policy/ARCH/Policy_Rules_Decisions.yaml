@@ -1,0 +1,78 @@
+contract_type: PTSIP_ARCH_POLICY_RULES_DECISIONS
+contract_revision: 1
+policy_class: PTSIP_DEVELOPER_POLICY
+responsibility_family: ARCH
+
+authority:
+  decision_source: PROJECT_OWNER_EXPLICIT
+  decision_state: APPROVED_DIRECTION
+  scope: ARCH_POLICY_RULES_AND_INDEPENDENT_CONTRACT_BOUNDARY
+  retired_root_policy_reactivation: FORBIDDEN
+  policy_id_allocation: UNRESOLVED
+  full_mpd_policy_materialization: NOT_COMPLETED
+  active_mpd_policy_claim: FORBIDDEN
+  retired_registries_dependency: FORBIDDEN
+
+public_policy_structure:
+  required_sections:
+    - Policy_Identity
+    - Policy_Status
+    - Authority
+    - Policy_Rules
+  existing_common_rules_schema: developer/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json
+  current_common_validation:
+    type: object
+    shared_rule_reference_fields: NOT_MANDATED
+    shared_required_properties: NONE
+    min_properties: UNCONSTRAINED
+    additional_properties_restriction: NOT_IMPOSED
+    sufficiency: REOPENED_FOR_REVIEW
+  family_internal_semantics: INDEPENDENT
+  family_structural_unification: FORBIDDEN
+
+validation_responsibility:
+  common_schema: MINIMAL_SHARED_STRUCTURE_ONLY
+  arch_schema:
+    owner: ARCH
+    targets:
+      - POLICY_RULES_REFERENCE_SECTION
+      - INDEPENDENT_RULE_CONTRACT_BODY
+    exact_properties_and_constraints: UNRESOLVED
+    physical_schema_partition: UNRESOLVED
+  reference_existence_check: REQUIRES_SEPARATE_RESOLUTION
+
+rule_contract_boundary:
+  selected_direction: INDEPENDENT_RULE_CONTRACT
+  reconciliation: POLICY_REFERENCES_INDEPENDENT_REQUIREMENTS
+  policy_rules_section_owns:
+    - RULE_IDENTIFICATION
+    - INDEPENDENT_CONTRACT_REFERENCE
+  independent_rule_contract_owns:
+    - NORMATIVE_REQUIREMENTS_BODY
+    - INDIVIDUAL_RULE_APPROVAL_METADATA
+    - INDIVIDUAL_RULE_APPROVAL_EVIDENCE_REFERENCE
+  contract_storage_root: developer/contracts/Policy_Rules/root-family/ARCH/
+  approval_metadata_in_policy_document: NON_OWNING
+  policy_lifecycle_status_vs_rule_approval: DISTINCT
+
+unresolved:
+  rule_identity_format: UNRESOLVED
+  policy_reference_field_and_structure: UNRESOLVED
+  rule_approval_fields_names_and_nesting: UNRESOLVED
+  rule_approval_requiredness_and_types: UNRESOLVED
+  approval_evidence_reference_format: UNRESOLVED
+  approval_authority_and_transition: UNRESOLVED
+  requirements_fields_types_and_values: UNRESOLVED
+  contract_reference_resolution: UNRESOLVED
+  duplicated_identity_or_metadata_policy: UNRESOLVED
+  final_arch_schema_and_policy_document_fields: UNRESOLVED
+  canonical_new_mpd_policy_identity_and_status: UNRESOLVED
+  common_rules_stronger_structural_validation: UNRESOLVED
+
+materialization:
+  this_file: APPROVED_DIRECTION_CONTRACT_ONLY
+  independent_rule_contract_files: NOT_YET_AUTHORIZED
+  new_arch_mpd_policy: NOT_YET_MATERIALIZED
+  new_arch_json_schema: NOT_YET_AUTHORIZED
+  new_validator_or_resolver: NOT_YET_AUTHORIZED
+  other_root_families: NOT_MODIFIED
