@@ -17,6 +17,59 @@ on:
 permissions:
   contents: read
 jobs:
+  developer-schema-contracts:
+    name: "Developer schema contracts / ${{ matrix.runner }}"
+    if: ${{ inputs.mode == 'developer-schema-contracts' }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install registered PTSIP VALIDATION runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b3" "PyYAML>=6,<7"
+      - name: Resolve developer schema test responsibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          python .github/scripts/validate_test_modes.py
+          python .github/scripts/resolve_test_modes.py manual --mode developer-schema-contracts | python -c '
+          import json,sys
+          v=json.load(sys.stdin)
+          assert v["selected_ids"] == ["developer-schema-contracts"], v
+          assert len(v["plan"]) == 1, v
+          p=v["plan"][0]
+          assert p["component_ref"] == "developer-contract-schema-verification", p
+          assert p.get("go") == ["developer/tests/schema_validation"], p
+          '
+      - name: Exercise installed engine and schema-check negative fixtures
+        shell: bash
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
+        run: |
+          set -euo pipefail
+          go -C developer/tests test ./schema_validation -count=1 -v
+      - name: Validate current developer contract schemas
+        shell: bash
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
+        run: |
+          set -euo pipefail
+          go run .ptsip/engine/developer/schema_check/main.go --root .
+
   ptsip-validation-runtime:
     name: "Installed PTSIP VALIDATION smoke / ${{ matrix.runner }}"
     if: ${{ inputs.mode == 'ptsip-validation-runtime' }}
@@ -56,7 +109,7 @@ jobs:
           sys.exit(subprocess.call([sys.executable, "-m", "pytest", "-q", *targets]))
           '
   mode-selection:
-    if: ${{ inputs.mode != 'ptsip-validation-runtime' }}
+    if: ${{ inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.mode.outputs.matrix }}
