@@ -41,6 +41,21 @@ approved_identity_contract:
   inherited_legacy_schema: false
   collision_check: REQUIRED
   collision_check_method: UNRESOLVED
+  issuance_direction:
+    mode: MACHINE_AUTOMATED
+    implementation: NEW_INDEPENDENT_IMPLEMENTATION_REQUIRED
+    legacy_tool_copy_move_execution_import: FORBIDDEN
+    legacy_schema_structure_inheritance: FORBIDDEN
+    legacy_reference: READ_ONLY_COMPARISON_ONLY
+    source_of_authority: NEWLY_APPROVED_POLICY_IDENTITY_CONTRACT
+    issuer_location: UNRESOLVED_USER_DECISION
+    numbering_algorithm: UNRESOLVED_USER_DECISION
+    implementation_status: NOT_AUTHORIZED
+    explanation_ko: >-
+      사용자는 기존 ID 발급 도구가 이전 정책과 스키마 구조에 의존하므로
+      복사·이동·호출·재사용하지 않고 새 계약에 따라 독립적으로 구축하도록 승인했다.
+      자동 발급이 기본이며 번호 발급 및 충돌 판정 구현 방법과 정식 도구 위치는
+      아직 결정하지 않았다. 현재의 기존 구현은 역사적 참고로만 읽을 수 있다.
   explanation_ko: >-
     사용자가 개발 정책 ID의 기존 MPD 형식과 저장소 전체 고유성을 재확인했다.
     정규식은 형식만 판정하며 같은 패밀리에서 같은 번호를 사용한 두 파일을
