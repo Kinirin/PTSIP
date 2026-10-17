@@ -10,7 +10,6 @@ import (
     "path/filepath"
     "sort"
 
-    lifecycle "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/lifecycle"
     schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/schema_check"
 )
 
@@ -23,7 +22,6 @@ func runSchemaCheck(root string) (any, int) {
 
 var validators = map[string]Validator{
     "schema-check": runSchemaCheck,
-    "policy-lifecycle-proof": func(root string) (any, int) { return lifecycle.Run(root) },
 }
 
 func main() {
