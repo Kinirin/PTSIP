@@ -153,15 +153,21 @@ func VerifyCompositionProjections(root string, c Composition, contract Contract)
 				deps[d] = true
 			}
 		}
-		for id, v := range c.Engines {
-			key := "ptsip-engine-" + id + "==" + v
-			if !deps[key] {
-				return fmt.Errorf("mandatory Package engine dependency missing or optional: %s", id)
+		if contract.Distribution == "SINGLE_PROJECT_PLATFORM_BUNDLES" {
+			if len(deps) != 0 {
+				return fmt.Errorf("single-project Package must not depend on separate engine projects")
 			}
-			delete(deps, key)
-		}
-		if len(deps) != 0 {
-			return fmt.Errorf("unregistered or stale Package engine dependency")
+		} else {
+			for id, v := range c.Engines {
+				key := "ptsip-engine-" + id + "==" + v
+				if !deps[key] {
+					return fmt.Errorf("mandatory Package engine dependency missing or optional: %s", id)
+				}
+				delete(deps, key)
+			}
+			if len(deps) != 0 {
+				return fmt.Errorf("unregistered or stale Package engine dependency")
+			}
 		}
 	}
 	var index struct {

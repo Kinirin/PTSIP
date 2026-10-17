@@ -22,8 +22,8 @@ func TestPackageRequestExpandsAllAndCannotDowngradeForCredentials(t *testing.T) 
 	if len(s.Components) != len(c.Engines)+2 || s.Type != "PTSIP_PACKAGE" {
 		t.Fatal("Package request omitted canonical inventory")
 	}
-	if err := release.AdmitPublisherScope(root, s, "github-pypi"); err == nil {
-		t.Fatal("Package component vector claimed an unrequested standalone Tool PyPI project")
+	if err := release.AdmitPublisherScope(root, s, "github-pypi"); err != nil {
+		t.Fatalf("complete Package did not resolve to its single PTSIP project: %v", err)
 	}
 	if s.Type != "PTSIP_PACKAGE" || len(s.Components) != len(c.Engines)+2 {
 		t.Fatal("credential failure changed the request")

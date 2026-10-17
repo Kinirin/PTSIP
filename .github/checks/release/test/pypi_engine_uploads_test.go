@@ -1,6 +1,7 @@
 package releasetest
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -23,6 +24,21 @@ func TestSingleEngineUploadStageContainsAllAndOnlyPendingAdmittedWheels(t *testi
 	}
 	route := ".github/checks/release/pypi-publishers.json"
 	b, err := os.ReadFile(filepath.Join(repoRoot(t), route))
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Exercise the preserved legacy helper under a local fixture route. The
+	// production publisher admits only PTSIP and never calls this helper.
+	var legacy map[string]any
+	if err := json.Unmarshal(b, &legacy); err != nil {
+		t.Fatal(err)
+	}
+	scope := []string{"PTSIP"}
+	for _, id := range []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"} {
+		scope = append(scope, "ptsip-engine-"+id)
+	}
+	legacy["authentication"].(map[string]any)["declared_project_scope"] = scope
+	b, err = json.Marshal(legacy)
 	if err != nil {
 		t.Fatal(err)
 	}

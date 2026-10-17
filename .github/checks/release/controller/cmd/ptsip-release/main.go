@@ -123,7 +123,7 @@ func main() {
 						}
 					}
 					matrix.Include = engines
-					if err == nil && *destination == "github-pypi" {
+					if err == nil && *destination == "github-pypi" && len(engines) > 0 {
 						_, err = release.StageEngineUploads(*root, manifest, *output)
 					}
 				}

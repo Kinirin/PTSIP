@@ -15,6 +15,9 @@ func VerifyPackageJoin(root string, s release.Selection, input, platform string)
 	if err != nil {
 		return receipt, err
 	}
+	if err := command(root, nil, "python", "-m", "pip", "install", "build>=1.2,<2", "twine>=6,<8"); err != nil {
+		return receipt, err
+	}
 	dir, err := os.MkdirTemp("", "ptsip-complete-pip-consumer-")
 	if err != nil {
 		return receipt, err
@@ -39,6 +42,15 @@ if metadata.version('PTSIP') != sys.argv[1] or TOOL_VERSION != sys.argv[2]:
 result = inspect()
 if not result['all_installed'] or result['execution_authorized']:
  raise RuntimeError('pip Package omitted or implicitly activated an engine')
+if result['distribution'] != 'SINGLE_PROJECT_PLATFORM_BUNDLES':
+ raise RuntimeError('Package did not install a single-project native bundle')
+for row in result['entries']:
+ try:
+  metadata.distribution('ptsip-engine-' + row['engine'].lower())
+ except metadata.PackageNotFoundError:
+  pass
+ else:
+  raise RuntimeError('Package installed a separate engine distribution')
 catalog = resources.files('ptsip.profiles')
 if not catalog.joinpath('index.yaml').is_file() or catalog.joinpath('history').is_dir():
  raise RuntimeError('public Profile catalog missing or history shipped')
@@ -55,6 +67,20 @@ print('pip installed complete Package and all seven hash-verified native engines
 		return receipt, fmt.Errorf("complete pip Package verification failed: %w", err)
 	}
 	if err := release.VerifyInstalledComponents(receipt.Snapshot, python); err != nil {
+		return receipt, err
+	}
+	if platform == "linux-x64" {
+		source, err := verifySourcePackage(root, s, wheels, check, c.PackagePyPI, c.Tool)
+		if err != nil {
+			return receipt, err
+		}
+		receipt.SourceDist = &source
+	}
+	args := []string{"python", "-m", "twine", "check", filepath.Join(wheels, receipt.Wheel.Name)}
+	if receipt.SourceDist != nil {
+		args = append(args, filepath.Join(wheels, receipt.SourceDist.Name))
+	}
+	if err := command(root, nil, args...); err != nil {
 		return receipt, err
 	}
 	receipt.Status = "PASS"

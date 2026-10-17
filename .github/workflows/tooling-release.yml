@@ -18,8 +18,8 @@ on:
       destination:
         description: Publication destination
         type: choice
-        default: ghcr
-        options: [ghcr, github]
+        default: github-pypi
+        options: [github-pypi, github, ghcr]
 permissions:
   contents: read
 concurrency:
@@ -63,10 +63,9 @@ jobs:
           path: .artifacts/release/container/container-publication-*.json
           if-no-files-found: error
   release-admission:
-    if: ${{ inputs.destination == 'github' }}
+    if: ${{ inputs.destination == 'github' || inputs.destination == 'github-pypi' }}
     runs-on: ubuntu-latest
     outputs:
-      pypi_count: ${{ steps.preflight.outputs.pypi_count }}
       package_count: ${{ steps.preflight.outputs.package_count }}
     permissions:
       contents: read
@@ -126,38 +125,114 @@ jobs:
       - name: Publish one verified source-SHA Release
         shell: bash
         run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
-  pypi-publication:
-    needs: [release-admission, github-publication]
-    if: ${{ false }} # PyPI publication is on hold by owner instruction.
-    runs-on: ubuntu-latest
-    environment: pypi
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/download-artifact@v8
-        with:
-          name: admitted-publication-${{ github.sha }}
-          path: .artifacts/release/shipping
-      - name: Upload all admitted engine wheels sequentially with one publisher setup
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.ENTIRE_ACCOUNT }}
-          attestations: false
-          packages-dir: .artifacts/release/shipping/pypi/engines
   package-publication:
-    needs: [release-admission, github-publication, pypi-publication]
-    if: ${{ false }} # PyPI publication is on hold by owner instruction.
+    needs: [release-admission, github-publication]
+    if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.package_count != '0' }}
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       contents: read
     steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .github/checks/release/controller/go.mod
+          cache: true
+          cache-dependency-path: .github/checks/release/controller/go.sum
       - uses: actions/download-artifact@v8
         with:
           name: admitted-publication-${{ github.sha }}
           path: .artifacts/release/shipping
-      - name: Publish complete Package only after every engine upload succeeds
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Refresh pending uploads against immutable public PyPI files
+        id: pending
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-stage --root "$GITHUB_WORKSPACE" --destination github-pypi --output .artifacts/release/shipping
+      - name: Validate the single-project PTSIP upload set
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import email.parser
+          import hashlib
+          import json
+          import re
+          import tarfile
+          import zipfile
+          from pathlib import Path
+
+          root = Path('.artifacts/release/shipping')
+          manifest = json.loads((root / 'shipping-manifest.json').read_text())
+          package = manifest.get('pypi_package') or {}
+          version = package.get('version')
+          if manifest['selection']['release_type'] != 'PTSIP_PACKAGE' or version != '0.3.8b3':
+              raise SystemExit('PyPI accepts only the complete PTSIP 0.3.8b3 Package')
+          components = {c['id']: c for c in manifest['package']['components'] if c['kind'] == 'engine'}
+          admitted = {f['name']: f for f in package.get('files', [])}
+          stage = root / 'pypi/package'
+          files = sorted(root / name for name in admitted)
+          for pending in stage.iterdir():
+              expected = admitted.get(pending.name)
+              if expected is None or pending.is_symlink() or not pending.is_file() or hashlib.sha256(pending.read_bytes()).hexdigest() != expected['sha256']:
+                  raise SystemExit('Unadmitted pending PyPI distribution')
+          wheels = [p for p in files if p.suffix == '.whl']
+          source = [p for p in files if p.name == f'ptsip-{version}.tar.gz']
+          if len(components) != 7 or not wheels or len(source) != 1 or len(files) != len(wheels) + 1:
+              raise SystemExit('Single-project publication requires complete platform PTSIP wheels and one PTSIP sdist; independent engine uploads are disabled')
+          tags = {'windows-x64': 'win_amd64', 'linux-x64': 'manylinux_2_39_x86_64', 'macos-arm64': 'macosx_11_0_arm64'}
+          targets = {'windows-x64': 'x86_64-pc-windows-msvc', 'linux-x64': 'x86_64-unknown-linux-gnu', 'macos-arm64': 'aarch64-apple-darwin'}
+          platforms = set()
+          for file in files:
+              expected = admitted.get(file.name)
+              if not file.is_file() or file.is_symlink() or expected is None or hashlib.sha256(file.read_bytes()).hexdigest() != expected['sha256']:
+                  raise SystemExit(f'Unadmitted Package upload: {file.name}')
+          for file in wheels:
+              platform = admitted[file.name]['platform']
+              if platform not in tags or platform in platforms or file.name != f'ptsip-{version}-py3-none-{tags[platform]}.whl':
+                  raise SystemExit('Package wheel host selection differs')
+              platforms.add(platform)
+              with zipfile.ZipFile(file) as wheel:
+                  if len(wheel.namelist()) != len(set(wheel.namelist())):
+                      raise SystemExit('Duplicate Package wheel members')
+                  di = f'ptsip-{version}.dist-info/'
+                  metadata = email.parser.BytesParser().parsebytes(wheel.read(di + 'METADATA'))
+                  requirements = metadata.get_all('Requires-Dist', [])
+                  if metadata['Name'] != 'PTSIP' or metadata['Version'] != version or any(re.match(r'ptsip[-_.]engine[-_.]', r, re.I) for r in requirements):
+                      raise SystemExit('Package still depends on separate PyPI engine projects')
+                  compatibility = email.parser.BytesParser().parsebytes(wheel.read(di + 'WHEEL'))
+                  if compatibility['Root-Is-Purelib'] != 'false' or compatibility.get_all('Tag') != [f'py3-none-{tags[platform]}']:
+                      raise SystemExit('Package wheel compatibility differs')
+                  index = json.loads(wheel.read('ptsip/engines/index.json'))['official_engine_entries']
+                  identities = {entry['kind'].lower(): entry for entry in index}
+                  if len(index) != len(identities) or set(identities) != set(components):
+                      raise SystemExit('Package engine registry differs from the admitted inventory')
+                  bundle = json.loads(wheel.read(di + 'ptsip-engines.json'))
+                  if bundle.get('schema_version') != 'ptsip-bundled-engine-origins/v1' or bundle.get('package_version') != version or bundle.get('platform') != platform or bundle.get('execution_authorized') is not False or set(bundle['engines']) != set(components):
+                      raise SystemExit('Complete bundled engine inventory is not admitted')
+                  for kind, component in components.items():
+                      origin = bundle['engines'][kind]
+                      entrypoint = 'ptsip-engine-' + kind + ('.exe' if platform == 'windows-x64' else '')
+                      if identities[kind]['version'] != component['version'] or origin.get('schema_version') != 'ptsip-independent-wheel-origin/v1' or origin['engine_id'] != identities[kind]['engine_id'] or origin['host_target'] != targets[platform] or origin['entrypoint'] != entrypoint:
+                          raise SystemExit(f'Bundled engine registration differs: {kind}')
+                      binary = wheel.read(f'ptsip-{version}.data/scripts/' + origin['entrypoint'])
+                      if origin['source_sha'] != component['source_sha'] or origin['engine_version'] != component['version'] or origin.get('execution_authorized') is not False or hashlib.sha256(binary).hexdigest() != origin['binary_sha256']:
+                          raise SystemExit(f'Bundled engine identity differs: {kind}')
+          if platforms != set(manifest['selection']['platforms']):
+              raise SystemExit('Package wheel set does not cover the selected hosts')
+          with tarfile.open(source[0], 'r:gz') as archive:
+              info = archive.extractfile(f'ptsip-{version}/PKG-INFO')
+              metadata = email.parser.BytesParser().parsebytes(info.read())
+              if metadata['Name'] != 'PTSIP' or metadata['Version'] != version or any(re.match(r'ptsip[-_.]engine[-_.]', r, re.I) for r in metadata.get_all('Requires-Dist', [])):
+                  raise SystemExit('Source distribution is not the same PTSIP Package')
+          print('Validated one PyPI project: PTSIP, complete host wheels and one sdist')
+          PY
+      - name: Publish only the complete PTSIP distributions
+        if: ${{ steps.pending.outputs.package_count != '0' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
@@ -165,8 +240,8 @@ jobs:
           attestations: false
           packages-dir: .artifacts/release/shipping/pypi/package
   package-record:
-    needs: [release-admission, github-publication, pypi-publication, package-publication]
-    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || ((needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') && (needs.release-admission.outputs.package_count == '0' || needs.package-publication.result == 'success'))) }}
+    needs: [release-admission, github-publication, package-publication]
+    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || (inputs.destination == 'github-pypi' && (needs.release-admission.outputs.package_count == '0' || needs.package-publication.result == 'success')))) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

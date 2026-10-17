@@ -42,6 +42,7 @@ type MatrixEntry struct {
 	Runner    string `json:"runner"`
 }
 type Contract struct {
+	Distribution    string         `json:"pypi_distribution"`
 	Schema          string         `json:"schema_version"`
 	PackageBase     string         `json:"package_base"`
 	EngineRegistry  string         `json:"engine_registry"`

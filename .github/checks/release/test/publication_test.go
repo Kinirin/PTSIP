@@ -133,7 +133,7 @@ func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T
 	}
 }
 
-func TestOwnerTokenScopeAllowsCompletePackageAndOnlyApprovedEngineProjects(t *testing.T) {
+func TestOwnerTokenScopeAllowsOnlyTheCompletePTSIPProject(t *testing.T) {
 	root := repoRoot(t)
 	packageComponent := release.Component{ID: "package", Kind: "package"}
 	if environment, err := release.PublisherEnvironment(root, packageComponent); err != nil || environment != "pypi" {
@@ -147,8 +147,8 @@ func TestOwnerTokenScopeAllowsCompletePackageAndOnlyApprovedEngineProjects(t *te
 	}
 	for _, id := range []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"} {
 		s := release.Selection{Components: []release.Component{{ID: id, Kind: "engine"}}}
-		if err := release.AdmitPublisherScope(root, s, "github-pypi"); err != nil {
-			t.Fatalf("approved engine project %s rejected: %v", id, err)
+		if err := release.AdmitPublisherScope(root, s, "github-pypi"); err == nil {
+			t.Fatalf("separate engine project %s was admitted", id)
 		}
 		if err := release.AdmitPublisherScope(root, s, "github"); err != nil {
 			t.Fatal("token scope blocked an authorized GitHub-only release")

@@ -347,6 +347,11 @@ func InstallPackage(snapshot Snapshot, platform, python string, registered map[s
 func VerifyInstalledComponents(snapshot Snapshot, python string) error {
 	adapter := `import hashlib, importlib.metadata as metadata, json, pathlib, sys, sysconfig
 snapshot = json.load(sys.stdin)
+from ptsip.engine_installation import inspect
+status = inspect()
+if not status['all_installed'] or status['execution_authorized']:
+    raise RuntimeError('complete native engine installation not verified')
+engines = {row['engine'].lower(): row for row in status['entries']}
 for component in snapshot['components']:
     if component['kind'] == 'profiles':
         continue
@@ -363,16 +368,14 @@ for component in snapshot['components']:
             project = 'ptsip-tool'
         except metadata.PackageNotFoundError:
             pass
-    distribution = metadata.distribution(project)
-    if distribution.version != expected:
-        raise RuntimeError('installed component version differs: ' + project)
     if component['kind'] == 'engine':
-        origin = json.loads(distribution.read_text('ptsip-origin.json'))
-        if origin['source_sha'] != component['source_sha'] or origin['engine_version'] != component['version']:
+        row = engines[component['id']]
+        if row['source_sha'] != component['source_sha'] or row['installed_version'] != component['version']:
             raise RuntimeError('installed engine origin differs: ' + project)
-        binary = pathlib.Path(sysconfig.get_path('scripts')) / origin['entrypoint']
-        if not binary.is_file() or hashlib.sha256(binary.read_bytes()).hexdigest() != origin['binary_sha256']:
-            raise RuntimeError('installed native executable missing or changed: ' + project)
+    else:
+        distribution = metadata.distribution(project)
+        if distribution.version != expected:
+            raise RuntimeError('installed component version differs: ' + project)
 print('Complete Package installed: Tool, Profiles and all registered native engines')
 `
 	payload, err := json.Marshal(snapshot)

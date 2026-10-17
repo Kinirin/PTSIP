@@ -33,6 +33,12 @@ func MaterializeToolProject(root string) error {
 		return fmt.Errorf("project metadata unavailable")
 	}
 	project["name"], project["version"] = "ptsip-tool", version
+	build, ok := document["build-system"].(map[string]any)
+	if !ok {
+		return fmt.Errorf("build system unavailable")
+	}
+	build["build-backend"] = "setuptools.build_meta"
+	delete(build, "backend-path")
 	deps := []string{}
 	if values, ok := project["dependencies"].([]any); ok {
 		for _, value := range values {

@@ -1,7 +1,7 @@
 {
   "schema_version": "ptsip-owner-bounded-release/v1",
-  "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_15",
-  "instruction": "Publish 0.3.8.b3 (PyPI normalized 0.3.8b3) with Tool, Profiles and all seven engines; increment each engine micro by one and upload engines sequentially in one PyPI job. Continue isolated dev/0.3.8b2; never merge to main.",
+  "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_17",
+  "instruction": "Publish 0.3.8.b3 (PyPI normalized 0.3.8b3) as one PTSIP PyPI project with Tool, Profiles and all seven independently versioned engines in each platform wheel, plus one complete source distribution. Preserve original engine artifacts and historical releases. Continue isolated dev/0.3.8b2; never merge to main.",
   "branch": "dev/0.3.8b2",
   "package_pypi_version": "0.3.8b3",
   "tool_identity": "T.0.3.8.b3",
@@ -38,5 +38,24 @@
     "execution": "0.3.1",
     "projection": "0.2.1"
   },
-  "engine_pypi_publication": "ONE_JOB_SEQUENTIAL_UPLOADS"
+  "engine_pypi_publication": "DISABLED_SINGLE_PTSIP_PROJECT_ONLY",
+  "local_commit_hook_exception": {
+    "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_17",
+    "scope": "ONE_LOCAL_RELEASE_IMPLEMENTATION_COMMIT",
+    "branch": "dev/0.3.8b2",
+    "parent_sha": "04f2170d7e240efde8df7179df690de0ee9a10a1",
+    "retired_policy_resolver_restore": false,
+    "persistent_hook_configuration_change": false,
+    "automatic_policy_pass": false
+  },
+  "single_project_migration": {
+    "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_17",
+    "branch": "dev/0.3.8b2",
+    "package_version": "0.3.8b3",
+    "prior_tool_source": "916333f9aa0f9589272911818d8352fb0cae09e1",
+    "tool_packaging_rebuild": "ALLOW_FOR_FIRST_SINGLE_PROJECT_B3_PUBLICATION_ONLY",
+    "previous_release_assets": "PRESERVE_IMMUTABLE",
+    "engine_versions_and_original_artifacts": "UNCHANGED",
+    "runtime_activation": false
+  }
 }

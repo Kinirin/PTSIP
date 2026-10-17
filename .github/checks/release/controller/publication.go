@@ -323,7 +323,7 @@ func Shipping(root string, s Selection, output string) (ShippingManifest, error)
 	}
 	if m.PackageDistribution != nil {
 		c := m.PackageDistribution
-		if c.ID != "package" || c.Kind != "package" || c.SourceSHA != s.SourceSHA || c.Version != "0.3.8b3" || len(c.Files) != 1 {
+		if c.ID != "package" || c.Kind != "package" || c.SourceSHA != s.SourceSHA || c.Version != "0.3.8b3" || len(c.Files) != len(s.Platforms)+1 {
 			return m, fmt.Errorf("Package distribution admission differs")
 		}
 		for _, f := range c.Files {
@@ -374,7 +374,7 @@ func PyPIStage(root string, s Selection, output string, verify bool) error {
 		return err
 	}
 	for _, c := range m.Snapshot.Components {
-		if m.PackageDistribution != nil && c.Kind == "tool" {
+		if m.PackageDistribution != nil {
 			continue
 		}
 		selected := false
@@ -509,6 +509,10 @@ func AdmitPublisherScope(root string, s Selection, destination string) error {
 	if destination != "github-pypi" {
 		return fmt.Errorf("unregistered publication destination")
 	}
+	if s.Type == "PTSIP_PACKAGE" {
+		_, err := PublisherEnvironment(root, Component{ID: "package", Kind: "package"})
+		return err
+	}
 	for _, c := range s.Components {
 		if c.Kind != "profiles" {
 			if _, err := PublisherEnvironment(root, c); err != nil {
@@ -528,7 +532,7 @@ func PublicationTargets(root string, m ShippingManifest, output, destination str
 	}
 	components := append([]Component{}, m.Selection.Components...)
 	if m.PackageDistribution != nil {
-		components = append(components, Component{ID: "package", Kind: "package", Version: m.PackageDistribution.Version})
+		components = []Component{{ID: "package", Kind: "package", Version: m.PackageDistribution.Version}}
 	}
 	result := []map[string]string{}
 	for _, c := range components {

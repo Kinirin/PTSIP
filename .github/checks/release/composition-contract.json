@@ -23,6 +23,8 @@
     "projection_mismatch": "FAIL_CLOSED"
   },
   "default_engine_count": 7,
+  "pypi_distribution": "SINGLE_PROJECT_PLATFORM_BUNDLES",
+  "distribution_contract": "src/ptsip/package-distribution.json",
   "package_request": {
     "workflow_input": "release_type",
     "default": "PTSIP_PACKAGE",
@@ -77,6 +79,8 @@
     "tool": {
       "source_boundaries": [
         "src",
+        "MANIFEST.in",
+        "ptsip_build_backend.py",
         "registry",
         "License-Authority",
         "README.md",

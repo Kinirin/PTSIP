@@ -12,10 +12,11 @@ The registered Projection engine implements `projection.select`, `projection.ren
 
 This micro release increments the independent engine distribution version to `0.2.1`.
 The capability contract and runtime authority boundary are unchanged.
-Windows x64 and Linux x64 native wheels are rebuilt from the exact release source.
+Windows x64 and Linux x64 native artifacts retain their verified original source and hashes.
 macOS is optional and is not included in this release.
 
 The wheel archive uses explicit ZIP headers accepted by PyPI. Engine binaries
 and member hashes are preserved during archive normalization. All seven engines
-are uploaded sequentially through one publication job before the complete
-PTSIP `0.3.8.b3` Package is published.
+are embedded in each platform-specific PTSIP `0.3.8.b3` wheel. Only the PTSIP
+project is uploaded to PyPI; independent engine versions and original artifacts
+remain recorded in the complete Package composition.

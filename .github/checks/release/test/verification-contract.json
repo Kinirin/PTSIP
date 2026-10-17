@@ -10,7 +10,8 @@
     "selection": "PTSIP_PACKAGE_WITH_EXPLICIT_BETA2_COMPOSITION",
     "command": "join",
     "matrix": "REGISTERED_HOSTS_AFTER_ALL_COMPONENT_RECEIPTS_PASS",
-    "required": "PIP_INSTALL_COMPLETE_PACKAGE_AND_VERIFY_ALL_NATIVE_EXECUTABLE_HASHES",
+    "required": "PIP_INSTALL_SINGLE_PROJECT_PLATFORM_PACKAGE_VERIFY_ALL_NATIVE_HASHES_AND_REBUILD_LINUX_SOURCE_DISTRIBUTION",
+    "package_receipt_schema": "ptsip-pip-package-test-receipt/v2",
     "artifact_pattern": "verification-package-{platform}-{source_sha}"
   },
   "runners": {

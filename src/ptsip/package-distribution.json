@@ -1,0 +1,16 @@
+{
+  "schema_version": "ptsip-package-distribution/v1",
+  "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#authority_semantics.unit_ptsip_engine_draft.approved_decisions",
+  "approval": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_17",
+  "project": "PTSIP",
+  "mode": "SINGLE_PROJECT_PLATFORM_BUNDLES",
+  "engine_artifacts": "INDEPENDENT_VERSIONED_NATIVE_WHEELS_AS_VERIFIED_BUILD_INPUTS",
+  "engine_registry_ref": "engines/index.json",
+  "engine_artifact_contract_ref": "engines/contracts/installation-plan.json",
+  "bundle_metadata": "ptsip-engines.json",
+  "bundle_schema": "ptsip-bundled-engine-origins/v1",
+  "legacy_independent_installation": "EXISTING_COMPONENT_INSTALLER_AND_DIAGNOSTIC_COMPATIBILITY",
+  "source_distribution": "RUST_SOURCES_AND_LOCKFILES_WITH_PEP517_NATIVE_BUILD",
+  "installed_is_execution_authorization": false,
+  "self_reported_origin_is_release_attestation": false
+}

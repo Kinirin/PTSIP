@@ -1,10 +1,13 @@
 prune src/tests
+include ptsip_build_backend.py
+include ptsip-build-source.json
 recursive-include src/policy *.yaml *.json
 recursive-include src/ptsip/profiles *.ptsip.yaml
 include src/ptsip/profiles/index.yaml
 include registry/project-profile-contracts.yaml
 
 recursive-include src/ptsip/engines *.json
+recursive-include src/ptsip/engines Cargo.toml Cargo.lock *.rs *.yaml
 prune src/ptsip/engines/context/target
 prune src/ptsip/engines/storage/target
 prune src/ptsip/engines/validation/target
