@@ -63,6 +63,31 @@
       "rule_contract_reference_resolution": "UNRESOLVED_USER_DECISION",
       "physical_contract_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION",
       "validator_or_engine_implementation": "NOT_AUTHORIZED_BY_DIRECTION_DECISION"
+    },
+    "policy_rules_validation_responsibility": {
+      "decision": "USER_APPROVED_A_COMMON_C_FAMILY",
+      "common_schema": {
+        "scope": "MINIMAL_SHARED_STRUCTURE_ONLY",
+        "family_specific_rule_semantics": "EXCLUDED",
+        "universal_rule_reference_fields": "NOT_MANDATED",
+        "cross_family_internal_shape_unification": "FORBIDDEN",
+        "specific_minimum_structural_constraints": "UNRESOLVED_USER_DECISION"
+      },
+      "root_family_schema": {
+        "validation_responsibilities": [
+          "POLICY_RULES_REFERENCE_SECTION",
+          "INDEPENDENT_RULE_CONTRACT_BODY"
+        ],
+        "family_specific_internal_structures": "INDEPENDENT_AND_OWNER_DEFINED",
+        "family_specific_rule_semantics": "FAMILY_OWNED",
+        "same_physical_schema_file_for_both_responsibilities": "NOT_REQUIRED",
+        "schema_file_partition": "UNRESOLVED_USER_DECISION",
+        "exact_fields_types_constraints": "UNRESOLVED_USER_DECISION"
+      },
+      "independent_rule_contract_root": "developer/contracts/Policy_Rules/root-family/{FAMILY}/",
+      "rule_reference_resolution": "UNRESOLVED_USER_DECISION",
+      "schema_materialization": "NOT_AUTHORIZED_BY_RESPONSIBILITY_BOUNDARY_DECISION",
+      "validator_implementation": "NOT_AUTHORIZED_BY_RESPONSIBILITY_BOUNDARY_DECISION"
     }
   },
   "selected_arch_schema_header": {
