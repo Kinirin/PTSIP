@@ -12,7 +12,6 @@ func fixture(t *testing.T, rootFamilyRef, rootFamilyJSON string) string {
 	t.Helper()
 	root := t.TempDir()
 	files := map[string]string{
-		"developer/contracts/routing/policy_routes.json": `{"identity_sources":{"root_family":``}`,
 		"developer/contracts/identity/root_family.json": rootFamilyJSON,
 		"developer/contracts/identity/policy_kind.json": `{"$id":"urn:example:kind","type":"string","enum":["TYPE_A"]}`,
 	}
