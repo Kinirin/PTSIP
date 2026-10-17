@@ -19,4 +19,4 @@ pending_tasks:
   - "상태·계획 바인딩 차단요인: developer/automation/internal/machine/state.go 및 developer/automation/policy/binding/registry.go가 폐기 예정 developer/state/ 와 developer/bindings/ 를 참조한다. 신규 책임 및 대체 계약을 확인한다."
   - "버전·테스트 차단요인: developer/automation/policy/lifecycle/version_contract.go 와 developer/tests/internal/testrepo/copy.go에서 이전 lifecycle 파일을 참조한다. 정책 상태/버전 설계 결과를 기다려 변경 대상과 테스트 영향을 구분한다."
   - "검증·에이전트 진입 차단요인: .github/checks/release/engine-verification/admission.go가 구 계약과 policy-resolver 명령을 호출하고, AGENTS.md는 구 registry를 안내한다. 실제 사용 여부와 대체 검증 경로를 확인한다."
-  - "대체 계약의 위치·권위·호환성 및 검증 기준이 사용자 승인으로 확정된 항목만 순차적으로 전환한다. 미확정 항목은 유지하고, 폐기 대상의 물리적 삭제는 사용자 명시 요청 전 수행하지 않는다."
+  - "승인된 검증기 대체 방향: 신규 검증기는 승인된 신규 정책·스키마·계약만으로 독립 구현한다. 구 검증기는 모듈별 역할·책임 분리 경계만 기술 참고하며 기존 로직·알고리즘·함수명·모듈명·호출 계약은 신규 사양으로 승계하지 않는다. 실제 구현과 진입점 전환은 담당 세션의 업무이며, 미확정 계약은 임의로 확정하지 않는다. 구파일 물리적 삭제는 사용자 명시 요청 이전에 수행하지 않는다."
