@@ -38,6 +38,7 @@ approved_directions_ko:
   - "2026-10-17 사용자 결정: 별도 action_keyword는 만들지 않고 action_ref만으로 행동을 식별하고 사람이 의미를 유추할 수 있게 한다. 행동 URN은 urn:ptsip:authority:action:<target-domain>:<action-name> 구조를 사용하며 승인된 예시는 urn:ptsip:authority:action:policy:policy-modification이다. 향후 target-domain에는 plan, avatar도 예상되나 실제 계약·필드·등록 규칙은 미정이다."
   - "2026-10-17 사용자 승인: authority action URN의 target-domain은 policy, plan, avatar를 포함한다. urn:ptsip:authority:action:<target-domain>:<action-name> 패턴을 채택한다. 동일한 URN을 실제 독립 행동 계약의 식별자와 해당 행동 검증 JSON Schema의 $id로 공동 사용한다. action_keyword는 도입하지 않는다."
   - "2026-10-17 사용자 결정: Authority_Action은 정확히 하나의 독립 행동 계약만 action_ref로 참조한다. 순차적인 여러 내부 행동을 필요로 하면 순서를 소유하는 복합/패키지 행동 계약 하나를 별도의 행동 식별자로 참조한다. Authority_Action은 순서 목록이나 여러 action_ref를 직접 소유하지 않는다. 복합 계약의 내부 수행 제약, 실패/중단 처리 및 실행 승인 의미는 별도 후속 결정 사항이다."
+  - "2026-10-17 사용자 승인: Authority_Category 아래 Major 필수, Minor/Micro 선택; Authority 전체 객체 계층에 추가 미정의 필드 전면 금지; action_ref 행동 이름은 소문자·숫자·하이픈 표준으로 제한. Authority_Action은 최상위 필수·단일 action_ref 필수. 정식 스키마에 적용."
 
 review_findings:
   - id: JSON_SYNTAX
@@ -52,12 +53,12 @@ review_findings:
 
   - id: AUTHORITY_ACTION_SEMANTICS_OPEN
     result: PARTIALLY_DECIDED
-    description_ko: "2026-10-17 승인/결정: 독립 행동 계약 필수 참조(B안); Authority_Action은 단일 action_ref만 보유; 여러 순차 작업은 별도의 복합/패키지 행동 계약 하나로 참조; target-domain policy/plan/avatar; URN urn:ptsip:authority:action:<target-domain>:<action-name>; 행동 계약 ID와 해당 검증 JSON Schema의 $id는 동일 URN 사용; action_keyword 제외. 미결정: 동일 URN 리소스/레지스트리 조회 책임, 계약 데이터와 스키마 자원의 연결, 복합 계약 내부 순서/실패 처리와 실행 승인, 허가·금지·의무, 버전 정책 및 실제 스키마 필드 제약. JSON Schema $ref는 action_ref 문자열을 자동으로 따라가지 않으므로 별도 resolver 책임 논의 필요. 정식 파일은 구체 코드 검토/승인 후 수정."
+    description_ko: "Authority 필드 구조 승인 및 적용: Authority_Action 단일 action_ref 필수, Category의 Major 필수·Minor/Micro 선택, 각 객체 additionalProperties:false, action_ref URN pattern(policy/plan/avatar, 소문자·하이픈 표준). 남은 부분: 행동 계약 실체, 동일 URN의 계약 ID 및 JSON Schema $id 동시 사용에 따른 단일 조회/리소스 등록 체계, 복합 행동 내부 순서/실패, 행위 허가·금지·의무, 버전 정책(다른 세션), JSON Schema만으로 action_ref 문자열에서 참조 계약이 자동 로드되지 않으므로 Resolver 필요. CR-01 전체는 진행 중."
 
 last_checkpoint:
   date: "2026-10-17"
   confirmation_type: USER_APPROVED_SCHEMA_CHANGE
-  machine_validation: JSON_PARSE_AND_STRUCTURE_CHECK_ONLY
+  machine_validation: JSON_PARSE_REMOTE_STRUCTURE_AND_LOCAL_18_CASE_DRAFT202012
   user_approved_schema_change: true
   note_ko: >-
     사용자 승인에 따라 Public_Policy_Status.schema.json의 JSON 구문과
@@ -74,7 +75,14 @@ last_checkpoint:
     CR-01 전체 검토나 Root Family 정책 구현이 완료되었다는 뜻은 아니다.
     Authority 스키마 변경 커밋: 88ac0c42b73d9673b2bea6229db85be0afcf1100.
     Identity 및 Category 필수와 Major 계층 참조를 반영했으며,
-    Major 내부 필수 여부와 Authority 후속 행동 계약은 미결정이다.
+    이 항목은 당시 미결정 상태였으나 이번 승인으로 해소했다.
+    Authority 스키마 확정 커밋: 40923f3c52c38ded3b06eec27ebde3572fb17de6.
+    Major 필수, Minor/Micro 선택, 단일 Authority_Action/action_ref 필수,
+    추가 속성 전면 금지, policy/plan/avatar 행동 URN 소문자·하이픈
+    패턴을 적용했다. 원격 파일 재조회 및 JSON 파싱/구조 일치 확인.
+    Python jsonschema Draft 2020-12로 재구성한 동일 스키마와 기존
+    Major/Minor/Micro 참조 구조에 대한 18개 입력 케이스를 검증해
+    18/18 예상 일치. 실제 레지스트리·전체 통합 검증은 미완료.
 
 pending_tasks: null
 
