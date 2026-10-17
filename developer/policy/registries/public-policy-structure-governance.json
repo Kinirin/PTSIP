@@ -92,5 +92,34 @@
     "full_internal_authority_and_rules_fields": "UNRESOLVED",
     "historical_approval_files": "HISTORICAL_EVIDENCE_ONLY",
     "status_contract_authority_ref": "developer/policy/registries/lifecycle-status-contract-authority.json"
+  },
+  "policy_identity_contract": {
+    "id_uniqueness_scope": "REPOSITORY_WIDE",
+    "duplicate_ids_between_policy_documents": "FORBIDDEN",
+    "developer_root_family_id": {
+      "applies_to_policy_class": "PTSIP_DEVELOPER_POLICY",
+      "format": "MPD-{ROOT_FAMILY}-{FOUR_DIGITS}",
+      "pattern": "^MPD-(NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)-[0-9]{4}$",
+      "root_families": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ]
+    },
+    "format_validation_is_uniqueness_validation": false,
+    "actual_cross_document_collision_check": "REQUIRED",
+    "id_issuance_or_checking_mechanism": "NOT_YET_DECIDED",
+    "prior_policy_schema_import": "FORBIDDEN"
   }
 }
