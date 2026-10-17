@@ -69,3 +69,19 @@ func TestExternalRefsAreNotClaimedVerified(t *testing.T){
   t.Fatalf("unresolved references must be explicitly reported: %v",result)
  }
 }
+
+func TestOrchestratorRejectsUnknownValidator(t *testing.T) {
+ root,err:=filepath.Abs(filepath.Join("..","..",".."))
+ if err!=nil {t.Fatal(err)}
+ moduleDir:=filepath.Join(root,".ptsip","engine","developer")
+ cmd:=exec.Command("go","-C",moduleDir,"run",".","--validator","unknown-validator","--root",t.TempDir())
+ stdout,err:=cmd.Output()
+ if err==nil {t.Fatalf("unregistered validator must fail closed; output=%s",stdout)}
+ var result map[string]any
+ if err:=json.Unmarshal(stdout,&result);err!=nil {
+  t.Fatalf("unregistered validator must emit structured error: %v, output=%s",err,stdout)
+ }
+ if result["status"]!="UNRESOLVED" || result["reason"]!="UNREGISTERED_DEVELOPER_VALIDATOR" {
+  t.Fatalf("unexpected failure semantics: %v",result)
+ }
+}
