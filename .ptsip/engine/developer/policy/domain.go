@@ -127,7 +127,7 @@ func readVocabulary(root, reference string) ([]string, map[string]struct{}, erro
 }
 
 func confinedFile(root, reference string) (string, error) {
-	if reference == "" || strings.Contains(reference, "\") ||
+	if reference == "" || strings.Contains(reference, "\\") ||
 		strings.HasPrefix(reference, "/") {
 		return "", errors.New("missing or invalid declared relative source")
 	}
