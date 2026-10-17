@@ -114,6 +114,19 @@ developer_validator_engine_use:
     temporary_record_as_formal_runtime_dependency: FORBIDDEN
 ```
 
+
+### 현재 구현 경로 변경 알림 — 비규범
+
+2026-10-17 확인한 구현 변경의 **공유용 현황**이며 새로운 정책·계약 또는 타 작업 그룹의 진행 상태 변경이 아니다.
+
+- **공통 진입점:** `.ptsip/engine/developer/main.go` — 향후 개발자 검증기 등록·선택·실행 오케스트레이션. 현재 등록된 이름은 `schema-check`.
+- **Schema 검증 모듈:** `.ptsip/engine/developer/schema_check/Engine.go` — 설치된 PTSIP VALIDATION 엔진의 `validation.schema` 계약 확인·호출. `.ptsip/engine/developer/schema_check/Finding.go` — `developer/contracts/schemas/` 검사 결과·오류·미확인 `$ref` 보고.
+- **Go 모듈과 호출 경로:** `.ptsip/engine/developer/go.mod`; 저장소 루트에서 `go -C .ptsip/engine/developer run . --validator schema-check --root ../../..`.
+- **검증 연결:** `developer/tests/schema_validation/validation_test.go`, `.github/test_modes.yaml`의 `developer-schema-contracts`, `.github/workflows/tooling-test.yml`, `.ptsip/profiles/main.ptsip.yaml`. 구 `schema_check/main.go` 진입점은 제거됨.
+- **확인 수준:** GitHub `main`에서 구조 및 경로 연결 확인. 신규 Go 검증기·CI의 실제 실행 PASS는 **미확인**. JSON 문법·제한적 Schema 형태 점검만 대상으로 하며 외부 `$ref` 전체 해결, PTSIP 개발 정책 적합성 및 기존 검증기 완전 대체는 **미확인**.
+- **작업 그룹 구분:** `SCHEMA_AND_FAMILY_POLICY`와 `LEGACY_REPLACEMENT_BLOCKERS`의 상태·소유자·미결정 정책은 변경하지 않음. 각 담당 세션은 실제 소스·계약·테스트를 현재 HEAD에서 조회하며 이 알림을 규범 권위나 런타임 의존성으로 사용하지 않음.
+
+
 ## 구 검증기 참고 범위 — 사용자 승인
 
 신규 개발 정책 검증기는 **승인된 신규 `developer/policy/` 정책·신규 스키마·계약만을 기준으로 독립 설계·구현**한다. 구 검증기의 호환성 확보·기존 구조 마이그레이션은 신규 검증기의 전제 조건으로 요구하지 않는다.
