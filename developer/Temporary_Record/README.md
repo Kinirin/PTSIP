@@ -18,6 +18,15 @@
 
 이 목록은 **수동 안내**일 뿐, 기계적 색인이나 개별 작업 상태의 원본이 아니다. 새로운 독립 작업은 새 기록 파일로 분리할 수 있다. 해당 작업의 남은 단계는 `pending-work.json`에서 해당 작업 그룹의 세부 단계로 연결한다. 두 파일의 책임을 혼합하거나 같은 남은 작업을 중복 기재하지 않는다. 서로 다른 에이전트는 파일을 쓰기 전에 저장소 최신 상태를 확인하고 충돌을 조용히 덮어쓰지 않는다.
 
+
+## 최소 임시 기록 구조 — 사용자 지정
+
+- 신규 임시 작업 기록의 최소 헤더 검증 스키마: `developer/Temporary_Record/tools/temporary-record.schema.json`. 적용 범위는 이 임시 폴더 내부로 제한하며, 정식 `developer/policy/` 또는 `developer/contracts/`의 구조나 권위가 아니다.
+- 필수 필드: `record_type`, `work_id`, `created_at`, `purpose_ko`, `scope`, `last_checkpoint`, `pending_tasks`, `work`. `work.group_id`는 필수다. `purpose_ko`, `scope`, `last_checkpoint`, `pending_tasks`는 내용이 비어 있어도 된다.
+- 새 그룹별 작업 기록의 지정 디렉터리는 `developer/Temporary_Record/work/`이다. 그룹 기록에 요구되는 최소 항목은 `groups.title_ko`, `group_id`, `steps`, `owner_session_id`, `pending_tasks`이다. 기존 `pending-work.json`의 그룹/단계/담당 세션 원본 규칙과 겹치므로, 중복 필드의 원본 및 동기화 관계는 별도 사용자 결정 전까지 미확정이다. 이 미결정 사항을 임의로 해소하는 그룹 기록 스키마·파일 생성은 보류한다.
+- 파일 기록 위치·새 필드·구조가 승인된 계약으로 결정되지 않았다면 코딩 에이전트가 임의 생성하지 않는다. 사용자에게 목적, 저장 위치, 최소 필드 후보를 제시하고 결정받는다. `additionalProperties`의 허용은 추가 정책·필드 생성 승인으로 해석하지 않는다.
+- 이미 존재하는 작업 기록 파일의 이동·필드 추가·일괄 변경은 자동 승인되지 않는다. 다른 세션이 담당하는 파일과 그룹을 변경하지 않는다.
+
 ## 임시 작업 중 적용하는 규칙
 
 1. 신규 계약은 `developer/contracts/` 중심으로 설계한다. 기존 정책의 의미는 참고할 수 있으나 사용자 검수 없이 과거 스키마·호출 방식·필드를 새 권위로 자동 채택하지 않는다.
