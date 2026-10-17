@@ -10,7 +10,7 @@ purpose_ko: >-
 
 scope:
   comparison_kind: LIMITED_SEMANTIC_COMPARISON
-  source_commit: "975f17839e601c630809e67c06c0cffbe8597966"
+  source_commit: "888364b1d4e55ff1e69366c02eba989f5005b5bf"
   source_role: HISTORICAL_NON_NORMATIVE_REFERENCE
   whole_repository_coverage: false
   legacy_runtime_execution: NOT_RUN
@@ -23,6 +23,7 @@ current_user_decisions_ko:
   - "별도 최상위 Policy_Plan_Relationships 필드는 채택하지 않는다."
   - "새 계획 상태 계약의 이름은 ACTIVATE, DRAFT, INTERRUPTION이다."
   - "Plan_Auth는 이름 후보이며 구체적인 권한 식별자와 허용 작업은 아직 정하지 않았다."
+  - "기존 정책 상태의 의미를 보존하라는 지시는 유지한다. 새 계층의 자동 전파나 권한 부여까지 승인된 것으로 확대하지 않는다."
   - "세 계획 상태 기본 계약의 기존 변경 45줄은 현재 사용자 메시지에서 승인되었다."
   - "폐기 예정 경로에 새 정보를 기록하지 않으며 기존 파일 삭제는 사용자 명시 요청에 따른다."
 
