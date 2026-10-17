@@ -68,7 +68,7 @@ jobs:
           PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
         run: |
           set -euo pipefail
-          go run .ptsip/engine/developer/schema_check/main.go --root .
+          go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
 
   ptsip-validation-runtime:
     name: "Installed PTSIP VALIDATION smoke / ${{ matrix.runner }}"
