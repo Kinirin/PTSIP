@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PTSIP Temporary Work Record Minimal Header",
+  "description": "Only for new temporary reform records under developer/Temporary_Record/. It does not authorize new fields, destinations, or policy semantics.",
+  "type": "object",
+  "required": [
+    "record_type",
+    "work_id",
+    "created_at",
+    "purpose_ko",
+    "scope",
+    "last_checkpoint",
+    "pending_tasks",
+    "work"
+  ],
+  "properties": {
+    "record_type": {
+      "const": "TEMPORARY_WORK_RECORD"
+    },
+    "work_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "purpose_ko": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "scope": {},
+    "last_checkpoint": {},
+    "pending_tasks": {},
+    "work": {
+      "type": "object",
+      "required": [
+        "group_id"
+      ],
+      "properties": {
+        "group_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
