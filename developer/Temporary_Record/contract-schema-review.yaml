@@ -56,7 +56,12 @@ last_checkpoint:
     적용 커밋: 3a0e9d60eb49c05cdeb20fdc348e403b7762b945.
     원격 파일 재조회 결과 JSON 파싱 및 승인 구조 확인만 완료하였다.
     외부 $ref 전체 해소 및 통합 검증은 미완료이며,
-    상위 PTSIP_Public_Structure.schema.json의 Policy_Status $ref 불일치는 남아 있다.
+    상위 PTSIP_Public_Structure.schema.json의 Policy_Status $ref 불일치는
+    사용자 승인에 따라 Public_Policy_Status.schema.json의 $id 오타를
+    urn:ptsip:policy:Status:v1로 수정하여 해결했다.
+    수정 커밋: cb32894188d54f547d775e0b4991d667085d965b.
+    JSON 파싱과 해당 $ref/$id 문자열 일치는 확인했으나 전체 외부 참조의
+    해소 및 통합 스키마 검증 완료로 간주하지 않는다.
     CR-01 전체 검토나 Root Family 정책 구현이 완료되었다는 뜻은 아니다.
 
 pending_tasks: null
