@@ -1003,6 +1003,24 @@ components:
       - "developer/policy/contracts/policy-responsibility-analysis-generation.v1.yaml"
       - "developer/automation/internal/machine/policy_responsibility*.go"
 
+  - id: developer-contract-schema-verification
+    classification: DEVELOPMENT_TOOLING
+    roles:
+      - VERIFICATION
+    include:
+      - "developer/tests/schema_validation/**"
+    purpose: developer_schema_catalog_json_identity_and_installed_ptsip_validation_limited_shape_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: development_tooling
+    compatibility_owner: development_tooling
+    analysis_inputs:
+      - "developer/contracts/schemas/**"
+      - ".ptsip/engine/developer/schema_check/**"
+      - "src/ptsip/engines/index.json"
+      - "developer/tests/schema_validation/**"
+
   - id: repository-architecture-verification
     classification: DEVELOPMENT_TOOLING
     roles:
