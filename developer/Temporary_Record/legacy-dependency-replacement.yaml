@@ -1,0 +1,59 @@
+# 한국어 설명을 포함한 임시 작업 기록. 정식 Registry나 Resolver가 아님.
+record_type: TEMPORARY_WORK_RECORD
+work_id: LEGACY_DEPENDENCY_REPLACEMENT
+created_at: "2026-10-17"
+work_status: IN_REFORM
+
+purpose_ko: >-
+  이전 정책과 계약을 신규 설계의 암묵적인 권위로 채택하지 않고,
+  사용자가 검수하여 승인한 의미만 신규 계약·스키마 구조로 재정의한다.
+  과거의 필드, 스키마, 호출법 및 의존 관계를 그대로 상속하지 않는다.
+
+scope:
+  legacy_reference_paths:
+    - developer/policy/approvals/
+    - developer/policy/analysis/
+    - developer/policy/contracts/
+    - developer/policy/policy-resolver-bindings/
+    - developer/policy/legacy/
+    - developer/policy/registries/
+    - developer/policy/schemas/
+    - developer/policy/MPD-BOUND-0001.yaml
+    - developer/policy/policy-resolver-contract.yaml
+    - developer/policy/source-application-review.yaml
+    - developer/state/
+    - developer/verification/
+    - developer/bindings/
+    - developer/contracts/lifecycle/policy_status.json
+    - developer/contracts/lifecycle/policy_version.json
+  legacy_reference_existence: PARTIALLY_UNVERIFIED
+  new_policy_destination: developer/policy/
+  new_contract_destination: developer/contracts/
+
+approved_directions_ko:
+  - "이전 정책의 의미는 비교·참고할 수 있으나 사용자 검수 없이 새 정책의 기본값으로 채택하지 않는다."
+  - "새 스키마, 계약, Resolver 및 검증기는 과거 구조나 권위를 자동으로 상속하지 않는다."
+  - "이전 파일은 사용자의 명시적 삭제 요청 없이 삭제하거나 덮어쓰지 않는다."
+  - "폐기 예정 영역에는 새로운 정책을 저장하지 않는다."
+  - "새 계약으로 재정의할 가치가 있는 의미는 사용자 검수를 거친 다음에만 채택한다."
+  - "개혁 작업 중 일부 규칙을 개별 만료시키지 않고 남은 작업을 우선 처리한다."
+  - "정식 정책에 의한 충분한 대체 여부와 임시 기록 전체 정리 시점은 사용자가 결정한다."
+
+last_checkpoint:
+  date: "2026-10-17"
+  confirmation_type: USER_SCOPE_AND_BOUNDARY_REVIEW
+  old_references_all_removed: NOT_CONFIRMED
+  replacement_mapping_complete: NOT_CONFIRMED
+  machine_validation: NOT_CONFIRMED
+  note_ko: >-
+    폐기 예정 범위와 신규 설계의 참조 경계는 사용자 설명으로 확인했다.
+    과거 의존성의 완전 차단이나 모든 대체 대상 연결을 검증한 것은 아니다.
+
+pending_tasks:
+  file: developer/Temporary_Record/pending-work.json
+  select_groups_containing_step_work_id: LEGACY_DEPENDENCY_REPLACEMENT
+
+temporary_lifecycle_ko: >-
+  이 파일은 대체용 정식 Registry나 자동 검증기가 아니다.
+  정식 정책이 충분히 대체 가능하다는 사용자의 결정과 삭제 요청 후에
+  임시 폴더 전체와 함께 정리한다.

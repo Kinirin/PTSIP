@@ -1,0 +1,52 @@
+# 한국어 설명을 포함한 임시 작업 기록. 정식 정책이나 패밀리 스키마가 아님.
+record_type: TEMPORARY_WORK_RECORD
+work_id: DEVELOPER_POLICY_FAMILIES
+created_at: "2026-10-17"
+work_status: IN_REFORM
+purpose_ko: >-
+  개발 정책을 새로운 계약 구조에 맞춰 developer/policy/{FAMILY}/에 작성하는
+  작업 범위를 검토한다. 개별 패밀리의 권위, 필드 및 규칙을 임의로 정하지 않는다.
+
+scope:
+  policy_output_pattern: "developer/policy/{FAMILY}/"
+  policy_data_format: YAML
+  validation_schema_root: developer/contracts/schemas/
+  example_families:
+    - ARCH
+    - GOV
+    - INFO
+    - RECORD
+  root_family_count: 14
+  root_family_reform_state: PAUSED_FOR_DESIGN
+  policy_field_contract: UNRESOLVED
+  individual_family_implementation: NOT_CONFIRMED
+
+boundaries_ko:
+  - "Root Family별 정책은 새 계약과 검증 스키마에 따라 작성할 목표 대상이다."
+  - "기존 정책 파일과 과거 계약을 신규 정식 정책 권위로 자동 승계하지 않는다."
+  - "신규 스키마의 존재만으로 해당 패밀리의 구현이나 검증 완료를 추정하지 않는다."
+  - "개별 패밀리의 소유 책임, 필수 필드 및 허용 값은 사용자 검토 전 확정하지 않는다."
+
+approved_directions_ko:
+  - "장기적인 사용자 권위는 신규 developer/policy/ 개발 정책에 담는다."
+  - "Root Family별 허용 값과 규칙이 다를 수 있으므로 하나의 예제 구조를 일률적으로 복제하지 않는다."
+  - "과거 정책의 유용한 의미는 사용자 검수 후 새로운 계약 형태로 재채택할 수 있으나 과거 의존성은 강제하지 않는다."
+  - "임시 규칙을 정식 정책으로 충분히 대체할 수 있는지는 사용자가 결정한다. 개별 임시 규칙을 부분 만료하지 않는다."
+
+last_checkpoint:
+  date: "2026-10-17"
+  confirmation_type: USER_DIRECTION_REVIEW
+  family_policy_implementation: NOT_CONFIRMED
+  successor_validator_existence: NOT_CONFIRMED
+  machine_validation: NOT_CONFIRMED
+  note_ko: >-
+    신규 개발 정책의 상위 목표와 14개 Root Family 설계 보류 상태만
+    확인했다. 각 패밀리 YAML 정책의 구현·검증 성공을 확인한 것은 아니다.
+
+pending_tasks:
+  file: developer/Temporary_Record/pending-work.json
+  select_groups_containing_step_work_id: DEVELOPER_POLICY_FAMILIES
+
+temporary_lifecycle_ko: >-
+  이 파일은 정식 패밀리 정책을 대신하지 않는다. 대체 가능 여부는
+  사용자가 결정하고, 폴더 전체 삭제 요청 시 함께 정리한다.

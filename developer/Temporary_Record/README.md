@@ -12,8 +12,8 @@
 현재 별도의 작업 기록은 다음과 같다.
 
 - `contract-schema-review.yaml` — 신규 계약과 검증 스키마 검토
-- `developer-policy-families.md` — 신규 개발 정책 및 Root Family의 구현 범위
-- `legacy-dependency-replacement.md` — 폐기 예정 정책과의 의존성 차단·대체
+- `developer-policy-families.yaml` — 신규 개발 정책 및 Root Family의 구현 범위
+- `legacy-dependency-replacement.yaml` — 폐기 예정 정책과의 의존성 차단·대체
 - `pending-work.json` — 작업별 남은 업무 및 기계적 우선순위
 
 이 목록은 **수동 안내**일 뿐, 기계적 색인이나 개별 작업 상태의 원본이 아니다. 새로운 독립 작업은 새 기록 파일로 분리할 수 있다. 해당 작업의 남은 단계는 `pending-work.json`에서 해당 작업 그룹의 세부 단계로 연결한다. 두 파일의 책임을 혼합하거나 같은 남은 작업을 중복 기재하지 않는다. 서로 다른 에이전트는 파일을 쓰기 전에 저장소 최신 상태를 확인하고 충돌을 조용히 덮어쓰지 않는다.
