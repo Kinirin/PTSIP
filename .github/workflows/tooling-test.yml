@@ -29,6 +29,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-go@v6
         with:
           go-version-file: .github/checks/release/test/go.mod
