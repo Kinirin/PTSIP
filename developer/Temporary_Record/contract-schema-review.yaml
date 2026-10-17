@@ -34,6 +34,7 @@ approved_directions_ko:
   - "미결정 사항은 사용자에게 질문하고 정식 계약은 승인 후 수정한다."
   - "2026-10-17 사용자 승인: Policy_Status.Schema의 네 계약 버전 필드를 Schema 바로 아래에 독립적으로 둔다(B안). 중복 메타데이터를 허용하며 공용 버전 계층을 강제하지 않는다."
   - "2026-10-17 사용자 승인: Authority의 authority_Identity와 Authority_Category는 최상위 필수, authority_id는 내부 필수. Category는 Major → Minor → Micro 중첩이며 Identity와 분리한다. Major 필수 여부는 별도 미결정."
+  - "2026-10-17 사용자 결정: Authority는 별도의 독립 행동 계약을 필수 참조하는 B 방향을 채택한다. 독립 계약 자체와 로컬 권위 정보는 분리한다. 실제 필드·식별자·검증 방식은 미확정."
 
 review_findings:
   - id: JSON_SYNTAX
@@ -47,8 +48,8 @@ review_findings:
     description_ko: "$ref 식별자 또는 실제 참조 경로 불일치 가능성이 지적됨."
 
   - id: AUTHORITY_ACTION_SEMANTICS_OPEN
-    result: POLICY_DECISION_REQUIRED
-    description_ko: "권위를 통해 허용되는 후속 행동을 기계적으로 연결할 필수 계약 책임이 제안되었으나, 허가·의무·금지의 의미와 계약 경계·필드 구조는 미확정."
+    result: PARTIALLY_DECIDED
+    description_ko: "독립 행동 계약을 필수 참조하는 방향은 승인되었다. 사용자 제안: Authority 내부에도 일부 키워드·상수를 표시하여 인간이 연결 행동 계약을 유추하게 한다. 힌트의 형식·권위·표시 범위, 행동 참조 식별자, 허가·금지·의무 해석 및 fail-closed 검증은 아직 미결정. 정책·스키마는 수정 전 별도 승인 필요."
 
 last_checkpoint:
   date: "2026-10-17"
