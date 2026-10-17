@@ -57,3 +57,85 @@ temporary_lifecycle_ko: >-
   이 파일은 대체용 정식 Registry나 자동 검증기가 아니다.
   정식 정책이 충분히 대체 가능하다는 사용자의 결정과 삭제 요청 후에
   임시 폴더 전체와 함께 정리한다.
+
+# LG-04 그룹 전용 관찰 기록. 정식 정책/계약/Resolver의 권위가 아니다.
+lg04_blocker_inventory:
+  observed_on: "2026-10-17"
+  observed_branch: main
+  evidence_type: GITHUB_STATIC_REFERENCE_INSPECTION
+  execution_validation: NOT_RUN
+  completeness: PARTIAL_VERIFIED_EXAMPLES
+  owner_group: LEGACY_REPLACEMENT_BLOCKERS
+  owner_session_id: "6ad098a7-a260-83ee-b8d7-ff22c94d8c4d"
+  scope: REMAINING_REFERENCES_TO_LEGACY_PATHS
+  findings:
+    - id: LG04_BOOTSTRAP_COMPILER
+      sources:
+        - developer/automation/internal/machine/repository.go
+      legacy_refs:
+        - developer/policy/registries/developer-policy-catalog-contracts.json
+        - developer/policy/schemas/developer-policy-catalog-contracts.schema.json
+      observation_ko: Go Repository.Compiler가 기존 카탈로그 계약과 스키마를 읽고 등록함.
+      next_dependency_ko: 신규 계약 진입/스키마 컴파일 책임이 승인되어야 구현 전환 가능.
+    - id: LG04_FAMILY_IDENTITY
+      sources:
+        - developer/automation/policy/lifecycle/identity.go
+        - developer/automation/policy/lifecycle/family.go
+      legacy_refs:
+        - developer/policy/registries/root-family-entry-registry.json
+        - developer/policy/schemas/root-family-entry-registry.schema.json
+      observation_ko: Root Family 판독/진입 및 기존 카탈로그 검증이 폐기 예정 경로를 읽음.
+      next_dependency_ko: 신규 Family 식별·스키마 책임 결정이 먼저 필요함.
+    - id: LG04_OLD_RESOLVER
+      sources:
+        - developer/automation/policy/binding/resolver.go
+      legacy_refs:
+        - developer/policy/contracts/go-policy-resolver.v1.yaml
+        - developer/contracts/lifecycle/policy_status.json
+        - developer/policy/schemas/developer-policy-catalog.schema.json
+      observation_ko: 기존 Resolver는 구 계약을 읽고 resolution_authority도 구 status 계약에서 해석함.
+      next_dependency_ko: 별도 진행 중인 Resolver 설계의 승인 없이는 변경하지 않음.
+    - id: LG04_VERSION_AND_FIXTURES
+      sources:
+        - developer/automation/policy/lifecycle/version_contract.go
+        - developer/tests/internal/testrepo/copy.go
+      legacy_refs:
+        - developer/contracts/lifecycle/policy_version.json
+        - developer/contracts/lifecycle/policy_status.json
+      observation_ko: 버전 검증과 테스트용 복사에서 구 계약을 참조함.
+      next_dependency_ko: 별도 진행 중인 상태 정책 작업과 조정하며 새 의미를 추론하지 않음.
+    - id: LG04_STATE_AND_BINDING
+      sources:
+        - developer/automation/internal/machine/state.go
+        - developer/automation/policy/binding/registry.go
+      legacy_refs:
+        - developer/state/index.yaml
+        - developer/state/repository-state-index.schema.json
+        - developer/bindings/policy-plan-bindings.yaml
+        - developer/bindings/schemas/policy-plan-bindings.schema.json
+      observation_ko: State 조회와 정책-계획 바인딩 처리에서 구 경로를 읽음.
+      next_dependency_ko: 기존 상태/바인딩의 신규 소유 책임과 대체 여부가 확인되어야 함.
+    - id: LG04_CI_RELEASE_ENTRY
+      sources:
+        - .github/checks/release/engine-verification/admission.go
+      legacy_refs:
+        - developer/policy/contracts/engine-verification.v1.json
+      observation_ko: 엔진 검증 진입 코드가 구 계약과 구 policy-resolver 명령을 호출함.
+      next_dependency_ko: 원래 검증·릴리스 동작을 보존할 계획과 대체 진입점 검토가 필요함.
+    - id: LG04_AGENT_ENTRY_PROJECTION
+      sources:
+        - AGENTS.md
+      legacy_refs:
+        - developer/policy/registries/root-family-validation-reset.json
+        - developer/policy/registries/family-schema-rebuild.json
+      observation_ko: 에이전트용 bootstrap 문서가 구 임시 전환 기록으로 진입하도록 안내함.
+      next_dependency_ko: 신규 기계적 진입점 확정 후 파생 안내를 교체해야 함.
+  boundaries:
+    findings_create_new_policy_authority: false
+    physical_legacy_file_deletion: FORBIDDEN_WITHOUT_USER_EXPLICIT_REQUEST
+    do_not_modify_other_group_contracts: true
+    replacement_paths: UNRESOLVED
+    old_code_runtime_activeness: NOT_VERIFIED
+  result_ko: >-
+    구 경로의 실행 코드/검증 도구/에이전트 진입 참조가 남아 있음을 정적으로 확인했다.
+    이는 부분 사례이며 전체 참조 제거 완료 또는 새 구현의 검증 성공을 뜻하지 않는다.
