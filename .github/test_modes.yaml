@@ -15,6 +15,7 @@ groups:
     - agent-contract-plane
     - agent-contract-runtime
     - ptsip-core
+    - ptsip-validation-runtime
     - ptsip-evidence
     - ptsip-migration
     - ptsip-remediation
@@ -71,6 +72,11 @@ modes:
         - src/tests/ptsip/test_merge_gate_followup_030.py
         - src/tests/ptsip/test_proposed_component.py
         - src/tests/ptsip/test_context_plane.py
+  - id: ptsip-validation-runtime
+    component_ref: ptsip-validation-runtime-verification
+    execution:
+      pytest:
+        - src/tests/ptsip/engine_runtime_validation
   - id: ptsip-evidence
     component_ref: ptsip-evidence-verification
     execution:
