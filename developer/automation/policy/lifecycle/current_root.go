@@ -103,8 +103,10 @@ func ValidateCurrentRootContracts(r CurrentRootRepository, class string) (Object
 			return nil, fmt.Errorf("ROOT_CURRENT_KERNEL_MISMATCH: %s", id)
 		}
 		if class == DeveloperClass {
-			if err := ValidatePolicyLifecycleVersion(r, policy); err != nil {
-				return nil, fmt.Errorf("ROOT_CURRENT_LIFECYCLE_INVALID: %s: %w", id, err)
+			// The retired GOV lifecycle validator is not authoritative for new policies.
+			// Check only the approved required version-string schema.
+			if err := r.Validate("developer/contracts/lifecycle/Policy_version/Policy_version.schema.json", Object{"version": policy["version"]}); err != nil {
+				return nil, fmt.Errorf("ROOT_CURRENT_VERSION_SCHEMA_INVALID: %s: %w", id, err)
 			}
 			failures := ValidatePolicyTransitionSemantics(id, owner)
 			if len(failures) > 0 {
