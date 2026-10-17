@@ -71,7 +71,20 @@
         "family_specific_rule_semantics": "EXCLUDED",
         "universal_rule_reference_fields": "NOT_MANDATED",
         "cross_family_internal_shape_unification": "FORBIDDEN",
-        "specific_minimum_structural_constraints": "UNRESOLVED_USER_DECISION"
+        "specific_minimum_structural_constraints": {
+          "instance_type": "object",
+          "universal_properties": "NONE_REQUIRED_OR_DEFINED",
+          "required_properties": "NONE",
+          "min_properties": "NOT_CONSTRAINED",
+          "arbitrary_family_owned_properties": "ALLOWED",
+          "additional_properties_restriction": "NOT_IMPOSED"
+        },
+        "approved_schema_change": {
+          "target": "developer/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json",
+          "change_scope": "FIX_JSON_SYNTAX_AND_REQUIRE_OBJECT_TYPE_ONLY",
+          "implementation_authorized": true,
+          "user_decision": "EXPLICIT"
+        }
       },
       "root_family_schema": {
         "validation_responsibilities": [
