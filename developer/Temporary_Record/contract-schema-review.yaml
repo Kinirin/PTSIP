@@ -56,7 +56,7 @@ last_checkpoint:
 
 pending_tasks:
   file: developer/Temporary_Record/pending-work.json
-  select_by_work_id: CONTRACT_SCHEMA_REVIEW
+  select_groups_containing_step_work_id: CONTRACT_SCHEMA_REVIEW
 
 temporary_lifecycle_ko: >-
   임시 작업 기록은 전체 폴더를 사용자 요청으로 삭제할 때 함께 정리한다.

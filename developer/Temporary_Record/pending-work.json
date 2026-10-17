@@ -1,154 +1,170 @@
 {
-  "record_type": "TEMPORARY_EXECUTION_QUEUE",
+  "record_type": "TEMPORARY_WORK_GROUP_QUEUE",
   "updated_at": "2026-10-17",
-  "priority_policy": {
+  "coordination": {
+    "grouping": "ALL_TRANSITIVELY_DEPENDENT_STEPS_IN_ONE_GROUP",
+    "scheduling": "GROUP_PRIORITY_THEN_STEP_PRIORITY",
     "lower_number_first": true,
-    "status_values": [
+    "step_status_values": [
       "OPEN",
       "IN_PROGRESS",
       "DONE"
     ],
-    "execution_priority_authority": "AGENT_DERIVED_PLAN_NOT_USER_APPROVED_POLICY",
-    "prerequisites_required_before_execution": true,
-    "on_demand_only_when_applicable": true,
-    "important_ko": "이 JSON은 임시 작업 순서표이며 정식 정책·계약·부분 만료 상태표가 아니다. 우선순위는 작업 계획상 정한 값으로 사용자 승인 정책의 의미를 변경하지 않는다. 미결정 사항은 사용자에게 질문한다."
+    "status_note_ko": "단계 상태는 진행 기록이며 현재 소유자 표시가 아니다. 실제 점유는 그룹의 owner_session_id만 판단한다.",
+    "single_owner_per_group": true,
+    "owner_identity": "CHAT_SESSION_ID_ONLY",
+    "unassigned_owner": null,
+    "claim_protocol": "READ_LATEST_AND_COMMIT_WITH_EXPECTED_SHA",
+    "conflict_action": "REREAD_LATEST_AND_DO_NOT_OVERWRITE_OTHER_OWNER",
+    "occupied_group_action": "READ_ONLY_FOR_OTHER_SESSIONS",
+    "reassignment": "OWNER_RELEASE_OR_USER_DECISION; NEVER_AUTOMATIC_STEAL",
+    "priority_authority": "AGENT_DERIVED_EXECUTION_PLAN_NOT_APPROVED_POLICY",
+    "on_demand_rule": "ON_DEMAND_STEP_ONLY_WHEN_APPLICABLE",
+    "user_approval_rule": "USER_DECISION_REQUIRED_BEFORE_AUTHORITY_CHANGES",
+    "important_ko": "하나의 그룹은 한 작업 세션이 시작부터 종료까지 담당한다. owner_session_id가 null이면 현재 담당자가 없다. 그룹을 점유하는 행위만으로 정식 정책·계약 변경이 승인되지는 않는다. 중간 단계는 별도 세션에 할당하지 않는다."
   },
-  "tasks": [
+  "groups": [
     {
-      "id": "CR-01",
-      "work_id": "CONTRACT_SCHEMA_REVIEW",
-      "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
+      "group_id": "SCHEMA_AND_FAMILY_POLICY",
+      "title_ko": "신규 계약 및 개발 정책",
       "priority": 10,
-      "status": "IN_PROGRESS",
-      "execution_mode": "NORMAL",
-      "depends_on": [],
-      "user_decision_required": true,
-      "title_ko": "네 계약 영역의 저장 의도, 데이터 구조, 필드와 허용 값의 의미를 사용자와 검토"
+      "owner_session_id": null,
+      "steps": [
+        {
+          "id": "CR-01",
+          "work_id": "CONTRACT_SCHEMA_REVIEW",
+          "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
+          "priority": 10,
+          "status": "IN_PROGRESS",
+          "execution_mode": "NORMAL",
+          "user_decision_required": true,
+          "title_ko": "네 계약 영역의 저장 의도, 데이터 구조, 필드와 허용 값의 의미를 사용자와 검토"
+        },
+        {
+          "id": "FM-01",
+          "work_id": "DEVELOPER_POLICY_FAMILIES",
+          "work_file": "developer/Temporary_Record/developer-policy-families.md",
+          "priority": 20,
+          "status": "OPEN",
+          "execution_mode": "NORMAL",
+          "user_decision_required": true,
+          "title_ko": "신규 계약에 따른 스키마 책임 경계를 사용자와 확정"
+        },
+        {
+          "id": "FM-02",
+          "work_id": "DEVELOPER_POLICY_FAMILIES",
+          "work_file": "developer/Temporary_Record/developer-policy-families.md",
+          "priority": 30,
+          "status": "OPEN",
+          "execution_mode": "NORMAL",
+          "user_decision_required": true,
+          "title_ko": "패밀리별 정식 개발 정책의 구현 범위를 사용자와 검토"
+        },
+        {
+          "id": "CR-02",
+          "work_id": "CONTRACT_SCHEMA_REVIEW",
+          "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
+          "priority": 40,
+          "status": "OPEN",
+          "execution_mode": "NORMAL",
+          "user_decision_required": false,
+          "title_ko": "상위 구조와 하위 스키마의 $ref 식별자 및 실제 경로 대조"
+        },
+        {
+          "id": "CR-03",
+          "work_id": "CONTRACT_SCHEMA_REVIEW",
+          "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
+          "priority": 50,
+          "status": "OPEN",
+          "execution_mode": "NORMAL",
+          "user_decision_required": true,
+          "title_ko": "기존 코드와 수정 제안을 구분하여 설명하고 정식 계약 변경 승인을 확인"
+        },
+        {
+          "id": "CR-04",
+          "work_id": "CONTRACT_SCHEMA_REVIEW",
+          "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
+          "priority": 60,
+          "status": "OPEN",
+          "execution_mode": "NORMAL",
+          "user_decision_required": false,
+          "title_ko": "사용자 승인된 계약 변경 이후 수행한 검증과 결과만 기록"
+        },
+        {
+          "id": "FM-03",
+          "work_id": "DEVELOPER_POLICY_FAMILIES",
+          "work_file": "developer/Temporary_Record/developer-policy-families.md",
+          "priority": 70,
+          "status": "OPEN",
+          "execution_mode": "NORMAL",
+          "user_decision_required": false,
+          "title_ko": "패밀리 정책 구현 시 기존 파일과 신규 계약에 따른 파일을 구별하여 진행 기록에 반영"
+        }
+      ]
     },
     {
-      "id": "FM-01",
-      "work_id": "DEVELOPER_POLICY_FAMILIES",
-      "work_file": "developer/Temporary_Record/developer-policy-families.md",
-      "priority": 20,
-      "status": "OPEN",
-      "execution_mode": "NORMAL",
-      "depends_on": [
-        "CR-01"
-      ],
-      "user_decision_required": true,
-      "title_ko": "신규 계약에 따른 스키마 책임 경계를 사용자와 확정"
-    },
-    {
-      "id": "LG-01",
-      "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
-      "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
+      "group_id": "LEGACY_MEANING_REUSE",
+      "title_ko": "구정책 의미 재검토",
       "priority": 25,
-      "status": "OPEN",
-      "execution_mode": "ON_DEMAND",
-      "depends_on": [],
-      "user_decision_required": false,
-      "title_ko": "신규 계약 검토에 필요한 기존 정책의 의미를 제한적으로 비교"
+      "owner_session_id": null,
+      "steps": [
+        {
+          "id": "LG-01",
+          "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
+          "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
+          "priority": 25,
+          "status": "OPEN",
+          "execution_mode": "ON_DEMAND",
+          "user_decision_required": false,
+          "title_ko": "신규 계약 검토에 필요한 기존 정책의 의미를 제한적으로 비교"
+        },
+        {
+          "id": "LG-02",
+          "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
+          "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
+          "priority": 45,
+          "status": "OPEN",
+          "execution_mode": "ON_DEMAND",
+          "user_decision_required": true,
+          "title_ko": "채택할 가치가 있는 과거 규칙의 의미만 사용자 승인 후 신규 구조로 재정의"
+        }
+      ]
     },
     {
-      "id": "FM-02",
-      "work_id": "DEVELOPER_POLICY_FAMILIES",
-      "work_file": "developer/Temporary_Record/developer-policy-families.md",
-      "priority": 30,
-      "status": "OPEN",
-      "execution_mode": "NORMAL",
-      "depends_on": [
-        "FM-01"
-      ],
-      "user_decision_required": true,
-      "title_ko": "패밀리별 정식 개발 정책의 구현 범위를 사용자와 검토"
-    },
-    {
-      "id": "CR-02",
-      "work_id": "CONTRACT_SCHEMA_REVIEW",
-      "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
-      "priority": 40,
-      "status": "OPEN",
-      "execution_mode": "NORMAL",
-      "depends_on": [
-        "CR-01"
-      ],
-      "user_decision_required": false,
-      "title_ko": "상위 구조와 하위 스키마의 $ref 식별자 및 실제 경로 대조"
-    },
-    {
-      "id": "LG-02",
-      "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
-      "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
-      "priority": 45,
-      "status": "OPEN",
-      "execution_mode": "ON_DEMAND",
-      "depends_on": [
-        "LG-01"
-      ],
-      "user_decision_required": true,
-      "title_ko": "채택할 가치가 있는 과거 규칙의 의미만 사용자 승인 후 신규 구조로 재정의"
-    },
-    {
-      "id": "CR-03",
-      "work_id": "CONTRACT_SCHEMA_REVIEW",
-      "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
-      "priority": 50,
-      "status": "OPEN",
-      "execution_mode": "NORMAL",
-      "depends_on": [
-        "CR-01",
-        "CR-02"
-      ],
-      "user_decision_required": true,
-      "title_ko": "기존 코드와 수정 제안을 구분하여 설명하고 정식 계약 변경 승인을 확인"
-    },
-    {
-      "id": "LG-03",
-      "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
-      "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
+      "group_id": "LEGACY_REFERENCE_RISK",
+      "title_ko": "구정책 참조 위험 검토",
       "priority": 55,
-      "status": "OPEN",
-      "execution_mode": "ON_DEMAND",
-      "depends_on": [],
-      "user_decision_required": true,
-      "title_ko": "과거 참조·호출을 신규 구조에 이식하기 전 의존성 위험과 미결정 사항을 사용자에게 제시"
+      "owner_session_id": null,
+      "steps": [
+        {
+          "id": "LG-03",
+          "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
+          "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
+          "priority": 55,
+          "status": "OPEN",
+          "execution_mode": "ON_DEMAND",
+          "user_decision_required": true,
+          "title_ko": "과거 참조·호출을 신규 구조에 이식하기 전 의존성 위험과 미결정 사항을 사용자에게 제시"
+        }
+      ]
     },
     {
-      "id": "CR-04",
-      "work_id": "CONTRACT_SCHEMA_REVIEW",
-      "work_file": "developer/Temporary_Record/contract-schema-review.yaml",
-      "priority": 60,
-      "status": "OPEN",
-      "execution_mode": "NORMAL",
-      "depends_on": [
-        "CR-03"
-      ],
-      "user_decision_required": false,
-      "title_ko": "사용자 승인된 계약 변경 이후 수행한 검증과 결과만 기록"
-    },
-    {
-      "id": "FM-03",
-      "work_id": "DEVELOPER_POLICY_FAMILIES",
-      "work_file": "developer/Temporary_Record/developer-policy-families.md",
-      "priority": 70,
-      "status": "OPEN",
-      "execution_mode": "NORMAL",
-      "depends_on": [
-        "FM-02"
-      ],
-      "user_decision_required": false,
-      "title_ko": "패밀리 정책 구현 시 기존 파일과 신규 계약에 따른 파일을 구별하여 진행 기록에 반영"
-    },
-    {
-      "id": "LG-04",
-      "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
-      "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
+      "group_id": "LEGACY_REPLACEMENT_BLOCKERS",
+      "title_ko": "기존 의존성 정리",
       "priority": 80,
-      "status": "OPEN",
-      "execution_mode": "NORMAL",
-      "depends_on": [],
-      "user_decision_required": false,
-      "title_ko": "전체 대체를 가로막는 남은 기존 참조를 확인하고 대체 작업에 집중"
+      "owner_session_id": null,
+      "steps": [
+        {
+          "id": "LG-04",
+          "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
+          "work_file": "developer/Temporary_Record/legacy-dependency-replacement.md",
+          "priority": 80,
+          "status": "OPEN",
+          "execution_mode": "NORMAL",
+          "user_decision_required": false,
+          "title_ko": "전체 대체를 가로막는 남은 기존 참조를 확인하고 대체 작업에 집중"
+        }
+      ]
     }
   ]
 }
