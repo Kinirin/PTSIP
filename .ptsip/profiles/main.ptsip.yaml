@@ -695,6 +695,25 @@ components:
       - "schemas/ptsip-authority-eligibility-result.schema.json"
       - "schemas/ptsip-authorization-transition.schema.json"
 
+  - id: ptsip-validation-runtime-verification
+    classification: PRODUCT
+    roles:
+      - VERIFICATION
+    include:
+      - "src/tests/ptsip/engine_runtime_validation/**"
+    purpose: installed_official_validation_engine_native_schema_smoke_and_fail_closed_verification
+    shipped: false
+    runtime_required: false
+    executable: true
+    release_owner: tool
+    compatibility_owner: tool
+    analysis_inputs:
+      - "src/ptsip/engines/index.json"
+      - "src/ptsip/engines/validation/**"
+      - "src/ptsip/engines/contracts/stdio-transport.json"
+      - "src/ptsip/engine_installation.py"
+      - "src/tests/ptsip/engine_runtime_validation/**"
+
   - id: ptsip-evidence-verification
     classification: PRODUCT
     roles:
