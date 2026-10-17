@@ -43,6 +43,57 @@ func collectRefs(v any,refs *[]string){
  }
 }
 
+// approvedSchemaPaths are the current owner-approved Policy_Status and
+// Policy_version schema files. Requiring them detects missing contracts rather
+// than accidentally reporting a successful partial directory scan.
+var approvedSchemaPaths = []string{
+    "developer/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
+    "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+}
+
+var schemaScanRoots = []string{
+    "developer/contracts/schemas",
+    "developer/contracts/lifecycle/Policy_version",
+}
+
+func schemaFiles(root string) ([]string, []Finding) {
+    paths := []string{}
+    findings := []Finding{}
+    found := map[string]bool{}
+    for _, relativeRoot := range schemaScanRoots {
+        folder := filepath.Join(root, filepath.FromSlash(relativeRoot))
+        count := 0
+        err := filepath.WalkDir(folder, func(path string, item fs.DirEntry, walkError error) error {
+            if walkError != nil {
+                return walkError
+            }
+            if !item.IsDir() && strings.HasSuffix(item.Name(), ".json") {
+                relative, relError := filepath.Rel(root, path)
+                if relError != nil {
+                    return relError
+                }
+                found[filepath.ToSlash(relative)] = true
+                paths = append(paths, path)
+                count++
+            }
+            return nil
+        })
+        if err != nil {
+            findings = append(findings, Finding{File: relativeRoot, Status: "FAIL", Problem: "SCHEMA_ROOT_UNAVAILABLE: " + err.Error()})
+        } else if count == 0 {
+            findings = append(findings, Finding{File: relativeRoot, Status: "FAIL", Problem: "SCHEMA_ROOT_EMPTY"})
+        }
+    }
+    for _, relative := range approvedSchemaPaths {
+        if !found[relative] {
+            findings = append(findings, Finding{File: relative, Status: "FAIL", Problem: "MISSING_APPROVED_SCHEMA"})
+        }
+    }
+    sort.Strings(paths)
+    return paths, findings
+}
+
 func Run(root string)(Report,int){
  report:=Report{Status:"FAIL",Scope:"LIMITED_SCHEMA_JSON_AND_ENGINE_SHAPE_CHECK",
   Engine:"INSTALLED_PTSIP_VALIDATION",PolicyConformance:"NOT_ASSERTED",
@@ -50,18 +101,10 @@ func Run(root string)(Report,int){
  e,err:=installed()
  if err!=nil{report.Failed++;report.Findings=append(report.Findings,Finding{File:"<installed-VALIDATION>",Status:"FAIL",Problem:err.Error()});return report,2}
  report.PackageVersion=e.PackageVersion
- folder:=filepath.Join(root,"developer","contracts","schemas")
- var paths []string
- err=filepath.WalkDir(folder,func(path string,item fs.DirEntry,walkError error)error{
-  if walkError!=nil{return walkError}
-  if !item.IsDir() && strings.HasSuffix(item.Name(),".json"){paths=append(paths,path)}
-  return nil
- })
- if err!=nil||len(paths)==0{
-  report.Failed++;report.Findings=append(report.Findings,Finding{File:"developer/contracts/schemas",Status:"FAIL",Problem:"schema directory missing or empty"})
-  return report,2
- }
- sort.Strings(paths);ids:=map[string]string{}
+ paths, problems := schemaFiles(root)
+ report.Failed += len(problems)
+ report.Findings = append(report.Findings, problems...)
+ ids:=map[string]string{}
  for _,path:=range paths{
   relative,_:=filepath.Rel(root,path);relative=filepath.ToSlash(relative)
   f:=Finding{File:relative,Status:"LIMITED_CHECK_PASS"};report.Total++
