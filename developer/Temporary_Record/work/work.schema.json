@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Temporary Reform Work Group",
+  "description": "Temporary group-local record only. The basename of each YAML record must exactly match its group_id; schema itself does not validate filenames.",
+  "type": "object",
+  "required": [
+    "group_id",
+    "title_ko",
+    "steps",
+    "owner_session_id",
+    "pending_tasks"
+  ],
+  "properties": {
+    "group_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title_ko": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "owner_session_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pending_tasks": {},
+    "priority": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false
+}
