@@ -5,7 +5,8 @@
   "type": "object",
   "required": [
     "authority_Identity",
-    "Authority_Category"
+    "Authority_Category",
+    "Authority_Action"
   ],
   "properties": {
     "authority_Identity": {
@@ -18,7 +19,8 @@
           "type": "string",
           "minLength": 1
         }
-      }
+      },
+      "additionalProperties": false
     },
     "Authority_Category": {
       "type": "object",
@@ -26,7 +28,25 @@
         "Authority_Major_Category": {
           "$ref": "urn:ptsip:policy:authority_category:authority_major:v1"
         }
+      },
+      "additionalProperties": false,
+      "required": [
+        "Authority_Major_Category"
+      ]
+    },
+    "Authority_Action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_ref"
+      ],
+      "properties": {
+        "action_ref": {
+          "type": "string",
+          "pattern": "^urn:ptsip:authority:action:(policy|plan|avatar):[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+        }
       }
     }
-  }
+  },
+  "additionalProperties": false
 }
