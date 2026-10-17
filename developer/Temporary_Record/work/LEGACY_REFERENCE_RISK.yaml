@@ -15,4 +15,4 @@ steps:
 pending_tasks:
   - "LG-03: 도구를 만들지 않고 기존 파일을 읽기 전용으로 간단히 조회한 뒤, 신규 계약에 이어질 참조 위험과 미결정 사항만 수동 정리한다. 변경은 사용자 승인 후 수행한다."
   - "LG-03 검토 순서: developer/policy/ 외부 대상부터 계약 하나씩 수동 점검한다. 첫 후보는 developer/contracts/lifecycle/policy_version.json이며, 기존 정책 권위 참조가 기록인지 실행 의존성인지 확인하고 사용자 판단 전 파일을 교체하지 않는다."
-  - "LG-03 사용자 승인 방향: Policy_Status_version.schema.json은 계약 식별형(D), 즉 contract 식별자와 version 값을 함께 표현하는 객체 구조로 설계한다. 승인 범위는 표현 방향에 한하며 contract가 식별할 대상, 두 속성의 필수 여부 및 검증 규칙은 미결정. SCHEMA_AND_FAMILY_POLICY는 타 세션 소유이므로 스키마와 해당 그룹 기록을 변경하지 않는다."
+  - "LG-03 승인된 Policy_Status 버전 구조: 계약 식별형 객체이며 contract는 파일 경로와 독립적인 논리적 계약 식별자, version은 해당 계약의 버전이다. 정책의 contract 및 version 모두 필수다. 계획서의 필드명은 정책 필드와 명확히 구별하도록 별도 결정한다. 식별자 문법·버전 형식·의존성 연결 규칙은 아직 미결정이다. 스키마 작성은 SCHEMA_AND_FAMILY_POLICY 담당 세션 영역이다."
