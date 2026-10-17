@@ -58,9 +58,61 @@
 - **검증 기준:** 신규 검증기는 승인된 신규 개발 정책·스키마·계약만을 기준으로 독립 구현한다. 구 검증기의 로직, 명명, 호출 방식이나 이전 스키마와의 호환성은 구현 조건이 아니다.
 - **엔진 사양 기준:** 개발자 전용 검증기는 적용 대상 PTSIP 엔진 버전의 `src/policy/` 유효 정책과 그 정책에서 지정하는 엔진 사양·계약을 기준으로 설계·구현한다. 개발 정책 검증 대상 자체는 승인된 신규 개발 정책·스키마·계약을 따른다. 기존 엔진과 개발자 검증기 사이의 기능·책임 배분을 별도의 정책 결정으로 다시 정의하지 않는다.
 - **기계 조회 진입점:** 현재 LG-04에서 명시적으로 지정하는 조회 입력은 `src/policy/index.yaml`과 `src/ptsip/engines/index.json` **두 색인뿐**이다. 개별 정책 ID·파일 경로를 이 작업의 고정 설정으로 기록하지 않고, 색인에 선언된 경로와 관계를 정확히 대조한다. 색인에 선언되지 않은 권한·책임 소유자는 AI가 추론하지 않고 `UNRESOLVED`로 유지한다. 이는 임시 작업 도구의 조회 규칙이며 정식 검증기 실행 입력이나 추가 제품 정책이 아니다.
-- **엔진 사용 및 확인:** 설치된 PTSIP 엔진 도구를 실제 실행해 지원 기능과 동작을 확인할 수 있다. 사용자 지정 목표 버전은 `0.3.8b3`이며, 설치·연동 상태는 아직 확인되지 않았다. 로컬 실행 결과는 사양 준수 여부를 확인하는 관찰 증거이지 `src/policy/`에 정의된 규범 사양을 대체하거나 수정하는 권위가 아니다. 명세와 실제 동작이 다르면 차이를 보고하고 검증기를 실제 동작에 임의로 맞추지 않는다. 실제 버전·설치·호출 가능성은 구현 담당 작업에서 검증하고, 설치된 제품 엔진의 소스를 개발자 도구 경로에 복사하지 않는다.
+- **엔진 사용 및 확인:** 로컬 작업 환경에서 PTSIP `0.3.8b3` 설치 및 VALIDATION 엔진 `0.3.1`의 `validation.schema` 호출 성공이 사용자 출력으로 확인되었다. 이 결과는 확인된 Operation의 동작 증거이며 전체 엔진·기타 Operation의 검증 완료, PTSIP 정책 적합성 승인 또는 개발자 검증기 통합 완료를 뜻하지 않는다. 개발 정책 검증에 필요한 기능 중 해당 엔진이 지원하는 것은 새 알고리즘으로 중복 구현하지 않고 설치된 엔진을 호출하는 방향을 우선한다. 현재는 다른 엔진의 일괄 점검을 요구하지 않는다. 제품 엔진 자체 구현·수정이나 전체 엔진 적합성 검사는 이 작업 범위가 아니다. 로컬 실행 결과는 `src/policy/`의 규범 사양을 대체하지 않으며, 실행 중 실제 불일치를 발견하면 보고한다. 제품 엔진 소스를 개발자 도구 경로에 복사하지 않는다.
 - **의존성 분리:** 신규 검증기의 실행·검증 권위가 구 검증기나 `developer/Temporary_Record/`에 의존해서는 안 된다. 이 경로 결정만으로 기존 도구의 즉시 이전·삭제, 새 검증기의 구현 완료, 공통 엔진 작업 변경 또는 자동 활성화를 승인하지 않는다.
 - **독립 기록:** 이 결정은 이 절에 완결적으로 기록한다. 적용·해석·유효성 판단을 위해 과거 정책 파일, 과거 스키마, 승인 이력 파일을 찾아 읽거나 해당 파일의 존속을 요구하지 않는다. 다음 절의 구 검증기 역할 참고 제한은 별개의 임시 전환 규칙이며, 그 규칙의 정식 편입 제외가 이 경로 결정까지 폐기한다는 의미는 아니다.
+
+### VALIDATION 엔진 우선 활용 — 임시 실행 지침
+
+현재 신규 개발자 검증기 구현 작업에 한해 아래 YAML을 기계 판독 가능한 **작업 지침 데이터**로 제공한다. 정식 정책·Registry·엔진 계약이 아니며, 개발자 검증기의 런타임 입력으로 사용하거나 자동 승격하지 않는다.
+
+```yaml
+developer_validator_engine_use:
+  context: TEMPORARY_IMPLEMENTATION_GUIDANCE
+  implementation_target: .ptsip/engine/developer/
+  forbidden_new_validator_root: developer/automation/
+  approach: NEW_VALIDATOR_USING_INSTALLED_PTSIP_ENGINE
+  legacy_validator_source_copy: FORBIDDEN
+  ptsip_product_engine_reimplementation: OUT_OF_SCOPE
+
+  current_engine_selection:
+    kind: VALIDATION
+    preferred_engine: INSTALLED_PTSIP_ENGINE
+    other_engines_mandatory_review: false
+    full_engine_conformance_testing: OUT_OF_SCOPE
+
+  observed_evidence:
+    tool_version: T.0.3.8.b3
+    engine_version: 0.3.1
+    capability_contract_version: 3.0.0
+    verified_operation: validation.schema
+    verified_cases:
+      - case: VALID_SCHEMA_INSTANCE
+        invocation_status: PASS
+        exit_code: 0
+        instance_valid: true
+      - case: INVALID_SCHEMA_INSTANCE
+        invocation_status: PASS
+        exit_code: 0
+        instance_valid: false
+    ptsip_policy_conformance: NOT_ASSERTED
+    other_operations_verified: false
+    developer_validator_integration_verified: false
+
+  implementation_boundary:
+    reuse_supported_engine_functionality: PREFER
+    independently_recreate_confirmed_schema_validation: AVOID
+    formal_validation_basis: APPROVED_NEW_DEVELOPER_POLICY_SCHEMA_CONTRACT
+    engine_policy_lookup_indices:
+      - src/policy/index.yaml
+      - src/ptsip/engines/index.json
+    fixed_policy_id_or_file_mapping: FORBIDDEN
+    observed_behavior_redefines_normative_specification: false
+    discovered_engine_mismatch: REPORT_WHEN_ENCOUNTERED
+    unverified_functionality: NOT_ASSUMED
+    installed_engine_grants_normative_or_execution_authority: false
+    temporary_record_as_formal_runtime_dependency: FORBIDDEN
+```
 
 ## 구 검증기 참고 범위 — 사용자 승인
 
