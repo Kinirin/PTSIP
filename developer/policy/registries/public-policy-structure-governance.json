@@ -124,6 +124,30 @@
       "automatic_version_increment": "FORBIDDEN",
       "plan_version_implementation": "DEFERRED",
       "previous_combined_contract_version_schema": "SUPERSEDED_KEEP_LATEST"
+    },
+    "policy_rules_arch_reconcile": {
+      "decision": "RECONCILE",
+      "decision_authority": "USER_EXPLICIT",
+      "scope": {
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "ARCH"
+      },
+      "policy_document_role": "RULE_IDENTITY_AND_INDEPENDENT_CONTRACT_REFERENCE",
+      "independent_rule_contract_role": "NORMATIVE_REQUIREMENTS_BODY",
+      "contract_root": "developer/contracts/Policy_Rules/root-family/ARCH/",
+      "separate_policy_and_contract_files": "REQUIRED",
+      "preserve_four_common_policy_sections": true,
+      "preserve_family_specific_schema_ownership": true,
+      "preserve_common_rules_object_only_schema": true,
+      "policy_rule_approval_status_owner": "UNRESOLVED_USER_DECISION",
+      "policy_rule_reference_field_name": "UNRESOLVED_USER_DECISION",
+      "rule_identity_format": "UNRESOLVED_USER_DECISION",
+      "contract_requirement_fields_and_values": "UNRESOLVED_USER_DECISION",
+      "reference_resolver_binding": "UNRESOLVED_USER_DECISION",
+      "shared_identifiers_or_duplicated_metadata": "UNRESOLVED_USER_DECISION",
+      "physical_contract_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION",
+      "arch_schema_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION",
+      "validator_materialization": "NOT_AUTHORIZED_BY_DIRECTION_DECISION"
     }
   },
   "selected_arch_schema_header": {
