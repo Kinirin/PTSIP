@@ -39,6 +39,43 @@ approved_directions_ko:
   - "개혁 작업 중 일부 규칙을 개별 만료시키지 않고 남은 작업을 우선 처리한다."
   - "정식 정책에 의한 충분한 대체 여부와 임시 기록 전체 정리 시점은 사용자가 결정한다."
 
+
+# LG-04: temporary agent-readable execution guide, NOT a product or developer policy.
+# Only two fixed index entrypoints; returned policy IDs/paths are DATA, not hardcoded rules.
+engine_policy_discovery:
+  contract_role: TEMPORARY_WORK_EXECUTION_GUIDE
+  source_registries:
+    policy_catalog: src/policy/index.yaml
+    engine_catalog: src/ptsip/engines/index.json
+  source_count: 2
+  lookup:
+    selection: EXACT_DECLARED_ENGINE_KIND_AND_OPTIONAL_OPERATION
+    policy_owner_relation: ENGINE_CATALOG_DECLARED_OWNER_PATH
+    policy_identity_resolution: EXACT_POLICY_CATALOG_PATH_MATCH
+    eligible_policy_status: ACTIVE
+    eligible_authority_role: CANONICAL_AUTHORITY
+    fixed_policy_ids: FORBIDDEN
+    fixed_policy_paths: FORBIDDEN
+    semantic_guessing: FORBIDDEN
+    legacy_fallback: FORBIDDEN
+    missing_ambiguous_or_nonactive: UNRESOLVED_FAIL_CLOSED
+    other_responsibility_without_declared_index_relation: UNRESOLVED_NO_INFERENCE
+    successful_lookup_is_policy_validation_pass: false
+    successful_lookup_grants_engine_execution_authority: false
+  implementation:
+    temporary_lookup_tool: developer/Temporary_Record/tools/lg04_engine_policy_lookup.py
+    temporary_tool_role: READ_ONLY_INDEX_ROUTING_PROOF
+    future_developer_validator_root: .ptsip/engine/developer/
+    new_validator_in_legacy_automation_root: FORBIDDEN
+    legacy_validator_code_migration: FORBIDDEN
+    product_engine_implementation: OUT_OF_SCOPE
+    full_product_engine_conformance: OUT_OF_SCOPE
+    installed_engine_use: SEPARATE_IMPLEMENTATION_STAGE
+    temporary_record_as_formal_runtime_input: FORBIDDEN
+  promotion:
+    temporary_lookup_tool_promoted_as_formal_policy: FORBIDDEN
+    new_permanent_lookup_contract: SEPARATE_POLICY_AND_IMPLEMENTATION_SCOPE
+
 last_checkpoint:
   date: "2026-10-17"
   confirmation_type: USER_SCOPE_AND_BOUNDARY_REVIEW
