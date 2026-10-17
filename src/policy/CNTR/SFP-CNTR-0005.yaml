@@ -54,7 +54,7 @@
         ],
         "contract_permission_declaration_is_grant": false,
         "engine_version_independence": "PER_ENGINE_FROM_PTSIP_TOOL_AND_SCHEMA_VERSION",
-        "official_distribution": "AUTO_INSTALLED_INDEPENDENT_PACKAGES_ONLY",
+        "official_distribution": "INTEGRATED_USER_INSTALL_PACKAGE_WITH_INDEPENDENT_COMPONENTS",
         "mandatory_official_engine_availability": "ALL_SEVEN_BY_DEFAULT",
         "registry_topology": "FEDERATED_OFFICIAL_CONSUMER_EXTERNAL_OWNERSHIP_PRESERVED",
         "resolver_selection": "HONOR_EXPLICIT_CHOICE_OR_MACHINE_RESOLVE_WITH_APPROVED_CONTRACTS",
@@ -74,7 +74,7 @@
         "validation_generic_contract_scope": "SCHEMA_IO_PRECONDITIONS_AND_VERIFICATION_CASES",
         "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT",
         "engine_local_management_contract_boundary": "ENGINE_OWNED_LOCAL_MANAGEMENT",
-        "engine_independent_delivery_boundary": "PER_ENGINE_VERSION_DEPENDENCY_BUILD_DISTRIBUTION_PATCH",
+        "engine_independent_delivery_boundary": "PER_ENGINE_VERSION_DEPENDENCY_BUILD_PATCH_WITH_INTEGRATED_USER_INSTALL_DELIVERY",
         "engine_management_entry_resolution": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NO_DIRECTORY_NAME_INFERENCE",
         "engine_management_responsibility_model": "NO_MANDATORY_INTERNAL_MANAGEMENT_SET_EXTERNAL_INTEROPERABILITY_ONLY",
         "engine_version_dependency_contract": "COMMON_IDENTITY_CONTRACT_WITH_PER_ENGINE_EXTENSIONS",
@@ -204,7 +204,7 @@
           "cross_engine_source_crate_compiled_runtime_management_sharing": "FORBIDDEN",
           "per_engine_optional_management_implementation": "INDEPENDENT_SELF_OWNED",
           "common_engine_identity_and_interoperability_contract": "PRESERVED_LANGUAGE_NEUTRAL_NON_IMPLEMENTATION_SHARING",
-          "version_dependency_build_distribution_patch": "PER_ENGINE_INDEPENDENT",
+          "version_dependency_build_distribution_patch": "PER_ENGINE_INDEPENDENT_VERSION_DEPENDENCY_BUILD_PATCH_WITH_INTEGRATED_INSTALL_DELIVERY",
           "declared_contract_dependencies": "ALLOWED_AND_MACHINE_VERIFIED",
           "engine_to_engine_rust_runtime_dependency": "FORBIDDEN",
           "consumer_external_engine_implementation_rules": "UNCHANGED",
@@ -355,9 +355,9 @@
           "exact_registration_schema_state_serialization_ttl_invalidation_and_recovery": "UNRESOLVED_CONTRACT_DESIGN"
         },
         "official_package_installation_plan_direction": {
-          "decision": "REGISTERED_INDEPENDENT_PACKAGES_AUTO_INSTALL_ONLY",
+          "decision": "RECONCILE_INDEPENDENT_COMPONENT_PRODUCTION_WITH_INTEGRATED_USER_INSTALL_DELIVERY",
           "target_scope": "FUTURE_OFFICIAL_ENGINE_DISTRIBUTION_PLAN",
-          "distribution": "REGISTERED_INDEPENDENT_PACKAGES_ONLY",
+          "distribution": "ONE_COMPLETE_INSTALLABLE_PACKAGE_PER_SUPPORTED_TARGET",
           "selection_basis": [
             "CURRENT_HOST_ENVIRONMENT",
             "WORKLOAD_CONSTRAINTS",
@@ -370,11 +370,16 @@
           "no_installation_authority_from_availability_declaration": true,
           "installation": "ONLY_AFTER_APPLICABLE_EXISTING_SOURCE_PERMISSION_SUPPLY_AND_CTRL_GATES",
           "active_0_3_8_external_extension_automatic_installation": "NOT_AUTHORIZED_SFP_CNTR_0007",
-          "per_engine_version_build_distribution_patch": "INDEPENDENT",
+          "per_engine_version_build_distribution_patch": "INDEPENDENT_PRODUCTION_VERSION_DEPENDENCY_PATCH_WITH_INTEGRATED_INSTALL_DELIVERY",
           "cross_official_rust_implementation_sharing": "FORBIDDEN",
           "selection_uncertain_or_unverifiable": "FAIL_CLOSED_NO_SILENT_INSTALL_OR_COMPATIBILITY_CLAIM",
           "output_artifact": "PLAN_WITH_EXPLICIT_INSTALLED_ENGINE_COMPATIBILITY_EVIDENCE",
-          "detailed_plan": "UNRESOLVED_PLAN"
+          "detailed_plan": "UNRESOLVED_PLAN",
+          "user_engine_installation": "NO_INDIVIDUAL_ENGINE_PACKAGE_INSTALLATION_REQUIRED_FOR_COMPLETE_OFFICIAL_PTSIP_PACKAGE",
+          "package_manager_delivery": "TARGET_SPECIFIC_VERIFIED_INSTALLABLE_PROJECTION",
+          "artifact_reuse": "ONLY_PREVIOUSLY_VERIFIED_UNCHANGED_COMPONENT_ARTIFACTS",
+          "component_contract": "INDEPENDENT_MACHINE_READABLE_PER_COMPONENT",
+          "final_package_composition": "VERIFY_COMPLETE_REQUIRED_TOOL_PROFILE_AND_REGISTERED_ENGINES"
         },
         "engine_capability_responsibility_analysis_direction": {
           "decision": "B_CAPABILITY_CENTRIC_CANONICAL_OWNER_AND_PROVIDING_ENGINE_MAP",
@@ -1251,7 +1256,7 @@
           "external_extension_auto_installation": "UNCHANGED_NOT_AUTHORIZED_BY_THIS_DECISION",
           "installation_and_activation_authority": "UNCHANGED_EXISTING_GATES_REQUIRED",
           "detailed_installation_plan": "REQUIRES_SEPARATE_PLAN_GENERATION_AND_APPROVAL",
-          "record_role": "CURRENT_DIRECTION_REPLACING_HISTORICAL_DISTRIBUTION_CHOICE"
+          "record_role": "SUPERSEDED_HISTORICAL_DISTRIBUTION_CHOICE"
         },
         {
           "id": "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP_POLICY_DIRECTION",
@@ -1469,6 +1474,29 @@
           "active_authority_mutation": "NOT_AUTHORIZED",
           "implementation_and_runtime_activation": "NOT_AUTHORIZED",
           "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
+        },
+        {
+          "id": "OFFICIAL_ENGINE_INDEPENDENT_BUILD_INTEGRATED_INSTALL_RECONCILIATION",
+          "selected_option": "RECONCILE",
+          "approval_source": "USER_EXPLICIT",
+          "decision_date": "2026-10-18",
+          "conflicts_with": "OFFICIAL_ENGINE_DISTRIBUTION_AUTO_INSTALL_ONLY_REPLACEMENT",
+          "conflicting_rule_base_revision": "910164df37e95f81d0ffa386d8efc5b552bcbbf8",
+          "prior_policy_blob_sha": "fdc62acc227e96abe511ae37d4d090bb39c0c098",
+          "effective_rule": "INDEPENDENT_COMPONENT_IDENTITY_VERSION_DEPENDENCY_BUILD_PATCH_AND_SINGLE_COMPLETE_INSTALLABLE_PACKAGE_PER_TARGET",
+          "component_scope": {
+            "tool": 1,
+            "profile": 1,
+            "engines": 7
+          },
+          "component_contract": "INDEPENDENT_MACHINE_READABLE_PER_COMPONENT",
+          "build_reuse": "ONLY_WITH_VERIFIED_UNCHANGED_INPUT_AND_ORIGINAL_ARTIFACT_PROVENANCE",
+          "package_completeness": "REQUIRED_TOOL_PROFILE_AND_REGISTERED_ENGINES_VERIFIED_BEFORE_PUBLICATION",
+          "package_target_formats": "DISTRIBUTION_ADAPTER_DERIVED_NOT_VERSION_AUTHORITY",
+          "engine_runtime_implementation_sharing": "FORBIDDEN_PRESERVE_EXISTING_ISOLATION",
+          "external_extension_install_authority": "UNCHANGED",
+          "execution_activation_write_authority": "UNCHANGED",
+          "detailed_component_contract_schema_and_publisher_workflow": "SEPARATE_POLICY_COMPLIANT_PLAN_AND_MACHINE_VERIFICATION"
         }
       ],
       "dependent_plans": [
