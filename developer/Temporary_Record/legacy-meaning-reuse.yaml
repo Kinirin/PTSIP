@@ -1,0 +1,175 @@
+# 제한된 과거 의미 비교를 위한 한시적 기록. 정식 정책이나 실행 계약이 아님.
+record_type: TEMPORARY_WORK_RECORD
+work_id: LEGACY_DEPENDENCY_REPLACEMENT
+work_group: LEGACY_MEANING_REUSE
+created_at: "2026-10-17"
+
+purpose_ko: >-
+  정책 상태, 계획 상태 및 Plan_Auth 설계에 필요한 과거 의미만 제한적으로 비교한다.
+  과거 파일의 위치, 필드, 책임 패밀리, 승인 기록, 호출법을 새 권위로 채택하지 않는다.
+
+scope:
+  comparison_kind: LIMITED_SEMANTIC_COMPARISON
+  source_commit: "975f17839e601c630809e67c06c0cffbe8597966"
+  source_role: HISTORICAL_NON_NORMATIVE_REFERENCE
+  whole_repository_coverage: false
+  legacy_runtime_execution: NOT_RUN
+  formal_contract_adoption: NOT_PERFORMED
+  other_group_work: READ_ONLY
+
+current_user_decisions_ko:
+  - "정책 상태를 상위로 두고 계획 및 하위 계획의 상태와 권한을 계층적으로 연동한다."
+  - "권한 연결은 하위 상태까지 특정한 완전한 상태를 기준으로 한 상태당 하나를 지향한다."
+  - "별도 최상위 Policy_Plan_Relationships 필드는 채택하지 않는다."
+  - "새 계획 상태 계약의 이름은 ACTIVATE, DRAFT, INTERRUPTION이다."
+  - "Plan_Auth는 이름 후보이며 구체적인 권한 식별자와 허용 작업은 아직 정하지 않았다."
+  - "세 계획 상태 기본 계약의 기존 변경 45줄은 현재 사용자 메시지에서 승인되었다."
+  - "폐기 예정 경로에 새 정보를 기록하지 않으며 기존 파일 삭제는 사용자 명시 요청에 따른다."
+
+comparisons:
+  - id: LMR-01
+    subject_ko: "검토 표시와 명시적 승인 구분"
+    sources:
+      - path: developer/contracts/lifecycle/policy_status.json
+        line_start: 112
+        line_end: 124
+    old_meaning_ko: >-
+      DRAFT.Pass는 검토 표시이며 자동 승인이나 자동 상태 변경을 의미하지 않는다.
+      APPROVED.Default는 명시적으로 승인된 정책 상태를 뜻한다.
+    proposed_reuse_ko: >-
+      검토 결과 표시를 새 정책 승인이나 계획 실행 권한으로 자동 승격하지 않는 의미를
+      상태 및 권한 계약의 명시적 조건으로 재정의하는 것을 검토한다.
+    unresolved_ko: "완전한 정책 상태별 Plan_status 및 Plan_Auth 연결값은 미정이다."
+    adoption: USER_REVIEW_REQUIRED
+
+  - id: LMR-02
+    subject_ko: "정책 Activate와 계획 ACTIVATE의 의미 분리"
+    sources:
+      - path: developer/contracts/lifecycle/policy_status.json
+        line_start: 119
+        line_end: 124
+      - path: developer/contracts/lifecycle/Plan_status/Plan_status_ACTIVATE.json
+        line_start: 1
+        line_end: 15
+    old_meaning_ko: "APPROVED.Activate는 정책 무결성 검증이 오류 없이 완료되었다는 뜻이다."
+    current_difference_ko: >-
+      새 계획 계약은 ACTIVATE라는 상태 상수만 선언한다. 실행 승인, 삭제 승인 또는
+      정책 Activate와 같은 의미는 이 계약에 선언되어 있지 않다.
+    proposed_reuse_ko: "같은 단어가 있어도 정책 상태와 계획 상태의 계약 대상을 구별한다."
+    unresolved_ko: "계획 ACTIVATE가 허용하는 실제 작업과 권한 조건은 미정이다."
+    adoption: USER_REVIEW_REQUIRED
+
+  - id: LMR-03
+    subject_ko: "폐기 상태의 사실과 삭제 권한 구분"
+    sources:
+      - path: developer/contracts/lifecycle/policy_status.json
+        line_start: 126
+        line_end: 150
+    old_meaning_ko: >-
+      RETIRED.Removable에는 이력 정리 완료와 삭제 승인이라는 서로 다른 사실이 함께
+      들어 있다. 구 계약도 이 상태가 파일을 자동 삭제하는 것은 아니라고 기록한다.
+    proposed_reuse_ko: >-
+      상태의 사실, 권한 선언 및 실제 삭제 요청을 구별하는 의미만 검토한다.
+      폐기 예정 파일을 현재 삭제할 권한은 이 비교 기록에서 만들지 않는다.
+    unresolved_ko: "새 상태 계약과 Authority 사이의 구체적인 삭제 조건 표현은 미정이다."
+    adoption: USER_REVIEW_REQUIRED
+
+  - id: LMR-04
+    subject_ko: "충돌 해소 후 자동 복구"
+    sources:
+      - path: developer/contracts/lifecycle/policy_status.json
+        line_start: 132
+        line_end: 142
+    old_meaning_ko: >-
+      구 계약은 충돌이 해결되면 APPROVED.Application_Problems에서
+      APPROVED.Default로 자동 복구하도록 선언한다.
+    proposed_reuse_ko: >-
+      자동 복구를 재채택할지는 별도 검토한다. 새 계층에서는 정책 상태의 복구가
+      하위 계획 상태 및 권한 변경으로 이어질 수 있어 과거 동작을 자동 승계하지 않는다.
+    unresolved_ko: >-
+      충돌 해소 증거, 자동 또는 명시적 복구, 하위 계획 반영 범위와 실행 주체가 미정이다.
+    adoption: USER_REVIEW_REQUIRED
+
+  - id: LMR-05
+    subject_ko: "대분류별 사용 권한을 하위 상태별 권한으로 그대로 옮기지 않음"
+    sources:
+      - path: developer/contracts/lifecycle/policy_status.json
+        line_start: 144
+        line_end: 158
+      - path: developer/policy/GOV/MPD-GOV-0001.yaml
+        line_start: 18
+        line_end: 41
+    old_meaning_ko: >-
+      구 계약은 DRAFT/APPROVED/RETIRED 대분류별 resolution_authority를 불리언으로
+      정의하고, 구현 권한과 정책 상태의 독립성도 별도로 기록한다.
+    current_difference_ko: >-
+      사용자 방향은 정책의 완전한 상태가 하위 계획 상태와 단일 권한 선택에 영향을 주는
+      계층 구조이다. 구 resolution_authority와 Plan_Auth는 대상과 용도가 같다고 볼 수 없다.
+    proposed_reuse_ko: >-
+      권한 판정 대상을 명시한다는 의미만 검토한다. GOV 소유 선언, 대분류 불리언,
+      구 승인 참조 및 구현 권한의 전면 독립 규칙은 새 기준으로 복사하지 않는다.
+    unresolved_ko: "상태별 권한, 작업 주체, 대상과 승인 조건의 구체적인 계약은 미정이다."
+    adoption: USER_REVIEW_REQUIRED
+
+  - id: LMR-06
+    subject_ko: "계획 생성 여부와 계획 생명주기 구분"
+    sources:
+      - path: developer/policy/CTRL/MPD-CTRL-0001.yaml
+        line_start: 194
+        line_end: 207
+      - path: developer/policy/ASSURE/MPD-ASSURE-0002.yaml
+        line_start: 29
+        line_end: 54
+    old_meaning_ko: >-
+      NOT_CREATED/CREATED는 계획의 생성 및 식별 정보 등록 여부를 구분한다.
+      실행, 중단, 검토 같은 계획 생명주기를 정의한 상태 집합은 아니다.
+    proposed_reuse_ko: >-
+      실제 대상의 존재 여부를 검증한다는 의미만 검토한다. NOT_CREATED를 DRAFT로,
+      CREATED를 ACTIVATE로 자동 대응시키지 않는다.
+    unresolved_ko: "새 구조에서 생성 전 계획을 표현할 필요와 그 방식은 미정이다."
+    adoption: USER_REVIEW_REQUIRED
+
+  - id: LMR-07
+    subject_ko: "정확한 대상 식별과 경로 이동 시 동일성"
+    sources:
+      - path: developer/policy/CTRL/MPD-CTRL-0001.yaml
+        line_start: 213
+        line_end: 254
+      - path: developer/automation/policy/binding/store.go
+        line_start: 14
+        line_end: 17
+      - path: developer/automation/policy/binding/manager.go
+        line_start: 109
+        line_end: 147
+    old_meaning_ko: >-
+      구 구조는 식별자와 경로를 구분하고 정확한 대상을 확인한 다음 경로를 갱신한다.
+      CTRL 문서의 중복 관계 키는 정책과 계획의 조합이고, 현재 코드에는 정책 규칙 목록도
+      포함되어 있어 과거 문서와 구현이 완전히 같은 의미라고 단정할 수 없다.
+    proposed_reuse_ko: >-
+      정확한 대상 식별 및 이동 전후 동일성 확인이라는 의미만 검토한다.
+      PPB/PLN/PLANFILE 형식, rules 키 구조, 중복 관계 키, 다중 부모 허용 여부 및
+      기존 Registry/Resolver 호출은 자동 채택하지 않는다.
+    unresolved_ko: "새 정책/계획 식별 구조와 관계 중복·공유·이동의 기준은 미정이다."
+    adoption: USER_REVIEW_REQUIRED
+
+last_checkpoint:
+  date: "2026-10-17"
+  confirmation_type: BOUNDED_READ_ONLY_SEMANTIC_COMPARISON
+  source_paths_and_ranges_checked: true
+  legacy_files_modified: false
+  old_resolver_or_validator_invoked: false
+  candidate_meanings_adopted: false
+  new_authority_granted: false
+  formal_policy_validation: NOT_PERFORMED
+  note_ko: >-
+    과거 상태 계약 및 GOV/CTRL/ASSURE 정책의 한정된 구간과 관계 처리 코드만 비교했다.
+    기록의 존재는 의미 채택 승인, 전체 의존성 제거 또는 새 정책 검증 통과를 뜻하지 않는다.
+
+pending_tasks:
+  file: developer/Temporary_Record/pending-work.json
+  select_group_id: LEGACY_MEANING_REUSE
+
+temporary_lifecycle_ko: >-
+  이 기록은 정식 계약과 정책의 입력이 아니다. 사용자 결정이 채택되면 정식 영역에
+  독립적으로 정의하며, 이 기록을 정식 파일의 필수 참조로 만들지 않는다.
+  최종적으로 사용자 요청에 따라 Temporary_Record 전체와 함께 삭제한다.
