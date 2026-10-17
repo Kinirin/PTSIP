@@ -19,8 +19,8 @@ func schemaCheck(t *testing.T, docs map[string]string) (map[string]any, error) {
  for file,content:=range docs{
   if err:=os.WriteFile(filepath.Join(dir,file),[]byte(content),0644);err!=nil{t.Fatal(err)}
  }
- mainFile:=filepath.Join(root,".ptsip","engine","developer","schema_check","main.go")
- cmd:=exec.Command("go","run",mainFile,"--root",fixture)
+ moduleDir:=filepath.Join(root,".ptsip","engine","developer")
+ cmd:=exec.Command("go","-C",moduleDir,"run",".","--validator","schema-check","--root",fixture)
  stdout,err:=cmd.Output()
  if err!=nil{
   if _,ok:=err.(*exec.ExitError);!ok{t.Fatalf("validator could not run: %v",err)}
