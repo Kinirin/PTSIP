@@ -51,6 +51,8 @@ approved_directions_ko:
 
   - "2026-10-18 사용자 확정: ARCH 독립 규칙 계약이 개별 규칙의 승인 상태와 승인 근거를 소유한다. 사용자 제안 YAML의 status.approval 및 status.approval_ref는 이 소유 대상의 설명 예시이며, 최종 필드명·중첩·자료형·필수 여부·검증 방식 및 실제 승인 권한·전이 절차는 아직 별도 결정할 사항이다. 정책 YAML은 규칙 식별 및 독립 계약 참조 책임만 유지하고, 실제 requirements 본문과 규칙 승인 메타데이터는 독립 계약이 소유한다. 정책 자체 Policy_Status 생명주기와는 구분한다. 정식 정책 변경 커밋: ebe87b70043035ae6955ffb562ddae65d583c1e0. 스키마·독립 계약 본문·검증기 미변경."
   - "2026-10-18 사용자 정정: 삭제 예정 developer/policy/registries/ 에 잘못 기록한 Policy_Rules 사용자 승인 결정을 정식 정책으로 간주하면 안 된다. 이전에 해당 경로에 추가한 세 항목(policy_rules_independent_contract_direction, policy_rules_validation_responsibility, policy_rules_arch_reconcile)을 다른 세션 변경을 보존하며 제거했다(정정 커밋 5f351aa3e9bf22aaf9a3065bb543d354edad0252). 사용자 승인 내용(독립 규칙 참조 B, 계약 저장 위치, 최소 공통 검증 A/패밀리별 양쪽 검증 C, object 공통 스키마, ARCH RECONCILE, 승인 정보의 독립 규칙 계약 소유)은 취소된 것이 아니지만, 현재 별도 정식 정책 저장 위치가 정해지기 전까지 이 임시 기록은 규범 원본이 아니다. 향후 developer/policy/registries/ 로 신규 정책 반영 금지. 해당 경로 외 최종 정책 저장 위치는 사용자 방향 필요."
+  - "2026-10-18 사용자 승인: 삭제 예정 registries 경로 대신 ARCH 전용 정책 결정 계약을 재기록했다. 정식 파일: developer/policy/ARCH/Policy_Rules_Decisions.yaml (커밋 9b232652faf84ea18a17c5d199e832740762b85b). 과거 삭제한 방향·공통 4섹션의 ARCH 적용, ARCH 양쪽 검증 책임, B 독립 계약 경계와 저장 위치, RECONCILE, 규칙 승인 정보 소유를 기계 판독형으로 기록. 기존 MPD-ARCH-0001~0003은 RETIRED 유지. MPD 정책 ID 자동 발급·4섹션 완료 정책 인스턴스·독립 규칙 YAML 본문·계약 resolver·검증 스키마는 미확정으로 생성하거나 활성화하지 않음. 공통 type: object의 충실성은 재검토 필요. registries/에는 정책 내용 재기록하지 않음."
+
 review_findings:
   - id: POLICY_RULES_PRIORITY_BLOCKER
     result: PUBLIC_MINIMUM_OBJECT_SCHEMA_APPLIED_FAMILY_SCHEMAS_OPEN
