@@ -62,6 +62,24 @@ rule_contract_boundary:
     arch_individual_approval_fields_and_evidence_format: UNRESOLVED_USER_DECISION
     common_policy_rules_reference_shape: UNRESOLVED_USER_DECISION
     root_family_policy_record_full_schema_authority: UNCHANGED
+    common_contract_formal_policy_authority_decision:
+      decision: COMMON_MACHINE_CONTRACT_PLUS_FORMAL_POLICY_AUTHORITY
+      option: C
+      authorization: PROJECT_OWNER_EXPLICIT
+      subject: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
+      record_role: ARCH_LOCAL_NONCANONICAL_DECISION_ACKNOWLEDGMENT_ONLY
+      this_arch_record_owns_common_authority: false
+      existing_common_schema_foundation: developer/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json
+      existing_family_schema_root: developer/contracts/schemas/Policy_Rules/root-family/
+      common_machine_contract_role: SHARED_INDEPENDENT_RULE_CONTRACT_STRUCTURE_VALIDATION
+      family_schema_role: FAMILY_OWNED_INDEPENDENT_RULE_CONTRACT_VALIDATION
+      normative_authority_location: FORMAL_POLICY_RECORD_NOT_YET_SELECTED
+      formal_policy_reference: UNRESOLVED_USER_DECISION
+      existing_family_policy_record_schema_ownership: PRESERVED
+      existing_common_policy_rules_object_only_contract: UNCHANGED
+      independent_rule_contract_vs_policy_rules_reference_schema_binding: UNRESOLVED_USER_DECISION
+      schema_changes_or_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
+      new_policy_artifact_created: false
   policy_lifecycle_status_vs_rule_approval: DISTINCT
   multi_rule_reference_decision:
     decision_id: P1
