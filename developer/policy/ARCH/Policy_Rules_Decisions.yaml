@@ -73,10 +73,26 @@ component_representation_hybrid:
     edges: TYPED_DIRECTED
   hierarchy:
     optional: true
-    purpose: RESPONSIBILITY_DOMAIN_CONTEXT
+    purpose: RESPONSIBILITY_DOMAIN_APPLICABILITY_BOUNDARY
     must_not_replace_graph_edges: true
   rule_target_cardinality: UNRESOLVED
-  hierarchy_scope_semantics: UNRESOLVED
+  hierarchy_scope_semantics: RESTRICT_APPLICABILITY_OF_EXPLICIT_EDGES
+  hierarchy_scope_decision:
+    decision_id: H2
+    user_selected_option: H2
+    authorization: PROJECT_OWNER_EXPLICIT
+    mode: OPTIONAL_HIERARCHY_SCOPE_RESTRICTION
+    applies_only_to: EXPLICITLY_DECLARED_TYPED_DIRECTED_EDGES
+    when_domain_scope_is_absent: EDGE_REMAINS_EXPLICIT_WITHOUT_HIERARCHY_RESTRICTION
+    when_domain_scope_is_present: RESTRICT_EDGE_RULE_APPLICABILITY_TO_DECLARED_DOMAIN
+    domain_membership_inference_from_edge_alone: FORBIDDEN
+    generation_of_undeclared_edges_from_hierarchy: FORBIDDEN
+    automatic_descendant_obligation_propagation: NOT_AUTHORIZED_BY_H2
+    endpoint_membership_semantics: UNRESOLVED_USER_DECISION
+    domain_identity_and_lookup: UNRESOLVED_USER_DECISION
+    nested_hierarchy_resolution: UNRESOLVED_USER_DECISION
+    schema_field_names_types: UNRESOLVED_USER_DECISION
+    validation_behavior_and_failure_states: UNRESOLVED_USER_DECISION
   descendant_inheritance: UNRESOLVED
   field_names: UNRESOLVED
   schema_creation: NOT_AUTHORIZED
