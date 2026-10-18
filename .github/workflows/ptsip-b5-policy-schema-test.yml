@@ -52,3 +52,11 @@ jobs:
         run: |
           set -euo pipefail
           go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
+      - name: Verify affected Go and declarative ownership test units
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check 'pytest>=8,<10'
+          python -m pytest -q src/tests/ptsip/agent_contracts/test_projection_bindings.py -k exact_declarative_verification_ownership
+          go -C developer/tests test ./repository ./workflows -count=1
+          go -C developer/tests test ./rootfamily -run '^ -count=1

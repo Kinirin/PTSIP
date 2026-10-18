@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import runpy
 import shutil
 from importlib.resources import files
 from pathlib import Path
@@ -187,22 +186,20 @@ def test_binding_completion_does_not_authorize_an_active_digest_scheme(contract_
         validate_projection_bindings(contract_root)
 
 
-def test_four_approved_paths_have_exact_owners_and_select_only_the_new_mode() -> None:
+def test_four_approved_paths_retain_exact_declarative_verification_ownership() -> None:
+    # This checks only declared Project Profile/registry identity, NOT automatic
+    # Test Mode selection. The retired resolver is intentionally unavailable.
     profile = yaml.safe_load((ROOT / ".ptsip/profiles/main.ptsip.yaml").read_text(encoding="utf-8"))
     registry = yaml.safe_load((ROOT / ".github/test_modes.yaml").read_text(encoding="utf-8"))
-    resolver = runpy.run_path(str(ROOT / ".github/scripts/resolve_test_modes.py"))
     components = {c["id"]: c for c in profile["components"]}
     verification = components["agent-contract-candidate-verification"]
     assert verification["analysis_inputs"][:4] == list(FOUR_PATHS)
     assert "src/agent_contracts/**" not in components["ptsip-contract-verification"]["analysis_inputs"]
-    for path in FOUR_PATHS:
-        selected, not_required = resolver["resolve_automatic_selection"](registry, profile, [path])
-        assert [item["id"] for item in selected] == ["agent-contract-candidate"]
-        assert not_required == []
-        assert sum(path in c["include"] for c in components.values()) == 1
-    for path in verification["include"]:
-        assert sum(resolver["matches_pattern"](path, pattern)
-                   for c in components.values() for pattern in c["include"]) == 1
+    assert all(sum(path in c["analysis_inputs"] for c in components.values()) == 1 for path in FOUR_PATHS)
+    declared = [mode for mode in registry["modes"] if mode["id"] == "agent-contract-candidate"]
+    assert len(declared) == 1
+    assert declared[0]["component_ref"] == verification["id"]
+    assert declared[0]["execution"]["pytest"] == verification["include"]
     relations = {(r["from"], r["to"], r["type"]) for r in profile["relationships"]}
     for source in (
         "agent-contract-candidate-compiler",
@@ -211,5 +208,3 @@ def test_four_approved_paths_have_exact_owners_and_select_only_the_new_mode() ->
         "agent-contract-candidate-projections",
     ):
         assert (verification["id"], source, "VERIFIES") in relations
-    with pytest.raises(resolver["TestModeSelectionError"], match="unmapped changed paths"):
-        resolver["resolve_automatic_selection"](registry, profile, ["src/agent_contracts/not-approved.py"])
