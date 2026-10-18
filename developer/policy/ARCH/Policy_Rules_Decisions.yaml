@@ -53,6 +53,28 @@ rule_contract_boundary:
     - INDIVIDUAL_RULE_APPROVAL_EVIDENCE_REFERENCE
   contract_storage_root: developer/contracts/Policy_Rules/root-family/ARCH/
   approval_metadata_in_policy_document: NON_OWNING
+  independent_contract_structural_groups_decision:
+    decision_id: ARCH_INDEPENDENT_CONTRACT_GROUP_SET
+    authorization: PROJECT_OWNER_EXPLICIT
+    decision_scope: ARCH_INDEPENDENT_RULE_CONTRACT_GENERIC_STRUCTURAL_VOCABULARY
+    selected_generic_groups:
+      - Identity
+      - Definition
+      - Boundary
+      - Constraints
+      - Evaluation
+    additional_generic_peer_groups: FORBIDDEN_WITHOUT_SEPARATE_POLICY_AUTHORIZATION
+    specificity_bias_in_generic_group_names: FORBIDDEN
+    family_or_rule_specific_detail: NESTED_UNDER_APPROVED_RESPONSIBILITY_GROUP_WHEN_SEMANTICALLY_VALID
+    enforce_all_five_as_required: UNRESOLVED_USER_DECISION
+    exact_group_semantics_and_responsibility_boundaries: UNRESOLVED_USER_DECISION
+    exact_fields_types_and_nesting: UNRESOLVED_USER_DECISION
+    applicability_to_other_root_families: NOT_AUTHORIZED_BY_THIS_DECISION
+    legacy_field_names_as_new_contract_mandates: FORBIDDEN
+    existing_normative_approval_and_evidence_ownership: PRESERVED
+    approval_and_evidence_representation: UNRESOLVED_USER_DECISION
+    common_public_policy_rules_reference_shape: UNRESOLVED_USER_DECISION
+    schema_contract_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
   policy_lifecycle_status_vs_rule_approval: DISTINCT
   multi_rule_reference_decision:
     decision_id: P1
