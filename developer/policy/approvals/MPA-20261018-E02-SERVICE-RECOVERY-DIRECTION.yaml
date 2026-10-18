@@ -1,0 +1,38 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261018-E02-SERVICE-RECOVERY-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    E02 publication service outage and request throttling: select B, conditional
+    automatic recovery after confirming service availability or release from
+    request limits. Do not automatically resume publication when recovery
+    conditions cannot be verified. Defer subordinate requirements until an
+    actual E02 incident. Do not resolve other error types.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E02
+  selected_direction:
+    error_category: E02_SERVICE_UNAVAILABILITY_AND_REQUEST_LIMITING
+    response_model: B_CONDITIONAL_AUTOMATIC_RECOVERY
+    automatic_resume_requires: CONFIRMED_RECOVERY_CONDITION
+    unresolved_recovery_condition: NO_AUTOMATIC_PUBLICATION_RETRY
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    conditional_approval_model: PRESERVED
+  unresolved:
+    service_recovery_evidence: DEFERRED_UNTIL_ACTUAL_E02_OCCURRENCE
+    rate_limit_release_evidence: DEFERRED_UNTIL_ACTUAL_E02_OCCURRENCE
+    retry_limits_and_backoff: DEFERRED_UNTIL_ACTUAL_E02_OCCURRENCE
+    error_detection_and_classification_details: DEFERRED_UNTIL_ACTUAL_E02_OCCURRENCE
+    fallback_and_human_escalation_conditions: DEFERRED_UNTIL_ACTUAL_E02_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_ctrl_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-18'
