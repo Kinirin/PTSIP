@@ -11,6 +11,7 @@ import (
     "sort"
 
     schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/schema_check"
+    test_mode "github.com/Kinirin/PTSIP/.ptsip/engine/developer/test_mode"
 )
 
 type Validator func(string) (any, int)
@@ -20,8 +21,14 @@ func runSchemaCheck(root string) (any, int) {
     return result, code
 }
 
+func runTestMode(root string) (any, int) {
+    result, code := test_mode.Run(root)
+    return result, code
+}
+
 var validators = map[string]Validator{
     "schema-check": runSchemaCheck,
+    "test-mode-registry": runTestMode,
 }
 
 func main() {

@@ -91,8 +91,45 @@ jobs:
           echo "UNRESOLVED: retired Test Mode Registry validation and mode resolution are not available."
           echo "Executing existing ptsip-validation-runtime pytest directory without asserting registry conformance."
           python -m pytest -q src/tests/ptsip/engine_runtime_validation
+  test-mode-control-plane:
+    name: "Independent Test Mode registry / ${{ matrix.runner }}"
+    if: ${{ inputs.mode == 'test-mode-control-plane' }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/go.mod
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install official validation runtime and test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b5" "pytest>=8,<10" "PyYAML>=6,<7"
+      - name: Native control-plane boundary unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer test ./test_mode -count=1
+          python -m pytest -q developer/tests/testmode
+      - name: Validate registry against official PTSIP schema engine
+        shell: bash
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer run . --validator test-mode-registry --root ../../..
   mode-selection:
-    if: ${{ inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' }}
+    if: ${{ inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' && inputs.mode != 'test-mode-control-plane' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.mode.outputs.matrix }}

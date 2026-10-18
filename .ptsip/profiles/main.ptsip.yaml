@@ -606,6 +606,8 @@ components:
     include:
       - ".ptsip/profiles/main.ptsip.yaml"
       - ".ptsip/**"
+    exclude:
+      - ".ptsip/engine/developer/test_mode/**"
     purpose: repository_development_architecture_declaration
     shipped: false
     runtime_required: false
@@ -1119,6 +1121,7 @@ components:
       - ".github/checks/*"
       - "developer/contracts/test-mode-control-plane/**"
       - "developer/tests/testmode/**"
+      - ".ptsip/engine/developer/test_mode/**"
     purpose: independent_registry_contract_validation_and_explicit_verification_selection_boundary
     shipped: false
     runtime_required: false
