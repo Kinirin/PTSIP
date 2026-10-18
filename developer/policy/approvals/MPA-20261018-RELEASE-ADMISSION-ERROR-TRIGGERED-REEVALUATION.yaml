@@ -1,0 +1,39 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261018-RELEASE-ADMISSION-ERROR-TRIGGERED-REEVALUATION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Same-release Release Admission result reuse is allowed without repeated
+    evaluation while no error occurs. If an error occurs during publication
+    or reuse, Admission must be reevaluated before further publication
+    retry. This is an exception to the normal once-per-release evaluation.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION
+  selected_direction:
+    model: CONDITIONAL_APPROVAL
+    timing: PUBLICATION_STAGE_ONLY
+    normal_evaluation: ONCE_PER_RELEASE
+    reuse_scope: SAME_RELEASE
+    normal_reuse_without_error: NO_REEVALUATION
+    error_trigger: REEVALUATION_REQUIRED
+    reevaluation_point: BEFORE_NEXT_PUBLICATION_ATTEMPT
+    user_reapproval_on_error: NOT_AUTOMATICALLY_REQUIRED
+    user_reapproval_rule_source: EFFECTIVE_POLICY
+  unresolved:
+    exact_release_identity_binding: USER_DECISION_PENDING
+    error_classification: USER_DECISION_PENDING
+    reevaluation_evidence_freshness: USER_DECISION_PENDING
+    reevaluation_output_and_recovery: USER_DECISION_PENDING
+    successor_policy_id_and_schema: UNAVAILABLE
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_ctrl_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    approval_result_is_publication_authorization: false
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-18'
