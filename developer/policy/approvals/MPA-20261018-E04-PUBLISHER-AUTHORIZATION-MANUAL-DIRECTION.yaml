@@ -1,0 +1,41 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261018-E04-PUBLISHER-AUTHORIZATION-MANUAL-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E04 option A: publication authorization or Publisher
+    configuration errors require user intervention. Do not automatically
+    repair authorization, change Publisher routing, or grant new privileges.
+    Detailed requirements are deferred until an actual E04 incident.
+    Keep E03 credential-lifecycle automation separately scoped.
+    Continue discussion with E05; do not decide E05 or other errors.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E04
+  selected_direction:
+    error_category: E04_PUBLISHER_AUTHORIZATION_AND_CONFIGURATION
+    response_model: A_USER_INTERVENTION_REQUIRED
+    on_e04_error: SUSPEND_AUTOMATIC_PUBLICATION_RECOVERY
+    authorization_or_routing_auto_mutation: NOT_GRANTED
+    responsibility_boundary:
+      e03_authentication_lifecycle: SEPARATE_SCOPE_UNCHANGED
+      e04_authorization_and_publisher_routing: USER_INTERVENTION_REQUIRED
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    conditional_approval_model: PRESERVED
+  unresolved:
+    e04_detection_and_classification: DEFERRED_UNTIL_ACTUAL_E04_OCCURRENCE
+    user_intervention_and_recovery_procedure: DEFERRED_UNTIL_ACTUAL_E04_OCCURRENCE
+    permissions_and_routing_resolution_details: DEFERRED_UNTIL_ACTUAL_E04_OCCURRENCE
+    post_intervention_verification: DEFERRED_UNTIL_ACTUAL_E04_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-18'
