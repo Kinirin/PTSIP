@@ -185,7 +185,30 @@ rule_contract_boundary:
               common_family_identity_and_discovery_authority: PRESERVED
               family_nested_field_and_semantic_schema_ownership: PRESERVED
               machine_contract_location_and_serialization: UNRESOLVED_USER_DECISION
-              family_policy_to_machine_contract_provenance_binding: UNRESOLVED_USER_DECISION
+              family_policy_to_machine_contract_provenance_binding: B3_IMMUTABLE_APPROVED_CONTENT_BINDING_REQUIRED
+              approval_provenance_binding_strength_decision:
+                selected_option: B3
+                authorization: PROJECT_OWNER_EXPLICIT
+                scope: ALL_14_ROOT_FAMILY_MACHINE_CONTRACT_SCHEMA_LOOKUP_BINDINGS
+                approved_contract_identity_binding: REQUIRED
+                approved_contract_content_immutable_version_binding: REQUIRED
+                approval_evidence_must_bind_both_identity_and_exact_approved_content_version: true
+                machine_verification_of_contract_identity_and_approved_content_version: REQUIRED
+                approval_scope_authority_verification: REQUIRED_SEPARATELY_FROM_CONTENT_IDENTITY_MATCH
+                machine_contract_self_declared_approval_as_sufficient_evidence: false
+                changed_content_without_matching_approval: NOT_VERIFIED_AS_APPROVED
+                approved_policy_remains_normative_authority: true
+                machine_contract_remains_policy_derived_non_normative: true
+                immutable_version_representation: UNRESOLVED_USER_DECISION
+                contract_identifier_format: UNRESOLVED_USER_DECISION
+                approval_evidence_record_binding_format: UNRESOLVED_USER_DECISION
+                exact_content_boundary_and_canonicalization: UNRESOLVED_USER_DECISION
+                approved_policy_and_machine_contract_version_coupling: UNRESOLVED_USER_DECISION
+                source_discovery_and_error_codes: UNRESOLVED_USER_DECISION
+                formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+                record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                this_record_owns_cross_family_policy_authority: false
+                approval_schema_or_machine_contract_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
               schema_version_and_identity_binding: UNRESOLVED_USER_DECISION
               machine_contract_discovery_mechanism: UNRESOLVED_USER_DECISION
               missing_or_inconsistent_source_handling: UNRESOLVED_USER_DECISION
