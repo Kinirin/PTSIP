@@ -87,7 +87,22 @@ rule_contract_boundary:
     unverified_statement_to_machine_obligation_promotion: FORBIDDEN
     statement_authority_and_approval_status_interpretation: SEPARATE_FROM_MACHINE_VERIFIABILITY
     exact_semantics_fields_and_representation: UNRESOLVED_USER_DECISION
-    semantic_extension_authorization_and_management: UNRESOLVED_USER_DECISION
+    semantic_extension_authorization_and_management:
+      decision_id: ARCH_SEMANTICS_EXTENSION_AUTHORIZATION
+      authorization: PROJECT_OWNER_EXPLICIT
+      scope: ARCH_INDEPENDENT_RULE_CONTRACT_DEFINITION_SEMANTICS
+      decision: APPROVED_SEMANTICS_AUTO_REUSE_NEW_SEMANTICS_REQUIRES_USER_APPROVAL
+      approved_semantics_reuse: AUTOMATIC_WITHIN_APPROVED_MEANING_CONTRACT
+      new_semantic_meaning_or_vocabulary_creation: PROJECT_OWNER_EXPLICIT_APPROVAL_REQUIRED
+      agent_autonomous_semantic_expansion: FORBIDDEN
+      automatic_semantic_optimization_execution: FORBIDDEN
+      statement_optimization_inspection_trigger: USER_REQUEST_ONLY
+      inference_cost_or_usage_threshold_as_inspection_trigger: FORBIDDEN
+      unsolicited_agent_optimization_prompt_or_notice: FORBIDDEN
+      cross_family_extension_authority: UNRESOLVED_SEPARATE_POLICY_DECISION
+      passive_catalog_and_metrics_management: PROPOSED_NOT_AUTHORIZED_BY_THIS_DECISION
+      semantics_catalog_artifact_and_engine_capability: UNRESOLVED_SEPARATE_POLICY_DECISION
+      schema_and_implementation_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
     statement_to_semantics_equivalence_verification: UNRESOLVED_USER_DECISION
     machine_constraints_generation_and_unexpressed_meaning_handling: UNRESOLVED_USER_DECISION
     schema_contract_or_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
