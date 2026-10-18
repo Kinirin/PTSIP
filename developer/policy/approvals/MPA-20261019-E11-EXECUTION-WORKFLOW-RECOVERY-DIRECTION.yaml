@@ -1,0 +1,46 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E11-EXECUTION-WORKFLOW-RECOVERY-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E11 option B: conditional automatic recovery of execution
+    environment and workflow errors based on previously verified execution
+    state. Reuse independently verified successful steps and resume only
+    recovery steps whose preconditions and outcomes are demonstrably valid.
+    Do not infer failure or success of interrupted external publication and
+    do not silently broaden release authority. Defer detailed requirements
+    until an actual E11 incident. Record this direction on current branch
+    then discuss E12 separately without deciding E12 or later categories.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E11
+  selected_direction:
+    error_category: E11_EXECUTION_ENVIRONMENT_AND_WORKFLOW_FAILURE
+    response_model: B_CONDITIONAL_RECOVERY_FROM_VERIFIED_EXECUTION_STATE
+    verified_successful_execution_steps: REUSE_WHEN_IDENTITY_AND_EVIDENCE_REMAIN_VALID
+    recovery_scope: CONFIRMED_FAILED_OR_INTERRUPTED_STEP_WITH_VALID_PRECONDITIONS
+    unverified_execution_state: NO_AUTOMATIC_PUBLICATION_RETRY
+    interrupted_publication_remote_state: DO_NOT_INFER_SUCCESS_OR_FAILURE
+    automatic_verification_bypass: FORBIDDEN
+    workflow_permission_or_release_scope_expansion: NOT_GRANTED
+    prior_admission_after_publication_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    publication_admission_for_only_prep_stage_error: NOT_AUTOMATICALLY_REQUIRED
+    other_error_type_responses: UNCHANGED
+  unresolved:
+    verified_execution_state_evidence: DEFERRED_UNTIL_ACTUAL_E11_OCCURRENCE
+    workflow_failure_cause_and_recovery_method: DEFERRED_UNTIL_ACTUAL_E11_OCCURRENCE
+    resumable_step_identity_and_state_freshness: DEFERRED_UNTIL_ACTUAL_E11_OCCURRENCE
+    reexecution_scope_and_retry_limits: DEFERRED_UNTIL_ACTUAL_E11_OCCURRENCE
+    unknown_state_escalation: DEFERRED_UNTIL_ACTUAL_E11_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
