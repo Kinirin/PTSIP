@@ -1,0 +1,43 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E07-VERSION-IMMUTABILITY-COLLISION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E07 option B: conditional automatic recovery based on
+    proving identity with already-published release files and metadata.
+    Identical already-published results may be reused; authorized compatible
+    additions may proceed; conflicting immutable file identities or source
+    tags must not be silently overwritten or renamed. Detailed requirements
+    are deferred until an actual E07 incident. Record on current branch and
+    discuss E08 separately without deciding E08 or other categories.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E07
+  selected_direction:
+    error_category: E07_VERSION_DUPLICATE_AND_IMMUTABILITY_CONFLICT
+    response_model: B_CONDITIONAL_RECOVERY_BY_PUBLISHED_IDENTITY_PROOF
+    identical_published_identity: REUSE_EXISTING_PUBLICATION_WHEN_PROVEN
+    compatible_additional_distribution: ONLY_WITHIN_EXISTING_AUTHORIZED_RELEASE_SCOPE
+    same_filename_different_digest: DO_NOT_AUTOMATICALLY_REPLACE
+    same_release_tag_different_source: DO_NOT_AUTOMATICALLY_REASSIGN
+    automatic_version_increment_or_relabel: NOT_GRANTED
+    publication_on_unresolved_identity_conflict: BLOCKED
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    other_error_type_responses: UNCHANGED
+  unresolved:
+    published_identity_evidence_requirements: DEFERRED_UNTIL_ACTUAL_E07_OCCURRENCE
+    platform_specific_immutability_rules: DEFERRED_UNTIL_ACTUAL_E07_OCCURRENCE
+    identity_conflict_classification_and_reconciliation: DEFERRED_UNTIL_ACTUAL_E07_OCCURRENCE
+    user_escalation_and_retry_details: DEFERRED_UNTIL_ACTUAL_E07_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
