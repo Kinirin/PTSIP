@@ -1,0 +1,60 @@
+name: PTSIP b5 Policy Schema Test
+on:
+  push:
+    paths:
+      - ".github/workflows/ptsip-b5-policy-schema-test.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  developer-schema-contracts-b5-diagnostic:
+    name: "developer-schema-contracts b5 diagnostic / ${{ matrix.runner }}"
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install pinned official PTSIP b5
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b5" "PyYAML>=6,<7"
+      - name: Confirm registered developer-schema-contracts responsibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          python .github/scripts/validate_test_modes.py
+          python .github/scripts/resolve_test_modes.py manual --mode developer-schema-contracts | python -c '
+          import json,sys
+          v=json.load(sys.stdin)
+          assert v["selected_ids"] == ["developer-schema-contracts"], v
+          assert len(v["plan"]) == 1, v
+          p=v["plan"][0]
+          assert p["component_ref"] == "developer-contract-schema-verification", p
+          assert p.get("go") == ["developer/tests/schema_validation"], p
+          '
+      - name: Execute official engine b5 internal ref and developer schema tests
+        shell: bash
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
+        run: |
+          set -euo pipefail
+          go -C developer/tests test ./schema_validation -count=1 -v
+      - name: Run developer-schema-contracts full current schema check
+        shell: bash
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer run . --validator schema-check --root ../../..

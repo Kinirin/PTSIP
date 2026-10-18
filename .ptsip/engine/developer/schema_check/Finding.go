@@ -133,7 +133,7 @@ func Run(root string)(Report,int){
  }
  // Reference probe is independent of the limited document-shape scan.
  // It proves only the approved Policy_Status_version -> Policy_version link.
- // Internal references in policy_status_constant remain outside engine b4 support.
+ // Full policy status reference verification is separately exercised by the official b5 engine integration tests.
  if len(problems)==0 {
   probe:=probeApprovedPolicyVersionReference(root,e)
   report.ReferenceProbe=&probe
