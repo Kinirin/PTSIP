@@ -243,6 +243,33 @@ rule_contract_boundary:
                       auto_expand_or_infer_scope_from_contract_content: FORBIDDEN
                       previous_B3_and_content_derived_identity_binding: PRESERVED
                       family_specific_scope_ownership: PRESERVED
+                      scope_declaration_integrity_binding_decision:
+                        selected_option: B
+                        authorization: PROJECT_OWNER_EXPLICIT
+                        scope: ALL_14_ROOT_FAMILY_MACHINE_CONTRACT_APPROVED_CONTENT_IDENTITY_BINDINGS
+                        integrity_binding_model: SEPARATE_SCOPE_DECLARATION_AND_SCOPED_CONTENT_IDENTITIES
+                        scope_declaration_immutable_content_identity: REQUIRED
+                        scoped_contract_content_immutable_identity: REQUIRED
+                        scope_declaration_and_content_identity_distinct: true
+                        approved_contract_logical_identity: PRESERVED_SEPARATELY
+                        approval_evidence_must_bind_scope_identity_and_content_identity_together: true
+                        scope_identity_validation: REQUIRED
+                        scoped_content_identity_validation: REQUIRED
+                        approved_family_scope_source_verification: REQUIRED
+                        approval_scope_and_legitimacy_verification: SEPARATELY_REQUIRED
+                        integrity_identifiers_do_not_grant_normative_authority: true
+                        unapproved_change_to_either_identity: NOT_VERIFIED_AS_APPROVED
+                        family_specific_scope_authority: PRESERVED
+                        previous_B3_immutable_approved_content_binding: PRESERVED
+                        scope_declaration_identity_source_boundary: UNRESOLVED_USER_DECISION
+                        self_reference_and_circular_dependency_handling: UNRESOLVED_USER_DECISION
+                        digest_algorithm_canonicalization_and_encoding: UNRESOLVED_USER_DECISION
+                        approval_binding_record_format: UNRESOLVED_USER_DECISION
+                        missing_mismatch_error_and_verification_order: UNRESOLVED_USER_DECISION
+                        formal_shared_policy_owner_and_identity: UNRESOLVED_USER_DECISION
+                        record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                        this_record_owns_cross_family_policy_authority: false
+                        machine_contract_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
                       physical_declaration_location_and_format: UNRESOLVED_USER_DECISION
                       declaration_field_schema_and_selection_semantics: UNRESOLVED_USER_DECISION
                       scope_declaration_self_reference_and_digest_boundary: UNRESOLVED_USER_DECISION
