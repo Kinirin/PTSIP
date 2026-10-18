@@ -106,6 +106,23 @@ component_representation_hybrid:
       membership_lookup_and_verification: UNRESOLVED_USER_DECISION
       scope_absent_handling: UNRESOLVED_USER_DECISION
       new_rule_contract_or_schema_materialization: NOT_AUTHORIZED_BY_S1
+    domain_membership_source_decision:
+      decision_id: S2
+      user_selected_option: C
+      authorization: PROJECT_OWNER_EXPLICIT
+      membership_source_scope: PER_PROJECT
+      membership_authority: SINGLE_REGISTERED_CANONICAL_SOURCE
+      lookup_semantics: DETERMINISTIC
+      guessing_from_component_name_path_or_relationship: FORBIDDEN
+      multiple_competing_membership_authorities: FORBIDDEN
+      actual_source_selection: UNRESOLVED_USER_DECISION
+      source_registration_and_binding: UNRESOLVED_USER_DECISION
+      source_identity_and_reference_format: UNRESOLVED_USER_DECISION
+      source_version_and_resolution_contract: UNRESOLVED_USER_DECISION
+      membership_validation_and_failure_behavior: UNRESOLVED_USER_DECISION
+      hierarchy_lookup_and_descendant_semantics: UNRESOLVED_USER_DECISION
+      specific_project_profile_as_source: NOT_AUTOMATICALLY_SELECTED
+      schema_or_resolver_materialization: NOT_AUTHORIZED_BY_S2
     domain_identity_and_lookup: UNRESOLVED_USER_DECISION
     nested_hierarchy_resolution: UNRESOLVED_USER_DECISION
     schema_field_names_types: UNRESOLVED_USER_DECISION
