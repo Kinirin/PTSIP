@@ -277,6 +277,29 @@ rule_contract_boundary:
                           family_specific_scope_ownership_and_machine_contract_carrier: PRESERVED
                           approval_binding_representation: UNRESOLVED_USER_DECISION
                           content_selection_and_identity_input_boundary: UNRESOLVED_USER_DECISION
+                          scope_declaration_self_reference_prevention_decision:
+                              selected_option: A
+                              authorization: PROJECT_OWNER_EXPLICIT
+                              scope: ALL_14_ROOT_FAMILY_MACHINE_CONTRACT_SCOPE_DECLARATION_IDENTITIES
+                              separation_model: DECLARATION_BODY_AND_DERIVED_IDENTITY_METADATA
+                              declaration_body_role: APPROVED_FAMILY_SCOPE_CONTENT
+                              identity_metadata_role: DERIVED_NON_NORMATIVE_IDENTITY_OUTPUT
+                              declaration_body_and_identity_metadata_logically_distinct: true
+                              scope_identity_input: DECLARATION_BODY_ONLY
+                              derived_identity_metadata_in_own_identity_input: FORBIDDEN
+                              self_referential_scope_identity_dependency: FORBIDDEN
+                              existing_independent_scope_and_content_identities: PRESERVED
+                              approval_evidence_binds_scope_and_scoped_content_identities: REQUIRED
+                              scope_body_normative_owner: APPROVED_MATCHING_FAMILY_POLICY
+                              machine_contract_declares_policy_derived_scope_only: true
+                              physical_body_and_metadata_field_structure: UNRESOLVED_USER_DECISION
+                              scope_body_canonicalization_and_hash_algorithm: UNRESOLVED_USER_DECISION
+                              identity_metadata_storage_and_reference_format: UNRESOLVED_USER_DECISION
+                              malformed_or_overlapping_body_metadata_handling: UNRESOLVED_USER_DECISION
+                              formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+                              record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                              this_record_owns_cross_family_policy_authority: false
+                              schema_validator_or_machine_contract_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
                           self_reference_and_canonicalization: UNRESOLVED_USER_DECISION
                           digest_algorithm_and_output_encoding: UNRESOLVED_USER_DECISION
                           formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
