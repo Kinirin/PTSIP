@@ -1117,8 +1117,9 @@ components:
     include:
       - ".github/test_modes.yaml"
       - ".github/checks/*"
-      - "src/tests/ptsip/test_modes/**"
-    purpose: test_mode_execution_contract_registry_validation_and_selection_resolution
+      - "developer/contracts/test-mode-control-plane/**"
+      - "developer/tests/testmode/**"
+    purpose: independent_registry_contract_validation_and_explicit_verification_selection_boundary
     shipped: false
     runtime_required: false
     executable: true
@@ -1128,6 +1129,8 @@ components:
       - ".ptsip/profiles/main.ptsip.yaml"
       - ".github/workflows/tooling-test.yml"
       - "src/tests/ptsip/conftest.py"
+      - "developer/policy/ARCH/MPD-ARCH-0004.yaml"
+      - "developer/contracts/test-mode-control-plane/**"
 
   - id: repository-release-automation
     classification: DELIVERY
