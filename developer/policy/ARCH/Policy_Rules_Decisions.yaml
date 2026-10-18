@@ -325,6 +325,35 @@ rule_contract_boundary:
                       record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
                       this_record_owns_cross_family_policy_authority: false
                       physical_machine_contract_schema_validator_and_resolver: NOT_AUTHORIZED_BY_THIS_DECISION
+                    scope_declaration_formal_equivalence_decision:
+                        selected_option: C
+                        authorization: PROJECT_OWNER_EXPLICIT
+                        subject: ALL_14_ROOT_FAMILY_SCOPE_DECLARATION_EQUIVALENCE_JUDGMENTS
+                        policy_direction: FORMAL_SEMANTIC_EQUIVALENCE_PROOF_FOR_BOUNDED_DECLARATIVE_LANGUAGE
+                        declaration_semantics_owner: APPROVED_MATCHING_ROOT_FAMILY_POLICY
+                        proof_applicability: APPROVED_AND_SUPPORTED_DECLARATION_SEMANTICS_ONLY
+                        equivalence_criterion: SAME_SELECTED_SCOPE_FOR_ALL_PERMITTED_INPUTS_IN_DECLARED_SEMANTICS
+                        proof_judgment_states: [EQUIVALENT, DIFFERENT, UNPROVEN]
+                        equivalent_requires_machine_verifiable_proof: true
+                        different_requires_machine_verifiable_counterexample_or_disproof: true
+                        unproven_must_not_be_accepted_as_equivalent: true
+                        heuristic_or_ai_similarity_as_formal_proof: FORBIDDEN
+                        semantic_equivalence_is_exact_content_identity: false
+                        semantic_equivalence_is_approval_evidence: false
+                        equivalence_cannot_replace_B3_exact_approved_content_verification: true
+                        equivalence_cannot_transfer_approval_to_unapproved_contract_content: true
+                        contract_identity_scope_identity_and_content_identity_binding: PRESERVED
+                        separate_approval_scope_and_legitimacy_verification: REQUIRED
+                        family_specific_scope_semantics_and_schema_ownership: PRESERVED
+                        existing_INFO_canonical_digest_authority_and_activation: PRESERVED
+                        proof_domain_and_supported_language_subset: UNRESOLVED_USER_DECISION
+                        type_semantics_and_exact_resolution: UNRESOLVED_USER_DECISION
+                        proof_system_and_evidence_validation: UNRESOLVED_USER_DECISION
+                        status_handling_for_unsupported_or_unresolved_cases: UNRESOLVED_USER_DECISION
+                        formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+                        record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                        this_record_owns_cross_family_policy_authority: false
+                        language_schema_prover_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
                     scope_expression_and_field_selection_semantics: UNRESOLVED_USER_DECISION
                     approval_metadata_inclusion_or_exclusion: UNRESOLVED_USER_DECISION
                     exact_content_canonicalization: UNRESOLVED_USER_DECISION
