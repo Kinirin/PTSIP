@@ -1,0 +1,44 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E08-PARTIAL-PUBLICATION-RECOVERY-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E08 option B: preserve successful, verified publication
+    results and conditionally recover only failed or incomplete publication
+    targets. Require reevaluation of Release Admission after a publication
+    error and before the next publication attempt. Defer subordinate recovery
+    details until an actual E08 incident. Record on the current branch and
+    proceed to discussion of E09 without deciding it or later error types.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E08
+  selected_direction:
+    error_category: E08_PARTIAL_PUBLICATION_FAILURE
+    response_model: B_PRESERVE_VERIFIED_SUCCESS_RECOVER_INCOMPLETE_TARGETS
+    confirmed_successful_publications: PRESERVE_AND_AVOID_DUPLICATE_PUBLICATION
+    recovery_scope: CONFIRMED_FAILED_OR_INCOMPLETE_TARGETS_ONLY
+    automatic_recovery: CONDITIONAL_ON_VERIFIED_TARGET_STATE_AND_APPLICABLE_POLICY
+    unknown_remote_publication_state: NOT_ASSUMED_FAILED_OR_SUCCESSFUL
+    unresolved_target_identity_or_publication_status: NO_AUTOMATIC_PUBLICATION_RETRY
+    successful_publication_rollback_or_replacement: NOT_GRANTED
+    cross_target_permission_expansion: NOT_GRANTED
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    other_error_type_responses: UNCHANGED
+  unresolved:
+    exact_target_state_evidence_and_freshness: DEFERRED_UNTIL_ACTUAL_E08_OCCURRENCE
+    recovery_order_and_retry_limits: DEFERRED_UNTIL_ACTUAL_E08_OCCURRENCE
+    verification_and_admission_binding_per_target: DEFERRED_UNTIL_ACTUAL_E08_OCCURRENCE
+    ambiguous_target_status_escalation: DEFERRED_UNTIL_ACTUAL_E08_OCCURRENCE
+    final_release_completion_evidence: DEFERRED_UNTIL_ACTUAL_E08_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
