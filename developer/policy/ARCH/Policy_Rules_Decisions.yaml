@@ -230,6 +230,29 @@ rule_contract_boundary:
                     scope_declaration_is_independent_normative_authority: false
                     scope_omission_or_ambiguity_must_not_be_silently_resolved: true
                     scope_declaration_location_and_binding: UNRESOLVED_USER_DECISION
+                    content_identity_scope_declaration_source_decision:
+                      selected_option: B
+                      authorization: PROJECT_OWNER_EXPLICIT
+                      subject: ALL_14_ROOT_FAMILY_MACHINE_CONTRACT_CONTENT_IDENTITY_SCOPE_DECLARATIONS
+                      declaration_carrier: FAMILY_OWNED_MACHINE_READABLE_CONTRACT
+                      scope_semantics_authority: APPROVED_MATCHING_FAMILY_POLICY
+                      machine_contract_authority: POLICY_DERIVED_NON_NORMATIVE
+                      declaration_must_represent_approved_family_scope: true
+                      machine_verification_against_authoritative_approval: REQUIRED
+                      unapproved_or_self_declared_scope_as_authority: FORBIDDEN
+                      auto_expand_or_infer_scope_from_contract_content: FORBIDDEN
+                      previous_B3_and_content_derived_identity_binding: PRESERVED
+                      family_specific_scope_ownership: PRESERVED
+                      physical_declaration_location_and_format: UNRESOLVED_USER_DECISION
+                      declaration_field_schema_and_selection_semantics: UNRESOLVED_USER_DECISION
+                      scope_declaration_self_reference_and_digest_boundary: UNRESOLVED_USER_DECISION
+                      policy_to_declaration_exact_binding_format: UNRESOLVED_USER_DECISION
+                      approval_metadata_inclusion_or_exclusion: UNRESOLVED_USER_DECISION
+                      normalization_hash_scheme_and_encoding: UNRESOLVED_USER_DECISION
+                      common_formal_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+                      record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                      this_record_owns_cross_family_policy_authority: false
+                      physical_machine_contract_schema_validator_and_resolver: NOT_AUTHORIZED_BY_THIS_DECISION
                     scope_expression_and_field_selection_semantics: UNRESOLVED_USER_DECISION
                     approval_metadata_inclusion_or_exclusion: UNRESOLVED_USER_DECISION
                     exact_content_canonicalization: UNRESOLVED_USER_DECISION
