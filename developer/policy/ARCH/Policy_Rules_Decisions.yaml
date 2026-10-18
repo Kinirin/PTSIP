@@ -172,7 +172,27 @@ rule_contract_boundary:
             derived_lookup_projection_authority: NONE
             direct_and_reference_validation_coverage: PRESERVED
             deterministic_schema_lookup_derivation: REQUIRED
-            family_schema_binding_source_and_format: UNRESOLVED_USER_DECISION
+            family_schema_binding_source_and_format: FAMILY_MACHINE_CONTRACT_SOURCE_KIND_APPROVED;_PHYSICAL_BINDING_UNRESOLVED
+            family_machine_contract_source_decision:
+              selected_option: B
+              authorization: PROJECT_OWNER_EXPLICIT
+              scope: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACT_SCHEMA_BINDINGS
+              source_kind: FAMILY_OWNED_MACHINE_READABLE_CONTRACT
+              machine_contract_responsibility: FAMILY_SCHEMA_LOOKUP_BINDING
+              normative_semantic_authority: APPROVED_MATCHING_FAMILY_POLICY
+              machine_contract_authority: POLICY_DERIVED_NON_NORMATIVE
+              deterministic_lookup_derivation: REQUIRED
+              common_family_identity_and_discovery_authority: PRESERVED
+              family_nested_field_and_semantic_schema_ownership: PRESERVED
+              machine_contract_location_and_serialization: UNRESOLVED_USER_DECISION
+              family_policy_to_machine_contract_provenance_binding: UNRESOLVED_USER_DECISION
+              schema_version_and_identity_binding: UNRESOLVED_USER_DECISION
+              machine_contract_discovery_mechanism: UNRESOLVED_USER_DECISION
+              missing_or_inconsistent_source_handling: UNRESOLVED_USER_DECISION
+              formal_common_policy_owner_and_reference: UNRESOLVED_USER_DECISION
+              record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+              this_record_owns_cross_family_policy_authority: false
+              actual_machine_contract_schema_validator_and_route_creation: NOT_AUTHORIZED_BY_THIS_DECISION
             common_discovery_source_and_format: UNRESOLVED_USER_DECISION
             approved_source_version_and_identity_binding: UNRESOLVED_USER_DECISION
             cross_level_integrity_check: UNRESOLVED_USER_DECISION
