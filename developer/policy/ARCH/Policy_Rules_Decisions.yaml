@@ -88,7 +88,24 @@ component_representation_hybrid:
     domain_membership_inference_from_edge_alone: FORBIDDEN
     generation_of_undeclared_edges_from_hierarchy: FORBIDDEN
     automatic_descendant_obligation_propagation: NOT_AUTHORIZED_BY_H2
-    endpoint_membership_semantics: UNRESOLVED_USER_DECISION
+    endpoint_membership_semantics: PER_INDEPENDENT_RULE_EXPLICIT_CHOICE
+    endpoint_membership_decision:
+      decision_id: S1
+      user_selected_option: D
+      authorization: PROJECT_OWNER_EXPLICIT
+      declared_by: EACH_INDEPENDENT_ARCH_RULE_CONTRACT
+      membership_selection_required_for_hierarchy_scoped_rule: true
+      choices:
+        FROM_ONLY: SOURCE_ENDPOINT_IN_DECLARED_DOMAIN
+        TO_ONLY: DESTINATION_ENDPOINT_IN_DECLARED_DOMAIN
+        BOTH: SOURCE_AND_DESTINATION_IN_DECLARED_DOMAIN
+        EITHER: SOURCE_OR_DESTINATION_IN_DECLARED_DOMAIN
+      default_choice: FORBIDDEN
+      infer_choice_from_edge_type_or_direction: FORBIDDEN
+      exact_field_names_and_nesting: UNRESOLVED_USER_DECISION
+      membership_lookup_and_verification: UNRESOLVED_USER_DECISION
+      scope_absent_handling: UNRESOLVED_USER_DECISION
+      new_rule_contract_or_schema_materialization: NOT_AUTHORIZED_BY_S1
     domain_identity_and_lookup: UNRESOLVED_USER_DECISION
     nested_hierarchy_resolution: UNRESOLVED_USER_DECISION
     schema_field_names_types: UNRESOLVED_USER_DECISION
