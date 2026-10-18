@@ -100,6 +100,26 @@ rule_contract_boundary:
         exact_inner_fields_types_and_values: UNRESOLVED_USER_DECISION
         formal_policy_identity_and_binding: UNRESOLVED_USER_DECISION
         schema_changes_and_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+      sequential_dual_validation_direction_acknowledgment:
+        authorization: PROJECT_OWNER_EXPLICIT
+        selected_option: B
+        decision_scope: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACT_BODIES
+        record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+        this_record_owns_cross_family_policy_authority: false
+        connection_mode: VALIDATOR_ORCHESTRATED_SEQUENTIAL_VALIDATION
+        required_validation_responsibilities:
+          - COMMON_FIVE_GROUP_STRUCTURE
+          - MATCHING_ROOT_FAMILY_INNER_STRUCTURE_AND_SEMANTICS
+        common_and_family_results: BOTH_REQUIRED_FOR_STRUCTURAL_CONFORMANCE
+        validation_subject: SAME_INDEPENDENT_RULE_CONTRACT_BODY
+        formal_policy_owner_and_reference: UNRESOLVED_USER_DECISION
+        trigger_and_invocation_coverage: UNRESOLVED_USER_DECISION
+        family_identity_and_selection: UNRESOLVED_USER_DECISION
+        schema_discovery_and_version_binding: UNRESOLVED_USER_DECISION
+        reference_resolution_and_cross_document_verification: UNRESOLVED_USER_DECISION
+        failure_reporting_and_short_circuit: UNRESOLVED_USER_DECISION
+        validator_binding_and_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
+        schema_and_route_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
       independent_rule_contract_vs_policy_rules_reference_schema_binding: UNRESOLVED_USER_DECISION
       schema_changes_or_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
       new_policy_artifact_created: false
