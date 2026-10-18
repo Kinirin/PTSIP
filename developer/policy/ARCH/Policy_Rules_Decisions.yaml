@@ -132,7 +132,27 @@ rule_contract_boundary:
           reference_resolution_implementation: UNRESOLVED_USER_DECISION
           redundant_invocation_and_caching_policy: UNRESOLVED_USER_DECISION
           schema_and_validator_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
-        family_identity_and_selection: UNRESOLVED_USER_DECISION
+        family_identity_and_selection: CONTRACT_SELF_IDENTITY_WITH_POLICY_REFERENCE_CONTEXT_CROSS_CHECK
+        family_identity_and_cross_context_decision:
+          selected_option: C
+          authorization: PROJECT_OWNER_EXPLICIT
+          applies_to: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
+          contract_self_identity: PRIMARY_FOR_MATCHING_FAMILY_SCHEMA_SELECTION
+          direct_validation_family_source: INDEPENDENT_RULE_CONTRACT_OWN_IDENTITY
+          policy_reference_validation_family_source: INDEPENDENT_RULE_CONTRACT_OWN_IDENTITY
+          policy_reference_expected_family: REFERENCING_POLICY_CONTEXT
+          policy_reference_family_agreement_check: REQUIRED
+          policy_reference_mismatch_must_not_be_ACCEPTED_AS_MATCHING: true
+          inferred_family_from_filename_or_path: NOT_AUTHORIZED_BY_THIS_DECISION
+          contract_identity_field_names_nesting_types: UNRESOLVED_USER_DECISION
+          referenced_policy_context_binding_and_fields: UNRESOLVED_USER_DECISION
+          canonical_family_vocabulary_and_identity_format_binding: UNRESOLVED_USER_DECISION
+          mismatch_error_codes_and_validation_order: UNRESOLVED_USER_DECISION
+          contract_reference_resolution_mechanics: UNRESOLVED_USER_DECISION
+          record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+          this_record_owns_cross_family_policy_authority: false
+          formal_policy_owner_and_reference: UNRESOLVED_USER_DECISION
+          schema_route_validator_changes: NOT_AUTHORIZED_BY_THIS_DECISION
         schema_discovery_and_version_binding: UNRESOLVED_USER_DECISION
         reference_resolution_and_cross_document_verification: UNRESOLVED_USER_DECISION
         failure_reporting_and_short_circuit: UNRESOLVED_USER_DECISION
