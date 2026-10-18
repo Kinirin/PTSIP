@@ -1,0 +1,10 @@
+schema_version: ptsip-shared-policy-decisions-index/v1
+registry_role: SHARED_DECISION_RECORD_LOOKUP
+authority_role: NON_CANONICAL_DECISION_DISCOVERY
+entries:
+  - id: SHARED_INDEPENDENT_RULE_CONTRACT_STRUCTURE
+    path: developer/policy/shared/Independent_Rule_Contract_Decisions.yaml
+    contract_type: PTSIP_SHARED_INDEPENDENT_RULE_CONTRACT_DECISIONS
+    decision_state: APPROVED_DIRECTION
+    canonical_mpd_activation: NOT_CLAIMED
+    scope: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
