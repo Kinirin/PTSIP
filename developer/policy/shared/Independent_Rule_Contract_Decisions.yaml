@@ -1,0 +1,125 @@
+contract_type: PTSIP_SHARED_INDEPENDENT_RULE_CONTRACT_DECISIONS
+contract_revision: 1
+authority:
+  decision_source: PROJECT_OWNER_EXPLICIT
+  conflict_resolution: RECONCILE
+  decision_state: APPROVED_DIRECTION
+  decision_scope: SHARED_STRUCTURE_FOR_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
+  source_of_reconciled_decisions: developer/policy/ARCH/Policy_Rules_Decisions.yaml
+  canonical_mpd_identity_and_activation: UNRESOLVED
+  this_record_claims_canonical_active_mpd: false
+  canonical_policy_creation: DEFER_UNTIL_POLICY_IDENTITY_AND_SCHEMA_READY
+
+applicability:
+  target_artifact: INDEPENDENT_RULE_CONTRACT
+  root_families:
+    - ARCH
+    - ASSURE
+    - CHANGE
+    - CNTR
+    - CTRL
+    - GOV
+    - INFO
+    - INTENT
+    - NORM
+    - OPS
+    - REAL
+    - RECORD
+    - RISK
+    - SUPPLY
+  all_family_specific_rule_semantics: INDEPENDENT
+  applies_to_existing_root_family_policy_record_schema: false
+  root_family_policy_record_full_schema_authority: PRESERVED_PER_FAMILY
+  prior_cross_family_root_record_schema_inheritance_prohibition: PRESERVED
+  shared_structure_does_not_transfer_family_rule_authority: true
+  policy_class_specific_schema_sharing: NOT_AUTHORIZED_BY_THIS_DECISION
+
+reconciled_common_decisions:
+  independent_contract_structural_groups_decision:
+    decision_id: COMMON_INDEPENDENT_CONTRACT_GROUP_SET
+    authorization: PROJECT_OWNER_EXPLICIT
+    decision_scope: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
+    selected_generic_groups:
+      - Identity
+      - Definition
+      - Boundary
+      - Constraints
+      - Evaluation
+    additional_generic_peer_groups: FORBIDDEN_WITHOUT_SEPARATE_POLICY_AUTHORIZATION
+    specificity_bias_in_generic_group_names: FORBIDDEN
+    family_or_rule_specific_detail: NESTED_UNDER_APPROVED_RESPONSIBILITY_GROUP_WHEN_SEMANTICALLY_VALID
+    enforce_all_five_as_required: REQUIRED_PRESENCE_UNUSED_ALLOWED
+    structural_group_presence_decision:
+      decision_id: COMMON_INDEPENDENT_RULE_GROUP_PRESENCE
+      user_selected_option: C
+      authorization: PROJECT_OWNER_EXPLICIT
+      applies_to: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
+      presence_required_for:
+        - Identity
+        - Definition
+        - Boundary
+        - Constraints
+        - Evaluation
+      omission_of_declared_group: INVALID_CONTRACT_STRUCTURE
+      unused_group: EXPLICITLY_EMPTY_ALLOWED
+      unused_vs_incomplete_or_unresolved_meaning: UNRESOLVED_USER_DECISION
+      empty_group_exact_representation_and_types: UNRESOLVED_USER_DECISION
+      required_semantic_content_within_groups: UNRESOLVED_USER_DECISION
+      structural_presence_does_not_prove_semantic_completeness: true
+      other_root_families: INCLUDED_IN_COMMON_STRUCTURE
+      schema_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    exact_group_semantics_and_responsibility_boundaries: UNRESOLVED_USER_DECISION
+    exact_fields_types_and_nesting: UNRESOLVED_USER_DECISION
+    applicability_to_other_root_families: ALL_14_ROOT_FAMILIES
+    legacy_field_names_as_new_contract_mandates: FORBIDDEN
+    schema_contract_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+  definition_statement_semantic_preservation_decision:
+    decision_id: COMMON_DEFINITION_STATEMENT_ROLE
+    user_selected_option: B
+    authorization: PROJECT_OWNER_EXPLICIT
+    scope: INDEPENDENT_RULE_CONTRACT_DEFINITION
+    statement_purpose: PRESERVE_MEANING_NOT_YET_ADEQUATELY_MACHINE_EXPRESSIBLE
+    statement_may_preserve_approved_normative_meaning: true
+    machine_readable_semantics: PREFERRED_WHERE_MEANING_CAN_BE_FAITHFULLY_EXPRESSED
+    statement_as_unlimited_semantic_accumulation_target: DISCOURAGED
+    unverified_statement_to_machine_obligation_promotion: FORBIDDEN
+    statement_authority_and_approval_status_interpretation: SEPARATE_FROM_MACHINE_VERIFIABILITY
+    exact_semantics_fields_and_representation: UNRESOLVED_USER_DECISION
+    semantic_extension_authorization_and_management:
+      decision_id: COMMON_SEMANTICS_EXTENSION_AUTHORIZATION
+      authorization: PROJECT_OWNER_EXPLICIT
+      scope: SHARED_INDEPENDENT_RULE_CONTRACT_DEFINITION_SEMANTICS
+      decision: APPROVED_SEMANTICS_AUTO_REUSE_NEW_SEMANTICS_REQUIRES_USER_APPROVAL
+      approved_semantics_reuse: AUTOMATIC_WITHIN_APPROVED_MEANING_CONTRACT
+      new_semantic_meaning_or_vocabulary_creation: PROJECT_OWNER_EXPLICIT_APPROVAL_REQUIRED
+      agent_autonomous_semantic_expansion: FORBIDDEN
+      automatic_semantic_optimization_execution: FORBIDDEN
+      statement_optimization_inspection_trigger: USER_REQUEST_ONLY
+      inference_cost_or_usage_threshold_as_inspection_trigger: FORBIDDEN
+      unsolicited_agent_optimization_prompt_or_notice: FORBIDDEN
+      cross_family_semantic_vocabulary_ownership: UNRESOLVED_SEPARATE_POLICY_DECISION
+      passive_catalog_and_metrics_management: PROPOSED_NOT_AUTHORIZED_BY_THIS_DECISION
+      semantics_catalog_artifact_and_engine_capability: UNRESOLVED_SEPARATE_POLICY_DECISION
+      semantics_yaml_responsibility:
+        authorization: PROJECT_OWNER_EXPLICIT
+        recognition: CONCEPTUAL_RESPONSIBILITY_EXISTS
+        label: semantics.yaml
+        actual_artifact_created: false
+        implementation_scope: DEFERRED
+        storage_location_format_fields_and_metrics: UNRESOLVED
+        engine_ownership_and_sync_mechanics: UNRESOLVED
+        normative_authority: UNRESOLVED
+        current_priority: FINALIZE_INDEPENDENT_RULE_CONTRACT_STRUCTURE_FIRST
+      schema_and_implementation_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    statement_to_semantics_equivalence_verification: UNRESOLVED_USER_DECISION
+    machine_constraints_generation_and_unexpressed_meaning_handling: UNRESOLVED_USER_DECISION
+    schema_contract_or_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+
+source_reconciliation:
+  prior_arch_specific_shared_scope: REPLACED_BY_COMMON_STRUCTURE_AUTHORITY
+  arch_specific_graph_hierarchy_and_rule_reference_decisions: PRESERVED
+  arch_individual_rule_approval_and_evidence_responsibility: PRESERVED_IN_ARCH
+  other_root_family_internal_contract_field_details: UNRESOLVED
+  developer_policy_catalog_integration: UNRESOLVED
+  canonical_machine_schema_and_validator: NOT_YET_AUTHORIZED
+  shared_structure_design: APPROVED_DIRECTION_NOT_IMPLEMENTED
