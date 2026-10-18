@@ -426,6 +426,23 @@ rule_contract_boundary:
     minimum_and_maximum_rule_count: UNRESOLVED_USER_DECISION
     duplicate_reference_handling: UNRESOLVED_USER_DECISION
 
+
+semantic_responsibility_workflow_direction:
+  decision_id: ARCH_SEMANTIC_RESPONSIBILITY_FIRST
+  approval: PROJECT_OWNER_EXPLICIT
+  selected_option: A_SEMANTIC_RESPONSIBILITY_FIRST
+  primary_design_basis: SEMANTIC_RESPONSIBILITY
+  workflow_role: REFERENCE_AND_COMPOSE_SEMANTIC_RESPONSIBILITIES
+  workflow_may_create_normative_meaning_or_authority: false
+  responsibility_group_count_and_labels: UNRESOLVED_USER_DECISION
+  independent_responsibility_partition: UNRESOLVED_USER_DECISION
+  legacy_policy_branch_test_mode_release_reinterpretation: UNRESOLVED_USER_DECISION
+  workflow_inventory_and_boundaries: UNRESOLVED_USER_DECISION
+  between_plane_relationship_specification: UNRESOLVED_USER_DECISION
+  policy_plan_implementation_hierarchy: PRESERVE_EXISTING_AUTHORITY_ORDER
+  canonical_mpd_schema_or_policy_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+  subordinate_plan_contract_schema_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
+
 component_representation_hybrid:
   choice: GRAPH_PRIMARY_HIERARCHY_OPTIONAL
   user_direction: EXPLICIT
