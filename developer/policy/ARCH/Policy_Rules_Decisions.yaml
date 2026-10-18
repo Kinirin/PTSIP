@@ -53,88 +53,17 @@ rule_contract_boundary:
     - INDIVIDUAL_RULE_APPROVAL_EVIDENCE_REFERENCE
   contract_storage_root: developer/contracts/Policy_Rules/root-family/ARCH/
   approval_metadata_in_policy_document: NON_OWNING
-  independent_contract_structural_groups_decision:
-    decision_id: ARCH_INDEPENDENT_CONTRACT_GROUP_SET
-    authorization: PROJECT_OWNER_EXPLICIT
-    decision_scope: ARCH_INDEPENDENT_RULE_CONTRACT_GENERIC_STRUCTURAL_VOCABULARY
-    selected_generic_groups:
-      - Identity
-      - Definition
-      - Boundary
-      - Constraints
-      - Evaluation
-    additional_generic_peer_groups: FORBIDDEN_WITHOUT_SEPARATE_POLICY_AUTHORIZATION
-    specificity_bias_in_generic_group_names: FORBIDDEN
-    family_or_rule_specific_detail: NESTED_UNDER_APPROVED_RESPONSIBILITY_GROUP_WHEN_SEMANTICALLY_VALID
-    enforce_all_five_as_required: REQUIRED_PRESENCE_UNUSED_ALLOWED
-    structural_group_presence_decision:
-      decision_id: ARCH_INDEPENDENT_RULE_GROUP_PRESENCE
-      user_selected_option: C
-      authorization: PROJECT_OWNER_EXPLICIT
-      applies_to: ARCH_INDEPENDENT_RULE_CONTRACT
-      presence_required_for:
-        - Identity
-        - Definition
-        - Boundary
-        - Constraints
-        - Evaluation
-      omission_of_declared_group: INVALID_CONTRACT_STRUCTURE
-      unused_group: EXPLICITLY_EMPTY_ALLOWED
-      unused_vs_incomplete_or_unresolved_meaning: UNRESOLVED_USER_DECISION
-      empty_group_exact_representation_and_types: UNRESOLVED_USER_DECISION
-      required_semantic_content_within_groups: UNRESOLVED_USER_DECISION
-      structural_presence_does_not_prove_semantic_completeness: true
-      other_root_families: NOT_AUTHORIZED_BY_THIS_DECISION
-      schema_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
-    exact_group_semantics_and_responsibility_boundaries: UNRESOLVED_USER_DECISION
-    exact_fields_types_and_nesting: UNRESOLVED_USER_DECISION
-    applicability_to_other_root_families: NOT_AUTHORIZED_BY_THIS_DECISION
-    legacy_field_names_as_new_contract_mandates: FORBIDDEN
-    existing_normative_approval_and_evidence_ownership: PRESERVED
-    approval_and_evidence_representation: UNRESOLVED_USER_DECISION
-    common_public_policy_rules_reference_shape: UNRESOLVED_USER_DECISION
-    schema_contract_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
-  definition_statement_semantic_preservation_decision:
-    decision_id: ARCH_DEFINITION_STATEMENT_ROLE
-    user_selected_option: B
-    authorization: PROJECT_OWNER_EXPLICIT
-    scope: INDEPENDENT_RULE_CONTRACT_DEFINITION
-    statement_purpose: PRESERVE_MEANING_NOT_YET_ADEQUATELY_MACHINE_EXPRESSIBLE
-    statement_may_preserve_approved_normative_meaning: true
-    machine_readable_semantics: PREFERRED_WHERE_MEANING_CAN_BE_FAITHFULLY_EXPRESSED
-    statement_as_unlimited_semantic_accumulation_target: DISCOURAGED
-    unverified_statement_to_machine_obligation_promotion: FORBIDDEN
-    statement_authority_and_approval_status_interpretation: SEPARATE_FROM_MACHINE_VERIFIABILITY
-    exact_semantics_fields_and_representation: UNRESOLVED_USER_DECISION
-    semantic_extension_authorization_and_management:
-      decision_id: ARCH_SEMANTICS_EXTENSION_AUTHORIZATION
-      authorization: PROJECT_OWNER_EXPLICIT
-      scope: ARCH_INDEPENDENT_RULE_CONTRACT_DEFINITION_SEMANTICS
-      decision: APPROVED_SEMANTICS_AUTO_REUSE_NEW_SEMANTICS_REQUIRES_USER_APPROVAL
-      approved_semantics_reuse: AUTOMATIC_WITHIN_APPROVED_MEANING_CONTRACT
-      new_semantic_meaning_or_vocabulary_creation: PROJECT_OWNER_EXPLICIT_APPROVAL_REQUIRED
-      agent_autonomous_semantic_expansion: FORBIDDEN
-      automatic_semantic_optimization_execution: FORBIDDEN
-      statement_optimization_inspection_trigger: USER_REQUEST_ONLY
-      inference_cost_or_usage_threshold_as_inspection_trigger: FORBIDDEN
-      unsolicited_agent_optimization_prompt_or_notice: FORBIDDEN
-      cross_family_extension_authority: UNRESOLVED_SEPARATE_POLICY_DECISION
-      passive_catalog_and_metrics_management: PROPOSED_NOT_AUTHORIZED_BY_THIS_DECISION
-      semantics_catalog_artifact_and_engine_capability: UNRESOLVED_SEPARATE_POLICY_DECISION
-      semantics_yaml_responsibility:
-        authorization: PROJECT_OWNER_EXPLICIT
-        recognition: CONCEPTUAL_RESPONSIBILITY_EXISTS
-        label: semantics.yaml
-        actual_artifact_created: false
-        implementation_scope: DEFERRED
-        storage_location_format_fields_and_metrics: UNRESOLVED
-        engine_ownership_and_sync_mechanics: UNRESOLVED
-        normative_authority: UNRESOLVED
-        current_priority: FINALIZE_INDEPENDENT_RULE_CONTRACT_STRUCTURE_FIRST
-      schema_and_implementation_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
-    statement_to_semantics_equivalence_verification: UNRESOLVED_USER_DECISION
-    machine_constraints_generation_and_unexpressed_meaning_handling: UNRESOLVED_USER_DECISION
-    schema_contract_or_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+  common_independent_rule_contract_structure:
+    resolution: RECONCILE
+    shared_decision_ref: developer/policy/shared/Independent_Rule_Contract_Decisions.yaml
+    shared_decision_catalog_ref: developer/policy/shared/index.yaml
+    prior_arch_scoped_shared_structure_authority: REPLACED_BY_COMMON_DECISION
+    applies_common_five_group_envelope: true
+    arch_family_specific_rule_semantics: PRESERVED
+    arch_rule_reference_and_approval_responsibility: PRESERVED
+    arch_individual_approval_fields_and_evidence_format: UNRESOLVED_USER_DECISION
+    common_policy_rules_reference_shape: UNRESOLVED_USER_DECISION
+    root_family_policy_record_full_schema_authority: UNCHANGED
   policy_lifecycle_status_vs_rule_approval: DISTINCT
   multi_rule_reference_decision:
     decision_id: P1
