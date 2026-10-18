@@ -1,0 +1,46 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E12-APPROVAL-VERIFICATION-EVIDENCE-RECOVERY-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E12 option B: conditionally recover approval or verification
+    evidence and rerun applicable verification only when effective policy
+    authorizes that recovery or re-verification. Never infer or manufacture
+    missing policy authority, user approval, verification evidence, or machine
+    verification success. Defer detailed E12 requirements until an actual
+    E12 incident. Record this direction on the active branch and discuss
+    E13 next, without deciding E13 or later error types.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E12
+  selected_direction:
+    error_category: E12_APPROVAL_AND_VERIFICATION_EVIDENCE_FAILURE
+    response_model: B_CONDITIONAL_EVIDENCE_RECOVERY_AND_REVERIFICATION
+    recovery_scope: EXISTING_EFFECTIVE_POLICY_AND_DELEGATED_AUTHORITY_ONLY
+    recover_existing_evidence: ONLY_WITH_VALID_IDENTITY_PROVENANCE_AND_SCOPE
+    rerun_verification: ONLY_WHEN_AUTHORIZED_BY_EFFECTIVE_POLICY
+    policy_or_approval_absent_or_unresolved: FAIL_CLOSED_NO_PUBLICATION
+    unverifiable_evidence: FAIL_CLOSED_NO_PUBLICATION
+    evidence_recovery_creates_new_publication_authority: false
+    manual_review_is_machine_verification_pass: false
+    missing_validator_implies_pass: false
+    prior_admission_after_publication_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    prior_error_type_responses: UNCHANGED
+  unresolved:
+    accepted_evidence_sources_and_freshness: DEFERRED_UNTIL_ACTUAL_E12_OCCURRENCE
+    permitted_evidence_recovery_operations: DEFERRED_UNTIL_ACTUAL_E12_OCCURRENCE
+    authorized_reverification_scope: DEFERRED_UNTIL_ACTUAL_E12_OCCURRENCE
+    missing_authority_escalation: DEFERRED_UNTIL_ACTUAL_E12_OCCURRENCE
+    evidence_binding_and_validator_output: DEFERRED_UNTIL_ACTUAL_E12_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    retired_root_policy_reactivation: FORBIDDEN
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
