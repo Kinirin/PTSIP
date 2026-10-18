@@ -113,7 +113,25 @@ rule_contract_boundary:
         common_and_family_results: BOTH_REQUIRED_FOR_STRUCTURAL_CONFORMANCE
         validation_subject: SAME_INDEPENDENT_RULE_CONTRACT_BODY
         formal_policy_owner_and_reference: UNRESOLVED_USER_DECISION
-        trigger_and_invocation_coverage: UNRESOLVED_USER_DECISION
+        trigger_and_invocation_coverage: DIRECT_AND_POLICY_REFERENCE_BOTH_MANDATORY
+        validation_entrypoint_coverage_decision:
+          selected_option: C
+          authorization: PROJECT_OWNER_EXPLICIT
+          subject: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
+          direct_independent_rule_contract_validation:
+            common_five_group_validation: REQUIRED
+            matching_family_validation: REQUIRED
+          policy_document_reference_and_resolution:
+            referenced_independent_rule_contract_common_validation: REQUIRED
+            referenced_independent_rule_contract_family_validation: REQUIRED
+          same_structural_conformance_criteria_across_entrypoints: true
+          common_and_family_validation_both_required_on_each_entrypoint: true
+          record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+          common_formal_policy_owner_and_binding: UNRESOLVED_USER_DECISION
+          invocation_lifecycle_phase_and_hooks: UNRESOLVED_USER_DECISION
+          reference_resolution_implementation: UNRESOLVED_USER_DECISION
+          redundant_invocation_and_caching_policy: UNRESOLVED_USER_DECISION
+          schema_and_validator_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
         family_identity_and_selection: UNRESOLVED_USER_DECISION
         schema_discovery_and_version_binding: UNRESOLVED_USER_DECISION
         reference_resolution_and_cross_document_verification: UNRESOLVED_USER_DECISION
