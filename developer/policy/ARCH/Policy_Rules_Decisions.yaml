@@ -80,7 +80,33 @@ unresolved:
   common_rules_stronger_structural_validation: UNRESOLVED
 
 materialization:
-  this_file: APPROVED_DIRECTION_CONTRACT_ONLY
+  this_file: TEMPORARY_NON_CANONICAL_DECISION_STAGING
+  temporary_staging_policy:
+    decision_source: PROJECT_OWNER_EXPLICIT_CONDITIONAL_APPROVAL
+    canonical_policy_filename_pattern: "MPD-ARCH-[0-9]{4}.yaml"
+    canonical_policy_directory: developer/policy/ARCH/
+    temporary_file_is_policy_identity: false
+    temporary_file_is_activation_authority: false
+    allowed_use: HOLD_APPROVED_ARCH_DECISIONS_ONLY_WHILE_CANONICAL_MPD_AUTHORING_IS_UNAVAILABLE
+    when_canonical_mpd_authoring_is_available: WRITE_CANONICAL_MPD_DIRECTLY
+    subsequent_temporary_file_updates_when_mpd_authoring_available: FORBIDDEN
+    new_normative_consumers_or_bindings_to_temporary_file: FORBIDDEN
+    permanent_policy_schema_resolver_and_index_references_to_temporary_file: FORBIDDEN
+    existing_canonical_mpd_ids_must_not_be_reused_or_overwritten: true
+    mpd_readiness_checks:
+      - POLICY_ID_ISSUER_OR_EXPLICITLY_AUTHORIZED_ID_IS_AVAILABLE
+      - FOUR_SECTION_DOCUMENT_AND_ARCH_FIELDS_ARE_DECIDED
+      - CANONICAL_SCHEMA_AND_REFERENCE_VALIDATION_CAN_VALIDATE_DOCUMENT
+    migration_when_ready:
+      - MATERIALIZE_APPROVED_DECISIONS_WITHOUT_INVENTING_UNRESOLVED_DETAILS_IN_CANONICAL_MPD
+      - PRESERVE_INDEPENDENT_RULE_CONTRACT_OWNERSHIP
+      - VALIDATE_AND_REGISTER_CANONICAL_MPD_UNDER_APPROVED_AUTHORITY
+      - VERIFY_CANONICAL_MPD_HAS_NO_REFERENCE_TO_TEMPORARY_FILE
+      - REMOVE_ALL_LIVE_REPOSITORY_REFERENCES_TO_TEMPORARY_FILE
+      - DELETE_TEMPORARY_FILE
+      - VERIFY_NO_LIVE_REPOSITORY_DEPENDENCY_ON_TEMPORARY_FILE
+    deletion_must_not_require_legacy_registry_or_temporary_contract: true
+    migration_completion: NOT_COMPLETED
   independent_rule_contract_files: NOT_YET_AUTHORIZED
   new_arch_mpd_policy: NOT_YET_MATERIALIZED
   new_arch_json_schema: NOT_YET_AUTHORIZED
