@@ -1,0 +1,45 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E09-PUBLICATION-CONFIRMATION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E09 option B: conditionally confirm publication and recover
+    using evidence about remote publication results, exact release identity
+    and artifacts. A positive proof of the intended publication permits
+    completion recognition; a proven non-publication may be considered for
+    a policy-authorized retry after Admission reevaluation. Inconclusive
+    evidence must not be classified as either success or failure and must not
+    trigger an automatic reupload. Defer detailed requirements until an
+    actual E09 incident and proceed to E10 discussion without deciding E10.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E09
+  selected_direction:
+    error_category: E09_PUBLICATION_RESULT_CONFIRMATION_FAILURE
+    response_model: B_EVIDENCE_BASED_CONDITIONAL_CONFIRMATION_AND_RECOVERY
+    confirmed_published_result: MAY_RECOGNIZE_COMPLETION_WITH_IDENTITY_PROOF
+    confirmed_not_published_result: MAY_CONSIDER_RETRY_ONLY_UNDER_APPLICABLE_POLICY
+    uncertain_remote_published_state: UNKNOWN_NOT_SUCCESS_OR_FAILURE
+    uncertain_remote_published_state_automatic_reupload: FORBIDDEN
+    published_artifact_identity_conflict: NO_AUTOMATIC_COMPLETION_OR_REPLACEMENT
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    e08_confirmed_success_preservation: PRESERVED
+    other_error_type_responses: UNCHANGED
+  unresolved:
+    accepted_publication_evidence_and_freshness: DEFERRED_UNTIL_ACTUAL_E09_OCCURRENCE
+    platform_specific_finality_and_observation: DEFERRED_UNTIL_ACTUAL_E09_OCCURRENCE
+    outcome_confirmation_retry_schedule_and_limits: DEFERRED_UNTIL_ACTUAL_E09_OCCURRENCE
+    ambiguous_status_escalation: DEFERRED_UNTIL_ACTUAL_E09_OCCURRENCE
+    exact_evidence_and_release_identity_binding: DEFERRED_UNTIL_ACTUAL_E09_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
