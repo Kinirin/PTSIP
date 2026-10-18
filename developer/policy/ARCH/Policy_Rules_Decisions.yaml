@@ -410,7 +410,38 @@ rule_contract_boundary:
                                     ASSURE_evidence_admissibility_authority: PRESERVED
                                     GOV_approval_legitimacy_authority: PRESERVED
                                     proof_domain_and_completeness_boundary: UNRESOLVED_USER_DECISION
-                                    proof_trust_and_checking_model: UNRESOLVED_USER_DECISION
+                                    proof_trust_and_checking_model: INDEPENDENT_GENERATOR_AND_CHECKER_KERNEL
+                                    adapter_proof_trust_model_decision:
+                                        selected_option: B
+                                        authorization: PROJECT_OWNER_EXPLICIT
+                                        subject: ALL_14_ROOT_FAMILY_SEMANTIC_ADAPTER_PRESERVATION_PROOFS
+                                        trust_model: PROOF_GENERATOR_SEPARATE_FROM_INDEPENDENT_CHECKER_KERNEL
+                                        proof_generator_role: CANDIDATE_PROOF_PRODUCTION_ONLY
+                                        proof_generator_assertion_is_not_verification: true
+                                        checker_kernel_role: MACHINE_VERIFICATION_OF_SUBMITTED_PROOF
+                                        checker_kernel_independent_of_proof_generator: REQUIRED
+                                        unchecked_generator_output_accepted_as_valid_proof: false
+                                        checker_must_validate_proof_against_approved_family_semantics: true
+                                        checker_must_verify_bound_semantics_and_adapter_identities: true
+                                        generated_proof_may_define_family_normative_semantics: false
+                                        checker_kernel_may_define_family_normative_semantics: false
+                                        verified_proof_is_policy_approval_or_activation: false
+                                        proven_semantic_preservation_may_replace_B3_exact_approved_content_verification: false
+                                        proof_verification_may_transfer_approval_to_unapproved_content: false
+                                        failure_or_unproven_result_may_be_promoted_to_verified: false
+                                        family_semantics_authority: APPROVED_MATCHING_ROOT_FAMILY_POLICY
+                                        CNTR_interface_authority: PRESERVED
+                                        ASSURE_evidence_admissibility_authority: PRESERVED
+                                        GOV_approval_legitimacy_authority: PRESERVED
+                                        checker_trust_boundary_and_verifier_qualification: UNRESOLVED_USER_DECISION
+                                        checker_proof_representation_and_verification_semantics: UNRESOLVED_USER_DECISION
+                                        proof_carrying_source_and_adapter_version_binding: UNRESOLVED_USER_DECISION
+                                        checker_independence_conformance_and_update_rules: UNRESOLVED_USER_DECISION
+                                        unsupported_or_incomplete_proof_handling: UNRESOLVED_USER_DECISION
+                                        formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+                                        record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                                        this_record_owns_cross_family_policy_authority: false
+                                        proof_generator_or_checker_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
                                     exact_semantics_adapter_and_proof_identity_binding: UNRESOLVED_USER_DECISION
                                     unsupported_or_unproven_processing: UNRESOLVED_USER_DECISION
                                     formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
