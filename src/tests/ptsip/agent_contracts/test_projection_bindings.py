@@ -195,7 +195,7 @@ def test_four_approved_paths_retain_exact_declarative_verification_ownership() -
     verification = components["agent-contract-candidate-verification"]
     assert verification["analysis_inputs"][:4] == list(FOUR_PATHS)
     assert "src/agent_contracts/**" not in components["ptsip-contract-verification"]["analysis_inputs"]
-    assert all(sum(path in c["analysis_inputs"] for c in components.values()) == 1 for path in FOUR_PATHS)
+    assert all(sum(path in c["include"] for c in components.values()) == 1 for path in FOUR_PATHS)
     declared = [mode for mode in registry["modes"] if mode["id"] == "agent-contract-candidate"]
     assert len(declared) == 1
     assert declared[0]["component_ref"] == verification["id"]
