@@ -158,6 +158,30 @@ rule_contract_boundary:
           authorization: PROJECT_OWNER_EXPLICIT
           subject: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
           lookup_authority_model: DETERMINISTIC_DERIVATION_FROM_APPROVED_SOURCE
+          hierarchical_source_authority_decision:
+            selected_option: C
+            authorization: PROJECT_OWNER_EXPLICIT
+            scope: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACT_SCHEMA_LOOKUPS
+            authority_model: HIERARCHICAL_APPROVED_SOURCE
+            common_authority_responsibility:
+              - ROOT_FAMILY_DISCOVERY_AND_IDENTITY
+              - COMMON_FIVE_GROUP_VALIDATION_STRUCTURE
+            matching_family_authority_responsibility:
+              - ITS_INDEPENDENT_RULE_CONTRACT_SCHEMA_BINDING
+              - ITS_NESTED_FIELD_AND_SEMANTIC_VALIDATION
+            derived_lookup_projection_authority: NONE
+            direct_and_reference_validation_coverage: PRESERVED
+            deterministic_schema_lookup_derivation: REQUIRED
+            family_schema_binding_source_and_format: UNRESOLVED_USER_DECISION
+            common_discovery_source_and_format: UNRESOLVED_USER_DECISION
+            approved_source_version_and_identity_binding: UNRESOLVED_USER_DECISION
+            cross_level_integrity_check: UNRESOLVED_USER_DECISION
+            formal_shared_policy_owner_and_reference: UNRESOLVED_USER_DECISION
+            existing_route_documents_promoted_to_authority: false
+            existing_family_policy_record_schema_ownership: PRESERVED
+            record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+            this_record_owns_cross_family_policy_authority: false
+            new_artifact_route_schema_and_validator_changes: NOT_AUTHORIZED_BY_THIS_DECISION
           canonical_source_identity: UNRESOLVED_USER_DECISION
           canonical_source_approval_and_version_binding: UNRESOLVED_USER_DECISION
           derivation_rule_and_required_machine_inputs: UNRESOLVED_USER_DECISION
