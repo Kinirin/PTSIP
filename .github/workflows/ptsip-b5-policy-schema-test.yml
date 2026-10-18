@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - ".github/workflows/ptsip-b5-policy-schema-test.yml"
+      - "src/tests/ptsip/agent_contracts/test_projection_bindings.py"
   workflow_dispatch:
 permissions:
   contents: read
