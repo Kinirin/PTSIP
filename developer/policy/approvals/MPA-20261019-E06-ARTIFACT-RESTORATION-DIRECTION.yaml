@@ -1,0 +1,41 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E06-ARTIFACT-RESTORATION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E06 option B: automatically restore the original verified
+    release artifact when integrity fails. Reuse verification evidence only
+    after the restored artifact's identity and digest match the verified
+    original. If the verified original cannot be established or restored,
+    do not publish automatically. Defer detailed recovery requirements until
+    an actual E06 incident; proceed to E07 without deciding E07 or later errors.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E06
+  selected_direction:
+    error_category: E06_ARTIFACT_INTEGRITY_FAILURE
+    response_model: B_RESTORE_ORIGINAL_VERIFIED_ARTIFACT
+    restore_target: ORIGINAL_VERIFIED_ARTIFACT
+    automatic_restoration_requires: PROVEN_ORIGINAL_IDENTITY_AND_DIGEST
+    reuse_previous_verification: ONLY_IF_RESTORED_ARTIFACT_MATCHES_VERIFIED_ORIGINAL
+    restoration_unavailable_or_unverified: NO_AUTOMATIC_PUBLICATION_RETRY
+    changed_or_rebuilt_artifact_reuses_prior_verification: false
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    other_error_type_responses: UNCHANGED
+  unresolved:
+    original_artifact_provenance_and_storage: DEFERRED_UNTIL_ACTUAL_E06_OCCURRENCE
+    restoration_evidence_and_identity_binding: DEFERRED_UNTIL_ACTUAL_E06_OCCURRENCE
+    unavailable_original_escalation: DEFERRED_UNTIL_ACTUAL_E06_OCCURRENCE
+    restore_retry_limits_and_algorithms: DEFERRED_UNTIL_ACTUAL_E06_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
