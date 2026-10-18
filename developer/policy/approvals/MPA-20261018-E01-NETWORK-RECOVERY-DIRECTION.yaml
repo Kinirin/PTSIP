@@ -9,7 +9,10 @@ approval:
     E01 network communication error: select B (conditional automatic recovery).
     Recover automatically only when the remote publication state is positively
     established; otherwise suspend automatic retries and require user review.
-    Other error categories and E01 subordinate boundaries remain undecided.
+    Remote nonpublication must be confirmed using evidence-based state
+    determination (B), not a single missing lookup result. Detailed E01
+    requirements are deferred until an actual E01 occurs. Other error
+    categories remain undecided.
   approval_scope: FINAL_POLICY
   policy_content_review_scope: DIRECTION
   responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E01
@@ -17,6 +20,8 @@ approval:
     error_category: E01_NETWORK_COMMUNICATION
     response_model: B_CONDITIONAL_AUTOMATIC_RECOVERY
     remote_state_necessary_for_automatic_recovery: CONFIRMED
+    remote_nonpublication_confirmation: B_EVIDENCE_BASED_STATE_DETERMINATION
+    missing_single_lookup_result_proves_nonpublication: false
     remote_publication_state_uncertain: SUSPEND_AUTO_RETRY_USER_REVIEW
     reuse_of_prior_admission: REEVALUATE_AFTER_ERROR_BEFORE_RETRY
     automatic_manual_override_of_unknown_state: FORBIDDEN
@@ -27,6 +32,7 @@ approval:
     component_responsibility_interfaces: USER_DECISION_PENDING
     unknown_state_review_procedure: USER_DECISION_PENDING
     retry_limits_and_backoff: USER_DECISION_PENDING
+    subordinate_e01_requirements: DEFERRED_UNTIL_ACTUAL_E01_OCCURRENCE
     error_outcome_semantics: USER_DECISION_PENDING
     successor_policy_id_and_schema: UNAVAILABLE
   authority_boundary:
