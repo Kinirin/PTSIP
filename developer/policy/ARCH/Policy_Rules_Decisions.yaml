@@ -153,6 +153,27 @@ rule_contract_boundary:
           this_record_owns_cross_family_policy_authority: false
           formal_policy_owner_and_reference: UNRESOLVED_USER_DECISION
           schema_route_validator_changes: NOT_AUTHORIZED_BY_THIS_DECISION
+        approved_source_derived_schema_lookup_decision:
+          selected_option: C
+          authorization: PROJECT_OWNER_EXPLICIT
+          subject: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACTS
+          lookup_authority_model: DETERMINISTIC_DERIVATION_FROM_APPROVED_SOURCE
+          canonical_source_identity: UNRESOLVED_USER_DECISION
+          canonical_source_approval_and_version_binding: UNRESOLVED_USER_DECISION
+          derivation_rule_and_required_machine_inputs: UNRESOLVED_USER_DECISION
+          derived_lookup_result_authority: NON_NORMATIVE_PROJECTION
+          independent_new_lookup_authority: NOT_AUTHORIZED_BY_THIS_DECISION
+          applicable_family_schema_owner: MATCHING_ROOT_FAMILY
+          common_five_group_validation_responsibility: PRESERVED
+          identity_based_family_selection_and_cross_check: PRESERVED
+          policy_routes_existing_schema_map: EVIDENCE_ONLY_NOT_SELECTED_AS_NEW_RULE_CONTRACT_SOURCE
+          filename_or_path_guess_as_canonical_source: NOT_AUTHORIZED_BY_THIS_DECISION
+          resolver_behavior_if_source_missing_or_ambiguous: UNRESOLVED_USER_DECISION
+          generated_index_storage_and_caching: UNRESOLVED_USER_DECISION
+          formal_shared_policy_owner_and_reference: UNRESOLVED_USER_DECISION
+          record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+          this_record_owns_cross_family_policy_authority: false
+          new_registry_schema_route_or_validator_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
         schema_discovery_and_version_binding: UNRESOLVED_USER_DECISION
         reference_resolution_and_cross_document_verification: UNRESOLVED_USER_DECISION
         failure_reporting_and_short_circuit: UNRESOLVED_USER_DECISION
