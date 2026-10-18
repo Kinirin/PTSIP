@@ -1,0 +1,42 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E10-PACKAGE-PLATFORM-COMPLIANCE-MANUAL-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E10 option A: package-format, metadata, dependency
+    declaration or publication platform compatibility errors require user
+    intervention before remediation or publication resume. Detailed E10
+    requirements are deferred until an actual E10 incident. Record the
+    selected direction on the current branch, then discuss E11 separately.
+    Do not decide E11 or later error categories.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E10
+  selected_direction:
+    error_category: E10_PACKAGE_AND_PLATFORM_FORMAT_COMPLIANCE_FAILURE
+    response_model: A_USER_INTERVENTION_REQUIRED
+    e10_error_response: SUSPEND_AUTOMATIC_REMEDIATION_AND_PUBLICATION_RETRY
+    automatic_package_metadata_or_format_change: NOT_GRANTED
+    automatic_dependency_or_version_change: NOT_GRANTED
+    automatic_repackaging_as_e10_remediation: NOT_GRANTED
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    applicable_verification_after_remediation: REQUIRED
+    e05_identity_reconstruction_authority: NOT_EXPANDED_BY_THIS_APPROVAL
+    other_error_type_responses: UNCHANGED
+  unresolved:
+    e10_failure_classification_details: DEFERRED_UNTIL_ACTUAL_E10_OCCURRENCE
+    user_intervention_and_fix_procedure: DEFERRED_UNTIL_ACTUAL_E10_OCCURRENCE
+    post_fix_verification_scope: DEFERRED_UNTIL_ACTUAL_E10_OCCURRENCE
+    platform_specific_compliance_requirements: DEFERRED_UNTIL_ACTUAL_E10_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
