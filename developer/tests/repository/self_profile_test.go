@@ -46,14 +46,13 @@ func TestRepositorySelfProfileIsExplicitAndHasNoRootBridge(t *testing.T) {
 	}
 }
 
-func TestRepositoryTestModeDefaultsAndProfileHaveNoRootBridgeDependency(t *testing.T) {
-	for _, ref := range []string{".github/scripts/validate_test_modes.py", ".github/scripts/resolve_test_modes.py"} {
-		source := repositoryText(t, ref)
-		if !strings.Contains(source, ".ptsip/profiles/main.ptsip.yaml") {
-			t.Fatal("explicit self-profile default missing", ref)
+func TestRepositoryProfileRetainsModeOwnershipWithoutRetiredPythonSelectors(t *testing.T) {
+	text := repositoryText(t, ".ptsip/profiles/main.ptsip.yaml")
+	for _, retired := range []string{".github/scripts/validate_test_modes.py", ".github/scripts/resolve_test_modes.py"} {
+		if strings.Contains(text, retired) {
+			t.Fatalf("retired selector still declared in Project Profile: %s", retired)
 		}
 	}
-	text := repositoryText(t, ".ptsip/profiles/main.ptsip.yaml")
 	if strings.Contains(text, `"ptsip.yaml"`) || !strings.Contains(text, ".ptsip/profiles/main.ptsip.yaml") {
 		t.Fatal("self-profile root bridge dependency")
 	}

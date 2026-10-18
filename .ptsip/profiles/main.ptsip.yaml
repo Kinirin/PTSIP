@@ -1117,8 +1117,6 @@ components:
     include:
       - ".github/test_modes.yaml"
       - ".github/checks/*"
-      - ".github/scripts/validate_test_modes.py"
-      - ".github/scripts/resolve_test_modes.py"
       - "src/tests/ptsip/test_modes/**"
     purpose: test_mode_execution_contract_registry_validation_and_selection_resolution
     shipped: false

@@ -537,17 +537,7 @@ except (ValueError,OSError) as exc:
 	}
 }
 
-func TestGoExecutionUsesOwnedDomainsAndConsumerSDKRegression(t *testing.T) {
-	result := python(t, ".github/scripts/resolve_test_modes.py", "manual", "--mode", "repository-architecture")
-	plan := sequence(t, result["plan"])
-	if len(plan) != 1 {
-		t.Fatal("unexpected execution selection")
-	}
-	mode := mapping(t, plan[0])
-	expectedGo := []any{"developer/tests/planning", "developer/tests/policy", "developer/tests/pp", "developer/tests/repository", "developer/tests/rootfamily", "developer/tests/workflows", "developer/tests/engines"}
-	if !reflect.DeepEqual(mode["go"], expectedGo) || !reflect.DeepEqual(mode["pytest"], []any{"src/tests/ptsip/repository/test_self_profile.py"}) {
-		t.Fatal("owned Go domains or consumer SDK regression missing", mode)
-	}
+func TestExplicitOwnedVerificationDomains(t *testing.T) {
 	bindings, err, output := automation(t, buildAutomation(t), repository(t), "policy-resolver", "resolve", "--scope", "developer/tests/rootfamily", "--operation", "VERIFY")
 	if err != nil {
 		t.Fatalf("native verification owner routing failed: %v\n%s", err, output)
@@ -563,25 +553,3 @@ func TestGoExecutionUsesOwnedDomainsAndConsumerSDKRegression(t *testing.T) {
 	}
 }
 
-func TestGoExecutionRejectsUnownedOrEscapingModules(t *testing.T) {
-	for _, failure := range contract(t).GoCases {
-		t.Run(failure.Module, func(t *testing.T) {
-			registry := read(t, filepath.Join(repository(t), ".github/test_modes.yaml"))
-			for _, raw := range sequence(t, registry["modes"]) {
-				mode := mapping(t, raw)
-				if mode["id"] == "repository-architecture" {
-					mapping(t, mode["execution"])["go"] = []any{failure.Module}
-				}
-			}
-			path := filepath.Join(t.TempDir(), "registry.yaml")
-			write(t, path, registry)
-			result := python(t, "-c", `import json,runpy,sys
-from pathlib import Path
-validator=runpy.run_path('.github/scripts/validate_test_modes.py')['validate_registry']
-print(json.dumps({'errors':validator(Path(sys.argv[1]),Path('.ptsip/profiles/main.ptsip.yaml'),Path.cwd())}))`, path)
-			if !strings.Contains(string(canonicalJSON(t, result["errors"])), failure.Error) {
-				t.Fatalf("expected %s, got %v", failure.Error, result)
-			}
-		})
-	}
-}

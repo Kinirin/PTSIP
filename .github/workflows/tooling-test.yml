@@ -41,20 +41,11 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check "PTSIP==0.3.8b5" "PyYAML>=6,<7"
-      - name: Resolve developer schema test responsibility
+      - name: Record retired registry validator gap
         shell: bash
         run: |
-          set -euo pipefail
-          python .github/scripts/validate_test_modes.py
-          python .github/scripts/resolve_test_modes.py manual --mode developer-schema-contracts | python -c '
-          import json,sys
-          v=json.load(sys.stdin)
-          assert v["selected_ids"] == ["developer-schema-contracts"], v
-          assert len(v["plan"]) == 1, v
-          p=v["plan"][0]
-          assert p["component_ref"] == "developer-contract-schema-verification", p
-          assert p.get("go") == ["developer/tests/schema_validation"], p
-          '
+          echo "UNRESOLVED: retired Test Mode Registry validator/resolver intentionally removed."
+          echo "This manually selected job executes developer schema checks; it does NOT assert Test Mode Registry conformance."
       - name: Exercise installed engine and schema-check negative fixtures
         shell: bash
         env:
@@ -91,23 +82,15 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check "PTSIP==0.3.8b3" "pytest>=8,<10" "PyYAML>=6,<7"
-      - name: Validate test registry and execute selected VALIDATION mode
+      - name: Execute declared installed VALIDATION runtime tests (registry selection unverified)
         shell: bash
         env:
           PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
         run: |
           set -euo pipefail
-          python .github/scripts/validate_test_modes.py
-          python .github/scripts/resolve_test_modes.py manual --mode ptsip-validation-runtime | python -c '
-          import json, subprocess, sys
-          selected = json.load(sys.stdin)
-          assert selected["selected_ids"] == ["ptsip-validation-runtime"], selected
-          plan = selected["plan"]
-          assert len(plan) == 1 and plan[0]["component_ref"] == "ptsip-validation-runtime-verification", plan
-          targets = plan[0]["pytest"]
-          assert targets and all(item.startswith("src/tests/ptsip/engine_runtime_validation") for item in targets), targets
-          sys.exit(subprocess.call([sys.executable, "-m", "pytest", "-q", *targets]))
-          '
+          echo "UNRESOLVED: retired Test Mode Registry validation and mode resolution are not available."
+          echo "Executing existing ptsip-validation-runtime pytest directory without asserting registry conformance."
+          python -m pytest -q src/tests/ptsip/engine_runtime_validation
   mode-selection:
     if: ${{ inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' }}
     runs-on: ubuntu-latest

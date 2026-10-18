@@ -30,21 +30,14 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check "PTSIP==0.3.8b5" "PyYAML>=6,<7"
-      - name: Diagnose registered developer-schema-contracts responsibility (non-blocking)
-        continue-on-error: true
+      - name: Confirm retired Test Mode Python scripts are absent
         shell: bash
         run: |
           set -euo pipefail
-          python .github/scripts/validate_test_modes.py
-          python .github/scripts/resolve_test_modes.py manual --mode developer-schema-contracts | python -c '
-          import json,sys
-          v=json.load(sys.stdin)
-          assert v["selected_ids"] == ["developer-schema-contracts"], v
-          assert len(v["plan"]) == 1, v
-          p=v["plan"][0]
-          assert p["component_ref"] == "developer-contract-schema-verification", p
-          assert p.get("go") == ["developer/tests/schema_validation"], p
-          '
+          test ! -e .github/scripts/validate_test_modes.py
+          test ! -e .github/scripts/resolve_test_modes.py
+          echo "RETIRED_CONTROL_PLANE_UNRESOLVED: old Python validator/resolver absent."
+          echo "This diagnostic checks official b5 engine only, not full Test Mode Registry conformance."
       - name: Execute official engine b5 internal ref and developer schema tests
         shell: bash
         env:
