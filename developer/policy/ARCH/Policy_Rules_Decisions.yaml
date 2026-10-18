@@ -123,6 +123,29 @@ component_representation_hybrid:
       hierarchy_lookup_and_descendant_semantics: UNRESOLVED_USER_DECISION
       specific_project_profile_as_source: NOT_AUTOMATICALLY_SELECTED
       schema_or_resolver_materialization: NOT_AUTHORIZED_BY_S2
+    descendant_membership_scope_decision:
+      decision_id: S3
+      user_selected_option: C
+      authorization: PROJECT_OWNER_EXPLICIT
+      declared_by: EACH_INDEPENDENT_ARCH_RULE_CONTRACT
+      when_hierarchy_scope_present: REQUIRE_EXPLICIT_DESCENDANT_INCLUSION_CHOICE
+      inclusion_choice_type: BOOLEAN
+      permitted_choices: [true, false]
+      implicit_default: FORBIDDEN
+      logical_domain_reference: REQUIRED
+      physical_repository_or_filesystem_paths_in_rule: FORBIDDEN
+      source_of_domain_hierarchy_and_membership: S2_SINGLE_REGISTERED_CANONICAL_SOURCE
+      hierarchy_lookup: DETERMINISTIC
+      true_semantics: TARGET_DOMAIN_AND_ITS_DESCENDANT_MEMBERSHIP
+      false_semantics: TARGET_DOMAIN_DIRECT_MEMBERSHIP_ONLY
+      hierarchy_does_not_generate_undeclared_graph_edges: true
+      hierarchy_does_not_automatically_propagate_normative_obligations: true
+      logical_id_format: UNRESOLVED_USER_DECISION
+      exact_fields_and_nesting: UNRESOLVED_USER_DECISION
+      canonical_source_binding_and_resolution: UNRESOLVED_USER_DECISION
+      descendant_graph_lookup_and_validation: UNRESOLVED_USER_DECISION
+      missing_reference_and_cycle_handling: UNRESOLVED_USER_DECISION
+      schema_or_resolver_materialization: NOT_AUTHORIZED_BY_S3
     domain_identity_and_lookup: UNRESOLVED_USER_DECISION
     nested_hierarchy_resolution: UNRESOLVED_USER_DECISION
     schema_field_names_types: UNRESOLVED_USER_DECISION
