@@ -1,0 +1,39 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261018-E03-AUTHENTICATION-LIFECYCLE-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E03 option C: automated authentication credential lifecycle
+    management as the directional response to release publication authentication
+    errors. Detailed requirements are deferred until an actual E03 incident.
+    Record on the active branch and then discuss E04 without deciding E04 or
+    other error categories.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E03
+  selected_direction:
+    error_category: E03_AUTHENTICATION_FAILURE
+    response_model: C_AUTOMATED_AUTHENTICATION_LIFECYCLE
+    objective: AUTOMATE_AUTHENTICATION_RECOVERY_WITHIN_PREAUTHORIZED_CREDENTIAL_SCOPE
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    autonomous_new_privileges_or_UNAPPROVED_CREDENTIAL_ACCESS: FORBIDDEN
+    conditional_approval_model: PRESERVED
+  unresolved:
+    credential_lifecycle_capabilities: DEFERRED_UNTIL_ACTUAL_E03_OCCURRENCE
+    credential_issuance_rotation_revocation_authority: USER_DECISION_PENDING
+    authentication_method_and_provider_constraints: DEFERRED_UNTIL_ACTUAL_E03_OCCURRENCE
+    secrets_storage_and_access_contract: DEFERRED_UNTIL_ACTUAL_E03_OCCURRENCE
+    incident_detection_and_recovery_limit: DEFERRED_UNTIL_ACTUAL_E03_OCCURRENCE
+    human_escalation_condition: DEFERRED_UNTIL_ACTUAL_E03_OCCURRENCE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+    successor_policy_id_and_schema: UNAVAILABLE
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-18'
