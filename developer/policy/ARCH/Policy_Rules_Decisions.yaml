@@ -128,16 +128,17 @@ component_representation_hybrid:
       user_selected_option: C
       authorization: PROJECT_OWNER_EXPLICIT
       declared_by: EACH_INDEPENDENT_ARCH_RULE_CONTRACT
-      when_hierarchy_scope_present: REQUIRE_EXPLICIT_DESCENDANT_INCLUSION_CHOICE
-      inclusion_choice_type: BOOLEAN
-      permitted_choices: [true, false]
+      scope_selection: PER_RULE_EXPLICIT
+      scope_selection_format: UNRESOLVED_USER_DECISION
+      old_boolean_option_status: WITHDRAWN_BY_PROJECT_OWNER
+      conflict_resolution: KEEP_LATEST
+      old_boolean_values: AUDIT_ONLY
       implicit_default: FORBIDDEN
       logical_domain_reference: REQUIRED
       physical_repository_or_filesystem_paths_in_rule: FORBIDDEN
       source_of_domain_hierarchy_and_membership: S2_SINGLE_REGISTERED_CANONICAL_SOURCE
       hierarchy_lookup: DETERMINISTIC
-      true_semantics: TARGET_DOMAIN_AND_ITS_DESCENDANT_MEMBERSHIP
-      false_semantics: TARGET_DOMAIN_DIRECT_MEMBERSHIP_ONLY
+      descendant_selection_semantics: UNRESOLVED_USER_DECISION
       hierarchy_does_not_generate_undeclared_graph_edges: true
       hierarchy_does_not_automatically_propagate_normative_obligations: true
       logical_id_format: UNRESOLVED_USER_DECISION
