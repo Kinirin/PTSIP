@@ -130,6 +130,21 @@ component_representation_hybrid:
       declared_by: EACH_INDEPENDENT_ARCH_RULE_CONTRACT
       scope_selection: PER_RULE_EXPLICIT
       scope_selection_format: LOGICAL_HIERARCHY_PATTERN
+      scope_field_composition_decision:
+        decision_id: S3_FIELD_COMPOSITION
+        user_selected_option: B
+        authorization: PROJECT_OWNER_EXPLICIT
+        representation: SEPARATE_LOGICAL_ANCHOR_REFERENCE_AND_HIERARCHY_PATTERN_FIELDS
+        composition: MACHINE_PARSEABLE_FIELDWISE
+        required_semantic_minimum:
+          - LOGICAL_ANCHOR_REFERENCE
+          - LOGICAL_HIERARCHY_SELECTOR
+        exact_field_names: UNRESOLVED_USER_DECISION
+        exact_field_types_and_pattern_syntax: UNRESOLVED_USER_DECISION
+        optional_additional_scope_fields: UNRESOLVED_USER_DECISION
+        universal_scope_contract_across_authority_and_actions: UNRESOLVED_USER_DECISION
+        project_profile_schema_migration: NOT_AUTHORIZED_BY_THIS_DECISION
+        rule_contract_or_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
       logical_hierarchy_pattern_replacement:
         decision_id: S3_REPLACEMENT
         user_selected_option: B
