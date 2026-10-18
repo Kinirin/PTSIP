@@ -1,10 +1,10 @@
 {
   "schema_version": "ptsip-owner-bounded-release/v1",
-  "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_17",
-  "instruction": "Publish 0.3.8.b3 (PyPI normalized 0.3.8b3) as one PTSIP PyPI project with Tool, Profiles and all seven independently versioned engines in each platform wheel, plus one complete source distribution. Preserve original engine artifacts and historical releases. Continue isolated dev/0.3.8b2; never merge to main.",
-  "branch": "dev/0.3.8b2",
-  "package_pypi_version": "0.3.8b3",
-  "tool_identity": "T.0.3.8.b3",
+  "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_18",
+  "instruction": "Publish emergency PTSIP 0.3.8b4 with Validation 0.3.2 offline external $ref resolution by explicit schema resource IDs; clearly reject internal $ref and $dynamicRef. Preserve the complete single-project PTSIP Windows/Linux wheels and source distribution. Work on codex/validation-b4 derived from the b3 release branch; do not merge to main.",
+  "branch": "codex/validation-b4",
+  "package_pypi_version": "0.3.8b4",
+  "tool_identity": "T.0.3.8.b4",
   "mandatory_engines": [
     "context",
     "storage",
@@ -20,7 +20,7 @@
     "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_15",
     "file": "developer/policy/schemas/root-family-policy.schema.json",
     "historical_source_sha": "781a0a46764734a98707662af1a3a2fbd6a88cf7",
-    "scope": "EXISTING_PROFILE_VERIFICATION_LOADING_ON_DEV_0_3_8B2_ONLY",
+    "scope": "EXISTING_PROFILE_VERIFICATION_LOADING_ON_B3_DERIVED_B4_RELEASE_BRANCH_ONLY",
     "merge_to_main": false
   },
   "automated_policy_validation_available": false,
@@ -28,26 +28,17 @@
   "verification_workflow": ".github/workflows/tooling-test.yml",
   "publication_workflow": ".github/workflows/tooling-release.yml",
   "runtime_activation": false,
-  "package_release_version": "0.3.8.b3",
+  "package_release_version": "0.3.8.b4",
   "engine_versions": {
     "context": "0.2.1",
     "storage": "0.3.1",
-    "validation": "0.3.1",
+    "validation": "0.3.2",
     "discovery": "0.3.1",
     "planning": "0.3.1",
     "execution": "0.3.1",
     "projection": "0.2.1"
   },
   "engine_pypi_publication": "DISABLED_SINGLE_PTSIP_PROJECT_ONLY",
-  "local_commit_hook_exception": {
-    "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_17",
-    "scope": "ONE_LOCAL_RELEASE_IMPLEMENTATION_COMMIT",
-    "branch": "dev/0.3.8b2",
-    "parent_sha": "04f2170d7e240efde8df7179df690de0ee9a10a1",
-    "retired_policy_resolver_restore": false,
-    "persistent_hook_configuration_change": false,
-    "automatic_policy_pass": false
-  },
   "single_project_migration": {
     "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_17",
     "branch": "dev/0.3.8b2",
@@ -57,5 +48,23 @@
     "previous_release_assets": "PRESERVE_IMMUTABLE",
     "engine_versions_and_original_artifacts": "UNCHANGED",
     "runtime_activation": false
+  },
+  "validation_hotfix": {
+    "approval_source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_18",
+    "engine_version": "0.3.2",
+    "capability_contract_version": "3.1.0",
+    "external_ref": "EXPLICIT_OFFLINE_SCHEMA_RESOURCES_AUTOMATIC_ID_LOOKUP",
+    "internal_ref": "UNSUPPORTED_EXPLICIT_ERROR_AND_DOCUMENTATION",
+    "dynamic_ref": "UNSUPPORTED_EXPLICIT_ERROR_AND_DOCUMENTATION",
+    "network_or_filesystem_discovery": false
+  },
+  "local_commit_hook_exception": {
+    "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_18",
+    "scope": "ONE_LOCAL_B4_RELEASE_IMPLEMENTATION_COMMIT",
+    "branch": "codex/validation-b4",
+    "parent_sha": "b4588071a8b8fb0211e6ff75ac247002f18f8f80",
+    "retired_policy_resolver_restore": false,
+    "persistent_hook_configuration_change": false,
+    "automatic_policy_pass": false
   }
 }

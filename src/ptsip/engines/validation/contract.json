@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:450659b1-1e89-4138-91d3-8dcbf6d6dc1a",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
   "semantic_owner": "VALIDATION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -15,7 +15,23 @@
           "schema": {
             "type": "object"
           },
-          "instance": {}
+          "instance": {},
+          "schema_resources": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "required": [
+                "$id"
+              ],
+              "properties": {
+                "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
         },
         "required": [
           "schema",
@@ -61,19 +77,36 @@
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
-        "no_effect_inference": "FORBIDDEN"
+        "no_effect_inference": "FORBIDDEN",
+        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
+        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
+        "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
-        "normative_authority_from_runtime_result": false
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "normative_authority_from_runtime_result": false,
+        "schema_reference_support": {
+          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
+          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
+          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
+          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "network_retrieval": false,
+          "filesystem_discovery": false,
+          "duplicate_ids": "FAIL_CLOSED",
+          "missing_resource": "FAIL_CLOSED",
+          "resource_limit": 128,
+          "schema_node_limit": 16384
+        }
       }
     },
     {
@@ -84,7 +117,23 @@
           "schema": {
             "type": "object"
           },
-          "instance": {}
+          "instance": {},
+          "schema_resources": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "required": [
+                "$id"
+              ],
+              "properties": {
+                "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
         },
         "required": [
           "schema",
@@ -130,19 +179,36 @@
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
-        "no_effect_inference": "FORBIDDEN"
+        "no_effect_inference": "FORBIDDEN",
+        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
+        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
+        "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
-        "normative_authority_from_runtime_result": false
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "normative_authority_from_runtime_result": false,
+        "schema_reference_support": {
+          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
+          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
+          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
+          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "network_retrieval": false,
+          "filesystem_discovery": false,
+          "duplicate_ids": "FAIL_CLOSED",
+          "missing_resource": "FAIL_CLOSED",
+          "resource_limit": 128,
+          "schema_node_limit": 16384
+        }
       }
     },
     {
@@ -153,7 +219,23 @@
           "schema": {
             "type": "object"
           },
-          "instance": {}
+          "instance": {},
+          "schema_resources": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "required": [
+                "$id"
+              ],
+              "properties": {
+                "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
         },
         "required": [
           "schema",
@@ -199,19 +281,36 @@
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
-        "no_effect_inference": "FORBIDDEN"
+        "no_effect_inference": "FORBIDDEN",
+        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
+        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
+        "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
-        "normative_authority_from_runtime_result": false
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "normative_authority_from_runtime_result": false,
+        "schema_reference_support": {
+          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
+          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
+          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
+          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "network_retrieval": false,
+          "filesystem_discovery": false,
+          "duplicate_ids": "FAIL_CLOSED",
+          "missing_resource": "FAIL_CLOSED",
+          "resource_limit": 128,
+          "schema_node_limit": 16384
+        }
       }
     },
     {
@@ -222,7 +321,23 @@
           "schema": {
             "type": "object"
           },
-          "instance": {}
+          "instance": {},
+          "schema_resources": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "required": [
+                "$id"
+              ],
+              "properties": {
+                "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
         },
         "required": [
           "schema",
@@ -268,19 +383,36 @@
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
-        "no_effect_inference": "FORBIDDEN"
+        "no_effect_inference": "FORBIDDEN",
+        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
+        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
+        "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
-        "normative_authority_from_runtime_result": false
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "normative_authority_from_runtime_result": false,
+        "schema_reference_support": {
+          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
+          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
+          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
+          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "network_retrieval": false,
+          "filesystem_discovery": false,
+          "duplicate_ids": "FAIL_CLOSED",
+          "missing_resource": "FAIL_CLOSED",
+          "resource_limit": 128,
+          "schema_node_limit": 16384
+        }
       }
     },
     {
@@ -291,7 +423,23 @@
           "schema": {
             "type": "object"
           },
-          "instance": {}
+          "instance": {},
+          "schema_resources": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "required": [
+                "$id"
+              ],
+              "properties": {
+                "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
         },
         "required": [
           "schema",
@@ -337,19 +485,36 @@
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
-        "no_effect_inference": "FORBIDDEN"
+        "no_effect_inference": "FORBIDDEN",
+        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
+        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
+        "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
-        "normative_authority_from_runtime_result": false
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "normative_authority_from_runtime_result": false,
+        "schema_reference_support": {
+          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
+          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
+          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
+          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "network_retrieval": false,
+          "filesystem_discovery": false,
+          "duplicate_ids": "FAIL_CLOSED",
+          "missing_resource": "FAIL_CLOSED",
+          "resource_limit": 128,
+          "schema_node_limit": 16384
+        }
       }
     },
     {
@@ -398,6 +563,22 @@
               "additionalProperties": false
             },
             "minItems": 1
+          },
+          "schema_resources": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "required": [
+                "$id"
+              ],
+              "properties": {
+                "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
           }
         },
         "required": [
@@ -464,19 +645,36 @@
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
-        "no_effect_inference": "FORBIDDEN"
+        "no_effect_inference": "FORBIDDEN",
+        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
+        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
+        "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE",
-        "normative_authority_from_runtime_result": false
+        "normative_authority_from_runtime_result": false,
+        "schema_reference_support": {
+          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
+          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
+          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
+          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
+          "network_retrieval": false,
+          "filesystem_discovery": false,
+          "duplicate_ids": "FAIL_CLOSED",
+          "missing_resource": "FAIL_CLOSED",
+          "resource_limit": 128,
+          "schema_node_limit": 16384
+        }
       }
     },
     {
@@ -577,7 +775,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -671,7 +869,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -868,7 +1066,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -1068,7 +1266,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -1229,7 +1427,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {

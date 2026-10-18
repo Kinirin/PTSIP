@@ -22,7 +22,7 @@ func Beta2Branch(root string) (string, error) {
 	if err := ReadJSON(root, Beta2AuthorizationPath, &a); err != nil {
 		return "", err
 	}
-	if a.Schema != "ptsip-owner-bounded-release/v1" || a.Branch != "dev/0.3.8b2" || a.Package != "0.3.8b3" || a.Tool != "T.0.3.8.b3" || a.Merge || a.PolicyPass || strings.Join(a.Engines, ",") != "context,storage,validation,discovery,planning,execution,projection" {
+	if a.Schema != "ptsip-owner-bounded-release/v1" || a.Branch != "codex/validation-b4" || a.Package != "0.3.8b4" || a.Tool != "T.0.3.8.b4" || a.Merge || a.PolicyPass || strings.Join(a.Engines, ",") != "context,storage,validation,discovery,planning,execution,projection" {
 		return "", fmt.Errorf("owner's bounded beta2 release instruction differs")
 	}
 	return a.Branch, nil
@@ -36,7 +36,7 @@ func AdmitBeta2(root string, s Selection) error {
 	if err != nil {
 		return err
 	}
-	if c.PackagePyPI != "0.3.8b3" || c.Tool != "T.0.3.8.b3" || s.Type != "PTSIP_PACKAGE" || len(s.Components) != 9 || len(c.Engines) != 7 || strings.Join(s.Platforms, ",") != "windows-x64,linux-x64" {
+	if c.PackagePyPI != "0.3.8b4" || c.Tool != "T.0.3.8.b4" || s.Type != "PTSIP_PACKAGE" || len(s.Components) != 9 || len(c.Engines) != 7 || strings.Join(s.Platforms, ",") != "windows-x64,linux-x64" {
 		return fmt.Errorf("beta2 requires complete Tool/Profile/seven-engine Windows and Linux selection")
 	}
 	return ValidateSelection(root, s)

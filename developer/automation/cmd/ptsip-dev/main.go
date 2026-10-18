@@ -80,7 +80,7 @@ func runCommand(arguments []string, metadata *commandMetadata) (any, error) {
 			b, _ := exec.Command("git", "-C", repo.Root, "symbolic-ref", "--short", "HEAD").Output()
 			branch = strings.TrimSpace(string(b))
 		}
-		if readErr == nil && approval["schema_version"] == "ptsip-owner-bounded-release/v1" && approval["branch"] == "dev/0.3.8b2" && approval["merge_to_main"] == false && branch == "dev/0.3.8b2" {
+		if readErr == nil && approval["schema_version"] == "ptsip-owner-bounded-release/v1" && approval["branch"] == "codex/validation-b4" && approval["package_pypi_version"] == "0.3.8b4" && approval["merge_to_main"] == false && branch == "codex/validation-b4" {
 			if len(repetitions) != 0 {
 				return nil, fmt.Errorf("duplicate Profile verification option")
 			}

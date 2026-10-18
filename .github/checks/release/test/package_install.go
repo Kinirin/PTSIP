@@ -34,7 +34,8 @@ func VerifyPackageJoin(root string, s release.Selection, input, platform string)
 	if err := command(root, nil, python, "-m", "pip", "install", "--disable-pip-version-check", "--find-links", wheels, filepath.Join(wheels, receipt.Wheel.Name)); err != nil {
 		return receipt, err
 	}
-	check := `import importlib.metadata as metadata, importlib.resources as resources, sys, yaml
+	check := `import importlib.metadata as metadata, importlib.resources as resources, json, os, subprocess, sys, sysconfig, yaml
+from pathlib import Path
 from ptsip.engine_installation import inspect
 from ptsip.constants import TOOL_VERSION
 if metadata.version('PTSIP') != sys.argv[1] or TOOL_VERSION != sys.argv[2]:
@@ -57,6 +58,28 @@ if not catalog.joinpath('index.yaml').is_file() or catalog.joinpath('history').i
 registry = yaml.safe_load(resources.files('ptsip').joinpath('specdata/project-profile-contracts.yaml').read_text())
 if registry['current'] != 'pp.1.02':
  raise RuntimeError('Profile version differs')
+contract = json.loads(resources.files('ptsip').joinpath('engines/validation/contract.json').read_text())
+validation = next(row for row in result['entries'] if row['engine'] == 'VALIDATION')
+if validation['installed_version'] != '0.3.2' or contract['version'] != '3.1.0':
+ raise RuntimeError('b4 Validation engine or capability contract differs')
+binary = Path(sysconfig.get_path('scripts')) / ('ptsip-engine-validation' + ('.exe' if os.name == 'nt' else ''))
+request = dict(engine_id=validation['engine_id'], engine_version=validation['installed_version'], contract_id=contract['contract_id'], contract_version=contract['version'], operation_id='validation.schema')
+for schema, instance, schema_resources, expected, error in [
+ ({'$ref':'urn:ptsip:b4:string'}, 'ok', [{'$id':'urn:ptsip:b4:string','type':'string'}], True, None),
+ ({'$ref':'urn:ptsip:b4:string'}, 3, [{'$id':'urn:ptsip:b4:string','type':'string'}], False, None),
+ ({'$ref':'#'}, {}, [], None, 'INTERNAL_REF_UNSUPPORTED'),
+ ({'$dynamicRef':'#x'}, {}, [], None, 'DYNAMIC_REF_UNSUPPORTED'),
+ ({'$ref':'https://example.invalid/absent'}, {}, [], None, 'SCHEMA_RESOURCE_NOT_FOUND'),
+]:
+ request['input'] = dict(schema=schema, instance=instance, schema_resources=schema_resources)
+ process = subprocess.run([str(binary)], input=json.dumps(request), text=True, capture_output=True, timeout=30)
+ response = json.loads(process.stdout)
+ if error is None:
+  assert process.returncode == 0 and response['status'] == 'PASS' and response['output']['valid'] == expected, response
+ else:
+  assert process.returncode == 2 and response['status'] == 'FAIL' and error in response['error'], response
+ assert response['normative_authority'] is False and response['execution_authorized'] is False
+print('Installed b4 Validation resolves explicit external IDs and explicitly rejects internal/dynamic refs')
 print('pip installed complete Package and all seven hash-verified native engines')
 `
 	c, err := release.ReadComposition(root)

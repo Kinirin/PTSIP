@@ -91,8 +91,8 @@ func ParseComposition(data []byte) (Composition, error) {
 		}
 		c.PackagePyPI = pypi
 	} else if c.Schema == "ptsip-current-composition/v3" {
-		if c.ToolRef != "tool.ptsip.release.tool_version" || document.Project.Version != "0.3.8b3" || c.Tool != "T.0.3.8.b3" || c.PackageDisplay != "0.3.8.b3" {
-			return c, fmt.Errorf("explicit beta3 Package/Tool projection differs")
+		if c.ToolRef != "tool.ptsip.release.tool_version" || document.Project.Version != "0.3.8b4" || c.Tool != "T.0.3.8.b4" || c.PackageDisplay != "0.3.8.b4" {
+			return c, fmt.Errorf("explicit beta4 Package/Tool projection differs")
 		}
 		c.PackagePyPI = document.Project.Version
 	} else {

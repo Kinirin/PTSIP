@@ -17,14 +17,14 @@
 
 ## 구성요소 버전
 
-<!-- ptsip-readme-i18n: c367e12d1b55e1c2e875b6380530816503c574f885f8c2d962f2c2a8e11bb4a5 -->
+<!-- ptsip-readme-i18n: 9a34eb4b2e50b1c3b92ac56a6a1010337dae5c0be09e95b1e379634fb3d449d7 -->
 
 | 식별자 | 소스 트리 값 |
 | --- | --- |
 | PTSIP_Package | `0.3.8.<SHA6>` — 게시 완료 후 결정되는 구성 식별자 |
-| PTSIP_Tool | `0.3.8b1` |
+| PTSIP_Tool | `T.0.3.8.b4` (PTSIP PyPI Package `0.3.8b4`) |
 | Project Profile | `pp.1.02` |
-| Engine | Context/Projection `0.2.0`; Storage/Validation/Discovery/Planning/Execution `0.3.0` |
+| Engine | Validation `0.3.2`; Context/Projection `0.2.1`; Storage/Discovery/Planning/Execution `0.3.1` |
 
 <!-- ptsip-readme-i18n: 1b5e6c193ce4a49f1fb453b3c05c9006e0f7431f820a9e86f038656d72da9768 -->
 
@@ -394,9 +394,13 @@ GitHub 좌표 결정 권한 사용 `refs/heads/ptsip-policy` **설정하기**. �
 | 계정 관리 | bounded caller-admitted 요청 및 기록 효과/스톱 |
 | 사업소개 | Render validated Context에 선언된 출력 형식 |
 
-<!-- ptsip-readme-i18n: 6dc4d46672b3abaaceb9d21357db2f73b6d76fe881227467c0b3823e6b76d4bc -->
+<!-- ptsip-readme-i18n: bb8b5f511aad6cad1b9c8c230300e74c7974068e6d7d01cc35a6afd44b419d38 -->
 
-`0.3.8a5` Linux, Windows 및 macOS의 기본 기반을 검증합니다. **없음** implicitly 보조 소비자 생산 임명, 권위 입원, 활성화, 또는 versioned cutover. 파이썬 휠은 중립 엔진 계약 데이터를 운반합니다. **아니다.** Rust 소스, native binaries 또는 build 출력. 기존 소비자 API는 사용할 수 있습니다. [공지사항](../releasenote/tool/0.3.8a5.md).
+PTSIP `0.3.8b4`는 일곱 네이티브 엔진을 모두 포함한 Windows x64·Linux x64 wheel과, Rust 소스 및 lockfile을 담은 소스 배포본 하나를 제공합니다. 설치 자체가 권한 승인, 활성화 또는 API 전환을 허용하지는 않습니다. 기존 소비자 API는 계속 사용할 수 있습니다.
+
+<!-- ptsip-readme-i18n: d5d3cd92e5fac3567e9acad3b40eca48e3ac9ace85699b3d9534487f52675ccc -->
+
+**Validation 참조 지원 범위:** 외부 `$ref` 대상은 명시적으로 제공한 `schema_resources` 집합 안의 `$id`와 자동 연결됩니다. **내부 `$ref` (`#`, `#/$defs/...`, 현재 리소스를 가리키는 참조)와 `$dynamicRef`는 지원하지 않으며**, 구체적인 오류를 반환합니다. 스키마를 다운로드하거나 파일시스템을 검색해 찾지 않습니다. [지원 표와 전체 요청 예제](https://github.com/Kinirin/PTSIP/blob/codex/validation-b4/docs/validation-schema-references.md)를 참고하거나 `ptsip-engine-validation --help`를 실행하세요.
 
 <!-- ptsip-readme-i18n: 16237957bf45b9495cd88af15fbc6968d93cb312c35004ad238924423610e07e -->
 

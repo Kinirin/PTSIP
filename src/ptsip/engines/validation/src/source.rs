@@ -78,19 +78,7 @@ pub fn parse(bytes: &[u8]) -> Result<Value, String> {
     Ok(value)
 }
 pub fn inline(schema: &Value) -> Result<(), String> {
-    fn closed(v: &Value) -> bool {
-        match v {
-            Value::Object(o) => {
-                !o.contains_key("$ref") && !o.contains_key("$dynamicRef") && o.values().all(closed)
-            }
-            Value::Array(a) => a.iter().all(closed),
-            _ => true,
-        }
-    }
-    if !closed(schema) {
-        return Err("unresolved or external schema reference".into());
-    }
-    jsonschema::validator_for(schema).map_err(|e| e.to_string())?;
+    crate::schema::validator(schema, None)?;
     Ok(())
 }
 pub fn schema(name: &str, value: &Value) -> Result<(), String> {

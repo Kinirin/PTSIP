@@ -10,7 +10,15 @@ import (
 // Exercise the real historical producer delta that the hosted Package join
 // consumes, including the frozen container runner added before this migration.
 func TestSingleProjectMigrationAdmitsHistoricalToolDeltaOnlyForPackage(t *testing.T) {
-	root := repoRoot(t)
+	// Freeze the already published b3 migration; subsequent releases must not
+	// replace its old Tool version with their changed producer tree.
+	root := t.TempDir()
+	if _, err := release.Run(repoRoot(t), "git", "clone", "--shared", "--quiet", "--no-checkout", repoRoot(t), root); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := release.Run(root, "git", "checkout", "--detach", "--quiet", "8275490b85a3b685a7840d6fba80783a01b9b2c0"); err != nil {
+		t.Fatal(err)
+	}
 	head, err := release.Run(root, "git", "rev-parse", "HEAD")
 	if err != nil {
 		t.Fatal(err)

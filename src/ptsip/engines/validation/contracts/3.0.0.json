@@ -1,0 +1,1241 @@
+{
+  "contract_id": "urn:uuid:450659b1-1e89-4138-91d3-8dcbf6d6dc1a",
+  "version": "3.0.0",
+  "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+  "semantic_owner": "VALIDATION",
+  "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "normative_language": "JSON",
+  "execution_permission_from_declaration": false,
+  "operations": [
+    {
+      "operation_id": "validation.contract",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.schema",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.typed-io",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.precondition",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.case",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "object"
+          },
+          "instance": {}
+        },
+        "required": [
+          "schema",
+          "instance"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.compose",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "check_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "operation_id": {
+                  "enum": [
+                    "validation.contract",
+                    "validation.schema",
+                    "validation.typed-io",
+                    "validation.precondition",
+                    "validation.case"
+                  ]
+                },
+                "schema": {
+                  "type": "object"
+                },
+                "instance": {},
+                "depends_on": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "check_id",
+                "operation_id",
+                "schema",
+                "instance",
+                "depends_on"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "checks"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "check_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valid": {
+                  "type": "boolean"
+                },
+                "diagnostics": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "check_id",
+                "valid",
+                "diagnostics"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "valid_all": {
+            "type": "boolean"
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "checks",
+          "valid_all",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.verify-handoff",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mapping_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_mapping_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "root",
+          "mapping_ref",
+          "expected_mapping_sha256"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "mapping_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "verified_relation_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "covered_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cardinalities": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "ONE_TO_ONE",
+                "ONE_TO_MANY",
+                "MANY_TO_ONE"
+              ]
+            }
+          },
+          "public_api_equivalence": {
+            "const": false
+          },
+          "cutover_authorized": {
+            "const": false
+          },
+          "legacy_retired": {
+            "const": false
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "mapping_revision",
+          "verified_relation_count",
+          "covered_source_ids",
+          "cardinalities",
+          "public_api_equivalence",
+          "cutover_authorized",
+          "legacy_retired",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_CURRENT_VERSIONED_VPMS_RELATIONS_AND_FULL_RESPONSIBILITY_CLASSIFICATION_WITHOUT_PUBLIC_API_CUTOVER",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.verify-context-handoff",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mapping_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_mapping_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "root",
+          "mapping_ref",
+          "expected_mapping_sha256"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "mapping_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_semantics_owner": {
+            "const": "CONTEXT"
+          },
+          "output_transformation_owner": {
+            "const": "PROJECTION"
+          },
+          "verified_contract_refs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "cutover_authorized": {
+            "const": false
+          },
+          "legacy_retired": {
+            "const": false
+          },
+          "public_api_changed": {
+            "const": false
+          }
+        },
+        "required": [
+          "mapping_revision",
+          "source_semantics_owner",
+          "output_transformation_owner",
+          "verified_contract_refs",
+          "cutover_authorized",
+          "legacy_retired",
+          "public_api_changed"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_EXPLICIT_CONTEXT_SOURCE_AND_PROJECTION_OUTPUT_OWNERS_WITH_PRESERVED_PUBLIC_API",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.prepare-cases",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalog_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "root",
+          "catalog_ref"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "catalog_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "input": {},
+                "input_schema": {
+                  "type": "object"
+                },
+                "output_schema": {
+                  "type": "object"
+                },
+                "adapter_ref": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "input",
+                "input_schema",
+                "output_schema",
+                "adapter_ref",
+                "tags"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "selectors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "case_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "case_ids"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "catalog_revision",
+          "cases",
+          "selectors",
+          "ptsip_conformance_verdict",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_OWNER_ROOT",
+        "CURRENT_REGISTERED_SOURCE_REFERENCE_CLOSURE"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_or_stale_source": "FAIL_CLOSED",
+        "ambiguous_registration": "FAIL_CLOSED",
+        "missing_or_revoked_authority": "DENY_OR_STOP_AFFECTED_NATIVE_INVOCATION",
+        "attempt_failure_proves_no_effect": false
+      },
+      "verification_evidence": {
+        "required": "ISOLATED_NATIVE_POSITIVE_NEGATIVE_EXECUTION_AND_CURRENT_OWNER_SOURCE_EVIDENCE",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_CURRENT_CASE_CATALOG_REFERENCE_CLOSURE_AND_INDEPENDENT_INLINE_CASE_CONTRACTS",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.select-cases",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalog_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "selection": {
+            "type": "object",
+            "properties": {
+              "case_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "selector_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "case_ids",
+              "selector_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "root",
+          "catalog_ref",
+          "selection"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "catalog_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "selected_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "input": {},
+                "input_schema": {
+                  "type": "object"
+                },
+                "output_schema": {
+                  "type": "object"
+                },
+                "adapter_ref": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "input",
+                "input_schema",
+                "output_schema",
+                "adapter_ref",
+                "tags"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution_authorized": {
+            "const": false
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "catalog_revision",
+          "selected_ids",
+          "cases",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_OWNER_ROOT",
+        "CURRENT_REGISTERED_SOURCE_REFERENCE_CLOSURE"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_or_stale_source": "FAIL_CLOSED",
+        "ambiguous_registration": "FAIL_CLOSED",
+        "missing_or_revoked_authority": "DENY_OR_STOP_AFFECTED_NATIVE_INVOCATION",
+        "attempt_failure_proves_no_effect": false
+      },
+      "verification_evidence": {
+        "required": "ISOLATED_NATIVE_POSITIVE_NEGATIVE_EXECUTION_AND_CURRENT_OWNER_SOURCE_EVIDENCE",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "SELECT_EXPLICIT_CASE_IDS_OR_CURRENT_REGISTERED_SELECTOR_WITH_NO_EXECUTION",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.prepare-composition",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalog_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "selection": {
+            "type": "object",
+            "properties": {
+              "case_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "selector_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "case_ids",
+              "selector_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "root",
+          "catalog_ref",
+          "selection"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "catalog_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "selected_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "prepared_adapters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "case_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "invocation_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "adapter_revision": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "case_id",
+                "invocation_id",
+                "adapter_revision"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "all_preflight_passed": {
+            "const": true
+          },
+          "execution_authorized": {
+            "const": false
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "catalog_revision",
+          "selected_ids",
+          "prepared_adapters",
+          "all_preflight_passed",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_OWNER_ROOT",
+        "CURRENT_REGISTERED_SOURCE_REFERENCE_CLOSURE"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_or_stale_source": "FAIL_CLOSED",
+        "ambiguous_registration": "FAIL_CLOSED",
+        "missing_or_revoked_authority": "DENY_OR_STOP_AFFECTED_NATIVE_INVOCATION",
+        "attempt_failure_proves_no_effect": false
+      },
+      "verification_evidence": {
+        "required": "ISOLATED_NATIVE_POSITIVE_NEGATIVE_EXECUTION_AND_CURRENT_OWNER_SOURCE_EVIDENCE",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_ALL_SELECTED_CASE_ADAPTERS_AND_CONTRACT_INPUTS_BEFORE_ANY_INVOCATION",
+        "normative_authority_from_runtime_result": false
+      }
+    }
+  ]
+}

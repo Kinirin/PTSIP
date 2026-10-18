@@ -323,7 +323,7 @@ func Shipping(root string, s Selection, output string) (ShippingManifest, error)
 	}
 	if m.PackageDistribution != nil {
 		c := m.PackageDistribution
-		if c.ID != "package" || c.Kind != "package" || c.SourceSHA != s.SourceSHA || c.Version != "0.3.8b3" || len(c.Files) != len(s.Platforms)+1 {
+		if c.ID != "package" || c.Kind != "package" || c.SourceSHA != s.SourceSHA || c.Version != "0.3.8b4" || len(c.Files) != len(s.Platforms)+1 {
 			return m, fmt.Errorf("Package distribution admission differs")
 		}
 		for _, f := range c.Files {
@@ -348,7 +348,7 @@ type PyPIFile struct {
 
 func PyPIFiles(project, version string) ([]PyPIFile, error) {
 	client := &http.Client{Timeout: time.Minute}
-	response, err := client.Get("https://pypi.org/pypi/" + project + "/" + version + "/json")
+	response, err := client.Get("https://pypi.org/pypi/" + strings.ToLower(project) + "/" + version + "/json")
 	if err != nil {
 		return nil, err
 	}

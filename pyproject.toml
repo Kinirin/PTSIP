@@ -5,7 +5,7 @@ backend-path = ["."]
 
 [project]
 name = "PTSIP"
-version = "0.3.8b3"
+version = "0.3.8b4"
 description = "Reference tooling for primary lifecycle ownership and responsibility isolation"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -114,9 +114,9 @@ dev = [
 [tool.ptsip.release]
 schema_version = "ptsip-current-composition/v3"
 package_base = "0.3.8"
-package_release_version = "0.3.8.b3"
+package_release_version = "0.3.8.b4"
 tool_version_ref = "tool.ptsip.release.tool_version"
-tool_version = "T.0.3.8.b3"
+tool_version = "T.0.3.8.b4"
 profile_version = "pp.1.02"
 specification_source = "https://github.com/Kinirin/PTSIP"
 spec_revision = "3c47816770d194ae42f98faedc911d980db0e62a"
@@ -124,7 +124,7 @@ spec_revision = "3c47816770d194ae42f98faedc911d980db0e62a"
 [tool.ptsip.release.engines]
 context = "0.2.1"
 storage = "0.3.1"
-validation = "0.3.1"
+validation = "0.3.2"
 discovery = "0.3.1"
 planning = "0.3.1"
 execution = "0.3.1"

@@ -1,16 +1,6 @@
 use serde_json::{json, Value};
 use std::collections::{BTreeMap, BTreeSet};
 
-fn closed(v: &Value) -> bool {
-    match v {
-        Value::Object(o) => {
-            !o.contains_key("$ref") && !o.contains_key("$dynamicRef") && o.values().all(closed)
-        }
-        Value::Array(a) => a.iter().all(closed),
-        _ => true,
-    }
-}
-
 pub fn validate(input: &Value) -> Result<Value, String> {
     let checks = input["checks"]
         .as_array()
@@ -60,14 +50,11 @@ pub fn validate(input: &Value) -> Result<Value, String> {
         ) {
             return Err("unsupported independent validation capability".into());
         }
-        if !closed(&check["schema"]) {
-            return Err("unregistered composed schema reference".into());
-        }
-        let validator = jsonschema::validator_for(&check["schema"]).map_err(|e| e.to_string())?;
-        let diagnostics: Vec<String> = validator
-            .iter_errors(&check["instance"])
-            .map(|e| e.to_string())
-            .collect();
+        let diagnostics = crate::schema::validate(
+            &check["schema"],
+            &check["instance"],
+            input.get("schema_resources"),
+        )?;
         valid_all &= diagnostics.is_empty();
         results
             .push(json!({"check_id":id,"valid":diagnostics.is_empty(),"diagnostics":diagnostics}));
