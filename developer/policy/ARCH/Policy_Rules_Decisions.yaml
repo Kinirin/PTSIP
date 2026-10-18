@@ -75,6 +75,22 @@ rule_contract_boundary:
     approval_and_evidence_representation: UNRESOLVED_USER_DECISION
     common_public_policy_rules_reference_shape: UNRESOLVED_USER_DECISION
     schema_contract_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+  definition_statement_semantic_preservation_decision:
+    decision_id: ARCH_DEFINITION_STATEMENT_ROLE
+    user_selected_option: B
+    authorization: PROJECT_OWNER_EXPLICIT
+    scope: INDEPENDENT_RULE_CONTRACT_DEFINITION
+    statement_purpose: PRESERVE_MEANING_NOT_YET_ADEQUATELY_MACHINE_EXPRESSIBLE
+    statement_may_preserve_approved_normative_meaning: true
+    machine_readable_semantics: PREFERRED_WHERE_MEANING_CAN_BE_FAITHFULLY_EXPRESSED
+    statement_as_unlimited_semantic_accumulation_target: DISCOURAGED
+    unverified_statement_to_machine_obligation_promotion: FORBIDDEN
+    statement_authority_and_approval_status_interpretation: SEPARATE_FROM_MACHINE_VERIFIABILITY
+    exact_semantics_fields_and_representation: UNRESOLVED_USER_DECISION
+    semantic_extension_authorization_and_management: UNRESOLVED_USER_DECISION
+    statement_to_semantics_equivalence_verification: UNRESOLVED_USER_DECISION
+    machine_constraints_generation_and_unexpressed_meaning_handling: UNRESOLVED_USER_DECISION
+    schema_contract_or_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
   policy_lifecycle_status_vs_rule_approval: DISTINCT
   multi_rule_reference_decision:
     decision_id: P1
