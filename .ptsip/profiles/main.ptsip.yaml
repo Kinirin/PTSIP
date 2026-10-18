@@ -606,8 +606,6 @@ components:
     include:
       - ".ptsip/profiles/main.ptsip.yaml"
       - ".ptsip/**"
-    exclude:
-      - ".ptsip/engine/developer/test_mode/**"
     purpose: repository_development_architecture_declaration
     shipped: false
     runtime_required: false
@@ -1119,10 +1117,8 @@ components:
     include:
       - ".github/test_modes.yaml"
       - ".github/checks/*"
-      - "developer/contracts/test-mode-control-plane/**"
-      - "developer/tests/testmode/**"
-      - ".ptsip/engine/developer/test_mode/**"
-    purpose: independent_registry_contract_validation_and_explicit_verification_selection_boundary
+      - "src/tests/ptsip/test_modes/**"
+    purpose: test_mode_execution_contract_registry_validation_and_selection_resolution
     shipped: false
     runtime_required: false
     executable: true
@@ -1132,7 +1128,6 @@ components:
       - ".ptsip/profiles/main.ptsip.yaml"
       - ".github/workflows/tooling-test.yml"
       - "src/tests/ptsip/conftest.py"
-      - "developer/contracts/test-mode-control-plane/**"
 
   - id: repository-release-automation
     classification: DELIVERY

@@ -125,14 +125,6 @@ func nativeValidate(e Engine, schema, instance any, resources []any) (bool, erro
  return result.Output.Valid,nil
 }
 
-// ValidateInstance calls the installed official PTSIP VALIDATION engine.
-// Callers own their schema and interpretation; no historical Test Mode logic is imported.
-func ValidateInstance(schema, instance any) (bool, error) {
- e, err := installed()
- if err != nil { return false, err }
- return nativeValidate(e, schema, instance, nil)
-}
-
 func nativeCheck(e Engine,doc any) error {
  valid,err:=nativeValidate(e,inlineShape,doc,nil)
  if err!=nil{return err}
