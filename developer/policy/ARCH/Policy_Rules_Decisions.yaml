@@ -366,6 +366,36 @@ rule_contract_boundary:
                             common_interface_normative_policy_owner: UNRESOLVED_USER_DECISION
                             supported_family_language_and_proof_binding_contract: UNRESOLVED_USER_DECISION
                             proof_request_result_schema_and_evidence_format: UNRESOLVED_USER_DECISION
+                            formal_proof_verification_responsibility_decision:
+                                selected_option: B
+                                authorization: PROJECT_OWNER_EXPLICIT
+                                scope: ALL_14_ROOT_FAMILY_FORMAL_SCOPE_DECLARATION_PROOF_VERIFICATION
+                                verification_model: SHARED_PROOF_VERIFIER_WITH_PER_FAMILY_SEMANTIC_ADAPTERS
+                                family_normative_semantics_owner: APPROVED_MATCHING_ROOT_FAMILY_POLICY
+                                family_semantics_adapter_role: POLICY_DERIVED_SEMANTICS_PRESERVING_TRANSLATION
+                                adapter_may_define_or_change_normative_semantics: false
+                                common_verifier_role: MACHINE_VERIFICATION_OF_PROOFS_BOUND_TO_APPROVED_FAMILY_SEMANTICS
+                                common_verifier_may_define_family_normative_semantics: false
+                                common_verifier_may_grant_policy_approval_or_activation: false
+                                common_interface_input_output_error_compatibility_authority: CNTR_PRESERVED
+                                verification_evidence_admissibility_authority: ASSURE_PRESERVED
+                                approval_legitimacy_authority: GOV_PRESERVED
+                                matching_family_policy_and_semantics_binding: REQUIRED
+                                machine_verifiable_equivalence_proof: REQUIRED
+                                unverified_adapter_semantics_must_not_produce_equivalent_verdict: true
+                                unproven_must_not_be_treated_as_equivalent: true
+                                semantic_equivalence_must_not_replace_B3_exact_approved_content_verification: true
+                                semantic_equivalence_must_not_transfer_content_approval: true
+                                existing_contract_scope_and_content_identity_bindings: PRESERVED
+                                adapter_semantics_preservation_assurance: UNRESOLVED_USER_DECISION
+                                verifier_trust_and_proof_validation_model: UNRESOLVED_USER_DECISION
+                                family_adapter_and_common_verifier_interface_binding: UNRESOLVED_USER_DECISION
+                                proof_result_evidence_admissibility_details: UNRESOLVED_USER_DECISION
+                                unresolved_or_unsupported_proof_outcome_handling: UNRESOLVED_USER_DECISION
+                                formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+                                record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                                this_record_owns_cross_family_policy_authority: false
+                                proof_verifier_adapter_schema_or_workflow_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
                             proof_verification_protocol_and_capability_discovery: UNRESOLVED_USER_DECISION
                             unsupported_semantics_and_unproven_outcome_handling: UNRESOLVED_USER_DECISION
                             formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
