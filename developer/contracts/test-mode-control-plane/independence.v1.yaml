@@ -1,6 +1,8 @@
 contract_id: urn:ptsip:developer:test-mode-control-plane:independence
 version: "1.0"
-policy_ref: developer/policy/ARCH/MPD-ARCH-0004.yaml
+artifact_role: NON_POLICY_IMPLEMENTATION_CONTRACT
+policy_authority_claim: NONE
+root_family_policy_materialization: PENDING_SCHEMA_AND_ID_DECISION
 component_ref: repository-test-mode-control-plane
 authority:
   project_profile: .ptsip/profiles/main.ptsip.yaml
