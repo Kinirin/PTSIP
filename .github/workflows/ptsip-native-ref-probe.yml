@@ -1,0 +1,52 @@
+name: PTSIP Native Ref Experiment
+on:
+  push:
+    paths:
+      - ".github/workflows/ptsip-native-ref-probe.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-experiment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/go.mod
+      - name: Install pinned actual PTSIP native VALIDATION engine
+        run: |
+          python -m pip install --disable-pip-version-check 'PTSIP==0.3.8b3'
+          python -m pip show PTSIP
+      - name: Execute native engine positive, negative, external-ref experiments
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
+        run: |
+          go -C .ptsip/engine/developer test -tags ptsip_probe ./schema_check -run TestInstalledPTSIP038b3InlineAndExternalRefExperiment -count=1 -v | tee native-probe.log
+      - name: Run existing actual engine schema-check (diagnostic even if schema incomplete)
+        if: always()
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
+        shell: bash
+        run: |
+          set +e
+          go -C .ptsip/engine/developer run . --validator schema-check --root ../../.. > schema-check-probe.json 2> schema-check-probe.err
+          result=$?
+          printf 'SCHEMA_CHECK_EXIT=%s\n' "$result"
+          head -c 14000 schema-check-probe.json || true
+          echo
+          cat schema-check-probe.err || true
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ptsip-038b3-native-ref-probe
+          path: |
+            native-probe.log
+            schema-check-probe.json
+            schema-check-probe.err
+          if-no-files-found: warn
