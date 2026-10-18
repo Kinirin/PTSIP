@@ -40,7 +40,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b3" "PyYAML>=6,<7"
+          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b4" "PyYAML>=6,<7"
       - name: Resolve developer schema test responsibility
         shell: bash
         run: |
@@ -58,14 +58,14 @@ jobs:
       - name: Exercise installed engine and schema-check negative fixtures
         shell: bash
         env:
-          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b4'
         run: |
           set -euo pipefail
           go -C developer/tests test ./schema_validation -count=1 -v
       - name: Validate current developer contract schemas
         shell: bash
         env:
-          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b4'
         run: |
           set -euo pipefail
           go -C .ptsip/engine/developer run . --validator schema-check --root ../../..

@@ -1,0 +1,32 @@
+name: PTSIP Schema Resources Bridge Smoke
+on:
+  push:
+    paths:
+      - ".github/workflows/ptsip-schema-resources-smoke.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-resource-bridge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+      - name: Install PTSIP b4 official runtime
+        run: python -m pip install --disable-pip-version-check 'PTSIP==0.3.8b4'
+      - name: Verify adapter unit tests
+        run: go -C .ptsip/engine/developer test ./schema_check -count=1 -v
+      - name: Verify native reference bridge integration
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b4'
+        run: go -C developer/tests test ./schema_validation -count=1 -v
+      - name: Run current developer schema scan with resources
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b4'
+        run: go -C .ptsip/engine/developer run . --validator schema-check --root ../../..

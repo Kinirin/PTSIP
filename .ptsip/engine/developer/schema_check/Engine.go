@@ -83,39 +83,51 @@ var inlineShape=map[string]any{
  "additionalProperties":true,
 }
 
-func nativeCheck(e Engine,doc any) error {
+// nativeValidate is the only request path used for official validation.schema.
+// schema_resources is an explicit, caller-selected set of local approved schemas.
+// It is omitted for the original inline-only shape check.
+func nativeValidate(e Engine, schema, instance any, resources []any) (bool, error) {
+ input:=map[string]any{"schema":schema,"instance":instance}
+ if resources!=nil {input["schema_resources"]=resources}
  request:=map[string]any{
   "engine_id":e.EngineID,"engine_version":e.EngineVersion,
   "contract_id":e.ContractID,"contract_version":e.ContractVersion,
-  "operation_id":"validation.schema",
-  "input":map[string]any{"schema":inlineShape,"instance":doc},
+  "operation_id":"validation.schema","input":input,
  }
- data,_:=json.Marshal(request)
+ data,err:=json.Marshal(request)
+ if err!=nil{return false,err}
  cmd:=exec.Command(e.Executable);cmd.Stdin=bytes.NewReader(data)
  var stdout,stderr bytes.Buffer;cmd.Stdout=&stdout;cmd.Stderr=&stderr
  done:=make(chan error,1);go func(){done<-cmd.Run()}()
  select {
- case err:= <-done:
-  if err!=nil{return fmt.Errorf("native validation execution failed: %v: %s %s",err,stdout.String(),stderr.String())}
+ case err= <-done:
  case <-time.After(20*time.Second):
   if cmd.Process!=nil{_ =cmd.Process.Kill()};<-done
-  return errors.New("native invocation timeout")
+  return false,errors.New("native invocation timeout")
  }
  var result struct {
   Status string `json:"status"`
   Error any `json:"error"`
   NormativeAuthority bool `json:"normative_authority"`
   ExecutionAuthorized bool `json:"execution_authorized"`
-  Output struct {
+  Output *struct {
    Valid bool `json:"valid"`
    Diagnostics []string `json:"diagnostics"`
    Verdict string `json:"ptsip_conformance_verdict"`
   } `json:"output"`
  }
- if err:=json.Unmarshal(stdout.Bytes(),&result);err!=nil{return fmt.Errorf("native response not JSON: %w",err)}
- if result.Status!="PASS" || result.Error!=nil || result.NormativeAuthority || result.ExecutionAuthorized || result.Output.Verdict!="NOT_ASSERTED"{
-  return fmt.Errorf("native contract rejected limited check: %s",strings.TrimSpace(stdout.String()))
+ if jsonErr:=json.Unmarshal(stdout.Bytes(),&result);jsonErr!=nil {
+  return false,fmt.Errorf("native response not JSON: %w; stderr=%s",jsonErr,strings.TrimSpace(stderr.String()))
  }
- if !result.Output.Valid{return fmt.Errorf("engine rejected limited schema shape: %v",result.Output.Diagnostics)}
+ if err!=nil||result.Status!="PASS"||result.Error!=nil||result.NormativeAuthority||result.ExecutionAuthorized||result.Output==nil||result.Output.Verdict!="NOT_ASSERTED"{
+  return false,fmt.Errorf("native validation operation failed: exit=%v result=%s stderr=%s",err,strings.TrimSpace(stdout.String()),strings.TrimSpace(stderr.String()))
+ }
+ return result.Output.Valid,nil
+}
+
+func nativeCheck(e Engine,doc any) error {
+ valid,err:=nativeValidate(e,inlineShape,doc,nil)
+ if err!=nil{return err}
+ if !valid{return errors.New("engine rejected limited schema shape")}
  return nil
 }

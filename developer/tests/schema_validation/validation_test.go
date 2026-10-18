@@ -57,6 +57,10 @@ func TestInstalledValidationEngineAcceptsLimitedSchemaShape(t *testing.T){
  })
  if err!=nil{t.Fatalf("unexpected validation error: %v",err)}
  if result["status"]!="LIMITED_CHECK_PASS"{t.Fatalf("unexpected status: %v",result)}
+ probe,ok:=result["reference_probe"].(map[string]any)
+ if !ok||probe["status"]!="PASS"||probe["positive_valid"]!=true||probe["missing_version_rejected"]!=true{
+  t.Fatalf("approved external version reference was not verified via native engine: %v",result)
+ }
  if result["policy_conformance"]!="NOT_ASSERTED" || result["full_json_schema_conformance"]!="NOT_ASSERTED"{
   t.Fatalf("limited engine check must not claim policy or full JSON Schema conformance: %v",result)
  }

@@ -28,6 +28,7 @@ type Report struct {
  UnverifiedReferences int `json:"unverified_references"`
  PolicyConformance string `json:"policy_conformance"`
  FullJSONSchemaConformance string `json:"full_json_schema_conformance"`
+ ReferenceProbe *ReferenceProbe `json:"reference_probe,omitempty"`
  Findings []Finding `json:"findings"`
 }
 
@@ -129,6 +130,14 @@ func Run(root string)(Report,int){
   }
   if f.Status=="FAIL"{report.Failed++}
   report.Findings=append(report.Findings,f)
+ }
+ // Reference probe is independent of the limited document-shape scan.
+ // It proves only the approved Policy_Status_version -> Policy_version link.
+ // Internal references in policy_status_constant remain outside engine b4 support.
+ if len(problems)==0 {
+  probe:=probeApprovedPolicyVersionReference(root,e)
+  report.ReferenceProbe=&probe
+  if probe.Status!="PASS" {report.Failed++}
  }
  if report.Failed==0{report.Status="LIMITED_CHECK_PASS"}
  if report.Failed>0{return report,2}
