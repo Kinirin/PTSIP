@@ -215,6 +215,29 @@ rule_contract_boundary:
                   hash_algorithm_and_encoding: UNRESOLVED_USER_DECISION
                   exact_content_boundary_and_canonicalization: UNRESOLVED_USER_DECISION
                   content_identity_scheme_binding: UNRESOLVED_USER_DECISION
+                  content_identity_scope_decision:
+                    selected_option: C
+                    authorization: PROJECT_OWNER_EXPLICIT
+                    scope: ALL_14_ROOT_FAMILY_MACHINE_CONTRACT_APPROVED_CONTENT_IDENTITIES
+                    selection_model: PER_FAMILY_EXPLICIT_APPROVED_CONTENT_SCOPE
+                    scope_declaration_owner: MATCHING_ROOT_FAMILY
+                    family_specific_scope_independence: REQUIRED
+                    exact_machine_readable_scope_declaration: REQUIRED
+                    implicit_field_or_content_inclusion: FORBIDDEN
+                    infer_scope_from_other_families_or_file_topology: FORBIDDEN
+                    declared_scope_must_bind_to_approval_evidence: true
+                    approval_scope_and_legitimacy_verification: SEPARATELY_REQUIRED
+                    scope_declaration_is_independent_normative_authority: false
+                    scope_omission_or_ambiguity_must_not_be_silently_resolved: true
+                    scope_declaration_location_and_binding: UNRESOLVED_USER_DECISION
+                    scope_expression_and_field_selection_semantics: UNRESOLVED_USER_DECISION
+                    approval_metadata_inclusion_or_exclusion: UNRESOLVED_USER_DECISION
+                    exact_content_canonicalization: UNRESOLVED_USER_DECISION
+                    hash_algorithm_and_output_encoding: UNRESOLVED_USER_DECISION
+                    shared_policy_owner_and_formal_identity: UNRESOLVED_USER_DECISION
+                    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                    this_record_owns_cross_family_policy_authority: false
+                    schema_validator_or_resolver_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
                   formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
                   record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
                   validator_schema_or_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
