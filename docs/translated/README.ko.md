@@ -17,14 +17,14 @@
 
 ## 구성요소 버전
 
-<!-- ptsip-readme-i18n: 9a34eb4b2e50b1c3b92ac56a6a1010337dae5c0be09e95b1e379634fb3d449d7 -->
+<!-- ptsip-readme-i18n: 6e7fcdcfcdcbfa82cc47f917cdcf89fa00a44354840677a07a05718937ab8a86 -->
 
 | 식별자 | 소스 트리 값 |
 | --- | --- |
 | PTSIP_Package | `0.3.8.<SHA6>` — 게시 완료 후 결정되는 구성 식별자 |
-| PTSIP_Tool | `T.0.3.8.b4` (PTSIP PyPI Package `0.3.8b4`) |
+| PTSIP_Tool | `T.0.3.8.b5` (PTSIP PyPI Package `0.3.8b5`) |
 | Project Profile | `pp.1.02` |
-| Engine | Validation `0.3.2`; Context/Projection `0.2.1`; Storage/Discovery/Planning/Execution `0.3.1` |
+| Engine | Validation `0.3.3`; Context/Projection `0.2.1`; Storage/Discovery/Planning/Execution `0.3.1` |
 
 <!-- ptsip-readme-i18n: 1b5e6c193ce4a49f1fb453b3c05c9006e0f7431f820a9e86f038656d72da9768 -->
 
@@ -394,13 +394,13 @@ GitHub 좌표 결정 권한 사용 `refs/heads/ptsip-policy` **설정하기**. �
 | 계정 관리 | bounded caller-admitted 요청 및 기록 효과/스톱 |
 | 사업소개 | Render validated Context에 선언된 출력 형식 |
 
-<!-- ptsip-readme-i18n: bb8b5f511aad6cad1b9c8c230300e74c7974068e6d7d01cc35a6afd44b419d38 -->
+<!-- ptsip-readme-i18n: dd2c5e0094bb02273829f4ad2b86c5896d16ba74d1296268b2010fb8f5068d3c -->
 
-PTSIP `0.3.8b4`는 일곱 네이티브 엔진을 모두 포함한 Windows x64·Linux x64 wheel과, Rust 소스 및 lockfile을 담은 소스 배포본 하나를 제공합니다. 설치 자체가 권한 승인, 활성화 또는 API 전환을 허용하지는 않습니다. 기존 소비자 API는 계속 사용할 수 있습니다.
+PTSIP `0.3.8b5`는 네이티브 엔진 7개를 모두 포함하는 Windows x64·Linux x64 wheel과 Rust 소스·lockfile을 포함하는 source 배포본을 제공합니다. 설치는 authority admission, activation 또는 API cutover를 허용하지 않습니다. 기존 소비자 API는 유지됩니다.
 
-<!-- ptsip-readme-i18n: d5d3cd92e5fac3567e9acad3b40eca48e3ac9ace85699b3d9534487f52675ccc -->
+<!-- ptsip-readme-i18n: 17ab9f498abaac0cd0332fe5fcd7aee9652dedcbdd3b4eaf1a829ed7704329da -->
 
-**Validation 참조 지원 범위:** 외부 `$ref` 대상은 명시적으로 제공한 `schema_resources` 집합 안의 `$id`와 자동 연결됩니다. **내부 `$ref` (`#`, `#/$defs/...`, 현재 리소스를 가리키는 참조)와 `$dynamicRef`는 지원하지 않으며**, 구체적인 오류를 반환합니다. 스키마를 다운로드하거나 파일시스템을 검색해 찾지 않습니다. [지원 표와 전체 요청 예제](https://github.com/Kinirin/PTSIP/blob/codex/validation-b4/docs/validation-schema-references.md)를 참고하거나 `ptsip-engine-validation --help`를 실행하세요.
+**Validation 참조 지원:** 내부 `$ref`(JSON Pointer·anchor·재귀 스키마), 외부 `$id` 참조와 `$dynamicRef`·`$dynamicAnchor`를 지원합니다. 선택적인 `schema_resolution`으로 명시한 디렉터리에서 JSON 스키마를 탐색하고 허용한 origin에서 누락된 HTTP(S) 참조를 가져올 수 있습니다. 결과에는 리소스 URI와 SHA256 증거가 포함됩니다. [지원 안내와 완전한 요청 예제](https://github.com/Kinirin/PTSIP/blob/dev/0.3.8b2/docs/validation-schema-references.md)를 참조하거나 `ptsip-engine-validation --help`를 실행하세요.
 
 <!-- ptsip-readme-i18n: 16237957bf45b9495cd88af15fbc6968d93cb312c35004ad238924423610e07e -->
 

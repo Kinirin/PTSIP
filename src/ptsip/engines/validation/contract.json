@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:450659b1-1e89-4138-91d3-8dcbf6d6dc1a",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
   "semantic_owner": "VALIDATION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -13,7 +13,10 @@
         "type": "object",
         "properties": {
           "schema": {
-            "type": "object"
+            "type": [
+              "object",
+              "boolean"
+            ]
           },
           "instance": {},
           "schema_resources": {
@@ -26,6 +29,38 @@
               ],
               "properties": {
                 "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "schema_resolution": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base_uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "directories": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allow_network": {
+                "type": "boolean",
+                "default": false
+              },
+              "allowed_origins": {
+                "type": "array",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
                   "type": "string",
                   "minLength": 1
                 }
@@ -54,12 +89,43 @@
           },
           "ptsip_conformance_verdict": {
             "const": "NOT_ASSERTED"
+          },
+          "schema_resources_used": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "uri",
+                "sha256",
+                "source"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source": {
+                  "enum": [
+                    "INPUT_JSON_COMPACT",
+                    "FILE_BYTES",
+                    "NETWORK_BYTES"
+                  ]
+                }
+              }
+            }
           }
         },
         "required": [
           "valid",
           "diagnostics",
-          "ptsip_conformance_verdict"
+          "ptsip_conformance_verdict",
+          "schema_resources_used"
         ],
         "additionalProperties": false
       },
@@ -71,41 +137,54 @@
         "SCHEMA_VALID_OUTPUT",
         "NO_PROJECT_MUTATION"
       ],
-      "side_effects": [],
-      "declared_permission_requirements": [],
+      "side_effects": [
+        "READ_ONLY_SCHEMA_FILES_IN_EXPLICIT_DIRECTORIES",
+        "HTTP_GET_TO_EXPLICIT_ORIGINS_ONLY_WHEN_ALLOW_NETWORK_TRUE"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_REQUEST_SCHEMA_RESOLUTION_SCOPE_FOR_FILE_OR_NETWORK_ACQUISITION"
+      ],
       "failure_semantics": {
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
         "no_effect_inference": "FORBIDDEN",
-        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
-        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
         "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
-        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID",
+        "schema_resolution": "FAIL_CLOSED_ON_UNRESOLVED_REF_INVALID_RESOURCE_OR_DISALLOWED_IO",
+        "network_error": "SCHEMA_NETWORK_ERROR",
+        "network_denied": "SCHEMA_NETWORK_DENIED",
+        "file_denied": "SCHEMA_FILE_DENIED"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION",
         "normative_authority_from_runtime_result": false,
         "schema_reference_support": {
-          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
-          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
-          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
-          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "network_retrieval": false,
-          "filesystem_discovery": false,
-          "duplicate_ids": "FAIL_CLOSED",
+          "dialect": "JSON_SCHEMA_2020_12_DEFAULT_WITH_LIBRARY_DIALECT_DETECTION",
+          "internal_ref": "JSON_POINTER_ANCHOR_AND_RECURSIVE_REFERENCE",
+          "dynamic_ref": "DYNAMIC_ANCHOR_AND_EVALUATION_SCOPE",
+          "external_ref": "AUTOMATIC_ID_LOOKUP_AND_TRANSITIVE_SCOPED_ACQUISITION",
+          "filesystem_discovery": "RECURSIVE_JSON_FILES_IN_EXPLICIT_CANONICAL_DIRECTORIES",
+          "network_retrieval": "OPT_IN_EXACT_HTTP_HTTPS_ORIGINS_NO_REDIRECTS_NO_AMBIENT_PROXY",
+          "duplicate_ids": "EXPLICIT_DUPLICATES_FAIL; ACQUIRED_IDENTICAL_CONTENT_DEDUPLICATES; CONFLICTS_FAIL",
           "missing_resource": "FAIL_CLOSED",
-          "resource_limit": 128,
-          "schema_node_limit": 16384
+          "document_limit": 128,
+          "schema_node_limit": 16384,
+          "acquired_document_byte_limit": 1048576,
+          "total_acquired_byte_limit": 8388608,
+          "directory_entry_limit": 4096,
+          "network_request_timeout_seconds": 5,
+          "acquisition_time_budget_seconds": 20,
+          "evidence": "URI_SOURCE_KIND_AND_SHA256_OF_INPUT_COMPACT_JSON_OR_ACQUIRED_BYTES",
+          "capability_permission_is_not_execution_grant": true
         }
       }
     },
@@ -115,7 +194,10 @@
         "type": "object",
         "properties": {
           "schema": {
-            "type": "object"
+            "type": [
+              "object",
+              "boolean"
+            ]
           },
           "instance": {},
           "schema_resources": {
@@ -128,6 +210,38 @@
               ],
               "properties": {
                 "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "schema_resolution": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base_uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "directories": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allow_network": {
+                "type": "boolean",
+                "default": false
+              },
+              "allowed_origins": {
+                "type": "array",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
                   "type": "string",
                   "minLength": 1
                 }
@@ -156,12 +270,43 @@
           },
           "ptsip_conformance_verdict": {
             "const": "NOT_ASSERTED"
+          },
+          "schema_resources_used": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "uri",
+                "sha256",
+                "source"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source": {
+                  "enum": [
+                    "INPUT_JSON_COMPACT",
+                    "FILE_BYTES",
+                    "NETWORK_BYTES"
+                  ]
+                }
+              }
+            }
           }
         },
         "required": [
           "valid",
           "diagnostics",
-          "ptsip_conformance_verdict"
+          "ptsip_conformance_verdict",
+          "schema_resources_used"
         ],
         "additionalProperties": false
       },
@@ -173,41 +318,54 @@
         "SCHEMA_VALID_OUTPUT",
         "NO_PROJECT_MUTATION"
       ],
-      "side_effects": [],
-      "declared_permission_requirements": [],
+      "side_effects": [
+        "READ_ONLY_SCHEMA_FILES_IN_EXPLICIT_DIRECTORIES",
+        "HTTP_GET_TO_EXPLICIT_ORIGINS_ONLY_WHEN_ALLOW_NETWORK_TRUE"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_REQUEST_SCHEMA_RESOLUTION_SCOPE_FOR_FILE_OR_NETWORK_ACQUISITION"
+      ],
       "failure_semantics": {
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
         "no_effect_inference": "FORBIDDEN",
-        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
-        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
         "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
-        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID",
+        "schema_resolution": "FAIL_CLOSED_ON_UNRESOLVED_REF_INVALID_RESOURCE_OR_DISALLOWED_IO",
+        "network_error": "SCHEMA_NETWORK_ERROR",
+        "network_denied": "SCHEMA_NETWORK_DENIED",
+        "file_denied": "SCHEMA_FILE_DENIED"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION",
         "normative_authority_from_runtime_result": false,
         "schema_reference_support": {
-          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
-          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
-          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
-          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "network_retrieval": false,
-          "filesystem_discovery": false,
-          "duplicate_ids": "FAIL_CLOSED",
+          "dialect": "JSON_SCHEMA_2020_12_DEFAULT_WITH_LIBRARY_DIALECT_DETECTION",
+          "internal_ref": "JSON_POINTER_ANCHOR_AND_RECURSIVE_REFERENCE",
+          "dynamic_ref": "DYNAMIC_ANCHOR_AND_EVALUATION_SCOPE",
+          "external_ref": "AUTOMATIC_ID_LOOKUP_AND_TRANSITIVE_SCOPED_ACQUISITION",
+          "filesystem_discovery": "RECURSIVE_JSON_FILES_IN_EXPLICIT_CANONICAL_DIRECTORIES",
+          "network_retrieval": "OPT_IN_EXACT_HTTP_HTTPS_ORIGINS_NO_REDIRECTS_NO_AMBIENT_PROXY",
+          "duplicate_ids": "EXPLICIT_DUPLICATES_FAIL; ACQUIRED_IDENTICAL_CONTENT_DEDUPLICATES; CONFLICTS_FAIL",
           "missing_resource": "FAIL_CLOSED",
-          "resource_limit": 128,
-          "schema_node_limit": 16384
+          "document_limit": 128,
+          "schema_node_limit": 16384,
+          "acquired_document_byte_limit": 1048576,
+          "total_acquired_byte_limit": 8388608,
+          "directory_entry_limit": 4096,
+          "network_request_timeout_seconds": 5,
+          "acquisition_time_budget_seconds": 20,
+          "evidence": "URI_SOURCE_KIND_AND_SHA256_OF_INPUT_COMPACT_JSON_OR_ACQUIRED_BYTES",
+          "capability_permission_is_not_execution_grant": true
         }
       }
     },
@@ -217,7 +375,10 @@
         "type": "object",
         "properties": {
           "schema": {
-            "type": "object"
+            "type": [
+              "object",
+              "boolean"
+            ]
           },
           "instance": {},
           "schema_resources": {
@@ -230,6 +391,38 @@
               ],
               "properties": {
                 "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "schema_resolution": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base_uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "directories": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allow_network": {
+                "type": "boolean",
+                "default": false
+              },
+              "allowed_origins": {
+                "type": "array",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
                   "type": "string",
                   "minLength": 1
                 }
@@ -258,12 +451,43 @@
           },
           "ptsip_conformance_verdict": {
             "const": "NOT_ASSERTED"
+          },
+          "schema_resources_used": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "uri",
+                "sha256",
+                "source"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source": {
+                  "enum": [
+                    "INPUT_JSON_COMPACT",
+                    "FILE_BYTES",
+                    "NETWORK_BYTES"
+                  ]
+                }
+              }
+            }
           }
         },
         "required": [
           "valid",
           "diagnostics",
-          "ptsip_conformance_verdict"
+          "ptsip_conformance_verdict",
+          "schema_resources_used"
         ],
         "additionalProperties": false
       },
@@ -275,41 +499,54 @@
         "SCHEMA_VALID_OUTPUT",
         "NO_PROJECT_MUTATION"
       ],
-      "side_effects": [],
-      "declared_permission_requirements": [],
+      "side_effects": [
+        "READ_ONLY_SCHEMA_FILES_IN_EXPLICIT_DIRECTORIES",
+        "HTTP_GET_TO_EXPLICIT_ORIGINS_ONLY_WHEN_ALLOW_NETWORK_TRUE"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_REQUEST_SCHEMA_RESOLUTION_SCOPE_FOR_FILE_OR_NETWORK_ACQUISITION"
+      ],
       "failure_semantics": {
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
         "no_effect_inference": "FORBIDDEN",
-        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
-        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
         "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
-        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID",
+        "schema_resolution": "FAIL_CLOSED_ON_UNRESOLVED_REF_INVALID_RESOURCE_OR_DISALLOWED_IO",
+        "network_error": "SCHEMA_NETWORK_ERROR",
+        "network_denied": "SCHEMA_NETWORK_DENIED",
+        "file_denied": "SCHEMA_FILE_DENIED"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION",
         "normative_authority_from_runtime_result": false,
         "schema_reference_support": {
-          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
-          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
-          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
-          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "network_retrieval": false,
-          "filesystem_discovery": false,
-          "duplicate_ids": "FAIL_CLOSED",
+          "dialect": "JSON_SCHEMA_2020_12_DEFAULT_WITH_LIBRARY_DIALECT_DETECTION",
+          "internal_ref": "JSON_POINTER_ANCHOR_AND_RECURSIVE_REFERENCE",
+          "dynamic_ref": "DYNAMIC_ANCHOR_AND_EVALUATION_SCOPE",
+          "external_ref": "AUTOMATIC_ID_LOOKUP_AND_TRANSITIVE_SCOPED_ACQUISITION",
+          "filesystem_discovery": "RECURSIVE_JSON_FILES_IN_EXPLICIT_CANONICAL_DIRECTORIES",
+          "network_retrieval": "OPT_IN_EXACT_HTTP_HTTPS_ORIGINS_NO_REDIRECTS_NO_AMBIENT_PROXY",
+          "duplicate_ids": "EXPLICIT_DUPLICATES_FAIL; ACQUIRED_IDENTICAL_CONTENT_DEDUPLICATES; CONFLICTS_FAIL",
           "missing_resource": "FAIL_CLOSED",
-          "resource_limit": 128,
-          "schema_node_limit": 16384
+          "document_limit": 128,
+          "schema_node_limit": 16384,
+          "acquired_document_byte_limit": 1048576,
+          "total_acquired_byte_limit": 8388608,
+          "directory_entry_limit": 4096,
+          "network_request_timeout_seconds": 5,
+          "acquisition_time_budget_seconds": 20,
+          "evidence": "URI_SOURCE_KIND_AND_SHA256_OF_INPUT_COMPACT_JSON_OR_ACQUIRED_BYTES",
+          "capability_permission_is_not_execution_grant": true
         }
       }
     },
@@ -319,7 +556,10 @@
         "type": "object",
         "properties": {
           "schema": {
-            "type": "object"
+            "type": [
+              "object",
+              "boolean"
+            ]
           },
           "instance": {},
           "schema_resources": {
@@ -332,6 +572,38 @@
               ],
               "properties": {
                 "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "schema_resolution": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base_uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "directories": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allow_network": {
+                "type": "boolean",
+                "default": false
+              },
+              "allowed_origins": {
+                "type": "array",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
                   "type": "string",
                   "minLength": 1
                 }
@@ -360,12 +632,43 @@
           },
           "ptsip_conformance_verdict": {
             "const": "NOT_ASSERTED"
+          },
+          "schema_resources_used": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "uri",
+                "sha256",
+                "source"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source": {
+                  "enum": [
+                    "INPUT_JSON_COMPACT",
+                    "FILE_BYTES",
+                    "NETWORK_BYTES"
+                  ]
+                }
+              }
+            }
           }
         },
         "required": [
           "valid",
           "diagnostics",
-          "ptsip_conformance_verdict"
+          "ptsip_conformance_verdict",
+          "schema_resources_used"
         ],
         "additionalProperties": false
       },
@@ -377,41 +680,54 @@
         "SCHEMA_VALID_OUTPUT",
         "NO_PROJECT_MUTATION"
       ],
-      "side_effects": [],
-      "declared_permission_requirements": [],
+      "side_effects": [
+        "READ_ONLY_SCHEMA_FILES_IN_EXPLICIT_DIRECTORIES",
+        "HTTP_GET_TO_EXPLICIT_ORIGINS_ONLY_WHEN_ALLOW_NETWORK_TRUE"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_REQUEST_SCHEMA_RESOLUTION_SCOPE_FOR_FILE_OR_NETWORK_ACQUISITION"
+      ],
       "failure_semantics": {
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
         "no_effect_inference": "FORBIDDEN",
-        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
-        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
         "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
-        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID",
+        "schema_resolution": "FAIL_CLOSED_ON_UNRESOLVED_REF_INVALID_RESOURCE_OR_DISALLOWED_IO",
+        "network_error": "SCHEMA_NETWORK_ERROR",
+        "network_denied": "SCHEMA_NETWORK_DENIED",
+        "file_denied": "SCHEMA_FILE_DENIED"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION",
         "normative_authority_from_runtime_result": false,
         "schema_reference_support": {
-          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
-          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
-          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
-          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "network_retrieval": false,
-          "filesystem_discovery": false,
-          "duplicate_ids": "FAIL_CLOSED",
+          "dialect": "JSON_SCHEMA_2020_12_DEFAULT_WITH_LIBRARY_DIALECT_DETECTION",
+          "internal_ref": "JSON_POINTER_ANCHOR_AND_RECURSIVE_REFERENCE",
+          "dynamic_ref": "DYNAMIC_ANCHOR_AND_EVALUATION_SCOPE",
+          "external_ref": "AUTOMATIC_ID_LOOKUP_AND_TRANSITIVE_SCOPED_ACQUISITION",
+          "filesystem_discovery": "RECURSIVE_JSON_FILES_IN_EXPLICIT_CANONICAL_DIRECTORIES",
+          "network_retrieval": "OPT_IN_EXACT_HTTP_HTTPS_ORIGINS_NO_REDIRECTS_NO_AMBIENT_PROXY",
+          "duplicate_ids": "EXPLICIT_DUPLICATES_FAIL; ACQUIRED_IDENTICAL_CONTENT_DEDUPLICATES; CONFLICTS_FAIL",
           "missing_resource": "FAIL_CLOSED",
-          "resource_limit": 128,
-          "schema_node_limit": 16384
+          "document_limit": 128,
+          "schema_node_limit": 16384,
+          "acquired_document_byte_limit": 1048576,
+          "total_acquired_byte_limit": 8388608,
+          "directory_entry_limit": 4096,
+          "network_request_timeout_seconds": 5,
+          "acquisition_time_budget_seconds": 20,
+          "evidence": "URI_SOURCE_KIND_AND_SHA256_OF_INPUT_COMPACT_JSON_OR_ACQUIRED_BYTES",
+          "capability_permission_is_not_execution_grant": true
         }
       }
     },
@@ -421,7 +737,10 @@
         "type": "object",
         "properties": {
           "schema": {
-            "type": "object"
+            "type": [
+              "object",
+              "boolean"
+            ]
           },
           "instance": {},
           "schema_resources": {
@@ -434,6 +753,38 @@
               ],
               "properties": {
                 "$id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "schema_resolution": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base_uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "directories": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allow_network": {
+                "type": "boolean",
+                "default": false
+              },
+              "allowed_origins": {
+                "type": "array",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
                   "type": "string",
                   "minLength": 1
                 }
@@ -462,12 +813,43 @@
           },
           "ptsip_conformance_verdict": {
             "const": "NOT_ASSERTED"
+          },
+          "schema_resources_used": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "uri",
+                "sha256",
+                "source"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "source": {
+                  "enum": [
+                    "INPUT_JSON_COMPACT",
+                    "FILE_BYTES",
+                    "NETWORK_BYTES"
+                  ]
+                }
+              }
+            }
           }
         },
         "required": [
           "valid",
           "diagnostics",
-          "ptsip_conformance_verdict"
+          "ptsip_conformance_verdict",
+          "schema_resources_used"
         ],
         "additionalProperties": false
       },
@@ -479,41 +861,54 @@
         "SCHEMA_VALID_OUTPUT",
         "NO_PROJECT_MUTATION"
       ],
-      "side_effects": [],
-      "declared_permission_requirements": [],
+      "side_effects": [
+        "READ_ONLY_SCHEMA_FILES_IN_EXPLICIT_DIRECTORIES",
+        "HTTP_GET_TO_EXPLICIT_ORIGINS_ONLY_WHEN_ALLOW_NETWORK_TRUE"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_REQUEST_SCHEMA_RESOLUTION_SCOPE_FOR_FILE_OR_NETWORK_ACQUISITION"
+      ],
       "failure_semantics": {
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
         "no_effect_inference": "FORBIDDEN",
-        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
-        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
         "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
-        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID",
+        "schema_resolution": "FAIL_CLOSED_ON_UNRESOLVED_REF_INVALID_RESOURCE_OR_DISALLOWED_IO",
+        "network_error": "SCHEMA_NETWORK_ERROR",
+        "network_denied": "SCHEMA_NETWORK_DENIED",
+        "file_denied": "SCHEMA_FILE_DENIED"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
-        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES",
+        "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION",
         "normative_authority_from_runtime_result": false,
         "schema_reference_support": {
-          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
-          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
-          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
-          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "network_retrieval": false,
-          "filesystem_discovery": false,
-          "duplicate_ids": "FAIL_CLOSED",
+          "dialect": "JSON_SCHEMA_2020_12_DEFAULT_WITH_LIBRARY_DIALECT_DETECTION",
+          "internal_ref": "JSON_POINTER_ANCHOR_AND_RECURSIVE_REFERENCE",
+          "dynamic_ref": "DYNAMIC_ANCHOR_AND_EVALUATION_SCOPE",
+          "external_ref": "AUTOMATIC_ID_LOOKUP_AND_TRANSITIVE_SCOPED_ACQUISITION",
+          "filesystem_discovery": "RECURSIVE_JSON_FILES_IN_EXPLICIT_CANONICAL_DIRECTORIES",
+          "network_retrieval": "OPT_IN_EXACT_HTTP_HTTPS_ORIGINS_NO_REDIRECTS_NO_AMBIENT_PROXY",
+          "duplicate_ids": "EXPLICIT_DUPLICATES_FAIL; ACQUIRED_IDENTICAL_CONTENT_DEDUPLICATES; CONFLICTS_FAIL",
           "missing_resource": "FAIL_CLOSED",
-          "resource_limit": 128,
-          "schema_node_limit": 16384
+          "document_limit": 128,
+          "schema_node_limit": 16384,
+          "acquired_document_byte_limit": 1048576,
+          "total_acquired_byte_limit": 8388608,
+          "directory_entry_limit": 4096,
+          "network_request_timeout_seconds": 5,
+          "acquisition_time_budget_seconds": 20,
+          "evidence": "URI_SOURCE_KIND_AND_SHA256_OF_INPUT_COMPACT_JSON_OR_ACQUIRED_BYTES",
+          "capability_permission_is_not_execution_grant": true
         }
       }
     },
@@ -541,7 +936,10 @@
                   ]
                 },
                 "schema": {
-                  "type": "object"
+                  "type": [
+                    "object",
+                    "boolean"
+                  ]
                 },
                 "instance": {},
                 "depends_on": {
@@ -579,6 +977,38 @@
                 }
               }
             }
+          },
+          "schema_resolution": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base_uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "directories": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allow_network": {
+                "type": "boolean",
+                "default": false
+              },
+              "allowed_origins": {
+                "type": "array",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
           }
         },
         "required": [
@@ -607,12 +1037,43 @@
                     "type": "string",
                     "minLength": 1
                   }
+                },
+                "schema_resources_used": {
+                  "type": "array",
+                  "maxItems": 128,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "uri",
+                      "sha256",
+                      "source"
+                    ],
+                    "properties": {
+                      "uri": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "source": {
+                        "enum": [
+                          "INPUT_JSON_COMPACT",
+                          "FILE_BYTES",
+                          "NETWORK_BYTES"
+                        ]
+                      }
+                    }
+                  }
                 }
               },
               "required": [
                 "check_id",
                 "valid",
-                "diagnostics"
+                "diagnostics",
+                "schema_resources_used"
               ],
               "additionalProperties": false
             }
@@ -639,41 +1100,54 @@
         "SCHEMA_VALID_OUTPUT",
         "NO_PROJECT_MUTATION"
       ],
-      "side_effects": [],
-      "declared_permission_requirements": [],
+      "side_effects": [
+        "READ_ONLY_SCHEMA_FILES_IN_EXPLICIT_DIRECTORIES",
+        "HTTP_GET_TO_EXPLICIT_ORIGINS_ONLY_WHEN_ALLOW_NETWORK_TRUE"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_REQUEST_SCHEMA_RESOLUTION_SCOPE_FOR_FILE_OR_NETWORK_ACQUISITION"
+      ],
       "failure_semantics": {
         "unknown_operation": "UNSUPPORTED_OPERATION",
         "invalid_input": "INPUT_CONTRACT_INVALID",
         "unverified_mapping": "FAIL_CLOSED",
         "no_effect_inference": "FORBIDDEN",
-        "internal_ref": "INTERNAL_REF_UNSUPPORTED",
-        "dynamic_ref": "DYNAMIC_REF_UNSUPPORTED",
         "missing_schema_resource": "SCHEMA_RESOURCE_NOT_FOUND",
-        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID"
+        "duplicate_schema_id": "DUPLICATE_SCHEMA_ID",
+        "schema_resolution": "FAIL_CLOSED_ON_UNRESOLVED_REF_INVALID_RESOURCE_OR_DISALLOWED_IO",
+        "network_error": "SCHEMA_NETWORK_ERROR",
+        "network_denied": "SCHEMA_NETWORK_DENIED",
+        "file_denied": "SCHEMA_FILE_DENIED"
       },
       "verification_evidence": {
         "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE",
         "normative_authority_from_runtime_result": false,
         "schema_reference_support": {
-          "external_ref": "AUTOMATIC_ID_LOOKUP_IN_EXPLICIT_SCHEMA_RESOURCES_AND_EMBEDDED_RESOURCES",
-          "relative_external_ref": "RESOLVE_AGAINST_CURRENT_ABSOLUTE_ID",
-          "external_fragment": "JSON_POINTER_OR_ANCHOR_IN_DIFFERENT_RESOURCE",
-          "internal_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "dynamic_ref": "UNSUPPORTED_FAIL_CLOSED",
-          "network_retrieval": false,
-          "filesystem_discovery": false,
-          "duplicate_ids": "FAIL_CLOSED",
+          "dialect": "JSON_SCHEMA_2020_12_DEFAULT_WITH_LIBRARY_DIALECT_DETECTION",
+          "internal_ref": "JSON_POINTER_ANCHOR_AND_RECURSIVE_REFERENCE",
+          "dynamic_ref": "DYNAMIC_ANCHOR_AND_EVALUATION_SCOPE",
+          "external_ref": "AUTOMATIC_ID_LOOKUP_AND_TRANSITIVE_SCOPED_ACQUISITION",
+          "filesystem_discovery": "RECURSIVE_JSON_FILES_IN_EXPLICIT_CANONICAL_DIRECTORIES",
+          "network_retrieval": "OPT_IN_EXACT_HTTP_HTTPS_ORIGINS_NO_REDIRECTS_NO_AMBIENT_PROXY",
+          "duplicate_ids": "EXPLICIT_DUPLICATES_FAIL; ACQUIRED_IDENTICAL_CONTENT_DEDUPLICATES; CONFLICTS_FAIL",
           "missing_resource": "FAIL_CLOSED",
-          "resource_limit": 128,
-          "schema_node_limit": 16384
+          "document_limit": 128,
+          "schema_node_limit": 16384,
+          "acquired_document_byte_limit": 1048576,
+          "total_acquired_byte_limit": 8388608,
+          "directory_entry_limit": 4096,
+          "network_request_timeout_seconds": 5,
+          "acquisition_time_budget_seconds": 20,
+          "evidence": "URI_SOURCE_KIND_AND_SHA256_OF_INPUT_COMPACT_JSON_OR_ACQUIRED_BYTES",
+          "capability_permission_is_not_execution_grant": true
         }
       }
     },
@@ -775,7 +1249,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -869,7 +1343,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1066,7 +1540,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -1266,7 +1740,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -1427,7 +1901,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "4.0.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {

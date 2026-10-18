@@ -170,8 +170,8 @@ jobs:
           manifest = json.loads((root / 'shipping-manifest.json').read_text())
           package = manifest.get('pypi_package') or {}
           version = package.get('version')
-          if manifest['selection']['release_type'] != 'PTSIP_PACKAGE' or version != '0.3.8b4':
-              raise SystemExit('PyPI accepts only the complete PTSIP 0.3.8b4 Package')
+          if manifest['selection']['release_type'] != 'PTSIP_PACKAGE' or version != '0.3.8b5':
+              raise SystemExit('PyPI accepts only the complete PTSIP 0.3.8b5 Package')
           components = {c['id']: c for c in manifest['package']['components'] if c['kind'] == 'engine'}
           admitted = {f['name']: f for f in package.get('files', [])}
           stage = root / 'pypi/package'

@@ -1,11 +1,10 @@
-//! Operation-local schema resources. URI identifiers never grant network or file access.
+//! Reference evaluation is owned by the JSON Schema evaluator; acquisition is explicit.
+use crate::retrieval::{Document, Loader, Resolution};
 use jsonschema::{Retrieve, Uri, Validator};
-use serde_json::Value;
+use serde_json::{json, Value};
+use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
 use std::sync::Arc;
-
-const INTERNAL: &str = "INTERNAL_REF_UNSUPPORTED: internal $ref (#, #/... or the current resource ID) is not supported in PTSIP 0.3.8b4";
-const DYNAMIC: &str = "DYNAMIC_REF_UNSUPPORTED: $dynamicRef is not supported in PTSIP 0.3.8b4";
 
 #[derive(Clone)]
 struct Resources(Arc<BTreeMap<String, Value>>);
@@ -14,12 +13,12 @@ impl Retrieve for Resources {
         &self,
         uri: &Uri<String>,
     ) -> Result<Value, Box<dyn std::error::Error + Send + Sync>> {
-        self.0.get(uri.as_str()).cloned().ok_or_else(|| {
-            format!("SCHEMA_RESOURCE_NOT_FOUND: {} is absent from schema_resources; network and filesystem retrieval are disabled", uri.as_str()).into()
-        })
+        self.0
+            .get(uri.as_str())
+            .cloned()
+            .ok_or_else(|| format!("SCHEMA_RESOURCE_NOT_FOUND: {}", uri.as_str()).into())
     }
 }
-
 fn resolve(reference: &str, base: Option<&str>) -> Result<String, String> {
     let uri = if let Some(base) = base {
         let base = Uri::parse(base).map_err(|e| format!("INVALID_SCHEMA_ID: {e}"))?;
@@ -31,54 +30,58 @@ fn resolve(reference: &str, base: Option<&str>) -> Result<String, String> {
     };
     Ok(uri.as_str().to_owned())
 }
-
+fn insert(
+    resources: &mut BTreeMap<String, Value>,
+    id: String,
+    schema: &Value,
+    identical_ok: bool,
+) -> Result<(), String> {
+    if let Some(previous) = resources.get(&id) {
+        if identical_ok && previous == schema {
+            return Ok(());
+        }
+        return Err(format!("DUPLICATE_SCHEMA_ID: {id}"));
+    }
+    resources.insert(id, schema.clone());
+    Ok(())
+}
 fn inspect(
     schema: &Value,
-    inherited: Option<&str>,
+    inherited: &str,
     resources: &mut BTreeMap<String, Value>,
     references: &mut Vec<String>,
     remaining: &mut usize,
+    identical_ok: bool,
 ) -> Result<(), String> {
     *remaining = remaining
         .checked_sub(1)
         .ok_or("SCHEMA_RESOURCE_LIMIT: too many schema nodes")?;
-    let Some(object) = schema.as_object() else {
+    if schema.is_boolean() {
         return Ok(());
-    };
-    let mut base = inherited.map(str::to_owned);
+    }
+    let object = schema
+        .as_object()
+        .ok_or("INVALID_SCHEMA: object or boolean schema required")?;
+    let mut base = inherited.to_owned();
     if let Some(id) = object.get("$id") {
         let id = id
             .as_str()
             .ok_or("INVALID_SCHEMA_ID: $id must be a string")?;
         if id.is_empty() || id.contains('#') {
-            return Err(
-                "INVALID_SCHEMA_ID: $id must identify a resource without a fragment".into(),
-            );
+            return Err("INVALID_SCHEMA_ID: fragment-free resource ID required".into());
         }
-        let id = resolve(id, inherited)?;
-        if resources.insert(id.clone(), schema.clone()).is_some() {
-            return Err(format!("DUPLICATE_SCHEMA_ID: {id}"));
-        }
-        base = Some(id);
+        base = resolve(id, Some(inherited))?;
+        insert(resources, base.clone(), schema, identical_ok)?;
     }
-    if object.contains_key("$dynamicRef") {
-        return Err(DYNAMIC.into());
-    }
-    if let Some(reference) = object.get("$ref") {
-        let reference = reference
-            .as_str()
-            .ok_or("INVALID_SCHEMA_REF: $ref must be a string")?;
-        if reference.is_empty() || reference.starts_with('#') {
-            return Err(INTERNAL.into());
+    for keyword in ["$ref", "$dynamicRef"] {
+        if let Some(reference) = object.get(keyword) {
+            let reference = reference
+                .as_str()
+                .ok_or("INVALID_SCHEMA_REF: URI-reference string required")?;
+            let target = resolve(reference, Some(&base))?;
+            references.push(target.split('#').next().unwrap_or("").to_owned());
         }
-        let target = resolve(reference, base.as_deref())?;
-        let document = target.split('#').next().unwrap_or("");
-        if Some(document) == base.as_deref() {
-            return Err(INTERNAL.into());
-        }
-        references.push(document.to_owned());
     }
-    // Visit schema locations only: values in examples/default/const are data.
     for name in [
         "$defs",
         "definitions",
@@ -89,14 +92,17 @@ fn inspect(
     ] {
         if let Some(children) = object.get(name).and_then(Value::as_object) {
             for child in children.values() {
-                inspect(child, base.as_deref(), resources, references, remaining)?;
+                if name == "dependencies" && child.is_array() {
+                    continue;
+                }
+                inspect(child, &base, resources, references, remaining, identical_ok)?;
             }
         }
     }
     for name in ["allOf", "anyOf", "oneOf", "prefixItems"] {
         if let Some(children) = object.get(name).and_then(Value::as_array) {
             for child in children {
-                inspect(child, base.as_deref(), resources, references, remaining)?;
+                inspect(child, &base, resources, references, remaining, identical_ok)?;
             }
         }
     }
@@ -117,17 +123,43 @@ fn inspect(
         if let Some(child) = object.get(name) {
             if let Some(children) = child.as_array() {
                 for child in children {
-                    inspect(child, base.as_deref(), resources, references, remaining)?;
+                    inspect(child, &base, resources, references, remaining, identical_ok)?;
                 }
             } else {
-                inspect(child, base.as_deref(), resources, references, remaining)?;
+                inspect(child, &base, resources, references, remaining, identical_ok)?;
             }
         }
     }
     Ok(())
 }
-
-pub fn validator(schema: &Value, supplied: Option<&Value>) -> Result<Validator, String> {
+pub struct Prepared {
+    pub validator: Validator,
+    pub evidence: Vec<Value>,
+}
+pub fn prepare(
+    schema: &Value,
+    supplied: Option<&Value>,
+    resolution: Option<&Value>,
+) -> Result<Prepared, String> {
+    let config: Resolution = match resolution {
+        None => Resolution::default(),
+        Some(value) => serde_json::from_value(value.clone())
+            .map_err(|e| format!("SCHEMA_RESOLUTION_INVALID: {e}"))?,
+    };
+    let base = resolve(
+        config
+            .base_uri
+            .as_deref()
+            .unwrap_or("urn:ptsip:validation:root"),
+        None,
+    )?;
+    if base.contains('#') {
+        return Err("INVALID_SCHEMA_ID: base_uri must not contain a fragment".into());
+    }
+    let root_uri = match schema.get("$id").and_then(Value::as_str) {
+        Some(id) => resolve(id, Some(&base))?,
+        None => base.clone(),
+    };
     let supplied =
         match supplied {
             None => &[][..],
@@ -142,145 +174,121 @@ pub fn validator(schema: &Value, supplied: Option<&Value>) -> Result<Validator, 
     let mut remaining = 16384;
     inspect(
         schema,
-        None,
+        &base,
         &mut resources,
         &mut references,
         &mut remaining,
+        false,
     )?;
+    insert(&mut resources, root_uri.clone(), schema, true)?;
+    let mut documents = vec![(root_uri.clone(), schema.clone())];
+    let mut evidence = vec![
+        json!({"uri":root_uri,"sha256":format!("{:x}",Sha256::digest(serde_json::to_vec(schema).map_err(|e| e.to_string())?)),"source":"INPUT_JSON_COMPACT"}),
+    ];
     for resource in supplied {
-        let id = resource.get("$id").and_then(Value::as_str).ok_or(
-            "SCHEMA_RESOURCE_ID_REQUIRED: every schema_resources entry requires an absolute $id",
-        )?;
-        resolve(id, None)?;
+        let id = resource
+            .get("$id")
+            .and_then(Value::as_str)
+            .ok_or("SCHEMA_RESOURCE_ID_REQUIRED: explicit resource requires an absolute $id")?;
+        let uri = resolve(id, None)?;
         inspect(
             resource,
-            None,
+            &uri,
             &mut resources,
             &mut references,
             &mut remaining,
+            false,
+        )?;
+        documents.push((uri.clone(), resource.clone()));
+        evidence.push(json!({"uri":uri,"sha256":format!("{:x}",Sha256::digest(serde_json::to_vec(resource).map_err(|e| e.to_string())?)),"source":"INPUT_JSON_COMPACT"}));
+    }
+    let mut loader = Loader::new(&config)?;
+    let discovered = loader.discover()?;
+    let add = |doc: Document,
+               resources: &mut BTreeMap<String, Value>,
+               references: &mut Vec<String>,
+               remaining: &mut usize,
+               documents: &mut Vec<(String, Value)>,
+               evidence: &mut Vec<Value>|
+     -> Result<(), String> {
+        inspect(
+            &doc.schema,
+            &doc.uri,
+            resources,
+            references,
+            remaining,
+            true,
+        )?;
+        insert(resources, doc.uri.clone(), &doc.schema, true)?;
+        documents.push((doc.uri, doc.schema));
+        evidence.push(doc.evidence);
+        Ok(())
+    };
+    for doc in discovered {
+        add(
+            doc,
+            &mut resources,
+            &mut references,
+            &mut remaining,
+            &mut documents,
+            &mut evidence,
         )?;
     }
-    for reference in references {
-        if !resources.contains_key(&reference) {
-            return Err(format!("SCHEMA_RESOURCE_NOT_FOUND: {reference} is absent from schema_resources; network and filesystem retrieval are disabled"));
+    let mut cursor = 0;
+    while cursor < references.len() {
+        if documents.len() > 128 {
+            return Err("SCHEMA_RESOURCE_LIMIT: at most 128 schema documents".into());
+        }
+        let uri = references[cursor].clone();
+        cursor += 1;
+        if !resources.contains_key(&uri) && !referencing::SPECIFICATIONS.contains_resource(&uri) {
+            let doc = loader.retrieve(&uri)?;
+            insert(&mut resources, uri, &doc.schema, true)?;
+            add(
+                doc,
+                &mut resources,
+                &mut references,
+                &mut remaining,
+                &mut documents,
+                &mut evidence,
+            )?;
         }
     }
+    if documents.len() > 128 {
+        return Err("SCHEMA_RESOURCE_LIMIT: at most 128 schema documents".into());
+    }
     let retriever = Resources(Arc::new(resources));
-    // Validate the complete supplied set, including unused resources, before use.
-    for resource in supplied {
+    for (uri, document) in documents.iter().skip(1) {
         jsonschema::options()
+            .with_base_uri(uri)
             .with_retriever(retriever.clone())
-            .build(resource)
+            .build(document)
             .map_err(|e| format!("INVALID_SCHEMA_RESOURCE: {e}"))?;
     }
-    jsonschema::options()
+    let validator = jsonschema::options()
+        .with_base_uri(base)
         .with_retriever(retriever)
         .build(schema)
-        .map_err(|e| format!("INVALID_SCHEMA: {e}"))
+        .map_err(|e| format!("INVALID_SCHEMA: {e}"))?;
+    Ok(Prepared {
+        validator,
+        evidence,
+    })
 }
-
-pub fn validate(
+pub fn validator(schema: &Value, resources: Option<&Value>) -> Result<Validator, String> {
+    Ok(prepare(schema, resources, None)?.validator)
+}
+pub fn validate_with_resolution(
     schema: &Value,
     instance: &Value,
     resources: Option<&Value>,
-) -> Result<Vec<String>, String> {
-    Ok(validator(schema, resources)?
+    resolution: Option<&Value>,
+) -> Result<(Vec<String>, Vec<Value>), String> {
+    let prepared = prepare(schema, resources, resolution)?;
+    let errors = prepared
+        .validator
         .iter_errors(instance)
         .map(|e| e.to_string())
-        .collect())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use serde_json::json;
-
-    #[test]
-    fn external_ids_resolve_without_manual_uri_mapping() {
-        let schema = json!({"$ref":"https://example.invalid/address"});
-        let resources = json!([{"$id":"https://example.invalid/address","type":"object","properties":{"zip":{"type":"integer"}},"required":["zip"]}]);
-        assert!(validate(&schema, &json!({"zip":123}), Some(&resources))
-            .unwrap()
-            .is_empty());
-        assert!(
-            !validate(&schema, &json!({"zip":"wrong"}), Some(&resources))
-                .unwrap()
-                .is_empty()
-        );
-    }
-
-    #[test]
-    fn relative_transitive_external_refs_and_external_fragments_resolve() {
-        let root = json!({"$id":"https://example.invalid/main","$ref":"parts/customer"});
-        let resources = json!([
-            {"$id":"https://example.invalid/parts/customer","$ref":"types#/$defs/name"},
-            {"$id":"https://example.invalid/parts/types","$defs":{"name":{"type":"string","minLength":2}}}
-        ]);
-        assert!(validate(&root, &json!("ok"), Some(&resources))
-            .unwrap()
-            .is_empty());
-        assert!(!validate(&root, &json!("x"), Some(&resources))
-            .unwrap()
-            .is_empty());
-    }
-
-    #[test]
-    fn embedded_schema_ids_and_anchors_are_discovered() {
-        let root = json!({"$id":"https://example.invalid/main","$ref":"other#name","$defs":{"embedded":{"$id":"other","$anchor":"name","type":"string"}}});
-        assert!(validate(&root, &json!("ok"), None).unwrap().is_empty());
-        assert!(!validate(&root, &json!(1), None).unwrap().is_empty());
-    }
-
-    #[test]
-    fn duplicate_missing_and_invalid_resource_ids_fail_closed() {
-        for resources in [
-            json!([{"type":"string"}]),
-            json!([{"$id":"relative","type":"string"}]),
-            json!([{"$id":"https://example.invalid/a"},{"$id":"https://example.invalid/a"}]),
-            json!([{"$id":"https://example.invalid/a#fragment"}]),
-            json!([{"$id":"https://example.invalid/a","type":123}]),
-        ] {
-            assert!(validator(&json!({}), Some(&resources)).is_err());
-        }
-        for uri in [
-            "https://example.invalid/unregistered",
-            "file:///unregistered.json",
-            "urn:missing",
-        ] {
-            let error = validator(&json!({"$ref":uri}), None).err().unwrap();
-            assert!(error.contains("SCHEMA_RESOURCE_NOT_FOUND"), "{error}");
-        }
-    }
-
-    #[test]
-    fn internal_and_dynamic_refs_report_explicit_limits_everywhere() {
-        for schema in [
-            json!({"$ref":"#"}),
-            json!({"$ref":"#/$defs/x","$defs":{"x":{}}}),
-            json!({"$id":"https://example.invalid/a","$ref":"https://example.invalid/a"}),
-            json!({"properties":{"x":{"$ref":"#"}}}),
-            json!({"$schema":"http://json-schema.org/draft-07/schema#","items":[{"$ref":"#"}]}),
-            json!({"$dynamicRef":"https://example.invalid/a"}),
-            json!({"$defs":{"x":{"$dynamicRef":"#x"}}}),
-        ] {
-            let error = validator(&schema, None).err().unwrap();
-            assert!(error.contains("REF_UNSUPPORTED"), "{error}");
-        }
-        let resources = json!([{"$id":"urn:bad","$ref":"#"}]);
-        assert!(validator(&json!({}), Some(&resources))
-            .err()
-            .unwrap()
-            .contains("INTERNAL_REF_UNSUPPORTED"));
-    }
-
-    #[test]
-    fn annotations_are_data_and_resources_do_not_leak_between_requests() {
-        let literal = json!({"$ref":"#","$dynamicRef":"#x"});
-        let schema = json!({"const":literal,"examples":[literal]});
-        assert!(validate(&schema, &literal, None).unwrap().is_empty());
-        let schema = json!({"$ref":"urn:only-one-request"});
-        let resources = json!([{"$id":"urn:only-one-request","type":"integer"}]);
-        assert!(validate(&schema, &json!(3), Some(&resources)).is_ok());
-        assert!(validate(&schema, &json!(3), None).is_err());
-    }
+        .collect();
+    Ok((errors, prepared.evidence))
 }

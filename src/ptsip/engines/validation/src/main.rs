@@ -6,7 +6,10 @@ const MANIFEST: &str = include_str!("../manifest.json");
 mod cases;
 mod composition;
 mod handoff;
+mod retrieval;
 mod schema;
+#[cfg(test)]
+mod schema_reference_tests;
 mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     if matches!(
@@ -25,13 +28,14 @@ fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     if operation == "validation.compose" {
         return composition::validate(input);
     }
-    let diagnostics = schema::validate(
+    let (diagnostics, evidence) = schema::validate_with_resolution(
         &input["schema"],
         &input["instance"],
         input.get("schema_resources"),
+        input.get("schema_resolution"),
     )?;
     Ok(
-        json!({"valid":diagnostics.is_empty(),"diagnostics":diagnostics,"ptsip_conformance_verdict":"NOT_ASSERTED"}),
+        json!({"valid":diagnostics.is_empty(),"diagnostics":diagnostics,"schema_resources_used":evidence,"ptsip_conformance_verdict":"NOT_ASSERTED"}),
     )
 }
 fn dispatch(request: &Value) -> Result<Value, String> {
@@ -66,19 +70,19 @@ fn dispatch(request: &Value) -> Result<Value, String> {
 "validation.prepare-composition" => "VERIFY_ALL_SELECTED_CASE_ADAPTERS_AND_CONTRACT_INPUTS_BEFORE_ANY_INVOCATION",
 
         "validation.contract" => {
-            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.schema" => {
-            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.typed-io" => {
-            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.precondition" => {
-            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.case" => {
-            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_EXPLICIT_OFFLINE_ID_RESOURCES"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.compose" => "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE",
         "validation.verify-handoff" => "VERIFY_CURRENT_VERSIONED_VPMS_RELATIONS_AND_FULL_RESPONSIBILITY_CLASSIFICATION_WITHOUT_PUBLIC_API_CUTOVER",
@@ -96,7 +100,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
     if args == ["--help"] || args == ["-h"] {
-        println!("PTSIP Validation Engine\nInput: one versioned JSON request on stdin.\nExternal $ref: automatically matched to $id in input.schema_resources (up to 128 local schema objects).\nNo network retrieval or filesystem discovery.\nInternal $ref (#, #/... or the current resource ID): UNSUPPORTED.\n$dynamicRef: UNSUPPORTED.\nRequest format and limits: https://github.com/Kinirin/PTSIP/blob/codex/validation-b4/docs/validation-schema-references.md");
+        println!("PTSIP Validation Engine 0.3.3 / capability contract 4.0.0\nInput: one versioned JSON request on stdin.\nSupports internal $ref (JSON Pointer, anchors, recursive schemas), external $id references and $dynamicRef/$dynamicAnchor.\nschema_resources: explicit local resources.\nschema_resolution.directories: recursively discover JSON schemas inside explicitly permitted roots.\nschema_resolution.allow_network + allowed_origins: retrieve missing HTTP(S) references from exact permitted origins; redirects and ambient proxies disabled.\nOptional base_uri resolves relative references for anonymous input schemas.\nResults include schema_resources_used (URI, source, SHA256).\nLimits: 128 schema documents, 1 MiB per acquired document, 8 MiB total, 16384 schema nodes, 5s per HTTP request and 20s acquisition budget per schema evaluation.\nGuide: https://github.com/Kinirin/PTSIP/blob/dev/0.3.8b2/docs/validation-schema-references.md");
         return;
     }
     if args == ["--manifest"] {

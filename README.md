@@ -11,9 +11,9 @@
 | Identity | Source-tree value |
 | --- | --- |
 | PTSIP_Package | `0.3.8.<SHA6>` — composition assigned after successful publication |
-| PTSIP_Tool | `T.0.3.8.b4` (PTSIP PyPI Package `0.3.8b4`) |
+| PTSIP_Tool | `T.0.3.8.b5` (PTSIP PyPI Package `0.3.8b5`) |
 | Project Profile | `pp.1.02` |
-| Engine | Validation `0.3.2`; Context/Projection `0.2.1`; Storage/Discovery/Planning/Execution `0.3.1` |
+| Engine | Validation `0.3.3`; Context/Projection `0.2.1`; Storage/Discovery/Planning/Execution `0.3.1` |
 
 Package composition, Tool, each engine and Project Profile retain independent versions. The immutable Specification binding is recorded in the canonical composition and shipping manifest. Read [what changed in `0.3.8b1`](docs/releasenote/tool/0.3.8b1.md), the [Tool release history](docs/releasenote/tool/README.md), or [the release workflow](.github/workflows/tooling-release.yml). Release verification is selected from `.github/test_modes.yaml` and runs exclusively in `tooling-test.yml`; publication consumes that exact-source evidence in `tooling-release.yml`. Actual publication state and exact Package composition are recorded in the version-specific release assets.
 
@@ -263,9 +263,9 @@ Seven independently built **Rust engines** have versioned, language-neutral cont
 | Execution | Perform bounded caller-admitted requests and record effects/stops |
 | Projection | Render validated Context into declared output formats |
 
-PTSIP `0.3.8b4` ships complete Windows x64 and Linux x64 wheels containing all seven native engines, and one source distribution with Rust sources and lockfiles. Installation does not grant authority admission, activation, or API cutover. Existing consumer APIs remain available.
+PTSIP `0.3.8b5` ships complete Windows x64 and Linux x64 wheels containing all seven native engines, and one source distribution with Rust sources and lockfiles. Installation does not grant authority admission, activation, or API cutover. Existing consumer APIs remain available.
 
-**Validation reference support:** external `$ref` targets are automatically matched to `$id` values in the explicitly supplied `schema_resources` set. **Internal `$ref` (`#`, `#/$defs/...`, or a reference to the current resource) and `$dynamicRef` are unsupported** and produce explicit errors. Schema files are not downloaded or discovered by scanning the filesystem. See the [support table and complete request example](https://github.com/Kinirin/PTSIP/blob/codex/validation-b4/docs/validation-schema-references.md), or run `ptsip-engine-validation --help`.
+**Validation reference support:** internal `$ref` (JSON Pointers, anchors and recursive schemas), external `$id` references and `$dynamicRef`/`$dynamicAnchor` are supported. Optional `schema_resolution` discovers JSON schemas in explicit directories and retrieves missing HTTP(S) references from explicitly allowed origins. Results include resource URI and SHA256 evidence. See the [support guide and complete request example](https://github.com/Kinirin/PTSIP/blob/dev/0.3.8b2/docs/validation-schema-references.md), or run `ptsip-engine-validation --help`.
 
 PTSIP controls **who owns lifecycle responsibilities**. The independent [`src/vpms/`](src/vpms/) Verification Protocol Management System (VPMS) controls **how explicit Verification Cases are registered, selected, run and reported**. VPMS purpose/verification status is separate from PTSIP classification and conformance.
 

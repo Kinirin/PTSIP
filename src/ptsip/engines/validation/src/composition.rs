@@ -50,14 +50,15 @@ pub fn validate(input: &Value) -> Result<Value, String> {
         ) {
             return Err("unsupported independent validation capability".into());
         }
-        let diagnostics = crate::schema::validate(
+        let (diagnostics, evidence) = crate::schema::validate_with_resolution(
             &check["schema"],
             &check["instance"],
             input.get("schema_resources"),
+            input.get("schema_resolution"),
         )?;
         valid_all &= diagnostics.is_empty();
         results
-            .push(json!({"check_id":id,"valid":diagnostics.is_empty(),"diagnostics":diagnostics}));
+            .push(json!({"check_id":id,"valid":diagnostics.is_empty(),"diagnostics":diagnostics,"schema_resources_used":evidence}));
         pending.remove(&id);
         for deps in pending.values_mut() {
             deps.remove(&id);

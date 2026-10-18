@@ -1,10 +1,10 @@
 {
   "schema_version": "ptsip-owner-bounded-release/v1",
   "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_18",
-  "instruction": "Publish emergency PTSIP 0.3.8b4 with Validation 0.3.2 offline external $ref resolution by explicit schema resource IDs; clearly reject internal $ref and $dynamicRef. Preserve the complete single-project PTSIP Windows/Linux wheels and source distribution. Work on codex/validation-b4 derived from the b3 release branch; do not merge to main.",
-  "branch": "codex/validation-b4",
-  "package_pypi_version": "0.3.8b4",
-  "tool_identity": "T.0.3.8.b4",
+  "instruction": "Publish PTSIP 0.3.8b5 with Validation 0.3.3 / contract 4.0.0 supporting internal $ref, $dynamicRef, recursive configured-directory JSON discovery and opt-in exact-origin HTTP(S) schema retrieval. Work on dev/0.3.8b2 with the completed b4 release as ancestor. Preserve one PTSIP project, verified Windows/Linux bundles and source distribution; do not merge main.",
+  "branch": "dev/0.3.8b2",
+  "package_pypi_version": "0.3.8b5",
+  "tool_identity": "T.0.3.8.b5",
   "mandatory_engines": [
     "context",
     "storage",
@@ -20,7 +20,7 @@
     "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_15",
     "file": "developer/policy/schemas/root-family-policy.schema.json",
     "historical_source_sha": "781a0a46764734a98707662af1a3a2fbd6a88cf7",
-    "scope": "EXISTING_PROFILE_VERIFICATION_LOADING_ON_B3_DERIVED_B4_RELEASE_BRANCH_ONLY",
+    "scope": "EXISTING_PROFILE_VERIFICATION_LOADING_ON_B3_B4_DERIVED_B5_RELEASE_BRANCH_ONLY",
     "merge_to_main": false
   },
   "automated_policy_validation_available": false,
@@ -28,11 +28,11 @@
   "verification_workflow": ".github/workflows/tooling-test.yml",
   "publication_workflow": ".github/workflows/tooling-release.yml",
   "runtime_activation": false,
-  "package_release_version": "0.3.8.b4",
+  "package_release_version": "0.3.8.b5",
   "engine_versions": {
     "context": "0.2.1",
     "storage": "0.3.1",
-    "validation": "0.3.2",
+    "validation": "0.3.3",
     "discovery": "0.3.1",
     "planning": "0.3.1",
     "execution": "0.3.1",
@@ -51,18 +51,19 @@
   },
   "validation_hotfix": {
     "approval_source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_18",
-    "engine_version": "0.3.2",
-    "capability_contract_version": "3.1.0",
-    "external_ref": "EXPLICIT_OFFLINE_SCHEMA_RESOURCES_AUTOMATIC_ID_LOOKUP",
-    "internal_ref": "UNSUPPORTED_EXPLICIT_ERROR_AND_DOCUMENTATION",
-    "dynamic_ref": "UNSUPPORTED_EXPLICIT_ERROR_AND_DOCUMENTATION",
-    "network_or_filesystem_discovery": false
+    "engine_version": "0.3.3",
+    "capability_contract_version": "4.0.0",
+    "internal_ref": "JSON_POINTER_ANCHOR_AND_RECURSION",
+    "dynamic_ref": "DYNAMIC_ANCHOR_EVALUATION_SCOPE",
+    "filesystem_discovery": "EXPLICIT_DIRECTORIES_RECURSIVE_JSON_ONLY",
+    "network_retrieval": "OPT_IN_EXACT_ORIGINS_WITH_LIMITS_NO_REDIRECTS",
+    "resource_evidence": "URI_SOURCE_AND_SHA256"
   },
   "local_commit_hook_exception": {
     "source": "PROJECT_OWNER_DIRECT_INSTRUCTION_2026_10_18",
-    "scope": "ONE_LOCAL_B4_RELEASE_IMPLEMENTATION_COMMIT",
-    "branch": "codex/validation-b4",
-    "parent_sha": "b4588071a8b8fb0211e6ff75ac247002f18f8f80",
+    "scope": "ONE_LOCAL_B5_RELEASE_IMPLEMENTATION_COMMIT",
+    "branch": "dev/0.3.8b2",
+    "parent_sha": "6c857918540c31e191cc4a47a8f7e930d77e73e3",
     "retired_policy_resolver_restore": false,
     "persistent_hook_configuration_change": false,
     "automatic_policy_pass": false
