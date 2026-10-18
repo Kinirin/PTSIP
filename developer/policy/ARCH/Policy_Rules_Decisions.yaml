@@ -261,6 +261,28 @@ rule_contract_boundary:
                         unapproved_change_to_either_identity: NOT_VERIFIED_AS_APPROVED
                         family_specific_scope_authority: PRESERVED
                         previous_B3_immutable_approved_content_binding: PRESERVED
+                        scope_and_content_identity_dependency_decision:
+                          selected_option: A
+                          authorization: PROJECT_OWNER_EXPLICIT
+                          scope: ALL_14_ROOT_FAMILY_MACHINE_CONTRACT_APPROVED_CONTENT_IDENTITY_BINDINGS
+                          dependency_model: NO_DIRECT_CROSS_IDENTITY_INPUT
+                          scope_identity_directly_in_scoped_content_identity_input: FORBIDDEN
+                          scoped_content_identity_directly_in_scope_identity_input: FORBIDDEN
+                          approved_scope_selects_content_for_content_identity: REQUIRED
+                          scope_change_may_change_selected_content: true
+                          approval_evidence_binds_both_independent_identities_together: REQUIRED
+                          approved_contract_logical_identity_binding: PRESERVED
+                          approval_scope_and_legitimacy_verification: SEPARATELY_REQUIRED
+                          scope_identity_and_content_identity_grant_normative_authority: false
+                          family_specific_scope_ownership_and_machine_contract_carrier: PRESERVED
+                          approval_binding_representation: UNRESOLVED_USER_DECISION
+                          content_selection_and_identity_input_boundary: UNRESOLVED_USER_DECISION
+                          self_reference_and_canonicalization: UNRESOLVED_USER_DECISION
+                          digest_algorithm_and_output_encoding: UNRESOLVED_USER_DECISION
+                          formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+                          record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+                          this_record_owns_cross_family_policy_authority: false
+                          machine_contract_validator_or_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
                         scope_declaration_identity_source_boundary: UNRESOLVED_USER_DECISION
                         self_reference_and_circular_dependency_handling: UNRESOLVED_USER_DECISION
                         digest_algorithm_canonicalization_and_encoding: UNRESOLVED_USER_DECISION
