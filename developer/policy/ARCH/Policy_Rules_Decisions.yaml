@@ -65,6 +65,22 @@ rule_contract_boundary:
     minimum_and_maximum_rule_count: UNRESOLVED_USER_DECISION
     duplicate_reference_handling: UNRESOLVED_USER_DECISION
 
+component_representation_hybrid:
+  choice: GRAPH_PRIMARY_HIERARCHY_OPTIONAL
+  user_direction: EXPLICIT
+  graph:
+    primary: true
+    edges: TYPED_DIRECTED
+  hierarchy:
+    optional: true
+    purpose: RESPONSIBILITY_DOMAIN_CONTEXT
+    must_not_replace_graph_edges: true
+  rule_target_cardinality: UNRESOLVED
+  hierarchy_scope_semantics: UNRESOLVED
+  descendant_inheritance: UNRESOLVED
+  field_names: UNRESOLVED
+  schema_creation: NOT_AUTHORIZED
+
 unresolved:
   rule_identity_format: UNRESOLVED
   policy_reference_field_and_structure: UNRESOLVED
