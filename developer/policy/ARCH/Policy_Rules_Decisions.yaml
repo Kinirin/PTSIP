@@ -129,7 +129,23 @@ component_representation_hybrid:
       authorization: PROJECT_OWNER_EXPLICIT
       declared_by: EACH_INDEPENDENT_ARCH_RULE_CONTRACT
       scope_selection: PER_RULE_EXPLICIT
-      scope_selection_format: UNRESOLVED_USER_DECISION
+      scope_selection_format: LOGICAL_HIERARCHY_PATTERN
+      logical_hierarchy_pattern_replacement:
+        decision_id: S3_REPLACEMENT
+        user_selected_option: B
+        authorization: PROJECT_OWNER_EXPLICIT
+        conflict_resolution: KEEP_LATEST
+        encoding: HUMAN_READABLE_MACHINE_PARSEABLE_LOGICAL_HIERARCHY_PATTERN
+        pattern_scope: LOGICAL_HIERARCHY_ONLY
+        physical_filesystem_or_repository_paths: FORBIDDEN
+        registered_canonical_membership_source: S2_SINGLE_REGISTERED_CANONICAL_SOURCE
+        deterministic_pattern_evaluation: REQUIRED
+        exact_pattern_syntax_and_wildcards: UNRESOLVED_USER_DECISION
+        stable_logical_identity_and_movement_handling: UNRESOLVED_USER_DECISION
+        pattern_generation_and_update_contract: UNRESOLVED_USER_DECISION
+        lookup_index_and_cache_implementation: UNRESOLVED_USER_DECISION
+        failure_and_validation_semantics: UNRESOLVED_USER_DECISION
+        schema_and_resolver_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
       old_boolean_option_status: WITHDRAWN_BY_PROJECT_OWNER
       conflict_resolution: KEEP_LATEST
       old_boolean_values: AUDIT_ONLY
@@ -138,7 +154,7 @@ component_representation_hybrid:
       physical_repository_or_filesystem_paths_in_rule: FORBIDDEN
       source_of_domain_hierarchy_and_membership: S2_SINGLE_REGISTERED_CANONICAL_SOURCE
       hierarchy_lookup: DETERMINISTIC
-      descendant_selection_semantics: UNRESOLVED_USER_DECISION
+      descendant_selection_semantics: EXPLICIT_LOGICAL_HIERARCHY_PATTERN_MATCH
       hierarchy_does_not_generate_undeclared_graph_edges: true
       hierarchy_does_not_automatically_propagate_normative_obligations: true
       logical_id_format: UNRESOLVED_USER_DECISION
