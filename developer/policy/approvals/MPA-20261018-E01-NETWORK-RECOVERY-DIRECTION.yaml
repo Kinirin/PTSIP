@@ -1,0 +1,38 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261018-E01-NETWORK-RECOVERY-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    E01 network communication error: select B (conditional automatic recovery).
+    Recover automatically only when the remote publication state is positively
+    established; otherwise suspend automatic retries and require user review.
+    Other error categories and E01 subordinate boundaries remain undecided.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E01
+  selected_direction:
+    error_category: E01_NETWORK_COMMUNICATION
+    response_model: B_CONDITIONAL_AUTOMATIC_RECOVERY
+    remote_state_necessary_for_automatic_recovery: CONFIRMED
+    remote_publication_state_uncertain: SUSPEND_AUTO_RETRY_USER_REVIEW
+    reuse_of_prior_admission: REEVALUATE_AFTER_ERROR_BEFORE_RETRY
+    automatic_manual_override_of_unknown_state: FORBIDDEN
+  unresolved:
+    error_detection_evidence: USER_DECISION_PENDING
+    remote_state_confirmation_sources_and_freshness: USER_DECISION_PENDING
+    retry_and_reconciliation_conditions: USER_DECISION_PENDING
+    component_responsibility_interfaces: USER_DECISION_PENDING
+    unknown_state_review_procedure: USER_DECISION_PENDING
+    retry_limits_and_backoff: USER_DECISION_PENDING
+    error_outcome_semantics: USER_DECISION_PENDING
+    successor_policy_id_and_schema: UNAVAILABLE
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_ctrl_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-18'
