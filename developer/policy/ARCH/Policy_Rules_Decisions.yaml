@@ -66,7 +66,26 @@ rule_contract_boundary:
     additional_generic_peer_groups: FORBIDDEN_WITHOUT_SEPARATE_POLICY_AUTHORIZATION
     specificity_bias_in_generic_group_names: FORBIDDEN
     family_or_rule_specific_detail: NESTED_UNDER_APPROVED_RESPONSIBILITY_GROUP_WHEN_SEMANTICALLY_VALID
-    enforce_all_five_as_required: UNRESOLVED_USER_DECISION
+    enforce_all_five_as_required: REQUIRED_PRESENCE_UNUSED_ALLOWED
+    structural_group_presence_decision:
+      decision_id: ARCH_INDEPENDENT_RULE_GROUP_PRESENCE
+      user_selected_option: C
+      authorization: PROJECT_OWNER_EXPLICIT
+      applies_to: ARCH_INDEPENDENT_RULE_CONTRACT
+      presence_required_for:
+        - Identity
+        - Definition
+        - Boundary
+        - Constraints
+        - Evaluation
+      omission_of_declared_group: INVALID_CONTRACT_STRUCTURE
+      unused_group: EXPLICITLY_EMPTY_ALLOWED
+      unused_vs_incomplete_or_unresolved_meaning: UNRESOLVED_USER_DECISION
+      empty_group_exact_representation_and_types: UNRESOLVED_USER_DECISION
+      required_semantic_content_within_groups: UNRESOLVED_USER_DECISION
+      structural_presence_does_not_prove_semantic_completeness: true
+      other_root_families: NOT_AUTHORIZED_BY_THIS_DECISION
+      schema_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
     exact_group_semantics_and_responsibility_boundaries: UNRESOLVED_USER_DECISION
     exact_fields_types_and_nesting: UNRESOLVED_USER_DECISION
     applicability_to_other_root_families: NOT_AUTHORIZED_BY_THIS_DECISION
