@@ -45,6 +45,34 @@ public_policy_structure:
     schema_or_contract_file_change: NOT_AUTHORIZED_BY_THIS_DECISION
     record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  boundary_field_shortlist_direction:
+    authorization: PROJECT_OWNER_EXPLICIT
+    meaning_ko: >-
+      독립 규칙 계약의 Boundary 그룹에서 적용 범위(scope), 직접 적용 대상(subjects),
+      적용 제외(exclusions), 적용 상황(context), 적용 환경(context.environment),
+      적용 단계(context.phase)를 각각 설계 대상으로 채택한다.
+      적용 범위 및 제외는 의무 또는 금지 규칙을 자동으로 생성하지 않으며,
+      context의 하위 필드 둘도 부모의 공통 강제와 필수 여부를 자동 상속하지 않는다.
+      이 채택은 14개 Root Family에 동일한 내부 필드명과 구조를 강제하거나
+      패밀리별 필수 여부, 세부 자료형, 허용값, 빈 값 표현을 확정하는 결정이 아니다.
+    group: Boundary
+    selected_field_candidates:
+      - scope
+      - subjects
+      - exclusions
+      - context
+      - context.environment
+      - context.phase
+    child_field_conditions_inherited_from_parent: false
+    cross_family_inner_field_shape_enforcement: UNRESOLVED_USER_DECISION
+    per_family_field_presence_boolean_matrix: UNRESOLVED_USER_DECISION
+    exact_types_values_and_nested_shapes: UNRESOLVED_USER_DECISION
+    common_five_group_structure: PRESERVED
+    family_internal_semantic_ownership: PRESERVED
+    B3_binding: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   definition_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
