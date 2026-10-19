@@ -670,6 +670,39 @@ test_mode_responsibility_stabilization:
   priority: RESOLVE_OTHER_PREREQUISITE_PRINCIPLES_BEFORE_DETAILED_PARTITION
   new_canonical_policy_contract_schema_plan_or_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
 
+
+test_mode_json_go_execution_direction:
+  decision_source: PROJECT_OWNER_EXPLICIT
+  decision_level: DIRECTION_ONLY
+  registry_replacement:
+    from: .github/test_modes.yaml
+    to: .github/test_modes.json
+    replacement_intent: YES
+    new_json_contract_schema_and_fields: UNRESOLVED_USER_DECISION
+    schema_inheritance_from_legacy_yaml: NOT_AUTHORIZED
+  workflow_binding:
+    workflow: .github/workflows/tooling-test.yml
+    user_mode_selection: SELECT_REGISTERED_JSON_MODE_AND_WORK
+    workflow_role: VERIFICATION_EXECUTION_ORCHESTRATION
+    mode_to_task_resolution_contract: UNRESOLVED_USER_DECISION
+  execution_migration:
+    execution_language_direction: GO_ONLY
+    src_tests_pytest: REPLACE_AND_RETIRE
+    test_coverage_preservation: REQUIRED_BY_EXISTING_VERIFICATION_OBLIGATIONS
+    go_test_migration_design: UNRESOLVED_USER_DECISION
+    cutover_order_and_equivalence_evidence: UNRESOLVED_USER_DECISION
+    python_runtime_under_test_vs_go_test_driver: UNRESOLVED_USER_DECISION
+  authority_scope:
+    test_mode_semantic_responsibility_baseline: PRESERVE_EXISTING_SIX
+    source_verification_ownership_redefinition: NOT_AUTHORIZED
+    normative_coverage_downgrade: NOT_AUTHORIZED
+    cross_family_policy_ownership_and_boundaries: UNRESOLVED_USER_DECISION
+  materialization:
+    json_registry_contract: NOT_YET_AUTHORIZED
+    runner_migration_and_test_rewrite: NOT_YET_AUTHORIZED
+    retired_yaml_deletion: NOT_YET_AUTHORIZED
+    new_canonical_policy_or_schema: NOT_YET_AUTHORIZED
+
 component_representation_hybrid:
   choice: GRAPH_PRIMARY_HIERARCHY_OPTIONAL
   user_direction: EXPLICIT
