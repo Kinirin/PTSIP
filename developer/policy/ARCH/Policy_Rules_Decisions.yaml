@@ -696,7 +696,18 @@ test_mode_json_go_execution_direction:
       task_lookup: tasks.execution[task_ref]
       matching: EXACT_DECLARED_REFERENCE
       unspecified_contract_fields: UNRESOLVED_USER_DECISION
-      task_body_properties_and_types: UNRESOLVED_USER_DECISION
+      task_body_properties_and_types: PARTIAL_GO_TARGET_FIELDS_APPROVED_OTHER_DETAILS_UNRESOLVED
+      task_execution_fields:
+        approval: PROJECT_OWNER_EXPLICIT
+        location: tasks.execution[task_ref]
+        module_root:
+          semantic: GO_MODULE_ROOT
+          purpose: IDENTIFY_GO_MODULE_CONTAINING_SELECTED_PACKAGE
+        package:
+          semantic: GO_PACKAGE_IN_DECLARED_MODULE_ROOT
+          purpose: IDENTIFY_GO_TEST_PACKAGE_TO_EXECUTE
+        field_types_and_path_constraints: UNRESOLVED_USER_DECISION
+        additional_fields: UNRESOLVED_USER_DECISION
   execution_migration:
     execution_language_direction: GO_ONLY
     src_tests_pytest: REPLACE_AND_RETIRE
