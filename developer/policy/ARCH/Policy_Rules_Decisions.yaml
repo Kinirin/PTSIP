@@ -73,11 +73,13 @@ public_policy_structure:
         meaning_ko: >-
           자연어 정책 의미 필드는 정책 문서의 Policy_Rules 참조 영역이 아니라
           별도 독립 규칙 계약 내부에 저장한다. 공통 5개 그룹의 이름과 존재 의무는
-          보존하되 그중 어느 그룹의 어떤 필드인지는 별도 사용자 결정으로 남긴다.
+          보존하며 자연어 의미의 논리적 위치는 Definition 그룹으로 정한다.
         storage_owner: INDEPENDENT_POLICY_RULES_CONTRACT
         policy_rules_reference_section_owns_semantic_body: false
         common_five_group_envelope: PRESERVED
-        exact_group_and_field_path: UNRESOLVED_USER_DECISION
+        selected_semantic_group: Definition
+        exact_inner_field_path: UNRESOLVED_USER_DECISION
+        common_inner_field_shape: NOT_AUTHORIZED_BY_THIS_DECISION
         family_nested_field_semantics_ownership: PRESERVED
         record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
         this_record_owns_cross_family_policy_authority: false
