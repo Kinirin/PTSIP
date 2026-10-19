@@ -45,6 +45,23 @@ public_policy_structure:
     schema_or_contract_file_change: NOT_AUTHORIZED_BY_THIS_DECISION
     record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  constraints_field_shortlist_direction:
+    authorization: PROJECT_OWNER_EXPLICIT
+    meaning_ko: >-
+      독립 규칙 계약의 Constraints 그룹에서 의무 obligations, 금지 prohibitions,
+      사전조건 preconditions, 의존조건 dependencies 네 필드만 설계 대상으로 채택한다.
+      앞서 제안한 invariants, postconditions, limits는 현 단계에서 사용하지 않는다.
+      이 선정만으로 14개 Root Family의 내부 필드명과 구조를 통일하거나
+      패밀리별 필수 조건, 자료형, 허용값 및 실행·승인 책임을 확정하지 않는다.
+    group: Constraints
+    selected_field_candidates: [obligations, prohibitions, preconditions, dependencies]
+    not_selected_for_current_review: [invariants, postconditions, limits]
+    shared_inner_field_structure: UNRESOLVED_USER_DECISION
+    per_family_requiredness: UNRESOLVED_USER_DECISION
+    machine_schema_and_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    existing_family_authority_and_B3: PRESERVED
+    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   boundary_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
