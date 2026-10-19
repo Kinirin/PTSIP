@@ -680,13 +680,23 @@ test_mode_json_go_execution_direction:
     from: .github/test_modes.yaml
     to: .github/test_modes.json
     replacement_intent: YES
-    new_json_contract_schema_and_fields: UNRESOLVED_USER_DECISION
+    new_json_contract_schema_and_fields: PARTIAL_MODE_TASK_REFERENCE_APPROVED_OTHER_FIELDS_UNRESOLVED
     schema_inheritance_from_legacy_yaml: NOT_AUTHORIZED
   workflow_binding:
     workflow: .github/workflows/tooling-test.yml
     user_mode_selection: SELECT_REGISTERED_JSON_MODE_AND_WORK
     workflow_role: VERIFICATION_EXECUTION_ORCHESTRATION
-    mode_to_task_resolution_contract: UNRESOLVED_USER_DECISION
+    mode_to_task_resolution_contract: APPROVED_EXPLICIT_TASK_REFERENCE
+    mode_to_task_reference:
+      approval: PROJECT_OWNER_EXPLICIT
+      mode_collection: modes
+      mode_identity_field: modes[].id
+      mode_task_reference_field: modes[].task_ref
+      task_catalog: tasks.execution
+      task_lookup: tasks.execution[task_ref]
+      matching: EXACT_DECLARED_REFERENCE
+      unspecified_contract_fields: UNRESOLVED_USER_DECISION
+      task_body_properties_and_types: UNRESOLVED_USER_DECISION
   execution_migration:
     execution_language_direction: GO_ONLY
     src_tests_pytest: REPLACE_AND_RETIRE
@@ -714,7 +724,7 @@ test_mode_json_go_execution_direction:
     unexecuted_verification_success_claim: FORBIDDEN
     automatic_fallback_or_silent_substitution: NOT_AUTHORIZED
     failure_report_exact_fields_and_output_channels: PLAN_OWNED
-    mode_to_task_json_field_structure: UNRESOLVED_USER_DECISION
+    mode_to_task_json_field_structure: APPROVED_REFERENCE_LINK_ONLY
 
 test_mode_engine_adapter_cutover:
   decision_source: PROJECT_OWNER_EXPLICIT
