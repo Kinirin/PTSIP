@@ -1,0 +1,47 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E14-SECURITY-ANOMALY-CONTAINMENT-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E14 option B: when security anomalies or tampering are
+    suspected, automatically suspend and contain affected publication activity
+    and preserve incident evidence only through preauthorized safe actions.
+    Require explicit user approval after security review before considering
+    trust recovery and publication resumption. Defer subordinate requirements
+    until an actual E14 incident. Record this decision on the current branch
+    and then audit completion of E01 through E14 directions and remaining
+    policy or implementation work.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E14
+  selected_direction:
+    error_category: E14_SECURITY_ANOMALY_OR_TAMPERING_SUSPICION
+    response_model: B_AUTOMATIC_CONTAINMENT_AND_EVIDENCE_PRESERVATION_USER_APPROVED_RECOVERY
+    on_suspected_security_anomaly: SUSPEND_AFFECTED_PUBLICATION_ACTIVITY
+    automatic_initial_response: PREAUTHORIZED_SAFE_CONTAINMENT_AND_EVIDENCE_PRESERVATION_ONLY
+    automatic_restoration_of_trust: NOT_GRANTED
+    publication_recovery_and_resumption_requires: EXPLICIT_USER_APPROVAL_AFTER_SECURITY_REVIEW
+    unverified_integrity_or_security_state: FAIL_CLOSED_NO_PUBLICATION
+    unauthorized_credential_permission_or_publisher_mutation: FORBIDDEN
+    incident_evidence_must_not_be_SILENTLY_DISCARDED: true
+    prior_admission_after_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    existing_error_type_response_authority: NOT_EXPANDED_BY_THIS_APPROVAL
+  unresolved:
+    security_anomaly_detection_and_classification: DEFERRED_UNTIL_ACTUAL_E14_OCCURRENCE
+    affected_resource_and_isolation_boundary: DEFERRED_UNTIL_ACTUAL_E14_OCCURRENCE
+    authorized_containment_actions_and_evidence_provenance: DEFERRED_UNTIL_ACTUAL_E14_OCCURRENCE
+    incident_notification_and_human_approval_protocol: DEFERRED_UNTIL_ACTUAL_E14_OCCURRENCE
+    trust_restoration_and_post_incident_verification: DEFERRED_UNTIL_ACTUAL_E14_OCCURRENCE
+    interaction_with_E03_E05_E06_E11_E13_recovery: DEFERRED_UNTIL_ACTUAL_E14_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-19'
