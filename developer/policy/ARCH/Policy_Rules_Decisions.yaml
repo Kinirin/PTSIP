@@ -712,7 +712,19 @@ test_mode_engine_adapter_cutover:
   retire_usage_of: developer/automation/cmd/test-modes/
   legacy_automation_directory_usage: DISCONTINUE_FOR_NEW_TEST_MODE_ADAPTER
   target_runtime_source: PTSIP_TOOL_ENGINE_0_3_8B5
-  target_engine_binding: UNRESOLVED_USER_DECISION
+  target_engine_binding: .ptsip/engine/developer/
+  initial_engine_selection:
+    option: A_DEVELOPER_GO_ENGINE_EXTENSION
+    approval: PROJECT_OWNER_EXPLICIT
+    status: APPROVED_DIRECTION
+    role: REPOSITORY_LOCAL_TEST_MODE_ADAPTER_FIRST
+    reuses_existing_official_engine_capabilities_when_CONTRACT_VERIFIED: true
+    official_engine_test_mode_feature_addition: DEFER_UNTIL_REAL_USE_FEEDBACK_AND_LIMITATIONS_REVIEW
+    productization_or_capability_promotion: REQUIRES_SEPARATE_USER_DECISION
+    new_json_contract_fields_and_selection_semantics: UNRESOLVED_USER_DECISION
+    go_engine_implementation_details: PLAN_OWNED_AFTER_REQUIRED_POLICY_DECISIONS
+    immediate_legacy_adapter_deletion: NOT_AUTHORIZED
+    immediate_official_engine_modification: NOT_AUTHORIZED
   verified_current_developer_engine_validators:
     - schema-check
   test_mode_specific_registered_engine_capability: NOT_VERIFIED
