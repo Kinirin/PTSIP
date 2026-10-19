@@ -47,7 +47,35 @@ public_policy_structure:
     field_purpose_type_allowed_values_and_validation_review: REQUIRED
     user_approval_before_formal_policy_and_schema_mutation: REQUIRED
     semantic_meaning_in_candidate_not_automatically_normative: true
-    natural_language_meaning_field_placement_and_authority: UNRESOLVED_USER_DECISION
+    natural_language_meaning_field_placement_and_authority: AUTHORITY_APPROVED_LOCATION_UNRESOLVED
+    natural_language_semantic_baseline_decision:
+      decision: APPROVED_NATURAL_LANGUAGE_SEMANTIC_BASELINE
+      authorization: PROJECT_OWNER_EXPLICIT
+      meaning_ko: >-
+        사용자에게 승인받은 자연어 정책 의미를 해당 규칙의 의미 기준으로 보존한다.
+        기계 필드는 승인된 의미를 조회·검증·실행하기 위한 파생 표현이며,
+        이 표현이 승인된 자연어의 적용 범위, 조건 또는 정책 효과를 임의로 변경하거나
+        새로운 규범 권한을 생성할 수 없다. 승인 이전의 자연어 후보는 규범이 아니며,
+        자연어와 기계 필드가 불일치하면 이를 조용히 해소하거나 자동 승인할 수 없다.
+        자연어 의미의 승인만으로 정확한 계약 콘텐츠의 B3 승인 검증을 대체할 수 없다.
+      scope: POLICY_RULES_INDEPENDENT_CONTRACT_SEMANTIC_FIELD_RESPONSIBILITY
+      semantic_source: EXPLICITLY_APPROVED_NATURAL_LANGUAGE_MEANING
+      candidate_semantic_authority: NONE
+      machine_field_role: APPROVED_MEANING_DERIVED_REPRESENTATION
+      machine_may_invent_or_override_meaning: FORBIDDEN
+      conflict_silent_override: FORBIDDEN
+      approval_authority: GOV_PRESERVED
+      content_integrity_approval_boundary: B3_PRESERVED
+      family_inner_semantics_ownership: PRESERVED
+      meaning_field_location: UNRESOLVED_USER_DECISION
+      meaning_field_requiredness: UNRESOLVED_USER_DECISION
+      meaning_field_name_and_representation: UNRESOLVED_USER_DECISION
+      machine_semantic_binding_and_conflict_resolution: UNRESOLVED_USER_DECISION
+      machine_field_vocabulary_and_enum_governance: UNRESOLVED_USER_DECISION
+      formal_shared_policy_owner_and_identity: UNRESOLVED_USER_DECISION
+      record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+      this_record_owns_cross_family_policy_authority: false
+      actual_schema_contract_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
     natural_language_vs_machine_binding_and_conflict_handling: UNRESOLVED_USER_DECISION
     machine_field_vocabulary_type_and_enum_governance: UNRESOLVED_USER_DECISION
     existing_policy_rules_reference_vs_independent_contract_boundary: PRESERVED
