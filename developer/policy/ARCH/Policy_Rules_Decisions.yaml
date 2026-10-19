@@ -29,6 +29,33 @@ public_policy_structure:
     sufficiency: REOPENED_FOR_REVIEW
   family_internal_semantics: INDEPENDENT
   family_structural_unification: FORBIDDEN
+  schema_first_review_authority_reconciliation:
+    resolution: RECONCILE
+    authorization: PROJECT_OWNER_EXPLICIT
+    purpose: POLICY_RULES_SCHEMA_CONTRACT_FIELD_REVIEW
+    meaning_ko: >-
+      정책관리 Policy_Rules 스키마 계약을 설계할 때 실제 대상 스키마와 패밀리별 하위 스키마를
+      먼저 분석하고 필드의 자연어 의미, 역할, 자료형, 허용값과 검증 책임을 사용자와 독립적으로 검토한다.
+      승인 전 스키마와 필드는 비규범적 설계 후보로만 다루며, 사용자 승인 후 정식 정책에 의미를
+      기록한 다음 승인된 스키마 변경을 계획하고 구현한다.
+      이 절차는 POLICY > PLAN > IMPLEMENTATION 권한 순위를 변경하지 않는다.
+    initial_target: developer/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json
+    subordinate_target_root: developer/contracts/schemas/Policy_Rules/root-family/
+    review_mode: SCHEMA_TARGET_FIRST_NON_NORMATIVE_CANDIDATE
+    candidate_normative_authority: NONE
+    require_separate_semantic_and_machine_field_decisions: true
+    field_purpose_type_allowed_values_and_validation_review: REQUIRED
+    user_approval_before_formal_policy_and_schema_mutation: REQUIRED
+    semantic_meaning_in_candidate_not_automatically_normative: true
+    natural_language_meaning_field_placement_and_authority: UNRESOLVED_USER_DECISION
+    natural_language_vs_machine_binding_and_conflict_handling: UNRESOLVED_USER_DECISION
+    machine_field_vocabulary_type_and_enum_governance: UNRESOLVED_USER_DECISION
+    existing_policy_rules_reference_vs_independent_contract_boundary: PRESERVED
+    common_five_group_envelope_and_family_inner_ownership: PRESERVED
+    formal_shared_policy_identity_and_owner: UNRESOLVED_USER_DECISION
+    no_schema_or_validator_materialization_from_this_decision: true
+    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    this_record_owns_cross_family_policy_authority: false
 
 validation_responsibility:
   common_schema: MINIMAL_SHARED_STRUCTURE_ONLY
