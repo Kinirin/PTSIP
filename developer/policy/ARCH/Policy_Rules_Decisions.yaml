@@ -67,7 +67,38 @@ public_policy_structure:
       approval_authority: GOV_PRESERVED
       content_integrity_approval_boundary: B3_PRESERVED
       family_inner_semantics_ownership: PRESERVED
-      meaning_field_location: UNRESOLVED_USER_DECISION
+      meaning_field_location: INDEPENDENT_RULE_CONTRACT_BODY
+      meaning_field_location_decision:
+        authorization: PROJECT_OWNER_EXPLICIT
+        meaning_ko: >-
+          자연어 정책 의미 필드는 정책 문서의 Policy_Rules 참조 영역이 아니라
+          별도 독립 규칙 계약 내부에 저장한다. 공통 5개 그룹의 이름과 존재 의무는
+          보존하되 그중 어느 그룹의 어떤 필드인지는 별도 사용자 결정으로 남긴다.
+        storage_owner: INDEPENDENT_POLICY_RULES_CONTRACT
+        policy_rules_reference_section_owns_semantic_body: false
+        common_five_group_envelope: PRESERVED
+        exact_group_and_field_path: UNRESOLVED_USER_DECISION
+        family_nested_field_semantics_ownership: PRESERVED
+        record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+        this_record_owns_cross_family_policy_authority: false
+      meaning_field_value_emptiness_decision:
+        authorization: PROJECT_OWNER_EXPLICIT
+        meaning_ko: >-
+          자연어 의미 필드가 존재할 때 그 값은 비어 있을 수 있다.
+          필드값이 반드시 비어 있지 않아야 한다는 조건은 두지 않는다.
+          이는 필드의 존재 자체를 필수 또는 선택으로 확정하는 결정이 아니며,
+          빈 값의 표현 방식과 의미 부재 시 정책 해석·승인·실행 처리도 아직 결정하지 않는다.
+          비어 있는 값을 AI가 임의로 보충하거나 B3의 정확한 승인 검증을 대체해서는 안 된다.
+        value_nonempty_constraint: NOT_REQUIRED
+        empty_field_value: ALLOWED
+        field_presence_requirement: UNRESOLVED_USER_DECISION
+        empty_value_representation: UNRESOLVED_USER_DECISION
+        empty_value_semantic_and_lifecycle_effect: UNRESOLVED_USER_DECISION
+        automatic_semantic_inference_from_empty_value: FORBIDDEN
+        B3_exact_approved_content_binding: PRESERVED
+        candidate_or_unapproved_text_normative_authority: NONE
+        record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+        this_record_owns_cross_family_policy_authority: false
       meaning_field_requiredness: UNRESOLVED_USER_DECISION
       meaning_field_name_and_representation: UNRESOLVED_USER_DECISION
       machine_semantic_binding_and_conflict_resolution: UNRESOLVED_USER_DECISION
