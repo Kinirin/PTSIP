@@ -1,0 +1,45 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-E13-CONCURRENT-PUBLICATION-COORDINATION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected E13 option C: end-to-end automated lifecycle management
+    for concurrent workflow execution and publication coordination. The
+    directional scope includes conflict detection, coordination of publication
+    resources and execution ownership, safe progress and recovery within
+    already-authorized release scope. Defer concrete coordination algorithms,
+    lock ownership, prioritization and recovery requirements until an actual
+    E13 incident. Record on active branch and discuss E14 without deciding it.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_E13
+  selected_direction:
+    error_category: E13_CONCURRENT_EXECUTION_AND_PUBLICATION_RACE
+    response_model: C_AUTOMATED_PUBLICATION_COORDINATION_LIFECYCLE
+    management_scope: CONCURRENT_EXECUTION_DETECTION_COORDINATION_AND_RECOVERY
+    preserve_independent_release_concurrency: WITHIN_VERIFIABLY_NONCONFLICTING_SCOPE
+    prevent_conflicting_publication_mutations: REQUIRED
+    existing_published_identity_and_immutability: PRESERVE
+    unverified_remote_or_competing_execution_state: NO_AUTOMATIC_PUBLICATION_RETRY
+    publisher_permission_or_release_authority_expansion: NOT_GRANTED
+    coordination_override_of_release_verification: FORBIDDEN
+    prior_admission_after_publication_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    other_error_type_responses: UNCHANGED
+  unresolved:
+    concurrency_resource_identity_and_granularity: DEFERRED_UNTIL_ACTUAL_E13_OCCURRENCE
+    coordination_ownership_and_lock_semantics: DEFERRED_UNTIL_ACTUAL_E13_OCCURRENCE
+    priority_scheduling_and_competing_execution_rules: DEFERRED_UNTIL_ACTUAL_E13_OCCURRENCE
+    remote_actor_and_external_publisher_coordination: DEFERRED_UNTIL_ACTUAL_E13_OCCURRENCE
+    recovery_and_escalation_limits: DEFERRED_UNTIL_ACTUAL_E13_OCCURRENCE
+    successor_policy_id_and_schema: UNAVAILABLE
+    other_error_types: NOT_DECIDED_BY_THIS_APPROVAL
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    current_release_execution_suspension: PRESERVED
+  recorded_at: '2026-10-19'
