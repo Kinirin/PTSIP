@@ -559,6 +559,31 @@ semantic_responsibility_workflow_direction:
   canonical_mpd_schema_or_policy_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
   subordinate_plan_contract_schema_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
 
+
+test_mode_responsibility_stabilization:
+  authorization: PROJECT_OWNER_EXPLICIT
+  decision_scope: TEST_MODE_RESPONSIBILITY_BASELINE_AND_REVIEW_PRIORITY
+  historical_reference_status: RETIRED_NON_NORMATIVE_INPUT
+  historical_reference: developer/policy/ARCH/MPD-ARCH-0002.yaml
+  working_responsibility_count: 6
+  working_responsibilities:
+    - TEST_MODE_REGISTRY_VALIDATION
+    - AUTOMATIC_MODE_RESOLUTION
+    - MANUAL_MODE_RESOLUTION
+    - CHANGED_FILE_MATCHING
+    - DELETION_PREIMAGE_RESOLUTION
+    - EXECUTION_PLAN_CONSTRUCTION
+  current_direction: RETAIN_EXISTING_SIX_WITHOUT_FURTHER_AUTOMATIC_SPLIT
+  new_or_expanded_responsibility: USER_EXPLICIT_DECISION_ONLY
+  generic_machine_classification_of_new_independent_responsibilities: DEFERRED
+  independence_proof_automation_as_prerequisite: NOT_REQUIRED_AT_THIS_STAGE
+  forced_assignment_to_proposed_six_high_level_groups: FORBIDDEN
+  proposed_six_high_level_group_taxonomy: UNRESOLVED_USER_DECISION
+  detailed_boundary_redefinition: UNRESOLVED_USER_DECISION
+  legacy_schema_algorithm_or_implementation_inheritance: NOT_AUTHORIZED
+  priority: RESOLVE_OTHER_PREREQUISITE_PRINCIPLES_BEFORE_DETAILED_PARTITION
+  new_canonical_policy_contract_schema_plan_or_implementation: NOT_AUTHORIZED_BY_THIS_DECISION
+
 component_representation_hybrid:
   choice: GRAPH_PRIMARY_HIERARCHY_OPTIONAL
   user_direction: EXPLICIT
