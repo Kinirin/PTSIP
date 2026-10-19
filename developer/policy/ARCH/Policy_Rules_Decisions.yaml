@@ -761,7 +761,18 @@ test_mode_json_go_execution_direction:
     normative_coverage_downgrade: NOT_AUTHORIZED
     cross_family_policy_ownership_and_boundaries: UNRESOLVED_USER_DECISION
   materialization:
-    json_registry_contract: NOT_YET_AUTHORIZED
+    json_registry_contract: INITIAL_APPROVED_MINIMAL_ARTIFACT_CREATED
+    initial_registry_file:
+      path: .github/test_modes.json
+      authorization: PROJECT_OWNER_EXPLICIT
+      status: INITIAL_SEED_ONLY_NOT_ACTIVE_CUTOVER
+      seed_mode: developer-schema-contracts
+      seed_task_ref: schema-validation
+      verified_go_module_root: developer/tests
+      verified_go_package: ./schema_validation
+      full_registry_migration: NOT_COMPLETED
+      existing_yaml_workflow_consumers: PRESERVED
+      full_schema_and_new_fields: UNRESOLVED_USER_DECISION
     runner_migration_and_test_rewrite: NOT_YET_AUTHORIZED
     retired_yaml_deletion: NOT_YET_AUTHORIZED
     new_canonical_policy_or_schema: NOT_YET_AUTHORIZED

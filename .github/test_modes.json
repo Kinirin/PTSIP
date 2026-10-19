@@ -1,0 +1,16 @@
+{
+  "modes": [
+    {
+      "id": "developer-schema-contracts",
+      "task_ref": "schema-validation"
+    }
+  ],
+  "tasks": {
+    "execution": {
+      "schema-validation": {
+        "module_root": "developer/tests",
+        "package": "./schema_validation"
+      }
+    }
+  }
+}
