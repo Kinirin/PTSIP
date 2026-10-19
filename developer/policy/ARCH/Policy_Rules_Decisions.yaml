@@ -29,6 +29,22 @@ public_policy_structure:
     sufficiency: REOPENED_FOR_REVIEW
   family_internal_semantics: INDEPENDENT
   family_structural_unification: FORBIDDEN
+  identity_field_shortlist_direction:
+    authorization: PROJECT_OWNER_EXPLICIT
+    meaning_ko: >-
+      독립 규칙 계약 Identity 그룹에서는 우선 family와 approval.state만
+      채택하고 이전에 제안한 다른 Identity 필드 후보는 현 단계에서 사용하지 않는다.
+      이 선택은 계약의 논리적 식별과 B3 승인 콘텐츠 결합 의무를 폐기하지 않으며,
+      이들의 다른 저장 위치나 참조 방식은 아직 결정하지 않는다.
+    selected_field_candidates: [family, approval.state]
+    previous_other_identity_candidates: NOT_SELECTED_FOR_CURRENT_SCHEMA_REVIEW
+    same_inner_field_shape_across_families: UNRESOLVED_USER_DECISION
+    per_family_field_presence: UNRESOLVED_USER_DECISION
+    approval_state_container_representation: UNRESOLVED_USER_DECISION
+    contract_identity_and_B3_binding: PRESERVED_SEPARATELY
+    schema_or_contract_file_change: NOT_AUTHORIZED_BY_THIS_DECISION
+    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   schema_first_review_authority_reconciliation:
     resolution: RECONCILE
     authorization: PROJECT_OWNER_EXPLICIT
