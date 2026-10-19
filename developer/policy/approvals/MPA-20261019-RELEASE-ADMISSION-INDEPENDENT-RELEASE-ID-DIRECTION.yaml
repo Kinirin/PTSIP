@@ -1,0 +1,51 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-RELEASE-ADMISSION-INDEPENDENT-RELEASE-ID-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected option C for the first of four common Release Admission
+    decisions: use a separately managed unique release ID as the primary
+    release identity rather than infer identity solely from source or from
+    a composite of publication scope fields. Record the high-level direction
+    on active main; proceed only to the second, error-classification policy
+    choice. Defer normative policy materialization and all planning and
+    implementation work (stages 2 and 3).
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_COMMON_IDENTITY
+  selected_direction:
+    decision_topic: COMMON_RELEASE_ADMISSION_IDENTITY
+    response_model: C_INDEPENDENT_UNIQUE_RELEASE_ID
+    primary_release_identity: INDEPENDENT_RELEASE_ID
+    identity_subject: LOGICAL_RELEASE_FOR_ADMISSION_AND_RESULT_REUSE
+    source_sha_as_sole_identity: NOT_SELECTED
+    publication_scope_tuple_as_sole_identity: NOT_SELECTED
+    release_admission_reuse: SAME_VERIFIED_RELEASE_ID_ONLY_WITH_APPLICABLE_EVIDENCE
+    changed_release_identity_reuses_prior_admission: false
+    existing_source_sha_github_carrier_grouping: PRESERVED_NOT_MODIFIED
+    component_version_and_external_publisher_identity: PRESERVED_NOT_MODIFIED
+    identity_model_is_permission_to_publish: false
+    prior_admission_error_trigger: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+  unresolved:
+    release_id_format_generation_and_issuance: POLICY_DECISION_DEFERRED
+    release_id_uniqueness_scope_and_binding: POLICY_DECISION_DEFERRED
+    relation_to_source_component_version_and_destination: POLICY_DECISION_DEFERRED
+    release_id_lifecycle_and_persistence: POLICY_DECISION_DEFERRED
+    error_classification_policy: USER_DECISION_PENDING
+    evidence_freshness_policy: USER_DECISION_PENDING
+    admission_reevaluation_result_policy: USER_DECISION_PENDING
+    successor_policy_id_and_schema: UNAVAILABLE
+  work_stage_boundary:
+    common_policy_direction_discussion: STAGE_1_ONLY
+    normative_policy_materialization: STAGE_2_DEFERRED_BY_USER
+    planning_and_implementation: STAGE_3_DEFERRED_BY_USER
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: PENDING_APPROVED_CANONICAL_POLICY_FORMAT_AND_AUTHORITY
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-19'
