@@ -45,6 +45,30 @@ public_policy_structure:
     schema_or_contract_file_change: NOT_AUTHORIZED_BY_THIS_DECISION
     record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  definition_field_shortlist_direction:
+    authorization: PROJECT_OWNER_EXPLICIT
+    meaning_ko: >-
+      독립 규칙 계약 Definition 그룹의 필드 후보 중 meaning과 rationale만
+      현 단계의 설계 대상으로 채택하고 title과 terms는 사용하지 않는다.
+      meaning은 앞서 승인된 자연어 규칙 의미 원본을 담고 반드시 존재하되 빈 값이 허용된다.
+      rationale은 규칙을 채택한 이유와 판단 근거의 설명을 담되 승인된 규칙 의미나
+      B3의 정확한 승인 콘텐츠 검증을 대체하지 않는다.
+      이 필드 선정만으로 모든 Root Family에 동일한 내부 필드 구조를 강제하거나
+      미결정된 패밀리별 필수 조건과 실제 JSON Schema를 확정하지 않는다.
+    group: Definition
+    selected_field_candidates: [meaning, rationale]
+    not_selected_for_current_review: [title, terms]
+    meaning_presence: REQUIRED
+    meaning_empty_value: ALLOWED
+    rationale_role: NON_NORMATIVE_EXPLANATION_OF_DECISION_MOTIVATION
+    rationale_presence: UNRESOLVED_USER_DECISION
+    field_names_types_and_nested_shapes: UNRESOLVED_USER_DECISION
+    cross_family_internal_shape_unification: NOT_AUTHORIZED_BY_THIS_DECISION
+    per_family_presence_boolean_matrix: UNRESOLVED_USER_DECISION
+    exact_approval_content_binding: B3_PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   schema_first_review_authority_reconciliation:
     resolution: RECONCILE
     authorization: PROJECT_OWNER_EXPLICIT
