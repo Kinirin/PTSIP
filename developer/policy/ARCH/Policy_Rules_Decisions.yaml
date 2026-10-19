@@ -705,6 +705,24 @@ test_mode_json_go_execution_direction:
     retired_yaml_deletion: NOT_YET_AUTHORIZED
     new_canonical_policy_or_schema: NOT_YET_AUTHORIZED
 
+test_mode_engine_adapter_cutover:
+  decision_source: PROJECT_OWNER_EXPLICIT
+  scope: TEST_MODE_REGISTRY_ADAPTER_TRANSITION
+  sequence_priority: ADAPTER_FIRST
+  retire_usage_of: developer/automation/cmd/test-modes/
+  legacy_automation_directory_usage: DISCONTINUE_FOR_NEW_TEST_MODE_ADAPTER
+  target_runtime_source: PTSIP_TOOL_ENGINE_0_3_8B5
+  target_engine_binding: UNRESOLVED_USER_DECISION
+  verified_current_developer_engine_validators:
+    - schema-check
+  test_mode_specific_registered_engine_capability: NOT_VERIFIED
+  json_registry_contract: UNRESOLVED_USER_DECISION
+  automatic_legacy_adapter_semantics_inheritance: FORBIDDEN
+  removal_of_legacy_files_and_execution_callers: DEFER_UNTIL_VERIFIED_REPLACEMENT
+  existing_required_verification_obligations: PRESERVE
+  new_engine_capability_contract_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DIRECTION
+
+
 component_representation_hybrid:
   choice: GRAPH_PRIMARY_HIERARCHY_OPTIONAL
   user_direction: EXPLICIT
