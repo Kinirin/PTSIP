@@ -1,0 +1,51 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261019-RELEASE-ADMISSION-INDEPENDENT-RELEASE-IDENTITY-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner explicitly selected common Release Admission release-identity option C.
+    Each logical release requires an independent release ID that distinguishes
+    who receives the publication, its source point, and its selected component
+    or engine scope. Source-only identity and scope-only identity were rejected:
+    they cannot reliably distinguish unpublished destinations from published
+    destinations. Prior source-SHA GitHub Release carrier grouping is a separate
+    transport concern not modified by this approval. Work is limited to
+    common Release Admission directional policy (stage 1); normative policy
+    materialization (stage 2) and plan/implementation (stage 3) are deferred.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_IDENTITY
+  selected_direction:
+    model: C_INDEPENDENT_LOGICAL_RELEASE_ID
+    independent_release_identifier: REQUIRED
+    identity_binding_dimensions:
+      - SOURCE_POINT_OR_REVISION
+      - SELECTED_COMPONENT_AND_ENGINE_SCOPE
+      - INTENDED_PUBLISHER_OR_PUBLICATION_DESTINATION
+    destination_specific_publication_outcomes: INDEPENDENTLY_DISTINGUISHABLE
+    publication_to_one_destination_proves_others_complete: false
+    source_only_release_identity: REJECTED
+    component_scope_only_release_identity: REJECTED
+    publisher_only_release_identity: INSUFFICIENT
+    prior_admission_reuse: ONLY_WITH_MATCHING_RELEASE_ID_AND_EFFECTIVE_BOUND_SCOPE
+    publication_error_reevaluation: BEFORE_NEXT_PUBLICATION_ATTEMPT
+    prior_release_source_sha_carrier_grouping: NOT_CHANGED_BY_THIS_APPROVAL
+    existing_published_release_immutability: PRESERVED
+  unresolved:
+    independent_id_generation_and_uniqueness_contract: FUTURE_POLICY_OR_PLAN_DECISION
+    exact_source_scope_publisher_binding_schema: FUTURE_POLICY_OR_PLAN_DECISION
+    logical_release_id_to_github_carrier_mapping: FUTURE_PLAN_DECISION
+    multi_destination_cardinality_and_identity_relationship: FUTURE_POLICY_OR_PLAN_DECISION
+    other_common_release_admission_topics: NOT_DECIDED_BY_THIS_APPROVAL
+    successor_policy_id_and_schema: UNAVAILABLE
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: STAGE_2_DEFERRED
+    plan_and_implementation: STAGE_3_DEFERRED
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-19'
