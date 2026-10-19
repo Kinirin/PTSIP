@@ -705,6 +705,17 @@ test_mode_json_go_execution_direction:
     retired_yaml_deletion: NOT_YET_AUTHORIZED
     new_canonical_policy_or_schema: NOT_YET_AUTHORIZED
 
+  failure_handling_direction:
+    decision_source: PROJECT_OWNER_EXPLICIT
+    unknown_mode: BLOCK_EXECUTION_AND_REPORT
+    unregistered_task_reference: BLOCK_EXECUTION_AND_REPORT
+    unavailable_or_unexecutable_task: BLOCK_EXECUTION_AND_REPORT
+    report_requirement: REPORT_REASON_TO_USER_FOR_CORRECTION
+    unexecuted_verification_success_claim: FORBIDDEN
+    automatic_fallback_or_silent_substitution: NOT_AUTHORIZED
+    failure_report_exact_fields_and_output_channels: PLAN_OWNED
+    mode_to_task_json_field_structure: UNRESOLVED_USER_DECISION
+
 test_mode_engine_adapter_cutover:
   decision_source: PROJECT_OWNER_EXPLICIT
   scope: TEST_MODE_REGISTRY_ADAPTER_TRANSITION
