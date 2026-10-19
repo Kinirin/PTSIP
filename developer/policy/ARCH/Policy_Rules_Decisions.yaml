@@ -86,12 +86,12 @@ public_policy_structure:
         meaning_ko: >-
           자연어 의미 필드가 존재할 때 그 값은 비어 있을 수 있다.
           필드값이 반드시 비어 있지 않아야 한다는 조건은 두지 않는다.
-          이는 필드의 존재 자체를 필수 또는 선택으로 확정하는 결정이 아니며,
+          자연어 의미 필드는 반드시 존재해야 하지만 필드값은 비어 있어도 되며,
           빈 값의 표현 방식과 의미 부재 시 정책 해석·승인·실행 처리도 아직 결정하지 않는다.
           비어 있는 값을 AI가 임의로 보충하거나 B3의 정확한 승인 검증을 대체해서는 안 된다.
         value_nonempty_constraint: NOT_REQUIRED
         empty_field_value: ALLOWED
-        field_presence_requirement: UNRESOLVED_USER_DECISION
+        field_presence_requirement: REQUIRED
         empty_value_representation: UNRESOLVED_USER_DECISION
         empty_value_semantic_and_lifecycle_effect: UNRESOLVED_USER_DECISION
         automatic_semantic_inference_from_empty_value: FORBIDDEN
@@ -99,7 +99,7 @@ public_policy_structure:
         candidate_or_unapproved_text_normative_authority: NONE
         record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
         this_record_owns_cross_family_policy_authority: false
-      meaning_field_requiredness: UNRESOLVED_USER_DECISION
+      meaning_field_requiredness: REQUIRED_PRESENCE_EMPTY_VALUE_ALLOWED
       meaning_field_name_and_representation: UNRESOLVED_USER_DECISION
       machine_semantic_binding_and_conflict_resolution: UNRESOLVED_USER_DECISION
       machine_field_vocabulary_and_enum_governance: UNRESOLVED_USER_DECISION
