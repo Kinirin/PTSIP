@@ -135,6 +135,32 @@ func verifyRegistry(root string, index map[string]any) error {
   return nil
 }
 
+func verifyReadOnlyReleaseWorkflow(root string) error {
+  b, err := os.ReadFile(filepath.Join(root, ".github", "workflows", "tooling-release.yml"))
+  if err != nil { return fmt.Errorf("release workflow unreadable: %w",err) }
+  content := string(b)
+  for _, forbidden := range []string{
+    ".github/checks/release/controller",
+    "pypa/gh-action-pypi-publish",
+    "publish-carrier",
+    "PYPI_API_TOKEN",
+    "contents: write",
+    "gh release create",
+    "twine upload",
+  } {
+    if strings.Contains(content,forbidden) { return fmt.Errorf("release workflow contains forbidden publication operation: %s",forbidden) }
+  }
+  for _, required := range []string{
+    ".github/test_modes.json",
+    ".ptsip/engine/developer",
+    "--validator",
+    "exit 1",
+  } {
+    if !strings.Contains(content,required) { return fmt.Errorf("release workflow missing fail-closed routing: %s",required) }
+  }
+  return nil
+}
+
 func verifyReleaseGap(root string) error {
   gap, err := readJSON(root, verificationGapPath)
   if err != nil { return err }
@@ -184,6 +210,7 @@ func RunAdmission(root string) (any, int) {
   if err != nil { return reject(err) }
   if err := verifyRegistry(root,index); err != nil { return reject(err) }
   if err := verifyReleaseGap(root); err != nil { return reject(err) }
+  if err := verifyReadOnlyReleaseWorkflow(root); err != nil { return reject(err) }
   contract, err := readJSON(root, contractPath)
   if err != nil { return reject(err) }
   if str(contract,"schema_version") != "ptsip-release-admission-direction-projection/v1" ||
