@@ -1,0 +1,17 @@
+{
+  "schema_version": "ptsip-release-contract-index/v1",
+  "contract_ref": ".ptsip/contracts/release/admission.json",
+  "approval_ref": "developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml",
+  "registry_ref": ".github/test_modes.json",
+  "mode_id": "release-admission-design-check",
+  "validator_name": "release-admission-check",
+  "engine_entry": ".ptsip/engine/developer/main.go",
+  "verifier_root": ".ptsip/engine/developer/release/",
+  "contract_authority": "DERIVED_APPROVED_DIRECTIONS_ONLY",
+  "normative_policy_activation": "PENDING",
+  "developer_policy_automated_validation": "UNAVAILABLE",
+  "publication_authorized": false,
+  "fail_closed_on_unresolved": true,
+  "retired_release_manager_ref": "NOT_USED",
+  "legacy_release_verifier_fallback": false
+}
