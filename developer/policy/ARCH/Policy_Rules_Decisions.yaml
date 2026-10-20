@@ -1035,6 +1035,29 @@ test_mode_verifier_target_reorganization:
       - RELEASENOTE
       - TRANSLATED
     concrete_task_ref_identifiers: UNRESOLVED_USER_DECISION
+    release_note_task_partition:
+      authorization: PROJECT_OWNER_EXPLICIT
+      integrated_single_task_ref: FORBIDDEN
+      independent_task_ref_domains:
+        - ENGINE
+        - TOOL
+        - PROJECT_PROFILE
+        - PTSIP_PACKAGE_COMPOSITION
+      namespace_paths:
+        ENGINE: docs/releasenote/engine/
+        TOOL: docs/releasenote/tool/
+        PROJECT_PROFILE: docs/releasenote/project-profile/
+        PTSIP_PACKAGE_COMPOSITION: docs/releasenote/PTSIP_Package/
+      task_ref_identity_for_each_domain: UNRESOLVED_USER_DECISION
+      independent_mode_selection: REQUIRED_TO_AVOID_UNNECESSARY_WORK
+      workflow_parallelization_and_change_selection: PLAN_OWNED
+      engine_per_component_subpartition: UNRESOLVED_USER_DECISION
+      release_note_generation_vs_verification_operations: UNRESOLVED_USER_DECISION
+    translated_task_partition:
+      authorization: PROJECT_OWNER_EXPLICIT
+      single_task_ref: PERMITTED
+      source_root: docs/translated/
+      concrete_task_ref_identity: UNRESOLVED_USER_DECISION
     package_execution_semantics: UNRESOLVED_USER_DECISION
     executable_registration: BLOCKED_UNTIL_PACKAGE_AND_VERIFIER_DECISION
   vpms:
