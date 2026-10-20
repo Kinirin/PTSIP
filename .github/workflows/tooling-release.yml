@@ -38,12 +38,34 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: .ptsip/engine/developer/go.mod
+      - name: Resolve Release Admission validator from test_modes.json
+        id: release_mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          registry = json.loads(Path('.github/test_modes.json').read_text())
+          modes = [x for x in registry['modes'] if x.get('id') == 'release-admission-design-check']
+          if len(modes) != 1 or modes[0].get('task_ref') != 'release-admission-contract-check':
+              raise SystemExit('BLOCKED: unregistered or ambiguous release verification mode')
+          execution = registry['tasks']['execution']['release-admission-contract-check']
+          if (execution.get('module_root') != '.ptsip/engine/developer'
+              or execution.get('validator') != 'release-admission-check'
+              or execution.get('contract_ref') != '.ptsip/contracts/release/admission.json'
+              or execution.get('publication_authorized') is not False):
+              raise SystemExit('BLOCKED: unsafe release verification task binding')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              print('validator=' + execution['validator'], file=out)
+          PY
       - name: Run developer Release Admission validator tests
         shell: bash
         run: go -C .ptsip/engine/developer test ./release -count=1
       - name: Validate registered Release Admission contract projection
         shell: bash
-        run: go -C .ptsip/engine/developer run . --validator release-admission-check --root "$GITHUB_WORKSPACE"
+        run: go -C .ptsip/engine/developer run . --validator "${{ steps.release_mode.outputs.validator }}" --root "$GITHUB_WORKSPACE"
       - name: Reject actual release publication until successor policy activation
         shell: bash
         run: |
