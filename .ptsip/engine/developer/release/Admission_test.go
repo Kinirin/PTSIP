@@ -35,6 +35,7 @@ func setupFixture(t *testing.T) string {
   root := t.TempDir()
   for _, path := range []string{
     contractIndexPath,contractPath,modeRegistryPath,cutoverApprovalPath,verificationGapPath,
+    ".github/workflows/tooling-release.yml",
   } { copyFixture(t,from,root,path) }
   contract, err := readJSON(root,contractPath)
   if err != nil { t.Fatal(err) }
@@ -136,4 +137,14 @@ func TestAdmissionRejectsSafetyBoundaryChanges(t *testing.T) {
   writeFixture(t,root,contractPath,data)
   _,code := RunAdmission(root)
   if code == 0 { t.Fatal("modified security constraint was accepted") }
+}
+
+func TestAdmissionRejectsPublisherWorkflowMutation(t *testing.T) {
+  root := setupFixture(t)
+  path := ".github/workflows/tooling-release.yml"
+  data,err := os.ReadFile(filepath.Join(root,filepath.FromSlash(path)))
+  if err != nil { t.Fatal(err) }
+  writeFixture(t,root,path,append(data,[]byte("\n# dangerous addition\n# gh release create\n")...))
+  _,code := RunAdmission(root)
+  if code == 0 { t.Fatal("publisher operation was accepted") }
 }
