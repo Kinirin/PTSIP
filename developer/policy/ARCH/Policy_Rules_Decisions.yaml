@@ -45,6 +45,31 @@ public_policy_structure:
     schema_or_contract_file_change: NOT_AUTHORIZED_BY_THIS_DECISION
     record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  evaluation_field_shortlist_direction:
+    authorization: PROJECT_OWNER_EXPLICIT
+    meaning_ko: >-
+      독립 규칙 계약 Evaluation 그룹에 criteria, method, method.ref를 채택하고,
+      독립 evidence_requirements 필드는 criteria.evidence 하위 필드로,
+      독립 outcomes 필드는 method.outcome_ref 하위 참조 필드로 대체한다.
+      criteria.evidence는 판정에 필요한 증거 요건을, method.outcome_ref는
+      판정 결과 정의의 참조를 표현한다. 실제 검증 증거·실행 결과 자체의
+      저장 책임이나 승인 권위는 이 필드 선택으로 변경하지 않는다.
+      필드별 공통 구조 강제와 패밀리별 필수 여부는 부모·자식 모두 독립 결정이며,
+      자료형·참조 해소·허용값 및 실제 스키마 변경은 아직 승인되지 않았다.
+    group: Evaluation
+    selected_field_paths: [criteria, criteria.evidence, method, method.ref, method.outcome_ref]
+    replaced_standalone_candidates: [evidence_requirements, outcomes]
+    not_selected_for_current_review: [on_unresolved, coverage]
+    criteria_evidence_responsibility: EVIDENCE_REQUIREMENTS_NOT_OBSERVED_EVIDENCE
+    method_outcome_ref_responsibility: OUTCOME_DEFINITION_REFERENCE_NOT_OBSERVED_RESULT
+    child_conditions_inherited_from_parent: false
+    cross_family_field_shape_enforcement: UNRESOLVED_USER_DECISION
+    per_family_field_presence_boolean_matrix: UNRESOLVED_USER_DECISION
+    exact_types_allowed_values_and_reference_resolution: UNRESOLVED_USER_DECISION
+    approval_and_provenance_boundaries: GOV_ASSURE_RECORD_B3_PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   constraints_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
