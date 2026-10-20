@@ -64,6 +64,45 @@ public_policy_structure:
       previous_approval_and_B3_boundaries: PRESERVED
       record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
       this_record_owns_cross_family_policy_authority: false
+    family_field_review_results:
+      NORM:
+        decision: USER_APPROVED_PRIOR_NORM_RECOMMENDATION
+        authorization: PROJECT_OWNER_EXPLICIT
+        meaning_ko: >-
+          NORM 패밀리의 19개 필드 중 5개는 필수(true), 14개는 비필수(false)로 승인한다.
+          비필수 필드는 제거·금지되지 않으며 필요할 때 사용할 수 있다.
+          이 결과는 NORM의 정식 정책이나 공통 필드 스키마를 생성하지 않는다.
+        family: NORM
+        field_requiredness:
+          Identity.family: true
+          Identity.approval.state: true
+          Definition.meaning: true
+          Definition.rationale: false
+          Boundary.scope: true
+          Boundary.subjects: true
+          Boundary.exclusions: false
+          Boundary.context: false
+          Boundary.context.environment: false
+          Boundary.context.phase: false
+          Constraints.obligations: false
+          Constraints.prohibitions: false
+          Constraints.preconditions: false
+          Constraints.dependencies: false
+          Evaluation.criteria: false
+          Evaluation.criteria.evidence: false
+          Evaluation.method: false
+          Evaluation.method.ref: false
+          Evaluation.method.outcome_ref: false
+        field_count: 19
+        required_count: 5
+        optional_count: 14
+        all_fourteen_family_review_completed: false
+        cross_family_name_shape_enforcement: NOT_AUTHORIZED_BY_THIS_DECISION
+        normative_NORM_policy_sync: NOT_MATERIALIZED
+        B3_approval_and_meaning_presence: PRESERVED
+        schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+        record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
+        this_record_owns_NORM_policy_authority: false
     common_required_if: ALL_14_FAMILIES_INCLUDE_TRUE
     common_optional_if: ANY_FAMILY_INCLUDE_FALSE
     common_classification_before_all_14_resolved: UNRESOLVED
