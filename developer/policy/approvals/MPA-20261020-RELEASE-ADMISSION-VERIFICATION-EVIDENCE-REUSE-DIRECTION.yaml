@@ -1,0 +1,49 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261020-RELEASE-ADMISSION-VERIFICATION-EVIDENCE-REUSE-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected common Release Admission topic 3 option B: conditionally
+    reuse existing verification evidence when its verified source, artifact
+    identity, component and verification scope, validity and applicable
+    policy requirements remain satisfied. Verification evidence may support
+    more than one publication destination when the covered verification scope
+    is the same, but an Admission result or publication success for one
+    independent logical release and publisher does not authorize or prove
+    completion for another. Record the direction on main and present
+    topic 4; stages 2 and 3 remain deferred.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_VERIFICATION_EVIDENCE_VALIDITY
+  selected_direction:
+    model: B_CONDITIONAL_EVIDENCE_REUSE_BY_VERIFIED_VALIDITY_SCOPE
+    verification_evidence_reuse: ALLOWED_ONLY_WITH_PROVEN_APPLICABLE_SCOPE_AND_VALIDITY
+    verification_evidence_binding: SOURCE_ARTIFACT_COMPONENT_VERIFICATION_SCOPE_AND_EFFECTIVE_POLICY
+    reuse_across_distinct_release_ids_or_publishers: ONLY_WHEN_SAME_EVIDENCE_IS_APPLICABLE_AND_VALID
+    admission_result_identity_binding: PRESERVE_INDEPENDENT_RELEASE_ID_AND_INTENDED_PUBLISHER_SCOPE
+    evidence_reuse_implies_other_publisher_admission: false
+    evidence_reuse_proves_other_publisher_publication: false
+    changed_artifact_or_source_outside_covered_scope: NO_AUTOMATIC_PRIOR_EVIDENCE_REUSE
+    unverifiable_stale_or_untrusted_evidence: FAIL_CLOSED_NO_PUBLICATION
+    missing_required_verification_or_policy_authority: FAIL_CLOSED_NO_PUBLICATION
+    manual_review_is_machine_verification_pass: false
+    release_admission_after_publication_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    existing_error_response_and_security_boundaries: PRESERVED
+  unresolved:
+    exact_evidence_identity_schema_and_comparison: FUTURE_POLICY_OR_PLAN_DECISION
+    evidence_freshness_and_revocation_rules: FUTURE_POLICY_OR_PLAN_DECISION
+    policy_revision_and_verification_scope_compatibility: FUTURE_POLICY_OR_PLAN_DECISION
+    release_id_publisher_verification_evidence_mapping: FUTURE_POLICY_OR_PLAN_DECISION
+    reevaluation_outcome_and_recovery_authority_topic_4: NOT_DECIDED_BY_THIS_APPROVAL
+    successor_policy_id_and_schema: UNAVAILABLE
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: STAGE_2_DEFERRED
+    plan_and_implementation: STAGE_3_DEFERRED
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-20'
