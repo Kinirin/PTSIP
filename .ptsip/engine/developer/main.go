@@ -21,12 +21,12 @@ func runSchemaCheck(root string) (any, int) {
     return result, code
 }
 
-func runReleaseManagerCheck(root string) (any, int) {
-    return release_check.Run(root)
+func runReleaseAdmissionCheck(root string) (any, int) {
+    return release_check.RunAdmission(root)
 }
 
 var validators = map[string]Validator{
-    "release-manager-check": runReleaseManagerCheck,
+    "release-admission-check": runReleaseAdmissionCheck,
     "schema-check": runSchemaCheck,
 }
 
