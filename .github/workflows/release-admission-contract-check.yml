@@ -11,6 +11,7 @@ on:
       - '.github/verification-retirement.json'
       - 'developer/policy/approvals/MPA-202610*-RELEASE-*.yaml'
       - 'developer/policy/approvals/MPA-202610*-E*.yaml'
+      - '.github/workflows/tooling-release.yml'
       - '.github/workflows/release-admission-contract-check.yml'
   workflow_dispatch:
 permissions:
