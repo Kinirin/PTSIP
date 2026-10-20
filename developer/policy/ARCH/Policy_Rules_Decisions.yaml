@@ -103,6 +103,85 @@ public_policy_structure:
         schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
         record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
         this_record_owns_NORM_policy_authority: false
+      GOV:
+        decision: USER_APPROVED_EXPLICIT_FIELD_MATRIX
+        authorization: PROJECT_OWNER_EXPLICIT
+        meaning_ko: >-
+          GOV 패밀리의 사용자 승인에 따라 19개 필드 중 6개 필수와 13개 비필수를 기록한다.
+          필드 생략 허용은 비필수 필드의 사용 금지가 아니다. Definition.meaning은 필수로 유지한다.
+          이 결과는 해당 패밀리의 정식 정책 변경이나 공통 구조 강제가 아니며, 임시 심사 기록이다.
+        family: GOV
+        field_requiredness:
+          Identity.family: true
+          Identity.approval.state: true
+          Definition.meaning: true
+          Definition.rationale: false
+          Boundary.scope: true
+          Boundary.subjects: true
+          Boundary.exclusions: false
+          Boundary.context: false
+          Boundary.context.environment: false
+          Boundary.context.phase: false
+          Constraints.obligations: false
+          Constraints.prohibitions: false
+          Constraints.preconditions: false
+          Constraints.dependencies: false
+          Evaluation.criteria: true
+          Evaluation.criteria.evidence: false
+          Evaluation.method: false
+          Evaluation.method.ref: false
+          Evaluation.method.outcome_ref: false
+        field_count: 19
+        required_count: 6
+        optional_count: 13
+        false_semantics: OPTIONAL_FIELD_PERMITTED
+        all_fourteen_family_review_completed: false
+        cross_family_name_shape_enforcement: NOT_AUTHORIZED_BY_THIS_DECISION
+        normative_GOV_policy_sync: NOT_MATERIALIZED
+        B3_approval_and_meaning_presence: PRESERVED
+        schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+        record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
+        this_record_owns_GOV_policy_authority: false
+
+      INTENT:
+        decision: USER_APPROVED_EXPLICIT_FIELD_MATRIX
+        authorization: PROJECT_OWNER_EXPLICIT
+        meaning_ko: >-
+          INTENT 패밀리의 사용자 승인에 따라 19개 필드 중 6개 필수와 13개 비필수를 기록한다.
+          필드 생략 허용은 비필수 필드의 사용 금지가 아니다. Definition.meaning은 필수로 유지한다.
+          이 결과는 해당 패밀리의 정식 정책 변경이나 공통 구조 강제가 아니며, 임시 심사 기록이다.
+        family: INTENT
+        field_requiredness:
+          Identity.family: true
+          Identity.approval.state: true
+          Definition.meaning: true
+          Definition.rationale: false
+          Boundary.scope: true
+          Boundary.subjects: false
+          Boundary.exclusions: true
+          Boundary.context: false
+          Boundary.context.environment: false
+          Boundary.context.phase: false
+          Constraints.obligations: false
+          Constraints.prohibitions: false
+          Constraints.preconditions: false
+          Constraints.dependencies: false
+          Evaluation.criteria: true
+          Evaluation.criteria.evidence: false
+          Evaluation.method: false
+          Evaluation.method.ref: false
+          Evaluation.method.outcome_ref: false
+        field_count: 19
+        required_count: 6
+        optional_count: 13
+        false_semantics: OPTIONAL_FIELD_PERMITTED
+        all_fourteen_family_review_completed: false
+        cross_family_name_shape_enforcement: NOT_AUTHORIZED_BY_THIS_DECISION
+        normative_INTENT_policy_sync: NOT_MATERIALIZED
+        B3_approval_and_meaning_presence: PRESERVED
+        schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+        record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
+        this_record_owns_INTENT_policy_authority: false
     common_required_if: ALL_14_FAMILIES_INCLUDE_TRUE
     common_optional_if: ANY_FAMILY_INCLUDE_FALSE
     common_classification_before_all_14_resolved: UNRESOLVED
