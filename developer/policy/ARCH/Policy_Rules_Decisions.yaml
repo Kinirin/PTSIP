@@ -933,6 +933,66 @@ test_mode_engine_adapter_cutover:
   new_engine_capability_contract_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DIRECTION
 
 
+
+test_mode_verifier_target_reorganization:
+  authorization: PROJECT_OWNER_EXPLICIT
+  scope: DEVELOPER_TEST_MODE_VERIFIER_AND_CONTRACT_TARGETS
+  execution_tests_before_path_migration: NOT_REQUIRED_AS_MIGRATION_PROOF
+  developer_policy_contracts:
+    temporary_root: developer/contracts/
+    later_product_level_candidate_root: .ptsip/contracts/
+    product_policy_verifier_current_implementation: ABSENT
+  legacy_policy_automation:
+    source_root: developer/automation/policy/
+    user_requested_target_root: .ptsip/contracts/policy/
+    physical_relocation: NOT_YET_EXECUTED
+    executable_code_and_contract_ownership_boundary: UNRESOLVED
+    no_unverified_go_package_move_or_caller_breakage: true
+  ptsip_core_verifier:
+    target_module_root: src/verifier/
+    language: GO
+    existing_pytest_test_root: src/tests/
+    pytest_migration: FUTURE_COVERAGE_PRESERVING_REPLACEMENT
+  ptsip_policy_verifier:
+    user_requested_module_root: src/verifier/policy/
+    language: GO
+    package_and_nested_go_module_structure: UNRESOLVED
+    source_policy_files: src/policy/
+  release_verification:
+    requested_module_root: .github/release/Integrated_Deployment_Manager.json
+    requested_package: .github/release/
+    path_role_conflict_with_prior_go_task_semantics: UNRESOLVED_USER_DECISION
+    requested_manager_file_status: EXISTS_EMPTY
+    executable_registration: BLOCKED_UNTIL_CONTRACT_RESOLUTION
+  docs_verification:
+    requested_module_root: .ptsip/contracts/docs/
+    requested_package: .ptsip/contracts/docs/
+    requested_task_ref_categories:
+      - RELEASENOTE
+      - TRANSLATED
+    concrete_task_ref_identifiers: UNRESOLVED_USER_DECISION
+    path_role_conflict_with_prior_go_task_semantics: UNRESOLVED_USER_DECISION
+    executable_registration: BLOCKED_UNTIL_CONTRACT_RESOLUTION
+  vpms:
+    root: src/vpms/
+    disposition: RETIREMENT_TARGET
+    new_policy_verifier: FORBIDDEN
+    new_test_mode: FORBIDDEN
+    existing_registry_entry_removal: NOT_AUTHORIZED_BY_THIS_DECISION
+  governance:
+    prior_approved_go_task_semantics_base_revision: 19621bbc821ff3e266285634b0d22727e699164f
+    prior_rule: tasks.execution[task_ref].module_root_IS_GO_MODULE_ROOT_AND_package_IS_GO_PACKAGE_WITHIN_ROOT
+    incoming_conflicting_requested_roles: RELEASE_JSON_FILE_AS_MODULE_ROOT_AND_DOCS_CONTRACT_DIR_AS_PACKAGE
+    resolution_authority: USER
+    resolution_status: AWAITING_EXPLICIT_CHOICE
+    conflict_resolution_options:
+      - KEEP_PRIOR
+      - KEEP_LATEST
+      - RECONCILE
+    prior_semantics_overwrite: FORBIDDEN_PENDING_RESOLUTION
+    new_invalid_or_nonexistent_go_execution_entries: NOT_MATERIALIZED
+    approved_unrelated_directions: STAGED_WITHOUT_EXECUTION
+
 component_representation_hybrid:
   choice: GRAPH_PRIMARY_HIERARCHY_OPTIONAL
   user_direction: EXPLICIT
