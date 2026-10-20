@@ -958,6 +958,19 @@ test_mode_verifier_target_reorganization:
     language: GO
     package_and_nested_go_module_structure: UNRESOLVED
     source_policy_files: src/policy/
+    test_mode_registry_entry:
+      authorization: PROJECT_OWNER_EXPLICIT
+      registry: .github/test_modes.json
+      index_role: DECLARED_PENDING_GO_VERIFIER
+      mode_id: ptsip-policy-verification
+      task_ref: ptsip-policy-verifier
+      module_root: src/verifier/policy
+      package: .
+      current_go_module_available: false
+      current_verifier_implementation_available: false
+      may_assert_executable_or_pass: false
+      registration_does_not_create_policy_verification_authority: true
+      package_and_nested_module_construction: PLAN_OWNED_WITH_PRIOR_ROOT_CONSTRAINTS
   release_verification:
     requested_module_root: .github/release/Integrated_Deployment_Manager.json
     requested_package: .github/release/

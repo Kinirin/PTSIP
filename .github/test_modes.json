@@ -3,6 +3,10 @@
     {
       "id": "developer-schema-contracts",
       "task_ref": "schema-validation"
+    },
+    {
+      "id": "ptsip-policy-verification",
+      "task_ref": "ptsip-policy-verifier"
     }
   ],
   "tasks": {
@@ -10,6 +14,10 @@
       "schema-validation": {
         "module_root": "developer/tests",
         "package": "./schema_validation"
+      },
+      "ptsip-policy-verifier": {
+        "module_root": "src/verifier/policy",
+        "package": "."
       }
     }
   }
