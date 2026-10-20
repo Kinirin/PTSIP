@@ -10,6 +10,7 @@ import (
     "path/filepath"
     "sort"
 
+    release_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/release"
     schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/schema_check"
 )
 
@@ -20,7 +21,12 @@ func runSchemaCheck(root string) (any, int) {
     return result, code
 }
 
+func runReleaseManagerCheck(root string) (any, int) {
+    return release_check.Run(root)
+}
+
 var validators = map[string]Validator{
+    "release-manager-check": runReleaseManagerCheck,
     "schema-check": runSchemaCheck,
 }
 

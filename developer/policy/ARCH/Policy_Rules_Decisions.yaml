@@ -1011,20 +1011,32 @@ test_mode_verifier_target_reorganization:
       registration_does_not_create_policy_verification_authority: true
       package_and_nested_module_construction: PLAN_OWNED_WITH_PRIOR_ROOT_CONSTRAINTS
   release_verification:
-    requested_module_root: .github/release/Integrated_Deployment_Manager.json
-    requested_package: .github/release/
-    path_role_conflict_with_prior_go_task_semantics: UNRESOLVED_USER_DECISION
-    requested_manager_file_status: EXISTS_EMPTY
-    executable_registration: BLOCKED_UNTIL_CONTRACT_RESOLUTION
+    historical_requested_module_root: .github/release/Integrated_Deployment_Manager.json
+    historical_requested_package: .github/release/
+    corrected_go_module_root: .ptsip/engine/developer/
+    corrected_go_package: ./release
+    verified_go_mod: .ptsip/engine/developer/go.mod
+    source_file: .ptsip/engine/developer/release/Integrated_Deployment_Manager.go
+    manager_document: .github/release/Integrated_Deployment_Manager.json
+    manager_document_role: READ_ONLY_VERIFICATION_INPUT
+    path_role_conflict_with_prior_go_task_semantics: RESOLVED_KEEP_PRIOR_BY_USER_CLARIFICATION
+    verifier_implementation: LIMITED_JSON_READINESS_CHECK
+    release_policy_or_deployment_conformance: NOT_ASSERTED
+    manager_document_status: EXISTS_EMPTY_BLOCKED
+    full_release_mode_registration: NOT_AUTHORIZED_BY_THIS_CLARIFICATION
   docs_verification:
-    requested_module_root: .ptsip/contracts/docs/
-    requested_package: .ptsip/contracts/docs/
+    historical_requested_module_root: .ptsip/contracts/docs/
+    historical_requested_package: .ptsip/contracts/docs/
+    corrected_parent_go_module_root: .ptsip/engine/developer/
+    intended_go_package_directory: .ptsip/engine/developer/docs/
+    intended_contract_directory: .ptsip/contracts/docs/
+    package_identifier: UNRESOLVED_INCOMPLETE_USER_INPUT
     requested_task_ref_categories:
       - RELEASENOTE
       - TRANSLATED
     concrete_task_ref_identifiers: UNRESOLVED_USER_DECISION
-    path_role_conflict_with_prior_go_task_semantics: UNRESOLVED_USER_DECISION
-    executable_registration: BLOCKED_UNTIL_CONTRACT_RESOLUTION
+    package_execution_semantics: UNRESOLVED_USER_DECISION
+    executable_registration: BLOCKED_UNTIL_PACKAGE_AND_VERIFIER_DECISION
   vpms:
     root: src/vpms/
     disposition: RETIREMENT_TARGET
@@ -1036,12 +1048,16 @@ test_mode_verifier_target_reorganization:
     prior_rule: tasks.execution[task_ref].module_root_IS_GO_MODULE_ROOT_AND_package_IS_GO_PACKAGE_WITHIN_ROOT
     incoming_conflicting_requested_roles: RELEASE_JSON_FILE_AS_MODULE_ROOT_AND_DOCS_CONTRACT_DIR_AS_PACKAGE
     resolution_authority: USER
-    resolution_status: AWAITING_EXPLICIT_CHOICE
+    resolution_status: RELEASE_KEEP_PRIOR_RESOLVED_DOCS_PACKAGE_PENDING
+    release_user_clarification: GO_MODULE_ROOT_IS_PARENT_DEVELOPER_ENGINE_AND_JSON_FILE_IS_INPUT
+    docs_user_clarification: CONTRACT_DIRECTORY_NOT_GO_MODULE_ROOT
+    release_resolution: KEEP_PRIOR
+    docs_resolution: UNRESOLVED_INCOMPLETE_USER_INPUT
     conflict_resolution_options:
       - KEEP_PRIOR
       - KEEP_LATEST
       - RECONCILE
-    prior_semantics_overwrite: FORBIDDEN_PENDING_RESOLUTION
+    prior_semantics_overwrite: FORBIDDEN
     new_invalid_or_nonexistent_go_execution_entries: NOT_MATERIALIZED
     approved_unrelated_directions: STAGED_WITHOUT_EXECUTION
 
