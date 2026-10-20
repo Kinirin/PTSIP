@@ -46,6 +46,24 @@ public_policy_structure:
     inclusion_decision: PER_FAMILY_PER_FIELD_BOOLEAN
     include_true: REQUIRED_IN_THIS_FAMILY
     include_false: OPTIONAL_IN_THIS_FAMILY
+    false_field_semantics_decision:
+      authorization: PROJECT_OWNER_EXPLICIT
+      meaning_ko: >-
+        Root Family의 필드별 false는 미포함이나 사용 금지가 아니라 비필수이다.
+        해당 필드는 승인된 후보 집합에 남아 있으며 필요한 규칙에서는 사용할 수 있다.
+        false라는 이유만으로 후보에서 삭제하거나 향후 신규 필드로 다시 생성하지 않는다.
+        true인 패밀리의 필수 조건과 하위 필드의 독립성은 그대로 유지하고,
+        필드명·자료형·검증 스키마의 확정 및 권위 변경을 자동 승인하지 않는다.
+      false_meaning: OPTIONAL_FIELD_PERMITTED
+      field_permitted_when_false: true
+      omit_field_permitted_when_false: true
+      field_removed_or_prohibited_when_false: false
+      new_field_creation_due_to_optional_status: NOT_REQUIRED
+      parent_child_requiredness_inheritance: FORBIDDEN
+      family_field_shape_and_schema_materialization: UNRESOLVED_USER_DECISION
+      previous_approval_and_B3_boundaries: PRESERVED
+      record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+      this_record_owns_cross_family_policy_authority: false
     common_required_if: ALL_14_FAMILIES_INCLUDE_TRUE
     common_optional_if: ANY_FAMILY_INCLUDE_FALSE
     common_classification_before_all_14_resolved: UNRESOLVED
