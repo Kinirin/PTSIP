@@ -216,8 +216,9 @@ func RunAdmission(root string) (any, int) {
   if len(errors) != 14 { return reject(fmt.Errorf("expected all fourteen error directions")) }
   for i, raw := range errors {
     item, ok := raw.(map[string]any)
-    if !ok || str(item,"error_id") != fmt.Sprintf("E%02d",i+1) {
-      return reject(fmt.Errorf("error sequence or identity mismatch at %d",i))
+    if !ok || str(item,"error_id") != fmt.Sprintf("E%02d",i+1) ||
+      !strings.HasPrefix(str(item,"category"),fmt.Sprintf("E%02d_",i+1)) {
+      return reject(fmt.Errorf("error sequence, category or identity mismatch at %d",i))
     }
     if err := verifyApprovedProjection(root,item,"error"); err != nil { return reject(err) }
   }
