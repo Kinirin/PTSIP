@@ -29,6 +29,33 @@ public_policy_structure:
     sufficiency: REOPENED_FOR_REVIEW
   family_internal_semantics: INDEPENDENT
   family_structural_unification: FORBIDDEN
+  fourteen_family_field_review_direction:
+    authorization: PROJECT_OWNER_EXPLICIT
+    meaning_ko: >-
+      승인된 5개 그룹의 19개 필드 경로를 고정 후보로 삼아 14개 Root Family를
+      하나씩 검토하며 각 필드의 포함 여부를 패밀리별 true/false로 독립 결정한다.
+      14개 전체 심사가 끝난 뒤 모든 패밀리가 true인 필드만 공통 필수로,
+      하나라도 false인 필드는 공통 선택으로 분류한다. 공통 선택이더라도
+      true로 승인한 패밀리 안에서는 필수이며 false인 패밀리에서는 필수가 아니다.
+      부모와 하위 필드의 조건은 상속하지 않는다. 이 필수 분류는 패밀리 내부의
+      동일 필드명·자료형·구조 강제를 자동 승인하지 않으며 기존의 자연어 의미
+      필드 존재 필수와 승인·B3 권위 경계는 별도 변경 승인 없이 유지한다.
+    field_candidates_source: APPROVED_FIVE_GROUP_FIELD_SHORTLISTS
+    family_order: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+    review_unit: ONE_FAMILY_AT_A_TIME
+    inclusion_decision: PER_FAMILY_PER_FIELD_BOOLEAN
+    include_true: REQUIRED_IN_THIS_FAMILY
+    include_false: OPTIONAL_IN_THIS_FAMILY
+    common_required_if: ALL_14_FAMILIES_INCLUDE_TRUE
+    common_optional_if: ANY_FAMILY_INCLUDE_FALSE
+    common_classification_before_all_14_resolved: UNRESOLVED
+    unselected_in_all_families: OPTIONAL_UNLESS_SEPARATELY_REMOVED
+    parent_child_requiredness_inheritance: FORBIDDEN
+    cross_family_field_name_and_structure_forcing: NOT_AUTHORIZED_BY_THIS_DECISION
+    previously_approved_meaning_presence: PRESERVED_REQUIRES_SEPARATE_CONFLICT_RESOLUTION_TO_CHANGE
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   identity_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
