@@ -1,0 +1,65 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner explicitly selected KEEP_LATEST to resolve the conflict between the
+    previous .github/checks/release/test and .github/test_modes.yaml release
+    verification ownership and the new developer Go validation route. Use
+    tooling-release.yml as dispatch, .github/test_modes.json as release
+    validator registration, .ptsip/engine/developer/main.go and release/
+    as developer verification, and .ptsip/contracts/release/ for derived
+    machine release contracts. Do not use .github/release for this route.
+    Author approved contracts and bounded verifier code now, without
+    activating actual release publication or creating a new branch.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_VERIFICATION_CONTROL_PLANE_CUTOVER
+  conflict_resolution: KEEP_LATEST
+  conflict:
+    prior_approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
+    prior_base_commit: 15ed3d9deef29f57cbfc4096ac50fb94f2fbe15d
+    prior_release_verification_mode_registry: .github/test_modes.yaml
+    prior_release_verification_implementation_root: .github/checks/release/test/
+    prior_release_publication_controller_root: .github/checks/release/controller/
+    latest_release_verification_mode_registry: .github/test_modes.json
+    latest_release_verifier_entrypoint: .ptsip/engine/developer/main.go
+    latest_release_verifier_package: .ptsip/engine/developer/release/
+    latest_derived_machine_contract_root: .ptsip/contracts/release/
+    conflicting_ownership_rule: RELEASE_VERIFICATION_ENTRY_AND_CONTRACT_LOCATION
+  selected_direction:
+    model: KEEP_LATEST_NEW_PTSIP_DEVELOPER_RELEASE_VERIFICATION_ROUTE
+    release_dispatch: .github/workflows/tooling-release.yml
+    release_validation_mode_registry: .github/test_modes.json
+    release_validation_engine: .ptsip/engine/developer/main.go
+    release_validation_module: .ptsip/engine/developer/release/
+    release_machine_contract_root: .ptsip/contracts/release/
+    retired_manager_document_as_validator_input: FORBIDDEN
+    retired_release_verification_route_as_fallback: FORBIDDEN
+    previous_source_sha_publication_carrier_and_other_release_rules: NOT_REDECIDED
+    unrelated_developer_verification_modes: PRESERVED
+    approved_admission_error_models_E01_E14: PRESERVED
+    approved_admission_common_directions: PRESERVED
+    publication_execution: BLOCKED_UNTIL_SEPARATE_POLICY_AND_VALIDATION_APPROVAL
+    policy_schema_gap: FAIL_CLOSED
+  implementation_authority:
+    derived_contract_design_and_validation: APPROVED
+    developer_go_validator_and_negative_tests: APPROVED
+    mode_selection_and_read_only_workflow_wiring: APPROVED
+    enabling_github_or_pypi_publication: FORBIDDEN
+    replacing_unresolved_normative_root_family_policy_schema: NOT_AUTHORIZED
+    new_branch_creation: FORBIDDEN
+  unresolved:
+    successor_normative_policy_document_format_and_identifier: SEPARATE_USER_POLICY_DECISION
+    successor_root_family_schema_and_validator: NOT_YET_AVAILABLE
+    release_policy_activation: SEPARATE_USER_AUTHORIZATION_REQUIRED
+    detailed_error_recovery_subpolicies: DEFERRED_UNTIL_ACTUAL_ERROR
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    active_release_execution_gap: PRESERVED
+    implementation_does_not_create_policy_authority: true
+  recorded_at: '2026-10-20'
