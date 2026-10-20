@@ -1049,6 +1049,20 @@ test_mode_verifier_target_reorganization:
         PROJECT_PROFILE: docs/releasenote/project-profile/
         PTSIP_PACKAGE_COMPOSITION: docs/releasenote/PTSIP_Package/
       task_ref_identity_for_each_domain: UNRESOLVED_USER_DECISION
+      placeholder_reservation:
+        authorization: PROJECT_OWNER_EXPLICIT
+        responsibility_level: ABSTRACT_ONLY
+        urgency: DEFER_IMPLEMENTATION
+        reserved_directories:
+          ENGINE: .ptsip/engine/developer/docs/releasenote/engine/
+          TOOL: .ptsip/engine/developer/docs/releasenote/tool/
+          PROJECT_PROFILE: .ptsip/engine/developer/docs/releasenote/project-profile/
+          PTSIP_PACKAGE_COMPOSITION: .ptsip/engine/developer/docs/releasenote/PTSIP_Package/
+        placeholder_file: .gitkeep
+        placeholder_file_content: EMPTY
+        go_source_generation: NOT_AUTHORIZED
+        test_mode_task_ref_registration: NOT_AUTHORIZED
+        verification_claim: NOT_ASSERTED
       independent_mode_selection: REQUIRED_TO_AVOID_UNNECESSARY_WORK
       workflow_parallelization_and_change_selection: PLAN_OWNED
       engine_per_component_subpartition: UNRESOLVED_USER_DECISION
