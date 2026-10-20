@@ -1,0 +1,53 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261020-RELEASE-ADMISSION-POLICY-BASED-CONDITIONAL-RESUMPTION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected common Release Admission topic 4 option B: policy-based
+    conditional resumption after error-triggered Admission reevaluation.
+    Automatic recovery or publication retry is allowed only when the
+    reevaluated Admission result satisfies effective policy requirements
+    and the applicable independently classified error-response policies
+    authorize the action. Admission eligibility alone does not grant new
+    recovery authority. E04 and E10 manual intervention, E14 explicit
+    approval after security review, and existing scope and evidence rules
+    are preserved. Record on active main, verify stage 1 topic decisions
+    1-4, and keep normative policy materialization (stage 2) and
+    plan/implementation (stage 3) deferred.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_REEVALUATION_AND_RECOVERY_AUTHORITY
+  selected_direction:
+    model: B_POLICY_BASED_CONDITIONAL_RESUMPTION
+    after_publication_or_admission_reuse_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    recovery_or_publication_retry: ONLY_IF_REEVALUATED_ADMISSION_AND_APPLICABLE_ERROR_POLICIES_ALLOW
+    admission_result_alone_grants_recovery_authority: false
+    admission_policy_or_evidence_unresolved: FAIL_CLOSED_NO_PUBLICATION
+    user_reapproval_for_every_error: NOT_AUTOMATICALLY_REQUIRED
+    user_approval_requirement_source: APPLICABLE_EFFECTIVE_POLICY
+    manual_e04_publisher_authorization_and_configuration: PRESERVED
+    manual_e10_package_and_platform_format_compliance: PRESERVED
+    e14_security_review_and_explicit_user_resumption_approval: PRESERVED
+    independent_release_id_and_publisher_scope: PRESERVED
+    independently_classified_multiple_error_responses: PRESERVED
+    scoped_verification_evidence_reuse: PRESERVED
+    existing_publication_and_immutability_constraints: PRESERVED
+    error_policy_authority_expansion: NOT_GRANTED
+  unresolved:
+    admission_reevaluation_result_encoding: DEFERRED
+    policy_to_recovery_action_binding: DEFERRED
+    inter_error_conflicts_and_precedence: SEPARATE_USER_POLICY_DECISION
+    evidence_freshness_and_revision_specific_requirements: DEFERRED
+    independent_release_id_generation_and_binding: DEFERRED
+    successor_policy_id_and_schema: UNAVAILABLE
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: STAGE_2_DEFERRED
+    plan_and_implementation: STAGE_3_DEFERRED
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-20'
