@@ -1,0 +1,44 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261020-RELEASE-ADMISSION-MULTIPLE-ERROR-INDEPENDENT-CLASSIFICATION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected common Release Admission topic 2 option B: classify each
+    concurrently observed error independently and bind each to its applicable
+    E01-E14 policy, rather than collapsing multiple faults into a single
+    representative error. Preserve unresolved inter-policy conflict handling
+    for separate authorization. Record this directional approval on main
+    and proceed to topic 3 (evidence validity), with normative policy
+    materialization (stage 2) and plan/implementation (stage 3) deferred.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: REPOSITORY_RELEASE_PUBLICATION_ADMISSION_ERROR_CLASSIFICATION
+  selected_direction:
+    model: B_MULTIPLE_ERRORS_INDEPENDENT_CLASSIFICATION
+    simultaneous_errors: CLASSIFY_EACH_APPLICABLE_ERROR_SEPARATELY
+    policy_binding: EACH_CLASSIFIED_ERROR_TO_ITS_APPLICABLE_E01_E14_DIRECTION
+    single_representative_error_only: REJECTED
+    unclassified_or_uncertain_error: NOT_SILENTLY_DISCARDED_OR_ASSUMED_RESOLVED
+    automatic_error_policy_override_or_merging: NOT_GRANTED
+    conflict_resolution_or_error_precedence: NOT_DECIDED_BY_THIS_APPROVAL
+    underlying_release_identity: PRESERVE_INDEPENDENT_LOGICAL_RELEASE_ID_AND_BOUND_SCOPE
+    earlier_admission_after_publication_error: REEVALUATE_BEFORE_NEXT_PUBLICATION_ATTEMPT
+    e14_security_containment_and_user_reapproval: PRESERVED
+  unresolved:
+    exact_error_classification_and_evidence_contract: DEFERRED
+    simultaneous_policy_conflict_resolution_and_precedence: SEPARATE_USER_POLICY_DECISION
+    composite_error_recovery_coordination: DEFERRED
+    evidence_validity_topic_3: NOT_DECIDED_BY_THIS_APPROVAL
+    admission_reevaluation_outcome_topic_4: NOT_DECIDED_BY_THIS_APPROVAL
+    successor_policy_id_and_schema: UNAVAILABLE
+  authority_boundary:
+    this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY
+    retired_root_policy_reactivation: FORBIDDEN
+    successor_normative_policy_materialization: STAGE_2_DEFERRED
+    plan_and_implementation: STAGE_3_DEFERRED
+    implementation_authorized_by_this_record: false
+    existing_release_execution_block: PRESERVED
+  recorded_at: '2026-10-20'
