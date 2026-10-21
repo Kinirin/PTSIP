@@ -6,7 +6,7 @@
   "relocated_go_root": ".ptsip/engine/developer/release/",
   "machine_contract_root": ".ptsip/contracts/release/",
   "original_go_files_relocated": 38,
-  "original_module_files_relocated": 7,
+  "original_module_files_relocated": 6,
   "migrated_go_modules": {
     "controller": ".ptsip/engine/developer/release/controller/",
     "test": ".ptsip/engine/developer/release/test/",
@@ -35,7 +35,7 @@
   "migrated_old_release_verification_mode": "HISTORICAL_NO_CANONICAL_ADMISSION_AUTHORITY",
   "legacy_policy_resolver": "RETIRED_FAIL_CLOSED",
   "release_publication": "BLOCKED",
-  "code_relocation_state": "SOURCE_RELOCATED_COMPATIBILITY_COMPILATION_PENDING",
+  "code_relocation_state": "SOURCE_RELOCATED_COMPILE_VERIFIED_IN_GITHUB_ACTIONS",
   "legacy_hardcoded_rule_semantic_migration": "NOT_ASSERTED_COMPLETE",
   "workflow_release_entrypoint": ".github/workflows/tooling-release.yml",
   "go_code_activation": "NO_RELEASE_PUBLICATION",
@@ -197,11 +197,6 @@
       "source_blob_sha": "184d584d79f87617cc64477f2c3a26ae27a6d91b"
     },
     {
-      "from": ".github/checks/release/go.mod",
-      "to": ".ptsip/engine/developer/release/go.mod",
-      "source_blob_sha": "8c599a9222a84069394bbfc5a77bd36621e2e0f5"
-    },
-    {
       "from": ".github/checks/release/test/admission_test.go",
       "to": ".ptsip/engine/developer/release/test/admission_test.go",
       "source_blob_sha": "eb6f2168298bee1082c49a0fb90453b1204f3441"
@@ -266,5 +261,17 @@
       "to": ".ptsip/engine/developer/release/test/tool.go",
       "source_blob_sha": "8a530c02ed8acd53712194c986d79995446946a7"
     }
-  ]
+  ],
+  "original_module_files_superseded": 1,
+  "superseded_original_go_module": {
+    "source": ".github/checks/release/go.mod",
+    "reason": "Existing .ptsip/engine/developer/go.mod already owns the release package; a nested release root module would hide Admission.go"
+  },
+  "compile_verification": {
+    "workflow": ".github/workflows/release-admission-contract-check.yml",
+    "run_url": "https://github.com/Kinirin/PTSIP/actions/runs/39581679099",
+    "result": "SUCCESS",
+    "release_publication_certified": false,
+    "comprehensive_runtime_equivalence_certified": false
+  }
 }
