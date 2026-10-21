@@ -26,7 +26,86 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-go@v6
         with:
-          go-version-file: .ptsip/engine/developer/go.mod
+          go-version-file: .ptsip/engine/developer/release/controller/go.mod
+      - name: Compile relocated release Go modules without enabling publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer/release/controller test ./... -run '^
+        shell: bash
+        run: go -C .ptsip/engine/developer test ./release -count=1
+      - name: Check consolidated Developer contracts and fourteen Family routes
+        shell: bash
+        run: go -C .ptsip/engine/developer test ./schema_check -run 'TestCanonical' -count=1 -v
+      - name: Check approval-bound machine contract (not publication)
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer run . --validator release-admission-check --root "$GITHUB_WORKSPACE" > /tmp/admission-design-report.json
+          cat /tmp/admission-design-report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/admission-design-report.json').read_text())
+          assert report['status'] == 'DESIGN_CONTRACT_CONSISTENT'
+          assert report['contract_validation'] == 'APPROVED_PROVENANCE_BINDINGS_MATCH'
+          assert report['publication_authorized'] is False
+          assert report['release_verification'] == 'NOT_ASSERTED'
+          assert report['approved_error_directions_checked'] == 14
+          assert report['common_directions_checked'] == 5
+          print('Design projection verified; normative policy and publication remain BLOCKED.')
+          PY
+
+          go -C .ptsip/engine/developer/release/test test ./... -run '^
+        shell: bash
+        run: go -C .ptsip/engine/developer test ./release -count=1
+      - name: Check consolidated Developer contracts and fourteen Family routes
+        shell: bash
+        run: go -C .ptsip/engine/developer test ./schema_check -run 'TestCanonical' -count=1 -v
+      - name: Check approval-bound machine contract (not publication)
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer run . --validator release-admission-check --root "$GITHUB_WORKSPACE" > /tmp/admission-design-report.json
+          cat /tmp/admission-design-report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/admission-design-report.json').read_text())
+          assert report['status'] == 'DESIGN_CONTRACT_CONSISTENT'
+          assert report['contract_validation'] == 'APPROVED_PROVENANCE_BINDINGS_MATCH'
+          assert report['publication_authorized'] is False
+          assert report['release_verification'] == 'NOT_ASSERTED'
+          assert report['approved_error_directions_checked'] == 14
+          assert report['common_directions_checked'] == 5
+          print('Design projection verified; normative policy and publication remain BLOCKED.')
+          PY
+
+          go -C .ptsip/engine/developer/release/engine-verification test ./... -run '^
+        shell: bash
+        run: go -C .ptsip/engine/developer test ./release -count=1
+      - name: Check consolidated Developer contracts and fourteen Family routes
+        shell: bash
+        run: go -C .ptsip/engine/developer test ./schema_check -run 'TestCanonical' -count=1 -v
+      - name: Check approval-bound machine contract (not publication)
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer run . --validator release-admission-check --root "$GITHUB_WORKSPACE" > /tmp/admission-design-report.json
+          cat /tmp/admission-design-report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/admission-design-report.json').read_text())
+          assert report['status'] == 'DESIGN_CONTRACT_CONSISTENT'
+          assert report['contract_validation'] == 'APPROVED_PROVENANCE_BINDINGS_MATCH'
+          assert report['publication_authorized'] is False
+          assert report['release_verification'] == 'NOT_ASSERTED'
+          assert report['approved_error_directions_checked'] == 14
+          assert report['common_directions_checked'] == 5
+          print('Design projection verified; normative policy and publication remain BLOCKED.')
+          PY
+
       - name: Execute Release Admission negative tests
         shell: bash
         run: go -C .ptsip/engine/developer test ./release -count=1

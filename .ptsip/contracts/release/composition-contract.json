@@ -1,0 +1,116 @@
+{
+  "schema_version": "ptsip-release-composition/v1",
+  "approval_ref": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml",
+  "publication_workflow": ".github/workflows/tooling-release.yml",
+  "verification_workflow": ".github/workflows/tooling-test.yml",
+  "mode_registry": ".github/test_modes.yaml",
+  "test_contract": ".ptsip/engine/developer/release/test/verification-contract.json",
+  "engine_registry": "src/ptsip/engines/index.json",
+  "profile_registry": "registry/project-profile-contracts.yaml",
+  "canonical_current_composition": {
+    "owner_ref": "developer/policy/INFO/MPD-INFO-0005.yaml#rules.independent_release_versioning",
+    "file": "pyproject.toml",
+    "table": "tool.ptsip.release",
+    "schema_version": "ptsip-current-composition/v2",
+    "package_pypi_version_ref": "project.version",
+    "tool_version_ref": "tool.ptsip.release.tool_version",
+    "tool_identifier": "T.MAJOR.MINOR.MICRO.STATE",
+    "tool_distribution_version": "STRIP_T_PREFIX_AND_JOIN_PRERELEASE_STATE",
+    "package_pypi_version": "BASE.REVISION_WITH_OPTIONAL_A_B_RC_STATE",
+    "published_snapshot_table": "tool.ptsip.release.published",
+    "distributed_current_version_authority": false,
+    "missing_declaration": "FAIL_NO_LEGACY_FALLBACK",
+    "projection_mismatch": "FAIL_CLOSED"
+  },
+  "default_engine_count": 7,
+  "package_request": {
+    "workflow_input": "release_type",
+    "default": "PTSIP_PACKAGE",
+    "components": "TOOL_AND_PROFILES_AND_ALL_REGISTERED_ENGINES",
+    "component_subset_or_exclusion": "FORBIDDEN",
+    "credential_scope_downgrade": "FORBIDDEN_FAIL_ORIGINAL_REQUEST",
+    "official_release_or_specification_version_gate": false
+  },
+  "engine_addition": "CANONICAL_REGISTRY_ONLY",
+  "profile_addition": "CANONICAL_REGISTRY_ONLY",
+  "release_types": [
+    "PTSIP_PACKAGE",
+    "TOOL_ONLY",
+    "ENGINE_ONLY",
+    "PROFILES_ONLY",
+    "TOOL_ENGINES",
+    "TOOL_PROFILES",
+    "ENGINES_PROFILES",
+    "MULTIPLE_ENGINES"
+  ],
+  "required_platforms": [
+    "windows-x64",
+    "linux-x64"
+  ],
+  "optional_platforms": [
+    "macos-arm64"
+  ],
+  "default_optional_platforms": [],
+  "github_release": {
+    "group_by": "FULL_SOURCE_SHA",
+    "tag_pattern": "ptsip-release-{source_sha}",
+    "one_release_per_source_sha": true,
+    "historic_component_releases": "PRESERVE",
+    "asset_overwrite": false
+  },
+  "engine_reuse": {
+    "mode": "IMMUTABLE_ORIGINAL_ARTIFACTS_WHEN_BOUNDARY_UNCHANGED",
+    "source_boundaries": [
+      "src/ptsip/engines/{engine}",
+      "src/ptsip/engines/contracts",
+      ".ptsip/engine/developer/release/engine-verification/wheel.go",
+      ".ptsip/engine/developer/release/engine-verification/linux_abi.go",
+      ".ptsip/engine/developer/release/engine-verification/go.mod",
+      ".ptsip/engine/developer/release/engine-verification/go.sum",
+      "License-Authority"
+    ],
+    "publication_transport_or_policy_route_change": "OUTSIDE_ENGINE_ARTIFACT_PRODUCER_BOUNDARY",
+    "changed_source_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_VERSION",
+    "current_source_verification": "REQUIRED_EVEN_WHEN_REUSING_ORIGINAL_PUBLISHED_ARTIFACTS"
+  },
+  "component_reuse": {
+    "tool": {
+      "source_boundaries": ["src", "registry", "License-Authority", "README.md", ".ptsip/engine/developer/release/test/tool.go", ".ptsip/engine/developer/release/test/runner.go"],
+      "pyproject_comparison": "FULL_DOCUMENT_EXCEPT_PUBLISHED_SNAPSHOT_TABLE"
+    },
+    "profiles": {
+      "source_boundaries": ["src/ptsip/profiles", "registry/project-profile-contracts.yaml"]
+    },
+    "unchanged_version": "REUSE_ORIGINAL_PUBLISHED_SOURCE_FILES_AND_DIGESTS",
+    "changed_producer_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_COMPONENT_VERSION"
+  },
+  "notes": {
+    "tool": "docs/releasenote/tool/{version}.md",
+    "profiles": "docs/releasenote/project-profile/{version}.md",
+    "engine": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md",
+    "package": "docs/releasenote/PTSIP_Package/{version}.md",
+    "merged_multi_engine_note_file": false,
+    "engine_draft_suffix": false
+  },
+  "package": {
+    "registry": ".ptsip/engine/developer/release/state/package-registry.json",
+    "identity": "NUMERIC_BASE_DOT_SIX_HEX",
+    "refresh_on": "EACH_SUCCESSFUL_COMPONENT_PUBLICATION",
+    "numeric_auto_increment": false,
+    "digest_input": "CANONICAL_PUBLISHED_COMPONENT_VERSIONS_SOURCE_AND_FILE_DIGESTS",
+    "repeat_same_publication": "IDEMPOTENT",
+    "suffix_collision": "FAIL_CLOSED_FULL_SHA256_MATCH_REQUIRED",
+    "published_history": "PUBLISHED_SOURCE_CARRIER_REGISTRY_ASSETS",
+    "initial_installable_baseline": "FULL_TOOL_PROFILE_AND_REGISTERED_ENGINE_COMPOSITION_REQUIRED",
+    "publication_record": "UPDATE_REGISTRY_AND_PACKAGE_NOTE_AFTER_OBSERVED_PUBLICATION",
+    "installation_contract": ".ptsip/contracts/release/package-installation-contract.json"
+  },
+  "identity_order": [
+    "PTSIP_Package",
+    "PTSIP_Tool",
+    "Project Profile",
+    "Engine"
+  ],
+  "presentation_contract": ".ptsip/contracts/release/release-presentation.json",
+  "evidence_resolution_contract": ".ptsip/contracts/release/publication-evidence.json"
+}

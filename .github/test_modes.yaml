@@ -35,8 +35,8 @@ modes:
   - id: release-verification
     component_ref: repository-release-verification
     execution:
-      contract_ref: .github/checks/release/test/verification-contract.json
-      runner_ref: .github/checks/release/test/cmd/ptsip-release-test
+      contract_ref: .ptsip/contracts/release/verification-contract.json
+      runner_ref: .ptsip/engine/developer/release/test/cmd/ptsip-release-test
   - id: agent-contract-plane
     component_ref: agent-contract-plane-verification
     execution:
