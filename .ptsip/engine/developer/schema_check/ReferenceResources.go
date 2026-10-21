@@ -20,8 +20,8 @@ type ReferenceProbe struct {
  Problem string `json:"problem,omitempty"`
 }
 
-const publicPolicyStatusPath = "developer/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json"
-const policyVersionPath = "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json"
+const publicPolicyStatusPath = ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json"
+const policyVersionPath = ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json"
 
 // approvedResource reads exactly a file already in the approved-schema set.
 // It does not search arbitrary paths or fetch URIs from the network.

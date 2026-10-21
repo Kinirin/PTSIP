@@ -221,7 +221,7 @@ func (r *Resolver) reference(value any) (Object, error) {
 }
 
 func (r *Resolver) resolutionAllowed(identity Object) (bool, error) {
-	const reference = "developer/contracts/lifecycle/policy_status.json"
+	const reference = ".ptsip/contracts/lifecycle/policy_status.json"
 	state := Object{"status": identity["status"], "substatus": identity["substatus"]}
 	if err := r.Repo.Validate(reference, state); err != nil {
 		return false, err

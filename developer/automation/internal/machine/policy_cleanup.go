@@ -229,7 +229,7 @@ func (r *Repository) CleanupInspect(id string) (Object, error) {
     if record["policy_class"] != "PTSIP_DEVELOPER_POLICY" {
         block("POLICY_CLASS_REMOVABLE_LIFECYCLE_NOT_REGISTERED")
     } else {
-        if err := r.Validate("developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+        if err := r.Validate(".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
             Object{"status": identity["status"], "substatus": identity["substatus"]}); err != nil {
             block("INVALID_GOV_LIFECYCLE: "+err.Error())
         }

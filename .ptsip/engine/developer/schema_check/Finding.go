@@ -48,14 +48,14 @@ func collectRefs(v any,refs *[]string){
 // Policy_version schema files. Requiring them detects missing contracts rather
 // than accidentally reporting a successful partial directory scan.
 var approvedSchemaPaths = []string{
-    "developer/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
-    "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
-    "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+    ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
+    ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
 }
 
 var schemaScanRoots = []string{
-    "developer/contracts/schemas",
-    "developer/contracts/lifecycle/Policy_version",
+    ".ptsip/contracts/schemas",
+    ".ptsip/contracts/lifecycle/Policy_version",
 }
 
 func schemaFiles(root string) ([]string, []Finding) {

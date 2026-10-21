@@ -1,6 +1,6 @@
 package lifecycle
 
-const PolicyStatusContract = "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
+const PolicyStatusContract = ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
 
 // NormalizePolicyStatus is a validated identity operation only.
 // It never converts DRAFT.Pass into approval or performs policy transitions.

@@ -43,7 +43,7 @@ func TestMissingPolicyVersionSchemaFailsClosed(t *testing.T) {
     _, findings := schemaFiles(root)
     found := false
     for _, finding := range findings {
-        if finding.File == "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json" && finding.Problem == "MISSING_APPROVED_SCHEMA" {
+        if finding.File == ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json" && finding.Problem == "MISSING_APPROVED_SCHEMA" {
             found = true
         }
     }
@@ -52,11 +52,11 @@ func TestMissingPolicyVersionSchemaFailsClosed(t *testing.T) {
 
 func TestEmptyStatusSchemaRootFailsClosed(t *testing.T) {
     root := t.TempDir()
-    writeSchemaFixture(t, root, "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json")
+    writeSchemaFixture(t, root, ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json")
     _, findings := schemaFiles(root)
     found := false
     for _, finding := range findings {
-        if finding.File == "developer/contracts/schemas" && strings.HasPrefix(finding.Problem, "SCHEMA_ROOT_UNAVAILABLE") {
+        if finding.File == ".ptsip/contracts/schemas" && strings.HasPrefix(finding.Problem, "SCHEMA_ROOT_UNAVAILABLE") {
             found = true
         }
     }
