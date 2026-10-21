@@ -1465,6 +1465,26 @@ developer_contract_repository_unification:
     update_live_schema_routes_and_go_consumers: true
     historical_source_refs_remain_evidence_not_runtime_fallback: true
     verify_before_deleting_old_paths: REQUIRED
+    completion_status: COMPLETED_AT_CURRENT_REPOSITORY_HEAD
+    migrated_developer_contract_files: 55
+    old_contract_directory: DELETED_AFTER_SOURCE_TO_DESTINATION_IDENTITY_CHECK
+    canonical_root: .ptsip/contracts/
+    contract_route_validation:
+      fourteen_developer_families: VERIFIED
+      forty_two_schema_refs_exist: true
+      json_syntax: VERIFIED_BY_GO_ACTIONS
+      normative_policy_compliance: NOT_ASSERTED
+    read_only_github_actions:
+      workflow: .github/workflows/release-admission-contract-check.yml
+      run_id: 39540266339
+      source_sha: 1a556e1d08d0f8eab7a331f99f29d6095a54ce3f
+      conclusion: SUCCESS
+      publication_authorized: false
+    separate_baseline_policy_cleanup:
+      workflow: Policy Cleanup Verification
+      prior_failure: MPD-0010_HISTORICAL_RECONSTRUCTION_INCOMPLETE
+      existed_before_this_migration: true
+    historical_approvals_consumption_retirement: UNRESOLVED_USER_POLICY_DECISION
     all_release_publication_still_blocked: true
     normative_conformance_not_asserted_by_path_move: true
 
