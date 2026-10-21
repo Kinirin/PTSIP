@@ -1419,6 +1419,56 @@ test_mode_verifier_target_reorganization:
     new_invalid_or_nonexistent_go_execution_entries: NOT_MATERIALIZED
     approved_unrelated_directions: STAGED_WITHOUT_EXECUTION
 
+developer_contract_repository_unification:
+  authorization: PROJECT_OWNER_EXPLICIT
+  scope: DEVELOPER_POLICY_MACHINE_CONTRACT_STORAGE
+  prior_root: developer/contracts/
+  selected_repository_root: .ptsip/contracts/
+  release_contract_root: .ptsip/contracts/release/
+  target_scope: ALL_EXISTING_DEVELOPER_CONTRACT_FILES
+  path_selection_philosophy:
+    recommended_default_for_ptsip_user_contracts: .ptsip/contracts/
+    user_defined_custom_contract_root: PERMITTED
+    mandatory_global_contract_path_for_all_projects: FORBIDDEN
+    repository_current_selected_root: .ptsip/contracts/
+    permanent_duplicate_active_authority_roots: DISCOURAGED
+  approvals_provenance:
+    new_developer_policy_approvals_record_creation: DISCONTINUE_BY_OWNER
+    old_approval_records: HISTORICAL_PRESERVE_NO_RETROACTIVE_REWRITE
+    new_normative_policy_authority_from_historical_approvals: FORBIDDEN
+    existing_release_design_verifier_consumes_historical_approvals: CURRENT_LEGACY_DEPENDENCY
+    removal_of_historical_approval_dependency: DEFER_UNTIL_NEW_CANONICAL_POLICY_AUTHORITY_VERIFIED
+    release_publication_authority: NOT_GRANTED
+  new_normative_policy_families:
+    - ARCH
+    - ASSURE
+    - CHANGE
+    - CNTR
+    - CTRL
+    - GOV
+    - INTENT
+    - INFO
+    - NORM
+    - OPS
+    - REAL
+    - RECORD
+    - RISK
+    - SUPPLY
+  canonical_policy_parent: developer/policy/
+  canonical_policy_contract_status: NOT_YET_FINALIZED
+  canonical_family_policy_generation_without_decided_contract: FORBIDDEN
+  existing_policy_identifiers_and_approval_records: PRESERVE
+  contract_migration:
+    approved: true
+    file_count_at_source_baseline: 55
+    preserve_schema_identities_and_contract_payloads: true
+    update_live_schema_routes_and_go_consumers: true
+    historical_source_refs_remain_evidence_not_runtime_fallback: true
+    verify_before_deleting_old_paths: REQUIRED
+    all_release_publication_still_blocked: true
+    normative_conformance_not_asserted_by_path_move: true
+
+
 component_representation_hybrid:
   choice: GRAPH_PRIMARY_HIERARCHY_OPTIONAL
   user_direction: EXPLICIT
