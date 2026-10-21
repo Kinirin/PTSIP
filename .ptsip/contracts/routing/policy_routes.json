@@ -1,0 +1,151 @@
+{
+  "schema_version": "ptsip-policy-routing/v2",
+  "identity_sources": {
+    "policy_kind": ".ptsip/contracts/identity/policy_kind.json",
+    "root_family": ".ptsip/contracts/identity/root_family.json"
+  },
+  "routes": {
+    "PTSIP_DEVELOPER_POLICY": {
+      "NORM": {
+        "output": {
+          "directory": "developer/policy/NORM"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/NORM_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/NORM_rules.schema.json"
+        }
+      },
+      "GOV": {
+        "output": {
+          "directory": "developer/policy/GOV"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/GOV_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json"
+        }
+      },
+      "INTENT": {
+        "output": {
+          "directory": "developer/policy/INTENT"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/INTENT_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/INTENT_rules.schema.json"
+        }
+      },
+      "ARCH": {
+        "output": {
+          "directory": "developer/policy/ARCH"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/ARCH_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/ARCH_rules.schema.json"
+        }
+      },
+      "INFO": {
+        "output": {
+          "directory": "developer/policy/INFO"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/INFO_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/INFO_rules.schema.json"
+        }
+      },
+      "CNTR": {
+        "output": {
+          "directory": "developer/policy/CNTR"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/CNTR_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/CNTR_rules.schema.json"
+        }
+      },
+      "RISK": {
+        "output": {
+          "directory": "developer/policy/RISK"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/RISK_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/RISK_rules.schema.json"
+        }
+      },
+      "SUPPLY": {
+        "output": {
+          "directory": "developer/policy/SUPPLY"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/SUPPLY_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/SUPPLY_rules.schema.json"
+        }
+      },
+      "REAL": {
+        "output": {
+          "directory": "developer/policy/REAL"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/REAL_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/REAL_rules.schema.json"
+        }
+      },
+      "ASSURE": {
+        "output": {
+          "directory": "developer/policy/ASSURE"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/ASSURE_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/ASSURE_rules.schema.json"
+        }
+      },
+      "CTRL": {
+        "output": {
+          "directory": "developer/policy/CTRL"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/CTRL_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/CTRL_rules.schema.json"
+        }
+      },
+      "CHANGE": {
+        "output": {
+          "directory": "developer/policy/CHANGE"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/CHANGE_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/CHANGE_rules.schema.json"
+        }
+      },
+      "OPS": {
+        "output": {
+          "directory": "developer/policy/OPS"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/OPS_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/OPS_rules.schema.json"
+        }
+      },
+      "RECORD": {
+        "output": {
+          "directory": "developer/policy/RECORD"
+        },
+        "schema_refs": {
+          "public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+          "authority": ".ptsip/contracts/schemas/Authority/root-family/RECORD_authority.schema.json",
+          "rules": ".ptsip/contracts/schemas/Policy_Rules/root-family/RECORD_rules.schema.json"
+        }
+      }
+    }
+  }
+}
