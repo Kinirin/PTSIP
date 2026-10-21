@@ -50,7 +50,7 @@
       "const": "PROJECT_OWNER_SHARED_DEVELOPER_CATALOG"
     },
     "policy_status_contract_ref": {
-      "const": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
+      "const": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
     },
     "lifecycle_schema_resources": {
       "type": "object",
@@ -64,19 +64,19 @@
       "additionalProperties": false,
       "properties": {
         "status": {
-          "const": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
+          "const": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
         },
         "version": {
-          "const": "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json"
+          "const": ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json"
         },
         "status_draft": {
-          "const": "developer/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json"
+          "const": ".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json"
         },
         "status_approved": {
-          "const": "developer/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json"
+          "const": ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json"
         },
         "status_retired": {
-          "const": "developer/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
+          "const": ".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
         }
       }
     },

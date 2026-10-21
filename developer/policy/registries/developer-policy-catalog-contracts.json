@@ -7,7 +7,7 @@
   "contract_status": "REGISTERED",
   "catalog_application_status": "APPLIED",
   "maintenance_authority": "PROJECT_OWNER_SHARED_DEVELOPER_CATALOG",
-  "policy_status_contract_ref": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+  "policy_status_contract_ref": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
   "approval": {
     "decision": "APPROVED",
     "decision_source": "USER_EXPLICIT",
@@ -595,10 +595,10 @@
     "runtime_activation": "FORBIDDEN"
   },
   "lifecycle_schema_resources": {
-    "status": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
-    "version": "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
-    "status_draft": "developer/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
-    "status_approved": "developer/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
-    "status_retired": "developer/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
+    "status": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    "version": ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+    "status_draft": ".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
+    "status_approved": ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
+    "status_retired": ".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
   }
 }

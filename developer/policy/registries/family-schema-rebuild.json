@@ -146,7 +146,7 @@
     "contract_driven_policy_decision": "FORBIDDEN",
     "existing_contract_functions_as_analysis_input": "PERMITTED_NON_NORMATIVE",
     "status": {
-      "file": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+      "file": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
       "current_functions": [
         "STATUS_SUBSTATUS_VALIDATION",
         "STATUS_VOCABULARY",
@@ -157,17 +157,17 @@
       "new_arch_status_field_requirement": "UNRESOLVED",
       "new_policy_status_vocabulary": "UNRESOLVED",
       "normalization_and_recovery_authorization": "DRAFT_PASS_PROMOTION_REMOVED; OTHER_RECOVERY_UNCHANGED",
-      "superseded_file": "developer/contracts/lifecycle/policy_status.json",
+      "superseded_file": ".ptsip/contracts/lifecycle/policy_status.json",
       "superseded_retention": "INVALIDATED",
       "replacement_contracts": [
-        "developer/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
-        "developer/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
-        "developer/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
+        ".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
+        ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
+        ".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
       ],
       "previous_content_role": "NON_NORMATIVE_MIGRATION_REFERENCE"
     },
     "version": {
-      "file": "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+      "file": ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
       "current_functions": [
         "REQUIRED_VERSION_STRING_SCHEMA"
       ],
@@ -175,13 +175,13 @@
       "new_arch_version_field_requirement": "UNRESOLVED",
       "new_policy_version_format": "UNRESOLVED",
       "status_major_mapping_authorization": "REMOVED_KEEP_LATEST",
-      "superseded_file": "developer/contracts/lifecycle/policy_version.json",
+      "superseded_file": ".ptsip/contracts/lifecycle/policy_version.json",
       "previous_content_role": "NON_NORMATIVE_REFERENCE_ONLY",
       "historical_functions": [
         "MAJOR_MINOR_SYNTAX",
         "RETIRED_VERSION_PRESERVATION"
       ],
-      "contract_identity_owner": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+      "contract_identity_owner": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
       "status_version_coupling": "FORBIDDEN",
       "automatic_version_increment": "FORBIDDEN"
     },
@@ -241,7 +241,7 @@
         "SHARED_TRANSITION_RULES"
       ],
       "shared_policy_field_format": "NOT_AUTHORIZED",
-      "new_contract_path_root": "developer/contracts/lifecycle/",
+      "new_contract_path_root": ".ptsip/contracts/lifecycle/",
       "contract_filename": "UNRESOLVED",
       "schema_fields": "UNRESOLVED",
       "authority_owner": "UNRESOLVED"

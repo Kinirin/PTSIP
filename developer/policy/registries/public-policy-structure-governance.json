@@ -57,14 +57,14 @@
     "policy_status_contract_and_version": {
       "conflict_resolution": "KEEP_LATEST",
       "contract": {
-        "owner": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+        "owner": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
         "field": "contract",
         "required": true,
         "type": "string",
         "approved_urn_pattern": "PRESERVE_PREVIOUSLY_APPROVED_CONTRACT_PATTERN"
       },
       "version": {
-        "owner_root": "developer/contracts/lifecycle/Policy_version/",
+        "owner_root": ".ptsip/contracts/lifecycle/Policy_version/",
         "field": "version",
         "required": true,
         "type": "string",

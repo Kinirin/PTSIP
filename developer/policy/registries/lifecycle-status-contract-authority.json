@@ -9,33 +9,33 @@
     "new_policy_inference": "FORBIDDEN"
   },
   "status": {
-    "superseded_contract": "developer/contracts/lifecycle/policy_status.json",
+    "superseded_contract": ".ptsip/contracts/lifecycle/policy_status.json",
     "superseded_contract_retention": "INVALIDATED",
     "disposition": "REPLACE_AND_REMOVE",
     "new_status_contracts": [
-      "developer/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
-      "developer/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
-      "developer/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
+      ".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
+      ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
+      ".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"
     ],
-    "composite_schema": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    "composite_schema": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
     "old_contract_as_normative_source": "FORBIDDEN",
     "historical_content_for_migration": "PERMITTED_NON_NORMATIVE",
     "missing_status_semantics": "USER_DECISION_REQUIRED",
     "dangling_contract_references": "FORBIDDEN"
   },
   "version": {
-    "contract": "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+    "contract": ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
     "version_field": "version",
     "version_field_type": "string",
     "version_field_required": true,
-    "contract_identity_owner": "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+    "contract_identity_owner": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
     "contract_identity_required": true,
     "independent_version_semantics": "POLICY_VERSION_CONTRACT_ONLY_NO_STATUS_MAPPING",
     "status_to_version_inference": "FORBIDDEN",
     "version_to_status_inference": "FORBIDDEN",
     "automatic_major_minor_increment": "FORBIDDEN",
     "format_pattern": "UNRESOLVED",
-    "superseded_contract": "developer/contracts/lifecycle/policy_version.json",
+    "superseded_contract": ".ptsip/contracts/lifecycle/policy_version.json",
     "superseded_disposition": "DELETE_AFTER_CALLSITE_AND_VALIDATOR_DEPENDENCIES_REMOVED",
     "conflict_resolution": "KEEP_LATEST"
   },
