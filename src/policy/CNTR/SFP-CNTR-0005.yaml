@@ -611,6 +611,19 @@
           "external_engine_runtime_ownership": "EXTERNAL_OWNER_UNCHANGED",
           "exact_registry_manifest_entrypoint_and_proof_schema": "UNRESOLVED_CONTRACT_DESIGN",
           "current_runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED"
+        },
+        "consumer_repository_engines_namespace_scope": {
+          "authority": "PROJECT_OWNER_EXPLICIT_CLARIFICATION",
+          "entrypoint": ".ptsip/index.json#namespaces.engines",
+          "purpose": "CONSUMER_REPOSITORY_DISCOVERY_BINDING_TO_EXISTING_OFFICIAL_AND_CONSUMER_ENGINE_REGISTRATIONS",
+          "create_official_engine_registry": false,
+          "duplicate_official_engine_registration": false,
+          "engine_registration_source_authority": "PRESERVED_PER_REGISTERED_OWNER",
+          "directory_name_or_installation_path_inference": "FORBIDDEN",
+          "registration_is_execution_authorization": false,
+          "external_engine_federation": "EXISTING_POLICY_UNCHANGED_NOT_DECIDED_BY_THIS_SCOPE",
+          "exact_namespace_schema_and_source_reference_layout": "UNRESOLVED_SEPARATE_DECISION",
+          "repository_index_and_schema_mutation": "NOT_AUTHORIZED_BY_THIS_SCOPE_CLARIFICATION"
         }
       },
       "invariants": {
