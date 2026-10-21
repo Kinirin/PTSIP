@@ -698,6 +698,29 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_CROSS_FAMILY_POLICY_AUTHORITY: false
+  identity_family_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Identity.family
+    selected_option: SIMPLE_FAMILY_IDENTIFIER_CODE
+    representation: DIRECT_CODE_VALUE_NOT_NESTED_MEANING_OBJECT
+    family_identity_purpose: MATCHING_ROOT_FAMILY_IDENTIFIER
+    field_may_duplicate_family_responsibility_description: false
+    approved_semantic_structuring_strategy: PRESERVED
+    per_family_identity_and_inner_semantics_ownership: PRESERVED
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    exact_data_type: UNRESOLVED_USER_DECISION
+    allowed_values_and_pattern: UNRESOLVED_USER_DECISION
+    canonical_vocabulary_binding: UNRESOLVED_USER_DECISION
+    logical_rule_identity_and_approval_content_binding: PRESERVED_SEPARATELY
+    B3_approval_evidence_requirements: PRESERVED
+    approval_state_field_shape: UNRESOLVED_USER_DECISION
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   identity_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
