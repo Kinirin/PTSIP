@@ -721,6 +721,32 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  identity_approval_state_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Identity.approval.state
+    selected_option: COMPOSITE_APPROVAL_STATE_OBJECT
+    representation: NESTED_STATE_OBJECT_WITH_SEPARATELY_EXPRESSIBLE_DETAILS
+    approval_state_meaning: RULE_CONTRACT_APPROVAL_STATUS_DESCRIPTION_ONLY
+    approval_state_self_claim_as_authority: FORBIDDEN
+    approval_state_display_and_B3_approval_proof: SEPARATE
+    B3_exact_approved_content_and_identity_verification: PRESERVED
+    B3_approval_scope_authority_verification: PRESERVED
+    example_code_or_qualifier_names: NON_NORMATIVE_NOT_APPROVED
+    actual_status_codes: UNRESOLVED_USER_DECISION
+    additional_nested_field_names_and_requiredness: UNRESOLVED_USER_DECISION
+    exact_types_and_allowed_values: UNRESOLVED_USER_DECISION
+    field_value_empty_and_null_semantics: UNRESOLVED_USER_DECISION
+    approved_semantic_structuring_strategy: PRESERVED
+    approved_Identity_family_simple_code: PRESERVED
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    per_family_identity_and_inner_semantics_ownership: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   identity_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
