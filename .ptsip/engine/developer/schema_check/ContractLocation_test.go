@@ -20,9 +20,17 @@ func checkCanonicalContractFile(root, name string) error {
         filepath.ToSlash(filepath.Clean(name)) != name {
         return fmt.Errorf("unapproved or unsafe contract reference %q", name)
     }
-    info, err := os.Stat(filepath.Join(root, filepath.FromSlash(name)))
+    base, err := filepath.EvalSymlinks(filepath.Join(root, ".ptsip", "contracts"))
+    if err != nil { return fmt.Errorf("canonical contract root: %w", err) }
+    target, err := filepath.EvalSymlinks(filepath.Join(root, filepath.FromSlash(name)))
     if err != nil { return fmt.Errorf("%s: %w", name, err) }
-    if info.IsDir() { return fmt.Errorf("%s: not a file", name) }
+    relative, err := filepath.Rel(base, target)
+    if err != nil || relative == ".." || strings.HasPrefix(relative, ".."+string(filepath.Separator)) {
+        return fmt.Errorf("contract reference escapes owner-selected root: %s", name)
+    }
+    info, err := os.Stat(target)
+    if err != nil { return fmt.Errorf("%s: %w", name, err) }
+    if !info.Mode().IsRegular() { return fmt.Errorf("%s: not a regular contract file", name) }
     return nil
 }
 
