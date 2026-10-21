@@ -83,7 +83,7 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	if contractRef == "" || runnerRef != ".ptsip/engine/developer/release/test/cmd/ptsip-release-test" {
 		return result, fmt.Errorf("mode is not registered with this runner")
 	}
-	if !strings.HasPrefix(contractRef, ".ptsip/engine/developer/release/test/") {
+	if !strings.HasPrefix(contractRef, ".ptsip/contracts/release/") {
 		return result, fmt.Errorf("verification contract outside admitted test root")
 	}
 	var contract TestContract
