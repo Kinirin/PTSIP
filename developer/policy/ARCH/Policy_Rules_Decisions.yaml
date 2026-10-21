@@ -672,6 +672,32 @@ public_policy_structure:
     schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
     record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  value_shape_design_direction:
+    decision: USER_SELECTED_SEMANTICALLY_STRUCTURED_FIELD_CONTRACTS
+    selected_option: B_MEANING_AWARE_STRUCTURED_CONTRACT
+    authorization: PROJECT_OWNER_EXPLICIT
+    scope: ALL_14_ROOT_FAMILY_INDEPENDENT_RULE_CONTRACT_FIELDS
+    design_strategy: FIELD_MEANING_DRIVEN_MACHINE_VERIFIABLE_STRUCTURE
+    family_owned_nested_field_semantics: PRESERVED
+    cross_family_same_field_type_or_shape: NOT_IMPLIED
+    approved_five_group_envelope: PRESERVED
+    approved_common_required_four: PRESERVED
+    approved_per_family_true_false_matrix: PRESERVED
+    future_field_structure_decisions: SEPARATE_INDEPENDENT_USER_DECISIONS_REQUIRED
+    first_review_fields:
+      - Identity.family
+      - Identity.approval.state
+    exact_field_types: UNRESOLVED_USER_DECISION
+    exact_field_values_and_patterns: UNRESOLVED_USER_DECISION
+    optional_field_empty_value_policy: UNRESOLVED_USER_DECISION
+    additional_properties_constraints: UNRESOLVED_USER_DECISION
+    reference_and_resolution_formats: UNRESOLVED_USER_DECISION
+    formal_policy_authority_and_B3_binding_format: DEFERRED
+    existing_B3_requirements: PRESERVED
+    schema_or_validator_implementation: NOT_AUTHORIZED_BY_THIS_DIRECTION
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_CROSS_FAMILY_POLICY_AUTHORITY: false
   identity_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
