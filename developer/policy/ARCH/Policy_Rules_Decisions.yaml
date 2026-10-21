@@ -619,6 +619,49 @@ public_policy_structure:
         schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
         record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
         this_record_owns_RECORD_policy_authority: false
+    final_common_field_requiredness:
+      decision: USER_APPROVED_EXPLICIT_COMMON_FIELD_CLASSIFICATION
+      authorization: PROJECT_OWNER_EXPLICIT
+      family_count: 14
+      evaluated_field_paths: 19
+      reviewed_boolean_assignments: 266
+      classification_rule: REQUIRED_IF_ALL_14_TRUE_ELSE_COMMON_OPTIONAL
+      field_values_source: family_field_review_results
+      common_required_fields:
+        - Identity.family
+        - Identity.approval.state
+        - Definition.meaning
+        - Boundary.scope
+      common_required_count: 4
+      common_optional_fields:
+        - Definition.rationale
+        - Boundary.subjects
+        - Boundary.exclusions
+        - Boundary.context
+        - Boundary.context.environment
+        - Boundary.context.phase
+        - Constraints.obligations
+        - Constraints.prohibitions
+        - Constraints.preconditions
+        - Constraints.dependencies
+        - Evaluation.criteria
+        - Evaluation.criteria.evidence
+        - Evaluation.method
+        - Evaluation.method.ref
+        - Evaluation.method.outcome_ref
+      common_optional_count: 15
+      common_optional_meaning: NOT_GLOBALLY_REQUIRED_BUT_PERMITTED
+      per_family_true_remains_required: true
+      per_family_false_remains_optional_and_permitted: true
+      per_family_requiredness_not_overridden_by_common_classification: true
+      all_family_field_assignments_preserved: true
+      parent_child_requiredness_inheritance: FORBIDDEN
+      same_field_type_or_internal_shape_across_families: NOT_AUTHORIZED_BY_THIS_DECISION
+      normative_policy_authority_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+      schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+      B3_approval_and_meaning_presence: PRESERVED
+      record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
+      this_record_owns_cross_family_policy_authority: false
     common_required_if: ALL_14_FAMILIES_INCLUDE_TRUE
     common_optional_if: ANY_FAMILY_INCLUDE_FALSE
     common_classification_before_all_14_resolved: UNRESOLVED
