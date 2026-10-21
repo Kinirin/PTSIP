@@ -1,258 +1,311 @@
-// Package release validates approved release directions against their source
-// approval provenance. This design check never grants publication authority.
+// Package release evaluates non-normative, approval-bound design contracts.
+// Release-specific rules live in .ptsip/contracts/release, not in Go.
 package release
 
 import (
-  "encoding/json"
-  "fmt"
-  "os"
-  "path/filepath"
-  "strings"
+    "encoding/json"
+    "fmt"
+    "os"
+    "path/filepath"
+    "reflect"
+    "strings"
 )
 
-const (
-  contractIndexPath = ".ptsip/contracts/release/index.json"
-  contractPath = ".ptsip/contracts/release/admission.json"
-  modeRegistryPath = ".github/test_modes.json"
-  cutoverApprovalPath = "developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml"
-  verificationGapPath = ".github/verification-retirement.json"
-)
+// Only the bootstrap contract location is compiled into this engine.
+const contractIndexPath = ".ptsip/contracts/release/index.json"
 
-func readJSON(root, path string) (map[string]any, error) {
-  b, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(path)))
-  if err != nil { return nil, fmt.Errorf("%s: %w", path, err) }
-  var obj map[string]any
-  if err := json.Unmarshal(b, &obj); err != nil { return nil, fmt.Errorf("%s: %w", path, err) }
-  if obj == nil { return nil, fmt.Errorf("%s: expected JSON object", path) }
-  return obj, nil
-}
-
-func str(m map[string]any, key string) string {
-  x, _ := m[key].(string)
-  return x
-}
-
-func obj(m map[string]any, key string) map[string]any {
-  v, _ := m[key].(map[string]any)
-  return v
-}
-
-func array(m map[string]any, key string) []any {
-  v, _ := m[key].([]any)
-  return v
-}
-
-func safeApprovalPath(path string) bool {
-  if !strings.HasPrefix(path, "developer/policy/approvals/MPA-") || !strings.HasSuffix(path, ".yaml") { return false }
-  cleaned := filepath.ToSlash(filepath.Clean(path))
-  return cleaned == path && !strings.Contains(path, "..")
-}
-
-func approvalDirection(text string) (string, error) {
-  text = strings.ReplaceAll(text, "\r\n", "\n")
-  marker := "  selected_direction:\n"
-  pos := strings.Index(text, marker)
-  if pos < 0 { return "", fmt.Errorf("selected_direction missing") }
-  after := text[pos + len(marker):]
-  end := strings.Index(after, "  unresolved:\n")
-  if end < 0 { return "", fmt.Errorf("unresolved boundary missing") }
-  selected := after[:end]
-  if selected == "" { return "", fmt.Errorf("selected_direction empty") }
-  return selected, nil
-}
-
-// verifyApprovedProjection guarantees that every projected rule is byte-for-byte
-// bound to a recorded approved direction. A provenance record is not an active
-// normative POLICY, and this function never evaluates publication readiness.
-func verifyApprovedProjection(root string, item map[string]any, expectedKind string) error {
-  path := str(item, "approval_ref")
-  if !safeApprovalPath(path) { return fmt.Errorf("invalid approval path %q", path) }
-  raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(path)))
-  if err != nil { return fmt.Errorf("approval %s: %w", path, err) }
-  text := strings.ReplaceAll(string(raw), "\r\n", "\n")
-  for _, requirement := range []string{
-    "  decision: APPROVED\n",
-    "  policy_content_review_scope: DIRECTION\n",
-    "  this_record: APPROVAL_PROVENANCE_NOT_ACTIVE_POLICY\n",
-  } {
-    if !strings.Contains(text, requirement) { return fmt.Errorf("%s: missing approved direction boundary %q", path, strings.TrimSpace(requirement)) }
-  }
-  projected := str(item, "selected_direction_yaml")
-  source, err := approvalDirection(text)
-  if err != nil { return fmt.Errorf("%s: %w", path, err) }
-  if projected != source { return fmt.Errorf("%s: approved direction differs from projection", path) }
-  model := str(item, "model")
-  if model == "" { return fmt.Errorf("%s: projected model missing", path) }
-  field := "model"
-  if expectedKind == "error" {
-    field = "response_model"
-    category := str(item, "category")
-    if category == "" || !strings.Contains(source, "    error_category: "+category+"\n") {
-      return fmt.Errorf("%s: error category not bound to approved source", path)
+func repoPath(root, ref string) (string, error) {
+    if ref == "" || filepath.IsAbs(ref) || strings.Contains(ref, "\\") ||
+        filepath.ToSlash(filepath.Clean(ref)) != ref ||
+        strings.HasPrefix(ref, "../") || strings.Contains(ref, "/../") {
+        return "", fmt.Errorf("unsafe contract path %q", ref)
     }
-  }
-  if !strings.Contains(source, "    "+field+": "+model+"\n") {
-    return fmt.Errorf("%s: model not bound to approved source", path)
-  }
-  return nil
+    return filepath.Join(root, filepath.FromSlash(ref)), nil
 }
 
-func verifyRegistry(root string, index map[string]any) error {
-  if str(index, "schema_version") != "ptsip-release-contract-index/v1" ||
-    str(index, "contract_ref") != contractPath ||
-    str(index, "registry_ref") != modeRegistryPath ||
-    str(index, "approval_ref") != cutoverApprovalPath ||
-    str(index, "engine_entry") != ".ptsip/engine/developer/main.go" ||
-    str(index, "verifier_root") != ".ptsip/engine/developer/release/" ||
-    str(index, "validator_name") != "release-admission-check" ||
-    str(index, "mode_id") != "release-admission-design-check" ||
-    str(index, "normative_policy_activation") != "PENDING" ||
-    index["publication_authorized"] != false ||
-    index["fail_closed_on_unresolved"] != true ||
-    index["legacy_release_verifier_fallback"] != false {
-    return fmt.Errorf("release index violates approved fail-closed design route")
-  }
-  registry, err := readJSON(root, modeRegistryPath)
-  if err != nil { return err }
-  found := 0
-  for _, raw := range array(registry, "modes") {
-    entry, ok := raw.(map[string]any)
-    if !ok { return fmt.Errorf("invalid mode entry") }
-    if str(entry, "id") == "release-admission-design-check" {
-      found++
-      if str(entry, "task_ref") != "release-admission-contract-check" { return fmt.Errorf("incorrect release task binding") }
+func readText(root, ref string) (string, error) {
+    p, err := repoPath(root, ref)
+    if err != nil { return "", err }
+    data, err := os.ReadFile(p)
+    if err != nil { return "", fmt.Errorf("%s: %w", ref, err) }
+    return strings.ReplaceAll(string(data), "\r\n", "\n"), nil
+}
+
+func readJSON(root, ref string) (map[string]any, error) {
+    text, err := readText(root, ref)
+    if err != nil { return nil, err }
+    var m map[string]any
+    if err := json.Unmarshal([]byte(text), &m); err != nil { return nil, fmt.Errorf("%s: %w", ref, err) }
+    if m == nil { return nil, fmt.Errorf("%s: empty JSON object", ref) }
+    return m, nil
+}
+
+func str(m map[string]any, k string) string {
+    v, _ := m[k].(string)
+    return v
+}
+
+func obj(m map[string]any, k string) map[string]any {
+    v, _ := m[k].(map[string]any)
+    return v
+}
+
+func array(m map[string]any, k string) []any {
+    v, _ := m[k].([]any)
+    return v
+}
+
+func requiredStrings(m map[string]any, k string) ([]string, error) {
+    raw := array(m, k)
+    if len(raw) == 0 { return nil, fmt.Errorf("missing required rule list %s", k) }
+    out := make([]string, 0, len(raw))
+    seen := make(map[string]bool)
+    for _, elem := range raw {
+        s, ok := elem.(string)
+        if !ok || s == "" || seen[s] { return nil, fmt.Errorf("invalid or duplicate %s rule", k) }
+        seen[s] = true
+        out = append(out, s)
     }
-  }
-  if found != 1 { return fmt.Errorf("release verification mode must be registered exactly once") }
-  task := obj(obj(obj(registry,"tasks"),"execution"),"release-admission-contract-check")
-  if str(task, "module_root") != ".ptsip/engine/developer" ||
-    str(task, "package") != "." ||
-    str(task, "validator") != "release-admission-check" ||
-    str(task, "contract_ref") != contractPath ||
-    task["publication_authorized"] != false {
-    return fmt.Errorf("registered developer Go verifier differs from approved path")
-  }
-  return nil
+    return out, nil
 }
 
-func verifyReadOnlyReleaseWorkflow(root string) error {
-  b, err := os.ReadFile(filepath.Join(root, ".github", "workflows", "tooling-release.yml"))
-  if err != nil { return fmt.Errorf("release workflow unreadable: %w",err) }
-  content := string(b)
-  for _, forbidden := range []string{
-    ".github/checks/release/controller",
-    "pypa/gh-action-pypi-publish",
-    "publish-carrier",
-    "PYPI_API_TOKEN",
-    "contents: write",
-    "gh release create",
-    "twine upload",
-  } {
-    if strings.Contains(content,forbidden) { return fmt.Errorf("release workflow contains forbidden publication operation: %s",forbidden) }
-  }
-  for _, required := range []string{
-    ".github/test_modes.json",
-    ".ptsip/engine/developer",
-    "--validator",
-    "exit 1",
-  } {
-    if !strings.Contains(content,required) { return fmt.Errorf("release workflow missing fail-closed routing: %s",required) }
-  }
-  return nil
+func compareFields(actual, expected map[string]any, label string) error {
+    if len(expected) == 0 { return fmt.Errorf("%s has no rule assertions", label) }
+    for k, want := range expected {
+        got, exists := actual[k]
+        if !exists || !reflect.DeepEqual(got, want) {
+            return fmt.Errorf("%s: rule %q does not match contract", label, k)
+        }
+    }
+    return nil
 }
 
-func verifyReleaseGap(root string) error {
-  gap, err := readJSON(root, verificationGapPath)
-  if err != nil { return err }
-  if str(obj(gap, "release_verification_gap"), "release_execution") != "BLOCKED" {
-    return fmt.Errorf("release publication must remain blocked")
-  }
-  return nil
+func verifyDocuments(root string, rules map[string]any) error {
+    assertions := array(rules, "document_assertions")
+    if len(assertions) < 2 { return fmt.Errorf("required document assertions absent") }
+    paths := map[string]bool{}
+    for _, entry := range assertions {
+        check, ok := entry.(map[string]any)
+        if !ok { return fmt.Errorf("invalid document assertion") }
+        ref := str(check, "path")
+        if ref == "" || paths[ref] { return fmt.Errorf("missing or duplicated asserted document") }
+        paths[ref] = true
+        source, err := readJSON(root, ref)
+        if err != nil { return err }
+        if err := compareFields(source, obj(check, "required_fields"), ref); err != nil { return err }
+    }
+    if !paths[contractIndexPath] || !paths[str(rules, "admission_ref")] {
+        return fmt.Errorf("required indexed documents not covered")
+    }
+    return nil
 }
 
-func verifyGuardrails(contract map[string]any) error {
-  guards := obj(contract,"guardrails")
-  required := map[string]string{
-    "independent_logical_release_id":"REQUIRED",
-    "publisher_specific_outcome":"INDEPENDENT",
-    "multiple_error_classification":"INDEPENDENT",
-    "verification_evidence_reuse":"SCOPED_CONDITIONAL",
-    "admission_after_publication_error":"REEVALUATE_BEFORE_NEXT_ATTEMPT",
-    "unresolved_policy_or_verification":"FAIL_CLOSED",
-    "actual_github_or_pypi_publication":"BLOCKED",
-  }
-  for k, want := range required {
-    if str(guards,k) != want { return fmt.Errorf("guardrail %s changed",k) }
-  }
-  if guards["admission_success_is_blanket_recovery_authorization"] != false ||
-    guards["security_recovery_requires_owner_approval"] != true {
-    return fmt.Errorf("mandatory authorization boundaries missing")
-  }
-  return nil
+func verifyRegistry(root string, index, rules map[string]any) error {
+    reg := obj(rules, "registry")
+    path := str(reg, "path")
+    mode := str(reg, "mode_id")
+    taskRef := str(reg, "mode_task_ref")
+    if path == "" || path != str(index, "registry_ref") ||
+       mode == "" || mode != str(index, "mode_id") ||
+       str(rules, "admission_ref") != str(index, "contract_ref") ||
+       str(rules, "approval_ref") != str(index, "approval_ref") {
+        return fmt.Errorf("release index/registry/approval binding mismatch")
+    }
+    registry, err := readJSON(root, path)
+    if err != nil { return err }
+    matches := 0
+    for _, entry := range array(registry, "modes") {
+        m, ok := entry.(map[string]any)
+        if !ok { return fmt.Errorf("invalid mode registry entry") }
+        if str(m, "id") == mode {
+            matches++
+            if str(m, "task_ref") != taskRef { return fmt.Errorf("mode task binding differs from contract") }
+        }
+    }
+    if matches != 1 { return fmt.Errorf("release mode must appear exactly once") }
+    task := obj(obj(obj(registry, "tasks"), "execution"), taskRef)
+    if err := compareFields(task, obj(reg, "task_expected"), "registered verifier task"); err != nil { return err }
+    return nil
 }
 
-// RunAdmission validates machine-readable approval-derived contract integrity.
-// A successful contract check reports DESIGN_CONTRACT_CONSISTENT, never PASS
-// for normative policy validation or publication admission.
+func verifyTextConstraints(root string, rule map[string]any, label string, forbid bool) error {
+    path := str(rule, "path")
+    if path == "" { return fmt.Errorf("%s source path not declared", label) }
+    content, err := readText(root, path)
+    if err != nil { return err }
+    must, err := requiredStrings(rule, "must_contain")
+    if err != nil { return fmt.Errorf("%s: %w", label, err) }
+    for _, fragment := range must {
+        if !strings.Contains(content, fragment) {
+            return fmt.Errorf("%s missing required contract condition %q", label, fragment)
+        }
+    }
+    if forbid {
+        denied, err := requiredStrings(rule, "must_not_contain")
+        if err != nil { return fmt.Errorf("%s: %w", label, err) }
+        for _, fragment := range denied {
+            if strings.Contains(content, fragment) {
+                return fmt.Errorf("%s contains forbidden contract condition %q", label, fragment)
+            }
+        }
+    }
+    return nil
+}
+
+func verifyReleaseBlocked(root string, rule map[string]any) error {
+    path := str(rule, "state_path")
+    keys, err := requiredStrings(rule, "state_fields")
+    if err != nil { return err }
+    state, err := readJSON(root, path)
+    if err != nil { return err }
+    var value any = state
+    for _, key := range keys {
+        node, ok := value.(map[string]any)
+        if !ok { return fmt.Errorf("publication state path is invalid") }
+        next, found := node[key]
+        if !found { return fmt.Errorf("publication state missing %s", key) }
+        value = next
+    }
+    if str(rule, "expected") == "" || value != str(rule, "expected") {
+        return fmt.Errorf("release publication is not in contract-declared blocked state")
+    }
+    return nil
+}
+
+func verifyProvenance(root string, item, rule map[string]any, isError bool) error {
+    ref := str(item, "approval_ref")
+    if !strings.HasPrefix(ref, "developer/policy/approvals/MPA-") ||
+       !strings.HasSuffix(ref, ".yaml") {
+        return fmt.Errorf("invalid approved provenance path %q", ref)
+    }
+    text, err := readText(root, ref)
+    if err != nil { return err }
+    required, err := requiredStrings(rule, "required_provenance_lines")
+    if err != nil { return err }
+    for _, line := range required {
+        if !strings.Contains(text, line+"\n") { return fmt.Errorf("%s: missing approved provenance %q", ref, line) }
+    }
+    start := str(rule, "start_marker")
+    end := str(rule, "end_marker")
+    if start == "" || end == "" { return fmt.Errorf("direction boundaries missing") }
+    a := strings.Index(text, start)
+    if a < 0 { return fmt.Errorf("%s: selected direction missing", ref) }
+    rest := text[a+len(start):]
+    b := strings.Index(rest, end)
+    if b < 0 { return fmt.Errorf("%s: unresolved boundary missing", ref) }
+    direction := rest[:b]
+    if direction == "" || direction != str(item, "selected_direction_yaml") {
+        return fmt.Errorf("%s: approved direction does not match projection", ref)
+    }
+    modelField := str(rule, "model_field")
+    if isError {
+        modelField = str(rule, "error_model_field")
+        categoryField := str(rule, "error_category_field")
+        if categoryField == "" || str(item, "category") == "" ||
+            !strings.Contains(direction, "    "+categoryField+": "+str(item, "category")+"\n") {
+            return fmt.Errorf("%s: error category is not bound to approval", ref)
+        }
+    }
+    if modelField == "" || str(item, "model") == "" ||
+        !strings.Contains(direction, "    "+modelField+": "+str(item, "model")+"\n") {
+        return fmt.Errorf("%s: model is not bound to approval", ref)
+    }
+    return nil
+}
+
+func verifyDirections(root string, contract, rules map[string]any) (int,int,error) {
+    rule := obj(rules, "approval_direction_checks")
+    topics, err := requiredStrings(rule, "common_topics")
+    if err != nil { return 0,0,err }
+    ids, err := requiredStrings(rule, "error_ids")
+    if err != nil { return 0,0,err }
+    common := array(contract, "common_directions")
+    errors := array(contract, "error_directions")
+    if len(common) != len(topics) || len(errors) != len(ids) {
+        return 0,0,fmt.Errorf("approved direction coverage changed")
+    }
+    usedRefs := map[string]bool{}
+    for i, raw := range common {
+        item, ok := raw.(map[string]any)
+        if !ok || str(item, "topic") != topics[i] {
+            return 0,0,fmt.Errorf("common direction identity mismatch at %d", i)
+        }
+        ref := str(item, "approval_ref")
+        if usedRefs[ref] { return 0,0,fmt.Errorf("duplicated provenance reference %s", ref) }
+        usedRefs[ref]=true
+        if err := verifyProvenance(root, item, rule, false); err != nil { return 0,0,err }
+    }
+    for i, raw := range errors {
+        item, ok := raw.(map[string]any)
+        if !ok || str(item, "error_id") != ids[i] ||
+            !strings.HasPrefix(str(item,"category"),ids[i]+"_") {
+            return 0,0,fmt.Errorf("error direction identity mismatch at %d",i)
+        }
+        ref := str(item,"approval_ref")
+        if usedRefs[ref] { return 0,0,fmt.Errorf("duplicated provenance reference %s", ref) }
+        usedRefs[ref]=true
+        if err := verifyProvenance(root, item, rule, true); err != nil { return 0,0,err }
+    }
+    return len(common),len(errors),nil
+}
+
+// RunAdmission is a read-only verifier of *approved-direction projections*.
+// Neither a successful design check nor edited contracts grant release authority.
 func RunAdmission(root string) (any, int) {
-  report := map[string]any{
-    "status":"BLOCKED",
-    "contract_validation":"UNVERIFIED",
-    "release_verification":"NOT_ASSERTED",
-    "publication_authorized":false,
-    "contract_ref":contractPath,
-  }
-  reject := func(err error) (any,int) {
-    report["reason"] = err.Error()
-    return report,2
-  }
-  index, err := readJSON(root, contractIndexPath)
-  if err != nil { return reject(err) }
-  if err := verifyRegistry(root,index); err != nil { return reject(err) }
-  if err := verifyReleaseGap(root); err != nil { return reject(err) }
-  if err := verifyReadOnlyReleaseWorkflow(root); err != nil { return reject(err) }
-  contract, err := readJSON(root, contractPath)
-  if err != nil { return reject(err) }
-  if str(contract,"schema_version") != "ptsip-release-admission-direction-projection/v1" ||
-    str(contract,"artifact_class") != "DERIVED_MACHINE_CONTRACT_FROM_APPROVED_PROVENANCE" ||
-    str(contract,"normative_policy_status") != "NOT_ACTIVE_NORMATIVE_POLICY" ||
-    str(contract,"conflict_resolution_approval_ref") != cutoverApprovalPath ||
-    str(contract,"old_root_policy_fallback") != "FORBIDDEN" ||
-    str(contract,"mode_registry") != modeRegistryPath ||
-    str(contract,"developer_validator") != ".ptsip/engine/developer/main.go" ||
-    contract["publication_authorized"] != false {
-    return reject(fmt.Errorf("contract metadata violates approved non-normative authority boundary"))
-  }
-  if err := verifyGuardrails(contract); err != nil { return reject(err) }
-  cutover, err := os.ReadFile(filepath.Join(root,filepath.FromSlash(cutoverApprovalPath)))
-  if err != nil { return reject(err) }
-  if !strings.Contains(string(cutover),"  conflict_resolution: KEEP_LATEST\n") ||
-    !strings.Contains(string(cutover),"  decision: APPROVED\n") ||
-    !strings.Contains(string(cutover),"    publication_execution: BLOCKED_UNTIL_SEPARATE_POLICY_AND_VALIDATION_APPROVAL\n") {
-    return reject(fmt.Errorf("missing approved KEEP_LATEST fail-closed cutover record"))
-  }
-  expectedTopics := []string{"baseline","release-identity","multiple-errors","evidence-validity","conditional-resumption"}
-  common := array(contract,"common_directions")
-  if len(common) != len(expectedTopics) { return reject(fmt.Errorf("expected five common admission directions")) }
-  for i, raw := range common {
-    item, ok := raw.(map[string]any)
-    if !ok || str(item,"topic") != expectedTopics[i] { return reject(fmt.Errorf("incorrect common admission direction %d",i)) }
-    if err := verifyApprovedProjection(root,item,"common"); err != nil { return reject(err) }
-  }
-  errors := array(contract,"error_directions")
-  if len(errors) != 14 { return reject(fmt.Errorf("expected all fourteen error directions")) }
-  for i, raw := range errors {
-    item, ok := raw.(map[string]any)
-    if !ok || str(item,"error_id") != fmt.Sprintf("E%02d",i+1) ||
-      !strings.HasPrefix(str(item,"category"),fmt.Sprintf("E%02d_",i+1)) {
-      return reject(fmt.Errorf("error sequence, category or identity mismatch at %d",i))
+    report := map[string]any{
+        "status": "BLOCKED",
+        "contract_validation": "UNVERIFIED",
+        "release_verification": "NOT_ASSERTED",
+        "publication_authorized": false,
+        "contract_ref": contractIndexPath,
     }
-    if err := verifyApprovedProjection(root,item,"error"); err != nil { return reject(err) }
-  }
-  report["status"] = "DESIGN_CONTRACT_CONSISTENT"
-  report["contract_validation"] = "APPROVED_PROVENANCE_BINDINGS_MATCH"
-  report["approved_error_directions_checked"] = 14
-  report["common_directions_checked"] = 5
-  report["reason"] = "Success does not certify normative policy or authorize release publication"
-  return report,0
+    reject := func(err error) (any,int) {
+        report["reason"] = err.Error()
+        return report,2
+    }
+    index, err := readJSON(root, contractIndexPath)
+    if err != nil { return reject(err) }
+    rulesPath := str(index, "validation_rules_ref")
+    if rulesPath == "" { return reject(fmt.Errorf("validation rule contract not registered")) }
+    rules, err := readJSON(root, rulesPath)
+    if err != nil { return reject(err) }
+    // Structural safety floor: the runtime never treats a derived contract as
+    // an active normative POLICY and always reports publication_authorized=false.
+    if str(rules, "schema_version") != "ptsip-release-contract-check-rules/v1" ||
+       str(rules, "artifact_class") != "DERIVED_NON_NORMATIVE_RELEASE_DESIGN_CHECKS" ||
+       str(rules, "policy_authority") != "NONE" ||
+       rules["publication_authorized"] != false ||
+       str(rules, "contract_index_ref") != contractIndexPath ||
+       str(rules, "admission_ref") != str(index, "contract_ref") ||
+       str(rules, "approval_ref") != str(index, "approval_ref") {
+        return reject(fmt.Errorf("invalid non-normative validation contract binding"))
+    }
+    if err := verifyDocuments(root, rules); err != nil { return reject(err) }
+    if err := verifyRegistry(root,index,rules); err != nil { return reject(err) }
+    if err := verifyTextConstraints(root,obj(rules,"cutover_approval"),"cutover approval",false); err != nil { return reject(err) }
+    if str(obj(rules,"cutover_approval"),"path") != str(rules,"approval_ref") {
+        return reject(fmt.Errorf("cutover approval reference mismatch"))
+    }
+    if err := verifyReleaseBlocked(root,obj(rules,"publication_block")); err != nil { return reject(err) }
+    if err := verifyTextConstraints(root,obj(rules,"workflow"),"release workflow",true); err != nil { return reject(err) }
+    contract, err := readJSON(root, str(rules,"admission_ref"))
+    if err != nil { return reject(err) }
+    if contract["publication_authorized"] != false ||
+        index["publication_authorized"] != false ||
+        index["fail_closed_on_unresolved"] != true ||
+        str(index,"normative_policy_activation") != "PENDING" {
+        return reject(fmt.Errorf("publication authority or normative POLICY activation is not permitted"))
+    }
+    if err := compareFields(obj(contract,"guardrails"),obj(rules,"admission_guardrails"),"release guardrails"); err != nil {
+        return reject(err)
+    }
+    commonCount,errorCount,err := verifyDirections(root,contract,rules)
+    if err != nil { return reject(err) }
+    report["status"] = "DESIGN_CONTRACT_CONSISTENT"
+    report["contract_validation"] = "APPROVED_PROVENANCE_BINDINGS_MATCH"
+    report["contract_ref"] = str(rules,"admission_ref")
+    report["approved_error_directions_checked"] = errorCount
+    report["common_directions_checked"] = commonCount
+    report["reason"] = "Design-only consistency; normative policy and publication are not authorized"
+    return report,0
 }
