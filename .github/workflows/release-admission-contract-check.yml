@@ -27,6 +27,35 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: .ptsip/engine/developer/release/controller/go.mod
+      - name: Assert relocated Go code and contract ownership
+        shell: bash
+        run: |
+          set -euo pipefail
+          if find .github/checks/release -type f \( -name '*.go' -o -name 'go.mod' -o -name 'go.sum' \) | grep -q .; then
+            echo "BLOCKED: legacy release Go code remains in .github/checks/release"
+            exit 1
+          fi
+          if grep -R -n --include='*.go' --include='go.mod' -F '.github/checks/release' .ptsip/engine/developer/release; then
+            echo "BLOCKED: relocated Go code still references the retired Go path"
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('.')
+          m = json.loads((root/'.ptsip/contracts/release/migration-inventory.json').read_text())
+          assert m['original_go_files_relocated'] == 38
+          assert m['original_module_files_relocated'] == 6
+          assert m['original_module_files_superseded'] == 1
+          for item in m['migrated_source_files']:
+              assert not (root/item['from']).exists(), item['from']
+              assert (root/item['to']).is_file(), item['to']
+          composition = json.loads((root/'.ptsip/contracts/release/composition-contract.json').read_text())
+          assert composition['test_contract'] == '.ptsip/contracts/release/verification-contract.json'
+          for contract in m['derived_legacy_contracts']:
+              assert (root/contract).is_file(), contract
+          print('Legacy Go source relocation and contract references verified; publication authority not asserted.')
+          PY
       - name: Compile relocated release Go modules without enabling publication
         shell: bash
         run: |
