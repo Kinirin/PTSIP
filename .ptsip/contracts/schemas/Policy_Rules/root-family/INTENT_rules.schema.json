@@ -1,3 +1,96 @@
 {
-  "$id": "urn:ptsip:policy:INTENT_rules:v1"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:INTENT_rules:v1",
+  "$defs": {
+    "IndependentRuleContract": {
+      "allOf": [
+        {
+          "$ref": "urn:ptsip:policy:Public_Structure_Rules:v1#/$defs/IndependentRuleContract"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "Identity": {
+              "type": "object",
+              "properties": {
+                "family": {},
+                "approval": {
+                  "type": "object",
+                  "properties": {
+                    "state": {}
+                  },
+                  "required": [
+                    "state"
+                  ]
+                }
+              },
+              "required": [
+                "family",
+                "approval"
+              ]
+            },
+            "Definition": {
+              "type": "object",
+              "properties": {
+                "meaning": {},
+                "rationale": {}
+              },
+              "required": [
+                "meaning"
+              ]
+            },
+            "Boundary": {
+              "type": "object",
+              "properties": {
+                "scope": {},
+                "subjects": {},
+                "exclusions": {},
+                "context": {
+                  "type": "object",
+                  "properties": {
+                    "environment": {},
+                    "phase": {}
+                  }
+                }
+              },
+              "required": [
+                "scope",
+                "exclusions"
+              ]
+            },
+            "Constraints": {
+              "type": "object",
+              "properties": {
+                "obligations": {},
+                "prohibitions": {},
+                "preconditions": {},
+                "dependencies": {}
+              }
+            },
+            "Evaluation": {
+              "type": "object",
+              "properties": {
+                "criteria": {
+                  "type": "object",
+                  "properties": {
+                    "evidence": {}
+                  }
+                },
+                "method": {
+                  "type": "object",
+                  "properties": {
+                    "ref": {},
+                    "outcome_ref": {}
+                  }
+                }
+              },
+              "required": [
+                "criteria"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
 }
