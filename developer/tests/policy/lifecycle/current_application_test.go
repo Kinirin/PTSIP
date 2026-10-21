@@ -46,7 +46,7 @@ func TestCurrentGOVLifecycleApplicationPreservesVersionsAndExcludesLegacy(t *tes
 		if entry == nil || identity["status"] != after["status"] || identity["substatus"] != after["substatus"] || entry["status"] != identity["status"] || entry["substatus"] != identity["substatus"] {
 			t.Fatal("policy, application evidence and index disagree", row)
 		}
-		if err := repo.Validate("developer/contracts/lifecycle/Policy_version/Policy_version.schema.json", object{"version": identity["version"]}); err != nil {
+		if err := repo.Validate(".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json", object{"version": identity["version"]}); err != nil {
 			t.Fatalf("current version field %s: %v", ref, err)
 		}
 		states[identity["status"].(string)+"."+identity["substatus"].(string)]++

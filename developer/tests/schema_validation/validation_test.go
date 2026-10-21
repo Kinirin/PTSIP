@@ -18,7 +18,7 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
  root,err:=filepath.Abs(filepath.Join("..","..",".."))
  if err!=nil{t.Fatal(err)}
  fixture:=t.TempDir()
- dir:=filepath.Join(fixture,"developer","contracts","schemas")
+ dir:=filepath.Join(fixture,".ptsip","contracts","schemas")
  if err:=os.MkdirAll(dir,0755);err!=nil{t.Fatal(err)}
  for file,content:=range docs{
   dest:=filepath.Join(dir,file)
@@ -27,9 +27,9 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
  }
  // Copy current approved contracts, not substitute legacy schemas or invented rules.
  for _,relative:=range []string{
-  "developer/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
-  "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
-  "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+  ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
+  ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+  ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
  }{
   if relative==missing {continue}
   raw,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(relative)))
@@ -73,7 +73,7 @@ func TestMalformedSchemaFailsClosed(t *testing.T){
  detected:=false
  for _,item:=range findings{
   row:=item.(map[string]any)
-  if row["file"]=="developer/contracts/schemas/malformed.schema.json" && strings.Contains(row["problem"].(string),"INVALID_JSON") {detected=true}
+  if row["file"]==".ptsip/contracts/schemas/malformed.schema.json" && strings.Contains(row["problem"].(string),"INVALID_JSON") {detected=true}
  }
  if !detected { t.Fatalf("malformed fixture not rejected: %v",findings) }
 }
@@ -97,7 +97,7 @@ func TestExternalRefsAreNotClaimedVerified(t *testing.T){
  detected:=false
  for _,item:=range result["findings"].([]any){
   row:=item.(map[string]any)
-  if row["file"]=="developer/contracts/schemas/ref.json" {
+  if row["file"]==".ptsip/contracts/schemas/ref.json" {
    refs:=row["unverified_refs"].([]any)
    if len(refs)==1 && refs[0]=="urn:example:external" {detected=true}
   }
@@ -126,9 +126,9 @@ func TestPolicyStatusAndVersionContractsIncludedInEnginePath(t *testing.T) {
  result,err:=schemaCheck(t,map[string]string{"fixture.json":`{"$id":"urn:example:fixture"}`})
  if err!=nil || result["status"]!="LIMITED_CHECK_PASS" { t.Fatalf("engine path failed: %v %v",err,result) }
  required:=map[string]bool{
-  "developer/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json":false,
-  "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json":false,
-  "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json":false,
+  ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json":false,
+  ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json":false,
+  ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json":false,
  }
  for _,item:=range result["findings"].([]any){
   row:=item.(map[string]any)
@@ -142,12 +142,12 @@ func TestPolicyStatusAndVersionContractsIncludedInEnginePath(t *testing.T) {
 }
 
 func TestMissingPolicyVersionContractFailsClosed(t *testing.T){
- result,err:=schemaCheckWithMissing(t,map[string]string{"fixture.json":`{"$id":"urn:example:fixture"}`},"developer/contracts/lifecycle/Policy_version/Policy_version.schema.json")
+ result,err:=schemaCheckWithMissing(t,map[string]string{"fixture.json":`{"$id":"urn:example:fixture"}`},".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json")
  if err==nil || result["status"]!="FAIL"{t.Fatalf("missing mandatory schema must fail: %v %v",err,result)}
  detected:=false
  for _,item:=range result["findings"].([]any){
   row:=item.(map[string]any)
-  if row["file"]=="developer/contracts/lifecycle/Policy_version/Policy_version.schema.json" && row["problem"]=="MISSING_APPROVED_SCHEMA"{detected=true}
+  if row["file"]==".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json" && row["problem"]=="MISSING_APPROVED_SCHEMA"{detected=true}
  }
  if !detected{t.Fatalf("missing contract not reported: %v",result)}
 }

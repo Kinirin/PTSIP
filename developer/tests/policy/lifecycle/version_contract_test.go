@@ -13,7 +13,7 @@ func TestIndependentVersionContractRegistry(t *testing.T) {
     authority, err := repo.Read("developer/policy/registries/lifecycle-status-contract-authority.json")
     if err != nil { t.Fatal(err) }
     details := authority["version"].(object)
-    ref := "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json"
+    ref := ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json"
     if details["contract"] != ref || details["version_field_required"] != true {
         t.Fatalf("current contract authority mismatch: %v", details)
     }

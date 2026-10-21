@@ -86,7 +86,7 @@ func TestOfficialNativePolicySchemaTrial(t *testing.T) {
   if err=json.Unmarshal(raw,&document);err!=nil{t.Fatal(err)}
   return document
  }
- version:=load("developer/contracts/lifecycle/Policy_version/Policy_version.schema.json")
+ version:=load(".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json")
  for _,test:=range []struct{name string;instance map[string]any;expected bool}{
   {"valid-version",map[string]any{"version":"1.0"},true},
   {"undecided-format-string",map[string]any{"version":"preview-beta"},true},
@@ -107,9 +107,9 @@ func TestOfficialNativePolicySchemaTrial(t *testing.T) {
  }
  for _,probe:=range []struct{name string;schema any;instance any}{
   {"status-external-ref",
-   load("developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json"),status},
+   load(".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json"),status},
   {"public-status-external-ref",
-   load("developer/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json"),
+   load(".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json"),
    map[string]any{
     "Schema":map[string]any{"Policy_Status_version":map[string]any{"version":"1.0"}},
     "constant":status,

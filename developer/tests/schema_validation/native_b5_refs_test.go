@@ -70,11 +70,11 @@ func b5InstalledEngine(t *testing.T) nativeTrialEngine {
 func TestB5ApprovedInternalPolicyStatusReferences(t *testing.T){
  engine:=b5InstalledEngine(t)
  root,err:=filepath.Abs(filepath.Join("..","..",".."));if err!=nil{t.Fatal(err)}
- status:=b5ReadApproved(t,root,"developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json")
+ status:=b5ReadApproved(t,root,".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json")
  resources:=[]any{
-  b5ReadApproved(t,root,"developer/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json"),
-  b5ReadApproved(t,root,"developer/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json"),
-  b5ReadApproved(t,root,"developer/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"),
+  b5ReadApproved(t,root,".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json"),
+  b5ReadApproved(t,root,".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json"),
+  b5ReadApproved(t,root,".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"),
  }
  // Input values are test instances, not changes to policy authority.
  goodContract:="urn:ptsip:contract:policy:arch:identity:status"
@@ -96,17 +96,17 @@ func TestB5ApprovedInternalPolicyStatusReferences(t *testing.T){
 func TestB5ApprovedPublicPolicyStatusExternalAndInternalRefs(t *testing.T){
  engine:=b5InstalledEngine(t)
  root,err:=filepath.Abs(filepath.Join("..","..",".."));if err!=nil{t.Fatal(err)}
- parent:=b5ReadApproved(t,root,"developer/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json")
+ parent:=b5ReadApproved(t,root,".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json")
  var resources []any
  for _,p:=range []string{
-  "developer/contracts/lifecycle/Policy_version/Policy_version.schema.json",
-  "developer/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
-  "developer/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
-  "developer/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
-  "developer/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json",
-  "developer/contracts/schemas/Policy_Identity/Policy_Identity_version.schema.json",
-  "developer/contracts/schemas/Authority/Authority_version.schema.json",
-  "developer/contracts/schemas/Policy_Rules/Policy_Rules_version.schema.json",
+  ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+  ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+  ".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
+  ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
+  ".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json",
+  ".ptsip/contracts/schemas/Policy_Identity/Policy_Identity_version.schema.json",
+  ".ptsip/contracts/schemas/Authority/Authority_version.schema.json",
+  ".ptsip/contracts/schemas/Policy_Rules/Policy_Rules_version.schema.json",
  }{resources=append(resources,b5ReadApproved(t,root,p))}
  constant:=map[string]any{"status":"DRAFT","substatus":"Default","contract":"urn:ptsip:contract:policy:arch:identity:status"}
  valid:=map[string]any{"Schema":map[string]any{"Policy_Status_version":map[string]any{"version":"preview"}},"constant":constant}
