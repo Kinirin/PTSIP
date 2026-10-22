@@ -866,6 +866,35 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  boundary_subjects_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Boundary.subjects
+    selected_option: EXPLICIT_TARGETS_AND_CRITERIA_BASED_SELECTION_SUPPORTED
+    representation: SUPPORT_BOTH_EXPLICIT_SUBJECT_DESIGNATION_AND_CONDITIONAL_SUBJECT_SELECTION
+    scope_and_subjects_semantic_responsibilities: DISTINCT
+    approved_scope_combined_description_and_machine_declaration: PRESERVED
+    explicit_subject_identity_source: UNRESOLVED_USER_DECISION
+    condition_subject_selection_semantics: UNRESOLVED_USER_DECISION
+    forms_required_together_per_instance: UNRESOLVED_USER_DECISION
+    simultaneous_forms_merge_intersection_precedence: UNRESOLVED_USER_DECISION
+    duplicates_and_conflicts_between_forms: UNRESOLVED_USER_DECISION
+    example_explicit_selected_kind_category_field_names: NON_NORMATIVE_NOT_APPROVED
+    exact_field_names_types_values_and_selection_syntax: UNRESOLVED_USER_DECISION
+    subject_inclusion_does_not_create_normative_obligation: true
+    subject_selection_may_infer_from_physical_path_or_filename: false
+    independent_family_semantic_ownership: PRESERVED
+    required_in_families: [NORM, GOV, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+    optional_permitted_in_families: [INTENT]
+    parent_child_requiredness_inheritance: FORBIDDEN
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    B3_exact_approved_content_and_approval_scope_verification: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   boundary_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
