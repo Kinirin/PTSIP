@@ -881,6 +881,40 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  constraints_preconditions_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Constraints.preconditions
+    selected_option: NATURAL_LANGUAGE_DESCRIPTION_AND_MACHINE_EVALUABLE_PRECONDITION_COMBINED
+    representation: COLOCATED_HUMAN_READABLE_PRECONDITION_DESCRIPTION_AND_MACHINE_READABLE_PRECONDITION
+    semantic_role: CONDITIONS_TO_BE_SATISFIED_BEFORE_RULE_GOVERNED_ACTION_OR_JUDGMENT
+    required_in_families: [CTRL, CHANGE]
+    optional_permitted_in_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, OPS, RECORD]
+    approved_natural_language_meaning_source: Definition.meaning
+    approved_natural_language_semantic_precedence: PRESERVED
+    machine_preconditions_may_redefine_approved_natural_language_meaning: false
+    preconditions_obligations_prohibitions_responsibilities: DISTINCT
+    approved_obligations_and_prohibitions_representation: PRESERVED
+    family_owned_precondition_semantics: PRESERVED
+    cross_family_same_precondition_internal_shape: NOT_AUTHORIZED_BY_THIS_DECISION
+    B3_approval_proof_cannot_be_replaced_by_self_reported_condition: true
+    example_description_requirement_subject_property_expected_and_values: NON_NORMATIVE_NOT_APPROVED
+    exact_nested_field_names_and_requiredness: UNRESOLVED_USER_DECISION
+    exact_container_shape_and_item_cardinality: UNRESOLVED_USER_DECISION
+    exact_data_types_and_allowed_values: UNRESOLVED_USER_DECISION
+    condition_evaluation_fact_source_and_resolution: UNRESOLVED_USER_DECISION
+    missing_or_unmet_precondition_handling: UNRESOLVED_USER_DECISION
+    natural_language_machine_consistency_validation: UNRESOLVED_USER_DECISION
+    human_description_machine_structure_conflict: NO_SILENT_RECONCILIATION
+    machine_action_or_enforcement_authority: NOT_GRANTED_BY_THIS_DIRECTION
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    B3_exact_approved_content_identity_and_approval_scope_verification: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   constraints_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
