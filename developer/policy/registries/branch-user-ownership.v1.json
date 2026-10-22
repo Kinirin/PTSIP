@@ -1,0 +1,40 @@
+{
+  "schema_version": "ptsip-developer-branch-owner-governance/v1",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "approval_ref": "developer/policy/approvals/MPA-20261022-USER-OWNED-BRANCH-REGISTRY.yaml",
+  "creation": {
+    "name_pattern_authority": "USER_DEFINED_OPTIONAL",
+    "ptsip_mandated_pattern": false,
+    "required_request_fields": ["branch_name", "base_branch"],
+    "values_source": "USER_EXPLICIT_REQUEST",
+    "implicit_creation_authorized": false,
+    "existing_branch_nonmatching_pattern_rejection": false
+  },
+  "activation": {
+    "source_branch": "main",
+    "registry_ref": "developer/branch/roster.json",
+    "active_membership": "EXPLICIT_LIST_ONLY",
+    "exception_membership": "EXPLICIT_GROUP_ONLY",
+    "unregistered_branch_inference": "FORBIDDEN",
+    "name_pattern_is_activity_evidence": false,
+    "age_is_activity_evidence": false,
+    "lifecycle_status_field": "NONE",
+    "merge_action": "REMOVE_REGISTRATION",
+    "close_action": "REMOVE_REGISTRATION"
+  },
+  "sync_boundary": {
+    "model": "CONTRACT_UNIT_SYNC",
+    "target_source": "APPROVED_BRANCH_ROSTER",
+    "automatic_ref_mutation_by_this_policy": false,
+    "unresolved_or_ambiguous_sync": "BLOCK_AND_REPORT"
+  },
+  "unresolved": [
+    "EXCEPTION_AND_ACTIVE_SET_RELATIONSHIP",
+    "EXCEPTION_APPLICABILITY_TO_CONTRACT_SYNC",
+    "MERGE_AND_CLOSE_EVENT_DEFINITIONS",
+    "ACTIVITY_REGISTRY_MUTATION_AUTHORITY_AND_CONCURRENCY",
+    "USER_OPTIONAL_NAME_PATTERN_CONTRACT_GRAMMAR",
+    "AUTOMATED_RECONCILIATION_AND_CROSS_BRANCH_PROPAGATION"
+  ],
+  "initial_implementation": "READ_ONLY_MINIMAL_STRUCTURAL_VALIDATION"
+}
