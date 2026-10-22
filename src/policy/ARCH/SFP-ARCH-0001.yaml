@@ -111,6 +111,27 @@ authority_semantics:
       branch_parallel_editability: REQUIRED
       identity_and_relationship_ownership: MACHINE_VERIFIED_NO_SILENT_COLLISION
       exact_fragment_discovery_composition_and_schema: UNRESOLVED
+    project_profile_discovery_policy:
+      decision_source: PROJECT_OWNER_EXPLICIT
+      selected_option: A3_DISTRIBUTED_DECLARATIONS_WITH_DETERMINISTIC_DISCOVERY
+      policy_scope: CONSUMER_PROJECT_PROFILE_SOURCE_DISCOVERY
+      responsibility_scoped_source_declarations: REQUIRED
+      machine_deterministic_discovery: REQUIRED
+      source_ownership_and_scope_must_be_explicit: true
+      per_fragment_shared_central_index_edits_required: false
+      existing_repository_namespace_index_as_ROUTING_ENTRYPOINT: PRESERVED
+      central_per_fragment_registry_requirement: NOT_SELECTED
+      unbounded_directory_auto_discovery_as_authoritative_source: NOT_SELECTED
+      discovery_does_not_create_component_policy_authority: true
+      effective_project_responsibility_map_completeness: PRESERVED
+      missing_ambiguous_conflicting_or_unverified_bindings: FAIL_CLOSED
+      exact_discovery_source_binding_and_selection_mechanism: UNRESOLVED_USER_DECISION
+      precise_file_reference_format_path_patterns_and_scope_rules: UNRESOLVED_USER_DECISION
+      exact_composition_order_duplicate_handling_and_cross_file_semantics: UNRESOLVED_USER_DECISION
+      schema_version_migration_and_backward_compatibility_details: UNRESOLVED_USER_DECISION
+      tasks_discovery_and_execution_rules: NOT_DECIDED_BY_THIS_APPROVAL
+      cntr_info_change_schema_and_runtime_contract_changes: NOT_AUTHORIZED_BY_THIS_APPROVAL
+      implementation_authority_from_this_abstract_selection: NONE
     tasks_partition:
       independent_responsibility_scoped_source_declarations: REQUIRED_IN_TARGET_MODEL
       cross_component_task_identity_collision: MUST_BE_REJECTED
