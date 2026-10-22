@@ -249,6 +249,37 @@ authority_semantics:
     - LEGACY_SFP_DECOMPOSITION_RESULT
     - FAMILY_AWARE_SCHEMA_IMPLEMENTATION
     - FAMILY_AWARE_RESOLVER_IMPLEMENTATION
+  semantic_unit_contract_unit_branch_sync:
+    approval:
+      source: PROJECT_OWNER_EXPLICIT
+      decision: CONTRACT_UNIT_SYNC
+      date: '2026-10-22'
+    scope: REPOSITORY_LOCAL_PTSIP_ROUTING_CONTRACT
+    routing_index: .ptsip/index.json
+    routing_index_authority: ROUTING_ONLY
+    synchronization:
+      model: CONTRACT_UNIT_SYNC
+      common_contract_change_target: ALL_ACTIVE_BRANCHES
+      whole_file_mirroring: NOT_REQUIRED
+      preserve_independent_branch_declarations:
+        - PROJECT_PROFILE_COMPONENTS
+        - PROJECT_TASKS
+        - UNRELATED_CONTRACT_UNITS
+      unconditional_overwrite: FORBIDDEN
+      applicable_compatibility_verification: REQUIRED
+      unresolved_or_incompatible_mutation: BLOCK_AND_REPORT
+    excluded_authority:
+      - BRANCH_CREATION
+      - ENGINE_ACTIVATION
+      - TASK_ENGINE_ACTIVATION
+      - CONFLICT_SILENT_RESOLUTION
+    subordinate_unresolved:
+      - ACTIVE_BRANCH_MEMBERSHIP_CONTRACT
+      - CONTRACT_UNIT_IDENTITY_AND_DISCOVERY
+      - PROPAGATION_TIMING_AND_TRANSACTION_BOUNDARY
+      - CONFLICT_RECONCILIATION_AUTHORITY
+      - BRANCH_LEVEL_VERIFICATION_AND_RETRY
+
 relations:
   supersedes: []
   amends: []
