@@ -1,0 +1,29 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261022-USER-OWNED-BRANCH-REGISTRY
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Branch naming is owner-defined rather than PTSIP-mandated. Require only
+    minimal creation inputs, provided by the user at the time of a requested
+    operation; PTSIP must not infer a branch name, source branch or pattern.
+    A branch that does not match an optional naming pattern must not be
+    considered invalid solely for that reason when already existing.
+    On main, maintain an explicit active-branch roster and a separate
+    owner-managed exception group. No branch becomes active from its name,
+    existence or age. Remove registered branch entries on merge or closure
+    without introducing an extra branch lifecycle status transition.
+    The current authorization covers a minimal read-only structural
+    validator and declaration artifacts, not automated creation, merging,
+    branch deletion, event-triggered removal, or cross-branch synchronization.
+    Previously retired Developer GOV branch-grammar records are historical
+    evidence, not successor authority. Overlap, exceptions semantics,
+    user-defined pattern grammar and event triggers remain unresolved.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  policy_content_review_scope: DIRECTION
+  implementation_authorized: true
+  branch_creation_authorized: false
+  recorded_at: '2026-10-22'
