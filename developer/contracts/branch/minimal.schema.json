@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:developer:branch-minimal:v1",
+  "title": "PTSIP minimal branch declaration inputs",
+  "$defs": {
+    "creation_input": {
+      "type": "object",
+      "required": [
+        "branch_name",
+        "base_branch"
+      ],
+      "properties": {
+        "branch_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base_branch": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "roster": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "active_branches",
+        "exception_branches"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "ptsip-branch-roster/v1"
+        },
+        "active_branches": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "exception_branches": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
