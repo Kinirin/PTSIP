@@ -747,6 +747,35 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  definition_meaning_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Definition.meaning
+    selected_option: NATURAL_LANGUAGE_ORIGINAL_PLUS_STRUCTURED_INFORMATION_OBJECT
+    representation: MEANING_OBJECT_WITH_ORIGINAL_NATURAL_LANGUAGE_AND_DERIVED_STRUCTURED_VIEW
+    approved_natural_language_original: PRESERVED_AS_SEMANTIC_SOURCE
+    approved_natural_language_semantic_precedence: PRESERVED
+    derived_structure_may_redefine_approved_meaning: false
+    conflicting_original_and_structured_semantics: NO_SILENT_RECONCILIATION
+    required_field_presence: PRESERVED_ALL_14_FAMILIES
+    empty_value_permitted: true
+    exact_empty_value_representation: UNRESOLVED_USER_DECISION
+    empty_value_semantic_and_lifecycle_effect: UNRESOLVED_USER_DECISION
+    automatic_semantic_inference_from_empty_value: FORBIDDEN
+    example_original_text_and_structured_view_field_names: NON_NORMATIVE_NOT_APPROVED
+    nested_field_names_and_requiredness: UNRESOLVED_USER_DECISION
+    exact_nested_types: UNRESOLVED_USER_DECISION
+    exact_values_and_patterns: UNRESOLVED_USER_DECISION
+    natural_language_to_structured_binding_and_consistency_verification: UNRESOLVED_USER_DECISION
+    B3_exact_approved_content_identity_and_scope_verification: PRESERVED
+    per_family_meaning_and_nested_structure_ownership: PRESERVED
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   identity_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
