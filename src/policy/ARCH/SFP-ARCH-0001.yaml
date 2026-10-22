@@ -94,6 +94,40 @@ authority_semantics:
   - VPMS_VERIFICATION_PURPOSE
   - VPMS_CASE_SELECTION
   - VPMS_EXECUTION_COMPOSITION
+  repository_modular_declaration_direction:
+    decision_source: PROJECT_OWNER_EXPLICIT
+    scope: CONSUMER_REPOSITORY_PROFILE_COMPONENT_TASK_AND_CONTRACT_LOCATION
+    repository_namespace_contracts:
+      registration_entrypoint: .ptsip/index.json
+      contracts_namespace_support: REQUIRED
+      current_repository_preferred_contract_root: .ptsip/contracts/
+      user_defined_contract_paths: PERMITTED
+      namespace_detailed_schema_and_activation: UNRESOLVED
+    project_profile_source_partition:
+      independently_maintainable_responsibility_scoped_declarations: REQUIRED
+      central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
+      central_main_empty_source_components: PERMITTED_IN_TARGET_MODEL
+      repository_effective_responsibility_map: PROJECT_COMPLETE_DECLARATION_PRESERVED
+      branch_parallel_editability: REQUIRED
+      identity_and_relationship_ownership: MACHINE_VERIFIED_NO_SILENT_COLLISION
+      exact_fragment_discovery_composition_and_schema: UNRESOLVED
+    tasks_partition:
+      independent_responsibility_scoped_source_declarations: REQUIRED_IN_TARGET_MODEL
+      cross_component_task_identity_collision: MUST_BE_REJECTED
+      existing_task_registry_reserved_status: PRESERVED_UNTIL_SEPARATE_CNTR_ACTIVATION
+      exact_task_location_selection_and_resolution: UNRESOLVED
+    invariants:
+      existing_project_owner_responsibility: PRESERVED
+      older_profile_contract_compatibility: NO_SILENT_REINTERPRETATION
+      no_forced_user_repository_layout_for_ptsip_convenience: true
+      central_index_as_authoritative_component_aggregation: NOT_REQUIRED
+      unresolved_merges_or_unverified_sources: FAIL_CLOSED
+    authorization_boundary:
+      approve_abstract_structural_direction_only: true
+      normative_info_schema_cntr_task_activation_change: SEPARATE_DECISION
+      legacy_release_or_approval_records_automatic_reuse: FORBIDDEN
+      implementation_before_concrete_contract_decisions: NOT_AUTHORIZED
+
   engine_plane_boundary:
     repository_local_root: .ptsip/engine/
     repository_local_state: .ptsip/engine/state.json
