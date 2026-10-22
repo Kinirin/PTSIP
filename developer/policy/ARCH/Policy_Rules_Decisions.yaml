@@ -792,6 +792,38 @@ public_policy_structure:
     schema_or_contract_file_change: NOT_AUTHORIZED_BY_THIS_DECISION
     record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  evaluation_criteria_representation_direction:
+    authorization: PROJECT_OWNER_EXPLICIT
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    field_path: Evaluation.criteria
+    selected_option: MACHINE_EVALUABLE_CRITERIA
+    representation: STRUCTURED_MACHINE_EVALUABLE_ASSESSMENT_RULE
+    required_in_families: [GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+    optional_in_families: [NORM]
+    criteria_evidence_required_in_families: [SUPPLY, ASSURE, RECORD]
+    criteria_evidence_optional_in_other_11_families: true
+    parent_and_child_requiredness_independence: PRESERVED
+    criteria_evidence_role: EVIDENCE_REQUIREMENTS_ONLY_NOT_OBSERVED_EVIDENCE
+    actual_evidence_storage_authority: UNCHANGED
+    approved_natural_language_meaning_source: Definition.meaning
+    approved_natural_language_meaning_precedence: PRESERVED
+    machine_criteria_may_redefine_approved_meaning: false
+    criteria_declaration_may_grant_approval: false
+    matching_family_field_semantics: PRESERVED
+    family_specific_nested_field_shapes: PRESERVED
+    example_checks_subject_property_expected_fields_and_values: NON_NORMATIVE_NOT_APPROVED
+    nested_field_names_types_values_and_cardinality: UNRESOLVED_USER_DECISION
+    comparison_and_evaluation_semantics: UNRESOLVED_USER_DECISION
+    assessment_states_and_source_data: UNRESOLVED_USER_DECISION
+    mismatch_and_unknown_evaluation_handling: UNRESOLVED_USER_DECISION
+    natural_language_machine_consistency_validation: UNRESOLVED_USER_DECISION
+    prior_common_five_groups_and_required_four: PRESERVED
+    approved_fourteen_family_field_matrix: PRESERVED
+    B3_exact_content_identity_and_approval_scope_verification: PRESERVED
+    schema_validator_and_resolver_materialization: NOT_AUTHORIZED
+    formal_policy_migration_and_authority_binding: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   evaluation_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
