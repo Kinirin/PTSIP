@@ -862,6 +862,34 @@ public_policy_structure:
     schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
     record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  definition_rationale_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Definition.rationale
+    selected_option: STRUCTURED_ADOPTION_REASON_AND_CONSIDERATIONS_OBJECT
+    representation: OBJECT_SEPARATING_ADOPTION_REASONS_AND_REVIEW_CONSIDERATIONS
+    normative_role: NON_NORMATIVE_EXPLANATION_ONLY
+    rationale_is_optional_in_all_14_families: true
+    rationale_omission_permitted: true
+    rationale_presence_does_not_add_normative_obligations: true
+    rationale_may_replace_approved_natural_language_meaning: false
+    rationale_may_replace_B3_approval_proof: false
+    machine_readable_reuse_of_decision_explanation: DESIGN_DIRECTION_ONLY
+    example_reason_considerations_tradeoff_field_names: NON_NORMATIVE_NOT_APPROVED
+    exact_nested_field_names_and_requiredness: UNRESOLVED_USER_DECISION
+    exact_nested_types_and_allowed_values: UNRESOLVED_USER_DECISION
+    rationale_empty_and_null_semantics: UNRESOLVED_USER_DECISION
+    cross_family_same_nested_field_shape: NOT_AUTHORIZED_BY_THIS_DECISION
+    family_owned_semantics: PRESERVED
+    approved_natural_language_meaning_authority: PRESERVED
+    approved_common_five_groups_and_required_four: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    existing_B3_approval_requirements: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   definition_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
