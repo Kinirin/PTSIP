@@ -959,6 +959,40 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  boundary_context_environment_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Boundary.context.environment
+    selected_option: ENVIRONMENT_IDENTITY_AND_CONDITIONS_SUPPORTED
+    representation: SUPPORT_EXPLICIT_ENVIRONMENT_IDENTIFICATION_AND_MACHINE_EVALUABLE_ENVIRONMENT_CONDITIONS
+    approved_parent_context_direction: MACHINE_READABLE_ENVIRONMENT_AND_PHASE_CONDITIONS_PRESERVED
+    environment_identity_and_conditions_both_required_per_instance: UNRESOLVED_USER_DECISION
+    identity_conditions_combination_and_validation: UNRESOLVED_USER_DECISION
+    identity_conditions_disagreement_handling: UNRESOLVED_USER_DECISION
+    environment_identity_source_and_resolution: UNRESOLVED_USER_DECISION
+    environment_condition_fact_source_and_resolution: UNRESOLVED_USER_DECISION
+    environment_condition_evaluation_semantics: UNRESOLVED_USER_DECISION
+    example_identity_conditions_execution_isolation_codes_and_values: NON_NORMATIVE_NOT_APPROVED
+    additional_nested_field_names_and_requiredness: UNRESOLVED_USER_DECISION
+    exact_field_types_values_patterns_and_condition_syntax: UNRESOLVED_USER_DECISION
+    field_presence_policy:
+      Boundary.context: OPTIONAL_PERMITTED_IN_ALL_14_FAMILIES
+      Boundary.context.environment: OPTIONAL_PERMITTED_IN_ALL_14_FAMILIES
+      Boundary.context.phase: OPTIONAL_PERMITTED_IN_ALL_14_FAMILIES
+    parent_child_requiredness_inheritance: FORBIDDEN
+    presence_of_environment_does_not_require_phase: true
+    presence_of_phase_does_not_require_environment: true
+    no_cross_family_semantic_or_internal_type_unification: true
+    matching_family_nested_field_semantics: PRESERVED
+    separate_scope_subjects_exclusions_responsibilities: PRESERVED
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    B3_exact_content_and_approval_scope_verification: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   boundary_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
