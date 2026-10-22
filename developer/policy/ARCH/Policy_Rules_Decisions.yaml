@@ -915,6 +915,42 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  constraints_dependencies_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Constraints.dependencies
+    selected_option: MACHINE_READABLE_RULE_CONTRACT_AND_RESULT_REFERENCES
+    representation: STRUCTURED_MACHINE_RESOLVABLE_DEPENDENCY_REFERENCE_DIRECTION
+    reference_kinds_at_direction_level: [RULE, CONTRACT, RESULT]
+    reference_kinds_exact_names_and_codes: UNRESOLVED_USER_DECISION
+    field_requiredness_in_all_14_families: OPTIONAL_PERMITTED
+    approved_natural_language_meaning_source: Definition.meaning
+    approved_natural_language_semantic_precedence: PRESERVED
+    machine_dependencies_may_redefine_approved_meaning: false
+    dependencies_preconditions_obligations_prohibitions_responsibilities: DISTINCT
+    dependency_declaration_creates_new_normative_authority: false
+    dependency_declaration_grants_or_transfers_approval: false
+    referenced_rule_contract_or_result_approval_automatically_inherited: false
+    family_owned_dependency_semantics_and_validations: PRESERVED
+    cross_family_same_reference_schema: NOT_AUTHORIZED_BY_THIS_DECISION
+    example_reference_kind_id_and_identifier_values: NON_NORMATIVE_NOT_APPROVED
+    exact_nested_field_names_and_requiredness: UNRESOLVED_USER_DECISION
+    exact_data_types_values_and_container_shapes: UNRESOLVED_USER_DECISION
+    reference_identity_namespace_and_format: UNRESOLVED_USER_DECISION
+    reference_source_resolution_and_version_binding: UNRESOLVED_USER_DECISION
+    missing_or_invalid_reference_handling: UNRESOLVED_USER_DECISION
+    cyclic_dependency_detection_and_handling: UNRESOLVED_USER_DECISION
+    reference_relation_types_and_semantics: UNRESOLVED_USER_DECISION
+    natural_language_machine_semantic_consistency_validation: UNRESOLVED_USER_DECISION
+    machine_reference_resolver_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    B3_exact_approved_content_identity_and_approval_scope_verification: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   constraints_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
