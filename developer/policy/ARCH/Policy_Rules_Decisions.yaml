@@ -993,6 +993,40 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  boundary_context_phase_representation_direction:
+    decision: USER_APPROVED_FIELD_REPRESENTATION
+    authorization: PROJECT_OWNER_EXPLICIT
+    field_path: Boundary.context.phase
+    selected_option: DIRECT_WORKFLOW_PHASE_IDENTIFIER_CODE
+    representation: DIRECT_PHASE_CODE_VALUE_NOT_COMPOSITE_CONDITIONS_OBJECT
+    semantic_role: IDENTIFY_APPLICATION_WORKFLOW_PHASE
+    approved_parent_context_machine_condition_direction: PRESERVED
+    approved_environment_identity_and_conditions_direction: PRESERVED
+    phase_code_does_not_imply_environment_is_required: true
+    context_environment_phase_requiredness_in_all_14_families:
+      Boundary.context: OPTIONAL_PERMITTED
+      Boundary.context.environment: OPTIONAL_PERMITTED
+      Boundary.context.phase: OPTIONAL_PERMITTED
+    parent_child_requiredness_inheritance: FORBIDDEN
+    phase_code_membership_in_a_phase_or_execution_state: UNRESOLVED_USER_DECISION
+    phase_identity_source_and_resolution: UNRESOLVED_USER_DECISION
+    phase_environment_combination_and_validation: UNRESOLVED_USER_DECISION
+    phase_identification_and_machine_condition_evaluation: UNRESOLVED_USER_DECISION
+    exact_data_type_and_serialization: UNRESOLVED_USER_DECISION
+    phase_code_allowed_values_and_pattern: UNRESOLVED_USER_DECISION
+    example_PRE_DEPLOY_code: NON_NORMATIVE_NOT_APPROVED
+    additional_nested_fields_and_predicate_shapes: NOT_AUTHORIZED_BY_THIS_DECISION
+    matching_family_phase_semantics: PRESERVED
+    cross_family_unified_phase_vocabulary: NOT_AUTHORIZED_BY_THIS_DECISION
+    no_new_normative_obligation_from_phase_declaration: true
+    common_five_groups_and_four_required_fields: PRESERVED
+    approved_fourteen_family_field_matrices: PRESERVED
+    B3_exact_approved_content_and_approval_scope_verification: PRESERVED
+    schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
+    formal_policy_authority_and_binding: DEFERRED
+    canonical_policy_migration: DEFERRED
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   boundary_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
