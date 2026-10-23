@@ -66,9 +66,17 @@ func routingString(v any) string {
 }
 
 func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int, int, []string, error) {
-    routing, err := routingFile(root, policyRoutingData, ".ptsip/contracts/policy/routing/")
+    boundary, err := routingFile(root, ".ptsip/contracts/policy/boundary.json", ".ptsip/contracts/policy/")
     if err != nil { return nil, nil, nil, 0, 0, nil, err }
-    schema, err := routingFile(root, policyRoutingSchema, ".ptsip/contracts/policy/routing/")
+    if routingString(boundary["domain"]) != "policy" ||
+        routingString(routingMembers(boundary["namespaces"])["routing"]) != "routing/" {
+        return nil, nil, nil, 0, 0, nil, fmt.Errorf("POLICY_ROUTING_BOUNDARY_INVALID")
+    }
+    binding := routingMembers(boundary["routing_binding"])
+    dataPath, schemaPath := routingString(binding["data"]), routingString(binding["schema"])
+    routing, err := routingFile(root, dataPath, ".ptsip/contracts/policy/routing/")
+    if err != nil { return nil, nil, nil, 0, 0, nil, err }
+    schema, err := routingFile(root, schemaPath, ".ptsip/contracts/policy/routing/")
     if err != nil { return nil, nil, nil, 0, 0, nil, err }
     if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v2" {
         return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTING_SCHEMA_ID_MISMATCH")
