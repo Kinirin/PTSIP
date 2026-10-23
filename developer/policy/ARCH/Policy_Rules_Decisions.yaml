@@ -953,6 +953,37 @@ public_policy_structure:
       support_provider_section_INFO_CNTR_authority: UNAFFECTED
       VPMS_product_contract_identity_authority: UNAFFECTED
       existing_C3_direction_and_abstract_ID_shape: PRESERVED
+      dual_identity_direction:
+        decision: USER_SELECTED_C_DUAL_IDENTITY_MANAGEMENT
+        authorization: PROJECT_OWNER_EXPLICIT
+        status: APPROVED_ABSTRACT_DIRECTION
+        subject: C3_METHOD_FIELD_PATTERN_IDENTITY_REPRESENTATION
+        selected_option: C_LINKED_HIERARCHICAL_AND_IMMUTABLE_IDENTITY
+        linked_identity_representations:
+          hierarchical_identity: REGISTERED_LOGICAL_NAMESPACE_AND_GRAPH_LOOKUP
+          immutable_identity: STABLE_CONTRACT_IDENTITY
+        linkage: EXPLICIT_REGISTERED_MACHINE_RESOLVABLE_MAPPING
+        identity_definition_authority: EXISTING_DELEGATED_RESPONSIBILITY_OWNERS
+        registration_assurance_authority: CENTRAL_CANONICAL_REGISTRATION
+        no_semantic_authority_from_namespace_or_mapped_alias: true
+        identifier_direction: "{METHOD}-{FIELD}-{SEQUENCE}"
+        identifier_direction_scope: EXISTING_ABSTRACT_HIERARCHICAL_IDENTIFIER
+        identity_change_is_not_implied_by_hierarchy_movement: true
+        semantic_change_reuse_of_immutable_identity: NOT_AUTHORIZED_BY_THIS_DIRECTION
+        existing_immutable_identity_semantic_invariants: PRESERVED_WHERE_APPLICABLE
+        existing_other_domain_registry_identities: UNAFFECTED
+        unresolved_subordinate_decisions:
+          - CANONICAL_AND_HIERARCHICAL_ID_EXACT_ROLES_AND_FORMATS
+          - METHOD_FIELD_PATTERN_IDENTITY_CARDINALITY
+          - IDENTITY_LINK_AUTHORITY_AND_REGISTRATION_PROOF
+          - NAMESPACE_RENAME_MOVE_AND_ALIAS_LIFECYCLE
+          - IMMUTABLE_IDENTITY_SEMANTIC_CHANGE_AND_VERSIONING
+          - COLLISION_MISSING_LINK_AND_MISMATCH_FAILURE_CONTRACT
+          - EXACT_REGISTRY_RESOLVER_AND_SCHEMA_BINDING
+        registration_schema_or_resolver_materialization: NOT_AUTHORIZED
+        canonical_policy_materialization: DEFERRED
+        record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+        this_record_owns_cross_family_policy_authority: false
       unresolved_subordinate_decisions:
         - EXACT_METHOD_FIELD_PATTERN_OWNER_BINDING
         - CANONICAL_IDENTITY_SEGMENT_SCOPE_AND_GRAMMAR
