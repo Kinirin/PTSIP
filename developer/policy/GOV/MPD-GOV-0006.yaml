@@ -1,0 +1,98 @@
+Policy_Identity:
+  id: MPD-GOV-0006
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: GOV
+  title: "GOV 정책 생명주기와 변경 결정 권한 관리"
+Policy_Status:
+  Schema:
+    Policy_Status_version:
+      version: "1"
+  constant:
+    status: APPROVED
+    substatus: provisional
+    contract: urn:ptsip:contract:policy:gov:lifecycle:governance
+Authority:
+  authority_Identity:
+    authority_id: MPD-GOV-0006
+  Authority_Category:
+    Authority_Major_Category:
+      major: responsibilities
+  Authority_Action:
+    action_ref: urn:ptsip:authority:action:policy:policy-modification
+Policy_Rules:
+  Identity:
+    family: GOV
+    contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority:v1"
+    version: "1"
+    Rule_state: APPROVED.provisional
+  Definition:
+    meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
+    rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
+  Boundary:
+    scope: "정책 생명주기 및 변경 허가, 기계 중심 코딩 에이전트 제어 구조, 반복 추론의 계약화, 거버넌스 결정·승인·실행·전환 출처"
+    subjects:
+      - "정책 상태와 버전의 소유 계약 및 적용 조건"
+      - "정책 상태 정규화와 충돌 복구"
+      - "변경 범위·선행조건·최신성·충돌 검사"
+      - "정책 조회·라우팅·상태 확인·계획 구성·문맥 생성의 기계적 제어"
+      - "제한된 AI 추론과 검증된 기계 계약·바인딩의 재사용"
+      - "USER_EXPLICIT, AGENT_INFERRED, AUTOMATION_DERIVED"
+      - "결정 출처, 승인 출처, 실행 허가 출처, 상태 전환 출처"
+    exclusions:
+      - "정책 식별자의 생성 및 등록부 무결성은 MPD-GOV-0005의 책임"
+      - "정책·작업의 결정권과 README 관리는 MPD-GOV-0004의 책임"
+      - "에이전트 제어 구조의 모든 상세 구현이 완료되었다는 주장"
+  Constraints:
+    obligations:
+      - id: LIFECYCLE_CONTRACT_AUTHORITY
+        condition: POLICY_STATUS_OR_VERSION_CHANGE
+        rule: "정책 상태와 버전은 해당 항목을 소유하는 GOV 생명주기 계약 및 승인 조건에 따라 관리한다."
+      - id: STATUS_IMPLEMENTATION_INDEPENDENCE
+        condition: POLICY_LIFECYCLE_OR_IMPLEMENTATION_AUTHORIZATION
+        rule: "정책 상태와 구현 승인 여부를 서로 독립적으로 취급한다."
+      - id: CONTRACT_BOUNDED_NORMALIZATION
+        condition: STATUS_NORMALIZATION_OR_CONFLICT_RECOVERY
+        rule: "상태 정규화와 충돌 복구는 관련 계약이 허용하는 범위에서만 자동 수행한다."
+      - id: PRESERVE_EXISTING_MAJOR_VERSION
+        condition: EXISTING_POLICY_VERSION_MAJOR_AT_LEAST_ONE
+        rule: "기존 정책의 주 버전이 1 이상이면 별도 승인 없이 임의로 다른 버전으로 변환하지 않는다."
+      - id: MUTATION_PRECONDITION_CHECK
+        condition: POLICY_OR_IMPLEMENTATION_CHANGE
+        rule: "변경 대상 범위, 실행 선행조건, 정보 최신성 및 기존 결정이나 작업과의 충돌을 확인하고 필수 조건이 해결된 경우에만 해당 범위의 변경을 허용한다."
+      - id: MACHINE_FIRST_AGENT_CONTROL
+        condition: CODING_AGENT_TASK
+        rule: "정책 조회, 작업 라우팅, 상태 확인, 실행 계획 구성 및 문맥 생성은 가능한 범위에서 재사용 가능한 기계적 제어를 우선 사용한다."
+      - id: REASONING_TO_REUSABLE_CONTRACT
+        condition: UNRESOLVED_CONTRACT_CASE_OR_EXECUTION_DEVIATION
+        rule: "기계 계약으로 해결되지 않는 경우 제한된 AI 추론→후보→검증→권한 경계 확인→재사용 가능한 기계 계약 또는 바인딩으로 전환의 절차를 따른다."
+      - id: GOVERNANCE_SOURCE_SEPARATION
+        condition: GOVERNANCE_DECISION_OR_AUTHORIZATION
+        rule: "결정 출처, 승인 출처, 실행 허가 출처 및 상태 전환 출처를 각각 구별한다."
+      - id: USER_EXPLICIT_AUTHORITY
+        condition: OFFICIAL_POLICY_AUTHORITY_CREATION
+        rule: "USER_EXPLICIT는 명시적인 사용자 결정이며 정식 정책 권위를 생성할 수 있는 근거로 사용한다."
+      - id: INFERRED_SOURCE_NON_AUTHORITY
+        condition: AGENT_INFERRED_DECISION
+        rule: "AGENT_INFERRED는 추론 후보일 뿐 정식 정책 권위를 생성하지 않으며 임시 해결에도 명시적인 사용자 허용이 필요하다."
+      - id: AUTOMATION_SOURCE_PROPAGATION_ONLY
+        condition: AUTOMATION_DERIVED_RESULT
+        rule: "AUTOMATION_DERIVED는 기존 규칙에서 파생된 결과로서 이미 존재하는 권위만 전달할 수 있다."
+    prohibitions:
+      - id: NO_OUT_OF_SCOPE_APPROVAL
+        operation: "필수 조건이 해결되지 않았거나 허가 범위를 벗어난 변경을 편의상 승인하는 행위"
+      - id: NO_INFERRED_OFFICIAL_AUTHORITY
+        operation: "AI의 추론·테스트 통과·구현 성공만으로 정식 정책 권위를 만드는 행위"
+      - id: NO_AUTOMATION_NEW_AUTHORITY
+        operation: "자동화 파생 결과를 독립적인 새로운 승인 권위로 사용하는 행위"
+      - id: NO_SOURCE_ESCALATION
+        operation: "사용자의 침묵이나 파일 존재를 USER_EXPLICIT로 간주하거나 낮은 권한의 출처를 높은 권한으로 재표시하는 행위"
+    dependencies:
+      - "developer/policy/GOV/MPD-GOV-0005.yaml"
+  Evaluation:
+    criteria:
+      evidence:
+        - "정책 상태와 구현 승인의 독립성"
+        - "변경 범위·선행조건·최신성·충돌 확인 결과"
+        - "추론 후보의 검증과 승인 근거, 기계 계약 승격 여부"
+        - "사용자 명시·에이전트 추론·자동화 파생 출처의 분리"
+        - "정책 생명주기와 상태 전환을 소유하는 실제 계약 참조"
