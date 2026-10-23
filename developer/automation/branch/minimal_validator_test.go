@@ -32,8 +32,9 @@ func TestValidateMinimalBranchRoster(t *testing.T) {
 		valid       bool
 	}{
 		{"empty roster", `{"schema_version":"ptsip-branch-roster/v1","active_branches":[],"exception_branches":[]}`, true},
-		{"arbitrary names", `{"schema_version":"ptsip-branch-roster/v1","active_branches":["feature/solar","dev/0.3.8b2"],"exception_branches":["codex/wip"]}`, true},
-		{"overlap unresolved", `{"schema_version":"ptsip-branch-roster/v1","active_branches":["feature/a"],"exception_branches":["feature/a"]}`, true},
+		{"arbitrary names", `{"schema_version":"ptsip-branch-roster/v1","active_branches":["feature/solar","dev/0.3.8b2","codex/wip"],"exception_branches":["codex/wip"]}`, true},
+		{"subset allowed", `{"schema_version":"ptsip-branch-roster/v1","active_branches":["feature/a"],"exception_branches":["feature/a"]}`, true},
+		{"exception absent from active", `{"schema_version":"ptsip-branch-roster/v1","active_branches":["feature/a"],"exception_branches":["feature/b"]}`, false},
 		{"duplicate", `{"schema_version":"ptsip-branch-roster/v1","active_branches":["feature/a","feature/a"],"exception_branches":[]}`, false},
 		{"bad version", `{"schema_version":"something","active_branches":[],"exception_branches":[]}`, false},
 		{"missing group", `{"schema_version":"ptsip-branch-roster/v1","active_branches":[]}`, false},
