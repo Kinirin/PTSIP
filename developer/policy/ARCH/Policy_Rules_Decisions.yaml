@@ -928,8 +928,43 @@ public_policy_structure:
     family_owned_field_semantics: PRESERVED
     parent_child_requiredness_inheritance: FORBIDDEN
     evaluation_method_and_outcome_reference_responsibilities: DISTINCT
+    identity_authority_direction:
+      decision: USER_SELECTED_C_DELEGATED_IDENTITY_WITH_CENTRAL_REGISTRATION_ASSURANCE
+      authorization: PROJECT_OWNER_EXPLICIT
+      status: APPROVED_ABSTRACT_DIRECTION
+      scope: C3_EVALUATION_METHOD_FIELD_PATTERN_IDENTITY
+      identity_definition_authority: DELEGATED_TO_EXISTING_RESPONSIBILITY_OWNERS
+      method_definition_authority: REGISTERED_METHOD_DOMAIN_OWNER
+      field_definition_authority: EXISTING_POLICY_CLASS_AND_RESPONSIBILITY_FAMILY_OWNER
+      pattern_definition_authority: RESPONSIBILITY_OWNER_EXPLICIT_BINDING_REQUIRED
+      central_registration_authority: CANONICAL_REGISTRATION_AND_ASSURANCE
+      central_registration_responsibilities:
+        - REGISTERED_IDENTITY_MEMBERSHIP_ASSURANCE
+        - NAMESPACE_SCOPED_UNIQUENESS_ASSURANCE
+        - REGISTERED_REFERENCE_INTEGRITY_ASSURANCE
+        - OWNER_BINDING_CONSISTENCY_ASSURANCE
+      central_registration_must_not:
+        - CREATE_OR_REDEFINE_METHOD_OR_FIELD_SEMANTIC_AUTHORITY
+        - INFER_OWNER_FROM_IDENTIFIER_OR_DIRECTORY_NAME
+        - DELEGATE_AUTHORITY_FROM_HIERARCHY_ALONE
+        - OVERRIDE_EXISTING_POLICY_CLASS_AND_FAMILY_AUTHORITY
+      registry_physical_topology: NOT_SELECTED
+      existing_developer_policy_catalog_registration_authority: PRESERVED
+      support_provider_section_INFO_CNTR_authority: UNAFFECTED
+      VPMS_product_contract_identity_authority: UNAFFECTED
+      existing_C3_direction_and_abstract_ID_shape: PRESERVED
+      unresolved_subordinate_decisions:
+        - EXACT_METHOD_FIELD_PATTERN_OWNER_BINDING
+        - CANONICAL_IDENTITY_SEGMENT_SCOPE_AND_GRAMMAR
+        - REGISTRATION_PROVENANCE_AND_AUTHORITY_PROOF
+        - REGISTRATION_COLLISION_AND_REFERENCE_FAILURE_CONTRACT
+        - IDENTITY_CHANGE_AND_VERSION_LIFECYCLE
+      new_schema_registry_or_resolver_implementation: NOT_AUTHORIZED
+      canonical_policy_materialization: DEFERRED
+      record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+      this_record_owns_cross_family_policy_authority: false
     unresolved_subordinate_policy:
-      - METHOD_AND_FIELD_CANONICAL_IDENTITY_AND_OWNERSHIP
+      - METHOD_AND_FIELD_CANONICAL_IDENTITY_AND_OWNER_BINDING
       - GRAPH_EDGE_TYPES_AND_RELATIONSHIP_AUTHORITY
       - HIERARCHY_VERSUS_REFERENCE_RELATIONSHIP_BOUNDARY
       - PATTERN_SEQUENCE_ALLOCATION_AND_IDENTITY_LIFECYCLE
