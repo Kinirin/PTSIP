@@ -905,6 +905,42 @@ public_policy_structure:
     canonical_policy_migration: DEFERRED
     record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
     this_record_owns_cross_family_policy_authority: false
+  evaluation_pattern_contract_graph_direction:
+    decision: USER_SELECTED_C3_HIERARCHICAL_CONTRACT_GRAPH
+    authorization: PROJECT_OWNER_EXPLICIT
+    status: APPROVED_DIRECTION
+    subject: EVALUATION_PATTERN_IDENTITY_AND_REFERENCE_RESOLUTION
+    selected_option: C3_HIERARCHICAL_CONTRACT_GRAPH
+    meaning_ko: >-
+      등록된 평가 방법(METHOD)과 평가 대상 필드(FIELD)의 네임스페이스를
+      계층형 계약 그래프로 연결한다. 식별 계층과 명시적으로 등록된 계약
+      참조·적용·의존 관계를 기계적으로 탐색하며, 패턴 식별과 참조 무결성,
+      관련 계약의 변경 영향 및 필요한 검증 범위의 결정적 발견을 지원하는
+      방향을 채택한다. 기존 정책 Catalog와 계층 구조 및 검증 계약을
+      우선 재사용한다. 이름 또는 디렉터리 경로만으로 계약 의미를 추론하거나
+      부모의 규범적 의무를 자식에 자동 상속하지 않는다.
+    identifier_direction: "{METHOD}-{FIELD}-{SEQUENCE}"
+    identifier_direction_status: ABSTRACT_FORMAT_ONLY
+    namespace_lookup: REGISTERED_EXACT_RESOLUTION
+    hierarchy_scope: LOGICAL_NOT_PHYSICAL_DIRECTORY
+    graph_relationships: EXPLICITLY_REGISTERED_ONLY
+    existing_policy_catalog_authority: PRESERVED
+    family_owned_field_semantics: PRESERVED
+    parent_child_requiredness_inheritance: FORBIDDEN
+    evaluation_method_and_outcome_reference_responsibilities: DISTINCT
+    unresolved_subordinate_policy:
+      - METHOD_AND_FIELD_CANONICAL_IDENTITY_AND_OWNERSHIP
+      - GRAPH_EDGE_TYPES_AND_RELATIONSHIP_AUTHORITY
+      - HIERARCHY_VERSUS_REFERENCE_RELATIONSHIP_BOUNDARY
+      - PATTERN_SEQUENCE_ALLOCATION_AND_IDENTITY_LIFECYCLE
+      - REFERENCE_VERSION_AND_IMPACT_SCOPE_RESOLUTION
+      - CONTRACT_REGISTRY_AND_RESOLVER_BINDINGS
+      - FAILURE_AND_VALIDATION_SEMANTICS
+    concrete_identifier_grammar_or_field_schema: NOT_AUTHORIZED_BY_THIS_DIRECTION
+    graph_or_resolver_implementation: NOT_AUTHORIZED_BY_THIS_DIRECTION
+    canonical_policy_materialization: DEFERRED_UNTIL_REQUIRED_CONTRACT_DECISIONS
+    record_role: ARCH_LOCAL_NONCANONICAL_DECISION_CHECKPOINT_ONLY
+    this_record_owns_cross_family_policy_authority: false
   evaluation_field_shortlist_direction:
     authorization: PROJECT_OWNER_EXPLICIT
     meaning_ko: >-
