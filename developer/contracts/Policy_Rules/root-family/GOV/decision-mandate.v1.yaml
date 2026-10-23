@@ -1,0 +1,28 @@
+state: APPROVED.provisional
+title: "GOV 결정 권한과 위임 경계"
+Identity:
+  family: GOV
+  contract_id: "urn:ptsip:policy:rule:gov:mandate:v1"
+  version: "1"
+  approval:
+    state: APPROVED.provisional
+    review_required: true
+Definition:
+  meaning: "개발 정책·개발 작업·개발 통제 영역에서 결정은 대상, 소유자, 위임 범위와 승인 주체의 명시적 연결에 따라 정당화된다."
+  rationale: "작업 목표나 기술 설계를 위임받은 의사결정 권한으로 오인하지 않게 분리한다."
+Boundary:
+  scope: "개발 정책·작업·통제 관련 결정 정당성"
+  subjects: ["개발 정책 결정", "개발 작업 승인", "개발 통제 관련 결정"]
+  exclusions: ["목표만으로 결정권 인정", "기술 설계만으로 권한 위임 추정"]
+Constraints:
+  decision_binding:
+    coordinates: [decision_subject, mandate_owner, delegation_scope, approval_actor]
+    missing: UNRESOLVED_NOT_AUTHORIZED
+  obligations:
+    - "결정 대상과 권한 소유자, 위임 범위, 승인 주체의 일치를 확인한다."
+  prohibitions:
+    - "INTENT의 목표 또는 ARCH의 기술 설계로 GOV 위임 범위를 자동 생성하지 않는다."
+Evaluation:
+  criteria:
+    evidence: ["주체와 결정 대상의 연결 증거", "위임 범위 및 승인 근거"]
+    missing_result: UNRESOLVED
