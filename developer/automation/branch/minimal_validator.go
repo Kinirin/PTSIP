@@ -59,7 +59,11 @@ func ValidateMinimalBranchRoster(data []byte) error {
 				return fmt.Errorf("field %q contains duplicate %q", name, value)
 			}
 			seen[value] = struct{}{}
-			if name == "active_branches" { activeSet[value] = true } else if !activeSet[value] { return fmt.Errorf("exception branch %q is not active", value) }
+			if name == "active_branches" {
+				activeSet[value] = true
+			} else if !activeSet[value] {
+				return fmt.Errorf("exception branch %q is not active", value)
+			}
 		}
 	}
 	return nil
