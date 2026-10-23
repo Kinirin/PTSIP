@@ -67,7 +67,18 @@
         "SILENT_CONFLICT_RESOLUTION"
       ],
       "decision_authorizes_live_git_mutation": false,
-      "subordinate_execution_policy": "UNRESOLVED"
+      "subordinate_execution_policy": "UNRESOLVED",
+      "git_mutation_authority": {
+        "approval_ref": "developer/policy/approvals/MPA-20261023-GIT-MUTATION-AUTHORITY-TRIGGER-DEFERRED.yaml",
+        "status": "APPROVED_IN_PRINCIPLE_WITHIN_EXISTING_CONTRACT_SYNC_SCOPE",
+        "authority_scope": "CONTRACT_SYNCHRONIZATION_GIT_WORK_MERGE_RETRY_RECOVERY_ONLY",
+        "execution_eligibility": "UNRESOLVED",
+        "automatic_execution_trigger": "UNRESOLVED",
+        "automatic_execution_without_approved_trigger": "NOT_AUTHORIZED",
+        "unresolved_trigger_resolution": "DEFERRED_USER_POLICY_DECISION",
+        "branch_creation_authorized": false,
+        "unrelated_git_mutation_authorized": false
+      }
     }
   },
   "unresolved": [
@@ -75,7 +86,8 @@
     "MERGE_AND_CLOSE_EVENT_DEFINITIONS",
     "ACTIVITY_REGISTRY_MUTATION_AUTHORITY_AND_CONCURRENCY",
     "USER_OPTIONAL_NAME_PATTERN_CONTRACT_GRAMMAR",
-    "AUTOMATED_RECONCILIATION_AND_CROSS_BRANCH_PROPAGATION"
+    "AUTOMATED_RECONCILIATION_AND_CROSS_BRANCH_PROPAGATION",
+    "GIT_MUTATION_AUTOMATIC_EXECUTION_TRIGGER"
   ],
   "initial_implementation": "READ_ONLY_MINIMAL_STRUCTURAL_VALIDATION"
 }
