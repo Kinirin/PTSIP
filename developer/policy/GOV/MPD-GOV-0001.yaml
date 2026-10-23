@@ -6,7 +6,7 @@ Policy_Identity:
 Policy_Status:
   Schema:
     Policy_Status_version:
-      version: "1"
+      version: "2"
   constant:
     status: APPROVED
     substatus: provisional
@@ -34,6 +34,7 @@ Policy_Rules:
       - "개발 정책 영역의 결정과 승인 정당성"
       - "개발 작업 영역의 결정과 승인 정당성"
       - "개발 통제 영역의 결정과 승인 정당성"
+      - "정책 계약 소유 경계: .ptsip/contracts/policy/identity/, routing/, lifecycle/, authority/"
       - "MPD-GOV-0004: 개발 결정권·위임 범위·승인 정당성과 README 관리"
       - "MPD-GOV-0005: 정책 식별자·제목·등록 무결성과 식별 문제의 기계적 해결"
       - "MPD-GOV-0006: 정책 생명주기·변경 허가·코딩 에이전트 기계적 제어·거버넌스 출처"
