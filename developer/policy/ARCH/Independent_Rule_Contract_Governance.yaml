@@ -57,10 +57,11 @@ schema_responsibility:
     responsibility: VALIDATE_FIVE_GROUP_PRESENCE
     normative_semantic_authority: NONE
   family_schema:
-    ref_pattern: ".ptsip/contracts/schemas/Policy_Rules/root-family/{FAMILY}_rules.schema.json"
+    schema_ref_source: EXPLICIT_MACHINE_REGISTERED_FAMILY_SCHEMA_BINDING
     responsibility: VALIDATE_MATCHING_FAMILY_FIELDS_AND_SHAPE
     schema_declares_new_family_meaning: false
-    exact_binding_and_nonuniform_existing_filenames: UNRESOLVED
+    infer_path_from_family_name_or_filename: FORBIDDEN
+    exact_registry_contract_and_current_binding: UNRESOLVED
   version_metadata_schema:
     ref: ".ptsip/contracts/schemas/Policy_Rules/Policy_Rules_version.schema.json"
     responsibility: VALIDATE_VERSION_REFERENCE_AND_COMPATIBILITY_DECLARATION_SHAPE
