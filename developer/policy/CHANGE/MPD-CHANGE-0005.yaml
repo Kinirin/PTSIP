@@ -1,0 +1,28 @@
+Policy_Identity:
+  id: MPD-CHANGE-0005
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: CHANGE
+  title: "CHANGE 신규 독립 규칙 계약 후보"
+Policy_Status:
+  Schema:
+    Policy_Status_version:
+      version: "1"
+  constant:
+    status: APPROVED
+    substatus: provisional
+    contract: urn:ptsip:contract:policy:change:rule-structure:provisional
+Authority:
+  authority_Identity:
+    authority_id: MPD-CHANGE-0005
+  Authority_Category:
+    Authority_Major_Category:
+      major: CHANGE
+  Authority_Action:
+    action_ref: urn:ptsip:authority:action:policy:policy-modification
+Policy_Rules:
+  independent_rule_refs: []
+  candidate_schema_id: urn:ptsip:policy:CHANGE_rules:v2
+  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/CHANGE_rules.schema.json
+  candidate_scope: "변경 영향"
+  semantic_rework_required: true
+  normative_content_from_retired_policies: FORBIDDEN
