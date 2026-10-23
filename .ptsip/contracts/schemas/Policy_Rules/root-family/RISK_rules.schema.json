@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:RISK_rules:v1",
+  "$id": "urn:ptsip:policy:RISK_rules:v2",
   "$defs": {
     "IndependentRuleContract": {
       "allOf": [
@@ -87,8 +87,19 @@
               "required": [
                 "criteria"
               ]
+            },
+            "state": {
+              "const": "APPROVED.provisional"
+            },
+            "title": {
+              "type": "string"
             }
-          }
+          },
+          "required": [
+            "state",
+            "title"
+          ],
+          "additionalProperties": true
         }
       ]
     }
