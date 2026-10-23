@@ -1,104 +1,195 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:GOV_rules:v2",
+  "$id": "urn:ptsip:policy:GOV_rules:v3",
+  "title": "GOV Policy_Rules in-policy document structure",
+  "$comment": "User-approved inline Policy_Rules structure. No physical YAML rule-contract split. Provisional candidate, version v2 archived.",
+  "$ref": "#/$defs/PolicyDocumentRules",
   "$defs": {
-    "IndependentRuleContract": {
+    "PolicyDocumentRules": {
       "allOf": [
         {
           "$ref": "urn:ptsip:policy:Public_Structure_Rules:v1#/$defs/IndependentRuleContract"
         },
         {
           "type": "object",
+          "required": [
+            "Identity",
+            "Definition",
+            "Boundary",
+            "Constraints",
+            "Evaluation"
+          ],
           "properties": {
             "Identity": {
               "type": "object",
-              "properties": {
-                "family": {},
-                "approval": {
-                  "type": "object",
-                  "properties": {
-                    "state": {}
-                  },
-                  "required": [
-                    "state"
-                  ]
-                }
-              },
               "required": [
                 "family",
-                "approval"
-              ]
+                "contract_id",
+                "version",
+                "Rule_state"
+              ],
+              "properties": {
+                "family": {
+                  "const": "GOV"
+                },
+                "contract_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "Rule_state": {
+                  "const": "APPROVED.provisional"
+                }
+              },
+              "additionalProperties": true
             },
             "Definition": {
               "type": "object",
-              "properties": {
-                "meaning": {},
-                "rationale": {}
-              },
               "required": [
                 "meaning"
-              ]
+              ],
+              "properties": {
+                "meaning": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
             },
             "Boundary": {
               "type": "object",
-              "properties": {
-                "scope": {},
-                "subjects": {},
-                "exclusions": {},
-                "context": {
-                  "type": "object",
-                  "properties": {
-                    "environment": {},
-                    "phase": {}
-                  }
-                }
-              },
               "required": [
                 "scope",
                 "subjects"
-              ]
+              ],
+              "properties": {
+                "scope": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "subjects": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "exclusions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "additionalProperties": true
             },
             "Constraints": {
               "type": "object",
               "properties": {
-                "obligations": {},
-                "prohibitions": {},
-                "preconditions": {},
-                "dependencies": {}
-              }
+                "obligations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "condition",
+                      "rule"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "condition": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "rule": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "prohibitions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "operation"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "operation": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "preconditions": {
+                  "type": "array"
+                },
+                "dependencies": {
+                  "type": "array"
+                }
+              },
+              "additionalProperties": true
             },
             "Evaluation": {
               "type": "object",
+              "required": [
+                "criteria"
+              ],
               "properties": {
                 "criteria": {
                   "type": "object",
+                  "required": [
+                    "evidence"
+                  ],
                   "properties": {
-                    "evidence": {}
-                  }
+                    "evidence": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "no_approval_result": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": true
                 },
                 "method": {
                   "type": "object",
                   "properties": {
-                    "ref": {},
-                    "outcome_ref": {}
-                  }
+                    "ref": {
+                      "type": "string"
+                    },
+                    "outcome_ref": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": true
                 }
               },
-              "required": [
-                "criteria"
-              ]
-            },
-            "state": {
-              "const": "APPROVED.provisional"
-            },
-            "title": {
-              "type": "string"
+              "additionalProperties": true
             }
           },
-          "required": [
-            "state",
-            "title"
-          ],
           "additionalProperties": true
         }
       ]
