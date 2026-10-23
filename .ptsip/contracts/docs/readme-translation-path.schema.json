@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:docs:readme-translation-path:v1",
+  "title": "README translation path contract",
+  "description": "Validates a repository-relative translated README path. It does not validate the corresponding file's existence.",
+  "type": "string",
+  "pattern": "^docs/translated/README\\.[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*\\.md$",
+  "examples": [
+    "docs/translated/README.ko.md",
+    "docs/translated/README.ja.md",
+    "docs/translated/README.zh-CN.md"
+  ],
+  "$comment": "PROVISIONAL candidate; language/path correspondence must be checked by a resolver or dedicated validator."
+}
