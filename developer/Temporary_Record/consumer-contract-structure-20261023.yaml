@@ -50,6 +50,28 @@ last_checkpoint:
   formal_validation: NOT_PERFORMED
   group_registration: NOT_CREATED_OR_ASSIGNED
 
+consumer_contract_plane_boundaries:
+  decision_source: PROJECT_OWNER_EXPLICIT
+  decision_status: APPROVED_BOUNDARY_ONLY
+  developer_policy_creation_contract_root: .ptsip/contracts/
+  developer_policy_validation_engine_root: .ptsip/engine/developer/
+  consumer_policy_contract_root: src/policy/contracts/
+  consumer_policy_validation_engine_root: .ptsip/engine/consumer/
+  developer_contracts_or_validator_are_consumer_policy_contracts: false
+  cross_plane_normative_schema_or_runtime_dependency: FORBIDDEN
+  developer_plane_may_request_consumer_contract_authoring: true
+  request_from_developer_plane_grants_consumer_contract_authority: false
+  retired_consumer_roots:
+    - src/policy/schemas/
+    - src/policy/registries/
+    - src/policy/legacy/
+  retired_roots_use: READ_ONLY_DESIGN_REFERENCE
+  new_contract_dependency_on_retired_roots: FORBIDDEN
+  equivalent_structure_without_dependency: PERMITTED
+  no_automatic_adoption_of_retired_meaning: true
+  consumer_validator_implementation_status: NOT_ASSERTED
+  no_formal_contract_or_validator_implementation_authorized_by_this_decision: true
+
 pending_tasks:
   - "Consumer 공통 계약의 필드·의미·필수 요구조건과 Family별 소유 경계를 별도로 결정"
   - "각 Root Family의 선택/필수 필드, 값 형식과 검증 책임을 개별 승인"
