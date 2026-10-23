@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:Policy_Authority:v1",
+  "$id": "urn:ptsip:policy:Policy_Authority:v2",
   "title": "PTSIP Policy Authority",
   "type": "object",
   "required": [
@@ -26,7 +26,7 @@
       "type": "object",
       "properties": {
         "Authority_Major_Category": {
-          "$ref": "urn:ptsip:policy:authority_category:authority_major:v1"
+          "$ref": "urn:ptsip:policy:authority_category:authority_major:v2"
         }
       },
       "additionalProperties": false,
