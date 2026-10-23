@@ -1,0 +1,58 @@
+record_type: TEMPORARY_WORK_RECORD
+work_id: GOV_0001_POLICY_RESPONSIBILITY_SPLIT
+created_at: "2026-10-23"
+record_role: NON_NORMATIVE_REFORM_AUDIT
+scope:
+  owner_family: GOV
+  source_document: developer/policy/GOV/MPD-GOV-0001.yaml
+  original_source_blob_sha: 8b19a0fc18894c7b122685c49d7327704aa153e2
+  original_policy_status: RETIRED.Waiting
+  current_policy_id: MPD-GOV-0001
+  archived_backup: GIT_BLOB_SOURCE_SHA
+  new_policy_documents:
+    - developer/policy/GOV/MPD-GOV-0005.yaml
+    - developer/policy/GOV/MPD-GOV-0006.yaml
+  existing_scope_policy: developer/policy/GOV/MPD-GOV-0004.yaml
+  removed_old_document: developer/policy/GOV/MPD-GOV-0002.yaml
+decisions:
+  current_orchestrator: MPD-GOV-0001
+  orchestrator_owns: [FAMILY_DEFINITION, DEVELOPMENT_POLICY_LEGITIMACY, DEVELOPMENT_WORK_LEGITIMACY, DEVELOPMENT_CONTROL_LEGITIMACY, POLICY_RESPONSIBILITY_ALLOCATION]
+  current_responsibility_map:
+    MPD-GOV-0004: [DECISION_MANDATE, APPROVAL_LEGITIMACY, README_TRANSLATION]
+    MPD-GOV-0005: [POLICY_IDENTIFICATION, APPROVAL_PROVENANCE_INTEGRITY, MACHINE_FIRST_IDENTITY_RESOLUTION]
+    MPD-GOV-0006: [POLICY_LIFECYCLE, CHANGE_AUTHORIZATION, AGENT_CONTROL, REASONING_PROMOTION, GOVERNANCE_SOURCE_PROVENANCE]
+  old_id_MPD_GOV_0002:
+    reuse_as_new_identity_policy: FORBIDDEN
+    retained_in_active_policy_catalog: false
+    retained_in_subject_catalog: false
+    file_removal_commit: ad720a373cead6bbb78f72a867bcde48f92e7159
+  old_GOV_0002_semantic_inheritance: FORBIDDEN
+  approved_current_transformation:
+    source_0001_contents_rewritten_as_multiple_policies: true
+    full_source_equivalence_not_assumed: true
+    full_schema_engine_validation: DEFERRED
+unassigned_source_responsibilities:
+  - id: UNASSIGNED_MARKDOWN_NORMATIVE_DOCUMENT_CLEANUP
+    source_unit: unit_mpd_0012_e0cfe7d01329
+  - id: UNASSIGNED_FINE_GRAINED_ATOMIC_FEATURE_MANAGEMENT
+    source_unit: unit_mpd_0012_e0cfe7d01329
+  - id: UNASSIGNED_SIX_STAGE_COMPILER_AND_RESOLVER_DETAIL
+    source_unit: unit_mpd_0012_e0cfe7d01329
+  - id: UNASSIGNED_IMPLEMENTATION_RESOLUTION_MODES
+    source_unit: unit_mpd_0012_ee8c0fa2d55c
+  - id: UNASSIGNED_EXPLICIT_BRANCH_CREATION
+    source_unit: unit_mpd_0014_*
+  - id: UNASSIGNED_PROJECT_PROFILE_AND_PYTHON_MIGRATION
+    source_unit: unit_mpd_migr_*
+  - id: UNASSIGNED_DEVELOPER_PLAN_BINDING_OWNER
+    source_unit: unit_mpd_spec_0023_1a5323523839
+  - id: UNASSIGNED_EXTERNAL_ORCHESTRATION_BOUNDARY
+    source_unit: unit_mpd_0012_e0cfe7d01329
+recovery:
+  method: READ_ORIGINAL_GIT_BLOB
+  sha: 8b19a0fc18894c7b122685c49d7327704aa153e2
+  source_file_rewritten: true
+  normative_fallback_to_original: FORBIDDEN_UNTIL_USER_DECISION
+work:
+  group_id: SCHEMA_AND_FAMILY_POLICY
+  owner_record_changed: false
