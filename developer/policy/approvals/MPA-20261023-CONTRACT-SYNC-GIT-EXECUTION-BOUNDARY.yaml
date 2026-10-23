@@ -1,0 +1,25 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261023-CONTRACT-SYNC-GIT-EXECUTION-BOUNDARY
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The project owner selected the complete contract synchronization manager
+    (option C), expressly limiting PTSIP execution responsibility to Git work,
+    merge, retry and recovery required for approved contract-unit
+    synchronization. Existing contract-unit scope, registered active branches,
+    user-owned exclusions, compatibility gates, and no-silent-overwrite
+    guarantees are retained. This responsibility does not expand to unrelated
+    Git or repository management, release and deployment management, autonomous
+    policy changes, or implicit branch creation. Approval of this responsibility
+    boundary is a policy direction, not admission of executable Git mutation.
+    Subordinate authorization, trigger, merge/conflict resolution, transaction,
+    retry and recovery specifics remain unresolved.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  policy_content_review_scope: DIRECTION
+  implementation_authorized: false
+  branch_creation_authorized: false
+  recorded_at: '2026-10-23'
