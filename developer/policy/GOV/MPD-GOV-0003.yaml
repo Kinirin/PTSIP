@@ -6,7 +6,7 @@ Policy_Identity:
 Policy_Status:
   Schema:
     Policy_Status_version:
-      version: "2"
+      version: "3"
   constant:
     status: APPROVED
     substatus: provisional
@@ -16,7 +16,7 @@ Authority:
     authority_id: MPD-GOV-0003
   Authority_Category:
     Authority_Major_Category:
-      major: GOV
+      major: responsibilities
   Authority_Action:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
