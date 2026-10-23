@@ -11,7 +11,21 @@
     ],
     "values_source": "USER_EXPLICIT_REQUEST",
     "implicit_creation_authorized": false,
-    "existing_branch_nonmatching_pattern_rejection": false
+    "existing_branch_nonmatching_pattern_rejection": false,
+    "pattern_registration": {
+      "approval_ref": "developer/policy/approvals/MPA-20261023-REPOSITORY-BRANCH-NAMING-PATTERN.yaml",
+      "model": "REPOSITORY_SCOPED_USER_REGISTERED",
+      "required": false,
+      "owner": "REPOSITORY_USER",
+      "registered_pattern_reuse": "SUBSEQUENT_REQUESTS_IN_SAME_REPOSITORY",
+      "when_no_registered_pattern": "VALIDATE_MINIMAL_REQUIRED_FIELDS_ONLY",
+      "ptsip_default_pattern": "NONE",
+      "branch_creation_authority_from_pattern": false,
+      "existing_branch_name_mismatch_is_invalid": false,
+      "active_branch_membership_inferred_from_pattern": false,
+      "implementation": "NOT_YET_AUTHORIZED",
+      "concrete_registry_and_pattern_schema": "UNRESOLVED"
+    }
   },
   "activation": {
     "source_branch": "main",
@@ -85,9 +99,11 @@
     "EXCEPTION_CONTRACT_UNIT_IDENTITY_AND_MAPPING",
     "MERGE_AND_CLOSE_EVENT_DEFINITIONS",
     "ACTIVITY_REGISTRY_MUTATION_AUTHORITY_AND_CONCURRENCY",
-    "USER_OPTIONAL_NAME_PATTERN_CONTRACT_GRAMMAR",
     "AUTOMATED_RECONCILIATION_AND_CROSS_BRANCH_PROPAGATION",
-    "GIT_MUTATION_AUTOMATIC_EXECUTION_TRIGGER"
+    "GIT_MUTATION_AUTOMATIC_EXECUTION_TRIGGER",
+    "USER_PATTERN_CONTRACT_GRAMMAR",
+    "USER_PATTERN_REGISTRY_DISCOVERY_AND_LOCATION",
+    "MULTIPLE_PATTERN_AND_VALIDATION_PRECEDENCE"
   ],
   "initial_implementation": "READ_ONLY_MINIMAL_STRUCTURAL_VALIDATION"
 }
