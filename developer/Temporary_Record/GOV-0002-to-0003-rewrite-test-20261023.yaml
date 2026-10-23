@@ -1,0 +1,86 @@
+record_type: TEMPORARY_WORK_RECORD
+work_id: GOV_0002_TO_0003_REWRITE_TEST
+created_at: "2026-10-23"
+purpose_ko: "GOV 기존 정책의 새 계약 구조 재작성 시험과 필드 한계 및 후보정 근거"
+scope:
+  source_unchanged: developer/policy/GOV/MPD-GOV-0002.yaml
+  source_status: RETIRED.Waiting
+  replacement: developer/policy/GOV/MPD-GOV-0003.yaml
+  new_status: APPROVED.provisional
+  independent_rule_contracts:
+    - developer/contracts/Policy_Rules/root-family/GOV/decision-mandate.v1.yaml
+    - developer/contracts/Policy_Rules/root-family/GOV/approval-legitimacy.v1.yaml
+    - developer/contracts/Policy_Rules/root-family/GOV/translation-activation.v1.yaml
+last_checkpoint: "GitHub files written; direct field, URI and JSON schema structure checks remain separate from full policy conformance"
+pending_tasks:
+  - "새 GOV rule_ref를 정식 등록·Resolver와 연결하고 참조 무결성 검증"
+  - "GOV 계약 필수 세부 필드 및 타입에 대한 후보정"
+  - "권한과 승인 근거의 실등록 계약 확정"
+  - "임시 코드 구현 발생 시 영향 파일, 버전, 제거 방법, 제거 증거 기록"
+  - "이전 GOV 의미와 신규 규칙 간 의미 변형 검수"
+work:
+  group_id: SCHEMA_AND_FAMILY_POLICY
+  owner_record_changed: false
+trial:
+  old_policy_id: MPD-GOV-0002
+  new_policy_id: MPD-GOV-0003
+  new_policy_previous_version: "1"
+  new_policy_rewrite_version: "2"
+  old_retired_policy_preserved: true
+  old_policy_approval_inherited: false
+  new_rule_contract_state: APPROVED.provisional
+  new_rule_contract_version: "1"
+  rule_schema: "urn:ptsip:policy:GOV_rules:v2"
+  independent_contract_count: 3
+  implementation_performed: false
+  version_increase_reason: "이미 존재하던 GOV-0003 초안을 실규칙 참조 문서로 변경하였으므로 1에서 2로 증가"
+  dropped_old_artifacts:
+    - "과거 MPD-0016 참조는 신규 정책 실행 의존성에서 제외"
+    - "과거 미완료 전이 승인증거와 RETIRED 상태는 신규 승인 근거로 승계하지 않음"
+    - "활성 언어 ko 및 미활성 예시 ja, zh-CN 목록을 정책에 고정하지 않고 등록부로 조회"
+  reinterpretation_reason:
+    - "결정 권한과 승인 정당성을 서로 다른 검사 가능한 규칙으로 분리"
+    - "영어 README 원본과 번역 Registry만 데이터 소유자로 유지하고 언어 목록 중복 제거"
+    - "새 구현은 기존 필드명 변경이 아니라 별도 GOV 역할 계약으로 재해석하므로 최종 승인 전 재작업 필요"
+findings:
+  - id: GOV-01
+    limitation: "공통 Rules 정책 스키마는 참조 리스트 및 실제 파일의 존재/ID를 검증하지 않음"
+    added_fields: ["Policy_Rules.independent_contracts", "contract_id", "path", "schema_ref"]
+    persistence: "계속 필요: YES, 독립 계약을 결정론적으로 조회하기 위한 최소 식별·경로"
+    missing_validation: EXACT_REGISTERED_REF_AND_IDENTITY_CHECK
+  - id: GOV-02
+    limitation: "GOV 스키마는 의사결정의 대상·소유자·위임 범위를 표현하거나 필수 검증하지 않음"
+    added_fields: ["Constraints.decision_binding.coordinates", "Constraints.decision_binding.missing"]
+    persistence: "계속 필요: GOV 전용, 권한이 존재한다고 자동 추측하지 않기 위함"
+    missing_validation: REGISTERED_MANDATE_AND_SCOPE
+  - id: GOV-03
+    limitation: "정책 상태 승인 근거와 테스트 성공의 구분을 검증기로 강제할 수 없음"
+    added_fields: ["Constraints.approval_binding", "Evaluation.criteria.missing_result"]
+    persistence: "계속 필요: GOV 전용, 테스트 PASS로 규범 권위를 생성하지 못하도록 차단"
+    missing_validation: APPROVAL_EVIDENCE_LINKING
+  - id: GOV-04
+    limitation: "번역 활성화 고정 목록을 규칙 본문에 이관하면 실제 Registry와 충돌 가능"
+    added_fields: ["Constraints.translation_sources", "Constraints.activation", "Constraints.normative_consistency"]
+    persistence: "계속 필요: GOV의 번역 등록 책임을 유지하는 동안 현재 등록부를 진실 원본으로 사용"
+    missing_validation: TRANSLATION_REGISTRY_AND_FILE_CONSISTENCY
+  - id: GOV-05
+    limitation: "규칙 계약의 계약 ID·버전·승인 추가 필드가 GOV v2 Schema에서 강제되지 않음"
+    added_fields: ["Identity.contract_id", "Identity.version", "Identity.approval.review_required"]
+    persistence: "계속 필요: YES, 참조된 계약의 버전·상태 전파 및 갱신 근거 보존"
+    missing_validation: GOV_INDEPENDENT_RULE_REQUIRED_FIELDS_AND_TYPE_CHECK
+  - id: GOV-06
+    limitation: "단일 Authority.action_ref가 세 GOV 책임을 구분하지 못함"
+    added_fields: ["Policy_Rules.independent_contracts[].contract_id"]
+    persistence: "계속 필요: GOV 규칙별 분리, 다만 새 행동 권위를 자동 생성하는 근거는 아님"
+    missing_validation: AUTHORITY_ACTION_GRAPH_AND_RULE_BINDING
+  - id: GOV-07
+    limitation: "임시 정책에서 계획 작성 금지·가역 구현 기록이 정적 문자열로만 선언됨"
+    added_fields: ["Policy_Rules.plan_generation", "Policy_Rules.implementation", "Policy_Rules.rule_revision_requires_version_increase"]
+    persistence: "공통 상태 권한 계약에 편입할 후보, 개별 GOV 정책에 영구 중복 저장은 재검토"
+    missing_validation: PERMISSION_GATE_VERSION_INCREMENT_AND_REMOVAL_TRACE
+verification:
+  source_preservation: REQUIRED_VERIFY_EXACT_SHA
+  output_file_structure: TO_VERIFY
+  external_schema_ref_resolution: NOT_CONFIRMED
+  full_policy_conformance: NOT_CONFIRMED
+  semantic_equivalence: REQUIRES_USER_REVIEW
