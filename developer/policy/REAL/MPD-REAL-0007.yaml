@@ -1,0 +1,28 @@
+Policy_Identity:
+  id: MPD-REAL-0007
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: REAL
+  title: "REAL 신규 독립 규칙 계약 후보"
+Policy_Status:
+  Schema:
+    Policy_Status_version:
+      version: "1"
+  constant:
+    status: APPROVED
+    substatus: provisional
+    contract: urn:ptsip:contract:policy:real:rule-structure:provisional
+Authority:
+  authority_Identity:
+    authority_id: MPD-REAL-0007
+  Authority_Category:
+    Authority_Major_Category:
+      major: REAL
+  Authority_Action:
+    action_ref: urn:ptsip:authority:action:policy:policy-modification
+Policy_Rules:
+  independent_rule_refs: []
+  candidate_schema_id: urn:ptsip:policy:REAL_rules:v2
+  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/REAL_rules.schema.json
+  candidate_scope: "구현 연결"
+  semantic_rework_required: true
+  normative_content_from_retired_policies: FORBIDDEN
