@@ -1,0 +1,65 @@
+# Consumer 계약 구조 개혁의 독립 임시 설계 기록. 정식 정책·계약·Registry가 아님.
+record_type: TEMPORARY_WORK_RECORD
+work_id: CONSUMER_CONTRACT_STRUCTURE_20261023
+created_at: "2026-10-23"
+
+purpose_ko: >-
+  PTSIP Consumer용 정책 계약을 Developer 정책 및 .ptsip/contracts와
+  물리적으로 분리하고, Consumer 공통 계약과 Root Family별 확장 계약의
+  책임 경계를 검토한다. 이 기록은 정식 정책 권위나 구현 승인이 아니다.
+
+scope:
+  decision_domain: CONSUMER_POLICY_CONTRACT_STRUCTURE
+  proposed_root: src/policy/contracts/
+  proposed_components:
+    - src/policy/contracts/consumer-root-family/
+    - src/policy/contracts/schemas/
+    - src/policy/contracts/contract_status.schema.json
+    - src/policy/contracts/index.json
+    - src/policy/contracts/schemas/index.schema.json
+  consumer_root_family_count: 14
+  root_family_filenames: USER_SUPPLIED_LOCAL_DRAFTS_PRESERVE_PENDING_REDESIGN
+  retired_candidate_roots:
+    - src/policy/registries/
+    - src/policy/schemas/
+    - src/policy/legacy/
+  existing_local_drafts: USER_REPORTED_UNCOMMITTED
+  branch_policy_authority: UNRESOLVED
+
+last_checkpoint:
+  date: "2026-10-23"
+  decision_source: PROJECT_OWNER_EXPLICIT
+  selected_option: A_CONSUMER_COMMON_CONTRACT_WITH_FAMILY_EXTENSIONS
+  decision_status: APPROVED_DESIGN_DIRECTION_ONLY
+  approved_directions:
+    - CONSUMER_SHARED_CONTRACT_OWNS_ONLY_SEPARATELY_APPROVED_SHARED_SEMANTICS
+    - ROOT_FAMILY_CONTRACTS_OWN_FAMILY_SPECIFIC_FIELDS_AND_CONSTRAINTS
+    - COMMON_FIELD_DOES_NOT_IMPLY_MANDATORY_IN_ALL_FAMILIES
+    - DEVELOPER_AND_DOT_PTSIP_CONTRACTS_ARE_NOT_RUNTIME_DEPENDENCIES
+    - COPIED_LEGACY_FIELDS_AND_MEANINGS_NOT_AUTOMATICALLY_ADOPTED
+    - CONTRACT_STATE_VALIDATION_SEPARATED_FROM_FAMILY_RULE_SEMANTICS
+    - INDEX_OWNS_CONTRACT_DISCOVERY_NOT_POLICY_APPROVAL_AUTHORITY
+    - IMPLEMENT_NECESSARY_FAMILIES_TO_FULL_APPROVED_REQUIREMENTS_NOT_MINIMAL_PLACEHOLDERS
+    - RETIRE_OLD_PATHS_ONLY_AFTER_INDEPENDENT_RESOLUTION_AND_CONSUMER_CUTOVER_VALIDATION
+  exclusions:
+    - NO_POLICY_DOCUMENT_OR_NEW_SCHEMA_MATERIALIZATION_AUTHORIZED_BY_THIS_RECORD
+    - NO_BRANCH_POLICY_FINALIZATION_OR_GIT_BRANCH_CREATION_AUTHORIZED
+    - NO_AUTOMATIC_ROOT_FAMILY_FIELD_INHERITANCE_FROM_DEVELOPER
+    - NO_FORMAL_DEPENDENCY_ON_TEMPORARY_RECORD
+  observation: USER_UPLOADED_DRAFTS_REVIEWED_NOT_FULLY_CONFORMANT
+  formal_validation: NOT_PERFORMED
+  group_registration: NOT_CREATED_OR_ASSIGNED
+
+pending_tasks:
+  - "Consumer 공통 계약의 필드·의미·필수 요구조건과 Family별 소유 경계를 별도로 결정"
+  - "각 Root Family의 선택/필수 필드, 값 형식과 검증 책임을 개별 승인"
+  - "계약 상태 및 색인 인스턴스/스키마의 식별자·조회·참조 해소 규칙 결정"
+  - "퇴역 예정 경로 의존성을 대조하고 검증된 전환·삭제 범위 결정"
+  - "브랜치 정책에 필요한 Family와 각 정책 권한 소유자를 별도 결정"
+  - "독립 작업 그룹 등록 여부 및 담당 세션을 별도 결정"
+
+work:
+  group_id: CONSUMER_CONTRACT_STRUCTURE
+  group_record: NOT_CREATED
+  group_owner: NOT_ASSIGNED
+  existing_owned_group_modified: false
