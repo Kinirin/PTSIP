@@ -23,7 +23,13 @@
     "age_is_activity_evidence": false,
     "lifecycle_status_field": "NONE",
     "merge_action": "REMOVE_REGISTRATION",
-    "close_action": "REMOVE_REGISTRATION"
+    "close_action": "REMOVE_REGISTRATION",
+    "exception_membership_constraint": {
+      "rule": "SUBSET_OF_ACTIVE_BRANCHES",
+      "approval_ref": "developer/policy/approvals/MPA-20261023-EXCEPTION-ACTIVE-SUBSET.yaml",
+      "unregistered_exception": "INVALID",
+      "implicit_activation": false
+    }
   },
   "sync_boundary": {
     "model": "CONTRACT_UNIT_SYNC",
@@ -42,7 +48,6 @@
     }
   },
   "unresolved": [
-    "EXCEPTION_AND_ACTIVE_SET_RELATIONSHIP",
     "EXCEPTION_CONTRACT_UNIT_IDENTITY_AND_MAPPING",
     "MERGE_AND_CLOSE_EVENT_DEFINITIONS",
     "ACTIVITY_REGISTRY_MUTATION_AUTHORITY_AND_CONCURRENCY",
