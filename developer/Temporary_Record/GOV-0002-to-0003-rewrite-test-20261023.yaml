@@ -110,3 +110,29 @@ additional_limitations:
     current_impact: "실행 resolver가 없으면 ID만으로 자동 조회·마이그레이션 불가"
     candidate_resolution: "논리 계약 ID를 권위로 등록하고 파일 경로는 기계 등록된 binding에서 파생"
     required_persistence: "명시적 조회·무결성 검증은 필요, 문서의 고정 path 필드는 잠정"
+criterion_correction_20261023:
+  user_defined_structural_limit: "기존 GOV v2 계약의 필수·선택 필드만으로 원래 규범 의미를 표현할 수 없는 경우만 한계로 분류"
+  previous_findings_invalid_as_structural_limit:
+    - GOV-01
+    - GOV-02
+    - GOV-03
+    - GOV-04
+    - GOV-05
+    - GOV-06
+    - GOV-07
+    - GOV-08
+    - GOV-09
+  reason: "대부분은 검증기/Resolver 및 내가 선택한 분리 방식의 한계이거나, 임의로 만든 새 필드의 검증 공백이지, 필수·선택 필드 자체의 표현 불능을 입증하지 않음"
+  revised_evaluation:
+    major_category_wrong_value: "Root Family GOV는 소유 좌표이지 주제 Major가 아님"
+    major_corrected_to: responsibilities
+    policy_version_increment: "2 -> 3"
+    major_subcategories: NOT_CREATED
+    major_schema_change: NOT_REQUIRED_FOR_NONEMPTY_STRING_VALUE
+    current_policy_rules_contract_role_conflict: UNRESOLVED_OWNER_DECISION
+    three_rule_files_disposition: USER_SAYS_RECORD_ONLY_NOT_PRESERVED
+    three_rule_files_removal: BLOCKED_UNTIL_DANGLING_REFERENCES_AND_RULE_BODY_OWNERSHIP_RESOLVED
+    original_0002_semantics_fully_preserved: false
+    textual_meaning_with_existing_GOV_fields: GENERALLY_EXPRESSIBLE
+    exact_machine_enforcement_with_existing_fields: NOT_PROVEN
+  next_step: "Resolve independently whether GOV-0003 stores the rules inline or references one GOV independent rule body; then remove the three experimental files without orphaning live references"
