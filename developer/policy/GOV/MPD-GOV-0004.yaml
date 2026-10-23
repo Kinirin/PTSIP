@@ -1,0 +1,32 @@
+Policy_Identity:
+  id: MPD-GOV-0004
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: GOV
+  title: "계약 재작성 시 원본 규범 단위의 보존"
+Policy_Status:
+  Schema:
+    Policy_Status_version:
+      version: "1"
+  constant:
+    status: APPROVED
+    substatus: provisional
+    contract: urn:ptsip:contract:policy:gov:source-unit:integrity
+Authority:
+  authority_Identity:
+    authority_id: MPD-GOV-0004
+  Authority_Category:
+    Authority_Major_Category:
+      major: responsibilities
+  Authority_Action:
+    action_ref: urn:ptsip:authority:action:policy:policy-modification
+Policy_Rules:
+  independent_contracts:
+    - contract_id: "urn:ptsip:policy:rule:gov:source-unit-integrity:v1"
+      path: developer/contracts/Policy_Rules/root-family/GOV/source-unit-integrity.v1.yaml
+      schema_ref: "urn:ptsip:policy:GOV_rules:v2#/$defs/IndependentRuleContract"
+  contract_partitioning: REQUIRE_EXPLICIT_USER_DECISION_FOR_SPLIT_OR_MERGE
+  source_unit_mapping: PRESERVE_UNLESS_APPROVED_CHANGE
+  unapproved_split_or_merge: FORBIDDEN
+  conflict_scope: AFFECTED_POLICY_ONLY
+  unresolved_category_catalog_binding: PENDING
+  normative_activation: PROVISIONAL_NOT_REGISTERED
