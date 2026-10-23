@@ -41,3 +41,39 @@ materialized_policy_ids:
 identity_selection_reason: "Each provisional candidate uses the next noncolliding four-digit MPD-{FAMILY}-NNNN identity in current main; prior documents remain unchanged."
 candidate_policy_semantics: "Independent rule references intentionally empty; retired normative bodies must not be copied or renamed."
 not_yet_validated: [CANONICAL_POLICY_REGISTRATION, GLOBAL_REFERENCE_RESOLUTION, PLAN_IMPLEMENTATION_PERMISSION_GATE, PROVISIONAL_CONTRACT_MIGRATION, FULL_SCHEMA_CONFORMANCE]
+gov_inline_policy_rules_fix_20261023:
+  decision: KEEP_LATEST
+  target: developer/policy/GOV/MPD-GOV-0004.yaml
+  expected_structure: "Policy_Rules directly contains Identity, Definition, Boundary, Constraints, Evaluation"
+  user_intent: "Keep normative meaning in policy document; do not create a separate rule-body YAML automatically"
+  previous_fault: "Agent interpreted reusable JSON Schema definition and prior separate-contract direction as permission to split physical storage"
+  previous_extra_file: developer/contracts/Policy_Rules/root-family/GOV/source-unit-integrity.v1.yaml
+  previous_extra_file_disposition: DELETED_AFTER_EMBEDDING
+  source_semantics_transfer: "Five group body exact after intended Identity.approval.state to Identity.Rule_state representation change"
+  current_policy_version: "2"
+  version_increase_reason: "APPROVED.provisional candidate changed from link-only to inlined normative body"
+  family_rules_schema:
+    path: .ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json
+    version: "v3"
+    former_version_archive: .ptsip/contracts/schemas/Policy_Rules/abortively/v2_GOV.schema.json
+    rule_document_root_validation: "#/$defs/PolicyDocumentRules"
+    includes_current_policy_root_five_groups: true
+  major_category:
+    selection: KEEP_LATEST
+    approved_enum: [responsibilities]
+    contract: .ptsip/contracts/Authority/Authority_Major_Category.json
+    reference_schema: .ptsip/contracts/schemas/Authority/Authority_Category/Authority_Major_Category.schema.json
+    version_after: "v2"
+    other_13_family_provisional_major_values: MUST_BE_REVIEWED_NOT_AUTO_REGISTERED
+    unchanged_legacy_categories: NOT_ASSERTED_CONFORMANT
+  outstanding:
+    - "Shared public schema only structurally checks Policy_Rules as an object; full routing to GOV schema requires validator enforcement"
+    - "GOV-0003 older experimental independent-rule links not migrated"
+    - "Old URI version resolution for archived schemas not yet connected"
+    - "Other 13 automatically generated Family Major values now fail strict Major enum and need user review"
+  validation:
+    schema_chain: STRUCTURAL_PASS
+    inline_five_groups: STRUCTURAL_PASS
+    removed_file_ref: ABSENT
+    source_body_meaning: BODY_EQUAL_EXCEPT_STATE_FIELD_REPRESENTATION
+    full_json_schema_engine_conformance: NOT_RUN
