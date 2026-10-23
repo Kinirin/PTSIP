@@ -6,7 +6,7 @@ Policy_Identity:
 Policy_Status:
   Schema:
     Policy_Status_version:
-      version: "2"
+      version: "3"
   constant:
     status: APPROVED
     substatus: provisional
@@ -74,9 +74,7 @@ Policy_Rules:
       - id: NO_REPEATED_MACHINE_RESOLVABLE_INFERENCE
         operation: "기계가 이미 해결할 수 있거나 유효한 해결 결과가 보존된 문제를 반복해서 새로 추론하는 행위"
     dependencies:
-      - ".ptsip/contracts/routing/policy_routes.json"
-      - ".ptsip/contracts/identity/policy_kind.json"
-      - ".ptsip/contracts/identity/root_family.json"
+      - ".ptsip/contracts/policy/boundary.json"
   Evaluation:
     criteria:
       evidence:
