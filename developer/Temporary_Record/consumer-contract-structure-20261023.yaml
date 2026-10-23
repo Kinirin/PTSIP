@@ -43,7 +43,9 @@ last_checkpoint:
     - RETIRE_OLD_PATHS_ONLY_AFTER_INDEPENDENT_RESOLUTION_AND_CONSUMER_CUTOVER_VALIDATION
     - STATUS_IS_SINGLE_COMPOSITE_STATUS_DOT_SUBSTATUS_TOKEN
     - STATUS_SUBSTATUS_SEPARATE_FIELD_NOT_REQUIRED
-    - STATUS_VOCABULARY_AND_TRANSITION_RULES_UNRESOLVED
+    - STATUS_ENUM_13_ALLOWED_COMPOSITE_VALUES_EMBEDDED_IN_CONSUMER_SCHEMA
+    - STATUS_VOCABULARY_SOURCE_IS_COPIED_SNAPSHOT_NOT_RUNTIME_REFERENCE
+    - STATUS_TRANSITION_RULES_REMAIN_UNRESOLVED
   exclusions:
     - NO_POLICY_DOCUMENT_OR_NEW_SCHEMA_MATERIALIZATION_AUTHORIZED_BY_THIS_RECORD
     - NO_BRANCH_POLICY_FINALIZATION_OR_GIT_BRANCH_CREATION_AUTHORIZED
@@ -72,6 +74,15 @@ consumer_contract_plane_boundaries:
   new_contract_dependency_on_retired_roots: FORBIDDEN
   equivalent_structure_without_dependency: PERMITTED
   no_automatic_adoption_of_retired_meaning: true
+  copied_consumer_status_snapshot:
+    source_type: DEVELOPER_STATUS_VALUES_READ_ONLY
+    consumer_schema_version: v3
+    status_families: [DRAFT, APPROVED, RETIRED]
+    permitted_composite_values: 13
+    source_schema_count: 3
+    runtime_dependency_on_developer: false
+    transitions_in_source: NOT_DEFINED
+    transitions_in_consumer: NOT_DEFINED
   consumer_validator_implementation_status: NOT_ASSERTED
   no_formal_contract_or_validator_implementation_authorized_by_this_decision: true
 

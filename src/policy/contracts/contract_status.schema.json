@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:consumer:ptsip:contracts:status:v2",
+  "$id": "urn:consumer:ptsip:contracts:status:v3",
   "title": "PTSIP Consumer Policy Contract Status",
-  "description": "Consumer policy contract status declaration. The status value is a single {status}.{substatus} token; permitted statuses, substates, transitions, and approval authority remain separately governed.",
+  "description": "Consumer-owned policy status contract. The status field is one token in {status}.{substatus} form; the enum contains independently embedded permitted pairs. Status transition rules and approval authority are not specified by this schema.",
   "type": "object",
   "required": [
     "status",
@@ -11,7 +11,21 @@
   "properties": {
     "status": {
       "type": "string",
-      "pattern": "^[^.\\s]+\\.[^.\\s]+$"
+      "enum": [
+        "DRAFT.Default",
+        "DRAFT.Reviewed",
+        "DRAFT.Denied",
+        "DRAFT.Pass",
+        "APPROVED.Default",
+        "APPROVED.Applying",
+        "APPROVED.Application_Problems",
+        "APPROVED.Unresolved",
+        "APPROVED.Activate",
+        "APPROVED.provisional",
+        "RETIRED.Default",
+        "RETIRED.Removable",
+        "RETIRED.Waiting"
+      ]
     },
     "contract": {
       "type": "string",
