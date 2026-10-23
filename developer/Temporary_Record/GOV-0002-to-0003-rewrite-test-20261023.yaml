@@ -151,3 +151,33 @@ cleanup_20261023:
     path: developer/tests/rootfamily/testdata/go_automation_protocol_vectors.json
     role: HISTORICAL_TEST_EXPECTATION_REVIEW_REQUIRED
   full_json_schema_engine_validation: DEFERRED_UNTIL_GOV_0001_REFORM
+
+gov_0004_user_directed_inline_rewrite_20261023:
+  source_for_semantics: "User-edited natural-language GOV-0002 core, GOV decision mandate, approval legitimacy and README management"
+  destination: developer/policy/GOV/MPD-GOV-0004.yaml
+  write_commit: "1549e4b3f7f075d1925fc8057d9f3be1596e8157"
+  replaced_policy_previous_blob: "a30af01bf454a58a949c8e1c33affcf2cf268229"
+  current_policy_blob: "1b969c7caeddf65d8a689749296df2290a760727"
+  user_specified_boundaries:
+    gov_core_responsibility_owner: MPD-GOV-0001
+    gov_core_responsibility_migration: NOT_IMPLEMENTED
+    policy_relation_and_transition_migration: EXCLUDED_BY_USER
+    README_registry: docs/translated/index.yaml
+    docs_contract_owner: .ptsip/contracts/docs/
+    docs_contract_current_state: ABSENT_ONLY_GITKEEP
+  contract_structure:
+    family: GOV
+    inline_rules_groups: [Identity, Definition, Boundary, Constraints, Evaluation]
+    schema_required_field_additions: NONE
+    split_independent_files: NONE
+  semantic_transfer:
+    source_0002_fully_copied: false
+    source_0002_preserved: true
+    gov_0001_preserved: true
+    GOV_0004_prior_rule_source_unit_integrity: REPLACED_NOT_TRANSFERRED
+    GOV_0004_prior_rule_recovery: "Git blob a30af01bf454a58a949c8e1c33affcf2cf268229"
+    loss_of_prior_anti_split_policy_enforcement: REQUIRES_USER_DISPOSITION
+  review:
+    full_JSON_schema_engine_validation: DEFERRED
+    static_document_review: DONE
+    docs_contract_resolution: BLOCKED_UNTIL_USER_DESIGNS_DOCS_CONTRACT
