@@ -6,7 +6,7 @@ Policy_Identity:
 Policy_Status:
   Schema:
     Policy_Status_version:
-      version: "1"
+      version: "2"
   constant:
     status: APPROVED
     substatus: provisional
@@ -26,7 +26,7 @@ Policy_Rules:
     version: "1"
     Rule_state: APPROVED.provisional
   Definition:
-    meaning: "정책 식별자, 제목 및 식별 관련 승인 근거의 일관성과 무결성을 관리하고 불확실한 식별 문제는 계약에 따른 기계적 결정으로 우선 해결한다."
+    meaning: "GOV의 정책 식별 원본은 정책 문서가 소유한다. 식별 인덱스는 정책 문서와 승인된 계약에서 자동 생성하는 비권위 조회 결과이다."
     rationale: "식별자나 상태를 에이전트의 추측으로 결정하지 않고 승인·검증된 결과를 재사용한다."
   Boundary:
     scope: "개발 정책 식별, 정책 목록과 등록부의 일치, 식별 및 승인 출처 확인, 식별 문제의 기계적 해결"
@@ -74,12 +74,13 @@ Policy_Rules:
       - id: NO_REPEATED_MACHINE_RESOLVABLE_INFERENCE
         operation: "기계가 이미 해결할 수 있거나 유효한 해결 결과가 보존된 문제를 반복해서 새로 추론하는 행위"
     dependencies:
-      - "developer/policy/index.yaml"
-      - "developer/policy/registries/authority-subject-registry.yaml"
+      - ".ptsip/contracts/routing/policy_routes.json"
+      - ".ptsip/contracts/identity/policy_kind.json"
+      - ".ptsip/contracts/identity/root_family.json"
   Evaluation:
     criteria:
       evidence:
-        - "정책 문서의 ID·제목·상태와 정책 목록 및 등록부의 일치"
+        - "정책 문서의 ID·제목·상태와 자동 생성된 식별 인덱스의 일치"
         - "승인 출처, 승인 대상, 목표 상태 및 내용 검토 범위의 명시"
         - "ID 충돌과 등록 불일치에 대한 실패 처리"
         - "기계 계약 우선 해결 및 검증된 결과 재사용"
