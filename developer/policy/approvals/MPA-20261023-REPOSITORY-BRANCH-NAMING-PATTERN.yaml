@@ -1,0 +1,26 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261023-REPOSITORY-BRANCH-NAMING-PATTERN
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The project owner selected option B: optional branch naming patterns
+    are registered and reused per repository, rather than supplied anew
+    for each branch creation request. The repository user owns pattern
+    definition and registration. PTSIP must not impose a naming grammar
+    or make pattern registration mandatory; with no registered naming
+    pattern, the existing minimal required creation fields remain.
+    Registered patterns cannot infer authorization to create a branch,
+    override the user's explicit branch name and base branch, invalidate
+    preexisting branches solely due to naming mismatch, or determine
+    active-branch roster membership. This direction does not decide
+    the concrete registry path, pattern grammar, multiple-pattern rules,
+    amendment process, validation precedence, or implementation cutover.
+  approval_scope: FINAL_POLICY
+  target_status: APPROVED
+  policy_content_review_scope: DIRECTION
+  implementation_authorized: false
+  branch_creation_authorized: false
+  recorded_at: '2026-10-23'
