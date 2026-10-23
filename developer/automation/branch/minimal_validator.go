@@ -40,6 +40,7 @@ func ValidateMinimalBranchRoster(data []byte) error {
 	if raw, ok := fields["schema_version"]; !ok || json.Unmarshal(raw, &format) != nil || format != "ptsip-branch-roster/v1" {
 		return fmt.Errorf("schema_version must be ptsip-branch-roster/v1")
 	}
+	activeSet := map[string]bool{}
 	for _, name := range []string{"active_branches", "exception_branches"} {
 		raw, present := fields[name]
 		if !present || bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
@@ -58,9 +59,9 @@ func ValidateMinimalBranchRoster(data []byte) error {
 				return fmt.Errorf("field %q contains duplicate %q", name, value)
 			}
 			seen[value] = struct{}{}
+			if name == "active_branches" { activeSet[value] = true } else if !activeSet[value] { return fmt.Errorf("exception branch %q is not active", value) }
 		}
 	}
-	// Overlap between active and exception groups remains an owner decision.
 	return nil
 }
 
