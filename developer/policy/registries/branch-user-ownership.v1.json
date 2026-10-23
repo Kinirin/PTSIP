@@ -5,7 +5,10 @@
   "creation": {
     "name_pattern_authority": "USER_DEFINED_OPTIONAL",
     "ptsip_mandated_pattern": false,
-    "required_request_fields": ["branch_name", "base_branch"],
+    "required_request_fields": [
+      "branch_name",
+      "base_branch"
+    ],
     "values_source": "USER_EXPLICIT_REQUEST",
     "implicit_creation_authorized": false,
     "existing_branch_nonmatching_pattern_rejection": false
@@ -26,11 +29,21 @@
     "model": "CONTRACT_UNIT_SYNC",
     "target_source": "APPROVED_BRANCH_ROSTER",
     "automatic_ref_mutation_by_this_policy": false,
-    "unresolved_or_ambiguous_sync": "BLOCK_AND_REPORT"
+    "unresolved_or_ambiguous_sync": "BLOCK_AND_REPORT",
+    "exception_sync": {
+      "approval_ref": "developer/policy/approvals/MPA-20261023-CONTRACT-UNIT-EXCEPTION-SYNC.yaml",
+      "selection_authority": "USER_EXPLICIT",
+      "exclusion_model": "SELECTED_CONTRACT_UNITS_ONLY",
+      "whole_branch_exclusion_from_exception_membership": false,
+      "nonexcluded_contract_units": "FOLLOW_ACTIVE_BRANCH_SYNC_POLICY",
+      "implicit_branch_activation_from_exception_membership": false,
+      "ambiguous_or_unresolved_exclusion": "BLOCK_AND_REPORT",
+      "execution_authorized_by_this_decision": false
+    }
   },
   "unresolved": [
     "EXCEPTION_AND_ACTIVE_SET_RELATIONSHIP",
-    "EXCEPTION_APPLICABILITY_TO_CONTRACT_SYNC",
+    "EXCEPTION_CONTRACT_UNIT_IDENTITY_AND_MAPPING",
     "MERGE_AND_CLOSE_EVENT_DEFINITIONS",
     "ACTIVITY_REGISTRY_MUTATION_AUTHORITY_AND_CONCURRENCY",
     "USER_OPTIONAL_NAME_PATTERN_CONTRACT_GRAMMAR",
