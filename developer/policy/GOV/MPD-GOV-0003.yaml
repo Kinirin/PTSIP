@@ -2,11 +2,11 @@ Policy_Identity:
   id: MPD-GOV-0003
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: GOV
-  title: "GOV 신규 독립 규칙 계약 후보"
+  title: "GOV 결정 정당성·정책 승인·번역 활성화 — 재작성 정책"
 Policy_Status:
   Schema:
     Policy_Status_version:
-      version: "1"
+      version: "2"
   constant:
     status: APPROVED
     substatus: provisional
@@ -20,9 +20,19 @@ Authority:
   Authority_Action:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
-  independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:GOV_rules:v2
-  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json
-  candidate_scope: "정책 결정 책임"
-  semantic_rework_required: true
-  normative_content_from_retired_policies: FORBIDDEN
+  independent_contracts:
+    - contract_id: "urn:ptsip:policy:rule:gov:mandate:v1"
+      path: developer/contracts/Policy_Rules/root-family/GOV/decision-mandate.v1.yaml
+      schema_ref: "urn:ptsip:policy:GOV_rules:v2#/$defs/IndependentRuleContract"
+    - contract_id: "urn:ptsip:policy:rule:gov:approval-legitimacy:v1"
+      path: developer/contracts/Policy_Rules/root-family/GOV/approval-legitimacy.v1.yaml
+      schema_ref: "urn:ptsip:policy:GOV_rules:v2#/$defs/IndependentRuleContract"
+    - contract_id: "urn:ptsip:policy:rule:gov:translation-activation:v1"
+      path: developer/contracts/Policy_Rules/root-family/GOV/translation-activation.v1.yaml
+      schema_ref: "urn:ptsip:policy:GOV_rules:v2#/$defs/IndependentRuleContract"
+  binding_state: PROVISIONAL_NOT_REGISTERED
+  generated_contract_state: APPROVED.provisional
+  plan_generation: FORBIDDEN
+  implementation: ALLOWED_WITH_REVERSIBLE_CHANGE_RECORD
+  rule_revision_requires_version_increase: true
+  semantic_reinterpretation_review: REQUIRED_BEFORE_FORMAL_ACTIVATION
