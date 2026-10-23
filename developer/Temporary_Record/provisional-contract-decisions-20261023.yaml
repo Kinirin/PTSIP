@@ -7,3 +7,19 @@ last_checkpoint: 사용자 임시 승인, 검증 미완료
 pending_tasks: [후보정, Family별 정책 생성, 참조 검증]
 work:
   group_id: SCHEMA_AND_FAMILY_POLICY
+review_20261023:
+  prior_output_disposition: INVALID_DRAFT
+  correction_reason: "Schema must be JSON; policy filename and ID must use MPD-{FAMILY}-{4digits}; unsupported PROVISIONAL status forbidden."
+  status_schema: ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json"
+  selected_status: "APPROVED.provisional"
+  created_contract_required_fields: [state, title]
+  created_contract_additionalProperties: true
+  schema_revision: "v1 archived unchanged before v2 revision"
+  modified_schema_group_count: 14
+  field_semantics: "New contract fields are provisional; do not rename and inherit obsolete normative meaning."
+  plan_generation: FORBIDDEN
+  implementation: ALLOWED_WITH_REMOVAL_PROVENANCE_PENDING_AUTHORITY_RECONCILIATION
+  generated_child_status: "APPROVED.provisional"
+  version_on_provisional_revision: MUST_INCREASE
+  rework_on_semantic_change: REQUIRED
+  validation: STRUCTURAL_REVIEW_ONLY
