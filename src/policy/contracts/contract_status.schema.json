@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consumer:ptsip:contracts:status:v1",
+  "title": "PTSIP consumer Policy Status Constants",
+  "description": "Consumer policy status declaration shape. State vocabularies, status/substatus relationships and approval authority require separate decisions.",
+  "type": "object",
+  "required": [
+    "status",
+    "substatus",
+    "contract"
+  ],
+  "properties": {
+    "status": {},
+    "substatus": {},
+    "contract": {
+      "type": "string",
+      "pattern": "^urn:[^:]+:consumer:contract:policy:(?:norm|gov|intent|arch|info|cntr|risk|supply|real|assure|ctrl|change|ops|record):[a-z0-9-]+:[a-z0-9-]+$"
+    }
+  },
+  "additionalProperties": false
+}
