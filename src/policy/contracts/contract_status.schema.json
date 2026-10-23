@@ -1,17 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:consumer:ptsip:contracts:status:v1",
-  "title": "PTSIP consumer Policy Status Constants",
-  "description": "Consumer policy status declaration shape. State vocabularies, status/substatus relationships and approval authority require separate decisions.",
+  "$id": "urn:consumer:ptsip:contracts:status:v2",
+  "title": "PTSIP Consumer Policy Contract Status",
+  "description": "Consumer policy contract status declaration. The status value is a single {status}.{substatus} token; permitted statuses, substates, transitions, and approval authority remain separately governed.",
   "type": "object",
   "required": [
     "status",
-    "substatus",
     "contract"
   ],
   "properties": {
-    "status": {},
-    "substatus": {},
+    "status": {
+      "type": "string",
+      "pattern": "^[^.\\s]+\\.[^.\\s]+$"
+    },
     "contract": {
       "type": "string",
       "pattern": "^urn:[^:]+:consumer:contract:policy:(?:norm|gov|intent|arch|info|cntr|risk|supply|real|assure|ctrl|change|ops|record):[a-z0-9-]+:[a-z0-9-]+$"
