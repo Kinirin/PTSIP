@@ -9,5 +9,9 @@
     "authority": "authority/"
   },
   "source_policy": "developer/policy/GOV/MPD-GOV-0001.yaml",
-  "phase": "MIGRATION_COMPLETED"
+  "phase": "MIGRATION_COMPLETED",
+  "routing_binding": {
+    "data": ".ptsip/contracts/policy/routing/policy_routes.json",
+    "schema": ".ptsip/contracts/policy/routing/Policy_Routing.schema.json"
+  }
 }
