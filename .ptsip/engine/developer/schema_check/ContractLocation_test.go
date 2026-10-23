@@ -123,9 +123,9 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
         ".ptsip/contracts/policy/authority/Authority_Minor_Category.json",
         ".ptsip/contracts/policy/authority/Authority_Micro_Category.json",
         ".ptsip/contracts/policy/authority/abortively/v1_Authority_Major_Category.json",
-        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
-        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_DRAFT.json",
-        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
+        ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
+        ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_DRAFT.json",
+        ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
     }
     for _, name := range required {
         if err := checkCanonicalContractFile(root, name); err != nil { t.Fatalf("%s: %v", name, err) }
@@ -138,11 +138,45 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
         ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
         ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
         ".ptsip/contracts/lifecycle/policy_status.json",
+        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
+        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_DRAFT.json",
+        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
         ".ptsip/contracts/Authority/Authority_Major_Category.json",
     }
     for _, name := range obsolete {
         if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(name))); !errors.Is(err, os.ErrNotExist) {
             t.Fatalf("obsolete policy contract path remains or is inaccessible: %s: %v", name, err)
+        }
+    }
+}
+
+func TestPlanStatusContractVocabulary(t *testing.T) {
+    root, err := filepath.Abs(filepath.Join("..", "..", "..", ".."))
+    if err != nil { t.Fatal(err) }
+    for _, tc := range []struct {
+        filename string
+        status string
+        id string
+    }{
+        {"Plan_status_ACTIVATE.json", "ACTIVATE", "urn:ptsip:contract:constant:plan_status_activate:v1"},
+        {"Plan_status_DRAFT.json", "DRAFT", "urn:ptsip:contract:constant:plan_status_draft:v1"},
+        {"Plan_status_INTERRUPTION.json", "INTERRUPTION", "urn:ptsip:contract:constant:plan_status_interruption:v1"},
+    } {
+        relative := ".ptsip/contracts/policy/lifecycle/Plan_status/" + tc.filename
+        raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(relative)))
+        if err != nil { t.Fatal(err) }
+        var schema struct {
+            ID string `json:"$id"`
+            Required []string `json:"required"`
+            Properties struct {
+                Status struct { Const string `json:"const"` } `json:"status"`
+            } `json:"properties"`
+            AdditionalProperties bool `json:"additionalProperties"`
+        }
+        if err := json.Unmarshal(raw, &schema); err != nil { t.Fatal(err) }
+        if schema.ID != tc.id || len(schema.Required) != 1 || schema.Required[0] != "status" ||
+            schema.Properties.Status.Const != tc.status || schema.AdditionalProperties {
+            t.Fatalf("%s: Plan status semantics changed during relocation", relative)
         }
     }
 }

@@ -55,7 +55,7 @@ var approvedSchemaPaths = []string{
 
 var schemaScanRoots = []string{
     ".ptsip/contracts/schemas",
-    ".ptsip/contracts/lifecycle/Policy_version",
+    ".ptsip/contracts/policy/lifecycle/Policy_version",
 }
 
 func schemaFiles(root string) ([]string, []Finding) {
