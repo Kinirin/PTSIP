@@ -24,7 +24,31 @@
       "existing_branch_name_mismatch_is_invalid": false,
       "active_branch_membership_inferred_from_pattern": false,
       "implementation": "NOT_YET_AUTHORIZED",
-      "concrete_registry_and_pattern_schema": "UNRESOLVED"
+      "concrete_registry_and_pattern_schema": "UNRESOLVED",
+      "hierarchical_patterns": {
+        "approval_ref": "developer/policy/approvals/MPA-20261023-OPTIONAL-HIERARCHICAL-BRANCH-PATTERNS.yaml",
+        "multiple_patterns": "ALLOWED",
+        "hierarchy": "USER_DEFINED_OPTIONAL",
+        "fixed_depth_or_taxonomy": "NOT_IMPOSED",
+        "optional_fields": {
+          "priority": {
+            "required": false,
+            "value_source": "USER_EXPLICIT",
+            "implicit_default": "NONE"
+          },
+          "inherits_from": {
+            "required": false,
+            "value_source": "USER_EXPLICIT",
+            "implicit_parent": "NONE"
+          }
+        },
+        "omission": "VALID",
+        "omitted_relationship_management_responsibility": "REPOSITORY_USER",
+        "infer_omitted_priority_or_inheritance": false,
+        "unresolved_pattern_ambiguity": "BLOCK_AND_REPORT",
+        "concrete_field_types_and_evaluation_rules": "UNRESOLVED",
+        "implementation_authorized_by_this_decision": false
+      }
     }
   },
   "activation": {
@@ -103,7 +127,8 @@
     "GIT_MUTATION_AUTOMATIC_EXECUTION_TRIGGER",
     "USER_PATTERN_CONTRACT_GRAMMAR",
     "USER_PATTERN_REGISTRY_DISCOVERY_AND_LOCATION",
-    "MULTIPLE_PATTERN_AND_VALIDATION_PRECEDENCE"
+    "PATTERN_VALIDATION_PRECEDENCE",
+    "OPTIONAL_PATTERN_HIERARCHY_FIELD_TYPES_AND_INHERITANCE_SEMANTICS"
   ],
   "initial_implementation": "READ_ONLY_MINIMAL_STRUCTURAL_VALIDATION"
 }
