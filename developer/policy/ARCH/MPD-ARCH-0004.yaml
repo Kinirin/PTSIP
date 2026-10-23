@@ -1,0 +1,28 @@
+Policy_Identity:
+  id: MPD-ARCH-0004
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: ARCH
+  title: "ARCH 신규 독립 규칙 계약 후보"
+Policy_Status:
+  Schema:
+    Policy_Status_version:
+      version: "1"
+  constant:
+    status: APPROVED
+    substatus: provisional
+    contract: urn:ptsip:contract:policy:arch:rule-structure:provisional
+Authority:
+  authority_Identity:
+    authority_id: MPD-ARCH-0004
+  Authority_Category:
+    Authority_Major_Category:
+      major: ARCH
+  Authority_Action:
+    action_ref: urn:ptsip:authority:action:policy:policy-modification
+Policy_Rules:
+  independent_rule_refs: []
+  candidate_schema_id: urn:ptsip:policy:ARCH_rules:v2
+  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/ARCH_rules.schemas.json
+  candidate_scope: "아키텍처 경계"
+  semantic_rework_required: true
+  normative_content_from_retired_policies: FORBIDDEN
