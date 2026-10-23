@@ -29,6 +29,7 @@ type Report struct {
  PolicyConformance string `json:"policy_conformance"`
  FullJSONSchemaConformance string `json:"full_json_schema_conformance"`
  ReferenceProbe *ReferenceProbe `json:"reference_probe,omitempty"`
+ RoutingProbe *RoutingProbe `json:"routing_probe,omitempty"`
  Findings []Finding `json:"findings"`
 }
 
@@ -138,6 +139,9 @@ func Run(root string)(Report,int){
   probe:=probeApprovedPolicyVersionReference(root,e)
   report.ReferenceProbe=&probe
   if probe.Status!="PASS" {report.Failed++}
+  routing:=probePolicyRouting(root,e)
+  report.RoutingProbe=&routing
+  if routing.Status!="PASS" {report.Failed++;report.Findings=append(report.Findings,Finding{File:policyRoutingData,Status:"FAIL",Problem:routing.Problem})}
  }
  if report.Failed==0{report.Status="LIMITED_CHECK_PASS"}
  if report.Failed>0{return report,2}
