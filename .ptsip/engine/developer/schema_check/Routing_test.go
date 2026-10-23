@@ -40,13 +40,30 @@ func TestPolicyRoutingCannotUseRetiredOrUnsafePaths(t *testing.T) {
     }
 }
 
-func TestPolicyRoutingDetectsCorruptedContract(t *testing.T) {
+func TestPolicyRoutingRejectsRetiredBinding(t *testing.T) {
     root := t.TempDir()
-    path := filepath.Join(root,filepath.FromSlash(policyRoutingData))
-    if err := os.MkdirAll(filepath.Dir(path),0755); err != nil {t.Fatal(err)}
-    corrupted := `{"identity_sources":{"policy_kind":"developer/policy/registries/authority-subject-registry.yaml"}}`
-    if err := os.WriteFile(path,[]byte(corrupted),0644); err != nil {t.Fatal(err)}
+    boundary := filepath.Join(root, ".ptsip", "contracts", "policy", "boundary.json")
+    if err := os.MkdirAll(filepath.Dir(boundary), 0755); err != nil { t.Fatal(err) }
+    corrupted := `{"domain":"policy","namespaces":{"routing":"routing/"},"routing_binding":{"data":".ptsip/contracts/routing/policy_routes.json","schema":".ptsip/contracts/policy/routing/Policy_Routing.schema.json"}}`
+    if err := os.WriteFile(boundary, []byte(corrupted), 0644); err != nil { t.Fatal(err) }
     _, _, _, _, _, _, err := loadRoutingInputs(root)
-    if err == nil {t.Fatal("missing routing schema must fail closed")}
-    if !strings.Contains(err.Error(),"MISSING") {t.Fatalf("unexpected error: %v",err)}
+    if err == nil { t.Fatal("retired routing path was accepted") }
+    if !strings.Contains(err.Error(), "INVALID_ROUTING_CONTRACT_PATH") {
+        t.Fatalf("unexpected result: %v", err)
+    }
+}
+
+func TestPolicyRoutingRequiresBoundSchemaFile(t *testing.T) {
+    root := t.TempDir()
+    boundary := filepath.Join(root, ".ptsip", "contracts", "policy", "boundary.json")
+    if err := os.MkdirAll(filepath.Dir(boundary), 0755); err != nil { t.Fatal(err) }
+    canonical := `{"domain":"policy","namespaces":{"routing":"routing/"},"routing_binding":{"data":".ptsip/contracts/policy/routing/policy_routes.json","schema":".ptsip/contracts/policy/routing/Policy_Routing.schema.json"}}`
+    if err := os.WriteFile(boundary, []byte(canonical), 0644); err != nil { t.Fatal(err) }
+    data := filepath.Join(root, filepath.FromSlash(policyRoutingData))
+    if err := os.MkdirAll(filepath.Dir(data), 0755); err != nil { t.Fatal(err) }
+    if err := os.WriteFile(data, []byte(`{"identity_sources":{}}`), 0644); err != nil { t.Fatal(err) }
+    _, _, _, _, _, _, err := loadRoutingInputs(root)
+    if err == nil || !strings.Contains(err.Error(), "ROUTING_RESOURCE_MISSING") {
+        t.Fatalf("missing routing schema must fail closed: %v", err)
+    }
 }
