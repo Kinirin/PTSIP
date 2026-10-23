@@ -23,3 +23,21 @@ review_20261023:
   version_on_provisional_revision: MUST_INCREASE
   rework_on_semantic_change: REQUIRED
   validation: STRUCTURAL_REVIEW_ONLY
+materialized_policy_ids:
+  NORM: MPD-NORM-0002
+  GOV: MPD-GOV-0003
+  INTENT: MPD-INTENT-0002
+  ARCH: MPD-ARCH-0004
+  INFO: MPD-INFO-0006
+  CNTR: MPD-CNTR-0006
+  RISK: MPD-RISK-0002
+  SUPPLY: MPD-SUPPLY-0002
+  REAL: MPD-REAL-0007
+  ASSURE: MPD-ASSURE-0005
+  CTRL: MPD-CTRL-0002
+  CHANGE: MPD-CHANGE-0005
+  OPS: MPD-OPS-0002
+  RECORD: MPD-RECORD-0002
+identity_selection_reason: "Each provisional candidate uses the next noncolliding four-digit MPD-{FAMILY}-NNNN identity in current main; prior documents remain unchanged."
+candidate_policy_semantics: "Independent rule references intentionally empty; retired normative bodies must not be copied or renamed."
+not_yet_validated: [CANONICAL_POLICY_REGISTRATION, GLOBAL_REFERENCE_RESOLUTION, PLAN_IMPLEMENTATION_PERMISSION_GATE, PROVISIONAL_CONTRACT_MIGRATION, FULL_SCHEMA_CONFORMANCE]
