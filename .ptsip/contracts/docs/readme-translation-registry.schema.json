@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:docs:readme-translation-registry:v1",
+  "title": "README Translation Registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "canonical",
+    "translations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-readme-translation-registry/v1"
+    },
+    "canonical": {
+      "type": "object",
+      "required": [
+        "language",
+        "path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "const": "en"
+        },
+        "path": {
+          "const": "README.md"
+        }
+      }
+    },
+    "translations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "language",
+          "path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+          },
+          "path": {
+            "$ref": "urn:ptsip:docs:readme-translation-path:v1"
+          }
+        }
+      }
+    }
+  }
+}
