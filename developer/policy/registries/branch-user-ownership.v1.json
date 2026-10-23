@@ -45,6 +45,29 @@
       "implicit_branch_activation_from_exception_membership": false,
       "ambiguous_or_unresolved_exclusion": "BLOCK_AND_REPORT",
       "execution_authorized_by_this_decision": false
+    },
+    "execution_responsibility": {
+      "approval_ref": "developer/policy/approvals/MPA-20261023-CONTRACT-SYNC-GIT-EXECUTION-BOUNDARY.yaml",
+      "manager_model": "BOUNDED_COMPLETE_CONTRACT_SYNCHRONIZATION",
+      "execution_owner": "PTSIP",
+      "owned_operations": [
+        "GIT_WORK_FOR_APPROVED_CONTRACT_UNITS",
+        "MERGE_FOR_CONTRACT_SYNCHRONIZATION",
+        "RETRY_FOR_CONTRACT_SYNCHRONIZATION",
+        "RECOVERY_FOR_CONTRACT_SYNCHRONIZATION"
+      ],
+      "scope_limit": "APPROVED_CONTRACT_UNIT_SYNC_ON_REGISTERED_ACTIVE_BRANCHES_WITH_OWNER_EXCEPTIONS",
+      "preserve_existing_authorization_and_compatibility_gates": true,
+      "out_of_scope": [
+        "GENERAL_GIT_REPOSITORY_MANAGEMENT",
+        "UNRELATED_CODE_OR_CONTENT_CHANGES",
+        "RELEASE_OR_DEPLOYMENT_MANAGEMENT",
+        "AUTONOMOUS_POLICY_AUTHORITY_MUTATION",
+        "IMPLICIT_BRANCH_CREATION",
+        "SILENT_CONFLICT_RESOLUTION"
+      ],
+      "decision_authorizes_live_git_mutation": false,
+      "subordinate_execution_policy": "UNRESOLVED"
     }
   },
   "unresolved": [
