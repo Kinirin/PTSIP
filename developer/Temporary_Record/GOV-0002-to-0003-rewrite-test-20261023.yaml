@@ -84,3 +84,18 @@ verification:
   external_schema_ref_resolution: NOT_CONFIRMED
   full_policy_conformance: NOT_CONFIRMED
   semantic_equivalence: REQUIRES_USER_REVIEW
+observed_checks:
+  source_old_blob_sha: f01a07ee1fa65d6cf24b9011e86299a6c6efa8b1
+  rewritten_policy_blob_sha: 2a3aceed35b49d3d6b6d6faaa9de579f6327b54c
+  check_scope: REMOTE_FILE_CONTENT_AND_SCHEMA_SHAPE
+  file_identity_and_status: PASS
+  source_preservation: PASS
+  independent_contracts_created: 3
+  independent_contract_paths_and_ids: PASS
+  independent_contract_states_and_five_groups: PASS
+  policy_version_increment: PASS
+  retired_policy_execution_reference_absence: PASS
+  translation_registry_current_entry: "ko"
+  external_draft202012_engine_validation: NOT_RUN
+  registered_resolver_lookup: NOT_IMPLEMENTED
+  provenance_migration_equivalence: REVIEW_REQUIRED
