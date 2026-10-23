@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:authority:major-category:v1",
+  "title": "PTSIP Authority Major Category",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "major"
+  ],
+  "properties": {
+    "major": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Authority_Minor_Category": {
+      "$ref": "urn:ptsip:policy:authority:minor-category:v1"
+    }
+  }
+}
