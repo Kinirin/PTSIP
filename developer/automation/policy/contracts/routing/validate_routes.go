@@ -16,8 +16,8 @@ import (
 )
 
 const identitySchemaPath = ".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json"
-const routingSchemaPath = ".ptsip/contracts/schemas/Policy_Identity/Routing/Policy_Routing.schema.json"
-const routingDataPath = ".ptsip/contracts/routing/policy_routes.json"
+const routingSchemaPath = ".ptsip/contracts/policy/routing/Policy_Routing.schema.json"
+const routingDataPath = ".ptsip/contracts/policy/routing/policy_routes.json"
 const policyKindSchemaID = "urn:ptsip:identity:policy-kind:v1"
 const rootFamilySchemaID = "urn:ptsip:identity:root-family:v1"
 

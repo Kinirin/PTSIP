@@ -50,7 +50,7 @@ func collectRefs(v any,refs *[]string){
 var approvedSchemaPaths = []string{
     ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
     ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
-    ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+    ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
 }
 
 var schemaScanRoots = []string{

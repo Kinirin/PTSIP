@@ -62,7 +62,7 @@ func TestInstalledPTSIP038b3InlineAndExternalRefExperiment(t *testing.T) {
     if err!=nil {t.Fatalf("installed official engine unavailable: %v",err)}
     if engine.PackageVersion!="0.3.8b3" {t.Fatalf("required PTSIP 0.3.8b3, got %s",engine.PackageVersion)}
     t.Logf("ENGINE_PROBE installed=%s engine_version=%s operation=validation.schema",engine.PackageVersion,engine.EngineVersion)
-    version:=readApprovedProbeSchema(t,".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json")
+    version:=readApprovedProbeSchema(t,".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json")
     publicStatus:=readApprovedProbeSchema(t,".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json")
     constant:=readApprovedProbeSchema(t,".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json")
 

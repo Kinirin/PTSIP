@@ -86,7 +86,7 @@ func TestOfficialNativePolicySchemaTrial(t *testing.T) {
   if err=json.Unmarshal(raw,&document);err!=nil{t.Fatal(err)}
   return document
  }
- version:=load(".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json")
+ version:=load(".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json")
  for _,test:=range []struct{name string;instance map[string]any;expected bool}{
   {"valid-version",map[string]any{"version":"1.0"},true},
   {"undecided-format-string",map[string]any{"version":"preview-beta"},true},

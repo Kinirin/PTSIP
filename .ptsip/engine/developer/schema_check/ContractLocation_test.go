@@ -58,7 +58,7 @@ func TestCanonicalDeveloperContractRoutes(t *testing.T) {
         t.Fatalf("contract migration coverage incomplete: %d JSON files (expected at least 55 migrated plus 2 release)", count)
     }
 
-    routingPath := ".ptsip/contracts/routing/policy_routes.json"
+    routingPath := ".ptsip/contracts/policy/routing/policy_routes.json"
     if err := checkCanonicalContractFile(root, routingPath); err != nil { t.Fatal(err) }
     raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(routingPath)))
     if err != nil { t.Fatal(err) }
@@ -103,6 +103,46 @@ func TestCanonicalContractReferenceRejectsUnsafeOrMissing(t *testing.T) {
     } {
         if checkCanonicalContractFile(root, ref) == nil {
             t.Fatalf("must reject missing or noncanonical reference: %s", ref)
+        }
+    }
+}
+func TestPolicyContractResponsibilityMigration(t *testing.T) {
+    root, err := filepath.Abs(filepath.Join("..", "..", "..", ".."))
+    if err != nil { t.Fatal(err) }
+    required := []string{
+        ".ptsip/contracts/policy/boundary.json",
+        ".ptsip/contracts/policy/identity/policy_kind.json",
+        ".ptsip/contracts/policy/identity/root_family.json",
+        ".ptsip/contracts/policy/routing/policy_routes.json",
+        ".ptsip/contracts/policy/routing/Policy_Routing.schema.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
+        ".ptsip/contracts/policy/authority/Authority_Major_Category.json",
+        ".ptsip/contracts/policy/authority/Authority_Minor_Category.json",
+        ".ptsip/contracts/policy/authority/Authority_Micro_Category.json",
+        ".ptsip/contracts/policy/authority/abortively/v1_Authority_Major_Category.json",
+        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
+        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_DRAFT.json",
+        ".ptsip/contracts/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
+    }
+    for _, name := range required {
+        if err := checkCanonicalContractFile(root, name); err != nil { t.Fatalf("%s: %v", name, err) }
+    }
+    obsolete := []string{
+        ".ptsip/contracts/identity/policy_kind.json",
+        ".ptsip/contracts/identity/root_family.json",
+        ".ptsip/contracts/routing/policy_routes.json",
+        ".ptsip/contracts/schemas/Policy_Identity/Routing/Policy_Routing.schema.json",
+        ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
+        ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+        ".ptsip/contracts/lifecycle/policy_status.json",
+        ".ptsip/contracts/Authority/Authority_Major_Category.json",
+    }
+    for _, name := range obsolete {
+        if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(name))); !errors.Is(err, os.ErrNotExist) {
+            t.Fatalf("obsolete policy contract path remains or is inaccessible: %s: %v", name, err)
         }
     }
 }

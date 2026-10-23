@@ -10,7 +10,7 @@ work:
 review_20261023:
   prior_output_disposition: INVALID_DRAFT
   correction_reason: "Schema must be JSON; policy filename and ID must use MPD-{FAMILY}-{4digits}; unsupported PROVISIONAL status forbidden."
-  status_schema: ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json"
+  status_schema: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json"
   selected_status: "APPROVED.provisional"
   created_contract_required_fields: [state, title]
   created_contract_additionalProperties: true
@@ -61,7 +61,7 @@ gov_inline_policy_rules_fix_20261023:
   major_category:
     selection: KEEP_LATEST
     approved_enum: [responsibilities]
-    contract: .ptsip/contracts/Authority/Authority_Major_Category.json
+    contract: .ptsip/contracts/policy/authority/Authority_Major_Category.json
     reference_schema: .ptsip/contracts/schemas/Authority/Authority_Category/Authority_Major_Category.schema.json
     version_after: "v2"
     other_13_family_provisional_major_values: MUST_BE_REVIEWED_NOT_AUTO_REGISTERED

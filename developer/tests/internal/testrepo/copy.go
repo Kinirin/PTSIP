@@ -12,7 +12,7 @@ func CopyTree(t *testing.T, destination *Repository, refs ...string) {
 	source := Open(Root(t))
 	for _, ref := range refs {
 		if ref == "developer/policy" {
-			CopyFiles(t, destination, ".ptsip/contracts/lifecycle/policy_status.json", ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json")
+			CopyFiles(t, destination, ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json", ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json", ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json", ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json")
 		}
 	}
 	for _, ref := range refs {

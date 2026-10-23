@@ -221,16 +221,24 @@ func (r *Resolver) reference(value any) (Object, error) {
 }
 
 func (r *Resolver) resolutionAllowed(identity Object) (bool, error) {
-	const reference = ".ptsip/contracts/lifecycle/policy_status.json"
+	// Current owner-authorized status contracts replace the invalidated composite.
+	// Status is validated independently; only APPROVED permits policy resolution.
 	state := Object{"status": identity["status"], "substatus": identity["substatus"]}
+	var reference string
+	switch Text(identity["status"]) {
+	case "DRAFT":
+		reference = ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json"
+	case "APPROVED":
+		reference = ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json"
+	case "RETIRED":
+		reference = ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json"
+	default:
+		return false, fmt.Errorf("unrecognized policy lifecycle status: %q", identity["status"])
+	}
 	if err := r.Repo.Validate(reference, state); err != nil {
 		return false, err
 	}
-	contract, err := r.Repo.Read(reference)
-	if err != nil {
-		return false, err
-	}
-	return Map(contract["resolution_authority"])[Text(identity["status"])] == true, nil
+	return Text(identity["status"]) == "APPROVED", nil
 }
 
 func (r *Resolver) Resolve(scope, operation string) (Object, error) {

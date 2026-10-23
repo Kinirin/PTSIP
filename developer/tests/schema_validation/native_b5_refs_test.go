@@ -72,9 +72,9 @@ func TestB5ApprovedInternalPolicyStatusReferences(t *testing.T){
  root,err:=filepath.Abs(filepath.Join("..","..",".."));if err!=nil{t.Fatal(err)}
  status:=b5ReadApproved(t,root,".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json")
  resources:=[]any{
-  b5ReadApproved(t,root,".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json"),
-  b5ReadApproved(t,root,".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json"),
-  b5ReadApproved(t,root,".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json"),
+  b5ReadApproved(t,root,".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json"),
+  b5ReadApproved(t,root,".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json"),
+  b5ReadApproved(t,root,".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json"),
  }
  // Input values are test instances, not changes to policy authority.
  goodContract:="urn:ptsip:contract:policy:arch:identity:status"
@@ -99,11 +99,11 @@ func TestB5ApprovedPublicPolicyStatusExternalAndInternalRefs(t *testing.T){
  parent:=b5ReadApproved(t,root,".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json")
  var resources []any
  for _,p:=range []string{
-  ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+  ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
   ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
-  ".ptsip/contracts/lifecycle/Policy_status/Policy_status_DRAFT.json",
-  ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
-  ".ptsip/contracts/lifecycle/Policy_status/Policy_status_RETIRED.json",
+  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
+  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
+  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
   ".ptsip/contracts/schemas/Policy_Identity/Policy_Identity_version.schema.json",
   ".ptsip/contracts/schemas/Authority/Authority_version.schema.json",
   ".ptsip/contracts/schemas/Policy_Rules/Policy_Rules_version.schema.json",
