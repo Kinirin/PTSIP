@@ -136,3 +136,18 @@ criterion_correction_20261023:
     textual_meaning_with_existing_GOV_fields: GENERALLY_EXPRESSIBLE
     exact_machine_enforcement_with_existing_fields: NOT_PROVEN
   next_step: "Resolve independently whether GOV-0003 stores the rules inline or references one GOV independent rule body; then remove the three experimental files without orphaning live references"
+cleanup_20261023:
+  reason: "0003 was a superseded split-contract trial, not the inline GOV source-of-truth"
+  gov_0003_disposition: DELETED
+  gov_0003_removal_commit: 795e6b54d0d5c4ccb25613adcd41ea1743dc2935
+  gov_0001_conversion: NOT_STARTED
+  gov_0002_preservation: REQUIRED
+  gov_0004_inline_policy: PRESERVED
+  trial_contract_cleanup:
+    decision_mandate: DELETED
+    approval_legitimacy: DELETE_BLOCKED_BY_REMOTE_SAFETY_CHECK
+    translation_activation: NOT_YET_DELETED
+  test_fixture_reference:
+    path: developer/tests/rootfamily/testdata/go_automation_protocol_vectors.json
+    role: HISTORICAL_TEST_EXPECTATION_REVIEW_REQUIRED
+  full_json_schema_engine_validation: DEFERRED_UNTIL_GOV_0001_REFORM
