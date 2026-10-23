@@ -46,7 +46,7 @@ findings:
   - id: GOV-01
     limitation: "공통 Rules 정책 스키마는 참조 리스트 및 실제 파일의 존재/ID를 검증하지 않음"
     added_fields: ["Policy_Rules.independent_contracts", "contract_id", "path", "schema_ref"]
-    persistence: "계속 필요: YES, 독립 계약을 결정론적으로 조회하기 위한 최소 식별·경로"
+    persistence: "계약의 논리 ID는 계속 필요; 물리 path와 schema_ref의 직접 기재는 등록 Registry·Resolver 완성 후 제거 가능한 임시 중복"
     missing_validation: EXACT_REGISTERED_REF_AND_IDENTITY_CHECK
   - id: GOV-02
     limitation: "GOV 스키마는 의사결정의 대상·소유자·위임 범위를 표현하거나 필수 검증하지 않음"
@@ -99,3 +99,14 @@ observed_checks:
   external_draft202012_engine_validation: NOT_RUN
   registered_resolver_lookup: NOT_IMPLEMENTED
   provenance_migration_equivalence: REVIEW_REQUIRED
+additional_limitations:
+  - id: GOV-08
+    limitation: "GOV_rules:v2가 state=APPROVED.provisional을 상수로 고정해 다른 승인 상태로 승격한 계약의 검증에는 사용할 수 없음"
+    current_impact: "시험 범위인 임시 승인에서만 검증 가능하며, 정식 상태 전환 검증 Schema의 책임 분리 미결정"
+    candidate_resolution: "상태 계약과 Family 내부 필드 검증을 분리해 상태별 스키마 선택 또는 선언적 상태 검증 연결을 검토"
+    required_persistence: "상태 검증 책임 자체는 필요; GOV v2 상수 규칙의 영구 유지 여부는 후보정 대상"
+  - id: GOV-09
+    limitation: "MPD-GOV-0003의 Policy_Rules에 물리 path와 URI를 중복 기록한 것은 실험용으로, 진입점 및 ID→path 매핑 규범 미완료"
+    current_impact: "실행 resolver가 없으면 ID만으로 자동 조회·마이그레이션 불가"
+    candidate_resolution: "논리 계약 ID를 권위로 등록하고 파일 경로는 기계 등록된 binding에서 파생"
+    required_persistence: "명시적 조회·무결성 검증은 필요, 문서의 고정 path 필드는 잠정"
