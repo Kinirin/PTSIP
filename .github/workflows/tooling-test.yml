@@ -59,6 +59,7 @@ jobs:
           PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
         run: |
           set -euo pipefail
+          go -C .ptsip/engine/developer test ./schema_check -count=1
           go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
 
   ptsip-validation-runtime:
