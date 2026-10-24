@@ -98,7 +98,7 @@ def test_parent_prefix_and_pointer_mismatch_fail_closed(tmp_path: Path) -> None:
         load_rule_records(root, main_payload=main)
 
     records = records_fixture()
-    records[1]["rule_value"]["root_id"] = records[3]["ID"]
+    records[0]["rule_value"]["root_id"] = "rule_ABsha256:" + "e" * 64
     root, main = project_fixture(tmp_path, records)
     with pytest.raises(RuleProfileError, match="direct child"):
         load_rule_records(root, main_payload=main)
