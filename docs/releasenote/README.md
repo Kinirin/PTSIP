@@ -69,11 +69,14 @@ An otherwise valid `0.3.6-draft` Project Profile does not require architecture r
 
 Historical `0.3.6-draft` facts remain historical facts; they are not rewritten as though they were originally published under the `pp.*` namespace.
 
-## Current new-generation records
+## Published 0.3.8b5 snapshot and current contract records
+
+The published b5 Package is independent of the older `main` source-tree version (`pyproject.toml` `0.3.8.1b1`). Publication evidence is the [original GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b), not a new release action from these documentation updates.
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
-| Tool | `0.3.8a6` | Unified release candidate; publication pending | [`tool/0.3.8a6.md`](tool/0.3.8a6.md) |
+| PTSIP_Package | `0.3.8.adee8b` / PyPI `0.3.8b5` | Published October 18, 2026 from the separate release branch | [`PTSIP_Package/0.3.8.adee8b.md`](PTSIP_Package/0.3.8.adee8b.md) |
+| Tool | `T.0.3.8.b5` | Published in the complete PTSIP beta Package | [`tool/T.0.3.8.b5.md`](tool/T.0.3.8.b5.md) |
 | Project Profile | `pp.1.02` | Current contract / repository adopted | [`project-profile/pp.1.02.md`](project-profile/pp.1.02.md) |
 | Specification | `0.3.7-draft @ 3c47816770d194ae42f98faedc911d980db0e62a` | WU-12 final normative freeze | [`PTSIP_Package/0.3.7-draft.md`](PTSIP_Package/0.3.7-draft.md) |
 
@@ -99,6 +102,9 @@ All retained Tool notes now live under `docs/releasenote/tool/`.
 | `0.3.8a2` | Published namespace-stabilization release | [`tool/0.3.8a2.md`](tool/0.3.8a2.md) |
 | `0.3.8a3` | Emergency Context Plane migration-semantics prerelease candidate | [`tool/0.3.8a3.md`](tool/0.3.8a3.md) |
 | `0.3.8a4` | Go-native developer automation and release-verification consolidation prerelease candidate | [`tool/0.3.8a4.md`](tool/0.3.8a4.md) |
+| `0.3.8a5` | Historical prerelease candidate and foundation | [`tool/0.3.8a5.md`](tool/0.3.8a5.md) |
+| `0.3.8a6` | Published historical Tool prerelease | [`tool/0.3.8a6.md`](tool/0.3.8a6.md) |
+| `0.3.8b1` | Published historical beta Tool package | [`tool/0.3.8b1.md`](tool/0.3.8b1.md) |
 
 Versions that never represented a real PTSIP Tool source/release state are not fabricated merely to make the sequence contiguous.
 

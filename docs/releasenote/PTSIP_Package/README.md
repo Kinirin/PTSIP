@@ -10,3 +10,11 @@ approved folder rename. Their content remains historical Specification evidence
 and does not establish historical Package publication.
 
 Package, Tool, Profile and each engine remain independently versioned.
+
+## Published 0.3.8b5 snapshot
+
+| PyPI distribution | Package composition | Tool | Release record |
+| --- | --- | --- | --- |
+| `PTSIP==0.3.8b5` | `0.3.8.adee8b` | `T.0.3.8.b5` | [Package release note](0.3.8.adee8b.md) / [GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b) |
+
+The note is preserved from the release branch's original publication record; it does not change the `main` source-tree composition.

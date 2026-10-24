@@ -6,34 +6,37 @@
 
 > **Purpose precedes reuse.** Determine why a responsibility exists and which lifecycle owns it before optimizing how code is shared.
 
-## Component versions
+## Published release and component versions
 
-| Identity | Source-tree value |
+The **published PTSIP beta is `0.3.8b5`** (October 18, 2026). This PyPI distribution installs the Tool, Project Profile and all seven registered native engines as one complete Package.
+
+| Identity | Published `PTSIP==0.3.8b5` |
 | --- | --- |
-| PTSIP_Package | `0.3.8.<SHA6>` — composition assigned after successful publication |
-| PTSIP_Tool | `0.3.8b1` |
+| PTSIP_Package composition | `0.3.8.adee8b` |
+| PTSIP_Tool | `T.0.3.8.b5` |
 | Project Profile | `pp.1.02` |
-| Engine | Context/Projection `0.2.0`; Storage/Validation/Discovery/Planning/Execution `0.3.0` |
+| Context / Projection engines | `0.2.1` |
+| Storage / Discovery / Planning / Execution engines | `0.3.1` |
+| Validation engine | `0.3.3` (capability contract `4.0.0`) |
 
-Package composition, Tool, each engine and Project Profile retain independent versions. The immutable Specification binding is recorded in the canonical composition and shipping manifest. Read [what changed in `0.3.8b1`](docs/releasenote/tool/0.3.8b1.md), the [Tool release history](docs/releasenote/tool/README.md), or [the release workflow](.github/workflows/tooling-release.yml). Release verification is selected from `.github/test_modes.yaml` and runs exclusively in `tooling-test.yml`; publication consumes that exact-source evidence in `tooling-release.yml`. Actual publication state and exact Package composition are recorded in the version-specific release assets.
+**Published artifact versus development source:** the root `pyproject.toml` on `main` still describes the separate `0.3.8.1b1` source composition / Tool `T.0.3.8.b1`. It does **not** define the published b5 artifacts, which were released from `dev/0.3.8b2`. This README reports the published release without changing the development-source version or rebuilding any package.
+
+Package composition, Tool, each engine and Project Profile retain independent identities. See the [b5 Package release note](docs/releasenote/PTSIP_Package/0.3.8.adee8b.md), [b5 Tool release note](docs/releasenote/tool/T.0.3.8.b5.md), [immutable GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b) and [Tool release history](docs/releasenote/tool/README.md). Release verification and publication remain governed by the existing [release workflow](.github/workflows/tooling-release.yml); documentation updates do not constitute new publication evidence.
 
 ## Quick start
 
 Requires Python **3.11 or newer**. These commands use PowerShell; the basic CLI commands also work in other shells.
 
-Install the latest normally selected published release, then inspect its identities:
+Install the **published `0.3.8b5` prerelease explicitly** (an unpinned pip command can prefer a stable release):
 
 ```powershell
-python -m pip install --upgrade PTSIP
+python -m pip install --upgrade "PTSIP==0.3.8b5"
 ptsip --version
 ptsip spec
+python -m pip show PTSIP
 ```
 
-To install Tool `0.3.8b1` specifically (ordinary pip resolution might select a stable version instead):
-
-```powershell
-python -m pip install "PTSIP==0.3.8b1"
-```
+For the normally selected stable release instead, use `python -m pip install --upgrade PTSIP`. The pinned command above is required when you specifically want b5; `pip show` reports the installed PyPI version, while Tool and engine identities remain independent.
 
 To develop this repository directly:
 
@@ -263,7 +266,7 @@ Seven independently built **Rust engines** have versioned, language-neutral cont
 | Execution | Perform bounded caller-admitted requests and record effects/stops |
 | Projection | Render validated Context into declared output formats |
 
-`0.3.8a5` verifies the native foundation on Linux, Windows and macOS; it **does not** implicitly grant consumer production installation, authority admission, activation, or versioned cutover. The Python wheel carries neutral engine contract data, **not** the Rust sources, native binaries or build outputs. Existing consumer APIs remain available; see the [release-scope boundary](docs/releasenote/tool/0.3.8a5.md).
+`0.3.8a5` verifies the native foundation on Linux, Windows and macOS; it **does not** implicitly grant consumer production installation, authority admission, activation, or versioned cutover. The older a5 Python wheel carries neutral engine contract data, **not** the Rust sources, native binaries or build outputs. The separately published **b5** Windows/Linux wheels include all seven native engines; see the [b5 release record](docs/releasenote/PTSIP_Package/0.3.8.adee8b.md). Existing consumer APIs remain available; the a5 scope remains documented in its [historical release note](docs/releasenote/tool/0.3.8a5.md).
 
 PTSIP controls **who owns lifecycle responsibilities**. The independent [`src/vpms/`](src/vpms/) Verification Protocol Management System (VPMS) controls **how explicit Verification Cases are registered, selected, run and reported**. VPMS purpose/verification status is separate from PTSIP classification and conformance.
 
@@ -302,10 +305,11 @@ Release PREPARE and PUBLISH are independent, exact-source-verification phases in
 
 ## Release notes and background
 
-- [Current `0.3.8a5` release candidate](docs/releasenote/tool/0.3.8a5.md): current-policy validation, registered Check coverage and seven-engine foundation; **publication pending**.
-- [Published `0.3.8a4` baseline](docs/releasenote/tool/0.3.8a4.md): Go-native developer automation, Project Profile and release verification.
-- [Historical Tool notes](docs/releasenote/tool/README.md): earlier releases, namespace and Context Plane migrations.
-- [Specification/Project Profile/Tool release records](docs/releasenote/README.md): independently versioned lifecycle histories.
+- [Published `0.3.8b5` Package](docs/releasenote/PTSIP_Package/0.3.8.adee8b.md): composition `0.3.8.adee8b`, Tool `T.0.3.8.b5`, Profile `pp.1.02` and seven engines.
+- [Tool `T.0.3.8.b5` changes](docs/releasenote/tool/T.0.3.8.b5.md): Validation `0.3.3` / capability `4.0.0`, recursive `$ref` and `$dynamicRef` support.
+- [Published b5 GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b): original publication and artifact record.
+- [Historical Tool notes](docs/releasenote/tool/README.md): earlier releases and source-only candidates.
+- [Package, Specification and Project Profile release records](docs/releasenote/README.md): independently versioned histories.
 
 ## License authority
 

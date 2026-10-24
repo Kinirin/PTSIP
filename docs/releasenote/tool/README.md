@@ -30,5 +30,6 @@ Historical Tool notes that previously lived directly under `docs/releasenote/` h
 | `0.3.8a5` | Policy, verification, and seven-native-engine foundation prerelease candidate; publication pending | [`0.3.8a5.md`](0.3.8a5.md) |
 | `0.3.8a6` | Published Tool prerelease; original distributions remain immutable | [`0.3.8a6.md`](0.3.8a6.md) |
 | `0.3.8b1` | Owner-authorized beta release for API-token Tool publication | [`0.3.8b1.md`](0.3.8b1.md) |
+| `T.0.3.8.b5` (PyPI `0.3.8b5`) | Published complete PTSIP Package beta; Validation 0.3.3 / capability 4.0.0 | [`T.0.3.8.b5.md`](T.0.3.8.b5.md) |
 
 Tool `0.3.4` is represented by immutable GitHub Release history rather than a retained repository release-note file.
