@@ -110,17 +110,18 @@ root_index_lookup_connection_direction:
     content_hash_verification: NOT_SELECTED
     identity_format_direction:
       decision: USER_APPROVED_DESIGN_DIRECTION
-      selected_option: C_CONSUMER_STRUCTURED_IDENTIFIER
-      representation: CONSUMER_OWNED_STRUCTURED_IDENTITY
-      field_component_names: UNRESOLVED_USER_DECISION
-      field_component_requiredness: UNRESOLVED_USER_DECISION
-      field_component_types_and_allowed_values: UNRESOLVED_USER_DECISION
-      target_dollar_id_mapping: UNRESOLVED_USER_DECISION
-      serialization_and_comparison_rules: UNRESOLVED_USER_DECISION
-      schema_or_index_implementation: NOT_AUTHORIZED_YET
+      conflict_resolution: KEEP_LATEST
+      selected_option: A_EXISTING_DOLLAR_ID_FULL_STRING
+      representation: DIRECT_TARGET_DOLLAR_ID_STRING
+      withdrawn_option: C_CONSUMER_STRUCTURED_IDENTIFIER
+      withdrawn_option_status: WITHDRAWN_BY_PROJECT_OWNER
+      identifier_pattern_constraints: UNRESOLVED_USER_DECISION
+      field_names_and_requiredness: UNRESOLVED_USER_DECISION
+      comparison_procedure_and_errors: UNRESOLVED_USER_DECISION
+      implementation: NOT_AUTHORIZED_YET
     concrete_field_names: UNRESOLVED_USER_DECISION
     field_requiredness: UNRESOLVED_USER_DECISION
-    data_types_and_component_schema: UNRESOLVED_USER_DECISION
+    data_types_and_identity_constraints: UNRESOLVED_USER_DECISION
     resolution_and_comparison_procedure: UNRESOLVED_USER_DECISION
     missing_or_mismatched_target_behavior: UNRESOLVED_USER_DECISION
     error_output_contract: UNRESOLVED_USER_DECISION
