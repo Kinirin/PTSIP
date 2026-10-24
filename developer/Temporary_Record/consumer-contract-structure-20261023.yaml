@@ -10,7 +10,8 @@ purpose_ko: >-
 
 scope:
   decision_domain: CONSUMER_POLICY_CONTRACT_STRUCTURE
-  proposed_root: src/policy/contracts/
+  consumer_contract_ownership_scope: "src/policy/**"
+  proposed_contract_definition_location: src/policy/contracts/
   proposed_components:
     - src/policy/contracts/consumer-root-family/
     - src/policy/contracts/schemas/
@@ -60,7 +61,13 @@ consumer_contract_plane_boundaries:
   decision_status: APPROVED_BOUNDARY_ONLY
   developer_policy_creation_contract_root: .ptsip/contracts/
   developer_policy_validation_engine_root: .ptsip/engine/developer/
-  consumer_policy_contract_root: src/policy/contracts/
+  consumer_contract_ownership_scope: "src/policy/**"
+  consumer_contract_definition_location: src/policy/contracts/
+  prior_ownership_root_interpretation:
+    former_field: consumer_policy_contract_root
+    former_value: src/policy/contracts/
+    resolution: RECONCILE_OWNERSHIP_AND_DEFINITION_LOCATION
+    status: SUPERSEDED_BY_USER_CORRECTION
   consumer_policy_validation_engine_root: .ptsip/engine/consumer/
   developer_contracts_or_validator_are_consumer_policy_contracts: false
   cross_plane_normative_schema_or_runtime_dependency: FORBIDDEN
