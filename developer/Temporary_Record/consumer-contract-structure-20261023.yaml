@@ -105,34 +105,49 @@ root_index_lookup_connection_direction:
     selected_option: B_TARGET_IDENTITY_VERIFICATION
     verification_responsibility:
       - RESOLVE_REGISTERED_SUBINDEX_TARGET
-      - COMPARE_REGISTERED_EXPECTED_TARGET_IDENTITY_WITH_ACTUAL_TARGET_IDENTITY
+      - VERIFY_EXPLICIT_BINDING_OF_STABLE_INDEX_ID_TO_ACTUAL_TARGET
+    target_identity_binding_representation: UNRESOLVED_USER_DECISION
     identity_verification_is_content_integrity_verification: false
     content_hash_verification: NOT_SELECTED
     identity_format_direction:
       decision: USER_APPROVED_DESIGN_DIRECTION
       conflict_resolution: KEEP_LATEST
-      selected_option: A_EXISTING_DOLLAR_ID_FULL_STRING
-      representation: DIRECT_TARGET_DOLLAR_ID_STRING
-      withdrawn_option: C_CONSUMER_STRUCTURED_IDENTIFIER
-      withdrawn_option_status: WITHDRAWN_BY_PROJECT_OWNER
-      identifier_pattern_constraints: UNRESOLVED_USER_DECISION
+      selected_option: STABLE_LOGICAL_INDEX_ID
+      representation: STABLE_INDEX_ID_INDEPENDENT_OF_PATH_VERSION_AND_PARAMETERS
+      index_id_value_type: string
+      index_id_issuance_format: UNRESOLVED_USER_DECISION
+      identifier_generated_from_path_or_version: FORBIDDEN
+      identifier_parsing_for_semantic_inference: FORBIDDEN
+      id_preserved_when:
+        - TARGET_PATH_CHANGES
+        - TARGET_VERSION_CHANGES
+        - REGISTRATION_PARAMETERS_CHANGE
+        - NESTED_FIELDS_CHANGE
+      target_dollar_id_is_same_as_index_id: NOT_REQUIRED
+      prior_identity_direction:
+        selected_option: A_EXISTING_DOLLAR_ID_FULL_STRING
+        status: SUPERSEDED_BY_USER_KEEP_LATEST
+        base_revision: d63313eca21a4b98905902343f8e83cbbe86b3aa
+      earlier_withdrawn_direction:
+        selected_option: C_CONSUMER_STRUCTURED_IDENTIFIER
+        status: WITHDRAWN_BY_PROJECT_OWNER
       approved_registration_field_names: [index_id, path]
       registration_field_requiredness: UNRESOLVED_USER_DECISION
+      parameter_structure: UNRESOLVED_USER_DECISION
       comparison_procedure_and_errors: UNRESOLVED_USER_DECISION
       implementation: NOT_AUTHORIZED_YET
     concrete_field_names:
-      index_id: EXPECTED_CHILD_INDEX_DOLLAR_ID
+      index_id: STABLE_LOGICAL_SUBINDEX_ID
       path: CHILD_INDEX_LOCATION
     field_value_types:
       index_id: string
       path: string
-    approved_example:
-      index_id: urn:consumer:ptsip:contracts:schemas:index:v1
-      path: schemas/index.json
+    previous_approved_example: SUPERSEDED_ID_INCLUDED_VERSION
     field_requiredness: UNRESOLVED_USER_DECISION
     identifier_pattern_and_path_constraints: UNRESOLVED_USER_DECISION
     resolution_and_comparison_procedure: UNRESOLVED_USER_DECISION
     missing_or_mismatched_target_behavior: UNRESOLVED_USER_DECISION
+    file_relocation_detection_and_identity_proof: UNRESOLVED_USER_DECISION
     error_output_contract: UNRESOLVED_USER_DECISION
     implementation: NOT_AUTHORIZED_YET
   extensible_subindex_registration:
