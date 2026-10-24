@@ -108,7 +108,9 @@ func TestCurrentRootFamilyPolicyFields(t *testing.T) {
     migrated := 0
     families := 0
     for family, raw := range developers {
-        directory := contractObject(t,contractObject(t,raw.(map[string]any),"output"),"directory")["directory"].(string)
+        output := contractObject(t,raw.(map[string]any),"output")
+        directory, ok := output["directory"].(string)
+        if !ok || directory == "" { t.Fatalf("%s: output.directory must be a nonempty string",family) }
         entries, err := os.ReadDir(filepath.Join(root,filepath.FromSlash(directory)))
         if err != nil { t.Fatal(err) }
         modern := 0
