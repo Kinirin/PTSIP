@@ -58,6 +58,7 @@ def test_record_schema_and_five_allowed_shapes() -> None:
     schema = json.loads((REPOSITORY / CONTRACT_PATH).read_text(encoding="utf-8"))
     Draft202012Validator.check_schema(schema)
     records = records_fixture()
+    records.append({"ID": "rule_sha256:" + "e" * 64, "rule_value": {"constant": "HI", "explanation": "root leaf"}})
     assert not list(Draft202012Validator(schema).iter_errors({"rules": records}))
     defs = schema["$defs"]
     assert len(defs["record"]["oneOf"]) == 5
