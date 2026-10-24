@@ -86,6 +86,29 @@ consumer_contract_plane_boundaries:
   consumer_validator_implementation_status: NOT_ASSERTED
   no_formal_contract_or_validator_implementation_authorized_by_this_decision: true
 
+
+root_index_lookup_connection_direction:
+  decision: USER_APPROVED_DESIGN_DIRECTION
+  authorization: PROJECT_OWNER_EXPLICIT
+  target: src/policy/contracts/index.json
+  selected_option: A_HIERARCHICAL_ENTRYPOINT
+  root_responsibility:
+    - DISCOVER_SUBINDEXES
+    - LINK_TO_SUBINDEXES
+  child_index_responsibility:
+    - OWN_ITS_INDIVIDUAL_CONTRACT_REGISTRATIONS
+    - OWN_CONTRACT_IDENTIFIER_TO_PATH_MAPPING
+  root_direct_contract_registration: NOT_SELECTED
+  index_grants_policy_approval_authority: false
+  field_names_and_requiredness: UNRESOLVED_USER_DECISION
+  input_contract: UNRESOLVED_USER_DECISION
+  output_contract: UNRESOLVED_USER_DECISION
+  lookup_protocol_and_error_behavior: UNRESOLVED_USER_DECISION
+  index_file_implementation: NOT_AUTHORIZED_YET
+  schemas_index_validation_design: DEFERRED_INDEPENDENT_DECISION
+  consumer_engine_automatic_lookup_design: DEFERRED_INDEPENDENT_DECISION
+  formal_policy_materialization: NOT_CLAIMED_BY_THIS_TEMPORARY_RECORD
+
 pending_tasks:
   - "Consumer 공통 계약의 필드·의미·필수 요구조건과 Family별 소유 경계를 별도로 결정"
   - "각 Root Family의 선택/필수 필드, 값 형식과 검증 책임을 개별 승인"
