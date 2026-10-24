@@ -41,6 +41,10 @@ Policy_Rules:
       - "에이전트 제어 구조의 모든 상세 구현이 완료되었다는 주장"
   Constraints:
     obligations:
+      - id: FLATTEN_POLICY_STATUS
+        condition: POLICY_STATUS_SERIALIZATION
+        rule: "Policy_Status의 최상위 필드는 Policy_Status_Schema_ver, status, contract로 관리한다. 기존 Schema/Policy_Status_version/version과 constant 그룹은 제거하고, status와 substatus의 상태 의미를 단일 status에 보존한다."
+        Rule_state: APPROVED.provisional
       - id: LIFECYCLE_CONTRACT_AUTHORITY
         condition: POLICY_STATUS_OR_VERSION_CHANGE
         rule: "정책 상태와 버전은 해당 항목을 소유하는 GOV 생명주기 계약 및 승인 조건에 따라 관리한다."

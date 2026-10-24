@@ -38,6 +38,10 @@ Policy_Rules:
       - "기술적 구현 승인만으로 정책 권위를 생성하는 행위"
   Constraints:
     obligations:
+      - id: SEPARATE_RULE_IDENTITY_CONTRACT
+        condition: RULE_CONTRACT_ID_ASSIGNMENT
+        rule: "Policy_Rules.Identity.contract_id는 Policy_Status.contract와 별도 식별 책임을 가지며 규칙의 안정적·버전 비포함 식별자를 사용한다. 규칙 버전은 Rule_ver가 소유하며, 식별자 생성·유일성 검증은 독립적으로 관리한다."
+        Rule_state: APPROVED.provisional
       - id: POLICY_ID_CONTRACT_OWNER
         condition: POLICY_IDENTITY_ASSIGNMENT
         rule: "정책 식별자와 제목은 각 항목을 소유하는 계약을 기준으로 결정하고 제목은 정책 문서에서 선언한 값을 사용한다."
