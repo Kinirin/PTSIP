@@ -100,6 +100,16 @@ root_index_lookup_connection_direction:
     - OWN_CONTRACT_IDENTIFIER_TO_PATH_MAPPING
   root_direct_contract_registration: NOT_SELECTED
   index_grants_policy_approval_authority: false
+  extensible_subindex_registration:
+    decision: USER_APPROVED_DIRECTION_ONLY
+    extensible_registry_structure: REQUIRED_DESIGN_PROPERTY
+    future_subindex_addition: PERMITTED_WITHOUT_REDESIGNING_ROOT_STRUCTURE
+    individual_subindex_requiredness: DEFER_UNTIL_AFTER_CONTRACT_CREATION
+    existing_subindexes_mandatory: NOT_DECIDED
+    newly_added_subindexes_mandatory: NOT_DECIDED
+    concrete_field_names_and_types: NOT_DECIDED
+    registration_constraints_and_resolver_behavior: NOT_DECIDED
+    schema_instance_creation_by_this_decision: NOT_AUTHORIZED
   field_names_and_requiredness: UNRESOLVED_USER_DECISION
   input_contract: UNRESOLVED_USER_DECISION
   output_contract: UNRESOLVED_USER_DECISION
