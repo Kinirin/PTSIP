@@ -11,7 +11,18 @@
         "Boundary",
         "Constraints",
         "Evaluation"
-      ]
+      ],
+      "properties": {
+        "Constraints": {
+          "type": "object",
+          "properties": {
+            "dependencies": {
+              "deprecated": true,
+              "description": "Discouraged for new Policy_Rules. Existing dependency declarations are preserved until a separate migration decision."
+            }
+          }
+        }
+      }
     },
     "RuleState": {
       "type": "string",
