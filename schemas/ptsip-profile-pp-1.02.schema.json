@@ -54,6 +54,11 @@
             "DISTRIBUTED_EXAMPLE"
           ],
           "description": "PROJECT is repository authority. DISTRIBUTED_EXAMPLE is non-authoritative and requires project-path materialization before use."
+        },
+        "rule_profile": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*\\.ptsip\\.yaml$",
+          "description": "Optional, repository-local non-authoritative rule record profile linked from the selected Project Profile."
         }
       },
       "additionalProperties": false
