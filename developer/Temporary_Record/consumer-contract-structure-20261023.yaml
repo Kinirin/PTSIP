@@ -100,6 +100,21 @@ root_index_lookup_connection_direction:
     - OWN_CONTRACT_IDENTIFIER_TO_PATH_MAPPING
   root_direct_contract_registration: NOT_SELECTED
   index_grants_policy_approval_authority: false
+  subindex_target_identity_verification:
+    decision: USER_APPROVED_DESIGN_DIRECTION
+    selected_option: B_TARGET_IDENTITY_VERIFICATION
+    verification_responsibility:
+      - RESOLVE_REGISTERED_SUBINDEX_TARGET
+      - COMPARE_REGISTERED_EXPECTED_TARGET_IDENTITY_WITH_ACTUAL_TARGET_IDENTITY
+    identity_verification_is_content_integrity_verification: false
+    content_hash_verification: NOT_SELECTED
+    concrete_field_names: UNRESOLVED_USER_DECISION
+    field_requiredness: UNRESOLVED_USER_DECISION
+    data_types_and_identity_format: UNRESOLVED_USER_DECISION
+    resolution_and_comparison_procedure: UNRESOLVED_USER_DECISION
+    missing_or_mismatched_target_behavior: UNRESOLVED_USER_DECISION
+    error_output_contract: UNRESOLVED_USER_DECISION
+    implementation: NOT_AUTHORIZED_YET
   extensible_subindex_registration:
     decision: USER_APPROVED_DIRECTION_ONLY
     extensible_registry_structure: REQUIRED_DESIGN_PROPERTY
