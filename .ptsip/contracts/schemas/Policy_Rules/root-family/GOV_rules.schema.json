@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:GOV_rules:v3",
+  "$id": "urn:ptsip:policy:GOV_rules:v4",
   "title": "GOV Policy_Rules in-policy document structure",
-  "$comment": "User-approved inline Policy_Rules structure. No physical YAML rule-contract split. Provisional candidate, version v2 archived.",
+  "$comment": "Inline GOV Policy_Rules. Obligation-level Rule_state; rule Identity redesign remains a separate user decision.",
   "$ref": "#/$defs/PolicyDocumentRules",
   "$defs": {
     "PolicyDocumentRules": {
@@ -25,8 +25,7 @@
               "required": [
                 "family",
                 "contract_id",
-                "version",
-                "Rule_state"
+                "version"
               ],
               "properties": {
                 "family": {
@@ -39,9 +38,6 @@
                 "version": {
                   "type": "string",
                   "minLength": 1
-                },
-                "Rule_state": {
-                  "const": "APPROVED.provisional"
                 }
               },
               "additionalProperties": true
@@ -100,7 +96,8 @@
                     "required": [
                       "id",
                       "condition",
-                      "rule"
+                      "rule",
+                      "Rule_state"
                     ],
                     "properties": {
                       "id": {
@@ -114,6 +111,9 @@
                       "rule": {
                         "type": "string",
                         "minLength": 1
+                      },
+                      "Rule_state": {
+                        "$ref": "urn:ptsip:policy:Public_Structure_Rules:v1#/$defs/RuleState"
                       }
                     },
                     "additionalProperties": true

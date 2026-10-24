@@ -12,6 +12,22 @@
         "Constraints",
         "Evaluation"
       ]
+    },
+    "RuleState": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ObligationState": {
+      "type": "object",
+      "required": [
+        "Rule_state"
+      ],
+      "properties": {
+        "Rule_state": {
+          "$ref": "#/$defs/RuleState"
+        }
+      },
+      "additionalProperties": true
     }
   }
 }

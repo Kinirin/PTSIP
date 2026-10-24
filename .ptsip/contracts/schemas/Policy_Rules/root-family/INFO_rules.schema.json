@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:INFO_rules:v2",
+  "$id": "urn:ptsip:policy:INFO_rules:v3",
   "$defs": {
     "IndependentRuleContract": {
       "allOf": [
@@ -61,7 +61,12 @@
             "Constraints": {
               "type": "object",
               "properties": {
-                "obligations": {},
+                "obligations": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "urn:ptsip:policy:Public_Structure_Rules:v1#/$defs/ObligationState"
+                  }
+                },
                 "prohibitions": {},
                 "preconditions": {},
                 "dependencies": {}
