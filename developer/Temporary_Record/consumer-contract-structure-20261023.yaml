@@ -116,12 +116,21 @@ root_index_lookup_connection_direction:
       withdrawn_option: C_CONSUMER_STRUCTURED_IDENTIFIER
       withdrawn_option_status: WITHDRAWN_BY_PROJECT_OWNER
       identifier_pattern_constraints: UNRESOLVED_USER_DECISION
-      field_names_and_requiredness: UNRESOLVED_USER_DECISION
+      approved_registration_field_names: [index_id, path]
+      registration_field_requiredness: UNRESOLVED_USER_DECISION
       comparison_procedure_and_errors: UNRESOLVED_USER_DECISION
       implementation: NOT_AUTHORIZED_YET
-    concrete_field_names: UNRESOLVED_USER_DECISION
+    concrete_field_names:
+      index_id: EXPECTED_CHILD_INDEX_DOLLAR_ID
+      path: CHILD_INDEX_LOCATION
+    field_value_types:
+      index_id: string
+      path: string
+    approved_example:
+      index_id: urn:consumer:ptsip:contracts:schemas:index:v1
+      path: schemas/index.json
     field_requiredness: UNRESOLVED_USER_DECISION
-    data_types_and_identity_constraints: UNRESOLVED_USER_DECISION
+    identifier_pattern_and_path_constraints: UNRESOLVED_USER_DECISION
     resolution_and_comparison_procedure: UNRESOLVED_USER_DECISION
     missing_or_mismatched_target_behavior: UNRESOLVED_USER_DECISION
     error_output_contract: UNRESOLVED_USER_DECISION
@@ -133,7 +142,10 @@ root_index_lookup_connection_direction:
     individual_subindex_requiredness: DEFER_UNTIL_AFTER_CONTRACT_CREATION
     existing_subindexes_mandatory: NOT_DECIDED
     newly_added_subindexes_mandatory: NOT_DECIDED
-    concrete_field_names_and_types: NOT_DECIDED
+    registration_item_field_names_and_types:
+      index_id: string
+      path: string
+    registration_container_name_and_type: NOT_DECIDED
     registration_constraints_and_resolver_behavior: NOT_DECIDED
     schema_instance_creation_by_this_decision: NOT_AUTHORIZED
   field_names_and_requiredness: UNRESOLVED_USER_DECISION
