@@ -12,8 +12,7 @@ Policy_Status:
     substatus: provisional
     contract: urn:ptsip:contract:policy:gov:approved-source:responsibilities
 Authority:
-  authority_Identity:
-    authority_id: MPD-GOV-0004
+  authority_id: MPD-GOV-0004
   Authority_Category:
     Authority_Major_Category:
       major: responsibilities
@@ -24,7 +23,6 @@ Policy_Rules:
     family: GOV
     contract_id: "urn:ptsip:policy:rule:gov:approved-source-responsibilities:v1"
     version: "1"
-    Rule_state: APPROVED.provisional
   Definition:
     meaning: "GOV는 개발 결정권과 위임 범위의 정당성 및 정책 등록·생명주기 상태·개발 작업 승인의 출처와 적용 범위가 적법한지를 판단하고, 공식 README 원본과 번역 활성화의 기준을 규정한다."
     rationale: "작업 목표·기술 설계·실행 가능성·검증 성공은 결정권 또는 정책 승인을 대신 증명하지 못하며, README 번역 활성화와 파일명은 각각 등록부 및 문서 계약을 기준으로 한다."
@@ -43,21 +41,27 @@ Policy_Rules:
       - id: GOV_DECISION_MANDATE
         condition: DEVELOPMENT_DECISION
         rule: "개발 과정의 결정에는 결정을 내릴 권한 주체와 권한의 적용 범위를 명확히 정의한다."
+        Rule_state: APPROVED.provisional
       - id: GOV_APPROVAL_SOURCE_SCOPE
         condition: POLICY_REGISTRATION_LIFECYCLE_OR_WORK_APPROVAL
         rule: "정책 등록, 정책 생명주기 상태 및 개발 작업 승인에 대해 승인 출처와 적용 대상 범위가 적법한지 판단한다."
+        Rule_state: APPROVED.provisional
       - id: README_CANONICAL_SOURCE
         condition: README_CONTENT_AUTHORITY
         rule: "PTSIP 공식 README의 콘텐츠 원본은 저장소 최상위의 영어 README.md이다."
+        Rule_state: APPROVED.provisional
       - id: README_TRANSLATION_ACTIVATION
         condition: TRANSLATION_ACTIVATION
         rule: "활성 번역 언어 집합은 docs/translated/index.yaml에 기록된 번역 등록 정보에 따라 결정한다."
+        Rule_state: APPROVED.provisional
       - id: TRANSLATION_REGISTRY_CONTRACT
         condition: TRANSLATION_REGISTRY_VALIDATION
         rule: "docs/translated/index.yaml의 계약은 .ptsip/contracts/docs/에 명시한다."
+        Rule_state: APPROVED.provisional
       - id: TRANSLATION_FILENAME_CONTRACT
         condition: TRANSLATION_FILE_NAMING
         rule: "번역 파일명은 .ptsip/contracts/docs/에 명시된 해당 계약을 따른다."
+        Rule_state: APPROVED.provisional
     prohibitions:
       - id: OTHER_FAMILY_CANNOT_REPLACE_GOV_AUTHORITY
         operation: "다른 책임 영역이 GOV의 결정 권한을 대신 정의하는 행위"

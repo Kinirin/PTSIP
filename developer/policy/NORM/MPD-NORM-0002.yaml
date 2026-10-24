@@ -12,8 +12,7 @@ Policy_Status:
     substatus: provisional
     contract: urn:ptsip:contract:policy:norm:rule-structure:provisional
 Authority:
-  authority_Identity:
-    authority_id: MPD-NORM-0002
+  authority_id: MPD-NORM-0002
   Authority_Category:
     Authority_Major_Category:
       major: NORM
@@ -21,7 +20,7 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:NORM_rules:v2
+  candidate_schema_id: urn:ptsip:policy:NORM_rules:v3
   candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/NORM_rules.schema.json
   candidate_scope: "규범 의미"
   semantic_rework_required: true

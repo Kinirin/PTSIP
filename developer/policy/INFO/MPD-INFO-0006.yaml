@@ -12,8 +12,7 @@ Policy_Status:
     substatus: provisional
     contract: urn:ptsip:contract:policy:info:rule-structure:provisional
 Authority:
-  authority_Identity:
-    authority_id: MPD-INFO-0006
+  authority_id: MPD-INFO-0006
   Authority_Category:
     Authority_Major_Category:
       major: INFO
@@ -21,7 +20,7 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:INFO_rules:v2
+  candidate_schema_id: urn:ptsip:policy:INFO_rules:v3
   candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/INFO_rules.schema.json
   candidate_scope: "정보 의미"
   semantic_rework_required: true

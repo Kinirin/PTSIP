@@ -12,8 +12,7 @@ Policy_Status:
     substatus: provisional
     contract: urn:ptsip:contract:policy:gov:responsibility:orchestration
 Authority:
-  authority_Identity:
-    authority_id: MPD-GOV-0001
+  authority_id: MPD-GOV-0001
   Authority_Category:
     Authority_Major_Category:
       major: responsibilities
@@ -24,7 +23,6 @@ Policy_Rules:
     family: GOV
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration:v1"
     version: "1"
-    Rule_state: APPROVED.provisional
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -47,21 +45,27 @@ Policy_Rules:
       - id: GOV_FAMILY_RESPONSIBILITY
         condition: GOV_POLICY_SCOPE
         rule: "GOV는 개발 정책, 개발 작업 및 개발 통제 영역에서 결정과 승인에 관한 정당성을 관리한다."
+        Rule_state: APPROVED.provisional
       - id: GOV_DECISION_LEGITIMACY
         condition: DEVELOPMENT_DECISION_OR_APPROVAL
         rule: "결정의 정당성은 결정 대상, 권한 소유자, 위임 범위 및 승인 주체에 따라 판단한다."
+        Rule_state: APPROVED.provisional
       - id: GOV_DELEGATION_POLICY_0004
         condition: DECISION_MANDATE_OR_README_GOVERNANCE
         rule: "개발 결정권·위임·승인 정당성과 README 관리의 구체적인 규칙은 MPD-GOV-0004가 소유한다."
+        Rule_state: APPROVED.provisional
       - id: GOV_DELEGATION_POLICY_0005
         condition: POLICY_IDENTIFICATION_AND_REGISTRATION
         rule: "정책 식별자·제목·등록 무결성·식별 문제 대응의 구체적인 규칙은 MPD-GOV-0005가 소유한다."
+        Rule_state: APPROVED.provisional
       - id: GOV_DELEGATION_POLICY_0006
         condition: POLICY_LIFECYCLE_AND_GOVERNANCE_PROVENANCE
         rule: "정책 상태·버전 관리, 변경 승인 조건, 코딩 에이전트 기계적 판단 및 거버넌스 출처의 구체적인 규칙은 MPD-GOV-0006이 소유한다."
+        Rule_state: APPROVED.provisional
       - id: GOV_CONTRACT_OWNERSHIP
         condition: POLICY_IDENTITY_STATUS_VERSION_OR_TITLE
         rule: "정책 식별자, 제목, 상태 및 버전은 각 항목을 소유하는 계약을 기준으로 관리하며 세부 적용은 해당 GOV 정책에 위임한다."
+        Rule_state: APPROVED.provisional
     prohibitions:
       - id: INTENT_ARCH_CANNOT_CREATE_GOV_MANDATE
         operation: "INTENT의 작업 목표나 ARCH의 기술 설계를 근거로 GOV의 위임 권한을 자동 생성하는 행위"

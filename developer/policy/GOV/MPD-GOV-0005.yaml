@@ -12,8 +12,7 @@ Policy_Status:
     substatus: provisional
     contract: urn:ptsip:contract:policy:gov:identity:integrity
 Authority:
-  authority_Identity:
-    authority_id: MPD-GOV-0005
+  authority_id: MPD-GOV-0005
   Authority_Category:
     Authority_Major_Category:
       major: responsibilities
@@ -24,7 +23,6 @@ Policy_Rules:
     family: GOV
     contract_id: "urn:ptsip:policy:rule:gov:policy-identification:v1"
     version: "1"
-    Rule_state: APPROVED.provisional
   Definition:
     meaning: "GOV의 정책 식별 원본은 정책 문서가 소유한다. 식별 인덱스는 정책 문서와 승인된 계약에서 자동 생성하는 비권위 조회 결과이다."
     rationale: "식별자나 상태를 에이전트의 추측으로 결정하지 않고 승인·검증된 결과를 재사용한다."
@@ -44,24 +42,31 @@ Policy_Rules:
       - id: POLICY_ID_CONTRACT_OWNER
         condition: POLICY_IDENTITY_ASSIGNMENT
         rule: "정책 식별자와 제목은 각 항목을 소유하는 계약을 기준으로 결정하고 제목은 정책 문서에서 선언한 값을 사용한다."
+        Rule_state: APPROVED.provisional
       - id: POLICY_ID_DERIVED_INDEX_CONSISTENCY
         condition: POLICY_DISCOVERY_OR_IDENTITY_VALIDATION
         rule: "승인된 계약으로 정책 문서를 탐색·검증하고 자동 생성된 인덱스의 식별자·경로·상태가 원본과 정확히 일치하는지 확인한다."
+        Rule_state: APPROVED.provisional
       - id: APPROVAL_PROVENANCE_SCOPE
         condition: POLICY_IDENTITY_OR_STATUS_APPROVAL_EVIDENCE
         rule: "승인 근거에는 승인 대상, 목표 상태와 정책 내용 검토 범위를 명시한다."
+        Rule_state: APPROVED.provisional
       - id: FAIL_CLOSED_ON_INTEGRITY_FAULT
         condition: ID_COLLISION_OR_CATALOG_MISMATCH_OR_INVALID_PROVENANCE
         rule: "식별자 충돌, 정책 문서와 파생 인덱스 불일치, 승인 근거 누락 또는 무효한 승인 근거가 발생하면 해당 처리를 실패로 판정한다."
+        Rule_state: APPROVED.provisional
       - id: MACHINE_CONTRACT_FIRST
         condition: INCOMPLETE_IDENTITY_INFORMATION
         rule: "정보가 부족하면 먼저 기계 계약에 정의된 해결 결과를 사용한다."
+        Rule_state: APPROVED.provisional
       - id: BOUNDED_NON_AUTHORITY_DEFAULT
         condition: MISSING_DETERMINISTIC_RESULT
         rule: "정당한 권위를 새로 생성하거나 변경하지 않는 범위에서만 제한적인 합리적 기본값을 사용할 수 있다."
+        Rule_state: APPROVED.provisional
       - id: PERSIST_VERIFIED_RESOLUTION
         condition: REPEATED_IDENTITY_DECISION
         rule: "검증된 해결 결과는 기계가 재사용할 수 있는 계약 또는 바인딩으로 보존하고 동일한 현재 문제의 반복 추론을 방지한다."
+        Rule_state: APPROVED.provisional
     prohibitions:
       - id: NO_VISUAL_ID_GUESS
         operation: "정책 외형이나 의미를 보고 다음 정책 식별자를 추측하여 결정하는 행위"

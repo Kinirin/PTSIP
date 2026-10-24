@@ -12,8 +12,7 @@ Policy_Status:
     substatus: provisional
     contract: urn:ptsip:contract:policy:real:rule-structure:provisional
 Authority:
-  authority_Identity:
-    authority_id: MPD-REAL-0007
+  authority_id: MPD-REAL-0007
   Authority_Category:
     Authority_Major_Category:
       major: REAL
@@ -21,7 +20,7 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:REAL_rules:v2
+  candidate_schema_id: urn:ptsip:policy:REAL_rules:v3
   candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/REAL_rules.schema.json
   candidate_scope: "구현 연결"
   semantic_rework_required: true

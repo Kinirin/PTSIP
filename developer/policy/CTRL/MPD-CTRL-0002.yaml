@@ -12,8 +12,7 @@ Policy_Status:
     substatus: provisional
     contract: urn:ptsip:contract:policy:ctrl:rule-structure:provisional
 Authority:
-  authority_Identity:
-    authority_id: MPD-CTRL-0002
+  authority_id: MPD-CTRL-0002
   Authority_Category:
     Authority_Major_Category:
       major: CTRL
@@ -21,7 +20,7 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:CTRL_rules:v2
+  candidate_schema_id: urn:ptsip:policy:CTRL_rules:v3
   candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/CTRL_rules.schema.json
   candidate_scope: "실행 통제"
   semantic_rework_required: true
