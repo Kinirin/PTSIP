@@ -13,22 +13,32 @@
 
 > **목적은 재사용합니다.** 책임이 존재하고 수명주기가 코드를 공유하기 전에 그것을 소유하는 것을 결정합니다.
 
-<!-- ptsip-readme-i18n: 2326fa36ed3b50d8502638bc070c7a1166c6a7b36fa1b48e83ca40212d5f30d0 -->
+<!-- ptsip-readme-i18n: c65bc30eaa46bc4ea9a3206cf9c80db560cd4a599d53f2b2bfad9c8534c54781 -->
 
-## 구성요소 버전
+## 게시 및 구성 요소 버전
 
-<!-- ptsip-readme-i18n: c367e12d1b55e1c2e875b6380530816503c574f885f8c2d962f2c2a8e11bb4a5 -->
+<!-- ptsip-readme-i18n: 50c8b1faccea063561e51c1b0cdb3f54045632f1a07e5a53bb55ce44800adbd0 -->
 
-| 식별자 | 소스 트리 값 |
+더 보기 **관련 기사 PTSIP 베타는 `0.3.8b5`** (10월 18, 2026). 이 PyPI 배포는 도구, 프로젝트 프로필 및 모든 7 개의 등록된 네이티브 엔진을 하나의 완전한 패키지로 설치합니다.
+
+<!-- ptsip-readme-i18n: 748fdeb33f36f848637e178395de9e0f02e69e1662349c17231e3e2e997ec120 -->
+
+| 이름 * | 이름 * `PTSIP==0.3.8b5` |
 | --- | --- |
-| PTSIP_Package | `0.3.8.<SHA6>` — 게시 완료 후 결정되는 구성 식별자 |
-| PTSIP_Tool | `0.3.8b1` |
-| Project Profile | `pp.1.02` |
-| Engine | Context/Projection `0.2.0`; Storage/Validation/Discovery/Planning/Execution `0.3.0` |
+| PTSIP Package 구성 | `0.3.8.adee8b` |
+| PTSIP 도구 | `T.0.3.8.b5` |
+| 사업영역 | `pp.1.02` |
+| Context / 프로젝션 엔진 | `0.2.1` |
+| Storage / Discovery / 계획 / 실행 엔진 | `0.3.1` |
+| 검증 엔진 | `0.3.3` (자본계약) `4.0.0`) |
 
-<!-- ptsip-readme-i18n: 1b5e6c193ce4a49f1fb453b3c05c9006e0f7431f820a9e86f038656d72da9768 -->
+<!-- ptsip-readme-i18n: 2b0968ee1595bdfe7f394538df6f0706f9beb719ed88183c4a3808524cc1d826 -->
 
-Package 구성, Tool, 각 엔진과 Project Profile은 독립적인 버전을 유지합니다. 변경 불가능한 Specification 바인딩은 canonical 구성과 shipping manifest에 기록됩니다. [Tool `0.3.8b1` 변경 내용](../releasenote/tool/0.3.8b1.md), [Tool 릴리스 이력](../releasenote/tool/README.md), [릴리스 workflow](../../.github/workflows/tooling-release.yml)를 참조하세요. 릴리스 검증은 `.github/test_modes.yaml`의 모드로 선택하여 `tooling-test.yml`에서만 수행하고, `tooling-release.yml`은 정확한 source의 검증 증거를 소비하여 게시합니다. 실제 게시 상태와 정확한 Package 구성은 버전별 릴리스 산출물에 기록됩니다.
+**출판 artifact versus 개발 소스:** 이름 * `pyproject.toml` 으로 `main` 아직도 별도의 설명 `0.3.8.1b1` 소스 구성 / 도구 `T.0.3.8.b1`. 그것은 **아니다.** 출판된 b5 artifacts를 정의합니다. `dev/0.3.8b2`. 이 README는 개발 소스 버전을 변경하지 않고 게시 된 릴리스를보고 또는 모든 패키지를 재구성합니다.
+
+<!-- ptsip-readme-i18n: ec82fbe270a8842dd355c0e6b251efd402e87b0f987cbecf2c046eb7ea02701d -->
+
+패키지 구성, 도구, 각 엔진 및 프로젝트 프로필은 독립적 인 식별을 유지합니다. 이름 * [b5 패키지 릴리스 노트](../releasenote/PTSIP_Package/0.3.8.adee8b.md), [b5 공구 방출 주](../releasenote/tool/T.0.3.8.b5.md), [GitHub 릴리스](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b) · [Tool 출시](../releasenote/tool/README.md). 릴리스 검증 및 출판은 기존에 의해 지배된다 [공지사항](../../.github/workflows/tooling-release.yml); 문서 업데이트는 새로운 출판 증거를 구성하지 않습니다.
 
 <!-- ptsip-readme-i18n: 9535b10be9abb7a87788c3f5107c21822734a4507aeb464f8710fb8c4866b965 -->
 
@@ -38,27 +48,22 @@ Package 구성, Tool, 각 엔진과 Project Profile은 독립적인 버전을 �
 
 Python을 요구합니다 **3.11 또는 더 새로운**. 이 명령은 PowerShell을 사용합니다. 기본 CLI 명령은 다른 쉘에서도 작동합니다.
 
-<!-- ptsip-readme-i18n: 450fa203dde1e07be1879bb3d82689ac61853f7ac8979364b94e3a59128d711f -->
+<!-- ptsip-readme-i18n: f6867d259a9a4c78e4cf7a0c6209334151d36f44228abf841879e2d6f3366100 -->
 
-최근 일반적으로 선택한 출판 된 릴리스를 설치 한 다음 identities를 검사하십시오.
+설치하기 **관련 기사 `0.3.8b5` prerelease 명시적으로** (Unpinned pip 명령은 안정되어 있는 방출을 선호할 수 있습니다):
 
-<!-- ptsip-readme-i18n: fcde07b23764806188c438e5686eb83d8f1f878cd522fe314c066d3b7e847990 -->
+<!-- ptsip-readme-i18n: 713b36be44d0c9f0c644fd5b543e506ae9efd6099a6f91b4c7a9f8947c9265a4 -->
 
 ```powershell
-python -m pip install --upgrade PTSIP
+python -m pip install --upgrade "PTSIP==0.3.8b5"
 ptsip --version
 ptsip spec
+python -m pip show PTSIP
 ```
 
-<!-- ptsip-readme-i18n: 7278b556e430da33c3958ee8d688408d287478586bf3973deaf94104540f5438 -->
+<!-- ptsip-readme-i18n: 57ee689732c1ffba396e724ea9574cc731874a233e52e9f125639ffab4674cc1 -->
 
-Tool `0.3.8b1`을 명시하여 설치하려면 다음 명령을 사용합니다. 일반적인 pip 버전 선택은 안정 버전을 선택할 수 있습니다:
-
-<!-- ptsip-readme-i18n: 0a66fc01621beb4beec85223a0b244e94545e97f2afabfd5688c003c11b92223 -->
-
-```powershell
-python -m pip install "PTSIP==0.3.8b1"
-```
+일반적으로 선택한 안정적인 출시를 위해, 사용 `python -m pip install --upgrade PTSIP`. 위에 핀 명령은 당신이 특히 b5를 원할 때 요구됩니다; `pip show` 설치된 PyPI 버전을 보고, 도구 및 엔진 식별자는 독립적으로 유지됩니다.
 
 <!-- ptsip-readme-i18n: eeb5b10629d40c38fe851ec3b201220313d0abdf230abe498265d788fcc7c847 -->
 
@@ -394,9 +399,9 @@ GitHub 좌표 결정 권한 사용 `refs/heads/ptsip-policy` **설정하기**. �
 | 계정 관리 | bounded caller-admitted 요청 및 기록 효과/스톱 |
 | 사업소개 | Render validated Context에 선언된 출력 형식 |
 
-<!-- ptsip-readme-i18n: 6dc4d46672b3abaaceb9d21357db2f73b6d76fe881227467c0b3823e6b76d4bc -->
+<!-- ptsip-readme-i18n: 6a0f00e4bc597018fed6d2a63011ec92397e44407b7ae0c4ede3d49412ce62f7 -->
 
-`0.3.8a5` Linux, Windows 및 macOS의 기본 기반을 검증합니다. **없음** implicitly 보조 소비자 생산 임명, 권위 입원, 활성화, 또는 versioned cutover. 파이썬 휠은 중립 엔진 계약 데이터를 운반합니다. **아니다.** Rust 소스, native binaries 또는 build 출력. 기존 소비자 API는 사용할 수 있습니다. [공지사항](../releasenote/tool/0.3.8a5.md).
+`0.3.8a5` Linux, Windows 및 macOS의 기본 기반을 검증합니다. **없음** implicitly 보조 소비자 생산 임명, 권위 입원, 활성화, 또는 versioned cutover. 오래된 a5 파이썬 휠은 중립 엔진 계약 데이터를 운반합니다. **아니다.** Rust 소스, native binaries 또는 build 출력. 별도로 출판 **사이트맵** Windows/리눅스 휠에는 모든 7개의 네이티브 엔진이 포함되어 있습니다. [b5 릴리스 기록](../releasenote/PTSIP_Package/0.3.8.adee8b.md). 기존 소비자 API는 사용할 수 있습니다. a5 범위는 문서화되어 있습니다. [관련 기사](../releasenote/tool/0.3.8a5.md).
 
 <!-- ptsip-readme-i18n: 16237957bf45b9495cd88af15fbc6968d93cb312c35004ad238924423610e07e -->
 
@@ -455,12 +460,13 @@ PREPARE 및 PUBLISH는 독립적으로, 정확한 자원 검증 단계 [`.github
 
 ## 노트 및 배경
 
-<!-- ptsip-readme-i18n: 9b64e2d1fe992d064953141ce8b6ea96db3c9384a48531559512ac6cbc876218 -->
+<!-- ptsip-readme-i18n: a49fcb30463c21a3fcc301bcedbd8a1eb29397611c6e314ac45e12792c96fd31 -->
 
-- [현재 위치 `0.3.8a5` 공지사항](../releasenote/tool/0.3.8a5.md): 현재 승인, 등록 확인 적용 및 7 엔진 기반; **간행물**.
-- [이름 * `0.3.8a4` 기본 정보](../releasenote/tool/0.3.8a4.md): Go-native 개발자 자동화, 프로젝트 프로필 및 릴리스 검증.
-- [역사 도구 노트](../releasenote/tool/README.md): 이전 릴리스, namespace 및 Context Plane 마이그레이션.
-- [Specification/Project Profile/Tool 릴리즈 레코드](../releasenote/README.md): 독립적으로 versioned Lifecycle 역사.
+- [이름 * `0.3.8b5` 제품 정보](../releasenote/PTSIP_Package/0.3.8.adee8b.md): 구성 `0.3.8.adee8b`, 공구 `T.0.3.8.b5`, 단면도 `pp.1.02` 그리고 7개의 엔진.
+- [제품 정보 `T.0.3.8.b5` 기타](../releasenote/tool/T.0.3.8.b5.md): 검증 `0.3.3` / 기능 `4.0.0`, 반복 `$ref` · `$dynamicRef` 지원.
+- [게시 b5 GitHub 릴리스](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b): 원본 출판물 및 artifact 기록.
+- [역사 도구 노트](../releasenote/tool/README.md): 이전 릴리스 및 소스 전용 후보.
+- [포장, 명세 및 프로젝트 단면도 방출 기록](../releasenote/README.md): 독립적 인 버전의 역사.
 
 <!-- ptsip-readme-i18n: e0775e6d76d74833cd954ea3f8f1e7e939f92246af5b0f1c2c3e92d4d041620d -->
 
