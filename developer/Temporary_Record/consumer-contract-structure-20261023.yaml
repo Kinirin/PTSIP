@@ -99,6 +99,20 @@ root_index_lookup_connection_direction:
   authorization: PROJECT_OWNER_EXPLICIT
   target: src/policy/contracts/index.json
   selected_option: A_HIERARCHICAL_ENTRYPOINT
+  approved_scope_boundary:
+    decision: USER_CONFIRMED_SCOPE_BOUNDARY
+    authorization: PROJECT_OWNER_EXPLICIT
+    consumer_policy_ownership_scope: "src/policy/**"
+    index_role: CONSUMER_CONTRACT_SUBINDEX_DISCOVERY_AND_LINKING_ENTRYPOINT
+    eligible_registered_target: CONSUMER_CONTRACT_SUBINDEX
+    target_scope_not_equivalent_to_contract_definition_location: true
+    consumer_contract_definition_location: src/policy/contracts/
+    root_direct_policy_registration: FORBIDDEN
+    developer_contract_registration_or_management: FORBIDDEN
+    developer_policy_index_registration_or_management: FORBIDDEN
+    index_registration_does_not_grant_policy_authority: true
+    registration_field_names_and_id_review: PENDING_INDEPENDENT_RECHECK
+    implementation: NOT_AUTHORIZED_YET
   root_responsibility:
     - DISCOVER_SUBINDEXES
     - LINK_TO_SUBINDEXES
