@@ -224,6 +224,13 @@ def resolve_operation(operation_id: str) -> dict[str, object]:
     }
 
 
+def resolve_project_rule(repository_root: str, rule_id: str) -> dict[str, Any]:
+    """Resolve one exact project-linked rule record; never infer authority."""
+    from ptsip.profiles.rule_records import resolve_rule_record
+
+    return resolve_rule_record(repository_root, rule_id)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Resolve one bounded PTSIP Agent Contract operation graph.")
     parser.add_argument("operation_id")

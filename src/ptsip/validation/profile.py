@@ -480,6 +480,21 @@ def validate_profile(repository_root: str | Path, explicit: str | Path | None = 
         errors.extend(specification_binding_errors(payload, details=details))
         errors.extend(_source_responsibility_map_errors(payload))
 
+    if not errors:
+        from ..profiles.rule_records import RuleProfileError, load_rule_records
+
+        try:
+            records = load_rule_records(repository_root, main_payload=payload)
+            if isinstance(payload.get("ptsip"), dict) and payload["ptsip"].get("rule_profile"):
+                details["rule_profile"] = {
+                    "resource": payload["ptsip"]["rule_profile"],
+                    "record_count": len(records),
+                    "normative_authority": False,
+                    "execution_authorized": False,
+                }
+        except RuleProfileError as exc:
+            errors.append(f"ptsip.rule_profile: {exc}")
+
     resolved = None
     if not errors:
         try:
