@@ -73,7 +73,14 @@ func TestEveryFamilyRequiresObligationLevelRuleState(t *testing.T) {
                contractObject(t,identity,"properties")["Rule_state"] != nil {
                 t.Fatal("GOV Identity incorrectly owns Rule_state")
             }
-            if schema["$id"]!="urn:ptsip:policy:GOV_rules:v4" {t.Fatal("GOV rule contract version not migrated")}
+            if schema["$id"]!="urn:ptsip:policy:GOV_rules:v5" {t.Fatal("GOV rule contract version not migrated")}
+            if containsString(contractArray(t,identity,"required"),"family") || containsString(contractArray(t,identity,"required"),"version") ||
+                !containsString(contractArray(t,identity,"required"),"Rule_ver") ||
+                contractObject(t,identity,"properties")["family"] != nil ||
+                contractObject(t,identity,"properties")["version"] != nil {
+                t.Fatal("GOV Rule Identity retains duplicate fields or is missing Rule_ver")
+            }
+
         } else {
             doc := contractObject(t,schemaDefs,"IndependentRuleContract")
             group = contractArray(t,doc,"allOf")[1].(map[string]any)
@@ -117,6 +124,9 @@ func TestCurrentRootFamilyPolicyFields(t *testing.T) {
                 t.Errorf("%s: noncanonical Authority identifier",file.Name())
             }
             if family=="GOV" {
+                if strings.Contains(source,"    family: GOV\n") || strings.Contains(source,"    version: \"1\"\n") || !strings.Contains(source,"    Rule_ver: \"1\"\n") {
+                    t.Errorf("%s: duplicate Rule Identity metadata",file.Name())
+                }
                 if regexp.MustCompile(`(?m)^    Rule_state: `).MatchString(source) {t.Errorf("%s: legacy Identity.Rule_state",file.Name())}
                 begin:=strings.Index(source,"    obligations:\n")
                 end:=strings.Index(source,"    prohibitions:\n")
