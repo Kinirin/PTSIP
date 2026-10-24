@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:GOV_rules:v4",
+  "$id": "urn:ptsip:policy:GOV_rules:v5",
   "title": "GOV Policy_Rules in-policy document structure",
-  "$comment": "Inline GOV Policy_Rules. Obligation-level Rule_state; rule Identity redesign remains a separate user decision.",
+  "$comment": "Inline GOV Policy_Rules: Identity uses contract_id and Rule_ver, with document Family inherited from Policy_Identity. Multiple-rule container and rule-ID generator await separate policy decisions.",
   "$ref": "#/$defs/PolicyDocumentRules",
   "$defs": {
     "PolicyDocumentRules": {
@@ -23,24 +23,20 @@
             "Identity": {
               "type": "object",
               "required": [
-                "family",
                 "contract_id",
-                "version"
+                "Rule_ver"
               ],
               "properties": {
-                "family": {
-                  "const": "GOV"
-                },
                 "contract_id": {
                   "type": "string",
                   "minLength": 1
                 },
-                "version": {
+                "Rule_ver": {
                   "type": "string",
                   "minLength": 1
                 }
               },
-              "additionalProperties": true
+              "additionalProperties": false
             },
             "Definition": {
               "type": "object",

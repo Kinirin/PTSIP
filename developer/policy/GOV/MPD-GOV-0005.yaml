@@ -20,9 +20,8 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   Identity:
-    family: GOV
     contract_id: "urn:ptsip:policy:rule:gov:policy-identification:v1"
-    version: "1"
+    Rule_ver: "1"
   Definition:
     meaning: "GOV의 정책 식별 원본은 정책 문서가 소유한다. 식별 인덱스는 정책 문서와 승인된 계약에서 자동 생성하는 비권위 조회 결과이다."
     rationale: "식별자나 상태를 에이전트의 추측으로 결정하지 않고 승인·검증된 결과를 재사용한다."

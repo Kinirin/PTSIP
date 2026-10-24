@@ -20,9 +20,8 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   Identity:
-    family: GOV
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority:v1"
-    version: "1"
+    Rule_ver: "1"
   Definition:
     meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."

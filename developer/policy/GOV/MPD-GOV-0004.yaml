@@ -20,9 +20,8 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   Identity:
-    family: GOV
     contract_id: "urn:ptsip:policy:rule:gov:approved-source-responsibilities:v1"
-    version: "1"
+    Rule_ver: "1"
   Definition:
     meaning: "GOV는 개발 결정권과 위임 범위의 정당성 및 정책 등록·생명주기 상태·개발 작업 승인의 출처와 적용 범위가 적법한지를 판단하고, 공식 README 원본과 번역 활성화의 기준을 규정한다."
     rationale: "작업 목표·기술 설계·실행 가능성·검증 성공은 결정권 또는 정책 승인을 대신 증명하지 못하며, README 번역 활성화와 파일명은 각각 등록부 및 문서 계약을 기준으로 한다."
