@@ -15,6 +15,10 @@ func VerifyPackageJoin(root string, s release.Selection, input, platform string)
 	if err != nil {
 		return receipt, err
 	}
+	// Match the b5 release test toolchain; neither operation publishes assets.
+	if err := command(root, nil, "python", "-m", "pip", "install", "build>=1.2,<2", "twine>=6,<8"); err != nil {
+		return receipt, err
+	}
 	dir, err := os.MkdirTemp("", "ptsip-complete-pip-consumer-")
 	if err != nil {
 		return receipt, err
