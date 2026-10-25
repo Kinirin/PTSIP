@@ -75,7 +75,7 @@ func fixture(t *testing.T, target string) (string, Options) {
 	}
 	return root, Options{Kind: "context", Target: target, Binary: binary, Output: filepath.Join(root, "wheelhouse"), SourceSHA: strings.TrimSpace(string(source))}
 }
-func TestIndependentWheelForEveryDeclaredPlatform(t *testing.T) {
+func TestNativeComponentArtifactForEveryDeclaredPlatform(t *testing.T) {
 	for target := range hosts {
 		t.Run(target, func(t *testing.T) {
 			root, opts := fixture(t, target)
@@ -119,7 +119,7 @@ func TestIndependentWheelForEveryDeclaredPlatform(t *testing.T) {
 				t.Fatal(err)
 			}
 			if len(rows) != len(names) || scripts != 1 {
-				t.Fatal("independent artifact membership mismatch")
+				t.Fatal("native component archive membership mismatch")
 			}
 			for _, row := range rows {
 				if !names[row[0]] {
