@@ -143,3 +143,34 @@ def test_rbac_central_registry_draft_schema_is_packaged_and_non_authoritative() 
         {"schema_version": "sample", "entries": [{"id": "B-1", "kind": "BINDING"}]},
     ]:
         assert not validator.is_valid(invalid)
+
+
+def test_pp200_candidate_schema_declares_rbac_opt_in_without_activation() -> None:
+    from jsonschema import Draft202012Validator
+
+    root = Path(__file__).resolve().parents[4]
+    name = "ptsip-profile-pp-2.00.candidate.schema.json"
+    canonical = json.loads((root / "schemas" / name).read_text(encoding="utf-8"))
+    embedded = json.loads(files("ptsip").joinpath("specdata", name).read_text(encoding="utf-8"))
+    assert canonical == embedded
+    Draft202012Validator.check_schema(canonical)
+    assert "DRAFT_NON_NORMATIVE" in canonical["$comment"]
+    assert canonical["properties"]["ptsip"]["properties"]["version"]["const"] == "pp.2.00"
+    assert "rbac" in canonical["required"]
+
+    # Test the new declaration in isolation; pp.1.02's preexisting fields
+    # are inherited for this candidate and remain unchanged.
+    rbac = Draft202012Validator(canonical["properties"]["rbac"])
+    assert rbac.is_valid({"enabled": False})
+    assert rbac.is_valid({"enabled": False, "registry_ref": "ignored-when-disabled"})
+    assert rbac.is_valid({"enabled": True, "registry_ref": ".ptsip/profiles/rbac/registry.json"})
+    for invalid in [
+        {},
+        {"enabled": "true"},
+        {"enabled": True},
+        {"enabled": True, "registry_ref": "../outside.json"},
+        {"enabled": True, "registry_ref": ".ptsip/profiles/rbac/../outside.json"},
+        {"enabled": True, "registry_ref": ""},
+        {"enabled": True, "registry_ref": ".ptsip/profiles/rbac/registry.json", "auto_grant": True},
+    ]:
+        assert not rbac.is_valid(invalid)
