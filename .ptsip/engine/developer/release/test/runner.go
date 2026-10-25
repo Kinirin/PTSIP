@@ -280,8 +280,8 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 			return result, err
 		}
 	case "profiles":
-		if err := command(root, nil, "go", "-C", "developer/tests", "test", "./pp", "-count=1"); err != nil {
-			return result, err
+		if err := VerifyProjectProfiles(root, c.Version); err != nil {
+			return result, fmt.Errorf("native Project Profile verification failed: %w", err)
 		}
 		archive := filepath.Join(out, "profiles-"+c.Version+".zip")
 		files, err := release.Run(root, "git", "ls-tree", "-r", "--name-only", selection.SourceSHA, "src/ptsip/profiles", "registry/project-profile-contracts.yaml")
