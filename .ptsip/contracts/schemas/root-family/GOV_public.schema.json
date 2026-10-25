@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:public-structure:gov:v1",
+  "title": "GOV policy document structure during family-scoped migration",
+  "type": "object",
+  "required": [
+    "Policy_Identity",
+    "Policy_Status",
+    "Authority",
+    "Policy_Rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "Policy_Identity": {
+      "$ref": "urn:ptsip:policy:identity:v2"
+    },
+    "Policy_Status": {
+      "$ref": "urn:ptsip:policy:status:gov:v1"
+    },
+    "Authority": {
+      "$ref": "urn:ptsip:policy:Policy_Authority:v3"
+    },
+    "Policy_Rules": {
+      "$ref": "urn:ptsip:policy:GOV_rules:v6"
+    }
+  }
+}

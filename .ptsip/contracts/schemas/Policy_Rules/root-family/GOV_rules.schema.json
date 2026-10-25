@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:GOV_rules:v5",
+  "$id": "urn:ptsip:policy:GOV_rules:v6",
   "title": "GOV Policy_Rules in-policy document structure",
-  "$comment": "Inline GOV Policy_Rules: Identity uses contract_id and Rule_ver, with document Family inherited from Policy_Identity. Multiple-rule container and rule-ID generator await separate policy decisions.",
+  "$comment": "GOV-only migration: versionless independent rule contract ID, typed OBLIGATION/PROHIBITION item ID, preserved obligations and prohibitions in one array. Prohibition state and applicability not inferred.",
   "$ref": "#/$defs/PolicyDocumentRules",
   "$defs": {
     "PolicyDocumentRules": {
@@ -29,7 +29,7 @@
               "properties": {
                 "contract_id": {
                   "type": "string",
-                  "minLength": 1
+                  "pattern": "^urn:ptsip:policy:rule:gov:[a-z0-9]+(?:-[a-z0-9]+)*$"
                 },
                 "Rule_ver": {
                   "type": "string",
@@ -91,16 +91,14 @@
                     "type": "object",
                     "required": [
                       "id",
-                      "condition",
-                      "rule",
-                      "Rule_state"
+                      "rule"
                     ],
                     "properties": {
                       "id": {
                         "type": "string",
-                        "minLength": 1
+                        "pattern": "^(OBLIGATION|PROHIBITION)/[A-Z][A-Z0-9_]*$"
                       },
-                      "condition": {
+                      "applies_when": {
                         "type": "string",
                         "minLength": 1
                       },
@@ -112,28 +110,27 @@
                         "$ref": "urn:ptsip:policy:Public_Structure_Rules:v1#/$defs/RuleState"
                       }
                     },
-                    "additionalProperties": true
-                  }
-                },
-                "prohibitions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "operation"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "minLength": 1
-                      },
-                      "operation": {
-                        "type": "string",
-                        "minLength": 1
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "if": {
+                          "properties": {
+                            "id": {
+                              "pattern": "^OBLIGATION/"
+                            }
+                          },
+                          "required": [
+                            "id"
+                          ]
+                        },
+                        "then": {
+                          "required": [
+                            "applies_when",
+                            "Rule_state"
+                          ]
+                        }
                       }
-                    },
-                    "additionalProperties": true
+                    ]
                   }
                 },
                 "preconditions": {
@@ -143,7 +140,7 @@
                   "type": "array"
                 }
               },
-              "additionalProperties": true
+              "additionalProperties": false
             },
             "Evaluation": {
               "type": "object",

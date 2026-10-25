@@ -4,13 +4,9 @@ Policy_Identity:
   root_family: GOV
   title: "GOV — 승인된 출처의 책임과 결정 권한"
 Policy_Status:
-  Schema:
-    Policy_Status_version:
-      version: "3"
-  constant:
-    status: APPROVED
-    substatus: provisional
-    contract: urn:ptsip:contract:policy:gov:approved-source:responsibilities
+  Policy_Status_Schema_ver: "3"
+  status: APPROVED.provisional
+  contract: urn:ptsip:contract:policy:gov:approved-source:responsibilities
 Authority:
   authority_id: MPD-GOV-0004
   Authority_Category:
@@ -20,7 +16,7 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   Identity:
-    contract_id: "urn:ptsip:policy:rule:gov:approved-source-responsibilities:v1"
+    contract_id: "urn:ptsip:policy:rule:gov:approved-source-responsibilities"
     Rule_ver: "1"
   Definition:
     meaning: "GOV는 개발 결정권과 위임 범위의 정당성 및 정책 등록·생명주기 상태·개발 작업 승인의 출처와 적용 범위가 적법한지를 판단하고, 공식 README 원본과 번역 활성화의 기준을 규정한다."
@@ -37,37 +33,36 @@ Policy_Rules:
       - "GOV Family 전체의 핵심 책임 총칙은 MPD-GOV-0001의 전환 범위로 둔다."
   Constraints:
     obligations:
-      - id: GOV_DECISION_MANDATE
-        condition: DEVELOPMENT_DECISION
+      - id: OBLIGATION/GOV_DECISION_MANDATE
+        applies_when: DEVELOPMENT_DECISION
         rule: "개발 과정의 결정에는 결정을 내릴 권한 주체와 권한의 적용 범위를 명확히 정의한다."
         Rule_state: APPROVED.provisional
-      - id: GOV_APPROVAL_SOURCE_SCOPE
-        condition: POLICY_REGISTRATION_LIFECYCLE_OR_WORK_APPROVAL
+      - id: OBLIGATION/GOV_APPROVAL_SOURCE_SCOPE
+        applies_when: POLICY_REGISTRATION_LIFECYCLE_OR_WORK_APPROVAL
         rule: "정책 등록, 정책 생명주기 상태 및 개발 작업 승인에 대해 승인 출처와 적용 대상 범위가 적법한지 판단한다."
         Rule_state: APPROVED.provisional
-      - id: README_CANONICAL_SOURCE
-        condition: README_CONTENT_AUTHORITY
+      - id: OBLIGATION/README_CANONICAL_SOURCE
+        applies_when: README_CONTENT_AUTHORITY
         rule: "PTSIP 공식 README의 콘텐츠 원본은 저장소 최상위의 영어 README.md이다."
         Rule_state: APPROVED.provisional
-      - id: README_TRANSLATION_ACTIVATION
-        condition: TRANSLATION_ACTIVATION
+      - id: OBLIGATION/README_TRANSLATION_ACTIVATION
+        applies_when: TRANSLATION_ACTIVATION
         rule: "활성 번역 언어 집합은 docs/translated/index.yaml에 기록된 번역 등록 정보에 따라 결정한다."
         Rule_state: APPROVED.provisional
-      - id: TRANSLATION_REGISTRY_CONTRACT
-        condition: TRANSLATION_REGISTRY_VALIDATION
+      - id: OBLIGATION/TRANSLATION_REGISTRY_CONTRACT
+        applies_when: TRANSLATION_REGISTRY_VALIDATION
         rule: "docs/translated/index.yaml의 계약은 .ptsip/contracts/docs/에 명시한다."
         Rule_state: APPROVED.provisional
-      - id: TRANSLATION_FILENAME_CONTRACT
-        condition: TRANSLATION_FILE_NAMING
+      - id: OBLIGATION/TRANSLATION_FILENAME_CONTRACT
+        applies_when: TRANSLATION_FILE_NAMING
         rule: "번역 파일명은 .ptsip/contracts/docs/에 명시된 해당 계약을 따른다."
         Rule_state: APPROVED.provisional
-    prohibitions:
-      - id: OTHER_FAMILY_CANNOT_REPLACE_GOV_AUTHORITY
-        operation: "다른 책임 영역이 GOV의 결정 권한을 대신 정의하는 행위"
-      - id: GOAL_OR_DESIGN_DOES_NOT_PROVE_MANDATE
-        operation: "작업 목표나 기술 설계가 타당하다는 이유만으로 결정권자의 권한이 증명되었다고 판단하는 행위"
-      - id: EXECUTION_OR_TEST_DOES_NOT_APPROVE_POLICY
-        operation: "기술적 실행 가능성이나 검증 성공을 정책상 승인과 동일하게 취급하는 행위"
+      - id: PROHIBITION/OTHER_FAMILY_CANNOT_REPLACE_GOV_AUTHORITY
+        rule: "다른 책임 영역이 GOV의 결정 권한을 대신 정의하는 행위"
+      - id: PROHIBITION/GOAL_OR_DESIGN_DOES_NOT_PROVE_MANDATE
+        rule: "작업 목표나 기술 설계가 타당하다는 이유만으로 결정권자의 권한이 증명되었다고 판단하는 행위"
+      - id: PROHIBITION/EXECUTION_OR_TEST_DOES_NOT_APPROVE_POLICY
+        rule: "기술적 실행 가능성이나 검증 성공을 정책상 승인과 동일하게 취급하는 행위"
     dependencies:
       - "README.md"
       - "docs/translated/index.yaml"
