@@ -14,5 +14,9 @@
   "fail_closed_on_unresolved": true,
   "retired_release_manager_ref": "NOT_USED",
   "legacy_release_verifier_fallback": false,
-  "validation_rules_ref": ".ptsip/contracts/release/validation-rules.json"
+  "validation_rules_ref": ".ptsip/contracts/release/validation-rules.json",
+  "activation_conflict_resolution_ref": "developer/policy/registries/release-admission-publication-activation.json",
+  "activation_conflict_resolution": "KEEP_LATEST",
+  "automated_publication_direction": "APPROVED_PENDING_VERIFIED_SUCCESSOR",
+  "actual_publication_admission": "FAIL_CLOSED"
 }
