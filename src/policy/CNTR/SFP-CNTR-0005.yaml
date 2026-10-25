@@ -624,6 +624,18 @@
           "external_engine_federation": "EXISTING_POLICY_UNCHANGED_NOT_DECIDED_BY_THIS_SCOPE",
           "exact_namespace_schema_and_source_reference_layout": "UNRESOLVED_SEPARATE_DECISION",
           "repository_index_and_schema_mutation": "NOT_AUTHORIZED_BY_THIS_SCOPE_CLARIFICATION"
+        },
+        "official_consumer_package_delivery": {
+          "model": "RECONCILE_INDEPENDENT_COMPONENTS_WITH_TARGET_INTEGRATED_PTSIP_WHEEL",
+          "public_distribution": "PTSIP",
+          "native_component_count": 7,
+          "consumer_wheel": "ONE_PLATFORM_TARGET_PER_COMPLETE_PTSIP_PACKAGE",
+          "separately_installable_engine_pip_dependencies": "RETIRED_FROM_OFFICIAL_PTSIP_PACKAGE",
+          "independent_engine_versions_and_native_verification": "PRESERVED",
+          "verification_implementation_owner": ".ptsip/engine/developer/release/",
+          "retired_verification_controller_restoration": "FORBIDDEN",
+          "public_release_execution": "UNCHANGED_EXISTING_ADMISSION_GATE",
+          "provenance": "USER_EXPLICIT_2026_10_26"
         }
       },
       "invariants": {
@@ -667,7 +679,7 @@
         "legacy_contract_retirement_requires_separate_explicit_owner_approval": true,
         "engine_management_api_interoperability_requires_explicit_contract": true,
         "engine_local_management_is_not_global_authority": true,
-        "official_engine_distribution_forbids_bundled_package_delivery": true,
+        "official_engine_distribution_forbids_bundled_package_delivery": false,
         "engine_environment_isolation_does_not_implicitly_override_ctrl_isolation_mode": true,
         "existing_active_common_management_owner_map_preserved_until_explicit_transition": true,
         "independent_engine_local_management_applies_only_with_valid_effective_authority": true,
