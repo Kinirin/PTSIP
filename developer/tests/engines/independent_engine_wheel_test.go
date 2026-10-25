@@ -52,7 +52,11 @@ func TestIndependentEngineWheel(t *testing.T) {
 		wheelDir = filepath.Join(root, wheelDir)
 	}
 	plan := document(t, "src/ptsip/engines/contracts/installation-plan.json")
-	packages := plan["packages"].([]any)
+	if plan["schema_version"] != "ptsip-engine-installation-plan/v2" ||
+		plan["selection"] != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL" {
+		t.Fatal("current integrated native component plan required")
+	}
+	packages := plan["components"].([]any)
 	for _, value := range entries(t) {
 		entry := value.(object)
 		kind := strings.ToLower(entry["kind"].(string))
@@ -65,17 +69,17 @@ func TestIndependentEngineWheel(t *testing.T) {
 				p := raw.(object)
 				if p["engine_id"] == engineID {
 					matched++
-					if p["version"] != version || p["package_distribution"] != distribution ||
-						p["distribution"] != "INDEPENDENT_VERSIONED_NATIVE_WHEEL" ||
-						p["installation"] != "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY" ||
+					if p["version"] != version || p["entrypoint"] != distribution ||
+						p["distribution"] != "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT" ||
+						p["installation"] != "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL" ||
 						p["installed_is_execution_authorization"] != false ||
 						!containsString(p["build_targets"], target) {
-						t.Fatal("registered independent distribution contract mismatch")
+						t.Fatal("registered integrated native component contract mismatch")
 					}
 				}
 			}
 			if matched != 1 {
-				t.Fatalf("exact one independent package expected: %d", matched)
+				t.Fatalf("exact one registered native component expected: %d", matched)
 			}
 			filename := strings.ReplaceAll(distribution, "-", "_") + "-" + version + "-py3-none-" + platform + ".whl"
 			wheel := filepath.Join(wheelDir, filename)
