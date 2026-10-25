@@ -258,7 +258,7 @@ func Build(root string, opts Options) (Result, error) {
 		return Result{}, fmt.Errorf("canonical source license Git blob unavailable: %w", err)
 	}
 	metadata := fmt.Sprintf("Metadata-Version: 2.4\nName: %s\nVersion: %s\nSummary: Native PTSIP build component for integrated host package\nRequires-Python: >=3.11\nLicense-Expression: LicenseRef-PTSIP-Community-Reciprocity-1.0\nLicense-File: LICENSE.md\nDescription-Content-Type: text/markdown\n\n# PTSIP Engine %s\n\nNative engine component version `%s` (internal verification artifact).\n\nEngine identity: `%s`\n\nSource revision: `%s`\n\nSource, platform and binary digests are bound by the packaged origin and release receipt. Installed availability does not grant runtime authorization.\n", entrypoint, selected.Version, kind, selected.Version, selected.ID, opts.SourceSHA)
-	wheelMetadata := fmt.Sprintf("Wheel-Version: 1.0\nGenerator: ptsip-independent-engine-wheel-go/1\nRoot-Is-Purelib: false\nTag: py3-none-%s\n", h.Platform)
+	wheelMetadata := fmt.Sprintf("Wheel-Version: 1.0\nGenerator: ptsip-native-component-artifact-go/1\nRoot-Is-Purelib: false\nTag: py3-none-%s\n", h.Platform)
 	origin, _ := json.Marshal(map[string]any{"schema_version": "ptsip-independent-wheel-origin/v1", "source_sha": opts.SourceSHA, "engine_id": selected.ID, "engine_version": selected.Version, "host_target": opts.Target, "entrypoint": entrypoint + h.Suffix, "binary_sha256": digest(contents), "execution_authorized": false})
 	members := map[string][]byte{script: contents, di + "METADATA": []byte(metadata), di + "WHEEL": []byte(wheelMetadata), di + "licenses/LICENSE.md": license, di + "ptsip-origin.json": append(origin, '\n')}
 	names := []string{}
