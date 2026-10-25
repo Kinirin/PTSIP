@@ -168,6 +168,10 @@ ptsip_registry:
       meaning: "Project explicitly selects an exact template and owns stable-ID replacements, extensions, and removals over unchanged template declarations."
 
   concepts:
+    - id: COMPILE_SEALED_RBAC_CENTRAL_REGISTRY
+      meaning: "Optional pp.2.00 feature: one project-owned registry maps independently owned RBAC contract IDs to source resources; registration grants neither permission nor activation."
+    - id: COMPILE_SEALED_RBAC_SCHEMA_SET
+      meaning: "Six independent Responsibility, Condition Atom, Permission Atom, Binding, Seal, and Activation JSON Schema identities; published source scaffolds are fail-closed until detailed field contracts are approved."
     - id: CONSUMER_REPOSITORY
       meaning: "Repository inspected, piloted, validated, or governed using PTSIP."
     - id: EXTERNAL_PTSIP_TOOLING
