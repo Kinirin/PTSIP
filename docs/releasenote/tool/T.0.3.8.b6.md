@@ -341,6 +341,53 @@ has yet been received.** The historical failed run cannot validate
 the newer source; a fresh `tooling-test` run on updated main is
 required. All official publication gates remain disabled.
 
+## Linux workflow #40225534511 — v2 intermediate engine artifact migration
+
+User-requested `tooling-test` run
+[40225534511](https://github.com/Kinirin/PTSIP/actions/runs/40225534511)
+on source `cc7c82c8473bdd6b73ff2254aa8dd25ba8274778` completed
+with conclusion `cancelled`. `mode-selection` **passed**, confirming
+the previous missing developer Go module blocker was cleared.
+Both `Registered verification / context / linux-x64` (job 121266117211)
+and `Registered verification / execution / linux-x64` (job 121266117326)
+reported failure; the other matrix jobs were cancelled, and no
+complete `registered-join` native Linux PTSIP Wheel was verified.
+
+In both failed Linux jobs, `cargo test --locked`,
+`cargo build --release --locked`, and `abi-check`
+(`manylinux_2_39_x86_64`) succeeded. The subsequent internal
+native engine artifact builder failed with:
+`ENGINE_WHEEL_BUILD_BLOCKED: exact seven independent official engines required`.
+
+Root cause: `.ptsip/engine/developer/release/engine-verification/wheel.go`
+continued to parse the retired `installation-plan/v1` `packages`
+collection and require independently auto-installed engine distribution
+metadata even though the current official installation plan is v2 with
+`components` and one integrated consumer PTSIP Wheel.
+
+Bounded source changes on main:
+- Internal per-engine verification artifact construction now requires
+  exactly seven registered native `components`, one matching v2
+  integrated PTSIP platform installation declaration, and no separate
+  engine pip dependency or release/publication authority.
+- Engine identity, version, executable name, native host magic,
+  source Git blob license, binary digest, wheel RECORD, origin receipt,
+  original engine version and explicit non-authority checks are retained.
+- No per-engine consumer-install dependency has been reintroduced;
+  intermediate native Wheels remain internal artifacts used to assemble
+  the complete target-specific PTSIP Wheel.
+- `engine-verification/wheel_test.go` now has v2-compatible fixtures
+  and rejects legacy pip package fields, component omission, duplicate
+  default IDs, or publication grants in addition to existing identity
+  and artifact tamper cases.
+- Neither `.github/checks/release/controller/` nor the historical
+  b5 release sources were restored or changed.
+
+**Verification status:** GitHub remote source assertions were checked,
+but no Go/Cargo test or new `tooling-test` run has yet executed against
+the revised source. The cancelled original run is not evidence of a
+Linux native Package build or install PASS. Publication stays blocked.
+
 ## Release blockers / explicit scope limits
 
 - Approve complete field/lookup/serialization contracts before enabling
