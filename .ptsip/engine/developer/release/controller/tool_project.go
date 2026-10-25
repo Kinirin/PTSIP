@@ -33,6 +33,14 @@ func MaterializeToolProject(root string) error {
 		return fmt.Errorf("project metadata unavailable")
 	}
 	project["name"], project["version"] = "ptsip-tool", version
+	// A Tool-only intermediate must not trigger the complete PTSIP native
+	// source build backend: that backend belongs to the final host distribution.
+	build, ok := document["build-system"].(map[string]any)
+	if !ok {
+		return fmt.Errorf("build system unavailable")
+	}
+	build["build-backend"] = "setuptools.build_meta"
+	delete(build, "backend-path")
 	deps := []string{}
 	if values, ok := project["dependencies"].([]any); ok {
 		for _, value := range values {
