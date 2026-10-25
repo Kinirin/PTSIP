@@ -12,4 +12,3 @@ require golang.org/x/text v0.14.0 // indirect
 
 replace github.com/Kinirin/PTSIP/developer/automation => ../automation
 
-replace github.com/Kinirin/PTSIP/developer/automation/release => ../../.github/checks/release
