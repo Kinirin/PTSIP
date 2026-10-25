@@ -1,6 +1,6 @@
 {
   "contract_id": "PTSIP_COMPILE_SEALED_RBAC_CENTRAL_REGISTRY_FIELD_REQUIREMENTS",
-  "contract_revision": 2,
+  "contract_revision": 3,
   "policy_ref": "developer/policy/GOV/MPD-GOV-0001.yaml",
   "applies_when": "PROJECT_USES_COMPILE_SEALED_RBAC",
   "registry_root": ".ptsip/profiles/rbac/",
@@ -47,9 +47,8 @@
   "unresolved": [
     "REGISTRY_FILE_NAME",
     "REGISTRY_SERIALIZATION_FORMAT",
-    "FIELD_VALUE_TYPES_AND_CONSTRAINTS",
-    "ENTRIES_KIND_SERIALIZED_LITERALS",
-    "ENTRY_ID_UNIQUENESS_AND_RESOURCE_REFERENCE_RULES",
+    "OTHER_FIELD_VALUE_TYPES_AND_CONSTRAINTS",
+    "ENTRY_ID_UNIQUENESS_AND_IDENTITY_MATCH_RULES",
     "REVISION_CONDITIONAL_TRIGGER",
     "METADATA_INTERNAL_SHAPE",
     "REGISTRY_SCHEMA_AND_VALIDATOR_INTEGRATION",
@@ -73,8 +72,15 @@
       "SEAL",
       "ACTIVATION"
     ],
-    "serialized_kind_literals": "UNRESOLVED",
-    "scope": "DECLARATIVE_CONTRACT_SOURCE_LOOKUP_ONLY"
+    "serialized_kind_literals": [
+      "RESPONSIBILITY",
+      "CONDITION_ATOM",
+      "PERMISSION_ATOM",
+      "BINDING"
+    ],
+    "scope": "DECLARATIVE_CONTRACT_SOURCE_LOOKUP_ONLY",
+    "type": "string",
+    "case_sensitive": true
   },
   "separate_artifact_contracts": {
     "seal": {
@@ -90,6 +96,47 @@
       "artifact_plane": "SEPARATE_FROM_CENTRAL_DECLARATIVE_REGISTRY",
       "storage_ref": "UNRESOLVED",
       "lookup_contract": "UNRESOLVED"
+    }
+  },
+  "entry_resource_reference": {
+    "type": "string",
+    "coordinate_system": "PROJECT_REPOSITORY_ROOT_RELATIVE",
+    "canonical_prefix": ".ptsip/profiles/rbac/",
+    "notation": "POSIX_SLASH_FILESYSTEM_PATH",
+    "allowed_lowercase_suffixes": [
+      ".json",
+      ".yaml",
+      ".yml"
+    ],
+    "nested_subdirectories_allowed": true,
+    "filename_pattern": "NOT_CONSTRAINED_BY_ROOT_FAMILY",
+    "lexical_requirements": {
+      "nonempty_path_after_prefix": true,
+      "no_leading_or_trailing_slash": true,
+      "no_empty_segments": true,
+      "reject_dot_or_dotdot_segments": true,
+      "forbid_characters": [
+        "\\",
+        ":",
+        "?",
+        "#",
+        "%"
+      ],
+      "forbid_control_characters": true,
+      "absolute_paths_forbidden": true,
+      "uri_scheme_forbidden": true
+    },
+    "filesystem_requirements": {
+      "project_root_containment": true,
+      "target_must_exist": true,
+      "regular_file_only": true,
+      "symlink_components_forbidden": true,
+      "on_failure": "FAIL_CLOSED"
+    },
+    "authority": {
+      "registry_reference_is_lookup_only": true,
+      "content_must_be_verified_against_kind_schema_before_authorization": true,
+      "binding_or_activation_cannot_be_inferred_from_file_existence": true
     }
   }
 }
