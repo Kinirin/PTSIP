@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-compile-sealed-rbac-binding.candidate.schema.json",
+  "title": "PTSIP Compile-Sealed RBAC BINDING implementation candidate",
+  "$comment": "DRAFT_NON_NORMATIVE: user-authorized provisional implementation candidate only. Not a normative schema, effective policy, release admission, approval proof, permission grant, or active engine operation. Approval reference is only provenance; validity and authority must be verified separately.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "revision",
+    "responsibility_ref",
+    "permission_refs",
+    "approval_ref"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "kind": {
+      "const": "BINDING"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "responsibility_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "permission_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "minItems": 1
+    },
+    "approval_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    }
+  }
+}
