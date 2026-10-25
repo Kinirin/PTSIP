@@ -151,6 +151,38 @@ root_index_lookup_connection_direction:
         parameter_container_field_name: parameters
         parameter_internal_field_set: UNRESOLVED_USER_DECISION
       index_id_issuance_format: UNRESOLVED_USER_DECISION
+      id_issuance_responsibility:
+        decision: USER_APPROVED
+        model: C_DISTRIBUTED_CANDIDATE_GENERATION_WITH_MACHINE_REGISTRATION_VERIFICATION
+        authorization: PROJECT_OWNER_EXPLICIT
+        candidate_creation: DISTRIBUTED_AUTOMATED
+        candidate_generation_independent_of_path_and_version: true
+        user_selected_candidate_value: PERMITTED
+        user_candidate_override: PERMITTED
+        automated_candidate_id_change: PERMITTED
+        candidate_change_permission_scope: PRE_REGISTRATION_CANDIDATES
+        automated_candidate_verification: REQUIRED_CAPABILITY
+        automated_id_collision_check: REQUIRED_CAPABILITY
+        automated_candidate_reuse_attempt: PERMITTED_WITH_COLLISION_VERIFICATION
+        existing_id_reuse_for_same_logical_subindex: PRESERVE_EXISTING_ID
+        approved_value_is_only_final_after_registration_verification: true
+        candidate_generation_does_not_grant_policy_approval_authority: true
+        issuer_format: UNRESOLVED_USER_DECISION
+        uniqueness_scope: UNRESOLVED_USER_DECISION
+        issued_id_reuse_for_different_logical_subindex: UNRESOLVED_USER_DECISION
+        issuance_history_contract: UNRESOLVED_USER_DECISION
+        verification_protocol: UNRESOLVED_USER_DECISION
+        implementation: NOT_AUTHORIZED_YET
+        issued_stable_id_change:
+          requested_capability: AUTOMATED_ID_CHANGE_WITH_VERIFICATION
+          decision: UNRESOLVED_POLICY_CONFLICT
+          prior_rule: PRESERVE_ID_FOR_SAME_LOGICAL_SUBINDEX_ON_PATH_VERSION_AND_PARAMETER_CHANGES
+          prior_approval_revision: ca873f6fed3289aca91532e7987353757196087b
+          current_rule: PRESERVED_PENDING_USER_CONFLICT_RESOLUTION
+          issue: WHETHER_USER_DIRECTED_CHANGE_APPLIES_AFTER_CONFIRMED_REGISTRATION
+          resolution_authority: USER
+          options: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
+          selected_option: UNRESOLVED_USER_DECISION
       identifier_generated_from_path_or_version: FORBIDDEN
       identifier_parsing_for_semantic_inference: FORBIDDEN
       id_preserved_when:
