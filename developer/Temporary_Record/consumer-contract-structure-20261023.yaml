@@ -193,7 +193,10 @@ root_index_lookup_connection_direction:
           responsibility_is_scenario_specific: true
           responsibility_applicability_condition_owner: RESPONSIBILITY
           responsibility_matching_rules_in_permission_definitions: FORBIDDEN
-          responsibility_match_implies_execution_permission: false
+          responsibility_match_implies_execution_permission: true
+          responsibility_match_grant_scope: ALL_EXPLICITLY_LINKED_PERMISSIONS
+          separate_per_permission_authorization_gate: FORBIDDEN
+          unrelated_or_unassigned_permission_automatic_grants: FORBIDDEN
           responsibility_permission_mapping: MANY_TO_MANY
           all_permissions_must_be_assIGNED: false
           unused_permissions_permitted: true
@@ -238,17 +241,40 @@ root_index_lookup_connection_direction:
           REUSE_HISTORICAL_ID_FOR_OTHER_TARGET: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
           RETIRE_REGISTERED_ID: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
           RECORD_ID_ISSUANCE_HISTORY: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_CONTRACT_PENDING}
+        matching_responsibility_permission_grant:
+          decision: USER_APPROVED_POLICY_CHANGE
+          conflict_resolution: KEEP_LATEST
+          authority: PROJECT_OWNER_EXPLICIT
+          conflicting_prior_policy:
+            base_revision: 40a3ebaf0cdfc1aaea8df9e981a8a117ac109390
+            previous_rule: RESPONSIBILITY_MATCH_SELECTS_RESPONSIBILITY_ONLY
+            status: SUPERSEDED
+          options_considered: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
+          selected_rule: RESPONSIBILITY_MATCH_AUTO_GRANTS_EVERY_ATTACHED_PERMISSION
+          condition_ownership: RESPONSIBILITY
+          permission_definitions_are_responsibility_agnostic: true
+          second_permission_authorization_check: FORBIDDEN
+          unlinked_permissions_granted: false
+          permission_catalog_declared_but_not_linked_granted: false
+          permissions_unapproved_by_higher_authority_granted: false
+          implementation_state: NOT_AUTHORIZED_YET
+          applicability_expressions: UNRESOLVED_USER_DECISION
+          multiple_matches_resolution: UNRESOLVED_USER_DECISION
+          no_match_behavior: UNRESOLVED_USER_DECISION
+          collision_handling_rules: UNRESOLVED_USER_DECISION
+          independent_preexisting_mutation_integrity_obligations: PRESERVED
         applicability_condition_ownership:
           decision: USER_APPROVED
           condition_owner: RESPONSIBILITY
           permission_is_responsibility_independent: true
-          responsibility_match_result: SELECT_RESPONSIBILITY_ONLY
-          responsibility_match_is_runtime_authorization: false
+          responsibility_match_result: SELECT_RESPONSIBILITY_AND_GRANT_LINKED_PERMISSIONS
+          responsibility_match_is_runtime_authorization: true
           trigger_is_existing_scenario_discriminator: true
           complete_condition_expressions: UNRESOLVED_USER_DECISION
           overlapping_matches: UNRESOLVED_USER_DECISION
           no_match_behavior: UNRESOLVED_USER_DECISION
-          permission_execution_conditions: UNRESOLVED_USER_DECISION
+          permission_execution_conditions: RESPONSIBILITY_APPLICABILITY_CONDITIONS_ONLY
+          per_permission_secondary_approval: NOT_APPLICABLE
           implementation: NOT_AUTHORIZED_YET
         responsibility_mapping_approval:
           decision: USER_APPROVED
@@ -261,7 +287,8 @@ root_index_lookup_connection_direction:
           unused_permissions_remain_permitted: true
           permission_declarations_are_not_runtime_grants: true
           collision_resolution_conditions: UNRESOLVED_USER_DECISION
-          permission_execution_boundaries: UNRESOLVED_USER_DECISION
+          permission_execution_boundaries: RESPONSIBILITY_MATCH_AUTO_GRANTS_ALL_LINKED_PERMISSIONS
+          separate_permission_execution_approval: FORBIDDEN
           persistent_mutation_grants: NOT_AUTHORIZED_BY_THIS_APPROVAL
         responsibilities:
           EXISTING_REGISTERED_ID:
