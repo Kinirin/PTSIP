@@ -298,6 +298,49 @@ a supported platform and a clean exact source. Its local Wheel must include
 seven native executables and the distribution's `ptsip-engines.json`; merely
 observing a `py3-none-any` Tool intermediate is not complete Package proof.
 
+## 2026-10-26 workflow diagnostics — read-only verification cutover
+
+GitHub Actions `tooling-test` run 40224599600, mode
+`release-verification`, targets `package`, source
+`d0cbca451d01fa97ae9033653410ddf1102b2ad1`: **FAILED
+before Linux/Windows matrix launch.** Job
+`mode-selection` 121263190756 failed in
+`Resolve registered mode and execution contract`. Log:
+`developer/automation/release@v0.0.0` replaced to deleted
+`../../.github/checks/release`; missing `.github/checks/release/go.mod`.
+All subsequent registered verification and join jobs were skipped.
+This is NOT native Linux engine failure evidence.
+
+Current main implements a bounded fix:
+- `.ptsip/engine/developer/release/test/runner.go` does not invoke the
+  retired `MPD-ASSURE-0001` policy resolver. It checks existing
+  `.github/test_modes.yaml`, read-only
+  `.ptsip/contracts/release/verification-contract.json`, and the
+  independent publication-denied
+  `.ptsip/contracts/release/admission.json` before selecting exact-source
+  Windows/Linux test jobs.
+- Derived selection output explicitly reports
+  `policy_authority=NOT_ASSERTED`,
+  `verification_scope=SOURCE_BOUND_TEST_EVIDENCE_ONLY`, and
+  `publication_authorized=false`. This is **non-normative test
+  execution**, not retroactive ASSURE policy activation or release
+  admission. Any missing/different contract or publication authorization
+  fails closed.
+- Obsolete `developer/automation/release` module imports/replacements
+  removed from `developer/automation/go.mod`,
+  `developer/automation/cmd/ptsip-dev/main.go`, and
+  `developer/tests/go.mod`. The deleted `.github/checks/release/`
+  controller was NOT reinstated.
+- `.ptsip/engine/developer/release/test/verification_route_test.go`
+  adds three regression tests for valid nonnormative selection,
+  missing/changed admission, and legacy/publication denial.
+
+Static remote source checks of nine migration invariants passed.
+**No post-fix end-to-end tooling-test run or Linux artifact evidence
+has yet been received.** The historical failed run cannot validate
+the newer source; a fresh `tooling-test` run on updated main is
+required. All official publication gates remain disabled.
+
 ## Release blockers / explicit scope limits
 
 - Approve complete field/lookup/serialization contracts before enabling
