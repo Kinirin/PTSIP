@@ -2,7 +2,7 @@
   "schema_version": "ptsip-release-admission-publication-activation-decision/v1",
   "artifact_class": "OWNER_APPROVED_POLICY_CONFLICT_RESOLUTION_BINDING",
   "policy_class": "PTSIP_DEVELOPER_POLICY",
-  "status": "APPROVED_KEEP_LATEST_PENDING_NORMATIVE_SUCCESSOR",
+  "status": "APPROVED_KEEP_LATEST_EFFECTIVE_NORMATIVE_SUCCESSOR",
   "decision_source": "USER_EXPLICIT",
   "resolution": "KEEP_LATEST",
   "approval_ref": "developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-PUBLICATION-KEEP-LATEST.yaml",
@@ -20,9 +20,9 @@
   "effective_decision": {
     "publication_activation_direction": "APPROVED",
     "old_absolute_prohibition": "SUPERSEDED_FOR_THIS_SCOPE",
-    "actual_publication_permission": "NOT_GRANTED_UNTIL_EFFECTIVE_VERIFIED_SUCCESSOR",
+    "actual_publication_permission": "CONDITIONAL_EXACT_SOURCE_ADMISSION_ONLY",
     "release_admission_normative_policy": "REQUIRED",
-    "normative_policy_identity_schema_and_validator": "UNRESOLVED_USER_DECISION",
+    "normative_policy_identity_schema_and_validator": "RESOLVED_CTRL_POLICY_VERIFIER",
     "evidence_requirement": "FRESH_EXACT_SOURCE_AND_SELECTION",
     "design_provenance_is_normative_pass": false,
     "admission_authority_owner": "CTRL",
@@ -44,22 +44,19 @@
     "prior_approval_provenance": "PRESERVE_UNMODIFIED"
   },
   "machine_gates": {
-    "normative_successor_validated": false,
-    "publish_workflow_enabled": false,
+    "normative_successor_validated": true,
+    "publish_workflow_enabled": true,
     "actual_publication_admitted": false,
     "release_verification_example": {
       "run_id": 40231338209,
       "source_sha": "00f4745e83aadfb363ec8e88fadf29f589022d78",
       "result": "SUCCESS",
-      "authority": "SOURCE_BOUND_TEST_EVIDENCE_ONLY"
+      "authority": "HISTORICAL_TEST_EVIDENCE_ONLY_NOT_CURRENT_PUBLICATION_AUTHORIZATION"
     },
     "fail_closed_if_missing": true
   },
   "unresolved": [
-    "SUCCESSOR_NORMATIVE_POLICY_DOCUMENT_IDENTITY_AND_SCHEMA",
-    "SUCCESSOR_POLICY_VALIDATOR",
     "RELEASE_ID_ISSUANCE_AND_PERSISTENCE",
-    "CHANGED_ENGINE_COMPONENT_VERSION_DECISIONS",
     "EXACT_HEAD_RELEASE_ADMISSION_VERIFICATION"
   ]
 }

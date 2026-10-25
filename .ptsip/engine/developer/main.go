@@ -12,6 +12,7 @@ import (
 
     release_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/release"
     schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/schema_check"
+    ctrl_admission "github.com/Kinirin/PTSIP/.ptsip/engine/developer/ctrl_admission"
 )
 
 type Validator func(string) (any, int)
@@ -28,6 +29,7 @@ func runReleaseAdmissionCheck(root string) (any, int) {
 var validators = map[string]Validator{
     "release-admission-check": runReleaseAdmissionCheck,
     "schema-check": runSchemaCheck,
+    "ctrl-release-admission-check": ctrl_admission.Run,
 }
 
 func main() {

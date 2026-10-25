@@ -2,12 +2,12 @@ package releasecontroller
 
 import (
     "fmt"
+    "encoding/json"
 )
 
-// AdmitCTRLPublicationPolicy is the publication-only authority boundary.
-// The retired developer policy resolver and the non-normative design checker
-// cannot grant admission. Current owner direction is approved, but publication
-// is gated on a separately validated normative successor.
+// AdmitCTRLPublicationPolicy validates the current normative CTRL release
+// policy, not a mutable "publication admitted" flag. Per-run evidence is
+// independently required by AdmitVerification and the shipping manifest.
 func AdmitCTRLPublicationPolicy(root string) error {
     var owner struct {
         Schema string `json:"schema_version"`
@@ -28,10 +28,10 @@ func AdmitCTRLPublicationPolicy(root string) error {
     if owner.Schema != "ptsip-release-admission-owner-selection/v1" ||
         owner.Decision != "CTRL_CENTERED" ||
         owner.Responsibility.Admission != "CTRL" ||
-        owner.Responsibility.Verification != "ASSURE" || !owner.Activation.Direction {
-        return fmt.Errorf("CTRL/ASSURE release responsibility is not authorized")
+        owner.Responsibility.Verification != "ASSURE" ||
+        !owner.Activation.Direction || !owner.Activation.Document || !owner.Activation.Validator {
+        return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: CTRL/ASSURE normative release owner not active")
     }
-
     var activation struct {
         Resolution string `json:"resolution"`
         Effective struct {
@@ -51,32 +51,44 @@ func AdmitCTRLPublicationPolicy(root string) error {
     if activation.Resolution != "KEEP_LATEST" ||
         activation.Effective.Direction != "APPROVED" ||
         activation.Effective.Owner != "CTRL" ||
-        activation.Effective.Evidence != "ASSURE" {
-        return fmt.Errorf("unresolved Release Admission activation authority")
+        activation.Effective.Evidence != "ASSURE" ||
+        !activation.Gates.Validated || !activation.Gates.Enabled ||
+        activation.Gates.Admitted {
+        return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: invalid conditional admission activation")
     }
-
-    // Implementation flags are NOT policy. All must be true and an actual
-    // registered successor normative validator must independently succeed.
-    if !owner.Activation.Document || !owner.Activation.Validator ||
-        !activation.Gates.Validated || !activation.Gates.Enabled || !activation.Gates.Admitted {
-        return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: effective CTRL normative policy and automated validation are not yet complete")
-    }
+    // The v1 derived design report intentionally continues to report
+    // publication_authorized=false: it is NOT a normative permission source.
     var index struct {
-        Activation string `json:"normative_policy_activation"`
-        Authorized bool `json:"publication_authorized"`
+        Policy string `json:"effective_ctrl_policy_ref"`
+        Validator string `json:"effective_ctrl_validator"`
+        Schema string `json:"effective_ctrl_schema_ref"`
+        Authority string `json:"effective_ctrl_policy_status"`
+        DesignAuthorizes bool `json:"publication_authorized"`
     }
     if err := ReadJSON(root, ".ptsip/contracts/release/index.json", &index); err != nil {
         return err
     }
-    if index.Activation != "ACTIVE" || !index.Authorized {
-        return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: active normative policy admission not registered")
+    if index.Policy != "developer/policy/CTRL/release-admission.policy.json" ||
+        index.Validator != "ctrl-release-admission-check" ||
+        index.Schema != ".ptsip/contracts/schemas/release/ctrl-release-admission.schema.json" ||
+        index.Authority != "ACTIVE_PER_RELEASE_CONDITIONAL" || index.DesignAuthorizes {
+        return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: active CTRL policy registration invalid")
     }
-    // This validator must be independently registered against an approved
-    // family schema; absent/retired validators and arbitrary contract edits
-    // cannot promote design-time evidence into publication authority.
-    if _, err := Run(root, "go", "-C", ".ptsip/engine/developer", "run", ".",
-        "--validator", "ctrl-release-admission-check", "--root", root); err != nil {
+    raw, err := Run(root, "go", "-C", ".ptsip/engine/developer", "run", ".",
+        "--validator", "ctrl-release-admission-check", "--root", root)
+    if err != nil {
         return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: CTRL normative admission verifier failed: %w", err)
+    }
+    var report struct {
+        Status string `json:"status"`
+        Evidence string `json:"per_release_evidence"`
+        Publication bool `json:"publication_authorized"`
+        Owner string `json:"admission_owner"`
+    }
+    if err := json.Unmarshal(raw,&report);err != nil{return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: invalid independent verifier result: %w",err)}
+    if report.Status!="ACTIVE_POLICY_VERIFIED" || report.Owner!="CTRL" ||
+        report.Evidence!="NOT_ASSERTED" || report.Publication {
+        return fmt.Errorf("RELEASE_PUBLICATION_BLOCKED: normative policy verifier did not return conditional admission")
     }
     return nil
 }

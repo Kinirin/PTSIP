@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths:
       - '.ptsip/contracts/**'
+      - 'developer/policy/CTRL/release-admission.policy.json'
+      - 'developer/policy/registries/release-admission-ctrl-ownership.json'
+      - 'developer/policy/registries/release-admission-publication-activation.json'
+      - 'developer/policy/approvals/MPA-20261026-CTRL-RELEASE-ADMISSION-COMPLETION.yaml'
+      - '.ptsip/engine/developer/ctrl_admission/**'
       - 'src/ptsip/engines/**'
       - 'developer/tests/engines/**'
       - 'developer/policy/approvals/MPA-20261026-VALIDATION-PROJECTION-CAPABILITY-CONTRACT-BUMPS.yaml'
@@ -68,6 +73,21 @@ jobs:
           go -C .ptsip/engine/developer/release/controller test ./... -run '^(TestCTRLAdmissionFailClosedWithoutActiveNormativePolicy|TestPublishedB5EngineVersionsAndProjections)$' -count=1
           go -C .ptsip/engine/developer/release/test test ./... -run '^$'
           go -C .ptsip/engine/developer/release/engine-verification test ./... -run '^$'
+      - name: Verify active normative CTRL policy (no publication)
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer test ./ctrl_admission -count=1
+          go -C .ptsip/engine/developer run . --validator ctrl-release-admission-check --root "$GITHUB_WORKSPACE" > /tmp/ctrl-policy.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('/tmp/ctrl-policy.json'))
+          assert p['status']=='ACTIVE_POLICY_VERIFIED'
+          assert p['admission_owner']=='CTRL'
+          assert p['publication_authorized'] is False
+          assert p['per_release_evidence']=='NOT_ASSERTED'
+          print('CTRL normative policy verified; publication requires exact original evidence')
+          PY
       - name: Execute Release Admission negative tests
         shell: bash
         run: go -C .ptsip/engine/developer test ./release -count=1

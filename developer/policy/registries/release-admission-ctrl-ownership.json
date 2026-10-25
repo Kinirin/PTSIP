@@ -21,7 +21,9 @@
     "admission_projection_ref": ".ptsip/contracts/release/admission.json",
     "runtime_policy_ref": "developer/policy/CTRL/release-admission.policy.json",
     "publication_workflow": ".github/workflows/tooling-release.yml",
-    "verification_workflow": ".github/workflows/tooling-test.yml"
+    "verification_workflow": ".github/workflows/tooling-test.yml",
+    "runtime_policy_schema_ref": ".ptsip/contracts/schemas/release/ctrl-release-admission.schema.json",
+    "runtime_policy_validator": "ctrl-release-admission-check"
   },
   "invariants": {
     "source_sha_exact": true,
@@ -40,10 +42,10 @@
   },
   "activation": {
     "direction_approved": true,
-    "runtime_policy_document_complete": false,
-    "required_policy_schema_and_validator_complete": false,
+    "runtime_policy_document_complete": true,
+    "required_policy_schema_and_validator_complete": true,
     "automation_implementation_authorized": true,
-    "execution_mode": "FAIL_CLOSED_PENDING_POLICY_VERIFICATION",
+    "execution_mode": "PER_RELEASE_CONDITIONAL_FAIL_CLOSED",
     "uncontrolled_mutation_not_authorized": true
   }
 }
