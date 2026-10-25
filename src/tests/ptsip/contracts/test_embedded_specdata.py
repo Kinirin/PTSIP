@@ -72,6 +72,16 @@ def test_rbac_schema_scaffolds_and_registry_requirements_are_packaged_fail_close
     assert canonical["entry_kind_scope"]["serialized_kind_literals"] == "UNRESOLVED"
     assert canonical["separate_artifact_contracts"]["seal"]["registry_entry_allowed"] is False
     assert canonical["separate_artifact_contracts"]["activation"]["registry_entry_allowed"] is False
+    assert canonical["contract_revision"] == 3
+    assert canonical["entry_kind_scope"]["serialized_kind_literals"] == [
+        "RESPONSIBILITY", "CONDITION_ATOM", "PERMISSION_ATOM", "BINDING"
+    ]
+    resource_rules = canonical["entry_resource_reference"]
+    assert resource_rules["coordinate_system"] == "PROJECT_REPOSITORY_ROOT_RELATIVE"
+    assert resource_rules["canonical_prefix"] == ".ptsip/profiles/rbac/"
+    assert resource_rules["allowed_lowercase_suffixes"] == [".json", ".yaml", ".yml"]
+    assert resource_rules["nested_subdirectories_allowed"] is True
+    assert resource_rules["filesystem_requirements"]["symlink_components_forbidden"] is True
     schema_files = (
         "responsibility.schema.json",
         "condition-atom.schema.json",
