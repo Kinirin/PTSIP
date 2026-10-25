@@ -91,10 +91,29 @@ fn draft_registry_preflight(root: &Root, bytes: &[u8]) -> Result<usize, String> 
         }
         validate_registry_entry(kind, resource)?;
         let data = root.bytes(resource, 2_097_152)?;
-        if resource.ends_with(".json") {
-            // Only JSON decoding is possible in this preliminary native adapter;
-            // YAML support requires a separately reviewed implementation adapter.
-            crate::source::parse(&data)?;
+        if !resource.ends_with(".json") {
+            // YAML paths remain valid references under the approved policy.
+            // Until the native YAML decoder is implemented, their CONTENT
+            // cannot be safely checked and must fail closed.
+            return Err("YAML source identity verification adapter unavailable".into());
+        }
+        let source = crate::source::parse(&data)?;
+        let object = source
+            .as_object()
+            .ok_or("draft contract source must be a JSON object")?;
+        if object.get("id").and_then(Value::as_str) != Some(id)
+            || object.get("kind").and_then(Value::as_str) != Some(kind)
+        {
+            return Err("draft source ID or kind differs from registry entry".into());
+        }
+        // Provisional rule: revision is required in the index exactly when
+        // the source declares one; both values must match without inference.
+        let source_revision = object.get("revision");
+        let index_revision = item.get("revision");
+        if source_revision.is_some_and(|v| !v.as_str().is_some_and(|s| !s.is_empty()))
+            || source_revision != index_revision
+        {
+            return Err("draft source revision missing, malformed or mismatched".into());
         }
     }
     Ok(entries.len())
@@ -305,10 +324,10 @@ mod tests {
         let registry = root.join(PROFILE_RBAC_ROOT);
         fs::create_dir_all(&schemas).unwrap();
         fs::create_dir_all(&registry).unwrap();
-        fs::write(registry.join("contract.json"), r#"{"id":"RESP-001"}"#).unwrap();
+        fs::write(registry.join("contract.json"), r#"{"id":"RESP-001","kind":"RESPONSIBILITY","revision":"Rev.1"}"#).unwrap();
         fs::write(
             registry.join("index.json"),
-            r#"{"schema_version":"candidate","entries":[{"id":"RESP-001","kind":"RESPONSIBILITY","resource":".ptsip/profiles/rbac/contract.json"}]}"#,
+            r#"{"schema_version":"candidate","entries":[{"id":"RESP-001","kind":"RESPONSIBILITY","revision":"Rev.1","resource":".ptsip/profiles/rbac/contract.json"}]}"#,
         ).unwrap();
         for name in SCHEMAS {
             fs::write(
@@ -346,11 +365,12 @@ mod tests {
         fs::create_dir_all(path.join(PROFILE_RBAC_ROOT)).unwrap();
         let root = Root::new(path.to_str().unwrap()).unwrap();
         let source_ref = ".ptsip/profiles/rbac/input.json";
-        fs::write(path.join(source_ref), r#"{"id":"RESP-01"}"#).unwrap();
+        fs::write(path.join(source_ref), r#"{"id":"RESP-01","kind":"RESPONSIBILITY","revision":"Rev.1"}"#).unwrap();
         let good = json!({
             "schema_version": "candidate",
             "entries": [{
-                "id":"RESP-01", "kind":"RESPONSIBILITY", "resource":source_ref
+                "id":"RESP-01", "kind":"RESPONSIBILITY", "resource":source_ref,
+                "revision":"Rev.1"
             }]
         });
         assert_eq!(
@@ -367,9 +387,26 @@ mod tests {
         let mut traversal = good.clone();
         traversal["entries"][0]["resource"] = json!(".ptsip/profiles/rbac/../escape.json");
         assert!(draft_registry_preflight(&root, traversal.to_string().as_bytes()).is_err());
-        let mut missing = good;
+        let mut missing = good.clone();
         missing["entries"][0]["resource"] = json!(".ptsip/profiles/rbac/missing.json");
         assert!(draft_registry_preflight(&root, missing.to_string().as_bytes()).is_err());
+        let mut wrong_id = good.clone();
+        wrong_id["entries"][0]["id"] = json!("OTHER");
+        assert!(draft_registry_preflight(&root, wrong_id.to_string().as_bytes()).is_err());
+        let mut wrong_revision = good.clone();
+        wrong_revision["entries"][0]["revision"] = json!("Rev.2");
+        assert!(draft_registry_preflight(&root, wrong_revision.to_string().as_bytes()).is_err());
+        let mut missing_revision = good.clone();
+        missing_revision["entries"][0].as_object_mut().unwrap().remove("revision");
+        assert!(draft_registry_preflight(&root, missing_revision.to_string().as_bytes()).is_err());
+        let mut wrong_kind = good.clone();
+        wrong_kind["entries"][0]["kind"] = json!("PERMISSION_ATOM");
+        assert!(draft_registry_preflight(&root, wrong_kind.to_string().as_bytes()).is_err());
+        let mut yaml = good.clone();
+        yaml["entries"][0]["resource"] = json!(".ptsip/profiles/rbac/input.yaml");
+        fs::write(path.join(".ptsip/profiles/rbac/input.yaml"), "id: RESP-01\n").unwrap();
+        assert!(draft_registry_preflight(&root, yaml.to_string().as_bytes()).is_err());
+        // Draft validation does not grant authority under any circumstance.
         fs::remove_dir_all(path).unwrap();
     }
 
