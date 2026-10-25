@@ -99,6 +99,45 @@ Native Windows and Linux wheel integration and the registered GitHub
 release policy can admit publication. No distribution was published as part
 of these changes.
 
+## Dependency resolver blocker (user-observed)
+
+The user inspected the locally built `0.3.8.1b1` wheel: it contains
+13 RBAC schema resources and explicitly requires 7 independent native engine
+distributions. The wheel contains no native engine binary by design: the
+engine distributions are required installation dependencies.
+
+**Installation admission currently fails.** The user ran
+`python -m pip install --dry-run --only-binary=:all:
+dist/ptsip-0.3.8.1b1-py3-none-any.whl`, and pip reported:
+
+```text
+ERROR: Could not find a version that satisfies the requirement
+ptsip-engine-context==0.2.0 (from ptsip) (from versions: 0.2.1)
+ERROR: No matching distribution found for ptsip-engine-context==0.2.0
+```
+
+The canonical `main` source composition still specifies Context/Projection
+0.2.0 and the other five engines 0.3.0. The published b5 complete Package
+instead identifies Context/Projection 0.2.1, Storage/Discovery/Planning/
+Execution 0.3.1 and Validation 0.3.3. This is a source-version reconciliation
+problem, not evidence of missing RBAC schema packaging. The pip resolver
+stopped at Context, so no success or failure is yet asserted for resolving the
+other six `main` pins.
+
+**No automatic version repair.** The approved source-to-version contract
+(`.ptsip/contracts/release/composition-contract.json`) requires an explicit
+new version for a changed native engine source, and
+`developer/policy/INFO/MPD-INFO-0005.yaml` forbids engine version
+auto-increment. In particular, `main`'s modified Rust Validation Engine
+source cannot be represented as the already-published Validation 0.3.3
+binary by merely changing `pyproject.toml` dependency pins. Align the
+package's selected engine versions, canonical engine registry, installation
+plan, per-engine projections and exact-source artifact evidence under the
+existing release contract. Do not mutate immutable historical b5 records.
+
+User-reported results are input evidence only; this failure does not attest
+an exact-source, multi-platform release build or authorize publication.
+
 ## Release blockers / explicit scope limits
 
 - Approve complete field/lookup/serialization contracts before enabling
