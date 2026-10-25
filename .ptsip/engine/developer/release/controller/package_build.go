@@ -34,8 +34,10 @@ func BuildPackageReceipt(root string, s Selection, input, output, platform strin
 	if err != nil {
 		return PackageReceipt{}, err
 	}
-	var registry Registry
-	if err := ReadJSON(root, ".ptsip/engine/developer/release/state/package-registry.json", &registry); err != nil {
+	// Match the b5 exact-source composition rule while using the active
+	// developer release state path, never the retired controller.
+	registry, err := PublishedRegistry(root, ".ptsip/engine/developer/release/state/package-registry.json", s.SourceSHA)
+	if err != nil {
 		return PackageReceipt{}, err
 	}
 	components, err = ReusePublishedComponents(root, s, registry, components, locations)
