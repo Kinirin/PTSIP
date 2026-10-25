@@ -148,3 +148,33 @@ def test_obligation_and_prohibition_negative_cases(rule_validator: Draft202012Va
     legacy_prohibitions = copy.deepcopy(original)
     legacy_prohibitions["Constraints"]["prohibitions"] = []
     assert list(rule_validator.iter_errors(legacy_prohibitions))
+
+
+def test_full_gov_document_schema_validates_four_policies() -> None:
+    resource_paths = (
+        ".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+        ".ptsip/contracts/policy/identity/policy_kind.json",
+        ".ptsip/contracts/policy/identity/root_family.json",
+        ".ptsip/contracts/schemas/Authority/PTSIP_Policy_Authority.schema.json",
+        ".ptsip/contracts/schemas/Authority/Authority_Category/Authority_Major_Category.schema.json",
+        ".ptsip/contracts/policy/authority/Authority_Major_Category.json",
+        GOV_STATUS_REF,
+        GOV_SCHEMA_REF,
+        SHARED_RULE_REF,
+    )
+    resources = [_json(path) for path in resource_paths]
+    registry = Registry().with_resources(
+        (resource["$id"], Resource.from_contents(resource)) for resource in resources
+    )
+    schema = _json(GOV_PUBLIC_REF)
+    Draft202012Validator.check_schema(schema)
+    validator = Draft202012Validator(schema, registry=registry)
+    for policy_id in GOV_FILES:
+        policy = yaml.safe_load(
+            (REPO / f"developer/policy/GOV/{policy_id}.yaml").read_text(encoding="utf-8")
+        )
+        errors = sorted(
+            validator.iter_errors(policy),
+            key=lambda error: tuple(map(str, error.absolute_path)),
+        )
+        assert not errors, f"{policy_id}: {errors}"
