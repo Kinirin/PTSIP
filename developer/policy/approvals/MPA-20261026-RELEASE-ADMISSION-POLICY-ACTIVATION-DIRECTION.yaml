@@ -1,0 +1,59 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-RELEASE-ADMISSION-POLICY-ACTIVATION-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The owner approved establishing a formal Release Admission policy and
+    activating automated publication following the successful PTSIP Package
+    Windows/Linux verification, in support of the approved PyPI deployment.
+    Previously unresolved policy conflicts, normative successor policy identity,
+    schema, validation, and published component immutability must not be
+    silently resolved or bypassed by implementation.
+  approval_scope: DIRECTION
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: RELEASE_ADMISSION_NORMATIVE_SUCCESSOR_AND_PYPI_AUTOMATION
+  selected_direction:
+    normative_release_admission_policy: ESTABLISH
+    automatic_publication: ACTIVATE_AFTER_POLICY_CONFLICT_RESOLUTION_AND_VERIFIED_SUCCESSOR
+    release_verification_evidence:
+      source_sha: 00f4745e83aadfb363ec8e88fadf29f589022d78
+      workflow: .github/workflows/tooling-test.yml
+      run_id: 40231338209
+      conclusion: SUCCESS
+      scope: PTSIP_PACKAGE_WINDOWS_X64_AND_LINUX_X64
+      publication_authorization_from_test_pass: false
+    intended_pypi_project: PTSIP
+    prior_approved_common_admission_directions: PRESERVE
+    prior_approved_error_directions_E01_E14: PRESERVE
+    immutable_published_artifacts: PRESERVE
+    per_engine_version_authority: PRESERVE
+    automatic_legacy_developer_policy_reactivation: FORBIDDEN
+    old_root_family_validator_fallback: FORBIDDEN
+    verification_workflow_publication: FORBIDDEN
+  pending_conflict:
+    earlier_approval_ref: developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml
+    earlier_base_revision: 15ed3d9deef29f57cbfc4096ac50fb94f2fbe15d
+    earlier_rule: enabling_github_or_pypi_publication_FORBIDDEN_UNTIL_SEPARATE_POLICY_AND_VALIDATION_APPROVAL
+    incoming_direction: ACTIVATE_AUTOMATED_PUBLICATION
+    resolution: USER_SELECTION_REQUIRED
+    allowed_resolutions: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
+  unresolved:
+    conflict_resolution: USER_SELECTION_REQUIRED
+    normative_policy_document_identity_and_format: USER_POLICY_DECISION_REQUIRED
+    successor_family_schema_and_validator: USER_POLICY_DECISION_REQUIRED
+    publication_permission_gate_and_binding: POLICY_AND_VALIDATION_REQUIRED
+    release_id_issuance_and_persistence: USER_POLICY_DECISION_REQUIRED
+    changed_published_engine_producer_versions: EXPLICIT_VERSION_DECISION_REQUIRED
+    actual_publication_execution: BLOCKED_UNTIL_ALL_GATES_PASS
+  authority_boundary:
+    this_record: OWNER_APPROVED_DIRECTION_PROVENANCE_NOT_ACTIVE_NORMATIVE_POLICY
+    previous_publication_block: PRESERVED_PENDING_CONFLICT_RESOLUTION
+    new_normative_policy_inferred_from_approval: false
+    machine_validation_pass_from_approval_record: false
+    workflow_activation_before_successor_verification: FORBIDDEN
+    historic_policy_reactivation: FORBIDDEN
+    new_branch_creation: FORBIDDEN
+  recorded_at: '2026-10-26'
