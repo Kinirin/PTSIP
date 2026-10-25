@@ -13,9 +13,16 @@ import (
 
 func repoRoot(t *testing.T) string {
 	t.Helper()
-	p, e := filepath.Abs("../../../..")
+	p, e := filepath.Abs("../../../../..")
 	if e != nil {
 		t.Fatal(e)
+	}
+	// The release test module lives at .ptsip/engine/developer/release/test.
+	// Five parent traversals reach the repository root, not its .ptsip folder.
+	for _, ref := range []string{"pyproject.toml", ".ptsip/contracts/release/composition-contract.json", "License-Authority/LICENSE.md"} {
+		if _, err := os.Stat(filepath.Join(p, filepath.FromSlash(ref))); err != nil {
+			t.Fatalf("release test repository root missing %s: %v", ref, err)
+		}
 	}
 	return p
 }
