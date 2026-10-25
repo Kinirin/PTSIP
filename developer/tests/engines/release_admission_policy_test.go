@@ -1,0 +1,18 @@
+package engines_test
+
+import (
+    "testing"
+    "github.com/Kinirin/PTSIP/developer/tests/internal/testrepo"
+)
+
+func TestEffectiveCTRLReleaseAdmissionSchema(t *testing.T) {
+    checker:=testrepo.Open(testrepo.Root(t))
+    policy:=document(t,"developer/policy/CTRL/release-admission.policy.json")
+    if err:=checker.Validate(".ptsip/contracts/schemas/release/ctrl-release-admission.schema.json",policy);err!=nil{t.Fatal(err)}
+    identity:=policy["policy_identity"].(object)
+    if identity["status"]!="APPROVED" || identity["substatus"]!="Applying"{t.Fatal("CTRL publication policy inactive")}
+    a:=policy["authorization"].(object)
+    if a["mode"]!="PER_RELEASE_CONDITIONAL" || a["test_pass_grants_publication"]!=false{t.Fatal("unsafe publication permission")}
+    projects:=a["pypi_projects"].([]any)
+    if len(projects)!=1 || projects[0]!="PTSIP"{t.Fatal("PyPI project scope differs")}
+}
