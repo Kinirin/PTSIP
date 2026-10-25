@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration"
-    Rule_ver: "14"
+    Rule_ver: "15"
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -99,7 +99,7 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/PP200_EXPLICIT_RBAC_OPT_IN_AND_REGISTRY_REF
         applies_when: PROJECT_PROFILE_PP_2_00_COMPILE_SEALED_RBAC_USE
-        rule: "Project Profile pp.2.00은 Compile-Sealed RBAC 기능의 사용 여부와 RBAC 계약 등록부 참조를 프로젝트 프로파일의 기계 검증 가능한 선언 필드로 정의한다. 기능 사용을 명시적으로 선언한 경우에만 RBAC 기능의 활성화 검증을 시작하고, 등록부 참조가 누락되었거나 참조 대상·필수 6개 스키마·독립 계약의 유효성을 검증하지 못하면 RBAC 기능을 실패 시 차단한다. 디렉터리·계약 파일의 존재나 에이전트 추론만으로 기능 사용 또는 실행 권한을 인정하지 않는다. 비사용 프로젝트의 RBAC 구조 미보유는 실패로 보지 않는다. 상위 정책이 승인한 .ptsip/profiles/rbac/ 계약 루트와 .ptsip/contracts/schemas/compile-sealed-rbac/ 스키마 루트는 유지한다. pp.2.00의 최상위 필드명·하위 필드명·값 형식·비사용 시 등록부 참조 처리·등록부 개별 파일명 및 버전 전환·배포 절차는 별도 결정한다. 이 승인으로 pp.1.02의 현재 상태를 변경하거나 pp.2.00의 프로파일/도구 전환을 완료한 것으로 간주하지 않는다."
+        rule: "Project Profile pp.2.00은 Compile-Sealed RBAC 기능의 사용 여부와 RBAC 계약 등록부 참조를 프로젝트 프로파일의 기계 검증 가능한 선언 필드로 정의한다. 기능 사용을 명시적으로 선언한 경우에만 RBAC 기능의 활성화 검증을 시작하고, 등록부 참조가 누락되었거나 참조 대상·필수 6개 스키마·독립 계약의 유효성을 검증하지 못하면 RBAC 기능을 실패 시 차단한다. 디렉터리·계약 파일의 존재나 에이전트 추론만으로 기능 사용 또는 실행 권한을 인정하지 않는다. 비사용 프로젝트의 RBAC 구조 미보유는 실패로 보지 않는다. 상위 정책이 승인한 .ptsip/profiles/rbac/ 계약 루트와 .ptsip/contracts/schemas/compile-sealed-rbac/ 스키마 루트는 유지한다. pp.2.00 프로젝트 프로파일의 신규 최상위 필드는 rbac이며 그 하위 기능 사용 선언 필드는 enabled(rbac.enabled), 등록부 참조 필드는 registry_ref(rbac.registry_ref)로 확정한다. 그 밖의 필드 값·자료형 제약·필수 여부의 세부 정의, 비사용 시 등록부 참조 처리, 등록부 개별 파일명 및 버전 전환·배포 절차는 별도 결정한다. 이 승인으로 pp.1.02의 현재 상태를 변경하거나 pp.2.00의 프로파일/도구 전환을 완료한 것으로 간주하지 않는다."
         Rule_state: APPROVED.provisional
       - id: PROHIBITION/REUSE_RETIRED_AUTHORITY_CATEGORY
         rule: "폐기된 Authority Major·Minor·Micro의 분류 계층·값을 새 RBAC 책임·조건·권한·바인딩 계약의 필수 의미 또는 승인 근거로 재사용하거나, 레거시 분류 참조에 근거하여 실행 권한을 부여하는 행위"
