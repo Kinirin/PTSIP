@@ -1,0 +1,175 @@
+name: ptsip-package-one-shot
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'developer/planning/release-requests/ptsip-package-20261026-01.json'
+  workflow_run:
+    workflows: [tooling-test]
+    types: [completed]
+    branches: [main]
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: ptsip-package-one-shot-${{ github.event_name }}-${{ github.event.workflow_run.head_sha || github.sha }}
+  cancel-in-progress: false
+jobs:
+  dispatch-verification:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+      - name: Assert initial user-authorized request
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$GITHUB_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-01.json'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-01.json').read_text())
+          assert r['request_id']=='PTSIP-PACKAGE-20261026-01'
+          assert r['decision_source']=='USER_EXPLICIT'
+          assert r['execution']['dispatch_test_now'] is True
+          assert r['execution']['dispatch_release_on_verification_success'] is True
+          assert r['trigger']['source_sha']=='COMMIT_CREATING_THIS_REQUEST'
+          s=r['authorized_scope']
+          assert s['verification_mode']=='release-verification' and s['targets']=='package'
+          assert s['release_type']=='PTSIP_PACKAGE' and s['destination']=='github-pypi'
+          assert s['required_platforms']==['windows-x64','linux-x64']
+          assert s['optional_platforms']==[]
+          PY
+          test "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')" = "$GITHUB_SHA"
+      - name: Dispatch exact-HEAD full Package verification
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/tooling-test.yml/dispatches" \
+            -f ref=main \
+            -f 'inputs[mode]=release-verification' \
+            -f 'inputs[targets]=package' \
+            -f 'inputs[optional_platforms]='
+          echo "DISPATCHED_TOOLING_TEST exact SHA=$GITHUB_SHA"
+  dispatch-release-after-verification:
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'workflow_dispatch' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+      VERIFY_RUN_ID: ${{ github.event.workflow_run.id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 2
+      - name: Require exact once-only request and current HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$EXPECTED_SHA" = "$(git rev-parse HEAD)"
+          test "$EXPECTED_SHA" = "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
+          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-01.json'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-01.json').read_text())
+          assert r['schema_version']=='ptsip-one-shot-package-release-request/v1'
+          assert r['request_id']=='PTSIP-PACKAGE-20261026-01'
+          assert r['decision_source']=='USER_EXPLICIT'
+          assert r['trigger']['source_sha']=='COMMIT_CREATING_THIS_REQUEST'
+          assert r['admission']['duplicate_publication_dispatch']=='FORBIDDEN'
+          assert r['authorized_scope']['verification_mode']=='release-verification'
+          assert r['authorized_scope']['targets']=='package'
+          assert r['authorized_scope']['release_type']=='PTSIP_PACKAGE'
+          assert r['authorized_scope']['destination']=='github-pypi'
+          assert r['authorized_scope']['required_platforms']==['windows-x64','linux-x64']
+          assert r['authorized_scope']['optional_platforms']==[]
+          PY
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/go.mod
+      - name: Verify independent active CTRL admission policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer run . --validator ctrl-release-admission-check --root "$GITHUB_WORKSPACE" > /tmp/ctrl.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/ctrl.json'))
+          assert r['status']=='ACTIVE_POLICY_VERIFIED'
+          assert r['admission_owner']=='CTRL'
+          assert r['per_release_evidence']=='NOT_ASSERTED'
+          assert r['publication_authorized'] is False
+          PY
+      - name: Verify original selection and every required host join
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$VERIFY_RUN_ID" > /tmp/verified-run.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$VERIFY_RUN_ID/jobs?per_page=100" > /tmp/verified-jobs.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$VERIFY_RUN_ID/artifacts?per_page=100" > /tmp/verified-artifacts.json
+          mkdir -p /tmp/ptsip-verified-selection
+          gh run download "$VERIFY_RUN_ID" -R "$GITHUB_REPOSITORY" \
+            -n "verification-selection-$EXPECTED_SHA" -D /tmp/ptsip-verified-selection
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          run=json.load(open('/tmp/verified-run.json'))
+          jobs=json.load(open('/tmp/verified-jobs.json'))['jobs']
+          artifacts=json.load(open('/tmp/verified-artifacts.json'))['artifacts']
+          sha=os.environ['EXPECTED_SHA']
+          assert run['head_sha']==sha, 'original verification ran for different source'
+          assert run['path']=='.github/workflows/tooling-test.yml'
+          assert run['event']=='workflow_dispatch'
+          assert run['status']=='completed' and run['conclusion']=='success'
+          assert len(jobs) < 100, 'incomplete job page must fail closed'
+          names=[j['name'] for j in jobs if j['status']=='completed' and j['conclusion']=='success']
+          platforms=['windows-x64','linux-x64']
+          components=['tool','profiles','context','storage','validation','discovery','planning','execution','projection']
+          for component in components:
+              for platform in platforms:
+                  expected=f'Registered verification / {component} / {platform}'
+                  assert names.count(expected)==1, f'missing {expected}'
+          for platform in platforms:
+              expected=f'Registered join / package / {platform}'
+              assert names.count(expected)==1, f'missing {expected}'
+          available={a['name'] for a in artifacts if not a['expired']}
+          expected_artifacts=[f'verification-selection-{sha}']
+          expected_artifacts += [f'verification-{c}-{p}-{sha}' for c in components for p in platforms]
+          expected_artifacts += [f'verification-package-{p}-{sha}' for p in platforms]
+          assert set(expected_artifacts).issubset(available), 'original verifiable artifacts missing'
+          selection=json.loads(Path('/tmp/ptsip-verified-selection/selection.json').read_text())
+          assert selection['source_sha']==sha
+          assert selection['release_type']=='PTSIP_PACKAGE'
+          assert selection['platforms']==platforms
+          items=selection['components']
+          assert len(items)==9 and {i['id'] for i in items}==set(components)
+          assert selection['selection_sha256'], 'canonical original selection hash missing'
+          print('EXACT_HEAD_PACKAGE_JOIN_AND_SELECTION_SUCCESS',sha,os.environ['VERIFY_RUN_ID'])
+          PY
+      - name: Disallow duplicate dispatch and start GitHub/PyPI release
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/tooling-release.yml/runs?head_sha=$EXPECTED_SHA&per_page=100" > /tmp/past-release-runs.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/past-release-runs.json'))
+          assert len(d['workflow_runs'])==0, 'release was already dispatched for this exact source'
+          PY
+          test "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')" = "$EXPECTED_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/tooling-release.yml/dispatches" \
+            -f ref=main \
+            -f 'inputs[release_type]=PTSIP_PACKAGE' \
+            -f 'inputs[components]=' \
+            -f 'inputs[optional_platforms]=' \
+            -f 'inputs[destination]=github-pypi'
+          echo "DISPATCHED_PTSIP_RELEASE exact SHA=$EXPECTED_SHA based on original run=$VERIFY_RUN_ID"
