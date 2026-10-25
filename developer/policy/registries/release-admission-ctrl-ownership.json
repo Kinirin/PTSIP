@@ -1,0 +1,49 @@
+{
+  "schema_version": "ptsip-release-admission-owner-selection/v1",
+  "artifact_class": "OWNER_APPROVED_CTRL_ADMISSION_RESPONSIBILITY",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "owner_decision": "CTRL_CENTERED",
+  "decision_source": "USER_EXPLICIT",
+  "decision_date": "2026-10-26",
+  "conflict_resolution": "KEEP_LATEST",
+  "conflict_approval": "developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-PUBLICATION-KEEP-LATEST.yaml",
+  "responsibility": {
+    "admission_decision": "CTRL",
+    "exact_source_verification_evidence": "ASSURE",
+    "release_identity_and_published_composition": "INFO",
+    "publication_records": "RECORD",
+    "workflow_execution": "IMPLEMENTATION",
+    "authority_order": "POLICY > PLAN > IMPLEMENTATION"
+  },
+  "machine_contract": {
+    "activation_ref": "developer/policy/registries/release-admission-publication-activation.json",
+    "verification_ref": ".ptsip/contracts/release/verification-contract.json",
+    "admission_projection_ref": ".ptsip/contracts/release/admission.json",
+    "runtime_policy_ref": "developer/policy/CTRL/release-admission.policy.json",
+    "publication_workflow": ".github/workflows/tooling-release.yml",
+    "verification_workflow": ".github/workflows/tooling-test.yml"
+  },
+  "invariants": {
+    "source_sha_exact": true,
+    "verified_selection_exact": true,
+    "required_hosts": [
+      "windows-x64",
+      "linux-x64"
+    ],
+    "already_published_artifact_immutability": true,
+    "independent_component_versions": true,
+    "release_identity_separate_from_github_carrier": true,
+    "retired_policy_resolver_forbidden": true,
+    "developer_schema_validation_gap_may_not_be_inferred_closed": true,
+    "stale_or_missing_normative_validator_blocks_publication": true,
+    "tool_only_fallback_for_package_forbidden": true
+  },
+  "activation": {
+    "direction_approved": true,
+    "runtime_policy_document_complete": false,
+    "required_policy_schema_and_validator_complete": false,
+    "automation_implementation_authorized": true,
+    "execution_mode": "FAIL_CLOSED_PENDING_POLICY_VERIFICATION",
+    "uncontrolled_mutation_not_authorized": true
+  }
+}

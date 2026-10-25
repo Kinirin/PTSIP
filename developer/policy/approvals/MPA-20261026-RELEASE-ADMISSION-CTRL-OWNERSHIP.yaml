@@ -1,0 +1,28 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-RELEASE-ADMISSION-CTRL-OWNERSHIP
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The owner selected A. CTRL-centered Release Admission responsibility and
+    directed expedited implementation without repeated policy-level discussion.
+    CTRL owns admission; ASSURE supplies independent verification evidence.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: RELEASE_ADMISSION_OWNER_SELECTION
+  selected_direction:
+    model: CTRL_CENTERED
+    policy_owner: CTRL
+    independent_verification_evidence_owner: ASSURE
+    previously_approved_keep_latest: PRESERVED
+    existing_publication_immutability_and_security_guards: PRESERVED
+    implementation_authorized: true
+  separate_unresolved:
+    detailed_normative_document_format_and_schema: NOT_DECIDED_BY_OWNER_SELECTION
+    changed_engine_versions: REQUIRE_EXPLICIT_VERSION_DECISION
+    publication_without_effective_policy: FORBIDDEN
+    branch_creation: NOT_AUTHORIZED
+  machine_contract_ref: developer/policy/registries/release-admission-ctrl-ownership.json
+  recorded_at: '2026-10-26'
