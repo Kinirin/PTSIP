@@ -138,6 +138,35 @@ existing release contract. Do not mutate immutable historical b5 records.
 User-reported results are input evidence only; this failure does not attest
 an exact-source, multi-platform release build or authorize publication.
 
+## Published b5 comparator (user-observed pip dry run and repository source comparison)
+
+The user executed:
+`python -m pip install --dry-run --ignore-installed --only-binary=:all: "PTSIP==0.3.8b5"`
+on Windows. Pip selected cached
+`ptsip-0.3.8b5-py3-none-win_amd64.whl` and completed dependency resolution:
+`Would install PTSIP-0.3.8b5 PyYAML-6.0.3 attrs-26.1.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 referencing-0.37.0 rpds-py-2026.9.1`.
+No independent `ptsip-engine-*` distributions were in the reported resolver
+plan. This is a **successful dry-run only**, not evidence of installed or
+executed engines.
+
+GitHub comparison against original b5 delivery branch
+`dev/0.3.8b2` shows:
+- `pyproject.toml`: project `0.3.8b5` with PyYAML/jsonschema runtime
+  dependencies, no seven `ptsip-engine-*` requirements.
+- `.github/workflows/tooling-release.yml`: host-tagged, integrated PTSIP
+  wheel and source distribution checks for the b5 single-project release.
+- Current `main`: project `0.3.8.1b1` depending on seven separately
+  versioned native engine distributions, currently bound to Context/Projection
+  `0.2.0` and the remaining engines `0.3.0`. Its publication workflow
+  is explicitly disabled.
+
+These are two different distribution mechanisms, not interchangeable
+versions of the same wheel layout. The user-requested b6 goal requires
+source/version/artifact composition reconciliation with the effective
+release policy before any new publication workflow can be activated.
+Neither the historical b5 delivery branch nor its release evidence is
+modified by this record.
+
 ## Release blockers / explicit scope limits
 
 - Approve complete field/lookup/serialization contracts before enabling
