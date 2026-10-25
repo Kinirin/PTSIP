@@ -29,10 +29,10 @@ var govPolicies = map[string]struct {
     statusVersion string
     ruleVersion string
 }{
-    "MPD-GOV-0001": {8, 3, "2", "3"},
-    "MPD-GOV-0004": {6, 3, "3", "1"},
+    "MPD-GOV-0001": {9, 3, "2", "4"},
+    "MPD-GOV-0004": {8, 3, "3", "2"},
     "MPD-GOV-0005": {8, 5, "3", "1"},
-    "MPD-GOV-0006": {12, 4, "1", "1"},
+    "MPD-GOV-0006": {14, 4, "1", "2"},
 }
 
 func govRepositoryRoot(t *testing.T) string {
