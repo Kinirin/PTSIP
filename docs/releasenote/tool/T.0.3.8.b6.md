@@ -241,9 +241,19 @@ not linked to or restored under `.github/checks/release/controller/`:
   `Successfully built ptsip-0.3.8.1b1.tar.gz and
   ptsip-0.3.8.1b1-py3-none-win_amd64.whl`. This confirms a Windows
   platform-tagged Wheel and sdist were produced via the native backend.
-- The full command logs, built artifact hashes, installed executable
-  inventory, origins and wheel RECORD have not been independently inspected.
-  Source SHA from the local build was not separately attached.
+- **Windows complete Wheel binary inventory and content hashes:
+  USER-REPORTED PASS.** The user inspected
+  `dist/ptsip-0.3.8.1b1-py3-none-win_amd64.whl` with Python `zipfile`
+  and `hashlib.sha256`. Each of the seven `ptsip-engine-*.exe` script
+  members (context, storage, validation, discovery, planning, execution,
+  projection) matched its `ptsip-engines.json` recorded `binary_sha256`.
+  The test also asserted the exact seven-engine key set,
+  `execution_authorized=false`, and the `win_amd64` WHEEL tag.
+  The user reported `PASS: 7 native engines verified`.
+- The Wheel was inspected in the user's local environment; the binary
+  contents and provenance are **not independently attested by CI**.
+  The local Wheel whole-file SHA256, exact source checkout SHA, RECORD
+  verification and installed/native-executable probe were not supplied.
 - Linux native Wheel and sdist reproducibility, exact-source admission,
   remaining Go/controller tests, developer native engine verification and
   Python/Rust tests are **NOT REPORTED PASS** by these two result lines.
