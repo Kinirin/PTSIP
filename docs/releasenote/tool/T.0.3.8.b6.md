@@ -20,11 +20,72 @@ b6 readiness or publication from this note.
 - `src/ptsip/specdata/ptsip-registry.yaml` matches its canonical
   `registry/ptsip-registry.yaml` source.
 
-All six schema files are intentionally **fail-closed scaffolds**. Their
-required/optional domain fields, registration grammar, Binding legitimacy,
-Seal integrity, and Activation semantics have not yet been approved; no
-RBAC instance is valid against the scaffolds. The Rust validation engine's
-RBAC preflight is unregistered internal code and does not grant authority.
+All six original canonical schema files remain **fail-closed scaffolds**.
+The non-normative draft companion files below are available for field-shape
+experimentation and tests; they are NOT replacements for the effective schemas:
+- `central-registry.draft.schema.json`: approved four kinds and path syntax,
+  plus provisional ID/revision/metadata shape.
+- `responsibility.candidate.schema.json`, `condition-atom.candidate.schema.json`,
+  `permission-atom.candidate.schema.json`, `binding.candidate.schema.json`.
+- `sealed-contract.candidate.schema.json`, `activation.candidate.schema.json`
+  (derived artifact candidates, NOT central registry source entries).
+- `candidate-index.json`: machine-readable implementation-only mapping,
+  explicitly `effective_policy_override=false` and
+  `rbac_authorization_permitted=false`.
+- `schemas/ptsip-profile-pp-2.00.candidate.schema.json`: opt-in declaration
+  candidate. pp.1.02 remains the current registered profile.
+
+Rust `rbac.rs` now includes a draft JSON registry source preflight which
+rejects duplicate registered IDs, unapproved kinds, escaping/missing paths,
+source ID/kind mismatches and revision mismatches. YAML source paths are
+legal but fail closed during content verification until a native YAML decoder
+is available. These source checks do not validate approval evidence, authentic
+Seal, Activation or executable authority. The RBAC operation remains unregistered.
+
+
+
+## Implementation and verification record (provisional)
+
+- GitHub source/embedded parity checks: PASS for the six candidate schema pairs;
+  PASS for the six existing fail-closed schema pairs; PASS for the draft central
+  registry and candidate index pairs.
+- Repository read-only static assertions: PASS (17 assertions) for registered
+  semantics, candidate packaging declarations, Rust draft identity comparisons,
+  existing pp.1.02 current binding, and publication guard preservation.
+- An **offline reconstruction** of the candidate JSON Schema structures was
+  validated with `jsonschema` and pytest: **8 tests passed**. This was NOT an
+  execution of the checked-out GitHub test suite and cannot be submitted as
+  official exact-source release evidence.
+- Rust cargo tests: **NOT EXECUTED** (Rust/Cargo toolchain unavailable in the
+  current execution container). The checked-in Rust tests are pending CI.
+- Repository pytest including
+  `src/tests/ptsip/contracts/test_rbac_candidate_contracts.py`:
+  **NOT EXECUTED** against the current GitHub checkout.
+- Go developer policy/release tests: **NOT EXECUTED** against current source.
+- Wheel/sdist build, Windows/Linux native engine composition, wheel install,
+  exact-source multi-platform GitHub Actions: **NOT EXECUTED**.
+- Release admission: **BLOCKED** by current effective release control plane
+  (`.github/workflows/tooling-release.yml` is design-only and explicitly
+  fails publication; `.ptsip/contracts/release/admission.json` has
+  `publication_authorized=false`).
+- The `main` `pyproject.toml` still declares `0.3.8.1b1`, not `0.3.8b6`;
+  a b5-to-b6 package/engine composition reconciliation has not been verified.
+
+### Commands for exact-source verification after checkout
+
+```bash
+python -m pytest -q src/tests/ptsip/contracts/test_rbac_candidate_contracts.py src/tests/ptsip/contracts/test_embedded_specdata.py
+cargo test --manifest-path src/ptsip/engines/validation/Cargo.toml
+go -C developer/tests test ./schema_validation -count=1
+go -C .ptsip/engine/developer test ./release -count=1
+python -m build --sdist --wheel
+```
+
+These commands are a verification checklist, not a release admission grant.
+Native Windows and Linux wheel integration and the registered GitHub
+`tooling-test` mode must also be verified from the exact source SHA before
+release policy can admit publication. No distribution was published as part
+of these changes.
 
 ## Release blockers / explicit scope limits
 
