@@ -15,6 +15,7 @@ CANONICAL_PUBLIC_PROFILE_CATALOG = CANONICAL_PUBLIC_PROFILES / "index.yaml"
 CANONICAL_PP_CONTRACT_REGISTRY = ROOT / "registry" / "project-profile-contracts.yaml"
 CANONICAL_RBAC_SCHEMA_ROOT = ROOT / ".ptsip" / "contracts" / "schemas" / "compile-sealed-rbac"
 CANONICAL_RBAC_FIELDS = ROOT / "registry" / "compile-sealed-rbac-registry-fields.json"
+CANONICAL_PP200_CANDIDATE = ROOT / "schemas" / "ptsip-profile-pp-2.00.candidate.schema.json"
 RBAC_SCHEMA_FILES = (
     "responsibility.schema.json", "condition-atom.schema.json",
     "permission-atom.schema.json", "binding.schema.json",
@@ -197,6 +198,12 @@ def _project_rbac_contract_assets(build_lib: Path) -> None:
     if CANONICAL_RBAC_FIELDS.read_bytes() != packaged_fields.read_bytes():
         raise RuntimeError("canonical and embedded RBAC field requirements diverged")
     copy2(CANONICAL_RBAC_FIELDS, target / packaged_fields.name)
+    candidate = embedded_src / CANONICAL_PP200_CANDIDATE.name
+    if not CANONICAL_PP200_CANDIDATE.is_file() or not candidate.is_file():
+        raise RuntimeError("pp.2.00 candidate profile schema is missing")
+    if CANONICAL_PP200_CANDIDATE.read_bytes() != candidate.read_bytes():
+        raise RuntimeError("canonical and embedded pp.2.00 candidate schemas diverged")
+    copy2(CANONICAL_PP200_CANDIDATE, target / candidate.name)
     for name in (*RBAC_SCHEMA_FILES, *RBAC_DRAFT_SCHEMA_FILES):
         source = CANONICAL_RBAC_SCHEMA_ROOT / name
         embedded = embedded_src / "compile-sealed-rbac" / name
