@@ -167,6 +167,46 @@ mod tests {
     }
 
     #[test]
+    fn enabled_with_six_syntactically_valid_schemas_remains_non_authoritative() {
+        use std::fs;
+        use std::time::{SystemTime, UNIX_EPOCH};
+        let stamp = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "ptsip-rbac-preflight-test-{}-{stamp}",
+            std::process::id()
+        ));
+        let schemas = root.join(SCHEMA_ROOT);
+        let registry = root.join(PROFILE_RBAC_ROOT);
+        fs::create_dir_all(&schemas).unwrap();
+        fs::create_dir_all(&registry).unwrap();
+        fs::write(registry.join("index.json"), "{}").unwrap();
+        for name in SCHEMAS {
+            fs::write(
+                schemas.join(name),
+                r#"{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object"}"#,
+            )
+            .unwrap();
+        }
+        let request = json!({
+            "root": root.to_str().unwrap(),
+            "profile": {
+                "ptsip": {"version": "pp.2.00"},
+                "rbac": {"enabled": true, "registry_ref": ".ptsip/profiles/rbac/index.json"}
+            }
+        });
+        let result = preflight(&request).unwrap();
+        assert_eq!(result["verified_schema_count"], 6);
+        assert_eq!(result["declaration_valid"], true);
+        assert_eq!(result["rbac_usable"], false);
+        assert_eq!(result["validation_stage"], "STRUCTURAL_PREFLIGHT_ONLY");
+        assert_eq!(result["execution_authorized"], false);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn external_schema_refs_fail_closed() {
         assert!(ensure_local_schema_refs(&json!({"$ref":"https://example.invalid/schema"})).is_err());
         assert!(ensure_local_schema_refs(&json!({"$dynamicRef":"#/$defs/item"})).is_err());
