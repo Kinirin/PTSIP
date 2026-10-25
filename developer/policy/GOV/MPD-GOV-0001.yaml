@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration"
-    Rule_ver: "19"
+    Rule_ver: "20"
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -108,6 +108,10 @@ Policy_Rules:
       - id: OBLIGATION/COMPILE_SEALED_CENTRAL_REGISTRY_FIELDS
         applies_when: PROJECT_USES_COMPILE_SEALED_RBAC_CENTRAL_REGISTRY
         rule: "Compile-Sealed RBAC의 중앙 등록부 필드 계약은 registry/compile-sealed-rbac-registry-fields.json을 기계 판독 기준으로 따른다. schema_version, entries, entries[].id, entries[].kind, entries[].resource는 필수이고 entries[].revision은 조건부, metadata는 선택으로 정의한다. schema_version은 등록부 형식 버전, entries는 독립 계약 목록, id는 독립 계약 ID, kind는 계약 종류, resource는 실제 계약 파일 참조, revision은 적용되는 경우 계약 개정 구분, metadata는 비권위적 설명·진단에 한정한다. revision 필수화 조건, 등록부 파일명·직렬화 형식, 필드 자료형·허용값·고유성 및 참조 검증 규칙은 별도 결정하며 추론으로 확정하지 않는다. 등록부에는 원본 책임·조건·권한·Binding 정의나 승인·실행 권위를 흡수하지 않는다."
+        Rule_state: APPROVED.provisional
+      - id: OBLIGATION/COMPILE_SEALED_SIX_SCHEMA_PROVISIONAL_SCAFFOLDS
+        applies_when: COMPILE_SEALED_RBAC_SCHEMA_FIELD_DEFINITION_PENDING
+        rule: "사용자는 .ptsip/contracts/schemas/compile-sealed-rbac/ 의 승인된 여섯 독립 JSON Schema 및 배포용 동일 사본의 현행 fail-closed 골격을 상세 필드 결정 작업의 임시 기준으로 승인한다. 이 임시 승인은 이미 생성된 스키마 파일의 존재·독립 분할·해당 위치에 한정하며 각 스키마의 실제 필수/선택 필드, 참조 문법, 승인 정당성, Seal 무결성, Activation 의미 또는 유효한 RBAC 인스턴스 판정을 승인하지 않는다. 세부 계약이 독립적으로 승인되어 실제 검증 가능한 스키마로 대체되기 전까지 골격은 모든 계약 인스턴스를 거부하며, 골격 파일 존재를 pp.2.00 활성화·RBAC 실행 권한·정식 엔진 연산 등록 또는 0.3.8b6 배포 완료의 근거로 사용하지 않는다. 실제 필드와 등록부 의미를 사용자의 후속 결정에 따라 독립 기계 계약으로 확정한다."
         Rule_state: APPROVED.provisional
       - id: PROHIBITION/REUSE_RETIRED_AUTHORITY_CATEGORY
         rule: "폐기된 Authority Major·Minor·Micro의 분류 계층·값을 새 RBAC 책임·조건·권한·바인딩 계약의 필수 의미 또는 승인 근거로 재사용하거나, 레거시 분류 참조에 근거하여 실행 권한을 부여하는 행위"
