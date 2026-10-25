@@ -144,7 +144,7 @@ func TestGOVPolicyMigrationAndFullSchema(t *testing.T) {
             state := govObject(t, document["Policy_Status"], "Policy_Status")
             if !govEqualKeys(state, "Policy_Status_Schema_ver", "status", "contract") ||
                 state["Policy_Status_Schema_ver"] != expected.statusVersion ||
-                state["status"] != "APPROVED.provisional" ||
+                state["status"] != "APPROVED.Applying" ||
                 !strings.HasPrefix(fmt.Sprint(state["contract"]), "urn:ptsip:contract:policy:gov:") {
                 t.Fatalf("GOV status mismatch: %v", state)
             }
@@ -234,7 +234,7 @@ func TestGOVFlattenedLifecycleStateVocabulary(t *testing.T) {
     }
     if !reflect.DeepEqual(actual, derived) { t.Fatalf("GOV lifecycle vocabulary does not match approved lifecycle sources") }
     compiled := govCompiler(t, govStatusRef)
-    valid := map[string]any{"Policy_Status_Schema_ver":"3", "status":"APPROVED.provisional", "contract":"urn:ptsip:contract:policy:gov:identity:integrity"}
+    valid := map[string]any{"Policy_Status_Schema_ver":"3", "status":"APPROVED.Applying", "contract":"urn:ptsip:contract:policy:gov:identity:integrity"}
     if err := compiled.Validate(valid); err != nil { t.Fatalf("valid status: %v", err) }
     changes := []map[string]any{
         {"status":"APPROVED.nonexistent"},
@@ -351,5 +351,30 @@ func TestGOVPolicyReaderAcceptsWindowsLineEndings(t *testing.T) {
         if govObject(t, document["Policy_Identity"], "Policy_Identity")["id"] != "MPD-GOV-0006" {
             t.Fatal("GOV policy reader lost canonical identity")
         }
+    }
+}
+
+// The index is a lookup projection; its state must track each owning document.
+func TestGOVCatalogStatusMatchesPolicyDocuments(t *testing.T) {
+    catalog := govYAML(t, "developer/policy/index.yaml")
+    entries := govArray(t, catalog["policies"], "policies")
+    found := make(map[string]bool)
+    for _, raw := range entries {
+        entry := govObject(t, raw, "index entry")
+        id, _ := entry["id"].(string)
+        if _, relevant := govPolicies[id]; !relevant { continue }
+        if found[id] { t.Fatalf("duplicate GOV catalog entry: %s", id) }
+        found[id] = true
+
+        document := govPolicy(t, id)
+        policyStatus := govObject(t, document["Policy_Status"], "Policy_Status")
+        fullStatus, _ := policyStatus["status"].(string)
+        pieces := strings.SplitN(fullStatus, ".", 2)
+        if len(pieces) != 2 || entry["status"] != pieces[0] || entry["substatus"] != pieces[1] {
+            t.Fatalf("%s: index status/substatus disagrees with owner policy status %q", id, fullStatus)
+        }
+    }
+    for id := range govPolicies {
+        if !found[id] { t.Errorf("missing GOV catalog entry: %s", id) }
     }
 }
