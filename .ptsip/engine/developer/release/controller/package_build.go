@@ -14,6 +14,7 @@ type PackageReceipt struct {
 	PyPI      string   `json:"pypi_version"`
 	Snapshot  Snapshot `json:"package"`
 	Wheel     File     `json:"wheel"`
+	SourceDist *File   `json:"source_distribution,omitempty"`
 	Status    string   `json:"status"`
 }
 
@@ -57,6 +58,7 @@ func BuildPackageReceipt(root string, s Selection, input, output, platform strin
 		return PackageReceipt{}, err
 	}
 	var tool, profiles []byte
+	native := PackageNativePayload{Platform: platform, Wheels: map[string][]byte{}}
 	for _, component := range snapshot.Components {
 		for _, file := range component.Files {
 			if component.Kind == "tool" && filepath.Ext(file.Name) == ".whl" {
@@ -69,7 +71,7 @@ func BuildPackageReceipt(root string, s Selection, input, output, platform strin
 				var b []byte
 				b, err = os.ReadFile(locations[component.ID+"/"+platform+"/"+file.Name])
 				if err == nil {
-					err = os.WriteFile(filepath.Join(out, file.Name), b, 0644)
+					native.Wheels[component.ID] = b
 				}
 			}
 			if err != nil {
@@ -77,13 +79,16 @@ func BuildPackageReceipt(root string, s Selection, input, output, platform strin
 			}
 		}
 	}
-	wheel, err := PackageWheel(tool, profiles, snapshot, c.Engines, c.PackagePyPI)
+	wheel, err := BundledPackageWheel(tool, profiles, snapshot, c.Engines, c.PackagePyPI, native)
 	if err != nil {
 		return PackageReceipt{}, err
 	}
-	name := "ptsip-" + c.PackagePyPI + "-py3-none-any.whl"
+	name, err := BundledPackageWheelName(c.PackagePyPI, platform)
+	if err != nil {
+		return PackageReceipt{}, err
+	}
 	if err := os.WriteFile(filepath.Join(out, name), wheel, 0644); err != nil {
 		return PackageReceipt{}, err
 	}
-	return PackageReceipt{Schema: "ptsip-pip-package-test-receipt/v1", Source: s.SourceSHA, Selection: s.SelectionSHA, Platform: platform, PyPI: c.PackagePyPI, Snapshot: snapshot, Wheel: File{Name: name, SHA256: Digest(wheel), Platform: "any"}, Status: "AWAITING_INSTALL_VERIFICATION"}, nil
+	return PackageReceipt{Schema: "ptsip-pip-package-test-receipt/v2", Source: s.SourceSHA, Selection: s.SelectionSHA, Platform: platform, PyPI: c.PackagePyPI, Snapshot: snapshot, Wheel: File{Name: name, SHA256: Digest(wheel), Platform: platform}, Status: "AWAITING_INSTALL_VERIFICATION"}, nil
 }
