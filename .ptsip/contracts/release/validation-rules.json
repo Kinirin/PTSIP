@@ -119,14 +119,16 @@
       ".github/test_modes.json",
       ".ptsip/engine/developer",
       "--validator",
-      "exit 1"
+      ".ptsip/engine/developer/release/controller",
+      "admit-policy",
+      "prepare-publication",
+      "publish-carrier",
+      "pypa/gh-action-pypi-publish@release/v1",
+      "PYPI_API_TOKEN",
+      "contents: write"
     ],
     "must_not_contain": [
       ".github/checks/release/controller",
-      "pypa/gh-action-pypi-publish",
-      "publish-carrier",
-      "PYPI_API_TOKEN",
-      "contents: write",
       "gh release create",
       "twine upload"
     ]
@@ -137,5 +139,8 @@
     "normative_policy_verification": "NOT_ASSERTED",
     "actual_release_authorization": false,
     "unknown_or_missing": "FAIL_CLOSED"
-  }
+  },
+  "workflow_role": "DESIGN_PROJECTION_AND_POLICY_GATED_PUBLICATION_PATH",
+  "runtime_publication_authority_source": "INDEPENDENT_CTRL_NORMATIVE_VERIFIER_NOT_THIS_DESIGN_CONTRACT",
+  "unresolved_publication": "FAIL_CLOSED_AT_CONTROLLER_GATE"
 }

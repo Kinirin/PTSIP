@@ -1,74 +1,155 @@
-# Design-only verification entry. Publication remains disabled by explicit policy.
 name: tooling-release
 on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Requested release selection (verification design only)'
+        description: 'Package always includes Tool, Profiles and ALL registered engines'
         type: choice
         default: PTSIP_PACKAGE
         options: [PTSIP_PACKAGE, TOOL_ONLY, ENGINE_ONLY, PROFILES_ONLY, TOOL_ENGINES, TOOL_PROFILES, ENGINES_PROFILES, MULTIPLE_ENGINES]
       components:
-        description: 'Selected component names (not published)'
+        description: 'Engine names for an explicit component release; leave empty for Package'
         type: string
         default: ''
       optional_platforms:
-        description: 'Optional platform selection (not executed)'
+        description: 'Optional macOS verification artifacts (leave empty for Windows and Linux)'
         type: string
         default: ''
       destination:
-        description: 'Intended publisher (not contacted)'
+        description: Publication destination
         type: choice
         default: github-pypi
         options: [github, github-pypi]
 permissions:
   contents: read
 concurrency:
-  group: ptsip-release-design-verification
+  group: ptsip-component-publication
   cancel-in-progress: false
 jobs:
-  release-admission-contract-check:
+  release-admission:
     runs-on: ubuntu-latest
+    outputs:
+      publication_matrix: ${{ steps.preflight.outputs.publication_matrix }}
+      pypi_count: ${{ steps.preflight.outputs.pypi_count }}
     permissions:
       contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TYPE: ${{ inputs.release_type }}
+      COMPONENTS: ${{ inputs.components }}
+      OPTIONAL: ${{ inputs.optional_platforms }}
+      DESTINATION: ${{ inputs.destination }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-go@v6
         with:
-          go-version-file: .ptsip/engine/developer/go.mod
-      - name: Resolve Release Admission validator from test_modes.json
-        id: release_mode
+          go-version-file: .ptsip/engine/developer/release/controller/go.mod
+          cache: true
+          cache-dependency-path: .ptsip/engine/developer/release/controller/go.sum
+      - name: Confirm latest CTRL ownership and non-normative design consistency
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-          registry = json.loads(Path('.github/test_modes.json').read_text())
-          modes = [x for x in registry['modes'] if x.get('id') == 'release-admission-design-check']
-          if len(modes) != 1 or modes[0].get('task_ref') != 'release-admission-contract-check':
-              raise SystemExit('BLOCKED: unregistered or ambiguous release verification mode')
-          execution = registry['tasks']['execution']['release-admission-contract-check']
-          if (execution.get('module_root') != '.ptsip/engine/developer'
-              or execution.get('validator') != 'release-admission-check'
-              or execution.get('contract_ref') != '.ptsip/contracts/release/admission.json'
-              or execution.get('publication_authorized') is not False):
-              raise SystemExit('BLOCKED: unsafe release verification task binding')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
-              print('validator=' + execution['validator'], file=out)
-          PY
-      - name: Run developer Release Admission validator tests
-        shell: bash
-        run: go -C .ptsip/engine/developer test ./release -count=1
-      - name: Validate registered Release Admission contract projection
-        shell: bash
-        run: go -C .ptsip/engine/developer run . --validator "${{ steps.release_mode.outputs.validator }}" --root "$GITHUB_WORKSPACE"
-      - name: Reject actual release publication until successor policy activation
+          test -f .github/test_modes.json
+          go -C .ptsip/engine/developer test ./release -count=1
+          go -C .ptsip/engine/developer run . --validator release-admission-check --root "$GITHUB_WORKSPACE"
+      - name: Admit the effective CTRL normative release policy (fail closed)
         shell: bash
         run: |
-          echo "BLOCKED: Release Admission verifier is a contract-design check, not publication authority."
-          echo "No GitHub Release, PyPI upload, publication credentials, or release records are invoked."
-          exit 1
+          set -euo pipefail
+          go -C .ptsip/engine/developer/release/controller run ./cmd/ptsip-release admit-policy --root "$GITHUB_WORKSPACE"
+      - name: Resolve original verification and prepare admitted publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .github/checks/release/controller run ./cmd/ptsip-release prepare-publication --root "$GITHUB_WORKSPACE" --release-type "$RELEASE_TYPE" --components "$COMPONENTS" --optional-platforms "$OPTIONAL" --output .artifacts/release/shipping
+      - name: Consume immutable PyPI file identities before publication
+        id: preflight
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-stage --root "$GITHUB_WORKSPACE" --destination "$DESTINATION" --output .artifacts/release/shipping
+      - uses: actions/upload-artifact@v7
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+          if-no-files-found: error
+  github-publication:
+    needs: release-admission
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/release/controller/go.mod
+          cache: true
+          cache-dependency-path: .ptsip/engine/developer/release/controller/go.sum
+      - uses: actions/download-artifact@v8
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+      - name: Publish one verified source-SHA Release
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+  pypi-publication:
+    needs: [release-admission, github-publication]
+    if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.pypi_count != '0' }}
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.release-admission.outputs.publication_matrix) }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+      - name: Upload the admitted original wheel set
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          attestations: false
+          packages-dir: .artifacts/release/shipping/pypi/${{ matrix.component }}
+  package-record:
+    needs: [release-admission, github-publication, pypi-publication]
+    if: ${{ always() && needs.github-publication.result == 'success' && (inputs.destination == 'github' || needs.release-admission.outputs.pypi_count == '0' || needs.pypi-publication.result == 'success') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/release/controller/go.mod
+          cache: true
+          cache-dependency-path: .ptsip/engine/developer/release/controller/go.sum
+      - uses: actions/download-artifact@v8
+        with:
+          name: admitted-publication-${{ github.sha }}
+          path: .artifacts/release/shipping
+      - name: Confirm public PyPI digests
+        if: ${{ inputs.destination == 'github-pypi' }}
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-verify --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+      - name: Record the published Package composition and separate Package note
+        shell: bash
+        run: go -C .github/checks/release/controller run ./cmd/ptsip-release record-package --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
