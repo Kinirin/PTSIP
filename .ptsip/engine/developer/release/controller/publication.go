@@ -512,7 +512,12 @@ func PublicationTargets(root string, m ShippingManifest, output, destination str
 	}
 	result := []map[string]string{}
 	for _, c := range components {
-		if c.Kind == "profiles" || (m.PackageDistribution != nil && c.Kind == "tool") {
+		// A complete platform-bundled PTSIP Package is one PyPI project:
+		// native per-engine artifacts are verification inputs, not uploads.
+		if m.PackageDistribution != nil && c.Kind != "package" {
+			continue
+		}
+		if c.Kind == "profiles" {
 			continue
 		}
 		p, err := SafePath(root, output+"/pypi/"+c.ID)
