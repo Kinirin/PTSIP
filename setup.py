@@ -13,6 +13,13 @@ CANONICAL_SUPPORT_POLICY = ROOT / "src" / "policy"
 CANONICAL_PUBLIC_PROFILES = ROOT / "src" / "ptsip" / "profiles"
 CANONICAL_PUBLIC_PROFILE_CATALOG = CANONICAL_PUBLIC_PROFILES / "index.yaml"
 CANONICAL_PP_CONTRACT_REGISTRY = ROOT / "registry" / "project-profile-contracts.yaml"
+CANONICAL_RBAC_SCHEMA_ROOT = ROOT / ".ptsip" / "contracts" / "schemas" / "compile-sealed-rbac"
+CANONICAL_RBAC_FIELDS = ROOT / "registry" / "compile-sealed-rbac-registry-fields.json"
+RBAC_SCHEMA_FILES = (
+    "responsibility.schema.json", "condition-atom.schema.json",
+    "permission-atom.schema.json", "binding.schema.json",
+    "sealed-contract.schema.json", "activation.schema.json",
+)
 EMBEDDED_PP_CONTRACT_REGISTRY = (
     ROOT / "src" / "ptsip" / "specdata" / "project-profile-contracts.yaml"
 )
@@ -176,6 +183,29 @@ def _project_public_profiles(build_lib: Path) -> None:
     )
 
 
+def _project_rbac_contract_assets(build_lib: Path) -> None:
+    """Package approved RBAC identities; incomplete schema scaffolds stay fail-closed."""
+    embedded_src = ROOT / "src" / "ptsip" / "specdata"
+    target = build_lib / "ptsip" / "specdata"
+    target.mkdir(parents=True, exist_ok=True)
+    packaged_fields = embedded_src / "compile-sealed-rbac-registry-fields.json"
+    if not CANONICAL_RBAC_FIELDS.is_file() or not packaged_fields.is_file():
+        raise RuntimeError("canonical and embedded RBAC field requirements are missing")
+    if CANONICAL_RBAC_FIELDS.read_bytes() != packaged_fields.read_bytes():
+        raise RuntimeError("canonical and embedded RBAC field requirements diverged")
+    copy2(CANONICAL_RBAC_FIELDS, target / packaged_fields.name)
+    for name in RBAC_SCHEMA_FILES:
+        source = CANONICAL_RBAC_SCHEMA_ROOT / name
+        embedded = embedded_src / "compile-sealed-rbac" / name
+        if not source.is_file() or not embedded.is_file():
+            raise RuntimeError(f"RBAC schema asset missing: {name}")
+        if source.read_bytes() != embedded.read_bytes():
+            raise RuntimeError(f"canonical/embedded RBAC schema mismatch: {name}")
+        destination = target / "compile-sealed-rbac" / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        copy2(source, destination)
+
+
 class build_py(_build_py):
     """Project canonical repository assets into the built ptsip package."""
 
@@ -184,6 +214,7 @@ class build_py(_build_py):
         build_lib = Path(self.build_lib)
         _project_support_policy(build_lib)
         _project_public_profiles(build_lib)
+        _project_rbac_contract_assets(build_lib)
 
 
 setup(cmdclass={"build_py": build_py})
