@@ -56,14 +56,26 @@ Seal, Activation or executable authority. The RBAC operation remains unregistere
   validated with `jsonschema` and pytest: **8 tests passed**. This was NOT an
   execution of the checked-out GitHub test suite and cannot be submitted as
   official exact-source release evidence.
-- Rust cargo tests: **NOT EXECUTED** (Rust/Cargo toolchain unavailable in the
-  current execution container). The checked-in Rust tests are pending CI.
+- Rust cargo tests: **COMMAND REPORTED, PASS/FAIL OUTPUT NOT SUPPLIED**.
+  The user listed the intended `cargo test` command alongside a successful
+  package build; the exact test result was not supplied. Rust/Cargo tests
+  were not executed by this assistant in the current environment.
 - Repository pytest including
   `src/tests/ptsip/contracts/test_rbac_candidate_contracts.py`:
-  **NOT EXECUTED** against the current GitHub checkout.
-- Go developer policy/release tests: **NOT EXECUTED** against current source.
-- Wheel/sdist build, Windows/Linux native engine composition, wheel install,
-  exact-source multi-platform GitHub Actions: **NOT EXECUTED**.
+  **COMMAND REPORTED, PASS/FAIL OUTPUT NOT SUPPLIED**. No checked-out
+  source pytest logs or complete summary were shared.
+- Go developer policy/release tests: **COMMANDS REPORTED, PASS/FAIL OUTPUT NOT SUPPLIED**.
+- Local wheel/sdist build: **USER-REPORTED COMPLETION (NOT INDEPENDENTLY VERIFIED)**.
+  User executed `python -m build --sdist --wheel` from
+  `C:\\Users\\rhkrt\\Documents\\GitHub\\ptsip` and reported:
+  - `dist/ptsip-0.3.8.1b1-py3-none-any.whl`
+  - `dist/ptsip-0.3.8.1b1.tar.gz`
+  These are current development-source `0.3.8.1b1` artifacts, **not**
+  proposed release `0.3.8b6` and not proof of seven native engines in
+  a correct Windows/Linux platform wheel.
+  Source snapshot SHA, hashes, package file list and build logs not supplied.
+- Windows/Linux native engine composition, wheel installation, exact-source
+  multi-platform GitHub Actions: **NOT VERIFIED**.
 - Release admission: **BLOCKED** by current effective release control plane
   (`.github/workflows/tooling-release.yml` is design-only and explicitly
   fails publication; `.ptsip/contracts/release/admission.json` has
