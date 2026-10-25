@@ -1,7 +1,23 @@
 {
-  "schema_version": "ptsip-engine-installation-plan/v1",
+  "schema_version": "ptsip-engine-installation-plan/v2",
   "plan_owner": "developer/planning/0.3.8/WU-02/WU-02.yaml",
-  "selection": "REGISTERED_INDEPENDENT_AUTO_INSTALLED_PACKAGES_CURRENT_HOST_ONLY",
+  "selection": "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL",
+  "distribution": {
+    "public_python_project": "PTSIP",
+    "model": "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL",
+    "engine_pip_dependencies": "FORBIDDEN",
+    "native_component_delivery": "BUNDLED_IN_COMPLETE_TARGET_WHEEL",
+    "required_verified_engines": 7,
+    "wheel_script_scheme": "WHEEL_DATA_SCRIPTS",
+    "bundle_origin_record": "ptsip-engines.json",
+    "bundle_origin_schema": "ptsip-bundled-engine-origins/v1",
+    "wheel_composition_verification": "REQUIRED_BEFORE_RELEASE_ADMISSION",
+    "source_sha_validation": "EXACT_SOURCE_REQUIRED",
+    "verification_owner": ".ptsip/engine/developer/release/",
+    "legacy_controller_root": ".github/checks/release/controller/",
+    "legacy_controller_execution": "FORBIDDEN",
+    "publication_authorized": false
+  },
   "default_available_engine_ids": [
     "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
     "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
@@ -11,116 +27,116 @@
     "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
     "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0"
   ],
-  "packages": [
+  "components": [
     {
       "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
       "version": "0.2.0",
       "cargo_manifest_ref": "src/ptsip/engines/context/Cargo.toml",
-      "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL",
+      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
       "build_targets": [
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "aarch64-apple-darwin"
       ],
       "permission_from_availability": false,
-      "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY",
-      "package_distribution": "ptsip-engine-context",
+      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+      "entrypoint": "ptsip-engine-context",
       "installed_is_execution_authorization": false
     },
     {
       "engine_id": "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
       "version": "0.3.0",
       "cargo_manifest_ref": "src/ptsip/engines/storage/Cargo.toml",
-      "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL",
+      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
       "build_targets": [
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "aarch64-apple-darwin"
       ],
       "permission_from_availability": false,
-      "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY",
-      "package_distribution": "ptsip-engine-storage",
+      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+      "entrypoint": "ptsip-engine-storage",
       "installed_is_execution_authorization": false
     },
     {
       "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
       "version": "0.3.0",
       "cargo_manifest_ref": "src/ptsip/engines/validation/Cargo.toml",
-      "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL",
+      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
       "build_targets": [
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "aarch64-apple-darwin"
       ],
       "permission_from_availability": false,
-      "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY",
-      "package_distribution": "ptsip-engine-validation",
+      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+      "entrypoint": "ptsip-engine-validation",
       "installed_is_execution_authorization": false
     },
     {
       "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
       "version": "0.3.0",
       "cargo_manifest_ref": "src/ptsip/engines/discovery/Cargo.toml",
-      "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL",
+      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
       "build_targets": [
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "aarch64-apple-darwin"
       ],
       "permission_from_availability": false,
-      "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY",
-      "package_distribution": "ptsip-engine-discovery",
+      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+      "entrypoint": "ptsip-engine-discovery",
       "installed_is_execution_authorization": false
     },
     {
       "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
       "version": "0.3.0",
       "cargo_manifest_ref": "src/ptsip/engines/planning/Cargo.toml",
-      "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL",
+      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
       "build_targets": [
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "aarch64-apple-darwin"
       ],
       "permission_from_availability": false,
-      "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY",
-      "package_distribution": "ptsip-engine-planning",
+      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+      "entrypoint": "ptsip-engine-planning",
       "installed_is_execution_authorization": false
     },
     {
       "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
       "version": "0.3.0",
       "cargo_manifest_ref": "src/ptsip/engines/execution/Cargo.toml",
-      "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL",
+      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
       "build_targets": [
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "aarch64-apple-darwin"
       ],
       "permission_from_availability": false,
-      "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY",
-      "package_distribution": "ptsip-engine-execution",
+      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+      "entrypoint": "ptsip-engine-execution",
       "installed_is_execution_authorization": false
     },
     {
       "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
       "version": "0.2.0",
       "cargo_manifest_ref": "src/ptsip/engines/projection/Cargo.toml",
-      "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL",
+      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
       "build_targets": [
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "aarch64-apple-darwin"
       ],
       "permission_from_availability": false,
-      "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY",
-      "package_distribution": "ptsip-engine-projection",
+      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+      "entrypoint": "ptsip-engine-projection",
       "installed_is_execution_authorization": false
     }
   ],
   "host_compatibility": "BUILD_AND_RUN_VERIFICATION_REQUIRED_PER_HOST",
   "unknown_environment": "INELIGIBLE_FAIL_CLOSED",
   "public_release": "NOT_PERFORMED",
-  "default_installation": "SEVEN_OFFICIAL_PACKAGES_AS_PYTHON_DISTRIBUTION_DEPENDENCIES",
+  "default_installation": "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES",
   "installation_authority": "EXPLICIT_AUTHORIZED_PACKAGE_MANAGER_TRANSACTION_AND_EXISTING_SOURCE_SUPPLY_CTRL_GATES"
 }
