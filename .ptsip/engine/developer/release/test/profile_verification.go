@@ -152,7 +152,7 @@ func validateProfileContract(root string, registry profileContractRegistry) (map
 			}
 		case "CURRENT", "SUPERSEDED":
 			if row.Schema == nil || *row.Schema !=
-				"schemas/ptsip-profile-"+row.Version+".schema.json" ||
+				"schemas/ptsip-profile-"+strings.Replace(row.Version, "pp.", "pp-", 1)+".schema.json" ||
 				row.Baseline != registry.Source.HistoryRoot+"/"+row.Version {
 				return nil, fmt.Errorf("PROFILE_CONTRACT_BINDING_INVALID: %s", row.Version)
 			}
