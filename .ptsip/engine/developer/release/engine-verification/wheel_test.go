@@ -38,7 +38,7 @@ func fixture(t *testing.T, target string) (string, Options) {
 		manifest := "src/ptsip/engines/" + kind + "/manifest.json"
 		binding := "src/ptsip/engines/" + kind + "/execution-bindings.json"
 		entries = append(entries, map[string]any{"kind": strings.ToUpper(kind), "engine_id": id, "version": "0.2.0", "manifest_ref": manifest, "execution_binding_ref": binding})
-		components = append(components, map[string]any{"engine_id": id, "version": "0.2.0", "entrypoint": "ptsip-engine-" + kind, "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT", "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL", "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
+		components = append(components, map[string]any{"engine_id": id, "version": "0.2.0", "entrypoint": "ptsip-engine-" + kind, "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
 		defaultIDs = append(defaultIDs, id)
 		writeFixture(t, root, manifest, map[string]any{"engine_id": id, "implementation_version": "0.2.0"})
 		writeFixture(t, root, "src/ptsip/engines/"+kind+"/version.yaml", map[string]any{"schema_version": "ptsip-engine-version/v1", "engine": kind, "version": "0.2.0"})
@@ -48,15 +48,7 @@ func fixture(t *testing.T, target string) (string, Options) {
 	writeFixture(t, root, "src/ptsip/engines/contracts/installation-plan.json", map[string]any{
 		"schema_version": "ptsip-engine-installation-plan/v2",
 		"selection": "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL",
-		"default_installation": "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES",
 		"default_available_engine_ids": defaultIDs,
-		"distribution": map[string]any{
-			"public_python_project": "PTSIP",
-			"model": "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL",
-			"engine_pip_dependencies": "FORBIDDEN",
-			"required_verified_engines": 7,
-			"publication_authorized": false,
-		},
 		"components": components,
 	})
 	license := filepath.Join(root, "License-Authority", "LICENSE.md")
@@ -160,6 +152,25 @@ func TestIndependentWheelForEveryDeclaredPlatform(t *testing.T) {
 	}
 }
 
+// Intermediate producers are not consumer installers. Packaging policy
+// fields belong to the complete PTSIP Wheel join, not native preflight.
+func TestNativeArtifactBuildDoesNotRequireConsumerDistributionMetadata(t *testing.T) {
+	root, opts := fixture(t, "x86_64-unknown-linux-gnu")
+	var plan map[string]any
+	if err := document(root, "src/ptsip/engines/contracts/installation-plan.json", &plan); err != nil {
+		t.Fatal(err)
+	}
+	if _, exists := plan["distribution"]; exists {
+		t.Fatal("native-only test fixture must not declare consumer distribution")
+	}
+	if _, exists := plan["default_installation"]; exists {
+		t.Fatal("native-only test fixture must not declare pip installation")
+	}
+	if _, err := Build(root, opts); err != nil {
+		t.Fatalf("native artifact build improperly depends on consumer distribution: %v", err)
+	}
+}
+
 func TestWheelUsesCanonicalLicenseBlobDespiteWorktreeLineEndings(t *testing.T) {
 	root, opts := fixture(t, "x86_64-pc-windows-msvc")
 	if err := os.WriteFile(filepath.Join(root, "License-Authority/LICENSE.md"), []byte("fixture license\r\n"), 0644); err != nil {
@@ -194,7 +205,7 @@ func TestWheelUsesCanonicalLicenseBlobDespiteWorktreeLineEndings(t *testing.T) {
 	}
 }
 func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
-	for _, defect := range []string{"sha", "target", "kind", "binary", "contract", "reference", "duplicate", "missing_boolean", "legacy_pip", "incomplete_components", "publication_grant", "duplicate_defaults"} {
+	for _, defect := range []string{"sha", "target", "kind", "binary", "contract", "reference", "duplicate", "missing_boolean", "wrong_version", "missing_permission", "incomplete_components", "wrong_schema", "duplicate_defaults"} {
 		t.Run(defect, func(t *testing.T) {
 			root, opts := fixture(t, "x86_64-unknown-linux-gnu")
 			switch defect {
@@ -208,7 +219,7 @@ func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
 				if err := os.WriteFile(opts.Binary, bytes.Repeat([]byte("X"), 300), 0755); err != nil {
 					t.Fatal(err)
 				}
-			case "contract", "missing_boolean", "legacy_pip", "incomplete_components", "publication_grant", "duplicate_defaults":
+			case "contract", "missing_boolean", "wrong_version", "missing_permission", "incomplete_components", "wrong_schema", "duplicate_defaults":
 				var p map[string]any
 				if err := document(root, "src/ptsip/engines/contracts/installation-plan.json", &p); err != nil {
 					t.Fatal(err)
@@ -216,15 +227,17 @@ func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
 				row := p["components"].([]any)[0].(map[string]any)
 				switch defect {
 				case "contract":
-					row["installation"] = "OPERATOR_ONLY"
+					row["entrypoint"] = "ptsip-engine-wrong"
 				case "missing_boolean":
 					delete(row, "installed_is_execution_authorization")
-				case "legacy_pip":
-					row["package_distribution"] = "ptsip-engine-context"
+				case "wrong_version":
+					row["version"] = "9.0.0"
+				case "missing_permission":
+					delete(row, "permission_from_availability")
 				case "incomplete_components":
 					p["components"] = p["components"].([]any)[:6]
-				case "publication_grant":
-					p["distribution"].(map[string]any)["publication_authorized"] = true
+				case "wrong_schema":
+					p["schema_version"] = "ptsip-engine-installation-plan/v1"
 				case "duplicate_defaults":
 					p["default_available_engine_ids"].([]any)[1] = p["default_available_engine_ids"].([]any)[0]
 				}
