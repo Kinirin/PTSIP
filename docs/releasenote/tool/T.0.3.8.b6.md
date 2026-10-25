@@ -232,12 +232,27 @@ not linked to or restored under `.github/checks/release/controller/`:
   keeps independent native *build evidence* while reading the integrated
   v2 component plan rather than retired consumer pip dependencies.
 
-**Verification status:** Go/Cargo/Python tests and Windows/Linux native
-builds have NOT been executed against the new exact source SHA in this chat.
-The registered workflow still intentionally rejects publication.
-`planning.select-installation` still needs a versioned operation cutover.
-Published b5 assets remain immutable. Candidate/beta6 source preparation is
-not a completed release.
+**Verification status (updated, user-reported Windows local run):**
+- `go -C .ptsip/engine/developer/release/test test ./... -count=1`:
+  `ok .../release/test 11.872s`; CLI test package returned `[no test files]`.
+  The user reported successful local execution after the test repoRoot
+  correction in main commit `3c324ed5c8e7f01d4f0a437fbbfa120f414efabb`.
+- `python -m build --sdist --wheel`:
+  `Successfully built ptsip-0.3.8.1b1.tar.gz and
+  ptsip-0.3.8.1b1-py3-none-win_amd64.whl`. This confirms a Windows
+  platform-tagged Wheel and sdist were produced via the native backend.
+- The full command logs, built artifact hashes, installed executable
+  inventory, origins and wheel RECORD have not been independently inspected.
+  Source SHA from the local build was not separately attached.
+- Linux native Wheel and sdist reproducibility, exact-source admission,
+  remaining Go/controller tests, developer native engine verification and
+  Python/Rust tests are **NOT REPORTED PASS** by these two result lines.
+- The registered workflow still intentionally rejects publication.
+  `planning.select-installation` needs a versioned operation cutover.
+  Historical b5 assets remain immutable.
+
+**This is user-reported local verification evidence, not release admission or
+publication.** Candidate/beta6 source preparation is not a completed release.
 
 Required local tests and release preflight:
 
