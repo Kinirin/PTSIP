@@ -130,6 +130,9 @@ func DownloadActionArtifact(root, destination string, a ActionArtifact) error {
 }
 
 func PreparePublication(root, targets, optional, output string) (ShippingManifest, error) {
+	if err := AdmitCTRLPublicationPolicy(root); err != nil {
+		return ShippingManifest{}, err
+	}
 	s, err := Select(root, targets, optional)
 	if err != nil {
 		return ShippingManifest{}, err

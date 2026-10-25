@@ -23,15 +23,8 @@ func AdmitVerification(root string, s Selection, run int64) error {
 	if err := ValidateSelection(root, s); err != nil {
 		return err
 	}
-	policyData, err := Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-CTRL-0001", "--section", "release_orchestration")
-	if err != nil {
+	if err := AdmitCTRLPublicationPolicy(root); err != nil {
 		return err
-	}
-	var policy struct {
-		Record map[string]any `json:"record"`
-	}
-	if json.Unmarshal(policyData, &policy) != nil || policy.Record["publication_workflow"] != ".github/workflows/tooling-release.yml" || policy.Record["verification_workflow"] != ".github/workflows/tooling-test.yml" || policy.Record["one_github_release_per_source_sha"] != "REQUIRED" {
-		return fmt.Errorf("unified publication authority unresolved")
 	}
 	head, err := Run(root, "git", "rev-parse", "HEAD")
 	if err != nil || strings.TrimSpace(string(head)) != s.SourceSHA {
@@ -285,6 +278,9 @@ func PrepareShipping(root string, s Selection, run int64, input, output string) 
 }
 
 func PublishCarrier(root string, s Selection, output string, resumeID int64) error {
+	if err := AdmitCTRLPublicationPolicy(root); err != nil {
+		return err
+	}
 	m, err := Shipping(root, s, output)
 	if err != nil {
 		return err

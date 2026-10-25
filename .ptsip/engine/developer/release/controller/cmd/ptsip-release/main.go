@@ -34,17 +34,16 @@ func main() {
 	destination := f.String("destination", "github-pypi", "registered publication destination")
 	inputRef := f.String("input", ".artifacts/release/verified", "original verified artifacts")
 	f.Parse(os.Args[2:])
-	// This migrated command is intentionally non-publishing until the normative
-	// successor policy and release admission implementation are authorized.
-	for _, forbidden := range []string{"prepare-publication", "admit", "prepare-shipping", "publish-carrier", "pypi-stage", "pypi-verify", "record-package"} {
-		if command == forbidden {
-			fmt.Fprintln(os.Stderr, "RELEASE_PUBLICATION_BLOCKED: migrated controller has no active publication authority")
-			os.Exit(2)
-		}
-	}
+	// Publication commands are reachable only through the independent CTRL
+	// normative admission gate. No legacy developer policy resolver fallback.
 	var value any
 	var err error
 	switch command {
+	case "admit-policy":
+		err = release.AdmitCTRLPublicationPolicy(*root)
+		if err == nil {
+			value = map[string]string{"status": "CTRL_NORMATIVE_ADMITTED"}
+		}
 	case "prepare-publication":
 		if *releaseType != "" {
 			var requested release.Selection

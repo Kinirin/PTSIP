@@ -349,6 +349,9 @@ func PyPIFiles(project, version string) ([]PyPIFile, error) {
 // Existing immutable files are removed only from the upload staging directory
 // after a matching public digest. A differing same-name file aborts publication.
 func PyPIStage(root string, s Selection, output string, verify bool) error {
+	if err := AdmitCTRLPublicationPolicy(root); err != nil {
+		return err
+	}
 	m, err := Shipping(root, s, output)
 	if err != nil {
 		return err
@@ -544,6 +547,9 @@ func PublicationTargets(root string, m ShippingManifest, output, destination str
 }
 
 func RecordPackage(root string, s Selection, output string) error {
+	if err := AdmitCTRLPublicationPolicy(root); err != nil {
+		return err
+	}
 	m, err := Shipping(root, s, output)
 	if err != nil {
 		return err
