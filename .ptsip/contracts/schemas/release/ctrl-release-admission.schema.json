@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:ctrl:release-admission:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_identity",
+    "responsibility",
+    "authorization",
+    "evidence",
+    "publication",
+    "recovery",
+    "references"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-ctrl-release-admission-policy/v1"
+    },
+    "policy_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "policy_kind",
+        "root_family",
+        "status",
+        "substatus",
+        "approval_ref",
+        "conflict_resolution"
+      ],
+      "properties": {
+        "id": {
+          "const": "MPD-CTRL-RELEASE-ADMISSION"
+        },
+        "policy_kind": {
+          "const": "PTSIP_DEVELOPER_POLICY"
+        },
+        "root_family": {
+          "const": "CTRL"
+        },
+        "status": {
+          "const": "APPROVED"
+        },
+        "substatus": {
+          "const": "Applying"
+        },
+        "approval_ref": {
+          "const": "developer/policy/approvals/MPA-20261026-CTRL-RELEASE-ADMISSION-COMPLETION.yaml"
+        },
+        "conflict_resolution": {
+          "const": "KEEP_LATEST"
+        }
+      }
+    },
+    "responsibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admission",
+        "verification_evidence",
+        "publication_execution",
+        "release_record"
+      ],
+      "properties": {
+        "admission": {
+          "const": "CTRL"
+        },
+        "verification_evidence": {
+          "const": "ASSURE"
+        },
+        "publication_execution": {
+          "const": "RELEASE_CONTROLLER"
+        },
+        "release_record": {
+          "const": "RECORD"
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "automation",
+        "destinations",
+        "pypi_projects",
+        "credential_scope",
+        "test_pass_grants_publication"
+      ],
+      "properties": {
+        "mode": {
+          "const": "PER_RELEASE_CONDITIONAL"
+        },
+        "automation": {
+          "const": "ENABLED"
+        },
+        "destinations": {
+          "const": [
+            "github",
+            "github-pypi"
+          ]
+        },
+        "pypi_projects": {
+          "const": [
+            "PTSIP"
+          ]
+        },
+        "credential_scope": {
+          "const": "NO_AUTOMATIC_EXPANSION"
+        },
+        "test_pass_grants_publication": {
+          "const": false
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_sha",
+        "selection",
+        "workflow",
+        "required_platforms",
+        "all_selected_component_host_jobs",
+        "verified_original_artifact_digests",
+        "stale_or_missing"
+      ],
+      "properties": {
+        "source_sha": {
+          "const": "EXACT_HEAD"
+        },
+        "selection": {
+          "const": "EXACT_SELECTION_SHA256"
+        },
+        "workflow": {
+          "const": ".github/workflows/tooling-test.yml"
+        },
+        "required_platforms": {
+          "const": [
+            "windows-x64",
+            "linux-x64"
+          ]
+        },
+        "all_selected_component_host_jobs": {
+          "const": "SUCCESS_REQUIRED"
+        },
+        "verified_original_artifact_digests": {
+          "const": "REQUIRED"
+        },
+        "stale_or_missing": {
+          "const": "FAIL_CLOSED"
+        }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "github_release_identity",
+        "already_published_assets",
+        "engine_producer_same_version_changed",
+        "package_completeness",
+        "developer_policy_fallback",
+        "verification_workflow_publication",
+        "tool_only_fallback"
+      ],
+      "properties": {
+        "github_release_identity": {
+          "const": "EXACT_SOURCE_SHA"
+        },
+        "already_published_assets": {
+          "const": "IMMUTABLE"
+        },
+        "engine_producer_same_version_changed": {
+          "const": "REJECT"
+        },
+        "package_completeness": {
+          "const": "TOOL_PROFILE_AND_ALL_SEVEN_ENGINES"
+        },
+        "developer_policy_fallback": {
+          "const": "FORBIDDEN"
+        },
+        "verification_workflow_publication": {
+          "const": "FORBIDDEN"
+        },
+        "tool_only_fallback": {
+          "const": "FORBIDDEN"
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "security_anomaly",
+        "resume",
+        "partial_publication"
+      ],
+      "properties": {
+        "security_anomaly": {
+          "const": "SUSPEND_AND_PRESERVE_EVIDENCE"
+        },
+        "resume": {
+          "const": "EXPLICIT_OWNER_APPROVAL"
+        },
+        "partial_publication": {
+          "const": "RE_EVALUATE_ADMISSION"
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "activation",
+        "verification",
+        "composition",
+        "admission_directions",
+        "publisher_scope",
+        "schema",
+        "publication_workflow"
+      ],
+      "properties": {
+        "owner": {
+          "const": "developer/policy/registries/release-admission-ctrl-ownership.json"
+        },
+        "activation": {
+          "const": "developer/policy/registries/release-admission-publication-activation.json"
+        },
+        "verification": {
+          "const": ".ptsip/contracts/release/verification-contract.json"
+        },
+        "composition": {
+          "const": ".ptsip/contracts/release/composition-contract.json"
+        },
+        "admission_directions": {
+          "const": ".ptsip/contracts/release/admission.json"
+        },
+        "publisher_scope": {
+          "const": ".ptsip/contracts/release/pypi-publishers.json"
+        },
+        "schema": {
+          "const": ".ptsip/contracts/schemas/release/ctrl-release-admission.schema.json"
+        },
+        "publication_workflow": {
+          "const": ".github/workflows/tooling-release.yml"
+        }
+      }
+    }
+  }
+}
