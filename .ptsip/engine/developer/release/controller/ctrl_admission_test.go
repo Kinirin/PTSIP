@@ -62,3 +62,13 @@ func TestCTRLAdmissionFailClosedWithoutActiveNormativePolicy(t *testing.T) {
         t.Fatal("forged completion flags permitted publication without normative index")
     }
 }
+
+func TestCTRLAdmissionAcceptsVerifiedPolicyWithoutGrantingPublication(t *testing.T) {
+    root,err:=filepath.Abs("../../../../..")
+    if err!=nil{t.Fatal(err)}
+    if err=AdmitCTRLPublicationPolicy(root);err!=nil{
+        t.Fatalf("effective CTRL policy should admit per-release verification: %v",err)
+    }
+    // This call admits only POLICY, not the exact-source selection or run.
+    // The latter remains mandatory through AdmitVerification.
+}
