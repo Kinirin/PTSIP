@@ -12,3 +12,7 @@ prune src/ptsip/engines/discovery/target
 prune src/ptsip/engines/planning/target
 prune src/ptsip/engines/execution/target
 prune src/ptsip/engines/projection/target
+include registry/compile-sealed-rbac-registry-fields.json
+recursive-include .ptsip/contracts/schemas/compile-sealed-rbac *.schema.json
+recursive-include src/ptsip/specdata/compile-sealed-rbac *.schema.json
+include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
