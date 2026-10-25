@@ -93,3 +93,40 @@ def test_new_installation_candidate_not_misrepresented_as_registered_operation()
     assert "wheel_composition_verified" in rust
     assert '"ready":false' in rust
     assert '"publication_authorized":false' in rust
+
+
+def test_native_intermediate_builder_is_not_a_consumer_distribution_resolver() -> None:
+    producer = (_ROOT / (
+        ".ptsip/engine/developer/release/engine-verification/wheel.go"
+    )).read_text(encoding="utf-8")
+    native_test = (_ROOT / (
+        "developer/tests/engines/independent_engine_wheel_test.go"
+    )).read_text(encoding="utf-8")
+    for retired_assumption in (
+        'json:"package_distribution"',
+        'json:"packages"',
+        'AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY',
+        'INDEPENDENT_VERSIONED_NATIVE_WHEEL',
+        'plan.Distribution',
+        'plan.DefaultInstallation',
+    ):
+        assert retired_assumption not in producer
+
+    assert 'plan.Components' in producer
+    assert 'component.Entrypoint != entrypoint' in producer
+    assert 'component.Version != selected.Version' in producer
+    assert 'component.Authorized == nil || *component.Authorized' in producer
+    assert 'metadata := fmt.Sprintf' in producer
+
+    assert '"pip", "install"' not in native_test
+    assert 'probeNativeComponentBinary(t, wheel, expected)' in native_test
+    assert 'exec.Command(binary, "--manifest")' in native_test
+
+    # Integration still owns the full consumer installation and hashes.
+    consumer_join = (_ROOT / (
+        ".ptsip/engine/developer/release/test/package_install.go"
+    )).read_text(encoding="utf-8")
+    assert '"pip", "install"' in consumer_join
+    assert '"SINGLE_PROJECT_PLATFORM_BUNDLES_ONLY"' in (
+        (_ROOT / "src/ptsip/engine_installation.py").read_text(encoding="utf-8")
+    )
