@@ -81,6 +81,7 @@ jobs:
         run: |
           set -euo pipefail
           go -C .ptsip/engine/developer/release/test test ./... -run TestNativeProfile -count=1
+          go -C .ptsip/engine/developer/release/test test ./... -run TestLightweightSDistManifestTracksCurrentProfile -count=1
           go -C .ptsip/engine/developer/release/test test ./... -run TestDeclaredVerificationSelection -count=1
           go -C .ptsip/engine/developer/release/test test ./... -run TestReleasePresentation -count=1
           go -C .ptsip/engine/developer/release/test test ./... -run TestReleaseComposition -count=1
