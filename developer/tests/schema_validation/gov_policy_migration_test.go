@@ -103,6 +103,10 @@ func govFullSchema(t *testing.T) *jsonschema.Schema {
         ".ptsip/contracts/schemas/Authority/PTSIP_Policy_Authority.schema.json",
         ".ptsip/contracts/schemas/Authority/Authority_Category/Authority_Major_Category.schema.json",
         ".ptsip/contracts/policy/authority/Authority_Major_Category.json",
+        // Register transitive authoritative category resources, even when their
+        // fields are optional: schema compilation resolves their $ref targets.
+        ".ptsip/contracts/policy/authority/Authority_Minor_Category.json",
+        ".ptsip/contracts/policy/authority/Authority_Micro_Category.json",
         govStatusRef, govRulesRef, govSharedRulesRef)
 }
 
