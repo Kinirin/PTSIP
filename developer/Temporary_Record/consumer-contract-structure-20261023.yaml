@@ -148,7 +148,7 @@ root_index_lookup_connection_direction:
         previous_field_status: SUPERSEDED_BY_USER_APPROVAL
         nesting_direction: INNER_STABLE_ID_VALUE_AND_VARIABLE_PARAMETERS
         scalar_id_field_name: consumer_contract_subindex_id
-        parameter_container_field_name: UNRESOLVED_USER_DECISION
+        parameter_container_field_name: parameters
         parameter_internal_field_set: UNRESOLVED_USER_DECISION
       index_id_issuance_format: UNRESOLVED_USER_DECISION
       identifier_generated_from_path_or_version: FORBIDDEN
@@ -171,7 +171,10 @@ root_index_lookup_connection_direction:
       parameter_structure:
         decision: USER_APPROVED_NESTED_DIRECTION
         parameter_container_location: INSIDE_CONSUMER_SUBINDEX_ID_OBJECT
-        parameter_container_field_name: UNRESOLVED_USER_DECISION
+        parameter_container_field_name: parameters
+        parameter_container_responsibility: HOLD_VARIABLE_PARAMETERS_ASSOCIATED_WITH_CONSUMER_CONTRACT_SUBINDEX
+        parameter_updates_do_not_change_stable_id: true
+        parameter_container_grants_policy_approval_authority: false
         internal_field_requiredness: UNRESOLVED_USER_DECISION
         internal_field_extensions: PERMITTED_WITHOUT_CHANGING_STABLE_ID
       path_location_direction:
@@ -216,7 +219,7 @@ root_index_lookup_connection_direction:
         value_type: object
         scalar_identity_type: string
         scalar_identity_field_name: consumer_contract_subindex_id
-        variable_parameter_container_name: UNRESOLVED_USER_DECISION
+        variable_parameter_container_name: parameters
       relative_location:
         field_name: path
         value_type: string
