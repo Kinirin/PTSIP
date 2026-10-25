@@ -36,12 +36,13 @@ type engine struct {
 type registration struct {
 	ID           string   `json:"engine_id"`
 	Version      string   `json:"version"`
-	Distribution string   `json:"package_distribution"`
+	Entrypoint   string   `json:"entrypoint"`
 	Format       string   `json:"distribution"`
 	Installation string   `json:"installation"`
 	Targets      []string `json:"build_targets"`
 	Permission   *bool    `json:"permission_from_availability"`
 	Authorized   *bool    `json:"installed_is_execution_authorization"`
+	LegacyPackage *string `json:"package_distribution"`
 }
 type host struct {
 	Platform, Suffix string
@@ -102,8 +103,10 @@ func has(values []string, value string) bool {
 	return false
 }
 
-// Build assembles one registered, already-built engine. It grants no release,
-// installation or execution permission and never invokes Python or Cargo.
+// Build assembles one registered, already-built engine into an internal
+// per-engine verification artifact for subsequent integration into a complete
+// PTSIP platform wheel. The standalone native wheel is NOT a public consumer
+// dependency or a publication grant. Build never invokes Python or Cargo.
 func Build(root string, opts Options) (Result, error) {
 	root, err := filepath.Abs(root)
 	if err != nil {
@@ -127,7 +130,18 @@ func Build(root string, opts Options) (Result, error) {
 		Entries []engine `json:"official_engine_entries"`
 	}
 	var plan struct {
-		Packages []registration `json:"packages"`
+		Schema string `json:"schema_version"`
+		Selection string `json:"selection"`
+		DefaultInstallation string `json:"default_installation"`
+		Distribution struct {
+			PublicProject string `json:"public_python_project"`
+			Model string `json:"model"`
+			EngineDependencies string `json:"engine_pip_dependencies"`
+			RequiredEngines int `json:"required_verified_engines"`
+			Publication *bool `json:"publication_authorized"`
+		} `json:"distribution"`
+		DefaultIDs []string `json:"default_available_engine_ids"`
+		Components []registration `json:"components"`
 	}
 	if err = document(root, "src/ptsip/engines/index.json", &index); err != nil {
 		return Result{}, err
@@ -135,8 +149,16 @@ func Build(root string, opts Options) (Result, error) {
 	if err = document(root, "src/ptsip/engines/contracts/installation-plan.json", &plan); err != nil {
 		return Result{}, err
 	}
-	if len(index.Entries) != 7 || len(plan.Packages) != 7 {
-		return Result{}, fmt.Errorf("exact seven independent official engines required")
+	if len(index.Entries) != 7 || len(plan.Components) != 7 ||
+		plan.Schema != "ptsip-engine-installation-plan/v2" ||
+		plan.Selection != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL" ||
+		plan.DefaultInstallation != "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES" ||
+		plan.Distribution.PublicProject != "PTSIP" ||
+		plan.Distribution.Model != "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL" ||
+		plan.Distribution.EngineDependencies != "FORBIDDEN" ||
+		plan.Distribution.RequiredEngines != 7 ||
+		plan.Distribution.Publication == nil || *plan.Distribution.Publication {
+		return Result{}, fmt.Errorf("exact seven integrated PTSIP native components with blocked publication required")
 	}
 	ids := map[string]bool{}
 	registeredKinds := map[string]bool{}
@@ -158,17 +180,27 @@ func Build(root string, opts Options) (Result, error) {
 			matches++
 		}
 	}
-	for _, p := range plan.Packages {
+	for _, p := range plan.Components {
 		if p.ID == "" {
-			return Result{}, fmt.Errorf("missing package identity")
+			return Result{}, fmt.Errorf("missing native component identity")
 		}
 		if _, ok := packages[p.ID]; ok {
-			return Result{}, fmt.Errorf("duplicate official package identity")
+			return Result{}, fmt.Errorf("duplicate official native component identity")
 		}
 		if !ids[p.ID] {
 			return Result{}, fmt.Errorf("official registry and installation contract diverged")
 		}
 		packages[p.ID] = p
+	}
+	if len(plan.DefaultIDs) != 7 {
+		return Result{}, fmt.Errorf("exact seven default native component identities required")
+	}
+	defaults := map[string]bool{}
+	for _, id := range plan.DefaultIDs {
+		if id == "" || defaults[id] || !ids[id] {
+			return Result{}, fmt.Errorf("default native component registry is incomplete or duplicated")
+		}
+		defaults[id] = true
 	}
 	if matches != 1 {
 		return Result{}, fmt.Errorf("engine kind not registered exactly once")
@@ -176,8 +208,13 @@ func Build(root string, opts Options) (Result, error) {
 	kind := strings.ToLower(selected.Kind)
 	distribution := "ptsip-engine-" + kind
 	p := packages[selected.ID]
-	if !versionPattern.MatchString(selected.Version) || p.Version != selected.Version || p.Distribution != distribution || p.Format != "INDEPENDENT_VERSIONED_NATIVE_WHEEL" || p.Installation != "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY" || !has(p.Targets, opts.Target) || p.Permission == nil || *p.Permission || p.Authorized == nil || *p.Authorized {
-		return Result{}, fmt.Errorf("independent auto-installed package contract mismatch")
+	if !versionPattern.MatchString(selected.Version) || p.Version != selected.Version ||
+		p.Entrypoint != distribution || p.LegacyPackage != nil ||
+		p.Format != "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT" ||
+		p.Installation != "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL" ||
+		!has(p.Targets, opts.Target) || p.Permission == nil || *p.Permission ||
+		p.Authorized == nil || *p.Authorized {
+		return Result{}, fmt.Errorf("native component contract not eligible for integrated PTSIP platform wheel")
 	}
 	var manifest struct {
 		ID      string `json:"engine_id"`
