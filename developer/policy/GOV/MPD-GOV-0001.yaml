@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration"
-    Rule_ver: "7"
+    Rule_ver: "8"
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -76,6 +76,10 @@ Policy_Rules:
       - id: OBLIGATION/RETIRE_LEGACY_AUTHORITY_CATEGORIES
         applies_when: LEGACY_AUTHORITY_MAJOR_MINOR_MICRO_MIGRATION
         rule: "KEEP_LATEST: Authority_Major_Category, Authority_Minor_Category, Authority_Micro_Category의 분류 계층 및 값은 새 Compile-Sealed RBAC의 권한·책임 계약에 승계하지 않고 규범적 분류 책임에서 전면 폐기한다. 기존 계약·GOV 및 타 Family 참조·스키마·Resolver·검증기의 관련 규칙은 변경 영향 대상으로 식별하여, 새 계약에 의한 유효한 참조 전환과 검증 후 물리적으로 제거한다. 전환 전 레거시 필드의 존재는 새 권위나 승인 근거를 생성하지 않는다."
+        Rule_state: APPROVED.provisional
+      - id: OBLIGATION/COMPILE_SEALED_HIERARCHICAL_SCHEMA_DESIGN
+        applies_when: COMPILE_SEALED_RBAC_INDEPENDENT_SCHEMA_DESIGN
+        rule: "Compile-Sealed RBAC 독립 계약의 신규 스키마는 H-B 공통 메타와 도메인별 의미 계층을 구분하는 구조로 설계한다. 공통 메타는 독립 계약 간에 실제로 공유되는 기계 검증 책임에 한정하고, Responsibility·Condition Atom·Permission Atom·Binding·Seal·Activation 등 고유 의미 계층과 소유권은 각 계약이 독립적으로 정의한다. 이 결정은 정책 Root Family 전체에 공통 문서 골격을 강제하지 않는다. 공통 메타의 구체 항목·필드명·필수 여부와 물리 저장 경로는 별도 결정으로 남긴다."
         Rule_state: APPROVED.provisional
       - id: PROHIBITION/REUSE_RETIRED_AUTHORITY_CATEGORY
         rule: "폐기된 Authority Major·Minor·Micro의 분류 계층·값을 새 RBAC 책임·조건·권한·바인딩 계약의 필수 의미 또는 승인 근거로 재사용하거나, 레거시 분류 참조에 근거하여 실행 권한을 부여하는 행위"
