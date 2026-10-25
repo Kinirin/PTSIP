@@ -383,7 +383,7 @@ func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpect
 		if err != nil || len(data) < 64 || len(data) > 268435456 {
 			return fmt.Errorf("native member read failed: %v", err)
 		}
-		if hexSHA(data) != expectedBinaryHash(wheel, expected, script) {
+		if hexSHA(data) != expectedBinaryHash(wheel, expected) {
 			return fmt.Errorf("native executable changed after archive receipt verification")
 		}
 		binary := filepath.Join(t.TempDir(), expected.distribution+expected.suffix)
@@ -414,8 +414,7 @@ func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpect
 
 // Native hash comparison reads the source-bound receipt rather than a
 // separately installed pip distribution.
-func expectedBinaryHash(wheel string, expected wheelExpectation, script string) string {
-	_ = script
+func expectedBinaryHash(wheel string, expected wheelExpectation) string {
 	data, err := os.ReadFile(wheel + ".receipt.json")
 	if err != nil {
 		return ""
