@@ -1,6 +1,6 @@
 {
   "contract_id": "PTSIP_COMPILE_SEALED_RBAC_CENTRAL_REGISTRY_FIELD_REQUIREMENTS",
-  "contract_revision": 1,
+  "contract_revision": 2,
   "policy_ref": "developer/policy/GOV/MPD-GOV-0001.yaml",
   "applies_when": "PROJECT_USES_COMPILE_SEALED_RBAC",
   "registry_root": ".ptsip/profiles/rbac/",
@@ -48,11 +48,12 @@
     "REGISTRY_FILE_NAME",
     "REGISTRY_SERIALIZATION_FORMAT",
     "FIELD_VALUE_TYPES_AND_CONSTRAINTS",
-    "ENTRIES_KIND_VALUE_SET",
+    "ENTRIES_KIND_SERIALIZED_LITERALS",
     "ENTRY_ID_UNIQUENESS_AND_RESOURCE_REFERENCE_RULES",
     "REVISION_CONDITIONAL_TRIGGER",
     "METADATA_INTERNAL_SHAPE",
-    "REGISTRY_SCHEMA_AND_VALIDATOR_INTEGRATION"
+    "REGISTRY_SCHEMA_AND_VALIDATOR_INTEGRATION",
+    "SEAL_ACTIVATION_ARTIFACT_STORAGE_AND_LOOKUP"
   ],
   "assertions": {
     "does_not_embed_original_contract_definitions": true,
@@ -60,5 +61,35 @@
     "registry_existence_activates_permissions": false,
     "independent_contract_ownership_preserved": true,
     "root_family_specific_duplication_required": false
+  },
+  "entry_kind_scope": {
+    "allowed_semantic_kinds": [
+      "RESPONSIBILITY",
+      "CONDITION_ATOM",
+      "PERMISSION_ATOM",
+      "BINDING"
+    ],
+    "excluded_semantic_kinds": [
+      "SEAL",
+      "ACTIVATION"
+    ],
+    "serialized_kind_literals": "UNRESOLVED",
+    "scope": "DECLARATIVE_CONTRACT_SOURCE_LOOKUP_ONLY"
+  },
+  "separate_artifact_contracts": {
+    "seal": {
+      "schema_file": "sealed-contract.schema.json",
+      "registry_entry_allowed": false,
+      "artifact_plane": "SEPARATE_FROM_CENTRAL_DECLARATIVE_REGISTRY",
+      "storage_ref": "UNRESOLVED",
+      "lookup_contract": "UNRESOLVED"
+    },
+    "activation": {
+      "schema_file": "activation.schema.json",
+      "registry_entry_allowed": false,
+      "artifact_plane": "SEPARATE_FROM_CENTRAL_DECLARATIVE_REGISTRY",
+      "storage_ref": "UNRESOLVED",
+      "lookup_contract": "UNRESOLVED"
+    }
   }
 }
