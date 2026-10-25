@@ -50,22 +50,73 @@ fn document(root: &Path, path: &str) -> Result<(Value, String), String> {
     ))
 }
 
-pub fn select(input: &Value) -> Result<Value, String> {
-    let root = fs::canonicalize(text(input, "root")?).map_err(|e| e.to_string())?;
-    let (plan, revision) = document(&root, text(input, "plan_ref")?)?;
-    if input["expected_plan_sha256"] != revision
-        || plan["schema_version"] != "ptsip-engine-installation-plan/v1"
-    {
-        return Err("current installation plan proof missing".into());
-    }
-    if plan["selection"] != "REGISTERED_INDEPENDENT_AUTO_INSTALLED_PACKAGES_CURRENT_HOST_ONLY"
-        || plan["default_installation"] != "SEVEN_OFFICIAL_PACKAGES_AS_PYTHON_DISTRIBUTION_DEPENDENCIES"
+fn verify_integrated_plan_contract(plan: &Value) -> Result<(), String> {
+    if plan["schema_version"] != "ptsip-engine-installation-plan/v2"
+        || plan["selection"] != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL"
+        || plan["default_installation"] != "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES"
+        || plan["distribution"]["public_python_project"] != "PTSIP"
+        || plan["distribution"]["model"] != "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL"
+        || plan["distribution"]["engine_pip_dependencies"] != "FORBIDDEN"
+        || plan["distribution"]["required_verified_engines"] != 7
+        || plan["distribution"]["verification_owner"] != ".ptsip/engine/developer/release/"
+        || plan["distribution"]["legacy_controller_execution"] != "FORBIDDEN"
+        || plan["distribution"]["publication_authorized"] != false
+        || plan.get("packages").is_some()
         || plan.get("bundle_selection").is_some()
     {
-        return Err("manual or bundled official engine installation contract is obsolete".into());
+        return Err("integrated PTSIP native component plan is incomplete or unauthorized".into());
     }
+    let components = plan["components"]
+        .as_array()
+        .ok_or("integrated PTSIP plan requires explicit components")?;
+    let ids: BTreeSet<_> = components
+        .iter()
+        .map(|v| v["engine_id"].as_str().unwrap_or("").to_owned())
+        .collect();
+    let defaults: BTreeSet<_> = plan["default_available_engine_ids"]
+        .as_array()
+        .ok_or("explicit default native engine set required")?
+        .iter()
+        .map(|v| v.as_str().unwrap_or("").to_owned())
+        .collect();
+    if components.len() != 7 || ids.len() != 7 || ids.contains("") || defaults != ids {
+        return Err("integrated PTSIP wheel requires exactly seven distinct registered engines".into());
+    }
+    for component in components {
+        let cargo = text(component, "cargo_manifest_ref")?;
+        let kind = cargo
+            .strip_prefix("src/ptsip/engines/")
+            .and_then(|s| s.strip_suffix("/Cargo.toml"))
+            .ok_or("unregistered engine component cargo ownership")?;
+        let required_entry = format!("ptsip-engine-{kind}");
+        if text(component, "entrypoint")? != required_entry
+            || component["distribution"] != "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT"
+            || component["installation"] != "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL"
+            || component["permission_from_availability"] != false
+            || component["installed_is_execution_authorization"] != false
+            || component.get("package_distribution").is_some()
+            || component["build_targets"].as_array().is_none()
+        {
+            return Err("independent pip engine package or invalid bundled component".into());
+        }
+    }
+    Ok(())
+}
+
+/// Provisional native component selection ahead of a separate versioned
+/// planning engine contract cutover. This does NOT check assembled wheel
+/// completeness, attest a release, install software or authorize execution.
+#[allow(dead_code)]
+pub fn select_integrated_candidate(input: &Value) -> Result<Value, String> {
+
+    let root = fs::canonicalize(text(input, "root")?).map_err(|e| e.to_string())?;
+    let (plan, revision) = document(&root, text(input, "plan_ref")?)?;
+    if input["expected_plan_sha256"] != revision {
+        return Err("current integrated installation plan proof missing".into());
+    }
+    verify_integrated_plan_contract(&plan)?;
     let target = text(input, "host_target")?;
-    let package_ids: BTreeSet<_> = plan["packages"]
+    let package_ids: BTreeSet<_> = plan["components"]
         .as_array()
         .ok_or("explicit package set required")?
         .iter()
@@ -78,7 +129,7 @@ pub fn select(input: &Value) -> Result<Value, String> {
         .map(|v| v.as_str().unwrap_or("").to_owned())
         .collect();
     if defaults != package_ids || package_ids.len() != 7 {
-        return Err("seven default packages must have exact independent declarations".into());
+        return Err("all seven official native components must be declared".into());
     }
     let reports = input["evidence_refs"]
         .as_array()
@@ -86,24 +137,25 @@ pub fn select(input: &Value) -> Result<Value, String> {
     let mut selected = Vec::new();
     let mut unverified = Vec::new();
     let mut seen = BTreeSet::new();
-    for package in plan["packages"].as_array().ok_or("package set required")? {
+    for package in plan["components"].as_array().ok_or("component set required")? {
         let id = text(package, "engine_id")?;
         if !seen.insert(id) {
             return Err("ambiguous default package identity".into());
         }
         let proof = (|| -> Result<Value, String> {
-            let package_name = text(package, "package_distribution")?;
+            let entrypoint = text(package, "entrypoint")?;
             let cargo_manifest = text(package, "cargo_manifest_ref")?;
             let kind = cargo_manifest
                 .strip_prefix("src/ptsip/engines/")
                 .and_then(|s| s.strip_suffix("/Cargo.toml"))
                 .ok_or("unregistered engine package cargo ownership")?;
-            if package_name != format!("ptsip-engine-{kind}")
-                || package["distribution"] != "INDEPENDENT_VERSIONED_NATIVE_WHEEL"
-                || package["installation"] != "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY"
+            if entrypoint != format!("ptsip-engine-{kind}")
+                || package["distribution"] != "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT"
+                || package["installation"] != "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL"
                 || package["installed_is_execution_authorization"] != false
+                || package.get("package_distribution").is_some()
             {
-                return Err("official engine requires independent auto-installed wheel".into());
+                return Err("official engine must be bundled in the PTSIP target wheel".into());
             }
             if package["permission_from_availability"] != false
                 || !package["build_targets"]
@@ -178,7 +230,7 @@ pub fn select(input: &Value) -> Result<Value, String> {
                 return Err("artifact platform does not match the declared host target".into());
             }
             Ok(
-                json!({"engine_id":id,"version":package["version"],"distribution":package["distribution"],"package_distribution":package_name,"host_target":target,"artifact_ref":artifact,"installation_authorized":false,"execution_authorized":false}),
+                json!({"engine_id":id,"version":package["version"],"distribution":"PTSIP","native_entrypoint":entrypoint,"host_target":target,"artifact_ref":artifact,"installation_authorized":false,"execution_authorized":false}),
             )
         })();
         match proof {
@@ -190,6 +242,67 @@ pub fn select(input: &Value) -> Result<Value, String> {
         return Err("installation plan changed during selection".into());
     }
     Ok(
-        json!({"plan_revision":revision,"ready":unverified.is_empty(),"selected_packages":selected,"unverified_packages":unverified,"installation_authorized":false,"external_installation_performed":false,"verification_report_authenticity":"SELECTED_OWNER_SOURCE_NOT_SELF_ISSUED_BY_ENGINE"}),
+        json!({"plan_revision":revision,"component_verification_ready":unverified.is_empty(),"ready":false,"selected_components":selected,"unverified_components":unverified,"wheel_composition_verified":false,"publication_authorized":false,"installation_authorized":false,"external_installation_performed":false,"verification_report_authenticity":"SELECTED_OWNER_SOURCE_NOT_SELF_ISSUED_BY_ENGINE"}),
     )
+}
+
+/// The published planning engine operation has a different, older machine
+/// semantics contract. The new integrated candidate must not silently replace
+/// it at the same engine/contract version; a separately authorized versioned
+/// operation cutover and exact-source Rust verification are required.
+pub fn select(_input: &Value) -> Result<Value, String> {
+    Err("retired independent-engine installation route; integrated planning operation not yet version-registered".into())
+}
+
+#[cfg(test)]
+mod integrated_candidate_tests {
+    use super::*;
+
+    #[test]
+    fn bundled_distribution_does_not_derive_install_authority() {
+        let mut components = Vec::new();
+        for name in ["context", "storage", "validation", "discovery", "planning", "execution", "projection"] {
+            components.push(json!({
+                "engine_id": format!("urn:uuid:{name}"),
+                "version": "0.3.0",
+                "cargo_manifest_ref":format!("src/ptsip/engines/{name}/Cargo.toml"),
+                "entrypoint":format!("ptsip-engine-{name}"),
+                "distribution":"PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
+                "installation":"INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
+                "permission_from_availability":false,
+                "installed_is_execution_authorization":false,
+                "build_targets":["x86_64-pc-windows-msvc","x86_64-unknown-linux-gnu"]
+            }));
+        }
+        let ids: Vec<_> = components.iter().map(|v| v["engine_id"].clone()).collect();
+        let mut plan = json!({
+            "schema_version":"ptsip-engine-installation-plan/v2",
+            "selection":"REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL",
+            "default_installation":"ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES",
+            "distribution":{
+                "public_python_project":"PTSIP",
+                "model":"SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL",
+                "engine_pip_dependencies":"FORBIDDEN",
+                "required_verified_engines":7,
+                "verification_owner":".ptsip/engine/developer/release/",
+                "legacy_controller_execution":"FORBIDDEN",
+                "publication_authorized":false
+            },
+            "default_available_engine_ids":ids,
+            "components":components
+        });
+        assert!(verify_integrated_plan_contract(&plan).is_ok());
+        plan["distribution"]["engine_pip_dependencies"] = json!("REQUIRED");
+        assert!(verify_integrated_plan_contract(&plan).is_err());
+        plan["distribution"]["engine_pip_dependencies"] = json!("FORBIDDEN");
+        plan["components"][0]["distribution"] = json!("INDEPENDENT_VERSIONED_NATIVE_WHEEL");
+        assert!(verify_integrated_plan_contract(&plan).is_err());
+        plan["components"][0]["distribution"] = json!("PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT");
+        plan["components"][0]["installed_is_execution_authorization"] = json!(true);
+        assert!(verify_integrated_plan_contract(&plan).is_err());
+        plan["components"][0]["installed_is_execution_authorization"] = json!(false);
+        plan["distribution"]["publication_authorized"] = json!(true);
+        assert!(verify_integrated_plan_contract(&plan).is_err());
+        assert!(select(&json!({})).is_err());
+    }
 }
