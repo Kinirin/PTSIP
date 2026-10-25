@@ -235,8 +235,22 @@ root_index_lookup_connection_direction:
           REUSE_HISTORICAL_ID_FOR_OTHER_TARGET: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
           RETIRE_REGISTERED_ID: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
           RECORD_ID_ISSUANCE_HISTORY: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_CONTRACT_PENDING}
+        responsibility_mapping_approval:
+          decision: USER_APPROVED
+          authorization: PROJECT_OWNER_EXPLICIT
+          approved_scenario_responsibilities:
+            - EXISTING_REGISTERED_ID
+            - NEW_USER_SELECTED_ID_COLLISION
+            - REGISTERED_ID_CHANGE_COLLISION
+          currently_linked_permission_sets: APPROVED_AS_RECORDED
+          unused_permissions_remain_permitted: true
+          permission_declarations_are_not_runtime_grants: true
+          collision_resolution_conditions: UNRESOLVED_USER_DECISION
+          permission_execution_boundaries: UNRESOLVED_USER_DECISION
+          persistent_mutation_grants: NOT_AUTHORIZED_BY_THIS_APPROVAL
         responsibilities:
           EXISTING_REGISTERED_ID:
+            decision: USER_APPROVED_WITH_EXISTING_PERMISSION_MAPPING
             trigger: ALREADY_HAS_REGISTERED_ID
             required_permissions:
               - READ_ID_STATE
@@ -247,6 +261,7 @@ root_index_lookup_connection_direction:
               - EMIT_VALIDATION_RESULT
             persistent_id_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
           NEW_USER_SELECTED_ID_COLLISION:
+            decision: USER_APPROVED_WITH_EXISTING_PERMISSION_MAPPING
             trigger: NEW_USER_SPECIFIED_ID_ALREADY_OCCUPIED
             required_permissions:
               - READ_ID_STATE
@@ -262,6 +277,7 @@ root_index_lookup_connection_direction:
               - PREVENT_UNVERIFIED_NEW_REGISTRATION
             persistent_id_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
           REGISTERED_ID_CHANGE_COLLISION:
+            decision: USER_APPROVED_WITH_EXISTING_PERMISSION_MAPPING
             trigger: EXISTING_ID_CHANGE_TARGET_ALREADY_OCCUPIED
             required_permissions:
               - READ_ID_STATE
