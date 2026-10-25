@@ -1,0 +1,32 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-VALIDATION-PROJECTION-CAPABILITY-CONTRACT-BUMPS
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner requires versions above those shipped in PTSIP 0.3.8b5: Validation
+    engine 0.3.4 with capability contract 4.0.1, and Projection engine
+    0.2.2 with capability contract 2.0.1. Publish only after current-source
+    verification and effective Release Admission.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: ENGINE_CAPABILITY_CONTRACT_PUBLICATION_IDENTITY
+  published_reference:
+    package: 0.3.8b5
+    source_sha: 912a2b4956e856bec709cadc322cbd68588cdd5b
+    validation: {engine: 0.3.3, contract: 4.0.0}
+    projection: {engine: 0.2.1, contract: 2.0.0}
+  approved_versions:
+    validation: {engine: 0.3.4, contract: 4.0.1}
+    projection: {engine: 0.2.2, contract: 2.0.1}
+  invariants:
+    preserve_published_4_0_0_scoped_reference_semantics: REQUIRED
+    retain_independent_component_version_authority: REQUIRED
+    preserve_published_artifact_immutability: REQUIRED
+    no_implicit_privilege_escalation: REQUIRED
+    source_bound_verification_before_publication: REQUIRED
+    active_CTRL_normative_admission_before_publication: REQUIRED
+    new_branch_creation: FORBIDDEN
+  recorded_at: '2026-10-26'

@@ -1,17 +1,15 @@
 # PTSIP Validation Engine 0.3.4
 
-## Version authority
+## Publication identities
 
-- Engine: `validation`
-- New independent engine version: `0.3.4`
-- Previously distributed by PTSIP `0.3.8b5`: `0.3.3`
-- Reference published source: `912a2b4956e856bec709cadc322cbd68588cdd5b`
-- Version owner: `src/ptsip/engines/validation/version.yaml`
+- Engine version: `0.3.4` (published PTSIP `0.3.8b5` contained `0.3.3`)
+- Capability contract: `4.0.1` (published PTSIP `0.3.8b5` contained `4.0.0`)
+- Published comparison source: `912a2b4956e856bec709cadc322cbd68588cdd5b`
+- Engine version owner: `src/ptsip/engines/validation/version.yaml`
+- Capability contract: `src/ptsip/engines/validation/contract.json`
 
-## Release scope
+## Compatibility and verification
 
-This version supersedes the engine version embedded in the published PTSIP `0.3.8b5` composition. The current source and Rust/native artifact producer boundaries require newly verified, uniquely versioned artifacts, not mutation or re-publication of the previously distributed engine version.
+The upcoming release preserves scoped JSON Schema reference resolution, including explicitly registered local resources and opt-in origin-bounded network acquisition. Capability IDs and permission boundaries remain unchanged. The explicit version increase does not confer authorization or imply compatibility without verification.
 
-The registered engine contract, capability identity, and independently owned Project Profile remain governed by their existing contracts; this version selection does not independently approve a contract-breaking change.
-
-Windows x64 and Linux x64 release artifacts require exact-source verification. GitHub Release publication, PyPI publication, and observed file hashes must be checked separately. **This note records an upcoming version candidate; it does not assert completed publication.**
+Windows x64 and Linux x64 native wheel artifacts, source-bound hashes, the resulting GitHub Release, and the public PyPI distribution must be verified separately. This note is a candidate release description, **not evidence of completed publication**.
