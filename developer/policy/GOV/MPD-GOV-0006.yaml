@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
-    Rule_ver: "1"
+    Rule_ver: "2"
   Definition:
     meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
@@ -84,6 +84,14 @@ Policy_Rules:
       - id: OBLIGATION/AUTOMATION_SOURCE_PROPAGATION_ONLY
         applies_when: AUTOMATION_DERIVED_RESULT
         rule: "AUTOMATION_DERIVED는 기존 규칙에서 파생된 결과로서 이미 존재하는 권위만 전달할 수 있다."
+        Rule_state: APPROVED.provisional
+      - id: OBLIGATION/COMPILE_SEALED_CHANGE_SENSITIVE_VALIDITY
+        applies_when: SEALED_ATOM_OR_BINDING_CHANGE
+        rule: "확정된 Compile-Sealed 계약은 불변으로 보존하며 관련 조건 원자·권한 원자·바인딩이 변경되면 영향을 받는 책임 활성화의 유효성을 기계적으로 재판정한다. 재활성화는 책임 단위로 수행하고 권한별 재승인을 도입하지 않는다."
+        Rule_state: APPROVED.provisional
+      - id: OBLIGATION/COMPILE_SEALED_MIGRATION_BOUNDARY
+        applies_when: LEGACY_TO_COMPILE_SEALED_TRANSITION
+        rule: "새 권한 모델의 저장 경로, 스키마 필드, 구현 방식 및 실제 전환 시점은 미결정이다. 이 상위 방향의 승인만으로 기존 검사를 제거하거나 미구현 책임 활성화를 현재 실행 허가로 간주하지 않는다. 실제 전환은 후속 승인된 계약과 검증된 이관에 따른다."
         Rule_state: APPROVED.provisional
       - id: PROHIBITION/NO_OUT_OF_SCOPE_APPROVAL
         rule: "필수 조건이 해결되지 않았거나 허가 범위를 벗어난 변경을 편의상 승인하는 행위"
