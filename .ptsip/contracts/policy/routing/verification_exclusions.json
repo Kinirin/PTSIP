@@ -1,0 +1,96 @@
+{
+  "schema_version": "ptsip-developer-policy-verification-scope/v1",
+  "domain": "PTSIP_DEVELOPER_POLICY",
+  "authority_source": "USER_EXPLICIT",
+  "policy_owner": "MPD-GOV-0006",
+  "decision": "EXCLUDE_RETIRING_POLICY_SOURCES_FROM_CURRENT_POLICY_VERIFICATION",
+  "excluded_path_rules": [
+    {
+      "match": "EXACT",
+      "path": "developer/policy/policy-resolver-contract.yaml"
+    },
+    {
+      "match": "EXACT",
+      "path": "developer/policy/MPD-BOUND-0001.yaml"
+    },
+    {
+      "match": "EXACT",
+      "path": "developer/policy/source-application-review.yaml"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/policy/registries/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/policy/schemas/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/policy/policy-resolver-bindings/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/policy/approvals/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/policy/analysis/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/policy/legacy/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/bindings/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/automation/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/verification/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "developer/state/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "reference/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "registry/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "schemas/"
+    },
+    {
+      "match": "PREFIX",
+      "path": "planning/"
+    }
+  ],
+  "applies_to": [
+    "CURRENT_POLICY_AUTHORITY_DISCOVERY",
+    "CURRENT_POLICY_DOCUMENT_OR_SCHEMA_VALIDATION",
+    "MANDATORY_POLICY_VERIFICATION_AND_ADMISSION_GATES"
+  ],
+  "does_not_disable": [
+    "INDEPENDENT_IMPLEMENTATION_REGRESSION_TESTS",
+    "NON_NORMATIVE_HISTORICAL_AUDIT_OUTSIDE_POLICY_ADMISSION"
+  ],
+  "legacy_policy_identity_pattern": "^MPD-[0-9]{4}$",
+  "historical_migration_reconstruction_required_for_current_policy_pass": false,
+  "successor_policy_verification_claim": "ONLY_WHEN_VALIDATOR_AND_CURRENT_POLICY_CONTRACT_ARE_VERIFIED",
+  "current_root_family_policy_path_pattern": "developer/policy/{FAMILY}/MPD-{FAMILY}-{NNNN}.yaml",
+  "current_contract_roots": [
+    ".ptsip/contracts/policy/",
+    ".ptsip/contracts/schemas/"
+  ],
+  "on_referenced_retired_source": "EXCLUDE_FROM_CURRENT_POLICY_VERIFICATION_NO_FALLBACK",
+  "on_unsupported_successor_validation": "REPORT_UNVERIFIED_NOT_PASS"
+}
