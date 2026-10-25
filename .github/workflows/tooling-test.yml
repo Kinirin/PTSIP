@@ -101,6 +101,8 @@ jobs:
       fetch_depth: ${{ steps.mode.outputs.fetch_depth }}
       join_matrix: ${{ steps.mode.outputs.join_matrix }}
       join_count: ${{ steps.mode.outputs.join_count }}
+      lightweight_matrix: ${{ steps.mode.outputs.lightweight_matrix }}
+      lightweight_count: ${{ steps.mode.outputs.lightweight_count }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -215,4 +217,43 @@ jobs:
         with:
           name: verification-${{ matrix.component }}-${{ matrix.platform }}-${{ github.sha }}
           path: .artifacts/release/components/${{ matrix.component }}/${{ matrix.platform }}
+          if-no-files-found: error
+  lightweight-package:
+    name: "Lightweight install / package / ${{ matrix.platform }}"
+    needs: [mode-selection, registered-verification]
+    if: ${{ needs.mode-selection.outputs.lightweight_count != '0' }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.mode-selection.outputs.lightweight_matrix) }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/release/test/go.mod
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ needs.mode-selection.outputs.python }}
+      - uses: actions/download-artifact@v8
+        with:
+          name: verification-selection-${{ github.sha }}
+          path: .artifacts/release
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: verification-*-${{ github.sha }}
+          path: .artifacts/release/verified
+      - name: Verify exact-source complete wheel install, versions, hashes and sdist
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "build>=1.2,<2"
+          go -C .ptsip/engine/developer/release/test run ./cmd/ptsip-release-test lightweight --root "$GITHUB_WORKSPACE" --platform "${{ matrix.platform }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: verification-package-${{ matrix.platform }}-${{ github.sha }}
+          path: .artifacts/release/package/${{ matrix.platform }}
           if-no-files-found: error

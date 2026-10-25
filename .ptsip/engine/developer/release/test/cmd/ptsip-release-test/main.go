@@ -94,6 +94,12 @@ func main() {
 			fail(e)
 		}
 		result = v
+    case "lightweight":
+        s,e:=test.ReadSelection(abs,*selection)
+        if e!=nil{fail(e)}
+        v,e:=test.VerifyLightweightPackageInstall(abs,s,*input,*platform)
+        if e!=nil{fail(e)}
+        result=v
 	default:
 		fail(fmt.Errorf("unregistered mode runner command"))
 	}
