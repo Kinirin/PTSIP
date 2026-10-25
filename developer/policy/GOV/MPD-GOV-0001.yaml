@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration"
-    Rule_ver: "2"
+    Rule_ver: "3"
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -66,6 +66,10 @@ Policy_Rules:
         applies_when: ROOT_FAMILY_AUTHORITY_MAJOR_CLASSIFICATION
         rule: "Authority_Major_Category.major는 Root Family 식별자의 복제가 아니라 권한 주제의 의미로 분류한다. 의미가 같은 주제는 Family가 달라도 기존 Major 분류를 재사용하고, 의미가 다른 주제는 구별한다. GOV의 기존 responsibilities 값은 유지한다. 나머지 Family의 구체적인 Major 값 및 Minor/Micro 계층은 별도 승인 전까지 자동 결정·등록·치환하지 않는다."
         Rule_state: APPROVED.provisional
+      - id: OBLIGATION/NORM_SEPARATE_MAJOR_SEMANTIC_DOMAINS
+        applies_when: NORM_AUTHORITY_MAJOR_DESIGN
+        rule: "NORM의 Authority Major는 규범 효력·우선순위와 규범 해석을 서로 다른 의미 범주로 구별한다. 이 분류 결정만으로 NORM의 세부 규범 내용·정식 승인 권위나 정책 문서 분할을 생성하지 않는다. 각 범주의 명칭·허용 값·정식 정책 바인딩 및 검증 적용은 후속 결정에 따른다."
+        Rule_state: APPROVED.provisional
       - id: PROHIBITION/INTENT_ARCH_CANNOT_CREATE_GOV_MANDATE
         rule: "INTENT의 작업 목표나 ARCH의 기술 설계를 근거로 GOV의 위임 권한을 자동 생성하는 행위"
       - id: PROHIBITION/CTRL_TEST_CANNOT_APPROVE_POLICY
@@ -84,3 +88,4 @@ Policy_Rules:
         - "GOV-0004, GOV-0005, GOV-0006의 책임 분배 및 문서 참조"
         - "GOV 총칙과 개별 GOV 정책 사이의 책임 중복 또는 미결정 구분"
         - "Authority Major 의미 분류와 Root Family 식별자 구별, 미승인 분류의 보류"
+        - "NORM의 규범 효력·우선순위와 규범 해석 Major 구별 및 미승인 상세 바인딩 보류"
