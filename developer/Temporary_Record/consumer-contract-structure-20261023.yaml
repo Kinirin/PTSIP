@@ -188,6 +188,31 @@ root_index_lookup_connection_direction:
         example_target_relative_path: contracts/schemas/index.json
         root_normalization_and_path_resolution: UNRESOLVED_USER_DECISION
         relocation_detection_and_same_file_proof: UNRESOLVED_USER_DECISION
+      direct_parameter_path_layout_direction:
+        user_selected_option: A_DIRECT_ROOT_AND_RELATIVE_PATH_UNDER_PARAMETERS
+        user_authorization: USER_APPROVED_STRUCTURAL_DIRECTION
+        disposition: RECORDED_PENDING_CONFLICT_RESOLUTION
+        parent_object_path: consumer_contract_root_subindex_refs[].consumer_subindex_id.parameters
+        location_field_grouping: DIRECT_CHILDREN_OF_PARAMETERS
+        intermediate_location_object: NOT_SELECTED
+        approved_base_root_value: src/policy
+        base_root_field_name: UNRESOLVED_USER_DECISION
+        relative_path_field_name_for_NESTED_LOCATION: UNRESOLVED_PENDING_CONFLICT_RESOLUTION
+        other_internal_field_names: UNRESOLVED_USER_DECISION
+        field_requiredness: UNRESOLVED_USER_DECISION
+        path_normalization_and_verification: UNRESOLVED_USER_DECISION
+        automatic_relocation_tracking: UNRESOLVED_USER_DECISION
+        implementation: NOT_AUTHORIZED_YET
+        conflict:
+          prior_path_location: REGISTRATION_ITEM_SIBLING_OF_IDENTIFIER_CONTAINER
+          prior_path_approval_revision: a0ba5ff289907a4a78af040c81eb9273ffd5d455
+          prior_registration_item_structure_revision: 474c3a3696f238b48b73907d1f4b9599f5650c03
+          current_conflicting_field: registration_item_structure.relative_location
+          conflict_topic: PATH_PLACEMENT_OUTSIDE_VERSUS_INSIDE_CONSUMER_SUBINDEX_ID_PARAMETERS
+          resolution_authority: USER
+          resolution_state: UNRESOLVED_USER_DECISION
+          options: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
+          original_rules_preserved_until_resolution: true
       comparison_procedure_and_errors: UNRESOLVED_USER_DECISION
       implementation: NOT_AUTHORIZED_YET
     concrete_field_names:
