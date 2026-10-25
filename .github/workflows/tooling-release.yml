@@ -66,11 +66,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          go -C .github/checks/release/controller run ./cmd/ptsip-release prepare-publication --root "$GITHUB_WORKSPACE" --release-type "$RELEASE_TYPE" --components "$COMPONENTS" --optional-platforms "$OPTIONAL" --output .artifacts/release/shipping
+          go -C .ptsip/engine/developer/release/controller run ./cmd/ptsip-release prepare-publication --root "$GITHUB_WORKSPACE" --release-type "$RELEASE_TYPE" --components "$COMPONENTS" --optional-platforms "$OPTIONAL" --output .artifacts/release/shipping
       - name: Consume immutable PyPI file identities before publication
         id: preflight
         shell: bash
-        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-stage --root "$GITHUB_WORKSPACE" --destination "$DESTINATION" --output .artifacts/release/shipping
+        run: go -C .ptsip/engine/developer/release/controller run ./cmd/ptsip-release pypi-stage --root "$GITHUB_WORKSPACE" --destination "$DESTINATION" --output .artifacts/release/shipping
       - uses: actions/upload-artifact@v7
         with:
           name: admitted-publication-${{ github.sha }}
@@ -100,7 +100,7 @@ jobs:
           path: .artifacts/release/shipping
       - name: Publish one verified source-SHA Release
         shell: bash
-        run: go -C .github/checks/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+        run: go -C .ptsip/engine/developer/release/controller run ./cmd/ptsip-release publish-carrier --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
   pypi-publication:
     needs: [release-admission, github-publication]
     if: ${{ inputs.destination == 'github-pypi' && needs.release-admission.outputs.pypi_count != '0' }}
@@ -149,7 +149,7 @@ jobs:
       - name: Confirm public PyPI digests
         if: ${{ inputs.destination == 'github-pypi' }}
         shell: bash
-        run: go -C .github/checks/release/controller run ./cmd/ptsip-release pypi-verify --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+        run: go -C .ptsip/engine/developer/release/controller run ./cmd/ptsip-release pypi-verify --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
       - name: Record the published Package composition and separate Package note
         shell: bash
-        run: go -C .github/checks/release/controller run ./cmd/ptsip-release record-package --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
+        run: go -C .ptsip/engine/developer/release/controller run ./cmd/ptsip-release record-package --root "$GITHUB_WORKSPACE" --output .artifacts/release/shipping
