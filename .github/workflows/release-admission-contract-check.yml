@@ -70,7 +70,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer/release/controller test ./... -run '^(TestCTRLAdmissionFailClosedWithoutActiveNormativePolicy|TestPublishedB5EngineVersionsAndProjections)$' -count=1
+          go -C .ptsip/engine/developer/release/controller test ./... -run '^(TestCTRLAdmissionFailClosedWithoutActiveNormativePolicy|TestCTRLAdmissionAcceptsVerifiedPolicyWithoutGrantingPublication|TestPublishedB5EngineVersionsAndProjections)$' -count=1
           go -C .ptsip/engine/developer/release/test test ./... -run '^$'
           go -C .ptsip/engine/developer/release/engine-verification test ./... -run '^$'
       - name: Verify active normative CTRL policy (no publication)
