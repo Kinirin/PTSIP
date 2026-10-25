@@ -197,22 +197,64 @@ Implementation currently committed to `main`:
   `src/tests/ptsip/contracts/test_integrated_installation_contract.py`:
   consumer negative checks and source contract alignment assertions.
 
-Remaining blocker: the current `.ptsip/engine/developer/release/controller/`
-assembly route still assumes separate engine wheel dependencies, and a
-plain `python -m build --wheel` produces a pure Python intermediate,
-**not** a complete Windows/Linux native PTSIP Wheel. The verified b5 host
-Wheel assembly and exact-source release validation still need to be ported
-to the present controller **without reinstating its retired predecessor**.
-No new planning engine contract/implementation version was selected or
-published. Publication remains blocked and historical b5 files are unchanged.
+The b5 single-project native packaging and verification modules have now
+been **ported as implementation** into the current developer release owner,
+not linked to or restored under `.github/checks/release/controller/`:
 
-Suggested local validation (results not yet provided):
+- `.ptsip/engine/developer/release/controller/package_wheel.go`:
+  `BundledPackageWheel`, all-seven engine origin/digest checks, Windows/Linux
+  wheel tags, executable permissions, no engine `Requires-Dist`, wheel RECORD.
+- `controller/pypi_archive.go`: PyPI-safe ZIP header normalization and
+  source-bound normalization helper.
+- `controller/package_build.go`: host-specific complete native Wheel and
+  `ptsip-pip-package-test-receipt/v2` tied to current published component
+  registry and exact source; no independent engine Wheel upload from this join.
+- `controller/package_admission.go`: verified receipts for every requested
+  native host plus one source distribution required before admitting a PTSIP
+  Package carrier.
+- `controller/composition.go`: rejects obsolete `ptsip-engine-*`
+  runtime pip dependencies.
+- `controller/tool_project.go`: Tool-only intermediate uses setuptools;
+  its build cannot accidentally invoke the complete PTSIP native backend.
+- `controller/package.go`: read-only installed PTSIP host bundle origin
+  and source version verification, not standalone pip engine inspection.
+- `controller/publication.go`: when the complete PTSIP Package is selected,
+  the derived PyPI upload project list contains only PTSIP, not intermediate
+  engine Wheel artifacts.
+- `.ptsip/engine/developer/release/backend/ptsip_build_backend.py`:
+  b5-style native Rust `--locked` wheel build and exact-source sdist rebuild.
+  `pyproject.toml` and `MANIFEST.in` include this relocated backend and
+  native crate/lockfile source files.
+- `.ptsip/engine/developer/release/test/`: b5 positive/negative native
+  bundle tests, host/source receipt tests, PyPI ZIP normalization tests,
+  source rebuild/install verifier and native PTSIP pip-install checks.
+- `developer/tests/engines/independent_engine_wheel_test.go`:
+  keeps independent native *build evidence* while reading the integrated
+  v2 component plan rather than retired consumer pip dependencies.
+
+**Verification status:** Go/Cargo/Python tests and Windows/Linux native
+builds have NOT been executed against the new exact source SHA in this chat.
+The registered workflow still intentionally rejects publication.
+`planning.select-installation` still needs a versioned operation cutover.
+Published b5 assets remain immutable. Candidate/beta6 source preparation is
+not a completed release.
+
+Required local tests and release preflight:
 
 ```powershell
+git pull --ff-only origin main
+go -C .ptsip/engine/developer/release/controller test ./... -count=1
+go -C .ptsip/engine/developer/release/test test ./... -count=1
+go -C developer/tests test ./engines -count=1
 python -m pytest -q src/tests/ptsip/cli/test_engine_installation.py src/tests/ptsip/contracts/test_integrated_installation_contract.py
 cargo test --manifest-path src/ptsip/engines/planning/Cargo.toml
-go -C .ptsip/engine/developer test ./release -count=1
+python -m build --sdist --wheel
 ```
+
+`python -m build` now selects the native backend and requires Rust/Cargo,
+a supported platform and a clean exact source. Its local Wheel must include
+seven native executables and the distribution's `ptsip-engines.json`; merely
+observing a `py3-none-any` Tool intermediate is not complete Package proof.
 
 ## Release blockers / explicit scope limits
 
