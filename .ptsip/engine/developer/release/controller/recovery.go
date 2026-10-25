@@ -121,16 +121,12 @@ func OriginalVerification(root string, s Selection, run int64) error {
 	return AdmitVerification(dir, s, run)
 }
 
+// AdmitShipping follows the active CTRL policy, not the retired
+// MPD-CTRL-0001 resolver. The active policy alone never grants an individual
+// release: the original exact-source workflow and artifacts are checked below.
 func AdmitShipping(root string, m ShippingManifest) error {
-	policyData, err := Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-CTRL-0001", "--section", "release_orchestration")
-	if err != nil {
+	if err := AdmitPublicationEvidenceAuthority(root); err != nil {
 		return err
-	}
-	var policy struct {
-		Record map[string]any `json:"record"`
-	}
-	if json.Unmarshal(policyData, &policy) != nil || policy.Record["evidence_resolution_contract_ref"] != EvidenceContractPath {
-		return fmt.Errorf("current publication evidence authority unresolved")
 	}
 	tracked, err := Run(root, "git", "status", "--porcelain", "--untracked-files=no")
 	if err != nil || len(tracked) != 0 {

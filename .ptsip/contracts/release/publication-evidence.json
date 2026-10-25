@@ -1,6 +1,6 @@
 {
   "schema_version": "ptsip-publication-evidence/v1",
-  "authority_ref": "developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.release_orchestration",
+  "authority_ref": "developer/policy/CTRL/release-admission.policy.json",
   "approval_ref": "developer/policy/approvals/MPA-20261013-RELEASE-PRESENTATION-AND-DELETED-CARRIER-REISSUE.yaml",
   "verification_run_id": "AUTOMATIC_NEWEST_SUCCESSFUL_EXACT_SOURCE_AND_SELECTION",
   "release_id": "AUTOMATIC_UNIQUE_SOURCE_TAG_THEN_RETURNED_NUMERIC_ID",
@@ -14,7 +14,18 @@
     "archive_and_file_digests": "REQUIRED",
     "original_verification": "RECHECK_SUCCESSFUL_EXACT_ORIGINAL_SOURCE_SELECTION_AND_ALL_REQUIRED_HOSTS",
     "current_versions_and_selection": "MUST_EQUAL_ORIGINAL_ADMISSION",
-    "source_boundaries": ["src", "registry", "License-Authority", "README.md", ".ptsip/engine/developer/release/test/tool.go", ".ptsip/engine/developer/release/test/runner.go", ".ptsip/engine/developer/release/engine-verification/wheel.go", ".ptsip/engine/developer/release/engine-verification/linux_abi.go", ".ptsip/engine/developer/release/engine-verification/go.mod", ".ptsip/engine/developer/release/engine-verification/go.sum"],
+    "source_boundaries": [
+      "src",
+      "registry",
+      "License-Authority",
+      "README.md",
+      ".ptsip/engine/developer/release/test/tool.go",
+      ".ptsip/engine/developer/release/test/runner.go",
+      ".ptsip/engine/developer/release/engine-verification/wheel.go",
+      ".ptsip/engine/developer/release/engine-verification/linux_abi.go",
+      ".ptsip/engine/developer/release/engine-verification/go.mod",
+      ".ptsip/engine/developer/release/engine-verification/go.sum"
+    ],
     "pyproject_comparison": "FULL_PARSED_DOCUMENT_EXCEPT_OBSERVED_PUBLISHED_SNAPSHOT_TABLE",
     "original_source_tag_and_package_identity": "PRESERVE",
     "publisher_control_sha": "SEPARATE_FRESH_MAIN_SHA",
