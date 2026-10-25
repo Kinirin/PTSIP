@@ -6,6 +6,10 @@ const MANIFEST: &str = include_str!("../manifest.json");
 mod cases;
 mod composition;
 mod handoff;
+mod retrieval;
+mod schema;
+#[cfg(test)]
+mod schema_reference_tests;
 mod source;
 mod rbac;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
@@ -25,29 +29,14 @@ fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     if operation == "validation.compose" {
         return composition::validate(input);
     }
-    fn closed_schema(v: &Value) -> bool {
-        match v {
-            Value::Object(o) => {
-                !o.contains_key("$ref")
-                    && !o.contains_key("$dynamicRef")
-                    && o.values().all(closed_schema)
-            }
-            Value::Array(a) => a.iter().all(closed_schema),
-            _ => true,
-        }
-    }
-    if !closed_schema(&input["schema"]) {
-        return Err(
-            "external or unresolved schema references are not supported by this capability".into(),
-        );
-    }
-    let validator = jsonschema::validator_for(&input["schema"]).map_err(|e| e.to_string())?;
-    let diagnostics: Vec<String> = validator
-        .iter_errors(&input["instance"])
-        .map(|e| e.to_string())
-        .collect();
+    let (diagnostics, evidence) = schema::validate_with_resolution(
+        &input["schema"],
+        &input["instance"],
+        input.get("schema_resources"),
+        input.get("schema_resolution"),
+    )?;
     Ok(
-        json!({"valid":diagnostics.is_empty(),"diagnostics":diagnostics,"ptsip_conformance_verdict":"NOT_ASSERTED"}),
+        json!({"valid":diagnostics.is_empty(),"diagnostics":diagnostics,"schema_resources_used":evidence,"ptsip_conformance_verdict":"NOT_ASSERTED"}),
     )
 }
 fn dispatch(request: &Value) -> Result<Value, String> {
@@ -82,19 +71,19 @@ fn dispatch(request: &Value) -> Result<Value, String> {
 "validation.prepare-composition" => "VERIFY_ALL_SELECTED_CASE_ADAPTERS_AND_CONTRACT_INPUTS_BEFORE_ANY_INVOCATION",
 
         "validation.contract" => {
-            "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.schema" => {
-            "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.typed-io" => {
-            "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.precondition" => {
-            "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.case" => {
-            "INDEPENDENT_INLINE_JSON_SCHEMA_2020_12_VALIDATION_NO_EXTERNAL_REFERENCE"
+            "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
         }
         "validation.compose" => "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE",
         "validation.verify-handoff" => "VERIFY_CURRENT_VERSIONED_VPMS_RELATIONS_AND_FULL_RESPONSIBILITY_CLASSIFICATION_WITHOUT_PUBLIC_API_CUTOVER",
@@ -111,6 +100,10 @@ fn dispatch(request: &Value) -> Result<Value, String> {
 }
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
+    if args == ["--help"] || args == ["-h"] {
+        println!("PTSIP Validation Engine 0.3.4 / capability contract 4.0.1\nInput: one versioned JSON request on stdin.\nSupports internal $ref (JSON Pointer, anchors, recursive schemas), external $id references and $dynamicRef/$dynamicAnchor.\nschema_resources: explicit local resources.\nschema_resolution.directories: recursively discover JSON schemas inside explicitly permitted roots.\nschema_resolution.allow_network + allowed_origins: retrieve missing HTTP(S) references from exact permitted origins; redirects and ambient proxies disabled.\nOptional base_uri resolves relative references for anonymous input schemas.\nResults include schema_resources_used (URI, source, SHA256).\nLimits: 128 schema documents, 1 MiB per acquired document, 8 MiB total, 16384 schema nodes, 5s per HTTP request and 20s acquisition budget per schema evaluation.\nGuide: https://github.com/Kinirin/PTSIP/blob/main/docs/validation-schema-references.md");
+        return;
+    }
     if args == ["--manifest"] {
         println!("{MANIFEST}");
         return;
@@ -198,5 +191,24 @@ mod tests {
             "validation.schema"
         ))
         .is_err());
+    }
+
+    #[test]
+    fn registered_operations_and_composition_accept_explicit_schema_resources() {
+        let resources = json!([{"$id":"urn:registered:string","type":"string"}]);
+        for op in [
+            "validation.contract",
+            "validation.schema",
+            "validation.typed-io",
+            "validation.precondition",
+            "validation.case",
+        ] {
+            let input = json!({"schema":{"$ref":"urn:registered:string"},"instance":"ok","schema_resources":resources});
+            assert_eq!(dispatch(&request(input, op)).unwrap()["valid"], true);
+        }
+        let input = json!({"checks":[{"check_id":"a","operation_id":"validation.schema","schema":{"$ref":"urn:registered:string"},"instance":4,"depends_on":[]}],"schema_resources":resources});
+        let output = dispatch(&request(input, "validation.compose")).unwrap();
+        assert_eq!(output["valid_all"], false);
+        assert_eq!(output["ptsip_conformance_verdict"], "NOT_ASSERTED");
     }
 }
