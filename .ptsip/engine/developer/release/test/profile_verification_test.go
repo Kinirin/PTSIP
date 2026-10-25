@@ -152,3 +152,22 @@ func TestNativeProfileVerifierRejectsMalformedProfileEvenWithMatchingBaseline(t 
 		t.Fatal("invalid Profile passed because it matched baseline")
 	}
 }
+
+func TestNativeProfileExecutionNeverReentersRetiredDeveloperVerifier(t *testing.T) {
+	root := repoRoot(t)
+	runner, err := os.ReadFile(filepath.Join(root, ".ptsip/engine/developer/release/test/runner.go"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(runner), "VerifyProjectProfiles(root, c.Version)") ||
+		strings.Contains(string(runner), `"developer/tests", "test", "./pp"`) {
+		t.Fatal("Release Profile verification is not owned by the native release engine")
+	}
+	modes, err := os.ReadFile(filepath.Join(root, ".github/test_modes.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(modes), "developer/tests/pp") {
+		t.Fatal("retired developer Profile tests are still registered as active architecture verification")
+	}
+}
