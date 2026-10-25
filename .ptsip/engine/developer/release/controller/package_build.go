@@ -18,7 +18,49 @@ type PackageReceipt struct {
 	Status    string   `json:"status"`
 }
 
-func BuildPackageReceipt(root string, s Selection, input, output, platform string) (PackageReceipt, error) {
+// sourceBoundVerificationSnapshot is never a published registry projection.
+// Every component must be present and tied to the selected source SHA.
+func sourceBoundVerificationSnapshot(s Selection, components []PublishedComponent, engines map[string]string) (Snapshot, error) {
+	if s.Type != "PTSIP_PACKAGE" || s.SourceSHA == "" || s.PackageBase == "" ||
+		len(s.Components) != len(components) {
+		return Snapshot{}, fmt.Errorf("source-bound Package selection is incomplete")
+	}
+	selected := map[string]Component{}
+	for _, c := range s.Components {
+		if c.ID == "" || selected[c.ID].ID != "" {
+			return Snapshot{}, fmt.Errorf("duplicate or empty source-bound component identity")
+		}
+		selected[c.ID] = c
+	}
+	seen := map[string]bool{}
+	for _, c := range components {
+		entry, ok := selected[c.ID]
+		if !ok || seen[c.ID] || entry.Kind != c.Kind || entry.Version != c.Version ||
+			c.SourceSHA != s.SourceSHA || len(c.Files) == 0 {
+			return Snapshot{}, fmt.Errorf("source-bound component evidence differs: %s", c.ID)
+		}
+		seen[c.ID] = true
+	}
+	// Deliberately do not load the published registry. A test receipt is not
+	// a license to reissue an immutable published version of this Package.
+	registry := Registry{NumericBase: s.PackageBase}
+	snapshot, err := RefreshPackage(&registry, s.SourceSHA, components)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	if err := CompletePackage(snapshot, engines); err != nil {
+		return Snapshot{}, err
+	}
+	return snapshot, nil
+}
+
+// BuildSourceVerificationPackageReceipt consumes only the exact-source receipts
+// admitted by Gather. This is a non-publishing test Join: a changed artifact
+// producer must be tested even when the public version has not been changed.
+//
+// Published artifact reuse and immutable version admission remain mandatory in
+// PrepareShipping, the separate production/publishing path.
+func BuildSourceVerificationPackageReceipt(root string, s Selection, input, output, platform string) (PackageReceipt, error) {
 	c, err := ReadComposition(root)
 	if err != nil {
 		return PackageReceipt{}, err
@@ -30,26 +72,11 @@ func BuildPackageReceipt(root string, s Selection, input, output, platform strin
 	if err != nil {
 		return PackageReceipt{}, err
 	}
-	components, err = EngineReuse(root, s, components, locations)
+	// The test-only receipt must not resolve immutable published assets or
+	// treat historical component versions as test admission authority.
+	// Gather already authenticates every source/selection/host/file digest.
+	snapshot, err := sourceBoundVerificationSnapshot(s, components, c.Engines)
 	if err != nil {
-		return PackageReceipt{}, err
-	}
-	// Match the b5 exact-source composition rule while using the active
-	// developer release state path, never the retired controller.
-	registry, err := PublishedRegistry(root, ".ptsip/engine/developer/release/state/package-registry.json", s.SourceSHA)
-	if err != nil {
-		return PackageReceipt{}, err
-	}
-	components, err = ReusePublishedComponents(root, s, registry, components, locations)
-	if err != nil {
-		return PackageReceipt{}, err
-	}
-	registry.NumericBase = c.PackageBase
-	snapshot, err := RefreshPackage(&registry, s.SourceSHA, components)
-	if err != nil {
-		return PackageReceipt{}, err
-	}
-	if err := CompletePackage(snapshot, c.Engines); err != nil {
 		return PackageReceipt{}, err
 	}
 	out, err := SafePath(root, output)
