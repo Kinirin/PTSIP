@@ -27,11 +27,12 @@ var govPolicies = map[string]struct {
     obligations int
     prohibitions int
     statusVersion string
+    ruleVersion string
 }{
-    "MPD-GOV-0001": {6, 3, "2"},
-    "MPD-GOV-0004": {6, 3, "3"},
-    "MPD-GOV-0005": {8, 5, "3"},
-    "MPD-GOV-0006": {12, 4, "1"},
+    "MPD-GOV-0001": {7, 3, "2", "2"},
+    "MPD-GOV-0004": {6, 3, "3", "1"},
+    "MPD-GOV-0005": {8, 5, "3", "1"},
+    "MPD-GOV-0006": {12, 4, "1", "1"},
 }
 
 func govRepositoryRoot(t *testing.T) string {
@@ -154,7 +155,7 @@ func TestGOVPolicyMigrationAndFullSchema(t *testing.T) {
             contractID, _ := ruleIdentity["contract_id"].(string)
             if !govEqualKeys(ruleIdentity, "contract_id", "Rule_ver") ||
                 !strings.HasPrefix(contractID, "urn:ptsip:policy:rule:gov:") ||
-                strings.Contains(contractID, ":v1") || ruleIdentity["Rule_ver"] != "1" {
+                strings.Contains(contractID, ":v1") || ruleIdentity["Rule_ver"] != expected.ruleVersion {
                 t.Fatalf("GOV rule identity mismatch: %v", ruleIdentity)
             }
             if err := rules.Validate(rule); err != nil { t.Fatalf("rules schema: %v", err) }
