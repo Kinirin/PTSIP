@@ -64,7 +64,7 @@ func TestReleasePresentationUsesPackageTitleAndOrderedTypedSections(t *testing.T
 		t.Fatal("release identity projection differs from requested template")
 	}
 	previous := -1
-	for _, heading := range []string{"# PTSIP Release\n", "# PTSIP Tool\n", "# Project Profile pp.1.02\n", "# PTSIP Engine\n"} {
+	for _, heading := range []string{"# PTSIP Release\n", "# PTSIP Tool\n", "# Project Profile pp.2.00\n", "# PTSIP Engine\n"} {
 		pos := strings.Index(body, heading)
 		if pos <= previous {
 			t.Fatalf("section order differs: %s", heading)

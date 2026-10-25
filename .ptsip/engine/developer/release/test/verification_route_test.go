@@ -81,7 +81,7 @@ func TestDeclaredVerificationSelectionNeverAssertsPolicyOrPublishing(t *testing.
         v.VerificationScope != "SOURCE_BOUND_TEST_EVIDENCE_ONLY" {
         t.Fatal("test execution was misrepresented as release policy authority")
     }
-    if len(v.Join.Include) != 2 || len(v.Matrix.Include) != 18 {
-        t.Fatalf("missing host/component verification matrix: joins=%d components=%d", len(v.Join.Include), len(v.Matrix.Include))
+    if len(v.Join.Include) != 0 || len(v.Lightweight.Include) != 2 || len(v.Matrix.Include) != 18 {
+        t.Fatalf("missing host/component verification matrix: joins=%d lightweight=%d components=%d", len(v.Join.Include), len(v.Lightweight.Include), len(v.Matrix.Include))
     }
 }

@@ -16,7 +16,7 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 		t.Fatal(err)
 	}
 	c, err := release.ParseComposition(data)
-	if err != nil || c.Tool == "" || c.Profile != "pp.1.02" || len(c.Engines) != 7 {
+	if err != nil || c.Tool == "" || c.Profile != "pp.2.00" || len(c.Engines) != 7 {
 		t.Fatalf("canonical declaration: %v", err)
 	}
 	noDeclaration := strings.Split(string(data), "[tool.ptsip.release]")[0]

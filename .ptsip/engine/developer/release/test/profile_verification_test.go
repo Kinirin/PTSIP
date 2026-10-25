@@ -32,6 +32,7 @@ func profileFixture(t *testing.T) string {
 		profileSourcePath + "/index.yaml",
 		"schemas/ptsip-profile-pp-1.01.schema.json",
 		"schemas/ptsip-profile-pp-1.02.schema.json",
+		"schemas/ptsip-profile-pp-2.00.schema.json",
 	} {
 		copyFile(path)
 	}
@@ -89,7 +90,7 @@ func TestNativeProfileVerifierAdmitsCurrentRepository(t *testing.T) {
 
 func TestNativeProfileVerifierNeedsNoRetiredDeveloperPolicy(t *testing.T) {
 	root := profileFixture(t)
-	if err := VerifyProjectProfiles(root, "pp.1.02"); err != nil {
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err != nil {
 		t.Fatalf("native verifier depended on retired developer-policy tooling: %v", err)
 	}
 }
@@ -97,9 +98,9 @@ func TestNativeProfileVerifierNeedsNoRetiredDeveloperPolicy(t *testing.T) {
 func TestNativeProfileVerifierRejectsRegistryProjectionDrift(t *testing.T) {
 	root := profileFixture(t)
 	rewriteProfileFixture(t, root, profileProjectionPath, func(s string) string {
-		return strings.Replace(s, "current: pp.1.02", "current: pp.9.99", 1)
+		return strings.Replace(s, "current: pp.2.00", "current: pp.9.99", 1)
 	})
-	if err := VerifyProjectProfiles(root, "pp.1.02"); err == nil {
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
 		t.Fatal("embedded registry drift admitted")
 	}
 }
@@ -115,7 +116,7 @@ func TestNativeProfileVerifierRejectsCatalogModeDrift(t *testing.T) {
 	rewriteProfileFixture(t, root, profileSourcePath+"/index.yaml", func(s string) string {
 		return strings.Replace(s, "responsibility_mode: explicit", "responsibility_mode: hybrid", 1)
 	})
-	if err := VerifyProjectProfiles(root, "pp.1.02"); err == nil {
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
 		t.Fatal("catalog vs profile responsibility mode drift admitted")
 	}
 }
@@ -125,7 +126,7 @@ func TestNativeProfileVerifierRejectsImmutableBaselineChange(t *testing.T) {
 	rewriteProfileFixture(t, root, profileSourcePath+"/example.ptsip.yaml", func(s string) string {
 		return strings.Replace(s, "revision: \"Rev.0001\"", "revision: \"Rev.0002\"", 1)
 	})
-	if err := VerifyProjectProfiles(root, "pp.1.02"); err == nil {
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
 		t.Fatal("current Profile differed from immutable baseline")
 	}
 }
@@ -136,7 +137,7 @@ func TestNativeProfileVerifierRejectsUncatalogedResource(t *testing.T) {
 	if err := os.WriteFile(p, []byte("ptsip: {}\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
-	if err := VerifyProjectProfiles(root, "pp.1.02"); err == nil {
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
 		t.Fatal("undeclared Profile distribution resource admitted")
 	}
 }
@@ -147,8 +148,8 @@ func TestNativeProfileVerifierRejectsMalformedProfileEvenWithMatchingBaseline(t 
 		return strings.Replace(s, "revision: \"Rev.0001\"", "revision: \"invalid\"", 1)
 	}
 	rewriteProfileFixture(t, root, profileSourcePath+"/example.ptsip.yaml", rewrite)
-	rewriteProfileFixture(t, root, profileSourcePath+"/history/pp.1.02/example.ptsip.yaml", rewrite)
-	if err := VerifyProjectProfiles(root, "pp.1.02"); err == nil {
+	rewriteProfileFixture(t, root, profileSourcePath+"/history/pp.2.00/example.ptsip.yaml", rewrite)
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
 		t.Fatal("invalid Profile passed because it matched baseline")
 	}
 }

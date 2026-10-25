@@ -19,7 +19,7 @@ The **published PTSIP beta is `0.3.8b5`** (October 18, 2026). This PyPI distribu
 | Storage / Discovery / Planning / Execution engines | `0.3.1` |
 | Validation engine | `0.3.3` (capability contract `4.0.0`) |
 
-**Published artifact versus development source:** the root `pyproject.toml` on `main` still describes the separate `0.3.8.1b1` source composition / Tool `T.0.3.8.b1`. It does **not** define the published b5 artifacts, which were released from `dev/0.3.8b2`. This README reports the published release without changing the development-source version or rebuilding any package.
+**Published artifact versus development source:** the current `main` source declares the next Package prerelease `0.3.8b6` (user identity `0.3.8.b6`) with Project Profile `pp.2.00` and the independently versioned Tool `T.0.3.8.b1`. It does **not** define the published b5 artifacts, which were released from `dev/0.3.8b2`. The above published `0.3.8b5` facts remain historical; source declarations for b6 do not mean that b6 has been published.
 
 Package composition, Tool, each engine and Project Profile retain independent identities. See the [b5 Package release note](docs/releasenote/PTSIP_Package/0.3.8.adee8b.md), [b5 Tool release note](docs/releasenote/tool/T.0.3.8.b5.md), [immutable GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b) and [Tool release history](docs/releasenote/tool/README.md). Release verification and publication remain governed by the existing [release workflow](.github/workflows/tooling-release.yml); documentation updates do not constitute new publication evidence.
 

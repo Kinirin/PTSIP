@@ -71,7 +71,7 @@ Historical `0.3.6-draft` facts remain historical facts; they are not rewritten a
 
 ## Published 0.3.8b5 snapshot and current contract records
 
-The published b5 Package is independent of the older `main` source-tree version (`pyproject.toml` `0.3.8.1b1`). Publication evidence is the [original GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b), not a new release action from these documentation updates.
+The published b5 Package is independent of the older `main` source-tree version (`pyproject.toml` `0.3.8b6` (identity `0.3.8.b6`)). Publication evidence is the [original GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b), not a new release action from these documentation updates.
 
 | Authority | Identity | State | Document |
 | --- | --- | --- | --- |
