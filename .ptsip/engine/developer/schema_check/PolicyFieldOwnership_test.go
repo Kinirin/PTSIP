@@ -96,7 +96,7 @@ func TestEveryFamilyRequiresObligationLevelRuleState(t *testing.T) {
                 t.Fatal("GOV unified constraint record requires id and rule")
             }
             if contractObject(t,item,"properties")["condition"] != nil ||
-                contractObject(t,contractObject(t,constraints,"properties"),"prohibitions") != nil {
+                contractObject(t,constraints,"properties")["prohibitions"] != nil {
                 t.Fatal("GOV legacy constraint fields still defined")
             }
             rules := contractArray(t,item,"allOf")
@@ -133,7 +133,8 @@ func TestCurrentRootFamilyPolicyFields(t *testing.T) {
             if file.IsDir() || !strings.HasSuffix(file.Name(),".yaml") {continue}
             data, err := os.ReadFile(filepath.Join(root,filepath.FromSlash(directory),file.Name()))
             if err!=nil {t.Fatal(err)}
-            source:=string(data)
+            // Treat CRLF checkouts and UTF-8 BOM as the same policy document.
+            source:=strings.TrimPrefix(strings.ReplaceAll(string(data), "\r\n", "\n"), "\ufeff")
             if !strings.HasPrefix(source,"Policy_Identity:\n") {continue}
             modern++
             migrated++
@@ -174,4 +175,17 @@ func TestCurrentRootFamilyPolicyFields(t *testing.T) {
         if modern==0 {t.Errorf("%s: no current policy with new structure",family)} else {families++}
     }
     if families!=14 || migrated<17 {t.Fatalf("coverage: families=%d modern_policy_docs=%d",families,migrated)}
+}
+
+func TestPolicyFieldOwnershipAcceptsWindowsLineEndings(t *testing.T) {
+    for _, document := range []string{
+        "Policy_Identity:\n  id: MPD-GOV-0006\n",
+        "Policy_Identity:\r\n  id: MPD-GOV-0006\r\n",
+        "\ufeffPolicy_Identity:\r\n  id: MPD-GOV-0006\r\n",
+    } {
+        source:=strings.TrimPrefix(strings.ReplaceAll(document, "\r\n", "\n"), "\ufeff")
+        if !strings.HasPrefix(source, "Policy_Identity:\n") {
+            t.Fatal("policy identity lost by platform-specific checkout")
+        }
+    }
 }

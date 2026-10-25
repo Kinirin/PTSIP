@@ -138,6 +138,8 @@ modes:
     execution:
       go:
         - developer/tests/schema_validation
+      pytest:
+        - developer/tests/schema_validation/test_gov_policy_migration.py
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:

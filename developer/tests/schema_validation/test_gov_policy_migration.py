@@ -14,7 +14,7 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
 
-REPO = Path(__file__).resolve().parents[4]
+REPO = Path(__file__).resolve().parents[3]
 GOV_FILES = {
     "MPD-GOV-0001": (6, 3, "2"),
     "MPD-GOV-0004": (6, 3, "3"),

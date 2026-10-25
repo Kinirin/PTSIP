@@ -40,7 +40,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b5" "PyYAML>=6,<7"
+          python -m pip install --disable-pip-version-check "PTSIP==0.3.8b5" "PyYAML>=6,<7" "pytest>=8,<10" "jsonschema>=4,<5"
       - name: Record retired registry validator gap
         shell: bash
         run: |
@@ -61,6 +61,7 @@ jobs:
           set -euo pipefail
           go -C .ptsip/engine/developer test ./schema_check -count=1
           go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
+          python -m pytest -q developer/tests/schema_validation/test_gov_policy_migration.py
 
   ptsip-validation-runtime:
     name: "Installed PTSIP VALIDATION smoke / ${{ matrix.runner }}"
