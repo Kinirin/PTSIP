@@ -1,0 +1,36 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-SEVEN-ENGINE-POST-B5-VERSIONS
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The project owner approved new independently versioned engines for the
+    imminent PTSIP release, with explicit requirement that validation and
+    projection on main be higher than those included in previously published
+    PTSIP 0.3.8b5. The published release source was checked and all seven
+    engines are advanced strictly past their published b5 versions.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: INDEPENDENT_ENGINE_PUBLICATION_VERSION_SELECTION
+  previously_published_reference:
+    package: 0.3.8b5
+    source_sha: 912a2b4956e856bec709cadc322cbd68588cdd5b
+    source_tag: ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b
+  version_selection:
+    context: {published_b5: 0.2.1, approved_next: 0.2.2}
+    storage: {published_b5: 0.3.1, approved_next: 0.3.2}
+    validation: {published_b5: 0.3.3, approved_next: 0.3.4}
+    discovery: {published_b5: 0.3.1, approved_next: 0.3.2}
+    planning: {published_b5: 0.3.1, approved_next: 0.3.2}
+    execution: {published_b5: 0.3.1, approved_next: 0.3.2}
+    projection: {published_b5: 0.2.1, approved_next: 0.2.2}
+  invariants:
+    every_version_greater_than_0_3_8b5_engine: true
+    existing_published_file_mutation: FORBIDDEN
+    automatic_version_increment: FORBIDDEN
+    exact_source_platform_validation_before_publication: REQUIRED
+    package_and_tool_release_version_changes: NOT_AUTHORIZED_BY_THIS_DECISION
+    new_branch_creation: FORBIDDEN
+  recorded_at: '2026-10-26'
