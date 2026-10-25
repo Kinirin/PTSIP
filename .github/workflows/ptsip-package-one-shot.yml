@@ -3,72 +3,24 @@ on:
   push:
     branches: [main]
     paths:
-      - 'developer/planning/release-requests/ptsip-package-20261026-02.json'
-  workflow_run:
-    workflows: [tooling-test]
-    types: [completed]
-    branches: [main]
+      - 'developer/planning/release-requests/ptsip-package-20261026-03.json'
 permissions:
   contents: read
   actions: write
 concurrency:
-  group: ptsip-package-one-shot-${{ github.event_name }}-${{ github.event.workflow_run.head_sha || github.sha }}
+  group: ptsip-package-one-shot-dispatch-${{ github.sha }}
   cancel-in-progress: false
 jobs:
-  dispatch-verification:
-    if: ${{ github.event_name == 'push' }}
+  verify-and-release:
     runs-on: ubuntu-24.04
+    timeout-minutes: 85
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 2
-      - name: Assert initial user-authorized request
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$GITHUB_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-02.json'
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-02.json').read_text())
-          assert r['request_id']=='PTSIP-PACKAGE-20261026-02'
-          assert r['decision_source']=='USER_EXPLICIT'
-          assert r['execution']['dispatch_test_now'] is True
-          assert r['execution']['dispatch_release_on_verification_success'] is True
-          assert r['trigger']['source_sha']=='COMMIT_CREATING_THIS_REQUEST'
-          s=r['authorized_scope']
-          assert s['verification_mode']=='release-verification' and s['targets']=='package'
-          assert s['release_type']=='PTSIP_PACKAGE' and s['destination']=='github-pypi'
-          assert s['required_platforms']==['windows-x64','linux-x64']
-          assert s['optional_platforms']==[]
-          PY
-          test "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')" = "$GITHUB_SHA"
-      - name: Dispatch exact-HEAD full Package verification
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/tooling-test.yml/dispatches" \
-            -f ref=main \
-            -f 'inputs[mode]=release-verification' \
-            -f 'inputs[targets]=package' \
-            -f 'inputs[optional_platforms]='
-          echo "DISPATCHED_TOOLING_TEST exact SHA=$GITHUB_SHA"
-  dispatch-release-after-verification:
-    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'workflow_dispatch' }}
-    runs-on: ubuntu-24.04
-    env:
-      GH_TOKEN: ${{ github.token }}
-      EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
-      VERIFY_RUN_ID: ${{ github.event.workflow_run.id }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 2
       - name: Require exact once-only request and current HEAD
         shell: bash
@@ -76,13 +28,13 @@ jobs:
           set -euo pipefail
           test "$EXPECTED_SHA" = "$(git rev-parse HEAD)"
           test "$EXPECTED_SHA" = "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
-          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-02.json'
+          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-03.json'
           python3 - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-02.json').read_text())
+          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-03.json').read_text())
           assert r['schema_version']=='ptsip-one-shot-package-release-request/v1'
-          assert r['request_id']=='PTSIP-PACKAGE-20261026-02'
+          assert r['request_id']=='PTSIP-PACKAGE-20261026-03'
           assert r['decision_source']=='USER_EXPLICIT'
           assert r['trigger']['source_sha']=='COMMIT_CREATING_THIS_REQUEST'
           assert r['admission']['duplicate_publication_dispatch']=='FORBIDDEN'
@@ -93,6 +45,34 @@ jobs:
           assert r['authorized_scope']['required_platforms']==['windows-x64','linux-x64']
           assert r['authorized_scope']['optional_platforms']==[]
           PY
+      - name: Dispatch and await this SHA's full Windows/Linux Package verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          api="repos/$GITHUB_REPOSITORY/actions/workflows/tooling-test.yml/runs"
+          gh api "$api?head_sha=$GITHUB_SHA&per_page=100" --jq '.workflow_runs[].id' > /tmp/preexisting-verification-runs
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/tooling-test.yml/dispatches" \
+            -f ref=main \
+            -f 'inputs[mode]=release-verification' \
+            -f 'inputs[targets]=package' \
+            -f 'inputs[optional_platforms]='
+          echo "Dispatched exact-head Package verification for $GITHUB_SHA"
+          for attempt in $(seq 1 180); do
+            gh api "$api?head_sha=$GITHUB_SHA&per_page=100" --jq '.workflow_runs[] | select(.event=="workflow_dispatch") | [.id,.status,.conclusion] | @tsv' > /tmp/current-verification-runs
+            while IFS="$(printf '\t')" read -r run_id status conclusion; do
+              test -n "$run_id" || continue
+              if grep -Fxq "$run_id" /tmp/preexisting-verification-runs; then continue; fi
+              if [ "$status" = "completed" ]; then
+                echo "Original verification run $run_id conclusion=$conclusion"
+                test "$conclusion" = "success" || exit 1
+                echo "VERIFY_RUN_ID=$run_id" >> "$GITHUB_ENV"
+                exit 0
+              fi
+            done < /tmp/current-verification-runs
+            sleep 20
+          done
+          echo "Verification did not complete within the registered execution window" >&2
+          exit 1
       - uses: actions/setup-go@v6
         with:
           go-version-file: .ptsip/engine/developer/go.mod
