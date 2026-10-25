@@ -61,12 +61,17 @@ func sourceBoundVerificationSnapshot(s Selection, components []PublishedComponen
 // Published artifact reuse and immutable version admission remain mandatory in
 // PrepareShipping, the separate production/publishing path.
 func BuildSourceVerificationPackageReceipt(root string, s Selection, input, output, platform string) (PackageReceipt, error) {
+	// Enforce the current canonical selection and exact HEAD before accepting any
+	// test receipts. The test Join is not a historic publication resolution path.
+	if err := ValidateSelection(root, s); err != nil {
+		return PackageReceipt{}, err
+	}
 	c, err := ReadComposition(root)
 	if err != nil {
 		return PackageReceipt{}, err
 	}
-	if c.PackagePyPI == "" {
-		return PackageReceipt{}, fmt.Errorf("complete pip Package requires current composition v2")
+	if c.PackagePyPI == "" || c.PackageBase != s.PackageBase {
+		return PackageReceipt{}, fmt.Errorf("source-bound Package selection differs from current composition v2")
 	}
 	components, locations, err := Gather(root, s, input)
 	if err != nil {
