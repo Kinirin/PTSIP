@@ -35,7 +35,9 @@ jobs:
             echo "BLOCKED: legacy release Go code remains in .github/checks/release"
             exit 1
           fi
-          if grep -R -n --include='*.go' --include='go.mod' -F '.github/checks/release' .ptsip/engine/developer/release; then
+          # Negative tests must be allowed to reference the retired path as rejected input.
+          # Reject references in production Go sources and module declarations only.
+          if grep -R -n --include='*.go' --include='go.mod' --exclude='*_test.go' -F '.github/checks/release' .ptsip/engine/developer/release; then
             echo "BLOCKED: relocated Go code still references the retired Go path"
             exit 1
           fi
