@@ -1,0 +1,59 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-RELEASE-ADMISSION-PUBLICATION-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Following the approval to establish a formal Release Admission policy
+    and activate publication automation, the owner explicitly selected
+    B. KEEP_LATEST for the conflict with the prior prohibition on enabling
+    GitHub or PyPI release publication.
+  approval_scope: FINAL_POLICY
+  policy_content_review_scope: DIRECTION
+  responsibility_scope: RELEASE_ADMISSION_PUBLICATION_ACTIVATION_CONFLICT
+  conflict_resolution: KEEP_LATEST
+  conflict:
+    earlier_approval_ref: developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml
+    earlier_base_revision: 0d6f293bb124941fcca1c211f1919dc767314fc1
+    earlier_current_rule:
+      - selected_direction.publication_execution
+      - implementation_authority.enabling_github_or_pypi_publication
+    earlier_values:
+      publication_execution: BLOCKED_UNTIL_SEPARATE_POLICY_AND_VALIDATION_APPROVAL
+      enabling_github_or_pypi_publication: FORBIDDEN
+    incoming_approval_ref: developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-POLICY-ACTIVATION-DIRECTION.yaml
+    incoming_current_head_at_decision: 0d6bca6c4f155f88710f23cf28e8cdcb86d27043
+    conflicting_authority: RELEASE_PUBLICATION_ACTIVATION_DIRECTION
+  resolution:
+    selected: KEEP_LATEST
+    replaced_scope: PRIOR_ABSOLUTE_PROHIBITION_ON_ACTIVATING_RELEASE_PUBLICATION
+    replacement: OWNER_APPROVED_FORMAL_RELEASE_ADMISSION_AND_PUBLICATION_AUTOMATION_DIRECTION
+    automatic_execution_gate: EFFECTIVE_SUCCESSOR_POLICY_AND_VERIFIED_ADMISSION_REQUIRED
+    policy_format_or_field_definition_by_this_resolution: NOT_GRANTED
+    test_pass_alone_is_publication_grant: false
+    historical_approval_files: PRESERVE_UNMODIFIED_FOR_AUDIT
+  preserved_unrelated:
+    release_verification_control_plane: CURRENT_DEVELOPER_VALIDATOR_ROUTE
+    verification_evidence_and_exact_source: REQUIRED
+    published_artifact_immutability: REQUIRED
+    per_component_version_authority: PRESERVED
+    engine_producer_changed_same_version: FAIL_REQUIRES_EXPLICIT_VERSION
+    official_engine_completeness: PRESERVED
+    source_sha_carrier_identity: PRESERVED
+    independent_logical_release_id_direction: PRESERVED
+    admission_common_directions: PRESERVED
+    admission_error_directions_E01_E14: PRESERVED
+    user_approved_security_recovery: REQUIRED
+    developer_retired_policy_or_validator_fallback: FORBIDDEN
+    verification_workflow_publication: FORBIDDEN
+    automatic_publisher_authorization_scope_expansion: FORBIDDEN
+  remaining:
+    successor_normative_policy_identity_schema_and_validator: UNRESOLVED
+    machine_verified_effective_policy_admission: REQUIRED_BEFORE_ACTUAL_PUBLICATION
+    new_versions_for_changed_published_engine_producers: USER_DECISION_REQUIRED
+    active_publication_execution: FAIL_CLOSED_UNTIL_SUCCESSOR_VERIFIED
+    branch_creation: NOT_AUTHORIZED
+  machine_resolution_ref: developer/policy/registries/release-admission-publication-activation.json
+  recorded_at: '2026-10-26'
