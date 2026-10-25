@@ -127,7 +127,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          go -C developer/tests test ./engines -run '^(TestRegisteredManifestContractBindingAndIndependentOwnerClosure|TestPostB5CapabilityVersions)$' -count=1
+          go -C developer/tests test ./engines -run '^(TestRegisteredManifestContractBindingAndIndependentOwnerClosure|TestPostB5CapabilityVersions|TestEffectiveCTRLReleaseAdmissionSchema)$' -count=1
   native-engine-contract-smoke:
     name: "Native contract / ${{ matrix.engine }}"
     runs-on: ubuntu-24.04
