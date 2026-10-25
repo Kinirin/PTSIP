@@ -345,23 +345,29 @@ func InstallPackage(snapshot Snapshot, platform, python string, registered map[s
 // Python is the installation adapter only. Inventory, artifact selection and
 // completion remain governed by the Go Package controller.
 func VerifyInstalledComponents(snapshot Snapshot, python string) error {
-	adapter := `import hashlib, importlib.metadata as metadata, json, pathlib, sys, sysconfig
+	adapter := `import importlib.metadata as metadata, json, sys
+from ptsip.engine_installation import inspect
 snapshot = json.load(sys.stdin)
+status = inspect()
+if not status['all_installed'] or status['execution_authorized'] or status['release_attested']:
+    raise RuntimeError('PTSIP native engine bundle incomplete or unauthorized')
+if status['distribution'] != 'SINGLE_PROJECT_PLATFORM_BUNDLES_ONLY':
+    raise RuntimeError('official integrated PTSIP distribution required')
+rows = {row['engine'].lower(): row for row in status['entries']}
+if len(rows) != 7:
+    raise RuntimeError('incomplete native PTSIP engine inventory')
 for component in snapshot['components']:
     if component['kind'] == 'profiles':
         continue
-    project = 'PTSIP' if component['kind'] == 'tool' else 'ptsip-engine-' + component['id']
-    distribution = metadata.distribution(project)
-    if distribution.version != component['version']:
-        raise RuntimeError('installed component version differs: ' + project)
     if component['kind'] == 'engine':
-        origin = json.loads(distribution.read_text('ptsip-origin.json'))
-        if origin['source_sha'] != component['source_sha'] or origin['engine_version'] != component['version']:
-            raise RuntimeError('installed engine origin differs: ' + project)
-        binary = pathlib.Path(sysconfig.get_path('scripts')) / origin['entrypoint']
-        if not binary.is_file() or hashlib.sha256(binary.read_bytes()).hexdigest() != origin['binary_sha256']:
-            raise RuntimeError('installed native executable missing or changed: ' + project)
-print('Complete Package installed: Tool, Profiles and all registered native engines')
+        row = rows[component['id']]
+        if row['source_sha'] != component['source_sha'] or row['installed_version'] != component['version']:
+            raise RuntimeError('installed native engine original source differs: ' + component['id'])
+    elif component['kind'] == 'tool':
+        from ptsip.constants import TOOL_VERSION
+        if TOOL_VERSION != component['version']:
+            raise RuntimeError('integrated PTSIP Tool version differs')
+print('Installed PTSIP Wheel contains seven source-bound verified native engines')
 `
 	payload, err := json.Marshal(snapshot)
 	if err != nil {
