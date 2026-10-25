@@ -64,15 +64,14 @@ func TestIndependentEngineWheel(t *testing.T) {
 		t.Run(kind, func(t *testing.T) {
 			version := entry["version"].(string)
 			engineID := entry["engine_id"].(string)
-			distribution := "ptsip-engine-" + kind
+			entrypoint := "ptsip-engine-" + kind
 			matched := 0
 			for _, raw := range components {
 				p := raw.(object)
 				if p["engine_id"] == engineID {
 					matched++
-					if p["version"] != version || p["entrypoint"] != distribution ||
-						p["distribution"] != "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT" ||
-						p["installation"] != "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL" ||
+					if p["version"] != version || p["entrypoint"] != entrypoint ||
+						p["permission_from_availability"] != false ||
 						p["installed_is_execution_authorization"] != false ||
 						!containsString(p["build_targets"], target) {
 						t.Fatal("registered integrated native component contract mismatch")
@@ -82,10 +81,10 @@ func TestIndependentEngineWheel(t *testing.T) {
 			if matched != 1 {
 				t.Fatalf("exact one registered native component expected: %d", matched)
 			}
-			filename := strings.ReplaceAll(distribution, "-", "_") + "-" + version + "-py3-none-" + platform + ".whl"
+			filename := strings.ReplaceAll(entrypoint, "-", "_") + "-" + version + "-py3-none-" + platform + ".whl"
 			wheel := filepath.Join(wheelDir, filename)
 			receipt := wheel + ".receipt.json"
-			expected := wheelExpectation{kind, engineID, version, distribution, target, platform, suffix, sourceSHA}
+			expected := wheelExpectation{kind, engineID, version, entrypoint, target, platform, suffix, sourceSHA}
 			if err := verifyIndependentWheel(wheel, receipt, expected); err != nil {
 				t.Fatalf("wheel conformance rejected: %v", err)
 			}
@@ -127,7 +126,7 @@ func TestIndependentEngineWheel(t *testing.T) {
 }
 
 type wheelExpectation struct {
-	kind, engineID, version, distribution, target, platform, suffix, sourceSHA string
+	kind, engineID, version, entrypoint, target, platform, suffix, sourceSHA string
 }
 
 func wheelHost() (target, platform, suffix, label string, err error) {
@@ -180,9 +179,9 @@ func verifyIndependentWheel(wheelPath, receiptPath string, expected wheelExpecta
 		return fmt.Errorf("invalid wheel ZIP: %w", err)
 	}
 	defer zr.Close()
-	base := strings.ReplaceAll(expected.distribution, "-", "_") + "-" + expected.version
+	base := strings.ReplaceAll(expected.entrypoint, "-", "_") + "-" + expected.version
 	di := base + ".dist-info/"
-	script := base + ".data/scripts/" + expected.distribution + expected.suffix
+	script := base + ".data/scripts/" + expected.entrypoint + expected.suffix
 	recordName := di + "RECORD"
 	wanted := map[string]bool{
 		script: true, di + "METADATA": true, di + "WHEEL": true,
@@ -211,7 +210,7 @@ func verifyIndependentWheel(wheelPath, receiptPath string, expected wheelExpecta
 	if err != nil {
 		return err
 	}
-	for _, field := range []string{"Metadata-Version: 2.4", "Name: " + expected.distribution, "Version: " + expected.version, "Requires-Python: >=3.11", "Description-Content-Type: text/markdown"} {
+	for _, field := range []string{"Metadata-Version: 2.4", "Name: " + expected.entrypoint, "Version: " + expected.version, "Requires-Python: >=3.11", "Description-Content-Type: text/markdown"} {
 		if !hasMetadataLine(meta, field) {
 			return fmt.Errorf("wheel metadata mismatch: %s", field)
 		}
@@ -241,7 +240,7 @@ func verifyIndependentWheel(wheelPath, receiptPath string, expected wheelExpecta
 	for key, want := range map[string]string{
 		"schema_version": "ptsip-independent-wheel-origin/v1", "source_sha": expected.sourceSHA,
 		"engine_id": expected.engineID, "engine_version": expected.version,
-		"host_target": expected.target, "entrypoint": expected.distribution + expected.suffix,
+		"host_target": expected.target, "entrypoint": expected.entrypoint + expected.suffix,
 		"binary_sha256": binaryDigest,
 	} {
 		if err := requireString(origin, key, want); err != nil {
@@ -365,8 +364,8 @@ func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpect
 		return fmt.Errorf("open verified native archive: %w", err)
 	}
 	defer archive.Close()
-	base := strings.ReplaceAll(expected.distribution, "-", "_") + "-" + expected.version
-	script := base + ".data/scripts/" + expected.distribution + expected.suffix
+	base := strings.ReplaceAll(expected.entrypoint, "-", "_") + "-" + expected.version
+	script := base + ".data/scripts/" + expected.entrypoint + expected.suffix
 	for _, member := range archive.File {
 		if member.Name != script {
 			continue
@@ -386,7 +385,7 @@ func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpect
 		if hexSHA(data) != expectedBinaryHash(wheel, expected) {
 			return fmt.Errorf("native executable changed after archive receipt verification")
 		}
-		binary := filepath.Join(t.TempDir(), expected.distribution+expected.suffix)
+		binary := filepath.Join(t.TempDir(), expected.entrypoint+expected.suffix)
 		if err := os.WriteFile(binary, data, 0700); err != nil {
 			return err
 		}
@@ -413,7 +412,7 @@ func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpect
 }
 
 // Native hash comparison reads the source-bound receipt rather than a
-// separately installed pip distribution.
+// independently installed pip package.
 func expectedBinaryHash(wheel string, expected wheelExpectation) string {
 	data, err := os.ReadFile(wheel + ".receipt.json")
 	if err != nil {
