@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:policy-identification"
-    Rule_ver: "1"
+    Rule_ver: "2"
   Definition:
     meaning: "GOV의 정책 식별 원본은 정책 문서가 소유한다. 식별 인덱스는 정책 문서와 승인된 계약에서 자동 생성하는 비권위 조회 결과이다."
     rationale: "식별자나 상태를 에이전트의 추측으로 결정하지 않고 승인·검증된 결과를 재사용한다."
@@ -65,6 +65,10 @@ Policy_Rules:
       - id: OBLIGATION/PERSIST_VERIFIED_RESOLUTION
         applies_when: REPEATED_IDENTITY_DECISION
         rule: "검증된 해결 결과는 기계가 재사용할 수 있는 계약 또는 바인딩으로 보존하고 동일한 현재 문제의 반복 추론을 방지한다."
+        Rule_state: APPROVED.provisional
+      - id: OBLIGATION/POLICY_DECLARED_RESPONSIBILITY_REFS
+        applies_when: POLICY_DOCUMENT_REFERENCES_COMPILE_SEALED_RBAC_RESPONSIBILITY
+        rule: "Compile-Sealed RBAC 연계 정책 문서는 Policy_Rules.Responsibility_Refs 필드를 통해 프로젝트 프로파일이 연결한 RBAC 계약의 Responsibility ID를 참조할 수 있다. 이 참조는 정책 문서가 Condition Atom·Permission Atom·Binding의 실제 정의를 직접 포함하거나 소유함을 뜻하지 않으며, 참조된 책임이 존재·유효·승인된 것인지 기계적으로 해소해야 한다. 모든 Root Family 및 고객 정책에 동일한 필드나 폴더를 무조건 강제하지 않는다. 참조 필드의 선택·필수 여부, 상세 자료형·검증 스키마 및 고객 정책 구조에 대한 반영 방식은 후속 독립 결정한다."
         Rule_state: APPROVED.provisional
       - id: PROHIBITION/NO_VISUAL_ID_GUESS
         rule: "정책 외형이나 의미를 보고 다음 정책 식별자를 추측하여 결정하는 행위"
