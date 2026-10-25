@@ -75,6 +75,20 @@ func AdmitVerification(root string, s Selection, run int64) error {
 			}
 		}
 	}
+	if s.Type == "PTSIP_PACKAGE" {
+		for _, platform := range s.Platforms {
+			name := "Registered join / package / " + platform
+			count := 0
+			for _, job := range jobs.Jobs {
+				if job.Name == name && job.Status == "completed" && job.Conclusion == "success" {
+					count++
+				}
+			}
+			if count != 1 {
+				return fmt.Errorf("required original package join missing: %s", name)
+			}
+		}
+	}
 	return nil
 }
 
