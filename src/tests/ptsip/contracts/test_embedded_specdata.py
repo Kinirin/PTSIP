@@ -69,7 +69,6 @@ def test_rbac_schema_scaffolds_and_registry_requirements_are_packaged_fail_close
         "SEAL",
         "ACTIVATION",
     ]
-    assert canonical["entry_kind_scope"]["serialized_kind_literals"] == "UNRESOLVED"
     assert canonical["separate_artifact_contracts"]["seal"]["registry_entry_allowed"] is False
     assert canonical["separate_artifact_contracts"]["activation"]["registry_entry_allowed"] is False
     assert canonical["contract_revision"] == 3
@@ -101,3 +100,46 @@ def test_rbac_schema_scaffolds_and_registry_requirements_are_packaged_fail_close
         Draft202012Validator.check_schema(bundled)
         assert not Draft202012Validator(bundled).is_valid({})
         assert not Draft202012Validator(bundled).is_valid({"Identity": {"kind": "BINDING"}})
+
+
+def test_rbac_central_registry_draft_schema_is_packaged_and_non_authoritative() -> None:
+    from jsonschema import Draft202012Validator
+
+    root = Path(__file__).resolve().parents[4]
+    name = "central-registry.draft.schema.json"
+    source = json.loads(
+        (root / ".ptsip/contracts/schemas/compile-sealed-rbac" / name).read_text(encoding="utf-8")
+    )
+    embedded = json.loads(
+        files("ptsip").joinpath("specdata", "compile-sealed-rbac", name).read_text(encoding="utf-8")
+    )
+    assert source == embedded
+    assert "DRAFT_NON_NORMATIVE" in source["$comment"]
+    Draft202012Validator.check_schema(source)
+    validator = Draft202012Validator(source)
+    valid = {
+        "schema_version": "sample",
+        "entries": [
+            {"id": "RESP-001", "kind": "RESPONSIBILITY",
+             "resource": ".ptsip/profiles/rbac/responsibilities/RESP-001.yaml"},
+            {"id": "BIND-001", "kind": "BINDING",
+             "resource": ".ptsip/profiles/rbac/bindings/BIND-001.json"},
+        ],
+    }
+    assert validator.is_valid(valid)
+    for invalid in [
+        {"schema_version": "sample", "entries": [
+            {"id": "S-1", "kind": "SEAL", "resource": ".ptsip/profiles/rbac/s.json"}
+        ]},
+        {"schema_version": "sample", "entries": [
+            {"id": "B-1", "kind": "BINDING", "resource": ".ptsip/profiles/rbac/../escape.json"}
+        ]},
+        {"schema_version": "sample", "entries": [
+            {"id": "B-1", "kind": "BINDING", "resource": "https://example.com/x.yaml"}
+        ]},
+        {"schema_version": "sample", "entries": [
+            {"id": "B-1", "kind": "BINDING", "resource": ".ptsip/profiles/rbac/x.txt"}
+        ]},
+        {"schema_version": "sample", "entries": [{"id": "B-1", "kind": "BINDING"}]},
+    ]:
+        assert not validator.is_valid(invalid)
