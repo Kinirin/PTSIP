@@ -17,6 +17,7 @@ func VerifyLightweightPackageInstall(root string, s release.Selection, input, pl
     if err!=nil{return release.PackageReceipt{},err}
     if !waived{return release.PackageReceipt{},fmt.Errorf("lightweight install requires active exact 0.3.8b6 waiver")}
     output:=".artifacts/release/package/"+platform
+    dist:=filepath.Join(root,filepath.FromSlash(output))
     r,err:=release.BuildSourceVerificationPackageReceipt(root,s,input,output,platform)
     if err!=nil{return r,err}
     wheel:=filepath.Join(root,filepath.FromSlash(output),r.Wheel.Name)
@@ -57,7 +58,7 @@ print('LIGHTWEIGHT_COMPLETE_PACKAGE_VERSION_INSTALL_OK')`
             "schema_version":"ptsip-build-source/v1",
             "source_sha":s.SourceSHA,
         });err!=nil{return r,err}
-        dist:=filepath.Join(root,filepath.FromSlash(output))
+        // Use the same per-platform output directory for the Linux source artifact.
         if err=command(stage,nil,"python","-m","build","--sdist","--outdir",dist);err!=nil{return r,err}
         sourceName:="ptsip-"+c.PackagePyPI+".tar.gz"
         sourcePath:=filepath.Join(dist,sourceName)
