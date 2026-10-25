@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
-    Rule_ver: "9"
+    Rule_ver: "10"
   Definition:
     meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
@@ -91,7 +91,7 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMPILE_SEALED_MIGRATION_BOUNDARY
         applies_when: LEGACY_TO_COMPILE_SEALED_TRANSITION
-        rule: "신규 독립 스키마의 최상위 경로는 승인된 GOV 상위 정책의 경로 계약을 따른다. RBAC를 선택한 프로젝트의 선언형 계약 원본 저장 루트와 여섯 스키마의 조건부 필수 위치는 GOV 상위 정책을 따른다. 원자 등록부·바인딩 인덱스·Compiler 관련 기계 계약의 세부 배치, Seal·Activation 산출물 저장 위치, 스키마 세부 필드, 구현 방식 및 실제 전환 시점은 미결정이다. 이 상위 방향의 승인만으로 기존 검사를 제거하거나 미구현 책임 활성화를 현재 실행 허가로 간주하지 않는다. 실제 전환은 후속 승인된 계약과 검증된 이관에 따른다."
+        rule: "신규 독립 스키마의 최상위 경로는 승인된 GOV 상위 정책의 경로 계약을 따른다. RBAC를 선택한 프로젝트의 선언형 계약 원본 저장 루트와 여섯 스키마의 조건부 필수 위치는 GOV 상위 정책을 따른다. RBAC 조회 진입점은 승인된 단일 중앙 등록부를 따르되, 그 개별 파일명·내부 구조·직렬화 형식과 Compiler 관련 기계 계약의 세부 배치, Seal·Activation 산출물 저장 위치, 스키마 세부 필드, 구현 방식 및 실제 전환 시점은 미결정이다. 이 상위 방향의 승인만으로 기존 검사를 제거하거나 미구현 책임 활성화를 현재 실행 허가로 간주하지 않는다. 실제 전환은 후속 승인된 계약과 검증된 이관에 따른다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/INDEPENDENT_CONTRACT_PHASED_REFERENCE_CUTOVER
         applies_when: COMPILE_SEALED_REFERENCE_TRANSITION
