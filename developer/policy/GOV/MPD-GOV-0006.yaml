@@ -69,14 +69,6 @@ Policy_Rules:
         applies_when: UNRESOLVED_CONTRACT_CASE_OR_EXECUTION_DEVIATION
         rule: "기계 계약으로 해결되지 않는 경우 제한된 AI 추론→후보→검증→권한 경계 확인→재사용 가능한 기계 계약 또는 바인딩으로 전환의 절차를 따른다."
         Rule_state: APPROVED.provisional
-      - id: OBLIGATION/COMPONENT_SCOPED_UPGRADE_REVIEW_IDENTITY
-        applies_when: VERSION_UPGRADE_REVIEW_RECORD_IDENTIFICATION
-        rule: "업데이트 검토의 식별 범위는 저장소·브랜치·구성요소 종류·명시적 구성요소 ID·이전 버전·대상 버전으로 구분한다. Tool, Project Profile, 공식 Engine, 등록된 사용자 제작 Engine 및 기계 계약의 버전과 검토 결과를 서로 독립적으로 관리하며, 패키지 또는 다른 구성요소의 버전으로 암묵적으로 대체하지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/SHARED_UPGRADE_REVIEW_DECISION_REUSE
-        applies_when: REPEATED_VERSION_UPGRADE_REVIEW
-        rule: "동일 저장소·브랜치·구성요소 버전 전환에 대한 사용자 검토 결정은 에이전트와 무관한 저장소 공유 기계 기록으로 보존한다. 유지·업데이트 거절도 완료된 결정으로 인정하며, 유효하게 보존된 동일 전환에 대해 코딩 에이전트 교체만을 이유로 검토나 승인을 반복 요구하지 않는다. 검토 기록은 정책 변경 시 수행해야 하는 검증을 면제하지 않는다."
-        Rule_state: APPROVED.provisional
       - id: OBLIGATION/GOVERNANCE_SOURCE_SEPARATION
         applies_when: GOVERNANCE_DECISION_OR_AUTHORIZATION
         rule: "결정 출처, 승인 출처, 실행 허가 출처 및 상태 전환 출처를 각각 구별한다."
