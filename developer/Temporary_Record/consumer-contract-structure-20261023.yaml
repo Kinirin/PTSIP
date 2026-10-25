@@ -191,6 +191,9 @@ root_index_lookup_connection_direction:
         rule:
           permission_is_single_operation: true
           responsibility_is_scenario_specific: true
+          responsibility_applicability_condition_owner: RESPONSIBILITY
+          responsibility_matching_rules_in_permission_definitions: FORBIDDEN
+          responsibility_match_implies_execution_permission: false
           responsibility_permission_mapping: MANY_TO_MANY
           all_permissions_must_be_assIGNED: false
           unused_permissions_permitted: true
@@ -235,6 +238,18 @@ root_index_lookup_connection_direction:
           REUSE_HISTORICAL_ID_FOR_OTHER_TARGET: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
           RETIRE_REGISTERED_ID: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
           RECORD_ID_ISSUANCE_HISTORY: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_CONTRACT_PENDING}
+        applicability_condition_ownership:
+          decision: USER_APPROVED
+          condition_owner: RESPONSIBILITY
+          permission_is_responsibility_independent: true
+          responsibility_match_result: SELECT_RESPONSIBILITY_ONLY
+          responsibility_match_is_runtime_authorization: false
+          trigger_is_existing_scenario_discriminator: true
+          complete_condition_expressions: UNRESOLVED_USER_DECISION
+          overlapping_matches: UNRESOLVED_USER_DECISION
+          no_match_behavior: UNRESOLVED_USER_DECISION
+          permission_execution_conditions: UNRESOLVED_USER_DECISION
+          implementation: NOT_AUTHORIZED_YET
         responsibility_mapping_approval:
           decision: USER_APPROVED
           authorization: PROJECT_OWNER_EXPLICIT
@@ -251,6 +266,8 @@ root_index_lookup_connection_direction:
         responsibilities:
           EXISTING_REGISTERED_ID:
             decision: USER_APPROVED_WITH_EXISTING_PERMISSION_MAPPING
+            condition_owner: SELF
+            complete_applicability_expression: UNRESOLVED_USER_DECISION
             trigger: ALREADY_HAS_REGISTERED_ID
             required_permissions:
               - READ_ID_STATE
@@ -262,6 +279,8 @@ root_index_lookup_connection_direction:
             persistent_id_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
           NEW_USER_SELECTED_ID_COLLISION:
             decision: USER_APPROVED_WITH_EXISTING_PERMISSION_MAPPING
+            condition_owner: SELF
+            complete_applicability_expression: UNRESOLVED_USER_DECISION
             trigger: NEW_USER_SPECIFIED_ID_ALREADY_OCCUPIED
             required_permissions:
               - READ_ID_STATE
@@ -278,6 +297,8 @@ root_index_lookup_connection_direction:
             persistent_id_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
           REGISTERED_ID_CHANGE_COLLISION:
             decision: USER_APPROVED_WITH_EXISTING_PERMISSION_MAPPING
+            condition_owner: SELF
+            complete_applicability_expression: UNRESOLVED_USER_DECISION
             trigger: EXISTING_ID_CHANGE_TARGET_ALREADY_OCCUPIED
             required_permissions:
               - READ_ID_STATE
