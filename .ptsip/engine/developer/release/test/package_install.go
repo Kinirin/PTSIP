@@ -11,7 +11,7 @@ import (
 
 func VerifyPackageJoin(root string, s release.Selection, input, platform string) (release.PackageReceipt, error) {
 	output := ".artifacts/release/package/" + platform
-	receipt, err := release.BuildPackageReceipt(root, s, input, output, platform)
+	receipt, err := release.BuildSourceVerificationPackageReceipt(root, s, input, output, platform)
 	if err != nil {
 		return receipt, err
 	}
