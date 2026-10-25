@@ -99,14 +99,14 @@ Native Windows and Linux wheel integration and the registered GitHub
 release policy can admit publication. No distribution was published as part
 of these changes.
 
-## Dependency resolver blocker (user-observed)
+## Historical b1 dependency resolver failure (source dependencies since retired)
 
-The user inspected the locally built `0.3.8.1b1` wheel: it contains
-13 RBAC schema resources and explicitly requires 7 independent native engine
-distributions. The wheel contains no native engine binary by design: the
-engine distributions are required installation dependencies.
+The user inspected a **previously built** `0.3.8.1b1` pure-Python wheel:
+it contains 13 RBAC schema resources and requires seven separate native engine
+pip distributions. That wheel was created **before** the integrated delivery
+source update and remains historical evidence; it is not the new Wheel output.
 
-**Installation admission currently fails.** The user ran
+**The earlier b1 dependency dry run failed.** The user ran
 `python -m pip install --dry-run --only-binary=:all:
 dist/ptsip-0.3.8.1b1-py3-none-any.whl`, and pip reported:
 
@@ -155,10 +155,11 @@ GitHub comparison against original b5 delivery branch
   dependencies, no seven `ptsip-engine-*` requirements.
 - `.github/workflows/tooling-release.yml`: host-tagged, integrated PTSIP
   wheel and source distribution checks for the b5 single-project release.
-- Current `main`: project `0.3.8.1b1` depending on seven separately
-  versioned native engine distributions, currently bound to Context/Projection
-  `0.2.0` and the remaining engines `0.3.0`. Its publication workflow
-  is explicitly disabled.
+- Earlier `main` before the integrated-delivery migration: project
+  `0.3.8.1b1` required seven independent engine pip distributions.
+- Current `main` after the migration: those independent engine pip dependencies
+  were removed; the versioned seven native component identities remain in
+  `[tool.ptsip.release.engines]`, and publication is still blocked.
 
 These are two different distribution mechanisms, not interchangeable
 versions of the same wheel layout. The user-requested b6 goal requires
@@ -166,6 +167,52 @@ source/version/artifact composition reconciliation with the effective
 release policy before any new publication workflow can be activated.
 Neither the historical b5 delivery branch nor its release evidence is
 modified by this record.
+
+## Integrated target Wheel source migration (not a release)
+
+The owner explicitly selected reconciliation: one target-specific PTSIP Wheel
+per supported platform, retaining seven native components with independent
+versions, verification and source-bound identity. Release verification remains
+under `.ptsip/engine/developer/release/`. The superseded
+`.github/checks/release/controller/` is **not** restored.
+
+Implementation currently committed to `main`:
+- `src/policy/CNTR/SFP-CNTR-0005.yaml`: active integrated consumer delivery
+  normalized, obsolete bundle-forbidden flag retired; immutable historic
+  distribution choice left intact.
+- `pyproject.toml`: removed seven `ptsip-engine-*` runtime pip dependencies;
+  PTSIP and every engine version are unchanged (`0.3.8.1b1`,
+  Context/Projection 0.2.0, other five 0.3.0).
+- `src/ptsip/engines/contracts/installation-plan.json`: v2 integrated
+  seven-component plan, with complete host Wheel, exact-source verification,
+  no standalone engine pip install and no publication authority.
+- `src/ptsip/engines/planning/src/installation.rs`: integrated candidate
+  selection checks component identity, host evidence and native artifact
+  hashes. The previous published `planning.select-installation` operation
+  is **fail-closed** pending an explicitly versioned operation cutover.
+  The candidate itself cannot verify complete assembled Wheel or admit release.
+- `src/ptsip/engine_installation.py`: read-only integrated bundle origin
+  inspection, no fallback to external engine distributions.
+- `src/tests/ptsip/cli/test_engine_installation.py` and
+  `src/tests/ptsip/contracts/test_integrated_installation_contract.py`:
+  consumer negative checks and source contract alignment assertions.
+
+Remaining blocker: the current `.ptsip/engine/developer/release/controller/`
+assembly route still assumes separate engine wheel dependencies, and a
+plain `python -m build --wheel` produces a pure Python intermediate,
+**not** a complete Windows/Linux native PTSIP Wheel. The verified b5 host
+Wheel assembly and exact-source release validation still need to be ported
+to the present controller **without reinstating its retired predecessor**.
+No new planning engine contract/implementation version was selected or
+published. Publication remains blocked and historical b5 files are unchanged.
+
+Suggested local validation (results not yet provided):
+
+```powershell
+python -m pytest -q src/tests/ptsip/cli/test_engine_installation.py src/tests/ptsip/contracts/test_integrated_installation_contract.py
+cargo test --manifest-path src/ptsip/engines/planning/Cargo.toml
+go -C .ptsip/engine/developer test ./release -count=1
+```
 
 ## Release blockers / explicit scope limits
 
