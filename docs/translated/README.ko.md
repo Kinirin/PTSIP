@@ -34,7 +34,7 @@
 
 <!-- ptsip-readme-i18n: 2b0968ee1595bdfe7f394538df6f0706f9beb719ed88183c4a3808524cc1d826 -->
 
-**출판 artifact versus 개발 소스:** 이름 * `pyproject.toml` 으로 `main` 아직도 별도의 설명 `0.3.8.1b1` 소스 구성 / 도구 `T.0.3.8.b1`. 그것은 **아니다.** 출판된 b5 artifacts를 정의합니다. `dev/0.3.8b2`. 이 README는 개발 소스 버전을 변경하지 않고 게시 된 릴리스를보고 또는 모든 패키지를 재구성합니다.
+**출판 artifact versus 개발 소스:** 이름 * `pyproject.toml` 으로 `main` 아직도 별도의 설명 `0.3.8b6` (`0.3.8.b6`, Project Profile `pp.2.00`) 소스 구성 / 도구 `T.0.3.8.b1`. 그것은 **아니다.** 출판된 b5 artifacts를 정의합니다. `dev/0.3.8b2`. 이 README는 개발 소스 버전을 변경하지 않고 게시 된 릴리스를보고 또는 모든 패키지를 재구성합니다.
 
 <!-- ptsip-readme-i18n: ec82fbe270a8842dd355c0e6b251efd402e87b0f987cbecf2c046eb7ea02701d -->
 
