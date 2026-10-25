@@ -84,8 +84,8 @@ func TestIndependentEngineWheel(t *testing.T) {
 			filename := strings.ReplaceAll(entrypoint, "-", "_") + "-" + version + "-py3-none-" + platform + ".whl"
 			wheel := filepath.Join(wheelDir, filename)
 			receipt := wheel + ".receipt.json"
-			expected := wheelExpectation{kind, engineID, version, entrypoint, target, platform, suffix, sourceSHA}
-			if err := verifyIndependentWheel(wheel, receipt, expected); err != nil {
+			expected := nativeArtifactExpectation{kind, engineID, version, entrypoint, target, platform, suffix, sourceSHA}
+			if err := verifyNativeArtifact(wheel, receipt, expected); err != nil {
 				t.Fatalf("wheel conformance rejected: %v", err)
 			}
 			// Mutation check: the verifier must reject evidence from a different source.
@@ -94,7 +94,7 @@ func TestIndependentEngineWheel(t *testing.T) {
 			if wrong.sourceSHA == expected.sourceSHA {
 				wrong.sourceSHA = strings.Repeat("f", 40)
 			}
-			if err := verifyIndependentWheel(wheel, receipt, wrong); err == nil {
+			if err := verifyNativeArtifact(wheel, receipt, wrong); err == nil {
 				t.Fatal("source SHA mismatch was accepted")
 			}
 			// A receipt or ZIP changed after packaging is never evidence of PASS.
@@ -115,7 +115,7 @@ func TestIndependentEngineWheel(t *testing.T) {
 			if err := os.WriteFile(tamperedReceipt, alteredBytes, 0600); err != nil {
 				t.Fatal(err)
 			}
-			if err := verifyIndependentWheel(wheel, tamperedReceipt, expected); err == nil {
+			if err := verifyNativeArtifact(wheel, tamperedReceipt, expected); err == nil {
 				t.Fatal("modified wheel digest receipt was accepted")
 			}
 			if err := probeNativeComponentBinary(t, wheel, expected); err != nil {
@@ -125,7 +125,7 @@ func TestIndependentEngineWheel(t *testing.T) {
 	}
 }
 
-type wheelExpectation struct {
+type nativeArtifactExpectation struct {
 	kind, engineID, version, entrypoint, target, platform, suffix, sourceSHA string
 }
 
@@ -142,10 +142,10 @@ func wheelHost() (target, platform, suffix, label string, err error) {
 	}
 }
 
-func verifyIndependentWheel(wheelPath, receiptPath string, expected wheelExpectation) error {
+func verifyNativeArtifact(wheelPath, receiptPath string, expected nativeArtifactExpectation) error {
 	data, err := os.ReadFile(receiptPath)
 	if err != nil {
-		return fmt.Errorf("missing independent receipt: %w", err)
+		return fmt.Errorf("missing native intermediate receipt: %w", err)
 	}
 	var receipt map[string]any
 	if err := json.Unmarshal(data, &receipt); err != nil {
@@ -153,7 +153,7 @@ func verifyIndependentWheel(wheelPath, receiptPath string, expected wheelExpecta
 	}
 	wheelData, err := os.ReadFile(wheelPath)
 	if err != nil {
-		return fmt.Errorf("missing independent wheel: %w", err)
+		return fmt.Errorf("missing native intermediate artifact: %w", err)
 	}
 	if err := requireString(receipt, "schema_version", "ptsip-independent-wheel-receipt/v1"); err != nil {
 		return err
@@ -357,7 +357,7 @@ func requireFalse(obj map[string]any, key string) error {
 
 // Probe an exact named native member after archive/receipt/RECORD verification.
 // The complete PTSIP Wheel join, not this per-engine test, verifies pip install.
-func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpectation) error {
+func probeNativeComponentBinary(t *testing.T, wheel string, expected nativeArtifactExpectation) error {
 	t.Helper()
 	archive, err := zip.OpenReader(wheel)
 	if err != nil {
@@ -413,7 +413,7 @@ func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpect
 
 // Native hash comparison reads the source-bound receipt rather than a
 // independently installed pip package.
-func expectedBinaryHash(wheel string, expected wheelExpectation) string {
+func expectedBinaryHash(wheel string, expected nativeArtifactExpectation) string {
 	data, err := os.ReadFile(wheel + ".receipt.json")
 	if err != nil {
 		return ""
