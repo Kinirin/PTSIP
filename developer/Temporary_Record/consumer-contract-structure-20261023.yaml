@@ -181,7 +181,14 @@ root_index_lookup_connection_direction:
     registration_item_field_names_and_types:
       index_id: string
       path: string
-    registration_container_name_and_type: NOT_DECIDED
+    registration_container:
+      decision: USER_APPROVED_FIELD_NAME_AND_ARRAY_DIRECTION
+      field_name: consumer_contract_root_subindex_refs
+      value_type: array
+      responsibility: CONSUMER_CONTRACT_ROOT_SUBINDEX_REFERENCES
+      field_requiredness: UNRESOLVED_USER_DECISION
+      array_item_structure: UNRESOLVED_USER_DECISION
+      nested_parameter_structure: UNRESOLVED_USER_DECISION
     registration_constraints_and_resolver_behavior: NOT_DECIDED
     schema_instance_creation_by_this_decision: NOT_AUTHORIZED
   field_names_and_requiredness: UNRESOLVED_USER_DECISION
