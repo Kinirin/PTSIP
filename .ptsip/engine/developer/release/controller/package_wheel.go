@@ -109,7 +109,10 @@ func packageWheel(toolWheel, profileArchive []byte, s Snapshot, registered map[s
 	if err != nil {
 		return nil, err
 	}
-	if (message.Header.Get("Name") != "PTSIP" && message.Header.Get("Name") != "ptsip-tool") || message.Header.Get("Version") != toolPEP {
+	// The current canonical single-project composition projects the PTSIP
+	// distribution version from project.version, independently of Tool_VERSION.
+	// Historical component Tool wheels can still carry the Tool PEP 440 version.
+	if (message.Header.Get("Name") != "PTSIP" && message.Header.Get("Name") != "ptsip-tool") || (message.Header.Get("Version") != toolPEP && message.Header.Get("Version") != pypiVersion) {
 		return nil, fmt.Errorf("Tool payload identity differs from complete composition")
 	}
 	resources, err := ProfileResources(profileArchive)
