@@ -1,0 +1,61 @@
+{
+  "schema_version": "ptsip-release-admission-publication-activation-decision/v1",
+  "artifact_class": "OWNER_APPROVED_POLICY_CONFLICT_RESOLUTION_BINDING",
+  "policy_class": "PTSIP_DEVELOPER_POLICY",
+  "status": "APPROVED_KEEP_LATEST_PENDING_NORMATIVE_SUCCESSOR",
+  "decision_source": "USER_EXPLICIT",
+  "resolution": "KEEP_LATEST",
+  "approval_ref": "developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-PUBLICATION-KEEP-LATEST.yaml",
+  "activation_direction_ref": "developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-POLICY-ACTIVATION-DIRECTION.yaml",
+  "conflict": {
+    "prior_record": "developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml",
+    "prior_base_revision": "0d6f293bb124941fcca1c211f1919dc767314fc1",
+    "prior_fields": [
+      "selected_direction.publication_execution",
+      "implementation_authority.enabling_github_or_pypi_publication"
+    ],
+    "incoming_rule": "ESTABLISH_FORMAL_RELEASE_ADMISSION_AND_ACTIVATE_PUBLICATION_AUTOMATION",
+    "affected_authority": "RELEASE_PUBLICATION_ACTIVATION_DIRECTION"
+  },
+  "effective_decision": {
+    "publication_activation_direction": "APPROVED",
+    "old_absolute_prohibition": "SUPERSEDED_FOR_THIS_SCOPE",
+    "actual_publication_permission": "NOT_GRANTED_UNTIL_EFFECTIVE_VERIFIED_SUCCESSOR",
+    "release_admission_normative_policy": "REQUIRED",
+    "normative_policy_identity_schema_and_validator": "UNRESOLVED_USER_DECISION",
+    "evidence_requirement": "FRESH_EXACT_SOURCE_AND_SELECTION",
+    "design_provenance_is_normative_pass": false
+  },
+  "preservation": {
+    "artifact_immutability": "REQUIRED",
+    "per_component_versioning": "REQUIRED",
+    "changed_engine_producer_same_version": "FAIL_EXPLICIT_NEW_VERSION_REQUIRED",
+    "source_sha_publication_carrier": "PRESERVE",
+    "independent_logical_release_identity": "PRESERVE",
+    "common_admission_directions": "PRESERVE",
+    "error_directions": "E01_E14_PRESERVE",
+    "security_resumption": "USER_APPROVAL_REQUIRED",
+    "publication_from_verification_workflow": "FORBIDDEN",
+    "retired_policy_and_validator_fallback": "FORBIDDEN",
+    "prior_approval_provenance": "PRESERVE_UNMODIFIED"
+  },
+  "machine_gates": {
+    "normative_successor_validated": false,
+    "publish_workflow_enabled": false,
+    "actual_publication_admitted": false,
+    "release_verification_example": {
+      "run_id": 40231338209,
+      "source_sha": "00f4745e83aadfb363ec8e88fadf29f589022d78",
+      "result": "SUCCESS",
+      "authority": "SOURCE_BOUND_TEST_EVIDENCE_ONLY"
+    },
+    "fail_closed_if_missing": true
+  },
+  "unresolved": [
+    "SUCCESSOR_NORMATIVE_POLICY_DOCUMENT_IDENTITY_AND_SCHEMA",
+    "SUCCESSOR_POLICY_VALIDATOR",
+    "RELEASE_ID_ISSUANCE_AND_PERSISTENCE",
+    "CHANGED_ENGINE_COMPONENT_VERSION_DECISIONS",
+    "EXACT_HEAD_RELEASE_ADMISSION_VERIFICATION"
+  ]
+}
