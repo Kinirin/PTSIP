@@ -35,13 +35,15 @@ approval:
     verification_workflow_publication: FORBIDDEN
   pending_conflict:
     earlier_approval_ref: developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml
-    earlier_base_revision: 15ed3d9deef29f57cbfc4096ac50fb94f2fbe15d
+    earlier_base_revision: 0d6f293bb124941fcca1c211f1919dc767314fc1
     earlier_rule: enabling_github_or_pypi_publication_FORBIDDEN_UNTIL_SEPARATE_POLICY_AND_VALIDATION_APPROVAL
     incoming_direction: ACTIVATE_AUTOMATED_PUBLICATION
-    resolution: USER_SELECTION_REQUIRED
+    resolution: KEEP_LATEST
+    resolution_approval_ref: developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-PUBLICATION-KEEP-LATEST.yaml
+    machine_resolution_ref: developer/policy/registries/release-admission-publication-activation.json
     allowed_resolutions: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
   unresolved:
-    conflict_resolution: USER_SELECTION_REQUIRED
+    conflict_resolution: RESOLVED_KEEP_LATEST
     normative_policy_document_identity_and_format: USER_POLICY_DECISION_REQUIRED
     successor_family_schema_and_validator: USER_POLICY_DECISION_REQUIRED
     publication_permission_gate_and_binding: POLICY_AND_VALIDATION_REQUIRED
@@ -50,7 +52,7 @@ approval:
     actual_publication_execution: BLOCKED_UNTIL_ALL_GATES_PASS
   authority_boundary:
     this_record: OWNER_APPROVED_DIRECTION_PROVENANCE_NOT_ACTIVE_NORMATIVE_POLICY
-    previous_publication_block: PRESERVED_PENDING_CONFLICT_RESOLUTION
+    previous_publication_block: SUPERSEDED_IN_ACTIVATION_DIRECTION_SUBJECT_TO_VERIFIED_SUCCESSOR
     new_normative_policy_inferred_from_approval: false
     machine_validation_pass_from_approval_record: false
     workflow_activation_before_successor_verification: FORBIDDEN
