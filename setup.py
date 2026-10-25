@@ -23,7 +23,16 @@ RBAC_SCHEMA_FILES = (
 )
 # Draft validation input: independently packaged, never counted as an approved
 # sixth-schema contract or registered as an executable RBAC capability.
-RBAC_DRAFT_SCHEMA_FILES = ("central-registry.draft.schema.json",)
+RBAC_DRAFT_SCHEMA_FILES = (
+    "central-registry.draft.schema.json",
+    "responsibility.candidate.schema.json",
+    "condition-atom.candidate.schema.json",
+    "permission-atom.candidate.schema.json",
+    "binding.candidate.schema.json",
+    "sealed-contract.candidate.schema.json",
+    "activation.candidate.schema.json",
+)
+RBAC_CANDIDATE_INDEX = "candidate-index.json"
 EMBEDDED_PP_CONTRACT_REGISTRY = (
     ROOT / "src" / "ptsip" / "specdata" / "project-profile-contracts.yaml"
 )
@@ -204,6 +213,15 @@ def _project_rbac_contract_assets(build_lib: Path) -> None:
     if CANONICAL_PP200_CANDIDATE.read_bytes() != candidate.read_bytes():
         raise RuntimeError("canonical and embedded pp.2.00 candidate schemas diverged")
     copy2(CANONICAL_PP200_CANDIDATE, target / candidate.name)
+    index_source = CANONICAL_RBAC_SCHEMA_ROOT / RBAC_CANDIDATE_INDEX
+    index_embedded = embedded_src / "compile-sealed-rbac" / RBAC_CANDIDATE_INDEX
+    if not index_source.is_file() or not index_embedded.is_file():
+        raise RuntimeError("RBAC candidate index missing")
+    if index_source.read_bytes() != index_embedded.read_bytes():
+        raise RuntimeError("canonical/embedded RBAC candidate index mismatch")
+    index_dest = target / "compile-sealed-rbac" / RBAC_CANDIDATE_INDEX
+    index_dest.parent.mkdir(parents=True, exist_ok=True)
+    copy2(index_source, index_dest)
     for name in (*RBAC_SCHEMA_FILES, *RBAC_DRAFT_SCHEMA_FILES):
         source = CANONICAL_RBAC_SCHEMA_ROOT / name
         embedded = embedded_src / "compile-sealed-rbac" / name
