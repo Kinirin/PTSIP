@@ -1,0 +1,66 @@
+{
+  "schema_version": "ptsip-one-shot-package-release-request/v1",
+  "request_id": "PTSIP-PACKAGE-20261026-05",
+  "decision_source": "USER_EXPLICIT",
+  "authorized_scope": {
+    "verification_workflow": ".github/workflows/tooling-test.yml",
+    "verification_mode": "release-verification",
+    "targets": "package",
+    "release_type": "PTSIP_PACKAGE",
+    "destination": "github-pypi",
+    "required_platforms": [
+      "windows-x64",
+      "linux-x64"
+    ],
+    "optional_platforms": [],
+    "publication_workflow": ".github/workflows/tooling-release.yml"
+  },
+  "trigger": {
+    "branch": "main",
+    "source_sha": "COMMIT_CREATING_THIS_REQUEST",
+    "request_added_once": true
+  },
+  "admission": {
+    "only_after_exact_head_verification": "REQUIRED",
+    "selection_artifact_exact": "REQUIRED",
+    "all_selected_component_platform_jobs": "SUCCESS",
+    "joined_package_platform_jobs": "SUCCESS",
+    "original_artifact_digests": "PRESERVE_AND_CHECK_AT_ADMISSION",
+    "ctrl_policy": "ACTIVE_VERIFIED",
+    "published_artifact_immutability": "REQUIRED",
+    "authorization_scope_expansion": "FORBIDDEN",
+    "duplicate_publication_dispatch": "FORBIDDEN"
+  },
+  "execution": {
+    "dispatch_test_now": true,
+    "dispatch_release_on_verification_success": true,
+    "skip_release_on_any_failed_gate": true,
+    "minimum_required_tests": 21
+  },
+  "approval_references": [
+    "developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-POLICY-ACTIVATION-DIRECTION.yaml",
+    "developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-PUBLICATION-KEEP-LATEST.yaml",
+    "developer/policy/approvals/MPA-20261026-RELEASE-ADMISSION-CTRL-OWNERSHIP.yaml"
+  ],
+  "repair_of": "PTSIP-PACKAGE-20261026-04",
+  "failed_run_id": 40238242007,
+  "remediation_scope": "ENGINE_RELEASE_NOTE_PRESENTATION_CONTRACT_ONLY",
+  "previous_successful_test_run_id": 40238463483,
+  "previous_successful_test_source_sha": "db73995bfe286fa575b20d069119343ab433c559",
+  "automation_remediation": "SELF_CONTAINED_DISPATCH_AND_AWAIT_SAME_SHA_NO_WORKFLOW_RUN_EVENT_DEPENDENCY",
+  "failed_release_run_id": 40240835089,
+  "release_authorization": {
+    "package_display": "0.3.8.b6",
+    "canonical_version": "0.3.8b6",
+    "profile": "pp.2.00",
+    "join_waiver": "RECONCILE_APPROVED_FOR_THIS_PACKAGE_ONLY",
+    "verification": "EXACT_SOURCE_COMPONENT_JOBS_AND_LIGHTWEIGHT_INSTALL_VERSION_AND_DIGEST"
+  },
+  "failed_verification_run_id": 40243035412,
+  "failed_verification_jobs": [
+    121319940077,
+    121319940098
+  ],
+  "remediation_commit": "432380852aece1146ab1b66e1ab3932b1fc07f9f",
+  "remediation": "FIX_SDIST_SCHEMA_MANIFEST_AND_LINUX_ONLY_SDIST_WITH_CI_VERIFIED"
+}

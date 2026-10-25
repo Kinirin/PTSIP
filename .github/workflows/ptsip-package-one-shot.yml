@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'developer/planning/release-requests/ptsip-package-20261026-04.json'
+      - 'developer/planning/release-requests/ptsip-package-20261026-05.json'
 permissions:
   contents: read
   actions: write
@@ -28,13 +28,13 @@ jobs:
           set -euo pipefail
           test "$EXPECTED_SHA" = "$(git rev-parse HEAD)"
           test "$EXPECTED_SHA" = "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
-          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-04.json'
+          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-05.json'
           python3 - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-04.json').read_text())
+          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-05.json').read_text())
           assert r['schema_version']=='ptsip-one-shot-package-release-request/v1'
-          assert r['request_id']=='PTSIP-PACKAGE-20261026-04'
+          assert r['request_id']=='PTSIP-PACKAGE-20261026-05'
           assert r['decision_source']=='USER_EXPLICIT'
           assert r['trigger']['source_sha']=='COMMIT_CREATING_THIS_REQUEST'
           assert r['admission']['duplicate_publication_dispatch']=='FORBIDDEN'
