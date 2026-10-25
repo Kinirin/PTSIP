@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-compile-sealed-rbac-permission-atom.candidate.schema.json",
+  "title": "PTSIP Compile-Sealed RBAC PERMISSION_ATOM implementation candidate",
+  "$comment": "DRAFT_NON_NORMATIVE: user-authorized provisional implementation candidate only. Not a normative schema, effective policy, release admission, approval proof, permission grant, or active engine operation. Permission is declared but not authorized by its existence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "revision",
+    "action",
+    "target"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "kind": {
+      "const": "PERMISSION_ATOM"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
