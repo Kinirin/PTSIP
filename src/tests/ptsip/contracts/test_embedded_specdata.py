@@ -59,6 +59,19 @@ def test_rbac_schema_scaffolds_and_registry_requirements_are_packaged_fail_close
         ("entries[].revision", "CONDITIONAL"),
         ("metadata", "OPTIONAL"),
     ]
+    assert canonical["entry_kind_scope"]["allowed_semantic_kinds"] == [
+        "RESPONSIBILITY",
+        "CONDITION_ATOM",
+        "PERMISSION_ATOM",
+        "BINDING",
+    ]
+    assert canonical["entry_kind_scope"]["excluded_semantic_kinds"] == [
+        "SEAL",
+        "ACTIVATION",
+    ]
+    assert canonical["entry_kind_scope"]["serialized_kind_literals"] == "UNRESOLVED"
+    assert canonical["separate_artifact_contracts"]["seal"]["registry_entry_allowed"] is False
+    assert canonical["separate_artifact_contracts"]["activation"]["registry_entry_allowed"] is False
     schema_files = (
         "responsibility.schema.json",
         "condition-atom.schema.json",
