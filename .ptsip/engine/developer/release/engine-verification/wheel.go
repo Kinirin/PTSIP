@@ -33,16 +33,14 @@ type engine struct {
 	Manifest string `json:"manifest_ref"`
 	Binding  string `json:"execution_binding_ref"`
 }
-type registration struct {
-	ID           string   `json:"engine_id"`
-	Version      string   `json:"version"`
-	Entrypoint   string   `json:"entrypoint"`
-	Format       string   `json:"distribution"`
-	Installation string   `json:"installation"`
-	Targets      []string `json:"build_targets"`
-	Permission   *bool    `json:"permission_from_availability"`
-	Authorized   *bool    `json:"installed_is_execution_authorization"`
-	LegacyPackage *string `json:"package_distribution"`
+// nativeComponent supplies build identity, never public pip distribution policy.
+type nativeComponent struct {
+	ID         string   `json:"engine_id"`
+	Version    string   `json:"version"`
+	Entrypoint string   `json:"entrypoint"`
+	Targets    []string `json:"build_targets"`
+	Permission *bool    `json:"permission_from_availability"`
+	Authorized *bool    `json:"installed_is_execution_authorization"`
 }
 type host struct {
 	Platform, Suffix string
@@ -105,7 +103,7 @@ func has(values []string, value string) bool {
 
 // Build assembles one registered, already-built engine into an internal
 // per-engine verification artifact for subsequent integration into a complete
-// PTSIP platform wheel. The standalone native wheel is NOT a public consumer
+// PTSIP platform wheel. The intermediate transport Wheel is NOT a public consumer
 // dependency or a publication grant. Build never invokes Python or Cargo.
 func Build(root string, opts Options) (Result, error) {
 	root, err := filepath.Abs(root)
@@ -130,18 +128,10 @@ func Build(root string, opts Options) (Result, error) {
 		Entries []engine `json:"official_engine_entries"`
 	}
 	var plan struct {
-		Schema string `json:"schema_version"`
-		Selection string `json:"selection"`
-		DefaultInstallation string `json:"default_installation"`
-		Distribution struct {
-			PublicProject string `json:"public_python_project"`
-			Model string `json:"model"`
-			EngineDependencies string `json:"engine_pip_dependencies"`
-			RequiredEngines int `json:"required_verified_engines"`
-			Publication *bool `json:"publication_authorized"`
-		} `json:"distribution"`
-		DefaultIDs []string `json:"default_available_engine_ids"`
-		Components []registration `json:"components"`
+		Schema     string            `json:"schema_version"`
+		Selection  string            `json:"selection"`
+		DefaultIDs []string          `json:"default_available_engine_ids"`
+		Components []nativeComponent `json:"components"`
 	}
 	if err = document(root, "src/ptsip/engines/index.json", &index); err != nil {
 		return Result{}, err
@@ -149,20 +139,16 @@ func Build(root string, opts Options) (Result, error) {
 	if err = document(root, "src/ptsip/engines/contracts/installation-plan.json", &plan); err != nil {
 		return Result{}, err
 	}
+	// Intermediate verification owns native source/identity/target only.
+	// Consumer distribution is checked at the complete PTSIP Wheel join.
 	if len(index.Entries) != 7 || len(plan.Components) != 7 ||
 		plan.Schema != "ptsip-engine-installation-plan/v2" ||
-		plan.Selection != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL" ||
-		plan.DefaultInstallation != "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES" ||
-		plan.Distribution.PublicProject != "PTSIP" ||
-		plan.Distribution.Model != "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL" ||
-		plan.Distribution.EngineDependencies != "FORBIDDEN" ||
-		plan.Distribution.RequiredEngines != 7 ||
-		plan.Distribution.Publication == nil || *plan.Distribution.Publication {
-		return Result{}, fmt.Errorf("exact seven integrated PTSIP native components with blocked publication required")
+		plan.Selection != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL" {
+		return Result{}, fmt.Errorf("exact seven registered native component identities required")
 	}
 	ids := map[string]bool{}
 	registeredKinds := map[string]bool{}
-	packages := map[string]registration{}
+	components := map[string]nativeComponent{}
 	var selected engine
 	matches := 0
 	for _, e := range index.Entries {
@@ -180,17 +166,17 @@ func Build(root string, opts Options) (Result, error) {
 			matches++
 		}
 	}
-	for _, p := range plan.Components {
-		if p.ID == "" {
+	for _, component := range plan.Components {
+		if component.ID == "" {
 			return Result{}, fmt.Errorf("missing native component identity")
 		}
-		if _, ok := packages[p.ID]; ok {
-			return Result{}, fmt.Errorf("duplicate official native component identity")
+		if _, exists := components[component.ID]; exists {
+			return Result{}, fmt.Errorf("duplicate registered native component identity")
 		}
-		if !ids[p.ID] {
-			return Result{}, fmt.Errorf("official registry and installation contract diverged")
+		if !ids[component.ID] {
+			return Result{}, fmt.Errorf("native registry and component identity contract differ")
 		}
-		packages[p.ID] = p
+		components[component.ID] = component
 	}
 	if len(plan.DefaultIDs) != 7 {
 		return Result{}, fmt.Errorf("exact seven default native component identities required")
@@ -206,15 +192,14 @@ func Build(root string, opts Options) (Result, error) {
 		return Result{}, fmt.Errorf("engine kind not registered exactly once")
 	}
 	kind := strings.ToLower(selected.Kind)
-	distribution := "ptsip-engine-" + kind
-	p := packages[selected.ID]
-	if !versionPattern.MatchString(selected.Version) || p.Version != selected.Version ||
-		p.Entrypoint != distribution || p.LegacyPackage != nil ||
-		p.Format != "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT" ||
-		p.Installation != "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL" ||
-		!has(p.Targets, opts.Target) || p.Permission == nil || *p.Permission ||
-		p.Authorized == nil || *p.Authorized {
-		return Result{}, fmt.Errorf("native component contract not eligible for integrated PTSIP platform wheel")
+	entrypoint := "ptsip-engine-" + kind
+	component := components[selected.ID]
+	if !versionPattern.MatchString(selected.Version) ||
+		component.Version != selected.Version || component.Entrypoint != entrypoint ||
+		!has(component.Targets, opts.Target) ||
+		component.Permission == nil || *component.Permission ||
+		component.Authorized == nil || *component.Authorized {
+		return Result{}, fmt.Errorf("native component identity, host or nonauthority contract mismatch")
 	}
 	var manifest struct {
 		ID      string `json:"engine_id"`
@@ -236,7 +221,7 @@ func Build(root string, opts Options) (Result, error) {
 	if err = document(root, selected.Binding, &bindings); err != nil {
 		return Result{}, err
 	}
-	if len(bindings.Entries) != 1 || bindings.Entries[0].ID != selected.ID || bindings.Entries[0].Version != selected.Version || bindings.Entries[0].Entrypoint != distribution {
+	if len(bindings.Entries) != 1 || bindings.Entries[0].ID != selected.ID || bindings.Entries[0].Version != selected.Version || bindings.Entries[0].Entrypoint != entrypoint {
 		return Result{}, fmt.Errorf("registered execution binding mismatch")
 	}
 	binary, err := filepath.Abs(opts.Binary)
@@ -247,8 +232,8 @@ func Build(root string, opts Options) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	if !info.Mode().IsRegular() || filepath.Base(binary) != distribution+h.Suffix || info.Size() < 64 || info.Size() > 268435456 {
-		return Result{}, fmt.Errorf("wrong independent executable name or size")
+	if !info.Mode().IsRegular() || filepath.Base(binary) != entrypoint+h.Suffix || info.Size() < 64 || info.Size() > 268435456 {
+		return Result{}, fmt.Errorf("wrong native component executable name or size")
 	}
 	contents, err := os.ReadFile(binary)
 	if err != nil {
@@ -261,10 +246,10 @@ func Build(root string, opts Options) (Result, error) {
 	if !valid {
 		return Result{}, fmt.Errorf("engine artifact does not match declared platform")
 	}
-	wd := strings.ReplaceAll(distribution, "-", "_")
+	wd := strings.ReplaceAll(entrypoint, "-", "_")
 	filename := wd + "-" + selected.Version + "-py3-none-" + h.Platform + ".whl"
 	di := wd + "-" + selected.Version + ".dist-info/"
-	script := wd + "-" + selected.Version + ".data/scripts/" + distribution + h.Suffix
+	script := wd + "-" + selected.Version + ".data/scripts/" + entrypoint + h.Suffix
 	if _, err := inside(root, "License-Authority/LICENSE.md"); err != nil {
 		return Result{}, err
 	}
@@ -272,9 +257,9 @@ func Build(root string, opts Options) (Result, error) {
 	if err != nil {
 		return Result{}, fmt.Errorf("canonical source license Git blob unavailable: %w", err)
 	}
-	metadata := fmt.Sprintf("Metadata-Version: 2.4\nName: %s\nVersion: %s\nSummary: Independently versioned official PTSIP native engine\nRequires-Python: >=3.11\nLicense-Expression: LicenseRef-PTSIP-Community-Reciprocity-1.0\nLicense-File: LICENSE.md\nDescription-Content-Type: text/markdown\n\n# PTSIP Engine %s\n\nIndependent native engine version `%s`.\n\nEngine identity: `%s`\n\nSource revision: `%s`\n\nSource, platform and binary digests are bound by the packaged origin and release receipt. Installed availability does not grant runtime authorization.\n", distribution, selected.Version, kind, selected.Version, selected.ID, opts.SourceSHA)
+	metadata := fmt.Sprintf("Metadata-Version: 2.4\nName: %s\nVersion: %s\nSummary: Native PTSIP build component for integrated host package\nRequires-Python: >=3.11\nLicense-Expression: LicenseRef-PTSIP-Community-Reciprocity-1.0\nLicense-File: LICENSE.md\nDescription-Content-Type: text/markdown\n\n# PTSIP Engine %s\n\nNative engine component version `%s` (internal verification artifact).\n\nEngine identity: `%s`\n\nSource revision: `%s`\n\nSource, platform and binary digests are bound by the packaged origin and release receipt. Installed availability does not grant runtime authorization.\n", entrypoint, selected.Version, kind, selected.Version, selected.ID, opts.SourceSHA)
 	wheelMetadata := fmt.Sprintf("Wheel-Version: 1.0\nGenerator: ptsip-independent-engine-wheel-go/1\nRoot-Is-Purelib: false\nTag: py3-none-%s\n", h.Platform)
-	origin, _ := json.Marshal(map[string]any{"schema_version": "ptsip-independent-wheel-origin/v1", "source_sha": opts.SourceSHA, "engine_id": selected.ID, "engine_version": selected.Version, "host_target": opts.Target, "entrypoint": distribution + h.Suffix, "binary_sha256": digest(contents), "execution_authorized": false})
+	origin, _ := json.Marshal(map[string]any{"schema_version": "ptsip-independent-wheel-origin/v1", "source_sha": opts.SourceSHA, "engine_id": selected.ID, "engine_version": selected.Version, "host_target": opts.Target, "entrypoint": entrypoint + h.Suffix, "binary_sha256": digest(contents), "execution_authorized": false})
 	members := map[string][]byte{script: contents, di + "METADATA": []byte(metadata), di + "WHEEL": []byte(wheelMetadata), di + "licenses/LICENSE.md": license, di + "ptsip-origin.json": append(origin, '\n')}
 	names := []string{}
 	for name := range members {
