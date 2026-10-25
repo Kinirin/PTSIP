@@ -22,7 +22,8 @@ import (
 )
 
 // Candidate engineering evidence only: a PASS does not authorize publication.
-// Each engine is selected and installed independently from its own wheel.
+// Per-engine archive receipts are intermediate inputs to a complete PTSIP Wheel.
+// Native binaries are probed directly; standalone pip installation is retired.
 func TestIndependentEngineWheel(t *testing.T) {
 	target, platform, suffix, label, err := wheelHost()
 	if err != nil {
@@ -56,7 +57,7 @@ func TestIndependentEngineWheel(t *testing.T) {
 		plan["selection"] != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL" {
 		t.Fatal("current integrated native component plan required")
 	}
-	packages := plan["components"].([]any)
+	components := plan["components"].([]any)
 	for _, value := range entries(t) {
 		entry := value.(object)
 		kind := strings.ToLower(entry["kind"].(string))
@@ -65,7 +66,7 @@ func TestIndependentEngineWheel(t *testing.T) {
 			engineID := entry["engine_id"].(string)
 			distribution := "ptsip-engine-" + kind
 			matched := 0
-			for _, raw := range packages {
+			for _, raw := range components {
 				p := raw.(object)
 				if p["engine_id"] == engineID {
 					matched++
@@ -118,8 +119,8 @@ func TestIndependentEngineWheel(t *testing.T) {
 			if err := verifyIndependentWheel(wheel, tamperedReceipt, expected); err == nil {
 				t.Fatal("modified wheel digest receipt was accepted")
 			}
-			if err := installAndProbeWheel(t, wheel, expected); err != nil {
-				t.Fatalf("isolated consumer wheel installation failed: %v", err)
+			if err := probeNativeComponentBinary(t, wheel, expected); err != nil {
+				t.Fatalf("native component executable probe failed: %v", err)
 			}
 		})
 	}
@@ -355,42 +356,78 @@ func requireFalse(obj map[string]any, key string) error {
 	return nil
 }
 
-func installAndProbeWheel(t *testing.T, wheel string, expected wheelExpectation) error {
+// Probe an exact named native member after archive/receipt/RECORD verification.
+// The complete PTSIP Wheel join, not this per-engine test, verifies pip install.
+func probeNativeComponentBinary(t *testing.T, wheel string, expected wheelExpectation) error {
 	t.Helper()
-	python := os.Getenv("PTSIP_WHEEL_TEST_PYTHON")
-	if python == "" {
-		python = "python"
-	}
-	venv := filepath.Join(t.TempDir(), "isolated-consumer")
-	setup := exec.Command(python, "-m", "venv", venv)
-	if output, err := setup.CombinedOutput(); err != nil {
-		return fmt.Errorf("python venv setup: %w (%s)", err, output)
-	}
-	binDir := "bin"
-	pythonExe := "python"
-	if runtime.GOOS == "windows" {
-		binDir = "Scripts"
-		pythonExe = "python.exe"
-	}
-	installedPython := filepath.Join(venv, binDir, pythonExe)
-	cmd := exec.Command(installedPython, "-m", "pip", "install", "--no-index", "--no-deps", wheel)
-	if output, err := cmd.CombinedOutput(); err != nil {
-		return fmt.Errorf("isolated pip install: %w (%s)", err, output)
-	}
-	binary := filepath.Join(venv, binDir, expected.distribution+expected.suffix)
-	cmd = exec.Command(binary, "--manifest")
-	out, err := cmd.Output()
+	archive, err := zip.OpenReader(wheel)
 	if err != nil {
-		return fmt.Errorf("installed native manifest execution: %w (%s)", err, out)
+		return fmt.Errorf("open verified native archive: %w", err)
 	}
-	var manifest map[string]any
-	if err := json.Unmarshal(out, &manifest); err != nil {
-		return fmt.Errorf("installed manifest JSON: %w", err)
-	}
-	for key, want := range map[string]string{"engine_id": expected.engineID, "implementation_version": expected.version} {
-		if err := requireString(manifest, key, want); err != nil {
+	defer archive.Close()
+	base := strings.ReplaceAll(expected.distribution, "-", "_") + "-" + expected.version
+	script := base + ".data/scripts/" + expected.distribution + expected.suffix
+	for _, member := range archive.File {
+		if member.Name != script {
+			continue
+		}
+		if member.UncompressedSize64 < 64 || member.UncompressedSize64 > 268435456 {
+			return fmt.Errorf("invalid native member size")
+		}
+		reader, err := member.Open()
+		if err != nil {
 			return err
 		}
+		data, err := io.ReadAll(io.LimitReader(reader, 268435457))
+		reader.Close()
+		if err != nil || len(data) < 64 || len(data) > 268435456 {
+			return fmt.Errorf("native member read failed: %v", err)
+		}
+		if hexSHA(data) != expectedBinaryHash(wheel, expected, script) {
+			return fmt.Errorf("native executable changed after archive receipt verification")
+		}
+		binary := filepath.Join(t.TempDir(), expected.distribution+expected.suffix)
+		if err := os.WriteFile(binary, data, 0700); err != nil {
+			return err
+		}
+		cmd := exec.Command(binary, "--manifest")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("native component --manifest: %w (%s)", err, out)
+		}
+		var manifest map[string]any
+		if err := json.Unmarshal(out, &manifest); err != nil {
+			return fmt.Errorf("native component manifest JSON: %w", err)
+		}
+		for key, want := range map[string]string{
+			"engine_id": expected.engineID,
+			"implementation_version": expected.version,
+		} {
+			if err := requireString(manifest, key, want); err != nil {
+				return err
+			}
+		}
+		return nil
 	}
-	return nil
+	return fmt.Errorf("missing native component executable")
+}
+
+// Native hash comparison reads the source-bound receipt rather than a
+// separately installed pip distribution.
+func expectedBinaryHash(wheel string, expected wheelExpectation, script string) string {
+	_ = script
+	data, err := os.ReadFile(wheel + ".receipt.json")
+	if err != nil {
+		return ""
+	}
+	var receipt map[string]any
+	if json.Unmarshal(data, &receipt) != nil {
+		return ""
+	}
+	if receipt["engine_id"] != expected.engineID ||
+		receipt["source_sha"] != expected.sourceSHA {
+		return ""
+	}
+	value, _ := receipt["binary_sha256"].(string)
+	return value
 }
