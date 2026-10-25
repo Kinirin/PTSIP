@@ -20,6 +20,9 @@ RBAC_SCHEMA_FILES = (
     "permission-atom.schema.json", "binding.schema.json",
     "sealed-contract.schema.json", "activation.schema.json",
 )
+# Draft validation input: independently packaged, never counted as an approved
+# sixth-schema contract or registered as an executable RBAC capability.
+RBAC_DRAFT_SCHEMA_FILES = ("central-registry.draft.schema.json",)
 EMBEDDED_PP_CONTRACT_REGISTRY = (
     ROOT / "src" / "ptsip" / "specdata" / "project-profile-contracts.yaml"
 )
@@ -194,7 +197,7 @@ def _project_rbac_contract_assets(build_lib: Path) -> None:
     if CANONICAL_RBAC_FIELDS.read_bytes() != packaged_fields.read_bytes():
         raise RuntimeError("canonical and embedded RBAC field requirements diverged")
     copy2(CANONICAL_RBAC_FIELDS, target / packaged_fields.name)
-    for name in RBAC_SCHEMA_FILES:
+    for name in (*RBAC_SCHEMA_FILES, *RBAC_DRAFT_SCHEMA_FILES):
         source = CANONICAL_RBAC_SCHEMA_ROOT / name
         embedded = embedded_src / "compile-sealed-rbac" / name
         if not source.is_file() or not embedded.is_file():
