@@ -7,6 +7,7 @@ mod cases;
 mod composition;
 mod handoff;
 mod source;
+mod rbac;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     if matches!(
         operation,
