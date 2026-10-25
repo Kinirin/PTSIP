@@ -90,7 +90,9 @@ func TestPolicyVerificationExclusions(t *testing.T) {
     if err != nil { t.Fatal(err) }
     if strings.Contains(string(workflow), "TestHistoricalSourceEvidencePreservesArchiveAndRouting") ||
        strings.Contains(string(workflow), "developer/policy/legacy/**") ||
-       strings.Contains(string(workflow), "developer/policy/*/*.yaml") {
+       strings.Contains(string(workflow), "developer/policy/*/*.yaml") ||
+       strings.Contains(string(workflow), "go -C developer/automation") ||
+       strings.Contains(string(workflow), "go -C developer/tests") {
         t.Fatal("retired migration source must not be a required policy-cleanup gate or trigger")
     }
     modes, err := os.ReadFile(filepath.Join(root, ".github", "test_modes.yaml"))
