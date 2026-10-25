@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-compile-sealed-rbac-sealed-contract.candidate.schema.json",
+  "title": "PTSIP Compile-Sealed RBAC SEALED_CONTRACT implementation candidate",
+  "$comment": "DRAFT_NON_NORMATIVE: user-authorized provisional implementation candidate only. Not a normative schema, effective policy, release admission, approval proof, permission grant, or active engine operation. Candidate compiled artifact is not a verified immutable Seal; generated outside source registry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "revision",
+    "responsibility_ref",
+    "source_digest_sha256",
+    "compiler_id",
+    "sealed_digest_sha256"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "kind": {
+      "const": "SEALED_CONTRACT"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "responsibility_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "source_digest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "compiler_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "binding_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      }
+    },
+    "sealed_digest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
