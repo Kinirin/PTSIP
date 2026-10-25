@@ -25,18 +25,52 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
   if err:=os.MkdirAll(filepath.Dir(dest),0755);err!=nil{t.Fatal(err)}
   if err:=os.WriteFile(dest,[]byte(content),0644);err!=nil{t.Fatal(err)}
  }
- // Copy current approved contracts, not substitute legacy schemas or invented rules.
- for _,relative:=range []string{
+ // Mirror only approved live contracts required by the limited-schema and
+ // routing probes. Missing-contract negative fixtures still omit their target.
+ //
+ // Routing validates references to all declared family schemas, so a synthetic
+ // temp repository that omits those inputs can no longer be a passing fixture.
+ paths := []string{
   ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
   ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
   ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
- }{
-  if relative==missing {continue}
-  raw,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(relative)))
-  if err!=nil{t.Fatal(err)}
-  target:=filepath.Join(fixture,filepath.FromSlash(relative))
-  if err:=os.MkdirAll(filepath.Dir(target),0755);err!=nil{t.Fatal(err)}
-  if err:=os.WriteFile(target,raw,0644);err!=nil{t.Fatal(err)}
+  ".ptsip/contracts/policy/boundary.json",
+  ".ptsip/contracts/policy/routing/policy_routes.json",
+  ".ptsip/contracts/policy/routing/Policy_Routing.schema.json",
+  ".ptsip/contracts/policy/identity/policy_kind.json",
+  ".ptsip/contracts/policy/identity/root_family.json",
+ }
+ routingBytes, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(".ptsip/contracts/policy/routing/policy_routes.json")))
+ if err != nil { t.Fatal(err) }
+ var routing struct {
+  Routes map[string]map[string]struct {
+   SchemaRefs map[string]string `json:"schema_refs"`
+  } `json:"routes"`
+ }
+ if err := json.Unmarshal(routingBytes, &routing); err != nil { t.Fatalf("parse approved routing: %v", err) }
+ if len(routing.Routes) == 0 { t.Fatal("approved routing registry has no routes") }
+ for kind, families := range routing.Routes {
+  for family, route := range families {
+   for _, key := range []string{"public", "authority", "rules"} {
+    relative := route.SchemaRefs[key]
+    if !strings.HasPrefix(relative, ".ptsip/contracts/schemas/") ||
+     filepath.ToSlash(filepath.Clean(filepath.FromSlash(relative))) != relative ||
+     strings.Contains(relative, "\\") {
+     t.Fatalf("unsafe or missing approved schema ref %s/%s/%s: %q", kind, family, key, relative)
+    }
+    paths = append(paths, relative)
+   }
+  }
+ }
+ copied := map[string]bool{}
+ for _, relative := range paths {
+  if relative == missing || copied[relative] { continue }
+  copied[relative] = true
+  raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(relative)))
+  if err != nil { t.Fatalf("approved contract %s: %v", relative, err) }
+  target := filepath.Join(fixture, filepath.FromSlash(relative))
+  if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil { t.Fatal(err) }
+  if err := os.WriteFile(target, raw, 0644); err != nil { t.Fatal(err) }
  }
  moduleDir:=filepath.Join(root,".ptsip","engine","developer")
  cmd:=exec.Command("go","-C",moduleDir,"run",".","--validator","schema-check","--root",fixture)
