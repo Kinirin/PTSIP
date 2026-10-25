@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration"
-    Rule_ver: "6"
+    Rule_ver: "7"
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -28,7 +28,6 @@ Policy_Rules:
       - "개발 작업 영역의 결정과 승인 정당성"
       - "개발 통제 영역의 결정과 승인 정당성"
       - "정책 계약 소유 경계: .ptsip/contracts/policy/identity/, routing/, lifecycle/, authority/"
-      - "14개 Root Family의 Authority Major 분류와 Family 식별자의 구별"
       - "MPD-GOV-0004: 개발 결정권·위임 범위·승인 정당성과 README 관리"
       - "MPD-GOV-0005: 정책 식별자·제목·등록 무결성과 식별 문제의 기계적 해결"
       - "MPD-GOV-0006: 정책 생명주기·변경 허가·코딩 에이전트 기계적 제어·거버넌스 출처"
@@ -62,14 +61,6 @@ Policy_Rules:
         applies_when: POLICY_IDENTITY_STATUS_VERSION_OR_TITLE
         rule: "정책 식별자, 제목, 상태 및 버전은 각 항목을 소유하는 계약을 기준으로 관리하며 세부 적용은 해당 GOV 정책에 위임한다."
         Rule_state: APPROVED.provisional
-      - id: OBLIGATION/SEMANTIC_AUTHORITY_MAJOR_CLASSIFICATION
-        applies_when: ROOT_FAMILY_AUTHORITY_MAJOR_CLASSIFICATION
-        rule: "Authority_Major_Category.major는 Root Family 식별자의 복제가 아니라 권한 주제의 의미로 분류한다. 의미가 같은 주제는 Family가 달라도 기존 Major 분류를 재사용하고, 의미가 다른 주제는 구별한다. GOV의 기존 responsibilities 값은 유지한다. 나머지 Family의 구체적인 Major 값 및 Minor/Micro 계층은 별도 승인 전까지 자동 결정·등록·치환하지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/NORM_SEPARATE_MAJOR_SEMANTIC_DOMAINS
-        applies_when: NORM_AUTHORITY_MAJOR_DESIGN
-        rule: "NORM의 Authority Major는 규범 효력·우선순위와 규범 해석을 서로 다른 의미 범주로 구별한다. 이 분류 결정만으로 NORM의 세부 규범 내용·정식 승인 권위나 정책 문서 분할을 생성하지 않는다. 각 범주의 명칭·허용 값·정식 정책 바인딩 및 검증 적용은 후속 결정에 따른다."
-        Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMPILE_SEALED_RBAC_SUCCESSOR
         applies_when: LEGACY_AUTHORITY_MODEL_REPLACEMENT
         rule: "기존 GOV·조건·실행의 권한 부여 방식은 Compile-Sealed RBAC로 대체한다(KEEP_LATEST). 새 권한 모델의 상위 경계는 컴파일 확정, 책임·조건 원자·권한 원자·바인딩 정당성의 독립 소유 및 변경 감응이다. 무관한 GOV 정책 책임은 자동 폐기하지 않는다."
@@ -82,6 +73,12 @@ Policy_Rules:
         applies_when: COMPILE_SEALED_RBAC_SCHEMA_DESIGN
         rule: "Compile-Sealed RBAC의 새 권한 모델은 기존 Authority·조건·실행 계약 필드의 단순 이름 변경이나 내부 확장이 아닌 신규 독립 스키마로 설계한다. 새 스키마는 독립 의미·소유권을 검증할 수 있어야 하며 기존 계약은 승인되고 검증된 참조 전환에 따라 대체한다. 스키마 필드 계층과 명칭, 참조 표현, 신규 계약의 물리 저장 위치 및 실제 전환 범위는 별도 정책 결정 전까지 확정하지 않는다."
         Rule_state: APPROVED.provisional
+      - id: OBLIGATION/RETIRE_LEGACY_AUTHORITY_CATEGORIES
+        applies_when: LEGACY_AUTHORITY_MAJOR_MINOR_MICRO_MIGRATION
+        rule: "KEEP_LATEST: Authority_Major_Category, Authority_Minor_Category, Authority_Micro_Category의 분류 계층 및 값은 새 Compile-Sealed RBAC의 권한·책임 계약에 승계하지 않고 규범적 분류 책임에서 전면 폐기한다. 기존 계약·GOV 및 타 Family 참조·스키마·Resolver·검증기의 관련 규칙은 변경 영향 대상으로 식별하여, 새 계약에 의한 유효한 참조 전환과 검증 후 물리적으로 제거한다. 전환 전 레거시 필드의 존재는 새 권위나 승인 근거를 생성하지 않는다."
+        Rule_state: APPROVED.provisional
+      - id: PROHIBITION/REUSE_RETIRED_AUTHORITY_CATEGORY
+        rule: "폐기된 Authority Major·Minor·Micro의 분류 계층·값을 새 RBAC 책임·조건·권한·바인딩 계약의 필수 의미 또는 승인 근거로 재사용하거나, 레거시 분류 참조에 근거하여 실행 권한을 부여하는 행위"
       - id: PROHIBITION/INTENT_ARCH_CANNOT_CREATE_GOV_MANDATE
         rule: "INTENT의 작업 목표나 ARCH의 기술 설계를 근거로 GOV의 위임 권한을 자동 생성하는 행위"
       - id: PROHIBITION/CTRL_TEST_CANNOT_APPROVE_POLICY
@@ -99,5 +96,4 @@ Policy_Rules:
         - "결정 주체·대상·위임 범위·승인 주체에 대한 기본 정당성 경계"
         - "GOV-0004, GOV-0005, GOV-0006의 책임 분배 및 문서 참조"
         - "GOV 총칙과 개별 GOV 정책 사이의 책임 중복 또는 미결정 구분"
-        - "Authority Major 의미 분류와 Root Family 식별자 구별, 미승인 분류의 보류"
-        - "NORM의 규범 효력·우선순위와 규범 해석 Major 구별 및 미승인 상세 바인딩 보류"
+        - "Authority Major·Minor·Micro 분류 전면 폐기, 신규 모델 미승계 및 레거시 참조의 검증된 제거"
