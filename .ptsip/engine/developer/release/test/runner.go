@@ -13,7 +13,13 @@ import (
 )
 
 type TestContract struct {
-	Schema  string            `json:"schema_version"`
+	Schema string `json:"schema_version"`
+	Workflow string `json:"workflow"`
+	ModeRegistry string `json:"mode_registry"`
+	TestRoot string `json:"test_change_root"`
+	Production string `json:"production_contract"`
+	Required []string `json:"required_platforms"`
+	Publication *bool `json:"publication_operations"`
 	Runners map[string]string `json:"runners"`
 	Runtime struct {
 		Python     string `json:"python_version"`
@@ -21,6 +27,10 @@ type TestContract struct {
 	} `json:"runtime"`
 }
 type Execution struct {
+	// A successful test is not normative release or publication approval.
+	PolicyAuthority string `json:"policy_authority"`
+	PublicationAuthorized bool `json:"publication_authorized"`
+	VerificationScope string `json:"verification_scope"`
 	Selection release.Selection `json:"selection"`
 	Matrix    struct {
 		Include []release.MatrixEntry `json:"include"`
@@ -55,7 +65,8 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 			Targets string `yaml:"release_targets"`
 		} `yaml:"defaults"`
 		Modes []struct {
-			ID        string `yaml:"id"`
+			ID string `yaml:"id"`
+			ComponentRef string `yaml:"component_ref"`
 			Execution struct {
 				Contract string `yaml:"contract_ref"`
 				Runner   string `yaml:"runner_ref"`
@@ -77,6 +88,9 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 			if contractRef != "" {
 				return result, fmt.Errorf("duplicate registered mode")
 			}
+			if binding.ComponentRef != "repository-release-verification" {
+				return result, fmt.Errorf("registered mode has wrong verification component owner")
+			}
 			contractRef, runnerRef = binding.Execution.Contract, binding.Execution.Runner
 		}
 	}
@@ -93,16 +107,14 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	if contract.Schema != "ptsip-release-test/v1" {
 		return result, fmt.Errorf("verification contract not admitted")
 	}
-	policyData, err := release.Run(root, "go", "-C", "developer/automation", "run", "-tags", "grammar_subset,grammar_subset_python", "./cmd/ptsip-dev", "policy-resolver", "get", "MPD-ASSURE-0001", "--section", "release_mode_verification")
-	if err != nil {
+	// The historical MPD-ASSURE-0001 resolver is retired. This admission
+	// permits source-bound test execution only, not normative release approval.
+	if err := verifyNonNormativeTestRoute(root, contractRef, contract); err != nil {
 		return result, err
 	}
-	var policy struct {
-		Record map[string]any `json:"record"`
-	}
-	if json.Unmarshal(policyData, &policy) != nil || policy.Record["contract_ref"] != contractRef || policy.Record["execution_workflow"] != ".github/workflows/tooling-test.yml" || policy.Record["mode_registry"] != ".github/test_modes.yaml" || policy.Record["release_test_change_root"] != ".ptsip/engine/developer/release/test/" {
-		return result, fmt.Errorf("registered release mode lacks canonical ASSURE admission")
-	}
+	result.PolicyAuthority = "NOT_ASSERTED"
+	result.PublicationAuthorized = false
+	result.VerificationScope = "SOURCE_BOUND_TEST_EVIDENCE_ONLY"
 	result.Selection, err = release.Select(root, targets, optional)
 	if err != nil {
 		return result, err
@@ -121,6 +133,42 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	result.Python = contract.Runtime.Python
 	result.FetchDepth = contract.Runtime.FetchDepth
 	return result, err
+}
+
+// Only the registered read-only route may run until normative authority
+// exists. Every missing, changed or publication-granting input fails closed.
+func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract) error {
+	if contractRef != ".ptsip/contracts/release/verification-contract.json" ||
+		contract.Workflow != ".github/workflows/tooling-test.yml" ||
+		contract.ModeRegistry != ".github/test_modes.yaml" ||
+		contract.TestRoot != ".ptsip/engine/developer/release/test/" ||
+		contract.Production != ".ptsip/contracts/release/composition-contract.json" ||
+		contract.Publication == nil || *contract.Publication ||
+		len(contract.Required) != 2 ||
+		contract.Required[0] != "windows-x64" ||
+		contract.Required[1] != "linux-x64" ||
+		contract.Runners["windows-x64"] != "windows-2025" ||
+		contract.Runners["linux-x64"] != "ubuntu-24.04" {
+		return fmt.Errorf("registered test-only verification contract differs or requests publication")
+	}
+	var gate struct {
+		Schema string `json:"schema_version"`
+		Policy string `json:"normative_policy_status"`
+		Fallback string `json:"old_root_policy_fallback"`
+		Module string `json:"verification_module"`
+		Publication *bool `json:"publication_authorized"`
+	}
+	if err := release.ReadJSON(root, ".ptsip/contracts/release/admission.json", &gate); err != nil {
+		return fmt.Errorf("read-only release admission boundary missing: %w", err)
+	}
+	if gate.Schema != "ptsip-release-admission-direction-projection/v1" ||
+		gate.Policy != "NOT_ACTIVE_NORMATIVE_POLICY" ||
+		gate.Fallback != "FORBIDDEN" ||
+		gate.Module != ".ptsip/engine/developer/release/" ||
+		gate.Publication == nil || *gate.Publication {
+		return fmt.Errorf("policy authority remains unresolved; test-only execution requires publication blocked")
+	}
+	return nil
 }
 
 func command(root string, environment []string, argv ...string) error {
