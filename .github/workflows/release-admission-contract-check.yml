@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - '.ptsip/contracts/**'
+      - 'src/ptsip/engines/**'
+      - 'developer/tests/engines/**'
+      - 'developer/policy/approvals/MPA-20261026-VALIDATION-PROJECTION-CAPABILITY-CONTRACT-BUMPS.yaml'
       - '.ptsip/engine/developer/schema_check/**'
       - '.ptsip/engine/developer/release/**'
       - '.ptsip/engine/developer/main.go'
@@ -89,3 +92,34 @@ jobs:
           assert report['common_directions_checked'] == 5
           print('Design projection verified; normative policy and publication remain BLOCKED.')
           PY
+
+  capability-contract-verification:
+    name: "Registered contract and digest verification"
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/tests/go.mod
+      - name: Verify new capability identities and all native source digests
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C developer/tests test ./engines -run '^(TestRegisteredManifestContractBindingAndIndependentOwnerClosure|TestPostB5CapabilityVersions)$' -count=1
+  native-engine-contract-smoke:
+    name: "Native contract / ${{ matrix.engine }}"
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [validation, projection]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Test exact registered Rust engine implementation
+        shell: bash
+        run: cargo test --locked --manifest-path "src/ptsip/engines/${{ matrix.engine }}/Cargo.toml"
