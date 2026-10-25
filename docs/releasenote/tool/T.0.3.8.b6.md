@@ -250,13 +250,30 @@ not linked to or restored under `.github/checks/release/controller/`:
   The test also asserted the exact seven-engine key set,
   `execution_authorized=false`, and the `win_amd64` WHEEL tag.
   The user reported `PASS: 7 native engines verified`.
-- The Wheel was inspected in the user's local environment; the binary
-  contents and provenance are **not independently attested by CI**.
-  The local Wheel whole-file SHA256, exact source checkout SHA, RECORD
-  verification and installed/native-executable probe were not supplied.
-- Linux native Wheel and sdist reproducibility, exact-source admission,
-  remaining Go/controller tests, developer native engine verification and
-  Python/Rust tests are **NOT REPORTED PASS** by these two result lines.
+- **Clean Windows consumer install: USER-REPORTED PASS.**
+  The user created a temporary virtualenv, installed the built local
+  `ptsip-0.3.8.1b1-py3-none-win_amd64.whl` with `pip` (exit code 0),
+  and called `ptsip.engine_installation.inspect()` from that environment.
+  All seven native engines (CONTEXT, STORAGE, VALIDATION, DISCOVERY,
+  PLANNING, EXECUTION, PROJECTION) returned
+  `INSTALLED_UNATTESTED_RELEASE`. `ALL_INSTALLED=True`,
+  `EXECUTION_AUTHORIZED=False`, `RELEASE_ATTESTED=False`;
+  the script printed `PASS: CLEAN_WINDOWS_WHEEL_INSTALL`.
+  This is an installed-file/native-source-and-digest inspection; it does
+  not independently attest runnable engine operations or official release.
+- **Linux release verification: PENDING WORKFLOW RUN.**
+  The existing read-only verification executor
+  `.github/workflows/tooling-test.yml` handles registered
+  `release-verification`, `targets=package` across required
+  `windows-x64` and `linux-x64` runners. Its developer release
+  controller/test roots are under `.ptsip/engine/developer/release/`.
+  The `registered-join` Linux job runs complete PTSIP wheel installation
+  plus Linux sdist native rebuild/installation and `twine check`.
+  No workflow run has been reported for the current tested source.
+- The Windows local Wheel SHA256 and exact source checkout SHA were
+  not separately supplied, and CI attestation/record inspection remain open.
+  Remaining Go/controller/developer tests and Python/Rust tests outside
+  the reported local suite are not asserted as PASS.
 - The registered workflow still intentionally rejects publication.
   `planning.select-installation` needs a versioned operation cutover.
   Historical b5 assets remain immutable.
