@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'developer/planning/release-requests/ptsip-package-20261026-01.json'
+      - 'developer/planning/release-requests/ptsip-package-20261026-02.json'
   workflow_run:
     workflows: [tooling-test]
     types: [completed]
@@ -29,12 +29,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$GITHUB_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-01.json'
+          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$GITHUB_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-02.json'
           python3 - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-01.json').read_text())
-          assert r['request_id']=='PTSIP-PACKAGE-20261026-01'
+          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-02.json').read_text())
+          assert r['request_id']=='PTSIP-PACKAGE-20261026-02'
           assert r['decision_source']=='USER_EXPLICIT'
           assert r['execution']['dispatch_test_now'] is True
           assert r['execution']['dispatch_release_on_verification_success'] is True
@@ -76,13 +76,13 @@ jobs:
           set -euo pipefail
           test "$EXPECTED_SHA" = "$(git rev-parse HEAD)"
           test "$EXPECTED_SHA" = "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
-          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-01.json'
+          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-02.json'
           python3 - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-01.json').read_text())
+          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-02.json').read_text())
           assert r['schema_version']=='ptsip-one-shot-package-release-request/v1'
-          assert r['request_id']=='PTSIP-PACKAGE-20261026-01'
+          assert r['request_id']=='PTSIP-PACKAGE-20261026-02'
           assert r['decision_source']=='USER_EXPLICIT'
           assert r['trigger']['source_sha']=='COMMIT_CREATING_THIS_REQUEST'
           assert r['admission']['duplicate_publication_dispatch']=='FORBIDDEN'

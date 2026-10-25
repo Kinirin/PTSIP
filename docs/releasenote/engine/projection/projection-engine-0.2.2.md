@@ -1,15 +1,18 @@
 # PTSIP Projection Engine 0.2.2
 
-## Publication identities
+Engine ID: `urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0`
+Capability: `urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45`
 
-- Engine version: `0.2.2` (published PTSIP `0.3.8b5` contained `0.2.1`)
-- Capability contract: `2.0.1` (published PTSIP `0.3.8b5` contained `2.0.0`)
-- Published comparison source: `912a2b4956e856bec709cadc322cbd68588cdd5b`
-- Engine version owner: `src/ptsip/engines/projection/version.yaml`
-- Capability contract: `src/ptsip/engines/projection/contract.json`
+### Purpose
 
-## Compatibility and verification
+The registered Projection engine implements `projection.select`, `projection.render`. Its registered machine semantics include `EXPLICIT_JSON_POINTER_SELECTION_WITHOUT_SOURCE_MUTATION_OR_LEGACY_OUTPUT_PARITY`, `VERIFY_CURRENT_CONTEXT_SNAPSHOT_AND_SOURCE_THEN_APPLY_REGISTERED_PROJECTION_FIELDS_AND_OUTPUT_SCHEMA`. No test result, capability declaration, or installation step grants additional authority.
 
-The upcoming release preserves existing registered source-bound pointer selection and projection rendering semantics. Capability IDs and permission boundaries remain unchanged. The explicit version increase does not confer authorization or imply compatibility without verification.
+### Contract changes
 
-Windows x64 and Linux x64 native wheel artifacts, source-bound hashes, the resulting GitHub Release, and the public PyPI distribution must be verified separately. This note is a candidate release description, **not evidence of completed publication**.
+Engine version: `0.2.2` (previous PTSIP `0.3.8b5` engine `0.2.1`).
+Current capability contract: `2.0.1`.
+The registered capability identity and operation authority remain unchanged. This release assigns a new independent engine version because the packaged source/producer boundary differs from the previously published artifact.
+
+Version authority: `src/ptsip/engines/projection/version.yaml`. Published comparison source: `912a2b4956e856bec709cadc322cbd68588cdd5b`.
+
+Required Windows x64 and Linux x64 verification must bind to the exact source SHA and component file hashes before publication. Existing published engine artifacts remain immutable; this note describes an upcoming version, not completed GitHub or PyPI publication.
