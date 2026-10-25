@@ -1,0 +1,15 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-PROJECT-PROFILE-2-00
+  decision: APPROVED
+  decision_source: USER_EXPLICIT
+  approval_scope: CURRENT_RELEASE_COMPONENT_VERSION
+  selected_profile_version: 'pp.2.00'
+  prior_published_version: 'pp.1.02'
+  preservation:
+    published_profile_immutability: REQUIRED
+    existing_profile_authority_boundaries: PRESERVED
+    candidate_rbac_policy_activation: NOT_AUTHORIZED_BY_VERSION_SELECTION
+    source_and_schema_verification: REQUIRED
+  recorded_at: '2026-10-26'

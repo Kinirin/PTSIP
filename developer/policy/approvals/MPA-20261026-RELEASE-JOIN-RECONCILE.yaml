@@ -1,0 +1,26 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-RELEASE-JOIN-RECONCILE
+  decision: APPROVED
+  decision_source: USER_EXPLICIT
+  conflict_resolution: RECONCILE
+  conflicting_prior:
+    - developer/policy/CTRL/release-admission.policy.json
+    - .ptsip/contracts/release/verification-contract.json
+  conflict_scope: SINGLE_PACKAGE_RELEASE_0_3_8_B6
+  scope:
+    package: PTSIP
+    package_version: '0.3.8b6'
+    profile_version: 'pp.2.00'
+    until: FIRST_SUCCESSFUL_PUBLICATION_RECORD
+    per_platform_full_package_join: TEMPORARILY_WAIVED
+    required_platforms: [windows-x64, linux-x64]
+    component_source_bound_verification: REQUIRED
+    original_artifact_digest_verification: REQUIRED
+    lightweight_complete_package_install_and_version: REQUIRED
+    absence_or_mismatch: FAIL_CLOSED
+    permanent_verification_reduction: FORBIDDEN
+    publication_immutability: PRESERVED
+  unrelated_policy: PRESERVED
+  recorded_at: '2026-10-26'

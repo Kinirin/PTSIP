@@ -16,7 +16,7 @@
     "tool_version_ref": "tool.ptsip.release.tool_version",
     "tool_identifier": "T.MAJOR.MINOR.MICRO.STATE",
     "tool_distribution_version": "STRIP_T_PREFIX_AND_JOIN_PRERELEASE_STATE",
-    "package_pypi_version": "BASE.REVISION_WITH_OPTIONAL_A_B_RC_STATE",
+    "package_pypi_version": "BASE_WITH_OPTIONAL_DIRECT_A_B_RC_STATE_OR_POSITIVE_REVISION",
     "published_snapshot_table": "tool.ptsip.release.published",
     "distributed_current_version_authority": false,
     "missing_declaration": "FAIL_NO_LEGACY_FALLBACK",
@@ -75,11 +75,21 @@
   },
   "component_reuse": {
     "tool": {
-      "source_boundaries": ["src", "registry", "License-Authority", "README.md", ".ptsip/engine/developer/release/test/tool.go", ".ptsip/engine/developer/release/test/runner.go"],
+      "source_boundaries": [
+        "src",
+        "registry",
+        "License-Authority",
+        "README.md",
+        ".ptsip/engine/developer/release/test/tool.go",
+        ".ptsip/engine/developer/release/test/runner.go"
+      ],
       "pyproject_comparison": "FULL_DOCUMENT_EXCEPT_PUBLISHED_SNAPSHOT_TABLE"
     },
     "profiles": {
-      "source_boundaries": ["src/ptsip/profiles", "registry/project-profile-contracts.yaml"]
+      "source_boundaries": [
+        "src/ptsip/profiles",
+        "registry/project-profile-contracts.yaml"
+      ]
     },
     "unchanged_version": "REUSE_ORIGINAL_PUBLISHED_SOURCE_FILES_AND_DIGESTS",
     "changed_producer_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_COMPONENT_VERSION"

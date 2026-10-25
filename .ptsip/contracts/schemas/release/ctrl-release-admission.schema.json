@@ -124,7 +124,8 @@
         "required_platforms",
         "all_selected_component_host_jobs",
         "verified_original_artifact_digests",
-        "stale_or_missing"
+        "stale_or_missing",
+        "temporary_join_waiver"
       ],
       "properties": {
         "source_sha": {
@@ -150,6 +151,46 @@
         },
         "stale_or_missing": {
           "const": "FAIL_CLOSED"
+        },
+        "temporary_join_waiver": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ref",
+            "package_version",
+            "profile_version",
+            "scope",
+            "full_join",
+            "lightweight_package_install",
+            "lightweight_package_version",
+            "required_original_digests"
+          ],
+          "properties": {
+            "ref": {
+              "const": "developer/policy/registries/release-20261026-package-join-waiver.json"
+            },
+            "package_version": {
+              "const": "0.3.8b6"
+            },
+            "profile_version": {
+              "const": "pp.2.00"
+            },
+            "scope": {
+              "const": "FIRST_PUBLICATION_ONLY"
+            },
+            "full_join": {
+              "const": "WAIVED"
+            },
+            "lightweight_package_install": {
+              "const": "REQUIRED"
+            },
+            "lightweight_package_version": {
+              "const": "REQUIRED"
+            },
+            "required_original_digests": {
+              "const": "REQUIRED"
+            }
+          }
         }
       }
     },

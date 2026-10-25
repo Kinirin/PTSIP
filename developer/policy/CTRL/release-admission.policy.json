@@ -38,7 +38,17 @@
     ],
     "all_selected_component_host_jobs": "SUCCESS_REQUIRED",
     "verified_original_artifact_digests": "REQUIRED",
-    "stale_or_missing": "FAIL_CLOSED"
+    "stale_or_missing": "FAIL_CLOSED",
+    "temporary_join_waiver": {
+      "ref": "developer/policy/registries/release-20261026-package-join-waiver.json",
+      "package_version": "0.3.8b6",
+      "profile_version": "pp.2.00",
+      "scope": "FIRST_PUBLICATION_ONLY",
+      "full_join": "WAIVED",
+      "lightweight_package_install": "REQUIRED",
+      "lightweight_package_version": "REQUIRED",
+      "required_original_digests": "REQUIRED"
+    }
   },
   "publication": {
     "github_release_identity": "EXACT_SOURCE_SHA",

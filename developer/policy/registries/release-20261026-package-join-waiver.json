@@ -1,0 +1,29 @@
+{
+  "schema_version": "ptsip-release-one-time-lightweight-join-waiver/v1",
+  "decision": "RECONCILE",
+  "state": "ACTIVE_UNTIL_FIRST_SUCCESSFUL_PUBLICATION_RECORD",
+  "approval_ref": "developer/policy/approvals/MPA-20261026-RELEASE-JOIN-RECONCILE.yaml",
+  "scope": {
+    "project": "PTSIP",
+    "package_version": "0.3.8b6",
+    "profile_version": "pp.2.00",
+    "release_type": "PTSIP_PACKAGE",
+    "platforms": [
+      "windows-x64",
+      "linux-x64"
+    ]
+  },
+  "exemption": {
+    "registered_full_package_join": "WAIVED_FOR_THIS_PACKAGE_ONLY",
+    "source_bound_component_builds": "REQUIRED",
+    "immutable_original_artifact_sha256": "REQUIRED",
+    "lightweight_package_install": "REQUIRED",
+    "lightweight_package_version": "REQUIRED",
+    "release_selection_sha256": "REQUIRED",
+    "exact_source_sha": "REQUIRED",
+    "fallback_to_old_sha": "FORBIDDEN",
+    "previous_published_component_immutability": "REQUIRED",
+    "extra_destinations": "FORBIDDEN"
+  },
+  "end_condition": "FIRST_SUCCESSFUL_PUBLICATION_RECORD_FOR_THIS_PACKAGE_VERSION"
+}

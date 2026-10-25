@@ -1,0 +1,20 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-PACKAGE-0-3-8-B6-KEEP-LATEST
+  decision: APPROVED
+  decision_source: USER_EXPLICIT
+  conflict_resolution: KEEP_LATEST
+  conflicting_prior:
+    - developer/policy/INFO/MPD-INFO-0005.yaml
+    - .ptsip/contracts/release/composition-contract.json
+  conflict_scope: PACKAGE_PYPI_VERSION_FORM
+  rejected_prior: POSITIVE_NUMERIC_PACKAGE_REVISION_REQUIRED
+  adopted_latest:
+    user_facing_version: '0.3.8.b6'
+    canonical_distribution_version: '0.3.8b6'
+    package_base: '0.3.8'
+    package_revision: 0
+    package_state: b6
+  unrelated_policy: PRESERVED
+  recorded_at: '2026-10-26'
