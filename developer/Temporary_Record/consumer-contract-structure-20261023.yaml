@@ -111,7 +111,7 @@ root_index_lookup_connection_direction:
     developer_contract_registration_or_management: FORBIDDEN
     developer_policy_index_registration_or_management: FORBIDDEN
     index_registration_does_not_grant_policy_authority: true
-    registration_field_names_and_id_review: PENDING_INDEPENDENT_RECHECK
+    registration_field_names_and_id_review: PARTIALLY_RESOLVED_CONSUMER_SUBINDEX_ID_CONTAINER_AND_ROOT_RELATIVE_PATH
     implementation: NOT_AUTHORIZED_YET
   root_responsibility:
     - DISCOVER_SUBINDEXES
@@ -135,7 +135,21 @@ root_index_lookup_connection_direction:
       conflict_resolution: KEEP_LATEST
       selected_option: STABLE_LOGICAL_INDEX_ID
       representation: STABLE_INDEX_ID_INDEPENDENT_OF_PATH_VERSION_AND_PARAMETERS
-      index_id_value_type: string
+      scalar_stable_id_value_type: string
+      id_container:
+        decision: USER_APPROVED_KEEP_LATEST
+        field_name: consumer_subindex_id
+        field_value_type: object
+        role: STABLE_CONSUMER_CONTRACT_SUBINDEX_ID_AND_VARIABLE_PARAMETER_CONTAINER
+        immutable_identity_is_entire_object: false
+        immutable_identity_is_inner_scalar_value: true
+        previous_field_name: index_id
+        previous_field_value_type: string
+        previous_field_status: SUPERSEDED_BY_USER_APPROVAL
+        nesting_direction: INNER_STABLE_ID_VALUE_AND_VARIABLE_PARAMETERS
+        scalar_id_field_name: UNRESOLVED_USER_DECISION
+        parameter_container_field_name: UNRESOLVED_USER_DECISION
+        parameter_internal_field_set: UNRESOLVED_USER_DECISION
       index_id_issuance_format: UNRESOLVED_USER_DECISION
       identifier_generated_from_path_or_version: FORBIDDEN
       identifier_parsing_for_semantic_inference: FORBIDDEN
@@ -152,16 +166,33 @@ root_index_lookup_connection_direction:
       earlier_withdrawn_direction:
         selected_option: C_CONSUMER_STRUCTURED_IDENTIFIER
         status: WITHDRAWN_BY_PROJECT_OWNER
-      approved_registration_field_names: [index_id, path]
+      approved_registration_field_names: [consumer_subindex_id, path]
       registration_field_requiredness: UNRESOLVED_USER_DECISION
-      parameter_structure: UNRESOLVED_USER_DECISION
+      parameter_structure:
+        decision: USER_APPROVED_NESTED_DIRECTION
+        parameter_container_location: INSIDE_CONSUMER_SUBINDEX_ID_OBJECT
+        parameter_container_field_name: UNRESOLVED_USER_DECISION
+        internal_field_requiredness: UNRESOLVED_USER_DECISION
+        internal_field_extensions: PERMITTED_WITHOUT_CHANGING_STABLE_ID
+      path_location_direction:
+        decision: USER_APPROVED_DESIGN_DIRECTION
+        selected_option: SEPARATE_BASE_ROOT_AND_RELATIVE_PATH
+        base_root: src/policy
+        relative_path_field_name: path
+        relative_path_value_type: string
+        base_root_field_name: UNRESOLVED_USER_DECISION
+        base_root_field_value_type: UNRESOLVED_USER_DECISION
+        example_target_relative_path: contracts/schemas/index.json
+        root_normalization_and_path_resolution: UNRESOLVED_USER_DECISION
+        relocation_detection_and_same_file_proof: UNRESOLVED_USER_DECISION
       comparison_procedure_and_errors: UNRESOLVED_USER_DECISION
       implementation: NOT_AUTHORIZED_YET
     concrete_field_names:
-      index_id: STABLE_LOGICAL_SUBINDEX_ID
-      path: CHILD_INDEX_LOCATION
+      consumer_subindex_id: STABLE_LOGICAL_CONSUMER_CONTRACT_SUBINDEX_ID_CONTAINER
+      path: RELATIVE_PATH_RESOLVED_AGAINST_CONSUMER_POLICY_ROOT
     field_value_types:
-      index_id: string
+      consumer_subindex_id: object
+      nested_stable_id_value: string
       path: string
     previous_approved_example: SUPERSEDED_ID_INCLUDED_VERSION
     field_requiredness: UNRESOLVED_USER_DECISION
@@ -178,17 +209,30 @@ root_index_lookup_connection_direction:
     individual_subindex_requiredness: DEFER_UNTIL_AFTER_CONTRACT_CREATION
     existing_subindexes_mandatory: NOT_DECIDED
     newly_added_subindexes_mandatory: NOT_DECIDED
-    registration_item_field_names_and_types:
-      index_id: string
-      path: string
+    registration_item_structure:
+      decision: USER_APPROVED_NESTING_DIRECTION
+      identifier_container:
+        field_name: consumer_subindex_id
+        value_type: object
+        scalar_identity_type: string
+        scalar_identity_field_name: UNRESOLVED_USER_DECISION
+        variable_parameter_container_name: UNRESOLVED_USER_DECISION
+      relative_location:
+        field_name: path
+        value_type: string
+        base_root: src/policy
+        separate_root_and_relative_path: true
+        base_root_field_name: UNRESOLVED_USER_DECISION
+      internal_fields_and_nesting_details: UNRESOLVED_USER_DECISION
+      item_field_requiredness: UNRESOLVED_USER_DECISION
     registration_container:
       decision: USER_APPROVED_FIELD_NAME_AND_ARRAY_DIRECTION
       field_name: consumer_contract_root_subindex_refs
       value_type: array
       responsibility: CONSUMER_CONTRACT_ROOT_SUBINDEX_REFERENCES
       field_requiredness: UNRESOLVED_USER_DECISION
-      array_item_structure: UNRESOLVED_USER_DECISION
-      nested_parameter_structure: UNRESOLVED_USER_DECISION
+      array_item_structure: APPROVED_CONSUMER_SUBINDEX_ID_OBJECT_DIRECTION
+      nested_parameter_structure: APPROVED_PARAMETERS_INSIDE_ID_CONTAINER_INTERNAL_FIELDS_UNRESOLVED
     registration_constraints_and_resolver_behavior: NOT_DECIDED
     schema_instance_creation_by_this_decision: NOT_AUTHORIZED
   field_names_and_requiredness: UNRESOLVED_USER_DECISION
