@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:approved-source-responsibilities"
-    Rule_ver: "2"
+    Rule_ver: "3"
   Definition:
     meaning: "GOV는 개발 결정권과 위임 범위의 정당성 및 정책 등록·생명주기 상태·개발 작업 승인의 출처와 적용 범위가 적법한지를 판단하고, 공식 README 원본과 번역 활성화의 기준을 규정한다."
     rationale: "작업 목표·기술 설계·실행 가능성·검증 성공은 결정권 또는 정책 승인을 대신 증명하지 못하며, README 번역 활성화와 파일명은 각각 등록부 및 문서 계약을 기준으로 한다."
@@ -66,7 +66,7 @@ Policy_Rules:
         rule: "정당하게 연결된 책임의 충족 조건이 만족되면 해당 책임에 연결된 모든 승인된 권한을 일괄 활성화한다. 개별 권한별 추가 실행 승인을 요구하지 않으며 미연결·미승인 권한은 자동 활성화하지 않는다."
         Rule_state: APPROVED.provisional
       - id: PROHIBITION/OTHER_FAMILY_CANNOT_REPLACE_GOV_AUTHORITY
-        rule: "다른 책임 영역이 GOV의 결정 권한을 대신 정의하는 행위"
+        rule: "사용자의 승인과 유효한 권한 모델 전환 결정 없이 다른 책임 영역이 GOV의 현재 결정 권한을 임의로 대체하거나, Compile-Sealed RBAC 전환을 구실로 미승인 권위를 생성하는 행위"
       - id: PROHIBITION/GOAL_OR_DESIGN_DOES_NOT_PROVE_MANDATE
         rule: "작업 목표나 기술 설계가 타당하다는 이유만으로 결정권자의 권한이 증명되었다고 판단하는 행위"
       - id: PROHIBITION/EXECUTION_OR_TEST_DOES_NOT_APPROVE_POLICY
