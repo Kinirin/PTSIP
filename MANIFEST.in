@@ -20,3 +20,8 @@ include schemas/ptsip-profile-pp-2.00.candidate.schema.json
 include src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json
 include .ptsip/contracts/schemas/compile-sealed-rbac/candidate-index.json
 include src/ptsip/specdata/compile-sealed-rbac/candidate-index.json
+
+# Only the current developer release module owns b5-derived PEP517 source builds.
+include .ptsip/engine/developer/release/backend/ptsip_build_backend.py
+include ptsip-build-source.json
+recursive-include src/ptsip/engines Cargo.toml Cargo.lock *.rs *.yaml
