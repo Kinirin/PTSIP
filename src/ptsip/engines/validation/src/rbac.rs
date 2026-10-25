@@ -16,6 +16,31 @@ const SCHEMAS: [&str; 6] = [
     "activation.schema.json",
 ];
 
+/// Central-registry lexical rule for the four approved declarative kinds.
+/// The full registry grammar and the individual domain schemas are still unresolved.
+#[allow(dead_code)]
+fn validate_registry_entry(kind: &str, resource: &str) -> Result<(), String> {
+    if !matches!(
+        kind,
+        "RESPONSIBILITY" | "CONDITION_ATOM" | "PERMISSION_ATOM" | "BINDING"
+    ) {
+        return Err("unregistered RBAC declarative kind".into());
+    }
+    let file = resource
+        .strip_prefix(PROFILE_RBAC_ROOT)
+        .ok_or("RBAC resource is not under the project profile RBAC root")?;
+    if file.is_empty()
+        || ![".json", ".yaml", ".yml"].iter().any(|suffix| file.ends_with(suffix))
+        || resource.chars().any(|ch| ch.is_control() || matches!(ch, '\\' | ':' | '?' | '#' | '%'))
+        || file.split('/').any(|part| part.is_empty() || part == "." || part == "..")
+    {
+        return Err("invalid RBAC resource reference".into());
+    }
+    // Root::bytes additionally checks regular file, symlinks, and root containment
+    // when the registered resource is actually resolved.
+    Ok(())
+}
+
 fn ensure_local_schema_refs(value: &Value) -> Result<(), String> {
     match value {
         Value::Object(items) => {
@@ -133,6 +158,42 @@ pub fn preflight(input: &Value) -> Result<Value, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn approved_registry_kinds_and_resources_are_strict() {
+        for kind in ["RESPONSIBILITY", "CONDITION_ATOM", "PERMISSION_ATOM", "BINDING"] {
+            for resource in [
+                ".ptsip/profiles/rbac/source.json",
+                ".ptsip/profiles/rbac/nested/source.yaml",
+                ".ptsip/profiles/rbac/하위/정의.yml",
+            ] {
+                assert!(validate_registry_entry(kind, resource).is_ok());
+            }
+        }
+        for kind in ["SEAL", "ACTIVATION", "Responsibility", "permission_atom", "OTHER", ""] {
+            assert!(validate_registry_entry(kind, ".ptsip/profiles/rbac/x.json").is_err());
+        }
+        for resource in [
+            "",
+            "/.ptsip/profiles/rbac/x.yaml",
+            "https://example.invalid/x.json",
+            ".ptsip/profiles/rbac/",
+            ".ptsip/profiles/rbac/x.txt",
+            ".ptsip/profiles/rbac/x.YAML",
+            ".ptsip/profiles/rbac/../x.json",
+            ".ptsip/profiles/rbac/./x.json",
+            ".ptsip/profiles/rbac/a//x.json",
+            ".ptsip/profiles/rbac/x\\y.json",
+            ".ptsip/profiles/rbac/c:/x.json",
+            ".ptsip/profiles/rbac/x%2Fz.json",
+            ".ptsip/profiles/rbac/file?.json",
+            ".ptsip/profiles/rbac/file#fragment.json",
+            ".ptsip/profiles/rbac/file\n.json",
+            ".ptsip/profiles/not-rbac/x.json",
+        ] {
+            assert!(validate_registry_entry("BINDING", resource).is_err(), "{resource:?}");
+        }
+    }
 
     #[test]
     fn explicit_disabled_declaration_needs_no_registry_or_schemas() {
