@@ -185,9 +185,9 @@ root_index_lookup_connection_direction:
         decision: USER_APPROVED_DESIGN_DIRECTION
         selected_option: SEPARATE_BASE_ROOT_AND_RELATIVE_PATH
         base_root: src/policy
-        relative_path_field_name: UNRESOLVED_USER_DECISION
+        relative_path_field_name: rel_path
         relative_path_value_type: string
-        base_root_field_name: UNRESOLVED_USER_DECISION
+        base_root_field_name: root_path
         base_root_field_value_type: UNRESOLVED_USER_DECISION
         example_target_relative_path: contracts/schemas/index.json
         root_normalization_and_path_resolution: UNRESOLVED_USER_DECISION
@@ -199,9 +199,17 @@ root_index_lookup_connection_direction:
         parent_object_path: consumer_contract_root_subindex_refs[].consumer_subindex_id.parameters
         location_field_grouping: DIRECT_CHILDREN_OF_PARAMETERS
         intermediate_location_object: NOT_SELECTED
+        parameter_field_names_decision:
+          decision: USER_APPROVED
+          approved_layout: A_MINIMAL_FLAT
+          fields:
+            root_path: BASE_ROOT_PATH
+            rel_path: RELATIVE_SUBINDEX_PATH
+          root_path_value: src/policy
+          other_parameter_fields: UNRESOLVED_USER_DECISION
         approved_base_root_value: src/policy
-        base_root_field_name: UNRESOLVED_USER_DECISION
-        relative_path_field_name_for_NESTED_LOCATION: UNRESOLVED_USER_DECISION
+        base_root_field_name: root_path
+        relative_path_field_name_for_NESTED_LOCATION: rel_path
         other_internal_field_names: UNRESOLVED_USER_DECISION
         field_requiredness: UNRESOLVED_USER_DECISION
         path_normalization_and_verification: UNRESOLVED_USER_DECISION
@@ -255,8 +263,8 @@ root_index_lookup_connection_direction:
         placement: DIRECT_CHILDREN
         base_root: src/policy
         separate_root_and_relative_path: true
-        base_root_field_name: UNRESOLVED_USER_DECISION
-        relative_path_field_name: UNRESOLVED_USER_DECISION
+        base_root_field_name: root_path
+        relative_path_field_name: rel_path
         relative_path_value_type: string
         prior_registration_sibling_path:
           field_name: path
@@ -270,7 +278,7 @@ root_index_lookup_connection_direction:
       responsibility: CONSUMER_CONTRACT_ROOT_SUBINDEX_REFERENCES
       field_requiredness: UNRESOLVED_USER_DECISION
       array_item_structure: APPROVED_CONSUMER_SUBINDEX_ID_OBJECT_DIRECTION
-      nested_parameter_structure: APPROVED_DIRECT_ROOT_AND_RELATIVE_PATH_INSIDE_PARAMETERS_NAMES_UNRESOLVED
+      nested_parameter_structure: APPROVED_DIRECT_ROOT_PATH_AND_REL_PATH_INSIDE_PARAMETERS
     registration_constraints_and_resolver_behavior: NOT_DECIDED
     schema_instance_creation_by_this_decision: NOT_AUTHORIZED
   field_names_and_requiredness: UNRESOLVED_USER_DECISION
