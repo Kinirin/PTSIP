@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'developer/planning/release-requests/ptsip-package-20261026-03.json'
+      - 'developer/planning/release-requests/ptsip-package-20261026-04.json'
 permissions:
   contents: read
   actions: write
@@ -28,24 +28,27 @@ jobs:
           set -euo pipefail
           test "$EXPECTED_SHA" = "$(git rev-parse HEAD)"
           test "$EXPECTED_SHA" = "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
-          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-03.json'
+          git diff-tree --no-commit-id --name-only --diff-filter=A -r "$EXPECTED_SHA" | grep -Fx 'developer/planning/release-requests/ptsip-package-20261026-04.json'
           python3 - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-03.json').read_text())
+          r=json.loads(Path('developer/planning/release-requests/ptsip-package-20261026-04.json').read_text())
           assert r['schema_version']=='ptsip-one-shot-package-release-request/v1'
-          assert r['request_id']=='PTSIP-PACKAGE-20261026-03'
+          assert r['request_id']=='PTSIP-PACKAGE-20261026-04'
           assert r['decision_source']=='USER_EXPLICIT'
           assert r['trigger']['source_sha']=='COMMIT_CREATING_THIS_REQUEST'
           assert r['admission']['duplicate_publication_dispatch']=='FORBIDDEN'
           assert r['authorized_scope']['verification_mode']=='release-verification'
           assert r['authorized_scope']['targets']=='package'
           assert r['authorized_scope']['release_type']=='PTSIP_PACKAGE'
+          assert r['release_authorization']['canonical_version']=='0.3.8b6'
+          assert r['release_authorization']['profile']=='pp.2.00'
           assert r['authorized_scope']['destination']=='github-pypi'
           assert r['authorized_scope']['required_platforms']==['windows-x64','linux-x64']
+          assert r['release_authorization']['join_waiver']=='RECONCILE_APPROVED_FOR_THIS_PACKAGE_ONLY'
           assert r['authorized_scope']['optional_platforms']==[]
           PY
-      - name: Dispatch and await this SHA's full Windows/Linux Package verification
+      - name: Dispatch and await exact-source component and lightweight Package verification
         shell: bash
         run: |
           set -euo pipefail
@@ -89,7 +92,7 @@ jobs:
           assert r['per_release_evidence']=='NOT_ASSERTED'
           assert r['publication_authorized'] is False
           PY
-      - name: Verify original selection and every required host join
+      - name: Verify exact selection, component receipts and waived lightweight Package checks
         shell: bash
         run: |
           set -euo pipefail
@@ -119,7 +122,7 @@ jobs:
                   expected=f'Registered verification / {component} / {platform}'
                   assert names.count(expected)==1, f'missing {expected}'
           for platform in platforms:
-              expected=f'Registered join / package / {platform}'
+              expected=f'Lightweight install / package / {platform}'
               assert names.count(expected)==1, f'missing {expected}'
           available={a['name'] for a in artifacts if not a['expired']}
           expected_artifacts=[f'verification-selection-{sha}']
@@ -133,7 +136,7 @@ jobs:
           items=selection['components']
           assert len(items)==9 and {i['id'] for i in items}==set(components)
           assert selection['selection_sha256'], 'canonical original selection hash missing'
-          print('EXACT_HEAD_PACKAGE_JOIN_AND_SELECTION_SUCCESS',sha,os.environ['VERIFY_RUN_ID'])
+          print('EXACT_HEAD_LIGHTWEIGHT_PACKAGE_AND_SELECTION_SUCCESS',sha,os.environ['VERIFY_RUN_ID'])
           PY
       - name: Disallow duplicate dispatch and start GitHub/PyPI release
         shell: bash
