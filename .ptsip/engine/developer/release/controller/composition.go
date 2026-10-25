@@ -137,24 +137,13 @@ func VerifyCompositionProjections(root string, c Composition, contract Contract)
 		if err := toml.Unmarshal(data, &project); err != nil {
 			return err
 		}
-		deps := map[string]bool{}
-		for _, d := range project.Project.Dependencies {
-			if strings.HasPrefix(d, "ptsip-engine-") {
-				if deps[d] {
-					return fmt.Errorf("duplicate native dependency")
-				}
-				deps[d] = true
+		for _, dep := range project.Project.Dependencies {
+			// A single PTSIP host Wheel must not silently depend on
+			// another independently distributed official native engine.
+			normalized := strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(dep, "_", "-"), ".", "-"))
+			if strings.HasPrefix(normalized, "ptsip-engine-") {
+				return fmt.Errorf("integrated PTSIP Wheel must not require separate engine pip packages")
 			}
-		}
-		for id, v := range c.Engines {
-			key := "ptsip-engine-" + id + "==" + v
-			if !deps[key] {
-				return fmt.Errorf("mandatory Package engine dependency missing or optional: %s", id)
-			}
-			delete(deps, key)
-		}
-		if len(deps) != 0 {
-			return fmt.Errorf("unregistered or stale Package engine dependency")
 		}
 	}
 	var index struct {
