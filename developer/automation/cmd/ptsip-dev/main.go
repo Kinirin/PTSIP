@@ -8,7 +8,6 @@ import (
 
 	_ "github.com/Kinirin/PTSIP/developer/automation/branch"
 	"github.com/Kinirin/PTSIP/developer/automation/internal/machine"
-	_ "github.com/Kinirin/PTSIP/developer/automation/release"
 )
 
 type commandMetadata struct {
