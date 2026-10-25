@@ -41,6 +41,65 @@ fn validate_registry_entry(kind: &str, resource: &str) -> Result<(), String> {
     Ok(())
 }
 
+/// Non-normative, implementation-only JSON registry preview. The final
+/// registry serialization and domain contract identity rules remain unresolved.
+/// Duplicate IDs are rejected as an ambiguity guard, NOT a policy decision.
+fn draft_registry_preflight(root: &Root, bytes: &[u8]) -> Result<usize, String> {
+    let registry = crate::source::parse(bytes)?;
+    let record = registry
+        .as_object()
+        .ok_or("draft RBAC registry must be a JSON object")?;
+    if record.keys().any(|key| !matches!(key.as_str(), "schema_version" | "entries" | "metadata")) {
+        return Err("unknown draft RBAC registry field".into());
+    }
+    if !record.get("schema_version").and_then(Value::as_str).is_some_and(|s| !s.is_empty()) {
+        return Err("draft RBAC registry schema_version missing or invalid".into());
+    }
+    if record.get("metadata").is_some_and(|m| !m.is_object()) {
+        return Err("draft RBAC registry metadata must be an object".into());
+    }
+    let entries = record
+        .get("entries")
+        .and_then(Value::as_array)
+        .ok_or("draft RBAC registry entries must be an array")?;
+    let mut seen = std::collections::HashSet::new();
+    for entry in entries {
+        let item = entry
+            .as_object()
+            .ok_or("draft RBAC registry entry must be an object")?;
+        if item.keys().any(|key| !matches!(key.as_str(), "id" | "kind" | "resource" | "revision")) {
+            return Err("unknown draft RBAC entry field".into());
+        }
+        let id = item
+            .get("id")
+            .and_then(Value::as_str)
+            .filter(|s| !s.is_empty())
+            .ok_or("draft RBAC registry entry requires nonempty id")?;
+        let kind = item
+            .get("kind")
+            .and_then(Value::as_str)
+            .ok_or("draft RBAC registry entry requires kind")?;
+        let resource = item
+            .get("resource")
+            .and_then(Value::as_str)
+            .ok_or("draft RBAC registry entry requires resource")?;
+        if !seen.insert(id) {
+            return Err("ambiguous repeated draft RBAC registry entry id".into());
+        }
+        if item.get("revision").is_some_and(|v| !v.as_str().is_some_and(|s| !s.is_empty())) {
+            return Err("draft RBAC registry revision must be a nonempty string when present".into());
+        }
+        validate_registry_entry(kind, resource)?;
+        let data = root.bytes(resource, 2_097_152)?;
+        if resource.ends_with(".json") {
+            // Only JSON decoding is possible in this preliminary native adapter;
+            // YAML support requires a separately reviewed implementation adapter.
+            crate::source::parse(&data)?;
+        }
+    }
+    Ok(entries.len())
+}
+
 fn ensure_local_schema_refs(value: &Value) -> Result<(), String> {
     match value {
         Value::Object(items) => {
@@ -127,6 +186,8 @@ pub fn preflight(input: &Value) -> Result<Value, String> {
     if registry_bytes.is_empty() {
         return Err("RBAC registry cannot be empty".into());
     }
+    // Preview checks source closure; it cannot establish RBAC authority.
+    let draft_registry_entry_count = draft_registry_preflight(&root, &registry_bytes)?;
     for name in SCHEMAS {
         let path = format!("{SCHEMA_ROOT}{name}");
         let schema_bytes = root.bytes(&path, 2_097_152)?;
@@ -148,8 +209,9 @@ pub fn preflight(input: &Value) -> Result<Value, String> {
         "rbac_enabled": true,
         "rbac_usable": false,
         "verified_schema_count": 6,
+        "draft_registry_entry_count": draft_registry_entry_count,
         "validation_stage": "STRUCTURAL_PREFLIGHT_ONLY",
-        "diagnostics": ["RBAC_REGISTRY_BINDING_SEAL_VALIDATION_NOT_YET_DEFINED"],
+        "diagnostics": ["DRAFT_NON_NORMATIVE_REGISTRY_PREVIEW", "RBAC_REGISTRY_BINDING_SEAL_VALIDATION_NOT_YET_DEFINED"],
         "ptsip_conformance_verdict": "NOT_ASSERTED",
         "execution_authorized": false
     }))
@@ -243,7 +305,11 @@ mod tests {
         let registry = root.join(PROFILE_RBAC_ROOT);
         fs::create_dir_all(&schemas).unwrap();
         fs::create_dir_all(&registry).unwrap();
-        fs::write(registry.join("index.json"), "{}").unwrap();
+        fs::write(registry.join("contract.json"), r#"{"id":"RESP-001"}"#).unwrap();
+        fs::write(
+            registry.join("index.json"),
+            r#"{"schema_version":"candidate","entries":[{"id":"RESP-001","kind":"RESPONSIBILITY","resource":".ptsip/profiles/rbac/contract.json"}]}"#,
+        ).unwrap();
         for name in SCHEMAS {
             fs::write(
                 schemas.join(name),
@@ -260,11 +326,51 @@ mod tests {
         });
         let result = preflight(&request).unwrap();
         assert_eq!(result["verified_schema_count"], 6);
+        assert_eq!(result["draft_registry_entry_count"], 1);
         assert_eq!(result["declaration_valid"], true);
         assert_eq!(result["rbac_usable"], false);
         assert_eq!(result["validation_stage"], "STRUCTURAL_PREFLIGHT_ONLY");
         assert_eq!(result["execution_authorized"], false);
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn draft_registry_fails_closed_for_duplicate_or_unsafe_entries() {
+        use std::fs;
+        use std::time::{SystemTime, UNIX_EPOCH};
+        let stamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_nanos();
+        let path = std::env::temp_dir().join(format!(
+            "ptsip-rbac-registry-draft-{}-{stamp}",
+            std::process::id()
+        ));
+        fs::create_dir_all(path.join(PROFILE_RBAC_ROOT)).unwrap();
+        let root = Root::new(path.to_str().unwrap()).unwrap();
+        let source_ref = ".ptsip/profiles/rbac/input.json";
+        fs::write(path.join(source_ref), r#"{"id":"RESP-01"}"#).unwrap();
+        let good = json!({
+            "schema_version": "candidate",
+            "entries": [{
+                "id":"RESP-01", "kind":"RESPONSIBILITY", "resource":source_ref
+            }]
+        });
+        assert_eq!(
+            draft_registry_preflight(&root, good.to_string().as_bytes()).unwrap(),
+            1
+        );
+        let mut duplicate = good.clone();
+        let duplicate_item = duplicate["entries"][0].clone();
+        duplicate["entries"].as_array_mut().unwrap().push(duplicate_item);
+        assert!(draft_registry_preflight(&root, duplicate.to_string().as_bytes()).is_err());
+        let mut unregistered = good.clone();
+        unregistered["entries"][0]["kind"] = json!("ACTIVATION");
+        assert!(draft_registry_preflight(&root, unregistered.to_string().as_bytes()).is_err());
+        let mut traversal = good.clone();
+        traversal["entries"][0]["resource"] = json!(".ptsip/profiles/rbac/../escape.json");
+        assert!(draft_registry_preflight(&root, traversal.to_string().as_bytes()).is_err());
+        let mut missing = good;
+        missing["entries"][0]["resource"] = json!(".ptsip/profiles/rbac/missing.json");
+        assert!(draft_registry_preflight(&root, missing.to_string().as_bytes()).is_err());
+        fs::remove_dir_all(path).unwrap();
     }
 
     #[test]
