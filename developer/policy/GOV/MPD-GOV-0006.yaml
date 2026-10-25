@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
-    Rule_ver: "5"
+    Rule_ver: "6"
   Definition:
     meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
@@ -96,6 +96,10 @@ Policy_Rules:
       - id: OBLIGATION/INDEPENDENT_CONTRACT_PHASED_REFERENCE_CUTOVER
         applies_when: COMPILE_SEALED_REFERENCE_TRANSITION
         rule: "독립 계약 전환형에서는 신규 원자·바인딩·Seal의 정당성과 참조 정합성 및 책임 단위 활성화·변경 감응의 유효성을 전환 대상 범위에서 검증한 뒤 기존 권한 참조를 단계적으로 대체한다. 미검증 영역의 기존 정식 권한 효력을 편의상 변경하거나 부분 전환을 전체 전환 완료로 간주하지 않는다."
+        Rule_state: APPROVED.provisional
+      - id: OBLIGATION/DISTRIBUTED_RBAC_VALIDATION_ENGINE
+        applies_when: PTSIP_TOOL_COMPILE_SEALED_RBAC_PROFILE_VALIDATION
+        rule: "Compile-Sealed RBAC의 pp.2.00 프로파일 사용 선언·등록부 참조·필수 스키마 검증 책임은 고객에게 검증기 자체 구현을 요구하지 않도록 배포되는 PTSIP 도구의 src/ptsip 런타임 검증 경로에 구현·연결한다. developer/tests 등 개발 저장소 전용 검증은 보조 검증일 뿐 배포 사용자 검증기의 대체물이 아니다. pp.1.02 계약의 현재 지원과 기존 검증 동작을 임의 변경하지 않으며, 세부 등록부 스키마·개별 원자 필드·Compiler·Seal·Activation 의미 검증이 승인되기 전에는 사전 구조 검증만으로 RBAC 실행 권한 또는 pp.2.00 정식 지원을 주장하지 않는다."
         Rule_state: APPROVED.provisional
       - id: PROHIBITION/DUAL_ACTIVE_AUTHORITY_DURING_TRANSITION
         rule: "동일한 권한 대상과 범위에서 구권한 체계와 새 Compile-Sealed RBAC가 독립적인 중복 승인 권위로 함께 작동하게 하거나, 신규 계약의 미결정·미검증 상태를 다른 체계의 우회 승인으로 해결하는 행위"
