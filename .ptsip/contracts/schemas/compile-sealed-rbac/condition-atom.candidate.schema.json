@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-compile-sealed-rbac-condition-atom.candidate.schema.json",
+  "title": "PTSIP Compile-Sealed RBAC CONDITION_ATOM implementation candidate",
+  "$comment": "DRAFT_NON_NORMATIVE: user-authorized provisional implementation candidate only. Not a normative schema, effective policy, release admission, approval proof, permission grant, or active engine operation. Provisional predicate vocabulary; evaluation engine remains undefined.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "revision",
+    "description",
+    "predicate"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "kind": {
+      "const": "CONDITION_ATOM"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "predicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fact_ref",
+        "operator"
+      ],
+      "properties": {
+        "fact_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operator": {
+          "enum": [
+            "EXISTS",
+            "EQUALS",
+            "NOT_EQUALS"
+          ]
+        },
+        "expected": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
