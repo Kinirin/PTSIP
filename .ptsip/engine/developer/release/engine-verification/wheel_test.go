@@ -31,19 +31,34 @@ func fixture(t *testing.T, target string) (string, Options) {
 	t.Helper()
 	root := t.TempDir()
 	entries := []map[string]any{}
-	packages := []map[string]any{}
+	components := []map[string]any{}
+	defaultIDs := []string{}
 	for _, kind := range kinds {
 		id := "fixture-" + kind
 		manifest := "src/ptsip/engines/" + kind + "/manifest.json"
 		binding := "src/ptsip/engines/" + kind + "/execution-bindings.json"
 		entries = append(entries, map[string]any{"kind": strings.ToUpper(kind), "engine_id": id, "version": "0.2.0", "manifest_ref": manifest, "execution_binding_ref": binding})
-		packages = append(packages, map[string]any{"engine_id": id, "version": "0.2.0", "package_distribution": "ptsip-engine-" + kind, "distribution": "INDEPENDENT_VERSIONED_NATIVE_WHEEL", "installation": "AUTO_INSTALL_AS_PTSIP_PACKAGE_DEPENDENCY", "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
+		components = append(components, map[string]any{"engine_id": id, "version": "0.2.0", "entrypoint": "ptsip-engine-" + kind, "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT", "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL", "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
+		defaultIDs = append(defaultIDs, id)
 		writeFixture(t, root, manifest, map[string]any{"engine_id": id, "implementation_version": "0.2.0"})
 		writeFixture(t, root, "src/ptsip/engines/"+kind+"/version.yaml", map[string]any{"schema_version": "ptsip-engine-version/v1", "engine": kind, "version": "0.2.0"})
 		writeFixture(t, root, binding, map[string]any{"bindings": []map[string]any{{"engine_id": id, "engine_version": "0.2.0", "entrypoint": "ptsip-engine-" + kind}}})
 	}
 	writeFixture(t, root, "src/ptsip/engines/index.json", map[string]any{"official_engine_entries": entries})
-	writeFixture(t, root, "src/ptsip/engines/contracts/installation-plan.json", map[string]any{"packages": packages})
+	writeFixture(t, root, "src/ptsip/engines/contracts/installation-plan.json", map[string]any{
+		"schema_version": "ptsip-engine-installation-plan/v2",
+		"selection": "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL",
+		"default_installation": "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES",
+		"default_available_engine_ids": defaultIDs,
+		"distribution": map[string]any{
+			"public_python_project": "PTSIP",
+			"model": "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL",
+			"engine_pip_dependencies": "FORBIDDEN",
+			"required_verified_engines": 7,
+			"publication_authorized": false,
+		},
+		"components": components,
+	})
 	license := filepath.Join(root, "License-Authority", "LICENSE.md")
 	if err := os.MkdirAll(filepath.Dir(license), 0755); err != nil {
 		t.Fatal(err)
@@ -179,7 +194,7 @@ func TestWheelUsesCanonicalLicenseBlobDespiteWorktreeLineEndings(t *testing.T) {
 	}
 }
 func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
-	for _, defect := range []string{"sha", "target", "kind", "binary", "contract", "reference", "duplicate", "missing_boolean"} {
+	for _, defect := range []string{"sha", "target", "kind", "binary", "contract", "reference", "duplicate", "missing_boolean", "legacy_pip", "incomplete_components", "publication_grant", "duplicate_defaults"} {
 		t.Run(defect, func(t *testing.T) {
 			root, opts := fixture(t, "x86_64-unknown-linux-gnu")
 			switch defect {
@@ -193,16 +208,25 @@ func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
 				if err := os.WriteFile(opts.Binary, bytes.Repeat([]byte("X"), 300), 0755); err != nil {
 					t.Fatal(err)
 				}
-			case "contract", "missing_boolean":
+			case "contract", "missing_boolean", "legacy_pip", "incomplete_components", "publication_grant", "duplicate_defaults":
 				var p map[string]any
 				if err := document(root, "src/ptsip/engines/contracts/installation-plan.json", &p); err != nil {
 					t.Fatal(err)
 				}
-				row := p["packages"].([]any)[0].(map[string]any)
-				if defect == "contract" {
+				row := p["components"].([]any)[0].(map[string]any)
+				switch defect {
+				case "contract":
 					row["installation"] = "OPERATOR_ONLY"
-				} else {
+				case "missing_boolean":
 					delete(row, "installed_is_execution_authorization")
+				case "legacy_pip":
+					row["package_distribution"] = "ptsip-engine-context"
+				case "incomplete_components":
+					p["components"] = p["components"].([]any)[:6]
+				case "publication_grant":
+					p["distribution"].(map[string]any)["publication_authorized"] = true
+				case "duplicate_defaults":
+					p["default_available_engine_ids"].([]any)[1] = p["default_available_engine_ids"].([]any)[0]
 				}
 				writeFixture(t, root, "src/ptsip/engines/contracts/installation-plan.json", p)
 			case "reference", "duplicate":
