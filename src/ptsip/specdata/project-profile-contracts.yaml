@@ -1,6 +1,6 @@
 schema_version: ptsip-project-profile-contract-registry/v1
 authority: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
-current: pp.1.02
+current: pp.2.00
 profile_source:
   root: src/ptsip/profiles
   catalog: src/ptsip/profiles/index.yaml
@@ -22,7 +22,7 @@ contracts:
     schema: schemas/ptsip-profile-pp-1.01.schema.json
     baseline: src/ptsip/profiles/history/pp.1.01
   - version: pp.1.02
-    lifecycle: CURRENT
+    lifecycle: SUPERSEDED
     operations:
       - IDENTIFY
       - VALIDATE
@@ -30,7 +30,19 @@ contracts:
       - CREATE_TARGET
     schema: schemas/ptsip-profile-pp-1.02.schema.json
     baseline: src/ptsip/profiles/history/pp.1.02
+  - version: pp.2.00
+    lifecycle: CURRENT
+    operations:
+      - IDENTIFY
+      - VALIDATE
+      - ANALYZE
+      - CREATE_TARGET
+    schema: schemas/ptsip-profile-pp-2.00.schema.json
+    baseline: src/ptsip/profiles/history/pp.2.00
 transitions:
   - from: pp.1.01
     to: pp.1.02
     kind: SEMANTIC_MIGRATION
+  - from: pp.1.02
+    to: pp.2.00
+    kind: IDENTITY_ONLY
