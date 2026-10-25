@@ -388,6 +388,57 @@ but no Go/Cargo test or new `tooling-test` run has yet executed against
 the revised source. The cancelled original run is not evidence of a
 Linux native Package build or install PASS. Publication stays blocked.
 
+## Intermediate engine verification artifact boundary cleanup
+
+The previous Linux tooling-test run
+`40225534511` failed after successful locked Rust tests,
+optimized native engine builds and Linux ABI checks because the native
+archive producer still assumed the previously retired independent
+consumer engine pip distribution layout. A first fix made the v2
+`components` input readable; this follow-up completely separates
+native artifact preflight responsibility from consumer distribution
+policy:
+
+- `.ptsip/engine/developer/release/engine-verification/wheel.go` now
+  checks **only** source SHA, exactly seven registered native identities,
+  selected engine ID and version, execution binding and manifest,
+  target architecture and magic, binary size, canonical source license,
+  default native identity membership, non-execution-authority flags,
+  binary/origin digests and intermediate archive RECORD. It does not
+  read or require consumer distribution, external pip dependencies,
+  package installation method or publication grant fields from the v2
+  plan. Output remains an **unreleased internal native Wheel artifact**
+  for the final PTSIP platform bundle.
+- `engine-verification/wheel_test.go` uses a native-only v2 fixture
+  with no consumer distribution or installation fields, proving no
+  dependency on those fields. Existing negative source/registry/identity
+  checks remain, with wrong version, missing authority flags and
+  wrong plan-schema cases.
+- `developer/tests/engines/independent_engine_wheel_test.go` (registered
+  test name preserved for tooling-test compatibility) no longer invokes
+  `pip install` on intermediate engine Wheels. It validates
+  source-bound archive receipts and RECORD, then extracts the exact
+  signed-by-digest executable into a test-only temporary directory and
+  probes its `--manifest` interface. Complete PTSIP pip installation
+  belongs to `.ptsip/engine/developer/release/test/package_install.go`
+  in the registered join step.
+- `src/tests/ptsip/contracts/test_integrated_installation_contract.py`
+  guards that native build preflight does not regain retired pip
+  distribution assumptions and verifies the separate consumer join
+  retains installation responsibility.
+- Existing intermediate `ptsip-independent-wheel-origin/v1` and
+  `ptsip-independent-wheel-receipt/v1` **schema IDs and on-disk
+  archive shape are preserved** to maintain the current verified
+  PTSIP bundle join. These historic contract names are not authority
+  to publish or install engines individually; changing versioned
+  producer/consumer wire schemas is separate from this preflight fix.
+
+All changes are implementation and tests; no new policy, public release
+number, branch or publishing permission was created. Linux native
+verification on the **new exact source SHA remains pending**. Prior
+Windows local PASS and the old failing CI source SHA do not attest the
+new source. Publication remains blocked.
+
 ## Release blockers / explicit scope limits
 
 - Approve complete field/lookup/serialization contracts before enabling
