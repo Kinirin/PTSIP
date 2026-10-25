@@ -161,6 +161,24 @@ func Verify(root string)error{
     if err=must(verification,"workflow",field(evidence,"workflow"));err!=nil{return err}
     if err=must(verification,"required_platforms",[]any{"windows-x64","linux-x64"});err!=nil{return err}
     if err=must(verification,"publication_operations",false);err!=nil{return err}
+    waiver:=object(evidence["temporary_join_waiver"])
+    if err=must(waiver,"ref","developer/policy/registries/release-20261026-package-join-waiver.json");err!=nil{return err}
+    if err=must(waiver,"package_version","0.3.8b6");err!=nil{return err}
+    if err=must(waiver,"profile_version","pp.2.00");err!=nil{return err}
+    if err=must(waiver,"scope","FIRST_PUBLICATION_ONLY");err!=nil{return err}
+    if err=must(waiver,"full_join","WAIVED");err!=nil{return err}
+    if err=must(waiver,"lightweight_package_install","REQUIRED");err!=nil{return err}
+    if err=must(waiver,"lightweight_package_version","REQUIRED");err!=nil{return err}
+    if err=must(waiver,"required_original_digests","REQUIRED");err!=nil{return err}
+    if err=must(verification,"temporary_join_waiver_ref",field(waiver,"ref"));err!=nil{return err}
+    if err=must(object(verification["joined_verification"]),"required","TEMPORARY_RECONCILED_WAIVER_FOR_PTSIP_0_3_8_B6");err!=nil{return err}
+    w,err:=data(root,field(waiver,"ref"));if err!=nil{return err}
+    if err=must(w,"decision","RECONCILE");err!=nil{return err}
+    if err=must(w,"state","ACTIVE_UNTIL_FIRST_SUCCESSFUL_PUBLICATION_RECORD");err!=nil{return err}
+    if err=approved(root,"developer/policy/approvals/MPA-20261026-RELEASE-JOIN-RECONCILE.yaml","  conflict_resolution: RECONCILE");err!=nil{return err}
+    if err=approved(root,"developer/policy/approvals/MPA-20261026-PACKAGE-0-3-8-B6-KEEP-LATEST.yaml","  conflict_resolution: KEEP_LATEST");err!=nil{return err}
+    if err=approved(root,"developer/policy/approvals/MPA-20261026-PROJECT-PROFILE-2-00.yaml","  selected_profile_version: 'pp.2.00'");err!=nil{return err}
+
     composition,err:=data(root,field(refs,"composition"));if err!=nil{return err}
     if err=must(object(composition["github_release"]),"asset_overwrite",false);err!=nil{return err}
     if err=must(object(composition["engine_reuse"]),"changed_source_same_version","FAIL_REQUIRES_EXPLICIT_NEW_VERSION");err!=nil{return err}

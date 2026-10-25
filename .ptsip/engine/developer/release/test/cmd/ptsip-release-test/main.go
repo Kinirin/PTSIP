@@ -47,7 +47,7 @@ func main() {
 			if e != nil {
 				fail(e)
 			}
-			fmt.Fprintf(file, "matrix=%s\njoin_matrix=%s\njoin_count=%d\npython=%s\nfetch_depth=%d\n", test.Encode(p.Matrix), test.Encode(p.Join), len(p.Join.Include), p.Python, p.FetchDepth)
+			fmt.Fprintf(file, "matrix=%s\njoin_matrix=%s\njoin_count=%d\nlightweight_matrix=%s\nlightweight_count=%d\npython=%s\nfetch_depth=%d\n", test.Encode(p.Matrix), test.Encode(p.Join), len(p.Join.Include), test.Encode(p.Lightweight), len(p.Lightweight.Include), p.Python, p.FetchDepth)
 			file.Close()
 		}
 		result = p

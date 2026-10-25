@@ -40,6 +40,9 @@ type Execution struct {
 	Join       struct {
 		Include []release.MatrixEntry `json:"include"`
 	} `json:"join_matrix"`
+	Lightweight struct {
+		Include []release.MatrixEntry `json:"include"`
+	} `json:"lightweight_matrix"`
 }
 type Receipt struct {
 	Schema       string         `json:"schema_version"`
@@ -121,13 +124,17 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	}
 	result.Matrix.Include, err = release.Matrix(result.Selection, contract.Runners)
 	result.Join.Include = []release.MatrixEntry{}
+	result.Lightweight.Include = []release.MatrixEntry{}
 	c, e := release.ReadComposition(root)
 	if e != nil {
 		return result, e
 	}
 	if c.PackagePyPI != "" && result.Selection.Type == "PTSIP_PACKAGE" {
 		for _, p := range result.Selection.Platforms {
-			result.Join.Include = append(result.Join.Include, release.MatrixEntry{Component: "package", Kind: "package", Version: c.PackagePyPI, Platform: p, Runner: contract.Runners[p]})
+			entry := release.MatrixEntry{Component: "package", Kind: "package", Version: c.PackagePyPI, Platform: p, Runner: contract.Runners[p]}
+            waived,err:=release.LightweightPackageWaiver(root,result.Selection)
+            if err!=nil{return result,err}
+            if waived {result.Lightweight.Include=append(result.Lightweight.Include,entry)} else {result.Join.Include=append(result.Join.Include,entry)}
 		}
 	}
 	result.Python = contract.Runtime.Python
