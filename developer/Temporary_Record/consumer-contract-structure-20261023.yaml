@@ -183,6 +183,127 @@ root_index_lookup_connection_direction:
           resolution_authority: USER
           options: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
           selected_option: UNRESOLVED_USER_DECISION
+      id_management_atomic_authority_model:
+        decision: USER_APPROVED_ATOMIC_PERMISSION_DECOMPOSITION
+        authorization: PROJECT_OWNER_EXPLICIT
+        scope: CONSUMER_CONTRACT_SUBINDEX_IDS_ONLY
+        original_six_combined_steps: SUPERSEDED_AS_PERMISSION_GRANULARITY
+        rule:
+          permission_is_single_operation: true
+          responsibility_is_scenario_specific: true
+          responsibility_permission_mapping: MANY_TO_MANY
+          all_permissions_must_be_assIGNED: false
+          unused_permissions_permitted: true
+          future_responsibility_extension_without_permission_merging: true
+          permission_declaration_does_not_imply_runtime_grant: true
+          check_permission_does_not_imply_write_permission: true
+          registration_or_policy_authority_not_inferred_from_permission_name: true
+        permission_catalog:
+          READ_ID_STATE: {effect: READ_ONLY, policy_state: APPROVED_CAPABILITY}
+          READ_REGISTERED_ID: {effect: READ_ONLY, policy_state: APPROVED_CAPABILITY}
+          READ_ID_BINDING: {effect: READ_ONLY, policy_state: APPROVED_CAPABILITY}
+          READ_COLLISION_OCCUPANCY: {effect: READ_ONLY, policy_state: APPROVED_CAPABILITY}
+          READ_OCCUPANT_BINDING: {effect: READ_ONLY, policy_state: APPROVED_CAPABILITY}
+          READ_ID_REFERENCES: {effect: READ_ONLY, policy_state: APPROVED_CAPABILITY}
+          READ_ID_ISSUANCE_HISTORY: {effect: READ_ONLY, policy_state: DEFINITION_PENDING}
+          READ_ID_RESERVATION: {effect: READ_ONLY, policy_state: DEFINITION_PENDING}
+          ACCEPT_USER_ID_CANDIDATE: {effect: CANDIDATE_INPUT, policy_state: APPROVED_CAPABILITY}
+          ACCEPT_ID_CHANGE_REQUEST: {effect: REQUEST_INPUT, policy_state: APPROVED_CAPABILITY}
+          GENERATE_ID_CANDIDATE: {effect: CANDIDATE_GENERATION, policy_state: APPROVED_CAPABILITY}
+          REPLACE_UNREGISTERED_CANDIDATE: {effect: CANDIDATE_CHANGE, policy_state: APPROVED_CAPABILITY}
+          CHECK_CANDIDATE_VALIDITY: {effect: CHECK_ONLY, policy_state: APPROVED_CAPABILITY}
+          CHECK_COLLISION: {effect: CHECK_ONLY, policy_state: APPROVED_CAPABILITY}
+          CHECK_LOGICAL_TARGET_EQUALITY: {effect: CHECK_ONLY, policy_state: APPROVED_CAPABILITY}
+          CLASSIFY_COLLISION_TYPE: {effect: CHECK_ONLY, policy_state: APPROVED_CAPABILITY}
+          CHECK_ID_PRESERVATION: {effect: CHECK_ONLY, policy_state: APPROVED_CAPABILITY}
+          CHECK_RENAME_AUTHORITY: {effect: CHECK_ONLY, policy_state: DEFINITION_PENDING}
+          CHECK_REFERENCE_IMPACT: {effect: CHECK_ONLY, policy_state: DEFINITION_PENDING}
+          CHECK_ID_REUSE_HISTORY: {effect: CHECK_ONLY, policy_state: DEFINITION_PENDING}
+          CHECK_ID_REUSE_ELIGIBILITY: {effect: CHECK_ONLY, policy_state: DEFINITION_PENDING}
+          CHECK_ID_UNIQUENESS_SCOPE: {effect: CHECK_ONLY, policy_state: DEFINITION_PENDING}
+          PROPOSE_ALTERNATIVE_CANDIDATE: {effect: PROPOSAL_ONLY, policy_state: APPROVED_CAPABILITY}
+          EMIT_VALIDATION_RESULT: {effect: DIAGNOSTIC_ONLY, policy_state: APPROVED_CAPABILITY}
+          EMIT_COLLISION_RESULT: {effect: DIAGNOSTIC_ONLY, policy_state: APPROVED_CAPABILITY}
+          PREVENT_UNVERIFIED_NEW_REGISTRATION: {effect: BLOCK_ONLY, policy_state: APPROVED_CAPABILITY}
+          PREVENT_UNVERIFIED_RENAME: {effect: BLOCK_ONLY, policy_state: APPROVED_CAPABILITY}
+          RESERVE_ID_CANDIDATE: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
+          COMMIT_NEW_ID_REGISTRATION: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_PROTOCOL_PENDING}
+          COMMIT_REGISTERED_ID_CHANGE: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_CONFLICT}
+          REWRITE_DEPENDENT_ID_REFERENCES: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
+          REGISTER_ID_ALIAS: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
+          REASSIGN_REGISTERED_ID: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
+          REUSE_HISTORICAL_ID_FOR_OTHER_TARGET: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
+          RETIRE_REGISTERED_ID: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_POLICY_PENDING}
+          RECORD_ID_ISSUANCE_HISTORY: {effect: PERSISTENT_MUTATION, policy_state: UNASSIGNED_CONTRACT_PENDING}
+        responsibilities:
+          EXISTING_REGISTERED_ID:
+            trigger: ALREADY_HAS_REGISTERED_ID
+            required_permissions:
+              - READ_ID_STATE
+              - READ_REGISTERED_ID
+              - READ_ID_BINDING
+              - CHECK_LOGICAL_TARGET_EQUALITY
+              - CHECK_ID_PRESERVATION
+              - EMIT_VALIDATION_RESULT
+            persistent_id_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
+          NEW_USER_SELECTED_ID_COLLISION:
+            trigger: NEW_USER_SPECIFIED_ID_ALREADY_OCCUPIED
+            required_permissions:
+              - READ_ID_STATE
+              - ACCEPT_USER_ID_CANDIDATE
+              - CHECK_CANDIDATE_VALIDITY
+              - READ_COLLISION_OCCUPANCY
+              - READ_OCCUPANT_BINDING
+              - CHECK_COLLISION
+              - CHECK_LOGICAL_TARGET_EQUALITY
+              - CLASSIFY_COLLISION_TYPE
+              - PROPOSE_ALTERNATIVE_CANDIDATE
+              - EMIT_COLLISION_RESULT
+              - PREVENT_UNVERIFIED_NEW_REGISTRATION
+            persistent_id_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
+          REGISTERED_ID_CHANGE_COLLISION:
+            trigger: EXISTING_ID_CHANGE_TARGET_ALREADY_OCCUPIED
+            required_permissions:
+              - READ_ID_STATE
+              - READ_REGISTERED_ID
+              - READ_ID_BINDING
+              - ACCEPT_ID_CHANGE_REQUEST
+              - READ_COLLISION_OCCUPANCY
+              - READ_OCCUPANT_BINDING
+              - READ_ID_REFERENCES
+              - CHECK_COLLISION
+              - CHECK_LOGICAL_TARGET_EQUALITY
+              - CLASSIFY_COLLISION_TYPE
+              - CHECK_RENAME_AUTHORITY
+              - CHECK_REFERENCE_IMPACT
+              - EMIT_COLLISION_RESULT
+              - PREVENT_UNVERIFIED_RENAME
+            persistent_id_mutation: NOT_AUTHORIZED_BY_THIS_DECISION
+        unused_permission_ids:
+          - READ_ID_ISSUANCE_HISTORY
+          - READ_ID_RESERVATION
+          - GENERATE_ID_CANDIDATE
+          - REPLACE_UNREGISTERED_CANDIDATE
+          - CHECK_ID_REUSE_HISTORY
+          - CHECK_ID_REUSE_ELIGIBILITY
+          - CHECK_ID_UNIQUENESS_SCOPE
+          - RESERVE_ID_CANDIDATE
+          - COMMIT_NEW_ID_REGISTRATION
+          - COMMIT_REGISTERED_ID_CHANGE
+          - REWRITE_DEPENDENT_ID_REFERENCES
+          - REGISTER_ID_ALIAS
+          - REASSIGN_REGISTERED_ID
+          - REUSE_HISTORICAL_ID_FOR_OTHER_TARGET
+          - RETIRE_REGISTERED_ID
+          - RECORD_ID_ISSUANCE_HISTORY
+        outstanding_authority_decisions:
+          registered_id_change: UNRESOLVED_EXISTING_POLICY_CONFLICT
+          cross_target_id_reuse: UNRESOLVED_USER_DECISION
+          id_uniqueness_scope: UNRESOLVED_USER_DECISION
+          id_generation_format: UNRESOLVED_USER_DECISION
+          id_history_contract: UNRESOLVED_USER_DECISION
+          collision_resolution_and_verification_protocol: UNRESOLVED_USER_DECISION
+        implementation: NOT_AUTHORIZED_YET
       identifier_generated_from_path_or_version: FORBIDDEN
       identifier_parsing_for_semantic_inference: FORBIDDEN
       id_preserved_when:
