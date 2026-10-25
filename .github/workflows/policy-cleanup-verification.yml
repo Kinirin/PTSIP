@@ -28,18 +28,7 @@ jobs:
           go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./internal/machine -run '^TestCleanup(IDValidationRejectsNonPolicyIdentity|ApplyRequiresExpectedHeadBeforeGitAccess|MissingSubstatusFailsClosed)$'
       - name: Verify current policy verification exclusions
         run: |
-          go -C .ptsip/engine/developer test ./schema_check -run '^TestPolicyVerificationExclusions      - name: Cleanup command smoke test (non-destructive)
-        shell: bash
-        run: |
-          go -C developer/automation build -tags grammar_subset,grammar_subset_python -o "$RUNNER_TEMP/ptsip-dev" ./cmd/ptsip-dev
-          set +e
-          "$RUNNER_TEMP/ptsip-dev" --repository . policy-cleanup inspect MPD-VERI-0006 > "$RUNNER_TEMP/cleanup-inspection.json"
-          result=$?
-          set -e
-          cat "$RUNNER_TEMP/cleanup-inspection.json"
-          test "$result" -eq 2
-          python -c 'import json, os; p=json.load(open(os.environ["RUNNER_TEMP"]+"/cleanup-inspection.json")); assert p["status"] == "BLOCKED" and p["blockers"]'
- -count=1
+          go -C .ptsip/engine/developer test ./schema_check -run '^TestPolicyVerificationExclusions$' -count=1
       - name: Cleanup command smoke test (non-destructive)
         shell: bash
         run: |
