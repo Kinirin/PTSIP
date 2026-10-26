@@ -13,33 +13,33 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
-var sourcePackageVersionPattern = regexp.MustCompile(\`^((?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*))(?:-((?:a|b|rc)[1-9][0-9]*))?$\`)
-var sourceEngineVersionPattern = regexp.MustCompile(\`^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)$\`)
-var sourceToolVersionPattern = regexp.MustCompile(\`^T\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:\.(?:a|b|rc)[1-9][0-9]*)?$\`)
-var sourceProfileVersionPattern = regexp.MustCompile(\`^pp\.[0-9]+\.[0-9]+$\`)
-var tomlSectionPattern = regexp.MustCompile(\`^[ \t]*\[([^\[\]\r\n]+)\][ \t]*(?:#.*)?$\`)
+var sourcePackageVersionPattern = regexp.MustCompile(`^((?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*))(?:-((?:a|b|rc)[1-9][0-9]*))?$`)
+var sourceEngineVersionPattern = regexp.MustCompile(`^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)$`)
+var sourceToolVersionPattern = regexp.MustCompile(`^T\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:\.(?:a|b|rc)[1-9][0-9]*)?$`)
+var sourceProfileVersionPattern = regexp.MustCompile(`^pp\.[0-9]+\.[0-9]+$`)
+var tomlSectionPattern = regexp.MustCompile(`^[ \t]*\[([^\[\]\r\n]+)\][ \t]*(?:#.*)?$`)
 
 var officialEngineIDs = []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"}
 
 type VersionSource struct {
-	PackageVersion string            \`toml:"package_version" json:"package_version"\`
-	ToolVersion    string            \`toml:"tool_version" json:"tool_version"\`
-	ProfileVersion string            \`toml:"profile_version" json:"profile_version"\`
-	Engines        map[string]string \`toml:"engines" json:"engines"\`
+	PackageVersion string            `toml:"package_version" json:"package_version"`
+	ToolVersion    string            `toml:"tool_version" json:"tool_version"`
+	ProfileVersion string            `toml:"profile_version" json:"profile_version"`
+	Engines        map[string]string `toml:"engines" json:"engines"`
 }
 
 type PackageVersionSyncResult struct {
-	Source         string            \`json:"source"\`
-	Target         string            \`json:"target"\`
-	Version        string            \`json:"version"\`
-	Previous       string            \`json:"previous_version"\`
-	ToolVersion    string            \`json:"tool_version"\`
-	ProfileVersion string            \`json:"profile_version"\`
-	Engines        map[string]string \`json:"engines"\`
-	ChangedFiles   []string          \`json:"changed_files"\`
-	CheckedFiles   []string          \`json:"checked_files"\`
-	Changed        bool              \`json:"changed"\`
-	Status         string            \`json:"status"\`
+	Source         string            `json:"source"`
+	Target         string            `json:"target"`
+	Version        string            `json:"version"`
+	Previous       string            `json:"previous_version"`
+	ToolVersion    string            `json:"tool_version"`
+	ProfileVersion string            `json:"profile_version"`
+	Engines        map[string]string `json:"engines"`
+	ChangedFiles   []string          `json:"changed_files"`
+	CheckedFiles   []string          `json:"checked_files"`
+	Changed        bool              `json:"changed"`
+	Status         string            `json:"status"`
 }
 
 func ReadSourceVersions(root string) (VersionSource, error) {
@@ -98,11 +98,11 @@ func tomlProjectionLine(original, key, replacement string) (string, string, bool
 	} else if strings.HasSuffix(line, "\n") {
 		newline, line = "\n", strings.TrimSuffix(line, "\n")
 	}
-	start := regexp.MustCompile(\`^[ \t]*\` + regexp.QuoteMeta(key) + \`[ \t]*=\`)
+	start := regexp.MustCompile(`^[ \t]*` + regexp.QuoteMeta(key) + `[ \t]*=`)
 	if !start.MatchString(line) {
 		return original, "", false, nil
 	}
-	pattern := regexp.MustCompile(\`^([ \t]*\` + regexp.QuoteMeta(key) + \`[ \t]*=[ \t]*)("[^"\r\n]*"|[0-9]+)([ \t]*(?:#.*)?)$\`)
+	pattern := regexp.MustCompile(`^([ \t]*` + regexp.QuoteMeta(key) + `[ \t]*=[ \t]*)("[^"\r\n]*"|[0-9]+)([ \t]*(?:#.*)?)$`)
 	parts := pattern.FindStringSubmatch(line)
 	if len(parts) != 4 {
 		return "", "", false, fmt.Errorf("unsupported TOML declaration for %s", key)
@@ -189,9 +189,9 @@ func ProjectVersionComposition(data []byte, source VersionSource) ([]byte, strin
 func projectEngineIndex(data []byte, source VersionSource) ([]byte, error) {
 	var doc struct {
 		Entries []struct {
-			Kind string \`json:"kind"\`
-			Version string \`json:"version"\`
-		} \`json:"official_engine_entries"\`
+			Kind string `json:"kind"`
+			Version string `json:"version"`
+		} `json:"official_engine_entries"`
 	}
 	if err := json.Unmarshal(data, &doc); err != nil { return nil, err }
 	if len(doc.Entries) != len(source.Engines) {
@@ -225,7 +225,7 @@ func projectEngineIndex(data []byte, source VersionSource) ([]byte, error) {
 func projectSingleLine(data []byte, field, version string) ([]byte, error) {
 	// Only an exact top-level scalar declaration can be projected; history
 	// entries and other version semantics are intentionally untouched.
-	re := regexp.MustCompile(\`(?m)^(\` + regexp.QuoteMeta(field) + \`:[ \t]*)([^\r\n#]*)([ \t]*(?:#.*)?)$\`)
+	re := regexp.MustCompile(`(?m)^(` + regexp.QuoteMeta(field) + `:[ \t]*)([^\r\n#]*)([ \t]*(?:#.*)?)$`)
 	matches := re.FindAllSubmatchIndex(data, -1)
 	if len(matches) != 1 {
 		return nil, fmt.Errorf("missing or ambiguous %s YAML projection", field)
