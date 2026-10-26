@@ -132,9 +132,9 @@ func TestVersionSyncPreservesCRLFAndSupportsStableRelease(t *testing.T) {
 	}
 }
 
- // TestCTRLAdmissionRequiresCanonicalVersionProjection exercises the required
+ // TestPublicationEvidenceAuthorityRequiresCanonicalVersionProjection exercises the required
  // read-only version gate used by release admission on the canonical source.
-func TestCTRLAdmissionRequiresCanonicalVersionProjection(t *testing.T) {
+func TestPublicationEvidenceAuthorityRequiresCanonicalVersionProjection(t *testing.T) {
 	root := writeVersionFixture(t, "0.3.8-b7\n", versionSyncFixture)
 	if _, err := SyncPackageVersion(root, true); err == nil {
 		t.Fatal("release admission must reject a stale Package version projection")
