@@ -85,7 +85,7 @@ func TestCanonicalDeveloperContractRoutes(t *testing.T) {
     for _, family := range vocab.Enum {
         entry, ok := routing.Routes["PTSIP_DEVELOPER_POLICY"][family]
         if !ok { t.Fatalf("missing declared family route: %s", family) }
-        for _, key := range []string{"public", "authority", "rules"} {
+        for _, key := range []string{"public", "rules"} {
             if err := checkCanonicalContractFile(root, entry.SchemaRefs[key]); err != nil {
                 t.Fatalf("%s/%s: %v", family, key, err)
             }
@@ -119,10 +119,6 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
         ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
         ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
         ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
-        ".ptsip/contracts/policy/authority/Authority_Major_Category.json",
-        ".ptsip/contracts/policy/authority/Authority_Minor_Category.json",
-        ".ptsip/contracts/policy/authority/Authority_Micro_Category.json",
-        ".ptsip/contracts/policy/authority/abortively/v1_Authority_Major_Category.json",
         ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
         ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_DRAFT.json",
         ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",

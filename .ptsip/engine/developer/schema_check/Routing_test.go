@@ -18,10 +18,10 @@ func TestPolicyRoutingContractInputs(t *testing.T) {
     root := routingRepositoryRoot(t)
     doc, schema, resources, registered, refs, sources, err := loadRoutingInputs(root)
     if err != nil { t.Fatal(err) }
-    if routingString(doc["schema_version"]) != "ptsip-policy-routing/v2" { t.Fatal("routing version mismatch") }
-    if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v2" { t.Fatal("schema ID mismatch") }
+    if routingString(doc["schema_version"]) != "ptsip-policy-routing/v3" { t.Fatal("routing version mismatch") }
+    if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v3" { t.Fatal("schema ID mismatch") }
     if len(resources) != 2 || len(sources) != 2 { t.Fatalf("missing identity sources: %d/%d",len(resources),len(sources)) }
-    if registered != 14 || refs != 3*registered { t.Fatalf("route coverage or schema reference count: %d/%d",registered,refs) }
+    if registered != 14 || refs != 2*registered { t.Fatalf("route coverage or schema reference count: %d/%d",registered,refs) }
 }
 
 func TestPolicyRoutingCannotUseRetiredOrUnsafePaths(t *testing.T) {

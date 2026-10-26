@@ -232,7 +232,7 @@ func loadContracts(root string) (map[string]any, map[string]bool, map[string]boo
 
 func inspectReferences(root string, selected map[string]any) error {
 	refs := asObject(selected["schema_refs"])
-	for _, field := range []string{"public", "authority", "rules"} {
+	for _, field := range []string{"public", "rules"} {
 		path := asString(refs[field])
 		// A referenced schema must exist and compile, but it need not accept
 		// an empty policy instance. No recursive discovery or activation here.

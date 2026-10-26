@@ -51,7 +51,7 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
  if len(routing.Routes) == 0 { t.Fatal("approved routing registry has no routes") }
  for kind, families := range routing.Routes {
   for family, route := range families {
-   for _, key := range []string{"public", "authority", "rules"} {
+   for _, key := range []string{"public", "rules"} {
     relative := route.SchemaRefs[key]
     if !strings.HasPrefix(relative, ".ptsip/contracts/schemas/") ||
      filepath.ToSlash(filepath.Clean(filepath.FromSlash(relative))) != relative ||

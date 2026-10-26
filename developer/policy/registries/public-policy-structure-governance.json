@@ -5,12 +5,14 @@
   "approval_ref": "developer/policy/approvals/MPA-20261015-PUBLIC-POLICY-STRUCTURE-RECONCILE.yaml",
   "policy_authority": {
     "source": "PROJECT_OWNER_EXPLICIT_RECONCILE",
-    "normative_for_new_public_policy_structure": true,
+    "normative_for_new_public_policy_structure": false,
     "self_contained": true,
     "previous_schema_layout_registry_dependency": "FORBIDDEN",
     "previous_layout_and_format_rules": "HISTORICAL_REFERENCE_ONLY_FOR_NEW_STRUCTURE",
     "archived_provenance_preservation": "REQUIRED",
-    "current_status_policy_ref": "developer/policy/registries/lifecycle-status-contract-authority.json"
+    "current_status_policy_ref": "developer/policy/registries/lifecycle-status-contract-authority.json",
+    "superseded_by_policy": "developer/policy/GOV/MPD-GOV-0001.yaml",
+    "supersession_decision": "KEEP_LATEST_COMPILE_SEALED_RBAC_INDEPENDENT_CONTRACT_TRANSITION"
   },
   "applicability": {
     "target_policy_classes": [

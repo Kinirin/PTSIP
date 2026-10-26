@@ -78,7 +78,7 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
     if err != nil { return nil, nil, nil, 0, 0, nil, err }
     schema, err := routingFile(root, schemaPath, ".ptsip/contracts/policy/routing/")
     if err != nil { return nil, nil, nil, 0, 0, nil, err }
-    if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v2" {
+    if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v3" {
         return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTING_SCHEMA_ID_MISMATCH")
     }
     sources := routingMembers(routing["identity_sources"])
@@ -122,7 +122,7 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
             if kind == "PTSIP_SUPPORT_FEATURE" { prefix = "src/policy/" }
             if output != prefix+family { return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTE_DIRECTORY_MISMATCH: %s/%s", kind, family) }
             schemaRefs := routingMembers(selected["schema_refs"])
-            for _, key := range []string{"public", "authority", "rules"} {
+            for _, key := range []string{"public", "rules"} {
                 target := routingString(schemaRefs[key])
                 doc, err := routingFile(root, target, ".ptsip/contracts/schemas/")
                 if err != nil { return nil, nil, nil, 0, 0, nil, err }

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:policy-routing:v2",
+  "$id": "urn:ptsip:contract:policy-routing:v3",
   "title": "PTSIP Policy Routing Contract",
   "description": "Validates explicit routes from policy_kind and root_family to policy output directories and schema references.",
   "type": "object",
@@ -12,7 +12,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "ptsip-policy-routing/v2"
+      "const": "ptsip-policy-routing/v3"
     },
     "routes": {
       "type": "object",
@@ -84,14 +84,10 @@
           "additionalProperties": false,
           "required": [
             "public",
-            "authority",
             "rules"
           ],
           "properties": {
             "public": {
-              "$ref": "#/$defs/schemaReference"
-            },
-            "authority": {
               "$ref": "#/$defs/schemaReference"
             },
             "rules": {

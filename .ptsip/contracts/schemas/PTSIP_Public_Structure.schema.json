@@ -1,12 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:public-structure:v4",
+  "$id": "urn:ptsip:policy:public-structure:v5",
   "title": "PTSIP Policy Public Structure",
   "type": "object",
   "required": [
     "Policy_Identity",
     "Policy_Status",
-    "Authority",
     "Policy_Rules"
   ],
   "properties": {
@@ -15,9 +14,6 @@
     },
     "Policy_Status": {
       "$ref": "urn:ptsip:policy:Status:v1"
-    },
-    "Authority": {
-      "$ref": "urn:ptsip:policy:Policy_Authority:v3"
     },
     "Policy_Rules": {
       "$ref": "urn:ptsip:policy:Public_Structure_Rules:v1"

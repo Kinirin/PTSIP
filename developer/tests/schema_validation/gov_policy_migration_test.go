@@ -301,8 +301,15 @@ func TestGOVAuthorityFieldOwnership(t *testing.T) {
     if _, obsolete := props["authority_Identity"]; obsolete { t.Fatal("obsolete nested authority_Identity") }
     if _, ok := props["authority_id"].(map[string]any); !ok { t.Fatal("missing authority_id schema") }
     parent := govJSON(t, ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json")
-    if govObject(t, govObject(t, parent["properties"], "public properties")["Authority"], "Authority")["$ref"] != authority["$id"] {
-        t.Fatal("legacy public schema uses a different Authority contract")
+    if parent["$id"] != "urn:ptsip:policy:public-structure:v5" {
+        t.Fatal("shared public schema version not advanced after Authority removal")
+    }
+    parentProps := govObject(t, parent["properties"], "shared public properties")
+    if _, found := parentProps["Authority"]; found {
+        t.Fatal("retired Authority must not be a shared public schema property")
+    }
+    for _, item := range govArray(t, parent["required"], "shared required") {
+        if item == "Authority" { t.Fatal("retired Authority must not be required in shared public schema") }
     }
 }
 
