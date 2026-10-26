@@ -97,11 +97,12 @@
       "cargo_manifest_ref": "src/ptsip/engines/discovery/Cargo.toml",
       "implementation_role": "OFFICIAL_ENGINE_RUNTIME_IMPLEMENTATION",
       "runtime_language": "RUST",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "operations": [
         "discovery.resolve",
         "discovery.verify-registry",
-        "discovery.verify-invocation"
+        "discovery.verify-invocation",
+        "discovery.check-environment"
       ],
       "capability_id": "urn:uuid:6cc343f5-a3af-404e-a22f-8d57f861bb97",
       "previous_candidate_contract_ref": "src/ptsip/engines/discovery/contracts/2.0.0.json"
@@ -174,5 +175,18 @@
     "legacy_public_api_retirement": false,
     "implicit_owner_transfer": false,
     "unsupported_unverified_required_contract": "FAIL_CLOSED"
+  },
+  "consumer_diagnostics": {
+    "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+    "operation_id": "discovery.check-environment",
+    "contract_ref": "src/ptsip/engines/discovery/contract.json",
+    "cli": [
+      "ptsip",
+      "engines",
+      "compatibility",
+      "--json"
+    ],
+    "scope": "SEVEN_OFFICIAL_ENGINES_ONLY",
+    "execution_authorized": false
   }
 }

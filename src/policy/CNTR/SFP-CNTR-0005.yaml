@@ -1803,6 +1803,33 @@
         "existing_vpms_contract_ids": "UNCHANGED",
         "cli_scope_policy": "SFP-CNTR-0007_UNCHANGED",
         "assure_conformance_policy": "SFP-ASSURE-0001_UNCHANGED"
+      },
+      "official_engine_environment_diagnostics": {
+        "decision": "USER_EXPLICIT_2026_10_26",
+        "scope": "SEVEN_OFFICIAL_ENGINES_ONLY",
+        "semantic_owner": "DISCOVERY",
+        "operation_id": "discovery.check-environment",
+        "cli": [
+          "ptsip",
+          "engines",
+          "compatibility",
+          "--json"
+        ],
+        "contract_ref": "src/ptsip/engines/discovery/contract.json",
+        "assessment_dimensions": [
+          "INSTALLATION_INTEGRITY",
+          "CAPABILITY_AND_TRANSPORT_CONTRACT_AGREEMENT",
+          "DECLARED_DEPENDENCY_COMPATIBILITY_EVIDENCE"
+        ],
+        "absent_relationship_or_evidence": "UNVERIFIED",
+        "version_mismatch": "INCOMPATIBLE",
+        "local_source_agreement_is_release_attestation": false,
+        "registration_or_diagnosis_grants_execution_permission": false,
+        "planning_and_storage_existing_judgment_ownership": "PRESERVED",
+        "agent_operation_catalog": "CURRENT_INSTALLED_CONTRACTS_WITH_TYPED_INPUT_AND_REQUEST_TEMPLATES",
+        "external_or_user_defined_engines": "OUT_OF_SCOPE",
+        "runtime_implementation": "INDEPENDENT_RUST_DISCOVERY_PYTHON_CLI_TRANSPORT_ADAPTER_ONLY",
+        "publication_authorized": false
       }
     }
   },

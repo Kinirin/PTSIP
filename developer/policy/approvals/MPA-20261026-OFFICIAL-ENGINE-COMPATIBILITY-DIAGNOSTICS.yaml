@@ -1,0 +1,32 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_SUPPORT_FEATURE
+approval:
+  approval_id: MPA-20261026-OFFICIAL-ENGINE-COMPATIBILITY-DIAGNOSTICS
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner selected only the seven official PTSIP engines, then approved a new
+    Discovery diagnosis contract and ptsip engines compatibility --json entry.
+    Report installation integrity, contract/transport agreement and declared
+    dependency evidence separately. Missing evidence remains unverified.
+  approval_scope: SCOPED_IMPLEMENTATION
+  policy_refs: [SFP-CNTR-0005, SFP-ARCH-0004]
+  contract_ref: src/ptsip/engines/discovery/contract.json
+  operation_id: discovery.check-environment
+  implementation_language: RUST
+  python_role: EXISTING_CLI_TRANSPORT_ADAPTER_ONLY
+  preserved_boundaries:
+    official_engines: 7
+    planning_and_storage_judgment_ownership: PRESERVED
+    external_and_user_defined_engines: OUT_OF_SCOPE
+    automatic_activation_or_permission_grant: FORBIDDEN
+    developer_retired_validator_reactivation: FORBIDDEN
+    bootstrap_integrated_engine_schema: UNCHANGED
+    publication_authorization: NOT_GRANTED_BY_THIS_IMPLEMENTATION_APPROVAL
+  source_version_projections:
+    discovery_engine: 0.3.3
+    discovery_contract: 3.1.0
+    tool: T.0.3.8.b2
+    reason: UNRELEASED_CHANGED_COMPONENT_IDENTITIES_PRESERVE_PUBLISHED_B6
+  recorded_at: '2026-10-26'

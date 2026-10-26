@@ -3,10 +3,14 @@ use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
+mod environment;
 mod invocation;
 mod registry;
 mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "discovery.check-environment" {
+        return environment::assess(input);
+    }
     if operation == "discovery.verify-invocation" {
         return invocation::verify(input);
     }
@@ -40,6 +44,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+        "discovery.check-environment" => "ASSESS_INSTALLED_OFFICIAL_SEVEN_ENGINE_SOURCE_TRANSPORT_AND_DECLARED_DEPENDENCY_EVIDENCE_WITHOUT_ACTIVATION",
         "discovery.verify-invocation" => {
             "VERIFY_REGISTERED_CURRENT_ENGINE_BINDING_REQUEST_AND_NATIVE_ARTIFACT_WITHOUT_GRANT"
         }

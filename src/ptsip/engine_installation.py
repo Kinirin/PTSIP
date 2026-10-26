@@ -12,6 +12,7 @@ import platform
 import re
 import sys
 import sysconfig
+import subprocess
 from importlib import metadata, resources
 from pathlib import Path
 from typing import Any
@@ -190,3 +191,65 @@ def inspect(
 def emit_status() -> tuple[dict[str, Any], int]:
     payload = inspect()
     return payload, 0 if payload["all_installed"] else 4
+
+
+def emit_compatibility() -> tuple[dict[str, Any], int]:
+    """Locate the selected installation and delegate diagnostics to native Discovery.
+
+    This adapter makes no compatibility judgment. Only its own launcher artifact
+    is checked here before executing the bundled, versioned native operation.
+    """
+    try:
+        distribution = metadata.distribution("PTSIP")
+        metadata_files = [
+            f for f in distribution.files or ()
+            if str(f).replace("\\", "/").endswith(".dist-info/METADATA")
+        ]
+        if len(metadata_files) != 1:
+            raise ValueError("A complete installed PTSIP wheel is required")
+        distribution_root = Path(distribution.locate_file(metadata_files[0])).parent
+        bundle = json.loads((distribution_root / "ptsip-engines.json").read_text(encoding="utf-8"))
+        package_root = Path(str(resources.files("ptsip")))
+        scripts_root = Path(sysconfig.get_path("scripts"))
+        suffix = ".exe" if sys.platform == "win32" else ""
+        executable = scripts_root / ("ptsip-engine-discovery" + suffix)
+        origin = bundle["engines"]["discovery"]
+        if executable.is_symlink() or not executable.is_file() or _sha256(executable) != origin["binary_sha256"]:
+            raise ValueError("Bundled Discovery executable is missing or its hash differs")
+        manifest = _load("discovery/manifest.json")
+        contract = _load("discovery/contract.json")
+        request = {
+            "engine_id": manifest["engine_id"],
+            "engine_version": manifest["implementation_version"],
+            "contract_id": contract["contract_id"], "contract_version": contract["version"],
+            "operation_id": "discovery.check-environment",
+            "input": {"package_root": str(package_root), "scripts_root": str(scripts_root),
+                      "distribution_root": str(distribution_root)},
+        }
+        completed = subprocess.run(
+            [str(executable)], input=json.dumps(request), capture_output=True,
+            encoding="utf-8", timeout=30, check=False,
+        )
+        result = json.loads(completed.stdout)
+        if not isinstance(result, dict):
+            raise ValueError("Native Discovery returned an invalid response envelope")
+        if completed.returncode != 0 or result.get("status") != "PASS":
+            raise ValueError(str(result.get("error", "Native Discovery diagnosis failed")))
+        if result.get("normative_authority") is not False or result.get("execution_authorized") is not False:
+            raise ValueError("Native Discovery response expanded diagnostic authority")
+        for field in ("engine_id", "engine_version", "contract_id", "contract_version"):
+            if result.get(field) != request[field]:
+                raise ValueError("Native Discovery response identity differs")
+        output = result["output"]
+        if not isinstance(output, dict) or output.get("schema_version") != "ptsip-official-engine-compatibility/v1":
+            raise ValueError("Native Discovery returned an unsupported diagnostic contract")
+        from .constants import TOOL_VERSION
+        output["runtime"] = {"python_executable": sys.executable, "tool_version": TOOL_VERSION}
+        return output, 0 if output["status"] == "VERIFIED" else 4
+    except (OSError, ValueError, KeyError, TypeError, metadata.PackageNotFoundError, subprocess.TimeoutExpired) as exc:
+        return {
+            "schema_version": "ptsip-official-engine-compatibility-error/v1",
+            "status": "UNVERIFIED", "reason": str(exc),
+            "required_action": "Use a complete PTSIP installation containing the current native Discovery diagnostic contract",
+            "execution_authorized": False, "pairwise_compatibility_guaranteed": False,
+        }, 4

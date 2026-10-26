@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:6cc343f5-a3af-404e-a22f-8d57f861bb97",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
   "semantic_owner": "DISCOVERY",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -243,7 +243,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
@@ -468,7 +468,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
@@ -599,11 +599,332 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.0.0",
+        "contract_version": "3.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
         "algorithm": "VERIFY_REGISTERED_CURRENT_ENGINE_BINDING_REQUEST_AND_NATIVE_ARTIFACT_WITHOUT_GRANT",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "discovery.check-environment",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "package_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "distribution_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scripts_root": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "package_root",
+          "distribution_root",
+          "scripts_root"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "schema_version": {
+            "const": "ptsip-official-engine-compatibility/v1"
+          },
+          "scope": {
+            "const": "SEVEN_OFFICIAL_ENGINES_DECLARED_RELATIONSHIPS_ONLY"
+          },
+          "status": {
+            "enum": [
+              "VERIFIED",
+              "UNVERIFIED",
+              "INCOMPATIBLE"
+            ]
+          },
+          "package_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "host_target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "package_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scripts_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "engine_count": {
+            "const": 7
+          },
+          "installation_integrity": {
+            "enum": [
+              "VERIFIED",
+              "UNVERIFIED"
+            ]
+          },
+          "entries": {
+            "type": "array",
+            "minItems": 7,
+            "maxItems": 7,
+            "items": {
+              "type": "object",
+              "properties": {
+                "engine": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "engine_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "contract_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "contract_version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "entrypoint": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "installation_integrity": {
+                  "enum": [
+                    "VERIFIED",
+                    "UNVERIFIED",
+                    "FAILED"
+                  ]
+                },
+                "contract_agreement": {
+                  "enum": [
+                    "VERIFIED",
+                    "UNVERIFIED",
+                    "FAILED"
+                  ]
+                },
+                "transport_agreement": {
+                  "enum": [
+                    "VERIFIED",
+                    "UNVERIFIED",
+                    "FAILED"
+                  ]
+                },
+                "dependency_compatibility": {
+                  "enum": [
+                    "VERIFIED",
+                    "UNVERIFIED",
+                    "INCOMPATIBLE"
+                  ]
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "operations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "operation_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "required_inputs": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "input_schema": {
+                        "type": "object"
+                      },
+                      "output_schema": {
+                        "type": "object"
+                      },
+                      "request_template": {
+                        "type": "object"
+                      },
+                      "template_is_executable_request": {
+                        "const": false
+                      },
+                      "side_effects": {
+                        "type": "array"
+                      },
+                      "declared_permission_requirements": {
+                        "type": "array"
+                      },
+                      "runtime_probed": {
+                        "const": false
+                      }
+                    },
+                    "required": [
+                      "operation_id",
+                      "required_inputs",
+                      "input_schema",
+                      "output_schema",
+                      "request_template",
+                      "template_is_executable_request",
+                      "side_effects",
+                      "declared_permission_requirements",
+                      "runtime_probed"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "engine",
+                "engine_id",
+                "installation_integrity",
+                "contract_agreement",
+                "transport_agreement",
+                "dependency_compatibility",
+                "issues",
+                "operations"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "consumer_engine_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "provider_engine_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "capability_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "status": {
+                  "enum": [
+                    "VERIFIED",
+                    "UNVERIFIED",
+                    "INCOMPATIBLE"
+                  ]
+                },
+                "reason": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "consumer_engine_id",
+                "provider_engine_id",
+                "capability_id",
+                "status",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "pairwise_compatibility_guaranteed": {
+            "const": false
+          },
+          "release_attested": {
+            "const": false
+          },
+          "execution_authorized": {
+            "const": false
+          },
+          "evidence_authentication": {
+            "const": "LOCAL_SOURCE_AGREEMENT_ONLY"
+          },
+          "runtime": {
+            "type": "object",
+            "properties": {
+              "python_executable": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tool_version": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "python_executable",
+              "tool_version"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "schema_version",
+          "scope",
+          "status",
+          "package_version",
+          "host_target",
+          "package_root",
+          "scripts_root",
+          "engine_count",
+          "installation_integrity",
+          "entries",
+          "relationships",
+          "pairwise_compatibility_guaranteed",
+          "release_attested",
+          "execution_authorized",
+          "evidence_authentication"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXPLICIT_SELECTED_INSTALLATION_ROOTS",
+        "OFFICIAL_SEVEN_ENGINE_IDENTITY_SET",
+        "NO_PATH_SEARCH_OR_EXTERNAL_ENGINE_PROBING"
+      ],
+      "postconditions": [
+        "INSTALLATION_CONTRACT_TRANSPORT_AND_DEPENDENCY_EVIDENCE_REPORTED_SEPARATELY",
+        "MISSING_RELATIONSHIPS_OR_EVIDENCE_ARE_UNVERIFIED",
+        "NO_ACTIVATION_OR_RELEASE_ATTESTATION_FROM_LOCAL_AGREEMENT"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_input_or_bundle": "FAIL_CLOSED_STRUCTURED_ERROR",
+        "per_engine_failure": "REPORT_AFFECTED_ENGINE_WITHOUT_SUPPRESSING_OTHER_ROWS",
+        "missing_compatibility_evidence": "UNVERIFIED_NEVER_PASS",
+        "known_dependency_version_mismatch": "INCOMPATIBLE"
+      },
+      "verification_evidence": {
+        "required": "REAL_INSTALLED_PACKAGE_AND_NEGATIVE_TAMPER_MISSING_VERSION_TRANSPORT_EVIDENCE_TESTS",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.1.0",
+        "legacy_public_api": "PREVIOUS_OPERATIONS_PRESERVED_NEW_VERSION_EXPLICITLY_BOUND",
+        "full_pairwise_guarantee": false
+      },
+      "machine_semantics": {
+        "algorithm": "ASSESS_INSTALLED_OFFICIAL_SEVEN_ENGINE_SOURCE_TRANSPORT_AND_DECLARED_DEPENDENCY_EVIDENCE_WITHOUT_ACTIVATION",
         "normative_authority_from_runtime_result": false
       }
     }

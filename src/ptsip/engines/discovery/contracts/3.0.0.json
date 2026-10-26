@@ -1,0 +1,611 @@
+{
+  "contract_id": "urn:uuid:6cc343f5-a3af-404e-a22f-8d57f861bb97",
+  "version": "3.0.0",
+  "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+  "semantic_owner": "DISCOVERY",
+  "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+  "normative_language": "JSON",
+  "execution_permission_from_declaration": false,
+  "operations": [
+    {
+      "operation_id": "discovery.resolve",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "index_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_revision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "engine_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "capability_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contract_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "root",
+          "index_ref",
+          "expected_revision",
+          "engine_id",
+          "capability_id",
+          "version",
+          "contract_id"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "source_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "registered_engines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "engine_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "origin": {
+                  "enum": [
+                    "OFFICIAL",
+                    "CONSUMER",
+                    "EXTERNAL"
+                  ]
+                },
+                "implementation_version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "capability_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "contract_version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "entrypoint": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "registration_eligible": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              },
+              "required": [
+                "engine_id",
+                "origin",
+                "implementation_version",
+                "capability_id",
+                "contract_version",
+                "entrypoint",
+                "registration_eligible",
+                "execution_authorized"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "selected": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "engine_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "origin": {
+                    "enum": [
+                      "OFFICIAL",
+                      "CONSUMER",
+                      "EXTERNAL"
+                    ]
+                  },
+                  "implementation_version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "capability_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "contract_version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "entrypoint": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  "registration_eligible": {
+                    "const": true
+                  },
+                  "execution_authorized": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "engine_id",
+                  "origin",
+                  "implementation_version",
+                  "capability_id",
+                  "contract_version",
+                  "entrypoint",
+                  "registration_eligible",
+                  "execution_authorized"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "derived_authority": {
+            "const": false
+          },
+          "owner_legitimacy_asserted": {
+            "const": false
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "source_revision",
+          "registered_engines",
+          "source_refs",
+          "selected",
+          "derived_authority",
+          "owner_legitimacy_asserted",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "OWNER_ROOT_EXPLICITLY_SELECTED_BY_CALLER",
+        "CURRENT_SOURCE_AND_REQUIRED_BINDINGS_MACHINE_VERIFIED"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_THEN_EXACT_REGISTERED_CAPABILITY",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "discovery.verify-registry",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "index_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_revision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "root",
+          "index_ref",
+          "expected_revision"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "source_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "registered_engines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "engine_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "origin": {
+                  "enum": [
+                    "OFFICIAL",
+                    "CONSUMER",
+                    "EXTERNAL"
+                  ]
+                },
+                "implementation_version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "capability_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "contract_version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "entrypoint": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "registration_eligible": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              },
+              "required": [
+                "engine_id",
+                "origin",
+                "implementation_version",
+                "capability_id",
+                "contract_version",
+                "entrypoint",
+                "registration_eligible",
+                "execution_authorized"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "selected": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "engine_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "origin": {
+                    "enum": [
+                      "OFFICIAL",
+                      "CONSUMER",
+                      "EXTERNAL"
+                    ]
+                  },
+                  "implementation_version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "capability_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "contract_version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "entrypoint": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  "registration_eligible": {
+                    "const": true
+                  },
+                  "execution_authorized": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "engine_id",
+                  "origin",
+                  "implementation_version",
+                  "capability_id",
+                  "contract_version",
+                  "entrypoint",
+                  "registration_eligible",
+                  "execution_authorized"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "derived_authority": {
+            "const": false
+          },
+          "owner_legitimacy_asserted": {
+            "const": false
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "source_revision",
+          "registered_engines",
+          "source_refs",
+          "selected",
+          "derived_authority",
+          "owner_legitimacy_asserted",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "OWNER_ROOT_EXPLICITLY_SELECTED_BY_CALLER",
+        "CURRENT_SOURCE_AND_REQUIRED_BINDINGS_MACHINE_VERIFIED"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "unverified_mapping": "FAIL_CLOSED",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "CONTRACT_SCHEMA_NEGATIVE_CASES_AND_NATIVE_RUST_EXECUTION",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_WITHOUT_AUTHORIZATION",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "discovery.verify-invocation",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "registry_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "invocation_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "root",
+          "registry_ref",
+          "invocation_id"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "invocation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "engine_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "registry_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "invocation_id",
+          "engine_id",
+          "operation_id",
+          "request_sha256",
+          "artifact_sha256",
+          "registry_revision",
+          "source_refs",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_OWNER_ROOT",
+        "CURRENT_REGISTERED_SOURCE_REFERENCE_CLOSURE"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_or_stale_source": "FAIL_CLOSED",
+        "ambiguous_registration": "FAIL_CLOSED",
+        "missing_or_revoked_authority": "DENY_OR_STOP_AFFECTED_NATIVE_INVOCATION",
+        "attempt_failure_proves_no_effect": false
+      },
+      "verification_evidence": {
+        "required": "ISOLATED_NATIVE_POSITIVE_NEGATIVE_EXECUTION_AND_CURRENT_OWNER_SOURCE_EVIDENCE",
+        "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
+      },
+      "compatibility": {
+        "contract_version": "3.0.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_REGISTERED_CURRENT_ENGINE_BINDING_REQUEST_AND_NATIVE_ARTIFACT_WITHOUT_GRANT",
+        "normative_authority_from_runtime_result": false
+      }
+    }
+  ]
+}
