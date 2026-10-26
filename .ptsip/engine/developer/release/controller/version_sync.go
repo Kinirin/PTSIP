@@ -225,12 +225,12 @@ func projectEngineIndex(data []byte, source VersionSource) ([]byte, error) {
 func projectSingleLine(data []byte, field, version string) ([]byte, error) {
 	// Only an exact top-level scalar declaration can be projected; history
 	// entries and other version semantics are intentionally untouched.
-	re := regexp.MustCompile(`(?m)^(` + regexp.QuoteMeta(field) + `:[ \t]*)([^\r\n#]*)([ \t]*(?:#.*)?)$`)
+	re := regexp.MustCompile(`(?m)^(` + regexp.QuoteMeta(field) + `:[ \t]*)([^\r\n#]*?)([ \t]*(?:#[^\r\n]*)?)(\r?)$`)
 	matches := re.FindAllSubmatchIndex(data, -1)
 	if len(matches) != 1 {
 		return nil, fmt.Errorf("missing or ambiguous %s YAML projection", field)
 	}
-	return re.ReplaceAll(data, []byte("${1}"+version+"${3}")), nil
+	return re.ReplaceAll(data, []byte("${1}"+version+"${3}${4}")), nil
 }
 
 type versionProjection struct {
