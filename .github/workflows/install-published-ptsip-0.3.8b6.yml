@@ -1,0 +1,52 @@
+name: install-published-ptsip-0.3.8b6
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/install-published-ptsip-0.3.8b6.yml'
+permissions:
+  contents: read
+jobs:
+  install-published-package:
+    name: Install released PTSIP 0.3.8b6 in isolated repository environment
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install exact published PTSIP in separate repository-local venv
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-published-0.3.8b6
+          .venv-published-0.3.8b6/bin/python -m pip install \
+            --disable-pip-version-check --no-cache-dir \
+            --index-url https://pypi.org/simple \
+            'PTSIP==0.3.8b6'
+          .venv-published-0.3.8b6/bin/python -m pip check
+      - name: Verify installed public release, separate from editable source
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$GITHUB_WORKSPACE/.venv-published-0.3.8b6/bin/python" - <<'PY'
+          import importlib.metadata as metadata
+          import pathlib
+          import sys
+          assert metadata.version("PTSIP") == "0.3.8b6", metadata.version("PTSIP")
+          import ptsip
+          assert ".venv-published-0.3.8b6" in str(pathlib.Path(ptsip.__file__).resolve())
+          from ptsip.engine_installation import inspect
+          state = inspect()
+          assert state["all_installed"] is True, state
+          assert len(state["entries"]) == 7, state
+          assert state["distribution"] == "SINGLE_PROJECT_PLATFORM_BUNDLES_ONLY", state
+          print("PUBLIC_RELEASE_INSTALL_SUCCESS: PTSIP==0.3.8b6")
+          print("SOURCE: PyPI, not editable repository")
+          print("PYTHON:", sys.executable)
+          print("INSTALLED:", pathlib.Path(ptsip.__file__).resolve())
+          print("NATIVE_ENGINES: 7")
+          PY
