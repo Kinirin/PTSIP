@@ -198,4 +198,86 @@ func TestPublicationEvidenceAuthorityVersionProjectionSuite(t *testing.T) {
 	t.Run("invalid_source", TestVersionSyncRejectsInvalidOrMissingSource)
 	t.Run("invalid_target", TestVersionSyncRejectsAmbiguousProjectFields)
 	t.Run("crlf", TestVersionSyncPreservesCRLFAndSupportsStableRelease)
+	t.Run("yaml_crlf", TestVersionSyncYAMLCRLF)
+	t.Run("ambiguous_yaml_crlf", TestVersionSyncRejectsAmbiguousCRLFCurrent)
+}
+
+
+func TestVersionSyncYAMLCRLF(t *testing.T) {
+	root := writeVersionFixture(t, canonicalVersionFixture, versionSyncFixture)
+	paths := []string{"src/ptsip/specdata/project-profile-contracts.yaml"}
+	for _, id := range officialEngineIDs {
+		paths = append(paths, "src/ptsip/engines/"+id+"/version.yaml")
+	}
+	before := map[string]string{}
+	for _, ref := range paths {
+		path := filepath.Join(root, filepath.FromSlash(ref))
+		data, err := os.ReadFile(path)
+		if err != nil { t.Fatal(err) }
+		withCRLF := strings.ReplaceAll(string(data), "\n", "\r\n")
+		if ref == "src/ptsip/specdata/project-profile-contracts.yaml" {
+			withCRLF = strings.Replace(withCRLF, "current: pp.2.00\r\n", "current: pp.2.00 # active profile\r\n", 1)
+		}
+		if ref == "src/ptsip/engines/storage/version.yaml" {
+			withCRLF = strings.Replace(withCRLF, "version: 0.3.2\r\n", "version: 0.3.2 # storage version\r\n", 1)
+		}
+		if err := os.WriteFile(path, []byte(withCRLF), 0644); err != nil { t.Fatal(err) }
+		before[ref] = withCRLF
+	}
+	result, err := SyncPackageVersion(root, false)
+	if err != nil || !reflect.DeepEqual(result.ChangedFiles, []string{"pyproject.toml"}) {
+		t.Fatalf("CRLF fields must not cause false mismatch: %+v %v", result, err)
+	}
+	for _, ref := range paths {
+		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(ref)))
+		if err != nil || string(data) != before[ref] {
+			t.Fatalf("unchanged CRLF projection was rewritten: %s: %v", ref, err)
+		}
+	}
+	if result, err = SyncPackageVersion(root, true); err != nil || result.Changed || result.Status != "IN_SYNC" {
+		t.Fatalf("CRLF check-version must succeed: %+v %v", result, err)
+	}
+	updatedSource := strings.NewReplacer(
+		"profile_version = \"pp.2.00\"", "profile_version = \"pp.2.01\"",
+		"storage = \"0.3.2\"", "storage = \"0.3.3\"",
+	).Replace(canonicalVersionFixture)
+	if err := os.WriteFile(filepath.Join(root, "src", "VERSION"), []byte(updatedSource), 0644); err != nil { t.Fatal(err) }
+	result, err = SyncPackageVersion(root, false)
+	if err != nil { t.Fatal(err) }
+	expected := []string{
+		"pyproject.toml", "src/ptsip/engines/index.json",
+		"src/ptsip/specdata/project-profile-contracts.yaml",
+		"src/ptsip/engines/storage/version.yaml",
+	}
+	if !reflect.DeepEqual(result.ChangedFiles, expected) {
+		t.Fatalf("CRLF projection changed wrong paths: got %v, want %v", result.ChangedFiles, expected)
+	}
+	for ref, expectedLine := range map[string]string{
+		"src/ptsip/specdata/project-profile-contracts.yaml": "current: pp.2.01 # active profile\r\n",
+		"src/ptsip/engines/storage/version.yaml": "version: 0.3.3 # storage version\r\n",
+	} {
+		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(ref)))
+		if err != nil || !strings.Contains(string(data), expectedLine) ||
+			strings.Contains(strings.ReplaceAll(string(data), "\r\n", ""), "\n") {
+			t.Fatalf("CRLF, comment or updated version was lost: %s: %v", ref, err)
+		}
+	}
+	if result, err = SyncPackageVersion(root, true); err != nil || result.Changed {
+		t.Fatalf("CRLF updates must be idempotent: %+v %v", result, err)
+	}
+}
+
+func TestVersionSyncRejectsAmbiguousCRLFCurrent(t *testing.T) {
+	root := writeVersionFixture(t, canonicalVersionFixture, versionSyncFixture)
+	p := filepath.Join(root, "src/ptsip/specdata/project-profile-contracts.yaml")
+	if err := os.WriteFile(p, []byte("current: pp.2.00\r\ncurrent: pp.2.00\r\n"), 0644); err != nil { t.Fatal(err) }
+	before, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
+	if err != nil { t.Fatal(err) }
+	if _, err := SyncPackageVersion(root, false); err == nil || !strings.Contains(err.Error(), "ambiguous current") {
+		t.Fatalf("duplicate current field must fail closed: %v", err)
+	}
+	after, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
+	if err != nil || string(before) != string(after) {
+		t.Fatalf("failed projection must not write other files: %v", err)
+	}
 }
