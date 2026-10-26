@@ -4,6 +4,8 @@ import (
     "os"
     "path/filepath"
     "testing"
+
+    release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/release/controller"
 )
 
 func testOnlyRouteFixture(t *testing.T) (string, TestContract) {
@@ -81,7 +83,28 @@ func TestDeclaredVerificationSelectionNeverAssertsPolicyOrPublishing(t *testing.
         v.VerificationScope != "SOURCE_BOUND_TEST_EVIDENCE_ONLY" {
         t.Fatal("test execution was misrepresented as release policy authority")
     }
-    if len(v.Join.Include) != 0 || len(v.Lightweight.Include) != 2 || len(v.Matrix.Include) != 18 {
+    // Each selected component and host must be covered. The one-time b6
+    // lightweight waiver must never replace the normal Package Join for b7+.
+    platforms := len(v.Selection.Platforms)
+    if len(v.Matrix.Include) != len(v.Selection.Components)*platforms ||
+        len(v.Join.Include)+len(v.Lightweight.Include) != platforms {
         t.Fatalf("missing host/component verification matrix: joins=%d lightweight=%d components=%d", len(v.Join.Include), len(v.Lightweight.Include), len(v.Matrix.Include))
+    }
+    seen := map[string]bool{}
+    for _, entry := range append(v.Join.Include, v.Lightweight.Include...) {
+        if entry.Component != "package" || entry.Kind != "package" || seen[entry.Platform] {
+            t.Fatalf("invalid or duplicate Package host verification: %+v", entry)
+        }
+        seen[entry.Platform] = true
+    }
+    for _, platform := range v.Selection.Platforms {
+        if !seen[platform] {
+            t.Fatalf("missing required Package host verification: %s", platform)
+        }
+    }
+    composition, err := release.ReadComposition(root)
+    if err != nil { t.Fatal(err) }
+    if composition.PackagePyPI != "0.3.8b6" && len(v.Lightweight.Include) != 0 {
+        t.Fatalf("one-time 0.3.8b6 lightweight waiver leaked to %s", composition.PackagePyPI)
     }
 }
