@@ -32,8 +32,8 @@ func TestApprovedResourceRejectsMissingIDAndMalformed(t *testing.T){
  }
 }
 
-func TestApprovedReferenceProbeMissingResourcesIsUnresolved(t *testing.T){
- report:=probeApprovedPolicyVersionReference(t.TempDir(),Engine{})
+func TestApprovedFlatStatusProbeMissingResourcesIsUnresolved(t *testing.T){
+ report:=probeApprovedFlatPolicyStatus(t.TempDir(),Engine{})
  if report.Status!="UNRESOLVED"||!strings.Contains(report.Problem,"APPROVED_SCHEMA_RESOURCE_UNAVAILABLE"){
   t.Fatalf("fail-closed resource probe required: %+v",report)
  }

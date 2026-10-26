@@ -17,7 +17,7 @@ Authority:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
-    Rule_ver: "12"
+    Rule_ver: "13"
   Definition:
     meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
@@ -39,7 +39,7 @@ Policy_Rules:
     obligations:
       - id: OBLIGATION/FLATTEN_POLICY_STATUS
         applies_when: POLICY_STATUS_SERIALIZATION
-        rule: "Policy_Status의 최상위 필드는 Policy_Status_Schema_ver, status, contract로 관리한다. 기존 Schema/Policy_Status_version/version과 constant 그룹은 제거하고, status와 substatus의 상태 의미를 단일 status에 보존한다."
+        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 공통 Policy_Status는 GOV에서 검증한 평면형을 채택하며 최상위 필드는 Policy_Status_Schema_ver, status, contract 세 항목을 필수로 관리한다. 기존 Schema/Policy_Status_version/version과 constant 그룹은 제거하고, status와 substatus의 상태 의미를 하나의 status 값에 보존한다. 승인된 13개 상태값과 정책 계약 식별 패턴은 .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json이 소유하며 GOV 전용 패턴을 모든 Family에 강제하지 않는다. 정책 문서에 대한 구조 전환은 해당 Family의 별도 검증된 이관을 필요로 하고, 스키마 변경만으로 구형 문서의 적합성이나 정책 활성화를 인정하지 않는다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/LIFECYCLE_CONTRACT_AUTHORITY
         applies_when: POLICY_STATUS_OR_VERSION_CHANGE

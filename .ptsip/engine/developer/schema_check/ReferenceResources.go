@@ -10,13 +10,13 @@ import (
  "path/filepath"
 )
 
-type ReferenceProbe struct {
+type StatusProbe struct {
  Status string `json:"status"`
  SchemaPath string `json:"schema_path"`
- Reference string `json:"reference,omitempty"`
- ResourceIDs []string `json:"resource_ids,omitempty"`
  PositiveValid bool `json:"positive_valid"`
  MissingVersionRejected bool `json:"missing_version_rejected"`
+ LegacyNestedRejected bool `json:"legacy_nested_rejected"`
+ InvalidStatusRejected bool `json:"invalid_status_rejected"`
  Problem string `json:"problem,omitempty"`
 }
 
@@ -38,40 +38,58 @@ func approvedResource(root,relative string) (map[string]any,error) {
  return doc,nil
 }
 
-// probeApprovedPolicyVersionReference uses an existing $ref field from the
-// approved Public_Policy_Status schema, not a synthesized policy constraint.
-// It passes only the Policy_version schema to schema_resources: passing the
-// Policy_Status constant would fail on its currently unsupported internal $ref.
-func probeApprovedPolicyVersionReference(root string,e Engine) ReferenceProbe {
- report:=ReferenceProbe{Status:"UNRESOLVED",SchemaPath:publicPolicyStatusPath}
- fail:=func(err error) ReferenceProbe {report.Problem=err.Error();return report}
- parent,err:=approvedResource(root,publicPolicyStatusPath)
- if err!=nil{return fail(err)}
- version,err:=approvedResource(root,policyVersionPath)
- if err!=nil{return fail(err)}
- props,ok:=parent["properties"].(map[string]any)
- if !ok{return fail(fmt.Errorf("POLICY_STATUS_PROPERTIES_MISSING"))}
- schema,ok:=props["Schema"].(map[string]any)
- if !ok{return fail(fmt.Errorf("POLICY_STATUS_SCHEMA_FIELD_MISSING"))}
- schemaProps,ok:=schema["properties"].(map[string]any)
- if !ok{return fail(fmt.Errorf("POLICY_STATUS_SCHEMA_PROPERTIES_MISSING"))}
- versionRef,ok:=schemaProps["Policy_Status_version"].(map[string]any)
- if !ok{return fail(fmt.Errorf("POLICY_STATUS_VERSION_REF_MISSING"))}
- ref,ok:=versionRef["$ref"].(string)
- if !ok||ref=="" {return fail(fmt.Errorf("POLICY_STATUS_VERSION_REF_INVALID"))}
- id:=version["$id"].(string)
- if ref!=id{return fail(fmt.Errorf("POLICY_STATUS_VERSION_REF_ID_MISMATCH: %s != %s",ref,id))}
- report.Reference=ref
- report.ResourceIDs=[]string{id}
- resources:=[]any{version}
- // A generic string is sufficient; the policy version format is unresolved.
- positive,err:=nativeValidate(e,versionRef,map[string]any{"version":"sample"},resources)
- if err!=nil{return fail(err)}
- missing,err:=nativeValidate(e,versionRef,map[string]any{},resources)
- if err!=nil{return fail(err)}
- report.PositiveValid=positive
- report.MissingVersionRejected=!missing
- if !positive||missing{return fail(fmt.Errorf("APPROVED_VERSION_REF_PROBE_UNEXPECTED_VERDICT"))}
- report.Status="PASS"
+// probeApprovedFlatPolicyStatus checks the current shared status record shape
+// through the installed VALIDATION engine. It never grants policy conformance.
+func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
+ report := StatusProbe{Status: "UNRESOLVED", SchemaPath: publicPolicyStatusPath}
+ fail := func(err error) StatusProbe { report.Problem = err.Error(); return report }
+ schema, err := approvedResource(root, publicPolicyStatusPath)
+ if err != nil { return fail(err) }
+ if schema["$id"] != "urn:ptsip:policy:Status:v2" {
+  return fail(fmt.Errorf("SHARED_STATUS_SCHEMA_ID_MISMATCH"))
+ }
+ positive := map[string]any{
+  "Policy_Status_Schema_ver": "2",
+  "status": "APPROVED.Applying",
+  "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
+ }
+ valid, err := nativeValidate(e, schema, positive, nil)
+ if err != nil { return fail(err) }
+ report.PositiveValid = valid
+
+ missingVersion := map[string]any{
+  "status": "APPROVED.Applying",
+  "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
+ }
+ accepted, err := nativeValidate(e, schema, missingVersion, nil)
+ if err != nil { return fail(err) }
+ report.MissingVersionRejected = !accepted
+
+ legacy := map[string]any{
+  "Schema": map[string]any{"Policy_Status_version": map[string]any{"version":"1"}},
+  "constant": map[string]any{
+   "status": "APPROVED",
+   "substatus": "Applying",
+   "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
+  },
+ }
+ accepted, err = nativeValidate(e, schema, legacy, nil)
+ if err != nil { return fail(err) }
+ report.LegacyNestedRejected = !accepted
+
+ invalidStatus := map[string]any{
+  "Policy_Status_Schema_ver": "2",
+  "status": "APPROVED.NotDeclared",
+  "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
+ }
+ accepted, err = nativeValidate(e, schema, invalidStatus, nil)
+ if err != nil { return fail(err) }
+ report.InvalidStatusRejected = !accepted
+
+ if !report.PositiveValid || !report.MissingVersionRejected ||
+  !report.LegacyNestedRejected || !report.InvalidStatusRejected {
+  return fail(fmt.Errorf("SHARED_FLAT_STATUS_SCHEMA_UNEXPECTED_VERDICT"))
+ }
+ report.Status = "PASS"
  return report
 }

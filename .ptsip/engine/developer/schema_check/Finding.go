@@ -28,7 +28,7 @@ type Report struct {
  UnverifiedReferences int `json:"unverified_references"`
  PolicyConformance string `json:"policy_conformance"`
  FullJSONSchemaConformance string `json:"full_json_schema_conformance"`
- ReferenceProbe *ReferenceProbe `json:"reference_probe,omitempty"`
+ StatusProbe *StatusProbe `json:"status_probe,omitempty"`
  RoutingProbe *RoutingProbe `json:"routing_probe,omitempty"`
  Findings []Finding `json:"findings"`
 }
@@ -132,12 +132,12 @@ func Run(root string)(Report,int){
   if f.Status=="FAIL"{report.Failed++}
   report.Findings=append(report.Findings,f)
  }
- // Reference probe is independent of the limited document-shape scan.
- // It proves only the approved Policy_Status_version -> Policy_version link.
- // Full policy status reference verification is separately exercised by the official b5 engine integration tests.
+ // Status shape probe is independent of the limited document-shape scan.
+ // It checks the flat shared Policy_Status schema through the installed engine.
+ // Full policy document conformance remains outside this validator.
  if len(problems)==0 {
-  probe:=probeApprovedPolicyVersionReference(root,e)
-  report.ReferenceProbe=&probe
+  probe:=probeApprovedFlatPolicyStatus(root,e)
+  report.StatusProbe=&probe
   if probe.Status!="PASS" {report.Failed++}
   routing:=probePolicyRouting(root,e)
   report.RoutingProbe=&routing

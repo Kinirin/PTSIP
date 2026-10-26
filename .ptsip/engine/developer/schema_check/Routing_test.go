@@ -67,3 +67,37 @@ func TestPolicyRoutingRequiresBoundSchemaFile(t *testing.T) {
         t.Fatalf("missing routing schema must fail closed: %v", err)
     }
 }
+
+func TestSharedPublicPolicyUsesGOVFlatStatusAndGOVRoute(t *testing.T) {
+ root := routingRepositoryRoot(t)
+ public, err := routingFile(root, ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json", ".ptsip/contracts/schemas/")
+ if err != nil { t.Fatal(err) }
+ if routingString(public["$id"]) != "urn:ptsip:policy:public-structure:v6" {
+  t.Fatal("shared public schema version mismatch")
+ }
+ statusRef := routingString(routingMembers(routingMembers(public["properties"])["Policy_Status"])["$ref"])
+ if statusRef != "urn:ptsip:policy:Status:v2" { t.Fatalf("unexpected shared Policy_Status reference: %s",statusRef) }
+ flat, err := routingFile(root, publicPolicyStatusPath, ".ptsip/contracts/schemas/")
+ if err != nil { t.Fatal(err) }
+ if routingString(flat["$id"]) != statusRef { t.Fatal("shared flat status ID differs from its public reference") }
+ fields := routingMembers(flat["properties"])
+ for _, key := range []string{"Policy_Status_Schema_ver", "status", "contract"} {
+  if fields[key] == nil { t.Fatalf("missing flat status field: %s",key) }
+ }
+ if len(fields)!=3 || fields["Schema"]!=nil || fields["constant"]!=nil {
+  t.Fatal("legacy nested status representation remains in common schema")
+ }
+ if flat["additionalProperties"] != false { t.Fatal("flat status schema must reject undeclared fields") }
+ required, ok := flat["required"].([]any)
+ if !ok || len(required)!=3 { t.Fatal("flat status required fields mismatch") }
+ route, _, _, _, _, _, err := loadRoutingInputs(root)
+ if err != nil { t.Fatal(err) }
+ families := routingMembers(routingMembers(route["routes"])["PTSIP_DEVELOPER_POLICY"])
+ govRoute := routingMembers(routingMembers(routingMembers(families["GOV"])["schema_refs"]))
+ if routingString(govRoute["public"]) != ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json" {
+  t.Fatal("GOV must resolve public schema from the shared common contract")
+ }
+ if routingString(govRoute["rules"]) != ".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json" {
+  t.Fatal("GOV independent rules binding must be preserved")
+ }
+}
