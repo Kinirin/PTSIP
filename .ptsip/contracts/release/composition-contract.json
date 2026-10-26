@@ -20,7 +20,18 @@
     "published_snapshot_table": "tool.ptsip.release.published",
     "distributed_current_version_authority": false,
     "missing_declaration": "FAIL_NO_LEGACY_FALLBACK",
-    "projection_mismatch": "FAIL_CLOSED"
+    "projection_mismatch": "FAIL_CLOSED",
+    "package_version_source": "src/VERSION",
+    "package_version_projection": "pyproject.toml#project.version",
+    "package_version_sync_command": "sync-version",
+    "package_version_check_command": "check-version",
+    "package_version_binding": "EXACT_SOURCE_STRING_MATCH",
+    "package_version_prerelease_format": "MAJOR.MINOR.PATCH-(a|b|rc)N",
+    "package_version_composition_projections": [
+      "pyproject.toml#tool.ptsip.release.package_base",
+      "pyproject.toml#tool.ptsip.release.package_revision",
+      "pyproject.toml#tool.ptsip.release.package_state"
+    ]
   },
   "default_engine_count": 7,
   "package_request": {
