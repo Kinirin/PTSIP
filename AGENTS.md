@@ -68,6 +68,18 @@ registry files are not active machine contracts; in particular,
 `developer/policy/registries/public-policy-structure-governance.json`
 does not impose current schema paths or reference obligations.
 
+**Temporary reform authoring lookup (not policy authority):**
+Before creating new repository policy, approval, schema, contract, automation,
+plan, or registry files during the temporary reform, read the structured
+`developer/Temporary_Record/legacy-dependency-replacement.json` via the
+`LEGACY_REPLACEMENT_BLOCKERS / LG-04` temporary work binding. Apply its
+directory-prefix/exact-file creation exclusions; do not infer permission
+from a nonmatch. This is a disposable agent pre-write lookup only, not
+an input to formal policy, runtime, verification or release contracts.
+When the user directs removal of `developer/Temporary_Record/**`, remove
+this temporary lookup and every link into that temporary root without
+separate reference-validation; do not skip unrelated verification.
+
 Do not reactivate the retired policy resolver, validators or legacy BOUND
 semantics when no valid successor exists. An unresolved authoritative
 policy or contract must fail closed rather than be reconstructed from a

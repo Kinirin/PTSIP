@@ -1,0 +1,105 @@
+{
+  "record_type": "TEMPORARY_WORK_RECORD",
+  "schema_version": "ptsip-temporary-retirement-authoring-guard/v1",
+  "work_id": "LEGACY_DEPENDENCY_REPLACEMENT",
+  "created_at": "2026-10-26",
+  "purpose_ko": "정책 개혁 중 폐기 예정 경로를 기계적으로 식별하고 신규 작성·새 권위 의존성을 방지하는 일시적 작업 입력",
+  "scope": {
+    "repository": "Kinirin/PTSIP",
+    "applies_during": "TEMPORARY_POLICY_REFORM_ONLY",
+    "legacy_reference_paths": [
+      "developer/policy/approvals/",
+      "developer/policy/analysis/",
+      "developer/policy/contracts/",
+      "developer/policy/policy-resolver-bindings/",
+      "developer/policy/legacy/",
+      "developer/policy/registries/",
+      "developer/policy/schemas/",
+      "developer/policy/MPD-BOUND-0001.yaml",
+      "developer/policy/policy-resolver-contract.yaml",
+      "developer/policy/source-application-review.yaml",
+      "developer/state/",
+      "developer/verification/",
+      "developer/bindings/",
+      "developer/contracts/lifecycle/policy_status.json",
+      "developer/contracts/lifecycle/policy_version.json"
+    ],
+    "additional_retirement_paths": [
+      {
+        "path": "developer/automation/",
+        "source": "USER_EXPLICIT_2026_10_26",
+        "intent": "DEPENDENCY_REPLACEMENT_AND_RETIREMENT"
+      },
+      {
+        "path": "registry/",
+        "source": "USER_EXPLICIT_2026_10_26",
+        "intent": "REMOVE_ROOT_AND_PROHIBIT_NEW"
+      },
+      {
+        "path": "schemas/",
+        "source": "USER_EXPLICIT_2026_10_26",
+        "intent": "REMOVE_ROOT_AND_PROHIBIT_NEW"
+      },
+      {
+        "path": "planning/",
+        "source": "USER_EXPLICIT_2026_10_26",
+        "intent": "REMOVE_ROOT_WITHOUT_MIGRATION_AND_PROHIBIT_NEW"
+      }
+    ],
+    "reference_existence": "PARTIALLY_UNVERIFIED",
+    "temporary_record_root": "developer/Temporary_Record/",
+    "policy_authority": "NONE",
+    "owner_policy_ref": null,
+    "official_policy_or_contract_dependency": "FORBIDDEN"
+  },
+  "authoring_guard": {
+    "operation": "PRE_CREATE_OR_NEW_REFERENCE_RESOLUTION",
+    "target_paths": "REPOSITORY_RELATIVE_POSIX_PATHS",
+    "directory_match": "TARGET_EQUALS_PREFIX_OR_DESCENDANT",
+    "file_match": "TARGET_EQUALS_EXACT_FILE",
+    "matching_rule": "PREFIX_FOR_TRAILING_SLASH_ELSE_EXACT_FILE",
+    "on_match": {
+      "new_file_or_policy_or_schema_or_contract": "DENY",
+      "add_authoritative_reference": "DENY",
+      "reactivate_legacy_policy_or_validator": "DENY",
+      "existing_file_change": "REQUIRES_INDEPENDENT_USER_AUTHORIZATION",
+      "historical_read_for_comparison": "ALLOW_NON_NORMATIVE"
+    },
+    "on_no_match": "NOT_AUTHORIZED_BY_THIS_CONTRACT",
+    "fail_closed_on_ambiguous_or_escaping_path": true,
+    "prevents_removal_without_user_authorization": true
+  },
+  "machine_link": {
+    "work_group_ref": "developer/Temporary_Record/work/LEGACY_REPLACEMENT_BLOCKERS.yaml",
+    "work_step_id": "LG-04",
+    "work_step_binding_field": "temporary_contract_ref",
+    "coding_agent_entry_ref": "AGENTS.md",
+    "read_contract_during_reform": true,
+    "replaces_validation_implementation": false,
+    "new_schema_or_validator": "NOT_CREATED",
+    "policy_mutation_or_formal_contract_promotion": "NOT_AUTHORIZED"
+  },
+  "removal": {
+    "condition": "USER_EXPLICIT_REMOVAL_OF_developer/Temporary_Record/",
+    "action": "DELETE_TEMPORARY_ROOT_AND_ALL_REFERENCES_POINTING_TO_IT",
+    "dependency_reference_cleanup": "REMOVE_WITHOUT_SEPARATE_REFERENCE_VALIDATION",
+    "skip_validation_scope": "ONLY_REFERENCES_TO_developer/Temporary_Record/",
+    "no_retain_or_migrate_contract": true,
+    "do_not_rewrite_as_formal_policy": true,
+    "unrelated_policy_plan_code_and_verification": "UNCHANGED",
+    "retired_artifacts_outside_temporary_root": "NOT_DELETED_BY_THIS_RULE"
+  },
+  "last_checkpoint": {
+    "date": "2026-10-26",
+    "origin_ref": "developer/Temporary_Record/legacy-dependency-replacement.yaml",
+    "decision_source": "USER_EXPLICIT",
+    "reference_existence_verified": false,
+    "enforcement_kind": "AGENT_PREWRITE_MACHINE_LOOKUP_NOT_CI_HOOK",
+    "machine_validation": "NOT_CLAIMED"
+  },
+  "pending_tasks": [],
+  "work": {
+    "group_id": "LEGACY_REPLACEMENT_BLOCKERS",
+    "step_id": "LG-04"
+  }
+}

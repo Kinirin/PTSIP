@@ -14,9 +14,12 @@
 - `contract-schema-review.yaml` — 신규 계약과 검증 스키마 검토
 - `developer-policy-families.yaml` — 신규 개발 정책 및 Root Family의 구현 범위
 - `legacy-dependency-replacement.yaml` — 폐기 예정 정책과의 의존성 차단·대체
+- `legacy-dependency-replacement.json` — LG-04용 일시적 기계 판독 신규 작성 금지 대상·조회 규칙 (정식 정책·계약 아님)
 - `pending-work.json` — 이전 그룹 상태의 이관 참고용 스냅샷(신규 원본 아님)
 - `work/<group_id>.yaml` — 그룹별 단계, 소유자, 우선순위, 남은 작업의 현재 원본
 - `work/work.schema.json` — 그룹별 작업 기록의 임시 전용 최소 검증 스키마
+
+> **임시 기계 연결 (사용자 승인):** LG-04의 `work/LEGACY_REPLACEMENT_BLOCKERS.yaml` 단계는 `temporary_contract_ref`로 위 JSON만 조회한다. `AGENTS.md`는 정식 권위가 아닌 일시적 코딩 작업 진입 안내로 이 JSON을 가리킨다. 임시 폴더 전체를 사용자 지시로 제거하면 그 폴더를 향한 참조는 추가 참조 검증 없이 함께 삭제한다. 공식 정책·계약·CI·제품 런타임은 이 임시 JSON을 필수 입력으로 삼지 않는다. 다른 검증의 생략이나 외부 대상 파일의 삭제는 허용하지 않는다.
 
 이 목록은 **수동 안내**일 뿐, 기계적 색인이 아니다. 새로운 독립 작업은 작업별 기록 파일로 분리할 수 있다. 그룹의 실행 상태는 `work/<group_id>.yaml`에만 기록하며, 개별 작업의 설계 설명은 별도 기록에 둔다. 다른 세션이 담당하는 그룹은 읽기만 가능하다. 파일을 쓰기 전에 저장소 최신 상태를 확인하고 충돌을 조용히 덮어쓰지 않는다.
 
