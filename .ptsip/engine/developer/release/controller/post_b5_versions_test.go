@@ -37,22 +37,32 @@ func TestPublishedB5EngineVersionsAndProjections(t *testing.T) {
         len(decision.Approval.Versions) != 7 {
         t.Fatal("published 0.3.8b5 engine version decision is incomplete")
     }
-    // A historical b5-to-b6 decision is a baseline, not a permanent upper bound.
-    // Consume the explicitly approved successor for the scoped Discovery change.
-    successorFile, err := os.ReadFile(filepath.Join(root, "developer/policy/approvals/MPA-20261026-OFFICIAL-ENGINE-COMPATIBILITY-DIAGNOSTICS.yaml"))
-    if err != nil { t.Fatal(err) }
-    var successor struct { Approval struct {
-        Decision string `yaml:"decision"`
-        Operation string `yaml:"operation_id"`
-        Versions struct { Discovery string `yaml:"discovery_engine"` } `yaml:"source_version_projections"`
-    } `yaml:"approval"` }
-    if err := yaml.Unmarshal(successorFile, &successor); err != nil { t.Fatal(err) }
-    if successor.Approval.Decision != "APPROVED" || successor.Approval.Operation != "discovery.check-environment" || successor.Approval.Versions.Discovery == "" {
-        t.Fatal("scoped Discovery successor approval is missing")
+    // Historical b5 versions are comparison data, not current approval authority.
+    // Check the current Support Feature owner and its registered contract only.
+    var current struct {
+        Policy struct { ID, Status string } `json:"policy"`
+        Semantics struct { Unit struct { Diagnostics struct {
+            Scope string `json:"scope"`
+            Operation string `json:"operation_id"`
+            Contract string `json:"contract_ref"`
+        } `json:"official_engine_environment_diagnostics"` } `json:"unit_ptsip_engine_draft"` } `json:"authority_semantics"`
     }
+    if err := ReadJSON(root,"src/policy/CNTR/SFP-CNTR-0005.yaml",&current); err != nil { t.Fatal(err) }
+    d := current.Semantics.Unit.Diagnostics
+    if current.Policy.ID != "SFP-CNTR-0005" || current.Policy.Status != "ACTIVE" || d.Scope != "SEVEN_OFFICIAL_ENGINES_ONLY" || d.Operation != "discovery.check-environment" {
+        t.Fatal("current Support Feature diagnostic owner is unavailable")
+    }
+    var capability struct { Operations []struct { ID string `json:"operation_id"` } `json:"operations"` }
+    if err := ReadJSON(root,d.Contract,&capability); err != nil { t.Fatal(err) }
+    found := false
+    for _, op := range capability.Operations { found = found || op.ID == d.Operation }
+    if !found { t.Fatal("current diagnostic operation is not contract-registered") }
+    var manifest struct { Version string `json:"implementation_version"` }
+    if err := ReadJSON(root,"src/ptsip/engines/discovery/manifest.json",&manifest); err != nil { t.Fatal(err) }
     discovery := decision.Approval.Versions["discovery"]
-    discovery.Next = successor.Approval.Versions.Discovery
+    discovery.Next = manifest.Version
     decision.Approval.Versions["discovery"] = discovery
+    // This test checks projection consistency; it grants no policy or release approval.
     composition, err := ReadComposition(root)
     if err != nil { t.Fatal(err) }
     if len(composition.Engines) != 7 { t.Fatalf("unexpected official engine count: %d",len(composition.Engines)) }
