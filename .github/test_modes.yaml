@@ -137,7 +137,7 @@ modes:
     component_ref: developer-contract-schema-verification
     execution:
       go:
-        - developer/tests/schema_validation
+        - .ptsip/engine/developer/schema_check
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:
