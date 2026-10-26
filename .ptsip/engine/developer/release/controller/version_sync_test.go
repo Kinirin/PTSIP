@@ -146,3 +146,12 @@ func TestPublicationEvidenceAuthorityRequiresCanonicalVersionProjection(t *testi
 		t.Fatalf("release admission must accept the synchronized version: %+v, %v", result, err)
 	}
 }
+
+// TestPublicationEvidenceAuthorityVersionProjectionSuite covers version-source
+// admission evidence without depending on the retired release verification tree.
+func TestPublicationEvidenceAuthorityVersionProjectionSuite(t *testing.T) {
+	t.Run("sync_and_read_only_gate", TestSyncPackageVersionFromSource)
+	t.Run("invalid_sources", TestVersionSyncRejectsInvalidOrMissingSource)
+	t.Run("invalid_projection", TestVersionSyncRejectsAmbiguousProjectFields)
+	t.Run("stable_and_crlf", TestVersionSyncPreservesCRLFAndSupportsStableRelease)
+}
