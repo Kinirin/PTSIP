@@ -37,6 +37,22 @@ func TestPublishedB5EngineVersionsAndProjections(t *testing.T) {
         len(decision.Approval.Versions) != 7 {
         t.Fatal("published 0.3.8b5 engine version decision is incomplete")
     }
+    // A historical b5-to-b6 decision is a baseline, not a permanent upper bound.
+    // Consume the explicitly approved successor for the scoped Discovery change.
+    successorFile, err := os.ReadFile(filepath.Join(root, "developer/policy/approvals/MPA-20261026-OFFICIAL-ENGINE-COMPATIBILITY-DIAGNOSTICS.yaml"))
+    if err != nil { t.Fatal(err) }
+    var successor struct { Approval struct {
+        Decision string `yaml:"decision"`
+        Operation string `yaml:"operation_id"`
+        Versions struct { Discovery string `yaml:"discovery_engine"` } `yaml:"source_version_projections"`
+    } `yaml:"approval"` }
+    if err := yaml.Unmarshal(successorFile, &successor); err != nil { t.Fatal(err) }
+    if successor.Approval.Decision != "APPROVED" || successor.Approval.Operation != "discovery.check-environment" || successor.Approval.Versions.Discovery == "" {
+        t.Fatal("scoped Discovery successor approval is missing")
+    }
+    discovery := decision.Approval.Versions["discovery"]
+    discovery.Next = successor.Approval.Versions.Discovery
+    decision.Approval.Versions["discovery"] = discovery
     composition, err := ReadComposition(root)
     if err != nil { t.Fatal(err) }
     if len(composition.Engines) != 7 { t.Fatalf("unexpected official engine count: %d",len(composition.Engines)) }
