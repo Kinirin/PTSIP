@@ -1,6 +1,7 @@
 package schema_check
 
 import (
+    "encoding/json"
     "os"
     "path/filepath"
     "strings"
@@ -61,4 +62,58 @@ func TestEmptyStatusSchemaRootFailsClosed(t *testing.T) {
         }
     }
     if !found { t.Fatalf("missing status schema root not reported: %v", findings) }
+}
+
+func TestSchemaScanSeparatesJSONDataFromSchemas(t *testing.T) {
+ for _, file := range []string{
+  ".ptsip/contracts/schemas/compile-sealed-rbac/candidate-index.json",
+  ".ptsip/contracts/schemas/Policy_Rules/root-family/ARCH_rules.schemas.json",
+  ".ptsip/contracts/schemas/compile-sealed-rbac/binding.schema.json",
+ } {
+  wantSchema := !strings.HasSuffix(file, "candidate-index.json")
+  if isSchemaJSON(file) != wantSchema {
+   t.Fatalf("wrong schema classification: %s", file)
+  }
+ }
+}
+
+func TestApprovedRBACScaffoldsRemainFailClosed(t *testing.T) {
+ root := routingRepositoryRoot(t)
+ for file := range approvedFailClosedRBACScaffolds {
+  raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(file)))
+  if err != nil { t.Fatal(err) }
+  var doc map[string]any
+  if err := json.Unmarshal(raw, &doc); err != nil { t.Fatal(err) }
+  if !validateFailClosedRBACScaffold(file, doc) {
+   t.Errorf("approved RBAC scaffold must remain fail closed: %s",file)
+  }
+ }
+ file := ".ptsip/contracts/schemas/compile-sealed-rbac/activation.schema.json"
+ base := map[string]any{
+  "$schema":schemaDraft202012,
+  "title":"Unresolved RBAC scaffold",
+  "$comment":"SCAFFOLD_ONLY: Reject all instances",
+  "type":"object",
+  "not":map[string]any{},
+ }
+ if !validateFailClosedRBACScaffold(file,base) {t.Fatal("expected valid closed scaffold")}
+ cases := []struct{name string; mutate func(map[string]any)}{
+  {"guard_removed",func(v map[string]any){delete(v,"not")}},
+  {"guard_weakened",func(v map[string]any){v["not"]=map[string]any{"type":"string"}}},
+  {"guard_null",func(v map[string]any){v["not"]=nil}},
+  {"wrong_type",func(v map[string]any){v["type"]="array"}},
+  {"marker_missing",func(v map[string]any){v["$comment"]="unresolved"}},
+  {"extra_field",func(v map[string]any){v["properties"]=map[string]any{}}},
+ }
+ for _, tc := range cases {
+  t.Run(tc.name,func(t *testing.T){
+   candidate := map[string]any{}
+   for k,v := range base {candidate[k]=v}
+   tc.mutate(candidate)
+   if validateFailClosedRBACScaffold(file,candidate) {t.Fatal("unsafe scaffold shape accepted")}
+  })
+ }
+ if validateFailClosedRBACScaffold(".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",base) {
+  t.Fatal("unapproved scaffold path accepted")
+ }
 }

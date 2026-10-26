@@ -26,6 +26,8 @@ type Report struct {
  Total int `json:"total"`
  Failed int `json:"failed"`
  UnverifiedReferences int `json:"unverified_references"`
+ UnresolvedScaffolds int `json:"unresolved_scaffolds"`
+ NonSchemaJSONFiles int `json:"non_schema_json_files"`
  PolicyConformance string `json:"policy_conformance"`
  FullJSONSchemaConformance string `json:"full_json_schema_conformance"`
  StatusProbe *StatusProbe `json:"status_probe,omitempty"`
@@ -52,6 +54,36 @@ var approvedSchemaPaths = []string{
     ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
     ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
     ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
+}
+
+
+const schemaDraft202012 = "https://json-schema.org/draft/2020-12/schema"
+
+// These six files are user-approved unresolved, fail-closed RBAC scaffolds.
+// Recognizing their exact shape does not activate or validate RBAC instances.
+var approvedFailClosedRBACScaffolds = map[string]bool{
+ ".ptsip/contracts/schemas/compile-sealed-rbac/responsibility.schema.json": true,
+ ".ptsip/contracts/schemas/compile-sealed-rbac/condition-atom.schema.json": true,
+ ".ptsip/contracts/schemas/compile-sealed-rbac/permission-atom.schema.json": true,
+ ".ptsip/contracts/schemas/compile-sealed-rbac/binding.schema.json": true,
+ ".ptsip/contracts/schemas/compile-sealed-rbac/sealed-contract.schema.json": true,
+ ".ptsip/contracts/schemas/compile-sealed-rbac/activation.schema.json": true,
+}
+
+func isSchemaJSON(path string) bool {
+ return strings.HasSuffix(path, ".schema.json") || strings.HasSuffix(path, ".schemas.json")
+}
+
+func validateFailClosedRBACScaffold(path string, obj map[string]any) bool {
+ if !approvedFailClosedRBACScaffolds[path] || len(obj)!=5 {return false}
+ if obj["$schema"]!=schemaDraft202012 || obj["type"]!="object" {return false}
+ title, titleOK := obj["title"].(string)
+ comment, commentOK := obj["$comment"].(string)
+ guard, guardOK := obj["not"].(map[string]any)
+ return titleOK && title!="" && commentOK &&
+  strings.Contains(comment,"SCAFFOLD_ONLY") &&
+  strings.Contains(comment,"Reject all instances") &&
+  guardOK && len(guard)==0
 }
 
 var schemaScanRoots = []string{
@@ -116,6 +148,19 @@ func Run(root string)(Report,int){
   if readError!=nil{f.Status="FAIL";f.Problem="INVALID_JSON: "+readError.Error()
   }else if obj,ok:=doc.(map[string]any);!ok{
    f.Status="FAIL";f.Problem="JSON_SCHEMA_ROOT_NOT_OBJECT"
+  }else if !isSchemaJSON(relative){
+   // A JSON data index is not a JSON Schema and cannot be required to have $id.
+   f.Status="NON_SCHEMA_JSON_SYNTAX_ONLY"
+   report.NonSchemaJSONFiles++
+  }else if approvedFailClosedRBACScaffolds[relative] {
+   if !validateFailClosedRBACScaffold(relative,obj) {
+    f.Status="FAIL"
+    f.Problem="RBAC_SCAFFOLD_NO_LONGER_FAIL_CLOSED"
+   }else{
+    f.Status="UNRESOLVED_FAIL_CLOSED_SCAFFOLD"
+    f.Warnings=append(f.Warnings,"RBAC_FIELDS_UNRESOLVED_NO_INSTANCE_AUTHORIZED")
+    report.UnresolvedScaffolds++
+   }
   }else{
    if id,valid:=obj["$id"].(string);valid&&id!=""{
     if prior,found:=ids[id];found{f.Status="FAIL";f.Problem="DUPLICATE_SCHEMA_ID_WITH: "+prior
