@@ -56,22 +56,22 @@ other developer-control-plane behavior, enter:
 
 `developer/policy/`
 
-**Developer Root Family transition entry:** Read the current machine contracts in this order:
+**Developer policy entry:** Discover policy identities and paths from
+`developer/policy/index.yaml` as a non-authoritative lookup aid. Read the
+current policy documents directly, including `developer/policy/GOV/MPD-GOV-0006.yaml`
+for lifecycle and governance source requirements. Confirm the referenced
+policy's own effective status before using it as authority.
 
-1. `developer/policy/registries/root-family-validation-reset.json`
-2. `developer/policy/registries/family-schema-rebuild.json`
+Do **not** use `developer/policy/registries/**` for current developer-policy
+authority, schema, contract routing, lifecycle or approval. These retired
+registry files are not active machine contracts; in particular,
+`developer/policy/registries/public-policy-structure-governance.json`
+does not impose current schema paths or reference obligations.
 
-These sources govern the ongoing reconstruction boundary, not this AGENTS.md projection. The
-previous developer Policy Resolver and common Root Family schema were retired. Do **not** invoke
-the former `policy-resolver` or `policy-validator` command as a fallback or restore old BOUND
-rules, old schema definitions, or old validators when a successor is absent. The successor's
-automated policy validation is not available; manual review is not a machine PASS.
-
-For new developer Root Family documents, apply the independently approved family format and
-fixed family root from the schema rebuild contract. The former `policy:` identity block is
-not a mandatory template. ARCH is the current schema design focus; GOV and INFO have separate
-unstarted schema design work. If a developer operation requires a still-unavailable authoritative
-resolution or validator, fail closed rather than infer or reactivate former authority.
+Do not reactivate the retired policy resolver, validators or legacy BOUND
+semantics when no valid successor exists. An unresolved authoritative
+policy or contract must fail closed rather than be reconstructed from a
+retired registry or inferred by an agent.
 
 ### 3. Kinirin/PTSIP consumer-facing feature semantics
 

@@ -1,0 +1,20 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261026-RETIRED-DEVELOPER-POLICY-REGISTRIES
+  decision: APPROVED
+  decision_source: USER_EXPLICIT
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  recorded_at: '2026-10-26'
+  policy_owner_ref: developer/policy/GOV/MPD-GOV-0006.yaml
+  decision_scope: DEVELOPER_POLICY_REGISTRY_RETIREMENT_AND_NONAUTHORITY
+  retired_root: developer/policy/registries/
+  normative_authority: FORBIDDEN
+  runtime_dependency: FORBIDDEN
+  policy_schema_contract_routing_lifecycle_approval_resolution: FORBIDDEN
+  public_policy_structure_governance:
+    ref: developer/policy/registries/public-policy-structure-governance.json
+    reference_obligation: VOID
+    current_policy_authority: NONE
+  physical_deletion: NOT_AUTHORIZED_BY_THIS_DECISION
+  unrelated_policy: PRESERVED
