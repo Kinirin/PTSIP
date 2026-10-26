@@ -70,7 +70,20 @@ consumer_contract_plane_boundaries:
     status: SUPERSEDED_BY_USER_CORRECTION
   consumer_policy_validation_engine_root: .ptsip/engine/consumer/
   developer_contracts_or_validator_are_consumer_policy_contracts: false
-  cross_plane_normative_schema_or_runtime_dependency: FORBIDDEN
+  cross_plane_normative_schema_or_runtime_dependency: FORBIDDEN_EXCEPT_EXPLICIT_RBAC_PROFILE_DECLARATIONS
+  cross_plane_rbac_exception:
+    decision: USER_APPROVED_RECONCILE
+    prior_rule: CROSS_PLANE_NORMATIVE_SCHEMA_OR_RUNTIME_DEPENDENCY_FORBIDDEN
+    exception_root: .ptsip/profiles/rbac/
+    consumer_rbac_definition_or_update: PERMITTED_WITHIN_EXISTING_RBAC_AUTHORITY
+    contract_types: [RESPONSIBILITY, CONDITION_ATOM, PERMISSION_ATOM, BINDING]
+    shared_with_developer_plane: true
+    other_dot_ptsip_paths_remain_forbidden: true
+    developer_contract_schema_mutation: NOT_AUTHORIZED
+    existing_rbac_opt_in_seal_activation_requirements: PRESERVED
+    consumer_default_runtime_external_dependencies: FORBIDDEN
+    consumer_product_packaging_and_runtime_access_rules: UNRESOLVED_USER_DECISION
+    implementation: NOT_AUTHORIZED_YET
   developer_plane_may_request_consumer_contract_authoring: true
   request_from_developer_plane_grants_consumer_contract_authority: false
   retired_consumer_roots:
@@ -93,6 +106,16 @@ consumer_contract_plane_boundaries:
   consumer_validator_implementation_status: NOT_ASSERTED
   no_formal_contract_or_validator_implementation_authorized_by_this_decision: true
 
+
+consumer_contract_location_resolution:
+  decision: KEEP_PRIOR
+  authorization: PROJECT_OWNER_EXPLICIT
+  selected_existing_root: src/policy/contracts/
+  rejected_new_root: src/ptsip/default_contract/
+  rejected_new_root_creation: WITHDRAWN
+  approved_subindex_identity_and_root_path_design: PRESERVED
+  existing_consumer_contract_indexes: PRESERVED
+  planned_product_packaging_migration: NOT_AUTHORIZED_BY_THIS_DECISION
 
 root_index_lookup_connection_direction:
   decision: USER_APPROVED_DESIGN_DIRECTION
