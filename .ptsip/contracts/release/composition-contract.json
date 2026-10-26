@@ -9,19 +9,19 @@
   "profile_registry": "registry/project-profile-contracts.yaml",
   "canonical_current_composition": {
     "owner_ref": "developer/policy/INFO/MPD-INFO-0005.yaml#rules.independent_release_versioning",
-    "file": "pyproject.toml",
-    "table": "tool.ptsip.release",
+    "file": "src/VERSION",
+    "table": "TOP_LEVEL_AND_ENGINES",
     "schema_version": "ptsip-current-composition/v2",
     "package_pypi_version_ref": "project.version",
     "tool_version_ref": "tool.ptsip.release.tool_version",
-    "tool_identifier": "T.MAJOR.MINOR.MICRO.STATE",
+    "tool_identifier": "T.MAJOR.MINOR.MICRO[.STATE]",
     "tool_distribution_version": "STRIP_T_PREFIX_AND_JOIN_PRERELEASE_STATE",
     "package_pypi_version": "BASE_WITH_OPTIONAL_DIRECT_A_B_RC_STATE_OR_POSITIVE_REVISION",
     "published_snapshot_table": "tool.ptsip.release.published",
     "distributed_current_version_authority": false,
     "missing_declaration": "FAIL_NO_LEGACY_FALLBACK",
     "projection_mismatch": "FAIL_CLOSED",
-    "package_version_source": "src/VERSION",
+    "package_version_source": "src/VERSION#package_version",
     "package_version_projection": "pyproject.toml#project.version",
     "package_version_sync_command": "sync-version",
     "package_version_check_command": "check-version",
@@ -31,7 +31,29 @@
       "pyproject.toml#tool.ptsip.release.package_base",
       "pyproject.toml#tool.ptsip.release.package_revision",
       "pyproject.toml#tool.ptsip.release.package_state"
-    ]
+    ],
+    "prior_legacy_composition_ref": {
+      "file": "pyproject.toml",
+      "table": "tool.ptsip.release",
+      "role": "DERIVED_PROJECTION_ONLY"
+    },
+    "source_format": "TOML_WITHOUT_EXTENSION",
+    "version_authority_scope": "PACKAGE_TOOL_PROFILE_ALL_SEVEN_REGISTERED_ENGINES",
+    "projection_role_of_pyproject": "DERIVED_NOT_CANONICAL",
+    "tool_version_source": "src/VERSION#tool_version",
+    "profile_version_source": "src/VERSION#profile_version",
+    "engine_version_source": "src/VERSION#engines",
+    "version_projection_paths": [
+      "pyproject.toml",
+      "src/ptsip/engines/index.json",
+      "src/ptsip/engines/{engine_id}/version.yaml",
+      "src/ptsip/specdata/project-profile-contracts.yaml"
+    ],
+    "component_version_changes": "EXPLICIT_SOURCE_EDIT_ONLY_NO_AUTO_INCREMENT",
+    "engine_version_change": "FUNCTIONAL_CHANGE_ONLY",
+    "version_sync_check_scope": "PACKAGE_TOOL_PROFILE_AND_ALL_REGISTERED_ENGINES",
+    "plane_owner": "DEVELOPER_POLICY_INFO",
+    "previous_pyproject_canonical_owner_rule": "SUPERSEDED_BY_PROJECT_OWNER_APPROVAL"
   },
   "default_engine_count": 7,
   "package_request": {
