@@ -84,7 +84,13 @@ func ParseComposition(data []byte) (Composition, error) {
 		if err != nil {
 			return c, err
 		}
-		if document.Project.Version != pypi {
+		// PEP 440 accepts both 0.3.8-b7 and the normalized 0.3.8b7.
+		// src/VERSION owns the exact canonical spelling in repository builds.
+		projectVersion := pypi
+		if c.PackageRevision == 0 && c.PackageState != "" {
+			projectVersion = c.PackageBase + "-" + c.PackageState
+		}
+		if document.Project.Version != pypi && document.Project.Version != projectVersion {
 			return c, fmt.Errorf("project.version must be the Package projection, not the Tool version")
 		}
 		c.PackagePyPI = pypi
@@ -120,7 +126,20 @@ func ReadComposition(root string) (Composition, error) {
 	if err != nil {
 		return Composition{}, err
 	}
-	return ParseComposition(b)
+	composition, err := ParseComposition(b)
+	if err != nil {
+		return Composition{}, err
+	}
+	// When the repository has adopted src/VERSION, fail on stale projections
+	// instead of accepting an outdated pyproject version for release.
+	if _, err := os.Stat(filepath.Join(root, "src", "VERSION")); err == nil {
+		if _, err := SyncPackageVersion(root, true); err != nil {
+			return Composition{}, err
+		}
+	} else if !os.IsNotExist(err) {
+		return Composition{}, err
+	}
+	return composition, nil
 }
 
 func VerifyCompositionProjections(root string, c Composition, contract Contract) error {
