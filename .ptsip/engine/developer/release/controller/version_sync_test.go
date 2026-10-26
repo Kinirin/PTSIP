@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-const canonicalVersionFixture = \`package_version = "0.3.8-b7"
+const canonicalVersionFixture = `package_version = "0.3.8-b7"
 tool_version = "T.0.3.8.b2"
 profile_version = "pp.2.00"
 
@@ -21,9 +21,9 @@ discovery = "0.3.3"
 planning = "0.3.2"
 execution = "0.3.2"
 projection = "0.2.2"
-\`
+`
 
-const versionSyncFixture = \`[project]
+const versionSyncFixture = `[project]
 name = "PTSIP"
 version = "0.3.8b6"
 
@@ -46,7 +46,7 @@ projection = "0.2.2"
 
 [tool.ptsip.release.published]
 identity = "0.3.8.fa660a"
-\`
+`
 
 var versionsForFixture = map[string]string{
 	"context": "0.2.2", "storage": "0.3.2", "validation": "0.3.4",
@@ -99,9 +99,9 @@ func TestSyncPackageVersionFromSource(t *testing.T) {
 	}
 	after, _ := os.ReadFile(filepath.Join(root, "pyproject.toml"))
 	for _, needle := range []string{
-		\`version = "0.3.8-b7"\`, \`package_state = "b7"\`,
-		\`tool_version = "T.0.3.8.b2"\`, \`profile_version = "pp.2.00"\`,
-		\`context = "0.2.2"\`, \`[tool.ptsip.release.published]\`, \`identity = "0.3.8.fa660a"\`,
+		`version = "0.3.8-b7"`, `package_state = "b7"`,
+		`tool_version = "T.0.3.8.b2"`, `profile_version = "pp.2.00"`,
+		`context = "0.2.2"`, `[tool.ptsip.release.published]`, `identity = "0.3.8.fa660a"`,
 	} {
 		if !strings.Contains(string(after), needle) { t.Fatalf("lost field: %s", needle) }
 	}
@@ -115,9 +115,9 @@ func TestSyncPackageVersionFromSource(t *testing.T) {
 
 func TestFullCanonicalSourceProjectsIndependentVersions(t *testing.T) {
 	source := strings.NewReplacer(
-		\`tool_version = "T.0.3.8.b2"\`, \`tool_version = "T.0.3.9"\`,
-		\`profile_version = "pp.2.00"\`, \`profile_version = "pp.2.01"\`,
-		\`storage = "0.3.2"\`, \`storage = "0.3.3"\`,
+		`tool_version = "T.0.3.8.b2"`, `tool_version = "T.0.3.9"`,
+		`profile_version = "pp.2.00"`, `profile_version = "pp.2.01"`,
+		`storage = "0.3.2"`, `storage = "0.3.3"`,
 	).Replace(canonicalVersionFixture)
 	root := writeVersionFixture(t, source, versionSyncFixture)
 	result, err := SyncPackageVersion(root, false)
@@ -130,7 +130,7 @@ func TestFullCanonicalSourceProjectsIndependentVersions(t *testing.T) {
 		t.Fatalf("wrong projection targets: got %v, want %v", result.ChangedFiles, expected)
 	}
 	project, _ := os.ReadFile(filepath.Join(root, "pyproject.toml"))
-	for _, needle := range []string{\`tool_version = "T.0.3.9"\`, \`profile_version = "pp.2.01"\`, \`storage = "0.3.3"\`, \`context = "0.2.2"\`} {
+	for _, needle := range []string{`tool_version = "T.0.3.9"`, `profile_version = "pp.2.01"`, `storage = "0.3.3"`, `context = "0.2.2"`} {
 		if !strings.Contains(string(project), needle) { t.Fatalf("missing %s", needle) }
 	}
 	if result, err = SyncPackageVersion(root, true); err != nil || result.Changed {
@@ -142,9 +142,9 @@ func TestVersionSyncRejectsInvalidOrMissingSource(t *testing.T) {
 	cases := []string{
 		"0.3.8-b7\n",
 		strings.Replace(canonicalVersionFixture, "0.3.8-b7", "0.3.8b7", 1),
-		strings.Replace(canonicalVersionFixture, \`tool_version = "T.0.3.8.b2"\`, \`tool_version = "0.3.8b2"\`, 1),
-		strings.Replace(canonicalVersionFixture, \`profile_version = "pp.2.00"\`, "", 1),
-		strings.Replace(canonicalVersionFixture, \`context = "0.2.2"\`, "", 1),
+		strings.Replace(canonicalVersionFixture, `tool_version = "T.0.3.8.b2"`, `tool_version = "0.3.8b2"`, 1),
+		strings.Replace(canonicalVersionFixture, `profile_version = "pp.2.00"`, "", 1),
+		strings.Replace(canonicalVersionFixture, `context = "0.2.2"`, "", 1),
 		canonicalVersionFixture + "unknown = true\n",
 		canonicalVersionFixture + "\n[not-approved]\nx = 1\n",
 	}
@@ -164,10 +164,10 @@ func TestVersionSyncRejectsInvalidOrMissingSource(t *testing.T) {
 func TestVersionSyncRejectsAmbiguousProjectFields(t *testing.T) {
 	cases := map[string]string{
 		"missing_project": strings.Replace(versionSyncFixture, "[project]", "[other]", 1),
-		"missing_version": strings.Replace(versionSyncFixture, \`version = "0.3.8b6"\`, \`v = "0.3.8b6"\`, 1),
-		"duplicate_version": strings.Replace(versionSyncFixture, \`version = "0.3.8b6"\`, \`version = "0.3.8b6"\`+"\n"+\`version = "0.3.8b5"\`, 1),
-		"missing_state": strings.Replace(versionSyncFixture, \`package_state = "b6"\`, "", 1),
-		"missing_engine": strings.Replace(versionSyncFixture, \`storage = "0.3.2"\`, "", 1),
+		"missing_version": strings.Replace(versionSyncFixture, `version = "0.3.8b6"`, `v = "0.3.8b6"`, 1),
+		"duplicate_version": strings.Replace(versionSyncFixture, `version = "0.3.8b6"`, `version = "0.3.8b6"`+"\n"+`version = "0.3.8b5"`, 1),
+		"missing_state": strings.Replace(versionSyncFixture, `package_state = "b6"`, "", 1),
+		"missing_engine": strings.Replace(versionSyncFixture, `storage = "0.3.2"`, "", 1),
 	}
 	for name, project := range cases {
 		t.Run(name, func(t *testing.T) {
@@ -184,7 +184,7 @@ func TestVersionSyncPreservesCRLFAndSupportsStableRelease(t *testing.T) {
 	if _, err := SyncPackageVersion(root, false); err != nil { t.Fatal(err) }
 	after, _ := os.ReadFile(filepath.Join(root, "pyproject.toml"))
 	if strings.Contains(strings.ReplaceAll(string(after), "\r\n", ""), "\n") { t.Fatal("CRLF rewritten") }
-	for _, want := range []string{\`version = "0.3.9"\`, \`package_base = "0.3.9"\`, \`package_state = ""\`} {
+	for _, want := range []string{`version = "0.3.9"`, `package_base = "0.3.9"`, `package_state = ""`} {
 		if !strings.Contains(string(after), want) { t.Fatalf("missing stable projection %s", want) }
 	}
 }
