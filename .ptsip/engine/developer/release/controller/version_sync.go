@@ -40,15 +40,18 @@ func ReadSourcePackageVersion(root string) (string, string, string, error) {
 }
 
 func tomlProjectionLine(line, key, replacement string) (string, string, bool, error) {
+	original := line
 	newline := ""
-	if strings.HasSuffix(line, "\n") {
+	if strings.HasSuffix(line, "\r\n") {
+		newline = "\r\n"
+		line = strings.TrimSuffix(line, "\r\n")
+	} else if strings.HasSuffix(line, "\n") {
 		newline = "\n"
 		line = strings.TrimSuffix(line, "\n")
 	}
-	line = strings.TrimSuffix(line, "\r")
 	start := regexp.MustCompile(`^[ \t]*` + regexp.QuoteMeta(key) + `[ \t]*=`)
 	if !start.MatchString(line) {
-		return line + strings.TrimSuffix(strings.TrimPrefix(newline, ""), ""), "", false, nil
+		return original, "", false, nil
 	}
 	pattern := regexp.MustCompile(`^([ \t]*` + regexp.QuoteMeta(key) + `[ \t]*=[ \t]*)("[^"\r\n]*"|[0-9]+)([ \t]*(?:#.*)?)$`)
 	parts := pattern.FindStringSubmatch(line)
