@@ -2,6 +2,7 @@ package engines_test
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -77,6 +78,29 @@ func installedEnvironment(t *testing.T) (object, string, string) {
 		t.Fatal(err)
 	}
 	return object{"package_root": packageRoot, "distribution_root": distribution, "scripts_root": scripts}, packageRoot, scripts
+}
+
+func TestOfficialEngineCompatibilityCLIEncoding(t *testing.T) {
+	root := testrepo.Root(t)
+	code := `import contextlib, io, json
+from ptsip import cli
+report={'schema_version':'ptsip-official-engine-compatibility-error/v1','status':'UNVERIFIED','reason':'파일 누락 🚀','execution_authorized':False}
+cli.official_engine_compatibility=lambda: (report,4)
+buffer=io.BytesIO()
+stream=io.TextIOWrapper(buffer,encoding='cp949')
+with contextlib.redirect_stdout(stream):
+ assert cli.main(['engines','compatibility','--json'])==4
+stream.flush()
+raw=buffer.getvalue()
+assert json.loads(raw.decode('utf-8'))==report
+print('Legacy-console JSON roundtrip PASS')
+`
+	cmd := exec.Command("python", "-c", code)
+	cmd.Dir = root
+	cmd.Env = append(os.Environ(), "PYTHONPATH="+filepath.Join(root, "src"), "PYTHONIOENCODING=cp949")
+	if output, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("diagnostic JSON must survive Windows legacy encodings: %v\n%s", err, output)
+	}
 }
 
 func environmentRow(t *testing.T, output object, kind string) object {

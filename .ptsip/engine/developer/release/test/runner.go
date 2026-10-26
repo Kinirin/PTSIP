@@ -256,7 +256,10 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 			return result, err
 		}
 		if id == "discovery" {
-			if err := command(root, []string{"PTSIP_TEST_DISCOVERY_BINARY=" + binary}, "go", "-C", "developer/tests", "test", "./engines", "-run", "^TestOfficialEngineEnvironmentDiagnostics$", "-count=1", "-timeout=5m"); err != nil {
+			if err := command(root, nil, "python", "-m", "pip", "install", "--disable-pip-version-check", "PyYAML>=6,<7", "jsonschema>=4.23,<5"); err != nil {
+				return result, err
+			}
+			if err := command(root, []string{"PTSIP_TEST_DISCOVERY_BINARY=" + binary}, "go", "-C", "developer/tests", "test", "./engines", "-run", "^(TestOfficialEngineEnvironmentDiagnostics|TestOfficialEngineCompatibilityCLIEncoding)$", "-count=1", "-timeout=5m"); err != nil {
 				return result, err
 			}
 		}

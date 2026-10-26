@@ -498,7 +498,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "engines":
             result, code = (official_engine_compatibility() if args.engine_command == "compatibility"
                             else official_engine_installation_status())
-            _emit(result, args.json)
+            if args.engine_command == "compatibility" and args.json:
+                # ASCII JSON escapes preserve localized errors even when Windows
+                # stdout uses a legacy encoding; every byte is also valid UTF-8.
+                print(json.dumps(result, indent=2, ensure_ascii=True))
+            else:
+                _emit(result, args.json)
             return code
         if args.command == "doctor":
             result = doctor(args.path)
