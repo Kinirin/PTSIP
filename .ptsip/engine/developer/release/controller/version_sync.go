@@ -230,7 +230,7 @@ func projectSingleLine(data []byte, field, version string) ([]byte, error) {
 	if len(matches) != 1 {
 		return nil, fmt.Errorf("missing or ambiguous %s YAML projection", field)
 	}
-	return re.ReplaceAll(data, []byte("1"+version+"3")), nil
+	return re.ReplaceAll(data, []byte("${1}"+version+"${3}")), nil
 }
 
 type versionProjection struct {
