@@ -39,6 +39,8 @@ func main() {
 	var value any
 	var err error
 	switch command {
+	case "sync-version", "check-version":
+		value, err = release.SyncPackageVersion(*root, command == "check-version")
 	case "admit-policy":
 		err = release.AdmitCTRLPublicationPolicy(*root)
 		if err == nil {
