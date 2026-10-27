@@ -107,9 +107,9 @@ jobs:
       - name: Execute Release Admission negative tests
         shell: bash
         run: go -C .ptsip/engine/developer test ./release -count=1
-      - name: Check consolidated Developer contracts and fourteen Family routes
+      - name: Test all Developer schema contracts and fourteen Family routes
         shell: bash
-        run: go -C .ptsip/engine/developer test ./schema_check -run 'TestCanonical' -count=1 -v
+        run: go -C .ptsip/engine/developer test ./schema_check -count=1 -v -v
       - name: Check approval-bound machine contract (not publication)
         shell: bash
         run: |
