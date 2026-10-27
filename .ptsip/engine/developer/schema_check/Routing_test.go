@@ -97,7 +97,36 @@ func TestSharedPublicPolicyUsesGOVFlatStatusAndGOVRoute(t *testing.T) {
  if routingString(govRoute["public"]) != ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json" {
   t.Fatal("GOV must resolve public schema from the shared common contract")
  }
- if routingString(govRoute["rules"]) != ".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json" {
+ if routingString(govRoute["rules"]) != ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json" {
   t.Fatal("GOV independent rules binding must be preserved")
+ }
+ rules, err := routingFile(root, ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json", ".ptsip/contracts/schemas/")
+ if err != nil {t.Fatal(err)}
+ if routingString(rules["$id"]) != "urn:ptsip:policy:GOV_rules:v6" {t.Fatal("GOV rules contract ID changed during move")}
+ if _,err := os.Stat(filepath.Join(root,filepath.FromSlash(".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json"))); !os.IsNotExist(err) {
+  t.Fatalf("old GOV rules schema path still exists or could not be checked: %v",err)
+ }
+}
+
+func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
+ root := routingRepositoryRoot(t)
+ for _, id := range []string{"0001","0004","0005","0006"} {
+  rel := "developer/policy/GOV/MPD-GOV-"+id+".yaml"
+  data,err := os.ReadFile(filepath.Join(root,filepath.FromSlash(rel)))
+  if err != nil {t.Fatal(err)}
+  lines := strings.Split(string(data),"\n")
+  roots := []string{}
+  for _,line := range lines {
+   if strings.HasPrefix(line," ") || strings.HasPrefix(line,"#") || line=="" {continue}
+   if strings.HasSuffix(line,":") {roots=append(roots,line)}
+  }
+  if got:=strings.Join(roots,"|");got!="Policy_Identity:|Policy_Status:|Policy_Rules:" {
+   t.Errorf("%s unexpected top-level sections: %s", rel,got)
+  }
+  if !strings.Contains(string(data),"  status: APPROVED.Applying\n") ||
+   !strings.Contains(string(data),"  Policy_Status_Schema_ver:") ||
+   !strings.Contains(string(data),"  contract: urn:ptsip:contract:policy:gov:") {
+   t.Errorf("%s missing current flat GOV Policy_Status",rel)
+  }
  }
 }
