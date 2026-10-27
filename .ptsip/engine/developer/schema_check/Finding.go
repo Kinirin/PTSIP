@@ -89,6 +89,23 @@ var schemaScanRoots = []string{
     ".ptsip/contracts/policy/lifecycle/Policy_version",
 }
 
+// Only Family-specific rule-writing schemas use this physical location.
+func isFamilyRulesAuthoringSchema(relative string) bool {
+ if !strings.HasPrefix(relative,".ptsip/contracts/schemas/Policy_Rules/"){return false}
+ idx:=strings.LastIndex(relative,"/")
+ file:=relative[idx+1:]
+ for _,suffix:=range []string{"_rules.schema.json","_rules.schemas.json"} {
+  if !strings.HasSuffix(file,suffix) {continue}
+  family:=strings.TrimSuffix(file,suffix)
+  if family==""{return false}
+  for _,letter:=range family {
+   if !((letter>='A'&&letter<='Z')||(letter>='0'&&letter<='9')){return false}
+  }
+  return true
+ }
+ return false
+}
+
 func schemaFiles(root string) ([]string, []Finding) {
     paths := []string{}
     findings := []Finding{}
@@ -106,6 +123,12 @@ func schemaFiles(root string) ([]string, []Finding) {
                     return relError
                 }
                 relative=filepath.ToSlash(relative)
+                if isFamilyRulesAuthoringSchema(relative) {
+                 file:=relative[strings.LastIndex(relative,"/")+1:]
+                 if relative!=familyRulesSchemaRoot+file {
+                  findings=append(findings,Finding{File:relative,Status:"FAIL",Problem:"FAMILY_RULES_SCHEMA_LOCATION_INVALID"})
+                 }
+                }
                 found[relative]=true
                 paths=append(paths,path)
                 count++

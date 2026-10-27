@@ -97,14 +97,14 @@ func TestSharedPublicPolicyUsesGOVFlatStatusAndGOVRoute(t *testing.T) {
  if routingString(govRoute["public"]) != ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json" {
   t.Fatal("GOV must resolve public schema from the shared common contract")
  }
- if routingString(govRoute["rules"]) != ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json" {
+ if routingString(govRoute["rules"]) != ".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json" {
   t.Fatal("GOV independent rules binding must be preserved")
  }
- rules, err := routingFile(root, ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json", ".ptsip/contracts/schemas/")
+ rules, err := routingFile(root, ".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json", ".ptsip/contracts/schemas/")
  if err != nil {t.Fatal(err)}
  if routingString(rules["$id"]) != "urn:ptsip:policy:GOV_rules:v6" {t.Fatal("GOV rules contract ID changed during move")}
- if _,err := os.Stat(filepath.Join(root,filepath.FromSlash(".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json"))); !os.IsNotExist(err) {
-  t.Fatalf("old GOV rules schema path still exists or could not be checked: %v",err)
+ if _,err := os.Stat(filepath.Join(root,filepath.FromSlash(".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json"))); !os.IsNotExist(err) {
+  t.Fatalf("noncanonical GOV rules schema still exists: %v",err)
  }
 }
 
@@ -129,5 +129,34 @@ func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
    !strings.Contains(normalized,"  contract: urn:ptsip:contract:policy:gov:") {
    t.Errorf("%s missing current flat GOV Policy_Status",rel)
   }
+ }
+}
+
+func TestAllFamilyRulesSchemaRoutesUseCanonicalDirectory(t *testing.T) {
+ root:=routingRepositoryRoot(t)
+ routing,_,_,_,_,_,err:=loadRoutingInputs(root)
+ if err!=nil{t.Fatal(err)}
+ families:=routingMembers(routingMembers(routing["routes"])["PTSIP_DEVELOPER_POLICY"])
+ if len(families)!=14 {t.Fatalf("expected 14 families: %d",len(families))}
+ for family,raw:=range families {
+  refs:=routingMembers(routingMembers(raw)["schema_refs"])
+  target:=routingString(refs["rules"])
+  if !canonicalFamilyRulesSchemaPath(family,target){t.Errorf("%s rules schema outside root-family: %s",family,target)}
+ }
+}
+
+func TestFamilyRulesSchemaLocationRejectsNoncanonicalPaths(t *testing.T) {
+ for _,path:=range []string{
+  ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json",
+  ".ptsip/contracts/schemas/Policy_Rules/abortively/v2_GOV.schema.json",
+  ".ptsip/contracts/schemas/Policy_Rules/root-family/INFO_rules.schema.json",
+  ".ptsip/contracts/schemas/Policy_Rules/root-family/../GOV_rules.schema.json",
+  ".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.json",
+ }{
+  if canonicalFamilyRulesSchemaPath("GOV",path) {t.Fatalf("incorrect schema location accepted: %s",path)}
+ }
+ for _,suffix:=range []string{".schema.json",".schemas.json"}{
+  target:=familyRulesSchemaRoot+"GOV_rules"+suffix
+  if !canonicalFamilyRulesSchemaPath("GOV",target){t.Fatalf("valid schema name rejected: %s",target)}
  }
 }

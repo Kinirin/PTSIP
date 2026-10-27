@@ -65,6 +65,14 @@ func routingString(v any) string {
     return s
 }
 
+// The policy-specific Rule schema always belongs to its matching Family.
+const familyRulesSchemaRoot = ".ptsip/contracts/schemas/Policy_Rules/root-family/"
+
+func canonicalFamilyRulesSchemaPath(family, target string) bool {
+ return target==familyRulesSchemaRoot+family+"_rules.schema.json" ||
+  target==familyRulesSchemaRoot+family+"_rules.schemas.json"
+}
+
 func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int, int, []string, error) {
     boundary, err := routingFile(root, ".ptsip/contracts/policy/boundary.json", ".ptsip/contracts/policy/")
     if err != nil { return nil, nil, nil, 0, 0, nil, err }
@@ -122,6 +130,10 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
             if kind == "PTSIP_SUPPORT_FEATURE" { prefix = "src/policy/" }
             if output != prefix+family { return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTE_DIRECTORY_MISMATCH: %s/%s", kind, family) }
             schemaRefs := routingMembers(selected["schema_refs"])
+            if kind == "PTSIP_DEVELOPER_POLICY" &&
+              !canonicalFamilyRulesSchemaPath(family,routingString(schemaRefs["rules"])) {
+              return nil,nil,nil,0,0,nil,fmt.Errorf("FAMILY_RULES_SCHEMA_LOCATION_INVALID: %s/%s",kind,family)
+            }
             for _, key := range []string{"public", "rules"} {
                 target := routingString(schemaRefs[key])
                 doc, err := routingFile(root, target, ".ptsip/contracts/schemas/")

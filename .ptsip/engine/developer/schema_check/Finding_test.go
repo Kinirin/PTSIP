@@ -117,3 +117,24 @@ func TestApprovedRBACScaffoldsRemainFailClosed(t *testing.T) {
   t.Fatal("unapproved scaffold path accepted")
  }
 }
+
+func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
+ root:=t.TempDir()
+ for _,relative:=range approvedSchemaPaths {writeSchemaFixture(t,root,relative)}
+ good:=familyRulesSchemaRoot+"GOV_rules.schema.json"
+ writeSchemaFixture(t,root,good)
+ _,prior:=schemaFiles(root)
+ if len(prior)!=0 {t.Fatalf("canonical Family rules schema rejected: %v",prior)}
+ for _,relative:=range []string{
+  ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json",
+  ".ptsip/contracts/schemas/Policy_Rules/abortively/GOV_rules.schema.json",
+ }{
+  writeSchemaFixture(t,root,relative)
+  _,findings:=schemaFiles(root)
+  found:=false
+  for _,row:=range findings {
+   if row.File==relative && row.Problem=="FAMILY_RULES_SCHEMA_LOCATION_INVALID" {found=true}
+  }
+  if !found{t.Fatalf("misplaced Family schema accepted: %s findings=%v",relative,findings)}
+ }
+}
