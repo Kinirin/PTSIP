@@ -47,12 +47,11 @@ func collectRefs(v any,refs *[]string){
  }
 }
 
-// approvedSchemaPaths are the current owner-approved Policy_Status and
-// Policy_version schema files. Requiring them detects missing contracts rather
+// approvedSchemaPaths lists current Policy_Status and Policy_version sources.
+// Retired status constant schema is no longer an approved active resource. Requiring them detects missing contracts rather
 // than accidentally reporting a successful partial directory scan.
 var approvedSchemaPaths = []string{
     ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
-    ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
     ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
 }
 

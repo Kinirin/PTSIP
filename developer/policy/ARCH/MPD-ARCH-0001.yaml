@@ -79,9 +79,15 @@ rules:
     policy_scope: PTSIP_DEVELOPER_POLICY
     root_family_policy_schema_ownership:
       owner: MATCHING_RESPONSIBILITY_FAMILY
-      scope: ENTIRE_POLICY_RECORD_FIELD_SCHEMA
+      scope: ENTIRE_POLICY_RECORD_FIELD_SCHEMA_EXCEPT_SHARED_POLICY_STATUS
       each_family_independent_schema: true
-      shared_cross_family_normative_schema: FORBIDDEN
+      shared_cross_family_normative_schema: FORBIDDEN_EXCEPT_GOV_OWNED_POLICY_STATUS
+      common_policy_status_exception:
+        decision: RECONCILE
+        owner: GOV
+        contract: .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json
+        scope: POLICY_STATUS_ONLY
+        unrelated_family_rule_authority: PRESERVED
       field_schema_authority_inferred_from_filename_only: FORBIDDEN
     canonical_fsd_layout:
       root: developer/policy/
@@ -105,7 +111,8 @@ rules:
       primary_owner_family: GOV
       contract_ref: developer/contracts/lifecycle/policy_status.json
       approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml
-      family_schema_owns_record_representation: true
+      family_schema_owns_record_representation: false
+      shared_record_representation_schema: .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json
       family_schema_redefines_lifecycle_vocabulary: false
     implementation_authorization: NOT_GRANTED
     existing_validator_cutover_authorized: false
@@ -142,9 +149,15 @@ rules:
     - REQUIRED_AND_OPTIONAL_FIELDS
     - FIELD_TYPES_AND_VALUE_CONSTRAINTS
     - FAMILY_SPECIFIC_RULE_PAYLOAD
-    - COMMON_NAMED_FIELDS_WITHIN_FAMILY_RECORD
+    - COMMON_NAMED_FIELDS_WITHIN_FAMILY_RECORD_EXCEPT_POLICY_STATUS
     each_family_owns_entire_schema: true
-    cross_family_schema_normative_inheritance: FORBIDDEN
+    cross_family_schema_normative_inheritance: FORBIDDEN_EXCEPT_POLICY_STATUS
+    policy_status_shared_contract_exception:
+      decision: RECONCILE
+      owner: GOV
+      ref: .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json
+      only_field: Policy_Status
+      family_policy_rules_ownership: PRESERVED
     info_global_field_schema_authority_for_other_families: REPLACED
     shared_primitives_transfer_field_authority: false
     target_schema_directory_pattern: 'developer/policy/{FAMILY}/validator/'

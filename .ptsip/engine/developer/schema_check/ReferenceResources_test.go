@@ -1,6 +1,7 @@
 package schema_check
 
 import (
+ "encoding/json"
  "os"
  "path/filepath"
  "strings"
@@ -36,5 +37,29 @@ func TestApprovedFlatStatusProbeMissingResourcesIsUnresolved(t *testing.T){
  report:=probeApprovedFlatPolicyStatus(t.TempDir(),Engine{})
  if report.Status!="UNRESOLVED"||!strings.Contains(report.Problem,"APPROVED_SCHEMA_RESOURCE_UNAVAILABLE"){
   t.Fatalf("fail-closed resource probe required: %+v",report)
+ }
+}
+
+func TestSharedStatusEnumMatchesLifecycleContracts(t *testing.T){
+ root,err:=filepath.Abs(filepath.Join("..","..","..",".."))
+ if err!=nil{t.Fatal(err)}
+ raw,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(publicPolicyStatusPath)))
+ if err!=nil{t.Fatal(err)}
+ var schema map[string]any
+ if err:=json.Unmarshal(raw,&schema);err!=nil{t.Fatal(err)}
+ if err:=verifySharedStatusLifecycleEnum(root,schema);err!=nil{
+  t.Fatalf("status enum must match lifecycle sources: %v",err)
+ }
+ props:=schema["properties"].(map[string]any)
+ status:=props["status"].(map[string]any)
+ original:=status["enum"].([]any)
+ status["enum"]=original[:len(original)-1]
+ if err:=verifySharedStatusLifecycleEnum(root,schema);err==nil {
+  t.Fatal("missing lifecycle-defined value should be rejected")
+ }
+ status["enum"]=original
+ delete(status,"x-ptsip-lifecycle-enum-binding")
+ if err:=verifySharedStatusLifecycleEnum(root,schema);err==nil {
+  t.Fatal("missing source binding should be rejected")
  }
 }

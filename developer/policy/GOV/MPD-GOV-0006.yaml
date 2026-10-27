@@ -10,7 +10,7 @@ Policy_Status:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
-    Rule_ver: "13"
+    Rule_ver: "14"
   Definition:
     meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
@@ -32,8 +32,12 @@ Policy_Rules:
     obligations:
       - id: OBLIGATION/FLATTEN_POLICY_STATUS
         applies_when: POLICY_STATUS_SERIALIZATION
-        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 공통 Policy_Status는 GOV에서 검증한 평면형을 채택하며 최상위 필드는 Policy_Status_Schema_ver, status, contract 세 항목을 필수로 관리한다. 기존 Schema/Policy_Status_version/version과 constant 그룹은 제거하고, status와 substatus의 상태 의미를 하나의 status 값에 보존한다. 승인된 13개 상태값과 정책 계약 식별 패턴은 .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json이 소유하며 GOV 전용 패턴을 모든 Family에 강제하지 않는다. 정책 문서에 대한 구조 전환은 해당 Family의 별도 검증된 이관을 필요로 하고, 스키마 변경만으로 구형 문서의 적합성이나 정책 활성화를 인정하지 않는다."
+        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 공통 Policy_Status는 GOV에서 검증한 평면형을 채택하며 최상위 필드는 Policy_Status_Schema_ver, status, contract 세 항목을 필수로 관리한다. 기존 Schema/Policy_Status_version/version과 constant 그룹은 제거하고, status와 substatus의 상태 의미를 하나의 status 값에 보존한다. 13개 결합 상태값의 권위 원본은 .ptsip/contracts/policy/lifecycle/Policy_status/의 APPROVED·DRAFT·RETIRED 계약이며, .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json의 status.enum은 원본의 status.const와 substatus.enum을 결정론적으로 결합한 투영으로 검증한다. 공통 스키마의 contract 패턴을 적용하며 GOV_status.schema.json의 독자적 contract 정의를 철회하고 Policy_Status/policy_status_constant.schema.json은 현행 검증에 사용하지 않는다. 정책 문서에 대한 구조 전환은 해당 Family의 별도 검증된 이관을 필요로 하고, 스키마 변경만으로 구형 문서의 적합성이나 정책 활성화를 인정하지 않는다."
         Rule_state: APPROVED.provisional
+      - id: OBLIGATION/COMMON_STATUS_CONTRACT_RECONCILIATION
+        applies_when: ROOT_FAMILY_POLICY_STATUS_SCHEMA_OWNERSHIP_OR_VALIDATION
+        rule: "RECONCILE: PTSIP_DEVELOPER_POLICY Root Family의 Policy_Status 필드에 한해 GOV 생명주기 소유권과 공통 Public_Policy_Status.schema.json을 단일 규범 구조로 적용한다. 기존 ARCH·INFO의 Family 전체 필드 스키마 독립 소유 규칙은 Policy_Status만 예외로 하며 각 Family 고유 정책 구조·Policy_Rules의 독립 소유권은 보존한다. Family별 Policy_Status 스키마나 GOV 단독 contract 패턴은 현재 규범을 대체할 수 없다. 구형 상태 스키마 사용 중단은 승인 없는 정책 상태 전환 또는 전체 문서 적합성 주장을 허용하지 않는다."
+        Rule_state: APPROVED.Applying
       - id: OBLIGATION/LIFECYCLE_CONTRACT_AUTHORITY
         applies_when: POLICY_STATUS_OR_VERSION_CHANGE
         rule: "정책 상태와 버전은 해당 항목을 소유하는 GOV 생명주기 계약 및 승인 조건에 따라 관리한다."

@@ -30,7 +30,18 @@
         "RETIRED.Default",
         "RETIRED.Removable",
         "RETIRED.Waiting"
-      ]
+      ],
+      "x-ptsip-lifecycle-enum-binding": {
+        "mode": "DERIVED_DOT_JOIN",
+        "source_contracts": [
+          ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
+          ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
+          ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json"
+        ],
+        "projection": "properties.status.const + '.' + properties.substatus.enum[]",
+        "authority": "SOURCE_CONTRACTS",
+        "on_mismatch": "FAIL_CLOSED"
+      }
     },
     "contract": {
       "type": "string",

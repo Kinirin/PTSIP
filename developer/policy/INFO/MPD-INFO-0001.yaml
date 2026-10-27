@@ -21,7 +21,10 @@ rules:
     affected_policy_class: PTSIP_DEVELOPER_POLICY
     affected_artifact_kind: ROOT_FAMILY_POLICY_RECORD
     schema_definition_owner: MATCHING_RESPONSIBILITY_FAMILY
-    full_field_schema_ownership: PER_FAMILY_EXCLUSIVE
+    full_field_schema_ownership: PER_FAMILY_EXCLUSIVE_EXCEPT_SHARED_POLICY_STATUS
+    status_exception_resolution: RECONCILE
+    status_exception_owner: GOV
+    status_exception_contract: .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json
     info_cross_family_field_schema_ownership: FORBIDDEN
     shared_schema_definition_authority_by_info: FORBIDDEN
     preserved_info_authority:
