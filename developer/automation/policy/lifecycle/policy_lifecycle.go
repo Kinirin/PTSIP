@@ -224,11 +224,18 @@ func policyApproval(r Repository, reference string) (Object, error) {
 	if approval["target_substatus"] == nil {
 		approval["target_substatus"] = "Default"
 	}
-	state, err := NormalizePolicyStatus(r, Object{"status": approval["target_status"], "substatus": approval["target_substatus"]})
-	if err != nil {
+	status, ok := approval["target_status"].(string)
+	if !ok {return nil, policyFailure("INVALID_APPROVAL_TARGET_STATUS", "target status must be a string")}
+	contract := ""
+	switch status {
+	case "APPROVED", "DRAFT", "RETIRED":
+		contract = ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_"+status+".json"
+	default:
+		return nil, policyFailure("INVALID_APPROVAL_TARGET_STATUS", "unknown lifecycle category")
+	}
+	if err := r.Validate(contract, Object{"status":status,"substatus":approval["target_substatus"]});err!=nil {
 		return nil, policyFailure("INVALID_APPROVAL_TARGET_STATUS", err.Error())
 	}
-	approval["target_status"], approval["target_substatus"] = state["status"], state["substatus"]
 	return approval, nil
 }
 func policyRequireFamilyClass(r Repository, class, family string) error {

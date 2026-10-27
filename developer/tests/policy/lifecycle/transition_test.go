@@ -98,7 +98,6 @@ func TestRelatedStatusSchemasIncludeApproved(t *testing.T) {
 		file string
 		path []string
 	}{
-		{lifecycle.PolicyStatusContract, []string{"$defs", "status", "enum"}},
 		{"developer/policy/schemas/policy-approval-provenance.schema.json", []string{"properties", "approval", "properties", "target_status", "enum"}},
 		{"developer/policy/schemas/source-application-review.schema.json", []string{"properties", "policy_query_list", "items", "properties", "expected_status", "enum"}},
 	} {

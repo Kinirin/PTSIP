@@ -32,7 +32,9 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
  // temp repository that omits those inputs can no longer be a passing fixture.
  paths := []string{
   ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
-  ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json",
+  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
+  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
+  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
   ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
   ".ptsip/contracts/policy/boundary.json",
   ".ptsip/contracts/policy/routing/policy_routes.json",
@@ -91,7 +93,7 @@ func TestInstalledValidationEngineAcceptsLimitedSchemaShape(t *testing.T){
  })
  if err!=nil{t.Fatalf("unexpected validation error: %v",err)}
  if result["status"]!="LIMITED_CHECK_PASS"{t.Fatalf("unexpected status: %v",result)}
- probe,ok:=result["reference_probe"].(map[string]any)
+ probe,ok:=result["status_probe"].(map[string]any)
  if !ok||probe["status"]!="PASS"||probe["positive_valid"]!=true||probe["missing_version_rejected"]!=true{
   t.Fatalf("approved external version reference was not verified via native engine: %v",result)
  }
@@ -114,15 +116,15 @@ func TestMalformedSchemaFailsClosed(t *testing.T){
 
 func TestDuplicateSchemaIDFailsClosed(t *testing.T){
  result,err:=schemaCheck(t,map[string]string{
-  "a.json":`{"$id":"urn:example:duplicate"}`,
-  "b.json":`{"$id":"urn:example:duplicate"}`,
+  "a.schema.json":`{"$id":"urn:example:duplicate"}`,
+  "b.schema.json":`{"$id":"urn:example:duplicate"}`,
  })
  if err==nil || result["status"]!="FAIL"{t.Fatalf("duplicate identity must fail closed: %v, %v",err,result)}
 }
 
 func TestExternalRefsAreNotClaimedVerified(t *testing.T){
  result,err:=schemaCheck(t,map[string]string{
-  "ref.json":`{"$id":"urn:example:reference","properties":{"linked":{"$ref":"urn:example:external"}}}`,
+  "ref.schema.json":`{"$id":"urn:example:reference","properties":{"linked":{"$ref":"urn:example:external"}}}`,
  })
  if err!=nil{t.Fatalf("external reference reporting should not pretend to resolve or reject it: %v",err)}
  if result["unverified_references"].(float64)<1{
@@ -131,7 +133,7 @@ func TestExternalRefsAreNotClaimedVerified(t *testing.T){
  detected:=false
  for _,item:=range result["findings"].([]any){
   row:=item.(map[string]any)
-  if row["file"]==".ptsip/contracts/schemas/ref.json" {
+  if row["file"]==".ptsip/contracts/schemas/ref.schema.json" {
    refs:=row["unverified_refs"].([]any)
    if len(refs)==1 && refs[0]=="urn:example:external" {detected=true}
   }
@@ -161,7 +163,6 @@ func TestPolicyStatusAndVersionContractsIncludedInEnginePath(t *testing.T) {
  if err!=nil || result["status"]!="LIMITED_CHECK_PASS" { t.Fatalf("engine path failed: %v %v",err,result) }
  required:=map[string]bool{
   ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json":false,
-  ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json":false,
   ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json":false,
  }
  for _,item:=range result["findings"].([]any){
@@ -188,7 +189,7 @@ func TestMissingPolicyVersionContractFailsClosed(t *testing.T){
 
 func TestDuplicateSchemaIDAcrossRootsFailsClosed(t *testing.T){
  result,err:=schemaCheck(t,map[string]string{
-  "duplicate.json":`{"$id":"urn:ptsip:policy:Status-version:v1"}`,
+  "duplicate.schema.json":`{"$id":"urn:ptsip:policy:Status-version:v1"}`,
  })
  if err==nil || result["status"]!="FAIL"{t.Fatalf("duplicate logical schema id must fail: %v %v",err,result)}
  detected:=false

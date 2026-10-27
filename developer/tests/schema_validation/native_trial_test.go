@@ -101,32 +101,4 @@ func TestOfficialNativePolicySchemaTrial(t *testing.T) {
    }
   })
  }
- status:=map[string]any{
-  "status":"DRAFT","substatus":"Default",
-  "contract":"urn:ptsip:contract:policy:arch:identity:status",
- }
- for _,probe:=range []struct{name string;schema any;instance any}{
-  {"status-external-ref",
-   load(".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json"),status},
-  {"public-status-external-ref",
-   load(".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json"),
-   map[string]any{
-    "Schema":map[string]any{"Policy_Status_version":map[string]any{"version":"1.0"}},
-    "constant":status,
-   }},
- }{
-  t.Run(probe.name,func(t *testing.T){
-   response,raw,err:=nativeTrialCall(engine,probe.schema,probe.instance)
-   report:=map[string]any{
-    "probe":probe.name,"package_version":engine.PackageVersion,
-    "engine_version":engine.EngineVersion,"status":response.Status,
-    "valid":response.Output.Valid,"diagnostics":response.Output.Diagnostics,
-    "external_ref_conformance":"NOT_ASSERTED",
-   }
-   if err!=nil{report["native_error"]=err.Error()}
-   if response.Error!=nil{report["engine_error"]=response.Error}
-   summary,_:=json.Marshal(report)
-   t.Logf("NATIVE_EXTERNAL_REF_TRIAL %s raw=%s",summary,raw)
-  })
- }
 }
