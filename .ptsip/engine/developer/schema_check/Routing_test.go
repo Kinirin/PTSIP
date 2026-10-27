@@ -114,7 +114,8 @@ func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
   rel := "developer/policy/GOV/MPD-GOV-"+id+".yaml"
   data,err := os.ReadFile(filepath.Join(root,filepath.FromSlash(rel)))
   if err != nil {t.Fatal(err)}
-  lines := strings.Split(string(data),"\n")
+  normalized := strings.ReplaceAll(string(data), "\r\n", "\n")
+  lines := strings.Split(normalized, "\n")
   roots := []string{}
   for _,line := range lines {
    if strings.HasPrefix(line," ") || strings.HasPrefix(line,"#") || line=="" {continue}
@@ -123,9 +124,9 @@ func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
   if got:=strings.Join(roots,"|");got!="Policy_Identity:|Policy_Status:|Policy_Rules:" {
    t.Errorf("%s unexpected top-level sections: %s", rel,got)
   }
-  if !strings.Contains(string(data),"  status: APPROVED.Applying\n") ||
-   !strings.Contains(string(data),"  Policy_Status_Schema_ver:") ||
-   !strings.Contains(string(data),"  contract: urn:ptsip:contract:policy:gov:") {
+  if !strings.Contains(normalized,"  status: APPROVED.Applying\n") ||
+   !strings.Contains(normalized,"  Policy_Status_Schema_ver:") ||
+   !strings.Contains(normalized,"  contract: urn:ptsip:contract:policy:gov:") {
    t.Errorf("%s missing current flat GOV Policy_Status",rel)
   }
  }
