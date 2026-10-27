@@ -26,6 +26,7 @@ type Report struct {
  Total int `json:"total"`
  Failed int `json:"failed"`
  UnverifiedReferences int `json:"unverified_references"`
+ RetiredSchemaFiles int `json:"retired_schema_files"`
  UnresolvedScaffolds int `json:"unresolved_scaffolds"`
  NonSchemaJSONFiles int `json:"non_schema_json_files"`
  PolicyConformance string `json:"policy_conformance"`
@@ -85,6 +86,39 @@ func validateFailClosedRBACScaffold(path string, obj map[string]any) bool {
   guardOK && len(guard)==0
 }
 
+// Explicitly retired by GOV lifecycle policy. Retaining these files on disk
+// does not grant them current normative schema authority.
+var retiredStatusSchemaIDs = map[string]string{
+ ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json":
+  "urn:ptsip:policy:policy-status-constant:v1",
+ ".ptsip/contracts/schemas/Policy_Status/root-family/GOV_status.schema.json":
+  "urn:ptsip:policy:status:gov:v1",
+}
+
+// auditRetiredStatusSchemas is historical metadata verification only.
+// Exclusion is fail-closed if a preserved retired schema loses its marker/ID.
+func auditRetiredStatusSchemas(root string) []Finding {
+ paths:=make([]string,0,len(retiredStatusSchemaIDs))
+ for path:=range retiredStatusSchemaIDs {paths=append(paths,path)}
+ sort.Strings(paths)
+ findings:=make([]Finding,0,len(paths))
+ for _,path:=range paths {
+  f:=Finding{File:path,Status:"RETIRED_SCHEMA_EXCLUDED"}
+  raw,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(path)))
+  var doc map[string]any
+  if err==nil {err=json.Unmarshal(raw,&doc)}
+  if err!=nil {
+   f.Status="FAIL";f.Problem="RETIRED_SCHEMA_AUDIT_UNAVAILABLE_OR_INVALID: "+err.Error()
+  }else if doc["$id"]!=retiredStatusSchemaIDs[path] || doc["deprecated"]!=true {
+   f.Status="FAIL";f.Problem="RETIRED_SCHEMA_METADATA_MISMATCH"
+  }else{
+   f.Warnings=[]string{"HISTORICAL_ONLY_NOT_AN_ACTIVE_SCHEMA"}
+  }
+  findings=append(findings,f)
+ }
+ return findings
+}
+
 var schemaScanRoots = []string{
     ".ptsip/contracts/schemas",
     ".ptsip/contracts/policy/lifecycle/Policy_version",
@@ -106,9 +140,11 @@ func schemaFiles(root string) ([]string, []Finding) {
                 if relError != nil {
                     return relError
                 }
-                found[filepath.ToSlash(relative)] = true
-                paths = append(paths, path)
+                rel:=filepath.ToSlash(relative)
                 count++
+                if _,retired:=retiredStatusSchemaIDs[rel];retired {return nil}
+                found[rel] = true
+                paths = append(paths, path)
             }
             return nil
         })
@@ -137,6 +173,12 @@ func Run(root string)(Report,int){
  paths, problems := schemaFiles(root)
  report.Failed += len(problems)
  report.Findings = append(report.Findings, problems...)
+ // Historical retired schemas are audited separately, never validated or
+ // counted as active schemas and never treated as $ref authority.
+ for _,f:=range auditRetiredStatusSchemas(root) {
+  report.Findings=append(report.Findings,f)
+  if f.Status=="FAIL" {report.Failed++} else {report.RetiredSchemaFiles++}
+ }
  ids:=map[string]string{}
  for _,path:=range paths{
   relative,_:=filepath.Rel(root,path);relative=filepath.ToSlash(relative)

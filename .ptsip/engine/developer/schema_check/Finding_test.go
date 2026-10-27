@@ -117,3 +117,68 @@ func TestApprovedRBACScaffoldsRemainFailClosed(t *testing.T) {
   t.Fatal("unapproved scaffold path accepted")
  }
 }
+
+func TestRetiredStatusSchemasExcludedFromCurrentScan(t *testing.T) {
+ root:=t.TempDir()
+ for _,relative:=range approvedSchemaPaths {writeSchemaFixture(t,root,relative)}
+ for path,id:=range retiredStatusSchemaIDs {
+  target:=filepath.Join(root,filepath.FromSlash(path))
+  if err:=os.MkdirAll(filepath.Dir(target),0755);err!=nil {t.Fatal(err)}
+  raw,err:=json.Marshal(map[string]any{
+   "$id":id,"deprecated":true,
+   "$ref":"urn:legacy:status:must-not-enter-current-ref-count",
+  })
+  if err!=nil{t.Fatal(err)}
+  if err:=os.WriteFile(target,raw,0644);err!=nil {t.Fatal(err)}
+ }
+ active,errors:=schemaFiles(root)
+ if len(errors)!=0 {t.Fatalf("unexpected schema scan errors: %v",errors)}
+ if len(active)!=len(approvedSchemaPaths) {
+  t.Fatalf("retired schemas must not be current scan inputs: %v",active)
+ }
+ for _,path:=range active {
+  relative,err:=filepath.Rel(root,path)
+  if err!=nil {t.Fatal(err)}
+  if _,retired:=retiredStatusSchemaIDs[filepath.ToSlash(relative)];retired {
+   t.Fatalf("retired file leaked into active scan: %s",relative)
+  }
+ }
+ audit:=auditRetiredStatusSchemas(root)
+ if len(audit)!=len(retiredStatusSchemaIDs) {t.Fatalf("audit must cover both retired schemas: %v",audit)}
+ for _,f:=range audit {
+  if f.Status!="RETIRED_SCHEMA_EXCLUDED" || len(f.UnverifiedRefs)!=0 {
+   t.Fatalf("retired schema must be excluded and reference-free: %+v",f)
+  }
+ }
+}
+
+func TestRetiredSchemaAuditRejectsReactivationOrMissingFile(t *testing.T) {
+ root:=t.TempDir()
+ for path,id:=range retiredStatusSchemaIDs {
+  target:=filepath.Join(root,filepath.FromSlash(path))
+  if err:=os.MkdirAll(filepath.Dir(target),0755);err!=nil{t.Fatal(err)}
+  body,err:=json.Marshal(map[string]any{"$id":id,"deprecated":true})
+  if err!=nil{t.Fatal(err)}
+  if err:=os.WriteFile(target,body,0644);err!=nil{t.Fatal(err)}
+ }
+ first:=auditRetiredStatusSchemas(root)
+ for _,f:=range first {if f.Status!="RETIRED_SCHEMA_EXCLUDED" {t.Fatal(f)}}
+ for path,id:=range retiredStatusSchemaIDs {
+  body,err:=json.Marshal(map[string]any{"$id":id,"deprecated":false})
+  if err!=nil{t.Fatal(err)}
+  target:=filepath.Join(root,filepath.FromSlash(path))
+  if err:=os.WriteFile(target,body,0644);err!=nil{t.Fatal(err)}
+  bad:=auditRetiredStatusSchemas(root)
+  failed:=false
+  for _,f:=range bad {if f.File==path && f.Problem=="RETIRED_SCHEMA_METADATA_MISMATCH" {failed=true}}
+  if !failed {t.Fatalf("retired schema reactivation must fail closed: %s",path)}
+  if err:=os.Remove(target);err!=nil{t.Fatal(err)}
+  bad=auditRetiredStatusSchemas(root)
+  missing:=false
+  for _,f:=range bad {if f.File==path && strings.HasPrefix(f.Problem,"RETIRED_SCHEMA_AUDIT_UNAVAILABLE_OR_INVALID") {missing=true}}
+  if !missing {t.Fatalf("missing retired historical schema must be flagged: %s",path)}
+  body,err=json.Marshal(map[string]any{"$id":id,"deprecated":true})
+  if err!=nil{t.Fatal(err)}
+  if err:=os.WriteFile(target,body,0644);err!=nil{t.Fatal(err)}
+ }
+}

@@ -131,3 +131,23 @@ func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
   }
  }
 }
+
+func TestCurrentGOVRoutingDoesNotSelectRetiredStatusContracts(t *testing.T) {
+ root:=routingRepositoryRoot(t)
+ routes,_,_,_,_,_,err:=loadRoutingInputs(root)
+ if err!=nil{t.Fatal(err)}
+ for _,rawFamilies:=range routingMembers(routes["routes"]) {
+  for family,raw:=range routingMembers(rawFamilies) {
+   refs:=routingMembers(routingMembers(raw)["schema_refs"])
+   for _,key:=range []string{"public","rules"} {
+    path:=routingString(refs[key])
+    if _,retired:=retiredStatusSchemaIDs[path];retired {
+     t.Fatalf("%s route %s selects a retired status schema",family,key)
+    }
+    if path==".ptsip/contracts/schemas/root-family/GOV_public.schema.json" {
+     t.Fatalf("%s route %s selects obsolete GOV public schema",family,key)
+    }
+   }
+  }
+ }
+}
