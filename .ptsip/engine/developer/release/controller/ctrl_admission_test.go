@@ -63,12 +63,11 @@ func TestCTRLAdmissionFailClosedWithoutActiveNormativePolicy(t *testing.T) {
     }
 }
 
-func TestCTRLAdmissionAcceptsVerifiedPolicyWithoutGrantingPublication(t *testing.T) {
-    root,err:=filepath.Abs("../../../../..")
-    if err!=nil{t.Fatal(err)}
-    if err=AdmitCTRLPublicationPolicy(root);err!=nil{
-        t.Fatalf("effective CTRL policy should admit per-release verification: %v",err)
+func TestCTRLAdmissionBlocksWithdrawnPolicy(t *testing.T) {
+    root, err := filepath.Abs("../../../../..")
+    if err != nil { t.Fatal(err) }
+    err = AdmitCTRLPublicationPolicy(root)
+    if err == nil || !strings.Contains(err.Error(), "RELEASE_PUBLICATION_BLOCKED") {
+        t.Fatalf("withdrawn CTRL policy unexpectedly admitted: %v", err)
     }
-    // This call admits only POLICY, not the exact-source selection or run.
-    // The latter remains mandatory through AdmitVerification.
 }

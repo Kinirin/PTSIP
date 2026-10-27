@@ -7,12 +7,12 @@ import (
 	"testing"
 )
 
-func TestPublicationEvidenceAuthorityActiveCTRL(t *testing.T) {
-	root,err:=filepath.Abs("../../../../..")
-	if err!=nil{t.Fatal(err)}
-	if err:=AdmitPublicationEvidenceAuthority(root);err!=nil{
-		t.Fatalf("current CTRL evidence authority unexpectedly blocked: %v",err)
-	}
+func TestPublicationEvidenceAuthorityBlocksWithdrawnPolicy(t *testing.T) {
+    root, err := filepath.Abs("../../../../..")
+    if err != nil { t.Fatal(err) }
+    if err = AdmitPublicationEvidenceAuthority(root); err == nil {
+        t.Fatal("withdrawn CTRL policy admitted publication evidence")
+    }
 }
 
 func TestPublicationEvidenceAuthorityRejectsRetiredResolver(t *testing.T) {
@@ -20,7 +20,7 @@ func TestPublicationEvidenceAuthorityRejectsRetiredResolver(t *testing.T) {
 	if err!=nil{t.Fatal(err)}
 	var valid publicationEvidenceAuthority
 	if err:=ReadJSON(root,EvidenceContractPath,&valid);err!=nil{t.Fatal(err)}
-	if err:=validatePublicationEvidenceAuthority(valid);err!=nil{t.Fatal(err)}
+	if err:=validatePublicationEvidenceAuthority(valid);err==nil{t.Fatal("unresolved authority accepted")}
 	changed:=valid
 	changed.Authority="developer/policy/CTRL/MPD-CTRL-0001.yaml#rules.release_orchestration"
 	if err:=validatePublicationEvidenceAuthority(changed);err==nil{t.Fatal("retired authority permitted publication")}

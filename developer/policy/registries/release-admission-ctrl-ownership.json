@@ -19,7 +19,7 @@
     "activation_ref": "developer/policy/registries/release-admission-publication-activation.json",
     "verification_ref": ".ptsip/contracts/release/verification-contract.json",
     "admission_projection_ref": ".ptsip/contracts/release/admission.json",
-    "runtime_policy_ref": "developer/policy/CTRL/release-admission.policy.json",
+    "runtime_policy_ref": "UNRESOLVED_NO_CURRENT_NORMATIVE_POLICY",
     "publication_workflow": ".github/workflows/tooling-release.yml",
     "verification_workflow": ".github/workflows/tooling-test.yml",
     "runtime_policy_schema_ref": ".ptsip/contracts/schemas/release/ctrl-release-admission.schema.json",
@@ -42,9 +42,9 @@
   },
   "activation": {
     "direction_approved": true,
-    "runtime_policy_document_complete": true,
-    "required_policy_schema_and_validator_complete": true,
-    "automation_implementation_authorized": true,
+    "runtime_policy_document_complete": false,
+    "required_policy_schema_and_validator_complete": false,
+    "automation_implementation_authorized": false,
     "execution_mode": "PER_RELEASE_CONDITIONAL_FAIL_CLOSED",
     "uncontrolled_mutation_not_authorized": true
   }

@@ -17,10 +17,6 @@
   "validation_rules_ref": ".ptsip/contracts/release/validation-rules.json",
   "activation_conflict_resolution_ref": "developer/policy/registries/release-admission-publication-activation.json",
   "activation_conflict_resolution": "KEEP_LATEST",
-  "automated_publication_direction": "APPROVED_POLICY_ACTIVE_EXACT_SOURCE_ADMISSION_REQUIRED",
-  "actual_publication_admission": "FAIL_CLOSED",
-  "effective_ctrl_policy_ref": "developer/policy/CTRL/release-admission.policy.json",
-  "effective_ctrl_schema_ref": ".ptsip/contracts/schemas/release/ctrl-release-admission.schema.json",
-  "effective_ctrl_validator": "ctrl-release-admission-check",
-  "effective_ctrl_policy_status": "ACTIVE_PER_RELEASE_CONDITIONAL"
+  "automated_publication_direction": "BLOCKED_PENDING_NEW_NORMATIVE_POLICY",
+  "actual_publication_admission": "FAIL_CLOSED"
 }
