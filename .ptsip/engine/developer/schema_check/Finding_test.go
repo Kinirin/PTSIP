@@ -125,17 +125,21 @@ func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
  writeSchemaFixture(t,root,good)
  _,prior:=schemaFiles(root)
  if len(prior)!=0 {t.Fatalf("canonical Family rules schema rejected: %v",prior)}
- for _,relative:=range []string{
-  ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json",
-  ".ptsip/contracts/schemas/Policy_Rules/abortively/GOV_rules.schema.json",
+ for _,tc:=range []struct{path,diagnosticFile,problem string}{
+  {".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json",
+   ".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json",
+   "FAMILY_RULES_SCHEMA_LOCATION_INVALID"},
+  {".ptsip/contracts/schemas/Policy_Rules/abortively/GOV_rules.schema.json",
+   ".ptsip/contracts/schemas/Policy_Rules/abortively",
+   "DISALLOWED_POLICY_RULES_ARCHIVE_DIRECTORY"},
  }{
-  writeSchemaFixture(t,root,relative)
+  writeSchemaFixture(t,root,tc.path)
   _,findings:=schemaFiles(root)
   found:=false
   for _,row:=range findings {
-   if row.File==relative && row.Problem=="FAMILY_RULES_SCHEMA_LOCATION_INVALID" {found=true}
+   if row.File==tc.diagnosticFile && row.Problem==tc.problem && row.Status=="FAIL" {found=true}
   }
-  if !found{t.Fatalf("misplaced Family schema accepted: %s findings=%v",relative,findings)}
+  if !found{t.Fatalf("misplaced Family schema was not rejected: %s findings=%v",tc.path,findings)}
  }
 }
 
