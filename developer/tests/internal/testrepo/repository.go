@@ -18,7 +18,6 @@ type Repository struct {
 	Root                  string
 	compiler              *jsonschema.Compiler
 	schemas               map[string]*jsonschema.Schema
-	registeredSchemaPaths map[string]bool
 }
 
 type closedLoader struct{}
@@ -85,39 +84,12 @@ func (r *Repository) Read(input string) (Object, error) {
 }
 
 func (r *Repository) Validate(input string, value any) error {
+	// Register only the schema explicitly requested by the test. Loading the
+	// retired developer-policy catalog would transitively revive deleted
+	// policy-status contracts in unrelated native and release checks.
 	if r.compiler == nil {
 		r.compiler = jsonschema.NewCompiler()
-		r.registeredSchemaPaths = map[string]bool{}
 		r.compiler.UseLoader(closedLoader{})
-		contracts, err := r.Read("developer/policy/registries/developer-policy-catalog-contracts.json")
-		if err != nil {
-			return err
-		}
-		meta, err := r.Read("developer/policy/schemas/developer-policy-catalog-contracts.schema.json")
-		if err != nil {
-			return err
-		}
-		resources := []Object{contracts, meta}
-		for _, reference := range contracts["lifecycle_schema_resources"].(map[string]any) {
-			resource, err := r.Read(reference.(string))
-			if err != nil {
-				return err
-			}
-			resources = append(resources, resource)
-			r.registeredSchemaPaths[reference.(string)] = true
-		}
-		for _, raw := range contracts["contracts"].(map[string]any) {
-			schema, err := r.Read(raw.(map[string]any)["schema_ref"].(string))
-			if err != nil {
-				return err
-			}
-			resources = append(resources, schema)
-		}
-		for _, schema := range resources {
-			if err := r.compiler.AddResource(schema["$id"].(string), schema); err != nil {
-				return err
-			}
-		}
 	}
 	schema := r.schemas[input]
 	if schema == nil {
@@ -125,11 +97,12 @@ func (r *Repository) Validate(input string, value any) error {
 		if err != nil {
 			return err
 		}
-		id := document["$id"].(string)
-		if !r.registeredSchemaPaths[input] && input != "developer/policy/schemas/developer-policy-catalog.schema.json" && input != "developer/policy/schemas/developer-policy-subject-catalog.schema.json" && input != "developer/policy/schemas/developer-policy-catalog-contracts.schema.json" {
-			if err := r.compiler.AddResource(id, document); err != nil {
-				return err
-			}
+		id, ok := document["$id"].(string)
+		if !ok || id == "" {
+			return fmt.Errorf("schema %s has no $id", input)
+		}
+		if err := r.compiler.AddResource(id, document); err != nil {
+			return err
 		}
 		schema, err = r.compiler.Compile(id)
 		if err != nil {
