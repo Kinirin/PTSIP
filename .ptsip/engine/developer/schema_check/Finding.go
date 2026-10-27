@@ -117,6 +117,14 @@ func schemaFiles(root string) ([]string, []Finding) {
             if walkError != nil {
                 return walkError
             }
+            if item.IsDir() {
+                relative, err := filepath.Rel(root, path)
+                if err != nil { return err }
+                if filepath.ToSlash(relative)==".ptsip/contracts/schemas/Policy_Rules/abortively" {
+                    findings=append(findings,Finding{File:filepath.ToSlash(relative),Status:"FAIL",Problem:"DISALLOWED_POLICY_RULES_ARCHIVE_DIRECTORY"})
+                    return filepath.SkipDir
+                }
+            }
             if !item.IsDir() && strings.HasSuffix(item.Name(), ".json") {
                 relative, relError := filepath.Rel(root, path)
                 if relError != nil {

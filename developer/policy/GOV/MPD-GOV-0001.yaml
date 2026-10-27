@@ -10,7 +10,7 @@ Policy_Status:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration"
-    Rule_ver: "25"
+    Rule_ver: "26"
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -112,7 +112,7 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/GOV_SHARED_PUBLIC_AND_INDEPENDENT_RULES
         applies_when: DEVELOPER_POLICY_RULES_SCHEMA_LOCATION_OR_VALIDATION
-        rule: "KEEP_LATEST: 개발 정책의 공통 문서 구조 스키마는 .ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json 한 파일이 소유한다. GOV 정책 문서는 developer/policy/GOV/에 보존하며 Policy_Identity, Policy_Status, Policy_Rules 공통 최상위 필드를 사용한다. GOV의 Policy_Rules 내부 의미·검증은 공통 문서 구조 스키마와 분리된 GOV 독립 규칙 계약이 소유한다. 별도 GOV 전용 Public Structure 스키마를 신규 규범 원본으로 생성하거나 퇴역 예정인 .ptsip/contracts/schemas/root-family/ 구조를 신규 계약의 필수 의존성으로 채택하지 않는다. 기존 GOV Public Structure 라우팅 및 구형 Authority 의존성은 유효한 신규 참조·GOV 상태 구조 정합성을 확인한 뒤 수동으로 전환·제거하며, 미검증 상태에서 공통 문서 스키마가 GOV 전체 정책을 검증했다고 주장하지 않는다. KEEP_LATEST: 모든 Root Family의 Policy_Rules 작성 스키마는 .ptsip/contracts/schemas/Policy_Rules/root-family/ 아래의 Family별 독립 파일이 소유하며 schema_refs.rules는 반드시 해당 경로를 참조한다. Policy_Rules/ 상위 경로에는 Public_Structure_Rules.schema.json을 비롯한 Family 비종속 공통 계약만 배치하고 Family 작성 스키마의 상위 경로 예외를 금지한다. GOV_rules.schema.json은 root-family/로 복귀시키며 $id와 규칙 의미를 보존한다. 다른 Family의 기존 스키마 파일명(.schema.json 또는 .schemas.json)은 변경하지 않는다. Policy_Rules/abortively/는 신규 작성 스키마의 생성·활성 라우팅 경로가 아니며 기존 과거 버전 파일의 삭제는 별도 결정한다. 추가적인 상세 참조 결합 방식은 별도로 결정하고, 이 규칙으로 RBAC의 독립 소유권이나 실행 권한을 생성하지 않는다."
+        rule: "KEEP_LATEST: 개발 정책의 공통 문서 구조 스키마는 .ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json 한 파일이 소유한다. GOV 정책 문서는 developer/policy/GOV/에 보존하며 Policy_Identity, Policy_Status, Policy_Rules 공통 최상위 필드를 사용한다. GOV의 Policy_Rules 내부 의미·검증은 공통 문서 구조 스키마와 분리된 GOV 독립 규칙 계약이 소유한다. 별도 GOV 전용 Public Structure 스키마를 신규 규범 원본으로 생성하거나 퇴역 예정인 .ptsip/contracts/schemas/root-family/ 구조를 신규 계약의 필수 의존성으로 채택하지 않는다. 기존 GOV Public Structure 라우팅 및 구형 Authority 의존성은 유효한 신규 참조·GOV 상태 구조 정합성을 확인한 뒤 수동으로 전환·제거하며, 미검증 상태에서 공통 문서 스키마가 GOV 전체 정책을 검증했다고 주장하지 않는다. KEEP_LATEST: 모든 Root Family의 Policy_Rules 작성 스키마는 .ptsip/contracts/schemas/Policy_Rules/root-family/ 아래의 Family별 독립 파일이 소유하며 schema_refs.rules는 반드시 해당 경로를 참조한다. Policy_Rules/ 상위 경로에는 Public_Structure_Rules.schema.json을 비롯한 Family 비종속 공통 계약만 배치하고 Family 작성 스키마의 상위 경로 예외를 금지한다. GOV_rules.schema.json은 root-family/로 복귀시키며 $id와 규칙 의미를 보존한다. 다른 Family의 기존 스키마 파일명(.schema.json 또는 .schemas.json)은 변경하지 않는다. Policy_Rules/abortively/는 불필요한 비규범 보관 구조이므로 현행 저장소에서 제거하고 새로 생성하지 않는다. Family 작성 계약은 승인된 root-family/에만 배치하며, 이전 구형 계약의 복구는 Git 이력으로 수행한다. 삭제된 파일의 보존 또는 존재 확인을 요구하는 검증 의존성을 새로 만들지 않는다. 추가적인 상세 참조 결합 방식은 별도로 결정하고, 이 규칙으로 RBAC의 독립 소유권이나 실행 권한을 생성하지 않는다."
         Rule_state: APPROVED.Applying
       - id: PROHIBITION/REUSE_RETIRED_AUTHORITY_CATEGORY
         rule: "폐기된 Authority Major·Minor·Micro의 분류 계층·값을 새 RBAC 책임·조건·권한·바인딩 계약의 필수 의미 또는 승인 근거로 재사용하거나, 레거시 분류 참조에 근거하여 실행 권한을 부여하는 행위"

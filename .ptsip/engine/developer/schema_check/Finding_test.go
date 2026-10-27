@@ -138,3 +138,18 @@ func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
   if !found{t.Fatalf("misplaced Family schema accepted: %s findings=%v",relative,findings)}
  }
 }
+
+func TestPolicyRulesArchiveDirectoryIsForbidden(t *testing.T) {
+ root:=t.TempDir()
+ for _,relative:=range approvedSchemaPaths {writeSchemaFixture(t,root,relative)}
+ _,clean:=schemaFiles(root)
+ if len(clean)!=0 {t.Fatalf("canonical fixture unexpectedly rejected: %v",clean)}
+ forbidden:=".ptsip/contracts/schemas/Policy_Rules/abortively"
+ if err:=os.MkdirAll(filepath.Join(root,filepath.FromSlash(forbidden)),0755);err!=nil {t.Fatal(err)}
+ _,findings:=schemaFiles(root)
+ found:=false
+ for _,f:=range findings {
+  if f.File==forbidden && f.Problem=="DISALLOWED_POLICY_RULES_ARCHIVE_DIRECTORY" && f.Status=="FAIL" {found=true}
+ }
+ if !found {t.Fatalf("unnecessary Policy_Rules archive must be rejected: %v",findings)}
+}
