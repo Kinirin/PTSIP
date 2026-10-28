@@ -18,7 +18,7 @@ import (
 )
 
 const versionsContract = ".ptsip/contracts/release/versions_different.json"
-const versionsPreview = ".ptsip/engines/release/versions_different.ini"
+const versionsPreview = ".ptsip/engine/developer/release/versions_different.ini"
 const versionsSource = "src/VERSION"
 
 var sha40 = regexp.MustCompile("^[a-f0-9]{40}$")

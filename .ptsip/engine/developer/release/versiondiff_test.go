@@ -52,6 +52,18 @@ func versionTestRepo(t *testing.T,sectioned bool)(string,string,string){
  head:=gitForVersionTest(t,root,"rev-parse","HEAD")
  return root,base,head
 }
+func TestVersionsDifferentPreviewDestination(t *testing.T){
+ if versionsPreview!=".ptsip/engine/developer/release/versions_different.ini"{
+  t.Fatalf("unexpected version preview destination: %s",versionsPreview)
+ }
+ root,base,head:=versionTestRepo(t,true)
+ if _,err:=PreviewVersionsDifferent(root,base,head);err!=nil{t.Fatal(err)}
+ if _,err:=os.Stat(filepath.Join(root,filepath.FromSlash(versionsPreview)));err!=nil{t.Fatal(err)}
+ if _,err:=os.Stat(filepath.Join(root,".ptsip","engines","release","versions_different.ini"));!os.IsNotExist(err){
+  t.Fatalf("obsolete preview destination created: %v",err)
+ }
+}
+
 func TestVersionsDifferentPreviewAndTamper(t *testing.T){
  root,base,head:=versionTestRepo(t,true)
  report,err:=PreviewVersionsDifferent(root,base,head)
