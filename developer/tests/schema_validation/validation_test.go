@@ -42,28 +42,45 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
   ".ptsip/contracts/policy/identity/policy_kind.json",
   ".ptsip/contracts/policy/identity/root_family.json",
  }
+ // The compact routing registry owns only shared schema references.
+ // Family rules are selected from the canonical root_family vocabulary, not
+ // by legacy per-family routing entries.
  routingBytes, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(".ptsip/contracts/policy/routing/policy_routes.json")))
  if err != nil { t.Fatal(err) }
  var routing struct {
-  Routes map[string]map[string]struct {
-   SchemaRefs map[string]string `json:"schema_refs"`
-  } `json:"routes"`
+  SchemaRefs map[string]string `json:"schema_refs"`
+  Routes map[string]struct { OutputRoot string `json:"output_root"` } `json:"routes"`
  }
- if err := json.Unmarshal(routingBytes, &routing); err != nil { t.Fatalf("parse approved routing: %v", err) }
- if len(routing.Routes) == 0 { t.Fatal("approved routing registry has no routes") }
- for kind, families := range routing.Routes {
-  for family, route := range families {
-   for _, key := range []string{"public", "rules"} {
-    relative := route.SchemaRefs[key]
-    if !strings.HasPrefix(relative, ".ptsip/contracts/schemas/") ||
-     filepath.ToSlash(filepath.Clean(filepath.FromSlash(relative))) != relative ||
-     strings.Contains(relative, "\\") {
-     t.Fatalf("unsafe or missing approved schema ref %s/%s/%s: %q", kind, family, key, relative)
-    }
-    paths = append(paths, relative)
-   }
+ if err := json.Unmarshal(routingBytes, &routing); err != nil { t.Fatalf("parse approved routing: %v",err) }
+ if len(routing.Routes)==0 || len(routing.SchemaRefs)!=2 { t.Fatal("approved compact routing is incomplete") }
+ for _, key := range []string{"public","rules"} {
+  relative:=routing.SchemaRefs[key]
+  if !strings.HasPrefix(relative,".ptsip/contracts/schemas/") ||
+   filepath.ToSlash(filepath.Clean(filepath.FromSlash(relative)))!=relative ||
+   strings.Contains(relative,"\\") {
+   t.Fatalf("unsafe or missing approved schema ref %s: %q",key,relative)
   }
+  paths=append(paths,relative)
  }
+ vocabularyBytes,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(".ptsip/contracts/policy/identity/root_family.json")))
+ if err!=nil { t.Fatal(err) }
+ var vocabulary struct { Enum []string `json:"enum"` }
+ if err:=json.Unmarshal(vocabularyBytes,&vocabulary);err!=nil { t.Fatalf("parse root family vocabulary: %v",err) }
+ if len(vocabulary.Enum)!=14 { t.Fatalf("expected fourteen registered families, got %d",len(vocabulary.Enum)) }
+ for _,family:=range vocabulary.Enum {
+  if family=="" || strings.Trim(family,"ABCDEFGHIJKLMNOPQRSTUVWXYZ")!="" {t.Fatalf("unsafe family: %q",family)}
+  paths=append(paths,".ptsip/contracts/policy/Rules/"+family+"_rules.json")
+ }
+ paths=append(paths,
+  ".ptsip/contracts/schemas/Policy_Rules/Family_Rules_Contract.schema.json",
+  ".ptsip/contracts/schemas/compile-sealed-rbac/Conditions_exercise/Condition.schema.json",
+  ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Operational_Authority.schema.json",
+  ".ptsip/contracts/schemas/compile-sealed-rbac/responsibility/Responsibility.schema.json",
+  ".ptsip/contracts/schemas/compile-sealed-rbac/Responsibilities_List.schema.json",
+  ".ptsip/contracts/schemas/compile-sealed-rbac/Responsibility_Authority_Contract.schema.json",
+  ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json",
+  ".ptsip/profiles/Responsibility-Authority-list.yaml",
+ )
  copied := map[string]bool{}
  for _, relative := range paths {
   if relative == missing || copied[relative] { continue }
