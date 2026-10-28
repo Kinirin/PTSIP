@@ -1,6 +1,7 @@
 package releasetest
 
 import (
+ "encoding/json"
  "os"
  "os/exec"
  "path/filepath"
@@ -98,6 +99,12 @@ func TestVersionsDifferentPolicyOnlyNoBump(t *testing.T){
  report,err:=releaseversion.AnalyzeVersionsDifferent(root,head,policyHead)
  if err!=nil{t.Fatal(err)}
  if len(report.Entries)!=0{t.Fatalf("policy-only commit changed versions: %#v",report)}
+ if report.Entries==nil{t.Fatal("empty change set must use non-nil slice")}
+ serialized,err:=json.Marshal(report)
+ if err!=nil{t.Fatal(err)}
+ if !strings.Contains(string(serialized),`"Entries":[]`){
+  t.Fatalf("empty change list is not serialized as []: %s",serialized)
+ }
 }
 func TestVersionsDifferentApplyRequiresExplicitSelection(t *testing.T){
  root,base,head:=versionTestRepo(t,true)

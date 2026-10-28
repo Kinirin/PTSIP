@@ -155,7 +155,7 @@ func AnalyzeVersionsDifferent(root,base,head string)(VersionDiffReport,error){
  values,legacy,err:=sourceVersions(version)
  if err!=nil{return report,err}
  digest:=sha256.Sum256(version)
- report=VersionDiffReport{Base:base,Head:head,VersionDigest:hex.EncodeToString(digest[:]),Legacy:legacy}
+ report=VersionDiffReport{Base:base,Head:head,VersionDigest:hex.EncodeToString(digest[:]),Legacy:legacy,Entries:make([]VersionDiffEntry,0)}
  files,err:=gitVersion(root,"diff","--no-renames","--name-only","-z",base,head,"--","src/ptsip")
  if err!=nil{return report,err}
  entries:=map[string]*VersionDiffEntry{}
