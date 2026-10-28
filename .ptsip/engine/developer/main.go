@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strings"
 
+	branch "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/branch"
 	release_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release"
 	ctrl_admission "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/admission"
 	releasenote "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/releasenote"
@@ -64,6 +65,7 @@ func runVersionDiff(root, operation, base, head, component, target, digest strin
 
 var validators = map[string]Validator{
 	"developer-layout-check":       layout.Run,
+	"branch-check":                 branch.Run,
 	"release-admission-check":      runReleaseAdmissionCheck,
 	"schema-check":                 runSchemaCheck,
 	"ctrl-release-admission-check": ctrl_admission.Run,

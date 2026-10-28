@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	_ "github.com/Kinirin/PTSIP/developer/automation/branch"
+	branch "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/branch"
 	"github.com/Kinirin/PTSIP/developer/automation/internal/machine"
 )
 
@@ -43,6 +43,9 @@ func runCommand(arguments []string, metadata *commandMetadata) (any, error) {
 		} else {
 			positional = append(positional, argument)
 		}
+	}
+	if len(positional) > 0 && (positional[0] == "branch-control" || positional[0] == "branch-guard") {
+		return branch.Execute(arguments)
 	}
 	start := options["--repository"]
 	if start == "" {
@@ -151,6 +154,12 @@ func main() {
 	}
 	if object, ok := result.(map[string]any); ok {
 		status, _ := object["status"].(string)
+		if metadata.repo == nil {
+			if status == "UNVERIFIED" {
+				os.Exit(4)
+			}
+			return
+		}
 		code, err := metadata.repo.CommandStatusExitCode(metadata.positional, status)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)

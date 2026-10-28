@@ -1,73 +1,28 @@
-# Developer automation
+# Retiring developer automation
 
-Run Developer automation through the native Go command surface from the repository root:
-
-```powershell
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-resolver resolve --scope developer/automation --operation READ
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-validator validate
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-plan-consistency verify
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev context-projection check
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev root-family-entry validate --policy-class PTSIP_DEVELOPER_POLICY
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev root-family-entry validate --policy-class PTSIP_SUPPORT_FEATURE
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev agent-instruction-materializer status
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev agent-context-migration verify --stage AUTO
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev automation-migration inspect
-```
-
-The build tags select the registered grammar subset used by CI. Python source inspection
-uses a native parser; it does not execute or import Python automation.
-
-`agent-integration status` reads an existing `.agent/index.yaml`. Use the materializer
-preview above before initializing an Agent surface through the registered materialization
-or bootstrap workflow. Preview does not modify `AGENTS.md` or create execution authority.
-
-For repeated calls, build the CLI once. The output path is relative to the Go module:
+Current developer validation enters through `.ptsip/engine/developer/index.json`.
+Use the developer module and its domain indexes for current policy, schema,
+responsibility-authority, release-documentation and branch checks:
 
 ```powershell
-go -C developer/automation build -tags grammar_subset,grammar_subset_python -o ../../.artifacts/ptsip-dev.exe ./cmd/ptsip-dev
-& ./.artifacts/ptsip-dev.exe --repository . policy-validator validate
+go -C .ptsip/engine/developer run . --validator developer-layout-check --root ../../..
+go -C .ptsip/engine/developer run . --validator branch-check --root ../../..
+go -C .ptsip/engine/developer run ./Distribution/branch/cmd/ptsip-branch branch-control commands --repository ../../..
 ```
 
-The closed command vocabulary, required inputs, and nonfatal statuses are registered in
-[`go-automation-cutover.v1.json`](../policy/contracts/go-automation-cutover.v1.json).
-Policy resolution uses canonical Root policy IDs and exact sections. Historical policy
-IDs and pre-retirement protocol fixtures provide audit evidence only.
+The examples above run from the repository root. Branch implementation and tests
+have moved to `.ptsip/engine/developer/Distribution/branch/`. The existing
+`ptsip-dev branch-control` and `branch-guard` commands are compatibility adapters
+that call that module directly, without the retired command catalog or policy
+resolver. Request-shape validation does not grant branch creation authority.
 
-The migration inventory records the original Python module and its explicit Go targets.
-`automation-migration inspect` reports source retirement separately from final cutover
-verification. A source-ready report does not grant release or operational approval.
+This directory remains a migration source for the older Planning, Agent and
+policy implementations. Its retired policy validator/resolver commands do not
+provide current developer-policy validation or authority. Their source presence
+must not be treated as completed migration or operational approval. New files
+belong in the successor developer engine, following its domain boundaries.
 
-Responsibility packages include `branch`, `release`, `planning`, `policy/binding`, and
-`policy/lifecycle`. Existing Agent, IWP, PP, and shared repository adapters remain under
-`internal/machine` while their package ownership is resolved through the approved
-responsibility-domain plan. Package placement does not transfer policy authority.
-
-Release build orchestration and product regression runners can invoke the product's
-Python build and test tools. Those tools belong to the product runtime and test
-toolchain; Developer automation itself has no Python implementation entrypoint.
-
-Run native regression checks with:
-
-```powershell
-go -C developer/automation test -tags grammar_subset,grammar_subset_python -count=1 ./...
-go -C developer/tests test -tags grammar_subset,grammar_subset_python -count=1 ./...
-```
-
-
-### Policy cleanup (explicit invocation only)
-
-The registered native Go cleanup surface reuses policy catalogs, the GOV status
-contract, and approved pinned Git migration evidence. It never deletes on status
-transition. Both commands return machine-readable JSON; BLOCKED exits nonzero.
-
-```powershell
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-cleanup inspect MPD-VERI-0006
-go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev policy-cleanup apply MPD-VERI-0006 --expected-head <EXACT_40_CHARACTER_GIT_HEAD>
-```
-
-The apply command requires a clean Git worktree, an unchanged HEAD, exact
-RETIRED.Removable authority, reproducible pinned Git evidence, and zero ambiguous
-references. It fails closed; it does not commit, push, or remove any policy unless
-explicitly invoked with the apply command. Support policies without an approved
-Removable lifecycle contract and canonical policies without an approved Git pin
-remain blocked. Historical migration index membership is preserved.
+The existing `pp pre-commit` compatibility command remains the commit hook's PP
+content/transition check. It is independently admitted and uses isolated PP data
+schemas; this branch migration neither disables the hook nor converts it into a
+current developer-policy validator.

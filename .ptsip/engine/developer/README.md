@@ -137,3 +137,25 @@ no versioned archive. The existing Go translation command exposes
 `documentation-check`, `documentation-preview` and `documentation-generate`
 with the same contracts; its closed schema adapter requires no retired policy
 resolver. The developer root CLI validates through installed PTSIP VALIDATION.
+
+## Branch module
+
+Branch implementation, HTTP reader, command dispatch and regression tests live
+under `Distribution/branch/`. Its local `index.json` owns the temporary closed
+command surface. The module has no dependency on `developer/automation`, the
+retired policy resolver, policy registries or historical approval files.
+
+```powershell
+go -C .ptsip/engine/developer run . --validator branch-check --root ../../..
+go -C .ptsip/engine/developer run ./Distribution/branch/cmd/ptsip-branch branch-control commands --repository ../../..
+go -C .ptsip/engine/developer run ./Distribution/branch/cmd/ptsip-branch branch-control inspect --github-repository Kinirin/PTSIP --branch main --repository ../../..
+```
+
+`branch-guard validate` checks Git reference syntax and the exact request fields,
+returning `STRUCTURE_VALID` with `authorization_status: UNVERIFIED` and
+`branch_creation_authorized: false`. It does not recover the retired development
+branch naming or retention rules. Classification and profile-transition
+authority remain `UNVERIFIED` (CLI exit 4). Creation, recreation and HTTP mutation
+methods are blocked before any request until a successor authority contract is
+defined. The old `ptsip-dev branch-*` entry forwards to this module before any
+legacy command-catalog resolution. The commit hook's PP checks are unchanged.

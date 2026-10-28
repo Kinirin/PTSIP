@@ -1,0 +1,59 @@
+name: Developer branch successor verification
+
+on:
+  push:
+    branches: [main, "dev/**", "codex/**"]
+    paths:
+      - .github/workflows/branch-verification.yml
+      - .ptsip/engine/developer/Distribution/branch/**
+      - .ptsip/engine/developer/Distribution/index.json
+      - .ptsip/engine/developer/index.json
+      - .ptsip/engine/developer/main.go
+      - .ptsip/engine/developer/main_test.go
+      - .ptsip/engine/developer/go.mod
+      - developer/automation/cmd/ptsip-dev/**
+      - developer/automation/go.mod
+      - developer/automation/go.sum
+  pull_request:
+    paths:
+      - .github/workflows/branch-verification.yml
+      - .ptsip/engine/developer/Distribution/branch/**
+      - .ptsip/engine/developer/Distribution/index.json
+      - .ptsip/engine/developer/index.json
+      - .ptsip/engine/developer/main.go
+      - .ptsip/engine/developer/main_test.go
+      - .ptsip/engine/developer/go.mod
+      - developer/automation/cmd/ptsip-dev/**
+      - developer/automation/go.mod
+      - developer/automation/go.sum
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  branch-contract-and-compatibility:
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: developer/automation/go.mod
+          cache-dependency-path: developer/automation/go.sum
+      - name: Test independent branch implementation and HTTP boundary
+        run: go -C .ptsip/engine/developer test ./Distribution/branch/... -count=1
+      - name: Vet the independent branch implementation
+        run: go -C .ptsip/engine/developer vet ./Distribution/branch/...
+      - name: Verify module index registration
+        run: go -C .ptsip/engine/developer test . -run '^TestModuleIndexesAndEntrypointStayInSync$' -count=1
+      - name: Verify old CLI forwards without retired policy discovery
+        run: go -C developer/automation test -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev -run '^TestBranchCompatibilityEntryUsesOnlySuccessorContract$' -count=1
+      - name: Preserve the independent PP commit check
+        run: go -C developer/automation test -tags grammar_subset,grammar_subset_python ./internal/machine -run '^TestPPPreCommitCommand' -count=1
+      - name: Check current branch contract
+        run: go -C .ptsip/engine/developer run . --validator branch-check --root ../../..

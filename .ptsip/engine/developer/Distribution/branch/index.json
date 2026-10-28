@@ -7,6 +7,31 @@
   "publication_authorized": false,
   "domain": "Distribution",
   "component": "branch",
-  "state": "PLANNED",
-  "validation_claim": "UNVERIFIED"
+  "state": "STRUCTURE_ONLY",
+  "validation_claim": "REFERENCE_SYNTAX_AND_EXACT_REQUEST_ONLY",
+  "implementation": "operations.go",
+  "entrypoint": ".ptsip/engine/developer/Distribution/branch/cmd/ptsip-branch",
+  "contract": {
+    "schema_version": "ptsip-branch-control/v1",
+    "creation_admission": "UNRESOLVED",
+    "classification_authority": "UNRESOLVED",
+    "profile_transition_authority": "UNRESOLVED",
+    "naming_validation": "GIT_CHECK_REF_FORMAT",
+    "registered_commands": {
+      "branch-control": [
+        "commands",
+        "list",
+        "inspect",
+        "create",
+        "recreate"
+      ],
+      "branch-guard": [
+        "validate",
+        "classify-existing",
+        "profile-transition"
+      ]
+    },
+    "mutation_policy": "BLOCK_UNTIL_SUCCESSOR_AUTHORITY_IS_DEFINED",
+    "legacy_fallback": false
+  }
 }

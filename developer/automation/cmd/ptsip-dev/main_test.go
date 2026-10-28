@@ -1,10 +1,39 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
 )
+
+func TestBranchCompatibilityEntryUsesOnlySuccessorContract(t *testing.T) {
+	root, err := filepath.Abs("../../../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	const contract = ".ptsip/engine/developer/Distribution/branch/index.json"
+	raw, err := os.ReadFile(filepath.Join(root, contract))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture := t.TempDir()
+	filename := filepath.Join(fixture, contract)
+	if err := os.MkdirAll(filepath.Dir(filename), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filename, raw, 0644); err != nil {
+		t.Fatal(err)
+	}
+	result, err := run([]string{"branch-control", "commands", "--repository", fixture})
+	if err != nil {
+		t.Fatalf("compatibility call required retired policy catalog: %v", err)
+	}
+	if result.(map[string]any)["execution_authorized"] != false {
+		t.Fatal("compatibility call granted authority")
+	}
+}
 
 func TestCleanupCLIUsesRegisteredRepeatedScopes(t *testing.T) {
 	result, err := run([]string{"markdown-cleanup", "inspect", "--scope", "developer/tests/policy", "--scope", "developer/tests/planning"})

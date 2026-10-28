@@ -11,3 +11,7 @@ require (
 
 
 require golang.org/x/text v0.14.0 // indirect
+
+require github.com/Kinirin/PTSIP/.ptsip/engine/developer v0.0.0
+
+replace github.com/Kinirin/PTSIP/.ptsip/engine/developer => ../../.ptsip/engine/developer
