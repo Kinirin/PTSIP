@@ -1,7 +1,6 @@
 {
   "schema_version": "ptsip-publication-evidence/v1",
-  "authority_ref": "UNRESOLVED_NO_CURRENT_PUBLICATION_POLICY",
-  "approval_ref": "developer/policy/approvals/MPA-20261013-RELEASE-PRESENTATION-AND-DELETED-CARRIER-REISSUE.yaml",
+  "authority_ref": "UNRESOLVED",
   "verification_run_id": "AUTOMATIC_NEWEST_SUCCESSFUL_EXACT_SOURCE_AND_SELECTION",
   "release_id": "AUTOMATIC_UNIQUE_SOURCE_TAG_THEN_RETURNED_NUMERIC_ID",
   "missing_verification": "FAIL_WITH_SEPARATE_TOOLING_TEST_DISPATCH_INSTRUCTION",
@@ -16,7 +15,8 @@
     "current_versions_and_selection": "MUST_EQUAL_ORIGINAL_ADMISSION",
     "source_boundaries": [
       "src",
-      "registry",
+      ".ptsip/contracts/release/profile",
+      ".ptsip/contracts/schemas/release/profile",
       "License-Authority",
       "README.md",
       ".ptsip/engine/developer/Distribution/release/test/tool.go",
@@ -36,5 +36,6 @@
     "expired_original_artifact": "FAIL_NO_CACHE_FALLBACK",
     "component_rebuild_or_version_increment": "FORBIDDEN",
     "presentation_assets": "REGENERATE_FROM_CURRENT_APPROVED_PRESENTATION_CONTRACT"
-  }
+  },
+  "verification_boundary_ref": ".ptsip/contracts/release/verification-boundary.json"
 }

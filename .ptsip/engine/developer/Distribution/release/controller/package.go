@@ -211,7 +211,7 @@ func ProfileResources(data []byte) (map[string][]byte, error) {
 			return nil, fmt.Errorf("unsafe Profile archive entry")
 		}
 		name := strings.TrimPrefix(f.Name, "src/ptsip/profiles/")
-		isRegistry := f.Name == "registry/project-profile-contracts.yaml"
+		isRegistry := f.Name == ".ptsip/contracts/release/profile/project-profile-contracts.yaml"
 		if !isRegistry && (name == f.Name || filepath.Base(name) != name || (name != "index.yaml" && !strings.HasSuffix(name, ".ptsip.yaml"))) {
 			return nil, fmt.Errorf("non-catalog Profile archive entry: %s", f.Name)
 		}

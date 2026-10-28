@@ -16,30 +16,30 @@
     {
       "id": "release-design",
       "root": "release",
-      "state": "COMPATIBILITY_BLOCKED",
+      "state": "STRUCTURE_ONLY",
       "implementation": "release/Admission.go",
-      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+      "validation_claim": "LOCAL_VERIFICATION_ONLY_PUBLICATION_UNRESOLVED"
     },
     {
       "id": "admission",
       "root": "release/verification/admission",
-      "state": "COMPATIBILITY_BLOCKED",
+      "state": "STRUCTURE_ONLY",
       "implementation": "release/verification/admission/Verifier.go",
-      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+      "validation_claim": "PUBLICATION_UNVERIFIED"
     },
     {
       "id": "controller",
       "root": "release/controller",
-      "state": "COMPATIBILITY_BLOCKED",
+      "state": "STRUCTURE_ONLY",
       "implementation": "release/controller/ctrl_admission.go",
-      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+      "validation_claim": "LOCAL_VERIFICATION_ONLY_PUBLICATION_UNRESOLVED"
     },
     {
       "id": "engine",
       "root": "release/verification/engine",
-      "state": "COMPATIBILITY_BLOCKED",
+      "state": "STRUCTURE_ONLY",
       "implementation": "release/verification/engine/admission.go",
-      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+      "validation_claim": "LOCAL_VERIFICATION_ONLY_PUBLICATION_UNRESOLVED"
     },
     {
       "id": "releasenote",
@@ -63,8 +63,10 @@
     {
       "id": "profile",
       "root": "release/verification/profile",
-      "state": "PLANNED",
-      "index": "release/verification/profile/index.json"
+      "state": "STRUCTURE_ONLY",
+      "index": "release/verification/profile/index.json",
+      "validation_claim": "LOCAL_VERIFICATION_ONLY_PUBLICATION_UNRESOLVED",
+      "implementation": "release/verification/profile/Verifier.go"
     },
     {
       "id": "readme-translation",

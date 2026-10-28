@@ -1,0 +1,28 @@
+{
+  "schema_version": "ptsip-release-verification-boundary/v1",
+  "lifecycle": "TEMPORARY_REPLACEABLE",
+  "replacement_required": true,
+  "policy_authority": "NONE",
+  "publication_admission": "UNRESOLVED",
+  "publication_authorized": false,
+  "runtime_activation_authorized": false,
+  "legacy_fallback": false,
+  "verification_waivers": [],
+  "operations": [
+    "RELEASE_STRUCTURE_CHECK",
+    "ENGINE_LOCAL_VERIFICATION",
+    "SOURCE_BOUND_TEST_EVIDENCE"
+  ],
+  "source_sha": "EXACT_CHECKED_OUT_HEAD",
+  "artifact_digest": "REQUIRED_SHA256",
+  "engine_inventory": [
+    "context",
+    "discovery",
+    "execution",
+    "planning",
+    "projection",
+    "storage",
+    "validation"
+  ],
+  "scope": "LOCAL_STRUCTURE_AND_VERIFICATION_ARTIFACTS_ONLY"
+}

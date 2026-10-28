@@ -9,30 +9,32 @@ import (
 	"strings"
 
 	release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller"
+	boundary "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/boundary"
 	"go.yaml.in/yaml/v3"
 )
 
 type TestContract struct {
-	Schema string `json:"schema_version"`
-	Workflow string `json:"workflow"`
-	ModeRegistry string `json:"mode_registry"`
-	TestRoot string `json:"test_change_root"`
-	Production string `json:"production_contract"`
-	Required []string `json:"required_platforms"`
-	Publication *bool `json:"publication_operations"`
-	Runners map[string]string `json:"runners"`
-	Runtime struct {
+	Schema       string            `json:"schema_version"`
+	Workflow     string            `json:"workflow"`
+	ModeRegistry string            `json:"mode_registry"`
+	TestRoot     string            `json:"test_change_root"`
+	Production   string            `json:"production_contract"`
+	Boundary     string            `json:"verification_boundary_ref"`
+	Required     []string          `json:"required_platforms"`
+	Publication  *bool             `json:"publication_operations"`
+	Runners      map[string]string `json:"runners"`
+	Runtime      struct {
 		Python     string `json:"python_version"`
 		FetchDepth int    `json:"git_fetch_depth"`
 	} `json:"runtime"`
 }
 type Execution struct {
 	// A successful test is not normative release or publication approval.
-	PolicyAuthority string `json:"policy_authority"`
-	PublicationAuthorized bool `json:"publication_authorized"`
-	VerificationScope string `json:"verification_scope"`
-	Selection release.Selection `json:"selection"`
-	Matrix    struct {
+	PolicyAuthority       string            `json:"policy_authority"`
+	PublicationAuthorized bool              `json:"publication_authorized"`
+	VerificationScope     string            `json:"verification_scope"`
+	Selection             release.Selection `json:"selection"`
+	Matrix                struct {
 		Include []release.MatrixEntry `json:"include"`
 	} `json:"matrix"`
 	Python     string `json:"python"`
@@ -68,9 +70,9 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 			Targets string `yaml:"release_targets"`
 		} `yaml:"defaults"`
 		Modes []struct {
-			ID string `yaml:"id"`
+			ID           string `yaml:"id"`
 			ComponentRef string `yaml:"component_ref"`
-			Execution struct {
+			Execution    struct {
 				Contract string `yaml:"contract_ref"`
 				Runner   string `yaml:"runner_ref"`
 			} `yaml:"execution"`
@@ -110,8 +112,7 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	if contract.Schema != "ptsip-release-test/v1" {
 		return result, fmt.Errorf("verification contract not admitted")
 	}
-	// The historical MPD-ASSURE-0001 resolver is retired. This admission
-	// permits source-bound test execution only, not normative release approval.
+	// The current contract permits source-bound test evidence only.
 	if err := verifyNonNormativeTestRoute(root, contractRef, contract); err != nil {
 		return result, err
 	}
@@ -132,9 +133,7 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	if c.PackagePyPI != "" && result.Selection.Type == "PTSIP_PACKAGE" {
 		for _, p := range result.Selection.Platforms {
 			entry := release.MatrixEntry{Component: "package", Kind: "package", Version: c.PackagePyPI, Platform: p, Runner: contract.Runners[p]}
-            waived,err:=release.LightweightPackageWaiver(root,result.Selection)
-            if err!=nil{return result,err}
-            if waived {result.Lightweight.Include=append(result.Lightweight.Include,entry)} else {result.Join.Include=append(result.Join.Include,entry)}
+			result.Join.Include = append(result.Join.Include, entry)
 		}
 	}
 	result.Python = contract.Runtime.Python
@@ -145,6 +144,12 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 // Only the registered read-only route may run until normative authority
 // exists. Every missing, changed or publication-granting input fails closed.
 func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract) error {
+	if contract.Boundary != boundary.Path {
+		return fmt.Errorf("verification boundary binding missing")
+	}
+	if err := boundary.CheckOperation(root, "SOURCE_BOUND_TEST_EVIDENCE"); err != nil {
+		return err
+	}
 	if contractRef != ".ptsip/contracts/release/verification-contract.json" ||
 		contract.Workflow != ".github/workflows/tooling-test.yml" ||
 		contract.ModeRegistry != ".github/test_modes.yaml" ||
@@ -159,11 +164,12 @@ func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract
 		return fmt.Errorf("registered test-only verification contract differs or requests publication")
 	}
 	var gate struct {
-		Schema string `json:"schema_version"`
-		Policy string `json:"normative_policy_status"`
-		Fallback string `json:"old_root_policy_fallback"`
-		Module string `json:"verification_module"`
-		Publication *bool `json:"publication_authorized"`
+		Schema      string `json:"schema_version"`
+		Policy      string `json:"normative_policy_status"`
+		Fallback    string `json:"old_root_policy_fallback"`
+		Module      string `json:"verification_module"`
+		Publication *bool  `json:"publication_authorized"`
+		Boundary    string `json:"verification_boundary_ref"`
 	}
 	if err := release.ReadJSON(root, ".ptsip/contracts/release/admission.json", &gate); err != nil {
 		return fmt.Errorf("read-only release admission boundary missing: %w", err)
@@ -172,7 +178,7 @@ func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract
 		gate.Policy != "NOT_ACTIVE_NORMATIVE_POLICY" ||
 		gate.Fallback != "FORBIDDEN" ||
 		gate.Module != ".ptsip/engine/developer/Distribution/release/" ||
-		gate.Publication == nil || *gate.Publication {
+		gate.Publication == nil || *gate.Publication || gate.Boundary != boundary.Path {
 		return fmt.Errorf("policy authority remains unresolved; test-only execution requires publication blocked")
 	}
 	return nil
@@ -299,11 +305,11 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 			return result, fmt.Errorf("native Project Profile verification failed: %w", err)
 		}
 		archive := filepath.Join(out, "profiles-"+c.Version+".zip")
-		files, err := release.Run(root, "git", "ls-tree", "-r", "--name-only", selection.SourceSHA, "src/ptsip/profiles", "registry/project-profile-contracts.yaml")
+		files, err := release.Run(root, "git", "ls-tree", "-r", "--name-only", selection.SourceSHA, "src/ptsip/profiles", ".ptsip/contracts/release/profile/project-profile-contracts.yaml")
 		if err != nil {
 			return result, err
 		}
-		args := []string{"git", "archive", "--format=zip", "--output", archive, selection.SourceSHA, "registry/project-profile-contracts.yaml"}
+		args := []string{"git", "archive", "--format=zip", "--output", archive, selection.SourceSHA, ".ptsip/contracts/release/profile/project-profile-contracts.yaml"}
 		for _, ref := range strings.Fields(string(files)) {
 			name := strings.TrimPrefix(ref, "src/ptsip/profiles/")
 			if filepath.Base(name) == name && (name == "index.yaml" || strings.HasSuffix(name, ".ptsip.yaml")) {

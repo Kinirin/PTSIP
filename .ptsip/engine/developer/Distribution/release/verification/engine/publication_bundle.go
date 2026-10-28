@@ -12,10 +12,11 @@ import (
 	"sort"
 	"strings"
 
+	boundary "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/boundary"
 	"go.yaml.in/yaml/v3"
 )
 
-const PublicationContract = "developer/policy/contracts/engine-publication.v1.json"
+const PublicationContract = boundary.Path
 
 func validateCanonicalVersion(root, kind, projected string) error {
 	p, err := inside(root, "src/ptsip/engines/"+kind+"/version.yaml")
@@ -52,35 +53,7 @@ type PublicationBundle struct {
 	Directory         string            `json:"-"`
 }
 
-func AdmitPublication(root string) error {
-	if err := Admit(root); err != nil {
-		return err
-	}
-	ctrl, err := policySection(root, "MPD-CTRL-0001", "release_execution_suspension")
-	if err != nil {
-		return err
-	}
-	scope, ok := ctrl["engine_publication"].(map[string]any)
-	if !ok || scope["state"] != "ALLOWED" || scope["operation"] != "RELEASE" || scope["scope"] != "SELECTED_REGISTERED_ENGINES_ONLY" || scope["contract_ref"] != PublicationContract || scope["tag_github_release_and_pypi_publication"] != "ALLOWED_AFTER_EXACT_SOURCE_GATE" || scope["existing_tag_or_distribution_overwrite"] != "FORBIDDEN" || scope["runtime_activation_from_publication"] != false {
-		return fmt.Errorf("independent engine publication is not admitted")
-	}
-	assure, err := policySection(root, "MPD-ASSURE-0001", "independent_engine_publication")
-	if err != nil || assure["contract_ref"] != PublicationContract || assure["approval_ref"] != scope["approval_ref"] {
-		return fmt.Errorf("engine publication verification owner mismatch")
-	}
-	identity, err := policySection(root, "MPD-INFO-0005", "independent_release_versioning")
-	if err != nil || identity["contract_ref"] != ".ptsip/contracts/release/release-contract.json" || identity["changed_source_same_component_version"] != "FAIL_CLOSED" {
-		return fmt.Errorf("immutable component version owner mismatch")
-	}
-	var contract map[string]any
-	if err := document(root, PublicationContract, &contract); err != nil {
-		return err
-	}
-	if contract["schema_version"] != "ptsip-engine-publication/v1" || contract["approval_ref"] != scope["approval_ref"] || contract["operation"] != "RELEASE" || contract["scope"] != scope["scope"] || contract["workflow_phase"] != "publish" || contract["existing_tag_or_distribution_overwrite"] != false || contract["tool_profile_package_publication"] != false || contract["runtime_activation_from_publication"] != false || contract["linux_wheel_tag"] != hosts["x86_64-unknown-linux-gnu"].Platform || !reflect.DeepEqual(contract["required_platforms"], []any{"windows-x64", "linux-x64", "macos-arm64"}) {
-		return fmt.Errorf("publication contract expanded or inconsistent")
-	}
-	return nil
-}
+func AdmitPublication(root string) error { return boundary.RequirePublication(root) }
 
 // Reconstruct each wheel with the current registered assembler and its embedded
 // binary. Byte equality covers membership, metadata, RECORD, license and origin.

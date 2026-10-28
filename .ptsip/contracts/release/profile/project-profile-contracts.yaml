@@ -1,0 +1,48 @@
+schema_version: ptsip-project-profile-contract-registry/v1
+authority: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
+current: pp.2.00
+profile_source:
+  root: src/ptsip/profiles
+  catalog: src/ptsip/profiles/index.yaml
+  history_root: src/ptsip/profiles/history
+  history_distribution: SOURCE_ONLY
+contracts:
+  - version: pp.0.00
+    lifecycle: LEGACY_COMPATIBILITY_ONLY
+    operations:
+      - IDENTIFY
+    schema: null
+  - version: pp.1.01
+    lifecycle: SUPERSEDED
+    operations:
+      - IDENTIFY
+      - VALIDATE
+      - ANALYZE
+      - CREATE_TARGET
+    schema: schemas/ptsip-profile-pp-1.01.schema.json
+    baseline: src/ptsip/profiles/history/pp.1.01
+  - version: pp.1.02
+    lifecycle: SUPERSEDED
+    operations:
+      - IDENTIFY
+      - VALIDATE
+      - ANALYZE
+      - CREATE_TARGET
+    schema: schemas/ptsip-profile-pp-1.02.schema.json
+    baseline: src/ptsip/profiles/history/pp.1.02
+  - version: pp.2.00
+    lifecycle: CURRENT
+    operations:
+      - IDENTIFY
+      - VALIDATE
+      - ANALYZE
+      - CREATE_TARGET
+    schema: schemas/ptsip-profile-pp-2.00.schema.json
+    baseline: src/ptsip/profiles/history/pp.2.00
+transitions:
+  - from: pp.1.01
+    to: pp.1.02
+    kind: SEMANTIC_MIGRATION
+  - from: pp.1.02
+    to: pp.2.00
+    kind: IDENTITY_ONLY

@@ -1,18 +1,34 @@
 {
   "schema_version": "ptsip-release-presentation/v1",
-  "authority_ref": "developer/policy/RECORD/MPD-RECORD-0001.yaml#rules.unit_mpd_rels_0001_8b9a13c6427c",
-  "approval_ref": "developer/policy/approvals/MPA-20261013-RELEASE-PRESENTATION-AND-DELETED-CARRIER-REISSUE.yaml",
+  "authority_ref": "UNRESOLVED",
   "title_pattern": "PTSIP_Package {package_version}",
-  "section_order": ["PTSIP Release", "PTSIP Tool", "Project Profile", "PTSIP Engine"],
-  "identity_order": ["PTSIP_Package", "PTSIP_Tool", "Project Profile", "Engine"],
+  "section_order": [
+    "PTSIP Release",
+    "PTSIP Tool",
+    "Project Profile",
+    "PTSIP Engine"
+  ],
+  "identity_order": [
+    "PTSIP_Package",
+    "PTSIP_Tool",
+    "Project Profile",
+    "Engine"
+  ],
   "engine_section": {
     "heading_pattern": "{engine_name} {version}",
-    "fields": ["Engine ID", "Capability"],
-    "subsections": ["Purpose", "Contract changes"],
+    "fields": [
+      "Engine ID",
+      "Capability"
+    ],
+    "subsections": [
+      "Purpose",
+      "Contract changes"
+    ],
     "identity_source": "src/ptsip/engines/index.json",
     "note_source": "EACH_SEPARATE_VERSIONED_ENGINE_NOTE"
   },
   "spec_revision_display": "OMITTED_FROM_PUBLIC_TEMPLATE_NO_SYNTHETIC_NUMERIC_REVISION",
   "immutable_source_provenance": "PRESERVE_FULL_SHA_IN_MACHINE_RECORDS",
-  "presentation_only_change": "PRESERVE_PACKAGE_COMPOSITION_IDENTITY_AND_COMPONENT_FILES"
+  "presentation_only_change": "PRESERVE_PACKAGE_COMPOSITION_IDENTITY_AND_COMPONENT_FILES",
+  "verification_boundary_ref": ".ptsip/contracts/release/verification-boundary.json"
 }

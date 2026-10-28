@@ -1,6 +1,6 @@
 {
   "schema_version": "ptsip-release-test/v1",
-  "authority_ref": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml#rules.release_mode_verification",
+  "authority_ref": "UNRESOLVED",
   "workflow": ".github/workflows/tooling-test.yml",
   "mode_registry": ".github/test_modes.yaml",
   "test_change_root": ".ptsip/engine/developer/Distribution/release/test/",
@@ -10,7 +10,7 @@
     "selection": "PTSIP_PACKAGE_WITH_COMPOSITION_V2",
     "command": "join",
     "matrix": "REGISTERED_HOSTS_AFTER_ALL_COMPONENT_RECEIPTS_PASS",
-    "required": "TEMPORARY_RECONCILED_WAIVER_FOR_PTSIP_0_3_8_B6",
+    "required": "ALL_SELECTED_HOSTS_NO_WAIVERS",
     "artifact_pattern": "verification-package-{platform}-{source_sha}"
   },
   "runners": {
@@ -53,22 +53,5 @@
     "controller": ".ptsip/engine/developer/Distribution/release/controller/cmd/ptsip-release"
   },
   "preserved_engine_verifier": "developer/tests/engines/TestIndependentEngineWheel",
-  "temporary_join_waiver_ref": "developer/policy/registries/release-20261026-package-join-waiver.json",
-  "lightweight_package_verification": {
-    "version": "0.3.8b6",
-    "profile": "pp.2.00",
-    "required_platforms": [
-      "windows-x64",
-      "linux-x64"
-    ],
-    "independently_check": [
-      "exact_source_sha",
-      "selection_sha256",
-      "component_artifact_digests",
-      "complete_install",
-      "canonical_project_version",
-      "native_engine_inventory"
-    ],
-    "no_full_join_repetition": true
-  }
+  "verification_boundary_ref": ".ptsip/contracts/release/verification-boundary.json"
 }

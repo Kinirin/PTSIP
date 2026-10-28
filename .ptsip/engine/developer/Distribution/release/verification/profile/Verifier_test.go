@@ -1,4 +1,4 @@
-package releasetest
+package profileverify
 
 import (
 	"os"
@@ -28,11 +28,12 @@ func profileFixture(t *testing.T) string {
 	}
 	for _, path := range []string{
 		profileContractPath,
+		".ptsip/contracts/release/profile/index.json",
 		profileProjectionPath,
 		profileSourcePath + "/index.yaml",
-		"schemas/ptsip-profile-pp-1.01.schema.json",
-		"schemas/ptsip-profile-pp-1.02.schema.json",
-		"schemas/ptsip-profile-pp-2.00.schema.json",
+		".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-1.01.schema.json",
+		".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-1.02.schema.json",
+		".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-2.00.schema.json",
 	} {
 		copyFile(path)
 	}
@@ -170,5 +171,46 @@ func TestNativeProfileExecutionNeverReentersRetiredDeveloperVerifier(t *testing.
 	}
 	if strings.Contains(string(modes), "developer/tests/pp") {
 		t.Fatal("retired developer Profile tests are still registered as active architecture verification")
+	}
+}
+
+func repoRoot(t *testing.T) string {
+	t.Helper()
+	root, err := filepath.Abs("../../../../../../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	return root
+}
+
+func TestProfileVerifierUsesCurrentSchemaStorageWithoutRootFallback(t *testing.T) {
+	root := profileFixture(t)
+	for _, retired := range []string{"registry", "schemas", "developer"} {
+		if _, err := os.Stat(filepath.Join(root, retired)); !os.IsNotExist(err) {
+			t.Fatalf("fixture has retired root %s", retired)
+		}
+	}
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(filepath.Join(root, ".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-2.00.schema.json")); err != nil {
+		t.Fatal(err)
+	}
+	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
+		t.Fatal("missing current schema accepted")
+	}
+}
+
+func TestProfileVerifierRejectsAuthorityRouteDrift(t *testing.T) {
+	for _, field := range []string{"publication_authorized", "consumer_contract_authority", "legacy_fallback"} {
+		t.Run(field, func(t *testing.T) {
+			root := profileFixture(t)
+			rewriteProfileFixture(t, root, ".ptsip/contracts/release/profile/index.json", func(s string) string {
+				return strings.Replace(s, `"`+field+`": false`, `"`+field+`": true`, 1)
+			})
+			if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
+				t.Fatal("forged route accepted")
+			}
+		})
 	}
 }

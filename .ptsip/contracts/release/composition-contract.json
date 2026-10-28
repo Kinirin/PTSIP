@@ -1,12 +1,11 @@
 {
   "schema_version": "ptsip-release-composition/v1",
-  "approval_ref": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml",
   "publication_workflow": ".github/workflows/tooling-release.yml",
   "verification_workflow": ".github/workflows/tooling-test.yml",
   "mode_registry": ".github/test_modes.yaml",
   "test_contract": ".ptsip/contracts/release/verification-contract.json",
   "engine_registry": "src/ptsip/engines/index.json",
-  "profile_registry": "registry/project-profile-contracts.yaml",
+  "profile_registry": ".ptsip/contracts/release/profile/project-profile-contracts.yaml",
   "canonical_current_composition": {
     "owner_ref": "developer/policy/INFO/MPD-INFO-0005.yaml#rules.independent_release_versioning",
     "file": "src/VERSION",
@@ -110,7 +109,8 @@
     "tool": {
       "source_boundaries": [
         "src",
-        "registry",
+        ".ptsip/contracts/release/profile",
+        ".ptsip/contracts/schemas/release/profile",
         "License-Authority",
         "README.md",
         ".ptsip/engine/developer/Distribution/release/test/tool.go",
@@ -121,7 +121,10 @@
     "profiles": {
       "source_boundaries": [
         "src/ptsip/profiles",
-        "registry/project-profile-contracts.yaml"
+        ".ptsip/contracts/release/profile/project-profile-contracts.yaml",
+        ".ptsip/contracts/release/profile/index.json",
+        ".ptsip/contracts/schemas/release/profile",
+        ".ptsip/engine/developer/Distribution/release/verification/profile"
       ]
     },
     "unchanged_version": "REUSE_ORIGINAL_PUBLISHED_SOURCE_FILES_AND_DIGESTS",
@@ -155,5 +158,6 @@
     "Engine"
   ],
   "presentation_contract": ".ptsip/contracts/release/release-presentation.json",
-  "evidence_resolution_contract": ".ptsip/contracts/release/publication-evidence.json"
+  "evidence_resolution_contract": ".ptsip/contracts/release/publication-evidence.json",
+  "verification_boundary_ref": ".ptsip/contracts/release/verification-boundary.json"
 }

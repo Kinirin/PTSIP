@@ -3,8 +3,8 @@ module github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/tes
 go 1.26
 
 require (
-    github.com/Kinirin/PTSIP/.ptsip/engine/developer v0.0.0
-    github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller v0.0.0
+	github.com/Kinirin/PTSIP/.ptsip/engine/developer v0.0.0
+	github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller v0.0.0
 )
 
 require (
@@ -17,3 +17,7 @@ require (
 replace github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller => ../controller
 
 replace github.com/Kinirin/PTSIP/.ptsip/engine/developer => ../../..
+
+require github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/profile v0.0.0
+
+replace github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/profile => ../verification/profile

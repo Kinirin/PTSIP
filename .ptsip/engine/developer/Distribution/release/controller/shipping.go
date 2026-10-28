@@ -76,11 +76,8 @@ func AdmitVerification(root string, s Selection, run int64) error {
 		}
 	}
 	if s.Type == "PTSIP_PACKAGE" {
-        waived,waiverErr:=LightweightPackageWaiver(root,s)
-        if waiverErr!=nil{return waiverErr}
-        for _, platform := range s.Platforms {
-            name := "Registered join / package / " + platform
-            if waived {name = "Lightweight install / package / " + platform}
+		for _, platform := range s.Platforms {
+			name := "Registered join / package / " + platform
 			count := 0
 			for _, job := range jobs.Jobs {
 				if job.Name == name && job.Status == "completed" && job.Conclusion == "success" {

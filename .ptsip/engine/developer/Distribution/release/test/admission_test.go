@@ -83,7 +83,7 @@ func archive(t *testing.T, names []string) []byte {
 }
 
 func TestProfileDistributionRejectsHistoryCodeAndTraversal(t *testing.T) {
-	base := []string{"src/ptsip/profiles/index.yaml", "src/ptsip/profiles/example.ptsip.yaml", "registry/project-profile-contracts.yaml"}
+	base := []string{"src/ptsip/profiles/index.yaml", "src/ptsip/profiles/example.ptsip.yaml", ".ptsip/contracts/release/profile/project-profile-contracts.yaml"}
 	if _, e := release.ProfileResources(archive(t, base)); e != nil {
 		t.Fatal(e)
 	}

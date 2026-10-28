@@ -1,6 +1,5 @@
 {
   "schema_version": "ptsip-pypi-publisher-routing/v3",
-  "approval_ref": "developer/policy/approvals/MPA-20261013-PYPI-TOKEN-AND-TOOL-B1-PUBLICATION.yaml",
   "repository_owner": "Kinirin",
   "repository": "PTSIP",
   "workflow": "tooling-release.yml",
@@ -9,15 +8,27 @@
     "environment": "pypi",
     "secret": "PYPI_API_TOKEN",
     "username": "__token__",
-    "declared_project_scope": ["PTSIP"],
+    "declared_project_scope": [
+      "PTSIP"
+    ],
     "scope_source": "USER_CONFIRMED_PTSIP_PROJECT_ONLY",
     "unadmitted_project": "FAIL_BEFORE_PUBLICATION",
     "oidc_fallback": false,
     "oidc_attestations": false,
     "secret_value_read_or_log": false
   },
-  "package": {"project": "PTSIP", "environment": "pypi"},
-  "tool": {"project": "ptsip-tool", "environment": "pypi"},
-  "engine": {"project_pattern": "ptsip-engine-{engine}", "environment_pattern": "pypi"},
-  "automatic_pypi_account_configuration": false
+  "package": {
+    "project": "PTSIP",
+    "environment": "pypi"
+  },
+  "tool": {
+    "project": "ptsip-tool",
+    "environment": "pypi"
+  },
+  "engine": {
+    "project_pattern": "ptsip-engine-{engine}",
+    "environment_pattern": "pypi"
+  },
+  "automatic_pypi_account_configuration": false,
+  "verification_boundary_ref": ".ptsip/contracts/release/verification-boundary.json"
 }

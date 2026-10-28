@@ -4,7 +4,6 @@
   "type": "object",
   "required": [
     "format",
-    "approval_ref",
     "package_base",
     "version_rules",
     "tag_prefixes",
@@ -14,15 +13,12 @@
     "engine_ids",
     "bootstrap_engine_versions",
     "commands",
-    "engine_version_resolution_ref"
+    "verification_boundary_ref"
   ],
   "additionalProperties": false,
   "properties": {
     "format": {
       "const": "ptsip-independent-release/v1"
-    },
-    "approval_ref": {
-      "type": "string"
     },
     "package_base": {
       "type": "string",
@@ -170,8 +166,8 @@
     "engine_version_file": {
       "const": "version.yaml"
     },
-    "engine_version_resolution_ref": {
-      "const": "developer/policy/approvals/MPA-20261012-ENGINE-VERSION-THREE-SEGMENT-KEEP-LATEST.yaml"
+    "verification_boundary_ref": {
+      "const": ".ptsip/contracts/release/verification-boundary.json"
     }
   }
 }

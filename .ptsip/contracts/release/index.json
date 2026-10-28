@@ -1,22 +1,12 @@
 {
-  "schema_version": "ptsip-release-contract-index/v1",
-  "contract_ref": ".ptsip/contracts/release/admission.json",
-  "approval_ref": "developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml",
-  "registry_ref": ".github/test_modes.json",
-  "mode_id": "release-admission-design-check",
+  "schema_version": "ptsip-release-contract-index/v2",
+  "contract_ref": ".ptsip/contracts/release/verification-boundary.json",
   "validator_name": "release-admission-check",
   "engine_entry": ".ptsip/engine/developer/main.go",
   "verifier_root": ".ptsip/engine/developer/Distribution/release/",
-  "contract_authority": "DERIVED_APPROVED_DIRECTIONS_ONLY",
-  "normative_policy_activation": "PENDING",
-  "developer_policy_automated_validation": "UNAVAILABLE",
+  "contract_authority": "NONE",
+  "normative_policy_activation": "UNRESOLVED",
   "publication_authorized": false,
-  "fail_closed_on_unresolved": true,
-  "retired_release_manager_ref": "NOT_USED",
   "legacy_release_verifier_fallback": false,
-  "validation_rules_ref": ".ptsip/contracts/release/validation-rules.json",
-  "activation_conflict_resolution_ref": "developer/policy/registries/release-admission-publication-activation.json",
-  "activation_conflict_resolution": "KEEP_LATEST",
-  "automated_publication_direction": "BLOCKED_PENDING_NEW_NORMATIVE_POLICY",
-  "actual_publication_admission": "FAIL_CLOSED"
+  "validation_rules_ref": ".ptsip/contracts/release/validation-rules.json"
 }

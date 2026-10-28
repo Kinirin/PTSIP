@@ -4,7 +4,7 @@ The repository developer entrypoint is `go -C .ptsip/engine/developer run .`.
 `index.json` routes its registered validators to the three domain indexes:
 
 - `Distribution/index.json`: release version tooling, verification categories,
-  integration tests and future branch verification.
+  integration tests and branch verification.
 - `policy/index.json`: identity, Policy_status, Plan_status, conditional Rules
   and limited schema inspection.
 - `Responsibility-Authority/index.json`: responsibility declarations, condition
@@ -19,8 +19,8 @@ resolver, a historical approval registry, or a completed semantic validator.
 Missing current resources fail their selected check without legacy fallback.
 
 `STRUCTURE_ONLY` reports the implemented structural scope.
-`COMPATIBILITY_BLOCKED` identifies relocated release code that still contains
-legacy authority dependencies and is not a successor verification contract.
+Release verification uses the temporary current boundary contract; publication
+admission remains `UNVERIFIED` until successor authority is registered.
 `PLANNED` modules have no implemented verification claim. Category indexes under
 `release/test` retain the shared integration suite until its coupled helpers can
 be separated; the self-contained version tests live under `test/tool`.
@@ -32,9 +32,9 @@ Distribution/
   index.json
   release/
     version/versiondiff.go
-    verification/{releasenote,tool,engine,package,profile,admission}/
+    verification/{boundary,releasenote,tool,engine,package,profile,admission}/
     test/{releasenote,profile,engine,package,tool}/
-    controller/                     # relocated compatibility module
+    controller/                     # artifact controller with blocked publication
     backend/                        # relocated PEP 517 backend
     state/                          # existing release data
   branch/
@@ -96,6 +96,7 @@ go -C .ptsip/engine/developer test ./... -count=1
 go -C .ptsip/engine/developer/Distribution/release/test test ./... -count=1
 go -C .ptsip/engine/developer/Distribution/release/controller test ./... -count=1
 go -C .ptsip/engine/developer/Distribution/release/verification/engine test ./... -count=1
+go -C .ptsip/engine/developer/Distribution/release/verification/profile test ./... -count=1
 go -C .ptsip/engine/developer/Distribution/release/test run ./releasenote --root ../../../../../.. --action verify
 ```
 
@@ -159,3 +160,33 @@ authority remain `UNVERIFIED` (CLI exit 4). Creation, recreation and HTTP mutati
 methods are blocked before any request until a successor authority contract is
 defined. The old `ptsip-dev branch-*` entry forwards to this module before any
 legacy command-catalog resolution. The commit hook's PP checks are unchanged.
+
+## Release verification boundary
+
+`.ptsip/contracts/release/verification-boundary.json` permits only contract
+structure checks, local engine verification and source-bound test evidence.
+The boundary has no policy authority, no verification waivers, and no permission
+to publish or activate runtime behavior. Missing or changed bindings fail closed.
+The official engine inventory stays limited to the seven declared engines.
+
+`release-admission-check` returns `CONTRACT_STRUCTURE_VALID` (exit 0) for the
+current structure. `ctrl-release-admission-check` returns `UNVERIFIED` (exit 4)
+with `SUCCESSOR_AUTHORITY_UNRESOLVED`. Controller and engine publication entry
+points reject before GitHub or PyPI publication. Exact checkout SHA, verification
+run, host, receipt, digest and immutable artifact checks remain required in the
+artifact implementations; structure checks do not assert those results.
+
+Profile verification lives in `release/verification/profile`, with a small
+forwarder for the shared test runner. The developer snapshot and schema resources
+are under `.ptsip/contracts/release/profile/` and
+`.ptsip/contracts/schemas/release/profile/`. Verification compares the snapshot
+against the distributed source projection and checks catalog, versions, schemas
+and immutable profile baselines. Existing `schemas/...` values in the snapshot
+are wire identifiers matched against that source projection; the closed loader
+reads only the new schema storage directory and never resolves those values as
+root paths or downloads. This snapshot does not change consumer profile authority.
+
+Every Package selection requires the full Package Join on each selected host.
+The former lightweight CLI returns `LIGHTWEIGHT_VERIFICATION_RETIRED` without
+writing artifacts; the empty compatibility matrix cannot waive a Package Join.
+Historical migration inventories remain audit data and are never admission input.
