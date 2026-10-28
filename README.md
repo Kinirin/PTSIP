@@ -58,7 +58,9 @@ ptsip conform .
 
 `validate` checks declarations. `conform` evaluates applicable architecture requirements against observed evidence. A valid profile is not proof of conformance; consult the installed CLI help for exact supported options.
 
-## What the system keeps separate
+## Classification technology
+
+### What the system keeps separate
 
 | Authority/evidence plane | Responsibility |
 | --- | --- |
@@ -69,7 +71,7 @@ ptsip conform .
 
 **Evidence is not architecture authority.** File paths, packages, heuristics, templates, AI confidence and observed imports can inform review; none may silently create lifecycle ownership. The tool never treats an `INCOMPLETE` result as a pass.
 
-## Primary lifecycle ownership
+### Primary lifecycle ownership
 
 Canonical Tool `0.3.8a5` classifications remain exactly:
 
@@ -83,7 +85,7 @@ Canonical Tool `0.3.8a5` classifications remain exactly:
 
 `UNKNOWN`, `CONFLICT`, `INCOMPLETE`, `PENDING`, confidence values, and migration states are workflow/evaluation states, not additional classifications.
 
-### Tool 0.3.5 compatibility boundary
+#### Tool 0.3.5 compatibility boundary
 
 Tool `0.3.5` historically used:
 
@@ -97,7 +99,7 @@ Tool `0.3.8a5` preserves the five-classification model established by Tool `0.3.
 
 Tool `0.3.8a5` provides evidence-bound direct current-target migration for explicitly supported historical sources. Migration capability remains separate from repository adoption authority and never turns inference into project intent.
 
-## Classification is not path or technology
+### Classification is not path or technology
 
 Classification follows the governing lifecycle obligation, not filename, directory, language, framework, executable status, workflow provider, compilation behavior, runtime duration, test status, or confidence score.
 
@@ -114,7 +116,7 @@ Independent non-executable shared contract          -> NEUTRAL_CONTRACT
 
 Paths such as `tests/`, `tools/`, `deploy/`, `ops/`, or `.github/workflows/` are evidence context only. They do not become architecture authority.
 
-## Responsibility Map v2
+### Responsibility Map v2
 
 Tool `0.3.8a5` uses Responsibility Map v2 as the project-owned architecture declaration model. It keeps several axes independent:
 
@@ -168,7 +170,7 @@ GOVERNS
 
 An associated artifact is a project-owned non-component support surface subordinate to one classified anchor component. It must not be used to hide independently governable executable or lifecycle responsibility.
 
-## Explicit, template, and hybrid declarations
+### Explicit, template, and hybrid declarations
 
 Canonical source modes are:
 
@@ -194,7 +196,7 @@ mixed-product-development-delivery
 
 Template selection is explicit. PTSIP does not automatically select a template from repository layout, language, framework detection, manifests, or confidence.
 
-## Source declaration and Effective Responsibility Map
+### Source declaration and Effective Responsibility Map
 
 All source modes resolve through deterministic, non-authoritative materialization:
 
@@ -252,7 +254,7 @@ Apply only an owner-reviewed change by adding `--apply`. This is an illustrative
 
 Optional GitHub-coordinated decision authority uses `refs/heads/ptsip-policy` **when configured**. It relies on fresh authority reads and conditional mutations to reject stale writers. Coordination failures block new architecture-authority writes rather than silently falling back to an unrelated local decision store; GitHub is not a universal Specification dependency.
 
-## Native foundation and consumer boundaries
+## Native foundation Engine
 
 Seven independently built **Rust engines** have versioned, language-neutral contracts and registered entrypoint bindings under [`src/ptsip/engines/`](src/ptsip/engines/). See the [official engine index](src/ptsip/engines/index.json).
 
@@ -303,13 +305,22 @@ ptsip dependency validation-plan . --changed src/ptsip/dependency_analysis.py --
 
 Release PREPARE and PUBLISH are independent, exact-source-verification phases in [`.github/workflows/tooling-release.yml`](.github/workflows/tooling-release.yml). Documentation, tests, workflow or Tool-only changes do not themselves change the immutable Specification revision.
 
-## Release notes and background
+### Release notes and background
 
 - [Published `0.3.8b5` Package](docs/releasenote/PTSIP_Package/0.3.8.adee8b.md): composition `0.3.8.adee8b`, Tool `T.0.3.8.b5`, Profile `pp.1.02` and seven engines.
 - [Tool `T.0.3.8.b5` changes](docs/releasenote/tool/T.0.3.8.b5.md): Validation `0.3.3` / capability `4.0.0`, recursive `$ref` and `$dynamicRef` support.
 - [Published b5 GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b): original publication and artifact record.
 - [Historical Tool notes](docs/releasenote/tool/README.md): earlier releases and source-only candidates.
 - [Package, Specification and Project Profile release records](docs/releasenote/README.md): independently versioned histories.
+
+### Detailed technical documentation
+
+Release summaries and detailed technical documents are recorded separately.
+
+- [Engine interfaces and capabilities](src/ptsip/engines/index.json)
+- [Project Profile contracts and adoption](src/ptsip/profiles/index.yaml)
+- [Schema reference validation](docs/validation-schema-references.md)
+- [Documentation formatting and archive contract](.ptsip/contracts/release/releasenote.json)
 
 ## License authority
 
@@ -321,7 +332,6 @@ License-related wording elsewhere in this repository is informational or context
 
 Normal Tool releases, Specification validation, Tool version changes, documentation mentions, keyword matches, and AI semantic guesses do not authorize License Authority entry. Entry uses only the triggers declared by `License-Authority/license-authority.yaml`.
 
-## Language and project status
+### Language and project status
 
 This English README is the canonical project overview. [Localized documentation](docs/translated/) is regenerated on `main` using the registered Argos Translate workflow; translations do not override the English overview or machine-readable policy. PTSIP remains experimental and release claims are bounded to their exact source and verification evidence.
-

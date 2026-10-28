@@ -1,0 +1,62 @@
+{
+  "schema_version": "ptsip-release-documentation/v1",
+  "canonical_readme": {
+    "path": "README.md",
+    "language": "en",
+    "schema": ".ptsip/contracts/schemas/release/releasenote/Basic_Formatting_readme.schema.json"
+  },
+  "version_change_contract": ".ptsip/contracts/release/versions_different.json",
+  "version_change_schema": ".ptsip/contracts/schemas/release/versions_different.schema.json",
+  "translation": {
+    "registry": "docs/translated/index.yaml",
+    "registry_schema": ".ptsip/contracts/schemas/release/releasenote/readme-translation-registry.schema.json",
+    "path_schema": ".ptsip/contracts/schemas/release/releasenote/readme-translation-path.schema.json",
+    "source": "README.md",
+    "archive": false,
+    "target_set": "REGISTERED_PATHS_ONLY",
+    "unregistered_language_activation": "FORBIDDEN"
+  },
+  "archive": {
+    "root": "docs/releasenote",
+    "language": "en",
+    "write_policy": "CREATE_ONLY_OR_IDENTICAL",
+    "translated_snapshots": false,
+    "engine_directory_index": false,
+    "legacy_files": "PRESERVE_WITHOUT_RENAMING",
+    "types": {
+      "engine": {
+        "schema": ".ptsip/contracts/schemas/release/releasenote/engine_Formatting_readme.schema.json",
+        "path": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md",
+        "documentation": "src/ptsip/engines/{engine}/contract.json"
+      },
+      "profile": {
+        "schema": ".ptsip/contracts/schemas/release/releasenote/profile_Formatting_readme.schema.json",
+        "path": "docs/releasenote/project-profile/{version}.md",
+        "documentation": "src/ptsip/profiles/index.yaml"
+      },
+      "tool": {
+        "schema": ".ptsip/contracts/schemas/release/releasenote/tool_Formatting_readme.schema.json",
+        "path": "docs/releasenote/tool/{filename_version}.md",
+        "filename_version": "T.MAJOR.MINOR.PATCH[-STATE]",
+        "documentation": "docs/validation-schema-references.md"
+      },
+      "package": {
+        "schema": ".ptsip/contracts/schemas/release/releasenote/Basic_Formatting_readme.schema.json#/$defs/ReleaseNote",
+        "path": "docs/releasenote/PTSIP_Package/{version}.md",
+        "documentation": "src/ptsip/engines/contracts/installation-plan.json"
+      }
+    }
+  },
+  "note_sections": [
+    "Summary",
+    "Version changes",
+    "Technical details",
+    "Documentation"
+  ],
+  "generation": {
+    "version_inference": "FORBIDDEN",
+    "semantic_change_claim": "NOT_INFERRED_FROM_DIFF",
+    "technical_details": "SEPARATE_FROM_SUMMARY",
+    "publication_authorized": false
+  }
+}

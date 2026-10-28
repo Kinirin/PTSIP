@@ -115,6 +115,70 @@
           "const": "TOOL_CANDIDATE"
         }
       }
+    },
+    "documentation": {
+      "type": "object",
+      "required": [
+        "contract",
+        "trigger",
+        "automatic_version_increment"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contract": {
+          "const": ".ptsip/contracts/release/releasenote.json"
+        },
+        "trigger": {
+          "const": "DECLARED_VERSION_VALUE_CHANGED"
+        },
+        "automatic_version_increment": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "DeclaredVersionChange": {
+      "type": "object",
+      "required": [
+        "component",
+        "previous_version",
+        "version",
+        "source_files"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "enum": [
+            "package",
+            "tool",
+            "profile",
+            "engine.context",
+            "engine.storage",
+            "engine.validation",
+            "engine.discovery",
+            "engine.planning",
+            "engine.execution",
+            "engine.projection"
+          ]
+        },
+        "previous_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_files": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^src/[^\\r\\n]+$"
+          }
+        }
+      }
     }
   }
 }

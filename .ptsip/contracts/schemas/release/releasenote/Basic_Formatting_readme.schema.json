@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:docs:format:basic-readme:v1",
+  "title": "PTSIP canonical English README formatting",
+  "description": "Validates the structured projection rendered as repository-root README.md. The title is followed by exactly seven ordered level-two sections.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "language",
+    "title",
+    "introduction",
+    "sections"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-readme/v1"
+    },
+    "language": {
+      "const": "en"
+    },
+    "title": {
+      "const": "PTSIP — Primary Lifecycle Ownership and Responsibility Isolation Policy"
+    },
+    "introduction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "navigation": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {
+          "type": "object",
+          "required": [
+            "heading",
+            "body"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "heading": {
+              "const": "Published release and component versions"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "heading",
+            "body"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "heading": {
+              "const": "Quick start"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "heading",
+            "body"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "heading": {
+              "const": "Classification technology"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "heading",
+            "body"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "heading": {
+              "const": "Profile selection and adoption"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "heading",
+            "body"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "heading": {
+              "const": "Native foundation Engine"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "heading",
+            "body"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "heading": {
+              "const": "Developer workflow and repository map"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "(^|\\n)### Detailed technical documentation(\\r?\\n|$)"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "heading",
+            "body"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "heading": {
+              "const": "License authority"
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "DocumentationLink": {
+      "type": "object",
+      "required": [
+        "title",
+        "path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?:docs/|src/|\\.ptsip/|License-Authority/|README\\.md$)[^\\r\\n]*$"
+        }
+      }
+    },
+    "ReleaseNote": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "language",
+        "kind",
+        "change",
+        "base_sha",
+        "head_sha",
+        "version_sha256",
+        "summary",
+        "technical_details",
+        "documentation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "ptsip-release-note/v1"
+        },
+        "language": {
+          "const": "en"
+        },
+        "kind": {
+          "enum": [
+            "engine",
+            "profile",
+            "tool",
+            "package"
+          ]
+        },
+        "change": {
+          "$ref": "urn:ptsip:release:versions-different-contract:v1#/$defs/DeclaredVersionChange"
+        },
+        "base_sha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "head_sha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "version_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "technical_details": {
+          "type": "string",
+          "minLength": 1
+        },
+        "documentation": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "urn:ptsip:docs:format:basic-readme:v1#/$defs/DocumentationLink"
+          }
+        }
+      }
+    }
+  }
+}

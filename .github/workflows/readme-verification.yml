@@ -5,6 +5,13 @@ on:
     branches: [main, "dev/**"]
     paths:
       - README.md
+      - .ptsip/contracts/release/releasenote.json
+      - .ptsip/contracts/release/versions_different.json
+      - .ptsip/contracts/schemas/release/versions_different.schema.json
+      - .ptsip/contracts/schemas/release/releasenote/**
+      - .ptsip/engine/developer/Distribution/release/verification/releasenote/**
+      - .ptsip/engine/developer/Distribution/release/version/**
+      - docs/releasenote/**
       - docs/translated/**
       - .github/workflows/readme-translation.yml
       - .github/workflows/readme-verification.yml
@@ -12,6 +19,13 @@ on:
   pull_request:
     paths:
       - README.md
+      - .ptsip/contracts/release/releasenote.json
+      - .ptsip/contracts/release/versions_different.json
+      - .ptsip/contracts/schemas/release/versions_different.schema.json
+      - .ptsip/contracts/schemas/release/releasenote/**
+      - .ptsip/engine/developer/Distribution/release/verification/releasenote/**
+      - .ptsip/engine/developer/Distribution/release/version/**
+      - docs/releasenote/**
       - docs/translated/**
       - .github/workflows/readme-translation.yml
       - .github/workflows/readme-verification.yml
@@ -34,5 +48,7 @@ jobs:
           cache-dependency-path: .ptsip/engine/developer/Distribution/release/test/go.sum
       - name: Run Go regression tests
         run: go -C .ptsip/engine/developer/Distribution/release/test test ./releasenote
+      - name: Verify English formatting, classification, and archive contracts
+        run: go -C .ptsip/engine/developer/Distribution/release/test run ./releasenote --root ../../../../../.. --action documentation-check
       - name: Verify registered translations without mutation
         run: go -C .ptsip/engine/developer/Distribution/release/test run ./releasenote --root ../../../../../.. --action verify

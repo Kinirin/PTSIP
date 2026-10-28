@@ -15,7 +15,7 @@
 
 <!-- ptsip-readme-i18n: c65bc30eaa46bc4ea9a3206cf9c80db560cd4a599d53f2b2bfad9c8534c54781 -->
 
-## 게시 및 구성 요소 버전
+## 공개 릴리스 및 구성 요소 버전
 
 <!-- ptsip-readme-i18n: 50c8b1faccea063561e51c1b0cdb3f54045632f1a07e5a53bb55ce44800adbd0 -->
 
@@ -95,9 +95,13 @@ ptsip conform .
 
 `validate` 확인 선언. `conform` 관찰 된 증거에 대한 적용 가능한 아키텍처 요구 사항을 평가합니다. 유효한 단면도는 적합의 증거가 아닙니다; 정확한 지원된 선택권을 위한 설치된 CLI 도움을 상담하십시오.
 
-<!-- ptsip-readme-i18n: 172930755fd531ee7adc8673d3f14e63d822f2964c1f9eb80379b4fe640941b2 -->
+<!-- ptsip-readme-i18n: 0f62ecdbc56721065510bb11b4e0bf460a518edcaffd7d4c8f8c0f98b481b5b5 -->
 
-## 시스템은 별도의 유지
+## 분류 기술
+
+<!-- ptsip-readme-i18n: ac020f2a262ee5e7393a619f2afe4cf38f7aab51fd436f5399d9b4bf170d8268 -->
+
+### 시스템이 분리하여 관리하는 대상
 
 <!-- ptsip-readme-i18n: d4c2a5bf97a6a96934b61e47a4a802f4c3185bcead3a3b597520c8d38864a9f5 -->
 
@@ -112,9 +116,9 @@ ptsip conform .
 
 **Evidence는 건축 권한이 없습니다.** 파일 경로, 패키지, heuristics, 템플릿, AI 신뢰 및 관찰 된 수입은 검토를 알 수 있습니다. 아무도 조용히 Lifecycle 소유권을 만들 수 있습니다. 도구는 결코 치료 `INCOMPLETE` 패스로 결과.
 
-<!-- ptsip-readme-i18n: 59d315379e83c74a959d6a47ede5d780cd5a696508215697029ba9b2a982a083 -->
+<!-- ptsip-readme-i18n: 7998cb93bbd81b1348fa669617c4857fa0f2eab3ad3977214957db23f6a887f9 -->
 
-## 생명주기 소유권
+### 주 생명주기 소유권
 
 <!-- ptsip-readme-i18n: 95fd662c19fb6d736995808187c17691c2b3b4a5a8a2eae72c69e5e9bc8f92ec -->
 
@@ -134,9 +138,9 @@ Canonical 공구 `0.3.8a5` 분류는 정확히 남아:
 
 `UNKNOWN`, `CONFLICT`, `INCOMPLETE`, `PENDING`, 신뢰 값 및 마이그레이션 상태는 작업 흐름/평가 상태, 추가 분류 되지.
 
-<!-- ptsip-readme-i18n: 15e1604255153cdc9d26507c6f060adc9919778a00205e9f435349aaf362d027 -->
+<!-- ptsip-readme-i18n: 57c07a430d478dbaf7752026cf7f0b03a95076035ecbc927b5067feb6d91e424 -->
 
-### 도구 0.3.5 호환성 경계
+#### Tool 0.3.5 호환성 경계
 
 <!-- ptsip-readme-i18n: e4db6f0d9ca63e5a1eecaa5ff84663e1dbd07197a732ad0116d897ad93a05ea8 -->
 
@@ -158,9 +162,9 @@ NEUTRAL_CONTRACT
 
 제품 정보 `0.3.8a5` 명시적으로 지원되는 역사적 소스에 대한 증거 반 방향 직접 현재 표적 이동을 제공합니다. Migration 기능은 저장소 채택 권위에서 분리되고 프로젝트 intent로 방해하지 않습니다.
 
-<!-- ptsip-readme-i18n: 302df01bc949d7d5f580f763ce382813a0620dae3e80c17bf253306eb36d0596 -->
+<!-- ptsip-readme-i18n: 6b253932d8b3ea8f0ec1c2e1003eb42fa835999dae9204654dff674a91918bc5 -->
 
-## 분류는 경로 또는 기술이 아닙니다.
+### 경로나 기술과 구별되는 분류
 
 <!-- ptsip-readme-i18n: ec0f168b034d4b884cee7a43ae19b48896f18cf35af5f6298c0023eadfef79c1 -->
 
@@ -185,9 +189,9 @@ Independent non-executable shared contract          -> NEUTRAL_CONTRACT
 
 같은 길 `tests/`, `tools/`, `deploy/`, `ops/`, 또는 `.github/workflows/` 증거 컨텍스트만 있습니다. 그들은 권위가되지 않습니다.
 
-<!-- ptsip-readme-i18n: a5232d5b2f89fc212656886f2cfd0b144bdb4ede49424f5364c0f3dacd8690f8 -->
+<!-- ptsip-readme-i18n: 7fd04feb1ef92b32da6e3c6781982fce11f15191eb0cdd304e24fa034cb6d233 -->
 
-## 책임 지도 v2
+### 책임 맵 v2
 
 <!-- ptsip-readme-i18n: 497953fa1961cd0bea655c4d409d4a9ddda31aae80e971607471137eb0fd9ea1 -->
 
@@ -255,9 +259,9 @@ GOVERNS
 
 관련 artifact는 1개의 분류한 닻 성분에 프로젝트 소유한 비 성분 지원 표면 이하입니다. 그것은 독립적으로 지배 가능한 실행 또는 수명주기 책임을 숨길 수 없습니다.
 
-<!-- ptsip-readme-i18n: 886eb33764e429a661eb5cc7844d1f62762431228823e429e804cf607ba7e626 -->
+<!-- ptsip-readme-i18n: a5390b5b2ab9df31ec9ec455c1a2552687f7373fde604b3f829a99480e683bbd -->
 
-## Explicit, 템플릿 및 하이브리드 선언
+### 명시형·템플릿형·혼합형 선언
 
 <!-- ptsip-readme-i18n: 44484dc156ad8584283e1a3f1862bfe5ab305434d4cfafc22071971623144d84 -->
 
@@ -293,9 +297,9 @@ mixed-product-development-delivery
 
 템플릿 선택은 명시되어 있습니다. PTSIP 저장소 레이아웃, 언어, 프레임 워크 감지, 표시, 또는 신뢰에서 템플릿을 자동으로 선택하지 않습니다.
 
-<!-- ptsip-readme-i18n: 0803a2a6aa0786b91b5499217ba9be58bad206f1068629fc3e25acebd3271ae9 -->
+<!-- ptsip-readme-i18n: 9a7804f45ef2ee7167bb41d06d5f65f183a7786983c31c182860e16afdd1f0ec -->
 
-## Source 선언 및 효과적인 책임 지도
+### 원본 선언과 유효 책임 맵
 
 <!-- ptsip-readme-i18n: c89060fb5b0ce92d5a9046549eba7969eb06f89b7b5f7010928aefd92ef07487 -->
 
@@ -344,7 +348,7 @@ and has deterministic digest identity for reproducibility. Neither 입증 또는
 
 <!-- ptsip-readme-i18n: dcaa281031e97283191553132c54f1e871bb5575d4bbf6b2c24615b4984d1532 -->
 
-## 단면도 선택과 채택
+## 프로파일 선택과 도입
 
 <!-- ptsip-readme-i18n: 24cf16af287dfddb4f096617de286be6e836f1d0713a7b3a407a213edd9b5f4f -->
 
@@ -379,9 +383,9 @@ ptsip adopt . `
 
 GitHub 좌표 결정 권한 사용 `refs/heads/ptsip-policy` **설정하기**. 그것은 신선한 권위를 읽고 stale 작가를 거부하는 조건부 mutations에 의존합니다. Coordination failures block new Architecture-authority writes 오히려 침묵적으로 관련 지역 결정점으로 떨어지는; GitHub는 보편적인 명세 의존성 아닙니다.
 
-<!-- ptsip-readme-i18n: a0f828429acdffc13f8c6b00ff58c657f0b47181eac4d2e6ed0f5aaf4ccb0e5f -->
+<!-- ptsip-readme-i18n: 061436551626be327ca0e5ea9b12b7245195fd990201b79663763ccecdf69d7a -->
 
-## 기초 및 소비자 경계
+## 네이티브 기반 엔진
 
 <!-- ptsip-readme-i18n: 2a1ac3b007368a8e02ee202c6c506a40777123786567d638a283f5ca13039c0f -->
 
@@ -417,7 +421,7 @@ PTSIP 적합성 `CONFORMANT` (예) `0`), `NON_CONFORMANT` (`5`), 또는 `INCOMPL
 
 <!-- ptsip-readme-i18n: 44b4c80bf0e32e26be3a57fbe31563cafda7fe2bda0406787ace36140fa6e190 -->
 
-## 개발자 워크플로우 및 저장소 맵
+## 개발자 워크플로와 저장소 안내
 
 <!-- ptsip-readme-i18n: 4e65bcaaafc5058626617215e0d8eb5886684f38a986ff276a832289c9b61023 -->
 
@@ -456,9 +460,9 @@ ptsip dependency validation-plan . --changed src/ptsip/dependency_analysis.py --
 
 PREPARE 및 PUBLISH는 독립적으로, 정확한 자원 검증 단계 [`.github/workflows/tooling-release.yml`](../../.github/workflows/tooling-release.yml). 문서, 테스트, 워크플로우 또는 도구 전용 변경은 immutable Specification을 변경하지 않습니다.
 
-<!-- ptsip-readme-i18n: bc857e872269efb32e78bc6bffa445c5226891a9128b0dc08c14b839f4892a84 -->
+<!-- ptsip-readme-i18n: ec29ec63dd8a391155d2a3a6fc7db2117e00baca7b1723219532b3f48a64e77b -->
 
-## 노트 및 배경
+### 릴리스 노트와 배경
 
 <!-- ptsip-readme-i18n: a49fcb30463c21a3fcc301bcedbd8a1eb29397611c6e314ac45e12792c96fd31 -->
 
@@ -468,9 +472,24 @@ PREPARE 및 PUBLISH는 독립적으로, 정확한 자원 검증 단계 [`.github
 - [역사 도구 노트](../releasenote/tool/README.md): 이전 릴리스 및 소스 전용 후보.
 - [포장, 명세 및 프로젝트 단면도 방출 기록](../releasenote/README.md): 독립적 인 버전의 역사.
 
+<!-- ptsip-readme-i18n: b50888879356a6555b71914c35cc9cd5ee86842b93efff3691f3911e1fe40ee0 -->
+
+### 상세 기술 문서
+
+<!-- ptsip-readme-i18n: b9486dfaad35921905b6a79683b5972a76c75bf8701bac91fa6feb4fbd5ae5ba -->
+
+릴리스 요약과 상세 기술 문서는 별도로 기록합니다.
+
+<!-- ptsip-readme-i18n: d6dbf24bb833d9191b1948c6b755d821837294711064c0d086679d82957a9468 -->
+
+- [엔진 인터페이스와 기능](../../src/ptsip/engines/index.json)
+- [프로젝트 프로파일 계약과 도입](../../src/ptsip/profiles/index.yaml)
+- [스키마 참조 검증](../../docs/validation-schema-references.md)
+- [문서 서식 및 보관 계약](../../.ptsip/contracts/release/releasenote.json)
+
 <!-- ptsip-readme-i18n: e0775e6d76d74833cd954ea3f8f1e7e939f92246af5b0f1c2c3e92d4d041620d -->
 
-## 라이센스 기관
+## 라이선스 권한
 
 <!-- ptsip-readme-i18n: 0ed51af0b127bcc59078a0f13e688d71bca4941a69fe58ca5653c6765bce3e14 -->
 
@@ -488,9 +507,9 @@ PTSIP 라이센스 당국은 아래에서 독점적으로 포함됩니다. [`Lic
 
 일반 도구 릴리스, 사양 검증, 도구 버전 변경, 문서 언급, 키워드 일치, 및 AI semantic 추측은 라이센스 기관 항목을 승인하지 않습니다. Entry는 선언된 트리거만 사용합니다. `License-Authority/license-authority.yaml`.
 
-<!-- ptsip-readme-i18n: 22ddfe0f8e6abeb1ef8baf20648a42115c4c957eeebfb6ac72520fb1d163c561 -->
+<!-- ptsip-readme-i18n: 4d3cfd47f9492904acbf3ea7a8fb44921dd4bd9544325ac0d8ce1f8bce62471e -->
 
-## 언어 및 프로젝트 상태
+### 언어와 프로젝트 상태
 
 <!-- ptsip-readme-i18n: 363cb44c9dc5e13a7b09566f187af0b6c87e8af231e5e8e8ab8f0e01f642f717 -->
 

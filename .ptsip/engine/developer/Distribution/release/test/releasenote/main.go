@@ -8,6 +8,7 @@ import (
     "context"
     "crypto/sha256"
     "encoding/hex"
+    "encoding/json"
     "errors"
     "flag"
     "fmt"
@@ -19,6 +20,7 @@ import (
     "strings"
     "time"
 
+    documentation "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/releasenote"
     "go.yaml.in/yaml/v3"
 )
 
@@ -31,7 +33,7 @@ type translationRegistry struct {
     Canonical languageEntry `yaml:"canonical"`
     Translations []languageEntry `yaml:"translations"`
 }
-var languageID = regexp.MustCompile(`^[a-z]{2,3}(?:-[a-z0-9]+)*$`)
+var languageID = regexp.MustCompile(`^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$`)
 var shaMarker = regexp.MustCompile(`^<!-- ptsip-readme-i18n: ([0-9a-f]{64}) -->$`)
 var fenceStart = regexp.MustCompile("^[ \t]*("+ "\x60\x60\x60"+ "+|~~~+)")
 var heading = regexp.MustCompile(`^(#{1,6})[ \t]+(.*)$`)
@@ -65,9 +67,6 @@ func loadRegistry(root, filename string) (translationRegistry, error) {
     if r.SchemaVersion != "ptsip-readme-translation-registry/v1" {
         return r, errors.New("unknown README translation registry version")
     }
-    if len(r.Translations) == 0 {
-        return r, errors.New("translation registry must declare at least one target")
-    }
     entries := append([]languageEntry{r.Canonical}, r.Translations...)
     seenLanguage, seenPath := map[string]bool{}, map[string]bool{}
     for i, e := range entries {
@@ -81,6 +80,7 @@ func loadRegistry(root, filename string) (translationRegistry, error) {
         }
         seenLanguage[e.Language], seenPath[e.Path] = true, true
     }
+    if err := validateTranslationRegistry(root,r); err != nil { return r,err }
     return r, nil
 }
 func stripNav(s string) string {
@@ -366,8 +366,19 @@ func run(root, action, registryFile string) error {
 func main() {
     root := flag.String("root", "../../../../../..", "repository root relative to Go module")
     registry := flag.String("registry", "docs/translated/index.yaml", "registered translation source")
-    action := flag.String("action", "verify", "list-targets | models | verify | verify-strict | apply")
+    action := flag.String("action", "verify", "list-targets | models | verify | verify-strict | apply | documentation-check | documentation-preview | documentation-generate")
+    base := flag.String("base", "", "exact baseline revision for documentation generation")
+    head := flag.String("head", "", "exact current revision for documentation generation")
+    input := flag.String("input", "", "optional repository-relative documentation detail input")
     flag.Parse()
+    if *action == "documentation-check" || *action == "documentation-generate" || *action == "documentation-preview" {
+        operation := strings.TrimPrefix(*action,"documentation-")
+        report,code := documentation.Run(*root,operation,*base,*head,*input,documentationValidator)
+        encoder := json.NewEncoder(os.Stdout)
+        encoder.SetIndent("","  ")
+        if err := encoder.Encode(report); err != nil { fmt.Fprintln(os.Stderr,err);os.Exit(2) }
+        os.Exit(code)
+    }
     if err := run(*root, *action, *registry); err != nil {
         fmt.Fprintln(os.Stderr, "readme-translate:", err)
         os.Exit(2)

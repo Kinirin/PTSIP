@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:docs:format:profile-readme:v1",
+  "title": "PTSIP profile release note and technical documentation formatting",
+  "allOf": [
+    {
+      "$ref": "urn:ptsip:docs:format:basic-readme:v1#/$defs/ReleaseNote"
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "profile"
+        },
+        "change": {
+          "properties": {
+            "component": {
+              "pattern": "^profile$"
+            },
+            "previous_version": {
+              "pattern": "^pp\\.[0-9]+\\.[0-9]+$"
+            },
+            "version": {
+              "pattern": "^pp\\.[0-9]+\\.[0-9]+$"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "x-markdown-section-order": [
+    "Summary",
+    "Version changes",
+    "Technical details",
+    "Documentation"
+  ]
+}

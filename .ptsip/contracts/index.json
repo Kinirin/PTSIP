@@ -10,9 +10,17 @@
       "responsibility-authority"
     ],
     "operations": {
-      "policy-rules": ["check", "generate", "describe"],
-      "responsibility-authority": ["check", "generate"]
+      "policy-rules": [
+        "check",
+        "generate",
+        "describe"
+      ],
+      "responsibility-authority": [
+        "check",
+        "generate"
+      ]
     },
     "execution_authorized": false
-  }
+  },
+  "release_documentation": "release/releasenote.json"
 }

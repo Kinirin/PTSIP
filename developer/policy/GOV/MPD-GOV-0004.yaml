@@ -10,7 +10,7 @@ Policy_Status:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:approved-source-responsibilities"
-    Rule_ver: "3"
+    Rule_ver: "4"
   Definition:
     meaning: "GOV는 개발 결정권과 위임 범위의 정당성 및 정책 등록·생명주기 상태·개발 작업 승인의 출처와 적용 범위가 적법한지를 판단하고, 공식 README 원본과 번역 활성화의 기준을 규정한다."
     rationale: "작업 목표·기술 설계·실행 가능성·검증 성공은 결정권 또는 정책 승인을 대신 증명하지 못하며, README 번역 활성화와 파일명은 각각 등록부 및 문서 계약을 기준으로 한다."
@@ -21,7 +21,7 @@ Policy_Rules:
       - "정책 등록·생명주기 상태·개발 작업 승인 출처 및 적용 범위"
       - "저장소 최상위 영어 README.md"
       - "docs/translated/index.yaml에 따른 번역 언어 활성화"
-      - ".ptsip/contracts/docs/에 정의되는 번역 등록부 및 파일명 계약"
+      - ".ptsip/contracts/schemas/release/releasenote/에 정의되는 번역 등록부 및 파일명 계약"
     exclusions:
       - "GOV Family 전체의 핵심 책임 총칙은 MPD-GOV-0001의 전환 범위로 둔다."
   Constraints:
@@ -44,11 +44,11 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/TRANSLATION_REGISTRY_CONTRACT
         applies_when: TRANSLATION_REGISTRY_VALIDATION
-        rule: "docs/translated/index.yaml의 계약은 .ptsip/contracts/docs/에 명시한다."
+        rule: "docs/translated/index.yaml의 계약은 .ptsip/contracts/schemas/release/releasenote/에 명시한다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/TRANSLATION_FILENAME_CONTRACT
         applies_when: TRANSLATION_FILE_NAMING
-        rule: "번역 파일명은 .ptsip/contracts/docs/에 명시된 해당 계약을 따른다."
+        rule: "번역 파일명은 .ptsip/contracts/schemas/release/releasenote/에 명시된 해당 계약을 따른다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMPILE_SEALED_INDEPENDENT_BINDINGS
         applies_when: RESPONSIBILITY_CONDITION_PERMISSION_BINDING
@@ -67,7 +67,7 @@ Policy_Rules:
     dependencies:
       - "README.md"
       - "docs/translated/index.yaml"
-      - ".ptsip/contracts/docs/"
+      - ".ptsip/contracts/schemas/release/releasenote/"
   Evaluation:
     criteria:
       evidence:
@@ -75,4 +75,4 @@ Policy_Rules:
         - "정책 등록·생명주기 상태·개발 작업 승인 출처 및 적용 범위의 정당성"
         - "저장소 최상위 영어 README.md의 원본 지정 여부"
         - "docs/translated/index.yaml의 번역 등록 및 활성 언어 집합"
-        - ".ptsip/contracts/docs/에서 번역 등록부와 파일명 계약을 확인할 수 있는지"
+        - ".ptsip/contracts/schemas/release/releasenote/에서 번역 등록부와 파일명 계약을 확인할 수 있는지"

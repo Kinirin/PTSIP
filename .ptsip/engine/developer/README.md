@@ -66,6 +66,7 @@ unexported implementation details. Domain integration tests live in `test/`.
 
 ```powershell
 go -C .ptsip/engine/developer run . --validator developer-layout-check --root ../../..
+go -C .ptsip/engine/developer run . --validator release-documentation --operation check --root ../../..
 go -C .ptsip/engine/developer run . --validator policy-check --root ../../.. --input developer/policy/GOV/MPD-GOV-0006.yaml
 go -C .ptsip/engine/developer run . --validator policy-identity-check --root ../../.. --input developer/policy/GOV/MPD-GOV-0006.yaml
 go -C .ptsip/engine/developer run . --validator policy-status-check --root ../../.. --input developer/policy/GOV/MPD-GOV-0006.yaml
@@ -101,3 +102,38 @@ go -C .ptsip/engine/developer/Distribution/release/test run ./releasenote --root
 The root module does not implicitly traverse nested Go modules. Run each listed
 module for migration verification. Structure validation, implementation tests,
 remote CI, release admission and runtime permission are separate results.
+
+## Release documentation
+
+`.ptsip/contracts/release/releasenote.json` binds the four formatting schemas and
+the moved translation schemas under `.ptsip/contracts/schemas/release/releasenote/`.
+Formatting schemas validate a structured Markdown projection; generated notes
+carry that projection as machine-readable metadata and have separate Summary,
+Version changes, Technical details and Documentation sections.
+
+`release-documentation --operation preview|generate --base <SHA> --head <SHA>`
+compares the existing version declarations at two exact Git revisions. The head
+must be checked out and the source/version tree must be clean. It creates notes
+only for actual declaration changes, preserving previous and current values,
+source paths and revision/digest provenance. It never selects a version bump.
+No version changes produce `NO_VERSION_CHANGES` without a documentation write.
+
+An optional `--input` JSON/YAML document supplies a `notes` map keyed by changed
+component ID. Each entry may contain `summary`, `technical_details`, and a
+`documentation` list of objects with `title` and repository-relative `path`.
+Absent details use factual version/source comparisons and the registered
+technical document. Unchanged or unknown component overrides fail validation.
+
+English notes are classified below `docs/releasenote/`. Engine filenames are
+`engine/{engine}/{engine}-engine-{version}.md`, profiles use
+`project-profile/pp.{version}.md`, Tool notes use `tool/T.X.Y.Z[-STATE].md`, and
+Package notes use `PTSIP_Package/{version}.md`. Existing historical filenames are
+retained. Archives allow creation or identical replay, and conflicting contents
+fail before the current README changes. `engine/README.md` is withdrawn.
+
+The `readme-translation` workflow runs English generation first, then updates
+only current targets declared in `docs/translated/index.yaml`. Translations have
+no versioned archive. The existing Go translation command exposes
+`documentation-check`, `documentation-preview` and `documentation-generate`
+with the same contracts; its closed schema adapter requires no retired policy
+resolver. The developer root CLI validates through installed PTSIP VALIDATION.

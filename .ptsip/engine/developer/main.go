@@ -13,6 +13,7 @@ import (
 
 	release_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release"
 	ctrl_admission "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/admission"
+	releasenote "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/releasenote"
 	release_version "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/version"
 	responsibilityauthority "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Responsibility-Authority/verification"
 	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
@@ -71,12 +72,12 @@ var validators = map[string]Validator{
 func main() {
 	root := flag.String("root", ".", "repository root")
 	selected := flag.String("validator", "schema-check", "registered developer validator")
-	operation := flag.String("operation", "check", "authoring: check, generate, describe; release-version-diff: preview, check, apply")
+	operation := flag.String("operation", "check", "authoring: check, generate, describe; release-version-diff: preview, check, apply; release-documentation: check, preview, generate")
 	family := flag.String("family", "", "explicit Root Family for policy-rules generation or description")
 	input := flag.String("input", "", "repository-relative JSON/YAML input, or - for stdin")
 	output := flag.String("output", "", "new repository-relative JSON/YAML output (existing files are preserved)")
-	base := flag.String("base", "", "exact baseline commit SHA for release-version-diff")
-	head := flag.String("head", "", "exact checked-out commit SHA for release-version-diff")
+	base := flag.String("base", "", "exact baseline commit SHA for version comparison and documentation")
+	head := flag.String("head", "", "exact checked-out commit SHA for version comparison and documentation")
 	component := flag.String("component", "", "explicitly selected component")
 	target := flag.String("target", "", "explicitly selected version")
 	digest := flag.String("version-sha256", "", "exact version source SHA256")
@@ -88,9 +89,24 @@ func main() {
 		names = append(names, name)
 	}
 	names = append(names, "release-version-diff")
+	names = append(names, "release-documentation")
 	names = append(names, "policy-rules", "responsibility-authority")
 	names = append(names, "policy-check", "policy-identity-check", "policy-status-check", "plan-status-check")
 	sort.Strings(names)
+	if *selected == "release-documentation" {
+		if *output != "" || *family != "" {
+			emit(map[string]any{"status": "FAIL", "problem": "DOCUMENTATION_USES_CONTRACT_OUTPUT_PATHS", "publication_authorized": false})
+			os.Exit(2)
+		}
+		validate, err := schema_check.InstalledValidator()
+		if err != nil {
+			emit(map[string]any{"status": "FAIL", "problem": err.Error(), "publication_authorized": false})
+			os.Exit(2)
+		}
+		report, code := releasenote.Run(*root, *operation, *base, *head, *input, validate)
+		emit(report)
+		os.Exit(code)
+	}
 	if *selected == "policy-check" || *selected == "policy-identity-check" || *selected == "policy-status-check" || *selected == "plan-status-check" {
 		if *operation != "check" || *output != "" || *family != "" {
 			emit(map[string]any{"status": "FAIL", "problem": "POLICY_VERIFICATION_REQUIRES_CHECK_WITH_INPUT", "execution_authorized": false})

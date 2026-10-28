@@ -5,11 +5,24 @@ on:
     branches: [main]
     paths:
       - README.md
+      - src/VERSION
+      - .ptsip/contracts/release/releasenote.json
+      - .ptsip/contracts/release/versions_different.json
+      - .ptsip/contracts/schemas/release/versions_different.schema.json
+      - .ptsip/contracts/schemas/release/releasenote/**
+      - .ptsip/engine/developer/Distribution/release/verification/releasenote/**
+      - .ptsip/engine/developer/Distribution/release/version/**
       - .github/workflows/readme-translation.yml
       - .ptsip/engine/developer/Distribution/release/test/releasenote/**
       - .github/workflows/readme-verification.yml
       - docs/translated/index.yaml
   workflow_dispatch:
+    inputs:
+      base_sha:
+        description: Exact baseline SHA for declared version change notes; blank validates the current README only
+        type: string
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -50,6 +63,20 @@ jobs:
           & ./.artifacts/readme-translate --root . --action list-targets
           if ($LASTEXITCODE -ne 0) { throw 'README translation registry validation failed.' }
 
+      - name: Generate classified English notes and current README from declared version changes
+        shell: pwsh
+        env:
+          BASE_SHA: ${{ github.event_name == 'push' && github.event.before || inputs.base_sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:BASE_SHA) -or $env:BASE_SHA -match '^0{40}$') {
+            $report = & ./.artifacts/readme-translate --root . --action documentation-check
+          } else {
+            $report = & ./.artifacts/readme-translate --root . --action documentation-generate --base $env:BASE_SHA --head $env:HEAD_SHA
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'English documentation contract or version-change generation failed.' }
+          $report | Set-Content -LiteralPath .artifacts/documentation-generation.json -Encoding utf8
+
       # Argos itself is a third-party CLI backed by Python. No PTSIP Python
       # translation script executes; the Go controller owns all document logic.
       - name: Install offline Argos command-line engine
@@ -81,7 +108,7 @@ jobs:
           & ./.artifacts/readme-translate --root . --action verify-strict
           if ($LASTEXITCODE -ne 0) { throw 'README translation validation failed.' }
 
-      - name: Commit only registered translation targets
+      - name: Commit generated English records and registered current translation targets
         shell: pwsh
         env:
           TARGET_BRANCH: ${{ github.ref_name }}
@@ -90,16 +117,23 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Translation whitespace validation failed.' }
 
           $targets = @(& ./.artifacts/readme-translate --root . --action list-targets)
-          if ($LASTEXITCODE -ne 0 -or $targets.Count -eq 0) {
-            throw 'No valid registered translation target was resolved.'
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Registered translation target validation failed.'
           }
-          foreach ($target in $targets) {
+          $documentation = Get-Content -LiteralPath .artifacts/documentation-generation.json -Raw | ConvertFrom-Json
+          $englishOutputs = @($documentation.output_paths) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+          foreach ($path in $englishOutputs) {
+            if ($path -ne 'README.md' -and (-not $path.StartsWith('docs/releasenote/') -or $path.Contains('\') -or $path.Split('/') -contains '..')) {
+              throw "Unexpected generated English output: $path"
+            }
+          }
+          foreach ($target in @($targets + $englishOutputs | Sort-Object -Unique)) {
             git add -- $target
             if ($LASTEXITCODE -ne 0) { throw "Failed to stage $target" }
           }
           git diff --cached --quiet
           if ($LASTEXITCODE -eq 0) {
-            Write-Host 'Registered translations are already synchronized.'
+            Write-Host 'English documentation and registered current translations are already synchronized.'
             exit 0
           }
           git fetch origin $env:TARGET_BRANCH
@@ -111,7 +145,7 @@ jobs:
           }
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'docs(i18n): synchronize registry translations via Go'
+          git commit -m 'docs: generate English version records and synchronize current translations'
           if ($LASTEXITCODE -ne 0) { throw 'README translation commit failed.' }
           git push origin "HEAD:$env:TARGET_BRANCH"
           if ($LASTEXITCODE -ne 0) { throw 'README translation push failed.' }

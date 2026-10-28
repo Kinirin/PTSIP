@@ -1,5 +1,35 @@
 # PTSIP Release Notes
 
+## Current generation and retention
+
+The current formatting and classification contract is
+[`releasenote.json`](../../.ptsip/contracts/release/releasenote.json), with schemas
+under [release/releasenote](../../.ptsip/contracts/schemas/release/releasenote/).
+An explicit version declaration change produces a mechanically classified
+English change record with separate Summary, Version changes, Technical details
+and Documentation sections. Previous/current versions and exact source
+revisions are retained. Source differences alone do not select a version bump
+or establish a functional or published release.
+
+New-generation filenames are:
+
+```text
+engine/{engine}/{engine}-engine-{version}.md
+project-profile/pp.{version}.md
+tool/T.{major}.{minor}.{patch}[-{state}].md
+PTSIP_Package/{package_version}.md
+```
+
+Only original English notes are archived. The repository-root English README
+uses its Basic formatting schema, and current translations are regenerated at
+the paths registered in `docs/translated/index.yaml`. Translations are updated
+in place without versioned snapshots. `engine/README.md` is withdrawn and is
+not generated as an archive index.
+
+Existing historical notes retain their recorded names, contents and publication
+facts. The historical records and workflows below do not redefine the current
+generation contract.
+
 This directory is the canonical repository history for independently versioned components and Package compositions:
 
 ```text

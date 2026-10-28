@@ -9,17 +9,19 @@ import (
 
 func TestRegistryLanguagesAreDataNotCode(t *testing.T) {
     root := t.TempDir()
+    copyDocumentationFile(t,root,".ptsip/contracts/schemas/release/releasenote/readme-translation-path.schema.json")
+    copyDocumentationFile(t,root,".ptsip/contracts/schemas/release/releasenote/readme-translation-registry.schema.json")
     dir := filepath.Join(root, "docs", "translated")
     if err := os.MkdirAll(dir, 0755); err != nil { t.Fatal(err) }
     registry := "schema_version: ptsip-readme-translation-registry/v1\n"+
-        "canonical:\n  language: it\n  path: README.md\n"+
+        "canonical:\n  language: en\n  path: README.md\n"+
         "translations:\n"+
         "  - language: de\n    path: docs/translated/README.de.md\n"+
         "  - language: fr\n    path: docs/translated/README.fr.md\n"
     if err := os.WriteFile(filepath.Join(dir, "index.yaml"), []byte(registry), 0644); err != nil { t.Fatal(err) }
     r, err := loadRegistry(root, "docs/translated/index.yaml")
     if err != nil { t.Fatal(err) }
-    if r.Canonical.Language != "it" || len(r.Translations) != 2 ||
+    if r.Canonical.Language != "en" || len(r.Translations) != 2 ||
         r.Translations[0].Language != "de" || r.Translations[1].Language != "fr" {
         t.Fatalf("unexpected registry: %+v", r)
     }
@@ -30,7 +32,7 @@ func TestUnsafeRegistryTargetFailsClosed(t *testing.T) {
     dir := filepath.Join(root, "docs", "translated")
     if err := os.MkdirAll(dir, 0755); err != nil { t.Fatal(err) }
     content := "schema_version: ptsip-readme-translation-registry/v1\n"+
-        "canonical:\n  language: it\n  path: README.md\n"+
+        "canonical:\n  language: en\n  path: README.md\n"+
         "translations:\n"+
         "  - language: fr\n    path: ../../outside.md\n"
     if err := os.WriteFile(filepath.Join(dir, "index.yaml"), []byte(content), 0644); err != nil { t.Fatal(err) }
