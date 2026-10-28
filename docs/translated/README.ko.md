@@ -32,9 +32,9 @@
 | Storage / Discovery / 계획 / 실행 엔진 | `0.3.1` |
 | 검증 엔진 | `0.3.3` (자본계약) `4.0.0`) |
 
-<!-- ptsip-readme-i18n: 2b0968ee1595bdfe7f394538df6f0706f9beb719ed88183c4a3808524cc1d826 -->
+<!-- ptsip-readme-i18n: 9ee82f1d423019dc64f24fbde0aff698b86de5d79c3067b01402941be3b7a37a -->
 
-**출판 artifact versus 개발 소스:** 이름 * `pyproject.toml` 으로 `main` 아직도 별도의 설명 `0.3.8b6` (`0.3.8.b6`, Project Profile `pp.2.00`; 이전 배포 `0.3.8b5`) 소스 구성 / 도구 `T.0.3.8.b1`. 그것은 **아니다.** 출판된 b5 artifacts를 정의합니다. `dev/0.3.8b2`. 이 README는 개발 소스 버전을 변경하지 않고 게시 된 릴리스를보고 또는 모든 패키지를 재구성합니다.
+**출판 artifact versus 개발 소스:** 현재 위치 `main` 소스는 다음 패키지 prerelease 선언 `0.3.8b6` (사용자 정체성 `0.3.8.b6`) 프로젝트 프로필 `pp.2.00` 그리고 독립적으로 버전 도구 `T.0.3.8.b1`. 그것은 **아니다.** 출판된 b5 artifacts를 정의합니다. `dev/0.3.8b2`. 위의 출판 `0.3.8b5` 사실은 역사적인 남아; b6의 소스 선언은 b6이 출판 된 것을 의미하지 않습니다.
 
 <!-- ptsip-readme-i18n: ec82fbe270a8842dd355c0e6b251efd402e87b0f987cbecf2c046eb7ea02701d -->
 
