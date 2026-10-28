@@ -9,12 +9,12 @@ on:
       - 'developer/policy/registries/release-admission-ctrl-ownership.json'
       - 'developer/policy/registries/release-admission-publication-activation.json'
       - 'developer/policy/approvals/MPA-20261026-CTRL-RELEASE-ADMISSION-COMPLETION.yaml'
-      - '.ptsip/engine/developer/ctrl_admission/**'
+      - '.ptsip/engine/developer/Distribution/release/verification/admission/**'
       - 'src/ptsip/engines/**'
       - 'developer/tests/engines/**'
       - 'developer/policy/approvals/MPA-20261026-VALIDATION-PROJECTION-CAPABILITY-CONTRACT-BUMPS.yaml'
-      - '.ptsip/engine/developer/schema_check/**'
-      - '.ptsip/engine/developer/release/**'
+      - '.ptsip/engine/developer/policy/verification/**'
+      - '.ptsip/engine/developer/Distribution/release/**'
       - 'src/ptsip/profiles/**'
       - 'registry/project-profile-contracts.yaml'
       - 'pyproject.toml'
@@ -37,7 +37,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-go@v6
         with:
-          go-version-file: .ptsip/engine/developer/release/controller/go.mod
+          go-version-file: .ptsip/engine/developer/Distribution/release/controller/go.mod
       - name: Assert relocated Go code and contract ownership
         shell: bash
         run: |
@@ -48,7 +48,7 @@ jobs:
           fi
           # Negative tests must be allowed to reference the retired path as rejected input.
           # Reject references in production Go sources and module declarations only.
-          if grep -R -n --include='*.go' --include='go.mod' --exclude='*_test.go' -F '.github/checks/release' .ptsip/engine/developer/release; then
+          if grep -R -n --include='*.go' --include='go.mod' --exclude='*_test.go' -F '.github/checks/release' .ptsip/engine/developer/Distribution/release; then
             echo "BLOCKED: relocated Go code still references the retired Go path"
             exit 1
           fi
@@ -73,24 +73,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer/release/controller test ./... -run '^(TestCTRLAdmissionFailClosedWithoutActiveNormativePolicy|TestCTRLAdmissionBlocksWithdrawnPolicy|TestPublicationEvidenceAuthority.*|TestAdmitShippingHasNoRetiredPolicyRuntimePath|TestPublishedB5EngineVersionsAndProjections)$' -count=1
-          go -C .ptsip/engine/developer/release/test test ./... -run '^$'
-          go -C .ptsip/engine/developer/release/engine-verification test ./... -run '^$'
+          go -C .ptsip/engine/developer/Distribution/release/controller test ./... -run '^(TestCTRLAdmissionFailClosedWithoutActiveNormativePolicy|TestCTRLAdmissionBlocksWithdrawnPolicy|TestPublicationEvidenceAuthority.*|TestAdmitShippingHasNoRetiredPolicyRuntimePath|TestPublishedB5EngineVersionsAndProjections)$' -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test ./... -run '^$'
+          go -C .ptsip/engine/developer/Distribution/release/verification/engine test ./... -run '^$'
       - name: Verify current Package and Profile native contracts
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer/release/test test ./... -run TestNativeProfile -count=1
-          go -C .ptsip/engine/developer/release/test test ./... -run TestLightweightSDistManifestTracksCurrentProfile -count=1
-          go -C .ptsip/engine/developer/release/test test ./... -run TestDeclaredVerificationSelection -count=1
-          go -C .ptsip/engine/developer/release/test test ./... -run TestReleasePresentation -count=1
-          go -C .ptsip/engine/developer/release/test test ./... -run TestReleaseComposition -count=1
-          go -C .ptsip/engine/developer/release/controller test ./... -run TestCTRLAdmission -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test ./... -run TestNativeProfile -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test ./... -run TestLightweightSDistManifestTracksCurrentProfile -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test ./... -run TestDeclaredVerificationSelection -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test ./... -run TestReleasePresentation -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test ./... -run TestReleaseComposition -count=1
+          go -C .ptsip/engine/developer/Distribution/release/controller test ./... -run TestCTRLAdmission -count=1
       - name: Verify withdrawn temporary CTRL policy fails closed (no publication)
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer test ./ctrl_admission -count=1
+          go -C .ptsip/engine/developer test ./Distribution/release/verification/admission -count=1
           if go -C .ptsip/engine/developer run . --validator ctrl-release-admission-check --root "$GITHUB_WORKSPACE" > /tmp/ctrl-policy.json; then
             echo "BLOCKED: withdrawn CTRL policy was unexpectedly admitted"
             exit 1
@@ -108,11 +108,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer/release/test test ./... -run '^(TestAdmission|TestVersionsDifferent)' -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test ./... -run '^(TestAdmission|TestVersionsDifferent)' -count=1
           go -C .ptsip/engine/developer test ./release -count=1
       - name: Test all Developer schema contracts and fourteen Family routes
         shell: bash
-        run: go -C .ptsip/engine/developer test ./schema_check -count=1 -v -v
+        run: go -C .ptsip/engine/developer test ./policy/verification -count=1 -v -v
       - name: Check approval-bound machine contract (not publication)
         shell: bash
         run: |

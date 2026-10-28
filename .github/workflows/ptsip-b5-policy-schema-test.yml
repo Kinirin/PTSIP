@@ -6,7 +6,7 @@ on:
       - "src/tests/ptsip/agent_contracts/test_projection_bindings.py"
       - ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json"
       - ".ptsip/contracts/policy/lifecycle/Policy_status/**"
-      - ".ptsip/engine/developer/schema_check/**"
+      - ".ptsip/engine/developer/policy/verification/**"
       - "developer/tests/schema_validation/**"
   workflow_dispatch:
 permissions:

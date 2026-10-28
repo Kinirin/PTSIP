@@ -58,7 +58,7 @@ fn verify_integrated_plan_contract(plan: &Value) -> Result<(), String> {
         || plan["distribution"]["model"] != "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL"
         || plan["distribution"]["engine_pip_dependencies"] != "FORBIDDEN"
         || plan["distribution"]["required_verified_engines"] != 7
-        || plan["distribution"]["verification_owner"] != ".ptsip/engine/developer/release/"
+        || plan["distribution"]["verification_owner"] != ".ptsip/engine/developer/Distribution/release/"
         || plan["distribution"]["legacy_controller_execution"] != "FORBIDDEN"
         || plan["distribution"]["publication_authorized"] != false
         || plan.get("packages").is_some()
@@ -284,7 +284,7 @@ mod integrated_candidate_tests {
                 "model":"SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL",
                 "engine_pip_dependencies":"FORBIDDEN",
                 "required_verified_engines":7,
-                "verification_owner":".ptsip/engine/developer/release/",
+                "verification_owner":".ptsip/engine/developer/Distribution/release/",
                 "legacy_controller_execution":"FORBIDDEN",
                 "publication_authorized":false
             },

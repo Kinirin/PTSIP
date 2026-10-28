@@ -65,7 +65,7 @@ def test_consumer_delivery_must_not_reactivate_retired_controller_or_release() -
     assert distribution["model"] == "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL"
     assert distribution["required_verified_engines"] == 7
     assert distribution["engine_pip_dependencies"] == "FORBIDDEN"
-    assert distribution["verification_owner"] == ".ptsip/engine/developer/release/"
+    assert distribution["verification_owner"] == ".ptsip/engine/developer/Distribution/release/"
     assert distribution["legacy_controller_execution"] == "FORBIDDEN"
     assert distribution["publication_authorized"] is False
 
@@ -97,7 +97,7 @@ def test_new_installation_candidate_not_misrepresented_as_registered_operation()
 
 def test_native_intermediate_builder_is_not_a_consumer_distribution_resolver() -> None:
     producer = (_ROOT / (
-        ".ptsip/engine/developer/release/engine-verification/wheel.go"
+        ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go"
     )).read_text(encoding="utf-8")
     native_test = (_ROOT / (
         "developer/tests/engines/independent_engine_wheel_test.go"
@@ -124,7 +124,7 @@ def test_native_intermediate_builder_is_not_a_consumer_distribution_resolver() -
 
     # Integration still owns the full consumer installation and hashes.
     consumer_join = (_ROOT / (
-        ".ptsip/engine/developer/release/test/package_install.go"
+        ".ptsip/engine/developer/Distribution/release/test/package_install.go"
     )).read_text(encoding="utf-8")
     assert '"pip", "install"' in consumer_join
     assert '"SINGLE_PROJECT_PLATFORM_BUNDLES_ONLY"' in (

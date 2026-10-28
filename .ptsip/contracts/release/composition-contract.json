@@ -96,10 +96,10 @@
     "source_boundaries": [
       "src/ptsip/engines/{engine}",
       "src/ptsip/engines/contracts",
-      ".ptsip/engine/developer/release/engine-verification/wheel.go",
-      ".ptsip/engine/developer/release/engine-verification/linux_abi.go",
-      ".ptsip/engine/developer/release/engine-verification/go.mod",
-      ".ptsip/engine/developer/release/engine-verification/go.sum",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/linux_abi.go",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/go.mod",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/go.sum",
       "License-Authority"
     ],
     "publication_transport_or_policy_route_change": "OUTSIDE_ENGINE_ARTIFACT_PRODUCER_BOUNDARY",
@@ -113,8 +113,8 @@
         "registry",
         "License-Authority",
         "README.md",
-        ".ptsip/engine/developer/release/test/tool.go",
-        ".ptsip/engine/developer/release/test/runner.go"
+        ".ptsip/engine/developer/Distribution/release/test/tool.go",
+        ".ptsip/engine/developer/Distribution/release/test/runner.go"
       ],
       "pyproject_comparison": "FULL_DOCUMENT_EXCEPT_PUBLISHED_SNAPSHOT_TABLE"
     },
@@ -136,7 +136,7 @@
     "engine_draft_suffix": false
   },
   "package": {
-    "registry": ".ptsip/engine/developer/release/state/package-registry.json",
+    "registry": ".ptsip/engine/developer/Distribution/release/state/package-registry.json",
     "identity": "NUMERIC_BASE_DOT_SIX_HEX",
     "refresh_on": "EACH_SUCCESSFUL_COMPONENT_PUBLICATION",
     "numeric_auto_increment": false,

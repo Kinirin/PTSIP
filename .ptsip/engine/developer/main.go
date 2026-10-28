@@ -11,10 +11,13 @@ import (
 	"sort"
 	"strings"
 
-	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/contract_authoring"
-	ctrl_admission "github.com/Kinirin/PTSIP/.ptsip/engine/developer/ctrl_admission"
-	release_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/release"
-	schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/schema_check"
+	release_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release"
+	ctrl_admission "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/admission"
+	release_version "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/version"
+	responsibilityauthority "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Responsibility-Authority/verification"
+	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/layout"
+	schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification"
 )
 
 type Validator func(string) (any, int)
@@ -38,11 +41,11 @@ func runVersionDiff(root, operation, base, head, component, target, digest strin
 	var err error
 	switch operation {
 	case "preview":
-		result, err = release_check.PreviewVersionsDifferent(root, base, head)
+		result, err = release_version.PreviewVersionsDifferent(root, base, head)
 	case "check":
-		result, err = release_check.CheckVersionsDifferent(root, base, head)
+		result, err = release_version.CheckVersionsDifferent(root, base, head)
 	case "apply":
-		err = release_check.ApplySelectedVersion(root, base, head, component, target, digest, explicit)
+		err = release_version.ApplySelectedVersion(root, base, head, component, target, digest, explicit)
 		if err == nil {
 			result = map[string]any{"status": "SELECTED_VERSION_APPLIED", "component": component, "target": target, "publication_authorized": false}
 		}
@@ -59,6 +62,7 @@ func runVersionDiff(root, operation, base, head, component, target, digest strin
 }
 
 var validators = map[string]Validator{
+	"developer-layout-check":       layout.Run,
 	"release-admission-check":      runReleaseAdmissionCheck,
 	"schema-check":                 runSchemaCheck,
 	"ctrl-release-admission-check": ctrl_admission.Run,
@@ -85,14 +89,34 @@ func main() {
 	}
 	names = append(names, "release-version-diff")
 	names = append(names, "policy-rules", "responsibility-authority")
+	names = append(names, "policy-check", "policy-identity-check", "policy-status-check", "plan-status-check")
 	sort.Strings(names)
+	if *selected == "policy-check" || *selected == "policy-identity-check" || *selected == "policy-status-check" || *selected == "plan-status-check" {
+		if *operation != "check" || *output != "" || *family != "" {
+			emit(map[string]any{"status": "FAIL", "problem": "POLICY_VERIFICATION_REQUIRES_CHECK_WITH_INPUT", "execution_authorized": false})
+			os.Exit(2)
+		}
+		report, code := schema_check.RunDocument(*root, *selected, *input)
+		emit(report)
+		os.Exit(code)
+	}
 	if *selected == "policy-rules" || *selected == "responsibility-authority" {
 		validate, err := schema_check.InstalledValidator()
 		if err != nil {
 			emit(map[string]any{"status": "FAIL", "problem": err.Error(), "execution_authorized": false})
 			os.Exit(2)
 		}
-		report, code := contract_authoring.Run(*root, *selected, *operation, *family, *input, *output, validate)
+		var report any
+		var code int
+		if *selected == "responsibility-authority" {
+			if *family != "" {
+				emit(map[string]any{"status": "FAIL", "problem": "FAMILY_ONLY_APPLIES_TO_POLICY_RULES", "execution_authorized": false})
+				os.Exit(2)
+			}
+			report, code = responsibilityauthority.Run(*root, *operation, *input, *output, validate)
+		} else {
+			report, code = contract_authoring.Run(*root, *selected, *operation, *family, *input, *output, validate)
+		}
 		emit(report)
 		os.Exit(code)
 	}

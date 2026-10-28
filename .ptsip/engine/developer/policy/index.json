@@ -1,0 +1,47 @@
+{
+  "schema_version": "ptsip-developer-validator-domain/v1",
+  "lifecycle": "TEMPORARY_REPLACEABLE",
+  "replacement_required": true,
+  "policy_authority": "NONE",
+  "execution_authorized": false,
+  "publication_authorized": false,
+  "domain": "policy",
+  "components": [
+    {
+      "id": "identity",
+      "root": "verification/identity",
+      "state": "STRUCTURE_ONLY",
+      "implementation": "verification/identity/Verifier.go"
+    },
+    {
+      "id": "policy-status",
+      "root": "verification/lifecycle/Policy_status",
+      "state": "STRUCTURE_ONLY",
+      "implementation": "verification/lifecycle/Policy_status/Verifier.go"
+    },
+    {
+      "id": "plan-status",
+      "root": "verification/lifecycle/Plan_status",
+      "state": "STRUCTURE_ONLY",
+      "implementation": "verification/lifecycle/Plan_status/Verifier.go"
+    },
+    {
+      "id": "rules",
+      "root": "verification/Rules",
+      "state": "STRUCTURE_ONLY",
+      "implementation": "verification/Rules/Verifier.go"
+    },
+    {
+      "id": "schema-inspection",
+      "root": "verification",
+      "state": "STRUCTURE_ONLY",
+      "implementation": "verification/Finding.go"
+    },
+    {
+      "id": "test",
+      "root": "test",
+      "state": "IMPLEMENTED",
+      "implementation": "test/Verifier_test.go"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "ptsip-developer-validator-domain/v1",
+  "lifecycle": "TEMPORARY_REPLACEABLE",
+  "replacement_required": true,
+  "policy_authority": "NONE",
+  "execution_authorized": false,
+  "publication_authorized": false,
+  "domain": "Distribution",
+  "component": "test-engine",
+  "state": "INTEGRATION_SUITE",
+  "test_module": ".ptsip/engine/developer/Distribution/release/test",
+  "command": "go test ./...",
+  "category_extraction": "PENDING"
+}

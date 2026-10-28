@@ -3,15 +3,15 @@
   "artifact_class": "DERIVED_MIGRATION_INVENTORY_NOT_POLICY_AUTHORITY",
   "authority_ref": "developer/policy/approvals/MPA-20261020-RELEASE-VERIFICATION-CUTOVER-KEEP-LATEST.yaml",
   "historical_source_root": ".github/checks/release/",
-  "relocated_go_root": ".ptsip/engine/developer/release/",
+  "relocated_go_root": ".ptsip/engine/developer/Distribution/release/",
   "machine_contract_root": ".ptsip/contracts/release/",
   "original_go_files_relocated": 38,
   "original_module_files_relocated": 6,
   "migrated_go_modules": {
-    "controller": ".ptsip/engine/developer/release/controller/",
-    "test": ".ptsip/engine/developer/release/test/",
-    "engine_verification": ".ptsip/engine/developer/release/engine-verification/",
-    "retired_cli": ".ptsip/engine/developer/release/cli.go"
+    "controller": ".ptsip/engine/developer/Distribution/release/controller/",
+    "test": ".ptsip/engine/developer/Distribution/release/test/",
+    "engine_verification": ".ptsip/engine/developer/Distribution/release/verification/engine/",
+    "retired_cli": ".ptsip/engine/developer/Distribution/release/cli.go"
   },
   "derived_legacy_contracts": [
     ".ptsip/contracts/release/composition-contract.json",
@@ -24,8 +24,8 @@
     ".ptsip/contracts/release/verification-contract.json"
   ],
   "relocated_implementation_state": [
-    ".ptsip/engine/developer/release/state/package-registry.json",
-    ".ptsip/engine/developer/release/state/release-availability.json"
+    ".ptsip/engine/developer/Distribution/release/state/package-registry.json",
+    ".ptsip/engine/developer/Distribution/release/state/release-availability.json"
   ],
   "canonical_approved_admission_projection": ".ptsip/contracts/release/admission.json",
   "canonical_approved_admission_validation_rules": ".ptsip/contracts/release/validation-rules.json",
@@ -43,222 +43,222 @@
   "migrated_source_files": [
     {
       "from": ".github/checks/release/cli.go",
-      "to": ".ptsip/engine/developer/release/cli.go",
+      "to": ".ptsip/engine/developer/Distribution/release/cli.go",
       "source_blob_sha": "fe23d4cf0a37104157cac329077a46666b4d1578"
     },
     {
       "from": ".github/checks/release/controller/cmd/ptsip-release/main.go",
-      "to": ".ptsip/engine/developer/release/controller/cmd/ptsip-release/main.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/cmd/ptsip-release/main.go",
       "source_blob_sha": "6464fb722a1e9615c966a0755afd5a90933f275e"
     },
     {
       "from": ".github/checks/release/controller/composition.go",
-      "to": ".ptsip/engine/developer/release/controller/composition.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/composition.go",
       "source_blob_sha": "8c99874b12e1b5e6e581caa9005a33059e7601e3"
     },
     {
       "from": ".github/checks/release/controller/evidence.go",
-      "to": ".ptsip/engine/developer/release/controller/evidence.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/evidence.go",
       "source_blob_sha": "300ecae09e3c449a004a606bf8ed62cd9d2ea496"
     },
     {
       "from": ".github/checks/release/controller/go.mod",
-      "to": ".ptsip/engine/developer/release/controller/go.mod",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/go.mod",
       "source_blob_sha": "e39c4d30f2a7843d8e07f877e8ce60f4af87b9fe"
     },
     {
       "from": ".github/checks/release/controller/go.sum",
-      "to": ".ptsip/engine/developer/release/controller/go.sum",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/go.sum",
       "source_blob_sha": "b2880734ee87199f022e0de878fe3759892e50e1"
     },
     {
       "from": ".github/checks/release/controller/package.go",
-      "to": ".ptsip/engine/developer/release/controller/package.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/package.go",
       "source_blob_sha": "673bb6673607906657833b692f6acb087c3f3887"
     },
     {
       "from": ".github/checks/release/controller/package_admission.go",
-      "to": ".ptsip/engine/developer/release/controller/package_admission.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/package_admission.go",
       "source_blob_sha": "051befe44e893c00df3c7d90c775298758a8e31c"
     },
     {
       "from": ".github/checks/release/controller/package_build.go",
-      "to": ".ptsip/engine/developer/release/controller/package_build.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/package_build.go",
       "source_blob_sha": "3e003bc8a936edb38a937c050a4690f49e750ddc"
     },
     {
       "from": ".github/checks/release/controller/package_wheel.go",
-      "to": ".ptsip/engine/developer/release/controller/package_wheel.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/package_wheel.go",
       "source_blob_sha": "099c50e8cd61842799150bf4ad25501d5fa7f8da"
     },
     {
       "from": ".github/checks/release/controller/presentation.go",
-      "to": ".ptsip/engine/developer/release/controller/presentation.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/presentation.go",
       "source_blob_sha": "47ac6f9ed2a64624605f4954d7afc40da0c8180f"
     },
     {
       "from": ".github/checks/release/controller/publication.go",
-      "to": ".ptsip/engine/developer/release/controller/publication.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/publication.go",
       "source_blob_sha": "98990045799b4584a66ad115f213dd80749fa33c"
     },
     {
       "from": ".github/checks/release/controller/recovery.go",
-      "to": ".ptsip/engine/developer/release/controller/recovery.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/recovery.go",
       "source_blob_sha": "db822d6d17752152f0a8a0c9efe65773c1cbae3a"
     },
     {
       "from": ".github/checks/release/controller/request.go",
-      "to": ".ptsip/engine/developer/release/controller/request.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/request.go",
       "source_blob_sha": "adf17cc1305ad4b42c09ad3cce7dc4a82f39c5d2"
     },
     {
       "from": ".github/checks/release/controller/reuse.go",
-      "to": ".ptsip/engine/developer/release/controller/reuse.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/reuse.go",
       "source_blob_sha": "f921b6ccdc6f63d215cbfe39f0b708fca9a57731"
     },
     {
       "from": ".github/checks/release/controller/selection.go",
-      "to": ".ptsip/engine/developer/release/controller/selection.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/selection.go",
       "source_blob_sha": "ee22fb19d29063e568360f5a28d48821b5908002"
     },
     {
       "from": ".github/checks/release/controller/shipping.go",
-      "to": ".ptsip/engine/developer/release/controller/shipping.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/shipping.go",
       "source_blob_sha": "ef2a8e87ecda0116aed19fd7756657232f3ee4e6"
     },
     {
       "from": ".github/checks/release/controller/tool_project.go",
-      "to": ".ptsip/engine/developer/release/controller/tool_project.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/tool_project.go",
       "source_blob_sha": "c7ee566fa2c0ec58c0e73b50f1a7bdb6cb8362f2"
     },
     {
       "from": ".github/checks/release/controller/versions.go",
-      "to": ".ptsip/engine/developer/release/controller/versions.go",
+      "to": ".ptsip/engine/developer/Distribution/release/controller/versions.go",
       "source_blob_sha": "80854340f1adfbdfa852aceef343f35f2d35717d"
     },
     {
       "from": ".github/checks/release/engine-verification/admission.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/admission.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/admission.go",
       "source_blob_sha": "cc9dd3bf1530872f883a0434c67cca64b9464b3d"
     },
     {
       "from": ".github/checks/release/engine-verification/cmd/engine-wheel/main.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/cmd/engine-wheel/main.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/cmd/engine-wheel/main.go",
       "source_blob_sha": "4ed24cf2afbb5814b90f31106f4eed0f7278336c"
     },
     {
       "from": ".github/checks/release/engine-verification/gate.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/gate.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/gate.go",
       "source_blob_sha": "223b35d86d229fa4ee2352ed1bd3ec6dc81b3e50"
     },
     {
       "from": ".github/checks/release/engine-verification/gate_test.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/gate_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/gate_test.go",
       "source_blob_sha": "91e67e6c1068386dc41852b3ff1ff5fdafb3a682"
     },
     {
       "from": ".github/checks/release/engine-verification/go.mod",
-      "to": ".ptsip/engine/developer/release/engine-verification/go.mod",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/go.mod",
       "source_blob_sha": "d0a91f5fd0effad87909ea360a0c7a3d286bda99"
     },
     {
       "from": ".github/checks/release/engine-verification/go.sum",
-      "to": ".ptsip/engine/developer/release/engine-verification/go.sum",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/go.sum",
       "source_blob_sha": "8675e7fd10805a7f501830963822898d96e020f3"
     },
     {
       "from": ".github/checks/release/engine-verification/linux_abi.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/linux_abi.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/linux_abi.go",
       "source_blob_sha": "64e0336b2e2b833c23891e033c8e2d28a0f470bb"
     },
     {
       "from": ".github/checks/release/engine-verification/publication.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/publication.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/publication.go",
       "source_blob_sha": "215cd1f4edadd0122f1e554bccfbb7b8c71d6a6f"
     },
     {
       "from": ".github/checks/release/engine-verification/publication_bundle.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/publication_bundle.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/publication_bundle.go",
       "source_blob_sha": "1979d49d9a7964c991925c58aff70d9053c41aef"
     },
     {
       "from": ".github/checks/release/engine-verification/publication_test.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/publication_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/publication_test.go",
       "source_blob_sha": "488ec7de6ac3369264852d4f3407d9c54da06e59"
     },
     {
       "from": ".github/checks/release/engine-verification/wheel.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/wheel.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go",
       "source_blob_sha": "6fd4878d20dddda23e6ea36803b86d91047a676b"
     },
     {
       "from": ".github/checks/release/engine-verification/wheel_test.go",
-      "to": ".ptsip/engine/developer/release/engine-verification/wheel_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/verification/engine/wheel_test.go",
       "source_blob_sha": "184d584d79f87617cc64477f2c3a26ae27a6d91b"
     },
     {
       "from": ".github/checks/release/test/admission_test.go",
-      "to": ".ptsip/engine/developer/release/test/admission_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/admission_test.go",
       "source_blob_sha": "eb6f2168298bee1082c49a0fb90453b1204f3441"
     },
     {
       "from": ".github/checks/release/test/cmd/ptsip-release-test/main.go",
-      "to": ".ptsip/engine/developer/release/test/cmd/ptsip-release-test/main.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/cmd/ptsip-release-test/main.go",
       "source_blob_sha": "97e86c5f004a474da941d242f90375356b0184fb"
     },
     {
       "from": ".github/checks/release/test/composition_test.go",
-      "to": ".ptsip/engine/developer/release/test/composition_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/composition_test.go",
       "source_blob_sha": "dc8c9b01c6476b90bf7b4c8520f75b00ef3760ad"
     },
     {
       "from": ".github/checks/release/test/contracts_test.go",
-      "to": ".ptsip/engine/developer/release/test/contracts_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/contracts_test.go",
       "source_blob_sha": "4259b8938c445abae666146fa2348b87f25320b1"
     },
     {
       "from": ".github/checks/release/test/go.mod",
-      "to": ".ptsip/engine/developer/release/test/go.mod",
+      "to": ".ptsip/engine/developer/Distribution/release/test/go.mod",
       "source_blob_sha": "f945e2440b7ca2b05772e5278a9e1e8cc18fd2b1"
     },
     {
       "from": ".github/checks/release/test/go.sum",
-      "to": ".ptsip/engine/developer/release/test/go.sum",
+      "to": ".ptsip/engine/developer/Distribution/release/test/go.sum",
       "source_blob_sha": "b2880734ee87199f022e0de878fe3759892e50e1"
     },
     {
       "from": ".github/checks/release/test/package_completeness_test.go",
-      "to": ".ptsip/engine/developer/release/test/package_completeness_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/package_completeness_test.go",
       "source_blob_sha": "f320e7926b1d15792e3eca4e6f7712d905851a56"
     },
     {
       "from": ".github/checks/release/test/package_install.go",
-      "to": ".ptsip/engine/developer/release/test/package_install.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/package_install.go",
       "source_blob_sha": "fe36f895b16eb1b529301a95bd0034cbb9c52242"
     },
     {
       "from": ".github/checks/release/test/package_wheel_test.go",
-      "to": ".ptsip/engine/developer/release/test/package_wheel_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/package_wheel_test.go",
       "source_blob_sha": "42fe4861460be30341b64a0a2f67bf42d2a9afcc"
     },
     {
       "from": ".github/checks/release/test/presentation_evidence_test.go",
-      "to": ".ptsip/engine/developer/release/test/presentation_evidence_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/presentation_evidence_test.go",
       "source_blob_sha": "c376b1c20971bc354f9fe4fa6dae7b823b362ea3"
     },
     {
       "from": ".github/checks/release/test/publication_test.go",
-      "to": ".ptsip/engine/developer/release/test/publication_test.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/publication_test.go",
       "source_blob_sha": "0a7ec86275728bce6c2e9f19909807857bcba590"
     },
     {
       "from": ".github/checks/release/test/runner.go",
-      "to": ".ptsip/engine/developer/release/test/runner.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/runner.go",
       "source_blob_sha": "7d095344cff5ab51ea9a9afa628427e9264f33db"
     },
     {
       "from": ".github/checks/release/test/tool.go",
-      "to": ".ptsip/engine/developer/release/test/tool.go",
+      "to": ".ptsip/engine/developer/Distribution/release/test/tool.go",
       "source_blob_sha": "8a530c02ed8acd53712194c986d79995446946a7"
     }
   ],

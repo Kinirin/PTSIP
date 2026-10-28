@@ -1,9 +1,9 @@
 {
   "schema_version": "ptsip-package-installation/v1",
-  "entry": ".ptsip/engine/developer/release/run_release.ps1",
+  "entry": ".ptsip/engine/developer/Distribution/release/run_release.ps1",
   "action": "Install",
   "version_argument": "PackageVersion",
-  "registry": ".ptsip/engine/developer/release/state/package-registry.json",
+  "registry": ".ptsip/engine/developer/Distribution/release/state/package-registry.json",
   "base_selector": "LATEST_SUCCESSFUL_PUBLISHED_COMPOSITION_FOR_EXACT_NUMERIC_BASE",
   "required_inventory": "TOOL_AND_PROFILES_AND_EVERY_CANONICALLY_REGISTERED_ENGINE_BY_EXACT_ID",
   "latest_components": "COMPLETE_LATEST_PUBLISHED_COMPOSITION_NO_RELEASE_CHANNEL_GATE",

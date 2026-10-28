@@ -26,7 +26,7 @@ jobs:
         env:
           PTSIP_TEST_PACKAGE_VERSION: '0.3.8b3'
         run: |
-          go -C .ptsip/engine/developer test -tags ptsip_probe ./schema_check -run TestInstalledPTSIP038b3InlineAndExternalRefExperiment -count=1 -v | tee native-probe.log
+          go -C .ptsip/engine/developer test -tags ptsip_probe ./policy/verification -run TestInstalledPTSIP038b3InlineAndExternalRefExperiment -count=1 -v | tee native-probe.log
       - name: Run existing actual engine schema-check (diagnostic even if schema incomplete)
         if: always()
         env:

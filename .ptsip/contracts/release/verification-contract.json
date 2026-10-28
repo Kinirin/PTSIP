@@ -3,7 +3,7 @@
   "authority_ref": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml#rules.release_mode_verification",
   "workflow": ".github/workflows/tooling-test.yml",
   "mode_registry": ".github/test_modes.yaml",
-  "test_change_root": ".ptsip/engine/developer/release/test/",
+  "test_change_root": ".ptsip/engine/developer/Distribution/release/test/",
   "production_contract": ".ptsip/contracts/release/composition-contract.json",
   "release_matrix": "SELECTED_COMPONENTS_JOINED_WITH_REQUIRED_AND_EXPLICIT_OPTIONAL_HOSTS",
   "joined_verification": {
@@ -43,14 +43,14 @@
     "twine"
   ],
   "runtime": {
-    "go_version_file": ".ptsip/engine/developer/release/test/go.mod",
+    "go_version_file": ".ptsip/engine/developer/Distribution/release/test/go.mod",
     "python_version": "3.12",
     "git_fetch_depth": 0,
     "git_history_requirement": "EXACT_SOURCE_PARENTS_AND_IMMUTABLE_COMPONENT_TAGS"
   },
   "production_helpers": {
-    "engine_wheel": ".ptsip/engine/developer/release/engine-verification/cmd/engine-wheel",
-    "controller": ".ptsip/engine/developer/release/controller/cmd/ptsip-release"
+    "engine_wheel": ".ptsip/engine/developer/Distribution/release/verification/engine/cmd/engine-wheel",
+    "controller": ".ptsip/engine/developer/Distribution/release/controller/cmd/ptsip-release"
   },
   "preserved_engine_verifier": "developer/tests/engines/TestIndependentEngineWheel",
   "temporary_join_waiver_ref": "developer/policy/registries/release-20261026-package-join-waiver.json",

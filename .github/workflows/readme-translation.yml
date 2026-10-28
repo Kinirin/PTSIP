@@ -6,7 +6,7 @@ on:
     paths:
       - README.md
       - .github/workflows/readme-translation.yml
-      - developer/automation/cmd/readme-translate/**
+      - .ptsip/engine/developer/Distribution/release/test/releasenote/**
       - .github/workflows/readme-verification.yml
       - docs/translated/index.yaml
   workflow_dispatch:
@@ -32,20 +32,20 @@ jobs:
       - name: Set up Go translation controller
         uses: actions/setup-go@v6
         with:
-          go-version-file: developer/automation/go.mod
-          cache-dependency-path: developer/automation/go.sum
+          go-version-file: .ptsip/engine/developer/Distribution/release/test/go.mod
+          cache-dependency-path: .ptsip/engine/developer/Distribution/release/test/go.sum
 
       - name: Verify README translation controller independently
         shell: pwsh
         run: |
-          go -C developer/automation test ./cmd/readme-translate
+          go -C .ptsip/engine/developer/Distribution/release/test test ./releasenote
           if ($LASTEXITCODE -ne 0) { throw 'Independent Go README translation regression failed.' }
 
       - name: Build registered-language translator
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force .artifacts | Out-Null
-          go -C developer/automation build -o ../../.artifacts/readme-translate ./cmd/readme-translate
+          go -C .ptsip/engine/developer/Distribution/release/test build -o ../../../../../../.artifacts/readme-translate ./releasenote
           if ($LASTEXITCODE -ne 0) { throw 'Go README translator build failed.' }
           & ./.artifacts/readme-translate --root . --action list-targets
           if ($LASTEXITCODE -ne 0) { throw 'README translation registry validation failed.' }

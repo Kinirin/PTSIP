@@ -1,0 +1,23 @@
+{
+  "schema_version": "ptsip-developer-validator-domain/v1",
+  "lifecycle": "TEMPORARY_REPLACEABLE",
+  "replacement_required": true,
+  "policy_authority": "NONE",
+  "execution_authorized": false,
+  "publication_authorized": false,
+  "domain": "Responsibility-Authority",
+  "components": [
+    {
+      "id": "declarations",
+      "root": "verification",
+      "state": "STRUCTURE_ONLY",
+      "implementation": "verification/Verifier.go"
+    },
+    {
+      "id": "test",
+      "root": "test",
+      "state": "IMPLEMENTED",
+      "implementation": "test/Verifier_test.go"
+    }
+  ]
+}

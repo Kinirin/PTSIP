@@ -1,0 +1,105 @@
+{
+  "schema_version": "ptsip-developer-validator-domain/v1",
+  "lifecycle": "TEMPORARY_REPLACEABLE",
+  "replacement_required": true,
+  "policy_authority": "NONE",
+  "execution_authorized": false,
+  "publication_authorized": false,
+  "domain": "Distribution",
+  "components": [
+    {
+      "id": "version",
+      "root": "release/version",
+      "state": "STRUCTURE_ONLY",
+      "implementation": "release/version/versiondiff.go"
+    },
+    {
+      "id": "release-design",
+      "root": "release",
+      "state": "COMPATIBILITY_BLOCKED",
+      "implementation": "release/Admission.go",
+      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+    },
+    {
+      "id": "admission",
+      "root": "release/verification/admission",
+      "state": "COMPATIBILITY_BLOCKED",
+      "implementation": "release/verification/admission/Verifier.go",
+      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+    },
+    {
+      "id": "controller",
+      "root": "release/controller",
+      "state": "COMPATIBILITY_BLOCKED",
+      "implementation": "release/controller/ctrl_admission.go",
+      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+    },
+    {
+      "id": "engine",
+      "root": "release/verification/engine",
+      "state": "COMPATIBILITY_BLOCKED",
+      "implementation": "release/verification/engine/admission.go",
+      "validation_claim": "UNVERIFIED_LEGACY_AUTHORITY_DEPENDENCY"
+    },
+    {
+      "id": "releasenote",
+      "root": "release/verification/releasenote",
+      "state": "PLANNED",
+      "index": "release/verification/releasenote/index.json"
+    },
+    {
+      "id": "tool",
+      "root": "release/verification/tool",
+      "state": "PLANNED",
+      "index": "release/verification/tool/index.json"
+    },
+    {
+      "id": "package",
+      "root": "release/verification/package",
+      "state": "PLANNED",
+      "index": "release/verification/package/index.json"
+    },
+    {
+      "id": "profile",
+      "root": "release/verification/profile",
+      "state": "PLANNED",
+      "index": "release/verification/profile/index.json"
+    },
+    {
+      "id": "readme-translation",
+      "root": "release/test/releasenote",
+      "state": "IMPLEMENTED",
+      "implementation": "release/test/releasenote/main.go"
+    },
+    {
+      "id": "test-profile",
+      "root": "release/test/profile",
+      "state": "INTEGRATION_SUITE",
+      "index": "release/test/profile/index.json"
+    },
+    {
+      "id": "test-engine",
+      "root": "release/test/engine",
+      "state": "INTEGRATION_SUITE",
+      "index": "release/test/engine/index.json"
+    },
+    {
+      "id": "test-package",
+      "root": "release/test/package",
+      "state": "INTEGRATION_SUITE",
+      "index": "release/test/package/index.json"
+    },
+    {
+      "id": "test-tool",
+      "root": "release/test/tool",
+      "state": "INTEGRATION_SUITE",
+      "index": "release/test/tool/index.json"
+    },
+    {
+      "id": "branch",
+      "root": "branch",
+      "state": "PLANNED",
+      "index": "branch/index.json"
+    }
+  ]
+}

@@ -8,14 +8,14 @@ on:
       - docs/translated/**
       - .github/workflows/readme-translation.yml
       - .github/workflows/readme-verification.yml
-      - developer/automation/cmd/readme-translate/**
+      - .ptsip/engine/developer/Distribution/release/test/releasenote/**
   pull_request:
     paths:
       - README.md
       - docs/translated/**
       - .github/workflows/readme-translation.yml
       - .github/workflows/readme-verification.yml
-      - developer/automation/cmd/readme-translate/**
+      - .ptsip/engine/developer/Distribution/release/test/releasenote/**
   workflow_dispatch:
 
 permissions:
@@ -30,9 +30,9 @@ jobs:
       - name: Set up Go for README verifier
         uses: actions/setup-go@v6
         with:
-          go-version-file: developer/automation/go.mod
-          cache-dependency-path: developer/automation/go.sum
+          go-version-file: .ptsip/engine/developer/Distribution/release/test/go.mod
+          cache-dependency-path: .ptsip/engine/developer/Distribution/release/test/go.sum
       - name: Run Go regression tests
-        run: go -C developer/automation test ./cmd/readme-translate
+        run: go -C .ptsip/engine/developer/Distribution/release/test test ./releasenote
       - name: Verify registered translations without mutation
-        run: go -C developer/automation run ./cmd/readme-translate --action verify
+        run: go -C .ptsip/engine/developer/Distribution/release/test run ./releasenote --root ../../../../../.. --action verify

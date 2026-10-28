@@ -1,0 +1,41 @@
+{
+  "schema_version": "ptsip-developer-validator-index/v1",
+  "lifecycle": "TEMPORARY_REPLACEABLE",
+  "replacement_required": true,
+  "scope": "REPOSITORY_DEVELOPER_ONLY",
+  "policy_authority": "NONE",
+  "domains": {
+    "Distribution": {
+      "index": "Distribution/index.json"
+    },
+    "policy": {
+      "index": "policy/index.json"
+    },
+    "Responsibility-Authority": {
+      "index": "Responsibility-Authority/index.json"
+    }
+  },
+  "validators": {
+    "developer-layout-check": "index.json",
+    "schema-check": "policy/index.json",
+    "policy-check": "policy/index.json",
+    "policy-identity-check": "policy/index.json",
+    "policy-status-check": "policy/index.json",
+    "plan-status-check": "policy/index.json",
+    "policy-rules": "policy/index.json",
+    "responsibility-authority": "Responsibility-Authority/index.json",
+    "release-version-diff": "Distribution/index.json",
+    "release-admission-check": "Distribution/index.json",
+    "ctrl-release-admission-check": "Distribution/index.json"
+  },
+  "temporary_contract_boundary": {
+    "creation_basis": "USER_EXPLICIT_2026_10_28",
+    "purpose": "BREAK_CONTRACT_VALIDATOR_BOOTSTRAP_CYCLE",
+    "policy_lifecycle_approval": "NOT_CREATED",
+    "retired_authority_fallback": "FORBIDDEN",
+    "replace_or_remove_when": "SUCCESSOR_VALIDATOR_CONTRACTS_ARE_CONFIRMED",
+    "semantic_validation_without_contract": "UNVERIFIED"
+  },
+  "execution_authorized": false,
+  "publication_authorized": false
+}
