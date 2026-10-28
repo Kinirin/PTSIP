@@ -10,7 +10,7 @@ Policy_Status:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:responsibility-orchestration"
-    Rule_ver: "29"
+    Rule_ver: "30"
   Definition:
     meaning: "GOV는 개발 정책·개발 작업·개발 통제 영역에서 결정과 승인의 정당성을 관리하는 정책 Family이며, 개별 GOV 정책의 책임 경계를 정의하고 정책 간 소유권을 분배한다."
     rationale: "GOV의 공통 책임과 개별 정책 소유 규칙을 분리하여, AI가 정책 주제나 실행 편의를 근거로 책임 및 승인 권한을 중복하거나 임의 재배분하지 못하게 한다."
@@ -76,11 +76,11 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMPILE_SEALED_SCHEMA_ROOT_LOCATION
         applies_when: COMPILE_SEALED_RBAC_INDEPENDENT_SCHEMA_LOCATION
-        rule: "Compile-Sealed RBAC 신규 독립 스키마의 최상위 저장 경로는 .ptsip/contracts/schemas/compile-sealed-rbac/ 로 확정한다. 이 위치 결정은 JSON Schema 저장 책임에 한정되며 원자 등록부, 바인딩 인덱스, Compiler 관련 기계 계약, 실제 YAML 정의 및 Seal 산출물의 경로를 이곳에 강제하지 않는다. 이들 비스키마 산출물의 저장 위치는 별도 결정한다. 신규 독립 스키마 파일은 위 확정 경로 바로 아래에 두고 common/ 및 domains/와 같은 내부 분류용 하위 디렉터리를 만들지 않는다. 독립 스키마는 승인된 계약별 6종으로 분할하며 상세 필드·공통 메타 재사용 방식은 미결정이다. 실제 스키마 파일명은 responsibility.schema.json, condition-atom.schema.json, permission-atom.schema.json, binding.schema.json, sealed-contract.schema.json, activation.schema.json으로 확정한다. 이 경로 결정만으로 미확정 스키마를 생성하거나 기존 권한 검증을 제거하지 않는다."
+        rule: "KEEP_LATEST: Compile-Sealed RBAC 스키마 루트는 .ptsip/contracts/schemas/compile-sealed-rbac/ 이다. 기존 여섯 독립 Seal·Activation 관련 계약 골격의 미확정 의미와 실패 시 차단 경계는 보존한다. 책임·권한 작성 인터페이스의 필드 스키마는 책임 실행조건을 Conditions_exercise/, 책임을 responsibility/, 권한을 authority/ 하위 디렉터리로 분리한다. Responsibilities_List.schema.json은 이 필드 스키마들을 참조하여 .ptsip/profiles/Responsibility-Authority-list.yaml을 검증한다. 기존 임시 후보 스키마의 additionalProperties:false는 새 작성 필드 계약의 제약으로 승계하지 않는다. 작성 인터페이스의 구조 검증은 Seal·Activation·실행 권한을 생성하지 않는다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMPILE_SEALED_SIX_INDEPENDENT_SCHEMAS
         applies_when: COMPILE_SEALED_RBAC_SCHEMA_PARTITIONING
-        rule: "Compile-Sealed RBAC 신규 독립 JSON Schema는 Responsibility, Condition Atom, Permission Atom, Binding, Seal, Activation의 계약별 6개 파일로 분할한다. 각 스키마가 해당 계약의 구조 및 도메인별 의미 검증을 독립적으로 소유하고 H-B 공통 메타·도메인 계층형 설계 원칙을 유지한다. 6개 스키마 파일은 .ptsip/contracts/schemas/compile-sealed-rbac/ 바로 아래에 배치하고 common/, domains/ 하위 디렉터리를 사용하지 않는다. 각 계약의 승인·활성화·변경 감응 등 독립 의미와 권위 경계를 스키마 통합으로 합치지 않는다. 개별 스키마 상세 필드 정의·공통 메타 재사용/검증의 기술적 표현과 Seal·Activation 산출물의 저장 위치는 별도 결정한다. RBAC 선언형 계약 원본의 저장 루트는 별도로 승인된 프로젝트 프로파일 RBAC 경로 정책을 따른다. 이 분할 결정만으로 미정의 스키마 파일을 생성하거나 구현·권한 전환을 완료한 것으로 간주하지 않는다."
+        rule: "Compile-Sealed RBAC의 Responsibility, Condition Atom, Permission Atom, Binding, Seal, Activation 독립 의미와 소유 경계를 보존한다. 기존 여섯 독립 계약 골격의 파일 존재와 실패 시 차단은 미확정 실행 의미를 승인하지 않는다. 책임·조건·권한의 선언 작성에는 Conditions_exercise/, responsibility/, authority/의 필드 스키마와 Responsibilities_List.schema.json을 사용한다. 이 작성 인터페이스를 기존 골격 전체의 유효 인스턴스 승인이나 런타임 활성화 완료로 간주하지 않는다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMPILE_SEALED_OPT_IN_PROFILE_RBAC_ROOT
         applies_when: PROJECT_USES_COMPILE_SEALED_RBAC
@@ -112,19 +112,19 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/GOV_SHARED_PUBLIC_AND_INDEPENDENT_RULES
         applies_when: DEVELOPER_POLICY_RULES_SCHEMA_LOCATION_OR_VALIDATION
-        rule: "KEEP_LATEST: 개발 정책의 공통 문서 구조 스키마는 .ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json 한 파일이 소유한다. GOV 정책 문서는 developer/policy/GOV/에 보존하며 Policy_Identity, Policy_Status, Policy_Rules 공통 최상위 필드를 사용한다. GOV의 Policy_Rules 내부 의미·검증은 공통 문서 구조 스키마와 분리된 GOV 독립 규칙 계약이 소유한다. 별도 GOV 전용 Public Structure 스키마를 신규 규범 원본으로 생성하거나 퇴역 예정인 .ptsip/contracts/schemas/root-family/ 구조를 신규 계약의 필수 의존성으로 채택하지 않는다. 기존 GOV Public Structure 라우팅 및 구형 Authority 의존성은 유효한 신규 참조·GOV 상태 구조 정합성을 확인한 뒤 수동으로 전환·제거하며, 미검증 상태에서 공통 문서 스키마가 GOV 전체 정책을 검증했다고 주장하지 않는다. KEEP_LATEST: 모든 Root Family의 실제 독립 Policy_Rules 계약 본문은 .ptsip/contracts/schemas/Policy_Rules/root-family/ 영역에서 일반 JSON 규칙 데이터로 소유하며 이 경로를 Family별 작성 스키마의 저장소로 사용하지 않는다. 기존 Family별 .schema.json 및 .schemas.json은 검증용 스키마일 뿐 독립 규칙 데이터가 아니므로 단순한 파일 확장자 변경만으로 규범적 본문·승인·권한을 생성할 수 없다. 공통 Public_Structure_Rules.schema.json의 공통 필드 존재 검증 책임과 Family별 내부 자료형·허용값·의미 검증 책임을 보존한다. Family별 별도 JSON Schema를 기본 검증 형식으로 강제하지 않고 승인된 A2의 기계 판독형 Family 검증 계약을 사용한다. Family 검증 계약의 물리 위치, 독립 규칙 JSON의 개별 파일명과 명시적 참조·조회 바인딩의 세부 형식은 후속 정책 결정 대상으로 유지한다. 구형 schema_refs.rules 경로를 독립 규칙 데이터 참조로 간주하는 자동 전환은 금지하며 미이관 계약의 검증·승인 성공을 주장하지 않는다. Policy_Rules/abortively/는 불필요한 비규범 보관 구조이므로 현행 저장소에서 제거하고 새로 생성하지 않는다. Family 작성 계약은 승인된 root-family/에만 배치하며, 이전 구형 계약의 복구는 Git 이력으로 수행한다. 삭제된 파일의 보존 또는 존재 확인을 요구하는 검증 의존성을 새로 만들지 않는다. 추가적인 상세 참조 결합 방식은 별도로 결정하고, 이 규칙으로 RBAC의 독립 소유권이나 실행 권한을 생성하지 않는다."
+        rule: "KEEP_LATEST: 개발 정책의 공통 문서 구조는 .ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json이 소유한다. 공통 Policy_Rules 필드 구조는 .ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json이 선언하며 모든 필드는 기본 선택이고 생성하지 않는다. Policy_Identity.root_family가 .ptsip/contracts/policy/identity/root_family.json에 등록된 값이면 .ptsip/contracts/policy/Rules/{root_family}_rules.json의 명시된 structure로 해당 Family의 조건부 필수 필드와 내부 검증 구조를 선택한다. 기존 Family별 .schema.json·.schemas.json 및 Policy_Rules_version.schema.json은 제거하며 기존 스키마 경로를 규칙 본문으로 자동 승격하지 않는다. 공통 문서 검증·Family 구조 선택·규칙 승인 및 실행 권한의 경계를 보존한다."
         Rule_state: APPROVED.Applying
       - id: OBLIGATION/POLICY_RULES_SHARED_PRESENCE_FAMILY_SEMANTICS
         applies_when: INDEPENDENT_POLICY_RULES_CONTRACT_VALIDATION
-        rule: "사용자 승인 B: 14개 Root Family의 독립 Policy_Rules 규칙 계약에서 Identity.family, Identity.approval.state, Definition.meaning, Boundary.scope 네 필드의 존재 여부는 공통 Public_Structure_Rules.schema.json의 규칙 계약 검증 책임으로 통합한다. 각 필드의 자료형, 값·패턴, 승인 의미, 추가 필수 조건 및 내부 구조·규칙 의미의 검증 책임은 Family가 소유하되 승인된 A2에 따라 기계 판독형 Family 검증 계약으로 선언한다. Policy_Rules 정책 문서 참조 영역과 실제 독립 규칙 계약 본문은 별도 책임이며, 공통 정책 문서 상위 객체의 기존 최소 검증을 규칙 본문 검증과 혼동하지 않는다. JSON Schema는 검증 정의이고 독립 규칙 JSON·YAML은 실제 데이터라는 역할 구분을 유지한다. 독립 규칙 계약은 일반 JSON 데이터로 .ptsip/contracts/schemas/Policy_Rules/root-family/ 영역에 두며 B3의 Family별 진입 계약과 규칙별 독립 JSON 계약으로 분리한다. 진입 계약은 해당 Family의 독립 규칙 계약들을 명시적으로 참조한다. 기계 판독형 Family 검증 계약의 물리 경로, JSON 파일명과 세부 참조 형식은 후속 결정 대상으로 유지한다. 기존 검증 스키마는 승인된 규칙 본문을 뜻하지 않는다. 필드별 구체 검증 스키마 변경은 후속 계획과 해당 정책 승인 제약에 따른다."
+        rule: "KEEP_LATEST: 공통 Policy_Rules의 Identity, Definition, Boundary, Constraints, Evaluation 및 책임 참조 필드는 선택형이며 기본 생성 대상이 아니다. Family가 명시적으로 일치할 때만 해당 .ptsip/contracts/policy/Rules/{root_family}_rules.json의 structure가 필수 필드·자료형·허용값과 내부 구조를 결정한다. Family 선택 없이 공통 필드 존재를 일괄 강제하거나 모든 Family의 필드를 합쳐 생성하지 않는다. 참조된 책임의 존재와 조건·권한 매칭은 별도 책임·권한 프로필 및 선언 계약을 통해 검증하며 구조 검증만으로 승인 상태를 추론하지 않는다."
         Rule_state: APPROVED.Applying
       - id: OBLIGATION/POLICY_RULES_A2_FAMILY_MACHINE_VALIDATION
         applies_when: INDEPENDENT_POLICY_RULES_FAMILY_VALIDATION_DESIGN
-        rule: "KEEP_LATEST A2: Public_Structure_Rules.schema.json은 승인된 공통 Identity.family, Identity.approval.state, Definition.meaning, Boundary.scope의 존재 검증을 소유한다. Family별 자료형·허용값·규칙 의미·추가 제약 검증은 해당 Family가 소유한 기계 판독형 검증 계약이 선언한다. 개별 Family JSON Schema 파일을 기본 소유 계약으로 강제하는 이전 배치 방향은 대체한다. Family 검증 계약과 독립 규칙의 실제 JSON 본문은 별개이며, 검증 계약만으로 규칙 본문·승인 권한을 생성할 수 없다. 기계 계약의 상세 구조·검증기 해석 방식·물리 경로는 후속 정책 결정 대상으로 유지한다."
+        rule: "KEEP_LATEST A2: 14개 Root Family의 기계 판독형 작성·검증 계약은 .ptsip/contracts/policy/Rules/의 ARCH_rules.json, ASSURE_rules.json, CHANGE_rules.json, CNTR_rules.json, CTRL_rules.json, GOV_rules.json, INFO_rules.json, INTENT_rules.json, NORM_rules.json, OPS_rules.json, REAL_rules.json, RECORD_rules.json, RISK_rules.json, SUPPLY_rules.json이다. Family_Rules_Contract.schema.json은 이 계약의 구조 및 Compile-Sealed RBAC 책임 참조를 검증한다. root_family.json의 값과 정확히 일치하는 계약만 선택하고 일치하지 않는 값·부재 계약·해소 불가능한 참조는 실패 시 차단한다. 반복된 Family별 구 스키마 라우팅을 유지하거나 폐기된 policy/authority를 권위로 사용하지 않는다."
         Rule_state: APPROVED.Applying
       - id: OBLIGATION/POLICY_RULES_B3_ENTRY_AND_INDEPENDENT_JSON
         applies_when: INDEPENDENT_POLICY_RULES_JSON_STORAGE_AND_DISCOVERY
-        rule: "KEEP_LATEST B3: .ptsip/contracts/schemas/Policy_Rules/root-family/는 실제 독립 규칙 JSON 데이터의 저장 영역으로서 14개 Root Family별 진입 계약과 개별 규칙마다 분리된 JSON 계약을 소유한다. Family 진입 계약은 각 규칙 계약을 명시적인 참조로 연결하며 계약 조회·변경 영향과 승인된 내용 검증의 진입점이다. 규칙의 의미·승인 상태·승인 근거는 규칙별 독립 계약의 소유권을 보존하고, Family 진입 계약은 규칙 승인이나 규범 권한을 생성하지 않는다. Family 이름·파일명·디렉터리 경로로 존재하지 않는 규칙 참조를 추론하거나 자동 승인하지 않는다. 기존 14개 Family JSON Schema를 확장자만 바꿔 독립 규칙 본문으로 승격하지 않는다. 진입·규칙 계약의 정확한 파일명, 규칙별 ID·참조/등록 형식·버전·검증 바인딩은 별도 결정하고, 승인된 실제 본문·참조·검증 체계가 갖춰질 때만 이관한다."
+        rule: "KEEP_LATEST: Family별 규칙 작성의 진입점은 .ptsip/contracts/policy/Rules/{root_family}_rules.json이다. 각 계약은 기본 생성 생략과 명시적 Family 일치 조건, 내부 structure 및 responsibility_refs를 선언한다. .ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json은 재사용 가능한 책임 실행조건과 권한 선언의 원본이고 .ptsip/profiles/Responsibility-Authority-list.yaml은 사용자가 수동 수정하거나 생성 인터페이스에 요청할 책임·조건·권한·역할 매칭 목록이다. 책임은 name, ID, condition_id, Operational_Authority, role_name, runtime_required를 가지며 기본 목록은 비어 있다. 계약 또는 프로필 생성은 개별 규칙의 승인·Seal·Activation이나 실행 허가를 생성하지 않는다."
         Rule_state: APPROVED.Applying
       - id: PROHIBITION/REUSE_RETIRED_AUTHORITY_CATEGORY
         rule: "폐기된 Authority Major·Minor·Micro의 분류 계층·값을 새 RBAC 책임·조건·권한·바인딩 계약의 필수 의미 또는 승인 근거로 재사용하거나, 레거시 분류 참조에 근거하여 실행 권한을 부여하는 행위"

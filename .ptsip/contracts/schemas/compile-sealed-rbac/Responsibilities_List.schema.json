@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:responsibilities-list:v1",
+  "title": "Editable responsibility-authority profile list",
+  "type": "object",
+  "properties": {
+    "ptsip": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "pp.2.01"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^Rev\\.[0-9]{4,}$"
+        },
+        "profile_role": {
+          "const": "RESPONSIBILITY-AUTHORITY"
+        },
+        "specification": {
+          "type": "object",
+          "required": [
+            "source",
+            "revision"
+          ],
+          "properties": {
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "revision": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            }
+          }
+        }
+      },
+      "required": [
+        "version",
+        "revision",
+        "profile_role",
+        "specification"
+      ],
+      "additionalProperties": true
+    },
+    "responsibility_map": {
+      "type": "object",
+      "required": [
+        "mode",
+        "contract_ref"
+      ],
+      "properties": {
+        "mode": {
+          "const": "explicit"
+        },
+        "contract_ref": {
+          "const": ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json"
+        }
+      }
+    },
+    "responsibility": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:rbac:responsibility:v1"
+      }
+    }
+  },
+  "required": [
+    "ptsip",
+    "responsibility_map",
+    "responsibility"
+  ],
+  "additionalProperties": true
+}

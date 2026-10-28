@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:operational-authority:v1",
+  "title": "Operational authority declaration",
+  "type": "object",
+  "properties": {
+    "ID": {
+      "$ref": "#/$defs/ID"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "ID",
+    "name"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "ID": {
+      "type": "string",
+      "minLength": 7,
+      "maxLength": 256,
+      "pattern": "^OA-ID-[A-Za-z0-9][A-Za-z0-9._-]*$"
+    }
+  }
+}

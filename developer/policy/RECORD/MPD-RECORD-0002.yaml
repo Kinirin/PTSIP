@@ -20,8 +20,8 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:RECORD_rules:v3
-  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/RECORD_rules.schema.json
+  candidate_contract_id: urn:ptsip:contract:policy:rules:RECORD:v1
+  candidate_contract_path: .ptsip/contracts/policy/Rules/RECORD_rules.json
   candidate_scope: "기록 추적"
   semantic_rework_required: true
   normative_content_from_retired_policies: FORBIDDEN

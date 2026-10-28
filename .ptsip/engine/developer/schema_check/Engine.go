@@ -3,17 +3,17 @@
 package schema_check
 
 import (
-    "bytes"
-    "encoding/json"
-    "errors"
-    "fmt"
-    "os"
-    "os/exec"
-    "strings"
-    "time"
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"os"
+	"os/exec"
+	"strings"
+	"time"
 )
 
-const discover=`import json, os, sysconfig
+const discover = `import json, os, sysconfig
 from importlib import metadata, resources
 from pathlib import Path
 version = metadata.version('PTSIP')
@@ -48,86 +48,129 @@ print(json.dumps({'executable':str(exe),'engine_id':e['engine_id'],'engine_versi
 `
 
 type Engine struct {
- Executable string `json:"executable"`
- EngineID string `json:"engine_id"`
- EngineVersion string `json:"engine_version"`
- ContractID string `json:"contract_id"`
- ContractVersion string `json:"contract_version"`
- PackageVersion string `json:"package_version"`
+	Executable      string `json:"executable"`
+	EngineID        string `json:"engine_id"`
+	EngineVersion   string `json:"engine_version"`
+	ContractID      string `json:"contract_id"`
+	ContractVersion string `json:"contract_version"`
+	PackageVersion  string `json:"package_version"`
 }
 
-func installed() (Engine,error) {
- var e Engine
- python:=os.Getenv("PTSIP_PYTHON"); if python=="" {python="python"}
- raw,err:=exec.Command(python,"-c",discover).CombinedOutput()
- if err!=nil {return e,fmt.Errorf("installed engine discovery failed: %v: %s",err,strings.TrimSpace(string(raw)))}
- if err=json.Unmarshal(raw,&e);err!=nil{return e,err}
- out,err:=exec.Command(e.Executable,"--manifest").Output()
- if err!=nil{return e,fmt.Errorf("native manifest failed: %w",err)}
- var m struct {EngineID string `json:"engine_id"`; Version string `json:"implementation_version"`}
- if err=json.Unmarshal(out,&m);err!=nil{return e,err}
- if m.EngineID!=e.EngineID || m.Version!=e.EngineVersion {return e,errors.New("native manifest differs from installed registry")}
- return e,nil
+func installed() (Engine, error) {
+	var e Engine
+	python := os.Getenv("PTSIP_PYTHON")
+	if python == "" {
+		python = "python"
+	}
+	raw, err := exec.Command(python, "-c", discover).CombinedOutput()
+	if err != nil {
+		return e, fmt.Errorf("installed engine discovery failed: %v: %s", err, strings.TrimSpace(string(raw)))
+	}
+	if err = json.Unmarshal(raw, &e); err != nil {
+		return e, err
+	}
+	out, err := exec.Command(e.Executable, "--manifest").Output()
+	if err != nil {
+		return e, fmt.Errorf("native manifest failed: %w", err)
+	}
+	var m struct {
+		EngineID string `json:"engine_id"`
+		Version  string `json:"implementation_version"`
+	}
+	if err = json.Unmarshal(out, &m); err != nil {
+		return e, err
+	}
+	if m.EngineID != e.EngineID || m.Version != e.EngineVersion {
+		return e, errors.New("native manifest differs from installed registry")
+	}
+	return e, nil
 }
 
 // A deliberately LIMITED, inline shape check. It is not the JSON Schema metaschema.
-var inlineShape=map[string]any{
- "type":"object", "required":[]string{"$id"},
- "properties":map[string]any{
-   "$id":map[string]any{"type":"string","minLength":1},
-   "$schema":map[string]any{"type":"string","minLength":1},
-   "properties":map[string]any{"type":"object"},
-   "$defs":map[string]any{"type":"object"},
-   "required":map[string]any{"type":"array","items":map[string]any{"type":"string"}},
- },
- "additionalProperties":true,
+var inlineShape = map[string]any{
+	"type": "object", "required": []string{"$id"},
+	"properties": map[string]any{
+		"$id":        map[string]any{"type": "string", "minLength": 1},
+		"$schema":    map[string]any{"type": "string", "minLength": 1},
+		"properties": map[string]any{"type": "object"},
+		"$defs":      map[string]any{"type": "object"},
+		"required":   map[string]any{"type": "array", "items": map[string]any{"type": "string"}},
+	},
+	"additionalProperties": true,
 }
 
 // nativeValidate is the only request path used for official validation.schema.
 // schema_resources is an explicit, caller-selected set of local approved schemas.
 // It is omitted for the original inline-only shape check.
 func nativeValidate(e Engine, schema, instance any, resources []any) (bool, error) {
- input:=map[string]any{"schema":schema,"instance":instance}
- if resources!=nil {input["schema_resources"]=resources}
- request:=map[string]any{
-  "engine_id":e.EngineID,"engine_version":e.EngineVersion,
-  "contract_id":e.ContractID,"contract_version":e.ContractVersion,
-  "operation_id":"validation.schema","input":input,
- }
- data,err:=json.Marshal(request)
- if err!=nil{return false,err}
- cmd:=exec.Command(e.Executable);cmd.Stdin=bytes.NewReader(data)
- var stdout,stderr bytes.Buffer;cmd.Stdout=&stdout;cmd.Stderr=&stderr
- done:=make(chan error,1);go func(){done<-cmd.Run()}()
- select {
- case err= <-done:
- case <-time.After(20*time.Second):
-  if cmd.Process!=nil{_ =cmd.Process.Kill()};<-done
-  return false,errors.New("native invocation timeout")
- }
- var result struct {
-  Status string `json:"status"`
-  Error any `json:"error"`
-  NormativeAuthority bool `json:"normative_authority"`
-  ExecutionAuthorized bool `json:"execution_authorized"`
-  Output *struct {
-   Valid bool `json:"valid"`
-   Diagnostics []string `json:"diagnostics"`
-   Verdict string `json:"ptsip_conformance_verdict"`
-  } `json:"output"`
- }
- if jsonErr:=json.Unmarshal(stdout.Bytes(),&result);jsonErr!=nil {
-  return false,fmt.Errorf("native response not JSON: %w; stderr=%s",jsonErr,strings.TrimSpace(stderr.String()))
- }
- if err!=nil||result.Status!="PASS"||result.Error!=nil||result.NormativeAuthority||result.ExecutionAuthorized||result.Output==nil||result.Output.Verdict!="NOT_ASSERTED"{
-  return false,fmt.Errorf("native validation operation failed: exit=%v result=%s stderr=%s",err,strings.TrimSpace(stdout.String()),strings.TrimSpace(stderr.String()))
- }
- return result.Output.Valid,nil
+	input := map[string]any{"schema": schema, "instance": instance}
+	if resources != nil {
+		input["schema_resources"] = resources
+	}
+	request := map[string]any{
+		"engine_id": e.EngineID, "engine_version": e.EngineVersion,
+		"contract_id": e.ContractID, "contract_version": e.ContractVersion,
+		"operation_id": "validation.schema", "input": input,
+	}
+	data, err := json.Marshal(request)
+	if err != nil {
+		return false, err
+	}
+	cmd := exec.Command(e.Executable)
+	cmd.Stdin = bytes.NewReader(data)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	done := make(chan error, 1)
+	go func() { done <- cmd.Run() }()
+	select {
+	case err = <-done:
+	case <-time.After(20 * time.Second):
+		if cmd.Process != nil {
+			_ = cmd.Process.Kill()
+		}
+		<-done
+		return false, errors.New("native invocation timeout")
+	}
+	var result struct {
+		Status              string `json:"status"`
+		Error               any    `json:"error"`
+		NormativeAuthority  bool   `json:"normative_authority"`
+		ExecutionAuthorized bool   `json:"execution_authorized"`
+		Output              *struct {
+			Valid       bool     `json:"valid"`
+			Diagnostics []string `json:"diagnostics"`
+			Verdict     string   `json:"ptsip_conformance_verdict"`
+		} `json:"output"`
+	}
+	if jsonErr := json.Unmarshal(stdout.Bytes(), &result); jsonErr != nil {
+		return false, fmt.Errorf("native response not JSON: %w; stderr=%s", jsonErr, strings.TrimSpace(stderr.String()))
+	}
+	if err != nil || result.Status != "PASS" || result.Error != nil || result.NormativeAuthority || result.ExecutionAuthorized || result.Output == nil || result.Output.Verdict != "NOT_ASSERTED" {
+		return false, fmt.Errorf("native validation operation failed: exit=%v result=%s stderr=%s", err, strings.TrimSpace(stdout.String()), strings.TrimSpace(stderr.String()))
+	}
+	return result.Output.Valid, nil
 }
 
-func nativeCheck(e Engine,doc any) error {
- valid,err:=nativeValidate(e,inlineShape,doc,nil)
- if err!=nil{return err}
- if !valid{return errors.New("engine rejected limited schema shape")}
- return nil
+func nativeCheck(e Engine, doc any) error {
+	valid, err := nativeValidate(e, inlineShape, doc, nil)
+	if err != nil {
+		return err
+	}
+	if !valid {
+		return errors.New("engine rejected limited schema shape")
+	}
+	return nil
+}
+
+// InstalledValidator shares the native validation.schema adapter with local
+// contract authoring. It does not register a new product engine operation.
+func InstalledValidator() (func(any, any, []any) (bool, error), error) {
+	e, err := installed()
+	if err != nil {
+		return nil, err
+	}
+	return func(schema, instance any, resources []any) (bool, error) {
+		return nativeValidate(e, schema, instance, resources)
+	}, nil
 }

@@ -1,17 +1,25 @@
 {
-  "schema_version": "ptsip-policy-contract-boundary/v1",
+  "schema_version": "ptsip-policy-contract-boundary/v2",
   "domain": "policy",
   "root": ".ptsip/contracts/policy/",
   "namespaces": {
     "identity": "identity/",
     "routing": "routing/",
     "lifecycle": "lifecycle/",
-    "authority": "authority/"
+    "rules": "Rules/"
   },
   "source_policy": "developer/policy/GOV/MPD-GOV-0001.yaml",
-  "phase": "MIGRATION_COMPLETED",
   "routing_binding": {
     "data": ".ptsip/contracts/policy/routing/policy_routes.json",
     "schema": ".ptsip/contracts/policy/routing/Policy_Routing.schema.json"
+  },
+  "rules_binding": {
+    "family_source": ".ptsip/contracts/policy/identity/root_family.json",
+    "directory": ".ptsip/contracts/policy/Rules",
+    "filename": "{root_family}_rules.json",
+    "contract_schema": ".ptsip/contracts/schemas/Policy_Rules/Family_Rules_Contract.schema.json",
+    "selection_schema": ".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json",
+    "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+    "responsibility_contract": ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json"
   }
 }

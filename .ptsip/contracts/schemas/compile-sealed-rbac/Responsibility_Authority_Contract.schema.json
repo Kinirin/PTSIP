@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:responsibility-authority-contract:v1",
+  "title": "Reusable condition and operational authority contracts",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "ptsip-responsibility-authority/v1"
+    },
+    "condition_list": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:rbac:condition:v1"
+      }
+    },
+    "authority_list": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:rbac:operational-authority:v1"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "condition_list",
+    "authority_list"
+  ],
+  "additionalProperties": true
+}

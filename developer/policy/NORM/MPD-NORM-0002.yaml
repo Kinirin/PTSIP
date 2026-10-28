@@ -20,8 +20,8 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:NORM_rules:v3
-  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/NORM_rules.schema.json
+  candidate_contract_id: urn:ptsip:contract:policy:rules:NORM:v1
+  candidate_contract_path: .ptsip/contracts/policy/Rules/NORM_rules.json
   candidate_scope: "규범 의미"
   semantic_rework_required: true
   normative_content_from_retired_policies: FORBIDDEN

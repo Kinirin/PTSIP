@@ -50,7 +50,10 @@ func (r *Repository) ProfileRegistryErrors() ([]string, error) {
 	}
 	errors := []string{}
 	for path, value := range map[string]any{"developer/policy/schemas/public-profile-catalog.schema.json": catalog, "developer/policy/schemas/project-profile-contract-registry.schema.json": registry} {
-		if err := r.Validate(path, value); err != nil {
+		// These PP data schemas are self-contained. The compatibility check
+		// must not bootstrap the retired developer-policy compiler and its
+		// unrelated lifecycle resources to validate a public profile registry.
+		if err := r.ValidateResourceSet(path, value, nil); err != nil {
 			errors = append(errors, path+": "+err.Error())
 		}
 	}

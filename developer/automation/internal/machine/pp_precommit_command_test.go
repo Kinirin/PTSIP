@@ -124,3 +124,69 @@ func TestPPPreCommitCLIWithoutRetiredSchemaPreservesChecksAndIndex(t *testing.T)
 		t.Fatalf("retired policy validator was reactivated: %v\n%s", err, output)
 	}
 }
+
+func TestProfileRegistryCheckDoesNotLoadDeveloperPolicyResources(t *testing.T) {
+	source, err := Open(".")
+	if err != nil {
+		t.Fatal(err)
+	}
+	repo := &Repository{Root: t.TempDir()}
+	files := ppTestFiles(t)
+	for _, path := range []string{
+		"developer/policy/schemas/public-profile-catalog.schema.json",
+		"developer/policy/schemas/project-profile-contract-registry.schema.json",
+	} {
+		files[path], err = os.ReadFile(filepath.Join(source.Root, filepath.FromSlash(path)))
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	for path, content := range files {
+		if err := repo.AtomicWrite(path, content, nil); err != nil {
+			t.Fatal(err)
+		}
+	}
+	// PP catalog checks must not load the unrelated, retired developer-policy
+	// compiler bundle or require any of its old lifecycle schema resources.
+	retired := filepath.Join(repo.Root, "developer", "policy", "registries", "developer-policy-catalog-contracts.json")
+	if _, err := os.Stat(retired); !os.IsNotExist(err) {
+		t.Fatalf("fixture unexpectedly contains a developer policy bundle: %v", err)
+	}
+	if failures, err := repo.ProfileRegistryErrors(); err != nil || len(failures) != 0 {
+		t.Fatalf("PP validation depends on retired policy resources: %v %v", err, failures)
+	}
+	storage, err := ppSnapshotStorage(PPGitSnapshot{Root: repo.Root, Worktree: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, target := range []struct{ path, schema string }{
+		{storage.Catalog, "public-profile-catalog.schema.json"},
+		{PPRegistry, "project-profile-contract-registry.schema.json"},
+	} {
+		t.Run(target.schema, func(t *testing.T) {
+			original, err := os.ReadFile(filepath.Join(repo.Root, filepath.FromSlash(target.path)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			payload, err := repo.Read(target.path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			payload["unexpected"] = true
+			encoded, err := json.Marshal(payload)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := repo.AtomicWrite(target.path, encoded, nil); err != nil {
+				t.Fatal(err)
+			}
+			failures, err := repo.ProfileRegistryErrors()
+			if err != nil || !strings.Contains(strings.Join(failures, ";"), target.schema) {
+				t.Fatalf("independent PP schema validation was skipped: %v %v", err, failures)
+			}
+			if err := repo.AtomicWrite(target.path, original, nil); err != nil {
+				t.Fatal(err)
+			}
+		})
+	}
+}

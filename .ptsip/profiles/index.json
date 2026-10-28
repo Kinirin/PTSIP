@@ -9,6 +9,12 @@
     {
       "id": "rules",
       "resource": "rules.ptsip.yaml"
+    },
+    {
+      "id": "responsibility-authority",
+      "resource": "Responsibility-Authority-list.yaml",
+      "profile_role": "RESPONSIBILITY-AUTHORITY",
+      "schema_ref": "../contracts/schemas/compile-sealed-rbac/Responsibilities_List.schema.json"
     }
   ]
 }

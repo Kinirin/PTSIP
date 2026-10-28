@@ -1,0 +1,155 @@
+{
+  "$schema": "../../schemas/Policy_Rules/Family_Rules_Contract.schema.json",
+  "$id": "urn:ptsip:contract:policy:rules:INFO:v1",
+  "schema_version": "ptsip-family-rules/v1",
+  "root_family": "INFO",
+  "generation": {
+    "default": "OMIT",
+    "when_root_family": "INFO"
+  },
+  "structure": {
+    "type": "object",
+    "properties": {
+      "Identity": {
+        "type": "object",
+        "properties": {
+          "family": {
+            "const": "INFO"
+          },
+          "approval": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "state"
+            ]
+          }
+        },
+        "required": [
+          "family",
+          "approval"
+        ]
+      },
+      "Definition": {
+        "type": "object",
+        "properties": {
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "meaning"
+        ]
+      },
+      "Boundary": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "exclusions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "context": {
+            "type": "object",
+            "properties": {
+              "environment": {},
+              "phase": {}
+            }
+          }
+        },
+        "required": [
+          "scope",
+          "subjects"
+        ]
+      },
+      "Constraints": {
+        "type": "object",
+        "properties": {
+          "obligations": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2#/$defs/ObligationState"
+            }
+          },
+          "prohibitions": {
+            "type": "array"
+          },
+          "preconditions": {
+            "type": "array"
+          },
+          "dependencies": {
+            "type": "array"
+          }
+        }
+      },
+      "Evaluation": {
+        "type": "object",
+        "properties": {
+          "criteria": {
+            "type": "object",
+            "properties": {
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "method": {
+            "type": "object",
+            "properties": {
+              "ref": {},
+              "outcome_ref": {}
+            }
+          }
+        },
+        "required": [
+          "criteria"
+        ]
+      },
+      "state": {
+        "const": "APPROVED.provisional"
+      },
+      "title": {
+        "type": "string"
+      },
+      "Responsibility_Refs": {
+        "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/IDList"
+      }
+    },
+    "required": [
+      "Identity",
+      "Definition",
+      "Boundary",
+      "Constraints",
+      "Evaluation",
+      "state",
+      "title"
+    ],
+    "additionalProperties": true
+  },
+  "responsibility_refs": []
+}

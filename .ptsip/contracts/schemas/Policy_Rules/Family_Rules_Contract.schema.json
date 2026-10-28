@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:family-rules-contract:v1",
+  "title": "Root Family rules authoring contract",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "$id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "ptsip-family-rules/v1"
+    },
+    "root_family": {
+      "$ref": "urn:ptsip:identity:root-family:v1"
+    },
+    "generation": {
+      "type": "object",
+      "required": [
+        "default",
+        "when_root_family"
+      ],
+      "properties": {
+        "default": {
+          "const": "OMIT"
+        },
+        "when_root_family": {
+          "$ref": "urn:ptsip:identity:root-family:v1"
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "required": [
+        "type",
+        "properties",
+        "required"
+      ],
+      "properties": {
+        "type": {
+          "const": "object"
+        },
+        "properties": {
+          "type": "object"
+        },
+        "required": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "responsibility_refs": {
+      "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/IDList"
+    }
+  },
+  "required": [
+    "$id",
+    "schema_version",
+    "root_family",
+    "generation",
+    "structure",
+    "responsibility_refs"
+  ],
+  "additionalProperties": true
+}

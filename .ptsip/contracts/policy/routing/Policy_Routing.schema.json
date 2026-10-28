@@ -1,18 +1,43 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:policy-routing:v3",
-  "title": "PTSIP Policy Routing Contract",
-  "description": "Validates explicit routes from policy_kind and root_family to policy output directories and schema references.",
+  "$id": "urn:ptsip:contract:policy-routing:v4",
+  "title": "Compact policy output routing; family rules are selected by the policy boundary",
   "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "identity_sources",
-    "routes"
-  ],
   "properties": {
     "schema_version": {
-      "const": "ptsip-policy-routing/v3"
+      "const": "ptsip-policy-routing/v4"
+    },
+    "identity_sources": {
+      "type": "object",
+      "required": [
+        "policy_kind",
+        "root_family"
+      ],
+      "properties": {
+        "policy_kind": {
+          "const": ".ptsip/contracts/policy/identity/policy_kind.json"
+        },
+        "root_family": {
+          "const": ".ptsip/contracts/policy/identity/root_family.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    "schema_refs": {
+      "type": "object",
+      "required": [
+        "public",
+        "rules"
+      ],
+      "properties": {
+        "public": {
+          "const": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json"
+        },
+        "rules": {
+          "const": ".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json"
+        }
+      },
+      "additionalProperties": false
     },
     "routes": {
       "type": "object",
@@ -22,85 +47,27 @@
       },
       "additionalProperties": {
         "type": "object",
-        "minProperties": 1,
-        "propertyNames": {
-          "$ref": "urn:ptsip:identity:root-family:v1"
+        "required": [
+          "output_root"
+        ],
+        "properties": {
+          "output_root": {
+            "type": "string",
+            "enum": [
+              "developer/policy",
+              "src/policy"
+            ]
+          }
         },
-        "additionalProperties": {
-          "$ref": "#/$defs/route"
-        }
-      }
-    },
-    "identity_sources": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "policy_kind",
-        "root_family"
-      ],
-      "properties": {
-        "root_family": {
-          "$ref": "#/$defs/repositoryFile"
-        },
-        "policy_kind": {
-          "$ref": "#/$defs/repositoryFile"
-        }
+        "additionalProperties": false
       }
     }
   },
-  "$defs": {
-    "schemaReference": {
-      "type": "string",
-      "minLength": 1,
-      "format": "uri-reference"
-    },
-    "repositoryDirectory": {
-      "type": "string",
-      "minLength": 1,
-      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+$"
-    },
-    "route": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "output",
-        "schema_refs"
-      ],
-      "properties": {
-        "output": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "directory"
-          ],
-          "properties": {
-            "directory": {
-              "$ref": "#/$defs/repositoryDirectory"
-            }
-          }
-        },
-        "schema_refs": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "public",
-            "rules"
-          ],
-          "properties": {
-            "public": {
-              "$ref": "#/$defs/schemaReference"
-            },
-            "rules": {
-              "$ref": "#/$defs/schemaReference"
-            }
-          }
-        }
-      }
-    },
-    "repositoryFile": {
-      "type": "string",
-      "minLength": 1,
-      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+\\.json$"
-    }
-  }
+  "required": [
+    "schema_version",
+    "identity_sources",
+    "schema_refs",
+    "routes"
+  ],
+  "additionalProperties": false
 }

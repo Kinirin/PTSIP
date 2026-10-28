@@ -20,8 +20,8 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:INFO_rules:v3
-  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/INFO_rules.schema.json
+  candidate_contract_id: urn:ptsip:contract:policy:rules:INFO:v1
+  candidate_contract_path: .ptsip/contracts/policy/Rules/INFO_rules.json
   candidate_scope: "정보 의미"
   semantic_rework_required: true
   normative_content_from_retired_policies: FORBIDDEN

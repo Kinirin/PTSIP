@@ -20,8 +20,8 @@ Authority:
     action_ref: urn:ptsip:authority:action:policy:policy-modification
 Policy_Rules:
   independent_rule_refs: []
-  candidate_schema_id: urn:ptsip:policy:ARCH_rules:v3
-  candidate_schema_path: .ptsip/contracts/schemas/Policy_Rules/root-family/ARCH_rules.schemas.json
+  candidate_contract_id: urn:ptsip:contract:policy:rules:ARCH:v1
+  candidate_contract_path: .ptsip/contracts/policy/Rules/ARCH_rules.json
   candidate_scope: "아키텍처 경계"
   semantic_rework_required: true
   normative_content_from_retired_policies: FORBIDDEN

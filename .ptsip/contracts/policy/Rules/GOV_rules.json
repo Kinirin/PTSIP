@@ -1,0 +1,189 @@
+{
+  "$schema": "../../schemas/Policy_Rules/Family_Rules_Contract.schema.json",
+  "$id": "urn:ptsip:contract:policy:rules:GOV:v1",
+  "schema_version": "ptsip-family-rules/v1",
+  "root_family": "GOV",
+  "generation": {
+    "default": "OMIT",
+    "when_root_family": "GOV"
+  },
+  "structure": {
+    "type": "object",
+    "required": [
+      "Identity",
+      "Definition",
+      "Boundary",
+      "Constraints",
+      "Evaluation"
+    ],
+    "properties": {
+      "Identity": {
+        "type": "object",
+        "required": [
+          "contract_id",
+          "Rule_ver"
+        ],
+        "properties": {
+          "contract_id": {
+            "type": "string",
+            "pattern": "^urn:ptsip:policy:rule:gov:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "Rule_ver": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "Definition": {
+        "type": "object",
+        "required": [
+          "meaning"
+        ],
+        "properties": {
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "Boundary": {
+        "type": "object",
+        "required": [
+          "scope",
+          "subjects"
+        ],
+        "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "exclusions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "Constraints": {
+        "type": "object",
+        "properties": {
+          "obligations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "rule"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(OBLIGATION|PROHIBITION)/[A-Z][A-Z0-9_]*$"
+                },
+                "applies_when": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "rule": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "Rule_state": {
+                  "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2#/$defs/RuleState"
+                }
+              },
+              "additionalProperties": false,
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "pattern": "^OBLIGATION/"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  },
+                  "then": {
+                    "required": [
+                      "applies_when",
+                      "Rule_state"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "preconditions": {
+            "type": "array"
+          },
+          "dependencies": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Evaluation": {
+        "type": "object",
+        "required": [
+          "criteria"
+        ],
+        "properties": {
+          "criteria": {
+            "type": "object",
+            "required": [
+              "evidence"
+            ],
+            "properties": {
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "no_approval_result": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          },
+          "method": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string"
+              },
+              "outcome_ref": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "Responsibility_Refs": {
+        "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/IDList"
+      }
+    },
+    "additionalProperties": true
+  },
+  "responsibility_refs": []
+}

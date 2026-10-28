@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:public-structure:v6",
+  "$id": "urn:ptsip:policy:public-structure:v7",
   "title": "PTSIP Policy Public Structure",
   "type": "object",
   "required": [
@@ -16,7 +16,12 @@
       "$ref": "urn:ptsip:policy:Status:v2"
     },
     "Policy_Rules": {
-      "$ref": "urn:ptsip:policy:Public_Structure_Rules:v1"
+      "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2"
     }
-  }
+  },
+  "allOf": [
+    {
+      "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2#/$defs/PolicyDocumentSelection"
+    }
+  ]
 }

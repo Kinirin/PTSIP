@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=../contracts/schemas/compile-sealed-rbac/Responsibilities_List.schema.json
+# Add explicit mappings after declaring the referenced condition and authority IDs in contract_ref.
+ptsip:
+  version: pp.2.01
+  revision: Rev.0001
+  profile_role: RESPONSIBILITY-AUTHORITY
+  specification:
+    source: https://github.com/Kinirin/PTSIP
+    revision: 3c47816770d194ae42f98faedc911d980db0e62a
+responsibility_map:
+  mode: explicit
+  contract_ref: .ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json
+responsibility: []

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:responsibility:v1",
+  "title": "Responsibility, conditions, authorities and role mapping",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ID": {
+      "$ref": "#/$defs/ID"
+    },
+    "condition_id": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:ptsip:rbac:condition:v1#/$defs/ID"
+      },
+      "minItems": 1
+    },
+    "Operational_Authority": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:ptsip:rbac:operational-authority:v1#/$defs/ID"
+      },
+      "minItems": 1
+    },
+    "role_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_required": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "name",
+    "ID",
+    "condition_id",
+    "Operational_Authority",
+    "role_name",
+    "runtime_required"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "ID": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 256,
+      "pattern": "^R-ID-[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "IDList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/ID"
+      }
+    }
+  },
+  "$comment": "Declaration and reference structure only. No approval, Seal, Activation or condition evaluator is implied."
+}
