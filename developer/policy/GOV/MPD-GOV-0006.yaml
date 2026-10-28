@@ -12,12 +12,12 @@ Policy_Rules:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
     Rule_ver: "15"
   Definition:
-    meaning: "정책 생명주기의 상태 및 버전을 소유 계약과 승인 조건에 따라 관리하고, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
+    meaning: "정책 생명주기의 상태 및 버전에 관한 정책 내용을 정의하고 공통 계약과 승인 조건에 따라 관리하며, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
   Boundary:
     scope: "정책 생명주기 및 변경 허가, 기계 중심 코딩 에이전트 제어 구조, 반복 추론의 계약화, 거버넌스 결정·승인·실행·전환 출처"
     subjects:
-      - "정책 상태와 버전의 소유 계약 및 적용 조건"
+      - "정책 상태와 버전의 공통 계약 및 적용 조건"
       - "정책 상태 정규화와 충돌 복구"
       - "변경 범위·선행조건·최신성·충돌 검사"
       - "정책 조회·라우팅·상태 확인·계획 구성·문맥 생성의 기계적 제어"
@@ -36,11 +36,11 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMMON_STATUS_CONTRACT_RECONCILIATION
         applies_when: ROOT_FAMILY_POLICY_STATUS_SCHEMA_OWNERSHIP_OR_VALIDATION
-        rule: "RECONCILE: PTSIP_DEVELOPER_POLICY Root Family의 Policy_Status 필드에 한해 GOV 생명주기 소유권과 공통 Public_Policy_Status.schema.json을 단일 규범 구조로 적용한다. 기존 ARCH·INFO의 Family 전체 필드 스키마 독립 소유 규칙은 Policy_Status만 예외로 하며 각 Family 고유 정책 구조·Policy_Rules의 독립 소유권은 보존한다. Family별 Policy_Status 스키마나 GOV 단독 contract 패턴은 현재 규범을 대체할 수 없으며 구형 상태 검증기와 참조는 제거한다. 승인 없는 정책 상태 전환이나 전체 문서 적합성 주장은 허용하지 않는다."
+        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 14개 Root Family는 공통 Public_Policy_Status.schema.json의 상태 검증 구조를 사용한다. GOV는 생명주기에 관한 정책 내용을 정의하지만 해당 스키마를 소유하지 않는다. 어느 Root Family도 스키마 자체의 소유권을 갖지 않으며 정책 구조 및 검증 요건을 정의하거나 담당할 뿐이다. 기존 ARCH·INFO의 Family별 스키마 독립 소유 규칙은 채택하지 않고, 각 Family의 고유 정책 내용과 Policy_Rules에 대한 책임은 보존한다. Family별 Policy_Status 스키마나 GOV 단독 contract 패턴은 현재 규범을 대체할 수 없으며 구형 상태 검증기와 참조는 제거한다. 승인 없는 정책 상태 전환이나 전체 문서 적합성 주장은 허용하지 않는다."
         Rule_state: APPROVED.Applying
       - id: OBLIGATION/LIFECYCLE_CONTRACT_AUTHORITY
         applies_when: POLICY_STATUS_OR_VERSION_CHANGE
-        rule: "정책 상태와 버전은 해당 항목을 소유하는 GOV 생명주기 계약 및 승인 조건에 따라 관리한다."
+        rule: "정책 상태와 버전은 해당 공통 생명주기 계약 및 승인 조건에 따라 관리한다. GOV 정책은 생명주기에 관한 정책 내용을 정의하며 스키마 소유권을 갖지 않는다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/STATUS_IMPLEMENTATION_INDEPENDENCE
         applies_when: POLICY_LIFECYCLE_OR_IMPLEMENTATION_AUTHORIZATION
@@ -125,5 +125,5 @@ Policy_Rules:
         - "변경 범위·선행조건·최신성·충돌 확인 결과"
         - "추론 후보의 검증과 승인 근거, 기계 계약 승격 여부"
         - "사용자 명시·에이전트 추론·자동화 파생 출처의 분리"
-        - "정책 생명주기와 상태 전환을 소유하는 실제 계약 참조"
+        - "정책 생명주기와 상태 전환을 정의하는 실제 계약 참조"
         - "developer/policy/registries/**의 퇴역 권위 참조 또는 실행 의존성이 정책 판단에 사용되지 않는지 확인"
