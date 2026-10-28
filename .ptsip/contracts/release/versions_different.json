@@ -1,0 +1,33 @@
+{
+  "schema_version": "ptsip-versions-different/v1",
+  "state": "DRAFT_NON_NORMATIVE",
+  "source": "src/VERSION",
+  "preview": ".ptsip/engines/release/versions_different.ini",
+  "detection": {
+    "basis": "EXACT_GIT_DIFF",
+    "function_addition": "SYNTAX_CANDIDATE_ONLY",
+    "functional_verification": "UNRESOLVED",
+    "policy_only": "NO_BUMP"
+  },
+  "update": {
+    "automatic_bump": "BLOCKED_PENDING_POLICY",
+    "increment_rule": "UNRESOLVED",
+    "explicit_apply": "REQUIRES_CALLER_DECISION_AND_EXACT_DIGEST",
+    "publication": "NOT_AUTHORIZED"
+  },
+  "boundaries": {
+    "source_root": "src/ptsip/",
+    "profile_prefix": "src/ptsip/profiles/",
+    "engine_prefix": "src/ptsip/engines/",
+    "engine_ids": [
+      "context",
+      "storage",
+      "validation",
+      "discovery",
+      "planning",
+      "execution",
+      "projection"
+    ],
+    "other_source": "TOOL_CANDIDATE"
+  }
+}

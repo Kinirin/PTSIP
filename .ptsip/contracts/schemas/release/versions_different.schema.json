@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:release:versions-different-contract:v1",
+  "title": "PTSIP version-diff draft contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "state",
+    "source",
+    "preview",
+    "detection",
+    "update",
+    "boundaries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-versions-different/v1"
+    },
+    "state": {
+      "const": "DRAFT_NON_NORMATIVE"
+    },
+    "source": {
+      "const": "src/VERSION"
+    },
+    "preview": {
+      "const": ".ptsip/engines/release/versions_different.ini"
+    },
+    "detection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis",
+        "function_addition",
+        "functional_verification",
+        "policy_only"
+      ],
+      "properties": {
+        "basis": {
+          "const": "EXACT_GIT_DIFF"
+        },
+        "function_addition": {
+          "const": "SYNTAX_CANDIDATE_ONLY"
+        },
+        "functional_verification": {
+          "const": "UNRESOLVED"
+        },
+        "policy_only": {
+          "const": "NO_BUMP"
+        }
+      }
+    },
+    "update": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "automatic_bump",
+        "increment_rule",
+        "explicit_apply",
+        "publication"
+      ],
+      "properties": {
+        "automatic_bump": {
+          "const": "BLOCKED_PENDING_POLICY"
+        },
+        "increment_rule": {
+          "const": "UNRESOLVED"
+        },
+        "explicit_apply": {
+          "const": "REQUIRES_CALLER_DECISION_AND_EXACT_DIGEST"
+        },
+        "publication": {
+          "const": "NOT_AUTHORIZED"
+        }
+      }
+    },
+    "boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_root",
+        "profile_prefix",
+        "engine_prefix",
+        "engine_ids",
+        "other_source"
+      ],
+      "properties": {
+        "source_root": {
+          "const": "src/ptsip/"
+        },
+        "profile_prefix": {
+          "const": "src/ptsip/profiles/"
+        },
+        "engine_prefix": {
+          "const": "src/ptsip/engines/"
+        },
+        "engine_ids": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "context",
+              "storage",
+              "validation",
+              "discovery",
+              "planning",
+              "execution",
+              "projection"
+            ]
+          }
+        },
+        "other_source": {
+          "const": "TOOL_CANDIDATE"
+        }
+      }
+    }
+  }
+}
