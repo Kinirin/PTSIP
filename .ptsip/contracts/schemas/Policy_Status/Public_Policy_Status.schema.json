@@ -15,33 +15,17 @@
       "minLength": 1
     },
     "status": {
-      "type": "string",
-      "enum": [
-        "APPROVED.Default",
-        "APPROVED.Applying",
-        "APPROVED.Application_Problems",
-        "APPROVED.Unresolved",
-        "APPROVED.Activate",
-        "APPROVED.provisional",
-        "DRAFT.Default",
-        "DRAFT.Reviewed",
-        "DRAFT.Denied",
-        "DRAFT.Pass",
-        "RETIRED.Default",
-        "RETIRED.Removable",
-        "RETIRED.Waiting"
-      ],
-      "x-ptsip-lifecycle-enum-binding": {
-        "mode": "DERIVED_DOT_JOIN",
-        "source_contracts": [
-          ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
-          ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
-          ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json"
-        ],
-        "projection": "properties.status.const + '.' + properties.substatus.enum[]",
-        "authority": "SOURCE_CONTRACTS",
-        "on_mismatch": "FAIL_CLOSED"
-      }
+      "oneOf": [
+        {
+          "$ref": "urn:ptsip:contract:constant:policy_status_approved:v2#/properties/status"
+        },
+        {
+          "$ref": "urn:ptsip:contract:constant:policy_status_draft:v2#/properties/status"
+        },
+        {
+          "$ref": "urn:ptsip:contract:constant:policy_status_retired:v2#/properties/status"
+        }
+      ]
     },
     "contract": {
       "type": "string",

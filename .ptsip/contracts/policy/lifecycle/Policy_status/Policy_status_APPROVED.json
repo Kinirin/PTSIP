@@ -1,26 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:constant:policy_status_approved:v1",
+  "$id": "urn:ptsip:contract:constant:policy_status_approved:v2",
   "title": "PTSIP APPROVED Status Contract",
-  "schema_version": "ptsip-lifecycle-status-constant/v1",
+  "schema_version": "ptsip-lifecycle-status-constant/v2",
   "type": "object",
   "required": [
-    "status",
-    "substatus"
+    "status"
   ],
   "properties": {
     "status": {
-      "const": "APPROVED"
-    },
-    "substatus": {
       "type": "string",
       "enum": [
-        "Default",
-        "Applying",
-        "Application_Problems",
-        "Unresolved",
-        "Activate",
-        "provisional"
+        "APPROVED.Default",
+        "APPROVED.Applying",
+        "APPROVED.Application_Problems",
+        "APPROVED.Unresolved",
+        "APPROVED.Activate",
+        "APPROVED.provisional"
       ]
     }
   }

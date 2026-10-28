@@ -8,6 +8,7 @@ import (
  "fmt"
  "os"
  "path/filepath"
+ "strings"
 )
 
 type StatusProbe struct {
@@ -40,63 +41,62 @@ func approvedResource(root,relative string) (map[string]any,error) {
 }
 
 
-// verifySharedStatusLifecycleEnum checks the common flat status enum against
-// the sole approved lifecycle source contracts. No retired per-family status
-// schema is an authority for this vocabulary.
-func verifySharedStatusLifecycleEnum(root string, schema map[string]any) error {
+// verifySharedStatusLifecycleRefs validates the fixed reference graph and the
+// authoritative string enums in the three lifecycle source schemas. It returns
+// the exact resources for the installed native VALIDATION engine to resolve.
+// No in-memory enum projection or alternative schema validator is created.
+func verifySharedStatusLifecycleRefs(root string, schema map[string]any) ([]any,error) {
  props,ok:=schema["properties"].(map[string]any)
- if !ok{return fmt.Errorf("SHARED_STATUS_PROPERTIES_MISSING")}
+ if !ok{return nil,fmt.Errorf("SHARED_STATUS_PROPERTIES_MISSING")}
  status,ok:=props["status"].(map[string]any)
- if !ok{return fmt.Errorf("SHARED_STATUS_STATUS_MISSING")}
- binding,ok:=status["x-ptsip-lifecycle-enum-binding"].(map[string]any)
- if !ok{return fmt.Errorf("LIFECYCLE_ENUM_BINDING_MISSING")}
- if binding["mode"]!="DERIVED_DOT_JOIN" || binding["authority"]!="SOURCE_CONTRACTS" ||
-   binding["on_mismatch"]!="FAIL_CLOSED" ||
-   binding["projection"]!="properties.status.const + '.' + properties.substatus.enum[]" {
-  return fmt.Errorf("LIFECYCLE_ENUM_BINDING_INVALID")
+ if !ok{return nil,fmt.Errorf("SHARED_STATUS_STATUS_MISSING")}
+ if len(status)!=1 {return nil,fmt.Errorf("PUBLIC_STATUS_REFERENCE_SHAPE_INVALID")}
+ declarations,ok:=status["oneOf"].([]any)
+ if !ok||len(declarations)!=3{return nil,fmt.Errorf("LIFECYCLE_REFERENCE_COUNT_INVALID")}
+ sources:=[]struct{path,id,prefix string}{
+  {".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json","urn:ptsip:contract:constant:policy_status_approved:v2","APPROVED."},
+  {".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json","urn:ptsip:contract:constant:policy_status_draft:v2","DRAFT."},
+  {".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json","urn:ptsip:contract:constant:policy_status_retired:v2","RETIRED."},
  }
- expectedPaths:=[]string{
-  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
-  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
-  ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
- }
- declared,ok:=binding["source_contracts"].([]any)
- if !ok||len(declared)!=len(expectedPaths){return fmt.Errorf("LIFECYCLE_ENUM_SOURCES_INVALID")}
- declaredEnum,ok:=status["enum"].([]any)
- if !ok{return fmt.Errorf("PUBLIC_STATUS_ENUM_INVALID")}
- combined:=[]string{}
  seen:=map[string]bool{}
- categories:=[]string{"APPROVED","DRAFT","RETIRED"}
- for i,rel:=range expectedPaths {
-  if declared[i]!=rel {return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_BINDING_MISMATCH: %s",rel)}
-  raw,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(rel)))
-  if err!=nil{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_UNAVAILABLE: %s: %w",rel,err)}
-  var contract map[string]any
-  if err:=json.Unmarshal(raw,&contract);err!=nil{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_JSON_INVALID: %s: %w",rel,err)}
-  sourceProps,ok:=contract["properties"].(map[string]any)
-  if !ok{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_PROPERTIES_MISSING: %s",rel)}
-  primary,ok:=sourceProps["status"].(map[string]any)
-  if !ok{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_STATUS_MISSING: %s",rel)}
-  category,ok:=primary["const"].(string)
-  if !ok||category!=categories[i]{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_CATEGORY_MISMATCH: %s",rel)}
-  sub,ok:=sourceProps["substatus"].(map[string]any)
-  if !ok{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_SUBSTATUS_MISSING: %s",rel)}
-  values,ok:=sub["enum"].([]any)
-  if !ok||len(values)==0{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_EMPTY: %s",rel)}
-  for _,v:=range values {
-   item,ok:=v.(string)
-   if !ok||item==""{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_INVALID_VALUE: %s",rel)}
-   value:=category+"."+item
-   if seen[value]{return fmt.Errorf("LIFECYCLE_ENUM_SOURCE_DUPLICATE: %s",value)}
-   seen[value]=true
-   combined=append(combined,value)
+ resources:=make([]any,0,len(sources))
+ for i,source:=range sources {
+  ref,ok:=declarations[i].(map[string]any)
+  if !ok||len(ref)!=1||ref["$ref"]!=source.id+"#/properties/status"{
+   return nil,fmt.Errorf("LIFECYCLE_REFERENCE_BINDING_MISMATCH: %s",source.path)
   }
+  raw,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(source.path)))
+  if err!=nil{return nil,fmt.Errorf("LIFECYCLE_SOURCE_UNAVAILABLE: %s: %w",source.path,err)}
+  var doc map[string]any
+  if err:=json.Unmarshal(raw,&doc);err!=nil{return nil,fmt.Errorf("LIFECYCLE_SOURCE_JSON_INVALID: %s: %w",source.path,err)}
+  if doc["$schema"]!="https://json-schema.org/draft/2020-12/schema"||
+   doc["$id"]!=source.id||doc["schema_version"]!="ptsip-lifecycle-status-constant/v2"||
+   doc["type"]!="object"{
+   return nil,fmt.Errorf("LIFECYCLE_SOURCE_ID_OR_VERSION_MISMATCH: %s",source.path)
+  }
+  required,ok:=doc["required"].([]any)
+  if !ok{return nil,fmt.Errorf("LIFECYCLE_SOURCE_REQUIRED_INVALID: %s",source.path)}
+  hasStatus:=false
+  for _,v:=range required{if v=="status"{hasStatus=true};if v=="substatus"{return nil,fmt.Errorf("LIFECYCLE_SOURCE_LEGACY_SUBSTATUS: %s",source.path)}}
+  if !hasStatus{return nil,fmt.Errorf("LIFECYCLE_SOURCE_STATUS_NOT_REQUIRED: %s",source.path)}
+  sourceProps,ok:=doc["properties"].(map[string]any)
+  if !ok{return nil,fmt.Errorf("LIFECYCLE_SOURCE_PROPERTIES_MISSING: %s",source.path)}
+  if _,legacy:=sourceProps["substatus"];legacy{return nil,fmt.Errorf("LIFECYCLE_SOURCE_LEGACY_SUBSTATUS: %s",source.path)}
+  primary,ok:=sourceProps["status"].(map[string]any)
+  if !ok||primary["type"]!="string"{return nil,fmt.Errorf("LIFECYCLE_SOURCE_STATUS_TYPE_INVALID: %s",source.path)}
+  values,ok:=primary["enum"].([]any)
+  if !ok||len(values)==0{return nil,fmt.Errorf("LIFECYCLE_SOURCE_ENUM_EMPTY: %s",source.path)}
+  for _,v:=range values {
+   value,ok:=v.(string)
+   if !ok||!strings.HasPrefix(value,source.prefix)||len(value)<=len(source.prefix){
+    return nil,fmt.Errorf("LIFECYCLE_SOURCE_ENUM_INVALID: %s",source.path)
+   }
+   if seen[value]{return nil,fmt.Errorf("LIFECYCLE_SOURCE_ENUM_DUPLICATE: %s",value)}
+   seen[value]=true
+  }
+  resources=append(resources,doc)
  }
- if len(combined)!=len(declaredEnum){return fmt.Errorf("PUBLIC_STATUS_ENUM_SOURCE_COUNT_MISMATCH")}
- for i,v:=range declaredEnum {
-  if v!=combined[i]{return fmt.Errorf("PUBLIC_STATUS_ENUM_SOURCE_DRIFT")}
- }
- return nil
+ return resources,nil
 }
 
 // probeApprovedFlatPolicyStatus checks the current shared status record shape
@@ -109,22 +109,34 @@ func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
  if schema["$id"] != "urn:ptsip:policy:Status:v2" {
   return fail(fmt.Errorf("SHARED_STATUS_SCHEMA_ID_MISMATCH"))
  }
- if err:=verifySharedStatusLifecycleEnum(root,schema);err!=nil{return fail(err)}
+ resources,err:=verifySharedStatusLifecycleRefs(root,schema)
+ if err!=nil{return fail(err)}
  report.LifecycleVocabularyLinked=true
  positive := map[string]any{
   "Policy_Status_Schema_ver": "2",
   "status": "APPROVED.Applying",
   "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
  }
- valid, err := nativeValidate(e, schema, positive, nil)
+ valid, err := nativeValidate(e, schema, positive, resources)
  if err != nil { return fail(err) }
+ // Every source family must resolve and validate through the native engine.
+ for _,value:=range []string{"DRAFT.Default","RETIRED.Waiting"} {
+  instance:=map[string]any{
+   "Policy_Status_Schema_ver":"2",
+   "status":value,
+   "contract":"urn:ptsip:contract:policy:gov:responsibility:orchestration",
+  }
+  familyValid,familyErr:=nativeValidate(e,schema,instance,resources)
+  if familyErr!=nil{return fail(familyErr)}
+  valid=valid&&familyValid
+ }
  report.PositiveValid = valid
 
  missingVersion := map[string]any{
   "status": "APPROVED.Applying",
   "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
  }
- accepted, err := nativeValidate(e, schema, missingVersion, nil)
+ accepted, err := nativeValidate(e, schema, missingVersion, resources)
  if err != nil { return fail(err) }
  report.MissingVersionRejected = !accepted
 
@@ -136,7 +148,7 @@ func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
    "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
   },
  }
- accepted, err = nativeValidate(e, schema, legacy, nil)
+ accepted, err = nativeValidate(e, schema, legacy, resources)
  if err != nil { return fail(err) }
  report.LegacyNestedRejected = !accepted
 
@@ -145,7 +157,7 @@ func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
   "status": "APPROVED.NotDeclared",
   "contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
  }
- accepted, err = nativeValidate(e, schema, invalidStatus, nil)
+ accepted, err = nativeValidate(e, schema, invalidStatus, resources)
  if err != nil { return fail(err) }
  report.InvalidStatusRejected = !accepted
 
