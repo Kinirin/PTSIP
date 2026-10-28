@@ -10,7 +10,7 @@ Policy_Status:
 Policy_Rules:
   Identity:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
-    Rule_ver: "15"
+    Rule_ver: "16"
   Definition:
     meaning: "정책 생명주기의 상태 및 버전에 관한 정책 내용을 정의하고 공통 계약과 승인 조건에 따라 관리하며, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
     rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
@@ -32,7 +32,7 @@ Policy_Rules:
     obligations:
       - id: OBLIGATION/FLATTEN_POLICY_STATUS
         applies_when: POLICY_STATUS_SERIALIZATION
-        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 공통 Policy_Status는 GOV에서 검증한 평면형을 채택하며 최상위 필드는 Policy_Status_Schema_ver, status, contract 세 항목을 필수로 관리한다. 기존 Schema/Policy_Status_version/version과 constant 그룹은 제거하고, status와 substatus의 상태 의미를 하나의 status 값에 보존한다. 13개 결합 상태값의 권위 원본은 .ptsip/contracts/policy/lifecycle/Policy_status/의 APPROVED·DRAFT·RETIRED 계약이며, .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json의 status.enum은 원본의 status.const와 substatus.enum을 결정론적으로 결합한 투영으로 검증한다. 공통 스키마의 contract 패턴만 사용하고 Family별 상태 스키마 및 이전 중첩형 상태 검증기·자동화·테스트의 의존성을 제거한다. 삭제된 계약의 복구는 Git 이력으로 수행하며 별도의 보존 파일이나 퇴역 파일 존재 검사를 생성하지 않는다. 정책 문서에 대한 구조 전환은 해당 Family의 별도 검증된 이관을 필요로 하고, 스키마 변경만으로 구형 문서의 적합성이나 정책 활성화를 인정하지 않는다."
+        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 14개 Root Family는 하나의 공통 Policy_Status 구조를 사용하며, 필수 최상위 필드 Policy_Status_Schema_ver, status, contract를 유지한다. 정책 문서의 status는 APPROVED.Applying 같은 결합 문자열로 유지하고 객체형 상태나 분리된 substatus 필드로 이관하지 않는다. .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json의 properties.status는 결합 상태 상수를 자체 enum으로 중복 선언하지 않고, JSON Schema oneOf와 해소 가능한 버전 명시 $ref를 사용해 .ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json, Policy_status_DRAFT.json, Policy_status_RETIRED.json 세 원본 계약의 properties.status를 참조한다. 각 원본 계약의 properties.status는 해당 범주의 결합 상태 문자열 type:string 및 enum을 정의하는 단일 상태 상수 원본이며, 기존 properties.status.const와 properties.substatus.enum을 결합하는 DERIVED_DOT_JOIN 투영 및 공통 스키마의 상태값 복제 목록을 폐기한다. 동일한 결합 상태 상수의 중복을 금지하고, 정의되지 않은 상태·누락 또는 해소 불가능한 참조·원본 계약 불일치는 실패 시 차단한다. 개별 하위 상태의 추가·변경·삭제·분할은 해당 원본 계약에서만 관리하고, 공통 스키마는 APPROVED/DRAFT/RETIRED 같은 상위 상태 분류의 추가·제거 또는 참조 계약 식별자 변경 등 참조 구성 자체의 변경에만 수정한다. 상태별 description은 해당 원본 계약에서 상태 상수와 분리하여 조회 가능한 비권한적 설명 정보로 취급하며, 일반 상태 판정은 상수만 조회하고 의미 확인이 필요한 경우에 한해 설명을 조회한다. description의 세부 필드명과 값, Compile-Sealed RBAC 권한·승인·전이 조건은 이 결정으로 확정하거나 생성하지 않으며, 설명만으로 승인·실행 권한을 부여하지 않는다. 세 원본 상태 계약은 additionalProperties:false를 필수로 두지 않는다. 기존 Schema/Policy_Status_version/version 및 constant 그룹과 Family별 상태 스키마는 되살리지 않고 공통 스키마의 contract 패턴을 유지한다. 스키마·검증기·테스트와 원본 계약의 실제 변경은 이 정책에 종속되는 별도 검증된 이관으로 수행하고, 정책 변경만으로 구형 문서 적합성·정책 활성화·RBAC 실행 허가를 인정하지 않는다."
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/COMMON_STATUS_CONTRACT_RECONCILIATION
         applies_when: ROOT_FAMILY_POLICY_STATUS_SCHEMA_OWNERSHIP_OR_VALIDATION
