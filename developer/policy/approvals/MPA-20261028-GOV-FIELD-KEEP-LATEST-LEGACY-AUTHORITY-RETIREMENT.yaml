@@ -7,8 +7,9 @@ approval:
   decision_source: USER_EXPLICIT
   source_reference: >-
     Owner explicitly authorized physical deletion of the retired
-    .ptsip/contracts/policy/authority/ files as the policy authority
-    category cutover, and selected KEEP_LATEST for the conflicting
+    .ptsip/contracts/policy/authority/ files and the dangling legacy
+    .ptsip/contracts/schemas/Authority/ compatibility scaffolds as the policy
+    authority category cutover, and selected KEEP_LATEST for the conflicting
     previous GOV nineteen-field review against the current GOV family
     contract (.ptsip/contracts/policy/Rules/GOV_rules.json).
     GOV legacy review and the cross-family four-required-field

@@ -68,7 +68,7 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/RETIRE_LEGACY_AUTHORITY_CATEGORIES
         applies_when: LEGACY_AUTHORITY_MAJOR_MINOR_MICRO_MIGRATION
-        rule: "KEEP_LATEST: 기존 Authority_Major_Category, Authority_Minor_Category, Authority_Micro_Category의 정책 권한 분류와 .ptsip/contracts/policy/authority/ 저장 영역은 폐기하고 물리적으로 제거한다. 신규 정책 작성·계약 조회·검증은 해당 분류 파일을 참조하지 않는다. 기존 정책 후보 문서의 Authority_Category 선언은 제거하며 해당 제거만으로 Compile-Sealed RBAC의 새 책임·조건·권한 바인딩 또는 승인·Seal·Activation·실행 권한을 생성하지 않는다. 별도 검증되지 않은 실행 활성화를 완료 상태로 취급하지 않는다."
+        rule: "KEEP_LATEST: 기존 Authority_Major_Category, Authority_Minor_Category, Authority_Micro_Category의 정책 권한 분류와 .ptsip/contracts/policy/authority/ 저장 영역은 폐기하고 물리적으로 제거한다. 신규 정책 작성·계약 조회·검증은 해당 분류 파일을 참조하지 않는다. 기존 Authority 분류용 .ptsip/contracts/schemas/Authority/ 내 21개 호환·임시 스키마도 삭제하고 종전 정책 후보 문서의 Authority_Category 선언은 제거하며 해당 제거만으로 Compile-Sealed RBAC의 새 책임·조건·권한 바인딩 또는 승인·Seal·Activation·실행 권한을 생성하지 않는다. 별도 검증되지 않은 실행 활성화를 완료 상태로 취급하지 않는다."
         Rule_state: APPROVED.Applying
       - id: OBLIGATION/COMPILE_SEALED_HIERARCHICAL_SCHEMA_DESIGN
         applies_when: COMPILE_SEALED_RBAC_INDEPENDENT_SCHEMA_DESIGN

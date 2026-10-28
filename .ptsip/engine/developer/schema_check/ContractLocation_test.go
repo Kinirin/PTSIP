@@ -227,3 +227,37 @@ func TestPlanStatusContractVocabulary(t *testing.T) {
 		}
 	}
 }
+
+func TestLegacyPolicyAuthorityModelRemoved(t *testing.T) {
+ root, err := filepath.Abs(filepath.Join("..", "..", "..", ".."))
+ if err != nil { t.Fatal(err) }
+ for _, path := range []string{
+  ".ptsip/contracts/policy/authority",
+  ".ptsip/contracts/schemas/Authority",
+ } {
+  if _, err := os.Lstat(filepath.Join(root, filepath.FromSlash(path))); !errors.Is(err, os.ErrNotExist) {
+   t.Fatalf("retired policy authority directory must not exist: %s: %v", path, err)
+  }
+ }
+ for _, policy := range []string{
+  "developer/policy/OPS/MPD-OPS-0002.yaml",
+  "developer/policy/INFO/MPD-INFO-0006.yaml",
+  "developer/policy/ARCH/MPD-ARCH-0004.yaml",
+  "developer/policy/REAL/MPD-REAL-0007.yaml",
+  "developer/policy/CNTR/MPD-CNTR-0006.yaml",
+  "developer/policy/CTRL/MPD-CTRL-0002.yaml",
+  "developer/policy/RISK/MPD-RISK-0002.yaml",
+  "developer/policy/NORM/MPD-NORM-0002.yaml",
+  "developer/policy/SUPPLY/MPD-SUPPLY-0002.yaml",
+  "developer/policy/ASSURE/MPD-ASSURE-0005.yaml",
+  "developer/policy/INTENT/MPD-INTENT-0002.yaml",
+  "developer/policy/CHANGE/MPD-CHANGE-0005.yaml",
+  "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+ } {
+  content, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(policy)))
+  if err != nil { t.Fatal(err) }
+  if strings.Contains(string(content), "\n  Authority_Category:") {
+   t.Fatalf("retired Authority_Category remains in %s", policy)
+  }
+ }
+}
