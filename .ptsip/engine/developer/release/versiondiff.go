@@ -104,7 +104,7 @@ func sourceVersions(data []byte)(map[string]string,bool,error) {
   l:=strings.TrimSpace(line)
   if l=="" || strings.HasPrefix(l,"#"){continue}
   if m:=header.FindStringSubmatch(l);m!=nil{
-   section=m[1];sectioned=true
+   section=m[1];if section!="engines"{sectioned=true}
    if section!="engines" && section!="package" && section!="tool" && section!="profile" {return nil,false,fmt.Errorf("unregistered version section")}
    continue
   }
