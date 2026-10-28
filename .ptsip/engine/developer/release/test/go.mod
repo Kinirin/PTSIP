@@ -2,7 +2,10 @@ module github.com/Kinirin/PTSIP/.ptsip/engine/developer/release/test
 
 go 1.26
 
-require github.com/Kinirin/PTSIP/.ptsip/engine/developer/release/controller v0.0.0
+require (
+    github.com/Kinirin/PTSIP/.ptsip/engine/developer v0.0.0
+    github.com/Kinirin/PTSIP/.ptsip/engine/developer/release/controller v0.0.0
+)
 
 require (
 	github.com/pelletier/go-toml/v2 v2.4.3 // indirect
@@ -12,3 +15,5 @@ require (
 )
 
 replace github.com/Kinirin/PTSIP/.ptsip/engine/developer/release/controller => ../controller
+
+replace github.com/Kinirin/PTSIP/.ptsip/engine/developer => ../..

@@ -104,9 +104,12 @@ jobs:
           assert p['per_release_evidence']=='NOT_ASSERTED'
           print('Withdrawn temporary policy rejected; no publication authority granted.')
           PY
-      - name: Execute Release Admission negative tests
+      - name: Execute Release Admission and versions-different tests in release/test
         shell: bash
-        run: go -C .ptsip/engine/developer test ./release -count=1
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer/release/test test ./... -run '^(TestAdmission|TestVersionsDifferent)' -count=1
+          go -C .ptsip/engine/developer test ./release -count=1
       - name: Test all Developer schema contracts and fourteen Family routes
         shell: bash
         run: go -C .ptsip/engine/developer test ./schema_check -count=1 -v -v

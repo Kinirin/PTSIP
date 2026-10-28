@@ -1,15 +1,18 @@
-package release
+package releasetest
 
 import (
   "encoding/json"
+  "fmt"
   "os"
   "path/filepath"
   "strings"
   "testing"
+  releaseversion "github.com/Kinirin/PTSIP/.ptsip/engine/developer/release"
 )
 
 // Fixture locations are not runtime policy authority; production resolves from contracts.
 const (
+  contractIndexPath = ".ptsip/contracts/release/index.json"
   contractPath = ".ptsip/contracts/release/admission.json"
   rulesPath = ".ptsip/contracts/release/validation-rules.json"
   modeRegistryPath = ".github/test_modes.json"
@@ -17,9 +20,31 @@ const (
   verificationGapPath = ".github/verification-retirement.json"
 )
 
+
+func admissionJSON(root,path string)(map[string]any,error){
+    b,err:=os.ReadFile(filepath.Join(root,filepath.FromSlash(path)))
+    if err!=nil{return nil,err}
+    var doc map[string]any
+    if err=json.Unmarshal(b,&doc);err!=nil{return nil,err}
+    if doc==nil{return nil,fmt.Errorf("empty JSON: %s",path)}
+    return doc,nil
+}
+func admissionArray(m map[string]any,key string)[]any{
+    a,_:=m[key].([]any)
+    return a
+}
+func admissionStr(m map[string]any,key string)string{
+    s,_:=m[key].(string)
+    return s
+}
+func admissionObj(m map[string]any,key string)map[string]any{
+    o,_:=m[key].(map[string]any)
+    return o
+}
+
 func rootOfRepository(t *testing.T) string {
   t.Helper()
-  root, err := filepath.Abs("../../../..")
+  root, err := filepath.Abs("../../../../..")
   if err != nil { t.Fatal(err) }
   return root
 }
@@ -46,11 +71,11 @@ func setupFixture(t *testing.T) string {
     contractIndexPath,contractPath,rulesPath,modeRegistryPath,cutoverApprovalPath,verificationGapPath,
     ".github/workflows/tooling-release.yml",
   } { copyFixture(t,from,root,path) }
-  contract, err := readJSON(root,contractPath)
+  contract, err := admissionJSON(root,contractPath)
   if err != nil { t.Fatal(err) }
   for _, group := range []string{"common_directions","error_directions"} {
-    for _, raw := range array(contract,group) {
-      approval := str(raw.(map[string]any),"approval_ref")
+    for _, raw := range admissionArray(contract,group) {
+      approval := admissionStr(raw.(map[string]any),"approval_ref")
       copyFixture(t,from,root,approval)
     }
   }
@@ -59,7 +84,7 @@ func setupFixture(t *testing.T) string {
 
 func TestAdmissionApprovedProjectionIsNonPublishing(t *testing.T) {
   root := setupFixture(t)
-  result,code := RunAdmission(root)
+  result,code := releaseversion.RunAdmission(root)
   report := result.(map[string]any)
   if code != 0 || report["status"] != "DESIGN_CONTRACT_CONSISTENT" {
     t.Fatalf("expected validated design projection: code=%d result=%v",code,report)
@@ -74,77 +99,77 @@ func TestAdmissionFailsClosedOnMissingOrInvalidContract(t *testing.T) {
   t.Run("missing",func(t *testing.T) {
     root := setupFixture(t)
     if err := os.Remove(filepath.Join(root,filepath.FromSlash(contractPath))); err != nil { t.Fatal(err) }
-    _,code := RunAdmission(root)
+    _,code := releaseversion.RunAdmission(root)
     if code == 0 { t.Fatal("missing contract was accepted") }
   })
   t.Run("malformed",func(t *testing.T) {
     root := setupFixture(t)
     writeFixture(t,root,contractPath,[]byte("{"))
-    _,code := RunAdmission(root)
+    _,code := releaseversion.RunAdmission(root)
     if code == 0 { t.Fatal("malformed contract was accepted") }
   })
 }
 
 func TestAdmissionRejectsAlteredApproval(t *testing.T) {
   root := setupFixture(t)
-  contract,err := readJSON(root,contractPath)
+  contract,err := admissionJSON(root,contractPath)
   if err != nil { t.Fatal(err) }
-  first := array(contract,"error_directions")[0].(map[string]any)
-  path := str(first,"approval_ref")
+  first := admissionArray(contract,"error_directions")[0].(map[string]any)
+  path := admissionStr(first,"approval_ref")
   data,err := os.ReadFile(filepath.Join(root,filepath.FromSlash(path)))
   if err != nil { t.Fatal(err) }
   changed := strings.Replace(string(data),"response_model: B_CONDITIONAL_AUTOMATIC_RECOVERY","response_model: UNAUTHORIZED_REPLACEMENT",1)
   writeFixture(t,root,path,[]byte(changed))
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("approval/source mismatch was accepted") }
 }
 
 func TestAdmissionRejectsAlteredProjection(t *testing.T) {
   root := setupFixture(t)
-  contract,err := readJSON(root,contractPath)
+  contract,err := admissionJSON(root,contractPath)
   if err != nil { t.Fatal(err) }
-  record := array(contract,"common_directions")[1].(map[string]any)
+  record := admissionArray(contract,"common_directions")[1].(map[string]any)
   record["model"] = "UNAPPROVED_MODEL"
   data,err := json.Marshal(contract)
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,contractPath,data)
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("unapproved model was accepted") }
 }
 
 func TestAdmissionRejectsUnregisteredMode(t *testing.T) {
   root := setupFixture(t)
-  registry,err := readJSON(root,modeRegistryPath)
+  registry,err := admissionJSON(root,modeRegistryPath)
   if err != nil { t.Fatal(err) }
   registry["modes"] = []any{}
   data,err := json.Marshal(registry)
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,modeRegistryPath,data)
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("unregistered mode was accepted") }
 }
 
 func TestAdmissionRejectsUnblockedRelease(t *testing.T) {
   root := setupFixture(t)
-  gap,err := readJSON(root,verificationGapPath)
+  gap,err := admissionJSON(root,verificationGapPath)
   if err != nil { t.Fatal(err) }
-  obj(gap,"release_verification_gap")["release_execution"] = "ENABLED"
+  admissionObj(gap,"release_verification_gap")["release_execution"] = "ENABLED"
   data,err := json.Marshal(gap)
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,verificationGapPath,data)
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("unblocked publication was accepted") }
 }
 
 func TestAdmissionRejectsSafetyBoundaryChanges(t *testing.T) {
   root := setupFixture(t)
-  contract,err := readJSON(root,contractPath)
+  contract,err := admissionJSON(root,contractPath)
   if err != nil { t.Fatal(err) }
-  obj(contract,"guardrails")["security_recovery_requires_owner_approval"] = false
+  admissionObj(contract,"guardrails")["security_recovery_requires_owner_approval"] = false
   data,err := json.Marshal(contract)
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,contractPath,data)
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("modified security constraint was accepted") }
 }
 
@@ -154,49 +179,49 @@ func TestAdmissionRejectsPublisherWorkflowMutation(t *testing.T) {
   data,err := os.ReadFile(filepath.Join(root,filepath.FromSlash(path)))
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,path,append(data,[]byte("\n# dangerous addition\n# gh release create\n")...))
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("publisher operation was accepted") }
 }
 
 func TestAdmissionRejectsMissingValidationRules(t *testing.T) {
   root := setupFixture(t)
   if err := os.Remove(filepath.Join(root,filepath.FromSlash(rulesPath))); err != nil { t.Fatal(err) }
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("missing rules contract was accepted") }
 }
 
 func TestAdmissionRejectsWeakenedRuleAssertions(t *testing.T) {
   root := setupFixture(t)
-  rules,err := readJSON(root,rulesPath)
+  rules,err := admissionJSON(root,rulesPath)
   if err != nil { t.Fatal(err) }
-  obj(rules,"admission_guardrails")["security_recovery_requires_owner_approval"] = false
+  admissionObj(rules,"admission_guardrails")["security_recovery_requires_owner_approval"] = false
   data,err := json.Marshal(rules)
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,rulesPath,data)
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("rules contract diverged from approval projection and was accepted") }
 }
 
 func TestAdmissionRejectsUnindexedOrInvalidRules(t *testing.T) {
   root := setupFixture(t)
-  index,err := readJSON(root,contractIndexPath)
+  index,err := admissionJSON(root,contractIndexPath)
   if err != nil { t.Fatal(err) }
   index["validation_rules_ref"] = "../untrusted.json"
   data,err := json.Marshal(index)
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,contractIndexPath,data)
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("untrusted rules path accepted") }
 }
 
 func TestAdmissionRejectsRemovedContractAssertion(t *testing.T) {
   root := setupFixture(t)
-  rules,err := readJSON(root,rulesPath)
+  rules,err := admissionJSON(root,rulesPath)
   if err != nil { t.Fatal(err) }
   rules["document_assertions"] = []any{}
   data,err := json.Marshal(rules)
   if err != nil { t.Fatal(err) }
   writeFixture(t,root,rulesPath,data)
-  _,code := RunAdmission(root)
+  _,code := releaseversion.RunAdmission(root)
   if code == 0 { t.Fatal("missing contract assertions accepted") }
 }
