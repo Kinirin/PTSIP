@@ -1,0 +1,29 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261028-GOV-FIELD-KEEP-LATEST-LEGACY-AUTHORITY-RETIREMENT
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner explicitly authorized physical deletion of the retired
+    .ptsip/contracts/policy/authority/ files as the policy authority
+    category cutover, and selected KEEP_LATEST for the conflicting
+    previous GOV nineteen-field review against the current GOV family
+    contract (.ptsip/contracts/policy/Rules/GOV_rules.json).
+    GOV legacy review and the cross-family four-required-field
+    aggregate derived from it are no longer effective.
+    Preserve the other thirteen family review results and other
+    independently owned policy rules. The candidate policy declarations
+    must not continue to refer to retired Authority_Category.
+    This cleanup does not invent RBAC conditions, responsibilities,
+    permissions, approved bindings, seals, activation or runtime grants.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+  branch_creation_authorized: false
+  recorded_at: '2026-10-28'

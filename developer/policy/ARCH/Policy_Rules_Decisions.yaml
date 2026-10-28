@@ -104,45 +104,18 @@ public_policy_structure:
         record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
         this_record_owns_NORM_policy_authority: false
       GOV:
-        decision: USER_APPROVED_EXPLICIT_FIELD_MATRIX
+        decision: KEEP_LATEST_CURRENT_GOV_RULES_CONTRACT
+        conflict_resolution: KEEP_LATEST
         authorization: PROJECT_OWNER_EXPLICIT
-        meaning_ko: >-
-          GOV 패밀리의 사용자 승인에 따라 19개 필드 중 6개 필수와 13개 비필수를 기록한다.
-          필드 생략 허용은 비필수 필드의 사용 금지가 아니다. Definition.meaning은 필수로 유지한다.
-          이 결과는 해당 패밀리의 정식 정책 변경이나 공통 구조 강제가 아니며, 임시 심사 기록이다.
-        family: GOV
-        field_requiredness:
-          Identity.family: true
-          Identity.approval.state: true
-          Definition.meaning: true
-          Definition.rationale: false
-          Boundary.scope: true
-          Boundary.subjects: true
-          Boundary.exclusions: false
-          Boundary.context: false
-          Boundary.context.environment: false
-          Boundary.context.phase: false
-          Constraints.obligations: false
-          Constraints.prohibitions: false
-          Constraints.preconditions: false
-          Constraints.dependencies: false
-          Evaluation.criteria: true
-          Evaluation.criteria.evidence: false
-          Evaluation.method: false
-          Evaluation.method.ref: false
-          Evaluation.method.outcome_ref: false
-        field_count: 19
-        required_count: 6
-        optional_count: 13
-        false_semantics: OPTIONAL_FIELD_PERMITTED
-        all_fourteen_family_review_completed: false
-        cross_family_name_shape_enforcement: NOT_AUTHORIZED_BY_THIS_DECISION
-        normative_GOV_policy_sync: NOT_MATERIALIZED
-        B3_approval_and_meaning_presence: PRESERVED
-        schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
-        record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
+        supersedes: USER_APPROVED_EXPLICIT_FIELD_MATRIX
+        old_nineteen_field_matrix: REMOVED_FROM_EFFECTIVE_REVIEW
+        current_contract: .ptsip/contracts/policy/Rules/GOV_rules.json
+        field_requiredness_source: CURRENT_GOV_CONTRACT_STRUCTURE
+        previously_derived_common_matrix_valid: false
+        family_scope: GOV_ONLY
+        remaining_thirteen_family_reviews: PRESERVED_AS_PRIOR_DECISIONS
+        record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
         this_record_owns_GOV_policy_authority: false
-
       INTENT:
         decision: USER_APPROVED_EXPLICIT_FIELD_MATRIX
         authorization: PROJECT_OWNER_EXPLICIT
@@ -620,50 +593,21 @@ public_policy_structure:
         record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
         this_record_owns_RECORD_policy_authority: false
     final_common_field_requiredness:
-      decision: USER_APPROVED_EXPLICIT_COMMON_FIELD_CLASSIFICATION
-      authorization: PROJECT_OWNER_EXPLICIT
-      family_count: 14
-      evaluated_field_paths: 19
-      reviewed_boolean_assignments: 266
-      classification_rule: REQUIRED_IF_ALL_14_TRUE_ELSE_COMMON_OPTIONAL
-      field_values_source: family_field_review_results
-      common_required_fields:
-        - Identity.family
-        - Identity.approval.state
-        - Definition.meaning
-        - Boundary.scope
-      common_required_count: 4
-      common_optional_fields:
-        - Definition.rationale
-        - Boundary.subjects
-        - Boundary.exclusions
-        - Boundary.context
-        - Boundary.context.environment
-        - Boundary.context.phase
-        - Constraints.obligations
-        - Constraints.prohibitions
-        - Constraints.preconditions
-        - Constraints.dependencies
-        - Evaluation.criteria
-        - Evaluation.criteria.evidence
-        - Evaluation.method
-        - Evaluation.method.ref
-        - Evaluation.method.outcome_ref
-      common_optional_count: 15
-      common_optional_meaning: NOT_GLOBALLY_REQUIRED_BUT_PERMITTED
-      per_family_true_remains_required: true
-      per_family_false_remains_optional_and_permitted: true
-      per_family_requiredness_not_overridden_by_common_classification: true
-      all_family_field_assignments_preserved: true
-      parent_child_requiredness_inheritance: FORBIDDEN
-      same_field_type_or_internal_shape_across_families: NOT_AUTHORIZED_BY_THIS_DECISION
-      normative_policy_authority_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
-      schema_or_validator_materialization: NOT_AUTHORIZED_BY_THIS_DECISION
-      B3_approval_and_meaning_presence: PRESERVED
-      record_role: ARCH_LOCAL_NONCANONICAL_REVIEW_CHECKPOINT_ONLY
-      this_record_owns_cross_family_policy_authority: false
-    common_required_if: ALL_14_FAMILIES_INCLUDE_TRUE
-    common_optional_if: ANY_FAMILY_INCLUDE_FALSE
+      decision: SUPERSEDED_BY_GOV_KEEP_LATEST
+      conflict_resolution: KEEP_LATEST
+      original_family_count: 14
+      original_field_paths: 19
+      original_assignments: 266
+      previously_approved_common_required_four: SUPERSEDED
+      cross_family_aggregate: INVALIDATED_BY_GOV_CONTRACT_REPLACEMENT
+      active_common_requiredness_from_this_checkpoint: NONE
+      canonical_structure_source: .ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json
+      canonical_gov_fields: .ptsip/contracts/policy/Rules/GOV_rules.json
+      remaining_thirteen_family_reviews: NOT_CHANGED
+      original_record_recoverable_from_git_history: true
+      record_role: ARCH_LOCAL_NONCANONICAL_ACKNOWLEDGMENT_ONLY
+    common_required_if: SUPERSEDED_OLD_FOURTEEN_FAMILY_DERIVATION
+    common_optional_if: SUPERSEDED_OLD_FOURTEEN_FAMILY_DERIVATION
     common_classification_before_all_14_resolved: UNRESOLVED
     unselected_in_all_families: OPTIONAL_UNLESS_SEPARATELY_REMOVED
     parent_child_requiredness_inheritance: FORBIDDEN
