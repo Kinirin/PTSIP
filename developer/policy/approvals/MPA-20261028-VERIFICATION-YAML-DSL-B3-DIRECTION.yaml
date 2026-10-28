@@ -1,0 +1,27 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261028-VERIFICATION-YAML-DSL-B3-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Project Owner selected A (YAML-only verification DSL) and subsequently B3
+    (integrated verification control direction). A single declarative
+    verification DSL is the intended control surface for verification rules,
+    verification execution coordination, and result handling. This is an
+    abstract directional decision, not authorization to merge independent
+    authority owners, change existing JSON contracts or JSON Schema,
+    replace registered validation engines, remove existing verification
+    obligations, invent unresolved DSL operations or field semantics, or
+    grant policy/execution approval through a verification result.
+    Subordinate decisions remain open for normative authority ownership,
+    DSL-versus-existing-contract boundaries, execution control limits,
+    verdict/evidence semantics, and directory responsibility allocation.
+    No implementation plan or code mutation is authorized by this selection.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  branch_creation_authorized: false
+  recorded_at: '2026-10-28'
