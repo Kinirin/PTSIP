@@ -31,17 +31,6 @@
       "minLength": 7,
       "maxLength": 256,
       "pattern": "^OA-ID-[A-Za-z0-9][A-Za-z0-9._-]*$"
-    },
-    "RuleState": {
-      "oneOf": [
-        {
-          "type": "null"
-        },
-        {
-          "type": "string",
-          "pattern": "^(APPROVED|DRAFT|RETIRED)\\.[A-Za-z][A-Za-z0-9_-]*$"
-        }
-      ]
     }
   }
 }

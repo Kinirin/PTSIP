@@ -9,15 +9,12 @@
     },
     "name": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "maxLength": 20,
+      "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
     },
     "description": {
       "type": "string"
-    },
-    "applies_when": {
-      "type": "string",
-      "minLength": 1,
-      "pattern": "^[A-Z][A-Z0-9_]*$"
     }
   },
   "required": [
@@ -28,9 +25,7 @@
   "$defs": {
     "ID": {
       "type": "string",
-      "minLength": 6,
-      "maxLength": 256,
-      "pattern": "^C-ID-[A-Za-z0-9][A-Za-z0-9._-]*$"
+      "pattern": "^C-ID-[A-F0-9]{32}$"
     }
   }
 }
