@@ -19,7 +19,7 @@ component_bindings:
       - "C-ID-ALL_FAMILY_POLICY_RULE_DEFINITION_CONTRACT_REDESIGN"
     source_policy: "MPD-GOV-0001"
     source_rule_id: "OBLIGATION/ALL_FAMILY_DEFINITION_ID_RULE_CONTRACT_DIRECTION"
-    source_text: "KEEP_LATEST: 14개 Family의 structure.Definition은 규칙별 id 및 rule 상수만 가진 배열이고 기존 자연어 meaning 및 rationale의 필수 구조는 폐기한다. 별도 responsibility_refs와 기존 component_bindings.component_id 및 컴포넌트 소유자 메타데이터는 이관 없이 제거한다. component_bindings는 R-ID 키별 rule·Rule_state·Condition 참조의 원본이며 정책 문서의 applies_when 및 Rule_state를 제거한다. 기존 원문은 비권한적 출처 설명으로 프로필에 보존하되 사용자의 새로운 승인이나 실행 권한을 생성하지 않는다."
+    source_text: "KEEP_LATEST: 14개 Family의 Policy_Rules.Definition은 규칙별 id, rule 및 필요 시 preconditions의 조건 ID 참조만 기록한다. Definition의 preconditions은 Condition.schema.json에 등록된 C-ID 식별자 목록이며 정책 문서가 조건 원본 또는 조건 의미를 정의하지 못한다. .ptsip/profiles/Responsibility-Authority-list.yaml의 component_bindings[R-ID].condition_id가 규칙별 precondition 연결의 유일한 원본이므로 문서와 프로필 목록은 순서 무관 정확히 일치해야 하며 누락, 미등록, 과잉·중복 조건 참조는 실패 시 차단한다. 독립 Condition 및 Operational_Authority 계약은 각각 조건의 구조와 규칙 상수의 상태 구조를 정의한다. 기존 Constraints.preconditions, Constraints.dependencies와 규범적 이전 obligations 및 prohibitions 필드를 14개 Family 계약에서 제거한다. 그러나 기존 공통 Constraints 객체 자체의 유지 여부는 별개 구조 결정으로 남기며 무단 제거하지 않는다. 정책 문서의 원문·상태·실행권한은 참조만으로 생성되지 않는다."
   R-ID-MPD-GOV-0001-OBLIGATION-ALL_ROOT_FAMILY_RULE_RESPONSIBILITY_CONTRACT_SCOPE:
     rule: "GOV.MPD-GOV-0001.OBLIGATION.ALL_ROOT_FAMILY_RULE_RESPONSIBILITY_CONTRACT_SCOPE"
     Rule_state: "APPROVED.provisional"
