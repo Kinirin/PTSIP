@@ -147,6 +147,16 @@ func Run(root, selected, operation, family, input, output string, validate Valid
 	if err := catalog.CheckContracts(validate); err != nil {
 		return reject(err)
 	}
+	if operation == "lookup-intention" {
+		if selected != "responsibility-authority" || input == "" {
+			return reject(fmt.Errorf("LOOKUP_INTENTION_REQUIRES_AUTHORIZATION_ID"))
+		}
+		resolved, err := catalog.LookupAuthorizationIntention(validate, input)
+		if err != nil { return reject(err) }
+		report["status"] = "RESOLVED"
+		report["authorization"] = resolved
+		return report, 0
+	}
 	if operation == "describe" {
 		if selected != "policy-rules" {
 			return reject(fmt.Errorf("DESCRIBE_ONLY_APPLIES_TO_POLICY_RULES"))
