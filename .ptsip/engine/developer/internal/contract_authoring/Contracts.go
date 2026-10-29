@@ -284,6 +284,9 @@ func (c *Catalog) definitionIDs() (map[string]bool, map[string]bool, error) {
 }
 
 func (c *Catalog) CheckProfile(v Validator, profile Document) error {
+	if _, legacy := profile["component_map"]; legacy {
+		return fmt.Errorf("RETIRED_COMPONENT_MAP_FIELD")
+	}
 	if err := c.validate(v, c.ProfileShape, profile, "responsibility-authority profile"); err != nil {
 		return err
 	}

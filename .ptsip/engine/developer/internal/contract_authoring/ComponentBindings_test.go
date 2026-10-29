@@ -47,6 +47,7 @@ func TestInvalidRIdBindingsAreRejected(t *testing.T) {
         {"legacy-component-metadata", func(p authoring.Document) {
             p["component_bindings"].(map[string]any)["R-ID-NEW"] = map[string]any{"rule":"RULE.NEW","Rule_state":nil,"component_id":"official-context-engine"}
         }},
+        {"retired-component-map", func(p authoring.Document) { p["component_map"] = map[string]any{"mode":"explicit"} }},
     } {
         t.Run(item.name, func(t *testing.T) {
             raw, err := json.Marshal(source)

@@ -114,5 +114,10 @@
     "component_bindings"
   ],
   "additionalProperties": true,
-  "$comment": "Rule constants and states are keyed by Responsibility ID. Existing component owner metadata is retired."
+  "$comment": "Rule constants and states are keyed by Responsibility ID. Existing component owner metadata is retired.",
+  "not": {
+    "required": [
+      "component_map"
+    ]
+  }
 }
