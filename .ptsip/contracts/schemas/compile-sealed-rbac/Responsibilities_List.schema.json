@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:rbac:responsibilities-list:v2",
+  "$id": "urn:ptsip:rbac:responsibilities-list:v3",
   "title": "Editable responsibility-authority profile list",
   "type": "object",
   "properties": {
@@ -70,19 +70,19 @@
         "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/ID"
       },
       "patternProperties": {
-        "^R-ID-[A-Za-z0-9][A-Za-z0-9._-]*$": {
+        "^R-ID-[A-F0-9]{32}$": {
           "type": "object",
           "required": [
             "rule",
-            "Rule_state"
+            "status"
           ],
           "properties": {
             "rule": {
               "type": "string",
-              "pattern": "^[A-Z][A-Z0-9_.-]+$"
+              "pattern": "^RULE-[A-F0-9]{32}$"
             },
-            "Rule_state": {
-              "$ref": "urn:ptsip:rbac:operational-authority:v1#/$defs/RuleState"
+            "status": {
+              "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/Status"
             },
             "condition_id": {
               "type": "array",
@@ -91,17 +91,33 @@
                 "$ref": "urn:ptsip:rbac:condition:v1#/$defs/ID"
               }
             },
-            "source_policy": {
-              "type": "string"
+            "condition_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
             },
-            "source_rule_id": {
-              "type": "string"
+            "live_policy": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
             },
-            "source_text": {
-              "type": "string"
+            "Authorization_ID": {
+              "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "dependentRequired": {
+            "condition_name": [
+              "condition_id"
+            ],
+            "condition_id": [
+              "condition_name"
+            ]
+          }
         }
       },
       "additionalProperties": false
@@ -114,7 +130,7 @@
     "component_bindings"
   ],
   "additionalProperties": true,
-  "$comment": "Rule constants and states are keyed by Responsibility ID. Existing component owner metadata is retired.",
+  "$comment": "Opaque R-ID bindings; lifecycle status resolves through lifecycle/index.json; Authorization_ID may only reference explicitly approved lookup entries, no inferred permission.",
   "not": {
     "required": [
       "component_map"
