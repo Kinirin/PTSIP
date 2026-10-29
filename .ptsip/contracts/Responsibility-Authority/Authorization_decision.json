@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/compile-sealed-rbac/authority/Authorization_decision.schema.json",
+  "schema_version": "ptsip-authorization-decision/v1",
+  "registration": {
+    "missing": "BLOCK_UNRESOLVED",
+    "implicit_allow": false,
+    "implicit_deny": false
+  },
+  "explicit_effects": {
+    "ALLOW": "ALLOW_CANDIDATE",
+    "DENY": "BLOCK_EXPLICIT"
+  },
+  "binding": {
+    "missing_or_invalid": "BLOCK_UNRESOLVED",
+    "execution_authority": "NOT_GRANTED"
+  },
+  "higher_authority": {
+    "policy": "REQUIRED",
+    "execution_gate": "REQUIRED"
+  },
+  "unresolved": {
+    "resource_identity": "UNRESOLVED",
+    "condition_evaluation": "UNRESOLVED",
+    "subject_binding": "UNRESOLVED",
+    "conflict_precedence": "UNRESOLVED"
+  }
+}

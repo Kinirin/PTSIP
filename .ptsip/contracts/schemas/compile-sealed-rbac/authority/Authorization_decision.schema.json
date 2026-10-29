@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:authorization-decision:v1",
+  "title": "Explicit RBAC effect and unregistered-block decision contract",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schema_version",
+    "registration",
+    "explicit_effects",
+    "binding",
+    "higher_authority",
+    "unresolved"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "../schemas/compile-sealed-rbac/authority/Authorization_decision.schema.json"
+    },
+    "schema_version": {
+      "const": "ptsip-authorization-decision/v1"
+    },
+    "registration": {
+      "type": "object",
+      "required": [
+        "missing",
+        "implicit_allow",
+        "implicit_deny"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "missing": {
+          "const": "BLOCK_UNRESOLVED"
+        },
+        "implicit_allow": {
+          "const": false
+        },
+        "implicit_deny": {
+          "const": false
+        }
+      }
+    },
+    "explicit_effects": {
+      "type": "object",
+      "required": [
+        "ALLOW",
+        "DENY"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ALLOW": {
+          "const": "ALLOW_CANDIDATE"
+        },
+        "DENY": {
+          "const": "BLOCK_EXPLICIT"
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "required": [
+        "missing_or_invalid",
+        "execution_authority"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "missing_or_invalid": {
+          "const": "BLOCK_UNRESOLVED"
+        },
+        "execution_authority": {
+          "const": "NOT_GRANTED"
+        }
+      }
+    },
+    "higher_authority": {
+      "type": "object",
+      "required": [
+        "policy",
+        "execution_gate"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "policy": {
+          "const": "REQUIRED"
+        },
+        "execution_gate": {
+          "const": "REQUIRED"
+        }
+      }
+    },
+    "unresolved": {
+      "type": "object",
+      "required": [
+        "resource_identity",
+        "condition_evaluation",
+        "subject_binding",
+        "conflict_precedence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "resource_identity": {
+          "const": "UNRESOLVED"
+        },
+        "condition_evaluation": {
+          "const": "UNRESOLVED"
+        },
+        "subject_binding": {
+          "const": "UNRESOLVED"
+        },
+        "conflict_precedence": {
+          "const": "UNRESOLVED"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

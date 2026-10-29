@@ -1,0 +1,30 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-RBAC-EXPLICIT-EFFECTS-UNREGISTERED-BLOCK
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User approved direction C: missing or unregistered authorization
+    rules must block without creating an implicit DENY record; only
+    explicitly registered ALLOW/DENY effects may be considered.
+    An explicit DENY blocks the requested operation. An explicit ALLOW
+    is a candidate and never bypasses higher-policy authority,
+    registered binding/conditions or execution-time gates. Missing,
+    invalid or unresolved bindings block without automatic effects.
+    No specific resource scope, condition evaluation, actor binding,
+    conflicting-rule precedence, grants, revocations or new action
+    types are authorized by this direction; such decisions stay
+    unresolved pending separate user authorization. Do not create
+    default ALLOW or DENY authorization entries.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: NONE_NO_DIRECT_CONFLICT
+  affected_policy_ids:
+    - MPD-GOV-0004
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'
