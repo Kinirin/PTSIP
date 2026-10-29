@@ -2466,6 +2466,70 @@ component_representation_hybrid:
   field_names: UNRESOLVED
   schema_creation: NOT_AUTHORIZED
 
+
+# Approved directional choices for the PTSIP repository only; this staging
+# record is NOT an activated MPD policy or an implementation authorization.
+src_ptsip_domain_responsibility_direction:
+  source: PROJECT_OWNER_EXPLICIT
+  selected_at: "2026-10-29"
+  authority_level: APPROVED_DIRECTION_ONLY
+  scope: PTSIP_REPOSITORY_DEVELOPER_CODE_AND_DISTRIBUTION
+  canonical_mpd_materialization: PENDING_REGISTERED_POLICY_ID_AND_SCHEMA
+  branch_creation: FORBIDDEN_WITHOUT_SEPARATE_USER_REQUEST
+  decisions:
+    tool_domain_decomposition:
+      user_choice: B_DOMAIN_SEPARATION_SINGLE_TOOL_VERSION
+      state: APPROVED_DIRECTION
+      component: TOOL
+      domain_responsibilities: FUNCTION_BASED
+      tool_version_owner_count: ONE
+      profile_and_official_engine_versions: PRESERVE_INDEPENDENT
+      specific_domain_names_and_paths: PLAN_DERIVED_AFTER_OWNER_CLASSIFICATION
+    implementation_sharing:
+      user_choice: B_OWNER_LOCAL_IMPLEMENTATION_CONTRACT_CONSUMPTION
+      state: APPROVED_DIRECTION
+      shared_implementation_primary_owner: EXACTLY_ONE
+      cross_domain_use: DECLARED_CONTRACT_AND_DEPENDENCY
+      unowned_or_ambiguous_implementation: UNRESOLVED_BLOCK_OWNER_ASSIGNMENT
+      official_rust_engine_implementation_sharing: FORBIDDEN_BY_EXISTING_SFP_ARCH_0004
+      physical_shared_directory_mandate: NONE
+    existing_python_paths:
+      user_choice: A_DIRECT_PATH_CUTOVER_WITHOUT_COMPATIBILITY_SHIM
+      state: USER_SELECTED_PENDING_EXISTING_AUTHORITY_RECONCILIATION
+      affected_scope: PTSIP_PYTHON_PUBLIC_IMPORTS_AND_CLI_ENTRYPOINTS
+      exact_new_paths: UNRESOLVED
+      migration_plan: REQUIRED_BEFORE_IMPLEMENTATION
+      conflict_policy_refs:
+        - src/policy/ARCH/SFP-ARCH-0004.yaml
+        - src/policy/CNTR/SFP-CNTR-0005.yaml
+      existing_legacy_public_interface_retirement: PRESERVED_PENDING_USER_CONFLICT_RESOLUTION
+    package_distribution_alignment:
+      user_choice: B_RELEASE_PACKAGE_CONTENT_MATCH_VERSION_DETECTION_SCOPE
+      state: USER_SELECTED_PENDING_EXISTING_AUTHORITY_RECONCILIATION
+      intent: REMOVE_EXCLUDED_SOURCE_PACKAGES_FROM_DISTRIBUTION
+      candidate_distribution_exclusions:
+        - src/vpms/**
+        - src/agent_contracts/**
+      source_directory_deletion: NOT_AUTHORIZED
+      src_ptsip_agent_contracts_subpackage: NOT_DECIDED_BY_THIS_SELECTION
+      version_source_layout_change: NOT_AUTHORIZED_BY_THIS_SELECTION
+      publication: NOT_AUTHORIZED
+      conflict_policy_refs:
+        - src/policy/ARCH/SFP-ARCH-0004.yaml
+        - src/policy/CNTR/SFP-CNTR-0005.yaml
+      distribution_mutation: BLOCKED_PENDING_EXPLICIT_CONFLICT_RESOLUTION
+  conflict_handling:
+    resolution_authority: PROJECT_OWNER
+    prior_base_revision_ref: f766a04c805d6f0a501e1f0fbf9cfb2d75bfc367
+    active_policy_revision_check: REQUIRED_AT_RESOLUTION
+    modes:
+      - KEEP_PRIOR
+      - KEEP_LATEST
+      - RECONCILE
+    implicit_precedence: FORBIDDEN
+    preserve_unrelated_policies: REQUIRED
+
+
 unresolved:
   rule_identity_format: UNRESOLVED
   policy_reference_field_and_structure: UNRESOLVED
