@@ -1,0 +1,37 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-KEEP-LATEST-NAMED-RULES-POLICY-AGNOSTIC-AUTHORIZATIONS
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    User corrects the previously misunderstood contract. KEEP_LATEST
+    supersedes the prior opaque random value for Definition.rule with
+    a semantic uppercase hyphenated constant name of at most 20 characters,
+    independent of policy document names, paths and versions. Existing
+    opaque R-ID and C-ID identifiers remain unchanged. Responsibility
+    profile registrations must not include live_policy or any per-policy
+    ownership association: policies refer to responsibilities, never
+    vice versa. Authorization_intention.json is a permission rule registry;
+    each entry requires exactly ID, resource, action, effect, condition_name.
+    Interpret the requested Auth-^[A-Z] shape as ^Auth-[A-Z]+$,
+    constrain action to the approved REA/WRI/EDI vocabulary and effect
+    to ALLOW/DENY. Validate authorization condition name against registered
+    conditions and allow a profile responsibility to refer to a registered
+    authorization rule ID only when its condition name matches.
+    No permission records are inferred or created by this change.
+    The former Authorization_ID/intention-only contract and profile
+    live_policy ownership projection are retired without compatibility.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0004
+    - MPD-GOV-0005
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'
