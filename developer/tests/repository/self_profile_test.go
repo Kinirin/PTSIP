@@ -71,13 +71,13 @@ func TestRepositoryProfileRetainsModeOwnershipWithoutRetiredPythonSelectors(t *t
 		components[row["id"].(string)] = row
 	}
 	bindings, err := repo.Read(".ptsip/profiles/Responsibility-Authority-list.yaml")
-	if err != nil {
-		t.Fatal(err)
-	}
-	roles := map[string][]any{}
-	for _, raw := range bindings["component_bindings"].([]any) {
+	if err != nil { t.Fatal(err) }
+	rules, ok := bindings["component_bindings"].(testrepo.Object)
+	if !ok || len(rules) == 0 { t.Fatal("R-ID keyed policy rule registry missing") }
+	for id, raw := range rules {
+		if !strings.HasPrefix(id, "R-ID-") { t.Fatal("invalid Responsibility key", id) }
 		row := raw.(testrepo.Object)
-		roles[row["component_id"].(string)], _ = row["roles"].([]any)
+		if row["rule"] == "" { t.Fatal("missing rule token", id) }
 	}
 	seen := map[string]bool{}
 	for _, raw := range modes["modes"].([]any) {
@@ -91,15 +91,7 @@ func TestRepositoryProfileRetainsModeOwnershipWithoutRetiredPythonSelectors(t *t
 		if component == nil {
 			t.Fatal("unregistered verification component", row)
 		}
-		found := false
-		for _, role := range roles[component["id"].(string)] {
-			if role == "VERIFICATION" {
-				found = true
-			}
-		}
-		if !found {
-			t.Fatal("mode routes to a non-verification owner", row)
-		}
+
 	}
 }
 

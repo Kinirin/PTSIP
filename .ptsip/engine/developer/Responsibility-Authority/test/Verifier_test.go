@@ -35,7 +35,7 @@ func TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree(t *testing.T) {
 				t.Fatal(err)
 			}
 			delete(profile, "component_map")
-			delete(profile, "component_bindings")
+			profile["component_bindings"] = map[string]any{}
 			raw, err = json.Marshal(profile)
 			if err != nil {
 				t.Fatal(err)
