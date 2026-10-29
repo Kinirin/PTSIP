@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:family-rules-contract:v1",
+  "$id": "urn:ptsip:policy:family-rules-contract:v2",
   "title": "Root Family rules authoring contract",
   "type": "object",
   "properties": {
@@ -12,7 +12,7 @@
       "minLength": 1
     },
     "schema_version": {
-      "const": "ptsip-family-rules/v1"
+      "const": "ptsip-family-rules/v2"
     },
     "root_family": {
       "$ref": "urn:ptsip:identity:root-family:v1"
@@ -55,9 +55,6 @@
           }
         }
       }
-    },
-    "responsibility_refs": {
-      "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/IDList"
     }
   },
   "required": [
@@ -65,8 +62,7 @@
     "schema_version",
     "root_family",
     "generation",
-    "structure",
-    "responsibility_refs"
+    "structure"
   ],
   "additionalProperties": true
 }

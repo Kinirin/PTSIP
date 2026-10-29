@@ -16,12 +16,12 @@
       "$ref": "urn:ptsip:policy:Status:v2"
     },
     "Policy_Rules": {
-      "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2"
+      "$ref": "urn:ptsip:policy:Public_Structure_Rules:v3"
     }
   },
   "allOf": [
     {
-      "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2#/$defs/PolicyDocumentSelection"
+      "$ref": "urn:ptsip:policy:Public_Structure_Rules:v3#/$defs/PolicyDocumentSelection"
     }
   ]
 }

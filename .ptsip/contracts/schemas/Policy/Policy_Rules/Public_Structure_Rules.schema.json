@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:policy:Public_Structure_Rules:v2",
+  "$id": "urn:ptsip:policy:Public_Structure_Rules:v3",
   "title": "Optional Policy_Rules fields with explicit Root Family selection",
   "type": "object",
   "properties": {
@@ -8,7 +8,7 @@
       "type": "object"
     },
     "Definition": {
-      "type": "object"
+      "type": "array"
     },
     "Boundary": {
       "type": "object"
@@ -25,9 +25,6 @@
     },
     "title": {
       "type": "string"
-    },
-    "Responsibility_Refs": {
-      "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/IDList"
     }
   },
   "additionalProperties": true,
@@ -40,7 +37,7 @@
           "type": "object"
         },
         "Definition": {
-          "type": "object"
+          "type": "array"
         },
         "Boundary": {
           "type": "object"
@@ -57,26 +54,12 @@
         },
         "title": {
           "type": "string"
-        },
-        "Responsibility_Refs": {
-          "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/IDList"
         }
       }
     },
     "RuleState": {
       "type": "string",
       "minLength": 1
-    },
-    "ObligationState": {
-      "type": "object",
-      "required": [
-        "Rule_state"
-      ],
-      "properties": {
-        "Rule_state": {
-          "$ref": "#/$defs/RuleState"
-        }
-      }
     },
     "PolicyDocumentSelection": {
       "type": "object",
@@ -90,7 +73,7 @@
           }
         },
         "Policy_Rules": {
-          "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2"
+          "$ref": "urn:ptsip:policy:Public_Structure_Rules:v3"
         }
       },
       "allOf": [
@@ -119,7 +102,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:NORM:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:NORM:v2#/structure"
               }
             }
           }
@@ -149,7 +132,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:GOV:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:GOV:v2#/structure"
               }
             }
           }
@@ -179,7 +162,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:INTENT:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:INTENT:v2#/structure"
               }
             }
           }
@@ -209,7 +192,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:ARCH:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:ARCH:v2#/structure"
               }
             }
           }
@@ -239,7 +222,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:INFO:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:INFO:v2#/structure"
               }
             }
           }
@@ -269,7 +252,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:CNTR:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:CNTR:v2#/structure"
               }
             }
           }
@@ -299,7 +282,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:RISK:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:RISK:v2#/structure"
               }
             }
           }
@@ -329,7 +312,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:SUPPLY:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:SUPPLY:v2#/structure"
               }
             }
           }
@@ -359,7 +342,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:REAL:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:REAL:v2#/structure"
               }
             }
           }
@@ -389,7 +372,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:ASSURE:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:ASSURE:v2#/structure"
               }
             }
           }
@@ -419,7 +402,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:CTRL:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:CTRL:v2#/structure"
               }
             }
           }
@@ -449,7 +432,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:CHANGE:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:CHANGE:v2#/structure"
               }
             }
           }
@@ -479,7 +462,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:OPS:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:OPS:v2#/structure"
               }
             }
           }
@@ -509,7 +492,7 @@
             ],
             "properties": {
               "Policy_Rules": {
-                "$ref": "urn:ptsip:contract:policy:rules:RECORD:v1#/structure"
+                "$ref": "urn:ptsip:contract:policy:rules:RECORD:v2#/structure"
               }
             }
           }
