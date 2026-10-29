@@ -42,7 +42,7 @@ func doc(raw string) authoring.Document {
 }
 
 func govInput() authoring.Document {
-	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS","preconditions":["C-ID-POLICY_STATUS_SERIALIZATION"]}],"Boundary":{"scope":"Example scope"}}}`)
+	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"RULE-FD125E8425C39349304D0BC566F5701E","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example scope"}}}`)
 }
 
 func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document {
@@ -53,8 +53,8 @@ func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document
 	}
 	delete(profile, "component_map")
 	delete(profile, "component_bindings")
-	catalog.Definitions = doc(`{"schema_version":"ptsip-responsibility-authority/v1","condition_list":[{"ID":"C-ID-review","name":"Review is complete"}],"authority_list":[{"ID":"OA-ID-edit","name":"Edit policy","action":"edit","scope":"example"}]}`)
-	profile["responsibility"] = doc(`{"items":[{"name":"Policy editor","ID":"R-ID-editor","condition_id":["C-ID-review"],"Operational_Authority":["OA-ID-edit"],"role_name":"Editor","runtime_required":false}]}`)["items"]
+	catalog.Definitions = doc(`{"schema_version":"ptsip-responsibility-authority/v1","condition_list":[{"ID":"C-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","name":"REVIEW-COMPLETE"}],"authority_list":[{"ID":"OA-ID-edit","name":"Edit policy","action":"edit","scope":"example"}]}`)
+	profile["responsibility"] = doc(`{"items":[{"name":"Policy editor","ID":"R-ID-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB","condition_id":["C-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"],"Operational_Authority":["OA-ID-edit"],"role_name":"Editor","runtime_required":false}]}`)["items"]
 	profile["component_bindings"] = authoring.Document{}
 	return profile
 }
@@ -71,7 +71,7 @@ func TestRegisteredContractsAndAllFourteenSelections(t *testing.T) {
 		t.Run(family, func(t *testing.T) {
 			input := govInput()
 			if family != "GOV" {
-				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS","preconditions":["C-ID-POLICY_STATUS_SERIALIZATION"]}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
+				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"RULE-FD125E8425C39349304D0BC566F5701E","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
 			}
 			generated, status, err := catalog.GenerateRules(validate, input, family)
 			if err != nil || status != "GENERATED" {
@@ -141,7 +141,7 @@ func TestProfileReferencesTypesAndExtensibleFields(t *testing.T) {
 		mutate func(authoring.Document)
 	}{
 		{"unknown_condition", func(p authoring.Document) {
-			p["responsibility"].([]any)[0].(map[string]any)["condition_id"] = []any{"C-ID-missing"}
+			p["responsibility"].([]any)[0].(map[string]any)["condition_id"] = []any{"C-ID-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"}
 		}},
 		{"unknown_authority", func(p authoring.Document) {
 			p["responsibility"].([]any)[0].(map[string]any)["Operational_Authority"] = []any{"OA-ID-missing"}
@@ -151,7 +151,7 @@ func TestProfileReferencesTypesAndExtensibleFields(t *testing.T) {
 			p["responsibility"] = append(entries, entries[0])
 		}},
 		{"duplicate_condition_ref", func(p authoring.Document) {
-			p["responsibility"].([]any)[0].(map[string]any)["condition_id"] = []any{"C-ID-review", "C-ID-review"}
+			p["responsibility"].([]any)[0].(map[string]any)["condition_id"] = []any{"C-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "C-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
 		}},
 		{"missing_role", func(p authoring.Document) { delete(p["responsibility"].([]any)[0].(map[string]any), "role_name") }},
 		{"draft_boolean", func(p authoring.Document) {
@@ -192,8 +192,8 @@ func TestPolicyDefinitionRuleBindingsResolveThroughRegisteredProfile(t *testing.
 		t.Fatal(err)
 	}
 	for _, tc := range []struct { name, id, rule string }{
-		{"unregistered", "R-ID-UNKNOWN", "GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS"},
-		{"wrong-rule", "R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS", "GOV.WRONG_RULE"},
+		{"unregistered", "R-ID-EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "RULE-FD125E8425C39349304D0BC566F5701E"},
+		{"wrong-rule", "R-ID-8D95436233BE6DCD5E90B2AAA986052C", "RULE-FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			bad := govInput()
@@ -216,10 +216,10 @@ func TestProfileIsSoleSourceOfDefinitionPreconditions(t *testing.T) {
 			delete(item, "preconditions")
 		}},
 		{"foreign-precondition", func(item map[string]any) {
-			item["preconditions"] = []any{"C-ID-NOT_REGISTERED"}
+			item["preconditions"] = []any{"C-ID-FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"}
 		}},
 		{"duplicate-precondition", func(item map[string]any) {
-			item["preconditions"] = []any{"C-ID-POLICY_STATUS_SERIALIZATION", "C-ID-POLICY_STATUS_SERIALIZATION"}
+			item["preconditions"] = []any{"C-ID-514BC6B03401A855DF7B7C157645C79B", "C-ID-514BC6B03401A855DF7B7C157645C79B"}
 		}},
 		{"empty-preconditions", func(item map[string]any) {
 			item["preconditions"] = []any{}
@@ -260,7 +260,7 @@ func TestNoOverwriteAndInvalidPaths(t *testing.T) {
 	}
 	for _, extension := range []string{".json", ".yaml", ".yml"} {
 		name := "roundtrip" + extension
-		value := doc(`{"runtime_required":false,"ID":"R-ID-example","conditions":["C-ID-review"],"name":"책임 매칭 🧭"}`)
+		value := doc(`{"runtime_required":false,"ID":"R-ID-example","conditions":["C-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"],"name":"책임 매칭 🧭"}`)
 		if err := authoring.WriteDocument(root, name, value); err != nil {
 			t.Fatal(err)
 		}
