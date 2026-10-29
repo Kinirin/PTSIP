@@ -23,6 +23,8 @@ const CommonSchema = ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Struct
 const ProfilePath = ".ptsip/profiles/Responsibility-Authority-list.yaml"
 const DefinitionsPath = ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json"
 const RBACSchemaRoot = ".ptsip/contracts/schemas/compile-sealed-rbac/"
+const AuthorizationDataPath = RBACSchemaRoot + "authority/Authorization_intention.json"
+const AuthorizationSchemaPath = RBACSchemaRoot + "authority/Authorization_intention.schema.json"
 
 const commonID = "urn:ptsip:policy:Public_Structure_Rules:v3"
 const responsibilityID = "urn:ptsip:rbac:responsibility:v1"
@@ -37,6 +39,8 @@ type Catalog struct {
 	ProfileShape    Document
 	Definitions     Document
 	DefinitionShape Document
+	AuthorizationShape Document
+	Authorizations Document
 }
 
 func object(value any) Document    { obj, _ := value.(map[string]any); return obj }
@@ -196,6 +200,10 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		{RBACSchemaRoot + "responsibility/Responsibility.schema.json", responsibilityID, nil},
 		{RBACSchemaRoot + "Responsibilities_List.schema.json", "urn:ptsip:rbac:responsibilities-list:v2", &c.ProfileShape},
 		{RBACSchemaRoot + "Responsibility_Authority_Contract.schema.json", "urn:ptsip:rbac:responsibility-authority-contract:v1", &c.DefinitionShape},
+		{RBACSchemaRoot + "lifecycle/status.json", "urn:ptsip:rbac:lifecycle:status:v1", nil},
+		{RBACSchemaRoot + "lifecycle/keywords.json", "urn:ptsip:rbac:lifecycle:keywords:v1", nil},
+		{RBACSchemaRoot + "lifecycle/index.json", "urn:ptsip:rbac:lifecycle:index:v1", nil},
+		{AuthorizationSchemaPath, "urn:ptsip:rbac:authorization-intention:v1", &c.AuthorizationShape},
 	}
 	for _, resource := range resources {
 		doc, err := readJSON(absolute, resource.file)
@@ -211,9 +219,9 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		c.Resources = append(c.Resources, doc)
 	}
 	c.Definitions, err = readJSON(absolute, DefinitionsPath)
-	if err != nil {
-		return nil, err
-	}
+	if err != nil { return nil, err }
+	c.Authorizations, err = readJSON(absolute, AuthorizationDataPath)
+	if err != nil { return nil, err }
 	return c, nil
 }
 
@@ -238,6 +246,7 @@ func (c *Catalog) validate(v Validator, schema, instance any, label string) erro
 }
 
 func (c *Catalog) CheckContracts(v Validator) error {
+	if err := c.checkAuthorizationRegistry(v); err != nil { return err }
 	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil {
 		return err
 	}
@@ -290,9 +299,8 @@ func (c *Catalog) CheckProfile(v Validator, profile Document) error {
 	if err := c.validate(v, c.ProfileShape, profile, "responsibility-authority profile"); err != nil {
 		return err
 	}
-	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil {
-		return err
-	}
+	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil { return err }
+	if err := c.checkAuthorizationRegistry(v); err != nil { return err }
 	if _, err := ids(profile["responsibility"], "responsibility"); err != nil {
 		return err
 	}
@@ -378,6 +386,51 @@ func (c *Catalog) checkRuleBindings(v Validator, doc Document) error {
 		}
 	}
 	return nil
+}
+
+
+// authorizationIDs returns only explicitly registered lookup codes.
+// A prefix conveys a requested action class, never a grant.
+func (c *Catalog) authorizationIDs() map[string]string {
+	known := map[string]string{}
+	for _, raw := range c.Authorizations["authorizations"].([]any) {
+		row := object(raw)
+		known[stringValue(row["Authorization_ID"])] = stringValue(row["intention"])
+	}
+	return known
+}
+
+func (c *Catalog) checkAuthorizationRegistry(v Validator) error {
+	if err := c.validate(v, c.AuthorizationShape, c.Authorizations, AuthorizationDataPath); err != nil {
+		return err
+	}
+	seen := map[string]bool{}
+	for _, raw := range c.Authorizations["authorizations"].([]any) {
+		id := stringValue(object(raw)["Authorization_ID"])
+		if id == "" || seen[id] { return fmt.Errorf("DUPLICATE_OR_EMPTY_AUTHORIZATION_ID: %s", id) }
+		seen[id] = true
+	}
+	return nil
+}
+
+// LookupAuthorizationIntention is explicit and fails closed for unknown IDs.
+// Even a successful match is explanatory data, not an execution permission.
+func (c *Catalog) LookupAuthorizationIntention(v Validator, id string) (Document, error) {
+	if err := c.checkAuthorizationRegistry(v); err != nil { return nil, err }
+	if err := c.validate(v, Document{"$ref":"urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"}, id, "Authorization_ID"); err != nil {
+		return nil, err
+	}
+	intention, exists := c.authorizationIDs()[id]
+	if !exists { return nil, fmt.Errorf("UNRESOLVED_AUTHORIZATION_INTENTION: %s", id) }
+	profile, err := ReadDocument(c.Root, ProfilePath)
+	if err != nil { return nil, err }
+	if err := c.CheckProfile(v, profile); err != nil { return nil, err }
+	for rid, raw := range object(profile["component_bindings"]) {
+		if stringValue(object(raw)["Authorization_ID"]) == id {
+			return Document{"Authorization_ID":id,"intention":intention,"responsibility_id":rid,"execution_authorized":false}, nil
+		}
+	}
+	return nil, fmt.Errorf("UNBOUND_AUTHORIZATION_INTENTION: %s", id)
 }
 
 func keys(doc Document) []string {
