@@ -303,7 +303,7 @@ func TestIdentityVersionStorageDelegatesToLifecycleOwner(t *testing.T) {
 }
 
 func TestCanonicalPolicySchemaGroupAndSeparation(t *testing.T) {
- root, err := filepath.Abs(filepath.Join("..", "..", "..", ".."))
+ root, err := filepath.Abs(filepath.Join("..", "..", "..", "..", ".."))
  if err != nil { t.Fatal(err) }
  tests := []struct{ previous, current, id string }{
   {".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json", ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json", "urn:ptsip:policy:public-structure:v7"},
