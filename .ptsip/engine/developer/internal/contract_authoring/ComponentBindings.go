@@ -24,14 +24,17 @@ func (c *Catalog) checkComponentBindings(v Validator, profile Document) error {
 		if binding == nil { return fmt.Errorf("INVALID_RULE_BINDING: %s", rid) }
 		if _, legacy := binding["Rule_state"]; legacy { return fmt.Errorf("RETIRED_POLICY_RULE_STATE: %s", rid) }
 		if _, present := binding["status"]; !present { return fmt.Errorf("RESPONSIBILITY_STATUS_REQUIRED: %s", rid) }
+		if _, legacy := binding["live_policy"]; legacy {
+			return fmt.Errorf("RETIRED_LIVE_POLICY: %s", rid)
+		}
 		if ref := stringValue(binding["Authorization_ID"]); ref != "" {
-			if _, exists := authorizations[ref]; !exists {
+			authorization, exists := authorizations[ref]
+			if !exists {
 				return fmt.Errorf("UNRESOLVED_AUTHORIZATION_INTENTION: %s/%s", rid, ref)
 			}
-		}
-		if policies, exists := binding["live_policy"]; exists {
-			items, ok := policies.([]any)
-			if !ok || len(items) == 0 { return fmt.Errorf("INVALID_LIVE_POLICY: %s", rid) }
+			if stringValue(authorization["condition_name"]) != stringValue(binding["condition_name"]) {
+				return fmt.Errorf("AUTHORIZATION_CONDITION_MISMATCH: %s/%s", rid, ref)
+			}
 		}
 		if refs, exists := binding["condition_id"]; exists {
 			items, ok := refs.([]any)
