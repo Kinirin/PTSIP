@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:rbac:responsibilities-list:v1",
+  "$id": "urn:ptsip:rbac:responsibilities-list:v2",
   "title": "Editable responsibility-authority profile list",
   "type": "object",
   "properties": {
@@ -64,88 +64,55 @@
         "$ref": "urn:ptsip:rbac:responsibility:v1"
       }
     },
-    "component_map": {
-      "type": "object",
-      "required": [
-        "mode",
-        "profile_ref",
-        "scope",
-        "execution_authorized"
-      ],
-      "properties": {
-        "mode": {
-          "const": "explicit"
-        },
-        "profile_ref": {
-          "const": ".ptsip/profiles/main.ptsip.yaml"
-        },
-        "scope": {
-          "const": "DECLARED_COMPONENT_METADATA_ONLY"
-        },
-        "execution_authorized": {
-          "const": false
-        }
-      },
-      "additionalProperties": true
-    },
     "component_bindings": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "component_id",
-          "release_owner",
-          "compatibility_owner",
-          "runtime_required"
-        ],
-        "properties": {
-          "component_id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "roles": {
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-              "enum": [
-                "IMPLEMENTATION",
-                "VERIFICATION",
-                "AUTOMATION",
-                "CONFIGURATION",
-                "DOCUMENTATION",
-                "GOVERNANCE"
-              ]
+      "type": "object",
+      "propertyNames": {
+        "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/ID"
+      },
+      "patternProperties": {
+        "^R-ID-[A-Za-z0-9][A-Za-z0-9._-]*$": {
+          "type": "object",
+          "required": [
+            "rule",
+            "Rule_state"
+          ],
+          "properties": {
+            "rule": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_.-]+$"
+            },
+            "Rule_state": {
+              "$ref": "urn:ptsip:rbac:operational-authority:v1#/$defs/RuleState"
+            },
+            "condition_id": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "urn:ptsip:rbac:condition:v1#/$defs/ID"
+              }
+            },
+            "source_policy": {
+              "type": "string"
+            },
+            "source_rule_id": {
+              "type": "string"
+            },
+            "source_text": {
+              "type": "string"
             }
           },
-          "release_owner": {
-            "type": "string",
-            "minLength": 1
-          },
-          "compatibility_owner": {
-            "type": "string",
-            "minLength": 1
-          },
-          "runtime_required": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": true
-      }
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "required": [
     "ptsip",
     "responsibility_map",
-    "responsibility"
+    "responsibility",
+    "component_bindings"
   ],
   "additionalProperties": true,
-  "dependentRequired": {
-    "component_map": [
-      "component_bindings"
-    ],
-    "component_bindings": [
-      "component_map"
-    ]
-  },
-  "$comment": "Component owner labels are preserved declaration metadata only; they never synthesize conditions, operational authorities, execution approval or runtime activation."
+  "$comment": "Rule constants and states are keyed by Responsibility ID. Existing component owner metadata is retired."
 }
