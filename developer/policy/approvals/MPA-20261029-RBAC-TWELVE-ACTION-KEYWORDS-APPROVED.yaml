@@ -1,0 +1,34 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-RBAC-TWELVE-ACTION-KEYWORDS-APPROVED
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    The project owner approved all twelve proposed Authorization_intention
+    action vocabulary codes: REA=READ, LIS=LIST, CRE=CREATE, WRI=WRITE,
+    EDI=EDIT, DEL=DELETE, VAL=VALIDATE, EXE=EXECUTE, APR=APPROVE,
+    PUB=PUBLISH, GRA=GRANT, REV=REVOKE. This explicit approval
+    supersedes the previously approved closed three-action vocabulary
+    REA/WRI/EDI. Update the machine-readable keyword registry and all
+    validation paths to accept exactly these twelve action constants.
+    Authorizing an action type does not create an Authorization_intention
+    rule entry, resource assignment, ALLOW effect, condition binding,
+    runtime execution authority or permission to approve policy, publish,
+    grant or revoke rights. High-authority actions remain subordinate to
+    existing policy approval and authority gates. No default permission
+    records may be inferred. Changes to the vocabulary after these
+    twelve codes require a separate policy decision.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0004
+    - MPD-GOV-0005
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'

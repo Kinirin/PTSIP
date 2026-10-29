@@ -7,17 +7,53 @@
     "REA": {
       "const": "READ"
     },
+    "LIS": {
+      "const": "LIST"
+    },
+    "CRE": {
+      "const": "CREATE"
+    },
     "WRI": {
       "const": "WRITE"
     },
     "EDI": {
       "const": "EDIT"
+    },
+    "DEL": {
+      "const": "DELETE"
+    },
+    "VAL": {
+      "const": "VALIDATE"
+    },
+    "EXE": {
+      "const": "EXECUTE"
+    },
+    "APR": {
+      "const": "APPROVE"
+    },
+    "PUB": {
+      "const": "PUBLISH"
+    },
+    "GRA": {
+      "const": "GRANT"
+    },
+    "REV": {
+      "const": "REVOKE"
     }
   },
   "required": [
     "REA",
+    "LIS",
+    "CRE",
     "WRI",
-    "EDI"
+    "EDI",
+    "DEL",
+    "VAL",
+    "EXE",
+    "APR",
+    "PUB",
+    "GRA",
+    "REV"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -25,9 +61,19 @@
       "type": "string",
       "enum": [
         "REA",
+        "LIS",
+        "CRE",
         "WRI",
-        "EDI"
+        "EDI",
+        "DEL",
+        "VAL",
+        "EXE",
+        "APR",
+        "PUB",
+        "GRA",
+        "REV"
       ]
     }
-  }
+  },
+  "$comment": "Vocabulary registration is not an authorization grant; any permission needs independently registered resource, effect, and condition. APR, PUB, GRA, REV do not confer policy approval, publication, or delegation authority without higher-authority policy approval."
 }
