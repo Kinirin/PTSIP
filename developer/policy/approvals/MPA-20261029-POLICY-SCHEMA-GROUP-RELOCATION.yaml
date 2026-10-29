@@ -5,21 +5,22 @@ approval:
   decision: APPROVED
   source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
   decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner approved relocating the public policy schema and the
+    Policy_Identity, Policy_Rules, Policy_Status schema groups under
+    .ptsip/contracts/schemas/Policy/, preserving schema identities and
+    updating active caller references. Keep the independent
+    .ptsip/contracts/schemas/release/ and
+    .ptsip/contracts/schemas/compile-sealed-rbac/ roots unchanged.
+    Historical and retired records remain non-authoritative.
   approval_scope: FINAL_POLICY
   target_status: ACTIVE
   implementation_authorized: true
+  policy_content_review_scope: DIRECTION
   branch_creation_authorized: false
-  decision_scope: PHYSICAL_POLICY_SCHEMA_GROUPING_AND_CALLSITE_RELOCATION
-  policy_schema_root: .ptsip/contracts/schemas/Policy/
-  included_groups:
-    - Policy_Identity
-    - Policy_Rules
-    - Policy_Status
-    - PTSIP_Public_Structure.schema.json
-  excluded_roots:
-    - .ptsip/contracts/schemas/release/
-    - .ptsip/contracts/schemas/compile-sealed-rbac/
-  schema_ids: PRESERVE
-  validation: UPDATE_ALL_ACTIVE_PATH_BINDINGS_AND_TESTS
-  historical_records: PRESERVE_PROVENANCE
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0006
+    - MPD-ARCH-0001
+    - MPD-INFO-0001
   recorded_at: '2026-10-29'
