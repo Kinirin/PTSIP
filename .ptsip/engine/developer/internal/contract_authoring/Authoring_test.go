@@ -42,7 +42,7 @@ func doc(raw string) authoring.Document {
 }
 
 func govInput() authoring.Document {
-	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":{"meaning":"Example policy"},"Boundary":{"scope":"Example scope"}}}`)
+	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS"}],"Boundary":{"scope":"Example scope"}}}`)
 }
 
 func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document {
@@ -55,6 +55,7 @@ func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document
 	delete(profile, "component_bindings")
 	catalog.Definitions = doc(`{"schema_version":"ptsip-responsibility-authority/v1","condition_list":[{"ID":"C-ID-review","name":"Review is complete"}],"authority_list":[{"ID":"OA-ID-edit","name":"Edit policy","action":"edit","scope":"example"}]}`)
 	profile["responsibility"] = doc(`{"items":[{"name":"Policy editor","ID":"R-ID-editor","condition_id":["C-ID-review"],"Operational_Authority":["OA-ID-edit"],"role_name":"Editor","runtime_required":false}]}`)["items"]
+	profile["component_bindings"] = authoring.Document{}
 	return profile
 }
 
@@ -70,7 +71,7 @@ func TestRegisteredContractsAndAllFourteenSelections(t *testing.T) {
 		t.Run(family, func(t *testing.T) {
 			input := govInput()
 			if family != "GOV" {
-				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":{"meaning":"Example"},"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
+				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS"}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
 			}
 			generated, status, err := catalog.GenerateRules(validate, input, family)
 			if err != nil || status != "GENERATED" {
@@ -180,27 +181,28 @@ func TestProfileReferencesTypesAndExtensibleFields(t *testing.T) {
 	}
 }
 
-func TestPolicyResponsibilityReferencesResolveThroughProfile(t *testing.T) {
+func TestPolicyDefinitionRuleBindingsResolveThroughRegisteredProfile(t *testing.T) {
 	catalog, validate := nativeCatalog(t)
-	profile := profileFixture(t, catalog)
-	temporaryRoot := t.TempDir()
-	profilePath := filepath.Join(temporaryRoot, filepath.FromSlash(authoring.ProfilePath))
-	if err := os.MkdirAll(filepath.Dir(profilePath), 0755); err != nil {
-		t.Fatal(err)
-	}
-	encoded, _ := json.Marshal(profile)
-	if err := os.WriteFile(profilePath, encoded, 0644); err != nil {
-		t.Fatal(err)
-	}
-	catalog.Root = temporaryRoot
 	input := govInput()
-	input["Policy_Rules"].(map[string]any)["Responsibility_Refs"] = []any{"R-ID-editor"}
-	if _, _, err := catalog.GenerateRules(validate, input, "GOV"); err != nil {
+	generated, status, err := catalog.GenerateRules(validate, input, "GOV")
+	if err != nil || status != "GENERATED" {
+		t.Fatalf("registered rule not generated: %v %v", status, err)
+	}
+	if err := catalog.CheckRules(validate, generated); err != nil {
 		t.Fatal(err)
 	}
-	input["Policy_Rules"].(map[string]any)["Responsibility_Refs"] = []any{"R-ID-missing"}
-	if _, _, err := catalog.GenerateRules(validate, input, "GOV"); err == nil || !strings.Contains(err.Error(), "UNRESOLVED_RESPONSIBILITY") {
-		t.Fatal("unresolved responsibility accepted", err)
+	for _, tc := range []struct { name, id, rule string }{
+		{"unregistered", "R-ID-UNKNOWN", "GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS"},
+		{"wrong-rule", "R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS", "GOV.WRONG_RULE"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			bad := govInput()
+			item := bad["Policy_Rules"].(map[string]any)["Definition"].([]any)[0].(map[string]any)
+			item["id"], item["rule"] = tc.id, tc.rule
+			if _, _, err := catalog.GenerateRules(validate, bad, "GOV"); err == nil {
+				t.Fatal("unregistered or mismatched rule accepted")
+			}
+		})
 	}
 }
 
