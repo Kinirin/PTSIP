@@ -198,7 +198,7 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		{RBACSchemaRoot + "Conditions_exercise/Condition.schema.json", "urn:ptsip:rbac:condition:v1", nil},
 		{RBACSchemaRoot + "authority/Operational_Authority.schema.json", "urn:ptsip:rbac:operational-authority:v1", nil},
 		{RBACSchemaRoot + "responsibility/Responsibility.schema.json", responsibilityID, nil},
-		{RBACSchemaRoot + "Responsibilities_List.schema.json", "urn:ptsip:rbac:responsibilities-list:v2", &c.ProfileShape},
+		{RBACSchemaRoot + "Responsibilities_List.schema.json", "urn:ptsip:rbac:responsibilities-list:v3", &c.ProfileShape},
 		{RBACSchemaRoot + "Responsibility_Authority_Contract.schema.json", "urn:ptsip:rbac:responsibility-authority-contract:v1", &c.DefinitionShape},
 		{RBACSchemaRoot + "lifecycle/status.json", "urn:ptsip:rbac:lifecycle:status:v1", nil},
 		{RBACSchemaRoot + "lifecycle/keywords.json", "urn:ptsip:rbac:lifecycle:keywords:v1", nil},
