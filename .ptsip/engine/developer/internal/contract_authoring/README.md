@@ -137,6 +137,29 @@ by itself grant runtime execution, Seal or Activation.
 Historical policy prose and previous mapping IDs remain in Git history for
 audit only. They do not create authorization intentions or privilege grants.
 
+## Approved authorization decision model
+
+`.ptsip/contracts/Responsibility-Authority/Authorization_decision.json` is
+the machine-readable **C: explicit ALLOW/DENY and unregistered block** policy.
+It is validated against
+`authority/Authorization_decision.schema.json` whenever contract/profile
+checks run. The decision outcomes are:
+
+| Registration / binding | Machine outcome | Persisted effect |
+| --- | --- | --- |
+| Missing authorization | `BLOCK_UNRESOLVED` | None |
+| Missing or invalid binding | `BLOCK_UNRESOLVED` | None |
+| Registered explicit `DENY` | `BLOCK_EXPLICIT` | Explicit DENY only |
+| Registered explicit `ALLOW` | `ALLOW_CANDIDATE` | Explicit ALLOW only |
+
+`ALLOW_CANDIDATE` is **not** permission to execute. Higher-policy
+authorization and action-time gates remain separately required. Resource
+identity matching, condition evaluation, actor bindings, and
+simultaneous/conflicting rule precedence are `UNRESOLVED`; do not invent
+these rules in an implementation. Unknown registration is blocked but is
+never materialized as a permanent DENY entry. The actual
+`Authorization_intention.json` still contains no permission records.
+
 ## Validation
 
 ```powershell
