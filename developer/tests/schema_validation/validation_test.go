@@ -221,3 +221,9 @@ func TestDuplicateSchemaIDAcrossRootsFailsClosed(t *testing.T){
  }
  if !detected{t.Fatalf("cross-root duplicate not detected: %v",result)}
 }
+
+func TestMissingAuthorizationIntentionSchemaFailsClosed(t *testing.T) {
+    _,err:=schemaCheckWithMissing(t,map[string]string{"fixture.json":`{"$id":"urn:example:fixture"}`},
+        ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_intention.schema.json")
+    if err==nil { t.Fatal("missing independent authorization contract must fail closed") }
+}
