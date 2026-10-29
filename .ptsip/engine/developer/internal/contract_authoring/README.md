@@ -2,14 +2,28 @@
 
 The fourteen contracts in `.ptsip/contracts/policy/Rules/{root_family}_rules.json`
 select the same `Policy_Rules.Definition` authoring model. The selected family
-requires an array of separate records with exactly two fields:
+requires an array of separate records with mandatory `id` and `rule`
+and an optional `preconditions` list of registered C-ID condition references:
 
 ```yaml
 Policy_Rules:
   Definition:
     - id: R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS
       rule: GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS
+      preconditions:
+        - C-ID-POLICY_STATUS_SERIALIZATION
+  Constraints: {}
 ```
+
+The policy document is *not* the source of preconditions. Its list is a
+non-authoritative selector and must exactly match the corresponding
+`component_bindings[R-ID].condition_id` list in the Responsibility profile.
+Missing or extra condition references are rejected regardless of ordering.
+All 14 Family contracts have retired
+`Constraints.preconditions` and `Constraints.dependencies` as authoring
+fields. The `Constraints: {}` shell remains required by the currently
+approved shared Family structure; removing that shell is a separate decision.
+
 
 Each `id` must be registered under the exact same R-ID key in
 `.ptsip/profiles/Responsibility-Authority-list.yaml`. Each `rule` must
