@@ -308,8 +308,8 @@ func TestCanonicalPolicySchemaGroupAndSeparation(t *testing.T) {
  tests := []struct{ previous, current, id string }{
   {".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json", ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json", "urn:ptsip:policy:public-structure:v7"},
   {".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", "urn:ptsip:policy:identity:v2"},
-  {".ptsip/contracts/schemas/Policy_Rules/Family_Rules_Contract.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json", "urn:ptsip:policy:family-rules-contract:v1"},
-  {".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json", "urn:ptsip:policy:Public_Structure_Rules:v2"},
+  {".ptsip/contracts/schemas/Policy_Rules/Family_Rules_Contract.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json", "urn:ptsip:policy:family-rules-contract:v2"},
+  {".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json", "urn:ptsip:policy:Public_Structure_Rules:v3"},
   {".ptsip/contracts/schemas/Policy_Rules/rule_record.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/rule_record.schema.json", "urn:ptsip:policy:rule-record:schema:v1"},
   {".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", "urn:ptsip:policy:Status:v2"},
  }

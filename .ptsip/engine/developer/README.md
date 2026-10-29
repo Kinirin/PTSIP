@@ -78,11 +78,13 @@ go -C .ptsip/engine/developer run . --validator policy-rules --operation generat
 Policy components may be supplied directly or inside their named wrapper.
 `policy-check` requires all three public policy components. The checks use the
 approved schema and selected family contract and do not evaluate policy rules,
-admit lifecycle transitions, or activate responsibilities. Responsibility declarations use their five authoring schemas and declaration
-contract. The linked local component list also checks the profile catalog, main
-component source and existing pp.1.02 source schema; explicit materialization
-produces a derived consumer-shaped projection without execution authority. A policy joins responsibility declarations through explicit
-`responsibility_refs`.
+admit lifecycle transitions, or activate responsibilities. Responsibility declarations use independent condition and authority schemas.
+For each of the 14 Root Families, a Policy_Rules.Definition item contains only
+a registered R-ID and a registered rule constant. The R-ID keyed
+Responsibility-Authority-list.yaml component_bindings map owns the rule state and
+condition references. The prior component ownership projection, its materialize
+operation and separate responsibility references have been removed.
+These references never grant execution authority.
 
 The installed PTSIP VALIDATION engine evaluates JSON Schema. JSON/YAML
 serialization uses Python and PyYAML with explicit UTF-8. The layout check needs
