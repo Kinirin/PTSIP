@@ -2,6 +2,8 @@ package schema_check
 
 import (
     "encoding/json"
+    "strings"
+    authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
     "os"
     "path/filepath"
     "regexp"
@@ -79,5 +81,36 @@ func TestOpaqueResponsibilityLifecycleAndLookupShape(t *testing.T) {
     if err!=nil {t.Fatal(err)}
     if !re.MatchString("REA-ABCDEFGHIJKLMNO") || re.MatchString("REA-INVALID_NAME") || re.MatchString("NEW-ABCDEFGHIJKLMNO") {
         t.Fatal("authorization pattern permits unregistered category")
+    }
+}
+
+func TestOpaqueRegistryResolvesActualGovAndFailsClosedOnMissingIntention(t *testing.T) {
+    root, err := filepath.Abs("../../../../..")
+    if err != nil { t.Fatal(err) }
+    catalog, err := authoring.Load(root)
+    if err != nil { t.Fatal(err) }
+    validate, err := InstalledValidator()
+    if err != nil { t.Skipf("installed validator unavailable: %v",err) }
+    if err := catalog.CheckContracts(validate); err != nil { t.Fatal(err) }
+    profile, err := authoring.ReadDocument(root, authoring.ProfilePath)
+    if err != nil { t.Fatal(err) }
+    if err := catalog.CheckLocalProfile(validate, profile); err != nil { t.Fatal(err) }
+    gov, err := authoring.ReadDocument(root, "developer/policy/GOV/MPD-GOV-0006.yaml")
+    if err != nil { t.Fatal(err) }
+    if err := catalog.CheckRules(validate, gov); err != nil { t.Fatal(err) }
+    if _, err := catalog.LookupAuthorizationIntention(validate,"REA-ABCDEFGHIJKLMNO"); err == nil || !strings.Contains(err.Error(),"UNRESOLVED_AUTHORIZATION_INTENTION") {
+        t.Fatalf("undeclared Read authorization was not rejected: %v",err)
+    }
+    profileData, err := json.Marshal(profile)
+    if err != nil { t.Fatal(err) }
+    var mutated map[string]any
+    if err := json.Unmarshal(profileData, &mutated); err != nil { t.Fatal(err) }
+    rows:=mutated["component_bindings"].(map[string]any)
+    for _, raw := range rows {
+        raw.(map[string]any)["status"]="APPROVED.provisional"
+        break
+    }
+    if err := catalog.CheckProfile(validate,mutated); err == nil {
+        t.Fatal("policy approval state must not become an RBAC lifecycle status")
     }
 }
