@@ -50,6 +50,14 @@
             "rule": {
               "type": "string",
               "pattern": "^[A-Z][A-Z0-9_.-]+$"
+            },
+            "preconditions": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "urn:ptsip:rbac:condition:v1#/$defs/ID"
+              }
             }
           },
           "additionalProperties": false
@@ -91,14 +99,8 @@
       },
       "Constraints": {
         "type": "object",
-        "properties": {
-          "preconditions": {
-            "type": "array"
-          },
-          "dependencies": {
-            "type": "array"
-          }
-        }
+        "properties": {},
+        "additionalProperties": false
       },
       "Evaluation": {
         "type": "object",
