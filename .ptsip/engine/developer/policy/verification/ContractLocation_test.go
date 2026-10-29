@@ -174,6 +174,7 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
 		".ptsip/contracts/identity/root_family.json",
 		".ptsip/contracts/routing/policy_routes.json",
 		".ptsip/contracts/schemas/Policy_Identity/Routing/Policy_Routing.schema.json",
+		".ptsip/contracts/schemas/Policy_Identity/Policy_Identity_version.schema.json",
 		".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
 		".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
 		".ptsip/contracts/lifecycle/policy_status.json",
@@ -263,5 +264,40 @@ func TestLegacyPolicyAuthorityModelRemoved(t *testing.T) {
 		if strings.Contains(string(content), "\n  Authority_Category:") {
 			t.Fatalf("retired Authority_Category remains in %s", policy)
 		}
+	}
+}
+
+// Identity version storage delegates to the lifecycle contract without adding
+// identity instance fields or changing the lifecycle owner's version grammar.
+func TestIdentityVersionStorageDelegatesToLifecycleOwner(t *testing.T) {
+	root, err := filepath.Abs("../../../../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	const target = ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json"
+	raw, err := os.ReadFile(filepath.Join(root, ".ptsip/engine/developer/policy/index.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var index struct {
+		Components []struct {
+			ID      string `json:"id"`
+			Version string `json:"version_contract"`
+		} `json:"components"`
+	}
+	if err := json.Unmarshal(raw, &index); err != nil {
+		t.Fatal(err)
+	}
+	var binding string
+	for _, component := range index.Components {
+		if component.ID == "identity" {
+			binding = component.Version
+		}
+	}
+	if binding != target {
+		t.Fatalf("identity version does not delegate to lifecycle: %q", binding)
+	}
+	if err := checkCanonicalContractFile(root, binding); err != nil {
+		t.Fatal(err)
 	}
 }

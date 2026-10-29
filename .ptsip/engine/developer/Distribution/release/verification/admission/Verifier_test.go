@@ -19,7 +19,7 @@ func TestPublicationAdmissionIsUnverifiedWithCurrentVerificationContract(t *test
 		t.Fatal("temporary contract granted publication")
 	}
 	fixture := t.TempDir()
-	const path = ".ptsip/contracts/release/verification-boundary.json"
+	const path = ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
 	raw, err := os.ReadFile(filepath.Join(root, path))
 	if err != nil {
 		t.Fatal(err)

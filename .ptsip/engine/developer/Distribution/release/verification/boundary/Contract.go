@@ -12,7 +12,7 @@ import (
 	authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
 )
 
-const Path = ".ptsip/contracts/release/verification-boundary.json"
+const Path = ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
 
 type Contract struct {
 	Schema      string   `json:"schema_version"`
@@ -90,6 +90,10 @@ func Run(root string) (any, int) {
 		report["problem"] = err.Error()
 		return report, 2
 	}
+	if err := checkPlatforms(root); err != nil {
+		report["problem"] = err.Error()
+		return report, 2
+	}
 	report["status"] = "CONTRACT_STRUCTURE_VALID"
 	return report, 0
 }
@@ -123,7 +127,7 @@ func checkRouting(root string) error {
 	}
 	if index.Schema != "ptsip-release-contract-index/v2" || index.Contract != Path || index.Authority != "NONE" || index.Activation != "UNRESOLVED" ||
 		index.Validator != "release-admission-check" || index.Entry != ".ptsip/engine/developer/main.go" || index.Root != ".ptsip/engine/developer/Distribution/release/" ||
-		index.Publication == nil || *index.Publication || index.Legacy == nil || *index.Legacy || index.Rules != ".ptsip/contracts/release/validation-rules.json" {
+		index.Publication == nil || *index.Publication || index.Legacy == nil || *index.Legacy || index.Rules != ".ptsip/contracts/release/Platform/Common/release_validation.json" {
 		return fmt.Errorf("RELEASE_INDEX_ROUTING_INVALID")
 	}
 	var rules struct {

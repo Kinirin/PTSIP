@@ -48,8 +48,10 @@ def test_current_pyproject_no_longer_installs_engine_pip_distributions() -> None
         cfg = tomllib.load(stream)
     dependencies = cfg["project"]["dependencies"]
     assert not any(name.lower().startswith("ptsip-engine-") for name in dependencies)
-    assert cfg["project"]["version"] == "0.3.8.1b1"
-    assert cfg["tool"]["ptsip"]["release"]["profile_version"] == "pp.1.02"
+    with (_ROOT / "src/VERSION").open("rb") as stream:
+        declared = tomllib.load(stream)
+    assert cfg["project"]["version"] == declared["package_version"]
+    assert cfg["tool"]["ptsip"]["release"]["profile_version"] == declared["profile_version"]
     declared = cfg["tool"]["ptsip"]["release"]["engines"]
     assert len(declared) == 7
     assert set(declared) == {
@@ -81,7 +83,7 @@ def test_consumer_delivery_must_not_reactivate_retired_controller_or_release() -
     assert policy["authority_semantics"]["unit_ptsip_engine_draft"]["invariants"][
         "official_engine_distribution_forbids_bundled_package_delivery"
     ] is False
-    admission = _json(".ptsip/contracts/release/admission.json")
+    admission = _json(".ptsip/contracts/release/Platform/Common/admission.json")
     assert admission["publication_authorized"] is False
 
 

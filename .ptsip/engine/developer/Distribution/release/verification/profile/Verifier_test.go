@@ -28,7 +28,7 @@ func profileFixture(t *testing.T) string {
 	}
 	for _, path := range []string{
 		profileContractPath,
-		".ptsip/contracts/release/profile/index.json",
+		".ptsip/contracts/release/Platform/Common/profile/index.json",
 		profileProjectionPath,
 		profileSourcePath + "/index.yaml",
 		".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-1.01.schema.json",
@@ -205,7 +205,7 @@ func TestProfileVerifierRejectsAuthorityRouteDrift(t *testing.T) {
 	for _, field := range []string{"publication_authorized", "consumer_contract_authority", "legacy_fallback"} {
 		t.Run(field, func(t *testing.T) {
 			root := profileFixture(t)
-			rewriteProfileFixture(t, root, ".ptsip/contracts/release/profile/index.json", func(s string) string {
+			rewriteProfileFixture(t, root, ".ptsip/contracts/release/Platform/Common/profile/index.json", func(s string) string {
 				return strings.Replace(s, `"`+field+`": false`, `"`+field+`": true`, 1)
 			})
 			if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {

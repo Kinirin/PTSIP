@@ -1,6 +1,6 @@
 {
   "schema_version": "ptsip-release-contract-index/v2",
-  "contract_ref": ".ptsip/contracts/release/verification-boundary.json",
+  "contract_ref": ".ptsip/contracts/release/Platform/Common/verification-boundary.json",
   "validator_name": "release-admission-check",
   "engine_entry": ".ptsip/engine/developer/main.go",
   "verifier_root": ".ptsip/engine/developer/Distribution/release/",
@@ -8,5 +8,45 @@
   "normative_policy_activation": "UNRESOLVED",
   "publication_authorized": false,
   "legacy_release_verifier_fallback": false,
-  "validation_rules_ref": ".ptsip/contracts/release/validation-rules.json"
+  "validation_rules_ref": ".ptsip/contracts/release/Platform/Common/release_validation.json",
+  "platform_dimension": "DISTRIBUTION_SERVICE",
+  "platforms": [
+    {
+      "platform": "Common",
+      "root": ".ptsip/contracts/release/Platform/Common/",
+      "contracts": {
+        "admission": ".ptsip/contracts/release/Platform/Common/admission.json",
+        "composition": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
+        "migration_inventory": ".ptsip/contracts/release/Platform/Common/migration-inventory.json",
+        "package_installation": ".ptsip/contracts/release/Platform/Common/package-installation-contract.json",
+        "release": ".ptsip/contracts/release/Platform/Common/release-contract.json",
+        "release_contract_validation": ".ptsip/contracts/release/Platform/Common/release-contract_validation.json",
+        "release_documentation": ".ptsip/contracts/release/Platform/Common/releasenote.json",
+        "release_validation": ".ptsip/contracts/release/Platform/Common/release_validation.json",
+        "verification_boundary": ".ptsip/contracts/release/Platform/Common/verification-boundary.json",
+        "verification": ".ptsip/contracts/release/Platform/Common/verification-contract.json",
+        "version_changes": ".ptsip/contracts/release/Platform/Common/versions_different.json",
+        "profile_routing": ".ptsip/contracts/release/Platform/Common/profile/index.json",
+        "profile_snapshot": ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml"
+      },
+      "validation_ref": ".ptsip/contracts/release/Platform/Common/Common_validation.json"
+    },
+    {
+      "platform": "GitHub",
+      "root": ".ptsip/contracts/release/Platform/GitHub/",
+      "contracts": {
+        "publication_evidence": ".ptsip/contracts/release/Platform/GitHub/publication-evidence.json",
+        "release_presentation": ".ptsip/contracts/release/Platform/GitHub/release-presentation.json"
+      },
+      "validation_ref": ".ptsip/contracts/release/Platform/GitHub/GitHub_validation.json"
+    },
+    {
+      "platform": "PyPI",
+      "root": ".ptsip/contracts/release/Platform/PyPI/",
+      "contracts": {
+        "publisher_routing": ".ptsip/contracts/release/Platform/PyPI/pypi-publishers.json"
+      },
+      "validation_ref": ".ptsip/contracts/release/Platform/PyPI/PyPI_validation.json"
+    }
+  ]
 }

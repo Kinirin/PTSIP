@@ -9,7 +9,7 @@ import (
 func testOnlyRouteFixture(t *testing.T) (string, TestContract) {
 	t.Helper()
 	root := releaseBoundaryFixture(t)
-	path := filepath.Join(root, ".ptsip", "contracts", "release")
+	path := filepath.Join(root, ".ptsip", "contracts", "release", "Platform", "Common")
 	if err := os.MkdirAll(path, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -19,7 +19,7 @@ func testOnlyRouteFixture(t *testing.T) (string, TestContract) {
       "old_root_policy_fallback":"FORBIDDEN",
       "verification_module":".ptsip/engine/developer/Distribution/release/",
       "publication_authorized":false,
-      "verification_boundary_ref":".ptsip/contracts/release/verification-boundary.json"
+      "verification_boundary_ref":".ptsip/contracts/release/Platform/Common/verification-boundary.json"
     }`
 	if err := os.WriteFile(filepath.Join(path, "admission.json"), []byte(admission), 0644); err != nil {
 		t.Fatal(err)
@@ -30,9 +30,9 @@ func testOnlyRouteFixture(t *testing.T) (string, TestContract) {
 		Workflow:     ".github/workflows/tooling-test.yml",
 		ModeRegistry: ".github/test_modes.yaml",
 		TestRoot:     ".ptsip/engine/developer/Distribution/release/test/",
-		Production:   ".ptsip/contracts/release/composition-contract.json",
+		Production:   ".ptsip/contracts/release/Platform/Common/composition-contract.json",
 		Publication:  &no,
-		Boundary:     ".ptsip/contracts/release/verification-boundary.json",
+		Boundary:     ".ptsip/contracts/release/Platform/Common/verification-boundary.json",
 		Required:     []string{"windows-x64", "linux-x64"},
 		Runners:      map[string]string{"windows-x64": "windows-2025", "linux-x64": "ubuntu-24.04"},
 	}
@@ -40,7 +40,7 @@ func testOnlyRouteFixture(t *testing.T) (string, TestContract) {
 
 func TestReadOnlyVerificationRouteRequiresRegisteredContracts(t *testing.T) {
 	root, c := testOnlyRouteFixture(t)
-	ref := ".ptsip/contracts/release/verification-contract.json"
+	ref := ".ptsip/contracts/release/Platform/Common/verification-contract.json"
 	if err := verifyNonNormativeTestRoute(root, ref, c); err != nil {
 		t.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func TestReadOnlyVerificationRouteRequiresRegisteredContracts(t *testing.T) {
 
 func TestReadOnlyVerificationRouteFailsClosedOnPublicationOrMissingEvidence(t *testing.T) {
 	root, c := testOnlyRouteFixture(t)
-	ref := ".ptsip/contracts/release/verification-contract.json"
+	ref := ".ptsip/contracts/release/Platform/Common/verification-contract.json"
 	yes := true
 	c.Publication = &yes
 	if err := verifyNonNormativeTestRoute(root, ref, c); err == nil {
@@ -63,7 +63,7 @@ func TestReadOnlyVerificationRouteFailsClosedOnPublicationOrMissingEvidence(t *t
 	}
 	no := false
 	c.Publication = &no
-	path := filepath.Join(root, ".ptsip", "contracts", "release", "admission.json")
+	path := filepath.Join(root, ".ptsip", "contracts", "release", "Platform", "Common", "admission.json")
 	for _, mutated := range []string{
 		`{"schema_version":"ptsip-release-admission-direction-projection/v1","normative_policy_status":"ACTIVE","old_root_policy_fallback":"FORBIDDEN","verification_module":".ptsip/engine/developer/Distribution/release/","publication_authorized":false}`,
 		`{"schema_version":"ptsip-release-admission-direction-projection/v1","normative_policy_status":"NOT_ACTIVE_NORMATIVE_POLICY","old_root_policy_fallback":"FORBIDDEN","verification_module":".ptsip/engine/developer/Distribution/release/","publication_authorized":true}`,

@@ -78,9 +78,10 @@ go -C .ptsip/engine/developer run . --validator policy-rules --operation generat
 Policy components may be supplied directly or inside their named wrapper.
 `policy-check` requires all three public policy components. The checks use the
 approved schema and selected family contract and do not evaluate policy rules,
-admit lifecycle transitions, or activate responsibilities. Responsibility checks
-load only their five authoring schemas, declaration contract and selected
-profile. A policy joins responsibility declarations through explicit
+admit lifecycle transitions, or activate responsibilities. Responsibility declarations use their five authoring schemas and declaration
+contract. The linked local component list also checks the profile catalog, main
+component source and existing pp.1.02 source schema; explicit materialization
+produces a derived consumer-shaped projection without execution authority. A policy joins responsibility declarations through explicit
 `responsibility_refs`.
 
 The installed PTSIP VALIDATION engine evaluates JSON Schema. JSON/YAML
@@ -106,7 +107,7 @@ remote CI, release admission and runtime permission are separate results.
 
 ## Release documentation
 
-`.ptsip/contracts/release/releasenote.json` binds the four formatting schemas and
+`.ptsip/contracts/release/Platform/Common/releasenote.json` binds the four formatting schemas and
 the moved translation schemas under `.ptsip/contracts/schemas/release/releasenote/`.
 Formatting schemas validate a structured Markdown projection; generated notes
 carry that projection as machine-readable metadata and have separate Summary,
@@ -163,7 +164,7 @@ legacy command-catalog resolution. The commit hook's PP checks are unchanged.
 
 ## Release verification boundary
 
-`.ptsip/contracts/release/verification-boundary.json` permits only contract
+`.ptsip/contracts/release/Platform/Common/verification-boundary.json` permits only contract
 structure checks, local engine verification and source-bound test evidence.
 The boundary has no policy authority, no verification waivers, and no permission
 to publish or activate runtime behavior. Missing or changed bindings fail closed.
@@ -178,7 +179,7 @@ artifact implementations; structure checks do not assert those results.
 
 Profile verification lives in `release/verification/profile`, with a small
 forwarder for the shared test runner. The developer snapshot and schema resources
-are under `.ptsip/contracts/release/profile/` and
+are under `.ptsip/contracts/release/Platform/Common/profile/` and
 `.ptsip/contracts/schemas/release/profile/`. Verification compares the snapshot
 against the distributed source projection and checks catalog, versions, schemas
 and immutable profile baselines. Existing `schemas/...` values in the snapshot
@@ -190,3 +191,22 @@ Every Package selection requires the full Package Join on each selected host.
 The former lightweight CLI returns `LIGHTWEIGHT_VERIFICATION_RETIRED` without
 writing artifacts; the empty compatibility matrix cannot waive a Package Join.
 Historical migration inventories remain audit data and are never admission input.
+
+## Release platform contract layout
+
+`.ptsip/contracts/release/index.json` catalogs distribution-service platforms.
+`Platform/Common/` holds shared composition, source-bound verification, version,
+profile and documentation contracts. `Platform/GitHub/` holds carrier evidence and
+release presentation; `Platform/PyPI/` holds publisher routing. Windows, Linux and
+optional macOS hosts remain declared by the shared verification contract.
+
+Each platform has a `{Platform_name}_validation.json` schema for its catalog
+routing record. These schemas describe the current resource paths and do not
+assert artifact verification or publication authority. The existing release
+contract schema is `Platform/Common/release-contract_validation.json`, and shared
+structural rules are `Platform/Common/release_validation.json`.
+
+All local readers use the platform paths. Historical immutable Profile ZIPs may
+retain their former snapshot member name; the archive reader accepts that name
+as transport data only and rejects duplicate current/historical members. It does
+not read a contract from the former local directory.

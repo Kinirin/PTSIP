@@ -14,21 +14,21 @@
     "retired_cli": ".ptsip/engine/developer/Distribution/release/cli.go"
   },
   "derived_legacy_contracts": [
-    ".ptsip/contracts/release/composition-contract.json",
-    ".ptsip/contracts/release/package-installation-contract.json",
-    ".ptsip/contracts/release/publication-evidence.json",
-    ".ptsip/contracts/release/pypi-publishers.json",
-    ".ptsip/contracts/release/release-contract.json",
-    ".ptsip/contracts/release/release-contract.schema.json",
-    ".ptsip/contracts/release/release-presentation.json",
-    ".ptsip/contracts/release/verification-contract.json"
+    ".ptsip/contracts/release/Platform/Common/composition-contract.json",
+    ".ptsip/contracts/release/Platform/Common/package-installation-contract.json",
+    ".ptsip/contracts/release/Platform/GitHub/publication-evidence.json",
+    ".ptsip/contracts/release/Platform/PyPI/pypi-publishers.json",
+    ".ptsip/contracts/release/Platform/Common/release-contract.json",
+    ".ptsip/contracts/release/Platform/Common/release-contract_validation.json",
+    ".ptsip/contracts/release/Platform/GitHub/release-presentation.json",
+    ".ptsip/contracts/release/Platform/Common/verification-contract.json"
   ],
   "relocated_implementation_state": [
     ".ptsip/engine/developer/Distribution/release/state/package-registry.json",
     ".ptsip/engine/developer/Distribution/release/state/release-availability.json"
   ],
-  "canonical_approved_admission_projection": ".ptsip/contracts/release/admission.json",
-  "canonical_approved_admission_validation_rules": ".ptsip/contracts/release/validation-rules.json",
+  "canonical_approved_admission_projection": ".ptsip/contracts/release/Platform/Common/admission.json",
+  "canonical_approved_admission_validation_rules": ".ptsip/contracts/release/Platform/Common/release_validation.json",
   "authoritative_normative_policy": "NOT_DEFINED_IN_MIGRATION",
   "migrated_legacy_contracts_may_grant_publication_authority": false,
   "migrated_legacy_contracts_may_inherit_retired_root_policy": false,

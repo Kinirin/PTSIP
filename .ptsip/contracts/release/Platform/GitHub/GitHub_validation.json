@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:release:platform:github-routing:v1",
+  "title": "PTSIP GitHub Release Contract Routing",
+  "type": "object",
+  "required": [
+    "platform",
+    "root",
+    "contracts",
+    "validation_ref"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "platform": {
+      "const": "GitHub"
+    },
+    "root": {
+      "const": ".ptsip/contracts/release/Platform/GitHub/"
+    },
+    "contracts": {
+      "type": "object",
+      "required": [
+        "publication_evidence",
+        "release_presentation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "publication_evidence": {
+          "const": ".ptsip/contracts/release/Platform/GitHub/publication-evidence.json"
+        },
+        "release_presentation": {
+          "const": ".ptsip/contracts/release/Platform/GitHub/release-presentation.json"
+        }
+      }
+    },
+    "validation_ref": {
+      "const": ".ptsip/contracts/release/Platform/GitHub/GitHub_validation.json"
+    }
+  }
+}

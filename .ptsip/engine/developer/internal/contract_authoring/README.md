@@ -98,3 +98,35 @@ binding approval, cryptographic sealing and runtime activation retain their
 separate contracts; authoring never grants execution permission. The existing
 six unresolved runtime schema scaffolds remain unchanged. The `pp.2.01` list is
 an authoring profile and does not activate a new distributed product operation.
+
+
+## Local component responsibility metadata
+
+The local profile catalog registers `main.ptsip.yaml` as the project source and
+`Responsibility-Authority-list.yaml` as an auxiliary authoring resource. The
+auxiliary list is not selected as a consumer Project Profile. Main component
+classification, selectors, purpose, delivery flags and relationships remain in
+the main source; `component_bindings` owns the original component `roles`,
+`release_owner`, `compatibility_owner` and `runtime_required` declarations.
+Every main component must have exactly one binding. Missing, duplicate, unknown
+or conflicting declarations fail the local check. Removing the whole binding
+map from a linked local list also fails.
+
+These owner labels are declaration metadata. They do not manufacture condition
+IDs, responsibility IDs, operational authority grants or runtime permission.
+The separately authored `responsibility` list and condition/authority contracts
+remain explicit. Generation without an input copies no component bindings.
+
+```powershell
+go -C .ptsip/engine/developer run . --root ../../.. --validator responsibility-authority --operation check
+go -C .ptsip/engine/developer run . --root ../../.. --validator responsibility-authority --operation materialize
+go -C .ptsip/engine/developer run . --root ../../.. --validator responsibility-authority --operation materialize --output .artifacts/profiles/main.ptsip.yaml
+```
+
+Materialization explicitly joins the two sources and validates the returned
+pp.1.02-shaped document against the existing distributed source schema. It
+preserves the authored component order and values and uses the existing
+no-overwrite writer when an output is requested. The report declares
+`projection_authority: NONE` and `execution_authorized: false`. The projection
+is derived; neither authored source is rewritten. Generic consumer code does
+not automatically inherit this developer-only composition or its owner labels.

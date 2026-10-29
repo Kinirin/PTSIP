@@ -109,7 +109,7 @@ func makePackageBundleFixture(t *testing.T, platform string) packageBundleFixtur
 	}
 	index, _ := json.Marshal(map[string]any{"official_engine_entries": entries})
 	f.tool = bundleTestArchive(t, map[string][]byte{"ptsip/__init__.py": []byte(""), "ptsip/engines/index.json": index, "ptsip_tool-0.3.8b3.dist-info/METADATA": []byte("Metadata-Version: 2.4\nName: ptsip-tool\nVersion: 0.3.8b3\nRequires-Dist: PyYAML>=6\nRequires-Dist: ptsip-engine-context==0.2.1\n\nTool\n"), "ptsip_tool-0.3.8b3.dist-info/entry_points.txt": []byte("[console_scripts]\nptsip=ptsip.cli:main\n")})
-	f.profiles = bundleTestArchive(t, map[string][]byte{"src/ptsip/profiles/index.yaml": []byte("catalog"), "src/ptsip/profiles/main.ptsip.yaml": []byte("example"), ".ptsip/contracts/release/profile/project-profile-contracts.yaml": []byte("current: pp.1.02\n")})
+	f.profiles = bundleTestArchive(t, map[string][]byte{"src/ptsip/profiles/index.yaml": []byte("catalog"), "src/ptsip/profiles/main.ptsip.yaml": []byte("example"), ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml": []byte("current: pp.1.02\n")})
 	for _, c := range []struct {
 		id, kind, version string
 		data              []byte

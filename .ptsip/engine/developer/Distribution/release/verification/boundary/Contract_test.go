@@ -19,18 +19,29 @@ func fixture(t *testing.T) string {
 		t.Fatal(err)
 	}
 	root := t.TempDir()
-	for _, file := range []string{Path, ".ptsip/contracts/release/index.json", ".ptsip/contracts/release/validation-rules.json"} {
-		raw, err := os.ReadFile(filepath.Join(source, file))
+	base := filepath.Join(source, ".ptsip/contracts/release")
+	if err := filepath.WalkDir(base, func(path string, entry os.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if entry.IsDir() {
+			return nil
+		}
+		relative, err := filepath.Rel(source, path)
 		if err != nil {
-			t.Fatal(err)
+			return err
 		}
-		target := filepath.Join(root, file)
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		target := filepath.Join(root, relative)
 		if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
-			t.Fatal(err)
+			return err
 		}
-		if err := os.WriteFile(target, raw, 0644); err != nil {
-			t.Fatal(err)
-		}
+		return os.WriteFile(target, raw, 0644)
+	}); err != nil {
+		t.Fatal(err)
 	}
 	return root
 }

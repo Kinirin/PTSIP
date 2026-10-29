@@ -10,7 +10,7 @@ import (
  releaseversion "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/version"
 )
 const (
-    versionsContract = ".ptsip/contracts/release/versions_different.json"
+    versionsContract = ".ptsip/contracts/release/Platform/Common/versions_different.json"
     versionsPreview = ".ptsip/engine/developer/Distribution/release/version/versions_different.ini"
     versionsSource = "src/VERSION"
 )

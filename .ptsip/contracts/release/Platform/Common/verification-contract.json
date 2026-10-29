@@ -4,7 +4,7 @@
   "workflow": ".github/workflows/tooling-test.yml",
   "mode_registry": ".github/test_modes.yaml",
   "test_change_root": ".ptsip/engine/developer/Distribution/release/test/",
-  "production_contract": ".ptsip/contracts/release/composition-contract.json",
+  "production_contract": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
   "release_matrix": "SELECTED_COMPONENTS_JOINED_WITH_REQUIRED_AND_EXPLICIT_OPTIONAL_HOSTS",
   "joined_verification": {
     "selection": "PTSIP_PACKAGE_WITH_COMPOSITION_V2",
@@ -53,5 +53,5 @@
     "controller": ".ptsip/engine/developer/Distribution/release/controller/cmd/ptsip-release"
   },
   "preserved_engine_verifier": "developer/tests/engines/TestIndependentEngineWheel",
-  "verification_boundary_ref": ".ptsip/contracts/release/verification-boundary.json"
+  "verification_boundary_ref": ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
 }

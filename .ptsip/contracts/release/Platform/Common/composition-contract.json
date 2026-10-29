@@ -3,9 +3,9 @@
   "publication_workflow": ".github/workflows/tooling-release.yml",
   "verification_workflow": ".github/workflows/tooling-test.yml",
   "mode_registry": ".github/test_modes.yaml",
-  "test_contract": ".ptsip/contracts/release/verification-contract.json",
+  "test_contract": ".ptsip/contracts/release/Platform/Common/verification-contract.json",
   "engine_registry": "src/ptsip/engines/index.json",
-  "profile_registry": ".ptsip/contracts/release/profile/project-profile-contracts.yaml",
+  "profile_registry": ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
   "canonical_current_composition": {
     "owner_ref": "developer/policy/INFO/MPD-INFO-0005.yaml#rules.independent_release_versioning",
     "file": "src/VERSION",
@@ -109,7 +109,7 @@
     "tool": {
       "source_boundaries": [
         "src",
-        ".ptsip/contracts/release/profile",
+        ".ptsip/contracts/release/Platform/Common/profile",
         ".ptsip/contracts/schemas/release/profile",
         "License-Authority",
         "README.md",
@@ -121,8 +121,8 @@
     "profiles": {
       "source_boundaries": [
         "src/ptsip/profiles",
-        ".ptsip/contracts/release/profile/project-profile-contracts.yaml",
-        ".ptsip/contracts/release/profile/index.json",
+        ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
+        ".ptsip/contracts/release/Platform/Common/profile/index.json",
         ".ptsip/contracts/schemas/release/profile",
         ".ptsip/engine/developer/Distribution/release/verification/profile"
       ]
@@ -149,7 +149,7 @@
     "published_history": "PUBLISHED_SOURCE_CARRIER_REGISTRY_ASSETS",
     "initial_installable_baseline": "FULL_TOOL_PROFILE_AND_REGISTERED_ENGINE_COMPOSITION_REQUIRED",
     "publication_record": "UPDATE_REGISTRY_AND_PACKAGE_NOTE_AFTER_OBSERVED_PUBLICATION",
-    "installation_contract": ".ptsip/contracts/release/package-installation-contract.json"
+    "installation_contract": ".ptsip/contracts/release/Platform/Common/package-installation-contract.json"
   },
   "identity_order": [
     "PTSIP_Package",
@@ -157,7 +157,7 @@
     "Project Profile",
     "Engine"
   ],
-  "presentation_contract": ".ptsip/contracts/release/release-presentation.json",
-  "evidence_resolution_contract": ".ptsip/contracts/release/publication-evidence.json",
-  "verification_boundary_ref": ".ptsip/contracts/release/verification-boundary.json"
+  "presentation_contract": ".ptsip/contracts/release/Platform/GitHub/release-presentation.json",
+  "evidence_resolution_contract": ".ptsip/contracts/release/Platform/GitHub/publication-evidence.json",
+  "verification_boundary_ref": ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
 }

@@ -1,6 +1,7 @@
 package responsibilityauthority_test
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"testing"
@@ -27,6 +28,18 @@ func TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree(t *testing.T) {
 		raw, err := os.ReadFile(filepath.Join(source, filepath.FromSlash(path)))
 		if err != nil {
 			t.Fatal(err)
+		}
+		if path == authoring.ProfilePath {
+			profile, err := authoring.ReadDocument(source, path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			delete(profile, "component_map")
+			delete(profile, "component_bindings")
+			raw, err = json.Marshal(profile)
+			if err != nil {
+				t.Fatal(err)
+			}
 		}
 		target := filepath.Join(root, filepath.FromSlash(path))
 		if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {

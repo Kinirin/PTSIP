@@ -3,7 +3,7 @@
 ## Current generation and retention
 
 The current formatting and classification contract is
-[`releasenote.json`](../../.ptsip/contracts/release/releasenote.json), with schemas
+[`releasenote.json`](../../.ptsip/contracts/release/Platform/Common/releasenote.json), with schemas
 under [release/releasenote](../../.ptsip/contracts/schemas/release/releasenote/).
 An explicit version declaration change produces a mechanically classified
 English change record with separate Summary, Version changes, Technical details

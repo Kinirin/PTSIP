@@ -455,7 +455,7 @@ func PublisherEnvironment(root string, c Component) (string, error) {
 			Environment string `json:"environment_pattern"`
 		}
 	}
-	if err := ReadJSON(root, ".ptsip/contracts/release/pypi-publishers.json", &routing); err != nil {
+	if err := ReadJSON(root, ".ptsip/contracts/release/Platform/PyPI/pypi-publishers.json", &routing); err != nil {
 		return "", err
 	}
 	if routing.Schema != "ptsip-pypi-publisher-routing/v3" || routing.Authentication.Mode != "API_TOKEN" || routing.Authentication.Environment != "pypi" || routing.Authentication.Secret != "PYPI_API_TOKEN" || routing.Authentication.Username != "__token__" || routing.Authentication.Fallback {

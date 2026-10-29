@@ -320,7 +320,7 @@ Release summaries and detailed technical documents are recorded separately.
 - [Engine interfaces and capabilities](src/ptsip/engines/index.json)
 - [Project Profile contracts and adoption](src/ptsip/profiles/index.yaml)
 - [Schema reference validation](docs/validation-schema-references.md)
-- [Documentation formatting and archive contract](.ptsip/contracts/release/releasenote.json)
+- [Documentation formatting and archive contract](.ptsip/contracts/release/Platform/Common/releasenote.json)
 
 ## License authority
 

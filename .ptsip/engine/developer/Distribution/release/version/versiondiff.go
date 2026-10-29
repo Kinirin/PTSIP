@@ -17,7 +17,7 @@ import (
  "strings"
 )
 
-const versionsContract = ".ptsip/contracts/release/versions_different.json"
+const versionsContract = ".ptsip/contracts/release/Platform/Common/versions_different.json"
 const versionsPreview = ".ptsip/engine/developer/Distribution/release/version/versions_different.ini"
 const versionsSource = "src/VERSION"
 

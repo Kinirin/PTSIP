@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:release:platform:pypi-routing:v1",
+  "title": "PTSIP PyPI Release Contract Routing",
+  "type": "object",
+  "required": [
+    "platform",
+    "root",
+    "contracts",
+    "validation_ref"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "platform": {
+      "const": "PyPI"
+    },
+    "root": {
+      "const": ".ptsip/contracts/release/Platform/PyPI/"
+    },
+    "contracts": {
+      "type": "object",
+      "required": [
+        "publisher_routing"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "publisher_routing": {
+          "const": ".ptsip/contracts/release/Platform/PyPI/pypi-publishers.json"
+        }
+      }
+    },
+    "validation_ref": {
+      "const": ".ptsip/contracts/release/Platform/PyPI/PyPI_validation.json"
+    }
+  }
+}

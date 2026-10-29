@@ -5,8 +5,8 @@ on:
     branches: [main, "dev/**"]
     paths:
       - README.md
-      - .ptsip/contracts/release/releasenote.json
-      - .ptsip/contracts/release/versions_different.json
+      - .ptsip/contracts/release/Platform/Common/releasenote.json
+      - .ptsip/contracts/release/Platform/Common/versions_different.json
       - .ptsip/contracts/schemas/release/versions_different.schema.json
       - .ptsip/contracts/schemas/release/releasenote/**
       - .ptsip/engine/developer/Distribution/release/verification/releasenote/**
@@ -19,8 +19,8 @@ on:
   pull_request:
     paths:
       - README.md
-      - .ptsip/contracts/release/releasenote.json
-      - .ptsip/contracts/release/versions_different.json
+      - .ptsip/contracts/release/Platform/Common/releasenote.json
+      - .ptsip/contracts/release/Platform/Common/versions_different.json
       - .ptsip/contracts/schemas/release/versions_different.schema.json
       - .ptsip/contracts/schemas/release/releasenote/**
       - .ptsip/engine/developer/Distribution/release/verification/releasenote/**

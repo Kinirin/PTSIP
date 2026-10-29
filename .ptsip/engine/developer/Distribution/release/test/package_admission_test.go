@@ -71,11 +71,11 @@ func TestPackageAdmissionRequiresEachNativeHostAndVerifiedSource(t *testing.T) {
 
 func TestCompletePackagePublicationTargetsOnlyPTSIPDespiteIntermediateEngineFiles(t *testing.T) {
 	root := t.TempDir()
-	route, err := os.ReadFile(filepath.Join(repoRoot(t), ".ptsip/contracts/release/pypi-publishers.json"))
+	route, err := os.ReadFile(filepath.Join(repoRoot(t), ".ptsip/contracts/release/Platform/PyPI/pypi-publishers.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	p := filepath.Join(root, ".ptsip/contracts/release")
+	p := filepath.Join(root, ".ptsip/contracts/release/Platform/PyPI")
 	os.MkdirAll(p, 0755)
 	os.WriteFile(filepath.Join(p, "pypi-publishers.json"), route, 0644)
 	m := release.ShippingManifest{PackageDistribution: &release.PublishedComponent{ID: "package", Kind: "package", Version: "0.3.8b3"}}

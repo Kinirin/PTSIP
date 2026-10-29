@@ -67,7 +67,7 @@ func documentationFixture(t *testing.T, changed bool) (string, string, string) {
 	t.Helper()
 	root := t.TempDir()
 	paths := []string{"README.md", "docs/translated/index.yaml", documentation.WorkflowPath,
-		".ptsip/contracts/release/versions_different.json", ".ptsip/contracts/schemas/release/versions_different.schema.json",
+		".ptsip/contracts/release/Platform/Common/versions_different.json", ".ptsip/contracts/schemas/release/versions_different.schema.json",
 		"docs/validation-schema-references.md", "src/ptsip/profiles/index.yaml", "src/ptsip/engines/validation/contract.json", "src/ptsip/engines/contracts/installation-plan.json"}
 	for _, schema := range []string{"Basic_Formatting_readme", "engine_Formatting_readme", "profile_Formatting_readme", "tool_Formatting_readme", "readme-translation-path", "readme-translation-registry"} {
 		paths = append(paths, documentation.SchemaRoot+schema+".schema.json")

@@ -16,7 +16,7 @@ import (
 	"go.yaml.in/yaml/v3"
 )
 
-const ContractPath = ".ptsip/contracts/release/composition-contract.json"
+const ContractPath = ".ptsip/contracts/release/Platform/Common/composition-contract.json"
 
 type Component struct {
 	ID      string `json:"id"`

@@ -310,7 +310,7 @@ func (c *Catalog) CheckProfile(v Validator, profile Document) error {
 			}
 		}
 	}
-	return nil
+	return c.checkComponentBindings(v, profile)
 }
 
 func (c *Catalog) checkResponsibilityRefs(v Validator, raw any) error {
@@ -322,7 +322,7 @@ func (c *Catalog) checkResponsibilityRefs(v Validator, raw any) error {
 	if err != nil {
 		return err
 	}
-	if err := c.CheckProfile(v, profile); err != nil {
+	if err := c.CheckLocalProfile(v, profile); err != nil {
 		return err
 	}
 	known, err := ids(profile["responsibility"], "responsibility")

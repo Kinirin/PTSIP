@@ -19,7 +19,7 @@ import (
 // No developer/automation command, retired developer-policy resolver, or
 // root-family-policy schema may be consulted by this verifier.
 const (
-	profileContractPath   = ".ptsip/contracts/release/profile/project-profile-contracts.yaml"
+	profileContractPath   = ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml"
 	profileProjectionPath = "src/ptsip/specdata/project-profile-contracts.yaml"
 	profileSourcePath     = "src/ptsip/profiles"
 )

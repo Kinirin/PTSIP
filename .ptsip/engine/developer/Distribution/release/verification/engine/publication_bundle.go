@@ -87,7 +87,7 @@ func validatePublicationBundle(root string, opts PublicationOptions) (Publicatio
 	var catalog struct {
 		Prefixes map[string]string `json:"tag_prefixes"`
 	}
-	if err := document(root, ".ptsip/contracts/release/release-contract.json", &catalog); err != nil {
+	if err := document(root, ".ptsip/contracts/release/Platform/Common/release-contract.json", &catalog); err != nil {
 		return bundle, err
 	}
 	if catalog.Prefixes["engine"] == "" {

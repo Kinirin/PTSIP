@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const PresentationPath = ".ptsip/contracts/release/release-presentation.json"
+const PresentationPath = ".ptsip/contracts/release/Platform/GitHub/release-presentation.json"
 
 type Presentation struct {
 	Schema        string   `json:"schema_version"`

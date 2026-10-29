@@ -51,6 +51,8 @@ func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document
 	if err != nil {
 		t.Fatal(err)
 	}
+	delete(profile, "component_map")
+	delete(profile, "component_bindings")
 	catalog.Definitions = doc(`{"schema_version":"ptsip-responsibility-authority/v1","condition_list":[{"ID":"C-ID-review","name":"Review is complete"}],"authority_list":[{"ID":"OA-ID-edit","name":"Edit policy","action":"edit","scope":"example"}]}`)
 	profile["responsibility"] = doc(`{"items":[{"name":"Policy editor","ID":"R-ID-editor","condition_id":["C-ID-review"],"Operational_Authority":["OA-ID-edit"],"role_name":"Editor","runtime_required":false}]}`)["items"]
 	return profile
@@ -295,5 +297,10 @@ func TestGenerationCLILeavesDefaultAndFailureUnwritten(t *testing.T) {
 	generated := result.(map[string]any)["document"].(map[string]any)
 	if len(generated["responsibility"].([]any)) != 0 {
 		t.Fatal("unspecified mappings generated")
+	}
+	for _, field := range []string{"component_map", "component_bindings"} {
+		if _, copied := generated[field]; copied {
+			t.Fatal("unspecified component assignments generated")
+		}
 	}
 }

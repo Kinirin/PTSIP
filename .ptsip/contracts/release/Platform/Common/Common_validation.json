@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:release:platform:common-routing:v1",
+  "title": "PTSIP Common Release Contract Routing",
+  "type": "object",
+  "required": [
+    "platform",
+    "root",
+    "contracts",
+    "validation_ref"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "platform": {
+      "const": "Common"
+    },
+    "root": {
+      "const": ".ptsip/contracts/release/Platform/Common/"
+    },
+    "contracts": {
+      "type": "object",
+      "required": [
+        "admission",
+        "composition",
+        "migration_inventory",
+        "package_installation",
+        "profile_routing",
+        "profile_snapshot",
+        "release",
+        "release_contract_validation",
+        "release_documentation",
+        "release_validation",
+        "verification",
+        "verification_boundary",
+        "version_changes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "admission": {
+          "const": ".ptsip/contracts/release/Platform/Common/admission.json"
+        },
+        "composition": {
+          "const": ".ptsip/contracts/release/Platform/Common/composition-contract.json"
+        },
+        "migration_inventory": {
+          "const": ".ptsip/contracts/release/Platform/Common/migration-inventory.json"
+        },
+        "package_installation": {
+          "const": ".ptsip/contracts/release/Platform/Common/package-installation-contract.json"
+        },
+        "profile_routing": {
+          "const": ".ptsip/contracts/release/Platform/Common/profile/index.json"
+        },
+        "profile_snapshot": {
+          "const": ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml"
+        },
+        "release": {
+          "const": ".ptsip/contracts/release/Platform/Common/release-contract.json"
+        },
+        "release_contract_validation": {
+          "const": ".ptsip/contracts/release/Platform/Common/release-contract_validation.json"
+        },
+        "release_documentation": {
+          "const": ".ptsip/contracts/release/Platform/Common/releasenote.json"
+        },
+        "release_validation": {
+          "const": ".ptsip/contracts/release/Platform/Common/release_validation.json"
+        },
+        "verification": {
+          "const": ".ptsip/contracts/release/Platform/Common/verification-contract.json"
+        },
+        "verification_boundary": {
+          "const": ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
+        },
+        "version_changes": {
+          "const": ".ptsip/contracts/release/Platform/Common/versions_different.json"
+        }
+      }
+    },
+    "validation_ref": {
+      "const": ".ptsip/contracts/release/Platform/Common/Common_validation.json"
+    }
+  }
+}

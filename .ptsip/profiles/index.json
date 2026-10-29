@@ -4,17 +4,16 @@
   "profiles": [
     {
       "id": "main",
-      "resource": "main.ptsip.yaml"
-    },
-    {
-      "id": "rules",
-      "resource": "rules.ptsip.yaml"
-    },
-    {
-      "id": "responsibility-authority",
+      "resource": "main.ptsip.yaml",
+      "responsibility_authority_ref": "responsibility-authority"
+    }
+  ],
+  "auxiliary_profiles": {
+    "responsibility-authority": {
       "resource": "Responsibility-Authority-list.yaml",
       "profile_role": "RESPONSIBILITY-AUTHORITY",
-      "schema_ref": "../contracts/schemas/compile-sealed-rbac/Responsibilities_List.schema.json"
+      "schema_ref": "../contracts/schemas/compile-sealed-rbac/Responsibilities_List.schema.json",
+      "source_profile": "main.ptsip.yaml"
     }
-  ]
+  }
 }

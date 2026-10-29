@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=../contracts/schemas/compile-sealed-rbac/Responsibilities_List.schema.json
-# Add explicit mappings after declaring the referenced condition and authority IDs in contract_ref.
+# Component owner labels are declarations; they do not grant operational permission.
 ptsip:
   version: pp.2.01
   revision: Rev.0001
@@ -11,3 +11,409 @@ responsibility_map:
   mode: explicit
   contract_ref: .ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json
 responsibility: []
+component_map:
+  mode: explicit
+  profile_ref: .ptsip/profiles/main.ptsip.yaml
+  scope: DECLARED_COMPONENT_METADATA_ONLY
+  execution_authorized: false
+component_bindings:
+- component_id: official-context-engine
+  roles:
+  - IMPLEMENTATION
+  release_owner: official-context-engine
+  compatibility_owner: official-context-engine
+  runtime_required: false
+- component_id: official-storage-engine
+  roles:
+  - IMPLEMENTATION
+  release_owner: official-storage-engine
+  compatibility_owner: official-storage-engine
+  runtime_required: false
+- component_id: official-validation-engine
+  roles:
+  - IMPLEMENTATION
+  release_owner: official-validation-engine
+  compatibility_owner: official-validation-engine
+  runtime_required: false
+- component_id: official-discovery-engine
+  roles:
+  - IMPLEMENTATION
+  release_owner: official-discovery-engine
+  compatibility_owner: official-discovery-engine
+  runtime_required: false
+- component_id: official-planning-engine
+  roles:
+  - IMPLEMENTATION
+  release_owner: official-planning-engine
+  compatibility_owner: official-planning-engine
+  runtime_required: false
+- component_id: official-execution-engine
+  roles:
+  - IMPLEMENTATION
+  release_owner: official-execution-engine
+  compatibility_owner: official-execution-engine
+  runtime_required: false
+- component_id: official-projection-engine
+  roles:
+  - IMPLEMENTATION
+  release_owner: official-projection-engine
+  compatibility_owner: official-projection-engine
+  runtime_required: false
+- component_id: official-engine-neutral-contracts
+  roles:
+  - CONFIGURATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-core
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: true
+- component_id: ptsip-evidence
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: agent-contract-candidate-compiler
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: agent-contract-candidate-resolver
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: agent-contract-candidate-contracts
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-registry
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-contract-schema
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-semantic-specs
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-operation-protocols
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-mutation-gates
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-io-contracts
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-vocabulary
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-promotion-contracts
+  roles:
+  - CONFIGURATION
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: agent-contract-runtime
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: agent-contract-implementation-binding
+  roles:
+  - CONFIGURATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-source-compat
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-migration
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-remediation
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-contract-runtime
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-product-protocol-handoff
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-case-selection
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-execution-composition
+  roles:
+  - IMPLEMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-contract-catalog
+  roles:
+  - CONFIGURATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-product-protocol-contract
+  roles:
+  - GOVERNANCE
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-selection-contract
+  roles:
+  - GOVERNANCE
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-execution-composition-contract
+  roles:
+  - GOVERNANCE
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-contract-registration-automation
+  roles:
+  - AUTOMATION
+  - IMPLEMENTATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: ptsip-distribution
+  roles:
+  - CONFIGURATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-package-assembly
+  roles:
+  - CONFIGURATION
+  release_owner: delivery
+  compatibility_owner: delivery
+  runtime_required: false
+- component_id: ptsip-embedded-contracts
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: true
+- component_id: ptsip-canonical-contracts
+  release_owner: specification
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: ptsip-public-profiles
+  roles:
+  - CONFIGURATION
+  release_owner: tool
+  compatibility_owner: specification
+  runtime_required: true
+- component_id: repository-profile-history
+  roles:
+  - CONFIGURATION
+  release_owner: architecture
+  compatibility_owner: specification
+  runtime_required: false
+- component_id: repository-architecture
+  roles:
+  - CONFIGURATION
+  - GOVERNANCE
+  release_owner: architecture
+  compatibility_owner: architecture
+  runtime_required: false
+- component_id: repository-license-authority
+  roles:
+  - GOVERNANCE
+  - DOCUMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: product-documentation
+  roles:
+  - DOCUMENTATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-core-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-validation-runtime-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-evidence-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-source-compat-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-migration-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-remediation-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: vpms-contract-plane-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: ptsip-contract-verification
+  roles:
+  - VERIFICATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: agent-contract-candidate-verification
+  roles:
+  - VERIFICATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: agent-contract-runtime-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: agent-contract-plane-verification
+  roles:
+  - VERIFICATION
+  release_owner: tool
+  compatibility_owner: tool
+  runtime_required: false
+- component_id: policy-responsibility-analysis-verification
+  roles:
+  - VERIFICATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: developer-contract-schema-verification
+  roles:
+  - VERIFICATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: repository-architecture-verification
+  roles:
+  - VERIFICATION
+  release_owner: architecture
+  compatibility_owner: architecture
+  runtime_required: false
+- component_id: repository-release-verification
+  roles:
+  - VERIFICATION
+  release_owner: delivery
+  compatibility_owner: delivery
+  runtime_required: false
+- component_id: repository-verification-support
+  roles:
+  - CONFIGURATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: repository-test-mode-control-plane
+  roles:
+  - IMPLEMENTATION
+  - VERIFICATION
+  - CONFIGURATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: repository-release-automation
+  roles:
+  - AUTOMATION
+  release_owner: delivery
+  compatibility_owner: delivery
+  runtime_required: false
+- component_id: repository-ci
+  roles:
+  - AUTOMATION
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false
+- component_id: repository-maintenance
+  roles:
+  - AUTOMATION
+  - CONFIGURATION
+  - DOCUMENTATION
+  - GOVERNANCE
+  release_owner: development_tooling
+  compatibility_owner: development_tooling
+  runtime_required: false

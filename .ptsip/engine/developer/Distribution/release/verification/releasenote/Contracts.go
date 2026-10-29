@@ -13,7 +13,7 @@ import (
 )
 
 const SchemaRoot = ".ptsip/contracts/schemas/release/releasenote/"
-const WorkflowPath = ".ptsip/contracts/release/releasenote.json"
+const WorkflowPath = ".ptsip/contracts/release/Platform/Common/releasenote.json"
 const BasicID = "urn:ptsip:docs:format:basic-readme:v1"
 
 type Catalog struct {
@@ -68,7 +68,7 @@ func Load(root string) (*Catalog, error) {
 	w := c.Workflow
 	if w.Schema != "ptsip-release-documentation/v1" || w.Readme.Path != "README.md" || w.Readme.Language != "en" ||
 		w.Readme.Schema != SchemaRoot+"Basic_Formatting_readme.schema.json" ||
-		w.VersionContract != ".ptsip/contracts/release/versions_different.json" || w.VersionSchema != ".ptsip/contracts/schemas/release/versions_different.schema.json" ||
+		w.VersionContract != ".ptsip/contracts/release/Platform/Common/versions_different.json" || w.VersionSchema != ".ptsip/contracts/schemas/release/versions_different.schema.json" ||
 		w.Translation.Registry != "docs/translated/index.yaml" || w.Translation.Source != "README.md" || w.Translation.Archive || w.Translation.TargetSet != "REGISTERED_PATHS_ONLY" ||
 		w.Translation.RegistrySchema != SchemaRoot+"readme-translation-registry.schema.json" || w.Translation.PathSchema != SchemaRoot+"readme-translation-path.schema.json" ||
 		w.Archive.Root != "docs/releasenote" || w.Archive.Language != "en" || w.Archive.WritePolicy != "CREATE_ONLY_OR_IDENTICAL" || w.Archive.Translated || w.Archive.EngineIndex ||

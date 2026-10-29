@@ -12,7 +12,7 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
-const EvidenceContractPath = ".ptsip/contracts/release/publication-evidence.json"
+const EvidenceContractPath = ".ptsip/contracts/release/Platform/GitHub/publication-evidence.json"
 
 func SameReleaseRequest(a, b Selection) bool {
 	x, _ := json.Marshal(struct {

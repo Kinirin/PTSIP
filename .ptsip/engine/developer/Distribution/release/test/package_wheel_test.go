@@ -47,7 +47,7 @@ func TestPipPackageHasEveryMandatoryEngineAndProfilePayload(t *testing.T) {
 		return b.Bytes()
 	}
 	tool := makeZip(map[string]string{"ptsip/__init__.py": "existing Tool payload", "ptsip-0.3.8b1.dist-info/METADATA": "Metadata-Version: 2.4\nName: PTSIP\nVersion: 0.3.8b1\nRequires-Dist: PyYAML>=6\n\nTool description\n", "ptsip-0.3.8b1.dist-info/entry_points.txt": "[console_scripts]\nptsip=ptsip.cli:main\n"})
-	profiles := makeZip(map[string]string{"src/ptsip/profiles/index.yaml": "catalog", "src/ptsip/profiles/example.ptsip.yaml": "example", ".ptsip/contracts/release/profile/project-profile-contracts.yaml": "current: pp.1.02\n"})
+	profiles := makeZip(map[string]string{"src/ptsip/profiles/index.yaml": "catalog", "src/ptsip/profiles/example.ptsip.yaml": "example", ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml": "current: pp.1.02\n"})
 	wheel, err := release.PackageWheel(tool, profiles, snapshot, registered, "0.3.8.1b1")
 	if err != nil {
 		t.Fatal(err)

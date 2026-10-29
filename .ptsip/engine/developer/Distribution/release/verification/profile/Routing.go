@@ -10,7 +10,7 @@ import (
 // The snapshot is a developer artifact-shape contract, not a replacement
 // authority for consumer profile identity, lifecycle or runtime admission.
 func verifyRouting(root string) error {
-	raw, err := os.ReadFile(filepath.Join(root, ".ptsip/contracts/release/profile/index.json"))
+	raw, err := os.ReadFile(filepath.Join(root, ".ptsip/contracts/release/Platform/Common/profile/index.json"))
 	if err != nil {
 		return err
 	}

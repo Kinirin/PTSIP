@@ -141,6 +141,8 @@ func (c *Catalog) GenerateProfile(v Validator, input Document) (Document, error)
 	// Metadata is retained from the editable profile. An omitted responsibility
 	// list generates no mappings; it never copies or invents grants.
 	doc["responsibility"] = []any{}
+	delete(doc, "component_map")
+	delete(doc, "component_bindings")
 	for key, value := range clone(input) {
 		doc[key] = value
 	}

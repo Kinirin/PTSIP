@@ -2,7 +2,6 @@ ptsip:
   version: "pp.1.02"
   revision: "Rev.0004"
   profile_role: "PROJECT"
-  rule_profile: "rules.ptsip.yaml"
   specification:
     source: "https://github.com/Kinirin/PTSIP"
     revision: "3c47816770d194ae42f98faedc911d980db0e62a"
@@ -13,99 +12,62 @@ responsibility_map:
 components:
   - id: official-context-engine
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/engines/context/**"
     purpose: independent_rust_context_engine_with_registered_neutral_contract
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: official-context-engine
-    compatibility_owner: official-context-engine
 
   - id: official-storage-engine
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/engines/storage/**"
     purpose: independent_rust_storage_engine_with_registered_neutral_contract
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: official-storage-engine
-    compatibility_owner: official-storage-engine
 
   - id: official-validation-engine
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/engines/validation/**"
     purpose: independent_rust_validation_engine_with_registered_neutral_contract
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: official-validation-engine
-    compatibility_owner: official-validation-engine
 
   - id: official-discovery-engine
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/engines/discovery/**"
     purpose: independent_rust_discovery_engine_with_registered_neutral_contract
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: official-discovery-engine
-    compatibility_owner: official-discovery-engine
 
   - id: official-planning-engine
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/engines/planning/**"
     purpose: independent_rust_planning_engine_with_registered_neutral_contract
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: official-planning-engine
-    compatibility_owner: official-planning-engine
 
   - id: official-execution-engine
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/engines/execution/**"
     purpose: independent_rust_execution_engine_with_registered_neutral_contract
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: official-execution-engine
-    compatibility_owner: official-execution-engine
 
   - id: official-projection-engine
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/engines/projection/**"
     purpose: independent_rust_projection_engine_with_registered_neutral_contract
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: official-projection-engine
-    compatibility_owner: official-projection-engine
 
   - id: official-engine-neutral-contracts
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/ptsip/engines/index.json"
       - "src/ptsip/engines/contracts/**"
@@ -114,15 +76,10 @@ components:
       - "src/ptsip/engines/.gitignore"
     purpose: language_neutral_federated_engine_contract_schema_and_plan_routes
     shipped: false
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: ptsip-core
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/*.py"
       - "src/ptsip/profiles/*.py"
@@ -137,54 +94,34 @@ components:
       - "src/ptsip/agent_contracts/*.py"
     purpose: distributed_ptsip_reference_tool
     shipped: true
-    runtime_required: true
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: ptsip-evidence
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/evidence/**"
     purpose: normalized_evidence_contract_and_adapter_runtime
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: agent-contract-candidate-compiler
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/agent_contracts/candidate.py"
     purpose: candidate_compilation_reproducibility_source_parity_and_projection_binding_validation
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: agent-contract-candidate-resolver
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/agent_contracts/machine_resolver.py"
     purpose: bounded_candidate_operation_resolution_and_freshness_checked_read_only_projection
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: agent-contract-candidate-contracts
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/digests/policy-v1.json"
       - "src/agent_contracts/digests/projection-v1.json"
@@ -194,189 +131,119 @@ components:
       - "src/agent_contracts/conformance/context-evidence-identity.json"
     purpose: language_neutral_candidate_serialization_digest_projection_and_asset_format_contracts
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-registry
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/index.yaml"
     purpose: exact_agent_contract_member_identity_and_resource_registry
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-contract-schema
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/schemas/contracts/**"
     purpose: language_neutral_agent_contract_grammar_and_structural_validation
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-semantic-specs
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/spec/**"
     purpose: machine_readable_ptsip_agent_rule_meaning_and_normative_semantic_units
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-operation-protocols
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/operations/**"
       - "src/agent_contracts/actions/**"
       - "src/agent_contracts/conditions/**"
     purpose: operation_action_condition_protocol_flow_effects_and_failure_semantics
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-mutation-gates
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/gates/**"
     purpose: product_operation_mutation_gate_requirements_distinct_from_execution_and_developer_policy
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-io-contracts
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/schemas/io/**"
     purpose: language_neutral_operation_action_and_condition_input_output_contracts
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-vocabulary
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/vocabulary/**"
     purpose: stable_agent_contract_vocabulary_identity_and_meaning
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-promotion-contracts
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/promotion/index.json"
       - "src/agent_contracts/promotion/specification-contract.json"
     purpose: specification_machine_promotion_contract_candidate_and_exact_identity_registry_without_mpd_runtime_dependency
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: agent-contract-runtime
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/agent_contracts/__init__.py"
       - "src/agent_contracts/resolver.py"
       - "src/agent_contracts/validator.py"
     purpose: distributed_agent_contract_resolution_and_validation_runtime
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: agent-contract-implementation-binding
     classification: PRODUCT
-    roles:
-      - CONFIGURATION
     include:
       - "src/agent_contracts/bindings/current.yaml"
     purpose: python_callable_cli_and_external_contract_adapter_bindings
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: ptsip-source-compat
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/source_compat/**"
     purpose: revision_bound_source_profile_compatibility_runtime
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: ptsip-migration
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/migration/**"
     purpose: deterministic_profile_migration_planning_execution_and_recovery_runtime
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: ptsip-remediation
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/ptsip/remediation/**"
     purpose: generic_authority_aware_remediation_runtime
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/vpms/__init__.py"
       - "src/vpms/domain/__init__.py"
@@ -388,68 +255,43 @@ components:
       - "src/vpms/integration/**"
     purpose: distributed_verification_protocol_management_library
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-contract-runtime
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/vpms/contract_runtime.py"
     purpose: bounded_shipped_contract_validation_and_fail_closed_activation_entry
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-product-protocol-handoff
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/vpms/domain/snapshot.py"
     purpose: factory_validated_immutable_case_and_reference_snapshot_handoff
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-case-selection
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/vpms/selection/**"
     purpose: explicit_case_id_or_registered_rule_selection_without_execution
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-execution-composition
     classification: PRODUCT
-    roles:
-      - IMPLEMENTATION
     include:
       - "src/vpms/execution/composition.py"
     purpose: validated_selection_handoff_and_all_adapter_preflight_before_execution
     shipped: true
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
 
 
   - id: vpms-contract-catalog
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/vpms/contracts/identity-registry.json"
       - "src/vpms/contracts/index.json"
@@ -457,55 +299,34 @@ components:
       - "src/vpms/contracts/schemas/**"
     purpose: non_executing_vpms_product_contract_identity_shape_and_resolution_catalog
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-product-protocol-contract
     classification: PRODUCT
-    roles:
-      - GOVERNANCE
     include:
       - "src/vpms/contracts/protocol.json"
     purpose: active_product_case_reference_runner_and_result_protocol_contract
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-selection-contract
     classification: PRODUCT
-    roles:
-      - GOVERNANCE
     include:
       - "src/vpms/contracts/selection.json"
     purpose: active_explicit_case_selection_request_rule_result_and_diagnostic_contract
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-execution-composition-contract
     classification: PRODUCT
-    roles:
-      - GOVERNANCE
     include:
       - "src/vpms/contracts/execution-composition.json"
     purpose: active_selection_to_execution_adapter_preflight_and_compatibility_contract
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: vpms-contract-registration-automation
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - AUTOMATION
-      - IMPLEMENTATION
     include:
       - "developer/automation/internal/machine/support_registration.go"
       - "developer/automation/internal/machine/support_catalog.go"
@@ -513,37 +334,24 @@ components:
       - "developer/automation/internal/machine/schema_resources.go"
     purpose: developer_only_contract_identity_preflight_registration_and_explicit_lifecycle_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
 
   - id: ptsip-distribution
     classification: PRODUCT
-    roles:
-      - CONFIGURATION
     include:
       - "pyproject.toml"
     purpose: product_distribution_identity_runtime_metadata_and_package_contract
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: ptsip-package-assembly
     classification: DELIVERY
-    roles:
-      - CONFIGURATION
     include:
       - "MANIFEST.in"
       - "setup.py"
     purpose: release_distribution_content_assembly_support_and_public_profile_projection_configuration
     shipped: false
-    runtime_required: false
     executable: false
-    release_owner: delivery
-    compatibility_owner: delivery
 
   - id: ptsip-embedded-contracts
     classification: NEUTRAL_CONTRACT
@@ -555,10 +363,7 @@ components:
       - "src/policy/**"
     purpose: tool_embedded_machine_readable_specification_support_policy_and_agent_contracts
     shipped: true
-    runtime_required: true
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: ptsip-canonical-contracts
     classification: NEUTRAL_CONTRACT
@@ -567,71 +372,44 @@ components:
       - "registry/**"
     purpose: canonical_ptsip_specification_and_machine_readable_contracts
     shipped: false
-    runtime_required: false
     executable: false
-    release_owner: specification
-    compatibility_owner: specification
 
   - id: ptsip-public-profiles
     classification: NEUTRAL_CONTRACT
-    roles:
-      - CONFIGURATION
     include:
       - "src/ptsip/profiles/index.yaml"
       - "src/ptsip/profiles/*.ptsip.yaml"
     purpose: canonical_public_project_profile_templates_distributed_with_ptsip_tool
     shipped: true
-    runtime_required: true
     executable: false
-    release_owner: tool
-    compatibility_owner: specification
 
   - id: repository-profile-history
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - CONFIGURATION
     include:
       - "src/ptsip/profiles/history/**"
     purpose: immutable_project_profile_generation_baselines_for_source_verification
     shipped: false
-    runtime_required: false
     executable: false
-    release_owner: architecture
-    compatibility_owner: specification
 
   - id: repository-architecture
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - CONFIGURATION
-      - GOVERNANCE
     include:
       - ".ptsip/profiles/main.ptsip.yaml"
       - ".ptsip/**"
     purpose: repository_development_architecture_declaration
     shipped: false
-    runtime_required: false
     executable: false
-    release_owner: architecture
-    compatibility_owner: architecture
 
   - id: repository-license-authority
     classification: PRODUCT
-    roles:
-      - GOVERNANCE
-      - DOCUMENTATION
     include:
       - "License-Authority/**"
     purpose: closed_path_owned_license_authority_and_distribution_documents
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: product-documentation
     classification: PRODUCT
-    roles:
-      - DOCUMENTATION
     include:
       - "README.md"
       - "docs/translated/**"
@@ -639,15 +417,10 @@ components:
       - "docs/releasenote/**"
     purpose: product_distribution_documentation_and_release_history
     shipped: true
-    runtime_required: false
     executable: false
-    release_owner: tool
-    compatibility_owner: tool
 
   - id: ptsip-core-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/clarification/**"
       - "src/tests/ptsip/cli/**"
@@ -672,10 +445,7 @@ components:
       - "src/tests/ptsip/test_context_plane.py"
     purpose: product_owned_ptsip_core_behavior_and_integration_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
@@ -698,16 +468,11 @@ components:
 
   - id: ptsip-validation-runtime-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/engine_runtime_validation/**"
     purpose: installed_official_validation_engine_native_schema_smoke_and_fail_closed_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/ptsip/engines/index.json"
       - "src/ptsip/engines/validation/**"
@@ -717,16 +482,11 @@ components:
 
   - id: ptsip-evidence-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/evidence/**"
     purpose: product_owned_normalized_evidence_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
@@ -735,16 +495,11 @@ components:
 
   - id: ptsip-source-compat-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/source_compat/**"
     purpose: product_owned_source_compatibility_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
@@ -754,16 +509,11 @@ components:
 
   - id: ptsip-migration-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/migration/**"
     purpose: product_owned_migration_planning_execution_and_recovery_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
@@ -773,16 +523,11 @@ components:
 
   - id: ptsip-remediation-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/remediation/**"
     purpose: product_owned_generic_remediation_contract_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
@@ -793,8 +538,6 @@ components:
 
   - id: vpms-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/vpms/domain/**"
       - "src/tests/vpms/execution/**"
@@ -803,10 +546,7 @@ components:
       - "src/tests/vpms/selection/**"
     purpose: product_owned_vpms_behavior_architecture_and_ptsip_integration_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/vpms/__init__.py"
       - "src/vpms/domain/**"
@@ -820,16 +560,11 @@ components:
 
   - id: vpms-contract-plane-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/vpms/contracts/**"
     purpose: product_owned_vpms_contract_shape_registration_lifecycle_boundary_and_installed_resource_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - "src/vpms/contracts/**"
       - "src/vpms/contract_runtime.py"
@@ -848,8 +583,6 @@ components:
 
   - id: ptsip-contract-verification
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/contracts/**"
       - "src/tests/ptsip/agent_contracts/test_contract_plane.py"
@@ -857,10 +590,7 @@ components:
       - "src/tests/ptsip/governance/test_contracts.py"
     purpose: canonical_embedded_and_governance_contract_consistency_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
     analysis_inputs:
       - "src/tests/ptsip/conftest.py"
       - "src/tests/ptsip/_test_support.py"
@@ -875,17 +605,12 @@ components:
 
   - id: agent-contract-candidate-verification
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/agent_contracts/test_candidate_parity.py"
       - "src/tests/ptsip/agent_contracts/test_projection_bindings.py"
     purpose: candidate_cutover_parity_and_explicit_semantic_projection_binding_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
     analysis_inputs:
       - "src/agent_contracts/candidate.py"
       - "src/agent_contracts/machine_resolver.py"
@@ -922,16 +647,11 @@ components:
 
   - id: agent-contract-runtime-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/agent_contracts/test_resolver.py"
     purpose: bounded_exact_product_operation_resolution_and_fail_closed_behavior_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - ".ptsip/profiles/main.ptsip.yaml"
       - "src/agent_contracts/__init__.py"
@@ -949,17 +669,12 @@ components:
 
   - id: agent-contract-plane-verification
     classification: PRODUCT
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/agent_contracts/test_contract_plane.py"
       - "src/tests/agent_contracts/test_promotion_contract.py"
     purpose: distributed_agent_contract_corpus_schema_identity_reference_and_candidate_projection_integrity_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: tool
-    compatibility_owner: tool
     analysis_inputs:
       - ".ptsip/profiles/main.ptsip.yaml"
       - "src/agent_contracts/__init__.py"
@@ -987,16 +702,11 @@ components:
 
   - id: policy-responsibility-analysis-verification
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/policy_responsibility_analysis/**"
     purpose: policy_responsibility_analysis_generation_coverage_current_authority_lookup_and_deterministic_regeneration_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
     analysis_inputs:
       - "developer/policy/analysis/**"
       - "developer/policy/analysis/schemas/policy-responsibility-analysis*.json"
@@ -1006,16 +716,11 @@ components:
 
   - id: developer-contract-schema-verification
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - VERIFICATION
     include:
       - "developer/tests/schema_validation/**"
     purpose: developer_schema_catalog_json_identity_and_installed_ptsip_validation_limited_shape_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
     analysis_inputs:
       - ".ptsip/contracts/schemas/**"
       - ".ptsip/engine/developer/**"
@@ -1024,8 +729,6 @@ components:
 
   - id: repository-architecture-verification
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - VERIFICATION
     include:
       - "src/tests/ptsip/repository/test_self_profile.py"
       - "developer/tests/go.mod"
@@ -1040,10 +743,7 @@ components:
       - "developer/tests/engines/**"
     purpose: repository_profile_and_active_planning_surface_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: architecture
-    compatibility_owner: architecture
     analysis_inputs:
       - "src/agent_contracts/contracts/context-evidence-identity.json"
       - "src/agent_contracts/conformance/context-evidence-identity.json"
@@ -1065,8 +765,6 @@ components:
 
   - id: repository-release-verification
     classification: DELIVERY
-    roles:
-      - VERIFICATION
     include:
       - ".github/checks/release/test/**"
       - "developer/tests/release/*.go"
@@ -1074,10 +772,7 @@ components:
       - ".github/scripts/verify_distribution_contracts.py"
     purpose: release_identity_workflow_contract_and_distribution_readiness_verification
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: delivery
-    compatibility_owner: delivery
     analysis_inputs:
       - "pyproject.toml"
       - "MANIFEST.in"
@@ -1097,34 +792,22 @@ components:
 
   - id: repository-verification-support
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - CONFIGURATION
     include:
       - "src/tests/ptsip/_test_support.py"
       - "src/tests/ptsip/conftest.py"
     purpose: shared_test_fixture_and_collection_support
     shipped: false
-    runtime_required: false
     executable: false
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
 
   - id: repository-test-mode-control-plane
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - IMPLEMENTATION
-      - VERIFICATION
-      - CONFIGURATION
     include:
       - ".github/test_modes.yaml"
       - ".github/checks/*"
       - "src/tests/ptsip/test_modes/**"
     purpose: test_mode_execution_contract_registry_validation_and_selection_resolution
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
     analysis_inputs:
       - ".ptsip/profiles/main.ptsip.yaml"
       - ".github/workflows/tooling-test.yml"
@@ -1132,8 +815,6 @@ components:
 
   - id: repository-release-automation
     classification: DELIVERY
-    roles:
-      - AUTOMATION
     include:
       - ".github/checks/release/**"
       - ".github/workflows/tooling-release.yml"
@@ -1141,10 +822,7 @@ components:
       - ".github/checks/release/test/**"
     purpose: tool_release_build_contract_tagging_and_publication_automation
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: delivery
-    compatibility_owner: delivery
     analysis_inputs:
       - "pyproject.toml"
       - "src/ptsip/profiles/**"
@@ -1157,8 +835,6 @@ components:
 
   - id: repository-ci
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - AUTOMATION
     include:
       - ".github/workflows/tooling-test.yml"
       - ".github/workflows/readme-translation.yml"
@@ -1170,10 +846,7 @@ components:
       - ".codex/openai-local-bridge/**"
     purpose: repository_verification_execution_and_localization_automation
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
     analysis_inputs:
       - "src/tests/**"
       - "src/**"
@@ -1184,11 +857,6 @@ components:
 
   - id: repository-maintenance
     classification: DEVELOPMENT_TOOLING
-    roles:
-      - AUTOMATION
-      - CONFIGURATION
-      - DOCUMENTATION
-      - GOVERNANCE
     include:
       - ".gitignore"
       - ".gitattributes"
@@ -1204,10 +872,7 @@ components:
       - "developer/**"
     purpose: development_planning_evidence_and_repository_maintenance
     shipped: false
-    runtime_required: false
     executable: true
-    release_owner: development_tooling
-    compatibility_owner: development_tooling
 
 associated_artifacts:
   - id: agent-contract-candidate-projections

@@ -13,7 +13,7 @@ func TestCTRLPublicationGateDoesNotLoadLegacyAuthority(t *testing.T) {
 		t.Fatal(err)
 	}
 	root := t.TempDir()
-	const contract = ".ptsip/contracts/release/verification-boundary.json"
+	const contract = ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
 	if err := AdmitCTRLPublicationPolicy(root); err == nil {
 		t.Fatal("missing verification contract admitted publication")
 	}

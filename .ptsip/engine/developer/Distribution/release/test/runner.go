@@ -150,11 +150,11 @@ func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract
 	if err := boundary.CheckOperation(root, "SOURCE_BOUND_TEST_EVIDENCE"); err != nil {
 		return err
 	}
-	if contractRef != ".ptsip/contracts/release/verification-contract.json" ||
+	if contractRef != ".ptsip/contracts/release/Platform/Common/verification-contract.json" ||
 		contract.Workflow != ".github/workflows/tooling-test.yml" ||
 		contract.ModeRegistry != ".github/test_modes.yaml" ||
 		contract.TestRoot != ".ptsip/engine/developer/Distribution/release/test/" ||
-		contract.Production != ".ptsip/contracts/release/composition-contract.json" ||
+		contract.Production != ".ptsip/contracts/release/Platform/Common/composition-contract.json" ||
 		contract.Publication == nil || *contract.Publication ||
 		len(contract.Required) != 2 ||
 		contract.Required[0] != "windows-x64" ||
@@ -171,7 +171,7 @@ func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract
 		Publication *bool  `json:"publication_authorized"`
 		Boundary    string `json:"verification_boundary_ref"`
 	}
-	if err := release.ReadJSON(root, ".ptsip/contracts/release/admission.json", &gate); err != nil {
+	if err := release.ReadJSON(root, ".ptsip/contracts/release/Platform/Common/admission.json", &gate); err != nil {
 		return fmt.Errorf("read-only release admission boundary missing: %w", err)
 	}
 	if gate.Schema != "ptsip-release-admission-direction-projection/v1" ||
@@ -305,11 +305,11 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 			return result, fmt.Errorf("native Project Profile verification failed: %w", err)
 		}
 		archive := filepath.Join(out, "profiles-"+c.Version+".zip")
-		files, err := release.Run(root, "git", "ls-tree", "-r", "--name-only", selection.SourceSHA, "src/ptsip/profiles", ".ptsip/contracts/release/profile/project-profile-contracts.yaml")
+		files, err := release.Run(root, "git", "ls-tree", "-r", "--name-only", selection.SourceSHA, "src/ptsip/profiles", ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml")
 		if err != nil {
 			return result, err
 		}
-		args := []string{"git", "archive", "--format=zip", "--output", archive, selection.SourceSHA, ".ptsip/contracts/release/profile/project-profile-contracts.yaml"}
+		args := []string{"git", "archive", "--format=zip", "--output", archive, selection.SourceSHA, ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml"}
 		for _, ref := range strings.Fields(string(files)) {
 			name := strings.TrimPrefix(ref, "src/ptsip/profiles/")
 			if filepath.Base(name) == name && (name == "index.yaml" || strings.HasSuffix(name, ".ptsip.yaml")) {

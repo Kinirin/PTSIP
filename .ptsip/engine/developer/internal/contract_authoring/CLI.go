@@ -130,8 +130,8 @@ func WriteDocument(root, relative string, doc Document) error {
 func Run(root, selected, operation, family, input, output string, validate Validator) (any, int) {
 	report := Document{"status": "FAIL", "scope": "CONTRACT_STRUCTURE_AND_REFERENCES", "execution_authorized": false}
 	reject := func(err error) (any, int) { report["problem"] = err.Error(); return report, 2 }
-	if output != "" && operation != "generate" {
-		return reject(fmt.Errorf("OUTPUT_REQUIRES_GENERATE_OPERATION"))
+	if output != "" && operation != "generate" && operation != "materialize" {
+		return reject(fmt.Errorf("OUTPUT_REQUIRES_GENERATE_OR_MATERIALIZE_OPERATION"))
 	}
 	if family != "" && selected != "policy-rules" {
 		return reject(fmt.Errorf("FAMILY_ONLY_APPLIES_TO_POLICY_RULES"))
@@ -157,11 +157,11 @@ func Run(root, selected, operation, family, input, output string, validate Valid
 		report["status"], report["contract"] = "DESCRIBED", catalog.Contracts[family]
 		return report, 0
 	}
-	if operation != "check" && operation != "generate" {
+	if operation != "check" && operation != "generate" && !(selected == "responsibility-authority" && operation == "materialize") {
 		return reject(fmt.Errorf("UNSUPPORTED_AUTHORING_OPERATION: %s", operation))
 	}
 	doc := Document{}
-	if input == "" && selected == "responsibility-authority" && operation == "check" {
+	if input == "" && selected == "responsibility-authority" && (operation == "check" || operation == "materialize") {
 		input = ProfilePath
 	}
 	if input != "" {
@@ -181,11 +181,19 @@ func Run(root, selected, operation, family, input, output string, validate Valid
 			err = catalog.CheckRules(validate, doc)
 		}
 	} else if selected == "responsibility-authority" {
-		if operation == "generate" {
+		if operation == "materialize" {
+			doc, err = catalog.MaterializeMain(validate, doc)
+			status = "MATERIALIZED"
+			report["projection_authority"] = "NONE"
+		} else if operation == "generate" {
 			doc, err = catalog.GenerateProfile(validate, doc)
 			status = "GENERATED"
 		} else {
-			err = catalog.CheckProfile(validate, doc)
+			if input == ProfilePath {
+				err = catalog.CheckLocalProfile(validate, doc)
+			} else {
+				err = catalog.CheckProfile(validate, doc)
+			}
 		}
 	} else {
 		return reject(fmt.Errorf("UNKNOWN_AUTHORING_INTERFACE: %s", selected))

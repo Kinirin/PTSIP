@@ -63,6 +63,74 @@
       "items": {
         "$ref": "urn:ptsip:rbac:responsibility:v1"
       }
+    },
+    "component_map": {
+      "type": "object",
+      "required": [
+        "mode",
+        "profile_ref",
+        "scope",
+        "execution_authorized"
+      ],
+      "properties": {
+        "mode": {
+          "const": "explicit"
+        },
+        "profile_ref": {
+          "const": ".ptsip/profiles/main.ptsip.yaml"
+        },
+        "scope": {
+          "const": "DECLARED_COMPONENT_METADATA_ONLY"
+        },
+        "execution_authorized": {
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "component_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "component_id",
+          "release_owner",
+          "compatibility_owner",
+          "runtime_required"
+        ],
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "roles": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "IMPLEMENTATION",
+                "VERIFICATION",
+                "AUTOMATION",
+                "CONFIGURATION",
+                "DOCUMENTATION",
+                "GOVERNANCE"
+              ]
+            }
+          },
+          "release_owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "compatibility_owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "runtime_required": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
     }
   },
   "required": [
@@ -70,5 +138,14 @@
     "responsibility_map",
     "responsibility"
   ],
-  "additionalProperties": true
+  "additionalProperties": true,
+  "dependentRequired": {
+    "component_map": [
+      "component_bindings"
+    ],
+    "component_bindings": [
+      "component_map"
+    ]
+  },
+  "$comment": "Component owner labels are preserved declaration metadata only; they never synthesize conditions, operational authorities, execution approval or runtime activation."
 }
