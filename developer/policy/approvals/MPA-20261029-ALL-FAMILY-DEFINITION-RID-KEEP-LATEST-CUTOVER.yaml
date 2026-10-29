@@ -1,0 +1,31 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-ALL-FAMILY-DEFINITION-RID-KEEP-LATEST-CUTOVER
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    KEEP_LATEST, owner-approved policy and implementation: migrate fourteen
+    independent family rules schemas to per-rule Definition items with
+    required id and rule; both resolve via registered R-ID keyed mappings.
+    Remove separate responsibility_refs and legacy component binding metadata
+    without compatibility fallback. Store each rule constant's Rule_state
+    on Responsibility-Authority-list.yaml, not on policy documents.
+    Conditions and operational authorities stay independently declared.
+    Preserve legacy source rule text as provenance and do not fabricate
+    approvals for source records with absent state. Archived RETIRED
+    non-GOV policy records remain historical and are not automatically
+    granted current policy validity.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0004
+    - MPD-GOV-0005
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'

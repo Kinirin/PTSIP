@@ -12,8 +12,54 @@ Policy_Rules:
     contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
     Rule_ver: "16"
   Definition:
-    meaning: "정책 생명주기의 상태 및 버전에 관한 정책 내용을 정의하고 공통 계약과 승인 조건에 따라 관리하며, 변경 허가와 에이전트의 기계적 결정 및 거버넌스 권한 출처를 구별한다."
-    rationale: "정책 상태와 구현 허가를 혼동하지 않으며 반복 판단을 검증 가능한 기계 계약으로 전환하되 새로운 규범 권위는 사용자 결정을 요구한다."
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-COMMON_STATUS_CONTRACT_RECONCILIATION"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.COMMON_STATUS_CONTRACT_RECONCILIATION"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-LIFECYCLE_CONTRACT_AUTHORITY"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.LIFECYCLE_CONTRACT_AUTHORITY"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-STATUS_IMPLEMENTATION_INDEPENDENCE"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.STATUS_IMPLEMENTATION_INDEPENDENCE"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-CONTRACT_BOUNDED_NORMALIZATION"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.CONTRACT_BOUNDED_NORMALIZATION"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-PRESERVE_EXISTING_MAJOR_VERSION"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.PRESERVE_EXISTING_MAJOR_VERSION"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-MUTATION_PRECONDITION_CHECK"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.MUTATION_PRECONDITION_CHECK"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-MACHINE_FIRST_AGENT_CONTROL"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.MACHINE_FIRST_AGENT_CONTROL"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-REASONING_TO_REUSABLE_CONTRACT"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.REASONING_TO_REUSABLE_CONTRACT"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-GOVERNANCE_SOURCE_SEPARATION"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.GOVERNANCE_SOURCE_SEPARATION"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-USER_EXPLICIT_AUTHORITY"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.USER_EXPLICIT_AUTHORITY"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-INFERRED_SOURCE_NON_AUTHORITY"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.INFERRED_SOURCE_NON_AUTHORITY"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-AUTOMATION_SOURCE_PROPAGATION_ONLY"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.AUTOMATION_SOURCE_PROPAGATION_ONLY"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-COMPILE_SEALED_CHANGE_SENSITIVE_VALIDITY"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.COMPILE_SEALED_CHANGE_SENSITIVE_VALIDITY"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-COMPILE_SEALED_MIGRATION_BOUNDARY"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.COMPILE_SEALED_MIGRATION_BOUNDARY"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-INDEPENDENT_CONTRACT_PHASED_REFERENCE_CUTOVER"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.INDEPENDENT_CONTRACT_PHASED_REFERENCE_CUTOVER"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-DISTRIBUTED_RBAC_VALIDATION_ENGINE"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.DISTRIBUTED_RBAC_VALIDATION_ENGINE"
+    - id: "R-ID-MPD-GOV-0006-OBLIGATION-RBAC_FIELD_CONTRACT_BEFORE_ENGINE_OPERATION_AND_RELEASE"
+      rule: "GOV.MPD-GOV-0006.OBLIGATION.RBAC_FIELD_CONTRACT_BEFORE_ENGINE_OPERATION_AND_RELEASE"
+    - id: "R-ID-MPD-GOV-0006-PROHIBITION-RETIRED_DEVELOPER_POLICY_REGISTRIES_AS_AUTHORITY"
+      rule: "GOV.MPD-GOV-0006.PROHIBITION.RETIRED_DEVELOPER_POLICY_REGISTRIES_AS_AUTHORITY"
+    - id: "R-ID-MPD-GOV-0006-PROHIBITION-DUAL_ACTIVE_AUTHORITY_DURING_TRANSITION"
+      rule: "GOV.MPD-GOV-0006.PROHIBITION.DUAL_ACTIVE_AUTHORITY_DURING_TRANSITION"
+    - id: "R-ID-MPD-GOV-0006-PROHIBITION-NO_OUT_OF_SCOPE_APPROVAL"
+      rule: "GOV.MPD-GOV-0006.PROHIBITION.NO_OUT_OF_SCOPE_APPROVAL"
+    - id: "R-ID-MPD-GOV-0006-PROHIBITION-NO_INFERRED_OFFICIAL_AUTHORITY"
+      rule: "GOV.MPD-GOV-0006.PROHIBITION.NO_INFERRED_OFFICIAL_AUTHORITY"
+    - id: "R-ID-MPD-GOV-0006-PROHIBITION-NO_AUTOMATION_NEW_AUTHORITY"
+      rule: "GOV.MPD-GOV-0006.PROHIBITION.NO_AUTOMATION_NEW_AUTHORITY"
+    - id: "R-ID-MPD-GOV-0006-PROHIBITION-NO_SOURCE_ESCALATION"
+      rule: "GOV.MPD-GOV-0006.PROHIBITION.NO_SOURCE_ESCALATION"
   Boundary:
     scope: "정책 생명주기 및 변경 허가, 기계 중심 코딩 에이전트 제어 구조, 반복 추론의 계약화, 거버넌스 결정·승인·실행·전환 출처"
     subjects:
@@ -29,93 +75,6 @@ Policy_Rules:
       - "정책·작업의 결정권과 README 관리는 MPD-GOV-0004의 책임"
       - "에이전트 제어 구조의 모든 상세 구현이 완료되었다는 주장"
   Constraints:
-    obligations:
-      - id: OBLIGATION/FLATTEN_POLICY_STATUS
-        applies_when: POLICY_STATUS_SERIALIZATION
-        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 14개 Root Family는 하나의 공통 Policy_Status 구조를 사용하며, 필수 최상위 필드 Policy_Status_Schema_ver, status, contract를 유지한다. 정책 문서의 status는 APPROVED.Applying 같은 결합 문자열로 유지하고 객체형 상태나 분리된 substatus 필드로 이관하지 않는다. .ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json의 properties.status는 결합 상태 상수를 자체 enum으로 중복 선언하지 않고, JSON Schema oneOf와 해소 가능한 버전 명시 $ref를 사용해 .ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json, Policy_status_DRAFT.json, Policy_status_RETIRED.json 세 원본 계약의 properties.status를 참조한다. 각 원본 계약의 properties.status는 해당 범주의 결합 상태 문자열 type:string 및 enum을 정의하는 단일 상태 상수 원본이며, 기존 properties.status.const와 properties.substatus.enum을 결합하는 DERIVED_DOT_JOIN 투영 및 공통 스키마의 상태값 복제 목록을 폐기한다. 동일한 결합 상태 상수의 중복을 금지하고, 정의되지 않은 상태·누락 또는 해소 불가능한 참조·원본 계약 불일치는 실패 시 차단한다. 개별 하위 상태의 추가·변경·삭제·분할은 해당 원본 계약에서만 관리하고, 공통 스키마는 APPROVED/DRAFT/RETIRED 같은 상위 상태 분류의 추가·제거 또는 참조 계약 식별자 변경 등 참조 구성 자체의 변경에만 수정한다. 상태별 description은 해당 원본 계약에서 상태 상수와 분리하여 조회 가능한 비권한적 설명 정보로 취급하며, 일반 상태 판정은 상수만 조회하고 의미 확인이 필요한 경우에 한해 설명을 조회한다. description의 세부 필드명과 값, Compile-Sealed RBAC 권한·승인·전이 조건은 이 결정으로 확정하거나 생성하지 않으며, 설명만으로 승인·실행 권한을 부여하지 않는다. 세 원본 상태 계약은 additionalProperties:false를 필수로 두지 않는다. 기존 Schema/Policy_Status_version/version 및 constant 그룹과 Family별 상태 스키마는 되살리지 않고 공통 스키마의 contract 패턴을 유지한다. 스키마·검증기·테스트와 원본 계약의 실제 변경은 이 정책에 종속되는 별도 검증된 이관으로 수행하고, 정책 변경만으로 구형 문서 적합성·정책 활성화·RBAC 실행 허가를 인정하지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/COMMON_STATUS_CONTRACT_RECONCILIATION
-        applies_when: ROOT_FAMILY_POLICY_STATUS_SCHEMA_OWNERSHIP_OR_VALIDATION
-        rule: "KEEP_LATEST: PTSIP_DEVELOPER_POLICY의 14개 Root Family는 공통 Public_Policy_Status.schema.json의 상태 검증 구조를 사용한다. GOV는 생명주기에 관한 정책 내용을 정의하지만 해당 스키마를 소유하지 않는다. 어느 Root Family도 스키마 자체의 소유권을 갖지 않으며 정책 구조 및 검증 요건을 정의하거나 담당할 뿐이다. 기존 ARCH·INFO의 Family별 스키마 독립 소유 규칙은 채택하지 않고, 각 Family의 고유 정책 내용과 Policy_Rules에 대한 책임은 보존한다. Family별 Policy_Status 스키마나 GOV 단독 contract 패턴은 현재 규범을 대체할 수 없으며 구형 상태 검증기와 참조는 제거한다. 승인 없는 정책 상태 전환이나 전체 문서 적합성 주장은 허용하지 않는다."
-        Rule_state: APPROVED.Applying
-      - id: OBLIGATION/LIFECYCLE_CONTRACT_AUTHORITY
-        applies_when: POLICY_STATUS_OR_VERSION_CHANGE
-        rule: "정책 상태와 버전은 해당 공통 생명주기 계약 및 승인 조건에 따라 관리한다. GOV 정책은 생명주기에 관한 정책 내용을 정의하며 스키마 소유권을 갖지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/STATUS_IMPLEMENTATION_INDEPENDENCE
-        applies_when: POLICY_LIFECYCLE_OR_IMPLEMENTATION_AUTHORIZATION
-        rule: "정책 상태와 구현 승인 여부를 서로 독립적으로 취급한다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/CONTRACT_BOUNDED_NORMALIZATION
-        applies_when: STATUS_NORMALIZATION_OR_CONFLICT_RECOVERY
-        rule: "상태 정규화와 충돌 복구는 관련 계약이 허용하는 범위에서만 자동 수행한다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/PRESERVE_EXISTING_MAJOR_VERSION
-        applies_when: EXISTING_POLICY_VERSION_MAJOR_AT_LEAST_ONE
-        rule: "기존 정책의 주 버전이 1 이상이면 별도 승인 없이 임의로 다른 버전으로 변환하지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/MUTATION_PRECONDITION_CHECK
-        applies_when: POLICY_OR_IMPLEMENTATION_CHANGE
-        rule: "변경 대상 범위, 실행 선행조건, 정보 최신성 및 기존 결정이나 작업과의 충돌을 확인하고 필수 조건이 해결된 경우에만 해당 범위의 변경을 허용한다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/MACHINE_FIRST_AGENT_CONTROL
-        applies_when: CODING_AGENT_TASK
-        rule: "정책 조회, 작업 라우팅, 상태 확인, 실행 계획 구성 및 문맥 생성은 가능한 범위에서 재사용 가능한 기계적 제어를 우선 사용한다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/REASONING_TO_REUSABLE_CONTRACT
-        applies_when: UNRESOLVED_CONTRACT_CASE_OR_EXECUTION_DEVIATION
-        rule: "기계 계약으로 해결되지 않는 경우 제한된 AI 추론→후보→검증→권한 경계 확인→재사용 가능한 기계 계약 또는 바인딩으로 전환의 절차를 따른다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/GOVERNANCE_SOURCE_SEPARATION
-        applies_when: GOVERNANCE_DECISION_OR_AUTHORIZATION
-        rule: "결정 출처, 승인 출처, 실행 허가 출처 및 상태 전환 출처를 각각 구별한다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/USER_EXPLICIT_AUTHORITY
-        applies_when: OFFICIAL_POLICY_AUTHORITY_CREATION
-        rule: "USER_EXPLICIT는 명시적인 사용자 결정이며 정식 정책 권위를 생성할 수 있는 근거로 사용한다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/INFERRED_SOURCE_NON_AUTHORITY
-        applies_when: AGENT_INFERRED_DECISION
-        rule: "AGENT_INFERRED는 추론 후보일 뿐 정식 정책 권위를 생성하지 않으며 임시 해결에도 명시적인 사용자 허용이 필요하다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/AUTOMATION_SOURCE_PROPAGATION_ONLY
-        applies_when: AUTOMATION_DERIVED_RESULT
-        rule: "AUTOMATION_DERIVED는 기존 규칙에서 파생된 결과로서 이미 존재하는 권위만 전달할 수 있다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/COMPILE_SEALED_CHANGE_SENSITIVE_VALIDITY
-        applies_when: SEALED_ATOM_OR_BINDING_CHANGE
-        rule: "확정된 Compile-Sealed 계약은 불변으로 보존하며 관련 조건 원자·권한 원자·바인딩이 변경되면 영향을 받는 책임 활성화의 유효성을 기계적으로 재판정한다. 재활성화는 책임 단위로 수행하고 권한별 재승인을 도입하지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/COMPILE_SEALED_MIGRATION_BOUNDARY
-        applies_when: LEGACY_TO_COMPILE_SEALED_TRANSITION
-        rule: "신규 독립 스키마의 최상위 경로는 승인된 GOV 상위 정책의 경로 계약을 따른다. RBAC를 선택한 프로젝트의 선언형 계약 원본 저장 루트와 여섯 스키마의 조건부 필수 위치는 GOV 상위 정책을 따른다. RBAC의 단일 중앙 등록부는 Responsibility·Condition Atom·Permission Atom·Binding의 선언형 계약 조회만 소유하며 Seal·Activation은 그 등록부에서 분리한 독립 산출물 체계가 소유한다. 여섯 독립 JSON Schema의 분할과 파일명은 유지한다. 중앙 등록부의 개별 파일명·내부 구조·직렬화 형식과 Compiler 관련 기계 계약의 세부 배치, Seal·Activation 산출물 저장·조회 위치와 형식, 스키마 세부 필드, 구현 방식 및 실제 전환 시점은 미결정이다. 이 상위 방향의 승인만으로 기존 검사를 제거하거나 미구현 책임 활성화를 현재 실행 허가로 간주하지 않는다. 실제 전환은 후속 승인된 계약과 검증된 이관에 따른다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/INDEPENDENT_CONTRACT_PHASED_REFERENCE_CUTOVER
-        applies_when: COMPILE_SEALED_REFERENCE_TRANSITION
-        rule: "독립 계약 전환형에서는 신규 원자·바인딩·Seal의 정당성과 참조 정합성 및 책임 단위 활성화·변경 감응의 유효성을 전환 대상 범위에서 검증한 뒤 기존 권한 참조를 단계적으로 대체한다. 미검증 영역의 기존 정식 권한 효력을 편의상 변경하거나 부분 전환을 전체 전환 완료로 간주하지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/DISTRIBUTED_RBAC_VALIDATION_ENGINE
-        applies_when: PTSIP_TOOL_COMPILE_SEALED_RBAC_PROFILE_VALIDATION
-        rule: "KEEP_LATEST: Compile-Sealed RBAC의 pp.2.00 프로파일 선언·등록부·필수 스키마의 정식 검증 소유자는 배포되는 독립 Rust Validation Engine(src/ptsip/engines/validation)이다. src/ptsip/validation/profile.py는 기존 프로파일 호환 검증 전용이며 RBAC 검증의 권한·정식 진입점으로 사용하지 않는다. 검증은 엔진 고유의 버전된 연산·계약과 배포 가능한 검증 코드로 구현한다. developer/tests는 독립 검증 증거일 뿐 고객용 검증기를 대체하지 않는다. pp.1.02의 현재 지원을 보존하고, pp.2.00의 버전 활성화나 원자·바인딩·Seal·Activation 의미 검증이 미결정인 동안에는 단순 사전 검증으로 실행 권한을 생성하지 않는다. 구현·배포는 기존 검증 책임과 승인·권한 경계를 준수해야 한다."
-        Rule_state: APPROVED.provisional
-      - id: OBLIGATION/RBAC_FIELD_CONTRACT_BEFORE_ENGINE_OPERATION_AND_RELEASE
-        applies_when: COMPILE_SEALED_RBAC_VALIDATION_OPERATION_REGISTRATION_OR_DISTRIBUTION
-        rule: "Compile-Sealed RBAC 검증의 독립 엔진 연산 등록·버전된 공개 인터페이스 확정·패키지 배포보다 먼저 pp.2.00 RBAC 선언 필드의 조건부 필수·자료형, RBAC 등록부와 독립 계약 6종의 필수·선택 필드, 참조·승인 근거·Seal/Activation 무결성 의미 및 직렬화 경계를 각각 사용자 승인된 기계 계약으로 확정한다. 미결정 필드를 구현으로 암묵 확정하지 않는다. 미확정인 동안 이미 작성된 Rust RBAC 사전 검증 모듈은 비권위적 내부 구현 초안으로만 취급하고, 단순 파일 존재·스키마 문법 검사나 테스트 코드만으로 RBAC 기능의 정식 검증 완료·엔진 연산 등록·배포 준비를 주장하지 않는다. 필드별 상세 설계 및 실제 구현은 정책 확정 후 승인된 계약에 종속시킨다. 기존 pp.1.02 프로파일 지원 및 다른 검증 엔진 기능의 독립 배포는 이 RBAC 전환 규칙만으로 제한하지 않는다."
-        Rule_state: APPROVED.provisional
-      - id: PROHIBITION/RETIRED_DEVELOPER_POLICY_REGISTRIES_AS_AUTHORITY
-        applies_when: DEVELOPER_POLICY_DISCOVERY_OR_SCHEMA_OR_CONTRACT_OR_LIFECYCLE_OR_APPROVAL_RESOLUTION
-        rule: "developer/policy/registries/**는 퇴역한 비권위 영역이며 정책·계약·스키마·검증·라우팅·생명주기·승인 판단의 권위 원본이나 실행 의존성으로 조회·사용·재활성화할 수 없다. developer/policy/registries/public-policy-structure-governance.json의 규칙·경로·참조의무는 효력이 없고 새 정책이나 구현의 필수 조건이 아니다. 이 디렉터리에 있는 파일의 존재 또는 과거의 참조는 현재 권한을 발생시키지 않으며, 후속 정책은 유효한 developer/policy/** 정책 원본과 별도로 승인된 기계 계약에서만 도출한다."
-        Rule_state: APPROVED.Applying
-      - id: PROHIBITION/DUAL_ACTIVE_AUTHORITY_DURING_TRANSITION
-        rule: "동일한 권한 대상과 범위에서 구권한 체계와 새 Compile-Sealed RBAC가 독립적인 중복 승인 권위로 함께 작동하게 하거나, 신규 계약의 미결정·미검증 상태를 다른 체계의 우회 승인으로 해결하는 행위"
-      - id: PROHIBITION/NO_OUT_OF_SCOPE_APPROVAL
-        rule: "필수 조건이 해결되지 않았거나 허가 범위를 벗어난 변경을 편의상 승인하는 행위"
-      - id: PROHIBITION/NO_INFERRED_OFFICIAL_AUTHORITY
-        rule: "AI의 추론·테스트 통과·구현 성공만으로 정식 정책 권위를 만드는 행위"
-      - id: PROHIBITION/NO_AUTOMATION_NEW_AUTHORITY
-        rule: "자동화 파생 결과를 독립적인 새로운 승인 권위로 사용하는 행위"
-      - id: PROHIBITION/NO_SOURCE_ESCALATION
-        rule: "사용자의 침묵이나 파일 존재를 USER_EXPLICIT로 간주하거나 낮은 권한의 출처를 높은 권한으로 재표시하는 행위"
     dependencies:
       - "developer/policy/GOV/MPD-GOV-0005.yaml"
   Evaluation:
