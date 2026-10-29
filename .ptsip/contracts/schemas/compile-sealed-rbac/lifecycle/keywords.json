@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:lifecycle:keywords:v1",
+  "title": "Registered authorization keyword vocabulary",
+  "type": "object",
+  "properties": {
+    "REA": {
+      "const": "READ"
+    },
+    "WRI": {
+      "const": "WRITE"
+    },
+    "EDI": {
+      "const": "EDIT"
+    }
+  },
+  "required": [
+    "REA",
+    "WRI",
+    "EDI"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "AuthorizationID": {
+      "type": "string",
+      "pattern": "^(REA|WRI|EDI)-[A-Za-z0-9]{15}$"
+    }
+  }
+}

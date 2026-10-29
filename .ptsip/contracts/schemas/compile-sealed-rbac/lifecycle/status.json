@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:lifecycle:status:v1",
+  "title": "Responsibility rule type, not policy approval state",
+  "type": "string",
+  "enum": [
+    "OBLIGATION",
+    "PROHIBITION"
+  ]
+}

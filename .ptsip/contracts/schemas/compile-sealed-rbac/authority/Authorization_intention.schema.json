@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:authorization-intention:v1",
+  "title": "Authorization intention lookup registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authorizations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-authorization-intention/v1"
+    },
+    "authorizations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "Authorization_ID",
+          "intention"
+        ],
+        "properties": {
+          "Authorization_ID": {
+            "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"
+          },
+          "intention": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

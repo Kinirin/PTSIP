@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:lifecycle:index:v1",
+  "title": "Independent responsibility lifecycle schema entrypoint",
+  "type": "object",
+  "$defs": {
+    "Status": {
+      "$ref": "urn:ptsip:rbac:lifecycle:status:v1"
+    },
+    "AuthorizationID": {
+      "$ref": "urn:ptsip:rbac:lifecycle:keywords:v1#/$defs/AuthorizationID"
+    }
+  }
+}
