@@ -42,7 +42,7 @@ func doc(raw string) authoring.Document {
 }
 
 func govInput() authoring.Document {
-	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"RULE-FD125E8425C39349304D0BC566F5701E","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example scope"}}}`)
+	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"FLATTEN-POLICY-STATU","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example scope"}}}`)
 }
 
 func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document {
@@ -71,7 +71,7 @@ func TestRegisteredContractsAndAllFourteenSelections(t *testing.T) {
 		t.Run(family, func(t *testing.T) {
 			input := govInput()
 			if family != "GOV" {
-				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"RULE-FD125E8425C39349304D0BC566F5701E","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
+				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"FLATTEN-POLICY-STATU","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
 			}
 			generated, status, err := catalog.GenerateRules(validate, input, family)
 			if err != nil || status != "GENERATED" {
@@ -192,8 +192,8 @@ func TestPolicyDefinitionRuleBindingsResolveThroughRegisteredProfile(t *testing.
 		t.Fatal(err)
 	}
 	for _, tc := range []struct { name, id, rule string }{
-		{"unregistered", "R-ID-EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "RULE-FD125E8425C39349304D0BC566F5701E"},
-		{"wrong-rule", "R-ID-8D95436233BE6DCD5E90B2AAA986052C", "RULE-FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"},
+		{"unregistered", "R-ID-EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "FLATTEN-POLICY-STATU"},
+		{"wrong-rule", "R-ID-8D95436233BE6DCD5E90B2AAA986052C", "WRONG-CONSTANT"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			bad := govInput()

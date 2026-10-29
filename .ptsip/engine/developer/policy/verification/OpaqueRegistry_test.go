@@ -30,8 +30,8 @@ func TestOpaqueResponsibilityContractSelection(t *testing.T) {
             def := props["Definition"].(map[string]any)
             items := def["items"].(map[string]any)
             fields := items["properties"].(map[string]any)
-            if fields["rule"].(map[string]any)["pattern"] != "^RULE-[A-F0-9]{32}$" {
-                t.Fatal("rule constant embeds semantics")
+            if fields["rule"].(map[string]any)["pattern"] != "^[A-Z]+(?:-[A-Z]+)*$" {
+                t.Fatal("rule constant must be a 20-character uppercase name")
             }
             if fields["id"].(map[string]any)["$ref"] != "urn:ptsip:rbac:responsibility:v1#/$defs/ID" {
                 t.Fatal("rule responsibility is not linked")
@@ -66,21 +66,20 @@ func TestOpaqueResponsibilityLifecycleAndLookupShape(t *testing.T) {
     if fields["status"].(map[string]any)["$ref"]!="urn:ptsip:rbac:lifecycle:index:v1#/$defs/Status" {
         t.Fatal("status must resolve through lifecycle/index.json")
     }
-    for _, retired:=range []string{"source_text","source_policy","source_rule_id"} {
+    for _, retired:=range []string{"source_text","source_policy","source_rule_id","live_policy"} {
         if _, exists:=fields[retired]; exists { t.Fatal("retired natural-language source field",retired) }
     }
     intent := read(filepath.Join(prefix,"authority","Authorization_intention.schema.json"))
     records := intent["properties"].(map[string]any)["authorizations"].(map[string]any)["items"].(map[string]any)
     required := records["required"].([]any)
-    if len(required)!=2 || required[0]!="Authorization_ID" || required[1]!="intention" {
+    if len(required)!=5 || required[0]!="ID" || required[1]!="resource" || required[2]!="action" || required[3]!="effect" || required[4]!="condition_name" {
         t.Fatal("intention lookup fields changed")
     }
-    keywords := read(filepath.Join(prefix,"lifecycle","keywords.json"))
-    idRule := keywords["$defs"].(map[string]any)["AuthorizationID"].(map[string]any)["pattern"].(string)
+    idRule := intent["$defs"].(map[string]any)["ID"].(map[string]any)["pattern"].(string)
     re, err := regexp.Compile(idRule)
     if err!=nil {t.Fatal(err)}
-    if !re.MatchString("REA-ABCDEFGHIJKLMNO") || re.MatchString("REA-INVALID_NAME") || re.MatchString("NEW-ABCDEFGHIJKLMNO") {
-        t.Fatal("authorization pattern permits unregistered category")
+    if !re.MatchString("Auth-READ") || re.MatchString("Auth-WRITE1") || re.MatchString("REA-ABCDEFGHIJKLMNO") {
+        t.Fatal("authorization ID pattern must use Auth- and uppercase letters")
     }
 }
 
@@ -98,8 +97,8 @@ func TestOpaqueRegistryResolvesActualGovAndFailsClosedOnMissingIntention(t *test
     gov, err := authoring.ReadDocument(root, "developer/policy/GOV/MPD-GOV-0006.yaml")
     if err != nil { t.Fatal(err) }
     if err := catalog.CheckRules(validate, gov); err != nil { t.Fatal(err) }
-    if _, err := catalog.LookupAuthorizationIntention(validate,"REA-ABCDEFGHIJKLMNO"); err == nil || !strings.Contains(err.Error(),"UNRESOLVED_AUTHORIZATION_INTENTION") {
-        t.Fatalf("undeclared Read authorization was not rejected: %v",err)
+    if _, err := catalog.LookupAuthorizationIntention(validate,"Auth-READ"); err == nil || !strings.Contains(err.Error(),"UNRESOLVED_AUTHORIZATION_INTENTION") {
+        t.Fatalf("undeclared authorization rule was not rejected: %v",err)
     }
     profileData, err := json.Marshal(profile)
     if err != nil { t.Fatal(err) }
