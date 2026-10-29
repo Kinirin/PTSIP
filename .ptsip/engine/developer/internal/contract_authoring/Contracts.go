@@ -24,7 +24,7 @@ const ProfilePath = ".ptsip/profiles/Responsibility-Authority-list.yaml"
 const DefinitionsPath = ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json"
 const RBACSchemaRoot = ".ptsip/contracts/schemas/compile-sealed-rbac/"
 
-const commonID = "urn:ptsip:policy:Public_Structure_Rules:v2"
+const commonID = "urn:ptsip:policy:Public_Structure_Rules:v3"
 const responsibilityID = "urn:ptsip:rbac:responsibility:v1"
 
 type Catalog struct {
@@ -141,7 +141,7 @@ func Load(root string) (*Catalog, error) {
 		file, id    string
 		destination *Document
 	}{
-		{FamilySchema, "urn:ptsip:policy:family-rules-contract:v1", &c.ContractShape},
+		{FamilySchema, "urn:ptsip:policy:family-rules-contract:v2", &c.ContractShape},
 		{CommonSchema, commonID, &c.Common},
 	}
 	for _, resource := range resources {
@@ -163,7 +163,7 @@ func Load(root string) (*Catalog, error) {
 		if err != nil {
 			return nil, err
 		}
-		if doc["$id"] != "urn:ptsip:contract:policy:rules:"+family+":v1" || doc["root_family"] != family ||
+		if doc["$id"] != "urn:ptsip:contract:policy:rules:"+family+":v2" || doc["root_family"] != family ||
 			object(doc["generation"])["default"] != "OMIT" || object(doc["generation"])["when_root_family"] != family {
 			return nil, fmt.Errorf("FAMILY_CONTRACT_MISMATCH: %s", family)
 		}
@@ -180,7 +180,7 @@ func Load(root string) (*Catalog, error) {
 }
 
 // LoadResponsibilities has no policy-family or policy-lifecycle dependency.
-// Only an explicit Rules responsibility_refs declaration joins these domains.
+// Profile rule bindings are scoped by explicit registered R-ID values.
 func LoadResponsibilities(root string) (*Catalog, error) {
 	absolute, err := filepath.Abs(root)
 	if err != nil {
@@ -194,7 +194,7 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		{RBACSchemaRoot + "Conditions_exercise/Condition.schema.json", "urn:ptsip:rbac:condition:v1", nil},
 		{RBACSchemaRoot + "authority/Operational_Authority.schema.json", "urn:ptsip:rbac:operational-authority:v1", nil},
 		{RBACSchemaRoot + "responsibility/Responsibility.schema.json", responsibilityID, nil},
-		{RBACSchemaRoot + "Responsibilities_List.schema.json", "urn:ptsip:rbac:responsibilities-list:v1", &c.ProfileShape},
+		{RBACSchemaRoot + "Responsibilities_List.schema.json", "urn:ptsip:rbac:responsibilities-list:v2", &c.ProfileShape},
 		{RBACSchemaRoot + "Responsibility_Authority_Contract.schema.json", "urn:ptsip:rbac:responsibility-authority-contract:v1", &c.DefinitionShape},
 	}
 	for _, resource := range resources {
@@ -254,9 +254,6 @@ func (c *Catalog) CheckContracts(v Validator) error {
 		if _, err := v(contract["structure"], Document{}, c.Resources); err != nil {
 			return fmt.Errorf("INVALID_FAMILY_STRUCTURE: %s: %w", family, err)
 		}
-		if err := c.checkResponsibilityRefs(v, contract["responsibility_refs"]); err != nil {
-			return err
-		}
 	}
 	return nil
 }
@@ -313,10 +310,12 @@ func (c *Catalog) CheckProfile(v Validator, profile Document) error {
 	return c.checkComponentBindings(v, profile)
 }
 
-func (c *Catalog) checkResponsibilityRefs(v Validator, raw any) error {
-	refs, ok := raw.([]any)
-	if !ok || len(refs) == 0 {
-		return nil
+// checkRuleBindings resolves every rule token through the explicit R-ID registry.
+// Resolving a rule does not activate it or grant an Operational Authority.
+func (c *Catalog) checkRuleBindings(v Validator, doc Document) error {
+	items, ok := object(doc["Policy_Rules"])["Definition"].([]any)
+	if !ok || len(items) == 0 {
+		return fmt.Errorf("POLICY_RULE_DEFINITIONS_REQUIRED")
 	}
 	profile, err := ReadDocument(c.Root, ProfilePath)
 	if err != nil {
@@ -325,13 +324,24 @@ func (c *Catalog) checkResponsibilityRefs(v Validator, raw any) error {
 	if err := c.CheckLocalProfile(v, profile); err != nil {
 		return err
 	}
-	known, err := ids(profile["responsibility"], "responsibility")
-	if err != nil {
-		return err
+	bindings := object(profile["component_bindings"])
+	if bindings == nil {
+		return fmt.Errorf("RULE_BINDINGS_REQUIRED")
 	}
-	for _, ref := range refs {
-		if !known[stringValue(ref)] {
-			return fmt.Errorf("UNRESOLVED_RESPONSIBILITY: %v", ref)
+	seen := map[string]bool{}
+	for _, raw := range items {
+		definition := object(raw)
+		id, rule := stringValue(definition["id"]), stringValue(definition["rule"])
+		if id == "" || seen[id] {
+			return fmt.Errorf("INVALID_OR_DUPLICATE_RULE_ID: %s", id)
+		}
+		seen[id] = true
+		binding := object(bindings[id])
+		if binding == nil {
+			return fmt.Errorf("UNRESOLVED_RESPONSIBILITY: %s", id)
+		}
+		if stringValue(binding["rule"]) != rule {
+			return fmt.Errorf("RULE_CONSTANT_MISMATCH: %s", id)
 		}
 	}
 	return nil

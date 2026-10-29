@@ -48,12 +48,10 @@ func (c *Catalog) CheckRules(v Validator, doc Document) error {
 	if err := c.validate(v, selection, doc, "conditional policy rules"); err != nil {
 		return err
 	}
-	if family != "" {
-		if err := c.checkResponsibilityRefs(v, c.Contracts[family]["responsibility_refs"]); err != nil {
-			return err
-		}
+	if family == "" {
+		return nil
 	}
-	return c.checkResponsibilityRefs(v, object(doc["Policy_Rules"])["Responsibility_Refs"])
+	return c.checkRuleBindings(v, doc)
 }
 
 // materialize creates only required object/array containers. Required scalar
@@ -141,8 +139,7 @@ func (c *Catalog) GenerateProfile(v Validator, input Document) (Document, error)
 	// Metadata is retained from the editable profile. An omitted responsibility
 	// list generates no mappings; it never copies or invents grants.
 	doc["responsibility"] = []any{}
-	delete(doc, "component_map")
-	delete(doc, "component_bindings")
+	doc["component_bindings"] = Document{}
 	for key, value := range clone(input) {
 		doc[key] = value
 	}
