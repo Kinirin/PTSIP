@@ -79,7 +79,9 @@
           "properties": {
             "rule": {
               "type": "string",
-              "pattern": "^RULE-[A-F0-9]{32}$"
+              "minLength": 1,
+              "maxLength": 20,
+              "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
             },
             "status": {
               "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/Status"
@@ -97,16 +99,8 @@
               "maxLength": 20,
               "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
             },
-            "live_policy": {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "type": "string",
-                "minLength": 1
-              }
-            },
             "Authorization_ID": {
-              "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"
+              "$ref": "urn:ptsip:rbac:authorization-intention:v1#/$defs/ID"
             }
           },
           "additionalProperties": false,
@@ -116,6 +110,11 @@
             ],
             "condition_id": [
               "condition_name"
+            ]
+          },
+          "not": {
+            "required": [
+              "live_policy"
             ]
           }
         }
@@ -130,7 +129,7 @@
     "component_bindings"
   ],
   "additionalProperties": true,
-  "$comment": "Opaque R-ID bindings; lifecycle status resolves through lifecycle/index.json; Authorization_ID may only reference explicitly approved lookup entries, no inferred permission.",
+  "$comment": "R-ID keyed responsibility and condition mapping; no knowledge of policy documents. Optional authorization link resolves only explicit authorization rule IDs.",
   "not": {
     "required": [
       "component_map"

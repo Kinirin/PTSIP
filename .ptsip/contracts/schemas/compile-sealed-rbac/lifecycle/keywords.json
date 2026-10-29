@@ -21,9 +21,13 @@
   ],
   "additionalProperties": false,
   "$defs": {
-    "AuthorizationID": {
+    "Action": {
       "type": "string",
-      "pattern": "^(REA|WRI|EDI)-[A-Za-z0-9]{15}$"
+      "enum": [
+        "REA",
+        "WRI",
+        "EDI"
+      ]
     }
   }
 }

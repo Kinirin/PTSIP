@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:rbac:authorization-intention:v1",
-  "title": "Authorization intention lookup registry",
+  "title": "Explicit authorization rules for resources and actions",
   "type": "object",
   "required": [
     "schema_version",
@@ -16,16 +16,35 @@
       "items": {
         "type": "object",
         "required": [
-          "Authorization_ID",
-          "intention"
+          "ID",
+          "resource",
+          "action",
+          "effect",
+          "condition_name"
         ],
         "properties": {
-          "Authorization_ID": {
-            "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"
+          "ID": {
+            "$ref": "#/$defs/ID"
           },
-          "intention": {
+          "resource": {
             "type": "string",
             "minLength": 1
+          },
+          "action": {
+            "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/Action"
+          },
+          "effect": {
+            "type": "string",
+            "enum": [
+              "ALLOW",
+              "DENY"
+            ]
+          },
+          "condition_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
           }
         },
         "additionalProperties": false
@@ -35,5 +54,11 @@
       "const": "./Authorization_intention.schema.json"
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "$defs": {
+    "ID": {
+      "type": "string",
+      "pattern": "^Auth-[A-Z]+$"
+    }
+  }
 }

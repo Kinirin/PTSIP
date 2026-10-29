@@ -8,7 +8,10 @@
       "$ref": "urn:ptsip:rbac:lifecycle:status:v1"
     },
     "AuthorizationID": {
-      "$ref": "urn:ptsip:rbac:lifecycle:keywords:v1#/$defs/AuthorizationID"
+      "$ref": "urn:ptsip:rbac:authorization-intention:v1#/$defs/ID"
+    },
+    "Action": {
+      "$ref": "urn:ptsip:rbac:lifecycle:keywords:v1#/$defs/Action"
     }
   }
 }
