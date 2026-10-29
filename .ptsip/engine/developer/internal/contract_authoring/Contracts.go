@@ -391,43 +391,55 @@ func (c *Catalog) checkRuleBindings(v Validator, doc Document) error {
 
 // authorizationIDs returns only explicitly registered lookup codes.
 // A prefix conveys a requested action class, never a grant.
-func (c *Catalog) authorizationIDs() map[string]string {
-	known := map[string]string{}
+func (c *Catalog) authorizationIDs() map[string]Document {
+	known := map[string]Document{}
 	for _, raw := range c.Authorizations["authorizations"].([]any) {
 		row := object(raw)
-		known[stringValue(row["Authorization_ID"])] = stringValue(row["intention"])
+		known[stringValue(row["ID"])] = row
 	}
 	return known
 }
 
 func (c *Catalog) checkAuthorizationRegistry(v Validator) error {
-	if err := c.validate(v, c.AuthorizationShape, c.Authorizations, AuthorizationDataPath); err != nil {
-		return err
+	if err := c.validate(v, c.AuthorizationShape, c.Authorizations, AuthorizationDataPath); err != nil { return err }
+	knownConditions := map[string]bool{}
+	for _, raw := range c.Definitions["condition_list"].([]any) {
+		knownConditions[stringValue(object(raw)["name"])] = true
 	}
 	seen := map[string]bool{}
 	for _, raw := range c.Authorizations["authorizations"].([]any) {
-		id := stringValue(object(raw)["Authorization_ID"])
+		row := object(raw)
+		id := stringValue(row["ID"])
 		if id == "" || seen[id] { return fmt.Errorf("DUPLICATE_OR_EMPTY_AUTHORIZATION_ID: %s", id) }
 		seen[id] = true
+		if !knownConditions[stringValue(row["condition_name"])] {
+			return fmt.Errorf("UNRESOLVED_AUTHORIZATION_CONDITION: %s", id)
+		}
 	}
 	return nil
 }
 
-// LookupAuthorizationIntention is explicit and fails closed for unknown IDs.
-// Even a successful match is explanatory data, not an execution permission.
+// Resolves the five required fields only for a registered, responsibility-linked
+// authorization rule. A lookup is not an execution grant, even for ALLOW.
 func (c *Catalog) LookupAuthorizationIntention(v Validator, id string) (Document, error) {
 	if err := c.checkAuthorizationRegistry(v); err != nil { return nil, err }
-	if err := c.validate(v, Document{"$ref":"urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"}, id, "Authorization_ID"); err != nil {
-		return nil, err
-	}
-	intention, exists := c.authorizationIDs()[id]
+	if err := c.validate(v, Document{"$ref":"urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"}, id, "Authorization_ID"); err != nil { return nil, err }
+	rule, exists := c.authorizationIDs()[id]
 	if !exists { return nil, fmt.Errorf("UNRESOLVED_AUTHORIZATION_INTENTION: %s", id) }
 	profile, err := ReadDocument(c.Root, ProfilePath)
 	if err != nil { return nil, err }
 	if err := c.CheckProfile(v, profile); err != nil { return nil, err }
 	for rid, raw := range object(profile["component_bindings"]) {
-		if stringValue(object(raw)["Authorization_ID"]) == id {
-			return Document{"Authorization_ID":id,"intention":intention,"responsibility_id":rid,"execution_authorized":false}, nil
+		binding := object(raw)
+		if stringValue(binding["Authorization_ID"]) == id {
+			if stringValue(binding["condition_name"]) != stringValue(rule["condition_name"]) {
+				return nil, fmt.Errorf("AUTHORIZATION_CONDITION_MISMATCH: %s", id)
+			}
+			return Document{
+				"ID":id,"resource":rule["resource"],"action":rule["action"],
+				"effect":rule["effect"],"condition_name":rule["condition_name"],
+				"responsibility_id":rid,"execution_authorized":false,
+			},nil
 		}
 	}
 	return nil, fmt.Errorf("UNBOUND_AUTHORIZATION_INTENTION: %s", id)
