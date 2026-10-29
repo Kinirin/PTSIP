@@ -1,0 +1,28 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-GOV-RULE-CONSTANTS-PROFILE-KEEP-LATEST
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    KEEP_LATEST for the GOV independent rules contract transition:
+    GOV policy rule id and rule must resolve declared machine constants
+    through a Responsibility-Authority-list.yaml-centered reference
+    and responsibility/authority mapping path rather than accepting
+    arbitrary natural language or regex-only values.
+    The GOV-0006 first-field comparison is review-only.
+    Profile field design, constant namespace, individual rule binding,
+    migration details, schema implementation and runtime authorization
+    are not approved by this direction and require subordinate decisions.
+    Existing unrelated policy authority and validation remain intact.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'
