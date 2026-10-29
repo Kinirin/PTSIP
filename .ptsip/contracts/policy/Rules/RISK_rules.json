@@ -49,7 +49,9 @@
             },
             "rule": {
               "type": "string",
-              "pattern": "^RULE-[A-F0-9]{32}$"
+              "minLength": 1,
+              "maxLength": 20,
+              "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
             },
             "preconditions": {
               "type": "array",
