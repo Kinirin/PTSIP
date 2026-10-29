@@ -145,7 +145,7 @@ func TestSharedPublicPolicyUsesGOVFlatStatusAndGOVRoute(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if routingString(rules["$id"]) != "urn:ptsip:contract:policy:rules:GOV:v1" {
+	if routingString(rules["$id"]) != "urn:ptsip:contract:policy:rules:GOV:v2" {
 		t.Fatal("GOV data contract ID mismatch")
 	}
 

@@ -42,7 +42,7 @@ func doc(raw string) authoring.Document {
 }
 
 func govInput() authoring.Document {
-	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS"}],"Boundary":{"scope":"Example scope"}}}`)
+	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS","preconditions":["C-ID-POLICY_STATUS_SERIALIZATION"]}],"Boundary":{"scope":"Example scope"}}}`)
 }
 
 func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document {
@@ -71,7 +71,7 @@ func TestRegisteredContractsAndAllFourteenSelections(t *testing.T) {
 		t.Run(family, func(t *testing.T) {
 			input := govInput()
 			if family != "GOV" {
-				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS"}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
+				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS","rule":"GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS","preconditions":["C-ID-POLICY_STATUS_SERIALIZATION"]}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
 			}
 			generated, status, err := catalog.GenerateRules(validate, input, family)
 			if err != nil || status != "GENERATED" {
@@ -201,6 +201,36 @@ func TestPolicyDefinitionRuleBindingsResolveThroughRegisteredProfile(t *testing.
 			item["id"], item["rule"] = tc.id, tc.rule
 			if _, _, err := catalog.GenerateRules(validate, bad, "GOV"); err == nil {
 				t.Fatal("unregistered or mismatched rule accepted")
+			}
+		})
+	}
+}
+
+func TestProfileIsSoleSourceOfDefinitionPreconditions(t *testing.T) {
+	catalog, validate := nativeCatalog(t)
+	for _, tc := range []struct {
+		name string
+		update func(map[string]any)
+	}{
+		{"missing-registered-precondition", func(item map[string]any) {
+			delete(item, "preconditions")
+		}},
+		{"foreign-precondition", func(item map[string]any) {
+			item["preconditions"] = []any{"C-ID-NOT_REGISTERED"}
+		}},
+		{"duplicate-precondition", func(item map[string]any) {
+			item["preconditions"] = []any{"C-ID-POLICY_STATUS_SERIALIZATION", "C-ID-POLICY_STATUS_SERIALIZATION"}
+		}},
+		{"empty-preconditions", func(item map[string]any) {
+			item["preconditions"] = []any{}
+		}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			candidate := govInput()
+			item := candidate["Policy_Rules"].(map[string]any)["Definition"].([]any)[0].(map[string]any)
+			tc.update(item)
+			if _, _, err := catalog.GenerateRules(validate, candidate, "GOV"); err == nil {
+				t.Fatal("unregistered or divergent preconditions accepted")
 			}
 		})
 	}
