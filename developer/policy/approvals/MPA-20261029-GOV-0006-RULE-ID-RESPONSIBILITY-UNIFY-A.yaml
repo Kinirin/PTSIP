@@ -1,0 +1,29 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-GOV-0006-RULE-ID-RESPONSIBILITY-UNIFY-A
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Subordinate direction A approved for MPD-GOV-0006 only:
+    the identity of each policy rule is the registered Responsibility ID
+    in .ptsip/profiles/Responsibility-Authority-list.yaml, not a separate
+    OBLIGATION/ or PROHIBITION/ identifier mapped to that responsibility.
+    Use the existing urn:ptsip:rbac:responsibility:v1 R-ID- vocabulary;
+    missing, unregistered or mismatching IDs must fail closed.
+    This authorizes direction synchronization, not immediate replacement
+    of legacy rule identifiers, rule text, GOV_rules.json, or profile data.
+    The rule field's constant meaning, registration, multiplicity and
+    migration mechanics remain unresolved for subsequent review.
+    No runtime grant, approval, Seal or Activation is authorized.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'
