@@ -1,0 +1,31 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-ALL-14-FAMILY-RULE-RESPONSIBILITY-SCOPE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner expanded the responsibility-profile-based independent policy rules
+    contract transition from GOV only to all fourteen root-family JSON
+    contracts: ARCH, ASSURE, CHANGE, CNTR, CTRL, GOV, INFO, INTENT,
+    NORM, OPS, REAL, RECORD, RISK, SUPPLY. Preserve the previously
+    approved rule-ID-equals-Responsibility-ID direction A as the
+    cross-family migration target. Family-specific policy semantics
+    remain independently owned. This is scope and identity direction
+    authorization only: the rule value's constant definition, meaning
+    ownership, serialization, profile field encoding, verification
+    migration and compatibility handling remain unresolved.
+    Do not silently modify the fourteen contract structures or claim
+    current legacy documents valid under an incomplete target model.
+    No runtime grant, automatic activation, Seal or new binding authority.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'
