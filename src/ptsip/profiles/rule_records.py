@@ -18,7 +18,7 @@ from .catalog import LocalProfileCatalogError, load_local_profile_selection
 
 CATALOG_REF = ".ptsip/profiles/index.json"
 PROFILE_REF = ".ptsip/profiles/rules.ptsip.yaml"
-SCHEMA_REF = ".ptsip/contracts/schemas/Policy_Rules/rule_record.schema.json"
+SCHEMA_REF = ".ptsip/contracts/schemas/Policy/Policy_Rules/rule_record.schema.json"
 
 _ROOT = re.compile(r"^rule_sha256:[a-f0-9]{64}$")
 _CHILD = re.compile(r"^rule_([A-Z]{1,4})sha256:[a-f0-9]{64}$")

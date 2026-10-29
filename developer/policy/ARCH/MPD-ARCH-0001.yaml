@@ -85,7 +85,7 @@ rules:
       common_policy_status_exception:
         decision: RECONCILE
         owner: GOV
-        contract: .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json
+        contract: .ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json
         scope: POLICY_STATUS_ONLY
         unrelated_family_rule_authority: PRESERVED
       field_schema_authority_inferred_from_filename_only: FORBIDDEN
@@ -112,7 +112,7 @@ rules:
       contract_ref: developer/contracts/lifecycle/policy_status.json
       approval_ref: developer/policy/approvals/MPA-20261012-POLICY-STATUS-GOV-CONTRACT.yaml
       family_schema_owns_record_representation: false
-      shared_record_representation_schema: .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json
+      shared_record_representation_schema: .ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json
       family_schema_redefines_lifecycle_vocabulary: false
     implementation_authorization: NOT_GRANTED
     existing_validator_cutover_authorized: false
@@ -155,7 +155,7 @@ rules:
     policy_status_shared_contract_exception:
       decision: RECONCILE
       owner: GOV
-      ref: .ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json
+      ref: .ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json
       only_field: Policy_Status
       family_policy_rules_ownership: PRESERVED
     info_global_field_schema_authority_for_other_families: REPLACED

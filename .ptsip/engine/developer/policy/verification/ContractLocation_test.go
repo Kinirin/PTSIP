@@ -301,3 +301,34 @@ func TestIdentityVersionStorageDelegatesToLifecycleOwner(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestCanonicalPolicySchemaGroupAndSeparation(t *testing.T) {
+ root, err := filepath.Abs(filepath.Join("..", "..", "..", ".."))
+ if err != nil { t.Fatal(err) }
+ tests := []struct{ previous, current, id string }{
+  {".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json", ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json", "urn:ptsip:policy:public-structure:v7"},
+  {".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", "urn:ptsip:policy:identity:v2"},
+  {".ptsip/contracts/schemas/Policy_Rules/Family_Rules_Contract.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json", "urn:ptsip:policy:family-rules-contract:v1"},
+  {".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json", "urn:ptsip:policy:Public_Structure_Rules:v2"},
+  {".ptsip/contracts/schemas/Policy_Rules/rule_record.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/rule_record.schema.json", "urn:ptsip:policy:rule-record:schema:v1"},
+  {".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", "urn:ptsip:policy:Status:v2"},
+ }
+ for _, tc := range tests {
+  if _, err := os.Lstat(filepath.Join(root, filepath.FromSlash(tc.previous))); !errors.Is(err, os.ErrNotExist) {
+   t.Fatalf("old schema path must not exist: %s: %v", tc.previous, err)
+  }
+  data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(tc.current)))
+  if err != nil { t.Fatalf("relocated schema %s: %v", tc.current, err) }
+  var content struct { ID string `json:"$id"` }
+  if err := json.Unmarshal(data, &content); err != nil || content.ID != tc.id {
+   t.Fatalf("schema ID changed at %s: %s, %v", tc.current, content.ID, err)
+  }
+ }
+ for _, directory := range []string{
+  ".ptsip/contracts/schemas/release",
+  ".ptsip/contracts/schemas/compile-sealed-rbac",
+ } {
+  info, err := os.Stat(filepath.Join(root, filepath.FromSlash(directory)))
+  if err != nil || !info.IsDir() {t.Fatalf("independent schema directory must remain: %s: %v", directory, err)}
+ }
+}

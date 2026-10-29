@@ -15,7 +15,7 @@ import (
 	"go.yaml.in/yaml/v3"
 )
 
-const identitySchemaPath = ".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json"
+const identitySchemaPath = ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json"
 const routingSchemaPath = ".ptsip/contracts/policy/routing/Policy_Routing.schema.json"
 const routingDataPath = ".ptsip/contracts/policy/routing/policy_routes.json"
 const policyKindSchemaID = "urn:ptsip:identity:policy-kind:v1"

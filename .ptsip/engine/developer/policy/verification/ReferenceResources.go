@@ -22,7 +22,7 @@ type StatusProbe struct {
 	Problem                   string `json:"problem,omitempty"`
 }
 
-const publicPolicyStatusPath = ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json"
+const publicPolicyStatusPath = ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json"
 const policyVersionPath = ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json"
 
 // approvedResource reads exactly a file already in the approved-schema set.

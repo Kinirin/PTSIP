@@ -48,7 +48,7 @@ func isolated(t *testing.T, paths ...string) string {
 
 func TestIdentityHasNoLifecycleRulesOrLegacyDependency(t *testing.T) {
 	root := isolated(t,
-		".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+		".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
 		".ptsip/contracts/policy/identity/policy_kind.json",
 		".ptsip/contracts/policy/identity/root_family.json",
 	)
@@ -71,7 +71,7 @@ func TestIdentityHasNoLifecycleRulesOrLegacyDependency(t *testing.T) {
 
 func TestLifecycleChecksOnlyDeclaredStatusVocabulary(t *testing.T) {
 	root := isolated(t,
-		".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
+		".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
 		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
 		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
 		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",

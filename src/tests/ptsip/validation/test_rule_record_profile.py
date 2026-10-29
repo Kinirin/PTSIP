@@ -16,7 +16,7 @@ from ptsip.profiles.rule_records import (
 )
 
 REPOSITORY = Path(__file__).resolve().parents[4]
-CONTRACT_PATH = ".ptsip/contracts/schemas/Policy_Rules/rule_record.schema.json"
+CONTRACT_PATH = ".ptsip/contracts/schemas/Policy/Policy_Rules/rule_record.schema.json"
 
 
 def records_fixture() -> list[dict]:

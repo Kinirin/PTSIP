@@ -96,7 +96,7 @@ func TestPolicyRoutingRequiresBoundSchemaFile(t *testing.T) {
 
 func TestSharedPublicPolicyUsesGOVFlatStatusAndGOVRoute(t *testing.T) {
 	root := routingRepositoryRoot(t)
-	public, err := routingFile(root, ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json", ".ptsip/contracts/schemas/")
+	public, err := routingFile(root, ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json", ".ptsip/contracts/schemas/")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -135,10 +135,10 @@ func TestSharedPublicPolicyUsesGOVFlatStatusAndGOVRoute(t *testing.T) {
 		t.Fatal(err)
 	}
 	refs := routingMembers(route["schema_refs"])
-	if routingString(refs["public"]) != ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json" {
+	if routingString(refs["public"]) != ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json" {
 		t.Fatal("public schema must be shared")
 	}
-	if routingString(refs["rules"]) != ".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json" {
+	if routingString(refs["rules"]) != ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json" {
 		t.Fatal("rules must use the common conditional schema")
 	}
 	rules, err := routingFile(root, ".ptsip/contracts/policy/Rules/GOV_rules.json", ".ptsip/contracts/policy/Rules/")
@@ -194,7 +194,7 @@ func TestFamilySelectionUsesContractsAndSharedSchemas(t *testing.T) {
 	if len(developer) != 1 || developer["output_root"] != "developer/policy" {
 		t.Fatalf("per-family routing has reappeared: %v", developer)
 	}
-	common, err := routingFile(root, ".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json", ".ptsip/contracts/schemas/")
+	common, err := routingFile(root, ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json", ".ptsip/contracts/schemas/")
 	if err != nil {
 		t.Fatal(err)
 	}

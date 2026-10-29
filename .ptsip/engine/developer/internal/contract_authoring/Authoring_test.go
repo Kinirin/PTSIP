@@ -241,15 +241,15 @@ func TestNoOverwriteAndInvalidPaths(t *testing.T) {
 
 func TestCurrentGOVPoliciesValidateThroughSharedPublicSelection(t *testing.T) {
 	catalog, validate := nativeCatalog(t)
-	public, err := authoring.ReadDocument(catalog.Root, ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json")
+	public, err := authoring.ReadDocument(catalog.Root, ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json")
 	if err != nil {
 		t.Fatal(err)
 	}
 	resources := append([]any(nil), catalog.Resources...)
 	for _, relative := range []string{
-		".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+		".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
 		".ptsip/contracts/policy/identity/policy_kind.json",
-		".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
+		".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
 		".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
 		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
 		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",

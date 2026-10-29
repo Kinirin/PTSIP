@@ -9,7 +9,7 @@ import (
 // lifecycle transition or interpret a description as execution permission.
 func Check(root string, instance any, validate authoring.Validator) error {
 	resources, err := contractcheck.Load(root,
-		contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json", ID: "urn:ptsip:policy:Status:v2"},
+		contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", ID: "urn:ptsip:policy:Status:v2"},
 		contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json", ID: "urn:ptsip:contract:constant:policy_status_approved:v2"},
 		contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json", ID: "urn:ptsip:contract:constant:policy_status_draft:v2"},
 		contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json", ID: "urn:ptsip:contract:constant:policy_status_retired:v2"},

@@ -112,7 +112,7 @@ Policy_Rules:
         Rule_state: APPROVED.provisional
       - id: OBLIGATION/GOV_SHARED_PUBLIC_AND_INDEPENDENT_RULES
         applies_when: DEVELOPER_POLICY_RULES_SCHEMA_LOCATION_OR_VALIDATION
-        rule: "KEEP_LATEST: 개발 정책의 공통 문서 구조는 .ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json이 소유한다. 공통 Policy_Rules 필드 구조는 .ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json이 선언하며 모든 필드는 기본 선택이고 생성하지 않는다. Policy_Identity.root_family가 .ptsip/contracts/policy/identity/root_family.json에 등록된 값이면 .ptsip/contracts/policy/Rules/{root_family}_rules.json의 명시된 structure로 해당 Family의 조건부 필수 필드와 내부 검증 구조를 선택한다. 기존 Family별 .schema.json·.schemas.json 및 Policy_Rules_version.schema.json은 제거하며 기존 스키마 경로를 규칙 본문으로 자동 승격하지 않는다. 공통 문서 검증·Family 구조 선택·규칙 승인 및 실행 권한의 경계를 보존한다."
+        rule: "KEEP_LATEST: 개발 정책의 공통 문서 구조는 .ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json이 소유한다. 공통 Policy_Rules 필드 구조는 .ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json이 선언하며 모든 필드는 기본 선택이고 생성하지 않는다. Policy_Identity.root_family가 .ptsip/contracts/policy/identity/root_family.json에 등록된 값이면 .ptsip/contracts/policy/Rules/{root_family}_rules.json의 명시된 structure로 해당 Family의 조건부 필수 필드와 내부 검증 구조를 선택한다. 기존 Family별 .schema.json·.schemas.json 및 Policy_Rules_version.schema.json은 제거하며 기존 스키마 경로를 규칙 본문으로 자동 승격하지 않는다. 공통 문서 검증·Family 구조 선택·규칙 승인 및 실행 권한의 경계를 보존한다."
         Rule_state: APPROVED.Applying
       - id: OBLIGATION/POLICY_RULES_SHARED_PRESENCE_FAMILY_SEMANTICS
         applies_when: INDEPENDENT_POLICY_RULES_CONTRACT_VALIDATION

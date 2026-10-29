@@ -83,7 +83,7 @@ func TestEmptyStatusSchemaRootFailsClosed(t *testing.T) {
 func TestSchemaScanSeparatesJSONDataFromSchemas(t *testing.T) {
 	for _, file := range []string{
 		".ptsip/contracts/schemas/compile-sealed-rbac/candidate-index.json",
-		".ptsip/contracts/schemas/Policy_Rules/root-family/ARCH_rules.schemas.json",
+		".ptsip/contracts/schemas/Policy/Policy_Rules/root-family/ARCH_rules.schemas.json",
 		".ptsip/contracts/schemas/compile-sealed-rbac/binding.schema.json",
 	} {
 		wantSchema := !strings.HasSuffix(file, "candidate-index.json")
@@ -142,7 +142,7 @@ func TestApprovedRBACScaffoldsRemainFailClosed(t *testing.T) {
 			}
 		})
 	}
-	if validateFailClosedRBACScaffold(".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json", base) {
+	if validateFailClosedRBACScaffold(".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", base) {
 		t.Fatal("unapproved scaffold path accepted")
 	}
 }
@@ -159,14 +159,14 @@ func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
 		t.Fatalf("canonical Family rules schema rejected: %v", prior)
 	}
 	for _, tc := range []struct{ path, diagnosticFile, problem string }{
-		{".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json",
-			".ptsip/contracts/schemas/Policy_Rules/root-family/GOV_rules.schema.json",
+		{".ptsip/contracts/schemas/Policy/Policy_Rules/root-family/GOV_rules.schema.json",
+			".ptsip/contracts/schemas/Policy/Policy_Rules/root-family/GOV_rules.schema.json",
 			"RETIRED_FAMILY_RULES_SCHEMA"},
-		{".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json",
-			".ptsip/contracts/schemas/Policy_Rules/GOV_rules.schema.json",
+		{".ptsip/contracts/schemas/Policy/Policy_Rules/GOV_rules.schema.json",
+			".ptsip/contracts/schemas/Policy/Policy_Rules/GOV_rules.schema.json",
 			"RETIRED_FAMILY_RULES_SCHEMA"},
-		{".ptsip/contracts/schemas/Policy_Rules/abortively/GOV_rules.schema.json",
-			".ptsip/contracts/schemas/Policy_Rules/abortively",
+		{".ptsip/contracts/schemas/Policy/Policy_Rules/abortively/GOV_rules.schema.json",
+			".ptsip/contracts/schemas/Policy/Policy_Rules/abortively",
 			"DISALLOWED_POLICY_RULES_ARCHIVE_DIRECTORY"},
 	} {
 		writeSchemaFixture(t, root, tc.path)
@@ -192,7 +192,7 @@ func TestPolicyRulesArchiveDirectoryIsForbidden(t *testing.T) {
 	if len(clean) != 0 {
 		t.Fatalf("canonical fixture unexpectedly rejected: %v", clean)
 	}
-	forbidden := ".ptsip/contracts/schemas/Policy_Rules/abortively"
+	forbidden := ".ptsip/contracts/schemas/Policy/Policy_Rules/abortively"
 	if err := os.MkdirAll(filepath.Join(root, filepath.FromSlash(forbidden)), 0755); err != nil {
 		t.Fatal(err)
 	}

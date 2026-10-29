@@ -31,7 +31,7 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
  // Routing validates references to all declared family schemas, so a synthetic
  // temp repository that omits those inputs can no longer be a passing fixture.
  paths := []string{
-  ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
+  ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
   ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
   ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
   ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
@@ -72,7 +72,7 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
   paths=append(paths,".ptsip/contracts/policy/Rules/"+family+"_rules.json")
  }
  paths=append(paths,
-  ".ptsip/contracts/schemas/Policy_Rules/Family_Rules_Contract.schema.json",
+  ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json",
   ".ptsip/contracts/schemas/compile-sealed-rbac/Conditions_exercise/Condition.schema.json",
   ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Operational_Authority.schema.json",
   ".ptsip/contracts/schemas/compile-sealed-rbac/responsibility/Responsibility.schema.json",
@@ -179,7 +179,7 @@ func TestPolicyStatusAndVersionContractsIncludedInEnginePath(t *testing.T) {
  result,err:=schemaCheck(t,map[string]string{"fixture.json":`{"$id":"urn:example:fixture"}`})
  if err!=nil || result["status"]!="LIMITED_CHECK_PASS" { t.Fatalf("engine path failed: %v %v",err,result) }
  required:=map[string]bool{
-  ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json":false,
+  ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json":false,
   ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json":false,
  }
  for _,item:=range result["findings"].([]any){

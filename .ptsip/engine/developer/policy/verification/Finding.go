@@ -56,7 +56,7 @@ func collectRefs(v any, refs *[]string) {
 // approvedSchemaPaths lists current Policy_Status and Policy_version sources.
 // Missing current contracts must fail the schema scan.
 var approvedSchemaPaths = []string{
-	".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json",
+	".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
 	".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
 }
 
@@ -101,7 +101,7 @@ var schemaScanRoots = []string{
 // Family authoring schemas have been replaced by data contracts. Their
 // reappearance anywhere below Policy_Rules is an unresolved old dependency.
 func isFamilyRulesAuthoringSchema(relative string) bool {
-	if !strings.HasPrefix(relative, ".ptsip/contracts/schemas/Policy_Rules/") {
+	if !strings.HasPrefix(relative, ".ptsip/contracts/schemas/Policy/Policy_Rules/") {
 		return false
 	}
 	idx := strings.LastIndex(relative, "/")
@@ -140,7 +140,7 @@ func schemaFiles(root string) ([]string, []Finding) {
 				if err != nil {
 					return err
 				}
-				if filepath.ToSlash(relative) == ".ptsip/contracts/schemas/Policy_Rules/abortively" {
+				if filepath.ToSlash(relative) == ".ptsip/contracts/schemas/Policy/Policy_Rules/abortively" {
 					findings = append(findings, Finding{File: filepath.ToSlash(relative), Status: "FAIL", Problem: "DISALLOWED_POLICY_RULES_ARCHIVE_DIRECTORY"})
 					return filepath.SkipDir
 				}

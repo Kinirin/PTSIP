@@ -32,10 +32,10 @@ func CheckDocument(root, selected string, document authoring.Document, validate 
 			return err
 		}
 		resources, err := contractcheck.Load(root,
-			contractcheck.Source{Path: ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json", ID: "urn:ptsip:policy:public-structure:v7"},
-			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json", ID: "urn:ptsip:policy:identity:v2"},
+			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json", ID: "urn:ptsip:policy:public-structure:v7"},
+			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", ID: "urn:ptsip:policy:identity:v2"},
 			contractcheck.Source{Path: ".ptsip/contracts/policy/identity/policy_kind.json", ID: "urn:ptsip:identity:policy-kind:v1"},
-			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json", ID: "urn:ptsip:policy:Status:v2"},
+			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", ID: "urn:ptsip:policy:Status:v2"},
 			contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json", ID: "urn:ptsip:policy:Status-version:v1"},
 			contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json", ID: "urn:ptsip:contract:constant:policy_status_approved:v2"},
 			contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json", ID: "urn:ptsip:contract:constant:policy_status_draft:v2"},

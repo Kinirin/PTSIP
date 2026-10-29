@@ -137,7 +137,7 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 	// rules contracts, rather than a second map of fourteen schema filenames.
 	schemaRefs := routingMembers(routing["schema_refs"])
 	expectedSchemas := map[string]string{
-		"public": ".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json",
+		"public": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
 		"rules":  contract_authoring.CommonSchema,
 	}
 	for key, expected := range expectedSchemas {

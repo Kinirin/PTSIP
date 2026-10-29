@@ -50,7 +50,7 @@
       "const": "PROJECT_OWNER_SHARED_DEVELOPER_CATALOG"
     },
     "policy_status_contract_ref": {
-      "const": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
+      "const": ".ptsip/contracts/schemas/Policy/Policy_Status/policy_status_constant.schema.json"
     },
     "lifecycle_schema_resources": {
       "type": "object",
@@ -64,7 +64,7 @@
       "additionalProperties": false,
       "properties": {
         "status": {
-          "const": ".ptsip/contracts/schemas/Policy_Status/policy_status_constant.schema.json"
+          "const": ".ptsip/contracts/schemas/Policy/Policy_Status/policy_status_constant.schema.json"
         },
         "version": {
           "const": ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json"
