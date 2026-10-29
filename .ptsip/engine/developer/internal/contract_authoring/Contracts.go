@@ -25,6 +25,8 @@ const DefinitionsPath = ".ptsip/contracts/Responsibility-Authority/Responsibilit
 const RBACSchemaRoot = ".ptsip/contracts/schemas/compile-sealed-rbac/"
 const AuthorizationDataPath = RBACSchemaRoot + "authority/Authorization_intention.json"
 const AuthorizationSchemaPath = RBACSchemaRoot + "authority/Authorization_intention.schema.json"
+const AuthorizationDecisionDataPath = ".ptsip/contracts/Responsibility-Authority/Authorization_decision.json"
+const AuthorizationDecisionSchemaPath = RBACSchemaRoot + "authority/Authorization_decision.schema.json"
 
 const commonID = "urn:ptsip:policy:Public_Structure_Rules:v3"
 const responsibilityID = "urn:ptsip:rbac:responsibility:v1"
@@ -41,6 +43,8 @@ type Catalog struct {
 	DefinitionShape Document
 	AuthorizationShape Document
 	Authorizations Document
+	AuthorizationDecisionShape Document
+	AuthorizationDecision Document
 }
 
 func object(value any) Document    { obj, _ := value.(map[string]any); return obj }
@@ -204,6 +208,7 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		{RBACSchemaRoot + "lifecycle/keywords.json", "urn:ptsip:rbac:lifecycle:keywords:v1", nil},
 		{RBACSchemaRoot + "lifecycle/index.json", "urn:ptsip:rbac:lifecycle:index:v1", nil},
 		{AuthorizationSchemaPath, "urn:ptsip:rbac:authorization-intention:v1", &c.AuthorizationShape},
+		{AuthorizationDecisionSchemaPath, "urn:ptsip:rbac:authorization-decision:v1", &c.AuthorizationDecisionShape},
 	}
 	for _, resource := range resources {
 		doc, err := readJSON(absolute, resource.file)
@@ -221,6 +226,8 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 	c.Definitions, err = readJSON(absolute, DefinitionsPath)
 	if err != nil { return nil, err }
 	c.Authorizations, err = readJSON(absolute, AuthorizationDataPath)
+	if err != nil { return nil, err }
+	c.AuthorizationDecision, err = readJSON(absolute, AuthorizationDecisionDataPath)
 	if err != nil { return nil, err }
 	return c, nil
 }
@@ -246,6 +253,7 @@ func (c *Catalog) validate(v Validator, schema, instance any, label string) erro
 }
 
 func (c *Catalog) CheckContracts(v Validator) error {
+	if err := c.checkAuthorizationDecision(v); err != nil { return err }
 	if err := c.checkAuthorizationRegistry(v); err != nil { return err }
 	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil {
 		return err
@@ -300,6 +308,7 @@ func (c *Catalog) CheckProfile(v Validator, profile Document) error {
 		return err
 	}
 	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil { return err }
+	if err := c.checkAuthorizationDecision(v); err != nil { return err }
 	if err := c.checkAuthorizationRegistry(v); err != nil { return err }
 	if _, err := ids(profile["responsibility"], "responsibility"); err != nil {
 		return err
@@ -398,6 +407,12 @@ func (c *Catalog) authorizationIDs() map[string]Document {
 		known[stringValue(row["ID"])] = row
 	}
 	return known
+}
+
+// checkAuthorizationDecision validates the project-owner approved fail-closed
+// decision contract. ALLOW is a candidate, not runtime authority.
+func (c *Catalog) checkAuthorizationDecision(v Validator) error {
+	return c.validate(v, c.AuthorizationDecisionShape, c.AuthorizationDecision, AuthorizationDecisionDataPath)
 }
 
 func (c *Catalog) checkAuthorizationRegistry(v Validator) error {
