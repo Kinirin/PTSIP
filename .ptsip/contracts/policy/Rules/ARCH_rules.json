@@ -139,6 +139,11 @@
       "state",
       "title"
     ],
-    "additionalProperties": true
+    "additionalProperties": true,
+    "not": {
+      "required": [
+        "Constraints"
+      ]
+    }
   }
 }
