@@ -1,0 +1,34 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-OPAQUE-RBAC-IDENTIFIERS-AND-AUTHORIZATION-LIFECYCLE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    KEEP_LATEST: Responsibility IDs, rule constants and condition IDs
+    become opaque non-semantic, non-versioned identifiers. Remove
+    empty Constraints in all fourteen family contracts. Responsibility
+    status is not Policy Rule_state; use independent lifecycle/index.json
+    and status.json, limited to OBLIGATION and PROHIBITION.
+    Use condition_name <=20 English hyphenated letters, multi-valued
+    live_policy and optional Authorization_ID based on independent
+    REA/WRI/EDI authorization vocabulary. Authorization_intention.json
+    owns explicit Authorization_ID/intention lookup declarations.
+    Retire source_policy, source_rule_id and source_text in active
+    profile bindings. Do not infer Read/Write/Edit classifications,
+    approvals, policy mandates or operational rights from historic text.
+    Unassigned authorization mappings remain unresolved; legacy text
+    is recoverable only through exact prior Git history.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: true
+  policy_content_review_scope: DIRECTION
+  conflict_resolution: KEEP_LATEST
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0004
+    - MPD-GOV-0005
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'
