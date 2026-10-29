@@ -82,6 +82,8 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
   ".ptsip/contracts/schemas/compile-sealed-rbac/lifecycle/keywords.json",
   ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_intention.schema.json",
   ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_intention.json",
+  ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_decision.schema.json",
+  ".ptsip/contracts/Responsibility-Authority/Authorization_decision.json",
   ".ptsip/contracts/schemas/compile-sealed-rbac/Responsibility_Authority_Contract.schema.json",
   ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json",
   ".ptsip/profiles/Responsibility-Authority-list.yaml",
@@ -226,4 +228,10 @@ func TestMissingAuthorizationIntentionSchemaFailsClosed(t *testing.T) {
     _,err:=schemaCheckWithMissing(t,map[string]string{"fixture.json":`{"$id":"urn:example:fixture"}`},
         ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_intention.schema.json")
     if err==nil { t.Fatal("missing independent authorization contract must fail closed") }
+}
+
+func TestMissingAuthorizationDecisionSchemaFailsClosed(t *testing.T) {
+    _,err:=schemaCheckWithMissing(t,map[string]string{"fixture.json":`{"$id":"urn:example:fixture"}`},
+        ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_decision.schema.json")
+    if err==nil { t.Fatal("missing approved authorization decision contract must fail closed") }
 }
