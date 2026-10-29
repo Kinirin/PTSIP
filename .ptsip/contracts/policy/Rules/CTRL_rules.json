@@ -1,7 +1,7 @@
 {
   "$schema": "../../schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json",
-  "$id": "urn:ptsip:contract:policy:rules:CTRL:v1",
-  "schema_version": "ptsip-family-rules/v1",
+  "$id": "urn:ptsip:contract:policy:rules:CTRL:v2",
+  "schema_version": "ptsip-family-rules/v2",
   "root_family": "CTRL",
   "generation": {
     "default": "OMIT",
@@ -35,19 +35,25 @@
         ]
       },
       "Definition": {
-        "type": "object",
-        "properties": {
-          "meaning": {
-            "type": "string",
-            "minLength": 1
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "rule"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/ID"
+            },
+            "rule": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_.-]+$"
+            }
           },
-          "rationale": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "meaning"
-        ]
+          "additionalProperties": false
+        }
       },
       "Boundary": {
         "type": "object",
@@ -86,15 +92,6 @@
       "Constraints": {
         "type": "object",
         "properties": {
-          "obligations": {
-            "type": "array",
-            "items": {
-              "$ref": "urn:ptsip:policy:Public_Structure_Rules:v2#/$defs/ObligationState"
-            }
-          },
-          "prohibitions": {
-            "type": "array"
-          },
           "preconditions": {
             "type": "array"
           },
@@ -138,9 +135,6 @@
       },
       "title": {
         "type": "string"
-      },
-      "Responsibility_Refs": {
-        "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/IDList"
       }
     },
     "required": [
@@ -153,6 +147,5 @@
       "title"
     ],
     "additionalProperties": true
-  },
-  "responsibility_refs": []
+  }
 }
