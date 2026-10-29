@@ -20,8 +20,8 @@ func TestRIdKeyedRuleBindingsAndNoComponentMetadata(t *testing.T) {
         if !strings.HasPrefix(id, "R-ID-") { t.Fatal("non-R-ID binding", id) }
         item := raw.(map[string]any)
         if item["rule"] == "" { t.Fatal("missing rule constant", id) }
-        if _, present := item["Rule_state"]; !present { t.Fatal("missing state declaration", id) }
-        for _, old := range []string{"component_id", "release_owner", "compatibility_owner", "roles"} {
+        if _, present := item["status"]; !present { t.Fatal("missing responsibility status", id) }
+        for _, old := range []string{"component_id", "release_owner", "compatibility_owner", "roles", "source_text", "source_policy", "source_rule_id", "Rule_state"} {
             if _, present := item[old]; present { t.Fatal("retired component owner field", id, old) }
         }
     }
@@ -36,16 +36,16 @@ func TestInvalidRIdBindingsAreRejected(t *testing.T) {
         mutate func(authoring.Document)
     }{
         {"unknown-condition", func(p authoring.Document) {
-            p["component_bindings"].(map[string]any)["R-ID-NEW"] = map[string]any{"rule":"RULE.NEW","Rule_state":nil,"condition_id":[]any{"C-ID-UNKNOWN"}}
+            p["component_bindings"].(map[string]any)["R-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"] = map[string]any{"rule":"RULE-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC","status":"OBLIGATION","condition_name":"MISSING","condition_id":[]any{"C-ID-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"}}
         }},
         {"invalid-key", func(p authoring.Document) {
-            p["component_bindings"].(map[string]any)["not-an-R-ID"] = map[string]any{"rule":"RULE.NEW","Rule_state":nil}
+            p["component_bindings"].(map[string]any)["not-an-R-ID"] = map[string]any{"rule":"RULE-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC","status":"OBLIGATION"}
         }},
         {"missing-state", func(p authoring.Document) {
-            p["component_bindings"].(map[string]any)["R-ID-NEW"] = map[string]any{"rule":"RULE.NEW"}
+            p["component_bindings"].(map[string]any)["R-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"] = map[string]any{"rule":"RULE-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"}
         }},
         {"legacy-component-metadata", func(p authoring.Document) {
-            p["component_bindings"].(map[string]any)["R-ID-NEW"] = map[string]any{"rule":"RULE.NEW","Rule_state":nil,"component_id":"official-context-engine"}
+            p["component_bindings"].(map[string]any)["R-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"] = map[string]any{"rule":"RULE-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC","status":"OBLIGATION","component_id":"official-context-engine"}
         }},
         {"retired-component-map", func(p authoring.Document) { p["component_map"] = map[string]any{"mode":"explicit"} }},
     } {
