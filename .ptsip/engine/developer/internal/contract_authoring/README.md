@@ -1,74 +1,74 @@
-# Independent policy rules and Responsibility-Authority authoring
+# Opaque responsibility and authorization contracts
 
-The fourteen contracts in `.ptsip/contracts/policy/Rules/{root_family}_rules.json`
-select the same `Policy_Rules.Definition` authoring model. The selected family
-requires an array of separate records with mandatory `id` and `rule`
-and an optional `preconditions` list of registered C-ID condition references:
+The fourteen `.ptsip/contracts/policy/Rules/{root_family}_rules.json`
+contracts select independent Policy_Rules.Definition entries. Each item refers
+to an opaque R-ID, an opaque rule constant, and optionally an opaque C-ID
+reference. No policy name, path or version is encoded into these identifiers.
 
 ```yaml
 Policy_Rules:
   Definition:
-    - id: R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS
-      rule: GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS
+    - id: R-ID-8D95436233BE6DCD5E90B2AAA986052C
+      rule: RULE-FD125E8425C39349304D0BC566F5701E
       preconditions:
-        - C-ID-POLICY_STATUS_SERIALIZATION
-  Constraints: {}
+        - C-ID-514BC6B03401A855DF7B7C157645C79B
 ```
 
-The policy document is *not* the source of preconditions. Its list is a
-non-authoritative selector and must exactly match the corresponding
-`component_bindings[R-ID].condition_id` list in the Responsibility profile.
-Missing or extra condition references are rejected regardless of ordering.
-All 14 Family contracts have retired
-`Constraints.preconditions` and `Constraints.dependencies` as authoring
-fields. The `Constraints: {}` shell remains required by the currently
-approved shared Family structure; removing that shell is a separate decision.
+A policy document is not allowed to define or override preconditions. The
+registered list at `component_bindings[R-ID].condition_id` in
+`.ptsip/profiles/Responsibility-Authority-list.yaml` must match exactly.
+The empty `Constraints` field is retired in the common schema and all
+fourteen Family contracts; explicit use is rejected.
 
-
-Each `id` must be registered under the exact same R-ID key in
-`.ptsip/profiles/Responsibility-Authority-list.yaml`. Each `rule` must
-match the registered rule constant under that key. No new rule ID, rule state,
-condition or approval is generated from a plain string.
+Responsibility profiles use an independent lifecycle type, not a policy
+approval state. The entrypoint
+`.ptsip/contracts/schemas/compile-sealed-rbac/lifecycle/index.json`
+loads the `status.json` contract; only `OBLIGATION` and `PROHIBITION`
+are currently allowed. A previous `APPROVED.*` Rule_state cannot be
+interpreted as this type. The profile maps opaque rule IDs as follows:
 
 ```yaml
 component_bindings:
-  R-ID-MPD-GOV-0006-OBLIGATION-FLATTEN_POLICY_STATUS:
-    rule: GOV.MPD-GOV-0006.OBLIGATION.FLATTEN_POLICY_STATUS
-    Rule_state: APPROVED.provisional
+  R-ID-8D95436233BE6DCD5E90B2AAA986052C:
+    rule: RULE-FD125E8425C39349304D0BC566F5701E
+    status: OBLIGATION
     condition_id:
-      - C-ID-POLICY_STATUS_SERIALIZATION
+      - C-ID-514BC6B03401A855DF7B7C157645C79B
+    condition_name: POLICY-STATUS
+    live_policy:
+      - MPD-GOV-0006
 ```
 
-The profile's `Rule_state` belongs to one registered rule constant. A null
-state explicitly records a missing source state and is *not* approval. Original
-rule texts in `source_text`, alongside `source_policy` and `source_rule_id`,
-are provenance-only migration evidence. This metadata must not create authority.
+`condition_name` is an English uppercase hyphenated description, no longer
+than 20 characters; it must match its declared condition name. `live_policy`
+is a nonempty array when present and can hold multiple policy references.
 
-`.ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json`
-declares reusable conditions and operational authorities. Condition records
-refer to the independent `Condition.schema.json`; their `applies_when`
-values are not duplicated in policy Definition records. The
-`Operational_Authority.schema.json` contract owns the representation of
-`Rule_state` used by the profile. Condition evaluation, approval, Seal and
-Activation remain separate and cannot be inferred from authoring validation.
-
-The old `responsibility_refs`, `Responsibility_Refs`, `component_id`,
-`component_map`, component owner metadata and component materialization
-operation are retired. No compatibility fallback recreates these declarations.
-
-To inspect or validate contracts from the repository root:
+An optional `Authorization_ID` uses a keyword from
+`lifecycle/keywords.json`: `REA` (Read), `WRI` (Write), or `EDI` (Edit),
+followed by a hyphen and 15 alphanumeric characters. The explicit
+`authority/Authorization_intention.json` registry holds
+`Authorization_ID` / `intention` records. The lookup operation resolves
+only an explicitly registered and profile-linked ID; it never fabricates
+a permission:
 
 ```powershell
-go -C .ptsip/engine/developer run . --root ../../.. --validator policy-rules --operation describe --family GOV
+go -C .ptsip/engine/developer run . --root ../../.. --validator responsibility-authority --operation lookup-intention --input REA-AAAAAAAAAAAAAAA
+```
+
+The example lookup ID is not registered, so it **fails closed**. No
+Read/Write/Edit mappings were inferred during the opaque-ID migration;
+an action needs explicit user authorization and a real intention record.
+
+The active responsibility profile no longer contains `source_text`,
+`source_policy`, `source_rule_id`, or `Rule_state`. The previous
+natural-language rules remain available in exact prior Git commits for
+historical audit only; none becomes a new authorization intention without
+approval. No Profile check, rule lookup, approval or status declaration
+activates a responsibility or authorizes execution.
+
+Validation examples:
+
+```powershell
 go -C .ptsip/engine/developer run . --root ../../.. --validator policy-rules --operation check --input developer/policy/GOV/MPD-GOV-0006.yaml
 go -C .ptsip/engine/developer run . --root ../../.. --validator responsibility-authority --operation check
 ```
-
-`generate` requires explicitly supplied rule Definition values; the tool
-never invents IDs, grants or states. It creates a new output file only when
-a path is provided and never overwrites an existing file. Validation uses the
-installed PTSIP JSON Schema engine; Python/PyYAML is used for serialization
-and rejects duplicate mapping keys.
-
-Existing RETIRED policy sources outside GOV are historical; a family contract
-change alone does not reactivate or rewrite their old policy authority.
