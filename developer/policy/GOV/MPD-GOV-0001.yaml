@@ -134,6 +134,10 @@ Policy_Rules:
         applies_when: ROOT_FAMILY_INDEPENDENT_POLICY_RULE_CONTRACT_TRANSITION
         rule: "KEEP_LATEST 범위 확대: .ptsip/contracts/policy/Rules/의 ARCH, ASSURE, CHANGE, CNTR, CTRL, GOV, INFO, INTENT, NORM, OPS, REAL, RECORD, RISK, SUPPLY 14개 독립 규칙 계약 모두를 .ptsip/profiles/Responsibility-Authority-list.yaml과 urn:ptsip:rbac:responsibility:v1 책임 ID 계약에 정렬하는 전환 대상으로 지정한다. 앞서 MPD-GOV-0006에 승인된 하위 결정 A(개별 규칙 id와 등록된 responsibility[].ID 동일화)는 전체 Root Family 계약을 대상으로 확장하되, Family 고유 책임과 이미 승인된 별개 정책 의미는 보존한다. 14개 계약을 부분적으로만 전환된 최종 상태로 선언하거나 미등록 Responsibility ID, 조건 또는 운영 권한을 생성하지 않는다. 14개 Family의 계약·검증기·기존 정책 문서 전환은 전체 영향 범위로 계획하며 기존 문서의 적합성을 근거 없이 선언하거나 기존 유효 정책의 검증을 준비 없이 중단하지 않는다. rule 필드의 상수 의미·정의 소유·직렬화·참조 및 이관 호환성은 아직 사용자 결정이 필요하며, 이 범위 승인만으로 스키마·프로필·정책 본문을 일괄 변경하거나 활성화·Seal·실행 권한을 부여하지 않는다."
         Rule_state: APPROVED.provisional
+      - id: OBLIGATION/ALL_FAMILY_DEFINITION_ID_RULE_CONTRACT_DIRECTION
+        applies_when: ALL_FAMILY_POLICY_RULE_DEFINITION_CONTRACT_REDESIGN
+        rule: "사용자 명시 결정: ARCH, ASSURE, CHANGE, CNTR, CTRL, GOV, INFO, INTENT, NORM, OPS, REAL, RECORD, RISK, SUPPLY의 14개 독립 Policy_Rules Family 계약은 공통 구조 structure.Definition에서 기존 필수 meaning 자연어 필드를 제거하고 필수 id 및 rule을 갖는 기계 참조 구조로 전환한다. Definition.id는 등록된 Responsibility ID와 동일한 R-ID- 계열 식별자이고 Definition.rule은 등록·해소되는 기계 상수로 한다. 기존 Constraints.obligations의 존재를 모든 Family에 일괄 요구하지 않으며, Definition의 규칙 선언에 applies_when 및 Rule_state를 포함시키지 않는다. 조건 및 운영 권한은 독립 Conditions_exercise/Condition.schema.json 및 authority/Operational_Authority.schema.json의 책임 경계에서 처리하며 정책 규칙 본문에 이 실행 정보와 규칙별 상태를 중복 저장하지 않는 것을 목표로 한다. 기존 정책 문서·검증기·14개 Family JSON의 실제 이관은 상수 의미 및 참조 해소 계약이 유효해진 후 별도로 수행하며, 임의의 Responsibility ID·규칙 상수·승인·Seal·Activation·실행 권한을 생성하지 않는다. 기존 responsibility_refs와 프로필 component_bindings의 소유권 충돌은 본 결정으로 처리하거나 덮어쓰지 않으며 사용자 별도 충돌 해결에 따른다."
+        Rule_state: APPROVED.provisional
       - id: PROHIBITION/REUSE_RETIRED_AUTHORITY_CATEGORY
         rule: "폐기된 Authority Major·Minor·Micro의 분류 계층·값을 새 RBAC 책임·조건·권한·바인딩 계약의 필수 의미 또는 승인 근거로 재사용하거나, 레거시 분류 참조에 근거하여 실행 권한을 부여하는 행위"
       - id: PROHIBITION/INTENT_ARCH_CANNOT_CREATE_GOV_MANDATE

@@ -1,0 +1,30 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261029-ALL-14-DEFINITION-ID-RULE-DIRECTION
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner explicitly chose the common structure.Definition in all fourteen
+    Root Family *_rules.json contracts as the future location of machine-only
+    policy-rule references. Replace the required natural-language meaning
+    with required id and rule; id equals a registered Responsibility ID;
+    rule resolves a registered machine constant. Do not impose a common
+    Constraints.obligations array. Keep applies_when and Rule_state out of
+    new policy rule declarations and leave execution condition and authority
+    semantics to the independently owned contracts. No field encoding
+    or constant registry schema beyond these directional constraints
+    is authorized. Prior responsibility_refs and component_bindings
+    ownership collisions remain unresolved; preserve them until the user
+    selects a conflict resolution. No bulk migration, runtime grants or
+    status transitions are authorized by this record.
+  approval_scope: FINAL_POLICY
+  target_status: ACTIVE
+  implementation_authorized: false
+  policy_content_review_scope: DIRECTION
+  affected_policy_ids:
+    - MPD-GOV-0001
+    - MPD-GOV-0006
+  branch_creation_authorized: false
+  recorded_at: '2026-10-29'
