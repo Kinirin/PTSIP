@@ -346,6 +346,36 @@ func (c *Catalog) checkRuleBindings(v Validator, doc Document) error {
 		if stringValue(binding["rule"]) != rule {
 			return fmt.Errorf("RULE_CONSTANT_MISMATCH: %s", id)
 		}
+		// The policy may select registered conditions, but must never author them.
+		// Require an exact set match, including the absence of preconditions.
+		registered := map[string]bool{}
+		if raw, present := binding["condition_id"]; present {
+			for _, ref := range raw.([]any) {
+				registered[stringValue(ref)] = true
+			}
+		}
+		declared := map[string]bool{}
+		if raw, present := definition["preconditions"]; present {
+			items, ok := raw.([]any)
+			if !ok || len(items) == 0 {
+				return fmt.Errorf("INVALID_RULE_PRECONDITIONS: %s", id)
+			}
+			for _, ref := range items {
+				name := stringValue(ref)
+				if name == "" || declared[name] {
+					return fmt.Errorf("INVALID_RULE_PRECONDITIONS: %s/%s", id, name)
+				}
+				declared[name] = true
+			}
+		}
+		if len(registered) != len(declared) {
+			return fmt.Errorf("RULE_PRECONDITIONS_PROFILE_MISMATCH: %s", id)
+		}
+		for name := range declared {
+			if !registered[name] {
+				return fmt.Errorf("UNREGISTERED_RULE_PRECONDITION: %s/%s", id, name)
+			}
+		}
 	}
 	return nil
 }
