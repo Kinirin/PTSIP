@@ -62,6 +62,25 @@ to `Distribution/release/test/releasenote` and uses the relocated test Go module
 Private package tests remain beside their Go package where they exercise
 unexported implementation details. Domain integration tests live in `test/`.
 
+## Temporary Go contract entry
+
+The read-only `contract-entry` validator resolves a registered developer-policy
+target via `.ptsip/index.json`, its policy routing and Family contract. It
+does not load release contracts during policy selection, does not infer a
+Family from the filename, and does not grant runtime or policy authority.
+The former Python entry script and tests were removed without compatibility
+aliases. The Go selector itself does not depend on Python; the existing
+`policy-check` validator can still use its existing YAML/VALIDATION runtime.
+
+```powershell
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0006.yaml --dry-run
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0006.yaml
+go -C .ptsip/engine/developer test ./internal/contractentry -count=1
+```
+
+Other current domain validators retain their explicit commands. `src/policy/**`
+is not selected by this developer-policy entry.
+
 ## Run checks from the repository root
 
 ```powershell
