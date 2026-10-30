@@ -20,6 +20,7 @@ import (
 	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/layout"
 	schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification"
+	contractentry "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractentry"
 )
 
 type Validator func(string) (any, int)
@@ -77,6 +78,8 @@ func main() {
 	operation := flag.String("operation", "check", "authoring: check, generate, describe; release-version-diff: preview, check, apply; release-documentation: check, preview, generate")
 	family := flag.String("family", "", "explicit Root Family for policy-rules generation or description")
 	input := flag.String("input", "", "repository-relative JSON/YAML input, or - for stdin")
+	target := flag.String("target", "", "exact repository-relative policy target for contract-entry")
+	dryRun := flag.Bool("dry-run", false, "resolve contract entry without invoking validation")
 	output := flag.String("output", "", "new repository-relative JSON/YAML output (existing files are preserved)")
 	base := flag.String("base", "", "exact baseline commit SHA for version comparison and documentation")
 	head := flag.String("head", "", "exact checked-out commit SHA for version comparison and documentation")
@@ -90,11 +93,37 @@ func main() {
 	for name := range validators {
 		names = append(names, name)
 	}
-	names = append(names, "release-version-diff")
+	names = append(names, "contract-entry", "release-version-diff")
 	names = append(names, "release-documentation")
 	names = append(names, "policy-rules", "responsibility-authority")
 	names = append(names, "policy-check", "policy-identity-check", "policy-status-check", "plan-status-check")
 	sort.Strings(names)
+	if *selected == "contract-entry" {
+		if *operation != "check" || *target == "" || *input != "" || *output != "" || *family != "" {
+			emit(map[string]any{"status": "UNRESOLVED", "problem": "CONTRACT_ENTRY_REQUIRES_EXACT_TARGET_ONLY", "execution_authorized": false, "mutation_authorized": false})
+			os.Exit(2)
+		}
+		absolute, err := filepath.Abs(*root)
+		if err != nil {
+			emit(map[string]any{"status": "UNRESOLVED", "problem": err.Error(), "execution_authorized": false, "mutation_authorized": false})
+			os.Exit(2)
+		}
+		selection, err := contractentry.Resolve(absolute, *target)
+		if err != nil {
+			emit(map[string]any{"status": "UNRESOLVED", "problem": err.Error(), "execution_authorized": false, "mutation_authorized": false})
+			os.Exit(2)
+		}
+		if *dryRun {
+			emit(map[string]any{"status": "SELECTED_NOT_EXECUTED", "selection": selection, "execution_authorized": false, "mutation_authorized": false})
+			return
+		}
+		verified, code := schema_check.RunDocument(absolute, selection.Validator, selection.Target)
+		status := "CHECK_COMPLETED"
+		if code != 0 { status = "CHECK_FAILED" }
+		emit(map[string]any{"status": status, "selection": selection, "result": verified, "execution_authorized": false, "mutation_authorized": false})
+		if code != 0 { os.Exit(code) }
+		return
+	}
 	if *selected == "release-documentation" {
 		if *output != "" || *family != "" {
 			emit(map[string]any{"status": "FAIL", "problem": "DOCUMENTATION_USES_CONTRACT_OUTPUT_PATHS", "publication_authorized": false})
