@@ -9,8 +9,16 @@ Policy_Status:
   contract: "urn:ptsip:contract:policy:arch:authority-layer:separation"
 Policy_Rules:
   Identity:
-    family: "ARCH"
-  Definition: []
+    contract_id: "urn:ptsip:policy:rule:arch:authority-layer"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-AFB9CA12F7BE4D9C946960BCE6B79B4F"
+      rule: "POLICY-PLAN-LAYERS"
+    - id: "R-ID-5C5ECE193926457CBEE2887CEE7A9330"
+      rule: "PLAN-APPROVAL-GATE"
+    - id: "R-ID-BD3E9B19FD1441AFAFECE2490BB6AB46"
+      rule: "NO-IMPL-PLAN-AUTH"
+  title: "ARCH 정책·계획·구현 권한 계층의 분리"
   Boundary:
     scope: "개발 정책·계획·구현 산출물의 상하 관계와 상호 독립적인 권한 경계"
     subjects:
