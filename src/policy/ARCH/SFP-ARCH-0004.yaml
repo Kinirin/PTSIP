@@ -1172,6 +1172,30 @@
         "runtime_gate": "CURRENT_REGISTERED_CONTRACT_BINDING_AND_GOV_CTRL_AUTHORIZATION_REQUIRED",
         "public_api_retirement": "SEPARATE_APPROVAL_REQUIRED"
       },
+      "ptsip_repository_python_path_reconciliation_2026_10_30": {
+          "decision": "RECONCILE",
+          "decision_source": "PROJECT_OWNER_EXPLICIT",
+          "approved_at": "2026-10-30",
+          "application_scope": "THIS_PTSIP_REPOSITORY_PYTHON_PATH_MIGRATION_AND_VPMS_PUBLIC_INTERFACE",
+          "applies_to_consumer_projects": false,
+          "compared_prior_policy_revision": "f766a04c805d6f0a501e1f0fbf9cfb2d75bfc367",
+          "preserved_existing_rule": "LEGACY_VPMS_CONTRACTS_AND_PUBLIC_INTERFACE_PRESERVED_UNTIL_SEPARATELY_AUTHORIZED_MACHINE_VERIFIED_HANDOFF",
+          "approved_target": "VERIFIED_NEW_PATH_CUTOVER_WITHOUT_PERMANENT_OLD_PATH_COMPATIBILITY_SHIM",
+          "transition_preconditions": [
+            "EXACT_RESPONSIBILITY_OWNER_AND_CONSUMER_CALLSITE_MAPPING_VERIFIED",
+            "RUST_VALIDATION_VPMS_CAPABILITY_RELATIONS_AND_BEHAVIOR_PARITY_VERIFIED_WHEN_APPLICABLE",
+            "PUBLIC_ENTRYPOINT_IMPORT_AND_CONTRACT_COMPATIBILITY_VERIFIED",
+            "VERSIONED_HANDOFF_AND_RELEVANT_POLICY_CONTROL_GATES_SATISFIED",
+            "EXACT_AFFECTED_PUBLIC_API_RETIREMENT_SCOPE_APPROVED_AND_VERIFIED"
+          ],
+          "pre_cutover_state": "EXISTING_PUBLIC_INTERFACES_REMAIN_EFFECTIVE",
+          "after_scoped_cutover": "NO_PERMANENT_LEGACY_COMPATIBILITY_SHIM_FOR_VERIFIED_RETIRED_SCOPE",
+          "unresolved_new_python_paths": "PLAN_DERIVED_NO_INFERRED_DIRECTORY_NAMES",
+          "unresolved_file_deletions": "NOT_AUTHORIZED",
+          "unverified_scope": "KEEP_PRIOR_NO_CUTOVER",
+          "implementation_and_runtime_activation": "NOT_AUTHORIZED_BY_THIS_DIRECTION",
+          "unrelated_engine_boundaries": "PRESERVED"
+        },
       "implementation_admission": {
         "approval_source": "USER_EXPLICIT",
         "approval_ref": "developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml",

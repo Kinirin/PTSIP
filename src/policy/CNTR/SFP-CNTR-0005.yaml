@@ -1644,6 +1644,36 @@
         "runtime_gate": "CURRENT_REGISTERED_CONTRACT_BINDING_AND_GOV_CTRL_AUTHORIZATION_REQUIRED",
         "public_api_retirement": "SEPARATE_APPROVAL_REQUIRED"
       },
+      "ptsip_repository_distribution_scope_reconciliation_2026_10_30": {
+          "decision": "RECONCILE",
+          "decision_source": "PROJECT_OWNER_EXPLICIT",
+          "approved_at": "2026-10-30",
+          "application_scope": "THIS_PTSIP_REPOSITORY_DISTRIBUTION_CONTENT_AND_VERSION_DETECTION_ALIGNMENT",
+          "applies_to_consumer_projects": false,
+          "compared_prior_policy_revision": "77f901195ab04f0ca5d723eb6c15f6f159716bf6",
+          "preserved_existing_rule": "ACTIVE_VPMS_PUBLIC_CONTRACT_AND_CONSUMER_BINDINGS_PRESERVED_UNTIL_MACHINE_VERIFIED_AUTHORIZED_HANDOFF",
+          "approved_target": "EXCLUDE_VERIFIED_MIGRATED_LEGACY_PACKAGES_FROM_PTSIP_DISTRIBUTION",
+          "candidate_source_roots": [
+            "src/vpms/",
+            "src/agent_contracts/"
+          ],
+          "pre_exclusion_requirements": [
+            "EXACT_PACKAGED_CONSUMER_IMPORT_AND_OPERATION_GRAPH_VERIFIED",
+            "VPMS_PUBLIC_API_VERSIONED_HANDOFF_AND_CONFORMANCE_PARITY_VERIFIED_WHEN_APPLICABLE",
+            "DECLARED_PROFILE_VERIFICATION_RESPONSIBILITY_AND_REGISTERED_TEST_MODES_COVER_MIGRATION",
+            "PACKAGE_MANIFEST_BUILD_CONTENT_AND_DEPENDENCY_CLOSURE_MACHINE_VERIFIED",
+            "UNMAPPED_UNVERIFIED_OR_INCOMPATIBLE_CONSUMERS_FAIL_CLOSED"
+          ],
+          "pre_exclusion_state": "CURRENT_PACKAGE_INCLUSION_REMAINS_EFFECTIVE",
+          "after_verified_scoped_handoff": "EXCLUDE_FROM_PTSIP_DISTRIBUTION_AND_ASSOCIATED_VERSION_CHANGE_DETECTION_SCOPE",
+          "source_directory_deletion": "NOT_AUTHORIZED",
+          "src_ptsip_agent_contracts_subpackage": "UNCHANGED_NOT_DECIDED",
+          "exact_package_metadata_and_import_path_changes": "PLAN_DERIVED_ONLY",
+          "publication_authorized": false,
+          "implementation_and_distribution_mutation": "NOT_AUTHORIZED_BY_THIS_DIRECTION",
+          "unverified_scope": "KEEP_PRIOR_PACKAGE_INCLUSION_AND_ACTIVE_CONTRACTS",
+          "unrelated_engine_package_contracts": "PRESERVED"
+        },
       "implementation_admission": {
         "approval_source": "USER_EXPLICIT",
         "approval_ref": "developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml",

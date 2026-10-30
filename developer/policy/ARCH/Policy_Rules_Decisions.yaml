@@ -2495,17 +2495,36 @@ src_ptsip_domain_responsibility_direction:
       physical_shared_directory_mandate: NONE
     existing_python_paths:
       user_choice: A_DIRECT_PATH_CUTOVER_WITHOUT_COMPATIBILITY_SHIM
-      state: USER_SELECTED_PENDING_EXISTING_AUTHORITY_RECONCILIATION
+      conflict_resolution: RECONCILE
+      state: APPROVED_RECONCILED_DIRECTION
+      transition_model: VERIFIED_SCOPE_CUTOVER_THEN_NO_PERMANENT_LEGACY_SHIM
+      prior_legacy_api_contracts: PRESERVE_UNTIL_VERIFIED_VERSIONED_HANDOFF
+      requires:
+        - MACHINE_VERIFIED_CAPABILITY_OWNERSHIP_AND_CONSUMER_CALLSITE_CLOSURE
+        - BEHAVIOR_CONFORMANCE_AND_PUBLIC_INTERFACE_COMPATIBILITY_PROOF
+        - VERSIONED_HANDOFF_WITH_APPLICABLE_ARCH_CNTR_GOV_CTRL_GATES
+        - VERIFIED_NEW_ENTRYPOINT_AND_IMPORT_BINDINGS
+      missing_evidence: BLOCK_CUTOVER_AND_PRESERVE_OLD_INTERFACE
+      approval_scope: POLICY_DIRECTION_NOT_EXACT_API_RETIREMENT_OR_SOURCE_MUTATION
       affected_scope: PTSIP_PYTHON_PUBLIC_IMPORTS_AND_CLI_ENTRYPOINTS
       exact_new_paths: UNRESOLVED
       migration_plan: REQUIRED_BEFORE_IMPLEMENTATION
       conflict_policy_refs:
         - src/policy/ARCH/SFP-ARCH-0004.yaml
         - src/policy/CNTR/SFP-CNTR-0005.yaml
-      existing_legacy_public_interface_retirement: PRESERVED_PENDING_USER_CONFLICT_RESOLUTION
+      existing_legacy_public_interface_retirement: PRESERVED_UNTIL_SCOPED_VERIFIED_CUTOVER
     package_distribution_alignment:
       user_choice: B_RELEASE_PACKAGE_CONTENT_MATCH_VERSION_DETECTION_SCOPE
-      state: USER_SELECTED_PENDING_EXISTING_AUTHORITY_RECONCILIATION
+      conflict_resolution: RECONCILE
+      state: APPROVED_RECONCILED_DIRECTION
+      transition_model: VERIFIED_CONSUMER_AND_CONTRACT_MIGRATION_THEN_DISTRIBUTION_EXCLUSION
+      requires:
+        - VERIFIED_PACKAGED_CONSUMER_CLOSURE_AND_TEST_MODE_COVERAGE
+        - VERIFIED_VPMS_VERSIONED_PUBLIC_CONTRACT_HANDOFF
+        - VERIFIED_PACKAGING_MANIFEST_AND_DEPENDENCY_INTEGRITY
+        - NO_UNVERIFIED_API_CONSUMERS_OR_PUBLICATION_SIDE_EFFECTS
+      missing_evidence: PRESERVE_CURRENT_DISTRIBUTION_AND_BLOCK_EXCLUSION
+      approval_scope: POLICY_DIRECTION_NOT_EXACT_SOURCE_DELETION_OR_BUILD_MUTATION
       intent: REMOVE_EXCLUDED_SOURCE_PACKAGES_FROM_DISTRIBUTION
       candidate_distribution_exclusions:
         - src/vpms/**
@@ -2517,11 +2536,19 @@ src_ptsip_domain_responsibility_direction:
       conflict_policy_refs:
         - src/policy/ARCH/SFP-ARCH-0004.yaml
         - src/policy/CNTR/SFP-CNTR-0005.yaml
-      distribution_mutation: BLOCKED_PENDING_EXPLICIT_CONFLICT_RESOLUTION
+      distribution_mutation: BLOCKED_UNTIL_VERIFIED_PLAN_AND_SCOPE
   conflict_handling:
     resolution_authority: PROJECT_OWNER
+    approved_resolution_date: "2026-10-30"
+    python_path_decision: RECONCILE
+    vpms_distribution_decision: RECONCILE
     prior_base_revision_ref: f766a04c805d6f0a501e1f0fbf9cfb2d75bfc367
-    active_policy_revision_check: REQUIRED_AT_RESOLUTION
+    prior_cntr_base_revision_ref: 77f901195ab04f0ca5d723eb6c15f6f159716bf6
+    prior_rule_disposition: RETAIN_HANDOFF_VERIFICATION_AND_SCOPED_AUTHORIZATION
+    new_rule_disposition: CONDITIONAL_NONPERMANENT_COMPATIBILITY_AND_DISTRIBUTION_EXCLUSION
+    active_policy_revision_check: VERIFIED_AT_2026_10_30_SYNC
+    conflicts_resolved: true
+    implementation_permitted_before_required_proofs: false
     modes:
       - KEEP_PRIOR
       - KEEP_LATEST
