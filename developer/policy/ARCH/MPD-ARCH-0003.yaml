@@ -1,0 +1,48 @@
+Policy_Identity:  id: "MPD-ARCH-0003"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "ARCH"
+  title: "ARCH 계획 생성 권한·저장 루트·경로 결정 원칙"
+Policy_Status:  Policy_Status_Schema_ver: "1"
+  status: "APPROVED.Application_Problems"
+  contract: "urn:ptsip:contract:policy:arch:planning-creation:routing"
+Policy_Rules:  Identity:    family: "ARCH"
+  Definition: []
+  Boundary:    scope: "현재 PTSIP 개발 저장소의 계획 아티팩트 생성 권한과 저장 위치 및 논리적 계획 식별 경계"
+    subjects:
+      - "사용자 승인 개발 계획 루트와 하위 경로의 기계적 도출"
+      - "명시적인 계획 생성 요청과 정책 승인·계획 생성 권한의 분리"
+      - "계획의 논리적 식별자와 Git 브랜치·물리적 경로의 독립성"
+    exclusions:
+      - "소비자 프로젝트에 대한 계획 루트 강제"
+      - "승인되지 않은 계획 경로 선택 알고리즘·생성기 파이프라인을 정책으로 확정"
+      - "계획 식별자만으로 브랜치를 생성하거나 선택하는 행위"
+    authority_semantics:      scope: "CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY"
+      planning_artifact_root: "developer/planning/"
+      planning_root_authority: "USER_APPROVED_REPOSITORY_POLICY_CONFIGURATION"
+      root_change: "SEPARATE_EXPLICIT_USER_POLICY_DECISION_ONLY"
+      canonical_subpath: "DERIVE_AT_CREATION_FROM_OWNER_APPROVED_MACHINE_ROUTING_CONTRACT"
+      subpath_inputs:
+        - "CURRENT_EFFECTIVE_POLICY"
+        - "REGISTERED_MACHINE_FACTS"
+      arbitrary_agent_path_choice: "FORBIDDEN"
+      missing_ambiguous_or_nonunique_path: "BLOCK_CREATION_AND_REQUEST_USER_DECISION"
+      user_explicit_plan_creation_request_required: true
+      policy_approval_does_not_authorize_plan_generation: true
+      plan_discussion_does_not_authorize_artifact_creation: true
+      plan_content_derived_from:
+        - "EFFECTIVE_POLICY"
+        - "VERIFIED_EVIDENCE"
+      logical_identity:        independent_of_branch: true
+        independent_of_physical_plan_ref: true
+        branch_role: "PLAN_EXECUTION_CONTEXT_NOT_PLAN_IDENTITY"
+        branch_creation_or_selection_from_plan_identity: "NOT_AUTHORIZED"
+      unresolved:        subpath_routing_contract: "SEPARATE_USER_APPROVAL_REQUIRED"
+        canonical_subpath_algorithm: "SEPARATE_UNRESOLVED_DECISION"
+        generator_pipeline: "NOT_ESTABLISHED"
+  Evaluation:    criteria:      evidence:
+        - "명시적인 생성 요청 및 승인된 루트·라우팅 계약 확인"
+        - "단일 정규 경로가 도출되지 않으면 생성 차단"
+        - "계획 ID 변경 없이 실행 브랜치가 달라질 수 있음"
+    application_problems:
+      - "ARCH_RULE_DEFINITION_R_ID_AND_PROFILE_REGISTRATION_PENDING"
+      - "ARCH_FAMILY_SCHEMA_IDENTITY_APPROVAL_AND_RULE_STATE_CONFLICT_UNRESOLVED"
