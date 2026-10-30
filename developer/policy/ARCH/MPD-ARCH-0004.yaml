@@ -22,11 +22,12 @@ Policy_Rules:
       rule: "YAML-JSON-SEPARATION"
   title: "ARCH Root Family별 정책 구조·스키마 소유권"
   Boundary:
-    scope: "개발 정책 14개 Root Family의 독립적인 전체 정책 레코드 스키마 소유권"
+    scope: "Developer 및 Support Feature 정책의 공통 구조·검증 계약 소유권을 .ptsip/contracts/와 .ptsip/engine/에 집중하고, Root Family별 규칙 소유 경계를 유지"
     subjects:
-      - "각 Root Family가 자신의 정책 레코드 필드·타입·값 제약과 Family 고유 규칙을 소유"
+      - "정책 구조·필드·타입·값 제약은 .ptsip/contracts/의 공통 계약 및 해당 Root Family 계약이 정의하며 Developer와 Support Feature 정책 문서 모두 준수"
       - "공통 정책 상태에 한정한 GOV 소유 계약 예외"
-      - "개발 정책과 src/policy 제품 정책 스키마 권한의 분리"
+      - "Developer와 Support Feature의 정책 내용·결정·승인 권한은 분리하지만 구조·스키마 정의 및 검증 계약은 .ptsip/에서 공유"
+      - "src/policy/는 Consumer 정책 문서만 소유하고 자체 계약 구조·스키마·검증기를 소유하지 않으며, src/ptsip/는 제품 기능 구현에 집중" 
       - "정책 YAML 및 JSON Schema JSON 파일 형식의 구분"
     exclusions:
       - "기존 검증기 마이그레이션 순서·레거시 resolver 폐기 절차·구현 진행 상태"
@@ -37,4 +38,4 @@ Policy_Rules:
       evidence:
         - "각 Family 정책 레코드의 필수·선택 필드를 해당 Family 계약에서 찾을 수 있음"
         - "GOV 공통 상태 외에 다른 Family의 규칙 구조를 공유 권위로 만들지 않음"
-        - "제품 정책 클래스와 개발 정책 클래스의 스키마 권한이 독립적임"
+        - "두 정책 클래스에 적용되는 구조·검증 계약의 정의 권위가 .ptsip/에 있고 src/policy/에 Consumer 별도 계약·검증기 권위가 없음을 확인"
