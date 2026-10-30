@@ -114,6 +114,35 @@
               "ref": {},
               "outcome_ref": {}
             }
+          },
+          "result": {
+            "type": "object",
+            "required": [
+              "status",
+              "task_name",
+              "task_id"
+            ],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "Perfect_fulfillment",
+                  "incomplete_fulfillment",
+                  "unfulfillable",
+                  "dangerous_defects",
+                  "serious_defects"
+                ]
+              },
+              "task_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "task_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
           }
         }
       },
