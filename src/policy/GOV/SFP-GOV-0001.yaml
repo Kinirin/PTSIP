@@ -45,9 +45,28 @@ authority_semantics:
   semantic_unit_1008b206be76: false
   semantic_unit_633f58c56305: false
   semantic_unit_7cba43b51776: OWNER_DECISION_REQUIRED
-  semantic_unit_e5a99b5ac3bd:
-    authorization: USER_EXPLICIT
-    silent_agent_selection: FORBIDDEN
+  context_semantic_source_update_direction:
+    decision_source: USER_EXPLICIT
+    conflict_resolution: KEEP_LATEST
+    policy_direction: EVENT_DRIVEN_MACHINE_VERIFIED_CANONICAL_SOURCE_UPDATE_EXPANSION
+    universal_per_update_user_approval_requirement: RETIRED
+    machine_verified_event_required: true
+    event_evidence_alone_grants_write_authority: false
+    preserved_authority_owners:
+    - GOV_PROJECT_DECISION_LEGITIMACY
+    - CTRL_FRESH_EXECUTION_ELIGIBILITY
+    - INFO_CANONICAL_SEMANTIC_SOURCE
+    - REAL_AUTHORIZED_STATE_REALIZATION
+    - RECORD_SOURCE_BOUND_EVENT_HISTORY
+    subordinate_decisions:
+      eligible_source_mutations: UNDECIDED
+      qualifying_evidence_and_existing_approval: UNDECIDED
+      conflicts_and_uncertainty: EXISTING_FAIL_CLOSED_UNTIL_RESOLVED
+      consumer_delegation_and_execution_permission: UNDECIDED
+      event_trigger_and_delivery: UNDECIDED
+    pending_subordinate_contracts:
+      automatic_source_mutation_permission: NOT_GRANTED
+      existing_execution_binding_activation: NOT_GRANTED
 relations:
   supersedes: []
   amends: []
