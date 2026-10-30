@@ -12,27 +12,21 @@
     "properties": {
       "Identity": {
         "type": "object",
+        "required": [
+          "contract_id",
+          "Rule_ver"
+        ],
         "properties": {
-          "family": {
-            "const": "NORM"
+          "contract_id": {
+            "type": "string",
+            "pattern": "^urn:ptsip:policy:rule:norm:[a-z0-9]+(?:-[a-z0-9]+)*$"
           },
-          "approval": {
-            "type": "object",
-            "properties": {
-              "state": {
-                "type": "string",
-                "minLength": 1
-              }
-            },
-            "required": [
-              "state"
-            ]
+          "Rule_ver": {
+            "type": "string",
+            "minLength": 1
           }
         },
-        "required": [
-          "family",
-          "approval"
-        ]
+        "additionalProperties": false
       },
       "Definition": {
         "type": "array",
@@ -123,9 +117,6 @@
           }
         }
       },
-      "state": {
-        "const": "APPROVED.provisional"
-      },
       "title": {
         "type": "string"
       }
@@ -135,13 +126,21 @@
       "Definition",
       "Boundary",
       "Evaluation",
-      "state",
       "title"
     ],
     "additionalProperties": true,
     "not": {
-      "required": [
-        "Constraints"
+      "anyOf": [
+        {
+          "required": [
+            "Constraints"
+          ]
+        },
+        {
+          "required": [
+            "state"
+          ]
+        }
       ]
     }
   }
