@@ -9,8 +9,18 @@ Policy_Status:
   contract: "urn:ptsip:contract:policy:arch:family-schema:ownership"
 Policy_Rules:
   Identity:
-    family: "ARCH"
-  Definition: []
+    contract_id: "urn:ptsip:policy:rule:arch:family-schema"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-7CE2F65F469C4ACBBD335CBAC5761433"
+      rule: "FAMILY-SCHEMA-OWNER"
+    - id: "R-ID-6AD78C17FB1F4172BC26ABA9C799830B"
+      rule: "GOV-STATUS-EXCEPTION"
+    - id: "R-ID-45CD8770D7C24046945BC594238E65DC"
+      rule: "NO-CROSS-FAMILY-REF"
+    - id: "R-ID-526217BA68F249AF90E3149D9C783877"
+      rule: "YAML-JSON-SEPARATION"
+  title: "ARCH Root Family별 정책 구조·스키마 소유권"
   Boundary:
     scope: "개발 정책 14개 Root Family의 독립적인 전체 정책 레코드 스키마 소유권"
     subjects:
