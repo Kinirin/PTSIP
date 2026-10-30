@@ -1,13 +1,18 @@
-Policy_Identity:  id: "MPD-ARCH-0004"
+Policy_Identity:
+  id: "MPD-ARCH-0004"
   policy_kind: "PTSIP_DEVELOPER_POLICY"
   root_family: "ARCH"
   title: "ARCH Root Family별 정책 구조·스키마 소유권"
-Policy_Status:  Policy_Status_Schema_ver: "1"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
   status: "APPROVED.Application_Problems"
   contract: "urn:ptsip:contract:policy:arch:family-schema:ownership"
-Policy_Rules:  Identity:    family: "ARCH"
+Policy_Rules:
+  Identity:
+    family: "ARCH"
   Definition: []
-  Boundary:    scope: "개발 정책 14개 Root Family의 독립적인 전체 정책 레코드 스키마 소유권"
+  Boundary:
+    scope: "개발 정책 14개 Root Family의 독립적인 전체 정책 레코드 스키마 소유권"
     subjects:
       - "각 Root Family가 자신의 정책 레코드 필드·타입·값 제약과 Family 고유 규칙을 소유"
       - "공통 정책 상태에 한정한 GOV 소유 계약 예외"
@@ -17,7 +22,8 @@ Policy_Rules:  Identity:    family: "ARCH"
       - "기존 검증기 마이그레이션 순서·레거시 resolver 폐기 절차·구현 진행 상태"
       - "ARCH가 다른 Family의 규칙 의미를 대신 정의하는 행위"
       - "미승인 공통 기반 스키마 추출 또는 검증기 자동 교체"
-    authority_semantics:      policy_class: "PTSIP_DEVELOPER_POLICY"
+    authority_semantics:
+      policy_class: "PTSIP_DEVELOPER_POLICY"
       owner_key:
         - "policy_class"
         - "root_family"
@@ -28,18 +34,22 @@ Policy_Rules:  Identity:    family: "ARCH"
         - "FIELD_TYPES_AND_VALUE_CONSTRAINTS"
         - "FAMILY_SPECIFIC_RULE_PAYLOAD"
       cross_family_normative_schema_inheritance: "FORBIDDEN_EXCEPT_GOV_OWNED_POLICY_STATUS"
-      policy_status_exception:        owner: "GOV"
+      policy_status_exception:
+        owner: "GOV"
         scope: "POLICY_STATUS_ONLY"
         contract: ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json"
         other_family_rules_unchanged: true
       info_global_field_schema_authority_for_other_families: "NOT_GRANTED"
       field_authority_from_filename_only: "FORBIDDEN"
       developer_and_support_policy_schema_sharing: "FORBIDDEN"
-      serialization:        policy: "YAML"
+      serialization:
+        policy: "YAML"
         schema: "JSON_SCHEMA_IN_JSON"
         content_format_matches_extension: true
       new_common_schema_extraction: "SEPARATE_USER_POLICY_DECISION_REQUIRED"
-  Evaluation:    criteria:      evidence:
+  Evaluation:
+    criteria:
+      evidence:
         - "각 Family 정책 레코드의 필수·선택 필드를 해당 Family 계약에서 찾을 수 있음"
         - "GOV 공통 상태 외에 다른 Family의 규칙 구조를 공유 권위로 만들지 않음"
         - "제품 정책 클래스와 개발 정책 클래스의 스키마 권한이 독립적임"
