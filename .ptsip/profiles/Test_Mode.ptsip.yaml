@@ -1,0 +1,13 @@
+# Non-authoritative Test Mode binding candidate.
+# This file is not a pp.1.02 Project Profile and is not an active verification owner.
+# Registry, ownership, and activation authority remain with their existing owners.
+candidate:
+  role: TEST_MODE_REFERENCE
+  state: DRAFT
+  registered: false
+  references:
+    registry: .github/test_modes.yaml
+    responsibility_profile: .ptsip/profiles/main.ptsip.yaml
+  permitted_use: SOURCE_REFERENCE_REVIEW_ONLY
+  activation_authorized: false
+  new_verification_requirement_authorized: false
