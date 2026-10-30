@@ -9,8 +9,16 @@ Policy_Status:
   contract: "urn:ptsip:contract:policy:arch:project-profile:responsibilities"
 Policy_Rules:
   Identity:
-    family: "ARCH"
-  Definition: []
+    contract_id: "urn:ptsip:policy:rule:arch:project-profile"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-F8F307C6E77744E5929038B1CD70E785"
+      rule: "PROFILE-ROLE-SPLIT"
+    - id: "R-ID-CE6C5FADD0444C5CAD55C91702B421B9"
+      rule: "DECLARED-COMPONENT"
+    - id: "R-ID-9002EA0B0B5748E1A82A76CD72B5055D"
+      rule: "BUILTIN-ONLY-IF-SHIP"
+  title: "ARCH Project Profile과 구성 요소 책임의 경계"
   Boundary:
     scope: "개발 저장소 프로파일과 배포용 PTSIP Project Profile의 책임 분리 및 명시적인 구성 요소 소유·관계 선언"
     subjects:
