@@ -1,0 +1,40 @@
+Policy_Identity:  id: "MPD-ARCH-0008"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "ARCH"
+  title: "ARCH 공통 PTSIP Engine과 개발자 Go Engine의 책임 분리"
+Policy_Status:  Policy_Status_Schema_ver: "1"
+  status: "APPROVED.Application_Problems"
+  contract: "urn:ptsip:contract:policy:arch:common-developer:engine-boundary"
+Policy_Rules:  Identity:    family: "ARCH"
+  Definition: []
+  Boundary:    scope: "배포용 공통 PTSIP 엔진과 PTSIP 저장소 전용 Go 개발자 도구의 권한·생명주기·배포 격리"
+    subjects:
+      - "공통 제품 엔진의 Support Feature 책임과 언어 중립 계약"
+      - "개발자 전용 Go 엔진의 Development Tooling 책임"
+      - "명시적인 개발 작업공간 바인딩과 일반 소비자 프로젝트 비전파"
+    exclusions:
+      - "개발자 Go 도구가 공통 PTSIP 제품 표준을 정의"
+      - "공식 Bootstrap Integrated Engine 구현 또는 활성화 결정"
+      - "개발자 도구의 존재만으로 제품 런타임 실행 권한 생성"
+    authority_semantics:      common_engine:        authority_plane: "PTSIP_SUPPORT_FEATURE"
+        normative_semantics: "LANGUAGE_NEUTRAL_MACHINE_CONTRACT"
+        product_distribution: "SITE_PACKAGES"
+        developer_go_tool_defines_product_standard: false
+        product_runtime_depends_on_developer_tool: false
+      developer_extension:        lifecycle: "DEVELOPMENT_TOOLING"
+        implementation_language: "GO"
+        implementation_root: ".ptsip/engine/developer/"
+        eligibility: "PTSIP_DEVELOPER_WORKSPACE_WITH_EXPLICIT_REGISTERED_BINDING"
+        role: "DEVELOPER_TOOL_NOT_INSTALLED_PRODUCT_ENGINE"
+        consumer_project_propagation: "FORBIDDEN"
+        product_distribution: "FORBIDDEN"
+        common_engine_role: "CONTRACT_CONSUMER"
+      official_bootstrap_engine_scope: "OUTSIDE_DEVELOPER_POLICY_AND_DEFERRED"
+      engine_activation_or_product_authority_granted: false
+  Evaluation:    criteria:      evidence:
+        - "공통 엔진은 개발자 도구 없이 배포·실행 가능"
+        - "Go 개발자 도구는 저장소 전용이며 명시적 바인딩에만 사용"
+        - "개발자 엔진의 제품 표준·활성화 권한 주장이 없음"
+    application_problems:
+      - "ARCH_RULE_DEFINITION_R_ID_AND_PROFILE_REGISTRATION_PENDING"
+      - "ARCH_FAMILY_SCHEMA_IDENTITY_APPROVAL_AND_RULE_STATE_CONFLICT_UNRESOLVED"
