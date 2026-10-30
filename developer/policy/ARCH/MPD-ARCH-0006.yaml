@@ -1,0 +1,34 @@
+Policy_Identity:  id: "MPD-ARCH-0006"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "ARCH"
+  title: "ARCH Project Profile과 구성 요소 책임의 경계"
+Policy_Status:  Policy_Status_Schema_ver: "1"
+  status: "APPROVED.Application_Problems"
+  contract: "urn:ptsip:contract:policy:arch:project-profile:responsibilities"
+Policy_Rules:  Identity:    family: "ARCH"
+  Definition: []
+  Boundary:    scope: "개발 저장소 프로파일과 배포용 PTSIP Project Profile의 책임 분리 및 명시적인 구성 요소 소유·관계 선언"
+    subjects:
+      - "PTSIP 저장소용 개발 프로파일과 제품 Support Feature 프로파일의 다른 생명주기"
+      - "프로파일에서 구성 요소 식별·소유·관계를 명시적으로 선언하는 역할"
+      - "실제로 배포되는 내장 프로파일만 내장 인스턴스로 취급"
+    exclusions:
+      - "개발 전용 프로파일을 소비자 프로젝트 필수 프로파일로 강제"
+      - "프로파일의 관측 정보만으로 정책 Family의 규범적 책임 소유권을 생성"
+      - "미검증 과거 프로파일 경로를 새 표준 경로로 확정"
+    authority_semantics:      developer_repository_profile:        lifecycle: "DEVELOPMENT_TOOLING"
+        consumer_requirement: false
+      product_project_profile:        lifecycle: "PTSIP_SUPPORT_FEATURE"
+        distribution: "REQUIRED"
+      component_ownership_resolution: "EXPLICIT_DECLARED_PROJECT_PROFILE"
+      component_relationships: "EXPLICIT_TYPED_DIRECTED"
+      profile_observation_alone_redefines_family_authority: false
+      builtin_profile_instance_creation: "ONLY_WHEN_RUNTIME_SHIPPED_BUILTIN_EXISTS"
+      legacy_profile_paths_authoritative: "NOT_ASSERTED"
+  Evaluation:    criteria:      evidence:
+        - "개발자 전용·배포용 프로파일의 소유 책임이 분리되어 있음"
+        - "구성 요소 소유·관계는 등록된 명시적 선언을 통해 확인"
+        - "실제로 배포하지 않는 기본 프로파일을 내장 배포물로 간주하지 않음"
+    application_problems:
+      - "ARCH_RULE_DEFINITION_R_ID_AND_PROFILE_REGISTRATION_PENDING"
+      - "ARCH_FAMILY_SCHEMA_IDENTITY_APPROVAL_AND_RULE_STATE_CONFLICT_UNRESOLVED"
