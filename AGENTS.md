@@ -104,42 +104,31 @@ mutation. The existing developer policy validators are routed through
 `.ptsip/engine/developer/index.json`; their structural checks must not
 be mistaken for semantic equivalence or approval.
 
-**Temporary automatic contract entry (read-only, replaceable):**
-For work on an **explicitly identified existing file** covered by registered
-repository-local contracts, invoke the adapter from the repository root
-**before** choosing a validator manually or proposing a new contract:
+**Temporary Go contract entry for existing developer policies (read-only):**
+For an explicitly identified `developer/policy/**` policy, use the existing
+repository-local Go developer engine from the repository root:
 
 ```powershell
-python .ptsip/engine/developer/contract_entry.py --target developer/policy/GOV/MPD-GOV-0006.yaml
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0006.yaml --dry-run
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0006.yaml
 ```
 
-Replace the example argument with the **exact repository-relative file path**
-identified by the task. The adapter reads `.ptsip/index.json` and
-`.ptsip/contracts/index.json`, follows declared contract bindings and the
-registered developer engine, then selects and **invokes** a read-only check:
+Replace the example target with the exact repository-relative path from the
+task. The first command resolves the registered contract without invoking
+validation; the second resolves and calls the existing `policy-check` Go
+validator. Contract entry selects only the developer-policy domain; unrelated
+release and Responsibility-Authority contracts are not loaded for selection.
+Other domains retain their explicit registered validator commands until their
+own current route is available. No Python `contract_entry.py` adapter exists.
 
-- `developer/policy/**`: use declared `Policy_Identity.policy_kind` and
-  `root_family`, registered route and Family contract; invoke `policy-check`.
-- Exact registered Responsibility-Authority profile: invoke
-  `responsibility-authority --operation check`.
-- Registered canonical `README.md`: invoke
-  `release-documentation --operation check`.
-- Exact release-catalog contract path: invoke its registered
-  `release-admission-check` structural validator.
-
-Use `--dry-run` to inspect the selected command without invoking Go.
-Do not infer a target from basename, directory, narrative resemblance or an
-unresolved multi-file task. Resolve separate targets independently.
-Missing, unregistered, incompatible or ambiguous routes fail closed;
-do not guess another validator or silently use a retired resolver.
-This adapter must never be used for `src/policy/**` Support Feature policies.
-
-This temporary bridge is **agent-invoked, not a self-running hook**:
-reading `AGENTS.md` alone does not execute a program. The resulting checks
-do not create/modify contracts, approve policy, assert semantic equivalence,
-activate a runtime gate, grant authority or permit release publication.
-Keep canonical policy authority, lifecycle and authorization with their
-registered owners, including `MPD-GOV-0006`.
+Selection follows `.ptsip/index.json`, the current contract catalog, policy
+routing and Family rules, and the policy document's declared identity.
+Missing or ambiguous selected references fail closed. This is an agent-invoked
+bootstrap instruction, not an automatic runtime hook. Neither this entry nor
+`AGENTS.md` creates policy authority, approves changes, grants permission,
+asserts semantic equivalence or activates the future Bootstrap Integrated
+Engine. The current developer validator may still use existing installed PTSIP
+validation and YAML serialization dependencies after selection.
 
 Do **not** use `developer/policy/registries/**` for current developer-policy
 authority, schema, contract routing, lifecycle or approval. These retired
