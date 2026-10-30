@@ -31,32 +31,6 @@ Policy_Rules:
       - "소비자 프로젝트에 대한 계획 루트 강제"
       - "승인되지 않은 계획 경로 선택 알고리즘·생성기 파이프라인을 정책으로 확정"
       - "계획 식별자만으로 브랜치를 생성하거나 선택하는 행위"
-    authority_semantics:
-      scope: "CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY"
-      planning_artifact_root: "developer/planning/"
-      planning_root_authority: "USER_APPROVED_REPOSITORY_POLICY_CONFIGURATION"
-      root_change: "SEPARATE_EXPLICIT_USER_POLICY_DECISION_ONLY"
-      canonical_subpath: "DERIVE_AT_CREATION_FROM_OWNER_APPROVED_MACHINE_ROUTING_CONTRACT"
-      subpath_inputs:
-        - "CURRENT_EFFECTIVE_POLICY"
-        - "REGISTERED_MACHINE_FACTS"
-      arbitrary_agent_path_choice: "FORBIDDEN"
-      missing_ambiguous_or_nonunique_path: "BLOCK_CREATION_AND_REQUEST_USER_DECISION"
-      user_explicit_plan_creation_request_required: true
-      policy_approval_does_not_authorize_plan_generation: true
-      plan_discussion_does_not_authorize_artifact_creation: true
-      plan_content_derived_from:
-        - "EFFECTIVE_POLICY"
-        - "VERIFIED_EVIDENCE"
-      logical_identity:
-        independent_of_branch: true
-        independent_of_physical_plan_ref: true
-        branch_role: "PLAN_EXECUTION_CONTEXT_NOT_PLAN_IDENTITY"
-        branch_creation_or_selection_from_plan_identity: "NOT_AUTHORIZED"
-      unresolved:
-        subpath_routing_contract: "SEPARATE_USER_APPROVAL_REQUIRED"
-        canonical_subpath_algorithm: "SEPARATE_UNRESOLVED_DECISION"
-        generator_pipeline: "NOT_ESTABLISHED"
   Evaluation:
     criteria:
       evidence:
@@ -64,6 +38,4 @@ Policy_Rules:
         - "단일 정규 경로가 도출되지 않으면 생성 차단"
         - "계획 ID 변경 없이 실행 브랜치가 달라질 수 있음"
     application_problems:
-      - "ARCH_RULE_DEFINITION_R_ID_AND_PROFILE_REGISTRATION_PENDING"
-      - "ARCH_FAMILY_SCHEMA_IDENTITY_APPROVAL_AND_RULE_STATE_CONFLICT_UNRESOLVED"
       - "POLICY_STATUS_CONTRACT_URN_REGISTRATION_PENDING"
