@@ -136,8 +136,17 @@
     },
     "additionalProperties": true,
     "not": {
-      "required": [
-        "Constraints"
+      "anyOf": [
+        {
+          "required": [
+            "Constraints"
+          ]
+        },
+        {
+          "required": [
+            "state"
+          ]
+        }
       ]
     }
   }
