@@ -62,6 +62,48 @@ current policy documents directly, including `developer/policy/GOV/MPD-GOV-0006.
 for lifecycle and governance source requirements. Confirm the referenced
 policy's own effective status before using it as authority.
 
+**Automatic existing-contract entry for developer policy work:** For a request
+to inspect, author, interpret, convert, migrate, rewrite, or validate a
+`developer/policy/**` policy, resolve the existing machine-contract route
+**before** proposing new schemas or independent rule contracts:
+
+```text
+.ptsip/index.json                         namespaces.contracts.index
+  -> .ptsip/contracts/index.json          policy
+  -> .ptsip/contracts/policy/boundary.json
+       -> routing_binding.data            policy_routes.json
+       -> routing_binding.schema          Policy_Routing.schema.json
+       -> rules_binding.selection_schema  Public_Structure_Rules.schema.json
+       -> rules_binding.directory         {root_family}_rules.json
+       -> rules_binding.responsibility_profile
+```
+
+Use the policy document's declared `Policy_Identity.policy_kind` and
+`Policy_Identity.root_family`, and follow the registered routes and
+family-selection contract; never select a family or schema merely by file
+name, directory name, or resemblance to another Family. The current
+policy public schema is registered through `policy_routes.json` at
+`.ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json`;
+its Policy_Rules selection resolves within the existing
+`.ptsip/contracts/schemas/Policy/` schema plane to the corresponding
+`.ptsip/contracts/policy/Rules/{root_family}_rules.json`.
+Resolve status, rule identities, conditions, and authorization through
+their registered owners; a schema or validator result does not grant
+policy approval or execution authority.
+
+**Policy migration uses, rather than recreates, the registered contracts.**
+For legacy machine policy -> human semantic review -> current machine policy,
+use the existing selected schema and Family rules contract as the
+serialization/validation target. Retired policy material is historical
+evidence for review, not automatically effective authority. Do not default
+to creating a new contract, a duplicate schema, a new independent rule body,
+or a guessed Family structure. If the selected contract is missing,
+incompatible, or insufficient for approved semantics, report the exact
+unresolved contract/authority decision and fail closed for normative
+mutation. The existing developer policy validators are routed through
+`.ptsip/engine/developer/index.json`; their structural checks must not
+be mistaken for semantic equivalence or approval.
+
 Do **not** use `developer/policy/registries/**` for current developer-policy
 authority, schema, contract routing, lifecycle or approval. These retired
 registry files are not active machine contracts; in particular,
