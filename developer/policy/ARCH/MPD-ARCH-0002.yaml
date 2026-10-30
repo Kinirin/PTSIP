@@ -28,39 +28,6 @@ Policy_Rules:
     exclusions:
       - "작업 단위 우선순위·실행 순서·의존관계 및 과거 Work Unit 등록 정책"
       - "개별 계획 필드·구현 단계의 상세 형식 및 실행 허가 출처의 생성"
-    authority_semantics:
-      authority_hierarchy:
-        - "POLICY"
-        - "PLAN"
-        - "IMPLEMENTATION"
-      policy:
-        owns:
-          - "POLICY_SEMANTICS"
-          - "POLICY_LIFECYCLE"
-          - "POLICY_APPROVAL"
-        does_not_own:
-          - "PLAN_CONTENT"
-          - "PLAN_APPROVAL"
-          - "PLAN_IMPLEMENTATION_PROGRESS"
-          - "PLAN_COMPLETION_STATE"
-          - "IMPLEMENTATION_ARTIFACT_STATE"
-      plan:
-        owns:
-          - "PLAN_CONTENT"
-          - "PLAN_DESIGN"
-          - "PLAN_OPTIONS"
-          - "PLAN_APPROVAL"
-          - "PLAN_IMPLEMENTATION_PROGRESS"
-          - "PLAN_IMPLEMENTATION_COMPLETION"
-          - "PLAN_COMPLETION_AND_VERIFICATION_EVIDENCE"
-        superior_policy_reference_required: true
-      implementation:
-        role: "IMPLEMENTATION_OUTPUT"
-        owns_authoritative_plan_completion_state: false
-      separate_approval:
-        policy_approval_implies_plan_approval: false
-        plan_requires_separate_approval: true
-        multiple_valid_plans_per_policy: true
   Evaluation:
     criteria:
       evidence:
@@ -68,6 +35,4 @@ Policy_Rules:
         - "정책 승인만으로 계획 승인이 발생하지 않음"
         - "구현 산출물이 계획 완료 여부를 독립적으로 선언하지 않음"
     application_problems:
-      - "ARCH_RULE_DEFINITION_R_ID_AND_PROFILE_REGISTRATION_PENDING"
-      - "ARCH_FAMILY_SCHEMA_IDENTITY_APPROVAL_AND_RULE_STATE_CONFLICT_UNRESOLVED"
       - "POLICY_STATUS_CONTRACT_URN_REGISTRATION_PENDING"
