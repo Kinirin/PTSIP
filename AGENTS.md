@@ -104,6 +104,28 @@ mutation. The existing developer policy validators are routed through
 `.ptsip/engine/developer/index.json`; their structural checks must not
 be mistaken for semantic equivalence or approval.
 
+**Temporary executable invocation for developer-policy contracts (entry guidance only):**
+For a `developer/policy/**` task, resolve the current canonical policy
+identity and registered contract route above first. To invoke the existing
+PTSIP-backed repository-local checks from the repository root, use:
+
+```powershell
+go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
+go -C .ptsip/engine/developer run . --validator policy-rules --operation describe --family <registered-root-family> --root ../../..
+go -C .ptsip/engine/developer run . --validator policy-check --root ../../.. --input <repository-relative-policy-path>
+```
+
+Replace the angle-bracket arguments using registered machine identities and
+the exact target policy path; the commands are not a Family inference rule.
+The first command checks limited contract/routing shape, the second describes
+the selected Family contract, and the third validates the selected document
+structure and references. These checks are non-mutating and do not assert
+semantic equivalence, policy approval, Bootstrap Integrated Engine activation
+or execution permission. Always prefer a current, registered machine invocation
+if one becomes available; this Markdown neither registers an engine nor grants
+an automatic runtime gate. Do not apply this developer-policy validator route
+to `src/policy/**` Support Feature policy documents.
+
 Do **not** use `developer/policy/registries/**` for current developer-policy
 authority, schema, contract routing, lifecycle or approval. These retired
 registry files are not active machine contracts; in particular,
