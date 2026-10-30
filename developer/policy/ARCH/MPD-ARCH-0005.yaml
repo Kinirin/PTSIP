@@ -20,18 +20,19 @@ Policy_Rules:
       rule: "NO-RUNTIME-DEV-DEP"
   title: "ARCH 개발자 정책과 배포용 PTSIP 기능의 권한·배포 경계"
   Boundary:
-    scope: "PTSIP 저장소의 개발 정책 영역과 배포되는 PTSIP Support Feature 정책 영역 사이의 격리"
+    scope: "Developer와 Support Feature의 정책 내용·승인 권한 및 제품 런타임 의존성을 분리하되, 개발 시점 구조·검증 계약은 .ptsip/에서 공유"
     subjects:
       - "개발자 전용 정책의 저장소 내부 책임과 제품 기능 정책의 배포 책임 분리"
       - "개발 정책이 일반 소비자 프로젝트의 필수 조건이 되지 않음"
       - "제품 런타임에서 개발 전용 정책·도구에 대한 의존 금지"
+      +"\n      - \".ptsip/contracts/에서 정책 구조를 정의하고 .ptsip/engine/에서 정책 적합성을 검증하며 src/policy/는 정책 문서만 관리\""
     exclusions:
       - "제품 정책(src/policy)의 규범적 의미를 개발 정책이 변경하는 행위"
       - "개발자 정책과 지원 기능 정책의 Owner 병합"
-      - "두 정책 클래스 간 권한 스키마 공유"
+      - "공통 구조·검증 계약 사용만으로 Developer의 규범적 정책 의미·결정·승인 권한이 Support Feature로 이전되거나 역으로 이전되는 행위"
   Evaluation:
     criteria:
       evidence:
         - "제품 배포 아티팩트가 개발자 정책에 의존하지 않음"
         - "개발자 정책으로 일반 사용자 프로젝트 의무가 생성되지 않음"
-        - "서로 다른 정책 클래스의 소유 권한이 분리되어 있음"
+        - "서로 다른 정책 클래스의 내용·승인 소유 권한이 분리되면서 구조·검증 계약은 .ptsip/에 일원화되어 있음을 확인"
