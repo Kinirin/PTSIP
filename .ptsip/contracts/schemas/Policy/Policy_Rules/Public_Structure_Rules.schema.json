@@ -16,10 +16,6 @@
     "Evaluation": {
       "type": "object"
     },
-    "state": {
-      "type": "string",
-      "minLength": 1
-    },
     "title": {
       "type": "string"
     }
@@ -42,23 +38,24 @@
         "Evaluation": {
           "type": "object"
         },
-        "state": {
-          "type": "string",
-          "minLength": 1
-        },
         "title": {
           "type": "string"
         }
       },
       "not": {
-        "required": [
-          "Constraints"
+        "anyOf": [
+          {
+            "required": [
+              "Constraints"
+            ]
+          },
+          {
+            "required": [
+              "state"
+            ]
+          }
         ]
       }
-    },
-    "RuleState": {
-      "type": "string",
-      "minLength": 1
     },
     "PolicyDocumentSelection": {
       "type": "object",
@@ -500,8 +497,17 @@
     }
   },
   "not": {
-    "required": [
-      "Constraints"
+    "anyOf": [
+      {
+        "required": [
+          "Constraints"
+        ]
+      },
+      {
+        "required": [
+          "state"
+        ]
+      }
     ]
   }
 }
