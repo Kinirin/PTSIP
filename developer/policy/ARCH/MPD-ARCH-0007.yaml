@@ -9,8 +9,16 @@ Policy_Status:
   contract: "urn:ptsip:contract:policy:arch:component-dependency:review"
 Policy_Rules:
   Identity:
-    family: "ARCH"
-  Definition: []
+    contract_id: "urn:ptsip:policy:rule:arch:component-dependency"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-3EB28F73985142D8A8280737834859ED"
+      rule: "REVIEW-COMPONENTS"
+    - id: "R-ID-CD21A5697F2840BFA0EECAF0CC3AEBC3"
+      rule: "REVIEW-DEPENDENCIES"
+    - id: "R-ID-A61E1B094A43435EBF91F5A516BF6129"
+      rule: "NO-INFERRED-RELATION"
+  title: "ARCH PTSIP 구성 요소 분류 및 의존관계 재검토"
   Boundary:
     scope: "기존 PTSIP 구성 요소와 import·read 의존관계의 수정 전 검토 후보"
     subjects:
