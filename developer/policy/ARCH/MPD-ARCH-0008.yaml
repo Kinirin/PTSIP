@@ -9,8 +9,18 @@ Policy_Status:
   contract: "urn:ptsip:contract:policy:arch:common-developer:engine-boundary"
 Policy_Rules:
   Identity:
-    family: "ARCH"
-  Definition: []
+    contract_id: "urn:ptsip:policy:rule:arch:common-developer"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-F69435F732344D148D1603D6B249D9B2"
+      rule: "ENGINE-ROLE-BOUNDARY"
+    - id: "R-ID-5A861B85AD854A6DBB9C5BA1752E9257"
+      rule: "NO-DEV-STANDARD"
+    - id: "R-ID-21E2DC63C75B4405B755750F481C9DD7"
+      rule: "GO-TOOL-DEV-ONLY"
+    - id: "R-ID-91ACF71FC89C43E38FC1DF1F6CD5E86D"
+      rule: "NO-PRODUCT-DEP"
+  title: "ARCH 공통 PTSIP Engine과 개발자 Go Engine의 책임 분리"
   Boundary:
     scope: "배포용 공통 PTSIP 엔진과 PTSIP 저장소 전용 Go 개발자 도구의 권한·생명주기·배포 격리"
     subjects:
