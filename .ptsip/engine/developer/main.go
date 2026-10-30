@@ -78,7 +78,6 @@ func main() {
 	operation := flag.String("operation", "check", "authoring: check, generate, describe; release-version-diff: preview, check, apply; release-documentation: check, preview, generate")
 	family := flag.String("family", "", "explicit Root Family for policy-rules generation or description")
 	input := flag.String("input", "", "repository-relative JSON/YAML input, or - for stdin")
-	target := flag.String("target", "", "exact repository-relative policy target for contract-entry")
 	dryRun := flag.Bool("dry-run", false, "resolve contract entry without invoking validation")
 	output := flag.String("output", "", "new repository-relative JSON/YAML output (existing files are preserved)")
 	base := flag.String("base", "", "exact baseline commit SHA for version comparison and documentation")
