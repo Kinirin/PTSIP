@@ -2552,110 +2552,6 @@
       "source_worktree_sha256": "71d6d8e37542ce880dfbd2ef32d62d1b018938fee27d73330958149cbca4c3ab"
     },
     {
-      "source_sha256": "692e50796cade2ae6c1807c6eb3cd2ea9b58173a0ce1c429cc25b527faec15c9",
-      "record_sha256": "54e1bc24fbd71469d4c3e3fe54cf818d771543047871dc0ed3d7923a93493625",
-      "header": {
-        "schema_version": "ptsip-support-feature-policy/v1",
-        "policy_class": "PTSIP_SUPPORT_FEATURE",
-        "policy": {
-          "id": "SFP-0022",
-          "title": "Context Plane Migration and Deterministic Projection Repair",
-          "status": "ACTIVE"
-        }
-      },
-      "source_policy_id": "SFP-0022",
-      "source_status": "ACTIVE",
-      "original_path": "SFP-0022.yaml",
-      "archive_path": "legacy/SFP-0022.yaml",
-      "units": [
-        {
-          "source_pointer": "/authority_semantics/canonical_semantic_source",
-          "family": "INFO",
-          "section": "unit_sfp_0022_782f389e9f00",
-          "policy_id": "SFP-INFO-0001",
-          "policy_path": "INFO/SFP-INFO-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/generated_projections",
-          "family": "INFO",
-          "section": "unit_sfp_0022_900c3f8d471c",
-          "policy_id": "SFP-INFO-0001",
-          "policy_path": "INFO/SFP-INFO-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/normal_direct_projection_edit",
-          "family": "INFO",
-          "section": "unit_sfp_0022_6359b28f9f8b",
-          "policy_id": "SFP-INFO-0001",
-          "policy_path": "INFO/SFP-INFO-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/deterministic_projection_repair",
-          "family": "REAL",
-          "section": "unit_sfp_0022_de28528b9b4f",
-          "policy_id": "SFP-REAL-0001",
-          "policy_path": "REAL/SFP-REAL-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/semantic_source_creation_from_legacy_memory",
-          "family": "CHANGE",
-          "section": "unit_sfp_0022_d2ee41455ab2",
-          "policy_id": "SFP-CHANGE-0001",
-          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/existing_semantic_source_replacement",
-          "family": "GOV",
-          "section": "unit_sfp_0022_e5a99b5ac3bd",
-          "policy_id": "SFP-GOV-0001",
-          "policy_path": "GOV/SFP-GOV-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/legacy_memory_deletion",
-          "family": "CHANGE",
-          "section": "unit_sfp_0022_a498c7f0ff7e",
-          "policy_id": "SFP-CHANGE-0001",
-          "policy_path": "CHANGE/SFP-CHANGE-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/emergency_direct_projection_repair",
-          "family": "CTRL",
-          "section": "unit_sfp_0022_18e0f3955df0",
-          "policy_id": "SFP-CTRL-0001",
-          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_semantics/release_gate",
-          "family": "CTRL",
-          "section": "unit_sfp_0022_3e8fd3fe513f",
-          "policy_id": "SFP-CTRL-0001",
-          "policy_path": "CTRL/SFP-CTRL-0001.yaml"
-        },
-        {
-          "source_pointer": "/feature_contract",
-          "family": "CNTR",
-          "section": "unit_sfp_0022_571db38c09b9",
-          "policy_id": "SFP-CNTR-0001",
-          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
-        },
-        {
-          "source_pointer": "/authority_contract",
-          "family": "CNTR",
-          "section": "unit_sfp_0022_afbfbdc1cc69",
-          "policy_id": "SFP-CNTR-0001",
-          "policy_path": "CNTR/SFP-CNTR-0001.yaml"
-        },
-        {
-          "source_pointer": "/relations",
-          "family": "INFO",
-          "section": "unit_sfp_0022_40c664bc86a2",
-          "policy_id": "SFP-INFO-0001",
-          "policy_path": "INFO/SFP-INFO-0001.yaml"
-        }
-      ],
-      "source_worktree_sha256": "e7fcc00aed7e9454987f3444db622b4eadfccf649b7680208df39e6629392f01"
-    },
-    {
       "source_sha256": "ff078bfcf2ac3b747f18f7aff64e2ad45f649cf51a1179041b3cf9fbebfbbcf8",
       "record_sha256": "8057f6a852c41d8f30d38bb712af2a4789c1a946c980e3f9b1114981a8cbe492",
       "header": {
@@ -2921,7 +2817,7 @@
       "family": "GOV",
       "path": "GOV/SFP-GOV-0001.yaml",
       "source_status": "ACTIVE",
-      "unit_count": 14,
+      "unit_count": 13,
       "definition_only": false
     },
     {
@@ -2961,7 +2857,7 @@
       "family": "INFO",
       "path": "INFO/SFP-INFO-0001.yaml",
       "source_status": "ACTIVE",
-      "unit_count": 70,
+      "unit_count": 66,
       "definition_only": false
     },
     {
@@ -2985,7 +2881,7 @@
       "family": "CNTR",
       "path": "CNTR/SFP-CNTR-0001.yaml",
       "source_status": "ACTIVE",
-      "unit_count": 58,
+      "unit_count": 56,
       "definition_only": false
     },
     {
@@ -3025,7 +2921,7 @@
       "family": "REAL",
       "path": "REAL/SFP-REAL-0001.yaml",
       "source_status": "ACTIVE",
-      "unit_count": 9,
+      "unit_count": 8,
       "definition_only": false
     },
     {
@@ -3057,7 +2953,7 @@
       "family": "CTRL",
       "path": "CTRL/SFP-CTRL-0001.yaml",
       "source_status": "ACTIVE",
-      "unit_count": 32,
+      "unit_count": 30,
       "definition_only": false
     },
     {
@@ -3065,7 +2961,7 @@
       "family": "CHANGE",
       "path": "CHANGE/SFP-CHANGE-0001.yaml",
       "source_status": "ACTIVE",
-      "unit_count": 74,
+      "unit_count": 72,
       "definition_only": false
     },
     {
