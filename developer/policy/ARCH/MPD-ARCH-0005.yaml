@@ -9,8 +9,16 @@ Policy_Status:
   contract: "urn:ptsip:contract:policy:arch:developer-support:isolation"
 Policy_Rules:
   Identity:
-    family: "ARCH"
-  Definition: []
+    contract_id: "urn:ptsip:policy:rule:arch:developer-support"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-D81909A614BE4DCAAA79224988A89643"
+      rule: "DEV-PRODUCT-BOUNDARY"
+    - id: "R-ID-1B1BBFD12FC94F4EAF811D0E7A89762D"
+      rule: "NO-CONSUMER-IMPOSE"
+    - id: "R-ID-D0D57D5167034760AA0FF9C22859AF05"
+      rule: "NO-RUNTIME-DEV-DEP"
+  title: "ARCH 개발자 정책과 배포용 PTSIP 기능의 권한·배포 경계"
   Boundary:
     scope: "PTSIP 저장소의 개발 정책 영역과 배포되는 PTSIP Support Feature 정책 영역 사이의 격리"
     subjects:
