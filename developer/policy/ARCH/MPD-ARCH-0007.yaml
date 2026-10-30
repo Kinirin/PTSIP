@@ -1,13 +1,18 @@
-Policy_Identity:  id: "MPD-ARCH-0007"
+Policy_Identity:
+  id: "MPD-ARCH-0007"
   policy_kind: "PTSIP_DEVELOPER_POLICY"
   root_family: "ARCH"
   title: "ARCH PTSIP 구성 요소 분류 및 의존관계 재검토"
-Policy_Status:  Policy_Status_Schema_ver: "1"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
   status: "DRAFT.Default"
   contract: "urn:ptsip:contract:policy:arch:component-dependency:review"
-Policy_Rules:  Identity:    family: "ARCH"
+Policy_Rules:
+  Identity:
+    family: "ARCH"
   Definition: []
-  Boundary:    scope: "기존 PTSIP 구성 요소와 import·read 의존관계의 수정 전 검토 후보"
+  Boundary:
+    scope: "기존 PTSIP 구성 요소와 import·read 의존관계의 수정 전 검토 후보"
     subjects:
       - "ptsip-evidence, ptsip-source-compat, ptsip-migration의 과거 분류"
       - "과거 선언된 IMPORTS 및 READS 관계"
@@ -16,7 +21,8 @@ Policy_Rules:  Identity:    family: "ARCH"
       - "기존 기록을 확인 없이 현재 적용 중인 공식 의존관계로 확정"
       - "관찰된 import만으로 ARCH 관계 의도를 추정"
       - "검토 후보에서 제품 실행 권한 또는 배포 승인 생성"
-    authority_semantics:      candidate_only: true
+    authority_semantics:
+      candidate_only: true
       normative_adoption: "NOT_AUTHORIZED_UNTIL_REVIEW"
       prior_components:
         -
@@ -34,7 +40,8 @@ Policy_Rules:  Identity:    family: "ARCH"
           classification: "PRODUCT"
           role: "IMPLEMENTATION"
           selector: "src/ptsip/migration/**"
-      prior_common_properties:        shipped: true
+      prior_common_properties:
+        shipped: true
         runtime_required: false
         executable: false
         release_owner: "tool"
@@ -66,7 +73,9 @@ Policy_Rules:  Identity:    family: "ARCH"
           to: "ptsip-source-compat"
       ptsip_core_selector_broadened_to_recursive_src_ptsip: false
       review_status: "UNVERIFIED_CANDIDATES"
-  Evaluation:    criteria:      evidence:
+  Evaluation:
+    criteria:
+      evidence:
         - "선언된 구성 요소 목록을 실제 프로젝트 프로파일 및 파일 구조와 대조"
         - "IMPORTS·READS의 방향과 의미를 현재 근거로 재검증"
         - "검토 완료 전 DRAFT 상태와 비활성 후보를 유지"
