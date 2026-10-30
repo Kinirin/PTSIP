@@ -29,18 +29,6 @@ Policy_Rules:
       - "제품 정책(src/policy)의 규범적 의미를 개발 정책이 변경하는 행위"
       - "개발자 정책과 지원 기능 정책의 Owner 병합"
       - "두 정책 클래스 간 권한 스키마 공유"
-    authority_semantics:
-      developer_policy:
-        policy_class: "PTSIP_DEVELOPER_POLICY"
-        distribution_required: false
-        may_impose_consumer_project_requirement: false
-      support_feature:
-        policy_class: "PTSIP_SUPPORT_FEATURE"
-        distribution_required: true
-        runtime_depends_on_developer_policy: false
-      policy_class_owner_merging: "FORBIDDEN"
-      cross_class_normative_schema_definition_sharing: "FORBIDDEN"
-      product_authority_unmodified_by_developer_policy: true
   Evaluation:
     criteria:
       evidence:
@@ -48,6 +36,4 @@ Policy_Rules:
         - "개발자 정책으로 일반 사용자 프로젝트 의무가 생성되지 않음"
         - "서로 다른 정책 클래스의 소유 권한이 분리되어 있음"
     application_problems:
-      - "ARCH_RULE_DEFINITION_R_ID_AND_PROFILE_REGISTRATION_PENDING"
-      - "ARCH_FAMILY_SCHEMA_IDENTITY_APPROVAL_AND_RULE_STATE_CONFLICT_UNRESOLVED"
       - "POLICY_STATUS_CONTRACT_URN_REGISTRATION_PENDING"
