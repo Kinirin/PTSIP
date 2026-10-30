@@ -31,21 +31,6 @@ Policy_Rules:
       - "계획 생성과 계획 승인, 정책 스키마 소유권, 배포 기능 분리는 해당 독립 ARCH 정책에서 관리"
       - "SUPPLY의 생산자·파일 형식·실행 환경만으로 생명주기 소유자를 추정하지 않음"
       - "INFO 스키마·import 관측만으로 소유권이나 관계 의도를 확정하지 않음"
-    authority_semantics:
-      lifecycle:
-        classify_by: "GOVERNING_LIFECYCLE_OBLIGATION"
-        families:
-          - "PRODUCT"
-          - "DEVELOPMENT_TOOLING"
-          - "DELIVERY"
-          - "OPERATIONS"
-          - "NEUTRAL_CONTRACT"
-        producer_or_format_determines_owner: false
-      components:
-        split_by: "INDEPENDENTLY_CONTROLLED_RESPONSIBILITY"
-        relationship_model: "EXPLICIT_TYPED_DIRECTED"
-        observed_imports_create_ownership: false
-        declared_relation_required: true
   Evaluation:
     criteria:
       evidence:
@@ -53,6 +38,4 @@ Policy_Rules:
         - "방향과 유형이 지정된 독립 구성 요소 관계를 확인할 수 있음"
         - "파일 배치 및 import 정보만으로 소유권이 승격되지 않음"
     application_problems:
-      - "ARCH_RULE_DEFINITION_R_ID_AND_PROFILE_REGISTRATION_PENDING"
-      - "ARCH_FAMILY_SCHEMA_IDENTITY_APPROVAL_AND_RULE_STATE_CONFLICT_UNRESOLVED"
       - "POLICY_STATUS_CONTRACT_URN_REGISTRATION_PENDING"
