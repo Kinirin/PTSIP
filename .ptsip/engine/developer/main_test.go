@@ -32,7 +32,7 @@ func TestModuleIndexesAndEntrypointStayInSync(t *testing.T) {
 	for name := range validators {
 		names[name] = true
 	}
-	for _, name := range []string{"release-version-diff", "release-documentation", "policy-rules", "responsibility-authority", "policy-check", "policy-identity-check", "policy-status-check", "plan-status-check"} {
+	for _, name := range []string{"contract-entry", "release-version-diff", "release-documentation", "policy-rules", "responsibility-authority", "policy-check", "policy-identity-check", "policy-status-check", "plan-status-check"} {
 		names[name] = true
 	}
 	if len(names) != len(index.Validators) {
