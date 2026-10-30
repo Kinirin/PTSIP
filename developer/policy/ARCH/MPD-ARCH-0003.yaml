@@ -9,8 +9,18 @@ Policy_Status:
   contract: "urn:ptsip:contract:policy:arch:planning-creation:routing"
 Policy_Rules:
   Identity:
-    family: "ARCH"
-  Definition: []
+    contract_id: "urn:ptsip:policy:rule:arch:planning-creation"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-B57C4B5C975B444AA9B2C42B165FD287"
+      rule: "USER-PLAN-CREATION"
+    - id: "R-ID-BB7BBACE51DD4D379B03E9D749FD1693"
+      rule: "DETERMINISTIC-PATH"
+    - id: "R-ID-941D410F67F44DE89F0194258E22B9CF"
+      rule: "BLOCK-AMBIGUOUS-PATH"
+    - id: "R-ID-93952D9E7DA14B46887934C305F7261A"
+      rule: "NO-BRANCH-INFERENCE"
+  title: "ARCH 계획 생성 권한·저장 루트·경로 결정 원칙"
   Boundary:
     scope: "현재 PTSIP 개발 저장소의 계획 아티팩트 생성 권한과 저장 위치 및 논리적 계획 식별 경계"
     subjects:
