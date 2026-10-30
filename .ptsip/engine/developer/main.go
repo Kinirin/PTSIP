@@ -83,7 +83,7 @@ func main() {
 	base := flag.String("base", "", "exact baseline commit SHA for version comparison and documentation")
 	head := flag.String("head", "", "exact checked-out commit SHA for version comparison and documentation")
 	component := flag.String("component", "", "explicitly selected component")
-	target := flag.String("target", "", "explicitly selected version")
+	target := flag.String("target", "", "version target or exact developer-policy path for contract-entry")
 	digest := flag.String("version-sha256", "", "exact version source SHA256")
 	explicit := flag.Bool("explicit-user-decision", false, "version apply requires explicit decision")
 	flag.Parse()
