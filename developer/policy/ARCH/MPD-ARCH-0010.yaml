@@ -1,74 +1,47 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: ARCH
-policy:
-  id: MPD-ARCH-0010
-  version: '0.0'
-  title: Developer Verification responsibility-domain package boundary
-  status: DRAFT
-  substatus: Reviewed
-authority_subject:
-  id: DEV_VERIFICATION_RESPONSIBILITY_DOMAIN_STRUCTURE
-  statement: Developer Verification 구현을 독립적인 responsibility domain 경계로 분리하고 각 검증 구현 단위의 소유 책임이 package 경로에서 기계적으로 식별되도록 한다.
-exclusive_kernel:
-- DEV_LIFECYCLE_RESPONSIBILITY_BOUNDARIES
-- DEV_EXPLICIT_COMPONENT_RELATIONSHIPS
-rules:
-  developer_verification_responsibility_domain_boundary:
-    scope_root: developer/tests
-    decomposition_model: RESPONSIBILITY_DOMAIN_COMPLETE_SEPARATION
-    ownership:
-      every_verification_implementation_unit_requires_exactly_one_responsibility_domain: true
-      domain_owner_must_be_machine_identifiable_from_package_path: true
-      multi_domain_catch_all_package: FORBIDDEN
-      unowned_shared_verification_implementation: FORBIDDEN
-    semantic_boundary:
-      verification_implementation_may_create_normative_semantics: false
-      verification_target_does_not_transfer_domain_ownership: true
-      cross_domain_dependency_does_not_transfer_authority: true
-      package_co_location_does_not_merge_responsibility_domains: true
-    project_profile_alignment:
-      explicit_component_ownership_must_be_preserved: true
-      test_mode_execution_relationship_defines_domain_ownership: false
-      component_identity_may_be_reused_as_domain_responsibility_only_on_exact_semantic_match: true
-    domain_inventory:
-      state: UNRESOLVED
-      automatic_new_domain_inventory_creation: FORBIDDEN
-      user_decision_required: true
-    inventory_admission:
-      mixed_responsibility_file_must_be_split_before_domain_inventory_assignment: true
-      inventory_assignment_before_responsibility_split: FORBIDDEN
-      each_split_unit_requires_single_responsibility_meaning: true
-      automatic_assignment_requires_semantic_preservation: true
-    existing_domain_resolution:
-      prefer_existing_domain_when_exact_responsibility_boundary_matches: true
-      approximate_or_convenience_match: FORBIDDEN
-      semantic_meaning_transformation_to_fit_existing_domain: FORBIDDEN
-      unresolved_existing_domain_match: FAIL_CLOSED
-    new_domain_candidate_escalation:
-      allowed_when:
-      - NO_EXISTING_DOMAIN_OWNS_RESPONSIBILITY
-      - EXISTING_DOMAIN_ASSIGNMENT_RISKS_RESPONSIBILITY_SEMANTIC_DISTORTION
-      automatic_adoption: FORBIDDEN
-      user_decision_required: true
-      proposal_must_include:
-      - CANDIDATE_RESPONSIBILITY_STATEMENT
-      - SEMANTIC_DISTORTION_RISK_EVIDENCE
-      - NEAREST_EXISTING_DOMAIN_COMPARISON
-      - EXPLICIT_BOUNDARY_DIFFERENCE
-      - OVERLAP_AND_NON_OWNERSHIP_EXPLANATION
-      proposal_boundary_requirement: CLEAR_NON_OVERLAPPING_RESPONSIBILITY_BOUNDARY
-    planning_boundary:
-      concrete_domain_inventory: PLAN_OWNED
-      test_move_mapping: PLAN_OWNED
-      package_dependency_graph: PLAN_OWNED
-      migration_sequence: PLAN_OWNED
-relations:
-  supersedes: []
-  amends: []
-  extends:
-  - policy: MPD-ARCH-0001
-    scope: DEVELOPER_VERIFICATION_RESPONSIBILITY_DOMAIN_BOUNDARY
-  depends_on:
-  - policy: MPD-ASSURE-0001
-    scope: VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+Policy_Identity:
+  id: "MPD-ARCH-0010"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "ARCH"
+  title: "ARCH Policy 검증기 단일 책임 경계 및 수동 분리"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
+  status: "DRAFT.Reviewed"
+  contract: "urn:ptsip:contract:policy:arch:developer-policy:verification-boundary"
+Policy_Rules:
+  Identity:
+    contract_id: "urn:ptsip:policy:rule:arch:developer-verification"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-A8C12D874B4C4DDF91C9DF2F63729005"
+      rule: "POLICY-VERIFY-SCOPE"
+    - id: "R-ID-F12085AE7275C5CBBB93DCEC057DFAC1"
+      rule: "SINGLE-DOMAIN-OWNER"
+    - id: "R-ID-26D7F9291CDA4B099128DE728157A249"
+      rule: "NO-MIXED-VERIFIER"
+    - id: "R-ID-724F13D635A94D8C9C3D156F843F052C"
+      rule: "MANUAL-VERIFIER-FIX"
+  title: "ARCH Policy 검증기 단일 책임 경계 및 수동 분리"
+  Boundary:
+    scope: ".ptsip/engine/developer/policy/ 범위의 Policy 검증 구현 단일 책임 구조"
+    subjects:
+      - "Policy 검증 구현은 해당 영역의 기존 유효 계약을 소비하며 구현 위치를 이유로 새 규범적 권위를 생성하지 않음"
+      - "새 검증기를 생성할 때는 검증 책임별 디렉터리로 구분하고 각 구현 단위는 정확히 하나의 검증 책임을 수행"
+      - "서로 다른 책임을 하나의 검증 파일이나 검증기에 혼합하는 것을 권장하지 않음"
+      - "이미 혼합 책임으로 작성된 검증기는 미해결 검토 대상으로 이 문서에 명시하고 실제 분리는 사용자 수동 변경으로만 수행"
+      - "미확정 책임 경계를 임의 배정하거나 분석 결과로 새 검증기 또는 책임 디렉터리를 자동 생성하지 않음"
+    exclusions:
+      - "Policy 검증기 외의 검증 체계에 관한 소유권·적용 범위·책임 정의"
+      - "혼합 검증기 파일의 자동 분할·이동·재작성 및 임의 책임 영역 확정"
+      - "검증 대상 또는 패키지 경로만으로 정책 의미·승인·실행 권한을 생성하는 행위"
+      - "폐기된 developer/automation/ 경로의 재활성화"
+  Evaluation:
+    criteria:
+      evidence:
+        - "미해결 검토 후보: verification/Finding.go — 스키마 파일 탐색·구조 검사·참조 수집·RBAC scaffold·상태·routing probe가 함께 존재; 의미적 혼합 여부는 미판정"
+        - "추가 검토 후보: verification/Document.go — Identity·Policy_Status·Plan_Status·Rules의 검증 요청을 분기; 조정 역할인지 책임 혼합인지 미판정"
+        - "위 후보는 수동 분리 작업이 완료되었다는 뜻이 아니며 자동 분리 또는 파일 변경은 허가하지 않음"
+        - "Policy 검증기의 책임별 디렉터리 및 구현 적합성 검증은 아직 미완료"
+    result:
+      status: "incomplete_fulfillment"
+      task_name: "Policy 검증기 책임별 분리 적용 평가"
+      task_id: "MPD-ARCH-0010"
