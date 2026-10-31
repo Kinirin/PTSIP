@@ -194,6 +194,10 @@ func TestFamilySelectionUsesContractsAndSharedSchemas(t *testing.T) {
 	if len(developer) != 1 || developer["output_root"] != "developer/policy" {
 		t.Fatalf("per-family routing has reappeared: %v", developer)
 	}
+	support := routingMembers(routingMembers(routing["routes"])["PTSIP_SUPPORT_FEATURE"])
+	if len(support) != 1 || support["output_root"] != "src/policy" {
+		t.Fatalf("support-feature policy routing missing or incorrect: %v", support)
+	}
 	common, err := routingFile(root, ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json", ".ptsip/contracts/schemas/")
 	if err != nil {
 		t.Fatal(err)
