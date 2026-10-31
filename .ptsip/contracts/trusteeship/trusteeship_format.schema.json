@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:trusteeship:v1",
+  "title": "Trusteeship Structure of the document",
+  "type": "object",
+  "required": [
+    "Save_Draft"
+  ],
+  "properties": {
+    "Save_Draft": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "id",
+          "statement",
+          "root-family"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$",
+            "$comment": "Independent UUID identifier, lowercase hexadecimal without hyphens; not a content hash."
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "root-family": {
+            "type": "string",
+            "pattern": "^(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
