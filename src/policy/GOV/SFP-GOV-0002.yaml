@@ -1,95 +1,51 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "GOV",
-  "policy": {
-    "id": "SFP-GOV-0002",
-    "title": "Engine optimization objective and unresolved choice authority (DRAFT)",
-    "status": "DRAFT"
-  },
-  "authority_subject": {
-    "id": "SUP_PROJECT_AUTHORITY_LEGITIMACY",
-    "statement": "SFP-GOV-0002는 엔진 선택 및 확정된 선택 변경에 관한 결정의 정당성, 승인 출처, 검증된 분석의 단계적 자율성 확대 권한 정책에 대한 내용을 관리한다. 조건의 정보 의미, 엔진 기능 계약, 실행 허가와 실제 상태 변경이 발생할 때 이에 대한 관리법에 대한 정책을 위주로 책임을 가진다."
-  },
-  "exclusive_kernel": [
-    "SUP_SUBJECT_ROLE_AND_DECISION_MANDATE",
-    "SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_GOV",
-    "schema_id": "ptsip.governance/root-family/gov",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_SUBJECT_ROLE_AND_DECISION_MANDATE",
-          "statement": "subject applicability, 결정 주체 및 Authority Role의 효력을 shipped registry의 정확한 identity와 명시적 relationship으로만 해석한다.",
-          "non_substitutability": "ARCH의 완전한 local profile이나 AI의 의미 유사성이 Project Authority와 역할 권한을 만들어 내지 못한다."
-        },
-        {
-          "id": "SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE",
-          "statement": "최초 유효 확정 결정 우선 원칙와 global authority/local projection 구분에 따라 어느 적법한 결정이 해당 subject의 winner인지 정한다.",
-          "non_substitutability": "CTRL의 fresh read 성공이나 RECORD의 가장 최근 기록이라는 사실만으로 authority winner가 바뀌지 않는다."
-        }
-      ]
-    },
-    "unit_ptsip_engine_draft": {
-      "domain": "PTSIP_ENGINE",
-      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-      "approved_decisions": {
-        "evaluation_objective_source": "USER_INTENT_WITH_EXISTING_APPROVED_PROJECT_RULES",
-        "explicit_engine_choice_priority": "RESPECT_WITHIN_APPLICABLE_POLICY_LIMITS",
-        "resolver_may_invent_objective": false,
-        "no_valid_selection_preference": "PRESERVE_UNRESOLVED_CANDIDATE_SET",
-        "unresolved_authority_conflict": "ESCALATE_TO_AUTHORIZED_DECISION_OWNER",
-        "selected_engine_may_modify_normative_policy": false,
-        "condition_rule_evolution_autonomy_direction": "VERIFIED_ANALYSIS_PROGRESSIVE_AUTONOMY_EXPANSION",
-        "initial_user_decision_dependency": "ACCEPTED_AS_INITIAL_ADOPTION_INVESTMENT"
-      },
-      "invariants": {
-        "source_of_objective_must_be_machine_resolvable": true,
-        "benchmark_evidence_does_not_create_selection_authority": true,
-        "unresolved_multiobjective_tradeoff_is_not_randomly_tiebroken": true,
-        "selecting_or_activating_engine_is_not_global_policy_approval": true
-      },
-      "unresolved_decisions": [
-        {
-          "id": "EVALUATION_OBJECTIVE_BINDING_PRIORITY_AND_CONFLICT_RULES",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "UNRANKED_MULTI_OPTIMAL_SET_PRESENTATION_TIMING",
-          "kind": "PLAN",
-          "status": "UNRESOLVED"
-        }
-      ],
-      "activation_requirements": {
-        "owner_decisions_all_resolved": true,
-        "responsibility_mapping_verified": true,
-        "conflicts_with_existing_active_policies_resolved": true,
-        "machine_contract_and_registry_validation_passed": true,
-        "explicit_separate_user_active_approval_required": true
-      },
-      "out_of_scope": [
-        "IMMEDIATE_RUNTIME_ACTIVATION",
-        "EXISTING_ACTIVE_POLICY_MUTATION",
-        "UNAPPROVED_DIRECTORY_NAMES",
-        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ]
-    }
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-GOV-0001",
-        "scope": "ENGINE_DRAFT_COMPATIBILITY"
-      }
-    ]
-  }
-}
+Policy_Identity:
+  id: SFP-GOV-0002
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: GOV
+  title: "엔진 선택·변경 결정의 정당성과 승인 출처"
+Policy_Status:
+  Policy_Status_Schema_ver: "2"
+  status: DRAFT.Default
+  contract: urn:ptsip:contract:policy:gov:engine-choice:governance
+Policy_Rules:
+  Identity:
+    contract_id: urn:ptsip:policy:rule:gov:engine-choice-governance
+    Rule_ver: "1"
+  Definition:
+    - id: R-ID-9EC91DC88B7D48968C8D8590E98BD84F
+      rule: ENGINE-CHOICE-GOV
+      preconditions: [C-ID-1B4F77AAC1A24BCE83A193DF3640F1BA]
+    - id: R-ID-C58EFF28E433403C9163B4846BD17370
+      rule: APPROVAL-SOURCE-GOV
+      preconditions: [C-ID-9B4D900A2860438191FB7761177ACA53]
+    - id: R-ID-1C3AB9E2C64D494D82322161E1B72BF5
+      rule: CONFIRMED-CHOICE-GOV
+      preconditions: [C-ID-7992A47FDE044464BDBD176BE0A8D399]
+    - id: R-ID-09824AB5286B4C5C953BD859D999FF54
+      rule: VERIFIED-AUTONOMY
+      preconditions: [C-ID-5FD70C0C1A344ACBAFFDE068E062059A]
+    - id: R-ID-926D2E0E9CAF4D74BADBBE4898893AB3
+      rule: CROSS-PLANE-CHANGE
+      preconditions: [C-ID-47B45A45F2FF4A39960792EEE7D8087F]
+  Boundary:
+    scope: "엔진 선택·확정된 선택 변경의 결정 정당성, 승인 출처, 검증된 분석에 따른 단계적 자율성 확대와 인접 계약·권한·상태 변경의 거버넌스"
+    subjects:
+      - "엔진 선택 결정의 주체, 적용 범위와 결정 정당성을 관리한다."
+      - "엔진 선택 및 변경의 승인 출처와 그 효력 범위를 관리한다."
+      - "확정된 엔진 선택 변경의 정당한 결정·승인 관계를 관리한다."
+      - "검증된 분석에 따른 자율성 확대의 정당성과 승인 경계를 관리한다."
+      - "조건의 정보 의미, 엔진 기능 계약, 실행 허가, 실제 상태 변경과 관련된 권한·변경 관리의 경계를 조정한다."
+    exclusions:
+      - "INFO의 정보 의미, CNTR의 기능 계약을 GOV가 직접 재정의하지 않는다."
+      - "CTRL의 실행 허가, REAL의 실제 상태 변경을 GOV가 직접 수행하지 않는다."
+      - "기존 SFP-GOV-0001의 결정 권한을 자동 승계하거나 대체하지 않는다."
+      - "검증 결과만으로 신규 승인·실행 권한이나 정책 활성화 효력을 생성하지 않는다."
+  Evaluation:
+    criteria:
+      evidence:
+        - "엔진 선택 결정 주체와 정당한 승인 출처를 확인할 수 있는가?"
+        - "기존 확정 선택과 변경 결정의 권한 관계를 검증할 수 있는가?"
+        - "분석 검증과 자율성 확대 승인의 근거가 구분되는가?"
+        - "INFO·CNTR·CTRL·REAL의 의미·실행·상태 책임을 침범하지 않는가?"
+        - "SFP-GOV-0001의 결정 권한과의 충돌 및 미해결 사항이 식별되는가?"
+        - "미해결 승인·권한 문제를 유지하며 별도 승인 전 활성화하지 않는가?"
