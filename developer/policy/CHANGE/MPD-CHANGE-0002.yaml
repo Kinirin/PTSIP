@@ -1,137 +1,44 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: CHANGE
-policy:
-  id: MPD-CHANGE-0002
-  title: CHANGE authority (APPROVED source responsibilities)
-  status: RETIRED
-  substatus: Waiting
-  version: '1.0'
-authority_subject:
-  id: DEV_VERSIONED_TRANSITION_SEMANTICS
-  statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
-exclusive_kernel:
-- DEV_CHANGE_IMPACT_AND_COMPATIBILITY
-- DEV_MIGRATION_ORDER_AND_CONTINUITY
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
-      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version 문자열이나 Family 이름을 치환하지
-        않는다.
-      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지 않는다.
-    - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
-      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을 정한다.
-      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기 조건을 정당화할 수 없다.
-    source_scope:
-    - MPD-0016
-    - MPD-VERI-0001
-  unit_mpd_0016_f036e3f8c407:
-    target_status: ACTIVE
-    state: PENDING
-    requirements:
-    - id: TR-001
-      type: VERIFICATION
-      state: OPEN
-      refs:
-      - docs/translated/index.yaml
-      - .github/workflows/readme-translation.yml
-      next_action:
-        action: VALIDATE_README_TRANSLATION_GOVERNANCE
-        execution: PARALLEL_ALLOWED
-        target_refs:
-        - developer/policy/MPD-0016.yaml
-        - docs/translated/index.yaml
-        - .github/workflows/readme-translation.yml
-        completion_check: README_TRANSLATION_GOVERNANCE_VALID
-  unit_mpd_veri_0001_f036e3f8c407:
-    target_status: ACTIVE
-    state: PENDING
-    requirements:
-    - id: TR-001
-      type: STRUCTURAL_COMPATIBILITY
-      state: SATISFIED
-      refs:
-      - MPD-SPEC-0023
-      - MPD-0013
-      next_action:
-        action: ALIGN_POLICY_PLAN_IDENTITY_CONTRACT
-        execution: PARALLEL_ALLOWED
-        target_refs:
-        - developer/policy/SPEC/MPD-SPEC-0023.yaml
-        - developer/policy/MPD-0013.yaml
-        completion_check: POLICY_PLAN_IDENTITY_CONTRACT_ALIGNED
-    - id: TR-002
-      type: SCHEMA_MIGRATION
-      state: SATISFIED
-      refs:
-      - developer/bindings/schemas/policy-plan-bindings.schema.json
-      next_action:
-        action: MIGRATE_POLICY_PLAN_BINDING_SCHEMA
-        execution: SERIAL_REQUIRED
-        target_refs:
-        - developer/bindings/schemas/policy-plan-bindings.schema.json
-        after:
-        - TR-001
-        completion_check: POLICY_PLAN_BINDING_SCHEMA_VALID
-    - id: TR-003
-      type: AUTOMATION_INTEGRATION
-      state: SATISFIED
-      refs:
-      - developer/automation/policy_plan_binding/
-      next_action:
-        action: IMPLEMENT_PLAN_IDENTITY_AND_REF_TRACKING
-        execution: SERIAL_REQUIRED
-        target_refs:
-        - developer/automation/policy_plan_binding/
-        after:
-        - TR-002
-        completion_check: PLAN_IDENTITY_AND_REF_TRACKING_VALID
-    - id: TR-004
-      type: VERIFICATION
-      state: SATISFIED
-      refs:
-      - developer/automation/
-      - .github/workflows/tooling-test.yml
-      next_action:
-        action: IMPLEMENT_POLICY_PLAN_CONSISTENCY_VERIFICATION
-        execution: SERIAL_REQUIRED
-        target_refs:
-        - developer/automation/
-        - .github/workflows/tooling-test.yml
-        after:
-        - TR-002
-        - TR-003
-        completion_check: POLICY_PLAN_CONSISTENCY_VERIFICATION_PASS
-    - id: TR-005
-      type: OUTPUT_CONTRACT
-      state: OPEN
-      refs:
-      - MPD-VERI-0006
-      - developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
-      next_action:
-        action: COMPLETE_VERIFICATION_OUTPUT_CONTRACT
-        execution: PARALLEL_ALLOWED
-        target_refs:
-        - developer/policy/VERI/MPD-VERI-0006.yaml
-        - developer/policy/schemas/management/verification/policy-plan-consistency-report.schema.json
-        completion_check: VERIFICATION_OUTPUT_CONTRACT_COMPLETE
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: PENDING
-  requirements:
-  - id: TR-001
-    type: CURRENT_ROOT_CONTRACT_VERIFICATION
-    state: OPEN
-    refs:
-    - developer/policy/approvals/MPA-20261006-ROOT-CHANGE-0002-APPROVED.yaml
-    next_action:
-      action: VERIFY_CURRENT_ROOT_CONTRACT
-      execution: SERIAL_REQUIRED
-      completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID
+Policy_Identity:
+  id: "MPD-CHANGE-0002"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "CHANGE"
+  title: "CHANGE 반복 추론 감지와 계약 개선 후보 식별"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
+  status: "DRAFT.Reviewed"
+  contract: "urn:ptsip:contract:policy:change:reasoning:refinement-candidates"
+Policy_Rules:
+  Identity:
+    contract_id: "urn:ptsip:policy:rule:change:reasoning-refinement"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-99E9A8520BC24DABAE53FB066BD4A980"
+      rule: "REPEAT-INFERENCE"
+    - id: "R-ID-81E29F51406A45A49277E6B096362B8B"
+      rule: "REFINEMENT-CANDIDATE"
+  title: "CHANGE 반복 추론 감지와 계약 개선 후보 식별"
+  Boundary:
+    scope: "PTSIP 개발 과정에서 반복적으로 재추론되는 규범적 의미와 사용자 개입 패턴을 계약 개선 필요성의 후보로 식별하는 CHANGE 책임"
+    subjects:
+      - "AI 에이전트가 같은 의미를 반복적으로 추론하거나 사용자가 같은 판단에 반복 개입하는 현상은 재사용 가능한 기계 계약 개선의 검토 신호로 식별"
+      - "반복 추론·반복 사용자 개입·반복적 임시 우회 구현은 계약 표현 또는 의미 해석 경계의 개선 후보를 검토하는 근거로 활용"
+      - "동일한 확장 패턴의 반복 및 누적된 사용자 피드백·운영 데이터를 계약 개선 후보의 근거로 활용"
+      - "반복 패턴의 분석은 이미 승인된 의미를 기계적으로 재사용하려는 개선 후보 식별에 한정하며 실제 신규 규범의 승인·소유권 확정·계약 변경은 해당 유효 정책과 별도 사용자 결정에 따름"
+      - "개선 후보는 반복 현상의 근거와 기존 승인 의미의 보존 여부를 구별해 비권위적으로 기록하고, 아직 해결되지 않은 의미는 자동 확정하지 않음"
+    exclusions:
+      - "기존 MPD-CHANGE-0002의 README 번역, 정책·PLAN 일관성 검증 이전, 과거 TR-001~TR-005, 레거시 경로·검증 구현 의존의 규범적 승계"
+      - "정책 변경에 따른 PLAN 영향 분석·재생성·승인 또는 정책-PLAN 관계 검증 시스템의 규범적 소유권·구현 사양을 CHANGE-0002에서 결정하는 행위"
+      - "고객 배포용 PTSIP의 검증 자동화 기능 또는 다섯 단계 검증 시스템의 목표·구현을 개발자 CHANGE 규칙으로 확정하는 행위; 해당 주제는 별도 SFP-ASSURE 책임 결정 대상"
+      - "반복 추론 신호만을 근거로 규칙 의미·정책 승인·소유권·실행 권한을 생성하거나 기존 권위를 승격하는 행위"
+  Evaluation:
+    criteria:
+      evidence:
+        - "반복 의미 추론, 반복 사용자 개입, 임시 우회, 확장 패턴, 사용자 피드백·운영 데이터에서 구체적 개선 후보가 식별되는지 확인"
+        - "검토 신호와 유효한 규범적 소유권·승인 근거가 분리되어 있는지 확인"
+        - "계약 후보의 실제 적용과 검증 결과는 미완료이며 신규 규칙의 의미 소유권은 확정하지 않음"
+        - "정책 변경 관련 PLAN 검증 자동화의 다섯 단계 및 배포용 SFP-ASSURE 귀속은 별도 정책 검토 대상으로 남김"
+        - "기존 README 번역과 레거시 검증 이관 단위의 의미·경로·전환 상태는 새 정책의 현행 권한으로 재사용하지 않음"
+    result:
+      status: "incomplete_fulfillment"
+      task_name: "반복 추론 개선 후보 식별 정책 개혁 및 적용 평가"
+      task_id: "MPD-CHANGE-0002"
