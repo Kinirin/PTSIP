@@ -1,0 +1,39 @@
+Policy_Identity:
+  id: "MPD-ARCH-0014"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "ARCH"
+  title: "ARCH Policy 검증 책임 정책과 PLAN의 권한 분리"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
+  status: "DRAFT.Default"
+  contract: "urn:ptsip:contract:policy:arch:responsibility:policy-plan-separation"
+Policy_Rules:
+  Identity:
+    contract_id: "urn:ptsip:policy:rule:arch:responsibility-policy-plan"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-79930E44AE61B2C7EA24409F6EF1A08F"
+      rule: "PLAN-OWNS-MIGRATION"
+    - id: "R-ID-9A14723C5C654089AA6C0FF0116734E9"
+      rule: "POLICY-SPLIT"
+  title: "ARCH Policy 검증 책임 정책과 PLAN의 권한 분리"
+  Boundary:
+    scope: "Policy 검증 구현 책임의 규범적 경계와 해당 경계에 종속되는 마이그레이션 PLAN의 권한 분리"
+    subjects:
+      - "POLICY는 책임 분리 기준, 기존 책임 배정 조건, 신규 책임 후보 승인 조건 등 안정적인 규범을 결정"
+      - "PLAN은 유효한 정책을 소비해 검증 구현 목록, 수동 분리 대상, 파일 이동, 패키지 의존관계, 이전 순서 및 검증 방법을 기술"
+      - "구체적 구현 계획은 정책의 규범 의미·소유권을 재정의하거나 미완료 정책 결정을 완료로 간주할 수 없음"
+      - "혼합 검증기 수동 분리는 PLAN의 작업 대상으로 명세할 수 있지만 PLAN 자체가 자동 분리 실행 권한을 만들지 않음"
+    exclusions:
+      - "POLICY에 구체적인 파일 이동 순서나 패키지 의존 그래프를 직접 고정"
+      - "PLAN이 신규 책임 영역, 규칙 소유자, 승인·실행 권한을 생성"
+      - "PLAN 작성 또는 테스트 성공을 정책 승인과 동일시"
+  Evaluation:
+    criteria:
+      evidence:
+        - "POLICY의 규범적 결정과 PLAN의 구체적 실행 명세가 구별되는지 확인"
+        - "혼합 검증기의 수동 변경 계획과 검증 결과는 별도 PLAN에서 다루므로 이 정책에서는 미완료"
+    result:
+      status: "incomplete_fulfillment"
+      task_name: "Policy 검증 책임 정책·PLAN 분리 경계 검토"
+      task_id: "MPD-ARCH-0014"
