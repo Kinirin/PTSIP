@@ -25,7 +25,7 @@ Policy_Rules:
       - "개발자 전용 정책의 저장소 내부 책임과 제품 기능 정책의 배포 책임 분리"
       - "개발 정책이 일반 소비자 프로젝트의 필수 조건이 되지 않음"
       - "제품 런타임에서 개발 전용 정책·도구에 대한 의존 금지"
-      +"\n      - \".ptsip/contracts/에서 정책 구조를 정의하고 .ptsip/engine/에서 정책 적합성을 검증하며 src/policy/는 정책 문서만 관리\""
+      - ".ptsip/contracts/에서 정책 구조를 정의하고 .ptsip/engine/에서 정책 적합성을 검증하며 src/policy/는 정책 문서만 관리"
     exclusions:
       - "제품 정책(src/policy)의 규범적 의미를 개발 정책이 변경하는 행위"
       - "개발자 정책과 지원 기능 정책의 Owner 병합"
