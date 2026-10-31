@@ -46,7 +46,13 @@
         "unresolved_authority_conflict": "ESCALATE_TO_AUTHORIZED_DECISION_OWNER",
         "selected_engine_may_modify_normative_policy": false,
         "condition_rule_evolution_autonomy_direction": "VERIFIED_ANALYSIS_PROGRESSIVE_AUTONOMY_EXPANSION",
-        "initial_user_decision_dependency": "ACCEPTED_AS_INITIAL_ADOPTION_INVESTMENT"
+        "initial_user_decision_dependency": "ACCEPTED_AS_INITIAL_ADOPTION_INVESTMENT",
+        "rule_authoring_default": "AGENT_MAY_CREATE_CONTEXT_SPECIFIC_RESPONSIBILITY_CONDITION_RULE_DRAFTS",
+        "rule_reuse_policy": "PREFER_WHEN_SEMANTICALLY_VALID_NOT_REQUIRED",
+        "low_reusability_alone_blocks_new_rule": false,
+        "automatic_atomic_rule_decomposition": false,
+        "existing_rule_atomic_refactor_trigger": "USER_EXPLICIT_DIRECTION_ONLY",
+        "normative_rule_registration_or_activation_from_authoring": "NOT_GRANTED_BY_THIS_DECISION"
       },
       "invariants": {
         "source_of_objective_must_be_machine_resolvable": true,
@@ -78,7 +84,44 @@
         "EXISTING_ACTIVE_POLICY_MUTATION",
         "UNAPPROVED_DIRECTORY_NAMES",
         "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ]
+      ],
+      "long_term_rule_composition_direction": {
+        "status": "FUTURE_DIRECTION_ONLY",
+        "mandatory_for_current_rule_authoring": false,
+        "example_kind": "NON_NORMATIVE_ILLUSTRATION",
+        "atomic_rule_candidates": [
+          {
+            "name": "ENGINE-CHOICE",
+            "meaning": "결정할 대상이 엔진 선택인지 식별"
+          },
+          {
+            "name": "DECISION-LEGITIM",
+            "meaning": "대상 결정의 정당성 판단"
+          },
+          {
+            "name": "APPROVAL-SOURCE",
+            "meaning": "승인 출처 판단·관리"
+          }
+        ],
+        "composed_condition_example": {
+          "name": "ENGINE-CHOICE-AUTH",
+          "component_refs": [
+            "ENGINE-CHOICE",
+            "DECISION-LEGITIM",
+            "APPROVAL-SOURCE"
+          ],
+          "purpose": "엔진 선택에 대한 정당한 결정 및 승인 출처 관리"
+        },
+        "registrations_created": false,
+        "compositional_evaluation_contract": "NOT_YET_APPROVED",
+        "existing_rule_automatic_decomposition_or_migration": false
+      },
+      "rule_authoring_direction": {
+        "applicability": "SFP-GOV-0002_DRAFT_POLICY_SCOPE",
+        "agent_creation": "ALLOWED_FOR_PROPOSED_RESPONSIBILITY_CONDITION_RULE_DESIGN",
+        "quality_gate": "SEMANTIC_FIT_AND_RESPONSIBILITY_BOUNDARY_NOT_ATOMICITY_OR_REUSE_SCORE",
+        "normative_owner_registration_and_activation": "RETAIN_EXISTING_INDEPENDENT_AUTHORITY_GATES"
+      }
     }
   },
   "relations": {
