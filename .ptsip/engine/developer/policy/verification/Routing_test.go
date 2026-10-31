@@ -31,7 +31,7 @@ func TestPolicyRoutingContractInputs(t *testing.T) {
 	if len(resources) != 2 || len(sources) != 2 {
 		t.Fatalf("missing identity sources: %d/%d", len(resources), len(sources))
 	}
-	if registered != 14 || refs != 2 {
+	if registered != 28 || refs != 2 {
 		t.Fatalf("route coverage or schema reference count: %d/%d", registered, refs)
 	}
 }
@@ -187,8 +187,8 @@ func TestFamilySelectionUsesContractsAndSharedSchemas(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if registered != 14 || refs != 2 {
-		t.Fatalf("expected 14 selections and two common schemas: %d/%d", registered, refs)
+	if registered != 28 || refs != 2 {
+		t.Fatalf("expected 28 selections across two policy kinds and two common schemas: %d/%d", registered, refs)
 	}
 	developer := routingMembers(routingMembers(routing["routes"])["PTSIP_DEVELOPER_POLICY"])
 	if len(developer) != 1 || developer["output_root"] != "developer/policy" {
