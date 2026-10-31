@@ -2604,3 +2604,530 @@ materialization:
   new_arch_json_schema: NOT_YET_AUTHORIZED
   new_validator_or_resolver: NOT_YET_AUTHORIZED
   other_root_families: NOT_MODIFIED
+
+migration_identification:
+  metadata_role: NON_NORMATIVE_MIGRATION_PREPARATION
+  contract_schema_declared: false
+  current_policy_authority: NONE
+  candidate_classification_only: true
+  semantic_owner_registry: NOT_CREATED
+  owner_declaration_and_activation: FORBIDDEN
+  policy_or_contract_migration_executed: false
+  new_policy_id_allocation: NOT_AUTHORIZED
+  official_destination_policy_binding: NOT_DECIDED
+  retired_policy_reactivation: FORBIDDEN
+  effective_policy_and_schema_comparison_before_migration: REQUIRED
+  note: "후보 Family는 향후 정책 개혁 검토 대상이며 규범적 의미 소유자 선언이나 현재 권한을 뜻하지 않음"
+  source_units:
+    - source_path: "authority"
+      source_line_hint: 6
+      candidate_root_families: [GOV, ARCH]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: FORMAL_AUTHORITY_CHECK_REQUIRED
+      review_reason: "과거 임시 문서의 승인 출처·미확정 정책 ID 및 정식화 금지 경계"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.required_sections"
+      source_line_hint: 17
+      candidate_root_families: [ARCH, GOV]
+      review_disposition: CONFLICT_REVIEW
+      conflict_review: LEGACY_FOUR_SECTION_VS_CURRENT_PUBLIC_STRUCTURE
+      review_reason: "임시 문서의 4섹션과 현행 공통 정책 구조가 달라 대체 규칙 판단 필요"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.current_common_validation"
+      source_line_hint: 23
+      candidate_root_families: [ARCH]
+      review_disposition: CURRENT_CONTRACT_COMPARISON
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "구형 공통 규칙 구조 및 제한 부족 진술"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction"
+      source_line_hint: 32
+      candidate_root_families: [ARCH, GOV]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: GOV_KEEP_LATEST_AND_CURRENT_STRUCTURE
+      review_reason: "14패밀리 필드 심사 방향과 GOV 후속 대체 결정은 별도 판단"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.NORM"
+      source_line_hint: 68
+      candidate_root_families: [NORM]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "NORM 임시 필드 심사 결과; 현행 NORM 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.GOV"
+      source_line_hint: 106
+      candidate_root_families: [GOV]
+      review_disposition: SUPERSEDED_REVIEW
+      conflict_review: SUPERSEDED_BY_GOV_KEEP_LATEST
+      review_reason: "현행 GOV 계약을 우선하는 KEEP_LATEST 결정; 예전 19필드 행렬 복원 금지"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.INTENT"
+      source_line_hint: 119
+      candidate_root_families: [INTENT]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "INTENT 임시 필드 심사 결과; 현행 INTENT 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.ARCH"
+      source_line_hint: 158
+      candidate_root_families: [ARCH]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "ARCH 임시 필드 심사 결과; 현행 ARCH 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.INFO"
+      source_line_hint: 198
+      candidate_root_families: [INFO]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "INFO 임시 필드 심사 결과; 현행 INFO 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.CNTR"
+      source_line_hint: 238
+      candidate_root_families: [CNTR]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "CNTR 임시 필드 심사 결과; 현행 CNTR 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.RISK"
+      source_line_hint: 279
+      candidate_root_families: [RISK]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "RISK 임시 필드 심사 결과; 현행 RISK 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.SUPPLY"
+      source_line_hint: 319
+      candidate_root_families: [SUPPLY]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "SUPPLY 임시 필드 심사 결과; 현행 SUPPLY 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.REAL"
+      source_line_hint: 360
+      candidate_root_families: [REAL]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "REAL 임시 필드 심사 결과; 현행 REAL 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.ASSURE"
+      source_line_hint: 400
+      candidate_root_families: [ASSURE]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "ASSURE 임시 필드 심사 결과; 현행 ASSURE 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.CTRL"
+      source_line_hint: 441
+      candidate_root_families: [CTRL]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "CTRL 임시 필드 심사 결과; 현행 CTRL 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.CHANGE"
+      source_line_hint: 481
+      candidate_root_families: [CHANGE]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "CHANGE 임시 필드 심사 결과; 현행 CHANGE 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.OPS"
+      source_line_hint: 521
+      candidate_root_families: [OPS]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "OPS 임시 필드 심사 결과; 현행 OPS 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.family_field_review_results.RECORD"
+      source_line_hint: 561
+      candidate_root_families: [RECORD]
+      review_disposition: FAMILY_POLICY_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "RECORD 임시 필드 심사 결과; 현행 RECORD 승인 정책 및 계약과 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.fourteen_family_field_review_direction.final_common_field_requiredness"
+      source_line_hint: 595
+      candidate_root_families: [ARCH, GOV]
+      review_disposition: HISTORICAL_ONLY
+      conflict_review: SUPERSEDED_BY_GOV_KEEP_LATEST
+      review_reason: "후속 GOV 계약 교체로 공통 필수 집계 무효화"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.value_shape_design_direction"
+      source_line_hint: 619
+      candidate_root_families: [ARCH]
+      review_disposition: COMMON_STRUCTURE_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "의미 기반 구조화 원칙; 개별 Family 필드 내부 의미는 해당 Family에 귀속"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.identity_family_representation_direction"
+      source_line_hint: 645
+      candidate_root_families: [ARCH]
+      review_disposition: IDENTITY_STRUCTURE_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "family 단순 식별자 표현과 허용값·스키마 미확정"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.identity_approval_state_representation_direction"
+      source_line_hint: 668
+      candidate_root_families: [GOV, ARCH]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: GOV_APPROVAL_CONTRACT_COMPARISON_REQUIRED
+      review_reason: "승인 상태의 GOV 권한과 표현 구조의 ARCH 경계 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.definition_meaning_representation_direction"
+      source_line_hint: 694
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: NO_GLOBAL_SEMANTIC_OWNER
+      review_reason: "승인된 자연어 의미와 구조화 표현의 공통 원칙; 실제 규범 의미는 각 Family에서 판단"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.identity_field_shortlist_direction"
+      source_line_hint: 723
+      candidate_root_families: [ARCH]
+      review_disposition: COMMON_STRUCTURE_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Identity 후보 필드 선택을 현행 정책 구조와 비교"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.evaluation_criteria_representation_direction"
+      source_line_hint: 739
+      candidate_root_families: [ARCH, ASSURE, CNTR]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "구조화 평가 기준·검증 의미·인터페이스 경계의 분리 필요"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.evaluation_criteria_evidence_representation_direction"
+      source_line_hint: 771
+      candidate_root_families: [ASSURE, ARCH, RECORD]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "증거 요구조건·구조·실제 결과 기록 책임을 구별"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.evaluation_method_representation_direction"
+      source_line_hint: 808
+      candidate_root_families: [ARCH, ASSURE, CNTR]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "평가 방법 정의 참조·평가 증거 판단·기계 인터페이스의 경계 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.evaluation_pattern_contract_graph_direction"
+      source_line_hint: 852
+      candidate_root_families: [ARCH, CNTR, GOV, ASSURE]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: DECLARATION_OWNER_AND_FORMAL_PROOF_UNRESOLVED
+      review_reason: "패턴 식별·계층 그래프·권한·증명 인터페이스가 혼재; 개별 소유 확정 유보"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.evaluation_field_shortlist_direction"
+      source_line_hint: 954
+      candidate_root_families: [ARCH, ASSURE]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "평가 필드 구조와 증거 적합성의 서로 다른 책임"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.constraints_obligations_representation_direction"
+      source_line_hint: 979
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "Constraints.obligations의 공통 필드 후보와 패밀리별 규범 의미를 독립 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.constraints_prohibitions_representation_direction"
+      source_line_hint: 1010
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "Constraints.prohibitions의 공통 필드 후보와 패밀리별 규범 의미를 독립 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.constraints_preconditions_representation_direction"
+      source_line_hint: 1043
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "Constraints.preconditions의 공통 필드 후보와 패밀리별 규범 의미를 독립 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.constraints_dependencies_representation_direction"
+      source_line_hint: 1077
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_FAMILY_POLICY_COMPARISON_REQUIRED
+      review_reason: "Constraints.dependencies의 공통 필드 후보와 패밀리별 규범 의미를 독립 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.constraints_field_shortlist_direction"
+      source_line_hint: 1113
+      candidate_root_families: [ARCH]
+      review_disposition: COMMON_STRUCTURE_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Constraints 공통 필드 후보; 패밀리 내부 의무는 미확정"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.boundary_scope_representation_direction"
+      source_line_hint: 1130
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Boundary.scope 공통 필드 역할과 각 Family의 의미·필수 여부 분리 검토"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.boundary_subjects_representation_direction"
+      source_line_hint: 1162
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Boundary.subjects 공통 필드 역할과 각 Family의 의미·필수 여부 분리 검토"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.boundary_exclusions_representation_direction"
+      source_line_hint: 1191
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Boundary.exclusions 공통 필드 역할과 각 Family의 의미·필수 여부 분리 검토"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.boundary_context_representation_direction"
+      source_line_hint: 1221
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Boundary.context 공통 필드 역할과 각 Family의 의미·필수 여부 분리 검토"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.boundary_context_environment_representation_direction"
+      source_line_hint: 1255
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Boundary.context_environment 공통 필드 역할과 각 Family의 의미·필수 여부 분리 검토"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.boundary_context_phase_representation_direction"
+      source_line_hint: 1289
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Boundary.context_phase 공통 필드 역할과 각 Family의 의미·필수 여부 분리 검토"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.boundary_field_shortlist_direction"
+      source_line_hint: 1323
+      candidate_root_families: [ARCH]
+      review_disposition: COMMON_STRUCTURE_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Boundary 공통 필드 후보는 현행 구조와 별도 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.definition_rationale_representation_direction"
+      source_line_hint: 1351
+      candidate_root_families: [NORM, GOV, INTENT, ARCH, INFO, CNTR, RISK, SUPPLY, REAL, ASSURE, CTRL, CHANGE, OPS, RECORD]
+      review_disposition: PER_FAMILY_SEMANTICS_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Definition.rationale 해석 및 표현의 Family별 의미 독립"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.definition_field_shortlist_direction"
+      source_line_hint: 1379
+      candidate_root_families: [ARCH]
+      review_disposition: COMMON_STRUCTURE_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Definition 공통 필드 후보의 현행 구조 일치 확인"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "public_policy_structure.schema_first_review_authority_reconciliation"
+      source_line_hint: 1403
+      candidate_root_families: [ARCH, GOV]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: APPROVED_MEANING_VS_MACHINE_CONTRACT
+      review_reason: "스키마 대상 사전 검토와 승인된 자연어 의미의 정책 권한 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "validation_responsibility"
+      source_line_hint: 1492
+      candidate_root_families: [ARCH, ASSURE]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "검증 구조 선택과 적합성 증거 판단 경계"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "rule_contract_boundary"
+      source_line_hint: 1503
+      candidate_root_families: [ARCH, GOV, ASSURE, CNTR]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: LEGACY_FIVE_GROUP_VS_CURRENT_FAMILY_RULES
+      review_reason: "독립 규칙 계약과 승인 증명·검증 인터페이스 경계 혼재"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "rule_contract_boundary.common_independent_rule_contract_structure"
+      source_line_hint: 1515
+      candidate_root_families: [ARCH, GOV, ASSURE, CNTR]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: LEGACY_FIVE_GROUP_VS_CURRENT_FAMILY_RULES
+      review_reason: "5그룹 승인 방향과 현행 계약 간 미해결 충돌·B3/등록·검증 항목의 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "rule_contract_boundary.multi_rule_reference_decision"
+      source_line_hint: 1993
+      candidate_root_families: [ARCH]
+      review_disposition: REFERENCE_CONTRACT_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "복수 규칙 참조 허용 원칙과 현행 R-ID/Definition 바인딩 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "semantic_responsibility_workflow_direction"
+      source_line_hint: 2005
+      candidate_root_families: [ARCH, GOV]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "의미 기반 책임 분리와 권한 없는 워크플로우 조정"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "test_mode_responsibility_stabilization"
+      source_line_hint: 2022
+      candidate_root_families: [ARCH, ASSURE]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "Test Mode 실행 선택 책임과 검증 적합성 판단 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "test_mode_json_go_execution_direction"
+      source_line_hint: 2047
+      candidate_root_families: [ARCH, ASSURE, CTRL]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "모드 선택·실행·검증·게이트가 혼재하고 기존 구현 상태 변동"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "test_mode_engine_adapter_cutover"
+      source_line_hint: 2122
+      candidate_root_families: [ARCH, CNTR, SUPPLY]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "엔진 어댑터 전환·호환성·배포 경계의 정책별 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "test_mode_verifier_target_reorganization"
+      source_line_hint: 2153
+      candidate_root_families: [ARCH, ASSURE, SUPPLY, CTRL, RECORD]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "검증 타깃별 구현·coverage·릴리스·게이트·결과 기록 범위 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "developer_contract_repository_unification"
+      source_line_hint: 2278
+      candidate_root_families: [ARCH, GOV, RECORD, SUPPLY]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_PATH_AND_TEMP_RETIREMENT_CHECK
+      review_reason: "계약 저장 책임·승인 이력·마이그레이션 검증·배포 경계 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "developer_contract_repository_unification.approvals_provenance"
+      source_line_hint: 2291
+      candidate_root_families: [GOV, RECORD]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "승인 정당성과 이력 증거 보존을 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "developer_contract_repository_unification.contract_migration"
+      source_line_hint: 2317
+      candidate_root_families: [ARCH, SUPPLY, RECORD]
+      review_disposition: CURRENT_IMPLEMENTATION_EVIDENCE_REVIEW
+      conflict_review: HISTORICAL_COMMIT_EVIDENCE_ONLY
+      review_reason: "과거 이전 완료 기록을 현행 정책 권한으로 승격하지 않고 대조"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "component_representation_hybrid"
+      source_line_hint: 2348
+      candidate_root_families: [ARCH]
+      review_disposition: EXISTING_ARCH_POLICY_COMPARISON
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "명시적 방향 그래프와 선택적 논리 계층의 책임 경계"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "src_ptsip_domain_responsibility_direction"
+      source_line_hint: 2472
+      candidate_root_families: [ARCH, CNTR, SUPPLY, CTRL]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: EXISTING_SUPPORT_FEATURE_POLICY_COMPARISON
+      review_reason: "제품 코드 소유권·외부 인터페이스·배포 범위·릴리스 게이트 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "src_ptsip_domain_responsibility_direction.decisions.tool_domain_decomposition"
+      source_line_hint: 2480
+      candidate_root_families: [ARCH]
+      review_disposition: CURRENT_POLICY_COMPARISON
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "기능 기반 개발 도구 영역 구분과 버전 단일성"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "src_ptsip_domain_responsibility_direction.decisions.implementation_sharing"
+      source_line_hint: 2488
+      candidate_root_families: [ARCH, CNTR]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: CURRENT_CONTRACT_REVIEW_REQUIRED
+      review_reason: "공유 구현 단일 소유와 계약을 통한 외부 소비 구분"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "src_ptsip_domain_responsibility_direction.decisions.existing_python_paths"
+      source_line_hint: 2496
+      candidate_root_families: [ARCH, CNTR, CHANGE]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: APPROVED_RECONCILE_PRESERVE_PUBLIC_INTERFACE
+      review_reason: "공개 Python API 이관·호환·변경 조건과 사용자 승인 경계"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "src_ptsip_domain_responsibility_direction.decisions.package_distribution_alignment"
+      source_line_hint: 2516
+      candidate_root_families: [SUPPLY, ARCH, CNTR, CTRL]
+      review_disposition: SPLIT_AND_REVIEW
+      conflict_review: APPROVED_RECONCILE_DISTRIBUTION_GATE
+      review_reason: "배포 제외·구성 변경·호환성 및 검증 게이트 분리"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "unresolved"
+      source_line_hint: 2560
+      candidate_root_families: []
+      review_disposition: UNRESOLVED_POLICY_DECISIONS
+      conflict_review: UNRESOLVED_USER_DECISION
+      review_reason: "선행 정책 결정이 필요하며 Root Family 강제 배정 금지"
+      target_policy_id: null
+      semantic_owner_confirmed: false
+    - source_path: "materialization"
+      source_line_hint: 2574
+      candidate_root_families: [ARCH, GOV]
+      review_disposition: STAGING_LIFECYCLE_REVIEW
+      conflict_review: CANONICAL_MPD_READINESS_NOT_CONFIRMED
+      review_reason: "임시 파일 보존·공식 이관·삭제 조건; 신규 활성화 권한 없음"
+      target_policy_id: null
+      semantic_owner_confirmed: false
