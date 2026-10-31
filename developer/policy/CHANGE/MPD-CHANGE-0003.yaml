@@ -1,76 +1,53 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: CHANGE
-policy:
-  id: MPD-CHANGE-0003
-  title: CHANGE authority (APPROVED source responsibilities)
-  status: RETIRED
-  substatus: Waiting
-  version: '1.0'
-authority_subject:
-  id: DEV_VERSIONED_TRANSITION_SEMANTICS
-  statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
-exclusive_kernel:
-- DEV_CHANGE_IMPACT_AND_COMPATIBILITY
-- DEV_MIGRATION_ORDER_AND_CONTINUITY
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
-      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version
-        문자열이나 Family 이름을 치환하지 않는다.
-      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지
-        않는다.
-    - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
-      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을
-        정한다.
-      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기
-        조건을 정당화할 수 없다.
-    source_scope:
-    - MPD-MIGR-0002
-  unit_mpd_migr_0002_fd0bec532c13:
-    governing_policy_ref: MPD-0016
-    source_state:
-      canonical_readme: README.md
-      existing_translation:
-        language: ko
-        path: README.ko.md
-      translation_workflow: .github/workflows/readme-translation.yml
-    target_state:
-      canonical_readme: README.md
-      translation_registry: docs/translated/index.yaml
-      translations:
-      - language: ko
-        path: docs/translated/README.ko.md
-    required_transition:
-    - CREATE_TRANSLATION_REGISTRY
-    - MOVE_KOREAN_README_TO_REGISTERED_PATH
-    - UPDATE_CANONICAL_README_LANGUAGE_NAVIGATION
-    - UPDATE_TRANSLATION_INTERNAL_CANONICAL_LINKS
-    - UPDATE_README_TRANSLATION_WORKFLOW_TARGET_PATH
-    - UPDATE_WORKFLOW_GIT_ADD_PATH
-    - VERIFY_NO_ACTIVE_ROOT_README_KO_PATH_REFERENCE
-    preservation:
-      canonical_readme_content_authority_unchanged: true
-      korean_translation_history_should_be_preserved_when_git_operation_allows: true
-      translation_generation_model_unchanged_by_layout_migration: true
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: PENDING
-  requirements:
-  - id: TR-001
-    type: ACTIVE_TRANSITION_DECISION
-    state: OPEN
-    refs:
-    - developer/policy/approvals/MPA-20261007-ROOT-CHANGE-0003-APPROVED.yaml
-    next_action:
-      action: DECIDE_ACTIVE_TRANSITION
-      execution: OWNER_DECISION_REQUIRED
-      completion_check: ACTIVE_TRANSITION_AUTHORIZED
+Policy_Identity:
+  id: "MPD-CHANGE-0003"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "CHANGE"
+  title: "CHANGE README 및 릴리스 노트 변경 관리 책임"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
+  status: "DRAFT.Reviewed"
+  contract: "urn:ptsip:contract:policy:change:documentation:version-updates"
+Policy_Rules:
+  Identity:
+    contract_id: "urn:ptsip:policy:rule:change:readme-release-management"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-02F78C9D4B4D493FB2938AE21C79E602"
+      rule: "README-CHANGE-SCOPE"
+    - id: "R-ID-1984AC8F2C194CC1BE801D2FC6FD0942"
+      rule: "TRANSLATION-TARGETS"
+    - id: "R-ID-50E89BB94D7245789DA07DF5D16E2C3B"
+      rule: "RELEASE-NOTE-MGMT"
+  title: "CHANGE README 및 릴리스 노트 변경 관리 책임"
+  Boundary:
+    scope: "PTSIP 개발자 저장소의 버전 갱신에 따른 README·등록 번역본·릴리스 노트의 변경 관리 책임"
+    subjects:
+      - "개발자 저장소의 버전 업데이트에 따라 README 및 릴리스 노트 변경을 관리할 책임을 정의하며, 어떤 내용을 변경할지에 관한 별도 정책이나 작업 계획 상세는 이 문서에서 결정하지 않음"
+      - "저장소 최상위 README.md는 영문 정식 원본으로 유지"
+      - "docs/translated/**에는 영문 README.md를 원본으로 하는 언어별 번역본을 관리"
+      - "docs/translated/index.yaml에 등록된 활성 언어와 해당 번역 경로를 기준으로 번역 생성 대상을 결정; 등록되지 않은 대상은 자동 활성화하지 않음"
+      - "릴리스 노트 생성 책임의 관리 대상은 docs/releasenote/engine/, docs/releasenote/project-profile/, docs/releasenote/PTSIP_Package/, docs/releasenote/tool/의 네 경로"
+      - ".github/workflows/readme-management.yml을 README 번역 및 문서 관리 자동화의 후속 구현 목표로 지정하되 세부 동작·실행 조건·검증 사양은 후속 정책과 PLAN에서 결정"
+      - ".ptsip/contracts/schemas/release/readme/readme_template.schema.json을 README 문서 구조 계약의 제안 경로로 기록; 현재 존재 또는 승인된 스키마의 의미·완성은 주장하지 않음"
+      - ".ptsip/contracts/schemas/release/releasenote/는 릴리스 노트 형식 스키마의 기존 계약 경로로 참조하되 실제 형식 정의는 유효한 개별 계약을 따름"
+      - "기존 .github/workflows/readme-verification.yml 및 readme-translation.yml은 후속 readme-management.yml로 대체 후 제거하는 대상으로 식별하되 현재 기능·호출자 단절을 방지하는 조건은 미확정"
+      - "README 원본·번역 등록부에 관한 기존 APPROVED.Applying MPD-GOV-0004와 CHANGE 변경 관리 책임의 중복 여부는 사용자 충돌 해결 전까지 미확정으로 유지"
+    exclusions:
+      - "README의 구체적 수정 내용, 릴리스 노트의 작성 항목, 상세 구현 작업 순서 또는 번역 엔진의 기술 사양을 이 정책에서 고정하는 행위"
+      - "버전 변경만으로 README·릴리스 노트를 실제 수정하거나 특정 커밋·릴리스의 게시를 승인하는 행위"
+      - "GOV의 기존 원본·번역 활성화 책임을 명시적 충돌 해결 없이 변경·대체하거나 CHANGE에 동일한 규범적 소유권을 중복 부여하는 행위"
+      - "미존재 readme_template.schema.json의 계약 내용을 추론하거나 기존 릴리스 노트 스키마를 사전 승인 없이 대체하는 행위"
+      - "대체 워크플로의 동등한 번역·검증 수행 근거가 없는데 기존 두 워크플로의 제거가 완료됐다고 선언하는 행위"
+      - "과거 MPD-MIGR-0002의 README 경로 이전 작업·레거시 상태 전환·작업 계획을 현행 CHANGE 규범으로 승계하는 행위"
+  Evaluation:
+    criteria:
+      evidence:
+        - "관리 대상 README.md, docs/translated/index.yaml, 네 릴리스 노트 경로와 현행 계약의 존재·역할 확인"
+        - "미완료 충돌: MPD-GOV-0004의 승인된 README 원본·번역 관리 책임과 신규 CHANGE-0003의 책임 경계 분리 또는 공식 변경에 대한 사용자 결정 필요"
+        - "미완료 계약: .ptsip/contracts/schemas/release/readme/readme_template.schema.json 현재 없음; 실제 유효 README 구조 계약과 책임 비교 필요"
+        - "미완료 구현: readme-management.yml 후속 구현 및 기존 readme-verification.yml·readme-translation.yml 의존 소비자 대체와 검증은 아직 완료되지 않음"
+        - "READMЕ 버전 동기화·번역 생성·릴리스 노트 생성 및 적용 적합성은 현재 평가에서 검증 완료로 주장하지 않음"
+    result:
+      status: "incomplete_fulfillment"
+      task_name: "README 및 릴리스 노트 변경 관리 정책 개혁과 적용 검토"
+      task_id: "MPD-CHANGE-0003"
