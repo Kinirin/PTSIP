@@ -1,52 +1,94 @@
-{
-  "schema_version": "developer-policy/v2",
-  "policy_class": "VPMS_DEVELOPER_POLICY",
-  "policy": {
-    "id": "MPD-ASSURE-0004",
-    "version": "0.0",
-    "title": "VPMS current neutral contract verification candidate",
-    "status": "DRAFT",
-    "substatus": "Default"
-  },
-  "rules": {
-    "current_contract_verification": {
-      "responsibility": "VPMS_CURRENT_CONTRACT_CASES",
-      "contract_ref": "developer/policy/contracts/vpms-current-verification.v1.json",
-      "case_schema_ref": "developer/policy/schemas/vpms-current-verification-case.schema.json",
-      "source_resolution": "EXACT_CURRENT_CANONICAL_REGISTRATION",
-      "legacy_policy_body_read": "FORBIDDEN",
-      "legacy_source_reconstruction": "FORBIDDEN",
-      "unknown_or_cross_class_reference": "FAIL_CLOSED"
-    },
-    "candidate_result_contract": {
-      "responsibility": "VPMS_CURRENT_CONTRACT_RESULTS",
-      "result_schema_ref": "developer/policy/schemas/vpms-current-verification-result.schema.json",
-      "result_preserves_case_id": true,
-      "normative_authority": false,
-      "runtime_activation": "FORBIDDEN"
-    },
-    "implementation_boundary": {
-      "go_implementation_role": "NON_NORMATIVE_CANDIDATE_CONFORMANCE_VERIFIER",
-      "go_source_owns_normative_semantics": false,
-      "consumer_runtime_policy_dependency": "FORBIDDEN",
-      "support_authority_inheritance": "FORBIDDEN",
-      "vpms_runtime_replacement": "NOT_AUTHORIZED",
-      "successor_activation": "SEPARATE_EXPLICIT_OWNER_APPROVAL_REQUIRED"
-    }
-  },
-  "relations": {
-    "depends_on": [
-      {
-        "policy": "MPD-CNTR-0004",
-        "scope": "CURRENT_ROOT_MACHINE_INTERFACE_REFERENCE_ONLY"
-      },
-      {
-        "policy": "MPD-REAL-0005",
-        "scope": "GO_VERIFICATION_IMPLEMENTATION_REFERENCE_ONLY"
-      }
-    ],
-    "supersedes": [],
-    "amends": [],
-    "extends": []
-  }
-}
+Policy_Identity:
+  id: MPD-ASSURE-0004
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: ASSURE
+  title: "ASSURE 저장소 기계 계약 준수 검증"
+Policy_Status:
+  Policy_Status_Schema_ver: "2"
+  status: DRAFT.Default
+  version: "0.0"
+  contract: urn:ptsip:contract:policy:assure:repository-contract-conformance:draft
+Authority:
+  authority_id: MPD-ASSURE-0004
+  responsibility: REPOSITORY_CONTRACT_VERIFICATION_EVIDENCE_JUDGMENT
+  normative_scope: VERIFICATION_ONLY
+  policy_approval_authority: false
+  contract_schema_definition_authority: false
+  contract_or_validator_creation_authority: false
+Policy_Rules:
+  Identity:
+    contract_id: urn:ptsip:policy:rule:assure:repository-contract-conformance
+    Rule_ver: "1"
+  title: "현재 등록된 기계 계약의 검증 범위·증거·결과 판정"
+  Definition:
+    - id: R-ID-16C8255C833446A4A0BAC7086AC52F89
+      rule: CHECK-CURRENT-CONTRACT
+    - id: R-ID-4BE43BF42A34442D943DF7CD6A2C1738
+      rule: CHECK-POLICY-SHAPE
+    - id: R-ID-9C4AF8F043834F26968ED4B01F84C2F1
+      rule: CHECK-LEGACY-REUSE
+    - id: R-ID-2A49E0D1888945B5AA82A0792BE65E8B
+      rule: CHECK-COVERAGE-EVID
+    - id: R-ID-8AA61B6798C742F7B499BA519E1720BC
+      rule: REPORT-MISSING-CONTR
+    - id: R-ID-C2B27612F8AB4EA8B984056775169A74
+      rule: NO-AUTHORITY-GRANT
+  Boundary:
+    scope: "저장소 환경에서 유효하게 승인·등록된 기계 계약에 대한 정책 문서의 적합성, 검증 범위 및 증거 판정"
+    subjects:
+      - "검증 대상 정책 문서에 적용되는 유효한 기계 계약의 정확한 식별과 참조 적합성"
+      - "정책 문서가 해당 계약의 구조와 검증 조건을 만족하는지에 관한 증거 판단"
+      - "과거 또는 폐기된 정책 본문·구조를 현행 계약의 대체 권위로 사용했는지 확인"
+      - "필요 계약이 없거나 검증할 수 없는 경우 검증 공백을 명시하고 근거 없는 PASS를 금지"
+      - "검증 결과가 실제 검증 대상, 계약 버전 및 저장소 스냅샷과 일치하는지 판단"
+    exclusions:
+      - "정책의 규범적 내용, 작성 의무 또는 승인 여부를 새로 정의하지 않는다."
+      - "GOV의 정책 결정·승인 권한 및 계약 소유 경계를 인수하지 않는다."
+      - "ARCH와 각 Root Family의 문서 구조·스키마 정의 권한을 인수하지 않는다."
+      - "CNTR·INFO의 인터페이스 및 데이터 의미를 임의로 재정의하지 않는다."
+      - "REAL의 기계 계약·검증기 생성 및 구현 권한을 인수하지 않는다."
+      - "CTRL의 정책 적용·실행 허가 또는 RECORD의 증거 보존 책임을 인수하지 않는다."
+      - "VPMS 전용 사례·실행기·결과 계약과 퇴역 정책의 권한을 상속하지 않는다."
+  Evaluation:
+    criteria:
+      evidence:
+        - "검증 대상에 적용되는 현재 유효 계약의 등록 식별자·버전·출처"
+        - "정책 문서와 계약 구조의 필수 필드·형식·참조에 대한 검증 결과"
+        - "검증 범위, 미실행 항목, 누락 계약 및 검증 불가능 영역에 대한 명시적 보고"
+        - "폐기된 정책의 본문 또는 구조를 규범 근거로 사용하지 않았다는 확인"
+        - "검증 대상의 정확한 revision 및 결과와의 연결"
+    method:
+      authority: CONSUME_EFFECTIVE_REGISTERED_CONTRACTS
+      contract_missing_or_unresolved: REPORT_GAP_NO_PASS
+      obsolete_contract_used_as_authority: FAIL_CLOSED
+      unsupported_reference: FAIL_CLOSED
+      result_cannot_approve_policy: true
+  contract_scope:
+    policy_document_contract:
+      obligation_source: EFFECTIVE_NORMATIVE_POLICY_NOT_ASSURE
+      conformance_check: REQUIRED_WHEN_APPLICABLE
+      unregistered_contract_guessing: FORBIDDEN
+    missing_contract:
+      ptsip_support_possible: true
+      assure_role: IDENTIFY_GAP_AND_JUDGE_EVIDENCE
+      materialization_owner: SEPARATELY_AUTHORIZED_REAL
+      automatic_contract_generation: NOT_AUTHORIZED_BY_THIS_POLICY
+  advisory_locations:
+    authority: NON_NORMATIVE_RECOMMENDATION_ONLY
+    preferred_contract_root: .ptsip/contracts/
+    candidate_contract_domains:
+      - policy
+      - Plans
+      - profile
+      - compile-sealed-rbac
+      - registry
+    preferred_validation_extension_root: .ptsip/engine/validation/
+    fixed_layout_or_filename_mandate: false
+    extension_implementation_requires_separate_authority: true
+  prior_policy_disposition:
+    prior_policy_class: VPMS_DEVELOPER_POLICY
+    old_vpms_rules: NOT_ADOPTED
+    previous_cntr_and_real_policy_references: HISTORICAL_ONLY
+    old_vpms_contracts_are_current_authority: false
+    old_vpms_verifier_activation: NOT_AUTHORIZED
+    implementation_binding_cutover: SEPARATE_POLICY_DERIVED_WORK
