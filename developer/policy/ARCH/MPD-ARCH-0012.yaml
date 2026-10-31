@@ -1,0 +1,39 @@
+Policy_Identity:
+  id: "MPD-ARCH-0012"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "ARCH"
+  title: "ARCH 기존 Policy 검증 책임 영역 배정 기준"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
+  status: "DRAFT.Default"
+  contract: "urn:ptsip:contract:policy:arch:responsibility:existing-assignment"
+Policy_Rules:
+  Identity:
+    contract_id: "urn:ptsip:policy:rule:arch:responsibility-existing-assignment"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-156F98CD127841C78DF42974A19E639C"
+      rule: "EXACT-DOMAIN-MATCH"
+    - id: "R-ID-879D465121D142E8A10BFC3757D3095A"
+      rule: "NO-APPROX-ASSIGN"
+  title: "ARCH 기존 Policy 검증 책임 영역 배정 기준"
+  Boundary:
+    scope: ".ptsip/engine/developer/policy/의 검증 구현을 기존 승인된 책임 영역에 배정할 때의 의미 일치 기준"
+    subjects:
+      - "기존 책임 영역이 대상 검증 구현의 책임을 정확히 소유할 경우 새로운 영역보다 기존 영역 재사용을 우선 검토"
+      - "검증 구현의 실제 기능과 기존 영역의 책임 의미가 정확히 일치할 때만 해당 영역에 배정"
+      - "명칭·경로 유사성 또는 구현 편의만으로 소유권을 추론하거나 배정하지 않음"
+      - "혼합된 검증 구현을 책임별 수동 분리하기 전에는 파일 전체를 특정 영역에 배정하지 않음"
+      - "동일성을 확인하지 못하거나 복수 후보가 충돌하면 자동 배정을 중단하고 비권위적 후보 분석으로 기록"
+    exclusions:
+      - "기존 책임에 맞추기 위한 의미 변형 또는 편의상 책임 배정"
+      - "혼합 검증기의 자동 분리·이전, 미확정 소유권 등록, 다른 검증 체계로의 범위 확대"
+  Evaluation:
+    criteria:
+      evidence:
+        - "검증 구현의 수행 책임과 기존 책임 계약의 의미 대응이 정확한지 확인"
+        - "책임 혼합 검증기 후보의 기존 영역 배정은 수동 분리 및 사용자 결정 전까지 미완료"
+    result:
+      status: "incomplete_fulfillment"
+      task_name: "기존 Policy 검증 책임 영역 배정 기준 검토"
+      task_id: "MPD-ARCH-0012"
