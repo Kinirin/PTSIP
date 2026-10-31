@@ -78,3 +78,13 @@ Policy_Rules:
         - "기존 정책 및 비활성 정책의 읽기 전용 후보·충돌 분석이 비권위로 유지되고 규범적 소유권·승인·활성화의 근거로 사용되지 않는지 확인"
         - "신규 책임 영역의 승인 근거가 있고 구현·이전 작업의 구체 내용은 PLAN에 있는지 확인"
         - "폐기된 developer/automation/ 및 .github/checks/release/에 대한 신규 권위 의존이 없는지 확인"
+        - "현황 확인: POLICY-SPLIT, RULE-CONTRACT-OWNER, OWNER DECLARATION 유보 및 NON-AUTHORITATIVE ANALYSIS 허용은 문서 규칙에 반영됨"
+        - "미완료: .ptsip/engine/developer/policy/index.json은 TEMPORARY_REPLACEABLE / policy_authority NONE이며 POLICY 하위 책임의 최종 소유 경계·구현은 미확정"
+        - "미완료: .ptsip/profiles/Test_Mode.ptsip.yaml은 DRAFT / registered false이며 Test Mode 정식 소유권 연결 계약은 미승인"
+        - "유보: 규칙 의미 소유자의 확정·등록은 사용자 별도 명시 승인 전까지 금지하며 비권위적 후보 분석으로 대체하지 않음"
+        - "검증 미확인: Developer Automation 네 영역의 구현 적합성 및 Go Family 검증기 전체 검증 결과는 이 평가에서 주장하지 않음"
+        - "선행 충돌 해결: 기존 developer/automation/planning/ 보존 요청보다 KEEP_PRIOR 폐기 결정을 적용하며 재활성화하지 않음"
+    result:
+      status: "incomplete_fulfillment"
+      task_name: "Developer Automation 책임 영역 분리 정책 적용 현황 평가"
+      task_id: "MPD-ARCH-0009"
