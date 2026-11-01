@@ -1,0 +1,150 @@
+{
+  "format": "ptsip-candidate-family-selection/v1",
+  "stage": "FIELD_REVIEW",
+  "active": false,
+  "selection_basis": "DECLARED_POLICY_IDENTITY_ROOT_FAMILY",
+  "family_source_ref": "urn:ptsip:identity:root-family:v1",
+  "family_routes": {
+    "NORM": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "GOV": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "INTENT": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "ARCH": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "INFO": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "CNTR": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "RISK": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "SUPPLY": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "REAL": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "ASSURE": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "CTRL": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "CHANGE": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "OPS": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    },
+    "RECORD": {
+      "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v1",
+      "relation_schema_refs": [
+        "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+        "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+        "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+        "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+      ]
+    }
+  },
+  "family_name_inference": false
+}

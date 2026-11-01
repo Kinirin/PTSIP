@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:plan:status:v1",
+  "title": "plan:status",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "oneOf": [
+    {
+      "$ref": "urn:ptsip:contract:constant:plan_status_draft:v1"
+    },
+    {
+      "$ref": "urn:ptsip:contract:constant:plan_status_activate:v1"
+    },
+    {
+      "$ref": "urn:ptsip:contract:constant:plan_status_interruption:v1"
+    }
+  ]
+}

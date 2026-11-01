@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:relation:composition:v1",
+  "title": "policy:relation:composition",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "meaning_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+    },
+    "basic_relations": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/RelationUse"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "conditional_relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "condition_ref": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+          },
+          "condition_basis_ref": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+          },
+          "relation": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/RelationUse"
+          }
+        },
+        "required": [
+          "condition_ref",
+          "condition_basis_ref",
+          "relation"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "result_combination": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "const": "ALL_APPLICABLE_RELATIONS"
+        },
+        "preserve_individual_results": {
+          "const": true
+        },
+        "preserve_non_satisfaction": {
+          "const": true
+        },
+        "preserve_unresolved": {
+          "const": true
+        },
+        "requirement_judgement_is_separate": {
+          "const": true
+        }
+      },
+      "required": [
+        "mode",
+        "preserve_individual_results",
+        "preserve_non_satisfaction",
+        "preserve_unresolved",
+        "requirement_judgement_is_separate"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "contract_id",
+    "revision",
+    "meaning_ref",
+    "basic_relations",
+    "conditional_relations",
+    "result_combination"
+  ],
+  "additionalProperties": false,
+  "anyOf": [
+    {
+      "properties": {
+        "basic_relations": {
+          "minItems": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "conditional_relations": {
+          "minItems": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,304 @@
+{
+  "format": "ptsip-contract-candidate-catalog/v1",
+  "stage": "FIELD_REVIEW",
+  "creation_basis": "USER_EXPLICIT_2026_11_01",
+  "active_registration": false,
+  "active_entry_unchanged": ".ptsip/contracts/policy/boundary.json",
+  "validator_implementation": "DEFERRED",
+  "policy_migration": "DEFERRED",
+  "old_validator_removal": "DEFERRED",
+  "artifacts": [
+    {
+      "path": ".ptsip/contracts/Plans/PTSIP_Public_Policy_Structure.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:plan:public-structure:v1"
+    },
+    {
+      "path": ".ptsip/contracts/Plans/Plan_Identity/PTSIP_Public_Plan_Identity.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:plan:identity:v1"
+    },
+    {
+      "path": ".ptsip/contracts/Plans/Plan_Identity/Public_Plan_Identity.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:plan:identity-declarations:v1"
+    },
+    {
+      "path": ".ptsip/contracts/Plans/Plan_lifecycle/Public_Plan_lifecycle.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:plan:lifecycle:v1"
+    },
+    {
+      "path": ".ptsip/contracts/Plans/Plan_lifecycle/status/Plan_status.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:plan:status:v1"
+    },
+    {
+      "path": ".ptsip/contracts/Plans/Plan_lifecycle/version/Plan_version.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:plan:version:v1"
+    },
+    {
+      "path": ".ptsip/contracts/Plans/Plan_unit/Public_Plan_unit.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:plan:unit:v1"
+    },
+    {
+      "path": ".ptsip/contracts/compile-sealed-rbac/Authority/Operational_Authority.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:rbac:operational-authority:v1"
+    },
+    {
+      "path": ".ptsip/contracts/compile-sealed-rbac/Authority/Responsibility-Authority.json",
+      "kind": "SOURCE_BINDING"
+    },
+    {
+      "path": ".ptsip/contracts/compile-sealed-rbac/Conditions_exercise/Condition.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:rbac:condition:v1"
+    },
+    {
+      "path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/Responsibilities_List.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:rbac:responsibilities-list:v1"
+    },
+    {
+      "path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/Responsibility_Authority_Contract.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:rbac:responsibility-authority:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:public-structure:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Identity/PTSIP_Public_Policy_Identity.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:identity:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
+      "kind": "SOURCE_BINDING"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Contract_Types.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:types:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Evaluation_Record.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:evaluation-record:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
+      "kind": "CANDIDATE_SELECTION_DATA"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:rules:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Relations/Alternative_Satisfaction.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Relations/Composition.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:relation:composition:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Relations/Joint_Satisfaction.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Relations/Precedence.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Relations/Result_Dependency.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Relations/Role_Link.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:relation:role-link:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_Rules/Requirement_Judgement.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:requirement-judgement:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_lifecycle.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:lifecycle:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:status:v1"
+    },
+    {
+      "path": ".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:policy:version:v1"
+    },
+    {
+      "path": ".ptsip/contracts/profile/Storage/ptsip-profile-pp-1.01.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:profile:storage:1-01:v1"
+    },
+    {
+      "path": ".ptsip/contracts/profile/Storage/ptsip-profile-pp-1.02.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:profile:storage:1-02:v1"
+    },
+    {
+      "path": ".ptsip/contracts/profile/Storage/ptsip-profile-pp-2.00.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:profile:storage:2-00:v1"
+    },
+    {
+      "path": ".ptsip/contracts/profile/User_Profile.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:profile:user:v1"
+    },
+    {
+      "path": ".ptsip/contracts/registry/Agent_management.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:registry:agent-management:v1"
+    },
+    {
+      "path": ".ptsip/contracts/registry/Readme_template.schema.json",
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:candidate:contract:registry:readme-template:v1"
+    }
+  ],
+  "external_resources": {
+    "urn:ptsip:identity:root-family:v1": {
+      "path": ".ptsip/contracts/policy/identity/root_family.json",
+      "sha256": "67da0fa873c1912c4c12763ce798551ac6489856a9155d53acc477c4487734f3"
+    },
+    "urn:ptsip:identity:policy-kind:v1": {
+      "path": ".ptsip/contracts/policy/identity/policy_kind.json",
+      "sha256": "23f6f0f5ff09207eff34aa9fd036d1529f7defa76ed2d474fe0dc4382e5d719c"
+    },
+    "urn:ptsip:rbac:responsibility:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/responsibility/Responsibility.schema.json",
+      "sha256": "ef4bcf24d34fd4440bdc1af30068bd0e1b5dbc8ce60dfdd68f5746821fdbd366"
+    },
+    "urn:ptsip:rbac:condition:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/Conditions_exercise/Condition.schema.json",
+      "sha256": "94f956e0dbdedc225cd029259375f36c102460d7faa58d085982d1999cd3da96"
+    },
+    "urn:ptsip:policy:identity:v2": {
+      "path": ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+      "sha256": "840392c02ed17deff46122f7a83b2d136274332aab5ed169e45fb40b0718a963"
+    },
+    "urn:ptsip:contract:constant:policy_status_draft:v2": {
+      "path": ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
+      "sha256": "d0eebeba27d582b8451d123a662c7345497485c03c3cf1249033e58b71d5a8df"
+    },
+    "urn:ptsip:contract:constant:policy_status_approved:v2": {
+      "path": ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
+      "sha256": "8d1ed43c3bd78ad594536a122e0ea93a155be3a4e4e2df6fa21929178255dae5"
+    },
+    "urn:ptsip:contract:constant:policy_status_retired:v2": {
+      "path": ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
+      "sha256": "00a30629a36d396228d235f98680abadb4ffd3ca863783ec15e494b859183889"
+    },
+    "urn:ptsip:policy:Status:v2": {
+      "path": ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
+      "sha256": "1b91ef713235e36083a3aceafe1b18d2708d660f2b7d22af862b055149580974"
+    },
+    "urn:ptsip:policy:Status-version:v1": {
+      "path": ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
+      "sha256": "8f10638a056e896d7be15db89602f0960bb84f3190e5bc5d05c4c85c19953e99"
+    },
+    "urn:ptsip:contract:constant:plan_status_draft:v1": {
+      "path": ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_DRAFT.json",
+      "sha256": "ed1823f6c6482f4f1cacbf0c0f3a882a36b477b7878cc737139171fd2610b286"
+    },
+    "urn:ptsip:contract:constant:plan_status_activate:v1": {
+      "path": ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
+      "sha256": "14299d61e83e22a0988e8991574adfdecb51d17bdd67d61cdb593d35726d9eff"
+    },
+    "urn:ptsip:contract:constant:plan_status_interruption:v1": {
+      "path": ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
+      "sha256": "89a8142fe8d2fdd9436552c2a116c16e52ec72ae21c7a0d80877499659da3435"
+    },
+    "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-1.01.schema.json": {
+      "path": ".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-1.01.schema.json",
+      "sha256": "75e13d9c857ce83d06045bcca7acd031d97f5d093dd77321c452af7a8bb5fc6f"
+    },
+    "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-1.02.schema.json": {
+      "path": ".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-1.02.schema.json",
+      "sha256": "a5f772a8d0bbf2d5205ddb6143d09203b45621d02981382d277405366f22c775"
+    },
+    "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json": {
+      "path": ".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-2.00.schema.json",
+      "sha256": "574b1ed1f8148c91a66bb66bcc9f056f0e3b75468a488b79db8c4ef5bc6c2d57"
+    },
+    "urn:ptsip:rbac:responsibilities-list:v3": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/Responsibilities_List.schema.json",
+      "sha256": "48a5740847b61c3f35029770515a62a49aee494926fb8b021494d15344d0392b"
+    },
+    "urn:ptsip:rbac:responsibility-authority-contract:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/Responsibility_Authority_Contract.schema.json",
+      "sha256": "44db8ef03fc9e260707f4f62e417a7d2398020461c7c00529ac2597fc866639a"
+    },
+    "urn:ptsip:rbac:operational-authority:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Operational_Authority.schema.json",
+      "sha256": "c7ff6c7349f5077a6d51cdb974feded7f31815e497116ce5e28b09b512f37179"
+    },
+    "urn:ptsip:rbac:lifecycle:index:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/lifecycle/index.json",
+      "sha256": "9e1bb67582d50db1e7dd38c4f4d506f983e3ae0da0868ebccc98c4a77ff1e552"
+    },
+    "urn:ptsip:rbac:lifecycle:status:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/lifecycle/status.json",
+      "sha256": "d09a2498b0b1bb1a33db5fdf9a7b183b80c210c05b050bae5027fcf3b033e15d"
+    },
+    "urn:ptsip:rbac:lifecycle:keywords:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/lifecycle/keywords.json",
+      "sha256": "537e5c7cfffbe110bc1a917820a7bb31db83e0c51a3ea4166328bafabcaf624e"
+    },
+    "urn:ptsip:rbac:authorization-intention:v1": {
+      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_intention.schema.json",
+      "sha256": "ae49132b86025798e4b7dd8b649a5c0f235a77ea28f4403dc2990ea597509afc"
+    }
+  },
+  "pending_field_definitions": {
+    ".ptsip/contracts/Plans/PTSIP_Public_Policy_Structure.schema.json": "Plan public structure has not been reviewed. The user-provided Policy filename is intentionally preserved.",
+    ".ptsip/contracts/Plans/Plan_Identity/PTSIP_Public_Plan_Identity.schema.json": "Plan identity fields and source are not selected by an admitted current contract.",
+    ".ptsip/contracts/Plans/Plan_Identity/Public_Plan_Identity.json": "No Plan identities are generated or inferred from paths.",
+    ".ptsip/contracts/Plans/Plan_lifecycle/version/Plan_version.json": "No Plan version format or transition semantics have been selected.",
+    ".ptsip/contracts/Plans/Plan_unit/Public_Plan_unit.schema.json": "Plan unit fields and execution semantics await their own field review.",
+    ".ptsip/contracts/profile/User_Profile.schema.json": "User Profile fields and responsibilities have not been defined in this task.",
+    ".ptsip/contracts/registry/Readme_template.schema.json": "Generic README template fields have not been admitted; release-specific schemas are not substituted.",
+    ".ptsip/contracts/registry/Agent_management.schema.json": "Agent management fields and authority boundaries await field review."
+  },
+  "pending_semantics": [
+    "registered compatibility selection and version ordering contracts",
+    "unique identities and participant/context/source correspondence checks",
+    "composition nesting and conflict policy",
+    "outcome vocabulary, propagation and original-grounded judgement rules"
+  ],
+  "relation_kinds": {
+    "role_link": "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+    "joint_satisfaction": "urn:ptsip:candidate:contract:policy:relation:joint-satisfaction:v1",
+    "alternative_satisfaction": "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+    "result_dependency": "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+    "precedence": "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
+  },
+  "composition_schema_ref": "urn:ptsip:candidate:contract:policy:relation:composition:v1",
+  "judgement_schema_ref": "urn:ptsip:candidate:contract:policy:requirement-judgement:v1",
+  "evaluation_schema_ref": "urn:ptsip:candidate:contract:policy:evaluation-record:v1"
+}

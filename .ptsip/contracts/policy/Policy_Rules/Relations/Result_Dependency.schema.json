@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
+  "title": "policy:relation:result-dependency",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relation_type": {
+      "const": "result_dependency"
+    },
+    "meaning_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+    },
+    "output_contract_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+    },
+    "input_contract_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+    },
+    "binding_rule_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+    }
+  },
+  "required": [
+    "contract_id",
+    "revision",
+    "relation_type",
+    "meaning_ref",
+    "output_contract_ref",
+    "input_contract_ref",
+    "binding_rule_ref"
+  ],
+  "additionalProperties": false
+}

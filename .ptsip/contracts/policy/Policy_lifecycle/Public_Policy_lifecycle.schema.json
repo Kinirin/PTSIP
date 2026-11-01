@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:lifecycle:v1",
+  "title": "policy:lifecycle",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "Policy_Status_Schema_ver": {
+      "$ref": "urn:ptsip:policy:Status:v2#/properties/Policy_Status_Schema_ver"
+    },
+    "status": {
+      "$ref": "urn:ptsip:candidate:contract:policy:status:v1"
+    },
+    "contract": {
+      "$ref": "urn:ptsip:policy:Status:v2#/properties/contract"
+    }
+  },
+  "required": [
+    "Policy_Status_Schema_ver",
+    "status",
+    "contract"
+  ],
+  "additionalProperties": false
+}

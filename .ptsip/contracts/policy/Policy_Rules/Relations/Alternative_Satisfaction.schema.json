@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
+  "title": "policy:relation:alternative-satisfaction",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relation_type": {
+      "const": "alternative_satisfaction"
+    },
+    "meaning_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+    },
+    "logic": {
+      "const": "AT_LEAST_ONE"
+    },
+    "alternative_eligibility_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+    }
+  },
+  "required": [
+    "contract_id",
+    "revision",
+    "relation_type",
+    "meaning_ref",
+    "logic",
+    "alternative_eligibility_ref"
+  ],
+  "additionalProperties": false
+}

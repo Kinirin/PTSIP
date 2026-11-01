@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:requirement-judgement:v1",
+  "title": "policy:requirement-judgement",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "meaning_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+    },
+    "relation_summary_input_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+    },
+    "additional_evidence_requirement_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "decision_rule_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+    }
+  },
+  "required": [
+    "contract_id",
+    "revision",
+    "meaning_ref",
+    "relation_summary_input_ref",
+    "additional_evidence_requirement_refs",
+    "decision_rule_ref"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:relation:role-link:v1",
+  "title": "policy:relation:role-link",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relation_type": {
+      "const": "role_link"
+    },
+    "meaning_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+    },
+    "role_definition_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "contract_id",
+    "revision",
+    "relation_type",
+    "meaning_ref",
+    "role_definition_refs"
+  ],
+  "additionalProperties": false
+}
