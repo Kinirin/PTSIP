@@ -2,27 +2,25 @@ Policy_Identity:
   id: MPD-ASSURE-0004
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: ASSURE
-  title: "ASSURE 저장소 기계 계약 준수 검증"
+  title: "ASSURE 계약 기반 정책 생성 및 저장소 검증 지원"
 Policy_Status:
   Policy_Status_Schema_ver: "2"
   status: DRAFT.Default
-  version: "0.0"
-  contract: urn:ptsip:contract:policy:rules:ASSURE:v2
+  contract: urn:ptsip:contract:policy:assure:repository:conformance
 Authority:
   authority_id: MPD-ASSURE-0004
-  responsibility: REPOSITORY_CONTRACT_VERIFICATION_EVIDENCE_JUDGMENT
-  normative_scope: VERIFICATION_ONLY
+  responsibility: REPOSITORY_POLICY_GENERATION_AND_VERIFICATION_SUPPORT
+  normative_scope: POLICY_GENERATION_CONTRACT_REQUIREMENTS_AND_SUPPORT
   policy_approval_authority: false
   contract_schema_definition_authority: false
-  contract_or_validator_creation_authority: false
 Policy_Rules:
   Identity:
     contract_id: urn:ptsip:policy:rule:assure:repository-contract-conformance
-    Rule_ver: "1"
-  title: "현재 등록된 기계 계약의 검증 범위·증거·결과 판정"
+    Rule_ver: "2"
+  title: "지정된 계약에 따른 정책 생성, 기본 계약 구조 지원 및 검증기 확장 권고"
   Definition:
     - id: R-ID-16C8255C833446A4A0BAC7086AC52F89
-      rule: CHECK-CURRENT-CONTRACT
+      rule: CHECK-CURRENT-CONTR
     - id: R-ID-4BE43BF42A34442D943DF7CD6A2C1738
       rule: CHECK-POLICY-SHAPE
     - id: R-ID-9C4AF8F043834F26968ED4B01F84C2F1
@@ -34,28 +32,32 @@ Policy_Rules:
     - id: R-ID-C2B27612F8AB4EA8B984056775169A74
       rule: NO-AUTHORITY-GRANT
   Boundary:
-    scope: "저장소 환경에서 유효하게 승인·등록된 기계 계약에 대한 정책 문서의 적합성, 검증 범위 및 증거 판정"
+    scope: "저장소 환경의 검증을 위한 기계적 계약 구조의 생성 지원, 지정된 계약에 따른 정책 문서 생성 및 저장소 검증기 확장 지원"
     subjects:
+      - "이 정책은 저장소 환경의 검증을 위한 기계적 계약 구조를 생성하도록 하고, 그 구조에 따른 정책 생성과 검증을 지원한다."
+      - "모든 정책 문서는 생성할 때 반드시 지정된 기계적 계약 구조에 따라 생성되어야 한다."
       - "검증 대상 정책 문서에 적용되는 유효한 기계 계약의 정확한 식별과 참조 적합성"
       - "정책 문서가 해당 계약의 구조와 검증 조건을 만족하는지에 관한 증거 판단"
-      - "과거 또는 폐기된 정책 본문·구조를 현행 계약의 대체 권위로 사용했는지 확인"
+      - "사용자 저장소 환경에 기본적인 계약 구조가 존재하지 않는 경우 PTSIP는 필요한 계약 구조의 생성을 지원할 수 있다."
+      - "PTSIP가 저장소 환경에 설치되어 있고 비규범적 정책 등으로 기존 검증 엔진에서 정책을 검증하기 어려운 경우, 검증기의 확장·생성을 지원할 수 있다."
       - "필요 계약이 없거나 검증할 수 없는 경우 검증 공백을 명시하고 근거 없는 PASS를 금지"
       - "검증 결과가 실제 검증 대상, 계약 버전 및 저장소 스냅샷과 일치하는지 판단"
     exclusions:
-      - "정책의 규범적 내용, 작성 의무 또는 승인 여부를 새로 정의하지 않는다."
+      - "과거 정책 문서의 본문을 직접 읽거나 폐기된 원본의 구조를 변형하여 정책 문서를 생성하는 행위를 금지한다."
       - "GOV의 정책 결정·승인 권한 및 계약 소유 경계를 인수하지 않는다."
       - "ARCH와 각 Root Family의 문서 구조·스키마 정의 권한을 인수하지 않는다."
       - "CNTR·INFO의 인터페이스 및 데이터 의미를 임의로 재정의하지 않는다."
-      - "REAL의 기계 계약·검증기 생성 및 구현 권한을 인수하지 않는다."
       - "CTRL의 정책 적용·실행 허가 또는 RECORD의 증거 보존 책임을 인수하지 않는다."
       - "VPMS 전용 사례·실행기·결과 계약과 퇴역 정책의 권한을 상속하지 않는다."
   Evaluation:
     criteria:
       evidence:
+        - "정책 생성 시 사용한 지정 기계 계약의 식별자·버전·출처와 생성된 정책 문서의 대응"
         - "검증 대상에 적용되는 현재 유효 계약의 등록 식별자·버전·출처"
         - "정책 문서와 계약 구조의 필수 필드·형식·참조에 대한 검증 결과"
         - "검증 범위, 미실행 항목, 누락 계약 및 검증 불가능 영역에 대한 명시적 보고"
-        - "폐기된 정책의 본문 또는 구조를 규범 근거로 사용하지 않았다는 확인"
+        - "과거 정책 본문 또는 폐기된 원본 구조를 정책 생성의 근거로 사용하지 않았다는 확인"
+        - "기본 계약 구조 부재에 따른 생성 지원 여부와 기존 검증 엔진의 검증 공백에 따른 확장·생성 지원 조건"
         - "검증 대상의 정확한 revision 및 결과와의 연결"
     method:
       authority: CONSUME_EFFECTIVE_REGISTERED_CONTRACTS
@@ -65,14 +67,20 @@ Policy_Rules:
       result_cannot_approve_policy: true
   contract_scope:
     policy_document_contract:
-      obligation_source: EFFECTIVE_NORMATIVE_POLICY_NOT_ASSURE
+      obligation_source: MPD-ASSURE-0004
+      generation_uses_designated_contract: true
+      generation_from_past_policy_body: FORBIDDEN
+      generation_from_retired_structure: FORBIDDEN
       conformance_check: REQUIRED_WHEN_APPLICABLE
       unregistered_contract_guessing: FORBIDDEN
     missing_contract:
       ptsip_support_possible: true
-      assure_role: IDENTIFY_GAP_AND_JUDGE_EVIDENCE
-      materialization_owner: SEPARATELY_AUTHORIZED_REAL
+      assure_role: SUPPORT_CONTRACT_GENERATION_AND_CHECK_CONFORMANCE
       automatic_contract_generation: NOT_AUTHORIZED_BY_THIS_POLICY
+    validation_extension:
+      ptsip_installed_in_repository: REQUIRED
+      existing_engine_cannot_validate_policy: REQUIRED
+      generation_support_possible: true
   advisory_locations:
     authority: NON_NORMATIVE_RECOMMENDATION_ONLY
     preferred_contract_root: .ptsip/contracts/
@@ -82,6 +90,32 @@ Policy_Rules:
       - profile
       - compile-sealed-rbac
       - registry
+    recommended_contract_files:
+      - .ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
+      - .ptsip/contracts/policy/Policy_Identity/PTSIP_Public_Policy_Identity.schema.json
+      - .ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json
+      - .ptsip/contracts/policy/Policy_lifecycle/Public_Policy_lifecycle.schema.json
+      - .ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json
+      - .ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json
+      - .ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json
+      - .ptsip/contracts/Plans/PTSIP_Public_Policy_Structure.schema.json
+      - .ptsip/contracts/Plans/Plan_Identity/PTSIP_Public_Plan_Identity.schema.json
+      - .ptsip/contracts/Plans/Plan_Identity/Public_Plan_Identity.json
+      - .ptsip/contracts/Plans/Plan_lifecycle/Public_Plan_lifecycle.schema.json
+      - .ptsip/contracts/Plans/Plan_lifecycle/status/Plan_status.json
+      - .ptsip/contracts/Plans/Plan_lifecycle/version/Plan_version.json
+      - .ptsip/contracts/Plans/Plan_unit/Public_Plan_unit.schema.json
+      - .ptsip/contracts/profile/User_Profile.schema.json
+      - .ptsip/contracts/profile/Storage/ptsip-profile-pp-1.01.schema.json
+      - .ptsip/contracts/profile/Storage/ptsip-profile-pp-1.02.schema.json
+      - .ptsip/contracts/profile/Storage/ptsip-profile-pp-2.00.schema.json
+      - .ptsip/contracts/compile-sealed-rbac/Responsibility/Responsibilities_List.schema.json
+      - .ptsip/contracts/compile-sealed-rbac/Responsibility/Responsibility_Authority_Contract.schema.json
+      - .ptsip/contracts/compile-sealed-rbac/Authority/Responsibility-Authority.json
+      - .ptsip/contracts/compile-sealed-rbac/Authority/Operational_Authority.schema.json
+      - .ptsip/contracts/compile-sealed-rbac/Conditions_exercise/Condition.schema.json
+      - .ptsip/contracts/registry/Readme_template.schema.json
+      - .ptsip/contracts/registry/Agent_management.schema.json
     preferred_validation_extension_root: .ptsip/engine/validation/
     fixed_layout_or_filename_mandate: false
     extension_implementation_requires_separate_authority: true
