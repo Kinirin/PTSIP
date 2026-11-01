@@ -140,8 +140,8 @@ Policy_Rules:
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0001]
             - purpose: SCOPE
-              state: SOURCE_IDENTIFIED
-              ref_ids: [SUB-0001]
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0001]
             - purpose: TARGET
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0001]
@@ -151,14 +151,15 @@ Policy_Rules:
             - purpose: CRITERION
               state: SOURCE_IDENTIFIED
               ref_ids: [CRI-0001]
+          unresolved_fields: [source_bindings.SCOPE]
         - requirement_id: REQ-0002
           source_bindings:
             - purpose: MEANING
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0002]
             - purpose: SCOPE
-              state: SOURCE_IDENTIFIED
-              ref_ids: [SUB-0001]
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0001]
             - purpose: TARGET
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0002]
@@ -168,14 +169,15 @@ Policy_Rules:
             - purpose: CRITERION
               state: SOURCE_IDENTIFIED
               ref_ids: [CRI-0002, CRI-0007]
+          unresolved_fields: [source_bindings.SCOPE]
         - requirement_id: REQ-0003
           source_bindings:
             - purpose: MEANING
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0003]
             - purpose: SCOPE
-              state: SOURCE_IDENTIFIED
-              ref_ids: [SUB-0001]
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0001]
             - purpose: TARGET
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0003]
@@ -185,14 +187,15 @@ Policy_Rules:
             - purpose: CRITERION
               state: SOURCE_IDENTIFIED
               ref_ids: [CRI-0001, CRI-0002]
+          unresolved_fields: [source_bindings.SCOPE]
         - requirement_id: REQ-0004
           source_bindings:
             - purpose: MEANING
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0004]
             - purpose: SCOPE
-              state: SOURCE_IDENTIFIED
-              ref_ids: [SUB-0001]
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0001]
             - purpose: TARGET
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0004]
@@ -202,14 +205,15 @@ Policy_Rules:
             - purpose: CRITERION
               state: SOURCE_IDENTIFIED
               ref_ids: [CRI-0003, CRI-0004, CRI-0006]
+          unresolved_fields: [source_bindings.SCOPE]
         - requirement_id: REQ-0007
           source_bindings:
             - purpose: MEANING
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0007]
             - purpose: SCOPE
-              state: SOURCE_IDENTIFIED
-              ref_ids: [SUB-0001]
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0001]
             - purpose: TARGET
               state: SOURCE_IDENTIFIED
               ref_ids: [SUB-0007]
@@ -219,4 +223,5 @@ Policy_Rules:
             - purpose: CRITERION
               state: SOURCE_IDENTIFIED
               ref_ids: [CRI-0007]
+          unresolved_fields: [source_bindings.SCOPE]
       historical_result_ref_ids: [HISTORY-RESULT]
