@@ -1,0 +1,90 @@
+name: Policy review helper
+run-name: Policy review / ${{ inputs.expected_sha || github.sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: JSON array of exact developer-policy paths
+        type: string
+        required: true
+        default: '["developer/policy/RECORD/MPD-RECORD-0001.yaml","developer/policy/RECORD/MPD-RECORD-0002.yaml","developer/policy/RECORD/MPD-RECORD-0003.yaml","developer/policy/RECORD/MPD-RECORD-0004.yaml"]'
+      sources:
+        description: JSON array of explicitly selected FILE#/pointer historical sections
+        type: string
+        default: '[]'
+      expected_sha:
+        description: Optional exact 40-character checkout SHA; mismatch fails before collection
+        type: string
+        default: ''
+  workflow_call:
+    inputs:
+      targets:
+        description: JSON array of exact developer-policy paths
+        type: string
+        required: true
+      sources:
+        description: JSON array of explicitly selected FILE#/pointer historical sections
+        type: string
+        default: '[]'
+      expected_sha:
+        description: Optional exact checkout SHA
+        type: string
+        default: ''
+    outputs:
+      source_sha:
+        description: Actual checkout SHA
+        value: ${{ jobs.review.outputs.source_sha }}
+      review_status:
+        description: NON_NORMATIVE_REVIEW or REVIEW_REQUIRED; never policy approval
+        value: ${{ jobs.review.outputs.review_status }}
+      artifact_id:
+        description: Uploaded review artifact ID
+        value: ${{ jobs.review.outputs.artifact_id }}
+      artifact_url:
+        description: Uploaded review artifact URL
+        value: ${{ jobs.review.outputs.artifact_url }}
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      source_sha: ${{ steps.collect.outputs.source_sha }}
+      review_status: ${{ steps.collect.outputs.review_status }}
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      artifact_url: ${{ steps.upload.outputs.artifact-url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/go.mod
+          cache: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install YAML serialization dependency
+        run: python -m pip install --disable-pip-version-check 'PyYAML==6.0.3'
+      - name: Collect explicit policy review evidence
+        id: collect
+        env:
+          REVIEW_TARGETS: ${{ inputs.targets }}
+          REVIEW_SOURCES: ${{ inputs.sources }}
+          REVIEW_EXPECTED_SHA: ${{ inputs.expected_sha }}
+          REVIEW_OUTPUT_DIRECTORY: ${{ runner.temp }}/policy-review-output
+        run: python .ptsip/engine/developer/policy/review/workflow.py
+      - name: Upload review evidence and diagnostics
+        id: upload
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.collect.outputs.artifact_name || format('policy-review-{0}-{1}', github.run_id, github.run_attempt) }}
+          path: ${{ runner.temp }}/policy-review-output/
+          if-no-files-found: warn
+          retention-days: 14

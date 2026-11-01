@@ -1,5 +1,8 @@
 # 정책 자연어 검토를 위한 보조 작업
 
+GitHub Actions manual dispatch, reusable workflow inputs, artifact retrieval,
+and web-agent access are documented in [ACTIONS.md](ACTIONS.md).
+
 이 문서는 정책 개정 작업을 돕는 비규범적 작업 안내다. 정책·승인·계약·라우팅의 원본이 아니며, 사용자의 현재 지시와 유효한 기계 계약을 대신하지 않는다. 이 도구와 아래 작업 순서는 2026-11-01 사용자가 요청한 번역 효율, 계약 확장 보고, 책임 분리 검토를 지원한다. 다른 작업에 자동 적용되는 새 정책으로 등록하지 않았다.
 
 ## 작업 순서
