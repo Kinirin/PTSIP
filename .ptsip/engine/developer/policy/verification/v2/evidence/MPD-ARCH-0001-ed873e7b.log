@@ -1,0 +1,35 @@
+ok  	github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/v2	1.908s
+ok  	github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractentry	1.824s
+ok  	github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/test	2.430s
+{
+  "execution_authorized": false,
+  "mutation_authorized": false,
+  "result": {
+    "execution_authorized": false,
+    "input": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+    "lifecycle_transition_authorized": false,
+    "policy_conformance": "NOT_ASSERTED",
+    "scope": "STRUCTURE_AND_DECLARED_REFERENCES",
+    "status": "VALID",
+    "validator": "policy-check"
+  },
+  "selection": {
+    "domain": "developer_policy",
+    "validator": "policy-check",
+    "target": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+    "policy_kind": "PTSIP_DEVELOPER_POLICY",
+    "root_family": "ARCH",
+    "contract_refs": {
+      "boundary": ".ptsip/contracts/policy/boundary.json",
+      "family": ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
+      "public_schema": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+      "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+      "selection_schema": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+      "v2_registry": ".ptsip/contracts/policy/candidate.index.json"
+    },
+    "execution_authorized": false,
+    "mutation_authorized": false,
+    "policy_conformance": "NOT_ASSERTED"
+  },
+  "status": "CHECK_COMPLETED"
+}

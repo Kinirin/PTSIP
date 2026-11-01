@@ -1,0 +1,77 @@
+{
+  "format": "ptsip-developer-policy-v2-local-validation-evidence/v1",
+  "record_class": "NON_NORMATIVE_VERIFICATION_EVIDENCE",
+  "recorded_on": "2026-11-01",
+  "timezone": "Asia/Seoul",
+  "source": {
+    "kind": "USER_PROVIDED_LOCAL_TERMINAL_LOG",
+    "original_filename": "ptsip-policy-v2-validation.log",
+    "archived_path": ".ptsip/engine/developer/policy/verification/v2/evidence/MPD-ARCH-0001-ed873e7b.log",
+    "sha256": "ed873e7b813e62ada8e153d0d6c32d6ad6ff738c3462c2db4f2154ce49f43393",
+    "git_blob_sha": "a028f72d650a00017d23a938834eb98617db1a59",
+    "byte_length": 1504,
+    "line_endings": "CRLF",
+    "local_commit_sha": "NOT_CAPTURED_IN_LOG",
+    "shell_exit_codes": "NOT_CAPTURED_IN_LOG"
+  },
+  "repository_context": {
+    "observed_main_head_before_evidence_commit": "85358d16edcfc410c143f4729da7acb5ad9b9821",
+    "commit_relation": "REFERENCE_AT_RECORDING_ONLY_NOT_PROOF_OF_LOCAL_CHECKOUT"
+  },
+  "subject": {
+    "policy_id": "MPD-ARCH-0001",
+    "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+    "policy_status_observed_in_repository": "APPROVED.Application_Problems",
+    "root_family": "ARCH"
+  },
+  "go_tests": [
+    {
+      "package": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/v2",
+      "terminal_result": "ok",
+      "elapsed_seconds": 1.908
+    },
+    {
+      "package": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractentry",
+      "terminal_result": "ok",
+      "elapsed_seconds": 1.824
+    },
+    {
+      "package": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/test",
+      "terminal_result": "ok",
+      "elapsed_seconds": 2.43
+    }
+  ],
+  "contract_entry": {
+    "status": "CHECK_COMPLETED",
+    "domain": "developer_policy",
+    "validator": "policy-check",
+    "policy_kind": "PTSIP_DEVELOPER_POLICY",
+    "root_family": "ARCH",
+    "target": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+    "selected_contract_refs": {
+      "boundary": ".ptsip/contracts/policy/boundary.json",
+      "family": ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
+      "public_schema": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+      "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+      "selection_schema": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+      "v2_registry": ".ptsip/contracts/policy/candidate.index.json"
+    }
+  },
+  "policy_check": {
+    "status": "VALID",
+    "input": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+    "validator": "policy-check",
+    "scope": "STRUCTURE_AND_DECLARED_REFERENCES",
+    "policy_conformance": "NOT_ASSERTED",
+    "execution_authorized": false,
+    "mutation_authorized": false,
+    "lifecycle_transition_authorized": false
+  },
+  "evidence_boundary": {
+    "approval_or_status_change_authorized": false,
+    "semantic_equivalence_asserted": false,
+    "field_review_finalized": false,
+    "structural_check_only": true,
+    "local_tested_commit_not_captured": true
+  }
+}
