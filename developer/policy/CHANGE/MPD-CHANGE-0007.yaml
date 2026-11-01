@@ -5,7 +5,7 @@ Policy_Identity:
   title: "CHANGE 위탁 책임 수락 적격성"
 Policy_Status:
   Policy_Status_Schema_ver: "1"
-  status: "DRAFT.Default"
+  status: "APPROVED.Applying"
   contract: "urn:ptsip:contract:policy:change:trusteeship-acceptance:eligibility"
 Policy_Rules:
   Identity:
@@ -18,7 +18,7 @@ Policy_Rules:
       rule: "SEMANTIC-REVIEW"
   title: "CHANGE 위탁 책임 수락 적격성"
   Boundary:
-    scope: "기존 정책 책임의 위탁 수락 적격성 판정에 필요한 보존·출처·의미 검토 의무의 정책적 경계. 기존 정책 제거 허가와 별개이며, 현 문서는 승인 전 후속 책임 이전 후보."
+    scope: "기존 정책 책임의 위탁 수락 적격성 판정에 필요한 보존·출처·의미 검토 의무의 정책적 경계. 기존 정책 제거 허가와 별개이며, 정책 자체의 승인은 MPD-CHANGE-0001 원본 책임의 최종 이전 완료나 개별 위탁 수락 완료를 의미하지 않는다."
     subjects:
       - "위탁 수락 적격성은 원본에서 근거 있게 식별된 의무·금지·적용 조건·책임 소유 경계·출처뿐 아니라 해당 책임의 원문이 손실 없이 보존되고 자연어 의미 해석으로 누락·왜곡되지 않았는지 확인하는 책임으로 한정한다. 원문 보존과 코딩 에이전트의 해석 내용을 구별한다."
       - "TRUSTEESHIP_AGENT_SEMANTIC_REVIEW_REQUIRED: 코딩 에이전트는 위탁 수락 전에 원본 책임의 의미를 직접 검토하고 누락·변형 가능성과 미확인 범위를 보고해야 하며, 수행 근거가 없거나 불충분하면 수락 적격성을 충족하지 못한다."
