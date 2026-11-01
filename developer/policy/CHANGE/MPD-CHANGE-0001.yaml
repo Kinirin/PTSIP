@@ -1,43 +1,322 @@
-Policy_Identity:
-  id: "MPD-CHANGE-0001"
-  policy_kind: "PTSIP_DEVELOPER_POLICY"
-  root_family: "CHANGE"
-  title: "CHANGE 정책 정의 및 책임 오케스트레이션"
-Policy_Status:
-  Policy_Status_Schema_ver: "1"
-  status: "DRAFT.Reviewed"
-  contract: "urn:ptsip:contract:policy:change:family:orchestration"
-Policy_Rules:
-  Identity:
-    contract_id: "urn:ptsip:policy:rule:change:family-orchestration"
-    Rule_ver: "1"
-  Definition:
-    - id: "R-ID-C615A4E8BF5F4A0597CD28E6A5B79011"
-      rule: "CHANGE-ORCHESTRATION"
-    - id: "R-ID-E29A03BD454B4BB2A4074F16C587AD62"
-      rule: "CHANGE-RESP-GOV"
-  title: "CHANGE 정책 정의 및 책임 오케스트레이션"
-  Boundary:
-    scope: "CHANGE Family 총칙 단일 책임: 정책·규범·Project Profile·개발 도구 변경의 공통 책임 경계와 CHANGE 정책 간 책임 배분·오케스트레이션 원칙. 개별 상세 규범은 승인된 MPD-CHANGE-0009의 책임이다."
-    subjects:
-      - "PTSIP 개발 과정에서 정책·규범·프로젝트 프로파일·개발 도구가 변경되면 변경 전과 변경 후 상태 사이의 관계를 CHANGE 정책의 책임 범위로 관리"
-      - "MPD-CHANGE-0001은 CHANGE Family 정책의 정의 및 책임 오케스트레이션을 담당"
-      - "CHANGE Family 정책 정의, CHANGE 영역의 결정·승인 정당성을 판단할 기본 경계, CHANGE 정책별 책임 범위와 분배 원칙을 관리"
-      - "CHANGE의 결정·승인 정당성 판단은 유효한 상위 정책 권한과 GOV 승인 근거를 존중하며 CHANGE 자체가 새로운 승인 권한을 생성하지 않음"
-      - "CHANGE-GENERAL-ONLY: MPD-CHANGE-0001은 CHANGE 총칙만 소유하며, 상세 규범은 사용자 KEEP_LATEST에 따라 MPD-CHANGE-0009로 영구 이전한다. CHANGE는 GOV의 승인 권한, 각 정책의 규범 의미와 PLAN 본문의 고유 권위를 자동 취득하지 않는다."
-    exclusions:
-      - "구형 MPD-CHANGE-0001에 누적된 legacy unit_mpd 작업·이전 경로·상태 변경·버전 산식·브랜치·검증·배포 구현 규칙의 자동 승계"
-      - "정책 변경에 따른 PLAN 자동 생성·자동 승인, Project Profile 변경, 사용자 Revision, 계획 파일 식별 관리의 세부 정책을 이 총칙에서 확정하는 행위"
-      - "계획 또는 구현의 상세 이동 순서·파일 작업을 CHANGE 총칙의 규범적 내용으로 고정하는 행위"
-      - "MPD-CHANGE-0002를 MPD-CHANGE-0006으로 무검증 식별자 치환하거나 과거 내용을 새 권한으로 활성화하는 행위"
-      - "CHANGE의 책임 오케스트레이션을 GOV의 승인 정당성 부여 권한 또는 각 정책의 미확정 의미 소유권으로 확대하는 행위"
-  Evaluation:
-    criteria:
-      evidence:
-        - "CHANGE 정책 정의·결정 근거·책임 분배가 후속 정책과 구별되는지 확인"
-        - "세부 규칙의 정책 ID와 적용 권위가 MPD-CHANGE-0009로 영구 이전되고 총칙에 잔류하지 않는지 확인"
-        - "기존 MPD-CHANGE-0007·0008 및 정책-PLAN 별도 Family의 과거 소유권을 CHANGE 총칙에서 다시 활성화하지 않는지 확인"
-    result:
-      status: "incomplete_fulfillment"
-      task_name: "CHANGE 총칙 단일 책임 검증 및 정책 승인 검토"
-      task_id: "MPD-CHANGE-0001"
+# Experimental common field binding candidate. Not a lifecycle/meaning approval.
+# JSON flow syntax is valid YAML 1.2; provenance is pinned to pre-edit Git SHA.
+{
+  "Policy_Identity": {
+    "id": "MPD-CHANGE-0001",
+    "policy_kind": "PTSIP_DEVELOPER_POLICY",
+    "root_family": "CHANGE",
+    "title": "CHANGE 정책 정의 및 책임 오케스트레이션"
+  },
+  "Policy_Status": {
+    "Policy_Status_Schema_ver": "1",
+    "status": "DRAFT.Reviewed",
+    "contract": "urn:ptsip:contract:policy:change:family:orchestration"
+  },
+  "Policy_Rules": {
+    "contracts": [
+      {
+        "contract_id": "urn:ptsip:policy:rule:change:family-orchestration",
+        "Rule_ver": "1",
+        "source_documents": [
+          {
+            "id": "D1",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "revision": "git:9dfd231b1c385dd8df9d6ad5cbcfe8c3a1f3a549"
+          }
+        ],
+        "source_items": [
+          {
+            "id": "I01",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Identity",
+            "original_role": "annotation"
+          },
+          {
+            "id": "I02",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Definition/0",
+            "original_role": "rule"
+          },
+          {
+            "id": "I03",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Definition/1",
+            "original_role": "rule"
+          },
+          {
+            "id": "I04",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/title",
+            "original_role": "annotation"
+          },
+          {
+            "id": "I05",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/scope",
+            "original_role": "scope"
+          },
+          {
+            "id": "I06",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/subjects/0",
+            "original_role": "statement"
+          },
+          {
+            "id": "I07",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/subjects/1",
+            "original_role": "statement"
+          },
+          {
+            "id": "I08",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/subjects/2",
+            "original_role": "statement"
+          },
+          {
+            "id": "I09",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/subjects/3",
+            "original_role": "statement"
+          },
+          {
+            "id": "I10",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/subjects/4",
+            "original_role": "statement"
+          },
+          {
+            "id": "I11",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/exclusions/0",
+            "original_role": "constraint"
+          },
+          {
+            "id": "I12",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/exclusions/1",
+            "original_role": "constraint"
+          },
+          {
+            "id": "I13",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/exclusions/2",
+            "original_role": "constraint"
+          },
+          {
+            "id": "I14",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/exclusions/3",
+            "original_role": "constraint"
+          },
+          {
+            "id": "I15",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Boundary/exclusions/4",
+            "original_role": "constraint"
+          },
+          {
+            "id": "I16",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Evaluation/criteria/evidence/0",
+            "original_role": "criterion"
+          },
+          {
+            "id": "I17",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Evaluation/criteria/evidence/1",
+            "original_role": "criterion"
+          },
+          {
+            "id": "I18",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Evaluation/criteria/evidence/2",
+            "original_role": "criterion"
+          },
+          {
+            "id": "I19",
+            "document_id": "D1",
+            "item_ref": "/Policy_Rules/Evaluation/result",
+            "original_role": "record"
+          }
+        ],
+        "rules": [
+          {
+            "id": "R-ID-C615A4E8BF5F4A0597CD28E6A5B79011",
+            "rule": "CHANGE-ORCHESTRATION",
+            "source_item_id": "I02"
+          },
+          {
+            "id": "R-ID-E29A03BD454B4BB2A4074F16C587AD62",
+            "rule": "CHANGE-RESP-GOV",
+            "source_item_id": "I03"
+          }
+        ],
+        "requirements": [
+          {
+            "requirement_id": "REQ-0001",
+            "bindings": [
+              {
+                "purpose": "MEANING",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I06"
+                ]
+              },
+              {
+                "purpose": "SCOPE",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I05"
+                ]
+              },
+              {
+                "purpose": "RESPONSIBILITY",
+                "state": "UNRESOLVED",
+                "basis_ref_ids": [
+                  "I06"
+                ]
+              },
+              {
+                "purpose": "CONSTRAINT",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I11",
+                  "I13"
+                ]
+              }
+            ]
+          },
+          {
+            "requirement_id": "REQ-0002",
+            "bindings": [
+              {
+                "purpose": "MEANING",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I07",
+                  "I08"
+                ]
+              },
+              {
+                "purpose": "SCOPE",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I05"
+                ]
+              },
+              {
+                "purpose": "RESPONSIBILITY",
+                "state": "UNRESOLVED",
+                "basis_ref_ids": [
+                  "I07",
+                  "I08"
+                ]
+              },
+              {
+                "purpose": "CONSTRAINT",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I12",
+                  "I14"
+                ]
+              },
+              {
+                "purpose": "CRITERION",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I16"
+                ]
+              }
+            ]
+          },
+          {
+            "requirement_id": "REQ-0003",
+            "bindings": [
+              {
+                "purpose": "MEANING",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I09",
+                  "I10"
+                ]
+              },
+              {
+                "purpose": "SCOPE",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I05"
+                ]
+              },
+              {
+                "purpose": "RESPONSIBILITY",
+                "state": "UNRESOLVED",
+                "basis_ref_ids": [
+                  "I09",
+                  "I10"
+                ]
+              },
+              {
+                "purpose": "CONSTRAINT",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I15"
+                ]
+              },
+              {
+                "purpose": "CRITERION",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I16"
+                ]
+              }
+            ]
+          },
+          {
+            "requirement_id": "REQ-0004",
+            "bindings": [
+              {
+                "purpose": "MEANING",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I10"
+                ]
+              },
+              {
+                "purpose": "SCOPE",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I05"
+                ]
+              },
+              {
+                "purpose": "RESPONSIBILITY",
+                "state": "UNRESOLVED",
+                "basis_ref_ids": [
+                  "I10"
+                ]
+              },
+              {
+                "purpose": "CRITERION",
+                "state": "SOURCE_IDENTIFIED",
+                "ref_ids": [
+                  "I17",
+                  "I18"
+                ]
+              }
+            ]
+          }
+        ],
+        "historical_records": [
+          {
+            "purpose": "HISTORICAL_RESULT",
+            "state": "SOURCE_IDENTIFIED",
+            "ref_ids": [
+              "I19"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

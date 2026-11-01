@@ -100,3 +100,12 @@ v2 공통 구조의 Go 검증기와 계약 선택은 후속 전환에서 활성�
 선택·판정 계약과 포트 바인딩의 실제 의미는 추가 검토 대상이다.
 구조 검사를 통과해도 의미 동등성·적용 승인·정책 충족을 주장하지 않는다.
 2026-11-01에 제출된 로컬 검증 로그에서 `MPD-ARCH-0001`의 v2 `policy-check`는 `VALID`(범위: `STRUCTURE_AND_DECLARED_REFERENCES`)이고 세 Go 테스트 패키지는 `ok`이다. 증거는 `.ptsip/engine/developer/policy/verification/v2/evidence/MPD-ARCH-0001-ed873e7b.json`과 동일 경로의 원본 `.log`에 보존한다. 이는 정책 준수·의미 동등성·생명주기 전환 또는 실행 권한의 승인을 의미하지 않는다.
+
+
+## CHANGE-0001 공통 필드 후보 B 실험 (미승인)
+
+기준 SHA: `9dfd231b1c385dd8df9d6ad5cbcfe8c3a1f3a549`. 총칙 원본의 2개 R-ID, 5개 subjects, 5개 exclusions, 3개 evidence 기준, 원본 scope와 과거 `incomplete_fulfillment`를 19개 항목 식별자로 추적한다. 원본 텍스트는 기준 리비전이 보존한다. 4개 요구사항은 **후보 그룹화**이며 원자성·책임 연결은 확정되지 않았다.
+
+선택한 B 후보는 `source_documents`(경로·정확한 revision), `source_items`(원본 항목·비권위적 항목 분류), `bindings`(용도·상태·참조 ID)를 분리한다. `SOURCE_IDENTIFIED`는 출처를 식별했다는 뜻이지 원문 의미·규칙 충족·관계 판정의 승인 의미가 아니다. 빠진 용도는 `UNRESOLVED`이며 확인된 공집합과 비적용은 별도 근거를 요구한다. 독립적인 `unresolved_fields` 중복 보고는 없다. 원본 0009에 속하는 상세 규칙을 총칙으로 복제하지 않는다.
+
+시험 후보 파일: `.ptsip/contracts/policy/Policy_Rules/Field_Binding_Trial.schema.json`. 비교·반례: `.ptsip/contracts/policy/review/CHANGE-0001-Field-Trial.json`. 이 파일들은 **미등록 작성 시험**이며 현재 v2 라우팅, 검증기, 승인을 변경하지 않는다. 대상 YAML은 현재 등록된 v2 스키마에 불일치하는 것이 예상되므로 이를 은폐하거나 legacy 본문과 병기하지 않는다.

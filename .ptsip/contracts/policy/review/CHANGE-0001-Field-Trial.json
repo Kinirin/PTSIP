@@ -1,0 +1,260 @@
+{
+  "format": "ptsip-policy-field-trial/v1",
+  "status": "CANDIDATE_NOT_FINAL",
+  "source_revision": "git:9dfd231b1c385dd8df9d6ad5cbcfe8c3a1f3a549",
+  "policy_id": "MPD-CHANGE-0001",
+  "candidate_A": {
+    "address_catalog": "ONCE_PER_ITEM",
+    "semantic_links": "SEPARATE_ROLE_ID_ARRAYS",
+    "state": "ADDITIONAL_UNRESOLVED_FIELDS_OR_EMPTY_BASIS",
+    "estimated_structural_fields_per_requirement": 11
+  },
+  "candidate_B": {
+    "address_catalog": "DOCUMENT_PATH_AND_REVISION_ONCE_PLUS_ITEM_IDS",
+    "semantic_links": "CLOSED_PURPOSE_STATE_BINDINGS",
+    "state": "UNDECLARED_PURPOSE_IS_UNRESOLVED",
+    "chosen_for_trial": true,
+    "estimated_container_fields_per_requirement": 2
+  },
+  "source_inventory": {
+    "rule_declarations": 2,
+    "subjects": 5,
+    "exclusions": 5,
+    "criteria": 3,
+    "scope": 1,
+    "other_annotations": 2,
+    "history": 1,
+    "total": 19
+  },
+  "target_metrics": {
+    "unique_source_items": 19,
+    "document_revision_objects": 1,
+    "full_source_triples_stored": 0,
+    "requirement_count_trial": 4,
+    "requirement_bindings": 18,
+    "repeated_unresolved_field_lists": 0
+  },
+  "requirements": [
+    {
+      "id": "REQ-0001",
+      "meaning_refs": [
+        "I06"
+      ],
+      "role_assignment": "UNRESOLVED",
+      "other_bindings": [
+        {
+          "purpose": "SCOPE",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I05"
+          ]
+        },
+        {
+          "purpose": "RESPONSIBILITY",
+          "state": "UNRESOLVED",
+          "basis_ref_ids": [
+            "I06"
+          ]
+        },
+        {
+          "purpose": "CONSTRAINT",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I11",
+            "I13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "REQ-0002",
+      "meaning_refs": [
+        "I07",
+        "I08"
+      ],
+      "role_assignment": "UNRESOLVED",
+      "other_bindings": [
+        {
+          "purpose": "SCOPE",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I05"
+          ]
+        },
+        {
+          "purpose": "RESPONSIBILITY",
+          "state": "UNRESOLVED",
+          "basis_ref_ids": [
+            "I07",
+            "I08"
+          ]
+        },
+        {
+          "purpose": "CONSTRAINT",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I12",
+            "I14"
+          ]
+        },
+        {
+          "purpose": "CRITERION",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I16"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "REQ-0003",
+      "meaning_refs": [
+        "I09",
+        "I10"
+      ],
+      "role_assignment": "UNRESOLVED",
+      "other_bindings": [
+        {
+          "purpose": "SCOPE",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I05"
+          ]
+        },
+        {
+          "purpose": "RESPONSIBILITY",
+          "state": "UNRESOLVED",
+          "basis_ref_ids": [
+            "I09",
+            "I10"
+          ]
+        },
+        {
+          "purpose": "CONSTRAINT",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I15"
+          ]
+        },
+        {
+          "purpose": "CRITERION",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I16"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "REQ-0004",
+      "meaning_refs": [
+        "I10"
+      ],
+      "role_assignment": "UNRESOLVED",
+      "other_bindings": [
+        {
+          "purpose": "SCOPE",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I05"
+          ]
+        },
+        {
+          "purpose": "RESPONSIBILITY",
+          "state": "UNRESOLVED",
+          "basis_ref_ids": [
+            "I10"
+          ]
+        },
+        {
+          "purpose": "CRITERION",
+          "state": "SOURCE_IDENTIFIED",
+          "ref_ids": [
+            "I17",
+            "I18"
+          ]
+        }
+      ]
+    }
+  ],
+  "cross_policy": [
+    {
+      "id": "MPD-GOV-0001",
+      "requirements": 7,
+      "unique_refs": 88,
+      "original_full_ref_objects": 88,
+      "expanded_ref_uses": 141,
+      "simulated_B_full_ref_objects": 0,
+      "simulated_B_document_level_revision_storage": "ONE_PER_DISTINCT_PATH_REVISION",
+      "semantic_validation": "UNRESOLVED",
+      "source_unchanged": true
+    },
+    {
+      "id": "MPD-ARCH-0001",
+      "requirements": 6,
+      "unique_refs": 26,
+      "original_full_ref_objects": 49,
+      "expanded_ref_uses": 57,
+      "simulated_B_full_ref_objects": 0,
+      "simulated_B_document_level_revision_storage": "ONE_PER_DISTINCT_PATH_REVISION",
+      "semantic_validation": "UNRESOLVED",
+      "source_unchanged": true
+    },
+    {
+      "id": "MPD-ARCH-0002",
+      "requirements": 3,
+      "unique_refs": 18,
+      "original_full_ref_objects": 18,
+      "expanded_ref_uses": 30,
+      "simulated_B_full_ref_objects": 0,
+      "simulated_B_document_level_revision_storage": "ONE_PER_DISTINCT_PATH_REVISION",
+      "semantic_validation": "UNRESOLVED",
+      "source_unchanged": true
+    },
+    {
+      "id": "MPD-CHANGE-0007",
+      "requirements": 9,
+      "unique_refs": 29,
+      "original_full_ref_objects": 29,
+      "expanded_ref_uses": 50,
+      "simulated_B_full_ref_objects": 0,
+      "simulated_B_document_level_revision_storage": "ONE_PER_DISTINCT_PATH_REVISION",
+      "semantic_validation": "UNRESOLVED",
+      "source_unchanged": true
+    },
+    {
+      "id": "MPD-RECORD-0001",
+      "requirements": 6,
+      "unique_refs": 23,
+      "original_full_ref_objects": 23,
+      "expanded_ref_uses": 40,
+      "simulated_B_full_ref_objects": 0,
+      "simulated_B_document_level_revision_storage": "ONE_PER_DISTINCT_PATH_REVISION",
+      "semantic_validation": "UNRESOLVED",
+      "source_unchanged": true
+    }
+  ],
+  "tests": {
+    "source_pointer_resolution": "PASS_IN_MEMORY",
+    "duplicate_ids": "REJECTED",
+    "dangling_refs": "REJECTED",
+    "empty_without_basis": "REJECTED",
+    "NA_without_basis": "REJECTED",
+    "multiple_roles_many_requirements": "PASS",
+    "same_path_multiple_revisions": "PASS",
+    "registered_validator": "NOT_EXECUTED",
+    "registered_v2_compatibility": "INCOMPATIBLE_AS_EXPECTED",
+    "actual_semantic_equivalence": "UNRESOLVED"
+  },
+  "limitations": [
+    "One clause can serve multiple candidate requirements, atomic split not approved",
+    "Inventory references do not approve meaning assignment",
+    "All five exclusions and three criteria remain referenced",
+    "Rule responsibility IDs preserved but their requirement links unresolved",
+    "Target/condition/evidence and relation/judgement selections remain unresolved",
+    "Historical incomplete_fulfillment is not current evaluation result",
+    "Other policies simulated without modifying originals",
+    "No policy-specific schema predicate or family branch added",
+    "Active routing/schema/CI/engine unchanged"
+  ]
+}
