@@ -1,172 +1,52 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: CHANGE
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
+Policy_Identity:
   id: MPD-CHANGE-0004
-  version: '2.6'
-  title: Developer legacy policy and Python automation retirement
-  status: RETIRED
-  substatus: Waiting
-authority_subject:
-  id: DEV_VERSIONED_TRANSITION_SEMANTICS
-  statement: 개발 규범, 정책, profile 및 Tool의 명시적인 old→new 변경 관계, 영향과 안전한 전환 순서를 소유한다.
-exclusive_kernel:
-- DEV_CHANGE_IMPACT_AND_COMPATIBILITY
-- DEV_MIGRATION_ORDER_AND_CONTINUITY
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_CHANGE_IMPACT_AND_COMPATIBILITY
-      statement: 변경 전후 의미, identity와 호환 약속의 차이 및 영향 받는 책임을 명시한다. 의미적 근거 없이 version
-        문자열이나 Family 이름을 치환하지 않는다.
-      non_substitutability: INFO의 유효한 새 schema나 CNTR의 새 계약만으로 기존 상태와의 의미적 대응이 확정되지
-        않는다.
-    - id: DEV_MIGRATION_ORDER_AND_CONTINUITY
-      statement: 승인된 변경의 migration 경로, 선행 조건, staged legacy 책임 보존 및 retirement 조건을
-        정한다.
-      non_substitutability: REAL의 변환 성공이나 OPS의 회복 조치만으로 전환 순서와 legacy authority 폐기
-        조건을 정당화할 수 없다.
-    source_scope: []
-  developer_legacy_retirement:
-    scope: DEVELOPER_CONTROL_PLANE
-    support_plane_inheritance: FORBIDDEN
-    target_policy_families:
-    - NORM
-    - GOV
-    - INTENT
-    - ARCH
-    - INFO
-    - CNTR
-    - RISK
-    - SUPPLY
-    - REAL
-    - ASSURE
-    - CTRL
-    - CHANGE
-    - OPS
-    - RECORD
-    target_policy_reference_model: EXACT_ROOT_POLICY_ID_AND_SECTION
-    target_removed_path: developer/policy/legacy
-    original_responsibility_lifecycle: PRESERVE
-    subsequent_manual_responsibility_review:
-      conflict_resolution: RECONCILE
-      approval_ref: developer/policy/approvals/MPA-20261011-ROOT-FAMILY-MANUAL-RECONCILE.yaml
-      prior_materialization_state_rule: PRESERVE_AS_HISTORICAL_DECISION
-      historical_legacy_source_status: PRESERVE_UNCHANGED
-      historical_legacy_source_authority: AUDIT_ONLY
-      current_authority_source: REGISTERED_ROOT_FAMILY_POLICY_AND_EXACT_SECTION
-      eligible_for_activation: USER_REVIEWED_AND_EXPLICITLY_APPROVED_RESPONSIBILITY_ONLY
-      required_review:
-      - LEGACY_SOURCE_CONTENT
-      - ALL_EXISTING_RELEVANT_FAMILY_POLICY_RULES
-      - CONFLICT_AND_DUPLICATE_AUTHORITY
-      - RUNTIME_LEGACY_AUTHORITY_DEPENDENCIES
-      - EXACT_RESPONSIBILITY_OWNER_AND_BOUNDARY
-      approved_responsibility_target_status: ACTIVE
-      unreviewed_responsibility_status: PRESERVE_EXISTING
-      family_policy_active_does_not_prove_all_units_reviewed: true
-      source_status_does_not_auto_promote_target: true
-      approval_of_review_process_does_not_approve_individual_migrations: true
-      unresolved_conflict_or_owner: USER_DECISION_REQUIRED
-      duplicate_canonical_ownership: FORBIDDEN
-      unrelated_existing_policy_rules: PRESERVE
-    mpd_0001_reconciliation:
-      decision: RECONCILE
-      approval_ref: developer/policy/approvals/MPA-20261013-MPD-0001-RECONCILE.yaml
-      historical_source: developer/policy/legacy/MPD-0001.yaml
-      historical_source_status: PRESERVE_UNCHANGED
-      root_family_responsibility_partition:
-        state: COMPLETE_AS_RECORDED
-        evidence_ref: developer/policy/registries/root-family-migration.json
-      change_policy_transition:
-        policy_ref: MPD-CHANGE-0004
-        state: COMPLETE
-        implies_profile_retirement_verified: false
-      remaining_responsibility:
-        policy_ref: MPD-ARCH-0001
-        section: unit_mpd_0001_bd42d96859af
-        disposition: PRESERVE_UNTIL_INDEPENDENT_REPLACEMENT_VERIFIED
-        preconditions_ref: MPD-CHANGE-0004#rules.developer_legacy_retirement.profile_boundary_conditional_retirement.preconditions
-      review_state: PARTIALLY_RESOLVED
-      legacy_file_deletion_authorized: false
-      automatic_legacy_status_transition: FORBIDDEN
-      unrelated_rules: PRESERVE
-    delete_before_complete_coverage_and_consumer_cutover: FORBIDDEN
-    historical_provenance: AUDIT_ONLY_NO_RUNTIME_AUTHORITY
-    runtime_legacy_policy_projection: REMOVE
-    profile_boundary_conditional_retirement:
-      approved_direction: VERIFY_INDEPENDENT_REPLACEMENT_THEN_RETIRE
-      approval_ref: developer/policy/approvals/MPA-20261011-MPD-0001-PROFILE-REPLACEMENT-RETIRE.yaml
-      exact_current_responsibility:
-        policy_id: MPD-ARCH-0001
-        section: unit_mpd_0001_bd42d96859af
-      replacement_model: INDEPENDENT_EXISTING_CANONICAL_POLICY_AUTHORITIES_ONLY
-      historical_source_role: AUDIT_ONLY_NO_NORMATIVE_FALLBACK
-      preconditions:
-      - INDEPENDENT_DEVELOPER_PROFILE_BOUNDARY_OWNER_VERIFIED
-      - INDEPENDENT_SUPPORT_PROFILE_AUTHORITY_IN_OWN_CLASS_VERIFIED
-      - COMPLETE_SEMANTIC_COVERAGE_WITHOUT_DUPLICATE_OWNER
-      - DEVELOPER_EXPLICIT_PROFILE_SELECTION_VERIFIED
-      - TEMPORARY_COMPATIBILITY_OBLIGATION_RESOLVED
-      - ALL_AFFECTED_POLICY_AND_RUNTIME_CALLERS_CUT_OVER
-      - ZERO_RUNTIME_LEGACY_POLICY_AUTHORITY_DEPENDENCY
-      - REQUIRED_EXACT_HEAD_VERIFICATION_PASS
-      failed_or_unverified_precondition: PRESERVE_EXISTING_RESPONSIBILITY
-      verified_disposition: RETIRE_ONLY_FULLY_REPLACED_RESPONSIBILITY
-      direction_approval_is_retirement_verification: false
-      consumer_profile_compatibility: PRESERVE_UNLESS_SEPARATELY_APPROVED
-      support_feature_policy_authority: PRESERVE
-      unrelated_existing_policy_rules: PRESERVE
-      other_unreviewed_legacy_responsibilities: PRESERVE_EXISTING
-      create_new_policy_or_branch_by_this_decision: FORBIDDEN
-    completion_contract_ref: developer/policy/contracts/go-automation-cutover.v1.json
-  developer_go_engine_post_common_engine_migration:
-    conflict_resolution: RECONCILE
-    approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
-    from_root: developer/automation/
-    to_root: .ptsip/engine/developer/
-    product_engine_repository_state_root: .ptsip/engine/
-    source_workspace_scope: PTSIP_DEVELOPER_REPOSITORY_ONLY
-    explicit_developer_workspace_binding_required: true
-    ordinary_consumer_project_migration: FORBIDDEN
-    installed_product_engine_source_copy: FORBIDDEN
-    engine_root_reconciliation_approval_ref: developer/policy/approvals/MPA-20261011-ENGINE-ROOT-RECONCILE.yaml
-    common_engine_plan: PRESERVE_EXISTING_SEPARATE_PLAN
-    work_unit_planning_boundary:
-      priority_owner: APPROVED_WU_PLAN
-      execution_order_owner: APPROVED_WU_PLAN
-      dependency_owner: APPROVED_WU_PLAN
-      policy_defined_work_priority: FORBIDDEN
-      policy_defined_work_sequence: FORBIDDEN
-      policy_defined_work_unit_dependencies: FORBIDDEN
-      plan_binding_creation_by_policy_sync: FORBIDDEN
-      approval_ref: developer/policy/approvals/MPA-20261011-WU-PRIORITY-PLAN-BOUNDARY.yaml
-    retirement_guard:
-      required: VERIFIED_SEMANTIC_EQUIVALENCE_AND_OPERATIONAL_CALLER_CUTOVER
-      existing_go_entrypoints_preserved_until_cutover: true
-    existing_go_automation_cutover_contract: REMAINS_EFFECTIVE_UNTIL_AUTHORIZED_REPLACEMENT
-    no_early_path_move_or_implicit_activation: true
-    existing_dot_ptsip_engine_data: PRESERVE
-    no_existing_common_engine_plan_mutation: true
-    no_implicit_shared_normative_authority_from_developer_tools: true
-    implementation_authorization_granted_by_policy_sync: false
-    branch_creation_authorized: false
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: PROJECT_OWNER_GO_AUTOMATION_POLICY_ADMISSION
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-GO-CHANGE-0004-ACTIVE.yaml
-    next_action:
-      action: VERIFY_GO_AUTOMATION_CUTOVER
-      execution: SERIAL_REQUIRED
-      completion_check: POLICY_ADMISSION_DOES_NOT_IMPLY_IMPLEMENTATION_COMPLETION
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: CHANGE
+  title: "레거시 정책 이전·정리 및 기존 정책 제거"
+Policy_Lifecycle:
+  Policy_Status_Schema_ver: '1'
+  status: APPROVED.provisional
+  contract: urn:ptsip:contract:policy:change:legacy:removal-eligibility
+Policy_Rules:
+  Identity:
+    contract_id: urn:ptsip:policy:rule:change:legacy-removal-eligibility
+    Rule_ver: '1'
+  Definition:
+    - id: R-ID-E29EC5873AB64BB19636F59000104001
+      rule: LEGACY-PLAN-BOUNDARY
+    - id: R-ID-E29EC5873AB64BB19636F59000104002
+      rule: LEGACY-OWNER-ASSIGN
+    - id: R-ID-E29EC5873AB64BB19636F59000109003
+      rule: POLICY-REMOVAL
+    - id: R-ID-E29EC5873AB64BB19636F59000104003
+      rule: REMOVAL-AUTH-BOUND
+  Boundary:
+    scope: "PTSIP 개발자 저장소의 레거시 정책 이전·정리 작업 경계와 기존 정책 제거 적격성에 관한 CHANGE 규범. 일반 사용자 프로젝트나 배포용 제품의 정책 관리는 포함하지 않는다."
+    subjects:
+      - "LEGACY-PLAN-ROOT: 레거시 정책 이전·정리 작업계획서의 지정 위치는 developer/planning/legacy/이다. 이 경계는 ARCH의 일반 PLAN 생성·경로 원칙과 구별되며 레거시 정책 이전 전체를 ARCH에 귀속시키지 않는다."
+      - "LEGACY-PLAN-CONTRACT: 레거시 정책 작업계획서는 .ptsip/contracts/Plans/PTSIP_Public_Policy_Structure.schema.json을 참조하여 작성한다. 해당 계약이 필드 검토 중이거나 유효하지 않으면 이 경로 지정만으로 계획 생성의 적격성 또는 검증 PASS를 주장하지 않는다."
+      - "LEGACY-OWNER-ASSIGN: 레거시 정책을 지정된 현행 정책 구조로 이전할 때에는 대상 루트 패밀리와 실제 규범 책임 소유자를 근거에 따라 명시적으로 배정해야 한다. 이름이나 경로만으로 소유자를 추론하지 않으며 미확정·중복 소유는 확정된 이전으로 취급하지 않는다."
+      - "LEGACY-POLICY-STRUCTURE: 이전된 정책 문서는 대상 정책에 적용되는 유효한 지정 정책 구조 스키마를 따라야 한다. 이 정책은 해당 스키마의 필드나 의미를 재정의하지 않는다."
+      - "REMOVAL-ELIGIBILITY: 기존 정책 제거 적격성의 규범 소유자는 MPD-CHANGE-0004이다. MPD-CHANGE-0009의 책임 위탁 수락 결과를 선행 근거로 소비하지만, 위탁 수락 PASS만으로 정책 제거 적격성·실제 파일 삭제 허가·정책 생명주기 전이가 자동 승인되지 않는다."
+      - "REMOVAL-INDEPENDENT-GATES: 정책을 실제 제거하려면 유효한 GOV 승인 출처, 대상 정책 생명주기, 적용 범위 및 별도로 승인된 특수 전환 의무를 독립적으로 확인해야 한다. 실제 실행 게이트 구현과 최종 실행 주체는 별도 권위 결정의 대상이다."
+      - "REMOVAL-AFTER-TRUSTEESHIP: 일반적인 위탁 수락 후 제거에서 신규 정책·전용 검증기·전체 소비자 전환의 사전 완료를 일괄 강제하지 않는다. 별도로 승인된 Profile 전환 등의 특수 의무는 유지한다."
+      - "REMOVAL-RELATION-BOUNDARY: 제거 대상 정책과 PLAN 사이의 유효한 관계를 처리할 때 MPD-CHANGE-0009의 관계 규범을 소비한다. 다른 유효 관계와 PLAN의 본문·승인·진행·완료·생명주기는 보존하며 0004는 개별 관계의 생성·해제·증거 소유권을 취득하지 않는다."
+      - "AUTHORITY-SEPARATION: MPD-CHANGE-0009는 위탁 수락과 정책-PLAN 관계 규범, GOV는 승인 출처, ARCH는 일반 아키텍처 및 PLAN 경로 원칙을 소유한다. 0004는 제거 적격성의 규범 소유권만으로 승인 발급·정책 상태 전이·실제 삭제 실행 권한을 얻지 않는다."
+      - "DECISION-SEPARATION: 작업계획 생성, 정책 위탁 수락, 제거 적격성, 관계 변경 및 실제 삭제 실행은 서로 다른 판단이며 한 결과의 PASS가 다른 권위를 자동 부여하지 않는다."
+    exclusions:
+      - "개별 정리 대상 정책명·파일 목록, 마이그레이션 순서·우선순위·작업 단위, 검증기 명칭, 테스트 명령, 실행 결과·완료 이력 또는 특정 이전 작업을 현행 정책 규범에 포함하는 행위"
+      - "과거 MPD-CHANGE-0004의 Go 엔진 이동·특정 Profile 전환 작업계획·검증기 의존성·전체 소비자 전환 일반 조건을 현행 규범으로 무단 승계하는 행위"
+      - "별도로 승인된 특수 전환 의무를 과거 0004의 본문 정리를 근거로 자동 폐기하는 행위"
+      - "위탁 수락 결과나 자동화 검증 PASS만으로 정책 파일 삭제·GOV 승인·상태 전이·승인 범위 확대를 실행하는 행위"
+      - "명칭 또는 Root Family 유사성만으로 규범 책임 소유자를 배정하거나 하나의 책임에 중복된 현행 규범 소유권을 부여하는 행위"
+      - "MPD-CHANGE-0009의 정책-PLAN 관계 관리, GOV 승인 권위, ARCH 일반 경로 원칙, 개별 PLAN의 승인·생명주기 규범을 이 정책으로 인수하는 행위"
+  Evaluation:
+    criteria:
+      evidence:
+        - "레거시 PLAN의 경로가 developer/planning/legacy/로 지정되며 PLAN 구조 계약의 유효성은 별도 확인 대상인지 점검"
+        - "대상 정책의 루트 패밀리, 실제 책임 소유자 및 적용 정책 구조 스키마가 근거에 따라 식별되어 있고 중복 또는 미확정 소유를 확정 이전으로 처리하지 않는지 확인"
+        - "MPD-CHANGE-0009의 위탁 수락 결과와 0004의 제거 적격성 판정, GOV 승인·상태 전이, 실제 파일 삭제 허가가 독립인지 확인"
+        - "일반적인 제거에 새 정책·전용 검증기·전체 소비자 전환의 선완성을 요구하지 않되 별도 승인된 특수 의무는 보존하는지 확인"
+        - "정책 제거에 따른 관계 처리에서 MPD-CHANGE-0009의 관계 규범, 다른 유효 관계 및 PLAN 본래 권위가 유지되는지 확인"
+        - "과거 0004의 작업별 실행 내역을 현행 규범으로 재활성화하지 않았는지 확인"
