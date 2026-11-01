@@ -244,7 +244,11 @@
     "same_path_multiple_revisions": "PASS",
     "registered_validator": "NOT_EXECUTED",
     "registered_v2_compatibility": "INCOMPATIBLE_AS_EXPECTED",
-    "actual_semantic_equivalence": "UNRESOLVED"
+    "actual_semantic_equivalence": "UNRESOLVED",
+    "json_schema_definition_parsing": "PASS_JSON_PARSE_ONLY",
+    "external_schema_resolution": "UNVERIFIED",
+    "source_pointer_revision_lookup": "SOURCE_BASE_SHA_DECLARED_NOT_EXTERNAL_RESOLVER_EXECUTED",
+    "registered_validator_execution": "NOT_EXECUTED_IN_THIS_ENVIRONMENT"
   },
   "limitations": [
     "One clause can serve multiple candidate requirements, atomic split not approved",
@@ -256,5 +260,22 @@
     "Other policies simulated without modifying originals",
     "No policy-specific schema predicate or family branch added",
     "Active routing/schema/CI/engine unchanged"
-  ]
+  ],
+  "measured_in_memory_requirements_only": {
+    "method": "Serialize the same four grouped requirements with shared document/item catalogs, compact JSON.stringify (ASCII structural data) and equivalent unresolved default; this is a candidate projection, not live validator output.",
+    "candidate_A_serialized_characters": 1830,
+    "candidate_B_serialized_characters": 1470,
+    "candidate_A_direct_requirement_fields": 48,
+    "candidate_B_direct_requirement_fields": 8,
+    "candidate_A_repeated_unresolved_field_labels": 16,
+    "candidate_B_explicit_unresolved_bindings": 4,
+    "candidate_B_bindings": 18,
+    "caveat": "Comparisons measure authoring data only; B does not automatically reduce runtime resolution cost and requires ID lookup."
+  },
+  "common_schema_constraints": {
+    "no_policy_id_or_family_specific_condition": true,
+    "identity_lifecycle_and_rid_reuse": "EXTERNAL_REFERENCES",
+    "reference_id_prefix": "NOT_HARDCODED",
+    "revision_transport": "NOT_GIT_ONLY"
+  }
 }
