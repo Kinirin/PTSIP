@@ -124,3 +124,29 @@ func TestChange0001ManyToManyRIDsRemainStructuralOnly(t *testing.T) {
     if err!=nil { t.Fatalf("official validator missing: %v",err) }
     if err:=v2.Check(root,doc,validator); err!=nil { t.Fatalf("many-to-many binding structurally rejected: %v",err) }
 }
+
+func TestIndexedV2CrossPolicyRegression(t *testing.T) {
+    root := repoRoot(t)
+    validator, err := verification.InstalledValidator()
+    if err != nil { t.Fatalf("official native validator missing: %v",err) }
+    for _, target := range []string{
+        "developer/policy/GOV/MPD-GOV-0001.yaml",
+        "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+        "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+        "developer/policy/CHANGE/MPD-CHANGE-0007.yaml",
+        "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+    } {
+        t.Run(target,func(t *testing.T){
+            selected, err := entry.Resolve(root,target)
+            if err != nil { t.Fatalf("selection regression: %v",err) }
+            if selected.ContractRefs["selection_schema"] != ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json" {
+                t.Fatal("unexpected schema selection")
+            }
+            doc, err := authoring.ReadDocument(root,target)
+            if err != nil { t.Fatalf("YAML parse regression: %v",err) }
+            if err := v2.Check(root,doc,validator); err != nil {
+                t.Fatalf("selected v2 structure regression: %v",err)
+            }
+        })
+    }
+}
