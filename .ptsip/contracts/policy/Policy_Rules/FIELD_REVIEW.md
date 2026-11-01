@@ -123,3 +123,10 @@ v2 공통 구조의 Go 검증기와 계약 선택은 후속 전환에서 활성�
 현재 Policy_Rules / Contract_Types v2에 등록된 식별 작성 유형 `INDEXED_SOURCE_BINDINGS`을 사용하도록 교정한다. 원본은 일반 블록 YAML이고, 별도 Field_Binding_Trial.schema.json은 미등록·퇴역 시험으로만 보존한다. 한 문서에는 한 개의 작성 형식만 존재한다. 원본 주소와 리비전 `source_documents`, 원본 포인터 `source_items`, 범주별 참조·작성 상태 `source_bindings`, 별도 책임 R-ID `responsibility_binding`, 증거 요건·관계·판정 선택 `IndexedSelectionBinding`은 모두 공통 타입에 정의된다. 판정 계약은 DECLARED가 아닌 UNRESOLVED로 유지한다. v2 legacy inline 정책은 동일 공통 타입 내에서 독립적으로 계속 인정되지만 새 indexed 문서가 실패할 때 auto fallback 하지 않는다.
 
 비교·반례: `review/CHANGE-0001-Field-Trial.json`의 correction. 등록 검사: Go `contract-entry` -> `policy-check`, 여기에 indexed 참조 해석 검사를 추가했다. 해당 Go 실행과 외부 `$ref` 포함 정식 스키마 검증은 아직 환경상 미실행이며 PASS로 간주하지 않는다. 
+
+
+### 등록된 v2에서 수행한 검증 (GitHub Actions)
+
+실제 대상 문서와 다른 정책 5건은 `go -C .ptsip/engine/developer test ./policy/verification/v2 ./internal/contractentry ./policy/test -count=1` 의 새 테스트 사례를 통해 구조·참조 검증됨. Ubuntu 24.04와 Windows 2025 모두 2026-11-01 Actions run `41319900563`에서 0 종료 / 성공. 근거: https://github.com/Kinirin/PTSIP/actions/runs/41319900563. 검증이 선택한 public schema: `urn:ptsip:candidate:contract:policy:public-structure:v2` / rules schema: `urn:ptsip:candidate:contract:policy:rules:v2` / indexed type: `urn:ptsip:candidate:contract:policy:types:v2#/$defs/IndexedContract`. 
+
+정식 등록 구조의 PASS는 중복·미해결 ID·원본 역할 타입·작성 상태의 기본 정합성에 한한다. source SHA의 완전한 역사적 pointer 내용 검증, 원문 의미 보존의 최종 승인, 실제 책임 배정, 관계 적합성 및 적용 완료를 대신하지 않는다. 새 본문은 기존 시험 문서 9,049자에 비해 10,002자로 늘었지만 원본 경로와 리비전 선언은 각 1개이며 19개 항목 주소를 공유한다. 크기 축소가 아니라 중복 데이터 저장과 반복 해석의 구조적 제거를 시험한 것이다.

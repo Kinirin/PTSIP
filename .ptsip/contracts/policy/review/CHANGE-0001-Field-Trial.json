@@ -361,10 +361,52 @@
       ],
       "many_to_many": "PASS_IN_MEMORY",
       "same_path_different_revisions": "PASS_IN_MEMORY",
-      "registered_go": "NOT_EXECUTED",
-      "selected_schema_runtime": "NOT_EXECUTED"
+      "registered_go": "PASS_NATIVELY_ON_GITHUB_ACTIONS_UBUNTU_AND_WINDOWS",
+      "selected_schema_runtime": "PASS_NATIVE_V2_CHECK",
+      "cross_policy_registered_v2": "PASS_FIVE_ORIGINAL_POLICIES",
+      "native_target_read": "PASS_BLOCK_YAML_READ",
+      "actual_policy_approval": "NOT_ASSERTED",
+      "source_reference_revision_existence": "CONFIRMED_SOURCE_COMMIT_BY_GITHUB_READ_NOT_FULL_RUNTIME_POINTER_RESOLUTION",
+      "github_actions_run_id": 41319900563,
+      "github_actions_source_sha": "84047cbb9f6668a23a7190f4ff24bbbb63818ebe",
+      "github_actions_url": "https://github.com/Kinirin/PTSIP/actions/runs/41319900563",
+      "jobs": [
+        {
+          "platform": "ubuntu-24.04",
+          "job_id": 124887663917,
+          "status": "success",
+          "go_test_exit_code": 0
+        },
+        {
+          "platform": "windows-2025",
+          "job_id": 124887664056,
+          "status": "success",
+          "go_test_exit_code": 0
+        }
+      ],
+      "command": "go -C .ptsip/engine/developer test ./policy/verification/v2 ./internal/contractentry ./policy/test -count=1",
+      "effective_type": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/IndexedContract",
+      "effective_public": "urn:ptsip:candidate:contract:policy:public-structure:v2"
     },
     "approval": "NOT_GRANTED",
-    "meaning": "UNRESOLVED"
+    "meaning": "UNRESOLVED",
+    "authoring_metrics": {
+      "previous_unregistered_trial_document_chars": 9049,
+      "current_block_yaml_document_chars": 10002,
+      "relative_file_growth_pct": 10.5,
+      "unique_source_item_ids": 19,
+      "document_path_declarations": 1,
+      "revision_declarations": 1,
+      "source_item_pointer_declarations": 19,
+      "explicit_purpose_bindings": 24,
+      "explanation": "The repaired document is longer due to explicit unresolved facets, despite removing repeatable full-reference triples; byte reduction is not a claim or completion criterion."
+    },
+    "remaining_unverified": [
+      "exact source content pointer resolution at historical revision is not verified by current Go referential stage",
+      "final requirement atomicity, role assignment, meaning equivalence remain UNRESOLVED",
+      "relations and judgement contracts are UNRESOLVED and were not synthesized",
+      "lifecycle DRAFT.Reviewed does not constitute approval",
+      "no global registration cutover or schema finalization has been approved"
+    ]
   }
 }
