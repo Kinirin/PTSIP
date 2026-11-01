@@ -1,73 +1,62 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
 Policy_Identity:
-  id: "MPD-CHANGE-0009"
-  policy_kind: "PTSIP_DEVELOPER_POLICY"
-  root_family: "CHANGE"
-  title: "CHANGE 상세 규범 영구 통합"
+  id: MPD-CHANGE-0009
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: CHANGE
+  title: "정책 책임 위탁 수락 및 정책-PLAN 관계 관리"
 Policy_Lifecycle:
-  Policy_Status_Schema_ver: "1"
-  status: "APPROVED.Applying"
-  contract: "urn:ptsip:contract:policy:change:details:permanent-ownership"
+  Policy_Status_Schema_ver: '1'
+  status: APPROVED.provisional
+  contract: urn:ptsip:contract:policy:change:trusteeship-and-plan-relations
 Policy_Rules:
   Identity:
-    contract_id: "urn:ptsip:policy:rule:change:details-permanent-ownership"
-    Rule_ver: "1"
+    contract_id: urn:ptsip:policy:rule:change:trusteeship-and-plan-relations
+    Rule_ver: '2'
   Definition:
-    - id: "R-ID-E29EC5873AB64BB19636F59000109001"
-      rule: "DETAILS-OWNERSHIP"
-    - id: "R-ID-E29EC5873AB64BB19636F59000109002"
-      rule: "TRUSTEESHIP-ACCEPT"
-    - id: "R-ID-E29EC5873AB64BB19636F59000109003"
-      rule: "POLICY-REMOVAL"
-    - id: "R-ID-E29EC5873AB64BB19636F59000109004"
-      rule: "POLICY-PLAN-RELATIONS"
-  title: "CHANGE 상세 규범 영구 통합"
+    - id: R-ID-E29EC5873AB64BB19636F59000109001
+      rule: DETAILS-OWNERSHIP
+    - id: R-ID-E29EC5873AB64BB19636F59000109002
+      rule: TRUSTEESHIP-ACCEPT
+    - id: R-ID-E29EC5873AB64BB19636F59000109004
+      rule: POLICY-PLAN-RELATIONS
   Boundary:
-    scope: "사용자 KEEP_LATEST에 따라 CHANGE 총칙을 제외한 위탁 수락·기존 정책 제거·정책-PLAN 관계 등의 상세 규범을 단일 정책으로 영구 소유한다. 분야별 판정은 독립적으로 유지하며 GOV·ARCH·PLAN 원천 권위는 승계하지 않는다."
+    scope: "CHANGE 총칙을 제외한 정책 책임 위탁 수락 적격성과 정책-PLAN 개별 관계 규범을 소유한다. 기존 정책 제거 적격성은 MPD-CHANGE-0004가 독립적으로 소유한다. GOV·ARCH·PLAN의 원천 권위는 승계하지 않는다."
     subjects:
-      - "KEEP_LATEST_PERMANENT: 사용자 명시적 최종 결정에 따라 MPD-CHANGE-0009가 MPD-CHANGE-0001의 CHANGE 총칙 이외의 상세 규범을 영구적으로 소유한다. 이전 MPD-CHANGE-0007·0008의 독립 소유권과 정책-PLAN 독립 Family 신설·소유 결정은 이 결정으로 대체된다. 기존 원문은 본 문서의 비규범적 Transfer_Archive에 출처별 보존한다."
-      - "DOMAIN_ACCEPTANCE: 위탁 수락 적격성을 담당하며, 원본 정책의 의무·금지·적용 조건·책임 소유 경계·출처·원문과 자연어 의미의 누락·왜곡 여부를 검토한다. 원문과 에이전트의 해석 및 근거를 구별한다."
-      - "TRUSTEESHIP_AGENT_SEMANTIC_REVIEW_REQUIRED: 수락 전에 코딩 에이전트는 원본 책임의 의미와 보존 대상을 직접 대조하고 누락·변형 위험 및 확인되지 않은 범위를 근거와 함께 보고한다. 검토 생략, 근거 부재 또는 확인 불가능한 책임의 포함 여부는 수락 PASS가 될 수 없다."
-      - "DOMAIN_ACCEPTANCE_COVERAGE: 원본의 근거 있는 책임 항목과 위탁 항목의 포함 관계 및 누락 여부, 원문·출처 증거를 확인하고 불명확한 영역을 FAIL/미확인으로 분리한다. 원문 복사·필드 대응·스키마 PASS·자동 추정 목록만으로 자연어 의미 동등성이나 완전성을 보증하지 않는다."
-      - "DOMAIN_ACCEPTANCE_PRESERVATION: 각 출처 정책 영역은 원문·출처·미이전 상태·인계 근거를 개별 보존하고, 위탁 수락 보존 검증은 재사용 가능한 공통 검증 계약을 사용할 수 있다. 공통 검증은 승인 주체나 중앙 정책 의미 소유자가 아니며 세부 증명 범위·최종 검증 소유권은 별도 결정한다."
-      - "DOMAIN_ACCEPTANCE_CONTRACT: 미이전 책임 기록의 필드·자료형·저장 구조는 .ptsip/contracts/trusteeship/의 유효한 독립 계약이 정의한다. 신규 정책 전용 스키마·검증기·필드 대응·최종 인수 완료를 위탁 수락의 일반 선행조건으로 강제하지 않는다."
-      - "DOMAIN_ACCEPTANCE_AUTHORITY: 위탁 수락, GOV의 계약 범위별 임시 적용 권위, 최종 정책 이전 승인과 기존 정책 제거 허가는 각기 별개의 판정이다. 공통 검증 PASS나 수락 검토로 GOV 승인·정책 삭제·상태 전이 권한을 얻지 않는다."
-      - "DOMAIN_REMOVAL: 기존 정책 제거의 적격성 판단은 위탁 수락 결과를 선행 근거로 소비하되 별도 게이트로 판정한다. 두 판정의 규칙 소유 문서는 0009 하나이지만 위탁 수락 PASS가 실제 정책 제거 실행 허가로 자동 승격되지 않는다."
-      - "DOMAIN_REMOVAL_GATES: 기존 정책의 실제 제거는 유효한 GOV 승인 출처·정책 생명주기·적용 범위·별도로 승인된 특수 전환 조건을 독립 검증한 뒤에만 허용될 수 있다. 구체적 실행 게이트 구현과 최종 실행 주체는 별도 권위 결정 대상이다."
-      - "DOMAIN_REMOVAL_AFTER_TRUSTEESHIP: 일반적인 제거에 위탁 수락 후 새 정책·전용 검증기·전체 소비자 전환의 선완성을 일괄 강제하지 않는다. 과거 MPD-CHANGE-0004의 일반 제거 조건을 되살리지 않으며, 별도 승인된 Profile 전환 등 특수 의무는 유지한다."
-      - "DOMAIN_RELATION_REMOVAL: 정책 제거 시 제거 대상 정책과 PLAN 사이의 관계만 정리하고 다른 유효한 관계와 PLAN의 본문·승인·진행·완료·생명주기를 유지한다. 정책 제거 자체와 정책-PLAN 관계 적격성은 명확히 구분한다."
-      - "DOMAIN_RELATION_ORPHAN: 유효한 정책-PLAN 관계가 전부 사라져도 PLAN 자체를 삭제·실효화·재승인하지 않고 관계 관리상 정책 근거 미확정만 구별한다. 관련 실행의 권위는 실행 시점에 검증하되 독립 근거가 있는 작업을 일괄 차단하지 않는다."
-      - "DOMAIN_RELATION_OWNERSHIP: 정책-PLAN 개별 연결의 존재·범위·유효성·해제·식별·검증 근거 판정·장기 보존의 CHANGE 세부 규범은 0009의 정책-PLAN 관계 영역이 소유한다. 독립 정책 Family 신설이라는 과거 배치 방향은 이번 KEEP_LATEST로 대체하며, ARCH·GOV·정책·PLAN 원본 권위나 기타 유형 관계를 대체하지 않는다."
-      - "DOMAIN_RELATION_CREATE: 신규 정책-PLAN 연결은 각 정책과 PLAN의 실제 적용 범위 및 유효한 권위 출처가 일치한다는 검증과 대상 정책·PLAN·연결 범위를 지정한 사용자 건별 명시적 승인 둘 다 있어야 생성할 수 있다. 명칭 유사성·AI 추론·기존 포괄 승인으로 대체하지 않는다."
-      - "DOMAIN_RELATION_CHANGE: 승인된 연결의 실질적인 적용 범위가 변경된 경우 변경 적용 전에 동일 관계에 대한 신규 명시적 사용자 승인이 필요하다. 단순 버전·리비전 변경으로 실제 범위가 그대로라면 재승인을 강제하지 않으며, 불확정 범위를 승인된 것으로 간주하지 않는다."
-      - "DOMAIN_RELATION_EVIDENCE: 관계별 생성·범위 변경·해제의 사용자 승인 근거, 검증 입력·판정 결과, 원천 정책·PLAN 출처 및 판단 시점의 증거를 장기 보존하고 재확인 가능하게 한다. 관계 증거 보존은 승인 발급·정책 승인·PLAN 생명주기 변경이나 범용 RECORD 소유권을 포함하지 않는다."
-      - "UNRESOLVED_BOUNDARIES: 개발자 CHANGE와 배포용 PTSIP 정책의 구별 및 기존 0006 후보의 실체, 공통 검증의 최종 소유권·증명 방법, 실행 게이트의 구현, 관계 기록의 물리 경로·증거 계약은 확정된 근거 전까지 미결정으로 둔다. 이 미결정 사항은 현재 승인된 원칙의 적용을 임의로 확장하거나 없애지 않는다."
+      - "RECONCILE-OWNERSHIP: 사용자 승인 RECONCILE에 따라 이전 MPD-CHANGE-0009의 상세 규범 가운데 기존 정책 제거 적격성 소유권을 MPD-CHANGE-0004로 이전한다. 0009에는 위탁 수락 및 정책-PLAN 관계 규범을 남긴다. 과거 MPD-CHANGE-0007·0008의 퇴역 상태와 원문 보존은 유지한다."
+      - "TRUSTEESHIP-ACCEPT: 원본 정책의 의무·금지·적용 조건·책임 소유 경계·출처·원문과 의미의 누락 및 왜곡을 검토하여 위탁 수락 적격성을 판단한다. 위탁 수락은 최종 정책 이전이나 기존 정책 제거와 독립된 판단이다."
+      - "TRUSTEESHIP-SEMANTIC-REVIEW: 위탁 수락 전에 코딩 에이전트는 원본 책임 의미·금지·조건·소유 경계를 직접 검토하고 누락·변형 위험 및 확인되지 않은 범위를 근거와 함께 제시한다. 근거 없는 검토나 검토 생략은 수락 적격성을 충족하지 못한다."
+      - "TRUSTEESHIP-COVERAGE: 근거 있는 원본 책임 항목과 위탁 보존 항목의 포함·누락 여부를 구별하며 미확인 영역을 PASS로 처리하지 않는다. 원문 복사·목록 일치·필드 매핑·스키마 PASS만으로 의미 동등성과 완전성을 보증하지 않는다."
+      - "TRUSTEESHIP-PRESERVATION: 원본 정책 영역별로 책임 원문·출처·미이전 상태·인계 근거를 보존한다. 분야 간 공통 보존 검증 계약을 재사용할 수 있지만 공통 검증의 결과는 정책 의미 소유권·승인 권한을 생성하지 않는다."
+      - "TRUSTEESHIP-CONTRACT: 미이전 책임의 필드·자료형·저장 구조는 .ptsip/contracts/trusteeship/에 있는 유효한 독립 계약이 정의한다. 위탁 수락에 새 정책·전용 스키마·전용 검증기·필드 대응 또는 최종 이전의 선완성을 일괄 요구하지 않는다."
+      - "TRUSTEESHIP-TO-REMOVAL: 위탁 수락 결과를 MPD-CHANGE-0004가 제거 적격성 판단의 선행 근거로 소비할 수 있지만 위탁 수락이나 보존 검증 PASS가 기존 정책 제거·GOV 승인·정책 생명주기 전이·실제 삭제 실행을 자동 허가하지 않는다."
+      - "RELATION-OWNERSHIP: 정책-PLAN 개별 관계의 존재·생성·범위·유효성·변경·해제·식별·증거 판정 및 관계별 장기 보존의 규범은 MPD-CHANGE-0009가 소유한다. 정책·PLAN 자체의 의미·승인·생명주기와 GOV·ARCH 원천 권위는 인수하지 않는다."
+      - "RELATION-CREATE: 신규 정책-PLAN 관계는 대상 정책과 PLAN의 실제 적용 범위가 유효한 권위 출처에 근거해 일치하는지 검증하고, 대상 정책·PLAN·연결 범위를 특정한 사용자 건별 명시적 승인을 모두 갖춘 경우에만 생성한다. 이름 유사성·AI 추론·포괄 승인으로 대체하지 않는다."
+      - "RELATION-CHANGE: 승인된 관계의 실질적 적용 범위가 변경되면 해당 범위를 적용하기 전에 사용자 명시적 재승인이 필요하다. 범위가 그대로인 단순 버전·리비전 변경에는 재승인을 강제하지 않으며 불확정 범위를 승인된 것으로 간주하지 않는다."
+      - "RELATION-REMOVAL: MPD-CHANGE-0004가 제거 적격성을 판단한 정책의 관계를 정리할 때 제거 대상 정책과 PLAN 사이의 관계만 처리하며 다른 정책의 유효 관계와 PLAN 본문·승인·진행·완료·생명주기를 보존한다. 신규 관계 생성의 건별 승인을 제거에 따른 관계 해제의 추가 조건으로 오용하지 않는다."
+      - "RELATION-ORPHAN: 유효 정책 연결이 모두 사라진 PLAN을 삭제·실효화·재승인하지 않고 관계 관리에서만 정책 근거 미확정으로 구별한다. 해당 근거에 의존한 실행 권위는 실행 시 별도 확인하며 다른 독립 근거의 작업을 일괄 차단하지 않는다."
+      - "RELATION-EVIDENCE: 관계별 생성·변경·해제의 사용자 승인 출처, 검증 입력·판정 결과, 원천 정책·PLAN 출처와 판단 시점의 근거를 장기 보존하고 재확인 가능하게 한다. 관계 증거 보존은 범용 RECORD 권위나 GOV 승인 발급권을 승계하지 않는다."
+      - "HISTORICAL-ARCHIVE: 기존 Transfer_Archive에 기록된 원문·리비전·Blob SHA는 비규범적 역사 증거로 보존한다. 과거 0004의 마이그레이션 작업·일반 소비자 전환 게이트 및 0007·0008의 이전 소유권을 자동 재활성화하지 않는다."
+      - "UNRESOLVED-BOUNDARIES: 개발자 CHANGE와 배포용 PTSIP 정책의 구별, 0006 후보의 실체, 공통 검증의 최종 소유권과 증명 방법, 정책 제거 실행 게이트의 구현, 관계 기록의 물리 경로·증거 계약은 별도 확정 전까지 미결정으로 둔다."
     exclusions:
-      - "KEEP_LATEST_PERMANENT에 반하여 MPD-CHANGE-0007 또는 0008을 다시 활성 규범 소유자로 재승격하거나, 분리된 정책-PLAN 독립 Family를 신규 정책 승인 없이 이전의 유효한 소유자로 적용하는 행위"
-      - "위탁 수락과 정책 제거의 판단을 하나의 PASS로 합치거나 위탁 수락만으로 정책 파일 삭제·생명주기 전이·승인 범위 확대를 자동 실행하는 행위"
-      - "원문·출처·책임 항목이 검증 불가한데도 위탁 수락 PASS를 반환하거나, 자동 생성된 추정 책임 목록·필드 매핑·스키마 검증을 의미 동등성의 증명으로 간주하는 행위"
-      - "위탁 수락을 위해 신규 정책 전용 스키마·검증기·최종 정책 수용을 일괄 선행조건으로 강제하거나, trusteeship 데이터 구조를 CHANGE 규범 문서에서 재정의하는 행위"
-      - "공통 검증기의 존재를 근거로 원본 Family의 보존 의무나 GOV 승인 권위 및 미확정 의미 소유권을 공통 검증 주체로 이관하는 행위"
-      - "RETIRED MPD-CHANGE-0004·CTRL, 과거 MPD-SPEC-0023 또는 developer/bindings 및 폐기된 정책-PLAN 관계 계약을 현행 규범 권위로 재활성화하는 행위"
-      - "정책-PLAN 관계를 이유로 PLAN 전체를 삭제·무효화·재생성·재승인하거나, 정책 근거 미확정을 PLAN 자체의 신규 생명주기 상태로 강제하는 행위"
-      - "신규 관계 생성의 건별 사용자 승인을 기존 정책 제거에 의한 관계 해제의 추가 승인 조건으로 오용하거나, 관계 범위 검증을 사용자 승인·정책 승인·PLAN 승인으로 승격하는 행위"
-      - "정책-PLAN 관계 규범 소유권을 다른 구성 요소 관계·정책 의미·PLAN 생성·개발 이력 전체·GOV 승인 발급까지 확대하는 행위"
-      - "과거 독립 Family의 이름·번호·경로 또는 승인되지 않은 실행·검증·저장 세부사항을 임의 확정하는 행위"
+      - "MPD-CHANGE-0004에 배정된 기존 정책 제거 적격성 기준을 0009에서 중복 소유하거나 위탁 수락 결과만으로 실제 정책 제거를 허가하는 행위"
+      - "근거 없이 위탁 수락 PASS를 반환하거나 필드 매핑·스키마 검증·자동 추정 목록으로 원문 의미 동등성을 보증하는 행위"
+      - "위탁 수락에 전용 스키마·검증기·새 정책 완성을 일반 선행조건으로 강제하거나 trusteeship 독립 데이터 계약을 변경하는 행위"
+      - "공통 검증 계약을 근거로 원본 영역의 보존 의무, GOV 승인 권위 또는 미확정 의미 소유권을 인수하는 행위"
+      - "정책 제거에 따른 관계 정리로 PLAN 전체를 삭제·무효화·재승인하거나 다른 유효 관계를 변경하는 행위"
+      - "신규 관계를 명칭 유사성·AI 추론·기존 포괄 승인으로 생성하거나 실질 변경된 연결 범위를 사용자 재승인 없이 적용하는 행위"
+      - "관계 판단·증거 보존의 범위를 정책 자체의 규범 의미, PLAN 생성·승인·생명주기, 일반 개발 기록 전체, GOV 승인 발급 또는 다른 유형의 관계로 확대하는 행위"
+      - "과거 퇴역 0004의 작업별 실행 규칙, 0007·0008의 퇴역 규범 소유권, 퇴역 CTRL·MPD-SPEC-0023·developer/bindings·과거 정책-PLAN 관계 계약을 현재 권위로 자동 재활성화하는 행위"
   Evaluation:
     criteria:
       evidence:
-        - "KEEP_LATEST의 규범 소유자가 0009로 단일화되고 0007·0008이 퇴역했으며 0001은 CHANGE 총칙만 유지되는지 확인"
-        - "원문과 AI 의미 해석의 구분, 근거 있는 원본 책임 항목의 누락·불명확 범위, PASS 금지가 검증되는지 확인"
-        - "출처별 보존 의무와 공통 검증의 비권위적 역할 및 trusteeship 데이터 계약 소유권이 구별되는지 확인"
-        - "위탁 수락·정책 제거 적격성·GOV 승인·상태 전이·실제 실행 허가가 서로 다른 판단으로 유지되는지 확인"
-        - "특수 전환 의무는 유지하되 퇴역 전체 소비자 전환 게이트가 무단 부활하지 않는지 확인"
-        - "정책 제거가 해당 정책 관계만 처리하고 연결이 사라진 PLAN과 다른 정책의 유효 관계를 보존하는지 확인"
-        - "신규 관계의 범위 확인·건별 사용자 승인 및 실질적 범위 변경 시 재승인 의무가 지켜지는지 확인"
-        - "관계별 승인·검증·출처·판정 시점 증거가 보존되고 관계 기록으로 GOV·ARCH·정책·PLAN의 원천 권위를 인수하지 않는지 확인"
-        - "Transfer_Archive의 원본 조항과 출처 SHA가 누락 없이 존재하고 폐기된 배정 결정을 규범으로 되살리지 않는지 확인"
-    result:
-      status: "incomplete_fulfillment"
-      task_name: "영구 책임 통합에 따른 실행·검증 계약의 적용 확인"
-      task_id: "MPD-CHANGE-0009"
+        - "위탁 수락 책임과 기존 정책 제거 적격성 책임이 0009 및 0004로 구별되고 다른 정책의 권위가 중복되지 않는지 확인"
+        - "원본의 책임 항목·출처와 코딩 에이전트의 자연어 의미 해석·검토 근거·미확인 범위가 명확히 구분되는지 확인"
+        - "각 원본 영역의 보존 의무와 공통 검증의 비권위적 역할, trusteeship 독립 계약의 소유권이 구별되는지 확인"
+        - "위탁 수락·제거 적격성·GOV 승인·상태 전이·실제 실행이 서로 다른 판단으로 유지되는지 확인"
+        - "관계 신규 생성의 범위 적합성·건별 사용자 승인 및 실질적 변경 시 재승인 조건이 유지되는지 확인"
+        - "제거 대상 정책의 관계만 처리하고 다른 유효 관계 및 연결이 사라진 PLAN의 본문·승인·진행·완료·생명주기가 보존되는지 확인"
+        - "관계 증거의 출처·판정 시점 보존과 GOV·ARCH·정책·PLAN 원천 권위의 비승계를 확인"
+        - "기존 Transfer_Archive의 원문 및 source SHA가 변경되지 않고 역사 기록을 규범으로 자동 재활성화하지 않았는지 확인"
   Transfer_Archive:
     authority: HISTORICAL_EVIDENCE_ONLY
     decision: KEEP_LATEST
