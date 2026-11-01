@@ -86,5 +86,6 @@ func Check(root string, document authoring.Document, validate authoring.Validato
         if doc["$id"] == publicID { public = doc; break }
     }
     if public == nil { return fmt.Errorf("V2_PUBLIC_SCHEMA_UNRESOLVED") }
-    return contractcheck.Validate(validate, public, document, resources)
+    if err := contractcheck.Validate(validate, public, document, resources); err != nil { return err }
+    return checkIndexedReferences(document)
 }
