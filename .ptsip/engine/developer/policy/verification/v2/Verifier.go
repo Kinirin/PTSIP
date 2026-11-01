@@ -3,6 +3,7 @@
 package v2
 
 import (
+    "bytes"
     "crypto/sha256"
     "encoding/hex"
     "encoding/json"
@@ -66,7 +67,10 @@ func Check(root string, document authoring.Document, validate authoring.Validato
         if err != nil { return err }
         raw, err := os.ReadFile(name)
         if err != nil { return err }
-        digest := sha256.Sum256(raw)
+        // Git can check out the same committed JSON with CRLF on Windows.
+        // Pin the platform-independent LF representation; do not alter or
+        // relax schema validation of the original on-disk document.
+        digest := sha256.Sum256(bytes.ReplaceAll(raw, []byte("\r\n"), []byte("\n")))
         if hex.EncodeToString(digest[:]) != expected {
             return fmt.Errorf("V2_EXTERNAL_RESOURCE_DIGEST_MISMATCH: %s", id)
         }
