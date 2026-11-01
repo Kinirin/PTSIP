@@ -18,12 +18,13 @@ Policy_Rules:
       rule: "CHANGE-RESP-GOV"
   title: "CHANGE 정책 정의 및 책임 오케스트레이션"
   Boundary:
-    scope: "PTSIP 개발 과정의 정책·규범·Project Profile·개발 도구 변경 전후 관계와 Developer CHANGE Family 내부 정책 책임"
+    scope: "CHANGE Family 총칙 단일 책임: 정책·규범·Project Profile·개발 도구 변경의 공통 책임 경계와 CHANGE 정책 간 책임 분배·오케스트레이션 원칙; 개별 위탁 수락·정책 제거 및 정책-PLAN 관계의 세부 규범은 별도 정책 책임"
     subjects:
       - "PTSIP 개발 과정에서 정책·규범·프로젝트 프로파일·개발 도구가 변경되면 변경 전과 변경 후 상태 사이의 관계를 CHANGE 정책의 책임 범위로 관리"
       - "MPD-CHANGE-0001은 CHANGE Family 정책의 정의 및 책임 오케스트레이션을 담당"
       - "CHANGE Family 정책 정의, CHANGE 영역의 결정·승인 정당성을 판단할 기본 경계, CHANGE 정책별 책임 범위와 분배 원칙을 관리"
       - "CHANGE의 결정·승인 정당성 판단은 유효한 상위 정책 권한과 GOV 승인 근거를 존중하며 CHANGE 자체가 새로운 승인 권한을 생성하지 않음"
+      - "CHANGE-GENERAL-ONLY: MPD-CHANGE-0001은 CHANGE 총칙의 단일 책임만 소유한다. 본문에 남아 있는 개별 위탁·정책 제거·정책-PLAN 관계 규정과 과거 결정은 후속 소유 정책 지정·손실 없는 이전이 완료되기 전까지 분리 대기 대상으로 보존하며, 이 방향 승인만으로 다른 문서의 현행 규범 권위를 신설하거나 정책 제거·위탁 수락을 승인하지 않는다"
       - "개발자 CHANGE 정책과 배포용 PTSIP 정책의 권한 경계는 후속 MPD-CHANGE-0006 정책 책임으로 분리하는 방향; 기존 MPD-CHANGE-0002의 번호 변경 및 실제 내용은 별도 검토 대상"
       - "개별 규칙의 의미 소유자 선언·확정·등록은 별도 사용자 승인 전까지 유보하며 책임 후보 분석이 이를 대신하지 않음"
       - "KEEP_LATEST 승인: 기존 정책 책임이 PTSIP 위탁 계약에 인계되면 새 정책 문서·전용 검증기 완성 전에도 기존 정책 제거가 가능하도록 한다"
