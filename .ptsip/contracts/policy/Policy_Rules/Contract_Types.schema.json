@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:candidate:contract:policy:types:v2",
   "title": "Policy contract, rule declaration and independent requirement candidates",
-  "$comment": "UNAPPROVED_FIELD_CANDIDATE_V2. Common shape tested across five policy documents. Authoring declarations and unresolved bindings are not semantic equivalence, approval or execution authority.",
+  "$comment": "UNAPPROVED_FIELD_CANDIDATE_V2. Common shape tested across five policy documents. Authoring declarations and unresolved bindings are not semantic equivalence, approval or execution authority. Indexed source binding type is connected directly to active common type Contract; no separate Trial schema used for policy validation. Source IDs must be unique and resolvable under their owning Contract, checked separately from JSON Schema.",
   "$defs": {
     "SourceRef": {
       "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
@@ -812,57 +812,15 @@
       "additionalProperties": false
     },
     "Contract": {
-      "type": "object",
-      "properties": {
-        "contract_id": {
-          "type": "string",
-          "minLength": 1
+      "oneOf": [
+        {
+          "$ref": "#/$defs/LegacyInlineContract"
         },
-        "Rule_ver": {
-          "type": "string",
-          "minLength": 1
-        },
-        "rules": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/Rule"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "requirements": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/Requirement"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "source_items": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/SourceItem"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "historical_result_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
-          },
-          "minItems": 0,
-          "uniqueItems": true
+        {
+          "$ref": "#/$defs/IndexedContract"
         }
-      },
-      "required": [
-        "contract_id",
-        "Rule_ver",
-        "rules",
-        "requirements",
-        "source_items"
       ],
-      "additionalProperties": false
+      "$comment": "Two explicitly discriminated serializations in the same registered common v2 types contract. INDEXED_SOURCE_BINDINGS MUST NOT fall back to legacy inline when invalid; neither representation conveys policy approval."
     },
     "ParticipantBinding": {
       "type": "object",
@@ -921,6 +879,677 @@
         "relation_ref",
         "participant_bindings",
         "applicability_basis_refs"
+      ],
+      "additionalProperties": false
+    },
+    "IndexedSourceID": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+    },
+    "IndexedDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "source_ref",
+        "revision_ref"
+      ]
+    },
+    "IndexedSourceItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "document_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "item_ref": {
+          "type": "string",
+          "pattern": "^(#|/)"
+        },
+        "original_role": {
+          "enum": [
+            "rule",
+            "scope",
+            "statement",
+            "constraint",
+            "criterion",
+            "record",
+            "annotation"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "document_id",
+        "item_ref",
+        "original_role"
+      ]
+    },
+    "IndexedSourceUse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {
+          "enum": [
+            "MEANING",
+            "TARGET",
+            "SCOPE",
+            "CONDITION",
+            "CONSTRAINT",
+            "CRITERION"
+          ]
+        },
+        "state": {
+          "enum": [
+            "SOURCE_IDENTIFIED",
+            "UNRESOLVED",
+            "CONFIRMED_EMPTY",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "ref_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "basis_ref_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "purpose",
+        "state"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "SOURCE_IDENTIFIED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "ref_ids"
+            ],
+            "not": {
+              "required": [
+                "basis_ref_ids"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "UNRESOLVED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "ref_ids"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "CONFIRMED_EMPTY"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "basis_ref_ids"
+            ],
+            "not": {
+              "required": [
+                "ref_ids"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "NOT_APPLICABLE"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "basis_ref_ids"
+            ],
+            "not": {
+              "required": [
+                "ref_ids"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "IndexedResponsibilityBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "DECLARED",
+            "UNRESOLVED",
+            "CONFIRMED_EMPTY",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "responsibility_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ResponsibilityRef"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "basis_ref_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "state",
+        "basis_ref_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "DECLARED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "responsibility_refs"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "responsibility_refs"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "IndexedInputBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port_ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "value_ref_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "port_ref",
+        "value_ref_ids"
+      ]
+    },
+    "IndexedSelectionBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "DECLARED",
+            "UNRESOLVED",
+            "CONFIRMED_EMPTY",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "basis_ref_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "selection": {
+          "$ref": "#/$defs/ContractSelectionRef"
+        },
+        "input_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedInputBinding"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "state",
+        "basis_ref_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "DECLARED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "selection"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "selection"
+                  ]
+                },
+                {
+                  "required": [
+                    "input_bindings"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "IndexedRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ResponsibilityRef"
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
+        },
+        "preconditions": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ConditionRef"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_item_id": {
+          "$ref": "#/$defs/IndexedSourceID"
+        },
+        "authority_binding": {
+          "$ref": "#/$defs/IndexedSelectionBinding"
+        }
+      },
+      "required": [
+        "id",
+        "rule",
+        "source_item_id",
+        "authority_binding"
+      ]
+    },
+    "IndexedRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requirement_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceUse"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "responsibility_binding": {
+          "$ref": "#/$defs/IndexedResponsibilityBinding"
+        },
+        "evidence_requirement_binding": {
+          "$ref": "#/$defs/IndexedSelectionBinding"
+        },
+        "relation_binding": {
+          "$ref": "#/$defs/IndexedSelectionBinding"
+        },
+        "judgement_binding": {
+          "$ref": "#/$defs/IndexedSelectionBinding"
+        }
+      },
+      "required": [
+        "requirement_id",
+        "source_bindings",
+        "responsibility_binding",
+        "evidence_requirement_binding",
+        "relation_binding",
+        "judgement_binding"
+      ],
+      "allOf": [
+        {
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "purpose": {
+                    "const": "MEANING"
+                  },
+                  "state": {
+                    "const": "SOURCE_IDENTIFIED"
+                  }
+                },
+                "required": [
+                  "purpose",
+                  "state"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "MEANING"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "TARGET"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "SCOPE"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "CONDITION"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "CONSTRAINT"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "CRITERION"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        }
+      ]
+    },
+    "IndexedContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "serialization": {
+          "const": "INDEXED_SOURCE_BINDINGS"
+        },
+        "contract_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "Rule_ver": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_documents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedDocument"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceItem"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedRule"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedRequirement"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "historical_result_ref_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "serialization",
+        "contract_id",
+        "Rule_ver",
+        "source_documents",
+        "source_items",
+        "rules",
+        "requirements"
+      ]
+    },
+    "LegacyInlineContract": {
+      "type": "object",
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "Rule_ver": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/Rule"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/Requirement"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "source_items": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/SourceItem"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "historical_result_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "contract_id",
+        "Rule_ver",
+        "rules",
+        "requirements",
+        "source_items"
       ],
       "additionalProperties": false
     }
