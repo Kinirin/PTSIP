@@ -41,6 +41,8 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
   ".ptsip/contracts/policy/routing/Policy_Routing.schema.json",
   ".ptsip/contracts/policy/identity/policy_kind.json",
   ".ptsip/contracts/policy/identity/root_family.json",
+  ".ptsip/contracts/policy/candidate.index.json",
+  ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
  }
  // The compact routing registry owns only shared schema references.
  // Family rules are selected from the canonical root_family vocabulary, not
@@ -55,7 +57,7 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
  if len(routing.Routes)==0 || len(routing.SchemaRefs)!=2 { t.Fatal("approved compact routing is incomplete") }
  for _, key := range []string{"public","rules"} {
   relative:=routing.SchemaRefs[key]
-  if !strings.HasPrefix(relative,".ptsip/contracts/schemas/") ||
+  if !strings.HasPrefix(relative,".ptsip/contracts/policy/") ||
    filepath.ToSlash(filepath.Clean(filepath.FromSlash(relative)))!=relative ||
    strings.Contains(relative,"\\") {
    t.Fatalf("unsafe or missing approved schema ref %s: %q",key,relative)
@@ -69,7 +71,7 @@ func schemaCheckWithMissing(t *testing.T, docs map[string]string, missing string
  if len(vocabulary.Enum)!=14 { t.Fatalf("expected fourteen registered families, got %d",len(vocabulary.Enum)) }
  for _,family:=range vocabulary.Enum {
   if family=="" || strings.Trim(family,"ABCDEFGHIJKLMNOPQRSTUVWXYZ")!="" {t.Fatalf("unsafe family: %q",family)}
-  paths=append(paths,".ptsip/contracts/policy/Rules/"+family+"_rules.json")
+  // v2 family coverage is declared in Family_Selection.json, not v7 Family rules.
  }
  paths=append(paths,
   ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json",
