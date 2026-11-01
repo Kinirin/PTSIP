@@ -336,5 +336,35 @@
     "relation_participation_vs_authority": "SEPARATE_BUT_UNRESOLVED_NO_FABRICATED_RELATION",
     "evidence_requirement_vs_real_evidence": "DISTINCT_PURPOSE_TAGS_NO_EVIDENCE_ASSERTED",
     "confirmed_empty_vs_unresolved": "CONFIRMED_EMPTY_REQUIRES_BASIS; OMISSION_IS_UNRESOLVED"
+  },
+  "correction": {
+    "status": "REGISTERED_V2_TYPED_AUTHORING_NOT_SEMANTIC_APPROVAL",
+    "replaces_unregistered_trial": true,
+    "policy": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+    "source_revision": "git:9dfd231b1c385dd8df9d6ad5cbcfe8c3a1f3a549",
+    "actual_common_type": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/IndexedContract",
+    "actual_public_type": "urn:ptsip:candidate:contract:policy:public-structure:v2",
+    "source_index_count": 19,
+    "requirements_trial_count": 4,
+    "source_id_bases": "CONTRACT_SCOPED",
+    "tests": {
+      "positive": "PASS_IN_MEMORY",
+      "rejected": [
+        "duplicate-id",
+        "missing-ref",
+        "missing-document",
+        "bad-revision",
+        "wrong-role",
+        "duplicate-purpose",
+        "empty-no-basis",
+        "NA-no-basis"
+      ],
+      "many_to_many": "PASS_IN_MEMORY",
+      "same_path_different_revisions": "PASS_IN_MEMORY",
+      "registered_go": "NOT_EXECUTED",
+      "selected_schema_runtime": "NOT_EXECUTED"
+    },
+    "approval": "NOT_GRANTED",
+    "meaning": "UNRESOLVED"
   }
 }

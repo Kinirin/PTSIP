@@ -116,3 +116,10 @@ v2 공통 구조의 Go 검증기와 계약 선택은 후속 전환에서 활성�
 공통 출처 색인 19항목을 양 후보에서 똑같이 쓰고, 임시 4개 요구사항만 compact JSON으로 직렬화했을 때 **A 1,830자 / B 1,470자**다. 요구사항의 직접 필드 슬롯은 **A 48 / B 8**이며, 별도 미확정 필드 이름 보고는 **A 16개 / B 0개**(대신 B는 직접 미확정 바인딩 4개)다. 이는 시뮬레이션의 제한된 값이며 유효한 의미 배정이나 실행속도 개선 수치가 아니다. B는 목적과 상태를 분리하여 기계 해석을 단순화하지만 ID 조회 단계가 추가되고 관계별 추론이 완전히 제거되는 것은 아니다.
 
 공통 후보는 현재 Identity/Lifecycle/R-ID 타입을 자체적으로 다시 정의하지 않고 기존 외부 계약을 참조한다. 타 정책·특정 Family·리비전 값을 공통 필드의 상수로 넣지 않았다.
+
+
+## CHANGE-0001 작성 연결 정정 (2026-11-01)
+
+현재 Policy_Rules / Contract_Types v2에 등록된 식별 작성 유형 `INDEXED_SOURCE_BINDINGS`을 사용하도록 교정한다. 원본은 일반 블록 YAML이고, 별도 Field_Binding_Trial.schema.json은 미등록·퇴역 시험으로만 보존한다. 한 문서에는 한 개의 작성 형식만 존재한다. 원본 주소와 리비전 `source_documents`, 원본 포인터 `source_items`, 범주별 참조·작성 상태 `source_bindings`, 별도 책임 R-ID `responsibility_binding`, 증거 요건·관계·판정 선택 `IndexedSelectionBinding`은 모두 공통 타입에 정의된다. 판정 계약은 DECLARED가 아닌 UNRESOLVED로 유지한다. v2 legacy inline 정책은 동일 공통 타입 내에서 독립적으로 계속 인정되지만 새 indexed 문서가 실패할 때 auto fallback 하지 않는다.
+
+비교·반례: `review/CHANGE-0001-Field-Trial.json`의 correction. 등록 검사: Go `contract-entry` -> `policy-check`, 여기에 indexed 참조 해석 검사를 추가했다. 해당 Go 실행과 외부 `$ref` 포함 정식 스키마 검증은 아직 환경상 미실행이며 PASS로 간주하지 않는다. 
