@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:policy-routing:v4",
+  "$id": "urn:ptsip:contract:policy-routing:v5",
   "title": "Compact policy output routing; family rules are selected by the policy boundary",
   "type": "object",
   "properties": {
     "schema_version": {
-      "const": "ptsip-policy-routing/v4"
+      "const": "ptsip-policy-routing/v5"
     },
     "identity_sources": {
       "type": "object",
@@ -31,10 +31,10 @@
       ],
       "properties": {
         "public": {
-          "const": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json"
+          "const": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json"
         },
         "rules": {
-          "const": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+          "const": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json"
         }
       },
       "additionalProperties": false

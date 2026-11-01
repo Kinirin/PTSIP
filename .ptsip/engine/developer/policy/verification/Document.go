@@ -5,8 +5,7 @@ import (
 	"path/filepath"
 
 	authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
-	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractcheck"
-	rules "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/Rules"
+	v2 "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/v2"
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/identity"
 	planstatus "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/lifecycle/Plan_status"
 	policystatus "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/lifecycle/Policy_status"
@@ -27,28 +26,7 @@ func CheckDocument(root, selected string, document authoring.Document, validate 
 	case "plan-status-check":
 		return planstatus.Check(root, component("Plan_Status"), validate)
 	case "policy-check":
-		catalog, err := rules.Load(root, validate)
-		if err != nil {
-			return err
-		}
-		resources, err := contractcheck.Load(root,
-			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json", ID: "urn:ptsip:policy:public-structure:v7"},
-			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", ID: "urn:ptsip:policy:identity:v2"},
-			contractcheck.Source{Path: ".ptsip/contracts/policy/identity/policy_kind.json", ID: "urn:ptsip:identity:policy-kind:v1"},
-			contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", ID: "urn:ptsip:policy:Status:v2"},
-			contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json", ID: "urn:ptsip:policy:Status-version:v1"},
-			contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json", ID: "urn:ptsip:contract:constant:policy_status_approved:v2"},
-			contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json", ID: "urn:ptsip:contract:constant:policy_status_draft:v2"},
-			contractcheck.Source{Path: ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json", ID: "urn:ptsip:contract:constant:policy_status_retired:v2"},
-		)
-		if err != nil {
-			return err
-		}
-		resources = append(resources, catalog.Resources...)
-		if err := contractcheck.Validate(validate, resources[0].(map[string]any), document, resources); err != nil {
-			return err
-		}
-		return catalog.CheckRules(validate, document)
+		return v2.Check(root, document, validate)
 	default:
 		return fmt.Errorf("UNREGISTERED_POLICY_VALIDATOR: %s", selected)
 	}

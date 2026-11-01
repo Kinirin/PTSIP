@@ -210,7 +210,7 @@ func Resolve(root, target string) (Selection, error) {
     if err != nil { return fail(err) }
     vocabularyKind, err := field(routes, "identity_sources", "policy_kind")
     if err != nil { return fail(err) }
-    vocabularyFamily, err := field(boundary, "rules_binding", "family_source")
+    vocabularyFamily, err := field(routes, "identity_sources", "root_family")
     if err != nil { return fail(err) }
     kindList, err := jsonObject(root, vocabularyKind)
     if err != nil { return fail(err) }
@@ -226,30 +226,58 @@ func Resolve(root, target string) (Selection, error) {
     outputRoot, err := field(route, "output_root")
     if err != nil { return fail(err) }
     if !strings.HasPrefix(target, outputRoot+"/") { return fail(fmt.Errorf("POLICY_TARGET_OUTSIDE_REGISTERED_ROUTE")) }
-    rules, err := object(boundary, "rules_binding")
-    if err != nil { return fail(err) }
-    folder, err := field(rules, "directory")
-    if err != nil { return fail(err) }
-    fileTemplate, err := field(rules, "filename")
-    if err != nil { return fail(err) }
-    if fileTemplate != "{root_family}_rules.json" { return fail(fmt.Errorf("UNSUPPORTED_FAMILY_CONTRACT_TEMPLATE")) }
-    familyRef := folder + "/" + strings.ReplaceAll(fileTemplate, "{root_family}", family)
-    familyDoc, err := jsonObject(root, familyRef)
-    if err != nil { return fail(err) }
-    if familyDoc["root_family"] != family { return fail(fmt.Errorf("FAMILY_CONTRACT_IDENTITY_MISMATCH")) }
+    // v7 family-rule selection is withdrawn. Only the explicitly activated
+    // v2 common schema and declared family-selection contract may be selected.
     publicRef, err := field(routes, "schema_refs", "public")
     if err != nil { return fail(err) }
-    selectionRef, err := field(rules, "selection_schema")
+    rulesRef, err := field(routes, "schema_refs", "rules")
     if err != nil { return fail(err) }
-    profileRef, err := field(rules, "responsibility_profile")
+    if publicRef != ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json" ||
+        rulesRef != ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json" {
+        return fail(fmt.Errorf("V2_POLICY_ROUTE_UNRESOLVED"))
+    }
+    registryRef := ".ptsip/contracts/policy/candidate.index.json"
+    registry, err := jsonObject(root, registryRef)
     if err != nil { return fail(err) }
-    for _, ref := range []string{publicRef, selectionRef, profileRef} {
-        if _, err := localFile(root, ref); err != nil { return fail(err) }
+    if registry["active_registration"] != true || registry["active_policy_cutover"] != "STRUCTURE_V2_ACTIVE" {
+        return fail(fmt.Errorf("V2_POLICY_STRUCTURE_NOT_ACTIVE"))
+    }
+    registeredSchemas, err := object(registry, "schema_refs")
+    if err != nil { return fail(err) }
+    publicID, err := field(registeredSchemas, "public")
+    if err != nil { return fail(err) }
+    rulesID, err := field(registeredSchemas, "rules")
+    if err != nil { return fail(err) }
+    if publicID != "urn:ptsip:candidate:contract:policy:public-structure:v2" ||
+        rulesID != "urn:ptsip:candidate:contract:policy:rules:v2" {
+        return fail(fmt.Errorf("V2_SCHEMA_IDS_UNREGISTERED"))
+    }
+    familySelectionRef, err := field(registry, "family_selection_ref")
+    if err != nil { return fail(err) }
+    if familySelectionRef != ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json" {
+        return fail(fmt.Errorf("V2_FAMILY_SELECTION_UNREGISTERED"))
+    }
+    familySelection, err := jsonObject(root, familySelectionRef)
+    if err != nil { return fail(err) }
+    if familySelection["active"] != true || familySelection["selection_basis"] != "DECLARED_POLICY_IDENTITY_ROOT_FAMILY" {
+        return fail(fmt.Errorf("V2_FAMILY_SELECTION_INACTIVE"))
+    }
+    familyRoutes, err := object(familySelection, "family_routes")
+    if err != nil { return fail(err) }
+    selectedFamily, err := object(familyRoutes, family)
+    if err != nil { return fail(fmt.Errorf("UNREGISTERED_V2_FAMILY: %s", family)) }
+    if selectedFamily["rules_schema_ref"] != rulesID {
+        return fail(fmt.Errorf("V2_FAMILY_RULE_SCHEMA_MISMATCH: %s", family))
+    }
+    for _, item := range []struct{path,id string}{{publicRef,publicID},{rulesRef,rulesID}} {
+        schema, err := jsonObject(root, item.path)
+        if err != nil { return fail(err) }
+        if schema["$id"] != item.id { return fail(fmt.Errorf("V2_ROUTE_SCHEMA_ID_MISMATCH: %s",item.path)) }
     }
     return Selection{Domain: "developer_policy", Validator: "policy-check", Target: target,
         PolicyKind: kind, RootFamily: family,
         ContractRefs: map[string]string{"boundary": boundaryRef, "routing": routeRef,
-            "public_schema": publicRef, "selection_schema": selectionRef,
-            "family": familyRef, "responsibility_profile": profileRef},
+            "public_schema": publicRef, "selection_schema": rulesRef,
+            "family": familySelectionRef, "v2_registry": registryRef},
         PolicyConformance: "NOT_ASSERTED"}, nil
 }

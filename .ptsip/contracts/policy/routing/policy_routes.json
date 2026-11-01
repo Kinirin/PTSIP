@@ -1,12 +1,12 @@
 {
-  "schema_version": "ptsip-policy-routing/v4",
+  "schema_version": "ptsip-policy-routing/v5",
   "identity_sources": {
     "policy_kind": ".ptsip/contracts/policy/identity/policy_kind.json",
     "root_family": ".ptsip/contracts/policy/identity/root_family.json"
   },
   "schema_refs": {
-    "public": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
-    "rules": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+    "public": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+    "rules": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json"
   },
   "routes": {
     "PTSIP_DEVELOPER_POLICY": {

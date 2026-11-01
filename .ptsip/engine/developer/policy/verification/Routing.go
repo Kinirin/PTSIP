@@ -11,7 +11,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
 )
 
 const policyRoutingData = ".ptsip/contracts/policy/routing/policy_routes.json"
@@ -90,7 +89,7 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 	if err != nil {
 		return nil, nil, nil, 0, 0, nil, err
 	}
-	if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v4" {
+	if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v5" {
 		return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTING_SCHEMA_ID_MISMATCH")
 	}
 	sources := routingMembers(routing["identity_sources"])
@@ -137,14 +136,14 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 	// rules contracts, rather than a second map of fourteen schema filenames.
 	schemaRefs := routingMembers(routing["schema_refs"])
 	expectedSchemas := map[string]string{
-		"public": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
-		"rules":  contract_authoring.CommonSchema,
+		"public": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+		"rules":  ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
 	}
 	for key, expected := range expectedSchemas {
 		if routingString(schemaRefs[key]) != expected {
 			return nil, nil, nil, 0, 0, nil, fmt.Errorf("COMMON_SCHEMA_BINDING_MISMATCH: %s", key)
 		}
-		doc, err := routingFile(root, expected, ".ptsip/contracts/schemas/")
+		doc, err := routingFile(root, expected, ".ptsip/contracts/policy/")
 		if err != nil {
 			return nil, nil, nil, 0, 0, nil, err
 		}
@@ -169,11 +168,35 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 	if kinds["PTSIP_DEVELOPER_POLICY"] == nil {
 		return nil, nil, nil, 0, 0, nil, fmt.Errorf("DEVELOPER_OUTPUT_ROUTE_MISSING")
 	}
-	catalog, err := contract_authoring.Load(root)
-	if err != nil {
-		return nil, nil, nil, 0, 0, nil, err
+	// v2 activation and family coverage are checked independently from the
+	// withdrawn v7 authoring catalog. Missing entries fail closed.
+	registry, err := routingFile(root, ".ptsip/contracts/policy/candidate.index.json", ".ptsip/contracts/policy/")
+	if err != nil { return nil, nil, nil, 0, 0, nil, err }
+	if registry["active_registration"] != true || registry["active_policy_cutover"] != "STRUCTURE_V2_ACTIVE" {
+		return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_POLICY_STRUCTURE_NOT_ACTIVE")
 	}
-	registered := len(catalog.Families) * len(kinds)
+	declaredSchemas := routingMembers(registry["schema_refs"])
+	if routingString(declaredSchemas["public"]) != "urn:ptsip:candidate:contract:policy:public-structure:v2" ||
+		routingString(declaredSchemas["rules"]) != "urn:ptsip:candidate:contract:policy:rules:v2" {
+		return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_SCHEMA_REGISTRATION_MISMATCH")
+	}
+	familyRef := routingString(registry["family_selection_ref"])
+	if familyRef != ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json" {
+		return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_FAMILY_SELECTION_NOT_REGISTERED")
+	}
+	selected, err := routingFile(root, familyRef, ".ptsip/contracts/policy/")
+	if err != nil { return nil, nil, nil, 0, 0, nil, err }
+	if selected["active"] != true {
+		return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_FAMILY_SELECTION_INACTIVE")
+	}
+	familyRoutes := routingMembers(selected["family_routes"])
+	for family := range vocabulary["root_family"] {
+		binding := routingMembers(familyRoutes[family])
+		if routingString(binding["rules_schema_ref"]) != routingString(declaredSchemas["rules"]) {
+			return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_FAMILY_BINDING_UNRESOLVED: %s",family)
+		}
+	}
+	registered := len(vocabulary["root_family"]) * len(kinds)
 	return routing, schema, resources, registered, references, identities, nil
 }
 

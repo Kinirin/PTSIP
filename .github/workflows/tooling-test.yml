@@ -52,11 +52,13 @@ jobs:
           PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer test ./policy/verification -count=1
+          go -C .ptsip/engine/developer test ./policy/verification/... -count=1
+          go -C .ptsip/engine/developer test ./policy/test -count=1
           go -C .ptsip/engine/developer test ./internal/contractentry -count=1
           go -C .ptsip/engine/developer test ./policy/review/... -count=1
           python -m unittest discover -s .ptsip/engine/developer/policy/review -p workflow_test.py
-          go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0006.yaml --dry-run
+          go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/ARCH/MPD-ARCH-0001.yaml --dry-run
+          go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/ARCH/MPD-ARCH-0001.yaml
           go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
 
   ptsip-validation-runtime:

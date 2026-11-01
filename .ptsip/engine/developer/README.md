@@ -73,8 +73,8 @@ aliases. The Go selector itself does not depend on Python; the existing
 `policy-check` validator can still use its existing YAML/VALIDATION runtime.
 
 ```powershell
-go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0006.yaml --dry-run
-go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0006.yaml
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/ARCH/MPD-ARCH-0001.yaml --dry-run
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/ARCH/MPD-ARCH-0001.yaml
 go -C .ptsip/engine/developer test ./internal/contractentry -count=1
 ```
 
@@ -86,7 +86,7 @@ is not selected by this developer-policy entry.
 ```powershell
 go -C .ptsip/engine/developer run . --validator developer-layout-check --root ../../..
 go -C .ptsip/engine/developer run . --validator release-documentation --operation check --root ../../..
-go -C .ptsip/engine/developer run . --validator policy-check --root ../../.. --input developer/policy/GOV/MPD-GOV-0006.yaml
+go -C .ptsip/engine/developer run . --validator policy-check --root ../../.. --input developer/policy/ARCH/MPD-ARCH-0001.yaml
 go -C .ptsip/engine/developer run . --validator policy-identity-check --root ../../.. --input developer/policy/GOV/MPD-GOV-0006.yaml
 go -C .ptsip/engine/developer run . --validator policy-status-check --root ../../.. --input developer/policy/GOV/MPD-GOV-0006.yaml
 '{"status":"DRAFT"}' | go -C .ptsip/engine/developer run . --validator plan-status-check --root ../../.. --input -
@@ -236,3 +236,8 @@ All local readers use the platform paths. Historical immutable Profile ZIPs may
 retain their former snapshot member name; the archive reader accepts that name
 as transport data only and rejects duplicate current/historical members. It does
 not read a contract from the former local directory.
+
+The active policy structural check selects v2 via `.ptsip/contracts/policy/candidate.index.json` and
+`Policy_Rules/Family_Selection.json`. The v7 public structure is withdrawn from
+`policy-check`. Policies not yet serialized as v2 fail structural validation;
+no lifecycle approval or execution permission is inferred from a VALID result.

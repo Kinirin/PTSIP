@@ -102,9 +102,9 @@ func TestLifecycleChecksOnlyDeclaredStatusVocabulary(t *testing.T) {
 	}
 }
 
-func TestCurrentPolicyChecksSharedStructureAndConditionalRules(t *testing.T) {
+func TestV2PolicyChecksSharedStructureAndRejectsMissingRules(t *testing.T) {
 	root, validate := repository(t), native(t)
-	document, err := authoring.ReadDocument(root, "developer/policy/GOV/MPD-GOV-0006.yaml")
+	document, err := authoring.ReadDocument(root, "developer/policy/ARCH/MPD-ARCH-0001.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,6 +113,6 @@ func TestCurrentPolicyChecksSharedStructureAndConditionalRules(t *testing.T) {
 	}
 	delete(document, "Policy_Rules")
 	if err := verification.CheckDocument(root, "policy-check", document, validate); err == nil {
-		t.Fatal("missing Rules accepted for selected GOV family")
+		t.Fatal("missing v2 Rules accepted for selected ARCH family")
 	}
 }
