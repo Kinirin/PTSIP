@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
+
 )
 
 const policyRoutingData = ".ptsip/contracts/policy/routing/policy_routes.json"
@@ -220,6 +222,20 @@ func probePolicyRouting(root string, e Engine) RoutingProbe {
 	}
 	if !valid {
 		p.Problem = "ROUTING_CONTRACT_SCHEMA_REJECTED"
+		return p
+	}
+
+	// Independent RBAC resources remain mandatory. Do not reload retired
+	// v7 Family policy schemas just to check authorization contracts.
+	rbac, err := contract_authoring.LoadResponsibilities(root)
+	if err != nil {
+		p.Problem = err.Error()
+		return p
+	}
+	if err := rbac.CheckContracts(func(schema, instance any, resources []any) (bool, error) {
+		return nativeValidate(e, schema, instance, resources)
+	}); err != nil {
+		p.Problem = err.Error()
 		return p
 	}
 	p.Status = "PASS"
