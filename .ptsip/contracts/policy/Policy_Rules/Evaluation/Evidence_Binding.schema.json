@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:evidence-binding:v1",
+  "title": "policy:evidence-binding",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "context_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    },
+    "evidence_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    },
+    "binding_basis_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    }
+  },
+  "required": [
+    "context_ref",
+    "evidence_ref",
+    "binding_basis_ref"
+  ],
+  "additionalProperties": false
+}

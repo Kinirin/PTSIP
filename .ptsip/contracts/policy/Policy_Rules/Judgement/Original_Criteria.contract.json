@@ -1,0 +1,49 @@
+{
+  "contract_id": "urn:ptsip:candidate:policy:judgement:original-criteria",
+  "revision": "1",
+  "meaning_ref": {
+    "source_ref": ".ptsip/contracts/policy/References/Authoring_Basis.json",
+    "item_ref": "/decisions/judgement",
+    "revision_ref": "1"
+  },
+  "source_review_ref": {
+    "source_ref": ".ptsip/contracts/policy/References/MPD-GOV-0001_Source_Review.json",
+    "item_ref": "#",
+    "revision_ref": "1"
+  },
+  "required_checks": {
+    "exact_requirement_source": true,
+    "source_semantics_complete": true,
+    "responsibility_and_target_scope_match": true,
+    "original_criteria_explicitly_bound": true,
+    "applicable_relations_individually_assessed": true,
+    "original_additional_evidence_checked": true
+  },
+  "forbidden_inferences": {
+    "role_binding_implies_fulfillment": false,
+    "relation_summary_alone_implies_fulfillment": false,
+    "source_hash_implies_approval": false,
+    "schema_validity_implies_approval": false,
+    "missing_mapping_implies_no_obligation": false
+  },
+  "outcomes": {
+    "satisfied": "SOURCE_CRITERIA_SATISFIED",
+    "not_satisfied": "SOURCE_CRITERIA_NOT_SATISFIED",
+    "unresolved": "SOURCE_CRITERIA_UNRESOLVED"
+  },
+  "on_incomplete_meaning": "SOURCE_CRITERIA_UNRESOLVED",
+  "on_unassigned_target_or_criteria": "SOURCE_CRITERIA_UNRESOLVED",
+  "authority_granted": false,
+  "input_contract": {
+    "relation_summary_ref": {
+      "source_ref": ".ptsip/contracts/policy/Policy_Rules/Evaluation/Evaluation_Record.schema.json",
+      "item_ref": "/properties/summary",
+      "revision_ref": "sha256:a51de0f8fdfd9e565209870a4b49a7ff1472d542abc591b50519c859f65c7abe"
+    },
+    "source_criteria_ref": {
+      "source_ref": ".ptsip/contracts/policy/References/MPD-GOV-0001_Source_Review.json",
+      "item_ref": "/original_evaluation/criterion_refs",
+      "revision_ref": "1"
+    }
+  }
+}

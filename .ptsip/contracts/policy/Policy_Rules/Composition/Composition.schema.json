@@ -14,12 +14,12 @@
       "minLength": 1
     },
     "meaning_ref": {
-      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
     },
     "basic_relations": {
       "type": "array",
       "items": {
-        "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/RelationUse"
+        "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/RelationUse"
       },
       "minItems": 0,
       "uniqueItems": true
@@ -30,13 +30,13 @@
         "type": "object",
         "properties": {
           "condition_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
           },
           "condition_basis_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "relation": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/RelationUse"
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/RelationUse"
           }
         },
         "required": [

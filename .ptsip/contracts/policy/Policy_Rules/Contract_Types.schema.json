@@ -1,52 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:candidate:contract:policy:types:v1",
-  "title": "policy:types",
-  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "$id": "urn:ptsip:candidate:contract:policy:types:v2",
+  "title": "Policy contract, rule declaration and independent requirement candidates",
+  "$comment": "UNAPPROVED_FIELD_CANDIDATE_V2. Common shape tested across five policy documents. Authoring declarations and unresolved bindings are not semantic equivalence, approval or execution authority.",
   "$defs": {
     "SourceRef": {
-      "type": "object",
-      "properties": {
-        "source_ref": {
-          "type": "string",
-          "minLength": 1
-        },
-        "item_ref": {
-          "type": "string",
-          "minLength": 1
-        },
-        "revision_ref": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [
-        "source_ref",
-        "item_ref",
-        "revision_ref"
-      ],
-      "additionalProperties": false
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
     },
     "ContractSelectionRef": {
-      "type": "object",
-      "properties": {
-        "contract_ref": {
-          "type": "string",
-          "minLength": 1
-        },
-        "compatibility_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-        },
-        "selection_rule_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-        }
-      },
-      "required": [
-        "contract_ref",
-        "compatibility_ref",
-        "selection_rule_ref"
-      ],
-      "additionalProperties": false
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
     },
     "ResponsibilityRef": {
       "$ref": "urn:ptsip:rbac:responsibility:v1#/$defs/ID"
@@ -54,128 +16,111 @@
     "ConditionRef": {
       "$ref": "urn:ptsip:rbac:condition:v1#/$defs/ID"
     },
-    "DirectFields": {
+    "InputBinding": {
       "type": "object",
       "properties": {
-        "target_refs": {
+        "port_ref": {
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+        },
+        "value_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 1,
-          "uniqueItems": true
-        },
-        "preconditions": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ConditionRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "excluded_target_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "reserved_responsibility_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ResponsibilityRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        }
-      },
-      "required": [],
-      "additionalProperties": false
-    },
-    "Requirement": {
-      "type": "object",
-      "properties": {
-        "responsibility_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ResponsibilityRef"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "meaning_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-        },
-        "target_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "preconditions": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ConditionRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "excluded_target_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "reserved_responsibility_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ResponsibilityRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "relation_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
-        },
-        "evidence_requirement_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "judgement_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
-        },
-        "decision_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "minItems": 0,
           "uniqueItems": true
         }
       },
       "required": [
-        "responsibility_refs",
-        "meaning_ref",
-        "target_refs",
-        "relation_ref",
-        "judgement_ref"
+        "port_ref",
+        "value_refs"
       ],
       "additionalProperties": false
+    },
+    "ContractBinding": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "state": {
+              "const": "DECLARED"
+            },
+            "selection": {
+              "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
+            },
+            "basis_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "input_bindings": {
+              "type": "array",
+              "items": {
+                "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/InputBinding"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "state",
+            "selection",
+            "basis_refs"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "state": {
+              "const": "UNRESOLVED"
+            },
+            "source_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "state",
+            "source_refs"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "state": {
+              "const": "NOT_APPLICABLE"
+            },
+            "basis_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "state",
+            "basis_refs"
+          ],
+          "additionalProperties": false
+        }
+      ]
     },
     "Rule": {
       "type": "object",
       "properties": {
         "id": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ResponsibilityRef"
+          "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ResponsibilityRef"
         },
         "rule": {
           "type": "string",
@@ -183,51 +128,686 @@
           "maxLength": 20,
           "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
         },
-        "target_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
         "preconditions": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ConditionRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "excluded_target_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "reserved_responsibility_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ResponsibilityRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "requirements": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/Requirement"
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ConditionRef"
           },
           "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_ref": {
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+        },
+        "authority_ref": {
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+        },
+        "unresolved_fields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "authority_ref"
+            ]
+          },
+          "minItems": 0,
           "uniqueItems": true
         }
       },
       "required": [
         "id",
         "rule",
-        "requirements"
+        "source_ref"
+      ],
+      "additionalProperties": false
+    },
+    "Requirement": {
+      "type": "object",
+      "properties": {
+        "requirement_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "responsibility_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ResponsibilityRef"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "meaning_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "target_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "scope_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "condition_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "constraint_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "criteria_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "evidence_requirement_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "relation_binding": {
+          "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ContractBinding"
+        },
+        "judgement_binding": {
+          "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ContractBinding"
+        },
+        "unresolved_fields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "responsibility_refs",
+              "target_refs",
+              "scope_refs",
+              "condition_refs",
+              "constraint_refs",
+              "criteria_refs",
+              "evidence_requirement_refs"
+            ]
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "empty_field_basis": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "enum": [
+                  "responsibility_refs",
+                  "target_refs",
+                  "scope_refs",
+                  "condition_refs",
+                  "constraint_refs",
+                  "criteria_refs",
+                  "evidence_requirement_refs"
+                ]
+              },
+              "basis_refs": {
+                "type": "array",
+                "items": {
+                  "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "field",
+              "basis_refs"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "requirement_id",
+        "responsibility_refs",
+        "meaning_refs",
+        "target_refs",
+        "scope_refs",
+        "condition_refs",
+        "constraint_refs",
+        "criteria_refs",
+        "evidence_requirement_refs",
+        "relation_binding",
+        "judgement_binding",
+        "unresolved_fields"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "responsibility_refs": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "responsibility_refs"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "unresolved_fields": {
+                    "contains": {
+                      "const": "responsibility_refs"
+                    }
+                  }
+                },
+                "required": [
+                  "unresolved_fields"
+                ]
+              },
+              {
+                "properties": {
+                  "empty_field_basis": {
+                    "contains": {
+                      "properties": {
+                        "field": {
+                          "const": "responsibility_refs"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "empty_field_basis"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "responsibility_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "target_refs": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "target_refs"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "unresolved_fields": {
+                    "contains": {
+                      "const": "target_refs"
+                    }
+                  }
+                },
+                "required": [
+                  "unresolved_fields"
+                ]
+              },
+              {
+                "properties": {
+                  "empty_field_basis": {
+                    "contains": {
+                      "properties": {
+                        "field": {
+                          "const": "target_refs"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "empty_field_basis"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "target_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scope_refs": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "scope_refs"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "unresolved_fields": {
+                    "contains": {
+                      "const": "scope_refs"
+                    }
+                  }
+                },
+                "required": [
+                  "unresolved_fields"
+                ]
+              },
+              {
+                "properties": {
+                  "empty_field_basis": {
+                    "contains": {
+                      "properties": {
+                        "field": {
+                          "const": "scope_refs"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "empty_field_basis"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "scope_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "condition_refs": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "condition_refs"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "unresolved_fields": {
+                    "contains": {
+                      "const": "condition_refs"
+                    }
+                  }
+                },
+                "required": [
+                  "unresolved_fields"
+                ]
+              },
+              {
+                "properties": {
+                  "empty_field_basis": {
+                    "contains": {
+                      "properties": {
+                        "field": {
+                          "const": "condition_refs"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "empty_field_basis"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "condition_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "constraint_refs": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "constraint_refs"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "unresolved_fields": {
+                    "contains": {
+                      "const": "constraint_refs"
+                    }
+                  }
+                },
+                "required": [
+                  "unresolved_fields"
+                ]
+              },
+              {
+                "properties": {
+                  "empty_field_basis": {
+                    "contains": {
+                      "properties": {
+                        "field": {
+                          "const": "constraint_refs"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "empty_field_basis"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "constraint_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "criteria_refs": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "criteria_refs"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "unresolved_fields": {
+                    "contains": {
+                      "const": "criteria_refs"
+                    }
+                  }
+                },
+                "required": [
+                  "unresolved_fields"
+                ]
+              },
+              {
+                "properties": {
+                  "empty_field_basis": {
+                    "contains": {
+                      "properties": {
+                        "field": {
+                          "const": "criteria_refs"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "empty_field_basis"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "criteria_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_requirement_refs": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "evidence_requirement_refs"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "unresolved_fields": {
+                    "contains": {
+                      "const": "evidence_requirement_refs"
+                    }
+                  }
+                },
+                "required": [
+                  "unresolved_fields"
+                ]
+              },
+              {
+                "properties": {
+                  "empty_field_basis": {
+                    "contains": {
+                      "properties": {
+                        "field": {
+                          "const": "evidence_requirement_refs"
+                        }
+                      },
+                      "required": [
+                        "field"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "empty_field_basis"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "evidence_requirement_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SourceItem": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "rule",
+            "scope",
+            "statement",
+            "constraint",
+            "criterion",
+            "record",
+            "annotation"
+          ]
+        },
+        "source_ref": {
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+        }
+      },
+      "required": [
+        "item_id",
+        "role",
+        "source_ref"
       ],
       "additionalProperties": false
     },
@@ -245,16 +825,42 @@
         "rules": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/Rule"
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/Rule"
           },
           "minItems": 1,
+          "uniqueItems": true
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/Requirement"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "source_items": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/SourceItem"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "historical_result_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          },
+          "minItems": 0,
           "uniqueItems": true
         }
       },
       "required": [
         "contract_id",
         "Rule_ver",
-        "rules"
+        "rules",
+        "requirements",
+        "source_items"
       ],
       "additionalProperties": false
     },
@@ -262,15 +868,15 @@
       "type": "object",
       "properties": {
         "port_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
         },
         "responsibility_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ResponsibilityRef"
+          "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ResponsibilityRef"
         },
         "target_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 1,
           "uniqueItems": true
@@ -291,12 +897,12 @@
           "minLength": 1
         },
         "relation_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
         },
         "participant_bindings": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ParticipantBinding"
+            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ParticipantBinding"
           },
           "minItems": 1,
           "uniqueItems": true
@@ -304,7 +910,7 @@
         "applicability_basis_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 1,
           "uniqueItems": true

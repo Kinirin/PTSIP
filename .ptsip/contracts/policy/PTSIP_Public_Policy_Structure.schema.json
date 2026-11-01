@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:candidate:contract:policy:public-structure:v1",
+  "$id": "urn:ptsip:candidate:contract:policy:public-structure:v2",
   "title": "policy:public-structure",
-  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "$comment": "UNAPPROVED_FIELD_CANDIDATE_V2. Common shape tested across five policy documents. Authoring declarations and unresolved bindings are not semantic equivalence, approval or execution authority.",
   "type": "object",
   "properties": {
     "Policy_Identity": {
@@ -12,7 +12,7 @@
       "$ref": "urn:ptsip:candidate:contract:policy:lifecycle:v1"
     },
     "Policy_Rules": {
-      "$ref": "urn:ptsip:candidate:contract:policy:rules:v1"
+      "$ref": "urn:ptsip:candidate:contract:policy:rules:v2"
     }
   },
   "required": [

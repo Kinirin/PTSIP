@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:contract-registry:v2",
+  "title": "Generic policy contract registry",
+  "$comment": "FIELD_REVIEW_CANDIDATE. Defines reusable serialization shape only. Registered contract data owns algorithms, compatibility, admission and outcome semantics. Schema validation does not grant policy authority or execution permission.",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "ptsip-policy-contract-registry/v1"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contracts": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "revisions": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "content_ref": {
+                  "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+                },
+                "schema_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "admission_refs": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "content_ref",
+                "schema_ref",
+                "admission_refs"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "revisions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "compatibility_sets": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "contract_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "allowed_revisions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "basis_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "contract_ref",
+          "allowed_revisions",
+          "basis_refs"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "format",
+    "revision",
+    "contracts",
+    "compatibility_sets"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "contract_id": "urn:ptsip:candidate:policy:judgement:requirement",
+  "revision": "1",
+  "meaning_ref": {
+    "source_ref": ".ptsip/contracts/policy/References/Authoring_Basis.json",
+    "item_ref": "/decisions/judgement",
+    "revision_ref": "1"
+  },
+  "relation_summary_input_ref": {
+    "source_ref": ".ptsip/contracts/policy/Policy_Rules/Judgement/Original_Criteria.contract.json",
+    "item_ref": "/input_contract/relation_summary_ref",
+    "revision_ref": "1"
+  },
+  "additional_evidence_requirement_refs": [],
+  "decision_rule_ref": {
+    "contract_ref": "urn:ptsip:candidate:policy:judgement:original-criteria",
+    "compatibility_ref": {
+      "source_ref": ".ptsip/contracts/policy/References/Contract_Registry.json",
+      "item_ref": "/compatibility",
+      "revision_ref": "1"
+    },
+    "selection_rule_ref": {
+      "source_ref": ".ptsip/contracts/policy/References/Contract_Selection.contract.json",
+      "item_ref": "/selection_rule",
+      "revision_ref": "1"
+    }
+  }
+}

@@ -17,12 +17,12 @@
       "const": "role_link"
     },
     "meaning_ref": {
-      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
     },
     "role_definition_refs": {
       "type": "array",
       "items": {
-        "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+        "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
       },
       "minItems": 1,
       "uniqueItems": true

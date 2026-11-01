@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:judgement-rule:v2",
+  "title": "Generic policy requirement judgement rule",
+  "$comment": "FIELD_REVIEW_CANDIDATE. Defines reusable serialization shape only. Registered contract data owns algorithms, compatibility, admission and outcome semantics. Schema validation does not grant policy authority or execution permission.",
+  "type": "object",
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "meaning_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "input_ports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "port_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contract_ref": {
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "port_id",
+          "contract_ref",
+          "required"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "criterion_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "rule_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    },
+    "outcome_contract_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
+    }
+  },
+  "required": [
+    "contract_id",
+    "revision",
+    "meaning_refs",
+    "input_ports",
+    "criterion_refs",
+    "rule_ref",
+    "outcome_contract_ref"
+  ],
+  "additionalProperties": false
+}

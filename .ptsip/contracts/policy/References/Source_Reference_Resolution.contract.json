@@ -1,0 +1,18 @@
+{
+  "contract_id": "urn:ptsip:candidate:policy:source-resolution",
+  "revision": "1",
+  "stage": "FIELD_REVIEW",
+  "source_ref_format": "REPOSITORY_RELATIVE_POSIX_PATH",
+  "source_ref_scope": "EXACT_REPOSITORY_FILE_NO_PATH_ESCAPE",
+  "item_ref_format": "JSON_POINTER_OR_HASH_ROOT",
+  "root_item_ref": "#",
+  "revision_forms": {
+    "git": "git:<exact 40-hex repository commit>; read the source path from that commit without writing it back",
+    "sha256": "sha256:<exact lowercase 64-hex content digest>; verify exact repository file bytes",
+    "declared": "Exact document revision value; schema files instead use a content hash"
+  },
+  "identity_check": "A source pointer is a locator. Match any available source identity independently; a locator alone does not assign responsibility, scope, approval or authority.",
+  "no_name_based_identity": true,
+  "no_historical_source_authority_promotion": true,
+  "missing_or_ambiguous": "UNRESOLVED"
+}

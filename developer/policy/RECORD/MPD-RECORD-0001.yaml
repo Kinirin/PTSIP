@@ -1,3 +1,6 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
+# UNAPPROVED cross-policy field candidate. Identity/status are retained; authoring does not admit runtime use.
+# Source inventory and unresolved assignments are distinct from policy fulfillment.
 Policy_Identity:
   id: MPD-RECORD-0001
   policy_kind: PTSIP_DEVELOPER_POLICY
@@ -8,28 +11,237 @@ Policy_Status:
   status: APPROVED.Unresolved
   contract: urn:ptsip:contract:policy:record:responsibility:orchestration
 Policy_Rules:
-  Identity:
-    contract_id: urn:ptsip:policy:rule:record:responsibility-orchestration
-    Rule_ver: '1'
-  Definition:
-  - id: R-ID-2791BF0E5A354FC58D837882A10BD867
-    rule: RECORD-ORCHESTRATION
-  Boundary:
-    scope: RECORD responsibilities and subordinate policy boundaries for decision and document records in the Kinirin/PTSIP developer control plane
-    subjects:
-    - RECORD describes and separates the responsibilities for decisions concerning policy documents, decisions concerning work-plan documents, and release-note records.
-    - This orchestration policy makes RECORD responsibilities and roles explicit so that users and AI agents can assess and recommend a suitable Root Family when policy classification is ambiguous.
-    - MPD-RECORD-0002 owns policy-decision recording, MPD-RECORD-0003 owns work-plan decision recording, and MPD-RECORD-0004 owns release-note recording.
-    - The orchestration document connects subordinate responsibilities without concentrating every recording method and detailed contract in one policy.
-    - This revision follows the user's new declaration of 2026-11-01. Historical implementation observations, earlier plans, approval history, and the provisional contract candidate are not inherited wholesale as new normative content.
-    exclusions:
-    - GOV retains responsibility for the legitimacy of policy decisions and approvals and the scope of delegation. RECORD recording responsibilities and Family recommendations do not replace GOV.
-    - Using a Family recommendation to automatically settle unresolved classification, routing, lifecycle status, or execution authority.
-    - Consumer-repository PTSIP feature declarations, implementation, and activation are outside this developer-policy revision and remain a separate Support Feature follow-up.
-  Evaluation:
-    criteria:
-      evidence:
-      - Review whether the orchestration policy states RECORD responsibilities, roles, and subordinate document boundaries explicitly.
-      - Review whether policy decisions, work-plan decisions, and release-note records have separate responsibilities.
-      - Review whether Family recommendations remain distinct from policy authority and machine routing.
-  title: RECORD responsibilities and policy document orchestration
+  contracts:
+    - contract_id: urn:ptsip:policy:rule:record:responsibility-orchestration
+      Rule_ver: '2'
+      rules:
+        - id: R-ID-2791BF0E5A354FC58D837882A10BD867
+          rule: RECORD-ORCHESTRATION
+          source_ref: &ref_011
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Definition/0
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          authority_ref:
+            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+            item_ref: /component_bindings/R-ID-2791BF0E5A354FC58D837882A10BD867
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      requirements:
+        - requirement_id: REQ-0001
+          responsibility_refs: &ref_002
+            - R-ID-2791BF0E5A354FC58D837882A10BD867
+          meaning_refs:
+            - &ref_001
+              source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+              item_ref: /Policy_Rules/Boundary/subjects/0
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs: []
+          scope_refs:
+            - &ref_003
+              source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+              item_ref: /Policy_Rules/Boundary/scope
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding:
+            state: UNRESOLVED
+            source_refs:
+              - *ref_001
+          judgement_binding: &ref_005
+            state: UNRESOLVED
+            source_refs:
+              - source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+                item_ref: /Policy_Rules/Evaluation/criteria
+                revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          unresolved_fields: &ref_006
+            - responsibility_refs
+            - target_refs
+            - condition_refs
+            - constraint_refs
+            - criteria_refs
+            - evidence_requirement_refs
+        - requirement_id: REQ-0002
+          responsibility_refs: *ref_002
+          meaning_refs:
+            - &ref_004
+              source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+              item_ref: /Policy_Rules/Boundary/subjects/1
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs: []
+          scope_refs:
+            - *ref_003
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding:
+            state: UNRESOLVED
+            source_refs:
+              - *ref_004
+          judgement_binding: *ref_005
+          unresolved_fields: *ref_006
+        - requirement_id: REQ-0003-1
+          responsibility_refs: *ref_002
+          meaning_refs:
+            - &ref_007
+              source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+              item_ref: /Policy_Rules/Boundary/subjects/2
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+            - source_ref: developer/policy/RECORD/MPD-RECORD-0002.yaml
+              item_ref: /Policy_Rules/Boundary/scope
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs:
+            - source_ref: developer/policy/RECORD/MPD-RECORD-0002.yaml
+              item_ref: /Policy_Identity
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          scope_refs:
+            - *ref_003
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding: &ref_008
+            state: UNRESOLVED
+            source_refs:
+              - *ref_007
+          judgement_binding: *ref_005
+          unresolved_fields: &ref_009
+            - responsibility_refs
+            - condition_refs
+            - constraint_refs
+            - criteria_refs
+            - evidence_requirement_refs
+        - requirement_id: REQ-0003-2
+          responsibility_refs: *ref_002
+          meaning_refs:
+            - *ref_007
+            - source_ref: developer/policy/RECORD/MPD-RECORD-0003.yaml
+              item_ref: /Policy_Rules/Boundary/scope
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs:
+            - source_ref: developer/policy/RECORD/MPD-RECORD-0003.yaml
+              item_ref: /Policy_Identity
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          scope_refs:
+            - *ref_003
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding: *ref_008
+          judgement_binding: *ref_005
+          unresolved_fields: *ref_009
+        - requirement_id: REQ-0003-3
+          responsibility_refs: *ref_002
+          meaning_refs:
+            - *ref_007
+            - source_ref: developer/policy/RECORD/MPD-RECORD-0004.yaml
+              item_ref: /Policy_Rules/Boundary/scope
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs:
+            - source_ref: developer/policy/RECORD/MPD-RECORD-0004.yaml
+              item_ref: /Policy_Identity
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          scope_refs:
+            - *ref_003
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding: *ref_008
+          judgement_binding: *ref_005
+          unresolved_fields: *ref_009
+        - requirement_id: REQ-0004
+          responsibility_refs: *ref_002
+          meaning_refs:
+            - &ref_010
+              source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+              item_ref: /Policy_Rules/Boundary/subjects/3
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs: []
+          scope_refs:
+            - *ref_003
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding:
+            state: UNRESOLVED
+            source_refs:
+              - *ref_010
+          judgement_binding: *ref_005
+          unresolved_fields: *ref_006
+      source_items:
+        - item_id: SRC-0001
+          role: rule
+          source_ref: *ref_011
+        - item_id: SRC-0002
+          role: scope
+          source_ref: *ref_003
+        - item_id: SRC-0003
+          role: statement
+          source_ref: *ref_001
+        - item_id: SRC-0004
+          role: statement
+          source_ref: *ref_004
+        - item_id: SRC-0005
+          role: statement
+          source_ref: *ref_007
+        - item_id: SRC-0006
+          role: statement
+          source_ref: *ref_010
+        - item_id: SRC-0007
+          role: annotation
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Boundary/subjects/4
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0008
+          role: constraint
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Boundary/exclusions/0
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0009
+          role: constraint
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Boundary/exclusions/1
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0010
+          role: constraint
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Boundary/exclusions/2
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0011
+          role: criterion
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0012
+          role: criterion
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0013
+          role: criterion
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0014
+          role: annotation
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/title
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0015
+          role: annotation
+          source_ref:
+            source_ref: developer/policy/RECORD/MPD-RECORD-0001.yaml
+            item_ref: /Policy_Rules/Identity
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47

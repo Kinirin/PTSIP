@@ -1,0 +1,44 @@
+{
+  "format": "ptsip-policy-role-link-meaning/v1",
+  "revision": "1",
+  "stage": "FIELD_REVIEW",
+  "meaning": {
+    "proposition": "EXPLICIT_RESPONSIBILITY_ROLE_BINDING",
+    "decision_basis_refs": [
+      {
+        "source_ref": ".ptsip/contracts/policy/References/Authoring_Basis.json",
+        "item_ref": "/decisions/direct_responsibility",
+        "revision_ref": "1"
+      },
+      {
+        "source_ref": ".ptsip/contracts/policy/References/Authoring_Basis.json",
+        "item_ref": "/decisions/role_link",
+        "revision_ref": "1"
+      }
+    ],
+    "input_ownership": "EXPLICIT_ROLE_DEFINITION_AND_PARTICIPANT_BINDING",
+    "evaluation_scope": "PARTICIPATION_STRUCTURE_ONLY",
+    "infer_roles_from_rule_names": false,
+    "infer_roles_from_rids": false,
+    "fulfillment_claim": false,
+    "authority_granted": false,
+    "application_requires": [
+      "INDEPENDENT_ASSESSMENT_A",
+      "ORIGINAL_GROUNDED_ASSESSMENT_B",
+      "CORRESPONDENCE_CHECK"
+    ],
+    "declaration_is_not_application_basis": true
+  },
+  "roles": {
+    "declared_responsibility": {
+      "role_id": "declared_responsibility",
+      "purpose": "Identify the R-ID explicitly declared for a candidate requirement; make no claim about its substantive fulfillment.",
+      "definition_basis_ref": {
+        "source_ref": ".ptsip/contracts/policy/References/Authoring_Basis.json",
+        "item_ref": "/decisions/direct_responsibility",
+        "revision_ref": "1"
+      },
+      "does_not_define_responsibility_meaning": true
+    }
+  }
+}

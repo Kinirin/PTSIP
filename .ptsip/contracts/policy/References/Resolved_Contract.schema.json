@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:reference:resolved-contract:v1",
+  "title": "policy:reference:resolved-contract",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "request_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    },
+    "contract_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolved_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    },
+    "compatibility_evidence_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    },
+    "selection_evidence_ref": {
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    }
+  },
+  "required": [
+    "request_ref",
+    "contract_ref",
+    "resolved_version",
+    "content_ref",
+    "compatibility_evidence_ref",
+    "selection_evidence_ref"
+  ],
+  "additionalProperties": false
+}

@@ -17,13 +17,13 @@
       "const": "alternative_satisfaction"
     },
     "meaning_ref": {
-      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
     },
     "logic": {
       "const": "AT_LEAST_ONE"
     },
     "alternative_eligibility_ref": {
-      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/ContractSelectionRef"
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
     }
   },
   "required": [

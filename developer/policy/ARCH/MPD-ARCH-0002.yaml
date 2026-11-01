@@ -1,36 +1,186 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
+# UNAPPROVED cross-policy field candidate. Identity/status are retained; authoring does not admit runtime use.
+# Source inventory and unresolved assignments are distinct from policy fulfillment.
 Policy_Identity:
-  id: "MPD-ARCH-0002"
-  policy_kind: "PTSIP_DEVELOPER_POLICY"
-  root_family: "ARCH"
-  title: "ARCH 정책·계획·구현 권한 계층의 분리"
+  id: MPD-ARCH-0002
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: ARCH
+  title: ARCH 정책·계획·구현 권한 계층의 분리
 Policy_Status:
-  Policy_Status_Schema_ver: "1"
-  status: "APPROVED.Application_Problems"
-  contract: "urn:ptsip:contract:policy:arch:authority-layer:separation"
+  Policy_Status_Schema_ver: '1'
+  status: APPROVED.Application_Problems
+  contract: urn:ptsip:contract:policy:arch:authority-layer:separation
 Policy_Rules:
-  Identity:
-    contract_id: "urn:ptsip:policy:rule:arch:authority-layer"
-    Rule_ver: "1"
-  Definition:
-    - id: "R-ID-AFB9CA12F7BE4D9C946960BCE6B79B4F"
-      rule: "POLICY-PLAN-LAYERS"
-    - id: "R-ID-5C5ECE193926457CBEE2887CEE7A9330"
-      rule: "PLAN-APPROVAL-GATE"
-    - id: "R-ID-BD3E9B19FD1441AFAFECE2490BB6AB46"
-      rule: "NO-IMPL-PLAN-AUTH"
-  title: "ARCH 정책·계획·구현 권한 계층의 분리"
-  Boundary:
-    scope: "개발 정책·계획·구현 산출물의 상하 관계와 상호 독립적인 권한 경계"
-    subjects:
-      - "POLICY > PLAN > IMPLEMENTATION 계층과 책임 소유"
-      - "정책 승인과 계획 승인 및 구현 허가의 독립성"
-      - "구현 산출물의 계획 완료 권한 비승계"
-    exclusions:
-      - "작업 단위 우선순위·실행 순서·의존관계 및 과거 Work Unit 등록 정책"
-      - "개별 계획 필드·구현 단계의 상세 형식 및 실행 허가 출처의 생성"
-  Evaluation:
-    criteria:
-      evidence:
-        - "정책·계획·구현의 권한 소유가 분리되어 있음"
-        - "정책 승인만으로 계획 승인이 발생하지 않음"
-        - "구현 산출물이 계획 완료 여부를 독립적으로 선언하지 않음"
+  contracts:
+    - contract_id: urn:ptsip:policy:rule:arch:authority-layer
+      Rule_ver: '2'
+      rules:
+        - id: R-ID-AFB9CA12F7BE4D9C946960BCE6B79B4F
+          rule: POLICY-PLAN-LAYERS
+          source_ref: &ref_007
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Definition/0
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          authority_ref:
+            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+            item_ref: /component_bindings/R-ID-AFB9CA12F7BE4D9C946960BCE6B79B4F
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - id: R-ID-5C5ECE193926457CBEE2887CEE7A9330
+          rule: PLAN-APPROVAL-GATE
+          source_ref: &ref_008
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Definition/1
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          authority_ref:
+            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+            item_ref: /component_bindings/R-ID-5C5ECE193926457CBEE2887CEE7A9330
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - id: R-ID-BD3E9B19FD1441AFAFECE2490BB6AB46
+          rule: NO-IMPL-PLAN-AUTH
+          source_ref: &ref_009
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Definition/2
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          authority_ref:
+            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+            item_ref: /component_bindings/R-ID-BD3E9B19FD1441AFAFECE2490BB6AB46
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      requirements:
+        - requirement_id: REQ-0001
+          responsibility_refs: []
+          meaning_refs:
+            - &ref_001
+              source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+              item_ref: /Policy_Rules/Boundary/subjects/0
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs: []
+          scope_refs:
+            - &ref_002
+              source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+              item_ref: /Policy_Rules/Boundary/scope
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding:
+            state: UNRESOLVED
+            source_refs:
+              - *ref_001
+          judgement_binding: &ref_004
+            state: UNRESOLVED
+            source_refs:
+              - source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+                item_ref: /Policy_Rules/Evaluation/criteria
+                revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          unresolved_fields: &ref_005
+            - responsibility_refs
+            - target_refs
+            - condition_refs
+            - constraint_refs
+            - criteria_refs
+            - evidence_requirement_refs
+        - requirement_id: REQ-0002
+          responsibility_refs: []
+          meaning_refs:
+            - &ref_003
+              source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+              item_ref: /Policy_Rules/Boundary/subjects/1
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs: []
+          scope_refs:
+            - *ref_002
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding:
+            state: UNRESOLVED
+            source_refs:
+              - *ref_003
+          judgement_binding: *ref_004
+          unresolved_fields: *ref_005
+        - requirement_id: REQ-0003
+          responsibility_refs: []
+          meaning_refs:
+            - &ref_006
+              source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+              item_ref: /Policy_Rules/Boundary/subjects/2
+              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          target_refs: []
+          scope_refs:
+            - *ref_002
+          condition_refs: []
+          constraint_refs: []
+          criteria_refs: []
+          evidence_requirement_refs: []
+          relation_binding:
+            state: UNRESOLVED
+            source_refs:
+              - *ref_006
+          judgement_binding: *ref_004
+          unresolved_fields: *ref_005
+      source_items:
+        - item_id: SRC-0001
+          role: rule
+          source_ref: *ref_007
+        - item_id: SRC-0002
+          role: rule
+          source_ref: *ref_008
+        - item_id: SRC-0003
+          role: rule
+          source_ref: *ref_009
+        - item_id: SRC-0004
+          role: scope
+          source_ref: *ref_002
+        - item_id: SRC-0005
+          role: statement
+          source_ref: *ref_001
+        - item_id: SRC-0006
+          role: statement
+          source_ref: *ref_003
+        - item_id: SRC-0007
+          role: statement
+          source_ref: *ref_006
+        - item_id: SRC-0008
+          role: constraint
+          source_ref:
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Boundary/exclusions/0
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0009
+          role: constraint
+          source_ref:
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Boundary/exclusions/1
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0010
+          role: criterion
+          source_ref:
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0011
+          role: criterion
+          source_ref:
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0012
+          role: criterion
+          source_ref:
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0013
+          role: annotation
+          source_ref:
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/title
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+        - item_id: SRC-0014
+          role: annotation
+          source_ref:
+            source_ref: developer/policy/ARCH/MPD-ARCH-0002.yaml
+            item_ref: /Policy_Rules/Identity
+            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47

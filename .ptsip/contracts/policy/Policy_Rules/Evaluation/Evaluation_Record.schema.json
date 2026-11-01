@@ -1,70 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:candidate:contract:policy:evaluation-record:v1",
+  "$id": "urn:ptsip:candidate:contract:policy:evaluation-record:v2",
   "title": "policy:evaluation-record",
-  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "$comment": "UNAPPROVED common evaluation record candidate. Relation sections are present only when responsibility relations are recorded; a scalar requirement does not require a fabricated relation summary.",
   "type": "object",
   "properties": {
     "context": {
-      "type": "object",
-      "properties": {
-        "context_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "requirement_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-        },
-        "target_scope_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-        },
-        "evaluation_case_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-        }
-      },
-      "required": [
-        "context_id",
-        "requirement_ref",
-        "target_scope_ref",
-        "evaluation_case_ref"
-      ],
-      "additionalProperties": false
+      "$ref": "urn:ptsip:candidate:contract:policy:evaluation-context:v1"
     },
     "resolved_contracts": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "request_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "contract_ref": {
-            "type": "string",
-            "minLength": 1
-          },
-          "resolved_version": {
-            "type": "string",
-            "minLength": 1
-          },
-          "content_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "compatibility_evidence_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          },
-          "selection_evidence_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
-          }
-        },
-        "required": [
-          "request_ref",
-          "contract_ref",
-          "resolved_version",
-          "content_ref",
-          "compatibility_evidence_ref",
-          "selection_evidence_ref"
-        ],
-        "additionalProperties": false
+        "$ref": "urn:ptsip:candidate:contract:policy:reference:resolved-contract:v1"
       },
       "minItems": 1,
       "uniqueItems": true
@@ -79,13 +26,13 @@
             "minLength": 1
           },
           "assessment_a_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "assessment_b_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "correspondence_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           }
         },
         "required": [
@@ -114,7 +61,7 @@
         "condition_not_met_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 0,
           "uniqueItems": true
@@ -122,7 +69,7 @@
         "unresolved_application_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 0,
           "uniqueItems": true
@@ -145,15 +92,15 @@
             "minLength": 1
           },
           "context_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "outcome_ref": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "evidence_refs": {
             "type": "array",
             "items": {
-              "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+              "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
             },
             "minItems": 1,
             "uniqueItems": true
@@ -174,12 +121,12 @@
       "type": "object",
       "properties": {
         "summary_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
         },
         "individual_result_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 0,
           "uniqueItems": true
@@ -187,7 +134,7 @@
         "non_satisfaction_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 0,
           "uniqueItems": true
@@ -195,7 +142,7 @@
         "unresolved_refs": {
           "type": "array",
           "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+            "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
           "minItems": 0,
           "uniqueItems": true
@@ -210,16 +157,51 @@
       "additionalProperties": false
     },
     "judgement_result_ref": {
-      "$ref": "urn:ptsip:candidate:contract:policy:types:v1#/$defs/SourceRef"
+      "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+    },
+    "evidence_bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:candidate:contract:policy:evidence-binding:v1"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "criterion_result_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+      },
+      "minItems": 0,
+      "uniqueItems": true
     }
   },
   "required": [
     "context",
     "resolved_contracts",
-    "relation_assessments",
-    "application_resolution",
-    "relation_results",
-    "summary"
+    "evidence_bindings"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "dependentRequired": {
+    "relation_assessments": [
+      "application_resolution",
+      "relation_results",
+      "summary"
+    ],
+    "application_resolution": [
+      "relation_assessments",
+      "relation_results",
+      "summary"
+    ],
+    "relation_results": [
+      "relation_assessments",
+      "application_resolution",
+      "summary"
+    ],
+    "summary": [
+      "relation_assessments",
+      "application_resolution",
+      "relation_results"
+    ]
+  }
 }

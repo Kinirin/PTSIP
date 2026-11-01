@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:reference:source:v1",
+  "title": "policy:reference:source",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
+  "type": "object",
+  "properties": {
+    "source_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "item_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision_ref": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "source_ref",
+    "item_ref",
+    "revision_ref"
+  ],
+  "additionalProperties": false
+}

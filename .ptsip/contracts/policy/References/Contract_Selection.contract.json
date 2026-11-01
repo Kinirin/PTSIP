@@ -1,0 +1,23 @@
+{
+  "contract_id": "urn:ptsip:candidate:policy:selection:unique-admitted-version",
+  "revision": "1",
+  "meaning_ref": {
+    "source_ref": ".ptsip/contracts/policy/References/Authoring_Basis.json",
+    "item_ref": "/decisions/compatibility",
+    "revision_ref": "1"
+  },
+  "selection_rule": {
+    "eligible_registry_ref": {
+      "source_ref": ".ptsip/contracts/policy/References/Contract_Registry.json",
+      "item_ref": "/contracts",
+      "revision_ref": "1"
+    },
+    "cardinality": "EXACTLY_ONE_ELIGIBLE_REVISION",
+    "version_ordering": "NONE",
+    "on_zero": "UNRESOLVED",
+    "on_multiple": "AMBIGUOUS",
+    "freeze_before_evaluation": true,
+    "preserve_content_reference": true,
+    "normative_admission": "REQUIRED_SEPARATELY"
+  }
+}

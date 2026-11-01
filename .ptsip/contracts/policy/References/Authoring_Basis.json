@@ -1,0 +1,48 @@
+{
+  "format": "ptsip-policy-candidate-authoring-basis/v1",
+  "revision": "1",
+  "stage": "FIELD_REVIEW",
+  "source_kind": "USER_EXPLICIT_CURRENT_CONVERSATION",
+  "recorded_on": "2026-11-01",
+  "applies_to": "MPD-GOV-0001 authoring and its referenced candidate contracts",
+  "runtime_approval": false,
+  "decisions": {
+    "direct_responsibility": {
+      "statement": "책임 결합형 규칙별 책임 관계는 직접 선언하고 의미 원본은 참조 하는 방식으로 개별 요구 사항을 식별하게 합니다",
+      "scope": "EXPLICIT_RESPONSIBILITY_BINDING_AND_SOURCE_REFERENCE"
+    },
+    "role_link": {
+      "statement": "이 관계가 판단하는 것은 필요한 역할에 정확한 책임이 연결됐는지입니다.",
+      "scope": "PARTICIPATION_STRUCTURE_ONLY"
+    },
+    "hierarchical_composition": {
+      "statement": "개별 관계의 의미는 독립 관계 계약에 유지하고, 조합 계약은 복수 관계의 적용·연결·결과 조합만 소유하도록 합니다.",
+      "scope": "COMPOSITION_BOUNDARY"
+    },
+    "summary": {
+      "statement": "각 관계가 자기 판정 기준을 충족했는지 모두 확인하고, 불성립·미확인 내역을 함께 반환합니다.",
+      "scope": "ALL_APPLICABLE_RELATIONS"
+    },
+    "judgement": {
+      "statement": "관계 조합 결과와 원본이 요구하는 다른 증거를 함께 사용하며, 원본의 충족 기준에 따라 판단합니다.",
+      "scope": "EXPLICIT_REQUIREMENT_JUDGEMENT"
+    },
+    "compatibility": {
+      "statement": "허용 버전 범위와 결정 규칙을 등록하고, 해석기가 선택한 정확한 버전을 평가 전에 고정합니다.",
+      "scope": "VERSION_SELECTION_AND_FREEZE"
+    },
+    "define_before_authoring": {
+      "statement": "실제 계약과 선택 근거를 먼저 마련한 뒤 정책을 작성합니다.",
+      "scope": "CANDIDATE_CONTRACT_AUTHORING"
+    }
+  },
+  "implementation_choices": {
+    "initial_compatible_revision_set": [
+      "1"
+    ],
+    "choice_scope": "FIELD_REVIEW_ONLY",
+    "singleton_resolution": "No latest-version preference or numeric/SemVer ordering is introduced.",
+    "normative_admission": "NOT_GRANTED",
+    "note": "The concrete candidate revision set and serialization vocabulary are authoring choices, not a record of normative version approval."
+  }
+}
