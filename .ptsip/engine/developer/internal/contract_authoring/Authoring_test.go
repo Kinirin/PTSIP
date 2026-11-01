@@ -320,3 +320,75 @@ func TestGenerationCLILeavesDefaultAndFailureUnwritten(t *testing.T) {
 		t.Fatal("unspecified component assignments generated")
 	}
 }
+
+func TestAuthoringAndDirectValidationRequireLiveRegisteredSelection(t *testing.T) {
+	catalog, _ := nativeCatalog(t)
+	input := policyFixture(t, catalog, "developer/policy/ARCH/MPD-ARCH-0001.yaml")
+	root := t.TempDir()
+	for _, relative := range []string{
+		".ptsip/index.json", ".ptsip/contracts/index.json", ".ptsip/engine/developer/index.json",
+		".ptsip/contracts/policy/boundary.json", ".ptsip/contracts/policy/routing/policy_routes.json",
+		".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json", ".ptsip/contracts/policy/candidate.index.json",
+		".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
+		".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+		".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+	} {
+		data, err := os.ReadFile(filepath.Join(catalog.Root, filepath.FromSlash(relative)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		name := filepath.Join(root, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(name), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(name, data, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	catalog.Root = root // A previously loaded catalog must not bypass a changed route.
+	routePath := filepath.Join(root, ".ptsip/contracts/policy/routing/policy_routes.json")
+	raw, err := os.ReadFile(routePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	routes := doc(string(raw))
+	routes["schema_refs"].(map[string]any)["rules"] = ".ptsip/contracts/policy/Rules/ARCH_rules.json"
+	raw, _ = json.Marshal(routes)
+	if err := os.WriteFile(routePath, raw, 0644); err != nil {
+		t.Fatal(err)
+	}
+	calls := 0
+	validate := func(any, any, []any) (bool, error) { calls++; return true, nil }
+	if _, _, err := catalog.GenerateRules(validate, input, "ARCH"); err == nil || !strings.Contains(err.Error(), "V2_POLICY_ROUTE_UNRESOLVED") {
+		t.Fatalf("authoring bypassed live selection: %v", err)
+	}
+	if err := schema_check.CheckDocument(root, "policy-check", input, validate); err == nil || !strings.Contains(err.Error(), "V2_POLICY_ROUTE_UNRESOLVED") {
+		t.Fatalf("direct policy-check bypassed live selection: %v", err)
+	}
+	if calls != 0 {
+		t.Fatal("validation ran before registered selection")
+	}
+}
+
+func TestPolicyAuthoringReportsSelectionAndRejectsContractOutput(t *testing.T) {
+	catalog, validate := nativeCatalog(t)
+	input := "developer/policy/ARCH/MPD-ARCH-0001.yaml"
+	result, code := authoring.Run(catalog.Root, "policy-rules", "generate", "ARCH", input, "", validate)
+	if code != 0 {
+		t.Fatal(result)
+	}
+	selection, ok := result.(map[string]any)["selection"].(authoring.PolicySelection)
+	if !ok || selection.SchemaIDs["public"] != catalog.Common["$id"] || selection.RootFamily != "ARCH" {
+		t.Fatalf("authoring selection omitted or mismatched: %v", result)
+	}
+	result, code = authoring.Run(catalog.Root, "policy-rules", "generate", "ARCH", input,
+		".ptsip/contracts/policy/Rules/must-not-be-generated.json", validate)
+	if code != 2 || !strings.Contains(result.(map[string]any)["problem"].(string), "POLICY_OUTPUT_OUTSIDE_REGISTERED_ROUTE") {
+		t.Fatalf("policy written to contract directory: %v", result)
+	}
+	for _, path := range []string{".ptsip/contracts/policy/Rules/ARCH_rules.json", ".ptsip/contracts/policy/rules/ARCH_rules.json", `.ptsip\contracts\policy\Rules\ARCH_rules.json`} {
+		if err := authoring.CheckPolicyContractPath(path); err == nil {
+			t.Fatalf("accepted retired resource: %s", path)
+		}
+	}
+}

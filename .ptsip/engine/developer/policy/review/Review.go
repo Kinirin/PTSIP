@@ -208,21 +208,61 @@ func Build(root string, targets, sources []string) (Packet, error) {
 			target.SelectionProblem = err.Error()
 		} else {
 			target.Selection = &selection
-			for _, ref := range selection.ContractRefs {
+			for name, ref := range selection.ContractRefs {
+				if name == "family_fields" {
+					continue // Registered schema URN + fragment, not a local file.
+				}
 				if err := record(ref); err != nil {
 					return packet, err
 				}
 			}
-			family, err := read(selection.ContractRefs["family"])
+			rulesSchema, err := read(selection.ContractRefs["selection_schema"])
 			if err != nil {
 				return packet, err
 			}
-			shape, ok := family["structure"].(map[string]any)
+			resourceID, fragment, ok := strings.Cut(selection.ContractRefs["family_fields"], "#")
+			if !ok || rulesSchema["$id"] != resourceID {
+				return packet, fmt.Errorf("SELECTED_SCHEMA_REFERENCE_UNRESOLVED")
+			}
+			if _, err := Pointer(rulesSchema, fragment); err != nil {
+				return packet, err
+			}
+			registry, err := read(selection.ContractRefs["v2_registry"])
+			if err != nil {
+				return packet, err
+			}
+			// Capture the registered resource files, without resolving a URN as
+			// a filesystem path or treating historical evidence as a contract.
+			artifacts, ok := registry["artifacts"].([]any)
 			if !ok {
-				return packet, fmt.Errorf("SELECTED_STRUCTURE_UNAVAILABLE")
+				return packet, fmt.Errorf("V2_SCHEMA_ARTIFACTS_MISSING")
+			}
+			for _, raw := range artifacts {
+				item, _ := raw.(map[string]any)
+				if item["kind"] != "SCHEMA" {
+					continue
+				}
+				ref, _ := item["path"].(string)
+				if err := authoring.CheckPolicyContractPath(ref); err != nil {
+					return packet, err
+				}
+				if err := record(ref); err != nil {
+					return packet, err
+				}
+			}
+			external, _ := registry["external_resources"].(map[string]any)
+			for _, raw := range external {
+				item, _ := raw.(map[string]any)
+				ref, _ := item["path"].(string)
+				if err := authoring.CheckPolicyContractPath(ref); err != nil {
+					return packet, err
+				}
+				if err := record(ref); err != nil {
+					return packet, err
+				}
 			}
 			if rules, present := doc["Policy_Rules"]; present {
-				target.FieldFindings = Inventory(shape, rules, "/Policy_Rules")
+				target.FieldFindings = Inventory(rulesSchema, rules, "/Policy_Rules")
 			} else {
 				target.FieldFindings = append(target.FieldFindings, Finding{"/Policy_Rules", "MISSING_DECLARED_FIELD"})
 			}

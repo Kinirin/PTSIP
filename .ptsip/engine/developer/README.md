@@ -94,16 +94,16 @@ go -C .ptsip/engine/developer run . --validator responsibility-authority --opera
 go -C .ptsip/engine/developer run . --validator policy-rules --operation generate --root ../../..
 ```
 
-Policy components may be supplied directly or inside their named wrapper.
-`policy-check` requires all three public policy components. The checks use the
-approved schema and selected family contract and do not evaluate policy rules,
-admit lifecycle transitions, or activate responsibilities. Responsibility declarations use independent condition and authority schemas.
-For each of the 14 Root Families, a Policy_Rules.Definition item contains only
-a registered R-ID and a registered rule constant. The R-ID keyed
-Responsibility-Authority-list.yaml component_bindings map owns the rule state and
-condition references. The prior component ownership projection, its materialize
-operation and separate responsibility references have been removed.
-These references never grant execution authority.
+Individual identity/lifecycle components may be supplied directly or inside
+their named wrapper. Complete `policy-check` requires all three public v2
+components and the same registered selection used by authoring and
+`contract-entry`. Current `Policy_Rules.contracts[]` contains the selected
+contract's rules, requirements, source items and optional authority catalog;
+read the selected schema and Family profile for exact fields. The historical
+`Identity`/`Definition`/`Boundary`/`Evaluation` four-block shape is rejected.
+Responsibility declarations retain their independent condition and authority
+owners. These checks do not evaluate policy fulfillment, admit lifecycle
+transitions, or grant execution authority.
 
 The installed PTSIP VALIDATION engine evaluates JSON Schema. JSON/YAML
 serialization uses Python and PyYAML with explicit UTF-8. The layout check needs
@@ -115,6 +115,34 @@ For explicit historical-section extraction and a non-normative declared-field
 inventory before policy rewriting, see `policy/review/README.md`. Its standalone
 read-only helper reuses contract entry, preserves unresolved selection, and does
 not register a validator, amend contracts, or authorize policy changes.
+
+## Policy authoring guard
+
+`.github/workflows/policy-contract-guard.yml` runs on pull requests, pushes to
+`main`, and manual dispatch with an exact `base_sha`. It tests the shared
+selector and validates added/modified developer policy YAML through the existing
+`contract-entry` path. A missing/inactive route or a legacy policy structure
+fails the job. Current policies that have not migrated must migrate before
+being edited; the guard does not rewrite or approve them.
+
+The diff check rejects additions/modifications below the historical
+`.ptsip/contracts/policy/Rules/` tree, including copies and renames into it.
+Deletion of historical files and explicit read-only historical review remain
+possible. `developer/policy/legacy/` and the `developer/policy/index.yaml` lookup
+projection are not treated as current policy authoring inputs. This is a CI
+check; required-check enforcement in GitHub repository rules is separate and
+is not configured by this workflow.
+
+Run the same committed-range guard locally from a clean exact checkout:
+
+```powershell
+.venv/Scripts/python.exe .ptsip/engine/developer/policy/verification/changed.py --base <EXACT_40_CHARACTER_BASE_SHA> --head HEAD
+```
+
+The JSON report records source/base SHAs and each selected contract. Structural
+`VALID` is separate from semantic approval and execution authority. The manual
+review workflow remains a non-normative evidence collector; its successful
+artifact collection is not a substitute for this guard.
 
 ## Test modules
 

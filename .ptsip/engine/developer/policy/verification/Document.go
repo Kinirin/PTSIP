@@ -5,10 +5,10 @@ import (
 	"path/filepath"
 
 	authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
-	v2 "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/v2"
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/identity"
 	planstatus "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/lifecycle/Plan_status"
 	policystatus "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/lifecycle/Policy_status"
+	v2 "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification/v2"
 )
 
 func CheckDocument(root, selected string, document authoring.Document, validate authoring.Validator) error {
@@ -49,6 +49,13 @@ func RunDocument(root, selected, input string) (any, int) {
 	document, err := authoring.ReadDocument(absolute, input)
 	if err != nil {
 		return reject(err)
+	}
+	if selected == "policy-check" {
+		selection, err := authoring.SelectPolicyDocument(absolute, document)
+		if err != nil {
+			return reject(err)
+		}
+		report["selection"] = selection
 	}
 	validate, err := InstalledValidator()
 	if err != nil {

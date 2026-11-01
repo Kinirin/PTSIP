@@ -152,7 +152,9 @@ func Run(root, selected, operation, family, input, output string, validate Valid
 			return reject(fmt.Errorf("LOOKUP_INTENTION_REQUIRES_AUTHORIZATION_ID"))
 		}
 		resolved, err := catalog.LookupAuthorizationIntention(validate, input)
-		if err != nil { return reject(err) }
+		if err != nil {
+			return reject(err)
+		}
 		report["status"] = "RESOLVED"
 		report["authorization"] = resolved
 		return report, 0
@@ -164,6 +166,11 @@ func Run(root, selected, operation, family, input, output string, validate Valid
 		if catalog.Contracts[family] == nil {
 			return reject(fmt.Errorf("SELECT_REGISTERED_ROOT_FAMILY"))
 		}
+		selection, err := SelectPolicy(catalog.Root, "PTSIP_DEVELOPER_POLICY", family)
+		if err != nil {
+			return reject(err)
+		}
+		report["selection"] = selection
 		report["status"], report["contract"] = "DESCRIBED", catalog.Contracts[family]
 		return report, 0
 	}
@@ -182,6 +189,19 @@ func Run(root, selected, operation, family, input, output string, validate Valid
 	}
 	status := "VALID"
 	if selected == "policy-rules" {
+		if len(doc) != 0 || operation != "generate" || family != "" {
+			selection, selectionErr := SelectPolicyDocument(catalog.Root, doc)
+			if selectionErr != nil {
+				return reject(selectionErr)
+			}
+			report["selection"] = selection
+			if output != "" {
+				if !strings.HasPrefix(output, selection.OutputRoot+"/") ||
+					(strings.ToLower(filepath.Ext(output)) != ".yaml" && strings.ToLower(filepath.Ext(output)) != ".yml") {
+					return reject(fmt.Errorf("POLICY_OUTPUT_OUTSIDE_REGISTERED_ROUTE: %s", output))
+				}
+			}
+		}
 		if operation == "generate" {
 			doc, status, err = catalog.GenerateRules(validate, doc, family)
 		} else {

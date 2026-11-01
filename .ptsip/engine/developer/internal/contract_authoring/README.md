@@ -32,6 +32,21 @@ scalars, empty containers, authority, responsibilities, or semantic decisions.
 An empty request without a Family selection returns `OMITTED` and writes no
 file. Missing or conflicting declarations fail closed.
 
+Authoring, `contract-entry` and complete `policy-check` share the same selector.
+For supplied content, the declared kind and Family must resolve before schema
+validation or output. The returned `selection` contains the registered schema
+paths, schema IDs, Family profile reference and output root. The authoring API
+re-resolves registration even when a catalog was loaded earlier; a cached
+catalog cannot bypass changed routing. There is no caller-supplied selection
+file to trust or reconstruct manually. `describe --family` also reports the
+selection, but does not declare identity for a future document.
+
+With `--output`, policy generation can create only a new YAML file below the
+selected developer-policy output root. It cannot write a policy into
+`.ptsip/contracts/policy/Rules/` or another contract directory. Registered schema
+resources under the historical `Rules/` directory are rejected by both loaders.
+No compatibility fallback uses those resources when current selection fails.
+
 ```powershell
 go -C .ptsip/engine/developer run . --validator policy-rules --root ../../.. --operation describe --family GOV
 go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0001.yaml --dry-run

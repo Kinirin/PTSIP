@@ -48,6 +48,14 @@ func (c *Catalog) CheckRules(v Validator, doc Document) error {
 	if c.Common == nil {
 		return fmt.Errorf("REGISTERED_POLICY_SCHEMA_REQUIRED")
 	}
+	selection, err := SelectPolicyDocument(c.Root, doc)
+	if err != nil {
+		return err
+	}
+	if c.Common["$id"] != selection.SchemaIDs["public"] ||
+		c.Contracts[family]["$ref"] != selection.ContractRefs["family_fields"] {
+		return fmt.Errorf("AUTHORING_SELECTION_MISMATCH")
+	}
 	// The registered public schema owns the complete document and delegates
 	// Family field requirements to Policy_Rules. Authoring does not reinterpret
 	// retired four-block rule bindings or claim semantic approval.

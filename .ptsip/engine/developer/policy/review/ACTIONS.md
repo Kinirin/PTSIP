@@ -8,6 +8,14 @@ selected checkout and publishes its results as a GitHub Actions artifact. It
 supports manual dispatch and reuse by another workflow in the same repository.
 It does not run automatically on every policy edit.
 
+The separate `Policy contract guard` workflow runs on pull requests and pushes
+to `main`. It rejects writes into the historical `Rules/` contract tree and
+validates changed current policy documents through registered contract entry.
+Its structural pass/fail is distinct from the review helper's collection status.
+The helper now uses the shared current selector, resolves Family schema URNs
+against registered resources, and retains complex inventory branches as
+uninspected rather than interpreting an obsolete Family `structure` field.
+
 ## Inputs and checkout selection
 
 | Input | Meaning |

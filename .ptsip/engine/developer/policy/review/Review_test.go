@@ -114,3 +114,39 @@ func TestBuildPreservesUnresolvedTargetAndOnlySelectedSourceSection(t *testing.T
 		}
 	}
 }
+
+func TestCurrentV2ReviewResolvesSchemaURNAndKeepsHistoryExplicit(t *testing.T) {
+	root, err := filepath.Abs("../../../../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	packet, err := Build(root, []string{"developer/policy/RECORD/MPD-RECORD-0001.yaml"},
+		[]string{".ptsip/contracts/policy/Rules/RECORD_rules.json#/$id"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	target := packet.Targets[0]
+	if target.Selection == nil || target.SelectionProblem != "" {
+		t.Fatalf("v2 selection failed: %+v", target)
+	}
+	if target.Selection.ContractRefs["family_fields"] != "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/RECORD" {
+		t.Fatalf("wrong selected Family: %+v", target.Selection)
+	}
+	for _, ref := range target.Selection.ContractRefs {
+		if strings.HasPrefix(ref, ".ptsip/contracts/policy/Rules/") {
+			t.Fatal("historical source became selected contract")
+		}
+	}
+	if len(packet.Sources) != 1 || packet.Sources[0].Value != "urn:ptsip:contract:policy:rules:RECORD:v2" {
+		t.Fatal("explicit historical evidence lost")
+	}
+	if packet.SchemaValidation != "NOT_PERFORMED" || packet.MutationAuthorized {
+		t.Fatal("review granted authority")
+	}
+	if packet.Files[".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"] == "" {
+		t.Fatal("selection input not captured")
+	}
+	if err := packet.Verify(root); err != nil {
+		t.Fatal(err)
+	}
+}

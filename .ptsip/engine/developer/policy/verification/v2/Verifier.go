@@ -45,6 +45,10 @@ func Check(root string, document authoring.Document, validate authoring.Validato
 	if stringValue(refs["public"]) != publicID || stringValue(refs["rules"]) != rulesID {
 		return fmt.Errorf("V2_SCHEMA_REGISTRATION_MISMATCH")
 	}
+	selection, err := authoring.SelectPolicyDocument(root, document)
+	if err != nil {
+		return err
+	}
 
 	artifacts, ok := registry["artifacts"].([]any)
 	if !ok {
@@ -58,6 +62,9 @@ func Check(root string, document authoring.Document, validate authoring.Validato
 			continue
 		}
 		id, p := stringValue(entry["schema_id"]), stringValue(entry["path"])
+		if err := authoring.CheckPolicyContractPath(p); err != nil {
+			return err
+		}
 		if id == "" || p == "" || known[id] {
 			return fmt.Errorf("DUPLICATE_OR_MISSING_V2_SCHEMA: %s", id)
 		}
@@ -79,6 +86,9 @@ func Check(root string, document authoring.Document, validate authoring.Validato
 	for _, id := range names {
 		entry := object(external[id])
 		p, expected := stringValue(entry["path"]), stringValue(entry["sha256"])
+		if err := authoring.CheckPolicyContractPath(p); err != nil {
+			return err
+		}
 		if known[id] || p == "" || len(expected) != 64 {
 			return fmt.Errorf("INVALID_V2_EXTERNAL_RESOURCE: %s", id)
 		}
@@ -113,7 +123,7 @@ func Check(root string, document authoring.Document, validate authoring.Validato
 	var public map[string]any
 	for _, item := range resources {
 		doc, _ := item.(map[string]any)
-		if doc["$id"] == publicID {
+		if doc["$id"] == selection.SchemaIDs["public"] {
 			public = doc
 			break
 		}

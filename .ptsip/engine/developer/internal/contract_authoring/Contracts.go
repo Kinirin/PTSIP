@@ -175,6 +175,9 @@ func Load(root string) (*Catalog, error) {
 		known[stringValue(object(raw)["$id"])] = true
 	}
 	add := func(file, id string) error {
+		if err := CheckPolicyContractPath(file); err != nil {
+			return err
+		}
 		doc, err := readJSON(absolute, file)
 		if err != nil {
 			return err
@@ -242,8 +245,12 @@ func Load(root string) (*Catalog, error) {
 	routes := object(selection["family_routes"])
 	for _, raw := range values {
 		family := stringValue(raw)
+		selected, err := SelectPolicy(absolute, "PTSIP_DEVELOPER_POLICY", family)
+		if err != nil {
+			return nil, err
+		}
 		route := object(routes[family])
-		ref := commonID + "#/$defs/FamilyProfiles/" + family
+		ref := selected.ContractRefs["family_fields"]
 		if route["rules_schema_ref"] != commonID || route["document_fields_ref"] != ref {
 			return nil, fmt.Errorf("V2_FAMILY_RULE_SCHEMA_MISMATCH: %s", family)
 		}

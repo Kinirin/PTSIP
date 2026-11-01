@@ -37,10 +37,10 @@ func fixture(t *testing.T) string {
 	put(".ptsip/contracts/policy/boundary.json", map[string]any{"domain": "policy", "routing_binding": map[string]any{"data": ".ptsip/contracts/policy/routing/policy_routes.json"}, "rules_binding": map[string]any{"family_source": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json", "directory": ".ptsip/contracts/policy/Policy_Rules", "selection_schema": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json", "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml"}})
 	put(".ptsip/contracts/policy/routing/policy_routes.json", map[string]any{"identity_sources": map[string]any{"policy_kind": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json", "root_family": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"}, "routes": map[string]any{"PTSIP_DEVELOPER_POLICY": map[string]any{"output_root": "developer/policy"}}, "schema_refs": map[string]any{"public": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json", "rules": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json"}})
 	put(".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json", map[string]any{"$id": "urn:ptsip:identity:policy:v1", "$defs": map[string]any{"policy_kind": map[string]any{"type": "string", "enum": []string{"PTSIP_DEVELOPER_POLICY"}}, "root_family": map[string]any{"type": "string", "enum": []string{"GOV"}}}})
-	put(".ptsip/contracts/policy/candidate.index.json", map[string]any{"active_registration": true, "active_policy_cutover": "STRUCTURE_V2_ACTIVE", "schema_refs": map[string]any{"public": "urn:ptsip:candidate:contract:policy:public-structure:v2", "rules": "urn:ptsip:candidate:contract:policy:rules:v2"}, "family_selection_ref": ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json"})
+	put(".ptsip/contracts/policy/candidate.index.json", map[string]any{"active_registration": true, "active_policy_cutover": "STRUCTURE_V2_ACTIVE", "artifacts": []any{map[string]any{"kind": "SCHEMA", "path": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json", "schema_id": "urn:ptsip:candidate:contract:policy:public-structure:v2"}, map[string]any{"kind": "SCHEMA", "path": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json", "schema_id": "urn:ptsip:candidate:contract:policy:rules:v2"}}, "schema_refs": map[string]any{"public": "urn:ptsip:candidate:contract:policy:public-structure:v2", "rules": "urn:ptsip:candidate:contract:policy:rules:v2"}, "family_selection_ref": ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json"})
 	put(".ptsip/contracts/policy/Policy_Rules/Family_Selection.json", map[string]any{"active": true, "selection_basis": "DECLARED_POLICY_IDENTITY_ROOT_FAMILY", "family_routes": map[string]any{"GOV": map[string]any{"rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2", "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/GOV"}}})
 	put(".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json", map[string]any{"$id": "urn:ptsip:candidate:contract:policy:public-structure:v2"})
-	put(".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json", map[string]any{"$id": "urn:ptsip:candidate:contract:policy:rules:v2"})
+	put(".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json", map[string]any{"$id": "urn:ptsip:candidate:contract:policy:rules:v2", "$defs": map[string]any{"FamilyProfiles": map[string]any{"GOV": map[string]any{}}}})
 	put(".ptsip/profiles/Responsibility-Authority-list.yaml", "responsibility: []\n")
 	put("developer/policy/GOV/MPD-GOV-0006.yaml", "Policy_Identity:\n  policy_kind: PTSIP_DEVELOPER_POLICY\n  root_family: GOV\nPolicy_Lifecycle:\n  status: APPROVED.Applying\n")
 	return root
@@ -140,5 +140,60 @@ func TestUnifiedIdentitySourceFailsClosed(t *testing.T) {
 	}
 	if _, err := Resolve(root, "developer/policy/GOV/MPD-GOV-0006.yaml"); err == nil {
 		t.Fatal("missing unified vocabulary fell back to another file")
+	}
+}
+
+func TestRetiredRouteAndUnresolvedSelectedProfileNeverFallBack(t *testing.T) {
+	for _, example := range []struct{ path, content, problem string }{
+		{".ptsip/contracts/policy/routing/policy_routes.json", `{"identity_sources":{"policy_kind":".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json","root_family":".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"},"routes":{"PTSIP_DEVELOPER_POLICY":{"output_root":"developer/policy"}},"schema_refs":{"public":".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json","rules":".ptsip/contracts/policy/Rules/GOV_rules.json"}}`, "V2_POLICY_ROUTE_UNRESOLVED"},
+		{".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json", `{"$id":"urn:ptsip:candidate:contract:policy:rules:v2"}`, "V2_FAMILY_FIELD_PROFILE_UNRESOLVED"},
+		{".ptsip/contracts/policy/boundary.json", `{"domain":"policy","rules_binding":{"directory":".ptsip/contracts/policy/Rules"}}`, "RULES_BINDING_MISMATCH"},
+	} {
+		t.Run(example.problem, func(t *testing.T) {
+			root := fixture(t)
+			old := filepath.Join(root, ".ptsip/contracts/policy/Rules/GOV_rules.json")
+			if err := os.MkdirAll(filepath.Dir(old), 0755); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(old, []byte(`{"structure":{"type":"object"}}`), 0644); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(root, filepath.FromSlash(example.path)), []byte(example.content), 0644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := Resolve(root, "developer/policy/GOV/MPD-GOV-0006.yaml"); err == nil || !strings.Contains(err.Error(), example.problem) {
+				t.Fatalf("retired or missing selection accepted: %v", err)
+			}
+		})
+	}
+}
+
+func TestRegisteredSchemaIDsCannotRedirectSelectedPathsOrRegisterRetiredRules(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		root := fixture(t)
+		file := filepath.Join(root, ".ptsip/contracts/policy/candidate.index.json")
+		raw, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var registry map[string]any
+		if err := json.Unmarshal(raw, &registry); err != nil {
+			t.Fatal(err)
+		}
+		artifacts := registry["artifacts"].([]any)
+		problem := "V2_SELECTED_SCHEMA_PATH_MISMATCH"
+		if legacy {
+			registry["artifacts"] = append(artifacts, map[string]any{"kind": "SCHEMA", "schema_id": "urn:old:family", "path": ".ptsip/contracts/policy/Rules/GOV_rules.json"})
+			problem = "RETIRED_POLICY_CONTRACT_PATH"
+		} else {
+			artifacts[0].(map[string]any)["path"] = ".ptsip/contracts/policy/other-public.schema.json"
+		}
+		raw, _ = json.Marshal(registry)
+		if err := os.WriteFile(file, raw, 0644); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := Resolve(root, "developer/policy/GOV/MPD-GOV-0006.yaml"); err == nil || !strings.Contains(err.Error(), problem) {
+			t.Fatalf("registry bypass accepted: %v", err)
+		}
 	}
 }
