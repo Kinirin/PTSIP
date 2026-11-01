@@ -57,7 +57,7 @@ Go helper는 기존 `internal/contractentry.Resolve`와 `contract_authoring.Read
 
 자동화는 반복해서 확인된 조회·추출·비교부터 추가한다. 새로운 의미 추정이나 복잡한 분류 체계를 미리 구현하지 않는다. 이 명령을 호출하는 것은 명시적인 작업 선택이며 자동 정책 개정 경로의 활성화가 아니다.
 
-## RECORD 예제 재실행
+## 현재 RECORD 문서 검토
 
 저장소 루트의 PowerShell에서 실행한다. `PTSIP_PYTHON`은 해당 프로세스에서 기존 YAML 직렬화/검증 런타임을 선택한다. 설치나 환경 파일 변경은 하지 않는다.
 
@@ -66,18 +66,17 @@ $env:PTSIP_PYTHON = (Resolve-Path .venv/Scripts/python.exe).Path
 go -C .ptsip/engine/developer run ./policy/review/cmd/policy-review --root ../../.. `
   --target developer/policy/RECORD/MPD-RECORD-0001.yaml `
   --target developer/policy/RECORD/MPD-RECORD-0002.yaml `
-  --source 'developer/policy/legacy/MPD-0010.yaml#/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/exact_snapshot_identity' `
-  --source 'developer/policy/legacy/MPD-0011.yaml#/rules/implementation_state' `
-  --source 'developer/policy/legacy/MPD-0012.yaml#/rules/repository_materialization_snapshot' `
-  --source 'developer/policy/legacy/MPD-RELS-0001.yaml#/rules/authority_semantics' `
-  --source 'developer/policy/legacy/MPD-WORK-0002.yaml#/rules/work_execution_lifecycle/execution_output'
+  --target developer/policy/RECORD/MPD-RECORD-0003.yaml `
+  --target developer/policy/RECORD/MPD-RECORD-0004.yaml
 ```
 
 출력을 파일로 저장하려면 PowerShell 7에서 `> <새 파일 경로>`를 명시한다. 기존 검토본을 덮어쓰지 않도록 새 경로를 사용한다. 이 도구는 출력 파일 생성을 직접 수행하지 않는다.
 
 ```powershell
-go -C .ptsip/engine/developer run ./policy/review/cmd/policy-review --root ../../.. --verify .ptsip/engine/developer/policy/review/examples/RECORD.evidence.json
+go -C .ptsip/engine/developer run ./policy/review/cmd/policy-review --root ../../.. --verify .ptsip/engine/developer/policy/review/examples/RECORD.current.evidence.json
 go -C .ptsip/engine/developer test ./policy/review/... ./internal/contractentry -count=1
 ```
 
-예제의 자연어 검토본은 `examples/RECORD-review.ko.md`, 수집 근거는 `examples/RECORD.evidence.json`에 있다. 둘 다 시점이 고정된 비규범적 검토 자료다. 다음 번역에서 이 선정 결과를 재사용할 수 있지만, 새 요청의 책임 범위와 원문 변경을 먼저 확인한다.
+개정 전 자연어 검토본은 `examples/RECORD-review.ko.md`, 당시 수집 근거는 `examples/RECORD.evidence.json`이다. 둘 다 시점이 고정된 비규범적 역사 자료다. `0001`은 새 선언으로 개정되었고 구 `0002` 후보의 내용은 삭제한 뒤 사용자의 명시적 지시에 따라 같은 번호를 정책 결정 기록에 재사용했다. 따라서 과거 근거의 `--verify`는 원문 변경을 보고하는 것이 정상이다.
+
+새 선언과 후속 기능 범위는 `examples/RECORD-declaration-2026-11-01.ko.md`, 작성 후보 이력은 `examples/RECORD-proposal.json`에 보존했다. 현재 네 정책의 검토 패킷은 `examples/RECORD.current.evidence.json`이다. 원본 정책의 권위와 상태는 `developer/policy/RECORD/`의 각 문서에서 다시 확인한다. 개정 전의 다섯 원문 선정 결과는 역사적 번역에서만 재사용하고 새 정책에 자동 편입하지 않는다.

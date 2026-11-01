@@ -1,0 +1,323 @@
+{
+  "format": "ptsip-non-normative-policy-review/v1",
+  "status": "NON_NORMATIVE_REVIEW",
+  "schema_validation": "NOT_PERFORMED",
+  "semantic_selection": "HUMAN_OR_AGENT_SELECTED_NOT_VERIFIED",
+  "mutation_authorized": false,
+  "file_sha256": {
+    ".ptsip/contracts/index.json": "fda0b6b998d9739658d9a61d70f400a888a253df341640009a3d30451660cda8",
+    ".ptsip/contracts/policy/Rules/RECORD_rules.json": "43e12fe2ba4c5fc43a28be58252fb7ebd38cc48c3f26e3c67e39db51d44863f7",
+    ".ptsip/contracts/policy/boundary.json": "30071bbed3ef213307e4a522d36ec2a3740298e607bc71ad673e69bb33bac0a4",
+    ".ptsip/contracts/policy/routing/policy_routes.json": "1ebe6f9635ea76f2266cde3631e202627cc932587d01cdaa0e7d0543c13a5a04",
+    ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json": "bccdeb71d6220d44b171a084d89b1b576232584a4c8ec5e764a12b56609cef93",
+    ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json": "8d7c58af4a8950279be6dd765bf8398f8902e28c3ad017a2dfd229780fb24dc2",
+    ".ptsip/engine/developer/index.json": "9e8e1540f38bd37a4fecd3d1515c1439948a2684cd353f58cb34de026871c03f",
+    ".ptsip/index.json": "0e7281a68a21f46b3e4d0baca2834ad4f1698366f7f540ee868194d661208219",
+    ".ptsip/profiles/Responsibility-Authority-list.yaml": "ce81de8f4e04ce0625e224e8ee81d4815a13b965d3ed38ed7207912b47ca3be0",
+    "developer/policy/RECORD/MPD-RECORD-0001.yaml": "35f4c4e547d6b57252748bbddeddf824e8a4452f1b1364f1cb76fa6fbcce3f6a",
+    "developer/policy/RECORD/MPD-RECORD-0002.yaml": "81e8c500daf9e6572bf5ade3581d9e749f8fc66d7878e5a41c1f1401712c0dad",
+    "developer/policy/RECORD/MPD-RECORD-0003.yaml": "e1a04e469d6de8bd50f38933f1700bc38e5ca2e55668e690bdb3c9358644e02a",
+    "developer/policy/RECORD/MPD-RECORD-0004.yaml": "ca8084babbb60d29547dd81fbeafc781b15abe64671f613eb37ee626d9dbe0c5"
+  },
+  "targets": [
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0001",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD responsibilities and policy document orchestration"
+        },
+        "Policy_Rules": {
+          "Boundary": {
+            "exclusions": [
+              "GOV retains responsibility for the legitimacy of policy decisions and approvals and the scope of delegation. RECORD recording responsibilities and Family recommendations do not replace GOV.",
+              "Using a Family recommendation to automatically settle unresolved classification, routing, lifecycle status, or execution authority.",
+              "Consumer-repository PTSIP feature declarations, implementation, and activation are outside this developer-policy revision and remain a separate Support Feature follow-up."
+            ],
+            "scope": "RECORD responsibilities and subordinate policy boundaries for decision and document records in the Kinirin/PTSIP developer control plane",
+            "subjects": [
+              "RECORD describes and separates the responsibilities for decisions concerning policy documents, decisions concerning work-plan documents, and release-note records.",
+              "This orchestration policy makes RECORD responsibilities and roles explicit so that users and AI agents can assess and recommend a suitable Root Family when policy classification is ambiguous.",
+              "MPD-RECORD-0002 owns policy-decision recording, MPD-RECORD-0003 owns work-plan decision recording, and MPD-RECORD-0004 owns release-note recording.",
+              "The orchestration document connects subordinate responsibilities without concentrating every recording method and detailed contract in one policy.",
+              "This revision follows the user's new declaration of 2026-11-01. Historical implementation observations, earlier plans, approval history, and the provisional contract candidate are not inherited wholesale as new normative content."
+            ]
+          },
+          "Definition": [
+            {
+              "id": "R-ID-2791BF0E5A354FC58D837882A10BD867",
+              "rule": "RECORD-ORCHESTRATION"
+            }
+          ],
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "Review whether the orchestration policy states RECORD responsibilities, roles, and subordinate document boundaries explicitly.",
+                "Review whether policy decisions, work-plan decisions, and release-note records have separate responsibilities.",
+                "Review whether Family recommendations remain distinct from policy authority and machine routing."
+              ]
+            }
+          },
+          "Identity": {
+            "Rule_ver": "1",
+            "contract_id": "urn:ptsip:policy:rule:record:responsibility-orchestration"
+          },
+          "title": "RECORD responsibilities and policy document orchestration"
+        },
+        "Policy_Status": {
+          "Policy_Status_Schema_ver": "1",
+          "contract": "urn:ptsip:contract:policy:record:responsibility:orchestration",
+          "status": "APPROVED.Unresolved"
+        }
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "field_findings": []
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0002",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD developer policy-decision recording and storage"
+        },
+        "Policy_Rules": {
+          "Boundary": {
+            "exclusions": [
+              "MPD-RECORD-0003 owns decisions concerning work-plan documents; its rules do not inherit automatically from this policy.",
+              "Creating new decision, approval, or execution authority from the existence or structural validation of a record.",
+              "Treating these recording principles as completed implementation or activation of a missing service schema, binding contract, or verifier.",
+              "Equivalent product policy and automation for consumer repositories remain a separate Support Feature follow-up."
+            ],
+            "scope": "Recording and storage of user decisions concerning Kinirin/PTSIP developer policy documents, with recording integration that preserves existing contract structures",
+            "subjects": [
+              "Record user decisions concerning developer policies. Decisions may be stored in the policy document itself or in a separate record file; the policy document is the default storage location.",
+              "Use a structured recording contract for decisions stored in policy documents. Preserve the user's contract structure and identity, and limit changes to the minimum needed for reference integration.",
+              "When only a common policy contract exists, reference the policy-decision record schema from that common contract. By default, maintain the record schema in a separate file distinguishable from the user's contract file; the user may request a merge.",
+              "When only independent policy contracts exist, assess each contract's role, responsibility, and recording needs, and add a record-schema reference only to contracts that need it. Do not force the creation of a common parent policy contract merely for recording.",
+              "By default, recommend one recording-service schema referenced by the independent contracts. Sharing a subordinate recording-service contract does not establish a common policy contract structure. The user may request a separate record schema for each independent contract.",
+              "When common and independent policy contracts coexist, identify the actual owner of the policy-content field. Reference the record schema from the common contract when it owns that field, or from the relevant independent contracts when only those contracts own the field.",
+              "When both contract structures coexist, strongly recommend references to one recording-service schema and discourage a separate decision-record structure for every independent contract. Do not require a reference in contracts whose roles and responsibilities do not need recording.",
+              "Separating decisions from the policy document requires record verification and policy reference rules. Keep policy-decision record schema contracts under .ptsip/contracts/Decision_Record/policy/ and decision-record data under .ptsip/context/.",
+              "For separate records, connect the necessary policy-contract binding through a path and a unique ID with a SHA256 pattern. Write decision details in the designated record file and display a short constant name in the policy document for convenience.",
+              "A constant name is a user-facing identification aid, not evidence of decision meaning. Do not infer a decision from its name; resolve the unique ID and inspect the actual decision content before making a determination.",
+              "Do not invent unresolved record or binding fields, the generation and change semantics of a SHA256-pattern ID, or detailed verification procedures. Request user review when a conflict or problem arises."
+            ]
+          },
+          "Definition": [
+            {
+              "id": "R-ID-1A279F4AEF5D4111BD8DDC0AC92D744B",
+              "rule": "POLICY-DECISION-LOG"
+            }
+          ],
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "Review whether default storage in the policy document and the option of separate storage are distinguished.",
+                "Review whether common-only, independent-only, and coexisting contract structures preserve actual policy-content ownership and minimum-change integration.",
+                "Review whether sharing a recording-service schema avoids forcing a common policy contract into existence.",
+                "Review whether separate records require a path, a unique ID, and inspection of actual decision content without inference from a constant name.",
+                "Review whether unresolved schema, binding, and integrity procedures remain unresolved and are not automatically applied to consumer features."
+              ]
+            }
+          },
+          "Identity": {
+            "Rule_ver": "1",
+            "contract_id": "urn:ptsip:policy:rule:record:policy-decision-recording"
+          },
+          "title": "RECORD developer policy-decision recording and storage"
+        },
+        "Policy_Status": {
+          "Policy_Status_Schema_ver": "1",
+          "contract": "urn:ptsip:contract:policy:record:decision:recording",
+          "status": "APPROVED.Unresolved"
+        }
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "field_findings": []
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0003",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD responsibility boundaries for work-plan decision records"
+        },
+        "Policy_Rules": {
+          "Boundary": {
+            "exclusions": [
+              "MPD-RECORD-0002 owns decisions concerning policy documents.",
+              "Automatically inheriting policy-decision default storage, reference, or ID rules for work-plan records without a separate declaration.",
+              "Using decision records alone to approve a work plan, authorize execution, or activate consumer features."
+            ],
+            "scope": "An independent responsibility area for recording decisions concerning Kinirin/PTSIP developer work-plan documents",
+            "subjects": [
+              "Manage responsibility for recording decisions concerning work-plan documents in a separate policy, distinct from decisions concerning policy documents.",
+              "Keep work-plan decision record schema contracts under .ptsip/contracts/Decision_Record/plan/.",
+              "Preserve undeclared storage details, record and binding fields, and verification procedures as unresolved. Request user review when a conflict or problem arises."
+            ]
+          },
+          "Definition": [
+            {
+              "id": "R-ID-C945694F577C4F3891F79DC0632B1BCB",
+              "rule": "PLAN-DECISION-LOG"
+            }
+          ],
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "Review whether decision-record responsibilities for policy documents and work-plan documents remain separate.",
+                "Review whether policy and work-plan record schemas have distinct owner paths.",
+                "Review whether unresolved work-plan recording details remain unfilled by historical policy or agent inference."
+              ]
+            }
+          },
+          "Identity": {
+            "Rule_ver": "1",
+            "contract_id": "urn:ptsip:policy:rule:record:plan-decision-recording"
+          },
+          "title": "RECORD responsibility boundaries for work-plan decision records"
+        },
+        "Policy_Status": {
+          "Policy_Status_Schema_ver": "1",
+          "contract": "urn:ptsip:contract:policy:record:plan:recording",
+          "status": "APPROVED.Unresolved"
+        }
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "field_findings": []
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0004",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD release-note recording and contract and verifier locations"
+        },
+        "Policy_Rules": {
+          "Boundary": {
+            "exclusions": [
+              "Detailed storage rules for policy-decision records and work-plan decision records.",
+              "Granting release execution, distribution, publication authority, or verification waivers through this policy.",
+              "Automatically inheriting historical approvals, implementation states, or mixed planning content from earlier policies."
+            ],
+            "scope": "Release-note record units, file patterns, namespaces, and composition-contract and verifier locations for Kinirin/PTSIP development",
+            "subjects": [
+              "The Package note file pattern is docs/releasenote/PTSIP_Package/{package_version}.md.",
+              "The per-engine note file pattern is docs/releasenote/engine/{engine}/{engine}-engine-{version}.md.",
+              "Combining notes for multiple engines into one merged note file is forbidden.",
+              "The release-note record namespaces are tool, project-profile, PTSIP_Package, and engine.",
+              "Verifiers that perform release-note validation or reference checks belong under .ptsip/engine/developer/Distribution/release/.",
+              "Resolve release-note composition contracts under .ptsip/contracts/release/; other locations are not canonical locations for those composition contracts.",
+              "Leave details not included in this declaration unresolved, and request user review when a conflict or problem arises."
+            ]
+          },
+          "Definition": [
+            {
+              "id": "R-ID-50E89BB94D7245789DA07DF5D16E2C3B",
+              "rule": "RELEASE-NOTE-MGMT"
+            }
+          ],
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "Check whether Package and per-engine note files follow the declared file patterns and namespaces.",
+                "Check whether note source files for different engines remain separate.",
+                "Check whether release-note validation and reference verifiers and composition contracts remain within their declared owner paths.",
+                "Review whether unresolved details and results from existing release-verification contracts are reported separately."
+              ]
+            }
+          },
+          "Identity": {
+            "Rule_ver": "1",
+            "contract_id": "urn:ptsip:policy:rule:record:release-note-recording"
+          },
+          "title": "RECORD release-note recording and contract and verifier locations"
+        },
+        "Policy_Status": {
+          "Policy_Status_Schema_ver": "1",
+          "contract": "urn:ptsip:contract:policy:record:release:notes",
+          "status": "APPROVED.Unresolved"
+        }
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "field_findings": []
+    }
+  ],
+  "sources": []
+}

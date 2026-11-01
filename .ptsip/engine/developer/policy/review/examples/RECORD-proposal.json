@@ -1,0 +1,235 @@
+{
+  "format": "non-normative-record-policy-proposal/v1",
+  "status": "MATERIALIZED_APPROVED_UNRESOLVED",
+  "policy_authority": "NONE",
+  "execution_authorized": false,
+  "base_head": "a5fa4aad3e48bd821a276608aa9931d0965ecacd",
+  "selected_family_contract": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+  "pending_decisions": [
+    "SHA256 패턴 ID의 생성·변경 의미는 실제 기록 schema 설계 전 확정"
+  ],
+  "notes": [
+    "소비자 지원 기능은 후속 작업으로 보존",
+    "사용자 지시에 따라 0002 재사용",
+    "정확한 결정 기록·바인딩 schema는 새로 만들지 않음",
+    "사용자가 네 정책의 목표 상태를 APPROVED.Unresolved로 명시하여 실제 정책 파일에 반영했다. 아래 문서들은 Policy_Status 확정 전 작성 후보의 이력이며 현재 정책 원본이 아니다. 실제 상태와 내용은 각 target_path의 정책에서 확인한다."
+  ],
+  "prospective_profile_bindings": {
+    "R-ID-2791BF0E5A354FC58D837882A10BD867": {
+      "rule": "RECORD-ORCHESTRATION",
+      "status": "OBLIGATION"
+    },
+    "R-ID-1A279F4AEF5D4111BD8DDC0AC92D744B": {
+      "rule": "POLICY-DECISION-LOG",
+      "status": "OBLIGATION"
+    },
+    "R-ID-C945694F577C4F3891F79DC0632B1BCB": {
+      "rule": "PLAN-DECISION-LOG",
+      "status": "OBLIGATION"
+    }
+  },
+  "documents": [
+    {
+      "target_path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0001",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD 정책 기록 책임 및 문서 오케스트레이션"
+        },
+        "Policy_Rules": {
+          "Identity": {
+            "contract_id": "urn:ptsip:policy:rule:record:responsibility-orchestration",
+            "Rule_ver": "1"
+          },
+          "Definition": [
+            {
+              "id": "R-ID-2791BF0E5A354FC58D837882A10BD867",
+              "rule": "RECORD-ORCHESTRATION"
+            }
+          ],
+          "Boundary": {
+            "scope": "Kinirin/PTSIP 개발 통제 영역에서 RECORD Family가 담당하는 결정·문서 기록 책임과 하위 정책의 경계",
+            "subjects": [
+              "RECORD는 정책문서에 관한 결정 기록, 작업 계획서 문서에 관한 결정 기록, 릴리스 노트 기록의 책임 영역을 설명하고 서로 구분한다.",
+              "이 총괄 정책은 사용자와 AI 에이전트가 RECORD의 책임·역할을 인지하고, 정책을 어느 Root Family에 둘지 모호할 때 해당 책임에 맞는 Family를 검토·추천하는 근거를 제공한다.",
+              "정책 결정 기록의 책임은 MPD-RECORD-0002, 작업 계획서 결정 기록의 책임은 MPD-RECORD-0003, 릴리스 노트 기록의 책임은 MPD-RECORD-0004로 분리한다.",
+              "총괄 문서는 각 하위 문서의 책임을 연결하며 개별 기록 방식과 세부 계약을 하나의 문서에 집중시키지 않는다.",
+              "이번 개정은 2026-11-01 사용자의 새 선언을 기준으로 하며 구 정책의 구현 관측, 과거 계획, 승인 이력과 잠정 계약 후보를 새 규범으로 일괄 승계하지 않는다."
+            ],
+            "exclusions": [
+              "정책 내용 결정·승인의 정당성과 위임 범위는 GOV의 책임이며 RECORD의 기록 책임이나 Family 추천으로 이를 대체하지 않는다.",
+              "Family 추천을 근거로 미확정 분류·라우팅·상태·실행 권한을 자동 확정하는 행위",
+              "소비자 저장소의 PTSIP 지원 기능 선언·구현·활성화는 이번 개발 정책 개정의 범위 밖이며 별도 Support Feature 작업으로 보존한다."
+            ]
+          },
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "총괄 정책에서 RECORD의 책임·역할과 하위 정책 문서 경계를 확인할 수 있는지 검토",
+                "정책 결정·계획서 결정·릴리스 기록 책임이 서로 구분되는지 검토",
+                "Family 추천과 실제 정책 권한·기계 라우팅을 혼동하지 않는지 검토"
+              ]
+            }
+          },
+          "title": "RECORD 정책 기록 책임 및 문서 오케스트레이션"
+        }
+      }
+    },
+    {
+      "target_path": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0002",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD 개발 정책 결정 기록 및 보관 방식"
+        },
+        "Policy_Rules": {
+          "Identity": {
+            "contract_id": "urn:ptsip:policy:rule:record:policy-decision-recording",
+            "Rule_ver": "1"
+          },
+          "Definition": [
+            {
+              "id": "R-ID-1A279F4AEF5D4111BD8DDC0AC92D744B",
+              "rule": "POLICY-DECISION-LOG"
+            }
+          ],
+          "Boundary": {
+            "scope": "Kinirin/PTSIP 개발 정책문서에 관한 사용자 결정의 기록·보관과 기존 계약 구조를 보존하는 기록 연동 원칙",
+            "subjects": [
+              "개발 정책에 관한 사용자의 결정 내용을 기록한다. 결정 보관 위치는 정책문서 자체 또는 별도 기록 파일로 선택할 수 있고 기본 보관 위치는 정책문서다.",
+              "정책문서에 결정 내용을 기록할 때는 정형화된 기록 계약으로 관리하며, 사용자 계약의 구조·정체성을 침해하지 않고 참조 연동에 필요한 최소 변경을 수행한다.",
+              "공통 정책 계약만 존재하는 경우에는 공통 계약에서 정책 결정 기록 schema를 참조한다. 기록 schema 파일은 사용자 계약 파일과 구별하여 별도 관리하는 것이 기본이며, 사용자가 원하면 병합할 수 있다.",
+              "독립 정책 계약만 존재하는 경우에는 각 계약의 역할·책임과 기록 필요성을 분석하여 필요한 독립 계약에만 정책 결정 기록 schema 참조를 추가한다. 기록 때문에 정책의 공통 상위 계약을 강제로 생성하지 않는다.",
+              "독립 계약들이 하나의 기록 서비스 schema를 참조하는 방식을 기본으로 권장한다. 하위 기록 서비스 계약의 공유는 공통 정책 계약 구조의 존재를 뜻하지 않는다. 사용자가 원하면 독립 계약별 기록 schema를 둘 수 있다.",
+              "공통·독립 정책 계약이 모두 존재하는 경우에는 정책 내용을 담당하는 필드의 실제 소유 위치를 확인한다. 공통 계약이 그 필드를 소유하면 공통 계약에서 참조하고, 독립 계약들만 소유하면 기록이 필요한 독립 계약에서 참조한다.",
+              "두 계약 구조가 공존하는 경우에는 하나의 기록 서비스 schema를 참조하는 방식을 강하게 권장하고, 독립 계약마다 별도 결정 기록 구조를 만드는 방식은 비권장한다. 역할·책임상 필요하지 않은 모든 독립 계약에 참조를 강제하지 않는다.",
+              "정책문서와 결정 기록을 분리하는 방식에는 기록 검증과 정책의 참조 규칙이 필요하다. 정책 결정 기록 schema 계약의 위치는 .ptsip/contracts/Decision_Record/policy/로 구분하고, 결정 기록 데이터는 .ptsip/context/에 둔다.",
+              "별도 기록 방식에서 정책 계약의 필요한 바인딩에는 경로와 SHA256 패턴의 고유 식별 ID를 연결한다. 결정 상세 내용은 지정된 기록 파일에 작성하고 정책문서에는 편의상 짧은 상수 이름을 표시한다.",
+              "상수 이름은 사용자 편의를 위한 식별 보조이며 결정 의미의 근거가 아니다. 이름에서 결정을 추론하지 않고 고유 ID로 연결된 기록의 실제 결정 내용을 확인하여 판정한다.",
+              "정확한 기록·바인딩 필드 구조, SHA256 패턴 ID의 생성·변경 의미와 세부 검증 절차 중 미확정인 내용은 임의로 보충하지 않는다. 충돌·문제가 발생하면 사용자에게 재검토를 요청한다."
+            ],
+            "exclusions": [
+              "작업 계획서 문서에 관한 결정 기록은 MPD-RECORD-0003의 책임이며 이 정책에서 자동 상속시키지 않는다.",
+              "결정 기록의 존재나 구조 검증으로 결정·승인·실행 권한을 새로 생성하는 행위",
+              "기록 원칙의 선언만으로 아직 없는 서비스 schema·바인딩 계약·검증기를 구현 완료 또는 활성 상태로 간주하는 행위",
+              "소비자 저장소에 대한 동일 기능의 제품 정책과 자동화는 별도 Support Feature 작업의 범위"
+            ]
+          },
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "정책문서 기본 보관과 별도 보관 선택이 구분되는지 검토",
+                "공통만·독립만·공존하는 계약 구조에서 실제 정책 내용 소유자와 최소 변경 원칙을 보존하는지 검토",
+                "기록 서비스 schema 공유를 공통 정책 계약의 강제 생성으로 해석하지 않는지 검토",
+                "별도 기록의 경로·고유 ID와 실제 결정 내용 확인을 요구하며 상수 이름에서 의미를 추론하지 않는지 검토",
+                "미확정 schema·바인딩·무결성 절차를 임의 확정하거나 소비자 기능에 자동 적용하지 않는지 검토"
+              ]
+            }
+          },
+          "title": "RECORD 개발 정책 결정 기록 및 보관 방식"
+        }
+      }
+    },
+    {
+      "target_path": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0003",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD 작업 계획서 결정 기록의 책임 경계"
+        },
+        "Policy_Rules": {
+          "Identity": {
+            "contract_id": "urn:ptsip:policy:rule:record:plan-decision-recording",
+            "Rule_ver": "1"
+          },
+          "Definition": [
+            {
+              "id": "R-ID-C945694F577C4F3891F79DC0632B1BCB",
+              "rule": "PLAN-DECISION-LOG"
+            }
+          ],
+          "Boundary": {
+            "scope": "Kinirin/PTSIP 개발 작업 계획서 문서에 관한 결정 기록의 독립된 책임 영역",
+            "subjects": [
+              "작업 계획서 문서에 관한 결정 내용을 기록하는 책임은 정책문서 결정 기록과 구분하여 별도 정책에서 관리한다.",
+              "계획서 결정 기록 schema 계약의 위치는 .ptsip/contracts/Decision_Record/plan/으로 구분한다.",
+              "계획서 기록의 상세 보관 방식, 기록·바인딩 필드와 검증 절차에 대해 아직 선언되지 않은 내용은 미결정으로 보존하며 충돌·문제가 발생하면 사용자에게 재검토를 요청한다."
+            ],
+            "exclusions": [
+              "정책문서 결정 기록은 MPD-RECORD-0002의 책임",
+              "정책 결정 기록의 기본 저장 위치·참조·ID 규칙을 별도 선언 없이 계획서 기록에 자동 상속시키는 행위",
+              "작업 계획의 승인·실행 또는 소비자 지원 기능의 활성화를 결정 기록만으로 승인하는 행위"
+            ]
+          },
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "정책문서와 작업 계획서 문서의 결정 기록 책임이 분리되는지 검토",
+                "정책·계획서 기록 schema의 소유 경로가 구분되는지 검토",
+                "미결정인 계획서 기록 세부 규칙을 과거 정책이나 에이전트 추정으로 채우지 않는지 검토"
+              ]
+            }
+          },
+          "title": "RECORD 작업 계획서 결정 기록의 책임 경계"
+        }
+      }
+    },
+    {
+      "target_path": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+      "document": {
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0004",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD 릴리스 노트 기록 및 계약·검증기 위치"
+        },
+        "Policy_Rules": {
+          "Identity": {
+            "contract_id": "urn:ptsip:policy:rule:record:release-note-recording",
+            "Rule_ver": "1"
+          },
+          "Definition": [
+            {
+              "id": "R-ID-50E89BB94D7245789DA07DF5D16E2C3B",
+              "rule": "RELEASE-NOTE-MGMT"
+            }
+          ],
+          "Boundary": {
+            "scope": "Kinirin/PTSIP 개발 릴리스 노트의 기록 단위·파일 패턴·영역과 구성 계약·검증기의 위치",
+            "subjects": [
+              "Package 노트 파일 패턴은 docs/releasenote/PTSIP_Package/{package_version}.md다.",
+              "엔진별 노트 파일 패턴은 docs/releasenote/engine/{engine}/{engine}-engine-{version}.md다.",
+              "여러 엔진의 노트를 하나의 병합 노트 파일로 만드는 것을 금지한다.",
+              "릴리스 노트 기록 영역은 tool, project-profile, PTSIP_Package, engine이다.",
+              "릴리스 노트의 검증 또는 참조 역할을 수행하는 검증기는 .ptsip/engine/developer/Distribution/release/ 아래에 둔다.",
+              "릴리스 노트 구성 계약은 .ptsip/contracts/release/ 아래에서 참조하며 그 외 위치를 해당 구성 계약의 원본 위치로 사용하지 않는다.",
+              "이번 선언에 없는 상세 규칙은 미결정으로 남기고 충돌·문제가 발생하면 사용자에게 재검토를 요청한다."
+            ],
+            "exclusions": [
+              "정책 결정 기록과 작업 계획서 결정 기록의 상세 보관 규칙",
+              "이 정책을 근거로 릴리스 실행·배포·발행 권한 또는 검증 면제를 부여하는 행위",
+              "구 정책의 과거 승인·구현 상태·혼합된 계획 내용을 자동 승계하는 행위"
+            ]
+          },
+          "Evaluation": {
+            "criteria": {
+              "evidence": [
+                "Package·엔진별 노트 파일이 선언한 패턴과 기록 영역을 따르는지 확인",
+                "서로 다른 엔진의 노트 원본 파일을 병합하지 않는지 확인",
+                "릴리스 노트 검증·참조 검증기와 구성 계약이 각각 선언된 소유 경로 안에 있는지 확인",
+                "미결정 상세 규칙과 기존 release 검증 계약의 결과를 구분하여 보고하는지 검토"
+              ]
+            }
+          },
+          "title": "RECORD 릴리스 노트 기록 및 계약·검증기 위치"
+        }
+      }
+    }
+  ]
+}

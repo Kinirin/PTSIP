@@ -1,0 +1,33 @@
+Policy_Identity:
+  id: MPD-RECORD-0003
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: RECORD
+  title: RECORD responsibility boundaries for work-plan decision records
+Policy_Status:
+  Policy_Status_Schema_ver: '1'
+  status: APPROVED.Unresolved
+  contract: urn:ptsip:contract:policy:record:plan:recording
+Policy_Rules:
+  Identity:
+    contract_id: urn:ptsip:policy:rule:record:plan-decision-recording
+    Rule_ver: '1'
+  Definition:
+  - id: R-ID-C945694F577C4F3891F79DC0632B1BCB
+    rule: PLAN-DECISION-LOG
+  Boundary:
+    scope: An independent responsibility area for recording decisions concerning Kinirin/PTSIP developer work-plan documents
+    subjects:
+    - Manage responsibility for recording decisions concerning work-plan documents in a separate policy, distinct from decisions concerning policy documents.
+    - Keep work-plan decision record schema contracts under .ptsip/contracts/Decision_Record/plan/.
+    - Preserve undeclared storage details, record and binding fields, and verification procedures as unresolved. Request user review when a conflict or problem arises.
+    exclusions:
+    - MPD-RECORD-0002 owns decisions concerning policy documents.
+    - Automatically inheriting policy-decision default storage, reference, or ID rules for work-plan records without a separate declaration.
+    - Using decision records alone to approve a work plan, authorize execution, or activate consumer features.
+  Evaluation:
+    criteria:
+      evidence:
+      - Review whether decision-record responsibilities for policy documents and work-plan documents remain separate.
+      - Review whether policy and work-plan record schemas have distinct owner paths.
+      - Review whether unresolved work-plan recording details remain unfilled by historical policy or agent inference.
+  title: RECORD responsibility boundaries for work-plan decision records

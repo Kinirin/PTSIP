@@ -255,7 +255,10 @@ func TestLegacyPolicyAuthorityModelRemoved(t *testing.T) {
 		"developer/policy/ASSURE/MPD-ASSURE-0005.yaml",
 		"developer/policy/INTENT/MPD-INTENT-0002.yaml",
 		"developer/policy/CHANGE/MPD-CHANGE-0005.yaml",
+		"developer/policy/RECORD/MPD-RECORD-0001.yaml",
 		"developer/policy/RECORD/MPD-RECORD-0002.yaml",
+		"developer/policy/RECORD/MPD-RECORD-0003.yaml",
+		"developer/policy/RECORD/MPD-RECORD-0004.yaml",
 	} {
 		content, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(policy)))
 		if err != nil {

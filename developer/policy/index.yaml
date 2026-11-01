@@ -298,9 +298,24 @@ policies:
 - id: MPD-RECORD-0001
   policy_class: PTSIP_DEVELOPER_POLICY
   path: developer/policy/RECORD/MPD-RECORD-0001.yaml
-  status: RETIRED
-  substatus: Waiting
+  status: APPROVED
+  substatus: Unresolved
   authority_role: CANONICAL_AUTHORITY
+- id: MPD-RECORD-0002
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/RECORD/MPD-RECORD-0002.yaml
+  status: APPROVED
+  substatus: Unresolved
+- id: MPD-RECORD-0003
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/RECORD/MPD-RECORD-0003.yaml
+  status: APPROVED
+  substatus: Unresolved
+- id: MPD-RECORD-0004
+  policy_class: PTSIP_DEVELOPER_POLICY
+  path: developer/policy/RECORD/MPD-RECORD-0004.yaml
+  status: APPROVED
+  substatus: Unresolved
 - id: MPD-RELS-0001
   path: developer/policy/legacy/MPD-RELS-0001.yaml
   status: ACTIVE

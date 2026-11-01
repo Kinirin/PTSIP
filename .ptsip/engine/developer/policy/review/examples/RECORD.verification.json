@@ -1,0 +1,258 @@
+{
+  "format": "non-normative-record-policy-verification/v1",
+  "checked_on": "2026-11-01",
+  "timezone": "Asia/Seoul",
+  "baseline_head": "a5fa4aad3e48bd821a276608aa9931d0965ecacd",
+  "status": "POLICY_FILES_CREATED_WITH_EXISTING_REGRESSION_FAILURES",
+  "policy_status": "APPROVED.Unresolved",
+  "policy_language": "en",
+  "encoding_check": {
+    "policy_files": 4,
+    "ascii_policy_files": 4,
+    "replacement_characters": 0
+  },
+  "policy_checks": [
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+      "exit_code": 0,
+      "execution_authorized": false,
+      "mutation_authorized": false,
+      "result": {
+        "execution_authorized": false,
+        "input": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+        "lifecycle_transition_authorized": false,
+        "policy_conformance": "NOT_ASSERTED",
+        "scope": "STRUCTURE_AND_DECLARED_REFERENCES",
+        "status": "VALID",
+        "validator": "policy-check"
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "status": "CHECK_COMPLETED"
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+      "exit_code": 0,
+      "execution_authorized": false,
+      "mutation_authorized": false,
+      "result": {
+        "execution_authorized": false,
+        "input": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+        "lifecycle_transition_authorized": false,
+        "policy_conformance": "NOT_ASSERTED",
+        "scope": "STRUCTURE_AND_DECLARED_REFERENCES",
+        "status": "VALID",
+        "validator": "policy-check"
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "status": "CHECK_COMPLETED"
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+      "exit_code": 0,
+      "execution_authorized": false,
+      "mutation_authorized": false,
+      "result": {
+        "execution_authorized": false,
+        "input": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+        "lifecycle_transition_authorized": false,
+        "policy_conformance": "NOT_ASSERTED",
+        "scope": "STRUCTURE_AND_DECLARED_REFERENCES",
+        "status": "VALID",
+        "validator": "policy-check"
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "status": "CHECK_COMPLETED"
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+      "exit_code": 0,
+      "execution_authorized": false,
+      "mutation_authorized": false,
+      "result": {
+        "execution_authorized": false,
+        "input": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+        "lifecycle_transition_authorized": false,
+        "policy_conformance": "NOT_ASSERTED",
+        "scope": "STRUCTURE_AND_DECLARED_REFERENCES",
+        "status": "VALID",
+        "validator": "policy-check"
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "status": "CHECK_COMPLETED"
+    }
+  ],
+  "profile_check": {
+    "status": "VALID",
+    "scope": "CONTRACT_STRUCTURE_AND_REFERENCES",
+    "execution_authorized": false,
+    "new_rule_bindings": 3,
+    "reused_release_rule_bindings": 1
+  },
+  "field_inventory": {
+    "targets": 4,
+    "findings": 0,
+    "schema_validation": "NOT_PERFORMED_BY_INVENTORY",
+    "packet": ".ptsip/engine/developer/policy/review/examples/RECORD.current.evidence.json"
+  },
+  "captured_file_freshness": {
+    "status": "CAPTURED_FILES_UNCHANGED",
+    "files": 13
+  },
+  "catalog_check": {
+    "status": "PASS",
+    "matching_policy_entries": 4,
+    "unrelated_entries_unchanged": true
+  },
+  "regressions": {
+    "command": "go -C .ptsip/engine/developer test ./policy/verification ./internal/contract_authoring ./internal/contractentry ./policy/review/... ./internal/layout ./Responsibility-Authority/... -count=1",
+    "exit_code": 1,
+    "passing_packages": [
+      "policy/verification",
+      "internal/contractentry",
+      "policy/review"
+    ],
+    "comparison_packages": [
+      "internal/contract_authoring",
+      "Responsibility-Authority/test"
+    ],
+    "top_level_failed_test_groups": 4,
+    "failed_test_events_including_subtests": 17,
+    "comparison": {
+      "current": {
+        "failed_test_ids": [
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Responsibility-Authority/test::TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestConditionalDefaultsAndInvalidSelections",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestGenerationCLILeavesDefaultAndFailureUnwritten",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/ARCH",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/ASSURE",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/CHANGE",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/CNTR",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/CTRL",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/INFO",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/INTENT",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/NORM",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/OPS",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/REAL",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/RECORD",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/RISK",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/SUPPLY"
+        ],
+        "passed_test_events": 29,
+        "skipped_test_events": 0,
+        "exit_code": 1,
+        "events_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-record-baseline-tf58hhwr\\current-test-events.jsonl"
+      },
+      "baseline": {
+        "failed_test_ids": [
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Responsibility-Authority/test::TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestConditionalDefaultsAndInvalidSelections",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestGenerationCLILeavesDefaultAndFailureUnwritten",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/ARCH",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/ASSURE",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/CHANGE",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/CNTR",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/CTRL",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/INFO",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/INTENT",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/NORM",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/OPS",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/REAL",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/RECORD",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/RISK",
+          "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring::TestRegisteredContractsAndAllFourteenSelections/SUPPLY"
+        ],
+        "passed_test_events": 29,
+        "skipped_test_events": 0,
+        "exit_code": 1,
+        "events_path": "C:\\Users\\rhkrt\\AppData\\Local\\Temp\\ptsip-record-baseline-tf58hhwr\\baseline-test-events.jsonl"
+      },
+      "new_failed_test_ids": [],
+      "removed_failed_test_ids": [],
+      "failure_sets_equal": true
+    }
+  },
+  "scope": {
+    "policy_structure_expanded": false,
+    "record_service_schemas_created": false,
+    "condition_or_execution_grants_created": false,
+    "support_feature_plane_changed": false,
+    "contract_plane_changed": false
+  },
+  "unresolved_work": [
+    "Record and binding schema fields and detailed validation procedures",
+    "Generation and change semantics of SHA256-pattern decision IDs",
+    "Undeclared work-plan recording details",
+    "Consumer Support Feature declaration and implementation"
+  ],
+  "policy_conformance": "NOT_ASSERTED_BY_STRUCTURAL_VALIDATION"
+}

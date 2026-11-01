@@ -2,23 +2,43 @@ Policy_Identity:
   id: MPD-RECORD-0002
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: RECORD
-  title: "RECORD 신규 독립 규칙 계약 후보"
+  title: RECORD developer policy-decision recording and storage
 Policy_Status:
-  Schema:
-    Policy_Status_version:
-      version: "1"
-  constant:
-    status: APPROVED
-    substatus: provisional
-    contract: urn:ptsip:contract:policy:record:rule-structure:provisional
-Authority:
-  authority_id: MPD-RECORD-0002
-  Authority_Action:
-    action_ref: urn:ptsip:authority:action:policy:policy-modification
+  Policy_Status_Schema_ver: '1'
+  status: APPROVED.Unresolved
+  contract: urn:ptsip:contract:policy:record:decision:recording
 Policy_Rules:
-  independent_rule_refs: []
-  candidate_contract_id: urn:ptsip:contract:policy:rules:RECORD:v1
-  candidate_contract_path: .ptsip/contracts/policy/Rules/RECORD_rules.json
-  candidate_scope: "기록 추적"
-  semantic_rework_required: true
-  normative_content_from_retired_policies: FORBIDDEN
+  Identity:
+    contract_id: urn:ptsip:policy:rule:record:policy-decision-recording
+    Rule_ver: '1'
+  Definition:
+  - id: R-ID-1A279F4AEF5D4111BD8DDC0AC92D744B
+    rule: POLICY-DECISION-LOG
+  Boundary:
+    scope: Recording and storage of user decisions concerning Kinirin/PTSIP developer policy documents, with recording integration that preserves existing contract structures
+    subjects:
+    - Record user decisions concerning developer policies. Decisions may be stored in the policy document itself or in a separate record file; the policy document is the default storage location.
+    - Use a structured recording contract for decisions stored in policy documents. Preserve the user's contract structure and identity, and limit changes to the minimum needed for reference integration.
+    - When only a common policy contract exists, reference the policy-decision record schema from that common contract. By default, maintain the record schema in a separate file distinguishable from the user's contract file; the user may request a merge.
+    - When only independent policy contracts exist, assess each contract's role, responsibility, and recording needs, and add a record-schema reference only to contracts that need it. Do not force the creation of a common parent policy contract merely for recording.
+    - By default, recommend one recording-service schema referenced by the independent contracts. Sharing a subordinate recording-service contract does not establish a common policy contract structure. The user may request a separate record schema for each independent contract.
+    - When common and independent policy contracts coexist, identify the actual owner of the policy-content field. Reference the record schema from the common contract when it owns that field, or from the relevant independent contracts when only those contracts own the field.
+    - When both contract structures coexist, strongly recommend references to one recording-service schema and discourage a separate decision-record structure for every independent contract. Do not require a reference in contracts whose roles and responsibilities do not need recording.
+    - Separating decisions from the policy document requires record verification and policy reference rules. Keep policy-decision record schema contracts under .ptsip/contracts/Decision_Record/policy/ and decision-record data under .ptsip/context/.
+    - For separate records, connect the necessary policy-contract binding through a path and a unique ID with a SHA256 pattern. Write decision details in the designated record file and display a short constant name in the policy document for convenience.
+    - A constant name is a user-facing identification aid, not evidence of decision meaning. Do not infer a decision from its name; resolve the unique ID and inspect the actual decision content before making a determination.
+    - Do not invent unresolved record or binding fields, the generation and change semantics of a SHA256-pattern ID, or detailed verification procedures. Request user review when a conflict or problem arises.
+    exclusions:
+    - MPD-RECORD-0003 owns decisions concerning work-plan documents; its rules do not inherit automatically from this policy.
+    - Creating new decision, approval, or execution authority from the existence or structural validation of a record.
+    - Treating these recording principles as completed implementation or activation of a missing service schema, binding contract, or verifier.
+    - Equivalent product policy and automation for consumer repositories remain a separate Support Feature follow-up.
+  Evaluation:
+    criteria:
+      evidence:
+      - Review whether default storage in the policy document and the option of separate storage are distinguished.
+      - Review whether common-only, independent-only, and coexisting contract structures preserve actual policy-content ownership and minimum-change integration.
+      - Review whether sharing a recording-service schema avoids forcing a common policy contract into existence.
+      - Review whether separate records require a path, a unique ID, and inspection of actual decision content without inference from a constant name.
+      - Review whether unresolved schema, binding, and integrity procedures remain unresolved and are not automatically applied to consumer features.
+  title: RECORD developer policy-decision recording and storage

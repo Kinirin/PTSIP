@@ -1,0 +1,38 @@
+Policy_Identity:
+  id: MPD-RECORD-0004
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: RECORD
+  title: RECORD release-note recording and contract and verifier locations
+Policy_Status:
+  Policy_Status_Schema_ver: '1'
+  status: APPROVED.Unresolved
+  contract: urn:ptsip:contract:policy:record:release:notes
+Policy_Rules:
+  Identity:
+    contract_id: urn:ptsip:policy:rule:record:release-note-recording
+    Rule_ver: '1'
+  Definition:
+  - id: R-ID-50E89BB94D7245789DA07DF5D16E2C3B
+    rule: RELEASE-NOTE-MGMT
+  Boundary:
+    scope: Release-note record units, file patterns, namespaces, and composition-contract and verifier locations for Kinirin/PTSIP development
+    subjects:
+    - The Package note file pattern is docs/releasenote/PTSIP_Package/{package_version}.md.
+    - The per-engine note file pattern is docs/releasenote/engine/{engine}/{engine}-engine-{version}.md.
+    - Combining notes for multiple engines into one merged note file is forbidden.
+    - The release-note record namespaces are tool, project-profile, PTSIP_Package, and engine.
+    - Verifiers that perform release-note validation or reference checks belong under .ptsip/engine/developer/Distribution/release/.
+    - Resolve release-note composition contracts under .ptsip/contracts/release/; other locations are not canonical locations for those composition contracts.
+    - Leave details not included in this declaration unresolved, and request user review when a conflict or problem arises.
+    exclusions:
+    - Detailed storage rules for policy-decision records and work-plan decision records.
+    - Granting release execution, distribution, publication authority, or verification waivers through this policy.
+    - Automatically inheriting historical approvals, implementation states, or mixed planning content from earlier policies.
+  Evaluation:
+    criteria:
+      evidence:
+      - Check whether Package and per-engine note files follow the declared file patterns and namespaces.
+      - Check whether note source files for different engines remain separate.
+      - Check whether release-note validation and reference verifiers and composition contracts remain within their declared owner paths.
+      - Review whether unresolved details and results from existing release-verification contracts are reported separately.
+  title: RECORD release-note recording and contract and verifier locations
