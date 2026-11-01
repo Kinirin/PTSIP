@@ -277,5 +277,64 @@
     "identity_lifecycle_and_rid_reuse": "EXTERNAL_REFERENCES",
     "reference_id_prefix": "NOT_HARDCODED",
     "revision_transport": "NOT_GIT_ONLY"
+  },
+  "candidate_schema_path": ".ptsip/contracts/policy/Policy_Rules/Field_Binding_Trial.schema.json",
+  "additional_cross_policy_projection": {
+    "method": "Read current five unchanged YAML texts; lexically collect full source_ref/item_ref/revision_ref triples, normalize unique document+revision pairs and item IDs; generate in-memory unresolved responsibility binding per independent requirement. No semantic claims copied or inferred. Not full YAML AST parsing or schema engine execution.",
+    "results": [
+      {
+        "policy": "MPD-GOV-0001",
+        "document_revisions": 6,
+        "unique_items": 88,
+        "requirements": 7,
+        "declared_rules": 32,
+        "result": "PASS"
+      },
+      {
+        "policy": "MPD-ARCH-0001",
+        "document_revisions": 3,
+        "unique_items": 26,
+        "requirements": 6,
+        "declared_rules": 4,
+        "result": "PASS"
+      },
+      {
+        "policy": "MPD-ARCH-0002",
+        "document_revisions": 3,
+        "unique_items": 18,
+        "requirements": 3,
+        "declared_rules": 3,
+        "result": "PASS"
+      },
+      {
+        "policy": "MPD-CHANGE-0007",
+        "document_revisions": 2,
+        "unique_items": 29,
+        "requirements": 9,
+        "declared_rules": 2,
+        "retired": true,
+        "source_history_present": true,
+        "result": "PASS"
+      },
+      {
+        "policy": "MPD-RECORD-0001",
+        "document_revisions": 6,
+        "unique_items": 23,
+        "requirements": 6,
+        "declared_rules": 1,
+        "result": "PASS"
+      }
+    ],
+    "scope": "REF_INDEX_AND_REQUIREMENT_ID_PROJECTION_ONLY",
+    "semantic_field_bindings": "UNRESOLVED",
+    "historical_results": "PRESERVED_IN_ORIGINAL_POLICY_NOT_ISSUED_AS_NEW_EVALUATION"
+  },
+  "counterexamples_addendum": {
+    "source_identity_and_usage": "same I10 appears as MEANING for REQ-0003 and REQ-0004; no duplicated source object",
+    "same_target_different_scope": "SUPPORTED_BY_INDEPENDENT_TARGET_AND_SCOPE_PURPOSE_BINDINGS; NO TARGET VERIFIED",
+    "same_path_different_revisions": "PASS_MEMORY_CONTRACT_D2",
+    "relation_participation_vs_authority": "SEPARATE_BUT_UNRESOLVED_NO_FABRICATED_RELATION",
+    "evidence_requirement_vs_real_evidence": "DISTINCT_PURPOSE_TAGS_NO_EVIDENCE_ASSERTED",
+    "confirmed_empty_vs_unresolved": "CONFIRMED_EMPTY_REQUIRES_BASIS; OMISSION_IS_UNRESOLVED"
   }
 }
