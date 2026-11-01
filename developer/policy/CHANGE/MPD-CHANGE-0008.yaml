@@ -1,0 +1,45 @@
+Policy_Identity:
+  id: "MPD-CHANGE-0008"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "CHANGE"
+  title: "CHANGE 기존 정책 제거 적격성"
+Policy_Status:
+  Policy_Status_Schema_ver: "1"
+  status: "DRAFT.Default"
+  contract: "urn:ptsip:contract:policy:change:policy-removal:eligibility"
+Policy_Rules:
+  Identity:
+    contract_id: "urn:ptsip:policy:rule:change:policy-removal-eligibility"
+    Rule_ver: "1"
+  Definition:
+    - id: "R-ID-562D9CF80AB14BC5A8AA219AC0008001"
+      rule: "REMOVAL-ELIGIBILITY"
+    - id: "R-ID-56BDE23F037548ACBDF71F34E0008002"
+      rule: "INDEPENDENT-GATE"
+  title: "CHANGE 기존 정책 제거 적격성"
+  Boundary:
+    scope: "기존 정책 책임의 위탁 수락 이후 기존 정책 제거를 고려할 때 적용할 적격 조건의 정책적 경계. 위탁 수락 자체의 검토와 별개이며, 현 문서는 승인 전 후속 책임 이전 후보."
+    subjects:
+      - "기존 정책 제거 적격성은 별도 CHANGE 위탁 수락 적격성 검토 결과를 선행 근거로 확인하되, 수락 PASS만으로 실제 삭제 실행을 허가하지 않는다."
+      - "실제 정책 제거의 실행 허가는 유효한 GOV 승인 출처·정책 생명주기·적용 범위 및 별도로 승인된 전환 조건을 독립 확인하는 게이트를 거친다."
+      - "일반적인 위탁 수락 후 제거에 신규 정책 또는 전용 검증기의 선완성을 일괄 요구하지 않되, 유효한 별도 특수 전환 의무는 보존한다."
+      - "기존 정책 제거로 인해 영향을 받는 정책-PLAN 연결만을 정리하고 다른 유효한 관계와 PLAN 본문·승인·상태는 보존해야 한다. 관계 자체의 규범적 소유권은 별도로 결정된 독립 관계 Family의 경계에 남긴다."
+      - "제거 적격성의 규범 기준은 GOV의 실제 승인·상태 전이 권한이나 실행 게이트의 최종 구현 주체를 새로 창설하지 않는다."
+      - "MPD-CHANGE-0001의 기존 제거·관계 정리 세부 규칙은 손실 없는 후속 이전과 승인 완료 전까지 원본에서 유지한다."
+    exclusions:
+      - "위탁 수락의 의미 보존·누락 검토 자체를 MPD-CHANGE-0007 대신 소유하는 행위"
+      - "수락 또는 보존 검증 PASS만으로 정책 파일을 자동 삭제하거나 정책 승인·적용 권위를 새로 부여하는 행위"
+      - "RETIRED MPD-CHANGE-0004 또는 퇴역 CTRL 정책을 현행 제거 허가 주체로 재활성화하는 행위"
+      - "정책 제거 시 PLAN 전체를 삭제·무효화·재승인하거나 정책-PLAN 독립 관계 Family의 최종 의미 소유권을 인수하는 행위"
+      - "DRAFT 정책을 제거 실행 허가로 주장하거나 독립 게이트의 미확정 구현 방법을 본 정책에서 승인 완료로 선언하는 행위"
+  Evaluation:
+    criteria:
+      evidence:
+        - "위탁 수락 적격성과 기존 정책 제거 적격성 결과가 별개임을 확인"
+        - "GOV 승인·정책 생명주기·적용 범위의 유효 근거가 독립 실행 허가 전에 확인되는지 점검"
+        - "기존 정책 제거 시 다른 정책-PLAN 관계와 PLAN 자체 권위 및 승인 상태가 보존되는지 확인"
+        - "독립 실행 게이트의 최종 구현·소유권과 MPD-CHANGE-0001 원문 세부 책임 이전은 아직 미완료"
+    result:
+      status: "incomplete_fulfillment"
+      task_name: "CHANGE 기존 정책 제거 적격성 후속 책임 이전 검토"
+      task_id: "MPD-CHANGE-0008"
