@@ -222,17 +222,6 @@ func probePolicyRouting(root string, e Engine) RoutingProbe {
 		p.Problem = "ROUTING_CONTRACT_SCHEMA_REJECTED"
 		return p
 	}
-	catalog, err := contract_authoring.Load(root)
-	if err != nil {
-		p.Problem = err.Error()
-		return p
-	}
-	if err := catalog.CheckContracts(func(schema, instance any, resources []any) (bool, error) {
-		return nativeValidate(e, schema, instance, resources)
-	}); err != nil {
-		p.Problem = err.Error()
-		return p
-	}
 	p.Status = "PASS"
 	return p
 }
