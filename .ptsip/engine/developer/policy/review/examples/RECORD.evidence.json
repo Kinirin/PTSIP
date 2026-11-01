@@ -1,0 +1,348 @@
+{
+  "format": "ptsip-non-normative-policy-review/v1",
+  "status": "NON_NORMATIVE_REVIEW",
+  "schema_validation": "NOT_PERFORMED",
+  "semantic_selection": "HUMAN_OR_AGENT_SELECTED_NOT_VERIFIED",
+  "mutation_authorized": false,
+  "file_sha256": {
+    ".ptsip/contracts/index.json": "fda0b6b998d9739658d9a61d70f400a888a253df341640009a3d30451660cda8",
+    ".ptsip/contracts/policy/Rules/RECORD_rules.json": "43e12fe2ba4c5fc43a28be58252fb7ebd38cc48c3f26e3c67e39db51d44863f7",
+    ".ptsip/contracts/policy/boundary.json": "30071bbed3ef213307e4a522d36ec2a3740298e607bc71ad673e69bb33bac0a4",
+    ".ptsip/contracts/policy/routing/policy_routes.json": "1ebe6f9635ea76f2266cde3631e202627cc932587d01cdaa0e7d0543c13a5a04",
+    ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json": "bccdeb71d6220d44b171a084d89b1b576232584a4c8ec5e764a12b56609cef93",
+    ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json": "8d7c58af4a8950279be6dd765bf8398f8902e28c3ad017a2dfd229780fb24dc2",
+    ".ptsip/engine/developer/index.json": "9e8e1540f38bd37a4fecd3d1515c1439948a2684cd353f58cb34de026871c03f",
+    ".ptsip/index.json": "0e7281a68a21f46b3e4d0baca2834ad4f1698366f7f540ee868194d661208219",
+    ".ptsip/profiles/Responsibility-Authority-list.yaml": "347e78c14cd78aa6f2c8356544f36be9565740661388e28ab1579a21d3cfa844",
+    "developer/policy/RECORD/MPD-RECORD-0001.yaml": "a8cef6b6a61d742aa9c5753e0329d145778ce840b8c36082b14701fa4e79d743",
+    "developer/policy/RECORD/MPD-RECORD-0002.yaml": "9aa5859393d41e182bb3e2cc85665f25d3524fc96d08b0287d90821c6e99dbd5",
+    "developer/policy/legacy/MPD-0010.yaml": "de2481adb302198aac4a4dbd53d3b0af299842aeb8ef660c498af965c23bf980",
+    "developer/policy/legacy/MPD-0011.yaml": "fe68fbc6860fc1c36090f042f03ce40ca9e6751d90df1dc4d7712bed4f874d45",
+    "developer/policy/legacy/MPD-0012.yaml": "57debdc3dd6f7665875116b4e265e49b8a29afcde7983f161abeca0d6c180b6d",
+    "developer/policy/legacy/MPD-RELS-0001.yaml": "dd381288c34ad5960ece0a8c0351a2ae57c44c33051d9fb99f31880e6017021c",
+    "developer/policy/legacy/MPD-WORK-0002.yaml": "d64f6be227be39c6214e15c58d29da4c648983aec35c54250c0e98553d57e95a"
+  },
+  "targets": [
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+      "document": {
+        "authority_subject": {
+          "id": "DEV_DECISION_AND_EXECUTION_PROVENANCE",
+          "statement": "개발 결정, 승인, 작업 실행 및 검증 사건의 출처와 exact revision 결합, 감사 가능성과 역사적 보존을 소유한다."
+        },
+        "exclusive_kernel": [
+          "DEV_EVENT_PROVENANCE_AND_SOURCE_BINDING",
+          "DEV_HISTORY_RETENTION_AND_TRACEABILITY"
+        ],
+        "policy": {
+          "id": "MPD-RECORD-0001",
+          "status": "RETIRED",
+          "substatus": "Waiting",
+          "title": "RECORD authority (ACTIVE source responsibilities)",
+          "version": "2.2"
+        },
+        "policy_class": "PTSIP_DEVELOPER_POLICY",
+        "relations": {
+          "amends": [],
+          "depends_on": [],
+          "extends": [],
+          "supersedes": []
+        },
+        "responsibility_family": "RECORD",
+        "rules": {
+          "family_definition": {
+            "kernel_definitions": [
+              {
+                "id": "DEV_EVENT_PROVENANCE_AND_SOURCE_BINDING",
+                "non_substitutability": "ASSURE의 판정이나 GOV의 결정만으로 그 사건의 재확인 가능한 provenance가 보존되지 않는다.",
+                "statement": "개발 기록에 subject, 수행 주체, 승인 근거, source SHA, 시점과 결과 출처를 결합하고 다른 revision의 증거를 혼합하지 않는다."
+              },
+              {
+                "id": "DEV_HISTORY_RETENTION_AND_TRACEABILITY",
+                "non_substitutability": "INFO의 현재 canonical 레코드나 OPS의 회복 상태가 역사적 사건의 원본 출처와 보존을 대체하지 못한다.",
+                "statement": "원본 검증 로그, receipt와 완료 산출물의 보존·조회 및 이력 연결을 정한다. 과거 기록을 현재 권한이나 현재 PASS로 승격하지 않는다."
+              }
+            ],
+            "source_scope": [
+              "MPD-0010",
+              "MPD-0011",
+              "MPD-0012",
+              "MPD-RELS-0001",
+              "MPD-WORK-0002"
+            ]
+          },
+          "unit_mpd_0010_b72085fb0868": "GIT_REVISION",
+          "unit_mpd_0011_b2d8b41a01e2": {
+            "authority_plane_registration": "MATERIALIZED",
+            "canonical_pp_contract_registry": "MATERIALIZED",
+            "claim": "LOCAL_REMOTE_RELEASE_PP_AUTOMATION_ACTIVE",
+            "distribution_contract_verifier": "MATERIALIZED",
+            "h3_hook_activation": "MATERIALIZED_SHARED_INSTALLER",
+            "operationalization_level": "L4_LOCAL_AUTO_REMEDIATION_L3_REMOTE_AND_RELEASE_VERIFY",
+            "packaging_registry_projection": "MATERIALIZED",
+            "policy_index_registration": "MATERIALIZED",
+            "policy_record": "MATERIALIZED",
+            "policy_resolver_routing": "MATERIALIZED",
+            "public_profile_catalog": "MATERIALIZED",
+            "release_transition_verifier": "MATERIALIZED_EXACT_SHA_VERIFY_ONLY",
+            "remote_commit_verifier": "MATERIALIZED_PUSH_VERIFY_ONLY",
+            "runtime_current_pp_registry_resolution": "MATERIALIZED",
+            "t2_delta_resolver": "MATERIALIZED",
+            "transition_reconciler": "MATERIALIZED_AND_HOOK_INVOKED"
+          },
+          "unit_mpd_0012_7bc423f87b11": {
+            "completed_materialization": [
+              "NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL"
+            ],
+            "current_legacy_markdown_physical_presence": "ABSENT",
+            "currently_materialized": {
+              "agent_contract_root": "src/agent_contracts",
+              "authority_scope": "CODING_AGENT_BEHAVIOR",
+              "contract_set_status": "CURRENT",
+              "external_machine_contracts": "EXPLICIT_BINDING_ONLY",
+              "markdown_cleanup_automation": "MATERIALIZED_SIMULATION_AND_GUARDED_APPLY",
+              "markdown_normative_dependency": "FORBIDDEN",
+              "typed_contract_kinds": [
+                "SPEC",
+                "OPERATION",
+                "ACTION",
+                "CONDITION",
+                "MUTATION_GATE",
+                "IO_SCHEMA",
+                "VOCABULARY",
+                "BINDING"
+              ]
+            },
+            "implementation_work_from_this_ledger": "AGENT_CONTRACT_MACHINE_PLANE_M0_M5_VERIFIED",
+            "observed_branch": "dev/0.3.8",
+            "observed_head_before_this_record": "df018272ef31ef84c3cc158d00235af946862c09"
+          },
+          "unit_mpd_rels_0001_8b9a13c6427c": {
+            "approval_ref": "developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml",
+            "engine_note_pattern": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md",
+            "grouped_release_body": "COMPONENT_NOTE_SECTIONS_IN_ONE_SOURCE_SHA_RELEASE",
+            "historical_flat_release_notes_bulk_moved": false,
+            "merged_multi_engine_note_file": "FORBIDDEN",
+            "package_note_pattern": "docs/releasenote/PTSIP_Package/{package_version}.md",
+            "presentation_contract_ref": ".github/checks/release/release-presentation.json",
+            "release_note_contract_ref": ".github/checks/release/composition-contract.json",
+            "release_note_namespaces": [
+              "tool",
+              "project-profile",
+              "PTSIP_Package",
+              "engine"
+            ]
+          },
+          "unit_mpd_work_0002_a794e002b8bd": {
+            "resulting_state_required": true,
+            "structured_result_required": true
+          }
+        },
+        "schema_version": "ptsip-developer-root-family-policy/v1",
+        "transition": {
+          "requirements": [
+            {
+              "id": "TR-001",
+              "next_action": {
+                "action": "VERIFY_SOURCE_PROJECTION",
+                "completion_check": "EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH",
+                "execution": "SERIAL_REQUIRED"
+              },
+              "refs": [
+                "developer/policy/approvals/MPA-20261006-ROOT-RECORD-0001-ACTIVE.yaml"
+              ],
+              "state": "SATISFIED",
+              "type": "ROOT_FAMILY_SOURCE_STATE_PRESERVATION"
+            }
+          ],
+          "state": "COMPLETE",
+          "target_status": "APPROVED",
+          "target_substatus": "Applying"
+        }
+      },
+      "selection_problem": "POLICY_IDENTITY_SELECTION_UNRESOLVED",
+      "field_findings": []
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+      "document": {
+        "Authority": {
+          "Authority_Action": {
+            "action_ref": "urn:ptsip:authority:action:policy:policy-modification"
+          },
+          "authority_id": "MPD-RECORD-0002"
+        },
+        "Policy_Identity": {
+          "id": "MPD-RECORD-0002",
+          "policy_kind": "PTSIP_DEVELOPER_POLICY",
+          "root_family": "RECORD",
+          "title": "RECORD 신규 독립 규칙 계약 후보"
+        },
+        "Policy_Rules": {
+          "candidate_contract_id": "urn:ptsip:contract:policy:rules:RECORD:v1",
+          "candidate_contract_path": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "candidate_scope": "기록 추적",
+          "independent_rule_refs": [],
+          "normative_content_from_retired_policies": "FORBIDDEN",
+          "semantic_rework_required": true
+        },
+        "Policy_Status": {
+          "Schema": {
+            "Policy_Status_version": {
+              "version": "1"
+            }
+          },
+          "constant": {
+            "contract": "urn:ptsip:contract:policy:record:rule-structure:provisional",
+            "status": "APPROVED",
+            "substatus": "provisional"
+          }
+        }
+      },
+      "selection": {
+        "domain": "developer_policy",
+        "validator": "policy-check",
+        "target": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+        "policy_kind": "PTSIP_DEVELOPER_POLICY",
+        "root_family": "RECORD",
+        "contract_refs": {
+          "boundary": ".ptsip/contracts/policy/boundary.json",
+          "family": ".ptsip/contracts/policy/Rules/RECORD_rules.json",
+          "public_schema": ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+          "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
+          "routing": ".ptsip/contracts/policy/routing/policy_routes.json",
+          "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+        },
+        "execution_authorized": false,
+        "mutation_authorized": false,
+        "policy_conformance": "NOT_ASSERTED"
+      },
+      "field_findings": [
+        {
+          "path": "/Policy_Rules/Identity",
+          "kind": "MISSING_DECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/Definition",
+          "kind": "MISSING_DECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/Boundary",
+          "kind": "MISSING_DECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/Evaluation",
+          "kind": "MISSING_DECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/title",
+          "kind": "MISSING_DECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/candidate_contract_id",
+          "kind": "UNDECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/candidate_contract_path",
+          "kind": "UNDECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/candidate_scope",
+          "kind": "UNDECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/independent_rule_refs",
+          "kind": "UNDECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/normative_content_from_retired_policies",
+          "kind": "UNDECLARED_FIELD"
+        },
+        {
+          "path": "/Policy_Rules/semantic_rework_required",
+          "kind": "UNDECLARED_FIELD"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "developer/policy/legacy/MPD-0010.yaml",
+      "pointer": "/rules/management_policy_identity_lifecycle_preflight/policy_version_contract/exact_snapshot_identity",
+      "value": "GIT_REVISION"
+    },
+    {
+      "path": "developer/policy/legacy/MPD-0011.yaml",
+      "pointer": "/rules/implementation_state",
+      "value": {
+        "authority_plane_registration": "MATERIALIZED",
+        "canonical_pp_contract_registry": "MATERIALIZED",
+        "claim": "LOCAL_REMOTE_RELEASE_PP_AUTOMATION_ACTIVE",
+        "distribution_contract_verifier": "MATERIALIZED",
+        "h3_hook_activation": "MATERIALIZED_SHARED_INSTALLER",
+        "operationalization_level": "L4_LOCAL_AUTO_REMEDIATION_L3_REMOTE_AND_RELEASE_VERIFY",
+        "packaging_registry_projection": "MATERIALIZED",
+        "policy_index_registration": "MATERIALIZED",
+        "policy_record": "MATERIALIZED",
+        "policy_resolver_routing": "MATERIALIZED",
+        "public_profile_catalog": "MATERIALIZED",
+        "release_transition_verifier": "MATERIALIZED_EXACT_SHA_VERIFY_ONLY",
+        "remote_commit_verifier": "MATERIALIZED_PUSH_VERIFY_ONLY",
+        "runtime_current_pp_registry_resolution": "MATERIALIZED",
+        "t2_delta_resolver": "MATERIALIZED",
+        "transition_reconciler": "MATERIALIZED_AND_HOOK_INVOKED"
+      }
+    },
+    {
+      "path": "developer/policy/legacy/MPD-0012.yaml",
+      "pointer": "/rules/repository_materialization_snapshot",
+      "value": {
+        "completed_materialization": [
+          "NORMATIVE_OPERATIONAL_MARKDOWN_PHYSICAL_REMOVAL"
+        ],
+        "current_legacy_markdown_physical_presence": "ABSENT",
+        "currently_materialized": {
+          "agent_contract_root": "src/agent_contracts",
+          "authority_scope": "CODING_AGENT_BEHAVIOR",
+          "contract_set_status": "CURRENT",
+          "external_machine_contracts": "EXPLICIT_BINDING_ONLY",
+          "markdown_cleanup_automation": "MATERIALIZED_SIMULATION_AND_GUARDED_APPLY",
+          "markdown_normative_dependency": "FORBIDDEN",
+          "typed_contract_kinds": [
+            "SPEC",
+            "OPERATION",
+            "ACTION",
+            "CONDITION",
+            "MUTATION_GATE",
+            "IO_SCHEMA",
+            "VOCABULARY",
+            "BINDING"
+          ]
+        },
+        "implementation_work_from_this_ledger": "AGENT_CONTRACT_MACHINE_PLANE_M0_M5_VERIFIED",
+        "observed_branch": "dev/0.3.8",
+        "observed_head_before_this_record": "df018272ef31ef84c3cc158d00235af946862c09"
+      }
+    },
+    {
+      "path": "developer/policy/legacy/MPD-RELS-0001.yaml",
+      "pointer": "/rules/authority_semantics",
+      "value": {
+        "historical_flat_release_notes_bulk_moved": false,
+        "release_note_namespaces": [
+          "tool",
+          "project-profile",
+          "specification"
+        ]
+      }
+    },
+    {
+      "path": "developer/policy/legacy/MPD-WORK-0002.yaml",
+      "pointer": "/rules/work_execution_lifecycle/execution_output",
+      "value": {
+        "resulting_state_required": true,
+        "structured_result_required": true
+      }
+    }
+  ]
+}

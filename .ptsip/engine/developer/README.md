@@ -111,6 +111,11 @@ only Go and the local module indexes. A default Rules generation remains
 `OMITTED`; supplied scalars and an explicit family are required for generation.
 See `internal/contract_authoring/README.md` for the authoring interface.
 
+For explicit historical-section extraction and a non-normative declared-field
+inventory before policy rewriting, see `policy/review/README.md`. Its standalone
+read-only helper reuses contract entry, preserves unresolved selection, and does
+not register a validator, amend contracts, or authorize policy changes.
+
 ## Test modules
 
 ```powershell
