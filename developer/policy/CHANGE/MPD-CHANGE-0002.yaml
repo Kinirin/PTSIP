@@ -1,44 +1,240 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
 Policy_Identity:
-  id: "MPD-CHANGE-0002"
-  policy_kind: "PTSIP_DEVELOPER_POLICY"
-  root_family: "CHANGE"
-  title: "CHANGE 반복 추론 감지와 계약 개선 후보 식별"
-Policy_Status:
-  Policy_Status_Schema_ver: "1"
-  status: "DRAFT.Reviewed"
-  contract: "urn:ptsip:contract:policy:change:reasoning:refinement-candidates"
+  id: MPD-CHANGE-0002
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: CHANGE
+  title: CHANGE 반복 추론 감지와 계약 개선 후보 식별
+Policy_Lifecycle:
+  Policy_Status_Schema_ver: '1'
+  status: DRAFT.Reviewed
+  contract: urn:ptsip:contract:policy:change:reasoning:refinement-candidates
 Policy_Rules:
-  Identity:
-    contract_id: "urn:ptsip:policy:rule:change:reasoning-refinement"
-    Rule_ver: "1"
-  Definition:
-    - id: "R-ID-99E9A8520BC24DABAE53FB066BD4A980"
-      rule: "REPEAT-INFERENCE"
-    - id: "R-ID-81E29F51406A45A49277E6B096362B8B"
-      rule: "REFINEMENT-CANDIDATE"
-  title: "CHANGE 반복 추론 감지와 계약 개선 후보 식별"
-  Boundary:
-    scope: "PTSIP 개발 과정에서 반복적으로 재추론되는 규범적 의미와 사용자 개입 패턴을 계약 개선 필요성의 후보로 식별하는 CHANGE 책임"
-    subjects:
-      - "AI 에이전트가 같은 의미를 반복적으로 추론하거나 사용자가 같은 판단에 반복 개입하는 현상은 재사용 가능한 기계 계약 개선의 검토 신호로 식별"
-      - "반복 추론·반복 사용자 개입·반복적 임시 우회 구현은 계약 표현 또는 의미 해석 경계의 개선 후보를 검토하는 근거로 활용"
-      - "동일한 확장 패턴의 반복 및 누적된 사용자 피드백·운영 데이터를 계약 개선 후보의 근거로 활용"
-      - "반복 패턴의 분석은 이미 승인된 의미를 기계적으로 재사용하려는 개선 후보 식별에 한정하며 실제 신규 규범의 승인·소유권 확정·계약 변경은 해당 유효 정책과 별도 사용자 결정에 따름"
-      - "개선 후보는 반복 현상의 근거와 기존 승인 의미의 보존 여부를 구별해 비권위적으로 기록하고, 아직 해결되지 않은 의미는 자동 확정하지 않음"
-    exclusions:
-      - "기존 MPD-CHANGE-0002의 README 번역, 정책·PLAN 일관성 검증 이전, 과거 TR-001~TR-005, 레거시 경로·검증 구현 의존의 규범적 승계"
-      - "정책 변경에 따른 PLAN 영향 분석·재생성·승인 또는 정책-PLAN 관계 검증 시스템의 규범적 소유권·구현 사양을 CHANGE-0002에서 결정하는 행위"
-      - "고객 배포용 PTSIP의 검증 자동화 기능 또는 다섯 단계 검증 시스템의 목표·구현을 개발자 CHANGE 규칙으로 확정하는 행위; 해당 주제는 별도 SFP-ASSURE 책임 결정 대상"
-      - "반복 추론 신호만을 근거로 규칙 의미·정책 승인·소유권·실행 권한을 생성하거나 기존 권위를 승격하는 행위"
-  Evaluation:
-    criteria:
-      evidence:
-        - "반복 의미 추론, 반복 사용자 개입, 임시 우회, 확장 패턴, 사용자 피드백·운영 데이터에서 구체적 개선 후보가 식별되는지 확인"
-        - "검토 신호와 유효한 규범적 소유권·승인 근거가 분리되어 있는지 확인"
-        - "계약 후보의 실제 적용과 검증 결과는 미완료이며 신규 규칙의 의미 소유권은 확정하지 않음"
-        - "정책 변경 관련 PLAN 검증 자동화의 다섯 단계 및 배포용 SFP-ASSURE 귀속은 별도 정책 검토 대상으로 남김"
-        - "기존 README 번역과 레거시 검증 이관 단위의 의미·경로·전환 상태는 새 정책의 현행 권한으로 재사용하지 않음"
-    result:
-      status: "incomplete_fulfillment"
-      task_name: "반복 추론 개선 후보 식별 정책 개혁 및 적용 평가"
-      task_id: "MPD-CHANGE-0002"
+  contracts:
+  - serialization: INDEXED_SOURCE_BINDINGS
+    contract_id: urn:ptsip:policy:rule:change:reasoning-refinement
+    Rule_ver: '1'
+    source_documents:
+    - id: DOC-POLICY
+      source_ref: developer/policy/CHANGE/MPD-CHANGE-0002.yaml
+      revision_ref: git:9fdbaafce1f3af40d65290e6983b770f3cb64e55
+    - id: DOC-PROFILE
+      source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+      revision_ref: git:9fdbaafce1f3af40d65290e6983b770f3cb64e55
+    source_items:
+    - item_id: SRC-HEADER
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Identity
+      original_role: annotation
+    - item_id: SRC-TITLE
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/title
+      original_role: annotation
+    - item_id: SRC-RULE-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Definition/0
+      original_role: rule
+    - item_id: SRC-PROFILE-0001
+      document_id: DOC-PROFILE
+      item_ref: /component_bindings/R-ID-99E9A8520BC24DABAE53FB066BD4A980
+      original_role: annotation
+    - item_id: SRC-RULE-0002
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Definition/1
+      original_role: rule
+    - item_id: SRC-PROFILE-0002
+      document_id: DOC-PROFILE
+      item_ref: /component_bindings/R-ID-81E29F51406A45A49277E6B096362B8B
+      original_role: annotation
+    - item_id: SRC-SCOPE
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/scope
+      original_role: scope
+    - item_id: SRC-SUBJECT-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/0
+      original_role: statement
+    - item_id: SRC-SUBJECT-0002
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/1
+      original_role: statement
+    - item_id: SRC-SUBJECT-0003
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/2
+      original_role: statement
+    - item_id: SRC-SUBJECT-0004
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/3
+      original_role: statement
+    - item_id: SRC-SUBJECT-0005
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/4
+      original_role: statement
+    - item_id: SRC-EXCLUSION-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/exclusions/0
+      original_role: constraint
+    - item_id: SRC-EXCLUSION-0002
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/exclusions/1
+      original_role: constraint
+    - item_id: SRC-EXCLUSION-0003
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/exclusions/2
+      original_role: constraint
+    - item_id: SRC-EXCLUSION-0004
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/exclusions/3
+      original_role: constraint
+    - item_id: SRC-CRITERIA
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria
+      original_role: criterion
+    - item_id: SRC-CRITERION-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+      original_role: criterion
+    - item_id: SRC-CRITERION-0002
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+      original_role: criterion
+    - item_id: SRC-CRITERION-0003
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+      original_role: criterion
+    - item_id: SRC-CRITERION-0004
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
+      original_role: criterion
+    - item_id: SRC-CRITERION-0005
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/4
+      original_role: criterion
+    - item_id: SRC-HISTORICAL-RESULT
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/result
+      original_role: record
+    authority_ref:
+    - id: AUTH-0001
+      binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-RULE-0001, SRC-PROFILE-0001]
+    - id: AUTH-0002
+      binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-RULE-0002, SRC-PROFILE-0002]
+    rules:
+    - id: R-ID-99E9A8520BC24DABAE53FB066BD4A980
+      rule: REPEAT-INFERENCE
+      source_ref: [SRC-RULE-0001]
+      authority_ref: [AUTH-0001]
+    - id: R-ID-81E29F51406A45A49277E6B096362B8B
+      rule: REFINEMENT-CANDIDATE
+      source_ref: [SRC-RULE-0002]
+      authority_ref: [AUTH-0002]
+    requirements:
+    - requirement_id: REQ-0001
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0001]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0001]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003, SRC-EXCLUSION-0004]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERION-0001, SRC-CRITERION-0002, SRC-CRITERION-0003, SRC-CRITERION-0004, SRC-CRITERION-0005]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0001, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, judgement_binding]
+    - requirement_id: REQ-0002
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0002]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0002]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003, SRC-EXCLUSION-0004]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERION-0001, SRC-CRITERION-0002, SRC-CRITERION-0003, SRC-CRITERION-0004, SRC-CRITERION-0005]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0002, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, judgement_binding]
+    - requirement_id: REQ-0003
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0003]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0003]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003, SRC-EXCLUSION-0004]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERION-0001, SRC-CRITERION-0002, SRC-CRITERION-0003, SRC-CRITERION-0004, SRC-CRITERION-0005]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0003, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, judgement_binding]
+    - requirement_id: REQ-0004
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0004]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0004]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003, SRC-EXCLUSION-0004]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERION-0001, SRC-CRITERION-0002, SRC-CRITERION-0003, SRC-CRITERION-0004, SRC-CRITERION-0005]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0004, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, judgement_binding]
+    - requirement_id: REQ-0005
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0005]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0005]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003, SRC-EXCLUSION-0004]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERION-0001, SRC-CRITERION-0002, SRC-CRITERION-0003, SRC-CRITERION-0004, SRC-CRITERION-0005]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0005, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, judgement_binding]
+    historical_result_ref_ids: [SRC-HISTORICAL-RESULT]

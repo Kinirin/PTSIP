@@ -27,15 +27,14 @@ GOV 한 문서에 맞춘 v1 실제 계약·고정 검사 목록·기계적인 �
 
 계약은 `rules[]`에 책임 선언을, `requirements[]`에 개별 요구사항을 둔다.
 요구사항을 규칙 아래에 넣었다는 이유로 책임을 배정하는 구조를 제거했다.
-연결은 `responsibility_refs[]`로 직접 선언하고, 확인되지 않은 배정은 별도로 드러낸다.
+요구사항은 `requirement_id`로 식별하며 `responsibility_refs`는 요구사항 형식에서 제거했다. 기존 R-ID 선언은 `rules[].id`에 보존한다.
 
 | 필드 | 소유하는 책임 |
 |---|---|
 | 계약의 contract_id, Rule_ver | 계약 식별과 자체 직렬화 버전. 특정 값은 공통 스키마에 고정하지 않음 |
 | rules[].id, rule, preconditions | 기존 R-ID·규칙명·C-ID 선언. 이름으로 의미나 결합 연산을 추론하지 않음 |
-| rules[].source_ref, authority_ref | 원본 선언과 현재 책임 소유 계약의 정확한 항목 참조 |
-| requirements[].requirement_id | R-ID와 독립적인 요구사항 식별. 계약 안에서 유일해야 함 |
-| responsibility_refs | 해당 요구사항에 연결하는 책임. 복수 책임과 한 책임의 여러 요구사항을 수용 |
+| rules[].source_ref, authority_ref | source_ref는 같은 계약의 source_items.item_id를 가리키는 비어 있지 않은 ID 배열이다. 원본 좌표 객체는 source_items가 보존하며 authority_ref는 별도 권위 원본 참조다 |
+| requirements[].requirement_id | 개별 요구사항의 식별자. 계약 안에서 유일해야 하며 R-ID 선언과 구별 |
 | meaning_refs | 원본의 정확한 항목·리비전. 복수 원본이 의미를 함께 뒷받침할 수 있음 |
 | target_refs | 실제 대상 식별. 공통 scope 문장을 실제 대상의 대용물로 넣지 않음 |
 | scope_refs | 적용 범위·상한. 책임별 대상이나 권한의 생성과 구별 |
@@ -52,7 +51,7 @@ GOV 한 문서에 맞춘 v1 실제 계약·고정 검사 목록·기계적인 �
 
 필수 필드는 작성 상태를 빠짐없이 보고하기 위한 형식이다.
 모든 요구사항에 조건·예외·외부 증거 계약이 반드시 존재한다는 새 규범 의무를 만들지 않는다.
-빈 배열은 `unresolved_fields` 또는 근거가 있는 `empty_field_basis` 중 하나로 설명한다.
+값이 없는 선택 필드는 빈 배열·빈 객체·null·빈 문자열로 쓰지 않고 생략한다. 미확정은 값이 있는 `unresolved_fields` 또는 바인딩 상태로 보존하고, 확인된 공집합은 실제 필드를 생략한 뒤 `empty_field_basis`에 근거를 남길 수 있다.
 일부 참조를 선언했어도 그 배정이 덜 확인됐으면 `unresolved_fields`에 남길 수 있다.
 목록의 선언이나 공집합 근거 참조는 그 근거의 실질적 타당성을 검증한 결과가 아니다.
 
@@ -62,7 +61,7 @@ CHANGE의 기존 scope 문장은 퇴역·이전 기록이므로 record로 보존
 
 RECORD의 세 하위 문서 연결은 총칙이 그 소유 경계를 명시한다는 후보 표현이다.
 하위 기록 수행 책임·상세 요구사항·R-ID를 총칙으로 가져오지 않는다.
-부모 R-ID와 여러 요구사항의 후보 연결도 책임 배정 검토가 끝났다는 뜻이 아니므로 미확정을 표시했다.
+부모의 R-ID는 규칙 선언에만 보존하고, 여섯 요구사항은 각각 requirement_id로 식별한다. 하위 정책의 수행 책임을 총칙에 이전하지 않는다.
 
 ## 공통 바인딩 상태
 
@@ -99,6 +98,48 @@ v2 공통 구조의 Go 검증기와 계약 선택은 후속 전환에서 활성�
 원문 복합 문장의 최종 원자 경계, 책임 배정, 대상·조건·제약·기준의 등록 항목,
 선택·판정 계약과 포트 바인딩의 실제 의미는 추가 검토 대상이다.
 구조 검사를 통과해도 의미 동등성·적용 승인·정책 충족을 주장하지 않는다.
+
+## 2026-11-02 Family별 필드와 소유 경로
+
+기존 `policy/Rules/*_rules.json` 14개는 구조 비교 자료로만 사용한다. 활성 선택·작성은
+`Policy_Rules/Family_Selection.json`과 `Public_Policy_Rules.schema.json`을 따른다.
+`schemas/Policy`와 `schemas/compile-sealed-rbac`의 스키마는 현재 등록·소비 경로에서 제외한다.
+식별·생명주기와 규칙 레코드는 `contracts/policy`, RBAC 계약은 `contracts/compile-sealed-rbac`에 둔다.
+역사 자료와 검증 영수증의 좌표·해시는 현재 경로로 다시 쓰지 않는다.
+
+모든 Family는 계약 식별·버전, 규칙 ID·이름·원본 항목, 독립 요구사항 ID와 원본 의미·범위를
+표현한다. Family별 차이는 아래 검토 관점을 추가하는 방식이며, 별도 자연어 필드를 만들지 않는다.
+
+| Family | 대상 관점 | 제약 관점 | 판정 기준 관점 | 증거 요구 관점 |
+| --- | --- | --- | --- | --- |
+| NORM | 필수 검토 | 선택 | 선택 | 선택 |
+| GOV | 필수 검토 | 선택 | 필수 검토 | 필수 검토 |
+| INTENT | 선택 | 필수 검토 | 필수 검토 | 선택 |
+| ARCH | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| INFO | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| CNTR | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| RISK | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| SUPPLY | 필수 검토 | 선택 | 필수 검토 | 필수 검토 |
+| REAL | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| ASSURE | 필수 검토 | 선택 | 필수 검토 | 필수 검토 |
+| CTRL | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| CHANGE | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| OPS | 필수 검토 | 선택 | 필수 검토 | 선택 |
+| RECORD | 필수 검토 | 선택 | 필수 검토 | 필수 검토 |
+
+필수 검토는 원본에 없는 의무를 추가하지 않는다. 원본 참조, 명시적 미결정,
+원본 근거가 있는 값 없음/비적용을 구별한다. 미결정 필드는 값을 생성하지 않고
+`unresolved_fields`에 남긴다. 빈 필드는 생략한다. 기존 필수 배열은 빈 배열을 허용했으므로
+필수 키였다는 이유만으로 새 대상·예외·증거 의무가 존재한다고 추정하지 않는다.
+
+공통 Envelope와 관점별 제약은 `Public_Policy_Rules.schema.json`의 `$defs`에서 재사용하며,
+Family별 조합도 같은 파일이 소유한다. 상위 공개 구조는 한 번만 위임한다.
+정책 제목은 `Policy_Identity.title`이 소유하고 규칙에 중복 제목을 요구하지 않는다.
+
+정책 문서의 생명주기 구획은 `Policy_Lifecycle`이다. 내부 상태 값과 버전·계약 값은 유지한다.
+규칙별 권한 연결은 `authority_ref: [AUTH-0001]`로 쓰고, 같은 계약의
+`authority_ref[].id`에 대응시킨다. 권한 원본 좌표 또는 미결정 선택 바인딩은 계약 목록에
+한 번 보존한다. ID의 연결 검사는 권한의 유효 승인·행사 가능성을 대신하지 않는다.
 2026-11-01에 제출된 로컬 검증 로그에서 `MPD-ARCH-0001`의 v2 `policy-check`는 `VALID`(범위: `STRUCTURE_AND_DECLARED_REFERENCES`)이고 세 Go 테스트 패키지는 `ok`이다. 증거는 `.ptsip/engine/developer/policy/verification/v2/evidence/MPD-ARCH-0001-ed873e7b.json`과 동일 경로의 원본 `.log`에 보존한다. 이는 정책 준수·의미 동등성·생명주기 전환 또는 실행 권한의 승인을 의미하지 않는다.
 
 
@@ -130,3 +171,31 @@ v2 공통 구조의 Go 검증기와 계약 선택은 후속 전환에서 활성�
 실제 대상 문서와 다른 정책 5건은 `go -C .ptsip/engine/developer test ./policy/verification/v2 ./internal/contractentry ./policy/test -count=1` 의 새 테스트 사례를 통해 구조·참조 검증됨. Ubuntu 24.04와 Windows 2025 모두 2026-11-01 Actions run `41319900563`에서 0 종료 / 성공. 근거: https://github.com/Kinirin/PTSIP/actions/runs/41319900563. 검증이 선택한 public schema: `urn:ptsip:candidate:contract:policy:public-structure:v2` / rules schema: `urn:ptsip:candidate:contract:policy:rules:v2` / indexed type: `urn:ptsip:candidate:contract:policy:types:v2#/$defs/IndexedContract`. 
 
 정식 등록 구조의 PASS는 중복·미해결 ID·원본 역할 타입·작성 상태의 기본 정합성에 한한다. source SHA의 완전한 역사적 pointer 내용 검증, 원문 의미 보존의 최종 승인, 실제 책임 배정, 관계 적합성 및 적용 완료를 대신하지 않는다. 새 본문은 기존 시험 문서 9,049자에 비해 10,002자로 늘었지만 원본 경로와 리비전 선언은 각 1개이며 19개 항목 주소를 공유한다. 크기 축소가 아니라 중복 데이터 저장과 반복 해석의 구조적 제거를 시험한 것이다.
+
+## Consolidated identity, status and version owners
+
+`Policy_Identity/Public_Policy_Identity.json` owns the policy-kind and Root Family vocabularies
+in its named `$defs`. Routing, Family selection and identity validation reference that single file.
+`Policy_lifecycle/status/Policy_status.json` owns the combined DRAFT, APPROVED and RETIRED
+string vocabulary. The shared status record and lifecycle wrapper reference it without copying values.
+`Policy_lifecycle/version/Policy_version.json` owns version-token generation shape only; the existing
+string constraint is preserved without introducing a new lexical pattern or increment algorithm.
+The reserved `policy/Plans/` directory and its catalog entry have been removed.
+
+## GOV required structure and omitted empty fields
+
+GOV field presence requirements are owned by `Public_Policy_Rules.schema.json` under
+`$defs.PolicyDocumentRules`. The public policy envelope delegates through one reference and
+does not accumulate Family-specific conditional bodies. Contract headers keep `contract_id`
+as a string sibling of `rules`, `requirements` and `source_items`; rules do not nest inside it.
+GOV contracts require rules, requirements and source items, with rule id/rule/source_ref and
+requirement_id identifiers. `unresolved_fields` is required when pending bindings exist and
+is omitted when empty. Empty optional fields are never emitted. Omission does not imply
+approval, satisfaction or non-applicability.
+
+`rules[].source_ref` is an array of contract-local item IDs, never an inline source address.
+Both source representations use `source_items[].item_id`. Missing/duplicate item IDs,
+dangling rule references and duplicate requirement IDs fail the reference-integrity stage.
+`responsibility_refs` and its redundant requirement binding are removed from requirement
+instances; explicit responsibility participants in an independent relation remain a separate
+contract responsibility.

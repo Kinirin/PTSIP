@@ -111,23 +111,41 @@ func TestCanonicalDeveloperContractRoutes(t *testing.T) {
 		t.Fatal(err)
 	}
 	var vocab struct {
-		Enum []string `json:"enum"`
+		Definitions map[string]struct {
+			Enum []string `json:"enum"`
+		} `json:"$defs"`
 	}
 	if err := json.Unmarshal(vocabBytes, &vocab); err != nil {
 		t.Fatal(err)
 	}
-	if len(vocab.Enum) != 14 {
-		t.Fatalf("expected 14 root-family vocabulary values, got %d", len(vocab.Enum))
+	families := vocab.Definitions["root_family"].Enum
+	if len(families) != 14 {
+		t.Fatalf("expected 14 root-family vocabulary values, got %d", len(families))
 	}
 	for _, target := range routing.SchemaRefs {
 		if err := checkCanonicalContractFile(root, target); err != nil {
 			t.Fatal(err)
 		}
 	}
-	for _, family := range vocab.Enum {
-		target := ".ptsip/contracts/policy/Rules/" + family + "_rules.json"
-		if err := checkCanonicalContractFile(root, target); err != nil {
-			t.Fatal(err)
+	selectionPath := ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json"
+	if err := checkCanonicalContractFile(root, selectionPath); err != nil {
+		t.Fatal(err)
+	}
+	selectionRaw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(selectionPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var selection struct {
+		Routes map[string]struct {
+			Fields string `json:"document_fields_ref"`
+		} `json:"family_routes"`
+	}
+	if err := json.Unmarshal(selectionRaw, &selection); err != nil {
+		t.Fatal(err)
+	}
+	for _, family := range families {
+		if selection.Routes[family].Fields != "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/"+family {
+			t.Fatalf("missing current Family field profile: %s", family)
 		}
 	}
 }
@@ -152,14 +170,11 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
 	}
 	required := []string{
 		".ptsip/contracts/policy/boundary.json",
-		".ptsip/contracts/policy/identity/policy_kind.json",
-		".ptsip/contracts/policy/identity/root_family.json",
+		".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
 		".ptsip/contracts/policy/routing/policy_routes.json",
 		".ptsip/contracts/policy/routing/Policy_Routing.schema.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
-		".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
+		".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json",
+		".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json",
 		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
 		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_DRAFT.json",
 		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
@@ -170,6 +185,13 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
 		}
 	}
 	obsolete := []string{
+		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
+		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
+		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
+		".ptsip/contracts/policy/identity/policy_kind.json",
+		".ptsip/contracts/policy/identity/root_family.json",
+		".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
+		".ptsip/contracts/policy/Plans",
 		".ptsip/contracts/identity/policy_kind.json",
 		".ptsip/contracts/identity/root_family.json",
 		".ptsip/contracts/routing/policy_routes.json",
@@ -270,14 +292,14 @@ func TestLegacyPolicyAuthorityModelRemoved(t *testing.T) {
 	}
 }
 
-// Identity version storage delegates to the lifecycle contract without adding
+// Identity version generation delegates to the pattern contract without adding
 // identity instance fields or changing the lifecycle owner's version grammar.
-func TestIdentityVersionStorageDelegatesToLifecycleOwner(t *testing.T) {
+func TestIdentityVersionPatternDelegatesToLifecycleOwner(t *testing.T) {
 	root, err := filepath.Abs("../../../../..")
 	if err != nil {
 		t.Fatal(err)
 	}
-	const target = ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json"
+	const target = ".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json"
 	raw, err := os.ReadFile(filepath.Join(root, ".ptsip/engine/developer/policy/index.json"))
 	if err != nil {
 		t.Fatal(err)
@@ -306,32 +328,37 @@ func TestIdentityVersionStorageDelegatesToLifecycleOwner(t *testing.T) {
 }
 
 func TestCanonicalPolicySchemaGroupAndSeparation(t *testing.T) {
- root, err := filepath.Abs(filepath.Join("..", "..", "..", "..", ".."))
- if err != nil { t.Fatal(err) }
- tests := []struct{ previous, current, id string }{
-  {".ptsip/contracts/schemas/PTSIP_Public_Structure.schema.json", ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json", "urn:ptsip:policy:public-structure:v7"},
-  {".ptsip/contracts/schemas/Policy_Identity/PTSIP_Policy_Identity.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", "urn:ptsip:policy:identity:v2"},
-  {".ptsip/contracts/schemas/Policy_Rules/Family_Rules_Contract.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json", "urn:ptsip:policy:family-rules-contract:v2"},
-  {".ptsip/contracts/schemas/Policy_Rules/Public_Structure_Rules.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json", "urn:ptsip:policy:Public_Structure_Rules:v3"},
-  {".ptsip/contracts/schemas/Policy_Rules/rule_record.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Rules/rule_record.schema.json", "urn:ptsip:policy:rule-record:schema:v1"},
-  {".ptsip/contracts/schemas/Policy_Status/Public_Policy_Status.schema.json", ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", "urn:ptsip:policy:Status:v2"},
- }
- for _, tc := range tests {
-  if _, err := os.Lstat(filepath.Join(root, filepath.FromSlash(tc.previous))); !errors.Is(err, os.ErrNotExist) {
-   t.Fatalf("old schema path must not exist: %s: %v", tc.previous, err)
-  }
-  data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(tc.current)))
-  if err != nil { t.Fatalf("relocated schema %s: %v", tc.current, err) }
-  var content struct { ID string `json:"$id"` }
-  if err := json.Unmarshal(data, &content); err != nil || content.ID != tc.id {
-   t.Fatalf("schema ID changed at %s: %s, %v", tc.current, content.ID, err)
-  }
- }
- for _, directory := range []string{
-  ".ptsip/contracts/schemas/release",
-  ".ptsip/contracts/schemas/compile-sealed-rbac",
- } {
-  info, err := os.Stat(filepath.Join(root, filepath.FromSlash(directory)))
-  if err != nil || !info.IsDir() {t.Fatalf("independent schema directory must remain: %s: %v", directory, err)}
- }
+	root, err := filepath.Abs(filepath.Join("..", "..", "..", "..", ".."))
+	if err != nil {
+		t.Fatal(err)
+	}
+	tests := []struct{ current, id string }{
+		{".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json", "urn:ptsip:candidate:contract:policy:public-structure:v2"},
+		{".ptsip/contracts/policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", "urn:ptsip:policy:identity:v2"},
+		{".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json", "urn:ptsip:candidate:contract:policy:rules:v2"},
+		{".ptsip/contracts/policy/Policy_Rules/Contract_Types.schema.json", "urn:ptsip:candidate:contract:policy:types:v2"},
+		{".ptsip/contracts/policy/Policy_Rules/rule_record.schema.json", "urn:ptsip:policy:rule-record:schema:v1"},
+		{".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json", "urn:ptsip:policy:Status:v2"},
+	}
+	for _, tc := range tests {
+		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(tc.current)))
+		if err != nil {
+			t.Fatalf("current contract %s: %v", tc.current, err)
+		}
+		var content struct {
+			ID string `json:"$id"`
+		}
+		if err := json.Unmarshal(data, &content); err != nil || content.ID != tc.id {
+			t.Fatalf("schema ID changed at %s: %s, %v", tc.current, content.ID, err)
+		}
+	}
+	for _, directory := range []string{
+		".ptsip/contracts/schemas/release",
+		".ptsip/contracts/compile-sealed-rbac",
+	} {
+		info, err := os.Stat(filepath.Join(root, filepath.FromSlash(directory)))
+		if err != nil || !info.IsDir() {
+			t.Fatalf("independent schema directory must remain: %s: %v", directory, err)
+		}
+	}
 }

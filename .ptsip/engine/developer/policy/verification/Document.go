@@ -22,7 +22,7 @@ func CheckDocument(root, selected string, document authoring.Document, validate 
 	case "policy-identity-check":
 		return identity.Check(root, component("Policy_Identity"), validate)
 	case "policy-status-check":
-		return policystatus.Check(root, component("Policy_Status"), validate)
+		return policystatus.Check(root, component("Policy_Lifecycle"), validate)
 	case "plan-status-check":
 		return planstatus.Check(root, component("Plan_Status"), validate)
 	case "policy-check":

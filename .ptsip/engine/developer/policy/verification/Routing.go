@@ -12,13 +12,11 @@ import (
 	"strings"
 
 	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
-
 )
 
 const policyRoutingData = ".ptsip/contracts/policy/routing/policy_routes.json"
 const policyRoutingSchema = ".ptsip/contracts/policy/routing/Policy_Routing.schema.json"
-const policyKindVocabulary = ".ptsip/contracts/policy/identity/policy_kind.json"
-const rootFamilyVocabulary = ".ptsip/contracts/policy/identity/root_family.json"
+const policyIdentityVocabulary = ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"
 
 type RoutingProbe struct {
 	Status            string   `json:"status"`
@@ -95,39 +93,26 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 		return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTING_SCHEMA_ID_MISMATCH")
 	}
 	sources := routingMembers(routing["identity_sources"])
-	expected := []struct{ key, file, id string }{
-		{"policy_kind", policyKindVocabulary, "urn:ptsip:identity:policy-kind:v1"},
-		{"root_family", rootFamilyVocabulary, "urn:ptsip:identity:root-family:v1"},
+	identity, err := routingFile(root, policyIdentityVocabulary, ".ptsip/contracts/policy/Policy_Identity/")
+	if err != nil {
+		return nil, nil, nil, 0, 0, nil, err
 	}
-	resources := make([]any, 0, len(expected))
-	identities := make([]string, 0, len(expected))
+	resources := []any{identity}
+	identities := []string{policyIdentityVocabulary}
 	vocabulary := map[string]map[string]bool{}
-	for _, item := range expected {
-		if routingString(sources[item.key]) != item.file {
-			return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTING_IDENTITY_SOURCE_MISMATCH: %s", item.key)
+	for _, key := range []string{"policy_kind", "root_family"} {
+		if routingString(sources[key]) != policyIdentityVocabulary {
+			return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTING_IDENTITY_SOURCE_MISMATCH: %s", key)
 		}
-		doc, err := routingFile(root, item.file, ".ptsip/contracts/policy/identity/")
+		values, err := contract_authoring.IdentityValues(identity, key)
 		if err != nil {
 			return nil, nil, nil, 0, 0, nil, err
 		}
-		if routingString(doc["$id"]) != item.id {
-			return nil, nil, nil, 0, 0, nil, fmt.Errorf("IDENTITY_SCHEMA_ID_MISMATCH: %s", item.key)
-		}
-		values, ok := doc["enum"].([]any)
-		if !ok || len(values) == 0 {
-			return nil, nil, nil, 0, 0, nil, fmt.Errorf("EMPTY_IDENTITY_VOCABULARY: %s", item.key)
-		}
 		names := map[string]bool{}
 		for _, value := range values {
-			name := routingString(value)
-			if name == "" || names[name] {
-				return nil, nil, nil, 0, 0, nil, fmt.Errorf("DUPLICATE_IDENTITY_VALUE: %s", item.key)
-			}
-			names[name] = true
+			names[routingString(value)] = true
 		}
-		vocabulary[item.key] = names
-		resources = append(resources, doc)
-		identities = append(identities, item.file)
+		vocabulary[key] = names
 	}
 	kinds := routingMembers(routing["routes"])
 	if len(kinds) == 0 {
@@ -173,7 +158,9 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 	// v2 activation and family coverage are checked independently from the
 	// withdrawn v7 authoring catalog. Missing entries fail closed.
 	registry, err := routingFile(root, ".ptsip/contracts/policy/candidate.index.json", ".ptsip/contracts/policy/")
-	if err != nil { return nil, nil, nil, 0, 0, nil, err }
+	if err != nil {
+		return nil, nil, nil, 0, 0, nil, err
+	}
 	if registry["active_registration"] != true || registry["active_policy_cutover"] != "STRUCTURE_V2_ACTIVE" {
 		return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_POLICY_STRUCTURE_NOT_ACTIVE")
 	}
@@ -187,7 +174,9 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 		return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_FAMILY_SELECTION_NOT_REGISTERED")
 	}
 	selected, err := routingFile(root, familyRef, ".ptsip/contracts/policy/")
-	if err != nil { return nil, nil, nil, 0, 0, nil, err }
+	if err != nil {
+		return nil, nil, nil, 0, 0, nil, err
+	}
 	if selected["active"] != true {
 		return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_FAMILY_SELECTION_INACTIVE")
 	}
@@ -195,7 +184,7 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 	for family := range vocabulary["root_family"] {
 		binding := routingMembers(familyRoutes[family])
 		if routingString(binding["rules_schema_ref"]) != routingString(declaredSchemas["rules"]) {
-			return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_FAMILY_BINDING_UNRESOLVED: %s",family)
+			return nil, nil, nil, 0, 0, nil, fmt.Errorf("V2_FAMILY_BINDING_UNRESOLVED: %s", family)
 		}
 	}
 	registered := len(vocabulary["root_family"]) * len(kinds)

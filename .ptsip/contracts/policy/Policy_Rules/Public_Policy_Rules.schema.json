@@ -17,5 +17,1098 @@
   "required": [
     "contracts"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "$defs": {
+    "PolicyDocumentRules": {
+      "type": "object",
+      "$comment": "All Family field requirements are owned by Policy_Rules; the public envelope delegates once.",
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "NORM"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/NORM"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "GOV"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/GOV"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "INTENT"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/INTENT"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "ARCH"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/ARCH"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "INFO"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/INFO"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "CNTR"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/CNTR"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "RISK"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/RISK"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "SUPPLY"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/SUPPLY"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "REAL"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/REAL"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "ASSURE"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/ASSURE"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "CTRL"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/CTRL"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "CHANGE"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/CHANGE"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "OPS"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/OPS"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "Policy_Identity"
+            ],
+            "properties": {
+              "Policy_Identity": {
+                "required": [
+                  "root_family"
+                ],
+                "properties": {
+                  "root_family": {
+                    "const": "RECORD"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/FamilyProfiles/RECORD"
+          }
+        }
+      ]
+    },
+    "FieldPresence": {
+      "MEANING": {
+        "if": {
+          "required": [
+            "source_bindings"
+          ]
+        },
+        "then": {
+          "required": [
+            "source_bindings"
+          ],
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "MEANING"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              }
+            }
+          }
+        },
+        "else": {
+          "anyOf": [
+            {
+              "required": [
+                "meaning_refs"
+              ]
+            },
+            {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "meaning_refs"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "TARGET": {
+        "if": {
+          "required": [
+            "source_bindings"
+          ]
+        },
+        "then": {
+          "required": [
+            "source_bindings"
+          ],
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "TARGET"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              }
+            }
+          }
+        },
+        "else": {
+          "anyOf": [
+            {
+              "required": [
+                "target_refs"
+              ]
+            },
+            {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "target_refs"
+                  }
+                }
+              }
+            },
+            {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "target_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "SCOPE": {
+        "if": {
+          "required": [
+            "source_bindings"
+          ]
+        },
+        "then": {
+          "required": [
+            "source_bindings"
+          ],
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "SCOPE"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              }
+            }
+          }
+        },
+        "else": {
+          "anyOf": [
+            {
+              "required": [
+                "scope_refs"
+              ]
+            },
+            {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "scope_refs"
+                  }
+                }
+              }
+            },
+            {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "scope_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "CONSTRAINT": {
+        "if": {
+          "required": [
+            "source_bindings"
+          ]
+        },
+        "then": {
+          "required": [
+            "source_bindings"
+          ],
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "CONSTRAINT"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              }
+            }
+          }
+        },
+        "else": {
+          "anyOf": [
+            {
+              "required": [
+                "constraint_refs"
+              ]
+            },
+            {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "constraint_refs"
+                  }
+                }
+              }
+            },
+            {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "constraint_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "CRITERION": {
+        "if": {
+          "required": [
+            "source_bindings"
+          ]
+        },
+        "then": {
+          "required": [
+            "source_bindings"
+          ],
+          "properties": {
+            "source_bindings": {
+              "contains": {
+                "properties": {
+                  "purpose": {
+                    "const": "CRITERION"
+                  }
+                },
+                "required": [
+                  "purpose"
+                ]
+              }
+            }
+          }
+        },
+        "else": {
+          "anyOf": [
+            {
+              "required": [
+                "criteria_refs"
+              ]
+            },
+            {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "criteria_refs"
+                  }
+                }
+              }
+            },
+            {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "criteria_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "EVIDENCE": {
+        "if": {
+          "required": [
+            "source_bindings"
+          ]
+        },
+        "then": {
+          "required": [
+            "evidence_requirement_binding"
+          ]
+        },
+        "else": {
+          "anyOf": [
+            {
+              "required": [
+                "evidence_requirement_refs"
+              ]
+            },
+            {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "evidence_requirement_refs"
+                  }
+                }
+              }
+            },
+            {
+              "required": [
+                "empty_field_basis"
+              ],
+              "properties": {
+                "empty_field_basis": {
+                  "contains": {
+                    "properties": {
+                      "field": {
+                        "const": "evidence_requirement_refs"
+                      }
+                    },
+                    "required": [
+                      "field"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "FamilyProfiles": {
+      "NORM": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          }
+        ]
+      },
+      "GOV": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/EVIDENCE"
+          }
+        ]
+      },
+      "INTENT": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CONSTRAINT"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "ARCH": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "INFO": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "CNTR": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "RISK": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "SUPPLY": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/EVIDENCE"
+          }
+        ]
+      },
+      "REAL": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "ASSURE": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/EVIDENCE"
+          }
+        ]
+      },
+      "CTRL": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "CHANGE": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "OPS": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          }
+        ]
+      },
+      "RECORD": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/ContractReviewEnvelope"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/MEANING"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/SCOPE"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/TARGET"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/CRITERION"
+          },
+          {
+            "$ref": "#/$defs/ReviewDimensions/EVIDENCE"
+          }
+        ]
+      }
+    },
+    "ContractReviewEnvelope": {
+      "properties": {
+        "Policy_Rules": {
+          "properties": {
+            "contracts": {
+              "items": {
+                "required": [
+                  "contract_id",
+                  "Rule_ver",
+                  "rules",
+                  "source_items",
+                  "requirements"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "ReviewDimensions": {
+      "MEANING": {
+        "properties": {
+          "Policy_Rules": {
+            "properties": {
+              "contracts": {
+                "items": {
+                  "properties": {
+                    "requirements": {
+                      "items": {
+                        "$ref": "#/$defs/FieldPresence/MEANING"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "TARGET": {
+        "properties": {
+          "Policy_Rules": {
+            "properties": {
+              "contracts": {
+                "items": {
+                  "properties": {
+                    "requirements": {
+                      "items": {
+                        "$ref": "#/$defs/FieldPresence/TARGET"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SCOPE": {
+        "properties": {
+          "Policy_Rules": {
+            "properties": {
+              "contracts": {
+                "items": {
+                  "properties": {
+                    "requirements": {
+                      "items": {
+                        "$ref": "#/$defs/FieldPresence/SCOPE"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CONSTRAINT": {
+        "properties": {
+          "Policy_Rules": {
+            "properties": {
+              "contracts": {
+                "items": {
+                  "properties": {
+                    "requirements": {
+                      "items": {
+                        "$ref": "#/$defs/FieldPresence/CONSTRAINT"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CRITERION": {
+        "properties": {
+          "Policy_Rules": {
+            "properties": {
+              "contracts": {
+                "items": {
+                  "properties": {
+                    "requirements": {
+                      "items": {
+                        "$ref": "#/$defs/FieldPresence/CRITERION"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "EVIDENCE": {
+        "properties": {
+          "Policy_Rules": {
+            "properties": {
+              "contracts": {
+                "items": {
+                  "properties": {
+                    "requirements": {
+                      "items": {
+                        "$ref": "#/$defs/FieldPresence/EVIDENCE"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

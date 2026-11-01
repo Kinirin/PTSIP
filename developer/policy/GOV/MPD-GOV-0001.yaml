@@ -1,744 +1,909 @@
 # yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
-# UNAPPROVED cross-policy field candidate. Identity/status are retained; authoring does not admit runtime use.
-# Source inventory and unresolved assignments are distinct from policy fulfillment.
 Policy_Identity:
   id: MPD-GOV-0001
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: GOV
   title: GOV 정책 정의 및 책임 오케스트레이션
-Policy_Status:
+Policy_Lifecycle:
   Policy_Status_Schema_ver: '2'
   status: APPROVED.Applying
   contract: urn:ptsip:contract:policy:gov:responsibility:orchestration
 Policy_Rules:
   contracts:
-    - contract_id: urn:ptsip:policy:rule:gov:responsibility-orchestration
-      Rule_ver: '32'
-      rules:
-        - id: R-ID-EE5471D20D7DF894FD9646FFD358FA06
-          rule: GOV-FAMILY-RESPONSIB
-          preconditions:
-            - C-ID-B8D73F698C7C386B069E0B2F67B67752
-          source_ref: &ref_014
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/0
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-EE5471D20D7DF894FD9646FFD358FA06
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-FF59CB925E13B87B9B93075BD218C532
-          rule: GOV-DECISION-LEGITIM
-          preconditions:
-            - C-ID-287734D32D6088A80C77129DDCC8E51B
-          source_ref: &ref_015
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/1
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-FF59CB925E13B87B9B93075BD218C532
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-30DB5CC8339E2CBD9E32342A84E46C2A
-          rule: GOV-DELEGATION-POLIC
-          preconditions:
-            - C-ID-FB27DBDD936F31114228D8EB828FDD3C
-          source_ref: &ref_016
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/2
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-30DB5CC8339E2CBD9E32342A84E46C2A
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-A39B963E110D68F66DF1C3D3A812FCAC
-          rule: GOV-DELEGATION-PO-AA
-          preconditions:
-            - C-ID-2B620812708B88BE61988D10F5305B7B
-          source_ref: &ref_017
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/3
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-A39B963E110D68F66DF1C3D3A812FCAC
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-31541F59FBB818854D1CA2F190B8A0FB
-          rule: GOV-DELEGATION-PO-AB
-          preconditions:
-            - C-ID-F398C16F114773B82683A45A40F5CA59
-          source_ref: &ref_018
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/4
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-31541F59FBB818854D1CA2F190B8A0FB
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-B2763F8998EC87E2F5A7E1007E8068D5
-          rule: GOV-CONTRACT-OWNERSH
-          preconditions:
-            - C-ID-72E6CEA46951381B811BF0E519B81666
-          source_ref: &ref_019
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/5
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-B2763F8998EC87E2F5A7E1007E8068D5
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-9E1C4A06AE93F86EB212B41E1148CBBE
-          rule: COMPILE-SEALED-RBAC
-          preconditions:
-            - C-ID-7395D38D640B480E3D9CA37FFC95771B
-          source_ref: &ref_020
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/6
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-9E1C4A06AE93F86EB212B41E1148CBBE
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-2AD81D05972378D3C6DB940E5B725BAF
-          rule: COMPILE-SEALED-INDEP
-          preconditions:
-            - C-ID-055BA4B347727825643C9FF399085164
-          source_ref: &ref_021
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/7
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-2AD81D05972378D3C6DB940E5B725BAF
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-6BB3FAC95F9BF881AA2EB7094DE8B106
-          rule: COMPILE-SEALED-NEW-I
-          preconditions:
-            - C-ID-FA518CDA9EBCADC625278F30B182D40F
-          source_ref: &ref_022
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/8
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-6BB3FAC95F9BF881AA2EB7094DE8B106
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-E824DDF32FA1ADD961C89772D48FEC95
-          rule: RETIRE-LEGACY-AUTHOR
-          preconditions:
-            - C-ID-675EDAD9647F984074EEA133A7D86970
-          source_ref: &ref_023
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/9
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-E824DDF32FA1ADD961C89772D48FEC95
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-72E99CEAF97C689E864DB35296E8C31C
-          rule: COMPILE-SEALED-HIERA
-          preconditions:
-            - C-ID-FBF219D668EA78CCFBD989658DEBBCE4
-          source_ref: &ref_024
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/10
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-72E99CEAF97C689E864DB35296E8C31C
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-1143315FA293A8CD4C7895A9C592B98B
-          rule: COMPILE-SEALED-SCHEM
-          preconditions:
-            - C-ID-A27FB7D796258844452985B41AB88570
-          source_ref: &ref_025
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/11
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-1143315FA293A8CD4C7895A9C592B98B
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-B81886476116D8CBB663047FEB4386E7
-          rule: COMPILE-SEALED-SIX-I
-          preconditions:
-            - C-ID-4EAF21197F43A28F1AA3EB41DB57820E
-          source_ref: &ref_026
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/12
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-B81886476116D8CBB663047FEB4386E7
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-6A1A8F3D0577284CF11A5444A7084450
-          rule: COMPILE-SEALED-OPT-I
-          preconditions: &ref_001
-            - C-ID-3A89D8908C23B8B3367395C5B27D0F6B
-          source_ref: &ref_027
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/13
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-6A1A8F3D0577284CF11A5444A7084450
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-B7A6984E9C9D290B1F8CFFDD0AB0593E
-          rule: COMPILE-SEALED-OP-AA
-          preconditions: *ref_001
-          source_ref: &ref_028
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/14
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-B7A6984E9C9D290B1F8CFFDD0AB0593E
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-097A36C98853A858DB23ABFAD508A515
-          rule: PP-EXPLICIT-RBAC-OPT
-          preconditions:
-            - C-ID-3183ED35B279CD4AE1FB7A6CB4839052
-          source_ref: &ref_029
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/15
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-097A36C98853A858DB23ABFAD508A515
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-E01615EAD49D38CE9FA243C0B1FC2024
-          rule: COMPILE-SEALED-CENTR
-          preconditions:
-            - C-ID-C09BACA041983C43636C8175982C081A
-          source_ref: &ref_030
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/16
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-E01615EAD49D38CE9FA243C0B1FC2024
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-2DD4800E02B6E041E7B789657AB6BE8B
-          rule: COMPILE-SEALED-CE-AA
-          preconditions: &ref_002
-            - C-ID-F0EB2AB9E58A4CCE504B897B1778CB7D
-          source_ref: &ref_031
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/17
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-2DD4800E02B6E041E7B789657AB6BE8B
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-953C54E32ECE288C39CDD81C87C7CD6D
-          rule: COMPILE-SEALED-SIX-S
-          preconditions:
-            - C-ID-8A656D20BC45BAD4A2E9A04FF587302C
-          source_ref: &ref_032
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/18
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-953C54E32ECE288C39CDD81C87C7CD6D
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-ACF24123CB64D8AC55AFB0F73F1D109B
-          rule: COMPILE-SEALED-REGIS
-          preconditions: *ref_002
-          source_ref: &ref_033
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/19
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-ACF24123CB64D8AC55AFB0F73F1D109B
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-97A45F47A55F48493E8E7E3CA67815CB
-          rule: GOV-SHARED-PUBLIC-AN
-          preconditions:
-            - C-ID-5B0C66D3C68418905FAB520F718CE1E7
-          source_ref: &ref_034
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/20
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-97A45F47A55F48493E8E7E3CA67815CB
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-B9BD578D098538F7EFFFC3D8445877CD
-          rule: POLICY-RULES-SHARED
-          preconditions:
-            - C-ID-A750CE91748E5804C38712803ED82630
-          source_ref: &ref_035
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/21
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-B9BD578D098538F7EFFFC3D8445877CD
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-1A84A0F1E184C8CCD2CE850C68381B5D
-          rule: POLICY-RULES-A-FAMIL
-          preconditions:
-            - C-ID-A6AAF99AFCED187ED6FFF32281508AB3
-          source_ref: &ref_036
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/22
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-1A84A0F1E184C8CCD2CE850C68381B5D
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-55CA6A3525B778E804A71B97C488B79D
-          rule: POLICY-RULES-B-ENTRY
-          preconditions:
-            - C-ID-8361BFEB62B9D8F3F207935C3EC8A302
-          source_ref: &ref_037
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/23
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-55CA6A3525B778E804A71B97C488B79D
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-3FE81065B2AA78F6BDC5D1BC8F57A804
-          rule: GOV-PROFILE-BACKED-R
-          preconditions:
-            - C-ID-68D5FEE14563F433462E08692F6BC502
-          source_ref: &ref_038
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/24
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-3FE81065B2AA78F6BDC5D1BC8F57A804
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-8E9F16FE3A5F733A95D62DC4F65F8561
-          rule: ALL-ROOT-FAMILY-RULE
-          preconditions:
-            - C-ID-113AA59D47AA7A83A02980C333886BD3
-          source_ref: &ref_039
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/25
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-8E9F16FE3A5F733A95D62DC4F65F8561
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-DFAE762B9BC751BB3865777B1586DD2C
-          rule: ALL-FAMILY-DEFINITIO
-          preconditions:
-            - C-ID-9B246C53685858D9EB3D9C2113C8090A
-          source_ref: &ref_040
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/26
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-DFAE762B9BC751BB3865777B1586DD2C
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-6FFF2517BFC0F8B703F57A03C1D8CB1D
-          rule: APPROVED-ALL-FAMILY
-          preconditions:
-            - C-ID-AA0D87DA597FE8AD5587D9085DCE2AF2
-          source_ref: &ref_041
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/27
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-6FFF2517BFC0F8B703F57A03C1D8CB1D
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-576CDD82C38386723C76C6C1E2D114EA
-          rule: REUSE-RETIRED-AUTHOR
-          source_ref: &ref_042
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/28
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-576CDD82C38386723C76C6C1E2D114EA
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-B9E5E346AF7AB8288C16C440B84926EA
-          rule: INTENT-ARCH-CANNOT-C
-          source_ref: &ref_043
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/29
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-B9E5E346AF7AB8288C16C440B84926EA
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-0C5C00CB814EC0E8FA67F0F8D850CDEA
-          rule: CTRL-TEST-CANNOT-APP
-          source_ref: &ref_044
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/30
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-0C5C00CB814EC0E8FA67F0F8D850CDEA
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - id: R-ID-73876F1216E7B87E26155157F27891A4
-          rule: UNAUTHORIZED-RESPONS
-          source_ref: &ref_045
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Definition/31
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          authority_ref:
-            source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
-            item_ref: /component_bindings/R-ID-73876F1216E7B87E26155157F27891A4
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      requirements:
-        - requirement_id: REQ-0001
-          responsibility_refs: []
-          meaning_refs:
-            - &ref_003
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/subjects/0
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          target_refs: []
-          scope_refs:
-            - &ref_004
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/scope
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          condition_refs: []
-          constraint_refs: []
-          criteria_refs: []
-          evidence_requirement_refs: []
-          relation_binding:
-            state: UNRESOLVED
-            source_refs:
-              - *ref_003
-          judgement_binding: &ref_006
-            state: UNRESOLVED
-            source_refs:
-              - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-                item_ref: /Policy_Rules/Evaluation/criteria
-                revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          unresolved_fields: &ref_007
-            - responsibility_refs
-            - target_refs
-            - condition_refs
-            - constraint_refs
-            - criteria_refs
-            - evidence_requirement_refs
-        - requirement_id: REQ-0002
-          responsibility_refs: []
-          meaning_refs:
-            - &ref_005
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/subjects/1
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          target_refs: []
-          scope_refs:
-            - *ref_004
-          condition_refs: []
-          constraint_refs: []
-          criteria_refs: []
-          evidence_requirement_refs: []
-          relation_binding:
-            state: UNRESOLVED
-            source_refs:
-              - *ref_005
-          judgement_binding: *ref_006
-          unresolved_fields: *ref_007
-        - requirement_id: REQ-0003
-          responsibility_refs: []
-          meaning_refs:
-            - &ref_008
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/subjects/2
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          target_refs: []
-          scope_refs:
-            - *ref_004
-          condition_refs: []
-          constraint_refs: []
-          criteria_refs: []
-          evidence_requirement_refs: []
-          relation_binding:
-            state: UNRESOLVED
-            source_refs:
-              - *ref_008
-          judgement_binding: *ref_006
-          unresolved_fields: *ref_007
-        - requirement_id: REQ-0004
-          responsibility_refs: []
-          meaning_refs:
-            - &ref_009
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/subjects/3
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          target_refs: []
-          scope_refs:
-            - *ref_004
-          condition_refs: []
-          constraint_refs: []
-          criteria_refs: []
-          evidence_requirement_refs: []
-          relation_binding:
-            state: UNRESOLVED
-            source_refs:
-              - *ref_009
-          judgement_binding: *ref_006
-          unresolved_fields: *ref_007
-        - requirement_id: REQ-0005
-          responsibility_refs: []
-          meaning_refs:
-            - &ref_010
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/subjects/4
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-            - source_ref: developer/policy/GOV/MPD-GOV-0004.yaml
-              item_ref: /Policy_Rules/Boundary/scope
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          target_refs:
-            - source_ref: developer/policy/GOV/MPD-GOV-0004.yaml
-              item_ref: /Policy_Identity
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          scope_refs:
-            - *ref_004
-          condition_refs: []
-          constraint_refs: []
-          criteria_refs: []
-          evidence_requirement_refs: []
-          relation_binding:
-            state: UNRESOLVED
-            source_refs:
-              - *ref_010
-          judgement_binding: *ref_006
-          unresolved_fields: &ref_012
-            - responsibility_refs
-            - condition_refs
-            - constraint_refs
-            - criteria_refs
-            - evidence_requirement_refs
-        - requirement_id: REQ-0006
-          responsibility_refs: []
-          meaning_refs:
-            - &ref_011
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/subjects/5
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-            - source_ref: developer/policy/GOV/MPD-GOV-0005.yaml
-              item_ref: /Policy_Rules/Boundary/scope
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          target_refs:
-            - source_ref: developer/policy/GOV/MPD-GOV-0005.yaml
-              item_ref: /Policy_Identity
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          scope_refs:
-            - *ref_004
-          condition_refs: []
-          constraint_refs: []
-          criteria_refs: []
-          evidence_requirement_refs: []
-          relation_binding:
-            state: UNRESOLVED
-            source_refs:
-              - *ref_011
-          judgement_binding: *ref_006
-          unresolved_fields: *ref_012
-        - requirement_id: REQ-0007
-          responsibility_refs: []
-          meaning_refs:
-            - &ref_013
-              source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-              item_ref: /Policy_Rules/Boundary/subjects/6
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-            - source_ref: developer/policy/GOV/MPD-GOV-0006.yaml
-              item_ref: /Policy_Rules/Boundary/scope
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          target_refs:
-            - source_ref: developer/policy/GOV/MPD-GOV-0006.yaml
-              item_ref: /Policy_Identity
-              revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-          scope_refs:
-            - *ref_004
-          condition_refs: []
-          constraint_refs: []
-          criteria_refs: []
-          evidence_requirement_refs: []
-          relation_binding:
-            state: UNRESOLVED
-            source_refs:
-              - *ref_013
-          judgement_binding: *ref_006
-          unresolved_fields: *ref_012
-      source_items:
-        - item_id: SRC-0001
-          role: rule
-          source_ref: *ref_014
-        - item_id: SRC-0002
-          role: rule
-          source_ref: *ref_015
-        - item_id: SRC-0003
-          role: rule
-          source_ref: *ref_016
-        - item_id: SRC-0004
-          role: rule
-          source_ref: *ref_017
-        - item_id: SRC-0005
-          role: rule
-          source_ref: *ref_018
-        - item_id: SRC-0006
-          role: rule
-          source_ref: *ref_019
-        - item_id: SRC-0007
-          role: rule
-          source_ref: *ref_020
-        - item_id: SRC-0008
-          role: rule
-          source_ref: *ref_021
-        - item_id: SRC-0009
-          role: rule
-          source_ref: *ref_022
-        - item_id: SRC-0010
-          role: rule
-          source_ref: *ref_023
-        - item_id: SRC-0011
-          role: rule
-          source_ref: *ref_024
-        - item_id: SRC-0012
-          role: rule
-          source_ref: *ref_025
-        - item_id: SRC-0013
-          role: rule
-          source_ref: *ref_026
-        - item_id: SRC-0014
-          role: rule
-          source_ref: *ref_027
-        - item_id: SRC-0015
-          role: rule
-          source_ref: *ref_028
-        - item_id: SRC-0016
-          role: rule
-          source_ref: *ref_029
-        - item_id: SRC-0017
-          role: rule
-          source_ref: *ref_030
-        - item_id: SRC-0018
-          role: rule
-          source_ref: *ref_031
-        - item_id: SRC-0019
-          role: rule
-          source_ref: *ref_032
-        - item_id: SRC-0020
-          role: rule
-          source_ref: *ref_033
-        - item_id: SRC-0021
-          role: rule
-          source_ref: *ref_034
-        - item_id: SRC-0022
-          role: rule
-          source_ref: *ref_035
-        - item_id: SRC-0023
-          role: rule
-          source_ref: *ref_036
-        - item_id: SRC-0024
-          role: rule
-          source_ref: *ref_037
-        - item_id: SRC-0025
-          role: rule
-          source_ref: *ref_038
-        - item_id: SRC-0026
-          role: rule
-          source_ref: *ref_039
-        - item_id: SRC-0027
-          role: rule
-          source_ref: *ref_040
-        - item_id: SRC-0028
-          role: rule
-          source_ref: *ref_041
-        - item_id: SRC-0029
-          role: rule
-          source_ref: *ref_042
-        - item_id: SRC-0030
-          role: rule
-          source_ref: *ref_043
-        - item_id: SRC-0031
-          role: rule
-          source_ref: *ref_044
-        - item_id: SRC-0032
-          role: rule
-          source_ref: *ref_045
-        - item_id: SRC-0033
-          role: scope
-          source_ref: *ref_004
-        - item_id: SRC-0034
-          role: statement
-          source_ref: *ref_003
-        - item_id: SRC-0035
-          role: statement
-          source_ref: *ref_005
-        - item_id: SRC-0036
-          role: statement
-          source_ref: *ref_008
-        - item_id: SRC-0037
-          role: statement
-          source_ref: *ref_009
-        - item_id: SRC-0038
-          role: statement
-          source_ref: *ref_010
-        - item_id: SRC-0039
-          role: statement
-          source_ref: *ref_011
-        - item_id: SRC-0040
-          role: statement
-          source_ref: *ref_013
-        - item_id: SRC-0041
-          role: constraint
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Boundary/exclusions/0
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0042
-          role: constraint
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Boundary/exclusions/1
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0043
-          role: constraint
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Boundary/exclusions/2
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0044
-          role: criterion
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0045
-          role: criterion
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0046
-          role: criterion
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0047
-          role: criterion
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0048
-          role: criterion
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Evaluation/criteria/evidence/4
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-        - item_id: SRC-0049
-          role: annotation
-          source_ref:
-            source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
-            item_ref: /Policy_Rules/Identity
-            revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+  - contract_id: urn:ptsip:policy:rule:gov:responsibility-orchestration
+    Rule_ver: '32'
+    authority_ref:
+    - id: AUTH-0001
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-EE5471D20D7DF894FD9646FFD358FA06
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0002
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-FF59CB925E13B87B9B93075BD218C532
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0003
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-30DB5CC8339E2CBD9E32342A84E46C2A
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0004
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-A39B963E110D68F66DF1C3D3A812FCAC
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0005
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-31541F59FBB818854D1CA2F190B8A0FB
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0006
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-B2763F8998EC87E2F5A7E1007E8068D5
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0007
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-9E1C4A06AE93F86EB212B41E1148CBBE
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0008
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-2AD81D05972378D3C6DB940E5B725BAF
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0009
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-6BB3FAC95F9BF881AA2EB7094DE8B106
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0010
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-E824DDF32FA1ADD961C89772D48FEC95
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0011
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-72E99CEAF97C689E864DB35296E8C31C
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0012
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-1143315FA293A8CD4C7895A9C592B98B
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0013
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-B81886476116D8CBB663047FEB4386E7
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0014
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-6A1A8F3D0577284CF11A5444A7084450
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0015
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-B7A6984E9C9D290B1F8CFFDD0AB0593E
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0016
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-097A36C98853A858DB23ABFAD508A515
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0017
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-E01615EAD49D38CE9FA243C0B1FC2024
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0018
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-2DD4800E02B6E041E7B789657AB6BE8B
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0019
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-953C54E32ECE288C39CDD81C87C7CD6D
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0020
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-ACF24123CB64D8AC55AFB0F73F1D109B
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0021
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-97A45F47A55F48493E8E7E3CA67815CB
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0022
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-B9BD578D098538F7EFFFC3D8445877CD
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0023
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-1A84A0F1E184C8CCD2CE850C68381B5D
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0024
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-55CA6A3525B778E804A71B97C488B79D
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0025
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-3FE81065B2AA78F6BDC5D1BC8F57A804
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0026
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-8E9F16FE3A5F733A95D62DC4F65F8561
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0027
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-DFAE762B9BC751BB3865777B1586DD2C
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0028
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-6FFF2517BFC0F8B703F57A03C1D8CB1D
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0029
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-576CDD82C38386723C76C6C1E2D114EA
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0030
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-B9E5E346AF7AB8288C16C440B84926EA
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0031
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-0C5C00CB814EC0E8FA67F0F8D850CDEA
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - id: AUTH-0032
+      source_ref:
+        source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+        item_ref: /component_bindings/R-ID-73876F1216E7B87E26155157F27891A4
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    rules:
+    - id: R-ID-EE5471D20D7DF894FD9646FFD358FA06
+      rule: GOV-FAMILY-RESPONSIB
+      preconditions:
+      - C-ID-B8D73F698C7C386B069E0B2F67B67752
+      source_ref:
+      - SRC-0001
+      authority_ref: [AUTH-0001]
+    - id: R-ID-FF59CB925E13B87B9B93075BD218C532
+      rule: GOV-DECISION-LEGITIM
+      preconditions:
+      - C-ID-287734D32D6088A80C77129DDCC8E51B
+      source_ref:
+      - SRC-0002
+      authority_ref: [AUTH-0002]
+    - id: R-ID-30DB5CC8339E2CBD9E32342A84E46C2A
+      rule: GOV-DELEGATION-POLIC
+      preconditions:
+      - C-ID-FB27DBDD936F31114228D8EB828FDD3C
+      source_ref:
+      - SRC-0003
+      authority_ref: [AUTH-0003]
+    - id: R-ID-A39B963E110D68F66DF1C3D3A812FCAC
+      rule: GOV-DELEGATION-PO-AA
+      preconditions:
+      - C-ID-2B620812708B88BE61988D10F5305B7B
+      source_ref:
+      - SRC-0004
+      authority_ref: [AUTH-0004]
+    - id: R-ID-31541F59FBB818854D1CA2F190B8A0FB
+      rule: GOV-DELEGATION-PO-AB
+      preconditions:
+      - C-ID-F398C16F114773B82683A45A40F5CA59
+      source_ref:
+      - SRC-0005
+      authority_ref: [AUTH-0005]
+    - id: R-ID-B2763F8998EC87E2F5A7E1007E8068D5
+      rule: GOV-CONTRACT-OWNERSH
+      preconditions:
+      - C-ID-72E6CEA46951381B811BF0E519B81666
+      source_ref:
+      - SRC-0006
+      authority_ref: [AUTH-0006]
+    - id: R-ID-9E1C4A06AE93F86EB212B41E1148CBBE
+      rule: COMPILE-SEALED-RBAC
+      preconditions:
+      - C-ID-7395D38D640B480E3D9CA37FFC95771B
+      source_ref:
+      - SRC-0007
+      authority_ref: [AUTH-0007]
+    - id: R-ID-2AD81D05972378D3C6DB940E5B725BAF
+      rule: COMPILE-SEALED-INDEP
+      preconditions:
+      - C-ID-055BA4B347727825643C9FF399085164
+      source_ref:
+      - SRC-0008
+      authority_ref: [AUTH-0008]
+    - id: R-ID-6BB3FAC95F9BF881AA2EB7094DE8B106
+      rule: COMPILE-SEALED-NEW-I
+      preconditions:
+      - C-ID-FA518CDA9EBCADC625278F30B182D40F
+      source_ref:
+      - SRC-0009
+      authority_ref: [AUTH-0009]
+    - id: R-ID-E824DDF32FA1ADD961C89772D48FEC95
+      rule: RETIRE-LEGACY-AUTHOR
+      preconditions:
+      - C-ID-675EDAD9647F984074EEA133A7D86970
+      source_ref:
+      - SRC-0010
+      authority_ref: [AUTH-0010]
+    - id: R-ID-72E99CEAF97C689E864DB35296E8C31C
+      rule: COMPILE-SEALED-HIERA
+      preconditions:
+      - C-ID-FBF219D668EA78CCFBD989658DEBBCE4
+      source_ref:
+      - SRC-0011
+      authority_ref: [AUTH-0011]
+    - id: R-ID-1143315FA293A8CD4C7895A9C592B98B
+      rule: COMPILE-SEALED-SCHEM
+      preconditions:
+      - C-ID-A27FB7D796258844452985B41AB88570
+      source_ref:
+      - SRC-0012
+      authority_ref: [AUTH-0012]
+    - id: R-ID-B81886476116D8CBB663047FEB4386E7
+      rule: COMPILE-SEALED-SIX-I
+      preconditions:
+      - C-ID-4EAF21197F43A28F1AA3EB41DB57820E
+      source_ref:
+      - SRC-0013
+      authority_ref: [AUTH-0013]
+    - id: R-ID-6A1A8F3D0577284CF11A5444A7084450
+      rule: COMPILE-SEALED-OPT-I
+      preconditions:
+      - C-ID-3A89D8908C23B8B3367395C5B27D0F6B
+      source_ref:
+      - SRC-0014
+      authority_ref: [AUTH-0014]
+    - id: R-ID-B7A6984E9C9D290B1F8CFFDD0AB0593E
+      rule: COMPILE-SEALED-OP-AA
+      preconditions:
+      - C-ID-3A89D8908C23B8B3367395C5B27D0F6B
+      source_ref:
+      - SRC-0015
+      authority_ref: [AUTH-0015]
+    - id: R-ID-097A36C98853A858DB23ABFAD508A515
+      rule: PP-EXPLICIT-RBAC-OPT
+      preconditions:
+      - C-ID-3183ED35B279CD4AE1FB7A6CB4839052
+      source_ref:
+      - SRC-0016
+      authority_ref: [AUTH-0016]
+    - id: R-ID-E01615EAD49D38CE9FA243C0B1FC2024
+      rule: COMPILE-SEALED-CENTR
+      preconditions:
+      - C-ID-C09BACA041983C43636C8175982C081A
+      source_ref:
+      - SRC-0017
+      authority_ref: [AUTH-0017]
+    - id: R-ID-2DD4800E02B6E041E7B789657AB6BE8B
+      rule: COMPILE-SEALED-CE-AA
+      preconditions:
+      - C-ID-F0EB2AB9E58A4CCE504B897B1778CB7D
+      source_ref:
+      - SRC-0018
+      authority_ref: [AUTH-0018]
+    - id: R-ID-953C54E32ECE288C39CDD81C87C7CD6D
+      rule: COMPILE-SEALED-SIX-S
+      preconditions:
+      - C-ID-8A656D20BC45BAD4A2E9A04FF587302C
+      source_ref:
+      - SRC-0019
+      authority_ref: [AUTH-0019]
+    - id: R-ID-ACF24123CB64D8AC55AFB0F73F1D109B
+      rule: COMPILE-SEALED-REGIS
+      preconditions:
+      - C-ID-F0EB2AB9E58A4CCE504B897B1778CB7D
+      source_ref:
+      - SRC-0020
+      authority_ref: [AUTH-0020]
+    - id: R-ID-97A45F47A55F48493E8E7E3CA67815CB
+      rule: GOV-SHARED-PUBLIC-AN
+      preconditions:
+      - C-ID-5B0C66D3C68418905FAB520F718CE1E7
+      source_ref:
+      - SRC-0021
+      authority_ref: [AUTH-0021]
+    - id: R-ID-B9BD578D098538F7EFFFC3D8445877CD
+      rule: POLICY-RULES-SHARED
+      preconditions:
+      - C-ID-A750CE91748E5804C38712803ED82630
+      source_ref:
+      - SRC-0022
+      authority_ref: [AUTH-0022]
+    - id: R-ID-1A84A0F1E184C8CCD2CE850C68381B5D
+      rule: POLICY-RULES-A-FAMIL
+      preconditions:
+      - C-ID-A6AAF99AFCED187ED6FFF32281508AB3
+      source_ref:
+      - SRC-0023
+      authority_ref: [AUTH-0023]
+    - id: R-ID-55CA6A3525B778E804A71B97C488B79D
+      rule: POLICY-RULES-B-ENTRY
+      preconditions:
+      - C-ID-8361BFEB62B9D8F3F207935C3EC8A302
+      source_ref:
+      - SRC-0024
+      authority_ref: [AUTH-0024]
+    - id: R-ID-3FE81065B2AA78F6BDC5D1BC8F57A804
+      rule: GOV-PROFILE-BACKED-R
+      preconditions:
+      - C-ID-68D5FEE14563F433462E08692F6BC502
+      source_ref:
+      - SRC-0025
+      authority_ref: [AUTH-0025]
+    - id: R-ID-8E9F16FE3A5F733A95D62DC4F65F8561
+      rule: ALL-ROOT-FAMILY-RULE
+      preconditions:
+      - C-ID-113AA59D47AA7A83A02980C333886BD3
+      source_ref:
+      - SRC-0026
+      authority_ref: [AUTH-0026]
+    - id: R-ID-DFAE762B9BC751BB3865777B1586DD2C
+      rule: ALL-FAMILY-DEFINITIO
+      preconditions:
+      - C-ID-9B246C53685858D9EB3D9C2113C8090A
+      source_ref:
+      - SRC-0027
+      authority_ref: [AUTH-0027]
+    - id: R-ID-6FFF2517BFC0F8B703F57A03C1D8CB1D
+      rule: APPROVED-ALL-FAMILY
+      preconditions:
+      - C-ID-AA0D87DA597FE8AD5587D9085DCE2AF2
+      source_ref:
+      - SRC-0028
+      authority_ref: [AUTH-0028]
+    - id: R-ID-576CDD82C38386723C76C6C1E2D114EA
+      rule: REUSE-RETIRED-AUTHOR
+      source_ref:
+      - SRC-0029
+      authority_ref: [AUTH-0029]
+    - id: R-ID-B9E5E346AF7AB8288C16C440B84926EA
+      rule: INTENT-ARCH-CANNOT-C
+      source_ref:
+      - SRC-0030
+      authority_ref: [AUTH-0030]
+    - id: R-ID-0C5C00CB814EC0E8FA67F0F8D850CDEA
+      rule: CTRL-TEST-CANNOT-APP
+      source_ref:
+      - SRC-0031
+      authority_ref: [AUTH-0031]
+    - id: R-ID-73876F1216E7B87E26155157F27891A4
+      rule: UNAUTHORIZED-RESPONS
+      source_ref:
+      - SRC-0032
+      authority_ref: [AUTH-0032]
+    requirements:
+    - requirement_id: REQ-0001
+      meaning_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/0
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      scope_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      relation_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Boundary/subjects/0
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      judgement_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Evaluation/criteria
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      unresolved_fields:
+      - target_refs
+      - condition_refs
+      - constraint_refs
+      - criteria_refs
+      - evidence_requirement_refs
+      - relation_binding
+      - judgement_binding
+    - requirement_id: REQ-0002
+      meaning_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/1
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      scope_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      relation_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Boundary/subjects/1
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      judgement_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Evaluation/criteria
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      unresolved_fields:
+      - target_refs
+      - condition_refs
+      - constraint_refs
+      - criteria_refs
+      - evidence_requirement_refs
+      - relation_binding
+      - judgement_binding
+    - requirement_id: REQ-0003
+      meaning_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/2
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      scope_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      relation_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Boundary/subjects/2
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      judgement_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Evaluation/criteria
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      unresolved_fields:
+      - target_refs
+      - condition_refs
+      - constraint_refs
+      - criteria_refs
+      - evidence_requirement_refs
+      - relation_binding
+      - judgement_binding
+    - requirement_id: REQ-0004
+      meaning_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/3
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      scope_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      relation_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Boundary/subjects/3
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      judgement_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Evaluation/criteria
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      unresolved_fields:
+      - target_refs
+      - condition_refs
+      - constraint_refs
+      - criteria_refs
+      - evidence_requirement_refs
+      - relation_binding
+      - judgement_binding
+    - requirement_id: REQ-0005
+      meaning_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/4
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      - source_ref: developer/policy/GOV/MPD-GOV-0004.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      target_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0004.yaml
+        item_ref: /Policy_Identity
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      scope_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      relation_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Boundary/subjects/4
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      judgement_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Evaluation/criteria
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      unresolved_fields:
+      - condition_refs
+      - constraint_refs
+      - criteria_refs
+      - evidence_requirement_refs
+      - relation_binding
+      - judgement_binding
+    - requirement_id: REQ-0006
+      meaning_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/5
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      - source_ref: developer/policy/GOV/MPD-GOV-0005.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      target_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0005.yaml
+        item_ref: /Policy_Identity
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      scope_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      relation_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Boundary/subjects/5
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      judgement_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Evaluation/criteria
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      unresolved_fields:
+      - condition_refs
+      - constraint_refs
+      - criteria_refs
+      - evidence_requirement_refs
+      - relation_binding
+      - judgement_binding
+    - requirement_id: REQ-0007
+      meaning_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/6
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      - source_ref: developer/policy/GOV/MPD-GOV-0006.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      target_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0006.yaml
+        item_ref: /Policy_Identity
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      scope_refs:
+      - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      relation_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Boundary/subjects/6
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      judgement_binding:
+        state: UNRESOLVED
+        source_refs:
+        - source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+          item_ref: /Policy_Rules/Evaluation/criteria
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      unresolved_fields:
+      - condition_refs
+      - constraint_refs
+      - criteria_refs
+      - evidence_requirement_refs
+      - relation_binding
+      - judgement_binding
+    source_items:
+    - item_id: SRC-0001
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/0
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0002
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/1
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0003
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/2
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0004
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/3
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0005
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/4
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0006
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/5
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0007
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/6
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0008
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/7
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0009
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/8
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0010
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/9
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0011
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/10
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0012
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/11
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0013
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/12
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0014
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/13
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0015
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/14
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0016
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/15
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0017
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/16
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0018
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/17
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0019
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/18
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0020
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/19
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0021
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/20
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0022
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/21
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0023
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/22
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0024
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/23
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0025
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/24
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0026
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/25
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0027
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/26
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0028
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/27
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0029
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/28
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0030
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/29
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0031
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/30
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0032
+      role: rule
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Definition/31
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0033
+      role: scope
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/scope
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0034
+      role: statement
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/0
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0035
+      role: statement
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/1
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0036
+      role: statement
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/2
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0037
+      role: statement
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/3
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0038
+      role: statement
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/4
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0039
+      role: statement
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/5
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0040
+      role: statement
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/subjects/6
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0041
+      role: constraint
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/exclusions/0
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0042
+      role: constraint
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/exclusions/1
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0043
+      role: constraint
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Boundary/exclusions/2
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0044
+      role: criterion
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0045
+      role: criterion
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0046
+      role: criterion
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0047
+      role: criterion
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0048
+      role: criterion
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Evaluation/criteria/evidence/4
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+    - item_id: SRC-0049
+      role: annotation
+      source_ref:
+        source_ref: developer/policy/GOV/MPD-GOV-0001.yaml
+        item_ref: /Policy_Rules/Identity
+        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47

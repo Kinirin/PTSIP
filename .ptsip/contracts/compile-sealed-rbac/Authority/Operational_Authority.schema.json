@@ -1,7 +1,36 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:candidate:contract:rbac:operational-authority:v1",
-  "title": "rbac:operational-authority",
-  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
-  "$ref": "urn:ptsip:rbac:operational-authority:v1"
+  "$id": "urn:ptsip:rbac:operational-authority:v1",
+  "title": "Operational authority declaration",
+  "type": "object",
+  "properties": {
+    "ID": {
+      "$ref": "#/$defs/ID"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "ID",
+    "name"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "ID": {
+      "type": "string",
+      "minLength": 7,
+      "maxLength": 256,
+      "pattern": "^OA-ID-[A-Za-z0-9][A-Za-z0-9._-]*$"
+    }
+  }
 }

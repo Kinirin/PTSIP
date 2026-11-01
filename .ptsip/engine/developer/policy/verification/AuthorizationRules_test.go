@@ -120,7 +120,7 @@ func TestTwelveApprovedActionsUseSingleMachineVocabulary(t *testing.T) {
         {"PUB", "PUBLISH"}, {"GRA", "GRANT"}, {"REV", "REVOKE"},
     }
     encoded, err := authoring.ReadDocument(root,
-        ".ptsip/contracts/schemas/compile-sealed-rbac/lifecycle/keywords.json")
+        ".ptsip/contracts/compile-sealed-rbac/lifecycle/keywords.json")
     if err != nil { t.Fatal(err) }
     properties, ok := encoded["properties"].(map[string]any)
     if !ok || len(properties) != len(actions) { t.Fatal("unexpected action property count") }

@@ -56,8 +56,10 @@ func collectRefs(v any, refs *[]string) {
 // approvedSchemaPaths lists current Policy_Status and Policy_version sources.
 // Missing current contracts must fail the schema scan.
 var approvedSchemaPaths = []string{
-	".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
-	".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
+	".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json",
+	".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json",
+	".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json",
+	".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
 }
 
 const schemaDraft202012 = "https://json-schema.org/draft/2020-12/schema"
@@ -65,15 +67,20 @@ const schemaDraft202012 = "https://json-schema.org/draft/2020-12/schema"
 // These six files are user-approved unresolved, fail-closed RBAC scaffolds.
 // Recognizing their exact shape does not activate or validate RBAC instances.
 var approvedFailClosedRBACScaffolds = map[string]bool{
-	".ptsip/contracts/schemas/compile-sealed-rbac/responsibility.schema.json":  true,
-	".ptsip/contracts/schemas/compile-sealed-rbac/condition-atom.schema.json":  true,
-	".ptsip/contracts/schemas/compile-sealed-rbac/permission-atom.schema.json": true,
-	".ptsip/contracts/schemas/compile-sealed-rbac/binding.schema.json":         true,
-	".ptsip/contracts/schemas/compile-sealed-rbac/sealed-contract.schema.json": true,
-	".ptsip/contracts/schemas/compile-sealed-rbac/activation.schema.json":      true,
+	".ptsip/contracts/compile-sealed-rbac/responsibility.schema.json":  true,
+	".ptsip/contracts/compile-sealed-rbac/condition-atom.schema.json":  true,
+	".ptsip/contracts/compile-sealed-rbac/permission-atom.schema.json": true,
+	".ptsip/contracts/compile-sealed-rbac/binding.schema.json":         true,
+	".ptsip/contracts/compile-sealed-rbac/sealed-contract.schema.json": true,
+	".ptsip/contracts/compile-sealed-rbac/activation.schema.json":      true,
 }
 
 func isSchemaJSON(path string) bool {
+	for _, registered := range approvedSchemaPaths {
+		if path == registered {
+			return true
+		}
+	}
 	return strings.HasSuffix(path, ".schema.json") || strings.HasSuffix(path, ".schemas.json")
 }
 
@@ -93,15 +100,19 @@ func validateFailClosedRBACScaffold(path string, obj map[string]any) bool {
 		guardOK && len(guard) == 0
 }
 
+// Scan current contract owners only. The stopped schemas/Policy and
+// schemas/compile-sealed-rbac trees may retain historical copies with the same
+// identities; discovering them must not register or validate those copies.
 var schemaScanRoots = []string{
-	".ptsip/contracts/schemas",
-	".ptsip/contracts/policy/lifecycle/Policy_version",
+	".ptsip/contracts/schemas/release",
+	".ptsip/contracts/policy",
+	".ptsip/contracts/compile-sealed-rbac",
 }
 
 // Family authoring schemas have been replaced by data contracts. Their
 // reappearance anywhere below Policy_Rules is an unresolved old dependency.
 func isFamilyRulesAuthoringSchema(relative string) bool {
-	if !strings.HasPrefix(relative, ".ptsip/contracts/schemas/Policy/Policy_Rules/") {
+	if !strings.HasPrefix(relative, ".ptsip/contracts/policy/Policy_Rules/") {
 		return false
 	}
 	idx := strings.LastIndex(relative, "/")
@@ -140,7 +151,7 @@ func schemaFiles(root string) ([]string, []Finding) {
 				if err != nil {
 					return err
 				}
-				if filepath.ToSlash(relative) == ".ptsip/contracts/schemas/Policy/Policy_Rules/abortively" {
+				if filepath.ToSlash(relative) == ".ptsip/contracts/policy/Policy_Rules/abortively" {
 					findings = append(findings, Finding{File: filepath.ToSlash(relative), Status: "FAIL", Problem: "DISALLOWED_POLICY_RULES_ARCHIVE_DIRECTORY"})
 					return filepath.SkipDir
 				}

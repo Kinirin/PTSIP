@@ -22,8 +22,10 @@ type StatusProbe struct {
 	Problem                   string `json:"problem,omitempty"`
 }
 
-const publicPolicyStatusPath = ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json"
-const policyVersionPath = ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json"
+const publicPolicyStatusPath = ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json"
+const policyVersionPath = ".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json"
+const policyStatusVocabularyPath = ".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json"
+const policyStatusVocabularyID = "urn:ptsip:candidate:contract:policy:status:v1"
 
 // approvedResource reads exactly a file already in the approved-schema set.
 // It does not search arbitrary paths or fetch URIs from the network.
@@ -53,95 +55,57 @@ func approvedResource(root, relative string) (map[string]any, error) {
 	return doc, nil
 }
 
-// verifySharedStatusLifecycleRefs validates the fixed reference graph and the
-// authoritative string enums in the three lifecycle source schemas. It returns
-// the exact resources for the installed native VALIDATION engine to resolve.
-// No in-memory enum projection or alternative schema validator is created.
+// verifySharedStatusLifecycleRefs checks the one registered vocabulary source.
+// The installed VALIDATION engine resolves the original schema, not an enum projection.
 func verifySharedStatusLifecycleRefs(root string, schema map[string]any) ([]any, error) {
 	props, ok := schema["properties"].(map[string]any)
 	if !ok {
 		return nil, fmt.Errorf("SHARED_STATUS_PROPERTIES_MISSING")
 	}
 	status, ok := props["status"].(map[string]any)
-	if !ok {
-		return nil, fmt.Errorf("SHARED_STATUS_STATUS_MISSING")
+	if !ok || len(status) != 1 || status["$ref"] != policyStatusVocabularyID {
+		return nil, fmt.Errorf("LIFECYCLE_REFERENCE_BINDING_MISMATCH")
 	}
-	if len(status) != 1 {
-		return nil, fmt.Errorf("PUBLIC_STATUS_REFERENCE_SHAPE_INVALID")
+	raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(policyStatusVocabularyPath)))
+	if err != nil {
+		return nil, fmt.Errorf("LIFECYCLE_SOURCE_UNAVAILABLE: %w", err)
 	}
-	declarations, ok := status["oneOf"].([]any)
-	if !ok || len(declarations) != 3 {
-		return nil, fmt.Errorf("LIFECYCLE_REFERENCE_COUNT_INVALID")
+	var source map[string]any
+	if err := json.Unmarshal(raw, &source); err != nil {
+		return nil, fmt.Errorf("LIFECYCLE_SOURCE_JSON_INVALID: %w", err)
 	}
-	sources := []struct{ path, id, prefix string }{
-		{".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json", "urn:ptsip:contract:constant:policy_status_approved:v2", "APPROVED."},
-		{".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json", "urn:ptsip:contract:constant:policy_status_draft:v2", "DRAFT."},
-		{".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json", "urn:ptsip:contract:constant:policy_status_retired:v2", "RETIRED."},
+	if properties, ok := source["properties"].(map[string]any); ok {
+		if _, legacy := properties["substatus"]; legacy {
+			return nil, fmt.Errorf("LIFECYCLE_SOURCE_LEGACY_SUBSTATUS")
+		}
 	}
+	if source["$schema"] != "https://json-schema.org/draft/2020-12/schema" ||
+		source["$id"] != policyStatusVocabularyID || source["type"] != "string" {
+		return nil, fmt.Errorf("LIFECYCLE_SOURCE_ID_OR_TYPE_MISMATCH")
+	}
+	values, ok := source["enum"].([]any)
+	if !ok || len(values) == 0 {
+		return nil, fmt.Errorf("LIFECYCLE_SOURCE_ENUM_EMPTY")
+	}
+	families := map[string]bool{"DRAFT": false, "APPROVED": false, "RETIRED": false}
 	seen := map[string]bool{}
-	resources := make([]any, 0, len(sources))
-	for i, source := range sources {
-		ref, ok := declarations[i].(map[string]any)
-		if !ok || len(ref) != 1 || ref["$ref"] != source.id+"#/properties/status" {
-			return nil, fmt.Errorf("LIFECYCLE_REFERENCE_BINDING_MISMATCH: %s", source.path)
+	for _, item := range values {
+		value, ok := item.(string)
+		family, suffix, found := strings.Cut(value, ".")
+		if _, known := families[family]; !ok || !found || suffix == "" || !known {
+			return nil, fmt.Errorf("LIFECYCLE_SOURCE_ENUM_INVALID")
 		}
-		raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(source.path)))
-		if err != nil {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_UNAVAILABLE: %s: %w", source.path, err)
+		if seen[value] {
+			return nil, fmt.Errorf("LIFECYCLE_SOURCE_ENUM_DUPLICATE: %s", value)
 		}
-		var doc map[string]any
-		if err := json.Unmarshal(raw, &doc); err != nil {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_JSON_INVALID: %s: %w", source.path, err)
-		}
-		if doc["$schema"] != "https://json-schema.org/draft/2020-12/schema" ||
-			doc["$id"] != source.id || doc["schema_version"] != "ptsip-lifecycle-status-constant/v2" ||
-			doc["type"] != "object" {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_ID_OR_VERSION_MISMATCH: %s", source.path)
-		}
-		required, ok := doc["required"].([]any)
-		if !ok {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_REQUIRED_INVALID: %s", source.path)
-		}
-		hasStatus := false
-		for _, v := range required {
-			if v == "status" {
-				hasStatus = true
-			}
-			if v == "substatus" {
-				return nil, fmt.Errorf("LIFECYCLE_SOURCE_LEGACY_SUBSTATUS: %s", source.path)
-			}
-		}
-		if !hasStatus {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_STATUS_NOT_REQUIRED: %s", source.path)
-		}
-		sourceProps, ok := doc["properties"].(map[string]any)
-		if !ok {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_PROPERTIES_MISSING: %s", source.path)
-		}
-		if _, legacy := sourceProps["substatus"]; legacy {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_LEGACY_SUBSTATUS: %s", source.path)
-		}
-		primary, ok := sourceProps["status"].(map[string]any)
-		if !ok || primary["type"] != "string" {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_STATUS_TYPE_INVALID: %s", source.path)
-		}
-		values, ok := primary["enum"].([]any)
-		if !ok || len(values) == 0 {
-			return nil, fmt.Errorf("LIFECYCLE_SOURCE_ENUM_EMPTY: %s", source.path)
-		}
-		for _, v := range values {
-			value, ok := v.(string)
-			if !ok || !strings.HasPrefix(value, source.prefix) || len(value) <= len(source.prefix) {
-				return nil, fmt.Errorf("LIFECYCLE_SOURCE_ENUM_INVALID: %s", source.path)
-			}
-			if seen[value] {
-				return nil, fmt.Errorf("LIFECYCLE_SOURCE_ENUM_DUPLICATE: %s", value)
-			}
-			seen[value] = true
-		}
-		resources = append(resources, doc)
+		seen[value], families[family] = true, true
 	}
-	return resources, nil
+	for family, present := range families {
+		if !present {
+			return nil, fmt.Errorf("LIFECYCLE_SOURCE_FAMILY_MISSING: %s", family)
+		}
+	}
+	return []any{source}, nil
 }
 
 // probeApprovedFlatPolicyStatus checks the current shared status record shape

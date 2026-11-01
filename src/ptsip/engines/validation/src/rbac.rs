@@ -5,7 +5,7 @@ use serde_json::{json, Value};
 
 use crate::source::Root;
 
-const SCHEMA_ROOT: &str = ".ptsip/contracts/schemas/compile-sealed-rbac/";
+const SCHEMA_ROOT: &str = ".ptsip/contracts/compile-sealed-rbac/";
 const PROFILE_RBAC_ROOT: &str = ".ptsip/profiles/rbac/";
 const SCHEMAS: [&str; 6] = [
     "responsibility.schema.json",

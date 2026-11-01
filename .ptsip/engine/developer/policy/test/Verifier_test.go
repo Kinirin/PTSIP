@@ -48,9 +48,8 @@ func isolated(t *testing.T, paths ...string) string {
 
 func TestIdentityHasNoLifecycleRulesOrLegacyDependency(t *testing.T) {
 	root := isolated(t,
-		".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
-		".ptsip/contracts/policy/identity/policy_kind.json",
-		".ptsip/contracts/policy/identity/root_family.json",
+		".ptsip/contracts/policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+		".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
 	)
 	validate := native(t)
 	document := authoring.Document{"id": "EXAMPLE", "policy_kind": "PTSIP_DEVELOPER_POLICY", "root_family": "GOV"}
@@ -61,7 +60,7 @@ func TestIdentityHasNoLifecycleRulesOrLegacyDependency(t *testing.T) {
 	if err := verification.CheckDocument(root, "policy-identity-check", document, validate); err == nil {
 		t.Fatal("unregistered family accepted")
 	}
-	if err := os.Remove(filepath.Join(root, ".ptsip/contracts/policy/identity/root_family.json")); err != nil {
+	if err := os.Remove(filepath.Join(root, ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json")); err != nil {
 		t.Fatal(err)
 	}
 	if err := verification.CheckDocument(root, "policy-identity-check", document, validate); err == nil {
@@ -71,10 +70,8 @@ func TestIdentityHasNoLifecycleRulesOrLegacyDependency(t *testing.T) {
 
 func TestLifecycleChecksOnlyDeclaredStatusVocabulary(t *testing.T) {
 	root := isolated(t,
-		".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
+		".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json",
+		".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json",
 		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_DRAFT.json",
 		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
 		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",

@@ -1,7 +1,31 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:candidate:contract:rbac:condition:v1",
-  "title": "rbac:condition",
-  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
-  "$ref": "urn:ptsip:rbac:condition:v1"
+  "$id": "urn:ptsip:rbac:condition:v1",
+  "title": "Responsibility execution condition declaration",
+  "type": "object",
+  "properties": {
+    "ID": {
+      "$ref": "#/$defs/ID"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20,
+      "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "ID",
+    "name"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "ID": {
+      "type": "string",
+      "pattern": "^C-ID-[A-F0-9]{32}$"
+    }
+  }
 }

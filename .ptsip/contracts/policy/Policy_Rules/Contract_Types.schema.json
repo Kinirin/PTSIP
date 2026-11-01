@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:candidate:contract:policy:types:v2",
   "title": "Policy contract, rule declaration and independent requirement candidates",
-  "$comment": "UNAPPROVED_FIELD_CANDIDATE_V2. Common shape tested across five policy documents. Authoring declarations and unresolved bindings are not semantic equivalence, approval or execution authority. Indexed source binding type is connected directly to active common type Contract; no separate Trial schema used for policy validation. Source IDs must be unique and resolvable under their owning Contract, checked separately from JSON Schema.",
+  "$comment": "UNAPPROVED_FIELD_CANDIDATE_V2. Common shape tested across five policy documents. Authoring declarations and unresolved bindings are not semantic equivalence, approval or execution authority. Indexed source binding type is connected directly to active common type Contract; no separate Trial schema used for policy validation. Source IDs must be unique and resolvable under their owning Contract, checked separately from JSON Schema. User-directed cleanup: requirement_id identifies requirements; responsibility_refs is removed. Rule source_ref arrays contain source_items.item_id values. Empty optional fields are omitted, never interpreted as fulfillment. Authority references are contract-local ID arrays; original authority coordinates/bindings are stored once in contracts[].authority_ref[]. Reference existence does not grant authority.",
   "$defs": {
     "SourceRef": {
       "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
@@ -61,7 +61,7 @@
               "items": {
                 "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/InputBinding"
               },
-              "minItems": 0,
+              "minItems": 1,
               "uniqueItems": true
             }
           },
@@ -137,10 +137,20 @@
           "uniqueItems": true
         },
         "source_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
         },
         "authority_ref": {
-          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
         },
         "unresolved_fields": {
           "type": "array",
@@ -149,7 +159,7 @@
               "authority_ref"
             ]
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         }
       },
@@ -167,14 +177,6 @@
           "type": "string",
           "minLength": 1
         },
-        "responsibility_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/ResponsibilityRef"
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
         "meaning_refs": {
           "type": "array",
           "items": {
@@ -188,7 +190,7 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "scope_refs": {
@@ -196,7 +198,7 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "condition_refs": {
@@ -204,7 +206,7 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "constraint_refs": {
@@ -212,7 +214,7 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "criteria_refs": {
@@ -220,7 +222,7 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "evidence_requirement_refs": {
@@ -228,7 +230,7 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:reference:contract-selection:v1"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "relation_binding": {
@@ -241,28 +243,29 @@
           "type": "array",
           "items": {
             "enum": [
-              "responsibility_refs",
               "target_refs",
               "scope_refs",
               "condition_refs",
               "constraint_refs",
               "criteria_refs",
-              "evidence_requirement_refs"
+              "evidence_requirement_refs",
+              "meaning_refs",
+              "relation_binding",
+              "judgement_binding"
             ]
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "empty_field_basis": {
           "type": "array",
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true,
           "items": {
             "type": "object",
             "properties": {
               "field": {
                 "enum": [
-                  "responsibility_refs",
                   "target_refs",
                   "scope_refs",
                   "condition_refs",
@@ -289,136 +292,17 @@
         }
       },
       "required": [
-        "requirement_id",
-        "responsibility_refs",
-        "meaning_refs",
-        "target_refs",
-        "scope_refs",
-        "condition_refs",
-        "constraint_refs",
-        "criteria_refs",
-        "evidence_requirement_refs",
-        "relation_binding",
-        "judgement_binding",
-        "unresolved_fields"
+        "requirement_id"
       ],
       "additionalProperties": false,
       "allOf": [
         {
           "if": {
-            "properties": {
-              "responsibility_refs": {
-                "maxItems": 0
-              }
-            },
-            "required": [
-              "responsibility_refs"
-            ]
-          },
-          "then": {
-            "oneOf": [
-              {
-                "properties": {
-                  "unresolved_fields": {
-                    "contains": {
-                      "const": "responsibility_refs"
-                    }
-                  }
-                },
-                "required": [
-                  "unresolved_fields"
-                ]
-              },
-              {
-                "properties": {
-                  "empty_field_basis": {
-                    "contains": {
-                      "properties": {
-                        "field": {
-                          "const": "responsibility_refs"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "empty_field_basis"
-                ]
-              }
-            ]
-          },
-          "else": {
-            "not": {
-              "required": [
-                "empty_field_basis"
-              ],
-              "properties": {
-                "empty_field_basis": {
-                  "contains": {
-                    "properties": {
-                      "field": {
-                        "const": "responsibility_refs"
-                      }
-                    },
-                    "required": [
-                      "field"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "target_refs": {
-                "maxItems": 0
-              }
-            },
             "required": [
               "target_refs"
             ]
           },
           "then": {
-            "oneOf": [
-              {
-                "properties": {
-                  "unresolved_fields": {
-                    "contains": {
-                      "const": "target_refs"
-                    }
-                  }
-                },
-                "required": [
-                  "unresolved_fields"
-                ]
-              },
-              {
-                "properties": {
-                  "empty_field_basis": {
-                    "contains": {
-                      "properties": {
-                        "field": {
-                          "const": "target_refs"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "empty_field_basis"
-                ]
-              }
-            ]
-          },
-          "else": {
             "not": {
               "required": [
                 "empty_field_basis"
@@ -442,51 +326,46 @@
         },
         {
           "if": {
+            "required": [
+              "empty_field_basis"
+            ],
             "properties": {
-              "scope_refs": {
-                "maxItems": 0
+              "empty_field_basis": {
+                "contains": {
+                  "properties": {
+                    "field": {
+                      "const": "target_refs"
+                    }
+                  },
+                  "required": [
+                    "field"
+                  ]
+                }
               }
-            },
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "target_refs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
             "required": [
               "scope_refs"
             ]
           },
           "then": {
-            "oneOf": [
-              {
-                "properties": {
-                  "unresolved_fields": {
-                    "contains": {
-                      "const": "scope_refs"
-                    }
-                  }
-                },
-                "required": [
-                  "unresolved_fields"
-                ]
-              },
-              {
-                "properties": {
-                  "empty_field_basis": {
-                    "contains": {
-                      "properties": {
-                        "field": {
-                          "const": "scope_refs"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "empty_field_basis"
-                ]
-              }
-            ]
-          },
-          "else": {
             "not": {
               "required": [
                 "empty_field_basis"
@@ -510,51 +389,46 @@
         },
         {
           "if": {
+            "required": [
+              "empty_field_basis"
+            ],
             "properties": {
-              "condition_refs": {
-                "maxItems": 0
+              "empty_field_basis": {
+                "contains": {
+                  "properties": {
+                    "field": {
+                      "const": "scope_refs"
+                    }
+                  },
+                  "required": [
+                    "field"
+                  ]
+                }
               }
-            },
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "scope_refs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
             "required": [
               "condition_refs"
             ]
           },
           "then": {
-            "oneOf": [
-              {
-                "properties": {
-                  "unresolved_fields": {
-                    "contains": {
-                      "const": "condition_refs"
-                    }
-                  }
-                },
-                "required": [
-                  "unresolved_fields"
-                ]
-              },
-              {
-                "properties": {
-                  "empty_field_basis": {
-                    "contains": {
-                      "properties": {
-                        "field": {
-                          "const": "condition_refs"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "empty_field_basis"
-                ]
-              }
-            ]
-          },
-          "else": {
             "not": {
               "required": [
                 "empty_field_basis"
@@ -578,51 +452,46 @@
         },
         {
           "if": {
+            "required": [
+              "empty_field_basis"
+            ],
             "properties": {
-              "constraint_refs": {
-                "maxItems": 0
+              "empty_field_basis": {
+                "contains": {
+                  "properties": {
+                    "field": {
+                      "const": "condition_refs"
+                    }
+                  },
+                  "required": [
+                    "field"
+                  ]
+                }
               }
-            },
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "condition_refs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
             "required": [
               "constraint_refs"
             ]
           },
           "then": {
-            "oneOf": [
-              {
-                "properties": {
-                  "unresolved_fields": {
-                    "contains": {
-                      "const": "constraint_refs"
-                    }
-                  }
-                },
-                "required": [
-                  "unresolved_fields"
-                ]
-              },
-              {
-                "properties": {
-                  "empty_field_basis": {
-                    "contains": {
-                      "properties": {
-                        "field": {
-                          "const": "constraint_refs"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "empty_field_basis"
-                ]
-              }
-            ]
-          },
-          "else": {
             "not": {
               "required": [
                 "empty_field_basis"
@@ -646,51 +515,46 @@
         },
         {
           "if": {
+            "required": [
+              "empty_field_basis"
+            ],
             "properties": {
-              "criteria_refs": {
-                "maxItems": 0
+              "empty_field_basis": {
+                "contains": {
+                  "properties": {
+                    "field": {
+                      "const": "constraint_refs"
+                    }
+                  },
+                  "required": [
+                    "field"
+                  ]
+                }
               }
-            },
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "constraint_refs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
             "required": [
               "criteria_refs"
             ]
           },
           "then": {
-            "oneOf": [
-              {
-                "properties": {
-                  "unresolved_fields": {
-                    "contains": {
-                      "const": "criteria_refs"
-                    }
-                  }
-                },
-                "required": [
-                  "unresolved_fields"
-                ]
-              },
-              {
-                "properties": {
-                  "empty_field_basis": {
-                    "contains": {
-                      "properties": {
-                        "field": {
-                          "const": "criteria_refs"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "empty_field_basis"
-                ]
-              }
-            ]
-          },
-          "else": {
             "not": {
               "required": [
                 "empty_field_basis"
@@ -714,51 +578,46 @@
         },
         {
           "if": {
+            "required": [
+              "empty_field_basis"
+            ],
             "properties": {
-              "evidence_requirement_refs": {
-                "maxItems": 0
+              "empty_field_basis": {
+                "contains": {
+                  "properties": {
+                    "field": {
+                      "const": "criteria_refs"
+                    }
+                  },
+                  "required": [
+                    "field"
+                  ]
+                }
               }
-            },
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "criteria_refs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
             "required": [
               "evidence_requirement_refs"
             ]
           },
           "then": {
-            "oneOf": [
-              {
-                "properties": {
-                  "unresolved_fields": {
-                    "contains": {
-                      "const": "evidence_requirement_refs"
-                    }
-                  }
-                },
-                "required": [
-                  "unresolved_fields"
-                ]
-              },
-              {
-                "properties": {
-                  "empty_field_basis": {
-                    "contains": {
-                      "properties": {
-                        "field": {
-                          "const": "evidence_requirement_refs"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "empty_field_basis"
-                ]
-              }
-            ]
-          },
-          "else": {
             "not": {
               "required": [
                 "empty_field_basis"
@@ -775,6 +634,103 @@
                       "field"
                     ]
                   }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "empty_field_basis"
+            ],
+            "properties": {
+              "empty_field_basis": {
+                "contains": {
+                  "properties": {
+                    "field": {
+                      "const": "evidence_requirement_refs"
+                    }
+                  },
+                  "required": [
+                    "field"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "unresolved_fields"
+              ],
+              "properties": {
+                "unresolved_fields": {
+                  "contains": {
+                    "const": "evidence_requirement_refs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "relation_binding"
+            ],
+            "properties": {
+              "relation_binding": {
+                "properties": {
+                  "state": {
+                    "const": "UNRESOLVED"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "relation_binding"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "judgement_binding"
+            ],
+            "properties": {
+              "judgement_binding": {
+                "properties": {
+                  "state": {
+                    "const": "UNRESOLVED"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "judgement_binding"
                 }
               }
             }
@@ -913,10 +869,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
-        },
         "document_id": {
           "type": "string",
           "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
@@ -935,10 +887,14 @@
             "record",
             "annotation"
           ]
+        },
+        "item_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
         }
       },
       "required": [
-        "id",
+        "item_id",
         "document_id",
         "item_ref",
         "original_role"
@@ -1075,66 +1031,6 @@
         }
       ]
     },
-    "IndexedResponsibilityBinding": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "state": {
-          "enum": [
-            "DECLARED",
-            "UNRESOLVED",
-            "CONFIRMED_EMPTY",
-            "NOT_APPLICABLE"
-          ]
-        },
-        "responsibility_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/ResponsibilityRef"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "basis_ref_ids": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/IndexedSourceID"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": [
-        "state",
-        "basis_ref_ids"
-      ],
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "state": {
-                "const": "DECLARED"
-              }
-            },
-            "required": [
-              "state"
-            ]
-          },
-          "then": {
-            "required": [
-              "responsibility_refs"
-            ]
-          },
-          "else": {
-            "not": {
-              "required": [
-                "responsibility_refs"
-              ]
-            }
-          }
-        }
-      ]
-    },
     "IndexedInputBinding": {
       "type": "object",
       "additionalProperties": false,
@@ -1184,7 +1080,7 @@
           "items": {
             "$ref": "#/$defs/IndexedInputBinding"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         }
       },
@@ -1249,18 +1145,27 @@
           "minItems": 1,
           "uniqueItems": true
         },
-        "source_item_id": {
-          "$ref": "#/$defs/IndexedSourceID"
+        "source_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
         },
-        "authority_binding": {
-          "$ref": "#/$defs/IndexedSelectionBinding"
+        "authority_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedSourceID"
+          },
+          "minItems": 1,
+          "uniqueItems": true
         }
       },
       "required": [
         "id",
         "rule",
-        "source_item_id",
-        "authority_binding"
+        "source_ref"
       ]
     },
     "IndexedRequirement": {
@@ -1279,9 +1184,6 @@
           "minItems": 1,
           "uniqueItems": true
         },
-        "responsibility_binding": {
-          "$ref": "#/$defs/IndexedResponsibilityBinding"
-        },
         "evidence_requirement_binding": {
           "$ref": "#/$defs/IndexedSelectionBinding"
         },
@@ -1290,15 +1192,29 @@
         },
         "judgement_binding": {
           "$ref": "#/$defs/IndexedSelectionBinding"
+        },
+        "unresolved_fields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "source_bindings.MEANING",
+              "source_bindings.TARGET",
+              "source_bindings.SCOPE",
+              "source_bindings.CONDITION",
+              "source_bindings.CONSTRAINT",
+              "source_bindings.CRITERION",
+              "evidence_requirement_binding",
+              "relation_binding",
+              "judgement_binding"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
         }
       },
       "required": [
         "requirement_id",
-        "source_bindings",
-        "responsibility_binding",
-        "evidence_requirement_binding",
-        "relation_binding",
-        "judgement_binding"
+        "source_bindings"
       ],
       "allOf": [
         {
@@ -1431,6 +1347,321 @@
               "maxContains": 1
             }
           }
+        },
+        {
+          "if": {
+            "required": [
+              "evidence_requirement_binding"
+            ],
+            "properties": {
+              "evidence_requirement_binding": {
+                "properties": {
+                  "state": {
+                    "const": "UNRESOLVED"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "evidence_requirement_binding"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "relation_binding"
+            ],
+            "properties": {
+              "relation_binding": {
+                "properties": {
+                  "state": {
+                    "const": "UNRESOLVED"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "relation_binding"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "judgement_binding"
+            ],
+            "properties": {
+              "judgement_binding": {
+                "properties": {
+                  "state": {
+                    "const": "UNRESOLVED"
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "judgement_binding"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "source_bindings"
+            ],
+            "properties": {
+              "source_bindings": {
+                "contains": {
+                  "properties": {
+                    "purpose": {
+                      "const": "MEANING"
+                    },
+                    "state": {
+                      "const": "UNRESOLVED"
+                    }
+                  },
+                  "required": [
+                    "purpose",
+                    "state"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "source_bindings.MEANING"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "source_bindings"
+            ],
+            "properties": {
+              "source_bindings": {
+                "contains": {
+                  "properties": {
+                    "purpose": {
+                      "const": "TARGET"
+                    },
+                    "state": {
+                      "const": "UNRESOLVED"
+                    }
+                  },
+                  "required": [
+                    "purpose",
+                    "state"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "source_bindings.TARGET"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "source_bindings"
+            ],
+            "properties": {
+              "source_bindings": {
+                "contains": {
+                  "properties": {
+                    "purpose": {
+                      "const": "SCOPE"
+                    },
+                    "state": {
+                      "const": "UNRESOLVED"
+                    }
+                  },
+                  "required": [
+                    "purpose",
+                    "state"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "source_bindings.SCOPE"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "source_bindings"
+            ],
+            "properties": {
+              "source_bindings": {
+                "contains": {
+                  "properties": {
+                    "purpose": {
+                      "const": "CONDITION"
+                    },
+                    "state": {
+                      "const": "UNRESOLVED"
+                    }
+                  },
+                  "required": [
+                    "purpose",
+                    "state"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "source_bindings.CONDITION"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "source_bindings"
+            ],
+            "properties": {
+              "source_bindings": {
+                "contains": {
+                  "properties": {
+                    "purpose": {
+                      "const": "CONSTRAINT"
+                    },
+                    "state": {
+                      "const": "UNRESOLVED"
+                    }
+                  },
+                  "required": [
+                    "purpose",
+                    "state"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "source_bindings.CONSTRAINT"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "source_bindings"
+            ],
+            "properties": {
+              "source_bindings": {
+                "contains": {
+                  "properties": {
+                    "purpose": {
+                      "const": "CRITERION"
+                    },
+                    "state": {
+                      "const": "UNRESOLVED"
+                    }
+                  },
+                  "required": [
+                    "purpose",
+                    "state"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unresolved_fields"
+            ],
+            "properties": {
+              "unresolved_fields": {
+                "contains": {
+                  "const": "source_bindings.CRITERION"
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -1478,7 +1709,7 @@
           "items": {
             "$ref": "#/$defs/IndexedRequirement"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "historical_result_ref_ids": {
@@ -1486,7 +1717,15 @@
           "items": {
             "$ref": "#/$defs/IndexedSourceID"
           },
-          "minItems": 0,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "authority_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IndexedAuthorityReference"
+          },
+          "minItems": 1,
           "uniqueItems": true
         }
       },
@@ -1496,8 +1735,7 @@
         "Rule_ver",
         "source_documents",
         "source_items",
-        "rules",
-        "requirements"
+        "rules"
       ]
     },
     "LegacyInlineContract": {
@@ -1524,7 +1762,7 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:types:v2#/$defs/Requirement"
           },
-          "minItems": 0,
+          "minItems": 1,
           "uniqueItems": true
         },
         "source_items": {
@@ -1540,7 +1778,15 @@
           "items": {
             "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
           },
-          "minItems": 0,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "authority_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AuthorityReference"
+          },
+          "minItems": 1,
           "uniqueItems": true
         }
       },
@@ -1548,8 +1794,39 @@
         "contract_id",
         "Rule_ver",
         "rules",
-        "requirements",
         "source_items"
+      ],
+      "additionalProperties": false
+    },
+    "AuthorityReference": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/IndexedSourceID"
+        },
+        "source_ref": {
+          "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1"
+        }
+      },
+      "required": [
+        "id",
+        "source_ref"
+      ],
+      "additionalProperties": false
+    },
+    "IndexedAuthorityReference": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/IndexedSourceID"
+        },
+        "binding": {
+          "$ref": "#/$defs/IndexedSelectionBinding"
+        }
+      },
+      "required": [
+        "id",
+        "binding"
       ],
       "additionalProperties": false
     }

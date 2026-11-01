@@ -12,7 +12,7 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 _ROOT = Path(__file__).resolve().parents[4]
-_SCHEMA_ROOT = ".ptsip/contracts/schemas/compile-sealed-rbac"
+_SCHEMA_ROOT = ".ptsip/contracts/compile-sealed-rbac"
 _PACKAGE = files("ptsip").joinpath("specdata", "compile-sealed-rbac")
 _FILES = (
     "responsibility",

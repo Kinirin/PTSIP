@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:policy:rule-record:schema:v1",
+  "title": "PTSIP Hierarchical Rule Records",
+  "type": "object",
+  "properties": {
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    }
+  },
+  "required": [
+    "rules"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "rootID": {
+      "type": "string",
+      "pattern": "^rule_sha256:[a-f0-9]{64}$"
+    },
+    "childID": {
+      "type": "string",
+      "pattern": "^rule_[A-Z]{1,4}sha256:[a-f0-9]{64}$"
+    },
+    "grandchildID": {
+      "type": "string",
+      "pattern": "^rule_[A-Z]{1,4}\\.[A-Z]{1,4}sha256:[a-f0-9]{64}$"
+    },
+    "token": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,4}$"
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        },
+        "parent_id": {
+          "type": "string"
+        },
+        "rule_value": {
+          "type": "object",
+          "properties": {
+            "constant": {
+              "$ref": "#/$defs/token"
+            },
+            "root_id": {
+              "type": "string"
+            },
+            "explanation": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ID",
+        "rule_value"
+      ],
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "properties": {
+            "ID": {
+              "$ref": "#/$defs/rootID"
+            },
+            "rule_value": {
+              "required": [
+                "constant",
+                "explanation"
+              ],
+              "maxProperties": 2
+            }
+          },
+          "not": {
+            "required": [
+              "parent_id"
+            ]
+          }
+        },
+        {
+          "properties": {
+            "ID": {
+              "$ref": "#/$defs/rootID"
+            },
+            "rule_value": {
+              "required": [
+                "constant",
+                "root_id"
+              ],
+              "properties": {
+                "root_id": {
+                  "$ref": "#/$defs/childID"
+                }
+              },
+              "maxProperties": 2
+            }
+          },
+          "not": {
+            "required": [
+              "parent_id"
+            ]
+          }
+        },
+        {
+          "required": [
+            "parent_id"
+          ],
+          "properties": {
+            "ID": {
+              "$ref": "#/$defs/childID"
+            },
+            "parent_id": {
+              "$ref": "#/$defs/rootID"
+            },
+            "rule_value": {
+              "required": [
+                "constant",
+                "explanation"
+              ],
+              "maxProperties": 2
+            }
+          }
+        },
+        {
+          "required": [
+            "parent_id"
+          ],
+          "properties": {
+            "ID": {
+              "$ref": "#/$defs/childID"
+            },
+            "parent_id": {
+              "$ref": "#/$defs/rootID"
+            },
+            "rule_value": {
+              "required": [
+                "constant",
+                "root_id"
+              ],
+              "properties": {
+                "root_id": {
+                  "$ref": "#/$defs/grandchildID"
+                }
+              },
+              "maxProperties": 2
+            }
+          }
+        },
+        {
+          "required": [
+            "parent_id"
+          ],
+          "properties": {
+            "ID": {
+              "$ref": "#/$defs/grandchildID"
+            },
+            "parent_id": {
+              "$ref": "#/$defs/childID"
+            },
+            "rule_value": {
+              "required": [
+                "constant",
+                "explanation"
+              ],
+              "maxProperties": 2
+            }
+          }
+        }
+      ]
+    }
+  }
+}

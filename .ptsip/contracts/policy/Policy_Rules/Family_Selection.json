@@ -3,7 +3,7 @@
   "stage": "STRUCTURE_V2_ACTIVE",
   "active": true,
   "selection_basis": "DECLARED_POLICY_IDENTITY_ROOT_FAMILY",
-  "family_source_ref": "urn:ptsip:identity:root-family:v1",
+  "family_source_ref": "urn:ptsip:identity:policy:v1#/$defs/root_family",
   "family_routes": {
     "NORM": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -13,7 +13,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/NORM"
     },
     "GOV": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -23,7 +24,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/GOV"
     },
     "INTENT": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -33,7 +35,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/INTENT"
     },
     "ARCH": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -43,7 +46,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/ARCH"
     },
     "INFO": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -53,7 +57,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/INFO"
     },
     "CNTR": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -63,7 +68,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/CNTR"
     },
     "RISK": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -73,7 +79,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/RISK"
     },
     "SUPPLY": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -83,7 +90,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/SUPPLY"
     },
     "REAL": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -93,7 +101,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/REAL"
     },
     "ASSURE": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -103,7 +112,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/ASSURE"
     },
     "CTRL": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -113,7 +123,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/CTRL"
     },
     "CHANGE": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -123,7 +134,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/CHANGE"
     },
     "OPS": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -133,7 +145,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/OPS"
     },
     "RECORD": {
       "rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
@@ -143,7 +156,8 @@
         "urn:ptsip:candidate:contract:policy:relation:alternative-satisfaction:v1",
         "urn:ptsip:candidate:contract:policy:relation:result-dependency:v1",
         "urn:ptsip:candidate:contract:policy:relation:precedence:v1"
-      ]
+      ],
+      "document_fields_ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/RECORD"
     }
   },
   "family_name_inference": false

@@ -28,7 +28,7 @@ func TestPolicyRoutingContractInputs(t *testing.T) {
 	if routingString(schema["$id"]) != "urn:ptsip:contract:policy-routing:v5" {
 		t.Fatal("schema ID mismatch")
 	}
-	if len(resources) != 2 || len(sources) != 2 {
+	if len(resources) != 1 || len(sources) != 1 {
 		t.Fatalf("missing identity sources: %d/%d", len(resources), len(sources))
 	}
 	if registered != 28 || refs != 2 {
@@ -95,23 +95,27 @@ func TestPolicyRoutingRequiresBoundSchemaFile(t *testing.T) {
 }
 
 func TestV2PublicPolicySelectedWithoutV7Fallback(t *testing.T) {
-    root := routingRepositoryRoot(t)
-    public, err := routingFile(root, ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json", ".ptsip/contracts/policy/")
-    if err != nil { t.Fatal(err) }
-    if routingString(public["$id"]) != "urn:ptsip:candidate:contract:policy:public-structure:v2" {
-        t.Fatal("v2 public schema not registered")
-    }
-    ruleRef := routingString(routingMembers(routingMembers(public["properties"])["Policy_Rules"])["$ref"])
-    if ruleRef != "urn:ptsip:candidate:contract:policy:rules:v2" {
-        t.Fatalf("wrong Policy_Rules schema: %s",ruleRef)
-    }
-    route, _, _, _, _, _, err := loadRoutingInputs(root)
-    if err != nil { t.Fatal(err) }
-    refs := routingMembers(route["schema_refs"])
-    if routingString(refs["public"]) != ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json" ||
-       routingString(refs["rules"]) != ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json" {
-        t.Fatalf("v7 fallback in active route: %v",refs)
-    }
+	root := routingRepositoryRoot(t)
+	public, err := routingFile(root, ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json", ".ptsip/contracts/policy/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if routingString(public["$id"]) != "urn:ptsip:candidate:contract:policy:public-structure:v2" {
+		t.Fatal("v2 public schema not registered")
+	}
+	ruleRef := routingString(routingMembers(routingMembers(public["properties"])["Policy_Rules"])["$ref"])
+	if ruleRef != "urn:ptsip:candidate:contract:policy:rules:v2" {
+		t.Fatalf("wrong Policy_Rules schema: %s", ruleRef)
+	}
+	route, _, _, _, _, _, err := loadRoutingInputs(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	refs := routingMembers(route["schema_refs"])
+	if routingString(refs["public"]) != ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json" ||
+		routingString(refs["rules"]) != ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json" {
+		t.Fatalf("v7 fallback in active route: %v", refs)
+	}
 }
 
 func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
@@ -133,7 +137,7 @@ func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
 				roots = append(roots, line)
 			}
 		}
-		if got := strings.Join(roots, "|"); got != "Policy_Identity:|Policy_Status:|Policy_Rules:" {
+		if got := strings.Join(roots, "|"); got != "Policy_Identity:|Policy_Lifecycle:|Policy_Rules:" {
 			t.Errorf("%s unexpected top-level sections: %s", rel, got)
 		}
 		if !strings.Contains(normalized, "  status: APPROVED.Applying\n") ||
@@ -145,20 +149,28 @@ func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
 }
 
 func TestV2FamilySelectionSharesRulesAndDoesNotGrantAuthority(t *testing.T) {
-    root := routingRepositoryRoot(t)
-    routing, _, _, registered, refs, _, err := loadRoutingInputs(root)
-    if err != nil { t.Fatal(err) }
-    if registered != 28 || refs != 2 { t.Fatalf("unexpected coverage: %d/%d",registered,refs) }
-    developer := routingMembers(routingMembers(routing["routes"])["PTSIP_DEVELOPER_POLICY"])
-    if len(developer) != 1 || developer["output_root"] != "developer/policy" {
-        t.Fatalf("developer route has inferred authority: %v",developer)
-    }
-    selection, err := routingFile(root,".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",".ptsip/contracts/policy/")
-    if err != nil { t.Fatal(err) }
-    if selection["active"] != true { t.Fatal("v2 selection inactive") }
-    fam := routingMembers(selection["family_routes"])
-    arch := routingMembers(fam["ARCH"])
-    if arch["rules_schema_ref"] != "urn:ptsip:candidate:contract:policy:rules:v2" {
-        t.Fatal("ARCH v2 family not bound")
-    }
+	root := routingRepositoryRoot(t)
+	routing, _, _, registered, refs, _, err := loadRoutingInputs(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if registered != 28 || refs != 2 {
+		t.Fatalf("unexpected coverage: %d/%d", registered, refs)
+	}
+	developer := routingMembers(routingMembers(routing["routes"])["PTSIP_DEVELOPER_POLICY"])
+	if len(developer) != 1 || developer["output_root"] != "developer/policy" {
+		t.Fatalf("developer route has inferred authority: %v", developer)
+	}
+	selection, err := routingFile(root, ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json", ".ptsip/contracts/policy/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if selection["active"] != true {
+		t.Fatal("v2 selection inactive")
+	}
+	fam := routingMembers(selection["family_routes"])
+	arch := routingMembers(fam["ARCH"])
+	if arch["rules_schema_ref"] != "urn:ptsip:candidate:contract:policy:rules:v2" {
+		t.Fatal("ARCH v2 family not bound")
+	}
 }

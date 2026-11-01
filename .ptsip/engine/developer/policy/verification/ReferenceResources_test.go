@@ -77,69 +77,49 @@ func statusTestSchema(t *testing.T, root string) map[string]any {
 func statusTestSources(t *testing.T, root string) string {
 	t.Helper()
 	dest := t.TempDir()
-	for _, family := range []string{"APPROVED", "DRAFT", "RETIRED"} {
-		rel := ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_" + family + ".json"
-		raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(rel)))
-		if err != nil {
-			t.Fatal(err)
-		}
-		name := filepath.Join(dest, filepath.FromSlash(rel))
-		if err := os.MkdirAll(filepath.Dir(name), 0755); err != nil {
-			t.Fatal(err)
-		}
-		if err := os.WriteFile(name, raw, 0644); err != nil {
-			t.Fatal(err)
-		}
+	raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(policyStatusVocabularyPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	name := filepath.Join(dest, filepath.FromSlash(policyStatusVocabularyPath))
+	if err := os.MkdirAll(filepath.Dir(name), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(name, raw, 0644); err != nil {
+		t.Fatal(err)
 	}
 	return dest
 }
-func TestSharedStatusReferencesMatchLifecycleContracts(t *testing.T) {
+func TestSharedStatusReferencesMatchLifecycleContract(t *testing.T) {
 	root := statusTestRoot(t)
 	schema := statusTestSchema(t, root)
 	resources, err := verifySharedStatusLifecycleRefs(root, schema)
 	if err != nil {
-		t.Fatalf("status source references invalid: %v", err)
+		t.Fatal(err)
 	}
-	if len(resources) != 3 {
-		t.Fatalf("expected three native schema resources, got %d", len(resources))
+	if len(resources) != 1 {
+		t.Fatalf("expected one native schema resource, got %d", len(resources))
 	}
-	props := schema["properties"].(map[string]any)
-	status := props["status"].(map[string]any)
-	if _, ok := status["enum"]; ok {
-		t.Fatal("public schema must not duplicate lifecycle enum")
+	status := schema["properties"].(map[string]any)["status"].(map[string]any)
+	if len(status) != 1 || status["$ref"] != policyStatusVocabularyID {
+		t.Fatal("public status must refer to the single vocabulary without copying its enum")
 	}
-	if _, ok := status["type"]; ok {
-		t.Fatal("status type must come from source references")
-	}
-	oneOf := status["oneOf"].([]any)
-	original := append([]any(nil), oneOf...)
-	status["oneOf"] = original[:2]
+	original := status["$ref"]
+	status["$ref"] = "urn:ptsip:unknown"
 	if _, err := verifySharedStatusLifecycleRefs(root, schema); err == nil {
-		t.Fatal("missing source reference must fail")
+		t.Fatal("unknown source reference accepted")
 	}
-	status["oneOf"] = original
-	status["oneOf"] = []any{original[0], original[0], original[2]}
-	if _, err := verifySharedStatusLifecycleRefs(root, schema); err == nil {
-		t.Fatal("duplicate source reference must fail")
-	}
-	status["oneOf"] = original
+	status["$ref"] = original
 	status["enum"] = []any{"APPROVED.Default"}
 	if _, err := verifySharedStatusLifecycleRefs(root, schema); err == nil {
-		t.Fatal("duplicate public enum must fail")
-	}
-	delete(status, "enum")
-	status["oneOf"] = []any{map[string]any{"$ref": "urn:ptsip:unknown"}, original[1], original[2]}
-	if _, err := verifySharedStatusLifecycleRefs(root, schema); err == nil {
-		t.Fatal("unknown source reference must fail")
+		t.Fatal("duplicate public vocabulary accepted")
 	}
 }
-
 func TestStatusSourceUpdatesNeedNoPublicSchemaEdit(t *testing.T) {
 	root := statusTestRoot(t)
 	schema := statusTestSchema(t, root)
 	fixture := statusTestSources(t, root)
-	approved := ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json"
-	file := filepath.Join(fixture, filepath.FromSlash(approved))
+	file := filepath.Join(fixture, filepath.FromSlash(policyStatusVocabularyPath))
 	raw, err := os.ReadFile(file)
 	if err != nil {
 		t.Fatal(err)
@@ -148,50 +128,45 @@ func TestStatusSourceUpdatesNeedNoPublicSchemaEdit(t *testing.T) {
 	if err := json.Unmarshal(raw, &doc); err != nil {
 		t.Fatal(err)
 	}
-	primary := doc["properties"].(map[string]any)["status"].(map[string]any)
-	values := primary["enum"].([]any)
-	primary["enum"] = append(values, "APPROVED.FutureState")
-	changed, err := json.Marshal(doc)
-	if err != nil {
-		t.Fatal(err)
+	values := doc["enum"].([]any)
+	write := func(values []any) {
+		t.Helper()
+		doc["enum"] = values
+		data, err := json.Marshal(doc)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(file, data, 0644); err != nil {
+			t.Fatal(err)
+		}
 	}
-	if err := os.WriteFile(file, changed, 0644); err != nil {
-		t.Fatal(err)
-	}
+	write(append(append([]any(nil), values...), "APPROVED.FutureState"))
 	resources, err := verifySharedStatusLifecycleRefs(fixture, schema)
 	if err != nil {
-		t.Fatalf("adding a state only to source must be valid: %v", err)
+		t.Fatalf("source-only state update rejected: %v", err)
 	}
-	approvedResource := resources[0].(map[string]any)
-	got := approvedResource["properties"].(map[string]any)["status"].(map[string]any)["enum"].([]any)
-	if len(got) != len(values)+1 {
-		t.Fatalf("new state lost: %v", got)
+	if len(resources[0].(map[string]any)["enum"].([]any)) != len(values)+1 {
+		t.Fatal("new source value lost")
 	}
-	primary["enum"] = append(values, values[0])
-	duplicate, _ := json.Marshal(doc)
-	if err := os.WriteFile(file, duplicate, 0644); err != nil {
-		t.Fatal(err)
+	write(append(append([]any(nil), values...), values[0]))
+	if _, err := verifySharedStatusLifecycleRefs(fixture, schema); err == nil || !strings.Contains(err.Error(), "ENUM_DUPLICATE") {
+		t.Fatalf("duplicate status must fail closed: %v", err)
 	}
-	if _, err := verifySharedStatusLifecycleRefs(fixture, schema); err == nil || !strings.Contains(err.Error(), "LIFECYCLE_SOURCE_ENUM_DUPLICATE") {
-		t.Fatalf("duplicate state must fail closed: %v", err)
+	write(append(append([]any(nil), values...), "UNKNOWN.NotAdmitted"))
+	if _, err := verifySharedStatusLifecycleRefs(fixture, schema); err == nil || !strings.Contains(err.Error(), "ENUM_INVALID") {
+		t.Fatalf("undeclared status family must fail closed: %v", err)
 	}
-	primary["enum"] = append(values, "DRAFT.NotApproved")
-	wrong, _ := json.Marshal(doc)
-	if err := os.WriteFile(file, wrong, 0644); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := verifySharedStatusLifecycleRefs(fixture, schema); err == nil || !strings.Contains(err.Error(), "LIFECYCLE_SOURCE_ENUM_INVALID") {
-		t.Fatalf("wrong family prefix must fail closed: %v", err)
+	write([]any{"APPROVED.Default"})
+	if _, err := verifySharedStatusLifecycleRefs(fixture, schema); err == nil || !strings.Contains(err.Error(), "FAMILY_MISSING") {
+		t.Fatalf("dropping lifecycle families must fail closed: %v", err)
 	}
 }
-
 func TestStatusSourceMissingAndLegacyFormatFailClosed(t *testing.T) {
 	root := statusTestRoot(t)
 	schema := statusTestSchema(t, root)
 	fixture := statusTestSources(t, root)
-	rel := ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json"
-	path := filepath.Join(fixture, filepath.FromSlash(rel))
-	raw, err := os.ReadFile(path)
+	file := filepath.Join(fixture, filepath.FromSlash(policyStatusVocabularyPath))
+	raw, err := os.ReadFile(file)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -199,19 +174,18 @@ func TestStatusSourceMissingAndLegacyFormatFailClosed(t *testing.T) {
 	if err := json.Unmarshal(raw, &doc); err != nil {
 		t.Fatal(err)
 	}
-	props := doc["properties"].(map[string]any)
-	props["substatus"] = map[string]any{"enum": []any{"Default"}}
-	changed, _ := json.Marshal(doc)
-	if err := os.WriteFile(path, changed, 0644); err != nil {
+	doc["properties"] = map[string]any{"substatus": map[string]any{"enum": []any{"Default"}}}
+	data, _ := json.Marshal(doc)
+	if err := os.WriteFile(file, data, 0644); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := verifySharedStatusLifecycleRefs(fixture, schema); err == nil || !strings.Contains(err.Error(), "LEGACY_SUBSTATUS") {
-		t.Fatalf("legacy split schema must fail closed: %v", err)
+		t.Fatalf("legacy status layout must fail closed: %v", err)
 	}
-	if err := os.Remove(path); err != nil {
+	if err := os.Remove(file); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := verifySharedStatusLifecycleRefs(fixture, schema); err == nil || !strings.Contains(err.Error(), "SOURCE_UNAVAILABLE") {
-		t.Fatalf("missing source must fail closed: %v", err)
+		t.Fatalf("missing unified source must fail closed: %v", err)
 	}
 }

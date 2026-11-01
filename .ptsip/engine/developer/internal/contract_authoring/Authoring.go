@@ -3,8 +3,6 @@ package contract_authoring
 import (
 	"encoding/json"
 	"fmt"
-	"sort"
-	"strings"
 )
 
 func clone(input Document) Document {
@@ -44,85 +42,31 @@ func (c *Catalog) CheckRules(v Validator, doc Document) error {
 	if err != nil {
 		return err
 	}
-	selection := Document{"$ref": commonID + "#/$defs/PolicyDocumentSelection"}
-	if err := c.validate(v, selection, doc, "conditional policy rules"); err != nil {
-		return err
-	}
 	if family == "" {
-		return nil
+		return fmt.Errorf("DECLARED_ROOT_FAMILY_REQUIRED")
 	}
-	return c.checkRuleBindings(v, doc)
-}
-
-// materialize creates only required object/array containers. Required scalar
-// values, including approval state and rule identity, must come from the input.
-// A family constant is the sole scalar supplied from the explicit selection.
-func materialize(shape Document, value any, location, family string, missing *[]string) any {
-	if shape["type"] == "object" {
-		current := object(value)
-		if current == nil {
-			if value != nil {
-				return value
-			}
-			current = Document{}
-		}
-		properties := object(shape["properties"])
-		required := map[string]bool{}
-		if entries, ok := shape["required"].([]any); ok {
-			for _, entry := range entries {
-				required[stringValue(entry)] = true
-			}
-		}
-		for _, key := range keys(properties) {
-			child, present := current[key]
-			if !present && !required[key] {
-				continue
-			}
-			childShape := object(properties[key])
-			if !present && childShape["type"] != "object" && childShape["type"] != "array" {
-				if key == "family" && childShape["const"] == family {
-					current[key] = family
-					continue
-				}
-				*missing = append(*missing, location+"."+key)
-				continue
-			}
-			current[key] = materialize(childShape, child, location+"."+key, family, missing)
-		}
-		return current
+	if c.Common == nil {
+		return fmt.Errorf("REGISTERED_POLICY_SCHEMA_REQUIRED")
 	}
-	if shape["type"] == "array" && value == nil {
-		return []any{}
-	}
-	return value
+	// The registered public schema owns the complete document and delegates
+	// Family field requirements to Policy_Rules. Authoring does not reinterpret
+	// retired four-block rule bindings or claim semantic approval.
+	return c.validate(v, c.Common, doc, "policy document")
 }
 
 func (c *Catalog) GenerateRules(v Validator, input Document, requested string) (Document, string, error) {
 	doc := clone(input)
+	// An unspecified empty request has no declaration to serialize. It must not
+	// create a policy, a Family selection, or empty required containers.
+	if len(doc) == 0 && requested == "" {
+		return doc, "OMITTED", nil
+	}
 	family, err := c.selectedFamily(doc, requested)
 	if err != nil {
 		return nil, "", err
 	}
 	if family == "" {
-		if err := c.CheckRules(v, doc); err != nil {
-			return nil, "", err
-		}
-		return doc, "OMITTED", nil
-	}
-	identity := object(doc["Policy_Identity"])
-	if identity == nil {
-		identity = Document{}
-		doc["Policy_Identity"] = identity
-	}
-	identity["root_family"] = family
-	if present, ok := doc["Policy_Rules"]; ok && object(present) == nil {
-		return nil, "", fmt.Errorf("POLICY_RULES_MUST_BE_OBJECT")
-	}
-	missing := []string{}
-	doc["Policy_Rules"] = materialize(object(c.Contracts[family]["structure"]), doc["Policy_Rules"], "Policy_Rules", family, &missing)
-	if len(missing) > 0 {
-		sort.Strings(missing)
-		return nil, "", fmt.Errorf("REQUIRED_INPUT_VALUES: %s", strings.Join(missing, ", "))
+		return nil, "", fmt.Errorf("DECLARED_ROOT_FAMILY_REQUIRED")
 	}
 	if err := c.CheckRules(v, doc); err != nil {
 		return nil, "", err

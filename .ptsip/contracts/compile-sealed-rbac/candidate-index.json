@@ -1,0 +1,78 @@
+{
+  "schema_version": "ptsip-compile-sealed-rbac-candidate-index/v1",
+  "status": "DRAFT_NON_NORMATIVE",
+  "origin": "implementation-staging-only",
+  "effective_policy_override": false,
+  "rbac_operation_registered": false,
+  "rbac_authorization_permitted": false,
+  "release_admission_evidence": false,
+  "central_registry": {
+    "draft_schema": "central-registry.draft.schema.json",
+    "allowed_source_kinds": [
+      "RESPONSIBILITY",
+      "CONDITION_ATOM",
+      "PERMISSION_ATOM",
+      "BINDING"
+    ],
+    "format_candidate": "JSON"
+  },
+  "source_revision_verification_candidate": {
+    "rule": "PRESENT_IN_BOTH_OR_NEITHER_AND_EXACT_EQUAL",
+    "index_key": "entries[].revision",
+    "source_key": "revision",
+    "source_identity_keys": [
+      "id",
+      "kind"
+    ],
+    "duplicate_registry_id": "REJECT",
+    "yaml_source_validation": "FAIL_CLOSED_PENDING_NATIVE_DECODER"
+  },
+  "independent_schema_candidates": [
+    {
+      "kind": "RESPONSIBILITY",
+      "file": "responsibility.candidate.schema.json",
+      "role": "DECLARATIVE_SOURCE",
+      "authoritative": false
+    },
+    {
+      "kind": "CONDITION_ATOM",
+      "file": "condition-atom.candidate.schema.json",
+      "role": "DECLARATIVE_SOURCE",
+      "authoritative": false
+    },
+    {
+      "kind": "PERMISSION_ATOM",
+      "file": "permission-atom.candidate.schema.json",
+      "role": "DECLARATIVE_SOURCE",
+      "authoritative": false
+    },
+    {
+      "kind": "BINDING",
+      "file": "binding.candidate.schema.json",
+      "role": "DECLARATIVE_SOURCE",
+      "authoritative": false
+    },
+    {
+      "kind": "SEALED_CONTRACT",
+      "file": "sealed-contract.candidate.schema.json",
+      "role": "DERIVED_ARTIFACT",
+      "authoritative": false
+    },
+    {
+      "kind": "ACTIVATION",
+      "file": "activation.candidate.schema.json",
+      "role": "DERIVED_ARTIFACT",
+      "authoritative": false
+    }
+  ],
+  "canonical_six_schemas_unchanged": true,
+  "unresolved": [
+    "SEAL_ATTESTATION_AND_SOURCE_DIGEST_CLOSURE",
+    "ACTIVATION_AUTHORITY_PROOF",
+    "CONDITION_EVALUATION_SEMANTICS",
+    "APPROVAL_EVIDENCE_VERIFICATION",
+    "FINAL_PROFILE_PP_2_00_SCHEMA",
+    "VERSIONED_VALIDATION_ENGINE_OPERATION",
+    "PUBLICATION_POLICY_ADMISSION"
+  ]
+}

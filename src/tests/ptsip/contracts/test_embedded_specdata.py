@@ -91,7 +91,7 @@ def test_rbac_schema_scaffolds_and_registry_requirements_are_packaged_fail_close
     )
     for name in schema_files:
         source = json.loads(
-            (root / ".ptsip/contracts/schemas/compile-sealed-rbac" / name).read_text(encoding="utf-8")
+            (root / ".ptsip/contracts/compile-sealed-rbac" / name).read_text(encoding="utf-8")
         )
         bundled = json.loads(
             files("ptsip").joinpath("specdata", "compile-sealed-rbac", name).read_text(encoding="utf-8")
@@ -108,7 +108,7 @@ def test_rbac_central_registry_draft_schema_is_packaged_and_non_authoritative() 
     root = Path(__file__).resolve().parents[4]
     name = "central-registry.draft.schema.json"
     source = json.loads(
-        (root / ".ptsip/contracts/schemas/compile-sealed-rbac" / name).read_text(encoding="utf-8")
+        (root / ".ptsip/contracts/compile-sealed-rbac" / name).read_text(encoding="utf-8")
     )
     embedded = json.loads(
         files("ptsip").joinpath("specdata", "compile-sealed-rbac", name).read_text(encoding="utf-8")

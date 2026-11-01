@@ -1,168 +1,59 @@
-# Responsibility rule constants and authorization contracts
+# Current contract authoring entry
 
-## Family rule declarations
+The repository-local entry is `.ptsip/index.json` → `.ptsip/contracts/index.json`.
+Policy selection follows `policy/boundary.json`, `policy/routing/policy_routes.json`,
+`policy/candidate.index.json` and `policy/Policy_Rules/Family_Selection.json`.
+The declared `Policy_Identity.policy_kind` and `root_family` select the route.
 
-All fourteen Family contracts use `Policy_Rules.Definition[]`. Each entry
-binds an opaque, nonsemantic R-ID to a **named rule constant** in uppercase
-letters and hyphens, at most 20 characters. A rule constant is not a random
-hash, document number, path or version.
+Current schemas are owned by `.ptsip/contracts/policy/` and
+`.ptsip/contracts/compile-sealed-rbac/`. The former
+`contracts/schemas/Policy/` and `contracts/schemas/compile-sealed-rbac/` trees
+are historical copies and are excluded from current loading and scanning.
 
-```yaml
-Policy_Rules:
-  Definition:
-    - id: R-ID-8D95436233BE6DCD5E90B2AAA986052C
-      rule: FLATTEN-POLICY-STATU
-      preconditions:
-        - C-ID-514BC6B03401A855DF7B7C157645C79B
-```
+## Policy documents
 
-Policy documents select responsibility and optional registered conditions.
-The policy document never owns condition semantics. `Constraints` is retired
-and rejected in all fourteen Family contracts.
+The public v2 schema owns `Policy_Identity`, `Policy_Lifecycle` and `Policy_Rules`.
+`Policy_Rules.contracts[]` groups contract identity/version, independent rules,
+requirements, original source items and optional authority declarations.
+Family field profiles belong to `Public_Policy_Rules.schema.json`; the public
+envelope delegates once. Read the selected schemas for exact required fields.
 
-## Responsibility-Authority profile
+A rule identifies its responsibility with `id` (R-ID) and `rule`. Its
+`source_ref` is an array of local `source_items[].item_id` values. Its optional
+`authority_ref` is an array of IDs in the same contract's `authority_ref[]`.
+Original authority coordinates or unresolved selection bindings are recorded
+in that contract catalog. ID matches never establish an authority grant.
+Requirements use `requirement_id`; empty optional fields are omitted and
+pending fields remain explicitly unresolved.
 
-`.ptsip/profiles/Responsibility-Authority-list.yaml` declares responsibilities
-and their condition/authorization links only; it stores **no policy file ID,
-path or ownership mapping**. One R-ID can be referenced by more than one
-policy document without edits to the profile.
-
-```yaml
-component_bindings:
-  R-ID-8D95436233BE6DCD5E90B2AAA986052C:
-    rule: FLATTEN-POLICY-STATU
-    status: OBLIGATION
-    condition_id:
-      - C-ID-514BC6B03401A855DF7B7C157645C79B
-    condition_name: POLICY-STATUS
-```
-
-The approved independent lifecycle statuses are `OBLIGATION` and
-`PROHIBITION`, not policy document approval states. The profile rejects
-`live_policy`, `source_policy`, `source_rule_id`, `source_text` and
-`Rule_state`. An optional `Authorization_ID` must resolve through the
-independent authorization registry, with the same `condition_name`.
-
-## Authorization rules
-
-`.ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_intention.json`
-registers explicit authorization rules. Each record has **five required
-fields**: `ID`, `resource`, `action`, `effect`, and `condition_name`.
-`ID` matches `^Auth-[A-Z]+# Responsibility rule constants and authorization contracts
-
-## Family rule declarations
-
-All fourteen Family contracts use `Policy_Rules.Definition[]`. Each entry
-binds an opaque, nonsemantic R-ID to a **named rule constant** in uppercase
-letters and hyphens, at most 20 characters. A rule constant is not a random
-hash, document number, path or version.
-
-```yaml
-Policy_Rules:
-  Definition:
-    - id: R-ID-8D95436233BE6DCD5E90B2AAA986052C
-      rule: FLATTEN-POLICY-STATU
-      preconditions:
-        - C-ID-514BC6B03401A855DF7B7C157645C79B
-```
-
-Policy documents select responsibility and optional registered conditions.
-The policy document never owns condition semantics. `Constraints` is retired
-and rejected in all fourteen Family contracts.
-
-## Responsibility-Authority profile
-
-`.ptsip/profiles/Responsibility-Authority-list.yaml` declares responsibilities
-and their condition/authorization links only; it stores **no policy file ID,
-path or ownership mapping**. One R-ID can be referenced by more than one
-policy document without edits to the profile.
-
-```yaml
-component_bindings:
-  R-ID-8D95436233BE6DCD5E90B2AAA986052C:
-    rule: FLATTEN-POLICY-STATU
-    status: OBLIGATION
-    condition_id:
-      - C-ID-514BC6B03401A855DF7B7C157645C79B
-    condition_name: POLICY-STATUS
-```
-
-The approved independent lifecycle statuses are `OBLIGATION` and
-`PROHIBITION`, not policy document approval states. The profile rejects
-`live_policy`, `source_policy`, `source_rule_id`, `source_text` and
-`Rule_state`. An optional `Authorization_ID` must resolve through the
-independent authorization registry, with the same `condition_name`.
-
-## Authorization rules
-
-`.ptsip/contracts/schemas/compile-sealed-rbac/authority/Authorization_intention.json`
-registers explicit authorization rules. Each record has **five required
-fields**: `ID`, `resource`, `action`, `effect`, and `condition_name`.
-. The `action` field resolves against the
-**twelve explicitly approved codes** in `lifecycle/keywords.json`:
-
-| Code | Meaning | Code | Meaning |
-| --- | --- | --- | --- |
-| `REA` | READ | `LIS` | LIST |
-| `CRE` | CREATE | `WRI` | WRITE |
-| `EDI` | EDIT | `DEL` | DELETE |
-| `VAL` | VALIDATE | `EXE` | EXECUTE |
-| `APR` | APPROVE | `PUB` | PUBLISH |
-| `GRA` | GRANT | `REV` | REVOKE |
-
-`WRI` records/writes data; `EDI` modifies an existing target. The
-registered `APR`, `PUB`, `GRA`, and `REV` names are vocabulary, not
-implicit authority to approve policy, publish, grant, or revoke rights.
-Actual authorization rules require independently approved resources,
-conditions and effects. `effect` is `ALLOW` or `DENY`. The condition name must be registered
-in the independent condition catalog.
-
-Example of **schema shape only** (this rule is *not* registered):
-
-```json
-{
-  "ID": "Auth-READ",
-  "resource": "EXAMPLE-RESOURCE",
-  "action": "REA",
-  "effect": "DENY",
-  "condition_name": "POLICY-STATUS"
-}
-```
-
-Use explicit lookups through `responsibility-authority` with
-`--operation lookup-intention --input Auth-READ`; this currently fails
-closed because the registry is empty. A matched ALLOW entry does **not**
-by itself grant runtime execution, Seal or Activation.
-
-Historical policy prose and previous mapping IDs remain in Git history for
-audit only. They do not create authorization intentions or privilege grants.
-
-## Approved authorization decision model
-
-`.ptsip/contracts/Responsibility-Authority/Authorization_decision.json` is
-the machine-readable **C: explicit ALLOW/DENY and unregistered block** policy.
-It is validated against
-`authority/Authorization_decision.schema.json` whenever contract/profile
-checks run. The decision outcomes are:
-
-| Registration / binding | Machine outcome | Persisted effect |
-| --- | --- | --- |
-| Missing authorization | `BLOCK_UNRESOLVED` | None |
-| Missing or invalid binding | `BLOCK_UNRESOLVED` | None |
-| Registered explicit `DENY` | `BLOCK_EXPLICIT` | Explicit DENY only |
-| Registered explicit `ALLOW` | `ALLOW_CANDIDATE` | Explicit ALLOW only |
-
-`ALLOW_CANDIDATE` is **not** permission to execute. Higher-policy
-authorization and action-time gates remain separately required. Resource
-identity matching, condition evaluation, actor bindings, and
-simultaneous/conflicting rule precedence are `UNRESOLVED`; do not invent
-these rules in an implementation. Unknown registration is blocked but is
-never materialized as a permanent DENY entry. The actual
-`Authorization_intention.json` still contains no permission records.
-
-## Validation
+The `policy-rules` authoring interface validates supplied complete v2 policy
+content. `generate` preserves that content and does not synthesize missing
+scalars, empty containers, authority, responsibilities, or semantic decisions.
+An empty request without a Family selection returns `OMITTED` and writes no
+file. Missing or conflicting declarations fail closed.
 
 ```powershell
-go -C .ptsip/engine/developer run . --root ../../.. --validator policy-rules --operation check --input developer/policy/GOV/MPD-GOV-0006.yaml
-go -C .ptsip/engine/developer run . --root ../../.. --validator responsibility-authority --operation check
+go -C .ptsip/engine/developer run . --validator policy-rules --root ../../.. --operation describe --family GOV
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0001.yaml --dry-run
+go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/GOV/MPD-GOV-0001.yaml
+```
+
+`contract-entry` / `policy-check` performs the current schema and declared local
+reference checks. Structural validity is separate from source equivalence,
+relation applicability, requirement fulfillment, lifecycle approval and
+runtime authorization. Historical four-block rules and v7 schemas are not
+fallbacks for an unresolved current contract.
+
+## Responsibility and authority
+
+The profile binding remains `.ptsip/profiles/Responsibility-Authority-list.yaml`.
+Its schema is `contracts/compile-sealed-rbac/Responsibility/Responsibilities_List.schema.json`.
+Independent condition and authority owners are in `Conditions_exercise/` and
+`Authority/`; exact IDs and vocabularies are read from those machine contracts.
+The `responsibility-authority` interface resolves independently of policy
+Family selection. Missing authorization registrations fail closed; policy
+status is not a substitute for a responsibility status or an authorization.
+
+```powershell
+go -C .ptsip/engine/developer run . --validator responsibility-authority --root ../../.. --operation check
 ```

@@ -19,16 +19,29 @@ func writeSchemaFixture(t *testing.T, root, relative string) {
 	}
 }
 
+var otherCurrentSchemaFixtures = []string{
+	".ptsip/contracts/schemas/release/scan-fixture.schema.json",
+	".ptsip/contracts/compile-sealed-rbac/scan-fixture.schema.json",
+}
+
+func writeOtherCurrentSchemaFixtures(t *testing.T, root string) {
+	t.Helper()
+	for _, relative := range otherCurrentSchemaFixtures {
+		writeSchemaFixture(t, root, relative)
+	}
+}
+
 func TestSchemaFilesIncludeApprovedPolicyVersionAndStatus(t *testing.T) {
 	root := t.TempDir()
+	writeOtherCurrentSchemaFixtures(t, root)
 	for _, relative := range approvedSchemaPaths {
 		writeSchemaFixture(t, root, relative)
 	}
 	paths, findings := schemaFiles(root)
-	if len(findings) != 0 || len(paths) != len(approvedSchemaPaths) {
+	if len(findings) != 0 || len(paths) != len(approvedSchemaPaths)+len(otherCurrentSchemaFixtures) {
 		t.Fatalf("approved schemas not discovered: paths=%v findings=%v", paths, findings)
 	}
-	for _, required := range approvedSchemaPaths {
+	for _, required := range append(append([]string{}, approvedSchemaPaths...), otherCurrentSchemaFixtures...) {
 		present := false
 		for _, path := range paths {
 			rel, err := filepath.Rel(root, path)
@@ -47,8 +60,9 @@ func TestSchemaFilesIncludeApprovedPolicyVersionAndStatus(t *testing.T) {
 
 func TestMissingPolicyVersionSchemaFailsClosed(t *testing.T) {
 	root := t.TempDir()
+	writeOtherCurrentSchemaFixtures(t, root)
 	for _, relative := range approvedSchemaPaths {
-		if strings.Contains(relative, "/Policy_version/") {
+		if relative == policyVersionPath {
 			continue
 		}
 		writeSchemaFixture(t, root, relative)
@@ -56,7 +70,7 @@ func TestMissingPolicyVersionSchemaFailsClosed(t *testing.T) {
 	_, findings := schemaFiles(root)
 	found := false
 	for _, finding := range findings {
-		if finding.File == ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json" && finding.Problem == "MISSING_APPROVED_SCHEMA" {
+		if finding.File == ".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json" && finding.Problem == "MISSING_APPROVED_SCHEMA" {
 			found = true
 		}
 	}
@@ -65,26 +79,59 @@ func TestMissingPolicyVersionSchemaFailsClosed(t *testing.T) {
 	}
 }
 
-func TestEmptyStatusSchemaRootFailsClosed(t *testing.T) {
+func TestMissingCurrentPolicySchemaRootFailsClosed(t *testing.T) {
 	root := t.TempDir()
-	writeSchemaFixture(t, root, ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json")
+	writeOtherCurrentSchemaFixtures(t, root)
 	_, findings := schemaFiles(root)
 	found := false
 	for _, finding := range findings {
-		if finding.File == ".ptsip/contracts/schemas" && strings.HasPrefix(finding.Problem, "SCHEMA_ROOT_UNAVAILABLE") {
+		if finding.File == ".ptsip/contracts/policy" && strings.HasPrefix(finding.Problem, "SCHEMA_ROOT_UNAVAILABLE") {
 			found = true
 		}
 	}
 	if !found {
-		t.Fatalf("missing status schema root not reported: %v", findings)
+		t.Fatalf("missing current policy contract root not reported: %v", findings)
+	}
+}
+
+func TestSchemaFilesExcludeStoppedContractRoots(t *testing.T) {
+	root := t.TempDir()
+	writeOtherCurrentSchemaFixtures(t, root)
+	for _, relative := range approvedSchemaPaths {
+		writeSchemaFixture(t, root, relative)
+	}
+	for _, relative := range []string{
+		".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+		".ptsip/contracts/schemas/Policy/Policy_Rules/abortively/GOV_rules.schema.json",
+		".ptsip/contracts/schemas/compile-sealed-rbac/responsibility.schema.json",
+	} {
+		writeSchemaFixture(t, root, relative)
+	}
+	paths, findings := schemaFiles(root)
+	if len(findings) != 0 {
+		t.Fatalf("historical copies entered current validation: %v", findings)
+	}
+	if len(paths) != len(approvedSchemaPaths)+len(otherCurrentSchemaFixtures) {
+		t.Fatalf("historical copies were discovered: %v", paths)
+	}
+	for _, path := range paths {
+		relative, err := filepath.Rel(root, path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		relative = filepath.ToSlash(relative)
+		if strings.HasPrefix(relative, ".ptsip/contracts/schemas/Policy/") ||
+			strings.HasPrefix(relative, ".ptsip/contracts/schemas/compile-sealed-rbac/") {
+			t.Fatalf("stopped contract root entered current scan: %s", relative)
+		}
 	}
 }
 
 func TestSchemaScanSeparatesJSONDataFromSchemas(t *testing.T) {
 	for _, file := range []string{
-		".ptsip/contracts/schemas/compile-sealed-rbac/candidate-index.json",
-		".ptsip/contracts/schemas/Policy/Policy_Rules/root-family/ARCH_rules.schemas.json",
-		".ptsip/contracts/schemas/compile-sealed-rbac/binding.schema.json",
+		".ptsip/contracts/compile-sealed-rbac/candidate-index.json",
+		".ptsip/contracts/policy/Policy_Rules/root-family/ARCH_rules.schemas.json",
+		".ptsip/contracts/compile-sealed-rbac/binding.schema.json",
 	} {
 		wantSchema := !strings.HasSuffix(file, "candidate-index.json")
 		if isSchemaJSON(file) != wantSchema {
@@ -108,7 +155,7 @@ func TestApprovedRBACScaffoldsRemainFailClosed(t *testing.T) {
 			t.Errorf("approved RBAC scaffold must remain fail closed: %s", file)
 		}
 	}
-	file := ".ptsip/contracts/schemas/compile-sealed-rbac/activation.schema.json"
+	file := ".ptsip/contracts/compile-sealed-rbac/activation.schema.json"
 	base := map[string]any{
 		"$schema":  schemaDraft202012,
 		"title":    "Unresolved RBAC scaffold",
@@ -142,13 +189,14 @@ func TestApprovedRBACScaffoldsRemainFailClosed(t *testing.T) {
 			}
 		})
 	}
-	if validateFailClosedRBACScaffold(".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json", base) {
+	if validateFailClosedRBACScaffold(".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json", base) {
 		t.Fatal("unapproved scaffold path accepted")
 	}
 }
 
 func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
 	root := t.TempDir()
+	writeOtherCurrentSchemaFixtures(t, root)
 	for _, relative := range approvedSchemaPaths {
 		writeSchemaFixture(t, root, relative)
 	}
@@ -159,14 +207,14 @@ func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
 		t.Fatalf("canonical Family rules schema rejected: %v", prior)
 	}
 	for _, tc := range []struct{ path, diagnosticFile, problem string }{
-		{".ptsip/contracts/schemas/Policy/Policy_Rules/root-family/GOV_rules.schema.json",
-			".ptsip/contracts/schemas/Policy/Policy_Rules/root-family/GOV_rules.schema.json",
+		{".ptsip/contracts/policy/Policy_Rules/root-family/GOV_rules.schema.json",
+			".ptsip/contracts/policy/Policy_Rules/root-family/GOV_rules.schema.json",
 			"RETIRED_FAMILY_RULES_SCHEMA"},
-		{".ptsip/contracts/schemas/Policy/Policy_Rules/GOV_rules.schema.json",
-			".ptsip/contracts/schemas/Policy/Policy_Rules/GOV_rules.schema.json",
+		{".ptsip/contracts/policy/Policy_Rules/GOV_rules.schema.json",
+			".ptsip/contracts/policy/Policy_Rules/GOV_rules.schema.json",
 			"RETIRED_FAMILY_RULES_SCHEMA"},
-		{".ptsip/contracts/schemas/Policy/Policy_Rules/abortively/GOV_rules.schema.json",
-			".ptsip/contracts/schemas/Policy/Policy_Rules/abortively",
+		{".ptsip/contracts/policy/Policy_Rules/abortively/GOV_rules.schema.json",
+			".ptsip/contracts/policy/Policy_Rules/abortively",
 			"DISALLOWED_POLICY_RULES_ARCHIVE_DIRECTORY"},
 	} {
 		writeSchemaFixture(t, root, tc.path)
@@ -185,6 +233,7 @@ func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
 
 func TestPolicyRulesArchiveDirectoryIsForbidden(t *testing.T) {
 	root := t.TempDir()
+	writeOtherCurrentSchemaFixtures(t, root)
 	for _, relative := range approvedSchemaPaths {
 		writeSchemaFixture(t, root, relative)
 	}
@@ -192,7 +241,7 @@ func TestPolicyRulesArchiveDirectoryIsForbidden(t *testing.T) {
 	if len(clean) != 0 {
 		t.Fatalf("canonical fixture unexpectedly rejected: %v", clean)
 	}
-	forbidden := ".ptsip/contracts/schemas/Policy/Policy_Rules/abortively"
+	forbidden := ".ptsip/contracts/policy/Policy_Rules/abortively"
 	if err := os.MkdirAll(filepath.Join(root, filepath.FromSlash(forbidden)), 0755); err != nil {
 		t.Fatal(err)
 	}

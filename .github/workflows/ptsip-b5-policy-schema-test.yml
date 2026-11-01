@@ -4,10 +4,10 @@ on:
     paths:
       - ".github/workflows/ptsip-b5-policy-schema-test.yml"
       - "src/tests/ptsip/agent_contracts/test_projection_bindings.py"
-      - ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json"
-      - ".ptsip/contracts/policy/lifecycle/Policy_status/**"
+      - ".ptsip/contracts/policy/**"
+      - ".ptsip/contracts/compile-sealed-rbac/**"
       - ".ptsip/engine/developer/policy/verification/**"
-      - "developer/tests/schema_validation/**"
+      - ".ptsip/engine/developer/policy/test/**"
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-go@v6
         with:
-          go-version-file: developer/tests/go.mod
+          go-version-file: .ptsip/engine/developer/go.mod
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -49,7 +49,7 @@ jobs:
           PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
         run: |
           set -euo pipefail
-          go -C developer/tests test ./schema_validation -count=1 -v
+          go -C .ptsip/engine/developer test ./policy/verification/... ./policy/test -count=1 -v
       - name: Run developer-schema-contracts full current schema check
         shell: bash
         env:

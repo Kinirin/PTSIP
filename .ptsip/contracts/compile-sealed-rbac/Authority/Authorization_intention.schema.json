@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:authorization-intention:v1",
+  "title": "Explicit authorization rules for resources and actions",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authorizations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ptsip-authorization-intention/v1"
+    },
+    "authorizations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ID",
+          "resource",
+          "action",
+          "effect",
+          "condition_name"
+        ],
+        "properties": {
+          "ID": {
+            "$ref": "#/$defs/ID"
+          },
+          "resource": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/Action"
+          },
+          "effect": {
+            "type": "string",
+            "enum": [
+              "ALLOW",
+              "DENY"
+            ]
+          },
+          "condition_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[A-Z]+(?:-[A-Z]+)*$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "$schema": {
+      "const": "./Authorization_intention.schema.json"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "ID": {
+      "type": "string",
+      "pattern": "^Auth-[A-Z]+$"
+    }
+  }
+}

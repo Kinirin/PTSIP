@@ -1,17 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:candidate:contract:policy:status:v1",
-  "title": "policy:status",
-  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
-  "oneOf": [
-    {
-      "$ref": "urn:ptsip:contract:constant:policy_status_draft:v2#/properties/status"
-    },
-    {
-      "$ref": "urn:ptsip:contract:constant:policy_status_approved:v2#/properties/status"
-    },
-    {
-      "$ref": "urn:ptsip:contract:constant:policy_status_retired:v2#/properties/status"
-    }
+  "title": "PTSIP Unified Policy Status Vocabulary",
+  "$comment": "Single owner of the existing DRAFT, APPROVED and RETIRED status values. Membership does not authorize a lifecycle transition.",
+  "type": "string",
+  "enum": [
+    "DRAFT.Default",
+    "DRAFT.Reviewed",
+    "DRAFT.Denied",
+    "DRAFT.Pass",
+    "APPROVED.Default",
+    "APPROVED.Applying",
+    "APPROVED.Application_Problems",
+    "APPROVED.Unresolved",
+    "APPROVED.Activate",
+    "APPROVED.provisional",
+    "RETIRED.Default",
+    "RETIRED.Removable",
+    "RETIRED.Waiting"
   ]
 }

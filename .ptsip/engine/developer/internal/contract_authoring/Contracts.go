@@ -3,6 +3,9 @@
 package contract_authoring
 
 import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -16,35 +19,36 @@ type Document = map[string]any
 type Validator func(schema, instance any, resources []any) (bool, error)
 
 const BoundaryPath = ".ptsip/contracts/policy/boundary.json"
-const FamilySource = ".ptsip/contracts/policy/identity/root_family.json"
-const FamilyDirectory = ".ptsip/contracts/policy/Rules"
-const FamilySchema = ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json"
-const CommonSchema = ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json"
+const IdentityVocabularyPath = ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"
+const IdentityVocabularyID = "urn:ptsip:identity:policy:v1"
+const FamilySource = IdentityVocabularyPath
+const FamilyDirectory = ".ptsip/contracts/policy/Policy_Rules"
+const FamilySchema = ".ptsip/contracts/policy/Policy_Rules/Contract_Types.schema.json"
+const CommonSchema = ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json"
 const ProfilePath = ".ptsip/profiles/Responsibility-Authority-list.yaml"
 const DefinitionsPath = ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json"
-const RBACSchemaRoot = ".ptsip/contracts/schemas/compile-sealed-rbac/"
-const AuthorizationDataPath = RBACSchemaRoot + "authority/Authorization_intention.json"
-const AuthorizationSchemaPath = RBACSchemaRoot + "authority/Authorization_intention.schema.json"
+const RBACSchemaRoot = ".ptsip/contracts/compile-sealed-rbac/"
+const AuthorizationDataPath = RBACSchemaRoot + "Authority/Authorization_intention.json"
+const AuthorizationSchemaPath = RBACSchemaRoot + "Authority/Authorization_intention.schema.json"
 const AuthorizationDecisionDataPath = ".ptsip/contracts/Responsibility-Authority/Authorization_decision.json"
-const AuthorizationDecisionSchemaPath = RBACSchemaRoot + "authority/Authorization_decision.schema.json"
+const AuthorizationDecisionSchemaPath = RBACSchemaRoot + "Authority/Authorization_decision.schema.json"
 
-const commonID = "urn:ptsip:policy:Public_Structure_Rules:v3"
+const commonID = "urn:ptsip:candidate:contract:policy:rules:v2"
 const responsibilityID = "urn:ptsip:rbac:responsibility:v1"
 
 type Catalog struct {
-	Root            string
-	Families        []string
-	Contracts       map[string]Document
-	Resources       []any
-	ContractShape   Document
-	Common          Document
-	ProfileShape    Document
-	Definitions     Document
-	DefinitionShape Document
-	AuthorizationShape Document
-	Authorizations Document
+	Root                       string
+	Families                   []string
+	Contracts                  map[string]Document
+	Resources                  []any
+	Common                     Document
+	ProfileShape               Document
+	Definitions                Document
+	DefinitionShape            Document
+	AuthorizationShape         Document
+	Authorizations             Document
 	AuthorizationDecisionShape Document
-	AuthorizationDecision Document
+	AuthorizationDecision      Document
 }
 
 func object(value any) Document    { obj, _ := value.(map[string]any); return obj }
@@ -97,6 +101,33 @@ func readJSON(root, relative string) (Document, error) {
 	return doc, nil
 }
 
+// IdentityValues reads one named vocabulary from the unified identity contract.
+// It performs no policy approval or name-based Family inference.
+func IdentityValues(document Document, name string) ([]any, error) {
+	if document["$id"] != IdentityVocabularyID {
+		return nil, fmt.Errorf("IDENTITY_VOCABULARY_ID_MISMATCH")
+	}
+	if name != "policy_kind" && name != "root_family" {
+		return nil, fmt.Errorf("UNKNOWN_IDENTITY_VOCABULARY: %s", name)
+	}
+	definition := object(object(document["$defs"])[name])
+	values, ok := definition["enum"].([]any)
+	if definition["type"] != "string" || !ok || len(values) == 0 {
+		return nil, fmt.Errorf("EMPTY_IDENTITY_VOCABULARY: %s", name)
+	}
+	seen := map[string]bool{}
+	for _, value := range values {
+		text := stringValue(value)
+		if text == "" || seen[text] {
+			return nil, fmt.Errorf("INVALID_IDENTITY_VOCABULARY: %s", name)
+		}
+		seen[text] = true
+	}
+	return values, nil
+}
+
+// Load resolves only current v2 schemas. Historical Rules/ data and withdrawn
+// v7 selection schemas are analysis inputs, never authoring fallbacks.
 func Load(root string) (*Catalog, error) {
 	absolute, err := filepath.Abs(root)
 	if err != nil {
@@ -106,15 +137,15 @@ func Load(root string) (*Catalog, error) {
 	if err != nil {
 		return nil, err
 	}
-	if boundary["domain"] != "policy" || object(boundary["namespaces"])["rules"] != "Rules/" {
+	if boundary["domain"] != "policy" || object(boundary["namespaces"])["rules"] != "Policy_Rules/" {
 		return nil, fmt.Errorf("POLICY_RULES_BOUNDARY_INVALID")
 	}
 	binding := object(boundary["rules_binding"])
 	for key, expected := range map[string]string{
 		"family_source": FamilySource, "directory": FamilyDirectory,
-		"filename": "{root_family}_rules.json", "contract_schema": FamilySchema,
-		"selection_schema": CommonSchema, "responsibility_profile": ProfilePath,
-		"responsibility_contract": DefinitionsPath,
+		"contract_schema": FamilySchema, "selection_schema": CommonSchema,
+		"family_selection":       FamilyDirectory + "/Family_Selection.json",
+		"responsibility_profile": ProfilePath, "responsibility_contract": DefinitionsPath,
 	} {
 		if binding[key] != expected {
 			return nil, fmt.Errorf("RULES_BINDING_MISMATCH: %s", key)
@@ -128,61 +159,99 @@ func Load(root string) (*Catalog, error) {
 	if err != nil {
 		return nil, err
 	}
-	if vocabulary["$id"] != "urn:ptsip:identity:root-family:v1" {
-		return nil, fmt.Errorf("FAMILY_VOCABULARY_ID_MISMATCH")
+	values, err := IdentityValues(vocabulary, "root_family")
+	if err != nil {
+		return nil, err
 	}
-	values, ok := vocabulary["enum"].([]any)
-	if !ok || len(values) == 0 {
-		return nil, fmt.Errorf("EMPTY_FAMILY_VOCABULARY")
+	registry, err := readJSON(absolute, ".ptsip/contracts/policy/candidate.index.json")
+	if err != nil {
+		return nil, err
 	}
-	seen := map[string]bool{}
-	for _, raw := range values {
-		family := stringValue(raw)
-		if family == "" || seen[family] || strings.IndexFunc(family, func(r rune) bool { return r < 'A' || r > 'Z' }) >= 0 {
-			return nil, fmt.Errorf("INVALID_FAMILY_VOCABULARY: %v", raw)
-		}
-		seen[family] = true
-		c.Families = append(c.Families, family)
+	if registry["active_registration"] != true || registry["active_policy_cutover"] != "STRUCTURE_V2_ACTIVE" {
+		return nil, fmt.Errorf("V2_POLICY_STRUCTURE_NOT_ACTIVE")
 	}
-	c.Resources = append(c.Resources, vocabulary)
-	resources := []struct {
-		file, id    string
-		destination *Document
-	}{
-		{FamilySchema, "urn:ptsip:policy:family-rules-contract:v2", &c.ContractShape},
-		{CommonSchema, commonID, &c.Common},
+	known := map[string]bool{}
+	for _, raw := range c.Resources {
+		known[stringValue(object(raw)["$id"])] = true
 	}
-	for _, resource := range resources {
-		doc, err := readJSON(absolute, resource.file)
-		if err != nil {
-			return nil, err
-		}
-		if doc["$id"] != resource.id {
-			return nil, fmt.Errorf("SCHEMA_ID_MISMATCH: %s", resource.file)
-		}
-		if resource.destination != nil {
-			*resource.destination = doc
-		}
-		c.Resources = append(c.Resources, doc)
-	}
-	for _, family := range c.Families {
-		file := FamilyDirectory + "/" + family + "_rules.json"
+	add := func(file, id string) error {
 		doc, err := readJSON(absolute, file)
 		if err != nil {
+			return err
+		}
+		if doc["$id"] != id {
+			return fmt.Errorf("SCHEMA_ID_MISMATCH: %s", file)
+		}
+		if !known[id] {
+			c.Resources = append(c.Resources, doc)
+			known[id] = true
+		}
+		if id == "urn:ptsip:candidate:contract:policy:public-structure:v2" {
+			c.Common = doc
+		}
+		return nil
+	}
+	artifacts, ok := registry["artifacts"].([]any)
+	if !ok {
+		return nil, fmt.Errorf("V2_SCHEMA_ARTIFACTS_MISSING")
+	}
+	for _, raw := range artifacts {
+		item := object(raw)
+		if item["kind"] == "SCHEMA" {
+			file, id := stringValue(item["path"]), stringValue(item["schema_id"])
+			if !strings.HasPrefix(file, ".ptsip/contracts/policy/") || id == "" {
+				return nil, fmt.Errorf("V2_SCHEMA_OUTSIDE_POLICY_CONTRACT_ROOT")
+			}
+			if err := add(file, id); err != nil {
+				return nil, err
+			}
+		}
+	}
+	for id, raw := range object(registry["external_resources"]) {
+		item := object(raw)
+		file := stringValue(item["path"])
+		if !strings.HasPrefix(file, ".ptsip/contracts/policy/") && !strings.HasPrefix(file, RBACSchemaRoot) {
+			return nil, fmt.Errorf("RETIRED_OR_UNREGISTERED_CONTRACT_ROOT: %s", file)
+		}
+		name, err := LocalFile(absolute, file)
+		if err != nil {
 			return nil, err
 		}
-		if doc["$id"] != "urn:ptsip:contract:policy:rules:"+family+":v2" || doc["root_family"] != family ||
-			object(doc["generation"])["default"] != "OMIT" || object(doc["generation"])["when_root_family"] != family {
-			return nil, fmt.Errorf("FAMILY_CONTRACT_MISMATCH: %s", family)
+		data, err := os.ReadFile(name)
+		if err != nil {
+			return nil, err
 		}
-		c.Contracts[family] = doc
-		// The data contract's $schema points to its authoring schema. Its
-		// embedded structure is exposed as a Draft 2020-12 schema resource,
-		// without interpreting that data-schema link as a schema dialect.
-		c.Resources = append(c.Resources, Document{
-			"$schema": "https://json-schema.org/draft/2020-12/schema",
-			"$id":     doc["$id"], "structure": doc["structure"],
-		})
+		digest := sha256.Sum256(bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n")))
+		if hex.EncodeToString(digest[:]) != stringValue(item["sha256"]) {
+			return nil, fmt.Errorf("V2_EXTERNAL_RESOURCE_DIGEST_MISMATCH: %s", id)
+		}
+		if err := add(file, id); err != nil {
+			return nil, err
+		}
+	}
+	if c.Common == nil {
+		return nil, fmt.Errorf("V2_PUBLIC_SCHEMA_UNRESOLVED")
+	}
+	selection, err := readJSON(absolute, FamilyDirectory+"/Family_Selection.json")
+	if err != nil {
+		return nil, err
+	}
+	if selection["active"] != true || selection["selection_basis"] != "DECLARED_POLICY_IDENTITY_ROOT_FAMILY" {
+		return nil, fmt.Errorf("V2_FAMILY_SELECTION_INACTIVE")
+	}
+	routes := object(selection["family_routes"])
+	for _, raw := range values {
+		family := stringValue(raw)
+		route := object(routes[family])
+		ref := commonID + "#/$defs/FamilyProfiles/" + family
+		if route["rules_schema_ref"] != commonID || route["document_fields_ref"] != ref {
+			return nil, fmt.Errorf("V2_FAMILY_RULE_SCHEMA_MISMATCH: %s", family)
+		}
+		c.Families = append(c.Families, family)
+		c.Contracts[family] = Document{"$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "urn:ptsip:policy:family-fields:" + family + ":v1", "$ref": ref}
+	}
+	if len(routes) != len(c.Families) {
+		return nil, fmt.Errorf("V2_FAMILY_ROUTE_COUNT_MISMATCH")
 	}
 	return c, nil
 }
@@ -200,10 +269,10 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		destination *Document
 	}{
 		{RBACSchemaRoot + "Conditions_exercise/Condition.schema.json", "urn:ptsip:rbac:condition:v1", nil},
-		{RBACSchemaRoot + "authority/Operational_Authority.schema.json", "urn:ptsip:rbac:operational-authority:v1", nil},
-		{RBACSchemaRoot + "responsibility/Responsibility.schema.json", responsibilityID, nil},
-		{RBACSchemaRoot + "Responsibilities_List.schema.json", "urn:ptsip:rbac:responsibilities-list:v3", &c.ProfileShape},
-		{RBACSchemaRoot + "Responsibility_Authority_Contract.schema.json", "urn:ptsip:rbac:responsibility-authority-contract:v1", &c.DefinitionShape},
+		{RBACSchemaRoot + "Authority/Operational_Authority.schema.json", "urn:ptsip:rbac:operational-authority:v1", nil},
+		{RBACSchemaRoot + "Responsibility/Responsibility.schema.json", responsibilityID, nil},
+		{RBACSchemaRoot + "Responsibility/Responsibilities_List.schema.json", "urn:ptsip:rbac:responsibilities-list:v3", &c.ProfileShape},
+		{RBACSchemaRoot + "Responsibility/Responsibility_Authority_Contract.schema.json", "urn:ptsip:rbac:responsibility-authority-contract:v1", &c.DefinitionShape},
 		{RBACSchemaRoot + "lifecycle/status.json", "urn:ptsip:rbac:lifecycle:status:v1", nil},
 		{RBACSchemaRoot + "lifecycle/keywords.json", "urn:ptsip:rbac:lifecycle:keywords:v1", nil},
 		{RBACSchemaRoot + "lifecycle/index.json", "urn:ptsip:rbac:lifecycle:index:v1", nil},
@@ -224,11 +293,17 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		c.Resources = append(c.Resources, doc)
 	}
 	c.Definitions, err = readJSON(absolute, DefinitionsPath)
-	if err != nil { return nil, err }
+	if err != nil {
+		return nil, err
+	}
 	c.Authorizations, err = readJSON(absolute, AuthorizationDataPath)
-	if err != nil { return nil, err }
+	if err != nil {
+		return nil, err
+	}
 	c.AuthorizationDecision, err = readJSON(absolute, AuthorizationDecisionDataPath)
-	if err != nil { return nil, err }
+	if err != nil {
+		return nil, err
+	}
 	return c, nil
 }
 
@@ -253,8 +328,12 @@ func (c *Catalog) validate(v Validator, schema, instance any, label string) erro
 }
 
 func (c *Catalog) CheckContracts(v Validator) error {
-	if err := c.checkAuthorizationDecision(v); err != nil { return err }
-	if err := c.checkAuthorizationRegistry(v); err != nil { return err }
+	if err := c.checkAuthorizationDecision(v); err != nil {
+		return err
+	}
+	if err := c.checkAuthorizationRegistry(v); err != nil {
+		return err
+	}
 	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil {
 		return err
 	}
@@ -262,13 +341,9 @@ func (c *Catalog) CheckContracts(v Validator) error {
 		return err
 	}
 	for _, family := range c.Families {
-		contract := c.Contracts[family]
-		if err := c.validate(v, c.ContractShape, contract, family+" rules contract"); err != nil {
-			return err
-		}
-		// Compiling a structure rejects malformed schema keywords and unresolved
-		// references even when the empty probe instance itself is invalid.
-		if _, err := v(contract["structure"], Document{}, c.Resources); err != nil {
+		// Compile exact current Family profile references. Probe validity is not
+		// policy fulfillment, approval or a generation template.
+		if _, err := v(c.Contracts[family], Document{}, c.Resources); err != nil {
 			return fmt.Errorf("INVALID_FAMILY_STRUCTURE: %s: %w", family, err)
 		}
 	}
@@ -307,9 +382,15 @@ func (c *Catalog) CheckProfile(v Validator, profile Document) error {
 	if err := c.validate(v, c.ProfileShape, profile, "responsibility-authority profile"); err != nil {
 		return err
 	}
-	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil { return err }
-	if err := c.checkAuthorizationDecision(v); err != nil { return err }
-	if err := c.checkAuthorizationRegistry(v); err != nil { return err }
+	if err := c.validate(v, c.DefinitionShape, c.Definitions, DefinitionsPath); err != nil {
+		return err
+	}
+	if err := c.checkAuthorizationDecision(v); err != nil {
+		return err
+	}
+	if err := c.checkAuthorizationRegistry(v); err != nil {
+		return err
+	}
 	if _, err := ids(profile["responsibility"], "responsibility"); err != nil {
 		return err
 	}
@@ -330,74 +411,6 @@ func (c *Catalog) CheckProfile(v Validator, profile Document) error {
 	return c.checkComponentBindings(v, profile)
 }
 
-// checkRuleBindings resolves every rule token through the explicit R-ID registry.
-// Resolving a rule does not activate it or grant an Operational Authority.
-func (c *Catalog) checkRuleBindings(v Validator, doc Document) error {
-	items, ok := object(doc["Policy_Rules"])["Definition"].([]any)
-	if !ok || len(items) == 0 {
-		return fmt.Errorf("POLICY_RULE_DEFINITIONS_REQUIRED")
-	}
-	profile, err := ReadDocument(c.Root, ProfilePath)
-	if err != nil {
-		return err
-	}
-	if err := c.CheckLocalProfile(v, profile); err != nil {
-		return err
-	}
-	bindings := object(profile["component_bindings"])
-	if bindings == nil {
-		return fmt.Errorf("RULE_BINDINGS_REQUIRED")
-	}
-	seen := map[string]bool{}
-	for _, raw := range items {
-		definition := object(raw)
-		id, rule := stringValue(definition["id"]), stringValue(definition["rule"])
-		if id == "" || seen[id] {
-			return fmt.Errorf("INVALID_OR_DUPLICATE_RULE_ID: %s", id)
-		}
-		seen[id] = true
-		binding := object(bindings[id])
-		if binding == nil {
-			return fmt.Errorf("UNRESOLVED_RESPONSIBILITY: %s", id)
-		}
-		if stringValue(binding["rule"]) != rule {
-			return fmt.Errorf("RULE_CONSTANT_MISMATCH: %s", id)
-		}
-		// The policy may select registered conditions, but must never author them.
-		// Require an exact set match, including the absence of preconditions.
-		registered := map[string]bool{}
-		if raw, present := binding["condition_id"]; present {
-			for _, ref := range raw.([]any) {
-				registered[stringValue(ref)] = true
-			}
-		}
-		declared := map[string]bool{}
-		if raw, present := definition["preconditions"]; present {
-			items, ok := raw.([]any)
-			if !ok || len(items) == 0 {
-				return fmt.Errorf("INVALID_RULE_PRECONDITIONS: %s", id)
-			}
-			for _, ref := range items {
-				name := stringValue(ref)
-				if name == "" || declared[name] {
-					return fmt.Errorf("INVALID_RULE_PRECONDITIONS: %s/%s", id, name)
-				}
-				declared[name] = true
-			}
-		}
-		if len(registered) != len(declared) {
-			return fmt.Errorf("RULE_PRECONDITIONS_PROFILE_MISMATCH: %s", id)
-		}
-		for name := range declared {
-			if !registered[name] {
-				return fmt.Errorf("UNREGISTERED_RULE_PRECONDITION: %s/%s", id, name)
-			}
-		}
-	}
-	return nil
-}
-
-
 // authorizationIDs returns only explicitly registered lookup codes.
 // A prefix conveys a requested action class, never a grant.
 func (c *Catalog) authorizationIDs() map[string]Document {
@@ -416,7 +429,9 @@ func (c *Catalog) checkAuthorizationDecision(v Validator) error {
 }
 
 func (c *Catalog) checkAuthorizationRegistry(v Validator) error {
-	if err := c.validate(v, c.AuthorizationShape, c.Authorizations, AuthorizationDataPath); err != nil { return err }
+	if err := c.validate(v, c.AuthorizationShape, c.Authorizations, AuthorizationDataPath); err != nil {
+		return err
+	}
 	knownConditions := map[string]bool{}
 	for _, raw := range c.Definitions["condition_list"].([]any) {
 		knownConditions[stringValue(object(raw)["name"])] = true
@@ -425,7 +440,9 @@ func (c *Catalog) checkAuthorizationRegistry(v Validator) error {
 	for _, raw := range c.Authorizations["authorizations"].([]any) {
 		row := object(raw)
 		id := stringValue(row["ID"])
-		if id == "" || seen[id] { return fmt.Errorf("DUPLICATE_OR_EMPTY_AUTHORIZATION_ID: %s", id) }
+		if id == "" || seen[id] {
+			return fmt.Errorf("DUPLICATE_OR_EMPTY_AUTHORIZATION_ID: %s", id)
+		}
 		seen[id] = true
 		if !knownConditions[stringValue(row["condition_name"])] {
 			return fmt.Errorf("UNRESOLVED_AUTHORIZATION_CONDITION: %s", id)
@@ -437,13 +454,23 @@ func (c *Catalog) checkAuthorizationRegistry(v Validator) error {
 // Resolves the five required fields only for a registered, responsibility-linked
 // authorization rule. A lookup is not an execution grant, even for ALLOW.
 func (c *Catalog) LookupAuthorizationIntention(v Validator, id string) (Document, error) {
-	if err := c.checkAuthorizationRegistry(v); err != nil { return nil, err }
-	if err := c.validate(v, Document{"$ref":"urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"}, id, "Authorization_ID"); err != nil { return nil, err }
+	if err := c.checkAuthorizationRegistry(v); err != nil {
+		return nil, err
+	}
+	if err := c.validate(v, Document{"$ref": "urn:ptsip:rbac:lifecycle:index:v1#/$defs/AuthorizationID"}, id, "Authorization_ID"); err != nil {
+		return nil, err
+	}
 	rule, exists := c.authorizationIDs()[id]
-	if !exists { return nil, fmt.Errorf("UNRESOLVED_AUTHORIZATION_INTENTION: %s", id) }
+	if !exists {
+		return nil, fmt.Errorf("UNRESOLVED_AUTHORIZATION_INTENTION: %s", id)
+	}
 	profile, err := ReadDocument(c.Root, ProfilePath)
-	if err != nil { return nil, err }
-	if err := c.CheckProfile(v, profile); err != nil { return nil, err }
+	if err != nil {
+		return nil, err
+	}
+	if err := c.CheckProfile(v, profile); err != nil {
+		return nil, err
+	}
 	for rid, raw := range object(profile["component_bindings"]) {
 		binding := object(raw)
 		if stringValue(binding["Authorization_ID"]) == id {
@@ -451,10 +478,10 @@ func (c *Catalog) LookupAuthorizationIntention(v Validator, id string) (Document
 				return nil, fmt.Errorf("AUTHORIZATION_CONDITION_MISMATCH: %s", id)
 			}
 			return Document{
-				"ID":id,"resource":rule["resource"],"action":rule["action"],
-				"effect":rule["effect"],"condition_name":rule["condition_name"],
-				"responsibility_id":rid,"execution_authorized":false,
-			},nil
+				"ID": id, "resource": rule["resource"], "action": rule["action"],
+				"effect": rule["effect"], "condition_name": rule["condition_name"],
+				"responsibility_id": rid, "execution_authorized": false,
+			}, nil
 		}
 	}
 	return nil, fmt.Errorf("UNBOUND_AUTHORIZATION_INTENTION: %s", id)

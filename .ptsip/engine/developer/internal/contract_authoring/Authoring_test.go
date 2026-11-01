@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -41,8 +42,18 @@ func doc(raw string) authoring.Document {
 	return result
 }
 
-func govInput() authoring.Document {
-	return doc(`{"Policy_Rules":{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"FLATTEN-POLICY-STATU","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example scope"}}}`)
+func policyFixture(t *testing.T, catalog *authoring.Catalog, path string) authoring.Document {
+	t.Helper()
+	policy, err := authoring.ReadDocument(catalog.Root, path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return policy
+}
+
+func copyDocument(input authoring.Document) authoring.Document {
+	raw, _ := json.Marshal(input)
+	return doc(string(raw))
 }
 
 func profileFixture(t *testing.T, catalog *authoring.Catalog) authoring.Document {
@@ -67,30 +78,31 @@ func TestRegisteredContractsAndAllFourteenSelections(t *testing.T) {
 	if len(catalog.Families) != 14 {
 		t.Fatalf("expected 14 families, got %d", len(catalog.Families))
 	}
+	if catalog.Common["$id"] != "urn:ptsip:candidate:contract:policy:public-structure:v2" {
+		t.Fatal("authoring did not load the registered public v2 schema")
+	}
 	for _, family := range catalog.Families {
 		t.Run(family, func(t *testing.T) {
-			input := govInput()
-			if family != "GOV" {
-				input = doc(`{"Policy_Rules":{"Identity":{"approval":{"state":"DRAFT.Default"}},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"FLATTEN-POLICY-STATU","preconditions":["C-ID-514BC6B03401A855DF7B7C157645C79B"]}],"Boundary":{"scope":"Example"},"state":"APPROVED.provisional","title":"Explicitly supplied legacy state"}}`)
-			}
-			generated, status, err := catalog.GenerateRules(validate, input, family)
-			if err != nil || status != "GENERATED" {
-				t.Fatalf("generation failed: %s %v", status, err)
-			}
-			if err := catalog.CheckRules(validate, generated); err != nil {
-				t.Fatal(err)
-			}
-			rules := generated["Policy_Rules"].(map[string]any)
-			if _, present := rules["Responsibility_Refs"]; present {
-				t.Fatal("optional responsibility reference was generated")
-			}
-			if family == "GOV" {
-				if _, present := rules["state"]; present {
-					t.Fatal("approval state was invented")
+			// This probe checks explicit Family dispatch and preservation. Actual
+			// schema validation uses the source policy fixtures in the regression
+			// below; it does not assume one Family's semantics fit another.
+			input := policyFixture(t, catalog, "developer/policy/ARCH/MPD-ARCH-0001.yaml")
+			input["Policy_Identity"].(map[string]any)["root_family"] = family
+			before := copyDocument(input)
+			calls := 0
+			probe := func(schema, instance any, resources []any) (bool, error) {
+				calls++
+				if !reflect.DeepEqual(schema, catalog.Common) || !reflect.DeepEqual(instance, before) {
+					t.Fatal("authoring passed an inferred shape or changed the supplied document")
 				}
-				if _, present := rules["title"]; present {
-					t.Fatal("optional title was generated")
-				}
+				return true, nil
+			}
+			generated, status, err := catalog.GenerateRules(probe, input, family)
+			if err != nil || status != "GENERATED" || calls != 1 {
+				t.Fatalf("explicit selection failed: %s %d %v", status, calls, err)
+			}
+			if !reflect.DeepEqual(input, before) || !reflect.DeepEqual(generated, before) {
+				t.Fatal("generation synthesized or changed policy content")
 			}
 		})
 	}
@@ -102,28 +114,28 @@ func TestConditionalDefaultsAndInvalidSelections(t *testing.T) {
 	if err != nil || status != "OMITTED" || len(empty) != 0 {
 		t.Fatalf("default must omit: %v %s %v", empty, status, err)
 	}
-	if err := catalog.CheckRules(validate, doc(`{"Policy_Rules":{}}`)); err != nil {
-		t.Fatal("shared optional fields unexpectedly required", err)
-	}
 	for _, input := range []authoring.Document{
+		authoring.Document{},
+		doc(`{"Policy_Rules":{}}`),
+		doc(`{"Policy_Identity":false}`),
 		doc(`{"Policy_Identity":{"root_family":"UNKNOWN"}}`),
 		doc(`{"Policy_Identity":{"root_family":false}}`),
 		doc(`{"Policy_Identity":{"root_family":"GOV"}}`),
 		doc(`{"Policy_Identity":{"root_family":"GOV"},"Policy_Rules":{}}`),
 	} {
 		if err := catalog.CheckRules(validate, input); err == nil {
-			t.Fatalf("invalid selection accepted: %v", input)
+			t.Fatalf("invalid or incomplete policy accepted: %v", input)
 		}
 	}
 	conflict := doc(`{"Policy_Identity":{"root_family":"INFO"}}`)
 	if _, _, err := catalog.GenerateRules(validate, conflict, "GOV"); err == nil || !strings.Contains(err.Error(), "ROOT_FAMILY_CONFLICT") {
 		t.Fatal("conflicting selection accepted", err)
 	}
-	if _, _, err := catalog.GenerateRules(validate, authoring.Document{}, "GOV"); err == nil || !strings.Contains(err.Error(), "REQUIRED_INPUT_VALUES") {
-		t.Fatal("required values were invented", err)
+	if _, _, err := catalog.GenerateRules(validate, authoring.Document{}, "GOV"); err == nil || !strings.Contains(err.Error(), "DECLARED_ROOT_FAMILY_REQUIRED") {
+		t.Fatal("Family declaration or required values were invented", err)
 	}
-	if _, _, err := catalog.GenerateRules(validate, govInput(), "ARCH"); err == nil || !strings.Contains(err.Error(), ".state") {
-		t.Fatal("legacy approval value must be supplied explicitly", err)
+	if _, _, err := catalog.GenerateRules(validate, authoring.Document{}, "UNKNOWN"); err == nil || !strings.Contains(err.Error(), "UNKNOWN_ROOT_FAMILY") {
+		t.Fatal("unregistered requested Family accepted", err)
 	}
 }
 
@@ -181,58 +193,38 @@ func TestProfileReferencesTypesAndExtensibleFields(t *testing.T) {
 	}
 }
 
-func TestPolicyDefinitionRuleBindingsResolveThroughRegisteredProfile(t *testing.T) {
+func TestPolicyRulesAuthoringRejectsLegacyFourBlocks(t *testing.T) {
 	catalog, validate := nativeCatalog(t)
-	input := govInput()
-	generated, status, err := catalog.GenerateRules(validate, input, "GOV")
-	if err != nil || status != "GENERATED" {
-		t.Fatalf("registered rule not generated: %v %v", status, err)
+	input := policyFixture(t, catalog, "developer/policy/GOV/MPD-GOV-0001.yaml")
+	input["Policy_Rules"] = doc(`{"Identity":{"contract_id":"urn:ptsip:policy:rule:gov:example","Rule_ver":"1"},"Definition":[{"id":"R-ID-8D95436233BE6DCD5E90B2AAA986052C","rule":"FLATTEN-POLICY-STATU"}],"Boundary":{"scope":"Example scope"},"Evaluation":{"criteria":{"evidence":["Legacy evidence"]}}}`)
+	before := copyDocument(input)
+	if _, _, err := catalog.GenerateRules(validate, input, "GOV"); err == nil {
+		t.Fatal("retired four-block policy rules were accepted")
 	}
-	if err := catalog.CheckRules(validate, generated); err != nil {
-		t.Fatal(err)
-	}
-	for _, tc := range []struct { name, id, rule string }{
-		{"unregistered", "R-ID-EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "FLATTEN-POLICY-STATU"},
-		{"wrong-rule", "R-ID-8D95436233BE6DCD5E90B2AAA986052C", "WRONG-CONSTANT"},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			bad := govInput()
-			item := bad["Policy_Rules"].(map[string]any)["Definition"].([]any)[0].(map[string]any)
-			item["id"], item["rule"] = tc.id, tc.rule
-			if _, _, err := catalog.GenerateRules(validate, bad, "GOV"); err == nil {
-				t.Fatal("unregistered or mismatched rule accepted")
-			}
-		})
+	if !reflect.DeepEqual(input, before) {
+		t.Fatal("failed generation altered the source document")
 	}
 }
 
-func TestProfileIsSoleSourceOfDefinitionPreconditions(t *testing.T) {
-	catalog, validate := nativeCatalog(t)
-	for _, tc := range []struct {
-		name string
-		update func(map[string]any)
-	}{
-		{"missing-registered-precondition", func(item map[string]any) {
-			delete(item, "preconditions")
-		}},
-		{"foreign-precondition", func(item map[string]any) {
-			item["preconditions"] = []any{"C-ID-FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"}
-		}},
-		{"duplicate-precondition", func(item map[string]any) {
-			item["preconditions"] = []any{"C-ID-514BC6B03401A855DF7B7C157645C79B", "C-ID-514BC6B03401A855DF7B7C157645C79B"}
-		}},
-		{"empty-preconditions", func(item map[string]any) {
-			item["preconditions"] = []any{}
-		}},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			candidate := govInput()
-			item := candidate["Policy_Rules"].(map[string]any)["Definition"].([]any)[0].(map[string]any)
-			tc.update(item)
-			if _, _, err := catalog.GenerateRules(validate, candidate, "GOV"); err == nil {
-				t.Fatal("unregistered or divergent preconditions accepted")
-			}
-		})
+func TestPolicyRulesAuthoringPropagatesPublicSchemaRejection(t *testing.T) {
+	catalog, _ := nativeCatalog(t)
+	input := policyFixture(t, catalog, "developer/policy/ARCH/MPD-ARCH-0001.yaml")
+	before := copyDocument(input)
+	reject := func(schema, instance any, resources []any) (bool, error) {
+		if !reflect.DeepEqual(schema, catalog.Common) || !reflect.DeepEqual(instance, before) {
+			t.Fatal("policy authoring did not validate the complete supplied policy")
+		}
+		return false, nil
+	}
+	if _, _, err := catalog.GenerateRules(reject, input, "ARCH"); err == nil || !strings.Contains(err.Error(), "SCHEMA_REJECTED") {
+		t.Fatal("public schema rejection was ignored", err)
+	}
+	if !reflect.DeepEqual(input, before) {
+		t.Fatal("failed generation changed the input")
+	}
+	catalog.Common = nil
+	if err := catalog.CheckRules(reject, input); err == nil || !strings.Contains(err.Error(), "REGISTERED_POLICY_SCHEMA_REQUIRED") {
+		t.Fatal("missing registered public schema accepted", err)
 	}
 }
 
@@ -271,37 +263,28 @@ func TestNoOverwriteAndInvalidPaths(t *testing.T) {
 	}
 }
 
-func TestCurrentGOVPoliciesValidateThroughSharedPublicSelection(t *testing.T) {
+func TestCurrentPoliciesValidateThroughRegisteredPublicSchema(t *testing.T) {
 	catalog, validate := nativeCatalog(t)
-	public, err := authoring.ReadDocument(catalog.Root, ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	resources := append([]any(nil), catalog.Resources...)
-	for _, relative := range []string{
-		".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
-		".ptsip/contracts/policy/identity/policy_kind.json",
-		".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
-		".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
-		".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
+	for _, path := range []string{
+		"developer/policy/GOV/MPD-GOV-0001.yaml",
+		"developer/policy/ARCH/MPD-ARCH-0001.yaml",
+		"developer/policy/ARCH/MPD-ARCH-0002.yaml",
+		"developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+		"developer/policy/CHANGE/MPD-CHANGE-0007.yaml",
+		"developer/policy/RECORD/MPD-RECORD-0001.yaml",
 	} {
-		resource, err := authoring.ReadDocument(catalog.Root, relative)
-		if err != nil {
-			t.Fatal(err)
-		}
-		resources = append(resources, resource)
-	}
-	for _, suffix := range []string{"0001", "0004", "0005", "0006"} {
-		policy, err := authoring.ReadDocument(catalog.Root, "developer/policy/GOV/MPD-GOV-"+suffix+".yaml")
-		if err != nil {
-			t.Fatal(err)
-		}
-		valid, err := validate(public, policy, resources)
-		if err != nil || !valid {
-			t.Fatalf("GOV-%s rejected by shared public schema: %v", suffix, err)
-		}
+		t.Run(path, func(t *testing.T) {
+			input := policyFixture(t, catalog, path)
+			before := copyDocument(input)
+			family := input["Policy_Identity"].(map[string]any)["root_family"].(string)
+			generated, status, err := catalog.GenerateRules(validate, input, family)
+			if err != nil || status != "GENERATED" {
+				t.Fatalf("registered public schema rejected source policy: %s %v", status, err)
+			}
+			if !reflect.DeepEqual(input, before) || !reflect.DeepEqual(generated, before) {
+				t.Fatal("generation changed source values or synthesized optional fields")
+			}
+		})
 	}
 }
 
@@ -330,9 +313,10 @@ func TestGenerationCLILeavesDefaultAndFailureUnwritten(t *testing.T) {
 	if len(generated["responsibility"].([]any)) != 0 {
 		t.Fatal("unspecified mappings generated")
 	}
-	for _, field := range []string{"component_map", "component_bindings"} {
-		if _, copied := generated[field]; copied {
-			t.Fatal("unspecified component assignments generated")
-		}
+	if _, copied := generated["component_map"]; copied {
+		t.Fatal("retired component map generated")
+	}
+	if bindings, present := generated["component_bindings"]; present && len(bindings.(map[string]any)) != 0 {
+		t.Fatal("unspecified component assignments generated")
 	}
 }

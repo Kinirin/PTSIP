@@ -15,10 +15,10 @@
       ],
       "properties": {
         "policy_kind": {
-          "const": ".ptsip/contracts/policy/identity/policy_kind.json"
+          "const": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"
         },
         "root_family": {
-          "const": ".ptsip/contracts/policy/identity/root_family.json"
+          "const": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"
         }
       },
       "additionalProperties": false
@@ -43,7 +43,7 @@
       "type": "object",
       "minProperties": 1,
       "propertyNames": {
-        "$ref": "urn:ptsip:identity:policy-kind:v1"
+        "$ref": "urn:ptsip:identity:policy:v1#/$defs/policy_kind"
       },
       "additionalProperties": {
         "type": "object",

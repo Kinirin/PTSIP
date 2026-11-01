@@ -7,9 +7,8 @@ import (
 
 func Check(root string, instance any, validate authoring.Validator) error {
 	resources, err := contractcheck.Load(root,
-		contractcheck.Source{Path: ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", ID: "urn:ptsip:policy:identity:v2"},
-		contractcheck.Source{Path: ".ptsip/contracts/policy/identity/policy_kind.json", ID: "urn:ptsip:identity:policy-kind:v1"},
-		contractcheck.Source{Path: ".ptsip/contracts/policy/identity/root_family.json", ID: "urn:ptsip:identity:root-family:v1"},
+		contractcheck.Source{Path: ".ptsip/contracts/policy/Policy_Identity/PTSIP_Policy_Identity.schema.json", ID: "urn:ptsip:policy:identity:v2"},
+		contractcheck.Source{Path: ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json", ID: "urn:ptsip:identity:policy:v1"},
 	)
 	if err != nil {
 		return err

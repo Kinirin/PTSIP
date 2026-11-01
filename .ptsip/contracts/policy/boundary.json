@@ -3,10 +3,10 @@
   "domain": "policy",
   "root": ".ptsip/contracts/policy/",
   "namespaces": {
-    "identity": "identity/",
+    "identity": "Policy_Identity/",
     "routing": "routing/",
-    "lifecycle": "lifecycle/",
-    "rules": "Rules/"
+    "lifecycle": "Policy_lifecycle/",
+    "rules": "Policy_Rules/"
   },
   "source_policy": "developer/policy/GOV/MPD-GOV-0001.yaml",
   "routing_binding": {
@@ -14,12 +14,12 @@
     "schema": ".ptsip/contracts/policy/routing/Policy_Routing.schema.json"
   },
   "rules_binding": {
-    "family_source": ".ptsip/contracts/policy/identity/root_family.json",
-    "directory": ".ptsip/contracts/policy/Rules",
-    "filename": "{root_family}_rules.json",
-    "contract_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Family_Rules_Contract.schema.json",
-    "selection_schema": ".ptsip/contracts/schemas/Policy/Policy_Rules/Public_Structure_Rules.schema.json",
+    "family_source": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
+    "directory": ".ptsip/contracts/policy/Policy_Rules",
+    "contract_schema": ".ptsip/contracts/policy/Policy_Rules/Contract_Types.schema.json",
+    "selection_schema": ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
     "responsibility_profile": ".ptsip/profiles/Responsibility-Authority-list.yaml",
-    "responsibility_contract": ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json"
+    "responsibility_contract": ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json",
+    "family_selection": ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json"
   }
 }

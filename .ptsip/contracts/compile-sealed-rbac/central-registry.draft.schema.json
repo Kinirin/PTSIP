@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-compile-sealed-rbac-central-registry-draft.schema.json",
+  "title": "PTSIP Central RBAC Declarative Source Registry (non-normative draft)",
+  "$comment": "DRAFT_NON_NORMATIVE. Only already-approved field names, kinds, and resource reference restrictions are final. String/object types for other fields, structural closure, draft JSON serialization and optional revision behavior are implementation candidates. No RBAC authority or release publication.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "minLength": 1,
+      "$comment": "Candidate type: final format/version grammar remains unresolved"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "$comment": "Candidate type: internal metadata shape remains unresolved"
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "resource"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "$comment": "ID uniqueness and matching the source contract identity require a separate future decision"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "RESPONSIBILITY",
+            "CONDITION_ATOM",
+            "PERMISSION_ATOM",
+            "BINDING"
+          ]
+        },
+        "resource": {
+          "type": "string",
+          "pattern": "^\\.ptsip/profiles/rbac/(?:(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1F\\x7F]+/)*(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1F\\x7F]+\\.(?:json|yaml|yml)$",
+          "$comment": "Only lexical checks here; root containment and symlink rejection occur in engine source resolution"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "$comment": "Candidate type, conditional requirement trigger not defined"
+        }
+      }
+    }
+  }
+}

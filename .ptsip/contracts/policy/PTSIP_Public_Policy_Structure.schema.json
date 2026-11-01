@@ -8,7 +8,7 @@
     "Policy_Identity": {
       "$ref": "urn:ptsip:candidate:contract:policy:identity:v1"
     },
-    "Policy_Status": {
+    "Policy_Lifecycle": {
       "$ref": "urn:ptsip:candidate:contract:policy:lifecycle:v1"
     },
     "Policy_Rules": {
@@ -17,8 +17,13 @@
   },
   "required": [
     "Policy_Identity",
-    "Policy_Status",
+    "Policy_Lifecycle",
     "Policy_Rules"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/PolicyDocumentRules"
+    }
+  ]
 }

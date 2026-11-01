@@ -15,7 +15,8 @@
     },
     {
       "path": ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
-      "kind": "SOURCE_BINDING"
+      "kind": "SCHEMA",
+      "schema_id": "urn:ptsip:identity:policy:v1"
     },
     {
       "path": ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_lifecycle.schema.json",
@@ -146,48 +147,24 @@
     }
   ],
   "external_resources": {
-    "urn:ptsip:identity:root-family:v1": {
-      "path": ".ptsip/contracts/policy/identity/root_family.json",
-      "sha256": "fce148fcf795bf6649bba5b78d9030a3e76cf776deb4ea852e4518adc135b2de"
-    },
-    "urn:ptsip:identity:policy-kind:v1": {
-      "path": ".ptsip/contracts/policy/identity/policy_kind.json",
-      "sha256": "8be4ed631b3a3ee0e388280cacd14a2f23b91055966b9bbbdbe2893219a9e01c"
-    },
     "urn:ptsip:rbac:responsibility:v1": {
-      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/responsibility/Responsibility.schema.json",
+      "path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/Responsibility.schema.json",
       "sha256": "1b1b06c9ba03d6fbe6828cb28f6d583216d78736d9af6ed485aff9ba5931393b"
     },
     "urn:ptsip:rbac:condition:v1": {
-      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/Conditions_exercise/Condition.schema.json",
+      "path": ".ptsip/contracts/compile-sealed-rbac/Conditions_exercise/Condition.schema.json",
       "sha256": "ee50884f8e5fe41d3bf67ab304a3b7c742da70923c892d3efff308647e157df2"
     },
     "urn:ptsip:policy:identity:v2": {
-      "path": ".ptsip/contracts/schemas/Policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
-      "sha256": "2b7c6f94216ee1348ff2792ac426ced6ae5b9c5d9f45e01ca8447a7e87a3ec00"
-    },
-    "urn:ptsip:contract:constant:policy_status_draft:v2": {
-      "path": ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
-      "sha256": "c52ae283b3858cb510db376566161402428c5db31ed8f4e7e9f8541f4925de67"
-    },
-    "urn:ptsip:contract:constant:policy_status_approved:v2": {
-      "path": ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
-      "sha256": "b1509b192ed59a033c75075f51589eaa29f43d146161c05ea4675360d9109c8e"
-    },
-    "urn:ptsip:contract:constant:policy_status_retired:v2": {
-      "path": ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
-      "sha256": "8186226a1e01509a869cda943bcda3f68b07072cdede00235e053cd9b7ad2527"
+      "path": ".ptsip/contracts/policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+      "sha256": "ba12ef4d1b1c753c4cbbb95e0ea3e161da1d9d0f093c1d3e89600c29e7d4b9dd"
     },
     "urn:ptsip:policy:Status:v2": {
-      "path": ".ptsip/contracts/schemas/Policy/Policy_Status/Public_Policy_Status.schema.json",
-      "sha256": "f08ff406761d248ef24f5c6c5612829927f78cd83f8a666750eaba5fed32e9c4"
-    },
-    "urn:ptsip:policy:Status-version:v1": {
-      "path": ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
-      "sha256": "0742c23825cbc40117de40d78e9da21b1c977f8334649c4c4461bc106de7d6a5"
+      "path": ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json",
+      "sha256": "d7ca83563d8c15f1b38e5717c7b0c9eac948d931f263ae7f0b6a8b7da6b7101f"
     },
     "urn:ptsip:rbac:operational-authority:v1": {
-      "path": ".ptsip/contracts/schemas/compile-sealed-rbac/authority/Operational_Authority.schema.json",
+      "path": ".ptsip/contracts/compile-sealed-rbac/Authority/Operational_Authority.schema.json",
       "sha256": "c5d15abff94e42f4e9c3f327776300a9ce7122df0d24a3a91efa9e2bd1c9f7a1"
     }
   },
@@ -224,18 +201,11 @@
     "evidence_binding": "urn:ptsip:candidate:contract:policy:evidence-binding:v1",
     "contract_registry": "urn:ptsip:candidate:contract:policy:contract-registry:v2",
     "selection_rule": "urn:ptsip:candidate:contract:policy:selection-rule:v2",
-    "judgement_rule": "urn:ptsip:candidate:contract:policy:judgement-rule:v2"
+    "judgement_rule": "urn:ptsip:candidate:contract:policy:judgement-rule:v2",
+    "identity_vocabulary": "urn:ptsip:identity:policy:v1"
   },
   "family_selection_ref": ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
-  "reserved_namespaces": {
-    "plans": {
-      "root": ".ptsip/contracts/policy/Plans/",
-      "stage": "RESERVED",
-      "active_registration": false,
-      "field_definitions": "PENDING",
-      "existing_contract_migration": "DEFERRED"
-    }
-  },
+  "reserved_namespaces": {},
   "source_resolution_ref": {
     "source_ref": ".ptsip/contracts/policy/References/Source_Reference_Resolution.contract.json",
     "item_ref": "#",

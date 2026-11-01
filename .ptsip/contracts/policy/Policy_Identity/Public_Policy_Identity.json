@@ -1,15 +1,47 @@
 {
-  "format": "ptsip-candidate-source-binding/v1",
-  "stage": "FIELD_REVIEW",
-  "active": false,
-  "sources": [
-    {
-      "path": ".ptsip/contracts/policy/identity/policy_kind.json",
-      "sha256": "23f6f0f5ff09207eff34aa9fd036d1529f7defa76ed2d474fe0dc4382e5d719c"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:identity:policy:v1",
+  "title": "PTSIP Policy Identity Vocabularies",
+  "$comment": "Single owner of policy_kind and root_family values. Identity document layout and policy authority remain separate contracts.",
+  "type": "object",
+  "properties": {
+    "policy_kind": {
+      "$ref": "#/$defs/policy_kind"
     },
-    {
-      "path": ".ptsip/contracts/policy/identity/root_family.json",
-      "sha256": "67da0fa873c1912c4c12763ce798551ac6489856a9155d53acc477c4487734f3"
+    "root_family": {
+      "$ref": "#/$defs/root_family"
     }
-  ]
+  },
+  "required": [
+    "policy_kind",
+    "root_family"
+  ],
+  "$defs": {
+    "policy_kind": {
+      "type": "string",
+      "enum": [
+        "PTSIP_DEVELOPER_POLICY",
+        "PTSIP_SUPPORT_FEATURE"
+      ]
+    },
+    "root_family": {
+      "type": "string",
+      "enum": [
+        "NORM",
+        "GOV",
+        "INTENT",
+        "ARCH",
+        "INFO",
+        "CNTR",
+        "RISK",
+        "SUPPLY",
+        "REAL",
+        "ASSURE",
+        "CTRL",
+        "CHANGE",
+        "OPS",
+        "RECORD"
+      ]
+    }
+  }
 }

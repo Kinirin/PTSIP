@@ -1,7 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:candidate:contract:policy:version:v1",
-  "title": "policy:version",
-  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review.",
-  "$ref": "urn:ptsip:policy:Status-version:v1"
+  "title": "PTSIP Policy Version Generation Pattern",
+  "$comment": "Owns the lexical shape of generated version tokens only. The existing string constraint is preserved; no additional lexical pattern, increment algorithm, lifecycle transition or approval rule is introduced.",
+  "type": "object",
+  "required": [
+    "version"
+  ],
+  "properties": {
+    "version": {
+      "$ref": "#/$defs/VersionToken"
+    }
+  },
+  "$defs": {
+    "VersionToken": {
+      "type": "string"
+    }
+  }
 }

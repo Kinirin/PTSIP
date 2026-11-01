@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ptsip-compile-sealed-rbac-activation.candidate.schema.json",
+  "title": "PTSIP Compile-Sealed RBAC ACTIVATION implementation candidate",
+  "$comment": "DRAFT_NON_NORMATIVE: user-authorized provisional implementation candidate only. Not a normative schema, effective policy, release admission, approval proof, permission grant, or active engine operation. Candidate activation outcome is non-authoritative, with no ACTIVE state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "revision",
+    "responsibility_ref",
+    "seal_digest_sha256",
+    "assessment",
+    "authority"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+    },
+    "kind": {
+      "const": "ACTIVATION"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "responsibility_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "seal_digest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "assessment": {
+      "enum": [
+        "PENDING",
+        "BLOCKED",
+        "INVALIDATED"
+      ]
+    },
+    "authority": {
+      "const": "NOT_ASSERTED"
+    }
+  }
+}
