@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:trusteeship:v1",
-  "title": "Trusteeship Structure of the document",
+  "$id": "urn:ptsip:trusteeship:v2",
+  "title": "PTSIP Trusteeship Responsibility Draft",
   "type": "object",
   "required": [
     "Save_Draft"
@@ -12,27 +12,41 @@
       "items": {
         "type": "object",
         "required": [
-          "title",
           "id",
-          "statement",
-          "root-family"
+          "statement"
         ],
         "properties": {
-          "title": {
-            "type": "string"
-          },
           "id": {
             "type": "string",
             "pattern": "^[a-f0-9]{32}$",
-            "$comment": "Independent UUID identifier, lowercase hexadecimal without hyphens; not a content hash."
+            "$comment": "Independent UUID32 lowercase hexadecimal identifier, without hyphens; not a content hash."
           },
           "statement": {
-            "type": "string",
-            "minLength": 1
-          },
-          "root-family": {
-            "type": "string",
-            "pattern": "^(?:NORM|GOV|INTENT|ARCH|INFO|CNTR|RISK|SUPPLY|REAL|ASSURE|CTRL|CHANGE|OPS|RECORD)$"
+            "type": "object",
+            "required": [
+              "source_policy_id",
+              "content"
+            ],
+            "properties": {
+              "source_policy_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "content": {
+                "type": "object",
+                "required": [
+                  "Rules"
+                ],
+                "properties": {
+                  "Rules": {
+                    "type": "object",
+                    "$comment": "Policy-specific semantic responsibility content selected by an agent. Generic internal rule fields and typing are not yet standardized."
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false
