@@ -57,6 +57,14 @@ jobs:
         run: |
           set -euo pipefail
           go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
+      - name: Verify active v2 structure and contract selection
+        shell: bash
+        env:
+          PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer test ./policy/verification/v2 ./internal/contractentry ./policy/test -count=1
+          go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/ARCH/MPD-ARCH-0001.yaml
       - name: Verify affected Go and declarative ownership test units
         shell: bash
         run: |
