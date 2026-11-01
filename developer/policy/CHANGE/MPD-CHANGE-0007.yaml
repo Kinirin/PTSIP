@@ -3,433 +3,267 @@ Policy_Identity:
   id: MPD-CHANGE-0007
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: CHANGE
-  title: CHANGE 위탁 책임 수락 적격성
+  title: "CHANGE 위탁 책임 수락 적격성"
 Policy_Lifecycle:
   Policy_Status_Schema_ver: '1'
-  status: RETIRED.Waiting
+  status: APPROVED.Applying
   contract: urn:ptsip:contract:policy:change:trusteeship-acceptance:eligibility
 Policy_Rules:
   contracts:
-  - contract_id: urn:ptsip:policy:rule:change:trusteeship-acceptance
-    Rule_ver: '2'
-    rules:
-    - id: R-ID-8F3AB54D5A644ADBB81291D4E6007001
-      rule: TRUSTEESHIP-ACCEPT
-      source_ref:
-      - SRC-0001
-      unresolved_fields:
-      - authority_ref
-    - id: R-ID-791E4C98DF554CAB8DA81BC0CE000702
-      rule: SEMANTIC-REVIEW
-      source_ref:
-      - SRC-0002
-      unresolved_fields:
-      - authority_ref
-    requirements:
-    - requirement_id: REQ-0001
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/0
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+    - serialization: INDEXED_SOURCE_BINDINGS
+      contract_id: urn:ptsip:policy:rule:change:trusteeship-acceptance
+      Rule_ver: '2'
+      source_documents:
+        - id: ORIGINAL
+          source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+      source_items:
+        - item_id: RULE-0001
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/0
+          original_role: rule
+        - item_id: RULE-0002
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/1
+          original_role: rule
+        - item_id: OLD-SCOPE
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/scope
+          original_role: record
+        - item_id: SUB-0001
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/0
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0002
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/1
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0002
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/1
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0003
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/2
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0003
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/2
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0004
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/3
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0004
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/3
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0005
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/4
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0005
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/4
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0006
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/5
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0006
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/5
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0007
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/6
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0007
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/6
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0008
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/7
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0008
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/7
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    - requirement_id: REQ-0009
-      meaning_refs:
-      - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/8
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      relation_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
+          original_role: statement
+        - item_id: SUB-0009
+          document_id: ORIGINAL
           item_ref: /Policy_Rules/Boundary/subjects/8
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      judgement_binding:
-        state: UNRESOLVED
-        source_refs:
-        - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-          item_ref: /Policy_Rules/Evaluation/criteria
-          revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-      unresolved_fields:
-      - target_refs
-      - scope_refs
-      - condition_refs
-      - constraint_refs
-      - criteria_refs
-      - evidence_requirement_refs
-      - relation_binding
-      - judgement_binding
-    source_items:
-    - item_id: SRC-0001
-      role: rule
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Definition/0
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0002
-      role: rule
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Definition/1
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0003
-      role: record
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/scope
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0004
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/0
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0005
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/1
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0006
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/2
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0007
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/3
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0008
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/4
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0009
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/5
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0010
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/6
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0011
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/7
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0012
-      role: statement
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/subjects/8
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0013
-      role: constraint
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/exclusions/0
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0014
-      role: constraint
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/exclusions/1
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0015
-      role: constraint
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/exclusions/2
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0016
-      role: constraint
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/exclusions/3
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0017
-      role: constraint
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/exclusions/4
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0018
-      role: constraint
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Boundary/exclusions/5
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0019
-      role: criterion
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0020
-      role: criterion
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0021
-      role: criterion
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0022
-      role: criterion
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0023
-      role: criterion
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/criteria/evidence/4
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0024
-      role: criterion
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/criteria/evidence/5
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0025
-      role: criterion
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/criteria/evidence/6
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0026
-      role: annotation
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/title
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0027
-      role: record
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Evaluation/result
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    - item_id: SRC-0028
-      role: annotation
-      source_ref:
-        source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-        item_ref: /Policy_Rules/Identity
-        revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    historical_result_refs:
-    - source_ref: developer/policy/CHANGE/MPD-CHANGE-0007.yaml
-      item_ref: /Policy_Rules/Evaluation/result
-      revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+          original_role: record
+        - item_id: EXC-0001
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/0
+          original_role: constraint
+        - item_id: EXC-0002
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/1
+          original_role: constraint
+        - item_id: EXC-0003
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/2
+          original_role: constraint
+        - item_id: EXC-0004
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/3
+          original_role: constraint
+        - item_id: EXC-0005
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/4
+          original_role: constraint
+        - item_id: EXC-0006
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/5
+          original_role: constraint
+        - item_id: CRI-0001
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+          original_role: criterion
+        - item_id: CRI-0002
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+          original_role: criterion
+        - item_id: CRI-0003
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+          original_role: criterion
+        - item_id: CRI-0004
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
+          original_role: criterion
+        - item_id: CRI-0005
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/4
+          original_role: criterion
+        - item_id: CRI-0006
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/5
+          original_role: criterion
+        - item_id: CRI-0007
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/6
+          original_role: criterion
+        - item_id: HISTORY-RESULT
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/result
+          original_role: record
+      rules:
+        - id: R-ID-8F3AB54D5A644ADBB81291D4E6007001
+          rule: TRUSTEESHIP-ACCEPT
+          source_ref: [RULE-0001]
+        - id: R-ID-791E4C98DF554CAB8DA81BC0CE000702
+          rule: SEMANTIC-REVIEW
+          source_ref: [RULE-0002]
+      requirements:
+        - requirement_id: REQ-0001
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0001, EXC-0003]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0001, CRI-0002]
+        - requirement_id: REQ-0002
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0002]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0002]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0003]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0002, CRI-0005]
+        - requirement_id: REQ-0003
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0003]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0003]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0003]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0001, CRI-0002]
+        - requirement_id: REQ-0004
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0004]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0004]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0003]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0003]
+        - requirement_id: REQ-0005
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0005]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0005]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0004, EXC-0006]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0004]
+        - requirement_id: REQ-0006
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0006]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0006]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0004, EXC-0005]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0004]
+        - requirement_id: REQ-0007
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0007]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0007]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0002, EXC-0003]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0004]
+        - requirement_id: REQ-0008
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0008]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: TARGET
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0008]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0001, EXC-0005]
+            - purpose: CRITERION
+              state: SOURCE_IDENTIFIED
+              ref_ids: [CRI-0006]
+      historical_result_ref_ids: [HISTORY-RESULT]
