@@ -1,90 +1,725 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
 Policy_Identity:
-  id: "MPD-ARCH-0009"
-  policy_kind: "PTSIP_DEVELOPER_POLICY"
-  root_family: "ARCH"
+  id: MPD-ARCH-0009
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: ARCH
   title: "ARCH Developer Automation 책임 영역 분리"
 Policy_Lifecycle:
-  Policy_Status_Schema_ver: "1"
-  status: "APPROVED.Application_Problems"
-  contract: "urn:ptsip:contract:policy:arch:developer-automation:domain-separation"
+  Policy_Status_Schema_ver: '1'
+  status: APPROVED.Application_Problems
+  contract: urn:ptsip:contract:policy:arch:developer-automation:domain-separation
 Policy_Rules:
-  Identity:
-    contract_id: "urn:ptsip:policy:rule:arch:developer-automation"
-    Rule_ver: "1"
-  Definition:
-    - id: "R-ID-F12085AE7275C5CBBB93DCEC057DFAC1"
-      rule: "SINGLE-DOMAIN-OWNER"
-    - id: "R-ID-5E91966F45D920DD74166D797903EEF0"
-      rule: "NO-CATCHALL"
-    - id: "R-ID-9527DAB07674017762DDC841EAE75F98"
-      rule: "NO-OWNER-TRANSFER"
-    - id: "R-ID-06B7A3FE0E919088ADC558C466E264BC"
-      rule: "DECLARED-DOMAIN-ROOT"
-    - id: "R-ID-7BD68FA2A478B3D51DEB56694F9B188C"
-      rule: "RELEASE-SCOPE-GATE"
-    - id: "R-ID-2B4D7DE2A953797FD9734758F048E8E0"
-      rule: "TEST-NO-REDEFINE"
-    - id: "R-ID-9A14723C5C654089AA6C0FF0116734E9"
-      rule: "POLICY-SPLIT"
-    - id: "R-ID-7F3A264CC0E14B6D8ED5E91AF02D472B"
-      rule: "RULE-CONTRACT-OWNER"
-    - id: "R-ID-041A6F1A24458B0331470B8BCA0297F9"
-      rule: "NEW-DOMAIN-APPROVAL"
-    - id: "R-ID-79930E44AE61B2C7EA24409F6EF1A08F"
-      rule: "PLAN-OWNS-MIGRATION"
-    - id: "R-ID-94FE990111092568CEBA0A7949F2706E"
-      rule: "GO-FAMILY-VERIFIER"
-    - id: "R-ID-EF3214C5C86C2AA012051E075080B80B"
-      rule: "NO-LEGACY-ROOTS"
-  title: "ARCH Developer Automation 책임 영역 분리"
-  Boundary:
-    scope: "PTSIP 저장소 전용 Developer Automation의 단일 책임 소유와 Go 구현 경계"
-    subjects:
-      - "모든 구현 단위의 책임 영역은 정확히 하나이며 패키지 경로로 기계 식별 가능해야 함"
-      - "서로 다른 책임 영역의 협력·의존은 가능하지만 소유권·권위의 승계를 뜻하지 않음"
-      - "BRANCH: .ptsip/engine/developer/Distribution/branch/ — 브랜치 제어"
-      - "RELEASE: .ptsip/engine/developer/Distribution/release/ — 릴리스 식별·준비·빌드 조정·배포 조립·태그·게시·게이트 호출; 책임 확대는 사용자 승인 필요"
-      - "TEST_MODE: .ptsip/engine/developer/testmode/ — 등록부 검증·자동/수동 모드 선택·변경 파일·삭제 전 이미지 해석·실행 계획 구성"
-      - "TEST_MODE는 .github/test_modes.yaml을 소비하며 .ptsip/profiles/Test_Mode.ptsip.yaml은 독립 계약 승인 전 비활성 참조 초안임"
-      - "POLICY: .ptsip/engine/developer/policy/ — 정책 조회·해석·연결·바인딩·식별자·버전·상태·산출물 생명주기"
-      - "POLICY-SPLIT: POLICY 구현은 단일 소유권을 유지하는 계층형 책임 분리를 허용하고 상·하위 책임의 개수와 깊이를 고정하지 않음; 세부 책임 및 경로는 별도 사용자 결정 대상"
-      - "RULE CONTRACT OWNERSHIP: 규칙 계약의 독립성은 선언된 규범적 의미와 명시적인 소유 책임을 기준으로 판단하며 Namespace·Category·Family 등 분류 명칭 자체는 규범적 소유권의 근거가 아님"
-      - "OWNER DECLARATION: 정책 계약 개혁 중 규칙의 개별 의미 소유권 선언·확정·등록은 사용자의 별도 명시적 승인이 있을 때까지 유보하되, 사전 승인된 생성 계약의 적용 범위 안에서 기존 규범적 의미와 소유 책임의 불변성이 검증된 파생 규칙 등록에 한해 개별 재승인을 면제; 선언 부재를 임의 소유권 추론이나 정책 결함 확정의 근거로 사용하지 않음"
-      - "NON-AUTHORITATIVE ANALYSIS: 기존 정책·계약·이력으로 소유권 후보·충돌·불확실성을 읽기 전용 분석하는 것은 허용; 결과는 비권위적 검토 자료이며 규범적 소유권·권한·승인·활성화를 생성하지 않음"
-      - "고객의 규칙 계약 분류 방식은 중립적으로 취급하며, PTSIP 개발자 환경의 Family별 규칙 소유권은 해당 승인된 기존 계약대로 보존"
-      - "Family 정책 검증 기능은 .ptsip/engine/developer/policy/ 아래의 Go 개발 도구에 배치하고 Family 간 규범적 소유권을 침범하지 않음"
-      - "새 책임 영역은 정확한 기존 영역이 없거나 의미 왜곡 위험이 있을 때 근거·근접 영역 비교·비중복 설명을 제시하고 사용자 승인으로만 확정"
-      - "구체적인 구현 목록·파일 이동·패키지 의존관계·마이그레이션 순서는 PLAN 소유"
-    exclusions:
-      - "서로 다른 책임을 하나의 범용 패키지에 혼합하거나 소유자가 없는 공통 구현을 생성하는 행위"
-      - "다른 영역이 소유하는 규범적 의미를 재정의하거나 의존·동일 경로를 이유로 책임을 병합·승계하는 행위"
-      - "TEST_MODE가 원본 구성 요소 소유권·검증 관계·검증 의무를 변경하거나 생성하는 행위"
-      - "기존에 폐기한 developer/automation/planning/ 및 developer/automation/ 경로의 보존·재활성화"
-      - "폐기된 .github/checks/release/ 경로의 보존 또는 신규 릴리스 구현의 실행 의존"
-      - "사용자 승인 없이 새로운 책임 영역·계층형 하위 책임의 구체적 소유권·실행 권한을 확정하는 행위"
-      - "Namespace·Category·Family 등 분류 라벨 또는 경로 이름만으로 규범적 의미 소유권을 추정하거나 기존 소유권을 이전하는 행위"
-      - "규칙 소유자의 별도 승인 전 owner 필드나 중앙 소유권 원본 등록부를 신설·확정하거나 기존 Responsibility-Authority 등록부를 의미 소유권의 원본으로 승격하는 행위"
-      - "비활성·폐기 정책 또는 비권위 분석 후보를 현재 유효한 소유권·실행 권한으로 승격하는 행위"
-      - "Family 검증기의 구현만으로 제품 검증 엔진의 규범적 권위를 변경하는 행위"
-  Evaluation:
-    criteria:
-      evidence:
-        - "구현 단위별 단일 책임 소유 및 패키지 경로 기반 기계 식별 가능 여부"
-        - "Branch·Release·Test Mode·Policy 책임 분리와 상호 비승계 여부"
-        - "Test Mode가 기존 등록부를 소비하되 원본 소유권과 검증 요구를 재정의하지 않는지 확인"
-        - "POLICY 상·하위 책임의 개수·깊이를 고정하지 않고 새 책임은 단일 소유·비중복·사용자 승인 조건을 충족하는지 확인"
-        - "규칙 계약의 독립성을 명시적 의미 소유권으로 판정하고 Namespace·Category·Family 등의 분류 키가 소유권으로 자동 승격되지 않는지 확인"
-        - "규칙별 의미 소유권 확정·등록이 별도 사용자 승인 전 보류되는지 확인하되, 사전 승인 생성 계약의 적용 범위 및 기존 규범적 의미·소유 책임의 불변성이 검증된 파생 등록에만 예외를 인정하고 owner 필드·중앙 소유권 원본의 자동 생성은 금지"
-        - "기존 정책 및 비활성 정책의 읽기 전용 후보·충돌 분석이 비권위로 유지되고 규범적 소유권·승인·활성화의 근거로 사용되지 않는지 확인"
-        - "신규 책임 영역의 승인 근거가 있고 구현·이전 작업의 구체 내용은 PLAN에 있는지 확인"
-        - "폐기된 developer/automation/ 및 .github/checks/release/에 대한 신규 권위 의존이 없는지 확인"
-        - "현황 확인: POLICY-SPLIT, RULE-CONTRACT-OWNER, OWNER DECLARATION 유보 및 NON-AUTHORITATIVE ANALYSIS 허용은 문서 규칙에 반영됨"
-        - "미완료: .ptsip/engine/developer/policy/index.json은 TEMPORARY_REPLACEABLE / policy_authority NONE이며 POLICY 하위 책임의 최종 소유 경계·구현은 미확정"
-        - "미완료: .ptsip/profiles/Test_Mode.ptsip.yaml은 DRAFT / registered false이며 Test Mode 정식 소유권 연결 계약은 미승인"
-        - "유보: 새 규범적 의미·소유 책임의 확정은 사용자 별도 명시 승인 전까지 금지하며 비권위적 후보 분석으로 대체하지 않음; 기존 규범적 의미와 소유 책임이 유지됨이 검증된 사전 승인 생성 계약의 파생 등록만 개별 재승인 면제"
-        - "검증 미확인: Developer Automation 네 영역의 구현 적합성 및 Go Family 검증기 전체 검증 결과는 이 평가에서 주장하지 않음"
-        - "선행 충돌 해결: 기존 developer/automation/planning/ 보존 요청보다 KEEP_PRIOR 폐기 결정을 적용하며 재활성화하지 않음"
-    result:
-      status: "incomplete_fulfillment"
-      task_name: "Developer Automation 책임 영역 분리 정책 적용 현황 평가"
-      task_id: "MPD-ARCH-0009"
+  contracts:
+    - serialization: INDEXED_SOURCE_BINDINGS
+      contract_id: urn:ptsip:policy:rule:arch:developer-automation
+      Rule_ver: '1'
+      source_documents:
+        - id: ORIGINAL
+          source_ref: developer/policy/ARCH/MPD-ARCH-0009.yaml
+          revision_ref: git:e19b8a49a5442c366efaa04bf4611e55908eca34
+      source_items:
+        - item_id: SCOPE
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/scope
+          original_role: scope
+        - item_id: RULE-0001
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/0
+          original_role: rule
+        - item_id: RULE-0002
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/1
+          original_role: rule
+        - item_id: RULE-0003
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/2
+          original_role: rule
+        - item_id: RULE-0004
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/3
+          original_role: rule
+        - item_id: RULE-0005
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/4
+          original_role: rule
+        - item_id: RULE-0006
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/5
+          original_role: rule
+        - item_id: RULE-0007
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/6
+          original_role: rule
+        - item_id: RULE-0008
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/7
+          original_role: rule
+        - item_id: RULE-0009
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/8
+          original_role: rule
+        - item_id: RULE-0010
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/9
+          original_role: rule
+        - item_id: RULE-0011
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/10
+          original_role: rule
+        - item_id: RULE-0012
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Definition/11
+          original_role: rule
+        - item_id: SUB-0001
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/0
+          original_role: statement
+        - item_id: SUB-0002
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/1
+          original_role: statement
+        - item_id: SUB-0003
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/2
+          original_role: statement
+        - item_id: SUB-0004
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/3
+          original_role: statement
+        - item_id: SUB-0005
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/4
+          original_role: statement
+        - item_id: SUB-0006
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/5
+          original_role: statement
+        - item_id: SUB-0007
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/6
+          original_role: statement
+        - item_id: SUB-0008
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/7
+          original_role: statement
+        - item_id: SUB-0009
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/8
+          original_role: statement
+        - item_id: SUB-0010
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/9
+          original_role: statement
+        - item_id: SUB-0011
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/10
+          original_role: statement
+        - item_id: SUB-0012
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/11
+          original_role: statement
+        - item_id: SUB-0013
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/12
+          original_role: statement
+        - item_id: SUB-0014
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/13
+          original_role: statement
+        - item_id: SUB-0015
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/subjects/14
+          original_role: statement
+        - item_id: EXC-0001
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/0
+          original_role: constraint
+        - item_id: EXC-0002
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/1
+          original_role: constraint
+        - item_id: EXC-0003
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/2
+          original_role: constraint
+        - item_id: EXC-0004
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/3
+          original_role: constraint
+        - item_id: EXC-0005
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/4
+          original_role: constraint
+        - item_id: EXC-0006
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/5
+          original_role: constraint
+        - item_id: EXC-0007
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/6
+          original_role: constraint
+        - item_id: EXC-0008
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/7
+          original_role: constraint
+        - item_id: EXC-0009
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/8
+          original_role: constraint
+        - item_id: EXC-0010
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Boundary/exclusions/9
+          original_role: constraint
+        - item_id: CRI-0001
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+          original_role: criterion
+        - item_id: CRI-0002
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+          original_role: criterion
+        - item_id: CRI-0003
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+          original_role: criterion
+        - item_id: CRI-0004
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
+          original_role: criterion
+        - item_id: CRI-0005
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/4
+          original_role: criterion
+        - item_id: CRI-0006
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/5
+          original_role: criterion
+        - item_id: CRI-0007
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/6
+          original_role: criterion
+        - item_id: CRI-0008
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/7
+          original_role: criterion
+        - item_id: CRI-0009
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/8
+          original_role: criterion
+        - item_id: CRI-0010
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/9
+          original_role: criterion
+        - item_id: CRI-0011
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/10
+          original_role: criterion
+        - item_id: CRI-0012
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/11
+          original_role: criterion
+        - item_id: CRI-0013
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/12
+          original_role: criterion
+        - item_id: CRI-0014
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/13
+          original_role: criterion
+        - item_id: CRI-0015
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/criteria/evidence/14
+          original_role: criterion
+        - item_id: EVAL-RESULT
+          document_id: ORIGINAL
+          item_ref: /Policy_Rules/Evaluation/result
+          original_role: record
+      rules:
+        - id: R-ID-F12085AE7275C5CBBB93DCEC057DFAC1
+          rule: SINGLE-DOMAIN-OWNER
+          source_ref: [RULE-0001]
+        - id: R-ID-5E91966F45D920DD74166D797903EEF0
+          rule: NO-CATCHALL
+          source_ref: [RULE-0002]
+        - id: R-ID-9527DAB07674017762DDC841EAE75F98
+          rule: NO-OWNER-TRANSFER
+          source_ref: [RULE-0003]
+        - id: R-ID-06B7A3FE0E919088ADC558C466E264BC
+          rule: DECLARED-DOMAIN-ROOT
+          source_ref: [RULE-0004]
+        - id: R-ID-7BD68FA2A478B3D51DEB56694F9B188C
+          rule: RELEASE-SCOPE-GATE
+          source_ref: [RULE-0005]
+        - id: R-ID-2B4D7DE2A953797FD9734758F048E8E0
+          rule: TEST-NO-REDEFINE
+          source_ref: [RULE-0006]
+        - id: R-ID-9A14723C5C654089AA6C0FF0116734E9
+          rule: POLICY-SPLIT
+          source_ref: [RULE-0007]
+        - id: R-ID-7F3A264CC0E14B6D8ED5E91AF02D472B
+          rule: RULE-CONTRACT-OWNER
+          source_ref: [RULE-0008]
+        - id: R-ID-041A6F1A24458B0331470B8BCA0297F9
+          rule: NEW-DOMAIN-APPROVAL
+          source_ref: [RULE-0009]
+        - id: R-ID-79930E44AE61B2C7EA24409F6EF1A08F
+          rule: PLAN-OWNS-MIGRATION
+          source_ref: [RULE-0010]
+        - id: R-ID-94FE990111092568CEBA0A7949F2706E
+          rule: GO-FAMILY-VERIFIER
+          source_ref: [RULE-0011]
+        - id: R-ID-EF3214C5C86C2AA012051E075080B80B
+          rule: NO-LEGACY-ROOTS
+          source_ref: [RULE-0012]
+      requirements:
+        - requirement_id: REQ-SUB-0001
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0001]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0001]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0002
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0002]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0002]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0003
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0003]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0003]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0004
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0004]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0004]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0005
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0005]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0005]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0006
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0006]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0006]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0007
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0007]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0007]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0008
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0008]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0008]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0009
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0009]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0009]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0010
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0010]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0010]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0011
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0011]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0011]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0012
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0012]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0012]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0013
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0013]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0013]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0014
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0014]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0014]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-SUB-0015
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SUB-0015]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [SUB-0015]
+            - purpose: CONSTRAINT
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001, EXC-0002, EXC-0003, EXC-0004, EXC-0005, EXC-0006, EXC-0007, EXC-0008, EXC-0009, EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0001
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0001]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0001]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0001]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0002
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0002]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0002]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0002]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0003
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0003]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0003]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0003]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0004
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0004]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0004]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0004]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0005
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0005]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0005]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0005]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0006
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0006]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0006]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0006]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0007
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0007]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0007]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0007]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0008
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0008]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0008]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0008]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0009
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0009]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0009]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0009]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+        - requirement_id: REQ-EXC-0010
+          source_bindings:
+            - purpose: MEANING
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0010]
+            - purpose: SCOPE
+              state: SOURCE_IDENTIFIED
+              ref_ids: [SCOPE]
+            - purpose: TARGET
+              state: UNRESOLVED
+              basis_ref_ids: [EXC-0010]
+            - purpose: CONSTRAINT
+              state: SOURCE_IDENTIFIED
+              ref_ids: [EXC-0010]
+            - purpose: CRITERION
+              state: UNRESOLVED
+              basis_ref_ids: [CRI-0001, CRI-0002, CRI-0003, CRI-0004, CRI-0005, CRI-0006, CRI-0007, CRI-0008, CRI-0009, CRI-0010, CRI-0011, CRI-0012, CRI-0013, CRI-0014, CRI-0015]
+          unresolved_fields: [source_bindings.TARGET, source_bindings.CRITERION]
+      historical_result_ref_ids: [EVAL-RESULT]
