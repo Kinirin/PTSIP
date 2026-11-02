@@ -1,0 +1,21 @@
+{
+  "profile_version": "pp.3.00",
+  "profile_resource": ".ptsip/profiles/rbac/Conditions_list.yaml",
+  "schema_resource": ".ptsip/contracts/compile-sealed-rbac/Conditions/Conditions_list.schema.json",
+  "definition_state": "STRUCTURE_APPROVED",
+  "activation_state": "UNREGISTERED",
+  "effective_policy_override": false,
+  "authorization_permitted": false,
+  "condition_evaluation": "UNRESOLVED",
+  "nist_responsibility_role_mapping": "MANUAL_REVIEW_REQUIRED",
+  "id_uniqueness": {
+    "scope": "CONDITIONS_LIST_FILE_ONLY",
+    "keys": [
+      "Responsibility_Assignment_Conditions[].ID",
+      "Authority_Exercise_Conditions[].ID"
+    ],
+    "duplicates": "REJECT",
+    "external_reference_reuse": "ALLOW",
+    "enforcement": "EXTERNAL_CHECK_REQUIRED"
+  }
+}

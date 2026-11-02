@@ -1,0 +1,29 @@
+schema_version: ptsip-policy-approval-provenance/v1
+policy_class: PTSIP_DEVELOPER_POLICY
+approval:
+  approval_id: MPA-20261102-RBAC-PP300-CONTRACT-STRUCTURE
+  decision: APPROVED
+  source_kind: PROJECT_OWNER_DIRECT_INSTRUCTION
+  decision_source: USER_EXPLICIT
+  source_reference: >-
+    Owner approved pp.3.00 separate RBAC list paths under
+    .ptsip/profiles/rbac/ for RA_list.yaml, Authority_list.yaml,
+    Conditions_list.yaml, with matching independent schemas and
+    *_contracts.json under .ptsip/contracts/compile-sealed-rbac/.
+    Conditions_list has directly grouped nonempty RAC/AEC arrays,
+    no intermediate conditions key, exact ID/name/condition_type
+    object fields, additionalProperties=false, ID-RAC/ID-AEC
+    32-uppercase-hex patterns, NIST-derived RAC/AEC enum candidates
+    validated structurally, and no duplicate definition IDs inside
+    Conditions_list.yaml; other documents may reuse condition IDs by
+    reference. Responsibility-to-NIST-role mapping requires individual
+    human review. Reconcile pp.2.01 historical/effective references
+    separately from pp.3.00; do not migrate legacy 66 conditions or
+    promote new RBAC contract structures to operational authority.
+    Undefined RA/Authority schemas fail closed pending separate policy.
+  approval_scope: CONTRACT_STRUCTURE
+  target_status: ACTIVE
+  implementation_authorized: true
+  conflict_resolution: RECONCILE
+  branch_creation_authorized: false
+  recorded_at: '2026-11-02'
