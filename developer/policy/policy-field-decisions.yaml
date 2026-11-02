@@ -1,0 +1,41 @@
+schema_version: ptsip-developer-policy-field-decisions/v1
+record_type: COMMON_POLICY_FIELD_CONCEPT_DECISIONS
+record_scope: DEVELOPER_POLICY_COMMON_RULE_FIELDS
+decisions:
+  - field_path: norm.modality
+    decision: APPROVED
+    decision_source: USER_EXPLICIT
+    decision_date: '2026-11-02'
+    approval_scope: ABSTRACT_NORMATIVE_FIELD_CONCEPT_ONLY
+    normative_meaning: NORMATIVE_RULE_BINDING_CHARACTER
+    semantic_boundary:
+      expresses: NORMATIVE_OBLIGATION_PROHIBITION_OR_PERMISSION_CHARACTER
+      distinct_from:
+        - APPROVAL_AUTHORITY
+        - JUDGEMENT_RESULT
+        - EXECUTION_PERMISSION
+    reuse_review:
+      change_policies:
+        - MPD-CHANGE-0001
+        - MPD-CHANGE-0002
+        - MPD-CHANGE-0003
+        - MPD-CHANGE-0007
+        - MPD-CHANGE-0008
+        - MPD-CHANGE-0009
+      other_family_examples:
+        - ARCH
+        - GOV
+        - RECORD
+      review_kind: SOURCE_SEMANTIC_COMPARISON_ONLY
+      automated_semantic_validation: NOT_CLAIMED
+    unresolved:
+      containing_schema_field: UNRESOLVED
+      data_type: UNRESOLVED
+      permitted_value_vocabulary: UNRESOLVED
+      mandatory_or_optional: UNRESOLVED
+      source_to_rule_assignment: UNRESOLVED
+      validator_behavior: UNRESOLVED
+    implementation_authorization:
+      schema_mutation: NOT_GRANTED_BY_THIS_DECISION
+      policy_migration: NOT_GRANTED_BY_THIS_DECISION
+      execution_authority: NOT_GRANTED_BY_THIS_DECISION
