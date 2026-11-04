@@ -42,5 +42,61 @@
     "CONTRACT_OBJECT_FIELDS_AND_REQUIREDNESS",
     "STRUCTURAL_CONTRACT_VERSION_AND_ACTIVATION",
     "PRIOR_EFFECTIVE_CONTRACT_CONFLICT_RESOLUTION"
-  ]
+  ],
+  "field_decisions": {
+    "approval": {
+      "state": "APPROVED",
+      "scope": "RAC_AEC_COMMON_REQUIRED_IDENTITY_FIELDS_ONLY",
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "recorded_at": "2026-11-04"
+    },
+    "contract_objects": [
+      "RAC_CONDITION",
+      "AEC_CONDITION"
+    ],
+    "fields": {
+      "ID": {
+        "field_name": "ID",
+        "required": true,
+        "semantics": "STABLE_CONDITION_IDENTITY",
+        "authoritative_for": [
+          "EXACT_CONDITION_REFERENCE"
+        ],
+        "not_authoritative_for": [
+          "CONDITION_SEMANTICS",
+          "EVALUATION_RESULT",
+          "EXECUTION_PERMISSION"
+        ]
+      },
+      "name": {
+        "field_name": "name",
+        "required": true,
+        "semantics": "HUMAN_READABLE_CONDITION_LABEL",
+        "not_authoritative_for": [
+          "SEMANTIC_INFERENCE",
+          "CONDITION_IDENTITY",
+          "EVALUATION_RESULT",
+          "EXECUTION_PERMISSION"
+        ]
+      }
+    },
+    "preserved_boundaries": {
+      "previous_schema_shape_inherited": false,
+      "previous_id_pattern_inherited": false,
+      "previous_condition_type_enum_inherited": false,
+      "existing_active_contract_not_changed": true
+    },
+    "unresolved": [
+      "ID_FORMAT",
+      "ID_UNIQUENESS_SCOPE",
+      "NAME_CONSTRAINTS",
+      "CONDITION_CLASSIFICATION_FIELD",
+      "SOURCE_PROVENANCE_FIELDS",
+      "SUBJECT_BINDING_FIELDS",
+      "OBSERVATION_TIME_AND_PHASE_FIELDS",
+      "ATTRIBUTE_EXPRESSION_STRUCTURE",
+      "SHARED_EXTENSION_DECISION",
+      "RAC_AEC_FIELD_REQUIREDNESS_BEYOND_ID_AND_NAME"
+    ]
+  }
 }
