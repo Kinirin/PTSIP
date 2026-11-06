@@ -28,12 +28,20 @@
     "source_head": "7a16e991bdc8cf679e0df02f36bdc1f33cb01b9f",
     "criteria_creation": "USER_AUTHORIZED",
     "criteria_content": "TEMPORARY_PROPOSAL",
-    "evaluation": "NOT_RUN"
+    "evaluation": "COMPLETED_WITH_OPEN_ITEMS",
+    "evaluated_head": "00da5b5c517bcaf561ad8c95a11f66ded198bf03",
+    "formal_reflection_approval": "USER_EXPLICIT_2026_11_07",
+    "result_counts": {
+      "PASS": 1,
+      "FAIL": 1,
+      "UNRESOLVED": 7
+    }
   },
   "pending_tasks": [
-    "각 미결정 주제별 사용자 정책 결정",
-    "기준별 근거 수집과 반례 검정",
-    "승인 후에만 정식 정책 반영 및 별도 계획 수립"
+    "Resolve the approved RA binding semantics, owner identity, required fields, and registration route.",
+    "Resolve exact RAC/AEC owner and declaration bindings, source revisions, entrypoints, and evaluation result semantics.",
+    "Resolve independent evaluator and registry interfaces before implementation and registration.",
+    "Verify the replacement of current profile consumers before retiring Responsibilities_List.schema.json."
   ],
   "work": {
     "group_id": "RA_RAC_AEC_TEMP_CHECKS"
@@ -78,8 +86,27 @@
         "an unapproved owner or authority is fabricated"
       ],
       "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "evidence_result": "PARTIAL",
+      "decision_status": "UNDECIDED",
+      "assessment": {
+        "observed": [
+          "The draft projection scopes a binding by owner and binding key, with distinct RAC and AEC references and no old-profile schema inheritance.",
+          "All three pinned GOV rule coordinates resolve and match the current items. The GOV document itself is rejected by the current public v2 policy-check.",
+          "The RA descriptor's profile_resource does not exist at the evaluated revision. No exact owner declaration was resolved."
+        ],
+        "policy_decisions_open": [
+          "Approve the RA binding owner, meaning, and responsibility/authority source relationship."
+        ],
+        "implementation_or_verification_open": [
+          "Resolve the owner, responsibility, authority, RAC and AEC declarations by identity and revision."
+        ],
+        "contract_disposition": "PENDING_POLICY_AND_IMPLEMENTATION",
+        "evidence_refs": [
+          ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+          ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list.schema.json#/$defs/draft_projection",
+          "developer/policy/GOV/MPD-GOV-0006.yaml"
+        ]
+      }
     },
     {
       "id": "T-RA-02",
@@ -101,8 +128,25 @@
         "root schema accepts every input yet a contract-valid PASS is claimed"
       ],
       "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "evidence_result": "PARTIAL",
+      "decision_status": "UNDECIDED",
+      "assessment": {
+        "observed": [
+          "Draft 2020-12 schema checks passed. The RA root accepted a scalar and a binding missing AEC.",
+          "The draft projection accepted a test-only binding shape and rejected its missing-AEC variant. Fixture references were unregistered; this test established shape only."
+        ],
+        "policy_decisions_open": [
+          "Approve RA field meaning and requiredness."
+        ],
+        "implementation_or_verification_open": [
+          "Bind the approved schema to the registered verifier and verify duplicate input keys and unresolved references at that entrypoint."
+        ],
+        "contract_disposition": "PENDING_APPROVED_FIELD_CONTRACT",
+        "evidence_refs": [
+          ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list.schema.json",
+          ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json"
+        ]
+      }
     },
     {
       "id": "T-RA-03",
@@ -123,9 +167,27 @@
         "compatibility shim or cloned legacy schema becomes a required new RA dependency",
         "old schema is deleted while an active consumer requires it"
       ],
-      "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "result": "FAIL",
+      "evidence_result": "COLLECTED",
+      "decision_status": "PARTIALLY_DECIDED",
+      "assessment": {
+        "observed": [
+          "The current contract catalog, auxiliary profile catalog and Go authoring loader require the old Responsibilities_List schema.",
+          "The registered responsibility-authority check returned VALID for the existing pp.2.01 profile with exit code 0."
+        ],
+        "policy_decisions_open": [
+          "Resolve the disposition of the existing profile registration at the successor cutover."
+        ],
+        "implementation_or_verification_open": [
+          "Migrate active consumers to the approved successor and verify removal readiness."
+        ],
+        "contract_disposition": "RETIREMENT_BLOCKED_BY_ACTIVE_CONSUMERS",
+        "evidence_refs": [
+          ".ptsip/contracts/index.json#/responsibility_profile_schema",
+          ".ptsip/profiles/index.json#/auxiliary_profiles/responsibility-authority/schema_ref",
+          ".ptsip/engine/developer/internal/contract_authoring/Contracts.go"
+        ]
+      }
     },
     {
       "id": "T-RAC-01",
@@ -148,8 +210,26 @@
         "RAC activation or assignment authority is inferred from schema validation"
       ],
       "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "evidence_result": "PARTIAL",
+      "decision_status": "PARTIALLY_DECIDED",
+      "assessment": {
+        "observed": [
+          "The existing role policy coordinate resolves. SFP-ARCH-0004 explicitly selects Rego source for RAC evaluation.",
+          "The draft schema accepts a declaration containing only condition ID and name. Exact owner, registered responsibility and Rego source/entrypoint remain unresolved."
+        ],
+        "policy_decisions_open": [
+          "Designate the exact condition owner, assigned responsibility, and approved Rego source revision and entrypoint."
+        ],
+        "implementation_or_verification_open": [
+          "Implement exact declaration resolution and verify the approved evaluation source in the registered path."
+        ],
+        "contract_disposition": "APPROVED_EVALUATION_SOURCE_DIRECTION_LINKED",
+        "evidence_refs": [
+          ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+          ".ptsip/contracts/compile-sealed-rbac/rac/rac.schema.json",
+          "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3:src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics/rac_aec_rego_original_contract_direction"
+        ]
+      }
     },
     {
       "id": "T-AEC-01",
@@ -174,8 +254,27 @@
         "an AEC evaluation result bypasses a current authority/freshness gate"
       ],
       "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "evidence_result": "PARTIAL",
+      "decision_status": "PARTIALLY_DECIDED",
+      "assessment": {
+        "observed": [
+          "The existing GOV role/scope and CTRL freshness coordinates resolve. SFP-ARCH-0004 explicitly selects Rego source for AEC evaluation.",
+          "The draft schema accepts a declaration containing only condition ID and name. Actual owner, authority, revision-pinned RAC dependency, and Rego entrypoint remain unresolved."
+        ],
+        "policy_decisions_open": [
+          "Designate the exact authority owner, authority basis, RAC dependency revision, and approved Rego source revision and entrypoint."
+        ],
+        "implementation_or_verification_open": [
+          "Verify independent RAC/AEC resolution and evaluation before the existing authority and freshness gate."
+        ],
+        "contract_disposition": "APPROVED_EVALUATION_SOURCE_DIRECTION_LINKED",
+        "evidence_refs": [
+          ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+          ".ptsip/contracts/compile-sealed-rbac/aec/aec.schema.json",
+          "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3:src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics/rac_aec_rego_original_contract_direction",
+          "src/policy/CTRL/SFP-CTRL-0001.yaml"
+        ]
+      }
     },
     {
       "id": "T-REG-01",
@@ -198,8 +297,26 @@
         "file path similarity is used to infer ownership"
       ],
       "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "evidence_result": "PARTIAL",
+      "decision_status": "UNDECIDED",
+      "assessment": {
+        "observed": [
+          "The candidate index declares DRAFT_NON_NORMATIVE and has no registered RBAC operation. The current local indexes do not register the RA/RAC/AEC declarations."
+        ],
+        "policy_decisions_open": [
+          "Approve the source-owned identity, revision and registration contract for the three declaration kinds."
+        ],
+        "implementation_or_verification_open": [
+          "Verify exact owner/revision resolution and fail-closed behavior for absent, duplicate and stale bindings."
+        ],
+        "contract_disposition": "PENDING_CANONICAL_REGISTRATION",
+        "evidence_refs": [
+          ".ptsip/index.json",
+          ".ptsip/contracts/index.json",
+          ".ptsip/profiles/index.json",
+          ".ptsip/contracts/compile-sealed-rbac/candidate-index.json"
+        ]
+      }
     },
     {
       "id": "T-REG-02",
@@ -222,8 +339,25 @@
         "missing evidence silently becomes successful authorization"
       ],
       "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "evidence_result": "PARTIAL",
+      "decision_status": "PARTIALLY_DECIDED",
+      "assessment": {
+        "observed": [
+          "Rego is selected as the evaluation source for RAC/AEC. The evaluated revision has no tracked .rego source and no exact source/entrypoint was resolved for these declarations."
+        ],
+        "policy_decisions_open": [
+          "Approve result and evidence semantics, including unmet condition versus missing evidence, and the exact evaluation source."
+        ],
+        "implementation_or_verification_open": [
+          "Run source-bound positive, negative, missing-evidence and malformed-contract cases with the selected actual runtime."
+        ],
+        "contract_disposition": "APPROVED_SOURCE_DIRECTION_LINKED_RUNTIME_PENDING",
+        "evidence_refs": [
+          ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+          ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+          "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3:src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics/rac_aec_rego_original_contract_direction"
+        ]
+      }
     },
     {
       "id": "T-ENG-01",
@@ -246,8 +380,26 @@
         "the new engine is registered or activated solely by this temporary checklist"
       ],
       "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "evidence_result": "PARTIAL",
+      "decision_status": "PARTIALLY_DECIDED",
+      "assessment": {
+        "observed": [
+          "The official index contains CONTEXT, STORAGE, VALIDATION, DISCOVERY, PLANNING, EXECUTION and PROJECTION.",
+          "The Rego direction does not select a new official engine interface or authorize its implementation or activation."
+        ],
+        "policy_decisions_open": [
+          "Resolve the ARCH evaluator responsibility and CNTR interface, identity and registration."
+        ],
+        "implementation_or_verification_open": [
+          "Implement and verify the approved independent evaluator after those decisions."
+        ],
+        "contract_disposition": "PENDING_ENGINE_POLICY_AND_INTERFACE",
+        "evidence_refs": [
+          "src/ptsip/engines/index.json#/official_engine_entries",
+          "src/policy/CNTR/SFP-CNTR-0005.yaml",
+          "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3:src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics/rac_aec_rego_original_contract_direction"
+        ]
+      }
     },
     {
       "id": "T-ACT-01",
@@ -269,9 +421,27 @@
         "schema or temporary criterion PASS is treated as permission to exercise authority",
         "UNREGISTERED contract is activated without authorized transition"
       ],
-      "result": "UNRESOLVED",
-      "evidence_result": "NOT_COLLECTED",
-      "decision_status": "UNDECIDED"
+      "result": "PASS",
+      "evidence_result": "COLLECTED",
+      "decision_status": "DECIDED",
+      "assessment": {
+        "observed": [
+          "Declaration and registration boundary only. All three descriptors explicitly declare UNREGISTERED and authorization_permitted=false.",
+          "RA definition_state is UNRESOLVED. The candidate index has no registered operation or authorization. The AEC descriptor independently references the current CTRL freshness gate."
+        ],
+        "policy_decisions_open": [],
+        "implementation_or_verification_open": [
+          "Future activation and runtime enforcement require their own registered, currently authorized path and verification."
+        ],
+        "contract_disposition": "EXISTING_BOUNDARY_CONFIRMED",
+        "evidence_refs": [
+          ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+          ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+          ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+          ".ptsip/contracts/compile-sealed-rbac/candidate-index.json",
+          "src/policy/CTRL/SFP-CTRL-0001.yaml"
+        ]
+      }
     }
   ],
   "traceability": {
