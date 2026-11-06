@@ -25,7 +25,10 @@
     "source_head": "00da5b5c517bcaf561ad8c95a11f66ded198bf03",
     "inventory_status": "INDEX_TREE_MATCHED",
     "policy_document_content_review": "PARTIAL",
-    "applicability_results": "NOT_EVALUATED"
+    "applicability_results": "NOT_EVALUATED",
+    "latest_review_head": "7fe83fd95e40e887e0ff0a53feeceaf4ca30645f",
+    "review_status": "SCHEMA_FIELD_AND_APPLICABILITY_POLICY_DECISION_PENDING",
+    "policy_document_changes": "NONE"
   },
   "pending_tasks": [
     "각 문서의 실제 정책 ID·상태 및 규범 의미 검토",
@@ -1373,5 +1376,79 @@
         "policy_write_allowed_by_this_record": false
       }
     ]
+  },
+  "integration_schema_eligibility_review": {
+    "baseline_verified_head": "7fe83fd95e40e887e0ff0a53feeceaf4ca30645f",
+    "policy_schema_observation": {
+      "support_source": "src/policy/schemas/ptsip-support-root-family-policy.schema.json",
+      "support_authority_semantics_type": "object",
+      "support_root_disallows_undefined_fields": true,
+      "developer_source": ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+      "developer_root_disallows_undefined_fields": true,
+      "developer_policy_rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
+      "policy_item_level_binding_field_approved": false,
+      "structural_write_assessment": "NO_UNIVERSAL_BINDING_LOCATION_APPROVED"
+    },
+    "unregistered_contract_guard": {
+      "ra": "UNRESOLVED_UNREGISTERED",
+      "rac": "UNREGISTERED",
+      "aec": "UNREGISTERED",
+      "input_policy_eligibility": "READ_ONLY_UNTIL_FIELD_AND_APPLICATION_POLICY_APPROVED"
+    },
+    "semantic_application_direction_candidates": [
+      {
+        "id": "A",
+        "direction": "EVERY_RULE_DIRECT_CONTRACT_BINDING",
+        "benefits": [
+          "MAXIMUM_EXACT_RULE_TRACEABILITY",
+          "NO_SEPARATE_JOIN_FOR_POLICY_RULE"
+        ],
+        "drawbacks": [
+          "LARGE_POLICY_CHANGE_SURFACE",
+          "DUPLICATE_BINDING_MAINTENANCE"
+        ],
+        "decision": "UNRESOLVED"
+      },
+      {
+        "id": "B",
+        "direction": "RESPONSIBILITY_SCOPED_POLICY_LOCAL_BINDING",
+        "benefits": [
+          "IN_DOCUMENT_EXACT_OWNER_AND_CONTRACT_REFERENCE",
+          "NO_UNNECESSARY_CONTRACTS_PER_POLICY",
+          "MACHINE_VALIDATABLE"
+        ],
+        "drawbacks": [
+          "APPROVED_POLICY_LOCAL_REFERENCE_FIELD_REQUIRED",
+          "PER_POLICY_APPLICABILITY_REVIEW_REQUIRED"
+        ],
+        "decision": "UNRESOLVED"
+      },
+      {
+        "id": "C",
+        "direction": "POLICY_LOCAL_DECLARATION_WITH_EXTERNAL_DETERMINISTIC_JOIN",
+        "benefits": [
+          "LOWER_REPEATED_POLICY_DOC_EDIT_COST",
+          "CENTRAL_DETERMINISTIC_RESOLUTION"
+        ],
+        "drawbacks": [
+          "EXTERNAL_MAPPING_MUST_REMAIN_IN_SYNC",
+          "IN_DOCUMENT_RULE_LEVEL_LINKS_LESS_OBVIOUS"
+        ],
+        "decision": "UNRESOLVED"
+      }
+    ],
+    "decision_request": {
+      "id": "POLICY_CONTRACT_BINDING_MODEL",
+      "status": "UNRESOLVED_USER_DECISION",
+      "recommendation": "B",
+      "user_direction_required_before_policy_schema_and_file_mutation": true,
+      "scope": "IN_POLICY_DOCUMENT_CONTRACT_USAGE_AND_RESPONSIBILITY_BINDING",
+      "not_decided": [
+        "POLICY_LOCAL_FIELD_NAME",
+        "RAC_AEC_APPLICABILITY_PER_RULE",
+        "EVALUATION_RESULT_USAGE",
+        "ACTIVATION"
+      ]
+    }
   }
 }
