@@ -1,0 +1,1377 @@
+{
+  "record_type": "TEMPORARY_WORK_RECORD",
+  "work_id": "RA_RAC_AEC_FAMILY_INTEGRATION",
+  "created_at": "2026-11-07",
+  "purpose_ko": "양쪽 14개 Family 정책문서가 RA/RAC/AEC 계약을 필요한 경우에만 사용하는지 결정론적으로 판단하고 반영하기 위한 임시 인벤토리 및 계약 적용 검정.",
+  "scope": {
+    "repository": "Kinirin/PTSIP",
+    "reference_branch": "main",
+    "baseline_head": "00da5b5c517bcaf561ad8c95a11f66ded198bf03",
+    "roots": [
+      "src/policy/",
+      "developer/policy/"
+    ],
+    "family_count_each": 14,
+    "authority": "NONE",
+    "status": "TEMPORARY_NON_NORMATIVE",
+    "formal_policy_reverse_dependency": "FORBIDDEN",
+    "automatic_policy_mutation_authorized": false
+  },
+  "last_checkpoint": {
+    "source_index_sha": {
+      "support": "b07d55046a6e7c472cb2742506f1179e8d28b2a2",
+      "developer": "6d2c0b89d97c2ee6a65d5b9d5ab5c35b78414723"
+    },
+    "source_head": "00da5b5c517bcaf561ad8c95a11f66ded198bf03",
+    "inventory_status": "INDEX_TREE_MATCHED",
+    "policy_document_content_review": "PARTIAL",
+    "applicability_results": "NOT_EVALUATED"
+  },
+  "pending_tasks": [
+    "각 문서의 실제 정책 ID·상태 및 규범 의미 검토",
+    "RA/RAC/AEC 각각에 대한 적용 필요성과 관계 종류 결정",
+    "정식 스키마에 허용되는 계약 참조 위치와 필드 결정",
+    "등록 및 활성화와 무관하게 정식 정책 변경의 범위/근거 검증",
+    "정책 변경 후 Family별 최소 검증과 전체 영향 검증"
+  ],
+  "work": {
+    "group_id": "RA_RAC_AEC_FAMILY_INTEGRATION"
+  },
+  "authority_boundary": {
+    "temporary_contract": "REVIEW_ONLY_NOT_POLICY",
+    "policy_sources": [
+      "src/policy/index.yaml",
+      "developer/policy/index.yaml"
+    ],
+    "registered_policy_documents_are_canonical": "ONLY_IF_DOCUMENT_LIFECYCLE_EFFECTIVE",
+    "source_support_and_developer_authority": "SEPARATE",
+    "source_policy_meaning_preserved": true,
+    "prior_schema_dependency": "FORBIDDEN_FOR_NEW_RA",
+    "deprecated_or_unindexed_auto_activation": "FORBIDDEN",
+    "temporary_records_cannot_be_formal_deps": true,
+    "registered_contract_is_not_automatic_execution_authorization": true,
+    "current_RA": "UNRESOLVED_UNREGISTERED",
+    "current_RAC_AEC": "UNREGISTERED",
+    "policy_authorization_from_this_contract": false
+  },
+  "source_contracts": {
+    "RA": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+    "RAC": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+    "AEC": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+    "EVALUATION_ORIGIN": "src/policy/ARCH/SFP-ARCH-0004.yaml"
+  },
+  "policy_document_binding_acceptance": {
+    "temporary_outcomes": [
+      "APPLICABLE",
+      "NOT_APPLICABLE",
+      "UNRESOLVED",
+      "CONFLICT"
+    ],
+    "initial": "UNRESOLVED",
+    "required_evidence": [
+      "EXACT_CURRENT_POLICY_IDENTITY",
+      "LIFECYCLE_STATUS_CURRENT",
+      "POLICY_OWNED_SEMANTIC_ROLE",
+      "INDEPENDENT_CONTRACT_SOURCE_AND_VERSION",
+      "APPROVED_FIELD_OR_REFERENCE_POSITION",
+      "NO_NORMATIVE_OWNER_TRANSFER",
+      "NO_LEGACY_RA_SCHEMA_DEPENDENCY"
+    ],
+    "role_categorization_candidates": [
+      "RA_RESPONSIBILITY_AUTHORITY_BINDING",
+      "RAC_ASSIGNMENT_CONDITION",
+      "AEC_EXERCISE_CONDITION",
+      "EVALUATION_INPUT_ONLY",
+      "NONE"
+    ],
+    "role_categorization_not_automatic": true,
+    "action_if_evidence_insufficient": "UNRESOLVED_USER_DECISION",
+    "action_if_conflicting_policy": "KEEP_PRIOR_KEEP_LATEST_RECONCILE_USER_DECISION",
+    "source_state_fail_closed": true,
+    "result_does_not_grant_schema_activation": true
+  },
+  "known_source_bindings_for_review": [
+    {
+      "policy_id": "SFP-ARCH-0004",
+      "policy_path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "meaning_pointer": "/authority_semantics/rac_aec_rego_original_contract_direction",
+      "contract_kind": "RAC_AEC",
+      "relationship": "APPROVED_DIRECTION_IN_POLICY",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "SFP-ARCH-0001",
+      "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "meaning_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+      "contract_kind": "RAC",
+      "relationship": "ALREADY_REFERENCED_FROM_RAC_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "SFP-GOV-0001",
+      "policy_path": "src/policy/GOV/SFP-GOV-0001.yaml",
+      "meaning_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+      "contract_kind": "AEC",
+      "relationship": "ALREADY_REFERENCED_FROM_AEC_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "SFP-GOV-0001",
+      "policy_path": "src/policy/GOV/SFP-GOV-0001.yaml",
+      "meaning_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+      "contract_kind": "AEC",
+      "relationship": "ALREADY_REFERENCED_FROM_AEC_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "SFP-CTRL-0001",
+      "policy_path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+      "meaning_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+      "contract_kind": "AEC",
+      "relationship": "ALREADY_REFERENCED_AS_AEC_EXECUTION_BOUNDARY",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "MPD-GOV-0006",
+      "policy_path": "developer/policy/GOV/MPD-GOV-0006.yaml",
+      "meaning_pointer": "/Policy_Rules/Definition/15",
+      "contract_kind": "RA",
+      "relationship": "ALREADY_REFERENCED_FROM_RA_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "MPD-GOV-0006",
+      "policy_path": "developer/policy/GOV/MPD-GOV-0006.yaml",
+      "meaning_pointer": "/Policy_Rules/Definition/16",
+      "contract_kind": "RA",
+      "relationship": "ALREADY_REFERENCED_FROM_RA_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "MPD-GOV-0006",
+      "policy_path": "developer/policy/GOV/MPD-GOV-0006.yaml",
+      "meaning_pointer": "/Policy_Rules/Definition/17",
+      "contract_kind": "RA",
+      "relationship": "ALREADY_REFERENCED_FROM_RA_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+      "reverse_policy_binding": "NOT_APPLIED"
+    }
+  ],
+  "inventory": {
+    "summary": {
+      "registered": 99,
+      "unindexed": 12,
+      "family_directories": 28,
+      "unindexed_policy_candidates": 11,
+      "unindexed_nonpolicy_yaml": 1
+    },
+    "by_family": [
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "ARCH",
+        "root": "src/policy/ARCH/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-ARCH-0001",
+            "path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ARCH-0002",
+            "path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ARCH-0003",
+            "path": "src/policy/ARCH/SFP-ARCH-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ARCH-0004",
+            "path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ARCH-0005",
+            "path": "src/policy/ARCH/SFP-ARCH-0005.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "ASSURE",
+        "root": "src/policy/ASSURE/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-ASSURE-0001",
+            "path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ASSURE-0002",
+            "path": "src/policy/ASSURE/SFP-ASSURE-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ASSURE-0003",
+            "path": "src/policy/ASSURE/SFP-ASSURE-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ASSURE-0004",
+            "path": "src/policy/ASSURE/SFP-ASSURE-0004.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-ASSURE-0005",
+            "path": "src/policy/ASSURE/SFP-ASSURE-0005.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "CHANGE",
+        "root": "src/policy/CHANGE/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-CHANGE-0001",
+            "path": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "CNTR",
+        "root": "src/policy/CNTR/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-CNTR-0001",
+            "path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0002",
+            "path": "src/policy/CNTR/SFP-CNTR-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0003",
+            "path": "src/policy/CNTR/SFP-CNTR-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0004",
+            "path": "src/policy/CNTR/SFP-CNTR-0004.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0005",
+            "path": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0006",
+            "path": "src/policy/CNTR/SFP-CNTR-0006.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0007",
+            "path": "src/policy/CNTR/SFP-CNTR-0007.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CNTR-0008",
+            "path": "src/policy/CNTR/SFP-CNTR-0008.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "CTRL",
+        "root": "src/policy/CTRL/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-CTRL-0001",
+            "path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CTRL-0002",
+            "path": "src/policy/CTRL/SFP-CTRL-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-CTRL-0003",
+            "path": "src/policy/CTRL/SFP-CTRL-0003.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "GOV",
+        "root": "src/policy/GOV/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-GOV-0001",
+            "path": "src/policy/GOV/SFP-GOV-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-GOV-0002",
+            "path": "src/policy/GOV/SFP-GOV-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "INFO",
+        "root": "src/policy/INFO/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-INFO-0001",
+            "path": "src/policy/INFO/SFP-INFO-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0002",
+            "path": "src/policy/INFO/SFP-INFO-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0003",
+            "path": "src/policy/INFO/SFP-INFO-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0004",
+            "path": "src/policy/INFO/SFP-INFO-0004.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0005",
+            "path": "src/policy/INFO/SFP-INFO-0005.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0006",
+            "path": "src/policy/INFO/SFP-INFO-0006.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0007",
+            "path": "src/policy/INFO/SFP-INFO-0007.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0008",
+            "path": "src/policy/INFO/SFP-INFO-0008.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-INFO-0009",
+            "path": "src/policy/INFO/SFP-INFO-0009.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "INTENT",
+        "root": "src/policy/INTENT/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-INTENT-0001",
+            "path": "src/policy/INTENT/SFP-INTENT-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "NORM",
+        "root": "src/policy/NORM/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-NORM-0001",
+            "path": "src/policy/NORM/SFP-NORM-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-NORM-0002",
+            "path": "src/policy/NORM/SFP-NORM-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "OPS",
+        "root": "src/policy/OPS/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-OPS-0001",
+            "path": "src/policy/OPS/SFP-OPS-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-OPS-0002",
+            "path": "src/policy/OPS/SFP-OPS-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "REAL",
+        "root": "src/policy/REAL/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-REAL-0001",
+            "path": "src/policy/REAL/SFP-REAL-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "RECORD",
+        "root": "src/policy/RECORD/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-RECORD-0001",
+            "path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+            "index_status": "ACTIVE",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-RECORD-0002",
+            "path": "src/policy/RECORD/SFP-RECORD-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-RECORD-0003",
+            "path": "src/policy/RECORD/SFP-RECORD-0003.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "SFP-RECORD-0004",
+            "path": "src/policy/RECORD/SFP-RECORD-0004.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "RISK",
+        "root": "src/policy/RISK/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-RISK-0001",
+            "path": "src/policy/RISK/SFP-RISK-0001.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "SUPPORT_FEATURE",
+        "family": "SUPPLY",
+        "root": "src/policy/SUPPLY/",
+        "catalog": "src/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "SFP-SUPPLY-0001",
+            "path": "src/policy/SUPPLY/SFP-SUPPLY-0001.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": null,
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "ARCH",
+        "root": "developer/policy/ARCH/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-ARCH-0001",
+            "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0002",
+            "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0003",
+            "path": "developer/policy/ARCH/MPD-ARCH-0003.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0004",
+            "path": "developer/policy/ARCH/MPD-ARCH-0004.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0005",
+            "path": "developer/policy/ARCH/MPD-ARCH-0005.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0006",
+            "path": "developer/policy/ARCH/MPD-ARCH-0006.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0007",
+            "path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": "Default",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0008",
+            "path": "developer/policy/ARCH/MPD-ARCH-0008.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0009",
+            "path": "developer/policy/ARCH/MPD-ARCH-0009.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Application_Problems",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0010",
+            "path": "developer/policy/ARCH/MPD-ARCH-0010.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "provisional",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0011",
+            "path": "developer/policy/ARCH/MPD-ARCH-0011.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": "Reviewed",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0012",
+            "path": "developer/policy/ARCH/MPD-ARCH-0012.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "provisional",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0013",
+            "path": "developer/policy/ARCH/MPD-ARCH-0013.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "provisional",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ARCH-0014",
+            "path": "developer/policy/ARCH/MPD-ARCH-0014.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Default",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/ARCH/Policy_Rules_Decisions.yaml",
+            "classification": "UNINDEXED_OTHER_YAML",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "ASSURE",
+        "root": "developer/policy/ASSURE/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-ASSURE-0001",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ASSURE-0002",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0002.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ASSURE-0003",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-ASSURE-0004",
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0004.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": "Default",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/ASSURE/MPD-ASSURE-0005.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "CHANGE",
+        "root": "developer/policy/CHANGE/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-CHANGE-0001",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": "Reviewed",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0002",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0002.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": "Reviewed",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0003",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0003.yaml",
+            "index_status": "DRAFT",
+            "index_substatus": "Reviewed",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0007",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0007.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Applying",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0008",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0008.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Applying",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CHANGE-0009",
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0009.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "provisional",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/CHANGE/MPD-CHANGE-0005.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "CNTR",
+        "root": "developer/policy/CNTR/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-CNTR-0001",
+            "path": "developer/policy/CNTR/MPD-CNTR-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CNTR-0002",
+            "path": "developer/policy/CNTR/MPD-CNTR-0002.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CNTR-0003",
+            "path": "developer/policy/CNTR/MPD-CNTR-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CNTR-0004",
+            "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-CNTR-0005",
+            "path": "developer/policy/CNTR/MPD-CNTR-0005.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/CNTR/MPD-CNTR-0006.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "CTRL",
+        "root": "developer/policy/CTRL/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-CTRL-0001",
+            "path": "developer/policy/CTRL/MPD-CTRL-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/CTRL/MPD-CTRL-0002.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "GOV",
+        "root": "developer/policy/GOV/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-GOV-0001",
+            "path": "developer/policy/GOV/MPD-GOV-0001.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Applying",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-GOV-0004",
+            "path": "developer/policy/GOV/MPD-GOV-0004.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Applying",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-GOV-0005",
+            "path": "developer/policy/GOV/MPD-GOV-0005.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Applying",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-GOV-0006",
+            "path": "developer/policy/GOV/MPD-GOV-0006.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Applying",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "INFO",
+        "root": "developer/policy/INFO/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-INFO-0001",
+            "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-INFO-0002",
+            "path": "developer/policy/INFO/MPD-INFO-0002.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-INFO-0003",
+            "path": "developer/policy/INFO/MPD-INFO-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-INFO-0004",
+            "path": "developer/policy/INFO/MPD-INFO-0004.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-INFO-0005",
+            "path": "developer/policy/INFO/MPD-INFO-0005.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/INFO/MPD-INFO-0006.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "INTENT",
+        "root": "developer/policy/INTENT/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-INTENT-0001",
+            "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/INTENT/MPD-INTENT-0002.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "NORM",
+        "root": "developer/policy/NORM/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-NORM-0001",
+            "path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/NORM/MPD-NORM-0002.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "OPS",
+        "root": "developer/policy/OPS/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-OPS-0001",
+            "path": "developer/policy/OPS/MPD-OPS-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/OPS/MPD-OPS-0002.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "REAL",
+        "root": "developer/policy/REAL/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-REAL-0001",
+            "path": "developer/policy/REAL/MPD-REAL-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-REAL-0002",
+            "path": "developer/policy/REAL/MPD-REAL-0002.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-REAL-0003",
+            "path": "developer/policy/REAL/MPD-REAL-0003.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-REAL-0004",
+            "path": "developer/policy/REAL/MPD-REAL-0004.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-REAL-0005",
+            "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-REAL-0006",
+            "path": "developer/policy/REAL/MPD-REAL-0006.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/REAL/MPD-REAL-0007.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "RECORD",
+        "root": "developer/policy/RECORD/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-RECORD-0001",
+            "path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Unresolved",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-RECORD-0002",
+            "path": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Unresolved",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-RECORD-0003",
+            "path": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Unresolved",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          },
+          {
+            "policy_id": "MPD-RECORD-0004",
+            "path": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+            "index_status": "APPROVED",
+            "index_substatus": "Unresolved",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "RISK",
+        "root": "developer/policy/RISK/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-RISK-0001",
+            "path": "developer/policy/RISK/MPD-RISK-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/RISK/MPD-RISK-0002.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      },
+      {
+        "plane": "DEVELOPER",
+        "family": "SUPPLY",
+        "root": "developer/policy/SUPPLY/",
+        "catalog": "developer/policy/index.yaml",
+        "indexed_documents": [
+          {
+            "policy_id": "MPD-SUPPLY-0001",
+            "path": "developer/policy/SUPPLY/MPD-SUPPLY-0001.yaml",
+            "index_status": "RETIRED",
+            "index_substatus": "Waiting",
+            "document_status_confirmation": "REQUIRED_BEFORE_MUTATION",
+            "ra_rac_aec_applicability": "UNRESOLVED"
+          }
+        ],
+        "unindexed_yaml": [
+          {
+            "path": "developer/policy/SUPPLY/MPD-SUPPLY-0002.yaml",
+            "classification": "UNINDEXED_POLICY_CANDIDATE",
+            "authority": "NOT_INFERRED"
+          }
+        ],
+        "all_family_policies_require_ra_rac_aec": false,
+        "binding_decision": "PER_POLICY_SEMANTIC_APPLICABILITY_UNRESOLVED",
+        "policy_write_allowed_by_this_record": false
+      }
+    ]
+  }
+}
