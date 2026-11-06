@@ -1,9 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:rbac:pp300:ra-list:schema:v1",
-  "title": "PTSIP RA_list (unresolved, fail closed)",
-  "$comment": "The root rejects profile instances while registration is unresolved. The draft projection checks structure only. A resolver must reject duplicate input keys and verify owner, declaration, and revision references.",
-  "not": {},
+  "title": "PTSIP RA_list (unresolved, unregistered)",
+  "$comment": "The root no longer rejects all inputs and does not establish an approved RA field structure. The draft projection is an optional, non-normative structural candidate. Contract activation remains UNREGISTERED and authorization remains prohibited in RA_list_contracts.json. A resolver must reject duplicate input keys and verify owner, declaration, and revision references.",
   "$defs": {
     "reference": {
       "type": "string",
