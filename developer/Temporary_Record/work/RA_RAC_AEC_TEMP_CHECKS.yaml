@@ -1,0 +1,14 @@
+group_id: "RA_RAC_AEC_TEMP_CHECKS"
+title_ko: "RA·RAC·AEC 임시 결정 검정 기준"
+owner_session_id: null
+steps:
+  - id: "RAEC-T01"
+    work_id: "RA_RAC_AEC_TEMP_CHECKS"
+    work_file: "developer/Temporary_Record/ra-rac-aec-temporary-checks-20261107.json"
+    status: "OPEN"
+    execution_mode: "ON_DEMAND"
+    user_decision_required: true
+    title_ko: "임시 기준으로 남은 정책 결정을 평가하고 사용자 결정을 요청"
+pending_tasks:
+  - "임시 기준 PASS와 정책 승인·계약 활성화를 혼동하지 않는다."
+  - "RA·RAC·AEC의 실제 소유자/평가 원본 등록과 신규 평가 엔진 정책 경계의 미결정을 확인한다."
