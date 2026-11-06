@@ -164,6 +164,26 @@
       "relationship": "ALREADY_REFERENCED_FROM_RA_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
       "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "SFP-ARCH-0004",
+      "policy_path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "meaning_pointer": "/authority_semantics/rac_aec_rego_original_contract_direction",
+      "contract_kind": "RAC",
+      "relationship": "ALREADY_REFERENCED_FROM_RAC_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+      "revision_ref": "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
+      "reverse_policy_binding": "NOT_APPLIED"
+    },
+    {
+      "policy_id": "SFP-ARCH-0004",
+      "policy_path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "meaning_pointer": "/authority_semantics/rac_aec_rego_original_contract_direction",
+      "contract_kind": "AEC",
+      "relationship": "ALREADY_REFERENCED_FROM_AEC_CONTRACT",
+      "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+      "revision_ref": "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
+      "reverse_policy_binding": "NOT_APPLIED"
     }
   ],
   "inventory": {
