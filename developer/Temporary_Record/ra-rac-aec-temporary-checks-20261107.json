@@ -1,0 +1,291 @@
+{
+  "record_type": "TEMPORARY_WORK_RECORD",
+  "work_id": "RA_RAC_AEC_TEMP_CHECKS",
+  "created_at": "2026-11-07",
+  "purpose_ko": "RA·RAC·AEC 신규 독립 계약과 정책 평가 엔진의 남은 정책 결정을 위한 임시 검정 기준. 정식 정책, 계약, 스키마, 실행 승인 또는 유효성 판정을 생성하지 않음.",
+  "scope": {
+    "repository": "Kinirin/PTSIP",
+    "source_head": "7a16e991bdc8cf679e0df02f36bdc1f33cb01b9f",
+    "target": [
+      "RA independent contract",
+      "RAC and AEC distinct evaluation contracts",
+      "independent policy evaluation engine",
+      "old Responsibilities_List.schema.json retirement"
+    ],
+    "excluded": [
+      "normative policy mutation",
+      "schema approval",
+      "automatic registry activation",
+      "authorization",
+      "new engine implementation",
+      "legacy compatibility adapter"
+    ],
+    "authority": "NONE",
+    "classification": "NON_NORMATIVE_REVIEW_AID",
+    "formal_policy_dependency": "FORBIDDEN"
+  },
+  "last_checkpoint": {
+    "source_head": "7a16e991bdc8cf679e0df02f36bdc1f33cb01b9f",
+    "criteria_creation": "USER_AUTHORIZED",
+    "criteria_content": "TEMPORARY_PROPOSAL",
+    "evaluation": "NOT_RUN"
+  },
+  "pending_tasks": [
+    "각 미결정 주제별 사용자 정책 결정",
+    "기준별 근거 수집과 반례 검정",
+    "승인 후에만 정식 정책 반영 및 별도 계획 수립"
+  ],
+  "work": {
+    "group_id": "RA_RAC_AEC_TEMP_CHECKS"
+  },
+  "review_contract": {
+    "outcomes": [
+      "PASS",
+      "FAIL",
+      "UNRESOLVED"
+    ],
+    "outcome_meanings": {
+      "PASS": "원본에 고정된 충분한 근거가 해당 임시 기준을 만족",
+      "FAIL": "확인된 근거가 해당 임시 기준을 위반",
+      "UNRESOLVED": "승인된 의미 또는 관측 근거 부족으로 결론 보류"
+    },
+    "default": "UNRESOLVED",
+    "all_checks_pass_grants_policy_approval": false,
+    "all_checks_pass_grants_execution_authority": false,
+    "implementation_or_activation_trigger": "NONE",
+    "missing_evidence_result": "UNRESOLVED",
+    "semantic_conflict_result": "UNRESOLVED_AND_USER_ESCALATION",
+    "owner_of_policy_decisions": "USER"
+  },
+  "checks": [
+    {
+      "id": "T-RA-01",
+      "domain": "RA",
+      "topic_ko": "RA 독립 책임 경계",
+      "decision_needed": "RA_BINDING_OWNERSHIP_AND_MEANING",
+      "evidence": [
+        "owner-declared binding scope",
+        "registered responsibility and authority sources",
+        "RAC/AEC references as separate contracts"
+      ],
+      "pass_if": [
+        "RA-owned binding meaning is explicit",
+        "policy/authority evaluation is not silently transferred to RA",
+        "no former Responsibility-Authority schema inheritance"
+      ],
+      "fail_if": [
+        "RA identity or meaning is inferred from field name or old profile",
+        "an unapproved owner or authority is fabricated"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-RA-02",
+      "domain": "RA",
+      "topic_ko": "RA 스키마 필드와 검증",
+      "decision_needed": "RA_FIELD_SCHEMA_AND_REQUIREDNESS",
+      "evidence": [
+        ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list.schema.json",
+        "proposed positive and negative RA fixtures",
+        "explicit approved field/requiredness decisions"
+      ],
+      "pass_if": [
+        "approved field semantics and requiredness have machine-verifiable checks",
+        "valid and invalid cases are distinguishable by the approved schema and resolver",
+        "duplicate keys and unresolved references are rejected by responsible verifier"
+      ],
+      "fail_if": [
+        "blanket-rejection removal is claimed as schema approval",
+        "root schema accepts every input yet a contract-valid PASS is claimed"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-RA-03",
+      "domain": "RA",
+      "topic_ko": "구 스키마 완전 의존성 제거",
+      "decision_needed": "LEGACY_SCHEMA_REFERENCE_RETIREMENT",
+      "evidence": [
+        "remaining imports/$ref/registry/validator references to Responsibilities_List.schema.json",
+        "impacted old-profile registration disposition",
+        "test results after reference cleanup"
+      ],
+      "pass_if": [
+        "the old schema has no active required references",
+        "target file can be deleted without dangling active references",
+        "new RA schema does not reuse the old schema as a dependency"
+      ],
+      "fail_if": [
+        "compatibility shim or cloned legacy schema becomes a required new RA dependency",
+        "old schema is deleted while an active consumer requires it"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-RAC-01",
+      "domain": "RAC",
+      "topic_ko": "RAC 조건 소유자와 평가 원본",
+      "decision_needed": "RAC_OWNER_RESPONSIBILITY_REGO_BINDING",
+      "evidence": [
+        ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+        "owner-designated condition identity and responsibility declaration",
+        "approved exact Rego source revision and entrypoint",
+        "src/policy/ARCH/SFP-ARCH-0001.yaml"
+      ],
+      "pass_if": [
+        "RAC condition ID and designated owner resolve exactly",
+        "assigned responsibility maps to a registered declaration",
+        "Rego source and entrypoint resolve to the exact approved revision"
+      ],
+      "fail_if": [
+        "RAC owner is assumed from a policy-family name",
+        "RAC activation or assignment authority is inferred from schema validation"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-AEC-01",
+      "domain": "AEC",
+      "topic_ko": "AEC 조건 소유자와 권한 행사 경계",
+      "decision_needed": "AEC_OWNER_AUTHORITY_RAC_REGO_BINDING",
+      "evidence": [
+        ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+        "registered authority owner and policy basis",
+        "linked RAC identity and exact revision",
+        "approved Rego source and entrypoint",
+        "src/policy/GOV/SFP-GOV-0001.yaml",
+        "src/policy/CTRL/SFP-CTRL-0001.yaml"
+      ],
+      "pass_if": [
+        "AEC condition owner and authority source resolve exactly",
+        "the RAC dependency is revision-pinned and evaluated independently",
+        "AEC computation does not itself grant operation authorization"
+      ],
+      "fail_if": [
+        "AEC owner inferred from GOV filename or relationship label",
+        "an AEC evaluation result bypasses a current authority/freshness gate"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-REG-01",
+      "domain": "DISCOVERY",
+      "topic_ko": "중앙 색인과 원본 소유권",
+      "decision_needed": "CANONICAL_IDENTITY_REGISTRY_AND_RESOLUTION",
+      "evidence": [
+        ".ptsip/index.json",
+        ".ptsip/contracts/compile-sealed-rbac/candidate-index.json",
+        "source-owned exact identity and revision declarations",
+        "resolver behavior for missing/duplicate/stale references"
+      ],
+      "pass_if": [
+        "registered identity resolves to an independent source owner and exact revision",
+        "missing, duplicate, or conflicting source/owner bindings do not resolve to a valid decision",
+        "a derived index does not create policy authority"
+      ],
+      "fail_if": [
+        "draft index is treated as an activated canonical registry",
+        "file path similarity is used to infer ownership"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-REG-02",
+      "domain": "EVALUATION",
+      "topic_ko": "Rego 평가 의미와 반례 검정",
+      "decision_needed": "REGO_RESULT_CONTRACT_AND_EVIDENCE",
+      "evidence": [
+        "src/policy/ARCH/SFP-ARCH-0004.yaml",
+        "actual Rego source and runtime version",
+        "positive, negative, missing-evidence, malformed-contract examples",
+        "source-bound evaluation evidence"
+      ],
+      "pass_if": [
+        "the same registered source/revision gives reproducible evaluation",
+        "condition-unsatisfied and missing-evidence scenarios remain distinguishable",
+        "actual Rego runtime behavior is verified, not inferred from Python-only simulation"
+      ],
+      "fail_if": [
+        "tests are asserted to confer policy approval",
+        "missing evidence silently becomes successful authorization"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-ENG-01",
+      "domain": "ENGINE",
+      "topic_ko": "독립 정책 평가 엔진의 신규 책임",
+      "decision_needed": "EVALUATION_ENGINE_AUTHORITY_AND_INTERFACE",
+      "evidence": [
+        "src/policy/ARCH/SFP-ARCH-0004.yaml",
+        "src/ptsip/engines/index.json",
+        "policy evaluation scope and cross-engine boundary proposal",
+        "CNTR interface and registration decision"
+      ],
+      "pass_if": [
+        "the seven existing engines keep their independent ownership",
+        "the new evaluator owns Rego evaluation computation without owning normative policy approval",
+        "official engine additions and capability registration have separately resolved policy authority"
+      ],
+      "fail_if": [
+        "Rego core ownership is silently forced onto a prior engine",
+        "the new engine is registered or activated solely by this temporary checklist"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    },
+    {
+      "id": "T-ACT-01",
+      "domain": "AUTHORIZATION",
+      "topic_ko": "계약 정의·등록·실행 권위 분리",
+      "decision_needed": "ACTIVATION_AND_AUTHORIZATION_GATES",
+      "evidence": [
+        ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+        ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+        ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+        "authoritative policy approval and current registration evidence"
+      ],
+      "pass_if": [
+        "definition, structural validity, registration, evaluation and authorization remain distinct",
+        "unresolved/unregistered contracts are not advertised as active",
+        "execution eligibility is decided only by the responsible currently effective authority"
+      ],
+      "fail_if": [
+        "schema or temporary criterion PASS is treated as permission to exercise authority",
+        "UNREGISTERED contract is activated without authorized transition"
+      ],
+      "result": "UNRESOLVED",
+      "evidence_result": "NOT_COLLECTED",
+      "decision_status": "UNDECIDED"
+    }
+  ],
+  "traceability": {
+    "active_basis": [
+      "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "src/policy/GOV/SFP-GOV-0001.yaml",
+      "src/policy/CTRL/SFP-CTRL-0001.yaml",
+      "src/policy/CNTR/SFP-CNTR-0005.yaml",
+      "developer/policy/GOV/MPD-GOV-0006.yaml"
+    ],
+    "old_profile": "REFERENCE_ONLY_NON_AUTHORITY_FOR_NEW_RA",
+    "old_schema": "TARGET_OF_APPROVED_RETIREMENT_NOT_INHERITED",
+    "official_reverse_dependency": "FORBIDDEN",
+    "effective_policy_status_must_be_rechecked_before_normative_action": true
+  }
+}
