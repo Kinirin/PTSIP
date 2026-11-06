@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:rbac:aec-declaration",
+  "title": "Repository-local AEC owner declaration",
+  "$comment": "Draft declaration shape. Registration must resolve the designated owner, authority, declared RAC link, and exact Rego source independently. Structural validation does not authorize exercise.",
+  "type": "object",
+  "properties": {
+    "condition": {
+      "type": "object",
+      "properties": {
+        "ID": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["ID", "name"]
+    },
+    "owner": {
+      "type": "string",
+      "description": "Registration reference for the designated AEC condition owner."
+    },
+    "authority": {
+      "type": "string",
+      "description": "Registered authority to which the exercise condition applies."
+    },
+    "required_rac": {
+      "type": "string",
+      "description": "Registered RAC condition linked by the AEC owner. The exercise request pins the RAC contract revision."
+    },
+    "operation": {
+      "type": "string",
+      "description": "Registered operation for which exercise is evaluated."
+    },
+    "target_type": {
+      "type": "string",
+      "description": "Registered type of the operation target."
+    },
+    "rego": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Reference to the approved exact Rego source revision."
+        },
+        "entrypoint": {
+          "type": "string",
+          "description": "Entry point for the exercise condition in that source."
+        }
+      }
+    }
+  },
+  "required": ["condition"]
+}

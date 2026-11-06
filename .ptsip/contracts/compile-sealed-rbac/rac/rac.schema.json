@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:rbac:rac-declaration",
+  "title": "Repository-local RAC owner declaration",
+  "$comment": "Draft declaration shape. Registration must resolve the designated owner, responsibility, and exact Rego source independently. Structural validation does not authorize assignment.",
+  "type": "object",
+  "properties": {
+    "condition": {
+      "type": "object",
+      "properties": {
+        "ID": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["ID", "name"]
+    },
+    "owner": {
+      "type": "string",
+      "description": "Registration reference for the designated RAC condition owner."
+    },
+    "responsibility": {
+      "type": "string",
+      "description": "Registered responsibility to which the assignment condition applies."
+    },
+    "rego": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Reference to the approved exact Rego source revision."
+        },
+        "entrypoint": {
+          "type": "string",
+          "description": "Entry point for the assignment condition in that source."
+        }
+      }
+    }
+  },
+  "required": ["condition"]
+}
