@@ -1,0 +1,57 @@
+record_type: TEMPORARY_WORK_RECORD
+work_id: RA_RAC_AEC_FAMILY_INTEGRATION
+created_at: "2026-11-07"
+purpose_ko: "RA·RAC·AEC 계약을 두 정책 영역의 14개 Family 문서에 의미별로 반영하기 위한 비규범적 임시 작업 기준"
+scope:
+  repository: Kinirin/PTSIP
+  reference_branch: main
+  baseline_head: "00da5b5c517bcaf561ad8c95a11f66ded198bf03"
+  roots:
+    - src/policy/
+    - developer/policy/
+  policy_family_count: 14
+  policy_plane_count: 2
+  authority: NONE
+  formal_policy_dependency: FORBIDDEN
+last_checkpoint:
+  reference_head: "00da5b5c517bcaf561ad8c95a11f66ded198bf03"
+  status: TEMPORARY_POLICY_DIRECTION_USER_AUTHORIZED
+  normative_policy_edits: NOT_PERFORMED
+pending_tasks:
+  - "개별 정책의 실제 의미와 계약 적용 관계를 검정한다"
+  - "RAC/AEC 계약 등록·활성 상태와 무관하게 임의 규범 참조를 추가하지 않는다"
+  - "정식 문서 적용 필드와 검증 경계를 정책별로 확정한다"
+work:
+  group_id: RA_RAC_AEC_FAMILY_INTEGRATION
+temporary_policy:
+  authority: NONE
+  contract_ref: "developer/Temporary_Record/ra-rac-aec-family-integration-contract-20261107.json"
+  linked_existing_review_ref: "developer/Temporary_Record/ra-rac-aec-temporary-checks-20261107.json"
+  rules:
+    - id: TEMP-PCI-01
+      subject: POLICY_AUTHORITY_SEPARATION
+      requirement: "Support와 Developer는 독립적으로 소유한 정책 의미와 상태를 보존하고 서로의 권위를 승계하지 않는다"
+    - id: TEMP-PCI-02
+      subject: RESPONSIBILITY_SCOPED_USAGE
+      requirement: "각 정책의 실제 의미에 필요한 RA·RAC·AEC 계약만 연결한다. 28개 디렉터리에 대한 일괄 삽입은 금지한다"
+    - id: TEMP-PCI-03
+      subject: SEMANTIC_CONTRACT_BOUNDARY
+      requirement: "RA는 관계 선언, RAC는 책임 배정 조건, AEC는 권한 행사 조건을 구분하여 검토하고 Rego 계산은 정책 승인 또는 실행 허가와 혼동하지 않는다"
+    - id: TEMP-PCI-04
+      subject: EXACT_SOURCE_REFERENCE
+      requirement: "정책 ID·항목 포인터·원본 리비전·유효 상태·계약 스키마를 모두 확인한 경우에만 정식 반영 후보를 제시한다"
+    - id: TEMP-PCI-05
+      subject: LEGACY_ISOLATION
+      requirement: "새 RA 계약은 Responsibility-Authority-list.yaml과 Responsibilities_List.schema.json에 의존하지 않으며 기존 스키마는 참조 정리 후 완전히 삭제한다"
+    - id: TEMP-PCI-06
+      subject: NO_TEMPORARY_AUTHORITY_PROMOTION
+      requirement: "임시 기록은 정식 정책·계약의 참조 입력 또는 효력 근거가 아니며, 미등록·RETIRED·DRAFT 정책을 활성화하지 않는다"
+  conflict_handling:
+    resolution_options: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
+    owner: USER
+    auto_resolution: FORBIDDEN
+  verification:
+    per_policy_applicability: REQUIRED
+    actual_identity_status_check: REQUIRED
+    reference_validation_after_mutation: REQUIRED
+    test_result_confers_authority: false
