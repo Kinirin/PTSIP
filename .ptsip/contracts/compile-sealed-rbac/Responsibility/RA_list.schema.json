@@ -2,6 +2,55 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ptsip:rbac:pp300:ra-list:schema:v1",
   "title": "PTSIP RA_list (unresolved, fail closed)",
-  "$comment": "Schema not defined or activated. No instance is valid until responsibilities and field contracts are separately approved.",
-  "not": {}
+  "$comment": "The root rejects profile instances while registration is unresolved. The draft projection checks structure only. A resolver must reject duplicate input keys and verify owner, declaration, and revision references.",
+  "not": {},
+  "$defs": {
+    "reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "draft_projection": {
+      "type": "object",
+      "required": ["bindings"],
+      "properties": {
+        "bindings": {
+          "type": "object",
+          "description": "The outer key is the registered owner of the link. The inner key is the stable binding key declared by that owner. Together they identify the RA entry independently of its revision.",
+          "propertyNames": { "$ref": "#/$defs/reference" },
+          "additionalProperties": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": { "$ref": "#/$defs/reference" },
+            "additionalProperties": { "$ref": "#/$defs/binding" }
+          }
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "required": ["revision", "responsibility", "authority", "rac", "aec"],
+      "properties": {
+        "revision": {
+          "$ref": "#/$defs/reference",
+          "description": "Exact revision of the owner-declared binding."
+        },
+        "responsibility": {
+          "$ref": "#/$defs/reference",
+          "description": "Registered responsibility assigned by the linked RAC."
+        },
+        "authority": {
+          "$ref": "#/$defs/reference",
+          "description": "Registered authority evaluated by the linked AEC."
+        },
+        "rac": {
+          "$ref": "#/$defs/reference",
+          "description": "Exact revision of the registered RAC condition declaration."
+        },
+        "aec": {
+          "$ref": "#/$defs/reference",
+          "description": "Exact revision of the registered AEC condition declaration."
+        }
+      }
+    }
+  }
 }

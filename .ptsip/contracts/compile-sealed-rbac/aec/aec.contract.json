@@ -1,6 +1,25 @@
 {
   "title": "Authority Exercise Conditions",
   "declaration_schema": "aec.schema.json",
+  "policy_basis": {
+    "SUP_SUBJECT_ROLE_AND_DECISION_MANDATE": {
+      "source_ref": "src/policy/GOV/SFP-GOV-0001.yaml",
+      "item_ref": "/authority_semantics/family_definition/kernel_definitions/0",
+      "revision_ref": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7"
+    },
+    "SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE": {
+      "source_ref": "src/policy/GOV/SFP-GOV-0001.yaml",
+      "item_ref": "/authority_semantics/family_definition/kernel_definitions/1",
+      "revision_ref": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7"
+    }
+  },
+  "execution_boundary": {
+    "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE": {
+      "source_ref": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+      "item_ref": "/authority_semantics/family_definition/kernel_definitions/0",
+      "revision_ref": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7"
+    }
+  },
   "activation_state": "UNREGISTERED",
   "authorization_permitted": false
 }

@@ -1,6 +1,13 @@
 {
   "title": "Responsibility Assignment Conditions",
   "declaration_schema": "rac.schema.json",
+  "policy_basis": {
+    "SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS": {
+      "source_ref": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "item_ref": "/authority_semantics/family_definition/kernel_definitions/1",
+      "revision_ref": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7"
+    }
+  },
   "activation_state": "UNREGISTERED",
   "authorization_permitted": false
 }

@@ -2,6 +2,24 @@
   "profile_version": "pp.3.00",
   "profile_resource": ".ptsip/profiles/rbac/RA_list.yaml",
   "schema_resource": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list.schema.json",
+  "draft_schema_resource": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list.schema.json#/$defs/draft_projection",
+  "development_basis": {
+    "INDEPENDENT-CONTRACT": {
+      "source_ref": "developer/policy/GOV/MPD-GOV-0006.yaml",
+      "item_ref": "/Policy_Rules/Definition/15",
+      "revision_ref": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7"
+    },
+    "DISTRIBUTED-RBAC-VAL": {
+      "source_ref": "developer/policy/GOV/MPD-GOV-0006.yaml",
+      "item_ref": "/Policy_Rules/Definition/16",
+      "revision_ref": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7"
+    },
+    "RBAC-FIELD-CONTRACT": {
+      "source_ref": "developer/policy/GOV/MPD-GOV-0006.yaml",
+      "item_ref": "/Policy_Rules/Definition/17",
+      "revision_ref": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7"
+    }
+  },
   "definition_state": "UNRESOLVED",
   "activation_state": "UNREGISTERED",
   "effective_policy_override": false,
