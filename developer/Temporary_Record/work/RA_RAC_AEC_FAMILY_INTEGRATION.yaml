@@ -1,0 +1,29 @@
+group_id: "RA_RAC_AEC_FAMILY_INTEGRATION"
+title_ko: "정식 정책 Family별 RA·RAC·AEC 계약 연결 검토"
+owner_session_id: null
+steps:
+  - id: "RAEC-PCI-01"
+    work_id: "RA_RAC_AEC_FAMILY_INTEGRATION"
+    work_file: "developer/Temporary_Record/ra-rac-aec-family-integration-policy-20261107.yaml"
+    status: "OPEN"
+    execution_mode: "ON_DEMAND"
+    user_decision_required: false
+    title_ko: "28개 Family의 색인 및 계약 원본 일치 검정"
+  - id: "RAEC-PCI-02"
+    work_id: "RA_RAC_AEC_FAMILY_INTEGRATION"
+    work_file: "developer/Temporary_Record/ra-rac-aec-family-integration-contract-20261107.json"
+    status: "OPEN"
+    execution_mode: "ON_DEMAND"
+    user_decision_required: true
+    title_ko: "정책별 계약 사용 의미 및 정확한 반영 위치 결정"
+  - id: "RAEC-PCI-03"
+    work_id: "RA_RAC_AEC_FAMILY_INTEGRATION"
+    work_file: "developer/Temporary_Record/ra-rac-aec-family-integration-contract-20261107.json"
+    status: "OPEN"
+    execution_mode: "ON_DEMAND"
+    user_decision_required: true
+    title_ko: "승인된 정책·계약 필드만 정식 정책에 반영하고 검증"
+pending_tasks:
+  - "미등록 개발 정책 후보 11개와 미등록 보조 YAML 1개를 기존 색인의 실효 권위로 승격하지 않는다."
+  - "등록된 정책 99개의 적용 적합성을 문서의 실제 의미와 권위 상태로 개별 확인한다."
+  - "RA/RAC/AEC 조건과 평가 엔진의 실행 권한은 정식 등록 결정 전까지 활성화하지 않는다."
