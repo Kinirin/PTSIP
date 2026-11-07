@@ -1,0 +1,46 @@
+{
+  "format": "ptsip-unified-policy-authoring-direction/v1",
+  "artifact_role": "USER_APPROVED_REFORM_DIRECTION",
+  "owner_repository": "Kinirin/PTSIP",
+  "baseline_head": "d25301ff970868f818af25acf7140fa0f6fdf2cb",
+  "recorded_on": "2026-11-07",
+  "decisions": {
+    "architecture": {
+      "statement": "KEEP_LATEST unifies Developer and Support Feature policy documents under one machine contract family while retaining each plane and Family normative responsibility.",
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "date": "2026-11-07",
+      "conflict_resolution": "KEEP_LATEST",
+      "document_structure": "UNIFIED",
+      "scope": [
+        "PTSIP_DEVELOPER_POLICY",
+        "PTSIP_SUPPORT_FEATURE"
+      ],
+      "existing_seven_engines": "INDEPENDENT",
+      "policy_evaluation_engine": "SEPARATE_RESPONSIBILITY",
+      "rule_binding": "DIRECT_PER_RULE",
+      "runtime_activation_authorized": false
+    },
+    "contracts": {
+      "statement": "Each policy rule declares its RA, RAC and AEC applicability and direct references. Evaluation eligibility requires the exact registered owner, contract ID and revision; execution authorization is checked separately.",
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "date": "2026-11-07",
+      "unregistered_evaluation_effect": "NONE",
+      "unresolved_semantics": "UNRESOLVED",
+      "candidate_schema_validation": "STRUCTURAL_ONLY",
+      "temporary_record_runtime_dependency": "FORBIDDEN",
+      "condition_source": "REGO_SOURCE",
+      "legacy_ra_schema_inheritance": "FORBIDDEN",
+      "runtime_activation_authorized": false
+    },
+    "governance": {
+      "statement": "KEEP_LATEST authorizes immediate staged structural migration of all policy documents in both planes and all fourteen Families. Preserve policy identity, original lifecycle and meaning; retain unresolved decisions explicitly and verify each document before and after conversion.",
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "date": "2026-11-07",
+      "policy_status_transition_authorized": false,
+      "retired_reactivation_authorized": false,
+      "candidate_contract_creation_authorized": true,
+      "normative_approval_by_schema_validation": false,
+      "implementation_scope": "COMMON_CONTRACT_STRUCTURE_AND_REGISTRATION_BASED_EVALUATION_PREPARATION"
+    }
+  }
+}

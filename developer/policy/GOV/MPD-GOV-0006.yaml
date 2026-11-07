@@ -17,6 +17,9 @@ Policy_Rules:
     - id: ORIGINAL
       source_ref: developer/policy/GOV/MPD-GOV-0006.yaml
       revision_ref: git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0
+    - id: REFORM
+      source_ref: .ptsip/contracts/policy/unified/authoring-decision.json
+      revision_ref: sha256:70cbe2f5fda248c2865e6e604704e0ae5480e1e8183c17f640c66a2cabaa5241
     source_items:
     - item_id: RULE-0001
       document_id: ORIGINAL
@@ -182,6 +185,10 @@ Policy_Rules:
       document_id: ORIGINAL
       item_ref: /Policy_Rules/Evaluation/criteria/evidence/5
       original_role: criterion
+    - item_id: REFORM-GOV
+      document_id: REFORM
+      item_ref: /decisions/governance
+      original_role: statement
     rules:
     - id: R-ID-8D95436233BE6DCD5E90B2AAA986052C
       rule: FLATTEN-POLICY-STATU
@@ -489,6 +496,33 @@ Policy_Rules:
         state: UNRESOLVED
         basis_ref_ids: *id001
       unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding
+    - requirement_id: REQ-UNIFIED-POLICY-REFORM
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - REFORM-GOV
+      - purpose: SCOPE
+        state: UNRESOLVED
+        basis_ref_ids:
+        - REFORM-GOV
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - REFORM-GOV
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids:
+        - REFORM-GOV
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids:
+        - REFORM-GOV
+      unresolved_fields:
+      - source_bindings.SCOPE
       - source_bindings.TARGET
       - source_bindings.CRITERION
       - evidence_requirement_binding
