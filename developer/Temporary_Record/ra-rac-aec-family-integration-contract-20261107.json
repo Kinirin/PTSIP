@@ -31,7 +31,10 @@
     "policy_document_changes": "NONE",
     "approved_binding_model": "A_EVERY_RULE_DIRECT_CONTRACT_BINDING",
     "policy_schema_changes": "NONE",
-    "latest_user_instruction": "KEEP_LATEST_UNIFIED_STRUCTURE_STAGED_EXECUTION_2026_11_07"
+    "latest_user_instruction": "KEEP_LATEST_UNIFIED_STRUCTURE_STAGED_EXECUTION_2026_11_07",
+    "applicability_delegation_synced_at_head": "d4a7ca015af91a95d49cfa9e33b0ddff8b9201d4",
+    "applicability_delegation_scope": "TEMPORARY_AUTO_CANDIDATE_ONLY",
+    "canonical_policy_or_schema_mutation": "NOT_PERFORMED"
   },
   "pending_tasks": [
     "Resolve each rule's actual need to consume a contract independently of its use as a contract policy basis.",
@@ -1790,5 +1793,42 @@
         "code": "SUPPORT_ROOT_FAMILY_KERNEL_MISMATCH"
       }
     }
+  },
+  "temporary_rule_applicability_delegation": {
+    "approval_source": "PROJECT_OWNER_EXPLICIT",
+    "approval_type": "TEMPORARY_AUTOMATED_DECISION_DELEGATION",
+    "approved_on": "2026-11-07",
+    "scope": "PER_POLICY_RULE_RA_RAC_AEC_APPLICABILITY_CANDIDATE_CLASSIFICATION",
+    "user_redecision_per_rule": "NOT_REQUIRED",
+    "decision_owner": "DELEGATED_CODING_AGENT_AUTOMATION",
+    "decision_inputs": [
+      "EFFECTIVE_POLICY_SEMANTICS",
+      "RULE_SOURCE_IDENTITY_AND_EXACT_REVISION",
+      "REGISTERED_OR_DRAFT_RA_RAC_AEC_CONTRACT_SEMANTIC_BOUNDARIES",
+      "MACHINE_VERIFIABLE_EVIDENCE"
+    ],
+    "output_target": "PROVISIONAL_EVIDENCE_BOUND_CLASSIFICATIONS",
+    "per_binding_outputs": [
+      "DECLARED_CANDIDATE",
+      "NOT_APPLICABLE_CANDIDATE",
+      "UNRESOLVED"
+    ],
+    "declared_candidate_requires_registration_before_evaluation": true,
+    "classification_may_infer_from_field_names_only": false,
+    "classification_may_use_legacy_migration_initialization_as_authority": false,
+    "classification_requires_source_and_evidence": true,
+    "unexplained_or_conflicting_evidence": "UNRESOLVED_NO_AUTOMATIC_AUTHORITY",
+    "candidate_state_is_normative_approval": false,
+    "automated_normative_policy_mutation_authorized": false,
+    "runtime_activation_authorized": false,
+    "policy_lifecycle_transition_authorized": false,
+    "authorized_engine_implementation": "NOT_DECIDED_BY_DELEGATION",
+    "implementation_language_preference": "GO",
+    "deprecated_migration_tool": "migrate_unified.py",
+    "deprecated_migration_tool_as_applicability_authority": false,
+    "design_direction_source": "developer/policy/contracts/rbac-hybrid-conditions-direction.v1.json",
+    "design_direction_as_per_rule_decision_authority": false,
+    "formal_activation_and_registration": "SEPARATE_POLICY_AUTHORITY",
+    "note_ko": "사용자가 규칙별 RA·RAC·AEC 적용 여부의 임시 자동 후보 판단을 위임함. 이 위임은 개별 규칙마다 승인을 다시 묻지 않아도 된다는 뜻이며 정식 계약 등록·평가 효력·실행 권한까지 위임하지 않음."
   }
 }
