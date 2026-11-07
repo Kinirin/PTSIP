@@ -28,7 +28,9 @@
     "applicability_results": "NOT_EVALUATED",
     "latest_review_head": "7fe83fd95e40e887e0ff0a53feeceaf4ca30645f",
     "review_status": "SCHEMA_FIELD_AND_APPLICABILITY_POLICY_DECISION_PENDING",
-    "policy_document_changes": "NONE"
+    "policy_document_changes": "NONE",
+    "approved_binding_model": "A_EVERY_RULE_DIRECT_CONTRACT_BINDING",
+    "policy_schema_changes": "NONE"
   },
   "pending_tasks": [
     "각 문서의 실제 정책 ID·상태 및 규범 의미 검토",
@@ -1427,7 +1429,7 @@
           "LARGE_POLICY_CHANGE_SURFACE",
           "DUPLICATE_BINDING_MAINTENANCE"
         ],
-        "decision": "UNRESOLVED"
+        "decision": "USER_APPROVED"
       },
       {
         "id": "B",
@@ -1441,7 +1443,7 @@
           "APPROVED_POLICY_LOCAL_REFERENCE_FIELD_REQUIRED",
           "PER_POLICY_APPLICABILITY_REVIEW_REQUIRED"
         ],
-        "decision": "UNRESOLVED"
+        "decision": "NOT_SELECTED"
       },
       {
         "id": "C",
@@ -1454,21 +1456,41 @@
           "EXTERNAL_MAPPING_MUST_REMAIN_IN_SYNC",
           "IN_DOCUMENT_RULE_LEVEL_LINKS_LESS_OBVIOUS"
         ],
-        "decision": "UNRESOLVED"
+        "decision": "NOT_SELECTED"
       }
     ],
     "decision_request": {
       "id": "POLICY_CONTRACT_BINDING_MODEL",
-      "status": "UNRESOLVED_USER_DECISION",
-      "recommendation": "B",
-      "user_direction_required_before_policy_schema_and_file_mutation": true,
+      "status": "USER_APPROVED_DIRECTION",
+      "recommendation": "A_USER_SELECTED",
+      "user_direction_required_before_policy_schema_and_file_mutation": false,
       "scope": "IN_POLICY_DOCUMENT_CONTRACT_USAGE_AND_RESPONSIBILITY_BINDING",
       "not_decided": [
         "POLICY_LOCAL_FIELD_NAME",
         "RAC_AEC_APPLICABILITY_PER_RULE",
         "EVALUATION_RESULT_USAGE",
         "ACTIVATION"
-      ]
+      ],
+      "selected": "A",
+      "selected_direction": "EVERY_RULE_DIRECT_CONTRACT_BINDING",
+      "selected_semantics": "DIRECT_RA_RAC_AEC_CONTRACT_REFERENCE_PER_SEMANTICALLY_APPLICABLE_POLICY_RULE",
+      "unresolved_subordinate_decisions": [
+        "DIRECT_BINDING_SEMANTIC_ROLE_PER_RULE",
+        "REFERENCE_AUTHORITY_AND_SOURCE_OF_TRUTH",
+        "UNREGISTERED_CONTRACT_BINDING_EFFECT",
+        "POLICY_LOCAL_FIELD_NAME_AND_LOCATION_PER_PLANE",
+        "PER_RULE_APPLICABILITY_AND_EXISTING_POLICY_LIFECYCLE",
+        "EVALUATION_RESULT_USAGE",
+        "ACTIVATION"
+      ],
+      "final_schema_change_authorized": false,
+      "mass_policy_document_mutation_authorized": false,
+      "formal_policy_recording_pending_owner_resolution": true,
+      "provenance": {
+        "source": "PROJECT_OWNER_EXPLICIT",
+        "date": "2026-11-07",
+        "phase": "ABSTRACT_BINDING_MODEL_SELECTION"
+      }
     }
   }
 }
