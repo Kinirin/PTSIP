@@ -57,7 +57,14 @@ def main() -> int:
                 path = entry["path"]
                 if plane == "PTSIP_SUPPORT_FEATURE":
                     path = "src/policy/" + path
-                if not path.startswith(("src/policy/", "developer/policy/")) or ".." in Path(path).parts:
+                parts = Path(path).parts
+                # Match the exact two-plane / fourteen-Family migration scope.
+                # Root-level BOUND records belong to an independent owner.
+                if len(parts) != 4:
+                    continue
+                if (parts[0] not in ("src", "developer") or parts[1] != "policy"
+                        or not path.startswith(("src/policy/", "developer/policy/"))
+                        or ".." in parts):
                     raise ValueError("POLICY_INDEX_PATH_OUTSIDE_SCOPE: " + path)
                 if policy_id in seen:
                     raise ValueError("DUPLICATE_INDEXED_POLICY: " + policy_id)
