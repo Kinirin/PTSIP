@@ -115,7 +115,7 @@ func TestBuildPreservesUnresolvedTargetAndOnlySelectedSourceSection(t *testing.T
 	}
 }
 
-func TestCurrentV2ReviewResolvesSchemaURNAndKeepsHistoryExplicit(t *testing.T) {
+func TestCurrentUnifiedReviewResolvesCandidateAndKeepsHistoryExplicit(t *testing.T) {
 	root, err := filepath.Abs("../../../../..")
 	if err != nil {
 		t.Fatal(err)
@@ -127,10 +127,21 @@ func TestCurrentV2ReviewResolvesSchemaURNAndKeepsHistoryExplicit(t *testing.T) {
 	}
 	target := packet.Targets[0]
 	if target.Selection == nil || target.SelectionProblem != "" {
-		t.Fatalf("v2 selection failed: %+v", target)
+		t.Fatalf("unified selection failed: %+v", target)
 	}
-	if target.Selection.ContractRefs["family_fields"] != "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/RECORD" {
-		t.Fatalf("wrong selected Family: %+v", target.Selection)
+	selection := target.Selection
+	if selection.PolicyKind != "PTSIP_DEVELOPER_POLICY" || selection.RootFamily != "RECORD" ||
+		selection.SchemaIDs["public"] != "urn:ptsip:candidate:policy:unified:v3" ||
+		selection.ContractRefs["public_schema"] != ".ptsip/contracts/policy/unified/Unified_Policy.schema.json" ||
+		selection.ContractRefs["unified_registry"] != ".ptsip/contracts/policy/unified/index.json" {
+		t.Fatalf("wrong registered unified selection: %+v", selection)
+	}
+	if _, legacyFamily := selection.ContractRefs["family_fields"]; legacyFamily {
+		t.Fatalf("legacy v2 Family contract was selected for a unified document: %+v", selection)
+	}
+	if selection.StructuralState != "CANDIDATE" || selection.PolicyConformance != "NOT_ASSERTED" ||
+		selection.ExecutionAuthorized || selection.MutationAuthorized {
+		t.Fatalf("candidate selection claimed normative authority: %+v", selection)
 	}
 	for _, ref := range target.Selection.ContractRefs {
 		if strings.HasPrefix(ref, ".ptsip/contracts/policy/Rules/") {
