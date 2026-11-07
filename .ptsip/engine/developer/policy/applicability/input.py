@@ -45,6 +45,12 @@ def main() -> int:
                 "activation_state": contract["activation_state"],
                 "definition_state": contract.get("definition_state", ""),
             }
+        family_registry = json.loads(
+            (root / ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json").read_text(encoding="utf-8")
+        )
+        families = set(family_registry["family_routes"])
+        if len(families) != 14:
+            raise ValueError("ROOT_FAMILY_REGISTRY_MISMATCH")
         policies = []
         seen = set()
         for plane, index_path in (
@@ -60,7 +66,7 @@ def main() -> int:
                 parts = Path(path).parts
                 # Match the exact two-plane / fourteen-Family migration scope.
                 # Root-level BOUND records belong to an independent owner.
-                if len(parts) != 4:
+                if len(parts) != 4 or parts[2] not in families:
                     continue
                 if (parts[0] not in ("src", "developer") or parts[1] != "policy"
                         or not path.startswith(("src/policy/", "developer/policy/"))
