@@ -1350,8 +1350,8 @@ Policy_Content:
     source_pointer: /authority_subject
     value:
       id: SUP_EXPLICIT_PROFILE_AUTHORITY_MIGRATION
-      statement: consumer의 기존 profile, context 및 authority 상태에서 명시된 target 의미로 이동하는 변경 대응과 compatibility 및 staged migration을
-        소유한다.
+      statement: consumer의 기존 profile, context 및 authority 상태에서 명시된 target 의미로 이동하는 변경 대응과 compatibility 및 staged
+        migration 흐름을 소유한다. 필요한 작업 책임은 등록된 RA 식별자로 참조하며 RAC 연결과 AEC 권한 조건을 CHANGE에 중복 선언하지 않는다.
   - id: SRC-0006
     source_pointer: /exclusive_kernel
     value:
@@ -1374,8 +1374,9 @@ Policy_Content:
     source_pointer: /authority_semantics/family_definition/kernel_definitions/1
     value:
       id: SUP_COMPATIBILITY_ORDER_AND_RETIREMENT
-      statement: 명시적으로 등록된 migration 경로, 호환 입력의 범위, 선행 validation 및 legacy retirement 조건을 정한다. 문서나 인접 version에서 누락된 hop을 추론하지
-        않는다.
+      statement: 명시적으로 등록된 migration 경로와 호환 입력 범위를 식별하고 선행 validation 또는 legacy retirement가 필요한 경우
+        RA_list.yaml에 등록된 해당 RA 책임을 참조하여 호출한다. 폐기 조건과 RAC 연결 및 AEC 권한 행사 조건은 CHANGE가 정의하지 않으며 RA 책임 선언에 따른다.
+        문서나 인접 version에서 누락된 hop을 추론하지 않는다.
       non_substitutability: CNTR의 호환 약속이나 OPS의 회복 절차만으로 semantic replacement와 legacy deletion이 허용되지 않는다.
   - id: SRC-0010
     source_pointer: /authority_semantics/semantic_unit_a917c21c1554
@@ -1785,7 +1786,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/CHANGE/SFP-CHANGE-0001.yaml
-    sha256: ea07d222a072e451327bddf20ef4c2a2ebac25db5877b1cf57337d73a56a5bdf
+    sha256: 0142d478d040b16789e93ed83c920a775f689b323bf9233bf0f5ba05565a6a30
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
