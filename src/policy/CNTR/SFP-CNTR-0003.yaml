@@ -1,54 +1,248 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: CNTR
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-CNTR-0003
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CNTR
   title: CNTR authority (RETIRED source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-authority_subject:
-  id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
-  statement: 설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition
-    및 호환 보장을 소유한다.
-exclusive_kernel:
-- SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
-- SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
-authority_contract:
-  authority_type: ROOT_FAMILY_CNTR
-  schema_id: ptsip.governance/root-family/cntr
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
-      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped
-        contract로 명시한다.
-      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이
-        지원되는 계약을 만들 수 없다.
-    - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
-      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다.
-        미등록 alias나 capability는 실행 계약이 아니다.
-      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime
-        persistence를 활성 지원 계약으로 바꾸지 못한다.
-  semantic_unit_a541e1d8fdee:
-  - PURPOSE
-  - TARGET
-  - FORMULA
-  - VARIABLES
-  - POLICY
-  - RUNNER
-  semantic_unit_1999fcdb1003: FORMULA
-  semantic_unit_d71bbd17838d: false
-  semantic_unit_05d2c4c05b8e: true
-  semantic_unit_571db38c09b9:
-    shipped: true
-    runtime_surface:
-    - src/vpms/**
-  semantic_unit_afbfbdc1cc69:
-    authority_type: VPMS_VERIFICATION_PURPOSE_MANAGEMENT
-    schema_id: ptsip.governance/vpms-verification-purpose-management
-    schema_version: 1
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-CNTR-0003#/authority_semantics/semantic_unit_a541e1d8fdee
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-CNTR-0003#/authority_semantics/semantic_unit_1999fcdb1003
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-CNTR-0003#/authority_semantics/semantic_unit_d71bbd17838d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-CNTR-0003#/authority_semantics/semantic_unit_05d2c4c05b8e
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-CNTR-0003#/authority_semantics/semantic_unit_571db38c09b9
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-CNTR-0003#/authority_semantics/semantic_unit_afbfbdc1cc69
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0016
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CNTR
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CNTR-0003
+      title: CNTR authority (RETIRED source responsibilities)
+      status: RETIRED
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
+      statement: 설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition 및 호환 보장을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+    - SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CNTR
+      schema_id: ptsip.governance/root-family/cntr
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.
+      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.
+      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원 계약으로 바꾸지 못한다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_a541e1d8fdee
+    value:
+    - PURPOSE
+    - TARGET
+    - FORMULA
+    - VARIABLES
+    - POLICY
+    - RUNNER
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_1999fcdb1003
+    value: FORMULA
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_d71bbd17838d
+    value: false
+  - id: SRC-0013
+    source_pointer: /authority_semantics/semantic_unit_05d2c4c05b8e
+    value: true
+  - id: SRC-0014
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9
+    value:
+      shipped: true
+      runtime_surface:
+      - src/vpms/**
+  - id: SRC-0015
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69
+    value:
+      authority_type: VPMS_VERIFICATION_PURPOSE_MANAGEMENT
+      schema_id: ptsip.governance/vpms-verification-purpose-management
+      schema_version: 1
+  - id: SRC-0016
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/CNTR/SFP-CNTR-0003.yaml
+    sha256: 91be1d3f06f5bf0430679dee91e14bf0b2d3e425f4e8e0ebb5c0e8800ccae845
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

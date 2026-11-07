@@ -1,33 +1,114 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: SUPPLY
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-SUPPLY-0001
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: SUPPLY
   title: SUPPLY authority (DRAFT source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-  version: '0.0'
-authority_subject:
-  id: DEV_BUILD_VERIFICATION_INPUT_SUPPLY
-  statement: 개발, build, verification 및 delivery에 투입하거나 인계하는 dependency, resource와
-    Artifact의 공급 적합성 및 출처를 소유한다.
-exclusive_kernel:
-- DEV_INPUT_ADMISSION_AND_PROVENANCE
-- DEV_ARTIFACT_SUPPLY_HANDOFF
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_INPUT_ADMISSION_AND_PROVENANCE
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: DEV_INPUT_ADMISSION_AND_PROVENANCE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_ARTIFACT_SUPPLY_HANDOFF
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0010
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: SUPPLY
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-SUPPLY-0001
+      title: SUPPLY authority (DRAFT source responsibilities)
+      status: RETIRED
+      substatus: Waiting
+      version: '0.0'
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_BUILD_VERIFICATION_INPUT_SUPPLY
+      statement: 개발, build, verification 및 delivery에 투입하거나 인계하는 dependency, resource와 Artifact의 공급 적합성 및 출처를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_INPUT_ADMISSION_AND_PROVENANCE
+    - DEV_ARTIFACT_SUPPLY_HANDOFF
+  - id: SRC-0007
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_INPUT_ADMISSION_AND_PROVENANCE
       statement: 개발 입력과 환경 dependency의 정확한 출처, revision, 필요 조건 및 허용된 공급 경로를 명시한다.
-      non_substitutability: REAL의 성공적인 build나 RISK의 잔여 위험 수락만으로 입력의 출처와 공급 자격을 확정할
-        수 없다.
-    - id: DEV_ARTIFACT_SUPPLY_HANDOFF
-      statement: 생산된 Artifact를 다음 개발·검증·delivery 단계에 공급하는 단위, provenance 및 인계 조건을
-        정한다. 생산자와 Artifact lifecycle 소유자는 구별한다.
+      non_substitutability: REAL의 성공적인 build나 RISK의 잔여 위험 수락만으로 입력의 출처와 공급 자격을 확정할 수 없다.
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_ARTIFACT_SUPPLY_HANDOFF
+      statement: 생산된 Artifact를 다음 개발·검증·delivery 단계에 공급하는 단위, provenance 및 인계 조건을 정한다. 생산자와 Artifact lifecycle 소유자는 구별한다.
       non_substitutability: ARCH가 lifecycle 소유자를 정해도 실제 공급 단위와 출처 확인 의무를 대신 수행하지 않는다.
-    source_scope: []
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/source_scope
+    value: []
+  - id: SRC-0010
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: developer/policy/SUPPLY/MPD-SUPPLY-0001.yaml
+    sha256: 97d6554d353b267dfae7202bd2e2327e0a25ddf7dff71081404b15d72f0b3a2d
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

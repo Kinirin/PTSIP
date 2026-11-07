@@ -1,242 +1,1424 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: CNTR
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-CNTR-0001
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CNTR
   title: CNTR authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
-  statement: 설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition
-    및 호환 보장을 소유한다.
-exclusive_kernel:
-- SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
-- SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
-authority_contract:
-  authority_type: ROOT_FAMILY_CNTR
-  schema_id: ptsip.governance/root-family/cntr
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
-      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped
-        contract로 명시한다.
-      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이
-        지원되는 계약을 만들 수 없다.
-    - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
-      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다.
-        미등록 alias나 capability는 실행 계약이 아니다.
-      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime
-        persistence를 활성 지원 계약으로 바꾸지 못한다.
-  semantic_unit_571db38c09b9_entry_01:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_01:
-    authority_type: PTSIP_POLICY_IDENTITY
-    schema_id: ptsip.governance/ptsip-policy-identity
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_02:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_02:
-    authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
-    schema_id: ptsip.governance/consumer-repository-non-intrusion
-    schema_version: 1
-  semantic_unit_a97728e628f8: true
-  semantic_unit_571db38c09b9_entry_03:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_03:
-    authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
-    schema_id: ptsip.governance/specification-tool-version-independence
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_04:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_04:
-    authority_type: DISTRIBUTED_DECISION_AUTHORITY
-    schema_id: ptsip.governance/distributed-decision-authority
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_05:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_05:
-    authority_type: PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION
-    schema_id: ptsip.governance/primary-lifecycle-boundary-determination
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_06:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_06:
-    authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
-    schema_id: ptsip.governance/responsibility-map-semantic-axes
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_07:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_07:
-    authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
-    schema_id: ptsip.governance/responsibility-map-declaration-authority
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_08:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_08:
-    authority_type: VERSIONED_DRAFT_PROFILE_TRANSITION
-    schema_id: ptsip.governance/versioned-draft-profile-transition
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_09:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_09:
-    authority_type: SPECIFICATION_FAMILY_ACTIVATION
-    schema_id: ptsip.governance/specification-family-activation
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_10:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_10:
-    authority_type: NORMALIZED_EVIDENCE_CONTRACT
-    schema_id: ptsip.governance/normalized-evidence-contract
-    schema_version: 1
-  semantic_unit_0bba130c4825: READ_ONLY
-  semantic_unit_571db38c09b9_entry_11:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_11:
-    authority_type: SOURCE_PROFILE_COMPATIBILITY_MODEL
-    schema_id: ptsip.governance/source-profile-compatibility-model
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_12:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_12:
-    authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
-    schema_id: ptsip.governance/staged-migration-analysis-pipeline
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_13:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_13:
-    authority_type: TARGET_DELTA_RECONCILIATION_PLANNER
-    schema_id: ptsip.governance/target-delta-reconciliation-planner
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_14:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_14:
-    authority_type: MIGRATION_APPLY_STATE_MACHINE
-    schema_id: ptsip.governance/migration-apply-state-machine
-    schema_version: 1
-  semantic_unit_40152ae8e3b4: true
-  semantic_unit_c802549cdbdc: false
-  semantic_unit_464033332049: true
-  semantic_unit_571db38c09b9_entry_15:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_15:
-    authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
-    schema_id: ptsip.governance/tool-profile-contract-independence
-    schema_version: 1
-  semantic_unit_67ea0aee4c30:
-  - READ
-  - VALIDATE
-  - ANALYZE
-  - MIGRATE
-  - CREATE
-  semantic_unit_571db38c09b9_entry_16:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_16:
-    authority_type: PROJECT_PROFILE_VERSION_NAMESPACE
-    schema_id: ptsip.governance/project-profile-version-namespace
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_17:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_17:
-    authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
-    schema_id: ptsip.governance/project-profile-identity-bridge-release-note-namespace
-    schema_version: 1
-  semantic_unit_858f80cda2f0: EXPLICIT_TOOL_PP_COMPATIBILITY
-  semantic_unit_571db38c09b9_entry_18:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_18:
-    authority_type: DIRECT_LATEST_TARGET_CONVERGENCE
-    schema_id: ptsip.governance/direct-latest-target-convergence
-    schema_version: 1
-  semantic_unit_93c11c27e548:
-  - TOOL_TO_PROJECT_PROFILE
-  - TOOL_TO_SPECIFICATION
-  - HISTORICAL_MIGRATION_COMPATIBILITY
-  semantic_unit_44ef2c187847: false
-  semantic_unit_310194b317bc: false
-  semantic_unit_5d36a46d6785: false
-  semantic_unit_cc5d3a302136: MIGRATION_INTERPRETATION_ONLY
-  semantic_unit_571db38c09b9_entry_19:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/**
-  semantic_unit_afbfbdc1cc69_entry_19:
-    authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
-    schema_id: ptsip.governance/specification-binding-capability-registries
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_20:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/context_plane.py
-    - src/ptsip/cli.py
-  semantic_unit_afbfbdc1cc69_entry_20:
-    authority_type: CONTEXT_PLANE_MIGRATION_REPAIR
-    schema_id: ptsip.context/migration-repair
-    schema_version: 1
-  semantic_unit_9c400c5ae297:
-    kind: VALIDATED_EFFECTIVE_RESPONSIBILITY_MAP
-    validation_owner: PTSIP
-    validation_handoff: EXPLICIT_VALIDATED_PROVIDER_HANDOFF
-    boolean_assertion_is_validation_proof: false
-    concrete_provider_binding: ptsip.validation.handoff:load_validated_effective_map
-  semantic_unit_236ca4fff107:
-    match: EXACT_COMPONENT_ID
-    unknown_target: EXPLICIT_NOT_FOUND
-  semantic_unit_571db38c09b9_entry_21:
-    shipped: true
-    runtime_surface:
-    - src/vpms/integration/ptsip_bridge.py
-  semantic_unit_afbfbdc1cc69_entry_21:
-    authority_type: PTSIP_VPMS_READ_ONLY_INTEGRATION
-    schema_id: ptsip.governance/ptsip-vpms-read-only-integration
-    schema_version: 1
-  semantic_unit_571db38c09b9_entry_22:
-    shipped: true
-    runtime_surface:
-    - src/ptsip/governance/support_assets.py
-  semantic_unit_afbfbdc1cc69_entry_22:
-    authority_type: SUPPORT_ROOT_RESPONSIBILITY_FAMILY_TRANSITION
-    schema_id: ptsip.governance/support-root-responsibility-family-transition
-    schema_version: 1
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_01
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_01
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_02
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_02
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_a97728e628f8
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_03
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_03
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_04
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_04
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_05
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0019
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_05
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0020
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_06
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0021
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_06
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0022
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_07
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0023
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_07
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0024
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_08
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0025
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_08
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0026
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_09
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0027
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_09
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0028
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_10
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0029
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_10
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0030
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_0bba130c4825
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0031
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_11
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0032
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_11
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0033
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_12
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0034
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_12
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0035
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_13
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0036
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_13
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0037
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_14
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0038
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_14
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0039
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_40152ae8e3b4
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0040
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_c802549cdbdc
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0041
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0041
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0041
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0041
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_464033332049
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0042
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0042
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0042
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0042
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_15
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0043
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0043
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0043
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0043
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_15
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0044
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0044
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0044
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0044
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_67ea0aee4c30
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0045
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0045
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0045
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0045
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_16
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0046
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0046
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0046
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0046
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_16
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0047
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0047
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0047
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0047
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_17
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0048
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0048
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0048
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0048
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_17
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0049
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0049
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0049
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0049
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_858f80cda2f0
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0050
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0050
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0050
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0050
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_18
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0051
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0051
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0051
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0051
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_18
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0052
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0052
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0052
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0052
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_93c11c27e548
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0053
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0053
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0053
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0053
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_44ef2c187847
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0054
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0054
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0054
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0054
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_310194b317bc
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0055
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0055
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0055
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0055
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_5d36a46d6785
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0056
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0056
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0056
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0056
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_cc5d3a302136
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0057
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0057
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0057
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0057
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_19
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0058
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0058
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0058
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0058
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_19
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0059
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0059
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0059
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0059
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_20
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0060
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0060
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0060
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0060
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_20
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0061
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0061
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0061
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0061
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_9c400c5ae297
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0062
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0062
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0062
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0062
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_236ca4fff107
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0063
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0063
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0063
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0063
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_21
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0064
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0064
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0064
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0064
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_21
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0065
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0065
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0065
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0065
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_571db38c09b9_entry_22
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0066
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0066
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0066
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0066
+  - id: SFP-CNTR-0001#/authority_semantics/semantic_unit_afbfbdc1cc69_entry_22
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0067
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0067
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0067
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0067
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0068
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CNTR
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CNTR-0001
+      title: CNTR authority (ACTIVE source responsibilities)
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
+      statement: 설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition 및 호환 보장을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+    - SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CNTR
+      schema_id: ptsip.governance/root-family/cntr
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.
+      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.
+      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원 계약으로 바꾸지 못한다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_01
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_01
+    value:
+      authority_type: PTSIP_POLICY_IDENTITY
+      schema_id: ptsip.governance/ptsip-policy-identity
+      schema_version: 1
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_02
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0013
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_02
+    value:
+      authority_type: CONSUMER_REPOSITORY_NON_INTRUSION
+      schema_id: ptsip.governance/consumer-repository-non-intrusion
+      schema_version: 1
+  - id: SRC-0014
+    source_pointer: /authority_semantics/semantic_unit_a97728e628f8
+    value: true
+  - id: SRC-0015
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_03
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0016
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_03
+    value:
+      authority_type: SPECIFICATION_TOOL_VERSION_INDEPENDENCE
+      schema_id: ptsip.governance/specification-tool-version-independence
+      schema_version: 1
+  - id: SRC-0017
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_04
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0018
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_04
+    value:
+      authority_type: DISTRIBUTED_DECISION_AUTHORITY
+      schema_id: ptsip.governance/distributed-decision-authority
+      schema_version: 1
+  - id: SRC-0019
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_05
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0020
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_05
+    value:
+      authority_type: PRIMARY_LIFECYCLE_BOUNDARY_DETERMINATION
+      schema_id: ptsip.governance/primary-lifecycle-boundary-determination
+      schema_version: 1
+  - id: SRC-0021
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_06
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0022
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_06
+    value:
+      authority_type: RESPONSIBILITY_MAP_SEMANTIC_AXES
+      schema_id: ptsip.governance/responsibility-map-semantic-axes
+      schema_version: 1
+  - id: SRC-0023
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_07
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0024
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_07
+    value:
+      authority_type: RESPONSIBILITY_MAP_DECLARATION_AUTHORITY
+      schema_id: ptsip.governance/responsibility-map-declaration-authority
+      schema_version: 1
+  - id: SRC-0025
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_08
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0026
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_08
+    value:
+      authority_type: VERSIONED_DRAFT_PROFILE_TRANSITION
+      schema_id: ptsip.governance/versioned-draft-profile-transition
+      schema_version: 1
+  - id: SRC-0027
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_09
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0028
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_09
+    value:
+      authority_type: SPECIFICATION_FAMILY_ACTIVATION
+      schema_id: ptsip.governance/specification-family-activation
+      schema_version: 1
+  - id: SRC-0029
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_10
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0030
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_10
+    value:
+      authority_type: NORMALIZED_EVIDENCE_CONTRACT
+      schema_id: ptsip.governance/normalized-evidence-contract
+      schema_version: 1
+  - id: SRC-0031
+    source_pointer: /authority_semantics/semantic_unit_0bba130c4825
+    value: READ_ONLY
+  - id: SRC-0032
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_11
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0033
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_11
+    value:
+      authority_type: SOURCE_PROFILE_COMPATIBILITY_MODEL
+      schema_id: ptsip.governance/source-profile-compatibility-model
+      schema_version: 1
+  - id: SRC-0034
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_12
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0035
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_12
+    value:
+      authority_type: STAGED_MIGRATION_ANALYSIS_PIPELINE
+      schema_id: ptsip.governance/staged-migration-analysis-pipeline
+      schema_version: 1
+  - id: SRC-0036
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_13
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0037
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_13
+    value:
+      authority_type: TARGET_DELTA_RECONCILIATION_PLANNER
+      schema_id: ptsip.governance/target-delta-reconciliation-planner
+      schema_version: 1
+  - id: SRC-0038
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_14
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0039
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_14
+    value:
+      authority_type: MIGRATION_APPLY_STATE_MACHINE
+      schema_id: ptsip.governance/migration-apply-state-machine
+      schema_version: 1
+  - id: SRC-0040
+    source_pointer: /authority_semantics/semantic_unit_40152ae8e3b4
+    value: true
+  - id: SRC-0041
+    source_pointer: /authority_semantics/semantic_unit_c802549cdbdc
+    value: false
+  - id: SRC-0042
+    source_pointer: /authority_semantics/semantic_unit_464033332049
+    value: true
+  - id: SRC-0043
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_15
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0044
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_15
+    value:
+      authority_type: TOOL_PROFILE_CONTRACT_INDEPENDENCE
+      schema_id: ptsip.governance/tool-profile-contract-independence
+      schema_version: 1
+  - id: SRC-0045
+    source_pointer: /authority_semantics/semantic_unit_67ea0aee4c30
+    value:
+    - READ
+    - VALIDATE
+    - ANALYZE
+    - MIGRATE
+    - CREATE
+  - id: SRC-0046
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_16
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0047
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_16
+    value:
+      authority_type: PROJECT_PROFILE_VERSION_NAMESPACE
+      schema_id: ptsip.governance/project-profile-version-namespace
+      schema_version: 1
+  - id: SRC-0048
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_17
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0049
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_17
+    value:
+      authority_type: PROJECT_PROFILE_IDENTITY_BRIDGE_RELEASE_NOTE_NAMESPACE
+      schema_id: ptsip.governance/project-profile-identity-bridge-release-note-namespace
+      schema_version: 1
+  - id: SRC-0050
+    source_pointer: /authority_semantics/semantic_unit_858f80cda2f0
+    value: EXPLICIT_TOOL_PP_COMPATIBILITY
+  - id: SRC-0051
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_18
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0052
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_18
+    value:
+      authority_type: DIRECT_LATEST_TARGET_CONVERGENCE
+      schema_id: ptsip.governance/direct-latest-target-convergence
+      schema_version: 1
+  - id: SRC-0053
+    source_pointer: /authority_semantics/semantic_unit_93c11c27e548
+    value:
+    - TOOL_TO_PROJECT_PROFILE
+    - TOOL_TO_SPECIFICATION
+    - HISTORICAL_MIGRATION_COMPATIBILITY
+  - id: SRC-0054
+    source_pointer: /authority_semantics/semantic_unit_44ef2c187847
+    value: false
+  - id: SRC-0055
+    source_pointer: /authority_semantics/semantic_unit_310194b317bc
+    value: false
+  - id: SRC-0056
+    source_pointer: /authority_semantics/semantic_unit_5d36a46d6785
+    value: false
+  - id: SRC-0057
+    source_pointer: /authority_semantics/semantic_unit_cc5d3a302136
+    value: MIGRATION_INTERPRETATION_ONLY
+  - id: SRC-0058
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_19
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/**
+  - id: SRC-0059
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_19
+    value:
+      authority_type: SPECIFICATION_BINDING_CAPABILITY_REGISTRIES
+      schema_id: ptsip.governance/specification-binding-capability-registries
+      schema_version: 1
+  - id: SRC-0060
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_20
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/context_plane.py
+      - src/ptsip/cli.py
+  - id: SRC-0061
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_20
+    value:
+      authority_type: CONTEXT_PLANE_MIGRATION_REPAIR
+      schema_id: ptsip.context/migration-repair
+      schema_version: 1
+  - id: SRC-0062
+    source_pointer: /authority_semantics/semantic_unit_9c400c5ae297
+    value:
+      kind: VALIDATED_EFFECTIVE_RESPONSIBILITY_MAP
+      validation_owner: PTSIP
+      validation_handoff: EXPLICIT_VALIDATED_PROVIDER_HANDOFF
+      boolean_assertion_is_validation_proof: false
+      concrete_provider_binding: ptsip.validation.handoff:load_validated_effective_map
+  - id: SRC-0063
+    source_pointer: /authority_semantics/semantic_unit_236ca4fff107
+    value:
+      match: EXACT_COMPONENT_ID
+      unknown_target: EXPLICIT_NOT_FOUND
+  - id: SRC-0064
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_21
+    value:
+      shipped: true
+      runtime_surface:
+      - src/vpms/integration/ptsip_bridge.py
+  - id: SRC-0065
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_21
+    value:
+      authority_type: PTSIP_VPMS_READ_ONLY_INTEGRATION
+      schema_id: ptsip.governance/ptsip-vpms-read-only-integration
+      schema_version: 1
+  - id: SRC-0066
+    source_pointer: /authority_semantics/semantic_unit_571db38c09b9_entry_22
+    value:
+      shipped: true
+      runtime_surface:
+      - src/ptsip/governance/support_assets.py
+  - id: SRC-0067
+    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69_entry_22
+    value:
+      authority_type: SUPPORT_ROOT_RESPONSIBILITY_FAMILY_TRANSITION
+      schema_id: ptsip.governance/support-root-responsibility-family-transition
+      schema_version: 1
+  - id: SRC-0068
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/CNTR/SFP-CNTR-0001.yaml
+    sha256: 2405eaef8761b2d3531a9aa28aea99dd37f1de88d1f49afce6ab3e6bdc53dd62
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

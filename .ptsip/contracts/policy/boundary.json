@@ -9,6 +9,9 @@
     "rules": "Policy_Rules/"
   },
   "source_policy": "developer/policy/GOV/MPD-GOV-0001.yaml",
+  "unified_binding": {
+    "index": ".ptsip/contracts/policy/unified/index.json"
+  },
   "routing_binding": {
     "data": ".ptsip/contracts/policy/routing/policy_routes.json",
     "schema": ".ptsip/contracts/policy/routing/Policy_Routing.schema.json"

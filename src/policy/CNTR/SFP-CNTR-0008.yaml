@@ -1,58 +1,125 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: CNTR
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-CNTR-0008
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CNTR
   title: Bootstrap Integrated Engine machine-contract boundary
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_BOOTSTRAP_MACHINE_CONTRACT_INTERFACE
-  statement: Machine-contract obligations and interoperability boundary for agent bootstrap, independent of agent and runtime adapters.
-exclusive_kernel:
-  - SUP_BOOTSTRAP_CONTRACT_INTERFACE_SEMANTICS
-authority_contract:
-  authority_type: ROOT_FAMILY_CNTR
-  schema_id: ptsip.governance/root-family/cntr
-  schema_version: 1
-authority_semantics:
-  bootstrap_machine_contract:
-    responsibility_owner_ref: SFP-ARCH-0005
-    policy_scope: AGENT_BOOTSTRAP_MANAGEMENT
-    machine_contract_authority: REQUIRED
-    engine_implementation_language: RUST
-    contract_representation_language: LANGUAGE_NEUTRAL
-    mandatory_legacy_python_binding: FORBIDDEN
-    agent_specific_normative_forks: FORBIDDEN
-    implementation_registration_strategy: SIMULTANEOUS_OFFICIAL_ENGINE_IMPLEMENTATION_AND_REGISTRATION
-    engine_owned_capability_domains:
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SFP-CNTR-0008#/authority_semantics/bootstrap_machine_contract
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0009
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CNTR
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CNTR-0008
+      title: Bootstrap Integrated Engine machine-contract boundary
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_BOOTSTRAP_MACHINE_CONTRACT_INTERFACE
+      statement: Machine-contract obligations and interoperability boundary for agent bootstrap, independent of agent and
+        runtime adapters.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_BOOTSTRAP_CONTRACT_INTERFACE_SEMANTICS
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CNTR
+      schema_id: ptsip.governance/root-family/cntr
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/bootstrap_machine_contract
+    value:
+      responsibility_owner_ref: SFP-ARCH-0005
+      policy_scope: AGENT_BOOTSTRAP_MANAGEMENT
+      machine_contract_authority: REQUIRED
+      engine_implementation_language: RUST
+      contract_representation_language: LANGUAGE_NEUTRAL
+      mandatory_legacy_python_binding: FORBIDDEN
+      agent_specific_normative_forks: FORBIDDEN
+      implementation_registration_strategy: SIMULTANEOUS_OFFICIAL_ENGINE_IMPLEMENTATION_AND_REGISTRATION
+      engine_owned_capability_domains:
       - CONTRACT_REGISTRATION
       - CONTRACT_RESOLUTION
       - CONTRACT_VALIDATION
       - BOOTSTRAP_PROJECTION
       - CONTRACT_CONFORMANT_CHANGE
       - COMPATIBILITY_ASSESSMENT
-    semantics:
-      eligible_rules: APPROVED_CURRENT_APPLICABLE_MACHINE_CONTRACTS_ONLY
-      missing_or_ambiguous_normative_contract: UNRESOLVED_NO_AGENT_INFERENCE
-      permission_from_contract_registration: NOT_GRANTED
-      no_legacy_contract_auto_inheritance: true
-      no_markdown_to_machine_authority_promotion: true
-    version_boundary:
-      engine_identity_and_version: IDENTIFIABLE
-      applied_contract_identity_and_revision: IDENTIFIABLE
-      incompatibility: REPORT_UNRESOLVED
-      automatic_engine_version_rollback: NOT_AUTHORIZED
-      fixed_markdown_across_versions: NOT_REQUIRED
-    unresolved:
-      governance_namespace: UNDECIDED
-      contract_storage_namespace: UNDECIDED
-      exact_contract_schema: UNDECIDED
-      operation_names_and_typed_io: UNDECIDED
-      invocation_transport: UNDECIDED
-      persistence_and_lifecycle: UNDECIDED
-      activation_and_distribution: SEPARATE_POLICY_DECISION
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+      semantics:
+        eligible_rules: APPROVED_CURRENT_APPLICABLE_MACHINE_CONTRACTS_ONLY
+        missing_or_ambiguous_normative_contract: UNRESOLVED_NO_AGENT_INFERENCE
+        permission_from_contract_registration: NOT_GRANTED
+        no_legacy_contract_auto_inheritance: true
+        no_markdown_to_machine_authority_promotion: true
+      version_boundary:
+        engine_identity_and_version: IDENTIFIABLE
+        applied_contract_identity_and_revision: IDENTIFIABLE
+        incompatibility: REPORT_UNRESOLVED
+        automatic_engine_version_rollback: NOT_AUTHORIZED
+        fixed_markdown_across_versions: NOT_REQUIRED
+      unresolved:
+        governance_namespace: UNDECIDED
+        contract_storage_namespace: UNDECIDED
+        exact_contract_schema: UNDECIDED
+        operation_names_and_typed_io: UNDECIDED
+        invocation_transport: UNDECIDED
+        persistence_and_lifecycle: UNDECIDED
+        activation_and_distribution: SEPARATE_POLICY_DECISION
+  - id: SRC-0009
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/CNTR/SFP-CNTR-0008.yaml
+    sha256: f2c9c808b841e676d75ca22a4636798dae8efbc616fe7cd7cb054ab7468cafc0
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

@@ -1,23 +1,168 @@
-# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
 Policy_Identity:
   id: MPD-CHANGE-0001
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: CHANGE
   title: CHANGE 정책 정의 및 책임 오케스트레이션
 Policy_Lifecycle:
-  Policy_Status_Schema_ver: '1'
   status: DRAFT.Reviewed
-  contract: urn:ptsip:contract:policy:change:family:orchestration
+  source_ref: SRC-0002
+Policy_Authority:
+  source_refs:
+  - SRC-0008
+  - SRC-0009
+  - SRC-0010
 Policy_Rules:
-  contracts:
-  - serialization: INDEXED_SOURCE_BINDINGS
-    contract_id: urn:ptsip:policy:rule:change:family-orchestration
-    Rule_ver: '1'
-    source_documents:
+  rules:
+  - id: R-ID-C615A4E8BF5F4A0597CD28E6A5B79011
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: R-ID-E29A03BD454B4BB2A4074F16C587AD62
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: REQ-0001
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: REQ-0002
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: REQ-0003
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: REQ-0004
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+Policy_Evaluation:
+  source_refs:
+  - SRC-0011
+  - SRC-0012
+  - SRC-0013
+  - SRC-0014
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0011
+  - SRC-0012
+  - SRC-0013
+  - SRC-0014
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /Policy_Identity
+    value:
+      id: MPD-CHANGE-0001
+      policy_kind: PTSIP_DEVELOPER_POLICY
+      root_family: CHANGE
+      title: CHANGE 정책 정의 및 책임 오케스트레이션
+  - id: SRC-0002
+    source_pointer: /Policy_Lifecycle
+    value:
+      Policy_Status_Schema_ver: '1'
+      status: DRAFT.Reviewed
+      contract: urn:ptsip:contract:policy:change:family:orchestration
+  - id: SRC-0003
+    source_pointer: /Policy_Rules/contracts/0/serialization
+    value: INDEXED_SOURCE_BINDINGS
+  - id: SRC-0004
+    source_pointer: /Policy_Rules/contracts/0/contract_id
+    value: urn:ptsip:policy:rule:change:family-orchestration
+  - id: SRC-0005
+    source_pointer: /Policy_Rules/contracts/0/Rule_ver
+    value: '1'
+  - id: SRC-0006
+    source_pointer: /Policy_Rules/contracts/0/source_documents
+    value:
     - id: D1
       source_ref: developer/policy/CHANGE/MPD-CHANGE-0001.yaml
       revision_ref: git:9dfd231b1c385dd8df9d6ad5cbcfe8c3a1f3a549
-    source_items:
+  - id: SRC-0007
+    source_pointer: /Policy_Rules/contracts/0/source_items
+    value:
     - item_id: I01
       document_id: D1
       item_ref: /Policy_Rules/Identity
@@ -94,145 +239,249 @@ Policy_Rules:
       document_id: D1
       item_ref: /Policy_Rules/Evaluation/result
       original_role: record
-    authority_ref:
+  - id: SRC-0008
+    source_pointer: /Policy_Rules/contracts/0/authority_ref
+    value:
     - id: AUTH-0001
       binding:
         state: UNRESOLVED
-        basis_ref_ids: [I02]
+        basis_ref_ids:
+        - I02
     - id: AUTH-0002
       binding:
         state: UNRESOLVED
-        basis_ref_ids: [I03]
-    rules:
-    - id: R-ID-C615A4E8BF5F4A0597CD28E6A5B79011
+        basis_ref_ids:
+        - I03
+  - id: SRC-0009
+    source_pointer: /Policy_Rules/contracts/0/rules/0
+    value:
+      id: R-ID-C615A4E8BF5F4A0597CD28E6A5B79011
       rule: CHANGE-ORCHESTRATION
-      source_ref: [I02]
-      authority_ref: [AUTH-0001]
-    - id: R-ID-E29A03BD454B4BB2A4074F16C587AD62
+      source_ref:
+      - I02
+      authority_ref:
+      - AUTH-0001
+  - id: SRC-0010
+    source_pointer: /Policy_Rules/contracts/0/rules/1
+    value:
+      id: R-ID-E29A03BD454B4BB2A4074F16C587AD62
       rule: CHANGE-RESP-GOV
-      source_ref: [I03]
-      authority_ref: [AUTH-0002]
-    requirements:
-    - requirement_id: REQ-0001
+      source_ref:
+      - I03
+      authority_ref:
+      - AUTH-0002
+  - id: SRC-0011
+    source_pointer: /Policy_Rules/contracts/0/requirements/0
+    value:
+      requirement_id: REQ-0001
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
-        ref_ids: [I06]
+        ref_ids:
+        - I06
       - purpose: TARGET
         state: UNRESOLVED
-        basis_ref_ids: [I06]
+        basis_ref_ids:
+        - I06
       - purpose: SCOPE
         state: SOURCE_IDENTIFIED
-        ref_ids: [I05]
+        ref_ids:
+        - I05
       - purpose: CONDITION
         state: UNRESOLVED
-        basis_ref_ids: [I06]
+        basis_ref_ids:
+        - I06
       - purpose: CONSTRAINT
         state: SOURCE_IDENTIFIED
-        ref_ids: [I11, I13]
+        ref_ids:
+        - I11
+        - I13
       - purpose: CRITERION
         state: UNRESOLVED
-        basis_ref_ids: [I06]
+        basis_ref_ids:
+        - I06
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I06]
+        basis_ref_ids:
+        - I06
       relation_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I06]
+        basis_ref_ids:
+        - I06
       judgement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I06]
-      unresolved_fields: [relation_binding, judgement_binding, evidence_requirement_binding, source_bindings.TARGET, source_bindings.CONDITION,
-        source_bindings.CRITERION]
-    - requirement_id: REQ-0002
+        basis_ref_ids:
+        - I06
+      unresolved_fields:
+      - relation_binding
+      - judgement_binding
+      - evidence_requirement_binding
+      - source_bindings.TARGET
+      - source_bindings.CONDITION
+      - source_bindings.CRITERION
+  - id: SRC-0012
+    source_pointer: /Policy_Rules/contracts/0/requirements/1
+    value:
+      requirement_id: REQ-0002
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
-        ref_ids: [I07, I08]
+        ref_ids:
+        - I07
+        - I08
       - purpose: TARGET
         state: UNRESOLVED
-        basis_ref_ids: [I07, I08]
+        basis_ref_ids:
+        - I07
+        - I08
       - purpose: SCOPE
         state: SOURCE_IDENTIFIED
-        ref_ids: [I05]
+        ref_ids:
+        - I05
       - purpose: CONDITION
         state: UNRESOLVED
-        basis_ref_ids: [I07, I08]
+        basis_ref_ids:
+        - I07
+        - I08
       - purpose: CONSTRAINT
         state: SOURCE_IDENTIFIED
-        ref_ids: [I12, I14]
+        ref_ids:
+        - I12
+        - I14
       - purpose: CRITERION
         state: SOURCE_IDENTIFIED
-        ref_ids: [I16]
+        ref_ids:
+        - I16
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I16]
+        basis_ref_ids:
+        - I16
       relation_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I07, I08]
+        basis_ref_ids:
+        - I07
+        - I08
       judgement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I16]
-      unresolved_fields: [relation_binding, judgement_binding, evidence_requirement_binding, source_bindings.TARGET, source_bindings.CONDITION]
-    - requirement_id: REQ-0003
+        basis_ref_ids:
+        - I16
+      unresolved_fields:
+      - relation_binding
+      - judgement_binding
+      - evidence_requirement_binding
+      - source_bindings.TARGET
+      - source_bindings.CONDITION
+  - id: SRC-0013
+    source_pointer: /Policy_Rules/contracts/0/requirements/2
+    value:
+      requirement_id: REQ-0003
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
-        ref_ids: [I09, I10]
+        ref_ids:
+        - I09
+        - I10
       - purpose: TARGET
         state: UNRESOLVED
-        basis_ref_ids: [I09, I10]
+        basis_ref_ids:
+        - I09
+        - I10
       - purpose: SCOPE
         state: SOURCE_IDENTIFIED
-        ref_ids: [I05]
+        ref_ids:
+        - I05
       - purpose: CONDITION
         state: UNRESOLVED
-        basis_ref_ids: [I09, I10]
+        basis_ref_ids:
+        - I09
+        - I10
       - purpose: CONSTRAINT
         state: SOURCE_IDENTIFIED
-        ref_ids: [I15]
+        ref_ids:
+        - I15
       - purpose: CRITERION
         state: SOURCE_IDENTIFIED
-        ref_ids: [I16]
+        ref_ids:
+        - I16
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I16]
+        basis_ref_ids:
+        - I16
       relation_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I09, I10]
+        basis_ref_ids:
+        - I09
+        - I10
       judgement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I16]
-      unresolved_fields: [relation_binding, judgement_binding, evidence_requirement_binding, source_bindings.TARGET, source_bindings.CONDITION]
-    - requirement_id: REQ-0004
+        basis_ref_ids:
+        - I16
+      unresolved_fields:
+      - relation_binding
+      - judgement_binding
+      - evidence_requirement_binding
+      - source_bindings.TARGET
+      - source_bindings.CONDITION
+  - id: SRC-0014
+    source_pointer: /Policy_Rules/contracts/0/requirements/3
+    value:
+      requirement_id: REQ-0004
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
-        ref_ids: [I10]
+        ref_ids:
+        - I10
       - purpose: TARGET
         state: UNRESOLVED
-        basis_ref_ids: [I10]
+        basis_ref_ids:
+        - I10
       - purpose: SCOPE
         state: SOURCE_IDENTIFIED
-        ref_ids: [I05]
+        ref_ids:
+        - I05
       - purpose: CONDITION
         state: UNRESOLVED
-        basis_ref_ids: [I10]
+        basis_ref_ids:
+        - I10
       - purpose: CONSTRAINT
         state: UNRESOLVED
-        basis_ref_ids: [I10]
+        basis_ref_ids:
+        - I10
       - purpose: CRITERION
         state: SOURCE_IDENTIFIED
-        ref_ids: [I17, I18]
+        ref_ids:
+        - I17
+        - I18
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I17, I18]
+        basis_ref_ids:
+        - I17
+        - I18
       relation_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I10]
+        basis_ref_ids:
+        - I10
       judgement_binding:
         state: UNRESOLVED
-        basis_ref_ids: [I17, I18]
-      unresolved_fields: [relation_binding, judgement_binding, evidence_requirement_binding, source_bindings.TARGET, source_bindings.CONDITION,
-        source_bindings.CONSTRAINT]
-    historical_result_ref_ids: [I19]
+        basis_ref_ids:
+        - I17
+        - I18
+      unresolved_fields:
+      - relation_binding
+      - judgement_binding
+      - evidence_requirement_binding
+      - source_bindings.TARGET
+      - source_bindings.CONDITION
+      - source_bindings.CONSTRAINT
+  - id: SRC-0015
+    source_pointer: /Policy_Rules/contracts/0/historical_result_ref_ids
+    value:
+    - I19
+  source_document:
+    path: developer/policy/CHANGE/MPD-CHANGE-0001.yaml
+    sha256: 5b6eb938439dd0c508ccc684857e2a8204e2dec1de00f478e7e3a26c09264502
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: PUBLIC_POLICY_V2
+  source_registration: INDEXED
+  contract_state: CANDIDATE

@@ -22,11 +22,12 @@ def classify(paths):
             raise ValueError("INVALID_CHANGED_PATH")
         if name.lower().startswith(".ptsip/contracts/policy/rules/"):
             retired.append(name)
-        elif (name.startswith("developer/policy/")
+        elif ((name.startswith("developer/policy/") or name.startswith("src/policy/"))
               and not name.startswith("developer/policy/legacy/")
+              and not name.startswith(("src/policy/legacy/", "src/policy/schemas/", "src/policy/registries/"))
               and path.suffix in {".yaml", ".yml"}):
             # The catalog is a lookup projection, not a policy document.
-            if name != "developer/policy/index.yaml":
+            if name not in {"developer/policy/index.yaml", "src/policy/index.yaml"}:
                 policies.append(name)
     return policies, retired
 

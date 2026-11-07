@@ -1,41 +1,142 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-INFO-0003
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: INFO
   title: INFO authority (RETIRED source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-authority_subject:
-  id: SUP_PROFILE_CONTEXT_INFORMATION_SEMANTICS
-  statement: consumer profile, canonical effective metadata, Context Plane 및 관측 evidence의
-    정보 의미와 semantic source/projection 구분을 소유한다.
-exclusive_kernel:
-- SUP_CANONICAL_INFORMATION_MODEL
-- SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
-authority_contract:
-  authority_type: ROOT_FAMILY_INFO
-  schema_id: ptsip.governance/root-family/info
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_CANONICAL_INFORMATION_MODEL
-      statement: profile의 classification, roles, relationships, source_mode 및 evidence
-        정보형을 서로 다른 의미 축으로 정의한다.
-      non_substitutability: ARCH의 특정 project 선언이나 ASSURE의 판정이 정보 축의 의미를 합치거나 새 canonical
-        alias를 만들 수 없다.
-    - id: SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
-      statement: Source Profile 및 context semantic source와 결정론적 effective/projection
-        정보의 결합과 non-authoritative derivation 관계를 명시한다.
-      non_substitutability: REAL의 출력 파일 존재나 RECORD의 과거 snapshot은 현재 source 의미를 대신
-        소유하지 않는다.
-  semantic_unit_40c664bc86a2:
-    supersedes: []
-    amends: []
-    extends: []
-    depends_on: []
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_CANONICAL_INFORMATION_MODEL
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-INFO-0003#/authority_semantics/semantic_unit_40c664bc86a2
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0011
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-INFO-0003
+      title: INFO authority (RETIRED source responsibilities)
+      status: RETIRED
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROFILE_CONTEXT_INFORMATION_SEMANTICS
+      statement: consumer profile, canonical effective metadata, Context Plane 및 관측 evidence의 정보 의미와 semantic source/projection
+        구분을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_CANONICAL_INFORMATION_MODEL
+    - SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_INFO
+      schema_id: ptsip.governance/root-family/info
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_CANONICAL_INFORMATION_MODEL
+      statement: profile의 classification, roles, relationships, source_mode 및 evidence 정보형을 서로 다른 의미 축으로 정의한다.
+      non_substitutability: ARCH의 특정 project 선언이나 ASSURE의 판정이 정보 축의 의미를 합치거나 새 canonical alias를 만들 수 없다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING
+      statement: Source Profile 및 context semantic source와 결정론적 effective/projection 정보의 결합과 non-authoritative derivation
+        관계를 명시한다.
+      non_substitutability: REAL의 출력 파일 존재나 RECORD의 과거 snapshot은 현재 source 의미를 대신 소유하지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_40c664bc86a2
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0011
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/INFO/SFP-INFO-0003.yaml
+    sha256: 0d44985647fa1a126108d66fdadc79e354371899c31efe3b15bcb2be520dee0f
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

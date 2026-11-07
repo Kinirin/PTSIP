@@ -1,95 +1,786 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: CTRL
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-CTRL-0001
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CTRL
   title: CTRL authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY
-  statement: consumer repository/profile/authority의 fresh state를 기준으로 특정 prepared
-    mutation이나 transition의 현재 실행 허용 여부를 소유한다.
-exclusive_kernel:
-- SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
-- SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
-authority_contract:
-  authority_type: ROOT_FAMILY_CTRL
-  schema_id: ptsip.governance/root-family/ctrl
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
-      statement: 실행 직전 repository/profile revision과 관련 distributed authority를 확인한다.
-        완전한 local declaration만으로 필요한 remote authority 읽기를 생략하지 않는다.
-      non_substitutability: GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority
-        freshness를 대신 보장하지 않는다.
-    - id: SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
-      statement: expected revision, operation identity와 등록된 transition 조건으로 stale
-        writer 및 무권한 mutation을 차단한다. unresolved 관계는 fail-closed한다.
-      non_substitutability: REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들
-        수 없다.
-  semantic_unit_1b31ec4b9d9d: true
-  semantic_unit_29808ce8f6f9: true
-  semantic_unit_357e4badce21: false
-  semantic_unit_237b87708626: FAIL_CLOSED
-  semantic_unit_35ebd4c19a04: false
-  semantic_unit_eff445da227f: FAIL_CLOSED
-  semantic_unit_63de9cca0162: false
-  semantic_unit_f9fd791de3d8: FAIL_CLOSED
-  semantic_unit_5096854498d0: FAIL_CLOSED
-  semantic_unit_d95752cca22f: EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS
-  semantic_unit_098540ae8ffa: UNSUPPORTED_SOURCE_REVISION
-  semantic_unit_5ad4d8828fb3: UNSUPPORTED_SOURCE_FAMILY
-  semantic_unit_68971aaac1fa: FAIL_CLOSED
-  semantic_unit_a6e3a720fddb: false
-  semantic_unit_2800d5f71fc4: true
-  semantic_unit_af5c0ade5ce7: false
-  semantic_unit_e1e1d0ee8de9: STRONGLY_TYPED_MIGRATION_STATE_MACHINE_APPEND_ONLY_CHECKPOINT_LEDGER
-  semantic_unit_39e444b2ea13:
-  - PLAN_BOUND
-  - AUTHORIZED
-  - PRECONDITIONS_VERIFIED
-  - FINAL_POINT_APPLIED
-  - SOURCE_REANALYZED
-  - SOURCE_COMPLETE
-  - ASYNC_APPLIED
-  - SOURCE_REMOVED
-  - CANONICAL_SOURCE_COMPLETE
-  - GLOBAL_VALIDATION
-  - PROMOTION_READY
-  - PROMOTED
-  - POST_PROMOTION_VERIFIED
-  - RECOVERY_REQUIRED
-  semantic_unit_31962f4fde1c: EXACT_WU06_PLAN_DIGEST
-  semantic_unit_236bb8e7c859: ACCEPTED_DELTA_BUNDLE_ONLY
-  semantic_unit_85c17cf5faf3:
-  - WU06_PLAN_DIGEST
-  - PROJECT_DECISION_IDS
-  - AUTHORITY_REVISION
-  semantic_unit_bc3eec85743b: PARTICIPATING_PROFILE_PATHS_ONLY
-  semantic_unit_b25e38bb727b: true
-  semantic_unit_cffdfbecbd0b: true
-  semantic_unit_c8e4e94c61e2: true
-  semantic_unit_a3771f256239: true
-  semantic_unit_5e07ffde514f: true
-  semantic_unit_5f35b8c4cd63: false
-  semantic_unit_d63dd8f5fdab: DUPLICATE_EQUIVALENT_TARGET
-  semantic_unit_00ff091f8423: FAIL_CLOSED
-  semantic_unit_18e0f3955df0:
-    authorization: USER_EXPLICIT
-    status: TEMPORARY_ONLY
-    release_while_active: FORBIDDEN
-    required_reconciliation:
-    - REGENERATE_FROM_CANONICAL_SOURCE
-    - CONTEXT_CHECK_PASS
-  semantic_unit_3e8fd3fe513f:
-    context_check: REQUIRED
-    missing_projection: FAIL_CLOSED
-    projection_drift: FAIL_CLOSED
-    semantic_equivalence_failure: FAIL_CLOSED
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_1b31ec4b9d9d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_29808ce8f6f9
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_357e4badce21
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_237b87708626
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_35ebd4c19a04
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_eff445da227f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_63de9cca0162
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_f9fd791de3d8
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_5096854498d0
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_d95752cca22f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0019
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_098540ae8ffa
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0020
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_5ad4d8828fb3
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0021
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_68971aaac1fa
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0022
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_a6e3a720fddb
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0023
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_2800d5f71fc4
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0024
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_af5c0ade5ce7
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0025
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_e1e1d0ee8de9
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0026
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_39e444b2ea13
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0027
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_31962f4fde1c
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0028
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_236bb8e7c859
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0029
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_85c17cf5faf3
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0030
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_bc3eec85743b
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0031
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_b25e38bb727b
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0032
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_cffdfbecbd0b
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0033
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_c8e4e94c61e2
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0034
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_a3771f256239
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0035
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_5e07ffde514f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0036
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_5f35b8c4cd63
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0037
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_d63dd8f5fdab
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0038
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_00ff091f8423
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0039
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_18e0f3955df0
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0040
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+  - id: SFP-CTRL-0001#/authority_semantics/semantic_unit_3e8fd3fe513f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0041
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0041
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0041
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0041
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0042
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CTRL
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CTRL-0001
+      title: CTRL authority (ACTIVE source responsibilities)
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY
+      statement: consumer repository/profile/authority의 fresh state를 기준으로 특정 prepared mutation이나 transition의 현재 실행 허용 여부를
+        소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+    - SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CTRL
+      schema_id: ptsip.governance/root-family/ctrl
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+      statement: 실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote authority
+        읽기를 생략하지 않는다.
+      non_substitutability: GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority freshness를 대신 보장하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+      statement: expected revision, operation identity와 등록된 transition 조건으로 stale writer 및 무권한 mutation을 차단한다. unresolved
+        관계는 fail-closed한다.
+      non_substitutability: REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들 수 없다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_1b31ec4b9d9d
+    value: true
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_29808ce8f6f9
+    value: true
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_357e4badce21
+    value: false
+  - id: SRC-0013
+    source_pointer: /authority_semantics/semantic_unit_237b87708626
+    value: FAIL_CLOSED
+  - id: SRC-0014
+    source_pointer: /authority_semantics/semantic_unit_35ebd4c19a04
+    value: false
+  - id: SRC-0015
+    source_pointer: /authority_semantics/semantic_unit_eff445da227f
+    value: FAIL_CLOSED
+  - id: SRC-0016
+    source_pointer: /authority_semantics/semantic_unit_63de9cca0162
+    value: false
+  - id: SRC-0017
+    source_pointer: /authority_semantics/semantic_unit_f9fd791de3d8
+    value: FAIL_CLOSED
+  - id: SRC-0018
+    source_pointer: /authority_semantics/semantic_unit_5096854498d0
+    value: FAIL_CLOSED
+  - id: SRC-0019
+    source_pointer: /authority_semantics/semantic_unit_d95752cca22f
+    value: EXPLICIT_CONFLICT_NO_LAST_WRITER_WINS
+  - id: SRC-0020
+    source_pointer: /authority_semantics/semantic_unit_098540ae8ffa
+    value: UNSUPPORTED_SOURCE_REVISION
+  - id: SRC-0021
+    source_pointer: /authority_semantics/semantic_unit_5ad4d8828fb3
+    value: UNSUPPORTED_SOURCE_FAMILY
+  - id: SRC-0022
+    source_pointer: /authority_semantics/semantic_unit_68971aaac1fa
+    value: FAIL_CLOSED
+  - id: SRC-0023
+    source_pointer: /authority_semantics/semantic_unit_a6e3a720fddb
+    value: false
+  - id: SRC-0024
+    source_pointer: /authority_semantics/semantic_unit_2800d5f71fc4
+    value: true
+  - id: SRC-0025
+    source_pointer: /authority_semantics/semantic_unit_af5c0ade5ce7
+    value: false
+  - id: SRC-0026
+    source_pointer: /authority_semantics/semantic_unit_e1e1d0ee8de9
+    value: STRONGLY_TYPED_MIGRATION_STATE_MACHINE_APPEND_ONLY_CHECKPOINT_LEDGER
+  - id: SRC-0027
+    source_pointer: /authority_semantics/semantic_unit_39e444b2ea13
+    value:
+    - PLAN_BOUND
+    - AUTHORIZED
+    - PRECONDITIONS_VERIFIED
+    - FINAL_POINT_APPLIED
+    - SOURCE_REANALYZED
+    - SOURCE_COMPLETE
+    - ASYNC_APPLIED
+    - SOURCE_REMOVED
+    - CANONICAL_SOURCE_COMPLETE
+    - GLOBAL_VALIDATION
+    - PROMOTION_READY
+    - PROMOTED
+    - POST_PROMOTION_VERIFIED
+    - RECOVERY_REQUIRED
+  - id: SRC-0028
+    source_pointer: /authority_semantics/semantic_unit_31962f4fde1c
+    value: EXACT_WU06_PLAN_DIGEST
+  - id: SRC-0029
+    source_pointer: /authority_semantics/semantic_unit_236bb8e7c859
+    value: ACCEPTED_DELTA_BUNDLE_ONLY
+  - id: SRC-0030
+    source_pointer: /authority_semantics/semantic_unit_85c17cf5faf3
+    value:
+    - WU06_PLAN_DIGEST
+    - PROJECT_DECISION_IDS
+    - AUTHORITY_REVISION
+  - id: SRC-0031
+    source_pointer: /authority_semantics/semantic_unit_bc3eec85743b
+    value: PARTICIPATING_PROFILE_PATHS_ONLY
+  - id: SRC-0032
+    source_pointer: /authority_semantics/semantic_unit_b25e38bb727b
+    value: true
+  - id: SRC-0033
+    source_pointer: /authority_semantics/semantic_unit_cffdfbecbd0b
+    value: true
+  - id: SRC-0034
+    source_pointer: /authority_semantics/semantic_unit_c8e4e94c61e2
+    value: true
+  - id: SRC-0035
+    source_pointer: /authority_semantics/semantic_unit_a3771f256239
+    value: true
+  - id: SRC-0036
+    source_pointer: /authority_semantics/semantic_unit_5e07ffde514f
+    value: true
+  - id: SRC-0037
+    source_pointer: /authority_semantics/semantic_unit_5f35b8c4cd63
+    value: false
+  - id: SRC-0038
+    source_pointer: /authority_semantics/semantic_unit_d63dd8f5fdab
+    value: DUPLICATE_EQUIVALENT_TARGET
+  - id: SRC-0039
+    source_pointer: /authority_semantics/semantic_unit_00ff091f8423
+    value: FAIL_CLOSED
+  - id: SRC-0040
+    source_pointer: /authority_semantics/semantic_unit_18e0f3955df0
+    value:
+      authorization: USER_EXPLICIT
+      status: TEMPORARY_ONLY
+      release_while_active: FORBIDDEN
+      required_reconciliation:
+      - REGENERATE_FROM_CANONICAL_SOURCE
+      - CONTEXT_CHECK_PASS
+  - id: SRC-0041
+    source_pointer: /authority_semantics/semantic_unit_3e8fd3fe513f
+    value:
+      context_check: REQUIRED
+      missing_projection: FAIL_CLOSED
+      projection_drift: FAIL_CLOSED
+      semantic_equivalence_failure: FAIL_CLOSED
+  - id: SRC-0042
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/CTRL/SFP-CTRL-0001.yaml
+    sha256: c270bde4ca765a85d8d46f3817b81bc947e810109a6ace6650baeaeac022bc76
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

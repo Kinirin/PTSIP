@@ -1,66 +1,208 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-INFO-0002
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: INFO
   title: INFO authority (APPROVED source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-  version: '1.0'
-authority_subject:
-  id: DEV_CONTROL_INFORMATION_MEANING
-  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의
-    구분을 소유한다.
-exclusive_kernel:
-- DEV_CANONICAL_INFORMATION_AND_IDENTITY
-- DEV_SOURCE_PROJECTION_SEMANTICS
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_SOURCE_PROJECTION_SEMANTICS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: MPD-INFO-0002#/rules/unit_mpd_0016_2e215a2a3abc
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: MPD-INFO-0002#/rules/unit_mpd_0016_40c664bc86a2
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: MPD-INFO-0002#/rules/unit_mpd_veri_0001_40c664bc86a2
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0013
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-INFO-0002
+      title: INFO authority (APPROVED source responsibilities)
+      status: RETIRED
+      substatus: Waiting
+      version: '1.0'
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_CONTROL_INFORMATION_MEANING
+      statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의 구분을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_CANONICAL_INFORMATION_AND_IDENTITY
+    - DEV_SOURCE_PROJECTION_SEMANTICS
+  - id: SRC-0007
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_CANONICAL_INFORMATION_AND_IDENTITY
       statement: 개발 레코드의 필드, 식별자, 상태 표현 및 canonical 정보 단위의 의미를 정의한다. 식별자 할당 승인의 적법성은 GOV가 소유한다.
       non_substitutability: GOV의 승인 기록은 정보 필드의 해석과 schema 의미를 대신 정의하지 못한다.
-    - id: DEV_SOURCE_PROJECTION_SEMANTICS
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_SOURCE_PROJECTION_SEMANTICS
       statement: semantic source와 결정론적 projection의 관계 및 projection이 독립 authority가 될 수 없는 조건을 정한다.
       non_substitutability: REAL의 생성 절차나 RECORD의 과거 로그가 현재 정보의 semantic source를 대체하지 못한다.
-    source_scope:
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/source_scope
+    value:
     - MPD-0016
     - MPD-VERI-0001
-  unit_mpd_0016_2e215a2a3abc:
-    language_identity_must_be_unique: true
-    registered_translation_path_must_be_explicit: true
-    registered_translation_path_must_resolve: true
-    unregistered_generated_translation_is_invalid: true
-  unit_mpd_0016_40c664bc86a2:
-    supersedes: []
-    amends: []
-    extends: []
-    depends_on: []
-  unit_mpd_veri_0001_40c664bc86a2:
-    supersedes: []
-    amends: []
-    extends: []
-    depends_on:
-    - policy: MPD-SPEC-0023
-      scope: POLICY_PLAN_BINDING_CONTRACT
-    - policy: MPD-PLAN-0001
-      scope: PLANNING_AUTHORITY_AND_LIFECYCLE
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: PENDING
-  requirements:
-  - id: TR-001
-    type: CURRENT_ROOT_CONTRACT_VERIFICATION
-    state: OPEN
-    refs:
-    - developer/policy/approvals/MPA-20261006-ROOT-INFO-0002-APPROVED.yaml
-    next_action:
-      action: VERIFY_CURRENT_ROOT_CONTRACT
-      execution: SERIAL_REQUIRED
-      completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID
+  - id: SRC-0010
+    source_pointer: /rules/unit_mpd_0016_2e215a2a3abc
+    value:
+      language_identity_must_be_unique: true
+      registered_translation_path_must_be_explicit: true
+      registered_translation_path_must_resolve: true
+      unregistered_generated_translation_is_invalid: true
+  - id: SRC-0011
+    source_pointer: /rules/unit_mpd_0016_40c664bc86a2
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0012
+    source_pointer: /rules/unit_mpd_veri_0001_40c664bc86a2
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: MPD-SPEC-0023
+        scope: POLICY_PLAN_BINDING_CONTRACT
+      - policy: MPD-PLAN-0001
+        scope: PLANNING_AUTHORITY_AND_LIFECYCLE
+  - id: SRC-0013
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0014
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: PENDING
+      requirements:
+      - id: TR-001
+        type: CURRENT_ROOT_CONTRACT_VERIFICATION
+        state: OPEN
+        refs:
+        - developer/policy/approvals/MPA-20261006-ROOT-INFO-0002-APPROVED.yaml
+        next_action:
+          action: VERIFY_CURRENT_ROOT_CONTRACT
+          execution: SERIAL_REQUIRED
+          completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID
+  source_document:
+    path: developer/policy/INFO/MPD-INFO-0002.yaml
+    sha256: 1f0dcc4f1617eebbebd0018df97c9177e4a7d9c8ae01466385d357585d229ed2
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

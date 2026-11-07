@@ -1,58 +1,163 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: CNTR
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-CNTR-0003
-  version: '3.0'
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: CNTR
   title: Language-neutral Root Family projection module
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-authority_subject:
-  id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
-  statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를 소유한다.
-exclusive_kernel:
-- DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
-- DEV_INTERFACE_COMPATIBILITY_COMMITMENT
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: MPD-CNTR-0003#/rules/root_family_projection_module
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0011
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CNTR
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-CNTR-0003
+      version: '3.0'
+      title: Language-neutral Root Family projection module
+      status: RETIRED
+      substatus: Waiting
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_AUTOMATION_INTERFACE_OBLIGATIONS
+      statement: 개발 resolver, IWP, command plane 및 검증 자동화가 호출자와 맺는 입력, 출력, 오류 및 호환 의무를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
+    - DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+  - id: SRC-0007
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_AUTOMATION_REQUEST_RESULT_CONTRACT
       statement: 호출 가능한 command vocabulary, typed 입력과 출력, 오류 의미 및 precondition/postcondition 약속을 명시한다.
       non_substitutability: INFO의 내부 데이터 모델만으로 외부 호출에 허용된 command와 결과 약속을 만들 수 없다.
-    - id: DEV_INTERFACE_COMPATIBILITY_COMMITMENT
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_INTERFACE_COMPATIBILITY_COMMITMENT
       statement: 개발 자동화 인터페이스의 보장 범위와 호환성 약속을 정하고 미등록 command나 추측 fallback이 계약이 되는 것을 금지한다.
       non_substitutability: CHANGE가 전환 일정을 정하거나 REAL이 편의 기능을 구현해도 계약상 지원 의무가 자동으로 생기지 않는다.
-    source_scope: []
-  root_family_projection_module:
-    module_id: urn:ptsip:developer:root-family-projection:v1
-    module_ref: developer/policy/registries/root-family-projection.module.json
-    language_neutral: true
-    versioned: true
-    machine_readable: true
-    semantics_must_be_explicit: true
-    normative_program_language: PTSIP_JSON_PROGRAM_V1
-    implementation_source_is_module_authority: false
-    support_module_authority_inheritance: FORBIDDEN
-    module_sha256: d86038c17ea13d64adbadc9fc7153dac0887d2542f2576d675101b5104976b15
-    module_digest_format: SHA256_UTF8_LF
-    current_root_reconstruction: FORBIDDEN
-    usage: MIGRATION_HISTORY_AUDIT_ONLY
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: NEUTRAL_MODULE_EXPLICIT_OWNER_ADMISSION
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-NEUTRAL-CNTR-0003-ACTIVE.yaml
-    next_action:
-      action: VERIFY_REGISTERED_NEUTRAL_MODULE_BINDING
-      execution: SERIAL_REQUIRED
-      completion_check: OWNER_AND_BINDING_EXACTLY_REGISTERED
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/source_scope
+    value: []
+  - id: SRC-0010
+    source_pointer: /rules/root_family_projection_module
+    value:
+      module_id: urn:ptsip:developer:root-family-projection:v1
+      module_ref: developer/policy/registries/root-family-projection.module.json
+      language_neutral: true
+      versioned: true
+      machine_readable: true
+      semantics_must_be_explicit: true
+      normative_program_language: PTSIP_JSON_PROGRAM_V1
+      implementation_source_is_module_authority: false
+      support_module_authority_inheritance: FORBIDDEN
+      module_sha256: d86038c17ea13d64adbadc9fc7153dac0887d2542f2576d675101b5104976b15
+      module_digest_format: SHA256_UTF8_LF
+      current_root_reconstruction: FORBIDDEN
+      usage: MIGRATION_HISTORY_AUDIT_ONLY
+  - id: SRC-0011
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0012
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: COMPLETE
+      requirements:
+      - id: TR-001
+        type: NEUTRAL_MODULE_EXPLICIT_OWNER_ADMISSION
+        state: SATISFIED
+        refs:
+        - developer/policy/approvals/MPA-20261006-NEUTRAL-CNTR-0003-ACTIVE.yaml
+        next_action:
+          action: VERIFY_REGISTERED_NEUTRAL_MODULE_BINDING
+          execution: SERIAL_REQUIRED
+          completion_check: OWNER_AND_BINDING_EXACTLY_REGISTERED
+  source_document:
+    path: developer/policy/CNTR/MPD-CNTR-0003.yaml
+    sha256: 5efa54a9f437f8c4823d05ef1c75003212456485924e4d094fe6c67bebfebadf
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

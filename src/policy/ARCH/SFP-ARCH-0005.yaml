@@ -1,76 +1,142 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: ARCH
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-ARCH-0005
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ARCH
   title: Agent Bootstrap Integrated Engine responsibility
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_AGENT_BOOTSTRAP_INTEGRATED_MANAGEMENT
-  statement: Single-owner management of machine-contract-driven agent bootstrap.
-exclusive_kernel:
-  - SUP_AGENT_BOOTSTRAP_CONTRACT_MANAGEMENT
-authority_contract:
-  authority_type: ROOT_FAMILY_ARCH
-  schema_id: ptsip.governance/root-family/arch
-  schema_version: 1
-authority_semantics:
-  bootstrap_integrated_engine:
-    intent: SINGLE_CONTRACT_AUTHORITY_ACROSS_CODING_AGENTS
-    implementation_root: src/ptsip/engines/
-    runtime_language: RUST
-    external_contract_language: LANGUAGE_NEUTRAL
-    management_owner: SINGLE_INTEGRATED_ENGINE
-    responsibilities:
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SFP-ARCH-0005#/authority_semantics/bootstrap_integrated_engine
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0009
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ARCH
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ARCH-0005
+      title: Agent Bootstrap Integrated Engine responsibility
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_AGENT_BOOTSTRAP_INTEGRATED_MANAGEMENT
+      statement: Single-owner management of machine-contract-driven agent bootstrap.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_AGENT_BOOTSTRAP_CONTRACT_MANAGEMENT
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ARCH
+      schema_id: ptsip.governance/root-family/arch
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/bootstrap_integrated_engine
+    value:
+      intent: SINGLE_CONTRACT_AUTHORITY_ACROSS_CODING_AGENTS
+      implementation_root: src/ptsip/engines/
+      runtime_language: RUST
+      external_contract_language: LANGUAGE_NEUTRAL
+      management_owner: SINGLE_INTEGRATED_ENGINE
+      responsibilities:
       - CONTRACT_REGISTRATION
       - CONTRACT_RESOLUTION
       - CONTRACT_VALIDATION
       - BOOTSTRAP_MATERIALIZATION
       - CONTRACT_CONFORMANT_CHANGE
       - COMPATIBILITY_DECISION
-    python_legacy_runtime_dependency: FORBIDDEN
-    legacy_agent_instruction_contract_inheritance: FORBIDDEN
-    normative_management_boundary:
-      contract_authority_owner: BOOTSTRAP_INTEGRATED_ENGINE
-      agent_specific_parallel_bootstrap_authority: FORBIDDEN
-      mandatory_cross_engine_bootstrap_decision_chain: FORBIDDEN
-      internal_design: UNDECIDED
-      external_engine_interoperability: SEPARATE_DECISION
-    accepted_variability:
-      coding_agent_output_expression: CONTRACT_BOUNDED_VARIATION_ALLOWED
-      current_contract_change_may_change_markdown: true
-      historical_markdown_equality_as_correctness_gate: FORBIDDEN
-    bootstrap_surface:
-      path: AGENTS.md
-      role: NON_NORMATIVE_MARKDOWN_BOOTSTRAP
-      normative_source: MACHINE_CONTRACT
-      generation_direction: MACHINE_CONTRACT_TO_AGENTS_MD
-      markdown_to_machine_authority_extraction: FORBIDDEN
-      representation: NATURAL_MARKDOWN
-      single_machine_entry: REQUIRED
-      routing_index: .ptsip/index.json
-      permitted_content:
+      python_legacy_runtime_dependency: FORBIDDEN
+      legacy_agent_instruction_contract_inheritance: FORBIDDEN
+      normative_management_boundary:
+        contract_authority_owner: BOOTSTRAP_INTEGRATED_ENGINE
+        agent_specific_parallel_bootstrap_authority: FORBIDDEN
+        mandatory_cross_engine_bootstrap_decision_chain: FORBIDDEN
+        internal_design: UNDECIDED
+        external_engine_interoperability: SEPARATE_DECISION
+      accepted_variability:
+        coding_agent_output_expression: CONTRACT_BOUNDED_VARIATION_ALLOWED
+        current_contract_change_may_change_markdown: true
+        historical_markdown_equality_as_correctness_gate: FORBIDDEN
+      bootstrap_surface:
+        path: AGENTS.md
+        role: NON_NORMATIVE_MARKDOWN_BOOTSTRAP
+        normative_source: MACHINE_CONTRACT
+        generation_direction: MACHINE_CONTRACT_TO_AGENTS_MD
+        markdown_to_machine_authority_extraction: FORBIDDEN
+        representation: NATURAL_MARKDOWN
+        single_machine_entry: REQUIRED
+        routing_index: .ptsip/index.json
+        permitted_content:
         - ENTRYPOINT
         - AUTHORITY_LOCATOR
         - COMMAND
         - BOUNDED_SCOPE
         - FAIL_CLOSED_CONDITION
-      prohibited_content:
+        prohibited_content:
         - HISTORICAL_STATE
         - VERSION_SPECIFIC_REASONING
         - DUPLICATED_NORMATIVE_SEMANTICS
-      conformance_basis: CURRENT_APPLICABLE_MACHINE_CONTRACT
-      byte_identical_output_across_agents: NOT_REQUIRED
-    unresolved:
-      governance_namespace: UNDECIDED
-      contract_storage_namespace: UNDECIDED
-      contract_schema: UNDECIDED
-      command_interface: UNDECIDED
-      engine_registration_and_activation: SEPARATE_DECISION
-      migration_or_legacy_deletion_plan: SEPARATE_PLAN
-    prior_agent_taxonomy_level1_semantics: NOT_INHERITED
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+        conformance_basis: CURRENT_APPLICABLE_MACHINE_CONTRACT
+        byte_identical_output_across_agents: NOT_REQUIRED
+      unresolved:
+        governance_namespace: UNDECIDED
+        contract_storage_namespace: UNDECIDED
+        contract_schema: UNDECIDED
+        command_interface: UNDECIDED
+        engine_registration_and_activation: SEPARATE_DECISION
+        migration_or_legacy_deletion_plan: SEPARATE_PLAN
+      prior_agent_taxonomy_level1_semantics: NOT_INHERITED
+  - id: SRC-0009
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/ARCH/SFP-ARCH-0005.yaml
+    sha256: 9dbec2b749612da9da3496a9091a25f75bc562c5b1a3325476b1b6db11d646c2
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

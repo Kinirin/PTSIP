@@ -1,74 +1,420 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: GOV
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-GOV-0001
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: GOV
   title: GOV authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_PROJECT_AUTHORITY_LEGITIMACY
-  statement: consumer Project Authority에서 정확한 subject에 대해 누가 결정할 수 있는지, Authority
-    Role의 효력 및 정당한 coordinated winner를 소유한다.
-exclusive_kernel:
-- SUP_SUBJECT_ROLE_AND_DECISION_MANDATE
-- SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE
-authority_contract:
-  authority_type: ROOT_FAMILY_GOV
-  schema_id: ptsip.governance/root-family/gov
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_SUBJECT_ROLE_AND_DECISION_MANDATE
-      statement: subject applicability, 결정 주체 및 Authority Role의 효력을 shipped registry의
-        정확한 identity와 명시적 relationship으로만 해석한다.
-      non_substitutability: ARCH의 완전한 local profile이나 AI의 의미 유사성이 Project Authority와
-        역할 권한을 만들어 내지 못한다.
-    - id: SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE
-      statement: 최초 유효 확정 결정 우선 원칙와 global authority/local projection 구분에
-        따라 어느 적법한 결정이 해당 subject의 winner인지 정한다.
-      non_substitutability: CTRL의 fresh read 성공이나 RECORD의 가장 최근 기록이라는 사실만으로 authority
-        winner가 바뀌지 않는다.
-  semantic_unit_db5fcfdfb9f1: false
-  semantic_unit_a9e64b2f374b: true
-  semantic_unit_497b5224a8b6: STABLE
-  semantic_unit_544177a069c5: FIRST_VALID_CONFIRMED_DECISION_PRECEDENCE
-  semantic_unit_f4ecc779cdbf: false
-  semantic_unit_138d6488f191: true
-  semantic_unit_335c13787166: false
-  semantic_unit_f0fcd9e4583e: false
-  semantic_unit_e5e68017d47f:
-  - PROPOSAL_BUNDLE
-  - ACCEPTED_DELTA_BUNDLE
-  - UNRESOLVED_BUNDLE
-  semantic_unit_729a3aad608d: true
-  semantic_unit_1008b206be76: false
-  semantic_unit_633f58c56305: false
-  semantic_unit_7cba43b51776: OWNER_DECISION_REQUIRED
-  context_semantic_source_update_direction:
-    decision_source: USER_EXPLICIT
-    conflict_resolution: KEEP_LATEST
-    policy_direction: EVENT_DRIVEN_MACHINE_VERIFIED_CANONICAL_SOURCE_UPDATE_EXPANSION
-    universal_per_update_user_approval_requirement: RETIRED
-    machine_verified_event_required: true
-    event_evidence_alone_grants_write_authority: false
-    preserved_authority_owners:
-    - GOV_PROJECT_DECISION_LEGITIMACY
-    - CTRL_FRESH_EXECUTION_ELIGIBILITY
-    - INFO_CANONICAL_SEMANTIC_SOURCE
-    - REAL_AUTHORIZED_STATE_REALIZATION
-    - RECORD_SOURCE_BOUND_EVENT_HISTORY
-    subordinate_decisions:
-      eligible_source_mutations: UNDECIDED
-      qualifying_evidence_and_existing_approval: UNDECIDED
-      conflicts_and_uncertainty: EXISTING_FAIL_CLOSED_UNTIL_RESOLVED
-      consumer_delegation_and_execution_permission: UNDECIDED
-      event_trigger_and_delivery: UNDECIDED
-    pending_subordinate_contracts:
-      automatic_source_mutation_permission: NOT_GRANTED
-      existing_execution_binding_activation: NOT_GRANTED
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_SUBJECT_ROLE_AND_DECISION_MANDATE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_db5fcfdfb9f1
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_a9e64b2f374b
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_497b5224a8b6
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_544177a069c5
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_f4ecc779cdbf
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_138d6488f191
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_335c13787166
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_f0fcd9e4583e
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_e5e68017d47f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_729a3aad608d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0019
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_1008b206be76
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0020
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_633f58c56305
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0021
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+  - id: SFP-GOV-0001#/authority_semantics/semantic_unit_7cba43b51776
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0022
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+  - id: SFP-GOV-0001#/authority_semantics/context_semantic_source_update_direction
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0023
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0024
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: GOV
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-GOV-0001
+      title: GOV authority (ACTIVE source responsibilities)
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROJECT_AUTHORITY_LEGITIMACY
+      statement: consumer Project Authority에서 정확한 subject에 대해 누가 결정할 수 있는지, Authority Role의 효력 및 정당한 coordinated winner를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_SUBJECT_ROLE_AND_DECISION_MANDATE
+    - SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_GOV
+      schema_id: ptsip.governance/root-family/gov
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_SUBJECT_ROLE_AND_DECISION_MANDATE
+      statement: subject applicability, 결정 주체 및 Authority Role의 효력을 shipped registry의 정확한 identity와 명시적 relationship으로만 해석한다.
+      non_substitutability: ARCH의 완전한 local profile이나 AI의 의미 유사성이 Project Authority와 역할 권한을 만들어 내지 못한다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE
+      statement: 최초 유효 확정 결정 우선 원칙와 global authority/local projection 구분에 따라 어느 적법한 결정이 해당 subject의 winner인지 정한다.
+      non_substitutability: CTRL의 fresh read 성공이나 RECORD의 가장 최근 기록이라는 사실만으로 authority winner가 바뀌지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_db5fcfdfb9f1
+    value: false
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_a9e64b2f374b
+    value: true
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_497b5224a8b6
+    value: STABLE
+  - id: SRC-0013
+    source_pointer: /authority_semantics/semantic_unit_544177a069c5
+    value: FIRST_VALID_CONFIRMED_DECISION_PRECEDENCE
+  - id: SRC-0014
+    source_pointer: /authority_semantics/semantic_unit_f4ecc779cdbf
+    value: false
+  - id: SRC-0015
+    source_pointer: /authority_semantics/semantic_unit_138d6488f191
+    value: true
+  - id: SRC-0016
+    source_pointer: /authority_semantics/semantic_unit_335c13787166
+    value: false
+  - id: SRC-0017
+    source_pointer: /authority_semantics/semantic_unit_f0fcd9e4583e
+    value: false
+  - id: SRC-0018
+    source_pointer: /authority_semantics/semantic_unit_e5e68017d47f
+    value:
+    - PROPOSAL_BUNDLE
+    - ACCEPTED_DELTA_BUNDLE
+    - UNRESOLVED_BUNDLE
+  - id: SRC-0019
+    source_pointer: /authority_semantics/semantic_unit_729a3aad608d
+    value: true
+  - id: SRC-0020
+    source_pointer: /authority_semantics/semantic_unit_1008b206be76
+    value: false
+  - id: SRC-0021
+    source_pointer: /authority_semantics/semantic_unit_633f58c56305
+    value: false
+  - id: SRC-0022
+    source_pointer: /authority_semantics/semantic_unit_7cba43b51776
+    value: OWNER_DECISION_REQUIRED
+  - id: SRC-0023
+    source_pointer: /authority_semantics/context_semantic_source_update_direction
+    value:
+      decision_source: USER_EXPLICIT
+      conflict_resolution: KEEP_LATEST
+      policy_direction: EVENT_DRIVEN_MACHINE_VERIFIED_CANONICAL_SOURCE_UPDATE_EXPANSION
+      universal_per_update_user_approval_requirement: RETIRED
+      machine_verified_event_required: true
+      event_evidence_alone_grants_write_authority: false
+      preserved_authority_owners:
+      - GOV_PROJECT_DECISION_LEGITIMACY
+      - CTRL_FRESH_EXECUTION_ELIGIBILITY
+      - INFO_CANONICAL_SEMANTIC_SOURCE
+      - REAL_AUTHORIZED_STATE_REALIZATION
+      - RECORD_SOURCE_BOUND_EVENT_HISTORY
+      subordinate_decisions:
+        eligible_source_mutations: UNDECIDED
+        qualifying_evidence_and_existing_approval: UNDECIDED
+        conflicts_and_uncertainty: EXISTING_FAIL_CLOSED_UNTIL_RESOLVED
+        consumer_delegation_and_execution_permission: UNDECIDED
+        event_trigger_and_delivery: UNDECIDED
+      pending_subordinate_contracts:
+        automatic_source_mutation_permission: NOT_GRANTED
+        existing_execution_binding_activation: NOT_GRANTED
+  - id: SRC-0024
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/GOV/SFP-GOV-0001.yaml
+    sha256: a0686482787a53c80f651802110cb3c53715d057359796fad625ad0ecd23c14e
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

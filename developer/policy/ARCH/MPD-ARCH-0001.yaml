@@ -1,18 +1,233 @@
-# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
 Policy_Identity:
   id: MPD-ARCH-0001
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: ARCH
   title: ARCH 개발 체계의 생명주기별 책임 경계와 명시적 구성 요소 관계
 Policy_Lifecycle:
-  Policy_Status_Schema_ver: '1'
   status: APPROVED.Application_Problems
-  contract: urn:ptsip:contract:policy:arch:lifecycle-responsibility:boundaries
+  source_ref: SRC-0002
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0006
+  - SRC-0007
+  - SRC-0008
+  - SRC-0009
 Policy_Rules:
-  contracts:
-  - contract_id: urn:ptsip:policy:rule:arch:lifecycle-responsibility
-    Rule_ver: '2'
-    authority_ref:
+  rules:
+  - id: R-ID-BF212913700A411DB188A1E926F5B3DB
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0006
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0006
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0006
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0006
+  - id: R-ID-5189116EFBED456BAFA9586901F8C045
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: R-ID-22F632FA935247A4B87CD8E50FAB7939
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: R-ID-605FD39BDF2C4F19B59936055877DDC7
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: REQ-0001
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: REQ-0002
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: REQ-0003
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: REQ-0004
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: REQ-0005
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: REQ-0006
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+Policy_Evaluation:
+  source_refs:
+  - SRC-0010
+  - SRC-0011
+  - SRC-0012
+  - SRC-0013
+  - SRC-0014
+  - SRC-0015
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0010
+  - SRC-0011
+  - SRC-0012
+  - SRC-0013
+  - SRC-0014
+  - SRC-0015
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /Policy_Identity
+    value:
+      id: MPD-ARCH-0001
+      policy_kind: PTSIP_DEVELOPER_POLICY
+      root_family: ARCH
+      title: ARCH 개발 체계의 생명주기별 책임 경계와 명시적 구성 요소 관계
+  - id: SRC-0002
+    source_pointer: /Policy_Lifecycle
+    value:
+      Policy_Status_Schema_ver: '1'
+      status: APPROVED.Application_Problems
+      contract: urn:ptsip:contract:policy:arch:lifecycle-responsibility:boundaries
+  - id: SRC-0003
+    source_pointer: /Policy_Rules/contracts/0/contract_id
+    value: urn:ptsip:policy:rule:arch:lifecycle-responsibility
+  - id: SRC-0004
+    source_pointer: /Policy_Rules/contracts/0/Rule_ver
+    value: '2'
+  - id: SRC-0005
+    source_pointer: /Policy_Rules/contracts/0/authority_ref
+    value:
     - id: AUTH-0001
       source_ref:
         source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
@@ -33,29 +248,46 @@ Policy_Rules:
         source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
         item_ref: /component_bindings/R-ID-605FD39BDF2C4F19B59936055877DDC7
         revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
-    rules:
-    - id: R-ID-BF212913700A411DB188A1E926F5B3DB
+  - id: SRC-0006
+    source_pointer: /Policy_Rules/contracts/0/rules/0
+    value:
+      id: R-ID-BF212913700A411DB188A1E926F5B3DB
       rule: LIFECYCLE-OWNERSHIP
       source_ref:
       - SRC-0001
-      authority_ref: [AUTH-0001]
-    - id: R-ID-5189116EFBED456BAFA9586901F8C045
+      authority_ref:
+      - AUTH-0001
+  - id: SRC-0007
+    source_pointer: /Policy_Rules/contracts/0/rules/1
+    value:
+      id: R-ID-5189116EFBED456BAFA9586901F8C045
       rule: COMPONENT-BOUNDARIES
       source_ref:
       - SRC-0002
-      authority_ref: [AUTH-0002]
-    - id: R-ID-22F632FA935247A4B87CD8E50FAB7939
+      authority_ref:
+      - AUTH-0002
+  - id: SRC-0008
+    source_pointer: /Policy_Rules/contracts/0/rules/2
+    value:
+      id: R-ID-22F632FA935247A4B87CD8E50FAB7939
       rule: TYPED-RELATIONS
       source_ref:
       - SRC-0003
-      authority_ref: [AUTH-0003]
-    - id: R-ID-605FD39BDF2C4F19B59936055877DDC7
+      authority_ref:
+      - AUTH-0003
+  - id: SRC-0009
+    source_pointer: /Policy_Rules/contracts/0/rules/3
+    value:
+      id: R-ID-605FD39BDF2C4F19B59936055877DDC7
       rule: NO-IMPLICIT-OWNER
       source_ref:
       - SRC-0004
-      authority_ref: [AUTH-0004]
-    requirements:
-    - requirement_id: REQ-0001
+      authority_ref:
+      - AUTH-0004
+  - id: SRC-0010
+    source_pointer: /Policy_Rules/contracts/0/requirements/0
+    value:
+      requirement_id: REQ-0001
       meaning_refs:
       - source_ref: developer/policy/ARCH/MPD-ARCH-0001.yaml
         item_ref: /Policy_Rules/Boundary/subjects/0
@@ -87,7 +319,10 @@ Policy_Rules:
       - evidence_requirement_refs
       - relation_binding
       - judgement_binding
-    - requirement_id: REQ-0002
+  - id: SRC-0011
+    source_pointer: /Policy_Rules/contracts/0/requirements/1
+    value:
+      requirement_id: REQ-0002
       meaning_refs:
       - source_ref: developer/policy/ARCH/MPD-ARCH-0001.yaml
         item_ref: /Policy_Rules/Boundary/subjects/1
@@ -116,7 +351,10 @@ Policy_Rules:
       - evidence_requirement_refs
       - relation_binding
       - judgement_binding
-    - requirement_id: REQ-0003
+  - id: SRC-0012
+    source_pointer: /Policy_Rules/contracts/0/requirements/2
+    value:
+      requirement_id: REQ-0003
       meaning_refs:
       - source_ref: developer/policy/ARCH/MPD-ARCH-0001.yaml
         item_ref: /Policy_Rules/Boundary/subjects/2
@@ -148,7 +386,10 @@ Policy_Rules:
       - evidence_requirement_refs
       - relation_binding
       - judgement_binding
-    - requirement_id: REQ-0004
+  - id: SRC-0013
+    source_pointer: /Policy_Rules/contracts/0/requirements/3
+    value:
+      requirement_id: REQ-0004
       meaning_refs:
       - source_ref: developer/policy/ARCH/MPD-ARCH-0001.yaml
         item_ref: /Policy_Rules/Boundary/exclusions/1
@@ -183,7 +424,10 @@ Policy_Rules:
       - evidence_requirement_refs
       - relation_binding
       - judgement_binding
-    - requirement_id: REQ-0005
+  - id: SRC-0014
+    source_pointer: /Policy_Rules/contracts/0/requirements/4
+    value:
+      requirement_id: REQ-0005
       meaning_refs:
       - source_ref: developer/policy/ARCH/MPD-ARCH-0001.yaml
         item_ref: /Policy_Rules/Boundary/exclusions/2
@@ -222,7 +466,10 @@ Policy_Rules:
       - evidence_requirement_refs
       - relation_binding
       - judgement_binding
-    - requirement_id: REQ-0006
+  - id: SRC-0015
+    source_pointer: /Policy_Rules/contracts/0/requirements/5
+    value:
+      requirement_id: REQ-0006
       meaning_refs:
       - source_ref: developer/policy/ARCH/MPD-ARCH-0001.yaml
         item_ref: /Policy_Rules/Boundary/exclusions/2
@@ -257,7 +504,9 @@ Policy_Rules:
       - evidence_requirement_refs
       - relation_binding
       - judgement_binding
-    source_items:
+  - id: SRC-0016
+    source_pointer: /Policy_Rules/contracts/0/source_items
+    value:
     - item_id: SRC-0001
       role: rule
       source_ref:
@@ -354,3 +603,11 @@ Policy_Rules:
         source_ref: developer/policy/ARCH/MPD-ARCH-0001.yaml
         item_ref: /Policy_Rules/Identity
         revision_ref: git:fc19f6d222573c9fa425860342c277e8379d3a47
+  source_document:
+    path: developer/policy/ARCH/MPD-ARCH-0001.yaml
+    sha256: 59cd78afd3ca000fc8065ce2e7240eb1321b77bc4aeabeea12341c4c65f1902b
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: PUBLIC_POLICY_V2
+  source_registration: INDEXED
+  contract_state: CANDIDATE

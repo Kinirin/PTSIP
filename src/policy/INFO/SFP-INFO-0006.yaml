@@ -1,67 +1,209 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-INFO-0006
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: INFO
   title: Registered Provider Section Identity Ownership
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_PROVIDER_SECTION_IDENTITY_MEMBERSHIP
-  statement: 현재 Support provider_binding.section의 불투명 식별자와 명시적 Registry 구성원 권위를 소유한다. CNTR의 조회 및 실패 계약을 소유하지 않는다.
-exclusive_kernel:
-  - SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
-authority_contract:
-  authority_type: ROOT_FAMILY_INFO
-  schema_id: ptsip.governance/root-family/info
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-      - id: SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
-        statement: provider_binding.section의 현행 식별자는 불투명한 명시적 Registry 구성원으로 결정된다. 과거 정책 ID와 이로부터 유래한 섹션 이름은 현재 식별자 권위를 부여하지 않는다.
-        non_substitutability: CNTR의 조회 성공, Legacy migration 기록 또는 구현의 이름 유추는 INFO의 식별자 등록 권위를 대신하지 않는다.
-  unit_provider_section_approved_decisions:
-    identity_model: OPAQUE_REGISTERED_IDENTIFIER
-    authority_split: INFO_IDENTITY_AND_REGISTRY_CNTR_LOOKUP_AND_FAILURE
-    applicability: PROVIDER_BINDING_SECTION
-    legacy_boundary: CURRENT_AUTHORITY_FULLY_SEPARATED_FROM_LEGACY
-    section_id_issuance_authority: PTSIP_AUTOMATED_ISSUANCE
-    section_id_reuse: AUTHORIZED_ID_RECLAIM
-    section_registration_mutation_authorization: AUTHORIZED_VERIFIED_MUTATION
-  unit_provider_section_invariants:
-    registration:
-      membership_authority: INFO
-      authoritative_only_if_explicitly_registered: true
-      inferred_membership_confers_authority: false
-      mutation_requires_preapproved_authority: true
-      mutation_requires_machine_verifiable_conditions: true
-      qualified_mutation_without_per_case_approval_allowed: true
-      unauthorized_or_unverified_mutation: REJECT_WITHOUT_MUTATION
-    identity:
-      legacy_policy_id_derived_current_identity: FORBIDDEN
-      legacy_unit_section_as_current_identity: FORBIDDEN
-      semantic_name_or_source_pointer_inference: FORBIDDEN
-      issuance:
-        issuer: PTSIP
-        automated_issuance_allowed: true
-        issuance_alone_confers_membership: false
-      reclaim:
-        explicit_reclaim_authority_required: true
-        active_reference_absence_required: true
-        reclaimed_identity_must_not_rewrite_history: true
-    authority_boundary:
-      info_owns_identity_and_registry_membership: true
-      cntr_owns_registered_lookup_and_failure_contract: true
-      cntr_may_create_identity_authority: false
-      history_audit_may_confer_current_authority: false
-      existing_active_cntr_contract_implicitly_redefined: false
-  unit_provider_section_separate_responsibilities:
-    INFO: OPAQUE_SECTION_IDENTITY_AND_EXPLICIT_REGISTRY_MEMBERSHIP
-    CNTR: REGISTERED_SECTION_LOOKUP_RESULT_AND_FAILURE_CONTRACT
-    PLAN: REGISTRATION_STORAGE_RESOLUTION_AND_MIGRATION_MECHANICS
-  unit_provider_section_unresolved_decisions: []
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SFP-INFO-0006#/authority_semantics/unit_provider_section_approved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-INFO-0006#/authority_semantics/unit_provider_section_invariants
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-INFO-0006#/authority_semantics/unit_provider_section_separate_responsibilities
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-INFO-0006#/authority_semantics/unit_provider_section_unresolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0013
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-INFO-0006
+      title: Registered Provider Section Identity Ownership
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROVIDER_SECTION_IDENTITY_MEMBERSHIP
+      statement: 현재 Support provider_binding.section의 불투명 식별자와 명시적 Registry 구성원 권위를 소유한다. CNTR의 조회 및 실패 계약을 소유하지 않는다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_INFO
+      schema_id: ptsip.governance/root-family/info
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OPAQUE_PROVIDER_SECTION_IDENTITY_AND_REGISTRY
+      statement: provider_binding.section의 현행 식별자는 불투명한 명시적 Registry 구성원으로 결정된다. 과거 정책 ID와 이로부터 유래한 섹션 이름은 현재 식별자 권위를 부여하지
+        않는다.
+      non_substitutability: CNTR의 조회 성공, Legacy migration 기록 또는 구현의 이름 유추는 INFO의 식별자 등록 권위를 대신하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/unit_provider_section_approved_decisions
+    value:
+      identity_model: OPAQUE_REGISTERED_IDENTIFIER
+      authority_split: INFO_IDENTITY_AND_REGISTRY_CNTR_LOOKUP_AND_FAILURE
+      applicability: PROVIDER_BINDING_SECTION
+      legacy_boundary: CURRENT_AUTHORITY_FULLY_SEPARATED_FROM_LEGACY
+      section_id_issuance_authority: PTSIP_AUTOMATED_ISSUANCE
+      section_id_reuse: AUTHORIZED_ID_RECLAIM
+      section_registration_mutation_authorization: AUTHORIZED_VERIFIED_MUTATION
+  - id: SRC-0010
+    source_pointer: /authority_semantics/unit_provider_section_invariants
+    value:
+      registration:
+        membership_authority: INFO
+        authoritative_only_if_explicitly_registered: true
+        inferred_membership_confers_authority: false
+        mutation_requires_preapproved_authority: true
+        mutation_requires_machine_verifiable_conditions: true
+        qualified_mutation_without_per_case_approval_allowed: true
+        unauthorized_or_unverified_mutation: REJECT_WITHOUT_MUTATION
+      identity:
+        legacy_policy_id_derived_current_identity: FORBIDDEN
+        legacy_unit_section_as_current_identity: FORBIDDEN
+        semantic_name_or_source_pointer_inference: FORBIDDEN
+        issuance:
+          issuer: PTSIP
+          automated_issuance_allowed: true
+          issuance_alone_confers_membership: false
+        reclaim:
+          explicit_reclaim_authority_required: true
+          active_reference_absence_required: true
+          reclaimed_identity_must_not_rewrite_history: true
+      authority_boundary:
+        info_owns_identity_and_registry_membership: true
+        cntr_owns_registered_lookup_and_failure_contract: true
+        cntr_may_create_identity_authority: false
+        history_audit_may_confer_current_authority: false
+        existing_active_cntr_contract_implicitly_redefined: false
+  - id: SRC-0011
+    source_pointer: /authority_semantics/unit_provider_section_separate_responsibilities
+    value:
+      INFO: OPAQUE_SECTION_IDENTITY_AND_EXPLICIT_REGISTRY_MEMBERSHIP
+      CNTR: REGISTERED_SECTION_LOOKUP_RESULT_AND_FAILURE_CONTRACT
+      PLAN: REGISTRATION_STORAGE_RESOLUTION_AND_MIGRATION_MECHANICS
+  - id: SRC-0012
+    source_pointer: /authority_semantics/unit_provider_section_unresolved_decisions
+    value: []
+  - id: SRC-0013
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/INFO/SFP-INFO-0006.yaml
+    sha256: 290c0956dbb3f41fa710a6a2e79d6423afe2620c5ec15eae6f945a8ed4873144
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

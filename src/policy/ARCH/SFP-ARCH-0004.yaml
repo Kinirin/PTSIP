@@ -1,1302 +1,1337 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "ARCH",
-  "policy": {
-    "id": "SFP-ARCH-0004",
-    "title": "Engine structural ownership and physical responsibility boundary (ACTIVE)",
-    "status": "ACTIVE"
-  },
-  "authority_subject": {
-    "id": "SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION",
-    "statement": "Owns the approved engine architecture boundary."
-  },
-  "exclusive_kernel": [
-    "SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY",
-    "SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_ARCH",
-    "schema_id": "ptsip.governance/root-family/arch",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "rac_aec_rego_original_contract_direction": {
-      "decision_source": "PROJECT_OWNER_EXPLICIT",
-      "decision_date": "2026-11-06",
-      "approval_level": "RAC_AEC_EVALUATION_SOURCE_DIRECTION",
-      "scope": "RAC_AEC_CONDITION_EVALUATION_SEMANTICS",
-      "evaluation_contract_original": "REGO_SOURCE",
-      "rego_generated_from_separate_expression_contract_as_canonical": "NOT_SELECTED",
-      "non_evaluation_policy_authority": "PRESERVE_APPROVED_POLICY_CONTRACTS",
-      "rac_aec_attribute_ownership": "INDEPENDENT_RAC_AEC_PREFIXED_REGISTRATION",
-      "identity_fields_existing_approval": [
-        "ID",
-        "name"
-      ],
-      "evidence_requirements_and_evaluation_criteria": "SEMANTIC_RESPONSIBILITIES_SEPARATED",
-      "machine_contract_field_names_and_count": "UNDECIDED",
-      "rego_code_structure_and_storage": "UNDECIDED",
-      "relation_to_existing_condition_schemas": "UNDECIDED",
-      "implementation_and_integration": "UNDECIDED",
-      "whole_policy_scope_beyond_rac_aec": "DIRECTION_ONLY_NOT_ACTIVATED",
-      "implementation_authorized": false,
-      "runtime_activation_authorized": false,
-      "policy_authority_transfer_authorized": false
-    },
-    "rego_policy_evaluation_scope_direction": {
-      "decision_source": "PROJECT_OWNER_EXPLICIT",
-      "decision_date": "2026-11-06",
-      "approval_level": "DIRECTION_ONLY",
-      "direction": "REGO_EVALUATION_SCOPE_MAY_EXTEND_BEYOND_RAC_AEC_TO_WHOLE_POLICY_VALIDATION_AND_JUDGEMENT",
-      "immediate_planning_priority": "RAC_AEC",
-      "expression_language_final_selection": "UNDECIDED",
-      "implementation_location": "UNDECIDED",
-      "integration_method": "UNDECIDED",
-      "evaluator_runtime_and_binding": "UNDECIDED",
-      "normative_policy_authority": "PRESERVE_EXISTING_POLICY_OWNERSHIP",
-      "rac_aec_new_field_names_and_count": "UNDECIDED",
-      "implementation_authorized": false,
-      "runtime_activation_authorized": false,
-      "prior_engine_architecture_changes_authorized": false
-    },
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY",
-          "statement": "classification을 governing lifecycle obligation에 따른 primary ownership으로 선언하고 material mixed 책임 및 unresolved 소유를 구분한다.",
-          "non_substitutability": "SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle ownership을 자동 결정하지 않는다."
-        },
-        {
-          "id": "SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS",
-          "statement": "roles, associated artifacts 및 typed directed relationships를 프로젝트의 명시적 architecture 사실로 선언하고 evidence에서 자동 생성하지 않는다.",
-          "non_substitutability": "INFO의 필드 schema나 REAL의 template materialization이 프로젝트 소유 architecture 의도를 만들어 내지 못한다."
-        }
-      ]
-    },
-    "unit_ptsip_engine_draft": {
-      "domain": "PTSIP_ENGINE",
-      "approved_decisions": {
-        "engine_ownership": "OFFICIAL_PACKAGE_OWNED_AND_CONSUMER_USER_ENGINE_OWNED",
-        "official_implementations": "SHIPPED_PTSIP_INSTALLATION",
-        "consumer_user_implementations": "CONSUMER_REPOSITORY_OWNED_OR_EXPLICITLY_REGISTERED_EXTERNAL_INSTALLATION",
-        "official_engine_kinds": [
-          "CONTEXT",
-          "STORAGE",
-          "VALIDATION",
-          "DISCOVERY",
-          "PLANNING",
-          "EXECUTION",
-          "PROJECTION"
-        ],
-        "integration_engine_priority": "DEFERRED_LOWER_PRIORITY",
-        "engine_structure_P1": "EXPLICIT_SINGLE_OWNER_MIXED_IMPLEMENTATION",
-        "directory_policy_P2": "RESPONSIBILITY_BOUNDARY_STRUCTURED",
-        "physical_organization_P3": "SINGLE_UPPER_ENGINE_AREA",
-        "common_management_P4": "PER_ENGINE_SELF_OWNED_FUNCTION_BY_FUNCTION_MANAGEMENT",
-        "implementation_sharing_P5": "NO_CROSS_OFFICIAL_RUST_ENGINE_IMPLEMENTATION_SHARING",
-        "capability_implementation_P6": "INDEPENDENT_CONTRACT_FLEXIBLE_IMPLEMENTATION",
-        "user_external_isolation_P7": "MANDATORY_ISOLATION",
-        "common_management_function_examples": [
-          "CONTRACT",
-          "REGISTRY",
-          "RESOLVER",
-          "ACTIVATION",
-          "EVALUATION",
-          "COMPOSITION",
-          "TRANSPORT",
-          "LIFECYCLE"
-        ],
-        "internal_hierarchy_model": "DECLARATION_BASED_VARIABLE_HIERARCHY",
-        "storage_engine_semantic_boundary": "CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP",
-        "context_projection_responsibility_direction": "B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER",
-        "validation_vpms_responsibility_direction": "SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE",
-        "vpms_independent_semantic_engine_owner": false,
-        "validation_engine_scope": "GENERAL_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_VALIDATION",
-        "validation_vpms_interface_migration_policy": "STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT",
-        "official_engine_source_root": "src/ptsip/engines/",
-        "official_engine_source_root_selection": "B_PTSIP_ENGINES_PACKAGE_ROOT",
-        "independent_engine_module_layout": "D_SELF_CONTAINED_ENGINE_MODULES",
-        "per_engine_management_ownership": "INDEPENDENT_SEMANTICS_AND_IMPLEMENTATION",
-        "per_engine_change_boundary": "VERSION_DEPENDENCIES_BUILD_DEPLOYMENT_PATCH",
-        "per_engine_environment_boundary": "VERSIONED_DEPENDENCY_ENVIRONMENT_PER_ENGINE",
-        "engine_local_management_entry_resolution": "MACHINE_DECLARED_IDENTITY_BOUND_ENTRYPOINT_WITH_NAME_AGNOSTIC_DIRECTORY",
-        "engine_local_management_function_model": "NO_MANDATORY_COMMON_MANAGEMENT_FUNCTIONS_EXTERNAL_INTEROPERABILITY_ONLY",
-        "engine_local_management_mandate": "OPTIONAL_ENGINE_OWNED_INTERNAL_FUNCTIONS",
-        "engine_minimum_external_interoperability": "MACHINE_READABLE_CONTRACT_REQUIRED",
-        "engine_external_interoperability_upper_scope": "STATIC_DECLARATION_WITH_CONDITIONAL_EXECUTION_BINDING",
-        "seven_official_engine_subdirectory_name_authority_choice": "B_USER_EXPLICIT",
-        "seven_official_engine_subdirectory_name_authority_decided_at": "2026-10-11",
-        "seven_official_engine_subdirectory_name_authority": "PROJECT_OWNER_APPROVED_POLICY",
-        "seven_official_engine_subdirectory_exact_names": "ALL_SEVEN_EXPLICITLY_APPROVED",
-        "seven_official_engine_subdirectory_name_determination_by_plan": "FORBIDDEN_WITHOUT_SEPARATE_POLICY_APPROVAL",
-        "seven_official_engine_subdirectory_unapproved_name_materialization": "FORBIDDEN",
-        "official_source_root_and_seven_engine_identities": "UNCHANGED",
-        "directory_name_runtime_identity_or_entrypoint_authority": "NONE",
-        "official_engine_subdirectory_name_approvals": {
-          "root": "src/ptsip/engines/",
-          "naming_authority": "PROJECT_OWNER_POLICY_APPROVAL",
-          "approved": {
-            "CONTEXT": "context/",
-            "STORAGE": "storage/",
-            "VALIDATION": "validation/",
-            "DISCOVERY": "discovery/",
-            "PLANNING": "planning/",
-            "EXECUTION": "execution/",
-            "PROJECTION": "projection/"
-          },
-          "pending_engine_kinds": [],
-          "all_seven_names_resolved": true,
-          "policy_value_not_implementation_authorization": true
-        },
-        "official_context_engine_subdirectory_name": "context/",
-        "official_context_engine_subdirectory_decision": "A_USER_EXPLICIT",
-        "official_context_engine_subdirectory_approved_at": "2026-10-11",
-        "official_context_engine_subdirectory_physical_creation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-        "official_context_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
-        "official_storage_engine_subdirectory_name": "storage/",
-        "official_storage_engine_subdirectory_decision": "A_USER_EXPLICIT",
-        "official_storage_engine_subdirectory_approved_at": "2026-10-11",
-        "official_storage_engine_subdirectory_physical_creation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-        "official_storage_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
-        "official_validation_engine_subdirectory_name": "validation/",
-        "official_validation_engine_subdirectory_decision": "A_USER_EXPLICIT",
-        "official_validation_engine_subdirectory_approved_at": "2026-10-11",
-        "official_validation_engine_subdirectory_physical_creation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-        "official_validation_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
-        "official_discovery_engine_subdirectory_name": "discovery/",
-        "official_discovery_engine_subdirectory_decision": "A_USER_EXPLICIT",
-        "official_discovery_engine_subdirectory_approved_at": "2026-10-11",
-        "official_discovery_engine_subdirectory_physical_creation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-        "official_discovery_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
-        "seven_official_engine_subdirectory_name_set_status": "USER_APPROVED_COMPLETE",
-        "seven_official_engine_subdirectory_names_completed_at": "2026-10-11",
-        "official_planning_engine_subdirectory_name": "planning/",
-        "official_planning_engine_subdirectory_decision": "USER_EXPLICIT_APPROVAL",
-        "official_planning_engine_subdirectory_approved_at": "2026-10-11",
-        "official_planning_engine_subdirectory_physical_creation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-        "official_planning_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
-        "official_execution_engine_subdirectory_name": "execution/",
-        "official_execution_engine_subdirectory_decision": "USER_EXPLICIT_APPROVAL",
-        "official_execution_engine_subdirectory_approved_at": "2026-10-11",
-        "official_execution_engine_subdirectory_physical_creation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-        "official_execution_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
-        "official_projection_engine_subdirectory_name": "projection/",
-        "official_projection_engine_subdirectory_decision": "USER_EXPLICIT_APPROVAL",
-        "official_projection_engine_subdirectory_approved_at": "2026-10-11",
-        "official_projection_engine_subdirectory_physical_creation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-        "official_projection_engine_subdirectory_name_source": "OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE",
-        "concrete_physical_package_layout_authority_choice": "A_USER_EXPLICIT",
-        "concrete_physical_package_layout_authority_decided_at": "2026-10-11",
-        "concrete_physical_package_layout_authority": "PLAN_DERIVED_FROM_EFFECTIVE_ARCH_CNTR_AND_RELEVANT_RESPONSIBILITY_CONTRACTS",
-        "concrete_physical_package_layout_concrete_shape": "PLAN_WITH_MACHINE_VALIDATION_NOT_POLICY_FIXED",
-        "per_engine_internal_hierarchy": "VARIABLE_PER_DECLARED_RESPONSIBILITY",
-        "internal_management_layout": "ENGINE_OWNED_OPTIONAL_AND_NONSTANDARDIZED",
-        "seven_official_engine_source_and_name_contract": "IMMUTABLE_UNLESS_SEPARATE_OWNER_POLICY_APPROVAL",
-        "internal_layout_validation": "MACHINE_VERIFIED_CONTRACT_AND_OWNER_MAPPING",
-        "internal_layout_missing_or_conflicting_responsibility_proof": "BLOCK_UNVERIFIED_PLAN_IMPLEMENTATION",
-        "internal_layout_plan_approval": "NO_SEPARATE_PER_LAYOUT_USER_APPROVAL_REQUIRED_BY_THIS_DECISION",
-        "internal_layout_decision_does_not_authorize_physical_mutation": true,
-        "official_engine_implementation_language": "RUST",
-        "official_engine_implementation_language_scope": "SEVEN_OFFICIAL_ENGINES_ONLY",
-        "official_engine_language_neutral_contract": "PRESERVED",
-        "consumer_user_external_engine_language_policy": "UNCHANGED",
-        "official_engine_legacy_python_implementation_boundary": {
-          "scope": "SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY",
-          "prohibited_source": "EXISTING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION",
-          "prohibition": "ALL_LEGACY_PYTHON_IMPLEMENTATION_RELOCATION_REUSE_AND_SHARING_FORBIDDEN",
-          "prohibited_operations": [
-            "MOVE_LEGACY_PYTHON_SOURCE_INTO_OFFICIAL_ENGINE",
-            "COPY_LEGACY_PYTHON_SOURCE_INTO_OFFICIAL_ENGINE",
-            "TRANSLATE_OR_PORT_LEGACY_PYTHON_IMPLEMENTATION_AS_ENGINE_IMPLEMENTATION",
-            "REUSE_LEGACY_PYTHON_MODULE_OR_IMPLEMENTATION",
-            "SHARE_LEGACY_PYTHON_IMPLEMENTATION_WITH_OFFICIAL_ENGINE",
-            "LINK_WRAP_BRIDGE_OR_DELEGATE_OFFICIAL_ENGINE_IMPLEMENTATION_TO_LEGACY_PYTHON_RUNTIME"
-          ],
-          "implementation_source": "NEW_INDEPENDENT_RUST_IMPLEMENTATION_DERIVED_FROM_EFFECTIVE_POLICY_AND_LANGUAGE_NEUTRAL_MACHINE_CONTRACT",
-          "runtime_dependency_on_legacy_ptsip_python_implementation": "FORBIDDEN",
-          "normative_contract_reuse": "PRESERVED_LANGUAGE_NEUTRAL_CONTRACTS_NOT_LEGACY_PYTHON_IMPLEMENTATIONS",
-          "existing_active_public_api_and_vpms_transition": "PRESERVED_UNTIL_SEPARATELY_AUTHORIZED_AND_VERIFIED",
-          "existing_legacy_implementation_modification": "NOT_AUTHORIZED_BY_THIS_DECISION",
-          "consumer_and_registered_external_engine_language_scope": "UNAFFECTED",
-          "unrelated_rust_sharing_policy": "UNCHANGED_SEPARATE_POLICY_DECISION",
-          "new_engine_implementation_authorization": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-          "draft_runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED"
-        },
-        "current_declared_component_boundary_reconciliation": {
-          "decision": "KEEP_LATEST",
-          "decision_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "prior_active_authority": "SFP-ARCH-0001",
-          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "current_active_authority_scope": "CONSUMER_PROJECT_LIFECYCLE_COMPONENT_OWNERSHIP_AND_TYPED_RELATIONSHIPS",
-          "conflicting_old_boundary": "EXISTING_PTSIP_SHIPPED_COMPONENT_FUNCTIONAL_OWNER_REMAINS_CANONICAL_ON_ENGINE_CAPABILITY_OVERLAP",
-          "replacement_boundary": "OFFICIAL_RUST_ENGINE_CANONICAL_FUNCTIONAL_RESPONSIBILITY_FOR_VERIFIED_OVERLAPPING_PTSIP_SHIPPED_CAPABILITIES",
-          "replacement_scope": "PTSIP_OFFICIAL_PRODUCT_INTERNAL_OVERLAPPING_ENGINE_CAPABILITY_RESPONSIBILITIES_ONLY",
-          "old_functional_boundary_handling": "REPLACE_WHEN_EXPLICIT_ENGINE_CAPABILITY_OWNER_MAP_AND_COMPATIBILITY_HANDOFF_VERIFIED",
-          "canonical_owner_selection": "DECLARED_ENGINE_CAPABILITY_ID_AND_EXPLICIT_RESPONSIBILITY_MAP_NOT_DIRECTORY_OR_LANGUAGE_HEURISTIC",
-          "consumer_project_lifecycle_ownership": "PRESERVE_PROJECT_OWNER_DECLARED_RESPONSIBILITY_MAP",
-          "nonoverlapping_active_component_obligations": "PRESERVED",
-          "existing_shipped_public_capability_contracts": "PRESERVED_UNTIL_VERIFIED_AUTHORIZED_TRANSITION",
-          "active_context_projection_vpms_assure_storage_authorities": "NO_IMPLICIT_TRANSFER_SEPARATE_RECONCILIATION_REQUIRED",
-          "required_ownership_map": "PENDING_MACHINE_VERIFIED_ENGINE_TO_EXISTING_FUNCTIONAL_COMPONENT_RESPONSIBILITY_RECONCILIATION",
-          "rust_engine_legacy_python_dependency": "FORBIDDEN_AS_ALREADY_APPROVED",
-          "immediate_active_policy_override": "FORBIDDEN_BEFORE_ARCH_0004_ACTIVE_PROMOTION",
-          "runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED",
-          "physical_implementation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED"
-        },
-        "context_projection_active_authority_reconciliation": {
-          "decision": "KEEP_LATEST",
-          "decision_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "scope": "OFFICIAL_RUST_CONTEXT_AND_PROJECTION_ENGINE_NORMATIVE_OUTPUT_RESPONSIBILITY",
-          "prior_active_contract": "SFP-CNTR-0001#CONTEXT_PLANE_MIGRATION_REPAIR",
-          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "current_active_contract_status": "ACTIVE_UNCHANGED_UNTIL_CONCRETE_AUTHORIZED_VERSIONED_TRANSITION",
-          "conflicting_old_rule": "LEGACY_CONTEXT_PUBLIC_OUTPUT_CONTRACT_PRIORITIZED_OVER_NEW_PROJECTION_OUTPUT_AUTHORITY",
-          "replacement_rule": "RUST_PROJECTION_ENGINE_CANONICAL_OUTPUT_SCHEMA_FORMAT_AND_TRANSFORMATION_NORMATIVE_OWNER",
-          "context_owner": "SOURCE_CONTENT_SEMANTICS_AND_CONSTRAINTS",
-          "projection_owner": "OUTPUT_SCHEMA_FORMAT_AND_TRANSFORMATION_RULES",
-          "legacy_format_parity_requirement_after_authorized_cutover": "NOT_AUTOMATICALLY_MANDATORY",
-          "legacy_public_api_contract_change": "ELIGIBLE_ONLY_BY_SEPARATELY_AUTHORIZED_VERSIONED_CONTRACT_TRANSITION_AND_MACHINE_VERIFIED_CUTOVER",
-          "previous_active_public_api_before_cutover": "PRESERVED",
-          "independent_engines": "RUST_NEW_IMPLEMENTATION_NO_LEGACY_PYTHON_REUSE",
-          "consumer_project_lifecycle_authority": "UNCHANGED",
-          "assure_conformance_and_ctrl_execution_authorities": "UNCHANGED",
-          "remaining_contract_handoff": "SFP-CNTR-0005#CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF",
-          "active_promotion": "BLOCKED_UNTIL_ALL_EXISTING_GATES_VERIFIED",
-          "physical_implementation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-          "runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED"
-        },
-        "validation_vpms_public_contract_final_target": {
-          "decision": "KEEP_LATEST",
-          "decision_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "scope": "SEVEN_OFFICIAL_RUST_VALIDATION_ENGINE_TARGET_PUBLIC_CONTRACT_AND_LEGACY_VPMS_API_COMPATIBILITY",
-          "target_canonical_public_contract": "RUST_VALIDATION_ENGINE_LANGUAGE_NEUTRAL_CAPABILITY_CONTRACT",
-          "target_semantic_owner": "SINGLE_OFFICIAL_VALIDATION_ENGINE_INCLUDING_VPMS_PROTOCOL_SELECTION_AND_EXECUTION_COMPOSITION_CAPABILITIES",
-          "existing_active_vpms_contract_ids": {
-            "VPMS_PRODUCT_PROTOCOL": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
-            "VPMS_CASE_SELECTION": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
-            "VPMS_EXECUTION_COMPOSITION": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
-          },
-          "previous_active_owner_contracts": "PRESERVED_BEFORE_AUTHORIZED_VERIFIED_CUTOVER",
-          "active_contract_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "old_public_api": "TRANSITIONAL_COMPATIBILITY_ONLY_AFTER_NEW_API_VERIFIED",
-          "migration": "NEW_RUST_VALIDATION_CONTRACT_VERIFIED_THEN_VERSIONED_COMPATIBILITY_HANDOFF_THEN_SEPARATELY_AUTHORIZED_RETIREMENT",
-          "compatibility_verification": "MACHINE_VERIFIED_BEHAVIOR_CONFORMANCE_AND_CALLSITE_COMPATIBILITY_BEFORE_SWITCH",
-          "old_api_indefinite_support": "NOT_MANDATORY_AFTER_SEPARATELY_APPROVED_RETIREMENT",
-          "legacy_public_api_retirement": "SEPARATE_EXPLICIT_PROJECT_OWNER_APPROVAL_REQUIRED",
-          "retirement_approval_by_this_decision": "NOT_GRANTED",
-          "implementation_boundary": "NEW_RUST_ONLY_NO_EXISTING_PYTHON_VPMS_MOVE_PORT_WRAP_REUSE_OR_RUNTIME_DEPENDENCY",
-          "exact_capability_and_public_api_mapping": "UNRESOLVED_CONTRACT_DESIGN_AND_RESPONSIBILITY_ANALYSIS",
-          "existing_assure_conformance_authority": "PRESERVED_DISTINCT_FROM_VPMS_OUTCOME",
-          "other_active_authority_and_consumer_profile_ownership": "UNCHANGED",
-          "active_policy_effect": "NONE_UNTIL_AUTHORIZED_AND_VERIFIED_TRANSITION",
-          "engine_runtime_activation": "NOT_AUTHORIZED",
-          "physical_implementation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED"
-        },
-        "validation_vpms_legacy_to_generic_validator_mapping": {
-          "choice": "C_INDEPENDENT_RUST_VALIDATION_CAPABILITIES_WITH_EXPLICIT_MACHINE_VERIFIABLE_LEGACY_CONTRACT_MAPPING",
-          "source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "scope": "OFFICIAL_RUST_VALIDATION_ENGINE_RESPONSIBILITY_AND_LEGACY_VPMS_CONTRACT_RELATIONSHIPS",
-          "canonical_semantic_owner": "SINGLE_RUST_VALIDATION_ENGINE",
-          "new_capability_design": "DERIVE_INDEPENDENTLY_FROM_EFFECTIVE_VALIDATION_RESPONSIBILITIES_AND_LANGUAGE_NEUTRAL_CONTRACTS",
-          "existing_vpms_module_structure": "NON_NORMATIVE_FOR_NEW_RUST_CAPABILITY_DECOMPOSITION",
-          "legacy_contract_identities": {
-            "VPMS_PRODUCT_PROTOCOL": "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
-            "VPMS_CASE_SELECTION": "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
-            "VPMS_EXECUTION_COMPOSITION": "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
-          },
-          "required_legacy_to_new_relationships": "EXPLICIT_VERSIONED_MACHINE_VERIFIABLE_CONTRACT_MAPPING",
-          "allowed_mapping_cardinalities": [
-            "ONE_TO_ONE",
-            "ONE_TO_MANY",
-            "MANY_TO_ONE"
-          ],
-          "mapping_inference_from_name_path_or_python_module": "FORBIDDEN",
-          "ambiguous_missing_conflicting_or_unverified_mapping": "UNRESOLVED_FAIL_CLOSED_NO_OWNER_HANDOFF",
-          "mapped_capability_semantics": "NO_IMPLICIT_CHANGE_TO_LEGACY_CONTRACT_MEANING_OR_CURRENT_ACTIVE_PUBLIC_BEHAVIOR",
-          "generic_validator_responsibilities": [
-            "CONTRACT_VALIDATION",
-            "SCHEMA_VALIDATION",
-            "TYPED_IO_VALIDATION",
-            "PRECONDITION_VALIDATION",
-            "VERIFICATION_CASE_VALIDATION"
-          ],
-          "generic_validator_relation_to_vpms": "EXPLICIT_CAPABILITY_RELATIONS_WITHOUT_INFERRED_SEMANTIC_EQUIVALENCE",
-          "existing_python_vpms_implementation_reuse": "FORBIDDEN_MOVE_COPY_PORT_WRAP_SHARE_RUNTIME_DEPENDENCY",
-          "existing_vpms_contract_status": "ACTIVE_UNTIL_SEPARATELY_AUTHORIZED_AND_VERIFIED_HANDOFF",
-          "legacy_public_api_retirement": "SEPARATE_EXPLICIT_OWNER_AUTHORIZATION_REQUIRED",
-          "ptsip_assure_conformance_owner": "SFP-ASSURE-0001_UNCHANGED",
-          "detailed_capability_ids_operations_schemas_and_cross_contract_bridge": "SFP-CNTR-0005_UNRESOLVED_CONTRACT_DESIGN",
-          "machine_mapping_evidence": "REQUIRED_BEFORE_RUNTIME_ELIGIBILITY_OR_AUTHORITY_HANDOFF",
-          "policy_status": "ACTIVE_USER_EXPLICIT_2026_10_12",
-          "physical_implementation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-          "runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED"
-        },
-        "implementation_sharing_P5_scope": "SEVEN_OFFICIAL_RUST_ENGINES_ONLY",
-        "implementation_sharing_P5_precedence": "KEEP_LATEST_OVERRIDES_PRIOR_SINGLE_OWNER_SHARING_PERMISSION_WITHIN_SEVEN_OFFICIAL_RUST_ENGINES",
-        "per_engine_management_and_shared_implementation_owner_policy": {
-          "decision": "KEEP_LATEST",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "policy_scope": "SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY",
-          "engine_implementation_ownership": "ENGINE_SELF_OWNED_ISOLATED",
-          "management_implementation_ownership": "ENGINE_SELF_OWNED_OPTIONAL",
-          "cross_official_engine_rust_source_module_crate_import": "FORBIDDEN",
-          "cross_official_engine_shared_compiled_runtime_or_management_library": "FORBIDDEN",
-          "cross_official_engine_implementation_copy_move_reuse_port_or_link": "FORBIDDEN",
-          "engine_internal_management_capability_set": "ENGINE_DECLARED_OPTIONAL_NO_GLOBAL_MANDATORY_SET",
-          "shared_ptsip_rust_implementation_between_official_engines": "FORBIDDEN",
-          "independent_engine_version_dependency_build_distribution_patch": "REQUIRED_UNCHANGED",
-          "normative_language_neutral_machine_contract_sharing": "ALLOWED",
-          "explicit_cross_engine_capability_and_dependency_contracts": "ALLOWED_WITHOUT_IMPLEMENTATION_SHARING",
-          "independently_versioned_external_toolchain_or_third_party_dependency_rules": "UNCHANGED_NO_NEW_PERMISSION_OR_GLOBAL_PROHIBITION",
-          "consumer_and_external_engine_implementation_policy": "UNCHANGED",
-          "prior_conditional_implementation_sharing_policy": "SUPERSEDED_IN_SCOPE_ONLY",
-          "exact_per_engine_internal_management_owner_map": "PLAN_DERIVED_AND_MACHINE_VERIFIED_NO_INFERRED_OWNER",
-          "active_contracts_and_authorities": "PRESERVED",
-          "runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED",
-          "physical_implementation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED"
-        },
-        "engine_local_management_entrypoint_capability_mapping": {
-          "decision": "C_FLEXIBLE_ENTRYPOINT_TO_EXPLICIT_CAPABILITY_BINDINGS",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "scope": "OFFICIAL_RUST_ENGINE_LOCAL_MANAGEMENT_EXTERNAL_INVOCABILITY",
-          "ownership": "ENGINE_SELF_OWNED_INDEPENDENT_OPTIONAL_MANAGEMENT",
-          "entrypoint_count": "ENGINE_DEFINED_ZERO_ONE_OR_MANY",
-          "management_capability_count": "ENGINE_DEFINED_OPTIONAL_NO_MANDATORY_COMMON_SET",
-          "mapping_rule": "EACH_DECLARED_EXTERNALLY_INVOCABLE_MANAGEMENT_CAPABILITY_HAS_EXPLICIT_REGISTERED_VERSIONED_ENGINE_IDENTITY_AND_CAPABILITY_BOUND_ENTRYPOINT",
-          "many_capabilities_to_one_entrypoint": "ALLOWED",
-          "different_capabilities_to_different_entrypoints": "ALLOWED",
-          "internal_only_management": "NO_EXTERNAL_BINDING_MANDATE_UNLESS_DECLARED_EXTERNALLY_INVOCABLE",
-          "absent_management": "NO_MANAGEMENT_ENTRYPOINT_REQUIRED",
-          "entrypoint_discovery": "REGISTERED_MACHINE_DECLARATION_ONLY",
-          "directory_name_and_internal_path_inference": "FORBIDDEN_AS_ENTRYPOINT_AUTHORITY",
-          "ambiguous_missing_invalid_or_unverifiable_required_binding": "FAIL_CLOSED_AFFECTED_CAPABILITIES",
-          "initial_binding_verification": "REQUIRED_AT_REGISTRATION_FOR_EXTERNALLY_INVOCABLE_CAPABILITIES",
-          "changed_binding": "REVERIFY_CURRENT_ELIGIBILITY_BEFORE_USE",
-          "invocation": "FRESH_APPLICABLE_BINDING_AND_EXISTING_CTRL_AUTHORITY_REQUIRED",
-          "registration_or_discovery": "NO_AUTOMATIC_EXECUTION_ACTIVATION_OR_WRITE_AUTHORITY",
-          "cross_official_rust_engine_management_runtime_or_module_sharing": "FORBIDDEN",
-          "no_fixed_management_directory_name_or_internal_hierarchy": true,
-          "exact_manifest_schema_binding_encoding_and_validation_plan": "DEFERRED_TO_SFP_CNTR_0005_AND_POLICY_COMPLIANT_PLAN",
-          "existing_ACTIVE_policies": "UNCHANGED",
-          "policy_status": "ACTIVE_USER_EXPLICIT_2026_10_12",
-          "physical_implementation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-          "runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED"
-        },
-        "engine_external_interoperability_authority_split": {
-          "decision": "C_ARCH_SCOPE_CNTR_MACHINE_CONTRACT_AUTHORITY_SPLIT",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "required_participation_boundary": "ALL_DISCOVERABLE_REGISTERABLE_PTSIP_ENGINES_OFFICIAL_CONSUMER_AND_EXTERNAL",
-          "arch_normative_owner": "EXTERNAL_INTEROPERABILITY_OBLIGATION_APPLICABILITY_PARTICIPATION_AND_INDEPENDENT_IMPLEMENTATION_BOUNDARY",
-          "cntr_normative_owner": "MACHINE_CONTRACT_REQUIRED_DIMENSIONS_VERSIONED_IDENTITY_CAPABILITY_DEPENDENCY_COMPATIBILITY_REFERENCES_AND_CONDITIONAL_ENTRYPOINT_BINDING",
-          "cntr_policy": "SFP-CNTR-0005",
-          "cntr_active_precedence": "SFP-CNTR-0001",
-          "static_declaration": "REQUIRED_FOR_ENGINE_DISCOVERY_WITHOUT_ENGINE_RUNTIME",
-          "conditional_execution_binding": "REQUIRED_ONLY_WHEN_EXTERNALLY_INVOCABLE_CAPABILITY_DECLARED",
-          "no_externally_invocable_capability": "NO_EXECUTION_ENTRYPOINT_REQUIRED",
-          "internal_management": "ENGINE_OPTIONAL_NO_MANDATORY_SHARED_RUNTIME",
-          "seven_official_rust_engine_code_isolation": "PRESERVED_NO_CROSS_ENGINE_IMPLEMENTATION_SHARING",
-          "consumer_or_external_engine_internal_language_or_implementation": "NOT_RESTRICTED_BY_OFFICIAL_RUST_RULES",
-          "declared_dependency_relation": "CONTRACT_LEVEL_INTEROPERABILITY_NOT_SHARED_COMPILED_CODE",
-          "missing_invalid_or_unverifiable_required_contract": "FAIL_CLOSED_AFFECTED_REGISTRATION_OR_OPERATION",
-          "registry_or_binding_declaration": "NO_ACTIVATION_EXECUTION_WRITE_OR_NORMATIVE_CONFORMANCE_AUTHORITY",
-          "contract_shape_schema_reference_binding_implementation": "UNRESOLVED_IN_SFP_CNTR_0005_AND_POLICY_COMPLIANT_PLAN",
-          "existing_active_contracts": "UNCHANGED_UNTIL_VERIFIED_SEPARATELY_AUTHORIZED_TRANSITION",
-          "active_promotion": "SEPARATE_EXPLICIT_USER_APPROVAL_AFTER_VERIFIED_GATES",
-          "policy_status": "ACTIVE_USER_EXPLICIT_2026_10_12",
-          "physical_implementation": "APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED",
-          "runtime_activation": "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED"
-        }
-      },
-      "invariants": {
-        "physical_parent_co_location_does_not_merge_semantic_owners": true,
-        "directory_name_is_not_semantic_authority": true,
-        "every_owned_implementation_requires_explicit_responsibility_mapping": true,
-        "shared_implementation_has_exactly_one_semantic_owner": true,
-        "using_an_implementation_does_not_transfer_ownership": true,
-        "common_management_functions_have_independent_responsibility": true,
-        "capability_contract_boundary_survives_implementation_sharing": true,
-        "existing_architecture_and_public_contracts_must_not_be_silently_reassigned": true,
-        "user_source_never_mistaken_for_official_source": true,
-        "hierarchy_depth_may_vary_by_declared_responsibility": true,
-        "fixed_intermediate_role_grouping_is_mandatory": false,
-        "flat_only_hierarchy_is_mandatory": false,
-        "concrete_hierarchy_requires_explicit_responsibility_map": true,
-        "storage_engine_owns_capability_contract_not_all_provider_implementations": true,
-        "storage_provider_and_data_policy_ownership_remain_explicit_and_independent": true,
-        "existing_storage_ownership_transfer_requires_separate_authorized_decision": true,
-        "physical_colocation_or_capability_consumption_does_not_transfer_storage_data_ownership": true,
-        "context_engine_retains_source_content_and_semantic_authority": true,
-        "projection_engine_owns_context_inclusive_output_format_specification_and_transformation_rule_authority": true,
-        "projection_ownership_does_not_transfer_context_source_semantic_authority": true,
-        "output_schema_and_transformation_normative_owner_must_be_unique": true,
-        "existing_active_context_projection_authority_not_silently_reassigned": true,
-        "implementation_co_location_does_not_merge_context_and_projection_responsibility": true,
-        "actual_owner_handoff_requires_effective_policy_reconciliation": true,
-        "vpms_and_official_validation_engine_must_not_have_competing_semantic_owners": true,
-        "existing_vpms_product_contracts_remain_effective_until_separately_authorized_transition": true,
-        "vpms_implementation_can_be_reused_without_immediate_physical_move": true,
-        "validation_execution_capability_is_not_normative_ptsip_conformance_authority": true,
-        "existing_assure_conformance_judgment_authority_unaffected": true,
-        "common_engine_registry_resolver_composition_and_execution_authorities_not_implicitly_transferred": true,
-        "current_project_profile_ownership_not_automatically_rewritten": true,
-        "vpms_legacy_interfaces_are_transitional_access_paths_not_independent_engine_owners": true,
-        "legacy_vpms_contracts_and_profile_owners_remain_effective_until_verified_handoff": true,
-        "semantic_validation_owner_transition_requires_machine_verified_responsibility_reconciliation": true,
-        "new_engine_physical_paths_not_authorized_by_interface_migration_policy": true,
-        "legacy_vpms_retirement_requires_separate_explicit_user_authorization": true,
-        "validation_migration_must_respect_independent_common_management_responsibilities": true,
-        "official_engine_source_root_is_explicitly_approved": true,
-        "approved_source_root_name_does_not_define_semantic_authority": true,
-        "management_subdirectory_names_approved": false,
-        "concrete_nested_package_layout_approved": false,
-        "existing_modules_cannot_be_relocated_from_path_choice_alone": true,
-        "source_root_approval_does_not_activate_engine_draft": true,
-        "consumer_engine_state_root_remains_separate_from_executable_source": true,
-        "no_mandatory_parent_shared_management_runtime": true,
-        "engine_local_management_does_not_create_separate_engine_identity": true,
-        "each_engine_local_management_has_explicit_owner": true,
-        "each_engine_has_independent_versioned_dependency_and_build_patch_boundary": true,
-        "shared_implementation_requires_one_explicit_owner_and_declared_dependency": true,
-        "shared_code_reuse_cannot_force_joint_engine_update_without_contract_impact": true,
-        "engine_local_management_cannot_assume_active_external_authority": true,
-        "new_engine_registration_does_not_expand_mandatory_official_set": true,
-        "internal_layout_variable_depth_per_engine": true,
-        "engine_local_management_directory_name_is_not_lookup_authority": true,
-        "management_internal_name_and_depth_are_engine_owned_and_non_normative": true,
-        "engine_optional_management_functions_not_globally_mandatory": true,
-        "management_directory_rename_does_not_change_engine_identity_or_normative_contract": true,
-        "engine_module_and_management_ownership_remain_independent_of_file_names": true,
-        "no_common_engine_local_management_function_set_mandatory": true,
-        "external_interoperability_contract_does_not_imply_shared_compiled_management_code": true,
-        "engine_internal_management_functions_and_directory_names_are_engine_owned": true,
-        "engine_local_management_absence_does_not_invalidate_external_contract_when_no_management_operation_declared": true,
-        "declared_management_entrypoint_resolves_from_engine_identity_without_path_inference": true,
-        "engine_local_management_retains_independent_version_build_and_patch_boundaries": true,
-        "external_engine_static_contract_does_not_force_common_management_runtime": true,
-        "execution_entry_bindings_are_conditional_on_declared_externally_invocable_capabilities": true,
-        "engine_without_externally_invocable_capability_needs_no_execution_entry_binding": true,
-        "engine_independent_compile_build_distribution_and_patch_boundaries_remain_normative": true,
-        "engine_management_internal_entrypoints_not_inferred_from_directory_names": true,
-        "physical_paths_do_not_grant_external_invocation_authority": true,
-        "seven_official_engine_subdirectory_names_require_explicit_project_owner_policy_approval": true,
-        "seven_official_engine_subdirectory_name_values_not_automatically_derived_from_engine_kinds": true,
-        "implementation_and_plan_must_not_silently_choose_official_engine_subdirectory_names": true,
-        "official_engine_names_approval_does_not_imply_actual_directory_creation_or_module_migration": true,
-        "official_engine_directory_names_are_physical_labels_not_registered_engine_identity": true,
-        "engine_execution_entrypoint_resolution_remains_registered_contract_bound": true,
-        "common_engine_source_root_and_exact_official_engine_set_must_remain_unchanged": true,
-        "policy_approved_physical_names_must_not_force_user_external_engine_package_layout": true,
-        "naming_authority_decision_does_not_activate_draft_engine_runtime": true,
-        "context_engine_subdirectory_name_approved_by_owner": true,
-        "context_engine_approved_subdirectory_is_exactly_context": true,
-        "seven_engine_subdirectory_approval_cannot_be_inferred_from_one_engine_approval": true,
-        "management_subdirectory_and_remaining_module_names_unapproved": true,
-        "physical_package_layout_remains_unapproved": true,
-        "context_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
-        "context_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
-        "context_subdirectory_approval_does_not_change_ownership_of_context_source_or_projection_rules": true,
-        "context_subdirectory_approval_does_not_activate_engine_runtime": true,
-        "storage_engine_subdirectory_name_approved_by_owner": true,
-        "storage_engine_approved_subdirectory_is_exactly_storage": true,
-        "both_approved_context_and_storage_subdirectories_remain_distinct": true,
-        "storage_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
-        "storage_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
-        "storage_subdirectory_approval_does_not_reassign_storage_provider_or_data_ownership": true,
-        "storage_engine_contract_mediation_boundary_remains_separate_from_storage_provider_implementation": true,
-        "storage_subdirectory_approval_does_not_activate_engine_runtime": true,
-        "validation_engine_subdirectory_name_approved_by_owner": true,
-        "validation_engine_approved_subdirectory_is_exactly_validation": true,
-        "approved_context_storage_validation_subdirectories_are_distinct": true,
-        "validation_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
-        "validation_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
-        "validation_subdirectory_approval_does_not_transfer_active_vpms_or_validation_contract_authority": true,
-        "validation_subdirectory_approval_does_not_modify_existing_public_vpms_interfaces": true,
-        "validation_subdirectory_approval_does_not_retire_legacy_vpms_or_bypass_staged_migration": true,
-        "validation_subdirectory_approval_does_not_change_assure_normative_conformance_authority": true,
-        "validation_subdirectory_approval_does_not_activate_engine_runtime": true,
-        "discovery_engine_subdirectory_name_approved_by_owner": true,
-        "discovery_engine_approved_subdirectory_is_exactly_discovery": true,
-        "approved_context_storage_validation_discovery_subdirectories_are_distinct": true,
-        "discovery_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation": true,
-        "discovery_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup": true,
-        "discovery_subdirectory_approval_does_not_change_existing_semantic_or_execution_authorities": true,
-        "discovery_subdirectory_approval_does_not_modify_existing_public_interfaces": true,
-        "discovery_subdirectory_approval_does_not_activate_engine_runtime": true,
-        "seven_capability_subdirectory_names_approved": true,
-        "planning_engine_subdirectory_name_approved_by_owner": true,
-        "execution_engine_subdirectory_name_approved_by_owner": true,
-        "projection_engine_subdirectory_name_approved_by_owner": true,
-        "all_seven_official_engine_subdirectory_names_are_unique_and_owner_approved": true,
-        "no_official_engine_subdirectory_name_remains_unapproved": true,
-        "all_seven_directory_approvals_do_not_authorize_any_physical_creation_or_code_migration": true,
-        "all_seven_directory_approvals_do_not_activate_draft_engine_runtime": true,
-        "all_seven_directory_approvals_preserve_registered_contract_based_discovery": true,
-        "all_seven_directory_approvals_preserve_original_engine_responsibility_boundaries": true,
-        "user_or_external_engine_package_naming_remains_outside_official_engine_naming_policy": true,
-        "concrete_internal_layout_design_may_be_derived_by_plan_without_per_layout_policy_decision": true,
-        "internal_layout_plan_must_machine_verify_arch_and_cntr_contract_conformance": true,
-        "internal_layout_plan_must_machine_verify_explicit_single_owner_and_dependencies": true,
-        "internal_layout_plan_must_respect_independent_engine_version_build_deploy_patch_boundaries": true,
-        "internal_layout_plan_must_preserve_engine_local_management_ownership_and_optional_functions": true,
-        "internal_layout_plan_must_not_change_any_of_seven_approved_official_engine_names": true,
-        "internal_layout_plan_must_not_infer_identity_execution_authorization_or_entrypoints_from_directory_names": true,
-        "internal_layout_plan_must_not_reassign_context_projection_storage_or_validation_vpms_authorities": true,
-        "internal_layout_plan_cannot_approve_unresolved_active_authority_handoffs": true,
-        "internal_layout_plan_must_fail_closed_when_effective_responsibility_compatibility_not_proven": true,
-        "no_standardized_internal_directory_depth_or_management_subdirectory_forced": true,
-        "physical_layout_delegation_is_not_permission_to_create_directories_relocate_code_or_activate_runtime": true,
-        "plan_level_internal_path_selection_is_not_seven_official_directory_policy_change": true,
-        "approved_layout_authority_does_not_change_existing_active_policy_roles": true,
-        "official_rust_engines_must_not_relocate_copy_translate_reuse_or_share_existing_ptsip_python_implementations": true,
-        "official_rust_engines_must_not_depend_on_legacy_ptsip_python_runtime_or_wrappers": true,
-        "language_neutral_contract_reuse_does_not_allow_reuse_of_legacy_python_implementation": true,
-        "previous_active_public_interface_and_vpms_migration_boundaries_remain_in_force": true,
-        "product_internal_overlap_rust_engine_functional_owner_is_canonical_after_verified_handoff": true,
-        "consumer_project_component_lifecycle_ownership_not_reassigned_by_engine_functional_owner": true,
-        "existing_active_public_capability_contracts_remain_until_authorized_verified_transition": true,
-        "unverified_component_to_engine_mapping_cannot_activate_owner_transfer": true,
-        "projection_is_canonical_new_output_normative_owner_when_effective": true,
-        "legacy_context_output_format_parity_not_inherited_by_new_projection_after_authorized_versioned_transition": true,
-        "existing_context_public_api_remains_effective_until_separately_authorized_verified_transition": true,
-        "projection_authority_does_not_transfer_context_source_or_assure_conformance_authority": true,
-        "rust_validation_is_target_canonical_public_contract_owner_after_authorized_cutover": true,
-        "legacy_vpms_active_contracts_are_not_replaced_before_verified_authorized_transition": true,
-        "legacy_vpms_retirement_is_not_implicitly_approved_by_final_target_selection": true,
-        "legacy_vpms_implementation_reuse_permissibility_does_not_apply_to_seven_official_rust_engines": true,
-        "validation_public_contract_migration_must_preserve_assure_normative_verdict_ownership": true,
-        "rust_validation_capability_decomposition_must_not_be_inferred_from_legacy_vpms_module_layout": true,
-        "legacy_vpms_to_rust_validation_mapping_must_be_explicit_versioned_and_machine_verified": true,
-        "no_unverified_mapping_can_transfer_vpms_public_or_execution_authority": true,
-        "generic_validation_capability_must_not_infer_vpms_protocol_selection_execution_equivalence": true,
-        "rust_validation_must_not_reuse_move_port_or_wrap_legacy_vpms_python_implementation": true,
-        "seven_official_rust_engines_must_not_share_internal_source_crates_compiled_runtime_or_management_code": true,
-        "seven_official_rust_engine_implementations_and_optional_management_are_independently_owned": true,
-        "cross_engine_normative_machine_contract_use_does_not_create_implementation_sharing_permission": true,
-        "engine_management_owner_must_be_declared_and_verified_without_path_inference": true,
-        "existing_single_owner_sharing_invariants_apply_only_outside_this_official_rust_no_sharing_scope": true,
-        "management_external_capabilities_must_resolve_via_explicit_registered_engine_identity_version_and_capability_entrypoint": true,
-        "each_engine_may_group_multiple_management_capabilities_in_one_entrypoint_or_split_across_multiple": true,
-        "engine_without_declared_external_management_operations_requires_no_management_entrypoint": true,
-        "unknown_or_ambiguous_required_management_capability_binding_is_fail_closed": true,
-        "management_binding_does_not_grant_execution_activation_or_write_authority": true,
-        "management_entrypoint_layout_does_not_allow_cross_engine_rust_implementation_sharing": true,
-        "engine_interoperability_obligation_applies_independent_of_engine_origin_or_implementation_language": true,
-        "arch_scope_does_not_redefine_cntr_contract_semantics_or_static_required_dimensions": true,
-        "cntr_contract_shape_and_binding_obligations_are_resolved_through_explicit_policy_ref": true,
-        "external_interoperability_never_requires_cross_official_rust_implementation_sharing": true,
-        "static_contract_registration_never_grants_runtime_or_write_authority": true,
-        "no_externally_invocable_capability_needs_no_runtime_entrypoint": true
-      },
-      "unresolved_decisions": [],
-      "activation_requirements": {
-        "owner_policy_directions_resolved": true,
-        "explicit_user_activation_approval_required": true,
-        "current_policy_index_schema_and_conflict_reconciliation_required": true,
-        "contract_design_implementation_work_not_policy_direction": "TRACK_IN_APPROVED_WU_02",
-        "runtime_requires_contract_registry_owner_compatibility_and_permission_verification": true
-      },
-      "out_of_scope": [
-        "UNVERIFIED_RUNTIME_EXECUTION",
-        "UNAPPROVED_PUBLIC_API_RETIREMENT",
-        "UNAPPROVED_DIRECTORY_NAMES",
-        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ],
-      "resolved_decisions": [
-        {
-          "id": "INTERNAL_HIERARCHY_PRINCIPLE",
-          "source_unresolved_id": "INTERNAL_HIERARCHY_AND_PHYSICAL_PACKAGE_LAYOUT",
-          "selected_option": "C_DECLARATION_BASED_VARIABLE_HIERARCHY",
-          "resolution_scope": "HIERARCHY_PRINCIPLE_ONLY",
-          "remaining_unresolved_id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
-          "approval_source": "USER_EXPLICIT",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "STORAGE_ENGINE_SEMANTIC_RESPONSIBILITY_DIRECTION",
-          "selected_option": "C_STORAGE_CONTRACT_MEDIATOR",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_CAPABILITY_OWNERSHIP_DIRECTION",
-          "physical_directory_names": "NOT_DECIDED",
-          "existing_module_transfer": "NOT_DECIDED",
-          "concrete_provider_mapping": "NOT_DECIDED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "CONTEXT_PROJECTION_SEMANTIC_RESPONSIBILITY_DIRECTION",
-          "selected_option": "B_PROJECTION_INDEPENDENT_OWNER",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_CONTEXT_AND_PROJECTION_RESPONSIBILITY_DIRECTION",
-          "context_source_semantics_owner": "CONTEXT",
-          "output_formats_and_transformation_rules_owner": "PROJECTION",
-          "current_active_policy_reconciliation": "PENDING",
-          "physical_implementation_move": "NOT_DECIDED",
-          "directory_names": "NOT_DECIDED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "VALIDATION_ENGINE_AND_VPMS_SEMANTIC_CONVERGENCE",
-          "selected_option": "SINGLE_VALIDATION_ENGINE_RESPONSIBILITY_VPMS_SUBSUMED",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_SEMANTIC_RESPONSIBILITY_DIRECTION_ONLY",
-          "actual_code_or_profile_reassignment": "NOT_DECIDED",
-          "legacy_public_interface_retirement": "NOT_DECIDED",
-          "existing_active_contract_transition": "NOT_DECIDED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "VALIDATION_VPMS_PUBLIC_INTERFACE_MIGRATION_DIRECTION",
-          "selected_option": "C_STAGED_MIGRATION",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_TRANSITION_DIRECTION_ONLY",
-          "new_engine_api_or_directory": "NOT_DECIDED",
-          "old_contract_retirement": "SEPARATE_APPROVAL_REQUIRED",
-          "transition_plan_ref": "developer/planning/migrations/validation-vpms-staged-handoff.yaml",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "ENGINE_UPPER_DIRECTORY_NAME",
-          "selected_option": "B_SRC_PTSIP_ENGINES",
-          "approved_path": "src/ptsip/engines/",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "OFFICIAL_ENGINE_TOP_LEVEL_SOURCE_DIRECTORY_ONLY",
-          "management_subdirectories": "NOT_DECIDED",
-          "seven_capability_subdirectories": "NOT_DECIDED",
-          "nested_layout": "NOT_DECIDED",
-          "physical_directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "ENGINE_LOCAL_MANAGEMENT_CONFLICT_RESOLUTION",
-          "selection": "KEEP_LATEST",
-          "approval_source": "USER_EXPLICIT",
-          "conflicting_prior_at_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "prior_rule": "P4_COMMON_MANAGEMENT_FUNCTION_OWNER",
-          "replacement": "EACH_ENGINE_OWNS_LOCAL_MANAGEMENT_AND_RULES",
-          "P5": "PRESERVE_SINGLE_OWNER_FOR_ACTUALLY_SHARED_IMPLEMENTATION",
-          "P6": "RETAIN_CONTRACT_INDEPENDENCE_WITH_PER_ENGINE_BUILD_DEPLOY_PATCH",
-          "P8": "RETAIN_DECLARATION_BASED_VARIABLE_DEPTH",
-          "exact_directory_names": "NOT_DECIDED",
-          "activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "INDEPENDENT_ENGINE_MODULE_LAYOUT_DIRECTION",
-          "selected_option": "D_INDEPENDENT_ENGINE_MODULES_WITH_INTERNAL_MANAGEMENT",
-          "approval_source": "USER_EXPLICIT",
-          "source_root": "src/ptsip/engines/",
-          "scope": "ARCHITECTURAL_DIRECTION_ONLY",
-          "physical_creation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "ENGINE_LOCAL_MANAGEMENT_NAMING_AND_FUNCTION_MODEL",
-          "selected_options": [
-            "C_MACHINE_DISCOVERABLE_UNRESTRICTED_ENGINE_LOCAL_NAMES",
-            "B_MINIMUM_COMMON_RESPONSIBILITIES_OPTIONAL_EXTENSIONS"
-          ],
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "ENGINE_LOCAL_MANAGEMENT_DIRECTION_ONLY",
-          "fixed_management_directory_name": "NOT_REQUIRED",
-          "entrypoint_resolution": "ENGINE_IDENTITY_TO_DECLARED_MANAGEMENT_ENTRYPOINT",
-          "minimum_responsibilities_exact_set": "UNRESOLVED_CONTRACT_DESIGN",
-          "actual_directory_creation": "NOT_AUTHORIZED",
-          "activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "ENGINE_COMMON_MANAGEMENT_MINIMUM_REQUIREMENT_REPLACEMENT",
-          "selected_option": "B_DROP_COMMON_MANAGEMENT_MINIMUM_RETAIN_EXTERNAL_INTEROPERABILITY",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "REPLACES_INTERNAL_MANAGEMENT_MANDATE_ONLY",
-          "conflicting_prior_decision_id": "ENGINE_LOCAL_MANAGEMENT_NAMING_AND_FUNCTION_MODEL",
-          "conflicting_prior_selection": "B_MINIMUM_COMMON_RESPONSIBILITIES_OPTIONAL_EXTENSIONS",
-          "replaces_rule": "MINIMUM_COMMON_RESPONSIBILITY_WITH_OPTIONAL_ENGINE_OWNED_EXTENSIONS",
-          "preserved_decisions": [
-            "C_MACHINE_DISCOVERABLE_UNRESTRICTED_ENGINE_LOCAL_NAMES",
-            "COMMON_IDENTITY_CONTRACT_WITH_PER_ENGINE_EXTENSIONS",
-            "DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS",
-            "INDEPENDENT_ENGINE_VERSION_DEPENDENCY_BUILD_DEPLOYMENT_PATCH"
-          ],
-          "exact_interoperability_shape": "NOT_DECIDED",
-          "physical_directory_creation": "NOT_AUTHORIZED",
-          "activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "ENGINE_EXTERNAL_INTEROPERABILITY_UPPER_SCOPE",
-          "selected_option": "B_STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_INTEROPERABILITY_BOUNDARY_ONLY",
-          "required_static_declaration": "MACHINE_READABLE_EXTERNAL_INTEROPERABILITY",
-          "conditional_runtime_binding": "ONLY_WHEN_EXTERNALLY_INVOCABLE_CAPABILITY_DECLARED",
-          "no_forced_global_engine_execution_interface": true,
-          "no_common_management_implementation_required": true,
-          "engine_source_path": "src/ptsip/engines/",
-          "exact_schema": "NOT_DECIDED",
-          "actual_binding_mechanism": "NOT_DECIDED",
-          "active_transition": "NOT_AUTHORIZED",
-          "physical_implementation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMING_AUTHORITY",
-          "selected_option": "B_POLICY_LEVEL_PROJECT_OWNER_APPROVAL",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "APPROVAL_AUTHORITY_ONLY_NOT_NAME_VALUES",
-          "affected_official_engine_kinds": [
-            "CONTEXT",
-            "STORAGE",
-            "VALIDATION",
-            "DISCOVERY",
-            "PLANNING",
-            "EXECUTION",
-            "PROJECTION"
-          ],
-          "approved_common_source_root": "src/ptsip/engines/",
-          "exact_seven_subdirectory_names": "PENDING_SEPARATE_PROJECT_OWNER_DECISION",
-          "unresolved_name_values_ref": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES",
-          "generic_plan_implementation_name_selection": "NOT_AUTHORIZED",
-          "registered_identity_and_declared_entrypoint_binding": "PRESERVED_PATH_NAME_AGNOSTIC",
-          "physical_creation_and_existing_module_migration": "NOT_AUTHORIZED",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_CONTEXT_ENGINE_SUBDIRECTORY_NAME",
-          "selected_option": "A_CONTEXT_DIRECTORY",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "CONTEXT_ENGINE_NAME_VALUE_ONLY",
-          "official_engine_kind": "CONTEXT",
-          "approved_subdirectory": "context/",
-          "approved_parent_source_root": "src/ptsip/engines/",
-          "planned_path_not_materialized": "src/ptsip/engines/context/",
-          "other_six_official_engine_names": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
-          "physical_package_layout": "UNRESOLVED",
-          "directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_STORAGE_ENGINE_SUBDIRECTORY_NAME",
-          "selected_option": "A_STORAGE_DIRECTORY",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "STORAGE_ENGINE_NAME_VALUE_ONLY",
-          "official_engine_kind": "STORAGE",
-          "approved_subdirectory": "storage/",
-          "approved_parent_source_root": "src/ptsip/engines/",
-          "planned_path_not_materialized": "src/ptsip/engines/storage/",
-          "previously_approved_context_subdirectory": "context/",
-          "other_five_official_engine_names": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
-          "physical_package_layout": "UNRESOLVED",
-          "storage_provider_and_data_ownership": "INDEPENDENT_UNCHANGED",
-          "directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_VALIDATION_ENGINE_SUBDIRECTORY_NAME",
-          "selected_option": "A_VALIDATION_DIRECTORY",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "VALIDATION_ENGINE_NAME_VALUE_ONLY",
-          "official_engine_kind": "VALIDATION",
-          "approved_subdirectory": "validation/",
-          "approved_parent_source_root": "src/ptsip/engines/",
-          "planned_path_not_materialized": "src/ptsip/engines/validation/",
-          "previously_approved_names": {
-            "CONTEXT": "context/",
-            "STORAGE": "storage/"
-          },
-          "other_four_official_engine_names": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
-          "physical_package_layout": "UNRESOLVED",
-          "existing_validation_and_vpms_active_authority": "UNCHANGED",
-          "existing_validation_and_vpms_public_interfaces": "UNCHANGED",
-          "existing_staged_vpms_transition": "UNCHANGED",
-          "directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_DISCOVERY_ENGINE_SUBDIRECTORY_NAME",
-          "selected_option": "A_DISCOVERY_DIRECTORY",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "DISCOVERY_ENGINE_NAME_VALUE_ONLY",
-          "official_engine_kind": "DISCOVERY",
-          "approved_subdirectory": "discovery/",
-          "approved_parent_source_root": "src/ptsip/engines/",
-          "planned_path_not_materialized": "src/ptsip/engines/discovery/",
-          "previously_approved_names": {
-            "CONTEXT": "context/",
-            "STORAGE": "storage/",
-            "VALIDATION": "validation/"
-          },
-          "other_three_official_engine_names": "UNRESOLVED_SEPARATE_POLICY_APPROVAL",
-          "physical_package_layout": "UNRESOLVED",
-          "active_authority_and_public_interfaces": "UNCHANGED",
-          "directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_PLANNING_ENGINE_SUBDIRECTORY_NAME",
-          "selected_option": "OWNER_EXPLICIT_PLANNING_DIRECTORY",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "PLANNING_ENGINE_NAME_VALUE_ONLY",
-          "official_engine_kind": "PLANNING",
-          "approved_subdirectory": "planning/",
-          "approved_parent_source_root": "src/ptsip/engines/",
-          "planned_path_not_materialized": "src/ptsip/engines/planning/",
-          "concrete_internal_package_layout": "UNRESOLVED",
-          "directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_EXECUTION_ENGINE_SUBDIRECTORY_NAME",
-          "selected_option": "OWNER_EXPLICIT_EXECUTION_DIRECTORY",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "EXECUTION_ENGINE_NAME_VALUE_ONLY",
-          "official_engine_kind": "EXECUTION",
-          "approved_subdirectory": "execution/",
-          "approved_parent_source_root": "src/ptsip/engines/",
-          "planned_path_not_materialized": "src/ptsip/engines/execution/",
-          "concrete_internal_package_layout": "UNRESOLVED",
-          "directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_PROJECTION_ENGINE_SUBDIRECTORY_NAME",
-          "selected_option": "OWNER_EXPLICIT_PROJECTION_DIRECTORY",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "PROJECTION_ENGINE_NAME_VALUE_ONLY",
-          "official_engine_kind": "PROJECTION",
-          "approved_subdirectory": "projection/",
-          "approved_parent_source_root": "src/ptsip/engines/",
-          "planned_path_not_materialized": "src/ptsip/engines/projection/",
-          "concrete_internal_package_layout": "UNRESOLVED",
-          "directory_creation": "NOT_AUTHORIZED",
-          "existing_module_migration": "NOT_AUTHORIZED",
-          "machine_lookup": "REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES_COMPLETE",
-          "selected_option": "SEVEN_USER_APPROVED_PHYSICAL_TOP_LEVEL_ENGINE_LABELS",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "ALL_SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAME_VALUES_ONLY",
-          "source_root": "src/ptsip/engines/",
-          "approved_name_map": {
-            "CONTEXT": "context/",
-            "STORAGE": "storage/",
-            "VALIDATION": "validation/",
-            "DISCOVERY": "discovery/",
-            "PLANNING": "planning/",
-            "EXECUTION": "execution/",
-            "PROJECTION": "projection/"
-          },
-          "unapproved_name_values": [],
-          "names_do_not_create_semantic_execution_or_discovery_authority": true,
-          "detailed_internal_package_layout": "UNRESOLVED_CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
-          "physical_directories_or_module_migration": "NOT_AUTHORIZED",
-          "current_policy_state": "DRAFT_ONLY",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT_AUTHORITY",
-          "source_unresolved_id": "CONCRETE_PHYSICAL_PACKAGE_LAYOUT",
-          "selected_option": "A_PLAN_DERIVED_MACHINE_VERIFIED_INTERNAL_LAYOUT",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "DECISION_AUTHORITY_ONLY_NOT_PHYSICAL_LAYOUT_VALUES",
-          "policy_fixed_root": "src/ptsip/engines/",
-          "policy_fixed_seven_official_names": {
-            "CONTEXT": "context/",
-            "STORAGE": "storage/",
-            "VALIDATION": "validation/",
-            "DISCOVERY": "discovery/",
-            "PLANNING": "planning/",
-            "EXECUTION": "execution/",
-            "PROJECTION": "projection/"
-          },
-          "internal_layout_design": "PLAN_AND_MACHINE_CONTRACT",
-          "constraints": "ALL_EFFECTIVE_ARCH_CNTR_AND_DECLARED_RESPONSIBILITY_BOUNDARIES",
-          "actual_layout_or_directory_materialization": "NOT_APPROVED_BY_THIS_DECISION",
-          "code_migration": "NOT_APPROVED_BY_THIS_DECISION",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "OFFICIAL_ENGINE_IMPLEMENTATION_LANGUAGE",
-          "selected_option": "RUST",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "resolution_scope": "SEVEN_OFFICIAL_ENGINE_IMPLEMENTATIONS_ONLY",
-          "machine_contract_language": "LANGUAGE_NEUTRAL_UNCHANGED",
-          "consumer_and_external_engine_languages": "UNCHANGED",
-          "existing_module_move_reuse_and_shared_implementation_policy": "UNRESOLVED_SEPARATE_DECISION",
-          "policy_status": "DRAFT_UNCHANGED",
-          "implementation_authorization": "NOT_GRANTED",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "LEGACY_PYTHON_MODULE_MOVE_REUSE_SHARING_POLICY",
-          "source_unresolved_id": "EXISTING_MODULE_DIRECT_MOVE_OR_REUSE_MAPPING",
-          "selected_option": "FORBID_ALL_LEGACY_PYTHON_IMPLEMENTATION_MOVE_REUSE_SHARING",
-          "decision_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "conflicting_prior_policy": "SFP-ARCH-0004",
-          "conflicting_prior_at_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "conflicting_prior_rule": "EXPLICIT_SINGLE_OWNER_SHARING_AND_FLEXIBLE_IMPLEMENTATION_REUSE_PERMITTED",
-          "scope_of_override": "SEVEN_OFFICIAL_RUST_ENGINES_REUSING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION_ONLY",
-          "resolution": "KEEP_LATEST_SCOPED_LEGACY_PROHIBITION",
-          "prior_permission_outside_target_scope": "PRESERVED",
-          "mapping_resolution": "NO_LEGACY_PYTHON_MODULE_MOVE_OR_REUSE_MAPPING_REQUIRED",
-          "remaining_component_and_capability_ownership_reconciliation": "PRESERVED_UNRESOLVED",
-          "language_neutral_contracts": "PRESERVED",
-          "active_policy": "UNCHANGED",
-          "policy_status": "DRAFT_UNCHANGED",
-          "implementation_and_runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "CURRENT_DECLARED_COMPONENT_BOUNDARY_RECONCILIATION",
-          "kind": "USER_POLICY_DECISION",
-          "status": "RESOLVED_POLICY_DIRECTION",
-          "selected_option": "KEEP_LATEST",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "prior_authority_policy": "SFP-ARCH-0001",
-          "prior_authority_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "active_policy_head_unchanged": true,
-          "new_rule_ref": "authority_semantics.unit_ptsip_engine_draft.approved_decisions.current_declared_component_boundary_reconciliation",
-          "implementation_mapping_proof": "PENDING",
-          "affected_engine_capability_handoff": "BLOCKED_UNTIL_VERIFIED_AND_AUTHORIZED",
-          "existing_active_context_projection_vpms_and_public_contracts": "UNAFFECTED_PENDING_SEPARATE_ITEMS",
-          "original_activation_gate": "KEEP_PRIOR_PRESERVED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION",
-          "kind": "USER_POLICY_DECISION",
-          "status": "RESOLVED_POLICY_DIRECTION",
-          "selected_option": "KEEP_LATEST",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "existing_active_conflict_policy": "SFP-CNTR-0001",
-          "existing_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "existing_active_scope": "CONTEXT_PLANE_MIGRATION_REPAIR_PUBLIC_CONTRACT",
-          "replacement": "PROJECTION_NORMATIVE_OUTPUT_SCHEMA_FORMAT_TRANSFORMATION_OWNERSHIP",
-          "legacy_public_api_contract": "UNCHANGED_PENDING_VERSIONED_AUTHORIZED_HANDOFF",
-          "exact_contract_handoff": "REMAINS_UNRESOLVED_IN_SFP_CNTR_0005",
-          "separate_new_engine_runtime_activation": "NOT_AUTHORIZED",
-          "original_KEEP_PRIOR_gate": "PRESERVED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "VALIDATION_VPMS_ACTIVE_CONTRACT_AND_PUBLIC_COMPATIBILITY_RECONCILIATION",
-          "kind": "USER_POLICY_DECISION",
-          "status": "RESOLVED_POLICY_DIRECTION",
-          "selected_option": "KEEP_LATEST",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "prior_active_contracts": [
-            "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
-            "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
-            "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
-          ],
-          "prior_active_contract_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "canonical_target": "OFFICIAL_RUST_VALIDATION_LANGUAGE_NEUTRAL_PUBLIC_CONTRACT",
-          "existing_public_compatibility": "TRANSITIONAL_WITH_MACHINE_VERIFIED_VERSIONED_HANDOFF",
-          "future_legacy_retirement": "REQUIRES_SEPARATE_EXPLICIT_OWNER_APPROVAL",
-          "existing_legacy_retirement": "NOT_AUTHORIZED_NOW",
-          "remaining_mapping": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
-          "remaining_contract_design": "SFP-CNTR-0005#VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
-          "draft_status_and_KEEP_PRIOR_gate": "PRESERVED",
-          "implementation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING",
-          "kind": "USER_POLICY_DECISION",
-          "status": "RESOLVED_POLICY_DIRECTION",
-          "selected_option": "C_INDEPENDENT_RUST_VALIDATION_WITH_EXPLICIT_CONTRACT_MAPPING",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "prior_active_vpms_contracts": [
-            "urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b",
-            "urn:uuid:e6707543-f052-4035-bb86-166701e06362",
-            "urn:uuid:32058048-9342-4514-9754-2a4b25a79b06"
-          ],
-          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "canonical_owner": "OFFICIAL_RUST_VALIDATION_ENGINE_AFTER_VERIFIED_AUTHORIZED_HANDOFF",
-          "exact_capability_map": "PENDING_MACHINE_CONTRACT_AND_RESPONSIBILITY_EVIDENCE",
-          "old_contracts": "ACTIVE_UNCHANGED",
-          "original_KEEP_PRIOR_gate": "PRESERVED",
-          "separate_legacy_retirement_approval": "REQUIRED",
-          "physical_implementation": "NOT_AUTHORIZED",
-          "runtime_activation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP",
-          "kind": "USER_POLICY_DECISION",
-          "status": "RESOLVED_POLICY_DIRECTION",
-          "selected_option": "KEEP_LATEST",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "prior_policy": "SFP-ARCH-0004",
-          "prior_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "prior_rule": "EXPLICIT_SINGLE_OWNER_SHARING",
-          "replacement_rule": "NO_CROSS_OFFICIAL_RUST_ENGINE_IMPLEMENTATION_SHARING",
-          "conflicting_sharing_permission": "REPLACED_WITHIN_SEVEN_OFFICIAL_RUST_ENGINE_SCOPE_ONLY",
-          "conditional_single_owner_sharing_rules": "NOT_APPLICABLE_WITHIN_SEVEN_OFFICIAL_RUST_ENGINE_SCOPE",
-          "runtime_and_source_module_shared_dependencies": "FORBIDDEN_BETWEEN_OFFICIAL_RUST_ENGINES",
-          "external_machine_contract_interoperability": "PRESERVED",
-          "concrete_engine_management_implementation_map": "PLAN_AND_MACHINE_VERIFICATION_ONLY",
-          "exact_management_entrypoint_binding": "REMAINS_SEPARATE_UNRESOLVED_POLICY_ITEM",
-          "existing_ACTIVE_policies": "UNCHANGED",
-          "draft_keeping_prior_gate": "PRESERVED",
-          "implementation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "ENGINE_LOCAL_MANAGEMENT_ENTRYPOINT_DECLARATION_BINDING",
-          "kind": "USER_POLICY_DECISION",
-          "status": "RESOLVED_POLICY_DIRECTION",
-          "selected_option": "C_FLEXIBLE_ENGINE_MANAGEMENT_ENTRYPOINT_EXPLICIT_CAPABILITY_MAPPING",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "current_active_authority": "SFP-ARCH-0001",
-          "prior_active_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "prior_draft_management_direction": "REGISTERED_IDENTITY_TO_DECLARED_ENTRYPOINT_NO_NAME_INFERENCE",
-          "responsibility_scope": "ENTRYPOINT_CARDINALITY_AND_EXTERNAL_MANAGEMENT_CAPABILITY_BINDING",
-          "selected_mapping_rule_ref": "authority_semantics.unit_ptsip_engine_draft.approved_decisions.engine_local_management_entrypoint_capability_mapping",
-          "existing_registry_and_permission_gates": "PRESERVED",
-          "exact_contract_schema": "UNRESOLVED_SFP_CNTR_0005",
-          "remaining_arch_item": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
-          "keep_prior_activation_gate": "PRESERVED",
-          "implementation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        },
-        {
-          "id": "ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY",
-          "kind": "USER_POLICY_DECISION",
-          "status": "RESOLVED_POLICY_DIRECTION",
-          "selected_option": "C_ARCH_APPLICATION_CNTR_CONTRACT_SEMANTICS",
-          "approval_source": "USER_EXPLICIT",
-          "decision_date": "2026-10-11",
-          "prior_active_arch": "SFP-ARCH-0001",
-          "prior_active_cntr": "SFP-CNTR-0001",
-          "comparison_base_revision": "394dae3ef484323da7e884d6f193b20d61db6500",
-          "split_rule_ref": "authority_semantics.unit_ptsip_engine_draft.approved_decisions.engine_external_interoperability_authority_split",
-          "cntr_contract_policy": "SFP-CNTR-0005",
-          "cntr_exact_machine_contract_shape": "REMAINS_UNRESOLVED",
-          "verified_responsibility_mapping": "REQUIRED_BEFORE_ACTIVE",
-          "schema_registry_machine_validation": "REQUIRED_BEFORE_ACTIVE",
-          "independent_user_active_approval": "REQUIRED",
-          "active_policy_mutation": "NOT_AUTHORIZED",
-          "engine_implementation": "NOT_AUTHORIZED",
-          "record_role": "HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE"
-        }
-      ],
-      "dependent_plans": [
-        {
-          "id": "VALIDATION_VPMS_STAGED_HANDOFF",
-          "path": "developer/planning/migrations/validation-vpms-staged-handoff.yaml",
-          "status": "DRAFT",
-          "authority": "PLAN_NOT_POLICY"
-        },
-        {
-          "id": "SFP-ARCH-0004-CNTR-0005-OFFICIAL-ENGINE-ACTIVATION-READINESS",
-          "path": "developer/planning/migrations/SFP-ARCH-0004-CNTR-0005-official-engine-readiness.yaml",
-          "status": "ACTIVE",
-          "authority": "PLAN_NOT_POLICY"
-        }
-      ],
-      "physical_package_layout_decision_boundary": {
-        "policy_subject": "OFFICIAL_ENGINE_INTERNAL_PHYSICAL_PACKAGE_LAYOUT_DECISION_AUTHORITY",
-        "selected_option": "A_POLICY_CONSTRAINED_PLAN_WITH_MACHINE_VALIDATION",
-        "explicit_owner_policy_preserves": {
-          "official_source_root": "src/ptsip/engines/",
-          "official_directory_names": {
-            "CONTEXT": "context/",
-            "STORAGE": "storage/",
-            "VALIDATION": "validation/",
-            "DISCOVERY": "discovery/",
-            "PLANNING": "planning/",
-            "EXECUTION": "execution/",
-            "PROJECTION": "projection/"
-          },
-          "official_engine_kinds": [
-            "CONTEXT",
-            "STORAGE",
-            "VALIDATION",
-            "DISCOVERY",
-            "PLANNING",
-            "EXECUTION",
-            "PROJECTION"
-          ]
-        },
-        "internal_package_layout_owner": "PLAN",
-        "applicable_policy_constraints": [
-          "ARCH",
-          "CNTR",
-          "REGISTERED_ENGINE_RESPONSIBILITY_MAP",
-          "ALL_EFFECTIVE_DEPENDENT_AUTHORITIES"
-        ],
-        "machine_validation_required": true,
-        "per_engine_variable_hierarchy_and_management_optional": true,
-        "explicit_single_owner_mapping_required": true,
-        "independent_engine_version_dependency_build_deploy_patch": true,
-        "registered_identity_and_entrypoint_binding": "NOT_DERIVED_FROM_DIRECTORY_NAME",
-        "unresolved_active_authority_reconciliation": "MUST_NOT_BE_ASSUMED",
-        "actual_internal_module_paths_and_serialization": "UNSPECIFIED_PLAN",
-        "directory_creation_or_code_move": "APPROVED_PLAN_NEW_RUST_MATERIALIZATION_ONLY_NO_LEGACY_CODE_MOVE",
-        "policy_status": "ACTIVE_REGISTERED_RUNTIME_GATES_REQUIRED"
-      },
-      "activation_conflict_resolution": {
-        "decision": "RECONCILE",
-        "decision_source": "USER_EXPLICIT",
-        "decision_date": "2026-10-12",
-        "approval_ref": "developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml",
-        "prior_KEEP_PRIOR_decision": "HISTORICAL_SUPERSEDED_FOR_NORMATIVE_POLICY_ACTIVATION_AND_PLAN_IMPLEMENTATION_ONLY",
-        "base_policy": "SFP-ARCH-0001",
-        "state_schema_owner": "SFP-CNTR-0005",
-        "engine_architecture_owner": "SFP-ARCH-0004",
-        "runtime_execution": "CURRENT_VERIFIED_REGISTERED_BINDING_AND_EXPLICIT_GOV_CTRL_AUTHORIZATION",
-        "plan_creation_authorized": true,
-        "physical_engine_creation_authorized": "APPROVED_PLAN_AND_MACHINE_VERIFICATION_REQUIRED",
-        "public_api_retirement_authorized": false
-      },
-      "policy_activation": {
-        "status": "ACTIVE",
-        "approval_source": "USER_EXPLICIT",
-        "approved_at": "2026-10-12",
-        "approval_ref": "developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml",
-        "scope": "NORMATIVE_POLICY_AND_APPROVED_PLAN_IMPLEMENTATION",
-        "runtime_gate": "CURRENT_REGISTERED_CONTRACT_BINDING_AND_GOV_CTRL_AUTHORIZATION_REQUIRED",
-        "public_api_retirement": "SEPARATE_APPROVAL_REQUIRED"
-      },
-      "ptsip_repository_python_path_reconciliation_2026_10_30": {
-        "decision": "RECONCILE",
-        "decision_source": "PROJECT_OWNER_EXPLICIT",
-        "approved_at": "2026-10-30",
-        "application_scope": "THIS_PTSIP_REPOSITORY_PYTHON_PATH_MIGRATION_AND_VPMS_PUBLIC_INTERFACE",
-        "applies_to_consumer_projects": false,
-        "compared_prior_policy_revision": "f766a04c805d6f0a501e1f0fbf9cfb2d75bfc367",
-        "preserved_existing_rule": "LEGACY_VPMS_CONTRACTS_AND_PUBLIC_INTERFACE_PRESERVED_UNTIL_SEPARATELY_AUTHORIZED_MACHINE_VERIFIED_HANDOFF",
-        "approved_target": "VERIFIED_NEW_PATH_CUTOVER_WITHOUT_PERMANENT_OLD_PATH_COMPATIBILITY_SHIM",
-        "transition_preconditions": [
-          "EXACT_RESPONSIBILITY_OWNER_AND_CONSUMER_CALLSITE_MAPPING_VERIFIED",
-          "RUST_VALIDATION_VPMS_CAPABILITY_RELATIONS_AND_BEHAVIOR_PARITY_VERIFIED_WHEN_APPLICABLE",
-          "PUBLIC_ENTRYPOINT_IMPORT_AND_CONTRACT_COMPATIBILITY_VERIFIED",
-          "VERSIONED_HANDOFF_AND_RELEVANT_POLICY_CONTROL_GATES_SATISFIED",
-          "EXACT_AFFECTED_PUBLIC_API_RETIREMENT_SCOPE_APPROVED_AND_VERIFIED"
-        ],
-        "pre_cutover_state": "EXISTING_PUBLIC_INTERFACES_REMAIN_EFFECTIVE",
-        "after_scoped_cutover": "NO_PERMANENT_LEGACY_COMPATIBILITY_SHIM_FOR_VERIFIED_RETIRED_SCOPE",
-        "unresolved_new_python_paths": "PLAN_DERIVED_NO_INFERRED_DIRECTORY_NAMES",
-        "unresolved_file_deletions": "NOT_AUTHORIZED",
-        "unverified_scope": "KEEP_PRIOR_NO_CUTOVER",
-        "implementation_and_runtime_activation": "NOT_AUTHORIZED_BY_THIS_DIRECTION",
-        "unrelated_engine_boundaries": "PRESERVED"
-      },
-      "implementation_admission": {
-        "approval_source": "USER_EXPLICIT",
-        "approval_ref": "developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml",
-        "plan_ref": "developer/planning/0.3.8/WU-02/WU-02.yaml",
-        "source_scope": "src/ptsip/engines/",
-        "language": "RUST",
-        "legacy_python_implementation": "FORBIDDEN",
-        "cross_official_engine_implementation_sharing": "FORBIDDEN",
-        "source_and_module_materialization": "AUTHORIZED_BY_APPROVED_PLAN",
-        "precedence": "REPLACES_PRIOR_DIRECTION_ONLY_IMPLEMENTATION_NOT_AUTHORIZED_FIELDS_WITHIN_THIS_SOURCE_SCOPE",
-        "does_not_override": [
-          "CONSUMER_PROJECT_OWNERSHIP",
-          "GOV_CTRL_ACTION_TIME_PERMISSION",
-          "ASSURE_CONFORMANCE_AUTHORITY",
-          "EXISTING_PUBLIC_API_RETIREMENT_GATES",
-          "EXTERNAL_INSTALLATION_RESTRICTIONS"
-        ]
-      }
-    },
-    "unit_unified_policy_contract_reform": {
-      "decision_source": "PROJECT_OWNER_EXPLICIT",
-      "decision_date": "2026-11-07",
-      "approved_direction": {
-        "statement": "KEEP_LATEST unifies Developer and Support Feature policy documents under one machine contract family while retaining each plane and Family normative responsibility.",
-        "source": "PROJECT_OWNER_EXPLICIT",
-        "date": "2026-11-07",
-        "conflict_resolution": "KEEP_LATEST",
-        "document_structure": "UNIFIED",
-        "scope": [
-          "PTSIP_DEVELOPER_POLICY",
-          "PTSIP_SUPPORT_FEATURE"
-        ],
-        "existing_seven_engines": "INDEPENDENT",
-        "policy_evaluation_engine": "SEPARATE_RESPONSIBILITY",
-        "rule_binding": "DIRECT_PER_RULE",
-        "runtime_activation_authorized": false
-      },
-      "source_ref": {
-        "source_ref": ".ptsip/contracts/policy/unified/authoring-decision.json",
-        "item_ref": "/decisions/architecture",
-        "revision_ref": "sha256:70cbe2f5fda248c2865e6e604704e0ae5480e1e8183c17f640c66a2cabaa5241"
-      }
-    }
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [
-      {
-        "policy": "SFP-ARCH-0001",
-        "scope": "ENGINE_STATE_SCHEMA_AND_RUNTIME_DEFERRED_RECONCILIATION_ONLY"
-      }
-    ],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-ARCH-0001",
-        "scope": "PRESERVED_CONSUMER_PROJECT_OWNERSHIP"
-      },
-      {
-        "policy": "SFP-CNTR-0005",
-        "scope": "ENGINE_EXTERNAL_INTEROPERABILITY_MACHINE_CONTRACT_AUTHORITY"
-      }
-    ]
-  }
-}
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-ARCH-0004
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ARCH
+  title: Engine structural ownership and physical responsibility boundary (ACTIVE)
+Policy_Lifecycle:
+  status: ACTIVE
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SFP-ARCH-0004#/authority_semantics/rac_aec_rego_original_contract_direction
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+        contract_ref:
+          source_ref: .ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json
+          item_ref: '#'
+          revision_ref: git:7420848b01747e937b400e6647020b122ed3bf51
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+        contract_ref:
+          source_ref: .ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json
+          item_ref: '#'
+          revision_ref: git:7420848b01747e937b400e6647020b122ed3bf51
+  - id: SFP-ARCH-0004#/authority_semantics/rego_policy_evaluation_scope_direction
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-ARCH-0004#/authority_semantics/unit_ptsip_engine_draft
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-ARCH-0004#/authority_semantics/unit_unified_policy_contract_reform
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0014
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ARCH
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ARCH-0004
+      title: Engine structural ownership and physical responsibility boundary (ACTIVE)
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION
+      statement: Owns the approved engine architecture boundary.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+    - SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ARCH
+      schema_id: ptsip.governance/root-family/arch
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/rac_aec_rego_original_contract_direction
+    value:
+      decision_source: PROJECT_OWNER_EXPLICIT
+      decision_date: '2026-11-06'
+      approval_level: RAC_AEC_EVALUATION_SOURCE_DIRECTION
+      scope: RAC_AEC_CONDITION_EVALUATION_SEMANTICS
+      evaluation_contract_original: REGO_SOURCE
+      rego_generated_from_separate_expression_contract_as_canonical: NOT_SELECTED
+      non_evaluation_policy_authority: PRESERVE_APPROVED_POLICY_CONTRACTS
+      rac_aec_attribute_ownership: INDEPENDENT_RAC_AEC_PREFIXED_REGISTRATION
+      identity_fields_existing_approval:
+      - ID
+      - name
+      evidence_requirements_and_evaluation_criteria: SEMANTIC_RESPONSIBILITIES_SEPARATED
+      machine_contract_field_names_and_count: UNDECIDED
+      rego_code_structure_and_storage: UNDECIDED
+      relation_to_existing_condition_schemas: UNDECIDED
+      implementation_and_integration: UNDECIDED
+      whole_policy_scope_beyond_rac_aec: DIRECTION_ONLY_NOT_ACTIVATED
+      implementation_authorized: false
+      runtime_activation_authorized: false
+      policy_authority_transfer_authorized: false
+  - id: SRC-0009
+    source_pointer: /authority_semantics/rego_policy_evaluation_scope_direction
+    value:
+      decision_source: PROJECT_OWNER_EXPLICIT
+      decision_date: '2026-11-06'
+      approval_level: DIRECTION_ONLY
+      direction: REGO_EVALUATION_SCOPE_MAY_EXTEND_BEYOND_RAC_AEC_TO_WHOLE_POLICY_VALIDATION_AND_JUDGEMENT
+      immediate_planning_priority: RAC_AEC
+      expression_language_final_selection: UNDECIDED
+      implementation_location: UNDECIDED
+      integration_method: UNDECIDED
+      evaluator_runtime_and_binding: UNDECIDED
+      normative_policy_authority: PRESERVE_EXISTING_POLICY_OWNERSHIP
+      rac_aec_new_field_names_and_count: UNDECIDED
+      implementation_authorized: false
+      runtime_activation_authorized: false
+      prior_engine_architecture_changes_authorized: false
+  - id: SRC-0010
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+      statement: classification을 governing lifecycle obligation에 따른 primary ownership으로 선언하고 material mixed 책임 및 unresolved
+        소유를 구분한다.
+      non_substitutability: SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle ownership을 자동 결정하지 않는다.
+  - id: SRC-0011
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+      statement: roles, associated artifacts 및 typed directed relationships를 프로젝트의 명시적 architecture 사실로 선언하고 evidence에서 자동
+        생성하지 않는다.
+      non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트 소유 architecture 의도를 만들어 내지 못한다.
+  - id: SRC-0012
+    source_pointer: /authority_semantics/unit_ptsip_engine_draft
+    value:
+      domain: PTSIP_ENGINE
+      approved_decisions:
+        engine_ownership: OFFICIAL_PACKAGE_OWNED_AND_CONSUMER_USER_ENGINE_OWNED
+        official_implementations: SHIPPED_PTSIP_INSTALLATION
+        consumer_user_implementations: CONSUMER_REPOSITORY_OWNED_OR_EXPLICITLY_REGISTERED_EXTERNAL_INSTALLATION
+        official_engine_kinds:
+        - CONTEXT
+        - STORAGE
+        - VALIDATION
+        - DISCOVERY
+        - PLANNING
+        - EXECUTION
+        - PROJECTION
+        integration_engine_priority: DEFERRED_LOWER_PRIORITY
+        engine_structure_P1: EXPLICIT_SINGLE_OWNER_MIXED_IMPLEMENTATION
+        directory_policy_P2: RESPONSIBILITY_BOUNDARY_STRUCTURED
+        physical_organization_P3: SINGLE_UPPER_ENGINE_AREA
+        common_management_P4: PER_ENGINE_SELF_OWNED_FUNCTION_BY_FUNCTION_MANAGEMENT
+        implementation_sharing_P5: NO_CROSS_OFFICIAL_RUST_ENGINE_IMPLEMENTATION_SHARING
+        capability_implementation_P6: INDEPENDENT_CONTRACT_FLEXIBLE_IMPLEMENTATION
+        user_external_isolation_P7: MANDATORY_ISOLATION
+        common_management_function_examples:
+        - CONTRACT
+        - REGISTRY
+        - RESOLVER
+        - ACTIVATION
+        - EVALUATION
+        - COMPOSITION
+        - TRANSPORT
+        - LIFECYCLE
+        internal_hierarchy_model: DECLARATION_BASED_VARIABLE_HIERARCHY
+        storage_engine_semantic_boundary: CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP
+        context_projection_responsibility_direction: B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER
+        validation_vpms_responsibility_direction: SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE
+        vpms_independent_semantic_engine_owner: false
+        validation_engine_scope: GENERAL_CONTRACT_SCHEMA_TYPED_IO_PRECONDITION_AND_VERIFICATION_CASE_VALIDATION
+        validation_vpms_interface_migration_policy: STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT
+        official_engine_source_root: src/ptsip/engines/
+        official_engine_source_root_selection: B_PTSIP_ENGINES_PACKAGE_ROOT
+        independent_engine_module_layout: D_SELF_CONTAINED_ENGINE_MODULES
+        per_engine_management_ownership: INDEPENDENT_SEMANTICS_AND_IMPLEMENTATION
+        per_engine_change_boundary: VERSION_DEPENDENCIES_BUILD_DEPLOYMENT_PATCH
+        per_engine_environment_boundary: VERSIONED_DEPENDENCY_ENVIRONMENT_PER_ENGINE
+        engine_local_management_entry_resolution: MACHINE_DECLARED_IDENTITY_BOUND_ENTRYPOINT_WITH_NAME_AGNOSTIC_DIRECTORY
+        engine_local_management_function_model: NO_MANDATORY_COMMON_MANAGEMENT_FUNCTIONS_EXTERNAL_INTEROPERABILITY_ONLY
+        engine_local_management_mandate: OPTIONAL_ENGINE_OWNED_INTERNAL_FUNCTIONS
+        engine_minimum_external_interoperability: MACHINE_READABLE_CONTRACT_REQUIRED
+        engine_external_interoperability_upper_scope: STATIC_DECLARATION_WITH_CONDITIONAL_EXECUTION_BINDING
+        seven_official_engine_subdirectory_name_authority_choice: B_USER_EXPLICIT
+        seven_official_engine_subdirectory_name_authority_decided_at: '2026-10-11'
+        seven_official_engine_subdirectory_name_authority: PROJECT_OWNER_APPROVED_POLICY
+        seven_official_engine_subdirectory_exact_names: ALL_SEVEN_EXPLICITLY_APPROVED
+        seven_official_engine_subdirectory_name_determination_by_plan: FORBIDDEN_WITHOUT_SEPARATE_POLICY_APPROVAL
+        seven_official_engine_subdirectory_unapproved_name_materialization: FORBIDDEN
+        official_source_root_and_seven_engine_identities: UNCHANGED
+        directory_name_runtime_identity_or_entrypoint_authority: NONE
+        official_engine_subdirectory_name_approvals:
+          root: src/ptsip/engines/
+          naming_authority: PROJECT_OWNER_POLICY_APPROVAL
+          approved:
+            CONTEXT: context/
+            STORAGE: storage/
+            VALIDATION: validation/
+            DISCOVERY: discovery/
+            PLANNING: planning/
+            EXECUTION: execution/
+            PROJECTION: projection/
+          pending_engine_kinds: []
+          all_seven_names_resolved: true
+          policy_value_not_implementation_authorization: true
+        official_context_engine_subdirectory_name: context/
+        official_context_engine_subdirectory_decision: A_USER_EXPLICIT
+        official_context_engine_subdirectory_approved_at: '2026-10-11'
+        official_context_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        official_context_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        official_storage_engine_subdirectory_name: storage/
+        official_storage_engine_subdirectory_decision: A_USER_EXPLICIT
+        official_storage_engine_subdirectory_approved_at: '2026-10-11'
+        official_storage_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        official_storage_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        official_validation_engine_subdirectory_name: validation/
+        official_validation_engine_subdirectory_decision: A_USER_EXPLICIT
+        official_validation_engine_subdirectory_approved_at: '2026-10-11'
+        official_validation_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        official_validation_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        official_discovery_engine_subdirectory_name: discovery/
+        official_discovery_engine_subdirectory_decision: A_USER_EXPLICIT
+        official_discovery_engine_subdirectory_approved_at: '2026-10-11'
+        official_discovery_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        official_discovery_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        seven_official_engine_subdirectory_name_set_status: USER_APPROVED_COMPLETE
+        seven_official_engine_subdirectory_names_completed_at: '2026-10-11'
+        official_planning_engine_subdirectory_name: planning/
+        official_planning_engine_subdirectory_decision: USER_EXPLICIT_APPROVAL
+        official_planning_engine_subdirectory_approved_at: '2026-10-11'
+        official_planning_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        official_planning_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        official_execution_engine_subdirectory_name: execution/
+        official_execution_engine_subdirectory_decision: USER_EXPLICIT_APPROVAL
+        official_execution_engine_subdirectory_approved_at: '2026-10-11'
+        official_execution_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        official_execution_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        official_projection_engine_subdirectory_name: projection/
+        official_projection_engine_subdirectory_decision: USER_EXPLICIT_APPROVAL
+        official_projection_engine_subdirectory_approved_at: '2026-10-11'
+        official_projection_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        official_projection_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        concrete_physical_package_layout_authority_choice: A_USER_EXPLICIT
+        concrete_physical_package_layout_authority_decided_at: '2026-10-11'
+        concrete_physical_package_layout_authority: PLAN_DERIVED_FROM_EFFECTIVE_ARCH_CNTR_AND_RELEVANT_RESPONSIBILITY_CONTRACTS
+        concrete_physical_package_layout_concrete_shape: PLAN_WITH_MACHINE_VALIDATION_NOT_POLICY_FIXED
+        per_engine_internal_hierarchy: VARIABLE_PER_DECLARED_RESPONSIBILITY
+        internal_management_layout: ENGINE_OWNED_OPTIONAL_AND_NONSTANDARDIZED
+        seven_official_engine_source_and_name_contract: IMMUTABLE_UNLESS_SEPARATE_OWNER_POLICY_APPROVAL
+        internal_layout_validation: MACHINE_VERIFIED_CONTRACT_AND_OWNER_MAPPING
+        internal_layout_missing_or_conflicting_responsibility_proof: BLOCK_UNVERIFIED_PLAN_IMPLEMENTATION
+        internal_layout_plan_approval: NO_SEPARATE_PER_LAYOUT_USER_APPROVAL_REQUIRED_BY_THIS_DECISION
+        internal_layout_decision_does_not_authorize_physical_mutation: true
+        official_engine_implementation_language: RUST
+        official_engine_implementation_language_scope: SEVEN_OFFICIAL_ENGINES_ONLY
+        official_engine_language_neutral_contract: PRESERVED
+        consumer_user_external_engine_language_policy: UNCHANGED
+        official_engine_legacy_python_implementation_boundary:
+          scope: SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
+          prohibited_source: EXISTING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION
+          prohibition: ALL_LEGACY_PYTHON_IMPLEMENTATION_RELOCATION_REUSE_AND_SHARING_FORBIDDEN
+          prohibited_operations:
+          - MOVE_LEGACY_PYTHON_SOURCE_INTO_OFFICIAL_ENGINE
+          - COPY_LEGACY_PYTHON_SOURCE_INTO_OFFICIAL_ENGINE
+          - TRANSLATE_OR_PORT_LEGACY_PYTHON_IMPLEMENTATION_AS_ENGINE_IMPLEMENTATION
+          - REUSE_LEGACY_PYTHON_MODULE_OR_IMPLEMENTATION
+          - SHARE_LEGACY_PYTHON_IMPLEMENTATION_WITH_OFFICIAL_ENGINE
+          - LINK_WRAP_BRIDGE_OR_DELEGATE_OFFICIAL_ENGINE_IMPLEMENTATION_TO_LEGACY_PYTHON_RUNTIME
+          implementation_source: NEW_INDEPENDENT_RUST_IMPLEMENTATION_DERIVED_FROM_EFFECTIVE_POLICY_AND_LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+          runtime_dependency_on_legacy_ptsip_python_implementation: FORBIDDEN
+          normative_contract_reuse: PRESERVED_LANGUAGE_NEUTRAL_CONTRACTS_NOT_LEGACY_PYTHON_IMPLEMENTATIONS
+          existing_active_public_api_and_vpms_transition: PRESERVED_UNTIL_SEPARATELY_AUTHORIZED_AND_VERIFIED
+          existing_legacy_implementation_modification: NOT_AUTHORIZED_BY_THIS_DECISION
+          consumer_and_registered_external_engine_language_scope: UNAFFECTED
+          unrelated_rust_sharing_policy: UNCHANGED_SEPARATE_POLICY_DECISION
+          new_engine_implementation_authorization: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+          draft_runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+        current_declared_component_boundary_reconciliation:
+          decision: KEEP_LATEST
+          decision_source: USER_EXPLICIT
+          decision_date: '2026-10-11'
+          prior_active_authority: SFP-ARCH-0001
+          prior_active_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+          current_active_authority_scope: CONSUMER_PROJECT_LIFECYCLE_COMPONENT_OWNERSHIP_AND_TYPED_RELATIONSHIPS
+          conflicting_old_boundary: EXISTING_PTSIP_SHIPPED_COMPONENT_FUNCTIONAL_OWNER_REMAINS_CANONICAL_ON_ENGINE_CAPABILITY_OVERLAP
+          replacement_boundary: OFFICIAL_RUST_ENGINE_CANONICAL_FUNCTIONAL_RESPONSIBILITY_FOR_VERIFIED_OVERLAPPING_PTSIP_SHIPPED_CAPABILITIES
+          replacement_scope: PTSIP_OFFICIAL_PRODUCT_INTERNAL_OVERLAPPING_ENGINE_CAPABILITY_RESPONSIBILITIES_ONLY
+          old_functional_boundary_handling: REPLACE_WHEN_EXPLICIT_ENGINE_CAPABILITY_OWNER_MAP_AND_COMPATIBILITY_HANDOFF_VERIFIED
+          canonical_owner_selection: DECLARED_ENGINE_CAPABILITY_ID_AND_EXPLICIT_RESPONSIBILITY_MAP_NOT_DIRECTORY_OR_LANGUAGE_HEURISTIC
+          consumer_project_lifecycle_ownership: PRESERVE_PROJECT_OWNER_DECLARED_RESPONSIBILITY_MAP
+          nonoverlapping_active_component_obligations: PRESERVED
+          existing_shipped_public_capability_contracts: PRESERVED_UNTIL_VERIFIED_AUTHORIZED_TRANSITION
+          active_context_projection_vpms_assure_storage_authorities: NO_IMPLICIT_TRANSFER_SEPARATE_RECONCILIATION_REQUIRED
+          required_ownership_map: PENDING_MACHINE_VERIFIED_ENGINE_TO_EXISTING_FUNCTIONAL_COMPONENT_RESPONSIBILITY_RECONCILIATION
+          rust_engine_legacy_python_dependency: FORBIDDEN_AS_ALREADY_APPROVED
+          immediate_active_policy_override: FORBIDDEN_BEFORE_ARCH_0004_ACTIVE_PROMOTION
+          runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+          physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        context_projection_active_authority_reconciliation:
+          decision: KEEP_LATEST
+          decision_source: USER_EXPLICIT
+          decision_date: '2026-10-11'
+          scope: OFFICIAL_RUST_CONTEXT_AND_PROJECTION_ENGINE_NORMATIVE_OUTPUT_RESPONSIBILITY
+          prior_active_contract: SFP-CNTR-0001#CONTEXT_PLANE_MIGRATION_REPAIR
+          prior_active_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+          current_active_contract_status: ACTIVE_UNCHANGED_UNTIL_CONCRETE_AUTHORIZED_VERSIONED_TRANSITION
+          conflicting_old_rule: LEGACY_CONTEXT_PUBLIC_OUTPUT_CONTRACT_PRIORITIZED_OVER_NEW_PROJECTION_OUTPUT_AUTHORITY
+          replacement_rule: RUST_PROJECTION_ENGINE_CANONICAL_OUTPUT_SCHEMA_FORMAT_AND_TRANSFORMATION_NORMATIVE_OWNER
+          context_owner: SOURCE_CONTENT_SEMANTICS_AND_CONSTRAINTS
+          projection_owner: OUTPUT_SCHEMA_FORMAT_AND_TRANSFORMATION_RULES
+          legacy_format_parity_requirement_after_authorized_cutover: NOT_AUTOMATICALLY_MANDATORY
+          legacy_public_api_contract_change: ELIGIBLE_ONLY_BY_SEPARATELY_AUTHORIZED_VERSIONED_CONTRACT_TRANSITION_AND_MACHINE_VERIFIED_CUTOVER
+          previous_active_public_api_before_cutover: PRESERVED
+          independent_engines: RUST_NEW_IMPLEMENTATION_NO_LEGACY_PYTHON_REUSE
+          consumer_project_lifecycle_authority: UNCHANGED
+          assure_conformance_and_ctrl_execution_authorities: UNCHANGED
+          remaining_contract_handoff: SFP-CNTR-0005#CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF
+          active_promotion: BLOCKED_UNTIL_ALL_EXISTING_GATES_VERIFIED
+          physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+          runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+        validation_vpms_public_contract_final_target:
+          decision: KEEP_LATEST
+          decision_source: USER_EXPLICIT
+          decision_date: '2026-10-11'
+          scope: SEVEN_OFFICIAL_RUST_VALIDATION_ENGINE_TARGET_PUBLIC_CONTRACT_AND_LEGACY_VPMS_API_COMPATIBILITY
+          target_canonical_public_contract: RUST_VALIDATION_ENGINE_LANGUAGE_NEUTRAL_CAPABILITY_CONTRACT
+          target_semantic_owner: SINGLE_OFFICIAL_VALIDATION_ENGINE_INCLUDING_VPMS_PROTOCOL_SELECTION_AND_EXECUTION_COMPOSITION_CAPABILITIES
+          existing_active_vpms_contract_ids:
+            VPMS_PRODUCT_PROTOCOL: urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b
+            VPMS_CASE_SELECTION: urn:uuid:e6707543-f052-4035-bb86-166701e06362
+            VPMS_EXECUTION_COMPOSITION: urn:uuid:32058048-9342-4514-9754-2a4b25a79b06
+          previous_active_owner_contracts: PRESERVED_BEFORE_AUTHORIZED_VERIFIED_CUTOVER
+          active_contract_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+          old_public_api: TRANSITIONAL_COMPATIBILITY_ONLY_AFTER_NEW_API_VERIFIED
+          migration: NEW_RUST_VALIDATION_CONTRACT_VERIFIED_THEN_VERSIONED_COMPATIBILITY_HANDOFF_THEN_SEPARATELY_AUTHORIZED_RETIREMENT
+          compatibility_verification: MACHINE_VERIFIED_BEHAVIOR_CONFORMANCE_AND_CALLSITE_COMPATIBILITY_BEFORE_SWITCH
+          old_api_indefinite_support: NOT_MANDATORY_AFTER_SEPARATELY_APPROVED_RETIREMENT
+          legacy_public_api_retirement: SEPARATE_EXPLICIT_PROJECT_OWNER_APPROVAL_REQUIRED
+          retirement_approval_by_this_decision: NOT_GRANTED
+          implementation_boundary: NEW_RUST_ONLY_NO_EXISTING_PYTHON_VPMS_MOVE_PORT_WRAP_REUSE_OR_RUNTIME_DEPENDENCY
+          exact_capability_and_public_api_mapping: UNRESOLVED_CONTRACT_DESIGN_AND_RESPONSIBILITY_ANALYSIS
+          existing_assure_conformance_authority: PRESERVED_DISTINCT_FROM_VPMS_OUTCOME
+          other_active_authority_and_consumer_profile_ownership: UNCHANGED
+          active_policy_effect: NONE_UNTIL_AUTHORIZED_AND_VERIFIED_TRANSITION
+          engine_runtime_activation: NOT_AUTHORIZED
+          physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        validation_vpms_legacy_to_generic_validator_mapping:
+          choice: C_INDEPENDENT_RUST_VALIDATION_CAPABILITIES_WITH_EXPLICIT_MACHINE_VERIFIABLE_LEGACY_CONTRACT_MAPPING
+          source: USER_EXPLICIT
+          decision_date: '2026-10-11'
+          scope: OFFICIAL_RUST_VALIDATION_ENGINE_RESPONSIBILITY_AND_LEGACY_VPMS_CONTRACT_RELATIONSHIPS
+          canonical_semantic_owner: SINGLE_RUST_VALIDATION_ENGINE
+          new_capability_design: DERIVE_INDEPENDENTLY_FROM_EFFECTIVE_VALIDATION_RESPONSIBILITIES_AND_LANGUAGE_NEUTRAL_CONTRACTS
+          existing_vpms_module_structure: NON_NORMATIVE_FOR_NEW_RUST_CAPABILITY_DECOMPOSITION
+          legacy_contract_identities:
+            VPMS_PRODUCT_PROTOCOL: urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b
+            VPMS_CASE_SELECTION: urn:uuid:e6707543-f052-4035-bb86-166701e06362
+            VPMS_EXECUTION_COMPOSITION: urn:uuid:32058048-9342-4514-9754-2a4b25a79b06
+          required_legacy_to_new_relationships: EXPLICIT_VERSIONED_MACHINE_VERIFIABLE_CONTRACT_MAPPING
+          allowed_mapping_cardinalities:
+          - ONE_TO_ONE
+          - ONE_TO_MANY
+          - MANY_TO_ONE
+          mapping_inference_from_name_path_or_python_module: FORBIDDEN
+          ambiguous_missing_conflicting_or_unverified_mapping: UNRESOLVED_FAIL_CLOSED_NO_OWNER_HANDOFF
+          mapped_capability_semantics: NO_IMPLICIT_CHANGE_TO_LEGACY_CONTRACT_MEANING_OR_CURRENT_ACTIVE_PUBLIC_BEHAVIOR
+          generic_validator_responsibilities:
+          - CONTRACT_VALIDATION
+          - SCHEMA_VALIDATION
+          - TYPED_IO_VALIDATION
+          - PRECONDITION_VALIDATION
+          - VERIFICATION_CASE_VALIDATION
+          generic_validator_relation_to_vpms: EXPLICIT_CAPABILITY_RELATIONS_WITHOUT_INFERRED_SEMANTIC_EQUIVALENCE
+          existing_python_vpms_implementation_reuse: FORBIDDEN_MOVE_COPY_PORT_WRAP_SHARE_RUNTIME_DEPENDENCY
+          existing_vpms_contract_status: ACTIVE_UNTIL_SEPARATELY_AUTHORIZED_AND_VERIFIED_HANDOFF
+          legacy_public_api_retirement: SEPARATE_EXPLICIT_OWNER_AUTHORIZATION_REQUIRED
+          ptsip_assure_conformance_owner: SFP-ASSURE-0001_UNCHANGED
+          detailed_capability_ids_operations_schemas_and_cross_contract_bridge: SFP-CNTR-0005_UNRESOLVED_CONTRACT_DESIGN
+          machine_mapping_evidence: REQUIRED_BEFORE_RUNTIME_ELIGIBILITY_OR_AUTHORITY_HANDOFF
+          policy_status: ACTIVE_USER_EXPLICIT_2026_10_12
+          physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+          runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+        implementation_sharing_P5_scope: SEVEN_OFFICIAL_RUST_ENGINES_ONLY
+        implementation_sharing_P5_precedence: KEEP_LATEST_OVERRIDES_PRIOR_SINGLE_OWNER_SHARING_PERMISSION_WITHIN_SEVEN_OFFICIAL_RUST_ENGINES
+        per_engine_management_and_shared_implementation_owner_policy:
+          decision: KEEP_LATEST
+          approval_source: USER_EXPLICIT
+          decision_date: '2026-10-11'
+          policy_scope: SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
+          engine_implementation_ownership: ENGINE_SELF_OWNED_ISOLATED
+          management_implementation_ownership: ENGINE_SELF_OWNED_OPTIONAL
+          cross_official_engine_rust_source_module_crate_import: FORBIDDEN
+          cross_official_engine_shared_compiled_runtime_or_management_library: FORBIDDEN
+          cross_official_engine_implementation_copy_move_reuse_port_or_link: FORBIDDEN
+          engine_internal_management_capability_set: ENGINE_DECLARED_OPTIONAL_NO_GLOBAL_MANDATORY_SET
+          shared_ptsip_rust_implementation_between_official_engines: FORBIDDEN
+          independent_engine_version_dependency_build_distribution_patch: REQUIRED_UNCHANGED
+          normative_language_neutral_machine_contract_sharing: ALLOWED
+          explicit_cross_engine_capability_and_dependency_contracts: ALLOWED_WITHOUT_IMPLEMENTATION_SHARING
+          independently_versioned_external_toolchain_or_third_party_dependency_rules: UNCHANGED_NO_NEW_PERMISSION_OR_GLOBAL_PROHIBITION
+          consumer_and_external_engine_implementation_policy: UNCHANGED
+          prior_conditional_implementation_sharing_policy: SUPERSEDED_IN_SCOPE_ONLY
+          exact_per_engine_internal_management_owner_map: PLAN_DERIVED_AND_MACHINE_VERIFIED_NO_INFERRED_OWNER
+          active_contracts_and_authorities: PRESERVED
+          runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+          physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+        engine_local_management_entrypoint_capability_mapping:
+          decision: C_FLEXIBLE_ENTRYPOINT_TO_EXPLICIT_CAPABILITY_BINDINGS
+          approval_source: USER_EXPLICIT
+          decision_date: '2026-10-11'
+          scope: OFFICIAL_RUST_ENGINE_LOCAL_MANAGEMENT_EXTERNAL_INVOCABILITY
+          ownership: ENGINE_SELF_OWNED_INDEPENDENT_OPTIONAL_MANAGEMENT
+          entrypoint_count: ENGINE_DEFINED_ZERO_ONE_OR_MANY
+          management_capability_count: ENGINE_DEFINED_OPTIONAL_NO_MANDATORY_COMMON_SET
+          mapping_rule: EACH_DECLARED_EXTERNALLY_INVOCABLE_MANAGEMENT_CAPABILITY_HAS_EXPLICIT_REGISTERED_VERSIONED_ENGINE_IDENTITY_AND_CAPABILITY_BOUND_ENTRYPOINT
+          many_capabilities_to_one_entrypoint: ALLOWED
+          different_capabilities_to_different_entrypoints: ALLOWED
+          internal_only_management: NO_EXTERNAL_BINDING_MANDATE_UNLESS_DECLARED_EXTERNALLY_INVOCABLE
+          absent_management: NO_MANAGEMENT_ENTRYPOINT_REQUIRED
+          entrypoint_discovery: REGISTERED_MACHINE_DECLARATION_ONLY
+          directory_name_and_internal_path_inference: FORBIDDEN_AS_ENTRYPOINT_AUTHORITY
+          ambiguous_missing_invalid_or_unverifiable_required_binding: FAIL_CLOSED_AFFECTED_CAPABILITIES
+          initial_binding_verification: REQUIRED_AT_REGISTRATION_FOR_EXTERNALLY_INVOCABLE_CAPABILITIES
+          changed_binding: REVERIFY_CURRENT_ELIGIBILITY_BEFORE_USE
+          invocation: FRESH_APPLICABLE_BINDING_AND_EXISTING_CTRL_AUTHORITY_REQUIRED
+          registration_or_discovery: NO_AUTOMATIC_EXECUTION_ACTIVATION_OR_WRITE_AUTHORITY
+          cross_official_rust_engine_management_runtime_or_module_sharing: FORBIDDEN
+          no_fixed_management_directory_name_or_internal_hierarchy: true
+          exact_manifest_schema_binding_encoding_and_validation_plan: DEFERRED_TO_SFP_CNTR_0005_AND_POLICY_COMPLIANT_PLAN
+          existing_ACTIVE_policies: UNCHANGED
+          policy_status: ACTIVE_USER_EXPLICIT_2026_10_12
+          physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+          runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+        engine_external_interoperability_authority_split:
+          decision: C_ARCH_SCOPE_CNTR_MACHINE_CONTRACT_AUTHORITY_SPLIT
+          approval_source: USER_EXPLICIT
+          decision_date: '2026-10-11'
+          required_participation_boundary: ALL_DISCOVERABLE_REGISTERABLE_PTSIP_ENGINES_OFFICIAL_CONSUMER_AND_EXTERNAL
+          arch_normative_owner: EXTERNAL_INTEROPERABILITY_OBLIGATION_APPLICABILITY_PARTICIPATION_AND_INDEPENDENT_IMPLEMENTATION_BOUNDARY
+          cntr_normative_owner: MACHINE_CONTRACT_REQUIRED_DIMENSIONS_VERSIONED_IDENTITY_CAPABILITY_DEPENDENCY_COMPATIBILITY_REFERENCES_AND_CONDITIONAL_ENTRYPOINT_BINDING
+          cntr_policy: SFP-CNTR-0005
+          cntr_active_precedence: SFP-CNTR-0001
+          static_declaration: REQUIRED_FOR_ENGINE_DISCOVERY_WITHOUT_ENGINE_RUNTIME
+          conditional_execution_binding: REQUIRED_ONLY_WHEN_EXTERNALLY_INVOCABLE_CAPABILITY_DECLARED
+          no_externally_invocable_capability: NO_EXECUTION_ENTRYPOINT_REQUIRED
+          internal_management: ENGINE_OPTIONAL_NO_MANDATORY_SHARED_RUNTIME
+          seven_official_rust_engine_code_isolation: PRESERVED_NO_CROSS_ENGINE_IMPLEMENTATION_SHARING
+          consumer_or_external_engine_internal_language_or_implementation: NOT_RESTRICTED_BY_OFFICIAL_RUST_RULES
+          declared_dependency_relation: CONTRACT_LEVEL_INTEROPERABILITY_NOT_SHARED_COMPILED_CODE
+          missing_invalid_or_unverifiable_required_contract: FAIL_CLOSED_AFFECTED_REGISTRATION_OR_OPERATION
+          registry_or_binding_declaration: NO_ACTIVATION_EXECUTION_WRITE_OR_NORMATIVE_CONFORMANCE_AUTHORITY
+          contract_shape_schema_reference_binding_implementation: UNRESOLVED_IN_SFP_CNTR_0005_AND_POLICY_COMPLIANT_PLAN
+          existing_active_contracts: UNCHANGED_UNTIL_VERIFIED_SEPARATELY_AUTHORIZED_TRANSITION
+          active_promotion: SEPARATE_EXPLICIT_USER_APPROVAL_AFTER_VERIFIED_GATES
+          policy_status: ACTIVE_USER_EXPLICIT_2026_10_12
+          physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
+          runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+      invariants:
+        physical_parent_co_location_does_not_merge_semantic_owners: true
+        directory_name_is_not_semantic_authority: true
+        every_owned_implementation_requires_explicit_responsibility_mapping: true
+        shared_implementation_has_exactly_one_semantic_owner: true
+        using_an_implementation_does_not_transfer_ownership: true
+        common_management_functions_have_independent_responsibility: true
+        capability_contract_boundary_survives_implementation_sharing: true
+        existing_architecture_and_public_contracts_must_not_be_silently_reassigned: true
+        user_source_never_mistaken_for_official_source: true
+        hierarchy_depth_may_vary_by_declared_responsibility: true
+        fixed_intermediate_role_grouping_is_mandatory: false
+        flat_only_hierarchy_is_mandatory: false
+        concrete_hierarchy_requires_explicit_responsibility_map: true
+        storage_engine_owns_capability_contract_not_all_provider_implementations: true
+        storage_provider_and_data_policy_ownership_remain_explicit_and_independent: true
+        existing_storage_ownership_transfer_requires_separate_authorized_decision: true
+        physical_colocation_or_capability_consumption_does_not_transfer_storage_data_ownership: true
+        context_engine_retains_source_content_and_semantic_authority: true
+        projection_engine_owns_context_inclusive_output_format_specification_and_transformation_rule_authority: true
+        projection_ownership_does_not_transfer_context_source_semantic_authority: true
+        output_schema_and_transformation_normative_owner_must_be_unique: true
+        existing_active_context_projection_authority_not_silently_reassigned: true
+        implementation_co_location_does_not_merge_context_and_projection_responsibility: true
+        actual_owner_handoff_requires_effective_policy_reconciliation: true
+        vpms_and_official_validation_engine_must_not_have_competing_semantic_owners: true
+        existing_vpms_product_contracts_remain_effective_until_separately_authorized_transition: true
+        vpms_implementation_can_be_reused_without_immediate_physical_move: true
+        validation_execution_capability_is_not_normative_ptsip_conformance_authority: true
+        existing_assure_conformance_judgment_authority_unaffected: true
+        common_engine_registry_resolver_composition_and_execution_authorities_not_implicitly_transferred: true
+        current_project_profile_ownership_not_automatically_rewritten: true
+        vpms_legacy_interfaces_are_transitional_access_paths_not_independent_engine_owners: true
+        legacy_vpms_contracts_and_profile_owners_remain_effective_until_verified_handoff: true
+        semantic_validation_owner_transition_requires_machine_verified_responsibility_reconciliation: true
+        new_engine_physical_paths_not_authorized_by_interface_migration_policy: true
+        legacy_vpms_retirement_requires_separate_explicit_user_authorization: true
+        validation_migration_must_respect_independent_common_management_responsibilities: true
+        official_engine_source_root_is_explicitly_approved: true
+        approved_source_root_name_does_not_define_semantic_authority: true
+        management_subdirectory_names_approved: false
+        concrete_nested_package_layout_approved: false
+        existing_modules_cannot_be_relocated_from_path_choice_alone: true
+        source_root_approval_does_not_activate_engine_draft: true
+        consumer_engine_state_root_remains_separate_from_executable_source: true
+        no_mandatory_parent_shared_management_runtime: true
+        engine_local_management_does_not_create_separate_engine_identity: true
+        each_engine_local_management_has_explicit_owner: true
+        each_engine_has_independent_versioned_dependency_and_build_patch_boundary: true
+        shared_implementation_requires_one_explicit_owner_and_declared_dependency: true
+        shared_code_reuse_cannot_force_joint_engine_update_without_contract_impact: true
+        engine_local_management_cannot_assume_active_external_authority: true
+        new_engine_registration_does_not_expand_mandatory_official_set: true
+        internal_layout_variable_depth_per_engine: true
+        engine_local_management_directory_name_is_not_lookup_authority: true
+        management_internal_name_and_depth_are_engine_owned_and_non_normative: true
+        engine_optional_management_functions_not_globally_mandatory: true
+        management_directory_rename_does_not_change_engine_identity_or_normative_contract: true
+        engine_module_and_management_ownership_remain_independent_of_file_names: true
+        no_common_engine_local_management_function_set_mandatory: true
+        external_interoperability_contract_does_not_imply_shared_compiled_management_code: true
+        engine_internal_management_functions_and_directory_names_are_engine_owned: true
+        engine_local_management_absence_does_not_invalidate_external_contract_when_no_management_operation_declared: true
+        declared_management_entrypoint_resolves_from_engine_identity_without_path_inference: true
+        engine_local_management_retains_independent_version_build_and_patch_boundaries: true
+        external_engine_static_contract_does_not_force_common_management_runtime: true
+        execution_entry_bindings_are_conditional_on_declared_externally_invocable_capabilities: true
+        engine_without_externally_invocable_capability_needs_no_execution_entry_binding: true
+        engine_independent_compile_build_distribution_and_patch_boundaries_remain_normative: true
+        engine_management_internal_entrypoints_not_inferred_from_directory_names: true
+        physical_paths_do_not_grant_external_invocation_authority: true
+        seven_official_engine_subdirectory_names_require_explicit_project_owner_policy_approval: true
+        seven_official_engine_subdirectory_name_values_not_automatically_derived_from_engine_kinds: true
+        implementation_and_plan_must_not_silently_choose_official_engine_subdirectory_names: true
+        official_engine_names_approval_does_not_imply_actual_directory_creation_or_module_migration: true
+        official_engine_directory_names_are_physical_labels_not_registered_engine_identity: true
+        engine_execution_entrypoint_resolution_remains_registered_contract_bound: true
+        common_engine_source_root_and_exact_official_engine_set_must_remain_unchanged: true
+        policy_approved_physical_names_must_not_force_user_external_engine_package_layout: true
+        naming_authority_decision_does_not_activate_draft_engine_runtime: true
+        context_engine_subdirectory_name_approved_by_owner: true
+        context_engine_approved_subdirectory_is_exactly_context: true
+        seven_engine_subdirectory_approval_cannot_be_inferred_from_one_engine_approval: true
+        management_subdirectory_and_remaining_module_names_unapproved: true
+        physical_package_layout_remains_unapproved: true
+        context_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation: true
+        context_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup: true
+        context_subdirectory_approval_does_not_change_ownership_of_context_source_or_projection_rules: true
+        context_subdirectory_approval_does_not_activate_engine_runtime: true
+        storage_engine_subdirectory_name_approved_by_owner: true
+        storage_engine_approved_subdirectory_is_exactly_storage: true
+        both_approved_context_and_storage_subdirectories_remain_distinct: true
+        storage_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation: true
+        storage_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup: true
+        storage_subdirectory_approval_does_not_reassign_storage_provider_or_data_ownership: true
+        storage_engine_contract_mediation_boundary_remains_separate_from_storage_provider_implementation: true
+        storage_subdirectory_approval_does_not_activate_engine_runtime: true
+        validation_engine_subdirectory_name_approved_by_owner: true
+        validation_engine_approved_subdirectory_is_exactly_validation: true
+        approved_context_storage_validation_subdirectories_are_distinct: true
+        validation_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation: true
+        validation_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup: true
+        validation_subdirectory_approval_does_not_transfer_active_vpms_or_validation_contract_authority: true
+        validation_subdirectory_approval_does_not_modify_existing_public_vpms_interfaces: true
+        validation_subdirectory_approval_does_not_retire_legacy_vpms_or_bypass_staged_migration: true
+        validation_subdirectory_approval_does_not_change_assure_normative_conformance_authority: true
+        validation_subdirectory_approval_does_not_activate_engine_runtime: true
+        discovery_engine_subdirectory_name_approved_by_owner: true
+        discovery_engine_approved_subdirectory_is_exactly_discovery: true
+        approved_context_storage_validation_discovery_subdirectories_are_distinct: true
+        discovery_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation: true
+        discovery_subdirectory_approval_does_not_change_registered_engine_identity_or_contract_lookup: true
+        discovery_subdirectory_approval_does_not_change_existing_semantic_or_execution_authorities: true
+        discovery_subdirectory_approval_does_not_modify_existing_public_interfaces: true
+        discovery_subdirectory_approval_does_not_activate_engine_runtime: true
+        seven_capability_subdirectory_names_approved: true
+        planning_engine_subdirectory_name_approved_by_owner: true
+        execution_engine_subdirectory_name_approved_by_owner: true
+        projection_engine_subdirectory_name_approved_by_owner: true
+        all_seven_official_engine_subdirectory_names_are_unique_and_owner_approved: true
+        no_official_engine_subdirectory_name_remains_unapproved: true
+        all_seven_directory_approvals_do_not_authorize_any_physical_creation_or_code_migration: true
+        all_seven_directory_approvals_do_not_activate_draft_engine_runtime: true
+        all_seven_directory_approvals_preserve_registered_contract_based_discovery: true
+        all_seven_directory_approvals_preserve_original_engine_responsibility_boundaries: true
+        user_or_external_engine_package_naming_remains_outside_official_engine_naming_policy: true
+        concrete_internal_layout_design_may_be_derived_by_plan_without_per_layout_policy_decision: true
+        internal_layout_plan_must_machine_verify_arch_and_cntr_contract_conformance: true
+        internal_layout_plan_must_machine_verify_explicit_single_owner_and_dependencies: true
+        internal_layout_plan_must_respect_independent_engine_version_build_deploy_patch_boundaries: true
+        internal_layout_plan_must_preserve_engine_local_management_ownership_and_optional_functions: true
+        internal_layout_plan_must_not_change_any_of_seven_approved_official_engine_names: true
+        internal_layout_plan_must_not_infer_identity_execution_authorization_or_entrypoints_from_directory_names: true
+        internal_layout_plan_must_not_reassign_context_projection_storage_or_validation_vpms_authorities: true
+        internal_layout_plan_cannot_approve_unresolved_active_authority_handoffs: true
+        internal_layout_plan_must_fail_closed_when_effective_responsibility_compatibility_not_proven: true
+        no_standardized_internal_directory_depth_or_management_subdirectory_forced: true
+        physical_layout_delegation_is_not_permission_to_create_directories_relocate_code_or_activate_runtime: true
+        plan_level_internal_path_selection_is_not_seven_official_directory_policy_change: true
+        approved_layout_authority_does_not_change_existing_active_policy_roles: true
+        official_rust_engines_must_not_relocate_copy_translate_reuse_or_share_existing_ptsip_python_implementations: true
+        official_rust_engines_must_not_depend_on_legacy_ptsip_python_runtime_or_wrappers: true
+        language_neutral_contract_reuse_does_not_allow_reuse_of_legacy_python_implementation: true
+        previous_active_public_interface_and_vpms_migration_boundaries_remain_in_force: true
+        product_internal_overlap_rust_engine_functional_owner_is_canonical_after_verified_handoff: true
+        consumer_project_component_lifecycle_ownership_not_reassigned_by_engine_functional_owner: true
+        existing_active_public_capability_contracts_remain_until_authorized_verified_transition: true
+        unverified_component_to_engine_mapping_cannot_activate_owner_transfer: true
+        projection_is_canonical_new_output_normative_owner_when_effective: true
+        legacy_context_output_format_parity_not_inherited_by_new_projection_after_authorized_versioned_transition: true
+        existing_context_public_api_remains_effective_until_separately_authorized_verified_transition: true
+        projection_authority_does_not_transfer_context_source_or_assure_conformance_authority: true
+        rust_validation_is_target_canonical_public_contract_owner_after_authorized_cutover: true
+        legacy_vpms_active_contracts_are_not_replaced_before_verified_authorized_transition: true
+        legacy_vpms_retirement_is_not_implicitly_approved_by_final_target_selection: true
+        legacy_vpms_implementation_reuse_permissibility_does_not_apply_to_seven_official_rust_engines: true
+        validation_public_contract_migration_must_preserve_assure_normative_verdict_ownership: true
+        rust_validation_capability_decomposition_must_not_be_inferred_from_legacy_vpms_module_layout: true
+        legacy_vpms_to_rust_validation_mapping_must_be_explicit_versioned_and_machine_verified: true
+        no_unverified_mapping_can_transfer_vpms_public_or_execution_authority: true
+        generic_validation_capability_must_not_infer_vpms_protocol_selection_execution_equivalence: true
+        rust_validation_must_not_reuse_move_port_or_wrap_legacy_vpms_python_implementation: true
+        seven_official_rust_engines_must_not_share_internal_source_crates_compiled_runtime_or_management_code: true
+        seven_official_rust_engine_implementations_and_optional_management_are_independently_owned: true
+        cross_engine_normative_machine_contract_use_does_not_create_implementation_sharing_permission: true
+        engine_management_owner_must_be_declared_and_verified_without_path_inference: true
+        existing_single_owner_sharing_invariants_apply_only_outside_this_official_rust_no_sharing_scope: true
+        management_external_capabilities_must_resolve_via_explicit_registered_engine_identity_version_and_capability_entrypoint: true
+        each_engine_may_group_multiple_management_capabilities_in_one_entrypoint_or_split_across_multiple: true
+        engine_without_declared_external_management_operations_requires_no_management_entrypoint: true
+        unknown_or_ambiguous_required_management_capability_binding_is_fail_closed: true
+        management_binding_does_not_grant_execution_activation_or_write_authority: true
+        management_entrypoint_layout_does_not_allow_cross_engine_rust_implementation_sharing: true
+        engine_interoperability_obligation_applies_independent_of_engine_origin_or_implementation_language: true
+        arch_scope_does_not_redefine_cntr_contract_semantics_or_static_required_dimensions: true
+        cntr_contract_shape_and_binding_obligations_are_resolved_through_explicit_policy_ref: true
+        external_interoperability_never_requires_cross_official_rust_implementation_sharing: true
+        static_contract_registration_never_grants_runtime_or_write_authority: true
+        no_externally_invocable_capability_needs_no_runtime_entrypoint: true
+      unresolved_decisions: []
+      activation_requirements:
+        owner_policy_directions_resolved: true
+        explicit_user_activation_approval_required: true
+        current_policy_index_schema_and_conflict_reconciliation_required: true
+        contract_design_implementation_work_not_policy_direction: TRACK_IN_APPROVED_WU_02
+        runtime_requires_contract_registry_owner_compatibility_and_permission_verification: true
+      out_of_scope:
+      - UNVERIFIED_RUNTIME_EXECUTION
+      - UNAPPROVED_PUBLIC_API_RETIREMENT
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      resolved_decisions:
+      - id: INTERNAL_HIERARCHY_PRINCIPLE
+        source_unresolved_id: INTERNAL_HIERARCHY_AND_PHYSICAL_PACKAGE_LAYOUT
+        selected_option: C_DECLARATION_BASED_VARIABLE_HIERARCHY
+        resolution_scope: HIERARCHY_PRINCIPLE_ONLY
+        remaining_unresolved_id: CONCRETE_PHYSICAL_PACKAGE_LAYOUT
+        approval_source: USER_EXPLICIT
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: STORAGE_ENGINE_SEMANTIC_RESPONSIBILITY_DIRECTION
+        selected_option: C_STORAGE_CONTRACT_MEDIATOR
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_CAPABILITY_OWNERSHIP_DIRECTION
+        physical_directory_names: NOT_DECIDED
+        existing_module_transfer: NOT_DECIDED
+        concrete_provider_mapping: NOT_DECIDED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: CONTEXT_PROJECTION_SEMANTIC_RESPONSIBILITY_DIRECTION
+        selected_option: B_PROJECTION_INDEPENDENT_OWNER
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_CONTEXT_AND_PROJECTION_RESPONSIBILITY_DIRECTION
+        context_source_semantics_owner: CONTEXT
+        output_formats_and_transformation_rules_owner: PROJECTION
+        current_active_policy_reconciliation: PENDING
+        physical_implementation_move: NOT_DECIDED
+        directory_names: NOT_DECIDED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: VALIDATION_ENGINE_AND_VPMS_SEMANTIC_CONVERGENCE
+        selected_option: SINGLE_VALIDATION_ENGINE_RESPONSIBILITY_VPMS_SUBSUMED
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_SEMANTIC_RESPONSIBILITY_DIRECTION_ONLY
+        actual_code_or_profile_reassignment: NOT_DECIDED
+        legacy_public_interface_retirement: NOT_DECIDED
+        existing_active_contract_transition: NOT_DECIDED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: VALIDATION_VPMS_PUBLIC_INTERFACE_MIGRATION_DIRECTION
+        selected_option: C_STAGED_MIGRATION
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_TRANSITION_DIRECTION_ONLY
+        new_engine_api_or_directory: NOT_DECIDED
+        old_contract_retirement: SEPARATE_APPROVAL_REQUIRED
+        transition_plan_ref: developer/planning/migrations/validation-vpms-staged-handoff.yaml
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: ENGINE_UPPER_DIRECTORY_NAME
+        selected_option: B_SRC_PTSIP_ENGINES
+        approved_path: src/ptsip/engines/
+        approval_source: USER_EXPLICIT
+        resolution_scope: OFFICIAL_ENGINE_TOP_LEVEL_SOURCE_DIRECTORY_ONLY
+        management_subdirectories: NOT_DECIDED
+        seven_capability_subdirectories: NOT_DECIDED
+        nested_layout: NOT_DECIDED
+        physical_directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: ENGINE_LOCAL_MANAGEMENT_CONFLICT_RESOLUTION
+        selection: KEEP_LATEST
+        approval_source: USER_EXPLICIT
+        conflicting_prior_at_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        prior_rule: P4_COMMON_MANAGEMENT_FUNCTION_OWNER
+        replacement: EACH_ENGINE_OWNS_LOCAL_MANAGEMENT_AND_RULES
+        P5: PRESERVE_SINGLE_OWNER_FOR_ACTUALLY_SHARED_IMPLEMENTATION
+        P6: RETAIN_CONTRACT_INDEPENDENCE_WITH_PER_ENGINE_BUILD_DEPLOY_PATCH
+        P8: RETAIN_DECLARATION_BASED_VARIABLE_DEPTH
+        exact_directory_names: NOT_DECIDED
+        activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: INDEPENDENT_ENGINE_MODULE_LAYOUT_DIRECTION
+        selected_option: D_INDEPENDENT_ENGINE_MODULES_WITH_INTERNAL_MANAGEMENT
+        approval_source: USER_EXPLICIT
+        source_root: src/ptsip/engines/
+        scope: ARCHITECTURAL_DIRECTION_ONLY
+        physical_creation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: ENGINE_LOCAL_MANAGEMENT_NAMING_AND_FUNCTION_MODEL
+        selected_options:
+        - C_MACHINE_DISCOVERABLE_UNRESTRICTED_ENGINE_LOCAL_NAMES
+        - B_MINIMUM_COMMON_RESPONSIBILITIES_OPTIONAL_EXTENSIONS
+        approval_source: USER_EXPLICIT
+        resolution_scope: ENGINE_LOCAL_MANAGEMENT_DIRECTION_ONLY
+        fixed_management_directory_name: NOT_REQUIRED
+        entrypoint_resolution: ENGINE_IDENTITY_TO_DECLARED_MANAGEMENT_ENTRYPOINT
+        minimum_responsibilities_exact_set: UNRESOLVED_CONTRACT_DESIGN
+        actual_directory_creation: NOT_AUTHORIZED
+        activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: ENGINE_COMMON_MANAGEMENT_MINIMUM_REQUIREMENT_REPLACEMENT
+        selected_option: B_DROP_COMMON_MANAGEMENT_MINIMUM_RETAIN_EXTERNAL_INTEROPERABILITY
+        approval_source: USER_EXPLICIT
+        resolution_scope: REPLACES_INTERNAL_MANAGEMENT_MANDATE_ONLY
+        conflicting_prior_decision_id: ENGINE_LOCAL_MANAGEMENT_NAMING_AND_FUNCTION_MODEL
+        conflicting_prior_selection: B_MINIMUM_COMMON_RESPONSIBILITIES_OPTIONAL_EXTENSIONS
+        replaces_rule: MINIMUM_COMMON_RESPONSIBILITY_WITH_OPTIONAL_ENGINE_OWNED_EXTENSIONS
+        preserved_decisions:
+        - C_MACHINE_DISCOVERABLE_UNRESTRICTED_ENGINE_LOCAL_NAMES
+        - COMMON_IDENTITY_CONTRACT_WITH_PER_ENGINE_EXTENSIONS
+        - DECLARED_DEPENDENCY_GRAPH_AND_CONTRACT_COMPATIBILITY_ANALYSIS
+        - INDEPENDENT_ENGINE_VERSION_DEPENDENCY_BUILD_DEPLOYMENT_PATCH
+        exact_interoperability_shape: NOT_DECIDED
+        physical_directory_creation: NOT_AUTHORIZED
+        activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: ENGINE_EXTERNAL_INTEROPERABILITY_UPPER_SCOPE
+        selected_option: B_STATIC_DECLARATION_PLUS_CONDITIONAL_EXECUTION_BINDING
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_INTEROPERABILITY_BOUNDARY_ONLY
+        required_static_declaration: MACHINE_READABLE_EXTERNAL_INTEROPERABILITY
+        conditional_runtime_binding: ONLY_WHEN_EXTERNALLY_INVOCABLE_CAPABILITY_DECLARED
+        no_forced_global_engine_execution_interface: true
+        no_common_management_implementation_required: true
+        engine_source_path: src/ptsip/engines/
+        exact_schema: NOT_DECIDED
+        actual_binding_mechanism: NOT_DECIDED
+        active_transition: NOT_AUTHORIZED
+        physical_implementation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMING_AUTHORITY
+        selected_option: B_POLICY_LEVEL_PROJECT_OWNER_APPROVAL
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: APPROVAL_AUTHORITY_ONLY_NOT_NAME_VALUES
+        affected_official_engine_kinds:
+        - CONTEXT
+        - STORAGE
+        - VALIDATION
+        - DISCOVERY
+        - PLANNING
+        - EXECUTION
+        - PROJECTION
+        approved_common_source_root: src/ptsip/engines/
+        exact_seven_subdirectory_names: PENDING_SEPARATE_PROJECT_OWNER_DECISION
+        unresolved_name_values_ref: SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES
+        generic_plan_implementation_name_selection: NOT_AUTHORIZED
+        registered_identity_and_declared_entrypoint_binding: PRESERVED_PATH_NAME_AGNOSTIC
+        physical_creation_and_existing_module_migration: NOT_AUTHORIZED
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_CONTEXT_ENGINE_SUBDIRECTORY_NAME
+        selected_option: A_CONTEXT_DIRECTORY
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: CONTEXT_ENGINE_NAME_VALUE_ONLY
+        official_engine_kind: CONTEXT
+        approved_subdirectory: context/
+        approved_parent_source_root: src/ptsip/engines/
+        planned_path_not_materialized: src/ptsip/engines/context/
+        other_six_official_engine_names: UNRESOLVED_SEPARATE_POLICY_APPROVAL
+        physical_package_layout: UNRESOLVED
+        directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        machine_lookup: REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_STORAGE_ENGINE_SUBDIRECTORY_NAME
+        selected_option: A_STORAGE_DIRECTORY
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: STORAGE_ENGINE_NAME_VALUE_ONLY
+        official_engine_kind: STORAGE
+        approved_subdirectory: storage/
+        approved_parent_source_root: src/ptsip/engines/
+        planned_path_not_materialized: src/ptsip/engines/storage/
+        previously_approved_context_subdirectory: context/
+        other_five_official_engine_names: UNRESOLVED_SEPARATE_POLICY_APPROVAL
+        physical_package_layout: UNRESOLVED
+        storage_provider_and_data_ownership: INDEPENDENT_UNCHANGED
+        directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        machine_lookup: REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_VALIDATION_ENGINE_SUBDIRECTORY_NAME
+        selected_option: A_VALIDATION_DIRECTORY
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: VALIDATION_ENGINE_NAME_VALUE_ONLY
+        official_engine_kind: VALIDATION
+        approved_subdirectory: validation/
+        approved_parent_source_root: src/ptsip/engines/
+        planned_path_not_materialized: src/ptsip/engines/validation/
+        previously_approved_names:
+          CONTEXT: context/
+          STORAGE: storage/
+        other_four_official_engine_names: UNRESOLVED_SEPARATE_POLICY_APPROVAL
+        physical_package_layout: UNRESOLVED
+        existing_validation_and_vpms_active_authority: UNCHANGED
+        existing_validation_and_vpms_public_interfaces: UNCHANGED
+        existing_staged_vpms_transition: UNCHANGED
+        directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        machine_lookup: REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_DISCOVERY_ENGINE_SUBDIRECTORY_NAME
+        selected_option: A_DISCOVERY_DIRECTORY
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: DISCOVERY_ENGINE_NAME_VALUE_ONLY
+        official_engine_kind: DISCOVERY
+        approved_subdirectory: discovery/
+        approved_parent_source_root: src/ptsip/engines/
+        planned_path_not_materialized: src/ptsip/engines/discovery/
+        previously_approved_names:
+          CONTEXT: context/
+          STORAGE: storage/
+          VALIDATION: validation/
+        other_three_official_engine_names: UNRESOLVED_SEPARATE_POLICY_APPROVAL
+        physical_package_layout: UNRESOLVED
+        active_authority_and_public_interfaces: UNCHANGED
+        directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        machine_lookup: REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_PLANNING_ENGINE_SUBDIRECTORY_NAME
+        selected_option: OWNER_EXPLICIT_PLANNING_DIRECTORY
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: PLANNING_ENGINE_NAME_VALUE_ONLY
+        official_engine_kind: PLANNING
+        approved_subdirectory: planning/
+        approved_parent_source_root: src/ptsip/engines/
+        planned_path_not_materialized: src/ptsip/engines/planning/
+        concrete_internal_package_layout: UNRESOLVED
+        directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        machine_lookup: REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_EXECUTION_ENGINE_SUBDIRECTORY_NAME
+        selected_option: OWNER_EXPLICIT_EXECUTION_DIRECTORY
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: EXECUTION_ENGINE_NAME_VALUE_ONLY
+        official_engine_kind: EXECUTION
+        approved_subdirectory: execution/
+        approved_parent_source_root: src/ptsip/engines/
+        planned_path_not_materialized: src/ptsip/engines/execution/
+        concrete_internal_package_layout: UNRESOLVED
+        directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        machine_lookup: REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_PROJECTION_ENGINE_SUBDIRECTORY_NAME
+        selected_option: OWNER_EXPLICIT_PROJECTION_DIRECTORY
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: PROJECTION_ENGINE_NAME_VALUE_ONLY
+        official_engine_kind: PROJECTION
+        approved_subdirectory: projection/
+        approved_parent_source_root: src/ptsip/engines/
+        planned_path_not_materialized: src/ptsip/engines/projection/
+        concrete_internal_package_layout: UNRESOLVED
+        directory_creation: NOT_AUTHORIZED
+        existing_module_migration: NOT_AUTHORIZED
+        machine_lookup: REGISTERED_ENGINE_IDENTITY_TO_DECLARED_ENTRYPOINT_NOT_DIRECTORY_NAME
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAMES_COMPLETE
+        selected_option: SEVEN_USER_APPROVED_PHYSICAL_TOP_LEVEL_ENGINE_LABELS
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: ALL_SEVEN_OFFICIAL_ENGINE_SUBDIRECTORY_NAME_VALUES_ONLY
+        source_root: src/ptsip/engines/
+        approved_name_map:
+          CONTEXT: context/
+          STORAGE: storage/
+          VALIDATION: validation/
+          DISCOVERY: discovery/
+          PLANNING: planning/
+          EXECUTION: execution/
+          PROJECTION: projection/
+        unapproved_name_values: []
+        names_do_not_create_semantic_execution_or_discovery_authority: true
+        detailed_internal_package_layout: UNRESOLVED_CONCRETE_PHYSICAL_PACKAGE_LAYOUT
+        physical_directories_or_module_migration: NOT_AUTHORIZED
+        current_policy_state: DRAFT_ONLY
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: CONCRETE_PHYSICAL_PACKAGE_LAYOUT_AUTHORITY
+        source_unresolved_id: CONCRETE_PHYSICAL_PACKAGE_LAYOUT
+        selected_option: A_PLAN_DERIVED_MACHINE_VERIFIED_INTERNAL_LAYOUT
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: DECISION_AUTHORITY_ONLY_NOT_PHYSICAL_LAYOUT_VALUES
+        policy_fixed_root: src/ptsip/engines/
+        policy_fixed_seven_official_names:
+          CONTEXT: context/
+          STORAGE: storage/
+          VALIDATION: validation/
+          DISCOVERY: discovery/
+          PLANNING: planning/
+          EXECUTION: execution/
+          PROJECTION: projection/
+        internal_layout_design: PLAN_AND_MACHINE_CONTRACT
+        constraints: ALL_EFFECTIVE_ARCH_CNTR_AND_DECLARED_RESPONSIBILITY_BOUNDARIES
+        actual_layout_or_directory_materialization: NOT_APPROVED_BY_THIS_DECISION
+        code_migration: NOT_APPROVED_BY_THIS_DECISION
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: OFFICIAL_ENGINE_IMPLEMENTATION_LANGUAGE
+        selected_option: RUST
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        resolution_scope: SEVEN_OFFICIAL_ENGINE_IMPLEMENTATIONS_ONLY
+        machine_contract_language: LANGUAGE_NEUTRAL_UNCHANGED
+        consumer_and_external_engine_languages: UNCHANGED
+        existing_module_move_reuse_and_shared_implementation_policy: UNRESOLVED_SEPARATE_DECISION
+        policy_status: DRAFT_UNCHANGED
+        implementation_authorization: NOT_GRANTED
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: LEGACY_PYTHON_MODULE_MOVE_REUSE_SHARING_POLICY
+        source_unresolved_id: EXISTING_MODULE_DIRECT_MOVE_OR_REUSE_MAPPING
+        selected_option: FORBID_ALL_LEGACY_PYTHON_IMPLEMENTATION_MOVE_REUSE_SHARING
+        decision_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        conflicting_prior_policy: SFP-ARCH-0004
+        conflicting_prior_at_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        conflicting_prior_rule: EXPLICIT_SINGLE_OWNER_SHARING_AND_FLEXIBLE_IMPLEMENTATION_REUSE_PERMITTED
+        scope_of_override: SEVEN_OFFICIAL_RUST_ENGINES_REUSING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION_ONLY
+        resolution: KEEP_LATEST_SCOPED_LEGACY_PROHIBITION
+        prior_permission_outside_target_scope: PRESERVED
+        mapping_resolution: NO_LEGACY_PYTHON_MODULE_MOVE_OR_REUSE_MAPPING_REQUIRED
+        remaining_component_and_capability_ownership_reconciliation: PRESERVED_UNRESOLVED
+        language_neutral_contracts: PRESERVED
+        active_policy: UNCHANGED
+        policy_status: DRAFT_UNCHANGED
+        implementation_and_runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: CURRENT_DECLARED_COMPONENT_BOUNDARY_RECONCILIATION
+        kind: USER_POLICY_DECISION
+        status: RESOLVED_POLICY_DIRECTION
+        selected_option: KEEP_LATEST
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        prior_authority_policy: SFP-ARCH-0001
+        prior_authority_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        active_policy_head_unchanged: true
+        new_rule_ref: authority_semantics.unit_ptsip_engine_draft.approved_decisions.current_declared_component_boundary_reconciliation
+        implementation_mapping_proof: PENDING
+        affected_engine_capability_handoff: BLOCKED_UNTIL_VERIFIED_AND_AUTHORIZED
+        existing_active_context_projection_vpms_and_public_contracts: UNAFFECTED_PENDING_SEPARATE_ITEMS
+        original_activation_gate: KEEP_PRIOR_PRESERVED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: CONTEXT_PROJECTION_ACTIVE_AUTHORITY_AND_CURRENT_IMPLEMENTATION_RECONCILIATION
+        kind: USER_POLICY_DECISION
+        status: RESOLVED_POLICY_DIRECTION
+        selected_option: KEEP_LATEST
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        existing_active_conflict_policy: SFP-CNTR-0001
+        existing_active_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        existing_active_scope: CONTEXT_PLANE_MIGRATION_REPAIR_PUBLIC_CONTRACT
+        replacement: PROJECTION_NORMATIVE_OUTPUT_SCHEMA_FORMAT_TRANSFORMATION_OWNERSHIP
+        legacy_public_api_contract: UNCHANGED_PENDING_VERSIONED_AUTHORIZED_HANDOFF
+        exact_contract_handoff: REMAINS_UNRESOLVED_IN_SFP_CNTR_0005
+        separate_new_engine_runtime_activation: NOT_AUTHORIZED
+        original_KEEP_PRIOR_gate: PRESERVED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: VALIDATION_VPMS_ACTIVE_CONTRACT_AND_PUBLIC_COMPATIBILITY_RECONCILIATION
+        kind: USER_POLICY_DECISION
+        status: RESOLVED_POLICY_DIRECTION
+        selected_option: KEEP_LATEST
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        prior_active_contracts:
+        - urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b
+        - urn:uuid:e6707543-f052-4035-bb86-166701e06362
+        - urn:uuid:32058048-9342-4514-9754-2a4b25a79b06
+        prior_active_contract_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        canonical_target: OFFICIAL_RUST_VALIDATION_LANGUAGE_NEUTRAL_PUBLIC_CONTRACT
+        existing_public_compatibility: TRANSITIONAL_WITH_MACHINE_VERIFIED_VERSIONED_HANDOFF
+        future_legacy_retirement: REQUIRES_SEPARATE_EXPLICIT_OWNER_APPROVAL
+        existing_legacy_retirement: NOT_AUTHORIZED_NOW
+        remaining_mapping: VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING
+        remaining_contract_design: SFP-CNTR-0005#VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE
+        draft_status_and_KEEP_PRIOR_gate: PRESERVED
+        implementation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: VALIDATION_VPMS_LEGACY_COMPONENT_AND_GENERIC_VALIDATOR_MAPPING
+        kind: USER_POLICY_DECISION
+        status: RESOLVED_POLICY_DIRECTION
+        selected_option: C_INDEPENDENT_RUST_VALIDATION_WITH_EXPLICIT_CONTRACT_MAPPING
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        prior_active_vpms_contracts:
+        - urn:uuid:2450027a-191a-4378-82de-6cdbd3a5f79b
+        - urn:uuid:e6707543-f052-4035-bb86-166701e06362
+        - urn:uuid:32058048-9342-4514-9754-2a4b25a79b06
+        prior_active_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        canonical_owner: OFFICIAL_RUST_VALIDATION_ENGINE_AFTER_VERIFIED_AUTHORIZED_HANDOFF
+        exact_capability_map: PENDING_MACHINE_CONTRACT_AND_RESPONSIBILITY_EVIDENCE
+        old_contracts: ACTIVE_UNCHANGED
+        original_KEEP_PRIOR_gate: PRESERVED
+        separate_legacy_retirement_approval: REQUIRED
+        physical_implementation: NOT_AUTHORIZED
+        runtime_activation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP
+        kind: USER_POLICY_DECISION
+        status: RESOLVED_POLICY_DIRECTION
+        selected_option: KEEP_LATEST
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        prior_policy: SFP-ARCH-0004
+        prior_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        prior_rule: EXPLICIT_SINGLE_OWNER_SHARING
+        replacement_rule: NO_CROSS_OFFICIAL_RUST_ENGINE_IMPLEMENTATION_SHARING
+        conflicting_sharing_permission: REPLACED_WITHIN_SEVEN_OFFICIAL_RUST_ENGINE_SCOPE_ONLY
+        conditional_single_owner_sharing_rules: NOT_APPLICABLE_WITHIN_SEVEN_OFFICIAL_RUST_ENGINE_SCOPE
+        runtime_and_source_module_shared_dependencies: FORBIDDEN_BETWEEN_OFFICIAL_RUST_ENGINES
+        external_machine_contract_interoperability: PRESERVED
+        concrete_engine_management_implementation_map: PLAN_AND_MACHINE_VERIFICATION_ONLY
+        exact_management_entrypoint_binding: REMAINS_SEPARATE_UNRESOLVED_POLICY_ITEM
+        existing_ACTIVE_policies: UNCHANGED
+        draft_keeping_prior_gate: PRESERVED
+        implementation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: ENGINE_LOCAL_MANAGEMENT_ENTRYPOINT_DECLARATION_BINDING
+        kind: USER_POLICY_DECISION
+        status: RESOLVED_POLICY_DIRECTION
+        selected_option: C_FLEXIBLE_ENGINE_MANAGEMENT_ENTRYPOINT_EXPLICIT_CAPABILITY_MAPPING
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        current_active_authority: SFP-ARCH-0001
+        prior_active_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        prior_draft_management_direction: REGISTERED_IDENTITY_TO_DECLARED_ENTRYPOINT_NO_NAME_INFERENCE
+        responsibility_scope: ENTRYPOINT_CARDINALITY_AND_EXTERNAL_MANAGEMENT_CAPABILITY_BINDING
+        selected_mapping_rule_ref: authority_semantics.unit_ptsip_engine_draft.approved_decisions.engine_local_management_entrypoint_capability_mapping
+        existing_registry_and_permission_gates: PRESERVED
+        exact_contract_schema: UNRESOLVED_SFP_CNTR_0005
+        remaining_arch_item: ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY
+        keep_prior_activation_gate: PRESERVED
+        implementation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      - id: ENGINE_MINIMUM_EXTERNAL_INTEROPERABILITY_CONTRACT_BOUNDARY
+        kind: USER_POLICY_DECISION
+        status: RESOLVED_POLICY_DIRECTION
+        selected_option: C_ARCH_APPLICATION_CNTR_CONTRACT_SEMANTICS
+        approval_source: USER_EXPLICIT
+        decision_date: '2026-10-11'
+        prior_active_arch: SFP-ARCH-0001
+        prior_active_cntr: SFP-CNTR-0001
+        comparison_base_revision: 394dae3ef484323da7e884d6f193b20d61db6500
+        split_rule_ref: authority_semantics.unit_ptsip_engine_draft.approved_decisions.engine_external_interoperability_authority_split
+        cntr_contract_policy: SFP-CNTR-0005
+        cntr_exact_machine_contract_shape: REMAINS_UNRESOLVED
+        verified_responsibility_mapping: REQUIRED_BEFORE_ACTIVE
+        schema_registry_machine_validation: REQUIRED_BEFORE_ACTIVE
+        independent_user_active_approval: REQUIRED
+        active_policy_mutation: NOT_AUTHORIZED
+        engine_implementation: NOT_AUTHORIZED
+        record_role: HISTORICAL_DIRECTION_DECISION_NOT_CURRENT_ACTIVATION_GATE
+      dependent_plans:
+      - id: VALIDATION_VPMS_STAGED_HANDOFF
+        path: developer/planning/migrations/validation-vpms-staged-handoff.yaml
+        status: DRAFT
+        authority: PLAN_NOT_POLICY
+      - id: SFP-ARCH-0004-CNTR-0005-OFFICIAL-ENGINE-ACTIVATION-READINESS
+        path: developer/planning/migrations/SFP-ARCH-0004-CNTR-0005-official-engine-readiness.yaml
+        status: ACTIVE
+        authority: PLAN_NOT_POLICY
+      physical_package_layout_decision_boundary:
+        policy_subject: OFFICIAL_ENGINE_INTERNAL_PHYSICAL_PACKAGE_LAYOUT_DECISION_AUTHORITY
+        selected_option: A_POLICY_CONSTRAINED_PLAN_WITH_MACHINE_VALIDATION
+        explicit_owner_policy_preserves:
+          official_source_root: src/ptsip/engines/
+          official_directory_names:
+            CONTEXT: context/
+            STORAGE: storage/
+            VALIDATION: validation/
+            DISCOVERY: discovery/
+            PLANNING: planning/
+            EXECUTION: execution/
+            PROJECTION: projection/
+          official_engine_kinds:
+          - CONTEXT
+          - STORAGE
+          - VALIDATION
+          - DISCOVERY
+          - PLANNING
+          - EXECUTION
+          - PROJECTION
+        internal_package_layout_owner: PLAN
+        applicable_policy_constraints:
+        - ARCH
+        - CNTR
+        - REGISTERED_ENGINE_RESPONSIBILITY_MAP
+        - ALL_EFFECTIVE_DEPENDENT_AUTHORITIES
+        machine_validation_required: true
+        per_engine_variable_hierarchy_and_management_optional: true
+        explicit_single_owner_mapping_required: true
+        independent_engine_version_dependency_build_deploy_patch: true
+        registered_identity_and_entrypoint_binding: NOT_DERIVED_FROM_DIRECTORY_NAME
+        unresolved_active_authority_reconciliation: MUST_NOT_BE_ASSUMED
+        actual_internal_module_paths_and_serialization: UNSPECIFIED_PLAN
+        directory_creation_or_code_move: APPROVED_PLAN_NEW_RUST_MATERIALIZATION_ONLY_NO_LEGACY_CODE_MOVE
+        policy_status: ACTIVE_REGISTERED_RUNTIME_GATES_REQUIRED
+      activation_conflict_resolution:
+        decision: RECONCILE
+        decision_source: USER_EXPLICIT
+        decision_date: '2026-10-12'
+        approval_ref: developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml
+        prior_KEEP_PRIOR_decision: HISTORICAL_SUPERSEDED_FOR_NORMATIVE_POLICY_ACTIVATION_AND_PLAN_IMPLEMENTATION_ONLY
+        base_policy: SFP-ARCH-0001
+        state_schema_owner: SFP-CNTR-0005
+        engine_architecture_owner: SFP-ARCH-0004
+        runtime_execution: CURRENT_VERIFIED_REGISTERED_BINDING_AND_EXPLICIT_GOV_CTRL_AUTHORIZATION
+        plan_creation_authorized: true
+        physical_engine_creation_authorized: APPROVED_PLAN_AND_MACHINE_VERIFICATION_REQUIRED
+        public_api_retirement_authorized: false
+      policy_activation:
+        status: ACTIVE
+        approval_source: USER_EXPLICIT
+        approved_at: '2026-10-12'
+        approval_ref: developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml
+        scope: NORMATIVE_POLICY_AND_APPROVED_PLAN_IMPLEMENTATION
+        runtime_gate: CURRENT_REGISTERED_CONTRACT_BINDING_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+        public_api_retirement: SEPARATE_APPROVAL_REQUIRED
+      ptsip_repository_python_path_reconciliation_2026_10_30:
+        decision: RECONCILE
+        decision_source: PROJECT_OWNER_EXPLICIT
+        approved_at: '2026-10-30'
+        application_scope: THIS_PTSIP_REPOSITORY_PYTHON_PATH_MIGRATION_AND_VPMS_PUBLIC_INTERFACE
+        applies_to_consumer_projects: false
+        compared_prior_policy_revision: f766a04c805d6f0a501e1f0fbf9cfb2d75bfc367
+        preserved_existing_rule: LEGACY_VPMS_CONTRACTS_AND_PUBLIC_INTERFACE_PRESERVED_UNTIL_SEPARATELY_AUTHORIZED_MACHINE_VERIFIED_HANDOFF
+        approved_target: VERIFIED_NEW_PATH_CUTOVER_WITHOUT_PERMANENT_OLD_PATH_COMPATIBILITY_SHIM
+        transition_preconditions:
+        - EXACT_RESPONSIBILITY_OWNER_AND_CONSUMER_CALLSITE_MAPPING_VERIFIED
+        - RUST_VALIDATION_VPMS_CAPABILITY_RELATIONS_AND_BEHAVIOR_PARITY_VERIFIED_WHEN_APPLICABLE
+        - PUBLIC_ENTRYPOINT_IMPORT_AND_CONTRACT_COMPATIBILITY_VERIFIED
+        - VERSIONED_HANDOFF_AND_RELEVANT_POLICY_CONTROL_GATES_SATISFIED
+        - EXACT_AFFECTED_PUBLIC_API_RETIREMENT_SCOPE_APPROVED_AND_VERIFIED
+        pre_cutover_state: EXISTING_PUBLIC_INTERFACES_REMAIN_EFFECTIVE
+        after_scoped_cutover: NO_PERMANENT_LEGACY_COMPATIBILITY_SHIM_FOR_VERIFIED_RETIRED_SCOPE
+        unresolved_new_python_paths: PLAN_DERIVED_NO_INFERRED_DIRECTORY_NAMES
+        unresolved_file_deletions: NOT_AUTHORIZED
+        unverified_scope: KEEP_PRIOR_NO_CUTOVER
+        implementation_and_runtime_activation: NOT_AUTHORIZED_BY_THIS_DIRECTION
+        unrelated_engine_boundaries: PRESERVED
+      implementation_admission:
+        approval_source: USER_EXPLICIT
+        approval_ref: developer/policy/approvals/MPA-20261012-OFFICIAL-ENGINE-ACTIVATION.yaml
+        plan_ref: developer/planning/0.3.8/WU-02/WU-02.yaml
+        source_scope: src/ptsip/engines/
+        language: RUST
+        legacy_python_implementation: FORBIDDEN
+        cross_official_engine_implementation_sharing: FORBIDDEN
+        source_and_module_materialization: AUTHORIZED_BY_APPROVED_PLAN
+        precedence: REPLACES_PRIOR_DIRECTION_ONLY_IMPLEMENTATION_NOT_AUTHORIZED_FIELDS_WITHIN_THIS_SOURCE_SCOPE
+        does_not_override:
+        - CONSUMER_PROJECT_OWNERSHIP
+        - GOV_CTRL_ACTION_TIME_PERMISSION
+        - ASSURE_CONFORMANCE_AUTHORITY
+        - EXISTING_PUBLIC_API_RETIREMENT_GATES
+        - EXTERNAL_INSTALLATION_RESTRICTIONS
+  - id: SRC-0013
+    source_pointer: /authority_semantics/unit_unified_policy_contract_reform
+    value:
+      decision_source: PROJECT_OWNER_EXPLICIT
+      decision_date: '2026-11-07'
+      approved_direction:
+        statement: KEEP_LATEST unifies Developer and Support Feature policy documents under one machine contract family while
+          retaining each plane and Family normative responsibility.
+        source: PROJECT_OWNER_EXPLICIT
+        date: '2026-11-07'
+        conflict_resolution: KEEP_LATEST
+        document_structure: UNIFIED
+        scope:
+        - PTSIP_DEVELOPER_POLICY
+        - PTSIP_SUPPORT_FEATURE
+        existing_seven_engines: INDEPENDENT
+        policy_evaluation_engine: SEPARATE_RESPONSIBILITY
+        rule_binding: DIRECT_PER_RULE
+        runtime_activation_authorized: false
+      source_ref:
+        source_ref: .ptsip/contracts/policy/unified/authoring-decision.json
+        item_ref: /decisions/architecture
+        revision_ref: sha256:70cbe2f5fda248c2865e6e604704e0ae5480e1e8183c17f640c66a2cabaa5241
+  - id: SRC-0014
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends:
+      - policy: SFP-ARCH-0001
+        scope: ENGINE_STATE_SCHEMA_AND_RUNTIME_DEFERRED_RECONCILIATION_ONLY
+      extends: []
+      depends_on:
+      - policy: SFP-ARCH-0001
+        scope: PRESERVED_CONSUMER_PROJECT_OWNERSHIP
+      - policy: SFP-CNTR-0005
+        scope: ENGINE_EXTERNAL_INTEROPERABILITY_MACHINE_CONTRACT_AUTHORITY
+  source_document:
+    path: src/policy/ARCH/SFP-ARCH-0004.yaml
+    sha256: 90d6fb0081949351f3ee84e8836fd5dcb4ae7a92521c883b56dea4bcd94cf875
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

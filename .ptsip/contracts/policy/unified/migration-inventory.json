@@ -1,0 +1,2749 @@
+{
+  "format": "ptsip-unified-policy-migration-inventory/v1",
+  "baseline_head": "7420848b01747e937b400e6647020b122ed3bf51",
+  "schema_version": "ptsip-unified-policy/v3-candidate",
+  "contract_state": "CANDIDATE",
+  "scope": {
+    "planes": [
+      "PTSIP_DEVELOPER_POLICY",
+      "PTSIP_SUPPORT_FEATURE"
+    ],
+    "families": [
+      "ARCH",
+      "ASSURE",
+      "CHANGE",
+      "CNTR",
+      "CTRL",
+      "GOV",
+      "INFO",
+      "INTENT",
+      "NORM",
+      "OPS",
+      "REAL",
+      "RECORD",
+      "RISK",
+      "SUPPLY"
+    ],
+    "family_directories": 28
+  },
+  "summary": {
+    "policy_documents": 110,
+    "changed_documents": 110,
+    "auxiliary_documents": 1,
+    "PTSIP_DEVELOPER_POLICY": 65,
+    "rules": 1090,
+    "source_items": 1931,
+    "INDEXED": 99,
+    "UNINDEXED": 11,
+    "PTSIP_SUPPORT_FEATURE": 45
+  },
+  "contract_binding_states": {
+    "UNRESOLVED": 3270
+  },
+  "rule_kinds": {
+    "RULE": 284,
+    "REQUIREMENT": 226,
+    "SEMANTIC_UNIT": 580
+  },
+  "families": [
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "policy_documents": 14,
+      "converted": 14,
+      "RULE": 53,
+      "REQUIREMENT": 114
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ASSURE",
+      "policy_documents": 5,
+      "converted": 5,
+      "SEMANTIC_UNIT": 19,
+      "RULE": 12,
+      "REQUIREMENT": 8
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "policy_documents": 7,
+      "converted": 7,
+      "RULE": 12,
+      "REQUIREMENT": 38
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CNTR",
+      "policy_documents": 6,
+      "converted": 6,
+      "RULE": 8,
+      "SEMANTIC_UNIT": 25
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CTRL",
+      "policy_documents": 2,
+      "converted": 2,
+      "SEMANTIC_UNIT": 21,
+      "RULE": 2
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "GOV",
+      "policy_documents": 4,
+      "converted": 4,
+      "RULE": 80,
+      "REQUIREMENT": 34
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INFO",
+      "policy_documents": 6,
+      "converted": 6,
+      "SEMANTIC_UNIT": 70,
+      "RULE": 6
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INTENT",
+      "policy_documents": 2,
+      "converted": 2,
+      "SEMANTIC_UNIT": 6,
+      "RULE": 2
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "NORM",
+      "policy_documents": 2,
+      "converted": 2,
+      "RULE": 2,
+      "SEMANTIC_UNIT": 8
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "OPS",
+      "policy_documents": 2,
+      "converted": 2,
+      "RULE": 2,
+      "SEMANTIC_UNIT": 2
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "policy_documents": 7,
+      "converted": 7,
+      "RULE": 12,
+      "SEMANTIC_UNIT": 12
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RECORD",
+      "policy_documents": 4,
+      "converted": 4,
+      "RULE": 4,
+      "REQUIREMENT": 27
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RISK",
+      "policy_documents": 2,
+      "converted": 2,
+      "RULE": 2
+    },
+    {
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "SUPPLY",
+      "policy_documents": 2,
+      "converted": 2,
+      "RULE": 2
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ARCH",
+      "policy_documents": 5,
+      "converted": 5,
+      "RULE": 8,
+      "SEMANTIC_UNIT": 44
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ASSURE",
+      "policy_documents": 5,
+      "converted": 5,
+      "RULE": 10,
+      "SEMANTIC_UNIT": 24
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CHANGE",
+      "policy_documents": 1,
+      "converted": 1,
+      "RULE": 2,
+      "SEMANTIC_UNIT": 75
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "policy_documents": 8,
+      "converted": 8,
+      "RULE": 14,
+      "SEMANTIC_UNIT": 75
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CTRL",
+      "policy_documents": 3,
+      "converted": 3,
+      "RULE": 6,
+      "SEMANTIC_UNIT": 47
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "GOV",
+      "policy_documents": 2,
+      "converted": 2,
+      "RULE": 7,
+      "SEMANTIC_UNIT": 14,
+      "REQUIREMENT": 5
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "policy_documents": 9,
+      "converted": 9,
+      "RULE": 14,
+      "SEMANTIC_UNIT": 100
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INTENT",
+      "policy_documents": 1,
+      "converted": 1,
+      "RULE": 2,
+      "SEMANTIC_UNIT": 1
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "NORM",
+      "policy_documents": 2,
+      "converted": 2,
+      "RULE": 4,
+      "SEMANTIC_UNIT": 11
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "OPS",
+      "policy_documents": 2,
+      "converted": 2,
+      "RULE": 4,
+      "SEMANTIC_UNIT": 4
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "REAL",
+      "policy_documents": 1,
+      "converted": 1,
+      "RULE": 2,
+      "SEMANTIC_UNIT": 9
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "RECORD",
+      "policy_documents": 4,
+      "converted": 4,
+      "RULE": 8,
+      "SEMANTIC_UNIT": 12
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "RISK",
+      "policy_documents": 1,
+      "converted": 1,
+      "RULE": 2
+    },
+    {
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "SUPPLY",
+      "policy_documents": 1,
+      "converted": 1,
+      "RULE": 2,
+      "SEMANTIC_UNIT": 1
+    }
+  ],
+  "source_preservation": "EXACT_PARSED_JSON_TREE",
+  "normative_activation": false,
+  "documents": [
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+      "policy_id": "MPD-ARCH-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "59cd78afd3ca000fc8065ce2e7240eb1321b77bc4aeabeea12341c4c65f1902b",
+      "source_items": 16,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 4,
+        "REQUIREMENT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+      "policy_id": "MPD-ARCH-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "7aaafaaee9daa33a2445311a4a1d75e375efccc2887243e0cd6bdf2bd6b93fd3",
+      "source_items": 12,
+      "rules": 6,
+      "rule_kinds": {
+        "RULE": 3,
+        "REQUIREMENT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 18
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0003.yaml",
+      "policy_id": "MPD-ARCH-0003",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "f3166b440ef809451660952edac7785f055d64f61f88005150ce47b5888b8eeb",
+      "source_items": 15,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 4,
+        "REQUIREMENT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0004.yaml",
+      "policy_id": "MPD-ARCH-0004",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "82515734dd8f967292c7b59a164bcd6eb0c97d93fa3e8e79b6d51b02e2e77142",
+      "source_items": 19,
+      "rules": 12,
+      "rule_kinds": {
+        "RULE": 4,
+        "REQUIREMENT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 36
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0005.yaml",
+      "policy_id": "MPD-ARCH-0005",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "e989015c1d5adb138255f1a9d8512aebdad7663f170343ba2d6d0242363c1f24",
+      "source_items": 17,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 3,
+        "REQUIREMENT": 7
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0006.yaml",
+      "policy_id": "MPD-ARCH-0006",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "49d28f027fc52946a64a8cb335b7883b1681aab286a855cdf07d1249173fb19d",
+      "source_items": 16,
+      "rules": 9,
+      "rule_kinds": {
+        "RULE": 3,
+        "REQUIREMENT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 27
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+      "policy_id": "MPD-ARCH-0007",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "DRAFT.Default",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "ede8dbb8567a1f6bd0aef7db597048f1318c3c663f1c7f4a46bcebbdfb1dd612",
+      "source_items": 16,
+      "rules": 9,
+      "rule_kinds": {
+        "RULE": 3,
+        "REQUIREMENT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 27
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0008.yaml",
+      "policy_id": "MPD-ARCH-0008",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "2facd400510fb6d4d567bf916027eb4b6ed28f59bbe327d458ee00d996753eae",
+      "source_items": 17,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 4,
+        "REQUIREMENT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0009.yaml",
+      "policy_id": "MPD-ARCH-0009",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Application_Problems",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "d7258b365ffda12c65002eebdc307d0e144fedb401d0fb7d22624d13715b5745",
+      "source_items": 45,
+      "rules": 37,
+      "rule_kinds": {
+        "RULE": 12,
+        "REQUIREMENT": 25
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 111
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0010.yaml",
+      "policy_id": "MPD-ARCH-0010",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.provisional",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "6e397abbd93a77d55127faf2a454153bccbc9e42880207d21c959d32a857d068",
+      "source_items": 20,
+      "rules": 12,
+      "rule_kinds": {
+        "RULE": 4,
+        "REQUIREMENT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 36
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0011.yaml",
+      "policy_id": "MPD-ARCH-0011",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "DRAFT.Reviewed",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "cad0bf5517cf9d9e564dd16b7fc9baedc2b66fb6c0aa287819bbeb51ff616cb0",
+      "source_items": 26,
+      "rules": 18,
+      "rule_kinds": {
+        "RULE": 3,
+        "REQUIREMENT": 15
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 54
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0012.yaml",
+      "policy_id": "MPD-ARCH-0012",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.provisional",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "d6ee4350c65a11763cde51e4020ad034e00248a36e2a6c7b45995844c3d4ab82",
+      "source_items": 17,
+      "rules": 9,
+      "rule_kinds": {
+        "RULE": 2,
+        "REQUIREMENT": 7
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 27
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0013.yaml",
+      "policy_id": "MPD-ARCH-0013",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.provisional",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "dc4a5243fc51621c40d5522c6c3eae513a676174244fcf229025db840dfddd17",
+      "source_items": 17,
+      "rules": 9,
+      "rule_kinds": {
+        "RULE": 2,
+        "REQUIREMENT": 7
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 27
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ARCH/MPD-ARCH-0014.yaml",
+      "policy_id": "MPD-ARCH-0014",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ARCH",
+      "status": "APPROVED.Default",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "071d788340c48464e6e02978dd3eb31e649dbacaa93a6db4876df6303c5d86f8",
+      "source_items": 17,
+      "rules": 9,
+      "rule_kinds": {
+        "RULE": 2,
+        "REQUIREMENT": 7
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 27
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ASSURE/MPD-ASSURE-0001.yaml",
+      "policy_id": "MPD-ASSURE-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ASSURE",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "2a31df7108857f2fb2b8cbccf1c96d7d013d08e52b7f162e79fb4dc102b2afc7",
+      "source_items": 27,
+      "rules": 18,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 16,
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 54
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ASSURE/MPD-ASSURE-0002.yaml",
+      "policy_id": "MPD-ASSURE-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ASSURE",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "58071b0353b62c00489dca215e461a5986f2ac350e0867191fae2c0eb00fb043",
+      "source_items": 13,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ASSURE/MPD-ASSURE-0003.yaml",
+      "policy_id": "MPD-ASSURE-0003",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ASSURE",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "030bd9dc06999b79ccddeaaa7cd712aa0b451ee17d7af9439134600f8dfd5c3e",
+      "source_items": 12,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ASSURE/MPD-ASSURE-0004.yaml",
+      "policy_id": "MPD-ASSURE-0004",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ASSURE",
+      "status": "DRAFT.Default",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "d2fcfe3efc2f61e22403c83a8366b1343301460886f451663d00b220d1b3b204",
+      "source_items": 22,
+      "rules": 14,
+      "rule_kinds": {
+        "RULE": 6,
+        "REQUIREMENT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 42
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/ASSURE/MPD-ASSURE-0005.yaml",
+      "policy_id": "MPD-ASSURE-0005",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "ASSURE",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "b78fa83311cba766bb60fad974161cf27519de057adc9b9b3fe2aa4bcc8d9a50",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+      "policy_id": "MPD-CHANGE-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "status": "DRAFT.Reviewed",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "5b6eb938439dd0c508ccc684857e2a8204e2dec1de00f478e7e3a26c09264502",
+      "source_items": 15,
+      "rules": 6,
+      "rule_kinds": {
+        "RULE": 2,
+        "REQUIREMENT": 4
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 18
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CHANGE/MPD-CHANGE-0002.yaml",
+      "policy_id": "MPD-CHANGE-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "status": "DRAFT.Reviewed",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "ca985443c292483e764bc74f6ad09ef3c34df1a25605101d951769f0fb3ade26",
+      "source_items": 16,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 2,
+        "REQUIREMENT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CHANGE/MPD-CHANGE-0003.yaml",
+      "policy_id": "MPD-CHANGE-0003",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "status": "DRAFT.Reviewed",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "0bf8d71de190a1141446e24e726dc767efc8d37a0456f8dc12f3a1e5c23d5d36",
+      "source_items": 22,
+      "rules": 13,
+      "rule_kinds": {
+        "RULE": 3,
+        "REQUIREMENT": 10
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 39
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CHANGE/MPD-CHANGE-0005.yaml",
+      "policy_id": "MPD-CHANGE-0005",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "7b9ec5da77bc277632cd1b825a6d59bc6e0b070228f60b0c963eb7d4c6f11cac",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CHANGE/MPD-CHANGE-0007.yaml",
+      "policy_id": "MPD-CHANGE-0007",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "status": "APPROVED.Applying",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "b35955e8573d2a38076a24ca4682a933274baffe40009bf007bf2e69478aa3c2",
+      "source_items": 18,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 2,
+        "REQUIREMENT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CHANGE/MPD-CHANGE-0008.yaml",
+      "policy_id": "MPD-CHANGE-0008",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "status": "APPROVED.Applying",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "cf7ff71cbd404ec1532ab8d42e401203c0f6baaf3cd1109a8750d2d3fd06f1f4",
+      "source_items": 15,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 2,
+        "REQUIREMENT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CHANGE/MPD-CHANGE-0009.yaml",
+      "policy_id": "MPD-CHANGE-0009",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CHANGE",
+      "status": "APPROVED.provisional",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "INDEXED",
+      "source_sha256": "f6b5eedb5359bd2a6cf56b33dae67f3e1cb07bd06dc13718fdaaf10bb216e4d8",
+      "source_items": 14,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 1,
+        "REQUIREMENT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CNTR/MPD-CNTR-0001.yaml",
+      "policy_id": "MPD-CNTR-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CNTR",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "2087be08dfc812cdb8b821bdd3b833dff2af97c38caf27a93ae41d1cc9339c67",
+      "source_items": 24,
+      "rules": 15,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 13
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 45
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CNTR/MPD-CNTR-0002.yaml",
+      "policy_id": "MPD-CNTR-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CNTR",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "7621c791bef9a1f0fc5462385e041ed1ff54b29d23e1d1171dd7b43046484358",
+      "source_items": 18,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CNTR/MPD-CNTR-0003.yaml",
+      "policy_id": "MPD-CNTR-0003",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CNTR",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "5efa54a9f437f8c4823d05ef1c75003212456485924e4d094fe6c67bebfebadf",
+      "source_items": 12,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CNTR/MPD-CNTR-0004.yaml",
+      "policy_id": "MPD-CNTR-0004",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CNTR",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "219fa7020727d1bdb9e796f4006c64bceec2ba55703246def276cd9d148c48d7",
+      "source_items": 13,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CNTR/MPD-CNTR-0005.yaml",
+      "policy_id": "MPD-CNTR-0005",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CNTR",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "220a8eb618fb971996ea3536e7880dd3cdab02830eaa49be2ae9a07f030056a2",
+      "source_items": 9,
+      "rules": 1,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 3
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CNTR/MPD-CNTR-0006.yaml",
+      "policy_id": "MPD-CNTR-0006",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CNTR",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "03d91ac25242ab8e810b670cce3b1df64c4cd2186d71bde847139b303c4c8c9e",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CTRL/MPD-CTRL-0001.yaml",
+      "policy_id": "MPD-CTRL-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CTRL",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "f17978f08fef0c76b5242042539102243e2a526dd90251093c54bce81d8922e2",
+      "source_items": 32,
+      "rules": 23,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 21,
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 69
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/CTRL/MPD-CTRL-0002.yaml",
+      "policy_id": "MPD-CTRL-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "CTRL",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "cdd86d8fc8a7f48d0b727f189e2307447983c0b08653157752c4818fbec1dce3",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/GOV/MPD-GOV-0001.yaml",
+      "policy_id": "MPD-GOV-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "GOV",
+      "status": "APPROVED.Applying",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "d4bf85222d7c44a0281181afa18756832818156f86f0c5583895766de7d84d54",
+      "source_items": 45,
+      "rules": 39,
+      "rule_kinds": {
+        "RULE": 32,
+        "REQUIREMENT": 7
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 117
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/GOV/MPD-GOV-0004.yaml",
+      "policy_id": "MPD-GOV-0004",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "GOV",
+      "status": "APPROVED.Applying",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "2987e41713281e1538c37eeed753dac265b5bc0a15b448f6ee858334e64f1e5b",
+      "source_items": 32,
+      "rules": 25,
+      "rule_kinds": {
+        "RULE": 11,
+        "REQUIREMENT": 14
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 75
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/GOV/MPD-GOV-0005.yaml",
+      "policy_id": "MPD-GOV-0005",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "GOV",
+      "status": "APPROVED.Applying",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "181a81e595a11dbeaaeaf86d39632a9777a195dfebeeda33db066cc4e96010a8",
+      "source_items": 25,
+      "rules": 18,
+      "rule_kinds": {
+        "RULE": 13,
+        "REQUIREMENT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 54
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/GOV/MPD-GOV-0006.yaml",
+      "policy_id": "MPD-GOV-0006",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "GOV",
+      "status": "APPROVED.Applying",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "0cedc834d1484dcb4fdecf4308d485a314eb7a2498bde4bb94c94aef59d860dc",
+      "source_items": 39,
+      "rules": 32,
+      "rule_kinds": {
+        "RULE": 24,
+        "REQUIREMENT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 96
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INFO/MPD-INFO-0001.yaml",
+      "policy_id": "MPD-INFO-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INFO",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "b5dc67fab8051415243a61735bab6b7ae8c94dc622be1e71ee04c0c50e1b07b2",
+      "source_items": 75,
+      "rules": 66,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 64,
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 198
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INFO/MPD-INFO-0002.yaml",
+      "policy_id": "MPD-INFO-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INFO",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "1f0dcc4f1617eebbebd0018df97c9177e4a7d9c8ae01466385d357585d229ed2",
+      "source_items": 14,
+      "rules": 5,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 15
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INFO/MPD-INFO-0003.yaml",
+      "policy_id": "MPD-INFO-0003",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INFO",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "904c3a0795baa1c300d727f03a6a91c9ab09d20efe94b00e8334a1d5a58fb193",
+      "source_items": 12,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INFO/MPD-INFO-0004.yaml",
+      "policy_id": "MPD-INFO-0004",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INFO",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "ffeb0884484321693a6998f89ab9feaee3c9822d3caf68cd64aa0838b626aca8",
+      "source_items": 9,
+      "rules": 1,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 3
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INFO/MPD-INFO-0005.yaml",
+      "policy_id": "MPD-INFO-0005",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INFO",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "30a7d1c9fff9e36a8c1221d77c1b53e1eed92e8b94ac5ec06106db486c6c6359",
+      "source_items": 9,
+      "rules": 1,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 3
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INFO/MPD-INFO-0006.yaml",
+      "policy_id": "MPD-INFO-0006",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INFO",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "51378ff2ddc9e245625a95b25c617849db631f7000f6ed1311c8816f47a4f614",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INTENT/MPD-INTENT-0001.yaml",
+      "policy_id": "MPD-INTENT-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INTENT",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "423d06c9653f4d442bcfa9a83f6403bc9792c4a6307ee107001dab5a036a9b31",
+      "source_items": 17,
+      "rules": 8,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 6,
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 24
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/INTENT/MPD-INTENT-0002.yaml",
+      "policy_id": "MPD-INTENT-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "INTENT",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "3770f47bdbe4c97154b8fd5d0cac33680dde60084a7af6b214576e52da202d1b",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/NORM/MPD-NORM-0001.yaml",
+      "policy_id": "MPD-NORM-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "NORM",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "64e6cb6a2912a87494199731c3a90ac40388ac03e2b8601cbf14a11479956b77",
+      "source_items": 19,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/NORM/MPD-NORM-0002.yaml",
+      "policy_id": "MPD-NORM-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "NORM",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "2ba37a5530d15c8ef109a2fac6eba5dbb3217ea3824b401d86fb86bfed646959",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/OPS/MPD-OPS-0001.yaml",
+      "policy_id": "MPD-OPS-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "OPS",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "760d2dbeebad0df24110f6bb649f5999c98586e35f776e606e859b083e561793",
+      "source_items": 13,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/OPS/MPD-OPS-0002.yaml",
+      "policy_id": "MPD-OPS-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "OPS",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "aa953ca73e90f6088e1116ce74a01638a3d9e77d9c9f685ed69ce44049cba880",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/REAL/MPD-REAL-0001.yaml",
+      "policy_id": "MPD-REAL-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "9d5987ba5703c76ca6d711cd1624ac84b896c84ddd7d4dfce8e4ceb359ea3d12",
+      "source_items": 16,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/REAL/MPD-REAL-0002.yaml",
+      "policy_id": "MPD-REAL-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "0ac44b6e91462deeb476a6fb1d5603443b75c0735e265f47ffd18eb66359eefa",
+      "source_items": 12,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/REAL/MPD-REAL-0003.yaml",
+      "policy_id": "MPD-REAL-0003",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "cc9918904d3ddc8aa20087941cb76c93ee31200c43894904300d714e5c2dd8cf",
+      "source_items": 13,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/REAL/MPD-REAL-0004.yaml",
+      "policy_id": "MPD-REAL-0004",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "cdbf945fab6511c4d1d9ad700311dab8b3c314b3308b4d9ff7d1b87816c58801",
+      "source_items": 12,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/REAL/MPD-REAL-0005.yaml",
+      "policy_id": "MPD-REAL-0005",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "9460ff23f03c19b107291dde2a247e744fff9094280014b48e9e4589914148a3",
+      "source_items": 13,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/REAL/MPD-REAL-0006.yaml",
+      "policy_id": "MPD-REAL-0006",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "3d522e25e9ca08fb1bdef8ddb6f14b108f762ef9fa0858138b8da4c36ec54e8f",
+      "source_items": 12,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/REAL/MPD-REAL-0007.yaml",
+      "policy_id": "MPD-REAL-0007",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "REAL",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "949d70016c092f11466debd66a16f7f9b9061ee87f4f4f149889267e5b350d50",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+      "policy_id": "MPD-RECORD-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RECORD",
+      "status": "APPROVED.Unresolved",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "732213aaa334f9bc868b396e0d9046aa4f215a96827890e0fcbe55441fc78b7b",
+      "source_items": 13,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 1,
+        "REQUIREMENT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+      "policy_id": "MPD-RECORD-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RECORD",
+      "status": "APPROVED.Unresolved",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "d72c0f7714efb98d8b4444d1ddf803fd71d75d01e3ad16da59608677d576eb19",
+      "source_items": 20,
+      "rules": 12,
+      "rule_kinds": {
+        "RULE": 1,
+        "REQUIREMENT": 11
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 36
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+      "policy_id": "MPD-RECORD-0003",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RECORD",
+      "status": "APPROVED.Unresolved",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "c659d7711451a2a1f13c9d3b0014c2dd34c2f1d8a7ed8c9daccd3260e2f4d28f",
+      "source_items": 12,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 1,
+        "REQUIREMENT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+      "policy_id": "MPD-RECORD-0004",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RECORD",
+      "status": "APPROVED.Unresolved",
+      "source_format": "PUBLIC_POLICY_V2",
+      "source_registration": "INDEXED",
+      "source_sha256": "6188c43bc3dc551ef8a0e509b5927a0399939a41871970b0ca1830aaff0cb967",
+      "source_items": 16,
+      "rules": 8,
+      "rule_kinds": {
+        "RULE": 1,
+        "REQUIREMENT": 7
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 24
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/RISK/MPD-RISK-0001.yaml",
+      "policy_id": "MPD-RISK-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RISK",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "101f30170fb183f092d16260231005b5864f1457b4ea3c9abb5482e8f3159fe0",
+      "source_items": 10,
+      "rules": 2,
+      "rule_kinds": {
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 6
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/RISK/MPD-RISK-0002.yaml",
+      "policy_id": "MPD-RISK-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "RISK",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "3e71b425c36d7becb03b12c59bf002b167823767a49ae6a7a4b71dccbdcb1ba4",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/SUPPLY/MPD-SUPPLY-0001.yaml",
+      "policy_id": "MPD-SUPPLY-0001",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "SUPPLY",
+      "status": "RETIRED",
+      "source_format": "ptsip-developer-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "97d6554d353b267dfae7202bd2e2327e0a25ddf7dff71081404b15d72f0b3a2d",
+      "source_items": 10,
+      "rules": 2,
+      "rule_kinds": {
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 6
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "developer/policy/SUPPLY/MPD-SUPPLY-0002.yaml",
+      "policy_id": "MPD-SUPPLY-0002",
+      "policy_kind": "PTSIP_DEVELOPER_POLICY",
+      "root_family": "SUPPLY",
+      "status": "APPROVED",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "UNINDEXED",
+      "source_sha256": "3f11716aa7c9089adcec5c54f4b10c1d0f653c90edb45e6b53119bbc98a3513f",
+      "source_items": 4,
+      "rules": 0,
+      "rule_kinds": {},
+      "contract_binding_states": {},
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "policy_id": "SFP-ARCH-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ARCH",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "8fba97f99438a2f735f3ae7d46366c05c4873d6f91203f655d8d08ae9b7dc913",
+      "source_items": 41,
+      "rules": 33,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 31
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 99
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+      "policy_id": "SFP-ARCH-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ARCH",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "455c30cf413a51785885bd477c6c55e941f05c73519d1880821ca1b8642b27d7",
+      "source_items": 15,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ARCH/SFP-ARCH-0003.yaml",
+      "policy_id": "SFP-ARCH-0003",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ARCH",
+      "status": "RETIRED",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "5521f3831b1a16c5f8b7d04c7051090ee5bf00f22095040e3d320d6f86dfa8b5",
+      "source_items": 13,
+      "rules": 5,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 15
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "policy_id": "SFP-ARCH-0004",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ARCH",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "90d6fb0081949351f3ee84e8836fd5dcb4ae7a92521c883b56dea4bcd94cf875",
+      "source_items": 14,
+      "rules": 6,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 4,
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 18
+      },
+      "candidate_definition_references": 2,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ARCH/SFP-ARCH-0005.yaml",
+      "policy_id": "SFP-ARCH-0005",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ARCH",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "9dbec2b749612da9da3496a9091a25f75bc562c5b1a3325476b1b6db11d646c2",
+      "source_items": 9,
+      "rules": 1,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 3
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+      "policy_id": "SFP-ASSURE-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ASSURE",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "6f02a50bd7101f389431cb76ba1de2d19bc808960c23d6ce20fd58485dc6fda4",
+      "source_items": 15,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ASSURE/SFP-ASSURE-0002.yaml",
+      "policy_id": "SFP-ASSURE-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ASSURE",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "655da46ea7701036e4759f41ce1813637e15ac702a40950ed2bb0e804e28f378",
+      "source_items": 16,
+      "rules": 8,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 24
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ASSURE/SFP-ASSURE-0003.yaml",
+      "policy_id": "SFP-ASSURE-0003",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ASSURE",
+      "status": "RETIRED",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "5879d2a0fc8386768bc025cca73e09fe2bcd9ef2d20861db08b763fb0f9c226f",
+      "source_items": 18,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ASSURE/SFP-ASSURE-0004.yaml",
+      "policy_id": "SFP-ASSURE-0004",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ASSURE",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "1364f04667273da75d489f1cda05f2150677824d57d1f49d8c6ea7b37e01bf6d",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/ASSURE/SFP-ASSURE-0005.yaml",
+      "policy_id": "SFP-ASSURE-0005",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "ASSURE",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "3dbcc77d6f8bce20f929629305e8c99d86aa99e5cd9a147f17fdba15c23dd9e9",
+      "source_items": 14,
+      "rules": 6,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 4
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 18
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+      "policy_id": "SFP-CHANGE-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CHANGE",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "ea07d222a072e451327bddf20ef4c2a2ebac25db5877b1cf57337d73a56a5bdf",
+      "source_items": 85,
+      "rules": 77,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 75
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 231
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+      "policy_id": "SFP-CNTR-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "2405eaef8761b2d3531a9aa28aea99dd37f1de88d1f49afce6ab3e6bdc53dd62",
+      "source_items": 68,
+      "rules": 60,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 58
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 180
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0002.yaml",
+      "policy_id": "SFP-CNTR-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "a7dd9b8ffe6e43672f35f2d163b46d2dd304b17885e9bb28481134d59fde04a3",
+      "source_items": 12,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0003.yaml",
+      "policy_id": "SFP-CNTR-0003",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "RETIRED",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "91be1d3f06f5bf0430679dee91e14bf0b2d3e425f4e8e0ebb5c0e8800ccae845",
+      "source_items": 16,
+      "rules": 8,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 24
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0004.yaml",
+      "policy_id": "SFP-CNTR-0004",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "6947d55a82ae092669b3c74567bd076a644e26cc55b6d076a3ea4d88e121edab",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+      "policy_id": "SFP-CNTR-0005",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "dca78ecd94d7d4afe02845b66164fe6fe4c2df4f2548cca3349fa05bbb057a2c",
+      "source_items": 12,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0006.yaml",
+      "policy_id": "SFP-CNTR-0006",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "9d88bf6645e357e68859011e7e99f5433ff7db5cdbb112ca0c11ea12427a89a3",
+      "source_items": 14,
+      "rules": 6,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 4
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 18
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0007.yaml",
+      "policy_id": "SFP-CNTR-0007",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "2439ad2dc1cd10eafff28b97e7831bf03358ba1df2b3b9389c31211e1e0e6460",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CNTR/SFP-CNTR-0008.yaml",
+      "policy_id": "SFP-CNTR-0008",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CNTR",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "f2c9c808b841e676d75ca22a4636798dae8efbc616fe7cd7cb054ab7468cafc0",
+      "source_items": 9,
+      "rules": 1,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 3
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+      "policy_id": "SFP-CTRL-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CTRL",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "c270bde4ca765a85d8d46f3817b81bc947e810109a6ace6650baeaeac022bc76",
+      "source_items": 42,
+      "rules": 34,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 32
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 102
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CTRL/SFP-CTRL-0002.yaml",
+      "policy_id": "SFP-CTRL-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CTRL",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "c687982a5277d1516c25794ebd03eb48b065fbff2f15a8481932863ade7aa4f7",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/CTRL/SFP-CTRL-0003.yaml",
+      "policy_id": "SFP-CTRL-0003",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "CTRL",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "1b2636583e74abb22c5d11efaa078cd6f8e04cc6ba21416abf5dfdf1477a2b9a",
+      "source_items": 24,
+      "rules": 16,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 14
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 48
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/GOV/SFP-GOV-0001.yaml",
+      "policy_id": "SFP-GOV-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "GOV",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "a0686482787a53c80f651802110cb3c53715d057359796fad625ad0ecd23c14e",
+      "source_items": 24,
+      "rules": 16,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 14
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 48
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/GOV/SFP-GOV-0002.yaml",
+      "policy_id": "SFP-GOV-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "GOV",
+      "status": "DRAFT.Default",
+      "source_format": "LEGACY_POLICY_COMPONENTS",
+      "source_registration": "INDEXED",
+      "source_sha256": "d55e795fe243fc2c2f98f633a949df88b38ba27d2084fd33e0fe38867d5e1e90",
+      "source_items": 16,
+      "rules": 10,
+      "rule_kinds": {
+        "RULE": 5,
+        "REQUIREMENT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 30
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0001.yaml",
+      "policy_id": "SFP-INFO-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "14084b80133e2da21a7d6c12c0720fe778707a700cd2a0ddc7fa4a892165ee22",
+      "source_items": 80,
+      "rules": 72,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 70
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 216
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0002.yaml",
+      "policy_id": "SFP-INFO-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "bbe4c857bd38ea34173a0649af15be25f730cc81a726f3c6d83fa245c0b0be91",
+      "source_items": 12,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0003.yaml",
+      "policy_id": "SFP-INFO-0003",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "RETIRED",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "0d44985647fa1a126108d66fdadc79e354371899c31efe3b15bcb2be520dee0f",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0004.yaml",
+      "policy_id": "SFP-INFO-0004",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "7ee6f429b2df5a8a33355ca7772f0f9fe7d276dd8e1bd65f356f1caa8b46af51",
+      "source_items": 17,
+      "rules": 9,
+      "rule_kinds": {
+        "RULE": 1,
+        "SEMANTIC_UNIT": 8
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 27
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0005.yaml",
+      "policy_id": "SFP-INFO-0005",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "15c662a7a79bee8c7bccfbb622509bf573ed23b424c85f38518f3712d7a7b766",
+      "source_items": 16,
+      "rules": 8,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 6
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 24
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0006.yaml",
+      "policy_id": "SFP-INFO-0006",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "290c0956dbb3f41fa710a6a2e79d6423afe2620c5ec15eae6f945a8ed4873144",
+      "source_items": 13,
+      "rules": 5,
+      "rule_kinds": {
+        "RULE": 1,
+        "SEMANTIC_UNIT": 4
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 15
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0007.yaml",
+      "policy_id": "SFP-INFO-0007",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "cae832f13f8b43e53dd2e073dd15718f277dbd9a0c7321b568d236e1af860f2b",
+      "source_items": 13,
+      "rules": 5,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 15
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0008.yaml",
+      "policy_id": "SFP-INFO-0008",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "8f0403185e7dc51b4836cf68ac0091bb1f063e27f859539ed38e9bfea5157592",
+      "source_items": 15,
+      "rules": 7,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 5
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 21
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INFO/SFP-INFO-0009.yaml",
+      "policy_id": "SFP-INFO-0009",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INFO",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "eb2634cb310d05e3903d4ce842d780d4d4af0256fc2b282f4ac9b7f5e3be9407",
+      "source_items": 9,
+      "rules": 1,
+      "rule_kinds": {
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 3
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/INTENT/SFP-INTENT-0001.yaml",
+      "policy_id": "SFP-INTENT-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "INTENT",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "88a0b2c966ad918c2d483bd87fdf3a7b227b534cfd45145ab49d2ed985ac3226",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/NORM/SFP-NORM-0001.yaml",
+      "policy_id": "SFP-NORM-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "NORM",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "419622b89b528f463392d5afaf80e99ea5af52408cfc406831f345d275ae4fea",
+      "source_items": 19,
+      "rules": 11,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 9
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 33
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/NORM/SFP-NORM-0002.yaml",
+      "policy_id": "SFP-NORM-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "NORM",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "7382751e5bd5bc49114ee34ff13252df15ba691c7854f94fa484b6ae39115bf7",
+      "source_items": 12,
+      "rules": 4,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 12
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/OPS/SFP-OPS-0001.yaml",
+      "policy_id": "SFP-OPS-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "OPS",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "7fd01b56d9b3aafcf3fc0deff71b7ab98d1cb6900edacd88a19c1aea3ab5056e",
+      "source_items": 13,
+      "rules": 5,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 15
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/OPS/SFP-OPS-0002.yaml",
+      "policy_id": "SFP-OPS-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "OPS",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "2e0de9890cfe276daf98ff1e90e41b0677aae88760c2ac5b8c85d276a0cd3e92",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/REAL/SFP-REAL-0001.yaml",
+      "policy_id": "SFP-REAL-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "REAL",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "d34d1fc2dc68f30c9d1002662ea73a9f165452ca92e1f3382b6730626389ed72",
+      "source_items": 19,
+      "rules": 11,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 9
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 33
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+      "policy_id": "SFP-RECORD-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "RECORD",
+      "status": "ACTIVE",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "4217035b39b66134a47122fe1d549b07ce78465cd40e303bce211a02f25ddfb9",
+      "source_items": 13,
+      "rules": 5,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 3
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 15
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/RECORD/SFP-RECORD-0002.yaml",
+      "policy_id": "SFP-RECORD-0002",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "RECORD",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "f8448988497c88079e63b260da26258cda65d45d24133860ddbd449ddabd3cf1",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/RECORD/SFP-RECORD-0003.yaml",
+      "policy_id": "SFP-RECORD-0003",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "RECORD",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "e9af25e22c38c91638e8c97146f625e1ca05aac19fb78f528300aba795e8952c",
+      "source_items": 12,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/RECORD/SFP-RECORD-0004.yaml",
+      "policy_id": "SFP-RECORD-0004",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "RECORD",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "6d461fcd5c18d3170fca573d15bb07d06aea8c7260957bb1e3f6fce66064e397",
+      "source_items": 18,
+      "rules": 9,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 7
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 27
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/RISK/SFP-RISK-0001.yaml",
+      "policy_id": "SFP-RISK-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "RISK",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "2db99f6ed3da8de43af5c1063ef30f62af93fc5fd0636d016458c951dbd780cb",
+      "source_items": 10,
+      "rules": 2,
+      "rule_kinds": {
+        "RULE": 2
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 6
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    },
+    {
+      "path": "src/policy/SUPPLY/SFP-SUPPLY-0001.yaml",
+      "policy_id": "SFP-SUPPLY-0001",
+      "policy_kind": "PTSIP_SUPPORT_FEATURE",
+      "root_family": "SUPPLY",
+      "status": "DRAFT",
+      "source_format": "ptsip-support-root-family-policy/v1",
+      "source_registration": "INDEXED",
+      "source_sha256": "ba2448cf4070b87f968c4992240134baceced390e186f03e1e2643ae4d8c0b6d",
+      "source_items": 11,
+      "rules": 3,
+      "rule_kinds": {
+        "RULE": 2,
+        "SEMANTIC_UNIT": 1
+      },
+      "contract_binding_states": {
+        "UNRESOLVED": 9
+      },
+      "candidate_definition_references": 0,
+      "source_preservation": "EXACT_PARSED_JSON_TREE",
+      "validation": "VALID",
+      "action": "CONVERTED"
+    }
+  ],
+  "auxiliary": [
+    {
+      "path": "developer/policy/ARCH/Policy_Rules_Decisions.yaml",
+      "classification": "AUXILIARY_NON_POLICY"
+    }
+  ]
+}

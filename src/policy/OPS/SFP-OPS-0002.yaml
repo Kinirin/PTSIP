@@ -1,270 +1,338 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "OPS",
-  "policy": {
-    "id": "SFP-OPS-0002",
-    "title": "Engine composition outcome and recovery responsibility (DRAFT)",
-    "status": "DRAFT"
-  },
-  "authority_subject": {
-    "id": "SUP_AVAILABLE_CAPABILITY_CONTINUITY_AND_RECOVERY",
-    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
-  },
-  "exclusive_kernel": [
-    "SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION",
-    "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_OPS",
-    "schema_id": "ptsip.governance/root-family/ops",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION",
-          "statement": "지원된 operation의 실패 분류, 회복과 canonical namespace 유지 조건을 정한다. 충돌 source, stale lock 또는 모호한 journal을 임의 폐기하지 않는다.",
-          "non_substitutability": "REAL의 단일 성공 write나 SUPPLY의 환경 공급이 장애 이후 authority 보존과 운영 회복 책임을 대체하지 못한다."
-        },
-        {
-          "id": "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION",
-          "statement": "계약에 정의된 operation ID와 expected revision을 보존해 재시도하고 conflict를 검토 가능하게 유지한다. RESERVED .ptsip/tasks 또는 .ptsip/runtime의 미정 persistence 의미를 새로 정의하지 않는다.",
-          "non_substitutability": "CTRL의 한 번의 실행 허용이나 CHANGE의 migration 경로는 반복 시도의 동일성 및 운영 연속성을 대신 정의하지 않는다."
-        }
-      ]
-    },
-    "unit_ptsip_engine_draft": {
-      "domain": "PTSIP_ENGINE",
-      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-      "approved_decisions": {
-        "per_engine_outcome_owner": "EXECUTING_ENGINE",
-        "combined_operation_outcome_owner": "INDEPENDENT_COMPOSITION_COORDINATOR",
-        "coordinator_new_policy_authority": false,
-        "recovery_must_preserve_operation_identity": true,
-        "irreversible_or_mutating_failure_requires_existing_ctrl_real_ops_gates": true,
-        "resource_failure_recovery_boundary": "EFFECT_STATE_AWARE_AUTHORIZED_RECOVERY",
-        "in_flight_revocation_recovery_boundary": "AUTHORIZED_SAFE_STOP_WITH_INDEPENDENT_EFFECT_ASSESSMENT",
-        "invalid_derived_state_recovery": "EXCLUDE_INVALID_STATE_AND_AUTOMATICALLY_RECOMPUTE_FROM_VERIFIED_SOURCE_AND_NORMATIVE_CONTRACT",
-        "invalid_derived_state_reuse": "FORBIDDEN",
-        "authoritative_source_validation": "REQUIRED_BEFORE_RECOMPUTATION",
-        "normative_contract_validation": "REQUIRED_BEFORE_RECOMPUTATION",
-        "invalid_authoritative_source_or_contract": "FAIL_CLOSED_NO_RECOMPUTATION",
-        "owner_recovery_direction": "OPTION_A",
-        "owner_recovery_direction_recorded_at": "2026-10-11",
-        "startup_failed_engine_revalidation_timing": "NEXT_PTSIP_STARTUP_ONLY",
-        "startup_failed_engine_revalidation_option": "A_USER_EXPLICIT",
-        "startup_failed_engine_revalidation_recorded_at": "2026-10-11",
-        "startup_failed_engine_environment_change_watch": "DEFERRED_NOT_RELEASE_REQUIRED",
-        "startup_failed_engine_revalidation_requires_fresh_gates": true,
-        "startup_failed_engine_same_session_retry": "NOT_AUTHORIZED_BY_THIS_POLICY",
-        "evidence_cache_cleanup_failure_scope_choice": "A_USER_EXPLICIT",
-        "evidence_cache_cleanup_failure_scope_decided_at": "2026-10-11",
-        "evidence_cache_cleanup_failure_containment": "ISOLATE_FAILED_ATTEMPT_AND_MACHINE_VERIFIED_AFFECTED_DEPENDENCY_SCOPE",
-        "evidence_cache_cleanup_independent_work_continuation": "ALLOW_ONLY_AFTER_MACHINE_VERIFIED_INDEPENDENCE_AND_EXISTING_ELIGIBILITY",
-        "evidence_cache_cleanup_unknown_effect_or_dependency": "FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK",
-        "evidence_cache_cleanup_failed_attempt_outcome": "FAILED_SEPARATE_FROM_OBSERVED_EFFECT_STATE",
-        "evidence_cache_cleanup_recovery_permission": "EXISTING_CTRL_REAL_OPS_AUTHORITY_ONLY",
-        "evidence_cache_cleanup_automatic_retry_policy": "B_AUTOMATIC_RETRY_AFTER_MACHINE_VERIFIED_SAME_OPERATION_SAFETY_EFFECTS_AND_CURRENT_AUTHORITY",
-        "evidence_cache_cleanup_failure_policy_record_ref": "SFP-RECORD-0003",
-        "evidence_cache_cleanup_automatic_retry_choice": "B_USER_EXPLICIT",
-        "evidence_cache_cleanup_automatic_retry_decided_at": "2026-10-11",
-        "evidence_cache_cleanup_retry_required_proofs": [
-          "FAILED_ATTEMPT_WORK_EFFECT_STATE_AND_AFFECTED_SCOPE_VERIFIED",
-          "SAME_OPERATION_IDENTITY_EXPECTED_REVISION_AND_RETRY_SAFETY_CONTRACT_VERIFIED",
-          "CURRENT_EFFECTIVE_CTRL_AUTHORITY_AND_OPERATION_SPECIFIC_RETRY_DELEGATION",
-          "CURRENT_RETENTION_RELEASE_AND_TARGET_NON_AUTHORITATIVE_CACHE_BOUNDARY",
-          "CURRENT_REAL_PREPARED_MUTATION_INTEGRITY_AND_APPLICABLE_RESOURCE_BUDGET"
-        ],
-        "evidence_cache_cleanup_retry_unknown_unsafe_or_unverified": "FAIL_CLOSED_NO_RETRY",
-        "evidence_cache_cleanup_retry_creates_new_execution_authority": false,
-        "evidence_cache_cleanup_retry_exhaustion_and_scheduling": "PLAN_WITH_EXISTING_RESOURCE_AND_AUTHORITY_GATES"
-      },
-      "invariants": {
-        "no_success_from_partial_failed_composition": true,
-        "no_recovery_path_can_synthesize_authorization": true,
-        "retries_must_respect_original_operation_and_expected_revision": true,
-        "composition_result_requires_member_outcome_provenance": true,
-        "resource_failure_requires_independent_effect_state_handling": true,
-        "no_implicit_rollback_from_engine_termination": true,
-        "unknown_effect_blocks_unverified_reuse_or_recovery_success": true,
-        "retry_remains_subject_to_existing_ctrl_and_ops_authority": true,
-        "revocation_stop_outcome_requires_work_effect_evaluation": true,
-        "revocation_stop_does_not_prove_rollback": true,
-        "safe_stop_does_not_create_retry_or_compensation_authority": true,
-        "incomplete_or_unknown_effect_state_requires_existing_recovery_gate": true,
-        "invalid_derived_execution_state_cannot_be_treated_as_authoritative": true,
-        "invalid_derived_state_does_not_automatically_invalidate_verified_source": true,
-        "recomputation_may_not_use_unverified_authoritative_inputs": true,
-        "recomputation_does_not_bypass_existing_execution_or_mutation_authorization": true,
-        "unknown_mutation_effect_must_not_be_treated_as_cache_only_failure": true,
-        "no_automatic_discard_of_conflicting_sources_locks_or_ambiguous_journals": true,
-        "recomputation_does_not_alone_authorize_state_persistence": true,
-        "recovery_policy_is_draft_only_until_owner_active_approval": true,
-        "failed_engine_reconsidered_at_subsequent_ptsip_startup": true,
-        "previous_startup_failure_not_permanent_exclusion": true,
-        "previous_eligibility_evidence_not_inherited_as_current_eligibility": true,
-        "no_current_release_environment_change_monitoring_requirement": true,
-        "environment_change_does_not_implicitly_trigger_activation": true,
-        "revalidation_requires_current_registered_contract_environment_predelegation_and_isolation": true,
-        "failed_or_unknown_revalidation_remains_ineligible": true,
-        "retry_revalidation_cannot_grant_execute_or_write_authority": true,
-        "activation_failure_does_not_imply_no_work_effect": true,
-        "revalidation_policy_does_not_modify_existing_recovery_or_authorization_gates": true,
-        "revalidation_direction_does_not_activate_draft_engine_runtime": true,
-        "evidence_cache_cleanup_failed_attempt_must_not_be_reported_successful": true,
-        "evidence_cache_cleanup_failure_isolated_to_machine_proven_impact_boundary": true,
-        "affected_or_potentially_affected_operations_must_not_continue_without_reverified_safety": true,
-        "independently_verified_safe_operations_may_continue_under_existing_authority": true,
-        "unknown_or_unverified_impact_scope_blocks_all_potentially_affected_operations": true,
-        "operation_independence_cannot_be_inferred_from_distinct_engine_or_path_only": true,
-        "cleanup_failure_does_not_prove_no_mutation_or_successful_rollback": true,
-        "cleanup_partial_effects_require_explicit_provenance_and_effect_state_classification": true,
-        "cleanup_failure_containment_must_preserve_original_evidence_and_mandatory_record_receipts": true,
-        "cleanup_failure_containment_cannot_create_recovery_retry_deletion_or_write_authority": true,
-        "cleanup_resumption_requires_current_ctrl_and_real_preconditions": true,
-        "fail_closed_on_unresolved_effects_does_not_require_global_shutdown_of_proven_unaffected_work": true,
-        "cleanup_failure_direction_does_not_activate_draft_runtime": true,
-        "evidence_cache_cleanup_auto_retry_requires_machine_verified_prior_effect_state": true,
-        "cleanup_retry_does_not_assume_failed_attempt_rolled_back": true,
-        "cleanup_retry_must_prove_safe_same_operation_semantics_and_expected_revision": true,
-        "cleanup_retry_must_not_duplicate_unverified_mutating_effect": true,
-        "cleanup_retry_requires_fresh_current_ctrl_authority_and_retry_scope": true,
-        "cleanup_retry_revoked_or_stale_authority": "FAIL_CLOSED_NO_RETRY",
-        "cleanup_retry_requires_current_record_retention_release_and_cache_target_separation": true,
-        "cleanup_retry_requires_real_prepared_write_integrity": true,
-        "cleanup_retry_requires_existing_resource_and_task_budget_eligibility": true,
-        "cleanup_retry_effect_or_operation_identity_unknown": "FAIL_CLOSED_NO_RETRY",
-        "cleanup_retry_unknown_dependent_impact_stays_blocked": true,
-        "cleanup_retry_does_not_block_machine_proven_independent_work": true,
-        "cleanup_retry_eligibility_does_not_grant_write_authority": true,
-        "cleanup_retry_protects_original_evidence_and_mandatory_record_provenance": true,
-        "cleanup_retry_cannot_reclassify_partial_effects_or_failed_attempt_as_success": true,
-        "cleanup_retry_count_delay_and_machine_proof_interface_are_plan_level_details": true,
-        "cleanup_retry_direction_does_not_activate_draft_runtime": true
-      },
-      "unresolved_decisions": [
-        {
-          "id": "COMPOSITION_RECOVERY_AND_FAILURE_PROPAGATION_INTERFACE",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "RESOURCE_FAILURE_RECOVERY_HANDOFF_CONTRACT",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "REVOCATION_SAFE_STOP_RECOVERY_HANDOFF_CONTRACT",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        }
-      ],
-      "activation_requirements": {
-        "owner_decisions_all_resolved": true,
-        "responsibility_mapping_verified": true,
-        "conflicts_with_existing_active_policies_resolved": true,
-        "machine_contract_and_registry_validation_passed": true,
-        "explicit_separate_user_active_approval_required": true
-      },
-      "out_of_scope": [
-        "IMMEDIATE_RUNTIME_ACTIVATION",
-        "EXISTING_ACTIVE_POLICY_MUTATION",
-        "UNAPPROVED_DIRECTORY_NAMES",
-        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ],
-      "engine_derived_state_recovery_boundary": {
-        "scope": "NON_AUTHORITATIVE_ENGINE_DERIVED_EXECUTION_STATE",
-        "state_validation_failure": "INELIGIBLE_FOR_REUSE",
-        "when_source_and_normative_contract_are_valid": "AUTOMATIC_DETERMINISTIC_RECOMPUTATION",
-        "when_source_or_normative_contract_not_verified": "FAIL_CLOSED",
-        "invalid_state_not_equal_to_authoritative_source_error": true,
-        "affected_policy_ref": "SFP-INFO-0008",
-        "authority_boundary": "DO_NOT_OVERRIDE_ACTIVE_CTRL_REAL_ASSURE_AND_OPS_REQUIREMENTS",
-        "excluded_from_policy_scope": [
-          "AUTHORITATIVE_SOURCE_CONFLICT",
-          "STALE_LOCK",
-          "AMBIGUOUS_JOURNAL",
-          "UNKNOWN_MUTATION_EFFECT"
-        ],
-        "execution_mechanics": "PLAN_AND_MACHINE_CONTRACT",
-        "runtime_activation": "NOT_AUTHORIZED_BY_DRAFT"
-      },
-      "startup_failed_engine_revalidation_policy": {
-        "policy_subject": "ENGINE_STARTUP_FAILED_ACTIVATION_REVALIDATION_CADENCE",
-        "decision": "A_NEXT_STARTUP",
-        "current_release_trigger": "SUBSEQUENT_PTSIP_RUNTIME_STARTUP",
-        "eligible_subject": "PREVIOUSLY_INELIGIBLE_OR_FAILED_ENGINES_STILL_REGISTERED",
-        "revalidation": "RERUN_CURRENT_REGISTERED_CONTRACT_ENVIRONMENT_AUTHORITY_AND_APPLICABLE_ISOLATION_GATES",
-        "on_qualified": "ACTIVATE_UNDER_EXISTING_PREDELEGATED_SCOPE",
-        "on_unqualified_or_unknown": "REMAIN_INACTIVE_FAIL_CLOSED_FOR_AFFECTED_CAPABILITIES",
-        "activation_is_not_execution_authorization": true,
-        "automatic_revalidation_from_environment_change": {
-          "status": "DEFERRED",
-          "current_release_required": false,
-          "implementation_not_authorized_by_this_decision": true
-        },
-        "same_session_repeated_retry_policy": "NOT_AUTHORIZED_BY_THIS_DECISION",
-        "preserve_independent_eligible_engines": true,
-        "applicable_authority_policy_ref": "SFP-CTRL-0002",
-        "existing_recovery_effect_state_and_revocation_gates": "PRESERVED",
-        "implementation_mechanics": "PLAN_AND_MACHINE_CONTRACT",
-        "current_effect": "DRAFT_ONLY_NO_RUNTIME_REVALIDATION"
-      },
-      "evidence_cache_cleanup_failure_scope": {
-        "policy_subject": "EVIDENCE_CACHE_AUTOMATIC_CLEANUP_FAILURE_CONTAINMENT",
-        "selected_option": "A_VERIFIED_SCOPE_ISOLATION",
-        "scope": "AUTHORIZED_DERIVED_EVIDENCE_CACHE_CLEANUP_ATTEMPT",
-        "failed_attempt_result": "FAILED_NOT_COMPOSITION_SUCCESS",
-        "work_effect_evaluation": "SEPARATE_VERIFIED_ATTEMPT_AND_MUTATION_EFFECT_CLASSIFICATION",
-        "isolation_boundary": "FAILED_ATTEMPT_AND_MACHINE_VERIFIED_AFFECTED_DEPENDENCY_CLOSURE",
-        "unknown_effect_or_dependency": "FAIL_CLOSED_FOR_ALL_POTENTIALLY_AFFECTED_WORK",
-        "allow_other_work": "ONLY_WITH_MACHINE_PROVEN_INDEPENDENCE_AND_CURRENT_ELIGIBILITY",
-        "no_implicit_global_shutdown_for_proven_independent_work": true,
-        "mandatory_original_evidence_and_record_provenance": "PRESERVED",
-        "state_mutation_integrity_owner": "REAL",
-        "operation_effect_recovery_owner": "OPS",
-        "eligibility_and_mutation_permission_owner": "CTRL",
-        "cache_retention_provenance_owner": "RECORD",
-        "recovery_or_retry": "REQUIRES_EXISTING_SEPARATE_AUTHORIZATION",
-        "automatic_retry_direction": "MACHINE_VERIFIED_SAFE_SAME_OPERATION_RETRY_WITH_FRESH_EXISTING_AUTHORITY",
-        "evidence_impact_proof_interface": "PLAN_AND_MACHINE_CONTRACT",
-        "policy_effect": "DRAFT_ONLY_NO_ACTIVE_RUNTIME_OR_AUTO_RETRY_EXECUTION",
-        "retry_policy_ref": "evidence_cache_cleanup_retry_policy"
-      },
-      "evidence_cache_cleanup_retry_policy": {
-        "policy_subject": "EVIDENCE_CACHE_AUTOMATED_CLEANUP_FAILURE_RETRY",
-        "selected_option": "B_VERIFIED_AUTOMATIC_RETRY",
-        "permitted": "ONLY_AFTER_MACHINE_VERIFIED_EFFECT_STATE_SAFE_SAME_OPERATION_RETRY_AND_CURRENT_AUTHORITY",
-        "identity_constraints": "PRESERVE_OPERATION_ID_EXPECTED_REVISION_AND_REGISTERED_RETRY_SEMANTICS",
-        "effect_proof": "NO_UNKNOWN_UNACCOUNTED_MUTATION_OR_UNVERIFIED_ROLLBACK",
-        "impact_constraints": "RETAIN_FAILED_ATTEMPT_AND_VERIFIED_AFFECTED_SCOPE_ISOLATION",
-        "required_gates": [
-          "MACHINE_VERIFIED_EFFECT_STATE_AND_RETRY_SAFETY",
-          "FRESH_CTRL_SPECIFIC_RETRY_AND_CLEANUP_AUTHORITY",
-          "RECORD_RETENTION_RELEASE_AND_PROTECTED_ORIGINAL_EXCLUSION",
-          "REAL_PREPARED_WRITE_AND_FAILURE_INTEGRITY",
-          "APPROVED_TASK_AND_RESOURCE_BUDGET"
-        ],
-        "when_unverified_revoked_or_unsafe": "NO_AUTOMATIC_RETRY_FAIL_CLOSED",
-        "independently_proven_safe_work": "CONTINUE_UNDER_EXISTING_GATES",
-        "retry_is_not_new_permission": true,
-        "protected_sources_and_records": "PRESERVED",
-        "retry_count_timing_and_idempotency_contract": "PLAN_AND_MACHINE_CONTRACT",
-        "current_effect": "DRAFT_ONLY_NO_RUNTIME_RETRY_OR_ACTIVE_TRANSITION"
-      }
-    }
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-OPS-0001",
-        "scope": "ENGINE_DRAFT_COMPATIBILITY"
-      }
-    ]
-  }
-}
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-OPS-0002
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: OPS
+  title: Engine composition outcome and recovery responsibility (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-OPS-0002#/authority_semantics/unit_ptsip_engine_draft
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0011
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: OPS
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-OPS-0002
+      title: Engine composition outcome and recovery responsibility (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_AVAILABLE_CAPABILITY_CONTINUITY_AND_RECOVERY
+      statement: PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
+    - SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_OPS
+      schema_id: ptsip.governance/root-family/ops
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
+      statement: 지원된 operation의 실패 분류, 회복과 canonical namespace 유지 조건을 정한다. 충돌 source, stale lock 또는 모호한 journal을 임의 폐기하지 않는다.
+      non_substitutability: REAL의 단일 성공 write나 SUPPLY의 환경 공급이 장애 이후 authority 보존과 운영 회복 책임을 대체하지 못한다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
+      statement: 계약에 정의된 operation ID와 expected revision을 보존해 재시도하고 conflict를 검토 가능하게 유지한다. RESERVED .ptsip/tasks 또는 .ptsip/runtime의
+        미정 persistence 의미를 새로 정의하지 않는다.
+      non_substitutability: CTRL의 한 번의 실행 허용이나 CHANGE의 migration 경로는 반복 시도의 동일성 및 운영 연속성을 대신 정의하지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/unit_ptsip_engine_draft
+    value:
+      domain: PTSIP_ENGINE
+      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      approved_decisions:
+        per_engine_outcome_owner: EXECUTING_ENGINE
+        combined_operation_outcome_owner: INDEPENDENT_COMPOSITION_COORDINATOR
+        coordinator_new_policy_authority: false
+        recovery_must_preserve_operation_identity: true
+        irreversible_or_mutating_failure_requires_existing_ctrl_real_ops_gates: true
+        resource_failure_recovery_boundary: EFFECT_STATE_AWARE_AUTHORIZED_RECOVERY
+        in_flight_revocation_recovery_boundary: AUTHORIZED_SAFE_STOP_WITH_INDEPENDENT_EFFECT_ASSESSMENT
+        invalid_derived_state_recovery: EXCLUDE_INVALID_STATE_AND_AUTOMATICALLY_RECOMPUTE_FROM_VERIFIED_SOURCE_AND_NORMATIVE_CONTRACT
+        invalid_derived_state_reuse: FORBIDDEN
+        authoritative_source_validation: REQUIRED_BEFORE_RECOMPUTATION
+        normative_contract_validation: REQUIRED_BEFORE_RECOMPUTATION
+        invalid_authoritative_source_or_contract: FAIL_CLOSED_NO_RECOMPUTATION
+        owner_recovery_direction: OPTION_A
+        owner_recovery_direction_recorded_at: '2026-10-11'
+        startup_failed_engine_revalidation_timing: NEXT_PTSIP_STARTUP_ONLY
+        startup_failed_engine_revalidation_option: A_USER_EXPLICIT
+        startup_failed_engine_revalidation_recorded_at: '2026-10-11'
+        startup_failed_engine_environment_change_watch: DEFERRED_NOT_RELEASE_REQUIRED
+        startup_failed_engine_revalidation_requires_fresh_gates: true
+        startup_failed_engine_same_session_retry: NOT_AUTHORIZED_BY_THIS_POLICY
+        evidence_cache_cleanup_failure_scope_choice: A_USER_EXPLICIT
+        evidence_cache_cleanup_failure_scope_decided_at: '2026-10-11'
+        evidence_cache_cleanup_failure_containment: ISOLATE_FAILED_ATTEMPT_AND_MACHINE_VERIFIED_AFFECTED_DEPENDENCY_SCOPE
+        evidence_cache_cleanup_independent_work_continuation: ALLOW_ONLY_AFTER_MACHINE_VERIFIED_INDEPENDENCE_AND_EXISTING_ELIGIBILITY
+        evidence_cache_cleanup_unknown_effect_or_dependency: FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK
+        evidence_cache_cleanup_failed_attempt_outcome: FAILED_SEPARATE_FROM_OBSERVED_EFFECT_STATE
+        evidence_cache_cleanup_recovery_permission: EXISTING_CTRL_REAL_OPS_AUTHORITY_ONLY
+        evidence_cache_cleanup_automatic_retry_policy: B_AUTOMATIC_RETRY_AFTER_MACHINE_VERIFIED_SAME_OPERATION_SAFETY_EFFECTS_AND_CURRENT_AUTHORITY
+        evidence_cache_cleanup_failure_policy_record_ref: SFP-RECORD-0003
+        evidence_cache_cleanup_automatic_retry_choice: B_USER_EXPLICIT
+        evidence_cache_cleanup_automatic_retry_decided_at: '2026-10-11'
+        evidence_cache_cleanup_retry_required_proofs:
+        - FAILED_ATTEMPT_WORK_EFFECT_STATE_AND_AFFECTED_SCOPE_VERIFIED
+        - SAME_OPERATION_IDENTITY_EXPECTED_REVISION_AND_RETRY_SAFETY_CONTRACT_VERIFIED
+        - CURRENT_EFFECTIVE_CTRL_AUTHORITY_AND_OPERATION_SPECIFIC_RETRY_DELEGATION
+        - CURRENT_RETENTION_RELEASE_AND_TARGET_NON_AUTHORITATIVE_CACHE_BOUNDARY
+        - CURRENT_REAL_PREPARED_MUTATION_INTEGRITY_AND_APPLICABLE_RESOURCE_BUDGET
+        evidence_cache_cleanup_retry_unknown_unsafe_or_unverified: FAIL_CLOSED_NO_RETRY
+        evidence_cache_cleanup_retry_creates_new_execution_authority: false
+        evidence_cache_cleanup_retry_exhaustion_and_scheduling: PLAN_WITH_EXISTING_RESOURCE_AND_AUTHORITY_GATES
+      invariants:
+        no_success_from_partial_failed_composition: true
+        no_recovery_path_can_synthesize_authorization: true
+        retries_must_respect_original_operation_and_expected_revision: true
+        composition_result_requires_member_outcome_provenance: true
+        resource_failure_requires_independent_effect_state_handling: true
+        no_implicit_rollback_from_engine_termination: true
+        unknown_effect_blocks_unverified_reuse_or_recovery_success: true
+        retry_remains_subject_to_existing_ctrl_and_ops_authority: true
+        revocation_stop_outcome_requires_work_effect_evaluation: true
+        revocation_stop_does_not_prove_rollback: true
+        safe_stop_does_not_create_retry_or_compensation_authority: true
+        incomplete_or_unknown_effect_state_requires_existing_recovery_gate: true
+        invalid_derived_execution_state_cannot_be_treated_as_authoritative: true
+        invalid_derived_state_does_not_automatically_invalidate_verified_source: true
+        recomputation_may_not_use_unverified_authoritative_inputs: true
+        recomputation_does_not_bypass_existing_execution_or_mutation_authorization: true
+        unknown_mutation_effect_must_not_be_treated_as_cache_only_failure: true
+        no_automatic_discard_of_conflicting_sources_locks_or_ambiguous_journals: true
+        recomputation_does_not_alone_authorize_state_persistence: true
+        recovery_policy_is_draft_only_until_owner_active_approval: true
+        failed_engine_reconsidered_at_subsequent_ptsip_startup: true
+        previous_startup_failure_not_permanent_exclusion: true
+        previous_eligibility_evidence_not_inherited_as_current_eligibility: true
+        no_current_release_environment_change_monitoring_requirement: true
+        environment_change_does_not_implicitly_trigger_activation: true
+        revalidation_requires_current_registered_contract_environment_predelegation_and_isolation: true
+        failed_or_unknown_revalidation_remains_ineligible: true
+        retry_revalidation_cannot_grant_execute_or_write_authority: true
+        activation_failure_does_not_imply_no_work_effect: true
+        revalidation_policy_does_not_modify_existing_recovery_or_authorization_gates: true
+        revalidation_direction_does_not_activate_draft_engine_runtime: true
+        evidence_cache_cleanup_failed_attempt_must_not_be_reported_successful: true
+        evidence_cache_cleanup_failure_isolated_to_machine_proven_impact_boundary: true
+        affected_or_potentially_affected_operations_must_not_continue_without_reverified_safety: true
+        independently_verified_safe_operations_may_continue_under_existing_authority: true
+        unknown_or_unverified_impact_scope_blocks_all_potentially_affected_operations: true
+        operation_independence_cannot_be_inferred_from_distinct_engine_or_path_only: true
+        cleanup_failure_does_not_prove_no_mutation_or_successful_rollback: true
+        cleanup_partial_effects_require_explicit_provenance_and_effect_state_classification: true
+        cleanup_failure_containment_must_preserve_original_evidence_and_mandatory_record_receipts: true
+        cleanup_failure_containment_cannot_create_recovery_retry_deletion_or_write_authority: true
+        cleanup_resumption_requires_current_ctrl_and_real_preconditions: true
+        fail_closed_on_unresolved_effects_does_not_require_global_shutdown_of_proven_unaffected_work: true
+        cleanup_failure_direction_does_not_activate_draft_runtime: true
+        evidence_cache_cleanup_auto_retry_requires_machine_verified_prior_effect_state: true
+        cleanup_retry_does_not_assume_failed_attempt_rolled_back: true
+        cleanup_retry_must_prove_safe_same_operation_semantics_and_expected_revision: true
+        cleanup_retry_must_not_duplicate_unverified_mutating_effect: true
+        cleanup_retry_requires_fresh_current_ctrl_authority_and_retry_scope: true
+        cleanup_retry_revoked_or_stale_authority: FAIL_CLOSED_NO_RETRY
+        cleanup_retry_requires_current_record_retention_release_and_cache_target_separation: true
+        cleanup_retry_requires_real_prepared_write_integrity: true
+        cleanup_retry_requires_existing_resource_and_task_budget_eligibility: true
+        cleanup_retry_effect_or_operation_identity_unknown: FAIL_CLOSED_NO_RETRY
+        cleanup_retry_unknown_dependent_impact_stays_blocked: true
+        cleanup_retry_does_not_block_machine_proven_independent_work: true
+        cleanup_retry_eligibility_does_not_grant_write_authority: true
+        cleanup_retry_protects_original_evidence_and_mandatory_record_provenance: true
+        cleanup_retry_cannot_reclassify_partial_effects_or_failed_attempt_as_success: true
+        cleanup_retry_count_delay_and_machine_proof_interface_are_plan_level_details: true
+        cleanup_retry_direction_does_not_activate_draft_runtime: true
+      unresolved_decisions:
+      - id: COMPOSITION_RECOVERY_AND_FAILURE_PROPAGATION_INTERFACE
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      - id: RESOURCE_FAILURE_RECOVERY_HANDOFF_CONTRACT
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      - id: REVOCATION_SAFE_STOP_RECOVERY_HANDOFF_CONTRACT
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      activation_requirements:
+        owner_decisions_all_resolved: true
+        responsibility_mapping_verified: true
+        conflicts_with_existing_active_policies_resolved: true
+        machine_contract_and_registry_validation_passed: true
+        explicit_separate_user_active_approval_required: true
+      out_of_scope:
+      - IMMEDIATE_RUNTIME_ACTIVATION
+      - EXISTING_ACTIVE_POLICY_MUTATION
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      engine_derived_state_recovery_boundary:
+        scope: NON_AUTHORITATIVE_ENGINE_DERIVED_EXECUTION_STATE
+        state_validation_failure: INELIGIBLE_FOR_REUSE
+        when_source_and_normative_contract_are_valid: AUTOMATIC_DETERMINISTIC_RECOMPUTATION
+        when_source_or_normative_contract_not_verified: FAIL_CLOSED
+        invalid_state_not_equal_to_authoritative_source_error: true
+        affected_policy_ref: SFP-INFO-0008
+        authority_boundary: DO_NOT_OVERRIDE_ACTIVE_CTRL_REAL_ASSURE_AND_OPS_REQUIREMENTS
+        excluded_from_policy_scope:
+        - AUTHORITATIVE_SOURCE_CONFLICT
+        - STALE_LOCK
+        - AMBIGUOUS_JOURNAL
+        - UNKNOWN_MUTATION_EFFECT
+        execution_mechanics: PLAN_AND_MACHINE_CONTRACT
+        runtime_activation: NOT_AUTHORIZED_BY_DRAFT
+      startup_failed_engine_revalidation_policy:
+        policy_subject: ENGINE_STARTUP_FAILED_ACTIVATION_REVALIDATION_CADENCE
+        decision: A_NEXT_STARTUP
+        current_release_trigger: SUBSEQUENT_PTSIP_RUNTIME_STARTUP
+        eligible_subject: PREVIOUSLY_INELIGIBLE_OR_FAILED_ENGINES_STILL_REGISTERED
+        revalidation: RERUN_CURRENT_REGISTERED_CONTRACT_ENVIRONMENT_AUTHORITY_AND_APPLICABLE_ISOLATION_GATES
+        on_qualified: ACTIVATE_UNDER_EXISTING_PREDELEGATED_SCOPE
+        on_unqualified_or_unknown: REMAIN_INACTIVE_FAIL_CLOSED_FOR_AFFECTED_CAPABILITIES
+        activation_is_not_execution_authorization: true
+        automatic_revalidation_from_environment_change:
+          status: DEFERRED
+          current_release_required: false
+          implementation_not_authorized_by_this_decision: true
+        same_session_repeated_retry_policy: NOT_AUTHORIZED_BY_THIS_DECISION
+        preserve_independent_eligible_engines: true
+        applicable_authority_policy_ref: SFP-CTRL-0002
+        existing_recovery_effect_state_and_revocation_gates: PRESERVED
+        implementation_mechanics: PLAN_AND_MACHINE_CONTRACT
+        current_effect: DRAFT_ONLY_NO_RUNTIME_REVALIDATION
+      evidence_cache_cleanup_failure_scope:
+        policy_subject: EVIDENCE_CACHE_AUTOMATIC_CLEANUP_FAILURE_CONTAINMENT
+        selected_option: A_VERIFIED_SCOPE_ISOLATION
+        scope: AUTHORIZED_DERIVED_EVIDENCE_CACHE_CLEANUP_ATTEMPT
+        failed_attempt_result: FAILED_NOT_COMPOSITION_SUCCESS
+        work_effect_evaluation: SEPARATE_VERIFIED_ATTEMPT_AND_MUTATION_EFFECT_CLASSIFICATION
+        isolation_boundary: FAILED_ATTEMPT_AND_MACHINE_VERIFIED_AFFECTED_DEPENDENCY_CLOSURE
+        unknown_effect_or_dependency: FAIL_CLOSED_FOR_ALL_POTENTIALLY_AFFECTED_WORK
+        allow_other_work: ONLY_WITH_MACHINE_PROVEN_INDEPENDENCE_AND_CURRENT_ELIGIBILITY
+        no_implicit_global_shutdown_for_proven_independent_work: true
+        mandatory_original_evidence_and_record_provenance: PRESERVED
+        state_mutation_integrity_owner: REAL
+        operation_effect_recovery_owner: OPS
+        eligibility_and_mutation_permission_owner: CTRL
+        cache_retention_provenance_owner: RECORD
+        recovery_or_retry: REQUIRES_EXISTING_SEPARATE_AUTHORIZATION
+        automatic_retry_direction: MACHINE_VERIFIED_SAFE_SAME_OPERATION_RETRY_WITH_FRESH_EXISTING_AUTHORITY
+        evidence_impact_proof_interface: PLAN_AND_MACHINE_CONTRACT
+        policy_effect: DRAFT_ONLY_NO_ACTIVE_RUNTIME_OR_AUTO_RETRY_EXECUTION
+        retry_policy_ref: evidence_cache_cleanup_retry_policy
+      evidence_cache_cleanup_retry_policy:
+        policy_subject: EVIDENCE_CACHE_AUTOMATED_CLEANUP_FAILURE_RETRY
+        selected_option: B_VERIFIED_AUTOMATIC_RETRY
+        permitted: ONLY_AFTER_MACHINE_VERIFIED_EFFECT_STATE_SAFE_SAME_OPERATION_RETRY_AND_CURRENT_AUTHORITY
+        identity_constraints: PRESERVE_OPERATION_ID_EXPECTED_REVISION_AND_REGISTERED_RETRY_SEMANTICS
+        effect_proof: NO_UNKNOWN_UNACCOUNTED_MUTATION_OR_UNVERIFIED_ROLLBACK
+        impact_constraints: RETAIN_FAILED_ATTEMPT_AND_VERIFIED_AFFECTED_SCOPE_ISOLATION
+        required_gates:
+        - MACHINE_VERIFIED_EFFECT_STATE_AND_RETRY_SAFETY
+        - FRESH_CTRL_SPECIFIC_RETRY_AND_CLEANUP_AUTHORITY
+        - RECORD_RETENTION_RELEASE_AND_PROTECTED_ORIGINAL_EXCLUSION
+        - REAL_PREPARED_WRITE_AND_FAILURE_INTEGRITY
+        - APPROVED_TASK_AND_RESOURCE_BUDGET
+        when_unverified_revoked_or_unsafe: NO_AUTOMATIC_RETRY_FAIL_CLOSED
+        independently_proven_safe_work: CONTINUE_UNDER_EXISTING_GATES
+        retry_is_not_new_permission: true
+        protected_sources_and_records: PRESERVED
+        retry_count_timing_and_idempotency_contract: PLAN_AND_MACHINE_CONTRACT
+        current_effect: DRAFT_ONLY_NO_RUNTIME_RETRY_OR_ACTIVE_TRANSITION
+  - id: SRC-0011
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: SFP-OPS-0001
+        scope: ENGINE_DRAFT_COMPATIBILITY
+  source_document:
+    path: src/policy/OPS/SFP-OPS-0002.yaml
+    sha256: 2e0de9890cfe276daf98ff1e90e41b0677aae88760c2ac5b8c85d276a0cd3e92
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

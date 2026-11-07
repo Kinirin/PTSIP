@@ -38,11 +38,10 @@ func TestChange0001RegisteredV2SelectionAndStructure(t *testing.T) {
 		t.Fatalf("policy identity selection: %v", err)
 	}
 	if selected.PolicyKind != "PTSIP_DEVELOPER_POLICY" || selected.RootFamily != "CHANGE" ||
-		selected.ContractRefs["public_schema"] != ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json" ||
-		selected.ContractRefs["selection_schema"] != ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json" {
+		selected.ContractRefs["public_schema"] != authoring.UnifiedPolicySchema || selected.StructuralState != "CANDIDATE" {
 		t.Fatalf("wrong selected contract: %+v", selected)
 	}
-	doc, err := authoring.ReadDocument(root, changeTarget)
+	doc, err := readSourcePolicy(root, changeTarget)
 	if err != nil {
 		t.Fatalf("block YAML parse: %v", err)
 	}
@@ -73,7 +72,7 @@ func TestChange0001RegisteredV2SelectionAndStructure(t *testing.T) {
 
 func TestChange0001IndexedReferenceCounterexamples(t *testing.T) {
 	root := repoRoot(t)
-	original, err := authoring.ReadDocument(root, changeTarget)
+	original, err := readSourcePolicy(root, changeTarget)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -134,7 +133,7 @@ func TestChange0001IndexedReferenceCounterexamples(t *testing.T) {
 
 func TestRequirementIDsReplaceResponsibilityReferences(t *testing.T) {
 	root := repoRoot(t)
-	original, err := authoring.ReadDocument(root, changeTarget)
+	original, err := readSourcePolicy(root, changeTarget)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -158,7 +157,7 @@ func TestRequirementIDsReplaceResponsibilityReferences(t *testing.T) {
 
 func TestGovRequiredFieldsAndLocalRuleSources(t *testing.T) {
 	root := repoRoot(t)
-	original, err := authoring.ReadDocument(root, "developer/policy/GOV/MPD-GOV-0001.yaml")
+	original, err := readSourcePolicy(root, "developer/policy/GOV/MPD-GOV-0001.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -236,10 +235,10 @@ func TestIndexedV2CrossPolicyRegression(t *testing.T) {
 			if err != nil {
 				t.Fatalf("selection regression: %v", err)
 			}
-			if selected.ContractRefs["selection_schema"] != ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json" {
+			if selected.ContractRefs["public_schema"] != authoring.UnifiedPolicySchema || selected.StructuralState != "CANDIDATE" {
 				t.Fatal("unexpected schema selection")
 			}
-			doc, err := authoring.ReadDocument(root, target)
+			doc, err := readSourcePolicy(root, target)
 			if err != nil {
 				t.Fatalf("YAML parse regression: %v", err)
 			}
@@ -252,7 +251,7 @@ func TestIndexedV2CrossPolicyRegression(t *testing.T) {
 
 func TestAuthorityReferencesStayInOwningContract(t *testing.T) {
 	root := repoRoot(t)
-	doc, err := authoring.ReadDocument(root, "developer/policy/GOV/MPD-GOV-0001.yaml")
+	doc, err := readSourcePolicy(root, "developer/policy/GOV/MPD-GOV-0001.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -272,7 +271,7 @@ func TestAuthorityReferencesStayInOwningContract(t *testing.T) {
 
 func TestAllFamilyReviewDimensions(t *testing.T) {
 	root := repoRoot(t)
-	original, err := authoring.ReadDocument(root, "developer/policy/GOV/MPD-GOV-0001.yaml")
+	original, err := readSourcePolicy(root, "developer/policy/GOV/MPD-GOV-0001.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}

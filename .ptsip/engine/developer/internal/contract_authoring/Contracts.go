@@ -126,8 +126,9 @@ func IdentityValues(document Document, name string) ([]any, error) {
 	return values, nil
 }
 
-// Load resolves only current v2 schemas. Historical Rules/ data and withdrawn
-// v7 selection schemas are analysis inputs, never authoring fallbacks.
+// Load exposes the v2 schema catalog for explicit legacy contract checks.
+// Unified candidate authoring resolves its own registered entry before this
+// loader. Historical Rules/ data is never an authoring fallback.
 func Load(root string) (*Catalog, error) {
 	absolute, err := filepath.Abs(root)
 	if err != nil {

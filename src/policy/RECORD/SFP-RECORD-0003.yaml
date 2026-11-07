@@ -1,403 +1,465 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "RECORD",
-  "policy": {
-    "id": "SFP-RECORD-0003",
-    "title": "Engine simulation and operational evidence provenance (DRAFT)",
-    "status": "DRAFT"
-  },
-  "authority_subject": {
-    "id": "SUP_OBSERVATION_AND_OPERATION_PROVENANCE",
-    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
-  },
-  "exclusive_kernel": [
-    "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
-    "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_RECORD",
-    "schema_id": "ptsip.governance/root-family/record",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
-          "statement": "report와 receipt를 실제 관측 repository/profile/authority revision 및 Artifact snapshot에 결합하고 다른 시점의 결과를 섞지 않는다.",
-          "non_substitutability": "ASSURE의 conformance 판정이나 CTRL의 실행 허용은 그 결과의 재확인 가능한 source provenance를 자동 보존하지 않는다."
-        },
-        {
-          "id": "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL",
-          "statement": "operation identity, observed evidence와 판단 출처의 보존 및 조회를 정한다. 기록은 새로운 global authority나 live canonical source가 되지 않는다.",
-          "non_substitutability": "GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와 원본 receipt를 대체하지 못한다."
-        }
-      ],
-      "source_scope": []
-    },
-    "unit_ptsip_engine_draft": {
-      "domain": "PTSIP_ENGINE",
-      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-      "approved_decisions": {
-        "evidence_tracks": [
-          "ISOLATED_SIMULATION",
-          "OPERATIONAL_OBSERVATION"
-        ],
-        "reuse_requires_current_conditions_applicability": true,
-        "outcome_provenance": "ENGINE_VERSION_CONTRACT_SOURCE_ENVIRONMENT_WORKLOAD_EVALUATION_OBJECTIVE",
-        "cached_record_is_not_new_authority": true,
-        "recording_a_success_is_not_conformance": true,
-        "startup_reporting_option": "A_USER_EXPLICIT",
-        "startup_reporting_decision_recorded_at": "2026-10-11",
-        "startup_reporting_scope": "FAILED_OR_INELIGIBLE_ENGINE_ONLY",
-        "startup_reporting_includes_unverified_as_ineligible": true,
-        "startup_reporting_requires_full_successful_engine_inventory": false,
-        "startup_reporting_requires_per_successful_engine_status": false,
-        "startup_reporting_requires_success_only_summary": false,
-        "startup_reporting_is_not_complete_engine_runtime_state": false,
-        "startup_reporting_result_semantics_owner": "SFP-CTRL-0002",
-        "mandatory_operation_provenance_unchanged": true,
-        "error_report_payload_contract": "PLAN_AND_MACHINE_CONTRACT",
-        "startup_failure_report_information_choice": "B_USER_EXPLICIT",
-        "startup_failure_report_information_decision_recorded_at": "2026-10-11",
-        "startup_reporting_required_information": [
-          "REGISTERED_ENGINE_IDENTITY",
-          "ACTIVATION_OR_ELIGIBILITY_FAILURE_TYPE",
-          "UNMET_REGISTERED_CONTRACT_OR_VERIFICATION_CONDITION_REFERENCE"
-        ],
-        "failure_reference_semantic_scope": "CURRENT_APPLICABLE_REGISTERED_CONTRACT_OR_MACHINE_VERIFICATION_CONDITION",
-        "failure_reference_provenance": "MACHINE_VERIFIED_SOURCE_AND_OBSERVED_ACTIVATION_CONTEXT",
-        "unverified_reference_cannot_be_claimed_as_verified": true,
-        "failure_report_payload_format_authority": "PLAN_AND_MACHINE_CONTRACT",
-        "startup_reporting_success_inventory_requirement": "NOT_REQUIRED_UNCHANGED",
-        "startup_unverifiable_failure_reference_handling": "A_EMIT_SEPARATE_INCOMPLETE_DIAGNOSTIC",
-        "startup_unverifiable_failure_reference_approval": "USER_EXPLICIT_OPTION_A",
-        "startup_unverifiable_failure_reference_decided_at": "2026-10-11",
-        "startup_incomplete_diagnostic_disposition": "REPORT_ONLY_VERIFIED_FACTS_AND_EXPLICITLY_MARK_REFERENCE_UNVERIFIED",
-        "startup_complete_failure_report_requires_validated_condition_reference": true,
-        "startup_incomplete_diagnostic_status_authority": "RECORD_REPORT_COMPLETENESS_ONLY_NOT_ASSURE_CONFORMANCE",
-        "startup_diagnostic_report_payload_shape": "PLAN_AND_MACHINE_CONTRACT",
-        "startup_failure_diagnostic_history_retention": "EXISTING_MANDATORY_RECORD_ONLY_NO_ADDITIONAL_STARTUP_DIAGNOSTIC_HISTORY",
-        "startup_failure_diagnostic_history_retention_choice": "A_USER_EXPLICIT",
-        "startup_failure_diagnostic_history_retention_decided_at": "2026-10-11",
-        "startup_failure_diagnostic_separate_history_required_for_current_release": false,
-        "startup_incomplete_diagnostic_separate_history_required_for_current_release": false,
-        "existing_mandatory_record_retention_policy_ref": "SFP-RECORD-0001",
-        "current_release_diagnostic_reporting_not_conditional_on_separate_history_persistence": true,
-        "separate_diagnostic_history_future_requirement": "NOT_APPROVED_REQUIRES_SEPARATE_POLICY_DECISION",
-        "evidence_cache_invalidation_judgment_choice": "B_USER_EXPLICIT",
-        "evidence_cache_invalidation_judgment_recorded_at": "2026-10-11",
-        "evidence_cache_invalidation_judgment_timing": "AT_EACH_REUSE_REQUEST",
-        "evidence_cache_reuse_required_validation": [
-          "CURRENT_APPLICABLE_NORMATIVE_CONTRACT",
-          "CURRENT_VERIFIED_SOURCE_AND_RELEVANT_DEPENDENCIES",
-          "CURRENT_APPLICABILITY_CONDITIONS"
-        ],
-        "evidence_cache_reuse_eligibility": "ONLY_IF_ALL_CURRENT_REUSE_OBLIGATIONS_MACHINE_VERIFIED",
-        "cache_verification_missing_unknown_invalid_or_mismatch": "NOT_REUSABLE",
-        "invalid_evidence_cache_outcome": "REUSE_ELIGIBILITY_REJECTED_NOT_SOURCE_RECORD_DELETION",
-        "eager_change_triggered_cache_invalidation": "DEFERRED_NOT_CURRENT_RELEASE_REQUIRED",
-        "eager_change_triggered_cache_invalidation_future_authorization": "SEPARATE_USER_POLICY_APPROVAL_REQUIRED",
-        "cache_reuse_verdict_authority": "SFP-ASSURE-0004",
-        "mandatory_evidence_provenance_retention": "UNCHANGED_SFP_RECORD_0001",
-        "evidence_cache_cleanup_policy_choice": "B_USER_EXPLICIT",
-        "evidence_cache_cleanup_policy_decision_date": "2026-10-11",
-        "evidence_cache_cleanup_direction": "AUTOMATIC_CLEANUP_ALLOWED_AFTER_MACHINE_VERIFIED_RETENTION_RELEASE_AND_SEPARATE_EXECUTION_AUTHORIZATION",
-        "evidence_cache_cleanup_candidate_scope": "PROVEN_DISPOSABLE_NON_AUTHORITATIVE_DERIVED_EVIDENCE_CACHE_ONLY",
-        "evidence_cache_cleanup_prerequisites": [
-          "ASSURE_VERIFIED_REUSE_INELIGIBILITY",
-          "MACHINE_VERIFIED_NO_APPLICABLE_RETENTION_OR_REFERENCE_OBLIGATION",
-          "VERIFIED_DISJOINT_FROM_ORIGINAL_EVIDENCE_AND_MANDATORY_RECORDS",
-          "FRESH_EFFECTIVE_CTRL_OPERATION_SPECIFIC_CLEANUP_AUTHORIZATION",
-          "REAL_COMPLIANT_MUTATION_INTEGRITY_AND_READ_ONLY_BOUNDARY"
-        ],
-        "cache_reuse_ineligibility_alone_grants_cleanup_authorization": false,
-        "cleanup_without_machine_verified_retention_release": "FORBIDDEN",
-        "cleanup_without_fresh_effective_mutation_authority": "FORBIDDEN",
-        "cleanup_target_is_original_evidence_or_mandatory_record": "FORBIDDEN",
-        "cleanup_trigger_or_schedule": "REUSE_INELIGIBILITY_EVENT_AS_CLEANUP_CANDIDATE_ONLY",
-        "cleanup_execution_and_failure_contract": "PLAN_AND_MACHINE_CONTRACT_WITH_EXISTING_CTRL_REAL_OPS",
-        "no_new_record_retention_override": true,
-        "evidence_cache_cleanup_trigger_choice": "A_USER_EXPLICIT",
-        "evidence_cache_cleanup_trigger_decision_date": "2026-10-11",
-        "cleanup_attempt_boundary": "SEPARATE_FRESHLY_AUTHORIZED_MUTATING_OPERATION",
-        "cleanup_trigger_grants_execution_authority": false,
-        "cleanup_trigger_grants_retention_release": false,
-        "cleanup_trigger_alone_requires_inline_deletion": false,
-        "cleanup_independent_periodic_scan_required_for_current_release": false,
-        "cleanup_read_only_reuse_validation_side_effect": "NONE",
-        "cleanup_retry_or_secondary_scheduling": "PLAN_WITHOUT_NEW_AUTHORITY"
-      },
-      "invariants": {
-        "every_record_keeps_origin_and_observation_context": true,
-        "unlike_conditions_must_not_be_silently_merged": true,
-        "provenance_identity_must_remain_queryable": true,
-        "selection_winner_not_defined_by_most_recent_receipt": true,
-        "startup_external_report_may_omit_eligible_successful_engine_entries": true,
-        "startup_external_report_must_include_failed_or_ineligible_engine_entries": true,
-        "no_failed_entry_must_not_be_inferred_as_all_engines_verified_or_active": true,
-        "incomplete_external_startup_report_must_not_be_treated_as_complete_activation_state": true,
-        "startup_report_filtering_cannot_suppress_mandatory_operation_receipts": true,
-        "per_engine_outcome_and_identity_preservation_unaffected": true,
-        "source_bound_record_provenance_and_retention_unchanged": true,
-        "failure_report_cannot_create_execution_write_or_retry_authority": true,
-        "report_visibility_choice_does_not_activate_draft_runtime": true,
-        "each_reported_startup_failure_requires_registered_engine_identity": true,
-        "each_reported_startup_failure_requires_failure_type": true,
-        "each_reported_startup_failure_requires_unmet_contract_or_verification_condition_reference": true,
-        "reference_must_resolve_to_applicable_registered_contract_or_verification_gate": true,
-        "failed_condition_reference_must_correspond_to_observed_failure_context": true,
-        "ai_inferred_or_fabricated_failure_condition_reference": "FORBIDDEN",
-        "invalid_or_unverifiable_reference_must_not_be_reported_as_verified": true,
-        "engine_identity_and_reference_scope_must_not_be_silently_cross_bound": true,
-        "new_required_report_information_does_not_require_success_engine_inventory": true,
-        "required_failure_report_information_does_not_grant_execution_retry_or_write_authority": true,
-        "reporting_contract_decision_does_not_activate_engine_runtime": true,
-        "missing_or_unverifiable_condition_reference_requires_incomplete_diagnostic": true,
-        "incomplete_diagnostic_only_contains_verified_facts": true,
-        "incomplete_diagnostic_must_explicitly_identify_reference_as_unverified": true,
-        "incomplete_diagnostic_must_not_be_marked_complete_failure_report": true,
-        "missing_reference_must_not_be_fabricated_or_synthetically_resolved": true,
-        "incomplete_report_status_does_not_override_assure_conformance_judgment": true,
-        "incompleteness_does_not_grant_execution_or_reuse_eligibility": true,
-        "failed_or_ineligible_engine_remains_inactive_unless_fresh_eligibility_passes": true,
-        "independent_eligible_engines_can_remain_active": true,
-        "existing_mandatory_record_provenance_preserved": true,
-        "incomplete_diagnostic_policy_does_not_activate_engine_runtime": true,
-        "no_extra_startup_diagnostic_history_retention_obligation_current_release": true,
-        "failure_or_incomplete_diagnostic_report_does_not_imply_separate_history_persistence": true,
-        "preexisting_mandatory_receipts_and_provenance_requirements_remain_binding": true,
-        "diagnostic_reporting_scope_and_required_failure_information_unchanged": true,
-        "incompleteness_diagnostic_resolution_unchanged": true,
-        "absence_of_separate_diagnostic_history_must_not_erase_mandatory_record": true,
-        "retention_scope_choice_does_not_authorize_record_deletion": true,
-        "retention_scope_choice_does_not_authorize_new_writes": true,
-        "future_separate_history_requirement_needs_separate_user_policy_authorization": true,
-        "retention_scope_decision_does_not_activate_engine_runtime": true,
-        "evidence_cache_reuse_must_revalidate_at_each_reuse_request": true,
-        "past_cache_validity_or_success_cannot_substitute_current_verification": true,
-        "reuse_requires_current_registered_contract_source_and_applicability_checks": true,
-        "missing_unknown_or_mismatched_required_validation_blocks_reuse": true,
-        "cache_record_presence_does_not_grant_reuse_conformance_or_execution_authority": true,
-        "evidence_source_and_mandatory_receipts_must_survive_cache_reuse_rejection": true,
-        "cache_ineligibility_is_not_automatic_source_record_deletion": true,
-        "validation_authority_remains_assure_and_is_not_created_by_record": true,
-        "eager_invalidating_change_watch_is_not_current_release_obligation": true,
-        "deferred_eager_watch_not_automatically_authorized": true,
-        "prior_approved_engine_state_exact_match_policy_scope_unchanged": true,
-        "missing_evidence_reuse_does_not_authorize_unverified_automatic_recomputation": true,
-        "cached_evidence_plan_contract_methods_not_resolved_by_policy_choice": true,
-        "cache_reuse_timing_direction_does_not_activate_engine_runtime": true,
-        "cache_cleanup_may_be_automated_only_after_separate_cleanup_eligibility_and_execution_authorization": true,
-        "cache_reuse_denial_is_not_proof_of_retention_release": true,
-        "cache_record_absence_of_reference_is_not_proof_of_release": true,
-        "unknown_ambiguous_or_unverified_retention_obligation": "FAIL_CLOSED_KEEP",
-        "unknown_ambiguous_or_unverified_cleanup_permission": "FAIL_CLOSED_NO_MUTATION",
-        "derived_cache_classification_must_be_machine_verified": true,
-        "original_evidence_cannot_be_targeted_by_cache_cleanup": true,
-        "mandatory_record_receipts_provenance_and_history_cannot_be_targeted_by_cache_cleanup": true,
-        "retention_protection_precedes_cleanup_optimization": true,
-        "cleanup_does_not_create_new_retention_deletion_or_authorization_authority": true,
-        "cleanup_eligibility_judgment_is_not_execution_or_write_permission": true,
-        "cleanup_must_not_modify_read_only_operation_side_effects": true,
-        "separately_approved_activation_draft_not_automatically_activated": true,
-        "cleanup_trigger_not_silently_decided_by_permission_direction": true,
-        "evidence_cache_reuse_denial_may_identify_cleanup_candidate": true,
-        "cleanup_candidate_recognition_is_not_cleanable_proof": true,
-        "no_inline_mutation_from_read_only_reuse_check": true,
-        "candidate_trigger_does_not_bypass_retention_reference_or_source_separation_proof": true,
-        "candidate_trigger_does_not_bypass_fresh_ctrl_delegation_and_real_write_integrity": true,
-        "no_cleanup_of_uncertain_or_incomplete_evidence_without_verified_release": true,
-        "standalone_cleanup_sweep_not_required_for_current_release": true,
-        "automatic_cleanup_attempt_rechecks_all_gates_at_actual_execution": true,
-        "cleanup_trigger_selection_does_not_activate_draft_runtime": true,
-        "cleanup_failure_must_preserve_mandatory_record_and_original_evidence": true,
-        "cleanup_failure_cannot_be_reclassified_as_success_due_to_other_successful_operations": true,
-        "cleanup_failure_record_information_does_not_grant_recovery_or_write_permission": true,
-        "cleanup_failure_unknown_effect_requires_ops_safety_classification": true,
-        "cleanup_retry_must_preserve_original_evidence_and_mandatory_records": true,
-        "cleanup_retry_may_not_infer_rollback_from_failed_attempt": true,
-        "cleanup_retry_policy_does_not_grant_deletion_authority": true
-      },
-      "unresolved_decisions": [
-        {
-          "id": "EVIDENCE_RECORD_AND_CACHE_DATA_MODEL",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        }
-      ],
-      "activation_requirements": {
-        "owner_decisions_all_resolved": true,
-        "responsibility_mapping_verified": true,
-        "conflicts_with_existing_active_policies_resolved": true,
-        "machine_contract_and_registry_validation_passed": true,
-        "explicit_separate_user_active_approval_required": true
-      },
-      "out_of_scope": [
-        "IMMEDIATE_RUNTIME_ACTIVATION",
-        "EXISTING_ACTIVE_POLICY_MUTATION",
-        "UNAPPROVED_DIRECTORY_NAMES",
-        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ],
-      "startup_failure_only_report_direction": {
-        "policy_subject": "ENGINE_STARTUP_EXTERNAL_REPORT_SCOPE",
-        "current_release": "FAILURE_AND_INELIGIBILITY_ONLY",
-        "report_population": [
-          "ACTIVATION_FAILED",
-          "ELIGIBILITY_NOT_MET",
-          "ELIGIBILITY_UNVERIFIED"
-        ],
-        "full_successful_engine_inventory": "NOT_REQUIRED",
-        "successful_engine_status_listing": "NOT_REQUIRED",
-        "separate_complete_operational_state_view": "NOT_AUTHORIZED_BY_THIS_DECISION",
-        "failure_identity_and_reason_contract": "PLAN_AND_MACHINE_CONTRACT",
-        "applies_to": "STARTUP_REPORTING_ONLY",
-        "invariant_reference": "SFP-CTRL-0002.startup_partial_failure_direction",
-        "retained_engine_identity_and_activation_outcome": "PRESERVE_EXISTING_INTERNAL_RESPONSIBILITY",
-        "existing_operation_provenance_reporting_and_receipt_obligations": "UNCHANGED",
-        "unrelated_mandatory_validation_report_requirements": "UNCHANGED",
-        "no_runtime_activation": "DRAFT_ONLY",
-        "required_information": [
-          "REGISTERED_ENGINE_IDENTITY",
-          "FAILURE_TYPE",
-          "UNMET_REGISTERED_CONTRACT_OR_MACHINE_VERIFICATION_CONDITION_REF"
-        ],
-        "reference_requirement": "EXISTING_REGISTERED_AND_MACHINE_RESOLVABLE",
-        "reference_validation": "CURRENT_APPLICABLE_GATE_AND_OBSERVED_FAILURE_BOUND",
-        "no_inferred_references": true,
-        "missing_or_unresolvable_reference_handling": "SEPARATE_INCOMPLETE_DIAGNOSTIC_VERIFIED_FACTS_ONLY",
-        "payload_serialization_and_field_names": "PLAN_AND_MACHINE_CONTRACT",
-        "complete_report_requires_verifiable_condition_reference": true,
-        "incomplete_diagnostic_ref": "startup_incomplete_diagnostic_handling"
-      },
-      "startup_incomplete_diagnostic_handling": {
-        "decision": "A_SEPARATE_INCOMPLETE_DIAGNOSTIC",
-        "trigger": "REQUIRED_FAILED_CONDITION_REFERENCE_MISSING_OR_UNVERIFIABLE",
-        "report_class": "ENGINE_STARTUP_FAILURE_DIAGNOSTIC",
-        "report_completeness": "INCOMPLETE",
-        "confirmed_information_policy": "VERIFIED_FACTS_ONLY",
-        "reference_status": "EXPLICITLY_UNVERIFIED",
-        "completed_failure_report_status": "NOT_GRANTED",
-        "required_full_report_reference_policy": "UNCHANGED_VERIFIED_REGISTERED_CONTRACT_OR_CONDITION_REF",
-        "incomplete_reference_must_not_be_fabricated": true,
-        "assure_conformance_result": "NOT_INFERRED_FROM_REPORT_COMPLETENESS",
-        "target_engine_activation_eligibility": "UNCHANGED_FAIL_CLOSED",
-        "independent_engine_activation": "UNCHANGED",
-        "failure_report_reference_restoration_and_resolution": "PLAN_OR_SEPARATE_POLICY",
-        "concrete_schema": "PLAN_AND_MACHINE_CONTRACT",
-        "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
-      },
-      "startup_failure_diagnostic_retention_boundary": {
-        "policy_subject": "ENGINE_STARTUP_FAILURE_DIAGNOSTIC_SEPARATE_HISTORY_RETENTION",
-        "current_release": "NO_EXTRA_DIAGNOSTIC_HISTORY_RETENTION_OBLIGATION",
-        "existing_authority": "SFP-RECORD-0001",
-        "mandatory_record_and_source_provenance": "PRESERVED",
-        "covers_diagnostic_completeness": [
-          "COMPLETE_FAILURE_REPORT",
-          "INCOMPLETE_DIAGNOSTIC"
-        ],
-        "report_emission_obligation": "UNCHANGED",
-        "report_completeness_semantics": "UNCHANGED",
-        "separate_diagnostic_persistence_required": false,
-        "absence_of_extra_history_not_sufficient_to_discard_existing_mandatory_receipt": true,
-        "optional_future_history_policy": "SEPARATE_USER_APPROVAL_REQUIRED",
-        "retention_execution_and_serialization": "PLAN_SUBJECT_TO_ACTIVE_RECORD_AND_REAL_AUTHORITY",
-        "implementation_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
-      },
-      "evidence_cache_reuse_eligibility_direction": {
-        "policy_subject": "EVIDENCE_CACHE_REUSE_ELIGIBILITY_DECISION_TIME",
-        "selected_option": "B_VALIDATE_ON_REUSE",
-        "current_release_reuse_decision_trigger": "EACH_CACHE_REUSE_REQUEST",
-        "mandatory_current_verification": [
-          "CURRENT_APPLICABLE_NORMATIVE_CONTRACT",
-          "VERIFIED_CURRENT_SOURCE_AND_DEPENDENCIES",
-          "REGISTERED_APPLICABILITY_CONDITIONS"
-        ],
-        "verification_verdict_owner": "ASSURE",
-        "record_provenance_and_history_owner": "RECORD",
-        "unverified_missing_ambiguous_incompatible": "DENY_REUSE_FAIL_CLOSED",
-        "valid_on_request": "ELIGIBLE_ONLY_SUBJECT_TO_OTHER_EXISTING_ASSURE_AND_CTRL_GATES",
-        "original_evidence_and_mandatory_record_preservation": "REQUIRED",
-        "cache_not_reusable_means_source_deletion": false,
-        "eager_change_detection": {
-          "status": "DEFERRED",
-          "current_release_requirement": false,
-          "automatically_authorized": false,
-          "separate_user_policy_decision_required": true
-        },
-        "implementation_and_binding_contract": "PLAN_AND_MACHINE_CONTRACT",
-        "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
-      },
-      "evidence_cache_remaining_contract_design": [
-        "REUSE_CHECK_IDENTITY_AND_DEPENDENCY_SNAPSHOT_BINDING",
-        "REUSE_VALIDATION_EVIDENCE_AND_ASSURE_HANDOFF",
-        "RECORD_RETENTION_AND_CACHE_INVALIDATION_STATUS_HANDOFF"
-      ],
-      "evidence_cache_cleanup_direction": {
-        "policy_subject": "EVIDENCE_CACHE_AUTOMATED_CLEANUP_ELIGIBILITY",
-        "approved_option": "B_CONDITIONAL_AUTOMATIC_CLEANUP",
-        "scope": "DISPOSABLE_DERIVED_NON_AUTHORITATIVE_EVIDENCE_CACHE_COPIES",
-        "not_in_scope": [
-          "ORIGINAL_EVIDENCE",
-          "MANDATORY_RECORD_RECEIPTS",
-          "REQUIRED_PROVENANCE_AND_HISTORY",
-          "OTHER_PROTECTED_ARTIFACTS"
-        ],
-        "eligibility": [
-          "CURRENT_ASSURE_REUSE_INELIGIBILITY",
-          "MACHINE_VERIFIED_RETENTION_RELEASE_AND_REFERENCE_CLOSURE",
-          "MACHINE_VERIFIED_TARGET_SEPARATION_FROM_PRESERVED_ORIGINALS"
-        ],
-        "execution_gates": [
-          "FRESH_EFFECTIVE_CTRL_OPERATION_SPECIFIC_AUTHORIZATION",
-          "REAL_PREPARED_MUTATION_INTEGRITY",
-          "APPLICABLE_OPS_FAILURE_PRESERVATION"
-        ],
-        "if_any_proof_missing": "KEEP_TARGET_FAIL_CLOSED",
-        "automatic_cleanup": "PERMITTED_ONLY_WITH_ALL_GATES_VERIFIED",
-        "cleanup_authorization_created_by_this_draft": false,
-        "cache_invalidity_alone_authorizes_deletion": false,
-        "source_and_mandatory_records": "MUST_PRESERVE",
-        "cleanup_trigger": "ON_EVIDENCE_CACHE_REUSE_INELIGIBILITY_VERDICT",
-        "proof_interface_cleanup_operation_and_failure_details": "PLAN_AND_MACHINE_CONTRACT",
-        "record_responsibility": "PROVENANCE_AND_RETENTION_ELIGIBILITY_BOUNDARY",
-        "ctrl_responsibility": "FRESH_EXECUTION_AUTHORIZATION",
-        "real_responsibility": "MUTATION_INTEGRITY",
-        "assure_responsibility": "VERIFIED_REUSE_INELIGIBILITY",
-        "current_effect": "DRAFT_ONLY_NO_CLEANUP_EXECUTION_OR_ACTIVE_TRANSITION",
-        "trigger_effect": "CANDIDATE_IDENTIFICATION_ONLY",
-        "attempt_execution_boundary": "SEPARATE_EFFECTIVE_CTRL_AUTHORIZED_REAL_MUTATION",
-        "if_verification_is_read_only": "NO_MUTATION_OR_STATE_MATERIALIZATION",
-        "check_all_existing_gates_again_at_cleanup_execution": true,
-        "background_independent_sweep_current_release_requirement": false,
-        "event_buffering_scheduling_and_idempotency": "PLAN_AND_MACHINE_CONTRACT",
-        "no_new_execution_rights_from_event": true,
-        "failure_scope_policy": "SFP-OPS-0002",
-        "failure_scope": "FAILED_CLEANUP_ATTEMPT_AND_PROVEN_AFFECTED_DEPENDENCY_BOUNDARY",
-        "unknown_impact_disposition": "FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK",
-        "proven_independent_work": "MAY_CONTINUE_WITH_EXISTING_GATES",
-        "record_and_original_evidence_preservation_on_failure": "REQUIRED",
-        "failed_cleanup_retry_policy_owner": "SFP-OPS-0002",
-        "retry_eligibility_requires_rechecked_record_retention_and_source_preservation": true,
-        "retry_status_only_after_verified_mutation_effect": true
-      }
-    }
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-RECORD-0001",
-        "scope": "ENGINE_DRAFT_COMPATIBILITY"
-      }
-    ]
-  }
-}
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-RECORD-0003
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: RECORD
+  title: Engine simulation and operational evidence provenance (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-RECORD-0003#/authority_semantics/unit_ptsip_engine_draft
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0012
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: RECORD
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-RECORD-0003
+      title: Engine simulation and operational evidence provenance (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_OBSERVATION_AND_OPERATION_PROVENANCE
+      statement: PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+    - SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_RECORD
+      schema_id: ptsip.governance/root-family/record
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+      statement: report와 receipt를 실제 관측 repository/profile/authority revision 및 Artifact snapshot에 결합하고 다른 시점의 결과를 섞지 않는다.
+      non_substitutability: ASSURE의 conformance 판정이나 CTRL의 실행 허용은 그 결과의 재확인 가능한 source provenance를 자동 보존하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+      statement: operation identity, observed evidence와 판단 출처의 보존 및 조회를 정한다. 기록은 새로운 global authority나 live canonical source가
+        되지 않는다.
+      non_substitutability: GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와 원본 receipt를 대체하지 못한다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/family_definition/source_scope
+    value: []
+  - id: SRC-0011
+    source_pointer: /authority_semantics/unit_ptsip_engine_draft
+    value:
+      domain: PTSIP_ENGINE
+      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      approved_decisions:
+        evidence_tracks:
+        - ISOLATED_SIMULATION
+        - OPERATIONAL_OBSERVATION
+        reuse_requires_current_conditions_applicability: true
+        outcome_provenance: ENGINE_VERSION_CONTRACT_SOURCE_ENVIRONMENT_WORKLOAD_EVALUATION_OBJECTIVE
+        cached_record_is_not_new_authority: true
+        recording_a_success_is_not_conformance: true
+        startup_reporting_option: A_USER_EXPLICIT
+        startup_reporting_decision_recorded_at: '2026-10-11'
+        startup_reporting_scope: FAILED_OR_INELIGIBLE_ENGINE_ONLY
+        startup_reporting_includes_unverified_as_ineligible: true
+        startup_reporting_requires_full_successful_engine_inventory: false
+        startup_reporting_requires_per_successful_engine_status: false
+        startup_reporting_requires_success_only_summary: false
+        startup_reporting_is_not_complete_engine_runtime_state: false
+        startup_reporting_result_semantics_owner: SFP-CTRL-0002
+        mandatory_operation_provenance_unchanged: true
+        error_report_payload_contract: PLAN_AND_MACHINE_CONTRACT
+        startup_failure_report_information_choice: B_USER_EXPLICIT
+        startup_failure_report_information_decision_recorded_at: '2026-10-11'
+        startup_reporting_required_information:
+        - REGISTERED_ENGINE_IDENTITY
+        - ACTIVATION_OR_ELIGIBILITY_FAILURE_TYPE
+        - UNMET_REGISTERED_CONTRACT_OR_VERIFICATION_CONDITION_REFERENCE
+        failure_reference_semantic_scope: CURRENT_APPLICABLE_REGISTERED_CONTRACT_OR_MACHINE_VERIFICATION_CONDITION
+        failure_reference_provenance: MACHINE_VERIFIED_SOURCE_AND_OBSERVED_ACTIVATION_CONTEXT
+        unverified_reference_cannot_be_claimed_as_verified: true
+        failure_report_payload_format_authority: PLAN_AND_MACHINE_CONTRACT
+        startup_reporting_success_inventory_requirement: NOT_REQUIRED_UNCHANGED
+        startup_unverifiable_failure_reference_handling: A_EMIT_SEPARATE_INCOMPLETE_DIAGNOSTIC
+        startup_unverifiable_failure_reference_approval: USER_EXPLICIT_OPTION_A
+        startup_unverifiable_failure_reference_decided_at: '2026-10-11'
+        startup_incomplete_diagnostic_disposition: REPORT_ONLY_VERIFIED_FACTS_AND_EXPLICITLY_MARK_REFERENCE_UNVERIFIED
+        startup_complete_failure_report_requires_validated_condition_reference: true
+        startup_incomplete_diagnostic_status_authority: RECORD_REPORT_COMPLETENESS_ONLY_NOT_ASSURE_CONFORMANCE
+        startup_diagnostic_report_payload_shape: PLAN_AND_MACHINE_CONTRACT
+        startup_failure_diagnostic_history_retention: EXISTING_MANDATORY_RECORD_ONLY_NO_ADDITIONAL_STARTUP_DIAGNOSTIC_HISTORY
+        startup_failure_diagnostic_history_retention_choice: A_USER_EXPLICIT
+        startup_failure_diagnostic_history_retention_decided_at: '2026-10-11'
+        startup_failure_diagnostic_separate_history_required_for_current_release: false
+        startup_incomplete_diagnostic_separate_history_required_for_current_release: false
+        existing_mandatory_record_retention_policy_ref: SFP-RECORD-0001
+        current_release_diagnostic_reporting_not_conditional_on_separate_history_persistence: true
+        separate_diagnostic_history_future_requirement: NOT_APPROVED_REQUIRES_SEPARATE_POLICY_DECISION
+        evidence_cache_invalidation_judgment_choice: B_USER_EXPLICIT
+        evidence_cache_invalidation_judgment_recorded_at: '2026-10-11'
+        evidence_cache_invalidation_judgment_timing: AT_EACH_REUSE_REQUEST
+        evidence_cache_reuse_required_validation:
+        - CURRENT_APPLICABLE_NORMATIVE_CONTRACT
+        - CURRENT_VERIFIED_SOURCE_AND_RELEVANT_DEPENDENCIES
+        - CURRENT_APPLICABILITY_CONDITIONS
+        evidence_cache_reuse_eligibility: ONLY_IF_ALL_CURRENT_REUSE_OBLIGATIONS_MACHINE_VERIFIED
+        cache_verification_missing_unknown_invalid_or_mismatch: NOT_REUSABLE
+        invalid_evidence_cache_outcome: REUSE_ELIGIBILITY_REJECTED_NOT_SOURCE_RECORD_DELETION
+        eager_change_triggered_cache_invalidation: DEFERRED_NOT_CURRENT_RELEASE_REQUIRED
+        eager_change_triggered_cache_invalidation_future_authorization: SEPARATE_USER_POLICY_APPROVAL_REQUIRED
+        cache_reuse_verdict_authority: SFP-ASSURE-0004
+        mandatory_evidence_provenance_retention: UNCHANGED_SFP_RECORD_0001
+        evidence_cache_cleanup_policy_choice: B_USER_EXPLICIT
+        evidence_cache_cleanup_policy_decision_date: '2026-10-11'
+        evidence_cache_cleanup_direction: AUTOMATIC_CLEANUP_ALLOWED_AFTER_MACHINE_VERIFIED_RETENTION_RELEASE_AND_SEPARATE_EXECUTION_AUTHORIZATION
+        evidence_cache_cleanup_candidate_scope: PROVEN_DISPOSABLE_NON_AUTHORITATIVE_DERIVED_EVIDENCE_CACHE_ONLY
+        evidence_cache_cleanup_prerequisites:
+        - ASSURE_VERIFIED_REUSE_INELIGIBILITY
+        - MACHINE_VERIFIED_NO_APPLICABLE_RETENTION_OR_REFERENCE_OBLIGATION
+        - VERIFIED_DISJOINT_FROM_ORIGINAL_EVIDENCE_AND_MANDATORY_RECORDS
+        - FRESH_EFFECTIVE_CTRL_OPERATION_SPECIFIC_CLEANUP_AUTHORIZATION
+        - REAL_COMPLIANT_MUTATION_INTEGRITY_AND_READ_ONLY_BOUNDARY
+        cache_reuse_ineligibility_alone_grants_cleanup_authorization: false
+        cleanup_without_machine_verified_retention_release: FORBIDDEN
+        cleanup_without_fresh_effective_mutation_authority: FORBIDDEN
+        cleanup_target_is_original_evidence_or_mandatory_record: FORBIDDEN
+        cleanup_trigger_or_schedule: REUSE_INELIGIBILITY_EVENT_AS_CLEANUP_CANDIDATE_ONLY
+        cleanup_execution_and_failure_contract: PLAN_AND_MACHINE_CONTRACT_WITH_EXISTING_CTRL_REAL_OPS
+        no_new_record_retention_override: true
+        evidence_cache_cleanup_trigger_choice: A_USER_EXPLICIT
+        evidence_cache_cleanup_trigger_decision_date: '2026-10-11'
+        cleanup_attempt_boundary: SEPARATE_FRESHLY_AUTHORIZED_MUTATING_OPERATION
+        cleanup_trigger_grants_execution_authority: false
+        cleanup_trigger_grants_retention_release: false
+        cleanup_trigger_alone_requires_inline_deletion: false
+        cleanup_independent_periodic_scan_required_for_current_release: false
+        cleanup_read_only_reuse_validation_side_effect: NONE
+        cleanup_retry_or_secondary_scheduling: PLAN_WITHOUT_NEW_AUTHORITY
+      invariants:
+        every_record_keeps_origin_and_observation_context: true
+        unlike_conditions_must_not_be_silently_merged: true
+        provenance_identity_must_remain_queryable: true
+        selection_winner_not_defined_by_most_recent_receipt: true
+        startup_external_report_may_omit_eligible_successful_engine_entries: true
+        startup_external_report_must_include_failed_or_ineligible_engine_entries: true
+        no_failed_entry_must_not_be_inferred_as_all_engines_verified_or_active: true
+        incomplete_external_startup_report_must_not_be_treated_as_complete_activation_state: true
+        startup_report_filtering_cannot_suppress_mandatory_operation_receipts: true
+        per_engine_outcome_and_identity_preservation_unaffected: true
+        source_bound_record_provenance_and_retention_unchanged: true
+        failure_report_cannot_create_execution_write_or_retry_authority: true
+        report_visibility_choice_does_not_activate_draft_runtime: true
+        each_reported_startup_failure_requires_registered_engine_identity: true
+        each_reported_startup_failure_requires_failure_type: true
+        each_reported_startup_failure_requires_unmet_contract_or_verification_condition_reference: true
+        reference_must_resolve_to_applicable_registered_contract_or_verification_gate: true
+        failed_condition_reference_must_correspond_to_observed_failure_context: true
+        ai_inferred_or_fabricated_failure_condition_reference: FORBIDDEN
+        invalid_or_unverifiable_reference_must_not_be_reported_as_verified: true
+        engine_identity_and_reference_scope_must_not_be_silently_cross_bound: true
+        new_required_report_information_does_not_require_success_engine_inventory: true
+        required_failure_report_information_does_not_grant_execution_retry_or_write_authority: true
+        reporting_contract_decision_does_not_activate_engine_runtime: true
+        missing_or_unverifiable_condition_reference_requires_incomplete_diagnostic: true
+        incomplete_diagnostic_only_contains_verified_facts: true
+        incomplete_diagnostic_must_explicitly_identify_reference_as_unverified: true
+        incomplete_diagnostic_must_not_be_marked_complete_failure_report: true
+        missing_reference_must_not_be_fabricated_or_synthetically_resolved: true
+        incomplete_report_status_does_not_override_assure_conformance_judgment: true
+        incompleteness_does_not_grant_execution_or_reuse_eligibility: true
+        failed_or_ineligible_engine_remains_inactive_unless_fresh_eligibility_passes: true
+        independent_eligible_engines_can_remain_active: true
+        existing_mandatory_record_provenance_preserved: true
+        incomplete_diagnostic_policy_does_not_activate_engine_runtime: true
+        no_extra_startup_diagnostic_history_retention_obligation_current_release: true
+        failure_or_incomplete_diagnostic_report_does_not_imply_separate_history_persistence: true
+        preexisting_mandatory_receipts_and_provenance_requirements_remain_binding: true
+        diagnostic_reporting_scope_and_required_failure_information_unchanged: true
+        incompleteness_diagnostic_resolution_unchanged: true
+        absence_of_separate_diagnostic_history_must_not_erase_mandatory_record: true
+        retention_scope_choice_does_not_authorize_record_deletion: true
+        retention_scope_choice_does_not_authorize_new_writes: true
+        future_separate_history_requirement_needs_separate_user_policy_authorization: true
+        retention_scope_decision_does_not_activate_engine_runtime: true
+        evidence_cache_reuse_must_revalidate_at_each_reuse_request: true
+        past_cache_validity_or_success_cannot_substitute_current_verification: true
+        reuse_requires_current_registered_contract_source_and_applicability_checks: true
+        missing_unknown_or_mismatched_required_validation_blocks_reuse: true
+        cache_record_presence_does_not_grant_reuse_conformance_or_execution_authority: true
+        evidence_source_and_mandatory_receipts_must_survive_cache_reuse_rejection: true
+        cache_ineligibility_is_not_automatic_source_record_deletion: true
+        validation_authority_remains_assure_and_is_not_created_by_record: true
+        eager_invalidating_change_watch_is_not_current_release_obligation: true
+        deferred_eager_watch_not_automatically_authorized: true
+        prior_approved_engine_state_exact_match_policy_scope_unchanged: true
+        missing_evidence_reuse_does_not_authorize_unverified_automatic_recomputation: true
+        cached_evidence_plan_contract_methods_not_resolved_by_policy_choice: true
+        cache_reuse_timing_direction_does_not_activate_engine_runtime: true
+        cache_cleanup_may_be_automated_only_after_separate_cleanup_eligibility_and_execution_authorization: true
+        cache_reuse_denial_is_not_proof_of_retention_release: true
+        cache_record_absence_of_reference_is_not_proof_of_release: true
+        unknown_ambiguous_or_unverified_retention_obligation: FAIL_CLOSED_KEEP
+        unknown_ambiguous_or_unverified_cleanup_permission: FAIL_CLOSED_NO_MUTATION
+        derived_cache_classification_must_be_machine_verified: true
+        original_evidence_cannot_be_targeted_by_cache_cleanup: true
+        mandatory_record_receipts_provenance_and_history_cannot_be_targeted_by_cache_cleanup: true
+        retention_protection_precedes_cleanup_optimization: true
+        cleanup_does_not_create_new_retention_deletion_or_authorization_authority: true
+        cleanup_eligibility_judgment_is_not_execution_or_write_permission: true
+        cleanup_must_not_modify_read_only_operation_side_effects: true
+        separately_approved_activation_draft_not_automatically_activated: true
+        cleanup_trigger_not_silently_decided_by_permission_direction: true
+        evidence_cache_reuse_denial_may_identify_cleanup_candidate: true
+        cleanup_candidate_recognition_is_not_cleanable_proof: true
+        no_inline_mutation_from_read_only_reuse_check: true
+        candidate_trigger_does_not_bypass_retention_reference_or_source_separation_proof: true
+        candidate_trigger_does_not_bypass_fresh_ctrl_delegation_and_real_write_integrity: true
+        no_cleanup_of_uncertain_or_incomplete_evidence_without_verified_release: true
+        standalone_cleanup_sweep_not_required_for_current_release: true
+        automatic_cleanup_attempt_rechecks_all_gates_at_actual_execution: true
+        cleanup_trigger_selection_does_not_activate_draft_runtime: true
+        cleanup_failure_must_preserve_mandatory_record_and_original_evidence: true
+        cleanup_failure_cannot_be_reclassified_as_success_due_to_other_successful_operations: true
+        cleanup_failure_record_information_does_not_grant_recovery_or_write_permission: true
+        cleanup_failure_unknown_effect_requires_ops_safety_classification: true
+        cleanup_retry_must_preserve_original_evidence_and_mandatory_records: true
+        cleanup_retry_may_not_infer_rollback_from_failed_attempt: true
+        cleanup_retry_policy_does_not_grant_deletion_authority: true
+      unresolved_decisions:
+      - id: EVIDENCE_RECORD_AND_CACHE_DATA_MODEL
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      - id: EVIDENCE_RETENTION_AND_INVALIDATION_HANDOFF
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      activation_requirements:
+        owner_decisions_all_resolved: true
+        responsibility_mapping_verified: true
+        conflicts_with_existing_active_policies_resolved: true
+        machine_contract_and_registry_validation_passed: true
+        explicit_separate_user_active_approval_required: true
+      out_of_scope:
+      - IMMEDIATE_RUNTIME_ACTIVATION
+      - EXISTING_ACTIVE_POLICY_MUTATION
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      startup_failure_only_report_direction:
+        policy_subject: ENGINE_STARTUP_EXTERNAL_REPORT_SCOPE
+        current_release: FAILURE_AND_INELIGIBILITY_ONLY
+        report_population:
+        - ACTIVATION_FAILED
+        - ELIGIBILITY_NOT_MET
+        - ELIGIBILITY_UNVERIFIED
+        full_successful_engine_inventory: NOT_REQUIRED
+        successful_engine_status_listing: NOT_REQUIRED
+        separate_complete_operational_state_view: NOT_AUTHORIZED_BY_THIS_DECISION
+        failure_identity_and_reason_contract: PLAN_AND_MACHINE_CONTRACT
+        applies_to: STARTUP_REPORTING_ONLY
+        invariant_reference: SFP-CTRL-0002.startup_partial_failure_direction
+        retained_engine_identity_and_activation_outcome: PRESERVE_EXISTING_INTERNAL_RESPONSIBILITY
+        existing_operation_provenance_reporting_and_receipt_obligations: UNCHANGED
+        unrelated_mandatory_validation_report_requirements: UNCHANGED
+        no_runtime_activation: DRAFT_ONLY
+        required_information:
+        - REGISTERED_ENGINE_IDENTITY
+        - FAILURE_TYPE
+        - UNMET_REGISTERED_CONTRACT_OR_MACHINE_VERIFICATION_CONDITION_REF
+        reference_requirement: EXISTING_REGISTERED_AND_MACHINE_RESOLVABLE
+        reference_validation: CURRENT_APPLICABLE_GATE_AND_OBSERVED_FAILURE_BOUND
+        no_inferred_references: true
+        missing_or_unresolvable_reference_handling: SEPARATE_INCOMPLETE_DIAGNOSTIC_VERIFIED_FACTS_ONLY
+        payload_serialization_and_field_names: PLAN_AND_MACHINE_CONTRACT
+        complete_report_requires_verifiable_condition_reference: true
+        incomplete_diagnostic_ref: startup_incomplete_diagnostic_handling
+      startup_incomplete_diagnostic_handling:
+        decision: A_SEPARATE_INCOMPLETE_DIAGNOSTIC
+        trigger: REQUIRED_FAILED_CONDITION_REFERENCE_MISSING_OR_UNVERIFIABLE
+        report_class: ENGINE_STARTUP_FAILURE_DIAGNOSTIC
+        report_completeness: INCOMPLETE
+        confirmed_information_policy: VERIFIED_FACTS_ONLY
+        reference_status: EXPLICITLY_UNVERIFIED
+        completed_failure_report_status: NOT_GRANTED
+        required_full_report_reference_policy: UNCHANGED_VERIFIED_REGISTERED_CONTRACT_OR_CONDITION_REF
+        incomplete_reference_must_not_be_fabricated: true
+        assure_conformance_result: NOT_INFERRED_FROM_REPORT_COMPLETENESS
+        target_engine_activation_eligibility: UNCHANGED_FAIL_CLOSED
+        independent_engine_activation: UNCHANGED
+        failure_report_reference_restoration_and_resolution: PLAN_OR_SEPARATE_POLICY
+        concrete_schema: PLAN_AND_MACHINE_CONTRACT
+        current_effect: DRAFT_ONLY_NO_RUNTIME_ACTIVATION
+      startup_failure_diagnostic_retention_boundary:
+        policy_subject: ENGINE_STARTUP_FAILURE_DIAGNOSTIC_SEPARATE_HISTORY_RETENTION
+        current_release: NO_EXTRA_DIAGNOSTIC_HISTORY_RETENTION_OBLIGATION
+        existing_authority: SFP-RECORD-0001
+        mandatory_record_and_source_provenance: PRESERVED
+        covers_diagnostic_completeness:
+        - COMPLETE_FAILURE_REPORT
+        - INCOMPLETE_DIAGNOSTIC
+        report_emission_obligation: UNCHANGED
+        report_completeness_semantics: UNCHANGED
+        separate_diagnostic_persistence_required: false
+        absence_of_extra_history_not_sufficient_to_discard_existing_mandatory_receipt: true
+        optional_future_history_policy: SEPARATE_USER_APPROVAL_REQUIRED
+        retention_execution_and_serialization: PLAN_SUBJECT_TO_ACTIVE_RECORD_AND_REAL_AUTHORITY
+        implementation_status: DRAFT_ONLY_NO_RUNTIME_ACTIVATION
+      evidence_cache_reuse_eligibility_direction:
+        policy_subject: EVIDENCE_CACHE_REUSE_ELIGIBILITY_DECISION_TIME
+        selected_option: B_VALIDATE_ON_REUSE
+        current_release_reuse_decision_trigger: EACH_CACHE_REUSE_REQUEST
+        mandatory_current_verification:
+        - CURRENT_APPLICABLE_NORMATIVE_CONTRACT
+        - VERIFIED_CURRENT_SOURCE_AND_DEPENDENCIES
+        - REGISTERED_APPLICABILITY_CONDITIONS
+        verification_verdict_owner: ASSURE
+        record_provenance_and_history_owner: RECORD
+        unverified_missing_ambiguous_incompatible: DENY_REUSE_FAIL_CLOSED
+        valid_on_request: ELIGIBLE_ONLY_SUBJECT_TO_OTHER_EXISTING_ASSURE_AND_CTRL_GATES
+        original_evidence_and_mandatory_record_preservation: REQUIRED
+        cache_not_reusable_means_source_deletion: false
+        eager_change_detection:
+          status: DEFERRED
+          current_release_requirement: false
+          automatically_authorized: false
+          separate_user_policy_decision_required: true
+        implementation_and_binding_contract: PLAN_AND_MACHINE_CONTRACT
+        current_effect: DRAFT_ONLY_NO_RUNTIME_ACTIVATION
+      evidence_cache_remaining_contract_design:
+      - REUSE_CHECK_IDENTITY_AND_DEPENDENCY_SNAPSHOT_BINDING
+      - REUSE_VALIDATION_EVIDENCE_AND_ASSURE_HANDOFF
+      - RECORD_RETENTION_AND_CACHE_INVALIDATION_STATUS_HANDOFF
+      evidence_cache_cleanup_direction:
+        policy_subject: EVIDENCE_CACHE_AUTOMATED_CLEANUP_ELIGIBILITY
+        approved_option: B_CONDITIONAL_AUTOMATIC_CLEANUP
+        scope: DISPOSABLE_DERIVED_NON_AUTHORITATIVE_EVIDENCE_CACHE_COPIES
+        not_in_scope:
+        - ORIGINAL_EVIDENCE
+        - MANDATORY_RECORD_RECEIPTS
+        - REQUIRED_PROVENANCE_AND_HISTORY
+        - OTHER_PROTECTED_ARTIFACTS
+        eligibility:
+        - CURRENT_ASSURE_REUSE_INELIGIBILITY
+        - MACHINE_VERIFIED_RETENTION_RELEASE_AND_REFERENCE_CLOSURE
+        - MACHINE_VERIFIED_TARGET_SEPARATION_FROM_PRESERVED_ORIGINALS
+        execution_gates:
+        - FRESH_EFFECTIVE_CTRL_OPERATION_SPECIFIC_AUTHORIZATION
+        - REAL_PREPARED_MUTATION_INTEGRITY
+        - APPLICABLE_OPS_FAILURE_PRESERVATION
+        if_any_proof_missing: KEEP_TARGET_FAIL_CLOSED
+        automatic_cleanup: PERMITTED_ONLY_WITH_ALL_GATES_VERIFIED
+        cleanup_authorization_created_by_this_draft: false
+        cache_invalidity_alone_authorizes_deletion: false
+        source_and_mandatory_records: MUST_PRESERVE
+        cleanup_trigger: ON_EVIDENCE_CACHE_REUSE_INELIGIBILITY_VERDICT
+        proof_interface_cleanup_operation_and_failure_details: PLAN_AND_MACHINE_CONTRACT
+        record_responsibility: PROVENANCE_AND_RETENTION_ELIGIBILITY_BOUNDARY
+        ctrl_responsibility: FRESH_EXECUTION_AUTHORIZATION
+        real_responsibility: MUTATION_INTEGRITY
+        assure_responsibility: VERIFIED_REUSE_INELIGIBILITY
+        current_effect: DRAFT_ONLY_NO_CLEANUP_EXECUTION_OR_ACTIVE_TRANSITION
+        trigger_effect: CANDIDATE_IDENTIFICATION_ONLY
+        attempt_execution_boundary: SEPARATE_EFFECTIVE_CTRL_AUTHORIZED_REAL_MUTATION
+        if_verification_is_read_only: NO_MUTATION_OR_STATE_MATERIALIZATION
+        check_all_existing_gates_again_at_cleanup_execution: true
+        background_independent_sweep_current_release_requirement: false
+        event_buffering_scheduling_and_idempotency: PLAN_AND_MACHINE_CONTRACT
+        no_new_execution_rights_from_event: true
+        failure_scope_policy: SFP-OPS-0002
+        failure_scope: FAILED_CLEANUP_ATTEMPT_AND_PROVEN_AFFECTED_DEPENDENCY_BOUNDARY
+        unknown_impact_disposition: FAIL_CLOSED_BLOCK_POTENTIALLY_AFFECTED_WORK
+        proven_independent_work: MAY_CONTINUE_WITH_EXISTING_GATES
+        record_and_original_evidence_preservation_on_failure: REQUIRED
+        failed_cleanup_retry_policy_owner: SFP-OPS-0002
+        retry_eligibility_requires_rechecked_record_retention_and_source_preservation: true
+        retry_status_only_after_verified_mutation_effect: true
+  - id: SRC-0012
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: SFP-RECORD-0001
+        scope: ENGINE_DRAFT_COMPATIBILITY
+  source_document:
+    path: src/policy/RECORD/SFP-RECORD-0003.yaml
+    sha256: e9af25e22c38c91638e8c97146f625e1ca05aac19fb78f528300aba795e8952c
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

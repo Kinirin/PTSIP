@@ -1,256 +1,398 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-INFO-0007
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: INFO
   title: Context Observation and Evidence Identity Binding
+Policy_Lifecycle:
   status: DRAFT
-authority_subject:
-  id: SUP_CONTEXT_OBSERVATION_EVIDENCE_IDENTITY_BINDING
-  statement: Context의 개별 관측 및 Evidence에 대한 PTSIP 공통 참조 식별자와 원본 제공자 식별자의 검증된 연결을 소유한다.
-exclusive_kernel:
-  - SUP_CONTEXT_OBSERVATION_COMMON_REFERENCE_IDENTITY
-  - SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
-authority_contract:
-  authority_type: ROOT_FAMILY_INFO
-  schema_id: ptsip.governance/root-family/info
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-      - id: SUP_CONTEXT_OBSERVATION_COMMON_REFERENCE_IDENTITY
-        statement: PTSIP가 개별 관측 및 Evidence의 기계적 참조를 위한 공통 안정 식별자를 부여한다.
-        non_substitutability: 원본 제공자의 독자적인 ID, AI의 의미 추측 또는 Analysis의 기록 ID가 Context 관측의 공통 ID 권위를 대신하지 않는다.
-      - id: SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
-        statement: PTSIP 공통 ID와 원본 제공자 ID 및 출처 간 연결은 검증된 등록 관계로만 인정한다.
-        non_substitutability: 공통 참조 ID의 발급은 RECORD가 소유하는 원본 출처와 이력 보존을 대체하거나 신규 관측 사실을 창설하지 않는다.
-  unit_context_evidence_identity_approved_decisions:
-    policy_direction: PTSIP_COMMON_ID_WITH_VERIFIED_PROVIDER_ID_BINDING
-    common_reference_identity_issuer: PTSIP_AUTOMATED
-    common_reference_identity_kind: STABLE_INDIVIDUAL_OBSERVATION_AND_EVIDENCE_ID
-    common_reference_identity_semantics: OPAQUE_NON_SEMANTIC
-    common_reference_identity_interpretation: EXACT_MATCH_ONLY
-    observation_evidence_semantic_metadata_authority: VERIFIED_SEPARATE_CONTEXT_EVIDENCE_METADATA
-    common_reference_identity_uniqueness_scope: CONSUMER_REPOSITORY
-    common_reference_identity_independence: REPOSITORY_LOCAL_AUTOMATED_ISSUANCE
-    issued_identity_reassignment: PERMANENTLY_FORBIDDEN_FOR_DISTINCT_OBSERVATION_OR_EVIDENCE
-    issued_identity_retirement_effect: NO_NEW_ASSIGNMENT_ELIGIBILITY
-    issued_identity_history_authority: IDENTITY_NON_REASSIGNMENT_INDEPENDENT_OF_RECORD_RETENTION
-    cross_repository_identity_interpretation: EXPLICIT_REPOSITORY_SCOPE_REQUIRED
-    repository_fork_lineage_policy: OPTIONAL_VERIFIED_AUDIT_LINEAGE
-    fork_lineage_reuse_role: AUDIT_ONLY_NO_ANALYSIS_REUSE
-    fork_analysis_execution: INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT
-    fork_lineage_registration: NOT_REQUIRED
-    fork_audit_lineage_derivation: EXISTING_MACHINE_VERIFIED_LOCAL_RECORDS_ONLY
-    fork_audit_derivation_trigger: EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY
-    fork_audit_derivation_execution: ON_DEMAND_READ_ONLY
-    fork_audit_lineage_result: OPTIONAL_NON_AUTHORITATIVE_DERIVED_PROJECTION
-    pre_fork_source_identity: ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED
-    post_fork_observation_identity: FORK_LOCAL_INDEPENDENT_ID
-    repository_name_location_change_policy: RESET_IDENTITY_SCOPE
-    relocation_historical_identity: PRESERVE_ORIGINAL_REPOSITORY_SCOPE_AND_ID
-    relocation_new_observation_identity: NEW_REPOSITORY_SCOPE_LOCAL_ID
-    relocation_id_continuity: NO_AUTOMATIC_SCOPE_INHERITANCE
-    relocation_analysis_execution: INDEPENDENT_REANALYSIS_OF_NEW_CONSUMER_CONTEXT
-    relocation_historical_analysis_reuse: FORBIDDEN
-    relocation_old_analysis_candidate_discovery: NOT_REQUIRED
-    relocation_cross_scope_relation_registration_for_analysis: NOT_REQUIRED
-    relocation_prior_reuse_policy: SUPERSEDED_KEEP_LATEST_INDEPENDENT_REANALYSIS
-    original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
-    missing_provider_event_id_registration: CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION
-    provider_event_id_requirement: OPTIONAL_WITH_VERIFIED_ALTERNATIVE
-    missing_provider_event_id_reuse: SEPARATE_SAME_EVENT_PROOF_REQUIRED
-    analysis_reference_identity: PTSIP_COMMON_CONTEXT_EVIDENCE_ID
-    analysis_reference_owner: ANALYSIS
-    analysis_discovery_direction: CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX
-    mandatory_record_provenance: PRESERVED
-    reobservation_identity_policy: CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE
-    verified_same_event: REUSE_EXISTING_COMMON_ID
-    verified_distinct_event: ISSUE_NEW_COMMON_ID
-    unresolved_event_identity: NO_AUTOMATIC_MERGE_OR_REUSE
-    event_identity_proof_authority: PTSIP_COMMON_PROOF_WITH_PROVIDER_TYPE_EXTENSION
-    common_proof_obligations_owner: PTSIP
-    provider_type_proof_extension: REGISTERED_MACHINE_VERIFIABLE_CONTRACT
-    duplicate_event_manual_mapping: NOT_REQUIRED
-  unit_context_evidence_identity_invariants:
-    authority:
-      info_owns_identity_and_binding_semantics: true
-      record_owns_source_bound_provenance_and_history: true
-      analysis_owns_registered_evidence_references: true
-      provider_id_alone_confers_ptsip_reference_authority: false
-      issued_id_alone_proves_observation_or_evidence: false
-    identity_uniqueness:
-      consumer_repository_scoped_uniqueness_required: true
-      no_global_issuer_or_central_id_registry_required: true
-      independent_ptsip_issuance_required: true
-      newly_issued_id_must_not_collide_with_registered_local_identity: true
-      ambiguous_or_colliding_local_identity: FAIL_CLOSED
-      unqualified_id_does_not_identify_cross_repository_event: true
-      foreign_repository_id_string_equality_proves_same_event: false
-      cross_repository_reference_requires_explicit_verified_repository_scope: true
-      repository_fork_semantics: OPTIONAL_VERIFIED_AUDIT_LINEAGE
-      repository_relocation_semantics: RESET_IDENTITY_SCOPE
-    identity_opacity:
-      opaque_identity_required: true
-      id_value_must_not_encode_observation_timestamp: true
-      id_value_must_not_encode_source_or_provider: true
-      id_value_must_not_encode_feature_or_classification: true
-      id_value_must_not_encode_observation_or_evidence_type: true
-      id_value_must_not_encode_mutable_semantic_attributes: true
-      source_time_type_and_classification_retrieved_from_verified_metadata: true
-      no_semantic_inference_from_id_text: true
-      no_semantic_or_temporal_ordering_from_id_text: true
-      id_assignment_and_reuse_must_not_depend_on_descriptive_meaning: true
-      metadata_change_must_not_rewrite_issued_id: true
-      exact_registered_identity_resolution_required: true
-      physical_id_encoding_and_generation_mechanism: PLAN_AND_MACHINE_CONTRACT
-      no_change_to_provider_native_identity_format_required: true
-      original_record_provenance_authority_unaffected: true
-    identity_non_reassignment:
-      within_consumer_repository_scope: REQUIRED
-      ever_issued_id_must_not_identify_distinct_observation_or_evidence: true
-      expiry_retirement_invalidation_or_unregistration_does_not_release_id: true
-      record_cleanup_or_retention_release_does_not_release_id: true
-      no_current_registry_entry_is_not_proof_of_never_issued: true
-      new_issuance_requires_proven_never_assigned_in_scope: true
-      issued_id_identity_meaning_must_remain_stable: true
-      same_event_verified_reobservation_may_reference_existing_id: true
-      same_event_reobservation_is_not_new_assignment: true
-      event_equivalence_still_requires_registered_machine_proof: true
-      unknown_prior_issuance_or_identity_history: FAIL_CLOSED_NO_NEW_ASSIGNMENT
-      no_new_record_retention_authority_created: true
-      historical_receipts_not_modified_or_deleted_by_identity_policy: true
-    repository_relocation:
-      name_or_location_change_requires_identity_scope_reset: true
-      prior_observation_ids_keep_original_repository_scope: true
-      existing_historical_source_receipts_must_be_preserved: true
-      historical_identity_or_provenance_rewrite: FORBIDDEN
-      prior_ids_are_not_automatically_rebound_to_new_scope: true
-      new_observations_use_new_repository_scoped_identity: true
-      location_change_alone_grants_same_event_identity: false
-      location_change_alone_grants_analysis_reuse: false
-      cross_scope_relation_not_required_for_new_analysis: true
-      old_repository_access_not_required_for_new_analysis: true
-      fork_lineage_rules_remain_independent: true
-    relocation_independent_analysis:
-      current_consumer_scope_is_sole_new_analysis_identity_authority: true
-      current_context_and_individual_evidence_drive_new_analysis: true
-      previous_repository_analysis_is_not_candidate_for_automatic_reuse: true
-      old_repository_lookup_is_not_required: true
-      old_repository_relation_discovery_is_not_required: true
-      cross_scope_registration_cannot_block_current_analysis: true
-      previous_analysis_validation_is_not_inherited: true
-      historical_source_and_record_identity_preserved: true
-      historical_receipts_are_not_rewritten_or_deleted: true
-      existing_analysis_to_evidence_reference_ownership_preserved: true
-      current_context_to_analysis_reverse_lookup_remains_local: true
-      reobservation_event_identity_proof_still_required: true
-      fork_lineage_policy_reconciled_as_independent_analysis_with_optional_audit: true
-    fork_lineage:
-      distinct_consumer_repositories_keep_independent_identity_authority: true
-      registered_audit_lineage_requires_verified_origin_relationship: true
-      audit_lineage_recording_is_optional: true
-      audit_derivation_must_require_explicit_audit_request: true
-      audit_derivation_not_triggered_by_record_creation: true
-      audit_derivation_not_triggered_by_normal_context_collection: true
-      audit_derivation_not_triggered_by_analysis_generation_or_validation: true
-      audit_derivation_not_triggered_by_default_candidate_lookup: true
-      audit_derivation_background_precomputation_required: false
-      missing_audit_request_does_not_initiate_derivation: true
-      separate_audit_lineage_registry_required: false
-      derived_audit_source_must_be_existing_verified_record: true
-      derived_audit_origin_relation_requires_machine_verified_proof: true
-      audit_lineage_must_not_be_inferred_from_git_similarity_or_paths: true
-      origin_repository_external_lookup_required: false
-      audit_derivation_must_not_expand_record_retention_obligation: true
-      derivation_must_not_mutate_original_record_or_receipt: true
-      derived_audit_is_non_authoritative_projection: true
-      missing_or_incomplete_record_proof_yields_no_audit_assertion: true
-      missing_audit_proof_does_not_block_new_analysis: true
-      optional_audit_derivation_cannot_grant_analysis_reuse: true
-      unavailable_audit_lineage_does_not_block_independent_analysis: true
-      origin_repository_lookup_is_not_required_for_current_analysis: true
-      fork_analysis_uses_current_consumer_context_and_evidence: true
-      origin_analysis_is_not_reuse_candidate: true
-      origin_analysis_discovery_is_not_required: true
-      provenance_of_inherited_observations_preserved: true
-      copied_pre_fork_observation_ids_keep_origin_repository_scope: true
-      newly_observed_fork_events_use_fork_repository_scoped_ids: true
-      lineage_alone_does_not_prove_same_event: true
-      lineage_alone_does_not_authorize_reuse: true
-      current_analysis_qualification_requires_local_evidence_and_dependencies: true
-      unverified_or_ambiguous_audit_lineage: FAIL_CLOSED_FOR_AUDIT_ASSERTION_ONLY
-      ai_inferred_or_fuzzy_lineage: FORBIDDEN
-      manual_per_record_lineage_mapping_required: false
-    registration:
-      verified_provider_source_binding_required: true
-      missing_provider_event_id_alone_forbids_registration: false
-      missing_event_id_cannot_waive_provider_and_source_verification: true
-      unverified_or_ambiguous_binding: FAIL_CLOSED
-      automatic_unverified_alias_or_equivalence_inference: FORBIDDEN
-      provider_identity_collision_may_not_merge_observations: true
-      identical_payload_alone_proves_same_event: false
-      identical_provider_id_alone_proves_same_event: false
-      provider_replay_and_new_event_must_remain_distinguishable: true
-      evidence_source_and_observed_revision_must_remain_traceable: true
-    missing_provider_event_id:
-      provider_identity_and_source_must_remain_verifiable: true
-      individual_observation_must_be_machine_verified: true
-      registered_source_and_observation_contract_required: true
-      verified_alternative_may_authorize_new_common_id: true
-      provider_event_id_may_not_be_fabricated: true
-      common_id_issuance_does_not_prove_event_equivalence: true
-      same_event_id_reuse_requires_separate_contract_proof: true
-      ambiguous_observation_or_source: FAIL_CLOSED
-      unproven_identity_collision: FAIL_CLOSED_NO_MERGE_OR_REUSE
-      mandatory_record_provenance_unaffected: true
-    proof_authority:
-      ptsip_common_proof_obligations_required: true
-      common_proof_obligations_cannot_be_weakened_by_provider_type: true
-      provider_type_specific_rules_must_be_registered: true
-      provider_type_specific_proof_must_be_machine_verifiable: true
-      provider_type_extension_alone_confers_identity_authority: false
-      source_and_observation_context_binding_required: true
-      unregistered_or_ambiguous_proof_contract: FAIL_CLOSED
-      proof_scope_or_source_revision_unverified: FAIL_CLOSED
-      ai_ad_hoc_event_equivalence_inference: FORBIDDEN
-      manual_duplicate_event_linkage_required: false
-    reobservation:
-      event_identity_requires_registered_machine_verifiable_proof: true
-      same_event_proven: REUSE_EXISTING_COMMON_ID
-      distinct_event_proven: ISSUE_NEW_COMMON_ID
-      identity_unresolved: FAIL_CLOSED_NO_MERGE_OR_REUSE
-      provider_identity_only_as_equivalence_proof: FORBIDDEN
-      payload_similarity_as_equivalence_proof: FORBIDDEN
-      previous_common_identity_must_remain_stable: true
-      reobservation_must_not_rewrite_original_source_receipts: true
-      subsequent_collection_provenance_must_remain_traceable: true
-    reference:
-      individual_observation_or_evidence_granularity: REQUIRED
-      whole_context_snapshot_as_implicit_reference: FORBIDDEN
-      analysis_uses_registered_common_identity: true
-      reverse_lookup_is_non_authoritative_projection: true
-      ambiguous_or_incomplete_reverse_lookup: FAIL_CLOSED
-    ownership:
-      independent_ai_identity_creation: FORBIDDEN
-      common_id_creates_project_policy_authority: false
-      existing_active_context_information_authority_overridden: false
-      existing_record_retention_overridden: false
-  unit_context_evidence_identity_unresolved_decisions:
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_CONTEXT_OBSERVATION_COMMON_REFERENCE_IDENTITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-INFO-0007#/authority_semantics/unit_context_evidence_identity_approved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-INFO-0007#/authority_semantics/unit_context_evidence_identity_invariants
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-INFO-0007#/authority_semantics/unit_context_evidence_identity_unresolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0013
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-INFO-0007
+      title: Context Observation and Evidence Identity Binding
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_CONTEXT_OBSERVATION_EVIDENCE_IDENTITY_BINDING
+      statement: Context의 개별 관측 및 Evidence에 대한 PTSIP 공통 참조 식별자와 원본 제공자 식별자의 검증된 연결을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_CONTEXT_OBSERVATION_COMMON_REFERENCE_IDENTITY
+    - SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_INFO
+      schema_id: ptsip.governance/root-family/info
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_CONTEXT_OBSERVATION_COMMON_REFERENCE_IDENTITY
+      statement: PTSIP가 개별 관측 및 Evidence의 기계적 참조를 위한 공통 안정 식별자를 부여한다.
+      non_substitutability: 원본 제공자의 독자적인 ID, AI의 의미 추측 또는 Analysis의 기록 ID가 Context 관측의 공통 ID 권위를 대신하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_CONTEXT_EVIDENCE_PROVIDER_IDENTITY_BINDING
+      statement: PTSIP 공통 ID와 원본 제공자 ID 및 출처 간 연결은 검증된 등록 관계로만 인정한다.
+      non_substitutability: 공통 참조 ID의 발급은 RECORD가 소유하는 원본 출처와 이력 보존을 대체하거나 신규 관측 사실을 창설하지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/unit_context_evidence_identity_approved_decisions
+    value:
+      policy_direction: PTSIP_COMMON_ID_WITH_VERIFIED_PROVIDER_ID_BINDING
+      common_reference_identity_issuer: PTSIP_AUTOMATED
+      common_reference_identity_kind: STABLE_INDIVIDUAL_OBSERVATION_AND_EVIDENCE_ID
+      common_reference_identity_semantics: OPAQUE_NON_SEMANTIC
+      common_reference_identity_interpretation: EXACT_MATCH_ONLY
+      observation_evidence_semantic_metadata_authority: VERIFIED_SEPARATE_CONTEXT_EVIDENCE_METADATA
+      common_reference_identity_uniqueness_scope: CONSUMER_REPOSITORY
+      common_reference_identity_independence: REPOSITORY_LOCAL_AUTOMATED_ISSUANCE
+      issued_identity_reassignment: PERMANENTLY_FORBIDDEN_FOR_DISTINCT_OBSERVATION_OR_EVIDENCE
+      issued_identity_retirement_effect: NO_NEW_ASSIGNMENT_ELIGIBILITY
+      issued_identity_history_authority: IDENTITY_NON_REASSIGNMENT_INDEPENDENT_OF_RECORD_RETENTION
+      cross_repository_identity_interpretation: EXPLICIT_REPOSITORY_SCOPE_REQUIRED
+      repository_fork_lineage_policy: OPTIONAL_VERIFIED_AUDIT_LINEAGE
+      fork_lineage_reuse_role: AUDIT_ONLY_NO_ANALYSIS_REUSE
+      fork_analysis_execution: INDEPENDENT_REANALYSIS_OF_FORK_CONTEXT
+      fork_lineage_registration: NOT_REQUIRED
+      fork_audit_lineage_derivation: EXISTING_MACHINE_VERIFIED_LOCAL_RECORDS_ONLY
+      fork_audit_derivation_trigger: EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY
+      fork_audit_derivation_execution: ON_DEMAND_READ_ONLY
+      fork_audit_lineage_result: OPTIONAL_NON_AUTHORITATIVE_DERIVED_PROJECTION
+      pre_fork_source_identity: ORIGINAL_REPOSITORY_SCOPE_AND_ID_PRESERVED
+      post_fork_observation_identity: FORK_LOCAL_INDEPENDENT_ID
+      repository_name_location_change_policy: RESET_IDENTITY_SCOPE
+      relocation_historical_identity: PRESERVE_ORIGINAL_REPOSITORY_SCOPE_AND_ID
+      relocation_new_observation_identity: NEW_REPOSITORY_SCOPE_LOCAL_ID
+      relocation_id_continuity: NO_AUTOMATIC_SCOPE_INHERITANCE
+      relocation_analysis_execution: INDEPENDENT_REANALYSIS_OF_NEW_CONSUMER_CONTEXT
+      relocation_historical_analysis_reuse: FORBIDDEN
+      relocation_old_analysis_candidate_discovery: NOT_REQUIRED
+      relocation_cross_scope_relation_registration_for_analysis: NOT_REQUIRED
+      relocation_prior_reuse_policy: SUPERSEDED_KEEP_LATEST_INDEPENDENT_REANALYSIS
+      original_provider_identity: VERIFIED_REGISTERED_SOURCE_BINDING
+      missing_provider_event_id_registration: CONTRACT_VERIFIED_SOURCE_AND_INDIVIDUAL_OBSERVATION
+      provider_event_id_requirement: OPTIONAL_WITH_VERIFIED_ALTERNATIVE
+      missing_provider_event_id_reuse: SEPARATE_SAME_EVENT_PROOF_REQUIRED
+      analysis_reference_identity: PTSIP_COMMON_CONTEXT_EVIDENCE_ID
+      analysis_reference_owner: ANALYSIS
+      analysis_discovery_direction: CONTEXT_TO_ANALYSIS_DERIVED_REVERSE_INDEX
+      mandatory_record_provenance: PRESERVED
+      reobservation_identity_policy: CONTRACT_VERIFIED_SAME_EVENT_ID_REUSE
+      verified_same_event: REUSE_EXISTING_COMMON_ID
+      verified_distinct_event: ISSUE_NEW_COMMON_ID
+      unresolved_event_identity: NO_AUTOMATIC_MERGE_OR_REUSE
+      event_identity_proof_authority: PTSIP_COMMON_PROOF_WITH_PROVIDER_TYPE_EXTENSION
+      common_proof_obligations_owner: PTSIP
+      provider_type_proof_extension: REGISTERED_MACHINE_VERIFIABLE_CONTRACT
+      duplicate_event_manual_mapping: NOT_REQUIRED
+  - id: SRC-0011
+    source_pointer: /authority_semantics/unit_context_evidence_identity_invariants
+    value:
+      authority:
+        info_owns_identity_and_binding_semantics: true
+        record_owns_source_bound_provenance_and_history: true
+        analysis_owns_registered_evidence_references: true
+        provider_id_alone_confers_ptsip_reference_authority: false
+        issued_id_alone_proves_observation_or_evidence: false
+      identity_uniqueness:
+        consumer_repository_scoped_uniqueness_required: true
+        no_global_issuer_or_central_id_registry_required: true
+        independent_ptsip_issuance_required: true
+        newly_issued_id_must_not_collide_with_registered_local_identity: true
+        ambiguous_or_colliding_local_identity: FAIL_CLOSED
+        unqualified_id_does_not_identify_cross_repository_event: true
+        foreign_repository_id_string_equality_proves_same_event: false
+        cross_repository_reference_requires_explicit_verified_repository_scope: true
+        repository_fork_semantics: OPTIONAL_VERIFIED_AUDIT_LINEAGE
+        repository_relocation_semantics: RESET_IDENTITY_SCOPE
+      identity_opacity:
+        opaque_identity_required: true
+        id_value_must_not_encode_observation_timestamp: true
+        id_value_must_not_encode_source_or_provider: true
+        id_value_must_not_encode_feature_or_classification: true
+        id_value_must_not_encode_observation_or_evidence_type: true
+        id_value_must_not_encode_mutable_semantic_attributes: true
+        source_time_type_and_classification_retrieved_from_verified_metadata: true
+        no_semantic_inference_from_id_text: true
+        no_semantic_or_temporal_ordering_from_id_text: true
+        id_assignment_and_reuse_must_not_depend_on_descriptive_meaning: true
+        metadata_change_must_not_rewrite_issued_id: true
+        exact_registered_identity_resolution_required: true
+        physical_id_encoding_and_generation_mechanism: PLAN_AND_MACHINE_CONTRACT
+        no_change_to_provider_native_identity_format_required: true
+        original_record_provenance_authority_unaffected: true
+      identity_non_reassignment:
+        within_consumer_repository_scope: REQUIRED
+        ever_issued_id_must_not_identify_distinct_observation_or_evidence: true
+        expiry_retirement_invalidation_or_unregistration_does_not_release_id: true
+        record_cleanup_or_retention_release_does_not_release_id: true
+        no_current_registry_entry_is_not_proof_of_never_issued: true
+        new_issuance_requires_proven_never_assigned_in_scope: true
+        issued_id_identity_meaning_must_remain_stable: true
+        same_event_verified_reobservation_may_reference_existing_id: true
+        same_event_reobservation_is_not_new_assignment: true
+        event_equivalence_still_requires_registered_machine_proof: true
+        unknown_prior_issuance_or_identity_history: FAIL_CLOSED_NO_NEW_ASSIGNMENT
+        no_new_record_retention_authority_created: true
+        historical_receipts_not_modified_or_deleted_by_identity_policy: true
+      repository_relocation:
+        name_or_location_change_requires_identity_scope_reset: true
+        prior_observation_ids_keep_original_repository_scope: true
+        existing_historical_source_receipts_must_be_preserved: true
+        historical_identity_or_provenance_rewrite: FORBIDDEN
+        prior_ids_are_not_automatically_rebound_to_new_scope: true
+        new_observations_use_new_repository_scoped_identity: true
+        location_change_alone_grants_same_event_identity: false
+        location_change_alone_grants_analysis_reuse: false
+        cross_scope_relation_not_required_for_new_analysis: true
+        old_repository_access_not_required_for_new_analysis: true
+        fork_lineage_rules_remain_independent: true
+      relocation_independent_analysis:
+        current_consumer_scope_is_sole_new_analysis_identity_authority: true
+        current_context_and_individual_evidence_drive_new_analysis: true
+        previous_repository_analysis_is_not_candidate_for_automatic_reuse: true
+        old_repository_lookup_is_not_required: true
+        old_repository_relation_discovery_is_not_required: true
+        cross_scope_registration_cannot_block_current_analysis: true
+        previous_analysis_validation_is_not_inherited: true
+        historical_source_and_record_identity_preserved: true
+        historical_receipts_are_not_rewritten_or_deleted: true
+        existing_analysis_to_evidence_reference_ownership_preserved: true
+        current_context_to_analysis_reverse_lookup_remains_local: true
+        reobservation_event_identity_proof_still_required: true
+        fork_lineage_policy_reconciled_as_independent_analysis_with_optional_audit: true
+      fork_lineage:
+        distinct_consumer_repositories_keep_independent_identity_authority: true
+        registered_audit_lineage_requires_verified_origin_relationship: true
+        audit_lineage_recording_is_optional: true
+        audit_derivation_must_require_explicit_audit_request: true
+        audit_derivation_not_triggered_by_record_creation: true
+        audit_derivation_not_triggered_by_normal_context_collection: true
+        audit_derivation_not_triggered_by_analysis_generation_or_validation: true
+        audit_derivation_not_triggered_by_default_candidate_lookup: true
+        audit_derivation_background_precomputation_required: false
+        missing_audit_request_does_not_initiate_derivation: true
+        separate_audit_lineage_registry_required: false
+        derived_audit_source_must_be_existing_verified_record: true
+        derived_audit_origin_relation_requires_machine_verified_proof: true
+        audit_lineage_must_not_be_inferred_from_git_similarity_or_paths: true
+        origin_repository_external_lookup_required: false
+        audit_derivation_must_not_expand_record_retention_obligation: true
+        derivation_must_not_mutate_original_record_or_receipt: true
+        derived_audit_is_non_authoritative_projection: true
+        missing_or_incomplete_record_proof_yields_no_audit_assertion: true
+        missing_audit_proof_does_not_block_new_analysis: true
+        optional_audit_derivation_cannot_grant_analysis_reuse: true
+        unavailable_audit_lineage_does_not_block_independent_analysis: true
+        origin_repository_lookup_is_not_required_for_current_analysis: true
+        fork_analysis_uses_current_consumer_context_and_evidence: true
+        origin_analysis_is_not_reuse_candidate: true
+        origin_analysis_discovery_is_not_required: true
+        provenance_of_inherited_observations_preserved: true
+        copied_pre_fork_observation_ids_keep_origin_repository_scope: true
+        newly_observed_fork_events_use_fork_repository_scoped_ids: true
+        lineage_alone_does_not_prove_same_event: true
+        lineage_alone_does_not_authorize_reuse: true
+        current_analysis_qualification_requires_local_evidence_and_dependencies: true
+        unverified_or_ambiguous_audit_lineage: FAIL_CLOSED_FOR_AUDIT_ASSERTION_ONLY
+        ai_inferred_or_fuzzy_lineage: FORBIDDEN
+        manual_per_record_lineage_mapping_required: false
+      registration:
+        verified_provider_source_binding_required: true
+        missing_provider_event_id_alone_forbids_registration: false
+        missing_event_id_cannot_waive_provider_and_source_verification: true
+        unverified_or_ambiguous_binding: FAIL_CLOSED
+        automatic_unverified_alias_or_equivalence_inference: FORBIDDEN
+        provider_identity_collision_may_not_merge_observations: true
+        identical_payload_alone_proves_same_event: false
+        identical_provider_id_alone_proves_same_event: false
+        provider_replay_and_new_event_must_remain_distinguishable: true
+        evidence_source_and_observed_revision_must_remain_traceable: true
+      missing_provider_event_id:
+        provider_identity_and_source_must_remain_verifiable: true
+        individual_observation_must_be_machine_verified: true
+        registered_source_and_observation_contract_required: true
+        verified_alternative_may_authorize_new_common_id: true
+        provider_event_id_may_not_be_fabricated: true
+        common_id_issuance_does_not_prove_event_equivalence: true
+        same_event_id_reuse_requires_separate_contract_proof: true
+        ambiguous_observation_or_source: FAIL_CLOSED
+        unproven_identity_collision: FAIL_CLOSED_NO_MERGE_OR_REUSE
+        mandatory_record_provenance_unaffected: true
+      proof_authority:
+        ptsip_common_proof_obligations_required: true
+        common_proof_obligations_cannot_be_weakened_by_provider_type: true
+        provider_type_specific_rules_must_be_registered: true
+        provider_type_specific_proof_must_be_machine_verifiable: true
+        provider_type_extension_alone_confers_identity_authority: false
+        source_and_observation_context_binding_required: true
+        unregistered_or_ambiguous_proof_contract: FAIL_CLOSED
+        proof_scope_or_source_revision_unverified: FAIL_CLOSED
+        ai_ad_hoc_event_equivalence_inference: FORBIDDEN
+        manual_duplicate_event_linkage_required: false
+      reobservation:
+        event_identity_requires_registered_machine_verifiable_proof: true
+        same_event_proven: REUSE_EXISTING_COMMON_ID
+        distinct_event_proven: ISSUE_NEW_COMMON_ID
+        identity_unresolved: FAIL_CLOSED_NO_MERGE_OR_REUSE
+        provider_identity_only_as_equivalence_proof: FORBIDDEN
+        payload_similarity_as_equivalence_proof: FORBIDDEN
+        previous_common_identity_must_remain_stable: true
+        reobservation_must_not_rewrite_original_source_receipts: true
+        subsequent_collection_provenance_must_remain_traceable: true
+      reference:
+        individual_observation_or_evidence_granularity: REQUIRED
+        whole_context_snapshot_as_implicit_reference: FORBIDDEN
+        analysis_uses_registered_common_identity: true
+        reverse_lookup_is_non_authoritative_projection: true
+        ambiguous_or_incomplete_reverse_lookup: FAIL_CLOSED
+      ownership:
+        independent_ai_identity_creation: FORBIDDEN
+        common_id_creates_project_policy_authority: false
+        existing_active_context_information_authority_overridden: false
+        existing_record_retention_overridden: false
+  - id: SRC-0012
+    source_pointer: /authority_semantics/unit_context_evidence_identity_unresolved_decisions
+    value:
     - CONTEXT_COMMON_ID_PHYSICAL_FORMAT_AND_LOCAL_COLLISION_CHECK_CONTRACT
     - CONTEXT_ISSUED_ID_HISTORY_PROOF_AND_NON_REASSIGNMENT_INTERFACE
     - CONTEXT_EXISTING_VERIFIED_RECORD_FORK_AUDIT_DERIVATION_PROOF_INTERFACE
     - CONTEXT_REPOSITORY_NAME_LOCATION_CHANGE_SCOPE_RESET_INTERFACE
     - MISSING_PROVIDER_EVENT_ID_SOURCE_OBSERVATION_PROOF_INTERFACE
     - PROVIDER_TYPE_EVENT_IDENTITY_PROOF_INTERFACE
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on:
-    - policy: SFP-INFO-0001
-      scope: EXISTING_CONTEXT_AND_EVIDENCE_INFORMATION_SEMANTICS
-    - policy: SFP-INFO-0005
-      scope: ANALYSIS_OWNED_CONTEXT_EVIDENCE_REFERENCE_BOUNDARY
-    - policy: SFP-RECORD-0001
-      scope: SOURCE_BOUND_PROVENANCE_AND_RETENTION
+  - id: SRC-0013
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: SFP-INFO-0001
+        scope: EXISTING_CONTEXT_AND_EVIDENCE_INFORMATION_SEMANTICS
+      - policy: SFP-INFO-0005
+        scope: ANALYSIS_OWNED_CONTEXT_EVIDENCE_REFERENCE_BOUNDARY
+      - policy: SFP-RECORD-0001
+        scope: SOURCE_BOUND_PROVENANCE_AND_RETENTION
+  source_document:
+    path: src/policy/INFO/SFP-INFO-0007.yaml
+    sha256: cae832f13f8b43e53dd2e073dd15718f277dbd9a0c7321b568d236e1af860f2b
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

@@ -1,121 +1,310 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-INFO-0005
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: INFO
   title: Consumer Analysis Record Information Ownership
+Policy_Lifecycle:
   status: DRAFT
-authority_subject:
-  id: SUP_CONSUMER_ANALYSIS_RECORD_INFORMATION
-  statement: Consumer Repository의 .ptsip/analysis 정보 소유권, 불투명한 기록 식별자, 명시적으로 등록된 기록 경로를 소유한다.
-exclusive_kernel:
-  - SUP_CONSUMER_ANALYSIS_OPAQUE_RECORD_IDENTITY
-  - SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
-authority_contract:
-  authority_type: ROOT_FAMILY_INFO
-  schema_id: ptsip.governance/root-family/info
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-      - id: SUP_CONSUMER_ANALYSIS_OPAQUE_RECORD_IDENTITY
-        statement: Consumer Analysis 기록은 의미를 인코딩하지 않는 안정적 식별자로 구분하며 이름으로 분석 종류 또는 시점을 추론하지 않는다.
-        non_substitutability: RECORD의 이력 보존 및 CNTR의 Resolver 구현은 기록 식별자의 정보 의미를 독자적으로 정의하지 않는다.
-      - id: SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
-        statement: Consumer Analysis의 기록 구성원과 정확한 record_ref는 명시적 Registry에서 결정하며 파일 시스템 발견은 등록 권위를 만들지 않는다.
-        non_substitutability: 파일명 규칙, AI 추측 또는 저장된 분석 결과는 Registry의 명시적 경로 결정을 대체하지 않는다.
-  unit_consumer_analysis_approved_decisions:
-    policy_direction: CONSUMER_REPOSITORY_LOCAL_ANALYSIS_OWNERSHIP
-    repository_root: .ptsip/analysis/
-    registry_ref: .ptsip/analysis/registry.yaml
-    schema_root: .ptsip/analysis/schemas/
-    record_root: .ptsip/analysis/records/
-    record_identity: OPAQUE_STABLE_ID
-    record_id_issuance_authority: PTSIP_AUTOMATED
-    record_id_uniqueness_scope: CONSUMER_REPOSITORY
-    record_id_generation_strategy: INDEPENDENT_COLLISION_RESISTANT_OPAQUE
-    record_serialization_format: JSON_ONLY
-    record_schema_model: COMMON_STRUCTURE_PLUS_ANALYSIS_TYPE_SCHEMAS
-    record_tiers: WORKING_AND_REUSABLE
-    reusable_qualification: EVIDENCE_VERIFIED
-    record_registration_atomicity: LOGICAL_AUTHORITY_ATOMICITY
-    record_membership: EXPLICIT_REGISTRY_ONLY
-    working_registration_does_not_grant_reuse: true
-    reusable_registration_requires_completed_qualification: true
-    record_reference: REGISTERED_EXPLICIT_PATH
-    resolution: EXACT_ID_TO_REGISTERED_RECORD_REF
-    context_analysis_reference_authority: ANALYSIS_OWNED_CONTEXT_EVIDENCE_REFERENCES
-    context_analysis_reference_granularity: INDIVIDUAL_OBSERVATION_AND_EVIDENCE
-    context_first_analysis_discovery: AUTOMATIC_DERIVED_REVERSE_INDEX
-    reusable_long_term_retention_granularity: CONSUMER_DELEGATED_PER_REGISTERED_ANALYSIS_TYPE
-    reusable_long_term_retention_missing_type_delegation: NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
-    reusable_long_term_retention_scope_policy_owner: SFP-RECORD-0004
-  unit_consumer_analysis_invariants:
-    registry:
-      membership_required: true
-      path_authority: EXPLICIT_RECORD_REF
-      filesystem_discovery_confers_authority: false
-    record_identity:
-      issuer: PTSIP
-      uniqueness_scope: CONSUMER_REPOSITORY
-      independent_collision_resistant_generation: REQUIRED
-      independent_ai_id_issuance: FORBIDDEN
-      descriptive_semantic_inference: FORBIDDEN
-      timestamp_semantic_inference: FORBIDDEN
-      filename_to_id_inference: FORBIDDEN
-      id_to_filename_inference: FORBIDDEN
-      id_to_path_derivation: FORBIDDEN
-    record_serialization:
-      record_payload_format: JSON_ONLY
-      common_and_type_specific_schema_required: true
-    registration:
-      logical_authority_atomicity: REQUIRED
-      incomplete_record_or_registry_mutation_confers_reuse_authority: false
-      incomplete_registration: FAIL_CLOSED
-    tiers:
-      working_reuse_authority: false
-      reusable_requires_evidence_verified_qualification: true
-    reusable_long_term_retention:
-      analysis_type_membership: EXPLICIT_REGISTERED_TYPE_IDENTITY
-      delegation_authority: CONSUMER_PROJECT_EXPLICIT_PER_ANALYSIS_TYPE
-      project_wide_default_as_type_delegation: FORBIDDEN
-      missing_ambiguous_stale_or_unverified_type_delegation: FAIL_CLOSED_NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
-      evidence_verified_reusable_qualification_still_required: true
-      retention_eligibility_does_not_create_record_reuse_or_cleanup_execution_authority: true
-      mandatory_record_retention_and_source_provenance_override_delegated_scope: true
-    context_analysis_references:
-      authoritative_direction: ANALYSIS_TO_CONTEXT_EVIDENCE
-      discovery_direction: CONTEXT_TO_ANALYSIS
-      individual_observation_and_evidence_identity_required: true
-      whole_context_snapshot_as_substitute: FORBIDDEN
-      absent_evidence_identity_or_unverified_scope: FAIL_CLOSED
-      reverse_index_is_non_authoritative_projection: true
-      independent_context_manual_analysis_list: NOT_REQUIRED
-    lookup:
-      unregistered_identity: FAIL_CLOSED
-      ambiguous_identity: FAIL_CLOSED
-      direct_filename_or_directory_search_as_authority: FORBIDDEN
-    authority_boundary:
-      analysis_record_creates_project_architecture_authority: false
-      legacy_source_implicit_inheritance: FORBIDDEN
-      developer_policy_analysis_scope_reuse: FORBIDDEN
-  unit_consumer_analysis_separate_responsibilities:
-    INFO: RECORD_IDENTITY_AND_REGISTRY_INFORMATION_BINDING
-    RECORD: SOURCE_BOUND_PROVENANCE_AND_RETRIEVABLE_HISTORY
-    CNTR: TYPED_RESOLVER_OPERATION_AND_FAILURE_INTERFACE
-    GOV: NO_UNAUTHORIZED_PROMOTION_TO_PROJECT_AUTHORITY
-    PLAN: SERIALIZATION_EXECUTION_AND_FILE_WRITE_MECHANICS
-  unit_consumer_analysis_policy_family_refs:
-    INFO_CONTEXT_EVIDENCE_IDENTITY: SFP-INFO-0007
-    RECORD: SFP-RECORD-0004
-    CNTR: SFP-CNTR-0006
-    ASSURE: SFP-ASSURE-0005
-    CTRL: SFP-CTRL-0003
-  unit_consumer_analysis_unresolved_decisions:
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_CONSUMER_ANALYSIS_OPAQUE_RECORD_IDENTITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-INFO-0005#/authority_semantics/unit_consumer_analysis_approved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-INFO-0005#/authority_semantics/unit_consumer_analysis_invariants
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-INFO-0005#/authority_semantics/unit_consumer_analysis_separate_responsibilities
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-INFO-0005#/authority_semantics/unit_consumer_analysis_policy_family_refs
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-INFO-0005#/authority_semantics/unit_consumer_analysis_unresolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-INFO-0005#/authority_semantics/unit_consumer_analysis_resolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0016
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-INFO-0005
+      title: Consumer Analysis Record Information Ownership
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_CONSUMER_ANALYSIS_RECORD_INFORMATION
+      statement: Consumer Repository의 .ptsip/analysis 정보 소유권, 불투명한 기록 식별자, 명시적으로 등록된 기록 경로를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_CONSUMER_ANALYSIS_OPAQUE_RECORD_IDENTITY
+    - SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_INFO
+      schema_id: ptsip.governance/root-family/info
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_CONSUMER_ANALYSIS_OPAQUE_RECORD_IDENTITY
+      statement: Consumer Analysis 기록은 의미를 인코딩하지 않는 안정적 식별자로 구분하며 이름으로 분석 종류 또는 시점을 추론하지 않는다.
+      non_substitutability: RECORD의 이력 보존 및 CNTR의 Resolver 구현은 기록 식별자의 정보 의미를 독자적으로 정의하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_CONSUMER_ANALYSIS_REGISTRY_PATH_AUTHORITY
+      statement: Consumer Analysis의 기록 구성원과 정확한 record_ref는 명시적 Registry에서 결정하며 파일 시스템 발견은 등록 권위를 만들지 않는다.
+      non_substitutability: 파일명 규칙, AI 추측 또는 저장된 분석 결과는 Registry의 명시적 경로 결정을 대체하지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/unit_consumer_analysis_approved_decisions
+    value:
+      policy_direction: CONSUMER_REPOSITORY_LOCAL_ANALYSIS_OWNERSHIP
+      repository_root: .ptsip/analysis/
+      registry_ref: .ptsip/analysis/registry.yaml
+      schema_root: .ptsip/analysis/schemas/
+      record_root: .ptsip/analysis/records/
+      record_identity: OPAQUE_STABLE_ID
+      record_id_issuance_authority: PTSIP_AUTOMATED
+      record_id_uniqueness_scope: CONSUMER_REPOSITORY
+      record_id_generation_strategy: INDEPENDENT_COLLISION_RESISTANT_OPAQUE
+      record_serialization_format: JSON_ONLY
+      record_schema_model: COMMON_STRUCTURE_PLUS_ANALYSIS_TYPE_SCHEMAS
+      record_tiers: WORKING_AND_REUSABLE
+      reusable_qualification: EVIDENCE_VERIFIED
+      record_registration_atomicity: LOGICAL_AUTHORITY_ATOMICITY
+      record_membership: EXPLICIT_REGISTRY_ONLY
+      working_registration_does_not_grant_reuse: true
+      reusable_registration_requires_completed_qualification: true
+      record_reference: REGISTERED_EXPLICIT_PATH
+      resolution: EXACT_ID_TO_REGISTERED_RECORD_REF
+      context_analysis_reference_authority: ANALYSIS_OWNED_CONTEXT_EVIDENCE_REFERENCES
+      context_analysis_reference_granularity: INDIVIDUAL_OBSERVATION_AND_EVIDENCE
+      context_first_analysis_discovery: AUTOMATIC_DERIVED_REVERSE_INDEX
+      reusable_long_term_retention_granularity: CONSUMER_DELEGATED_PER_REGISTERED_ANALYSIS_TYPE
+      reusable_long_term_retention_missing_type_delegation: NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
+      reusable_long_term_retention_scope_policy_owner: SFP-RECORD-0004
+  - id: SRC-0011
+    source_pointer: /authority_semantics/unit_consumer_analysis_invariants
+    value:
+      registry:
+        membership_required: true
+        path_authority: EXPLICIT_RECORD_REF
+        filesystem_discovery_confers_authority: false
+      record_identity:
+        issuer: PTSIP
+        uniqueness_scope: CONSUMER_REPOSITORY
+        independent_collision_resistant_generation: REQUIRED
+        independent_ai_id_issuance: FORBIDDEN
+        descriptive_semantic_inference: FORBIDDEN
+        timestamp_semantic_inference: FORBIDDEN
+        filename_to_id_inference: FORBIDDEN
+        id_to_filename_inference: FORBIDDEN
+        id_to_path_derivation: FORBIDDEN
+      record_serialization:
+        record_payload_format: JSON_ONLY
+        common_and_type_specific_schema_required: true
+      registration:
+        logical_authority_atomicity: REQUIRED
+        incomplete_record_or_registry_mutation_confers_reuse_authority: false
+        incomplete_registration: FAIL_CLOSED
+      tiers:
+        working_reuse_authority: false
+        reusable_requires_evidence_verified_qualification: true
+      reusable_long_term_retention:
+        analysis_type_membership: EXPLICIT_REGISTERED_TYPE_IDENTITY
+        delegation_authority: CONSUMER_PROJECT_EXPLICIT_PER_ANALYSIS_TYPE
+        project_wide_default_as_type_delegation: FORBIDDEN
+        missing_ambiguous_stale_or_unverified_type_delegation: FAIL_CLOSED_NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
+        evidence_verified_reusable_qualification_still_required: true
+        retention_eligibility_does_not_create_record_reuse_or_cleanup_execution_authority: true
+        mandatory_record_retention_and_source_provenance_override_delegated_scope: true
+      context_analysis_references:
+        authoritative_direction: ANALYSIS_TO_CONTEXT_EVIDENCE
+        discovery_direction: CONTEXT_TO_ANALYSIS
+        individual_observation_and_evidence_identity_required: true
+        whole_context_snapshot_as_substitute: FORBIDDEN
+        absent_evidence_identity_or_unverified_scope: FAIL_CLOSED
+        reverse_index_is_non_authoritative_projection: true
+        independent_context_manual_analysis_list: NOT_REQUIRED
+      lookup:
+        unregistered_identity: FAIL_CLOSED
+        ambiguous_identity: FAIL_CLOSED
+        direct_filename_or_directory_search_as_authority: FORBIDDEN
+      authority_boundary:
+        analysis_record_creates_project_architecture_authority: false
+        legacy_source_implicit_inheritance: FORBIDDEN
+        developer_policy_analysis_scope_reuse: FORBIDDEN
+  - id: SRC-0012
+    source_pointer: /authority_semantics/unit_consumer_analysis_separate_responsibilities
+    value:
+      INFO: RECORD_IDENTITY_AND_REGISTRY_INFORMATION_BINDING
+      RECORD: SOURCE_BOUND_PROVENANCE_AND_RETRIEVABLE_HISTORY
+      CNTR: TYPED_RESOLVER_OPERATION_AND_FAILURE_INTERFACE
+      GOV: NO_UNAUTHORIZED_PROMOTION_TO_PROJECT_AUTHORITY
+      PLAN: SERIALIZATION_EXECUTION_AND_FILE_WRITE_MECHANICS
+  - id: SRC-0013
+    source_pointer: /authority_semantics/unit_consumer_analysis_policy_family_refs
+    value:
+      INFO_CONTEXT_EVIDENCE_IDENTITY: SFP-INFO-0007
+      RECORD: SFP-RECORD-0004
+      CNTR: SFP-CNTR-0006
+      ASSURE: SFP-ASSURE-0005
+      CTRL: SFP-CTRL-0003
+  - id: SRC-0014
+    source_pointer: /authority_semantics/unit_consumer_analysis_unresolved_decisions
+    value:
     - RECORD_ID_PHYSICAL_FORMAT_AND_COLLISION_CHECK_CONTRACT
     - COMMON_AND_TYPE_SPECIFIC_SCHEMA_FIELD_CONTRACT
     - CONTEXT_OBSERVATION_EVIDENCE_REFERENCE_INTERFACE
-  unit_consumer_analysis_resolved_decisions:
+  - id: SRC-0015
+    source_pointer: /authority_semantics/unit_consumer_analysis_resolved_decisions
+    value:
     - id: REUSABLE_RETENTION_SCOPE
       selected_option: B_CONSUMER_DELEGATED_PER_ANALYSIS_TYPE
       approval_source: USER_EXPLICIT
@@ -128,8 +317,18 @@ authority_semantics:
       independent_cleanup_write_authority: UNCHANGED
       physical_implementation: NOT_AUTHORIZED
       active_transition: NOT_AUTHORIZED
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  - id: SRC-0016
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/INFO/SFP-INFO-0005.yaml
+    sha256: 15c662a7a79bee8c7bccfbb622509bf573ed23b424c85f38518f3712d7a7b766
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

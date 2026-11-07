@@ -1,128 +1,565 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: CTRL
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-CTRL-0001
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: CTRL
   title: CTRL authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-  version: '4.8'
-authority_subject:
-  id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
-  statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서
-    허용되는지를 소유한다.
-exclusive_kernel:
-- DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
-- DEV_TRANSITION_GATE_COMPOSITION
-rules:
-  release_orchestration:
-    approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
-    contract_ref: .github/checks/release/composition-contract.json
-    evidence_resolution_contract_ref: .github/checks/release/publication-evidence.json
-    publisher_authentication_contract_ref: .github/checks/release/pypi-publishers.json
-    state: APPROVED_FOR_IMPLEMENTATION
-    publication_workflow: .github/workflows/tooling-release.yml
-    verification_workflow: .github/workflows/tooling-test.yml
-    verification_registry: .github/test_modes.yaml
-    verification_contract_root: .github/checks/release/test/
-    verification_in_publication_workflow: FORBIDDEN
-    publication_in_verification_workflow: FORBIDDEN
-    workflow_inline_verification_cases: FORBIDDEN
-    one_github_release_per_source_sha: REQUIRED
-    historic_published_component_releases: PRESERVE_IMMUTABLE
-    release_types: [PTSIP_PACKAGE, TOOL_ONLY, ENGINE_ONLY, PROFILES_ONLY, TOOL_ENGINES, TOOL_PROFILES, ENGINES_PROFILES, MULTIPLE_ENGINES]
-    publication_authorization: EXACT_SOURCE_SELECTED_COMPONENT_VERIFICATION_AND_USER_APPROVED_PUBLICATION
-    automatic_package_refresh_after_component_publication: REQUIRED
-    component_version_auto_increment: FORBIDDEN
-    package_request_inventory: TOOL_PROFILES_AND_ALL_REGISTERED_ENGINES
-    package_request_credential_downgrade: FORBIDDEN_FAIL_ORIGINAL_REQUEST
-    legacy_engine_publication_surface: SUPERSEDED_BY_UNIFIED_SOURCE_SHA_CARRIER
-  planning_artifact_precreation_eligibility:
-    decision: KEEP_LATEST
-    approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-POLICY-ROOT-DERIVED-PATH.yaml
-    prior_approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
-    scope: ANY_NEW_OR_REVISED_PLANNING_ARTIFACT_INCLUDING_DRAFTS
-    creation_trigger: EXPLICIT_USER_REQUEST_TO_CREATE_OR_REVISE_PLAN_ARTIFACT
-    background_or_inferred_creation: FORBIDDEN
-    conversation_analysis_discussion_or_policy_change_is_creation_request: false
-    required_before_artifact_generation_or_write:
-    - USER_PLAN_ARTIFACT_CREATION_INTENT_VERIFIED
-    - CURRENT_EFFECTIVE_POLICY_AND_SCOPE_VERIFIED
-    - OWNER_APPROVED_PLANNING_ROOT_RESOLVED_FROM_EFFECTIVE_POLICY
-    - OWNER_APPROVED_SUBPATH_ROUTING_RULE_AND_CURRENT_FACTS_VERIFIED
-    - UNIQUE_EXACT_OUTPUT_PATH_DETERMINISTICALLY_DERIVED_AT_CREATION
-    - PLAN_CONTRACT_AND_FORMAT_VERIFIED
-    - APPLICABLE_PLAN_INPUTS_AND_POLICY_EVIDENCE_CURRENT
-    - ALL_NORMATIVE_AND_SUBORDINATE_DECISIONS_RESOLVED_OR_USER_APPROVED
-    - AUTHORIZATION_AND_CONFLICT_GATES_SATISFIED
-    path_root_current_repository_value: developer/planning/
-    path_root_source: OWNER_APPROVED_EFFECTIVE_POLICY_NOT_GENERATOR_CONSTANT
-    subpath_source: APPROVED_VERSIONED_MACHINE_ROUTING_CONTRACT
-    complete_path_resolution_time: ON_EXPLICIT_PLAN_CREATION_REQUEST_BEFORE_ANY_FILE_WRITE
-    preassigned_per_plan_path_required: false
-    manual_path_selection_if_deterministically_derivable: FORBIDDEN
-    subpath_routing_contract_current_status: RESOLVED_FOR_RELEASE_WORK_UNITS
-    subpath_routing_contract_ref: developer/planning/contracts/release-work-unit-routing.v1.json
-    subpath_routing_approval_ref: developer/policy/approvals/MPA-20261013-CANONICAL-COMPOSITION-CUTOVER-AND-RELEASE-REPAIR.yaml
-    unsupported_planning_scope: FAIL_CLOSED
-    unresolved_subpath_or_rule_is_valid_creation_path: false
-    unresolved_rule_request_type: USER_DECISION_ON_RULE_NOT_ARBITRARY_PLAN_PATH
-    user_must_be_asked_for_unresolved_normative_or_implementation_choices: true
-    ai_may_resolve_non_normative_deterministic_decisions_only_when_registered_contract_suffices: true
-    user_decision_request_required_when_rule_or_policy_is_unresolved: true
-    approval_is_not_repeated_for_already_resolved_deterministic_path: true
-    unknown_missing_ambiguous_or_conflicting_condition: BLOCK_NO_PLAN_FILE
-    may_create_placeholder_or_draft_when_blocked: false
-    approval_of_policy_is_approval_of_plan_or_implementation: false
-    default_decision_inference_from_example_or_prior_plan: FORBIDDEN
-    implementation_from_plan_requires_separate_effective_authority: true
-    previous_unrelated_release_execution_suspension: PRESERVED
-
-  release_execution_suspension:
-    decision_source: USER_EXPLICIT
-    approval_ref: developer/policy/approvals/MPA-20261012-RELEASE-VERIFICATION-GAP.yaml
-    execution_state_ref: .github/checks/release/release-availability.json
-    state: BLOCKED
-    state_scope: SUPERSEDED_LEGACY_RELEASE_COMMANDS_ONLY
-    workflow_execution: GOVERNED_BY_RELEASE_ORCHESTRATION
-    direct_release_commands: BLOCKED
-    missing_verification_contract_result: FAIL_CLOSED
-    legacy_verification_fallback: FORBIDDEN
-    reinstatement: SEPARATE_USER_APPROVED_SUCCESSOR_POLICY_AND_CONTRACT
-    engine_verification_only:
-      state: SUPERSEDED_BY_RELEASE_MODE_VERIFICATION
-      operation: VERIFY
-      approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml
-      contract_ref: developer/policy/contracts/engine-verification.v1.json
-      workflow_ref: .github/workflows/tooling-release.yml
-      implementation_work_in_this_scope: ALLOWED
-      release_gate: ENABLED
-      release_gate_scope: SELECTED_ENGINE_VERIFICATION
-      release_gate_requires: ALL_SELECTED_PLATFORM_JOBS_AND_EXACT_SOURCE_ARTIFACTS
-      tag_release_and_pypi_publication: NOT_GRANTED_BY_VERIFICATION
-      tool_profile_package_verification: DEFERRED
-      engine_pass_is_release_authorization: false
-    engine_publication:
-      state: SUPERSEDED_BY_RELEASE_ORCHESTRATION
-      operation: RELEASE
-      approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
-      contract_ref: developer/policy/contracts/engine-publication.v1.json
-      workflow_ref: .github/workflows/tooling-release.yml
-      workflow_phase: publish
-      scope: SELECTED_REGISTERED_ENGINES_ONLY
-      tag_github_release_and_pypi_publication: ALLOWED_AFTER_EXACT_SOURCE_GATE
-      tool_0_3_8a5_republication: FORBIDDEN_PRESERVE_EXISTING_PUBLICATION
-      tool_profile_package_publication: NOT_AUTHORIZED_BY_THIS_EXCEPTION
-      version_auto_increment: FORBIDDEN
-      existing_tag_or_distribution_overwrite: FORBIDDEN
-      runtime_activation_from_publication: false
-    successor_verification_reactivation_direction:
-      current_surface: SUPERSEDED_BY_RELEASE_ORCHESTRATION_AND_RELEASE_MODE_VERIFICATION
-      decision: B_SUCCESSOR_VERIFICATION_POLICY_APPROVAL_BEFORE_RESUMPTION
-      release_scope_decision: FULL_INDEPENDENT_RELEASE
-      release_scope_approval_ref: developer/policy/approvals/MPA-20261013-FULL-INDEPENDENT-RELEASE-SCOPE.yaml
-      release_scope_registry_ref: .github/checks/release/release-contract.json
-      release_scope_components:
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: MPD-CTRL-0001#/rules/release_orchestration
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: MPD-CTRL-0001#/rules/planning_artifact_precreation_eligibility
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: MPD-CTRL-0001#/rules/release_execution_suspension
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: DEV_TRANSITION_GATE_COMPOSITION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: MPD-CTRL-0001#/rules/unit_mpd_0010_3c286438d94d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: MPD-CTRL-0001#/rules/unit_mpd_0011_e200c6e6a1d5
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: MPD-CTRL-0001#/rules/unit_mpd_0012_02b6455c4f6d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: MPD-CTRL-0001#/rules/unit_mpd_0013_55660a13d7b1
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: MPD-CTRL-0001#/rules/unit_mpd_0013_ece0f737d29d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: MPD-CTRL-0001#/rules/unit_mpd_0014_d67c22d688ac
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+  - id: MPD-CTRL-0001#/rules/unit_mpd_migr_0004_e634095a9e0f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0019
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+  - id: MPD-CTRL-0001#/rules/unit_mpd_migr_0004_c6d84e07b661
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0020
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+  - id: MPD-CTRL-0001#/rules/unit_mpd_rels_0002_e782809fbb27
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0021
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+  - id: MPD-CTRL-0001#/rules/unit_mpd_veri_0004_8084d790e9d2
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0022
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+  - id: MPD-CTRL-0001#/rules/unit_mpd_work_0002_24cb7d076de1
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0023
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+  - id: MPD-CTRL-0001#/rules/unit_mpd_work_0002_579cedbf03c6
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0024
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+  - id: MPD-CTRL-0001#/rules/unit_mpd_work_0003_fc836a4c0e34
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0025
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+  - id: MPD-CTRL-0001#/rules/unit_mpd_work_0003_b59d60bb36a6
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0026
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+  - id: MPD-CTRL-0001#/rules/unit_mpd_work_0003_2c868d400573
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0027
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+  - id: MPD-CTRL-0001#/rules/unit_mpd_work_0003_7e804c26cf40
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0028
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+  - id: MPD-CTRL-0001#/rules/unit_mpd_work_0004_b413e855fd78
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0029
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+  - id: MPD-CTRL-0001#/rules/unit_mpd_plan_0001_6560d943f53d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0030
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0031
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CTRL
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-CTRL-0001
+      title: CTRL authority (ACTIVE source responsibilities)
+      status: RETIRED
+      substatus: Waiting
+      version: '4.8'
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_ACTION_TIME_EXECUTION_ELIGIBILITY
+      statement: 개발 변경, branch command 및 release 동작이 실행 직전의 정확한 scope, 승인과 fresh state에서 허용되는지를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
+    - DEV_TRANSITION_GATE_COMPOSITION
+  - id: SRC-0007
+    source_pointer: /rules/release_orchestration
+    value:
+      approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
+      contract_ref: .github/checks/release/composition-contract.json
+      evidence_resolution_contract_ref: .github/checks/release/publication-evidence.json
+      publisher_authentication_contract_ref: .github/checks/release/pypi-publishers.json
+      state: APPROVED_FOR_IMPLEMENTATION
+      publication_workflow: .github/workflows/tooling-release.yml
+      verification_workflow: .github/workflows/tooling-test.yml
+      verification_registry: .github/test_modes.yaml
+      verification_contract_root: .github/checks/release/test/
+      verification_in_publication_workflow: FORBIDDEN
+      publication_in_verification_workflow: FORBIDDEN
+      workflow_inline_verification_cases: FORBIDDEN
+      one_github_release_per_source_sha: REQUIRED
+      historic_published_component_releases: PRESERVE_IMMUTABLE
+      release_types:
+      - PTSIP_PACKAGE
+      - TOOL_ONLY
+      - ENGINE_ONLY
+      - PROFILES_ONLY
+      - TOOL_ENGINES
+      - TOOL_PROFILES
+      - ENGINES_PROFILES
+      - MULTIPLE_ENGINES
+      publication_authorization: EXACT_SOURCE_SELECTED_COMPONENT_VERIFICATION_AND_USER_APPROVED_PUBLICATION
+      automatic_package_refresh_after_component_publication: REQUIRED
+      component_version_auto_increment: FORBIDDEN
+      package_request_inventory: TOOL_PROFILES_AND_ALL_REGISTERED_ENGINES
+      package_request_credential_downgrade: FORBIDDEN_FAIL_ORIGINAL_REQUEST
+      legacy_engine_publication_surface: SUPERSEDED_BY_UNIFIED_SOURCE_SHA_CARRIER
+  - id: SRC-0008
+    source_pointer: /rules/planning_artifact_precreation_eligibility
+    value:
+      decision: KEEP_LATEST
+      approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-POLICY-ROOT-DERIVED-PATH.yaml
+      prior_approval_ref: developer/policy/approvals/MPA-20261012-PLANNING-CREATION-USER-DECISION-GATE.yaml
+      scope: ANY_NEW_OR_REVISED_PLANNING_ARTIFACT_INCLUDING_DRAFTS
+      creation_trigger: EXPLICIT_USER_REQUEST_TO_CREATE_OR_REVISE_PLAN_ARTIFACT
+      background_or_inferred_creation: FORBIDDEN
+      conversation_analysis_discussion_or_policy_change_is_creation_request: false
+      required_before_artifact_generation_or_write:
+      - USER_PLAN_ARTIFACT_CREATION_INTENT_VERIFIED
+      - CURRENT_EFFECTIVE_POLICY_AND_SCOPE_VERIFIED
+      - OWNER_APPROVED_PLANNING_ROOT_RESOLVED_FROM_EFFECTIVE_POLICY
+      - OWNER_APPROVED_SUBPATH_ROUTING_RULE_AND_CURRENT_FACTS_VERIFIED
+      - UNIQUE_EXACT_OUTPUT_PATH_DETERMINISTICALLY_DERIVED_AT_CREATION
+      - PLAN_CONTRACT_AND_FORMAT_VERIFIED
+      - APPLICABLE_PLAN_INPUTS_AND_POLICY_EVIDENCE_CURRENT
+      - ALL_NORMATIVE_AND_SUBORDINATE_DECISIONS_RESOLVED_OR_USER_APPROVED
+      - AUTHORIZATION_AND_CONFLICT_GATES_SATISFIED
+      path_root_current_repository_value: developer/planning/
+      path_root_source: OWNER_APPROVED_EFFECTIVE_POLICY_NOT_GENERATOR_CONSTANT
+      subpath_source: APPROVED_VERSIONED_MACHINE_ROUTING_CONTRACT
+      complete_path_resolution_time: ON_EXPLICIT_PLAN_CREATION_REQUEST_BEFORE_ANY_FILE_WRITE
+      preassigned_per_plan_path_required: false
+      manual_path_selection_if_deterministically_derivable: FORBIDDEN
+      subpath_routing_contract_current_status: RESOLVED_FOR_RELEASE_WORK_UNITS
+      subpath_routing_contract_ref: developer/planning/contracts/release-work-unit-routing.v1.json
+      subpath_routing_approval_ref: developer/policy/approvals/MPA-20261013-CANONICAL-COMPOSITION-CUTOVER-AND-RELEASE-REPAIR.yaml
+      unsupported_planning_scope: FAIL_CLOSED
+      unresolved_subpath_or_rule_is_valid_creation_path: false
+      unresolved_rule_request_type: USER_DECISION_ON_RULE_NOT_ARBITRARY_PLAN_PATH
+      user_must_be_asked_for_unresolved_normative_or_implementation_choices: true
+      ai_may_resolve_non_normative_deterministic_decisions_only_when_registered_contract_suffices: true
+      user_decision_request_required_when_rule_or_policy_is_unresolved: true
+      approval_is_not_repeated_for_already_resolved_deterministic_path: true
+      unknown_missing_ambiguous_or_conflicting_condition: BLOCK_NO_PLAN_FILE
+      may_create_placeholder_or_draft_when_blocked: false
+      approval_of_policy_is_approval_of_plan_or_implementation: false
+      default_decision_inference_from_example_or_prior_plan: FORBIDDEN
+      implementation_from_plan_requires_separate_effective_authority: true
+      previous_unrelated_release_execution_suspension: PRESERVED
+  - id: SRC-0009
+    source_pointer: /rules/release_execution_suspension
+    value:
+      decision_source: USER_EXPLICIT
+      approval_ref: developer/policy/approvals/MPA-20261012-RELEASE-VERIFICATION-GAP.yaml
+      execution_state_ref: .github/checks/release/release-availability.json
+      state: BLOCKED
+      state_scope: SUPERSEDED_LEGACY_RELEASE_COMMANDS_ONLY
+      workflow_execution: GOVERNED_BY_RELEASE_ORCHESTRATION
+      direct_release_commands: BLOCKED
+      missing_verification_contract_result: FAIL_CLOSED
+      legacy_verification_fallback: FORBIDDEN
+      reinstatement: SEPARATE_USER_APPROVED_SUCCESSOR_POLICY_AND_CONTRACT
+      engine_verification_only:
+        state: SUPERSEDED_BY_RELEASE_MODE_VERIFICATION
+        operation: VERIFY
+        approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml
+        contract_ref: developer/policy/contracts/engine-verification.v1.json
+        workflow_ref: .github/workflows/tooling-release.yml
+        implementation_work_in_this_scope: ALLOWED
+        release_gate: ENABLED
+        release_gate_scope: SELECTED_ENGINE_VERIFICATION
+        release_gate_requires: ALL_SELECTED_PLATFORM_JOBS_AND_EXACT_SOURCE_ARTIFACTS
+        tag_release_and_pypi_publication: NOT_GRANTED_BY_VERIFICATION
+        tool_profile_package_verification: DEFERRED
+        engine_pass_is_release_authorization: false
+      engine_publication:
+        state: SUPERSEDED_BY_RELEASE_ORCHESTRATION
+        operation: RELEASE
+        approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
+        contract_ref: developer/policy/contracts/engine-publication.v1.json
+        workflow_ref: .github/workflows/tooling-release.yml
+        workflow_phase: publish
+        scope: SELECTED_REGISTERED_ENGINES_ONLY
+        tag_github_release_and_pypi_publication: ALLOWED_AFTER_EXACT_SOURCE_GATE
+        tool_0_3_8a5_republication: FORBIDDEN_PRESERVE_EXISTING_PUBLICATION
+        tool_profile_package_publication: NOT_AUTHORIZED_BY_THIS_EXCEPTION
+        version_auto_increment: FORBIDDEN
+        existing_tag_or_distribution_overwrite: FORBIDDEN
+        runtime_activation_from_publication: false
+      successor_verification_reactivation_direction:
+        current_surface: SUPERSEDED_BY_RELEASE_ORCHESTRATION_AND_RELEASE_MODE_VERIFICATION
+        decision: B_SUCCESSOR_VERIFICATION_POLICY_APPROVAL_BEFORE_RESUMPTION
+        release_scope_decision: FULL_INDEPENDENT_RELEASE
+        release_scope_approval_ref: developer/policy/approvals/MPA-20261013-FULL-INDEPENDENT-RELEASE-SCOPE.yaml
+        release_scope_registry_ref: .github/checks/release/release-contract.json
+        release_scope_components:
         - TOOL
         - PROFILE
         - CONTEXT
@@ -133,31 +570,33 @@ rules:
         - EXECUTION
         - PROJECTION
         - PACKAGE
-      independent_component_build_version_and_publication: PRESERVED
-      package_assembly_does_not_replace_component_verification: true
-      existing_assure_required_verification: PRESERVED
-      exact_successor_required_checks: UNRESOLVED
-      decision_source: USER_EXPLICIT
-      approval_ref: developer/policy/approvals/MPA-20261013-SUCCESSOR-RELEASE-VERIFICATION-DIRECTION.yaml
-      approval_scope: DIRECTION_ONLY
-      successor_policy_content: UNRESOLVED
-      successor_verification_contract: UNRESOLVED
-      verification_implementation: NOT_VERIFIED
-      publication_reactivation: NOT_AUTHORIZED
-      release_suspension: PRESERVED
-  family_definition:
-    kernel_definitions:
-    - id: DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
-      statement: branch, HEAD, task context, selector와 승인 범위를 실행 직전에 확인하고 stale하거나
-        unlisted인 요청을 fail-closed한다.
-      non_substitutability: GOV의 적법한 과거 승인이나 INFO의 유효한 레코드만으로 현재 HEAD와 대상이 일치함을 보장할
-        수 없다.
-    - id: DEV_TRANSITION_GATE_COMPOSITION
-      statement: 정책 및 계약이 정한 gate들을 fresh evidence와 결합해 특정 실행의 허용·차단을 판정한다. 무권한 상태
-        변화나 새로운 정책 의미를 생성하지 않는다.
-      non_substitutability: ASSURE의 PASS가 실행 권한, 정확한 대상 및 모든 transition precondition을
-        대신 충족하지 않는다.
-    source_scope:
+        independent_component_build_version_and_publication: PRESERVED
+        package_assembly_does_not_replace_component_verification: true
+        existing_assure_required_verification: PRESERVED
+        exact_successor_required_checks: UNRESOLVED
+        decision_source: USER_EXPLICIT
+        approval_ref: developer/policy/approvals/MPA-20261013-SUCCESSOR-RELEASE-VERIFICATION-DIRECTION.yaml
+        approval_scope: DIRECTION_ONLY
+        successor_policy_content: UNRESOLVED
+        successor_verification_contract: UNRESOLVED
+        verification_implementation: NOT_VERIFIED
+        publication_reactivation: NOT_AUTHORIZED
+        release_suspension: PRESERVED
+  - id: SRC-0010
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_FRESH_PRECONDITION_AND_SCOPE_GATE
+      statement: branch, HEAD, task context, selector와 승인 범위를 실행 직전에 확인하고 stale하거나 unlisted인 요청을 fail-closed한다.
+      non_substitutability: GOV의 적법한 과거 승인이나 INFO의 유효한 레코드만으로 현재 HEAD와 대상이 일치함을 보장할 수 없다.
+  - id: SRC-0011
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_TRANSITION_GATE_COMPOSITION
+      statement: 정책 및 계약이 정한 gate들을 fresh evidence와 결합해 특정 실행의 허용·차단을 판정한다. 무권한 상태 변화나 새로운 정책 의미를 생성하지 않는다.
+      non_substitutability: ASSURE의 PASS가 실행 권한, 정확한 대상 및 모든 transition precondition을 대신 충족하지 않는다.
+  - id: SRC-0012
+    source_pointer: /rules/family_definition/source_scope
+    value:
     - MPD-0010
     - MPD-0011
     - MPD-0012
@@ -170,289 +609,337 @@ rules:
     - MPD-WORK-0002
     - MPD-WORK-0003
     - MPD-WORK-0004
-  unit_mpd_0010_3c286438d94d:
-  - RECONCILE_POLICY_FILE_INDEX_AND_SUBJECT_IDENTITY_CORPUS
-  - INSPECT_REQUESTED_OR_EXISTING_POLICY_ID
-  - VERIFY_EXISTING_POLICY_CONTENT_AND_INDEX_STATUS_WHEN_PRESENT
-  - VALIDATE_EXPLICIT_PROJECT_OWNER_APPROVAL_PROVENANCE
-  - ALLOCATE_NEW_ID_OR_BIND_EXISTING_ID_EXACTLY
-  - VERIFY_POLICY_FILE_ID_AND_EXPLICIT_TARGET_STATUS
-  - MUTATE_INDEX_AND_SUBJECT_IDENTITY_REGISTRY
-  - REVALIDATE_POLICY_CONTROL_PLANE
-  unit_mpd_0011_e200c6e6a1d5: MPD-RELS-0002
-  unit_mpd_0012_02b6455c4f6d:
-    activation_approval_ref: developer/policy/approvals/MPA-20260925-MPD-0012-AGENT-CONTEXT-ACTIVATION.yaml
-    agent_contract_current_activation: AUTHORIZED
-    runtime_authority_limited_to_approved_decisions: true
-    provisional_decisions_promoted_by_activation: false
-    deferred_decisions_promoted_by_activation: false
-    markdown_cleanup_inspect_plan_verify_simulate_allowed: true
-    markdown_cleanup_physical_apply_authorized_only_after_readiness: true
-    this_activation_does_not_implement_feature_compiler: true
-    this_activation_does_not_authorize_langgraph_or_langchain_core_dependency: true
-    next_required_phase: MARKDOWN_CLEANUP_SIMULATION_AND_REFERENCE_REMEDIATION
-  unit_mpd_0013_55660a13d7b1:
-    binding_creation:
-      initial_planning_state: NOT_CREATED
-      binding_id_allocation: AUTOMATIC
-    plan_materialization:
-      transition:
-        from: NOT_CREATED
-        to: CREATED
-      resolved_plan_id_allocation_at_transition: REQUIRED
-      plan_file_id_allocation_at_transition: REQUIRED
-      plan_version_registration_at_transition: REQUIRED
-      plan_revision_registration_at_transition: REQUIRED
-      plan_ref_registration_at_transition: REQUIRED
-      separate_registered_plan_id_allocation: FORBIDDEN
-    automatic_uncreated_binding_selection:
-      when_exactly_one_matching_not_created_binding_exists: ALLOWED
-      when_zero_matching_not_created_bindings_exist: FAIL_CLOSED
-      when_multiple_matching_not_created_bindings_exist: FAIL_CLOSED
-      ambiguous_case_requires_exact_binding_id: true
-    duplicate_identity:
-      duplicate_binding_id: FORBIDDEN
-      duplicate_created_relation:
-        key:
+  - id: SRC-0013
+    source_pointer: /rules/unit_mpd_0010_3c286438d94d
+    value:
+    - RECONCILE_POLICY_FILE_INDEX_AND_SUBJECT_IDENTITY_CORPUS
+    - INSPECT_REQUESTED_OR_EXISTING_POLICY_ID
+    - VERIFY_EXISTING_POLICY_CONTENT_AND_INDEX_STATUS_WHEN_PRESENT
+    - VALIDATE_EXPLICIT_PROJECT_OWNER_APPROVAL_PROVENANCE
+    - ALLOCATE_NEW_ID_OR_BIND_EXISTING_ID_EXACTLY
+    - VERIFY_POLICY_FILE_ID_AND_EXPLICIT_TARGET_STATUS
+    - MUTATE_INDEX_AND_SUBJECT_IDENTITY_REGISTRY
+    - REVALIDATE_POLICY_CONTROL_PLANE
+  - id: SRC-0014
+    source_pointer: /rules/unit_mpd_0011_e200c6e6a1d5
+    value: MPD-RELS-0002
+  - id: SRC-0015
+    source_pointer: /rules/unit_mpd_0012_02b6455c4f6d
+    value:
+      activation_approval_ref: developer/policy/approvals/MPA-20260925-MPD-0012-AGENT-CONTEXT-ACTIVATION.yaml
+      agent_contract_current_activation: AUTHORIZED
+      runtime_authority_limited_to_approved_decisions: true
+      provisional_decisions_promoted_by_activation: false
+      deferred_decisions_promoted_by_activation: false
+      markdown_cleanup_inspect_plan_verify_simulate_allowed: true
+      markdown_cleanup_physical_apply_authorized_only_after_readiness: true
+      this_activation_does_not_implement_feature_compiler: true
+      this_activation_does_not_authorize_langgraph_or_langchain_core_dependency: true
+      next_required_phase: MARKDOWN_CLEANUP_SIMULATION_AND_REFERENCE_REMEDIATION
+  - id: SRC-0016
+    source_pointer: /rules/unit_mpd_0013_55660a13d7b1
+    value:
+      binding_creation:
+        initial_planning_state: NOT_CREATED
+        binding_id_allocation: AUTOMATIC
+      plan_materialization:
+        transition:
+          from: NOT_CREATED
+          to: CREATED
+        resolved_plan_id_allocation_at_transition: REQUIRED
+        plan_file_id_allocation_at_transition: REQUIRED
+        plan_version_registration_at_transition: REQUIRED
+        plan_revision_registration_at_transition: REQUIRED
+        plan_ref_registration_at_transition: REQUIRED
+        separate_registered_plan_id_allocation: FORBIDDEN
+      automatic_uncreated_binding_selection:
+        when_exactly_one_matching_not_created_binding_exists: ALLOWED
+        when_zero_matching_not_created_bindings_exist: FAIL_CLOSED
+        when_multiple_matching_not_created_bindings_exist: FAIL_CLOSED
+        ambiguous_case_requires_exact_binding_id: true
+      duplicate_identity:
+        duplicate_binding_id: FORBIDDEN
+        duplicate_created_relation:
+          key:
+          - policy_ref
+          - resolved_plan_id
+          behavior: FORBIDDEN
+        shared_resolved_plan_id_across_distinct_policy_ref: ALLOWED
+        shared_plan_file_id_for_same_resolved_plan_id: ALLOWED
+        plan_file_id_reused_for_different_resolved_plan_id: FAIL_CLOSED
+      relationship_resolution:
+        exact_lookup_keys:
+        - binding_id
         - policy_ref
         - resolved_plan_id
-        behavior: FORBIDDEN
-      shared_resolved_plan_id_across_distinct_policy_ref: ALLOWED
-      shared_plan_file_id_for_same_resolved_plan_id: ALLOWED
-      plan_file_id_reused_for_different_resolved_plan_id: FAIL_CLOSED
-    relationship_resolution:
-      exact_lookup_keys:
-      - binding_id
-      - policy_ref
-      - resolved_plan_id
-      - plan_file_id
-      - plan_ref
-      semantic_similarity_resolution: FORBIDDEN
-  unit_mpd_0013_ece0f737d29d:
-    tracker_module: developer/automation/policy_plan_binding/ref_tracker.py
-    search_root: developer/planning/
-    search_key: plan_file_id
-    semantic_similarity_search: FORBIDDEN
-    missing_current_ref_resolution:
-      zero_exact_plan_file_id_matches: UNRESOLVED
-      one_exact_plan_file_id_match:
-        resolved_plan_id_exact_match_required: true
-        outcome: RECONCILE_REQUIRED
-      multiple_exact_plan_file_id_matches: FAIL_CLOSED
-    movement_mutation_contract:
-      operation: move_plan_ref
-      required_inputs:
-      - binding_id
-      - policy_ref
-      - resolved_plan_id
-      - plan_file_id
-      - from_plan_ref
-      - to_plan_ref
-      forbidden_inputs:
-      - version
-      - revision
-      preconditions:
-      - BINDING_ID_EXACT_MATCH
-      - POLICY_REF_EXACT_MATCH
-      - RESOLVED_PLAN_ID_EXACT_MATCH
-      - PLAN_FILE_ID_EXACT_MATCH
-      - CURRENT_PLAN_REF_EQUALS_FROM_PLAN_REF
-      - TO_PLAN_REF_RESOLVES_EXACT_PLAN_FILE_ID
-      - TO_PLAN_REF_RESOLVES_EXACT_RESOLVED_PLAN_ID
-      update_scope:
-      - plan_ref
-      stale_state_protection: EXPECTED_REGISTRY_DIGEST_CAS
-  unit_mpd_0014_d67c22d688ac:
-    normal_planning_root: developer/planning/
-    completed_version_plan_may_merge_without_new_user_approval: true
-    pre_merge_policy_analysis_required: true
-    pre_merge_policy_review_required: true
-    explicit_user_merge_request_allowed: true
-    merge_eligibility_does_not_authorize_branch_creation: true
-  unit_mpd_migr_0004_e634095a9e0f:
-    unit: GIT_COMMIT_CANDIDATE
-    local:
-      base: HEAD
-      candidate: STAGED_GIT_INDEX
-      comparison: HEAD_TO_STAGED_COMMIT_CANDIDATE
-      behavior: AUTO_RECONCILE_THEN_VERIFY
-    remote:
-      unit: INTRODUCED_COMMIT
-      comparison: PARENT_STATE_TO_COMMIT_STATE
-      behavior: VERIFY_ONLY
-      mutation: FORBIDDEN
-      every_introduced_commit_must_be_checked: true
-    release:
-      source: EXACT_SHA
-      behavior: VERIFY_ONLY
-      mutation: FORBIDDEN
-    merge_commit_with_authority_delta: SAME_RULE_AS_ANY_OTHER_COMMIT
-  unit_mpd_migr_0004_c6d84e07b661:
-    historical_developer_baseline: IMMUTABLE
-    reconciliation_model: THREE_WAY_USER_AUTHORITY_PRESERVING
-    reconciliation_inputs:
-    - DISTRIBUTED_BASELINE
-    - USER_CURRENT_AUTHORITATIVE_PROFILE
-    - NEW_DISTRIBUTED_BASELINE
-    user_change_when_developer_semantic_field_is_unchanged: PRESERVE
-    same_semantic_field_changed_by_user_and_developer: DECISION_REQUIRED
-    non_conflicting_developer_addition: SAFE_CANDIDATE
-    modified_profile_without_provable_origin: UNKNOWN_ORIGIN_FAIL_CLOSED
-    missing_or_changed_required_template_revision: FAIL_CLOSED
-    materialization_may_mutate_source_project_profile: false
-    automation_staging: EXACT_AUTOMATION_OWNED_OUTPUTS_ONLY
-    git_add_all: FORBIDDEN
-    unstaged_user_change_on_automation_owned_output: AUTOMATION_WRITE_CONFLICT
-    post_write_validation: REQUIRED
-    partial_authoritative_state_after_failure: FORBIDDEN
-  unit_mpd_rels_0002_e782809fbb27:
-    release_publication_with_invalid_pp_transition: FORBIDDEN
-    project_profile_transition_verification_ref: MPD-VERI-0003
-  unit_mpd_veri_0004_8084d790e9d2:
-    verification_model: REQUIRED_AND_OPTIONAL_SEPARATION
-    required_all_pass_result: AUTO_PROMOTE
-    required_any_fail_result: REJECT
-    required_no_fail_with_unknown_result: USER_REVIEW_REQUIRED
-  unit_mpd_work_0002_24cb7d076de1:
-    verified_state_may_feed_next_resolution: true
-    may_continue_without_new_human_confirmation_when_existing_authorization_remains_valid: true
-    may_create_new_approval_or_authorization: false
-  unit_mpd_work_0002_579cedbf03c6:
-    must_return_to_resolution_or_escalation: true
-    silent_success_coercion: FORBIDDEN
-    deviation_may_create_normative_authority: false
-  unit_mpd_work_0003_fc836a4c0e34:
-  - EXTRACT_NORMATIVE_STATEMENTS
-  - DECOMPOSE_RESPONSIBILITIES
-  - CLASSIFY_AUTHORITY_RELATION
-  - CLASSIFY_OWNED_FAMILY
-  - DISCOVER_EXISTING_FAMILY_AUTHORITY
-  - NORMALIZE_AUTHORITY_SCOPE
-  - CLASSIFY_AUTHORITY_COLLISION
-  - RESOLVE_COLLISION
-  - GROUP_NEW_AUTHORITY_BY_COHESION
-  - MATERIALIZE_POLICY
-  unit_mpd_work_0003_b59d60bb36a6:
-    required_before_new_policy_materialization: true
-    search_scope: ALL_ACTIVE_POLICIES_IN_SELECTED_FAMILY
-    comparison_dimensions:
-    - FAMILY
-    - AUTHORITY_SUBJECT
-    - LIFECYCLE_SCOPE
-    - NORMATIVE_SCOPE
-    - SEMANTIC_MEANING
-    unresolved_lookup: FAIL_CLOSED
-  unit_mpd_work_0003_2c868d400573:
-    NO_MATCH:
-    - NEW_AUTHORITY_CANDIDATE
-    EXACT_DUPLICATE:
-    - REFERENCE_EXISTING
-    SEMANTIC_EQUIVALENT:
-    - REFERENCE_EXISTING
-    EXISTING_SUBSUMES_CANDIDATE:
-    - DROP_REDUNDANT_CANDIDATE
-    CANDIDATE_EXTENDS_EXISTING:
-    - MERGE_INTO_EXISTING
-    - CREATE_NEW_SIBLING_POLICY
-    PARTIAL_OVERLAP:
-    - SPLIT_RESPONSIBILITY_REQUIRED
-    DISTINCT_SCOPED_AUTHORITY:
-    - COEXIST_SCOPED
-    CONFLICT:
-    - FAIL_CLOSED_OWNER_DECISION_REQUIRED
-  unit_mpd_work_0003_7e804c26cf40:
-    grandfathered_family_maximums:
-      SPEC: 27
-      PLAN: 4
-      WORK: 2
-      VERI: 1
-      MIGR: 5
-      RELS: 0
-    policies_above_grandfathered_maximum_require_analysis_binding: true
-  unit_mpd_work_0004_b413e855fd78:
-    ownership: PRE_EXECUTION_MUTATION_AUTHORIZATION
-    objective: AUTHORIZE_MUTATION_ONLY_WHEN_ALL_CONTRACT_DEFINED_REQUIRED_CONDITIONS_ARE_EXPLICITLY_SATISFIED
-    strategy: CONTRACT_DEFINED_CONDITIONAL_AUTHORIZATION
-    decision_contract:
-      result_vocabulary:
-      - AUTHORIZED
-      - NOT_AUTHORIZED
-      authorized_requires_all_required_dimensions_satisfied: true
-      partial_satisfaction_authorizes_mutation: false
-      contract_defined_conditions_may_authorize_mutation: true
-    required_condition_dimensions:
-    - SCOPE
-    - PRECONDITION
-    - FRESHNESS
-    - CONFLICT
-    dimension_boundary:
-      scope:
-        gate_responsibility: REQUIRE_TARGET_MUTATION_WITHIN_EXPLICIT_AUTHORIZED_SCOPE
-        gate_may_invent_scope: false
-      precondition:
-        gate_responsibility: REQUIRE_ALL_DECLARED_PRECONDITIONS_SATISFIED
-        gate_may_invent_precondition: false
-      freshness:
-        gate_responsibility: REQUIRE_AUTHORIZATION_INPUTS_CURRENT_FOR_TARGET_MUTATION
-        exact_freshness_identity_fixed_by_this_policy: false
-      conflict:
-        gate_responsibility: REQUIRE_NO_DECLARED_BLOCKING_CONFLICT
-        gate_may_invent_conflict_semantics: false
-    fail_closed:
-      unresolved_required_condition: NOT_AUTHORIZED
-      unknown_required_condition: NOT_AUTHORIZED
-      out_of_scope_mutation: NOT_AUTHORIZED
-      failed_precondition: NOT_AUTHORIZED
-      stale_authorization_input: NOT_AUTHORIZED
-      blocking_conflict: NOT_AUTHORIZED
-      missing_required_dimension: NOT_AUTHORIZED
-    authority_boundary:
-      authorization_result_may_be_consumed_by_execution_layer: true
-      authorization_result_executes_mutation: false
-      authorization_result_is_safe_apply: false
-      authorization_result_is_verification: false
-      authorization_result_is_rollback: false
-      authorization_result_creates_new_policy_or_project_authority: false
-      missing_condition_may_be_inferred_by_agent: false
-      model_confidence_may_authorize_mutation: false
-      implementation_urgency_may_authorize_mutation: false
-      execution_convenience_may_authorize_mutation: false
-    responsibility_boundary:
-      owns:
-      - MUTATION_AUTHORIZATION_DECISION
-      - REQUIRED_DIMENSION_AGGREGATION
-      - FAIL_CLOSED_AUTHORIZATION_RESULT
-      does_not_own:
-      - WORK_EXECUTION_LIFECYCLE
-      - REPOSITORY_MUTATION_EXECUTION
-      - SAFE_APPLY
-      - POSTCONDITION_VERIFICATION
-      - ROLLBACK
-      - DOMAIN_SPECIFIC_SCOPE_DEFINITION
-      - DOMAIN_SPECIFIC_PRECONDITION_SEMANTICS
-      - DOMAIN_SPECIFIC_CONFLICT_SEMANTICS
-  unit_mpd_plan_0001_6560d943f53d:
-    pending_status: IMPLEMENTED_VALIDATION_PENDING
-    complete_status: COMPLETE
-    rule: REGISTERED_MACHINE_CHECKS_MUST_PASS_BEFORE_AUTOMATIC_PROMOTION
-    failed_validation_mutation: FORBIDDEN
-    post_promotion_planning_validation_required: true
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-ROOT-CTRL-0001-ACTIVE.yaml
-    next_action:
-      action: VERIFY_SOURCE_PROJECTION
-      execution: SERIAL_REQUIRED
-      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+        - plan_file_id
+        - plan_ref
+        semantic_similarity_resolution: FORBIDDEN
+  - id: SRC-0017
+    source_pointer: /rules/unit_mpd_0013_ece0f737d29d
+    value:
+      tracker_module: developer/automation/policy_plan_binding/ref_tracker.py
+      search_root: developer/planning/
+      search_key: plan_file_id
+      semantic_similarity_search: FORBIDDEN
+      missing_current_ref_resolution:
+        zero_exact_plan_file_id_matches: UNRESOLVED
+        one_exact_plan_file_id_match:
+          resolved_plan_id_exact_match_required: true
+          outcome: RECONCILE_REQUIRED
+        multiple_exact_plan_file_id_matches: FAIL_CLOSED
+      movement_mutation_contract:
+        operation: move_plan_ref
+        required_inputs:
+        - binding_id
+        - policy_ref
+        - resolved_plan_id
+        - plan_file_id
+        - from_plan_ref
+        - to_plan_ref
+        forbidden_inputs:
+        - version
+        - revision
+        preconditions:
+        - BINDING_ID_EXACT_MATCH
+        - POLICY_REF_EXACT_MATCH
+        - RESOLVED_PLAN_ID_EXACT_MATCH
+        - PLAN_FILE_ID_EXACT_MATCH
+        - CURRENT_PLAN_REF_EQUALS_FROM_PLAN_REF
+        - TO_PLAN_REF_RESOLVES_EXACT_PLAN_FILE_ID
+        - TO_PLAN_REF_RESOLVES_EXACT_RESOLVED_PLAN_ID
+        update_scope:
+        - plan_ref
+        stale_state_protection: EXPECTED_REGISTRY_DIGEST_CAS
+  - id: SRC-0018
+    source_pointer: /rules/unit_mpd_0014_d67c22d688ac
+    value:
+      normal_planning_root: developer/planning/
+      completed_version_plan_may_merge_without_new_user_approval: true
+      pre_merge_policy_analysis_required: true
+      pre_merge_policy_review_required: true
+      explicit_user_merge_request_allowed: true
+      merge_eligibility_does_not_authorize_branch_creation: true
+  - id: SRC-0019
+    source_pointer: /rules/unit_mpd_migr_0004_e634095a9e0f
+    value:
+      unit: GIT_COMMIT_CANDIDATE
+      local:
+        base: HEAD
+        candidate: STAGED_GIT_INDEX
+        comparison: HEAD_TO_STAGED_COMMIT_CANDIDATE
+        behavior: AUTO_RECONCILE_THEN_VERIFY
+      remote:
+        unit: INTRODUCED_COMMIT
+        comparison: PARENT_STATE_TO_COMMIT_STATE
+        behavior: VERIFY_ONLY
+        mutation: FORBIDDEN
+        every_introduced_commit_must_be_checked: true
+      release:
+        source: EXACT_SHA
+        behavior: VERIFY_ONLY
+        mutation: FORBIDDEN
+      merge_commit_with_authority_delta: SAME_RULE_AS_ANY_OTHER_COMMIT
+  - id: SRC-0020
+    source_pointer: /rules/unit_mpd_migr_0004_c6d84e07b661
+    value:
+      historical_developer_baseline: IMMUTABLE
+      reconciliation_model: THREE_WAY_USER_AUTHORITY_PRESERVING
+      reconciliation_inputs:
+      - DISTRIBUTED_BASELINE
+      - USER_CURRENT_AUTHORITATIVE_PROFILE
+      - NEW_DISTRIBUTED_BASELINE
+      user_change_when_developer_semantic_field_is_unchanged: PRESERVE
+      same_semantic_field_changed_by_user_and_developer: DECISION_REQUIRED
+      non_conflicting_developer_addition: SAFE_CANDIDATE
+      modified_profile_without_provable_origin: UNKNOWN_ORIGIN_FAIL_CLOSED
+      missing_or_changed_required_template_revision: FAIL_CLOSED
+      materialization_may_mutate_source_project_profile: false
+      automation_staging: EXACT_AUTOMATION_OWNED_OUTPUTS_ONLY
+      git_add_all: FORBIDDEN
+      unstaged_user_change_on_automation_owned_output: AUTOMATION_WRITE_CONFLICT
+      post_write_validation: REQUIRED
+      partial_authoritative_state_after_failure: FORBIDDEN
+  - id: SRC-0021
+    source_pointer: /rules/unit_mpd_rels_0002_e782809fbb27
+    value:
+      release_publication_with_invalid_pp_transition: FORBIDDEN
+      project_profile_transition_verification_ref: MPD-VERI-0003
+  - id: SRC-0022
+    source_pointer: /rules/unit_mpd_veri_0004_8084d790e9d2
+    value:
+      verification_model: REQUIRED_AND_OPTIONAL_SEPARATION
+      required_all_pass_result: AUTO_PROMOTE
+      required_any_fail_result: REJECT
+      required_no_fail_with_unknown_result: USER_REVIEW_REQUIRED
+  - id: SRC-0023
+    source_pointer: /rules/unit_mpd_work_0002_24cb7d076de1
+    value:
+      verified_state_may_feed_next_resolution: true
+      may_continue_without_new_human_confirmation_when_existing_authorization_remains_valid: true
+      may_create_new_approval_or_authorization: false
+  - id: SRC-0024
+    source_pointer: /rules/unit_mpd_work_0002_579cedbf03c6
+    value:
+      must_return_to_resolution_or_escalation: true
+      silent_success_coercion: FORBIDDEN
+      deviation_may_create_normative_authority: false
+  - id: SRC-0025
+    source_pointer: /rules/unit_mpd_work_0003_fc836a4c0e34
+    value:
+    - EXTRACT_NORMATIVE_STATEMENTS
+    - DECOMPOSE_RESPONSIBILITIES
+    - CLASSIFY_AUTHORITY_RELATION
+    - CLASSIFY_OWNED_FAMILY
+    - DISCOVER_EXISTING_FAMILY_AUTHORITY
+    - NORMALIZE_AUTHORITY_SCOPE
+    - CLASSIFY_AUTHORITY_COLLISION
+    - RESOLVE_COLLISION
+    - GROUP_NEW_AUTHORITY_BY_COHESION
+    - MATERIALIZE_POLICY
+  - id: SRC-0026
+    source_pointer: /rules/unit_mpd_work_0003_b59d60bb36a6
+    value:
+      required_before_new_policy_materialization: true
+      search_scope: ALL_ACTIVE_POLICIES_IN_SELECTED_FAMILY
+      comparison_dimensions:
+      - FAMILY
+      - AUTHORITY_SUBJECT
+      - LIFECYCLE_SCOPE
+      - NORMATIVE_SCOPE
+      - SEMANTIC_MEANING
+      unresolved_lookup: FAIL_CLOSED
+  - id: SRC-0027
+    source_pointer: /rules/unit_mpd_work_0003_2c868d400573
+    value:
+      NO_MATCH:
+      - NEW_AUTHORITY_CANDIDATE
+      EXACT_DUPLICATE:
+      - REFERENCE_EXISTING
+      SEMANTIC_EQUIVALENT:
+      - REFERENCE_EXISTING
+      EXISTING_SUBSUMES_CANDIDATE:
+      - DROP_REDUNDANT_CANDIDATE
+      CANDIDATE_EXTENDS_EXISTING:
+      - MERGE_INTO_EXISTING
+      - CREATE_NEW_SIBLING_POLICY
+      PARTIAL_OVERLAP:
+      - SPLIT_RESPONSIBILITY_REQUIRED
+      DISTINCT_SCOPED_AUTHORITY:
+      - COEXIST_SCOPED
+      CONFLICT:
+      - FAIL_CLOSED_OWNER_DECISION_REQUIRED
+  - id: SRC-0028
+    source_pointer: /rules/unit_mpd_work_0003_7e804c26cf40
+    value:
+      grandfathered_family_maximums:
+        SPEC: 27
+        PLAN: 4
+        WORK: 2
+        VERI: 1
+        MIGR: 5
+        RELS: 0
+      policies_above_grandfathered_maximum_require_analysis_binding: true
+  - id: SRC-0029
+    source_pointer: /rules/unit_mpd_work_0004_b413e855fd78
+    value:
+      ownership: PRE_EXECUTION_MUTATION_AUTHORIZATION
+      objective: AUTHORIZE_MUTATION_ONLY_WHEN_ALL_CONTRACT_DEFINED_REQUIRED_CONDITIONS_ARE_EXPLICITLY_SATISFIED
+      strategy: CONTRACT_DEFINED_CONDITIONAL_AUTHORIZATION
+      decision_contract:
+        result_vocabulary:
+        - AUTHORIZED
+        - NOT_AUTHORIZED
+        authorized_requires_all_required_dimensions_satisfied: true
+        partial_satisfaction_authorizes_mutation: false
+        contract_defined_conditions_may_authorize_mutation: true
+      required_condition_dimensions:
+      - SCOPE
+      - PRECONDITION
+      - FRESHNESS
+      - CONFLICT
+      dimension_boundary:
+        scope:
+          gate_responsibility: REQUIRE_TARGET_MUTATION_WITHIN_EXPLICIT_AUTHORIZED_SCOPE
+          gate_may_invent_scope: false
+        precondition:
+          gate_responsibility: REQUIRE_ALL_DECLARED_PRECONDITIONS_SATISFIED
+          gate_may_invent_precondition: false
+        freshness:
+          gate_responsibility: REQUIRE_AUTHORIZATION_INPUTS_CURRENT_FOR_TARGET_MUTATION
+          exact_freshness_identity_fixed_by_this_policy: false
+        conflict:
+          gate_responsibility: REQUIRE_NO_DECLARED_BLOCKING_CONFLICT
+          gate_may_invent_conflict_semantics: false
+      fail_closed:
+        unresolved_required_condition: NOT_AUTHORIZED
+        unknown_required_condition: NOT_AUTHORIZED
+        out_of_scope_mutation: NOT_AUTHORIZED
+        failed_precondition: NOT_AUTHORIZED
+        stale_authorization_input: NOT_AUTHORIZED
+        blocking_conflict: NOT_AUTHORIZED
+        missing_required_dimension: NOT_AUTHORIZED
+      authority_boundary:
+        authorization_result_may_be_consumed_by_execution_layer: true
+        authorization_result_executes_mutation: false
+        authorization_result_is_safe_apply: false
+        authorization_result_is_verification: false
+        authorization_result_is_rollback: false
+        authorization_result_creates_new_policy_or_project_authority: false
+        missing_condition_may_be_inferred_by_agent: false
+        model_confidence_may_authorize_mutation: false
+        implementation_urgency_may_authorize_mutation: false
+        execution_convenience_may_authorize_mutation: false
+      responsibility_boundary:
+        owns:
+        - MUTATION_AUTHORIZATION_DECISION
+        - REQUIRED_DIMENSION_AGGREGATION
+        - FAIL_CLOSED_AUTHORIZATION_RESULT
+        does_not_own:
+        - WORK_EXECUTION_LIFECYCLE
+        - REPOSITORY_MUTATION_EXECUTION
+        - SAFE_APPLY
+        - POSTCONDITION_VERIFICATION
+        - ROLLBACK
+        - DOMAIN_SPECIFIC_SCOPE_DEFINITION
+        - DOMAIN_SPECIFIC_PRECONDITION_SEMANTICS
+        - DOMAIN_SPECIFIC_CONFLICT_SEMANTICS
+  - id: SRC-0030
+    source_pointer: /rules/unit_mpd_plan_0001_6560d943f53d
+    value:
+      pending_status: IMPLEMENTED_VALIDATION_PENDING
+      complete_status: COMPLETE
+      rule: REGISTERED_MACHINE_CHECKS_MUST_PASS_BEFORE_AUTOMATIC_PROMOTION
+      failed_validation_mutation: FORBIDDEN
+      post_promotion_planning_validation_required: true
+  - id: SRC-0031
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0032
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: COMPLETE
+      requirements:
+      - id: TR-001
+        type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+        state: SATISFIED
+        refs:
+        - developer/policy/approvals/MPA-20261006-ROOT-CTRL-0001-ACTIVE.yaml
+        next_action:
+          action: VERIFY_SOURCE_PROJECTION
+          execution: SERIAL_REQUIRED
+          completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  source_document:
+    path: developer/policy/CTRL/MPD-CTRL-0001.yaml
+    sha256: f17978f08fef0c76b5242042539102243e2a526dd90251093c54bce81d8922e2
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
 )
 
 func routingRepositoryRoot(t *testing.T) string {
@@ -118,32 +120,31 @@ func TestV2PublicPolicySelectedWithoutV7Fallback(t *testing.T) {
 	}
 }
 
-func TestGOVPolicyDocumentsUseSharedRootWithoutAuthority(t *testing.T) {
+func TestGOVPolicyDocumentsUseCandidateRootAndPreserveLifecycle(t *testing.T) {
 	root := routingRepositoryRoot(t)
 	for _, id := range []string{"0001", "0004", "0005", "0006"} {
-		rel := "developer/policy/GOV/MPD-GOV-" + id + ".yaml"
-		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(rel)))
+		relative := "developer/policy/GOV/MPD-GOV-" + id + ".yaml"
+		document, err := authoring.ReadDocument(root, relative)
 		if err != nil {
 			t.Fatal(err)
 		}
-		normalized := strings.ReplaceAll(string(data), "\r\n", "\n")
-		lines := strings.Split(normalized, "\n")
-		roots := []string{}
-		for _, line := range lines {
-			if strings.HasPrefix(line, " ") || strings.HasPrefix(line, "#") || line == "" {
-				continue
-			}
-			if strings.HasSuffix(line, ":") {
-				roots = append(roots, line)
+		if !authoring.IsUnifiedPolicy(document) {
+			t.Fatalf("%s is not in the current common structure", relative)
+		}
+		for _, field := range []string{"Policy_Identity", "Policy_Lifecycle", "Policy_Authority",
+			"Policy_Rules", "Policy_Evaluation", "Policy_Relationships", "Policy_Content", "Policy_Migration"} {
+			if _, ok := document[field]; !ok {
+				t.Fatalf("%s missing common field %s", relative, field)
 			}
 		}
-		if got := strings.Join(roots, "|"); got != "Policy_Identity:|Policy_Lifecycle:|Policy_Rules:" {
-			t.Errorf("%s unexpected top-level sections: %s", rel, got)
+		source, err := authoring.RestoreUnifiedSource(root, document)
+		if err != nil {
+			t.Fatal(err)
 		}
-		if !strings.Contains(normalized, "  status: APPROVED.Applying\n") ||
-			!strings.Contains(normalized, "  Policy_Status_Schema_ver:") ||
-			!strings.Contains(normalized, "  contract: urn:ptsip:contract:policy:gov:") {
-			t.Errorf("%s missing current flat GOV Policy_Status", rel)
+		lifecycle := source["Policy_Lifecycle"].(map[string]any)
+		if lifecycle["status"] != "APPROVED.Applying" || lifecycle["Policy_Status_Schema_ver"] == nil ||
+			!strings.HasPrefix(lifecycle["contract"].(string), "urn:ptsip:contract:policy:gov:") {
+			t.Errorf("%s original GOV lifecycle changed: %v", relative, lifecycle)
 		}
 	}
 }

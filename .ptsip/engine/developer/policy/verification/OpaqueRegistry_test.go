@@ -132,6 +132,10 @@ func TestOpaqueRegistryResolvesActualGovAndFailsClosedOnMissingIntention(t *test
 	if err != nil {
 		t.Fatal(err)
 	}
+	gov, err = authoring.RestoreUnifiedSource(root, gov)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if err := catalog.CheckRules(validate, gov); err != nil {
 		t.Fatal(err)
 	}

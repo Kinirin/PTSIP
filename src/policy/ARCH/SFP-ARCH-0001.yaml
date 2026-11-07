@@ -1,186 +1,856 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: ARCH
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-ARCH-0001
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ARCH
   title: ARCH authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION
-  statement: consumer Project Profile와 Responsibility Map의 프로젝트 소유 lifecycle 책임, 역할
-    및 명시적 typed 관계를 소유한다.
-exclusive_kernel:
-- SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
-- SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
-authority_contract:
-  authority_type: ROOT_FAMILY_ARCH
-  schema_id: ptsip.governance/root-family/arch
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
-      statement: classification을 governing lifecycle obligation에 따른 primary ownership으로
-        선언하고 material mixed 책임 및 unresolved 소유를 구분한다.
-      non_substitutability: SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle
-        ownership을 자동 결정하지 않는다.
-    - id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
-      statement: roles, associated artifacts 및 typed directed relationships를 프로젝트의
-        명시적 architecture 사실로 선언하고 evidence에서 자동 생성하지 않는다.
-      non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트
-        소유 architecture 의도를 만들어 내지 못한다.
-  semantic_unit_941be08af86f:
-  - PURPOSE
-  - LIFECYCLE_OWNERSHIP
-  semantic_unit_d111ae743dd5: true
-  semantic_unit_7ac95637e40a: EXTERNAL_TO_CONSUMER_REPOSITORY
-  semantic_unit_b846918d843e: CONSUMER_PROJECT
-  semantic_unit_9d1261697280: false
-  semantic_unit_3714b45fa56d: true
-  semantic_unit_aaf1b9c097ff: true
-  semantic_unit_5cf908525c8d:
-  - PRODUCT
-  - DEVELOPMENT_TOOLING
-  - DELIVERY
-  - OPERATIONS
-  - NEUTRAL_CONTRACT
-  semantic_unit_2554b65e2700: GOVERNING_LIFECYCLE_OBLIGATION
-  semantic_unit_3d157e56d69e:
-  - ESTABLISH_PROJECT_OWNED_SCOPE
-  - IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
-  - COLLECT_LIFECYCLE_EVIDENCE
-  - TEST_NEUTRAL_CONTRACT_QUALIFICATION
-  - DETERMINE_GOVERNING_OWNING_LIFECYCLE
-  - TEST_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY
-  - KEEP_SPLIT_OR_UNRESOLVED
-  - PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE
-  semantic_unit_42bcd8df20e8:
-  - PATH_NAME
-  - TECHNOLOGY_NAME
-  - EXECUTABLE_STATUS
-  - LINE_COUNT
-  - JOB_COUNT
-  - INVOCATION_FREQUENCY
-  - CONFIDENCE_SCORE
-  semantic_unit_3d9712772a48: DELIVERY_HANDOFF
-  semantic_unit_3ed216a63eab:
-  - NON_EXECUTABLE_ROLE
-  - NON_OWNING_IMPLEMENTATION
-  - LIFECYCLE_COMPATIBILITY_INDEPENDENT
-  semantic_unit_caeb7b95594d: true
-  semantic_unit_52f9cb677627: false
-  semantic_unit_782216c0653c: false
-  semantic_unit_598a1a795d37: false
-  semantic_unit_34ad0d5840f5: PROJECT_COMPLETE_DECLARATION
-  semantic_unit_b12fa462c850: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
-  semantic_unit_4194792f28ca: FORBIDDEN
-  semantic_unit_7907d3950fd9:
-  - TEMPLATE_SELECTION
-  - STABLE_ID_REPLACEMENTS
-  - STABLE_ID_EXTENSIONS
-  - STABLE_ID_REMOVALS
-  semantic_unit_7c23900f7f5f:
-  - PROJECT_OVERRIDE_EXTENSION_REMOVAL
-  - SELECTED_IMMUTABLE_TEMPLATE_DECLARATION
-  semantic_unit_7a39d51c0d83: WHOLE_ENTITY_BY_STABLE_ID
-  semantic_unit_777675b0b75d: NOT_INTRODUCED
-  semantic_unit_96036f84abf9: PTSIP_VPMS_READ_ONLY_BOUNDARY
-  semantic_unit_0d125cde84c0: false
-  semantic_unit_12e1aaea2bc8: false
-  semantic_unit_471bdba77329: false
-  semantic_unit_d2a2c2e5e77b:
-  - VPMS_GLOBAL_IDENTITY
-  - VPMS_CASE_PROTOCOL
-  - VPMS_VERIFICATION_PURPOSE
-  - VPMS_CASE_SELECTION
-  - VPMS_EXECUTION_COMPOSITION
-  repository_modular_declaration_direction:
-    decision_source: PROJECT_OWNER_EXPLICIT
-    scope: CONSUMER_REPOSITORY_PROFILE_COMPONENT_TASK_AND_CONTRACT_LOCATION
-    repository_namespace_contracts:
-      registration_entrypoint: .ptsip/index.json
-      contracts_namespace_support: REQUIRED
-      current_repository_preferred_contract_root: .ptsip/contracts/
-      user_defined_contract_paths: PERMITTED
-      namespace_detailed_schema_and_activation: UNRESOLVED
-    project_profile_source_partition:
-      independently_maintainable_responsibility_scoped_declarations: REQUIRED
-      central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
-      central_main_empty_source_components: PERMITTED_IN_TARGET_MODEL
-      repository_effective_responsibility_map: PROJECT_COMPLETE_DECLARATION_PRESERVED
-      branch_parallel_editability: REQUIRED
-      identity_and_relationship_ownership: MACHINE_VERIFIED_NO_SILENT_COLLISION
-      exact_fragment_discovery_composition_and_schema: UNRESOLVED
-    project_profile_discovery_policy:
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_941be08af86f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_d111ae743dd5
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_7ac95637e40a
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_b846918d843e
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_9d1261697280
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_3714b45fa56d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_aaf1b9c097ff
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_5cf908525c8d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_2554b65e2700
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_3d157e56d69e
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0019
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_42bcd8df20e8
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0020
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_3d9712772a48
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0021
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_3ed216a63eab
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0022
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_caeb7b95594d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0023
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_52f9cb677627
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0024
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_782216c0653c
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0025
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_598a1a795d37
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0026
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0026
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_34ad0d5840f5
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0027
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0027
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_b12fa462c850
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0028
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0028
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_4194792f28ca
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0029
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0029
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_7907d3950fd9
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0030
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0030
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_7c23900f7f5f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0031
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0031
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_7a39d51c0d83
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0032
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0032
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_777675b0b75d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0033
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0033
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_96036f84abf9
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0034
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0034
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_0d125cde84c0
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0035
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0035
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_12e1aaea2bc8
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0036
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0036
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_471bdba77329
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0037
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0037
+  - id: SFP-ARCH-0001#/authority_semantics/semantic_unit_d2a2c2e5e77b
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0038
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0038
+  - id: SFP-ARCH-0001#/authority_semantics/repository_modular_declaration_direction
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0039
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0039
+  - id: SFP-ARCH-0001#/authority_semantics/engine_plane_boundary
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0040
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0040
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0041
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ARCH
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ARCH-0001
+      title: ARCH authority (ACTIVE source responsibilities)
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION
+      statement: consumer Project Profile와 Responsibility Map의 프로젝트 소유 lifecycle 책임, 역할 및 명시적 typed 관계를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+    - SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ARCH
+      schema_id: ptsip.governance/root-family/arch
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+      statement: classification을 governing lifecycle obligation에 따른 primary ownership으로 선언하고 material mixed 책임 및 unresolved
+        소유를 구분한다.
+      non_substitutability: SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle ownership을 자동 결정하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+      statement: roles, associated artifacts 및 typed directed relationships를 프로젝트의 명시적 architecture 사실로 선언하고 evidence에서 자동
+        생성하지 않는다.
+      non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트 소유 architecture 의도를 만들어 내지 못한다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_941be08af86f
+    value:
+    - PURPOSE
+    - LIFECYCLE_OWNERSHIP
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_d111ae743dd5
+    value: true
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_7ac95637e40a
+    value: EXTERNAL_TO_CONSUMER_REPOSITORY
+  - id: SRC-0013
+    source_pointer: /authority_semantics/semantic_unit_b846918d843e
+    value: CONSUMER_PROJECT
+  - id: SRC-0014
+    source_pointer: /authority_semantics/semantic_unit_9d1261697280
+    value: false
+  - id: SRC-0015
+    source_pointer: /authority_semantics/semantic_unit_3714b45fa56d
+    value: true
+  - id: SRC-0016
+    source_pointer: /authority_semantics/semantic_unit_aaf1b9c097ff
+    value: true
+  - id: SRC-0017
+    source_pointer: /authority_semantics/semantic_unit_5cf908525c8d
+    value:
+    - PRODUCT
+    - DEVELOPMENT_TOOLING
+    - DELIVERY
+    - OPERATIONS
+    - NEUTRAL_CONTRACT
+  - id: SRC-0018
+    source_pointer: /authority_semantics/semantic_unit_2554b65e2700
+    value: GOVERNING_LIFECYCLE_OBLIGATION
+  - id: SRC-0019
+    source_pointer: /authority_semantics/semantic_unit_3d157e56d69e
+    value:
+    - ESTABLISH_PROJECT_OWNED_SCOPE
+    - IDENTIFY_COHERENT_RESPONSIBILITY_BOUNDARY
+    - COLLECT_LIFECYCLE_EVIDENCE
+    - TEST_NEUTRAL_CONTRACT_QUALIFICATION
+    - DETERMINE_GOVERNING_OWNING_LIFECYCLE
+    - TEST_MATERIAL_MIXED_LIFECYCLE_RESPONSIBILITY
+    - KEEP_SPLIT_OR_UNRESOLVED
+    - PROJECT_OWNER_CONFIRMS_INFERRED_OR_MIGRATED_ARCHITECTURE
+  - id: SRC-0020
+    source_pointer: /authority_semantics/semantic_unit_42bcd8df20e8
+    value:
+    - PATH_NAME
+    - TECHNOLOGY_NAME
+    - EXECUTABLE_STATUS
+    - LINE_COUNT
+    - JOB_COUNT
+    - INVOCATION_FREQUENCY
+    - CONFIDENCE_SCORE
+  - id: SRC-0021
+    source_pointer: /authority_semantics/semantic_unit_3d9712772a48
+    value: DELIVERY_HANDOFF
+  - id: SRC-0022
+    source_pointer: /authority_semantics/semantic_unit_3ed216a63eab
+    value:
+    - NON_EXECUTABLE_ROLE
+    - NON_OWNING_IMPLEMENTATION
+    - LIFECYCLE_COMPATIBILITY_INDEPENDENT
+  - id: SRC-0023
+    source_pointer: /authority_semantics/semantic_unit_caeb7b95594d
+    value: true
+  - id: SRC-0024
+    source_pointer: /authority_semantics/semantic_unit_52f9cb677627
+    value: false
+  - id: SRC-0025
+    source_pointer: /authority_semantics/semantic_unit_782216c0653c
+    value: false
+  - id: SRC-0026
+    source_pointer: /authority_semantics/semantic_unit_598a1a795d37
+    value: false
+  - id: SRC-0027
+    source_pointer: /authority_semantics/semantic_unit_34ad0d5840f5
+    value: PROJECT_COMPLETE_DECLARATION
+  - id: SRC-0028
+    source_pointer: /authority_semantics/semantic_unit_b12fa462c850
+    value: PROJECT_EXACT_TEMPLATE_ID_AND_IMMUTABLE_REVISION_SELECTION
+  - id: SRC-0029
+    source_pointer: /authority_semantics/semantic_unit_4194792f28ca
+    value: FORBIDDEN
+  - id: SRC-0030
+    source_pointer: /authority_semantics/semantic_unit_7907d3950fd9
+    value:
+    - TEMPLATE_SELECTION
+    - STABLE_ID_REPLACEMENTS
+    - STABLE_ID_EXTENSIONS
+    - STABLE_ID_REMOVALS
+  - id: SRC-0031
+    source_pointer: /authority_semantics/semantic_unit_7c23900f7f5f
+    value:
+    - PROJECT_OVERRIDE_EXTENSION_REMOVAL
+    - SELECTED_IMMUTABLE_TEMPLATE_DECLARATION
+  - id: SRC-0032
+    source_pointer: /authority_semantics/semantic_unit_7a39d51c0d83
+    value: WHOLE_ENTITY_BY_STABLE_ID
+  - id: SRC-0033
+    source_pointer: /authority_semantics/semantic_unit_777675b0b75d
+    value: NOT_INTRODUCED
+  - id: SRC-0034
+    source_pointer: /authority_semantics/semantic_unit_96036f84abf9
+    value: PTSIP_VPMS_READ_ONLY_BOUNDARY
+  - id: SRC-0035
+    source_pointer: /authority_semantics/semantic_unit_0d125cde84c0
+    value: false
+  - id: SRC-0036
+    source_pointer: /authority_semantics/semantic_unit_12e1aaea2bc8
+    value: false
+  - id: SRC-0037
+    source_pointer: /authority_semantics/semantic_unit_471bdba77329
+    value: false
+  - id: SRC-0038
+    source_pointer: /authority_semantics/semantic_unit_d2a2c2e5e77b
+    value:
+    - VPMS_GLOBAL_IDENTITY
+    - VPMS_CASE_PROTOCOL
+    - VPMS_VERIFICATION_PURPOSE
+    - VPMS_CASE_SELECTION
+    - VPMS_EXECUTION_COMPOSITION
+  - id: SRC-0039
+    source_pointer: /authority_semantics/repository_modular_declaration_direction
+    value:
       decision_source: PROJECT_OWNER_EXPLICIT
-      selected_option: A3_DISTRIBUTED_DECLARATIONS_WITH_DETERMINISTIC_DISCOVERY
-      policy_scope: CONSUMER_PROJECT_PROFILE_SOURCE_DISCOVERY
-      responsibility_scoped_source_declarations: REQUIRED
-      machine_deterministic_discovery: REQUIRED
-      source_ownership_and_scope_must_be_explicit: true
-      per_fragment_shared_central_index_edits_required: false
-      existing_repository_namespace_index_as_ROUTING_ENTRYPOINT: PRESERVED
-      central_per_fragment_registry_requirement: NOT_SELECTED
-      unbounded_directory_auto_discovery_as_authoritative_source: NOT_SELECTED
-      discovery_does_not_create_component_policy_authority: true
-      effective_project_responsibility_map_completeness: PRESERVED
-      missing_ambiguous_conflicting_or_unverified_bindings: FAIL_CLOSED
-      exact_discovery_source_binding_and_selection_mechanism: UNRESOLVED_USER_DECISION
-      precise_file_reference_format_path_patterns_and_scope_rules: UNRESOLVED_USER_DECISION
-      exact_composition_order_duplicate_handling_and_cross_file_semantics: UNRESOLVED_USER_DECISION
-      schema_version_migration_and_backward_compatibility_details: UNRESOLVED_USER_DECISION
-      tasks_discovery_and_execution_rules: NOT_DECIDED_BY_THIS_APPROVAL
-      cntr_info_change_schema_and_runtime_contract_changes: NOT_AUTHORIZED_BY_THIS_APPROVAL
-      implementation_authority_from_this_abstract_selection: NONE
-    tasks_partition:
-      independent_responsibility_scoped_source_declarations: REQUIRED_IN_TARGET_MODEL
-      cross_component_task_identity_collision: MUST_BE_REJECTED
-      existing_task_registry_reserved_status: PRESERVED_UNTIL_SEPARATE_CNTR_ACTIVATION
-      exact_task_location_selection_and_resolution: UNRESOLVED
-    invariants:
-      existing_project_owner_responsibility: PRESERVED
-      older_profile_contract_compatibility: NO_SILENT_REINTERPRETATION
-      no_forced_user_repository_layout_for_ptsip_convenience: true
-      central_index_as_authoritative_component_aggregation: NOT_REQUIRED
-      unresolved_merges_or_unverified_sources: FAIL_CLOSED
-    authorization_boundary:
-      approve_abstract_structural_direction_only: true
-      normative_info_schema_cntr_task_activation_change: SEPARATE_DECISION
-      legacy_release_or_approval_records_automatic_reuse: FORBIDDEN
-      implementation_before_concrete_contract_decisions: NOT_AUTHORIZED
-
-  engine_plane_boundary:
-    repository_local_root: .ptsip/engine/
-    repository_local_state: .ptsip/engine/state.json
-    semantic_role_binding_source: .ptsip/index.json
-    physical_path_name_is_semantic_role_authority: false
-    executable_implementation_owner: INSTALLED_PTSIP_PACKAGE
-    executable_source_copy_into_repository_engine_root: FORBIDDEN
-    executable_source_copy_prohibition_subject: INSTALLED_PTSIP_PRODUCT_ENGINE_SOURCE
-    ptsip_developer_workspace_reconciliation:
-      decision: RECONCILE
-      scope: PTSIP_SOURCE_DEVELOPMENT_WORKSPACE_ONLY
-      eligibility: EXPLICIT_REGISTERED_DEVELOPER_WORKSPACE_BINDING_REQUIRED
-      path_name_alone_grants_developer_authority: false
-      reserved_developer_subnamespace: .ptsip/engine/developer/
-      developer_subnamespace_role: NON_PRODUCT_GO_DEVELOPER_TOOL_SOURCE
-      installed_product_engine_source_copy: FORBIDDEN
-      installed_product_engine_execution_owner: INSTALLED_PTSIP_PACKAGE
-      consumer_repository_developer_source_permission: FORBIDDEN
-      automatic_subnamespace_materialization: FORBIDDEN
-      common_engine_machine_contract_authority: PRESERVE
-      developer_source_distribution_with_product: FORBIDDEN
-      active_developer_tool_migration: NOT_AUTHORIZED
-      future_migration: SEPARATE_APPROVED_PLAN_AND_CONFORMANCE_REQUIRED
-    shipped_repository_module: src/ptsip/repository/namespace.py
-    shipped_engine_state_schema: src/ptsip/repository/schemas/engine-state.schema.json
-    state_contract: REGISTERED_VERSIONED_ENGINE_CONTRACT
-    schema_contract: SFP-CNTR-0005
-    runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
-    current_engine_contract_ref: src/ptsip/engines/index.json
-    existing_repository_namespace_contract: PRESERVED_NO_LEGACY_RUNTIME_REPLACEMENT
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+      scope: CONSUMER_REPOSITORY_PROFILE_COMPONENT_TASK_AND_CONTRACT_LOCATION
+      repository_namespace_contracts:
+        registration_entrypoint: .ptsip/index.json
+        contracts_namespace_support: REQUIRED
+        current_repository_preferred_contract_root: .ptsip/contracts/
+        user_defined_contract_paths: PERMITTED
+        namespace_detailed_schema_and_activation: UNRESOLVED
+      project_profile_source_partition:
+        independently_maintainable_responsibility_scoped_declarations: REQUIRED
+        central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
+        central_main_empty_source_components: PERMITTED_IN_TARGET_MODEL
+        repository_effective_responsibility_map: PROJECT_COMPLETE_DECLARATION_PRESERVED
+        branch_parallel_editability: REQUIRED
+        identity_and_relationship_ownership: MACHINE_VERIFIED_NO_SILENT_COLLISION
+        exact_fragment_discovery_composition_and_schema: UNRESOLVED
+      project_profile_discovery_policy:
+        decision_source: PROJECT_OWNER_EXPLICIT
+        selected_option: A3_DISTRIBUTED_DECLARATIONS_WITH_DETERMINISTIC_DISCOVERY
+        policy_scope: CONSUMER_PROJECT_PROFILE_SOURCE_DISCOVERY
+        responsibility_scoped_source_declarations: REQUIRED
+        machine_deterministic_discovery: REQUIRED
+        source_ownership_and_scope_must_be_explicit: true
+        per_fragment_shared_central_index_edits_required: false
+        existing_repository_namespace_index_as_ROUTING_ENTRYPOINT: PRESERVED
+        central_per_fragment_registry_requirement: NOT_SELECTED
+        unbounded_directory_auto_discovery_as_authoritative_source: NOT_SELECTED
+        discovery_does_not_create_component_policy_authority: true
+        effective_project_responsibility_map_completeness: PRESERVED
+        missing_ambiguous_conflicting_or_unverified_bindings: FAIL_CLOSED
+        exact_discovery_source_binding_and_selection_mechanism: UNRESOLVED_USER_DECISION
+        precise_file_reference_format_path_patterns_and_scope_rules: UNRESOLVED_USER_DECISION
+        exact_composition_order_duplicate_handling_and_cross_file_semantics: UNRESOLVED_USER_DECISION
+        schema_version_migration_and_backward_compatibility_details: UNRESOLVED_USER_DECISION
+        tasks_discovery_and_execution_rules: NOT_DECIDED_BY_THIS_APPROVAL
+        cntr_info_change_schema_and_runtime_contract_changes: NOT_AUTHORIZED_BY_THIS_APPROVAL
+        implementation_authority_from_this_abstract_selection: NONE
+      tasks_partition:
+        independent_responsibility_scoped_source_declarations: REQUIRED_IN_TARGET_MODEL
+        cross_component_task_identity_collision: MUST_BE_REJECTED
+        existing_task_registry_reserved_status: PRESERVED_UNTIL_SEPARATE_CNTR_ACTIVATION
+        exact_task_location_selection_and_resolution: UNRESOLVED
+      invariants:
+        existing_project_owner_responsibility: PRESERVED
+        older_profile_contract_compatibility: NO_SILENT_REINTERPRETATION
+        no_forced_user_repository_layout_for_ptsip_convenience: true
+        central_index_as_authoritative_component_aggregation: NOT_REQUIRED
+        unresolved_merges_or_unverified_sources: FAIL_CLOSED
+      authorization_boundary:
+        approve_abstract_structural_direction_only: true
+        normative_info_schema_cntr_task_activation_change: SEPARATE_DECISION
+        legacy_release_or_approval_records_automatic_reuse: FORBIDDEN
+        implementation_before_concrete_contract_decisions: NOT_AUTHORIZED
+  - id: SRC-0040
+    source_pointer: /authority_semantics/engine_plane_boundary
+    value:
+      repository_local_root: .ptsip/engine/
+      repository_local_state: .ptsip/engine/state.json
+      semantic_role_binding_source: .ptsip/index.json
+      physical_path_name_is_semantic_role_authority: false
+      executable_implementation_owner: INSTALLED_PTSIP_PACKAGE
+      executable_source_copy_into_repository_engine_root: FORBIDDEN
+      executable_source_copy_prohibition_subject: INSTALLED_PTSIP_PRODUCT_ENGINE_SOURCE
+      ptsip_developer_workspace_reconciliation:
+        decision: RECONCILE
+        scope: PTSIP_SOURCE_DEVELOPMENT_WORKSPACE_ONLY
+        eligibility: EXPLICIT_REGISTERED_DEVELOPER_WORKSPACE_BINDING_REQUIRED
+        path_name_alone_grants_developer_authority: false
+        reserved_developer_subnamespace: .ptsip/engine/developer/
+        developer_subnamespace_role: NON_PRODUCT_GO_DEVELOPER_TOOL_SOURCE
+        installed_product_engine_source_copy: FORBIDDEN
+        installed_product_engine_execution_owner: INSTALLED_PTSIP_PACKAGE
+        consumer_repository_developer_source_permission: FORBIDDEN
+        automatic_subnamespace_materialization: FORBIDDEN
+        common_engine_machine_contract_authority: PRESERVE
+        developer_source_distribution_with_product: FORBIDDEN
+        active_developer_tool_migration: NOT_AUTHORIZED
+        future_migration: SEPARATE_APPROVED_PLAN_AND_CONFORMANCE_REQUIRED
+      shipped_repository_module: src/ptsip/repository/namespace.py
+      shipped_engine_state_schema: src/ptsip/repository/schemas/engine-state.schema.json
+      state_contract: REGISTERED_VERSIONED_ENGINE_CONTRACT
+      schema_contract: SFP-CNTR-0005
+      runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
+      current_engine_contract_ref: src/ptsip/engines/index.json
+      existing_repository_namespace_contract: PRESERVED_NO_LEGACY_RUNTIME_REPLACEMENT
+  - id: SRC-0041
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/ARCH/SFP-ARCH-0001.yaml
+    sha256: 8fba97f99438a2f735f3ae7d46366c05c4873d6f91203f655d8d08ae9b7dc913
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

@@ -3,7 +3,74 @@ package contract_authoring
 import (
 	"encoding/json"
 	"fmt"
+	"path/filepath"
 )
+
+const unifiedPolicyBridge = `import json, sys
+from pathlib import Path
+request = json.loads(sys.stdin.buffer.read().decode('utf-8'))
+sys.path.insert(0, str(Path(request['root']) / 'src'))
+from ptsip.policy_contracts.unified import validate_document, restore_source
+report = validate_document(request['root'], request['document'])
+if report.get('status') == 'VALID' and request['operation'] == 'restore':
+    report['source'] = restore_source(request['document'])
+sys.stdout.buffer.write(json.dumps(report, ensure_ascii=False, allow_nan=False).encode('utf-8'))
+`
+
+func unifiedPolicyOperation(root string, doc Document, operation string) (Document, error) {
+	absolute, err := filepath.Abs(root)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := SelectPolicyDocument(absolute, doc); err != nil {
+		return nil, err
+	}
+	if _, err := LocalFile(absolute, "src/ptsip/policy_contracts/unified.py"); err != nil {
+		return nil, err
+	}
+	request, err := json.Marshal(Document{"root": absolute, "document": doc, "operation": operation})
+	if err != nil {
+		return nil, err
+	}
+	encoded, err := pythonSerialization(unifiedPolicyBridge, request)
+	if err != nil {
+		return nil, err
+	}
+	var report Document
+	if err := json.Unmarshal(encoded, &report); err != nil {
+		return nil, err
+	}
+	if report["status"] != "VALID" {
+		return nil, fmt.Errorf("UNIFIED_POLICY_REJECTED: %v", report["problem"])
+	}
+	if report["execution_authorized"] != false || report["mutation_authorized"] != false {
+		return nil, fmt.Errorf("UNIFIED_POLICY_AUTHORITY_BOUNDARY_CHANGED")
+	}
+	return report, nil
+}
+
+// CheckUnifiedDocument calls the shared candidate verifier. Structural validity
+// does not approve semantics, lifecycle transitions, registration or execution.
+func CheckUnifiedDocument(root string, doc Document) (Document, error) {
+	return unifiedPolicyOperation(root, doc, "validate")
+}
+
+// RestoreUnifiedSource is an explicit read-only historical view for consumers
+// testing original contracts. ReadDocument always returns the canonical document.
+func RestoreUnifiedSource(root string, doc Document) (Document, error) {
+	if !IsUnifiedPolicy(doc) {
+		return clone(doc), nil
+	}
+	report, err := unifiedPolicyOperation(root, doc, "restore")
+	if err != nil {
+		return nil, err
+	}
+	source := object(report["source"])
+	if source == nil {
+		return nil, fmt.Errorf("UNIFIED_POLICY_SOURCE_VIEW_MISSING")
+	}
+	return source, nil
+}
 
 func clone(input Document) Document {
 	raw, _ := json.Marshal(input)
@@ -38,6 +105,10 @@ func (c *Catalog) selectedFamily(doc Document, requested string) (string, error)
 }
 
 func (c *Catalog) CheckRules(v Validator, doc Document) error {
+	if IsUnifiedPolicy(doc) {
+		_, err := CheckUnifiedDocument(c.Root, doc)
+		return err
+	}
 	family, err := c.selectedFamily(doc, "")
 	if err != nil {
 		return err

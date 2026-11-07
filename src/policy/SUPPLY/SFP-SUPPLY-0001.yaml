@@ -1,43 +1,143 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: SUPPLY
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-SUPPLY-0001
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: SUPPLY
   title: SUPPLY authority (DRAFT source responsibilities)
+Policy_Lifecycle:
   status: DRAFT
-authority_subject:
-  id: SUP_PROJECT_DEPENDENCY_AND_ARTIFACT_SUPPLY
-  statement: consumer project의 dependency, 외부 evidence 및 distribution Artifact 공급
-    관계의 명시적 입력 자격과 출처를 소유한다.
-exclusive_kernel:
-- SUP_DEPENDENCY_SOURCE_AND_ADMISSION
-- SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF
-authority_contract:
-  authority_type: ROOT_FAMILY_SUPPLY
-  schema_id: ptsip.governance/root-family/supply
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_DEPENDENCY_SOURCE_AND_ADMISSION
-      statement: consumer가 선언하거나 정확하게 등록한 dependency/source identity, 출처 및 공급 요구를
-        해석한다. unregistered alias나 관측 import에서 프로젝트 요구를 추론하지 않는다.
-      non_substitutability: ARCH의 lifecycle ownership이나 observed dependency 목록만으로
-        dependency 공급 요구와 허용된 source 관계가 결정되지 않는다.
-    - id: SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF
-      statement: imported evidence와 소비하는 Artifact 단위의 provenance 및 공급 인계 관계를 명시하고
-        생산자와 consumer-side artifact owner를 구별한다.
-      non_substitutability: ASSURE가 Artifact를 검사했다는 사실만으로 출처와 공급 관계가 선언되거나 architecture
-        owner가 결정되지 않는다.
-  semantic_unit_7fb40359c718:
-  - RELATIONSHIP_TYPE
-  - LIFECYCLE_PHASE
-  - RESOLUTION_STATE
-  - PROVENANCE
-  - SOURCE_TARGET_IDENTITY_WHEN_RESOLVABLE
-  - UNCERTAINTY
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_DEPENDENCY_SOURCE_AND_ADMISSION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-SUPPLY-0001#/authority_semantics/semantic_unit_7fb40359c718
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0011
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: SUPPLY
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-SUPPLY-0001
+      title: SUPPLY authority (DRAFT source responsibilities)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROJECT_DEPENDENCY_AND_ARTIFACT_SUPPLY
+      statement: consumer project의 dependency, 외부 evidence 및 distribution Artifact 공급 관계의 명시적 입력 자격과 출처를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_DEPENDENCY_SOURCE_AND_ADMISSION
+    - SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_SUPPLY
+      schema_id: ptsip.governance/root-family/supply
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_DEPENDENCY_SOURCE_AND_ADMISSION
+      statement: consumer가 선언하거나 정확하게 등록한 dependency/source identity, 출처 및 공급 요구를 해석한다. unregistered alias나 관측 import에서 프로젝트
+        요구를 추론하지 않는다.
+      non_substitutability: ARCH의 lifecycle ownership이나 observed dependency 목록만으로 dependency 공급 요구와 허용된 source 관계가 결정되지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF
+      statement: imported evidence와 소비하는 Artifact 단위의 provenance 및 공급 인계 관계를 명시하고 생산자와 consumer-side artifact owner를 구별한다.
+      non_substitutability: ASSURE가 Artifact를 검사했다는 사실만으로 출처와 공급 관계가 선언되거나 architecture owner가 결정되지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_7fb40359c718
+    value:
+    - RELATIONSHIP_TYPE
+    - LIFECYCLE_PHASE
+    - RESOLUTION_STATE
+    - PROVENANCE
+    - SOURCE_TARGET_IDENTITY_WHEN_RESOLVABLE
+    - UNCERTAINTY
+  - id: SRC-0011
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/SUPPLY/SFP-SUPPLY-0001.yaml
+    sha256: ba2448cf4070b87f968c4992240134baceced390e186f03e1e2643ae4d8c0b6d
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

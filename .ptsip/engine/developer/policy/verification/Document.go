@@ -12,6 +12,10 @@ import (
 )
 
 func CheckDocument(root, selected string, document authoring.Document, validate authoring.Validator) error {
+	if authoring.IsUnifiedPolicy(document) && (selected == "policy-check" || selected == "policy-identity-check" || selected == "policy-status-check") {
+		_, err := authoring.CheckUnifiedDocument(root, document)
+		return err
+	}
 	component := func(name string) any {
 		if value, present := document[name]; present {
 			return value
@@ -56,6 +60,19 @@ func RunDocument(root, selected, input string) (any, int) {
 			return reject(err)
 		}
 		report["selection"] = selection
+	}
+	if authoring.IsUnifiedPolicy(document) && selected != "plan-status-check" {
+		candidate, err := authoring.CheckUnifiedDocument(absolute, document)
+		if err != nil {
+			return reject(err)
+		}
+		for key, value := range candidate {
+			report[key] = value
+		}
+		report["structural_state"] = "CANDIDATE"
+		report["normative_approval"] = false
+		report["input"] = input
+		return report, 0
 	}
 	validate, err := InstalledValidator()
 	if err != nil {

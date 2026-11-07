@@ -1,90 +1,212 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: ASSURE
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-ASSURE-0002
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: ASSURE
   title: ASSURE authority (APPROVED source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-  version: '1.0'
-authority_subject:
-  id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
-  statement: 개발 결과와 release 후보에 대한 증거의 적합성, 필요한 검증 coverage 및 정확한 source snapshot에 구속된 검증 판정을 소유한다.
-exclusive_kernel:
-- DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
-- DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: MPD-ASSURE-0002#/rules/unit_mpd_veri_0001_85b7db19eee4
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: MPD-ASSURE-0002#/rules/unit_mpd_veri_0001_6a090d802720
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0012
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ASSURE
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-ASSURE-0002
+      title: ASSURE authority (APPROVED source responsibilities)
+      status: RETIRED
+      substatus: Waiting
+      version: '1.0'
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+      statement: 개발 결과와 release 후보에 대한 증거의 적합성, 필요한 검증 coverage 및 정확한 source snapshot에 구속된 검증 판정을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+    - DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+  - id: SRC-0007
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
       statement: 기계적으로 선택된 Test Mode와 규범상 필요한 검증 항목의 coverage 및 증거의 admissibility를 평가한다.
       non_substitutability: CTRL의 gate 목록이나 RECORD의 로그 존재만으로 필요한 검증 coverage와 증거 적합성이 충족되지 않는다.
-    - id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
-      statement: 검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와 PTSIP conformance
-        및 VPMS purpose를 구별한다.
-      non_substitutability: RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도 미검증 SHA를 PASS로 만들
-        수 없다.
-    source_scope:
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+      statement: 검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와 PTSIP conformance 및 VPMS purpose를 구별한다.
+      non_substitutability: RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도 미검증 SHA를 PASS로 만들 수 없다.
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/source_scope
+    value:
     - MPD-VERI-0001
-  unit_mpd_veri_0001_85b7db19eee4:
-    binding_contract_ref: MPD-SPEC-0023
-    binding_registry: developer/bindings/policy-plan-bindings.yaml
-    verification_scope:
-    - POLICY_ID_RESOLUTION
-    - PLAN_EXISTENCE_STATE
-    - RESOLVED_PLAN_ID_BINDING
-    - PLAN_FILE_ID_BINDING
-    - PLAN_REF_BINDING
-    - PLAN_VERSION_REVISION_IDENTITY_CURRENTNESS
-    - POLICY_PLAN_RELATIONSHIP_CONSISTENCY
-    invariants:
-      indexed_policy_reference_required: true
-      registered_binding_must_resolve_policy: true
-      not_created_state_forbids_plan_identity: true
-      created_state_requires_resolved_plan_id: true
-      created_state_requires_plan_file_id: true
-      created_state_requires_plan_ref: true
-      resolved_plan_id_requires_exact_contract_resolution: true
-      plan_file_id_requires_exact_contract_resolution: true
-      binding_and_plan_resolved_plan_id_must_match_exactly: true
-      binding_and_plan_file_id_must_match_exactly: true
-      created_plan_ref_must_resolve: true
-      moved_plan_ref_must_resolve_by_exact_plan_file_identity: true
-      plan_path_does_not_define_policy_authority: true
-      semantic_similarity_must_not_create_or_repair_binding: true
-    result:
-      machine_readable: true
-      binary_only: false
-      policy_identity_fields:
-      - id
-      - version
-      - status
-      automatic_semantic_repair: FORBIDDEN
-  unit_mpd_veri_0001_6a090d802720:
-    owns:
-    - POLICY_PLAN_CONSISTENCY_VERIFICATION
-    does_not_own:
-    - POLICY_SEMANTICS
-    - PLAN_CONTENT
-    - PLAN_APPROVAL
-    - POLICY_PLAN_BINDING_AUTHORITY
-    - IMPLEMENTATION_AUTHORIZATION
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: PENDING
-  requirements:
-  - id: TR-001
-    type: CURRENT_ROOT_CONTRACT_VERIFICATION
-    state: OPEN
-    refs:
-    - developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0002-APPROVED.yaml
-    next_action:
-      action: VERIFY_CURRENT_ROOT_CONTRACT
-      execution: SERIAL_REQUIRED
-      completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID
+  - id: SRC-0010
+    source_pointer: /rules/unit_mpd_veri_0001_85b7db19eee4
+    value:
+      binding_contract_ref: MPD-SPEC-0023
+      binding_registry: developer/bindings/policy-plan-bindings.yaml
+      verification_scope:
+      - POLICY_ID_RESOLUTION
+      - PLAN_EXISTENCE_STATE
+      - RESOLVED_PLAN_ID_BINDING
+      - PLAN_FILE_ID_BINDING
+      - PLAN_REF_BINDING
+      - PLAN_VERSION_REVISION_IDENTITY_CURRENTNESS
+      - POLICY_PLAN_RELATIONSHIP_CONSISTENCY
+      invariants:
+        indexed_policy_reference_required: true
+        registered_binding_must_resolve_policy: true
+        not_created_state_forbids_plan_identity: true
+        created_state_requires_resolved_plan_id: true
+        created_state_requires_plan_file_id: true
+        created_state_requires_plan_ref: true
+        resolved_plan_id_requires_exact_contract_resolution: true
+        plan_file_id_requires_exact_contract_resolution: true
+        binding_and_plan_resolved_plan_id_must_match_exactly: true
+        binding_and_plan_file_id_must_match_exactly: true
+        created_plan_ref_must_resolve: true
+        moved_plan_ref_must_resolve_by_exact_plan_file_identity: true
+        plan_path_does_not_define_policy_authority: true
+        semantic_similarity_must_not_create_or_repair_binding: true
+      result:
+        machine_readable: true
+        binary_only: false
+        policy_identity_fields:
+        - id
+        - version
+        - status
+        automatic_semantic_repair: FORBIDDEN
+  - id: SRC-0011
+    source_pointer: /rules/unit_mpd_veri_0001_6a090d802720
+    value:
+      owns:
+      - POLICY_PLAN_CONSISTENCY_VERIFICATION
+      does_not_own:
+      - POLICY_SEMANTICS
+      - PLAN_CONTENT
+      - PLAN_APPROVAL
+      - POLICY_PLAN_BINDING_AUTHORITY
+      - IMPLEMENTATION_AUTHORIZATION
+  - id: SRC-0012
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0013
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: PENDING
+      requirements:
+      - id: TR-001
+        type: CURRENT_ROOT_CONTRACT_VERIFICATION
+        state: OPEN
+        refs:
+        - developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0002-APPROVED.yaml
+        next_action:
+          action: VERIFY_CURRENT_ROOT_CONTRACT
+          execution: SERIAL_REQUIRED
+          completion_check: CURRENT_CATALOG_SCHEMA_LIFECYCLE_AND_KERNEL_VALID
+  source_document:
+    path: developer/policy/ASSURE/MPD-ASSURE-0002.yaml
+    sha256: 58071b0353b62c00489dca215e461a5986f2ac350e0867191fae2c0eb00fb043
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

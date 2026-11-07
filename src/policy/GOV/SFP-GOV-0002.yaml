@@ -1,51 +1,289 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
 Policy_Identity:
   id: SFP-GOV-0002
   policy_kind: PTSIP_SUPPORT_FEATURE
   root_family: GOV
-  title: "엔진 선택·변경 결정의 정당성과 승인 출처"
+  title: 엔진 선택·변경 결정의 정당성과 승인 출처
 Policy_Lifecycle:
-  Policy_Status_Schema_ver: "2"
   status: DRAFT.Default
-  contract: urn:ptsip:contract:policy:gov:engine-choice:governance
+  source_ref: SRC-0002
+Policy_Authority:
+  source_refs: []
 Policy_Rules:
-  Identity:
-    contract_id: urn:ptsip:policy:rule:gov:engine-choice-governance
-    Rule_ver: "1"
-  Definition:
-    - id: R-ID-9EC91DC88B7D48968C8D8590E98BD84F
+  rules:
+  - id: R-ID-9EC91DC88B7D48968C8D8590E98BD84F
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0004
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0004
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0004
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0004
+  - id: R-ID-C58EFF28E433403C9163B4846BD17370
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0005
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0005
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0005
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0005
+  - id: R-ID-1C3AB9E2C64D494D82322161E1B72BF5
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0006
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0006
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0006
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0006
+  - id: R-ID-09824AB5286B4C5C953BD859D999FF54
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: R-ID-926D2E0E9CAF4D74BADBBE4898893AB3
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SFP-GOV-0002#/Policy_Rules/Boundary/subjects/0
+    identity_scheme: SOURCE_COORDINATE
+    kind: REQUIREMENT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-GOV-0002#/Policy_Rules/Boundary/subjects/1
+    identity_scheme: SOURCE_COORDINATE
+    kind: REQUIREMENT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-GOV-0002#/Policy_Rules/Boundary/subjects/2
+    identity_scheme: SOURCE_COORDINATE
+    kind: REQUIREMENT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-GOV-0002#/Policy_Rules/Boundary/subjects/3
+    identity_scheme: SOURCE_COORDINATE
+    kind: REQUIREMENT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-GOV-0002#/Policy_Rules/Boundary/subjects/4
+    identity_scheme: SOURCE_COORDINATE
+    kind: REQUIREMENT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+Policy_Evaluation:
+  source_refs:
+  - SRC-0016
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs: []
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /Policy_Identity
+    value:
+      id: SFP-GOV-0002
+      policy_kind: PTSIP_SUPPORT_FEATURE
+      root_family: GOV
+      title: 엔진 선택·변경 결정의 정당성과 승인 출처
+  - id: SRC-0002
+    source_pointer: /Policy_Lifecycle
+    value:
+      Policy_Status_Schema_ver: '2'
+      status: DRAFT.Default
+      contract: urn:ptsip:contract:policy:gov:engine-choice:governance
+  - id: SRC-0003
+    source_pointer: /Policy_Rules/Identity
+    value:
+      contract_id: urn:ptsip:policy:rule:gov:engine-choice-governance
+      Rule_ver: '1'
+  - id: SRC-0004
+    source_pointer: /Policy_Rules/Definition/0
+    value:
+      id: R-ID-9EC91DC88B7D48968C8D8590E98BD84F
       rule: ENGINE-CHOICE-GOV
-      preconditions: [C-ID-1B4F77AAC1A24BCE83A193DF3640F1BA]
-    - id: R-ID-C58EFF28E433403C9163B4846BD17370
+      preconditions:
+      - C-ID-1B4F77AAC1A24BCE83A193DF3640F1BA
+  - id: SRC-0005
+    source_pointer: /Policy_Rules/Definition/1
+    value:
+      id: R-ID-C58EFF28E433403C9163B4846BD17370
       rule: APPROVAL-SOURCE-GOV
-      preconditions: [C-ID-9B4D900A2860438191FB7761177ACA53]
-    - id: R-ID-1C3AB9E2C64D494D82322161E1B72BF5
+      preconditions:
+      - C-ID-9B4D900A2860438191FB7761177ACA53
+  - id: SRC-0006
+    source_pointer: /Policy_Rules/Definition/2
+    value:
+      id: R-ID-1C3AB9E2C64D494D82322161E1B72BF5
       rule: CONFIRMED-CHOICE-GOV
-      preconditions: [C-ID-7992A47FDE044464BDBD176BE0A8D399]
-    - id: R-ID-09824AB5286B4C5C953BD859D999FF54
+      preconditions:
+      - C-ID-7992A47FDE044464BDBD176BE0A8D399
+  - id: SRC-0007
+    source_pointer: /Policy_Rules/Definition/3
+    value:
+      id: R-ID-09824AB5286B4C5C953BD859D999FF54
       rule: VERIFIED-AUTONOMY
-      preconditions: [C-ID-5FD70C0C1A344ACBAFFDE068E062059A]
-    - id: R-ID-926D2E0E9CAF4D74BADBBE4898893AB3
+      preconditions:
+      - C-ID-5FD70C0C1A344ACBAFFDE068E062059A
+  - id: SRC-0008
+    source_pointer: /Policy_Rules/Definition/4
+    value:
+      id: R-ID-926D2E0E9CAF4D74BADBBE4898893AB3
       rule: CROSS-PLANE-CHANGE
-      preconditions: [C-ID-47B45A45F2FF4A39960792EEE7D8087F]
-  Boundary:
-    scope: "엔진 선택·확정된 선택 변경의 결정 정당성, 승인 출처, 검증된 분석에 따른 단계적 자율성 확대와 인접 계약·권한·상태 변경의 거버넌스"
-    subjects:
-      - "엔진 선택 결정의 주체, 적용 범위와 결정 정당성을 관리한다."
-      - "엔진 선택 및 변경의 승인 출처와 그 효력 범위를 관리한다."
-      - "확정된 엔진 선택 변경의 정당한 결정·승인 관계를 관리한다."
-      - "검증된 분석에 따른 자율성 확대의 정당성과 승인 경계를 관리한다."
-      - "조건의 정보 의미, 엔진 기능 계약, 실행 허가, 실제 상태 변경과 관련된 권한·변경 관리의 경계를 조정한다."
-    exclusions:
-      - "INFO의 정보 의미, CNTR의 기능 계약을 GOV가 직접 재정의하지 않는다."
-      - "CTRL의 실행 허가, REAL의 실제 상태 변경을 GOV가 직접 수행하지 않는다."
-      - "기존 SFP-GOV-0001의 결정 권한을 자동 승계하거나 대체하지 않는다."
-      - "검증 결과만으로 신규 승인·실행 권한이나 정책 활성화 효력을 생성하지 않는다."
-  Evaluation:
-    criteria:
-      evidence:
-        - "엔진 선택 결정 주체와 정당한 승인 출처를 확인할 수 있는가?"
-        - "기존 확정 선택과 변경 결정의 권한 관계를 검증할 수 있는가?"
-        - "분석 검증과 자율성 확대 승인의 근거가 구분되는가?"
-        - "INFO·CNTR·CTRL·REAL의 의미·실행·상태 책임을 침범하지 않는가?"
-        - "SFP-GOV-0001의 결정 권한과의 충돌 및 미해결 사항이 식별되는가?"
-        - "미해결 승인·권한 문제를 유지하며 별도 승인 전 활성화하지 않는가?"
+      preconditions:
+      - C-ID-47B45A45F2FF4A39960792EEE7D8087F
+  - id: SRC-0009
+    source_pointer: /Policy_Rules/Boundary/scope
+    value: 엔진 선택·확정된 선택 변경의 결정 정당성, 승인 출처, 검증된 분석에 따른 단계적 자율성 확대와 인접 계약·권한·상태 변경의 거버넌스
+  - id: SRC-0010
+    source_pointer: /Policy_Rules/Boundary/subjects/0
+    value: 엔진 선택 결정의 주체, 적용 범위와 결정 정당성을 관리한다.
+  - id: SRC-0011
+    source_pointer: /Policy_Rules/Boundary/subjects/1
+    value: 엔진 선택 및 변경의 승인 출처와 그 효력 범위를 관리한다.
+  - id: SRC-0012
+    source_pointer: /Policy_Rules/Boundary/subjects/2
+    value: 확정된 엔진 선택 변경의 정당한 결정·승인 관계를 관리한다.
+  - id: SRC-0013
+    source_pointer: /Policy_Rules/Boundary/subjects/3
+    value: 검증된 분석에 따른 자율성 확대의 정당성과 승인 경계를 관리한다.
+  - id: SRC-0014
+    source_pointer: /Policy_Rules/Boundary/subjects/4
+    value: 조건의 정보 의미, 엔진 기능 계약, 실행 허가, 실제 상태 변경과 관련된 권한·변경 관리의 경계를 조정한다.
+  - id: SRC-0015
+    source_pointer: /Policy_Rules/Boundary/exclusions
+    value:
+    - INFO의 정보 의미, CNTR의 기능 계약을 GOV가 직접 재정의하지 않는다.
+    - CTRL의 실행 허가, REAL의 실제 상태 변경을 GOV가 직접 수행하지 않는다.
+    - 기존 SFP-GOV-0001의 결정 권한을 자동 승계하거나 대체하지 않는다.
+    - 검증 결과만으로 신규 승인·실행 권한이나 정책 활성화 효력을 생성하지 않는다.
+  - id: SRC-0016
+    source_pointer: /Policy_Rules/Evaluation
+    value:
+      criteria:
+        evidence:
+        - 엔진 선택 결정 주체와 정당한 승인 출처를 확인할 수 있는가?
+        - 기존 확정 선택과 변경 결정의 권한 관계를 검증할 수 있는가?
+        - 분석 검증과 자율성 확대 승인의 근거가 구분되는가?
+        - INFO·CNTR·CTRL·REAL의 의미·실행·상태 책임을 침범하지 않는가?
+        - SFP-GOV-0001의 결정 권한과의 충돌 및 미해결 사항이 식별되는가?
+        - 미해결 승인·권한 문제를 유지하며 별도 승인 전 활성화하지 않는가?
+  source_document:
+    path: src/policy/GOV/SFP-GOV-0002.yaml
+    sha256: d55e795fe243fc2c2f98f633a949df88b38ba27d2084fd33e0fe38867d5e1e90
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: LEGACY_POLICY_COMPONENTS
+  source_registration: INDEXED
+  contract_state: CANDIDATE

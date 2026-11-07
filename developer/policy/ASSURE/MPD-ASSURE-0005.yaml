@@ -1,24 +1,62 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
 Policy_Identity:
   id: MPD-ASSURE-0005
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: ASSURE
-  title: "ASSURE 신규 독립 규칙 계약 후보"
+  title: ASSURE 신규 독립 규칙 계약 후보
 Policy_Lifecycle:
-  Schema:
-    Policy_Status_version:
-      version: "1"
-  constant:
-    status: APPROVED
-    substatus: provisional
-    contract: urn:ptsip:contract:policy:assure:rule-structure:provisional
-Authority:
-  authority_id: MPD-ASSURE-0005
-  Authority_Action:
-    action_ref: urn:ptsip:authority:action:policy:policy-modification
+  status: APPROVED
+  source_ref: SRC-0002
+Policy_Authority:
+  source_refs:
+  - SRC-0003
 Policy_Rules:
-  independent_rule_refs: []
-  candidate_contract_id: urn:ptsip:contract:policy:rules:ASSURE:v1
-  candidate_contract_path: .ptsip/contracts/policy/Rules/ASSURE_rules.json
-  candidate_scope: "검증 근거"
-  semantic_rework_required: true
-  normative_content_from_retired_policies: FORBIDDEN
+  rules: []
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs: []
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /Policy_Identity
+    value:
+      id: MPD-ASSURE-0005
+      policy_kind: PTSIP_DEVELOPER_POLICY
+      root_family: ASSURE
+      title: ASSURE 신규 독립 규칙 계약 후보
+  - id: SRC-0002
+    source_pointer: /Policy_Lifecycle
+    value:
+      Schema:
+        Policy_Status_version:
+          version: '1'
+      constant:
+        status: APPROVED
+        substatus: provisional
+        contract: urn:ptsip:contract:policy:assure:rule-structure:provisional
+  - id: SRC-0003
+    source_pointer: /Authority
+    value:
+      authority_id: MPD-ASSURE-0005
+      Authority_Action:
+        action_ref: urn:ptsip:authority:action:policy:policy-modification
+  - id: SRC-0004
+    source_pointer: /Policy_Rules
+    value:
+      independent_rule_refs: []
+      candidate_contract_id: urn:ptsip:contract:policy:rules:ASSURE:v1
+      candidate_contract_path: .ptsip/contracts/policy/Rules/ASSURE_rules.json
+      candidate_scope: 검증 근거
+      semantic_rework_required: true
+      normative_content_from_retired_policies: FORBIDDEN
+  source_document:
+    path: developer/policy/ASSURE/MPD-ASSURE-0005.yaml
+    sha256: b78fa83311cba766bb60fad974161cf27519de057adc9b9b3fe2aa4bcc8d9a50
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: LEGACY_POLICY_COMPONENTS
+  source_registration: UNINDEXED
+  contract_state: CANDIDATE

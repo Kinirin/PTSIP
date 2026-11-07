@@ -32,7 +32,13 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install registered validation runtime
-        run: python -m pip install --disable-pip-version-check 'PTSIP==0.3.8b5' 'PyYAML==6.0.3'
+        run: python -m pip install --disable-pip-version-check 'PTSIP==0.3.8b5' 'PyYAML==6.0.3' 'pytest>=8,<10'
+      - name: Verify unified policy candidate coverage and registration boundaries
+        env:
+          PYTHONPATH: src
+        run: |
+          python -m pytest -q src/tests/ptsip/contracts/test_unified_policy.py
+          python .ptsip/engine/developer/policy/migrate_unified.py --root . --check
       - name: Test shared selection, authoring and review paths
         run: |
           go -C .ptsip/engine/developer test ./internal/contractentry ./internal/contract_authoring ./policy/verification/... ./policy/review/... -count=1

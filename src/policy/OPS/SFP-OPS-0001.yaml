@@ -1,40 +1,177 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: OPS
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-OPS-0001
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: OPS
   title: OPS authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_AVAILABLE_CAPABILITY_CONTINUITY_AND_RECOVERY
-  statement: 설치된 Tool과 consumer repository에 이미 제공된 capability의 지속 운영, 장애 회복 및 authority를
-    보존하는 반복 reconciliation을 소유한다.
-exclusive_kernel:
-- SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
-- SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
-authority_contract:
-  authority_type: ROOT_FAMILY_OPS
-  schema_id: ptsip.governance/root-family/ops
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
-      statement: 지원된 operation의 실패 분류, 회복과 canonical namespace 유지 조건을 정한다. 충돌 source,
-        stale lock 또는 모호한 journal을 임의 폐기하지 않는다.
-      non_substitutability: REAL의 단일 성공 write나 SUPPLY의 환경 공급이 장애 이후 authority 보존과
-        운영 회복 책임을 대체하지 못한다.
-    - id: SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
-      statement: 계약에 정의된 operation ID와 expected revision을 보존해 재시도하고 conflict를 검토 가능하게
-        유지한다. RESERVED .ptsip/tasks 또는 .ptsip/runtime의 미정 persistence 의미를 새로 정의하지
-        않는다.
-      non_substitutability: CTRL의 한 번의 실행 허용이나 CHANGE의 migration 경로는 반복 시도의 동일성 및
-        운영 연속성을 대신 정의하지 않는다.
-  semantic_unit_8e3ccfbcb110: OUTSIDE_CONSUMER_REPOSITORY
-  semantic_unit_61e22a21ee9a: ACTION_TIME
-  semantic_unit_76dff9bdc94a: false
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-OPS-0001#/authority_semantics/semantic_unit_8e3ccfbcb110
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-OPS-0001#/authority_semantics/semantic_unit_61e22a21ee9a
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-OPS-0001#/authority_semantics/semantic_unit_76dff9bdc94a
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0013
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: OPS
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-OPS-0001
+      title: OPS authority (ACTIVE source responsibilities)
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_AVAILABLE_CAPABILITY_CONTINUITY_AND_RECOVERY
+      statement: 설치된 Tool과 consumer repository에 이미 제공된 capability의 지속 운영, 장애 회복 및 authority를 보존하는 반복 reconciliation을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
+    - SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_OPS
+      schema_id: ptsip.governance/root-family/ops
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OPERATIONAL_RECOVERY_WITH_AUTHORITY_PRESERVATION
+      statement: 지원된 operation의 실패 분류, 회복과 canonical namespace 유지 조건을 정한다. 충돌 source, stale lock 또는 모호한 journal을 임의 폐기하지 않는다.
+      non_substitutability: REAL의 단일 성공 write나 SUPPLY의 환경 공급이 장애 이후 authority 보존과 운영 회복 책임을 대체하지 못한다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION
+      statement: 계약에 정의된 operation ID와 expected revision을 보존해 재시도하고 conflict를 검토 가능하게 유지한다. RESERVED .ptsip/tasks 또는 .ptsip/runtime의
+        미정 persistence 의미를 새로 정의하지 않는다.
+      non_substitutability: CTRL의 한 번의 실행 허용이나 CHANGE의 migration 경로는 반복 시도의 동일성 및 운영 연속성을 대신 정의하지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_8e3ccfbcb110
+    value: OUTSIDE_CONSUMER_REPOSITORY
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_61e22a21ee9a
+    value: ACTION_TIME
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_76dff9bdc94a
+    value: false
+  - id: SRC-0013
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/OPS/SFP-OPS-0001.yaml
+    sha256: 7fd01b56d9b3aafcf3fc0deff71b7ab98d1cb6900edacd88a19c1aea3ab5056e
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

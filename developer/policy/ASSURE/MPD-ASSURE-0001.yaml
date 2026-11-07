@@ -1,41 +1,393 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: ASSURE
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-ASSURE-0001
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: ASSURE
   title: ASSURE authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-  version: '4.5'
-authority_subject:
-  id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
-  statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의 검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증 의무는 별도 권위 이전 완료 전까지 보존한다.
-exclusive_kernel:
-- DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
-- DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
-rules:
-  release_mode_verification:
-    approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
-    contract_ref: .github/checks/release/test/verification-contract.json
-    execution_workflow: .github/workflows/tooling-test.yml
-    mode_registry: .github/test_modes.yaml
-    release_test_change_root: .github/checks/release/test/
-    required_platforms: [WINDOWS_X64, LINUX_X64]
-    platform_results_join: ALL_REQUIRED_HOSTS_FOR_EACH_SELECTED_COMPONENT
-    optional_platforms: [MACOS_ARM64]
-    macos_default: NOT_REQUESTED_NO_JOB_NO_PASS_EVIDENCE
-    exact_source_and_selection_binding: REQUIRED
-    publication_workflow_role: CONSUME_VERIFIED_ARTIFACTS_AND_ADMISSION_ONLY
-    prior_common_verification_gap: PRESERVE_AS_SEPARATE_UNRESOLVED_SCOPE
-  family_definition:
-    kernel_definitions:
-    - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: MPD-ASSURE-0001#/rules/release_mode_verification
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: MPD-ASSURE-0001#/rules/developer_test_verification_boundary
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: MPD-ASSURE-0001#/rules/explicitly_approved_legacy_executor_retirement
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: MPD-ASSURE-0001#/rules/approved_required_verification_responsibility_split
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: MPD-ASSURE-0001#/rules/independent_policy_responsibility_review
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_0011_1491da54b643
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_0012_d42d2230d10e
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_spec_0011_8b9a13c6427c
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_veri_0002_260ced325054
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_veri_0003_c4b59fc85667
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0019
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_veri_0004_f699ce5ccfa4
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0020
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_veri_0004_2f347420dfff
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0021
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+  - id: MPD-ASSURE-0001#/rules/unit_mpd_veri_0005_b5e5149c8490
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0022
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+  - id: MPD-ASSURE-0001#/rules/independent_release_component_verification
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0023
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+  - id: MPD-ASSURE-0001#/rules/engine_verification_only
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0024
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+  - id: MPD-ASSURE-0001#/rules/independent_engine_publication
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0025
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0026
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ASSURE
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-ASSURE-0001
+      title: ASSURE authority (ACTIVE source responsibilities)
+      status: RETIRED
+      substatus: Waiting
+      version: '4.5'
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_VERIFICATION_EVIDENCE_JUDGMENT
+      statement: Project Profile에 선언된 저장소 개발 테스트의 coverage, 증거 적합성 및 정확한 source snapshot의 검증 결과 판정을 소유한다. 기존 ACTIVE 필수 검증
+        의무는 별도 권위 이전 완료 전까지 보존한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
+    - DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+  - id: SRC-0007
+    source_pointer: /rules/release_mode_verification
+    value:
+      approval_ref: developer/policy/approvals/MPA-20261013-UNIFIED-RELEASE-SPECIFICATION.yaml
+      contract_ref: .github/checks/release/test/verification-contract.json
+      execution_workflow: .github/workflows/tooling-test.yml
+      mode_registry: .github/test_modes.yaml
+      release_test_change_root: .github/checks/release/test/
+      required_platforms:
+      - WINDOWS_X64
+      - LINUX_X64
+      platform_results_join: ALL_REQUIRED_HOSTS_FOR_EACH_SELECTED_COMPONENT
+      optional_platforms:
+      - MACOS_ARM64
+      macos_default: NOT_REQUESTED_NO_JOB_NO_PASS_EVIDENCE
+      exact_source_and_selection_binding: REQUIRED
+      publication_workflow_role: CONSUME_VERIFIED_ARTIFACTS_AND_ADMISSION_ONLY
+      prior_common_verification_gap: PRESERVE_AS_SEPARATE_UNRESOLVED_SCOPE
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_VERIFICATION_COVERAGE_AND_ADMISSIBILITY
       statement: 기계적으로 선택된 Test Mode와 규범상 필요한 검증 항목의 coverage 및 증거의 admissibility를 평가한다.
       non_substitutability: CTRL의 gate 목록이나 RECORD의 로그 존재만으로 필요한 검증 coverage와 증거 적합성이 충족되지 않는다.
-    - id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_EXACT_SOURCE_VERIFICATION_OUTCOME
       statement: 검증 판정을 실행한 source SHA, 환경 및 Artifact snapshot에 결합하고 functional PASS와 PTSIP conformance 및 VPMS purpose를 구별한다.
       non_substitutability: RECORD가 후속 documentation commit을 보존하거나 GOV가 release를 승인해도 미검증 SHA를 PASS로 만들 수 없다.
-    source_scope:
+  - id: SRC-0010
+    source_pointer: /rules/family_definition/source_scope
+    value:
     - MPD-0011
     - MPD-0012
     - MPD-SPEC-0011
@@ -43,484 +395,529 @@ rules:
     - MPD-VERI-0003
     - MPD-VERI-0004
     - MPD-VERI-0005
-  developer_test_verification_boundary:
-    decision: KEEP_LATEST
-    scope: REPOSITORY_DEVELOPER_TEST_COVERAGE_AND_EVIDENCE_JUDGMENT
-    test_source:
-      repository_test_root: src/tests
-      selected_by: DECLARED_PROJECT_PROFILE_VERIFICATION_RESPONSIBILITY
-      class_or_path_alone_confers_normative_ownership: false
-      test_implementation_may_create_normative_semantics: false
-    owns:
-    - REQUIRED_TEST_COVERAGE_ADMISSIBILITY
-    - REQUIRED_VS_EXECUTED_VERIFICATION_EVIDENCE_JUDGMENT
-    - EXPECTED_VS_OBSERVED_VERIFICATION_JUDGMENT
-    - EXACT_SOURCE_SNAPSHOT_VERIFICATION_OUTCOME
-    does_not_own:
-    - TEST_MODE_REGISTRY_SHAPE_AND_MODE_MEMBERSHIP
-    - TEST_MODE_EXECUTION_TARGET_DECLARATION
-    - TEST_MODE_RESOLVER_AND_RUNNER_IMPLEMENTATION
-    - GITHUB_ACTIONS_WORKFLOW_TOPOLOGY
-    - WORKFLOW_DISPATCH_SELECTION_UI
-    - RELEASE_PUBLICATION_AUTHORIZATION
-    adjacent_authorities:
-      verification_component_ownership: DECLARED_PROJECT_PROFILE
-      mode_execution_declarations: REPOSITORY_TEST_MODE_REGISTRY
-      workflow_executor_boundary: MPD-ARCH-0002
-      release_and_transition_gate_eligibility: MPD-CTRL-0001
-    preserved_existing_required_verification:
-      source_units:
-      - unit_mpd_veri_0002_260ced325054
-      - unit_mpd_veri_0003_c4b59fc85667
-      - unit_mpd_veri_0004_f699ce5ccfa4
-      - unit_mpd_veri_0004_2f347420dfff
-      - unit_mpd_veri_0005_b5e5149c8490
-      - unit_mpd_0011_1491da54b643
-      coverage_and_required_checks_remain_binding: true
-      local_remote_release_verification_remains_binding: true
-      source_sha_evidence_and_result_semantics_remain_binding: true
-      ownership_transfer_state: NOT_AUTHORIZED
-      reassignment_requires_explicit_owner_and_policy_transition: true
-      deletion_or_weakening_before_verified_transfer: FORBIDDEN_EXCEPT_EXPLICIT_EXECUTOR_RETIREMENT_WITH_OPEN_GAP
-      historical_evidence_records_remain_unchanged: true
-    plan_authority:
-      execution_adapter_and_migration_details: PLAN
-      plan_may_redefine_required_verification_or_authority: false
-  explicitly_approved_legacy_executor_retirement:
-    resolution: KEEP_LATEST
-    approval_ref: developer/policy/approvals/MPA-20261012-TOOLING-LEGACY-KEEP-LATEST.yaml
-    applies_to: RETIRED_COMMON_CHECK_EXECUTOR_ARTIFACTS_ONLY
-    exception_scope:
-    - .github/checks.yaml
-    - .github/checks-legacy-inventory.json
-    - .github/scripts/check_execution.py
-    - .github/checks/readme-translation.ps1
-    retired_workflow: .github/workflows/tooling-test.yml
-    gap_evidence: .github/verification-retirement.json
-    executable_required_checks_coverage: NOT_AVAILABLE
-    source_sha_bound_new_pass: NOT_ESTABLISHED
-    assurance_pass_may_be_inferred_from_retirement: false
-    preexisting_verification_obligations: STILL_BINDING_UNVERIFIED
-    coverage_downgrade_is_not_a_pass: true
-    no_automatic_authority_transfer: true
-    release_or_merge_approval_from_retired_execution: FORBIDDEN
-    successor_replacement: NOT_IMPLEMENTED
-  approved_required_verification_responsibility_split:
-    decision: C_RESPONSIBILITY_BY_RESPONSIBILITY_SPLIT
-    decision_authority: PROJECT_OWNER_EXPLICIT
-    source_policy_scope:
-    - MPD-VERI-0002
-    - MPD-VERI-0003
-    - MPD-VERI-0004
-    - MPD-VERI-0005
-    transition_state: APPROVED_DIRECTION_TARGET_MAPPING_UNRESOLVED
-    entries:
-      MPD-VERI-0002:
-        retain_in_assure:
-        - ISOLATED_FIXTURE_VERIFICATION_ADMISSIBILITY
-        split_topics:
-        - ISOLATED_FIXTURE_SCOPE_VS_MUTATION_PROMOTION_ELIGIBILITY
-        unresolved_authority_decisions:
-        - MUTATION_PROMOTION_ELIGIBILITY_SEMANTIC_OWNER
-      MPD-VERI-0003:
-        retain_in_assure:
-        - PROJECT_PROFILE_TRANSITION_VERIFICATION_COVERAGE_AND_RESULT
-        split_topics:
-        - LOCAL_REMOTE_RELEASE_EXECUTION_ELIGIBILITY
-        - PROJECT_PROFILE_TRANSITION_MECHANICS
-        unresolved_authority_decisions:
-        - EXACT_SOURCE_UNIT_DESTINATION_BINDING
-      MPD-VERI-0004:
-        retain_in_assure:
-        - AGENT_CONTRACT_SEMANTIC_REQUIRED_CHECK_COVERAGE_AND_JUDGMENT
-        split_topics:
-        - VERIFICATION_COMPONENT_OWNERSHIP
-        - REGISTERED_MODE_SELECTION_AND_EXECUTION
-        - BINDING_PROMOTION_ELIGIBILITY
-        unresolved_authority_decisions:
-        - BINDING_PROMOTION_ELIGIBILITY_SEMANTIC_OWNER
-        - EXACT_SOURCE_UNIT_DESTINATION_BINDING
-      MPD-VERI-0005:
-        retain_in_assure:
-        - EXPECTED_VS_OBSERVED_JUDGMENT
-        - VERIFICATION_RESULT_ADMISSIBILITY
-        split_topics:
-        - EXECUTION_EVIDENCE_PROVENANCE_AND_RETENTION
-        - MACHINE_READABLE_EXECUTION_RESULT_INTERFACE
-        unresolved_authority_decisions:
-        - OBSERVATION_ASSEMBLY_VS_RECORD_PROVENANCE_BOUNDARY
-        - EXACT_SOURCE_UNIT_DESTINATION_BINDING
-    existing_policy_boundary_references:
-      verification_evidence_and_judgment: MPD-ASSURE-0001
-      execution_eligibility_gates: MPD-CTRL-0001
-      project_profile_change_continuity: MPD-CHANGE-0001
-      component_and_test_mode_structure: MPD-ARCH-0002
-      execution_provenance_and_history: MPD-RECORD-0001
-      automation_result_interfaces: MPD-CNTR-0001
-    boundary_reference_is_source_unit_transfer_authority: false
-    invariants:
-      all_four_approved_decisions_are_independent: true
-      unresolved_transfer_may_be_implicitly_inferred: false
-      source_units_remain_binding_until_verified_transfer: true
-      required_checks_cannot_be_omitted: true
-      existing_fail_closed_semantics_preserved: true
-      original_test_evidence_and_exact_sha_requirements_preserved: true
-      no_new_policy_identity_or_owner_assignment_without_user_decision: true
-      final_transfer_requires_exact_destination_and_conformance_verification: true
-      plan_or_implementation_may_finalize_unresolved_policy: false
-  independent_policy_responsibility_review:
-    approved_subordinate_granularity:
+  - id: SRC-0011
+    source_pointer: /rules/developer_test_verification_boundary
+    value:
+      decision: KEEP_LATEST
+      scope: REPOSITORY_DEVELOPER_TEST_COVERAGE_AND_EVIDENCE_JUDGMENT
+      test_source:
+        repository_test_root: src/tests
+        selected_by: DECLARED_PROJECT_PROFILE_VERIFICATION_RESPONSIBILITY
+        class_or_path_alone_confers_normative_ownership: false
+        test_implementation_may_create_normative_semantics: false
+      owns:
+      - REQUIRED_TEST_COVERAGE_ADMISSIBILITY
+      - REQUIRED_VS_EXECUTED_VERIFICATION_EVIDENCE_JUDGMENT
+      - EXPECTED_VS_OBSERVED_VERIFICATION_JUDGMENT
+      - EXACT_SOURCE_SNAPSHOT_VERIFICATION_OUTCOME
+      does_not_own:
+      - TEST_MODE_REGISTRY_SHAPE_AND_MODE_MEMBERSHIP
+      - TEST_MODE_EXECUTION_TARGET_DECLARATION
+      - TEST_MODE_RESOLVER_AND_RUNNER_IMPLEMENTATION
+      - GITHUB_ACTIONS_WORKFLOW_TOPOLOGY
+      - WORKFLOW_DISPATCH_SELECTION_UI
+      - RELEASE_PUBLICATION_AUTHORIZATION
+      adjacent_authorities:
+        verification_component_ownership: DECLARED_PROJECT_PROFILE
+        mode_execution_declarations: REPOSITORY_TEST_MODE_REGISTRY
+        workflow_executor_boundary: MPD-ARCH-0002
+        release_and_transition_gate_eligibility: MPD-CTRL-0001
+      preserved_existing_required_verification:
+        source_units:
+        - unit_mpd_veri_0002_260ced325054
+        - unit_mpd_veri_0003_c4b59fc85667
+        - unit_mpd_veri_0004_f699ce5ccfa4
+        - unit_mpd_veri_0004_2f347420dfff
+        - unit_mpd_veri_0005_b5e5149c8490
+        - unit_mpd_0011_1491da54b643
+        coverage_and_required_checks_remain_binding: true
+        local_remote_release_verification_remains_binding: true
+        source_sha_evidence_and_result_semantics_remain_binding: true
+        ownership_transfer_state: NOT_AUTHORIZED
+        reassignment_requires_explicit_owner_and_policy_transition: true
+        deletion_or_weakening_before_verified_transfer: FORBIDDEN_EXCEPT_EXPLICIT_EXECUTOR_RETIREMENT_WITH_OPEN_GAP
+        historical_evidence_records_remain_unchanged: true
+      plan_authority:
+        execution_adapter_and_migration_details: PLAN
+        plan_may_redefine_required_verification_or_authority: false
+  - id: SRC-0012
+    source_pointer: /rules/explicitly_approved_legacy_executor_retirement
+    value:
+      resolution: KEEP_LATEST
+      approval_ref: developer/policy/approvals/MPA-20261012-TOOLING-LEGACY-KEEP-LATEST.yaml
+      applies_to: RETIRED_COMMON_CHECK_EXECUTOR_ARTIFACTS_ONLY
+      exception_scope:
+      - .github/checks.yaml
+      - .github/checks-legacy-inventory.json
+      - .github/scripts/check_execution.py
+      - .github/checks/readme-translation.ps1
+      retired_workflow: .github/workflows/tooling-test.yml
+      gap_evidence: .github/verification-retirement.json
+      executable_required_checks_coverage: NOT_AVAILABLE
+      source_sha_bound_new_pass: NOT_ESTABLISHED
+      assurance_pass_may_be_inferred_from_retirement: false
+      preexisting_verification_obligations: STILL_BINDING_UNVERIFIED
+      coverage_downgrade_is_not_a_pass: true
+      no_automatic_authority_transfer: true
+      release_or_merge_approval_from_retired_execution: FORBIDDEN
+      successor_replacement: NOT_IMPLEMENTED
+  - id: SRC-0013
+    source_pointer: /rules/approved_required_verification_responsibility_split
+    value:
+      decision: C_RESPONSIBILITY_BY_RESPONSIBILITY_SPLIT
       decision_authority: PROJECT_OWNER_EXPLICIT
-      approved_definition_strategy:
-        identity:
-          option: A
-          rule: ALLOCATE_AFTER_EXCLUSIVE_RESPONSIBILITY_SUBJECT_IS_RESOLVED
-          preallocation: FORBIDDEN
-          concrete_policy_ids: UNRESOLVED
-        exclusive_authority_subject:
-          option: B
-          decomposition_basis: VERIFICATION_LIFECYCLE_STAGE
-          exact_subjects: UNRESOLVED
-          lifecycle_structure:
-            decision: B_POLICY_SPECIFIC_INDEPENDENT_VERIFICATION_LIFECYCLES
+      source_policy_scope:
+      - MPD-VERI-0002
+      - MPD-VERI-0003
+      - MPD-VERI-0004
+      - MPD-VERI-0005
+      transition_state: APPROVED_DIRECTION_TARGET_MAPPING_UNRESOLVED
+      entries:
+        MPD-VERI-0002:
+          retain_in_assure:
+          - ISOLATED_FIXTURE_VERIFICATION_ADMISSIBILITY
+          split_topics:
+          - ISOLATED_FIXTURE_SCOPE_VS_MUTATION_PROMOTION_ELIGIBILITY
+          unresolved_authority_decisions:
+          - MUTATION_PROMOTION_ELIGIBILITY_SEMANTIC_OWNER
+        MPD-VERI-0003:
+          retain_in_assure:
+          - PROJECT_PROFILE_TRANSITION_VERIFICATION_COVERAGE_AND_RESULT
+          split_topics:
+          - LOCAL_REMOTE_RELEASE_EXECUTION_ELIGIBILITY
+          - PROJECT_PROFILE_TRANSITION_MECHANICS
+          unresolved_authority_decisions:
+          - EXACT_SOURCE_UNIT_DESTINATION_BINDING
+        MPD-VERI-0004:
+          retain_in_assure:
+          - AGENT_CONTRACT_SEMANTIC_REQUIRED_CHECK_COVERAGE_AND_JUDGMENT
+          split_topics:
+          - VERIFICATION_COMPONENT_OWNERSHIP
+          - REGISTERED_MODE_SELECTION_AND_EXECUTION
+          - BINDING_PROMOTION_ELIGIBILITY
+          unresolved_authority_decisions:
+          - BINDING_PROMOTION_ELIGIBILITY_SEMANTIC_OWNER
+          - EXACT_SOURCE_UNIT_DESTINATION_BINDING
+        MPD-VERI-0005:
+          retain_in_assure:
+          - EXPECTED_VS_OBSERVED_JUDGMENT
+          - VERIFICATION_RESULT_ADMISSIBILITY
+          split_topics:
+          - EXECUTION_EVIDENCE_PROVENANCE_AND_RETENTION
+          - MACHINE_READABLE_EXECUTION_RESULT_INTERFACE
+          unresolved_authority_decisions:
+          - OBSERVATION_ASSEMBLY_VS_RECORD_PROVENANCE_BOUNDARY
+          - EXACT_SOURCE_UNIT_DESTINATION_BINDING
+      existing_policy_boundary_references:
+        verification_evidence_and_judgment: MPD-ASSURE-0001
+        execution_eligibility_gates: MPD-CTRL-0001
+        project_profile_change_continuity: MPD-CHANGE-0001
+        component_and_test_mode_structure: MPD-ARCH-0002
+        execution_provenance_and_history: MPD-RECORD-0001
+        automation_result_interfaces: MPD-CNTR-0001
+      boundary_reference_is_source_unit_transfer_authority: false
+      invariants:
+        all_four_approved_decisions_are_independent: true
+        unresolved_transfer_may_be_implicitly_inferred: false
+        source_units_remain_binding_until_verified_transfer: true
+        required_checks_cannot_be_omitted: true
+        existing_fail_closed_semantics_preserved: true
+        original_test_evidence_and_exact_sha_requirements_preserved: true
+        no_new_policy_identity_or_owner_assignment_without_user_decision: true
+        final_transfer_requires_exact_destination_and_conformance_verification: true
+        plan_or_implementation_may_finalize_unresolved_policy: false
+  - id: SRC-0014
+    source_pointer: /rules/independent_policy_responsibility_review
+    value:
+      approved_subordinate_granularity:
+        decision_authority: PROJECT_OWNER_EXPLICIT
+        approved_definition_strategy:
+          identity:
+            option: A
+            rule: ALLOCATE_AFTER_EXCLUSIVE_RESPONSIBILITY_SUBJECT_IS_RESOLVED
+            preallocation: FORBIDDEN
+            concrete_policy_ids: UNRESOLVED
+          exclusive_authority_subject:
+            option: B
+            decomposition_basis: VERIFICATION_LIFECYCLE_STAGE
+            exact_subjects: UNRESOLVED
+            lifecycle_structure:
+              decision: B_POLICY_SPECIFIC_INDEPENDENT_VERIFICATION_LIFECYCLES
+              applies_to:
+              - MPD-VERI-0002
+              - MPD-VERI-0003
+              - MPD-VERI-0004
+              - MPD-VERI-0005
+              shared_normative_stage_model: NOT_REQUIRED
+              each_policy_lifecycle_independently_resolved: true
+              common_stage_identity_inferred_from_name: false
+              cross_policy_stage_authority_transfer_by_similarity: FORBIDDEN
+              stage_derivation_strategy:
+                decision: C_SOURCE_RULE_AND_POLICY_PURPOSE_CROSS_VALIDATION
+                evaluation_independence: PER_SOURCE_POLICY
+                sources:
+                  original_required_verification_rules: REQUIRED
+                  applicable_policy_purpose_and_responsibility: REQUIRED
+                admission:
+                  candidate_requires_both_evidence_classes: true
+                  semantic_gap_or_conflict: UNRESOLVED_USER_DECISION
+                  unsupported_new_normative_stage: FORBIDDEN
+                  cross_policy_stage_reuse_without_authority: FORBIDDEN
+                  original_required_check_loss: FORBIDDEN
+                candidates:
+                  non_normative_until_approved: true
+                  exact_stage_inventory: UNRESOLVED
+                  exclusive_stage_owners: UNRESOLVED
+                  policy_ids: UNRESOLVED
+                  obligation_transfer_mapping: UNRESOLVED
+                  active_transition: NOT_AUTHORIZED
+                independent_source_policy_reviews:
+                  MPD-VERI-0002: REQUIRED
+                  MPD-VERI-0003: REQUIRED
+                  MPD-VERI-0004: REQUIRED
+                  MPD-VERI-0005: REQUIRED
+                approved_stage_configuration_directions:
+                  decision_authority: PROJECT_OWNER_EXPLICIT
+                  nature: STRUCTURAL_DIRECTION_ONLY
+                  source_basis: C_SOURCE_RULE_AND_POLICY_PURPOSE_CROSS_VALIDATION
+                  policy_specific:
+                    MPD-VERI-0002:
+                      option: A
+                      pattern: FIXTURE_SCOPE_VALIDATION_AS_INDEPENDENT_STAGE
+                      normative_stage_inventory: UNRESOLVED
+                      mutation_promotion_permission: UNRESOLVED
+                    MPD-VERI-0003:
+                      option: A
+                      pattern: LOCAL_REMOTE_RELEASE_AS_SEPARATE_STAGES
+                      shared_transition_verification_semantics: PRESERVE
+                      normative_stage_inventory: UNRESOLVED
+                    MPD-VERI-0004:
+                      option: B
+                      pattern: SEVEN_REQUIRED_SEMANTIC_CHECKS_AS_DETAILED_STAGES
+                      all_original_required_checks: PRESERVE
+                      aggregate_promotion_semantics: PRESERVE
+                      normative_stage_inventory: UNRESOLVED
+                    MPD-VERI-0005:
+                      option: A
+                      pattern: EVIDENCE_OBSERVATION_COMPARISON_AND_RESULT_AS_SEPARATE_STAGES
+                      existing_three_required_obligations: PRESERVE
+                      normative_stage_inventory: UNRESOLVED
+                  guardrails:
+                    patterns_do_not_finalize_concrete_stages: true
+                    no_exclusive_stage_authority_assigned: true
+                    no_new_policy_id_allocated: true
+                    no_final_obligation_transfer_mapping: true
+                    no_policy_activation_or_source_unit_transfer: true
+                    preserve_existing_active_verification: true
+              stage_inventory: UNRESOLVED
+              exact_stage_semantics: UNRESOLVED
+              exact_exclusive_responsibility_subject: UNRESOLVED
+              concrete_new_policy_ids: UNRESOLVED
+              final_obligation_group_mapping: UNRESOLVED
+              actual_policy_state_transitions: UNRESOLVED
+              policy_creation_or_source_unit_transfer_authorized: false
+              existing_required_verification_remains_binding: true
+            existing_family_kernel_overlap_requires_explicit_resolution: true
+          obligation_mapping:
+            option: B
+            mapping_unit: RELATED_REQUIRED_VERIFICATION_OBLIGATION_SET
+            exact_source_to_target_mapping: UNRESOLVED
+            required_coverage_loss: FORBIDDEN
+            source_unit_traceability_required: true
+            equivalence_verification_required_before_transfer: true
+          creation_status:
+            option: A
+            rule: CREATE_DRAFT_ONLY_AFTER_RESPONSIBILITY_BOUNDARY_IS_RESOLVED
+            candidate_status: DRAFT
+            immediate_policy_creation_authorized: false
+            concrete_policy_identity_and_state_transition: UNRESOLVED
+          decision_scope:
+            direction_only: true
             applies_to:
             - MPD-VERI-0002
             - MPD-VERI-0003
             - MPD-VERI-0004
             - MPD-VERI-0005
-            shared_normative_stage_model: NOT_REQUIRED
-            each_policy_lifecycle_independently_resolved: true
-            common_stage_identity_inferred_from_name: false
-            cross_policy_stage_authority_transfer_by_similarity: FORBIDDEN
-            stage_derivation_strategy:
-              decision: C_SOURCE_RULE_AND_POLICY_PURPOSE_CROSS_VALIDATION
-              evaluation_independence: PER_SOURCE_POLICY
-              sources:
-                original_required_verification_rules: REQUIRED
-                applicable_policy_purpose_and_responsibility: REQUIRED
-              admission:
-                candidate_requires_both_evidence_classes: true
-                semantic_gap_or_conflict: UNRESOLVED_USER_DECISION
-                unsupported_new_normative_stage: FORBIDDEN
-                cross_policy_stage_reuse_without_authority: FORBIDDEN
-                original_required_check_loss: FORBIDDEN
-              candidates:
-                non_normative_until_approved: true
-                exact_stage_inventory: UNRESOLVED
-                exclusive_stage_owners: UNRESOLVED
-                policy_ids: UNRESOLVED
-                obligation_transfer_mapping: UNRESOLVED
-                active_transition: NOT_AUTHORIZED
-              independent_source_policy_reviews:
-                MPD-VERI-0002: REQUIRED
-                MPD-VERI-0003: REQUIRED
-                MPD-VERI-0004: REQUIRED
-                MPD-VERI-0005: REQUIRED
-              approved_stage_configuration_directions:
-                decision_authority: PROJECT_OWNER_EXPLICIT
-                nature: STRUCTURAL_DIRECTION_ONLY
-                source_basis: C_SOURCE_RULE_AND_POLICY_PURPOSE_CROSS_VALIDATION
-                policy_specific:
-                  MPD-VERI-0002:
-                    option: A
-                    pattern: FIXTURE_SCOPE_VALIDATION_AS_INDEPENDENT_STAGE
-                    normative_stage_inventory: UNRESOLVED
-                    mutation_promotion_permission: UNRESOLVED
-                  MPD-VERI-0003:
-                    option: A
-                    pattern: LOCAL_REMOTE_RELEASE_AS_SEPARATE_STAGES
-                    shared_transition_verification_semantics: PRESERVE
-                    normative_stage_inventory: UNRESOLVED
-                  MPD-VERI-0004:
-                    option: B
-                    pattern: SEVEN_REQUIRED_SEMANTIC_CHECKS_AS_DETAILED_STAGES
-                    all_original_required_checks: PRESERVE
-                    aggregate_promotion_semantics: PRESERVE
-                    normative_stage_inventory: UNRESOLVED
-                  MPD-VERI-0005:
-                    option: A
-                    pattern: EVIDENCE_OBSERVATION_COMPARISON_AND_RESULT_AS_SEPARATE_STAGES
-                    existing_three_required_obligations: PRESERVE
-                    normative_stage_inventory: UNRESOLVED
-                guardrails:
-                  patterns_do_not_finalize_concrete_stages: true
-                  no_exclusive_stage_authority_assigned: true
-                  no_new_policy_id_allocated: true
-                  no_final_obligation_transfer_mapping: true
-                  no_policy_activation_or_source_unit_transfer: true
-                  preserve_existing_active_verification: true
-            stage_inventory: UNRESOLVED
-            exact_stage_semantics: UNRESOLVED
-            exact_exclusive_responsibility_subject: UNRESOLVED
-            concrete_new_policy_ids: UNRESOLVED
-            final_obligation_group_mapping: UNRESOLVED
-            actual_policy_state_transitions: UNRESOLVED
-            policy_creation_or_source_unit_transfer_authorized: false
-            existing_required_verification_remains_binding: true
-          existing_family_kernel_overlap_requires_explicit_resolution: true
-        obligation_mapping:
-          option: B
-          mapping_unit: RELATED_REQUIRED_VERIFICATION_OBLIGATION_SET
-          exact_source_to_target_mapping: UNRESOLVED
-          required_coverage_loss: FORBIDDEN
-          source_unit_traceability_required: true
-          equivalence_verification_required_before_transfer: true
-        creation_status:
-          option: A
-          rule: CREATE_DRAFT_ONLY_AFTER_RESPONSIBILITY_BOUNDARY_IS_RESOLVED
-          candidate_status: DRAFT
-          immediate_policy_creation_authorized: false
-          concrete_policy_identity_and_state_transition: UNRESOLVED
-        decision_scope:
-          direction_only: true
-          applies_to:
-          - MPD-VERI-0002
-          - MPD-VERI-0003
-          - MPD-VERI-0004
-          - MPD-VERI-0005
-          original_granularity_decisions_preserved: true
-          new_policy_id_allocation_authorized: false
-          exclusive_authority_assignment_authorized: false
-          final_mapping_authorized: false
-          active_transition_authorized: false
-          original_required_verification_preserved: true
-          previous_unresolved_decisions_remain_unresolved: true
-      independent_responsibility_directions:
+            original_granularity_decisions_preserved: true
+            new_policy_id_allocation_authorized: false
+            exclusive_authority_assignment_authorized: false
+            final_mapping_authorized: false
+            active_transition_authorized: false
+            original_required_verification_preserved: true
+            previous_unresolved_decisions_remain_unresolved: true
+        independent_responsibility_directions:
+          MPD-VERI-0002:
+            mode: A_MINIMAL_INDEPENDENT_RESPONSIBILITY
+            exact_policy_count: UNRESOLVED
+            exclusive_authority_subject: UNRESOLVED
+            exact_source_unit_mapping: UNRESOLVED
+            proposed_policy_ids: UNRESOLVED
+            target_status: UNRESOLVED
+          MPD-VERI-0003:
+            mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
+            exact_policy_count: UNRESOLVED
+            exclusive_authority_subject: UNRESOLVED
+            exact_source_unit_mapping: UNRESOLVED
+            proposed_policy_ids: UNRESOLVED
+            target_status: UNRESOLVED
+          MPD-VERI-0004:
+            mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
+            exact_policy_count: UNRESOLVED
+            exclusive_authority_subject: UNRESOLVED
+            exact_source_unit_mapping: UNRESOLVED
+            proposed_policy_ids: UNRESOLVED
+            target_status: UNRESOLVED
+          MPD-VERI-0005:
+            mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
+            exact_policy_count: UNRESOLVED
+            exclusive_authority_subject: UNRESOLVED
+            exact_source_unit_mapping: UNRESOLVED
+            proposed_policy_ids: UNRESOLVED
+            target_status: UNRESOLVED
+        invariants:
+          direction_does_not_assign_exclusive_owner: true
+          direction_does_not_reserve_or_allocate_policy_id: true
+          direction_does_not_authorize_policy_creation: true
+          direction_does_not_authorize_source_unit_transfer: true
+          direction_does_not_change_existing_required_verification: true
+          existing_active_source_units_remain_binding: true
+          subsequent_decisions_are_independent: true
+      direction: REVIEW_INDEPENDENT_POLICY_RESPONSIBILITIES
+      decision_authority: PROJECT_OWNER_EXPLICIT
+      source_policies:
         MPD-VERI-0002:
-          mode: A_MINIMAL_INDEPENDENT_RESPONSIBILITY
-          exact_policy_count: UNRESOLVED
-          exclusive_authority_subject: UNRESOLVED
-          exact_source_unit_mapping: UNRESOLVED
-          proposed_policy_ids: UNRESOLVED
-          target_status: UNRESOLVED
+          direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+          exact_responsibility_subject: UNRESOLVED
+          proposed_policy_identity: UNRESOLVED
+          destination_authority: UNRESOLVED
         MPD-VERI-0003:
-          mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
-          exact_policy_count: UNRESOLVED
-          exclusive_authority_subject: UNRESOLVED
-          exact_source_unit_mapping: UNRESOLVED
-          proposed_policy_ids: UNRESOLVED
-          target_status: UNRESOLVED
+          direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+          exact_responsibility_subject: UNRESOLVED
+          proposed_policy_identity: UNRESOLVED
+          destination_authority: UNRESOLVED
         MPD-VERI-0004:
-          mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
-          exact_policy_count: UNRESOLVED
-          exclusive_authority_subject: UNRESOLVED
-          exact_source_unit_mapping: UNRESOLVED
-          proposed_policy_ids: UNRESOLVED
-          target_status: UNRESOLVED
+          direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+          exact_responsibility_subject: UNRESOLVED
+          proposed_policy_identity: UNRESOLVED
+          destination_authority: UNRESOLVED
         MPD-VERI-0005:
-          mode: B_FINE_GRAINED_INDEPENDENT_RESPONSIBILITIES
-          exact_policy_count: UNRESOLVED
-          exclusive_authority_subject: UNRESOLVED
-          exact_source_unit_mapping: UNRESOLVED
-          proposed_policy_ids: UNRESOLVED
-          target_status: UNRESOLVED
-      invariants:
-        direction_does_not_assign_exclusive_owner: true
-        direction_does_not_reserve_or_allocate_policy_id: true
-        direction_does_not_authorize_policy_creation: true
-        direction_does_not_authorize_source_unit_transfer: true
-        direction_does_not_change_existing_required_verification: true
-        existing_active_source_units_remain_binding: true
-        subsequent_decisions_are_independent: true
-    direction: REVIEW_INDEPENDENT_POLICY_RESPONSIBILITIES
-    decision_authority: PROJECT_OWNER_EXPLICIT
-    source_policies:
-      MPD-VERI-0002:
-        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
-        exact_responsibility_subject: UNRESOLVED
-        proposed_policy_identity: UNRESOLVED
-        destination_authority: UNRESOLVED
-      MPD-VERI-0003:
-        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
-        exact_responsibility_subject: UNRESOLVED
-        proposed_policy_identity: UNRESOLVED
-        destination_authority: UNRESOLVED
-      MPD-VERI-0004:
-        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
-        exact_responsibility_subject: UNRESOLVED
-        proposed_policy_identity: UNRESOLVED
-        destination_authority: UNRESOLVED
-      MPD-VERI-0005:
-        direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
-        exact_responsibility_subject: UNRESOLVED
-        proposed_policy_identity: UNRESOLVED
-        destination_authority: UNRESOLVED
-    independent_decisions_required: true
-    new_policy_creation_authorized: false
-    ownership_transfer_authorized: false
-    existing_required_verifications_remain_binding: true
-    exact_source_units_may_be_deleted_before_verified_transfer: false
-    predecessor_responsibility_decisions_remain_effective: true
-    review_may_create_normative_authority: false
-  unit_mpd_0011_1491da54b643: MPD-VERI-0003
-  unit_mpd_0012_d42d2230d10e:
-    user_reported_local_validation:
-      pytest_result: 1 passed in 2.32s
-      validator_counts:
-        specs: 8
-        operations: 5
-        actions: 18
-        conditions: 23
-        gates: 3
-        io_schemas: 15
-        vocabularies: 4
-        rules: 48
-        bindings: 1
-      evidence_scope: PRE_MPD_0012_EXISTING_AGENT_CONTRACT_PLANE
-      assistant_independent_execution: false
-    markdown_cleanup_automation:
-      implementation_state: MATERIALIZED
-      local_test_execution: NOT_RUN_BY_ASSISTANT
-      simulation_execution: READY_VERIFIED_36034253999
-    agent_context_migration_m5:
-      source_sha: 48c44448cdbb19fa5c666ad680e85ee4aa72e828
-      workflow_run_id: 36031848090
-      workflow_job_id: 107743172276
-      result: PASS
-      machine_contract_specs: 15
-      machine_contract_rules: 156
-      machine_contract_vocabularies: 5
-  unit_mpd_spec_0011_8b9a13c6427c:
-    tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption: false
-    existing_profile_examples_remain_0_3_6_draft_without_contract_change: true
-    repository_dogfood_mode: CONTROLLED_SELF_ANALYSIS
-    spec_0_3_7_draft_remains_tool_development_normative_family: true
-    superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
-  unit_mpd_veri_0002_260ced325054:
-    scope: ISOLATED_FIXTURE_REPOSITORIES
-  unit_mpd_veri_0003_c4b59fc85667:
-    local_pre_commit: AUTO_RECONCILE_AND_VERIFY
-    remote: VERIFY_ONLY
-    remote_must_detect_local_hook_bypass: true
-    remote_must_validate_every_introduced_commit: true
-    release: EXACT_SHA_VERIFY_ONLY
-    pp_transition_verifier_semantics_must_be_shared_across_local_remote_and_release: true
-  unit_mpd_veri_0004_f699ce5ccfa4:
-    model: R2_BEHAVIOR_SEMANTIC_REQUIRED
-    repository_entry:
-      scope: AGENT_CONTRACT_REQUIRED_SEMANTIC_CHECKS
-      source_ownership_authority: DECLARED_PROJECT_PROFILE_COMPONENTS_AND_ASSOCIATED_ARTIFACTS
-      verification_relationship_authority: DECLARED_PROJECT_PROFILE_TYPED_RELATIONSHIPS
-      selection_authority: VERIFICATION_COMPONENT_ANALYSIS_INPUTS_AND_OWNED_TEST_INCLUDE
-      execution_authority: REPOSITORY_TEST_MODE_REGISTRY
-      source_ownership_required_before_mode_selection: true
-      test_ownership_must_be_explicit_and_non_overlapping: true
-      test_mode_component_ref_must_resolve_test_owning_verification_component: true
-      execution_targets_must_be_within_component_test_ownership: true
-      required_changed_contract_path_must_select_applicable_verification: true
-      undeclared_source_owner: FAIL_CLOSED
-      missing_required_verification_entry: FAIL_CLOSED
-      registry_may_define_alternative_watch_paths: false
-      agent_may_infer_source_classification_or_verification_relationship: false
-      adding_analysis_inputs_alone_creates_source_ownership: false
-      unmapped_path_may_use_full_verification_fallback: false
-      targeted_debug_pass_replaces_required_automatic_verification: false
-    required_checks:
-    - IDENTITY_MATCH
-    - IMPLEMENTATION_RESOLUTION_VALID
-    - INPUT_CONTRACT_MATCH
-    - OUTPUT_CONTRACT_MATCH
-    - EFFECT_MATCH
-    - FAILURE_CONTRACT_MATCH
-    - COMPATIBILITY_MATCH
-    result_domain:
-    - PASS
-    - FAIL
-    - UNKNOWN
-    aggregate:
-      all_pass: AUTO_PROMOTE
-      any_fail: REJECT
-      unknown_without_fail: USER_REVIEW_REQUIRED
-    optional_verification:
-      promotion_blocking: false
-      exact_optional_set: DEFERRED
-  unit_mpd_veri_0004_2f347420dfff:
-    strategy: E3_DECLARATION_PLUS_MACHINE_VERIFICATION
-    declaration_only_is_sufficient: false
-    declaration_and_machine_evidence_agree: PASS
-    declaration_and_machine_evidence_conflict: FAIL
-    insufficient_evidence: UNKNOWN
-  unit_mpd_veri_0005_b5e5149c8490:
-    observable_evidence_required: true
-    expected_vs_observed_required: true
-    verification_result_must_be_machine_readable: true
-  independent_release_component_verification:
-    approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
-    contract_ref: .github/checks/release/composition-contract.json
-    verification_scope: EXACT_SOURCE_SELECTED_RELEASE_COMPONENTS
-    required:
-    - REGISTERED_IDENTITY_AND_VERSION
-    - UNCHANGED_SOURCE_OR_NEW_COMPONENT_VERSION
-    - REQUIRED_NATIVE_PLATFORM_TESTS
-    - COMPILED_MANIFEST_IDENTITY
-    - ALL_ARTIFACT_HASHES
-    - PROFILE_TRANSITION_EXACT_SOURCE
-    - TOOL_PRODUCT_ARTIFACT_BOUNDARY_WHEN_SELECTED
-    parallel_component_failure_scope: FAILED_COMPONENT_AND_DEPENDENT_PACKAGE
-    reuse: IMMUTABLE_PUBLISHED_COMPONENT_TAG_FINGERPRINT_AND_ARTIFACT_DIGEST_MATCH
-    common_verification_gap: PRESERVE_OPEN_NO_FORMER_STATUS_REEMISSION
-    operational_installation_and_activation: NOT_GRANTED
-  engine_verification_only:
-    current_surface: SUPERSEDED_BY_RELEASE_MODE_VERIFICATION
-    approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml
-    contract_ref: developer/policy/contracts/engine-verification.v1.json
-    scope: SELECTED_REGISTERED_ENGINE_AND_ITS_EXPLICIT_CONTRACTS
-    required_platforms: [WINDOWS_X64, LINUX_X64]
-    optional_platforms: [MACOS_ARM64]
-    required_checks:
-    - LOCKED_SELECTED_ENGINE_RUST_TESTS
-    - LOCKED_SELECTED_ENGINE_NATIVE_BUILD
-    - EXACT_SOURCE_SHA_AND_CLEAN_TRACKED_SOURCE
-    - REGISTERED_ENGINE_ID_VERSION_BINDING_AND_HOST
-    - WHEEL_MEMBERS_RECORD_AND_ARTIFACT_DIGESTS
-    - RECEIPT_TAMPER_AND_SOURCE_MISMATCH_REJECTION
-    - ISOLATED_NO_DEPENDENCY_CONSUMER_INSTALL_AND_NATIVE_MANIFEST
-    wheel_assembler_language: GO
-    result_scope: ENGINE_VERIFICATION_ONLY
-    full_release_required_verification: PRESERVE_AS_SEPARATE_GATE_REQUIREMENTS
-    tool_profile_package_verification: NOT_IMPLEMENTED
-    engine_pass_is_release_gate_pass: true
-    release_gate_scope: SELECTED_ENGINE_VERIFICATION
-    full_release_authorization_from_engine_gate: false
-    rust_build_cache:
-      role: NON_AUTHORITATIVE_BUILD_ACCELERATION
-      partition: ENGINE_RUNNER_NATIVE_TARGET_AND_RUST_COMPILER
-      exact_key_inputs: CARGO_MANIFEST_LOCKFILE_AND_ENGINE_SOURCE
-      source_change_restore: SAME_ENGINE_TOOLCHAIN_AND_DEPENDENCY_KEY_ONLY
-      cached_result_is_verification_evidence: false
-      rerun_locked_test_build_and_artifact_verification: REQUIRED
-  independent_engine_publication:
-    current_surface: SUPERSEDED_BY_UNIFIED_RELEASE_ORCHESTRATION
-    approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
-    contract_ref: developer/policy/contracts/engine-publication.v1.json
-    required:
-    - USER_APPROVED_ENGINE_ONLY_PUBLICATION
-    - COMPLETED_SUCCESSFUL_EXACT_SOURCE_VERIFICATION_RUN_AND_GATE
-    - REQUIRED_AND_EXPLICIT_OPTIONAL_PLATFORM_WHEEL_RECEIPTS_AND_FULL_FILE_DIGEST_MATCH
-    - LINUX_MANYLINUX_GLIBC_AND_EXTERNAL_LIBRARY_CHECK
-    - FRESH_MAIN_SOURCE_AND_REGISTERED_COMPONENT_VERSION
-    - IMMUTABLE_EXISTING_TAG_RELEASE_AND_PYPI_FILE_CHECK
-    reuse: ORIGINAL_VERIFIED_RUN_ARTIFACTS_NO_REBUILD_DURING_PUBLICATION
-    publication_transport: GO_GITHUB_PUBLICATION_AND_PYPA_OFFICIAL_PYPI_UPLOAD
-    publisher_implementation_authority: NATIVE_GO_POLICY_IDENTITY_SELECTION_AND_ARTIFACT_ADMISSION
-    external_pypa_action_role: TRUSTED_PUBLISHING_UPLOAD_TRANSPORT_ONLY
-    runtime_activation_from_publication: false
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0001-ACTIVE.yaml
-    next_action:
-      action: VERIFY_SOURCE_PROJECTION
-      execution: SERIAL_REQUIRED
-      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+          direction: INDEPENDENT_POLICY_RESPONSIBILITY_REVIEW
+          exact_responsibility_subject: UNRESOLVED
+          proposed_policy_identity: UNRESOLVED
+          destination_authority: UNRESOLVED
+      independent_decisions_required: true
+      new_policy_creation_authorized: false
+      ownership_transfer_authorized: false
+      existing_required_verifications_remain_binding: true
+      exact_source_units_may_be_deleted_before_verified_transfer: false
+      predecessor_responsibility_decisions_remain_effective: true
+      review_may_create_normative_authority: false
+  - id: SRC-0015
+    source_pointer: /rules/unit_mpd_0011_1491da54b643
+    value: MPD-VERI-0003
+  - id: SRC-0016
+    source_pointer: /rules/unit_mpd_0012_d42d2230d10e
+    value:
+      user_reported_local_validation:
+        pytest_result: 1 passed in 2.32s
+        validator_counts:
+          specs: 8
+          operations: 5
+          actions: 18
+          conditions: 23
+          gates: 3
+          io_schemas: 15
+          vocabularies: 4
+          rules: 48
+          bindings: 1
+        evidence_scope: PRE_MPD_0012_EXISTING_AGENT_CONTRACT_PLANE
+        assistant_independent_execution: false
+      markdown_cleanup_automation:
+        implementation_state: MATERIALIZED
+        local_test_execution: NOT_RUN_BY_ASSISTANT
+        simulation_execution: READY_VERIFIED_36034253999
+      agent_context_migration_m5:
+        source_sha: 48c44448cdbb19fa5c666ad680e85ee4aa72e828
+        workflow_run_id: 36031848090
+        workflow_job_id: 107743172276
+        result: PASS
+        machine_contract_specs: 15
+        machine_contract_rules: 156
+        machine_contract_vocabularies: 5
+  - id: SRC-0017
+    source_pointer: /rules/unit_mpd_spec_0011_8b9a13c6427c
+    value:
+      tool_0_3_7_creates_ptsip_0_3_7_yaml_for_self_adoption: false
+      existing_profile_examples_remain_0_3_6_draft_without_contract_change: true
+      repository_dogfood_mode: CONTROLLED_SELF_ANALYSIS
+      spec_0_3_7_draft_remains_tool_development_normative_family: true
+      superseded_scope: REPOSITORY_SELF_ADOPTION_ASSUMPTION_ONLY
+  - id: SRC-0018
+    source_pointer: /rules/unit_mpd_veri_0002_260ced325054
+    value:
+      scope: ISOLATED_FIXTURE_REPOSITORIES
+  - id: SRC-0019
+    source_pointer: /rules/unit_mpd_veri_0003_c4b59fc85667
+    value:
+      local_pre_commit: AUTO_RECONCILE_AND_VERIFY
+      remote: VERIFY_ONLY
+      remote_must_detect_local_hook_bypass: true
+      remote_must_validate_every_introduced_commit: true
+      release: EXACT_SHA_VERIFY_ONLY
+      pp_transition_verifier_semantics_must_be_shared_across_local_remote_and_release: true
+  - id: SRC-0020
+    source_pointer: /rules/unit_mpd_veri_0004_f699ce5ccfa4
+    value:
+      model: R2_BEHAVIOR_SEMANTIC_REQUIRED
+      repository_entry:
+        scope: AGENT_CONTRACT_REQUIRED_SEMANTIC_CHECKS
+        source_ownership_authority: DECLARED_PROJECT_PROFILE_COMPONENTS_AND_ASSOCIATED_ARTIFACTS
+        verification_relationship_authority: DECLARED_PROJECT_PROFILE_TYPED_RELATIONSHIPS
+        selection_authority: VERIFICATION_COMPONENT_ANALYSIS_INPUTS_AND_OWNED_TEST_INCLUDE
+        execution_authority: REPOSITORY_TEST_MODE_REGISTRY
+        source_ownership_required_before_mode_selection: true
+        test_ownership_must_be_explicit_and_non_overlapping: true
+        test_mode_component_ref_must_resolve_test_owning_verification_component: true
+        execution_targets_must_be_within_component_test_ownership: true
+        required_changed_contract_path_must_select_applicable_verification: true
+        undeclared_source_owner: FAIL_CLOSED
+        missing_required_verification_entry: FAIL_CLOSED
+        registry_may_define_alternative_watch_paths: false
+        agent_may_infer_source_classification_or_verification_relationship: false
+        adding_analysis_inputs_alone_creates_source_ownership: false
+        unmapped_path_may_use_full_verification_fallback: false
+        targeted_debug_pass_replaces_required_automatic_verification: false
+      required_checks:
+      - IDENTITY_MATCH
+      - IMPLEMENTATION_RESOLUTION_VALID
+      - INPUT_CONTRACT_MATCH
+      - OUTPUT_CONTRACT_MATCH
+      - EFFECT_MATCH
+      - FAILURE_CONTRACT_MATCH
+      - COMPATIBILITY_MATCH
+      result_domain:
+      - PASS
+      - FAIL
+      - UNKNOWN
+      aggregate:
+        all_pass: AUTO_PROMOTE
+        any_fail: REJECT
+        unknown_without_fail: USER_REVIEW_REQUIRED
+      optional_verification:
+        promotion_blocking: false
+        exact_optional_set: DEFERRED
+  - id: SRC-0021
+    source_pointer: /rules/unit_mpd_veri_0004_2f347420dfff
+    value:
+      strategy: E3_DECLARATION_PLUS_MACHINE_VERIFICATION
+      declaration_only_is_sufficient: false
+      declaration_and_machine_evidence_agree: PASS
+      declaration_and_machine_evidence_conflict: FAIL
+      insufficient_evidence: UNKNOWN
+  - id: SRC-0022
+    source_pointer: /rules/unit_mpd_veri_0005_b5e5149c8490
+    value:
+      observable_evidence_required: true
+      expected_vs_observed_required: true
+      verification_result_must_be_machine_readable: true
+  - id: SRC-0023
+    source_pointer: /rules/independent_release_component_verification
+    value:
+      approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
+      contract_ref: .github/checks/release/composition-contract.json
+      verification_scope: EXACT_SOURCE_SELECTED_RELEASE_COMPONENTS
+      required:
+      - REGISTERED_IDENTITY_AND_VERSION
+      - UNCHANGED_SOURCE_OR_NEW_COMPONENT_VERSION
+      - REQUIRED_NATIVE_PLATFORM_TESTS
+      - COMPILED_MANIFEST_IDENTITY
+      - ALL_ARTIFACT_HASHES
+      - PROFILE_TRANSITION_EXACT_SOURCE
+      - TOOL_PRODUCT_ARTIFACT_BOUNDARY_WHEN_SELECTED
+      parallel_component_failure_scope: FAILED_COMPONENT_AND_DEPENDENT_PACKAGE
+      reuse: IMMUTABLE_PUBLISHED_COMPONENT_TAG_FINGERPRINT_AND_ARTIFACT_DIGEST_MATCH
+      common_verification_gap: PRESERVE_OPEN_NO_FORMER_STATUS_REEMISSION
+      operational_installation_and_activation: NOT_GRANTED
+  - id: SRC-0024
+    source_pointer: /rules/engine_verification_only
+    value:
+      current_surface: SUPERSEDED_BY_RELEASE_MODE_VERIFICATION
+      approval_ref: developer/policy/approvals/MPA-20261013-ENGINE-GATE-AND-CACHE.yaml
+      contract_ref: developer/policy/contracts/engine-verification.v1.json
+      scope: SELECTED_REGISTERED_ENGINE_AND_ITS_EXPLICIT_CONTRACTS
+      required_platforms:
+      - WINDOWS_X64
+      - LINUX_X64
+      optional_platforms:
+      - MACOS_ARM64
+      required_checks:
+      - LOCKED_SELECTED_ENGINE_RUST_TESTS
+      - LOCKED_SELECTED_ENGINE_NATIVE_BUILD
+      - EXACT_SOURCE_SHA_AND_CLEAN_TRACKED_SOURCE
+      - REGISTERED_ENGINE_ID_VERSION_BINDING_AND_HOST
+      - WHEEL_MEMBERS_RECORD_AND_ARTIFACT_DIGESTS
+      - RECEIPT_TAMPER_AND_SOURCE_MISMATCH_REJECTION
+      - ISOLATED_NO_DEPENDENCY_CONSUMER_INSTALL_AND_NATIVE_MANIFEST
+      wheel_assembler_language: GO
+      result_scope: ENGINE_VERIFICATION_ONLY
+      full_release_required_verification: PRESERVE_AS_SEPARATE_GATE_REQUIREMENTS
+      tool_profile_package_verification: NOT_IMPLEMENTED
+      engine_pass_is_release_gate_pass: true
+      release_gate_scope: SELECTED_ENGINE_VERIFICATION
+      full_release_authorization_from_engine_gate: false
+      rust_build_cache:
+        role: NON_AUTHORITATIVE_BUILD_ACCELERATION
+        partition: ENGINE_RUNNER_NATIVE_TARGET_AND_RUST_COMPILER
+        exact_key_inputs: CARGO_MANIFEST_LOCKFILE_AND_ENGINE_SOURCE
+        source_change_restore: SAME_ENGINE_TOOLCHAIN_AND_DEPENDENCY_KEY_ONLY
+        cached_result_is_verification_evidence: false
+        rerun_locked_test_build_and_artifact_verification: REQUIRED
+  - id: SRC-0025
+    source_pointer: /rules/independent_engine_publication
+    value:
+      current_surface: SUPERSEDED_BY_UNIFIED_RELEASE_ORCHESTRATION
+      approval_ref: developer/policy/approvals/MPA-20261013-INDEPENDENT-ENGINE-PUBLICATION.yaml
+      contract_ref: developer/policy/contracts/engine-publication.v1.json
+      required:
+      - USER_APPROVED_ENGINE_ONLY_PUBLICATION
+      - COMPLETED_SUCCESSFUL_EXACT_SOURCE_VERIFICATION_RUN_AND_GATE
+      - REQUIRED_AND_EXPLICIT_OPTIONAL_PLATFORM_WHEEL_RECEIPTS_AND_FULL_FILE_DIGEST_MATCH
+      - LINUX_MANYLINUX_GLIBC_AND_EXTERNAL_LIBRARY_CHECK
+      - FRESH_MAIN_SOURCE_AND_REGISTERED_COMPONENT_VERSION
+      - IMMUTABLE_EXISTING_TAG_RELEASE_AND_PYPI_FILE_CHECK
+      reuse: ORIGINAL_VERIFIED_RUN_ARTIFACTS_NO_REBUILD_DURING_PUBLICATION
+      publication_transport: GO_GITHUB_PUBLICATION_AND_PYPA_OFFICIAL_PYPI_UPLOAD
+      publisher_implementation_authority: NATIVE_GO_POLICY_IDENTITY_SELECTION_AND_ARTIFACT_ADMISSION
+      external_pypa_action_role: TRUSTED_PUBLISHING_UPLOAD_TRANSPORT_ONLY
+      runtime_activation_from_publication: false
+  - id: SRC-0026
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0027
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: COMPLETE
+      requirements:
+      - id: TR-001
+        type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+        state: SATISFIED
+        refs:
+        - developer/policy/approvals/MPA-20261006-ROOT-ASSURE-0001-ACTIVE.yaml
+        next_action:
+          action: VERIFY_SOURCE_PROJECTION
+          execution: SERIAL_REQUIRED
+          completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  source_document:
+    path: developer/policy/ASSURE/MPD-ASSURE-0001.yaml
+    sha256: 2a31df7108857f2fb2b8cbccf1c96d7d013d08e52b7f162e79fb4dc102b2afc7
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

@@ -105,6 +105,10 @@ func TestV2PolicyChecksSharedStructureAndRejectsMissingRules(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	document, err = authoring.RestoreUnifiedSource(root, document)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if err := verification.CheckDocument(root, "policy-check", document, validate); err != nil {
 		t.Fatal(err)
 	}

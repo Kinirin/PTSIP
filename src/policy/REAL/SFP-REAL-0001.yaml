@@ -1,47 +1,299 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: REAL
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-REAL-0001
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: REAL
   title: REAL authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: ACTIVE
-authority_subject:
-  id: SUP_DETERMINISTIC_CONSUMER_STATE_REALIZATION
-  statement: consumer가 선택한 source 선언을 deterministic effective metadata와 허용된 repository
-    변경으로 실현하는 의미 보존 실행 절차를 소유한다.
-exclusive_kernel:
-- SUP_DECLARATION_PRESERVING_MATERIALIZATION
-- SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY
-authority_contract:
-  authority_type: ROOT_FAMILY_REAL
-  schema_id: ptsip.governance/root-family/real
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_DECLARATION_PRESERVING_MATERIALIZATION
-      statement: 명시적으로 선택된 immutable template/source에서 effective map과 projection을
-        결정론적으로 materialize하고 source facts 및 derived provenance를 보존한다.
-      non_substitutability: ARCH의 설계 의도나 INFO의 schema가 실제 materialization 결과를 생성하지
-        않으며 생성 과정도 새 architecture 의도를 추론할 수 없다.
-    - id: SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY
-      statement: 허용된 prepared write의 적용 단위, 원자성과 실패 보존을 정한다. read-only operation은
-        repository-local state를 materialize하지 않는다.
-      non_substitutability: CTRL의 fresh eligibility나 GOV의 승인은 쓰기 중 partial mutation과
-        실패 보존의 실행 mechanics를 대신 보장하지 않는다.
-  semantic_unit_eb63277527b8: READ_ONLY
-  semantic_unit_73587b4e12a6: NON_AUTHORITATIVE
-  semantic_unit_eb98fb99bd83: false
-  semantic_unit_4a7fe2226218: false
-  semantic_unit_1986452d2389: false
-  semantic_unit_a108e978a3d7: true
-  semantic_unit_1c3b027c20b5: ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS
-  semantic_unit_de28528b9b4f:
-    coding_agent_authorization: PREAUTHORIZED
-    user_decision_required: false
-  semantic_unit_2e6408da3841: false
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_DECLARATION_PRESERVING_MATERIALIZATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_eb63277527b8
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_73587b4e12a6
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_eb98fb99bd83
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_4a7fe2226218
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_1986452d2389
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_a108e978a3d7
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_1c3b027c20b5
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_de28528b9b4f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: SFP-REAL-0001#/authority_semantics/semantic_unit_2e6408da3841
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0019
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: REAL
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-REAL-0001
+      title: REAL authority (ACTIVE source responsibilities)
+      status: ACTIVE
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_DETERMINISTIC_CONSUMER_STATE_REALIZATION
+      statement: consumer가 선택한 source 선언을 deterministic effective metadata와 허용된 repository 변경으로 실현하는 의미 보존 실행 절차를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_DECLARATION_PRESERVING_MATERIALIZATION
+    - SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_REAL
+      schema_id: ptsip.governance/root-family/real
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_DECLARATION_PRESERVING_MATERIALIZATION
+      statement: 명시적으로 선택된 immutable template/source에서 effective map과 projection을 결정론적으로 materialize하고 source facts 및 derived
+        provenance를 보존한다.
+      non_substitutability: ARCH의 설계 의도나 INFO의 schema가 실제 materialization 결과를 생성하지 않으며 생성 과정도 새 architecture 의도를 추론할 수 없다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY
+      statement: 허용된 prepared write의 적용 단위, 원자성과 실패 보존을 정한다. read-only operation은 repository-local state를 materialize하지 않는다.
+      non_substitutability: CTRL의 fresh eligibility나 GOV의 승인은 쓰기 중 partial mutation과 실패 보존의 실행 mechanics를 대신 보장하지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_eb63277527b8
+    value: READ_ONLY
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_73587b4e12a6
+    value: NON_AUTHORITATIVE
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_eb98fb99bd83
+    value: false
+  - id: SRC-0013
+    source_pointer: /authority_semantics/semantic_unit_4a7fe2226218
+    value: false
+  - id: SRC-0014
+    source_pointer: /authority_semantics/semantic_unit_1986452d2389
+    value: false
+  - id: SRC-0015
+    source_pointer: /authority_semantics/semantic_unit_a108e978a3d7
+    value: true
+  - id: SRC-0016
+    source_pointer: /authority_semantics/semantic_unit_1c3b027c20b5
+    value: ATOMIC_REPLACE_AFTER_IN_MEMORY_CAS
+  - id: SRC-0017
+    source_pointer: /authority_semantics/semantic_unit_de28528b9b4f
+    value:
+      coding_agent_authorization: PREAUTHORIZED
+      user_decision_required: false
+  - id: SRC-0018
+    source_pointer: /authority_semantics/semantic_unit_2e6408da3841
+    value: false
+  - id: SRC-0019
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/REAL/SFP-REAL-0001.yaml
+    sha256: d34d1fc2dc68f30c9d1002662ea73a9f165452ca92e1f3382b6730626389ed72
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

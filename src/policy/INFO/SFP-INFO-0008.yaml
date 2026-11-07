@@ -1,99 +1,279 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-INFO-0008
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: INFO
   title: PTSIP Engine non-authoritative derived execution state
+Policy_Lifecycle:
   status: DRAFT
-authority_subject:
-  id: SUP_ENGINE_DERIVED_EXECUTION_STATE_INFORMATION
-  statement: Engine 실행 상태의 비권위적 정보 의미와 검증을 거친 재사용 자격 표시를 소유하며, 정책·원본·검증 책임을 대체하지 않는다.
-exclusive_kernel:
-  - SUP_ENGINE_STATE_NON_AUTHORITATIVE_DERIVATION
-  - SUP_ENGINE_STATE_VERIFIED_REUSE_ELIGIBILITY_INFORMATION
-authority_contract:
-  authority_type: ROOT_FAMILY_INFO
-  schema_id: ptsip.governance/root-family/info
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-      - id: SUP_ENGINE_STATE_NON_AUTHORITATIVE_DERIVATION
-        statement: 보존된 엔진 실행 상태는 현재의 규범 계약과 검증된 원본으로부터 도출한 비권위적 정보로만 해석한다.
-        non_substitutability: 저장된 실행 상태의 존재나 과거 결과는 NORM의 계약 및 INFO의 현행 원본 의미를 대신하지 않는다.
-      - id: SUP_ENGINE_STATE_VERIFIED_REUSE_ELIGIBILITY_INFORMATION
-        statement: 엔진 상태의 재사용 자격은 현행 기계 검증이 충족된 경우에만 부여하며, 자격 정보 자체는 검증 절차나 권위를 소유하지 않는다.
-        non_substitutability: INFO가 표시하는 재사용 자격은 ASSURE의 검증 책임 또는 REAL의 안전한 실행·쓰기 절차를 대체하지 않는다.
-  engine_state_approved_direction:
-    decision: OPTION_B
-    decision_source: PROJECT_OWNER_EXPLICIT
-    decision_recorded_at: '2026-10-11'
-    state_role: PERSISTED_NON_AUTHORITATIVE_DERIVED_EXECUTION_STATE
-    reuse_eligibility: REQUIRE_CURRENT_MACHINE_VERIFIED_VALIDITY
-    reuse_scope_decision: OPTION_A_EXACT_MATCH_ONLY
-    current_release_reuse_policy: EXACT_MATCH_ONLY
-    reuse_match_scope: COMPLETE_REGISTERED_REUSE_RELEVANT_INPUT_AND_NORMATIVE_CONTRACT_DEPENDENCIES
-    reuse_requires_machine_verified_exact_match: true
-    missing_unknown_or_mismatched_dependency: NOT_REUSABLE
-    semantic_equivalence_alone_may_grant_current_release_reuse: false
-    semantic_equivalence_reuse_extension:
-      status: DEFERRED
-      current_release_requirement: false
-      automatically_authorized: false
-      future_policy_approval_required: true
-      future_machine_verifiable_contract_required: true
-    exact_match_validation_method: PLAN_AND_MACHINE_CONTRACT
-    persisted_state_alone_grants_reuse_authority: false
-    unverified_stale_or_invalid_state: NOT_REUSABLE
-    invalid_state_reuse_classification: INELIGIBLE_FOR_REUSE
-    invalid_state_recovery_owner_ref: SFP-OPS-0002
-    fallback_recovery_direction: AUTOMATIC_RECOMPUTE_FROM_VERIFIED_SOURCE_AND_NORMATIVE_CONTRACT
-    source_or_normative_contract_unverified: FAIL_CLOSED
-    semantic_authority: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
-    engine_implementation_language_restriction: NONE
-    repository_state_path_ref: SFP-ARCH-0001
-    repository_state_path: .ptsip/engine/state.json
-    existing_arch_state_and_schema_contracts: DEFERRED_UNTIL_SEPARATELY_RESOLVED
-    existing_arch_runtime_activation: DEFERRED
-  engine_state_authority_boundaries:
-    cannot_create_or_override_normative_rules: true
-    cannot_replace_authoritative_source_information: true
-    cannot_grant_mutation_or_execution_authorization: true
-    does_not_activate_engine_runtime: true
-    does_not_authorize_engine_implementation_or_schema_mutation: true
-    cannot_relax_existing_read_only_operation_boundary: true
-    existing_go_test_implementation_policy_unchanged: true
-    invalid_or_unverified_state_must_not_be_reused: true
-    insufficient_exact_match_proof_must_not_grant_reuse: true
-    registered_machine_equivalence_not_current_release_reuse_permission: true
-    unrelated_consumer_analysis_reuse_policies_unchanged: true
-  engine_state_responsibility_partition:
-    INFO: DERIVED_STATE_INFORMATION_ROLE_AND_REUSE_QUALIFICATION_STATUS
-    ARCH: ENGINE_PLANE_PATH_ROLE_AND_ACTIVATION_BOUNDARY
-    NORM: LANGUAGE_NEUTRAL_NORMATIVE_SEMANTICS
-    ASSURE: MACHINE_VALIDATION_EVIDENCE_AND_ACCEPTANCE
-    REAL: AUTHORIZED_STATE_MATERIALIZATION_AND_WRITE_INTEGRITY
-    CNTR: TYPED_STATE_OPERATION_INTERFACE_AND_ERROR_CONTRACT
-    OPS: NON_AUTHORITATIVE_ENGINE_STATE_FAILURE_RECOVERY_BEHAVIOR
-    PLAN: SERIALIZATION_SCHEMA_VALIDATION_ALGORITHM_AND_RECOVERY_DESIGN
-  engine_state_unresolved_policy_decisions: []
-  engine_state_unresolved_plan_contract_details:
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_ENGINE_STATE_NON_AUTHORITATIVE_DERIVATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_ENGINE_STATE_VERIFIED_REUSE_ELIGIBILITY_INFORMATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-INFO-0008#/authority_semantics/engine_state_approved_direction
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-INFO-0008#/authority_semantics/engine_state_authority_boundaries
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-INFO-0008#/authority_semantics/engine_state_responsibility_partition
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-INFO-0008#/authority_semantics/engine_state_unresolved_policy_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-INFO-0008#/authority_semantics/engine_state_unresolved_plan_contract_details
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0015
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-INFO-0008
+      title: PTSIP Engine non-authoritative derived execution state
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_ENGINE_DERIVED_EXECUTION_STATE_INFORMATION
+      statement: Engine 실행 상태의 비권위적 정보 의미와 검증을 거친 재사용 자격 표시를 소유하며, 정책·원본·검증 책임을 대체하지 않는다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_ENGINE_STATE_NON_AUTHORITATIVE_DERIVATION
+    - SUP_ENGINE_STATE_VERIFIED_REUSE_ELIGIBILITY_INFORMATION
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_INFO
+      schema_id: ptsip.governance/root-family/info
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_ENGINE_STATE_NON_AUTHORITATIVE_DERIVATION
+      statement: 보존된 엔진 실행 상태는 현재의 규범 계약과 검증된 원본으로부터 도출한 비권위적 정보로만 해석한다.
+      non_substitutability: 저장된 실행 상태의 존재나 과거 결과는 NORM의 계약 및 INFO의 현행 원본 의미를 대신하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_ENGINE_STATE_VERIFIED_REUSE_ELIGIBILITY_INFORMATION
+      statement: 엔진 상태의 재사용 자격은 현행 기계 검증이 충족된 경우에만 부여하며, 자격 정보 자체는 검증 절차나 권위를 소유하지 않는다.
+      non_substitutability: INFO가 표시하는 재사용 자격은 ASSURE의 검증 책임 또는 REAL의 안전한 실행·쓰기 절차를 대체하지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/engine_state_approved_direction
+    value:
+      decision: OPTION_B
+      decision_source: PROJECT_OWNER_EXPLICIT
+      decision_recorded_at: '2026-10-11'
+      state_role: PERSISTED_NON_AUTHORITATIVE_DERIVED_EXECUTION_STATE
+      reuse_eligibility: REQUIRE_CURRENT_MACHINE_VERIFIED_VALIDITY
+      reuse_scope_decision: OPTION_A_EXACT_MATCH_ONLY
+      current_release_reuse_policy: EXACT_MATCH_ONLY
+      reuse_match_scope: COMPLETE_REGISTERED_REUSE_RELEVANT_INPUT_AND_NORMATIVE_CONTRACT_DEPENDENCIES
+      reuse_requires_machine_verified_exact_match: true
+      missing_unknown_or_mismatched_dependency: NOT_REUSABLE
+      semantic_equivalence_alone_may_grant_current_release_reuse: false
+      semantic_equivalence_reuse_extension:
+        status: DEFERRED
+        current_release_requirement: false
+        automatically_authorized: false
+        future_policy_approval_required: true
+        future_machine_verifiable_contract_required: true
+      exact_match_validation_method: PLAN_AND_MACHINE_CONTRACT
+      persisted_state_alone_grants_reuse_authority: false
+      unverified_stale_or_invalid_state: NOT_REUSABLE
+      invalid_state_reuse_classification: INELIGIBLE_FOR_REUSE
+      invalid_state_recovery_owner_ref: SFP-OPS-0002
+      fallback_recovery_direction: AUTOMATIC_RECOMPUTE_FROM_VERIFIED_SOURCE_AND_NORMATIVE_CONTRACT
+      source_or_normative_contract_unverified: FAIL_CLOSED
+      semantic_authority: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+      engine_implementation_language_restriction: NONE
+      repository_state_path_ref: SFP-ARCH-0001
+      repository_state_path: .ptsip/engine/state.json
+      existing_arch_state_and_schema_contracts: DEFERRED_UNTIL_SEPARATELY_RESOLVED
+      existing_arch_runtime_activation: DEFERRED
+  - id: SRC-0011
+    source_pointer: /authority_semantics/engine_state_authority_boundaries
+    value:
+      cannot_create_or_override_normative_rules: true
+      cannot_replace_authoritative_source_information: true
+      cannot_grant_mutation_or_execution_authorization: true
+      does_not_activate_engine_runtime: true
+      does_not_authorize_engine_implementation_or_schema_mutation: true
+      cannot_relax_existing_read_only_operation_boundary: true
+      existing_go_test_implementation_policy_unchanged: true
+      invalid_or_unverified_state_must_not_be_reused: true
+      insufficient_exact_match_proof_must_not_grant_reuse: true
+      registered_machine_equivalence_not_current_release_reuse_permission: true
+      unrelated_consumer_analysis_reuse_policies_unchanged: true
+  - id: SRC-0012
+    source_pointer: /authority_semantics/engine_state_responsibility_partition
+    value:
+      INFO: DERIVED_STATE_INFORMATION_ROLE_AND_REUSE_QUALIFICATION_STATUS
+      ARCH: ENGINE_PLANE_PATH_ROLE_AND_ACTIVATION_BOUNDARY
+      NORM: LANGUAGE_NEUTRAL_NORMATIVE_SEMANTICS
+      ASSURE: MACHINE_VALIDATION_EVIDENCE_AND_ACCEPTANCE
+      REAL: AUTHORIZED_STATE_MATERIALIZATION_AND_WRITE_INTEGRITY
+      CNTR: TYPED_STATE_OPERATION_INTERFACE_AND_ERROR_CONTRACT
+      OPS: NON_AUTHORITATIVE_ENGINE_STATE_FAILURE_RECOVERY_BEHAVIOR
+      PLAN: SERIALIZATION_SCHEMA_VALIDATION_ALGORITHM_AND_RECOVERY_DESIGN
+  - id: SRC-0013
+    source_pointer: /authority_semantics/engine_state_unresolved_policy_decisions
+    value: []
+  - id: SRC-0014
+    source_pointer: /authority_semantics/engine_state_unresolved_plan_contract_details
+    value:
     - STATE_SCHEMA_FIELDS_AND_SERIALIZATION
     - VALIDATION_PROOF_INTERFACE
     - EXACT_REUSE_DEPENDENCY_IDENTITY_AND_REVISION_PROOF
     - STATE_WRITE_ATOMICITY_AND_RETRIEVAL
-relations:
-  supersedes: []
-  amends: []
-  extends:
-    - policy: SFP-INFO-0001
-      scope: NON_AUTHORITATIVE_DERIVED_INFORMATION_SOURCE_BOUNDARY
-  depends_on:
-    - policy: SFP-ARCH-0001
-      scope: EXISTING_ENGINE_PLANE_LOCATION_AND_DEFERRED_RUNTIME_CONTRACTS
-    - policy: SFP-NORM-0001
-      scope: LANGUAGE_NEUTRAL_NORMATIVE_SEMANTICS
-    - policy: SFP-REAL-0001
-      scope: MATERIALIZATION_AND_READ_ONLY_WRITE_BOUNDARY
-    - policy: SFP-OPS-0002
-      scope: ENGINE_DERIVED_STATE_INVALIDITY_RECOVERY_DRAFT
+  - id: SRC-0015
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends:
+      - policy: SFP-INFO-0001
+        scope: NON_AUTHORITATIVE_DERIVED_INFORMATION_SOURCE_BOUNDARY
+      depends_on:
+      - policy: SFP-ARCH-0001
+        scope: EXISTING_ENGINE_PLANE_LOCATION_AND_DEFERRED_RUNTIME_CONTRACTS
+      - policy: SFP-NORM-0001
+        scope: LANGUAGE_NEUTRAL_NORMATIVE_SEMANTICS
+      - policy: SFP-REAL-0001
+        scope: MATERIALIZATION_AND_READ_ONLY_WRITE_BOUNDARY
+      - policy: SFP-OPS-0002
+        scope: ENGINE_DERIVED_STATE_INVALIDITY_RECOVERY_DRAFT
+  source_document:
+    path: src/policy/INFO/SFP-INFO-0008.yaml
+    sha256: 8f0403185e7dc51b4836cf68ac0091bb1f063e27f859539ed38e9bfea5157592
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

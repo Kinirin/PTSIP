@@ -138,6 +138,8 @@ modes:
     execution:
       go:
         - .ptsip/engine/developer/policy/verification
+      pytest:
+        - src/tests/ptsip/contracts/test_unified_policy.py
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:

@@ -1,82 +1,206 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: REAL
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-REAL-0005
-  version: '2.3'
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: REAL
   title: Mandatory Go implementation for all Developer automation
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-authority_subject:
-  id: DEV_APPROVED_ARTIFACT_REALIZATION
-  statement: 선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다.
-exclusive_kernel:
-- DEV_IMPLEMENTATION_AND_MATERIALIZATION
-- DEV_MUTATION_INTEGRITY
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_IMPLEMENTATION_AND_MATERIALIZATION
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: DEV_IMPLEMENTATION_AND_MATERIALIZATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_MUTATION_INTEGRITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: MPD-REAL-0005#/rules/go_automation_implementation
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: MPD-REAL-0005#/rules/future_developer_go_engine_extension
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0012
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: REAL
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-REAL-0005
+      version: '2.3'
+      title: Mandatory Go implementation for all Developer automation
+      status: RETIRED
+      substatus: Waiting
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_APPROVED_ARTIFACT_REALIZATION
+      statement: 선택된 설계와 명시적으로 허용된 변경 대상을 코드, 정책 표현 및 생성 Artifact로 실제 구현하는 의미 보존 절차를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_IMPLEMENTATION_AND_MATERIALIZATION
+    - DEV_MUTATION_INTEGRITY
+  - id: SRC-0007
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_IMPLEMENTATION_AND_MATERIALIZATION
       statement: 해결된 target과 입력을 사용해 코드와 결정론적 Artifact를 구현·materialize하고 선언된 의미 및 provenance를 보존한다.
       non_substitutability: INTENT의 목표나 ARCH의 설계 선언만으로 실제 구현 절차와 생성 결과가 존재하게 되지 않는다.
-    - id: DEV_MUTATION_INTEGRITY
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_MUTATION_INTEGRITY
       statement: 허용된 파일 변경의 적용 단위, 원자성 및 실패 시 보존 조건을 정하고 예상하지 않은 overwrite와 부분 적용을 방지한다.
       non_substitutability: CTRL이 변경을 허용했다는 판정은 실제 쓰기의 원자성과 실패 처리를 대신 보장하지 않는다.
-    source_scope: []
-  go_automation_implementation:
-    scope_root: developer/automation
-    inherit_to_descendants: true
-    implementation_language: GO
-    existing_implementations: MIGRATE_ALL_TO_GO
-    new_or_modified_python_automation: FORBIDDEN
-    python_automation_entrypoints: REMOVE_AFTER_EQUIVALENCE_VERIFICATION
-    go_wrapper_delegating_to_python_automation: FORBIDDEN
-    embedded_python_implementation: FORBIDDEN
-    language_neutral_contracts_remain_authority: true
-    root_and_src_neutral_module_policy_ref: MPD-REAL-0004
-    existing_python_regression_coverage: PRESERVE_SEMANTIC_COVERAGE
-    migration_contract_ref: developer/policy/contracts/go-automation-cutover.v1.json
-    admitted_relocated_release_root: .github/checks/release/
-    relocation_approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
-    powershell_release_role: PROCESS_ORCHESTRATION_ONLY_NATIVE_GO_OWNS_SELECTION_IDENTITY_VERIFICATION_AND_PUBLICATION
-  future_developer_go_engine_extension:
-    conflict_resolution: RECONCILE
-    approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
-    existing_implementation_root: developer/automation/
-    future_implementation_root: .ptsip/engine/developer/
-    parent_engine_state_root: .ptsip/engine/
-    future_root_role: PTSIP_REPOSITORY_ONLY_DEVELOPER_GO_SOURCE
-    explicit_developer_workspace_binding_required: true
-    ordinary_consumer_projects: FORBIDDEN
-    installed_product_engine_source_copy: FORBIDDEN
-    future_root_is_common_product_engine: false
-    engine_root_reconciliation_approval_ref: developer/policy/approvals/MPA-20261011-ENGINE-ROOT-RECONCILE.yaml
-    implementation_language: GO
-    current_go_migration_scope: UNCHANGED
-    neutral_semantic_authority: PRESERVE
-    common_engine_interface_role: CONSUME_VERIFIED_PRODUCT_CONTRACT
-    common_engine_is_implemented_from_developer_go: false
-    early_common_engine_bridge_required: false
-    implementation_path_migration_now_authorized: false
-    path_cutover_requires: APPROVED_PLAN_AND_VERIFIED_CONFORMANCE
-    existing_python_delegation_prohibition: PRESERVE
-    existing_regression_responsibility: PRESERVE
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: PROJECT_OWNER_GO_AUTOMATION_POLICY_ADMISSION
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-GO-REAL-0005-ACTIVE.yaml
-    next_action:
-      action: VERIFY_GO_AUTOMATION_CUTOVER
-      execution: SERIAL_REQUIRED
-      completion_check: POLICY_ADMISSION_DOES_NOT_IMPLY_IMPLEMENTATION_COMPLETION
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/source_scope
+    value: []
+  - id: SRC-0010
+    source_pointer: /rules/go_automation_implementation
+    value:
+      scope_root: developer/automation
+      inherit_to_descendants: true
+      implementation_language: GO
+      existing_implementations: MIGRATE_ALL_TO_GO
+      new_or_modified_python_automation: FORBIDDEN
+      python_automation_entrypoints: REMOVE_AFTER_EQUIVALENCE_VERIFICATION
+      go_wrapper_delegating_to_python_automation: FORBIDDEN
+      embedded_python_implementation: FORBIDDEN
+      language_neutral_contracts_remain_authority: true
+      root_and_src_neutral_module_policy_ref: MPD-REAL-0004
+      existing_python_regression_coverage: PRESERVE_SEMANTIC_COVERAGE
+      migration_contract_ref: developer/policy/contracts/go-automation-cutover.v1.json
+      admitted_relocated_release_root: .github/checks/release/
+      relocation_approval_ref: developer/policy/approvals/MPA-20261012-INDEPENDENT-RELEASE-DESIGN.yaml
+      powershell_release_role: PROCESS_ORCHESTRATION_ONLY_NATIVE_GO_OWNS_SELECTION_IDENTITY_VERIFICATION_AND_PUBLICATION
+  - id: SRC-0011
+    source_pointer: /rules/future_developer_go_engine_extension
+    value:
+      conflict_resolution: RECONCILE
+      approval_ref: developer/policy/approvals/MPA-20261011-DEVELOPER-ENGINE-RECONCILE.yaml
+      existing_implementation_root: developer/automation/
+      future_implementation_root: .ptsip/engine/developer/
+      parent_engine_state_root: .ptsip/engine/
+      future_root_role: PTSIP_REPOSITORY_ONLY_DEVELOPER_GO_SOURCE
+      explicit_developer_workspace_binding_required: true
+      ordinary_consumer_projects: FORBIDDEN
+      installed_product_engine_source_copy: FORBIDDEN
+      future_root_is_common_product_engine: false
+      engine_root_reconciliation_approval_ref: developer/policy/approvals/MPA-20261011-ENGINE-ROOT-RECONCILE.yaml
+      implementation_language: GO
+      current_go_migration_scope: UNCHANGED
+      neutral_semantic_authority: PRESERVE
+      common_engine_interface_role: CONSUME_VERIFIED_PRODUCT_CONTRACT
+      common_engine_is_implemented_from_developer_go: false
+      early_common_engine_bridge_required: false
+      implementation_path_migration_now_authorized: false
+      path_cutover_requires: APPROVED_PLAN_AND_VERIFIED_CONFORMANCE
+      existing_python_delegation_prohibition: PRESERVE
+      existing_regression_responsibility: PRESERVE
+  - id: SRC-0012
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0013
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: COMPLETE
+      requirements:
+      - id: TR-001
+        type: PROJECT_OWNER_GO_AUTOMATION_POLICY_ADMISSION
+        state: SATISFIED
+        refs:
+        - developer/policy/approvals/MPA-20261006-GO-REAL-0005-ACTIVE.yaml
+        next_action:
+          action: VERIFY_GO_AUTOMATION_CUTOVER
+          execution: SERIAL_REQUIRED
+          completion_check: POLICY_ADMISSION_DOES_NOT_IMPLY_IMPLEMENTATION_COMPLETION
+  source_document:
+    path: developer/policy/REAL/MPD-REAL-0005.yaml
+    sha256: 9460ff23f03c19b107291dde2a247e744fff9094280014b48e9e4589914148a3
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

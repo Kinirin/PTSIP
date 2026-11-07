@@ -1,62 +1,127 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-INFO-0004
-  version: '2.0'
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: INFO
   title: Policy Analysis registry-first information identity
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-authority_subject:
-  id: DEV_CONTROL_INFORMATION_MEANING
-  statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의 구분을 소유한다.
-exclusive_kernel:
-- DEV_CANONICAL_INFORMATION_AND_IDENTITY
-- DEV_SOURCE_PROJECTION_SEMANTICS
-rules:
-  policy_analysis_information_contract:
-    scope:
-      owner: POLICY_ANALYSIS
-      canonical_root: developer/policy/analysis
-      automatic_generalization_to_other_policy_subsystems: FORBIDDEN
-    schema_ownership:
-      schema_root: developer/policy/analysis/schemas
-      responsibility_analysis_schema: developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json
-      materialization_analysis_registry_schema: developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json
-    record_identity:
-      model: OPAQUE_STABLE_ID
-      pattern: ^PRA-[0-9]{4}$
-      canonical_filename_rule: ANALYSIS_ID_WITH_YAML_SUFFIX
-      record_root: developer/policy/analysis/records
-      date_in_identity: FORBIDDEN
-      descriptive_filename_semantics: FORBIDDEN
-    registry_information:
-      canonical_registry: developer/policy/analysis/registry.yaml
-      registry_owns_analysis_ref: true
-      policy_binding_references_analysis_id_only: true
-      binding_duplicates_analysis_ref: false
-    provenance:
-      recorded_at_allowed: true
-      recorded_at_is_identity: false
-      recorded_at_is_discovery_key: false
-relations:
-  supersedes:
-  - policy: MPD-WORK-0003
-    scope: POLICY_ANALYSIS_INFORMATION_IDENTITY_AND_SCHEMA_LOCATION
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: PROJECT_OWNER_POLICY_ANALYSIS_INFORMATION_APPROVAL
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-PRA-INFO-0004-ACTIVE.yaml
-    next_action:
-      action: VERIFY_REGISTRY_FIRST_INFORMATION_CONTRACT
-      execution: SERIAL_REQUIRED
-      completion_check: ANALYSIS_ID_SCHEMA_LOCATION_AND_REGISTRY_METADATA_MATCH
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: MPD-INFO-0004#/rules/policy_analysis_information_contract
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0008
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-INFO-0004
+      version: '2.0'
+      title: Policy Analysis registry-first information identity
+      status: RETIRED
+      substatus: Waiting
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_CONTROL_INFORMATION_MEANING
+      statement: 개발 정책, planning, self-profile 및 Context Plane 정보의 의미 구조와 canonical semantic source 및 projection의 구분을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_CANONICAL_INFORMATION_AND_IDENTITY
+    - DEV_SOURCE_PROJECTION_SEMANTICS
+  - id: SRC-0007
+    source_pointer: /rules/policy_analysis_information_contract
+    value:
+      scope:
+        owner: POLICY_ANALYSIS
+        canonical_root: developer/policy/analysis
+        automatic_generalization_to_other_policy_subsystems: FORBIDDEN
+      schema_ownership:
+        schema_root: developer/policy/analysis/schemas
+        responsibility_analysis_schema: developer/policy/analysis/schemas/policy-responsibility-analysis.schema.json
+        materialization_analysis_registry_schema: developer/policy/analysis/schemas/policy-materialization-analysis-registry.schema.json
+      record_identity:
+        model: OPAQUE_STABLE_ID
+        pattern: ^PRA-[0-9]{4}$
+        canonical_filename_rule: ANALYSIS_ID_WITH_YAML_SUFFIX
+        record_root: developer/policy/analysis/records
+        date_in_identity: FORBIDDEN
+        descriptive_filename_semantics: FORBIDDEN
+      registry_information:
+        canonical_registry: developer/policy/analysis/registry.yaml
+        registry_owns_analysis_ref: true
+        policy_binding_references_analysis_id_only: true
+        binding_duplicates_analysis_ref: false
+      provenance:
+        recorded_at_allowed: true
+        recorded_at_is_identity: false
+        recorded_at_is_discovery_key: false
+  - id: SRC-0008
+    source_pointer: /relations
+    value:
+      supersedes:
+      - policy: MPD-WORK-0003
+        scope: POLICY_ANALYSIS_INFORMATION_IDENTITY_AND_SCHEMA_LOCATION
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0009
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: COMPLETE
+      requirements:
+      - id: TR-001
+        type: PROJECT_OWNER_POLICY_ANALYSIS_INFORMATION_APPROVAL
+        state: SATISFIED
+        refs:
+        - developer/policy/approvals/MPA-20261006-PRA-INFO-0004-ACTIVE.yaml
+        next_action:
+          action: VERIFY_REGISTRY_FIRST_INFORMATION_CONTRACT
+          execution: SERIAL_REQUIRED
+          completion_check: ANALYSIS_ID_SCHEMA_LOCATION_AND_REGISTRY_METADATA_MATCH
+  source_document:
+    path: developer/policy/INFO/MPD-INFO-0004.yaml
+    sha256: ffeb0884484321693a6998f89ab9feaee3c9822d3caf68cd64aa0838b626aca8
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

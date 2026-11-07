@@ -216,6 +216,15 @@ func Build(root string, targets, sources []string) (Packet, error) {
 					return packet, err
 				}
 			}
+			if authoring.IsUnifiedPolicy(doc) {
+				schema, err := read(selection.ContractRefs["public_schema"])
+				if err != nil {
+					return packet, err
+				}
+				target.FieldFindings = Inventory(schema, doc, "")
+				packet.Targets = append(packet.Targets, target)
+				continue
+			}
 			rulesSchema, err := read(selection.ContractRefs["selection_schema"])
 			if err != nil {
 				return packet, err

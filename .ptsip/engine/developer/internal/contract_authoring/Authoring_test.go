@@ -48,7 +48,11 @@ func policyFixture(t *testing.T, catalog *authoring.Catalog, path string) author
 	if err != nil {
 		t.Fatal(err)
 	}
-	return policy
+	source, err := authoring.RestoreUnifiedSource(catalog.Root, policy)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return source
 }
 
 func copyDocument(input authoring.Document) authoring.Document {
@@ -378,7 +382,7 @@ func TestPolicyAuthoringReportsSelectionAndRejectsContractOutput(t *testing.T) {
 		t.Fatal(result)
 	}
 	selection, ok := result.(map[string]any)["selection"].(authoring.PolicySelection)
-	if !ok || selection.SchemaIDs["public"] != catalog.Common["$id"] || selection.RootFamily != "ARCH" {
+	if !ok || selection.SchemaIDs["public"] != authoring.UnifiedPolicySchemaID || selection.StructuralState != "CANDIDATE" || selection.RootFamily != "ARCH" {
 		t.Fatalf("authoring selection omitted or mismatched: %v", result)
 	}
 	result, code = authoring.Run(catalog.Root, "policy-rules", "generate", "ARCH", input,

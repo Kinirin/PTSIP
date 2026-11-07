@@ -1,46 +1,223 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: ARCH
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-ARCH-0002
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ARCH
   title: ARCH authority (DRAFT source responsibilities)
+Policy_Lifecycle:
   status: DRAFT
-authority_subject:
-  id: SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION
-  statement: consumer Project Profile와 Responsibility Map의 프로젝트 소유 lifecycle 책임, 역할
-    및 명시적 typed 관계를 소유한다.
-exclusive_kernel:
-- SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
-- SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
-authority_contract:
-  authority_type: ROOT_FAMILY_ARCH
-  schema_id: ptsip.governance/root-family/arch
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
-      statement: classification을 governing lifecycle obligation에 따른 primary ownership으로
-        선언하고 material mixed 책임 및 unresolved 소유를 구분한다.
-      non_substitutability: SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle
-        ownership을 자동 결정하지 않는다.
-    - id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
-      statement: roles, associated artifacts 및 typed directed relationships를 프로젝트의
-        명시적 architecture 사실로 선언하고 evidence에서 자동 생성하지 않는다.
-      non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트
-        소유 architecture 의도를 만들어 내지 못한다.
-  semantic_unit_172882ba590d:
-  - PRODUCT
-  - TOOLCHAIN
-  - NEUTRAL_CONTRACT
-  semantic_unit_29f9a4a86959: true
-  semantic_unit_1e2d788f8353: true
-  semantic_unit_ae28033e5275:
-  - BOUNDARIES
-  - COMPONENTS
-  semantic_unit_a034d14cc107: false
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-ARCH-0002#/authority_semantics/semantic_unit_172882ba590d
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-ARCH-0002#/authority_semantics/semantic_unit_29f9a4a86959
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-ARCH-0002#/authority_semantics/semantic_unit_1e2d788f8353
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-ARCH-0002#/authority_semantics/semantic_unit_ae28033e5275
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-ARCH-0002#/authority_semantics/semantic_unit_a034d14cc107
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0015
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ARCH
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ARCH-0002
+      title: ARCH authority (DRAFT source responsibilities)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROJECT_LIFECYCLE_RESPONSIBILITY_DECLARATION
+      statement: consumer Project Profile와 Responsibility Map의 프로젝트 소유 lifecycle 책임, 역할 및 명시적 typed 관계를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+    - SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ARCH
+      schema_id: ptsip.governance/root-family/arch
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY
+      statement: classification을 governing lifecycle obligation에 따른 primary ownership으로 선언하고 material mixed 책임 및 unresolved
+        소유를 구분한다.
+      non_substitutability: SUPPLY의 dependency 분류나 관측 파일의 executable 여부가 프로젝트 lifecycle ownership을 자동 결정하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS
+      statement: roles, associated artifacts 및 typed directed relationships를 프로젝트의 명시적 architecture 사실로 선언하고 evidence에서 자동
+        생성하지 않는다.
+      non_substitutability: INFO의 필드 schema나 REAL의 template materialization이 프로젝트 소유 architecture 의도를 만들어 내지 못한다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/semantic_unit_172882ba590d
+    value:
+    - PRODUCT
+    - TOOLCHAIN
+    - NEUTRAL_CONTRACT
+  - id: SRC-0011
+    source_pointer: /authority_semantics/semantic_unit_29f9a4a86959
+    value: true
+  - id: SRC-0012
+    source_pointer: /authority_semantics/semantic_unit_1e2d788f8353
+    value: true
+  - id: SRC-0013
+    source_pointer: /authority_semantics/semantic_unit_ae28033e5275
+    value:
+    - BOUNDARIES
+    - COMPONENTS
+  - id: SRC-0014
+    source_pointer: /authority_semantics/semantic_unit_a034d14cc107
+    value: false
+  - id: SRC-0015
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/ARCH/SFP-ARCH-0002.yaml
+    sha256: 455c30cf413a51785885bd477c6c55e941f05c73519d1880821ca1b8642b27d7
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

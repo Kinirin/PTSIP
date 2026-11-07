@@ -100,6 +100,14 @@ class AuthorityCatalog:
         value = yaml.safe_load(path.read_text(encoding="utf-8"))
         if not isinstance(value, dict):
             raise GovernanceAuthorityError("GOVERNANCE_ASSET_INVALID", f"support governance asset must contain a mapping: {relative}", value)
+        if category == "policy":
+            from ptsip.policy_contracts.unified import is_unified, restore_source, validate_document
+
+            if is_unified(value):
+                report = validate_document(self.root, value)
+                if report.get("status") != "VALID":
+                    raise GovernanceAuthorityError("UNIFIED_POLICY_DOCUMENT_INVALID", str(report.get("problem")), relative)
+                value = restore_source(value)
         return value
 
     def _load_json(self, category: str, relative: str) -> dict[str, object]:

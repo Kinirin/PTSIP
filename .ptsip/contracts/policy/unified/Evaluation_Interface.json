@@ -1,0 +1,148 @@
+{
+  "format": "ptsip-policy-evaluation-interface-candidate/v1",
+  "status": "CANDIDATE",
+  "owner_scope": "INDEPENDENT_POLICY_EVALUATION",
+  "authoring_basis_ref": ".ptsip/contracts/policy/unified/authoring-decision.json",
+  "field_semantics_status": "PROVISIONAL_REQUEST_RESPONSE_REVIEW",
+  "registered_engine": false,
+  "runtime_activation_authorized": false,
+  "execution_authorized": false,
+  "eligibility": {
+    "registration_ref": ".ptsip/contracts/policy/unified/evaluation-registry.json",
+    "require_exact_owner_contract_id_revision": true,
+    "require_approved_rego_source_and_entrypoint": true,
+    "missing_evidence": "UNRESOLVED",
+    "condition_unsatisfied": "UNSATISFIED",
+    "source_of_evaluation": "REGO_SOURCE",
+    "result_owner": "CALLING_POLICY_AUTHORITY",
+    "actual_execution": "SEPARATE_CURRENT_AUTHORITY_GATE"
+  },
+  "request_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "policy_id",
+      "rule_id",
+      "contract_kind",
+      "registered_contract",
+      "rego_source",
+      "entrypoint"
+    ],
+    "properties": {
+      "policy_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "rule_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "contract_kind": {
+        "enum": [
+          "RAC",
+          "AEC"
+        ]
+      },
+      "registered_contract": {
+        "type": "object",
+        "required": [
+          "source_ref",
+          "item_ref",
+          "revision_ref"
+        ],
+        "properties": {
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "item_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision_ref": {
+            "type": "string",
+            "pattern": "^git:[0-9a-f]{40}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "rego_source": {
+        "type": "object",
+        "required": [
+          "source_ref",
+          "item_ref",
+          "revision_ref"
+        ],
+        "properties": {
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "item_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision_ref": {
+            "type": "string",
+            "pattern": "^git:[0-9a-f]{40}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "entrypoint": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "additionalProperties": false
+  },
+  "response_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+      "status",
+      "basis_refs",
+      "execution_authorized"
+    ],
+    "properties": {
+      "status": {
+        "enum": [
+          "SATISFIED",
+          "UNSATISFIED",
+          "UNRESOLVED",
+          "INVALID"
+        ]
+      },
+      "basis_refs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "source_ref",
+            "item_ref",
+            "revision_ref"
+          ],
+          "properties": {
+            "source_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "item_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "revision_ref": {
+              "type": "string",
+              "pattern": "^git:[0-9a-f]{40}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "execution_authorized": {
+        "const": false
+      }
+    },
+    "additionalProperties": false
+  }
+}

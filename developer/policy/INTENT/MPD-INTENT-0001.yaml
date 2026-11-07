@@ -1,223 +1,423 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: INTENT
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-INTENT-0001
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: INTENT
   title: INTENT authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-  version: '2.5'
-authority_subject:
-  id: DEV_WORK_OUTCOME_INTENT
-  statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
-exclusive_kernel:
-- DEV_OUTCOME_SCOPE_AND_NON_GOALS
-- DEV_ACCEPTANCE_PURPOSE
-rules:
-  local_release_bounded_planning_intent:
-    approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-RELEASE-BOUNDED-PLANNING-SCOPE.yaml
-    scope: CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY
-    general_ptsip_or_consumer_project_requirement: false
-    default_plan_scope: SINGLE_TARGET_RELEASE
-    plan_outcome: COMPLETABLE_WITHIN_TARGET_RELEASE
-    oversized_unbounded_plan_creation: FORBIDDEN
-    oversized_plan_threshold: NOT_SPECIFIED_BY_POLICY
-    scope_cannot_be_bounded: REQUIRE_USER_SCOPE_DECISION_BEFORE_ARTIFACT_CREATION
-    cross_release_long_term_plan_default: NOT_PREFERRED
-    handoff_minimization: PREFERRED
-    policy_change:
-      may_require_existing_bound_plan_revision: true
-      automatically_creates_new_plan: false
-      separate_mandatory_plan_class: false
-    work_unit_priority_and_order: DEFER_TO_PLANNING_NOT_NORMATIVE_POLICY
-    logical_plan_identity_independent_of_branch: PRESERVE_EXISTING_ARCH_AND_INFO_POLICY
-    target_release_resolution_rule:
-      decision: RECONCILE_BRANCH_FIRST_APPROVED_FACT_AND_USER_CONFIRMED_CANDIDATE
-      conflict_resolution: RECONCILE
-      prior_approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-BRANCH-FIRST.yaml
-      approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-CANDIDATE-RECONCILE.yaml
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: MPD-INTENT-0001#/rules/local_release_bounded_planning_intent
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_OUTCOME_SCOPE_AND_NON_GOALS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: DEV_ACCEPTANCE_PURPOSE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: MPD-INTENT-0001#/rules/unit_mpd_0010_497ac087b73f
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: MPD-INTENT-0001#/rules/unit_ptsip_turnkey_policy_governance_product_criterion
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: MPD-INTENT-0001#/rules/unit_mpd_0010_55a1162781c1
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: MPD-INTENT-0001#/rules/unit_mpd_plan_0002_d909cd570b48
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: MPD-INTENT-0001#/rules/unit_mpd_plan_0004_acd66447ea97
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0016
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INTENT
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-INTENT-0001
+      title: INTENT authority (ACTIVE source responsibilities)
+      status: RETIRED
+      substatus: Waiting
+      version: '2.5'
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_WORK_OUTCOME_INTENT
+      statement: Reference Tool 및 개발 작업이 달성하려는 결과, 작업 범위, 비목표와 수락 목적을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_OUTCOME_SCOPE_AND_NON_GOALS
+    - DEV_ACCEPTANCE_PURPOSE
+  - id: SRC-0007
+    source_pointer: /rules/local_release_bounded_planning_intent
+    value:
+      approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-RELEASE-BOUNDED-PLANNING-SCOPE.yaml
       scope: CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY
-      subject: PLANNING_TARGET_RELEASE_SELECTION_NOT_PLAN_IDENTITY
-      ordered_sources:
-      - priority: 1
-        source: CURRENT_VERIFIED_DEVELOPMENT_VERSION_BRANCH
-        branch_name_contract_ref: MPD-GOV-0001#rules.unit_mpd_0014_d04f6a56972a.DEVELOPMENT_VERSION.exact_name_pattern
-        matching: EXACT_APPROVED_VERSION_BRANCH_PATTERN
-        target_release_extraction: REMOVE_EXACT_DEV_SLASH_PREFIX
-        nonmatching_branch_must_not_be_parsed_as_version: true
-      - priority: 2
-        source: USER_APPROVED_CANONICAL_TARGET_RELEASE_MACHINE_FACT
-        only_when: NO_MATCHING_VERSION_BRANCH
-        required_approval_proof: USER_EXPLICIT
-        required_fact_state: CURRENT_EFFECTIVE_AND_VERIFIABLE
-        required_identity_match: EXACT_RELEASE_VERSION
-        candidate_cardinality: EXACTLY_ONE
-        concrete_fallback_source_contract: UNRESOLVED_SEPARATE_USER_DECISION
-        unregistered_or_unapproved_source: REJECT
-      advisory_candidate_proposal:
-        availability: ALLOWED_WHEN_NO_VERSION_BRANCH_AND_NO_UNIQUE_APPROVED_TARGET
-        scope: NON_AUTHORITATIVE_READ_ONLY_USER_REVIEW
-        version_evidence_basis_decision: C_RELEASE_STATE_AWARE_AUTHORITATIVE_EVIDENCE_INTEGRATION
-        version_evidence_basis_approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-CANDIDATE-STATE-EVIDENCE-OPTION-C.yaml
-        version_evidence_basis_policy_ref: MPD-INFO-0001#rules.planning_release_candidate_version_evidence
-        consider_distinct_observation_classes:
-        - PUBLISHED_RELEASE
-        - ACTIVE_DEVELOPMENT
-        - APPROVED_PLANNED_RELEASE
-        cross_state_inconsistency: REQUEST_USER_REVIEW_DO_NOT_PROMOTE_CANDIDATE
-        release_identity_domains_remain_distinct: true
-        may_observe_last_known_version: true
-        observation_is_release_target_approval: false
-        latest_or_successor_version_candidate_may_be_suggested: true
-        proposal_is_approved_target_release: false
-        candidate_selection_requires_explicit_user_decision: true
-        proposal_may_generate_new_plan_or_directory: false
-        proposal_may_create_or_select_branch: false
-        selected_target_registration: REQUIRE_APPROVED_MACHINE_FACT_BEFORE_MATERIALIZATION
-        observed_version_source_contract: SEPARATELY_UNRESOLVED
-        next_version_candidate_derivation_contract: SEPARATELY_UNRESOLVED
-        confirmed_target_recording_contract: SEPARATELY_UNRESOLVED
-      conflict_and_failure:
-        no_primary_and_no_approved_fallback: BLOCK_PLAN_MATERIALIZATION_ALLOW_ADVISORY_CANDIDATES_AND_REQUEST_USER_DECISION
-        fallback_zero_or_multiple_eligible_releases: BLOCK_PLAN_MATERIALIZATION_AND_REQUEST_EXACT_TARGET_SELECTION
-        invalid_or_untrusted_version_branch: BLOCK
-        stale_or_unverifiable_approval_evidence: BLOCK
-        inferred_latest_or_highest_release_as_authoritative_target: FORBIDDEN
-        planning_registry_or_prior_path_as_automatic_new_release_approval: FORBIDDEN
-        published_package_or_engine_version_as_implicit_plan_target_authority: FORBIDDEN
-      authority_boundaries:
-        planning_artifact_creation_approval: SEPARATE_EXPLICIT_USER_REQUEST
-        branch_creation_from_release_resolution: FORBIDDEN
-        logical_plan_identity_independent_of_branch: PRESERVED
-        approved_planning_root_and_unresolved_subpath_routing: PRESERVED
-        generator_or_runtime_materialization: NOT_AUTHORIZED
-    planning_subpath_routing_rule: SEPARATELY_UNRESOLVED
-    new_plan_file_creation_approval: NOT_GRANTED
-  family_definition:
-    kernel_definitions:
-    - id: DEV_OUTCOME_SCOPE_AND_NON_GOALS
+      general_ptsip_or_consumer_project_requirement: false
+      default_plan_scope: SINGLE_TARGET_RELEASE
+      plan_outcome: COMPLETABLE_WITHIN_TARGET_RELEASE
+      oversized_unbounded_plan_creation: FORBIDDEN
+      oversized_plan_threshold: NOT_SPECIFIED_BY_POLICY
+      scope_cannot_be_bounded: REQUIRE_USER_SCOPE_DECISION_BEFORE_ARTIFACT_CREATION
+      cross_release_long_term_plan_default: NOT_PREFERRED
+      handoff_minimization: PREFERRED
+      policy_change:
+        may_require_existing_bound_plan_revision: true
+        automatically_creates_new_plan: false
+        separate_mandatory_plan_class: false
+      work_unit_priority_and_order: DEFER_TO_PLANNING_NOT_NORMATIVE_POLICY
+      logical_plan_identity_independent_of_branch: PRESERVE_EXISTING_ARCH_AND_INFO_POLICY
+      target_release_resolution_rule:
+        decision: RECONCILE_BRANCH_FIRST_APPROVED_FACT_AND_USER_CONFIRMED_CANDIDATE
+        conflict_resolution: RECONCILE
+        prior_approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-BRANCH-FIRST.yaml
+        approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-RELEASE-TARGET-CANDIDATE-RECONCILE.yaml
+        scope: CURRENT_PTSIP_REPOSITORY_DEVELOPER_PLANNING_ONLY
+        subject: PLANNING_TARGET_RELEASE_SELECTION_NOT_PLAN_IDENTITY
+        ordered_sources:
+        - priority: 1
+          source: CURRENT_VERIFIED_DEVELOPMENT_VERSION_BRANCH
+          branch_name_contract_ref: MPD-GOV-0001#rules.unit_mpd_0014_d04f6a56972a.DEVELOPMENT_VERSION.exact_name_pattern
+          matching: EXACT_APPROVED_VERSION_BRANCH_PATTERN
+          target_release_extraction: REMOVE_EXACT_DEV_SLASH_PREFIX
+          nonmatching_branch_must_not_be_parsed_as_version: true
+        - priority: 2
+          source: USER_APPROVED_CANONICAL_TARGET_RELEASE_MACHINE_FACT
+          only_when: NO_MATCHING_VERSION_BRANCH
+          required_approval_proof: USER_EXPLICIT
+          required_fact_state: CURRENT_EFFECTIVE_AND_VERIFIABLE
+          required_identity_match: EXACT_RELEASE_VERSION
+          candidate_cardinality: EXACTLY_ONE
+          concrete_fallback_source_contract: UNRESOLVED_SEPARATE_USER_DECISION
+          unregistered_or_unapproved_source: REJECT
+        advisory_candidate_proposal:
+          availability: ALLOWED_WHEN_NO_VERSION_BRANCH_AND_NO_UNIQUE_APPROVED_TARGET
+          scope: NON_AUTHORITATIVE_READ_ONLY_USER_REVIEW
+          version_evidence_basis_decision: C_RELEASE_STATE_AWARE_AUTHORITATIVE_EVIDENCE_INTEGRATION
+          version_evidence_basis_approval_ref: developer/policy/approvals/MPA-20261013-LOCAL-PLANNING-CANDIDATE-STATE-EVIDENCE-OPTION-C.yaml
+          version_evidence_basis_policy_ref: MPD-INFO-0001#rules.planning_release_candidate_version_evidence
+          consider_distinct_observation_classes:
+          - PUBLISHED_RELEASE
+          - ACTIVE_DEVELOPMENT
+          - APPROVED_PLANNED_RELEASE
+          cross_state_inconsistency: REQUEST_USER_REVIEW_DO_NOT_PROMOTE_CANDIDATE
+          release_identity_domains_remain_distinct: true
+          may_observe_last_known_version: true
+          observation_is_release_target_approval: false
+          latest_or_successor_version_candidate_may_be_suggested: true
+          proposal_is_approved_target_release: false
+          candidate_selection_requires_explicit_user_decision: true
+          proposal_may_generate_new_plan_or_directory: false
+          proposal_may_create_or_select_branch: false
+          selected_target_registration: REQUIRE_APPROVED_MACHINE_FACT_BEFORE_MATERIALIZATION
+          observed_version_source_contract: SEPARATELY_UNRESOLVED
+          next_version_candidate_derivation_contract: SEPARATELY_UNRESOLVED
+          confirmed_target_recording_contract: SEPARATELY_UNRESOLVED
+        conflict_and_failure:
+          no_primary_and_no_approved_fallback: BLOCK_PLAN_MATERIALIZATION_ALLOW_ADVISORY_CANDIDATES_AND_REQUEST_USER_DECISION
+          fallback_zero_or_multiple_eligible_releases: BLOCK_PLAN_MATERIALIZATION_AND_REQUEST_EXACT_TARGET_SELECTION
+          invalid_or_untrusted_version_branch: BLOCK
+          stale_or_unverifiable_approval_evidence: BLOCK
+          inferred_latest_or_highest_release_as_authoritative_target: FORBIDDEN
+          planning_registry_or_prior_path_as_automatic_new_release_approval: FORBIDDEN
+          published_package_or_engine_version_as_implicit_plan_target_authority: FORBIDDEN
+        authority_boundaries:
+          planning_artifact_creation_approval: SEPARATE_EXPLICIT_USER_REQUEST
+          branch_creation_from_release_resolution: FORBIDDEN
+          logical_plan_identity_independent_of_branch: PRESERVED
+          approved_planning_root_and_unresolved_subpath_routing: PRESERVED
+          generator_or_runtime_materialization: NOT_AUTHORIZED
+      planning_subpath_routing_rule: SEPARATELY_UNRESOLVED
+      new_plan_file_creation_approval: NOT_GRANTED
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_OUTCOME_SCOPE_AND_NON_GOALS
       statement: 개발 요청을 명시적인 달성 결과, 포함 범위와 비목표로 한정하고 범위 확장의 필요를 식별한다.
       non_substitutability: REAL의 구현 편의나 SUPPLY의 사용 가능한 도구가 승인된 작업 범위를 확대할 수 없다.
-    - id: DEV_ACCEPTANCE_PURPOSE
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_ACCEPTANCE_PURPOSE
       statement: 작업 결과를 수락하려는 목적과 성공 조건의 의미를 정하되 실제 충족 여부는 ASSURE에 맡긴다.
       non_substitutability: ASSURE가 테스트를 통과시켰다는 사실만으로 요청하지 않은 제품 목표가 수락 목적이 되지 않는다.
-    source_scope:
+  - id: SRC-0010
+    source_pointer: /rules/family_definition/source_scope
+    value:
     - MPD-0010
     - MPD-PLAN-0002
     - MPD-PLAN-0004
-  unit_mpd_0010_497ac087b73f:
-    precedence_order:
-    - CODING_AGENT_INFERENCE_COST_MINIMIZATION
-    - INDEPENDENT_EXTENSION_WITHOUT_UNRELATED_DEVELOPER_DISRUPTION
-    - USER_MACHINE_READABLE_POLICY_AUTOMATION
-    coding_agent_inference_cost_minimization:
-      objective: MINIMIZE_REPEATED_REASONING_CONTEXT_LOOKUP_AND_CREDIT_COST_FOR_CODING_AGENTS
-      rules:
-      - PREFER_MACHINE_EXPLICIT_DIRECTLY_RESOLVABLE_CONTRACTS_WHEN_THEY_REDUCE_REPEATED_INFERENCE
-      - ALLOW_BOUNDED_REFERENCE_DUPLICATION_WHEN_IT_REDUCES_AGENT_CONTEXT_OR_LOOKUP_COST
-      - DO_NOT_REDUCE_MACHINE_CLARITY_MERELY_TO_MINIMIZE_FIELD_COUNT
-    independent_extension_without_unrelated_developer_disruption:
-      objective: ALLOW_INDEPENDENT_EXTENSION_WHEN_PTSIP_CORE_DOES_NOT_NATIVELY_SUPPORT_REQUIRED_SEMANTICS
-      rules:
-      - EXTENSION_MUST_USE_DISTINCT_IDENTITY_AND_MUST_NOT_IMPERSONATE_OFFICIAL_CORE_SEMANTICS
-      - EXTENSION_UNSUPPORTED_BY_A_CONSUMER_MUST_BE_REPORTED_EXPLICITLY_WITHOUT_SILENT_CORE_MAPPING
-      - UNSUPPORTED_EXTENSION_CAPABILITY_MUST_BE_SCOPED_TO_DEPENDENT_OPERATIONS_OR_VALIDATION
-      - UNSUPPORTED_EXTENSION_CAPABILITY_MUST_NOT_BLOCK_UNRELATED_DEVELOPMENT
-      - EXTENSION_OWNER_RETAINS_SEMANTIC_CONFORMANCE_MAINTENANCE_REVALIDATION_MIGRATION_AND_COMPATIBILITY_RESPONSIBILITY
-    user_machine_readable_policy_automation:
-      objective: ENABLE_USERS_TO_EXPRESS_PROJECT_OR_PERSONAL_POLICY_AS_MACHINE_READABLE_CONTRACTS_AND_BUILD_LOCAL_AUTOMATED_REASONING
-      rules:
-      - PREFER_DECLARATIVE_MACHINE_READABLE_CONTRACT_SURFACES_OVER_REQUIRED_CUSTOM_CORE_CODE
-      - USER_DEFINED_POLICY_MAY_USE_REGISTERED_EXTENSION_IDENTITIES_AND_INTERFACES
-      - USER_POLICY_AUTOMATION_MUST_NOT_SILENTLY_GAIN_PROJECT_OR_CORE_AUTHORITY
-      - USER_POLICY_INTERPRETATION_MUST_REMAIN_EXACT_BOUNDED_AND_FAIL_CLOSED_WHEN_REQUIRED_SEMANTICS_CANNOT_BE_RESOLVED
-  unit_ptsip_turnkey_policy_governance_product_criterion:
-    approval: USER_EXPLICIT
-    objective: CONSUMER_ADOPTION_WITHOUT_CUSTOM_POLICY_MANAGEMENT_TOOL
-    evaluation_scope:
-    - PRODUCT_DESIGN
-    - IMPLEMENTATION_PLAN
-    required_ptsip_capabilities:
-      governance_policy_plan_implementation_boundary: PTSIP_PROVIDED
-      policy_registry_and_lifecycle: PTSIP_PROVIDED
-      policy_validation_and_closure: PTSIP_PROVIDED
-      policy_derived_plan_and_verification_resolution: PTSIP_PROVIDED
-      machine_readable_agent_contracts: PTSIP_PROVIDED
-    adoption_constraints:
-      custom_policy_management_tool_required: FORBIDDEN
-      custom_ptsip_specific_registry_resolver_validator_required: FORBIDDEN
-      repeated_project_specific_governance_system_design_required: FORBIDDEN
-      project_specific_policy_decisions: PRESERVED_WHEN_REQUIRED
-      existing_project_tooling_choice: PRESERVED
-      voluntary_extension: ALLOWED_WITH_EXPLICIT_AUTHORITY
-      project_structure_imposed_for_ptsip_convenience: FORBIDDEN
-    evaluation:
-      consumer_governance_tool_construction_as_prerequisite: FAIL
-      implementation_plan_delegates_ptsip_core_tooling_to_consumer: FAIL
-      reusable_ptsip_core_governance_capability: REQUIRED
-      planned_but_unshipped_capability_must_not_be_claimed_delivered: true
-      domain_specific_policy_gap: ESCALATE_TO_USER
-    implementation_detail_authority: PLAN
-  unit_mpd_0010_55a1162781c1:
-    objective: REDUCE_REPEATED_SEMANTIC_INFERENCE_AND_AMBIGUITY_BEFORE_MINIMIZING_IMPLEMENTATION_TIME
-    absolute_zero_inference_required: false
-    machine_explicit_reference_duplication_allowed_when_it_reduces_semantic_inference_cost: true
-    machine_explicit_duplication_does_not_create_authority_confidence_priority_or_ranking: true
-  unit_mpd_plan_0002_d909cd570b48:
-    final_release_readiness_work_unit: WU-12
-  unit_mpd_plan_0004_acd66447ea97:
-    deferred_decisions:
-      feature_implementation_body_details:
-        implementation_kind_allowed_values_and_semantics: DEFERRED
-        revision_format_and_compatibility_rules: DEFERRED
-        implementation_ref_target_kinds: DEFERRED
-        optional_extension_fields: DEFERRED
-      compatibility_feature_compiler:
-        exact_compiler_contract_shape: DEFERRED
-        exact_atomic_feature_projection_format: DEFERRED
-        registry_topology: DEFERRED
-        feature_mapping_algorithm: DEFERRED
-        migration_mechanics: DEFERRED
-      generated_resolution:
-        automatic_semantic_transformation_upper_bound: DEFERRED
-        user_review_threshold_beyond_required_unknown_rule: DEFERRED
-      plugin_integration:
-        langgraph_plugin_contract: DEFERRED_BEYOND_0_3_8
-        langchain_plugin_contract: DEFERRED_BEYOND_0_3_8
-        local_model_integration_contract: DEFERRED_BEYOND_0_3_8
-        remote_user_resolver_contract: DEFERRED_BEYOND_0_3_8
-      human_projection:
-        future_human_readable_projection_format: DEFERRED
-    pending_materialization:
-    - R2_REQUIRED_VERIFICATION_MODEL
-    - IMPLEMENTATION_RESOLUTION_VALID
-    - IO4_GENERATED_VERIFIED_IO_RESOLUTION
-    - E3_EFFECT_MATCH_VERIFICATION
-    - FAILURE_OBSERVATION_AND_FAILURE_SEMANTIC_SPLIT
-    - FO4_RUNTIME_ASSEMBLED_FAILURE_OBSERVATION
-    - C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
-    - CF2_FINE_GRAINED_ATOMIC_FEATURE_SYSTEM
-    - FEATURE_STABLE_CORE
-    - SEMANTIC_EXTENSION_CONTRACT
-    - FEATURE_IMPLEMENTATION_BODY_MINIMUM
-    source_policy_ref: MPD-0012
-    source_snapshot_ref: MPD-0012#rules.repository_materialization_snapshot
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-ROOT-INTENT-0001-ACTIVE.yaml
-    next_action:
-      action: VERIFY_SOURCE_PROJECTION
-      execution: SERIAL_REQUIRED
-      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  - id: SRC-0011
+    source_pointer: /rules/unit_mpd_0010_497ac087b73f
+    value:
+      precedence_order:
+      - CODING_AGENT_INFERENCE_COST_MINIMIZATION
+      - INDEPENDENT_EXTENSION_WITHOUT_UNRELATED_DEVELOPER_DISRUPTION
+      - USER_MACHINE_READABLE_POLICY_AUTOMATION
+      coding_agent_inference_cost_minimization:
+        objective: MINIMIZE_REPEATED_REASONING_CONTEXT_LOOKUP_AND_CREDIT_COST_FOR_CODING_AGENTS
+        rules:
+        - PREFER_MACHINE_EXPLICIT_DIRECTLY_RESOLVABLE_CONTRACTS_WHEN_THEY_REDUCE_REPEATED_INFERENCE
+        - ALLOW_BOUNDED_REFERENCE_DUPLICATION_WHEN_IT_REDUCES_AGENT_CONTEXT_OR_LOOKUP_COST
+        - DO_NOT_REDUCE_MACHINE_CLARITY_MERELY_TO_MINIMIZE_FIELD_COUNT
+      independent_extension_without_unrelated_developer_disruption:
+        objective: ALLOW_INDEPENDENT_EXTENSION_WHEN_PTSIP_CORE_DOES_NOT_NATIVELY_SUPPORT_REQUIRED_SEMANTICS
+        rules:
+        - EXTENSION_MUST_USE_DISTINCT_IDENTITY_AND_MUST_NOT_IMPERSONATE_OFFICIAL_CORE_SEMANTICS
+        - EXTENSION_UNSUPPORTED_BY_A_CONSUMER_MUST_BE_REPORTED_EXPLICITLY_WITHOUT_SILENT_CORE_MAPPING
+        - UNSUPPORTED_EXTENSION_CAPABILITY_MUST_BE_SCOPED_TO_DEPENDENT_OPERATIONS_OR_VALIDATION
+        - UNSUPPORTED_EXTENSION_CAPABILITY_MUST_NOT_BLOCK_UNRELATED_DEVELOPMENT
+        - EXTENSION_OWNER_RETAINS_SEMANTIC_CONFORMANCE_MAINTENANCE_REVALIDATION_MIGRATION_AND_COMPATIBILITY_RESPONSIBILITY
+      user_machine_readable_policy_automation:
+        objective: ENABLE_USERS_TO_EXPRESS_PROJECT_OR_PERSONAL_POLICY_AS_MACHINE_READABLE_CONTRACTS_AND_BUILD_LOCAL_AUTOMATED_REASONING
+        rules:
+        - PREFER_DECLARATIVE_MACHINE_READABLE_CONTRACT_SURFACES_OVER_REQUIRED_CUSTOM_CORE_CODE
+        - USER_DEFINED_POLICY_MAY_USE_REGISTERED_EXTENSION_IDENTITIES_AND_INTERFACES
+        - USER_POLICY_AUTOMATION_MUST_NOT_SILENTLY_GAIN_PROJECT_OR_CORE_AUTHORITY
+        - USER_POLICY_INTERPRETATION_MUST_REMAIN_EXACT_BOUNDED_AND_FAIL_CLOSED_WHEN_REQUIRED_SEMANTICS_CANNOT_BE_RESOLVED
+  - id: SRC-0012
+    source_pointer: /rules/unit_ptsip_turnkey_policy_governance_product_criterion
+    value:
+      approval: USER_EXPLICIT
+      objective: CONSUMER_ADOPTION_WITHOUT_CUSTOM_POLICY_MANAGEMENT_TOOL
+      evaluation_scope:
+      - PRODUCT_DESIGN
+      - IMPLEMENTATION_PLAN
+      required_ptsip_capabilities:
+        governance_policy_plan_implementation_boundary: PTSIP_PROVIDED
+        policy_registry_and_lifecycle: PTSIP_PROVIDED
+        policy_validation_and_closure: PTSIP_PROVIDED
+        policy_derived_plan_and_verification_resolution: PTSIP_PROVIDED
+        machine_readable_agent_contracts: PTSIP_PROVIDED
+      adoption_constraints:
+        custom_policy_management_tool_required: FORBIDDEN
+        custom_ptsip_specific_registry_resolver_validator_required: FORBIDDEN
+        repeated_project_specific_governance_system_design_required: FORBIDDEN
+        project_specific_policy_decisions: PRESERVED_WHEN_REQUIRED
+        existing_project_tooling_choice: PRESERVED
+        voluntary_extension: ALLOWED_WITH_EXPLICIT_AUTHORITY
+        project_structure_imposed_for_ptsip_convenience: FORBIDDEN
+      evaluation:
+        consumer_governance_tool_construction_as_prerequisite: FAIL
+        implementation_plan_delegates_ptsip_core_tooling_to_consumer: FAIL
+        reusable_ptsip_core_governance_capability: REQUIRED
+        planned_but_unshipped_capability_must_not_be_claimed_delivered: true
+        domain_specific_policy_gap: ESCALATE_TO_USER
+      implementation_detail_authority: PLAN
+  - id: SRC-0013
+    source_pointer: /rules/unit_mpd_0010_55a1162781c1
+    value:
+      objective: REDUCE_REPEATED_SEMANTIC_INFERENCE_AND_AMBIGUITY_BEFORE_MINIMIZING_IMPLEMENTATION_TIME
+      absolute_zero_inference_required: false
+      machine_explicit_reference_duplication_allowed_when_it_reduces_semantic_inference_cost: true
+      machine_explicit_duplication_does_not_create_authority_confidence_priority_or_ranking: true
+  - id: SRC-0014
+    source_pointer: /rules/unit_mpd_plan_0002_d909cd570b48
+    value:
+      final_release_readiness_work_unit: WU-12
+  - id: SRC-0015
+    source_pointer: /rules/unit_mpd_plan_0004_acd66447ea97
+    value:
+      deferred_decisions:
+        feature_implementation_body_details:
+          implementation_kind_allowed_values_and_semantics: DEFERRED
+          revision_format_and_compatibility_rules: DEFERRED
+          implementation_ref_target_kinds: DEFERRED
+          optional_extension_fields: DEFERRED
+        compatibility_feature_compiler:
+          exact_compiler_contract_shape: DEFERRED
+          exact_atomic_feature_projection_format: DEFERRED
+          registry_topology: DEFERRED
+          feature_mapping_algorithm: DEFERRED
+          migration_mechanics: DEFERRED
+        generated_resolution:
+          automatic_semantic_transformation_upper_bound: DEFERRED
+          user_review_threshold_beyond_required_unknown_rule: DEFERRED
+        plugin_integration:
+          langgraph_plugin_contract: DEFERRED_BEYOND_0_3_8
+          langchain_plugin_contract: DEFERRED_BEYOND_0_3_8
+          local_model_integration_contract: DEFERRED_BEYOND_0_3_8
+          remote_user_resolver_contract: DEFERRED_BEYOND_0_3_8
+        human_projection:
+          future_human_readable_projection_format: DEFERRED
+      pending_materialization:
+      - R2_REQUIRED_VERIFICATION_MODEL
+      - IMPLEMENTATION_RESOLUTION_VALID
+      - IO4_GENERATED_VERIFIED_IO_RESOLUTION
+      - E3_EFFECT_MATCH_VERIFICATION
+      - FAILURE_OBSERVATION_AND_FAILURE_SEMANTIC_SPLIT
+      - FO4_RUNTIME_ASSEMBLED_FAILURE_OBSERVATION
+      - C4_CONTRACT_FEATURE_SEMANTIC_COMPATIBILITY
+      - CF2_FINE_GRAINED_ATOMIC_FEATURE_SYSTEM
+      - FEATURE_STABLE_CORE
+      - SEMANTIC_EXTENSION_CONTRACT
+      - FEATURE_IMPLEMENTATION_BODY_MINIMUM
+      source_policy_ref: MPD-0012
+      source_snapshot_ref: MPD-0012#rules.repository_materialization_snapshot
+  - id: SRC-0016
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0017
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: COMPLETE
+      requirements:
+      - id: TR-001
+        type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+        state: SATISFIED
+        refs:
+        - developer/policy/approvals/MPA-20261006-ROOT-INTENT-0001-ACTIVE.yaml
+        next_action:
+          action: VERIFY_SOURCE_PROJECTION
+          execution: SERIAL_REQUIRED
+          completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  source_document:
+    path: developer/policy/INTENT/MPD-INTENT-0001.yaml
+    sha256: 423d06c9653f4d442bcfa9a83f6403bc9792c4a6307ee107001dab5a036a9b31
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

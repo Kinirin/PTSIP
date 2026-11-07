@@ -1,114 +1,319 @@
-schema_version: ptsip-support-root-family-policy/v1
-policy_class: PTSIP_SUPPORT_FEATURE
-responsibility_family: INFO
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: SFP-INFO-0004
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: INFO
   title: Project Profile Source Composition
+Policy_Lifecycle:
   status: DRAFT
-authority_subject:
-  id: SUP_PROJECT_PROFILE_SOURCE_COMPOSITION
-  statement: Consumer Project Profile의 source 구성원과 논리적 구성 단위를 관리한다. Responsibility Map 의미 권위는 소유하지 않는다.
-exclusive_kernel:
-  - SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
-authority_contract:
-  authority_type: ROOT_FAMILY_INFO
-  schema_id: ptsip.governance/root-family/info
-  schema_version: 1
-authority_semantics:
-  family_definition:
-    kernel_definitions:
-    - id: SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SFP-INFO-0004#/authority_semantics/domain
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-INFO-0004#/authority_semantics/target
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-INFO-0004#/authority_semantics/independence
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-INFO-0004#/authority_semantics/approved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-INFO-0004#/authority_semantics/invariants
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-INFO-0004#/authority_semantics/unresolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-INFO-0004#/authority_semantics/resolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: SFP-INFO-0004#/authority_semantics/implementation_detail_authority
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0017
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: INFO
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-INFO-0004
+      title: Project Profile Source Composition
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_PROJECT_PROFILE_SOURCE_COMPOSITION
+      statement: Consumer Project Profile의 source 구성원과 논리적 구성 단위를 관리한다. Responsibility Map 의미 권위는 소유하지 않는다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_INFO
+      schema_id: ptsip.governance/root-family/info
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_LOGICAL_PROFILE_SOURCE_COMPOSITION
       statement: Consumer Project Profile의 source 구성원과 논리적 구성 단위를 관리한다.
       non_substitutability: Responsibility Map 의미 권위는 소유하지 않는다.
-  domain: PROJECT_PROFILE_SOURCE_COMPOSITION
-  target: CONSUMER_PROJECT_PROFILE
-  independence:
-    responsibility_map_semantic_authority: EXCLUDED
-    legacy_policy_implicit_inheritance: FORBIDDEN
-    legacy_policy_ids_as_current_composition_authority: FORBIDDEN
-    legacy_derived_section_ids_as_current_composition_lookup_authority: FORBIDDEN
-    historical_migration_source_as_current_composition_authority: FORBIDDEN
-    historical_provenance_may_remain_in_non_authoritative_migration_audit: true
-  approved_decisions:
-    policy_direction: INDEPENDENT_SOURCE_COMPOSITION
-    current_composition_legacy_authority_boundary: CURRENT_AUTHORITY_FULLY_SEPARATED_FROM_LEGACY
-    logical_profile_model: SINGLE_LOGICAL_PROFILE
-    source_membership_authority: REGISTERED_MEMBERSHIP
-    component_fragment_ownership: ATOMIC_COMPONENT_OWNERSHIP
-    component_source_grouping: MULTI_COMPONENT_PER_SOURCE_ALLOWED
-    component_grouping_authority: AUTOMATED_GROUPING_WITH_PROJECT_OVERRIDE
-    automatic_grouping_primary_objective: MANAGEABILITY_FIRST
-    grouping_stability: GLOBAL_REOPTIMIZATION
-    relationship_source_ownership: PROFILE_LEVEL_RELATIONSHIP_OWNERSHIP
-    relationship_source_partitioning: MULTI_RELATIONSHIP_SOURCE_ALLOWED
-    relationship_declaration_ownership: ATOMIC_RELATIONSHIP_OWNERSHIP
-    source_assembly_consistency: COMPLETE_ASSEMBLY_ONLY
-    missing_source_diagnostics: MANDATORY_MISSING_SOURCE_DIAGNOSIS_AND_DISCOVERY
-    missing_source_recovery_authorization: AUTHORIZED_AUTOMATED_RECOVERY
-    source_change_atomicity: LOGICAL_AUTHORITY_ATOMICITY
-    automatic_grouping_determinism: DETERMINISTIC_GROUPING
-    automatic_grouping_strategy_authority_choice: A_USER_EXPLICIT
-    automatic_grouping_strategy_authority: POLICY_CONSTRAINED_PLAN_WITH_MACHINE_VERIFICATION
-    automatic_grouping_strategy_concrete_algorithm: PLAN_NOT_POLICY_FIXED
-    automatic_grouping_strategy_validation: MACHINE_VERIFIED_APPROVED_POLICY_RULES
-  invariants:
-    logical_profile_identity: SINGLE
-    physical_source_artifacts: ONE_OR_MORE
-    fragment_count_creates_independent_profile_authority: false
-    component_declaration:
-      exact_source_owner_per_component: ONE
-      field_level_fragmentation: FORBIDDEN
-    component_source:
-      multiple_components_may_share_source: true
-    component_grouping:
-      automated_grouping_requires_approved_rule: true
-      explicit_project_override_allowed: true
-      grouping_changes_responsibility_map_semantics: false
-      same_authoritative_profile_rules_and_overrides_yield_same_grouping: true
-      global_reoptimization_must_be_deterministic: true
-      concrete_grouping_strategy_may_be_selected_by_plan_without_per_strategy_policy_approval: true
-      plan_strategy_requires_machine_verifiable_declaration_and_validation: true
-      plan_strategy_must_optimize_manageability_under_effective_policy_constraints: true
-      plan_strategy_must_support_global_reoptimization_and_respect_project_override: true
-      plan_strategy_must_produce_deterministic_results_for_same_authoritative_inputs: true
-      plan_strategy_must_not_reassign_registered_source_membership_or_component_owner: true
-      plan_strategy_must_not_redefine_responsibility_map_semantic_authority: true
-      missing_ambiguous_or_unverified_strategy_conformance: FAIL_CLOSED_NO_AUTHORITY_MUTATION
-      strategy_delegation_does_not_activate_draft_or_implement_grouping: true
-    relationship_source:
-      ownership_scope: LOGICAL_PROFILE
-      component_source_ownership: FORBIDDEN
-      multiple_sources_allowed: true
-    relationship_declaration:
-      exact_source_owner_per_declaration: ONE
-      field_level_fragmentation: FORBIDDEN
-    source_membership:
-      authoritative_only_if_explicitly_registered: true
-      filesystem_discovery_confers_authority: false
-      automated_registration_requires_authorized_operation: true
-    source_assembly:
-      valid_only_if_registered_sources_complete_and_consistent: true
-      partial_assembly_confers_profile_authority: false
-    missing_source_diagnostics:
-      cause_analysis_required: true
-      candidate_discovery_required: true
-      unverified_cause_must_remain_unresolved: true
-      discovered_candidate_confers_source_authority: false
-      recovery_requires_separate_authorization: true
-    missing_source_recovery:
-      preapproved_recovery_authority_required: true
-      machine_verifiable_recovery_conditions_required: true
-      qualified_recovery_without_per_case_approval_allowed: true
-      unqualified_or_ambiguous_recovery: ESCALATE_WITHOUT_MUTATION
-      recovered_sources_require_complete_revalidation: true
-    source_change:
-      authority_transition: ATOMIC
-      publication_requires_complete_validated_source_set: true
-      intermediate_storage_state_confers_authority: false
-      failed_or_partial_change_can_activate_new_profile: false
-      intermediate_physical_storage_state_permitted: true
-  unresolved_decisions: []
-  resolved_decisions:
+  - id: SRC-0009
+    source_pointer: /authority_semantics/domain
+    value: PROJECT_PROFILE_SOURCE_COMPOSITION
+  - id: SRC-0010
+    source_pointer: /authority_semantics/target
+    value: CONSUMER_PROJECT_PROFILE
+  - id: SRC-0011
+    source_pointer: /authority_semantics/independence
+    value:
+      responsibility_map_semantic_authority: EXCLUDED
+      legacy_policy_implicit_inheritance: FORBIDDEN
+      legacy_policy_ids_as_current_composition_authority: FORBIDDEN
+      legacy_derived_section_ids_as_current_composition_lookup_authority: FORBIDDEN
+      historical_migration_source_as_current_composition_authority: FORBIDDEN
+      historical_provenance_may_remain_in_non_authoritative_migration_audit: true
+  - id: SRC-0012
+    source_pointer: /authority_semantics/approved_decisions
+    value:
+      policy_direction: INDEPENDENT_SOURCE_COMPOSITION
+      current_composition_legacy_authority_boundary: CURRENT_AUTHORITY_FULLY_SEPARATED_FROM_LEGACY
+      logical_profile_model: SINGLE_LOGICAL_PROFILE
+      source_membership_authority: REGISTERED_MEMBERSHIP
+      component_fragment_ownership: ATOMIC_COMPONENT_OWNERSHIP
+      component_source_grouping: MULTI_COMPONENT_PER_SOURCE_ALLOWED
+      component_grouping_authority: AUTOMATED_GROUPING_WITH_PROJECT_OVERRIDE
+      automatic_grouping_primary_objective: MANAGEABILITY_FIRST
+      grouping_stability: GLOBAL_REOPTIMIZATION
+      relationship_source_ownership: PROFILE_LEVEL_RELATIONSHIP_OWNERSHIP
+      relationship_source_partitioning: MULTI_RELATIONSHIP_SOURCE_ALLOWED
+      relationship_declaration_ownership: ATOMIC_RELATIONSHIP_OWNERSHIP
+      source_assembly_consistency: COMPLETE_ASSEMBLY_ONLY
+      missing_source_diagnostics: MANDATORY_MISSING_SOURCE_DIAGNOSIS_AND_DISCOVERY
+      missing_source_recovery_authorization: AUTHORIZED_AUTOMATED_RECOVERY
+      source_change_atomicity: LOGICAL_AUTHORITY_ATOMICITY
+      automatic_grouping_determinism: DETERMINISTIC_GROUPING
+      automatic_grouping_strategy_authority_choice: A_USER_EXPLICIT
+      automatic_grouping_strategy_authority: POLICY_CONSTRAINED_PLAN_WITH_MACHINE_VERIFICATION
+      automatic_grouping_strategy_concrete_algorithm: PLAN_NOT_POLICY_FIXED
+      automatic_grouping_strategy_validation: MACHINE_VERIFIED_APPROVED_POLICY_RULES
+  - id: SRC-0013
+    source_pointer: /authority_semantics/invariants
+    value:
+      logical_profile_identity: SINGLE
+      physical_source_artifacts: ONE_OR_MORE
+      fragment_count_creates_independent_profile_authority: false
+      component_declaration:
+        exact_source_owner_per_component: ONE
+        field_level_fragmentation: FORBIDDEN
+      component_source:
+        multiple_components_may_share_source: true
+      component_grouping:
+        automated_grouping_requires_approved_rule: true
+        explicit_project_override_allowed: true
+        grouping_changes_responsibility_map_semantics: false
+        same_authoritative_profile_rules_and_overrides_yield_same_grouping: true
+        global_reoptimization_must_be_deterministic: true
+        concrete_grouping_strategy_may_be_selected_by_plan_without_per_strategy_policy_approval: true
+        plan_strategy_requires_machine_verifiable_declaration_and_validation: true
+        plan_strategy_must_optimize_manageability_under_effective_policy_constraints: true
+        plan_strategy_must_support_global_reoptimization_and_respect_project_override: true
+        plan_strategy_must_produce_deterministic_results_for_same_authoritative_inputs: true
+        plan_strategy_must_not_reassign_registered_source_membership_or_component_owner: true
+        plan_strategy_must_not_redefine_responsibility_map_semantic_authority: true
+        missing_ambiguous_or_unverified_strategy_conformance: FAIL_CLOSED_NO_AUTHORITY_MUTATION
+        strategy_delegation_does_not_activate_draft_or_implement_grouping: true
+      relationship_source:
+        ownership_scope: LOGICAL_PROFILE
+        component_source_ownership: FORBIDDEN
+        multiple_sources_allowed: true
+      relationship_declaration:
+        exact_source_owner_per_declaration: ONE
+        field_level_fragmentation: FORBIDDEN
+      source_membership:
+        authoritative_only_if_explicitly_registered: true
+        filesystem_discovery_confers_authority: false
+        automated_registration_requires_authorized_operation: true
+      source_assembly:
+        valid_only_if_registered_sources_complete_and_consistent: true
+        partial_assembly_confers_profile_authority: false
+      missing_source_diagnostics:
+        cause_analysis_required: true
+        candidate_discovery_required: true
+        unverified_cause_must_remain_unresolved: true
+        discovered_candidate_confers_source_authority: false
+        recovery_requires_separate_authorization: true
+      missing_source_recovery:
+        preapproved_recovery_authority_required: true
+        machine_verifiable_recovery_conditions_required: true
+        qualified_recovery_without_per_case_approval_allowed: true
+        unqualified_or_ambiguous_recovery: ESCALATE_WITHOUT_MUTATION
+        recovered_sources_require_complete_revalidation: true
+      source_change:
+        authority_transition: ATOMIC
+        publication_requires_complete_validated_source_set: true
+        intermediate_storage_state_confers_authority: false
+        failed_or_partial_change_can_activate_new_profile: false
+        intermediate_physical_storage_state_permitted: true
+  - id: SRC-0014
+    source_pointer: /authority_semantics/unresolved_decisions
+    value: []
+  - id: SRC-0015
+    source_pointer: /authority_semantics/resolved_decisions
+    value:
     - id: AUTOMATED_GROUPING_STRATEGY
       selected_option: A_POLICY_CONSTRAINED_PLAN_AND_MACHINE_VERIFICATION
       approval_source: USER_EXPLICIT
@@ -116,18 +321,30 @@ authority_semantics:
       resolution_scope: GROUPING_STRATEGY_DESIGN_AUTHORITY_ONLY
       concrete_algorithm: PLAN_NOT_DECIDED_IN_POLICY
       policy_constraints:
-        - MANAGEABILITY_FIRST
-        - DETERMINISTIC_GROUPING
-        - GLOBAL_REOPTIMIZATION
-        - PROJECT_EXPLICIT_OVERRIDE
-        - REGISTERED_SOURCE_MEMBERSHIP_AUTHORITY
-        - RESPONSIBILITY_MAP_SEMANTIC_AUTHORITY_SEPARATION
+      - MANAGEABILITY_FIRST
+      - DETERMINISTIC_GROUPING
+      - GLOBAL_REOPTIMIZATION
+      - PROJECT_EXPLICIT_OVERRIDE
+      - REGISTERED_SOURCE_MEMBERSHIP_AUTHORITY
+      - RESPONSIBILITY_MAP_SEMANTIC_AUTHORITY_SEPARATION
       machine_verification: REQUIRED
       actual_grouping_and_source_MUTATION: NOT_AUTHORIZED_BY_THIS_DECISION
       active_transition: NOT_AUTHORIZED
-  implementation_detail_authority: PLAN
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
+  - id: SRC-0016
+    source_pointer: /authority_semantics/implementation_detail_authority
+    value: PLAN
+  - id: SRC-0017
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/INFO/SFP-INFO-0004.yaml
+    sha256: 7ee6f429b2df5a8a33355ca7772f0f9fe7d276dd8e1bd65f356f1caa8b46af51
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

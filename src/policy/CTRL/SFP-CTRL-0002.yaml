@@ -1,415 +1,466 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "CTRL",
-  "policy": {
-    "id": "SFP-CTRL-0002",
-    "title": "Engine delegated activation and mandatory external isolation (DRAFT)",
-    "status": "DRAFT"
-  },
-  "authority_subject": {
-    "id": "SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY",
-    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
-  },
-  "exclusive_kernel": [
-    "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
-    "SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_CTRL",
-    "schema_id": "ptsip.governance/root-family/ctrl",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
-          "statement": "실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote authority 읽기를 생략하지 않는다.",
-          "non_substitutability": "GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority freshness를 대신 보장하지 않는다."
-        },
-        {
-          "id": "SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE",
-          "statement": "expected revision, operation identity와 등록된 transition 조건으로 stale writer 및 무권한 mutation을 차단한다. unresolved 관계는 fail-closed한다.",
-          "non_substitutability": "REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들 수 없다."
-        }
-      ]
-    },
-    "unit_ptsip_engine_draft": {
-      "domain": "PTSIP_ENGINE",
-      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-      "approved_decisions": {
-        "registration_is_authorization": false,
-        "technical_conformance_is_authorization": false,
-        "activation_policy": "PREDELEGATED_SCOPE_ONLY",
-        "eligible_execution": "REQUIRES_FRESH_AUTHORIZATION_AT_EXECUTION",
-        "user_engine_default_execution": "ISOLATED",
-        "third_party_engine_default_execution": "ISOLATED",
-        "user_external_engine_nonisolated_exception": "FORBIDDEN",
-        "engine_activation_does_not_grant_isolation_exception": true,
-        "engine_selection_does_not_grant_write_permission": true,
-        "isolation_guarantee_scope": "EXECUTION_AND_PERMISSION_BOUNDARY",
-        "resource_containment_policy": "PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET",
-        "resource_exhaustion_failure_direction": "EXECUTION_ATTEMPT_FAILURE_SEPARATE_FROM_WORK_EFFECT_STATE",
-        "official_engine_isolation_policy": "CAPABILITY_CONTRACT_DECLARED_EXECUTION_BOUNDARY",
-        "official_engine_allowed_isolation_modes": [
-          "IN_PROCESS",
-          "ISOLATED"
-        ],
-        "in_flight_revocation_policy": "AUTHORITY_BOUNDARY_SAFE_STOP",
-        "eligible_activation_mode": "AUTOMATIC_AFTER_MACHINE_VERIFIED_CONTRACT_AND_ENVIRONMENT_ELIGIBILITY",
-        "automatic_activation_consent": "PREDELEGATED_SCOPE_NO_PER_ACTIVATION_USER_PROMPT",
-        "automatic_activation_contract_gate": "CURRENT_REGISTERED_ENGINE_AND_CAPABILITY_CONTRACT_VERIFIED",
-        "automatic_activation_environment_gate": "CURRENT_HOST_COMPATIBILITY_DEPENDENCY_AND_REQUIRED_ISOLATION_VERIFIED",
-        "automatic_activation_authority_gate": "EXISTING_PREDELEGATED_SCOPE_AND_FRESH_CTRL_AUTHORITY_REQUIRED",
-        "automatic_activation_failure": "INELIGIBLE_NOT_AUTOMATICALLY_ACTIVATED",
-        "automatic_activation_is_runtime_execution_authorization": false,
-        "activation_mode_owner_selection": "USER_EXPLICIT_OPTION_B",
-        "activation_mode_direction_recorded_at": "2026-10-11",
-        "automatic_activation_target_scope": "OFFICIAL_CONSUMER_USER_AND_REGISTERED_EXTERNAL_ENGINES",
-        "automatic_activation_target_selection": "OPTION_B_PROJECT_OWNER_EXPLICIT",
-        "automatic_activation_target_scope_recorded_at": "2026-10-11",
-        "official_engine_activation_isolation": "MACHINE_VERIFIED_DECLARED_CAPABILITY_EXECUTION_BOUNDARY",
-        "user_engine_activation_isolation": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY",
-        "external_engine_activation_isolation": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY",
-        "activation_fresh_permission_requirement": "EXISTING_PREDELEGATED_SCOPE_AND_FRESH_EXECUTION_GATE",
-        "target_engine_unverified_or_incompatible": "NOT_ELIGIBLE_FOR_AUTOMATIC_ACTIVATION",
-        "activation_target_scope_no_new_authority": true,
-        "current_release_activation_timing": "PTSIP_STARTUP_EAGER_ELIGIBLE_ENGINE_ACTIVATION",
-        "current_release_activation_timing_option": "A_USER_EXPLICIT",
-        "current_release_activation_timing_recorded_at": "2026-10-11",
-        "current_release_activation_scope": "ALL_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE",
-        "activation_trigger": "PTSIP_RUNTIME_STARTUP",
-        "activation_triggers_repeated_manual_approval": false,
-        "lazy_on_demand_activation_future_extension": "DEFERRED_NOT_CURRENT_RELEASE_REQUIRED",
-        "lazy_on_demand_automatically_authorized": false,
-        "lazy_on_demand_future_policy_review_required": true,
-        "ineligible_engine_startup_result": "NOT_ACTIVATED",
-        "automatic_activation_still_not_operation_execution_authorization": true,
-        "startup_partial_failure_choice": "OPTION_A_PROJECT_OWNER_EXPLICIT",
-        "startup_partial_failure_decision_recorded_at": "2026-10-11",
-        "startup_partial_failure_policy": "ISOLATE_INELIGIBLE_ENGINE_AND_CONTINUE_WITH_ELIGIBLE_ENGINES",
-        "startup_eligibility_granularity": "PER_ENGINE_AND_REQUIRED_CAPABILITY",
-        "failed_or_unverified_engine_activation": "EXCLUDE_FROM_ACTIVE_SET",
-        "unaffected_eligible_engine_activation": "CONTINUE",
-        "task_missing_required_capability": "BLOCK_TASK_FAIL_CLOSED",
-        "task_eligibility_requires_registered_contract_and_fresh_ctrl_gate": true,
-        "implicit_substitution_for_missing_required_capability": "FORBIDDEN_WITHOUT_EXISTING_CONTRACT_APPROVED_RESOLUTION",
-        "startup_global_success_from_individual_partial_success": "FORBIDDEN",
-        "partial_startup_does_not_weaken_seven_official_engine_default_availability_commitment": true,
-        "failed_engine_revalidation_timing": "NEXT_PTSIP_STARTUP_ONLY",
-        "failed_engine_environment_change_revalidation": "DEFERRED_NO_CURRENT_RELEASE_OBLIGATION",
-        "failed_engine_revalidation_policy_owner": "SFP-OPS-0002",
-        "failed_engine_revalidation_current_release_choice": "A_USER_EXPLICIT",
-        "startup_report_scope": "FAILED_OR_INELIGIBLE_ENGINE_ONLY",
-        "startup_success_inventory_report_required": false,
-        "startup_failure_report_owner": "SFP-RECORD-0003",
-        "startup_report_decision": "A_USER_EXPLICIT",
-        "evidence_cache_cleanup_execution_scope": "NON_AUTHORITATIVE_DERIVED_EVIDENCE_CACHE_WITH_SEPARATELY_VERIFIED_RETENTION_RELEASE",
-        "evidence_cache_automatic_cleanup_decision": "B_USER_EXPLICIT_CONDITIONAL_PERMISSION",
-        "evidence_cache_cleanup_current_permission": "REQUIRE_FRESH_EXISTING_OPERATION_SPECIFIC_DELEGATION",
-        "evidence_cache_cleanup_requires_real_write_integrity": true,
-        "evidence_cache_reuse_denial_is_execution_authorization": false,
-        "evidence_cache_cleanup_read_only_operation_mutation": "FORBIDDEN",
-        "evidence_cache_cleanup_policy_owner": "SFP-RECORD-0003"
-      },
-      "invariants": {
-        "unknown_delegation": "FAIL_CLOSED",
-        "authority_revision_staleness": "FAIL_CLOSED",
-        "isolation_gate_missing": "FAIL_CLOSED",
-        "unregistered_implementation": "NOT_EXECUTABLE",
-        "same_approval_does_not_authorize_other_capabilities": true,
-        "P7_scope": "USER_AND_EXTERNAL_ENGINES_NOT_AUTOMATICALLY_OFFICIAL",
-        "user_external_engine_execution_environment_separation_required": true,
-        "out_of_scope_host_access_must_be_restricted_at_isolation_boundary": true,
-        "activation_or_registration_does_not_expand_granted_access": true,
-        "unenforceable_required_boundary_cannot_qualify_for_execution": true,
-        "isolation_guarantee_is_not_universal_security_sandbox_claim": true,
-        "resource_budget_scope": "USER_AND_EXTERNAL_ENGINES",
-        "resource_budget_selection_basis": "AUTHORIZED_CAPABILITY_AND_TASK_CONTRACT",
-        "resource_budget_enforcement_required_before_execution": true,
-        "missing_or_unenforceable_required_budget": "FAIL_CLOSED",
-        "model_may_invent_default_resource_budget": false,
-        "resource_budget_grants_additional_access_authority": false,
-        "resource_exhaustion_attempt_outcome": "FAILED",
-        "work_effect_state_is_independently_assessed": true,
-        "resource_exhaustion_attempt_failure_does_not_prove_rollback": true,
-        "unresolved_work_effects_cannot_be_inferred_as_success": true,
-        "recovery_or_retry_require_independent_preexisting_authority": true,
-        "official_capability_isolation_mode_must_be_explicitly_declared": true,
-        "missing_invalid_or_ambiguous_official_isolation_declaration": "FAIL_CLOSED",
-        "official_status_must_be_verified_by_identity_and_provenance": true,
-        "package_installation_path_alone_proves_official_status": false,
-        "resolver_cannot_infer_or_override_official_isolation_mode": true,
-        "consumer_external_engine_isolation_mandate_unaffected": true,
-        "user_external_engine_in_process_override_permitted": false,
-        "revocation_blocks_new_execution_and_new_privileged_actions": true,
-        "recheck_revocation_at_relevant_authority_boundaries": true,
-        "revocation_cannot_create_or_extend_execution_authority": true,
-        "in_flight_non_interruptible_segment_completion_requires_preexisting_authorization_and_atomicity_contract": true,
-        "in_flight_continuation_cannot_start_new_mutation_after_revocation": true,
-        "revocation_safe_stop_respects_existing_ctrl_real_ops_authority": true,
-        "unverified_effects_at_stop_cannot_be_asserted_rolled_back_or_successful": true,
-        "revocation_does_not_implicitly_authorize_compensation_or_retry": true,
-        "automatic_activation_requires_all_applicable_contract_environment_and_authority_gates": true,
-        "registration_or_contract_compatibility_alone_cannot_grant_activation": true,
-        "failed_unknown_or_ambiguous_activation_predicate": "FAIL_CLOSED",
-        "activation_does_not_override_explicit_consumer_engine_binding": true,
-        "activation_does_not_bypass_required_fresh_execution_authorization": true,
-        "activation_does_not_expand_execute_write_host_or_isolation_rights": true,
-        "activation_does_not_authorize_automatic_in_flight_engine_switch": true,
-        "activation_direction_recording_does_not_activate_draft_runtime": true,
-        "activation_not_enabled_until_active_policy_and_shipped_contract_ready": true,
-        "official_user_and_external_engine_targets_subject_to_same_contract_and_environment_verification": true,
-        "user_engine_auto_activation_requires_verified_isolation_and_permission_boundary": true,
-        "external_engine_auto_activation_requires_verified_isolation_and_permission_boundary": true,
-        "official_engine_auto_activation_requires_verified_capability_declared_isolation_mode": true,
-        "user_or_external_engine_identity_must_not_be_misclassified_as_official": true,
-        "per_engine_origin_or_installation_does_not_confer_activation_authority": true,
-        "activation_requires_registered_identity_and_required_contract_compatibility": true,
-        "scope_approval_does_not_override_explicit_consumer_engine_selection": true,
-        "auto_activation_without_predelegation_or_fresh_eligibility": "FAIL_CLOSED",
-        "isolation_or_resource_enforcement_unverifiable": "FAIL_CLOSED",
-        "target_scope_selection_does_not_activate_engine_draft_runtime": true,
-        "active_engine_plane_runtime_activation_deferred_unchanged": true,
-        "every_startup_eligible_engine_within_authorized_scope_is_activated": true,
-        "startup_ineligible_unverified_or_ambiguous_engine_is_not_activated": true,
-        "startup_activation_never_bypasses_registered_contract_environment_predelegation_and_isolation_gates": true,
-        "startup_activation_may_not_override_explicit_consumer_engine_binding": true,
-        "startup_activation_does_not_grant_execution_write_or_new_permission": true,
-        "starting_ptsip_cannot_activate_unregistered_engine": true,
-        "startup_activation_no_per_engine_prompt_when_predelegation_is_verified": true,
-        "startup_automatic_activation_does_not_imply_automatic_operation_invocation": true,
-        "startup_policy_alone_does_not_activate_current_draft_runtime": true,
-        "delayed_lazy_activation_is_not_current_release_requirement": true,
-        "partial_startup_failure_must_not_block_independent_eligible_engines": true,
-        "failed_or_ineligible_engine_cannot_be_marked_activated": true,
-        "ineligible_engine_capabilities_must_not_be_reported_as_executable": true,
-        "startup_partial_activation_must_preserve_each_engine_identity_and_outcome": true,
-        "task_requiring_unavailable_capability_cannot_begin": true,
-        "task_block_must_not_be_bypassed_by_missing_or_ambiguous_capability_binding": true,
-        "availability_not_equal_to_execution_authorization": true,
-        "partial_startup_does_not_make_unknown_activation_side_effect_safe": true,
-        "partial_startup_cannot_override_existing_canonical_source_and_recovery_gates": true,
-        "startup_partial_failure_direction_does_not_activate_draft_runtime": true,
-        "default_official_engine_distribution_obligation_not_silently_redefined": true,
-        "old_startup_failure_not_permanent_disqualification": true,
-        "failed_engine_may_activate_only_after_fresh_subsequent_startup_eligibility_pass": true,
-        "startup_revalidation_does_not_authorize_in_session_background_retry": true,
-        "environment_change_revalidation_not_required_for_current_release": true,
-        "revalidation_schedule_does_not_expand_activation_or_operation_permission": true,
-        "existing_partial_startup_and_task_block_rules_unaffected": true,
-        "startup_failure_only_external_report_does_not_reclassify_eligible_engines": true,
-        "failure_only_report_does_not_override_task_capability_availability_gates": true,
-        "startup_report_filtering_does_not_erase_per_engine_outcomes": true,
-        "successful_engine_status_listing_not_required_for_current_release": true,
-        "failure_report_policy_does_not_grant_retry_or_execution_authority": true,
-        "automated_evidence_cache_cleanup_requires_current_effective_ctrl_eligibility": true,
-        "cleanup_delegation_must_specifically_cover_operation_kind_and_target": true,
-        "no_delegation_or_revocation_or_stale_authority": "FAIL_CLOSED_NO_CLEANUP",
-        "stale_expected_revision_must_not_authorize_cache_cleanup": true,
-        "reuse_ineligibility_does_not_grant_delete_permission": true,
-        "read_only_execution_does_not_permit_cleanup_write": true,
-        "cleanup_operation_must_preserve_mandatory_records_and_original_evidence": true,
-        "cleanup_validation_alone_does_not_authorize_materialization": true,
-        "cleanup_permission_direction_does_not_activate_draft_engine_runtime": true
-      },
-      "unresolved_decisions": [
-        {
-          "id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_INTERFACE",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED",
-          "source_unresolved_id": "EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_CONTRACT"
-        },
-        {
-          "id": "ISOLATION_MECHANISM_AND_BUDGET_ENFORCEMENT_PLAN",
-          "kind": "PLAN",
-          "status": "UNRESOLVED",
-          "source_unresolved_id": "ISOLATION_MECHANISM_AND_HOST_RESOURCE_CONTROLS"
-        },
-        {
-          "id": "RESOURCE_FAILURE_AND_WORK_EFFECT_CONTRACT_SHAPE",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED",
-          "source_unresolved_id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR"
-        },
-        {
-          "id": "OFFICIAL_CAPABILITY_ISOLATION_MODE_DECLARATION_CONTRACT",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED",
-          "source_unresolved_id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY"
-        },
-        {
-          "id": "OFFICIAL_CAPABILITY_ISOLATION_MODE_MAPPING",
-          "kind": "RESPONSIBILITY_ANALYSIS",
-          "status": "UNRESOLVED",
-          "source_unresolved_id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY"
-        }
-      ],
-      "activation_requirements": {
-        "owner_decisions_all_resolved": true,
-        "responsibility_mapping_verified": true,
-        "conflicts_with_existing_active_policies_resolved": true,
-        "machine_contract_and_registry_validation_passed": true,
-        "explicit_separate_user_active_approval_required": true
-      },
-      "out_of_scope": [
-        "IMMEDIATE_RUNTIME_ACTIVATION",
-        "EXISTING_ACTIVE_POLICY_MUTATION",
-        "UNAPPROVED_DIRECTORY_NAMES",
-        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ],
-      "resolved_decisions": [
-        {
-          "id": "ISOLATION_GUARANTEE_SCOPE",
-          "selected_option": "B_EXECUTION_AND_PERMISSION_BOUNDARY",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "BOUNDARY_OBLIGATION_ONLY",
-          "implementation_mechanism": "NOT_DECIDED",
-          "resource_exhaustion_semantics": "NOT_DECIDED"
-        },
-        {
-          "id": "RESOURCE_CONTAINMENT_DIRECTION",
-          "selected_option": "B_PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_RESOURCE_BUDGET_POLICY_ONLY",
-          "numeric_limits": "NOT_DECIDED",
-          "implementation_mechanism": "NOT_DECIDED",
-          "resource_exhaustion_failure_semantics": "NOT_DECIDED"
-        },
-        {
-          "id": "FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR",
-          "selected_option": "C_ATTEMPT_FAILURE_AND_WORK_EFFECT_SEPARATION",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_FAILURE_MEANING_ONLY",
-          "work_effect_taxonomy": "NOT_DECIDED",
-          "recovery_transition_protocol": "NOT_DECIDED"
-        },
-        {
-          "id": "OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY",
-          "selected_option": "C_CAPABILITY_CONTRACT_DECLARED_ISOLATION",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "OFFICIAL_ENGINE_HIGH_LEVEL_DIRECTION_ONLY",
-          "actual_capability_modes": "NOT_DECIDED",
-          "contract_shape": "NOT_DECIDED",
-          "concrete_execution_technology": "NOT_DECIDED"
-        },
-        {
-          "id": "IN_FLIGHT_DELEGATION_REVOCATION_POLICY",
-          "selected_option": "B_AUTHORITY_BOUNDARY_SAFE_STOP",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "HIGH_LEVEL_REVOCATION_BEHAVIOR",
-          "stop_protocol": "NOT_DECIDED",
-          "revocation_signal_transport": "NOT_DECIDED",
-          "atomic_segment_catalog": "NOT_DECIDED",
-          "timeout_parameters": "NOT_DECIDED"
-        }
-      ],
-      "automatic_activation_direction_boundary": {
-        "scope": "ENGINE_RUNTIME_ELIGIBILITY_AND_ACTIVATION_MODE",
-        "activation_mode": "AUTOMATIC_ONLY_WITHIN_EXISTING_PREDELEGATED_SCOPE",
-        "machine_verified_predicates": [
-          "REGISTERED_ENGINE_IDENTITY_AND_CURRENT_CAPABILITY_CONTRACT",
-          "CURRENT_HOST_ENVIRONMENT_AND_DEPENDENCY_COMPATIBILITY",
-          "REQUIRED_ISOLATION_AND_RESOURCE_BOUNDARY_ENFORCEABILITY",
-          "CURRENT_PREDELEGATED_ELIGIBILITY_WITHOUT_REVOKED_AUTHORITY"
-        ],
-        "when_eligible": "AUTOMATIC_ACTIVATION_WITHOUT_REPEATED_MANUAL_APPROVAL",
-        "when_ineligible_or_unverified": "NO_ACTIVATION_FAIL_CLOSED",
-        "activation_does_not_imply_operation_execution_permission": true,
-        "runtime_and_concrete_interface_details": "PLAN_AND_MACHINE_CONTRACT",
-        "current_effect": "DRAFT_DECISION_ONLY_NO_RUNTIME_ACTIVATION",
-        "existing_active_arch_engine_runtime_activation": "DEFERRED_UNTIL_SEPARATE_LIFECYCLE_APPROVAL",
-        "current_release_engine_state_reuse_scope": "UNCHANGED_EXACT_MATCH_ONLY",
-        "eligible_engine_origins": [
-          "OFFICIAL_PTSIP_ENGINE",
-          "CONSUMER_USER_ENGINE",
-          "REGISTERED_EXTERNAL_ENGINE"
-        ],
-        "origin_specific_required_isolation": {
-          "OFFICIAL_PTSIP_ENGINE": "CONTRACT_DECLARED_MODE_MUST_BE_VERIFIED_AND_ENFORCEABLE",
-          "CONSUMER_USER_ENGINE": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY",
-          "REGISTERED_EXTERNAL_ENGINE": "MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY"
-        },
-        "common_eligibility": "ALL_REGISTERED_CONTRACT_ENVIRONMENT_PREDELEGATED_SCOPE_AND_APPLICABLE_ISOLATION_GATES",
-        "no_implicit_nonisolated_exception_for_user_external_engines": true,
-        "engine_origin_alone_never_grants_execution_write_or_activation_authority": true
-      },
-      "startup_activation_direction": {
-        "policy_subject": "ENGINE_AUTOMATIC_ACTIVATION_TIMING",
-        "current_release": "EAGER_AT_PTSIP_STARTUP",
-        "eligible_population": "ALL_REGISTERED_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE",
-        "origins": [
-          "OFFICIAL_PTSIP_ENGINE",
-          "CONSUMER_USER_ENGINE",
-          "REGISTERED_EXTERNAL_ENGINE"
-        ],
-        "apply_existing_gates_ref": "automatic_activation_direction_boundary.machine_verified_predicates",
-        "when_gate_verified": "ACTIVATE_AT_STARTUP_WITHOUT_SEPARATE_PROMPT",
-        "when_gate_not_verified": "NO_ACTIVATION_FAIL_CLOSED_FOR_INELIGIBLE_ENGINE",
-        "existing_engine_registration_origin_and_isolation_boundary": "UNCHANGED",
-        "activation_is_not_execution_or_write_authorization": true,
-        "future_optional_alternative": {
-          "mode": "LAZY_ON_DEMAND_ACTIVATION",
-          "status": "DEFERRED",
-          "current_release_required": false,
-          "separate_owner_authorization_required": true
-        },
-        "concrete_startup_hook_and_activation_sequence": "PLAN_AND_MACHINE_CONTRACT",
-        "current_effect": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION"
-      },
-      "startup_partial_failure_direction": {
-        "policy_subject": "ENGINE_STARTUP_PARTIAL_ACTIVATION_FAILURE",
-        "resolution": "A_PARTIAL_ACTIVATION",
-        "scope": "PER_ENGINE_ACTIVATION_ELIGIBILITY_AND_TASK_GATES",
-        "on_eligible_engine": "ACTIVATE_INDEPENDENTLY_AT_STARTUP",
-        "on_ineligible_or_unverified_engine": "DO_NOT_ACTIVATE_EXCLUDE_FROM_ACTIVE_SET",
-        "startup_continuation": "CONTINUE_WITH_ELIGIBLE_ENGINES",
-        "capability_availability_authority": "EXISTING_REGISTERED_CAPABILITY_CONTRACTS",
-        "required_task_capability_unavailable": "BLOCK_AFFECTED_TASK_FAIL_CLOSED",
-        "partial_startup_not_equal_to_full_feature_readiness": true,
-        "activation_outcome_does_not_grant_execution_permission": true,
-        "unknown_partial_effect_recovery": "EXISTING_CTRL_REAL_OPS_GATES",
-        "official_engine_default_availability_ref": "SFP-CNTR-0005",
-        "official_engine_default_availability_changed": false,
-        "future_automatic_retry_policy": "NEXT_PTSIP_STARTUP_REVALIDATION_ONLY",
-        "implementation_status": "DRAFT_ONLY_NO_RUNTIME_ACTIVATION",
-        "validation_and_status_report_interface": "PLAN_AND_MACHINE_CONTRACT",
-        "failed_engine_revalidation_policy_ref": "SFP-OPS-0002",
-        "environment_change_auto_revalidation": "DEFERRED",
-        "environment_change_watch_required_for_current_release": false,
-        "subsequent_startup_revalidation_requires_fresh_eligibility": true,
-        "external_startup_report_scope": "FAILED_OR_INELIGIBLE_ENGINE_ONLY",
-        "successful_engine_inventory_reporting_required": false,
-        "external_report_policy_ref": "SFP-RECORD-0003",
-        "internal_per_engine_activation_outcome_preserved": true
-      },
-      "evidence_cache_cleanup_execution_authority": {
-        "policy_subject": "ENGINE_EVIDENCE_CACHE_AUTOMATED_CLEANUP_EXECUTION_GATE",
-        "record_policy_ref": "SFP-RECORD-0003",
-        "approved_direction": "AUTOMATION_ALLOWED_WITHIN_EFFECTIVE_OPERATION_SPECIFIC_CLEANUP_PERMISSION",
-        "existing_authority_required": [
-          "FRESH_CTRL",
-          "REAL_PREPARED_WRITE_INTEGRITY",
-          "RECORD_MANDATORY_RETENTION"
-        ],
-        "missing_or_unverified_delegation": "FAIL_CLOSED",
-        "activation_or_reuse_permission_implies_cleanup_permission": false,
-        "read_only_operation_effect": "NO_CLEANUP_MUTATION",
-        "plan_contract": "OPERATION_ID_TARGET_IDENTITY_EXPECTED_REVISION_AND_PROOF_BINDINGS",
-        "effect": "DRAFT_ONLY_NO_RUNTIME_MUTATION"
-      }
-    }
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-CTRL-0001",
-        "scope": "ENGINE_DRAFT_COMPATIBILITY"
-      }
-    ]
-  }
-}
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-CTRL-0002
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CTRL
+  title: Engine delegated activation and mandatory external isolation (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-CTRL-0002#/authority_semantics/unit_ptsip_engine_draft
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0011
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CTRL
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CTRL-0002
+      title: Engine delegated activation and mandatory external isolation (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY
+      statement: PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+    - SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CTRL
+      schema_id: ptsip.governance/root-family/ctrl
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
+      statement: 실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote authority
+        읽기를 생략하지 않는다.
+      non_substitutability: GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority freshness를 대신 보장하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_STALE_WRITER_AND_PREAUTHORIZED_TRANSITION_GATE
+      statement: expected revision, operation identity와 등록된 transition 조건으로 stale writer 및 무권한 mutation을 차단한다. unresolved
+        관계는 fail-closed한다.
+      non_substitutability: REAL의 원자적 write 구현이나 OPS의 재시도는 stale 상태에 대한 실행 허용을 만들 수 없다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/unit_ptsip_engine_draft
+    value:
+      domain: PTSIP_ENGINE
+      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      approved_decisions:
+        registration_is_authorization: false
+        technical_conformance_is_authorization: false
+        activation_policy: PREDELEGATED_SCOPE_ONLY
+        eligible_execution: REQUIRES_FRESH_AUTHORIZATION_AT_EXECUTION
+        user_engine_default_execution: ISOLATED
+        third_party_engine_default_execution: ISOLATED
+        user_external_engine_nonisolated_exception: FORBIDDEN
+        engine_activation_does_not_grant_isolation_exception: true
+        engine_selection_does_not_grant_write_permission: true
+        isolation_guarantee_scope: EXECUTION_AND_PERMISSION_BOUNDARY
+        resource_containment_policy: PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET
+        resource_exhaustion_failure_direction: EXECUTION_ATTEMPT_FAILURE_SEPARATE_FROM_WORK_EFFECT_STATE
+        official_engine_isolation_policy: CAPABILITY_CONTRACT_DECLARED_EXECUTION_BOUNDARY
+        official_engine_allowed_isolation_modes:
+        - IN_PROCESS
+        - ISOLATED
+        in_flight_revocation_policy: AUTHORITY_BOUNDARY_SAFE_STOP
+        eligible_activation_mode: AUTOMATIC_AFTER_MACHINE_VERIFIED_CONTRACT_AND_ENVIRONMENT_ELIGIBILITY
+        automatic_activation_consent: PREDELEGATED_SCOPE_NO_PER_ACTIVATION_USER_PROMPT
+        automatic_activation_contract_gate: CURRENT_REGISTERED_ENGINE_AND_CAPABILITY_CONTRACT_VERIFIED
+        automatic_activation_environment_gate: CURRENT_HOST_COMPATIBILITY_DEPENDENCY_AND_REQUIRED_ISOLATION_VERIFIED
+        automatic_activation_authority_gate: EXISTING_PREDELEGATED_SCOPE_AND_FRESH_CTRL_AUTHORITY_REQUIRED
+        automatic_activation_failure: INELIGIBLE_NOT_AUTOMATICALLY_ACTIVATED
+        automatic_activation_is_runtime_execution_authorization: false
+        activation_mode_owner_selection: USER_EXPLICIT_OPTION_B
+        activation_mode_direction_recorded_at: '2026-10-11'
+        automatic_activation_target_scope: OFFICIAL_CONSUMER_USER_AND_REGISTERED_EXTERNAL_ENGINES
+        automatic_activation_target_selection: OPTION_B_PROJECT_OWNER_EXPLICIT
+        automatic_activation_target_scope_recorded_at: '2026-10-11'
+        official_engine_activation_isolation: MACHINE_VERIFIED_DECLARED_CAPABILITY_EXECUTION_BOUNDARY
+        user_engine_activation_isolation: MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY
+        external_engine_activation_isolation: MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY
+        activation_fresh_permission_requirement: EXISTING_PREDELEGATED_SCOPE_AND_FRESH_EXECUTION_GATE
+        target_engine_unverified_or_incompatible: NOT_ELIGIBLE_FOR_AUTOMATIC_ACTIVATION
+        activation_target_scope_no_new_authority: true
+        current_release_activation_timing: PTSIP_STARTUP_EAGER_ELIGIBLE_ENGINE_ACTIVATION
+        current_release_activation_timing_option: A_USER_EXPLICIT
+        current_release_activation_timing_recorded_at: '2026-10-11'
+        current_release_activation_scope: ALL_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE
+        activation_trigger: PTSIP_RUNTIME_STARTUP
+        activation_triggers_repeated_manual_approval: false
+        lazy_on_demand_activation_future_extension: DEFERRED_NOT_CURRENT_RELEASE_REQUIRED
+        lazy_on_demand_automatically_authorized: false
+        lazy_on_demand_future_policy_review_required: true
+        ineligible_engine_startup_result: NOT_ACTIVATED
+        automatic_activation_still_not_operation_execution_authorization: true
+        startup_partial_failure_choice: OPTION_A_PROJECT_OWNER_EXPLICIT
+        startup_partial_failure_decision_recorded_at: '2026-10-11'
+        startup_partial_failure_policy: ISOLATE_INELIGIBLE_ENGINE_AND_CONTINUE_WITH_ELIGIBLE_ENGINES
+        startup_eligibility_granularity: PER_ENGINE_AND_REQUIRED_CAPABILITY
+        failed_or_unverified_engine_activation: EXCLUDE_FROM_ACTIVE_SET
+        unaffected_eligible_engine_activation: CONTINUE
+        task_missing_required_capability: BLOCK_TASK_FAIL_CLOSED
+        task_eligibility_requires_registered_contract_and_fresh_ctrl_gate: true
+        implicit_substitution_for_missing_required_capability: FORBIDDEN_WITHOUT_EXISTING_CONTRACT_APPROVED_RESOLUTION
+        startup_global_success_from_individual_partial_success: FORBIDDEN
+        partial_startup_does_not_weaken_seven_official_engine_default_availability_commitment: true
+        failed_engine_revalidation_timing: NEXT_PTSIP_STARTUP_ONLY
+        failed_engine_environment_change_revalidation: DEFERRED_NO_CURRENT_RELEASE_OBLIGATION
+        failed_engine_revalidation_policy_owner: SFP-OPS-0002
+        failed_engine_revalidation_current_release_choice: A_USER_EXPLICIT
+        startup_report_scope: FAILED_OR_INELIGIBLE_ENGINE_ONLY
+        startup_success_inventory_report_required: false
+        startup_failure_report_owner: SFP-RECORD-0003
+        startup_report_decision: A_USER_EXPLICIT
+        evidence_cache_cleanup_execution_scope: NON_AUTHORITATIVE_DERIVED_EVIDENCE_CACHE_WITH_SEPARATELY_VERIFIED_RETENTION_RELEASE
+        evidence_cache_automatic_cleanup_decision: B_USER_EXPLICIT_CONDITIONAL_PERMISSION
+        evidence_cache_cleanup_current_permission: REQUIRE_FRESH_EXISTING_OPERATION_SPECIFIC_DELEGATION
+        evidence_cache_cleanup_requires_real_write_integrity: true
+        evidence_cache_reuse_denial_is_execution_authorization: false
+        evidence_cache_cleanup_read_only_operation_mutation: FORBIDDEN
+        evidence_cache_cleanup_policy_owner: SFP-RECORD-0003
+      invariants:
+        unknown_delegation: FAIL_CLOSED
+        authority_revision_staleness: FAIL_CLOSED
+        isolation_gate_missing: FAIL_CLOSED
+        unregistered_implementation: NOT_EXECUTABLE
+        same_approval_does_not_authorize_other_capabilities: true
+        P7_scope: USER_AND_EXTERNAL_ENGINES_NOT_AUTOMATICALLY_OFFICIAL
+        user_external_engine_execution_environment_separation_required: true
+        out_of_scope_host_access_must_be_restricted_at_isolation_boundary: true
+        activation_or_registration_does_not_expand_granted_access: true
+        unenforceable_required_boundary_cannot_qualify_for_execution: true
+        isolation_guarantee_is_not_universal_security_sandbox_claim: true
+        resource_budget_scope: USER_AND_EXTERNAL_ENGINES
+        resource_budget_selection_basis: AUTHORIZED_CAPABILITY_AND_TASK_CONTRACT
+        resource_budget_enforcement_required_before_execution: true
+        missing_or_unenforceable_required_budget: FAIL_CLOSED
+        model_may_invent_default_resource_budget: false
+        resource_budget_grants_additional_access_authority: false
+        resource_exhaustion_attempt_outcome: FAILED
+        work_effect_state_is_independently_assessed: true
+        resource_exhaustion_attempt_failure_does_not_prove_rollback: true
+        unresolved_work_effects_cannot_be_inferred_as_success: true
+        recovery_or_retry_require_independent_preexisting_authority: true
+        official_capability_isolation_mode_must_be_explicitly_declared: true
+        missing_invalid_or_ambiguous_official_isolation_declaration: FAIL_CLOSED
+        official_status_must_be_verified_by_identity_and_provenance: true
+        package_installation_path_alone_proves_official_status: false
+        resolver_cannot_infer_or_override_official_isolation_mode: true
+        consumer_external_engine_isolation_mandate_unaffected: true
+        user_external_engine_in_process_override_permitted: false
+        revocation_blocks_new_execution_and_new_privileged_actions: true
+        recheck_revocation_at_relevant_authority_boundaries: true
+        revocation_cannot_create_or_extend_execution_authority: true
+        in_flight_non_interruptible_segment_completion_requires_preexisting_authorization_and_atomicity_contract: true
+        in_flight_continuation_cannot_start_new_mutation_after_revocation: true
+        revocation_safe_stop_respects_existing_ctrl_real_ops_authority: true
+        unverified_effects_at_stop_cannot_be_asserted_rolled_back_or_successful: true
+        revocation_does_not_implicitly_authorize_compensation_or_retry: true
+        automatic_activation_requires_all_applicable_contract_environment_and_authority_gates: true
+        registration_or_contract_compatibility_alone_cannot_grant_activation: true
+        failed_unknown_or_ambiguous_activation_predicate: FAIL_CLOSED
+        activation_does_not_override_explicit_consumer_engine_binding: true
+        activation_does_not_bypass_required_fresh_execution_authorization: true
+        activation_does_not_expand_execute_write_host_or_isolation_rights: true
+        activation_does_not_authorize_automatic_in_flight_engine_switch: true
+        activation_direction_recording_does_not_activate_draft_runtime: true
+        activation_not_enabled_until_active_policy_and_shipped_contract_ready: true
+        official_user_and_external_engine_targets_subject_to_same_contract_and_environment_verification: true
+        user_engine_auto_activation_requires_verified_isolation_and_permission_boundary: true
+        external_engine_auto_activation_requires_verified_isolation_and_permission_boundary: true
+        official_engine_auto_activation_requires_verified_capability_declared_isolation_mode: true
+        user_or_external_engine_identity_must_not_be_misclassified_as_official: true
+        per_engine_origin_or_installation_does_not_confer_activation_authority: true
+        activation_requires_registered_identity_and_required_contract_compatibility: true
+        scope_approval_does_not_override_explicit_consumer_engine_selection: true
+        auto_activation_without_predelegation_or_fresh_eligibility: FAIL_CLOSED
+        isolation_or_resource_enforcement_unverifiable: FAIL_CLOSED
+        target_scope_selection_does_not_activate_engine_draft_runtime: true
+        active_engine_plane_runtime_activation_deferred_unchanged: true
+        every_startup_eligible_engine_within_authorized_scope_is_activated: true
+        startup_ineligible_unverified_or_ambiguous_engine_is_not_activated: true
+        startup_activation_never_bypasses_registered_contract_environment_predelegation_and_isolation_gates: true
+        startup_activation_may_not_override_explicit_consumer_engine_binding: true
+        startup_activation_does_not_grant_execution_write_or_new_permission: true
+        starting_ptsip_cannot_activate_unregistered_engine: true
+        startup_activation_no_per_engine_prompt_when_predelegation_is_verified: true
+        startup_automatic_activation_does_not_imply_automatic_operation_invocation: true
+        startup_policy_alone_does_not_activate_current_draft_runtime: true
+        delayed_lazy_activation_is_not_current_release_requirement: true
+        partial_startup_failure_must_not_block_independent_eligible_engines: true
+        failed_or_ineligible_engine_cannot_be_marked_activated: true
+        ineligible_engine_capabilities_must_not_be_reported_as_executable: true
+        startup_partial_activation_must_preserve_each_engine_identity_and_outcome: true
+        task_requiring_unavailable_capability_cannot_begin: true
+        task_block_must_not_be_bypassed_by_missing_or_ambiguous_capability_binding: true
+        availability_not_equal_to_execution_authorization: true
+        partial_startup_does_not_make_unknown_activation_side_effect_safe: true
+        partial_startup_cannot_override_existing_canonical_source_and_recovery_gates: true
+        startup_partial_failure_direction_does_not_activate_draft_runtime: true
+        default_official_engine_distribution_obligation_not_silently_redefined: true
+        old_startup_failure_not_permanent_disqualification: true
+        failed_engine_may_activate_only_after_fresh_subsequent_startup_eligibility_pass: true
+        startup_revalidation_does_not_authorize_in_session_background_retry: true
+        environment_change_revalidation_not_required_for_current_release: true
+        revalidation_schedule_does_not_expand_activation_or_operation_permission: true
+        existing_partial_startup_and_task_block_rules_unaffected: true
+        startup_failure_only_external_report_does_not_reclassify_eligible_engines: true
+        failure_only_report_does_not_override_task_capability_availability_gates: true
+        startup_report_filtering_does_not_erase_per_engine_outcomes: true
+        successful_engine_status_listing_not_required_for_current_release: true
+        failure_report_policy_does_not_grant_retry_or_execution_authority: true
+        automated_evidence_cache_cleanup_requires_current_effective_ctrl_eligibility: true
+        cleanup_delegation_must_specifically_cover_operation_kind_and_target: true
+        no_delegation_or_revocation_or_stale_authority: FAIL_CLOSED_NO_CLEANUP
+        stale_expected_revision_must_not_authorize_cache_cleanup: true
+        reuse_ineligibility_does_not_grant_delete_permission: true
+        read_only_execution_does_not_permit_cleanup_write: true
+        cleanup_operation_must_preserve_mandatory_records_and_original_evidence: true
+        cleanup_validation_alone_does_not_authorize_materialization: true
+        cleanup_permission_direction_does_not_activate_draft_engine_runtime: true
+      unresolved_decisions:
+      - id: EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_INTERFACE
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+        source_unresolved_id: EXACT_ACTIVATION_DELEGATION_AND_REVOCATION_CONTRACT
+      - id: ISOLATION_MECHANISM_AND_BUDGET_ENFORCEMENT_PLAN
+        kind: PLAN
+        status: UNRESOLVED
+        source_unresolved_id: ISOLATION_MECHANISM_AND_HOST_RESOURCE_CONTROLS
+      - id: RESOURCE_FAILURE_AND_WORK_EFFECT_CONTRACT_SHAPE
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+        source_unresolved_id: FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR
+      - id: OFFICIAL_CAPABILITY_ISOLATION_MODE_DECLARATION_CONTRACT
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+        source_unresolved_id: OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY
+      - id: OFFICIAL_CAPABILITY_ISOLATION_MODE_MAPPING
+        kind: RESPONSIBILITY_ANALYSIS
+        status: UNRESOLVED
+        source_unresolved_id: OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY
+      activation_requirements:
+        owner_decisions_all_resolved: true
+        responsibility_mapping_verified: true
+        conflicts_with_existing_active_policies_resolved: true
+        machine_contract_and_registry_validation_passed: true
+        explicit_separate_user_active_approval_required: true
+      out_of_scope:
+      - IMMEDIATE_RUNTIME_ACTIVATION
+      - EXISTING_ACTIVE_POLICY_MUTATION
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      resolved_decisions:
+      - id: ISOLATION_GUARANTEE_SCOPE
+        selected_option: B_EXECUTION_AND_PERMISSION_BOUNDARY
+        approval_source: USER_EXPLICIT
+        resolution_scope: BOUNDARY_OBLIGATION_ONLY
+        implementation_mechanism: NOT_DECIDED
+        resource_exhaustion_semantics: NOT_DECIDED
+      - id: RESOURCE_CONTAINMENT_DIRECTION
+        selected_option: B_PER_CAPABILITY_TASK_APPROVED_ENFORCED_BUDGET
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_RESOURCE_BUDGET_POLICY_ONLY
+        numeric_limits: NOT_DECIDED
+        implementation_mechanism: NOT_DECIDED
+        resource_exhaustion_failure_semantics: NOT_DECIDED
+      - id: FAILURE_AND_RESOURCE_EXHAUSTION_BEHAVIOR
+        selected_option: C_ATTEMPT_FAILURE_AND_WORK_EFFECT_SEPARATION
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_FAILURE_MEANING_ONLY
+        work_effect_taxonomy: NOT_DECIDED
+        recovery_transition_protocol: NOT_DECIDED
+      - id: OFFICIAL_ENGINE_EXECUTION_ISOLATION_POLICY
+        selected_option: C_CAPABILITY_CONTRACT_DECLARED_ISOLATION
+        approval_source: USER_EXPLICIT
+        resolution_scope: OFFICIAL_ENGINE_HIGH_LEVEL_DIRECTION_ONLY
+        actual_capability_modes: NOT_DECIDED
+        contract_shape: NOT_DECIDED
+        concrete_execution_technology: NOT_DECIDED
+      - id: IN_FLIGHT_DELEGATION_REVOCATION_POLICY
+        selected_option: B_AUTHORITY_BOUNDARY_SAFE_STOP
+        approval_source: USER_EXPLICIT
+        resolution_scope: HIGH_LEVEL_REVOCATION_BEHAVIOR
+        stop_protocol: NOT_DECIDED
+        revocation_signal_transport: NOT_DECIDED
+        atomic_segment_catalog: NOT_DECIDED
+        timeout_parameters: NOT_DECIDED
+      automatic_activation_direction_boundary:
+        scope: ENGINE_RUNTIME_ELIGIBILITY_AND_ACTIVATION_MODE
+        activation_mode: AUTOMATIC_ONLY_WITHIN_EXISTING_PREDELEGATED_SCOPE
+        machine_verified_predicates:
+        - REGISTERED_ENGINE_IDENTITY_AND_CURRENT_CAPABILITY_CONTRACT
+        - CURRENT_HOST_ENVIRONMENT_AND_DEPENDENCY_COMPATIBILITY
+        - REQUIRED_ISOLATION_AND_RESOURCE_BOUNDARY_ENFORCEABILITY
+        - CURRENT_PREDELEGATED_ELIGIBILITY_WITHOUT_REVOKED_AUTHORITY
+        when_eligible: AUTOMATIC_ACTIVATION_WITHOUT_REPEATED_MANUAL_APPROVAL
+        when_ineligible_or_unverified: NO_ACTIVATION_FAIL_CLOSED
+        activation_does_not_imply_operation_execution_permission: true
+        runtime_and_concrete_interface_details: PLAN_AND_MACHINE_CONTRACT
+        current_effect: DRAFT_DECISION_ONLY_NO_RUNTIME_ACTIVATION
+        existing_active_arch_engine_runtime_activation: DEFERRED_UNTIL_SEPARATE_LIFECYCLE_APPROVAL
+        current_release_engine_state_reuse_scope: UNCHANGED_EXACT_MATCH_ONLY
+        eligible_engine_origins:
+        - OFFICIAL_PTSIP_ENGINE
+        - CONSUMER_USER_ENGINE
+        - REGISTERED_EXTERNAL_ENGINE
+        origin_specific_required_isolation:
+          OFFICIAL_PTSIP_ENGINE: CONTRACT_DECLARED_MODE_MUST_BE_VERIFIED_AND_ENFORCEABLE
+          CONSUMER_USER_ENGINE: MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY
+          REGISTERED_EXTERNAL_ENGINE: MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY
+        common_eligibility: ALL_REGISTERED_CONTRACT_ENVIRONMENT_PREDELEGATED_SCOPE_AND_APPLICABLE_ISOLATION_GATES
+        no_implicit_nonisolated_exception_for_user_external_engines: true
+        engine_origin_alone_never_grants_execution_write_or_activation_authority: true
+      startup_activation_direction:
+        policy_subject: ENGINE_AUTOMATIC_ACTIVATION_TIMING
+        current_release: EAGER_AT_PTSIP_STARTUP
+        eligible_population: ALL_REGISTERED_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE
+        origins:
+        - OFFICIAL_PTSIP_ENGINE
+        - CONSUMER_USER_ENGINE
+        - REGISTERED_EXTERNAL_ENGINE
+        apply_existing_gates_ref: automatic_activation_direction_boundary.machine_verified_predicates
+        when_gate_verified: ACTIVATE_AT_STARTUP_WITHOUT_SEPARATE_PROMPT
+        when_gate_not_verified: NO_ACTIVATION_FAIL_CLOSED_FOR_INELIGIBLE_ENGINE
+        existing_engine_registration_origin_and_isolation_boundary: UNCHANGED
+        activation_is_not_execution_or_write_authorization: true
+        future_optional_alternative:
+          mode: LAZY_ON_DEMAND_ACTIVATION
+          status: DEFERRED
+          current_release_required: false
+          separate_owner_authorization_required: true
+        concrete_startup_hook_and_activation_sequence: PLAN_AND_MACHINE_CONTRACT
+        current_effect: DRAFT_ONLY_NO_RUNTIME_ACTIVATION
+      startup_partial_failure_direction:
+        policy_subject: ENGINE_STARTUP_PARTIAL_ACTIVATION_FAILURE
+        resolution: A_PARTIAL_ACTIVATION
+        scope: PER_ENGINE_ACTIVATION_ELIGIBILITY_AND_TASK_GATES
+        on_eligible_engine: ACTIVATE_INDEPENDENTLY_AT_STARTUP
+        on_ineligible_or_unverified_engine: DO_NOT_ACTIVATE_EXCLUDE_FROM_ACTIVE_SET
+        startup_continuation: CONTINUE_WITH_ELIGIBLE_ENGINES
+        capability_availability_authority: EXISTING_REGISTERED_CAPABILITY_CONTRACTS
+        required_task_capability_unavailable: BLOCK_AFFECTED_TASK_FAIL_CLOSED
+        partial_startup_not_equal_to_full_feature_readiness: true
+        activation_outcome_does_not_grant_execution_permission: true
+        unknown_partial_effect_recovery: EXISTING_CTRL_REAL_OPS_GATES
+        official_engine_default_availability_ref: SFP-CNTR-0005
+        official_engine_default_availability_changed: false
+        future_automatic_retry_policy: NEXT_PTSIP_STARTUP_REVALIDATION_ONLY
+        implementation_status: DRAFT_ONLY_NO_RUNTIME_ACTIVATION
+        validation_and_status_report_interface: PLAN_AND_MACHINE_CONTRACT
+        failed_engine_revalidation_policy_ref: SFP-OPS-0002
+        environment_change_auto_revalidation: DEFERRED
+        environment_change_watch_required_for_current_release: false
+        subsequent_startup_revalidation_requires_fresh_eligibility: true
+        external_startup_report_scope: FAILED_OR_INELIGIBLE_ENGINE_ONLY
+        successful_engine_inventory_reporting_required: false
+        external_report_policy_ref: SFP-RECORD-0003
+        internal_per_engine_activation_outcome_preserved: true
+      evidence_cache_cleanup_execution_authority:
+        policy_subject: ENGINE_EVIDENCE_CACHE_AUTOMATED_CLEANUP_EXECUTION_GATE
+        record_policy_ref: SFP-RECORD-0003
+        approved_direction: AUTOMATION_ALLOWED_WITHIN_EFFECTIVE_OPERATION_SPECIFIC_CLEANUP_PERMISSION
+        existing_authority_required:
+        - FRESH_CTRL
+        - REAL_PREPARED_WRITE_INTEGRITY
+        - RECORD_MANDATORY_RETENTION
+        missing_or_unverified_delegation: FAIL_CLOSED
+        activation_or_reuse_permission_implies_cleanup_permission: false
+        read_only_operation_effect: NO_CLEANUP_MUTATION
+        plan_contract: OPERATION_ID_TARGET_IDENTITY_EXPECTED_REVISION_AND_PROOF_BINDINGS
+        effect: DRAFT_ONLY_NO_RUNTIME_MUTATION
+  - id: SRC-0011
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: SFP-CTRL-0001
+        scope: ENGINE_DRAFT_COMPATIBILITY
+  source_document:
+    path: src/policy/CTRL/SFP-CTRL-0002.yaml
+    sha256: c687982a5277d1516c25794ebd03eb48b065fbff2f15a8481932863ade7aa4f7
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

@@ -1,23 +1,366 @@
-# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
 Policy_Identity:
   id: MPD-GOV-0005
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: GOV
   title: GOV 정책 식별 관리
 Policy_Lifecycle:
-  Policy_Status_Schema_ver: '3'
   status: APPROVED.Applying
-  contract: urn:ptsip:contract:policy:gov:identity:integrity
+  source_ref: SRC-0002
+Policy_Authority:
+  source_refs: []
 Policy_Rules:
-  contracts:
-  - serialization: INDEXED_SOURCE_BINDINGS
-    contract_id: urn:ptsip:policy:rule:gov:policy-identification
-    Rule_ver: '2'
-    source_documents:
+  rules:
+  - id: R-ID-D26A65CB5640780B982EE89824F842F2
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: R-ID-8F91D35D5ECA880D2E49E5ADA5E8F458
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: R-ID-578089F0D97BE89B8F8499D83973A81A
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: R-ID-34C071088561988E31D4D714C88DFE72
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: R-ID-3FDD48C552CDF88837089E7F6A3E6407
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: R-ID-7C012ED2F41D08568A69E175EEF35133
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: R-ID-50C441D42DBC38828C88E66F07384BAE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: R-ID-4FD580CEF3E6D02CDABB7450583A7218
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: R-ID-E618FC2A271D8813F280E1D38618C8AD
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: R-ID-1EC630FDE913480E13979558EDD87442
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+  - id: R-ID-F6CEC282AA06D8E2ED3658A0E128AD73
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0018
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0018
+  - id: R-ID-F24189E62245585925D38A7C2DE69F35
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0019
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0019
+  - id: R-ID-5E75D488D59D2BEEA53EA42D68010F75
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0020
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0020
+  - id: REQ-0001
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0021
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0021
+  - id: REQ-0002
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0022
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0022
+  - id: REQ-0003
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0023
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0023
+  - id: REQ-0004
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0024
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0024
+  - id: REQ-0005
+    identity_scheme: DECLARED
+    kind: REQUIREMENT
+    source_ref: SRC-0025
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0025
+Policy_Evaluation:
+  source_refs:
+  - SRC-0021
+  - SRC-0022
+  - SRC-0023
+  - SRC-0024
+  - SRC-0025
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs: []
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /Policy_Identity
+    value:
+      id: MPD-GOV-0005
+      policy_kind: PTSIP_DEVELOPER_POLICY
+      root_family: GOV
+      title: GOV 정책 식별 관리
+  - id: SRC-0002
+    source_pointer: /Policy_Lifecycle
+    value:
+      Policy_Status_Schema_ver: '3'
+      status: APPROVED.Applying
+      contract: urn:ptsip:contract:policy:gov:identity:integrity
+  - id: SRC-0003
+    source_pointer: /Policy_Rules/contracts/0/serialization
+    value: INDEXED_SOURCE_BINDINGS
+  - id: SRC-0004
+    source_pointer: /Policy_Rules/contracts/0/contract_id
+    value: urn:ptsip:policy:rule:gov:policy-identification
+  - id: SRC-0005
+    source_pointer: /Policy_Rules/contracts/0/Rule_ver
+    value: '2'
+  - id: SRC-0006
+    source_pointer: /Policy_Rules/contracts/0/source_documents
+    value:
     - id: ORIGINAL
       source_ref: developer/policy/GOV/MPD-GOV-0005.yaml
       revision_ref: git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0
-    source_items:
+  - id: SRC-0007
+    source_pointer: /Policy_Rules/contracts/0/source_items
+    value:
     - item_id: RULE-0001
       document_id: ORIGINAL
       item_ref: /Policy_Rules/Definition/0
@@ -118,77 +461,117 @@ Policy_Rules:
       document_id: ORIGINAL
       item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
       original_role: criterion
-    rules:
-    - id: R-ID-D26A65CB5640780B982EE89824F842F2
+  - id: SRC-0008
+    source_pointer: /Policy_Rules/contracts/0/rules/0
+    value:
+      id: R-ID-D26A65CB5640780B982EE89824F842F2
       rule: SEPARATE-RULE-IDENTI
       preconditions:
       - C-ID-0CE2593E8885789909B338BC2982248B
       source_ref:
       - RULE-0001
-    - id: R-ID-8F91D35D5ECA880D2E49E5ADA5E8F458
+  - id: SRC-0009
+    source_pointer: /Policy_Rules/contracts/0/rules/1
+    value:
+      id: R-ID-8F91D35D5ECA880D2E49E5ADA5E8F458
       rule: POLICY-ID-CONTRACT-O
       preconditions:
       - C-ID-F0BC84293AB372AA1C0C137F5785013E
       source_ref:
       - RULE-0002
-    - id: R-ID-578089F0D97BE89B8F8499D83973A81A
+  - id: SRC-0010
+    source_pointer: /Policy_Rules/contracts/0/rules/2
+    value:
+      id: R-ID-578089F0D97BE89B8F8499D83973A81A
       rule: POLICY-ID-DERIVED-IN
       preconditions:
       - C-ID-34E8C65AE234585E9292E5C5099FF16F
       source_ref:
       - RULE-0003
-    - id: R-ID-34C071088561988E31D4D714C88DFE72
+  - id: SRC-0011
+    source_pointer: /Policy_Rules/contracts/0/rules/3
+    value:
+      id: R-ID-34C071088561988E31D4D714C88DFE72
       rule: APPROVAL-PROVENANCE
       preconditions:
       - C-ID-C4BDEF5386DB956C500F3459E984BC9A
       source_ref:
       - RULE-0004
-    - id: R-ID-3FDD48C552CDF88837089E7F6A3E6407
+  - id: SRC-0012
+    source_pointer: /Policy_Rules/contracts/0/rules/4
+    value:
+      id: R-ID-3FDD48C552CDF88837089E7F6A3E6407
       rule: FAIL-CLOSED-ON-INTEG
       preconditions:
       - C-ID-0E4B46D35F8C2F292AC77145BD79B8E7
       source_ref:
       - RULE-0005
-    - id: R-ID-7C012ED2F41D08568A69E175EEF35133
+  - id: SRC-0013
+    source_pointer: /Policy_Rules/contracts/0/rules/5
+    value:
+      id: R-ID-7C012ED2F41D08568A69E175EEF35133
       rule: MACHINE-CONTRACT-FIR
       preconditions:
       - C-ID-62BC183C9FCF86038E0AFD933E81F4D9
       source_ref:
       - RULE-0006
-    - id: R-ID-50C441D42DBC38828C88E66F07384BAE
+  - id: SRC-0014
+    source_pointer: /Policy_Rules/contracts/0/rules/6
+    value:
+      id: R-ID-50C441D42DBC38828C88E66F07384BAE
       rule: BOUNDED-NON-AUTHORIT
       preconditions:
       - C-ID-A1148B6A0A998D655AF79CA20FE457AB
       source_ref:
       - RULE-0007
-    - id: R-ID-4FD580CEF3E6D02CDABB7450583A7218
+  - id: SRC-0015
+    source_pointer: /Policy_Rules/contracts/0/rules/7
+    value:
+      id: R-ID-4FD580CEF3E6D02CDABB7450583A7218
       rule: PERSIST-VERIFIED-RES
       preconditions:
       - C-ID-9E3F79E1BBA1F8650D9820DF4F789BF4
       source_ref:
       - RULE-0008
-    - id: R-ID-E618FC2A271D8813F280E1D38618C8AD
+  - id: SRC-0016
+    source_pointer: /Policy_Rules/contracts/0/rules/8
+    value:
+      id: R-ID-E618FC2A271D8813F280E1D38618C8AD
       rule: NO-VISUAL-ID-GUESS
       source_ref:
       - RULE-0009
-    - id: R-ID-1EC630FDE913480E13979558EDD87442
+  - id: SRC-0017
+    source_pointer: /Policy_Rules/contracts/0/rules/9
+    value:
+      id: R-ID-1EC630FDE913480E13979558EDD87442
       rule: NO-APPROVAL-WORDING
       source_ref:
       - RULE-0010
-    - id: R-ID-F6CEC282AA06D8E2ED3658A0E128AD73
+  - id: SRC-0018
+    source_pointer: /Policy_Rules/contracts/0/rules/10
+    value:
+      id: R-ID-F6CEC282AA06D8E2ED3658A0E128AD73
       rule: NO-IMPLEMENTATION-TO
       source_ref:
       - RULE-0011
-    - id: R-ID-F24189E62245585925D38A7C2DE69F35
+  - id: SRC-0019
+    source_pointer: /Policy_Rules/contracts/0/rules/11
+    value:
+      id: R-ID-F24189E62245585925D38A7C2DE69F35
       rule: NO-REPOSITORY-EXISTE
       source_ref:
       - RULE-0012
-    - id: R-ID-5E75D488D59D2BEEA53EA42D68010F75
+  - id: SRC-0020
+    source_pointer: /Policy_Rules/contracts/0/rules/12
+    value:
+      id: R-ID-5E75D488D59D2BEEA53EA42D68010F75
       rule: NO-REPEATED-MACHINE
       source_ref:
       - RULE-0013
-    requirements:
-    - requirement_id: REQ-0001
+  - id: SRC-0021
+    source_pointer: /Policy_Rules/contracts/0/requirements/0
+    value:
+      requirement_id: REQ-0001
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
@@ -216,7 +599,10 @@ Policy_Rules:
       - source_bindings.TARGET
       - source_bindings.CRITERION
       - evidence_requirement_binding
-    - requirement_id: REQ-0002
+  - id: SRC-0022
+    source_pointer: /Policy_Rules/contracts/0/requirements/1
+    value:
+      requirement_id: REQ-0002
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
@@ -232,15 +618,22 @@ Policy_Rules:
         - SUB-0002
       - purpose: CRITERION
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: &id002
+        - CRI-0001
+        - CRI-0002
+        - CRI-0003
+        - CRI-0004
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: *id002
       unresolved_fields:
       - source_bindings.TARGET
       - source_bindings.CRITERION
       - evidence_requirement_binding
-    - requirement_id: REQ-0003
+  - id: SRC-0023
+    source_pointer: /Policy_Rules/contracts/0/requirements/2
+    value:
+      requirement_id: REQ-0003
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
@@ -256,15 +649,22 @@ Policy_Rules:
         - SUB-0003
       - purpose: CRITERION
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: &id003
+        - CRI-0001
+        - CRI-0002
+        - CRI-0003
+        - CRI-0004
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: *id003
       unresolved_fields:
       - source_bindings.TARGET
       - source_bindings.CRITERION
       - evidence_requirement_binding
-    - requirement_id: REQ-0004
+  - id: SRC-0024
+    source_pointer: /Policy_Rules/contracts/0/requirements/3
+    value:
+      requirement_id: REQ-0004
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
@@ -280,15 +680,22 @@ Policy_Rules:
         - SUB-0004
       - purpose: CRITERION
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: &id004
+        - CRI-0001
+        - CRI-0002
+        - CRI-0003
+        - CRI-0004
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: *id004
       unresolved_fields:
       - source_bindings.TARGET
       - source_bindings.CRITERION
       - evidence_requirement_binding
-    - requirement_id: REQ-0005
+  - id: SRC-0025
+    source_pointer: /Policy_Rules/contracts/0/requirements/4
+    value:
+      requirement_id: REQ-0005
       source_bindings:
       - purpose: MEANING
         state: SOURCE_IDENTIFIED
@@ -304,11 +711,23 @@ Policy_Rules:
         - SUB-0005
       - purpose: CRITERION
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: &id005
+        - CRI-0001
+        - CRI-0002
+        - CRI-0003
+        - CRI-0004
       evidence_requirement_binding:
         state: UNRESOLVED
-        basis_ref_ids: *id001
+        basis_ref_ids: *id005
       unresolved_fields:
       - source_bindings.TARGET
       - source_bindings.CRITERION
       - evidence_requirement_binding
+  source_document:
+    path: developer/policy/GOV/MPD-GOV-0005.yaml
+    sha256: 181a81e595a11dbeaaeaf86d39632a9777a195dfebeeda33db066cc4e96010a8
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: PUBLIC_POLICY_V2
+  source_registration: INDEXED
+  contract_state: CANDIDATE

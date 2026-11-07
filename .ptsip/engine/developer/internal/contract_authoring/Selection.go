@@ -25,13 +25,171 @@ type PolicySelection struct {
 	ExecutionAuthorized bool              `json:"execution_authorized"`
 	MutationAuthorized  bool              `json:"mutation_authorized"`
 	PolicyConformance   string            `json:"policy_conformance"`
+	StructuralState     string            `json:"structural_state,omitempty"`
 }
+
+const UnifiedPolicyVersion = "ptsip-unified-policy/v3-candidate"
+const UnifiedPolicyIndex = ".ptsip/contracts/policy/unified/index.json"
+const UnifiedPolicySchema = ".ptsip/contracts/policy/unified/Unified_Policy.schema.json"
+const UnifiedPolicySchemaID = "urn:ptsip:candidate:policy:unified:v3"
+
+func IsUnifiedPolicy(doc Document) bool { return doc["schema_version"] == UnifiedPolicyVersion }
 
 // SelectPolicyDocument requires the declared identity even before a new policy
 // has a destination file. Neither a --family hint nor a path supplies identity.
 func SelectPolicyDocument(root string, doc Document) (PolicySelection, error) {
 	identity := object(doc["Policy_Identity"])
+	if IsUnifiedPolicy(doc) {
+		return SelectUnifiedPolicy(root, stringValue(identity["policy_kind"]), stringValue(identity["root_family"]))
+	}
 	return SelectPolicy(root, stringValue(identity["policy_kind"]), stringValue(identity["root_family"]))
+}
+
+// SelectUnifiedPolicy resolves the candidate serialization independently of the
+// v2 Family contracts. It grants no policy or execution approval.
+func SelectUnifiedPolicy(root, kind, family string) (PolicySelection, error) {
+	fail := func(err error) (PolicySelection, error) { return PolicySelection{}, err }
+	if kind != "PTSIP_DEVELOPER_POLICY" && kind != "PTSIP_SUPPORT_FEATURE" {
+		return fail(fmt.Errorf("UNIFIED_POLICY_KIND_UNREGISTERED: %s", kind))
+	}
+	index, err := jsonObject(root, ".ptsip/index.json")
+	if err != nil {
+		return fail(err)
+	}
+	namespaces, err := bindingObject(index, "namespaces")
+	if err != nil {
+		return fail(err)
+	}
+	contracts, err := bindingObject(namespaces, "contracts")
+	if err != nil {
+		return fail(err)
+	}
+	if contracts["status"] != "ACTIVE" || contracts["index"] != "contracts/index.json" {
+		return fail(fmt.Errorf("UNIFIED_CONTRACT_NAMESPACE_UNRESOLVED"))
+	}
+	catalog, err := jsonObject(root, ".ptsip/contracts/index.json")
+	if err != nil {
+		return fail(err)
+	}
+	if catalog["policy"] != "policy/boundary.json" {
+		return fail(fmt.Errorf("UNIFIED_POLICY_BOUNDARY_UNRESOLVED"))
+	}
+	boundary, err := jsonObject(root, BoundaryPath)
+	if err != nil {
+		return fail(err)
+	}
+	if boundary["domain"] != "policy" {
+		return fail(fmt.Errorf("UNIFIED_POLICY_BOUNDARY_DOMAIN_INVALID"))
+	}
+	registration, err := field(boundary, "unified_binding", "index")
+	if err != nil {
+		return fail(err)
+	}
+	if registration != UnifiedPolicyIndex {
+		return fail(fmt.Errorf("UNIFIED_POLICY_REGISTRATION_UNRESOLVED"))
+	}
+	registrationData, err := jsonObject(root, registration)
+	if err != nil {
+		return fail(err)
+	}
+	if registrationData["schema_version"] != "ptsip-unified-policy-registration/v1" ||
+		registrationData["document_schema_version"] != UnifiedPolicyVersion || registrationData["status"] != "CANDIDATE" ||
+		registrationData["schema_ref"] != UnifiedPolicySchema || registrationData["schema_id"] != UnifiedPolicySchemaID ||
+		registrationData["structural_authoring_registered"] != true || registrationData["normative_activation"] != false ||
+		registrationData["execution_authorized"] != false || registrationData["publication_authorized"] != false {
+		return fail(fmt.Errorf("UNIFIED_POLICY_REGISTRATION_INVALID"))
+	}
+	if !registered(registrationData["policy_kinds"], kind) {
+		return fail(fmt.Errorf("UNIFIED_POLICY_KIND_UNREGISTERED: %s", kind))
+	}
+	vocabulary, err := jsonObject(root, IdentityVocabularyPath)
+	if err != nil {
+		return fail(err)
+	}
+	families, err := IdentityValues(vocabulary, "root_family")
+	if err != nil {
+		return fail(err)
+	}
+	if !registered(families, family) {
+		return fail(fmt.Errorf("UNIFIED_POLICY_FAMILY_UNREGISTERED: %s", family))
+	}
+	schema, err := jsonObject(root, UnifiedPolicySchema)
+	if err != nil {
+		return fail(err)
+	}
+	if schema["$id"] != UnifiedPolicySchemaID {
+		return fail(fmt.Errorf("UNIFIED_POLICY_SCHEMA_ID_MISMATCH"))
+	}
+	routingRef, err := field(boundary, "routing_binding", "data")
+	if err != nil {
+		return fail(err)
+	}
+	routing, err := jsonObject(root, routingRef)
+	if err != nil {
+		return fail(err)
+	}
+	routes, err := bindingObject(routing, "routes")
+	if err != nil {
+		return fail(err)
+	}
+	route, err := bindingObject(routes, kind)
+	if err != nil {
+		return fail(err)
+	}
+	output, err := field(route, "output_root")
+	if err != nil {
+		return fail(err)
+	}
+	if (kind == "PTSIP_DEVELOPER_POLICY" && output != "developer/policy") ||
+		(kind == "PTSIP_SUPPORT_FEATURE" && output != "src/policy") {
+		return fail(fmt.Errorf("UNIFIED_POLICY_OUTPUT_ROOT_MISMATCH"))
+	}
+	evaluationRef, err := field(registrationData, "evaluation_registry_ref")
+	if err != nil {
+		return fail(err)
+	}
+	if _, err := jsonObject(root, evaluationRef); err != nil {
+		return fail(err)
+	}
+	decisionRef, err := field(registrationData, "authoring_basis_ref")
+	if err != nil {
+		return fail(err)
+	}
+	if _, err := jsonObject(root, decisionRef); err != nil {
+		return fail(err)
+	}
+	return PolicySelection{Domain: "policy", Validator: "policy-check", PolicyKind: kind, RootFamily: family,
+		OutputRoot: output, StructuralState: "CANDIDATE", PolicyConformance: "NOT_ASSERTED",
+		SchemaIDs: map[string]string{"public": UnifiedPolicySchemaID},
+		ContractRefs: map[string]string{"boundary": BoundaryPath, "routing": routingRef,
+			"public_schema": UnifiedPolicySchema, "unified_registry": registration,
+			"identity_vocabulary": IdentityVocabularyPath, "evaluation_registry": evaluationRef,
+			"authoring_basis": decisionRef}}, nil
+}
+
+func unifiedTarget(root, target string) (bool, error) {
+	name, err := localFile(root, target)
+	if err != nil {
+		return false, err
+	}
+	data, err := os.ReadFile(name)
+	if err != nil {
+		return false, err
+	}
+	seen, unified := false, false
+	for _, line := range strings.Split(string(data), "\n") {
+		if !strings.HasPrefix(line, "schema_version:") {
+			continue
+		}
+		if seen {
+			return false, fmt.Errorf("DUPLICATE_POLICY_SCHEMA_VERSION")
+		}
+		seen = true
+		value := strings.TrimSpace(strings.TrimPrefix(line, "schema_version:"))
+		value = strings.Trim(value, "\"'")
+		unified = value == UnifiedPolicyVersion
+	}
+	return unified, nil
 }
 
 // CheckPolicyContractPath prevents registration from reviving historical Family
@@ -241,7 +399,16 @@ func ResolvePolicyTarget(root, target string) (PolicySelection, error) {
 	if err != nil {
 		return fail(err)
 	}
-	selection, err := SelectPolicy(root, kind, family)
+	unified, err := unifiedTarget(root, target)
+	if err != nil {
+		return fail(err)
+	}
+	var selection PolicySelection
+	if unified {
+		selection, err = SelectUnifiedPolicy(root, kind, family)
+	} else {
+		selection, err = SelectPolicy(root, kind, family)
+	}
 	if err != nil {
 		return fail(err)
 	}

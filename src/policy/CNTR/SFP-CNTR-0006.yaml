@@ -1,131 +1,272 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "CNTR",
-  "policy": {
-    "id": "SFP-CNTR-0006",
-    "title": "Consumer Analysis Reusable Resolver and Candidate Selection (DRAFT)",
-    "status": "DRAFT"
-  },
-  "authority_subject": {
-    "id": "SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT",
-    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
-  },
-  "exclusive_kernel": [
-    "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
-    "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_CNTR",
-    "schema_id": "ptsip.governance/root-family/cntr",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
-          "statement": "지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.",
-          "non_substitutability": "INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다."
-        },
-        {
-          "id": "SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY",
-          "statement": "지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.",
-          "non_substitutability": "OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원 계약으로 바꾸지 못한다."
-        }
-      ]
-    },
-    "unit_consumer_analysis_approved_decisions": {
-      "discovery": "EXACT_LOOKUP_PLUS_REGISTERED_RELATION_EXPANSION",
-      "selection": "CONTRACT_BASED_DETERMINISTIC_SELECTION",
-      "candidate_scope": "CONTRACT_DERIVED_CANDIDATE_CLOSURE",
-      "equivalent_candidates": "VERIFIED_LOGICAL_EQUIVALENCE",
-      "equivalence_definition_authority": "PTSIP_COMMON_SEMANTICS_WITH_CONSUMER_TYPE_EXTENSION",
-      "equivalence_transitivity": "CONTRACT_VERIFIED_EQUIVALENCE_TRANSITIVITY",
-      "relation_semantics_owner": "PTSIP",
-      "actual_relation_declaration_owner": "CONSUMER_PROJECT",
-      "project_selection_contract": "REGISTERED",
-      "manual_candidate_scope_list": "NOT_REQUIRED",
-      "per_record_equivalence_links": "NOT_REQUIRED",
-      "context_first_lookup": "AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX",
-      "reference_source_authority": "ANALYSIS_OWNED",
-      "reference_granularity": "INDIVIDUAL_OBSERVATION_AND_EVIDENCE",
-      "relocation_analysis_candidate_scope": "CURRENT_CONSUMER_CONTEXT_ONLY",
-      "relocation_analysis_operation": "NEW_LOCAL_ANALYSIS_NOT_CROSS_SCOPE_REUSE",
-      "relocation_previous_analysis_lookup": "DISABLED",
-      "fork_analysis_operation": "CURRENT_FORK_CONTEXT_INDEPENDENT_ANALYSIS",
-      "fork_analysis_candidate_scope": "FORK_LOCAL_CONTEXT_ONLY",
-      "fork_origin_analysis_candidate_discovery": "DISABLED",
-      "fork_lineage_lookup": "OPTIONAL_DERIVED_VERIFIED_LOCAL_RECORD_AUDIT_ONLY",
-      "fork_audit_source_resolution": "EXISTING_LOCAL_VERIFIED_RECORDS_ONLY",
-      "fork_audit_result_role": "NON_AUTHORITATIVE_READ_ONLY_PROJECTION",
-      "fork_audit_execution_trigger": "EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY",
-      "fork_audit_execution_role": "ON_DEMAND_READ_ONLY_DERIVED_PROJECTION"
-    },
-    "unit_consumer_analysis_invariants": {
-      "filename_or_ai_semantic_discovery": "FORBIDDEN",
-      "relations_must_be_registered": true,
-      "no_relation_found_is_no_impact_proof": false,
-      "selection_requires_complete_derived_candidate_set": true,
-      "selection_requires_unique_verified_logical_result": true,
-      "multiple_non_equivalent_or_unresolvable_candidates": "FAIL_CLOSED",
-      "physical_record_id_must_remain_distinct": true,
-      "transitivity_requires_validated_contract_scope_and_compatibility": true,
-      "unproved_equivalence_or_transitivity": "FAIL_CLOSED",
-      "no_manual_duplicate_reference_management": true,
-      "reverse_index_is_non_authoritative_projection": true,
-      "reverse_index_requires_complete_registered_relationships": true,
-      "unverified_candidate_closure": "FAIL_CLOSED",
-      "context_first_entry_does_not_require_ai_candidate_inference": true,
-      "relocation_old_repository_analysis_candidate_expansion": "FORBIDDEN",
-      "relocation_old_repository_lookup_required": false,
-      "relocation_cross_scope_reference_registration_required": false,
-      "relocation_current_context_to_analysis_reverse_index_preserved": true,
-      "relocation_analysis_uses_current_repository_local_evidence": true,
-      "relocation_missing_old_repository_does_not_block_new_analysis": true,
-      "relocation_earlier_analysis_result_not_implicitly_reused": true,
-      "relocation_fork_lineage_scope_not_changed": true,
-      "fork_lineage_not_a_prerequisite_for_new_analysis": true,
-      "fork_origin_repository_access_not_required": true,
-      "fork_origin_analysis_not_discovered_as_reuse_candidate": true,
-      "fork_optional_audit_relation_cannot_expand_candidate_scope": true,
-      "fork_audit_missing_or_unverified_cannot_block_local_analysis": true,
-      "fork_audit_assertion_requires_verified_registered_relation": true,
-      "fork_current_context_first_reverse_index_preserved": true,
-      "fork_analysis_uses_current_repository_evidence_only": true,
-      "fork_origin_record_ids_remain_origin_scoped": true,
-      "fork_audit_must_not_establish_event_equivalence": true,
-      "fork_audit_lookup_does_not_require_extra_registry": true,
-      "fork_audit_resolution_does_not_search_external_origin_repository": true,
-      "fork_audit_lookup_cannot_expand_candidate_set": true,
-      "fork_audit_lookup_must_be_read_only": true,
-      "fork_audit_missing_proof_returns_no_verified_lineage": true,
-      "fork_audit_no_proof_does_not_block_fork_analysis": true,
-      "fork_audit_verified_source_binding_required": true,
-      "fork_audit_request_required_to_compute_projection": true,
-      "fork_audit_derivation_on_record_creation": "FORBIDDEN",
-      "fork_audit_derivation_on_normal_analysis_execution": "FORBIDDEN",
-      "fork_audit_derivation_on_context_collection_or_regular_lookup": "FORBIDDEN",
-      "fork_audit_automatic_precompute_or_background_run_required": false,
-      "fork_audit_result_does_not_change_analysis_candidate_or_execution_status": true,
-      "fork_audit_request_uses_existing_local_verified_records_only": true
-    },
-    "unit_consumer_analysis_unresolved_decisions": [
-      "RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES",
-      "SELECTION_CONTRACT_COMPARISON_DIMENSIONS",
-      "EQUIVALENCE_PROOF_INTERFACE"
-    ],
-    "unit_consumer_analysis_implementation_detail_authority": "PLAN"
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-INFO-0005",
-        "scope": "CONSUMER_ANALYSIS_POLICY_BOUNDARY"
-      }
-    ]
-  }
-}
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-CNTR-0006
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CNTR
+  title: Consumer Analysis Reusable Resolver and Candidate Selection (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-CNTR-0006#/authority_semantics/unit_consumer_analysis_approved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: SFP-CNTR-0006#/authority_semantics/unit_consumer_analysis_invariants
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-CNTR-0006#/authority_semantics/unit_consumer_analysis_unresolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-CNTR-0006#/authority_semantics/unit_consumer_analysis_implementation_detail_authority
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0014
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CNTR
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CNTR-0006
+      title: Consumer Analysis Reusable Resolver and Candidate Selection (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
+      statement: PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+    - SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CNTR
+      schema_id: ptsip.governance/root-family/cntr
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.
+      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+      statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.
+      non_substitutability: OPS의 회복 필요나 CHANGE의 migration 요구가 RESERVED Task/runtime persistence를 활성 지원 계약으로 바꾸지 못한다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/unit_consumer_analysis_approved_decisions
+    value:
+      discovery: EXACT_LOOKUP_PLUS_REGISTERED_RELATION_EXPANSION
+      selection: CONTRACT_BASED_DETERMINISTIC_SELECTION
+      candidate_scope: CONTRACT_DERIVED_CANDIDATE_CLOSURE
+      equivalent_candidates: VERIFIED_LOGICAL_EQUIVALENCE
+      equivalence_definition_authority: PTSIP_COMMON_SEMANTICS_WITH_CONSUMER_TYPE_EXTENSION
+      equivalence_transitivity: CONTRACT_VERIFIED_EQUIVALENCE_TRANSITIVITY
+      relation_semantics_owner: PTSIP
+      actual_relation_declaration_owner: CONSUMER_PROJECT
+      project_selection_contract: REGISTERED
+      manual_candidate_scope_list: NOT_REQUIRED
+      per_record_equivalence_links: NOT_REQUIRED
+      context_first_lookup: AUTOMATIC_REGISTERED_EVIDENCE_REVERSE_INDEX
+      reference_source_authority: ANALYSIS_OWNED
+      reference_granularity: INDIVIDUAL_OBSERVATION_AND_EVIDENCE
+      relocation_analysis_candidate_scope: CURRENT_CONSUMER_CONTEXT_ONLY
+      relocation_analysis_operation: NEW_LOCAL_ANALYSIS_NOT_CROSS_SCOPE_REUSE
+      relocation_previous_analysis_lookup: DISABLED
+      fork_analysis_operation: CURRENT_FORK_CONTEXT_INDEPENDENT_ANALYSIS
+      fork_analysis_candidate_scope: FORK_LOCAL_CONTEXT_ONLY
+      fork_origin_analysis_candidate_discovery: DISABLED
+      fork_lineage_lookup: OPTIONAL_DERIVED_VERIFIED_LOCAL_RECORD_AUDIT_ONLY
+      fork_audit_source_resolution: EXISTING_LOCAL_VERIFIED_RECORDS_ONLY
+      fork_audit_result_role: NON_AUTHORITATIVE_READ_ONLY_PROJECTION
+      fork_audit_execution_trigger: EXPLICIT_AUDIT_INFORMATION_REQUEST_ONLY
+      fork_audit_execution_role: ON_DEMAND_READ_ONLY_DERIVED_PROJECTION
+  - id: SRC-0011
+    source_pointer: /authority_semantics/unit_consumer_analysis_invariants
+    value:
+      filename_or_ai_semantic_discovery: FORBIDDEN
+      relations_must_be_registered: true
+      no_relation_found_is_no_impact_proof: false
+      selection_requires_complete_derived_candidate_set: true
+      selection_requires_unique_verified_logical_result: true
+      multiple_non_equivalent_or_unresolvable_candidates: FAIL_CLOSED
+      physical_record_id_must_remain_distinct: true
+      transitivity_requires_validated_contract_scope_and_compatibility: true
+      unproved_equivalence_or_transitivity: FAIL_CLOSED
+      no_manual_duplicate_reference_management: true
+      reverse_index_is_non_authoritative_projection: true
+      reverse_index_requires_complete_registered_relationships: true
+      unverified_candidate_closure: FAIL_CLOSED
+      context_first_entry_does_not_require_ai_candidate_inference: true
+      relocation_old_repository_analysis_candidate_expansion: FORBIDDEN
+      relocation_old_repository_lookup_required: false
+      relocation_cross_scope_reference_registration_required: false
+      relocation_current_context_to_analysis_reverse_index_preserved: true
+      relocation_analysis_uses_current_repository_local_evidence: true
+      relocation_missing_old_repository_does_not_block_new_analysis: true
+      relocation_earlier_analysis_result_not_implicitly_reused: true
+      relocation_fork_lineage_scope_not_changed: true
+      fork_lineage_not_a_prerequisite_for_new_analysis: true
+      fork_origin_repository_access_not_required: true
+      fork_origin_analysis_not_discovered_as_reuse_candidate: true
+      fork_optional_audit_relation_cannot_expand_candidate_scope: true
+      fork_audit_missing_or_unverified_cannot_block_local_analysis: true
+      fork_audit_assertion_requires_verified_registered_relation: true
+      fork_current_context_first_reverse_index_preserved: true
+      fork_analysis_uses_current_repository_evidence_only: true
+      fork_origin_record_ids_remain_origin_scoped: true
+      fork_audit_must_not_establish_event_equivalence: true
+      fork_audit_lookup_does_not_require_extra_registry: true
+      fork_audit_resolution_does_not_search_external_origin_repository: true
+      fork_audit_lookup_cannot_expand_candidate_set: true
+      fork_audit_lookup_must_be_read_only: true
+      fork_audit_missing_proof_returns_no_verified_lineage: true
+      fork_audit_no_proof_does_not_block_fork_analysis: true
+      fork_audit_verified_source_binding_required: true
+      fork_audit_request_required_to_compute_projection: true
+      fork_audit_derivation_on_record_creation: FORBIDDEN
+      fork_audit_derivation_on_normal_analysis_execution: FORBIDDEN
+      fork_audit_derivation_on_context_collection_or_regular_lookup: FORBIDDEN
+      fork_audit_automatic_precompute_or_background_run_required: false
+      fork_audit_result_does_not_change_analysis_candidate_or_execution_status: true
+      fork_audit_request_uses_existing_local_verified_records_only: true
+  - id: SRC-0012
+    source_pointer: /authority_semantics/unit_consumer_analysis_unresolved_decisions
+    value:
+    - RESOLVER_TYPED_INPUT_OUTPUT_AND_FAILURE_SHAPES
+    - SELECTION_CONTRACT_COMPARISON_DIMENSIONS
+    - EQUIVALENCE_PROOF_INTERFACE
+  - id: SRC-0013
+    source_pointer: /authority_semantics/unit_consumer_analysis_implementation_detail_authority
+    value: PLAN
+  - id: SRC-0014
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: SFP-INFO-0005
+        scope: CONSUMER_ANALYSIS_POLICY_BOUNDARY
+  source_document:
+    path: src/policy/CNTR/SFP-CNTR-0006.yaml
+    sha256: 9d88bf6645e357e68859011e7e99f5433ff7db5cdbb112ca0c11ea12427a89a3
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

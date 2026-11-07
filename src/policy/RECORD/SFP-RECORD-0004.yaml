@@ -1,186 +1,379 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "RECORD",
-  "policy": {
-    "id": "SFP-RECORD-0004",
-    "title": "Consumer Analysis Working Retention and Provenance (DRAFT)",
-    "status": "DRAFT"
-  },
-  "authority_subject": {
-    "id": "SUP_OBSERVATION_AND_OPERATION_PROVENANCE",
-    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
-  },
-  "exclusive_kernel": [
-    "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
-    "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_RECORD",
-    "schema_id": "ptsip.governance/root-family/record",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
-          "statement": "report와 receipt를 실제 관측 repository/profile/authority revision 및 Artifact snapshot에 결합하고 다른 시점의 결과를 섞지 않는다.",
-          "non_substitutability": "ASSURE의 conformance 판정이나 CTRL의 실행 허용은 그 결과의 재확인 가능한 source provenance를 자동 보존하지 않는다."
-        },
-        {
-          "id": "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL",
-          "statement": "operation identity, observed evidence와 판단 출처의 보존 및 조회를 정한다. 기록은 새로운 global authority나 live canonical source가 되지 않는다.",
-          "non_substitutability": "GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와 원본 receipt를 대체하지 못한다."
-        }
-      ],
-      "source_scope": []
-    },
-    "unit_consumer_analysis_approved_decisions": {
-      "analysis_tiers": "WORKING_AND_REUSABLE",
-      "working_retention_scope": "MACHINE_DERIVED_SELECTIVE_RETENTION",
-      "working_retention_release": "CONTRACT_PROVEN_RETENTION_RELEASE",
-      "mandatory_record_retention": "PRESERVED_WITH_PRECEDENCE",
-      "original_records_for_equivalence": "PRESERVE_ID_PROVENANCE_AND_VERIFICATION_HISTORY",
-      "retention_inputs": "EXISTING_TASK_REFERENCE_VERIFICATION_AND_RECORD_CONTRACTS",
-      "per_record_manual_retention_list": "NOT_REQUIRED",
-      "reusable_long_term_retention_scope": "CONSUMER_DELEGATED_PER_REGISTERED_ANALYSIS_TYPE_LONG_TERM_RETENTION",
-      "reusable_required_original_identity_and_provenance": "PRESERVED",
-      "reusable_long_term_retention_scope_choice": "B_USER_EXPLICIT",
-      "reusable_long_term_retention_scope_decided_at": "2026-10-11",
-      "reusable_long_term_retention_delegation_granularity": "INDEPENDENT_EXPLICIT_CONSUMER_DELEGATION_FOR_EACH_REGISTERED_ANALYSIS_TYPE",
-      "reusable_long_term_retention_missing_valid_type_delegation": "NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY",
-      "reusable_long_term_retention_type_binding_owner": "SFP-INFO-0005",
-      "reusable_long_term_retention_contract_shape": "PLAN_AND_MACHINE_CONTRACT_UNRESOLVED",
-      "reusable_long_term_retention_policy_is_cleanup_or_write_permission": false,
-      "working_retention_historical_record_handoff_policy_choice": "A_USER_EXPLICIT",
-      "working_retention_historical_record_handoff_decided_at": "2026-10-11",
-      "working_retention_release_historical_record_boundary": "VERIFY_INDEPENDENT_RECORD_PRESERVATION_NO_SEPARATE_HANDOFF_TRANSITION_REQUIRED",
-      "working_retention_release_proof": "MACHINE_VERIFIED_CURRENT_RETENTION_RELEASE_AND_PRESERVED_MANDATORY_RECORD_PROVENANCE_HISTORY",
-      "working_retention_release_unproven_record_or_release": "FAIL_CLOSED_KEEP",
-      "working_retention_handoff_is_cleanup_execution_permission": false,
-      "working_retention_proof_interface": "PLAN_AND_MACHINE_CONTRACT_PENDING"
-    },
-    "unit_consumer_analysis_invariants": {
-      "working_retention_needs_machine_proven_reference_scope": true,
-      "lifecycle_end_alone_proves_release": false,
-      "no_reference_found_proves_release": false,
-      "unresolved_reference_or_retention_obligation": "FAIL_CLOSED_KEEP",
-      "cleanup_eligible_does_not_authorize_deletion": true,
-      "reusable_logical_merge_does_not_merge_or_delete_source_records": true,
-      "records_confer_new_project_authority": false,
-      "consumer_retention_scope_cannot_override_mandatory_record_retention": true,
-      "reusable_retention_policy_is_not_cleanup_execution_permission": true,
-      "unregistered_or_ambiguous_retention_delegation_cannot_authorize_cleanup": true,
-      "reusable_retention_scope_requires_explicit_type_bound_consumer_delegation": true,
-      "reusable_retention_scope_cannot_be_inferred_from_global_project_default": true,
-      "missing_expired_revoked_ambiguous_or_unverifiable_type_delegation": "FAIL_CLOSED_NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY",
-      "independent_analysis_type_delegations_do_not_implicitly_cross_authorize": true,
-      "evidence_verified_reusable_qualification_remains_independent_and_mandatory": true,
-      "reusable_long_term_retention_scope_does_not_override_mandatory_record_or_original_provenance": true,
-      "failure_to_delegate_long_term_retention_is_not_permission_to_delete_existing_records": true,
-      "retention_scope_eligibility_does_not_authorize_cleanup_physical_deletion_or_write": true,
-      "registration_or_retention_mutation_still_requires_separate_current_ctrl_and_real_authority": true,
-      "type_delegation_proof_and_resolution_are_machine_verifiable": true,
-      "type_specific_retention_direction_does_not_activate_draft_policy": true,
-      "working_release_requires_machine_proven_independent_mandatory_record_preservation": true,
-      "working_release_requires_original_record_identity_provenance_and_verification_history_preservation": true,
-      "working_release_does_not_require_separate_historical_record_handoff_state_transition": true,
-      "working_release_requires_prior_release_contract_and_reference_scope_verification": true,
-      "working_release_cannot_rely_on_lifecycle_end_or_absence_of_found_references": true,
-      "working_release_missing_ambiguous_stale_or_unprovable_record_protection": "FAIL_CLOSED_KEEP",
-      "working_release_missing_ambiguous_stale_or_unprovable_release_eligibility": "FAIL_CLOSED_KEEP",
-      "independent_record_history_cannot_be_replaced_by_working_record_retention_release": true,
-      "independent_record_retention_precedence_over_working_release": true,
-      "working_release_cannot_grant_record_deletion_cleanup_execution_or_mutating_authority": true,
-      "working_release_does_not_change_registered_analysis_source_identity_or_canonical_record_authority": true,
-      "working_release_proof_interface_details_delegated_to_plan_and_machine_contract": true,
-      "working_release_policy_direction_does_not_activate_draft_or_implement_cleanup": true
-    },
-    "unit_consumer_analysis_unresolved_decisions": [
-      "WORKING_RETENTION_RELEASE_AND_RECORD_PRESERVATION_PROOF_CONTRACT_PLAN",
-      "REUSABLE_RETENTION_DELEGATION_CONTRACT_SHAPE"
-    ],
-    "unit_consumer_analysis_implementation_detail_authority": "PLAN",
-    "unit_consumer_analysis_reusable_retention_type_delegation_policy": {
-      "subject": "REUSABLE_ANALYSIS_LONG_TERM_RETENTION_SCOPE",
-      "selected_option": "B_INDEPENDENT_CONSUMER_DELEGATION_PER_ANALYSIS_TYPE",
-      "decision_source": "USER_EXPLICIT",
-      "decision_date": "2026-10-11",
-      "applicability": "REGISTERED_ANALYSIS_TYPE_IDENTITY_VIA_SFP_INFO_0005",
-      "authority": "CONSUMER_PROJECT_EXPLICIT_DELEGATION_PER_ANALYSIS_TYPE",
-      "no_valid_matching_type_delegation": "DO_NOT_AUTOMATICALLY_GRANT_LONG_TERM_REUSABLE_RETENTION_ELIGIBILITY",
-      "otherwise_required": "EVIDENCE_VERIFIED_REUSABLE_QUALIFICATION_AND_ALL_MANDATORY_RECORD_CONTRACTS",
-      "mandatory_record_receipt_history_and_original_provenance": "PRESERVE_INDEPENDENT_OF_CONSUMER_TYPE_DELEGATION",
-      "no_implicit_project_wide_type_delegation": true,
-      "no_cleanup_execution_permission_from_retention_eligibility": true,
-      "no_write_permission_from_retention_eligibility": true,
-      "delegation_contract_format_and_verification": "UNRESOLVED_PLAN_AND_CONTRACT_DESIGN",
-      "physical_implementation": "NOT_AUTHORIZED",
-      "runtime_activation": "NOT_AUTHORIZED"
-    },
-    "unit_consumer_analysis_resolved_decisions": [
-      {
-        "id": "REUSABLE_RETENTION_SCOPE",
-        "selected_option": "B_CONSUMER_DELEGATED_PER_ANALYSIS_TYPE",
-        "approval_source": "USER_EXPLICIT",
-        "decision_date": "2026-10-11",
-        "resolution_scope": "LONG_TERM_RETENTION_DELEGATION_GRANULARITY_ONLY",
-        "record_policy_owner": "SFP-RECORD-0004",
-        "analysis_type_binding_owner": "SFP-INFO-0005",
-        "long_term_eligibility_without_type_delegation": "NOT_AUTOMATICALLY_GRANTED",
-        "mandatory_record_retention": "PRESERVED",
-        "evidence_qualification": "UNCHANGED",
-        "cleanup_write_authority": "UNCHANGED",
-        "implementation": "NOT_AUTHORIZED",
-        "activation": "NOT_AUTHORIZED"
-      },
-      {
-        "id": "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
-        "selected_option": "A_NO_SEPARATE_HANDOFF_REQUIRE_MACHINE_PROVEN_INDEPENDENT_RECORD_PRESERVATION",
-        "approval_source": "USER_EXPLICIT",
-        "decision_date": "2026-10-11",
-        "resolution_scope": "WORKING_RETENTION_RELEASE_TO_MANDATORY_RECORD_PRESERVATION_BOUNDARY_ONLY",
-        "separate_handoff_transition": "NOT_REQUIRED",
-        "required_proofs": [
-          "CURRENT_WORKING_RELEASE_ELIGIBILITY",
-          "INDEPENDENT_MANDATORY_RECORD_PRESERVATION",
-          "ORIGINAL_ID_PROVENANCE_VERIFICATION_HISTORY"
-        ],
-        "missing_or_ambiguous_proof": "FAIL_CLOSED_KEEP",
-        "record_retention_priority": "PRESERVED",
-        "release_is_cleanup_deletion_or_write_permission": false,
-        "implementation": "NOT_AUTHORIZED",
-        "active_transition": "NOT_AUTHORIZED"
-      }
-    ],
-    "unit_consumer_analysis_working_historical_handoff_direction": {
-      "policy_subject": "WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF",
-      "selected_option": "A_INDEPENDENT_RECORD_PRESERVATION_NO_SEPARATE_HANDOFF",
-      "approval_source": "USER_EXPLICIT",
-      "decision_date": "2026-10-11",
-      "working_release_condition": "CONTRACT_PROVEN_RELEASE_PLUS_MACHINE_PROVEN_RECORD_INDEPENDENT_RETENTION",
-      "historical_handoff_state_transition": "NOT_MANDATORY",
-      "protected_record_scope": "MANDATORY_ORIGINAL_RECORD_IDENTITY_PROVENANCE_VERIFICATION_AND_AUDIT_HISTORY",
-      "record_independence": "CONTINUES_UNDER_EXISTING_RECORD_AUTHORITY",
-      "release_proof_unverifiable": "FAIL_CLOSED_KEEP",
-      "record_preservation_proof_unverifiable": "FAIL_CLOSED_KEEP",
-      "no_new_consumer_cleanup_delegation_or_execution_permission": true,
-      "no_new_ctrl_real_write_or_physical_deletion_authority": true,
-      "proof_schema_reference_resolution_and_validation": "PLAN_AND_MACHINE_CONTRACT",
-      "implementation": "NOT_AUTHORIZED",
-      "active_transition": "NOT_AUTHORIZED"
-    }
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-INFO-0005",
-        "scope": "CONSUMER_ANALYSIS_POLICY_BOUNDARY"
-      }
-    ]
-  }
-}
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-RECORD-0004
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: RECORD
+  title: Consumer Analysis Working Retention and Provenance (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-RECORD-0004#/authority_semantics/unit_consumer_analysis_approved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: SFP-RECORD-0004#/authority_semantics/unit_consumer_analysis_invariants
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: SFP-RECORD-0004#/authority_semantics/unit_consumer_analysis_unresolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: SFP-RECORD-0004#/authority_semantics/unit_consumer_analysis_implementation_detail_authority
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: SFP-RECORD-0004#/authority_semantics/unit_consumer_analysis_reusable_retention_type_delegation_policy
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: SFP-RECORD-0004#/authority_semantics/unit_consumer_analysis_resolved_decisions
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: SFP-RECORD-0004#/authority_semantics/unit_consumer_analysis_working_historical_handoff_direction
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0018
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: RECORD
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-RECORD-0004
+      title: Consumer Analysis Working Retention and Provenance (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_OBSERVATION_AND_OPERATION_PROVENANCE
+      statement: PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+    - SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_RECORD
+      schema_id: ptsip.governance/root-family/record
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OBSERVATION_RECEIPT_SOURCE_BINDING
+      statement: report와 receipt를 실제 관측 repository/profile/authority revision 및 Artifact snapshot에 결합하고 다른 시점의 결과를 섞지 않는다.
+      non_substitutability: ASSURE의 conformance 판정이나 CTRL의 실행 허용은 그 결과의 재확인 가능한 source provenance를 자동 보존하지 않는다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL
+      statement: operation identity, observed evidence와 판단 출처의 보존 및 조회를 정한다. 기록은 새로운 global authority나 live canonical source가
+        되지 않는다.
+      non_substitutability: GOV의 현재 winner나 INFO의 semantic source는 이전 사건의 history와 원본 receipt를 대체하지 못한다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/family_definition/source_scope
+    value: []
+  - id: SRC-0011
+    source_pointer: /authority_semantics/unit_consumer_analysis_approved_decisions
+    value:
+      analysis_tiers: WORKING_AND_REUSABLE
+      working_retention_scope: MACHINE_DERIVED_SELECTIVE_RETENTION
+      working_retention_release: CONTRACT_PROVEN_RETENTION_RELEASE
+      mandatory_record_retention: PRESERVED_WITH_PRECEDENCE
+      original_records_for_equivalence: PRESERVE_ID_PROVENANCE_AND_VERIFICATION_HISTORY
+      retention_inputs: EXISTING_TASK_REFERENCE_VERIFICATION_AND_RECORD_CONTRACTS
+      per_record_manual_retention_list: NOT_REQUIRED
+      reusable_long_term_retention_scope: CONSUMER_DELEGATED_PER_REGISTERED_ANALYSIS_TYPE_LONG_TERM_RETENTION
+      reusable_required_original_identity_and_provenance: PRESERVED
+      reusable_long_term_retention_scope_choice: B_USER_EXPLICIT
+      reusable_long_term_retention_scope_decided_at: '2026-10-11'
+      reusable_long_term_retention_delegation_granularity: INDEPENDENT_EXPLICIT_CONSUMER_DELEGATION_FOR_EACH_REGISTERED_ANALYSIS_TYPE
+      reusable_long_term_retention_missing_valid_type_delegation: NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
+      reusable_long_term_retention_type_binding_owner: SFP-INFO-0005
+      reusable_long_term_retention_contract_shape: PLAN_AND_MACHINE_CONTRACT_UNRESOLVED
+      reusable_long_term_retention_policy_is_cleanup_or_write_permission: false
+      working_retention_historical_record_handoff_policy_choice: A_USER_EXPLICIT
+      working_retention_historical_record_handoff_decided_at: '2026-10-11'
+      working_retention_release_historical_record_boundary: VERIFY_INDEPENDENT_RECORD_PRESERVATION_NO_SEPARATE_HANDOFF_TRANSITION_REQUIRED
+      working_retention_release_proof: MACHINE_VERIFIED_CURRENT_RETENTION_RELEASE_AND_PRESERVED_MANDATORY_RECORD_PROVENANCE_HISTORY
+      working_retention_release_unproven_record_or_release: FAIL_CLOSED_KEEP
+      working_retention_handoff_is_cleanup_execution_permission: false
+      working_retention_proof_interface: PLAN_AND_MACHINE_CONTRACT_PENDING
+  - id: SRC-0012
+    source_pointer: /authority_semantics/unit_consumer_analysis_invariants
+    value:
+      working_retention_needs_machine_proven_reference_scope: true
+      lifecycle_end_alone_proves_release: false
+      no_reference_found_proves_release: false
+      unresolved_reference_or_retention_obligation: FAIL_CLOSED_KEEP
+      cleanup_eligible_does_not_authorize_deletion: true
+      reusable_logical_merge_does_not_merge_or_delete_source_records: true
+      records_confer_new_project_authority: false
+      consumer_retention_scope_cannot_override_mandatory_record_retention: true
+      reusable_retention_policy_is_not_cleanup_execution_permission: true
+      unregistered_or_ambiguous_retention_delegation_cannot_authorize_cleanup: true
+      reusable_retention_scope_requires_explicit_type_bound_consumer_delegation: true
+      reusable_retention_scope_cannot_be_inferred_from_global_project_default: true
+      missing_expired_revoked_ambiguous_or_unverifiable_type_delegation: FAIL_CLOSED_NO_AUTOMATIC_LONG_TERM_RETENTION_ELIGIBILITY
+      independent_analysis_type_delegations_do_not_implicitly_cross_authorize: true
+      evidence_verified_reusable_qualification_remains_independent_and_mandatory: true
+      reusable_long_term_retention_scope_does_not_override_mandatory_record_or_original_provenance: true
+      failure_to_delegate_long_term_retention_is_not_permission_to_delete_existing_records: true
+      retention_scope_eligibility_does_not_authorize_cleanup_physical_deletion_or_write: true
+      registration_or_retention_mutation_still_requires_separate_current_ctrl_and_real_authority: true
+      type_delegation_proof_and_resolution_are_machine_verifiable: true
+      type_specific_retention_direction_does_not_activate_draft_policy: true
+      working_release_requires_machine_proven_independent_mandatory_record_preservation: true
+      working_release_requires_original_record_identity_provenance_and_verification_history_preservation: true
+      working_release_does_not_require_separate_historical_record_handoff_state_transition: true
+      working_release_requires_prior_release_contract_and_reference_scope_verification: true
+      working_release_cannot_rely_on_lifecycle_end_or_absence_of_found_references: true
+      working_release_missing_ambiguous_stale_or_unprovable_record_protection: FAIL_CLOSED_KEEP
+      working_release_missing_ambiguous_stale_or_unprovable_release_eligibility: FAIL_CLOSED_KEEP
+      independent_record_history_cannot_be_replaced_by_working_record_retention_release: true
+      independent_record_retention_precedence_over_working_release: true
+      working_release_cannot_grant_record_deletion_cleanup_execution_or_mutating_authority: true
+      working_release_does_not_change_registered_analysis_source_identity_or_canonical_record_authority: true
+      working_release_proof_interface_details_delegated_to_plan_and_machine_contract: true
+      working_release_policy_direction_does_not_activate_draft_or_implement_cleanup: true
+  - id: SRC-0013
+    source_pointer: /authority_semantics/unit_consumer_analysis_unresolved_decisions
+    value:
+    - WORKING_RETENTION_RELEASE_AND_RECORD_PRESERVATION_PROOF_CONTRACT_PLAN
+    - REUSABLE_RETENTION_DELEGATION_CONTRACT_SHAPE
+  - id: SRC-0014
+    source_pointer: /authority_semantics/unit_consumer_analysis_implementation_detail_authority
+    value: PLAN
+  - id: SRC-0015
+    source_pointer: /authority_semantics/unit_consumer_analysis_reusable_retention_type_delegation_policy
+    value:
+      subject: REUSABLE_ANALYSIS_LONG_TERM_RETENTION_SCOPE
+      selected_option: B_INDEPENDENT_CONSUMER_DELEGATION_PER_ANALYSIS_TYPE
+      decision_source: USER_EXPLICIT
+      decision_date: '2026-10-11'
+      applicability: REGISTERED_ANALYSIS_TYPE_IDENTITY_VIA_SFP_INFO_0005
+      authority: CONSUMER_PROJECT_EXPLICIT_DELEGATION_PER_ANALYSIS_TYPE
+      no_valid_matching_type_delegation: DO_NOT_AUTOMATICALLY_GRANT_LONG_TERM_REUSABLE_RETENTION_ELIGIBILITY
+      otherwise_required: EVIDENCE_VERIFIED_REUSABLE_QUALIFICATION_AND_ALL_MANDATORY_RECORD_CONTRACTS
+      mandatory_record_receipt_history_and_original_provenance: PRESERVE_INDEPENDENT_OF_CONSUMER_TYPE_DELEGATION
+      no_implicit_project_wide_type_delegation: true
+      no_cleanup_execution_permission_from_retention_eligibility: true
+      no_write_permission_from_retention_eligibility: true
+      delegation_contract_format_and_verification: UNRESOLVED_PLAN_AND_CONTRACT_DESIGN
+      physical_implementation: NOT_AUTHORIZED
+      runtime_activation: NOT_AUTHORIZED
+  - id: SRC-0016
+    source_pointer: /authority_semantics/unit_consumer_analysis_resolved_decisions
+    value:
+    - id: REUSABLE_RETENTION_SCOPE
+      selected_option: B_CONSUMER_DELEGATED_PER_ANALYSIS_TYPE
+      approval_source: USER_EXPLICIT
+      decision_date: '2026-10-11'
+      resolution_scope: LONG_TERM_RETENTION_DELEGATION_GRANULARITY_ONLY
+      record_policy_owner: SFP-RECORD-0004
+      analysis_type_binding_owner: SFP-INFO-0005
+      long_term_eligibility_without_type_delegation: NOT_AUTOMATICALLY_GRANTED
+      mandatory_record_retention: PRESERVED
+      evidence_qualification: UNCHANGED
+      cleanup_write_authority: UNCHANGED
+      implementation: NOT_AUTHORIZED
+      activation: NOT_AUTHORIZED
+    - id: WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF
+      selected_option: A_NO_SEPARATE_HANDOFF_REQUIRE_MACHINE_PROVEN_INDEPENDENT_RECORD_PRESERVATION
+      approval_source: USER_EXPLICIT
+      decision_date: '2026-10-11'
+      resolution_scope: WORKING_RETENTION_RELEASE_TO_MANDATORY_RECORD_PRESERVATION_BOUNDARY_ONLY
+      separate_handoff_transition: NOT_REQUIRED
+      required_proofs:
+      - CURRENT_WORKING_RELEASE_ELIGIBILITY
+      - INDEPENDENT_MANDATORY_RECORD_PRESERVATION
+      - ORIGINAL_ID_PROVENANCE_VERIFICATION_HISTORY
+      missing_or_ambiguous_proof: FAIL_CLOSED_KEEP
+      record_retention_priority: PRESERVED
+      release_is_cleanup_deletion_or_write_permission: false
+      implementation: NOT_AUTHORIZED
+      active_transition: NOT_AUTHORIZED
+  - id: SRC-0017
+    source_pointer: /authority_semantics/unit_consumer_analysis_working_historical_handoff_direction
+    value:
+      policy_subject: WORKING_RETENTION_HISTORICAL_RECORD_HANDOFF
+      selected_option: A_INDEPENDENT_RECORD_PRESERVATION_NO_SEPARATE_HANDOFF
+      approval_source: USER_EXPLICIT
+      decision_date: '2026-10-11'
+      working_release_condition: CONTRACT_PROVEN_RELEASE_PLUS_MACHINE_PROVEN_RECORD_INDEPENDENT_RETENTION
+      historical_handoff_state_transition: NOT_MANDATORY
+      protected_record_scope: MANDATORY_ORIGINAL_RECORD_IDENTITY_PROVENANCE_VERIFICATION_AND_AUDIT_HISTORY
+      record_independence: CONTINUES_UNDER_EXISTING_RECORD_AUTHORITY
+      release_proof_unverifiable: FAIL_CLOSED_KEEP
+      record_preservation_proof_unverifiable: FAIL_CLOSED_KEEP
+      no_new_consumer_cleanup_delegation_or_execution_permission: true
+      no_new_ctrl_real_write_or_physical_deletion_authority: true
+      proof_schema_reference_resolution_and_validation: PLAN_AND_MACHINE_CONTRACT
+      implementation: NOT_AUTHORIZED
+      active_transition: NOT_AUTHORIZED
+  - id: SRC-0018
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: SFP-INFO-0005
+        scope: CONSUMER_ANALYSIS_POLICY_BOUNDARY
+  source_document:
+    path: src/policy/RECORD/SFP-RECORD-0004.yaml
+    sha256: 6d461fcd5c18d3170fca573d15bb07d06aea8c7260957bb1e3f6fce66064e397
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

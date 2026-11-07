@@ -1,99 +1,335 @@
-schema_version: ptsip-developer-root-family-policy/v1
-policy_class: PTSIP_DEVELOPER_POLICY
-responsibility_family: NORM
-policy:
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
   id: MPD-NORM-0001
+  policy_kind: PTSIP_DEVELOPER_POLICY
+  root_family: NORM
   title: NORM authority (ACTIVE source responsibilities)
+Policy_Lifecycle:
   status: RETIRED
-  substatus: Waiting
-  version: '2.0'
-authority_subject:
-  id: DEV_RULE_NORMATIVITY
-  statement: PTSIP 개발에 적용되는 규칙의 규범적 효력, 해석 및 명시적으로 선택된 immutable Specification과의 구속
-    관계를 소유한다.
-exclusive_kernel:
-- DEV_RULE_FORCE_AND_PRECEDENCE
-- DEV_NORMATIVE_INTERPRETATION
-rules:
-  family_definition:
-    kernel_definitions:
-    - id: DEV_RULE_FORCE_AND_PRECEDENCE
-      statement: 개발 규칙의 MUST/MUST_NOT 의미, 적용 범위 및 명시적 규범 우선순위를 정한다. bound Specification의
-        상위 요구를 완화할 수 없다.
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+Policy_Rules:
+  rules:
+  - id: DEV_RULE_FORCE_AND_PRECEDENCE
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0007
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0007
+  - id: DEV_NORMATIVE_INTERPRETATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: MPD-NORM-0001#/rules/unit_mpd_0015_181bf674e753
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+  - id: MPD-NORM-0001#/rules/unit_mpd_spec_0002_8b9a13c6427c
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0011
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0011
+  - id: MPD-NORM-0001#/rules/unit_mpd_spec_0003_8b9a13c6427c
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+  - id: MPD-NORM-0001#/rules/unit_mpd_spec_0004_8b9a13c6427c
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0013
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0013
+  - id: MPD-NORM-0001#/rules/unit_mpd_spec_0021_ac00c052d412
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0014
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0014
+  - id: MPD-NORM-0001#/rules/unit_mpd_spec_0021_26110959de43
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0015
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0015
+  - id: MPD-NORM-0001#/rules/unit_mpd_spec_0024_ffdffc01d053
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0016
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0016
+  - id: MPD-NORM-0001#/rules/unit_mpd_spec_0024_96089904dda7
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0017
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0017
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0018
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-developer-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_DEVELOPER_POLICY
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: NORM
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: MPD-NORM-0001
+      title: NORM authority (ACTIVE source responsibilities)
+      status: RETIRED
+      substatus: Waiting
+      version: '2.0'
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: DEV_RULE_NORMATIVITY
+      statement: PTSIP 개발에 적용되는 규칙의 규범적 효력, 해석 및 명시적으로 선택된 immutable Specification과의 구속 관계를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - DEV_RULE_FORCE_AND_PRECEDENCE
+    - DEV_NORMATIVE_INTERPRETATION
+  - id: SRC-0007
+    source_pointer: /rules/family_definition/kernel_definitions/0
+    value:
+      id: DEV_RULE_FORCE_AND_PRECEDENCE
+      statement: 개발 규칙의 MUST/MUST_NOT 의미, 적용 범위 및 명시적 규범 우선순위를 정한다. bound Specification의 상위 요구를 완화할 수 없다.
       non_substitutability: GOV의 적법한 승인만으로 규칙의 의무 강도나 상위 Specification 구속력을 바꿀 수 없다.
-    - id: DEV_NORMATIVE_INTERPRETATION
+  - id: SRC-0008
+    source_pointer: /rules/family_definition/kernel_definitions/1
+    value:
+      id: DEV_NORMATIVE_INTERPRETATION
       statement: 규칙 간 충돌과 해석 가능한 범위를 선택된 규범 revision 안에서 정하고, 새 규범 의미가 필요한 변경을 식별한다.
       non_substitutability: ASSURE는 정해진 규칙으로 판정하며 새로운 규범 의미를 검증 결과에서 만들어 낼 수 없다.
-    source_scope:
+  - id: SRC-0009
+    source_pointer: /rules/family_definition/source_scope
+    value:
     - MPD-0015
     - MPD-SPEC-0002
     - MPD-SPEC-0003
     - MPD-SPEC-0004
     - MPD-SPEC-0021
     - MPD-SPEC-0024
-  unit_mpd_0015_181bf674e753:
-    go_role: CANONICAL_RUNTIME_CANDIDATE
-    go_is_normative_authority: false
-  unit_mpd_spec_0002_8b9a13c6427c:
-    specification_family: 0.2.0-draft
-    reference_tool_target: 0.2.0
-    pilot_report_contract: ptsip-pilot-report/v2
-    architecture_classifications:
-    - PRODUCT
-    - TOOLCHAIN
-    - NEUTRAL_CONTRACT
-    unresolved_analysis_states:
-    - UNKNOWN
-    - CONFLICT
-    - INCOMPLETE
-  unit_mpd_spec_0003_8b9a13c6427c:
-    activated_specification_family: 0.3.4-draft
-  unit_mpd_spec_0004_8b9a13c6427c:
-    activated_family: 0.3.7-draft
-    immutable_normative_snapshot: b648d9e026f502b14481ba2d0606d9acc88a31fc
-    normative_companion: SFP-0010
-    activation_implies_repository_profile_mutation: false
-    tool_runtime_claims_full_implementation_by_activation: false
-  unit_mpd_spec_0021_ac00c052d412:
-    implementation_language_owns_final_ptsip_rules: false
-    authority_owner: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
-    machine_contract:
-      language_neutral: true
-      versioned: true
-      machine_readable: true
-      semantics_must_be_explicit: true
-      implementation_may_add_normative_semantics: false
-  unit_mpd_spec_0021_26110959de43:
-    rule: IMPLEMENTATIONS_INTERPRET_AND_EXECUTE_MACHINE_CONTRACTS
-    may_define_new_normative_meaning: false
-  unit_mpd_spec_0024_ffdffc01d053:
-    new_policy_or_specification_markdown: FORBIDDEN
-    normative_markdown_dependency: FORBIDDEN
-    legacy_markdown_as_authority_dependency_provenance_or_fallback: FORBIDDEN
-    machine_readable_agent_contract_root: src/agent_contracts
-    non_normative_human_communication_markdown_is_not_removed_by_format_alone: true
-  unit_mpd_spec_0024_96089904dda7:
-    scope: CODING_AGENT_BEHAVIOR_SEMANTICS
-    role: NORMATIVE_SSOT
-    external_authority_behavior: CONSUME_WITHOUT_CREATING_MISSING_NORMATIVE_AUTHORITY
-    authority_producing_inference: FORBIDDEN
-    operational_inference: CONDITIONALLY_ALLOWED
-relations:
-  supersedes: []
-  amends: []
-  extends: []
-  depends_on: []
-transition:
-  target_status: APPROVED
-  target_substatus: Applying
-  state: COMPLETE
-  requirements:
-  - id: TR-001
-    type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
-    state: SATISFIED
-    refs:
-    - developer/policy/approvals/MPA-20261006-ROOT-NORM-0001-ACTIVE.yaml
-    next_action:
-      action: VERIFY_SOURCE_PROJECTION
-      execution: SERIAL_REQUIRED
-      completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  - id: SRC-0010
+    source_pointer: /rules/unit_mpd_0015_181bf674e753
+    value:
+      go_role: CANONICAL_RUNTIME_CANDIDATE
+      go_is_normative_authority: false
+  - id: SRC-0011
+    source_pointer: /rules/unit_mpd_spec_0002_8b9a13c6427c
+    value:
+      specification_family: 0.2.0-draft
+      reference_tool_target: 0.2.0
+      pilot_report_contract: ptsip-pilot-report/v2
+      architecture_classifications:
+      - PRODUCT
+      - TOOLCHAIN
+      - NEUTRAL_CONTRACT
+      unresolved_analysis_states:
+      - UNKNOWN
+      - CONFLICT
+      - INCOMPLETE
+  - id: SRC-0012
+    source_pointer: /rules/unit_mpd_spec_0003_8b9a13c6427c
+    value:
+      activated_specification_family: 0.3.4-draft
+  - id: SRC-0013
+    source_pointer: /rules/unit_mpd_spec_0004_8b9a13c6427c
+    value:
+      activated_family: 0.3.7-draft
+      immutable_normative_snapshot: b648d9e026f502b14481ba2d0606d9acc88a31fc
+      normative_companion: SFP-0010
+      activation_implies_repository_profile_mutation: false
+      tool_runtime_claims_full_implementation_by_activation: false
+  - id: SRC-0014
+    source_pointer: /rules/unit_mpd_spec_0021_ac00c052d412
+    value:
+      implementation_language_owns_final_ptsip_rules: false
+      authority_owner: LANGUAGE_NEUTRAL_MACHINE_CONTRACT
+      machine_contract:
+        language_neutral: true
+        versioned: true
+        machine_readable: true
+        semantics_must_be_explicit: true
+        implementation_may_add_normative_semantics: false
+  - id: SRC-0015
+    source_pointer: /rules/unit_mpd_spec_0021_26110959de43
+    value:
+      rule: IMPLEMENTATIONS_INTERPRET_AND_EXECUTE_MACHINE_CONTRACTS
+      may_define_new_normative_meaning: false
+  - id: SRC-0016
+    source_pointer: /rules/unit_mpd_spec_0024_ffdffc01d053
+    value:
+      new_policy_or_specification_markdown: FORBIDDEN
+      normative_markdown_dependency: FORBIDDEN
+      legacy_markdown_as_authority_dependency_provenance_or_fallback: FORBIDDEN
+      machine_readable_agent_contract_root: src/agent_contracts
+      non_normative_human_communication_markdown_is_not_removed_by_format_alone: true
+  - id: SRC-0017
+    source_pointer: /rules/unit_mpd_spec_0024_96089904dda7
+    value:
+      scope: CODING_AGENT_BEHAVIOR_SEMANTICS
+      role: NORMATIVE_SSOT
+      external_authority_behavior: CONSUME_WITHOUT_CREATING_MISSING_NORMATIVE_AUTHORITY
+      authority_producing_inference: FORBIDDEN
+      operational_inference: CONDITIONALLY_ALLOWED
+  - id: SRC-0018
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  - id: SRC-0019
+    source_pointer: /transition
+    value:
+      target_status: APPROVED
+      target_substatus: Applying
+      state: COMPLETE
+      requirements:
+      - id: TR-001
+        type: ROOT_FAMILY_SOURCE_STATE_PRESERVATION
+        state: SATISFIED
+        refs:
+        - developer/policy/approvals/MPA-20261006-ROOT-NORM-0001-ACTIVE.yaml
+        next_action:
+          action: VERIFY_SOURCE_PROJECTION
+          execution: SERIAL_REQUIRED
+          completion_check: EXACT_SOURCE_RECONSTRUCTION_AND_STATE_MATCH
+  source_document:
+    path: developer/policy/NORM/MPD-NORM-0001.yaml
+    sha256: 64e6cb6a2912a87494199731c3a90ac40388ac03e2b8601cbf14a11479956b77
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-developer-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

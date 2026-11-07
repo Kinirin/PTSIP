@@ -1,148 +1,215 @@
-{
-  "schema_version": "ptsip-support-root-family-policy/v1",
-  "policy_class": "PTSIP_SUPPORT_FEATURE",
-  "responsibility_family": "ASSURE",
-  "policy": {
-    "id": "SFP-ASSURE-0004",
-    "title": "Engine fitness evidence admissibility and evaluation gates (DRAFT)",
-    "status": "DRAFT"
-  },
-  "authority_subject": {
-    "id": "SUP_DECLARATION_EVIDENCE_CONFORMANCE_JUDGMENT",
-    "statement": "PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority."
-  },
-  "exclusive_kernel": [
-    "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
-    "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING"
-  ],
-  "authority_contract": {
-    "authority_type": "ROOT_FAMILY_ASSURE",
-    "schema_id": "ptsip.governance/root-family/assure",
-    "schema_version": 1
-  },
-  "authority_semantics": {
-    "family_definition": {
-      "kernel_definitions": [
-        {
-          "id": "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
-          "statement": "mandatory 위반과 blocking evidence gap을 구별하여 완료 결과를 CONFORMANT, NON_CONFORMANT 또는 INCOMPLETE로 판정한다. zero findings는 자동 conformance가 아니다.",
-          "non_substitutability": "GOV의 coordinated winner나 완전한 ARCH 선언만으로 관측 evidence까지 규범에 적합하다고 판정할 수 없다."
-        },
-        {
-          "id": "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING",
-          "statement": "coverage와 admissibility 및 실제 built Artifact/source snapshot 결합을 평가하고 functional/VPMS PASS와 PTSIP conformance를 독립적으로 유지한다.",
-          "non_substitutability": "RECORD의 receipt 존재나 SUPPLY의 Artifact provenance만으로 필요한 검사와 conformance 판단이 완료되지 않는다."
-        }
-      ]
-    },
-    "unit_ptsip_engine_draft": {
-      "domain": "PTSIP_ENGINE",
-      "draft_activation": "BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION",
-      "approved_decisions": {
-        "metric_model": "COMMON_PLUS_CAPABILITY_SPECIFIC",
-        "evidence_classes": [
-          "ISOLATED_SIMULATION",
-          "OPERATIONAL_OBSERVATION"
-        ],
-        "evidence_classes_have_distinct_provenance": true,
-        "evaluation_order": "MANDATORY_CONTRACT_CONFORMANCE_BEFORE_PERFORMANCE_RANKING",
-        "measured_performance_cannot_compensate_policy_failure": true,
-        "evaluation_objective": "POLICY_AND_USER_AUTHORIZED",
-        "ranking_model": "MULTI_OBJECTIVE_PARETO_WITH_AUTHORIZED_FURTHER_PREFERENCE",
-        "evidence_reuse": "CONDITION_AND_APPLICABILITY_VERIFIED",
-        "evidence_missing": "CONTROLLED_AUTHORIZED_AUTOMATIC_REEVALUATION",
-        "evidence_sufficient_but_unranked": "DO_NOT_INVENT_NEW_PREFERENCE",
-        "environment_sensitive_measurement": true,
-        "engine_impact_verification_direction": "DEPENDENCY_GRAPH_COVERAGE_AND_CONTRACT_COMPATIBILITY_EVIDENCE",
-        "engine_interoperability_evidence_production_linkage": "PROVIDER_CONSUMER_ENGINE_SPLIT_WITH_ASSURE_NORMATIVE_AUTHORITY_PRESERVED"
-      },
-      "invariants": {
-        "operational_evidence_is_not_simulation_evidence": true,
-        "snapshot_version_environment_and_workload_binding_required": true,
-        "evidence_without_coverage_not_conformance": true,
-        "benchmark_requires_fair_comparability": true,
-        "unknown_safety_or_contract_state_not_eligible_for_ranking": true,
-        "simulation_must_observe_authorized_side_effect_bounds": true,
-        "impact_verification_requires_dependency_coverage_evidence": true,
-        "compatibility_verdict_requires_applicable_version_bound_evidence": true,
-        "unverified_change_impact_must_not_be_reported_as_no_effect": true,
-        "impact_assessment_does_not_override_existing_assure_normative_conformance_authority": true,
-        "provider_and_consumer_evidence_roles_do_not_reassign_assure_conformance_verdict": true,
-        "provider_evidence_and_consumer_evidence_retain_distinct_provenance_and_applicability_context": true,
-        "evidence_linkage_or_engine_level_compatibility_claim_is_not_automatic_ptsip_conformance": true,
-        "assure_retains_normative_conformance_judgment_and_evidence_sufficiency_authority": true,
-        "assure_evidence_assessment_cannot_infer_compatibility_from_unbound_or_inapplicable_evidence": true
-      },
-      "unresolved_decisions": [
-        {
-          "id": "METRIC_COMMON_AND_CAPABILITY_CATALOG",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "ENVIRONMENT_COMPARABILITY_AND_APPLICABILITY_CRITERIA",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "EVALUATION_REEXECUTION_BUDGET_AND_CASES",
-          "kind": "PLAN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "CURRENT_PC_TELEMETRY_COLLECTION_LIMITS",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        },
-        {
-          "id": "ENGINE_IMPACT_GRAPH_COVERAGE_AND_COMPATIBILITY_EVIDENCE_GATE",
-          "kind": "CONTRACT_DESIGN",
-          "status": "UNRESOLVED"
-        }
-      ],
-      "activation_requirements": {
-        "owner_decisions_all_resolved": true,
-        "responsibility_mapping_verified": true,
-        "conflicts_with_existing_active_policies_resolved": true,
-        "machine_contract_and_registry_validation_passed": true,
-        "explicit_separate_user_active_approval_required": true
-      },
-      "out_of_scope": [
-        "IMMEDIATE_RUNTIME_ACTIVATION",
-        "EXISTING_ACTIVE_POLICY_MUTATION",
-        "UNAPPROVED_DIRECTORY_NAMES",
-        "IMPLICIT_POLICY_AUTHORITY_TRANSFER"
-      ],
-      "resolved_decisions": [
-        {
-          "id": "ENGINE_CHANGE_IMPACT_EVIDENCE_DIRECTION",
-          "selected_option": "C_DECLARED_GRAPH_AND_CONTRACT_COMPATIBILITY",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "EVIDENCE_ELIGIBILITY_DIRECTION_ONLY",
-          "coverage_threshold_and_result_shape": "NOT_DECIDED"
-        },
-        {
-          "id": "ENGINE_PROVIDER_CONSUMER_INTEROPERABILITY_EVIDENCE_RESPONSIBILITY",
-          "selected_option": "B_PROVIDER_CONSUMER_ENGINE_SPLIT",
-          "approval_source": "USER_EXPLICIT",
-          "resolution_scope": "EVIDENCE_PRODUCER_LINKAGE_ROLES_ONLY",
-          "provider_evidence": "PROVIDER_CAPABILITY_CONTRACT_AND_CHANGE_SUPPORT",
-          "consumer_evidence": "CONSUMER_DEPENDENCY_ENVIRONMENT_AND_COMPATIBILITY_VERIFICATION",
-          "normative_judgment_owner": "EXISTING_ASSURE_UNCHANGED",
-          "exact_schema": "NOT_DECIDED"
-        }
-      ]
-    }
-  },
-  "relations": {
-    "supersedes": [],
-    "amends": [],
-    "extends": [],
-    "depends_on": [
-      {
-        "policy": "SFP-ASSURE-0001",
-        "scope": "ENGINE_DRAFT_COMPATIBILITY"
-      }
-    ]
-  }
-}
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-ASSURE-0004
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ASSURE
+  title: Engine fitness evidence admissibility and evaluation gates (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+  - id: SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0009
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0009
+  - id: SFP-ASSURE-0004#/authority_semantics/unit_ptsip_engine_draft
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0010
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0010
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0011
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ASSURE
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ASSURE-0004
+      title: Engine fitness evidence admissibility and evaluation gates (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_DECLARATION_EVIDENCE_CONFORMANCE_JUDGMENT
+      statement: PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION
+    - SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ASSURE
+      schema_id: ptsip.governance/root-family/assure
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION
+      statement: mandatory 위반과 blocking evidence gap을 구별하여 완료 결과를 CONFORMANT, NON_CONFORMANT 또는 INCOMPLETE로 판정한다. zero findings는
+        자동 conformance가 아니다.
+      non_substitutability: GOV의 coordinated winner나 완전한 ARCH 선언만으로 관측 evidence까지 규범에 적합하다고 판정할 수 없다.
+  - id: SRC-0009
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    value:
+      id: SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING
+      statement: coverage와 admissibility 및 실제 built Artifact/source snapshot 결합을 평가하고 functional/VPMS PASS와 PTSIP conformance를
+        독립적으로 유지한다.
+      non_substitutability: RECORD의 receipt 존재나 SUPPLY의 Artifact provenance만으로 필요한 검사와 conformance 판단이 완료되지 않는다.
+  - id: SRC-0010
+    source_pointer: /authority_semantics/unit_ptsip_engine_draft
+    value:
+      domain: PTSIP_ENGINE
+      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      approved_decisions:
+        metric_model: COMMON_PLUS_CAPABILITY_SPECIFIC
+        evidence_classes:
+        - ISOLATED_SIMULATION
+        - OPERATIONAL_OBSERVATION
+        evidence_classes_have_distinct_provenance: true
+        evaluation_order: MANDATORY_CONTRACT_CONFORMANCE_BEFORE_PERFORMANCE_RANKING
+        measured_performance_cannot_compensate_policy_failure: true
+        evaluation_objective: POLICY_AND_USER_AUTHORIZED
+        ranking_model: MULTI_OBJECTIVE_PARETO_WITH_AUTHORIZED_FURTHER_PREFERENCE
+        evidence_reuse: CONDITION_AND_APPLICABILITY_VERIFIED
+        evidence_missing: CONTROLLED_AUTHORIZED_AUTOMATIC_REEVALUATION
+        evidence_sufficient_but_unranked: DO_NOT_INVENT_NEW_PREFERENCE
+        environment_sensitive_measurement: true
+        engine_impact_verification_direction: DEPENDENCY_GRAPH_COVERAGE_AND_CONTRACT_COMPATIBILITY_EVIDENCE
+        engine_interoperability_evidence_production_linkage: PROVIDER_CONSUMER_ENGINE_SPLIT_WITH_ASSURE_NORMATIVE_AUTHORITY_PRESERVED
+      invariants:
+        operational_evidence_is_not_simulation_evidence: true
+        snapshot_version_environment_and_workload_binding_required: true
+        evidence_without_coverage_not_conformance: true
+        benchmark_requires_fair_comparability: true
+        unknown_safety_or_contract_state_not_eligible_for_ranking: true
+        simulation_must_observe_authorized_side_effect_bounds: true
+        impact_verification_requires_dependency_coverage_evidence: true
+        compatibility_verdict_requires_applicable_version_bound_evidence: true
+        unverified_change_impact_must_not_be_reported_as_no_effect: true
+        impact_assessment_does_not_override_existing_assure_normative_conformance_authority: true
+        provider_and_consumer_evidence_roles_do_not_reassign_assure_conformance_verdict: true
+        provider_evidence_and_consumer_evidence_retain_distinct_provenance_and_applicability_context: true
+        evidence_linkage_or_engine_level_compatibility_claim_is_not_automatic_ptsip_conformance: true
+        assure_retains_normative_conformance_judgment_and_evidence_sufficiency_authority: true
+        assure_evidence_assessment_cannot_infer_compatibility_from_unbound_or_inapplicable_evidence: true
+      unresolved_decisions:
+      - id: METRIC_COMMON_AND_CAPABILITY_CATALOG
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      - id: ENVIRONMENT_COMPARABILITY_AND_APPLICABILITY_CRITERIA
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      - id: EVALUATION_REEXECUTION_BUDGET_AND_CASES
+        kind: PLAN
+        status: UNRESOLVED
+      - id: CURRENT_PC_TELEMETRY_COLLECTION_LIMITS
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      - id: ENGINE_IMPACT_GRAPH_COVERAGE_AND_COMPATIBILITY_EVIDENCE_GATE
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      activation_requirements:
+        owner_decisions_all_resolved: true
+        responsibility_mapping_verified: true
+        conflicts_with_existing_active_policies_resolved: true
+        machine_contract_and_registry_validation_passed: true
+        explicit_separate_user_active_approval_required: true
+      out_of_scope:
+      - IMMEDIATE_RUNTIME_ACTIVATION
+      - EXISTING_ACTIVE_POLICY_MUTATION
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      resolved_decisions:
+      - id: ENGINE_CHANGE_IMPACT_EVIDENCE_DIRECTION
+        selected_option: C_DECLARED_GRAPH_AND_CONTRACT_COMPATIBILITY
+        approval_source: USER_EXPLICIT
+        resolution_scope: EVIDENCE_ELIGIBILITY_DIRECTION_ONLY
+        coverage_threshold_and_result_shape: NOT_DECIDED
+      - id: ENGINE_PROVIDER_CONSUMER_INTEROPERABILITY_EVIDENCE_RESPONSIBILITY
+        selected_option: B_PROVIDER_CONSUMER_ENGINE_SPLIT
+        approval_source: USER_EXPLICIT
+        resolution_scope: EVIDENCE_PRODUCER_LINKAGE_ROLES_ONLY
+        provider_evidence: PROVIDER_CAPABILITY_CONTRACT_AND_CHANGE_SUPPORT
+        consumer_evidence: CONSUMER_DEPENDENCY_ENVIRONMENT_AND_COMPATIBILITY_VERIFICATION
+        normative_judgment_owner: EXISTING_ASSURE_UNCHANGED
+        exact_schema: NOT_DECIDED
+  - id: SRC-0011
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on:
+      - policy: SFP-ASSURE-0001
+        scope: ENGINE_DRAFT_COMPATIBILITY
+  source_document:
+    path: src/policy/ASSURE/SFP-ASSURE-0004.yaml
+    sha256: 1364f04667273da75d489f1cda05f2150677824d57d1f49d8c6ea7b37e01bf6d
+Policy_Migration:
+  baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE

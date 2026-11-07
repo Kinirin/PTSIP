@@ -18,9 +18,9 @@ import (
 	release_version "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/version"
 	responsibilityauthority "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Responsibility-Authority/verification"
 	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
+	contractentry "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractentry"
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/layout"
 	schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification"
-	contractentry "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractentry"
 )
 
 type Validator func(string) (any, int)
@@ -118,9 +118,13 @@ func main() {
 		}
 		verified, code := schema_check.RunDocument(absolute, selection.Validator, selection.Target)
 		status := "CHECK_COMPLETED"
-		if code != 0 { status = "CHECK_FAILED" }
+		if code != 0 {
+			status = "CHECK_FAILED"
+		}
 		emit(map[string]any{"status": status, "selection": selection, "result": verified, "execution_authorized": false, "mutation_authorized": false})
-		if code != 0 { os.Exit(code) }
+		if code != 0 {
+			os.Exit(code)
+		}
 		return
 	}
 	if *selected == "release-documentation" {
@@ -147,10 +151,20 @@ func main() {
 		os.Exit(code)
 	}
 	if *selected == "policy-rules" || *selected == "responsibility-authority" {
-		validate, err := schema_check.InstalledValidator()
-		if err != nil {
-			emit(map[string]any{"status": "FAIL", "problem": err.Error(), "execution_authorized": false})
-			os.Exit(2)
+		// Candidate authoring uses the shared repository verifier. Initialize
+		// the installed v2 validator only when a legacy/profile check needs it.
+		var installed contract_authoring.Validator
+		var installedErr error
+		initialized := false
+		validate := func(schema, instance any, resources []any) (bool, error) {
+			if !initialized {
+				installed, installedErr = schema_check.InstalledValidator()
+				initialized = true
+			}
+			if installedErr != nil {
+				return false, installedErr
+			}
+			return installed(schema, instance, resources)
 		}
 		var report any
 		var code int
