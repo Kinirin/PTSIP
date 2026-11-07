@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
 Policy_Identity:
   id: MPD-RECORD-0003
   policy_kind: PTSIP_DEVELOPER_POLICY
@@ -8,26 +9,170 @@ Policy_Lifecycle:
   status: APPROVED.Unresolved
   contract: urn:ptsip:contract:policy:record:plan:recording
 Policy_Rules:
-  Identity:
+  contracts:
+  - serialization: INDEXED_SOURCE_BINDINGS
     contract_id: urn:ptsip:policy:rule:record:plan-decision-recording
     Rule_ver: '1'
-  Definition:
-  - id: R-ID-C945694F577C4F3891F79DC0632B1BCB
-    rule: PLAN-DECISION-LOG
-  Boundary:
-    scope: An independent responsibility area for recording decisions concerning Kinirin/PTSIP developer work-plan documents
-    subjects:
-    - Manage responsibility for recording decisions concerning work-plan documents in a separate policy, distinct from decisions concerning policy documents.
-    - Keep work-plan decision record schema contracts under .ptsip/contracts/Decision_Record/plan/.
-    - Preserve undeclared storage details, record and binding fields, and verification procedures as unresolved. Request user review when a conflict or problem arises.
-    exclusions:
-    - MPD-RECORD-0002 owns decisions concerning policy documents.
-    - Automatically inheriting policy-decision default storage, reference, or ID rules for work-plan records without a separate declaration.
-    - Using decision records alone to approve a work plan, authorize execution, or activate consumer features.
-  Evaluation:
-    criteria:
-      evidence:
-      - Review whether decision-record responsibilities for policy documents and work-plan documents remain separate.
-      - Review whether policy and work-plan record schemas have distinct owner paths.
-      - Review whether unresolved work-plan recording details remain unfilled by historical policy or agent inference.
-  title: RECORD responsibility boundaries for work-plan decision records
+    source_documents:
+    - id: DOC-POLICY
+      source_ref: developer/policy/RECORD/MPD-RECORD-0003.yaml
+      revision_ref: git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0
+    - id: DOC-PROFILE
+      source_ref: .ptsip/profiles/Responsibility-Authority-list.yaml
+      revision_ref: git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0
+    source_items:
+    - item_id: SRC-HEADER
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Identity
+      original_role: annotation
+    - item_id: SRC-TITLE
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/title
+      original_role: annotation
+    - item_id: SRC-RULE-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Definition/0
+      original_role: rule
+    - item_id: SRC-PROFILE-0001
+      document_id: DOC-PROFILE
+      item_ref: /component_bindings/R-ID-C945694F577C4F3891F79DC0632B1BCB
+      original_role: annotation
+    - item_id: SRC-SCOPE
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/scope
+      original_role: scope
+    - item_id: SRC-SUBJECT-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/0
+      original_role: statement
+    - item_id: SRC-SUBJECT-0002
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/1
+      original_role: statement
+    - item_id: SRC-SUBJECT-0003
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/subjects/2
+      original_role: statement
+    - item_id: SRC-EXCLUSION-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/exclusions/0
+      original_role: constraint
+    - item_id: SRC-EXCLUSION-0002
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/exclusions/1
+      original_role: constraint
+    - item_id: SRC-EXCLUSION-0003
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Boundary/exclusions/2
+      original_role: constraint
+    - item_id: SRC-CRITERIA
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria
+      original_role: criterion
+    - item_id: SRC-CRITERION-0001
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+      original_role: criterion
+    - item_id: SRC-CRITERION-0002
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+      original_role: criterion
+    - item_id: SRC-CRITERION-0003
+      document_id: DOC-POLICY
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+      original_role: criterion
+    authority_ref:
+    - id: AUTH-0001
+      binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-RULE-0001, SRC-PROFILE-0001]
+    rules:
+    - id: R-ID-C945694F577C4F3891F79DC0632B1BCB
+      rule: PLAN-DECISION-LOG
+      source_ref: [SRC-RULE-0001]
+      authority_ref: [AUTH-0001]
+    requirements:
+    - requirement_id: REQ-0001
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0001]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0001]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERIA]
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERIA]
+      relation_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0001]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0001, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, evidence_requirement_binding,
+        relation_binding, judgement_binding]
+    - requirement_id: REQ-0002
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0002]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0002]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERIA]
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERIA]
+      relation_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0002]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0002, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, evidence_requirement_binding,
+        relation_binding, judgement_binding]
+    - requirement_id: REQ-0003
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SUBJECT-0003]
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids: [SRC-SCOPE]
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0003]
+      - purpose: CONSTRAINT
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-EXCLUSION-0001, SRC-EXCLUSION-0002, SRC-EXCLUSION-0003]
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERIA]
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-CRITERIA]
+      relation_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0003]
+      judgement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: [SRC-SUBJECT-0003, SRC-CRITERIA]
+      unresolved_fields: [source_bindings.TARGET, source_bindings.CONSTRAINT, source_bindings.CRITERION, evidence_requirement_binding,
+        relation_binding, judgement_binding]

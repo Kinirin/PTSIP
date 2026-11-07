@@ -41,5 +41,11 @@ func TestV2RegisteredPolicyAndLegacyRejection(t *testing.T) {
     if err := v2.Check(root,doc,validate); err == nil { t.Fatal("missing v2 rules accepted") }
     legacy, err := authoring.ReadDocument(root,"developer/policy/GOV/MPD-GOV-0006.yaml")
     if err != nil { t.Fatal(err) }
+    if err := v2.Check(root, legacy, validate); err != nil {
+        t.Fatalf("migrated GOV policy rejected: %v", err)
+    }
+    // Exercise the old shape without tying the rejection test to a live legacy file.
+    contract := legacy["Policy_Rules"].(map[string]any)["contracts"].([]any)[0].(map[string]any)
+    legacy["Policy_Rules"] = map[string]any{"Definition": contract["rules"]}
     if err := v2.Check(root,legacy,validate); err == nil { t.Fatal("v7 legacy shape accepted") }
 }

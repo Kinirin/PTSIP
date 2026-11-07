@@ -24,20 +24,20 @@
     },
     "source_head": "00da5b5c517bcaf561ad8c95a11f66ded198bf03",
     "inventory_status": "INDEX_TREE_MATCHED",
-    "policy_document_content_review": "PARTIAL",
-    "applicability_results": "NOT_EVALUATED",
-    "latest_review_head": "7fe83fd95e40e887e0ff0a53feeceaf4ca30645f",
-    "review_status": "SCHEMA_FIELD_AND_APPLICABILITY_POLICY_DECISION_PENDING",
+    "policy_document_content_review": "EXACT_METADATA_AND_KNOWN_SOURCE_ITEMS",
+    "applicability_results": "DEFINITION_REFERENCE_REVIEW_CANDIDATE_ONLY",
+    "latest_review_head": "2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0",
+    "review_status": "RULE_REFERENCE_DIRECTION_RECORDED_FORMAL_ADMISSION_BLOCKED",
     "policy_document_changes": "NONE",
     "approved_binding_model": "A_EVERY_RULE_DIRECT_CONTRACT_BINDING",
-    "policy_schema_changes": "NONE"
+    "policy_schema_changes": "NONE",
+    "latest_user_instruction": "KEEP_LATEST_UNIFIED_STRUCTURE_STAGED_EXECUTION_2026_11_07"
   },
   "pending_tasks": [
-    "각 문서의 실제 정책 ID·상태 및 규범 의미 검토",
-    "RA/RAC/AEC 각각에 대한 적용 필요성과 관계 종류 결정",
-    "정식 스키마에 허용되는 계약 참조 위치와 필드 결정",
-    "등록 및 활성화와 무관하게 정식 정책 변경의 범위/근거 검증",
-    "정책 변경 후 Family별 최소 검증과 전체 영향 검증"
+    "Resolve each rule's actual need to consume a contract independently of its use as a contract policy basis.",
+    "Admit the rule reference field through each policy plane's own schema and fix existing schema rejections at the affected policy sources.",
+    "Resolve independent contract owner and revision registration before writing canonical policy references.",
+    "Run exact policy entry and affected Family checks after each admitted policy edit."
   ],
   "work": {
     "group_id": "RA_RAC_AEC_FAMILY_INTEGRATION"
@@ -102,7 +102,9 @@
       "meaning_pointer": "/authority_semantics/rac_aec_rego_original_contract_direction",
       "contract_kind": "RAC_AEC",
       "relationship": "APPROVED_DIRECTION_IN_POLICY",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "ACTIVE",
+      "policy_use_state": "DEFINITION_REFERENCE_REVIEW_CANDIDATE"
     },
     {
       "policy_id": "SFP-ARCH-0001",
@@ -111,7 +113,11 @@
       "contract_kind": "RAC",
       "relationship": "ALREADY_REFERENCED_FROM_RAC_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "ACTIVE",
+      "verified_contract_basis_item": "/policy_basis/SUP_EXPLICIT_ROLES_AND_TYPED_RELATIONSHIPS",
+      "verified_policy_basis_revision": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7",
+      "policy_use_state": "UNRESOLVED_UPSTREAM_BASIS_ONLY"
     },
     {
       "policy_id": "SFP-GOV-0001",
@@ -120,7 +126,11 @@
       "contract_kind": "AEC",
       "relationship": "ALREADY_REFERENCED_FROM_AEC_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "ACTIVE",
+      "verified_contract_basis_item": "/policy_basis/SUP_SUBJECT_ROLE_AND_DECISION_MANDATE",
+      "verified_policy_basis_revision": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7",
+      "policy_use_state": "UNRESOLVED_UPSTREAM_BASIS_ONLY"
     },
     {
       "policy_id": "SFP-GOV-0001",
@@ -129,7 +139,11 @@
       "contract_kind": "AEC",
       "relationship": "ALREADY_REFERENCED_FROM_AEC_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "ACTIVE",
+      "verified_contract_basis_item": "/policy_basis/SUP_COORDINATED_WINNER_AND_AUTHORITY_SCOPE",
+      "verified_policy_basis_revision": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7",
+      "policy_use_state": "UNRESOLVED_UPSTREAM_BASIS_ONLY"
     },
     {
       "policy_id": "SFP-CTRL-0001",
@@ -138,7 +152,11 @@
       "contract_kind": "AEC",
       "relationship": "ALREADY_REFERENCED_AS_AEC_EXECUTION_BOUNDARY",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "ACTIVE",
+      "verified_contract_basis_item": "/execution_boundary/SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+      "verified_policy_basis_revision": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7",
+      "policy_use_state": "UNRESOLVED_UPSTREAM_BASIS_ONLY"
     },
     {
       "policy_id": "MPD-GOV-0006",
@@ -147,7 +165,11 @@
       "contract_kind": "RA",
       "relationship": "ALREADY_REFERENCED_FROM_RA_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "APPROVED.Applying",
+      "verified_contract_basis_item": "/development_basis/INDEPENDENT-CONTRACT",
+      "verified_policy_basis_revision": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7",
+      "policy_use_state": "UNRESOLVED_UPSTREAM_BASIS_ONLY"
     },
     {
       "policy_id": "MPD-GOV-0006",
@@ -156,7 +178,11 @@
       "contract_kind": "RA",
       "relationship": "ALREADY_REFERENCED_FROM_RA_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "APPROVED.Applying",
+      "verified_contract_basis_item": "/development_basis/DISTRIBUTED-RBAC-VAL",
+      "verified_policy_basis_revision": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7",
+      "policy_use_state": "UNRESOLVED_UPSTREAM_BASIS_ONLY"
     },
     {
       "policy_id": "MPD-GOV-0006",
@@ -165,7 +191,11 @@
       "contract_kind": "RA",
       "relationship": "ALREADY_REFERENCED_FROM_RA_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "APPROVED.Applying",
+      "verified_contract_basis_item": "/development_basis/RBAC-FIELD-CONTRACT",
+      "verified_policy_basis_revision": "git:633d34602329e140a0370b289bb0aad8c6a2d2a7",
+      "policy_use_state": "UNRESOLVED_UPSTREAM_BASIS_ONLY"
     },
     {
       "policy_id": "SFP-ARCH-0004",
@@ -175,7 +205,11 @@
       "relationship": "ALREADY_REFERENCED_FROM_RAC_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
       "revision_ref": "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "ACTIVE",
+      "verified_contract_basis_item": "/policy_basis/RAC_AEC_EVALUATION_SOURCE_DIRECTION",
+      "verified_policy_basis_revision": "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
+      "policy_use_state": "DEFINITION_REFERENCE_REVIEW_CANDIDATE"
     },
     {
       "policy_id": "SFP-ARCH-0004",
@@ -185,7 +219,11 @@
       "relationship": "ALREADY_REFERENCED_FROM_AEC_CONTRACT",
       "contract_path": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
       "revision_ref": "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
-      "reverse_policy_binding": "NOT_APPLIED"
+      "reverse_policy_binding": "NOT_APPLIED",
+      "verified_document_status": "ACTIVE",
+      "verified_contract_basis_item": "/policy_basis/RAC_AEC_EVALUATION_SOURCE_DIRECTION",
+      "verified_policy_basis_revision": "git:cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
+      "policy_use_state": "DEFINITION_REFERENCE_REVIEW_CANDIDATE"
     }
   ],
   "inventory": {
@@ -1409,13 +1447,14 @@
       "developer_root_disallows_undefined_fields": true,
       "developer_policy_rules_schema_ref": "urn:ptsip:candidate:contract:policy:rules:v2",
       "policy_item_level_binding_field_approved": false,
-      "structural_write_assessment": "NO_UNIVERSAL_BINDING_LOCATION_APPROVED"
+      "structural_write_assessment": "FORMAL_RULE_REFERENCE_FIELD_UNREGISTERED",
+      "rule_level_direct_reference_direction_approved": true
     },
     "unregistered_contract_guard": {
       "ra": "UNRESOLVED_UNREGISTERED",
       "rac": "UNREGISTERED",
       "aec": "UNREGISTERED",
-      "input_policy_eligibility": "READ_ONLY_UNTIL_FIELD_AND_APPLICATION_POLICY_APPROVED"
+      "input_policy_eligibility": "TEMPORARY_REFERENCE_REVIEW_ONLY"
     },
     "semantic_application_direction_candidates": [
       {
@@ -1490,6 +1529,265 @@
         "source": "PROJECT_OWNER_EXPLICIT",
         "date": "2026-11-07",
         "phase": "ABSTRACT_BINDING_MODEL_SELECTION"
+      }
+    }
+  },
+  "rule_reference_review": {
+    "status": "TEMPORARY_NON_NORMATIVE",
+    "reference_effect": "DEFINITION_REVIEW_ONLY",
+    "candidate_field": "contract_refs",
+    "source_coordinate_schema": {
+      "source_ref": ".ptsip/contracts/policy/References/Source_Reference.schema.json",
+      "item_ref": "#",
+      "revision_ref": "git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0"
+    },
+    "schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Temporary rule contract definition references",
+      "type": "object",
+      "required": [
+        "contract_refs"
+      ],
+      "properties": {
+        "contract_refs": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "RA": {
+              "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1",
+              "properties": {
+                "source_ref": {
+                  "const": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json"
+                },
+                "item_ref": {
+                  "const": "#"
+                },
+                "revision_ref": {
+                  "pattern": "^git:[0-9a-f]{40}$"
+                }
+              }
+            },
+            "RAC": {
+              "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1",
+              "properties": {
+                "source_ref": {
+                  "const": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json"
+                },
+                "item_ref": {
+                  "const": "#"
+                },
+                "revision_ref": {
+                  "pattern": "^git:[0-9a-f]{40}$"
+                }
+              }
+            },
+            "AEC": {
+              "$ref": "urn:ptsip:candidate:contract:policy:reference:source:v1",
+              "properties": {
+                "source_ref": {
+                  "const": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json"
+                },
+                "item_ref": {
+                  "const": "#"
+                },
+                "revision_ref": {
+                  "pattern": "^git:[0-9a-f]{40}$"
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "applicable_rule_declaration": {
+      "explicit_contract_coordinates_per_rule": true,
+      "document_or_family_inheritance": "FORBIDDEN",
+      "meaning_owner": "INDEPENDENT_CONTRACT_SOURCE",
+      "registration_owner": "REGISTERED_OWNER_RESOLUTION",
+      "evaluation_owner": "INDEPENDENT_EVALUATOR_AND_EXACT_APPROVED_SOURCE",
+      "reverse_policy_basis_implies_forward_contract_use": false,
+      "reference_confers_execution_authority": false
+    },
+    "planes": {
+      "SUPPORT_FEATURE": {
+        "policy_entry": "src/policy/index.yaml",
+        "semantic_registry": "src/policy/registries/ptsip-support-authority-schema-registry.yaml",
+        "placement": "ON_THE_EXACT_OWNED_SEMANTIC_ITEM",
+        "admission": "BLOCKED",
+        "blockers": [
+          "SUPPORT_POLICY_AUTHORITY_SEMANTICS_INVALID",
+          "RULE_REFERENCE_FIELD_NOT_REGISTERED",
+          "TARGET_CONTRACTS_UNREGISTERED"
+        ],
+        "candidate": {
+          "policy_id": "SFP-ARCH-0004",
+          "policy_item_ref": {
+            "source_ref": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+            "item_ref": "/authority_semantics/rac_aec_rego_original_contract_direction",
+            "revision_ref": "git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0"
+          },
+          "declaration": {
+            "contract_refs": {
+              "RAC": {
+                "source_ref": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+                "item_ref": "#",
+                "revision_ref": "git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0"
+              },
+              "AEC": {
+                "source_ref": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
+                "item_ref": "#",
+                "revision_ref": "git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0"
+              }
+            }
+          }
+        }
+      },
+      "DEVELOPER": {
+        "policy_entry": "developer/policy/index.yaml",
+        "registered_rules": ".ptsip/contracts/policy/Policy_Rules/Contract_Types.schema.json",
+        "placement": "Policy_Rules.contracts[].rules[]",
+        "admission": "BLOCKED",
+        "blockers": [
+          "MPD_GOV_0006_PUBLIC_V2_SCHEMA_REJECTED",
+          "RULE_AND_INDEXED_RULE_REFERENCE_FIELD_NOT_REGISTERED",
+          "RA_OWNER_AND_REGISTRATION_UNRESOLVED"
+        ],
+        "syntax_fixture_without_policy_application": {
+          "contract_refs": {
+            "RA": {
+              "source_ref": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+              "item_ref": "#",
+              "revision_ref": "git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0"
+            }
+          }
+        }
+      }
+    },
+    "verification": {
+      "head": "2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0",
+      "indexed_identity_family_plane_matches": {
+        "SUPPORT_FEATURE": 45,
+        "DEVELOPER": 54
+      },
+      "unindexed_yaml": 12,
+      "status_representation_differences": {
+        "count": 26,
+        "groups": [
+          {
+            "indexed": "DRAFT",
+            "document": "DRAFT.Default",
+            "policy_ids": [
+              "SFP-GOV-0002"
+            ]
+          },
+          {
+            "indexed": "RETIRED.Waiting",
+            "document": "RETIRED",
+            "policy_ids": [
+              "MPD-ASSURE-0001",
+              "MPD-ASSURE-0002",
+              "MPD-ASSURE-0003",
+              "MPD-CNTR-0001",
+              "MPD-CNTR-0002",
+              "MPD-CNTR-0003",
+              "MPD-CNTR-0004",
+              "MPD-CNTR-0005",
+              "MPD-CTRL-0001",
+              "MPD-INFO-0001",
+              "MPD-INFO-0002",
+              "MPD-INFO-0003",
+              "MPD-INFO-0004",
+              "MPD-INFO-0005",
+              "MPD-INTENT-0001",
+              "MPD-NORM-0001",
+              "MPD-OPS-0001",
+              "MPD-REAL-0001",
+              "MPD-REAL-0002",
+              "MPD-REAL-0003",
+              "MPD-REAL-0004",
+              "MPD-REAL-0005",
+              "MPD-REAL-0006",
+              "MPD-RISK-0001",
+              "MPD-SUPPLY-0001"
+            ]
+          }
+        ]
+      },
+      "support_registered_policy_checks": {
+        "accepted": 38,
+        "rejected": [
+          {
+            "policy_id": "SFP-ARCH-0001",
+            "code": "AUTHORITY_SEMANTICS_INVALID",
+            "detail": "'repository_modular_declaration_direction' does not match any of the regexes: '^(?:unit_|semantic_unit_)[a-z0-9_]+$'"
+          },
+          {
+            "policy_id": "SFP-ARCH-0004",
+            "code": "AUTHORITY_SEMANTICS_INVALID",
+            "detail": "'rac_aec_rego_original_contract_direction', 'rego_policy_evaluation_scope_direction' do not match any of the regexes: '^(?:unit_|semantic_unit_)[a-z0-9_]+$'"
+          },
+          {
+            "policy_id": "SFP-ARCH-0005",
+            "code": "SUPPORT_ROOT_FAMILY_KERNEL_MISMATCH",
+            "detail": "current Root kernel declaration differs from its definition."
+          },
+          {
+            "policy_id": "SFP-CNTR-0008",
+            "code": "SUPPORT_ROOT_FAMILY_KERNEL_MISMATCH",
+            "detail": "current Root kernel declaration differs from its definition."
+          },
+          {
+            "policy_id": "SFP-GOV-0001",
+            "code": "AUTHORITY_SEMANTICS_INVALID",
+            "detail": "'context_semantic_source_update_direction' does not match any of the regexes: '^(?:unit_|semantic_unit_)[a-z0-9_]+$'"
+          },
+          {
+            "policy_id": "SFP-GOV-0002",
+            "code": "MALFORMED_AUTHORITY_RECORD",
+            "detail": "policy must be a mapping."
+          },
+          {
+            "policy_id": "SFP-INFO-0009",
+            "code": "SUPPORT_ROOT_FAMILY_KERNEL_MISMATCH",
+            "detail": "current Root kernel declaration differs from its definition."
+          }
+        ]
+      },
+      "exact_contract_to_policy_basis_references": 9,
+      "distinct_policy_source_items": 8,
+      "definition_reference_review_candidates": 2,
+      "temporary_schema_accepted_examples": 2,
+      "temporary_schema_rejected_examples": 8,
+      "canonical_policy_mutations": 0,
+      "unreviewed_rule_applicability": "UNRESOLVED",
+      "developer_registered_field_probes": [
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "serialization": "INLINE",
+          "control": "VALID",
+          "with_temporary_contract_refs": "SCHEMA_REJECTED",
+          "go_run_exit_codes": {
+            "control": 0,
+            "with_temporary_field": 1
+          }
+        },
+        {
+          "policy_id": "MPD-CHANGE-0001",
+          "serialization": "INDEXED_SOURCE_BINDINGS",
+          "control": "VALID",
+          "with_temporary_contract_refs": "SCHEMA_REJECTED",
+          "go_run_exit_codes": {
+            "control": 0,
+            "with_temporary_field": 1
+          }
+        }
+      ],
+      "support_current_corpus": {
+        "status": "FAIL",
+        "first_enumeration_rejection": "SFP-ARCH-0005",
+        "code": "SUPPORT_ROOT_FAMILY_KERNEL_MISMATCH"
       }
     }
   }

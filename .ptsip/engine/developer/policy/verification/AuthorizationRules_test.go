@@ -93,11 +93,15 @@ func TestNamedRuleConstantRejectsRandomHashesAndLongNames(t *testing.T) {
     if err!=nil{t.Skipf("installed validator unavailable: %v",err)}
     original,err:=authoring.ReadDocument(root,"developer/policy/GOV/MPD-GOV-0006.yaml")
     if err!=nil{t.Fatal(err)}
+    if err := catalog.CheckRules(validate, original); err != nil {
+        t.Fatalf("valid v2 policy rejected: %v", err)
+    }
     for _,tc:=range []string{"RULE-FD125E8425C39349304D0BC566F5701E","THIS-RULE-NAME-IS-TOO-LONG","lowercase"}{
         raw,_:=json.Marshal(original)
         var doc authoring.Document
         if err:=json.Unmarshal(raw,&doc);err!=nil{t.Fatal(err)}
-        row:=doc["Policy_Rules"].(map[string]any)["Definition"].([]any)[0].(map[string]any)
+        contract := doc["Policy_Rules"].(map[string]any)["contracts"].([]any)[0].(map[string]any)
+        row := contract["rules"].([]any)[0].(map[string]any)
         row["rule"]=tc
         if err:=catalog.CheckRules(validate,doc);err==nil{t.Fatalf("invalid rule constant accepted: %s",tc)}
     }

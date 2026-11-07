@@ -1,123 +1,494 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
 Policy_Identity:
   id: MPD-GOV-0006
   policy_kind: PTSIP_DEVELOPER_POLICY
   root_family: GOV
-  title: "GOV 정책 생명주기와 변경 결정 권한 관리"
+  title: GOV 정책 생명주기와 변경 결정 권한 관리
 Policy_Lifecycle:
-  Policy_Status_Schema_ver: "1"
+  Policy_Status_Schema_ver: '1'
   status: APPROVED.Applying
   contract: urn:ptsip:contract:policy:gov:lifecycle:governance
 Policy_Rules:
-  Identity:
-    contract_id: "urn:ptsip:policy:rule:gov:lifecycle-decision-authority"
-    Rule_ver: "16"
-  Definition:
-    - id: "R-ID-8D95436233BE6DCD5E90B2AAA986052C"
-      rule: "FLATTEN-POLICY-STATU"
+  contracts:
+  - serialization: INDEXED_SOURCE_BINDINGS
+    contract_id: urn:ptsip:policy:rule:gov:lifecycle-decision-authority
+    Rule_ver: '16'
+    source_documents:
+    - id: ORIGINAL
+      source_ref: developer/policy/GOV/MPD-GOV-0006.yaml
+      revision_ref: git:2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0
+    source_items:
+    - item_id: RULE-0001
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/0
+      original_role: rule
+    - item_id: RULE-0002
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/1
+      original_role: rule
+    - item_id: RULE-0003
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/2
+      original_role: rule
+    - item_id: RULE-0004
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/3
+      original_role: rule
+    - item_id: RULE-0005
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/4
+      original_role: rule
+    - item_id: RULE-0006
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/5
+      original_role: rule
+    - item_id: RULE-0007
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/6
+      original_role: rule
+    - item_id: RULE-0008
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/7
+      original_role: rule
+    - item_id: RULE-0009
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/8
+      original_role: rule
+    - item_id: RULE-0010
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/9
+      original_role: rule
+    - item_id: RULE-0011
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/10
+      original_role: rule
+    - item_id: RULE-0012
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/11
+      original_role: rule
+    - item_id: RULE-0013
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/12
+      original_role: rule
+    - item_id: RULE-0014
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/13
+      original_role: rule
+    - item_id: RULE-0015
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/14
+      original_role: rule
+    - item_id: RULE-0016
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/15
+      original_role: rule
+    - item_id: RULE-0017
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/16
+      original_role: rule
+    - item_id: RULE-0018
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/17
+      original_role: rule
+    - item_id: RULE-0019
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/18
+      original_role: rule
+    - item_id: RULE-0020
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/19
+      original_role: rule
+    - item_id: RULE-0021
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/20
+      original_role: rule
+    - item_id: RULE-0022
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/21
+      original_role: rule
+    - item_id: RULE-0023
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/22
+      original_role: rule
+    - item_id: RULE-0024
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Definition/23
+      original_role: rule
+    - item_id: SCOPE
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/scope
+      original_role: scope
+    - item_id: SUB-0001
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/subjects/0
+      original_role: statement
+    - item_id: SUB-0002
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/subjects/1
+      original_role: statement
+    - item_id: SUB-0003
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/subjects/2
+      original_role: statement
+    - item_id: SUB-0004
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/subjects/3
+      original_role: statement
+    - item_id: SUB-0005
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/subjects/4
+      original_role: statement
+    - item_id: SUB-0006
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/subjects/5
+      original_role: statement
+    - item_id: SUB-0007
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/subjects/6
+      original_role: statement
+    - item_id: EXC-0001
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/exclusions/0
+      original_role: constraint
+    - item_id: EXC-0002
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/exclusions/1
+      original_role: constraint
+    - item_id: EXC-0003
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Boundary/exclusions/2
+      original_role: constraint
+    - item_id: CRI-0001
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/0
+      original_role: criterion
+    - item_id: CRI-0002
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/1
+      original_role: criterion
+    - item_id: CRI-0003
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/2
+      original_role: criterion
+    - item_id: CRI-0004
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/3
+      original_role: criterion
+    - item_id: CRI-0005
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/4
+      original_role: criterion
+    - item_id: CRI-0006
+      document_id: ORIGINAL
+      item_ref: /Policy_Rules/Evaluation/criteria/evidence/5
+      original_role: criterion
+    rules:
+    - id: R-ID-8D95436233BE6DCD5E90B2AAA986052C
+      rule: FLATTEN-POLICY-STATU
       preconditions:
-        - "C-ID-514BC6B03401A855DF7B7C157645C79B"
-    - id: "R-ID-7782C0A75F6B4D220BF04CE85B86EDC9"
-      rule: "COMMON-STATUS-CONTRA"
+      - C-ID-514BC6B03401A855DF7B7C157645C79B
+      source_ref:
+      - RULE-0001
+    - id: R-ID-7782C0A75F6B4D220BF04CE85B86EDC9
+      rule: COMMON-STATUS-CONTRA
       preconditions:
-        - "C-ID-A43BC88330D698BDD4E922944C085C01"
-    - id: "R-ID-EA4820BBDDF280A569072506F3885F3C"
-      rule: "LIFECYCLE-CONTRACT-A"
+      - C-ID-A43BC88330D698BDD4E922944C085C01
+      source_ref:
+      - RULE-0002
+    - id: R-ID-EA4820BBDDF280A569072506F3885F3C
+      rule: LIFECYCLE-CONTRACT-A
       preconditions:
-        - "C-ID-04ACEB5A66C2DD6F344AC69D7587F7BE"
-    - id: "R-ID-DB68F08679D5B848E6F2DB02ACC802F2"
-      rule: "STATUS-IMPLEMENTATIO"
+      - C-ID-04ACEB5A66C2DD6F344AC69D7587F7BE
+      source_ref:
+      - RULE-0003
+    - id: R-ID-DB68F08679D5B848E6F2DB02ACC802F2
+      rule: STATUS-IMPLEMENTATIO
       preconditions:
-        - "C-ID-96FF238A5EE62C937F3A10B0ED8F7295"
-    - id: "R-ID-26F74533C9A98CF199B0F04D2B81006D"
-      rule: "CONTRACT-BOUNDED-NOR"
+      - C-ID-96FF238A5EE62C937F3A10B0ED8F7295
+      source_ref:
+      - RULE-0004
+    - id: R-ID-26F74533C9A98CF199B0F04D2B81006D
+      rule: CONTRACT-BOUNDED-NOR
       preconditions:
-        - "C-ID-5E26158A0E4EF8C4890E58A1A762169E"
-    - id: "R-ID-A58783FE67FEA8E6A5DC82E6B1284251"
-      rule: "PRESERVE-EXISTING-MA"
+      - C-ID-5E26158A0E4EF8C4890E58A1A762169E
+      source_ref:
+      - RULE-0005
+    - id: R-ID-A58783FE67FEA8E6A5DC82E6B1284251
+      rule: PRESERVE-EXISTING-MA
       preconditions:
-        - "C-ID-C6405AC741FE989D6EC1692DCDA32CDD"
-    - id: "R-ID-B46D2BD3902B08929D55D3DDA9FBBA82"
-      rule: "MUTATION-PRECONDITIO"
+      - C-ID-C6405AC741FE989D6EC1692DCDA32CDD
+      source_ref:
+      - RULE-0006
+    - id: R-ID-B46D2BD3902B08929D55D3DDA9FBBA82
+      rule: MUTATION-PRECONDITIO
       preconditions:
-        - "C-ID-3E772086ED3CAA5D584FF29A2B82A9CC"
-    - id: "R-ID-39AACCB4551B3D780D0D67A70CF3AC9F"
-      rule: "MACHINE-FIRST-AGENT"
+      - C-ID-3E772086ED3CAA5D584FF29A2B82A9CC
+      source_ref:
+      - RULE-0007
+    - id: R-ID-39AACCB4551B3D780D0D67A70CF3AC9F
+      rule: MACHINE-FIRST-AGENT
       preconditions:
-        - "C-ID-8C1AFA8B2C953645F59629A7051A6EE7"
-    - id: "R-ID-BE46303A018B9870BE2103831B88D776"
-      rule: "REASONING-TO-REUSABL"
+      - C-ID-8C1AFA8B2C953645F59629A7051A6EE7
+      source_ref:
+      - RULE-0008
+    - id: R-ID-BE46303A018B9870BE2103831B88D776
+      rule: REASONING-TO-REUSABL
       preconditions:
-        - "C-ID-5886131E0A302856B508AE6133891143"
-    - id: "R-ID-2B9E89AD4B261F534296F7D7238FAF81"
-      rule: "GOVERNANCE-SOURCE-SE"
+      - C-ID-5886131E0A302856B508AE6133891143
+      source_ref:
+      - RULE-0009
+    - id: R-ID-2B9E89AD4B261F534296F7D7238FAF81
+      rule: GOVERNANCE-SOURCE-SE
       preconditions:
-        - "C-ID-F6D7A24AC4CD1597AD01F01AE57844C6"
-    - id: "R-ID-DC631B80FE6E7839074774BB01A81A23"
-      rule: "USER-EXPLICIT-AUTHOR"
+      - C-ID-F6D7A24AC4CD1597AD01F01AE57844C6
+      source_ref:
+      - RULE-0010
+    - id: R-ID-DC631B80FE6E7839074774BB01A81A23
+      rule: USER-EXPLICIT-AUTHOR
       preconditions:
-        - "C-ID-692CCE5274FF7877EBE7EA601BE8B604"
-    - id: "R-ID-0C3EAC4BE698E3C576A4FE182A95EC76"
-      rule: "INFERRED-SOURCE-NON"
+      - C-ID-692CCE5274FF7877EBE7EA601BE8B604
+      source_ref:
+      - RULE-0011
+    - id: R-ID-0C3EAC4BE698E3C576A4FE182A95EC76
+      rule: INFERRED-SOURCE-NON
       preconditions:
-        - "C-ID-809268A139EC986461197E3B9BE54EBA"
-    - id: "R-ID-45C626E63247E85E633DFE7F92ADC622"
-      rule: "AUTOMATION-SOURCE-PR"
+      - C-ID-809268A139EC986461197E3B9BE54EBA
+      source_ref:
+      - RULE-0012
+    - id: R-ID-45C626E63247E85E633DFE7F92ADC622
+      rule: AUTOMATION-SOURCE-PR
       preconditions:
-        - "C-ID-3CC23FE5B0EDE0324177A4AE9E8D419B"
-    - id: "R-ID-A8603B02755C482E520F8513ECC051B4"
-      rule: "COMPILE-SEALED-CHANG"
+      - C-ID-3CC23FE5B0EDE0324177A4AE9E8D419B
+      source_ref:
+      - RULE-0013
+    - id: R-ID-A8603B02755C482E520F8513ECC051B4
+      rule: COMPILE-SEALED-CHANG
       preconditions:
-        - "C-ID-02629383FE8E77DCCA789DCE3BBD6CFC"
-    - id: "R-ID-BE8A48495CA32EA8AE5722A9534B063B"
-      rule: "COMPILE-SEALED-MIGRA"
+      - C-ID-02629383FE8E77DCCA789DCE3BBD6CFC
+      source_ref:
+      - RULE-0014
+    - id: R-ID-BE8A48495CA32EA8AE5722A9534B063B
+      rule: COMPILE-SEALED-MIGRA
       preconditions:
-        - "C-ID-9774395C2A328892E0650B2CC328A997"
-    - id: "R-ID-AB00C972E9DA0849F2B9CABF45C797ED"
-      rule: "INDEPENDENT-CONTRACT"
+      - C-ID-9774395C2A328892E0650B2CC328A997
+      source_ref:
+      - RULE-0015
+    - id: R-ID-AB00C972E9DA0849F2B9CABF45C797ED
+      rule: INDEPENDENT-CONTRACT
       preconditions:
-        - "C-ID-D7886CC555B548B8B0A049F578E4EDB8"
-    - id: "R-ID-DC8AE89B912C9AA88B50539F341D469F"
-      rule: "DISTRIBUTED-RBAC-VAL"
+      - C-ID-D7886CC555B548B8B0A049F578E4EDB8
+      source_ref:
+      - RULE-0016
+    - id: R-ID-DC8AE89B912C9AA88B50539F341D469F
+      rule: DISTRIBUTED-RBAC-VAL
       preconditions:
-        - "C-ID-50340150A41DE7A3C9253F355E84D968"
-    - id: "R-ID-50514F1CE3EE0854388AE84EC9195795"
-      rule: "RBAC-FIELD-CONTRACT"
+      - C-ID-50340150A41DE7A3C9253F355E84D968
+      source_ref:
+      - RULE-0017
+    - id: R-ID-50514F1CE3EE0854388AE84EC9195795
+      rule: RBAC-FIELD-CONTRACT
       preconditions:
-        - "C-ID-4E3A6955DCC9A37634C61236A08BE7B0"
-    - id: "R-ID-BB14F5926DD8283DE0D25BFFA1135A1A"
-      rule: "RETIRED-DEVELOPER-PO"
+      - C-ID-4E3A6955DCC9A37634C61236A08BE7B0
+      source_ref:
+      - RULE-0018
+    - id: R-ID-BB14F5926DD8283DE0D25BFFA1135A1A
+      rule: RETIRED-DEVELOPER-PO
       preconditions:
-        - "C-ID-45807817CCAEC8FCE0E768D12FF8A345"
-    - id: "R-ID-8DF18FC0D96F2836EA97B554ECAC8659"
-      rule: "DUAL-ACTIVE-AUTHORIT"
-    - id: "R-ID-955FC7183325B2688141D1159FCCFF2B"
-      rule: "NO-OUT-OF-SCOPE-APPR"
-    - id: "R-ID-7746F8DA6CA86865C66494D607E84CD9"
-      rule: "NO-INFERRED-OFFICIAL"
-    - id: "R-ID-D764CA90EAA8F89DE6567CAE3258F10A"
-      rule: "NO-AUTOMATION-NEW-AU"
-    - id: "R-ID-F8EDB9AEE6DE9C18BB387AB925763304"
-      rule: "NO-SOURCE-ESCALATION"
-  Boundary:
-    scope: "정책 생명주기 및 변경 허가, 기계 중심 코딩 에이전트 제어 구조, 반복 추론의 계약화, 거버넌스 결정·승인·실행·전환 출처"
-    subjects:
-      - "정책 상태와 버전의 공통 계약 및 적용 조건"
-      - "정책 상태 정규화와 충돌 복구"
-      - "변경 범위·선행조건·최신성·충돌 검사"
-      - "정책 조회·라우팅·상태 확인·계획 구성·문맥 생성의 기계적 제어"
-      - "제한된 AI 추론과 검증된 기계 계약·바인딩의 재사용"
-      - "USER_EXPLICIT, AGENT_INFERRED, AUTOMATION_DERIVED"
-      - "결정 출처, 승인 출처, 실행 허가 출처, 상태 전환 출처"
-    exclusions:
-      - "정책 식별자의 생성 및 등록부 무결성은 MPD-GOV-0005의 책임"
-      - "정책·작업의 결정권과 README 관리는 MPD-GOV-0004의 책임"
-      - "에이전트 제어 구조의 모든 상세 구현이 완료되었다는 주장"
-  Evaluation:
-    criteria:
-      evidence:
-        - "정책 상태와 구현 승인의 독립성"
-        - "변경 범위·선행조건·최신성·충돌 확인 결과"
-        - "추론 후보의 검증과 승인 근거, 기계 계약 승격 여부"
-        - "사용자 명시·에이전트 추론·자동화 파생 출처의 분리"
-        - "정책 생명주기와 상태 전환을 정의하는 실제 계약 참조"
-        - "developer/policy/registries/**의 퇴역 권위 참조 또는 실행 의존성이 정책 판단에 사용되지 않는지 확인"
+      - C-ID-45807817CCAEC8FCE0E768D12FF8A345
+      source_ref:
+      - RULE-0019
+    - id: R-ID-8DF18FC0D96F2836EA97B554ECAC8659
+      rule: DUAL-ACTIVE-AUTHORIT
+      source_ref:
+      - RULE-0020
+    - id: R-ID-955FC7183325B2688141D1159FCCFF2B
+      rule: NO-OUT-OF-SCOPE-APPR
+      source_ref:
+      - RULE-0021
+    - id: R-ID-7746F8DA6CA86865C66494D607E84CD9
+      rule: NO-INFERRED-OFFICIAL
+      source_ref:
+      - RULE-0022
+    - id: R-ID-D764CA90EAA8F89DE6567CAE3258F10A
+      rule: NO-AUTOMATION-NEW-AU
+      source_ref:
+      - RULE-0023
+    - id: R-ID-F8EDB9AEE6DE9C18BB387AB925763304
+      rule: NO-SOURCE-ESCALATION
+      source_ref:
+      - RULE-0024
+    requirements:
+    - requirement_id: REQ-0001
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SUB-0001
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SCOPE
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - SUB-0001
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: &id001
+        - CRI-0001
+        - CRI-0002
+        - CRI-0003
+        - CRI-0004
+        - CRI-0005
+        - CRI-0006
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding
+    - requirement_id: REQ-0002
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SUB-0002
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SCOPE
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - SUB-0002
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding
+    - requirement_id: REQ-0003
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SUB-0003
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SCOPE
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - SUB-0003
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding
+    - requirement_id: REQ-0004
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SUB-0004
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SCOPE
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - SUB-0004
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding
+    - requirement_id: REQ-0005
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SUB-0005
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SCOPE
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - SUB-0005
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding
+    - requirement_id: REQ-0006
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SUB-0006
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SCOPE
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - SUB-0006
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding
+    - requirement_id: REQ-0007
+      source_bindings:
+      - purpose: MEANING
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SUB-0007
+      - purpose: SCOPE
+        state: SOURCE_IDENTIFIED
+        ref_ids:
+        - SCOPE
+      - purpose: TARGET
+        state: UNRESOLVED
+        basis_ref_ids:
+        - SUB-0007
+      - purpose: CRITERION
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      evidence_requirement_binding:
+        state: UNRESOLVED
+        basis_ref_ids: *id001
+      unresolved_fields:
+      - source_bindings.TARGET
+      - source_bindings.CRITERION
+      - evidence_requirement_binding

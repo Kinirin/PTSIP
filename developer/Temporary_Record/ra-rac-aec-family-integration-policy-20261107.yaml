@@ -14,13 +14,13 @@ scope:
   authority: NONE
   formal_policy_dependency: FORBIDDEN
 last_checkpoint:
-  reference_head: "00da5b5c517bcaf561ad8c95a11f66ded198bf03"
-  status: TEMPORARY_POLICY_DIRECTION_USER_AUTHORIZED
+  reference_head: "2b3a1716f4cfe390d8ef015aa05e88d3bcd6afe0"
+  status: RULE_REFERENCE_DIRECTION_USER_AUTHORIZED_FOR_TEMPORARY_REVIEW
   normative_policy_edits: NOT_PERFORMED
 pending_tasks:
-  - "개별 정책의 실제 의미와 계약 적용 관계를 검정한다"
-  - "RAC/AEC 계약 등록·활성 상태와 무관하게 임의 규범 참조를 추가하지 않는다"
-  - "정식 문서 적용 필드와 검증 경계를 정책별로 확정한다"
+  - "실제 계약을 사용하는 규칙의 의미와 적용 관계를 개별 확인한다"
+  - "두 정책 영역에서 각각 허용할 규칙별 참조 필드와 검증 경로를 등록한다"
+  - "대상 RA·RAC·AEC의 원본 소유자와 리비전 등록을 확인한 후 정책 본문 반영을 검증한다"
 work:
   group_id: RA_RAC_AEC_FAMILY_INTEGRATION
 temporary_policy:
@@ -46,6 +46,15 @@ temporary_policy:
     - id: TEMP-PCI-06
       subject: NO_TEMPORARY_AUTHORITY_PROMOTION
       requirement: "임시 기록은 정식 정책·계약의 참조 입력 또는 효력 근거가 아니며, 미등록·RETIRED·DRAFT 정책을 활성화하지 않는다"
+    - id: TEMP-PCI-07
+      subject: DIRECT_REFERENCE_PER_APPLICABLE_RULE
+      requirement: "계약이 필요한 각 규칙에 그 계약의 원본 좌표를 직접 선언한다. 정책 문서나 Family에서 계약을 상속하지 않으며, 계약이 필요 없는 규칙에는 참조를 생략한다."
+    - id: TEMP-PCI-08
+      subject: INDEPENDENT_CONTRACT_OWNERSHIP
+      requirement: "정책 규칙은 계약 사용 여부와 참조를 소유한다. 계약 의미는 독립 계약 원본, 등록은 지정된 등록·해석 경로, 조건 평가는 승인된 원본과 독립 평가 책임에 각각 남긴다."
+    - id: TEMP-PCI-09
+      subject: CONTRACT_REFERENCE_ADMISSION
+      requirement: "계약이 정책을 근거로 인용한 사실만으로 정책의 계약 사용을 판정하지 않는다. 정책 영역별 구조 검사, 규칙의 사용 필요성, 참조 대상 등록이 모두 확인되면 해당 규칙에 정식 반영한다."
   conflict_handling:
     resolution_options: [KEEP_PRIOR, KEEP_LATEST, RECONCILE]
     owner: USER
