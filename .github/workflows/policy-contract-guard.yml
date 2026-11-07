@@ -39,6 +39,13 @@ jobs:
         run: |
           python -m pytest -q src/tests/ptsip/contracts/test_unified_policy.py
           python .ptsip/engine/developer/policy/migrate_unified.py --root . --check
+      - name: Check read-only per-rule RA RAC AEC applicability registration
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C .ptsip/engine/developer test ./policy/applicability/... -count=1
+          python .ptsip/engine/developer/policy/applicability/input.py --root . > "$RUNNER_TEMP/policy-applicability-input.json"
+          go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --input "$RUNNER_TEMP/policy-applicability-input.json" --output "$RUNNER_TEMP/policy-applicability-result.json" --summary
       - name: Test shared selection, authoring and review paths
         run: |
           go -C .ptsip/engine/developer test ./internal/contractentry ./internal/contract_authoring ./policy/verification/... ./policy/review/... -count=1

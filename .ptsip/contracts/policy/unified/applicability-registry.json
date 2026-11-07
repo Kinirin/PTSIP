@@ -1,0 +1,25 @@
+{
+  "schema_version": "ptsip-policy-applicability-registration/v1",
+  "status": "CANDIDATE_READ_ONLY",
+  "owner": "INDEPENDENT_POLICY_CONTRACT_APPLICABILITY_ASSESSMENT",
+  "source_policy_indexes": [
+    "developer/policy/index.yaml",
+    "src/policy/index.yaml"
+  ],
+  "input_adapter": ".ptsip/engine/developer/policy/applicability/input.py",
+  "implementation": ".ptsip/engine/developer/policy/applicability/assess.go",
+  "entrypoint": ".ptsip/engine/developer/policy/applicability/cmd/policy-applicability",
+  "contract_sources": {
+    "RA": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+    "RAC": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
+    "AEC": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json"
+  },
+  "binding_scope": "EXACT_RULE_LOCAL_EVIDENCE_ONLY",
+  "reverse_policy_basis_confers_contract_use": false,
+  "unresolved_without_semantic_evidence": "UNRESOLVED",
+  "policy_mutation_authorized": false,
+  "normative_policy_activation": false,
+  "evaluation_authorized": false,
+  "execution_authorized": false,
+  "formal_rego_evaluator_registration": "SEPARATE_REQUIRED"
+}
