@@ -1824,11 +1824,11 @@
     "policy_lifecycle_transition_authorized": false,
     "authorized_engine_implementation": "NOT_DECIDED_BY_DELEGATION",
     "implementation_language_preference": "GO",
-    "deprecated_migration_tool": "migrate_unified.py",
-    "deprecated_migration_tool_as_applicability_authority": false,
     "design_direction_source": "developer/policy/contracts/rbac-hybrid-conditions-direction.v1.json",
     "design_direction_as_per_rule_decision_authority": false,
     "formal_activation_and_registration": "SEPARATE_POLICY_AUTHORITY",
-    "note_ko": "사용자가 규칙별 RA·RAC·AEC 적용 여부의 임시 자동 후보 판단을 위임함. 이 위임은 개별 규칙마다 승인을 다시 묻지 않아도 된다는 뜻이며 정식 계약 등록·평가 효력·실행 권한까지 위임하지 않음."
+    "note_ko": "사용자가 규칙별 RA·RAC·AEC 적용 여부의 임시 자동 후보 판단을 위임함. 이 위임은 개별 규칙마다 승인을 다시 묻지 않아도 된다는 뜻이며 정식 계약 등록·평가 효력·실행 권한까지 위임하지 않음.",
+    "prior_structural_migration_tool": "migrate_unified.py",
+    "prior_structural_migration_tool_as_applicability_authority": false
   }
 }
