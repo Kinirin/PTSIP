@@ -46,6 +46,12 @@ jobs:
           go -C .ptsip/engine/developer test ./policy/applicability/... -count=1
           python .ptsip/engine/developer/policy/applicability/input.py --root . > "$RUNNER_TEMP/policy-applicability-input.json"
           go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --input "$RUNNER_TEMP/policy-applicability-input.json" --output "$RUNNER_TEMP/policy-applicability-result.json" --summary
+      - name: Retain machine-readable applicability assessment evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: policy-applicability-assessment-${{ github.sha }}
+          path: ${{ runner.temp }}/policy-applicability-result.json
+          if-no-files-found: error
       - name: Test shared selection, authoring and review paths
         run: |
           go -C .ptsip/engine/developer test ./internal/contractentry ./internal/contract_authoring ./policy/verification/... ./policy/review/... -count=1

@@ -43,6 +43,16 @@
       "root": "test",
       "state": "IMPLEMENTED",
       "implementation": "test/Verifier_test.go"
+    },
+    {
+      "id": "contract-applicability-assessment",
+      "root": "applicability",
+      "state": "IMPLEMENTED",
+      "implementation": "applicability/assess.go",
+      "registration": ".ptsip/contracts/policy/unified/applicability-registry.json",
+      "authority": "NONE",
+      "evaluation_authorized": false,
+      "execution_authorized": false
     }
   ]
 }

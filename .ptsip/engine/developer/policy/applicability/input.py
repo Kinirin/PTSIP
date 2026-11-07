@@ -16,14 +16,20 @@ def main() -> int:
     args = parser.parse_args()
     root = args.root.resolve()
     sys.path.insert(0, str(root / "src"))
-    from ptsip.policy_contracts.unified import load_document, VERSION
+    from ptsip.policy_contracts.unified import load_document, validate_document, VERSION
 
     try:
         head = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=root, check=True,
             capture_output=True, text=True,
         ).stdout.strip()
-        registry_path = root / ".ptsip/contracts/policy/unified/applicability-registry.json"
+        registry_ref = ".ptsip/contracts/policy/unified/applicability-registry.json"
+        unified_index = json.loads(
+            (root / ".ptsip/contracts/policy/unified/index.json").read_text(encoding="utf-8")
+        )
+        if unified_index.get("applicability_assessment_ref") != registry_ref:
+            raise ValueError("APPLICABILITY_ASSESSOR_NOT_REGISTERED")
+        registry_path = root / registry_ref
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
         if (
             registry.get("schema_version") != "ptsip-policy-applicability-registration/v1"
@@ -83,6 +89,9 @@ def main() -> int:
                     raise ValueError("POLICY_IDENTITY_MISMATCH: " + path)
                 if doc["Policy_Content"]["source_document"]["path"] != path:
                     raise ValueError("POLICY_SOURCE_PATH_MISMATCH: " + path)
+                result = validate_document(root, doc)
+                if result.get("status") != "VALID":
+                    raise ValueError("SOURCE_POLICY_CONTRACT_INVALID: " + path + ": " + str(result.get("problem")))
                 policies.append({
                     "policy_id": policy_id,
                     "path": path,
