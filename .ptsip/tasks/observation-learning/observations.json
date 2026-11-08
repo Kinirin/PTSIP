@@ -1,0 +1,457 @@
+{
+  "format": "ptsip-observation-evidence/v1",
+  "record_role": "USER_JUDGMENT_EVIDENCE_NON_NORMATIVE",
+  "case_scope": [
+    "CASE-001",
+    "CASE-017"
+  ],
+  "total_cases": 17,
+  "deferred_count": 1,
+  "generalized_count": 0,
+  "user_originals_not_policy": true,
+  "case_ref_semantics": "QUESTION_CONTEXT_ONLY",
+  "source_policy_review_required": true,
+  "provenance_notice": "CASE-001..CASE-004 verbatim quotes recovered from conversation summary; not independently verified against original transcript.",
+  "cases": [
+    {
+      "case_id": "CASE-001",
+      "family": "OPS",
+      "policy_context_ref": "src/policy/OPS/SFP-OPS-0001.yaml",
+      "rule_context_id": "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION",
+      "selected_option": "A",
+      "response_verbatim": "사용자나 호흡 오류를 해결하기 위해서, 권한의 조건이 변경될 수도 있기 때문입니다",
+      "verbatim_provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "AEC_RECHECK_ON_RETRY"
+      ],
+      "unresolved": [],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-002",
+      "family": "INFO",
+      "policy_context_ref": "src/policy/INFO/SFP-INFO-0001.yaml",
+      "rule_context_id": "SUP_CANONICAL_INFORMATION_MODEL",
+      "selected_option": "C",
+      "response_verbatim": "Profile에서 다음을 서로 다른 정보 의미 축으로 정의합니다. Classification, Roles, Relationships, Source mode, Evidence. 다만 이것은 이 전 정부의미에 축으로 정의를 하고 있어서 현재에서는 활용할 수 없는 정의입니다. .ptsip/profiles/rbac/RA_list.yaml에서 새로 만들려는 계약 구조인 .ptsip\\contracts\\compile-sealed-rbac\\Responsibility\\RA_list.schema.json 을 준수한다",
+      "verbatim_provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "LEGACY_INFO_AXES_DISTINGUISHED",
+        "NEW_RA_SCHEMA_REFERENCED"
+      ],
+      "unresolved": [
+        "RA_FIELD_CONTRACT_UNRESOLVED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-003",
+      "family": "ASSURE",
+      "policy_context_ref": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+      "rule_context_id": "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
+      "selected_option": "D",
+      "response_verbatim": "현재 질문 내용이 루트 패밀리이기 때문에 해당 루트 패밀리에 대한 정확한 철학이나 정의 책임에 대해 설명이 부족해서 판단을 내리기가 어렵습니다 이게 어떠한 루트 패밀리인지 고민을 해봐야 하며 RA 씨가 정확하게 어떠한 현재 책임을 맡고 있는지 계약구조를 제가 이해를 완전히 못했기 때문에 해당 질문만으로는 답변하기 어렵습니다",
+      "verbatim_provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+      "observation_status": "DEFERRED",
+      "observed_atoms": [
+        "JUDGMENT_DEFERRED_PENDING_RESPONSIBILITY_EXPLANATION"
+      ],
+      "unresolved": [
+        "ROOT_FAMILY_AND_RA_SEMANTICS_NEED_CONTEXT"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-004",
+      "family": "CHANGE",
+      "policy_context_ref": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+      "rule_context_id": "SUP_COMPATIBILITY_ORDER_AND_RETIREMENT",
+      "selected_option": "D",
+      "response_verbatim": "CHANGE는 필요한 책임 RA을 호출한다. 실제 RA_list.yaml에서는 RAC 연결과 AEC 권한 조건을선언한다. CHANGE는 폐기 조건을정의하지 않는다 . RA_list.yaml에서 만든 책임을 호출하며 책임안에 RAC 연결과 AEC 권한 조건이 포함되있다.\n\n일종의 오류 코드와 비슷하다. 적은 분량의 오류코드 발생시 해당 오류코드가 무슨 의미인지 메뉴얼 (현재 상황에서는 RA_list.yaml 이 메뉴얼이다.)을 보고 발생오류코드에 원인을 알수있다. 단점은 오류코드만으로는 정보를 알수없어 RA_list.yaml에 의존해야 한다, 장점은 기계적 처리를 하며 정책문서의 필드에는 표기가 간략하며 일괄성을 유지한다. 대신에 RA_list.yaml 에 관리가 중요하다.",
+      "verbatim_provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+      "observation_status": "ALTERNATIVE_OWNERSHIP_DIRECTION",
+      "observed_atoms": [
+        "CHANGE_CALLS_RA_REFERENCE",
+        "RA_LIST_ASSOCIATES_RAC_AEC",
+        "CHANGE_NOT_RETIREMENT_CONDITION_OWNER"
+      ],
+      "unresolved": [
+        "RA_LIST_ACTIVATION_UNREGISTERED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-005",
+      "family": "RECORD",
+      "policy_context_ref": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+      "rule_context_id": "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
+      "selected_option": "A",
+      "response_verbatim": "RECORD는 과거 작업이 당시 어떤 책임과 조건에 따라 처리됐는지 재현하기 위해 RA 식별자와 당시 정확한 리비전만 명시합니다.\nRECORD는 과거 작업이 당시 어떤 책임과 조건에 따라 처리됐는지 재현 하는 목적도 있지만 재헌의 중점이 아닙니다 내린 정책의 결정에 대한 기록하는 방식의 정책을 주로 다루는 내용이 주요 핵심입니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "RECORD_RA_ID_AND_EXACT_REVISION",
+        "POLICY_DECISION_RECORDING_PRIMARY"
+      ],
+      "unresolved": [],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-006",
+      "family": "CNTR",
+      "policy_context_ref": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+      "rule_context_id": "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+      "selected_option": "B",
+      "response_verbatim": "오류 결과에 RA/RAC/AEC의 상세 조건과 실패 원인까지 직접 포함하며, 현재 `RA_list.yaml`에서 존재하는 책임으로 해결하지 못하는 걸 추론이나 검색의 절차를 줄이기 위해서 책임내용도 전달하며 책임에 대한 유사책임과 역활을 설명하고 현재 실패한 사용중인 책임의 확장, 유사 책임의 적합한 용도일 경우 변경 (변경시 변경한 책임의 대한 RAC/AEC의 변경이 일시적 가능하며 권한이나 조건에 통과가 가능할경우 반드시 RAC/AEC의 변경의무가 있는건 아니다. ), 적절한 책임이 존재하지 않을경우  `RA_list.yaml`에서 새로운 책임 ID와 RAC/AEC의 생성.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "FAILURE_RETURNS_DETAILED_RA_RAC_AEC",
+        "EXPLAIN_SIMILAR_RESPONSIBILITIES",
+        "EXTEND_REPLACE_OR_CREATE_RA_CANDIDATES",
+        "RAC_AEC_CHANGE_NOT_UNCONDITIONALLY_MANDATORY"
+      ],
+      "unresolved": [
+        "NO_AUTOMATIC_RA_MUTATION_AUTHORIZED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-007",
+      "family": "INTENT",
+      "policy_context_ref": "src/policy/INTENT/SFP-INTENT-0001.yaml",
+      "rule_context_id": "SUP_EXPLICIT_OPERATION_PURPOSE_AND_SCOPE",
+      "selected_option": "B",
+      "response_verbatim": "B를 선택합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "REQUIRED_RA_CHANGE_WITHIN_ORIGINAL_MIGRATION_SCOPE"
+      ],
+      "unresolved": [
+        "BOUNDARY_VS_UNREQUESTED_MUTATION"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-008",
+      "family": "GOV",
+      "policy_context_ref": "src/policy/GOV/SFP-GOV-0001.yaml",
+      "rule_context_id": "SUP_SUBJECT_ROLE_AND_DECISION_MANDATE",
+      "selected_option": "B",
+      "response_verbatim": "다른 소유자가 등록하는 책임이라 해서 무조건 사용하면 안 된다는 축구는 엄격하기 때문에 만약 다른 소유자가 변경하려고 할 때 조건에 충족하는지 기준이 있다면 사용할 수 있도록 합니다 다만 사전에 선언한 조건이 없거나 해당 사안을 고려하지 못했을 경우에는 당장은 변경 범위에 포함 되더라도 소유자의 결정 권한까지 사용할 수는 없습니다 해당 이슈가 발생할 때는 다음부터는 동일한 문제가 발생하지 않도록 ra 소유자 결정에 대한 권한을 위임받을 수 있는지 규칙을 추가하는 기능 구현을 해야 합니다",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "OTHER_OWNER_ELIGIBLE_ONLY_WITH_DECLARED_CRITERIA",
+        "NO_UNDECLARED_AUTHORITY",
+        "DELEGATION_FEATURE_DESIRED"
+      ],
+      "unresolved": [
+        "DELEGATION_POLICY_DESIGN_UNRESOLVED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-009",
+      "family": "REAL",
+      "policy_context_ref": "src/policy/REAL/SFP-REAL-0001.yaml",
+      "rule_context_id": "SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY",
+      "selected_option": "C",
+      "response_verbatim": "C를 선택합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "ATOMICITY_DEPENDS_ON_DECLARED_WRITE_UNIT"
+      ],
+      "unresolved": [
+        "WHO_OWNS_WRITE_UNIT_DECISION"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-010",
+      "family": "NORM",
+      "policy_context_ref": "src/policy/NORM/SFP-NORM-0001.yaml",
+      "rule_context_id": "SUP_REQUIREMENT_FORCE_AND_BOUND_SPEC",
+      "selected_option": "A",
+      "response_verbatim": "Specification의 MUST_NOT은 권한이 강력하기에 차단이 맞으며 이 내용을 사용자에게 전달해야 합니다. Specification의 MUST_NOT을 무시나 우회를 해야하는지 사용자에게 다시한번 확인하며 다시 확인했을때도 승인한다면 이는 ptsip의 영역으로 해결하지 못하기에 에이전트의 ptsip의 사용이나 의존없이 별도 작업으로 생성해야 합니다. 별도 작업에 관한 PTSIP 로 생성하는 정책에 작성시 호출위험이 있어 별도경로로 지정해야 합니다. 또한 자동 우회 권한으로 해석합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "PTSIP_MUST_NOT_BLOCKS",
+        "INFORM_USER",
+        "RECONFIRMED_REQUEST_CONSIDERED_OUTSIDE_PTSIP"
+      ],
+      "unresolved": [
+        "AUTOMATIC_BYPASS_PHRASE_MEANING_UNRESOLVED",
+        "NEVER_INFER_PTSIP_BYPASS_AUTHORITY"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-011",
+      "family": "RISK",
+      "policy_context_ref": "src/policy/RISK/SFP-RISK-0001.yaml",
+      "rule_context_id": "SUP_RISK_ACCEPTANCE_WITHOUT_AUTHORITY_SUBSTITUTION",
+      "selected_option": "C",
+      "response_verbatim": "C를 선택합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "RISK_ACCEPTANCE_BOUND_TO_PRIOR_DELEGATION",
+        "RISK_ACCEPTANCE_NOT_NEW_AUTHORITY"
+      ],
+      "unresolved": [
+        "DELEGATION_DETAIL_UNRESOLVED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-012",
+      "family": "SUPPLY",
+      "policy_context_ref": "src/policy/SUPPLY/SFP-SUPPLY-0001.yaml",
+      "rule_context_id": "SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF",
+      "selected_option": "C",
+      "response_verbatim": "SUPPLY는 외부 즉 유저가 ptsip의 기능의 추가 확장으로 만든 엔진혹 정책의 기능입니다 .프로젝트 내부의 소유자가 누구인지는 아직 선언되지 않았다면 사용자 저장소 소유주의것으로 판단합니다.  또한 계약구조에는  프로젝트 소유주를 자동으로 작성하는 계약을 관리하여 사용자가 도구를 만들때 자신이 소유주임을 밣히지 않아도 자동으로 채울수있도록 합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "USER_CREATED_PTSIP_EXTENSIONS_AS_SUPPLY",
+        "UNDECLARED_OWNER_DEFAULTS_TO_REPOSITORY_OWNER",
+        "OWNER_AUTOFILL_CONTRACT_DESIRED"
+      ],
+      "unresolved": [
+        "EXISTING_SUPPLY_SCOPE_DIFFERS",
+        "OWNER_DEFAULT_VS_ARCH"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-013",
+      "family": "ARCH",
+      "policy_context_ref": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "rule_context_id": "SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY",
+      "selected_option": "C",
+      "response_verbatim": "엔진은 배포되는 릴리스 출시의 출처가 있습니다. 저장소의 소유주는 본인 리포터지 환경에 SUPPLY 계약 문서를 생성하는건 아닙니다. ptsip의 사양 기능에서 이에 필요한 계약을 제공합니다. 즉 저장소에 git 계정으로 판단하는것 입니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "ENGINE_RELEASE_PROVENANCE",
+        "SUPPLY_CONTRACT_PROVIDED_BY_PTSIP_SPEC",
+        "OWNER_IDENTIFIED_VIA_REPOSITORY_GIT_ACCOUNT"
+      ],
+      "unresolved": [
+        "OWNER_LIFECYCLE_VS_GIT_IDENTITY"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-014",
+      "family": "CTRL",
+      "policy_context_ref": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+      "rule_context_id": "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+      "selected_option": "B",
+      "response_verbatim": "계정 A와 B 사이의 소유권·위임 관계는 중요필드가 아닙니다. 협력리포터지의 경우 소유주가 여러명 잀있습니다. 따라서 소유주에 대한 추가는 어려운일이 아닙니다. 또한 소유주로 보안기능을 대체하지 않아 엄격한 관리는 필요없습니다. 소유주로 등록이 안되있다면 사용자에게 계정의 변경이면 변경된 걔정으로 소유주를 변경해서 진행하면 됩니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "CURRENT_GIT_ACCOUNT_OWNER_METADATA",
+        "MULTIPLE_OWNERS_ALLOWED",
+        "OWNER_METADATA_NOT_SECURITY",
+        "CONFIRM_OWNER_METADATA_UPDATE"
+      ],
+      "unresolved": [
+        "SECURITY_GATE_INDEPENDENT"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-015",
+      "family": "RECORD",
+      "policy_context_ref": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+      "rule_context_id": "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL",
+      "selected_option": "A",
+      "response_verbatim": "A를 선택합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "OWNER_METADATA_UPDATE_NOT_POLICY_DECISION_RECORD"
+      ],
+      "unresolved": [
+        "TECHNICAL_AUDIT_RECORD_BOUNDARY_UNRESOLVED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-016",
+      "family": "ASSURE",
+      "policy_context_ref": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+      "rule_context_id": "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING",
+      "selected_option": "C",
+      "response_verbatim": "C를 선택합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "SOURCE_ARTIFACT_DIFFERENCE_ALLOWED_WITH_VERIFIED_LINK",
+        "UNVERIFIED_LINK_INCOMPLETE_CONFORMANCE"
+      ],
+      "unresolved": [
+        "REQUIRED_EVIDENCE_RULE_UNRESOLVED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    },
+    {
+      "case_id": "CASE-017",
+      "family": "INFO",
+      "policy_context_ref": "src/policy/INFO/SFP-INFO-0001.yaml",
+      "rule_context_id": "SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING",
+      "selected_option": "A",
+      "response_verbatim": "A — 최신 Source 우선, 기존 Projection 무효화 해야합니다.",
+      "verbatim_provenance": "DIRECT_USER_MESSAGE",
+      "observation_status": "RECORDED",
+      "observed_atoms": [
+        "LATEST_SOURCE_CURRENT",
+        "OLD_PROJECTION_INVALID_FOR_CURRENT_USE"
+      ],
+      "unresolved": [
+        "PHYSICAL_DELETION_NOT_STATED"
+      ],
+      "policy_status_claim": "HISTORICAL_CONTEXT_ONLY_REVIEW_REQUIRED",
+      "decision_is_general_policy": false
+    }
+  ],
+  "structural_relation_candidates": [
+    {
+      "a": "CASE-004",
+      "b": "CASE-006",
+      "type": "RA_REFERENCE_VS_VERBOSE_ERRORS",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-015",
+      "type": "POLICY_DECISION_RECORD_VS_METADATA_UPDATE",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-008",
+      "type": "REQUEST_SCOPE_VS_RA_OWNER_MANDATE",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-011",
+      "type": "OWNERSHIP_DELEGATION_VS_RISK_ACCEPTANCE",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-016",
+      "type": "WRITE_ATOMICITY_VS_ARTIFACT_CONFORMANCE",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-011",
+      "type": "NORMATIVE_PROHIBITION_VS_RISK_ACCEPTANCE",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-013",
+      "type": "OWNER_DEFAULT_AND_GIT_IDENTITY",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-014",
+      "type": "OWNER_GIT_IDENTITY_CURRENTNESS",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-015",
+      "type": "OWNER_METADATA_CHANGE_CLASSIFICATION",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-017",
+      "type": "INFO_RA_MODEL_VS_SOURCE_PROJECTION_CURRENTNESS",
+      "relation_status": "ANALYST_CANDIDATE_ONLY",
+      "approved_general_rule": false
+    }
+  ],
+  "observation_activity": [
+    {
+      "activity_id": "ACT-001",
+      "kind": "COLLECT_USER_RESPONSES",
+      "case_range": "CASE-001..CASE-017",
+      "status": "RECORDED"
+    },
+    {
+      "activity_id": "ACT-002",
+      "kind": "PREVIOUS_SEPARATE_POLICY_APPROVAL",
+      "case_id": "CASE-004",
+      "commit": "87db24285d75f74c4a5ca47d45fedf19dc800bad",
+      "note": "Prior separately authorized CHANGE change; does not authorize generalization of other cases."
+    },
+    {
+      "activity_id": "ACT-003",
+      "kind": "LOCAL_AGENT_HANDOFF",
+      "case_id": "CASE-017",
+      "status": "USER_REQUESTED_NON_NORMATIVE_TASK_RECORD"
+    }
+  ],
+  "open_review": [
+    {
+      "id": "RV-01",
+      "subject": "src/policy/** older semantics require user natural-language review before modification",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "RV-02",
+      "subject": "CASE-010 automatic bypass authority phrase ambiguous",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "RV-03",
+      "subject": "SUPPLY contract scope and ARCH owner relation",
+      "status": "UNRESOLVED"
+    },
+    {
+      "id": "RV-04",
+      "subject": "RA/RAC/AEC contract activation remains unregistered/unresolved",
+      "status": "UNRESOLVED"
+    }
+  ]
+}
