@@ -26,6 +26,18 @@
       "existing_python": "LEGACY_ADAPTER_IMPACT_ONLY",
       "new_rust_operation_registration": "REQUIRES_EXISTING_ENGINE_AUTHORITY_AND_CONTRACT_VERIFICATION",
       "new_go_package_runtime": "DO_NOT_USE_DEVELOPER_ONLY_GO_MODULE_AS_CONSUMER_RUNTIME_WITHOUT_BUILD_INTEGRATION"
+    },
+    "rbac_version_policy_sync": {
+      "path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "commit": "612a41d0e065977e60ce23d37ea3c5f234127b8a",
+      "scope": "CONSUMER_RA_RAC_AEC_PROFILE_OUTPUT_CONTRACTS",
+      "selection": "pp.3.00",
+      "not_authorized": [
+        "AUTOMATIC_SCHEMA_ACTIVATION",
+        "UNAPPROVED_RBAC_FIELD_SEMANTICS",
+        "GENERAL_PROJECT_PROFILE_CATALOG_VERSION_UPGRADE",
+        "EXTERNAL_REPOSITORY_AUTOMATIC_REWRITE"
+      ]
     }
   },
   "identity": {
@@ -36,8 +48,8 @@
     "planning_domain": "PTSIP_CONSUMER_PRODUCT",
     "plan_path": "src/planning/0.3.8/repository-index-to-ptsip-config.yaml",
     "plan_version": "0.3.8",
-    "revision": "Rev.0003",
-    "review_status": "REWORKED_TO_CONCRETE_IMPLEMENTATION_SCOPE_WITH_USER_CORRECTIONS",
+    "revision": "Rev.0004",
+    "review_status": "RBAC_PP_3_00_VERSION_SELECTED_IMPACT_AND_MIGRATION_ANALYZED",
     "approval": {
       "status": "PENDING_USER_REVIEW",
       "scope": "THIS_IMPLEMENTATION_PLAN_ONLY",
@@ -90,7 +102,14 @@
     "official_engine_selector": "ptsip.engine.official.use",
     "official_engine_missing_or_invalid": "STRICT_BLOCK_ONLY_OFFICIAL_ENGINE_SPECIFIC_OPERATIONS",
     "auto_consumer_config_creation_does_not_grant_engine_consent": true,
-    "official_engine_registry_preservation": "src/ptsip/engines/index.json"
+    "official_engine_registry_preservation": "src/ptsip/engines/index.json",
+    "consumer_rbac_contract_version": "pp.3.00",
+    "consumer_rbac_scope": [
+      "RA-list.yaml",
+      "RAC_list.yaml",
+      "AEC_list.yaml"
+    ],
+    "general_project_profile_catalog_version_change": "NOT_AUTHORIZED_BY_RBAC_VERSION_CHOICE"
   },
   "execution_boundaries": {
     "product_repo_changes": [
@@ -160,7 +179,9 @@
       "generation_source": "PACKAGED_CONTRACTS_AND_VALIDATED_USER_SOURCE_INPUT",
       "static_filename_allowlist_for_discovery": false,
       "candidate_presence_means_approved_authority": false,
-      "source": "PACKAGE_NATIVE_RUST_GO_PRODUCERS_USING_SRC_PTSIP_COMPILE_SEALED_RBAC_NEUTRAL_CONTRACTS"
+      "source": "PACKAGE_NATIVE_RUST_GO_PRODUCERS_USING_SRC_PTSIP_COMPILE_SEALED_RBAC_NEUTRAL_CONTRACTS",
+      "rbac_output_version": "pp.3.00",
+      "legacy_pp201": "INPUT_ONLY_IF_PRESENT_AND_MIGRATION_APPROVED"
     },
     "policy_documents": {
       "location": "USER_REPOSITORY_POLICY_DOCUMENTS_AS_SELECTED_BY_APPLICABLE_CONTRACT",
@@ -230,18 +251,22 @@
       "id": "RA_RAC_AEC_PROFILE_CONTRACT",
       "domain": "DISTRIBUTED_RBAC_PROFILE_OUTPUT",
       "direction_from_user": "PACKAGE_GENERATES_RA_LIST_RAC_LIST_AEC_LIST_IN_CONSUMER_REPOSITORIES",
-      "status": "FIELD_LEVEL_DRAFT_IN_PLAN_USER_SCHEMATIC_NOT_NORMATIVE",
+      "status": "VERSION_APPROVED_PP_3_00_FIELDS_AND_ACTIVATION_OPEN",
       "unresolved": [
         "PROFILES_VS_PTSIP_METADATA_ROOT_IDENTIFIER_MIGRATION",
-        "PP_2_01_SUPPORT_AND_EXACT_SCHEMA_REGISTRATION",
         "R_ID_RAC_ID_AEC_ID_FORMAT_AND_UNIQUENESS",
         "RAC_AEC_VALUE_SCHEMA_AND_RELATION_SEMANTICS",
         "RA_KEY_POLICY_SOURCE_REFERENCE_AND_COLLISION_RULES",
-        "OLD_PP_3_00_RBAC_DRAFT_ASSETS_NOT_ACTIVE"
+        "PP_3_00_FIELD_SCHEMA_CONFORMANCE_AND_REGISTRATION_FOR_RA_RAC_AEC",
+        "EXISTING_PP_3_00_RA_AUTHORITY_CONDITIONS_DRAFT_SHAPES_VS_NEW_OUTPUT_ROLES",
+        "OLD_PP_2_01_CONSUMER_RBAC_INPUT_UPGRADE_OR_PRESERVATION_POLICY"
       ],
       "blocking_units": [
         "WU-05"
-      ]
+      ],
+      "selected_version": "pp.3.00",
+      "selected_version_policy_ref": "src/policy/ARCH/SFP-ARCH-0001.yaml#SRC-0039",
+      "version_decision_no_longer_open": true
     },
     {
       "id": "PROFILE_SELECTOR_DETAILS",
@@ -270,10 +295,19 @@
         "WU-02",
         "WU-06"
       ]
+    },
+    {
+      "id": "RBAC_VERSION_SELECTION",
+      "domain": "RA_RAC_AEC_OUTPUT_CONTRACT_VERSION",
+      "status": "RESOLVED_POLICY_APPROVED",
+      "version": "pp.3.00",
+      "scope": "RA_RAC_AEC_CONSUMER_PROFILE_ONLY",
+      "policy_ref": "src/policy/ARCH/SFP-ARCH-0001.yaml#SRC-0039",
+      "blocking_units": []
     }
   ],
   "user_supplied_rbac_shape_candidate": {
-    "status": "DRAFT_EXAMPLE_NOT_NORMATIVE_SCHEMA",
+    "status": "FIELD_SHAPE_EXAMPLE_VERSION_SUPERSEDED_CANONICAL_PP_3_00",
     "source_policy_rule_shape": {
       "Policy_Rules": [
         {
@@ -284,7 +318,7 @@
     },
     "ra_list": {
       "profiles": {
-        "version": "pp.2.01",
+        "version": "pp.3.00",
         "revision": "Rev.0001",
         "profile_role": "RESPONSIBILITY-AUTHORITY",
         "specification": {
@@ -308,7 +342,7 @@
     },
     "rac_list": {
       "profiles": {
-        "version": "pp.2.01",
+        "version": "pp.3.00",
         "profile_role": "RAC"
       },
       "RAC_profile": [
@@ -321,7 +355,7 @@
     },
     "aec_list": {
       "profiles": {
-        "version": "pp.2.01",
+        "version": "pp.3.00",
         "profile_role": "AEC"
       },
       "AEC_profile": [
@@ -332,8 +366,9 @@
         }
       ]
     },
-    "source_caveat": "EXAMPLE_FIELDS_PARTIALLY_OMITTED_AND_PLANNED_SCHEMA_NOT_APPROVED",
-    "do_not_infer_policy_authority_from_file_presence": true
+    "source_caveat": "DRAFT_FIELDS_PARTIAL; ORIGINAL_HEADER_VERSION_PP_2_01_SUPERSEDED_BY_APPROVED_PP_3_00; NO_SCHEMA_ACTIVATION",
+    "do_not_infer_policy_authority_from_file_presence": true,
+    "version_provenance": "APPROVED_VERSION_CHANGE_ONLY; OTHER_EXAMPLE_FIELD_SEMANTICS_STILL_DRAFT"
   },
   "work_units": [
     {
@@ -346,14 +381,17 @@
         "SOURCE_CALL_GRAPH",
         "ACTUAL_NATIVE_OPERATIONS_AND_BUILD_PATHS",
         "CONSUMER_FILE_STATE_MATRIX",
-        "RBAC_SCHEMA_FIELD_DIFF_PP_2_01_VS_PP_3_00"
+        "RBAC_SCHEMA_FIELD_DIFF_PP_2_01_VS_PP_3_00",
+        "RBAC_PP300_CONTRACT_OWNERSHIP_AND_LEGACY_FIELD_REFERENCE_DIFF"
       ],
       "actions": [
         "MAP_EXISTING_NATIVE_ENGINE_OPERATIONS_AND_GO_COMMON_CONTRACT_IMPORTS",
         "IDENTIFY_LEGACY_PYTHON_READERS_ONLY_AS_ADAPTER_DEPENDENCIES",
         "CLASSIFY_CONSUMER_VS_PRODUCT_INDEXES_BY_ACTUAL_ROLE",
         "VERIFY_BUILD_ARTIFACTS_CAN_EXECUTE_OUTSIDE_KINIRIN_CHECKOUT",
-        "IDENTIFY_ALL_RBAC_CANDIDATES_AS_NON_NORMATIVE"
+        "IDENTIFY_ALL_RBAC_CANDIDATES_AS_NON_NORMATIVE",
+        "AUDIT_PP300_PREEXISTING_RA_AUTHORITY_CONDITIONS_DRAFT_FIELD_AND_OWNER_DIFF_VS_NEW_RA_RAC_AEC_OUTPUT",
+        "CHECK_SRC_VERSION_PP300_VS_PROJECT_PROFILE_CONTRACT_REGISTRY_PP200_AS_SEPARATE_COMPATIBILITY_DIMENSION"
       ],
       "exit": [
         "NATIVE_MODULE_OWNERSHIP_MATRIX_COMPLETE",
@@ -380,14 +418,17 @@
         "RAC_LIST_SCHEMA",
         "AEC_LIST_SCHEMA",
         "CONFIG_FLAG_SCHEMA",
-        "SCHEMA_REFERENCE_TEST_VECTORS"
+        "SCHEMA_REFERENCE_TEST_VECTORS",
+        "RBAC_PP300_VERSIONED_CONTRACT_LOOKUP_MAP"
       ],
       "actions": [
         "DEFINE_FIELDS_TYPES_REQUIRED_OPTIONAL_ARRAY_CARDINALITY_VERSION_REFERENCES_AND_ERROR_CODES_AS_CONCRETE_CONTRACTS",
         "USE_SRC_PTSIP_COMPILE_SEALED_RBAC_FOR_NEW_RBAC_SCHEMAS_NOT_SPECDATA",
         "IMPLEMENT_GO_TYPED_CONTRACT_VALIDATION_USING_EXISTING_COMMON_CONTRACT_MODULE",
         "ADD_RUST_SCHEMA_VALIDATION_VECTORS_TO_NATIVE_VALIDATION_ENGINE",
-        "DO_NOT_ACTIVATE_UNREGISTERED_PP_2_01_OR_EXISTING_PP_3_00_CANDIDATES_BY_FILE_PLACEMENT"
+        "USE_APPROVED_PP300_FOR_RA_RAC_AEC_OUTPUT_SCHEMAS_BUT_DO_NOT_AUTO_ACTIVATE_EXISTING_UNREGISTERED_PP300_CANDIDATES",
+        "MAKE_PROFILES_VERSION_CONST_PP_3_00_IN_EACH_NEUTRAL_RA_RAC_AEC_SCHEMA",
+        "ADD_GO_RUST_NEGATIVE_CASES_FOR_PP201_WHEN_NEW_RBAC_PP300_SCHEMA_EXPECTED"
       ],
       "exit": [
         "RA_RAC_AEC_FIELD_SCHEMA_POSITIVE_NEGATIVE_TESTS",
@@ -416,7 +457,8 @@
         "PARSE_DECLARED_IDS_ROLES_CONTRACT_REFS_WITH_NO_FILENAME_ALLOWLIST",
         "ALLOW_ANY_USER_ADDED_VALID_PROFILE",
         "REJECT_UNSAFE_PATH_SYMLINK_TRAVERSAL_DUPLICATE_ID_AND_MISSING_BINDING",
-        "REGISTER_VERSIONED_NATIVE_OPERATION_AND_TRANSPORT_WITHOUT_IMPLICIT_AUTHORITY"
+        "REGISTER_VERSIONED_NATIVE_OPERATION_AND_TRANSPORT_WITHOUT_IMPLICIT_AUTHORITY",
+        "BIND_VALIDATED_RBAC_PP300_ROLE_TO_EXACT_REGISTERED_SCHEMA_NOT_JUST_VERSION_LABEL"
       ],
       "exit": [
         "CUSTOM_PROFILE_NAME_WORKS",
@@ -446,7 +488,8 @@
         "GENERATE_BASE_MAIN_AND_WORKFLOWS_PROFILE_FROM_REGISTERED_CONTRACTS",
         "ENABLE_CUSTOM_PROFILE_CREATION_WITHOUT_FILENAME_SWITCH",
         "DEFINE_MIGRATED_PROFILE_IDENTIFIER_REFERENCE_REWRITE_FOR_APPROVED_CASES",
-        "ADAPT_EXISTING_PYTHON_CALLS_AS_THIN_COMPATIBILITY_CONSUMERS_NOT_LOGIC_OWNERS"
+        "ADAPT_EXISTING_PYTHON_CALLS_AS_THIN_COMPATIBILITY_CONSUMERS_NOT_LOGIC_OWNERS",
+        "GENERATE_PP300_RBAC_PROFILE_HEADER_WHEN_RA_RAC_AEC_ROLE_SELECTED;KEEP_GENERAL_PROJECT_PP_CONTRACT_VERSION_INDEPENDENT"
       ],
       "exit": [
         "PROFILE_CREATION_IN_EXTERNAL_REPO_WITH_INSTALLED_NATIVE_BINARY",
@@ -471,7 +514,8 @@
         "RAC_LIST_YAML_RENDERER",
         "AEC_LIST_YAML_RENDERER",
         "POLICY_RULE_FIELD_RENDERER",
-        "ID_REF_NAME_CROSS_VALIDATOR"
+        "ID_REF_NAME_CROSS_VALIDATOR",
+        "PP300_RA_RAC_AEC_PROFILE_CONTRACT_AND_FIXTURE_SET"
       ],
       "actions": [
         "RENDER_RA_HEADER_AND_RESPONSIBILITY_AUTHORITY_MAP_WITH_POLICY_RULE_ID_KEYS_AND_RA_KEY_VALUES",
@@ -481,7 +525,9 @@
         "CHECK_SOURCE_POLICY_RULE_ID_MATCHES_RA_MAP_KEY_AND_RA_KEY_MATCHES_RULE",
         "HONOR_COMPILE_SEALED_RBAC_BOOL_ONLY_AFTER_APPROVED_FLAG_AND_FALSE_SEMANTICS",
         "GENERATE_CONSUMER_FILES_ONLY_WHEN_AUTHORIZED_BY_PTSIP_CONFIG_AND_ACTIVE_CONTRACT",
-        "DO_NOT_READ_SOURCE_REPO_RESPONSIBILITY_AUTHORITY_LIST_AS_TEMPLATE"
+        "DO_NOT_READ_SOURCE_REPO_RESPONSIBILITY_AUTHORITY_LIST_AS_TEMPLATE",
+        "SET_RA_RAC_AEC_PROFILES_VERSION_PP300_IN_ALL_THREE_OUTPUTS_AND_CROSS_FIELD_TESTS",
+        "IMPLEMENT_FIELD_DIFF_MIGRATION_MAPPING_WITHOUT_AUTOMATICALLY_INTERPRETING_LEGACY_PP201_VALUES_AS_PP300"
       ],
       "exit": [
         "FIELD_LEVEL_SCHEMA_POSITIVE_NEGATIVE_FIXTURES",
@@ -515,7 +561,9 @@
         "REMOVE_ONLY_DOT_PTSIP_INDEX_AND_DOT_PTSIP_PROFILES_INDEX_IN_SCOPE",
         "EXCLUDE_DOT_PTSIP_TASKS_INDEX_RETIREMENT_FROM_THIS_WU",
         "PRESERVE_PRODUCT_SRC_PTSIP_ENGINES_INDEX",
-        "RETRY_NOOP_IF_MIGRATION_ALREADY_APPLIED_AND_RECORD_EVIDENCE"
+        "RETRY_NOOP_IF_MIGRATION_ALREADY_APPLIED_AND_RECORD_EVIDENCE",
+        "DETECT_PP201_EXISTING_CONSUMER_RBAC_PROFILE_AND_REQUIRE_APPROVED_LOSSLESS_TRANSITION_BEFORE_PP300_WRITE",
+        "PRESERVE_EXISTING_PP300_UNREGISTERED_CONTRACT_ASSETS_WITHOUT_SILENTLY_ADMITTING_AS_NEW_RA_RAC_AEC_SCHEMA"
       ],
       "exit": [
         "MULTIPLE_EXTERNAL_LEGACY_REPOSITORIES_PATCH",
@@ -541,14 +589,16 @@
       "outputs": [
         "NATIVE_OPERATION_BINARIES_OR_LINKED_RUNTIME",
         "NEUTRAL_SCHEMAS_IN_WHEEL_SDIST",
-        "PUBLIC_SETUP_PATCH_DISCOVERY_CREATE_ENTRYPOINTS"
+        "PUBLIC_SETUP_PATCH_DISCOVERY_CREATE_ENTRYPOINTS",
+        "PP300_RBAC_PACKAGE_ASSET_AND_NATIVE_RESOLVER_INTEGRATION"
       ],
       "actions": [
         "LINK_EXISTING_CLI_AND_ADOPTION_WITH_NATIVE_OPERATION_TRANSPORT_ONLY",
         "INVENTORY_AND_RETIRE_LEGACY_PYTHON_INTERNAL_LOGIC_WHEN_NO_READER_REMAINS",
         "MAKE_BUILD_PACK_NATIVE_RUST_GO_AND_SRC_PTSIP_COMPILE_SEALED_RBAC_ASSETS",
         "KEEP_SRC_PTSIP_ENGINES_INDEX_JSON_UNMODIFIED_AS_AUTHORITY_ROUTE",
-        "VERIFY_NO_TEMP_SPECDATA_RBAC_DEPENDENCY_FOR_NEW_CONTRACTS"
+        "VERIFY_NO_TEMP_SPECDATA_RBAC_DEPENDENCY_FOR_NEW_CONTRACTS",
+        "BUNDLE_PP300_RA_RAC_AEC_VERSIONED_SCHEMA_AND_TYPED_OPERATION_RESOLUTION_WITHOUT_CHANGING_GENERAL_PP_CONTRACT_REGISTRY"
       ],
       "exit": [
         "INSTALLED_PACKAGE_RUNS_WITHOUT_CHECKOUT",
@@ -574,7 +624,8 @@
         "GO_CONTRACT_TESTS",
         "NATIVE_IO_CONTRACT_TESTS",
         "EXTERNAL_CONSUMER_REPO_FIXTURES",
-        "WHEEL_SDIST_INSTALL_PATCH_TEST_REPORT"
+        "WHEEL_SDIST_INSTALL_PATCH_TEST_REPORT",
+        "RBAC_PP300_DUAL_NATIVE_CONTRACT_AND_EXTERNAL_MIGRATION_EVIDENCE"
       ],
       "test_matrix": [
         "EMPTY_CONSUMER_REPOSITORY_INSTALL",
@@ -587,7 +638,10 @@
         "INTERRUPTED_PATCH_RESTART",
         "WINDOWS_11_CONSUMER_REPOSITORY",
         "OFFICIAL_ENGINE_INDEX_PRESERVED",
-        "TASK_INDEX_ASSUMPTION_NOT_ASSERTED_AS_THIS_PLAN_OUTPUT"
+        "TASK_INDEX_ASSUMPTION_NOT_ASSERTED_AS_THIS_PLAN_OUTPUT",
+        "RBAC_RA_RAC_AEC_VERSION_PP300_ALL_THREE_OUTPUTS",
+        "EXISTING_LEGACY_CONSUMER_RBAC_PP201_PRESERVE_OR_APPROVED_MIGRATE",
+        "GENERAL_PROFILE_PP200_CONTRACT_UNCHANGED_WHILE_RBAC_TARGET_PP300"
       ],
       "actions": [
         "COMPILE_RUST_AND_GO_COMPONENTS_WITH_TESTS",
@@ -595,7 +649,9 @@
         "EXECUTE_SHIPPED_ENTRYPOINT_IN_SEPARATE_TEMP_USER_REPOSITORIES",
         "ASSERT_BEFORE_AFTER_CONSUMER_FILES_AND_NO_PRODUCT_CHECKOUT_MUTATION",
         "VERIFY_GITHUB_ACTIONS_BY_CHANGE_SCOPED_TEST_MODE",
-        "LOG_TO_TEMP_FILES_NOT_COMMITTED_REMOVE_AFTER_REPORT"
+        "LOG_TO_TEMP_FILES_NOT_COMMITTED_REMOVE_AFTER_REPORT",
+        "TEST_PP300_ONLY_FOR_ALL_THREE_NEW_RBAC_HEADERS_AND_REJECT_MISMATCHED_PP201_WITHOUT_APPROVED_UPGRADE",
+        "TEST_EXISTING_RBAC_PP300_CANDIDATES_STAY_UNREGISTERED_WHILE_NEW_CONTRACT_VERSION_IS_SELECTED"
       ],
       "exit": [
         "NATIVE_BUILD_AND_CONTRACT_CASES_PASS",
@@ -625,7 +681,10 @@
     "approval": "PENDING_USER_REVIEW",
     "implementation": "NOT_AUTHORIZED",
     "tests": "NOT_EXECUTED",
-    "remote_actions": "NOT_EXECUTED"
+    "remote_actions": "NOT_EXECUTED",
+    "rbac_version": "pp.3.00",
+    "rbac_version_approval": "APPROVED_ONLY_NO_SCHEMA_OR_RUNTIME_ACTIVATION",
+    "general_project_profile_version": "UNAFFECTED_BY_THIS_DECISION"
   },
   "rbac_field_level_implementation": {
     "schema_state": "EXPLICIT_EXECUTION_SCHEMA_CANDIDATES_FROM_USER_EXAMPLES_NOT_APPROVED_NORMATIVE_FIELDS",
@@ -660,10 +719,11 @@
         "header_root": "profiles",
         "header_fields": {
           "profiles.version": {
-            "candidate_type": "string",
-            "example": "pp.2.01",
-            "meaning": "RBAC_PROFILE_CONTRACT_VERSION",
-            "gate": "UNREGISTERED_TARGET_VERSION"
+            "candidate_type": "string const pp.3.00",
+            "example": "pp.3.00",
+            "meaning": "RA_RAC_AEC_OUTPUT_PROFILE_CONTRACT_VERSION",
+            "gate": "VERSION_SELECTED_SCHEMA_REGISTRATION_PENDING",
+            "selection_status": "APPROVED_VERSION_NOT_ACTIVATED_SCHEMA"
           },
           "profiles.revision": {
             "candidate_type": "string",
@@ -712,9 +772,10 @@
         "header_root": "profiles",
         "header_fields": {
           "profiles.version": {
-            "candidate_type": "string",
-            "example": "pp.2.01",
-            "meaning": "RBAC_PROFILE_CONTRACT_VERSION"
+            "candidate_type": "string const pp.3.00",
+            "example": "pp.3.00",
+            "meaning": "RA_RAC_AEC_OUTPUT_PROFILE_CONTRACT_VERSION",
+            "selection_status": "APPROVED_VERSION_NOT_ACTIVATED_SCHEMA"
           },
           "profiles.profile_role": {
             "candidate_type": "const",
@@ -747,9 +808,10 @@
         "header_root": "profiles",
         "header_fields": {
           "profiles.version": {
-            "candidate_type": "string",
-            "example": "pp.2.01",
-            "meaning": "RBAC_PROFILE_CONTRACT_VERSION"
+            "candidate_type": "string const pp.3.00",
+            "example": "pp.3.00",
+            "meaning": "RA_RAC_AEC_OUTPUT_PROFILE_CONTRACT_VERSION",
+            "selection_status": "APPROVED_VERSION_NOT_ACTIVATED_SCHEMA"
           },
           "profiles.profile_role": {
             "candidate_type": "const",
@@ -825,7 +887,13 @@
         ".ptsip/contracts/compile-sealed-rbac/Authority/Authority_list_contracts.json",
         ".ptsip/contracts/compile-sealed-rbac/Conditions/Conditions_list_contracts.json"
       ],
-      "impact": "OLD_RBAC_PP_3_00_CANDIDATES_DIFFER_FROM_USER_PP_2_01_EXAMPLE_DO_NOT_RENAME_AS_IF_EQUIVALENT"
+      "impact": "PP_3_00_IS_SELECTED_FOR_NEW_RA_RAC_AEC_OUTPUTS_BUT_EXISTING_PP300_RA_AUTHORITY_CONDITIONS_CANDIDATE_SCHEMAS_HAVE_DIFFERENT_FIELDS_AND_ARE_UNREGISTERED",
+      "version_migration_sources": {
+        "legacy_consumer": "CONSUMER_RBAC_PP_2_01_INPUT_IF_PRESENT_AND_REGISTERED",
+        "existing_pp300_candidates": "PP_3_00_UNREGISTERED_NOT_AUTHORITATIVE",
+        "new_target": "PP_3_00_USER_FORMAT_WITH_FIELD_LEVEL_SCHEMA_AND_AUDITED_LINKS",
+        "required_evidence": "EXACT_FIELD_SCHEMA_DIFF_AND_AUTHORITY_SOURCE_MAPPING_BEFORE_ANY_AUTO_CONVERSION"
+      }
     }
   },
   "language_portability_and_build": {
@@ -848,7 +916,8 @@
       "VERSIONED_CONSUMER_PATCH_ENGINE",
       "PUBLIC_OPERATION_TRANSPORT_AND_DIAGNOSTICS"
     ],
-    "no_engine_registry_deletion": true
+    "no_engine_registry_deletion": true,
+    "rbca_contract_version": "pp.3.00"
   },
   "migration_impact_matrix": [
     {
@@ -903,17 +972,17 @@
       "surface": "RBAC_POLICY_RULES",
       "source": "USER_POLICY_RULES_RA_KEY_ID",
       "target": "RA_LIST_RAC_LIST_AEC_LIST",
-      "change": "CONDITIONAL_CONFIG_GATED_PROJECTION_AND_STRICT_REFERENCE_CHECKS",
+      "change": "PP300_CONSUMER_RA_RAC_AEC_OUTPUTS_WITH_CONFIG_GATED_FIELD_PROJECTION_AND_REFERENCE_VALIDATION",
       "owner": "RUST_PROJECTION_VALIDATION_WITH_NEW_NEUTRAL_CONTRACT",
       "test": "TRUE_FALSE_REFERENTIAL_INTEGRITY"
     },
     {
       "surface": "RBAC_LEGACY_DRAFTS",
       "source": "SRC_PTSIP_SPECDATA_RBAC_CANDIDATE_AND_PTSIP_CONTRACTS_PP_3_00",
-      "target": "NEW_APPROVED_PP_2_01_DERIVED_NEUTRAL_CONTRACT_ONLY_IF_AUTHORIZED",
-      "change": "COMPARE_FIELDS_KINDS_AND_AUTHORITY_NO_SILENT_RENAMING",
+      "target": "APPROVED_VERSION_PP_3_00_NEW_NEUTRAL_RA_RAC_AEC_FIELD_SCHEMAS_ONLY_AFTER_SEPARATE_FIELD_REGISTRATION",
+      "change": "COMPARE_EXISTING_PP300_RA_BINDINGS_AUTHORITY_CONDITIONS_AND_PP201_LEGACY_SHAPES_TO_NEW_PP300_FIELDS;NO_RENAME_OR_ACTIVATION_BY_MATCHING_VERSION",
       "owner": "CONTRACT_REVIEW",
-      "test": "OLD_CANDIDATE_REMAINS_NONAUTHORITATIVE"
+      "test": "FIELD_BY_FIELD_DIFF_REGISTERED_OWNER_AND_UNREGISTERED_NONAUTHORITY_VALIDATION"
     },
     {
       "surface": "BUILD_DISTRIBUTION",
@@ -930,6 +999,80 @@
       "change": "TEST_WINDOWS_INSTALL_UPGRADE_PATCH_FAIL_AND_RETRY",
       "owner": "TEST_MODE_AND_CI",
       "test": "GITHUB_ACTIONS_AND_TEMP_LOGS"
+    },
+    {
+      "surface": "RBAC_OUTPUT_VERSION_IDENTITY",
+      "source": "USER_EXAMPLE_PP_2_01_IN_PLAN_REV_0003",
+      "target": "PP_3_00_RA_RAC_AEC_HEADER_FIELDS",
+      "change": "CHANGE_THREE_GENERATORS_SCHEMA_CONSTS_TEST_FIXTURES_CONTRACT_LOOKUP_AND_PACKAGE_MANIFEST_VERSION_REF_TO_PP300",
+      "owner": "GO_CONTRACT_AND_RUST_VALIDATION_PROJECTION",
+      "test": "ALL_THREE_OUTPUTS_CONTAIN_EXACT_PP300_AND_OLD_EXAMPLE_NOT_CANONICAL"
+    },
+    {
+      "surface": "EXISTING_LEGACY_CONSUMER_RA",
+      "source": ".ptsip/profiles/Responsibility-Authority-list.yaml PP_2_01_IF_PRESENT",
+      "target": "NEW_PP_3_00_RA_LIST_ONLY_AFTER_APPROVED_TRANSITION",
+      "change": "NO_SOURCE_PROJECT_TEMPLATE_REUSE;IDENTIFY_IDS_AND_RULE_REFERENCES;PRESERVE_IF_NO_LOSSLESS_MAPPING;UPGRADE_ONLY_AFTER_MIGRATION_CONTRACT",
+      "owner": "RUST_GO_PATCH_AND_CONTRACT_MAPPING",
+      "test": "NO_UNAUTHORIZED_OVERWRITE_REFERENCES_LOSS_OR_VERSION_STAMP_ONLY"
+    },
+    {
+      "surface": "GENERAL_PROJECT_PROFILE_VERSION_NAMESPACE",
+      "source": "SRC_VERSION_DECLARATION_PP300_VS_EMBEDDED_PROJECT_PROFILE_CONTRACTS_CURRENT_PP200",
+      "target": "UNCHANGED_THIS_RBAC_DECISION",
+      "change": "AVOID_AUTO_PROMOTING_GENERAL_PROJECT_PROFILE_CONTRACT_SCHEMA_OR_PUBLIC_PROFILE_CATALOG;SEPARATE_COMPATIBILITY_ANALYSIS",
+      "owner": "CNTR_INFO_PROJECT_PROFILE",
+      "test": "GENERAL_PROFILE_OPERATIONS_AND_VERSION_COMPATIBILITY_UNALTERED"
+    },
+    {
+      "surface": "OLD_RBAC_CONTRACT_ASSET_FIELD_SHAPES",
+      "source": "RA_LIST_BINDINGS_PP300;AUTHORITY_LIST_PP300;CONDITIONS_LIST_PP300",
+      "target": "NEW_PP300_RA_RAC_AEC_CONSUMER_OUTPUT_CONTRACTS",
+      "change": "MAP_OWNERSHIP_AND_LINK_SEMANTICS;KEEP_DISTINCT_UNREGISTERED_CANDIDATES;NO_AUTOMATIC_ALIASING_OF_AUTHORITY_TO_AEC_OR_CONDITIONS_TO_RAC",
+      "owner": "CONTRACT_FIELD_OWNER_REVIEW",
+      "test": "NO_UNREGISTERED_CANDIDATE_SELECTED_BY_VERSION_ONLY"
     }
-  ]
+  ],
+  "rbac_contract_version_decision": {
+    "selected_version": "pp.3.00",
+    "selection_status": "USER_APPROVED_AND_POLICY_SYNCED",
+    "source_of_authority": "src/policy/ARCH/SFP-ARCH-0001.yaml#SRC-0039.repository_namespace_contracts.rbac_profile_contract_version",
+    "applies_to": [
+      ".ptsip/profiles/RA-list.yaml",
+      ".ptsip/profiles/RAC_list.yaml",
+      ".ptsip/profiles/AEC_list.yaml"
+    ],
+    "selected_field_paths": [
+      "profiles.version"
+    ],
+    "former_prototype": "pp.2.01",
+    "former_prototype_use": "HISTORICAL_EXAMPLE_AND_LEGACY_INPUT_ONLY_NOT_NEW_RBAC_OUTPUT",
+    "must_not_conflate": {
+      "profile_library": "src/ptsip/profiles/index.yaml CURRENT pp.2.00",
+      "runtime_contract_registry": "src/ptsip/specdata/project-profile-contracts.yaml CURRENT pp.2.00",
+      "version_manifest": "src/VERSION profile_version pp.3.00 DECLARATION_ONLY",
+      "non_rbcs": "OTHER_NON_RBAC_PROFILE_CONTRACTS_UNCHANGED_BY_THIS_DECISION"
+    },
+    "existing_pp300_evidence": [
+      {
+        "path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+        "version": "pp.3.00",
+        "status": "UNRESOLVED_UNREGISTERED"
+      },
+      {
+        "path": ".ptsip/contracts/compile-sealed-rbac/Authority/Authority_list_contracts.json",
+        "version": "pp.3.00",
+        "status": "UNRESOLVED_UNREGISTERED"
+      },
+      {
+        "path": ".ptsip/contracts/compile-sealed-rbac/Conditions/Conditions_list_contracts.json",
+        "version": "pp.3.00",
+        "status": "STRUCTURE_APPROVED_UNREGISTERED"
+      }
+    ],
+    "activation": "NO_AUTO_ACTIVATION",
+    "go_rust_contract_sync": "IMPLEMENT_AND_VALIDATE_SINGLE_PP300_RBAC_VERSION_IDENTITY_ACROSS_NEUTRAL_SCHEMA_AND_BOTH_NATIVE_CONSUMERS",
+    "schema_source": "src/ptsip/compile_sealed_rbac/",
+    "source_project_legacy_policy_schema_not_rewritten": true
+  }
 }
