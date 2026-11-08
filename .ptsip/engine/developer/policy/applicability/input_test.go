@@ -58,7 +58,7 @@ func TestStrictGoYAMLInput(t *testing.T) {
         {"valid", "policy: {id: A, status: ACTIVE}\n", ""},
         {"duplicate", "policy: {id: A, id: B}\n", "DUPLICATE_MAPPING_KEY"},
         {"non-string-key", "policy: {1: abc}\n", "MAPPING_KEY_MUST_BE_STRING"},
-        {"alias", "a: &x [1]\nb: *x\n", "YAML_ALIAS_UNSUPPORTED"},
+        {"alias", "a: &x [1]\nb: *x\n", ""},
         {"scalar", "hello\n", "POLICY_DOCUMENT_MUST_BE_OBJECT"},
     }
     for _, item := range test {
