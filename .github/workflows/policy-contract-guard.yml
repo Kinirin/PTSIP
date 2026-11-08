@@ -48,6 +48,8 @@ jobs:
           go -C .ptsip/engine/developer test ./policy/applicability/... -count=1
           go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --snapshot --root "$GITHUB_WORKSPACE" > "$RUNNER_TEMP/policy-applicability-input.json"
           go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --input "$RUNNER_TEMP/policy-applicability-input.json" --output "$RUNNER_TEMP/policy-applicability-result.json" --summary
+          go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local --skip-tests > "$RUNNER_TEMP/policy-applicability-local.json"
+          test -s "$RUNNER_TEMP/policy-applicability-local.json"
       - name: Retain machine-readable applicability assessment evidence
         uses: actions/upload-artifact@v7
         with:
