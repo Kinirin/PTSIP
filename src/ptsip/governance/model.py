@@ -28,6 +28,20 @@ class LifecycleState(StrEnum):
     SUPERSEDED = "SUPERSEDED"
     RETIRED = "RETIRED"
     DRAFT = "DRAFT"
+    # Canonical 13-state policy lifecycle vocabulary; parsing does not grant eligibility.
+    DRAFT_DEFAULT = "DRAFT.Default"
+    DRAFT_REVIEWED = "DRAFT.Reviewed"
+    DRAFT_DENIED = "DRAFT.Denied"
+    DRAFT_PASS = "DRAFT.Pass"
+    APPROVED_DEFAULT = "APPROVED.Default"
+    APPROVED_APPLYING = "APPROVED.Applying"
+    APPROVED_APPLICATION_PROBLEMS = "APPROVED.Application_Problems"
+    APPROVED_UNRESOLVED = "APPROVED.Unresolved"
+    APPROVED_ACTIVATE = "APPROVED.Activate"
+    APPROVED_PROVISIONAL = "APPROVED.provisional"
+    RETIRED_DEFAULT = "RETIRED.Default"
+    RETIRED_REMOVABLE = "RETIRED.Removable"
+    RETIRED_WAITING = "RETIRED.Waiting"
 
 
 class SubjectMatchKind(StrEnum):
