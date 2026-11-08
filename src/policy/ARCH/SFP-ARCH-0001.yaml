@@ -804,7 +804,10 @@ Policy_Content:
             path_name_is_identity: false
             missing_or_malformed_identity: FAIL_CLOSED_AFTER_NEW_CONTRACT_ACTIVATION
             duplicate_identity: FAIL_CLOSED
-            generation_algorithm: UNRESOLVED
+            generation_algorithm: UUID4_128_BIT
+            generation_output: UUID4_HEX_LOWERCASE_32_WITH_PROFILES_PREFIX
+            uuid_version: 4
+            generated_suffix_excludes_hyphens: true
             uniqueness_scope: UNRESOLVED
             existing_profile_migration: UNRESOLVED
             exact_schema_registration: REQUIRES_INFO_CNTR_CONTRACT_REVIEW
@@ -895,7 +898,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: 8bc6d422f6b0a8269308c5742a24c20586a541dc7ce0314988793abb20e1a725
+    sha256: 458703bc0636e6540890704baa5dc4b6cbfefb347bb930d63b3ff46035e3b0b1
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
