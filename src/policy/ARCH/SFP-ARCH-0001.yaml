@@ -824,6 +824,25 @@ Policy_Content:
           version_selection_is_runtime_authorization: false
           field_roles_and_reference_semantics: SEPARATE_CONTRACT_REVIEW_REQUIRED
           contract_definition_target: src/ptsip/compile_sealed_rbac/
+        rbac_output_declaration_boundary:
+          profile_identity_field: ptsip.id
+          profile_contract_root: profiles
+          profile_version_field: profiles.version
+          profile_version: pp.3.00
+          profile_revision_field: profiles.revision
+          profile_role_field: profiles.profile_role
+          specification_binding_root: profiles.specification
+          identity_contract_owners_independent: true
+          profiles_id_replaces_ptsip_id: false
+          ra_to_rac_multiple_refs: SUPPORTED
+          ra_to_aec_multiple_refs: SUPPORTED
+          rac_and_aec_counts_independent: true
+          exact_reference_encoding: UNRESOLVED
+          empty_reference_sets_allowed: UNRESOLVED
+          no_implicit_exactly_one_cardinality: true
+          policy_rule_id_R_ID_direction: USER_PROPOSED_CONFLICT_WITH_EXISTING_IDENTITIES
+          policy_rule_id_resolution: PENDING_KEEP_PRIOR_KEEP_LATEST_RECONCILE
+          existing_policy_rule_id_mutation_authorized: false
       project_profile_source_partition:
         independently_maintainable_responsibility_scoped_declarations: REQUIRED
         central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
@@ -910,7 +929,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: af38b9ae10edfb54e16eca9835a937482e2d5782ecef34980d4701b404938ce9
+    sha256: c44984eace1280d3fff33b82a50b4aaa95c615e9a2b1a424ae8a0847622725a6
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
