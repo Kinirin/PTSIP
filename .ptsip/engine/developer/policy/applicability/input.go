@@ -86,6 +86,10 @@ func parseSnapshotDocument(raw []byte) (map[string]any, error) {
         return nil, fmt.Errorf("INVALID_POLICY_YAML: %w", err)
     }
     if err := rejectYAMLConflicts(&node); err != nil { return nil, err }
+    if node.Kind != yaml.DocumentNode || len(node.Content) != 1 ||
+        node.Content[0].Kind != yaml.MappingNode {
+        return nil, fmt.Errorf("POLICY_DOCUMENT_MUST_BE_OBJECT")
+    }
     var object map[string]any
     if err := node.Decode(&object); err != nil { return nil, fmt.Errorf("INVALID_POLICY_YAML: %w", err) }
     if object == nil { return nil, fmt.Errorf("POLICY_DOCUMENT_MUST_BE_OBJECT") }
