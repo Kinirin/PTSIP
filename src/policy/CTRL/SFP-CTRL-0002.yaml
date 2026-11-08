@@ -1,12 +1,13 @@
-# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+# Approved source-preserving amendment; runtime activation remains gated by registered contracts and applicable authorities.
+# Schema source: Kinirin/PTSIP main/.ptsip/contracts/policy/unified/Unified_Policy.schema.json
 schema_version: ptsip-unified-policy/v3-candidate
 Policy_Identity:
   id: SFP-CTRL-0002
   policy_kind: PTSIP_SUPPORT_FEATURE
   root_family: CTRL
-  title: Engine delegated activation and mandatory external isolation (DRAFT)
+  title: Engine delegated activation and mandatory external isolation (ACTIVE)
 Policy_Lifecycle:
-  status: DRAFT
+  status: ACTIVE
   source_ref: SRC-0004
 Policy_Authority:
   source_refs:
@@ -65,6 +66,23 @@ Policy_Rules:
         state: UNRESOLVED
         basis_refs:
         - SRC-0010
+  - id: SFP-CTRL-0002#/authority_semantics/official_engine_user_config_consent_candidate
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0012
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0012
 Policy_Evaluation:
   source_refs: []
   state: UNRESOLVED
@@ -86,13 +104,13 @@ Policy_Content:
     source_pointer: /policy
     value:
       id: SFP-CTRL-0002
-      title: Engine delegated activation and mandatory external isolation (DRAFT)
-      status: DRAFT
+      title: Engine delegated activation and mandatory external isolation (ACTIVE)
+      status: ACTIVE
   - id: SRC-0005
     source_pointer: /authority_subject
     value:
       id: SUP_FRESH_CONSUMER_ACTION_ELIGIBILITY
-      statement: PTSIP Engine approved-direction draft; does not activate runtime semantics or supersede existing ACTIVE authority.
+      statement: Official-engine user configuration grants unified prior consent for registered operation use; runtime eligibility remains contract- and authority-checked.
   - id: SRC-0006
     source_pointer: /exclusive_kernel
     value:
@@ -108,8 +126,8 @@ Policy_Content:
     source_pointer: /authority_semantics/family_definition/kernel_definitions/0
     value:
       id: SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE
-      statement: 실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote authority
-        읽기를 생략하지 않는다.
+      statement: 실행 직전 repository/profile revision과 관련 distributed authority를 확인한다. 완전한 local declaration만으로 필요한 remote
+        authority 읽기를 생략하지 않는다.
       non_substitutability: GOV의 이전 winner나 ASSURE의 과거 PASS는 현재 profile/authority freshness를 대신 보장하지 않는다.
   - id: SRC-0009
     source_pointer: /authority_semantics/family_definition/kernel_definitions/1
@@ -122,12 +140,12 @@ Policy_Content:
     source_pointer: /authority_semantics/unit_ptsip_engine_draft
     value:
       domain: PTSIP_ENGINE
-      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      draft_activation: POLICY_APPROVED_RUNTIME_ACTIVATION_DEFERRED_PENDING_CONTRACTS
       approved_decisions:
         registration_is_authorization: false
         technical_conformance_is_authorization: false
-        activation_policy: PREDELEGATED_SCOPE_ONLY
-        eligible_execution: REQUIRES_FRESH_AUTHORIZATION_AT_EXECUTION
+        activation_policy: OFFICIAL_CURRENT_CONFIG_TRUE_PREDELEGATED_OR_USER_EXTERNAL_EXISTING_PREDELEGATION
+        eligible_execution: OFFICIAL_CONFIG_TRUE_PREAUTHORIZED_WITH_REQUIRED_ELIGIBILITY_OR_USER_EXTERNAL_FRESH_AUTHORIZATION
         user_engine_default_execution: ISOLATED
         third_party_engine_default_execution: ISOLATED
         user_external_engine_nonisolated_exception: FORBIDDEN
@@ -145,7 +163,7 @@ Policy_Content:
         automatic_activation_consent: PREDELEGATED_SCOPE_NO_PER_ACTIVATION_USER_PROMPT
         automatic_activation_contract_gate: CURRENT_REGISTERED_ENGINE_AND_CAPABILITY_CONTRACT_VERIFIED
         automatic_activation_environment_gate: CURRENT_HOST_COMPATIBILITY_DEPENDENCY_AND_REQUIRED_ISOLATION_VERIFIED
-        automatic_activation_authority_gate: EXISTING_PREDELEGATED_SCOPE_AND_FRESH_CTRL_AUTHORITY_REQUIRED
+        automatic_activation_authority_gate: OFFICIAL_CURRENT_CONFIG_TRUE_OR_USER_EXTERNAL_EXISTING_PREDELEGATION_WITH_FRESH_CTRL
         automatic_activation_failure: INELIGIBLE_NOT_AUTOMATICALLY_ACTIVATED
         automatic_activation_is_runtime_execution_authorization: false
         activation_mode_owner_selection: USER_EXPLICIT_OPTION_B
@@ -156,13 +174,13 @@ Policy_Content:
         official_engine_activation_isolation: MACHINE_VERIFIED_DECLARED_CAPABILITY_EXECUTION_BOUNDARY
         user_engine_activation_isolation: MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY
         external_engine_activation_isolation: MANDATORY_ISOLATED_EXECUTION_AND_PERMISSION_BOUNDARY
-        activation_fresh_permission_requirement: EXISTING_PREDELEGATED_SCOPE_AND_FRESH_EXECUTION_GATE
+        activation_fresh_permission_requirement: CURRENT_EFFECTIVE_OFFICIAL_CONFIG_OR_FRESH_USER_EXTERNAL_PREDELEGATION
         target_engine_unverified_or_incompatible: NOT_ELIGIBLE_FOR_AUTOMATIC_ACTIVATION
         activation_target_scope_no_new_authority: true
         current_release_activation_timing: PTSIP_STARTUP_EAGER_ELIGIBLE_ENGINE_ACTIVATION
         current_release_activation_timing_option: A_USER_EXPLICIT
         current_release_activation_timing_recorded_at: '2026-10-11'
-        current_release_activation_scope: ALL_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE
+        current_release_activation_scope: OFFICIAL_CONFIG_TRUE_ELIGIBLE_ENGINES_AND_USER_EXTERNAL_PREDELEGATED_ELIGIBLE_ENGINES
         activation_trigger: PTSIP_RUNTIME_STARTUP
         activation_triggers_repeated_manual_approval: false
         lazy_on_demand_activation_future_extension: DEFERRED_NOT_CURRENT_RELEASE_REQUIRED
@@ -365,7 +383,7 @@ Policy_Content:
         timeout_parameters: NOT_DECIDED
       automatic_activation_direction_boundary:
         scope: ENGINE_RUNTIME_ELIGIBILITY_AND_ACTIVATION_MODE
-        activation_mode: AUTOMATIC_ONLY_WITHIN_EXISTING_PREDELEGATED_SCOPE
+        activation_mode: OFFICIAL_CONFIG_TRUE_PREDELEGATED_OR_USER_EXTERNAL_EXISTING_PREDELEGATION
         machine_verified_predicates:
         - REGISTERED_ENGINE_IDENTITY_AND_CURRENT_CAPABILITY_CONTRACT
         - CURRENT_HOST_ENVIRONMENT_AND_DEPENDENCY_COMPATIBILITY
@@ -375,7 +393,7 @@ Policy_Content:
         when_ineligible_or_unverified: NO_ACTIVATION_FAIL_CLOSED
         activation_does_not_imply_operation_execution_permission: true
         runtime_and_concrete_interface_details: PLAN_AND_MACHINE_CONTRACT
-        current_effect: DRAFT_DECISION_ONLY_NO_RUNTIME_ACTIVATION
+        current_effect: POLICY_APPROVED_RUNTIME_NOT_ACTIVATED
         existing_active_arch_engine_runtime_activation: DEFERRED_UNTIL_SEPARATE_LIFECYCLE_APPROVAL
         current_release_engine_state_reuse_scope: UNCHANGED_EXACT_MATCH_ONLY
         eligible_engine_origins:
@@ -392,7 +410,7 @@ Policy_Content:
       startup_activation_direction:
         policy_subject: ENGINE_AUTOMATIC_ACTIVATION_TIMING
         current_release: EAGER_AT_PTSIP_STARTUP
-        eligible_population: ALL_REGISTERED_MACHINE_VERIFIED_ELIGIBLE_ENGINES_WITHIN_PREDELEGATED_SCOPE
+        eligible_population: REGISTERED_OFFICIAL_CONFIG_TRUE_ELIGIBLE_AND_USER_EXTERNAL_PREDELEGATED_ELIGIBLE
         origins:
         - OFFICIAL_PTSIP_ENGINE
         - CONSUMER_USER_ENGINE
@@ -408,7 +426,7 @@ Policy_Content:
           current_release_required: false
           separate_owner_authorization_required: true
         concrete_startup_hook_and_activation_sequence: PLAN_AND_MACHINE_CONTRACT
-        current_effect: DRAFT_ONLY_NO_RUNTIME_ACTIVATION
+        current_effect: POLICY_APPROVED_RUNTIME_NOT_ACTIVATED
       startup_partial_failure_direction:
         policy_subject: ENGINE_STARTUP_PARTIAL_ACTIVATION_FAILURE
         resolution: A_PARTIAL_ACTIVATION
@@ -424,7 +442,7 @@ Policy_Content:
         official_engine_default_availability_ref: SFP-CNTR-0005
         official_engine_default_availability_changed: false
         future_automatic_retry_policy: NEXT_PTSIP_STARTUP_REVALIDATION_ONLY
-        implementation_status: DRAFT_ONLY_NO_RUNTIME_ACTIVATION
+        implementation_status: POLICY_APPROVED_RUNTIME_NOT_ACTIVATED
         validation_and_status_report_interface: PLAN_AND_MACHINE_CONTRACT
         failed_engine_revalidation_policy_ref: SFP-OPS-0002
         environment_change_auto_revalidation: DEFERRED
@@ -446,7 +464,56 @@ Policy_Content:
         activation_or_reuse_permission_implies_cleanup_permission: false
         read_only_operation_effect: NO_CLEANUP_MUTATION
         plan_contract: OPERATION_ID_TARGET_IDENTITY_EXPECTED_REVISION_AND_PROOF_BINDINGS
-        effect: DRAFT_ONLY_NO_RUNTIME_MUTATION
+        effect: POLICY_APPROVED_NO_RUNTIME_MUTATION
+  - id: SRC-0012
+    source_pointer: /authority_semantics/official_engine_user_config_consent_candidate
+    value:
+      policy_subject: OFFICIAL_ENGINE_USER_CONFIG_UNIFIED_CONSENT
+      approval_source: PROJECT_OWNER_EXPLICIT_APPROVAL_2026_11_08
+      effect: POLICY_APPROVED_RUNTIME_NOT_ACTIVATED
+      consumer_config:
+        path: .ptsip/ptsip_config.json
+        selector: ptsip.engine.official.use
+        scope: REGISTERED_OFFICIAL_PTSIP_ENGINE_IDENTITIES
+        canonical_owner: CURRENT_EFFECTIVE_CONSUMER_REPOSITORY_CONFIG
+      when_true:
+        single_user_consent_grants:
+        - OFFICIAL_ENGINE_INSTALLATION_AND_SETUP_WITHIN_PTSIP_PACKAGE
+        - AUTOMATIC_REQUIRED_INSTALLATION_AND_HOST_COMPATIBILITY_VERIFICATION
+        - OFFICIAL_ENGINE_ACTIVATION
+        - DECLARED_REGISTERED_OPERATION_EXECUTION
+        repeated_stepwise_user_prompt: false
+        required_technical_gates: CONTRACT_ENVIRONMENT_DEPENDENCY_ISOLATION_AND_COMPATIBILITY_MUST_VERIFY
+        failed_or_unverified_gate: NOT_ELIGIBLE_NOT_EXECUTED
+        operation_invocation: REQUIRES_REQUEST_AND_REGISTERED_OPERATION_CONTRACT
+        unrelated_repository_mutation_permission: NOT_GRANTED
+      when_false:
+        consumer_install_setup_checks: SKIP_SELECTED_ENGINE_SPECIFIC_WORK
+        consumer_host_compatibility_checks: SKIP_SELECTED_ENGINE_SPECIFIC_WORK
+        activation: DISABLED
+        execution: FORBIDDEN
+        single_package_bundled_payload_deletion: NOT_REQUIRED_NOT_AUTHORIZED
+      official_distribution_boundary:
+        user_install_artifact: ONE_PTSIP_PACKAGE
+        independently_published_official_engine_packages: FORBIDDEN
+        engine_internal_implementation_versions_and_contracts: INDEPENDENT_PRESERVED
+        runtime_engine_selection: INDEPENDENT_OF_DISTRIBUTION_PACKAGING
+        distribution_validation_owner: SFP-CNTR-0005_AND_APPLICABLE_SUPPLY_ASSURE
+      official_engine_inventory:
+        currently_registered: 7
+        planned_after_policy_evaluation_engine_registration: 8
+        planned_engine_registration_is_active: 'NO'
+        future_registration_owner: SFP-ARCH-0004_AND_SFP-CNTR-0005
+      independent_engine_boundaries:
+        consumer_user_and_external_engine_authorization: UNCHANGED
+        mandatory_isolation_and_resource_budgets: UNCHANGED
+        in_flight_revocation: UNCHANGED
+        evidence_cache_cleanup_authority: UNCHANGED
+        explicit_operation_side_effects: APPLICABLE_OPERATION_CONTRACT_AUTHORITY_REQUIRED
+      unresolved:
+      - MISSING_OR_UNKNOWN_OFFICIAL_CONFIG_VALUE_DEFAULT
+      - EIGHTH_POLICY_EVALUATION_ENGINE_REGISTRATION_AND_PACKAGE_ADMISSION
+      - EXACT_SINGLE_PACKAGE_SELECTED_ENGINE_SETUP_INTERFACE
   - id: SRC-0011
     source_pointer: /relations
     value:
