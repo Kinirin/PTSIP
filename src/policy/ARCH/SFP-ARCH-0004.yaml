@@ -6,7 +6,7 @@ Policy_Identity:
   root_family: ARCH
   title: Engine structural ownership and physical responsibility boundary (ACTIVE)
 Policy_Lifecycle:
-  status: ACTIVE
+  status: APPROVED.Applying
   source_ref: SRC-0004
 Policy_Authority:
   source_refs:
@@ -146,7 +146,7 @@ Policy_Content:
     value:
       id: SFP-ARCH-0004
       title: Engine structural ownership and physical responsibility boundary (ACTIVE)
-      status: ACTIVE
+      status: APPROVED.Applying
   - id: SRC-0005
     source_pointer: /authority_subject
     value:
@@ -1346,7 +1346,7 @@ Policy_Content:
         scope: ENGINE_EXTERNAL_INTEROPERABILITY_MACHINE_CONTRACT_AUTHORITY
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0004.yaml
-    sha256: 511d513731c40542d7a90baf91014bbc7658df3703911f4c2e3ca518aa53abdd
+    sha256: 6168fa7d49dfa35317aa43ff23925461a596fbaa48ae4729515163a6d3ba43e2
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
