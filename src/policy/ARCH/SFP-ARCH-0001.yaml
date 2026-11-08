@@ -757,7 +757,7 @@ Policy_Content:
       decision_source: PROJECT_OWNER_EXPLICIT
       scope: CONSUMER_REPOSITORY_PROFILE_COMPONENT_TASK_AND_CONTRACT_LOCATION
       repository_namespace_contracts:
-        registration_entrypoint: .ptsip/index.json
+        registration_entrypoint: .ptsip/ptsip_config.json
         contracts_namespace_support: REQUIRED
         current_repository_preferred_contract_root: .ptsip/contracts/
         user_defined_contract_paths: PERMITTED
@@ -778,7 +778,7 @@ Policy_Content:
         machine_deterministic_discovery: REQUIRED
         source_ownership_and_scope_must_be_explicit: true
         per_fragment_shared_central_index_edits_required: false
-        existing_repository_namespace_index_as_ROUTING_ENTRYPOINT: PRESERVED
+        legacy_repository_namespace_index_routing_authority: RETIRED
         central_per_fragment_registry_requirement: NOT_SELECTED
         unbounded_directory_auto_discovery_as_authoritative_source: NOT_SELECTED
         discovery_does_not_create_component_policy_authority: true
@@ -812,7 +812,7 @@ Policy_Content:
     value:
       repository_local_root: .ptsip/engine/
       repository_local_state: .ptsip/engine/state.json
-      semantic_role_binding_source: .ptsip/index.json
+      semantic_role_binding_source: .ptsip/ptsip_config.json
       physical_path_name_is_semantic_role_authority: false
       executable_implementation_owner: INSTALLED_PTSIP_PACKAGE
       executable_source_copy_into_repository_engine_root: FORBIDDEN
@@ -832,13 +832,13 @@ Policy_Content:
         developer_source_distribution_with_product: FORBIDDEN
         active_developer_tool_migration: NOT_AUTHORIZED
         future_migration: SEPARATE_APPROVED_PLAN_AND_CONFORMANCE_REQUIRED
-      shipped_repository_module: src/ptsip/repository/namespace.py
+      legacy_namespace_module_disposition: RETIRED_PENDING_IMPLEMENTATION_REMOVAL
       shipped_engine_state_schema: src/ptsip/repository/schemas/engine-state.schema.json
       state_contract: REGISTERED_VERSIONED_ENGINE_CONTRACT
       schema_contract: SFP-CNTR-0005
       runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
       current_engine_contract_ref: src/ptsip/engines/index.json
-      existing_repository_namespace_contract: PRESERVED_NO_LEGACY_RUNTIME_REPLACEMENT
+      existing_repository_namespace_contract: RETIRED_LEGACY_INDEX_REPLACED_BY_PTSIP_CONFIG
   - id: SRC-0041
     source_pointer: /relations
     value:
@@ -848,7 +848,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: 8fba97f99438a2f735f3ae7d46366c05c4873d6f91203f655d8d08ae9b7dc913
+    sha256: a8dc5fa3a67585de98e54616fefb451b110421e70b50212412d791c6d9987f3b
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
