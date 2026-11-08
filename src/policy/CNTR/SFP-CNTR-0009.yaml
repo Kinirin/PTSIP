@@ -1,0 +1,365 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: "ptsip-unified-policy/v3-candidate"
+Policy_Identity:
+  id: "SFP-CNTR-0009"
+  policy_kind: "PTSIP_SUPPORT_FEATURE"
+  root_family: "CNTR"
+  title: "고객 기본 계약과 개발자 확장 계약의 참조 및 의미 호환성"
+Policy_Lifecycle:
+  status: "DRAFT.Default"
+  source_ref: "SRC-0002"
+Policy_Authority:
+  source_refs:
+    - "SRC-0013"
+Policy_Rules:
+  rules:
+    -
+      id: "SFP-CNTR-0009/R-01"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0005"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0005"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0005"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0005"
+    -
+      id: "SFP-CNTR-0009/R-02"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0006"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0006"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0006"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0006"
+    -
+      id: "SFP-CNTR-0009/R-03"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0007"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0007"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0007"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0007"
+    -
+      id: "SFP-CNTR-0009/R-04"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0008"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0008"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0008"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0008"
+    -
+      id: "SFP-CNTR-0009/R-05"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0009"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0009"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0009"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0009"
+    -
+      id: "SFP-CNTR-0009/R-06"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0010"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0010"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0010"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0010"
+    -
+      id: "SFP-CNTR-0009/R-07"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0011"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0011"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0011"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0011"
+    -
+      id: "SFP-CNTR-0009/R-08"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0012"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0012"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0012"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0012"
+Policy_Evaluation:
+  source_refs: []
+  state: "UNRESOLVED"
+Policy_Relationships:
+  source_refs:
+    - "SRC-0014"
+Policy_Content:
+  items:
+    -
+      id: "SRC-0001"
+      source_pointer: "/Policy_Identity"
+      value:
+        id: "SFP-CNTR-0009"
+        policy_kind: "PTSIP_SUPPORT_FEATURE"
+        root_family: "CNTR"
+        title: "고객 기본 계약과 개발자 확장 계약의 참조 및 의미 호환성"
+    -
+      id: "SRC-0002"
+      source_pointer: "/Policy_Lifecycle"
+      value:
+        Policy_Status_Schema_ver: "2"
+        status: "DRAFT.Default"
+        contract: "urn:ptsip:contract:policy:cntr:common-contract-extension"
+    -
+      id: "SRC-0003"
+      source_pointer: "/Policy_Rules/contracts/0/contract_id"
+      value: "urn:ptsip:policy:rule:cntr:common-contract-extension"
+    -
+      id: "SRC-0004"
+      source_pointer: "/Policy_Rules/contracts/0/Rule_ver"
+      value: "1"
+    -
+      id: "SRC-0005"
+      source_pointer: "/Policy_Rules/contracts/0/rules/0"
+      value:
+        id: "SFP-CNTR-0009/R-01"
+        rule: "COMMON_BASE_CONTRACT_AUTHORITY"
+        statement: "고객 기본 계약은 공통 필드와 기본 의미를 소유하며 개발자 계약은 기본 의미를 변경하지 않는 확장이다."
+        invariants:
+          common_is_base: true
+          developer_is_extension: true
+          base_semantics_owned_by_common: true
+          developer_must_not_redefine_base_semantics: true
+    -
+      id: "SRC-0006"
+      source_pointer: "/Policy_Rules/contracts/0/rules/1"
+      value:
+        id: "SFP-CNTR-0009/R-02"
+        rule: "VERSIONED_PUBLIC_CONTRACT_REFERENCES"
+        statement: "고객 기본 Policy 및 Plan의 6종 계약은 등록된 고유 URN과 정확한 버전으로 선택하며 개발자 확장은 이를 직접 참조한다."
+        contract_targets:
+          -
+            field: "Policy_Identity"
+            schema: "src/ptsip/common_contract/schemas/policy_identity.schema.json"
+            urn_template: "urn:ptsip:common_policy:identity:{version}"
+          -
+            field: "Policy_Lifecycle"
+            schema: "src/ptsip/common_contract/schemas/policy_lifecycle.schema.json"
+            urn_template: "urn:ptsip:common_policy:lifecycle:{version}"
+          -
+            field: "Policy_Rules"
+            schema: "src/ptsip/common_contract/schemas/policy_rules.schema.json"
+            urn_template: "urn:ptsip:common_policy:rules:{version}"
+          -
+            field: "Plan_Unit"
+            schema: "src/ptsip/common_contract/schemas/plan_unit.schema.json"
+            urn_template: "urn:ptsip:common:plan:unit:{version}"
+          -
+            field: "Plan_Lifecycle"
+            schema: "src/ptsip/common_contract/schemas/plan_lifecycle.schema.json"
+            urn_template: "urn:ptsip:common:plan:lifecycle:{version}"
+          -
+            field: "Plan_Identity"
+            schema: "src/ptsip/common_contract/schemas/plan_identity.schema.json"
+            urn_template: "urn:ptsip:common:plan:identity:{version}"
+        invariants:
+          registered_exact_version_required: true
+          missing_or_ambiguous_ref: "UNRESOLVED"
+          identity_inference_from_field_or_path: false
+    -
+      id: "SRC-0007"
+      source_pointer: "/Policy_Rules/contracts/0/rules/2"
+      value:
+        id: "SFP-CNTR-0009/R-03"
+        rule: "EXTENSIBLE_FIELDS_WITHOUT_WEAKENING"
+        statement: "공통 계약은 불필요한 필수 필드나 닫힌 구조를 강제하지 않고 개발자는 호환 가능한 필드와 세부 제약을 확장할 수 있으나 기본 의미는 약화하지 않는다."
+        invariants:
+          common_additional_fields_allowed: true
+          unapproved_universal_required_fields: false
+          developer_specific_fields_allowed: true
+          compatible_stricter_constraints_allowed: true
+          base_semantics_must_not_be_weakened: true
+          matching_names_do_not_prove_equivalence: true
+    -
+      id: "SRC-0008"
+      source_pointer: "/Policy_Rules/contracts/0/rules/3"
+      value:
+        id: "SFP-CNTR-0009/R-04"
+        rule: "MACHINE_VERIFIED_SEMANTIC_COMPATIBILITY"
+        statement: "기본 계약의 버전별 참조, 구조 적합성, 의미 충돌, 변경 영향을 분리하여 기계 검증하며 입증되지 않은 확장을 호환으로 인정하지 않는다."
+        invariants:
+          exact_base_version_resolution: true
+          structural_pass_is_not_semantic_approval: true
+          semantic_conflict_check_required: true
+          missing_proof: "UNRESOLVED"
+          incompatible_extension: "REJECT_AFFECTED_EXTENSION"
+          unrelated_independent_contracts_unchanged: true
+          compatibility_requires_machine_evidence: true
+    -
+      id: "SRC-0009"
+      source_pointer: "/Policy_Rules/contracts/0/rules/4"
+      value:
+        id: "SFP-CNTR-0009/R-05"
+        rule: "DEVELOPER_LIFECYCLE_STATUS_REFERENCE"
+        statement: "개발자 통합 정책의 Policy_Lifecycle.status는 등록된 Public_Policy_Status의 status 구조를 참조하고 공식 status enum을 중복 소유하지 않는다."
+        developer_schema: ".ptsip/contracts/policy/unified/Unified_Policy.schema.json"
+        target: "Policy_Lifecycle.status"
+        status_schema: ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json"
+        status_fragment: "#/properties/status"
+        vocabulary_schema: ".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json"
+        invariants:
+          status_ref_required: true
+          duplicate_official_enum: false
+          source_ref_preserved: true
+          developer_enum_not_automatically_customer_base_constraint: true
+    -
+      id: "SRC-0010"
+      source_pointer: "/Policy_Rules/contracts/0/rules/5"
+      value:
+        id: "SFP-CNTR-0009/R-06"
+        rule: "HISTORICAL_SOURCE_AND_STATE_PRESERVATION"
+        statement: "과거 상태는 출처 증거로 보존하고 현행 상태 enum 변환, 상태 전이 또는 퇴역 정책 재활성화는 별도 승인 없이는 수행하지 않는다."
+        invariants:
+          preserve_historical_status: true
+          legacy_to_current_mapping_requires_owner_decision: true
+          automatic_lifecycle_transition: false
+          retired_reactivation_without_approval: false
+          breaking_semantics_requires_version_or_authorized_migration: true
+    -
+      id: "SRC-0011"
+      source_pointer: "/Policy_Rules/contracts/0/rules/6"
+      value:
+        id: "SFP-CNTR-0009/R-07"
+        rule: "GO_CONSUMER_COMMON_CONTRACT_CAPABILITY"
+        statement: "고객 기본 계약의 등록, URN 해석, 구조 검증 및 확장 의미 충돌 검사 신규 기능은 Go로 구현하며 개발자 엔진을 고객 런타임에 필수 의존시키지 않는다."
+        new_feature_root: "src/ptsip/common_contract/"
+        existing_customer_python: "src/ptsip/policy_contracts/unified.py"
+        invariants:
+          implementation_language: "GO"
+          customer_runtime_developer_dependency: false
+          existing_python_feature_automatic_replacement: false
+          independent_publication_verification_required: true
+          official_rust_engines_unchanged: true
+    -
+      id: "SRC-0012"
+      source_pointer: "/Policy_Rules/contracts/0/rules/7"
+      value:
+        id: "SFP-CNTR-0009/R-08"
+        rule: "REGISTRATION_APPROVAL_AND_EXECUTION_SEPARATION"
+        statement: "계약 등록 또는 검사 성공은 정책 승인, 실행 권한, 배포 승인 및 개발자 정책 자동 수정의 근거가 아니다."
+        invariants:
+          draft_normative_activation: false
+          registration_is_approval: false
+          structure_validation_is_execution_permission: false
+          developer_policy_mutation_requires_separate_authorization: true
+          distribution_requires_separate_approval: true
+    -
+      id: "SRC-0013"
+      source_pointer: "/Policy_Rules/Boundary"
+      value:
+        scope: "고객 기본 계약 6종과 개발자 확장 계약 간의 소유권, 직접 참조, 버전, 의미 호환성 및 검증 경계"
+        responsibility:
+          CNTR: "계약 정의, 등록, 버전, 호환성 요구사항"
+          ASSURE: "적합성 판정과 근거 검증"
+          GOV: "승인과 상태 전이"
+          ARCH: "구조와 구현 책임 경계"
+        exclusions:
+          - "이 초안은 개발자 정책과 계약을 자동 수정하거나 활성화하지 않는다."
+          - "Go 구현, 공개 배포, 엔진 활성화는 이 초안 작성으로 승인되지 않는다."
+          - "폐기된 src/policy/contracts/ 경로나 임시 기록을 규범 계약으로 복원하지 않는다."
+          - "고객 기존 Python 기능과 공식 Rust 엔진을 자동 대체하지 않는다."
+    -
+      id: "SRC-0014"
+      source_pointer: "/Policy_Rules/Relationships"
+      value:
+        depends_on:
+          -
+            policy: "SFP-CNTR-0001"
+            scope: "기존 고객 계약 소유권"
+          -
+            policy: "SFP-ASSURE-0001"
+            scope: "적합성 판정 권위"
+          -
+            policy: "SFP-GOV-0001"
+            scope: "승인 권위"
+        supersedes: []
+        amends: []
+        extends: []
+  source_document:
+    path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
+    sha256: "0489cd8e5def9eb3c2cab3ff4acd15c8c0328cd409bb71e3222c5c40221e72e1"
+Policy_Migration:
+  baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
+  source_format: "ptsip-support-native-contract/v1"
+  source_registration: "INDEXED"
+  contract_state: "CANDIDATE"
