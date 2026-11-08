@@ -1,0 +1,447 @@
+{
+  "format": "ptsip-policy-derived-plan-proposal/v1",
+  "id": "PLN-SFP-CNTR-0009-GO-001",
+  "title": "PTSIP customer common contracts — Go implementation and Python-feature migration",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "authority": {
+    "policy_id": "SFP-CNTR-0009",
+    "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+    "policy_state": "APPROVED.Default",
+    "policy_source_sha256": "6acd10a19784b35d0dda76b8e011abf3d013b39651c74bab7299985132d229bd",
+    "reviewed_head_sha": "5da50e1e816ddd56c01cf7fcd5316ab1e378b876",
+    "policy_rule_refs": [
+      "SFP-CNTR-0009/R-01",
+      "SFP-CNTR-0009/R-02",
+      "SFP-CNTR-0009/R-03",
+      "SFP-CNTR-0009/R-04",
+      "SFP-CNTR-0009/R-05",
+      "SFP-CNTR-0009/R-07"
+    ],
+    "precedence": "POLICY > PLAN > IMPLEMENTATION",
+    "no_policy_redefinition": true
+  },
+  "approval": {
+    "plan_approval": "PENDING_USER_REVIEW",
+    "implementation_authorization": "NOT_GRANTED_UNTIL_FULL_PLAN_APPROVAL",
+    "branch_creation": "FORBIDDEN_NO_EXPLICIT_USER_REQUEST",
+    "release_publication": "NOT_AUTHORIZED"
+  },
+  "registration": {
+    "document_role": "NON_NORMATIVE_DRAFT_PLAN",
+    "directory": "src/planning/common-contract/",
+    "plan_schema_contract_status": "UNADMITTED_FIELD_REVIEW_CANDIDATE",
+    "plan_registration_status": "NOT_REGISTERED_AS_EXECUTABLE_PLAN",
+    "plan_contract_basis": ".ptsip/contracts/Plans/",
+    "claim_schema_conformance": false,
+    "requires_registered_admitted_plan_contract_before_execution": true,
+    "release_control_plane": "UNRESOLVED_RELEASE_SELECTION_NOT_INFERRED_FROM_BRANCH",
+    "existing_releases_unchanged": true
+  },
+  "scope": {
+    "user_intent": "Build customer-owned six-schema common contract capability in Go; remove replaced Python customer contract feature; preserve independent developer extension contracts and installed package resource access.",
+    "implementation_language": "GO_FOR_CUSTOMER_CONTRACT_CAPABILITY",
+    "existing_python_customer_feature_removal": "REQUIRED_BY_USER_FOR_THIS_PLAN",
+    "repository_source_location": "src/ptsip/common_contract/",
+    "customer_runtime_resource_namespace": "ptsip/common_contract/",
+    "runtime_reference_mode": "URN_PLUS_INSTALLED_PACKAGE_RESOURCES",
+    "installation_source_tree_dependency": "FORBIDDEN",
+    "developer_engine_required_for_customer_runtime": false,
+    "existing_unrelated_py_app_and_rust_engines": "OUT_OF_SCOPE",
+    "no_new_branch": true,
+    "release_version": "UNSELECTED"
+  },
+  "contract_targets": [
+    {
+      "field": "Policy_Identity",
+      "urn_template": "urn:ptsip:common_policy:identity:{version}",
+      "package_resource": "common_contract/schemas/policy_identity.schema.json"
+    },
+    {
+      "field": "Policy_Lifecycle",
+      "urn_template": "urn:ptsip:common_policy:lifecycle:{version}",
+      "package_resource": "common_contract/schemas/policy_lifecycle.schema.json"
+    },
+    {
+      "field": "Policy_Rules",
+      "urn_template": "urn:ptsip:common_policy:rules:{version}",
+      "package_resource": "common_contract/schemas/policy_rules.schema.json"
+    },
+    {
+      "field": "Plan_Unit",
+      "urn_template": "urn:ptsip:common:plan:unit:{version}",
+      "package_resource": "common_contract/schemas/plan_unit.schema.json"
+    },
+    {
+      "field": "Plan_Lifecycle",
+      "urn_template": "urn:ptsip:common:plan:lifecycle:{version}",
+      "package_resource": "common_contract/schemas/plan_lifecycle.schema.json"
+    },
+    {
+      "field": "Plan_Identity",
+      "urn_template": "urn:ptsip:common:plan:identity:{version}",
+      "package_resource": "common_contract/schemas/plan_identity.schema.json"
+    }
+  ],
+  "directory_responsibility": {
+    "src/policy/CNTR/SFP-CNTR-0009.yaml": "POLICY_AUTHORITY_DO_NOT_MODIFY_TO_FIT_PLAN",
+    "src/planning/common-contract/": "THIS_REVIEW_ONLY_PLAN_NOT_RELEASE_CONTROL_PLANE",
+    "src/ptsip/common_contract/schemas/": "SIX_CUSTOMER_OWNED_JSON_SCHEMAS",
+    "src/ptsip/common_contract/registry/": "URN_RESOURCE_VERSION_REGISTRATION",
+    "src/ptsip/common_contract/resolver/": "INSTALLATION_RESOURCE_AND_REF_RESOLUTION",
+    "src/ptsip/common_contract/validator/": "JSON_SCHEMA_CONFORMANCE",
+    "src/ptsip/common_contract/compatibility/": "SEMANTIC_EXTENSION_WEAKENING_AND_CHANGE_IMPACT",
+    "src/ptsip/common_contract/cmd/": "GO_COMMAND_MACHINE_REQUEST_RESPONSE_ADAPTER",
+    "src/ptsip/common_contract/testdata/": "PROOF_VECTORS_AND_NEGATIVE_FIXTURES",
+    "src/ptsip/policy_contracts/unified.py": "LEGACY_CUSTOMER_CONTRACT_FEATURE_REMOVE_AFTER_CALLER_CUTOVER",
+    "setup.py;pyproject.toml;.ptsip/engine/developer/Distribution/release/backend/": "BUILD_AND_WHEEL_INTEGRATION_WITHOUT_CUSTOMER_RUNTIME_DEVELOPER_DEPENDENCY",
+    ".ptsip/engine/developer/internal/contract_authoring/Authoring.go;.ptsip/engine/developer/policy/migrate_unified.py": "EXISTING_CALLSITE_REPLACEMENT_NOT_CUSTOMER_RUNTIME_AUTHORITY",
+    "src/tests/ptsip/contracts/;src/ptsip/common_contract/**/*_test.go": "SCOPED_GO_AND_INSTALLED_PRODUCT_VERIFICATION",
+    ".github/test_modes.yaml; .github/workflows/tooling-test.yml": "MUTABLE_TEST_REGISTRY_AND_STABLE_VERIFICATION_RUNNER"
+  },
+  "work_units": [
+    {
+      "id": "WU-01",
+      "title": "Inventory precise current call sites and approved authority",
+      "owner": "DEPENDENCY_ANALYSIS",
+      "policy_rules": [
+        "R-01",
+        "R-04",
+        "R-07"
+      ],
+      "depends_on": [],
+      "inputs": [
+        "src/ptsip/policy_contracts/unified.py",
+        "setup.py",
+        ".ptsip/engine/developer/internal/contract_authoring/Authoring.go",
+        ".ptsip/engine/developer/policy/migrate_unified.py",
+        "src/ptsip/governance/authority.py",
+        ".ptsip/contracts/policy/unified/index.json",
+        "src/policy/index.yaml",
+        "pyproject.toml",
+        ".github/test_modes.yaml"
+      ],
+      "actions": [
+        "Build exact call graph with imports, build-time invocation, source restoration, contract validation, and installed package consumers; do not infer ownership from file names.",
+        "Snapshot existing unified source roundtrip and developer policy document verification before modification.",
+        "Classify functions to replace in Go, build-time adapters, and unrelated Python code that remains out of scope.",
+        "Separate 0.3.8 release control plane and unadmitted Plan schema constraints from this plan."
+      ],
+      "outputs": [
+        "Machine-readable impact inventory: current caller, owned behavior, replacement entrypoint, required regression, exact owner.",
+        "Behavior parity corpus and approved-policy revision binding."
+      ],
+      "acceptance": [
+        "All known direct or indirect callers accounted for before any deletion.",
+        "No change to unrelated official engine behavior or SFP/MPD policy authority."
+      ]
+    },
+    {
+      "id": "WU-02",
+      "title": "Declare customer-owned six schemas, 13-status lifecycle and exact-version URNs",
+      "owner": "PUBLIC_CONTRACT_DEFINITION",
+      "policy_rules": [
+        "R-01",
+        "R-02",
+        "R-03",
+        "R-05"
+      ],
+      "depends_on": [
+        "WU-01"
+      ],
+      "inputs": [
+        "SFP-CNTR-0009",
+        "Six exact URN templates",
+        "Installed ptsip package resource namespace"
+      ],
+      "actions": [
+        "Create independent JSON Schema documents for all six resources under src/ptsip/common_contract/schemas/ as development sources, never as fixed customer runtime paths.",
+        "Define customer Policy Lifecycle's own exactly thirteen official enum values without referencing .ptsip developer contracts.",
+        "Define schema identities and version registration data, preserving flexible customer extension fields and rejecting invented mandatory customer fields.",
+        "Introduce explicit contract metadata where logical semantics cannot be inferred from property names."
+      ],
+      "outputs": [
+        "Six versioned JSON schemas.",
+        "Installed-package-relative resource mappings and resource manifest.",
+        "13-status validation fixtures."
+      ],
+      "acceptance": [
+        "All six resources have unique registered exact-version URNs and resolvable installed-package names.",
+        "All thirteen official statuses accepted by customer lifecycle contract.",
+        "No import/$ref from customer schemas to developer-only contracts.",
+        "Unapproved extra universal required fields and unrelated restriction not introduced."
+      ]
+    },
+    {
+      "id": "WU-03",
+      "title": "Implement standalone Go package-resource registry and resolution",
+      "owner": "GO_REGISTRY_AND_RESOLVER",
+      "policy_rules": [
+        "R-02",
+        "R-07"
+      ],
+      "depends_on": [
+        "WU-02"
+      ],
+      "inputs": [
+        "Exact-version schema catalog",
+        "Installed package resource manifest"
+      ],
+      "actions": [
+        "Implement Go module rooted at src/ptsip/common_contract/ independent of .ptsip/engine/developer.",
+        "Split Go packages by registry, resource lookup, reference resolution, validation, compatibility and command adapter.",
+        "Build version-bound URN resolution, duplicate-ID rejection, cycles and missing reference reporting.",
+        "Provide machine-readable request and response contracts. For the installed binary, resolve package resources relative to the installed PTSIP package rather than a fixed checkout or venv location.",
+        "Ensure Windows, Linux, macOS binaries can locate the installed registry and schemas without developer engine or git checkout."
+      ],
+      "outputs": [
+        "Go module and versioned registry resolver.",
+        "CLI or native entry adapter accepting machine-readable contract lookup and validation operations.",
+        "Error taxonomy for unresolved, invalid, incompatible and supported cases."
+      ],
+      "acceptance": [
+        "No fixed src/ptsip path required at runtime.",
+        "No dependency edge from customer Go module to developer-only engine.",
+        "Missing or ambiguous URNs fail closed and do not guess versions."
+      ]
+    },
+    {
+      "id": "WU-04",
+      "title": "Implement structural and semantic-extension compatibility evaluation in Go",
+      "owner": "GO_VALIDATION_AND_SEMANTIC_COMPARATOR",
+      "policy_rules": [
+        "R-01",
+        "R-03",
+        "R-04"
+      ],
+      "depends_on": [
+        "WU-03"
+      ],
+      "inputs": [
+        "Registered exact-version base schemas",
+        "Developer extension candidate schemas",
+        "Machine-verifiable semantic declarations and test vectors"
+      ],
+      "actions": [
+        "Separate reference resolution, JSON Schema structural validation, declared semantic constraints, and change-impact checks into distinct results.",
+        "Check that developer extension preserves common constraints; allow extra fields and compatible strengthening.",
+        "Treat unsupported or unprovable semantic comparison as UNRESOLVED, not compatible; reject demonstrated conflicts only in affected scope.",
+        "Record contract identity/revision, evidence and field/constraint pointers in a deterministic machine report.",
+        "Provide regression tests for same-name different-meaning, weakened restrictions, conflict, valid extension and independent unaffected contracts."
+      ],
+      "outputs": [
+        "Go structural/semantic evaluation API and CLI.",
+        "Machine-readable conflict report with exact evidence and proof scope.",
+        "Positive/negative/unknown test fixtures."
+      ],
+      "acceptance": [
+        "Structural VALID is never treated as proof of semantic equivalence.",
+        "Known weakening and contradiction rejected, unknown semantic equivalence unresolved.",
+        "Independent unaffected contracts remain independently eligible."
+      ]
+    },
+    {
+      "id": "WU-05",
+      "title": "Replace old Python customer contract feature and update all callers",
+      "owner": "LEGACY_PYTHON_TO_GO_MIGRATION",
+      "policy_rules": [
+        "R-07",
+        "R-04"
+      ],
+      "depends_on": [
+        "WU-04"
+      ],
+      "inputs": [
+        "WU-01 exact call graph and golden outputs",
+        "New Go resolver, validator and source fidelity APIs"
+      ],
+      "actions": [
+        "Port required customer-facing unified contract behaviors to Go including read-only source restoration, canonical digest verification and currently depended-on contract validation.",
+        "Replace setup.py run_path() build-time dependency on src/ptsip/policy_contracts/unified.py with an exact Go-backed projection/build adapter before deleting the file.",
+        "Update developer Go contract authoring bridge to use the new independent Go behavior rather than executing the Python unified policy feature.",
+        "Update developer migration utility and governance/test callers that import the old module; preserve correct authority/validation boundaries.",
+        "Delete src/ptsip/policy_contracts/unified.py only after exact caller parity and package build succeed; eliminate empty obsolete package exports only if callsite analysis confirms safe.",
+        "Do not migrate unrelated Python application or packaging code absent direct customer contract feature responsibility."
+      ],
+      "outputs": [
+        "Legacy customer Python contract feature removed.",
+        "All discovered former callers switched to Go or equivalent direct Go-backed adapter.",
+        "No stale module import in source, CI or wheel."
+      ],
+      "acceptance": [
+        "All identified old customer contract behavior has verified Go replacement or an explicit out-of-scope disposition.",
+        "No remaining runnable dependency on ptsip.policy_contracts.unified.",
+        "Setup/build policy projection, source-preservation, developer policy authoring and verifier regressions pass."
+      ]
+    },
+    {
+      "id": "WU-06",
+      "title": "Package Go executable and customer resources in installed PTSIP",
+      "owner": "DISTRIBUTION_AND_INSTALL_RESOURCES",
+      "policy_rules": [
+        "R-02",
+        "R-05",
+        "R-07"
+      ],
+      "depends_on": [
+        "WU-03",
+        "WU-05"
+      ],
+      "inputs": [
+        "Six schema resources and manifest",
+        "Go native binaries",
+        "Existing PEP 517 build and release backend"
+      ],
+      "actions": [
+        "Integrate Go build artifacts with current PTSIP wheel/sdist assembly, without replacing existing unrelated official Rust engine composition.",
+        "Install resources under ptsip/common_contract/schemas and a discoverable Go executable next to its package resources; avoid checkout-relative assumptions.",
+        "Make resource manifest revision and binary provenance verifiable in built artifacts.",
+        "Test an isolated Windows venv with .venv/Lib/site-packages/ptsip, plus Linux/macOS package environments, without assuming identical filesystem layouts.",
+        "Ensure no runtime import or bundling of old Python customer contract feature."
+      ],
+      "outputs": [
+        "Wheel/sdist integration modifications and distributable Go customer contract runtime.",
+        "Installed-package manifest and exact asset verification."
+      ],
+      "acceptance": [
+        "Wheel has six declared schemas and working platform-matched Go binary.",
+        "Standalone installed environment resolves all six URNs and validates status enum without repository checkout.",
+        "No developer Go engine install required for customer runtime."
+      ]
+    },
+    {
+      "id": "WU-07",
+      "title": "Register scoped verification and repair known missing-test guard",
+      "owner": "VERIFICATION_INTEGRATION",
+      "policy_rules": [
+        "R-01",
+        "R-02",
+        "R-03",
+        "R-04",
+        "R-05",
+        "R-07"
+      ],
+      "depends_on": [
+        "WU-04",
+        "WU-05",
+        "WU-06"
+      ],
+      "inputs": [
+        ".github/test_modes.yaml",
+        ".github/workflows/tooling-test.yml",
+        ".github/workflows/policy-contract-guard.yml",
+        "src/tests/ptsip/contracts (currently absent; referenced by existing workflows)"
+      ],
+      "actions": [
+        "Add precise Go-unit and installed wheel acceptance tests for all approved policy rule obligations.",
+        "Resolve pre-existing policy-contract guard missing-test paths by adding maintained replacement tests or updating obsolete targets only after coverage parity, rather than skipping contract verification.",
+        "Register or adjust the narrowest relevant mode in .github/test_modes.yaml; keep tooling-test.yml a stable verification executor and modify only if required.",
+        "Test negative cases for absent resource, ambiguous URN, developer status schema contamination, semantic weakening, unknown semantics, and stale installer assets.",
+        "Capture deterministic report artifacts and logs; never commit local log files."
+      ],
+      "outputs": [
+        "Go conformance fixtures and cross-platform installation smoke tests.",
+        "Updated scoped test mode and repaired policy contract guard coverage.",
+        "Machine-readable verification evidence."
+      ],
+      "acceptance": [
+        "All six rule IDs have at least one explicit conformance test.",
+        "Local Go tests, static checks, build and installed-wheel smoke tests pass.",
+        "Relevant GitHub Actions complete on exact pushed SHA; no blanket all-mode run when scoped mode suffices.",
+        "Pre-existing missing src/tests/ptsip/contracts/test_unified_policy.py and test_migrate_unified_current.py references no longer cause a missing-test failure."
+      ]
+    },
+    {
+      "id": "WU-08",
+      "title": "Final dependency-free installed runtime and release readiness review",
+      "owner": "CUTOVER_REVIEW_AND_FEEDBACK",
+      "policy_rules": [
+        "R-01",
+        "R-02",
+        "R-03",
+        "R-04",
+        "R-05",
+        "R-07"
+      ],
+      "depends_on": [
+        "WU-07"
+      ],
+      "inputs": [
+        "Committed Go-only customer contract implementation",
+        "Installed wheel/sdist evidence",
+        "Regression and action reports"
+      ],
+      "actions": [
+        "Verify no packaging, build, developer tooling or customer callsite still requires removed Python feature.",
+        "Compare exact released-source and built-asset integrity without asserting publication or release approval.",
+        "Record residual migration compatibility risks and any independently blocked scope; escalate new policy domain instead of silently deciding.",
+        "Prepare implementation report and await separate publication authorization as applicable."
+      ],
+      "outputs": [
+        "Policy-to-test traceability report.",
+        "Go migration verification and release handoff report."
+      ],
+      "acceptance": [
+        "No old Python customer feature is shipped or required.",
+        "All six resources are version resolved inside installed ptsip, all thirteen statuses supported, Go-only evaluator proves intended compatibility behavior.",
+        "No branch is created; no publication or release version silently selected."
+      ]
+    }
+  ],
+  "gates": {
+    "pre_implementation": [
+      "User reviews and approves the complete plan.",
+      "An admitted current plan contract and registration route is identified; do not misrepresent .ptsip/contracts/Plans/ field-review candidates as approved.",
+      "Current applicable policies are re-read at latest HEAD; conflicts escalated rather than overridden.",
+      "No obsolete developer release WU becomes this plan's implementation authority by proximity."
+    ],
+    "pre_python_removal": [
+      "WU-01 call graph complete",
+      "WU-04 Go contract feature parity proven",
+      "Existing build/authoring/migration callsites moved off old Python feature"
+    ],
+    "pre_wheel_distribution": [
+      "All six resources and manifest installed",
+      "Go binary packaged for target platform",
+      "Exact source and package asset integrity checked"
+    ],
+    "pre_publication": [
+      "Separate release/version/publication authorization and evidence as required"
+    ]
+  },
+  "verification": {
+    "local_windows_11_in_order": [
+      "git pull --ff-only origin main",
+      "$log = '.\\ptsip-common-contract-plan-check.log'",
+      "go -C src/ptsip/common_contract test ./... -count=1 2>&1 | Tee-Object -FilePath $log",
+      "go -C src/ptsip/common_contract vet ./... 2>&1 | Tee-Object -FilePath $log -Append",
+      "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
+      "Install built wheel in a fresh test venv; invoke its installed Go binary using package resource lookup; append output to $log",
+      "Remove the untracked log after communicating verification results"
+    ],
+    "execution_condition": "COMMANDS_ARE_FUTURE_POST_IMPLEMENTATION_NOT_EXECUTED_DURING_PLAN_AUTHORING",
+    "remote": ".github/workflows/tooling-test.yml via scoped .github/test_modes.yaml selection",
+    "preexisting_ci_issue": "Policy contract guard references missing src/tests/ptsip/contracts/test_unified_policy.py and test_migrate_unified_current.py; repair covered in WU-07."
+  },
+  "completion": {
+    "traceable_rule_ids": [
+      "SFP-CNTR-0009/R-01",
+      "SFP-CNTR-0009/R-02",
+      "SFP-CNTR-0009/R-03",
+      "SFP-CNTR-0009/R-04",
+      "SFP-CNTR-0009/R-05",
+      "SFP-CNTR-0009/R-07"
+    ],
+    "must_pass": [
+      "VERSIONED_SIX_RESOURCES",
+      "INDEPENDENT_THIRTEEN_STATUS_ENUM",
+      "INSTALLED_PACKAGE_RUNTIME_DISCOVERY",
+      "GO_ONLY_CUSTOMER_COMMON_CONTRACT_FEATURE",
+      "NO_PYTHON_UNIFIED_CUSTOMER_FEATURE",
+      "SCOPED_SEMANTIC_CONFLICT_VERIFICATION",
+      "WHEEL_SDIST_WINDOWS_LINUX_MAC_VERIFICATION",
+      "NO_DEVELOPER_RUNTIME_DEPENDENCY",
+      "ALL_APPLICABLE_ACTION_GATES_GREEN"
+    ],
+    "implementation_report_required": true
+  }
+}
