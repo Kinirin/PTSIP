@@ -790,6 +790,25 @@ Policy_Content:
           user_override_selection: PENDING_VALID_SCHEMA_REGISTRATION_AND_ITEMS_SEMANTICS_REVIEW
           exact_binding_identity_and_scope: UNRESOLVED
           current_RA_profile_name_migration: UNRESOLVED
+          profile_declaration_identity:
+            field_path: ptsip.id
+            profile_identity_role: PROFILE_DECLARATION_IDENTITY
+            user_stated_pattern: profiles-^[0-9a-f]{32}
+            canonical_fullmatch_regex: ^profiles-[0-9a-f]{32}$
+            namespace_prefix: profiles-
+            suffix_type: LOWERCASE_HEXADECIMAL
+            suffix_length: 32
+            independent_from: ptsip.specification.revision
+            distinction_from_profile_contract_version: ptsip.version
+            distinction_from_user_profile_revision: ptsip.revision
+            path_name_is_identity: false
+            missing_or_malformed_identity: FAIL_CLOSED_AFTER_NEW_CONTRACT_ACTIVATION
+            duplicate_identity: FAIL_CLOSED
+            generation_algorithm: UNRESOLVED
+            uniqueness_scope: UNRESOLVED
+            existing_profile_migration: UNRESOLVED
+            exact_schema_registration: REQUIRES_INFO_CNTR_CONTRACT_REVIEW
+            activation: POLICY_DIRECTION_ONLY_NOT_RUNTIME_ACTIVATED
       project_profile_source_partition:
         independently_maintainable_responsibility_scoped_declarations: REQUIRED
         central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
@@ -876,7 +895,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: b4ce94c11b5444f6790add06bb04f5eae294a171bf4fdadaf4802ad52cf5da09
+    sha256: 8bc6d422f6b0a8269308c5742a24c20586a541dc7ce0314988793abb20e1a725
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
