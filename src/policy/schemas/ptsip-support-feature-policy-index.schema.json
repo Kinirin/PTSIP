@@ -40,8 +40,22 @@
               "DRAFT",
               "ACTIVE",
               "DEPRECATED",
-              "RETIRED"
-            ]
+              "RETIRED",
+              "DRAFT.Default",
+              "DRAFT.Reviewed",
+              "DRAFT.Denied",
+              "DRAFT.Pass",
+              "APPROVED.Default",
+              "APPROVED.Applying",
+              "APPROVED.Application_Problems",
+              "APPROVED.Unresolved",
+              "APPROVED.Activate",
+              "APPROVED.provisional",
+              "RETIRED.Default",
+              "RETIRED.Removable",
+              "RETIRED.Waiting"
+            ],
+            "$comment": "Transitional index v1: legacy category tokens remain for untouched entries; the exact 13 official Policy_Lifecycle tokens are admitted for explicitly migrated entries. Do not infer activation from index status alone; source and index must agree per migration verification."
           },
           "authority_role": {
             "enum": [
