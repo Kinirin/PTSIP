@@ -6,7 +6,7 @@ Policy_Identity:
   root_family: "CNTR"
   title: "고객 기본 계약과 개발자 확장 계약의 참조 및 의미 호환성"
 Policy_Lifecycle:
-  status: "DRAFT.Default"
+  status: "APPROVED.Default"
   source_ref: "SRC-0002"
 Policy_Authority:
   source_refs: []
@@ -140,7 +140,7 @@ Policy_Content:
       source_pointer: "/Policy_Lifecycle"
       value:
         Policy_Status_Schema_ver: "2"
-        status: "DRAFT.Default"
+        status: "APPROVED.Default"
         contract: "urn:ptsip:contract:policy:cntr:common-contract-extension"
     -
       id: "SRC-0003"
@@ -271,7 +271,7 @@ Policy_Content:
           repository_source_tree_runtime_dependency: false
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "8fa790e30270ad9bd64ce2bb873594614c4b988d4e157b9ec14f8b6543e5a86d"
+    sha256: "6acd10a19784b35d0dda76b8e011abf3d013b39651c74bab7299985132d229bd"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
