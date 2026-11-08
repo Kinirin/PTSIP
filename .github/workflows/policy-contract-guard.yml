@@ -39,15 +39,14 @@ jobs:
         run: |
           python -m pytest -q \
             src/tests/ptsip/contracts/test_unified_policy.py \
-            src/tests/ptsip/contracts/test_migrate_unified_current.py \
-            src/tests/ptsip/contracts/test_applicability_snapshot.py
+            src/tests/ptsip/contracts/test_migrate_unified_current.py
           python .ptsip/engine/developer/policy/migrate_unified.py --root . --verify-current
       - name: Check read-only per-rule RA RAC AEC applicability registration
         shell: bash
         run: |
           set -euo pipefail
           go -C .ptsip/engine/developer test ./policy/applicability/... -count=1
-          python .ptsip/engine/developer/policy/applicability/input.py --root . > "$RUNNER_TEMP/policy-applicability-input.json"
+          go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --snapshot --root "$GITHUB_WORKSPACE" > "$RUNNER_TEMP/policy-applicability-input.json"
           go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --input "$RUNNER_TEMP/policy-applicability-input.json" --output "$RUNNER_TEMP/policy-applicability-result.json" --summary
       - name: Retain machine-readable applicability assessment evidence
         uses: actions/upload-artifact@v7
