@@ -1,415 +1,606 @@
 {
   "schema_version": "ptsip-policy-change-plan/v1",
   "artifact_class": "PTSIP_SUPPORT_FEATURE_MIGRATION",
-  "authority": false,
+  "authority": {
+    "normative": [
+      "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "src/policy/CTRL/SFP-CTRL-0002.yaml",
+      "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "src/policy/CNTR/SFP-CNTR-0005.yaml"
+    ],
+    "supporting": [
+      "src/policy/INFO/SFP-INFO-0001.yaml",
+      "src/policy/REAL/SFP-REAL-0001.yaml"
+    ],
+    "precedence": "POLICY_GT_PLAN_GT_IMPLEMENTATION",
+    "new_policy_semantics_from_plan": "FORBIDDEN",
+    "policy_source_state_mismatch": "READ_ONLY_REVIEW_NO_LIFECYCLE_PROMOTION",
+    "unapproved_registry_removal": "FORBIDDEN"
+  },
   "identity": {
     "plan_id": "REPOSITORY-INDEX-TO-PTSIP-CONFIG-MIGRATION",
-    "title": "Replace retired repository root index with PTSIP consumer configuration",
+    "title": "Implement distributable PTSIP consumer setup, profile discovery, RBAC projection and repository migration",
     "status": "DRAFT",
     "integration_branch": "main",
-    "creation_authority": "USER_EXPLICIT_REQUEST_FOR_SEPARATE_MIGRATION_PLAN_2026_11_08",
+    "planning_domain": "PTSIP_CONSUMER_PRODUCT",
+    "plan_path": "src/planning/0.3.8/repository-index-to-ptsip-config.yaml",
+    "plan_version": "0.3.8",
+    "revision": "Rev.0002",
+    "review_status": "REWRITTEN_FOR_CONSUMER_DISTRIBUTION_REVIEW",
     "approval": {
       "status": "PENDING_USER_REVIEW",
-      "scope": "THIS_MIGRATION_PLAN_ONLY",
+      "scope": "THIS_IMPLEMENTATION_PLAN_ONLY",
       "inherited_from_withdrawn_plan": false
     },
     "implementation_authorization": {
       "status": "NOT_AUTHORIZED"
-    },
-    "planning_domain": "PTSIP_CONSUMER_PRODUCT",
-    "plan_path": "src/planning/0.3.8/repository-index-to-ptsip-config.yaml",
-    "plan_version": "0.3.8"
+    }
   },
-  "lineage": {
-    "withdrawn_plan": "developer/planning/migrations/SFP-ARCH-0001-CTRL-0002-config-entrypoint-migration.yaml",
-    "copied_execution_authority": false,
-    "policies_remain_effective_independently": true,
-    "relocated_from": "developer/planning/migrations/repository-index-to-ptsip-config.yaml",
-    "relocation_reason": "CORRECT_PRODUCT_PLANNING_RESPONSIBILITY_USER_EXPLICIT_2026_11_08"
+  "correction": {
+    "reason": "PREVIOUS_PLAN_CONFUSED_PTSIP_PRODUCT_SOURCE_WITH_CONSUMER_REPOSITORY_ARTIFACTS_AND_REPEATED_POLICY_INSTEAD_OF_EXECUTABLE_DELIVERABLES",
+    "supersedes_same_file_revision": "Rev.0001",
+    "user_direction": "BUILD_SHIPPED_PTSIP_MODULES_AND_PATCH_SOURCE_THAT_OPERATE_ON_ARBITRARY_CONSUMER_REPOSITORIES",
+    "migration_mode": "PACKAGE_DELIVERED_CONSUMER_SETUP_AND_VERSIONED_REPOSITORY_PATCH",
+    "ptsip_development_repo_dot_ptsip": "REFERENCE_FIXTURE_NOT_THE_MIGRATION_TARGET",
+    "product_source_root": "src/ptsip/",
+    "consumer_repository_root": "RUNTIME_SELECTED_EXTERNAL_PROJECT_ROOT",
+    "consumer_mutation_authority": "INSTALL_OR_PATCH_ACTION_UNDER_APPLICABLE_POLICY_NOT_DERIVED_FROM_DEVELOPER_WORKSPACE"
   },
-  "policy_basis": {
-    "normative": [
-      "src/policy/ARCH/SFP-ARCH-0001.yaml",
-      "src/policy/CTRL/SFP-CTRL-0002.yaml"
-    ],
-    "applicable_for_contract_or_safe_write": [
-      "src/policy/CNTR/SFP-CNTR-0005.yaml",
-      "src/policy/INFO/SFP-INFO-0001.yaml",
-      "src/policy/REAL/SFP-REAL-0001.yaml"
-    ],
-    "approved_decisions": {
-      "old_root_registration_entrypoint": ".ptsip/index.json",
-      "old_root_registration_authority": "RETIRED",
-      "target_consumer_entrypoint": ".ptsip/ptsip_config.json",
-      "missing_invalid_or_unknown_official_engine_selector": "STRICT_BLOCK",
-      "old_index_authority_fallback": "FORBIDDEN",
-      "official_engine_runtime_activation": "NOT_AUTHORIZED_BY_THIS_PLAN",
-      "local_profile_catalog_index": ".ptsip/profiles/index.json",
-      "local_profile_catalog_status": "RETIRED_TARGET",
-      "discovery_direction": "BOUNDED_CANDIDATE_ENUMERATION_WITH_INDEPENDENT_PROFILE_BINDING",
-      "user_profiles": "EXTENSIBLE_NO_FIXED_FILENAME_ALLOWLIST",
-      "new_repository_config_setup": "AUTOMATIC_CREATE_ON_PTSIP_REPOSITORY_INSTALL",
-      "existing_repository_transition": "PATCH_SOURCE_REMOVE_OLD_INDEX_AND_CREATE_CONFIG",
-      "profile_identity_field": "ptsip.id",
-      "profile_identity_regex": "^profiles-[0-9a-f]{32}$",
-      "profile_identity_distinct_from": "ptsip.specification.revision",
-      "profile_identity_generator": "UUID4_128_BIT",
-      "profile_identity_generation_format": "profiles- + uuid4.hex(lowercase 32)"
-    },
-    "rule": "POLICY_PRECEDES_PLAN_PRECEDES_IMPLEMENTATION",
-    "policy_sync_evidence": [
-      {
-        "path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
-        "commit": "e67075807d6003bf807dce7385f3d20c33eb5095"
-      },
-      {
-        "path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
-        "commit": "e4a18128d49cb452b684bec785abda3eb9cf9f49",
-        "policy_direction": "PROFILE_DECLARATION_ID_IDENTITY"
-      },
-      {
-        "path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
-        "commit": "04654650c37a05b198620b16f33f0d31706b7b1e",
-        "policy_direction": "PTSIP_ID_UUID4_GENERATION"
-      }
-    ]
-  },
-  "scope": {
-    "single_goal": "MIGRATE_ROOT_AND_LOCAL_PROFILE_CATALOG_DISCOVERY_TO_CONFIG_AND_INDEPENDENT_PROFILE_BINDINGS",
-    "in_scope": [
-      "MAP_ALL_ACTIVE_ROOT_INDEX_READ_WRITE_CREATE_VALIDATE_REFERENCES",
-      "DERIVE_VERSIONED_CONSUMER_CONFIG_REGISTRATION_AND_DISCOVERY_CONTRACT",
-      "DEFINE_CONFIG_PROVISIONING_AND_EXISTING_REPOSITORY_TRANSITION_BEHAVIOR",
-      "MIGRATE_CONSUMER_PROFILE_DISCOVERY_AND_PROFILE_CREATION_DEPENDENCIES",
-      "REMOVE_RETIRED_ROOT_INDEX_FILE_SCHEMA_GENERATOR_AND_UNUSED_IMPORTS",
-      "VALIDATE_FAIL_CLOSED_AND_NO_LEGACY_AUTHORITY_FALLBACK",
-      "RETIRE_DOT_PTSIP_PROFILES_INDEX_JSON_CATALOG_AND_MIGRATE_ITS_READERS",
-      "SUPPORT_USER_ADDED_PROFILES_WITH_CONTRACT_VALIDATED_INDEPENDENT_BINDINGS_NOT_HARDCODED_FILENAMES",
-      "AUTO_CREATE_CONFIG_DURING_REPOSITORY_PTSIP_PACKAGE_SETUP_AND_PATCH_EXISTING_REPOSITORIES"
-    ],
-    "out_of_scope": [
-      "EIGHTH_OFFICIAL_ENGINE_REGISTRATION_OR_PACKAGE_ADMISSION",
-      "GENERAL_OFFICIAL_ENGINE_INSTALLER_OR_RUNTIME_ACTIVATION_IMPLEMENTATION",
-      "UNRELATED_CTRL_POLICY_LIFECYCLE_STATUS_PROMOTION",
-      "UNRELATED_POLICY_REWRITES",
-      "CREATION_OF_NEW_BRANCH",
-      "DEPLOYMENT_OR_RELEASE",
-      "REMOVAL_OF_INDEPENDENT_TASK_CONTRACT_ENGINE_REGISTRIES_OR_PROFILE_CONTENTS"
-    ],
-    "distinct_index_preservation": [
-      ".ptsip/tasks/index.json",
-      ".ptsip/contracts/index.json",
-      "src/ptsip/engines/index.json"
-    ],
-    "profile_bootstrap_targets": [
+  "approved_policy_inputs": {
+    "consumer_config_path": ".ptsip/ptsip_config.json",
+    "deprecated_consumer_root_index": ".ptsip/index.json",
+    "deprecated_consumer_profile_catalog": ".ptsip/profiles/index.json",
+    "profile_candidate_root": ".ptsip/profiles/",
+    "candidate_enumeration": "DIRECT_CHILDREN_CANDIDATE_ONLY_WITH_INDEPENDENT_BINDING",
+    "user_added_profiles": "SUPPORTED_NO_STATIC_FILENAME_ALLOWLIST",
+    "initial_bootstrap_profile_targets": [
       ".ptsip/profiles/main.ptsip.yaml",
       ".ptsip/profiles/RA-list.yaml",
       ".ptsip/profiles/workflows.ptsip.yaml"
     ],
-    "profile_runtime_discovery": {
-      "candidate_glob": ".ptsip/profiles/*",
-      "root_bounded": true,
-      "interpretation": "CANDIDATE_ONLY_NOT_IMPLICIT_POLICY_AUTHORITY",
-      "require_self_binding": true,
-      "user_extensions_allowed": true,
-      "filename_allowlist": "FORBIDDEN"
-    },
-    "profile_schema": {
-      "built_in_contract_when_unmodified": true,
-      "user_proposed_override": ".ptsip/contracts/profile/User_Profile.schema.json",
-      "items_semantics": "PENDING_CONTRACT_REVIEW",
-      "current_schema_valid_json": false,
-      "current_schema_lifecycle": "CANDIDATE_NOT_REGISTERED_ACTIVE",
-      "may_be_used_as_active_override": false
-    },
-    "baseline_mismatches": [
-      {
-        "expected_target": ".ptsip/profiles/RA-list.yaml",
-        "current_file": ".ptsip/profiles/Responsibility-Authority-list.yaml",
-        "change": "REQUIRES_EXPLICIT_IDENTITY_AND_REFERENCE_MIGRATION"
-      },
-      {
-        "expected_target": ".ptsip/profiles/workflows.ptsip.yaml",
-        "current_file": "ABSENT",
-        "change": "REQUIRES_AUTHORIZED_BOOTSTRAP_AND_ROLE_CONTRACT"
-      },
-      {
-        "expected_target": ".ptsip/contracts/profile/User_Profile.schema.json",
-        "current_state": "MALFORMED_JSON_AND_CANDIDATE_NOT_ACTIVE",
-        "change": "REQUIRES_SCHEMA_REPAIR_REVIEW_AND_CONTRACT_REGISTRATION"
-      }
+    "profile_identity": "ptsip.id",
+    "profile_id_regex": "^profiles-[0-9a-f]{32}$",
+    "profile_id_generation": "UUID4_HEX_32_LOWERCASE",
+    "profile_id_independent_from": "ptsip.specification.revision",
+    "consumer_config_installation": "AUTOMATIC_ON_APPROVED_REPOSITORY_SETUP",
+    "existing_consumer_upgrade": "PATCH_SOURCE_DISTRIBUTED_WITH_PTSIP_PACKAGE",
+    "official_engine_selector": "ptsip.engine.official.use",
+    "official_engine_missing_or_invalid": "STRICT_BLOCK_ONLY_OFFICIAL_ENGINE_SPECIFIC_OPERATIONS",
+    "auto_consumer_config_creation_does_not_grant_engine_consent": true
+  },
+  "execution_boundaries": {
+    "product_repo_changes": [
+      "IMPLEMENT_MODULES_AND_SCHEMA_ASSETS_UNDER_SRC_PTSIP",
+      "ADAPT_EXISTING_PRODUCT_ENTRYPOINTS_AND_PACKAGE_DATA",
+      "ADD_ISOLATED_CONSUMER_REPOSITORY_TEST_FIXTURES_AND_CI_VALIDATION",
+      "UPDATE_PRODUCT_TESTS_AND_RELEASE_COMPATIBILITY_EVIDENCE"
     ],
-    "profile_identity_contract": {
-      "field_path": "ptsip.id",
-      "required_for": "MIGRATED_PROFILE_CONTRACT_AFTER_ACTIVATION",
-      "canonical_regex": "^profiles-[0-9a-f]{32}$",
-      "example": "profiles-0123456789abcdef0123456789abcdef",
-      "distinct_from": [
-        "ptsip.specification.revision",
-        "ptsip.version",
-        "ptsip.revision"
+    "consumer_repo_effects_only_through_distributed_runtime": [
+      "CREATE_AND_VALIDATE_NEW_CONFIG_AT_INSTALL_SETUP",
+      "PATCH_OLD_CONSUMER_REGISTRATION_REFERENCES",
+      "REMOVE_VERIFIED_RETIRED_CONSUMER_INDEX_FILES",
+      "MATERIALIZE_CONTRACT_VALIDATED_PROFILE_AND_POLICY_ARTIFACTS_CONDITIONALLY",
+      "PRESERVE_USER_DATA_UNKNOWN_FILES_AND_EXPLICIT_CONFIG_CHOICES"
+    ],
+    "prohibited_as_completion_evidence": [
+      "DELETE_PTSIP_SOURCE_REPOSITORY_DOT_PTSIP_INDEX_FILES_IN_PLACE",
+      "MANUALLY_EDIT_ONLY_ONE_PTSIP_SOURCE_REPOSITORY_PROFILE",
+      "RUN_ONE_OFF_DEVELOPER_SCRIPT_WITHOUT_PACKAGING_AS_PRODUCT_CAPABILITY",
+      "ASSERT_EXTERNAL_PROJECT_MIGRATION_FROM_LOCAL_SOURCE_TREE_DIFF_ONLY"
+    ],
+    "out_of_scope": [
+      "EIGHTH_ENGINE_REGISTRATION",
+      "UNRELATED_DEV_TOOLING_MIGRATION",
+      "RELEASE_OR_PYPI_PUBLICATION",
+      "NEW_BRANCH_CREATION",
+      "UNRELATED_POLICY_LIFECYCLE_EDIT"
+    ]
+  },
+  "module_responsibilities": {
+    "note": "CANDIDATE_IMPLEMENTATION_PATHS_SUBORDINATE_TO_EFFECTIVE_POLICY_NOT_NEW_NORMATIVE_DIRECTORY_CONSTRAINTS",
+    "src/ptsip/repository/config.py": "LOAD_VALIDATE_AND_WRITE_CONSUMER_PTSIP_CONFIG_SEPARATE_FROM_ENGINE_CONSENT_EVALUATION",
+    "src/ptsip/repository/bootstrap.py": "INITIAL_PTSIP_REPOSITORY_SETUP_ENTRY_AND_CONFIG_CREATION",
+    "src/ptsip/repository/patch.py": "DISTRIBUTABLE_IDEMPOTENT_VERSIONED_EXISTING_REPOSITORY_MIGRATION_PATCH_ENGINE",
+    "src/ptsip/profiles/discovery.py": "BOUNDED_CONSUMER_PROFILE_FILE_CANDIDATES_AND_INDEPENDENT_BINDING_VALIDATION",
+    "src/ptsip/profiles/creation.py": "USER_ADDED_PROFILE_MATERIALIZATION_WITHOUT_FILENAME_ALLOWLIST",
+    "src/ptsip/profiles/identity.py": "REUSE_AND_EXTEND_PROFILE_IDENTITY_CONTRACT_WITH_UUID4_128_BIT_GENERATION",
+    "src/ptsip/specdata/": "VERSIONED_PACKAGE_BUNDLED_CONFIG_PROFILE_RBAC_CONTRACT_ASSETS_AND_TEMPLATES",
+    "src/ptsip/compile_sealed_rbac/": "CANDIDATE_RA_RAC_AEC_PROJECTION_AND_SCHEMA_VALIDATION_MODULES_ONLY_AFTER_POLICY_GATE",
+    "src/ptsip/clarification/resolution/profile_projection.py": "ADAPT_EXISTING_PROFILE_CREATION_ENTRY_TO_NEW_PRODUCT_SERVICES",
+    "src/ptsip/profiles/catalog.py": "MIGRATE_OLD_CATALOG_READER_BEFORE_REMOVING_LEGACY_PATH",
+    "src/ptsip/profiles/rule_records.py": "MIGRATE_EXISTING_RULE_PROFILE_LOOKUP_WITHOUT_LOSING_REF_SEMANTICS",
+    "src/ptsip/cli.py": "EXPOSE_EXISTING_OR_APPROVED_REPOSITORY_SETUP_PATCH_OPERATION_WITH_TYPED_DIAGNOSTICS",
+    "setup.py + pyproject.toml": "INCLUDE_DISTRIBUTABLE_MODULES_CONTRACT_ASSETS_AND_PATCH_IN_BUILT_PACKAGE",
+    "src/tests/ + .github/test_modes.yaml": "ISOLATED_MULTIPLE_CONSUMER_REPOSITORY_FIXTURES_AND_TEST_MODE_ROUTING"
+  },
+  "consumer_artifact_outputs": {
+    "config": {
+      "path": ".ptsip/ptsip_config.json",
+      "producer": "SHIPPED_REPOSITORY_BOOTSTRAP_OR_PATCH_SERVICE",
+      "content_scope": "REPOSITORY_REGISTRATION_REFERENCES_AND_SEPARATE_USER_CONSENT_FIELD",
+      "source_repo_copy_prohibited": true
+    },
+    "profiles": {
+      "discover_candidates": ".ptsip/profiles/*",
+      "initial_targets": [
+        ".ptsip/profiles/main.ptsip.yaml",
+        ".ptsip/profiles/RA-list.yaml",
+        ".ptsip/profiles/workflows.ptsip.yaml"
       ],
-      "implementation_gate": "PENDING_PLAN_APPROVAL_AND_VALIDATED_VERSIONED_SCHEMA",
-      "unresolved": [
-        "IDENTITY_UNIQUENESS_SCOPE",
-        "LEGACY_PROFILE_ID_ASSIGNMENT_AND_REFERENCE_PRESERVATION",
-        "VERSIONED_SCHEMA_CONFORMANCE_AND_ROLLOUT"
+      "conditional_rbac_targets": [
+        ".ptsip/profiles/RAC_list.yaml",
+        ".ptsip/profiles/AEC_list.yaml"
       ],
-      "generation_algorithm": "UUID4",
-      "source": "UUID4_RANDOM_128_BIT",
-      "serialization": "LOWERCASE_32_HEX_NO_HYPHENS",
-      "prefix": "profiles-"
+      "generation_source": "PACKAGED_CONTRACTS_AND_VALIDATED_USER_SOURCE_INPUT",
+      "static_filename_allowlist_for_discovery": false,
+      "candidate_presence_means_approved_authority": false
+    },
+    "policy_documents": {
+      "location": "USER_REPOSITORY_POLICY_DOCUMENTS_AS_SELECTED_BY_APPLICABLE_CONTRACT",
+      "source_fields": [
+        "Policy_Rules[].RA-key",
+        "Policy_Rules[].id"
+      ],
+      "candidate_control_path": "ptsip_config.json#compile-sealed-rbac",
+      "control_field_name_and_scope": "PENDING_POLICY_AUTHORIZATION",
+      "conditional_producer": "PACKAGED_POLICY_RENDERER_PENDING_POLICY_AUTHORIZATION"
+    },
+    "legacy_consumer_artifacts": {
+      "approved_replacement_targets": [
+        ".ptsip/index.json",
+        ".ptsip/profiles/index.json"
+      ],
+      "user_proposed_registry_retirements_pending_conflict_resolution": [
+        ".ptsip/tasks/index.json"
+      ],
+      "product_internal_engine_registry_pending_conflict_resolution": [
+        "src/ptsip/engines/index.json"
+      ],
+      "unrelated_contract_catalog_preserved": [
+        ".ptsip/contracts/index.json"
+      ]
     }
   },
-  "responsibility_boundaries": {
-    "policy": "SOURCE_OF_NORMATIVE_RULES_NOT_MUTABLE_BY_PLAN",
-    "config_contract": "VERSIONED_CONFIG_SHAPE_IDENTITY_AND_DISCOVERY_BINDINGS",
-    "config_provisioning": "AUTO_CREATE_ON_REPOSITORY_SETUP_PATCH_EXISTING_NO_IMPLICIT_OFFICIAL_ENGINE_CONSENT",
-    "profile_selection": "READ_DEFAULT_AND_USER_ADDED_PROFILE_CANDIDATES_WITH_VALIDATED_INDEPENDENT_BINDINGS_NO_LOCAL_CATALOG",
-    "profile_projection": "WRITE_PROJECT_PROFILE_AND_ALLOWED_CONFIG_ARTIFACTS_WITHOUT_RETIRED_ROOT_INDEX",
-    "legacy_retirement": "REMOVE_OLD_ROUTING_IMPLEMENTATION_ONLY_WHEN_ALL_REFERENCES_HAVE_MIGRATED",
-    "verification": "MACHINE_TESTS_AND_CHANGE_SCOPED_GITHUB_ACTIONS",
-    "profile_binding": "EACH_PROFILE_OWNS_ITS_DECLARED_ROLE_IDENTITY_AND_CONTRACT_BINDING_NOT_DIRECTORY_NAME",
-    "profile_schema": "INSTALLED_BUILTIN_CONTRACT_BY_DEFAULT_USER_OVERRIDE_ONLY_AFTER_REGISTERED_VALID_CONTRACT",
-    "profile_identity": "PTSIP_ID_DECLARATION_ID_NOT_SPECIFICATION_GIT_REVISION_NOT_FILENAME"
-  },
-  "migration_decision_boundaries": [
+  "policy_conflicts": [
     {
-      "id": "MIG-DEC-01",
-      "topic": "CONFIG_REGISTRATION_AND_DETERMINISTIC_DISCOVERY_BINDING",
-      "status": "DIRECTION_APPROVED_DETAILS_OPEN",
-      "policy_ref": "src/policy/ARCH/SFP-ARCH-0001.yaml",
-      "question": "How does ptsip_config.json identify and locate registered responsibility-scoped sources without unbounded discovery?",
-      "implementation_gate": "BLOCK_DISCOVERY_CODE_UNTIL_REQUIRED_EXACT_CONTRACT_IS_APPROVED",
-      "no_silent_resolution": true,
-      "approved_direction": "BOUNDED_DIRECTORY_CANDIDATES_WITH_PER_FILE_INDEPENDENT_BINDING",
-      "retired_profile_catalog": ".ptsip/profiles/index.json",
-      "remaining_issues": [
-        "EXACT_PER_FILE_BINDING_ID_ROLE_SCOPE_AND_SELECTOR",
-        "USER_PROFILE_SCHEMA_ITEMS_SEMANTICS_AND_CONTRACT_REGISTRATION",
-        "RA_LIST_OLD_NEW_FILE_IDENTITY_MAPPING",
-        "WORKFLOWS_PROFILE_ROLE_BINDING_AND_INITIAL_CONTENT",
-        "DUPLICATE_BINDING_AND_DEFAULT_SELECTION_RULES",
-        "LEGACY_PROFILES_ID_ASSIGNMENT_WITHOUT_BREAKING_EXISTING_REFERENCES",
-        "PROFILE_ID_UNIQUENESS_SCOPE_AND_COLLISION_POLICY"
+      "id": "CONFLICT_TASK_INDEX",
+      "prior_at_base_revision": "SFP-ARCH-0001@7420848b01747e937b400e6647020b122ed3bf51#tasks_partition.existing_task_registry_reserved_status",
+      "prior_effective_rule": "PRESERVED_UNTIL_SEPARATE_CNTR_ACTIVATION",
+      "latest_current_rule": "PRESERVED_UNTIL_SEPARATE_CNTR_ACTIVATION",
+      "incoming_user_direction": "REMOVE_CONSUMER_DOT_PTSIP_TASKS_INDEX_JSON_AFTER_PTSIP_CONFIG_ADOPTION",
+      "authority_affected": "SFP_ARCH_AND_TASK_CNTR_ACTIVATION",
+      "resolution_status": "USER_RESOLUTION_REQUIRED",
+      "allowed_choices": [
+        "KEEP_PRIOR",
+        "KEEP_LATEST",
+        "RECONCILE"
       ],
-      "approved_identity_field": "ptsip.id",
-      "approved_identity_canonical_regex": "^profiles-[0-9a-f]{32}$",
-      "approved_identity_generator": "UUID4_128_BIT"
+      "execution_blocked": "TASK_INDEX_RETIREMENT_ONLY"
     },
     {
-      "id": "MIG-DEC-02",
-      "topic": "CONFIG_CREATION_AND_EXISTING_REPOSITORY_MIGRATION_BOUNDARY",
-      "status": "DIRECTION_APPROVED_DETAILS_OPEN",
-      "policy_ref": "src/policy/CTRL/SFP-CTRL-0002.yaml",
-      "question": "Which authorized setup step creates the configuration, and how are preexisting repositories upgraded without silently enabling official engines?",
-      "implementation_gate": "BLOCK_PROVISIONING_CODE_UNTIL_NO_SILENT_CONSENT_AND_PATCH_CONTRACT_RESOLVED",
-      "no_silent_resolution": true,
-      "approved_direction": "REPOSITORY_PTSIP_INSTALL_AUTO_CREATE_CONFIG_EXISTING_REPOSITORY_PATCH_SOURCE_MIGRATION",
-      "remaining_issues": [
-        "NEW_CONFIG_INITIAL_OFFICIAL_USE_SELECTOR_VALUE_OR_EXPLICIT_USER_INPUT",
-        "PATCH_REVISION_BACKUP_AND_LOSSLESS_BINDING_MAPPING",
-        "EXACT_REPOSITORY_SETUP_INVOKER_AND_AUTHORIZATION"
+      "id": "CONFLICT_OFFICIAL_ENGINE_REGISTRY",
+      "prior_at_base_revision": "SFP-ARCH-0001@7420848b01747e937b400e6647020b122ed3bf51#engine_plane_boundary.current_engine_contract_ref",
+      "prior_effective_rule": "PRESERVE_SRC_PTSIP_ENGINES_INDEX_JSON_AS_CURRENT_OFFICIAL_ENGINE_CONTRACT_ROUTE",
+      "latest_current_rule": "SFP_ARCH_0001_RETAINS_INDEX_REF_SFP_ARCH_0004_AND_SFP_CNTR_0005_OWN_ACTIVE_REGISTRATION",
+      "incoming_user_direction": "REMOVE_SRC_PTSIP_ENGINES_INDEX_JSON_AS_OVERLAPPING_WITH_CONSUMER_CONFIG",
+      "authority_affected": "SFP_ARCH_0001_SFP_ARCH_0004_SFP_CNTR_0005",
+      "observed_runtime_reader": "src/ptsip/engine_installation.py",
+      "observed_path_class": "PRODUCT_PACKAGE_INTERNAL_ENGINE_REGISTRY_NOT_CONSUMER_DOT_PTSIP_INDEX",
+      "resolution_status": "USER_RESOLUTION_REQUIRED",
+      "allowed_choices": [
+        "KEEP_PRIOR",
+        "KEEP_LATEST",
+        "RECONCILE"
+      ],
+      "execution_blocked": "ENGINE_REGISTRY_RETIREMENT_ONLY"
+    }
+  ],
+  "new_policy_gates": [
+    {
+      "id": "RBAC_CONTROL_POLICY",
+      "domain": "CONFIG_CONTROL_FOR_COMPILE_SEALED_RBAC",
+      "direction_from_user": "TRUE_FALSE_CONTROLS_POLICY_RULES_RA_KEY_AND_ID_PROJECTION",
+      "status": "OPEN_POLICY_DECISION",
+      "unresolved": [
+        "SCOPED_CONSENT_OR_FORMAT_SELECTION",
+        "FALSE_BEHAVIOR_AND_EXISTING_DOCUMENT_PRESERVATION",
+        "VALIDATION_ENGINE_AND_POLICY_AUTHORSHIP_BOUNDARY"
+      ],
+      "blocking_units": [
+        "WU-05"
+      ]
+    },
+    {
+      "id": "RA_RAC_AEC_PROFILE_CONTRACT",
+      "domain": "DISTRIBUTED_RBAC_PROFILE_OUTPUT",
+      "direction_from_user": "PACKAGE_GENERATES_RA_LIST_RAC_LIST_AEC_LIST_IN_CONSUMER_REPOSITORIES",
+      "status": "OPEN_POLICY_AND_SCHEMA_CONTRACT",
+      "unresolved": [
+        "EXACT_PROFILE_IDENTITY_AND_ROLE_SCHEMA",
+        "RA_KEY_TO_R_ID_EXACT_BINDING_AND_REFERENTIAL_INTEGRITY",
+        "RAC_AEC_ID_NAME_RELATION_FIELDS",
+        "REFERENCE_SOURCE_AND_ACTIVATION_CONDITIONS",
+        "NON_NORMATIVE_CANDIDATE_ASSET_PROMOTION_NOT_IMPLIED"
+      ],
+      "blocking_units": [
+        "WU-05"
+      ]
+    },
+    {
+      "id": "PROFILE_SELECTOR_DETAILS",
+      "domain": "PROFILE_INDEPENDENT_DISCOVERY",
+      "status": "OPEN_CONCRETE_POLICY",
+      "unresolved": [
+        "EXACT_DEFAULT_PROFILE_SELECTION",
+        "ROLE_BINDING_FIELDS_AND_USER_SCHEMA_ITEMS",
+        "PROFILE_ID_COLLISION_SCOPE_AND_EXISTING_ID_MAPPING"
+      ],
+      "blocking_units": [
+        "WU-03",
+        "WU-04"
+      ]
+    },
+    {
+      "id": "INSTALL_PATCH_CONSENT_DETAILS",
+      "domain": "PACKAGE_DISTRIBUTED_CONFIG_MIGRATION",
+      "status": "OPEN_CONCRETE_POLICY",
+      "unresolved": [
+        "INITIAL_OFFICIAL_ENGINE_SELECTOR_EXPLICIT_INPUT_OR_ABSENCE",
+        "PATCH_USER_DATA_CONFLICT_AND_ROLLBACK",
+        "EXACT_SETUP_PATCH_ENTRYPOINT"
+      ],
+      "blocking_units": [
+        "WU-02",
+        "WU-06"
       ]
     }
   ],
+  "user_supplied_rbac_shape_candidate": {
+    "status": "DRAFT_EXAMPLE_NOT_NORMATIVE_SCHEMA",
+    "source_policy_rule_shape": {
+      "Policy_Rules": [
+        {
+          "RA-key": "SUP_DECLARATION_PRESERVING_MATERIALIZATION",
+          "id": "R-ID-09824AB5286B4C5C953BD859D999FF54"
+        }
+      ]
+    },
+    "ra_list": {
+      "profiles": {
+        "version": "pp.2.01",
+        "revision": "Rev.0001",
+        "profile_role": "RESPONSIBILITY-AUTHORITY",
+        "specification": {
+          "source": "https://github.com/Kinirin/PTSIP",
+          "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+        }
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "SUP_DECLARATION_PRESERVING_MATERIALIZATION",
+          "RAC_id": [
+            "RAC_id",
+            "RAC_name"
+          ],
+          "AEC_id": [
+            "AEC_id",
+            "AEC_name"
+          ]
+        }
+      }
+    },
+    "rac_list": {
+      "profiles": {
+        "version": "pp.2.01",
+        "profile_role": "RAC"
+      },
+      "RAC_profile": [
+        {
+          "RAC_id": null,
+          "RAC_name": null,
+          "value": null
+        }
+      ]
+    },
+    "aec_list": {
+      "profiles": {
+        "version": "pp.2.01",
+        "profile_role": "AEC"
+      },
+      "AEC_profile": [
+        {
+          "AEC_id": null,
+          "AEC_name": null,
+          "value": null
+        }
+      ]
+    },
+    "source_caveat": "EXAMPLE_FIELDS_PARTIALLY_OMITTED_AND_PLANNED_SCHEMA_NOT_APPROVED",
+    "do_not_infer_policy_authority_from_file_presence": true
+  },
   "work_units": [
     {
       "id": "WU-01",
-      "title": "Trace legacy root-index dependency graph",
+      "title": "Survey shipped product setup, legacy readers and external consumer states",
       "status": "PLANNED",
       "depends_on": [],
-      "primary_responsibility": "READ_ONLY_INVESTIGATION",
-      "observed_entrypoints": [
-        "src/ptsip/repository/namespace.py",
-        "src/ptsip/profiles/catalog.py",
-        "src/ptsip/clarification/resolution/profile_projection.py",
-        "src/ptsip/profiles/rule_records.py"
+      "responsibility": "READ_ONLY_PRODUCT_AND_CONSUMER_CONTRACT_AUDIT",
+      "deliverables": [
+        "PACKAGE_ENTRYPOINT_AND_ASSET_PROJECTION_GRAPH",
+        "LEGACY_CONSUMER_INDEX_READ_WRITE_REFERENCE_MAP",
+        "CONSUMER_STATE_MATRIX_NEW_LEGACY_PARTIAL_USER_CUSTOMIZED"
       ],
       "actions": [
-        "VERIFY_CURRENT_POLICY_AND_BRANCH_HEAD",
-        "FIND_ALL_READ_WRITE_CREATE_VALIDATE_AND_GENERATE_CALLS_OF_DOT_PTSIP_ROOT_INDEX",
-        "CLASSIFY_EACH_REFERENCED_INDEX_BY_ACTUAL_RESPONSIBILITY_NOT_FILENAME",
-        "IDENTIFY_TEST_SCHEMA_DOCS_AND_WORKFLOW_REFERENCES",
-        "RECORD_ORDERED_REVERSE_DEBUG_DEPENDENCY_MAP",
-        "FIND_ALL_PROFILE_LOCAL_CATALOG_INDEX_READERS_WRITERS_TESTS_AND_REFERENCE_LINKS",
-        "AUDIT_RA_LIST_FILENAME_MISMATCH_WORKFLOWS_FILE_ABSENCE_USER_PROFILE_SCHEMA_CANDIDATE_INVALID_JSON",
-        "INVENTORY_EXISTING_PROFILE_IDENTIFIERS_REFERENCES_AND_ALL_VERSIONED_SCHEMA_COPIES"
+        "CLASSIFY_SHIPPED_MODULES_VS_CONSUMER_RUNTIME_FILES",
+        "TRACE_CLI_ADOPTION_PROFILE_PROJECTION_INSTALLATION_AND_PACKAGE_BUILD",
+        "READ_POLICY_CONFLICTED_TASK_ENGINE_REGISTRIES_AT_BASE_AND_ACTIVE_HEAD",
+        "DETECT_SOURCE_PROJECT_ASSUMPTIONS_AND_REMOVE_FROM_MIGRATION_ACCEPTANCE"
       ],
-      "exit_checks": [
-        "NO_UNCLASSIFIED_ACTIVE_ROOT_INDEX_DEPENDENCIES",
-        "INDEPENDENT_SUBREGISTRIES_NOT_MISCLASSIFIED",
-        "PROFILE_INDEX_AND_USER_SCHEMA_CONSUMERS_ACCOUNTED_FOR"
-      ],
-      "verification": "READ_ONLY_SOURCE_GRAPH_AND_POLICY_REFERENCE_AUDIT"
+      "acceptance": [
+        "ALL_EXPECTED_CONSUMER_STATES_MAPPED",
+        "NO_ASSUMED_EXTERNAL_CONSUMER_FILE_EXISTENCE",
+        "REGISTRY_DELETION_CONFLICTS_RECORDED_NOT_SILENTLY_APPLIED"
+      ]
     },
     {
       "id": "WU-02",
-      "title": "Specify replacement consumer configuration contract",
+      "title": "Implement packaged consumer config contract and setup service",
       "status": "PLANNED",
       "depends_on": [
         "WU-01"
       ],
-      "primary_responsibility": "CONFIG_AND_DISCOVERY_CONTRACTS",
-      "decisions_required": [
-        "MIG-DEC-01",
-        "MIG-DEC-02"
+      "responsibility": "CONFIG_SCHEMA_AND_BOOTSTRAP_PRODUCT_CODE",
+      "implementation_gates": [
+        "INSTALL_PATCH_CONSENT_DETAILS"
+      ],
+      "deliverables": [
+        "VERSIONED_PACKAGED_PTSIP_CONFIG_SCHEMA",
+        "SRC_PTSIP_CONFIG_VALIDATOR",
+        "SRC_PTSIP_REPOSITORY_SETUP_SERVICE",
+        "SHIPPED_SETUP_ENTRYPOINT_BINDING"
       ],
       "actions": [
-        "BIND_CONFIG_IDENTITY_VERSION_REGISTRATION_AND_OFFICIAL_ENGINE_SELECTOR_WITH_SEPARATE_RESPONSIBILITIES",
-        "SPECIFY_DETERMINISTIC_DISCOVERY_AND_DUPLICATE_OR_CONFLICT_FAIL_CLOSED_PREDICATES",
-        "SPECIFY_CREATION_MISSING_CORRUPT_STALE_AND_EXISTING_REPOSITORY_TRANSITION_BEHAVIOR",
-        "PRESERVE_EXPLICIT_FALSE_AND_STRICT_BLOCK_WHEN_OFFICIAL_ENGINE_CONFIG_IS_MISSING_OR_INVALID",
-        "DEFINE_SAFE_WRITE_EXPECTED_REVISION_AND_ATOMIC_REPLACEMENT_OBLIGATIONS",
-        "SPECIFY_BOUNDED_PROFILE_DIRECTORY_CANDIDATE_ENUMERATION_WITH_SELF_DECLARED_IDENTITY_ROLE_SCOPE_BINDING",
-        "DERIVE_BUILTIN_SCHEMA_DEFAULT_AND_USER_SCHEMA_OVERRIDE_ITEMS_CONTRACT_WITH_VALID_REGISTRATION",
-        "SPECIFY_THREE_BOOTSTRAP_PROFILE_RESOURCE_ROLES_WITHOUT_HARDCODING_DISCOVERY",
-        "SPECIFY_CONFIG_AUTO_GENERATION_ON_REPOSITORY_SETUP_AND_EXISTING_INSTALL_PATCH_PROTOCOL_WITHOUT_IMPLICIT_OFFICIAL_CONSENT",
-        "DEFINE_PTSIP_ID_DECLARATION_IDENTITY_FORMAT_DISTINCT_FROM_SPECIFICATION_GIT_REVISION",
-        "USE_APPROVED_UUID4_GENERATOR_AND_SPECIFY_SEPARATE_UNIQUENESS_AND_SCHEMA_ROLLOUT_CONTRACTS"
+        "BUILD_PACKAGED_CONFIG_VALIDATOR_AND_WRITER_WITH_TYPED_RESULTS",
+        "ENSURE_FRESH_CONSUMER_REPOSITORY_SETUP_CREATES_CONFIG",
+        "KEEP_OFFICIAL_ENGINE_USER_CONSENT_SEPARATE_FROM_CONFIG_CREATION",
+        "PRESERVE_TRUE_FALSE_AND_STRICT_BLOCK_WHEN_SELECTOR_MISSING_UNKNOWN_INVALID",
+        "DO_NOT_MANIPULATE_PTSIP_DEVELOPER_WORKSPACE_AS_DEFAULT_TARGET"
       ],
-      "exit_checks": [
-        "MACHINE_VALIDATABLE_CONFIG_CONTRACT",
-        "NO_UNRESOLVED_POLICY_CHOICE_EMBEDDED_AS_CODE",
-        "NO_OLD_INDEX_AUTHORITY_FALLBACK",
-        "PTSIP_ID_PATTERN_CONTRACT_DISTINCT_FROM_SPECIFICATION_REVISION"
-      ],
-      "verification": "SCHEMA_AND_CONTRACT_CASES_PASS"
+      "acceptance": [
+        "INSTALLED_PACKAGE_CREATED_CONFIG_IN_EXTERNAL_EMPTY_REPO",
+        "INVALID_CONFIG_FAIL_CLOSED_WITH_DIAGNOSTIC",
+        "NO_IMPLICIT_ENGINE_CONSENT"
+      ]
     },
     {
       "id": "WU-03",
-      "title": "Migrate consumers and producers incrementally",
+      "title": "Implement dynamic independent-binding profile discovery module",
       "status": "PLANNED",
       "depends_on": [
         "WU-02"
       ],
-      "primary_responsibility": "READ_WRITE_ADAPTER_MIGRATION",
-      "candidate_files": [
-        "src/ptsip/profiles/catalog.py",
-        "src/ptsip/clarification/resolution/profile_projection.py",
-        "src/ptsip/repository/namespace.py",
-        "src/ptsip/profiles/rule_records.py"
+      "responsibility": "DISCOVERY_PRODUCT_CODE",
+      "implementation_gates": [
+        "PROFILE_SELECTOR_DETAILS"
+      ],
+      "deliverables": [
+        "SRC_PTSIP_BOUNDED_PROFILE_DISCOVERY",
+        "PROFILE_INDEPENDENT_BINDING_RESOLVER",
+        "DEFAULT_PROFILE_SELECTION_AND_CONFLICT_DIAGNOSTICS"
       ],
       "actions": [
-        "MOVE_PROFILE_SELECTION_ROOT_INDEX_DEPENDENCY_TO_NEW_CONTRACT",
-        "MOVE_PROFILE_PROJECTION_INDEX_PRODUCTION_TO_AUTHORIZED_CONFIG_FLOW",
-        "PRESERVE_EXISTING_PROFILE_CATALOG_AND_PROFILE_IDENTITIES",
-        "TEST_EACH_CHANGED_READER_OR_WRITER_BEFORE_NEXT_CHANGE",
-        "DO_NOT_DECLARE_OFFICIAL_ENGINE_EXECUTION_AUTHORIZED_BY_CONFIG_PROVISIONING",
-        "MIGRATE_PROFILE_CATALOG_AND_RULE_PROFILE_READERS_TO_INDEPENDENT_FILE_BINDING_VALIDATOR",
-        "CREATE_TARGET_BOOTSTRAP_PROFILES_ONLY_AFTER_ROLE_AND_SCHEMA_CONTRACT_APPROVAL",
-        "MIGRATE_EXISTING_PROJECT_AND_AUXILIARY_PROFILES_TO_NEW_PTSIP_ID_AFTER_APPROVED_ASSIGNMENT_PROTOCOL",
-        "UPDATE_RELATED_SCHEMAS_VALIDATORS_AND_ID_BINDINGS_AFTER_PLAN_APPROVAL_WITHOUT_BLIND_REF_REWRITE"
+        "ENUMERATE_DIRECT_CHILD_CANDIDATES_WITHOUT_NAMED_PROFILE_ALLOWLIST",
+        "READ_SELF_DECLARED_ID_ROLE_CONTRACT_BINDINGS",
+        "VALIDATE_BINDINGS_WITH_PACKAGED_CONTRACTS_AND_REGISTERED_USER_OVERRIDES",
+        "DETECT_DUPLICATE_MISSING_STALE_INVALID_AND_AMBIGUOUS_BINDINGS",
+        "DO_NOT_INFER_POLICY_AUTHORITY_FROM_PATH"
       ],
-      "exit_checks": [
-        "PROFILE_LOAD_AND_PROJECTION_WORK_WITHOUT_ROOT_INDEX",
-        "CONFIG_PERMISSION_AND_CONFLICT_CHECKS_PASS",
-        "USER_DEFINED_ADDITIONAL_PROFILE_DISCOVERED_WITHOUT_FILENAME_CODE_CHANGE",
-        "UNREGISTERED_CANDIDATE_HAS_NO_AUTHORITY",
-        "PROFILE_ID_AND_SPECIFICATION_REVISION_NOT_CONFLATED"
-      ],
-      "verification": "CHANGE_SCOPED_LOCAL_TESTS_AFTER_EACH_STEP"
+      "acceptance": [
+        "CUSTOM_NAMED_PROFILE_DISCOVERED_WITHOUT_SOURCE_EDIT",
+        "DUPLICATE_ID_MALFORMED_BINDING_FAIL_CLOSED",
+        "PROFILE_INDEX_NOT_REQUIRED_FOR_EFFECTIVE_DISCOVERY"
+      ]
     },
     {
       "id": "WU-04",
-      "title": "Remove retired root index and orphaned implementation",
+      "title": "Implement UUID4 identity and user-added profile creation",
       "status": "PLANNED",
       "depends_on": [
         "WU-03"
       ],
-      "primary_responsibility": "LEGACY_DELETION",
-      "required_delete": [
-        ".ptsip/index.json",
-        ".ptsip/profiles/index.json"
+      "responsibility": "PROFILE_MATERIALIZATION_PRODUCT_CODE",
+      "implementation_gates": [
+        "PROFILE_SELECTOR_DETAILS"
       ],
-      "conditional_delete_or_refactor": [
-        "src/ptsip/repository/namespace.py",
-        "src/ptsip/repository/schemas/repository-index.schema.json"
+      "deliverables": [
+        "UUID4_PTSIP_ID_GENERATOR_AND_VALIDATOR",
+        "SRC_PTSIP_PROFILE_CREATION_SERVICE",
+        "PROFILE_BINDING_PERSISTENCE_WITH_SAFE_WRITE"
       ],
       "actions": [
-        "VERIFY_NO_ACTIVE_CONSUMER_READER_WRITER_OR_GENERATOR_REMAINS",
-        "REMOVE_ROOT_INDEX_ARTIFACT_AND_DEAD_FORMAT_VALIDATORS_GENERATORS",
-        "REMOVE_OBSOLETE_TEST_FIXTURES_AND_REFERENCES_ONLY_IN_THIS_SCOPE",
-        "RETAIN_UNRELATED_SHARED_MODULE_FUNCTIONS_AND_INDEPENDENT_REGISTRY_FILES",
-        "REMOVE_LOCAL_PROFILE_CATALOG_AND_ONLY_ITS_OBSOLETE_CONSUMERS"
+        "GENERATE_PROFILES_PREFIX_UUID4_HEX_AND_PRESERVE_ON_SUBSEQUENT_EDITS",
+        "CREATE_USER_REQUESTED_PROFILE_FILE_WITHOUT_SOURCE_FILENAME_ALLOWLIST",
+        "VALIDATE_SCHEMA_BINDING_AND_PARENT_DIRECTORY_SECURITY",
+        "DEFINE_LEGACY_ID_ASSIGNMENT_ONLY_AFTER_APPROVED_POLICY",
+        "USE_EXISTING_PROFILE_SELECTION_AND_PROJECTION_CONSUMERS_AS_ADAPTERS"
       ],
-      "exit_checks": [
-        "ZERO_ACTIVE_DEPENDENCY_ON_DOT_PTSIP_ROOT_INDEX",
-        "NO_IMPORT_ERRORS",
-        "NO_SILENT_LEGACY_FALLBACK",
-        "ZERO_ACTIVE_DEPENDENCY_ON_DOT_PTSIP_PROFILES_INDEX_JSON"
-      ],
-      "verification": "STATIC_REFERENCE_AUDIT_AND_TARGETED_REGRESSION"
+      "acceptance": [
+        "NEW_CUSTOM_PROFILE_MATERIALIZES_IN_EXTERNAL_CONSUMER_REPO",
+        "INDEPENDENT_REFERENCES_RESOLVE",
+        "PROFILE_ID_UNCHANGED_ON_NONIDENTITY_EDIT"
+      ]
     },
     {
       "id": "WU-05",
-      "title": "Verify migration integrity and admission",
+      "title": "Implement package-distributed RA/RAC/AEC profile contracts and conditional policy projection",
       "status": "PLANNED",
       "depends_on": [
         "WU-04"
       ],
-      "primary_responsibility": "VERIFICATION",
+      "responsibility": "RBAC_CONTRACT_ASSETS_AND_GENERATORS_IN_SRC_PTSIP",
+      "implementation_gates": [
+        "RBAC_CONTROL_POLICY",
+        "RA_RAC_AEC_PROFILE_CONTRACT"
+      ],
+      "deliverables": [
+        "VERSIONED_RA_RAC_AEC_SCHEMA_ASSETS_INSIDE_INSTALLED_PTSIP",
+        "CONSUMER_RA_LIST_RAC_LIST_AEC_LIST_GENERATOR",
+        "POLICY_RULES_RA_KEY_AND_ID_CONDITIONAL_RENDERER"
+      ],
       "actions": [
-        "VERIFY_POLICY_SOURCE_DIGEST_AND_STRUCTURE",
-        "RUN_CONFIG_MISSING_INVALID_UNKNOWN_FALSE_TRUE_STALE_AND_CONFLICT_CASES",
-        "RUN_PROFILE_DISCOVERY_AND_MATERIALIZATION_TESTS_WITHOUT_ROOT_INDEX",
-        "RUN_CHANGE_SCOPED_RESOLVED_TEST_MODES",
-        "VALIDATE_REMOTE_PUSH_WITH_REQUIRED_GITHUB_ACTIONS",
-        "TEST_USER_ADDED_PROFILE_BINDING_UNRECOGNIZED_ROLE_DUPLICATE_ID_AND_MALFORMED_SCHEMA_FAIL_CLOSED",
-        "TEST_FRESH_AUTO_CONFIG_SETUP_AND_EXISTING_REPO_PATCH_PRESERVES_PROFILE_ID_AND_USER_CONFIG_DECISIONS",
-        "TEST_PTSIP_ID_CANONICAL_REGEX_COLLISION_MISSING_INVALID_NONLOWERCASE_AND_REFERENCE_PRESERVATION"
+        "TREAT_USER_EXAMPLES_AS_DRAFT_FIELD_CANDIDATES_NOT_FINAL_SCHEMA",
+        "BIND_POLICY_RULES_RA_KEY_AND_R_ID_TO_RA_LIST_KEYS",
+        "BIND_RAC_AEC_REFERENCES_TO_VALIDATED_SEPARATE_PROFILES",
+        "APPLY_CONFIG_COMPILE_SEALED_RBAC_TRUE_FALSE_BEHAVIOR_ONLY_AFTER_POLICY_APPROVAL",
+        "KEEP_GENERATION_SEPARATE_FROM_PERMISSION_GRANT_AND_POLICY_AUTHORITY",
+        "VALIDATE_ALL_WRITTEN_ARTIFACTS_WITH_PACKAGED_SCHEMAS"
       ],
-      "exit_checks": [
-        "POLICY_PLAN_IMPLEMENTATION_TRACEABLE",
-        "LOCAL_REQUIRED_TESTS_PASS",
-        "REQUIRED_REMOTE_ACTIONS_PASS",
-        "NO_OLD_INDEX_READ_WRITE",
-        "PROFILE_CATALOG_REMOVED_USER_ADDED_FILES_VALIDATED_WITHOUT_HARDCODED_ALLOWLIST",
-        "PROFILE_IDENTITY_UNIQUENESS_AND_MIGRATION_CONTRACT_PASS"
+      "acceptance": [
+        "CONSUMER_RBAC_OUTPUTS_DERIVED_FROM_INSTALLED_PACKAGE_ASSETS",
+        "NO_ASSUMPTION_RESPONSIBILITY_AUTHORITY_LIST_EXISTS_IN_NEW_CONSUMER_REPO",
+        "FALSE_TRUE_BEHAVIOR_MATCHES_APPROVED_POLICY",
+        "ORPHANED_REF_AND_DUPLICATE_ID_FAIL_CLOSED"
+      ]
+    },
+    {
+      "id": "WU-06",
+      "title": "Implement versioned and idempotent consumer repository patch engine",
+      "status": "PLANNED",
+      "depends_on": [
+        "WU-02",
+        "WU-03",
+        "WU-04"
       ],
-      "evidence_log_policy": "TEMPORARY_LOG_NOT_COMMITTED_REMOVE_AFTER_REPORT"
+      "responsibility": "DISTRIBUTABLE_REPOSITORY_PATCH_CODE",
+      "implementation_gates": [
+        "INSTALL_PATCH_CONSENT_DETAILS"
+      ],
+      "deliverables": [
+        "SRC_PTSIP_PATCH_SOURCE_SHIPPED_IN_PACKAGE",
+        "INSTALLED_PATCH_INVOCATION_ENTRY",
+        "VERSIONED_MIGRATION_STATE_PRECONDITIONS_AND_POSTCONDITIONS"
+      ],
+      "actions": [
+        "PATCH_OPERATES_ON_EXPLICITLY_SELECTED_CONSUMER_REPOSITORY_ROOT_NOT_PTSIP_SOURCE_WORKSPACE",
+        "MAP_OLD_ROOT_AND_PROFILE_CATALOG_REFERENCES_TO_NEW_CONFIG_AND_SELF_BINDING",
+        "PRESERVE_USER_PROFILE_FILES_REFERENCES_AND_CONSENT_CHOICES",
+        "WRITE_VERIFIED_NEW_STATE_BEFORE_REMOVING_OLD_CONSUMER_ROOT_AND_PROFILE_INDEX",
+        "USE_REVISION_SAFE_ATOMIC_WRITES_WITH_FAIL_CLOSED_AND_RECOVERY",
+        "ALLOW_RESTART_IDEMPOTENTLY_WITHOUT_NEW_PROFILE_IDS_ON_EACH_RUN",
+        "REPORT_PER_CONSUMER_ROOT_REMOVAL_PRESERVATION_AND_ERROR_EVIDENCE"
+      ],
+      "acceptance": [
+        "PACKAGED_PATCH_UPGRADES_EXTERNAL_LEGACY_REPO",
+        "SECOND_PATCH_RUN_NO_OP_AND_SAME_IDENTITIES",
+        "PRECONDITION_FAILURE_LEAVES_PRIOR_DATA_RECOVERABLE",
+        "SOURCE_REPO_DOT_PTSIP_CHANGE_NOT_A_PASS_SIGNAL"
+      ]
+    },
+    {
+      "id": "WU-07",
+      "title": "Refactor product adapters and package all shipped assets",
+      "status": "PLANNED",
+      "depends_on": [
+        "WU-03",
+        "WU-04",
+        "WU-05",
+        "WU-06"
+      ],
+      "responsibility": "PRODUCT_INTEGRATION_AND_DISTRIBUTION",
+      "implementation_gates": [
+        "RBAC_CONTROL_POLICY",
+        "RA_RAC_AEC_PROFILE_CONTRACT"
+      ],
+      "deliverables": [
+        "CLI_ADOPTION_AND_VALIDATOR_WIRED_TO_NEW_SERVICES",
+        "WHEEL_AND_SDIST_INCLUDE_PATCH_SCHEMAS_TEMPLATES",
+        "LEGACY_READERS_REPLACED_BEFORE_RETIREMENT"
+      ],
+      "actions": [
+        "ADAPT_EXISTING_CLI_ADOPTION_PROJECTION_VALIDATION_AND_RULE_RECORD_READERS",
+        "REMOVE_ONLY_UNUSED_LEGACY_PRODUCT_READERS_GENERATORS_AFTER_REFERENCES_MIGRATED",
+        "PACKAGE_CONTRACTS_AND_PATCH_ASSETS_IN_INSTALLABLE_DISTRIBUTION",
+        "VERIFY_INSTALLED_WHEEL_DOES_NOT_REQUIRE_SOURCE_CHECKOUT_LAYOUT",
+        "DO_NOT_RETIRE_SRC_PTSIP_ENGINES_INDEX_WITHOUT_POLICY_CONFLICT_RESOLUTION"
+      ],
+      "acceptance": [
+        "INSTALLED_WHEEL_RUNS_OUTSIDE_PTSIP_SOURCE_CHECKOUT",
+        "PRODUCT_INTERNAL_REGISTRATION_NOT_SILENTLY_BROKEN",
+        "NO_PRODUCT_RUNTIME_DEPENDENCY_ON_RETIRED_CONSUMER_INDEX"
+      ]
+    },
+    {
+      "id": "WU-08",
+      "title": "Verify migration on isolated diverse consumer repositories and in CI",
+      "status": "PLANNED",
+      "depends_on": [
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-05",
+        "WU-06",
+        "WU-07"
+      ],
+      "responsibility": "CROSS_REPOSITORY_E2E_AND_CI",
+      "deliverables": [
+        "ISOLATED_CONSUMER_REPO_FIXTURES_NOT_SOURCE_REPO_AS_PRIMARY_EVIDENCE",
+        "WHEEL_INSTALL_SETUP_PATCH_E2E_MATRIX",
+        "CHANGE_SCOPED_TEST_MODE_BINDING_AND_ACTION_REPORT"
+      ],
+      "test_matrix": [
+        "NEW_EMPTY_REPOSITORY_SETUP_WITH_INSTALLED_WHEEL",
+        "LEGACY_REPOSITORY_CONTAINING_OLD_ROOT_AND_PROFILE_INDEX",
+        "LEGACY_REPOSITORY_WITH_USER_ADDED_PROFILES_AND_CUSTOM_CONTRACTS",
+        "NEW_REPOSITORY_WITHOUT_EXISTING_RA_RAC_AEC_FILES",
+        "PARTIAL_PATCH_INTERRUPTED_RETRY",
+        "INVALID_DUPLICATE_OR_UNAUTHORIZED_BINDINGS",
+        "OFFICIAL_ENGINE_USE_TRUE_FALSE_MISSING_INVALID",
+        "RBAC_FLAG_TRUE_FALSE_AFTER_POLICY_AUTHORIZATION",
+        "WINDOWS_11_AND_SUPPORTED_NONWINDOWS_INSTALLATION_IF_APPLICABLE"
+      ],
+      "actions": [
+        "BUILD_SDIST_AND_WHEEL_AND_INSTALL_IN_FRESH_VIRTUAL_ENVIRONMENT",
+        "CREATE_MULTIPLE_TEMPORARY_CONSUMER_GIT_REPOS_AND_RUN_PUBLIC_INSTALLED_ENTRYPOINTS",
+        "ASSERT_CONSUMER_FILE_DIFF_AND_BACKWARD_COMPATIBILITY_POSTCONDITIONS",
+        "RUN_SCOPED_TESTS_AND_GITHUB_ACTIONS_WITH_REQUIRED_TEST_MODE_RESOLVER",
+        "CAPTURE_LOGS_IN_TEMP_FILES_AND_DO_NOT_COMMIT_OR_RETAIN_AFTER_REPORT"
+      ],
+      "acceptance": [
+        "PRODUCT_PACKAGE_TESTS_PASS",
+        "EXTERNAL_CONSUMER_REPO_PATCH_EVIDENCE_PASS",
+        "REPEATED_PATCH_IDEMPOTENCE_PASS",
+        "NO_SOURCE_REPO_ONLY_FALSE_SUCCESS",
+        "POLICY_CONFLICT_GATES_RESOLVED_FOR_ANY_REQUESTED_DELETION"
+      ]
     }
   ],
-  "acceptance": {
-    "root_index_removed": true,
-    "legacy_root_index_active_references": 0,
-    "new_config_required_for_affected_operations": true,
-    "namespace_discovery": "DETERMINISTIC_CONTRACT_BOUND",
-    "missing_invalid_official_use": "FAIL_CLOSED",
-    "independent_registry_ownership": "PRESERVED",
-    "baseline_compatibility_and_migration": "EXPLICITLY_VERIFIED",
-    "no_implicit_implementation_authorization": true,
-    "profile_catalog_index_removed": true,
-    "dynamic_bounded_profiles_candidate_scan": true,
-    "user_added_profile_binding": "VALIDATED_NO_HARDCODED_FILENAME_LIST",
-    "builtin_schema_default": true,
-    "user_profile_schema_override": "PENDING_VALIDATION_AND_REGISTRATION",
-    "new_repository_config_auto_creation": "AFTER_DETAILED_PROVISIONING_CONTRACT_APPROVAL",
-    "existing_repository_patch": "REMOVE_RETIRED_ROOT_INDEX_CREATE_CONFIG_PRESERVE_SEMANTICS"
-  },
-  "current_evidence": {
-    "status": "READ_ONLY_FINDINGS_NOT_TEST_RESULTS",
-    "root_index_producer": "src/ptsip/clarification/resolution/profile_projection.py",
-    "root_index_consumer": "src/ptsip/profiles/catalog.py",
-    "legacy_namespace_validator": "src/ptsip/repository/namespace.py",
-    "tests": "NOT_RUN",
-    "repository_mutation": "NOT_PERFORMED_BY_THIS_PLAN_CREATION",
-    "profile_catalog_existing_path": ".ptsip/profiles/index.json",
-    "profile_schema_json_valid": false,
-    "ra_list_current_path": ".ptsip/profiles/Responsibility-Authority-list.yaml",
-    "workflows_profile_current_path": "ABSENT",
-    "profile_schema_current_ptsip_id_supported": false,
-    "affected_versioned_schemas": [
-      "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
-      "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
-      "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
+  "separate_conflict_gated_work": {
+    "id": "WU-REGISTRY-RETIREMENT",
+    "status": "BLOCKED_POLICY_CONFLICT_RESOLUTION",
+    "depends_on": [
+      "WU-02",
+      "WU-06"
     ],
-    "schema_constraint": "PTSIP_OBJECT_ADDITIONAL_PROPERTIES_FALSE_PROFILE_ID_ADDITION_REQUIRES_SCHEMAS_CHANGE",
-    "planning_file_relocation": {
-      "from": "developer/planning/migrations/repository-index-to-ptsip-config.yaml",
-      "to": "src/planning/0.3.8/repository-index-to-ptsip-config.yaml",
-      "user_authorized": true,
-      "baseline_approval": "PENDING_USER_REVIEW"
-    }
+    "task_index": {
+      "consumer_file": ".ptsip/tasks/index.json",
+      "user_requested": "RETIRE_THROUGH_PACKAGED_CONSUMER_PATCH",
+      "current_policy": "PRESERVE_RESERVED_UNTIL_SEPARATE_CNTR_ACTIVATION",
+      "action_after_authorization": "REPLACE_ACTIVE_REGISTRATION_SEMANTICS_IN_CONFIG_OR_VERIFIED_SUCCESSOR_THEN_PATCH_CONSUMER_FILES"
+    },
+    "engine_index": {
+      "product_file": "src/ptsip/engines/index.json",
+      "user_requested": "RETIRE_BECAUSE_OVERLAPPING_WITH_PTSIP_CONFIG",
+      "observed_independent_role": "OFFICIAL_ENGINE_REGISTERED_CONTRACT_ROUTE_IN_PRODUCT_PACKAGE",
+      "action_after_authorization": "PROVIDE_INDEPENDENT_VERSIONED_ENGINE_REGISTRATION_SUCCESSOR_AND_MIGRATE_PRODUCT_READERS_BEFORE_REMOVING_OLD_REGISTRY"
+    },
+    "not_to_block_unrelated_package_setup_and_profile_discovery": true
+  },
+  "completion": {
+    "success_definition": "INSTALLED_DISTRIBUTED_PTSIP_PACKAGE_CAN_CREATE_CONFIG_AND_PATCH_MULTIPLE_UNRELATED_CONSUMER_REPOSITORIES_WITH_CONTRACT_VALIDATED_PROFILE_AND_POLICY_ARTIFACTS",
+    "not_success": "ONLY_CHANGE_DOT_PTSIP_FILES_INSIDE_KINIRIN_PTSIP_CHECKOUT",
+    "approval": "PENDING_USER_REVIEW",
+    "implementation": "NOT_AUTHORIZED",
+    "tests": "NOT_EXECUTED",
+    "remote_actions": "NOT_EXECUTED"
   }
 }
