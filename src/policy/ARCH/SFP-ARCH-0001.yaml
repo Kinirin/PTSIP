@@ -6,7 +6,7 @@ Policy_Identity:
   root_family: ARCH
   title: ARCH authority (ACTIVE source responsibilities)
 Policy_Lifecycle:
-  status: ACTIVE
+  status: APPROVED.Applying
   source_ref: SRC-0004
 Policy_Authority:
   source_refs:
@@ -597,7 +597,7 @@ Policy_Content:
     value:
       id: SFP-ARCH-0001
       title: ARCH authority (ACTIVE source responsibilities)
-      status: ACTIVE
+      status: APPROVED.Applying
   - id: SRC-0005
     source_pointer: /authority_subject
     value:
@@ -929,7 +929,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: c44984eace1280d3fff33b82a50b4aaa95c615e9a2b1a424ae8a0847622725a6
+    sha256: cb729ad2b8762837a3dbe0ba1b0f0577d1148f93121b5cb5e493a8c856579419
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
