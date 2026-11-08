@@ -9,7 +9,7 @@ Policy_Lifecycle:
   status: "APPROVED.Default"
   source_ref: "SRC-0002"
 Policy_Authority:
-  source_refs: []
+  source_refs: "[]"
 Policy_Rules:
   rules:
     -
@@ -120,11 +120,29 @@ Policy_Rules:
           state: "UNRESOLVED"
           basis_refs:
             - "SRC-0010"
+    -
+      id: "SFP-CNTR-0009/R-08"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0011"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0011"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0011"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0011"
 Policy_Evaluation:
-  source_refs: []
+  source_refs: "[]"
   state: "UNRESOLVED"
 Policy_Relationships:
-  source_refs: []
+  source_refs: "[]"
 Policy_Content:
   items:
     -
@@ -156,57 +174,75 @@ Policy_Content:
       value:
         id: "SFP-CNTR-0009/R-01"
         rule: "COMMON_BASE_CONTRACT_AUTHORITY"
-        statement: "고객 기본 계약은 공통 필드와 기본 의미를 소유하며 개발자 계약은 기본 의미를 변경하지 않는 확장이다."
+        statement: "고객 Policy 기본 계약과 공식 Plan 기본 계약은 각자의 선언된 단일 소유자가 필드와 기본 의미를 소유하며, 개발자·사용자 확장은 타 계약의 공식 의미를 암묵적으로 재정의하지 않는다."
         invariants:
-          common_is_base: true
+          policy_base_semantic_owner: "GO_COMMON_CONTRACT"
+          plan_base_semantic_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
+          single_declared_semantic_owner_per_contract: true
           developer_is_extension: true
-          base_semantics_owned_by_common: true
           developer_must_not_redefine_base_semantics: true
+          consumer_custom_contract_independent_from_official_source: true
     -
       id: "SRC-0006"
       source_pointer: "/Policy_Rules/contracts/0/rules/1"
       value:
         id: "SFP-CNTR-0009/R-02"
         rule: "VERSIONED_PUBLIC_CONTRACT_REFERENCES"
-        statement: "고객 기본 Policy 및 Plan 계약 6종은 설치된 PTSIP 패키지가 제공하는 계약 리소스로 식별하고 등록된 정확한 버전별 URN을 참조한다. 개발 저장소 소스 경로는 고객 설치환경의 런타임 경로가 아니다."
+        statement: "공식 Policy 3종은 Go Common Contract, 공식 Plan 3종은 Rust Planning 엔진이 각각 소스와 기본 의미를 소유한다. 고객 참조는 설치된 PTSIP 배포물의 검증된 정확 버전별 URN 및 계약 바인딩으로 해석하고, 개발 소스 경로를 고객 런타임 경로로 간주하지 않는다."
         contract_targets:
           -
             field: "Policy_Identity"
             package_resource: "common_contract/schemas/policy_identity.schema.json"
             urn_template: "urn:ptsip:common_policy:identity:{version}"
+            source_owner: "GO_COMMON_CONTRACT"
           -
             field: "Policy_Lifecycle"
             package_resource: "common_contract/schemas/policy_lifecycle.schema.json"
             urn_template: "urn:ptsip:common_policy:lifecycle:{version}"
+            source_owner: "GO_COMMON_CONTRACT"
           -
             field: "Policy_Rules"
             package_resource: "common_contract/schemas/policy_rules.schema.json"
             urn_template: "urn:ptsip:common_policy:rules:{version}"
+            source_owner: "GO_COMMON_CONTRACT"
           -
             field: "Plan_Unit"
-            package_resource: "common_contract/schemas/plan_unit.schema.json"
             urn_template: "urn:ptsip:common:plan:unit:{version}"
+            source_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
+            source_path: "src/ptsip/engines/planning/src/schemas/plan_unit.schema.json"
+            legacy_package_resource: "common_contract/schemas/plan_unit.schema.json"
+            runtime_resource_binding: "PENDING_VERSIONED_MACHINE_VERIFIED_HANDOFF"
           -
             field: "Plan_Lifecycle"
-            package_resource: "common_contract/schemas/plan_lifecycle.schema.json"
             urn_template: "urn:ptsip:common:plan:lifecycle:{version}"
+            source_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
+            source_path: "src/ptsip/engines/planning/src/schemas/plan_lifecycle.schema.json"
+            legacy_package_resource: "common_contract/schemas/plan_lifecycle.schema.json"
+            runtime_resource_binding: "PENDING_VERSIONED_MACHINE_VERIFIED_HANDOFF"
           -
             field: "Plan_Identity"
-            package_resource: "common_contract/schemas/plan_identity.schema.json"
             urn_template: "urn:ptsip:common:plan:identity:{version}"
+            source_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
+            source_path: "src/ptsip/engines/planning/src/schemas/plan_identity.schema.json"
+            legacy_package_resource: "common_contract/schemas/plan_identity.schema.json"
+            runtime_resource_binding: "PENDING_VERSIONED_MACHINE_VERIFIED_HANDOFF"
         invariants:
           registered_exact_version_required: true
           missing_or_ambiguous_ref: "UNRESOLVED"
           identity_inference_from_field_or_path: false
           package_resource_owner: "INSTALLED_PTSIP_DISTRIBUTION"
           repository_source_path_is_runtime_path: false
+          policy_schema_semantic_owner: "GO_COMMON_CONTRACT"
+          plan_schema_semantic_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
+          legacy_go_plan_resource_preserved_until_verified_handoff: true
+          plan_runtime_binding_unresolved_until_verified_registration: true
     -
       id: "SRC-0007"
       source_pointer: "/Policy_Rules/contracts/0/rules/2"
       value:
         id: "SFP-CNTR-0009/R-03"
         rule: "EXTENSIBLE_FIELDS_WITHOUT_WEAKENING"
-        statement: "공통 계약은 불필요한 필수 필드나 닫힌 구조를 강제하지 않고 개발자는 호환 가능한 필드와 세부 제약을 확장할 수 있으나 기본 의미는 약화하지 않는다."
+        statement: "공식 계약은 사용자 저장소에 강제되는 유일한 계획서 형식이 아니다. 사용자는 자체 계약을 선택할 수 있으며, 공식 기반 계약을 확장할 때 의미 약화를 암묵적으로 허용하지 않는다. 필드별 ON/OFF·제거·대체의 구체적인 효력은 별도의 정책 결정 대상이다."
         invariants:
           common_additional_fields_allowed: true
           unapproved_universal_required_fields: false
@@ -214,6 +250,9 @@ Policy_Content:
           compatible_stricter_constraints_allowed: true
           base_semantics_must_not_be_weakened: true
           matching_names_do_not_prove_equivalence: true
+          consumer_owned_custom_contract_allowed: true
+          official_contract_must_not_force_consumer_repository_schema: true
+          user_field_toggle_remove_replace_semantics: "UNRESOLVED_SEPARATE_POLICY"
     -
       id: "SRC-0008"
       source_pointer: "/Policy_Rules/contracts/0/rules/3"
@@ -229,6 +268,9 @@ Policy_Content:
           incompatible_extension: "REJECT_AFFECTED_EXTENSION"
           unrelated_independent_contracts_unchanged: true
           compatibility_requires_machine_evidence: true
+          declared_contract_owner_resolution_required: true
+          legacy_registration_not_semantic_owner_evidence: true
+          owner_handoff_requires_machine_verified_compatibility: true
     -
       id: "SRC-0009"
       source_pointer: "/Policy_Rules/contracts/0/rules/4"
@@ -262,16 +304,40 @@ Policy_Content:
       source_pointer: "/Policy_Rules/contracts/0/rules/5"
       value:
         id: "SFP-CNTR-0009/R-07"
-        rule: "GO_CONSUMER_COMMON_CONTRACT_CAPABILITY"
-        statement: "고객 기본 계약의 등록, 버전별 URN 참조 해석, 구조 검증 및 확장 의미 충돌 검사는 신규 Go 기능으로 제공하며, 설치된 PTSIP 패키지의 계약 리소스를 대상으로 한다."
+        rule: "GO_CONSUMER_POLICY_CONTRACT_CAPABILITY"
+        statement: "Go 기능은 고객 Policy 공식 계약 3종의 등록·정확 버전별 URN 해석·구조 검증·의미 호환성 검증을 소유한다. 기존 Go의 Plan v1 제공 기능은 검증된 이전 전까지 호환성 표면으로 유지되며, 공식 Plan 계약의 새 의미 소유권을 주장하지 않는다."
         invariants:
           implementation_language: "GO"
+          canonical_policy_contract_owner: "GO_COMMON_CONTRACT"
+          canonical_plan_contract_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
+          legacy_plan_go_capability: "COMPATIBILITY_ONLY_PENDING_VERIFIED_HANDOFF"
           customer_runtime_developer_dependency: false
           installed_package_resource_resolution_required: true
           repository_source_tree_runtime_dependency: false
+    -
+      id: "SRC-0011"
+      source_pointer: "/Policy_Rules/contracts/0/rules/6"
+      value:
+        id: "SFP-CNTR-0009/R-08"
+        rule: "STAGED_OFFICIAL_PLAN_CONTRACT_HANDOFF"
+        statement: "공식 Plan Identity·Lifecycle·Unit 스키마의 소스와 의미는 Rust Planning 엔진이 소유한다. 기존 Go 배포 계약의 변경·제거는 신규 버전 바인딩과 소비자 호환성의 기계 검증 이후에만 허용한다. 미결정 사용자 필드 정책과 생성 동작은 자동 승인하지 않는다."
+        invariants:
+          plan_schema_source_root: "src/ptsip/engines/planning/src/schemas/"
+          plan_semantic_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
+          legacy_go_plan_v1_preserve_until_verified_handoff: true
+          existing_urn_semantics_cannot_be_silently_redefined: true
+          changed_semantics_require_distinct_version_or_authorized_migration: true
+          staged_handoff_required: true
+          owner_map_and_versioned_capability_proof_required: true
+          runtime_lookup_paths_must_be_explicitly_registered: true
+          unverified_binding: "UNRESOLVED"
+          consumer_schema_customization_policy: "UNRESOLVED_SEPARATE_POLICY"
+          consumer_schema_materialization_policy: "UNRESOLVED_SEPARATE_POLICY"
+          unrelated_policy_contracts_unchanged: true
+          no_release_or_deployment_authority_implied: true
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "6acd10a19784b35d0dda76b8e011abf3d013b39651c74bab7299985132d229bd"
+    sha256: "a6a331f2c322eed50f471b6d71c6f725d8879aeaaf87c1c6ee82bce161a1528a"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
