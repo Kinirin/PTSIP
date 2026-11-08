@@ -10,25 +10,32 @@
     "ptsip": [
       {
         "required": ["items", "version"],
+        "properties": {
           "items": {
             "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-1.01.schema.json"
+          },
+          "version": "pp.1.01",
+          "revision": "Rev.0001"
         },
-        "version": "pp.1.01"
       },
       {
         "required": ["items", "version"],
+        "properties": {
           "items": {
             "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-1.02.schema.json"
+            },
+            "version": "pp.1.02",
+            "revision": "Rev.0001"
           },
-          "version": "pp.1.02"
-      },
-      {
+        },
+        {
         "required": ["items", "version"],
           "items": {
             "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json"
           },
-          "version": "pp.2.00"
-      },
-    ]
-  }
+          "version": "pp.2.00",
+          "revision": "Rev.0001"
+        },
+      ]
+    }
 }
