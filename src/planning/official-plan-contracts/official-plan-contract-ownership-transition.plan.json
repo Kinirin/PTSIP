@@ -259,5 +259,21 @@
     "user_audited": false,
     "plan_approved": false,
     "implementation_permission": "NOT_GRANTED_UNTIL_FULL_PLAN_APPROVAL_AND_RESOLVED_POLICY_GATES"
+  },
+  "validation_baseline": {
+    "assessment": "PARTIAL_PASS_WITH_PREEXISTING_POLICY_LIFECYCLE_BLOCKER",
+    "policy_source_restore_and_schema": "PASS",
+    "source_digest": "a6a331f2c322eed50f471b6d71c6f725d8879aeaaf87c1c6ee82bce161a1528a",
+    "github_actions_run_id": 42517593721,
+    "github_actions_run_url": "https://github.com/Kinirin/PTSIP/actions/runs/42517593721",
+    "failing_step": "Check read-only per-rule RA RAC AEC applicability registration",
+    "failure": "POLICY_APPLICABILITY_FAILED: POLICY_LIFECYCLE_CONFLICT: SFP-CNTR-0009",
+    "catalog_state": "ACTIVE",
+    "document_state": "APPROVED.Default",
+    "evidence_preexisting_run_id": 42515180643,
+    "evidence_preexisting_run_sha": "66f0ab0e03f792dae0d2027792ad202a0895d94c",
+    "guardrail": "DO_NOT_SILENTLY_CHANGE_POLICY_LIFECYCLE_OR_INDEX_SCHEMA_TO_MAKE_TEST_PASS",
+    "resolution": "REQUIRES_EXPLICIT_SEPARATE_POLICY_DECISION",
+    "blocks_implementation_admission": true
   }
 }
