@@ -1,0 +1,592 @@
+{
+  "format": "ptsip-local-applicability-decision-candidates/v1",
+  "artifact_role": "NON_NORMATIVE_REVIEW_ONLY",
+  "source_head": "b496edea09d4574d242df43d27e3bcd495d6d1ca",
+  "analysis_sha256": "51300aa2f8e8d3ea177ad87deadfefca3fdf71a2cd3f9ef4c4ee32a274297998",
+  "approval_state": "AWAITING_EXPLICIT_USER_DECISION",
+  "policy_mutation_authorized": false,
+  "contract_mutation_authorized": false,
+  "execution_authorized": false,
+  "approved_write_rows": [],
+  "review_groups": [
+    {
+      "id": "REV-01",
+      "title": "금지 조건과 PTSIP 밖의 작업",
+      "priority": "FIRST",
+      "case_ids": [
+        "CASE-010"
+      ],
+      "natural_language": "기존 NORM 규칙은 연결된 Specification의 MUST_NOT을 프로젝트 정책이나 요청으로 약화할 수 없다고 읽힙니다. 사례의 앞부분은 차단과 사용자 통지를 설명하지만, 마지막의 ‘자동 우회 권한’이 가리키는 작업 범위는 미결입니다.",
+      "clarification": "PTSIP 내부의 예외를 의도했다면 두 안에 포함되지 않으므로 해당 예외의 권위·범위·조건을 별도로 명시해야 합니다.",
+      "options": [
+        {
+          "id": "A",
+          "description_ko": "PTSIP는 차단과 사유를 기록하고, 이 정책에서 별도 작업 절차는 정의하지 않습니다."
+        },
+        {
+          "id": "B",
+          "description_ko": "PTSIP 차단은 유지하고, 재확인한 요청을 PTSIP 밖에서 별도로 접수하는 절차만 검토합니다. 별도 작업의 권한과 실제 실행은 별도로 판단합니다."
+        }
+      ],
+      "evidence_role": "AI_PROPOSED_OPTIONS",
+      "approval_state": "REQUIRES_USER_REVIEW",
+      "selected_option": null,
+      "approval_ref": null,
+      "patch_operations": [],
+      "evidence": [
+        {
+          "case_id": "CASE-010",
+          "case_pointer": "/cases/9",
+          "policy_id": "SFP-NORM-0001",
+          "policy_path": "src/policy/NORM/SFP-NORM-0001.yaml",
+          "rule_id": "SUP_REQUIREMENT_FORCE_AND_BOUND_SPEC",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "AUTOMATIC_BYPASS_PHRASE_MEANING_UNRESOLVED",
+            "NEVER_INFER_PTSIP_BYPASS_AUTHORITY"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        }
+      ]
+    },
+    {
+      "id": "REV-02",
+      "title": "작업 범위, 소유자 위임, 위험 수용",
+      "priority": "FIRST",
+      "case_ids": [
+        "CASE-007",
+        "CASE-008",
+        "CASE-011"
+      ],
+      "natural_language": "INTENT의 작업 범위는 필요한 변경을 식별하는 기준입니다. GOV 사례는 타 소유자의 책임을 사용할 조건과 그 소유자의 결정 권한을 구별합니다. RISK 문서는 DRAFT이고 사례 007·011에는 선택 문자만 남아 있습니다.",
+      "clarification": "B라면 위임의 주체, 행위, 대상, 리비전, 기간과 위험 수용 한도를 각각 결정해야 합니다.",
+      "options": [
+        {
+          "id": "A",
+          "description_ko": "작업 범위와 관계없이 소유자 판단이 필요한 변경은 기존 소유자에게 요청합니다."
+        },
+        {
+          "id": "B",
+          "description_ko": "기존 소유자의 명시적 위임이 있을 때만 위임된 판단을 검토합니다. 책임의 사용·참조와 변경·결정, 그리고 위험 수용의 범위를 각각 지정합니다."
+        }
+      ],
+      "evidence_role": "AI_PROPOSED_OPTIONS",
+      "approval_state": "REQUIRES_USER_REVIEW",
+      "selected_option": null,
+      "approval_ref": null,
+      "patch_operations": [],
+      "evidence": [
+        {
+          "case_id": "CASE-007",
+          "case_pointer": "/cases/6",
+          "policy_id": "SFP-INTENT-0001",
+          "policy_path": "src/policy/INTENT/SFP-INTENT-0001.yaml",
+          "rule_id": "SUP_EXPLICIT_OPERATION_PURPOSE_AND_SCOPE",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "BOUNDARY_VS_UNREQUESTED_MUTATION"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-008",
+          "case_pointer": "/cases/7",
+          "policy_id": "SFP-GOV-0001",
+          "policy_path": "src/policy/GOV/SFP-GOV-0001.yaml",
+          "rule_id": "SUP_SUBJECT_ROLE_AND_DECISION_MANDATE",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "DELEGATION_POLICY_DESIGN_UNRESOLVED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-011",
+          "case_pointer": "/cases/10",
+          "policy_id": "SFP-RISK-0001",
+          "policy_path": "src/policy/RISK/SFP-RISK-0001.yaml",
+          "rule_id": "SUP_RISK_ACCEPTANCE_WITHOUT_AUTHORITY_SUBSTITUTION",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "DRAFT",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "DELEGATION_DETAIL_UNRESOLVED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        }
+      ]
+    },
+    {
+      "id": "REV-03",
+      "title": "CHANGE 책임 참조와 CNTR 오류 결과",
+      "priority": "NEXT",
+      "case_ids": [
+        "CASE-004",
+        "CASE-006"
+      ],
+      "natural_language": "별도 승인된 CHANGE 규칙은 검증·폐기 책임을 등록된 RA로 참조하는 방향을 선언합니다. 구체적인 RA 항목·리비전은 아직 없습니다. CNTR 사례는 실패 응답의 상세 내용에 관한 별도 결정입니다.",
+      "clarification": "두 안 모두 승인된 CHANGE 방향을 다시 결정하지 않습니다. RA 항목 선택, 등록 및 책임 변경은 정확한 원본과 별도 승인이 필요합니다.",
+      "options": [
+        {
+          "id": "A",
+          "description_ko": "실패 응답에 실패 이유와 정확한 책임·조건 리비전 참조를 제공합니다."
+        },
+        {
+          "id": "B",
+          "description_ko": "실패 원인 판단에 필요한 조건을 응답에서 읽을 수 있게 하고, 상세 항목의 공개 범위와 정확한 리비전 참조를 함께 정합니다."
+        }
+      ],
+      "evidence_role": "AI_PROPOSED_OPTIONS",
+      "approval_state": "REQUIRES_USER_REVIEW",
+      "selected_option": null,
+      "approval_ref": null,
+      "patch_operations": [],
+      "evidence": [
+        {
+          "case_id": "CASE-004",
+          "case_pointer": "/cases/3",
+          "policy_id": "SFP-CHANGE-0001",
+          "policy_path": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+          "rule_id": "SUP_COMPATIBILITY_ORDER_AND_RETIREMENT",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+          "observation_status": "ALTERNATIVE_OWNERSHIP_DIRECTION",
+          "unresolved": [
+            "RA_LIST_ACTIVATION_UNREGISTERED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-006",
+          "case_pointer": "/cases/5",
+          "policy_id": "SFP-CNTR-0001",
+          "policy_path": "src/policy/CNTR/SFP-CNTR-0001.yaml",
+          "rule_id": "SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "NO_AUTOMATIC_RA_MUTATION_AUTHORIZED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        }
+      ]
+    },
+    {
+      "id": "REV-04",
+      "title": "재시도와 읽기 전용 대조",
+      "priority": "NEXT",
+      "case_ids": [
+        "CASE-001"
+      ],
+      "natural_language": "OPS의 기존 규칙은 같은 작업 ID와 예상 리비전으로 재시도하거나 결과를 대조하는 문맥입니다. 요약 복원 응답은 오류 처리 도중 권한 조건이 바뀔 수 있음을 지적합니다.",
+      "clarification": "권한 조건의 원본과 검증 책임자는 현재 사례에서 식별되지 않습니다.",
+      "options": [
+        {
+          "id": "A",
+          "description_ko": "실제로 다시 쓰기 전에 권한 행사 조건을 확인하고, 이전 시도의 읽기 전용 확인은 별도 절차로 다룹니다."
+        },
+        {
+          "id": "B",
+          "description_ko": "재확인을 촉발할 변경 신호와 그 신호의 검증 근거를 먼저 정합니다. 신호나 근거가 불명확할 때의 처리는 별도 결정으로 둡니다."
+        }
+      ],
+      "evidence_role": "AI_PROPOSED_OPTIONS",
+      "approval_state": "REQUIRES_USER_REVIEW",
+      "selected_option": null,
+      "approval_ref": null,
+      "patch_operations": [],
+      "evidence": [
+        {
+          "case_id": "CASE-001",
+          "case_pointer": "/cases/0",
+          "policy_id": "SFP-OPS-0001",
+          "policy_path": "src/policy/OPS/SFP-OPS-0001.yaml",
+          "rule_id": "SUP_IDEMPOTENT_RETRY_AND_RECONCILIATION",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+          "observation_status": "RECORDED",
+          "unresolved": [],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        }
+      ]
+    },
+    {
+      "id": "REV-05",
+      "title": "쓰기 단위, 실패 무결성과 근거 적합성",
+      "priority": "NEXT",
+      "case_ids": [
+        "CASE-003",
+        "CASE-009",
+        "CASE-016"
+      ],
+      "natural_language": "REAL의 쓰기 단위와 ASSURE의 산출물·근거 연결은 서로 다른 검증입니다. CASE-003은 Family와 RA 역할 설명이 부족해 보류됐고, 009·016은 선택지 전문이 없습니다.",
+      "clarification": "두 결정은 순서를 선택하는 안입니다. 어느 하나를 정해도 다른 검증 책임이나 CASE-003의 답은 자동으로 확정되지 않습니다.",
+      "options": [
+        {
+          "id": "A",
+          "description_ko": "쓰기 단위의 선언 주체와 실패 범위를 먼저 확인하고, 산출물·근거 판정은 기존 상태로 보류합니다."
+        },
+        {
+          "id": "B",
+          "description_ko": "ASSURE와 RA 책임 및 필요한 증거를 먼저 설명하고, 증거 부족과 위반을 구별하는 기준을 검토합니다. 쓰기 단위는 별도 결정으로 둡니다."
+        }
+      ],
+      "evidence_role": "AI_PROPOSED_OPTIONS",
+      "approval_state": "REQUIRES_USER_REVIEW",
+      "selected_option": null,
+      "approval_ref": null,
+      "patch_operations": [],
+      "evidence": [
+        {
+          "case_id": "CASE-003",
+          "case_pointer": "/cases/2",
+          "policy_id": "SFP-ASSURE-0001",
+          "policy_path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+          "rule_id": "SUP_THREE_OUTCOME_CONFORMANCE_EVALUATION",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+          "observation_status": "DEFERRED",
+          "unresolved": [
+            "ROOT_FAMILY_AND_RA_SEMANTICS_NEED_CONTEXT"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-009",
+          "case_pointer": "/cases/8",
+          "policy_id": "SFP-REAL-0001",
+          "policy_path": "src/policy/REAL/SFP-REAL-0001.yaml",
+          "rule_id": "SUP_PREPARED_WRITE_AND_FAILURE_INTEGRITY",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "WHO_OWNS_WRITE_UNIT_DECISION"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-016",
+          "case_pointer": "/cases/15",
+          "policy_id": "SFP-ASSURE-0001",
+          "policy_path": "src/policy/ASSURE/SFP-ASSURE-0001.yaml",
+          "rule_id": "SUP_EVIDENCE_COVERAGE_AND_ARTIFACT_BINDING",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "REQUIRED_EVIDENCE_RULE_UNRESOLVED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        }
+      ]
+    },
+    {
+      "id": "REV-06",
+      "title": "최신 원본, Projection과 결정 기록",
+      "priority": "NEXT",
+      "case_ids": [
+        "CASE-002",
+        "CASE-005",
+        "CASE-017"
+      ],
+      "natural_language": "INFO에는 과거 정보 모델과 원본·파생 정보 관계가 있고, RECORD 사례는 정책 결정의 기록과 당시 책임 근거의 추적을 함께 언급합니다. 최신 원본 우선과 구 Projection의 물리 삭제 여부는 별개입니다.",
+      "clarification": "어떤 소유자의 어느 등록 원본을 최신으로 인정할지, 결정 기록과 기술 추적의 경계를 각각 정해야 합니다.",
+      "options": [
+        {
+          "id": "A",
+          "description_ko": "현행 사용에서 낡은 Projection을 제외하고 과거 근거로는 보존합니다. 당시 책임은 확인 가능한 식별자와 리비전으로 추적합니다."
+        },
+        {
+          "id": "B",
+          "description_ko": "현행 사용 차단과 별도로, 재생성·보존·정리 조건을 정의합니다. 과거 정보 축을 유지할지 새 모델로 바꿀지는 별도 결정합니다."
+        }
+      ],
+      "evidence_role": "AI_PROPOSED_OPTIONS",
+      "approval_state": "REQUIRES_USER_REVIEW",
+      "selected_option": null,
+      "approval_ref": null,
+      "patch_operations": [],
+      "evidence": [
+        {
+          "case_id": "CASE-002",
+          "case_pointer": "/cases/1",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "src/policy/INFO/SFP-INFO-0001.yaml",
+          "rule_id": "SUP_CANONICAL_INFORMATION_MODEL",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "RECOVERED_FROM_PRIOR_CONVERSATION_SUMMARY",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "RA_FIELD_CONTRACT_UNRESOLVED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-005",
+          "case_pointer": "/cases/4",
+          "policy_id": "SFP-RECORD-0001",
+          "policy_path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+          "rule_id": "SUP_OBSERVATION_RECEIPT_SOURCE_BINDING",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-017",
+          "case_pointer": "/cases/16",
+          "policy_id": "SFP-INFO-0001",
+          "policy_path": "src/policy/INFO/SFP-INFO-0001.yaml",
+          "rule_id": "SUP_SEMANTIC_SOURCE_AND_PROJECTION_BINDING",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "PHYSICAL_DELETION_NOT_STATED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        }
+      ]
+    },
+    {
+      "id": "REV-07",
+      "title": "공급 범위, 소유자 메타데이터와 보안",
+      "priority": "NEXT",
+      "case_ids": [
+        "CASE-012",
+        "CASE-013",
+        "CASE-014",
+        "CASE-015"
+      ],
+      "natural_language": "DRAFT SUPPLY의 외부 산출물·근거 문맥과 사용자 제작 확장 중심 응답 사이에 범위 차이가 있습니다. ARCH의 라이프사이클 책임, CTRL의 실행 전 확인, RECORD의 기록 분류도 구별해야 합니다.",
+      "clarification": "정확한 계정 정보 출처, 공동 소유자와 변경 확인 기준, 기술 감사 기록 요건을 각각 결정해야 합니다.",
+      "options": [
+        {
+          "id": "A",
+          "description_ko": "SUPPLY를 사용자 제작 확장 중심으로 검토하고, 다른 공급물의 출처 기록은 별도 책임으로 결정합니다."
+        },
+        {
+          "id": "B",
+          "description_ko": "사용자 확장을 더 넓은 공급·출처 범위에 포함하는 방향을 검토합니다. 소유자 정보와 보안·실행 권한은 별도 근거로 판단합니다."
+        }
+      ],
+      "evidence_role": "AI_PROPOSED_OPTIONS",
+      "approval_state": "REQUIRES_USER_REVIEW",
+      "selected_option": null,
+      "approval_ref": null,
+      "patch_operations": [],
+      "evidence": [
+        {
+          "case_id": "CASE-012",
+          "case_pointer": "/cases/11",
+          "policy_id": "SFP-SUPPLY-0001",
+          "policy_path": "src/policy/SUPPLY/SFP-SUPPLY-0001.yaml",
+          "rule_id": "SUP_SUPPLIED_ARTIFACT_PROVENANCE_AND_HANDOFF",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "DRAFT",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "EXISTING_SUPPLY_SCOPE_DIFFERS",
+            "OWNER_DEFAULT_VS_ARCH"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-013",
+          "case_pointer": "/cases/12",
+          "policy_id": "SFP-ARCH-0001",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "rule_id": "SUP_PRIMARY_LIFECYCLE_OWNER_AND_BOUNDARY",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "OWNER_LIFECYCLE_VS_GIT_IDENTITY"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-014",
+          "case_pointer": "/cases/13",
+          "policy_id": "SFP-CTRL-0001",
+          "policy_path": "src/policy/CTRL/SFP-CTRL-0001.yaml",
+          "rule_id": "SUP_FRESH_REPOSITORY_PROFILE_AUTHORITY_GATE",
+          "rule_source_item": "SRC-0008",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/0",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "SECURITY_GATE_INDEPENDENT"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        },
+        {
+          "case_id": "CASE-015",
+          "case_pointer": "/cases/14",
+          "policy_id": "SFP-RECORD-0001",
+          "policy_path": "src/policy/RECORD/SFP-RECORD-0001.yaml",
+          "rule_id": "SUP_TRACEABILITY_RETENTION_AND_RETRIEVAL",
+          "rule_source_item": "SRC-0009",
+          "rule_source_pointer": "/authority_semantics/family_definition/kernel_definitions/1",
+          "document_lifecycle": "ACTIVE",
+          "provenance": "DIRECT_USER_MESSAGE",
+          "observation_status": "RECORDED",
+          "unresolved": [
+            "TECHNICAL_AUDIT_RECORD_BOUNDARY_UNRESOLVED"
+          ],
+          "evidence_role": "REVIEW_CONTEXT_ONLY"
+        }
+      ]
+    }
+  ],
+  "prior_approved_change": {
+    "case_id": "CASE-004",
+    "policy_source": {
+      "path": "src/policy/CHANGE/SFP-CHANGE-0001.yaml",
+      "revision": "87db24285d75f74c4a5ca47d45fedf19dc800bad",
+      "sha256": "a90be20801c03b4498a488dd54abdaad038cca19027a28f03d97b9d1bd158993"
+    },
+    "scope": "CHANGE_RESPONSIBILITY_BOUNDARY_ONLY",
+    "rule_contract_item_resolved": false
+  },
+  "engineering_blockers": [
+    {
+      "kind": "RA_PROFILE_NOT_PRESENT",
+      "source": {
+        "definition_source": {
+          "path": ".ptsip/contracts/compile-sealed-rbac/Responsibility/RA_list_contracts.json",
+          "revision": "b496edea09d4574d242df43d27e3bcd495d6d1ca",
+          "sha256": "a50b546f811987bf70224b1c3729d17ffa733ab98feb08adfaf4b9468ed3ad41"
+        },
+        "definition_state": "UNRESOLVED",
+        "activation_state": "UNREGISTERED",
+        "effective_registered_item_available": false,
+        "needed_if_rule_use_is_approved": "EXACT_REGISTERED_RESPONSIBILITY_OWNER_ITEM_AND_REVISION",
+        "profile_resource": ".ptsip/profiles/rbac/RA_list.yaml",
+        "profile_resource_present_at_head": false
+      }
+    },
+    {
+      "kind": "EVALUATION_NOT_REGISTERED",
+      "source": {
+        "path": ".ptsip/contracts/policy/unified/evaluation-registry.json",
+        "revision": "b496edea09d4574d242df43d27e3bcd495d6d1ca",
+        "sha256": "c8b0360c9dd6c12a6795cc921863d6c140f5ba79fcb650d0ac7c7a7052db33de"
+      },
+      "tracked_rego_sources": []
+    },
+    {
+      "kind": "DEFINITION_REFERENCES_DO_NOT_RESOLVE_CONSUMPTION",
+      "references": [
+        {
+          "policy_id": "SFP-ARCH-0004",
+          "rule_id": "SFP-ARCH-0004#/authority_semantics/rac_aec_rego_original_contract_direction",
+          "kind": "AEC",
+          "ref": {
+            "item_ref": "#",
+            "revision_ref": "git:7420848b01747e937b400e6647020b122ed3bf51",
+            "source_ref": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json"
+          },
+          "sha256": "6b4f5d4da71b4833cdec611b6484e70297fe0905fd4a1e322e871348786372fc",
+          "matches_current_definition_bytes": true,
+          "classification": "PINNED_DEFINITION_ONLY"
+        },
+        {
+          "policy_id": "SFP-ARCH-0004",
+          "rule_id": "SFP-ARCH-0004#/authority_semantics/rac_aec_rego_original_contract_direction",
+          "kind": "RAC",
+          "ref": {
+            "item_ref": "#",
+            "revision_ref": "git:7420848b01747e937b400e6647020b122ed3bf51",
+            "source_ref": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json"
+          },
+          "sha256": "e3cef8dd71cb584f546de439813782a69cfc229fafd2a3b5a04aacbfa0e7563a",
+          "matches_current_definition_bytes": true,
+          "classification": "PINNED_DEFINITION_ONLY"
+        }
+      ]
+    }
+  ],
+  "future_write_plan": {
+    "status": "WAITING_FOR_EXPLICIT_USER_DECISION_AND_SEPARATE_PLAN_APPROVAL",
+    "required_row": [
+      "base_sha",
+      "policy_plane",
+      "policy_path",
+      "policy_id",
+      "rule_id",
+      "contract_kind",
+      "binding_pointer",
+      "expected_current_binding",
+      "exact_rule_local_evidence",
+      "proposed_field_delta"
+    ],
+    "required_approval": [
+      "exact_selected_rows",
+      "proposed_change_set_sha256",
+      "explicit_user_approval_ref"
+    ],
+    "declared_gate": [
+      "approved_rule_use",
+      "exact_registered_owner",
+      "contract_item_pointer",
+      "git_revision"
+    ],
+    "not_applicable_gate": [
+      "approved_rule_local_non_applicability_basis",
+      "no_contract_ref"
+    ],
+    "evaluation_gate": [
+      "separate_evaluation_registration",
+      "approved_RAC_AEC_rego_source_revision_and_entrypoint",
+      "separate_execution_authorization"
+    ],
+    "on_drift": "REGENERATE_ON_CURRENT_HEAD_AND_REVIEW_CHANGED_ROWS",
+    "post_write_checks": [
+      "registered_contract_entry",
+      "verify_current",
+      "registered_applicability",
+      "compare_exact_approved_diff"
+    ]
+  }
+}
