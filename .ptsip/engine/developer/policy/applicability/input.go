@@ -59,14 +59,16 @@ func RequireSourceSnapshot(root, head string) error {
     return nil
 }
 
-// rejectYAMLConflicts prohibits duplicate keys, aliases and non-string keys.
+// rejectYAMLConflicts rejects duplicate and non-string mapping keys.
+// YAML aliases remain allowed: the old SafeLoader accepted them, and the
+// shared registered source-integrity verifier validates the restored meaning.
 func rejectYAMLConflicts(node *yaml.Node) error {
-    if node.Kind == yaml.AliasNode { return fmt.Errorf("YAML_ALIAS_UNSUPPORTED") }
+    if node.Kind == yaml.AliasNode { return nil }
     if node.Kind == yaml.MappingNode {
         seen := map[string]bool{}
         for i := 0; i < len(node.Content); i += 2 {
             key := node.Content[i]
-            if key.Kind != yaml.ScalarNode || key.Tag != "!!str" {
+            if key.Kind != yaml.ScalarNode || (key.Tag != "!!str" && key.Tag != "!!merge") {
                 return fmt.Errorf("MAPPING_KEY_MUST_BE_STRING")
             }
             if seen[key.Value] { return fmt.Errorf("DUPLICATE_MAPPING_KEY: %s", key.Value) }
