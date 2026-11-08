@@ -28,6 +28,30 @@ During the transition to generated projection, this checked-in file is limited t
 routing contract below. Do not expand it with policy or state semantics that belong in a canonical
 machine plane.
 
+## Local observation-learning handoff (non-normative)
+
+For coding-agent requests about user-judgment observations, activity/decision patterns,
+structural relationships, or conditional hybrid learning-data candidates, first read:
+
+```text
+.ptsip/tasks/observation-learning/decision.json
+.ptsip/tasks/observation-learning/observations.json
+```
+
+Treat these files as a local-agent task handoff and unapproved observational evidence,
+not as policies, registered Task Engine operations, model-training authorization,
+or authority for writing RA/RAC/AEC contracts. Check `.ptsip/tasks/index.json`
+before claiming Task Engine support; do not infer registration from a file's location.
+Conditional generation means non-authoritative dataset **candidates** only, with
+source-verbatim preservation, mechanical validation, and labeled AI-proposed
+cross-case relationships. Do not silently generalize individual user decisions.
+
+For `src/policy/**` review, treat existing wording as potentially outdated:
+translate the old policy's situation into natural language, submit the meaning
+for user review, and only then propose a separate authorized policy revision.
+Do not spend effort on complete legacy-semantic migration by default. An
+interpretation or dataset candidate is not approval to change effective policy.
+
 ## Top-level machine entry routing
 
 ### 1. PTSIP capability use
