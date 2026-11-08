@@ -169,10 +169,11 @@ def metadata_references(items, roots, fields=()):
 
 
 def normalize(root, path, source, registration, baseline, version):
-    from ptsip.policy_contracts.unified import source_rule_units
+    from ptsip._common_contract import source_result
 
     identity, status, lifecycle_pointer = native_identity(source)
-    units = source_rule_units(source)
+    units = {pointer: (unit["kind"], unit["value"]) for pointer, unit in
+             source_result("source-rule-units", "units", document=source).items()}
     items = partition_source(source, units)
     rules = []
     seen = set()
@@ -306,7 +307,7 @@ def run(root, apply, verify_current=False):
     if actual != root:
         raise ValueError("EXACT_REPOSITORY_ROOT_REQUIRED")
     sys.path.insert(0, str(root / "src"))
-    from ptsip.policy_contracts.unified import VERSION, is_unified, restore_source, validate_document
+    from ptsip._common_contract import UNIFIED_VERSION, request, source_result
 
     baseline = git(root, "rev-parse", "HEAD").decode("ascii").strip()
     paths, indexes = discover(root, verify_current)
@@ -325,7 +326,7 @@ def run(root, apply, verify_current=False):
             raise ValueError("POLICY_PATH_OUTSIDE_REPOSITORY: " + path)
         raw = absolute.read_bytes()
         parsed = parse_document(raw)
-        unified = is_unified(parsed)
+        unified = parsed.get("schema_version") == UNIFIED_VERSION
         if verify_current and not unified:
             auxiliary_decision = (
                 path == ARCH_DECISIONS
@@ -342,7 +343,7 @@ def run(root, apply, verify_current=False):
             auxiliary.append({"path": path, "classification": "AUXILIARY_NON_POLICY"})
             continue
         original_bytes[path] = raw
-        source = restore_source(parsed) if unified else parsed
+        source = source_result("restore-source", "source", document=parsed) if unified else parsed
         identity, _, _ = native_identity(source)
         parts = Path(path).parts
         if identity["policy_kind"] != PLANES[parts[0]] or identity["root_family"] != parts[2]:
@@ -353,15 +354,15 @@ def run(root, apply, verify_current=False):
         if verify_current and identity["id"] in policy_ids:
             raise ValueError("DUPLICATE_CURRENT_POLICY_ID: " + identity["id"])
         policy_ids.add(identity["id"])
-        candidate = parsed if unified else normalize(root, path, source, registration, baseline, VERSION)
-        result = validate_document(root, candidate)
+        candidate = parsed if unified else normalize(root, path, source, registration, baseline, UNIFIED_VERSION)
+        result = request("validate-unified", repository_root=str(root), document=candidate, restore=True)
         if result.get("status") != "VALID":
             raise ValueError("CANDIDATE_VALIDATION_FAILED: " + path + ": " + json.dumps(result, ensure_ascii=True))
         if candidate["Policy_Content"]["source_document"]["path"] != path:
             raise ValueError("CANDIDATE_SOURCE_PATH_MISMATCH: " + path)
         if verify_current and candidate["Policy_Migration"]["source_registration"] != registration:
             raise ValueError("CANDIDATE_SOURCE_REGISTRATION_MISMATCH: " + path)
-        if restore_source(candidate) != source:
+        if result.get("source") != source:
             raise ValueError("SOURCE_RESTORATION_CHANGED: " + path)
         if candidate["Policy_Content"]["source_document"]["sha256"] != canonical_digest(source):
             raise ValueError("SOURCE_DIGEST_CHANGED: " + path)
@@ -406,7 +407,7 @@ def run(root, apply, verify_current=False):
     inventory = {
         "format": "ptsip-unified-policy-migration-inventory/v1",
         "baseline_head": baseline,
-        "schema_version": VERSION,
+        "schema_version": UNIFIED_VERSION,
         "contract_state": "CANDIDATE",
         "scope": {"planes": list(PLANES.values()), "families": list(FAMILIES), "family_directories": len(PLANES) * len(FAMILIES)},
         "summary": {"policy_documents": len(documents), "changed_documents": len(changes), "auxiliary_documents": len(auxiliary), **dict(totals)},

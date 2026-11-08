@@ -17,6 +17,76 @@ on:
 permissions:
   contents: read
 jobs:
+  ptsip-common-contract:
+    name: "Customer common contracts / ${{ matrix.runner }}"
+    if: ${{ inputs.mode == 'ptsip-common-contract' }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2025, ubuntu-24.04, macos-15]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: src/ptsip/common_contract/go.mod
+          cache-dependency-path: src/ptsip/common_contract/go.sum
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install verification tools
+        run: python -m pip install --disable-pip-version-check 'build>=1.2,<2' 'pytest>=8,<10' 'PyYAML>=6,<7'
+        shell: bash
+      - name: Execute registered common contract checks
+        shell: bash
+        env:
+          PYTHONPATH: src
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/common-contract-evidence"
+          python - <<'PY'
+          import os, subprocess, sys
+          from pathlib import Path
+          import yaml
+
+          registry = yaml.safe_load(Path('.github/test_modes.yaml').read_text(encoding='utf-8'))
+          mode, = [item for item in registry['modes'] if item['id'] == 'ptsip-common-contract']
+          execution = mode['execution']
+          evidence = Path(os.environ['RUNNER_TEMP']) / 'common-contract-evidence'
+          for module in execution['go']:
+              with (evidence / 'go-test.jsonl').open('ab') as report:
+                  subprocess.run(['go', '-C', module, 'test', './...', '-count=1', '-json'], stdout=report, check=True)
+              subprocess.run(['go', '-C', module, 'vet', './...'], check=True)
+          subprocess.run([sys.executable, '-m', 'pytest', '-q', *execution['pytest']], check=True)
+          PY
+      - name: Rebuild from sdist and verify isolated installed wheel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m build --outdir "$RUNNER_TEMP/common-contract-dist"
+          python - <<'PY'
+          import os, subprocess, sys
+          from pathlib import Path
+          import yaml
+
+          registry = yaml.safe_load(Path('.github/test_modes.yaml').read_text(encoding='utf-8'))
+          mode, = [item for item in registry['modes'] if item['id'] == 'ptsip-common-contract']
+          temp = Path(os.environ['RUNNER_TEMP'])
+          wheel, = (temp / 'common-contract-dist').glob('*.whl')
+          with (temp / 'common-contract-evidence' / 'installed-wheel.json').open('wb') as report:
+              subprocess.run([sys.executable, mode['execution']['wheel_smoke'], str(wheel), os.environ['GITHUB_SHA']],
+                             stdout=report, check=True)
+          PY
+      - uses: actions/upload-artifact@v7
+        if: ${{ always() }}
+        with:
+          name: common-contract-${{ matrix.runner }}-${{ github.sha }}
+          path: ${{ runner.temp }}/common-contract-evidence
+          if-no-files-found: error
+
   developer-schema-contracts:
     name: "Developer schema contracts / ${{ matrix.runner }}"
     if: ${{ inputs.mode == 'developer-schema-contracts' }}
@@ -94,7 +164,7 @@ jobs:
           echo "Executing existing ptsip-validation-runtime pytest directory without asserting registry conformance."
           python -m pytest -q src/tests/ptsip/engine_runtime_validation
   mode-selection:
-    if: ${{ inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' }}
+    if: ${{ inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' && inputs.mode != 'ptsip-common-contract' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.mode.outputs.matrix }}

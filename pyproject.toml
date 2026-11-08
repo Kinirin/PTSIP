@@ -56,6 +56,9 @@ vpms = [
   "contracts/schemas/*.json",
 ]
 ptsip = [
+  "common_contract/registry/manifest.json",
+  "common_contract/cmd/ptsip-common-contract/protocol.json",
+  "common_contract/schemas/*.schema.json",
   "engines/index.json",
   "engines/*/*.json",
   "engines/contracts/*.json",
@@ -109,6 +112,7 @@ dev = [
 
 [tool.setuptools.exclude-package-data]
 "ptsip.profiles" = ["history/*", "history/**"]
+ptsip = ["common_contract/*.go", "common_contract/go.mod", "common_contract/go.sum", "common_contract/testdata/*"]
 
 # Canonical current composition. Published snapshots are recorded separately
 # after their original-source artifacts and publication state are verified.

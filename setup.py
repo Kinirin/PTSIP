@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
-from runpy import run_path
 from shutil import copy2, copytree, rmtree
 
 import yaml
@@ -14,9 +14,9 @@ CANONICAL_SUPPORT_POLICY = ROOT / "src" / "policy"
 CANONICAL_PUBLIC_PROFILES = ROOT / "src" / "ptsip" / "profiles"
 CANONICAL_PUBLIC_PROFILE_CATALOG = CANONICAL_PUBLIC_PROFILES / "index.yaml"
 CANONICAL_PP_CONTRACT_REGISTRY = ROOT / "registry" / "project-profile-contracts.yaml"
-CANONICAL_RBAC_SCHEMA_ROOT = ROOT / ".ptsip" / "contracts" / "schemas" / "compile-sealed-rbac"
+CANONICAL_RBAC_SCHEMA_ROOT = ROOT / ".ptsip" / "contracts" / "compile-sealed-rbac"
 CANONICAL_RBAC_FIELDS = ROOT / "registry" / "compile-sealed-rbac-registry-fields.json"
-CANONICAL_PP200_CANDIDATE = ROOT / "schemas" / "ptsip-profile-pp-2.00.candidate.schema.json"
+PP200_CANDIDATE_ASSET = "ptsip-profile-pp-2.00.candidate.schema.json"
 RBAC_SCHEMA_FILES = (
     "responsibility.schema.json", "condition-atom.schema.json",
     "permission-atom.schema.json", "binding.schema.json",
@@ -64,15 +64,19 @@ def _project_support_policy(build_lib: Path) -> None:
     sfp_files = sorted(source.rglob("SFP-*.yaml"))
     if not sfp_files:
         raise RuntimeError("canonical Support Policy source contains no SFP records")
-    # Load the projector from this build's source, including Git-less sdists.
-    contract = run_path(str(ROOT / "src/ptsip/policy_contracts/unified.py"))
+    # Setuptools can invoke this in a Git-less sdist with no installed PTSIP.
+    sys.path.insert(0, str(ROOT / "src"))
+    try:
+        from ptsip._common_contract import source_result
+    finally:
+        sys.path.pop(0)
     for path in sfp_files:
         relative = path.relative_to(source)
         destination = policy_target / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
-        document = contract["load_document"](path.read_bytes())
-        if contract["is_unified"](document):
-            projected = contract["restore_support_source"](document, relative.as_posix())
+        projected = source_result("project-support-source", "source", raw=path.read_bytes().decode("utf-8-sig"),
+                                  path=relative.as_posix())
+        if projected is not None:
             destination.write_text(yaml.safe_dump(projected, allow_unicode=True, sort_keys=False), encoding="utf-8")
         else:
             copy2(path, destination)
@@ -215,12 +219,15 @@ def _project_rbac_contract_assets(build_lib: Path) -> None:
     if CANONICAL_RBAC_FIELDS.read_bytes() != packaged_fields.read_bytes():
         raise RuntimeError("canonical and embedded RBAC field requirements diverged")
     copy2(CANONICAL_RBAC_FIELDS, target / packaged_fields.name)
-    candidate = embedded_src / CANONICAL_PP200_CANDIDATE.name
-    if not CANONICAL_PP200_CANDIDATE.is_file() or not candidate.is_file():
+    # This opt-in package asset retains its draft role after retirement of the
+    # byte-identical root schemas/ copy. It is not a profile validation source.
+    candidate = embedded_src / PP200_CANDIDATE_ASSET
+    if not candidate.is_file():
         raise RuntimeError("pp.2.00 candidate profile schema is missing")
-    if CANONICAL_PP200_CANDIDATE.read_bytes() != candidate.read_bytes():
-        raise RuntimeError("canonical and embedded pp.2.00 candidate schemas diverged")
-    copy2(CANONICAL_PP200_CANDIDATE, target / candidate.name)
+    comment = _load_yaml(candidate).get("$comment")
+    if not isinstance(comment, str) or not comment.startswith("DRAFT_NON_NORMATIVE:"):
+        raise RuntimeError("packaged pp.2.00 profile schema candidate must remain non-normative")
+    copy2(candidate, target / candidate.name)
     index_source = CANONICAL_RBAC_SCHEMA_ROOT / RBAC_CANDIDATE_INDEX
     index_embedded = embedded_src / "compile-sealed-rbac" / RBAC_CANDIDATE_INDEX
     if not index_source.is_file() or not index_embedded.is_file():
@@ -248,6 +255,14 @@ class build_py(_build_py):
     def run(self) -> None:
         super().run()
         build_lib = Path(self.build_lib)
+        # Incremental builds can retain the replaced Python feature from an
+        # earlier checkout even though it is absent from the source package.
+        for name in ("unified.py", "__init__.py"):
+            stale = build_lib / "ptsip" / "policy_contracts" / name
+            if stale.exists():
+                if not stale.resolve().is_relative_to(build_lib.resolve()):
+                    raise RuntimeError("retired contract output escapes build directory")
+                stale.unlink()
         _project_support_policy(build_lib)
         _project_public_profiles(build_lib)
         _project_rbac_contract_assets(build_lib)

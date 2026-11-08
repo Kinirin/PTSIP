@@ -1,0 +1,72 @@
+{
+  "format": "ptsip-common-contract-registry/v1",
+  "revision": "v1",
+  "contracts": [
+    {
+      "field": "Policy_Identity",
+      "urn": "urn:ptsip:common_policy:identity:v1",
+      "version": "v1",
+      "resource": "common_contract/schemas/policy_identity.schema.json",
+      "sha256": "ebc2b29b00112bc144afa9c36e786601b323be7e797047e8355e43425c532b2e",
+      "semantics": {
+        "": "urn:ptsip:common_policy:identity:v1#meaning",
+        "/properties/id": "urn:ptsip:common_policy:identity:v1#meaning/id",
+        "/properties/policy_kind": "urn:ptsip:common_policy:identity:v1#meaning/policy_kind",
+        "/properties/root_family": "urn:ptsip:common_policy:identity:v1#meaning/root_family",
+        "/properties/title": "urn:ptsip:common_policy:identity:v1#meaning/title"
+      }
+    },
+    {
+      "field": "Policy_Lifecycle",
+      "urn": "urn:ptsip:common_policy:lifecycle:v1",
+      "version": "v1",
+      "resource": "common_contract/schemas/policy_lifecycle.schema.json",
+      "sha256": "58b2cbe7c4bfae6194b89b9983157b5fc563879aca1d454c258cad9346d4b133",
+      "semantics": {
+        "": "urn:ptsip:common_policy:lifecycle:v1#meaning",
+        "/properties/status": "urn:ptsip:common_policy:lifecycle:v1#meaning/status"
+      }
+    },
+    {
+      "field": "Policy_Rules",
+      "urn": "urn:ptsip:common_policy:rules:v1",
+      "version": "v1",
+      "resource": "common_contract/schemas/policy_rules.schema.json",
+      "sha256": "75bb4afddea3447da15bc45b3583660d419a2bc8bf4301d036e146b41ca18094",
+      "semantics": {
+        "": "urn:ptsip:common_policy:rules:v1#meaning",
+        "/properties/rules": "urn:ptsip:common_policy:rules:v1#meaning/rules"
+      }
+    },
+    {
+      "field": "Plan_Unit",
+      "urn": "urn:ptsip:common:plan:unit:v1",
+      "version": "v1",
+      "resource": "common_contract/schemas/plan_unit.schema.json",
+      "sha256": "5e039fffaedefbf5b7fe2f7ca20e43ce0425b99fac837bba3dccca7e6242e9ab",
+      "semantics": {
+        "": "urn:ptsip:common:plan:unit:v1#meaning"
+      }
+    },
+    {
+      "field": "Plan_Lifecycle",
+      "urn": "urn:ptsip:common:plan:lifecycle:v1",
+      "version": "v1",
+      "resource": "common_contract/schemas/plan_lifecycle.schema.json",
+      "sha256": "baaf99422e90a4a2492dab9556cce97282dea57634f30838639de4ab31f1d907",
+      "semantics": {
+        "": "urn:ptsip:common:plan:lifecycle:v1#meaning"
+      }
+    },
+    {
+      "field": "Plan_Identity",
+      "urn": "urn:ptsip:common:plan:identity:v1",
+      "version": "v1",
+      "resource": "common_contract/schemas/plan_identity.schema.json",
+      "sha256": "c779078f0a84d95b48a045504a021d27f2b2ecaf6eac1577435d087da39d1d99",
+      "semantics": {
+        "": "urn:ptsip:common:plan:identity:v1#meaning"
+      }
+    }
+  ]
+}

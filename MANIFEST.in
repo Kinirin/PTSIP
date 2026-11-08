@@ -17,7 +17,6 @@ recursive-include .ptsip/contracts/compile-sealed-rbac *.schema.json
 recursive-include src/ptsip/specdata/compile-sealed-rbac *.schema.json
 include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
 include schemas/ptsip-profile-pp-2.00.schema.json
-include schemas/ptsip-profile-pp-2.00.candidate.schema.json
 include src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json
 include .ptsip/contracts/compile-sealed-rbac/candidate-index.json
 include src/ptsip/specdata/compile-sealed-rbac/candidate-index.json
@@ -26,3 +25,4 @@ include src/ptsip/specdata/compile-sealed-rbac/candidate-index.json
 include .ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py
 include ptsip-build-source.json
 recursive-include src/ptsip/engines Cargo.toml Cargo.lock *.rs *.yaml
+recursive-include src/ptsip/common_contract *.go *.json go.mod go.sum

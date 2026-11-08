@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:common-contract:cli-protocol:v1",
+  "title": "PTSIP customer common contract command protocol",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "required": ["format", "operation", "urn"],
+      "properties": {
+        "format": {"const": "ptsip-common-contract/v1"},
+        "operation": {"enum": ["lookup", "validate", "compatibility"]},
+        "urn": {"type": "string", "description": "Exact registered version; unresolved references are returned as such."}
+      },
+      "oneOf": [
+        {"properties": {"operation": {"const": "lookup"}}},
+        {
+          "properties": {"operation": {"const": "validate"}, "instance": true},
+          "required": ["instance"]
+        },
+        {
+          "properties": {
+            "operation": {"const": "compatibility"},
+            "schema": {"type": "object"},
+            "extension_id": {"type": "string", "minLength": 1},
+            "meanings": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}}
+          },
+          "required": ["schema"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "response": {
+      "type": "object",
+      "required": ["format", "status"],
+      "properties": {
+        "format": {"const": "ptsip-common-contract/v1"},
+        "status": {"enum": ["RESOLVED", "VALID", "INVALID", "SUPPORTED", "INCOMPATIBLE", "UNRESOLVED"]},
+        "contract": {"type": "object", "required": ["field", "urn", "version", "resource", "sha256", "semantics"]},
+        "schema": {"type": "object"},
+        "provenance": {"type": "object", "required": ["registry_revision", "registry_sha256", "source_revision"]},
+        "reference_resolution": {"$ref": "#/$defs/stage"},
+        "structure": {"$ref": "#/$defs/stage"},
+        "semantics": {"$ref": "#/$defs/stage"},
+        "change_impact": {"$ref": "#/$defs/stage"},
+        "extension": {"type": "object", "required": ["id", "sha256"]},
+        "problem": {"type": "string"}
+      }
+    },
+    "stage": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"type": "string"},
+        "scope": {"type": "string"},
+        "findings": {
+          "type": "array",
+          "items": {"type": "object", "required": ["pointer", "code"]}
+        }
+      }
+    }
+  }
+}

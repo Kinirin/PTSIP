@@ -10,6 +10,7 @@ from functools import lru_cache
 
 import yaml
 from jsonschema import Draft202012Validator, ValidationError
+from ptsip._common_contract import UNIFIED_VERSION, PolicySourceError, request
 
 from .model import (
     CheckStatus,
@@ -100,14 +101,14 @@ class AuthorityCatalog:
         value = yaml.safe_load(path.read_text(encoding="utf-8"))
         if not isinstance(value, dict):
             raise GovernanceAuthorityError("GOVERNANCE_ASSET_INVALID", f"support governance asset must contain a mapping: {relative}", value)
-        if category == "policy":
-            from ptsip.policy_contracts.unified import is_unified, restore_source, validate_document
-
-            if is_unified(value):
-                report = validate_document(self.root, value)
-                if report.get("status") != "VALID":
-                    raise GovernanceAuthorityError("UNIFIED_POLICY_DOCUMENT_INVALID", str(report.get("problem")), relative)
-                value = restore_source(value)
+        if category == "policy" and value.get("schema_version") == UNIFIED_VERSION:
+            try:
+                report = request("validate-unified", repository_root=str(self.root), document=value, restore=True)
+            except PolicySourceError as error:
+                raise GovernanceAuthorityError("UNIFIED_POLICY_DOCUMENT_INVALID", str(error), relative) from error
+            if report.get("status") != "VALID" or not isinstance(report.get("source"), dict):
+                raise GovernanceAuthorityError("UNIFIED_POLICY_DOCUMENT_INVALID", str(report.get("problem")), relative)
+            value = report["source"]
         return value
 
     def _load_json(self, category: str, relative: str) -> dict[str, object]:

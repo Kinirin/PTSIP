@@ -15,6 +15,7 @@ groups:
     - agent-contract-plane
     - agent-contract-runtime
     - ptsip-core
+    - ptsip-common-contract
     - ptsip-validation-runtime
     - ptsip-evidence
     - ptsip-migration
@@ -78,6 +79,15 @@ modes:
     execution:
       pytest:
         - src/tests/ptsip/engine_runtime_validation
+  - id: ptsip-common-contract
+    component_ref: ptsip-contract-verification
+    execution:
+      go:
+        - src/ptsip/common_contract
+      pytest:
+        - src/tests/ptsip/contracts/test_unified_policy.py
+        - src/tests/ptsip/contracts/test_migrate_unified_current.py
+      wheel_smoke: src/tests/ptsip/contracts/wheel_smoke.py
   - id: ptsip-evidence
     component_ref: ptsip-evidence-verification
     execution:

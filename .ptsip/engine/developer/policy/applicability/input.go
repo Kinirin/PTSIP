@@ -22,7 +22,7 @@ var sha40Input = regexp.MustCompile(`^[0-9a-f]{40}$`)
 
 var sourceSnapshotPaths = []string{
     ".ptsip/index.json", ".ptsip/contracts", "developer/policy", "src/policy",
-    "src/ptsip/policy_contracts",
+    "src/ptsip/common_contract",
 }
 
 // gitOutput never evaluates a shell. Every source is read from the exact HEAD.

@@ -72,7 +72,9 @@ func ReadDocument(root, relative string) (Document, error) {
 		return nil, err
 	}
 	var result Document
-	if err := json.Unmarshal(encoded, &result); err != nil {
+	decoder := json.NewDecoder(bytes.NewReader(encoded))
+	decoder.UseNumber()
+	if err := decoder.Decode(&result); err != nil {
 		return nil, err
 	}
 	return result, nil

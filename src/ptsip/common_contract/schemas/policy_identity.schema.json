@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:common_policy:identity:v1",
+  "title": "Policy_Identity",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "policy_kind": {
+      "type": "string"
+    },
+    "root_family": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:common_policy:lifecycle:v1",
+  "title": "Policy_Lifecycle",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT.Default",
+        "DRAFT.Reviewed",
+        "DRAFT.Denied",
+        "DRAFT.Pass",
+        "APPROVED.Default",
+        "APPROVED.Applying",
+        "APPROVED.Application_Problems",
+        "APPROVED.Unresolved",
+        "APPROVED.Activate",
+        "APPROVED.provisional",
+        "RETIRED.Default",
+        "RETIRED.Removable",
+        "RETIRED.Waiting"
+      ]
+    }
+  }
+}

@@ -53,10 +53,55 @@ def build_sdist(sdist_directory, config_settings=None):
             descriptor.unlink()
 
 
+def _common_contract_payload(stage, files, source, extension):
+    module = ROOT / "src/ptsip/common_contract"
+    prefix = "ptsip/common_contract/"
+    manifest_path = "registry/manifest.json"
+    manifest_bytes = (module / manifest_path).read_bytes()
+    manifest_digest = hashlib.sha256(manifest_bytes).hexdigest()
+    if files.get(prefix + manifest_path) != manifest_bytes:
+        raise RuntimeError("common contract wheel registry differs from source")
+    registry = json.loads(manifest_bytes)
+    resources = {prefix + path.name for path in (module / "schemas").glob("*.schema.json")}
+    expected = {"ptsip/" + entry["resource"] for entry in registry["contracts"]}
+    if len(expected) != len(registry["contracts"]) or expected != {
+        name for name in files if name.startswith(prefix + "schemas/")
+    } or resources != {prefix + Path(name).name for name in expected}:
+        raise RuntimeError("common contract wheel resource inventory differs from registry")
+    for entry in registry["contracts"]:
+        asset = "ptsip/" + entry["resource"]
+        if hashlib.sha256(files[asset]).hexdigest() != entry["sha256"]:
+            raise RuntimeError(f"common contract wheel resource digest differs: {asset}")
+    command = "ptsip-common-contract" + extension
+    binary = stage / command
+    # Prevent a developer's cross-compilation settings from changing the wheel's host target.
+    goos = {"win32": "windows", "linux": "linux", "darwin": "darwin"}[sys.platform]
+    goarch = "arm64" if platform.machine().lower() == "arm64" else "amd64"
+    subprocess.run([
+        "go", "build", "-mod=readonly", "-trimpath", "-buildvcs=false",
+        "-ldflags", f"-X main.sourceRevision={source} -X main.registryDigest={manifest_digest}",
+        "-o", str(binary), "./cmd/ptsip-common-contract",
+    ], cwd=module, env=dict(os.environ, GOWORK="off", CGO_ENABLED="0", GOOS=goos, GOARCH=goarch), check=True)
+    payload = binary.read_bytes()
+    name = prefix + command
+    files[name] = payload
+    provenance = {
+        "format": "ptsip-common-contract-wheel-origin/v1",
+        "source_sha": source,
+        "goos": goos,
+        "goarch": goarch,
+        "registry_revision": registry["revision"],
+        "registry_sha256": manifest_digest,
+        "binary": command,
+        "binary_sha256": hashlib.sha256(payload).hexdigest(),
+    }
+    files[prefix + "origin.json"] = (json.dumps(provenance, sort_keys=True, indent=2) + "\n").encode()
+    return name
+
+
 def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
     source = _source()
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    version = project["project"]["version"]
     if project["project"]["name"] != "PTSIP":
         raise RuntimeError("the native backend builds PTSIP only")
     hosts = {
@@ -79,10 +124,18 @@ def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
         pure = _setuptools.build_wheel(str(stage), config_settings, metadata_directory)
         with zipfile.ZipFile(stage / pure) as archive:
             files = {name: archive.read(name) for name in archive.namelist()}
-        di = f"ptsip-{version}.dist-info/"
+        if any(name.startswith("ptsip/policy_contracts/") for name in files):
+            raise RuntimeError("retired Python customer contract feature in wheel")
+        # The setuptools filename carries the normalized distribution/version
+        # (for example 0.3.8b7 for project version 0.3.8-b7).
+        distribution = pure.rsplit("-", 3)[0]
+        version = distribution.split("-", 1)[1]
+        di = f"{distribution}.dist-info/"
+        if di + "WHEEL" not in files:
+            raise RuntimeError("setuptools wheel metadata directory is missing")
         files.pop(di + "RECORD", None)
         origins = {}
-        executables = set()
+        executables = {_common_contract_payload(stage, files, source, extension)}
         for entry in entries:
             kind = entry["kind"].lower()
             manifest = ROOT / f"src/ptsip/engines/{kind}/Cargo.toml"
@@ -94,7 +147,7 @@ def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
             subprocess.run(["cargo", "build", "--release", "--locked", "--manifest-path", str(manifest)], cwd=ROOT, env=environment, check=True)
             command = "ptsip-engine-" + kind + extension
             binary = (build / "release" / command).read_bytes()
-            name = f"ptsip-{version}.data/scripts/{command}"
+            name = f"{distribution}.data/scripts/{command}"
             files[name] = binary
             executables.add(name)
             origins[kind] = {
@@ -117,7 +170,7 @@ def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
             writer.writerow((name, "sha256=" + digest, str(len(data))))
         writer.writerow((di + "RECORD", "", ""))
         files[di + "RECORD"] = record.getvalue().encode()
-        output = Path(wheel_directory) / f"ptsip-{version}-py3-none-{tag}.whl"
+        output = Path(wheel_directory) / f"{distribution}-py3-none-{tag}.whl"
         with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as archive:
             for name, data in sorted(files.items()):
                 info = zipfile.ZipInfo(name, (2020, 1, 1, 0, 0, 0))

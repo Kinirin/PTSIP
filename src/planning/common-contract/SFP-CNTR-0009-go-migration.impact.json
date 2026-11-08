@@ -1,0 +1,90 @@
+{
+  "format": "ptsip-common-contract-migration-impact/v1",
+  "plan_id": "PLN-SFP-CNTR-0009-GO-001",
+  "baseline_head": "a26453be25a887791f02acd31ae707b1535b6626",
+  "policy": {
+    "id": "SFP-CNTR-0009",
+    "source": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+    "canonical_source_sha256": "6acd10a19784b35d0dda76b8e011abf3d013b39651c74bab7299985132d229bd"
+  },
+  "baseline": {
+    "operation": "VERIFY_CURRENT",
+    "policy_documents": 111,
+    "changed_documents": 0,
+    "rules": 1097,
+    "source_items": 1942,
+    "unresolved_bindings": 3291,
+    "support_build_projections": 46
+  },
+  "callers": [
+    {
+      "path": "setup.py",
+      "entry": "_project_support_policy",
+      "owner": "SUPPORT_POLICY_BUILD_PROJECTION",
+      "previous": ["load_document", "is_unified", "restore_support_source"],
+      "replacement": "ptsip-common-contract project-support-source",
+      "regression": "Compare the 46 installed Support Policy trees against the baseline projector, including identity, lifecycle, and encoding."
+    },
+    {
+      "path": ".ptsip/engine/developer/internal/contract_authoring/Authoring.go",
+      "entry": "unifiedPolicyOperation",
+      "owner": "DEVELOPER_CANDIDATE_STRUCTURE_AND_SOURCE_CHECK",
+      "previous": ["validate_document", "restore_source"],
+      "replacement": "source.NewVerifier and Verifier.Check after existing Go selection",
+      "regression": "Run existing developer selection and authoring tests and check candidate status, source digest, and authority flags."
+    },
+    {
+      "path": ".ptsip/engine/developer/policy/migrate_unified.py",
+      "entry": "normalize and run",
+      "owner": "DEVELOPER_SOURCE_MIGRATION",
+      "previous": ["source_rule_units", "is_unified", "restore_source", "validate_document"],
+      "replacement": "ptsip-common-contract source-rule-units, restore-source and validate-unified",
+      "regression": "Compare VERIFY_CURRENT summaries and round-trip digests for both policy planes."
+    },
+    {
+      "path": "src/ptsip/governance/authority.py",
+      "entry": "AuthorityCatalog._load_yaml",
+      "owner": "SUPPORT_POLICY_GOVERNANCE_INPUT",
+      "previous": ["is_unified", "validate_document", "restore_source"],
+      "replacement": "Go-backed validate-unified with the read-only source view; installed projected policies use the native YAML path",
+      "regression": "Exercise source validation and restoration for a candidate, plus installed Support Policy projection."
+    },
+    {
+      "path": ".ptsip/engine/developer/policy/applicability/input.go",
+      "entry": "RequireSourceSnapshot",
+      "owner": "APPLICABILITY_SOURCE_SNAPSHOT",
+      "previous": ["src/ptsip/policy_contracts"],
+      "replacement": "Snapshot the shared Go common contract module",
+      "regression": "Go applicability tests and clean-source applicability guard."
+    },
+    {
+      "path": ".github/workflows/policy-contract-guard.yml",
+      "entry": "unified candidate coverage step",
+      "owner": "POLICY_CONTRACT_GUARD",
+      "previous": ["missing unified source test", "missing current migration test"],
+      "replacement": "Go contract vectors and maintained source/corpus parity tests at both registered pytest paths",
+      "regression": "Run the Go contract tests, source tests, and the current migration check."
+    },
+    {
+      "path": ".ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py",
+      "entry": "build_wheel and build_sdist",
+      "owner": "PEP517_PACKAGE_ASSEMBLY",
+      "previous": ["Python candidate helper distributed as a package"],
+      "replacement": "Host Go executable, exact registry and schemas, and wheel origin receipt",
+      "regression": "Verify wheel inventory, sdist rebuild and isolated installed resource lookup."
+    }
+  ],
+  "removed_interface_dispositions": {
+    "python_module_main": "REPLACED_BY_MACHINE_VALIDATE_UNIFIED_REQUEST",
+    "assess_registration": "NO_CALLERS_FOUND; DECLARED_REFERENCE_CHECKS_RETAINED_IN_VALIDATE_UNIFIED",
+    "empty_python_package_export": "NO_CALLERS_FOUND"
+  },
+  "rule_tests": {
+    "SFP-CNTR-0009/R-01": "TestR01R03R04ExtensionProofs",
+    "SFP-CNTR-0009/R-02": "TestR02ResourceAndReferenceFailures; wheel_smoke.py",
+    "SFP-CNTR-0009/R-03": "TestR02R03R05R07CustomerResources; TestR01R03R04ExtensionProofs",
+    "SFP-CNTR-0009/R-04": "TestR01R03R04ExtensionProofs",
+    "SFP-CNTR-0009/R-05": "TestR02R03R05R07CustomerResources; wheel_smoke.py",
+    "SFP-CNTR-0009/R-07": "TestR02R03R05R07CustomerResources; wheel_smoke.py"
+  }
+}
