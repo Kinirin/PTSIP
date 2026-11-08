@@ -40,6 +40,41 @@
 
 패키지 구성, 도구, 각 엔진 및 프로젝트 프로필은 독립적 인 식별을 유지합니다. 이름 * [b5 패키지 릴리스 노트](../releasenote/PTSIP_Package/0.3.8.adee8b.md), [b5 공구 방출 주](../releasenote/tool/T.0.3.8.b5.md), [GitHub 릴리스](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b) · [Tool 출시](../releasenote/tool/README.md). 릴리스 검증 및 출판은 기존에 의해 지배된다 [공지사항](../../.github/workflows/tooling-release.yml); 문서 업데이트는 새로운 출판 증거를 구성하지 않습니다.
 
+<!-- ptsip-readme-i18n: a7f73fb32f8192772aa7e54f187ef24a3c043167c38cc657eb1c6a8dbe6541b9 -->
+
+<!-- ptsip:declared-versions:start -->
+### 현재 소스 선언
+
+<!-- ptsip-readme-i18n: d98d3f98b4b82faad361bf17cd22c98a6faeea93462c75033de655a49e536954 -->
+
+이 소스 선언입니다; 출판 증거는 위에 별도로 기록됩니다.
+
+<!-- ptsip-readme-i18n: c40f8ec84f647d17c414445ad6a1906b0fb07382cf0c93358b4383c08999832c -->
+
+| 제품정보 | 선언된 버전 |
+| --- | --- |
+| `engine.context` | `0.2.2` |
+| `engine.discovery` | `0.3.3` |
+| `engine.execution` | `0.3.2` |
+| `engine.planning` | `0.3.2` |
+| `engine.projection` | `0.2.2` |
+| `engine.storage` | `0.3.2` |
+| `engine.validation` | `0.3.4` |
+| `package` | `0.3.8` |
+| `profile` | `pp.3.00` |
+| `tool` | `T.0.3.8.b3` |
+
+<!-- ptsip-readme-i18n: c29ce36ae3653f42cedeeddf10c13e20eb01096581a2695e795277692c3456d7 -->
+
+영어 변경 기록:
+
+<!-- ptsip-readme-i18n: 7beff9438cd4585af4f3dc25ec514ea89dbfbdd51160fd86d56cbdd4d04d0f03 -->
+
+- [docs/releasenote/PTSIP Package/0.3.8.md의 경우](../releasenote/PTSIP_Package/0.3.8.md)
+- [docs/releasenote/project-profile/pp.3.00.md의 경우](../releasenote/project-profile/pp.3.00.md)
+- [docs/releasenote/tool/T.0.3.8-b3.md의 경우](../releasenote/tool/T.0.3.8-b3.md)
+<!-- ptsip:declared-versions:end -->
+
 <!-- ptsip-readme-i18n: 9535b10be9abb7a87788c3f5107c21822734a4507aeb464f8710fb8c4866b965 -->
 
 ## 빠른 시작

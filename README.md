@@ -23,6 +23,31 @@ The **published PTSIP beta is `0.3.8b5`** (October 18, 2026). This PyPI distribu
 
 Package composition, Tool, each engine and Project Profile retain independent identities. See the [b5 Package release note](docs/releasenote/PTSIP_Package/0.3.8.adee8b.md), [b5 Tool release note](docs/releasenote/tool/T.0.3.8.b5.md), [immutable GitHub Release](https://github.com/Kinirin/PTSIP/releases/tag/ptsip-release-912a2b4956e856bec709cadc322cbd68588cdd5b) and [Tool release history](docs/releasenote/tool/README.md). Release verification and publication remain governed by the existing [release workflow](.github/workflows/tooling-release.yml); documentation updates do not constitute new publication evidence.
 
+<!-- ptsip:declared-versions:start -->
+### Current source declarations
+
+These are source declarations; publication evidence is recorded separately above.
+
+| Component | Declared version |
+| --- | --- |
+| `engine.context` | `0.2.2` |
+| `engine.discovery` | `0.3.3` |
+| `engine.execution` | `0.3.2` |
+| `engine.planning` | `0.3.2` |
+| `engine.projection` | `0.2.2` |
+| `engine.storage` | `0.3.2` |
+| `engine.validation` | `0.3.4` |
+| `package` | `0.3.8` |
+| `profile` | `pp.3.00` |
+| `tool` | `T.0.3.8.b3` |
+
+English change records:
+
+- [docs/releasenote/PTSIP_Package/0.3.8.md](docs/releasenote/PTSIP_Package/0.3.8.md)
+- [docs/releasenote/project-profile/pp.3.00.md](docs/releasenote/project-profile/pp.3.00.md)
+- [docs/releasenote/tool/T.0.3.8-b3.md](docs/releasenote/tool/T.0.3.8-b3.md)
+<!-- ptsip:declared-versions:end -->
+
 ## Quick start
 
 Requires Python **3.11 or newer**. These commands use PowerShell; the basic CLI commands also work in other shells.
