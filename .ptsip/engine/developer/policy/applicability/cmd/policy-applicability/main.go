@@ -42,7 +42,6 @@ func main() {
             return
         }
         base := *root
-        if base == "" { base = "." }
         request, err := applicability.CaptureInput(base)
         if err != nil { fail(err) }
         printJSON(request)
