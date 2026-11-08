@@ -68,3 +68,57 @@ def test_go_rejects_unregistered_source_item_references(document):
 def test_build_projection_rejects_duplicate_yaml_keys():
     with pytest.raises(PolicySourceError, match="DUPLICATE_MAPPING_KEY"):
         source_result("project-support-source", "source", raw="duplicate: 1\nduplicate: 2\n", path=RELATIVE)
+
+
+@pytest.mark.parametrize("relative", [
+    "ARCH/SFP-ARCH-0001.yaml",
+    "ARCH/SFP-ARCH-0004.yaml",
+    "CTRL/SFP-CTRL-0002.yaml",
+])
+def test_migrated_support_policy_lifecycle_matches_source_index_and_contract(relative):
+    """A lifecycle transition must preserve canonical source integrity and index equality."""
+    target = ROOT / "src/policy" / relative
+    policy = yaml.safe_load(target.read_text(encoding="utf-8"))
+    index = yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))
+    official_schema = json.loads(
+        (ROOT / "src/ptsip/common_contract/schemas/policy_lifecycle.schema.json").read_text(encoding="utf-8")
+    )
+    index_schema = json.loads(
+        (ROOT / "src/policy/schemas/ptsip-support-feature-policy-index.schema.json").read_text(encoding="utf-8")
+    )
+    status = "APPROVED.Applying"
+    assert policy["Policy_Lifecycle"]["status"] == status
+    assert status in official_schema["properties"]["status"]["enum"]
+    assert "ACTIVE" not in official_schema["properties"]["status"]["enum"]
+
+    entry, = (item for item in index["policies"] if item["id"] == policy["Policy_Identity"]["id"])
+    assert entry["path"] == relative
+    assert entry["status"] == status
+    assert status in index_schema["properties"]["policies"]["items"]["properties"]["status"]["enum"]
+    source_item, = (
+        item for item in policy["Policy_Content"]["items"]
+        if item["id"] == policy["Policy_Lifecycle"]["source_ref"]
+    )
+    assert source_item["source_pointer"] == "/policy"
+    assert source_item["value"]["status"] == status
+
+    original = source_result("restore-source", "source", document=policy)
+    assert original["policy"]["status"] == status
+    canonical = json.dumps(original, ensure_ascii=True, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    assert hashlib.sha256(canonical.encode("ascii")).hexdigest() == policy["Policy_Content"]["source_document"]["sha256"]
+
+
+def test_support_index_lifecycle_transition_retains_legacy_other_policy_entries():
+    index = yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))
+    index_schema = json.loads(
+        (ROOT / "src/policy/schemas/ptsip-support-feature-policy-index.schema.json").read_text(encoding="utf-8")
+    )
+    official_schema = json.loads(
+        (ROOT / "src/ptsip/common_contract/schemas/policy_lifecycle.schema.json").read_text(encoding="utf-8")
+    )
+    allowed = set(index_schema["properties"]["policies"]["items"]["properties"]["status"]["enum"])
+    canonical = set(official_schema["properties"]["status"]["enum"])
+    assert canonical <= allowed
+    assert {"DRAFT", "ACTIVE", "DEPRECATED", "RETIRED"} <= allowed
+    assert all(entry["status"] in allowed for entry in index["policies"])
+    assert "APPROVED.NotDeclared" not in allowed
