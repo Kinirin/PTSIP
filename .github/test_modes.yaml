@@ -140,6 +140,8 @@ modes:
         - .ptsip/engine/developer/policy/verification
       pytest:
         - src/tests/ptsip/contracts/test_unified_policy.py
+        - src/tests/ptsip/contracts/test_migrate_unified_current.py
+        - src/tests/ptsip/contracts/test_applicability_snapshot.py
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:

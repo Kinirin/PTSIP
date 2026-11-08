@@ -95,40 +95,35 @@ to inspect, author, interpret, convert, migrate, rewrite, or validate a
 .ptsip/index.json                         namespaces.contracts.index
   -> .ptsip/contracts/index.json          policy
   -> .ptsip/contracts/policy/boundary.json
-       -> routing_binding.data            policy_routes.json
-       -> routing_binding.schema          Policy_Routing.schema.json (v5)
-       -> routing.schema_refs.public       .ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json
-       -> routing.schema_refs.rules        .ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json
-       -> .ptsip/contracts/policy/candidate.index.json  active v2 structure registration
-       -> .ptsip/contracts/policy/Policy_Rules/Family_Selection.json
+       -> unified_binding.index           .ptsip/contracts/policy/unified/index.json
+            -> schema_ref                 Unified_Policy.schema.json
+       -> routing_binding.data            policy_routes.json (v2 source structure)
+       -> rules_binding.family_selection  Policy_Rules/Family_Selection.json
 ```
 
-Use the policy document's declared `Policy_Identity.policy_kind` and
-`Policy_Identity.root_family`, and follow the registered routes and
-family-selection contract; never select a family or schema merely by file
-name, directory name, or resemblance to another Family. The active policy structural schema is v2, registered through `policy_routes.json` at
-`.ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json`;
-its shared Policy_Rules schema is `.ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json`.
-Use `candidate.index.json` registration and the exact Family_Selection route, not withdrawn v7
-Family rules, for policy-check. A structural VALID result does not approve unresolved semantics.
+Use the policy document's declared identity, schema version and Family with
+the registered selector. For current Family documents in both planes,
+resolve the unified structural candidate via `unified_binding.index`.
+Use the v2 route for explicitly selected v2 source validation.
+File and directory names alone do not select a Family or contract.
+A structural VALID result does not approve unresolved semantics.
 Resolve status, rule identities, conditions, and authorization through
 their registered owners; a schema or validator result does not grant
 policy approval or execution authority.
 
 **Policy migration uses, rather than recreates, the registered contracts.**
 For legacy machine policy -> human semantic review -> current machine policy,
-use the registered v2 public schema and v2 Family selection as the
-serialization/validation target. Retired policy material is historical
-evidence for review, not automatically effective authority. Do not default
-to creating a new contract, a duplicate schema, a new independent rule body,
-or a guessed Family structure. If the selected contract is missing,
+use the registered contract returned by selection as the serialization and
+validation target. Retired policy material is historical evidence for review.
+Do not default to creating a new contract, a duplicate schema, a new
+independent rule body, or a guessed Family structure. If the selected contract is missing,
 incompatible, or insufficient for approved semantics, report the exact
 unresolved contract/authority decision and fail closed for normative
 mutation. The existing developer policy validators are routed through
 `.ptsip/engine/developer/index.json`; their structural checks must not
 be mistaken for semantic equivalence or approval.
 
-**Temporary Go contract entry for existing developer policies (read-only):**
+**Go contract entry for existing policies (read-only):**
 For an explicitly identified `developer/policy/**` policy, use the existing
 repository-local Go developer engine from the repository root:
 
@@ -140,10 +135,9 @@ go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. -
 Replace the example target with the exact repository-relative path from the
 task. The first command resolves the registered contract without invoking
 validation; the second resolves and calls the existing `policy-check` Go
-validator. Contract entry selects only the developer-policy domain; unrelated
-release and Responsibility-Authority contracts are not loaded for selection.
-Other domains retain their explicit registered validator commands until their
-own current route is available. No Python `contract_entry.py` adapter exists.
+validator. The unified route also accepts registered Support Feature Family
+documents after resolving the Support Feature plane independently. Release
+and Responsibility-Authority retain their own registered entry points.
 
 Selection follows `.ptsip/index.json`, the current contract catalog, policy
 routing and Family rules, and the policy document's declared identity.
@@ -151,8 +145,7 @@ Missing or ambiguous selected references fail closed. This is an agent-invoked
 bootstrap instruction, not an automatic runtime hook. Neither this entry nor
 `AGENTS.md` creates policy authority, approves changes, grants permission,
 asserts semantic equivalence or activates the future Bootstrap Integrated
-Engine. The developer v2 structural validator uses the installed PTSIP VALIDATION
-engine and YAML serialization dependencies after deterministic selection.
+Engine. The selected contract determines the structural validation scope.
 
 Do **not** use `developer/policy/registries/**` for current developer-policy
 authority, schema, contract routing, lifecycle or approval. These retired

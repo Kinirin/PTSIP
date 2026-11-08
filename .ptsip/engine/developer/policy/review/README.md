@@ -6,10 +6,11 @@ artifacts and web-agent access are documented in [ACTIONS.md](ACTIONS.md).
 
 ## Review and authoring sequence
 
-1. Resolve the exact policy with `contract-entry --dry-run`. Use its registered
-   public schema, rules schema, schema IDs, Family profile and active registry.
-   Version labels alone are insufficient: historical Family contracts also
-   contain a `v2` label. Unresolved selection permits historical explanation only.
+1. Resolve the exact policy with `contract-entry --dry-run`. Use the returned
+   schema and registry references. The current Family documents use the
+   registered unified structural candidate. For explicit v2 source review,
+   use the selected v2 schema and Family profile. Unresolved selection permits
+   historical explanation only.
 2. Read the target in full. Select relevant historical sections explicitly with
    exact file paths and JSON Pointers. Preserve selection reasons for reuse.
    `source_scope` does not establish which historical rules apply.
@@ -18,10 +19,11 @@ artifacts and web-agent access are documented in [ACTIONS.md](ACTIONS.md).
    Preserve obligations, prohibitions, permissions, conditions and exceptions.
 4. Present the semantic review for the user's new declaration. Translation or
    structural validity does not approve a policy change.
-5. Map approved content to the fields of the actual selected schema. Current
-   `Policy_Rules.contracts[]` owns rules, requirements, source items and optional
-   authority declarations. Read the exact Family field profile; do not recreate
-   the historical `Identity/Definition/Boundary/Evaluation` rule structure.
+5. Map approved content to the fields of the actual selected schema. In the
+   unified candidate, `Policy_Rules.rules[]` identifies rule-local bindings and
+   `Policy_Content.items` records their source. Keep missing applicability or
+   condition evidence unresolved. Read the selected Family profile when the
+   route is v2.
 6. Report contract limitations before extending fields: the unrepresentable
    meaning, existing-field alternatives, responsibility separation, reusability
    within the Family, common-contract effects and the exact approval boundary.

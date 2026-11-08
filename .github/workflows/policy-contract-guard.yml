@@ -37,8 +37,11 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          python -m pytest -q src/tests/ptsip/contracts/test_unified_policy.py
-          python .ptsip/engine/developer/policy/migrate_unified.py --root . --check
+          python -m pytest -q \
+            src/tests/ptsip/contracts/test_unified_policy.py \
+            src/tests/ptsip/contracts/test_migrate_unified_current.py \
+            src/tests/ptsip/contracts/test_applicability_snapshot.py
+          python .ptsip/engine/developer/policy/migrate_unified.py --root . --verify-current
       - name: Check read-only per-rule RA RAC AEC applicability registration
         shell: bash
         run: |

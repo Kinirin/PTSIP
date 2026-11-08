@@ -91,3 +91,16 @@ func TestRetiredPolicyIsNotPromoted(t *testing.T) {
     if err != nil { t.Fatal(err) }
     if out.Counts["INELIGIBLE_POLICY"] != 3 { t.Fatal(out.Counts) }
 }
+
+func TestBindingRequiresOwnRuleSource(t *testing.T) {
+    in := fixture()
+    policy := &in.Policies[0]
+    policy.Items = append(policy.Items, SourceItem{ID: "SRC-0002", SourcePointer: "/unrelated"})
+    binding := policy.Rules[0].ContractBindings["AEC"]
+    binding.BasisRefs = []string{"SRC-0002"}
+    policy.Rules[0].ContractBindings["AEC"] = binding
+    _, err := Assess(in)
+    if err == nil || !strings.Contains(err.Error(), "BINDING_RULE_SOURCE_REQUIRED") {
+        t.Fatalf("unrelated source must not satisfy the rule's evidence requirement: %v", err)
+    }
+}

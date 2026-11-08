@@ -174,11 +174,16 @@ func Assess(input Input) (Output, error) {
                     return out, fmt.Errorf("BINDING_MISSING: %s/%s/%s", policy.ID, rule.ID, kind)
                 }
                 evidence := make([]string, 0, len(binding.BasisRefs))
+                ruleSourcePresent := false
                 for _, ref := range binding.BasisRefs {
                     if items[ref] == "" {
                         return out, fmt.Errorf("BINDING_SOURCE_UNRESOLVED: %s/%s/%s", policy.ID, rule.ID, kind)
                     }
+                    ruleSourcePresent = ruleSourcePresent || ref == rule.SourceRef
                     evidence = append(evidence, ref)
+                }
+                if !ruleSourcePresent {
+                    return out, fmt.Errorf("BINDING_RULE_SOURCE_REQUIRED: %s/%s/%s", policy.ID, rule.ID, kind)
                 }
                 sort.Strings(evidence)
                 d := Decision{

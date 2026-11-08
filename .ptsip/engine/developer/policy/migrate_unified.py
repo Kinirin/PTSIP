@@ -27,6 +27,7 @@ FAMILIES = (
 )
 PLANES = {"developer": "PTSIP_DEVELOPER_POLICY", "src": "PTSIP_SUPPORT_FEATURE"}
 INVENTORY = ".ptsip/contracts/policy/unified/migration-inventory.json"
+ARCH_DECISIONS = "developer/policy/ARCH/Policy_Rules_Decisions.yaml"
 CANDIDATE_CONTRACTS = {
     "RAC": ".ptsip/contracts/compile-sealed-rbac/rac/rac.contract.json",
     "AEC": ".ptsip/contracts/compile-sealed-rbac/aec/aec.contract.json",
@@ -242,7 +243,7 @@ def normalize(root, path, source, registration, baseline, version):
     }
 
 
-def discover(root):
+def discover(root, verify_current=False):
     def in_scope(path):
         parts = Path(path).parts
         return (
@@ -258,15 +259,28 @@ def discover(root):
         index = parse_document((root / plane / "policy/index.yaml").read_bytes())
         for entry in index["policies"]:
             path = entry["path"] if plane == "developer" else "src/policy/" + entry["path"]
+            if verify_current and in_scope(path) and not path.startswith(plane + "/policy/"):
+                raise ValueError("POLICY_INDEX_PLANE_MISMATCH: " + path)
             if path in indexes:
                 raise ValueError("DUPLICATE_POLICY_ROUTE: " + path)
             indexes[path] = entry["id"]
     files = git(root, "ls-files", "-z", "--", "developer/policy", "src/policy").decode("utf-8").split("\0")
-    selected = sorted(path for path in files if in_scope(path))
-    missing = sorted({path for path in indexes if in_scope(path)} - set(selected))
+    selected = {path for path in files if in_scope(path)}
+    if verify_current:
+        for plane in PLANES:
+            for family in FAMILIES:
+                directory = root / plane / "policy" / family
+                if directory.exists():
+                    selected.update(
+                        path.relative_to(root).as_posix()
+                        for path in directory.iterdir()
+                        if path.suffix in (".yaml", ".yml") and path.is_file()
+                    )
+    missing = sorted({path for path in indexes if in_scope(path)} - selected)
     if missing:
-        raise ValueError("INDEXED_POLICY_NOT_TRACKED: " + ", ".join(missing))
-    return selected, indexes
+        problem = "INDEXED_POLICY_NOT_ON_DISK" if verify_current else "INDEXED_POLICY_NOT_TRACKED"
+        raise ValueError(problem + ": " + ", ".join(missing))
+    return sorted(selected), indexes
 
 
 def atomic_write(path, raw):
@@ -284,7 +298,9 @@ def atomic_write(path, raw):
             temporary.unlink(missing_ok=True)
 
 
-def run(root, apply):
+def run(root, apply, verify_current=False):
+    if verify_current and apply:
+        raise ValueError("CURRENT_POLICY_VERIFICATION_IS_READ_ONLY")
     root = root.resolve()
     actual = Path(git(root, "rev-parse", "--show-toplevel").decode("utf-8").strip()).resolve()
     if actual != root:
@@ -293,7 +309,7 @@ def run(root, apply):
     from ptsip.policy_contracts.unified import VERSION, is_unified, restore_source, validate_document
 
     baseline = git(root, "rev-parse", "HEAD").decode("ascii").strip()
-    paths, indexes = discover(root)
+    paths, indexes = discover(root, verify_current)
     original_bytes = {}
     changes = {}
     documents = []
@@ -302,17 +318,31 @@ def run(root, apply):
     binding_states = Counter()
     kinds = Counter()
     family_counts = {}
+    policy_ids = set()
     for path in paths:
         absolute = root / path
+        if verify_current and not absolute.resolve().is_relative_to(root):
+            raise ValueError("POLICY_PATH_OUTSIDE_REPOSITORY: " + path)
         raw = absolute.read_bytes()
         parsed = parse_document(raw)
-        if not is_unified(parsed) and not isinstance(parsed.get("Policy_Identity", parsed.get("policy")), dict):
+        unified = is_unified(parsed)
+        if verify_current and not unified:
+            auxiliary_decision = (
+                path == ARCH_DECISIONS
+                and path not in indexes
+                and parsed.get("contract_type") == "PTSIP_ARCH_POLICY_RULES_DECISIONS"
+                and "Policy_Identity" not in parsed
+                and "policy" not in parsed
+            )
+            if not auxiliary_decision:
+                raise ValueError("CURRENT_POLICY_NOT_UNIFIED: " + path)
+        if not unified and not isinstance(parsed.get("Policy_Identity", parsed.get("policy")), dict):
             if path in indexes:
                 raise ValueError("INDEXED_POLICY_IDENTITY_MISSING: " + path)
             auxiliary.append({"path": path, "classification": "AUXILIARY_NON_POLICY"})
             continue
         original_bytes[path] = raw
-        source = restore_source(parsed) if is_unified(parsed) else parsed
+        source = restore_source(parsed) if unified else parsed
         identity, _, _ = native_identity(source)
         parts = Path(path).parts
         if identity["policy_kind"] != PLANES[parts[0]] or identity["root_family"] != parts[2]:
@@ -320,17 +350,22 @@ def run(root, apply):
         registration = "INDEXED" if path in indexes else "UNINDEXED"
         if registration == "INDEXED" and indexes[path] != identity["id"]:
             raise ValueError("SOURCE_INDEX_IDENTITY_MISMATCH: " + path)
-        candidate = parsed if is_unified(parsed) else normalize(root, path, source, registration, baseline, VERSION)
+        if verify_current and identity["id"] in policy_ids:
+            raise ValueError("DUPLICATE_CURRENT_POLICY_ID: " + identity["id"])
+        policy_ids.add(identity["id"])
+        candidate = parsed if unified else normalize(root, path, source, registration, baseline, VERSION)
         result = validate_document(root, candidate)
         if result.get("status") != "VALID":
             raise ValueError("CANDIDATE_VALIDATION_FAILED: " + path + ": " + json.dumps(result, ensure_ascii=True))
         if candidate["Policy_Content"]["source_document"]["path"] != path:
             raise ValueError("CANDIDATE_SOURCE_PATH_MISMATCH: " + path)
+        if verify_current and candidate["Policy_Migration"]["source_registration"] != registration:
+            raise ValueError("CANDIDATE_SOURCE_REGISTRATION_MISMATCH: " + path)
         if restore_source(candidate) != source:
             raise ValueError("SOURCE_RESTORATION_CHANGED: " + path)
         if candidate["Policy_Content"]["source_document"]["sha256"] != canonical_digest(source):
             raise ValueError("SOURCE_DIGEST_CHANGED: " + path)
-        if not is_unified(parsed):
+        if not unified:
             header = "# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json\n"
             serialized = (header + yaml.safe_dump(candidate, allow_unicode=True, sort_keys=False, width=120)).encode("utf-8")
             if parse_document(serialized) != candidate:
@@ -417,14 +452,16 @@ def main():
     parser.add_argument("--root", type=Path, default=Path.cwd())
     operation = parser.add_mutually_exclusive_group()
     operation.add_argument("--check", action="store_true", help="prepare and validate all documents without writing")
+    operation.add_argument("--verify-current", action="store_true", help="validate the candidate documents currently on disk")
     operation.add_argument("--apply", action="store_true", help="write validated candidates and the migration inventory")
     args = parser.parse_args()
     try:
-        report = run(args.root, args.apply)
+        report = run(args.root, args.apply, args.verify_current)
     except (ValueError, OSError, TypeError, yaml.YAMLError) as error:
         print(json.dumps({"status": "FAIL", "problem": str(error)}, ensure_ascii=True))
         return 2
-    print(json.dumps({"status": "VALID", "operation": "APPLY" if args.apply else "CHECK", "summary": report["summary"], "contract_binding_states": report["contract_binding_states"], "inventory": INVENTORY if args.apply else None}, ensure_ascii=True))
+    name = "APPLY" if args.apply else "VERIFY_CURRENT" if args.verify_current else "CHECK"
+    print(json.dumps({"status": "VALID", "operation": name, "summary": report["summary"], "contract_binding_states": report["contract_binding_states"], "inventory": INVENTORY if args.apply else None}, ensure_ascii=True))
     return 0
 
 

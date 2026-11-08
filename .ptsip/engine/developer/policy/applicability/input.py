@@ -10,6 +10,33 @@ from pathlib import Path
 import subprocess
 import sys
 
+
+# These paths cover the selected policy inputs, registered contract resources,
+# and the shared validator that reads them from the working tree.
+SOURCE_PATHS = (
+    ".ptsip/index.json",
+    ".ptsip/contracts",
+    "developer/policy",
+    "src/policy",
+    "src/ptsip/policy_contracts",
+)
+
+
+def git(root: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "--no-optional-locks", *args], cwd=root, check=True, capture_output=True,
+    ).stdout
+
+
+def require_source_snapshot(root: Path, head: str) -> None:
+    changes = git(root, "status", "--porcelain=v1", "--untracked-files=all", "-z", "--", *SOURCE_PATHS)
+    if changes:
+        first_change = changes.split(b"\0", 1)[0].decode("utf-8", errors="replace")
+        raise ValueError("SOURCE_SNAPSHOT_DIRTY: " + first_change)
+    if git(root, "rev-parse", "HEAD").decode("ascii").strip() != head:
+        raise ValueError("SOURCE_HEAD_CHANGED_DURING_ASSESSMENT")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
@@ -19,21 +46,24 @@ def main() -> int:
     from ptsip.policy_contracts.unified import load_document, validate_document, VERSION
 
     try:
-        head = subprocess.run(
-            ["git", "rev-parse", "HEAD"], cwd=root, check=True,
-            capture_output=True, text=True,
-        ).stdout.strip()
+        if Path(git(root, "rev-parse", "--show-toplevel").decode("utf-8").strip()).resolve() != root:
+            raise ValueError("EXACT_REPOSITORY_ROOT_REQUIRED")
+        head = git(root, "rev-parse", "HEAD").decode("ascii").strip()
+        require_source_snapshot(root, head)
+
+        def read_source(path: str) -> dict:
+            return load_document(git(root, "show", "--no-textconv", head + ":" + path))
+
         registry_ref = ".ptsip/contracts/policy/unified/applicability-registry.json"
-        unified_index = json.loads(
-            (root / ".ptsip/contracts/policy/unified/index.json").read_text(encoding="utf-8")
-        )
+        unified_index = read_source(".ptsip/contracts/policy/unified/index.json")
         if unified_index.get("applicability_assessment_ref") != registry_ref:
             raise ValueError("APPLICABILITY_ASSESSOR_NOT_REGISTERED")
-        registry_path = root / registry_ref
-        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        registry = read_source(registry_ref)
         if (
             registry.get("schema_version") != "ptsip-policy-applicability-registration/v1"
             or registry.get("status") != "CANDIDATE_READ_ONLY"
+            or registry.get("policy_mutation_authorized") is not False
+            or registry.get("normative_policy_activation") is not False
             or registry.get("evaluation_authorized") is not False
             or registry.get("execution_authorized") is not False
         ):
@@ -45,15 +75,13 @@ def main() -> int:
                 ".ptsip/contracts/compile-sealed-rbac/"
             ) or ".." in Path(ref).parts:
                 raise ValueError("INVALID_CONTRACT_SOURCE: " + kind)
-            contract = json.loads((root / ref).read_text(encoding="utf-8"))
+            contract = read_source(ref)
             contracts[kind] = {
                 "source_ref": ref,
                 "activation_state": contract["activation_state"],
                 "definition_state": contract.get("definition_state", ""),
             }
-        family_registry = json.loads(
-            (root / ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json").read_text(encoding="utf-8")
-        )
+        family_registry = read_source(".ptsip/contracts/policy/Policy_Rules/Family_Selection.json")
         families = set(family_registry["family_routes"])
         if len(families) != 14:
             raise ValueError("ROOT_FAMILY_REGISTRY_MISMATCH")
@@ -63,7 +91,7 @@ def main() -> int:
             ("PTSIP_DEVELOPER_POLICY", "developer/policy/index.yaml"),
             ("PTSIP_SUPPORT_FEATURE", "src/policy/index.yaml"),
         ):
-            index = load_document((root / index_path).read_bytes())
+            index = read_source(index_path)
             for entry in index["policies"]:
                 policy_id = entry["id"]
                 path = entry["path"]
@@ -81,7 +109,7 @@ def main() -> int:
                 if policy_id in seen:
                     raise ValueError("DUPLICATE_INDEXED_POLICY: " + policy_id)
                 seen.add(policy_id)
-                doc = load_document((root / path).read_bytes())
+                doc = read_source(path)
                 if doc.get("schema_version") != VERSION:
                     raise ValueError("NON_UNIFIED_INDEXED_POLICY: " + path)
                 identity = doc["Policy_Identity"]
@@ -111,6 +139,7 @@ def main() -> int:
             "contracts": contracts,
             "policies": policies,
         }
+        require_source_snapshot(root, head)
         print(json.dumps(payload, ensure_ascii=True, separators=(",", ":"), sort_keys=True))
         return 0
     except (ValueError, KeyError, OSError, subprocess.SubprocessError) as error:
