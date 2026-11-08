@@ -42,9 +42,7 @@ func main() {
             return
         }
         base := *root
-        if base == "" {
-            fail(fmt.Errorf("SNAPSHOT_EXPLICIT_ROOT_REQUIRED"))
-        }
+        if base == "" { base = "." }
         request, err := applicability.CaptureInput(base)
         if err != nil { fail(err) }
         printJSON(request)
