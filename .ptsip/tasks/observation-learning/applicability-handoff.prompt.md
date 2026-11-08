@@ -1,76 +1,116 @@
-# PTSIP — Applicability small-unit handoff
+# PTSIP — 적용성 미해결 항목의 연속 배치 처리 (로컬 에이전트)
 
-> Non-normative local-agent prompt. This file does not register a Task Engine operation,
-> authorize contract activation, or change effective policy.
+> 이 문서는 구현 작업 인계 프롬프트이다. 정책·계약의 규범적 권위를 부여하지 않으며
+> `.ptsip/tasks/index.json`의 예약 상태를 실행 등록으로 바꾸지 않는다.
+> 처리 기준은 같은 디렉토리의 `applicability-batch.contract.json`을 함께 읽는다.
 
-## Entry and responsibility boundaries
+## 목표: 전수 기계 분류 + 반복적인 의미 검토 + 실제 진전
 
-Read `AGENTS.md`, then the current active branch/HEAD, and these existing sources:
+최종 목적은 2,001개 미해결 슬롯을 무작정 승인하거나 임의로 채우는 것이 아니라,
+**각 규칙이 RA/RAC/AEC 계약을 실제로 사용하는지 검증할 수 있는 근거 파이프라인**을
+구현하고, 조건이 충족되면 비규범적 계약·적용 근거 후보를 **반복 생성**하는 것이다.
 
-- `.ptsip/contracts/policy/unified/authoring-decision.json` — previously approved structural work.
-- `developer/policy/contracts/rbac-hybrid-conditions-direction.v1.json` — approved RBAC/ABAC design direction.
-- `.ptsip/contracts/policy/unified/applicability-registry.json` — read-only applicability contract.
-- `.ptsip/tasks/observation-learning/decision.json` and `observations.json` — observational evidence, **not policy**.
-- `.ptsip/tasks/index.json` — currently reserved; do not claim a registered Task Engine.
-- `.ptsip/contracts/compile-sealed-rbac/...` — inspect exact RA/RAC/AEC registration and permission flags before proposing any write.
+**한 그룹 / 최대 세 규칙 / 개선 하나 / 질문 하나로 작업을 종료하지 않는다.**
+세 규칙 샘플은 탐색용일 뿐, 그 그룹의 전체 적용 범위를 대신하지 않는다.
+한 배치가 막히면 원인을 기록하고 다른 독립 배치로 계속한다.
+같은 원인의 반복 질문은 개별 규칙별 질문이 아니라 소유자·계약 의미별 결정 묶음으로 통합한다.
 
-Do **not** request reapproval of the already approved hybrid design direction.
-Do **not** conflate approved design, GitHub push permission, implementation write permission,
-and normative RA/RAC/AEC activation.
+## 입력 및 기존 승인 재사용
 
-## Step 1 — Mechanical work (already scripted)
+1. `AGENTS.md`와 현재 활성 브랜치의 최신 HEAD 및 두 정책 plane의 인덱스를 확인한다.
+2. `.ptsip/tasks/observation-learning/applicability-batch.contract.json`을 읽는다.
+3. `.ptsip/contracts/policy/unified/authoring-decision.json`에서 승인된 구조 전환과
+   `candidate_contract_creation_authorized: true`를 확인한다.
+4. `developer/policy/contracts/rbac-hybrid-conditions-direction.v1.json`에서 승인된
+   RBAC+ABAC 조건부 하이브리드 방향 및 승인되지 않은 세부 의미를 분리한다.
+5. `.ptsip/contracts/policy/unified/applicability-registry.json`에서 현재 평가기가
+   `CANDIDATE_READ_ONLY`이며 실제 계약의 활성화·평가·실행 권한을 주지 않음을 확인한다.
+6. `decision.json`과 `observations.json`의 CASE-001~017은 원본 판단의 출처일 뿐
+   임의로 일반 정책화하지 않는다.
 
-From the repository root on Windows 11, execute:
+승인된 상위 방향을 사용자에게 다시 선택하도록 요구하지 않는다. GitHub 쓰기 접근과
+실제 정책·RA·RAC·AEC 권한은 구별한다. 새 브랜치를 만들지 않는다.
+
+## 실행 절차
+
+### 1. 전체 대상을 기계적으로 확보
+
+Windows PowerShell, 저장소 루트:
 
 ```powershell
-go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local
+$log = Join-Path $env:TEMP "ptsip-applicability-local.log"
+go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local 2>&1 |
+    Tee-Object -FilePath $log
+if ($LASTEXITCODE -ne 0) { throw "Applicability failed. Log: $log" }
 ```
 
-This calls the Go snapshot adapter and Go assessor, writes read-only results to
-`.agent/policy-applicability/<full-HEAD>/` and test logs to the system temporary directory.
-It validates the binding count and exact source revision, and runs the narrowly scoped
-Go + registered unified-policy Pytest checks. The Go adapter preserves the existing
-shared validator bridge until that independently owned verifier is migrated.
-Do not rewrite this routine in an agent prompt.
+결과 `.agent/policy-applicability/<HEAD>/assessment.json`의 **전체 행**을 사용한다.
+`triage.json`의 3개 예시만 작업 대상으로 삼지 않는다. 현재 확인된 기준은
+2,001개 미해결(1,999개 계약 사용 근거 없음, 2개 정의 참조만 존재) 및
+1,269개 생명주기 비대상이다. 최신 HEAD의 실제 결과가 다르면 최신 데이터를 사용한다.
 
-Read `triage.json` and `assessment.json`. The triage groups are **mechanical counts,
-not semantic ownership decisions**. Never infer contractual authority from family, path,
-rule labels or a reverse `policy_basis` reference.
+### 2. 원인과 책임을 기준으로 배치 구성
 
-## Step 2 — One bounded agent task only
+기계적으로 모든 대상 키(`policy_id + rule_id + RA/RAC/AEC`)를 생성하고,
+plane·실제 책임·원인·계약·원본 Source 리비전별로 분리한다.
+필드 이름이나 Family 이름만으로 의미를 추론하지 않는다.
+기본 권장 배치 규모는 약 40개 슬롯이며, 크기는 책임과 증거 특성에 따라 조정한다.
+`.agent/policy-applicability/<HEAD>/batch-progress.json`에 처리 상태와 재개 위치를 기록한다.
 
-Choose **one** unresolved group and at most **three** representative rule references
-from `triage.json`. Read those exact rules, contract items and revisions.
+한 실행 세션 내에서 **여러 배치를 순차 처리**한다. 이미 완료된 키를 반복 분석하지
+않고, 같은 근거가 충분히 검증된 경우에만 다른 대상에 기계적으로 적용한다.
 
-Complete only this small unit:
+### 3. 후보 생성과 실제 구현
 
-1. State the actual responsibility and evidence each rule declares.
-2. Separate the already authorized implementation changes from new policy meaning.
-3. If an existing, effective contract and authority explicitly permit a **non-normative
-   tool/validator improvement**, implement that narrow improvement and its test.
-4. Otherwise produce one precise, natural-language review question identifying the
-   missing owner/condition/evidence; do not fabricate a binding.
-5. Report the changed files, tests, and still-unresolved reasons. Do not expand to all
-   2,001 unresolved cases automatically.
+각 배치에서 정확한 규칙 원문, `source_ref`, `basis_refs`, 등록 소유자,
+계약 항목 ID, 리비전 및 실제 사용 근거를 대조한다.
 
-For old `src/policy/**` material, translate the current wording into ordinary Korean
-with its real scenario before asking the user to confirm revised meaning; do not pursue
-perfect historical migration. CASE-001..017 are observations, not automatically
-generalized rules. Respect previous authorized CHANGE edits without treating unrelated
-cases as approval.
+- 근거가 있으면: 특정 규칙·계약 항목·리비전에 연결된 **검증 가능한 적용 후보**를 만든다.
+- 승인된 후보 구조는: 기존 스키마·책임에 맞춰 **비규범적 후보 계약**으로 생성하고 검증한다.
+- 도구가 증거를 자동 수집·검증하지 못하면: 단순 표시 개선이 아니라
+  **재사용 가능한 증거 해석기/후보 생성기 및 회귀 테스트**를 구현한다.
+- 근거가 없으면: `UNRESOLVED`를 임의로 바꾸지 않고 정확한 결여 조건을 기록한 후
+  다른 배치로 계속한다.
+- 기존 계약 전체(`#`)만 참조하는 경우: 실제 소비되는 조건 항목이 아니라면 사용을
+  확정하지 않으며, 같은 문제가 반복되는 범위를 묶어 사용자 결정 후보를 만든다.
 
-## Write and validation boundaries
+진전은 계약 사용의 실제 근거 후보, 유효한 후보 계약, 반복 가능한 자동화 로직,
+또는 여러 키에 적용되는 중복 제거된 결정 묶음으로 측정한다.
+`source_item_id` 같은 표시 개선이나 테스트 통과만으로 적용성 개선이 완료됐다고
+보고하지 않는다.
 
-- Allowed: bounded implementation/test changes consistent with effective policy;
-  non-normative derived analyses/candidates; approved candidate-contract preparation.
-- Not granted by this prompt: changing `UNRESOLVED` to `DECLARED` or
-  `NOT_APPLICABLE` without evidence, activating unregistered RA/RAC/AEC or Rego,
-  policy lifecycle changes, or bypassing normative authorization gates.
-- Keep existing read-only applicability behavior and its registry untouched.
-- Do not create a branch; use the current active branch only. Do not bypass branch protection.
-- Verify locally, then use the registered test mode and GitHub Actions after a permitted push.
-- Keep long logs outside commits and remove temporary logs after delivering the result.
+### 4. 권한과 오래된 정책의 경계
 
-**Stop condition:** one mechanically verified group, one bounded improvement or a single
-evidence-backed review question, and an exact test report. This is a *small work unit*,
-not a replacement for the full automation project.
+실제 정책·RA/RAC/AEC 등록·활성화·규범 상태 변경은 유효한 명시적 권한과 근거가
+확인되는 경우에만 수행한다. 기존 읽기 전용 적용성 검사를 쓰기 허용으로 변조하지 않는다.
+
+오래된 `src/policy/**`는 먼저 상황과 책임을 **한국어 자연어로 설명**한 다음
+사용자에게 현재 의미를 확인받는다. 의미 변경을 승인하기 전까지 기존 정책을
+자동 교체·일괄 이전하지 않는다.
+
+생명주기 비대상 항목은 그대로 비대상으로 보존한다. 다른 소유자의 권한을 차용하지 않는다.
+
+### 5. 종료 판단과 결과
+
+**다음 사유만으로 종료하지 않는다:** 한 그룹 검토, 규칙 3개 열람, 한 규칙이
+여전히 `UNRESOLVED`, 소소한 UI/추적 필드 개선, 테스트 통과.
+
+작업을 이어갈 수 있는 승인된 구현 범위가 남아 있으면 다음 배치를 진행한다.
+남은 모든 배치가 동일한 신규 정책 의미·등록/활성화 권한 때문에 막혔다면
+그 영향을 받는 전체 키를 기계적으로 집계하고, **공통 근본 결정 질문을 통합해**
+사용자에게 전달한다. 새 정책 권한 없이 진행할 수 없는 지점까지 도달한 경우
+근거를 명시하고 중단한다.
+
+완료 보고에는 다음을 구분한다.
+
+| 항목 | 내용 |
+|---|---|
+| 처리량 | 전체 미해결 키 중 처리·미처리·검토 대기 건수 |
+| 실제 진전 | 증거 후보 수, 후보 계약 수, 자동화 구현 및 검증된 적용 범위 |
+| 보류 | 단순 근거 부족 / 의미 결정 / 소유자·등록·활성화 권한을 각각 분리 |
+| 작성물 | `evidence-candidates.json`, `decision-bundles.json`, `batch-progress.json` 등 |
+| 검증 | 관련 Go 테스트, 정책 검증, 필요시 GitHub Actions, 로그 경로 |
+| 다음 처리 | 다음 배치 또는 사용자에게 필요한 상위 결정 하나 |
+
+파생 파일은 `.agent/`에 비규범적으로 저장하고 커밋하지 않는다.
+허용된 실제 구현·테스트 변경은 저장소에 반영할 수 있다.
