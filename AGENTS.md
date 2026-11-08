@@ -46,12 +46,16 @@ Conditional generation means non-authoritative dataset **candidates** only, with
 source-verbatim preservation, mechanical validation, and labeled AI-proposed
 cross-case relationships. Do not silently generalize individual user decisions.
 
-For a **small** applicability implementation unit, read the non-normative
-`.ptsip/tasks/observation-learning/applicability-handoff.prompt.md` and reuse
-`go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local` for deterministic
-snapshot, triage, and scoped verification; the Go CLI retains the existing
-shared policy-validator bridge rather than weakening structural validation. Neither file grants policy mutation
-or registers the reserved Task Engine.
+For contract-applicability work, read the non-normative
+`.ptsip/tasks/observation-learning/applicability-handoff.prompt.md` and its
+`.ptsip/tasks/observation-learning/applicability-batch.contract.json` machine
+handoff. Use
+`go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local`
+for deterministic snapshot and triage. Process eligible work in **repeated
+evidence-backed batches**, not a single sample, and report measured progress
+toward rule-local contract-use evidence. Do not mistake cosmetic triage changes,
+tests alone, or repeated `UNRESOLVED` for completed applicability work.
+These handoffs grant no normative policy mutation or reserved Task Engine activation.
 
 For `src/policy/**` review, treat existing wording as potentially outdated:
 translate the old policy's situation into natural language, submit the meaning
