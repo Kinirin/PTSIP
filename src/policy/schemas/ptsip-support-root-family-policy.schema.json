@@ -62,8 +62,22 @@
             "DRAFT",
             "ACTIVE",
             "DEPRECATED",
-            "RETIRED"
-          ]
+            "RETIRED",
+            "DRAFT.Default",
+            "DRAFT.Reviewed",
+            "DRAFT.Denied",
+            "DRAFT.Pass",
+            "APPROVED.Default",
+            "APPROVED.Applying",
+            "APPROVED.Application_Problems",
+            "APPROVED.Unresolved",
+            "APPROVED.Activate",
+            "APPROVED.provisional",
+            "RETIRED.Default",
+            "RETIRED.Removable",
+            "RETIRED.Waiting"
+          ],
+          "$comment": "Transitional Root source projection accepts the original lifecycle category statuses for unmigrated policies, and the official 13 flat lifecycle statuses for migrated policies. Permission eligibility is not implied by an APPROVED status."
         }
       }
     },
