@@ -178,7 +178,24 @@ Policy_Content:
       - ID
       - name
       evidence_requirements_and_evaluation_criteria: SEMANTIC_RESPONSIBILITIES_SEPARATED
+      rac_aec_value_rego_source_fields:
+        value_kind: DIRECT_REGO_SOURCE_REFERENCE
+        field_paths:
+        - value.source_ref
+        - value.revision_ref
+        - value.entrypoint
+        value_rego_nested_object: false
+        source_revision_entrypoint_validation: REQUIRED
+        field_requiredness_and_value_constraints: UNRESOLVED
+        evaluation_authority: SEPARATE_UNCHANGED
       machine_contract_field_names_and_count: UNDECIDED
+      independent_rbac_registration_lifecycle:
+        registration: RA_RAC_AEC_INDEPENDENT
+        cross_contract_relation_verification: REQUIRED_BEFORE_USABLE
+        runtime_activation: SEPARATE_EXPLICIT_AUTHORITY
+        registration_implies_execution_authorization: false
+        relation_verification_implies_execution_authorization: false
+        existing_unregistered_candidates: REMAIN_UNREGISTERED
       rego_code_structure_and_storage: UNDECIDED
       relation_to_existing_condition_schemas: UNDECIDED
       implementation_and_integration: UNDECIDED
@@ -1329,7 +1346,7 @@ Policy_Content:
         scope: ENGINE_EXTERNAL_INTEROPERABILITY_MACHINE_CONTRACT_AUTHORITY
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0004.yaml
-    sha256: 90d6fb0081949351f3ee84e8836fd5dcb4ae7a92521c883b56dea4bcd94cf875
+    sha256: 511d513731c40542d7a90baf91014bbc7658df3703911f4c2e3ca518aa53abdd
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
