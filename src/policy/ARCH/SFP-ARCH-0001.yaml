@@ -762,6 +762,34 @@ Policy_Content:
         current_repository_preferred_contract_root: .ptsip/contracts/
         user_defined_contract_paths: PERMITTED
         namespace_detailed_schema_and_activation: UNRESOLVED
+        consumer_config_provisioning:
+          initial_consumer_repository_ptsip_setup: AUTOMATIC_CREATE_CONFIG
+          existing_repository_upgrade: PATCH_SOURCE_MIGRATION
+          legacy_root_index_path_to_remove: .ptsip/index.json
+          new_config_path: .ptsip/ptsip_config.json
+          preserve_effective_registered_responsibilities: true
+          creation_is_official_engine_user_consent: false
+          selector_default_value: UNRESOLVED_NO_INFERRED_VALUE
+          strict_missing_invalid_official_selector_ref: SFP-CTRL-0002#A_STRICT_BLOCK
+          exact_setup_interface: UNRESOLVED
+        profile_catalog_transition:
+          old_catalog_path: .ptsip/profiles/index.json
+          old_catalog_status: RETIRED_TARGET
+          candidate_root: .ptsip/profiles/
+          candidate_match: DIRECT_CHILDREN
+          per_file_independent_binding: REQUIRED
+          directory_entry_is_authority: false
+          static_profile_allowlist: FORBIDDEN
+          user_added_profile_policy: PERMITTED_WITH_VALIDATED_BINDING
+          bootstrap_profile_resources:
+          - main.ptsip.yaml
+          - RA-list.yaml
+          - workflows.ptsip.yaml
+          default_unchanged_contract: INSTALLED_PTSIP_PROFILE_CONTRACT
+          proposed_user_override_contract: .ptsip/contracts/profile/User_Profile.schema.json
+          user_override_selection: PENDING_VALID_SCHEMA_REGISTRATION_AND_ITEMS_SEMANTICS_REVIEW
+          exact_binding_identity_and_scope: UNRESOLVED
+          current_RA_profile_name_migration: UNRESOLVED
       project_profile_source_partition:
         independently_maintainable_responsibility_scoped_declarations: REQUIRED
         central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
@@ -848,7 +876,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: a8dc5fa3a67585de98e54616fefb451b110421e70b50212412d791c6d9987f3b
+    sha256: b4ce94c11b5444f6790add06bb04f5eae294a171bf4fdadaf4802ad52cf5da09
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
