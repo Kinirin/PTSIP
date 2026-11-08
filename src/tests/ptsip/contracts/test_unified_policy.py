@@ -95,6 +95,10 @@ def test_migrated_support_policy_lifecycle_matches_source_index_and_contract(rel
     assert entry["path"] == relative
     assert entry["status"] == status
     assert status in index_schema["properties"]["policies"]["items"]["properties"]["status"]["enum"]
+    root_family_schema = json.loads(
+        (ROOT / "src/policy/schemas/ptsip-support-root-family-policy.schema.json").read_text(encoding="utf-8")
+    )
+    assert status in root_family_schema["properties"]["policy"]["properties"]["status"]["enum"]
     source_item, = (
         item for item in policy["Policy_Content"]["items"]
         if item["id"] == policy["Policy_Lifecycle"]["source_ref"]
@@ -122,3 +126,15 @@ def test_support_index_lifecycle_transition_retains_legacy_other_policy_entries(
     assert {"DRAFT", "ACTIVE", "DEPRECATED", "RETIRED"} <= allowed
     assert all(entry["status"] in allowed for entry in index["policies"])
     assert "APPROVED.NotDeclared" not in allowed
+
+
+def test_new_lifecycle_is_parsed_without_implicit_eligibility():
+    from ptsip.governance.model import LifecycleState
+
+    assert LifecycleState("APPROVED.Applying") is LifecycleState.APPROVED_APPLYING
+    authority_registry = yaml.safe_load(
+        (ROOT / "src/policy/registries/ptsip-support-authority-schema-registry.yaml").read_text(encoding="utf-8")
+    )
+    eligible = authority_registry["lifecycle_policy"]["project_authority_eligible_states"]
+    assert "APPROVED.Applying" not in eligible
+    assert "ACTIVE" in eligible
