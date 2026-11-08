@@ -9,7 +9,7 @@ Policy_Lifecycle:
   status: "APPROVED.Default"
   source_ref: "SRC-0002"
 Policy_Authority:
-  source_refs: "[]"
+  source_refs: []
 Policy_Rules:
   rules:
     -
@@ -139,10 +139,10 @@ Policy_Rules:
           basis_refs:
             - "SRC-0011"
 Policy_Evaluation:
-  source_refs: "[]"
+  source_refs: []
   state: "UNRESOLVED"
 Policy_Relationships:
-  source_refs: "[]"
+  source_refs: []
 Policy_Content:
   items:
     -
