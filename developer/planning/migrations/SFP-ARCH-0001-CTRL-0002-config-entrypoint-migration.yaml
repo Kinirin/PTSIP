@@ -1,0 +1,280 @@
+{
+  "schema_version": "ptsip-policy-change-plan/v1",
+  "artifact_class": "DEVELOPER_PLANNING_MIGRATION",
+  "authority": false,
+  "identity": {
+    "plan_id": "SFP-ARCH-0001-CTRL-0002-CONFIG-ENTRYPOINT-MIGRATION",
+    "title": "Retire legacy repository namespace index and adopt consumer PTSIP configuration entrypoint",
+    "status": "DRAFT",
+    "integration_branch": "main",
+    "governing_policy_refs": [
+      "src/policy/ARCH/SFP-ARCH-0001.yaml",
+      "src/policy/CTRL/SFP-CTRL-0002.yaml"
+    ],
+    "related_policy_refs": [
+      "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "src/policy/CNTR/SFP-CNTR-0005.yaml",
+      "src/policy/INFO/SFP-INFO-0001.yaml",
+      "src/policy/REAL/SFP-REAL-0001.yaml"
+    ],
+    "policy_conflict_resolution": {
+      "choice": "KEEP_LATEST",
+      "decision_authority": "PROJECT_OWNER",
+      "policy_sync_commit": "96a7d0dac8e089ce5818dfe0c84041accc671a4b",
+      "legacy_index_authority": "RETIRED",
+      "new_entrypoint": ".ptsip/ptsip_config.json"
+    },
+    "planning_approval": {
+      "status": "PENDING_USER_REVIEW"
+    },
+    "implementation_authorization": {
+      "status": "NOT_AUTHORIZED",
+      "after_plan_approval": "IMPLICIT_IF_FULLY_AUDITED_AND_NO_NEW_POLICY_DECISION"
+    }
+  },
+  "intent": {
+    "outcome": "REMOVE_LEGACY_DOT_PTSIP_INDEX_AND_ITS_EXECUTABLE_DEPENDENCIES_AFTER_MACHINE_CONTRACT_MIGRATION",
+    "consumer_configuration_source": ".ptsip/ptsip_config.json",
+    "official_engine_selector": "ptsip.engine.official.use",
+    "project_profile_discovery": "DETERMINISTIC_DISTRIBUTED_DECLARATIONS_PRESERVED",
+    "repository_runtime_source": "INSTALLED_PTSIP_PACKAGE_NOT_CONSUMER_COPIED_ENGINE",
+    "plan_may_contain_open_policy_decision_gates": true,
+    "open_decisions_do_not_authorize_implementation": true
+  },
+  "responsibility_boundaries": {
+    "policy_ARCH": "REPOSITORY_PROFILE_OWNERSHIP_AND_DETERMINISTIC_REGISTRATION_DISCOVERY",
+    "policy_CTRL": "USER_CONSENT_AND_FRESH_ELIGIBILITY_FOR_OFFICIAL_ENGINE_ACTIVATION_AND_EXECUTION",
+    "policy_CNTR_INFO": "CONFIG_AND_DISCOVERY_SCHEMA_IDENTITY_VERSION_AND_REGISTRATION",
+    "policy_REAL": "SAFE_MATERIALIZATION_AND_ATOMIC_MIGRATION",
+    "installed_package": "SHIPPED_EXECUTABLE_IMPLEMENTATION_AND_SELECTED_ENGINE_SETUP",
+    "consumer_config": ".ptsip/ptsip_config.json",
+    "consumer_catalogs": "KEEP_SEPARATE_PROFILES_TASKS_CONTRACT_REGISTRIES_UNLESS_INDEPENDENT_AUTHORITY_APPROVES_REMOVAL",
+    "verifier": "DETERMINISTIC_PATH_RESOLUTION_INTEGRITY_POLICY_CONFORMANCE_AND_FAIL_CLOSED"
+  },
+  "decision_gates": [
+    {
+      "id": "DG-01",
+      "source": "SFP-CTRL-0002#MISSING_OR_UNKNOWN_OFFICIAL_CONFIG_VALUE_DEFAULT",
+      "status": "OPEN",
+      "owner": "PROJECT_OWNER",
+      "decision_stage": "P1_POLICY_DECISIONS",
+      "question": "WHAT_HAPPENS_IF_OFFICIAL_USE_SELECTOR_IS_ABSENT_UNKNOWN_OR_MALFORMED",
+      "implementation_blocked_for": [
+        "CONFIG_DEFAULTS",
+        "ACTIVATION_ELIGIBILITY"
+      ],
+      "silent_choice": "FORBIDDEN"
+    },
+    {
+      "id": "DG-02",
+      "source": "SFP-CTRL-0002#EIGHTH_POLICY_EVALUATION_ENGINE_REGISTRATION_AND_PACKAGE_ADMISSION",
+      "status": "OPEN",
+      "owner": "PROJECT_OWNER",
+      "decision_stage": "P1_POLICY_DECISIONS",
+      "question": "WHEN_AND_UNDER_WHICH_REGISTERED_CONTRACT_TO_ADMIT_EIGHTH_OFFICIAL_ENGINE",
+      "implementation_blocked_for": [
+        "EIGHTH_ENGINE_REGISTRATION",
+        "EIGHTH_ENGINE_PACKAGE_ADMISSION"
+      ],
+      "silent_choice": "FORBIDDEN"
+    },
+    {
+      "id": "DG-03",
+      "source": "SFP-CTRL-0002#EXACT_SINGLE_PACKAGE_SELECTED_ENGINE_SETUP_INTERFACE",
+      "status": "OPEN",
+      "owner": "PROJECT_OWNER",
+      "decision_stage": "P1_POLICY_DECISIONS",
+      "question": "WHAT_IS_THE_STABLE_USER_VISIBLE_CONFIG_AND_INSTALL_SETUP_INTERFACE_FOR_SELECTED_ENGINES",
+      "implementation_blocked_for": [
+        "INSTALLER_CLI_API",
+        "CONFIG_SCHEMA_USER_INPUT",
+        "ENGINE_SETUP"
+      ],
+      "silent_choice": "FORBIDDEN"
+    },
+    {
+      "id": "DG-04",
+      "source": "SFP-ARCH-0001#PROJECT_PROFILE_DETERMINISTIC_DISCOVERY",
+      "status": "OPEN",
+      "owner": "PROJECT_OWNER_IF_POLICY_DOMAIN",
+      "decision_stage": "P1_POLICY_DECISIONS",
+      "question": "WHICH_CONTRACT_DEFINED_DISCOVERY_AND_COMPOSITION_MECHANISM_REPLACES_LEGACY_ROUTING_INDEX",
+      "implementation_blocked_for": [
+        "DISCOVERY_EXECUTION"
+      ],
+      "silent_choice": "FORBIDDEN"
+    },
+    {
+      "id": "DG-05",
+      "source": "src/policy/index.yaml#SFP-CTRL-0002",
+      "status": "OPEN",
+      "owner": "POLICY_AUTHORITY",
+      "decision_stage": "P0_BASELINE",
+      "question": "RESOLVE_DRAFT_INDEX_ENTRY_VERSUS_ACTIVE_POLICY_LIFECYCLE_WITHOUT_UNAUTHORIZED_STATUS_PROMOTION",
+      "implementation_blocked_for": [
+        "POLICY_LIFECYCLE_TRANSITION"
+      ],
+      "silent_choice": "FORBIDDEN"
+    }
+  ],
+  "stages": [
+    {
+      "id": "P0_BASELINE_AND_INVENTORY",
+      "status": "PLANNED",
+      "actions": [
+        "PIN_LATEST_ACTIVE_BRANCH_HEAD_AND_EFFECTIVE_POLICY_SOURCES",
+        "INVENTORY_ALL_LEGACY_INDEX_READERS_WRITERS_SCHEMAS_TESTS_WORKFLOWS_DOCS",
+        "DISTINGUISH_ROOT_NAMESPACE_INDEX_FROM_SUBREGISTRY_INDEX_FILES",
+        "AUDIT_CTRL_INDEX_STATUS_MISMATCH",
+        "RECORD_CONSUMER_CONFIG_MISSING_STATE"
+      ],
+      "exit_checks": [
+        "COMPLETE_LEGACY_USAGE_GRAPH",
+        "NO_UNMAPPED_FILE_RESPONSIBILITY"
+      ]
+    },
+    {
+      "id": "P1_POLICY_DECISIONS",
+      "status": "PLANNED",
+      "depends_on": [
+        "P0_BASELINE_AND_INVENTORY"
+      ],
+      "actions": [
+        "REVIEW_DG_01_THROUGH_DG_05_WITH_PROJECT_OWNER",
+        "WRITE_EACH_APPROVED_POLICY_DELTA_TO_ACTIVE_HEAD_BEFORE_IMPLEMENTATION",
+        "RECOMPUTE_SOURCE_PRESERVATION_HASHES",
+        "DERIVE_TYPED_CONTRACT_CONSTRAINTS"
+      ],
+      "exit_checks": [
+        "NO_UNRESOLVED_DECISION_FOR_OPERATION_BEING_IMPLEMENTED",
+        "POLICY_GREATER_THAN_PLAN_GREATER_THAN_IMPLEMENTATION"
+      ]
+    },
+    {
+      "id": "P2_MACHINE_CONTRACTS_AND_SETUP",
+      "status": "PLANNED",
+      "depends_on": [
+        "P1_POLICY_DECISIONS"
+      ],
+      "actions": [
+        "DEFINE_VERSIONED_PTSIP_CONFIG_JSON_SCHEMA_WITH_SEPARATE_NAMESPACE_AND_OFFICIAL_ENGINE_CONSENT_RESPONSIBILITIES",
+        "DEFINE_DETERMINISTIC_DISCOVERY_BINDINGS_AND_CONFLICT_PREDICATES",
+        "DEFINE_CONFIG_CREATION_UPDATE_REVISION_AND_MIGRATION_PROTOCOL",
+        "PRESERVE_NO_UNBOUNDED_DISCOVERY_AND_FAIL_CLOSED_CONSTRAINTS",
+        "DESIGN_SINGLE_PACKAGE_SELECTED_ENGINE_SETUP_AFTER_DG_03"
+      ],
+      "exit_checks": [
+        "SCHEMA_VALID",
+        "REGISTRY_AND_DISCOVERY_CONTRACT_VALID",
+        "CONSENT_NOT_EQUIVALENT_TO_UNRELATED_WRITE_PERMISSION"
+      ]
+    },
+    {
+      "id": "P3_CONSUMER_AND_PACKAGE_MIGRATION",
+      "status": "PLANNED",
+      "depends_on": [
+        "P2_MACHINE_CONTRACTS_AND_SETUP"
+      ],
+      "actions": [
+        "IMPLEMENT_NEW_CONFIG_CREATION_AND_VALIDATION",
+        "MIGRATE_LEGACY_NAMESPACE_ROUTING_CONSUMERS_TO_CONTRACT_REGISTERED_CONFIG_DISCOVERY",
+        "PRESERVE_EXISTING_PROFILE_AND_TASK_SUBREGISTRY_IDENTITIES",
+        "HANDLE_MISSING_STALE_CONFLICTING_AND_UNKNOWN_CONFIG_AS_POLICY_DECIDED",
+        "VERIFY_RELEASE_AND_EXTERNAL_PROJECT_COMPATIBILITY_IMPACT"
+      ],
+      "exit_checks": [
+        "LEGACY_INDEX_NOT_REQUIRED_FOR_STARTUP_OR_DISCOVERY",
+        "NEW_CONFIG_FRESHNESS_AND_CONSENT_GATES_VERIFIED"
+      ]
+    },
+    {
+      "id": "P4_REMOVE_LEGACY_IMPLEMENTATION",
+      "status": "PLANNED",
+      "depends_on": [
+        "P3_CONSUMER_AND_PACKAGE_MIGRATION"
+      ],
+      "actions": [
+        "REMOVE_DOT_PTSIP_ROOT_INDEX_JSON",
+        "RETIRE_OR_REFACTOR_NAMESPACE_PY_AFTER_ALL_REFERENCES_MIGRATED",
+        "RETIRE_REPOSITORY_INDEX_SCHEMA_IF_UNUSED",
+        "REMOVE_DEAD_LEGACY_FALLBACKS_AND_TEST_FIXTURES",
+        "UPDATE_PUBLISHED_AND_INTERNAL_DOCS_WITHOUT_CHANGING_UNRELATED_CATALOG_POLICIES"
+      ],
+      "exit_checks": [
+        "ZERO_ACTIVE_ROOT_INDEX_READERS_WRITERS",
+        "NO_SILENT_FALLBACK_TO_RETIRED_INDEX",
+        "NO_DANGLING_IMPORTS_OR_SCHEMA_REFS"
+      ]
+    },
+    {
+      "id": "P5_VERIFICATION_AND_ADMISSION",
+      "status": "PLANNED",
+      "depends_on": [
+        "P4_REMOVE_LEGACY_IMPLEMENTATION"
+      ],
+      "actions": [
+        "RUN_UNIFIED_POLICY_SOURCE_HASH_AND_SCHEMA_VALIDATION",
+        "TEST_CONFIG_TRUE_FALSE_MISSING_UNKNOWN_INVALID_AND_STALE_BRANCHES",
+        "TEST_PROFILE_DISCOVERY_DUPLICATE_CONFLICT_AND_MISSING_BINDING_FAIL_CLOSED",
+        "TEST_SINGLE_PACKAGE_ENGINE_ELIGIBILITY_AND_PARTIAL_STARTUP",
+        "RUN_CHANGE_SCOPED_TEST_RESOLVER",
+        "RUN_REQUIRED_GITHUB_ACTIONS_AFTER_PUSH_AND_SAVE_EVIDENCE"
+      ],
+      "exit_checks": [
+        "LOCAL_TESTS_PASS",
+        "REQUIRED_ACTION_JOBS_PASS",
+        "POLICY_PLAN_IMPLEMENTATION_TRACE_COMPLETE"
+      ]
+    }
+  ],
+  "repository_impact": {
+    "policy_synced": [
+      "src/policy/ARCH/SFP-ARCH-0001.yaml"
+    ],
+    "policy_to_review": [
+      "src/policy/CTRL/SFP-CTRL-0002.yaml",
+      "src/policy/index.yaml"
+    ],
+    "legacy_to_delete_after_migration": [
+      ".ptsip/index.json"
+    ],
+    "code_to_refactor_or_retire": [
+      "src/ptsip/repository/namespace.py",
+      "src/ptsip/repository/schemas/repository-index.schema.json",
+      "src/ptsip/profiles/catalog.py",
+      "src/ptsip/clarification/resolution/profile_projection.py"
+    ],
+    "new_or_updated_contracts": [
+      ".ptsip/ptsip_config.json",
+      "VERSIONED_CONSUMER_CONFIG_SCHEMA_PATH_TO_BE_DECIDED",
+      "CONFIG_DISCOVERY_REGISTRATION_BINDINGS_TO_BE_DECIDED"
+    ],
+    "independent_catalogs_to_preserve": [
+      ".ptsip/profiles/index.json",
+      ".ptsip/tasks/index.json",
+      ".ptsip/contracts/index.json",
+      "src/ptsip/engines/index.json"
+    ],
+    "workflow_validation": {
+      "stable_executor": ".github/workflows/tooling-test.yml",
+      "preferred_mutable_test_config": ".github/test_modes.yaml"
+    }
+  },
+  "restrictions": {
+    "branch_creation": "FORBIDDEN",
+    "unapproved_policy_decision": "FORBIDDEN",
+    "code_deletion_before_plan_approval": "FORBIDDEN",
+    "unknown_config_grants_execution": "FORBIDDEN",
+    "old_index_as_authority_or_runtime_fallback": "FORBIDDEN_IN_TARGET",
+    "changes_to_independent_subregistries": "SEPARATE_SCOPE_REQUIRED",
+    "engine_policy_candidate_automatic_activation": "FORBIDDEN",
+    "source_migration_sha256_mismatch": "FAIL_CLOSED",
+    "per_capability_execution_auth_and_isolation": "PRESERVE"
+  },
+  "verification_evidence": {
+    "state": "NOT_EXECUTED",
+    "local_log_path": "OS_TEMP_NOT_COMMITTED",
+    "remote_actions": "REQUIRED_AFTER_IMPLEMENTATION_PUSH",
+    "worktrees_or_new_branches": "NOT_CREATED"
+  }
+}
