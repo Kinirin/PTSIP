@@ -168,36 +168,38 @@ Policy_Content:
       value:
         id: "SFP-CNTR-0009/R-02"
         rule: "VERSIONED_PUBLIC_CONTRACT_REFERENCES"
-        statement: "고객 기본 Policy 및 Plan의 6종 계약은 등록된 고유 URN과 정확한 버전으로 선택하며 개발자 확장은 이를 직접 참조한다."
+        statement: "고객 기본 Policy 및 Plan 계약 6종은 설치된 PTSIP 패키지가 제공하는 계약 리소스로 식별하고 등록된 정확한 버전별 URN을 참조한다. 개발 저장소 소스 경로는 고객 설치환경의 런타임 경로가 아니다."
         contract_targets:
           -
             field: "Policy_Identity"
-            schema: "src/ptsip/common_contract/schemas/policy_identity.schema.json"
+            package_resource: "common_contract/schemas/policy_identity.schema.json"
             urn_template: "urn:ptsip:common_policy:identity:{version}"
           -
             field: "Policy_Lifecycle"
-            schema: "src/ptsip/common_contract/schemas/policy_lifecycle.schema.json"
+            package_resource: "common_contract/schemas/policy_lifecycle.schema.json"
             urn_template: "urn:ptsip:common_policy:lifecycle:{version}"
           -
             field: "Policy_Rules"
-            schema: "src/ptsip/common_contract/schemas/policy_rules.schema.json"
+            package_resource: "common_contract/schemas/policy_rules.schema.json"
             urn_template: "urn:ptsip:common_policy:rules:{version}"
           -
             field: "Plan_Unit"
-            schema: "src/ptsip/common_contract/schemas/plan_unit.schema.json"
+            package_resource: "common_contract/schemas/plan_unit.schema.json"
             urn_template: "urn:ptsip:common:plan:unit:{version}"
           -
             field: "Plan_Lifecycle"
-            schema: "src/ptsip/common_contract/schemas/plan_lifecycle.schema.json"
+            package_resource: "common_contract/schemas/plan_lifecycle.schema.json"
             urn_template: "urn:ptsip:common:plan:lifecycle:{version}"
           -
             field: "Plan_Identity"
-            schema: "src/ptsip/common_contract/schemas/plan_identity.schema.json"
+            package_resource: "common_contract/schemas/plan_identity.schema.json"
             urn_template: "urn:ptsip:common:plan:identity:{version}"
         invariants:
           registered_exact_version_required: true
           missing_or_ambiguous_ref: "UNRESOLVED"
           identity_inference_from_field_or_path: false
+          package_resource_owner: "INSTALLED_PTSIP_DISTRIBUTION"
+          repository_source_path_is_runtime_path: false
     -
       id: "SRC-0007"
       source_pointer: "/Policy_Rules/contracts/0/rules/2"
@@ -234,7 +236,7 @@ Policy_Content:
         id: "SFP-CNTR-0009/R-05"
         rule: "CUSTOMER_POLICY_LIFECYCLE_STATUS_ENUM"
         statement: "고객 기본 Policy Lifecycle 계약은 PTSIP 공식 정책 상태 enum 13종을 자체 정의하고 지원하며 개발자 전용 정책 상태 구조나 값 정의를 참조하거나 의존하지 않는다."
-        schema: "src/ptsip/common_contract/schemas/policy_lifecycle.schema.json"
+        package_resource: "common_contract/schemas/policy_lifecycle.schema.json"
         urn_template: "urn:ptsip:common_policy:lifecycle:{version}"
         status_enum:
           - "DRAFT.Default"
@@ -261,18 +263,15 @@ Policy_Content:
       value:
         id: "SFP-CNTR-0009/R-07"
         rule: "GO_CONSUMER_COMMON_CONTRACT_CAPABILITY"
-        statement: "고객 기본 계약의 등록, URN 해석, 구조 검증 및 확장 의미 충돌 검사 신규 기능은 Go로 구현하며 개발자 엔진을 고객 런타임에 필수 의존시키지 않는다."
-        new_feature_root: "src/ptsip/common_contract/"
-        existing_customer_python: "src/ptsip/policy_contracts/unified.py"
+        statement: "고객 기본 계약의 등록, 버전별 URN 참조 해석, 구조 검증 및 확장 의미 충돌 검사는 신규 Go 기능으로 제공하며, 설치된 PTSIP 패키지의 계약 리소스를 대상으로 한다."
         invariants:
           implementation_language: "GO"
           customer_runtime_developer_dependency: false
-          existing_python_feature_automatic_replacement: false
-          independent_publication_verification_required: true
-          official_rust_engines_unchanged: true
+          installed_package_resource_resolution_required: true
+          repository_source_tree_runtime_dependency: false
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "a1606886f3aeb4320eda1e37bc4dc7acd9ccd522d401c8cca6e265c9e183a152"
+    sha256: "8fa790e30270ad9bd64ce2bb873594614c4b988d4e157b9ec14f8b6543e5a86d"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
