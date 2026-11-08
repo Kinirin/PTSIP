@@ -7,7 +7,7 @@ Policy_Identity:
   root_family: CTRL
   title: Engine delegated activation and mandatory external isolation (ACTIVE)
 Policy_Lifecycle:
-  status: ACTIVE
+  status: APPROVED.Applying
   source_ref: SRC-0004
 Policy_Authority:
   source_refs:
@@ -105,7 +105,7 @@ Policy_Content:
     value:
       id: SFP-CTRL-0002
       title: Engine delegated activation and mandatory external isolation (ACTIVE)
-      status: ACTIVE
+      status: APPROVED.Applying
   - id: SRC-0005
     source_pointer: /authority_subject
     value:
@@ -561,7 +561,7 @@ Policy_Content:
         scope: ENGINE_DRAFT_COMPATIBILITY
   source_document:
     path: src/policy/CTRL/SFP-CTRL-0002.yaml
-    sha256: 93386d93d2d51e9222d6a1243b818fb87aba68745556a63d03972e814b845903
+    sha256: 154d4631e42e5618a8e28dee455974d01323871d63d577b65bd8b22d343511fe
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
