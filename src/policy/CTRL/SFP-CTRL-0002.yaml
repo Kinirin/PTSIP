@@ -510,8 +510,22 @@ Policy_Content:
         in_flight_revocation: UNCHANGED
         evidence_cache_cleanup_authority: UNCHANGED
         explicit_operation_side_effects: APPLICABLE_OPERATION_CONTRACT_AUTHORITY_REQUIRED
+      missing_or_unknown_config_resolution:
+        selected_option: A_STRICT_BLOCK
+        approval_source: PROJECT_OWNER_EXPLICIT_2026_11_08
+        affected_inputs:
+        - CONFIG_FILE_MISSING
+        - CONFIG_UNREADABLE_OR_INVALID
+        - OFFICIAL_SELECTOR_MISSING
+        - OFFICIAL_SELECTOR_UNKNOWN_OR_MALFORMED
+        default_value: NONE_NO_IMPLICIT_TRUE_OR_FALSE
+        official_engine_authority_effect: NOT_GRANTED_FAIL_CLOSED
+        official_engine_specific_install_setup_activation_execution: BLOCK_WITH_EXPLICIT_ERROR
+        explicit_false: PRESERVE_WHEN_FALSE_POLICY
+        legacy_repository_index_fallback: FORBIDDEN
+        unrelated_project_operations: NO_NEW_AUTHORITY_TO_BLOCK
+        implementation_status: POLICY_APPROVED_RUNTIME_NOT_ACTIVATED
       unresolved:
-      - MISSING_OR_UNKNOWN_OFFICIAL_CONFIG_VALUE_DEFAULT
       - EIGHTH_POLICY_EVALUATION_ENGINE_REGISTRATION_AND_PACKAGE_ADMISSION
       - EXACT_SINGLE_PACKAGE_SELECTED_ENGINE_SETUP_INTERFACE
   - id: SRC-0011
@@ -525,7 +539,7 @@ Policy_Content:
         scope: ENGINE_DRAFT_COMPATIBILITY
   source_document:
     path: src/policy/CTRL/SFP-CTRL-0002.yaml
-    sha256: c687982a5277d1516c25794ebd03eb48b065fbff2f15a8481932863ade7aa4f7
+    sha256: 19132f9dde92ec5a0f80bc1f9394fd77351c1e135675ce52372670f81f4966b8
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
