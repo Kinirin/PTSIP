@@ -1,0 +1,114 @@
+{
+  "format": "ptsip-observation-learning-task-decision/v1",
+  "task_id": "OBSERVATION_HYBRID_LEARNING_001",
+  "record_kind": "USER_AUTHORIZED_NON_NORMATIVE_TASK_HANDOFF",
+  "authority_level": "TASK_ONLY_NOT_POLICY",
+  "repository": "Kinirin/PTSIP",
+  "task_status": "RECORDED_NOT_REGISTERED_FOR_EXECUTION",
+  "task_namespace_state": "RESERVED",
+  "task_engine": "UNAVAILABLE",
+  "evidence": {
+    "path": ".ptsip/tasks/observation-learning/observations.json",
+    "cases": 17,
+    "case_ids": [
+      "CASE-001",
+      "CASE-017"
+    ],
+    "source": "USER_CONVERSATION",
+    "verified_source_policy_semantics": false
+  },
+  "requested_result": "CONDITIONAL_HYBRID_GENERATION_OF_LOCAL_AGENT_LEARNING_DATA_CANDIDATES",
+  "directory_responsibilities": {
+    "AGENTS.md": "ROUTING_HINT_ONLY_NO_POLICY_AUTHORITY",
+    ".ptsip/tasks/observation-learning/decision.json": "DECISION_AND_GATES_FOR_LOCAL_AGENT_HANDOFF",
+    ".ptsip/tasks/observation-learning/observations.json": "ORIGINAL_CASE_RESPONSES_AND_STRUCTURAL_RELATION_CANDIDATES",
+    ".agent/learning-data/": "FUTURE_DERIVED_NON_AUTHORITATIVE_CANDIDATES_NOT_CREATED_BY_THIS_CHANGE",
+    "src/policy/**": "OLD_POLICY_REVIEW_INPUT_NOT_AUTOMATIC_MIGRATION_TARGET"
+  },
+  "user_constraints": {
+    "observation_generalization": "REQUIRES_SEPARATE_USER_DECISION",
+    "automatic_dataset_candidate_generation": "CONDITIONAL_PERMITTED",
+    "machine_contract_over_agent_inference": true,
+    "preserve_verbatim_responses": true,
+    "do_not_transform_unresolved_into_approved": true,
+    "no_auto_policy_mutation": true
+  },
+  "generation": {
+    "activation": "LOCAL_AGENT_ON_DEMAND_ONLY_NOT_SCHEDULED_OR_ENGINE_EXECUTION",
+    "when": "LOCAL_AGENT_IS_EXPLICITLY_TASKED_WITH_OBSERVATION_LEARNING_OR_ENCOUNTERS_NEW_USER_JUDGMENT_IN_THIS_WORKFLOW",
+    "requires_all": [
+      "OBSERVATION_FILE_VALID_JSON_AND_CASE_IDS_UNIQUE",
+      "CASE_VERBATIM_WITH_SOURCE_PROVENANCE_AVAILABLE",
+      "POLICY_SOURCE_TREATED_AS_REVIEW_REQUIRED_HISTORICAL_CONTEXT",
+      "STRUCTURAL_RELATIONS_LABELED_UNAPPROVED",
+      "UNRESOLVED_AND_DEFERRED_DECISIONS_PRESERVED",
+      "NO_NORMATIVE_POLICY_OR_RA_RAC_AEC_WRITE_REQUIRED"
+    ],
+    "hybrid": {
+      "mechanical": "Read cases, retain exact response text/choice/provenance/status; validate IDs and case linkage; reject duplicate or fabricated evidence.",
+      "reasoning": "Generate possible training examples of activities, decision distinctions, boundary tradeoffs, and structural relations with explicit case citations. Candidates only.",
+      "mechanical_validation": "Fail for unsupported quotes, invented authorities, missing provenance, unapproved generalization, converted draft/retired semantics, or hidden policy mutation."
+    },
+    "output_candidate": ".agent/learning-data/observation-candidates.jsonl",
+    "generated_artifact_role": "UNAPPROVED_NON_NORMATIVE_CACHE",
+    "automatic_model_training": false,
+    "external_dataset_upload": false,
+    "automatic_policy_admission": false,
+    "workflow_or_runtime_hook": false
+  },
+  "old_policy_review_gate": {
+    "target": "src/policy/**",
+    "status": "HUMAN_REVIEW_REQUIRED_BEFORE_SEMANTIC_MODIFICATION",
+    "user_instruction_verbatim": "한가지 유의 점추가합니다 \"src\\policy \" 정책 문서들은 상당히 오래되었기 때문에 제 검토가 필요합니다 따라서 이전에 작성된 정착 내용물 완벽하게 이전하려는 노력해서 비용을 소모할 필요가 없습니다. 별도로 자연어 기반으로 번역해서 정책 내용이 어떤 상황인지 확인한 다음에 정책 내용을 수정해야 하는 과정을 거쳐야 합니다",
+    "do_not_spend_effort_on_complete_fidelity_migration": true,
+    "allowed_initial_action": "READ_AND_RENDER_OLD_POLICY_AS_NATURAL_LANGUAGE_SITUATION_EXPLANATION",
+    "stages": [
+      {
+        "id": "READ",
+        "operation": "READ_OLD_POLICY_AS_HISTORICAL_CONTEXT_NO_MUTATION"
+      },
+      {
+        "id": "TRANSLATE",
+        "operation": "WRITE_NATURAL_LANGUAGE_DESCRIPTION_OF_WHAT_POLICY_IS_DOING_AND_WHERE_IT_MAY_BE_OUTDATED",
+        "state": "REVIEW_DRAFT_NOT_AUTHORITY"
+      },
+      {
+        "id": "USER_REVIEW",
+        "operation": "USER_CHECKS_AND_DECIDES_CORRECT_CURRENT_MEANING",
+        "state": "REQUIRED_BEFORE_POLICY_CHANGE"
+      },
+      {
+        "id": "CHANGE_POLICY",
+        "operation": "SEPARATE_USER_AUTHORIZED_EDIT_ON_CURRENT_ACTIVE_HEAD",
+        "state": "NOT_AUTHORIZED_BY_THIS_TASK"
+      }
+    ],
+    "non_assumptions": [
+      "CURRENT_SRC_POLICY_CONTENT_EQUALS_USER_LATEST_INTENT",
+      "HISTORICAL_SOURCE_IS_REQUIRED_TO_BE_FULLY_MIGRATED",
+      "OBSERVATION_CANDIDATES_ARE_CANONICAL_POLICY",
+      "TRANSLATION_ITSELF_AUTHORIZES_CHANGE"
+    ],
+    "preserve_actual_current_policy_authority_until_approved_change": true
+  },
+  "dependencies": {
+    "task_index": ".ptsip/tasks/index.json",
+    "task_index_mutation": "FORBIDDEN_IN_THIS_HANDOFF",
+    "registered_engine": false,
+    "source_policy_status": "READ_CURRENT_EFFECTIVE_POLICY_WHEN_AUTHORITY_NEEDED_BUT_DO_NOT_AUTOMATICALLY_ADOPT_STALE_SEMANTICS_AS_NEW_DESIGN",
+    "conflict_resolution": "EXPLICIT_USER_CHOICE_REQUIRED"
+  },
+  "verification_requirements": [
+    "LOCAL_JSON_PARSING",
+    "CASE_COUNT_AND_UNIQUENESS",
+    "RELATION_REFERENCE_INTEGRITY",
+    "AGENTS_ENTRYPOINT_MATCH",
+    "TASK_INDEX_REMAINS_RESERVED"
+  ],
+  "open_decisions": [
+    "REAL_TRIGGER_AND_RUNTIME_ACTIVATION",
+    "OUTPUT_DATASET_FINAL_SCHEMA_AND_MODEL_TRAINING_PIPELINE",
+    "USER_REVIEWED_CURRENT_SRC_POLICY_MEANING",
+    "RESPONSE_TO_UNRESOLVED_CASE_CONFLICTS"
+  ]
+}
