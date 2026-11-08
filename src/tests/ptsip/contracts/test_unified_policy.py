@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from jsonschema import Draft202012Validator
 
 from ptsip._common_contract import PolicySourceError, request, source_result
 
@@ -95,6 +96,7 @@ def test_migrated_support_policy_lifecycle_matches_source_index_and_contract(rel
     assert entry["path"] == relative
     assert entry["status"] == status
     assert status in index_schema["properties"]["policies"]["items"]["properties"]["status"]["enum"]
+    Draft202012Validator(index_schema).validate(index)
     root_family_schema = json.loads(
         (ROOT / "src/policy/schemas/ptsip-support-root-family-policy.schema.json").read_text(encoding="utf-8")
     )
@@ -108,6 +110,7 @@ def test_migrated_support_policy_lifecycle_matches_source_index_and_contract(rel
 
     original = source_result("restore-source", "source", document=policy)
     assert original["policy"]["status"] == status
+    Draft202012Validator(root_family_schema).validate(original)
     canonical = json.dumps(original, ensure_ascii=True, sort_keys=True, separators=(",", ":"), allow_nan=False)
     assert hashlib.sha256(canonical.encode("ascii")).hexdigest() == policy["Policy_Content"]["source_document"]["sha256"]
 
