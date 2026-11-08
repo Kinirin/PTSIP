@@ -295,11 +295,20 @@
         "source_integrity_sha256": "19132f9dde92ec5a0f80bc1f9394fd77351c1e135675ce52372670f81f4966b8",
         "test_execution": "NOT_EXECUTED"
       }
-    ]
+    ],
+    "read_only_source_trace": {
+      "sources": [
+        "src/ptsip/clarification/resolution/profile_projection.py",
+        "src/ptsip/profiles/catalog.py",
+        "src/ptsip/repository/namespace.py"
+      ],
+      "result": "LEGACY_ROOT_INDEX_WRITER_AND_READER_CONFIRMED",
+      "tests": "NOT_EXECUTED"
+    }
   },
   "reverse_debugging": {
     "strategy": "ONE_BREAKPOINT_AT_A_TIME_FROM_CONSUMER_ENTRYPOINT_BACK_TO_POLICY",
-    "first_breakpoint": "LEGACY_INDEX_REQUIRED_BY_CURRENT_PROFILE_CATALOG",
+    "first_breakpoint": "PROJECT_PROFILE_MATERIALIZATION_CREATES_RETIRED_ROOT_INDEX",
     "first_files": [
       "src/ptsip/profiles/catalog.py",
       "src/ptsip/repository/namespace.py"
@@ -309,6 +318,36 @@
       "DG-04",
       "DG-05"
     ],
-    "fix_status": "NOT_IMPLEMENTED"
+    "fix_status": "NOT_IMPLEMENTED",
+    "status": "FIRST_LEGACY_DEPENDENCY_CONFIRMED_READ_ONLY",
+    "first_writer": {
+      "path": "src/ptsip/clarification/resolution/profile_projection.py",
+      "prepare_lines": "339-348",
+      "write_lines": "427-447",
+      "current_effect": "CREATES_DOT_PTSIP_INDEX_JSON_IF_MISSING",
+      "remediation_status": "NOT_IMPLEMENTED"
+    },
+    "first_reader": {
+      "path": "src/ptsip/profiles/catalog.py",
+      "lines": "81-90",
+      "current_effect": "REQUIRES_RETIRED_ROOT_INDEX_WHEN_CANONICAL_PROFILE_CATALOG_EXISTS",
+      "remediation_status": "NOT_IMPLEMENTED"
+    },
+    "underlying_legacy_contract": {
+      "path": "src/ptsip/repository/namespace.py",
+      "lines": "11-14,52-87",
+      "current_effect": "LOADS_VALIDATES_AND_GENERATES_RETIRED_ROOT_INDEX",
+      "remediation_status": "NOT_IMPLEMENTED"
+    },
+    "new_config_observation": {
+      "path": ".ptsip/ptsip_config.json",
+      "status": "ABSENT_IN_CURRENT_REPOSITORY",
+      "expected_by_policy": true
+    },
+    "next_action": "DEFINE_AND_APPROVE_VERSIONED_CONFIG_DISCOVERY_SETUP_CONTRACTS_BEFORE_REMOVING_ROOT_INDEX_WRITER_OR_READER",
+    "requires_decisions_before_implementation": [
+      "DG-03",
+      "DG-04"
+    ]
   }
 }
