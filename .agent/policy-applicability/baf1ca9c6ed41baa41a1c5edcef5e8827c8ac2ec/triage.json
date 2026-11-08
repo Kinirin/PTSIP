@@ -1,0 +1,408 @@
+{
+  "format": "ptsip-applicability-triage/v1",
+  "source_head": "baf1ca9c6ed41baa41a1c5edcef5e8827c8ac2ec",
+  "evidence_role": "NON_NORMATIVE_DERIVED",
+  "policy_mutation_authorized": false,
+  "evaluation_authorized": false,
+  "execution_authorized": false,
+  "source_assessment": "assessment.json",
+  "binding_count": 3270,
+  "counts": {
+    "INELIGIBLE_POLICY": 1269,
+    "UNRESOLVED": 2001
+  },
+  "groups": [
+    {
+      "plane": "PTSIP_DEVELOPER_POLICY",
+      "contract_kind": "AEC",
+      "state": "INELIGIBLE_POLICY",
+      "reason": "POLICY_LIFECYCLE_NOT_EFFECTIVE",
+      "count": 274,
+      "examples": [
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-3EB28F73985142D8A8280737834859ED",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/0"
+        },
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-A61E1B094A43435EBF91F5A516BF6129",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0010",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/2"
+        },
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-CD21A5697F2840BFA0EECAF0CC3AEBC3",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0009",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_DEVELOPER_POLICY",
+      "contract_kind": "AEC",
+      "state": "UNRESOLVED",
+      "reason": "NO_CONFIRMED_CONTRACT_CONSUMPTION",
+      "count": 309,
+      "examples": [
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-22F632FA935247A4B87CD8E50FAB7939",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/2"
+        },
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-5189116EFBED456BAFA9586901F8C045",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0007",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1"
+        },
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-605FD39BDF2C4F19B59936055877DDC7",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0009",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/3"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_DEVELOPER_POLICY",
+      "contract_kind": "RA",
+      "state": "INELIGIBLE_POLICY",
+      "reason": "POLICY_LIFECYCLE_NOT_EFFECTIVE",
+      "count": 274,
+      "examples": [
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-3EB28F73985142D8A8280737834859ED",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/0"
+        },
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-A61E1B094A43435EBF91F5A516BF6129",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0010",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/2"
+        },
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-CD21A5697F2840BFA0EECAF0CC3AEBC3",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0009",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_DEVELOPER_POLICY",
+      "contract_kind": "RA",
+      "state": "UNRESOLVED",
+      "reason": "NO_CONFIRMED_CONTRACT_CONSUMPTION",
+      "count": 309,
+      "examples": [
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-22F632FA935247A4B87CD8E50FAB7939",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/2"
+        },
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-5189116EFBED456BAFA9586901F8C045",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0007",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1"
+        },
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-605FD39BDF2C4F19B59936055877DDC7",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0009",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/3"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_DEVELOPER_POLICY",
+      "contract_kind": "RAC",
+      "state": "INELIGIBLE_POLICY",
+      "reason": "POLICY_LIFECYCLE_NOT_EFFECTIVE",
+      "count": 274,
+      "examples": [
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-3EB28F73985142D8A8280737834859ED",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/0"
+        },
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-A61E1B094A43435EBF91F5A516BF6129",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0010",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/2"
+        },
+        {
+          "policy_id": "MPD-ARCH-0007",
+          "rule_id": "R-ID-CD21A5697F2840BFA0EECAF0CC3AEBC3",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0007.yaml",
+          "source_item_id": "SRC-0009",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_DEVELOPER_POLICY",
+      "contract_kind": "RAC",
+      "state": "UNRESOLVED",
+      "reason": "NO_CONFIRMED_CONTRACT_CONSUMPTION",
+      "count": 309,
+      "examples": [
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-22F632FA935247A4B87CD8E50FAB7939",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/2"
+        },
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-5189116EFBED456BAFA9586901F8C045",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0007",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1"
+        },
+        {
+          "policy_id": "MPD-ARCH-0001",
+          "rule_id": "R-ID-605FD39BDF2C4F19B59936055877DDC7",
+          "policy_path": "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+          "source_item_id": "SRC-0009",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/3"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "AEC",
+      "state": "INELIGIBLE_POLICY",
+      "reason": "POLICY_LIFECYCLE_NOT_EFFECTIVE",
+      "count": 149,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_172882ba590d",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0010",
+          "source_pointer": "/authority_semantics/semantic_unit_172882ba590d"
+        },
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_1e2d788f8353",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0012",
+          "source_pointer": "/authority_semantics/semantic_unit_1e2d788f8353"
+        },
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_29f9a4a86959",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0011",
+          "source_pointer": "/authority_semantics/semantic_unit_29f9a4a86959"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "AEC",
+      "state": "UNRESOLVED",
+      "reason": "NO_CONFIRMED_CONTRACT_CONSUMPTION",
+      "count": 357,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/engine_plane_boundary",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0040",
+          "source_pointer": "/authority_semantics/engine_plane_boundary"
+        },
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/repository_modular_declaration_direction",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0039",
+          "source_pointer": "/authority_semantics/repository_modular_declaration_direction"
+        },
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/semantic_unit_0d125cde84c0",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0035",
+          "source_pointer": "/authority_semantics/semantic_unit_0d125cde84c0"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "AEC",
+      "state": "UNRESOLVED",
+      "reason": "REFERENCE_EXISTS_BUT_CONSUMPTION_UNRESOLVED",
+      "count": 1,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0004",
+          "rule_id": "SFP-ARCH-0004#/authority_semantics/rac_aec_rego_original_contract_direction",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/authority_semantics/rac_aec_rego_original_contract_direction"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "RA",
+      "state": "INELIGIBLE_POLICY",
+      "reason": "POLICY_LIFECYCLE_NOT_EFFECTIVE",
+      "count": 149,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_172882ba590d",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0010",
+          "source_pointer": "/authority_semantics/semantic_unit_172882ba590d"
+        },
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_1e2d788f8353",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0012",
+          "source_pointer": "/authority_semantics/semantic_unit_1e2d788f8353"
+        },
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_29f9a4a86959",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0011",
+          "source_pointer": "/authority_semantics/semantic_unit_29f9a4a86959"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "RA",
+      "state": "UNRESOLVED",
+      "reason": "NO_CONFIRMED_CONTRACT_CONSUMPTION",
+      "count": 358,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/engine_plane_boundary",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0040",
+          "source_pointer": "/authority_semantics/engine_plane_boundary"
+        },
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/repository_modular_declaration_direction",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0039",
+          "source_pointer": "/authority_semantics/repository_modular_declaration_direction"
+        },
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/semantic_unit_0d125cde84c0",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0035",
+          "source_pointer": "/authority_semantics/semantic_unit_0d125cde84c0"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "RAC",
+      "state": "INELIGIBLE_POLICY",
+      "reason": "POLICY_LIFECYCLE_NOT_EFFECTIVE",
+      "count": 149,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_172882ba590d",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0010",
+          "source_pointer": "/authority_semantics/semantic_unit_172882ba590d"
+        },
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_1e2d788f8353",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0012",
+          "source_pointer": "/authority_semantics/semantic_unit_1e2d788f8353"
+        },
+        {
+          "policy_id": "SFP-ARCH-0002",
+          "rule_id": "SFP-ARCH-0002#/authority_semantics/semantic_unit_29f9a4a86959",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0002.yaml",
+          "source_item_id": "SRC-0011",
+          "source_pointer": "/authority_semantics/semantic_unit_29f9a4a86959"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "RAC",
+      "state": "UNRESOLVED",
+      "reason": "NO_CONFIRMED_CONTRACT_CONSUMPTION",
+      "count": 357,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/engine_plane_boundary",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0040",
+          "source_pointer": "/authority_semantics/engine_plane_boundary"
+        },
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/repository_modular_declaration_direction",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0039",
+          "source_pointer": "/authority_semantics/repository_modular_declaration_direction"
+        },
+        {
+          "policy_id": "SFP-ARCH-0001",
+          "rule_id": "SFP-ARCH-0001#/authority_semantics/semantic_unit_0d125cde84c0",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "source_item_id": "SRC-0035",
+          "source_pointer": "/authority_semantics/semantic_unit_0d125cde84c0"
+        }
+      ]
+    },
+    {
+      "plane": "PTSIP_SUPPORT_FEATURE",
+      "contract_kind": "RAC",
+      "state": "UNRESOLVED",
+      "reason": "REFERENCE_EXISTS_BUT_CONSUMPTION_UNRESOLVED",
+      "count": 1,
+      "examples": [
+        {
+          "policy_id": "SFP-ARCH-0004",
+          "rule_id": "SFP-ARCH-0004#/authority_semantics/rac_aec_rego_original_contract_direction",
+          "policy_path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+          "source_item_id": "SRC-0008",
+          "source_pointer": "/authority_semantics/rac_aec_rego_original_contract_direction"
+        }
+      ]
+    }
+  ]
+}

@@ -16,6 +16,9 @@ type TriageExample struct {
     PolicyID string `json:"policy_id"`
     RuleID string `json:"rule_id"`
     PolicyPath string `json:"policy_path"`
+    // SourceItemID locates the current Policy_Content item; SourcePointer
+    // addresses the restored source document.
+    SourceItemID string `json:"source_item_id"`
     SourcePointer string `json:"source_pointer"`
 }
 
@@ -65,11 +68,29 @@ func BuildTriage(input Input, result Output) (Triage, error) {
         return tr, fmt.Errorf("SOURCE_HEAD_MISMATCH")
     }
     planeByID := map[string]string{}
-    for _, p := range input.Policies { planeByID[p.ID] = p.Plane }
+    sourceByRule := map[[2]string]TriageExample{}
+    for _, p := range input.Policies {
+        planeByID[p.ID] = p.Plane
+        pointers := map[string]string{}
+        for _, item := range p.Items {
+            pointers[item.ID] = item.SourcePointer
+        }
+        for _, rule := range p.Rules {
+            sourceByRule[[2]string{p.ID, rule.ID}] = TriageExample{
+                PolicyID:p.ID, RuleID:rule.ID, PolicyPath:p.Path,
+                SourceItemID:rule.SourceRef, SourcePointer:pointers[rule.SourceRef],
+            }
+        }
+    }
     groups := map[string]*TriageGroup{}
     for _, row := range result.Decisions {
         plane, found := planeByID[row.PolicyID]
         if !found { return tr, fmt.Errorf("UNKNOWN_POLICY_ID: %s", row.PolicyID) }
+        source, found := sourceByRule[[2]string{row.PolicyID, row.RuleID}]
+        if !found || source.SourceItemID == "" || source.SourcePointer == "" ||
+            source.PolicyPath != row.PolicyPath || source.SourcePointer != row.SourcePointer {
+            return tr, fmt.Errorf("TRIAGE_RULE_SOURCE_MISMATCH: %s/%s", row.PolicyID, row.RuleID)
+        }
         key := strings.Join([]string{plane,row.ContractKind,row.State,row.Reason}, "\x00")
         group, exists := groups[key]
         if !exists {
@@ -81,10 +102,7 @@ func BuildTriage(input Input, result Output) (Triage, error) {
         }
         group.Count++
         if len(group.Examples) < 3 {
-            group.Examples = append(group.Examples, TriageExample{
-                PolicyID:row.PolicyID, RuleID:row.RuleID, PolicyPath:row.PolicyPath,
-                SourcePointer:row.SourcePointer,
-            })
+            group.Examples = append(group.Examples, source)
         }
     }
     actual := map[string]int{}
