@@ -55,15 +55,25 @@
     {
       "id": "DG-01",
       "source": "SFP-CTRL-0002#MISSING_OR_UNKNOWN_OFFICIAL_CONFIG_VALUE_DEFAULT",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "owner": "PROJECT_OWNER",
       "decision_stage": "P1_POLICY_DECISIONS",
       "question": "WHAT_HAPPENS_IF_OFFICIAL_USE_SELECTOR_IS_ABSENT_UNKNOWN_OR_MALFORMED",
-      "implementation_blocked_for": [
-        "CONFIG_DEFAULTS",
-        "ACTIVATION_ELIGIBILITY"
-      ],
-      "silent_choice": "FORBIDDEN"
+      "implementation_blocked_for": [],
+      "silent_choice": "FORBIDDEN",
+      "resolution": "A_STRICT_BLOCK",
+      "policy_commit": "d2369fef2b03ffa6c2ee6e56200a1325b4d2c70c",
+      "decision_authority": "PROJECT_OWNER_EXPLICIT",
+      "resolved_on": "2026-11-08",
+      "execution_gate": "REQUIRES_PLAN_APPROVAL_AND_REGISTERED_IMPLEMENTATION_CONTRACT",
+      "decision_rules": {
+        "when": "CONFIG_MISSING_UNKNOWN_MALFORMED_OR_UNREADABLE",
+        "effect": "BLOCK_OFFICIAL_ENGINE_SPECIFIC_SETUP_ACTIVATION_EXECUTION_WITH_ERROR",
+        "no_implicit_consent": true,
+        "do_not_fallback_to_legacy_index": true,
+        "explicit_false_separate": true,
+        "unrelated_project_operations_not_newly_blocked": true
+      }
     },
     {
       "id": "DG-02",
@@ -126,7 +136,8 @@
         "INVENTORY_ALL_LEGACY_INDEX_READERS_WRITERS_SCHEMAS_TESTS_WORKFLOWS_DOCS",
         "DISTINGUISH_ROOT_NAMESPACE_INDEX_FROM_SUBREGISTRY_INDEX_FILES",
         "AUDIT_CTRL_INDEX_STATUS_MISMATCH",
-        "RECORD_CONSUMER_CONFIG_MISSING_STATE"
+        "RECORD_CONSUMER_CONFIG_MISSING_STATE",
+        "VERIFY_CURRENT_CTRL_SOURCE_DIGEST_AFTER_FIX"
       ],
       "exit_checks": [
         "COMPLETE_LEGACY_USAGE_GRAPH",
@@ -275,6 +286,29 @@
     "state": "NOT_EXECUTED",
     "local_log_path": "OS_TEMP_NOT_COMMITTED",
     "remote_actions": "REQUIRED_AFTER_IMPLEMENTATION_PUSH",
-    "worktrees_or_new_branches": "NOT_CREATED"
+    "worktrees_or_new_branches": "NOT_CREATED",
+    "policy_decision_sync": [
+      {
+        "decision": "DG-01",
+        "path": "src/policy/CTRL/SFP-CTRL-0002.yaml",
+        "commit": "d2369fef2b03ffa6c2ee6e56200a1325b4d2c70c",
+        "source_integrity_sha256": "19132f9dde92ec5a0f80bc1f9394fd77351c1e135675ce52372670f81f4966b8",
+        "test_execution": "NOT_EXECUTED"
+      }
+    ]
+  },
+  "reverse_debugging": {
+    "strategy": "ONE_BREAKPOINT_AT_A_TIME_FROM_CONSUMER_ENTRYPOINT_BACK_TO_POLICY",
+    "first_breakpoint": "LEGACY_INDEX_REQUIRED_BY_CURRENT_PROFILE_CATALOG",
+    "first_files": [
+      "src/ptsip/profiles/catalog.py",
+      "src/ptsip/repository/namespace.py"
+    ],
+    "next_step": "INSPECT_CURRENT_LEGACY_READERS_AND_EXPECTED_CONFIGURATION_CONTRACT_BEFORE_ANY_IMPLEMENTATION",
+    "policy_gate_dependencies": [
+      "DG-04",
+      "DG-05"
+    ],
+    "fix_status": "NOT_IMPLEMENTED"
   }
 }
