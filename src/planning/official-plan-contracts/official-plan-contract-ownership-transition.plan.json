@@ -1,0 +1,263 @@
+{
+  "format": "ptsip-policy-derived-plan-proposal/v1",
+  "id": "PLN-SFP-CNTR-0009-PLANNING-001",
+  "title": "Official Plan contract ownership separation and staged Rust Planning handoff",
+  "lifecycle": {
+    "state": "DRAFT_REQUIRES_USER_REVIEW",
+    "registered_executable_plan": false,
+    "implementation_authorized": false,
+    "release_authorized": false
+  },
+  "authority": {
+    "hierarchy": "POLICY > PLAN > IMPLEMENTATION",
+    "approved_resolution": "RECONCILE",
+    "source_policy": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+    "policy_revision_commit": "8b77b4480491e93e3237799283fc1193b8659a34",
+    "policy_source_sha256": "a6a331f2c322eed50f471b6d71c6f725d8879aeaaf87c1c6ee82bce161a1528a",
+    "policy_rule_refs": [
+      "SFP-CNTR-0009/R-01",
+      "SFP-CNTR-0009/R-02",
+      "SFP-CNTR-0009/R-03",
+      "SFP-CNTR-0009/R-04",
+      "SFP-CNTR-0009/R-05",
+      "SFP-CNTR-0009/R-07",
+      "SFP-CNTR-0009/R-08"
+    ],
+    "applicable_boundaries": [
+      "src/policy/ARCH/SFP-ARCH-0004.yaml",
+      "src/policy/CNTR/SFP-CNTR-0005.yaml",
+      "src/policy/CNTR/SFP-CNTR-0007.yaml"
+    ],
+    "policy_must_not_be_modified_to_fit_plan": true
+  },
+  "origin": {
+    "new_plan_independent_of_completed_go_migration": true,
+    "prior_plan_body_reused": false,
+    "prior_plan_is_not_authority": true
+  },
+  "ownership": {
+    "official_policy_schemas": {
+      "source": "src/ptsip/common_contract/schemas/",
+      "owner": "GO_COMMON_CONTRACT",
+      "scope": [
+        "policy_identity.schema.json",
+        "policy_lifecycle.schema.json",
+        "policy_rules.schema.json"
+      ]
+    },
+    "official_plan_schemas": {
+      "source": "src/ptsip/engines/planning/src/schemas/",
+      "owner": "OFFICIAL_RUST_PLANNING_ENGINE",
+      "scope": [
+        "plan_identity.schema.json",
+        "plan_lifecycle.schema.json",
+        "plan_unit.schema.json"
+      ]
+    },
+    "go_legacy_plan_surface": {
+      "current_registry": "src/ptsip/common_contract/registry/manifest.json",
+      "role": "VERSIONED_COMPATIBILITY_PENDING_VERIFIED_HANDOFF"
+    },
+    "consumer_plan_contracts": {
+      "root": ".ptsip/contracts/Plans/",
+      "role": "CONSUMER_OWNED_SELECTION_AND_CUSTOMIZATION",
+      "automatic_mutation": "BLOCKED_PENDING_SEPARATE_POLICY"
+    },
+    "official_registry": {
+      "role": "VERSIONED_PROVIDER_DISCOVERY_NOT_IMPLIED_GLOBAL_NORMATIVE_OWNER"
+    }
+  },
+  "transition_contract": {
+    "expected_initial_state": "GO_COMMON_CONTRACT_CURRENTLY_EXPOSES_SIX_OFFICIAL_SCHEMAS",
+    "target_state": "POLICY_GO_3_PLAN_RUST_3_WITH_VERIFIED_COMPATIBILITY_HANDOFF",
+    "retirement": "FORBIDDEN_UNTIL_EXPLICIT_MIGRATION_PERMISSION_AND_PROOF",
+    "legacy_urns": [
+      "urn:ptsip:common:plan:identity:v1",
+      "urn:ptsip:common:plan:lifecycle:v1",
+      "urn:ptsip:common:plan:unit:v1"
+    ],
+    "no_silent_urn_semantic_redefinition": true,
+    "repository_paths_are_not_customer_runtime_paths": true
+  },
+  "work_units": [
+    {
+      "id": "WU-01",
+      "responsibility": "EXACT_CURRENT_CONTRACT_AND_CALLSITE_INVENTORY",
+      "depends_on": [],
+      "tasks": [
+        "Verify current active policy revision and provenance",
+        "Map Go manifest/resolver/validator/compatibility, Rust planning capabilities, package data, wheel smoke, CI and consumers",
+        "Record exact contract URNs and baseline schema digest/semantics"
+      ],
+      "evidence": [
+        "owner-callsite-matrix",
+        "immutable-original-digest-manifest",
+        "compatibility-consumer-inventory"
+      ],
+      "exit": "MACHINE_VERIFIED_DEPENDENCY_AND_AUTHORITY_CLOSURE"
+    },
+    {
+      "id": "WU-02",
+      "responsibility": "RUST_PLANNING_SCHEMA_CANONICAL_SOURCE",
+      "depends_on": [
+        "WU-01"
+      ],
+      "tasks": [
+        "Create owner-local Plan Identity/Lifecycle/Unit schemas at approved path",
+        "Preserve legacy v1 meaning and version identity until compatibility evidence authorizes version change",
+        "Separate canonical source ownership from installed lookup resource paths"
+      ],
+      "evidence": [
+        "schema-resource-inventory",
+        "content-digest-records",
+        "owner-binding-proof"
+      ],
+      "exit": "CANONICAL_OWNER_AND_CONTRACT_IDENTITY_VERIFIED"
+    },
+    {
+      "id": "WU-03",
+      "responsibility": "PLANNING_CAPABILITY_AND_VERSIONED_RESOLUTION",
+      "depends_on": [
+        "WU-02"
+      ],
+      "tasks": [
+        "Add versioned, contract-declared Planning operations only within its approved execution and side-effect authority",
+        "Integrate explicit registered owner/version/provenance lookup with fail-closed ambiguity behavior",
+        "Do not infer field meanings from names or directory positions"
+      ],
+      "evidence": [
+        "planning-capability-contract",
+        "registered-binding-proof",
+        "negative-reference-tests"
+      ],
+      "exit": "PLANNING_SCHEMA_LOOKUP_AND_VALIDATION_VERIFIED"
+    },
+    {
+      "id": "WU-04",
+      "responsibility": "GO_POLICY_OWNER_AND_PLAN_COMPATIBILITY_FACADE",
+      "depends_on": [
+        "WU-01",
+        "WU-03"
+      ],
+      "tasks": [
+        "Keep three official Policy schemas and Policy semantic ownership in Go",
+        "Preserve preexisting Plan v1 Go behavior until machine-proven Rust handoff",
+        "Prove affected-consumer compatibility or explicitly block unresolved scope; do not silently delete old registered resources"
+      ],
+      "evidence": [
+        "go-policy-regression",
+        "go-plan-v1-compatibility-suite",
+        "owner-handoff-decision-report"
+      ],
+      "exit": "NO_UNPROVEN_CONSUMER_REGRESSION"
+    },
+    {
+      "id": "WU-05",
+      "responsibility": "DISTRIBUTION_AND_INSTALLATION_RESOURCE_CLOSURE",
+      "depends_on": [
+        "WU-03",
+        "WU-04"
+      ],
+      "tasks": [
+        "Verify packaging source rules for Rust Planning JSON schemas and Go legacy resources",
+        "Reconcile manifest inventory, SHA-256 verification and installed wheel/sdist resource access",
+        "Confirm Windows, Linux and macOS compatibility for supported distribution paths"
+      ],
+      "evidence": [
+        "package-inventory-and-hashes",
+        "isolated-wheel-smoke",
+        "multiplatform-build-evidence"
+      ],
+      "exit": "INSTALLED_OFFICIAL_RESOURCES_RESOLVE_EXACTLY"
+    },
+    {
+      "id": "WU-06",
+      "responsibility": "CONSUMER_CUSTOMIZATION_AND_MATERIALIZATION_GATE",
+      "depends_on": [
+        "WU-01"
+      ],
+      "state": "BLOCKED_POLICY_UNRESOLVED",
+      "tasks": [
+        "Do not implement automatic creation or overwrite of consumer .ptsip/contracts/Plans until approved policy",
+        "Do not implement field toggle/remove/replace semantics by implementation inference",
+        "Reopen plan only after separate approved user contract binding and mutation policy"
+      ],
+      "evidence": [
+        "policy-decision-refs-required"
+      ],
+      "exit": "SEPARATE_APPROVED_POLICY_REQUIRED"
+    },
+    {
+      "id": "WU-07",
+      "responsibility": "VERIFICATION_AND_CONTROLLED_HANDOFF",
+      "depends_on": [
+        "WU-04",
+        "WU-05"
+      ],
+      "tasks": [
+        "Test Go policy contract behavior and Rust Planning contract behavior independently",
+        "Reconcile affected test modes through .github/test_modes.yaml and preserve stable tooling-test.yml where possible",
+        "Record hash/URN/semantic-compatibility evidence and prevent unapproved legacy retirement or release"
+      ],
+      "evidence": [
+        "scoped-test-report",
+        "CI-job-evidence",
+        "fail-closed-negative-tests",
+        "handoff-admission-report"
+      ],
+      "exit": "ALL_APPLICABLE_REGISTERED_VERIFICATION_PASS"
+    }
+  ],
+  "unresolved_policy_decisions": [
+    {
+      "id": "USER_FIELD_TOGGLE_REMOVE_REPLACE",
+      "scope": "Effective meaning and validation behavior of optional official fields and consumer-created fields",
+      "state": "UNRESOLVED",
+      "implementation": "BLOCKED"
+    },
+    {
+      "id": "CONSUMER_CONTRACT_SELECTION",
+      "scope": "Priority between official contract, modified official selection and fully independent consumer contract",
+      "state": "UNRESOLVED",
+      "implementation": "BLOCKED"
+    },
+    {
+      "id": "USER_REPOSITORY_SCHEMA_MATERIALIZATION",
+      "scope": "When and under whose authority .ptsip/contracts/Plans/PTSIP_Public_Policy_Structure.schema.json is generated or updated",
+      "state": "UNRESOLVED",
+      "implementation": "BLOCKED"
+    },
+    {
+      "id": "RUST_PROVIDER_RUNTIME_RESOURCE_BINDING",
+      "scope": "Exact installed-resource and versioned capability handoff schema",
+      "state": "PLAN_AND_MACHINE_CONTRACT_WITH_VERIFICATION_REQUIRED",
+      "implementation": "NO_INFERENCE_FROM_SOURCE_PATH"
+    }
+  ],
+  "verification": {
+    "required_tests": [
+      "Go common contract registry/semantic compatibility",
+      "Rust planning contract/operation tests",
+      "Policy source roundtrip and digest",
+      "Package wheel/sdist inventory and smoke",
+      "Per-platform installed-resource lookup",
+      "Negative tests for unknown/stale/ambiguous owner and URN"
+    ],
+    "governance_test_registry": ".github/test_modes.yaml",
+    "stable_executor": ".github/workflows/tooling-test.yml",
+    "logs": "WRITE_TEST_OUTPUT_TO_UNTRACKED_TEMPORARY_LOGS_AND_REMOVE_AFTER_REPORT",
+    "downstream_requires_completed_ci": true
+  },
+  "guardrails": {
+    "no_branch_creation": true,
+    "no_user_repository_automatic_mutation": true,
+    "no_legacy_plan_reactivation": true,
+    "no_silent_policy_decision_in_plan": true,
+    "no_deployment_authority_from_this_plan": true
+  },
+  "approval": {
+    "user_audited": false,
+    "plan_approved": false,
+    "implementation_permission": "NOT_GRANTED_UNTIL_FULL_PLAN_APPROVAL_AND_RESOLVED_POLICY_GATES"
+  }
+}
