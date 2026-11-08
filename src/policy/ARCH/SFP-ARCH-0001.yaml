@@ -812,6 +812,18 @@ Policy_Content:
             existing_profile_migration: UNRESOLVED
             exact_schema_registration: REQUIRES_INFO_CNTR_CONTRACT_REVIEW
             activation: POLICY_DIRECTION_ONLY_NOT_RUNTIME_ACTIVATED
+        rbac_profile_contract_version:
+          selected: pp.3.00
+          scope: CONSUMER_RA_RAC_AEC_PROFILE_OUTPUT_CONTRACTS_ONLY
+          approval_source: USER_EXPLICIT_2026_11_09
+          former_draft_example: pp.2.01
+          former_draft_example_status: SUPERSEDED_NOT_TARGET
+          general_project_profile_contract_catalog: UNCHANGED_BY_THIS_VERSION_DECISION
+          current_candidate_contracts_activation: UNCHANGED_UNREGISTERED
+          version_selection_is_schema_activation: false
+          version_selection_is_runtime_authorization: false
+          field_roles_and_reference_semantics: SEPARATE_CONTRACT_REVIEW_REQUIRED
+          contract_definition_target: src/ptsip/compile_sealed_rbac/
       project_profile_source_partition:
         independently_maintainable_responsibility_scoped_declarations: REQUIRED
         central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
@@ -898,7 +910,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: 458703bc0636e6540890704baa5dc4b6cbfefb347bb930d63b3ff46035e3b0b1
+    sha256: af38b9ae10edfb54e16eca9835a937482e2d5782ecef34980d4701b404938ce9
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
