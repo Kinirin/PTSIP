@@ -120,6 +120,11 @@ func decodeSelected(value any, result any) error {
 // shared validator is NOT implied by migration of this tool.
 func CaptureInput(root string) (Input, error) {
     var out Input
+    var err error
+    if root == "" {
+        root, err = defaultRepoRoot()
+        if err != nil { return out, err }
+    }
     absolute, err := filepath.Abs(root)
     if err != nil { return out, err }
     actual, err := gitOutput(absolute, "rev-parse", "--show-toplevel")
