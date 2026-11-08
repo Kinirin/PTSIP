@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from runpy import run_path
 from shutil import copy2, copytree, rmtree
 
 import yaml
@@ -63,11 +64,18 @@ def _project_support_policy(build_lib: Path) -> None:
     sfp_files = sorted(source.rglob("SFP-*.yaml"))
     if not sfp_files:
         raise RuntimeError("canonical Support Policy source contains no SFP records")
+    # Load the projector from this build's source, including Git-less sdists.
+    contract = run_path(str(ROOT / "src/ptsip/policy_contracts/unified.py"))
     for path in sfp_files:
         relative = path.relative_to(source)
         destination = policy_target / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
-        copy2(path, destination)
+        document = contract["load_document"](path.read_bytes())
+        if contract["is_unified"](document):
+            projected = contract["restore_support_source"](document, relative.as_posix())
+            destination.write_text(yaml.safe_dump(projected, allow_unicode=True, sort_keys=False), encoding="utf-8")
+        else:
+            copy2(path, destination)
 
     copytree(source / "schemas", target / "schemas")
     copytree(source / "registries", target / "registries")

@@ -16,7 +16,6 @@ import subprocess
 import sys
 from typing import Any, Mapping
 
-from jsonschema import Draft202012Validator, SchemaError
 import yaml
 
 
@@ -317,6 +316,31 @@ def _status(source: object) -> str | None:
     return None
 
 
+def restore_support_source(document: dict, relative: str) -> dict:
+    """Project the original Support record for distribution without candidate bindings."""
+    source = restore_source(document)
+    identity = _identity(source)
+    if (identity != document.get("Policy_Identity")
+            or identity["policy_kind"] != "PTSIP_SUPPORT_FEATURE"
+            or any(not isinstance(value, str) or not value for value in identity.values())):
+        raise PolicyContractError("SUPPORT_PROJECTION_IDENTITY_MISMATCH: " + relative)
+    expected = f"{identity['root_family']}/{identity['id']}.yaml"
+    content = document["Policy_Content"]
+    if relative != expected or _relative(content["source_document"].get("path")) != "src/policy/" + expected:
+        raise PolicyContractError("SUPPORT_PROJECTION_PATH_MISMATCH: " + relative)
+
+    status = _status(source)
+    lifecycle = document.get("Policy_Lifecycle", {})
+    lifecycle_pointer = "/policy"
+    if "Policy_Identity" in source:
+        lifecycle_pointer = "/Policy_Lifecycle" if "Policy_Lifecycle" in source else "/Policy_Status"
+    lifecycle_item = next((item for item in content["items"] if item["id"] == lifecycle.get("source_ref")), {})
+    if (not isinstance(status, str) or not status or lifecycle.get("status") != status
+            or lifecycle_item.get("source_pointer") != lifecycle_pointer):
+        raise PolicyContractError("SUPPORT_PROJECTION_LIFECYCLE_MISMATCH: " + relative)
+    return source
+
+
 def _declared_id(value: object) -> str | None:
     if isinstance(value, dict):
         for key in ("id", "ID", "requirement_id"):
@@ -367,6 +391,8 @@ def assess_registration(root: str | Path, rule: dict, kind: str) -> dict:
 
 
 def validate_document(root: str | Path, document: dict) -> dict:
+    from jsonschema import Draft202012Validator, SchemaError
+
     report = {
         "status": "FAIL",
         "scope": "STRUCTURE_SOURCE_INTEGRITY_AND_DECLARED_REFERENCES",

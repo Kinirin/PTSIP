@@ -9,6 +9,8 @@ import yaml
 
 import pytest
 
+from ptsip.policy_contracts.unified import is_unified, load_document, restore_source
+
 ROOT = Path(__file__).resolve().parents[4]
 
 
@@ -39,7 +41,13 @@ def test_actual_wheel_contains_exact_active_contracts_and_no_retired_selector(bu
             assert archive.read(member) == path.read_bytes()
         index = yaml.safe_load((ROOT / "src/policy/index.yaml").read_text(encoding="utf-8"))
         for entry in index["policies"]:
-            assert archive.read("ptsip/support/policy/" + entry["path"]) == (ROOT / "src/policy" / entry["path"]).read_bytes()
+            original = (ROOT / "src/policy" / entry["path"]).read_bytes()
+            packaged = archive.read("ptsip/support/policy/" + entry["path"])
+            document = load_document(original)
+            if is_unified(document):
+                assert load_document(packaged) == restore_source(document)
+            else:
+                assert packaged == original
         assert archive.read("ptsip/support/registries/root-family-migration.json") == (ROOT / "src/policy/registries/root-family-migration.json").read_bytes()
         assert archive.read("ptsip/support/registries/root-family-projection.module.json") == (ROOT / "src/policy/registries/root-family-projection.module.json").read_bytes()
         assert archive.read("ptsip/support/schemas/root-family-projection-module.schema.json") == (ROOT / "src/policy/schemas/root-family-projection-module.schema.json").read_bytes()
@@ -47,6 +55,35 @@ def test_actual_wheel_contains_exact_active_contracts_and_no_retired_selector(bu
         assert "vpms/domain/selector.py" not in names
         assert not any(name.startswith(("developer/", "docs/Support_policy/automation/")) for name in names)
         assert not any("/MPD-" in name for name in names)
+
+
+def test_shipped_support_projection_resolves_without_authoring_resources(built_wheel):
+    wheel, temporary = built_wheel
+    package = temporary / "support-projection-wheel"
+    with zipfile.ZipFile(wheel) as archive:
+        archive.extractall(package)
+    consumer = temporary / "support-projection-consumer"
+    consumer.mkdir()
+    code = r'''
+from pathlib import Path
+import sys
+sys.path.insert(0, sys.argv[1])
+from ptsip.governance import AuthorityCatalog
+
+consumer = Path.cwd()
+assert not (consumer / ".git").exists()
+assert not (consumer / ".ptsip").exists()
+catalog = AuthorityCatalog(consumer)
+path, route, record = catalog.load_current_record("SFP-INFO-0001")
+assert catalog.assets.source == "SHIPPED_PROJECTION"
+assert path == "src/policy/INFO/SFP-INFO-0001.yaml"
+assert route["status"] == record["policy"]["status"] == "ACTIVE"
+assert record["schema_version"] == "ptsip-support-root-family-policy/v1"
+assert "Policy_Evaluation" not in record and "Policy_Rules" not in record
+'''
+    smoke = subprocess.run([sys.executable, "-I", "-c", code, str(package)],
+                           cwd=consumer, capture_output=True, text=True)
+    assert smoke.returncode == 0, smoke.stdout + smoke.stderr
 
 
 def test_installed_contracts_resolve_without_repository_or_developer_assets(built_wheel):
