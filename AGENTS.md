@@ -48,8 +48,9 @@ cross-case relationships. Do not silently generalize individual user decisions.
 
 For a **small** applicability implementation unit, read the non-normative
 `.ptsip/tasks/observation-learning/applicability-handoff.prompt.md` and reuse
-`.ptsip/engine/developer/policy/applicability/run_local.py` for deterministic
-snapshot, triage, and scoped verification. Neither file grants policy mutation
+`go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local` for deterministic
+snapshot, triage, and scoped verification; the Go CLI retains the existing
+shared policy-validator bridge rather than weakening structural validation. Neither file grants policy mutation
 or registers the reserved Task Engine.
 
 For `src/policy/**` review, treat existing wording as potentially outdated:
