@@ -1,12 +1,12 @@
 # Deploy the PTSIP static website from Pages/ only.
-name: PTSIP 홈페이지
+name: PTSIP pages
 
 on:
   push:
     branches: ["main"]
     paths:
       - "Pages/**"
-      - ".github/workflows/PTSIP홈페이지.yml"
+      - ".github/workflows/PTSIP-pages.yml"
   workflow_dispatch:
 
 permissions:
