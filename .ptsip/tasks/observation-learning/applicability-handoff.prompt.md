@@ -23,13 +23,15 @@ and normative RA/RAC/AEC activation.
 From the repository root on Windows 11, execute:
 
 ```powershell
-python .ptsip/engine/developer/policy/applicability/run_local.py
+go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local
 ```
 
-This reuses the existing snapshot adapter and Go assessor, writes read-only results to
+This calls the Go snapshot adapter and Go assessor, writes read-only results to
 `.agent/policy-applicability/<full-HEAD>/` and test logs to the system temporary directory.
 It validates the binding count and exact source revision, and runs the narrowly scoped
-Go + Pytest checks. Do not rewrite this routine in an agent prompt.
+Go + registered unified-policy Pytest checks. The Go adapter preserves the existing
+shared validator bridge until that independently owned verifier is migrated.
+Do not rewrite this routine in an agent prompt.
 
 Read `triage.json` and `assessment.json`. The triage groups are **mechanical counts,
 not semantic ownership decisions**. Never infer contractual authority from family, path,
