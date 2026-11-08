@@ -46,6 +46,12 @@ Conditional generation means non-authoritative dataset **candidates** only, with
 source-verbatim preservation, mechanical validation, and labeled AI-proposed
 cross-case relationships. Do not silently generalize individual user decisions.
 
+For a **small** applicability implementation unit, read the non-normative
+`.ptsip/tasks/observation-learning/applicability-handoff.prompt.md` and reuse
+`.ptsip/engine/developer/policy/applicability/run_local.py` for deterministic
+snapshot, triage, and scoped verification. Neither file grants policy mutation
+or registers the reserved Task Engine.
+
 For `src/policy/**` review, treat existing wording as potentially outdated:
 translate the old policy's situation into natural language, submit the meaning
 for user review, and only then propose a separate authorized policy revision.
