@@ -525,6 +525,28 @@ Policy_Content:
         legacy_repository_index_fallback: FORBIDDEN
         unrelated_project_operations: NO_NEW_AUTHORITY_TO_BLOCK
         implementation_status: POLICY_APPROVED_RUNTIME_NOT_ACTIVATED
+      consumer_compile_sealed_rbac_control:
+        config_path: .ptsip/ptsip_config.json
+        selector: compile-sealed-rbac
+        selector_type: BOOLEAN
+        setup_user_selection: EXPLICIT_TRUE_OR_FALSE_REQUIRED
+        noninteractive_missing_selection: BLOCK_RBAC_SETUP_NO_IMPLICIT_DEFAULT
+        when_true:
+          policy_rule_rbac_fields: GENERATE_AFTER_RULE_ID_CONFLICT_RESOLUTION
+          ra_rac_aec_files: GENERATE_WITH_REGISTERED_CONTRACTS
+          structural_relation_preflight: REQUIRED
+          rego_evaluation: NOT_AUTOMATIC
+          execution_authorization: NOT_GRANTED
+        when_false:
+          new_policy_output_rbac_only_fields: OMIT
+          existing_policy_files: PRESERVE
+          existing_ra_rac_aec_files: PRESERVE
+          preexisting_policy_rule_identity: PRESERVE
+          new_rbac_generation: SKIP
+          deletion_authority: NOT_GRANTED
+        missing_unknown_invalid_value: BLOCK_RBAC_OPERATIONS
+        official_engine_consent: INDEPENDENT_UNCHANGED
+        true_implies_runtime_activation: false
       unresolved:
       - EIGHTH_POLICY_EVALUATION_ENGINE_REGISTRATION_AND_PACKAGE_ADMISSION
       - EXACT_SINGLE_PACKAGE_SELECTED_ENGINE_SETUP_INTERFACE
@@ -539,7 +561,7 @@ Policy_Content:
         scope: ENGINE_DRAFT_COMPATIBILITY
   source_document:
     path: src/policy/CTRL/SFP-CTRL-0002.yaml
-    sha256: 19132f9dde92ec5a0f80bc1f9394fd77351c1e135675ce52372670f81f4966b8
+    sha256: 93386d93d2d51e9222d6a1243b818fb87aba68745556a63d03972e814b845903
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
