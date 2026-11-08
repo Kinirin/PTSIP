@@ -1,0 +1,141 @@
+{
+  "format": "ptsip-applicability-batch-handoff/v1",
+  "role": "NON_NORMATIVE_LOCAL_AGENT_EXECUTION_GUIDANCE",
+  "authority": "NONE",
+  "task_engine_registration": false,
+  "intended_goal": "PROGRESS_TOWARD_EVIDENCE_BACKED_RA_RAC_AEC_APPLICABILITY",
+  "known_baseline": {
+    "source": "LATEST_ASSESSMENT_NOT_HARDCODED",
+    "total_bindings": 3270,
+    "unresolved": 2001,
+    "lifecycle_ineligible": 1269,
+    "baseline_is_diagnostic_not_target": true
+  },
+  "inputs": {
+    "run": "go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local",
+    "source_scope": [
+      ".agent/policy-applicability/<HEAD>/snapshot.json",
+      ".agent/policy-applicability/<HEAD>/assessment.json",
+      ".agent/policy-applicability/<HEAD>/triage.json"
+    ],
+    "approved_direction": ".ptsip/contracts/policy/unified/authoring-decision.json",
+    "hybrid_design": "developer/policy/contracts/rbac-hybrid-conditions-direction.v1.json",
+    "registration": ".ptsip/contracts/policy/unified/applicability-registry.json",
+    "observation_inputs": [
+      ".ptsip/tasks/observation-learning/decision.json",
+      ".ptsip/tasks/observation-learning/observations.json"
+    ]
+  },
+  "mechanical_allocation": {
+    "coverage": "ALL_ASSESSED_BINDINGS_IN_CURRENT_SOURCE_HEAD",
+    "strategy": "DETERMINISTIC_PARTITION_BY_PLANE_KIND_REASON_AND_SOURCE_RESPONSIBILITY",
+    "unit": "BATCH",
+    "recommended_batch_size": 40,
+    "batch_size_is_hard_authority_limit": false,
+    "representative_examples": "FOR_DISCOVERY_ONLY_NOT_COVERAGE_LIMIT",
+    "within_session": "CONTINUE_TO_NEXT_BATCH_UNLESS_APPROVED_EXECUTION_SCOPE_EXHAUSTED_OR_TRUE_BLOCKER",
+    "resume": "KEEP_DETERMINISTIC_CURSOR_AND_PROCESSED_KEYS_IN_NON_NORMATIVE_ARTIFACT",
+    "progress_sources": "RECORDED_WITH_EXACT_RULE_AND_SOURCE_REVISION"
+  },
+  "pipeline": [
+    {
+      "stage": "INVENTORY",
+      "owner": "GO_ASSESSOR",
+      "purpose": "Capture full per-rule RA/RAC/AEC queue; not only three exemplars"
+    },
+    {
+      "stage": "PATTERN_CLUSTER",
+      "owner": "MACHINE_PLUS_AGENT",
+      "purpose": "Group recurring missing evidence by actual semantics and authority owner; name similarity insufficient"
+    },
+    {
+      "stage": "EXACT_EVIDENCE_LOOKUP",
+      "owner": "MACHINE",
+      "purpose": "Resolve registered source, exact item and pinned revision; distinguish definition reference from consumption"
+    },
+    {
+      "stage": "CANDIDATE_PREPARATION",
+      "owner": "AGENT",
+      "purpose": "Produce reviewable candidate contract or explicit non-applicable evidence only when supporting facts exist"
+    },
+    {
+      "stage": "PREWRITE_GATE",
+      "owner": "MACHINE",
+      "purpose": "Check current effective policy/owner/revision/lifecycle/permission before any write"
+    },
+    {
+      "stage": "AUTHORIZED_IMPLEMENTATION",
+      "owner": "AGENT",
+      "purpose": "Implement testable tooling/candidate changes already permitted; normative writes require separate authority"
+    },
+    {
+      "stage": "CONTINUE",
+      "owner": "AGENT",
+      "purpose": "Record per-key disposition and resume next independent batch"
+    }
+  ],
+  "disposition_codes": {
+    "EVIDENCE_CANDIDATE": "Specific rule-local contract consumption evidence found; not normative approval",
+    "CONTRACT_CANDIDATE": "Draft candidate contract preparation allowed by current authority; not activation",
+    "AUTOMATION_IMPLEMENTED": "Reusable evidence/relationship resolution logic implemented with tests and coverage metric",
+    "NEEDS_USER_SEMANTIC_DECISION": "New meaning or stale Support policy requires user review",
+    "NEEDS_OWNER_OR_ACTIVATION_AUTHORITY": "Registration/owner/activation gate absent; cannot auto-approve",
+    "INELIGIBLE_LIFECYCLE": "Preserve DRAFT/RETIRED state and skip normative evaluation",
+    "NO_EVIDENCE": "No admissible use basis found; exact missing evidence recorded without inferring not-applicable"
+  },
+  "agent_progress_rule": {
+    "cosmetic_improvement_sufficient": false,
+    "only_analysis_report_sufficient": false,
+    "unresolved_status_repetition_sufficient": false,
+    "counts_alone_sufficient": false,
+    "measurable_progress_any": [
+      "NEW_VERIFIABLE_CONSUMPTION_CANDIDATE_WITH_EXACT_RULE_LOCAL_EVIDENCE",
+      "VALIDATED_MACHINE_READABLE_CANDIDATE_CONTRACT_WITH_SOURCE_AND_OWNER",
+      "REUSABLE_RESOLVER_OR_AUTOMATION_IMPLEMENTATION_WITH_TESTS_AND_COVERAGE_METRIC",
+      "MULTIPLE_RULE_KEYS_REVIEW_QUEUE_GROUNDED_AND_DEDUPLICATED_BY_AUTHORITY_DECISION"
+    ],
+    "if_first_sample_blocked": "CLASSIFY_AND_CONTINUE_DIFFERENT_INDEPENDENT_BATCH",
+    "if_systemic_blocker": "BUNDLE_ALL_AFFECTED_KEYS_BY_SHARED_MISSING_AUTHORITY_AND_REQUEST_ONE_ROOT_DECISION",
+    "stop_when": [
+      "ALL_ELIGIBLE_KEYS_HAVE_VERIFIABLE_DISPOSITION",
+      "REMAINING_KEYS_SHARE_DOCUMENTED_MISSING_DECISION_OR_AUTHORITY_AND_NO_OTHER_AUTHORIZED_PROGRESS_EXISTS",
+      "NEW_POLICY_DECISION_IS_REQUIRED_BEFORE_FURTHER_AUTHORIZED_ACTION",
+      "VERIFICATION_FAILURE_PREVENTS_SAFE_CONTINUATION"
+    ],
+    "not_stop_when": [
+      "ONE_GROUP_FINISHED",
+      "THREE_RULES_INSPECTED",
+      "UNRESOLVED_UNCHANGED_FOR_ONE_RULE",
+      "ONE_TINY_COSMETIC_TEST_PASSED"
+    ]
+  },
+  "safety": {
+    "canonical_policy_mutation": "ONLY_WITH_EXACT_EFFECTIVE_AUTHORIZATION",
+    "autorun_runtime_activation": false,
+    "unregistered_ra_rac_aec_treated_as_approved": false,
+    "user_observations_generalized": false,
+    "old_src_policy_meaning": "TRANSLATE_TO_NATURAL_LANGUAGE_THEN_USER_REVIEW_BEFORE_SEMANTIC_CHANGE",
+    "task_index_remains_reserved": true,
+    "no_branch_creation": true,
+    "separate_two_policy_planes": true,
+    "preserve_exact_source_revision": true
+  },
+  "artifacts": {
+    "root": ".agent/policy-applicability/<HEAD>/",
+    "suggested_progress": "batch-progress.json",
+    "suggested_proposals": "evidence-candidates.json",
+    "suggested_review": "decision-bundles.json",
+    "role": "DERIVED_NON_AUTHORITATIVE_NOT_POLICY",
+    "commit_policy": "DO_NOT_COMMIT_GENERATED_AGENT_CACHE",
+    "report_fields": [
+      "baseline_counts",
+      "processed_count",
+      "candidate_count",
+      "implemented_automation",
+      "user_review_bundle_count",
+      "unresolved_reasons",
+      "affected_rule_ids",
+      "test_results"
+    ]
+  }
+}
