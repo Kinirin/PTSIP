@@ -251,6 +251,11 @@ Policy_Content:
           base_semantics_must_not_be_weakened: true
           matching_names_do_not_prove_equivalence: true
           consumer_owned_custom_contract_allowed: true
+          consumer_plan_contract_root: ".ptsip/contracts/Plans/"
+          consumer_plan_contract_root_owner: "CONSUMER_PROJECT"
+          consumer_plan_contract_root_role: "CONSUMER_OWNED_PLAN_CONTRACTS"
+          official_plan_source_root_is_consumer_contract_root: false
+          directory_approval_grants_auto_write: false
           official_contract_must_not_force_consumer_repository_schema: true
           user_field_toggle_remove_replace_semantics: "UNRESOLVED_SEPARATE_POLICY"
     -
@@ -337,7 +342,7 @@ Policy_Content:
           no_release_or_deployment_authority_implied: true
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "a6a331f2c322eed50f471b6d71c6f725d8879aeaaf87c1c6ee82bce161a1528a"
+    sha256: "356652fdf3046c382d8385ab5290cd36e0f1e504cdaffd4cd7a578016f16bed2"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
