@@ -216,12 +216,6 @@
       "scope": "When and under whose authority .ptsip/contracts/Plans/PTSIP_Public_Policy_Structure.schema.json is generated or updated",
       "state": "UNRESOLVED",
       "implementation": "BLOCKED"
-    },
-    {
-      "id": "RUST_PROVIDER_RUNTIME_RESOURCE_BINDING",
-      "scope": "Exact installed-resource and versioned capability handoff schema",
-      "state": "PLAN_AND_MACHINE_CONTRACT_WITH_VERIFICATION_REQUIRED",
-      "implementation": "NO_INFERENCE_FROM_SOURCE_PATH"
     }
   ],
   "verification": {
@@ -293,6 +287,27 @@
       "owner": "OFFICIAL_RUST_PLANNING_ENGINE",
       "state": "APPROVED",
       "policy_rule": "SFP-CNTR-0009/R-08"
+    }
+  ],
+  "deferred_plan_contract_details": [
+    {
+      "id": "RUST_PROVIDER_RUNTIME_RESOURCE_BINDING",
+      "scope": "Exact installed-resource and versioned capability handoff schema",
+      "state": "DEFERRED_BECAUSE_WU05_DISTRIBUTION_CHECK_EXCLUDED",
+      "policy_constraints": [
+        "SFP-CNTR-0009/R-02",
+        "SFP-CNTR-0009/R-07",
+        "SFP-CNTR-0009/R-08"
+      ],
+      "implementation": "NO_INSTALLED_RESOURCE_HANDOFF_OR_PUBLIC_ACTIVATION_IN_CURRENT_PLAN",
+      "next_action": "REQUIRES_INDEPENDENT_VERIFIED_DISTRIBUTION_AND_INSTALLED_RUNTIME_PLAN_BEFORE_HANDOFF"
+    }
+  ],
+  "plan_contract_details": [
+    {
+      "id": "RUST_LOCAL_SOURCE_CAPABILITY_BINDING",
+      "state": "PLAN_DERIVED_MACHINE_CONTRACT_DESIGN",
+      "scope": "Local Rust Planning capability IDs, exact schema identities and provenance under effective owner and fail-closed constraints"
     }
   ]
 }
