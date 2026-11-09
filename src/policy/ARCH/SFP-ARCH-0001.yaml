@@ -781,6 +781,17 @@ Policy_Content:
           directory_entry_is_authority: false
           static_profile_allowlist: FORBIDDEN
           user_added_profile_policy: PERMITTED_WITH_VALIDATED_BINDING
+          user_profile_link_first_policy:
+            direction: USER_EXPLICIT_NATIVE_CLI_LINK_FIRST
+            workflow: USER_SUPPLIED_PROFILE_FILE_THEN_CLI_LINK_THEN_VALIDATED_BINDING_THEN_DISCOVERABLE_CANDIDATE
+            cli_language: RUST_NATIVE_WITH_GO_CONTRACT_VALIDATION
+            registration_authority: EXACT_REGISTERED_PROFILE_CONTRACT_REQUIRED
+            file_presence_grants_authority: false
+            cli_link_success_grants_runtime_authority: false
+            registered_contract_missing: BLOCK_NOT_INFER
+            phase_two: LATER_ENHANCEMENT_SEPARATE_CONTRACT_DECISION
+            exact_command_and_payload: UNRESOLVED_PLAN_DESIGN
+            existing_general_pp200_schema_automatic_MUTATION: FORBIDDEN
           bootstrap_profile_resources:
           - main.ptsip.yaml
           - RA-list.yaml
@@ -824,6 +835,9 @@ Policy_Content:
           version_selection_is_runtime_authorization: false
           field_roles_and_reference_semantics: SEPARATE_CONTRACT_REVIEW_REQUIRED
           contract_definition_target: src/ptsip/compile_sealed_rbac/
+          contract_materialization_requirement: MUST_CREATE_APPROVED_RBAC_CONTRACT_FILES_UNDER_SRC_PTSIP_COMPILE_SEALED_RBAC
+          contract_materialization_root: src/ptsip/compile_sealed_rbac/
+          contract_materialization_temp_specdata: FORBIDDEN
         rbac_output_declaration_boundary:
           profile_identity_field: ptsip.id
           profile_contract_root: profiles
@@ -842,11 +856,26 @@ Policy_Content:
           rac_min_references_per_ra: 1
           aec_min_references_per_ra: 1
           reference_item_id_and_name_both_required: true
-          reference_pair_serialization: UNRESOLVED
+          reference_pair_serialization: ORDERED_TWO_ELEMENT_SEQUENCE_ID_THEN_NAME
+          reference_pair_sequence_length: 2
+          reference_pair_element_zero: REGISTERED_CONDITION_ID
+          reference_pair_element_one: REGISTERED_CONDITION_NAME
+          reference_pair_nonempty_strings: REQUIRED
+          reference_set_min_items: 1
+          rac_aec_cross_list_positional_pairing: FORBIDDEN
           no_implicit_exactly_one_cardinality: true
           policy_rule_id_R_ID_direction: USER_PROPOSED_CONFLICT_WITH_EXISTING_IDENTITIES
           policy_rule_id_resolution: PENDING_KEEP_PRIOR_KEEP_LATEST_RECONCILE
           existing_policy_rule_id_mutation_authorized: false
+          policy_rule_id_R_ID_direction: USER_APPROVED_KEEP_LATEST_CANONICAL_R_ID
+          policy_rule_id_resolution: KEEP_LATEST_USER_EXPLICIT_MANUAL_TRANSITION
+          existing_policy_rule_id_mutation_authorized: true
+          existing_policy_rule_id_mutation_mode: MANUAL_ONLY
+          automatic_rule_id_rewrite_authorized: false
+          legacy_declared_and_source_coordinate_ids: REQUIRE_MANUAL_REFERENCE_IMPACT_INVENTORY
+          manual_transition_requires: EXACT_SOURCE_ID_TO_NEW_R_ID_MAPPING_AND_POST_CHANGE_REFERENCE_VALIDATION
+          policy_source_hash_and_index_update: REQUIRED_AFTER_MANUAL_EDIT
+          existing_rule_ids_now_rewritten: false
       project_profile_source_partition:
         independently_maintainable_responsibility_scoped_declarations: REQUIRED
         central_main_direct_component_declaration: NOT_MANDATORY_AFTER_NEW_CONTRACT_ACTIVATION
@@ -933,7 +962,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: 2c1c6b25019bda2683d28c8cac0dfe8135d055d33dee494be0a6b412d7f6328a
+    sha256: 8db084f16d3cf283c42beeaf94ea61ec6e905ea4cbf999e9734556fdfb8e550b
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
