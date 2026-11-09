@@ -86,8 +86,8 @@
     "planning_domain": "PTSIP_CONSUMER_PRODUCT",
     "plan_path": "src/planning/0.3.8/repository-index-to-ptsip-config.yaml",
     "plan_version": "0.3.8",
-    "revision": "Rev.0007",
-    "review_status": "USER_APPROVED_CLI_FIRST_RBAC_TUPLE_MANUAL_R_ID_AND_SCOPED_PYTHON_RETIREMENT_PLAN_DRAFT",
+    "revision": "Rev.0008",
+    "review_status": "USER_REVISED_PLAN_CLI_FIRST_NATIVE_DIRECT_RBAC_TUPLES_MANUAL_R_ID_INDEPENDENT_WORK_UNITS_PENDING_FINAL_USER_APPROVAL",
     "approval": {
       "status": "PENDING_USER_REVIEW",
       "scope": "THIS_IMPLEMENTATION_PLAN_ONLY",
@@ -129,7 +129,6 @@
     "user_added_profiles": "SUPPORTED_NO_STATIC_FILENAME_ALLOWLIST",
     "initial_bootstrap_profile_targets": [
       ".ptsip/profiles/main.ptsip.yaml",
-      ".ptsip/profiles/RA-list.yaml",
       ".ptsip/profiles/workflows.ptsip.yaml"
     ],
     "profile_identity": "ptsip.id",
@@ -153,7 +152,17 @@
     "rbac_contract_output_materialization": "MUST_CREATE_ACTUAL_VERSIONED_SCHEMA_CONTRACT_FILES_UNDER_SRC_PTSIP_COMPILE_SEALED_RBAC",
     "rac_aec_ref_element_encoding": "ORDERED_TUPLE_EXACTLY_TWO_STRING_ITEMS_ID_THEN_NAME",
     "rac_aec_min_references_per_type_per_ra": 1,
-    "r_id_policy_rule_migration": "MANUAL_KEEP_LATEST_NO_AUTOMATED_REWRITE"
+    "r_id_policy_rule_migration": "MANUAL_KEEP_LATEST_NO_AUTOMATED_REWRITE",
+    "conditional_rbac_bootstrap_targets": [
+      ".ptsip/profiles/RA-list.yaml",
+      ".ptsip/profiles/RAC_list.yaml",
+      ".ptsip/profiles/AEC_list.yaml"
+    ],
+    "initial_bootstrap_profile_candidates_before_boolean_selection": [
+      "main.ptsip.yaml",
+      "workflows.ptsip.yaml",
+      "RA-list.yaml"
+    ]
   },
   "execution_boundaries": {
     "product_repo_changes": [
@@ -217,10 +226,10 @@
       "discover_candidates": ".ptsip/profiles/*",
       "initial_targets": [
         ".ptsip/profiles/main.ptsip.yaml",
-        ".ptsip/profiles/RA-list.yaml",
         ".ptsip/profiles/workflows.ptsip.yaml"
       ],
       "conditional_rbac_targets": [
+        ".ptsip/profiles/RA-list.yaml",
         ".ptsip/profiles/RAC_list.yaml",
         ".ptsip/profiles/AEC_list.yaml"
       ],
@@ -251,7 +260,8 @@
         "future_enhancement": "AUTOMATIC_ROLE_DISCOVERY_AND_USER_PROFILE_CREATION_SEPARATELY",
         "block_on_missing_registered_contract": true,
         "open": "EXACT_CLI_SYNTAX_BINDING_PERSISTENCE_AND_USER_SCHEMA_REGISTRATION"
-      }
+      },
+      "creation_condition": "ALL_RBAC_TARGETS_ONLY_AFTER_COMPILE_SEALED_RBAC_TRUE_AND_OTHER_CONTRACT_AUTHORITY;FALSE_CREATES_NO_NEW_RA_RAC_AEC"
     },
     "policy_documents": {
       "location": "USER_REPOSITORY_POLICY_DOCUMENTS_AS_SELECTED_BY_APPLICABLE_CONTRACT",
@@ -630,11 +640,41 @@
       ]
     },
     {
+      "id": "WU-02A",
+      "title": "Define exact machine binding contract for native CLI-first user profile link",
+      "status": "PLANNED",
+      "depends_on": [
+        "WU-01"
+      ],
+      "owner": "GO_COMMON_CONTRACT_AND_RUST_DISCOVERY_VALIDATION",
+      "policy_gates": [
+        "PROFILE_SELECTOR_DETAILS",
+        "USER_PROFILE_CLI_LINK_CONTRACT"
+      ],
+      "outputs": [
+        "USER_PROFILE_LINK_TYPED_IO_SCHEMA",
+        "PER_FILE_IDENTITY_AND_REGISTERED_CONTRACT_BINDING",
+        "NATIVE_CLI_LINK_CONTRACT_TEST_VECTORS"
+      ],
+      "actions": [
+        "REVIEW_EXISTING_PP200_GENERAL_PROFILE_SCHEMA_NO_PTSIP_ID_FIELD_AND_DO_NOT_REINTERPRET_AS_NEW_ID_CONTRACT",
+        "CHOOSE_AND_REGISTER_EXACT_USER_PROFILE_PER_FILE_BINDING_SOURCE_AND_CLI_OPERATION_CONTRACT_BEFORE_IMPLEMENTATION",
+        "DEFINE_FILE_ID_ROLE_VERSION_REGISTERED_CONTRACT_ID_AND_SELECTION_BEHAVIOR_WITHOUT_CENTRAL_PER_FILE_ALLOWLIST",
+        "BUILD_GO_TYPED_VALIDATION_AND_MATCHING_RUST_VALIDATION_TEST_VECTORS",
+        "EXACT_USER_PROFILE_LINK_CLI_INPUT_AND_PERSISTENCE_REMAIN_POLICY_GATE_UNTIL_APPROVED"
+      ],
+      "exit": [
+        "APPROVED_USER_PROFILE_BINDING_CONTRACT_REGISTERED",
+        "GO_RUST_VALIDATION_CONFORMANCE",
+        "NO_IMPLICIT_AUTHORIZATION_FROM_LINK"
+      ]
+    },
+    {
       "id": "WU-03",
       "title": "Implement native CLI-first profile link, Rust Discovery and independent binding validation",
       "status": "PLANNED",
       "depends_on": [
-        "WU-02"
+        "WU-02A"
       ],
       "owner": "RUST_DISCOVERY",
       "policy_gates": [
@@ -659,13 +699,15 @@
         "IMPLEMENT_NATIVE_CLI_FIRST_EXPLICIT_PROFILE_LINK_OPERATION_BEFORE_ADVANCED_AUTO_ROLE_DISCOVERY",
         "LINK_USER_FILE_ONLY_AFTER_REGISTERED_CONTRACT_RESOLUTION_AND_GO_RUST_PARITY;DO_NOT_INFER_SCHEMA_FROM_FILENAME",
         "IMPLEMENT_CANDIDATE_LIST_AND_VALIDATE_SEPARATELY_FROM_AUTHORITY_OR_DEFAULT_PROFILE_SELECTION",
-        "CLI_SYNTAX_AND_BINDING_PERSISTENCE_REQUIRE_FINAL_APPROVED_USER_PROFILE_CONTRACT"
+        "CLI_SYNTAX_AND_BINDING_PERSISTENCE_REQUIRE_FINAL_APPROVED_USER_PROFILE_CONTRACT",
+        "PHASE_ONE_NATIVE_LINK_CLI_OWN_OPERATION_VERIFIED_BEFORE_FULL_RBAC_GENERATOR_INTEGRATION"
       ],
       "exit": [
         "CUSTOM_PROFILE_NAME_WORKS",
         "MALFORMED_OR_COLLIDING_PROFILE_FAILS_CLOSED",
         "PRODUCT_ENGINE_REGISTRY_PRESERVED",
-        "CLI_LINK_VALID_REGISTERED_PROFILE_WITHOUT_PYTHON_CORE_OR_STATIC_FILE_ALLOWLIST"
+        "CLI_LINK_VALID_REGISTERED_PROFILE_WITHOUT_PYTHON_CORE_OR_STATIC_FILE_ALLOWLIST",
+        "NATIVE_CLI_LINK_OPERATION_VERIFIED_BEFORE_WU_05_RBAC_GENERATOR"
       ]
     },
     {
@@ -913,7 +955,8 @@
     "rbac_version_approval": "APPROVED_ONLY_NO_SCHEMA_OR_RUNTIME_ACTIVATION",
     "general_project_profile_version": "UNAFFECTED_BY_THIS_DECISION",
     "python": "SCOPED_USER_APPROVED_RETIREMENT_AFTER_VERIFIED_NATIVE_CUTOVER_NO_FINAL_THIN_PYTHON_ADAPTER",
-    "manual_r_id": "USER_MANUAL_KEEP_LATEST_ID_CHANGE_NATIVE_IMPACT_VERIFICATION_ONLY"
+    "manual_r_id": "USER_MANUAL_KEEP_LATEST_ID_CHANGE_NATIVE_IMPACT_VERIFICATION_ONLY",
+    "phase_order": "WU01_READ_IMPACT_THEN_WU02A_CLI_LINK_CONTRACT_AND_WU03_NATIVE_CLI_EARLY;WU02_RBAC_SCHEMA_AND_WU04_WU05_GENERATORS;WU06_PATCH;WU07_SHIP;WU08_E2E"
   },
   "rbac_field_level_implementation": {
     "schema_state": "PP300_TUPLE_ID_NAME_MIN_ONE_APPROVED_NATIVE_MATERIALIZATION_REQUIRED_OTHER_REGISTRATION_GATES_OPEN",
@@ -1177,7 +1220,7 @@
           "kind": "string",
           "role": "CANONICAL_R_ID_AFTER_MANUAL_KEEP_LATEST_TRANSITION",
           "example": "R-ID-09824AB5286B4C5C953BD859D999FF54",
-          "source": "EXPLICIT_POLICY_RULE_OR_AUTHORIZED_GENERATOR",
+          "source": "MANUAL_USER_RULE_ID_TRANSITION_WITH_EXACT_MAPPING_AND_POST_CHANGE_VALIDATION_ONLY",
           "relationship": "EQUALS_RA_LIST_RESPONSIBILITY_AUTHORITY_MAP_KEY",
           "unresolved": "NO_LONGER_CONFLICT;EXACT_MANUAL_MIGRATION_MAPPING_AND_CLOSURE_EVIDENCE_STILL_REQUIRED",
           "policy_conflict": "RESOLVED_KEEP_LATEST_MANUAL_ONLY"
@@ -1445,8 +1488,8 @@
     {
       "surface": "PROFILE_CATALOG_READERS",
       "source": "src/ptsip/profiles/catalog.py;rule_records.py;repository/namespace.py",
-      "target": "VERSIONED_NATIVE_DISCOVERY_OR_MIGRATION_ADAPTER",
-      "change": "CUT_OVER_READERS_AFTER_NATIVE_OPERATION_AVAILABLE",
+      "target": "NATIVE_RUST_DISCOVERY_WITH_VERIFIED_VERSIONED_CUTOVER_NO_FINAL_PYTHON_ADAPTER",
+      "change": "REMOVE_AFFECTED_PYTHON_PROFILE_INDEX_READERS_AFTER_NEW_NATIVE_OPERATION_AND_PUBLIC_CALLSITE_HANDOFF_VERIFIED",
       "owner": "RUST_DISCOVERY_AND_EXISTING_ADAPTER",
       "test": "LEGACY_REFERENCES_ZERO_ONLY_FOR_CONSUMER_REMOVED_INDEXES"
     },
@@ -1743,7 +1786,12 @@
       "NEW_CORE_IMPLEMENTATION_RUST_GO_NOT_PYTHON",
       "RA_RAC_AEC_REFERENCE_ID_AND_NAME_BOTH_REQUIRED",
       "RA_RAC_AEC_PER_RA_MINIMUM_ONE_OF_EACH",
-      "PTSIP_ID_AND_PROFILES_METADATA_ROLE_NEEDS_FIELD_BY_FIELD_EXPLANATION"
+      "PTSIP_ID_AND_PROFILES_METADATA_ROLE_NEEDS_FIELD_BY_FIELD_EXPLANATION",
+      "MUST_CREATE_RBAC_CONTRACT_FILES_IN_DECLARED_SOURCE_DIRECTORY",
+      "CLI_FIRST_PROFILE_LINK_DIRECTION",
+      "R_ID_KEEP_LATEST_MANUAL_ONLY",
+      "SCOPED_PYTHON_PUBLIC_INTERFACE_RETIREMENT_EXPLICITLY_APPROVED_VERIFICATION_REQUIRED",
+      "RAC_AEC_ORDERED_ID_NAME_TUPLE_ENCODING"
     ],
     "preexisting_policy_constraints": {
       "legacy_python_engine_runtime_reuse": "FORBIDDEN",
