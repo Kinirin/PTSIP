@@ -360,6 +360,23 @@ Policy_Content:
         official_engine_language_neutral_contract: PRESERVED
         consumer_user_external_engine_language_policy: UNCHANGED
         official_engine_legacy_python_implementation_boundary:
+        consumer_python_public_interface_retirement_20261109:
+          decision_source: USER_EXPLICIT_2026_11_09
+          conflict_resolution: KEEP_LATEST_WITH_VERIFIED_HANDOFF_PRESERVED
+          user_authorization: APPROVED
+          scope: CONSUMER_PROFILE_SETUP_CLI_RBAC_MIGRATION_FUNCTIONS_IN_APPROVED_PLAN
+          replacement: DIRECT_RUST_AND_GO_IMPLEMENTATION
+          python_compatibility_adapter_as_new_core: FORBIDDEN
+          old_python_implementation_reuse_by_official_engine: FORBIDDEN
+          legacy_public_api_retirement_extra_approval_for_scope: SATISFIED_BY_THIS_USER_DECISION
+          removal_may_precede_native_contract_equivalence_verification: false
+          transition_requirements:
+          - INVENTORY_AFFECTED_PUBLIC_INTERFACES_AND_CALLERS
+          - IMPLEMENT_AND_VALIDATE_VERSIONED_NATIVE_REPLACEMENT
+          - PROVE_EXISTING_PUBLIC_CONTRACT_HANDOFF_AND_DEPENDENT_CALLS
+          - REMOVE_OBSOLETE_PYTHON_FUNCTIONS_AT_AUTHORIZED_CUTOVER
+          unrelated_legacy_interfaces: PREVIOUS_AUTHORITY_UNCHANGED
+          physical_removal_now_requested: PLAN_SCOPE_NOT_IMMEDIATE_SOURCE_DELETION
           scope: SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
           prohibited_source: EXISTING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION
           prohibition: ALL_LEGACY_PYTHON_IMPLEMENTATION_RELOCATION_REUSE_AND_SHARING_FORBIDDEN
@@ -1346,7 +1363,7 @@ Policy_Content:
         scope: ENGINE_EXTERNAL_INTEROPERABILITY_MACHINE_CONTRACT_AUTHORITY
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0004.yaml
-    sha256: 6168fa7d49dfa35317aa43ff23925461a596fbaa48ae4729515163a6d3ba43e2
+    sha256: b47e3bd5b031c514679789fa80617b0ed292958429601ca5d94649b9a4f8309a
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
