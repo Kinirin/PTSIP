@@ -837,8 +837,12 @@ Policy_Content:
           ra_to_rac_multiple_refs: SUPPORTED
           ra_to_aec_multiple_refs: SUPPORTED
           rac_and_aec_counts_independent: true
-          exact_reference_encoding: UNRESOLVED
-          empty_reference_sets_allowed: UNRESOLVED
+          exact_reference_encoding: ID_AND_NAME_REQUIRED_PAIR_SHAPE_UNRESOLVED
+          empty_reference_sets_allowed: false
+          rac_min_references_per_ra: 1
+          aec_min_references_per_ra: 1
+          reference_item_id_and_name_both_required: true
+          reference_pair_serialization: UNRESOLVED
           no_implicit_exactly_one_cardinality: true
           policy_rule_id_R_ID_direction: USER_PROPOSED_CONFLICT_WITH_EXISTING_IDENTITIES
           policy_rule_id_resolution: PENDING_KEEP_PRIOR_KEEP_LATEST_RECONCILE
@@ -929,7 +933,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0001.yaml
-    sha256: cb729ad2b8762837a3dbe0ba1b0f0577d1148f93121b5cb5e493a8c856579419
+    sha256: 2c1c6b25019bda2683d28c8cac0dfe8135d055d33dee494be0a6b412d7f6328a
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
