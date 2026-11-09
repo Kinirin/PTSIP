@@ -81,20 +81,32 @@
   "identity": {
     "plan_id": "REPOSITORY-INDEX-TO-PTSIP-CONFIG-MIGRATION",
     "title": "Implement Rust/Go language-neutral PTSIP consumer migration, dynamic profiles and RA/RAC/AEC contract projection",
-    "status": "DRAFT",
+    "status": "APPROVED",
     "integration_branch": "main",
     "planning_domain": "PTSIP_CONSUMER_PRODUCT",
     "plan_path": "src/planning/0.3.8/repository-index-to-ptsip-config.yaml",
     "plan_version": "0.3.8",
-    "revision": "Rev.0008",
-    "review_status": "USER_REVISED_PLAN_CLI_FIRST_NATIVE_DIRECT_RBAC_TUPLES_MANUAL_R_ID_INDEPENDENT_WORK_UNITS_PENDING_FINAL_USER_APPROVAL",
+    "revision": "Rev.0009",
+    "review_status": "USER_AUDITED_AND_APPROVED_REV_0008;EXECUTION_DEFERRED_TO_SEPARATE_USER_ENVIRONMENT",
     "approval": {
-      "status": "PENDING_USER_REVIEW",
+      "status": "APPROVED",
       "scope": "THIS_IMPLEMENTATION_PLAN_ONLY",
-      "inherited_from_withdrawn_plan": false
+      "inherited_from_withdrawn_plan": false,
+      "approval_source": "USER_EXPLICIT",
+      "approval_evidence_kind": "DIRECT_PROJECT_OWNER_INSTRUCTION",
+      "approved_revision": "Rev.0008",
+      "effective_revision": "Rev.0009"
     },
     "implementation_authorization": {
-      "status": "NOT_AUTHORIZED"
+      "status": "AUTHORIZED",
+      "authorization_source": "USER_EXPLICIT",
+      "approval_evidence_kind": "DIRECT_PROJECT_OWNER_INSTRUCTION",
+      "authorized_plan_revision": "Rev.0009",
+      "scope": "APPROVED_REPOSITORY_INDEX_TO_PTSIP_CONFIG_PLAN",
+      "execution_started": false,
+      "execution_deferred": true,
+      "execution_defer_reason": "USER_SELECTED_DIFFERENT_START_ENVIRONMENT",
+      "unresolved_policy_gates": "MUST_BE_RESOLVED_BEFORE_AFFECTED_WORK_UNITS"
     }
   },
   "correction": {
@@ -947,8 +959,8 @@
     "not_success": "PYTHON_NEW_CORE_OR_ONLY_EDIT_KINIRIN_PTSIP_DOT_PTSIP_OR_REUSE_TEMP_SPECDATA_FOR_NEW_CONTRACTS",
     "old_task_index": "EXTERNAL_ASSUMPTION_EXCLUDED",
     "official_engine_registry": "PRESERVED",
-    "approval": "PENDING_USER_REVIEW",
-    "implementation": "NOT_AUTHORIZED",
+    "approval": "APPROVED",
+    "implementation": "AUTHORIZED_NOT_STARTED",
     "tests": "NOT_EXECUTED",
     "remote_actions": "NOT_EXECUTED",
     "rbac_version": "pp.3.00",
@@ -956,7 +968,11 @@
     "general_project_profile_version": "UNAFFECTED_BY_THIS_DECISION",
     "python": "SCOPED_USER_APPROVED_RETIREMENT_AFTER_VERIFIED_NATIVE_CUTOVER_NO_FINAL_THIN_PYTHON_ADAPTER",
     "manual_r_id": "USER_MANUAL_KEEP_LATEST_ID_CHANGE_NATIVE_IMPACT_VERIFICATION_ONLY",
-    "phase_order": "WU01_READ_IMPACT_THEN_WU02A_CLI_LINK_CONTRACT_AND_WU03_NATIVE_CLI_EARLY;WU02_RBAC_SCHEMA_AND_WU04_WU05_GENERATORS;WU06_PATCH;WU07_SHIP;WU08_E2E"
+    "phase_order": "WU01_READ_IMPACT_THEN_WU02A_CLI_LINK_CONTRACT_AND_WU03_NATIVE_CLI_EARLY;WU02_RBAC_SCHEMA_AND_WU04_WU05_GENERATORS;WU06_PATCH;WU07_SHIP;WU08_E2E",
+    "execution_started": false,
+    "execution_state": "NOT_STARTED_DEFERRED_TO_OTHER_ENVIRONMENT",
+    "work_units_completed": 0,
+    "implementation_execution_permission_now": "DO_NOT_START"
   },
   "rbac_field_level_implementation": {
     "schema_state": "PP300_TUPLE_ID_NAME_MIN_ONE_APPROVED_NATIVE_MATERIALIZATION_REQUIRED_OTHER_REGISTRATION_GATES_OPEN",
@@ -1844,5 +1860,15 @@
       "candidate": "NO_AUTOMATIC_RULE_ID_REWRITE_READ_ONLY_MAPPING_CHECK_MANUAL_USER_REWRITE_AND_VERIFY",
       "not_authorized": "AUTOMATED_REWRITE_OF_EXISTING_POLICY_IDS"
     }
+  },
+  "execution_checkpoint": {
+    "state": "NOT_STARTED",
+    "start_authorization": "EXPLICIT_USER_FUTURE_START_IN_SELECTED_ENVIRONMENT",
+    "current_conversation_execution_permission": "DEFERRED_DO_NOT_START",
+    "execution_environment": "OTHER_ENVIRONMENT_USER_SELECTED",
+    "work_unit_progress": "ALL_PLANNED_ZERO_STARTED",
+    "source_changes_to_product_code": "NONE_BY_THIS_APPROVAL_UPDATE",
+    "validation_execution": "NOT_PERFORMED",
+    "policy_gate_effect": "PRESERVED_NO_OVERRIDE"
   }
 }
