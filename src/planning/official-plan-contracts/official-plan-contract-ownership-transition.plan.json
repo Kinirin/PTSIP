@@ -12,8 +12,8 @@
     "hierarchy": "POLICY > PLAN > IMPLEMENTATION",
     "approved_resolution": "RECONCILE",
     "source_policy": "src/policy/CNTR/SFP-CNTR-0009.yaml",
-    "policy_revision_commit": "d43de1ee13f78753808dcff47631ca24154b42a6",
-    "policy_source_sha256": "356652fdf3046c382d8385ab5290cd36e0f1e504cdaffd4cd7a578016f16bed2",
+    "policy_revision_commit": "283be17b4ff7c4ebbfce7c45eb5ad643804f957e",
+    "policy_source_sha256": "eb2081f0c9b74d1217a148e84f3f446e6c9beb90ea8b88a283037c31c4d051c6",
     "policy_rule_refs": [
       "SFP-CNTR-0009/R-01",
       "SFP-CNTR-0009/R-02",
@@ -167,13 +167,15 @@
       "state": "BLOCKED_POLICY_UNRESOLVED",
       "tasks": [
         "Recognize .ptsip/contracts/Plans/ as approved consumer-owned Plan contract directory; directory approval does not authorize automatic writes",
+        "Preserve all three approved nonexclusive consumer contract scopes (whole contract, independent section, nested field/section); no global one-of-three choice or inferred validator precedence",
         "Do not implement automatic creation or overwrite of consumer Plan schemas until separately approved mutation policy",
         "Do not implement field toggle/remove/replace semantics or contract choice priority by inference",
         "Reopen blocked functionality only after separate approved policy with machine-verifiable authority"
       ],
       "evidence": [
         "SFP-CNTR-0009/R-03_CONSUMER_ROOT_APPROVED",
-        "policy-decision-refs-required"
+        "policy-decision-refs-required",
+        "SFP-CNTR-0009/R-03_NONEXCLUSIVE_SCOPE_SUPPORT_APPROVED"
       ],
       "exit": "SEPARATE_APPROVED_POLICY_REQUIRED"
     },
@@ -287,6 +289,19 @@
       "owner": "OFFICIAL_RUST_PLANNING_ENGINE",
       "state": "APPROVED",
       "policy_rule": "SFP-CNTR-0009/R-08"
+    },
+    {
+      "id": "CONSUMER_CONTRACT_SCOPE_GRANULARITIES",
+      "supported_scopes": [
+        "WHOLE_CONTRACT",
+        "INDEPENDENT_CONTRACT_SECTION",
+        "NESTED_FIELD_OR_SECTION"
+      ],
+      "mutually_exclusive": false,
+      "selection": "PER_CONSUMER_CONTRACT_CONTEXT",
+      "state": "APPROVED",
+      "policy_rule": "SFP-CNTR-0009/R-03",
+      "validation_binding_and_overlap_resolution": "UNRESOLVED_SEPARATE_POLICY"
     }
   ],
   "deferred_plan_contract_details": [
