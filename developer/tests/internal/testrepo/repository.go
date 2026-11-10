@@ -33,7 +33,7 @@ func Root(t *testing.T) string {
 		t.Fatal("cannot resolve repository test source")
 	}
 	root := filepath.Clean(filepath.Join(filepath.Dir(file), "..", "..", "..", ".."))
-	if _, err := os.Stat(filepath.Join(root, "developer", "automation", "go.mod")); err != nil {
+	if _, err := os.Stat(filepath.Join(root, ".ptsip", "engine", "developer", "go.mod")); err != nil {
 		t.Fatalf("repository root: %v", err)
 	}
 	return root

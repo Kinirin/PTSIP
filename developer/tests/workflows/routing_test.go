@@ -90,10 +90,7 @@ func TestGoToolchainPrecedesEveryDeveloperAutomationConsumer(t *testing.T) {
 }
 
 func TestRepositoryEntryPointsDoNotInvokeRetiredAutomation(t *testing.T) {
-	root, err := filepath.Abs("../../..")
-	if err != nil {
-		t.Fatal(err)
-	}
+	root := testrepo.Root(t)
 	for _, file := range []string{"setup_dev.bat", "bootstrap_repo.ps1", ".github/workflows/branch-verification.yml"} {
 		raw, err := os.ReadFile(filepath.Join(root, file))
 		if err != nil {
