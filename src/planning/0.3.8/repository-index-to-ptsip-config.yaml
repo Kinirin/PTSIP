@@ -87,7 +87,7 @@
     "plan_path": "src/planning/0.3.8/repository-index-to-ptsip-config.yaml",
     "plan_version": "0.3.8",
     "revision": "Rev.0009",
-    "review_status": "USER_AUDITED_AND_APPROVED_REV_0008;EXECUTION_DEFERRED_TO_SEPARATE_USER_ENVIRONMENT",
+    "review_status": "USER_AUDITED_AND_APPROVED_REV_0008",
     "approval": {
       "status": "APPROVED",
       "scope": "THIS_IMPLEMENTATION_PLAN_ONLY",
@@ -103,9 +103,8 @@
       "approval_evidence_kind": "DIRECT_PROJECT_OWNER_INSTRUCTION",
       "authorized_plan_revision": "Rev.0009",
       "scope": "APPROVED_REPOSITORY_INDEX_TO_PTSIP_CONFIG_PLAN",
-      "execution_started": false,
-      "execution_deferred": true,
-      "execution_defer_reason": "USER_SELECTED_DIFFERENT_START_ENVIRONMENT",
+      "execution_started": true,
+      "execution_deferred": false,
       "unresolved_policy_gates": "MUST_BE_RESOLVED_BEFORE_AFFECTED_WORK_UNITS"
     }
   },
@@ -577,7 +576,7 @@
     {
       "id": "WU-01",
       "title": "Inventory Rust/Go owners and downstream migration impact",
-      "status": "PLANNED",
+      "status": "COMPLETED",
       "depends_on": [],
       "owner": "READ_ONLY_ARCHITECTURE_AND_IMPACT",
       "outputs": [
@@ -609,7 +608,7 @@
     {
       "id": "WU-02",
       "title": "Build language-neutral config and profile/RBAC schema contracts in permanent package assets",
-      "status": "PLANNED",
+      "status": "PARTIAL",
       "depends_on": [
         "WU-01"
       ],
@@ -654,7 +653,7 @@
     {
       "id": "WU-02A",
       "title": "Define exact machine binding contract for native CLI-first user profile link",
-      "status": "PLANNED",
+      "status": "BLOCKED",
       "depends_on": [
         "WU-01"
       ],
@@ -684,7 +683,7 @@
     {
       "id": "WU-03",
       "title": "Implement native CLI-first profile link, Rust Discovery and independent binding validation",
-      "status": "PLANNED",
+      "status": "BLOCKED",
       "depends_on": [
         "WU-02A"
       ],
@@ -960,19 +959,19 @@
     "old_task_index": "EXTERNAL_ASSUMPTION_EXCLUDED",
     "official_engine_registry": "PRESERVED",
     "approval": "APPROVED",
-    "implementation": "AUTHORIZED_NOT_STARTED",
-    "tests": "NOT_EXECUTED",
-    "remote_actions": "NOT_EXECUTED",
+    "implementation": "PARTIAL_WU01_COMPLETE_WU02_STRUCTURAL_ONLY",
+    "tests": "STRUCTURAL_GO_RUST_PARITY_VERIFIED_INSTALLED_WHEEL_AND_CONSUMER_WORKFLOW_PENDING",
+    "remote_actions": "EXECUTED_SEE_CHECKPOINT",
     "rbac_version": "pp.3.00",
-    "rbac_version_approval": "APPROVED_ONLY_NO_SCHEMA_OR_RUNTIME_ACTIVATION",
+    "rbac_version_approval": "APPROVED_STRUCTURAL_SCHEMAS_IMPLEMENTED_REGISTRATION_AND_ACTIVATION_PENDING",
     "general_project_profile_version": "UNAFFECTED_BY_THIS_DECISION",
     "python": "SCOPED_USER_APPROVED_RETIREMENT_AFTER_VERIFIED_NATIVE_CUTOVER_NO_FINAL_THIN_PYTHON_ADAPTER",
     "manual_r_id": "USER_MANUAL_KEEP_LATEST_ID_CHANGE_NATIVE_IMPACT_VERIFICATION_ONLY",
     "phase_order": "WU01_READ_IMPACT_THEN_WU02A_CLI_LINK_CONTRACT_AND_WU03_NATIVE_CLI_EARLY;WU02_RBAC_SCHEMA_AND_WU04_WU05_GENERATORS;WU06_PATCH;WU07_SHIP;WU08_E2E",
-    "execution_started": false,
-    "execution_state": "NOT_STARTED_DEFERRED_TO_OTHER_ENVIRONMENT",
-    "work_units_completed": 0,
-    "implementation_execution_permission_now": "DO_NOT_START"
+    "execution_started": true,
+    "execution_state": "PARTIAL_WITH_OPEN_POLICY_GATES",
+    "work_units_completed": 1,
+    "implementation_execution_permission_now": "AUTHORIZED_SUBJECT_TO_POLICY_AND_WORK_UNIT_GATES"
   },
   "rbac_field_level_implementation": {
     "schema_state": "PP300_TUPLE_ID_NAME_MIN_ONE_APPROVED_NATIVE_MATERIALIZATION_REQUIRED_OTHER_REGISTRATION_GATES_OPEN",
@@ -1862,13 +1861,72 @@
     }
   },
   "execution_checkpoint": {
-    "state": "NOT_STARTED",
-    "start_authorization": "EXPLICIT_USER_FUTURE_START_IN_SELECTED_ENVIRONMENT",
-    "current_conversation_execution_permission": "DEFERRED_DO_NOT_START",
-    "execution_environment": "OTHER_ENVIRONMENT_USER_SELECTED",
-    "work_unit_progress": "ALL_PLANNED_ZERO_STARTED",
-    "source_changes_to_product_code": "NONE_BY_THIS_APPROVAL_UPDATE",
-    "validation_execution": "NOT_PERFORMED",
-    "policy_gate_effect": "PRESERVED_NO_OVERRIDE"
+    "state": "PARTIAL_WITH_OPEN_POLICY_GATES",
+    "start_authorization": "EXPLICIT_USER_START_REV_0009_ON_MAIN",
+    "approval_source_commit": "78ca66d039f4f0217cc953034204bd4a85e222f3",
+    "implementation_baseline_commit": "ed49475115360f36e246efc2d0190e62a6183ee4",
+    "work_unit_progress": {
+      "WU-01": {
+        "state": "COMPLETED",
+        "inventory_snapshot": "78ca66d039f4f0217cc953034204bd4a85e222f3",
+        "baseline_review": "RECHECKED_POLICY_AND_DEPENDENCIES_AT_IMPLEMENTATION_BASELINE",
+        "r_id_inventory": "READ_ONLY_503_RULE_RECORDS_NO_ID_ASSIGNMENTS_OR_AUTOMATED_REWRITE"
+      },
+      "WU-02A": {
+        "state": "BLOCKED",
+        "user_selected_cli": "ptsip profile link --file <file> --contract <registered-contract> --role <role>",
+        "user_selected_binding_storage": "IN_FILE_PROFILES_METADATA",
+        "user_selected_initial_contract": "NEW_REGISTERED_PRODUCT_DEFAULT_PROFILE_SCHEMA",
+        "pending": "EXACT_REGISTRATION_OWNER_AND_ROUTE_ROLE_VERSION_AND_COLLISION_CONTRACT"
+      },
+      "WU-03": "BLOCKED_BY_WU_02A",
+      "WU-02": {
+        "state": "PARTIAL",
+        "commit": "c1095cd1cf4868959a77d4440683d5ea51ea8a70",
+        "asset_directory": "src/ptsip/compile_sealed_rbac/",
+        "verified": "PP300_RA_RAC_AEC_STRUCTURE_ONLY",
+        "pending": "CONFIG_AND_ROLE_BINDING_CONTRACTS_REGISTRATION_AND_SOURCE_REFERENCE_INTEGRITY"
+      },
+      "WU-04_THROUGH_WU-08": "PENDING_DECLARED_DEPENDENCIES_AND_POLICY_GATES"
+    },
+    "developer_verification_changes": {
+      "retired_automation_invocations": "8951e36aaaac5f2eeeddec7a63314375d1b7b027",
+      "active_developer_test_root_and_schema_test_dependency": "8c55f71f383f44aa1254c3ee888dfa3ddd866363",
+      "focused_retirement_and_engine_registry_tests": "PASS",
+      "release_capability_history_test": "BLOCKED_BY_MISSING_EXISTING_APPROVAL_SOURCE",
+      "legacy_developer_tests": "REMAINING_IMPORTS_AND_LEGACY_CLI_TEST_HELPER_REQUIRE_SEPARATE_CUTOVER"
+    },
+    "validation_execution": {
+      "go_common_contract_tests": "PASS",
+      "rust_validation_engine_tests": "24_PASS",
+      "shared_pp300_cases": "27_PASS_IN_BOTH_GO_AND_RUST",
+      "external_fixture_from_sdist": {
+        "sha256": "b68ebc5e23166b044db6d752ea99816ee71334b654858c0dd0ebf277c9cc84aa",
+        "result": "27_PASS_IN_BOTH_GO_AND_RUST_WITH_EXTRACTED_ASSETS"
+      },
+      "wheel_build": "BLOCKED_BY_DUPLICATE_KEY_POLICY_RULE_ID_R_ID_DIRECTION_IN_SFP_ARCH_0001",
+      "installed_package_consumer_test": "PENDING_WHEEL_BUILD"
+    },
+    "remote_verification": {
+      "implementation_commit": "c1095cd1cf4868959a77d4440683d5ea51ea8a70",
+      "branch_verification": {"run_id": 42827246046, "result": "SUCCESS"},
+      "policy_contract_guard": {"run_id": 42827246855, "result": "FAILURE_ARCH_DUPLICATE_KEYS"},
+      "common_contract_initial": {"run_id": 42827246973, "result": "FAILURE_MISSING_JSONSCHEMA_TEST_DEPENDENCY"},
+      "release_admission": {"run_id": 42827246092, "result": "FAILURE_RELEASE_CONTROLLER_GO_SUM_AND_RETIRED_TEST_ROOT"},
+      "ci_fix_commit": "8c55f71f383f44aa1254c3ee888dfa3ddd866363",
+      "policy_contract_guard_after_ci_fix": {"run_id": 42828237432, "result": "FAILURE_CURRENT_POLICY_MIGRATION"},
+      "common_contract_after_ci_fix": {
+        "run_id": 42828253658,
+        "windows": "FAILURE_CURRENT_POLICY_MIGRATION_12_PASSED_1_FAILED",
+        "linux": "FAILURE_CURRENT_POLICY_MIGRATION_12_PASSED_1_FAILED",
+        "macos": "PENDING"
+      }
+    },
+    "policy_source_blockers": [
+      {"path": "src/policy/ARCH/SFP-ARCH-0001.yaml", "duplicate_key": "policy_rule_id_R_ID_direction"},
+      {"path": "src/policy/ARCH/SFP-ARCH-0004.yaml", "duplicate_key": "scope"}
+    ],
+    "policy_gate_effect": "PRESERVED_NO_OVERRIDE_ARCH_SOURCE_CORRECTION_DEFERRED_BY_USER",
+    "next_work_unit": "WU-02A_AFTER_ARCH_SOURCE_CORRECTION_AND_EXACT_PROFILE_REGISTRATION_DECISION"
   }
 }
