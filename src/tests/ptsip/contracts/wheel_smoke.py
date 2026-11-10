@@ -26,6 +26,41 @@ STATUSES = [
 ]
 
 
+def verify_rbac_profile_structures(package):
+    root = package.joinpath("compile_sealed_rbac")
+    profile_contract = json.loads(root.joinpath("pp.3.00.contract.json").read_bytes())
+    assert profile_contract["profile_version"] == "pp.3.00"
+    assert profile_contract["scope"] == "STRUCTURE_ONLY"
+    assert profile_contract["activation_state"] == "UNREGISTERED"
+    assert profile_contract["authorization_permitted"] is False
+    cases = json.loads(Path(__file__).with_name("rbac-pp300-conformance.json").read_bytes())
+    validation = package.joinpath("engines/validation")
+    manifest = json.loads(validation.joinpath("manifest.json").read_bytes())
+    contract = json.loads(validation.joinpath("contract.json").read_bytes())
+    binary = Path(sys.executable).with_name("ptsip-engine-validation" + (".exe" if os.name == "nt" else ""))
+    schemas = {}
+    for entry in profile_contract["schemas"].values():
+        schema = json.loads(root.joinpath(entry["resource"]).read_bytes())
+        assert schema["$id"] == entry["id"]
+        schemas[entry["resource"]] = schema
+    assert schemas.keys() == {case["schema"] for case in cases}
+    for case in cases:
+        request = {
+            "engine_id": manifest["engine_id"],
+            "engine_version": manifest["implementation_version"],
+            "contract_id": contract["contract_id"],
+            "contract_version": contract["version"],
+            "operation_id": "validation.schema",
+            "input": {"schema": schemas[case["schema"]], "instance": case["instance"]},
+        }
+        result = subprocess.run([str(binary)], input=json.dumps(request).encode("utf-8"),
+                                capture_output=True, check=True, timeout=20)
+        report = json.loads(result.stdout)
+        assert report["output"]["valid"] is case["valid"], (case["name"], report)
+        assert report["execution_authorized"] is False
+    return len(cases)
+
+
 def verify(expected_sha):
     package = resources.files("ptsip")
     root = package.joinpath("common_contract")
@@ -72,8 +107,10 @@ def verify(expected_sha):
     manifest_path.write_bytes(manifest + b"\n")
     stale = request("lookup", IDENTITY)
     assert stale["status"] == "UNRESOLVED" and "STALE_REGISTRY" in stale["reference_resolution"]["problem"]
+    rbac_cases = verify_rbac_profile_structures(package)
     print(json.dumps({"status": "PASS", "source_sha": expected_sha, "platform": origin["goos"],
                       "architecture": origin["goarch"], "schemas": len(entries), "statuses": len(STATUSES),
+                      "rbac_structural_cases": rbac_cases,
                       "registry_sha256": origin["registry_sha256"], "binary_sha256": origin["binary_sha256"]}))
 
 
@@ -97,6 +134,8 @@ def main():
                        cwd=temp, env=env, check=True, stdout=sys.stderr)
         smoke = temp / "wheel_smoke.py"
         smoke.write_bytes(Path(__file__).read_bytes())
+        fixtures = Path(__file__).resolve().parents[3] / "ptsip/compile_sealed_rbac/testdata/conformance.json"
+        (temp / "rbac-pp300-conformance.json").write_bytes(fixtures.read_bytes())
         command = [str(python), "-I", str(smoke), str(wheel), args.source_sha, "--verify"]
         subprocess.run(command, cwd=temp, env=env, check=True)
 

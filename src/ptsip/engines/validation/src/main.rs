@@ -184,6 +184,53 @@ mod tests {
         .unwrap();
         assert_eq!(out["valid"], true);
     }
+
+    #[test]
+    fn validates_shared_pp300_rbac_conformance_cases() {
+        let root =
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../compile_sealed_rbac");
+        let read_json = |relative: &str| -> Value {
+            let path = root.join(relative);
+            let bytes = std::fs::read(&path)
+                .unwrap_or_else(|error| panic!("cannot read {}: {error}", path.display()));
+            source::parse(&bytes)
+                .unwrap_or_else(|error| panic!("invalid JSON in {}: {error}", path.display()))
+        };
+        let schemas = [
+            "ra.pp.3.00.schema.json",
+            "rac.pp.3.00.schema.json",
+            "aec.pp.3.00.schema.json",
+        ]
+        .map(|filename| (filename, read_json(filename)));
+        let fixture = read_json("testdata/conformance.json");
+        let cases = fixture
+            .as_array()
+            .expect("conformance cases must be an array");
+        assert!(!cases.is_empty(), "conformance cases must not be empty");
+        for case in cases {
+            let name = case["name"].as_str().expect("case name must be a string");
+            let schema_name = case["schema"]
+                .as_str()
+                .expect("schema name must be a string");
+            let (_, schema) = schemas
+                .iter()
+                .find(|(filename, _)| *filename == schema_name)
+                .unwrap_or_else(|| panic!("{name}: unknown schema {schema_name}"));
+            let instance = case.get("instance").expect("case instance is required");
+            let expected = case["valid"]
+                .as_bool()
+                .expect("case validity must be a boolean");
+            let input = json!({"schema": schema, "instance": instance});
+            let output = dispatch(&request(input, "validation.schema"))
+                .unwrap_or_else(|error| panic!("{name}: {error}"));
+            assert_eq!(output["valid"], expected, "{name}: {output}");
+            assert_eq!(
+                output["ptsip_conformance_verdict"], "NOT_ASSERTED",
+                "{name}"
+            );
+        }
+    }
+
     #[test]
     fn schema_reference_cannot_trigger_external_resolution() {
         assert!(dispatch(&request(

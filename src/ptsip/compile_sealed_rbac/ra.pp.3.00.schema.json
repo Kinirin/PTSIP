@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:consumer:pp300:ra:structure:v1",
+  "title": "PTSIP pp.3.00 consumer RA structure",
+  "$comment": "Structural conformance covers tuple shape. Exact registered ID/name lookup, list duplicate and ordering rules, and role binding require separate resolution.",
+  "type": "object",
+  "required": ["ptsip", "profiles", "responsibility_authority"],
+  "properties": {
+    "ptsip": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^profiles-[0-9a-f]{32}$", "maxLength": 41 }
+      }
+    },
+    "profiles": {
+      "type": "object",
+      "required": ["version"],
+      "properties": {
+        "version": { "const": "pp.3.00" }
+      }
+    },
+    "responsibility_authority": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["RAC_id", "AEC_id"],
+        "properties": {
+          "RA-key": { "type": "string" },
+          "RAC_id": { "$ref": "#/$defs/condition_references" },
+          "AEC_id": { "$ref": "#/$defs/condition_references" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "condition_references": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "prefixItems": [
+          { "type": "string", "minLength": 1, "description": "Registered condition ID." },
+          { "type": "string", "minLength": 1, "description": "Name of the same registered condition." }
+        ]
+      }
+    }
+  }
+}

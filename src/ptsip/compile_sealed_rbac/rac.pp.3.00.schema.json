@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rbac:consumer:pp300:rac:structure:v1",
+  "title": "PTSIP pp.3.00 consumer RAC structure",
+  "$comment": "Rego field requiredness and exact source, revision and entry point constraints require separate resolution. Structural conformance does not register a role or resolve a Rego source.",
+  "type": "object",
+  "required": ["ptsip", "profiles", "RAC_profile"],
+  "properties": {
+    "ptsip": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^profiles-[0-9a-f]{32}$", "maxLength": 41 }
+      }
+    },
+    "profiles": {
+      "type": "object",
+      "required": ["version"],
+      "properties": {
+        "version": { "const": "pp.3.00" }
+      }
+    },
+    "RAC_profile": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["RAC_id", "RAC_name"],
+        "properties": {
+          "RAC_id": { "type": "string", "minLength": 1 },
+          "RAC_name": { "type": "string", "minLength": 1 },
+          "value": {
+            "type": "object",
+            "not": { "required": ["rego"] },
+            "properties": {
+              "source_ref": { "type": "string" },
+              "revision_ref": { "type": "string" },
+              "entrypoint": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

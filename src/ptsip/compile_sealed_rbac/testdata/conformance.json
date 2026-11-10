@@ -1,0 +1,766 @@
+[
+  {
+    "name": "RA accepts independent two-RAC and three-AEC lists",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ],
+            [
+              "ID-AEC-002",
+              "exercise_b"
+            ],
+            [
+              "ID-AEC-003",
+              "exercise_c"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "RA rejects missing RAC_id list",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects empty RAC_id list",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects missing AEC_id list",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects empty AEC_id list",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": []
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects named object",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            {
+              "id": "ID-RAC-001",
+              "name": "condition_a"
+            }
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects tuple without name",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects tuple with extra item",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a",
+              "extra"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects empty ID",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "",
+              "condition_a"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects empty name",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              ""
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects non-string name",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              42
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RAC accepts flat Rego reference",
+    "schema": "rac.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "RAC_profile": [
+        {
+          "RAC_id": "ID-RAC-001",
+          "RAC_name": "condition_a",
+          "value": {
+            "source_ref": "policies/rbac/rac.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.rac.allow"
+          }
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "RAC rejects nested Rego object",
+    "schema": "rac.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "RAC_profile": [
+        {
+          "RAC_id": "ID-RAC-001",
+          "RAC_name": "condition_a",
+          "value": {
+            "rego": {
+              "source_ref": "policies/rbac/rac.rego",
+              "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+              "entrypoint": "data.ptsip.rac.allow"
+            }
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "RAC rejects non-string flat Rego reference field",
+    "schema": "rac.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "RAC_profile": [
+        {
+          "RAC_id": "ID-RAC-001",
+          "RAC_name": "condition_a",
+          "value": {
+            "source_ref": "policies/rbac/rac.rego",
+            "revision_ref": [],
+            "entrypoint": "data.ptsip.rac.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "RAC rejects missing condition name",
+    "schema": "rac.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "RAC_profile": [
+        {
+          "RAC_id": "ID-RAC-001",
+          "value": {
+            "source_ref": "policies/rbac/rac.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.rac.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "RAC rejects non-string condition ID",
+    "schema": "rac.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "RAC_profile": [
+        {
+          "RAC_id": 42,
+          "RAC_name": "condition_a",
+          "value": {
+            "source_ref": "policies/rbac/rac.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.rac.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "RAC rejects pp.2.01",
+    "schema": "rac.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.2.01"
+      },
+      "RAC_profile": [
+        {
+          "RAC_id": "ID-RAC-001",
+          "RAC_name": "condition_a",
+          "value": {
+            "source_ref": "policies/rbac/rac.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.rac.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "AEC accepts flat Rego reference",
+    "schema": "aec.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "AEC_profile": [
+        {
+          "AEC_id": "ID-AEC-001",
+          "AEC_name": "exercise_a",
+          "value": {
+            "source_ref": "policies/rbac/aec.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.aec.allow"
+          }
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "AEC rejects nested Rego object",
+    "schema": "aec.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "AEC_profile": [
+        {
+          "AEC_id": "ID-AEC-001",
+          "AEC_name": "exercise_a",
+          "value": {
+            "rego": {
+              "source_ref": "policies/rbac/aec.rego",
+              "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+              "entrypoint": "data.ptsip.aec.allow"
+            }
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "AEC rejects non-string flat Rego reference field",
+    "schema": "aec.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "AEC_profile": [
+        {
+          "AEC_id": "ID-AEC-001",
+          "AEC_name": "exercise_a",
+          "value": {
+            "source_ref": "policies/rbac/aec.rego",
+            "revision_ref": [],
+            "entrypoint": "data.ptsip.aec.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "AEC rejects missing condition name",
+    "schema": "aec.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "AEC_profile": [
+        {
+          "AEC_id": "ID-AEC-001",
+          "value": {
+            "source_ref": "policies/rbac/aec.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.aec.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "AEC rejects non-string condition ID",
+    "schema": "aec.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "AEC_profile": [
+        {
+          "AEC_id": 42,
+          "AEC_name": "exercise_a",
+          "value": {
+            "source_ref": "policies/rbac/aec.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.aec.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "AEC rejects pp.2.01",
+    "schema": "aec.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.2.01"
+      },
+      "AEC_profile": [
+        {
+          "AEC_id": "ID-AEC-001",
+          "AEC_name": "exercise_a",
+          "value": {
+            "source_ref": "policies/rbac/aec.rego",
+            "revision_ref": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "entrypoint": "data.ptsip.aec.allow"
+          }
+        }
+      ]
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects pp.2.01",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.2.01"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects identity only inside profiles",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "profiles": {
+        "version": "pp.3.00",
+        "id": "profiles-550e8400e29b41d4a716446655440000"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects uppercase profile identity",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550E8400e29b41d4a716446655440000"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "RA rejects profile identity with trailing newline",
+    "schema": "ra.pp.3.00.schema.json",
+    "instance": {
+      "ptsip": {
+        "id": "profiles-550e8400e29b41d4a716446655440000\n"
+      },
+      "profiles": {
+        "version": "pp.3.00"
+      },
+      "responsibility_authority": {
+        "R-ID-09824AB5286B4C5C953BD859D999FF54": {
+          "RA-key": "review",
+          "RAC_id": [
+            [
+              "ID-RAC-001",
+              "condition_a"
+            ],
+            [
+              "ID-RAC-002",
+              "condition_b"
+            ]
+          ],
+          "AEC_id": [
+            [
+              "ID-AEC-001",
+              "exercise_a"
+            ]
+          ]
+        }
+      }
+    },
+    "valid": false
+  }
+]

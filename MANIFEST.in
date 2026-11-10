@@ -26,3 +26,4 @@ include .ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend
 include ptsip-build-source.json
 recursive-include src/ptsip/engines Cargo.toml Cargo.lock *.rs *.yaml
 recursive-include src/ptsip/common_contract *.go *.json go.mod go.sum
+recursive-include src/ptsip/compile_sealed_rbac *.json

@@ -1,0 +1,20 @@
+{
+  "profile_version": "pp.3.00",
+  "scope": "STRUCTURE_ONLY",
+  "activation_state": "UNREGISTERED",
+  "authorization_permitted": false,
+  "schemas": {
+    "ra": {
+      "id": "urn:ptsip:rbac:consumer:pp300:ra:structure:v1",
+      "resource": "ra.pp.3.00.schema.json"
+    },
+    "rac": {
+      "id": "urn:ptsip:rbac:consumer:pp300:rac:structure:v1",
+      "resource": "rac.pp.3.00.schema.json"
+    },
+    "aec": {
+      "id": "urn:ptsip:rbac:consumer:pp300:aec:structure:v1",
+      "resource": "aec.pp.3.00.schema.json"
+    }
+  }
+}
