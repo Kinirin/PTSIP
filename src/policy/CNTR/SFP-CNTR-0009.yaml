@@ -254,6 +254,15 @@ Policy_Content:
           consumer_plan_contract_root: ".ptsip/contracts/Plans/"
           consumer_plan_contract_root_owner: "CONSUMER_PROJECT"
           consumer_plan_contract_root_role: "CONSUMER_OWNED_PLAN_CONTRACTS"
+          supported_consumer_contract_scopes:
+            - "WHOLE_CONTRACT"
+            - "INDEPENDENT_CONTRACT_SECTION"
+            - "NESTED_FIELD_OR_SECTION"
+          contract_scope_options_mutually_exclusive: false
+          one_granularity_must_not_be_selected_as_global_policy: true
+          scope_selection_depends_on_consumer_contract_context: true
+          scope_identity_and_semantic_owner_must_be_explicit: true
+          contract_scope_selection_and_validator_binding_details: "UNRESOLVED_SEPARATE_POLICY"
           official_plan_source_root_is_consumer_contract_root: false
           directory_approval_grants_auto_write: false
           official_contract_must_not_force_consumer_repository_schema: true
@@ -342,7 +351,7 @@ Policy_Content:
           no_release_or_deployment_authority_implied: true
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "356652fdf3046c382d8385ab5290cd36e0f1e504cdaffd4cd7a578016f16bed2"
+    sha256: "eb2081f0c9b74d1217a148e84f3f446e6c9beb90ea8b88a283037c31c4d051c6"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
