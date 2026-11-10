@@ -89,23 +89,22 @@ func TestGoToolchainPrecedesEveryDeveloperAutomationConsumer(t *testing.T) {
 	}
 }
 
-func TestRepositoryEntryPointsShareNativeInstallerAndDoNotStageUserFiles(t *testing.T) {
-	root := testrepo.Root(t)
-	for _, file := range []string{"setup_dev.bat", "bootstrap_repo.ps1"} {
+func TestRepositoryEntryPointsDoNotInvokeRetiredAutomation(t *testing.T) {
+	root, err := filepath.Abs("../../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, file := range []string{"setup_dev.bat", "bootstrap_repo.ps1", ".github/workflows/branch-verification.yml"} {
 		raw, err := os.ReadFile(filepath.Join(root, file))
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !strings.Contains(string(raw), "./cmd/ptsip-dev developer-setup install-hooks") || strings.Contains(string(raw), "python -m developer.automation.dev_setup") {
-			t.Fatalf("%s does not use canonical Go installer", file)
+		if strings.Contains(string(raw), "developer/automation") || strings.Contains(string(raw), "developer.automation") {
+			t.Fatalf("%s still depends on retired automation", file)
 		}
 	}
-	raw, err := os.ReadFile(filepath.Join(root, ".githooks", "pre-commit"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !strings.Contains(string(raw), "./cmd/ptsip-dev pp pre-commit") || strings.Contains(string(raw), "git add -A") || strings.Contains(string(raw), "PYTHON=") {
-		t.Fatal("pre-commit wrapper changed its native delegation or staging boundary")
+	if _, err := os.Stat(filepath.Join(root, ".githooks", "pre-commit")); !os.IsNotExist(err) {
+		t.Fatalf("retired automation hook remains (%v)", err)
 	}
 }
 

@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-
-exec go -C developer/automation run -tags grammar_subset,grammar_subset_python ./cmd/ptsip-dev pp pre-commit --repository ../..
