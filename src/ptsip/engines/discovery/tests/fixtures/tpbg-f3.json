@@ -1,0 +1,526 @@
+{
+  "bindings": [
+    {
+      "contract": null,
+      "evidence": [],
+      "node": "profile:31:.ptsip/profiles/assignment.json",
+      "origin": {
+        "file": ".ptsip/profiles/assignment.json",
+        "pointer": ""
+      },
+      "profile": "profiles-22222222222242228222222222222222",
+      "state": "unverified",
+      "version": "pp.3.00"
+    },
+    {
+      "contract": null,
+      "evidence": [],
+      "node": "profile:29:.ptsip/profiles/exercise.json",
+      "origin": {
+        "file": ".ptsip/profiles/exercise.json",
+        "pointer": ""
+      },
+      "profile": "profiles-33333333333343338333333333333333",
+      "state": "unverified",
+      "version": "pp.3.00"
+    },
+    {
+      "contract": {
+        "id": "fixture-ra-contract",
+        "rev": "fixture-revision",
+        "role": "fixture-ra-role",
+        "schema_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "scope": "fixture-scope"
+      },
+      "evidence": [
+        "fresh-source",
+        "ra-contract"
+      ],
+      "node": "profile:37:.ptsip/profiles/responsibilities.yaml",
+      "origin": {
+        "file": ".ptsip/profiles/responsibilities.yaml",
+        "pointer": ""
+      },
+      "profile": "profiles-11111111111141118111111111111111",
+      "state": "verified",
+      "version": "pp.3.00"
+    }
+  ],
+  "evidence": {
+    "binding": [
+      {
+        "contract_rev": "fixture-revision",
+        "id": "ra-contract",
+        "issuer": "fixture-validation",
+        "sources": [
+          {
+            "path": ".ptsip/profiles/assignment.json",
+            "sha256": "f22900dce29978e4cf2844903eb198df6998939dd2c1938ea510930ae46828ec"
+          },
+          {
+            "path": ".ptsip/profiles/exercise.json",
+            "sha256": "c75d31068a8f78c44fb2e7e226a886ac973304e3f8be3791425262c6cec9f5f3"
+          },
+          {
+            "path": ".ptsip/profiles/responsibilities.yaml",
+            "sha256": "ce6ef9493e3ef046b31fd30790cbf3baa8d6e14762fb20f5deee1a630d8632ec"
+          },
+          {
+            "path": ".ptsip/ptsip_config.json",
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        ],
+        "subject": "profile:37:.ptsip/profiles/responsibilities.yaml",
+        "target": null,
+        "verdict": "verified"
+      }
+    ],
+    "freshness": [
+      {
+        "contract_rev": "fixture-revision",
+        "id": "fresh-source",
+        "issuer": "fixture-validation",
+        "sources": [
+          {
+            "path": ".ptsip/profiles/assignment.json",
+            "sha256": "f22900dce29978e4cf2844903eb198df6998939dd2c1938ea510930ae46828ec"
+          },
+          {
+            "path": ".ptsip/profiles/exercise.json",
+            "sha256": "c75d31068a8f78c44fb2e7e226a886ac973304e3f8be3791425262c6cec9f5f3"
+          },
+          {
+            "path": ".ptsip/profiles/responsibilities.yaml",
+            "sha256": "ce6ef9493e3ef046b31fd30790cbf3baa8d6e14762fb20f5deee1a630d8632ec"
+          },
+          {
+            "path": ".ptsip/ptsip_config.json",
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        ],
+        "subject": "profile:37:.ptsip/profiles/responsibilities.yaml",
+        "target": null,
+        "verdict": "verified"
+      }
+    ],
+    "reference": [
+      {
+        "contract_rev": "fixture-revision",
+        "id": "reference-tuple",
+        "issuer": "fixture-validation",
+        "sources": [
+          {
+            "path": ".ptsip/profiles/assignment.json",
+            "sha256": "f22900dce29978e4cf2844903eb198df6998939dd2c1938ea510930ae46828ec"
+          },
+          {
+            "path": ".ptsip/profiles/exercise.json",
+            "sha256": "c75d31068a8f78c44fb2e7e226a886ac973304e3f8be3791425262c6cec9f5f3"
+          },
+          {
+            "path": ".ptsip/profiles/responsibilities.yaml",
+            "sha256": "ce6ef9493e3ef046b31fd30790cbf3baa8d6e14762fb20f5deee1a630d8632ec"
+          },
+          {
+            "path": ".ptsip/ptsip_config.json",
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        ],
+        "subject": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/0",
+        "target": null,
+        "verdict": "verified"
+      }
+    ],
+    "relation": [
+      {
+        "contract_rev": "fixture-revision",
+        "id": "second-relationship",
+        "issuer": "fixture-validation",
+        "sources": [
+          {
+            "path": ".ptsip/profiles/assignment.json",
+            "sha256": "f22900dce29978e4cf2844903eb198df6998939dd2c1938ea510930ae46828ec"
+          },
+          {
+            "path": ".ptsip/profiles/exercise.json",
+            "sha256": "c75d31068a8f78c44fb2e7e226a886ac973304e3f8be3791425262c6cec9f5f3"
+          },
+          {
+            "path": ".ptsip/profiles/responsibilities.yaml",
+            "sha256": "ce6ef9493e3ef046b31fd30790cbf3baa8d6e14762fb20f5deee1a630d8632ec"
+          },
+          {
+            "path": ".ptsip/ptsip_config.json",
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        ],
+        "subject": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/RAC_id/0",
+        "target": {
+          "file": ".ptsip/profiles/assignment.json",
+          "pointer": "/RAC_profile/0"
+        },
+        "verdict": "verified"
+      },
+      {
+        "contract_rev": "fixture-revision",
+        "id": "first-relationship",
+        "issuer": "fixture-validation",
+        "sources": [
+          {
+            "path": ".ptsip/profiles/assignment.json",
+            "sha256": "f22900dce29978e4cf2844903eb198df6998939dd2c1938ea510930ae46828ec"
+          },
+          {
+            "path": ".ptsip/profiles/exercise.json",
+            "sha256": "c75d31068a8f78c44fb2e7e226a886ac973304e3f8be3791425262c6cec9f5f3"
+          },
+          {
+            "path": ".ptsip/profiles/responsibilities.yaml",
+            "sha256": "ce6ef9493e3ef046b31fd30790cbf3baa8d6e14762fb20f5deee1a630d8632ec"
+          },
+          {
+            "path": ".ptsip/ptsip_config.json",
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        ],
+        "subject": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/0",
+        "target": {
+          "file": ".ptsip/profiles/assignment.json",
+          "pointer": "/RAC_profile/0"
+        },
+        "verdict": "verified"
+      },
+      {
+        "contract_rev": "fixture-revision",
+        "id": "exercise-relationship",
+        "issuer": "fixture-validation",
+        "sources": [
+          {
+            "path": ".ptsip/profiles/assignment.json",
+            "sha256": "f22900dce29978e4cf2844903eb198df6998939dd2c1938ea510930ae46828ec"
+          },
+          {
+            "path": ".ptsip/profiles/exercise.json",
+            "sha256": "c75d31068a8f78c44fb2e7e226a886ac973304e3f8be3791425262c6cec9f5f3"
+          },
+          {
+            "path": ".ptsip/profiles/responsibilities.yaml",
+            "sha256": "ce6ef9493e3ef046b31fd30790cbf3baa8d6e14762fb20f5deee1a630d8632ec"
+          },
+          {
+            "path": ".ptsip/ptsip_config.json",
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        ],
+        "subject": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/AEC_id/0",
+        "target": {
+          "file": ".ptsip/profiles/exercise.json",
+          "pointer": "/AEC_profile/0"
+        },
+        "verdict": "verified"
+      }
+    ]
+  },
+  "graph": {
+    "edges": [
+      {
+        "evidence": null,
+        "from": "profile:37:.ptsip/profiles/responsibilities.yaml",
+        "kind": "declares",
+        "to": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b"
+      },
+      {
+        "evidence": null,
+        "from": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b",
+        "kind": "references",
+        "to": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/RAC_id/0"
+      },
+      {
+        "evidence": null,
+        "from": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b",
+        "kind": "references",
+        "to": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/AEC_id/0"
+      },
+      {
+        "evidence": null,
+        "from": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b",
+        "kind": "references",
+        "to": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/AEC_id/1"
+      },
+      {
+        "evidence": null,
+        "from": "profile:37:.ptsip/profiles/responsibilities.yaml",
+        "kind": "declares",
+        "to": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0"
+      },
+      {
+        "evidence": null,
+        "from": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0",
+        "kind": "references",
+        "to": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/0"
+      },
+      {
+        "evidence": null,
+        "from": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0",
+        "kind": "references",
+        "to": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/1"
+      },
+      {
+        "evidence": null,
+        "from": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0",
+        "kind": "references",
+        "to": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/AEC_id/0"
+      },
+      {
+        "evidence": "second-relationship",
+        "from": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/RAC_id/0",
+        "kind": "resolves_to",
+        "to": "rac:31:.ptsip/profiles/assignment.json/RAC_profile/0"
+      },
+      {
+        "evidence": "first-relationship",
+        "from": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/0",
+        "kind": "resolves_to",
+        "to": "rac:31:.ptsip/profiles/assignment.json/RAC_profile/0"
+      },
+      {
+        "evidence": "exercise-relationship",
+        "from": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/AEC_id/0",
+        "kind": "resolves_to",
+        "to": "aec:29:.ptsip/profiles/exercise.json/AEC_profile/0"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "aec:29:.ptsip/profiles/exercise.json/AEC_profile/0",
+        "kind": "aec",
+        "origin": {
+          "file": ".ptsip/profiles/exercise.json",
+          "pointer": "/AEC_profile/0"
+        }
+      },
+      {
+        "id": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/AEC_id/0",
+        "kind": "aec_ref",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign-b/AEC_id/0"
+        }
+      },
+      {
+        "id": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/AEC_id/1",
+        "kind": "aec_ref",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign-b/AEC_id/1"
+        }
+      },
+      {
+        "id": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/AEC_id/0",
+        "kind": "aec_ref",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign~1a~0/AEC_id/0"
+        }
+      },
+      {
+        "id": "profile:29:.ptsip/profiles/exercise.json",
+        "kind": "profile",
+        "origin": {
+          "file": ".ptsip/profiles/exercise.json",
+          "pointer": ""
+        }
+      },
+      {
+        "id": "profile:31:.ptsip/profiles/assignment.json",
+        "kind": "profile",
+        "origin": {
+          "file": ".ptsip/profiles/assignment.json",
+          "pointer": ""
+        }
+      },
+      {
+        "id": "profile:37:.ptsip/profiles/responsibilities.yaml",
+        "kind": "profile",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": ""
+        }
+      },
+      {
+        "id": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b",
+        "kind": "ra",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign-b"
+        }
+      },
+      {
+        "id": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0",
+        "kind": "ra",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign~1a~0"
+        }
+      },
+      {
+        "id": "rac:31:.ptsip/profiles/assignment.json/RAC_profile/0",
+        "kind": "rac",
+        "origin": {
+          "file": ".ptsip/profiles/assignment.json",
+          "pointer": "/RAC_profile/0"
+        }
+      },
+      {
+        "id": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/RAC_id/0",
+        "kind": "rac_ref",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign-b/RAC_id/0"
+        }
+      },
+      {
+        "id": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/0",
+        "kind": "rac_ref",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign~1a~0/RAC_id/0"
+        }
+      },
+      {
+        "id": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/1",
+        "kind": "rac_ref",
+        "origin": {
+          "file": ".ptsip/profiles/responsibilities.yaml",
+          "pointer": "/responsibility_authority/assign~1a~0/RAC_id/1"
+        }
+      }
+    ]
+  },
+  "model": "TPBG F3",
+  "references": [
+    {
+      "evidence": [
+        "second-relationship"
+      ],
+      "kind": "rac",
+      "node": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/RAC_id/0",
+      "origin": {
+        "file": ".ptsip/profiles/responsibilities.yaml",
+        "pointer": "/responsibility_authority/assign-b/RAC_id/0"
+      },
+      "pair": [
+        "rac-a",
+        "assignment-a"
+      ],
+      "ra": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b",
+      "state": "verified",
+      "target": "rac:31:.ptsip/profiles/assignment.json/RAC_profile/0"
+    },
+    {
+      "evidence": [],
+      "kind": "aec",
+      "node": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/AEC_id/0",
+      "origin": {
+        "file": ".ptsip/profiles/responsibilities.yaml",
+        "pointer": "/responsibility_authority/assign-b/AEC_id/0"
+      },
+      "pair": [
+        "aec-a",
+        "exercise-a"
+      ],
+      "ra": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b",
+      "state": "unverified",
+      "target": null
+    },
+    {
+      "evidence": [],
+      "kind": "aec",
+      "node": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b/AEC_id/1",
+      "origin": {
+        "file": ".ptsip/profiles/responsibilities.yaml",
+        "pointer": "/responsibility_authority/assign-b/AEC_id/1"
+      },
+      "pair": [
+        "aec-b",
+        "exercise-b"
+      ],
+      "ra": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign-b",
+      "state": "unverified",
+      "target": null
+    },
+    {
+      "evidence": [
+        "first-relationship",
+        "reference-tuple"
+      ],
+      "kind": "rac",
+      "node": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/0",
+      "origin": {
+        "file": ".ptsip/profiles/responsibilities.yaml",
+        "pointer": "/responsibility_authority/assign~1a~0/RAC_id/0"
+      },
+      "pair": [
+        "rac-a",
+        "assignment-a"
+      ],
+      "ra": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0",
+      "state": "verified",
+      "target": "rac:31:.ptsip/profiles/assignment.json/RAC_profile/0"
+    },
+    {
+      "evidence": [],
+      "kind": "rac",
+      "node": "rac_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/RAC_id/1",
+      "origin": {
+        "file": ".ptsip/profiles/responsibilities.yaml",
+        "pointer": "/responsibility_authority/assign~1a~0/RAC_id/1"
+      },
+      "pair": [
+        "rac-b",
+        "assignment-b"
+      ],
+      "ra": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0",
+      "state": "unverified",
+      "target": null
+    },
+    {
+      "evidence": [
+        "exercise-relationship"
+      ],
+      "kind": "aec",
+      "node": "aec_ref:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0/AEC_id/0",
+      "origin": {
+        "file": ".ptsip/profiles/responsibilities.yaml",
+        "pointer": "/responsibility_authority/assign~1a~0/AEC_id/0"
+      },
+      "pair": [
+        "aec-a",
+        "exercise-a"
+      ],
+      "ra": "ra:37:.ptsip/profiles/responsibilities.yaml/responsibility_authority/assign~1a~0",
+      "state": "verified",
+      "target": "aec:29:.ptsip/profiles/exercise.json/AEC_profile/0"
+    }
+  ],
+  "sources": {
+    "config": {
+      "path": ".ptsip/ptsip_config.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "profiles": [
+      {
+        "path": ".ptsip/profiles/assignment.json",
+        "sha256": "f22900dce29978e4cf2844903eb198df6998939dd2c1938ea510930ae46828ec"
+      },
+      {
+        "path": ".ptsip/profiles/exercise.json",
+        "sha256": "c75d31068a8f78c44fb2e7e226a886ac973304e3f8be3791425262c6cec9f5f3"
+      },
+      {
+        "path": ".ptsip/profiles/responsibilities.yaml",
+        "sha256": "ce6ef9493e3ef046b31fd30790cbf3baa8d6e14762fb20f5deee1a630d8632ec"
+      }
+    ]
+  }
+}

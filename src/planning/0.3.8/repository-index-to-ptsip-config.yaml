@@ -683,7 +683,7 @@
     {
       "id": "WU-03",
       "title": "Implement native CLI-first profile link, Rust Discovery and independent binding validation",
-      "status": "BLOCKED",
+      "status": "PARTIAL",
       "depends_on": [
         "WU-02A"
       ],
@@ -1860,6 +1860,54 @@
       "not_authorized": "AUTOMATED_REWRITE_OF_EXISTING_POLICY_IDS"
     }
   },
+  "tpbg_f3": {
+    "approval": {
+      "structure_and_implementation": "USER_APPROVED",
+      "policy_file_changes": "PENDING_SEPARATE_APPROVAL",
+      "scope": "READ_ONLY_DISCOVERY_PROJECTION_AND_VALIDATION_EVIDENCE_CONTRACT",
+      "work_unit": "WU-03"
+    },
+    "name_meanings": {
+      "TPBG": "Typed Profile Binding Graph. Typed identifies the kind and direction of a relationship. Profile Binding identifies a profile file's association with a contract. Graph exposes normalized relationships and traceable evidence.",
+      "F3": "User-selected label for the integrated model with Binding Ledger, Reference Matrix and Typed Graph in one output, accompanied by Validation Evidence.",
+      "Binding Ledger": "One independently tracked binding candidate per discovered file. A resolved contract is included when Validation supplies corresponding evidence.",
+      "Reference Matrix": "Ordered occurrences of RAC and AEC pairs from RA declarations. Each row retains the source location of one occurrence in a many-to-many relationship.",
+      "Typed Graph": "Directed nodes and edges distinguish a source reference occurrence from an actual condition target confirmed by Validation. IDs identify graph occurrences, independently of normative policy rule IDs.",
+      "Validation Evidence": "Snapshot-bound results supplied by Validation and linked by Discovery. Binding, reference, relation and freshness denote different subjects of verification.",
+      "P1": "Discovery completion means successful candidate discovery and normalization. Evidence gaps remain visible in the complete output.",
+      "P2": "Graph semantics preserve both the declaration occurrence and the actual target when a relationship is confirmed.",
+      "P3": "Evidence is classified by the binding, reference, relation or source freshness it verifies."
+    },
+    "output_names": {
+      "model": "Identifies the TPBG F3 output model.",
+      "sources": "Selected consumer config and discovered profile snapshots, each located by relative path and identified by its byte digest.",
+      "bindings": "Binding Ledger rows. profile is the declared profile ID, version is the declared profile version, and contract carries the resolved ID, rev, role, scope and schema digest.",
+      "references": "Reference Matrix rows. pair preserves ID then name; ra and node identify the declaring RA and the occurrence; target points to a verified target node when present.",
+      "graph": "Typed Graph. nodes identify profiles, RA declarations, reference occurrences and confirmed targets; edges distinguish declares, references and resolves_to.",
+      "evidence": "Validation Evidence grouped by binding, reference, relation and freshness. Reports identify an issuer, a subject, a verdict and the source digests against which it was obtained. A relation report can carry the claimed target's origin.",
+      "origin": "Consumer-relative file and JSON Pointer to the declaration. The empty pointer denotes the whole profile document.",
+      "state": "unverified denotes missing usable evidence, verified denotes a supported binding or resolved relation, and rejected denotes a negative Validation verdict."
+    },
+    "runtime_boundary": {
+      "source": "src/ptsip/engines/discovery/src/tpbg/mod.rs",
+      "output_schema": "src/ptsip/engines/discovery/tpbg-f3.schema.json",
+      "consumer_entry": ".ptsip/ptsip_config.json",
+      "candidate_scope": "DIRECT_PROFILE_CHILDREN_READ_ONLY",
+      "initial_serialization": "UTF8_JSON_OR_SINGLE_YAML_DOCUMENT_WITH_JSON_COMPATIBLE_VALUES;YAML_ALIASES_AND_CUSTOM_TAGS_REJECTED",
+      "completion_rule": "SUCCESSFUL_DISCOVERY_AND_NORMALIZATION_RETURN_ALL_AREAS_WITH_UNVERIFIED_EVIDENCE_GAPS",
+      "evidence_owner": "VALIDATION",
+      "registration": "PENDING_VERSIONED_DISCOVERY_OPERATION_ADMITTED_CONTRACT_RESOLUTION_AND_VALIDATION_EVIDENCE_ROUTE",
+      "execution_authority": "EXISTING_REGISTRATION_AND_AUTHORITY_BOUNDARIES"
+    },
+    "verification": {
+      "rust_discovery": "12_PASS_ON_WINDOWS_INCLUDING_6_EXTERNAL_CONSUMER_FIXTURE_TESTS",
+      "go_common_contract": "TEST_AND_VET_PASS",
+      "shared_output_contract": "GO_AND_REGISTERED_RUST_VALIDATION_AGREE_ON_5_STRUCTURAL_VECTORS",
+      "relation_evidence_fixture": "TEST_VALIDATION_ADAPTER_WITH_SNAPSHOT_BOUND_REPORTS",
+      "cargo_archive": "PACKAGE_VERIFICATION_AND_6_EXTRACTED_ARCHIVE_INTEGRATION_TESTS_PASS",
+      "consumer_distribution": "PENDING_REGISTERED_OPERATION_AND_INSTALLED_PACKAGE"
+    }
+  },
   "execution_checkpoint": {
     "state": "PARTIAL_WITH_OPEN_POLICY_GATES",
     "start_authorization": "EXPLICIT_USER_START_REV_0009_ON_MAIN",
@@ -1879,7 +1927,11 @@
         "user_selected_initial_contract": "NEW_REGISTERED_PRODUCT_DEFAULT_PROFILE_SCHEMA",
         "pending": "EXACT_REGISTRATION_OWNER_AND_ROUTE_ROLE_VERSION_AND_COLLISION_CONTRACT"
       },
-      "WU-03": "BLOCKED_BY_WU_02A",
+      "WU-03": {
+        "state": "PARTIAL",
+        "tpbg_f3": "READ_ONLY_DISCOVERY_PROJECTION_AND_OUTPUT_CONTRACT_IMPLEMENTED",
+        "pending": "REGISTERED_OPERATION_AND_VALIDATION_SOURCE_BINDING;CLI_PROFILE_LINK_BLOCKED_BY_WU_02A"
+      },
       "WU-02": {
         "state": "PARTIAL",
         "commit": "c1095cd1cf4868959a77d4440683d5ea51ea8a70",

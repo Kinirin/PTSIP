@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:discovery:tpbg:f3:output:draft",
+  "title": "Discovery TPBG F3 output draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["model", "sources", "bindings", "references", "graph", "evidence"],
+  "properties": {
+    "model": { "const": "TPBG F3" },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["config", "profiles"],
+      "properties": {
+        "config": { "$ref": "#/$defs/source" },
+        "profiles": { "type": "array", "items": { "$ref": "#/$defs/source" } }
+      }
+    },
+    "bindings": { "type": "array", "items": { "$ref": "#/$defs/binding" } },
+    "references": { "type": "array", "items": { "$ref": "#/$defs/reference" } },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodes", "edges"],
+      "properties": {
+        "nodes": { "type": "array", "items": { "$ref": "#/$defs/node" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding", "reference", "relation", "freshness"],
+      "properties": {
+        "binding": { "$ref": "#/$defs/proofs" },
+        "reference": { "$ref": "#/$defs/proofs" },
+        "relation": { "$ref": "#/$defs/proofs" },
+        "freshness": { "$ref": "#/$defs/proofs" }
+      }
+    }
+  },
+  "$defs": {
+    "nonempty_string": { "type": "string", "minLength": 1 },
+    "nullable_string": { "type": ["string", "null"], "minLength": 1 },
+    "sha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "state": { "enum": ["unverified", "verified", "rejected"] },
+    "evidence_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonempty_string" }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/nonempty_string" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "pointer"],
+      "properties": {
+        "file": { "$ref": "#/$defs/nonempty_string" },
+        "pointer": {
+          "type": "string",
+          "anyOf": [{ "const": "" }, { "pattern": "^/" }]
+        }
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "rev", "role", "scope", "schema_sha256"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonempty_string" },
+        "rev": { "$ref": "#/$defs/nonempty_string" },
+        "role": { "$ref": "#/$defs/nonempty_string" },
+        "scope": { "$ref": "#/$defs/nonempty_string" },
+        "schema_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node", "profile", "version", "origin", "contract", "state", "evidence"],
+      "properties": {
+        "node": { "$ref": "#/$defs/nonempty_string" },
+        "profile": { "$ref": "#/$defs/nullable_string" },
+        "version": { "$ref": "#/$defs/nullable_string" },
+        "origin": { "$ref": "#/$defs/origin" },
+        "contract": { "anyOf": [{ "$ref": "#/$defs/contract" }, { "type": "null" }] },
+        "state": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidence_ids" }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node", "ra", "kind", "pair", "origin", "state", "target", "evidence"],
+      "properties": {
+        "node": { "$ref": "#/$defs/nonempty_string" },
+        "ra": { "$ref": "#/$defs/nonempty_string" },
+        "kind": { "enum": ["rac", "aec"] },
+        "pair": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/nonempty_string" }
+        },
+        "origin": { "$ref": "#/$defs/origin" },
+        "state": { "$ref": "#/$defs/state" },
+        "target": { "$ref": "#/$defs/nullable_string" },
+        "evidence": { "$ref": "#/$defs/evidence_ids" }
+      },
+      "if": { "properties": { "state": { "enum": ["unverified", "rejected"] } } },
+      "then": { "properties": { "target": { "type": "null" } } }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "origin"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonempty_string" },
+        "kind": { "enum": ["profile", "ra", "rac_ref", "aec_ref", "rac", "aec"] },
+        "origin": { "$ref": "#/$defs/origin" }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "kind", "evidence"],
+      "properties": {
+        "from": { "$ref": "#/$defs/nonempty_string" },
+        "to": { "$ref": "#/$defs/nonempty_string" },
+        "kind": { "enum": ["declares", "references", "resolves_to"] },
+        "evidence": { "$ref": "#/$defs/nullable_string" }
+      },
+      "if": { "properties": { "kind": { "const": "resolves_to" } } },
+      "then": { "properties": { "evidence": { "$ref": "#/$defs/nonempty_string" } } },
+      "else": { "properties": { "evidence": { "type": "null" } } }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "issuer", "subject", "verdict", "sources", "contract_rev", "target"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonempty_string" },
+        "issuer": { "$ref": "#/$defs/nonempty_string" },
+        "subject": { "$ref": "#/$defs/nonempty_string" },
+        "verdict": { "enum": ["verified", "rejected"] },
+        "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
+        "contract_rev": { "$ref": "#/$defs/nullable_string" },
+        "target": { "anyOf": [{ "$ref": "#/$defs/origin" }, { "type": "null" }] }
+      }
+    },
+    "proofs": { "type": "array", "items": { "$ref": "#/$defs/proof" } }
+  }
+}

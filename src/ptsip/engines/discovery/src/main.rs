@@ -1,3 +1,4 @@
+use ptsip_engine_discovery::source;
 use serde_json::{json, Value};
 use std::io::{self, Read};
 const CONTRACT: &str = include_str!("../contract.json");
@@ -6,7 +7,6 @@ const MANIFEST: &str = include_str!("../manifest.json");
 mod environment;
 mod invocation;
 mod registry;
-mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     if operation == "discovery.check-environment" {
         return environment::assess(input);
