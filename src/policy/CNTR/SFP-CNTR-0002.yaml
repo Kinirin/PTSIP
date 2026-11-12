@@ -14,23 +14,6 @@ Policy_Authority:
   - SRC-0007
 Policy_Rules:
   rules:
-  - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
-    identity_scheme: DECLARED
-    kind: RULE
-    source_ref: SRC-0008
-    contract_bindings:
-      RA:
-        state: UNRESOLVED
-        basis_refs:
-        - SRC-0008
-      RAC:
-        state: UNRESOLVED
-        basis_refs:
-        - SRC-0008
-      AEC:
-        state: UNRESOLVED
-        basis_refs:
-        - SRC-0008
   - id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
     identity_scheme: DECLARED
     kind: RULE
@@ -91,12 +74,11 @@ Policy_Content:
   - id: SRC-0005
     source_pointer: /authority_subject
     value:
-      id: SUP_SHIPPED_OPERATION_CAPABILITY_CONTRACT
-      statement: 설치된 PTSIP가 consumer에게 노출하는 operation과 capability의 입력, 결과, 오류, precondition/postcondition 및 호환 보장을 소유한다.
+      id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
+      statement: 설치된 PTSIP가 소비자에게 선언한 capability의 지원 여부, 가용성 및 호환성 계약을 소유한다.
   - id: SRC-0006
     source_pointer: /exclusive_kernel
     value:
-    - SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
     - SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
   - id: SRC-0007
     source_pointer: /authority_contract
@@ -104,14 +86,8 @@ Policy_Content:
       authority_type: ROOT_FAMILY_CNTR
       schema_id: ptsip.governance/root-family/cntr
       schema_version: 1
-  - id: SRC-0008
-    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
-    value:
-      id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
-      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.
-      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다.
   - id: SRC-0009
-    source_pointer: /authority_semantics/family_definition/kernel_definitions/1
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
     value:
       id: SUP_CAPABILITY_AVAILABILITY_AND_COMPATIBILITY
       statement: 지원 가능한 capability와 호환 입력의 범위 및 unavailable/reserved 상태의 계약상 의미를 정한다. 미등록 alias나 capability는 실행 계약이 아니다.
@@ -131,7 +107,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/CNTR/SFP-CNTR-0002.yaml
-    sha256: 09c0030d8c4fe529e25740406618d66d9e20781e4ecc1910fd174563b81f8eb4
+    sha256: 08fa4918fe4fb7216524eff6f40b22e59949f2881cb8adbea3afb44d69057612
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
