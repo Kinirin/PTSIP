@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-CNTR-0011
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CNTR
+  title: Evidence Artifact Conformance Model Schema Binding
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SFP-CNTR-0011#/authority_semantics/evidence_artifact_conformance_model
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0009
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CNTR
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CNTR-0011
+      title: Evidence Artifact Conformance Model Schema Binding
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
+      statement: 소비자 Evidence Artifact 적합성 모델의 타입과 스키마 참조 계약을 소유하며 적합성 판정 권한을 소유하지 않는다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - EVIDENCE_ARTIFACT_CONFORMANCE_MODEL_SCHEMA_BINDING
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CNTR
+      schema_id: ptsip.governance/root-family/cntr
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/evidence_artifact_conformance_model
+    value:
+      authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
+      schema_id: ptsip.governance/evidence-artifact-conformance-model
+      schema_version: 1
+  - id: SRC-0009
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/CNTR/SFP-CNTR-0011.yaml
+    sha256: 5914036ab239ebe5667c1462edf0e20c3d30fd3d56947ee28114d6c5fcff49c1
+Policy_Migration:
+  baseline_head: 79d363b651addcacc64c0acf461bb73f8fbab4eb
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE
