@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:policy:public-structure:v2",
+  "title": "policy:public-structure",
+  "$comment": "STRUCTURE_V2_ACTIVE_FIELD_REVIEW_OPEN. Common shape initially tested across five policy documents. Authoring declarations and unresolved bindings are not semantic equivalence, approval or execution authority.",
+  "type": "object",
+  "properties": {
+    "Policy_Identity": {
+      "$ref": "urn:ptsip:candidate:contract:policy:identity:v1"
+    },
+    "Policy_Lifecycle": {
+      "$ref": "urn:ptsip:candidate:contract:policy:lifecycle:v1"
+    },
+    "Policy_Rules": {
+      "$ref": "urn:ptsip:candidate:contract:policy:rules:v2"
+    }
+  },
+  "required": [
+    "Policy_Identity",
+    "Policy_Lifecycle",
+    "Policy_Rules"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/PolicyDocumentRules"
+    }
+  ]
+}

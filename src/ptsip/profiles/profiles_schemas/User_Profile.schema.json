@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:candidate:contract:profile:user:v1",
+  "title": "Pending field review: profile:user",
+  "$comment": "FIELD_REVIEW_CANDIDATE: created by explicit user instruction on 2026-11-01. Not registered for active selection; no policy migration, evaluator, execution permission, or semantic conformance is implied. Field names and constraints await review. FAIL_CLOSED: User Profile fields and responsibilities have not been defined in this task.",
+  "type": "object",
+  "required": ["ptsip"],
+  "properties": {
+    "type": "object",
+    "ptsip": [
+      {
+        "required": ["items", "version"],
+        "properties": {
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-1.01.schema.json"
+          },
+          "version": "pp.1.01",
+          "revision": "Rev.0001"
+        },
+      },
+      {
+        "required": ["items", "version"],
+        "properties": {
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-1.02.schema.json"
+            },
+            "version": "pp.1.02",
+            "revision": "Rev.0001"
+          },
+        },
+        {
+        "required": ["items", "version"],
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json"
+          },
+          "version": "pp.2.00",
+          "revision": "Rev.0001"
+        },
+      ]
+    }
+}

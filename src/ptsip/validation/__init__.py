@@ -1,1 +1,0 @@
-"""PTSIP project-profile validation."""
