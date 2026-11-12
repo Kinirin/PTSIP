@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-CNTR-0010
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: CNTR
+  title: Consumer Operation Request and Result Contract
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0009
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: CNTR
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-CNTR-0010
+      title: Consumer Operation Request and Result Contract
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+      statement: 소비자에게 제공하는 operation의 ID, typed 입력과 출력, 오류, 사전·사후 조건 및 읽기·쓰기 부작용 계약을 독립적으로 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_CNTR
+      schema_id: ptsip.governance/root-family/cntr
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/family_definition/kernel_definitions/0
+    value:
+      id: SUP_OPERATION_REQUEST_RESULT_OBLIGATIONS
+      statement: 지원 operation ID, typed 입력 및 출력, 오류와 read/write side effect 약속을 shipped contract로 명시한다.
+      non_substitutability: INFO의 profile schema나 내부 구현 함수의 존재만으로 consumer operation이 지원되는 계약을 만들 수 없다.
+  - id: SRC-0009
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/CNTR/SFP-CNTR-0010.yaml
+    sha256: 3cf1047d46e292874c15326e915f2ee301c38d1704d8fecca90cc6913c3722bb
+Policy_Migration:
+  baseline_head: ffab41f18f822acb8b9bd32934627123324742e0
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE
