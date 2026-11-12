@@ -6,7 +6,7 @@ Policy_Identity:
   root_family: CNTR
   title: Engine interfaces, registry, resolver, composition and distribution (ACTIVE)
 Policy_Lifecycle:
-  status: ACTIVE
+  status: APPROVED.Applying
   source_ref: SRC-0004
 Policy_Authority:
   source_refs:
@@ -104,7 +104,7 @@ Policy_Content:
     value:
       id: SFP-CNTR-0005
       title: Engine interfaces, registry, resolver, composition and distribution (ACTIVE)
-      status: ACTIVE
+      status: APPROVED.Applying
   - id: SRC-0005
     source_pointer: /authority_subject
     value:
@@ -1800,7 +1800,7 @@ Policy_Content:
         scope: REGISTERED_CLI_ACTIVE_BOUNDARY_AND_0_3_8_GENERALIZED_TRANSPORT_EXCLUSION
   source_document:
     path: src/policy/CNTR/SFP-CNTR-0005.yaml
-    sha256: dca78ecd94d7d4afe02845b66164fe6fe4c2df4f2548cca3349fa05bbb057a2c
+    sha256: 1a867889c30ab15932528e6f743bd846b118eea8af35c1e5e62d9226a8f92670
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
