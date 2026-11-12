@@ -65,23 +65,6 @@ Policy_Rules:
         state: UNRESOLVED
         basis_refs:
         - SRC-0010
-  - id: SFP-CNTR-0002#/authority_semantics/semantic_unit_afbfbdc1cc69
-    identity_scheme: SOURCE_COORDINATE
-    kind: SEMANTIC_UNIT
-    source_ref: SRC-0011
-    contract_bindings:
-      RA:
-        state: UNRESOLVED
-        basis_refs:
-        - SRC-0011
-      RAC:
-        state: UNRESOLVED
-        basis_refs:
-        - SRC-0011
-      AEC:
-        state: UNRESOLVED
-        basis_refs:
-        - SRC-0011
 Policy_Evaluation:
   source_refs: []
   state: UNRESOLVED
@@ -139,12 +122,6 @@ Policy_Content:
       shipped: true
       runtime_surface:
       - src/ptsip/**
-  - id: SRC-0011
-    source_pointer: /authority_semantics/semantic_unit_afbfbdc1cc69
-    value:
-      authority_type: EVIDENCE_ARTIFACT_CONFORMANCE_MODEL
-      schema_id: ptsip.governance/evidence-artifact-conformance-model
-      schema_version: 1
   - id: SRC-0012
     source_pointer: /relations
     value:
@@ -154,7 +131,7 @@ Policy_Content:
       depends_on: []
   source_document:
     path: src/policy/CNTR/SFP-CNTR-0002.yaml
-    sha256: a7dd9b8ffe6e43672f35f2d163b46d2dd304b17885e9bb28481134d59fde04a3
+    sha256: 09c0030d8c4fe529e25740406618d66d9e20781e4ecc1910fd174563b81f8eb4
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
