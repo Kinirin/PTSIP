@@ -6,7 +6,7 @@ Policy_Identity:
   root_family: CNTR
   title: Registered CLI Extension Capability Activation Boundary
 Policy_Lifecycle:
-  status: ACTIVE
+  status: APPROVED.Applying
   source_ref: SRC-0004
 Policy_Authority:
   source_refs:
@@ -87,7 +87,7 @@ Policy_Content:
     value:
       id: SFP-CNTR-0007
       title: Registered CLI Extension Capability Activation Boundary
-      status: ACTIVE
+      status: APPROVED.Applying
   - id: SRC-0005
     source_pointer: /authority_subject
     value:
@@ -211,7 +211,7 @@ Policy_Content:
         scope: ACTION_TIME_EXECUTION_ELIGIBILITY
   source_document:
     path: src/policy/CNTR/SFP-CNTR-0007.yaml
-    sha256: 2439ad2dc1cd10eafff28b97e7831bf03358ba1df2b3b9389c31211e1e0e6460
+    sha256: abc9b1db02f992df041812bfb31e529d63443488800ae572da18c47b040ed6c4
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
