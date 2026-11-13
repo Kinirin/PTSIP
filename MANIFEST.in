@@ -9,14 +9,11 @@ prune src/ptsip/engines/context/target
 prune src/ptsip/engines/storage/target
 prune src/ptsip/engines/validation/target
 prune src/ptsip/engines/discovery/target
-prune src/ptsip/engines/planning/target
 prune src/ptsip/engines/execution/target
 prune src/ptsip/engines/projection/target
-include registry/compile-sealed-rbac-registry-fields.json
 recursive-include .ptsip/contracts/compile-sealed-rbac *.schema.json
 recursive-include src/ptsip/specdata/compile-sealed-rbac *.schema.json
 include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
-include schemas/ptsip-profile-pp-2.00.schema.json
 include src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json
 include .ptsip/contracts/compile-sealed-rbac/candidate-index.json
 include src/ptsip/specdata/compile-sealed-rbac/candidate-index.json
