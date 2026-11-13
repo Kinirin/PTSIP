@@ -1,0 +1,113 @@
+{
+  "document_type": "CONTRACT_FIRST_MIGRATION_RESPONSIBILITY_REGISTRY",
+  "document_version": "draft-1",
+  "id": "PTSIP-0.3.8-CONTRACT-FIRST-MIGRATION-REGISTRY",
+  "root": "src/planning/0.3.8/contract-first-migration/",
+  "baseline_ref": "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json",
+  "planning_model": "C_RESPONSIBILITY_SPLIT",
+  "status": "DRAFT_PARTITION_SLOTS_NOT_IMPLEMENTATION_PLANS",
+  "branch": "main",
+  "reference_revision": "16affe3621fdb3995a229a1700ee0122ebc8416f",
+  "separation_rule": "ONE_OWNER_PER_RESPONSIBILITY;WUS_ONLY_AFTER_BOUNDARY_AND_DETAIL_APPROVAL",
+  "schedule_defined": false,
+  "execution_authorized": false,
+  "responsibility_partitions": [
+    {
+      "id": "contracts",
+      "semantic_responsibility": "OFFICIAL_CONTRACT_SOURCE_AND_BINDINGS",
+      "implementation_scope_candidate": "src/ptsip/engines/contracts/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/contracts.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "discovery",
+      "semantic_responsibility": "PLAN_DISCOVERY",
+      "implementation_scope_candidate": "src/ptsip/engines/discovery/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/discovery.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "validation",
+      "semantic_responsibility": "PLAN_VALIDATION",
+      "implementation_scope_candidate": "src/ptsip/engines/validation/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/validation.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "context",
+      "semantic_responsibility": "DEPENDENCY_ORDER",
+      "implementation_scope_candidate": "src/ptsip/engines/context/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/context.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "registry",
+      "semantic_responsibility": "ENGINE_REGISTRY_AND_REFERENCE_RELOCATION",
+      "implementation_scope_candidate": "src/ptsip/engines/contracts/engines_registries/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/registry.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "distribution",
+      "semantic_responsibility": "SIX_ENGINE_COMPILE_AND_PACKAGE",
+      "implementation_scope_candidate": "src/ptsip/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/distribution.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "developer-verification",
+      "semantic_responsibility": "INSTALLED_ENGINE_TEST_AND_CONTRACT_PROOF",
+      "implementation_scope_candidate": "developer/tests/engines/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/developer-verification.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "go-cli",
+      "semantic_responsibility": "GO_CLI_ENTRYPOINT_AND_PYTHON_PHASEOUT",
+      "implementation_scope_candidate": "src/ptsip/CLI.go",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/go-cli.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "policy-migration",
+      "semantic_responsibility": "INSTALLED_CONTRACT_BASED_POLICY_MIGRATION",
+      "implementation_scope_candidate": "src/ptsip/migration/",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/policy-migration.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    }
+  ],
+  "uncertainty_boundary": {
+    "registration_is_authorization": false,
+    "reserved_future_plan_files_do_not_exist": true,
+    "index_must_not_generate_work_units": true,
+    "no_legacy_planning_contract_used_as_canonical_schema": true,
+    "draft_json_shape_is_not_versioned_installed_contract": true
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "document_type": "CONTRACT_FIRST_MIGRATION_PLAN_BASELINE",
+  "document_version": "draft-1",
+  "id": "PTSIP-0.3.8-CONTRACT-FIRST-MIGRATION",
+  "title": "Contract-first distribution and engine responsibility migration",
+  "lifecycle": {
+    "state": "DRAFT_NON_EXECUTABLE",
+    "approval": "PENDING_USER_REVIEW",
+    "implementation_authorized": false,
+    "publication_authorized": false,
+    "work_unit_boundaries_approved": false,
+    "plan_contract_validation": "UNREGISTERED_DRAFT",
+    "branch": "main",
+    "snapshot_revision": "16affe3621fdb3995a229a1700ee0122ebc8416f"
+  },
+  "authority_boundary": {
+    "exceptional_no_new_policy_derivation": true,
+    "permitted_scope": "RECORD_USER_APPROVED_TECHNICAL_DIRECTION_ONLY",
+    "no_policy_mutation_from_plan": true,
+    "already_authorized_policy_changes_are_not_work_units": true,
+    "candidate_format_is_not_installed_canonical_plan_contract": true,
+    "normative_implementation_decisions_not_silently_inferred": true
+  },
+  "delivery_boundary": {
+    "distributable_source_root": "src/ptsip/",
+    "shipping_source_outside_root": "FORBIDDEN",
+    "forbidden_distribution_source_roots": [
+      ".ptsip/"
+    ],
+    "forbidden_distribution_dependencies": [
+      "READ",
+      ".ptsip SOURCE_REFERENCE",
+      "COPY",
+      "EMBED",
+      "ABSORB"
+    ],
+    "legacy_build_inputs_reuse": "FORBIDDEN",
+    "legacy_build_files": [
+      "pyproject.toml",
+      "setup.py",
+      "MANIFEST.in"
+    ],
+    "new_build_entrypoint": "PENDING_DESIGN",
+    "temporary_contract_materialization": "FORBIDDEN_AS_RELEASE_EVIDENCE"
+  },
+  "contract_first_transition": {
+    "accepted_conceptual_stages": [
+      "MANUAL_CONTRACT_AUTHORING",
+      "STRUCTURAL_VALIDATION",
+      "COMPILE_AND_PACKAGE_FROM_SRC_PTSIP",
+      "INSTALL_AND_VALIDATE_DISTRIBUTION",
+      "MIGRATE_POLICY_DOCUMENTS_USING_INSTALLED_ENGINE"
+    ],
+    "stage_order_is_implementation_schedule": false,
+    "installed_versioned_contract_is_migration_reference": true,
+    "predeployment_policy_documents_must_not_be_forced_into_guessed_schema": true,
+    "legacy_planning_operation_compatibility_required": false,
+    "no_publication_from_plan_approval": true
+  },
+  "confirmed_engine_responsibilities": {
+    "official_engine_count_target": 6,
+    "retired_engine": {
+      "kind": "PLANNING",
+      "source_root": "src/ptsip/engines/planning/",
+      "removal_condition": "DEPENDENCY_CLOSURE_NOT_YET_VERIFIED"
+    },
+    "discovery": {
+      "root": "src/ptsip/engines/discovery/",
+      "planned_operation": "discovery.planning",
+      "responsibility": "PLAN_DISCOVERY"
+    },
+    "validation": {
+      "root": "src/ptsip/engines/validation/src/planning/",
+      "planned_operations": [
+        "validation.planning.impact",
+        "validation.planning.prepare"
+      ],
+      "responsibility": "PLANNING_IMPACT_AND_PREPARATION_VALIDATION"
+    },
+    "context": {
+      "root": "src/ptsip/engines/context/",
+      "planned_responsibility": "DEPENDENCY_ORDERING",
+      "new_operation_id": "PENDING_DECISION"
+    },
+    "retired_operation": "planning.select-installation"
+  },
+  "confirmed_registry_responsibilities": {
+    "owner_root": "src/ptsip/engines/contracts/",
+    "existing_registry_source_root": "src/ptsip/engines/registries/",
+    "target_registry_root": "src/ptsip/engines/contracts/engines_registries/",
+    "existing_registry_files": [
+      "official-static.json",
+      "official-execution.json",
+      "derived-snapshot.json"
+    ],
+    "operation": "MOVE_EXISTING_CONTRACTS_AND_UPDATE_BOUND_REFERENCES",
+    "functional_behavior_expansion": "NOT_IMPLIED",
+    "capability_ownership_ref": "src/ptsip/engines/contracts/capability-owner-map.json",
+    "installation_contract_ref": "src/ptsip/engines/contracts/installation-plan.json",
+    "official_engine_registry_ref": "src/ptsip/engines/index.json"
+  },
+  "confirmed_cli_and_developer_verification": {
+    "go_cli_entry_file": "src/ptsip/CLI.go",
+    "go_cli_responsibility_contract": "PENDING_USER_DECISION",
+    "legacy_python_cli": "src/ptsip/cli.py",
+    "legacy_python_cli_lifecycle": "PHASED_RETIREMENT",
+    "planning_cli_retirement": "CONFIRMED",
+    "legacy_engine_inspection_module": "src/ptsip/engine_installation.py",
+    "legacy_engine_inspection_module_disposition": "REMOVE_AFTER_DEPENDENCY_CLOSURE",
+    "developer_test_owner_root": "developer/tests/engines/",
+    "installed_engine_inventory_and_validation_owner": "DEVELOPER_TEST_TOOL",
+    "cli_command_disposition": "PENDING_INDEPENDENT_DECISION",
+    "no_unapproved_go_command_behavior": true
+  },
+  "work_units": {
+    "state": "NOT_DEFINED",
+    "approved_units": [],
+    "candidate_units_not_executable": true,
+    "preconditions_for_materialization": [
+      "CONCRETE_IMPLEMENTATION_DIRECTORY",
+      "SINGLE_OWNER_RESPONSIBILITY",
+      "WORK_UNIT_BOUNDARY",
+      "SPECIFIC_IMPLEMENTATION_DETAILS",
+      "ACCEPTANCE_AND_VALIDATION_SCOPE",
+      "USER_PLAN_REVIEW"
+    ]
+  },
+  "immutable_out_of_scope_for_this_draft": [
+    "POLICY_DOCUMENT_MUTATION",
+    "PLANNING_ENGINE_SEPARATE_RETIREMENT_PLAN",
+    "PUBLIC_RELEASE",
+    "PYPI_PUBLICATION",
+    "BRANCH_CREATION",
+    "UNAPPROVED_SOURCE_IMPLEMENTATION",
+    "UNVERIFIED_SHIPPED_CONTRACT_COMPATIBILITY_CLAIMS"
+  ]
+}
