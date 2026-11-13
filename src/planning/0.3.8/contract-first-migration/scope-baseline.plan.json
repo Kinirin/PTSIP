@@ -13,13 +13,23 @@
     "branch": "main",
     "snapshot_revision": "16affe3621fdb3995a229a1700ee0122ebc8416f",
     "implementation_approval": {
-      "status": "APPROVED_WITH_POLICY_AND_UNIT_READINESS_GATES",
+      "status": "APPROVED_WITH_UNIT_READINESS_AND_APPLICABLE_AUTHORITY",
       "source": "USER_EXPLICIT_CHAT_2026-11-13",
       "scope": "WU-01_THROUGH_WU-11_ONLY_AND_EXISTING_RECORDED_FILE_OWNERSHIP",
       "does_not_authorize_policy_change": true,
       "does_not_authorize_unreviewed_scope_candidates": true,
       "does_not_authorize_release": true,
-      "blocked_work_must_not_execute": true
+      "blocked_work_must_not_execute": true,
+      "global_engine_count_authorized": false,
+      "migration_engine_membership": [
+        "CONTEXT",
+        "STORAGE",
+        "VALIDATION",
+        "DISCOVERY",
+        "EXECUTION",
+        "PROJECTION"
+      ],
+      "no_count_derived_policy_resolution": true
     }
   },
   "authority_boundary": {
@@ -28,7 +38,12 @@
     "no_policy_mutation_from_plan": true,
     "already_authorized_policy_changes_are_not_work_units": true,
     "candidate_format_is_not_installed_canonical_plan_contract": true,
-    "normative_implementation_decisions_not_silently_inferred": true
+    "normative_implementation_decisions_not_silently_inferred": true,
+    "scope_policy_mode": "TECHNICAL_MIGRATION_PLAN_NOT_POLICY_DERIVATION",
+    "plan_does_not_define_global_engine_count": true,
+    "plan_does_not_amend_current_policy": true,
+    "applicable_policy_precedence_at_implementation": "UNCHANGED",
+    "policy_conflicts_require_separate_user_resolution": true
   },
   "delivery_boundary": {
     "distributable_source_root": "src/ptsip/",
@@ -68,7 +83,6 @@
     "current_completion_boundary": "INSTALLED_PRODUCT_AND_ENGINE_CONTRACT_VERIFICATION"
   },
   "confirmed_engine_responsibilities": {
-    "official_engine_count_target": 6,
     "retired_engine": {
       "kind": "PLANNING",
       "source_root": "src/ptsip/engines/planning/",
@@ -92,7 +106,19 @@
       "planned_responsibility": "DEPENDENCY_ORDERING",
       "new_operation_id": "PENDING_DECISION"
     },
-    "retired_operation": "planning.select-installation"
+    "retired_operation": "planning.select-installation",
+    "current_migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "engine_selection_authority": "EXPLICIT_APPROVED_KINDS_NOT_NUMERIC_TOTAL",
+    "is_global_engine_inventory": false,
+    "future_engine_policy": "FUTURE_INDEPENDENT_ADDITION_NOT_AUTOMATICALLY_IN_CURRENT_MIGRATION_SCOPE",
+    "engine_count_as_scope_or_acceptance_condition": "FORBIDDEN"
   },
   "confirmed_registry_responsibilities": {
     "owner_root": "src/ptsip/engines/contracts/",
@@ -123,8 +149,7 @@
     "cli_command_disposition": "PENDING_INDEPENDENT_DECISION",
     "no_unapproved_go_command_behavior": true,
     "independent_engine_cli": {
-      "direction": "EACH_OFFICIAL_ENGINE_MUST_CREATE_AND_OWN_ITS_OWN_RUST_CLI",
-      "official_engines_required": 6,
+      "direction": "EACH_NAMED_MIGRATION_ENGINE_MUST_CREATE_AND_OWN_ITS_OWN_RUST_CLI",
       "explicit_cli_files": [
         {
           "owner": "CONTEXT",
@@ -194,7 +219,17 @@
       "go_common_contract_runtime_dependency": "FORBIDDEN",
       "disabled_engine_behavior": "UNRELATED_ENGINE_CLI_MUST_REMAIN_AVAILABLE",
       "cross_engine_communication": "ONLY_VERSIONED_LANGUAGE_NEUTRAL_INTERFACE_IF_REQUIRED",
-      "implementation_authorized": false
+      "implementation_authorized": false,
+      "required_engine_kinds": [
+        "CONTEXT",
+        "STORAGE",
+        "VALIDATION",
+        "DISCOVERY",
+        "EXECUTION",
+        "PROJECTION"
+      ],
+      "engine_set_is_exhaustive_for_current_migration_only": true,
+      "future_engine_additions_require_own_scope_review": true
     },
     "common_contract_cli": {
       "owner": "GO_COMMON_CONTRACT_ONLY",
@@ -261,23 +296,19 @@
     "implementation_order": "NOT_INFERRED_FROM_WU_ID;DERIVE_FROM_DEPENDENCIES_AND_POLICY",
     "partial_execution": "UNBLOCKED_INDEPENDENT_UNITS_MAY_PROCEED;BLOCKED_UNITS_HOLD",
     "user_approval_source": "USER_EXPLICIT_CHAT_2026-11-13",
-    "current_conflict_gate": {
-      "id": "POLICY_CONFLICT_SEVEN_VS_SIX",
-      "current_policy_refs": [
-        "src/policy/CTRL/SFP-CTRL-0002.yaml#/authority_semantics",
-        "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics",
-        "src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics"
-      ],
-      "evidence": "CTRL-0002 retains seven_official_engine_default_availability_commitment while current six-engine policy targets six.",
-      "conflict_resolution": "REQUIRES_EXPLICIT_USER_CHOICE_KEEP_PRIOR_KEEP_LATEST_OR_RECONCILE",
-      "priority": "POLICY_GT_PLAN_GT_IMPLEMENTATION",
-      "blocking_units": [
-        "WU-01",
-        "WU-08",
-        "WU-10"
-      ],
-      "action_before_resolution": "ALLOW_UNAFFECTED_WORK_ONLY;NO_SILENT_POLICY_REWRITE_OR_DISABLING_SEVEN_ENGINE_AUTHORITY"
-    }
+    "engine_selection_rule": "CURRENT_MIGRATION_ENGINE_KINDS_IDENTITY_SET_ONLY",
+    "current_migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "global_engine_count_is_not_an_execution_gate": true,
+    "explicit_retirement_target": "PLANNING",
+    "removal_work_unit_status": "WU-13_PROPOSED_NOT_APPROVED",
+    "applicable_policy_check": "AT_IMPLEMENTATION_CONCRETE_RULE_LEVEL;NO_ENGINE_COUNT_INFERRED_CONFLICT_GATE"
   },
   "immutable_out_of_scope_for_this_draft": [
     "POLICY_DOCUMENT_MUTATION",

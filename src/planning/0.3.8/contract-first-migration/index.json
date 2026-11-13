@@ -15,7 +15,7 @@
     {
       "id": "contracts",
       "work_unit_id": "WU-01",
-      "semantic_responsibility": "SIX_ENGINE_SHARED_REGISTRATION_METADATA_AND_OWNER_REFERENCES_WITHOUT_CENTRAL_ENGINE_CLI",
+      "semantic_responsibility": "NAMED_ENGINE_SET_REGISTRATION_METADATA_AND_OWNER_REFERENCES_WITHOUT_CENTRAL_ENGINE_CLI",
       "owner": "ENGINE_CONTRACT_OWNER",
       "primary_path": "src/ptsip/engines/contracts/",
       "implementation_scope_candidate": "src/ptsip/engines/contracts/",
@@ -27,7 +27,7 @@
         "src/ptsip/engines/contracts/engines_registries/"
       ],
       "required_results": [
-        "SIX_ENGINE_CAPABILITY_OWNER_AND_INSTALLATION_CONTRACTS",
+        "NAMED_ENGINE_SET_CAPABILITY_OWNER_AND_INSTALLATION_CONTRACTS",
         "RETIRED_PLANNING_REGISTRATION_REFERENCES_REMOVED",
         "INDEPENDENT_ENGINE_CONTRACT_OWNERS_PRESERVED"
       ],
@@ -70,7 +70,7 @@
       ],
       "owned_file_count": 28,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "BLOCKED_POLICY_CONFLICT_SEVEN_VS_SIX"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "discovery",
@@ -124,7 +124,7 @@
       ],
       "owned_file_count": 24,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "validation",
@@ -184,7 +184,7 @@
       ],
       "owned_file_count": 30,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "context",
@@ -230,7 +230,7 @@
       ],
       "owned_file_count": 13,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "storage",
@@ -276,7 +276,7 @@
       ],
       "owned_file_count": 16,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "execution",
@@ -322,7 +322,7 @@
       ],
       "owned_file_count": 16,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "projection",
@@ -341,7 +341,7 @@
         "OWN_CLI_RS_CREATED",
         "PROJECTION_ENGINE_REMAINS_INDEPENDENTLY_DISABLEABLE"
       ],
-      "boundary_provenance": "PRESERVE_PREVIOUS_EXPLICIT_SIX_ENGINE_CLI_REQUIREMENT",
+      "boundary_provenance": "PRESERVE_PREVIOUS_EXPLICIT_NAMED_ENGINE_CLI_REQUIREMENT",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/projection.plan.json",
       "materialized": false,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
@@ -365,7 +365,7 @@
       ],
       "owned_file_count": 13,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "registry",
@@ -403,7 +403,7 @@
       ],
       "owned_file_count": 6,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "BLOCKED_POLICY_CONFLICT_SEVEN_VS_SIX"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "common-contract-cli",
@@ -457,7 +457,7 @@
       ],
       "owned_file_count": 22,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "developer-engine-verification-and-python-removal",
@@ -476,7 +476,7 @@
       ],
       "removed_file": "src/ptsip/engine_installation.py",
       "required_results": [
-        "ACTUAL_INSTALLED_SIX_ENGINE_VERIFICATION",
+        "ACTUAL_INSTALLED_NAMED_ENGINE_SET_VERIFICATION",
         "DEPENDENT_IMPORTS_AND_COMMAND_REFERENCES_RESOLVED",
         "ENGINE_INSTALLATION_PY_REMOVED",
         "NO_UNRELATED_PYTHON_CLI_REMOVAL"
@@ -504,7 +504,7 @@
       ],
       "owned_file_count": 12,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "BLOCKED_POLICY_CONFLICT_SEVEN_VS_SIX"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "go-cli",
@@ -539,12 +539,12 @@
       ],
       "owned_file_count": 1,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_POLICY_AND_PLAN_READINESS_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "distribution",
       "work_unit_id": "WU-12",
-      "semantic_responsibility": "SIX_ENGINE_PRODUCT_BUILD_INSTALL_AND_PACKAGING_CLOSURE_FROM_SRC_PTSIP_ONLY",
+      "semantic_responsibility": "NAMED_ENGINE_SET_PRODUCT_BUILD_INSTALL_AND_PACKAGING_CLOSURE_FROM_SRC_PTSIP_ONLY",
       "owner": "PRODUCT_DISTRIBUTION",
       "primary_path": "src/ptsip/",
       "implementation_scope_candidate": "src/ptsip/ (PACKAGING_ONLY)",
@@ -560,7 +560,7 @@
         "src/ptsip/migration/"
       ],
       "required_results": [
-        "COMPLETE_SIX_ENGINE_PLATFORM_ARTIFACT",
+        "COMPLETE_NAMED_ENGINE_SET_PLATFORM_ARTIFACT",
         "NO_DOT_PTSIP_DISTRIBUTION_DEPENDENCIES",
         "NO_LEGACY_ROOT_SETUP_PYPROJECT_MANIFEST_REUSE",
         "NO_ENGINE_OR_CLI_IMPLEMENTATION_OWNERSHIP_IN_DISTRIBUTION_UNIT"
@@ -630,7 +630,8 @@
       ],
       "owned_file_count": 18,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "USER_APPROVAL_REQUIRED"
+      "execution_gate": "USER_APPROVAL_REQUIRED",
+      "lifecycle_note": "PLANNING_RETIREMENT_EXPLICITLY_DIRECTED;WU_13_SEPARATE_IMPLEMENTATION_APPROVAL_PENDING"
     }
   ],
   "uncertainty_boundary": {
@@ -642,7 +643,6 @@
   },
   "cli_ownership": {
     "status": "CONFIRMED_DIRECTORY_AND_RESPONSIBILITY_BUT_IMPLEMENTATION_NOT_AUTHORIZED",
-    "engine_count": 6,
     "engine_cli_files": [
       {
         "owner": "CONTEXT",
@@ -710,7 +710,17 @@
     "unused_old_common_contract_main": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
     "cross_engine_cli_hard_dependency": "FORBIDDEN",
     "common_go_contract_dependency_for_rust_engines": "FORBIDDEN",
-    "registry_directory_must_not_own_cli": true
+    "registry_directory_must_not_own_cli": true,
+    "current_migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "engine_kind_identity_set_is_scope_key": true,
+    "future_engines_outside_current_unit_scope": true
   },
   "deferred_responsibilities": [
     {
@@ -748,7 +758,17 @@
       "WU-13"
     ],
     "authority_source": "USER_EXPLICIT_CHAT_2026-11-13",
-    "unauthorized_policy_resolution": "FORBIDDEN"
+    "unauthorized_policy_resolution": "FORBIDDEN",
+    "engine_scope_rule": "NAMED_MIGRATION_ENGINE_KINDS_NOT_OFFICIAL_TOTAL",
+    "current_migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "no_numeric_engine_count_execution_gates": true
   },
   "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
   "file_ownership_state": "EXACT_PATH_CANDIDATE_OWNERSHIP_REQUIRES_USER_REVIEW",
@@ -765,23 +785,24 @@
     "WU-10",
     "WU-11"
   ],
-  "execution_gates": [
-    {
-      "id": "POLICY_CONFLICT_SEVEN_VS_SIX",
-      "current_policy_refs": [
-        "src/policy/CTRL/SFP-CTRL-0002.yaml#/authority_semantics",
-        "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics",
-        "src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics"
-      ],
-      "evidence": "CTRL-0002 retains seven_official_engine_default_availability_commitment while current six-engine policy targets six.",
-      "conflict_resolution": "REQUIRES_EXPLICIT_USER_CHOICE_KEEP_PRIOR_KEEP_LATEST_OR_RECONCILE",
-      "priority": "POLICY_GT_PLAN_GT_IMPLEMENTATION",
-      "blocking_units": [
-        "WU-01",
-        "WU-08",
-        "WU-10"
-      ],
-      "action_before_resolution": "ALLOW_UNAFFECTED_WORK_ONLY;NO_SILENT_POLICY_REWRITE_OR_DISABLING_SEVEN_ENGINE_AUTHORITY"
-    }
-  ]
+  "execution_gates": [],
+  "execution_scope_engine_identity_ref": "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json#/confirmed_engine_responsibilities/current_migration_engine_kinds",
+  "execution_policy_interpretation": {
+    "approach": "POLICY_INDEPENDENT_PLAN_SCOPE_DEFINITION",
+    "no_numeric_engine_count_constraint": true,
+    "no_inferred_policy_count_conflict_gate": true,
+    "effective_policy_precedence": "PRESERVED_AT_ACTUAL_IMPLEMENTATION",
+    "if_concrete_effective_policy_conflict_found": "BLOCK_ONLY_RELEVANT_EDIT_AND_ESCALATE_TO_USER",
+    "policy_document_modifications_in_this_plan": "FORBIDDEN",
+    "current_migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "excluded_retirement_target": "PLANNING",
+    "future_engine_additions": "SEPARATE_SCOPE_DECISION"
+  }
 }

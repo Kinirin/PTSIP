@@ -32,7 +32,8 @@
       "WU-12",
       "WU-13"
     ],
-    "approval_source": "USER_EXPLICIT_CHAT_2026-11-13"
+    "approval_source": "USER_EXPLICIT_CHAT_2026-11-13",
+    "engine_scope_authority": "EXPLICIT_NAMED_MIGRATION_SET_NOT_GLOBAL_COUNT"
   },
   "rules": {
     "physical_path_overrides_parent_directory": "ONLY_EXACTLY_REGISTERED_EXCEPTION_PATHS",
@@ -1080,7 +1081,7 @@
       "path": "src/ptsip/engines/contracts/capability-owner-map.json",
       "write_owner": "WU-01",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "TRANSFER_PLANNING_SEMANTIC_OWNER_AND_UPDATE_SIX_ENGINE_MAP",
+      "planned_file_action": "TRANSFER_PLANNING_SEMANTIC_OWNER_AND_UPDATE_NAMED_ENGINE_SET_MAP",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
       "implementation_authorized": false
@@ -1107,7 +1108,7 @@
       "path": "src/ptsip/engines/contracts/installation-plan.json",
       "write_owner": "WU-01",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "UPDATE_SIX_ENGINE_INSTALLATION_CONTRACT",
+      "planned_file_action": "UPDATE_NAMED_ENGINE_SET_INSTALLATION_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
       "implementation_authorized": false
@@ -1323,7 +1324,7 @@
       "path": "src/ptsip/engines/index.json",
       "write_owner": "WU-01",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "REGISTER_SIX_ENGINE_OWNERS_AND_BIND_REGISTRY_PATHS",
+      "planned_file_action": "REGISTER_NAMED_ENGINE_SET_OWNERS_AND_BIND_REGISTRY_PATHS",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "OFFICIAL_ENGINE_REGISTRY_CONTENT_VERIFIED",
       "implementation_authorized": false
@@ -1728,7 +1729,7 @@
       "path": ".ptsip/engine/developer/Distribution/release/test/package_bundle_test.go",
       "write_owner": "WU-12",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "REVISE_SIX_ENGINE_BUNDLE_ASSERTIONS",
+      "planned_file_action": "REVISE_NAMED_ENGINE_SET_BUNDLE_ASSERTIONS",
       "assignment_status": "DRAFT_DISTRIBUTION_COMPLETENESS_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "SOURCE_CODE_REFERENCES_TO_CURRENT_ENGINE_REGISTRY_AND_WHEEL",
       "implementation_authorized": false
@@ -1755,7 +1756,7 @@
       "path": "src/ptsip/engines/planning/Cargo.lock",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1764,7 +1765,7 @@
       "path": "src/ptsip/engines/planning/Cargo.toml",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1773,7 +1774,7 @@
       "path": "src/ptsip/engines/planning/contract.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1782,7 +1783,7 @@
       "path": "src/ptsip/engines/planning/contracts/1.0.0.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1791,7 +1792,7 @@
       "path": "src/ptsip/engines/planning/contracts/2.0.0.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1800,7 +1801,7 @@
       "path": "src/ptsip/engines/planning/execution-bindings.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1809,7 +1810,7 @@
       "path": "src/ptsip/engines/planning/manifest.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1818,7 +1819,7 @@
       "path": "src/ptsip/engines/planning/runtime-contracts.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1827,7 +1828,7 @@
       "path": "src/ptsip/engines/planning/schemas/plan_identity.schema.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1836,7 +1837,7 @@
       "path": "src/ptsip/engines/planning/schemas/plan_lifecycle.schema.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1845,7 +1846,7 @@
       "path": "src/ptsip/engines/planning/schemas/plan_unit.schema.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1854,7 +1855,7 @@
       "path": "src/ptsip/engines/planning/src/impact.rs",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1863,7 +1864,7 @@
       "path": "src/ptsip/engines/planning/src/installation.rs",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1872,7 +1873,7 @@
       "path": "src/ptsip/engines/planning/src/main.rs",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1881,7 +1882,7 @@
       "path": "src/ptsip/engines/planning/src/preparation.rs",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1890,7 +1891,7 @@
       "path": "src/ptsip/engines/planning/src/source.rs",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1899,7 +1900,7 @@
       "path": "src/ptsip/engines/planning/transport.json",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1908,7 +1909,7 @@
       "path": "src/ptsip/engines/planning/version.yaml",
       "write_owner": "WU-13",
       "source_state": "EXISTS_IN_BASELINE",
-      "planned_file_action": "DELETE_ONLY_AFTER_SIX_ENGINE_HANDOFF_AND_REFERENCE_CLOSURE",
+      "planned_file_action": "DELETE_ONLY_AFTER_NAMED_ENGINE_SET_HANDOFF_AND_REFERENCE_CLOSURE",
       "assignment_status": "DRAFT_RETIREMENT_OWNER_NOT_FINAL_APPROVED",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
@@ -1955,7 +1956,7 @@
         "WU-12",
         "WU-13"
       ],
-      "notes": "Six engine count updated by WU-01, distribution consumes verified contract"
+      "notes": "Named migration engine set recorded by WU-01, distribution consumes verified contract"
     },
     {
       "path": "src/ptsip/cli.py",
@@ -2093,22 +2094,6 @@
         "WU-13"
       ],
       "reason": "Both proposed scope-closure work units remain draft"
-    },
-    {
-      "id": "POLICY_CONFLICT_SEVEN_VS_SIX",
-      "units": [
-        "WU-01",
-        "WU-08",
-        "WU-10"
-      ],
-      "policy_references": [
-        "src/policy/CTRL/SFP-CTRL-0002.yaml#/authority_semantics",
-        "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics",
-        "src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics"
-      ],
-      "reason": "Current CTRL-0002 seven-engine default availability wording conflicts with effective six-engine target. Approval is not a policy conflict resolution.",
-      "resolution_authority": "USER_EXPLICIT_REQUIRED",
-      "status": "BLOCKING_AFFECTED_WORK_UNITS"
     }
   ],
   "approval_boundary": {
@@ -2131,12 +2116,37 @@
     ],
     "exact_file_ownership_authorized_only_for_approved_units": true,
     "current_revision": "737595fc6271937dde6ff9ca2086f2ff201688a3",
-    "policy_conflict_gate": "POLICY_CONFLICT_SEVEN_VS_SIX",
     "out_of_scope": [
       "POLICY_MIGRATION",
       "PUBLICATION",
       "BRANCH_CREATION",
       "POLICY_MUTATION_WITHOUT_SEPARATE_APPROVAL"
-    ]
+    ],
+    "engine_membership_basis": "EXPLICIT_CURRENT_MIGRATION_KINDS",
+    "current_migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "global_engine_count_semantics": "NO_COUNT_BASED_SCOPE_OR_COMPLETION_TEST",
+    "planning_retirement_target": "PLANNING",
+    "planning_retirement_unit": "WU-13_PROPOSED_NOT_YET_APPROVED"
+  },
+  "scope_notes": {
+    "count_related_external_policy_text": "NOT_A_WORK_PLAN_INPUT;EXISTING_POLICIES_ARE_NOT_AMENDED_BY_THIS_PLAN",
+    "current_migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "retired_engine_kind": "PLANNING",
+    "future_engine_additions": "DO_NOT_ASSUME_EXISTENCE_OR_ADMISSION",
+    "cross_unit_reconciliation_required_when_semantics_change": true
   }
 }
