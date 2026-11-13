@@ -4,14 +4,23 @@
   "id": "PTSIP-0.3.8-CONTRACT-FIRST-MIGRATION",
   "title": "Contract-first distribution and engine responsibility migration",
   "lifecycle": {
-    "state": "DRAFT_NON_EXECUTABLE",
-    "approval": "PENDING_USER_REVIEW",
-    "implementation_authorized": false,
+    "state": "IMPLEMENTATION_APPROVED",
+    "approval": "APPROVED_USER_EXPLICIT",
+    "implementation_authorized": true,
     "publication_authorized": false,
     "work_unit_boundaries_approved": false,
-    "plan_contract_validation": "UNREGISTERED_DRAFT",
+    "plan_contract_validation": "UNREGISTERED_DRAFT_REMAINS_UNVERIFIED",
     "branch": "main",
-    "snapshot_revision": "16affe3621fdb3995a229a1700ee0122ebc8416f"
+    "snapshot_revision": "16affe3621fdb3995a229a1700ee0122ebc8416f",
+    "implementation_approval": {
+      "status": "APPROVED_WITH_POLICY_AND_UNIT_READINESS_GATES",
+      "source": "USER_EXPLICIT_CHAT_2026-11-13",
+      "scope": "WU-01_THROUGH_WU-11_ONLY_AND_EXISTING_RECORDED_FILE_OWNERSHIP",
+      "does_not_authorize_policy_change": true,
+      "does_not_authorize_unreviewed_scope_candidates": true,
+      "does_not_authorize_release": true,
+      "blocked_work_must_not_execute": true
+    }
   },
   "authority_boundary": {
     "exceptional_no_new_policy_derivation": true,
@@ -210,19 +219,31 @@
     "go_cli_entry_file_creation": "REQUIRED_AS_SEPARATE_WORK_UNIT"
   },
   "work_units": {
-    "state": "BOUNDARIES_DRAFTED_DETAILS_PENDING",
+    "state": "IMPLEMENTATION_APPROVED_SCOPE_WITH_GATES",
     "unit_index_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions",
     "candidate_unit_count": 13,
-    "approved_units": [],
+    "approved_units": [
+      "WU-01",
+      "WU-02",
+      "WU-03",
+      "WU-04",
+      "WU-05",
+      "WU-06",
+      "WU-07",
+      "WU-08",
+      "WU-09",
+      "WU-10",
+      "WU-11"
+    ],
     "ids_are_execution_order": false,
-    "candidate_units_not_executable": true,
+    "candidate_units_not_executable": false,
     "boundary_selection_basis": "SOURCE_DIRECTORY_OR_EXPLICIT_ATOMIC_CROSS_DIRECTORY_RELOCATION",
     "user_named_or_previously_confirmed_boundary_count": 11,
     "additional_scope_closure_candidates": [
       "WU-12",
       "WU-13"
     ],
-    "registration_requires": "USER_FULL_PLAN_AUDIT_AND_APPROVAL",
+    "registration_requires": "EXPLICIT_USER_APPROVAL_RECORDED_FOR_WU_01_TO_11;NEW_SCOPE_NOT_PREAPPROVED",
     "preconditions_for_materialization": [
       "CONCRETE_IMPLEMENTATION_DIRECTORY",
       "SINGLE_OWNER_RESPONSIBILITY",
@@ -231,7 +252,32 @@
       "USER_PLAN_REVIEW"
     ],
     "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
-    "file_ownership_state": "DRAFT_EXACT_PATHS_REGISTERED_REQUIRES_USER_REVIEW"
+    "file_ownership_state": "APPROVED_RECORDED_EXACT_PATHS_FOR_WU_01_TO_11;WU_12_13_REVIEW_REQUIRED",
+    "proposed_unapproved_units": [
+      "WU-12",
+      "WU-13"
+    ],
+    "approval_effect": "APPROVED_UNITS_MAY_IMPLEMENT_ONLY_AFTER_APPLICABLE_POLICY_AND_PLAN_READINESS_GATES",
+    "implementation_order": "NOT_INFERRED_FROM_WU_ID;DERIVE_FROM_DEPENDENCIES_AND_POLICY",
+    "partial_execution": "UNBLOCKED_INDEPENDENT_UNITS_MAY_PROCEED;BLOCKED_UNITS_HOLD",
+    "user_approval_source": "USER_EXPLICIT_CHAT_2026-11-13",
+    "current_conflict_gate": {
+      "id": "POLICY_CONFLICT_SEVEN_VS_SIX",
+      "current_policy_refs": [
+        "src/policy/CTRL/SFP-CTRL-0002.yaml#/authority_semantics",
+        "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics",
+        "src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics"
+      ],
+      "evidence": "CTRL-0002 retains seven_official_engine_default_availability_commitment while current six-engine policy targets six.",
+      "conflict_resolution": "REQUIRES_EXPLICIT_USER_CHOICE_KEEP_PRIOR_KEEP_LATEST_OR_RECONCILE",
+      "priority": "POLICY_GT_PLAN_GT_IMPLEMENTATION",
+      "blocking_units": [
+        "WU-01",
+        "WU-08",
+        "WU-10"
+      ],
+      "action_before_resolution": "ALLOW_UNAFFECTED_WORK_ONLY;NO_SILENT_POLICY_REWRITE_OR_DISABLING_SEVEN_ENGINE_AUTHORITY"
+    }
   },
   "immutable_out_of_scope_for_this_draft": [
     "POLICY_DOCUMENT_MUTATION",

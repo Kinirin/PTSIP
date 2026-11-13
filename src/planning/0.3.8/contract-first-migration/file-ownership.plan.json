@@ -9,12 +9,30 @@
   "inspected_source_revision": "5ef70ea563392997879c8dcee93f323ad4534694",
   "inspected_source_tree": "a5ba68dc8279e56c0fda3e3471bfd59d8239297e",
   "lifecycle": {
-    "state": "DRAFT_FOR_USER_REVIEW",
-    "implementation_authorized": false,
+    "state": "IMPLEMENTATION_APPROVED_SCOPED_WITH_GATES",
+    "implementation_authorized": true,
     "policy_authority_created": false,
     "single_write_owner_per_exact_path": true,
     "unlisted_paths_may_be_modified": false,
-    "work_unit_numbers_are_not_execution_order": true
+    "work_unit_numbers_are_not_execution_order": true,
+    "implementation_approval_scope": [
+      "WU-01",
+      "WU-02",
+      "WU-03",
+      "WU-04",
+      "WU-05",
+      "WU-06",
+      "WU-07",
+      "WU-08",
+      "WU-09",
+      "WU-10",
+      "WU-11"
+    ],
+    "unapproved_scope": [
+      "WU-12",
+      "WU-13"
+    ],
+    "approval_source": "USER_EXPLICIT_CHAT_2026-11-13"
   },
   "rules": {
     "physical_path_overrides_parent_directory": "ONLY_EXACTLY_REGISTERED_EXCEPTION_PATHS",
@@ -2075,6 +2093,50 @@
         "WU-13"
       ],
       "reason": "Both proposed scope-closure work units remain draft"
+    },
+    {
+      "id": "POLICY_CONFLICT_SEVEN_VS_SIX",
+      "units": [
+        "WU-01",
+        "WU-08",
+        "WU-10"
+      ],
+      "policy_references": [
+        "src/policy/CTRL/SFP-CTRL-0002.yaml#/authority_semantics",
+        "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics",
+        "src/policy/ARCH/SFP-ARCH-0004.yaml#/authority_semantics"
+      ],
+      "reason": "Current CTRL-0002 seven-engine default availability wording conflicts with effective six-engine target. Approval is not a policy conflict resolution.",
+      "resolution_authority": "USER_EXPLICIT_REQUIRED",
+      "status": "BLOCKING_AFFECTED_WORK_UNITS"
     }
-  ]
+  ],
+  "approval_boundary": {
+    "approved_work_units": [
+      "WU-01",
+      "WU-02",
+      "WU-03",
+      "WU-04",
+      "WU-05",
+      "WU-06",
+      "WU-07",
+      "WU-08",
+      "WU-09",
+      "WU-10",
+      "WU-11"
+    ],
+    "unapproved_work_units": [
+      "WU-12",
+      "WU-13"
+    ],
+    "exact_file_ownership_authorized_only_for_approved_units": true,
+    "current_revision": "737595fc6271937dde6ff9ca2086f2ff201688a3",
+    "policy_conflict_gate": "POLICY_CONFLICT_SEVEN_VS_SIX",
+    "out_of_scope": [
+      "POLICY_MIGRATION",
+      "PUBLICATION",
+      "BRANCH_CREATION",
+      "POLICY_MUTATION_WITHOUT_SEPARATE_APPROVAL"
+    ]
+  }
 }
