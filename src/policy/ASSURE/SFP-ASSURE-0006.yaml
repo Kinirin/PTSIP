@@ -1,0 +1,116 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-ASSURE-0006
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ASSURE
+  title: Engine simulation and operational evidence classification (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_ENGINE_SIMULATION_OPERATIONAL_EVIDENCE_CLASSIFICATION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0009
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ASSURE
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ASSURE-0006
+      title: Engine simulation and operational evidence classification (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_ENGINE_SIMULATION_OPERATIONAL_EVIDENCE_CLASSIFICATION
+      statement: 시뮬레이션 증거와 실제 운영 관측 증거의 종류, 출처, 측정 상황 및 관측 안전 경계를 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_ENGINE_SIMULATION_OPERATIONAL_EVIDENCE_CLASSIFICATION
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ASSURE
+      schema_id: ptsip.governance/root-family/assure
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/engine_simulation_operational_evidence
+    value:
+      domain: PTSIP_ENGINE
+      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      approved_decisions:
+        evidence_classes:
+        - ISOLATED_SIMULATION
+        - OPERATIONAL_OBSERVATION
+        evidence_classes_have_distinct_provenance: true
+      invariants:
+        operational_evidence_is_not_simulation_evidence: true
+        snapshot_version_environment_and_workload_binding_required: true
+        simulation_must_observe_authorized_side_effect_bounds: true
+      unresolved_decisions:
+      - id: CURRENT_PC_TELEMETRY_COLLECTION_LIMITS
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      activation_requirements:
+        owner_decisions_all_resolved: true
+        responsibility_mapping_verified: true
+        conflicts_with_existing_active_policies_resolved: true
+        machine_contract_and_registry_validation_passed: true
+        explicit_separate_user_active_approval_required: true
+      out_of_scope:
+      - IMMEDIATE_RUNTIME_ACTIVATION
+      - EXISTING_ACTIVE_POLICY_MUTATION
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      resolved_decisions: []
+  - id: SRC-0009
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/ASSURE/SFP-ASSURE-0006.yaml
+    sha256: fcacaf041cac63ef1b595348f3cde0664d2259ed37e8f9c331e820d2188f6074
+Policy_Migration:
+  baseline_head: d6aa0cbbc010e04b2c6d29b636a566eed34690fe
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE
