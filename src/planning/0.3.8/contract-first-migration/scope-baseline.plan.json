@@ -89,7 +89,9 @@
       "removal_condition": "IMMEDIATE_USER_DIRECTED_REMOVE_WITHOUT_LEGACY_COMPATIBILITY_OR_HANDOFF_GATES",
       "removal_owner": "WU-01",
       "removal_status": "REMOVED_FROM_SOURCE_TREE_THIS_COMMIT",
-      "independent_retirement_work_unit": "NONE"
+      "independent_retirement_work_unit": "NONE",
+      "removal_validation": "USER_REVIEW_NO_AUTOMATED_LEGACY_PLANNING_COMPATIBILITY_OR_HANDOFF_PROOF",
+      "cli_quality_evidence": "FUTURE_NEW_CLI_POSITIVE_RESPONSES_ONLY"
     },
     "discovery": {
       "root": "src/ptsip/engines/discovery/",
@@ -311,7 +313,7 @@
     "removal_work_unit_status": "WU-13_MERGED_INTO_WU-01_NO_SEPARATE_WORK_UNIT",
     "applicable_policy_check": "AT_IMPLEMENTATION_CONCRETE_RULE_LEVEL;NO_ENGINE_COUNT_INFERRED_CONFLICT_GATE",
     "retired_planning_deletion": {
-      "status": "SOURCE_REMOVAL_REQUESTED_AND_APPLIED",
+      "status": "SOURCE_TREE_REMOVED_NO_LEGACY_BEHAVIOR_PROOF_REQUIRED",
       "path": "src/ptsip/engines/planning/",
       "owner_work_unit": "WU-01",
       "independent_deletion_unit": null,
@@ -319,10 +321,43 @@
       "delete_entire_tree": true,
       "no_legacy_planning_compatibility_verification": true,
       "no_legacy_planning_handoff_completion_verification": true,
-      "final_check": "EXECUTE_NEW_SRC_PTSIP_CLI_GO_REAL_COMMAND_WITH_PLANNING_TREE_ABSENT",
-      "final_check_state": "NOT_RUN_CLI_GO_DOES_NOT_YET_EXIST",
-      "does_not_override_other_work_units_validation": true
-    }
+      "final_check": "NO_SEPARATE_PLANNING_RETIREMENT_TEST;POSITIVE_NEW_CLI_SMOKE_IS_OWNED_BY_CLI_IMPLEMENTATION_UNITS",
+      "final_check_state": "REMOVAL_ALREADY_APPLIED;NEW_CLI_SMOKES_PENDING_THEIR_OWN_WORK_UNITS",
+      "does_not_override_other_work_units_validation": true,
+      "blocks_on_cli_creation": false,
+      "legacy_planning_cli_nonfunction_assertion": "FORBIDDEN_AS_ACCEPTANCE_EVIDENCE",
+      "user_owns_planning_handoff_verification": true
+    },
+    "positive_cli_verification": {
+      "basis": "POSITIVE_NEW_CLI_RESPONSE_NOT_RETIRED_ENGINE_NONFUNCTION",
+      "verification_policy": "NO_RETROACTIVE_PLANNING_COMPATIBILITY_OR_HANDOFF_PROOF",
+      "directory_assumption": "src/ptsip/engines/planning/ DOES_NOT_EXIST_IN_CURRENT_SOURCE",
+      "planning_cli_failure_as_proof": "FORBIDDEN",
+      "optional_integration_smoke_alternatives": [
+        {
+          "id": "TOP_LEVEL_GO",
+          "files": [
+            "src/ptsip/CLI.go"
+          ],
+          "pass": "RUN_NEW_CLI_COMMAND_AND_OBSERVE_VALID_SUCCESS_RESPONSE"
+        },
+        {
+          "id": "OWNED_RUST_CLI_TRIO",
+          "files": [
+            "src/ptsip/engines/context/src/cli.rs",
+            "src/ptsip/engines/validation/src/cli.rs",
+            "src/ptsip/engines/discovery/src/cli.rs"
+          ],
+          "pass": "EACH_ENGINE_OWN_CLI_RUNS_VALID_INPUT_AND_RETURNS_VALID_EXPECTED_RESPONSE"
+        }
+      ],
+      "mandatory_for_planning_directory_removal": false,
+      "mandatory_for_each_new_cli_implementation": "EACH_OWNED_CLI_MUST_DEMONSTRATE_VALID_COMMAND_RESPONSE_WHEN_IMPLEMENTED",
+      "user_reviewed_planning_handoff": "USER_REVIEW_ONLY_NOT_AGENT_GATE",
+      "no_old_cli_invocation_or_negative_smoke": true,
+      "no_new_operation_id_inference": true
+    },
+    "retirement_validation_policy": "SOURCE_TREE_ABSENT_IS_BASELINE;NO_LEGACY_COMPATIBILITY_OR_MIGRATION_COMPLETION_VERIFICATION"
   },
   "immutable_out_of_scope_for_this_draft": [
     "POLICY_DOCUMENT_MUTATION",

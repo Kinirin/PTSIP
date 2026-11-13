@@ -29,11 +29,9 @@
       ],
       "required_results": [
         "NAMED_ENGINE_SET_CAPABILITY_OWNER_AND_INSTALLATION_CONTRACTS",
-        "RETIRED_PLANNING_REGISTRATION_REFERENCES_REMOVED",
         "INDEPENDENT_ENGINE_CONTRACT_OWNERS_PRESERVED",
-        "PLANNING_SOURCE_TREE_ABSENT",
         "NO_PLANNING_RUST_SOURCE_FALLBACK",
-        "NEW_PTSIP_CLI_GO_REAL_COMMAND_EXECUTION_OBSERVED_BEFORE_WU01_COMPLETION"
+        "CURRENT_NAMED_ENGINE_REGISTRATION_HAS_ONLY_VALID_CURRENT_SOURCE_REFERENCES"
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/contracts.plan.json",
@@ -92,26 +90,21 @@
       ],
       "owned_file_count": 46,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "NEW_CLI_COMMAND_REQUIRED_FOR_FINAL_ACCEPTANCE_NOT_FOR_SOURCE_DELETION",
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION;NO_NEW_CLI_REQUIRED_FOR_PLANNING_SOURCE_RETIREMENT",
       "directory_retirement": {
         "directory": "src/ptsip/engines/planning/",
-        "operation": "DELETE_ALL_FILES_AND_DIRECTORY",
-        "request": "USER_EXPLICIT",
+        "operation": "REMOVE_ENTIRE_SOURCE_TREE",
+        "source_state": "ALREADY_REMOVED",
         "merged_from_work_unit": "WU-13",
-        "separate_deletion_work_unit": "FORBIDDEN",
-        "deleted_source_file_count": 18,
-        "legacy_planning_compatibility_proof": "NOT_REQUIRED_FOR_DIRECTORY_RETIREMENT",
-        "previous_engine_handoff_completion_proof": "NOT_REQUIRED_FOR_DIRECTORY_RETIREMENT",
-        "new_cli_command_execution_ref": "src/ptsip/CLI.go",
-        "new_cli_command_execution_required_for_final_acceptance": true,
-        "new_cli_execution_state": "PENDING_CLI_FILE_CREATION",
-        "file_removal_status": "SOURCE_DELETION_REQUESTED_AND_APPLIED_IN_THIS_COMMIT",
-        "blocked_due_to_missing_cli": false,
-        "completion_status": "IN_PROGRESS_NOT_VERIFIED"
-      },
-      "cross_unit_final_acceptance": [
-        "WU-11:CLI_GO_NEW_COMMAND_EXECUTION_SMOKE"
-      ]
+        "owned_by": "WU-01",
+        "separate_deletion_work_unit": "NOT_REQUIRED",
+        "prior_planning_compatibility_check": "NOT_REQUIRED",
+        "prior_planning_handoff_completion_check": "USER_HANDLED_NOT_AUTOMATED",
+        "old_planning_cli_nonfunction_check": "FORBIDDEN",
+        "new_cli_dependency_for_deletion": "NONE",
+        "completion_state": "SOURCE_REMOVAL_ALREADY_COMMITTED",
+        "external_evidence": "POSITIVE_NEW_CLI_SMOKE_OWNED_BY_INDEPENDENT_CLI_WORK_UNITS"
+      }
     },
     {
       "id": "discovery",
@@ -128,7 +121,8 @@
       ],
       "required_results": [
         "DISCOVERY_PLANNING_OPERATION_CONTRACT_AND_IMPLEMENTATION",
-        "OWN_CLI_RS_CREATED"
+        "OWN_CLI_RS_CREATED",
+        "OWN_CLI_RETURNS_VALID_EXPECTED_RESPONSE"
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/discovery.plan.json",
@@ -165,7 +159,12 @@
       ],
       "owned_file_count": 24,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
+      "cli_response_check": {
+        "file": "src/ptsip/engines/discovery/src/cli.rs",
+        "pass": "EXECUTE_OWN_CLI_WITH_VALID_CONTRACT_REQUEST_AND_OBSERVE_EXPECTED_RESPONSE",
+        "legacy_planning_negative_check": "FORBIDDEN"
+      }
     },
     {
       "id": "validation",
@@ -182,7 +181,8 @@
       ],
       "required_results": [
         "VALIDATION_PLANNING_IMPACT_AND_PREPARE_NEW_TYPED_CONTRACTS",
-        "OWN_CLI_RS_CREATED"
+        "OWN_CLI_RS_CREATED",
+        "OWN_CLI_RETURNS_VALID_EXPECTED_RESPONSE"
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/validation.plan.json",
@@ -225,7 +225,12 @@
       ],
       "owned_file_count": 30,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
+      "cli_response_check": {
+        "file": "src/ptsip/engines/validation/src/cli.rs",
+        "pass": "EXECUTE_OWN_CLI_WITH_VALID_CONTRACT_REQUEST_AND_OBSERVE_EXPECTED_RESPONSE",
+        "legacy_planning_negative_check": "FORBIDDEN"
+      }
     },
     {
       "id": "context",
@@ -242,7 +247,8 @@
       ],
       "required_results": [
         "NEW_CONTEXT_OWNED_DEPENDENCY_ORDER_OPERATION_CONTRACT",
-        "OWN_CLI_RS_CREATED"
+        "OWN_CLI_RS_CREATED",
+        "OWN_CLI_RETURNS_VALID_EXPECTED_RESPONSE"
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "unresolved": [
@@ -271,7 +277,12 @@
       ],
       "owned_file_count": 13,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
+      "cli_response_check": {
+        "file": "src/ptsip/engines/context/src/cli.rs",
+        "pass": "EXECUTE_OWN_CLI_WITH_VALID_CONTRACT_REQUEST_AND_OBSERVE_EXPECTED_RESPONSE",
+        "legacy_planning_negative_check": "FORBIDDEN"
+      }
     },
     {
       "id": "storage",
@@ -564,7 +575,7 @@
         "NEW_CLI_GO_CREATED",
         "NO_CROSS_ENGINE_REQUIRED_RUNTIME_DEPENDENCIES",
         "GO_BUILD_OWNERSHIP_PROVEN",
-        "CLI_REAL_COMMAND_INVOCATION_SUCCEEDS_WITH_PLANNING_DIRECTORY_ABSENT"
+        "NEW_CLI_GO_REAL_COMMAND_RETURNS_VALID_RESPONSE"
       ],
       "boundary_provenance": "EXPLICIT_SINGLE_UNIT",
       "unresolved": [
@@ -582,9 +593,7 @@
       "owned_file_count": 1,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
       "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
-      "cross_unit_acceptance_support": [
-        "WU-01"
-      ]
+      "validation_basis": "POSITIVE_NEW_CLI_EXECUTION_ONLY;NO_RETIRED_PLANNING_CLI_NEGATIVE_TEST"
     },
     {
       "id": "distribution",
@@ -771,7 +780,10 @@
       "reason": "USER_REQUIRES_NO_SEPARATE_DELETION_RESPONSIBILITY",
       "implementation_auth": "EXPLICIT_DELETE_SOURCE_ONLY",
       "previous_handoff_proof": false,
-      "cli_acceptance_required": true
+      "cli_acceptance_required": false,
+      "source_absence_baseline": true,
+      "old_planning_compatibility_proof": "FORBIDDEN",
+      "user_handles_handoff_review": true
     }
   },
   "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
@@ -814,5 +826,34 @@
     "expected": "ABSENT_AFTER_THIS_COMMIT",
     "old_engine_reintroduction": "FORBIDDEN_WITHOUT_NEW_USER_DECISION",
     "allows_legacy_compatibility_fallback": false
+  },
+  "positive_cli_verification": {
+    "basis": "POSITIVE_NEW_CLI_RESPONSE_NOT_RETIRED_ENGINE_NONFUNCTION",
+    "verification_policy": "NO_RETROACTIVE_PLANNING_COMPATIBILITY_OR_HANDOFF_PROOF",
+    "directory_assumption": "src/ptsip/engines/planning/ DOES_NOT_EXIST_IN_CURRENT_SOURCE",
+    "planning_cli_failure_as_proof": "FORBIDDEN",
+    "optional_integration_smoke_alternatives": [
+      {
+        "id": "TOP_LEVEL_GO",
+        "files": [
+          "src/ptsip/CLI.go"
+        ],
+        "pass": "RUN_NEW_CLI_COMMAND_AND_OBSERVE_VALID_SUCCESS_RESPONSE"
+      },
+      {
+        "id": "OWNED_RUST_CLI_TRIO",
+        "files": [
+          "src/ptsip/engines/context/src/cli.rs",
+          "src/ptsip/engines/validation/src/cli.rs",
+          "src/ptsip/engines/discovery/src/cli.rs"
+        ],
+        "pass": "EACH_ENGINE_OWN_CLI_RUNS_VALID_INPUT_AND_RETURNS_VALID_EXPECTED_RESPONSE"
+      }
+    ],
+    "mandatory_for_planning_directory_removal": false,
+    "mandatory_for_each_new_cli_implementation": "EACH_OWNED_CLI_MUST_DEMONSTRATE_VALID_COMMAND_RESPONSE_WHEN_IMPLEMENTED",
+    "user_reviewed_planning_handoff": "USER_REVIEW_ONLY_NOT_AGENT_GATE",
+    "no_old_cli_invocation_or_negative_smoke": true,
+    "no_new_operation_id_inference": true
   }
 }
