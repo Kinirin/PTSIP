@@ -1,0 +1,121 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-ASSURE-0007
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ASSURE
+  title: Engine multi-objective performance evaluation (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_ENGINE_MULTI_OBJECTIVE_FITNESS_COMPARISON
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0009
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ASSURE
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ASSURE-0007
+      title: Engine multi-objective performance evaluation (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_ENGINE_MULTI_OBJECTIVE_FITNESS_COMPARISON
+      statement: 계약 적합성 이후의 공통·기능별 지표, 공정한 비교 및 승인된 다목적 성능 순위 판단 기준을 소유한다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_ENGINE_MULTI_OBJECTIVE_FITNESS_COMPARISON
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ASSURE
+      schema_id: ptsip.governance/root-family/assure
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/engine_multi_objective_performance
+    value:
+      domain: PTSIP_ENGINE
+      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      approved_decisions:
+        metric_model: COMMON_PLUS_CAPABILITY_SPECIFIC
+        evaluation_order: MANDATORY_CONTRACT_CONFORMANCE_BEFORE_PERFORMANCE_RANKING
+        measured_performance_cannot_compensate_policy_failure: true
+        evaluation_objective: POLICY_AND_USER_AUTHORIZED
+        ranking_model: MULTI_OBJECTIVE_PARETO_WITH_AUTHORIZED_FURTHER_PREFERENCE
+        evidence_sufficient_but_unranked: DO_NOT_INVENT_NEW_PREFERENCE
+        environment_sensitive_measurement: true
+      invariants:
+        benchmark_requires_fair_comparability: true
+        unknown_safety_or_contract_state_not_eligible_for_ranking: true
+      unresolved_decisions:
+      - id: METRIC_COMMON_AND_CAPABILITY_CATALOG
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      - id: ENVIRONMENT_COMPARABILITY_AND_APPLICABILITY_CRITERIA
+        kind: CONTRACT_DESIGN
+        status: UNRESOLVED
+      activation_requirements:
+        owner_decisions_all_resolved: true
+        responsibility_mapping_verified: true
+        conflicts_with_existing_active_policies_resolved: true
+        machine_contract_and_registry_validation_passed: true
+        explicit_separate_user_active_approval_required: true
+      out_of_scope:
+      - IMMEDIATE_RUNTIME_ACTIVATION
+      - EXISTING_ACTIVE_POLICY_MUTATION
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      resolved_decisions: []
+  - id: SRC-0009
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/ASSURE/SFP-ASSURE-0007.yaml
+    sha256: 638dd011ee3457758350822173d226a93d838f2621b16288542d4e13ab6ff1e7
+Policy_Migration:
+  baseline_head: d6aa0cbbc010e04b2c6d29b636a566eed34690fe
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE
