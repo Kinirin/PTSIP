@@ -37,7 +37,39 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/contracts/capability-owner-map.json",
+        "src/ptsip/engines/contracts/context-projection-handoff.json",
+        "src/ptsip/engines/contracts/dependency-graph.json",
+        "src/ptsip/engines/contracts/installation-plan.json",
+        "src/ptsip/engines/contracts/native-runtime.json",
+        "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
+        "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
+        "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
+        "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
+        "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
+        "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
+        "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
+        "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
+        "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
+        "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
+        "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
+        "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
+        "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
+        "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
+        "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
+        "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
+        "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
+        "src/ptsip/engines/contracts/stdio-transport.json",
+        "src/ptsip/engines/contracts/work-item-bindings.json",
+        "src/ptsip/engines/index.json"
+      ],
+      "owned_file_count": 28,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "discovery",
@@ -62,7 +94,35 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/discovery/Cargo.lock",
+        "src/ptsip/engines/discovery/Cargo.toml",
+        "src/ptsip/engines/discovery/README.md",
+        "src/ptsip/engines/discovery/contract.json",
+        "src/ptsip/engines/discovery/contracts/1.0.0.json",
+        "src/ptsip/engines/discovery/contracts/2.0.0.json",
+        "src/ptsip/engines/discovery/contracts/3.0.0.json",
+        "src/ptsip/engines/discovery/execution-bindings.json",
+        "src/ptsip/engines/discovery/manifest.json",
+        "src/ptsip/engines/discovery/runtime-contracts.json",
+        "src/ptsip/engines/discovery/src/environment.rs",
+        "src/ptsip/engines/discovery/src/invocation.rs",
+        "src/ptsip/engines/discovery/src/lib.rs",
+        "src/ptsip/engines/discovery/src/main.rs",
+        "src/ptsip/engines/discovery/src/registry.rs",
+        "src/ptsip/engines/discovery/src/source.rs",
+        "src/ptsip/engines/discovery/src/tpbg/mod.rs",
+        "src/ptsip/engines/discovery/src/tpbg/source.rs",
+        "src/ptsip/engines/discovery/tests/fixtures/tpbg-f3.json",
+        "src/ptsip/engines/discovery/tests/tpbg_f3.rs",
+        "src/ptsip/engines/discovery/tpbg-f3.schema.json",
+        "src/ptsip/engines/discovery/transport.json",
+        "src/ptsip/engines/discovery/version.yaml",
+        "src/ptsip/engines/discovery/src/cli.rs"
+      ],
+      "owned_file_count": 24,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "validation",
@@ -87,7 +147,41 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/validation/Cargo.lock",
+        "src/ptsip/engines/validation/Cargo.toml",
+        "src/ptsip/engines/validation/contract.json",
+        "src/ptsip/engines/validation/contracts/1.0.0.json",
+        "src/ptsip/engines/validation/contracts/2.0.0.json",
+        "src/ptsip/engines/validation/execution-bindings.json",
+        "src/ptsip/engines/validation/manifest.json",
+        "src/ptsip/engines/validation/runtime-contracts.json",
+        "src/ptsip/engines/validation/src/cases.rs",
+        "src/ptsip/engines/validation/src/composition.rs",
+        "src/ptsip/engines/validation/src/handoff.rs",
+        "src/ptsip/engines/validation/src/main.rs",
+        "src/ptsip/engines/validation/src/planning/PTSIP_Public_Policy_Structure.schema.json",
+        "src/ptsip/engines/validation/src/planning/schemas/PTSIP_Public_Plan_Identity.schema.json",
+        "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json",
+        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json",
+        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json",
+        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json",
+        "src/ptsip/engines/validation/src/rbac.rs",
+        "src/ptsip/engines/validation/src/retrieval.rs",
+        "src/ptsip/engines/validation/src/schema.rs",
+        "src/ptsip/engines/validation/src/schema_fixtures/LICENSE",
+        "src/ptsip/engines/validation/src/schema_fixtures/dynamicRef.json",
+        "src/ptsip/engines/validation/src/schema_fixtures/ref.json",
+        "src/ptsip/engines/validation/src/schema_fixtures/source.json",
+        "src/ptsip/engines/validation/src/schema_reference_tests.rs",
+        "src/ptsip/engines/validation/src/source.rs",
+        "src/ptsip/engines/validation/transport.json",
+        "src/ptsip/engines/validation/version.yaml",
+        "src/ptsip/engines/validation/src/cli.rs"
+      ],
+      "owned_file_count": 30,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "context",
@@ -115,7 +209,24 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/context/Cargo.lock",
+        "src/ptsip/engines/context/Cargo.toml",
+        "src/ptsip/engines/context/contract.json",
+        "src/ptsip/engines/context/contracts/1.0.0.json",
+        "src/ptsip/engines/context/execution-bindings.json",
+        "src/ptsip/engines/context/manifest.json",
+        "src/ptsip/engines/context/runtime-contracts.json",
+        "src/ptsip/engines/context/src/loading.rs",
+        "src/ptsip/engines/context/src/main.rs",
+        "src/ptsip/engines/context/src/source.rs",
+        "src/ptsip/engines/context/transport.json",
+        "src/ptsip/engines/context/version.yaml",
+        "src/ptsip/engines/context/src/cli.rs"
+      ],
+      "owned_file_count": 13,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "storage",
@@ -140,7 +251,27 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/storage/Cargo.lock",
+        "src/ptsip/engines/storage/Cargo.toml",
+        "src/ptsip/engines/storage/contract.json",
+        "src/ptsip/engines/storage/contracts/1.0.0.json",
+        "src/ptsip/engines/storage/contracts/2.0.0.json",
+        "src/ptsip/engines/storage/execution-bindings.json",
+        "src/ptsip/engines/storage/manifest.json",
+        "src/ptsip/engines/storage/provider-registry.json",
+        "src/ptsip/engines/storage/runtime-contracts.json",
+        "src/ptsip/engines/storage/src/main.rs",
+        "src/ptsip/engines/storage/src/native.rs",
+        "src/ptsip/engines/storage/src/provider.rs",
+        "src/ptsip/engines/storage/src/source.rs",
+        "src/ptsip/engines/storage/transport.json",
+        "src/ptsip/engines/storage/version.yaml",
+        "src/ptsip/engines/storage/src/cli.rs"
+      ],
+      "owned_file_count": 16,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "execution",
@@ -165,7 +296,27 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/execution/Cargo.lock",
+        "src/ptsip/engines/execution/Cargo.toml",
+        "src/ptsip/engines/execution/contract.json",
+        "src/ptsip/engines/execution/contracts/1.0.0.json",
+        "src/ptsip/engines/execution/contracts/2.0.0.json",
+        "src/ptsip/engines/execution/execution-bindings.json",
+        "src/ptsip/engines/execution/manifest.json",
+        "src/ptsip/engines/execution/runtime-contracts.json",
+        "src/ptsip/engines/execution/src/authority.rs",
+        "src/ptsip/engines/execution/src/effect.rs",
+        "src/ptsip/engines/execution/src/invocation.rs",
+        "src/ptsip/engines/execution/src/main.rs",
+        "src/ptsip/engines/execution/src/source.rs",
+        "src/ptsip/engines/execution/transport.json",
+        "src/ptsip/engines/execution/version.yaml",
+        "src/ptsip/engines/execution/src/cli.rs"
+      ],
+      "owned_file_count": 16,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "projection",
@@ -190,7 +341,24 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/projection/Cargo.lock",
+        "src/ptsip/engines/projection/Cargo.toml",
+        "src/ptsip/engines/projection/contract.json",
+        "src/ptsip/engines/projection/contracts/1.0.0.json",
+        "src/ptsip/engines/projection/execution-bindings.json",
+        "src/ptsip/engines/projection/manifest.json",
+        "src/ptsip/engines/projection/runtime-contracts.json",
+        "src/ptsip/engines/projection/src/main.rs",
+        "src/ptsip/engines/projection/src/rendering.rs",
+        "src/ptsip/engines/projection/src/source.rs",
+        "src/ptsip/engines/projection/transport.json",
+        "src/ptsip/engines/projection/version.yaml",
+        "src/ptsip/engines/projection/src/cli.rs"
+      ],
+      "owned_file_count": 13,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "registry",
@@ -217,7 +385,17 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/registries/official-static.json",
+        "src/ptsip/engines/contracts/engines_registries/official-static.json",
+        "src/ptsip/engines/registries/official-execution.json",
+        "src/ptsip/engines/contracts/engines_registries/official-execution.json",
+        "src/ptsip/engines/registries/derived-snapshot.json",
+        "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json"
+      ],
+      "owned_file_count": 6,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "common-contract-cli",
@@ -244,7 +422,33 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
+        "src/ptsip/common_contract/cmd/ptsip-common-contract/main_test.go",
+        "src/ptsip/common_contract/cmd/ptsip-common-contract/protocol.json",
+        "src/ptsip/common_contract/compatibility/compatibility.go",
+        "src/ptsip/common_contract/go.mod",
+        "src/ptsip/common_contract/go.sum",
+        "src/ptsip/common_contract/jsondoc/json.go",
+        "src/ptsip/common_contract/registry/manifest.json",
+        "src/ptsip/common_contract/registry/registry.go",
+        "src/ptsip/common_contract/resolver/resolver.go",
+        "src/ptsip/common_contract/source/document.go",
+        "src/ptsip/common_contract/source/document_test.go",
+        "src/ptsip/common_contract/source/restore.go",
+        "src/ptsip/common_contract/source/units.go",
+        "src/ptsip/common_contract/source/verification.go",
+        "src/ptsip/common_contract/testdata/canonical_source.json",
+        "src/ptsip/common_contract/validator/rbac_conformance_test.go",
+        "src/ptsip/common_contract/validator/tpbg_conformance_test.go",
+        "src/ptsip/common_contract/validator/validator.go",
+        "src/ptsip/common_contract/main.go",
+        "src/ptsip/common_contract/cli.go",
+        "src/ptsip/_common_contract.py"
+      ],
+      "owned_file_count": 22,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "developer-engine-verification-and-python-removal",
@@ -274,7 +478,23 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "developer/tests/engines/contracts_test.go",
+        "developer/tests/engines/environment_test.go",
+        "developer/tests/engines/independent_engine_wheel_test.go",
+        "developer/tests/engines/release_admission_policy_test.go",
+        "developer/tests/engines/release_capabilities_test.go",
+        "developer/tests/engines/runtime_test.go",
+        "developer/tests/engines/source_test.go",
+        "developer/tests/engines/testdata/provider/main.go",
+        "src/ptsip/engine_installation.py",
+        "src/ptsip/cli.py",
+        ".ptsip/engine/developer/Distribution/release/controller/package.go",
+        ".ptsip/engine/developer/Distribution/release/test/package_install.go"
+      ],
+      "owned_file_count": 12,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "go-cli",
@@ -303,7 +523,12 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/CLI.go"
+      ],
+      "owned_file_count": 1,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "distribution",
@@ -336,7 +561,17 @@
       "implementation_details": "PENDING",
       "implementation_authorized": false,
       "status": "DRAFT_REQUIRES_USER_REVIEW",
-      "scope_granularity": "PACKAGING_AND_INSTALLATION_ONLY;NOT_ANY_NESTED_ENGINE_OR_CLI_SEMANTICS"
+      "scope_granularity": "PACKAGING_AND_INSTALLATION_ONLY;NOT_ANY_NESTED_ENGINE_OR_CLI_SEMANTICS",
+      "owned_file_paths": [
+        ".ptsip/engine/developer/Distribution/release/controller/package_build.go",
+        ".ptsip/engine/developer/Distribution/release/controller/package_wheel.go",
+        ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go",
+        ".ptsip/engine/developer/Distribution/release/test/package_bundle_test.go",
+        "src/tests/ptsip/contracts/wheel_smoke.py",
+        ".github/test_modes.yaml"
+      ],
+      "owned_file_count": 6,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     },
     {
       "id": "retired-planning-engine",
@@ -360,7 +595,29 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "owned_file_paths": [
+        "src/ptsip/engines/planning/Cargo.lock",
+        "src/ptsip/engines/planning/Cargo.toml",
+        "src/ptsip/engines/planning/contract.json",
+        "src/ptsip/engines/planning/contracts/1.0.0.json",
+        "src/ptsip/engines/planning/contracts/2.0.0.json",
+        "src/ptsip/engines/planning/execution-bindings.json",
+        "src/ptsip/engines/planning/manifest.json",
+        "src/ptsip/engines/planning/runtime-contracts.json",
+        "src/ptsip/engines/planning/schemas/plan_identity.schema.json",
+        "src/ptsip/engines/planning/schemas/plan_lifecycle.schema.json",
+        "src/ptsip/engines/planning/schemas/plan_unit.schema.json",
+        "src/ptsip/engines/planning/src/impact.rs",
+        "src/ptsip/engines/planning/src/installation.rs",
+        "src/ptsip/engines/planning/src/main.rs",
+        "src/ptsip/engines/planning/src/preparation.rs",
+        "src/ptsip/engines/planning/src/source.rs",
+        "src/ptsip/engines/planning/transport.json",
+        "src/ptsip/engines/planning/version.yaml"
+      ],
+      "owned_file_count": 18,
+      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION"
     }
   ],
   "uncertainty_boundary": {
@@ -460,5 +717,7 @@
     "number_is_identity_not_priority": true,
     "policy_migration_work_unit_created": false,
     "contract_first_scope": "ENGINE_AND_DISTRIBUTION_TRANSITION_NOT_POLICY_DOCUMENT_MIGRATION"
-  }
+  },
+  "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
+  "file_ownership_state": "EXACT_PATH_CANDIDATE_OWNERSHIP_REQUIRES_USER_REVIEW"
 }
