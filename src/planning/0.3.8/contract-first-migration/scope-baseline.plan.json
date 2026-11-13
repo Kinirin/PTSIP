@@ -15,7 +15,7 @@
     "implementation_approval": {
       "status": "APPROVED_WITH_UNIT_READINESS_AND_APPLICABLE_AUTHORITY",
       "source": "USER_EXPLICIT_CHAT_2026-11-13",
-      "scope": "WU-01_THROUGH_WU-11_ONLY_AND_EXISTING_RECORDED_FILE_OWNERSHIP",
+      "scope": "WU-01_THROUGH_WU-11_WITH_PLANNING_DIRECTORY_REMOVAL_ABSORBED_INTO_WU-01",
       "does_not_authorize_policy_change": true,
       "does_not_authorize_unreviewed_scope_candidates": true,
       "does_not_authorize_release": true,
@@ -86,7 +86,10 @@
     "retired_engine": {
       "kind": "PLANNING",
       "source_root": "src/ptsip/engines/planning/",
-      "removal_condition": "DEPENDENCY_CLOSURE_NOT_YET_VERIFIED"
+      "removal_condition": "IMMEDIATE_USER_DIRECTED_REMOVE_WITHOUT_LEGACY_COMPATIBILITY_OR_HANDOFF_GATES",
+      "removal_owner": "WU-01",
+      "removal_status": "REMOVED_FROM_SOURCE_TREE_THIS_COMMIT",
+      "independent_retirement_work_unit": "NONE"
     },
     "discovery": {
       "root": "src/ptsip/engines/discovery/",
@@ -256,7 +259,7 @@
   "work_units": {
     "state": "IMPLEMENTATION_APPROVED_SCOPE_WITH_GATES",
     "unit_index_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions",
-    "candidate_unit_count": 13,
+    "candidate_unit_count": 12,
     "approved_units": [
       "WU-01",
       "WU-02",
@@ -275,22 +278,20 @@
     "boundary_selection_basis": "SOURCE_DIRECTORY_OR_EXPLICIT_ATOMIC_CROSS_DIRECTORY_RELOCATION",
     "user_named_or_previously_confirmed_boundary_count": 11,
     "additional_scope_closure_candidates": [
-      "WU-12",
-      "WU-13"
+      "WU-12"
     ],
     "registration_requires": "EXPLICIT_USER_APPROVAL_RECORDED_FOR_WU_01_TO_11;NEW_SCOPE_NOT_PREAPPROVED",
     "preconditions_for_materialization": [
       "CONCRETE_IMPLEMENTATION_DIRECTORY",
       "SINGLE_OWNER_RESPONSIBILITY",
-      "SPECIFIC_IMPLEMENTATION_DETAILS",
       "ACCEPTANCE_AND_VALIDATION_SCOPE",
-      "USER_PLAN_REVIEW"
+      "USER_PLAN_REVIEW",
+      "SPECIFIC_IMPLEMENTATION_DETAILS"
     ],
     "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
-    "file_ownership_state": "APPROVED_RECORDED_EXACT_PATHS_FOR_WU_01_TO_11;WU_12_13_REVIEW_REQUIRED",
+    "file_ownership_state": "EXACT_PATHS_REGISTERED_WITH_PLANNING_FILES_AS_WU01_REMOVAL_HISTORY",
     "proposed_unapproved_units": [
-      "WU-12",
-      "WU-13"
+      "WU-12"
     ],
     "approval_effect": "APPROVED_UNITS_MAY_IMPLEMENT_ONLY_AFTER_APPLICABLE_POLICY_AND_PLAN_READINESS_GATES",
     "implementation_order": "NOT_INFERRED_FROM_WU_ID;DERIVE_FROM_DEPENDENCIES_AND_POLICY",
@@ -307,8 +308,21 @@
     ],
     "global_engine_count_is_not_an_execution_gate": true,
     "explicit_retirement_target": "PLANNING",
-    "removal_work_unit_status": "WU-13_PROPOSED_NOT_APPROVED",
-    "applicable_policy_check": "AT_IMPLEMENTATION_CONCRETE_RULE_LEVEL;NO_ENGINE_COUNT_INFERRED_CONFLICT_GATE"
+    "removal_work_unit_status": "WU-13_MERGED_INTO_WU-01_NO_SEPARATE_WORK_UNIT",
+    "applicable_policy_check": "AT_IMPLEMENTATION_CONCRETE_RULE_LEVEL;NO_ENGINE_COUNT_INFERRED_CONFLICT_GATE",
+    "retired_planning_deletion": {
+      "status": "SOURCE_REMOVAL_REQUESTED_AND_APPLIED",
+      "path": "src/ptsip/engines/planning/",
+      "owner_work_unit": "WU-01",
+      "independent_deletion_unit": null,
+      "removed_candidate_work_unit": "WU-13",
+      "delete_entire_tree": true,
+      "no_legacy_planning_compatibility_verification": true,
+      "no_legacy_planning_handoff_completion_verification": true,
+      "final_check": "EXECUTE_NEW_SRC_PTSIP_CLI_GO_REAL_COMMAND_WITH_PLANNING_TREE_ABSENT",
+      "final_check_state": "NOT_RUN_CLI_GO_DOES_NOT_YET_EXIST",
+      "does_not_override_other_work_units_validation": true
+    }
   },
   "immutable_out_of_scope_for_this_draft": [
     "POLICY_DOCUMENT_MUTATION",
