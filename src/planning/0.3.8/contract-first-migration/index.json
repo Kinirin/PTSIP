@@ -311,19 +311,23 @@
       "semantic_responsibility": "SIX_ENGINE_PRODUCT_BUILD_INSTALL_AND_PACKAGING_CLOSURE_FROM_SRC_PTSIP_ONLY",
       "owner": "PRODUCT_DISTRIBUTION",
       "primary_path": "src/ptsip/",
-      "implementation_scope_candidate": "src/ptsip/",
+      "implementation_scope_candidate": "src/ptsip/ (PACKAGING_ONLY)",
       "scope_paths": [
         "src/ptsip/"
       ],
       "excluded_paths": [
-        "src/ptsip/engines/*/src/",
+        "src/ptsip/engines/",
         "src/ptsip/common_contract/",
-        "src/ptsip/CLI.go"
+        "src/ptsip/CLI.go",
+        "src/ptsip/engine_installation.py",
+        "src/ptsip/cli.py",
+        "src/ptsip/migration/"
       ],
       "required_results": [
         "COMPLETE_SIX_ENGINE_PLATFORM_ARTIFACT",
         "NO_DOT_PTSIP_DISTRIBUTION_DEPENDENCIES",
-        "NO_LEGACY_ROOT_SETUP_PYPROJECT_MANIFEST_REUSE"
+        "NO_LEGACY_ROOT_SETUP_PYPROJECT_MANIFEST_REUSE",
+        "NO_ENGINE_OR_CLI_IMPLEMENTATION_OWNERSHIP_IN_DISTRIBUTION_UNIT"
       ],
       "boundary_provenance": "PROPOSED_COMPLETENESS_FROM_APPROVED_DISTRIBUTION_SCOPE",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/distribution.plan.json",
@@ -331,7 +335,8 @@
       "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
       "implementation_authorized": false,
-      "status": "DRAFT_REQUIRES_USER_REVIEW"
+      "status": "DRAFT_REQUIRES_USER_REVIEW",
+      "scope_granularity": "PACKAGING_AND_INSTALLATION_ONLY;NOT_ANY_NESTED_ENGINE_OR_CLI_SEMANTICS"
     },
     {
       "id": "retired-planning-engine",
