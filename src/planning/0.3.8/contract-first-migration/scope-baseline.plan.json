@@ -143,7 +143,7 @@
   },
   "confirmed_cli_and_developer_verification": {
     "go_cli_entry_file": "src/ptsip/CLI.go",
-    "go_cli_responsibility_contract": "PENDING_USER_DECISION",
+    "go_cli_responsibility_contract": "USER_DECIDED_ENGINE_ROUTING_AND_NON_ENGINE_FEATURE_OWNER",
     "legacy_python_cli": "src/ptsip/cli.py",
     "legacy_python_cli_lifecycle": "PHASED_RETIREMENT",
     "planning_cli_retirement": "CONFIRMED",
@@ -151,7 +151,7 @@
     "legacy_engine_inspection_module_disposition": "REMOVE_AFTER_DEPENDENCY_CLOSURE",
     "developer_test_owner_root": "developer/tests/engines/",
     "installed_engine_inventory_and_validation_owner": "DEVELOPER_TEST_TOOL",
-    "cli_command_disposition": "PENDING_INDEPENDENT_DECISION",
+    "cli_command_disposition": "ENGINE_COMMANDS_DELEGATED;NON_ENGINE_COMMAND_SET_DEFERRED_TO_WU11_PLANNING",
     "no_unapproved_go_command_behavior": true,
     "independent_engine_cli": {
       "direction": "EACH_NAMED_MIGRATION_ENGINE_MUST_CREATE_AND_OWN_ITS_OWN_RUST_CLI",
@@ -250,13 +250,34 @@
     },
     "top_level_go_cli_relation": {
       "file": "src/ptsip/CLI.go",
-      "role": "NEW_TOP_LEVEL_GO_ENTRYPOINT_REQUIRED",
+      "role": "TOP_LEVEL_COMMAND_ENTRY_AND_ENGINE_ROUTING_WITH_NON_ENGINE_FUNCTION_OWNERSHIP",
       "engine_operation_implementation": "FORBIDDEN",
       "mandatory_engine_dependency": "FORBIDDEN",
-      "details": "CREATION_REQUIRED;COMMAND_ROUTING_SEMANTICS_PENDING"
+      "details": "USER_DEFINED_ROUTING_VS_ENGINE_SEMANTICS_BOUNDARY;GO_MODULE_AND_CONCRETE_COMMAND_CATALOG_DEFERRED",
+      "engine_command_interpretation": "FORBIDDEN_USE_ENGINE_OWNED_CLI",
+      "engine_command_execution": "DELEGATE_TO_ENGINE_OWNED_CLI",
+      "non_engine_command_responsibility": "TOP_LEVEL_GO_CLI",
+      "non_engine_command_catalog": "TO_BE_DERIVED_IN_WU11_IMPLEMENTATION_PLAN",
+      "responsibility_contract_ref": "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json#/confirmed_cli_and_developer_verification/top_level_go_cli_ownership_boundary"
     },
     "engine_installation_removal_and_developer_verification_same_work_unit": true,
-    "go_cli_entry_file_creation": "REQUIRED_AS_SEPARATE_WORK_UNIT"
+    "go_cli_entry_file_creation": "REQUIRED_AS_SEPARATE_WORK_UNIT",
+    "top_level_go_cli_ownership_boundary": {
+      "id": "TOP_LEVEL_GO_CLI_ENGINE_ROUTING_AND_NON_ENGINE_FEATURE_OWNERSHIP",
+      "authority": "USER_EXPLICIT_TECHNICAL_DIRECTION_2026_11_13",
+      "engine_command_responsibility": "ROUTE_TO_OWNING_ENGINE_ONLY",
+      "engine_command_semantics": "OWNED_BY_INDIVIDUAL_ENGINE_CLI",
+      "engine_command_validation_and_dispatch": "OWNED_BY_TARGET_ENGINE",
+      "engine_operation_implementation": "FORBIDDEN",
+      "non_engine_command_responsibility": "TOP_LEVEL_GO_CLI",
+      "non_engine_command_catalog": "DEFER_TO_WU11_IMPLEMENTATION_PLAN",
+      "routing_mechanism_and_wire_protocol": "DECIDE_IN_WU11_IMPLEMENTATION_PLAN_WITH_ENGINE_CONTRACTS",
+      "go_module_build_boundary": "SEPARATE_UNDECIDED_DIRECTION",
+      "engine_discovery": "CONTRACT_OR_REGISTRY_BASED_NO_FIXED_ENGINE_COUNT",
+      "no_mandatory_runtime_dependency_on_all_engines": true,
+      "not_central_engine_lifecycle_manager": true,
+      "expansion_to_unapproved_engine_behaviors": "FORBIDDEN"
+    }
   },
   "work_units": {
     "state": "IMPLEMENTATION_APPROVED_SCOPE_WITH_GATES",

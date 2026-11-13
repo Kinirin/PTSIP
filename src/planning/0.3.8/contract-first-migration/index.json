@@ -527,7 +527,7 @@
     {
       "id": "go-cli",
       "work_unit_id": "WU-11",
-      "semantic_responsibility": "CREATE_TOP_LEVEL_GO_CLI_AS_ONE_INDEPENDENT_WORK_UNIT_WITHOUT_REIMPLEMENTING_ENGINE_CLI",
+      "semantic_responsibility": "TOP_LEVEL_GO_CLI_ROUTES_ENGINE_COMMANDS_WITHOUT_OWNING_ENGINE_SEMANTICS_AND_OWNS_NON_ENGINE_FUNCTIONS",
       "owner": "PTSIP_GO_ENTRYPOINT",
       "primary_path": "src/ptsip/CLI.go",
       "implementation_scope_candidate": "src/ptsip/CLI.go",
@@ -541,16 +541,18 @@
         "NEW_CLI_GO_CREATED",
         "NO_CROSS_ENGINE_REQUIRED_RUNTIME_DEPENDENCIES",
         "GO_BUILD_OWNERSHIP_PROVEN",
-        "NEW_CLI_GO_REAL_COMMAND_RETURNS_VALID_RESPONSE"
+        "NEW_CLI_GO_REAL_COMMAND_RETURNS_VALID_RESPONSE",
+        "ENGINE_COMMANDS_ROUTED_TO_OWNING_CLI_WITHOUT_SEMANTIC_REIMPLEMENTATION",
+        "NON_ENGINE_TOP_LEVEL_FUNCTIONS_REMAIN_IN_GO_CLI_OWNERSHIP"
       ],
       "boundary_provenance": "EXPLICIT_SINGLE_UNIT",
       "unresolved": [
-        "COMMAND_ROUTING_SCOPE_AND_GO_MODULE_BUILD_INTEGRATION"
+        "GO_MODULE_BUILD_INTEGRATION"
       ],
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/go-cli.plan.json",
       "materialized": false,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "TOP_LEVEL_RESPONSIBILITY_DECIDED;GO_MODULE_AND_COMMAND_CATALOG_REMAIN_FOR_WU11_PLANNING",
       "implementation_authorized": true,
       "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
       "owned_file_paths": [
@@ -559,7 +561,17 @@
       "owned_file_count": 1,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
       "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
-      "validation_basis": "POSITIVE_NEW_CLI_EXECUTION_ONLY;NO_RETIRED_PLANNING_CLI_NEGATIVE_TEST"
+      "validation_basis": "POSITIVE_NEW_CLI_EXECUTION_ONLY;NO_RETIRED_PLANNING_CLI_NEGATIVE_TEST",
+      "responsibility_boundary": {
+        "engine_entry": "ROUTE_ONLY",
+        "engine_function_implementation": "FORBIDDEN",
+        "engine_command_semantics": "ENGINE_CLI_OWNER",
+        "non_engine_functionality": "OWNED_BY_TOP_LEVEL_CLI",
+        "non_engine_command_catalog": "TO_BE_DETERMINED_DURING_WU11_IMPLEMENTATION_PLANNING",
+        "go_module_integration": "UNDECIDED_SEPARATE_DESIGN",
+        "extra_engine_dependency": "NOT_REQUIRED",
+        "interface_stability": "USE_EXPLICIT_ENGINE_CONTRACTS_NOT_ENGINE_COUNT"
+      }
     },
     {
       "id": "distribution",
