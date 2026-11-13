@@ -110,7 +110,100 @@
     "developer_test_owner_root": "developer/tests/engines/",
     "installed_engine_inventory_and_validation_owner": "DEVELOPER_TEST_TOOL",
     "cli_command_disposition": "PENDING_INDEPENDENT_DECISION",
-    "no_unapproved_go_command_behavior": true
+    "no_unapproved_go_command_behavior": true,
+    "independent_engine_cli": {
+      "direction": "EACH_OFFICIAL_ENGINE_MUST_CREATE_AND_OWN_ITS_OWN_RUST_CLI",
+      "official_engines_required": 6,
+      "explicit_cli_files": [
+        {
+          "owner": "CONTEXT",
+          "cli_file": "src/ptsip/engines/context/src/cli.rs",
+          "creation": "REQUIRED",
+          "status": "NOT_IMPLEMENTED",
+          "independent_execution": true,
+          "independent_disable": true,
+          "depends_on_any_other_engine_cli": false,
+          "depends_on_go_common_contract": false
+        },
+        {
+          "owner": "STORAGE",
+          "cli_file": "src/ptsip/engines/storage/src/cli.rs",
+          "creation": "REQUIRED",
+          "status": "NOT_IMPLEMENTED",
+          "independent_execution": true,
+          "independent_disable": true,
+          "depends_on_any_other_engine_cli": false,
+          "depends_on_go_common_contract": false
+        },
+        {
+          "owner": "VALIDATION",
+          "cli_file": "src/ptsip/engines/validation/src/cli.rs",
+          "creation": "REQUIRED",
+          "status": "NOT_IMPLEMENTED",
+          "independent_execution": true,
+          "independent_disable": true,
+          "depends_on_any_other_engine_cli": false,
+          "depends_on_go_common_contract": false
+        },
+        {
+          "owner": "DISCOVERY",
+          "cli_file": "src/ptsip/engines/discovery/src/cli.rs",
+          "creation": "REQUIRED",
+          "status": "NOT_IMPLEMENTED",
+          "independent_execution": true,
+          "independent_disable": true,
+          "depends_on_any_other_engine_cli": false,
+          "depends_on_go_common_contract": false
+        },
+        {
+          "owner": "EXECUTION",
+          "cli_file": "src/ptsip/engines/execution/src/cli.rs",
+          "creation": "REQUIRED",
+          "status": "NOT_IMPLEMENTED",
+          "independent_execution": true,
+          "independent_disable": true,
+          "depends_on_any_other_engine_cli": false,
+          "depends_on_go_common_contract": false
+        },
+        {
+          "owner": "PROJECTION",
+          "cli_file": "src/ptsip/engines/projection/src/cli.rs",
+          "creation": "REQUIRED",
+          "status": "NOT_IMPLEMENTED",
+          "independent_execution": true,
+          "independent_disable": true,
+          "depends_on_any_other_engine_cli": false,
+          "depends_on_go_common_contract": false
+        }
+      ],
+      "engine_main_rs_role": "ENGINE_ENTRYPOINT_TO_OWN_CLI",
+      "missing_engine_cli_policy": "BLOCK_ENGINE_CLI_ACCEPTANCE",
+      "other_engine_cli_dependency": "FORBIDDEN",
+      "shared_engine_cli_under_contracts": "FORBIDDEN",
+      "go_common_contract_runtime_dependency": "FORBIDDEN",
+      "disabled_engine_behavior": "UNRELATED_ENGINE_CLI_MUST_REMAIN_AVAILABLE",
+      "cross_engine_communication": "ONLY_VERSIONED_LANGUAGE_NEUTRAL_INTERFACE_IF_REQUIRED",
+      "implementation_authorized": false
+    },
+    "common_contract_cli": {
+      "owner": "GO_COMMON_CONTRACT_ONLY",
+      "root": "src/ptsip/common_contract/",
+      "cli_file": "src/ptsip/common_contract/cli.go",
+      "executable_file": "src/ptsip/common_contract/main.go",
+      "old_entrypoint": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
+      "old_entrypoint_target_usage": "FORBIDDEN",
+      "old_entrypoint_disposition": "RETIRE_WITH_BUILD_AND_CALLSITE_REBINDING",
+      "go_package_requirement": "ROOT_MAIN_GO_AND_CLI_GO_SAME_PACKAGE",
+      "rust_engine_runtime_dependency": "FORBIDDEN",
+      "implementation_authorized": false
+    },
+    "top_level_go_cli_relation": {
+      "file": "src/ptsip/CLI.go",
+      "role": "POTENTIAL_OPTIONAL_TOP_LEVEL_ENTRYPOINT",
+      "engine_operation_implementation": "FORBIDDEN",
+      "mandatory_engine_dependency": "FORBIDDEN",
+      "details": "PENDING_INDEPENDENT_USER_DIRECTION"
+    }
   },
   "work_units": {
     "state": "NOT_DEFINED",

@@ -30,7 +30,10 @@
       "materialized": false,
       "work_unit_decision": "PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "status": "RESERVED_FOR_USER_REVIEW",
+      "engine_cli_file": "src/ptsip/engines/discovery/src/cli.rs",
+      "engine_cli_creation": "REQUIRED",
+      "engine_cli_owner": "DISCOVERY"
     },
     {
       "id": "validation",
@@ -40,7 +43,10 @@
       "materialized": false,
       "work_unit_decision": "PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "status": "RESERVED_FOR_USER_REVIEW",
+      "engine_cli_file": "src/ptsip/engines/validation/src/cli.rs",
+      "engine_cli_creation": "REQUIRED",
+      "engine_cli_owner": "VALIDATION"
     },
     {
       "id": "context",
@@ -50,7 +56,10 @@
       "materialized": false,
       "work_unit_decision": "PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "status": "RESERVED_FOR_USER_REVIEW",
+      "engine_cli_file": "src/ptsip/engines/context/src/cli.rs",
+      "engine_cli_creation": "REQUIRED",
+      "engine_cli_owner": "CONTEXT"
     },
     {
       "id": "registry",
@@ -90,13 +99,65 @@
       "materialized": false,
       "work_unit_decision": "PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "status": "RESERVED_FOR_USER_REVIEW",
+      "engine_cli_ownership": "NONE",
+      "common_contract_cli_ownership": "NONE"
     },
     {
       "id": "policy-migration",
       "semantic_responsibility": "INSTALLED_CONTRACT_BASED_POLICY_MIGRATION",
       "implementation_scope_candidate": "src/ptsip/migration/",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/policy-migration.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "storage",
+      "semantic_responsibility": "STORAGE_INDEPENDENT_ENGINE_CLI",
+      "implementation_scope_candidate": "src/ptsip/engines/storage/",
+      "engine_cli_file": "src/ptsip/engines/storage/src/cli.rs",
+      "engine_cli_creation": "REQUIRED",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/storage.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "execution",
+      "semantic_responsibility": "EXECUTION_INDEPENDENT_ENGINE_CLI",
+      "implementation_scope_candidate": "src/ptsip/engines/execution/",
+      "engine_cli_file": "src/ptsip/engines/execution/src/cli.rs",
+      "engine_cli_creation": "REQUIRED",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/execution.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "projection",
+      "semantic_responsibility": "PROJECTION_INDEPENDENT_ENGINE_CLI",
+      "implementation_scope_candidate": "src/ptsip/engines/projection/",
+      "engine_cli_file": "src/ptsip/engines/projection/src/cli.rs",
+      "engine_cli_creation": "REQUIRED",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/projection.plan.json",
+      "materialized": false,
+      "work_unit_decision": "PENDING",
+      "implementation_details": "PENDING",
+      "status": "RESERVED_FOR_USER_REVIEW"
+    },
+    {
+      "id": "common-contract-cli",
+      "semantic_responsibility": "GO_COMMON_CONTRACT_INDEPENDENT_CLI",
+      "implementation_scope_candidate": "src/ptsip/common_contract/",
+      "cli_file": "src/ptsip/common_contract/cli.go",
+      "main_file": "src/ptsip/common_contract/main.go",
+      "old_main_file": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
+      "old_main_disposition": "RETIRE_NOT_USED_FOR_TARGET",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/common-contract-cli.plan.json",
       "materialized": false,
       "work_unit_decision": "PENDING",
       "implementation_details": "PENDING",
@@ -109,5 +170,77 @@
     "index_must_not_generate_work_units": true,
     "no_legacy_planning_contract_used_as_canonical_schema": true,
     "draft_json_shape_is_not_versioned_installed_contract": true
+  },
+  "cli_ownership": {
+    "status": "CONFIRMED_DIRECTORY_AND_RESPONSIBILITY_BUT_IMPLEMENTATION_NOT_AUTHORIZED",
+    "engine_count": 6,
+    "engine_cli_files": [
+      {
+        "owner": "CONTEXT",
+        "cli_file": "src/ptsip/engines/context/src/cli.rs",
+        "creation": "REQUIRED",
+        "status": "NOT_IMPLEMENTED",
+        "independent_execution": true,
+        "independent_disable": true,
+        "depends_on_any_other_engine_cli": false,
+        "depends_on_go_common_contract": false
+      },
+      {
+        "owner": "STORAGE",
+        "cli_file": "src/ptsip/engines/storage/src/cli.rs",
+        "creation": "REQUIRED",
+        "status": "NOT_IMPLEMENTED",
+        "independent_execution": true,
+        "independent_disable": true,
+        "depends_on_any_other_engine_cli": false,
+        "depends_on_go_common_contract": false
+      },
+      {
+        "owner": "VALIDATION",
+        "cli_file": "src/ptsip/engines/validation/src/cli.rs",
+        "creation": "REQUIRED",
+        "status": "NOT_IMPLEMENTED",
+        "independent_execution": true,
+        "independent_disable": true,
+        "depends_on_any_other_engine_cli": false,
+        "depends_on_go_common_contract": false
+      },
+      {
+        "owner": "DISCOVERY",
+        "cli_file": "src/ptsip/engines/discovery/src/cli.rs",
+        "creation": "REQUIRED",
+        "status": "NOT_IMPLEMENTED",
+        "independent_execution": true,
+        "independent_disable": true,
+        "depends_on_any_other_engine_cli": false,
+        "depends_on_go_common_contract": false
+      },
+      {
+        "owner": "EXECUTION",
+        "cli_file": "src/ptsip/engines/execution/src/cli.rs",
+        "creation": "REQUIRED",
+        "status": "NOT_IMPLEMENTED",
+        "independent_execution": true,
+        "independent_disable": true,
+        "depends_on_any_other_engine_cli": false,
+        "depends_on_go_common_contract": false
+      },
+      {
+        "owner": "PROJECTION",
+        "cli_file": "src/ptsip/engines/projection/src/cli.rs",
+        "creation": "REQUIRED",
+        "status": "NOT_IMPLEMENTED",
+        "independent_execution": true,
+        "independent_disable": true,
+        "depends_on_any_other_engine_cli": false,
+        "depends_on_go_common_contract": false
+      }
+    ],
+    "common_contract_cli_file": "src/ptsip/common_contract/cli.go",
+    "common_contract_main_file": "src/ptsip/common_contract/main.go",
+    "unused_old_common_contract_main": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
+    "cross_engine_cli_hard_dependency": "FORBIDDEN",
+    "common_go_contract_dependency_for_rust_engines": "FORBIDDEN",
+    "registry_directory_must_not_own_cli": true
   }
 }
