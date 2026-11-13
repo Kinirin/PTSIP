@@ -155,7 +155,7 @@ Policy_Content:
         contract_permission_declaration_is_grant: false
         engine_version_independence: PER_ENGINE_FROM_PTSIP_TOOL_AND_SCHEMA_VERSION
         official_distribution: INTEGRATED_USER_INSTALL_PACKAGE_WITH_INDEPENDENT_COMPONENTS
-        mandatory_official_engine_availability: ALL_SEVEN_BY_DEFAULT
+        mandatory_official_engine_availability: ALL_SIX_BY_DEFAULT
         registry_topology: FEDERATED_OFFICIAL_CONSUMER_EXTERNAL_OWNERSHIP_PRESERVED
         resolver_selection: HONOR_EXPLICIT_CHOICE_OR_MACHINE_RESOLVE_WITH_APPROVED_CONTRACTS
         engine_override: CONTROLLED_CAPABILITY_LEVEL_SUBSTITUTION
@@ -261,7 +261,7 @@ Policy_Content:
           this_decision_grants_retirement: false
           detailed_mapping_and_bridge: UNRESOLVED
           assured_normative_conformance_judgment: SFP-ASSURE-0001_UNCHANGED
-          existing_python_code_reuse: FORBIDDEN_FOR_SEVEN_OFFICIAL_RUST_ENGINES
+          existing_python_code_reuse: FORBIDDEN_FOR_SIX_OFFICIAL_RUST_ENGINES
           active_contract_modification: NOT_AUTHORIZED
           engine_runtime_activation: NOT_AUTHORIZED
         validation_vpms_contract_mapping_direction:
@@ -293,7 +293,7 @@ Policy_Content:
           approval_source: USER_EXPLICIT
           decision_date: '2026-10-11'
           source: SFP-ARCH-0004#PER_ENGINE_MANAGEMENT_AND_SHARED_IMPLEMENTATION_OWNER_MAP
-          scope: SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
+          scope: SIX_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
           cross_engine_source_crate_compiled_runtime_management_sharing: FORBIDDEN
           per_engine_optional_management_implementation: INDEPENDENT_SELF_OWNED
           common_engine_identity_and_interoperability_contract: PRESERVED_LANGUAGE_NEUTRAL_NON_IMPLEMENTATION_SHARING
@@ -319,7 +319,7 @@ Policy_Content:
           binding_change: REEVALUATE_BEFORE_FURTHER_ELIGIBILITY
           fresh_ctrl_execution_gate: UNCHANGED
           identity_from_path_name: FORBIDDEN
-          no_cross_engine_rust_code_sharing: UNCHANGED_FOR_SEVEN_OFFICIAL_RUST_ENGINES
+          no_cross_engine_rust_code_sharing: UNCHANGED_FOR_SIX_OFFICIAL_RUST_ENGINES
           exact_contract_schema_and_entrypoint_shape: PENDING_MACHINE_CONTRACT_PLAN
           active_public_authority: UNCHANGED
           implementation_and_runtime: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
@@ -336,7 +336,7 @@ Policy_Content:
           external_execution_binding: CONDITIONAL_ON_EXTERNALLY_INVOCABLE_CAPABILITY
           registration_and_binding_verification: EXISTING_VERIFIED_FAIL_CLOSED_GATES_UNCHANGED
           provider_and_consumer_evidence: EXISTING_SHARED_EVIDENCE_PRODUCTION_AND_LINKAGE_RULE_UNCHANGED
-          implementation_sharing: NO_SHARED_RUST_IMPLEMENTATION_BETWEEN_SEVEN_OFFICIAL_ENGINES
+          implementation_sharing: NO_SHARED_RUST_IMPLEMENTATION_BETWEEN_SIX_OFFICIAL_ENGINES
           detailed_interoperability_contract_and_registry_schema: UNRESOLVED
           no_new_authority: NO_ACTIVATION_EXECUTION_OR_WRITE_PERMISSION
           draft_policy_activation: NOT_AUTHORIZED
@@ -364,7 +364,7 @@ Policy_Content:
           allowed_transport_tech: NOT_SPECIFIED_BY_THIS_POLICY
           transport_bindings_for_noninvocable_capabilities: NOT_REQUIRED
           external_invocation: CONDITIONAL_ON_VERIFIED_REGISTERED_ENTRYPOINT_AND_CURRENT_GOV_CTRL_PERMISSIONS
-          engine_internal_runtime_and_management_code_sharing: FORBIDDEN_FOR_SEVEN_OFFICIAL_RUST_ENGINES
+          engine_internal_runtime_and_management_code_sharing: FORBIDDEN_FOR_SIX_OFFICIAL_RUST_ENGINES
           transport_adapter_cannot_redefine:
           - CAPABILITY_SEMANTICS
           - TYPED_INPUT_OUTPUT
@@ -448,7 +448,7 @@ Policy_Content:
           - VERSIONED_DEPENDENCY_GRAPH
           - VERIFIABLE_SOURCE_AND_EVIDENCE
           selection_algorithm: PLAN_DERIVED_NO_NEW_POLICY_HEURISTIC
-          seven_official_engines_default_availability: PRESERVED
+          six_official_engines_default_availability: PRESERVED
           no_installation_authority_from_availability_declaration: true
           installation: ONLY_AFTER_APPLICABLE_EXISTING_SOURCE_PERMISSION_SUPPLY_AND_CTRL_GATES
           active_0_3_8_external_extension_automatic_installation: NOT_AUTHORIZED_SFP_CNTR_0007
@@ -691,7 +691,7 @@ Policy_Content:
         official_consumer_package_delivery:
           model: RECONCILE_INDEPENDENT_COMPONENTS_WITH_TARGET_INTEGRATED_PTSIP_WHEEL
           public_distribution: PTSIP
-          native_component_count: 7
+          native_component_count: 6
           consumer_wheel: ONE_PLATFORM_TARGET_PER_COMPLETE_PTSIP_PACKAGE
           separately_installable_engine_pip_dependencies: RETIRED_FROM_OFFICIAL_PTSIP_PACKAGE
           independent_engine_versions_and_native_verification: PRESERVED
@@ -865,7 +865,7 @@ Policy_Content:
         legacy_vpms_contract_mapping_requires_explicit_identity_version_evidence_and_compatibility: true
         unresolved_legacy_to_rust_mapping_cannot_authorize_public_api_handoff: true
         generic_validation_is_not_automatically_equivalent_to_vpms_case_protocol_selection_or_composition: true
-        seven_official_rust_engines_have_no_shared_internal_rust_implementation_or_management_runtime: true
+        six_official_rust_engines_have_no_shared_internal_rust_implementation_or_management_runtime: true
         cross_engine_capability_contract_dependency_does_not_allow_importing_other_engine_rust_code: true
         language_neutral_interoperability_contract_is_not_shared_rust_runtime: true
         each_declared_externally_invocable_management_capability_must_have_explicit_registered_entry_binding: true
@@ -1475,7 +1475,7 @@ Policy_Content:
         component_scope:
           tool: 1
           profile: 1
-          engines: 7
+          engines: 6
         component_contract: INDEPENDENT_MACHINE_READABLE_PER_COMPONENT
         build_reuse: ONLY_WITH_VERIFIED_UNCHANGED_INPUT_AND_ORIGINAL_ARTIFACT_PROVENANCE
         package_completeness: REQUIRED_TOOL_PROFILE_AND_REGISTERED_ENGINES_VERIFIED_BEFORE_PUBLICATION
@@ -1744,7 +1744,7 @@ Policy_Content:
         assure_conformance_policy: SFP-ASSURE-0001_UNCHANGED
       official_engine_environment_diagnostics:
         decision: USER_EXPLICIT_2026_10_26
-        scope: SEVEN_OFFICIAL_ENGINES_ONLY
+        scope: SIX_OFFICIAL_ENGINES_ONLY
         semantic_owner: DISCOVERY
         operation_id: discovery.check-environment
         cli:

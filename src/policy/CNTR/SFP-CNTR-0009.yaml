@@ -177,7 +177,6 @@ Policy_Content:
         statement: "고객 Policy 기본 계약과 공식 Plan 기본 계약은 각자의 선언된 단일 소유자가 필드와 기본 의미를 소유하며, 개발자·사용자 확장은 타 계약의 공식 의미를 암묵적으로 재정의하지 않는다."
         invariants:
           policy_base_semantic_owner: "GO_COMMON_CONTRACT"
-          plan_base_semantic_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
           single_declared_semantic_owner_per_contract: true
           developer_is_extension: true
           developer_must_not_redefine_base_semantics: true
@@ -188,7 +187,7 @@ Policy_Content:
       value:
         id: "SFP-CNTR-0009/R-02"
         rule: "VERSIONED_PUBLIC_CONTRACT_REFERENCES"
-        statement: "공식 Policy 3종은 Go Common Contract, 공식 Plan 3종은 Rust Planning 엔진이 각각 소스와 기본 의미를 소유한다. 고객 참조는 설치된 PTSIP 배포물의 검증된 정확 버전별 URN 및 계약 바인딩으로 해석하고, 개발 소스 경로를 고객 런타임 경로로 간주하지 않는다."
+        statement: "공식 Policy 3종은 Go Common Contract가 소스와 기본 의미를 소유한다. 고객 참조는 설치된 PTSIP 배포물의 검증된 정확 버전별 URN 및 계약 바인딩으로 해석하고, 개발 소스 경로를 고객 런타임 경로로 간주하지 않는다."
         contract_targets:
           -
             field: "Policy_Identity"
@@ -208,22 +207,16 @@ Policy_Content:
           -
             field: "Plan_Unit"
             urn_template: "urn:ptsip:common:plan:unit:{version}"
-            source_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
-            source_path: "src/ptsip/engines/planning/src/schemas/plan_unit.schema.json"
             legacy_package_resource: "common_contract/schemas/plan_unit.schema.json"
             runtime_resource_binding: "PENDING_VERSIONED_MACHINE_VERIFIED_HANDOFF"
           -
             field: "Plan_Lifecycle"
             urn_template: "urn:ptsip:common:plan:lifecycle:{version}"
-            source_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
-            source_path: "src/ptsip/engines/planning/src/schemas/plan_lifecycle.schema.json"
             legacy_package_resource: "common_contract/schemas/plan_lifecycle.schema.json"
             runtime_resource_binding: "PENDING_VERSIONED_MACHINE_VERIFIED_HANDOFF"
           -
             field: "Plan_Identity"
             urn_template: "urn:ptsip:common:plan:identity:{version}"
-            source_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
-            source_path: "src/ptsip/engines/planning/src/schemas/plan_identity.schema.json"
             legacy_package_resource: "common_contract/schemas/plan_identity.schema.json"
             runtime_resource_binding: "PENDING_VERSIONED_MACHINE_VERIFIED_HANDOFF"
         invariants:
@@ -233,7 +226,6 @@ Policy_Content:
           package_resource_owner: "INSTALLED_PTSIP_DISTRIBUTION"
           repository_source_path_is_runtime_path: false
           policy_schema_semantic_owner: "GO_COMMON_CONTRACT"
-          plan_schema_semantic_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
           legacy_go_plan_resource_preserved_until_verified_handoff: true
           plan_runtime_binding_unresolved_until_verified_registration: true
     -
@@ -323,7 +315,6 @@ Policy_Content:
         invariants:
           implementation_language: "GO"
           canonical_policy_contract_owner: "GO_COMMON_CONTRACT"
-          canonical_plan_contract_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
           legacy_plan_go_capability: "COMPATIBILITY_ONLY_PENDING_VERIFIED_HANDOFF"
           customer_runtime_developer_dependency: false
           installed_package_resource_resolution_required: true
@@ -334,10 +325,8 @@ Policy_Content:
       value:
         id: "SFP-CNTR-0009/R-08"
         rule: "STAGED_OFFICIAL_PLAN_CONTRACT_HANDOFF"
-        statement: "공식 Plan Identity·Lifecycle·Unit 스키마의 소스와 의미는 Rust Planning 엔진이 소유한다. 기존 Go 배포 계약의 변경·제거는 신규 버전 바인딩과 소비자 호환성의 기계 검증 이후에만 허용한다. 미결정 사용자 필드 정책과 생성 동작은 자동 승인하지 않는다."
+        statement: "기존 Go 배포 계약의 변경·제거는 신규 버전 바인딩과 소비자 호환성의 기계 검증 이후에만 허용한다. 미결정 사용자 필드 정책과 생성 동작은 자동 승인하지 않는다."
         invariants:
-          plan_schema_source_root: "src/ptsip/engines/planning/src/schemas/"
-          plan_semantic_owner: "OFFICIAL_RUST_PLANNING_ENGINE"
           legacy_go_plan_v1_preserve_until_verified_handoff: true
           existing_urn_semantics_cannot_be_silently_redefined: true
           changed_semantics_require_distinct_version_or_authorized_migration: true

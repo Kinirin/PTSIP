@@ -247,7 +247,6 @@ Policy_Content:
         - STORAGE
         - VALIDATION
         - DISCOVERY
-        - PLANNING
         - EXECUTION
         - PROJECTION
         integration_engine_priority: DEFERRED_LOWER_PRIORITY
@@ -276,6 +275,13 @@ Policy_Content:
         validation_vpms_interface_migration_policy: STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT
         official_engine_source_root: src/ptsip/engines/
         official_engine_source_root_selection: B_PTSIP_ENGINES_PACKAGE_ROOT
+        retired_planning_engine_responsibility_owners:
+          dependency_ordering: CONTEXT
+          impact_validation: VALIDATION
+          preparation_validation: VALIDATION
+          plan_discovery: DISCOVERY
+          installation_selection: RETIRED
+          independent_engine: RETIRED
         independent_engine_module_layout: D_SELF_CONTAINED_ENGINE_MODULES
         per_engine_management_ownership: INDEPENDENT_SEMANTICS_AND_IMPLEMENTATION
         per_engine_change_boundary: VERSION_DEPENDENCIES_BUILD_DEPLOYMENT_PATCH
@@ -285,13 +291,13 @@ Policy_Content:
         engine_local_management_mandate: OPTIONAL_ENGINE_OWNED_INTERNAL_FUNCTIONS
         engine_minimum_external_interoperability: MACHINE_READABLE_CONTRACT_REQUIRED
         engine_external_interoperability_upper_scope: STATIC_DECLARATION_WITH_CONDITIONAL_EXECUTION_BINDING
-        seven_official_engine_subdirectory_name_authority_choice: B_USER_EXPLICIT
-        seven_official_engine_subdirectory_name_authority_decided_at: '2026-10-11'
-        seven_official_engine_subdirectory_name_authority: PROJECT_OWNER_APPROVED_POLICY
-        seven_official_engine_subdirectory_exact_names: ALL_SEVEN_EXPLICITLY_APPROVED
-        seven_official_engine_subdirectory_name_determination_by_plan: FORBIDDEN_WITHOUT_SEPARATE_POLICY_APPROVAL
-        seven_official_engine_subdirectory_unapproved_name_materialization: FORBIDDEN
-        official_source_root_and_seven_engine_identities: UNCHANGED
+        six_official_engine_subdirectory_name_authority_choice: B_USER_EXPLICIT
+        six_official_engine_subdirectory_name_authority_decided_at: '2026-10-11'
+        six_official_engine_subdirectory_name_authority: PROJECT_OWNER_APPROVED_POLICY
+        six_official_engine_subdirectory_exact_names: ALL_SIX_EXPLICITLY_APPROVED
+        six_official_engine_subdirectory_name_determination_by_plan: FORBIDDEN_WITHOUT_SEPARATE_POLICY_APPROVAL
+        six_official_engine_subdirectory_unapproved_name_materialization: FORBIDDEN
+        official_source_root_and_six_engine_identities: UNCHANGED
         directory_name_runtime_identity_or_entrypoint_authority: NONE
         official_engine_subdirectory_name_approvals:
           root: src/ptsip/engines/
@@ -301,11 +307,10 @@ Policy_Content:
             STORAGE: storage/
             VALIDATION: validation/
             DISCOVERY: discovery/
-            PLANNING: planning/
             EXECUTION: execution/
             PROJECTION: projection/
           pending_engine_kinds: []
-          all_seven_names_resolved: true
+          all_six_names_resolved: true
           policy_value_not_implementation_authorization: true
         official_context_engine_subdirectory_name: context/
         official_context_engine_subdirectory_decision: A_USER_EXPLICIT
@@ -327,13 +332,8 @@ Policy_Content:
         official_discovery_engine_subdirectory_approved_at: '2026-10-11'
         official_discovery_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
         official_discovery_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
-        seven_official_engine_subdirectory_name_set_status: USER_APPROVED_COMPLETE
-        seven_official_engine_subdirectory_names_completed_at: '2026-10-11'
-        official_planning_engine_subdirectory_name: planning/
-        official_planning_engine_subdirectory_decision: USER_EXPLICIT_APPROVAL
-        official_planning_engine_subdirectory_approved_at: '2026-10-11'
-        official_planning_engine_subdirectory_physical_creation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
-        official_planning_engine_subdirectory_name_source: OWNER_APPROVED_POLICY_NOT_ENGINE_KIND_INFERENCE
+        six_official_engine_subdirectory_name_set_status: USER_APPROVED_COMPLETE
+        six_official_engine_subdirectory_names_completed_at: '2026-10-11'
         official_execution_engine_subdirectory_name: execution/
         official_execution_engine_subdirectory_decision: USER_EXPLICIT_APPROVAL
         official_execution_engine_subdirectory_approved_at: '2026-10-11'
@@ -350,13 +350,13 @@ Policy_Content:
         concrete_physical_package_layout_concrete_shape: PLAN_WITH_MACHINE_VALIDATION_NOT_POLICY_FIXED
         per_engine_internal_hierarchy: VARIABLE_PER_DECLARED_RESPONSIBILITY
         internal_management_layout: ENGINE_OWNED_OPTIONAL_AND_NONSTANDARDIZED
-        seven_official_engine_source_and_name_contract: IMMUTABLE_UNLESS_SEPARATE_OWNER_POLICY_APPROVAL
+        six_official_engine_source_and_name_contract: IMMUTABLE_UNLESS_SEPARATE_OWNER_POLICY_APPROVAL
         internal_layout_validation: MACHINE_VERIFIED_CONTRACT_AND_OWNER_MAPPING
         internal_layout_missing_or_conflicting_responsibility_proof: BLOCK_UNVERIFIED_PLAN_IMPLEMENTATION
         internal_layout_plan_approval: NO_SEPARATE_PER_LAYOUT_USER_APPROVAL_REQUIRED_BY_THIS_DECISION
         internal_layout_decision_does_not_authorize_physical_mutation: true
         official_engine_implementation_language: RUST
-        official_engine_implementation_language_scope: SEVEN_OFFICIAL_ENGINES_ONLY
+        official_engine_implementation_language_scope: SIX_OFFICIAL_ENGINES_ONLY
         official_engine_language_neutral_contract: PRESERVED
         consumer_user_external_engine_language_policy: UNCHANGED
         official_engine_legacy_python_implementation_boundary:
@@ -377,7 +377,7 @@ Policy_Content:
           - REMOVE_OBSOLETE_PYTHON_FUNCTIONS_AT_AUTHORIZED_CUTOVER
           unrelated_legacy_interfaces: PREVIOUS_AUTHORITY_UNCHANGED
           physical_removal_now_requested: PLAN_SCOPE_NOT_IMMEDIATE_SOURCE_DELETION
-          scope: SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
+          scope: SIX_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
           prohibited_source: EXISTING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION
           prohibition: ALL_LEGACY_PYTHON_IMPLEMENTATION_RELOCATION_REUSE_AND_SHARING_FORBIDDEN
           prohibited_operations:
@@ -443,7 +443,7 @@ Policy_Content:
           decision: KEEP_LATEST
           decision_source: USER_EXPLICIT
           decision_date: '2026-10-11'
-          scope: SEVEN_OFFICIAL_RUST_VALIDATION_ENGINE_TARGET_PUBLIC_CONTRACT_AND_LEGACY_VPMS_API_COMPATIBILITY
+          scope: SIX_OFFICIAL_RUST_VALIDATION_ENGINE_TARGET_PUBLIC_CONTRACT_AND_LEGACY_VPMS_API_COMPATIBILITY
           target_canonical_public_contract: RUST_VALIDATION_ENGINE_LANGUAGE_NEUTRAL_CAPABILITY_CONTRACT
           target_semantic_owner: SINGLE_OFFICIAL_VALIDATION_ENGINE_INCLUDING_VPMS_PROTOCOL_SELECTION_AND_EXECUTION_COMPOSITION_CAPABILITIES
           existing_active_vpms_contract_ids:
@@ -501,13 +501,13 @@ Policy_Content:
           policy_status: ACTIVE_USER_EXPLICIT_2026_10_12
           physical_implementation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
           runtime_activation: CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED
-        implementation_sharing_P5_scope: SEVEN_OFFICIAL_RUST_ENGINES_ONLY
-        implementation_sharing_P5_precedence: KEEP_LATEST_OVERRIDES_PRIOR_SINGLE_OWNER_SHARING_PERMISSION_WITHIN_SEVEN_OFFICIAL_RUST_ENGINES
+        implementation_sharing_P5_scope: SIX_OFFICIAL_RUST_ENGINES_ONLY
+        implementation_sharing_P5_precedence: KEEP_LATEST_OVERRIDES_PRIOR_SINGLE_OWNER_SHARING_PERMISSION_WITHIN_SIX_OFFICIAL_RUST_ENGINES
         per_engine_management_and_shared_implementation_owner_policy:
           decision: KEEP_LATEST
           approval_source: USER_EXPLICIT
           decision_date: '2026-10-11'
-          policy_scope: SEVEN_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
+          policy_scope: SIX_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
           engine_implementation_ownership: ENGINE_SELF_OWNED_ISOLATED
           management_implementation_ownership: ENGINE_SELF_OWNED_OPTIONAL
           cross_official_engine_rust_source_module_crate_import: FORBIDDEN
@@ -565,7 +565,7 @@ Policy_Content:
           conditional_execution_binding: REQUIRED_ONLY_WHEN_EXTERNALLY_INVOCABLE_CAPABILITY_DECLARED
           no_externally_invocable_capability: NO_EXECUTION_ENTRYPOINT_REQUIRED
           internal_management: ENGINE_OPTIONAL_NO_MANDATORY_SHARED_RUNTIME
-          seven_official_rust_engine_code_isolation: PRESERVED_NO_CROSS_ENGINE_IMPLEMENTATION_SHARING
+          six_official_rust_engine_code_isolation: PRESERVED_NO_CROSS_ENGINE_IMPLEMENTATION_SHARING
           consumer_or_external_engine_internal_language_or_implementation: NOT_RESTRICTED_BY_OFFICIAL_RUST_RULES
           declared_dependency_relation: CONTRACT_LEVEL_INTEROPERABILITY_NOT_SHARED_COMPILED_CODE
           missing_invalid_or_unverifiable_required_contract: FAIL_CLOSED_AFFECTED_REGISTRATION_OR_OPERATION
@@ -647,8 +647,8 @@ Policy_Content:
         engine_independent_compile_build_distribution_and_patch_boundaries_remain_normative: true
         engine_management_internal_entrypoints_not_inferred_from_directory_names: true
         physical_paths_do_not_grant_external_invocation_authority: true
-        seven_official_engine_subdirectory_names_require_explicit_project_owner_policy_approval: true
-        seven_official_engine_subdirectory_name_values_not_automatically_derived_from_engine_kinds: true
+        six_official_engine_subdirectory_names_require_explicit_project_owner_policy_approval: true
+        six_official_engine_subdirectory_name_values_not_automatically_derived_from_engine_kinds: true
         implementation_and_plan_must_not_silently_choose_official_engine_subdirectory_names: true
         official_engine_names_approval_does_not_imply_actual_directory_creation_or_module_migration: true
         official_engine_directory_names_are_physical_labels_not_registered_engine_identity: true
@@ -658,7 +658,7 @@ Policy_Content:
         naming_authority_decision_does_not_activate_draft_engine_runtime: true
         context_engine_subdirectory_name_approved_by_owner: true
         context_engine_approved_subdirectory_is_exactly_context: true
-        seven_engine_subdirectory_approval_cannot_be_inferred_from_one_engine_approval: true
+        six_engine_subdirectory_approval_cannot_be_inferred_from_one_engine_approval: true
         management_subdirectory_and_remaining_module_names_unapproved: true
         physical_package_layout_remains_unapproved: true
         context_subdirectory_approval_does_not_authorize_directory_creation_or_code_relocation: true
@@ -691,30 +691,29 @@ Policy_Content:
         discovery_subdirectory_approval_does_not_change_existing_semantic_or_execution_authorities: true
         discovery_subdirectory_approval_does_not_modify_existing_public_interfaces: true
         discovery_subdirectory_approval_does_not_activate_engine_runtime: true
-        seven_capability_subdirectory_names_approved: true
-        planning_engine_subdirectory_name_approved_by_owner: true
+        six_capability_subdirectory_names_approved: true
         execution_engine_subdirectory_name_approved_by_owner: true
         projection_engine_subdirectory_name_approved_by_owner: true
-        all_seven_official_engine_subdirectory_names_are_unique_and_owner_approved: true
+        all_six_official_engine_subdirectory_names_are_unique_and_owner_approved: true
         no_official_engine_subdirectory_name_remains_unapproved: true
-        all_seven_directory_approvals_do_not_authorize_any_physical_creation_or_code_migration: true
-        all_seven_directory_approvals_do_not_activate_draft_engine_runtime: true
-        all_seven_directory_approvals_preserve_registered_contract_based_discovery: true
-        all_seven_directory_approvals_preserve_original_engine_responsibility_boundaries: true
+        all_six_directory_approvals_do_not_authorize_any_physical_creation_or_code_migration: true
+        all_six_directory_approvals_do_not_activate_draft_engine_runtime: true
+        all_six_directory_approvals_preserve_registered_contract_based_discovery: true
+        all_six_directory_approvals_preserve_unrelated_engine_responsibility_boundaries: true
         user_or_external_engine_package_naming_remains_outside_official_engine_naming_policy: true
         concrete_internal_layout_design_may_be_derived_by_plan_without_per_layout_policy_decision: true
         internal_layout_plan_must_machine_verify_arch_and_cntr_contract_conformance: true
         internal_layout_plan_must_machine_verify_explicit_single_owner_and_dependencies: true
         internal_layout_plan_must_respect_independent_engine_version_build_deploy_patch_boundaries: true
         internal_layout_plan_must_preserve_engine_local_management_ownership_and_optional_functions: true
-        internal_layout_plan_must_not_change_any_of_seven_approved_official_engine_names: true
+        internal_layout_plan_must_not_change_any_of_six_approved_official_engine_names: true
         internal_layout_plan_must_not_infer_identity_execution_authorization_or_entrypoints_from_directory_names: true
         internal_layout_plan_must_not_reassign_context_projection_storage_or_validation_vpms_authorities: true
         internal_layout_plan_cannot_approve_unresolved_active_authority_handoffs: true
         internal_layout_plan_must_fail_closed_when_effective_responsibility_compatibility_not_proven: true
         no_standardized_internal_directory_depth_or_management_subdirectory_forced: true
         physical_layout_delegation_is_not_permission_to_create_directories_relocate_code_or_activate_runtime: true
-        plan_level_internal_path_selection_is_not_seven_official_directory_policy_change: true
+        plan_level_internal_path_selection_is_not_six_official_directory_policy_change: true
         approved_layout_authority_does_not_change_existing_active_policy_roles: true
         official_rust_engines_must_not_relocate_copy_translate_reuse_or_share_existing_ptsip_python_implementations: true
         official_rust_engines_must_not_depend_on_legacy_ptsip_python_runtime_or_wrappers: true
@@ -731,15 +730,15 @@ Policy_Content:
         rust_validation_is_target_canonical_public_contract_owner_after_authorized_cutover: true
         legacy_vpms_active_contracts_are_not_replaced_before_verified_authorized_transition: true
         legacy_vpms_retirement_is_not_implicitly_approved_by_final_target_selection: true
-        legacy_vpms_implementation_reuse_permissibility_does_not_apply_to_seven_official_rust_engines: true
+        legacy_vpms_implementation_reuse_permissibility_does_not_apply_to_six_official_rust_engines: true
         validation_public_contract_migration_must_preserve_assure_normative_verdict_ownership: true
         rust_validation_capability_decomposition_must_not_be_inferred_from_legacy_vpms_module_layout: true
         legacy_vpms_to_rust_validation_mapping_must_be_explicit_versioned_and_machine_verified: true
         no_unverified_mapping_can_transfer_vpms_public_or_execution_authority: true
         generic_validation_capability_must_not_infer_vpms_protocol_selection_execution_equivalence: true
         rust_validation_must_not_reuse_move_port_or_wrap_legacy_vpms_python_implementation: true
-        seven_official_rust_engines_must_not_share_internal_source_crates_compiled_runtime_or_management_code: true
-        seven_official_rust_engine_implementations_and_optional_management_are_independently_owned: true
+        six_official_rust_engines_must_not_share_internal_source_crates_compiled_runtime_or_management_code: true
+        six_official_rust_engine_implementations_and_optional_management_are_independently_owned: true
         cross_engine_normative_machine_contract_use_does_not_create_implementation_sharing_permission: true
         engine_management_owner_must_be_declared_and_verified_without_path_inference: true
         existing_single_owner_sharing_invariants_apply_only_outside_this_official_rust_no_sharing_scope: true
@@ -815,7 +814,7 @@ Policy_Content:
         approval_source: USER_EXPLICIT
         resolution_scope: OFFICIAL_ENGINE_TOP_LEVEL_SOURCE_DIRECTORY_ONLY
         management_subdirectories: NOT_DECIDED
-        seven_capability_subdirectories: NOT_DECIDED
+        six_capability_subdirectories: NOT_DECIDED
         nested_layout: NOT_DECIDED
         physical_directory_creation: NOT_AUTHORIZED
         existing_module_migration: NOT_AUTHORIZED
@@ -1240,7 +1239,6 @@ Policy_Content:
             STORAGE: storage/
             VALIDATION: validation/
             DISCOVERY: discovery/
-            PLANNING: planning/
             EXECUTION: execution/
             PROJECTION: projection/
           official_engine_kinds:
@@ -1248,7 +1246,6 @@ Policy_Content:
           - STORAGE
           - VALIDATION
           - DISCOVERY
-          - PLANNING
           - EXECUTION
           - PROJECTION
         internal_package_layout_owner: PLAN
