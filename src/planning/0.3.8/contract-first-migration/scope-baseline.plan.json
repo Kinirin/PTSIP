@@ -1,6 +1,6 @@
 {
   "document_type": "CONTRACT_FIRST_MIGRATION_PLAN_BASELINE",
-  "document_version": "draft-1",
+  "document_version": "draft-2",
   "id": "PTSIP-0.3.8-CONTRACT-FIRST-MIGRATION",
   "title": "Contract-first distribution and engine responsibility migration",
   "lifecycle": {
@@ -48,14 +48,15 @@
       "MANUAL_CONTRACT_AUTHORING",
       "STRUCTURAL_VALIDATION",
       "COMPILE_AND_PACKAGE_FROM_SRC_PTSIP",
-      "INSTALL_AND_VALIDATE_DISTRIBUTION",
-      "MIGRATE_POLICY_DOCUMENTS_USING_INSTALLED_ENGINE"
+      "INSTALL_AND_VALIDATE_DISTRIBUTION"
     ],
     "stage_order_is_implementation_schedule": false,
     "installed_versioned_contract_is_migration_reference": true,
     "predeployment_policy_documents_must_not_be_forced_into_guessed_schema": true,
     "legacy_planning_operation_compatibility_required": false,
-    "no_publication_from_plan_approval": true
+    "no_publication_from_plan_approval": true,
+    "policy_document_migration_stage": "DEFERRED_OUT_OF_CURRENT_SCOPE",
+    "current_completion_boundary": "INSTALLED_PRODUCT_AND_ENGINE_CONTRACT_VERIFICATION"
   },
   "confirmed_engine_responsibilities": {
     "official_engine_count_target": 6,
@@ -97,7 +98,8 @@
     "functional_behavior_expansion": "NOT_IMPLIED",
     "capability_ownership_ref": "src/ptsip/engines/contracts/capability-owner-map.json",
     "installation_contract_ref": "src/ptsip/engines/contracts/installation-plan.json",
-    "official_engine_registry_ref": "src/ptsip/engines/index.json"
+    "official_engine_registry_ref": "src/ptsip/engines/index.json",
+    "work_unit_grouping": "ONE_ATOMIC_MOVE_AND_REMOVE_WORK_UNIT"
   },
   "confirmed_cli_and_developer_verification": {
     "go_cli_entry_file": "src/ptsip/CLI.go",
@@ -199,20 +201,31 @@
     },
     "top_level_go_cli_relation": {
       "file": "src/ptsip/CLI.go",
-      "role": "POTENTIAL_OPTIONAL_TOP_LEVEL_ENTRYPOINT",
+      "role": "NEW_TOP_LEVEL_GO_ENTRYPOINT_REQUIRED",
       "engine_operation_implementation": "FORBIDDEN",
       "mandatory_engine_dependency": "FORBIDDEN",
-      "details": "PENDING_INDEPENDENT_USER_DIRECTION"
-    }
+      "details": "CREATION_REQUIRED;COMMAND_ROUTING_SEMANTICS_PENDING"
+    },
+    "engine_installation_removal_and_developer_verification_same_work_unit": true,
+    "go_cli_entry_file_creation": "REQUIRED_AS_SEPARATE_WORK_UNIT"
   },
   "work_units": {
-    "state": "NOT_DEFINED",
+    "state": "BOUNDARIES_DRAFTED_DETAILS_PENDING",
+    "unit_index_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions",
+    "candidate_unit_count": 13,
     "approved_units": [],
+    "ids_are_execution_order": false,
     "candidate_units_not_executable": true,
+    "boundary_selection_basis": "SOURCE_DIRECTORY_OR_EXPLICIT_ATOMIC_CROSS_DIRECTORY_RELOCATION",
+    "user_named_or_previously_confirmed_boundary_count": 11,
+    "additional_scope_closure_candidates": [
+      "WU-12",
+      "WU-13"
+    ],
+    "registration_requires": "USER_FULL_PLAN_AUDIT_AND_APPROVAL",
     "preconditions_for_materialization": [
       "CONCRETE_IMPLEMENTATION_DIRECTORY",
       "SINGLE_OWNER_RESPONSIBILITY",
-      "WORK_UNIT_BOUNDARY",
       "SPECIFIC_IMPLEMENTATION_DETAILS",
       "ACCEPTANCE_AND_VALIDATION_SCOPE",
       "USER_PLAN_REVIEW"
@@ -225,6 +238,20 @@
     "PYPI_PUBLICATION",
     "BRANCH_CREATION",
     "UNAPPROVED_SOURCE_IMPLEMENTATION",
-    "UNVERIFIED_SHIPPED_CONTRACT_COMPATIBILITY_CLAIMS"
-  ]
+    "UNVERIFIED_SHIPPED_CONTRACT_COMPATIBILITY_CLAIMS",
+    "POLICY_DOCUMENT_MIGRATION_IMPLEMENTATION"
+  ],
+  "deferred_scope": {
+    "policy_migration": {
+      "status": "DEFERRED_OUT_OF_CURRENT_MIGRATION_WORK_UNITS",
+      "reason": "POLICY_FREE_PLAN_INSUFFICIENT_AUTHORITY_FOR_LARGE_POLICY_MIGRATION",
+      "prohibited_now": [
+        "POLICY_DOCUMENT_REWRITE",
+        "MIGRATE_ALL_LEGACY_POLICIES",
+        "AUTO_GENERATE_POLICY_TRANSITION_PLAN"
+      ],
+      "separate_user_decision_required_for_reentry": true
+    },
+    "prior_approved_policy_changes": "NOT_RETROACTIVELY_INCLUDED_IN_WORK_UNIT_SCOPE"
+  }
 }

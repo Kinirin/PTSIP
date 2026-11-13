@@ -1,11 +1,11 @@
 {
   "document_type": "CONTRACT_FIRST_MIGRATION_RESPONSIBILITY_REGISTRY",
-  "document_version": "draft-1",
+  "document_version": "draft-2",
   "id": "PTSIP-0.3.8-CONTRACT-FIRST-MIGRATION-REGISTRY",
   "root": "src/planning/0.3.8/contract-first-migration/",
   "baseline_ref": "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json",
   "planning_model": "C_RESPONSIBILITY_SPLIT",
-  "status": "DRAFT_PARTITION_SLOTS_NOT_IMPLEMENTATION_PLANS",
+  "status": "DRAFT_WORK_UNIT_BOUNDARIES_MATERIALIZED_IN_INDEX_NOT_EXECUTABLE",
   "branch": "main",
   "reference_revision": "16affe3621fdb3995a229a1700ee0122ebc8416f",
   "separation_rule": "ONE_OWNER_PER_RESPONSIBILITY;WUS_ONLY_AFTER_BOUNDARY_AND_DETAIL_APPROVAL",
@@ -14,154 +14,348 @@
   "responsibility_partitions": [
     {
       "id": "contracts",
-      "semantic_responsibility": "OFFICIAL_CONTRACT_SOURCE_AND_BINDINGS",
+      "work_unit_id": "WU-01",
+      "semantic_responsibility": "SIX_ENGINE_SHARED_REGISTRATION_METADATA_AND_OWNER_REFERENCES_WITHOUT_CENTRAL_ENGINE_CLI",
+      "owner": "ENGINE_CONTRACT_OWNER",
+      "primary_path": "src/ptsip/engines/contracts/",
       "implementation_scope_candidate": "src/ptsip/engines/contracts/",
+      "scope_paths": [
+        "src/ptsip/engines/contracts/",
+        "src/ptsip/engines/index.json"
+      ],
+      "excluded_paths": [
+        "src/ptsip/engines/contracts/engines_registries/"
+      ],
+      "required_results": [
+        "SIX_ENGINE_CAPABILITY_OWNER_AND_INSTALLATION_CONTRACTS",
+        "RETIRED_PLANNING_REGISTRATION_REFERENCES_REMOVED",
+        "INDEPENDENT_ENGINE_CONTRACT_OWNERS_PRESERVED"
+      ],
+      "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/contracts.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     },
     {
       "id": "discovery",
-      "semantic_responsibility": "PLAN_DISCOVERY",
+      "work_unit_id": "WU-02",
+      "semantic_responsibility": "DISCOVERY_PLAN_OPERATION_AND_INDEPENDENT_RUST_CLI",
+      "owner": "DISCOVERY_ENGINE",
+      "primary_path": "src/ptsip/engines/discovery/",
       "implementation_scope_candidate": "src/ptsip/engines/discovery/",
+      "scope_paths": [
+        "src/ptsip/engines/discovery/"
+      ],
+      "required_files": [
+        "src/ptsip/engines/discovery/src/cli.rs"
+      ],
+      "required_results": [
+        "DISCOVERY_PLANNING_OPERATION_CONTRACT_AND_IMPLEMENTATION",
+        "OWN_CLI_RS_CREATED"
+      ],
+      "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/discovery.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW",
-      "engine_cli_file": "src/ptsip/engines/discovery/src/cli.rs",
-      "engine_cli_creation": "REQUIRED",
-      "engine_cli_owner": "DISCOVERY"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     },
     {
       "id": "validation",
-      "semantic_responsibility": "PLAN_VALIDATION",
+      "work_unit_id": "WU-03",
+      "semantic_responsibility": "PLANNING_IMPACT_AND_PREPARATION_VALIDATION_WITH_INDEPENDENT_RUST_CLI",
+      "owner": "VALIDATION_ENGINE",
+      "primary_path": "src/ptsip/engines/validation/",
       "implementation_scope_candidate": "src/ptsip/engines/validation/",
+      "scope_paths": [
+        "src/ptsip/engines/validation/"
+      ],
+      "required_files": [
+        "src/ptsip/engines/validation/src/cli.rs"
+      ],
+      "required_results": [
+        "VALIDATION_PLANNING_IMPACT_AND_PREPARE_NEW_TYPED_CONTRACTS",
+        "OWN_CLI_RS_CREATED"
+      ],
+      "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/validation.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW",
-      "engine_cli_file": "src/ptsip/engines/validation/src/cli.rs",
-      "engine_cli_creation": "REQUIRED",
-      "engine_cli_owner": "VALIDATION"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     },
     {
       "id": "context",
-      "semantic_responsibility": "DEPENDENCY_ORDER",
+      "work_unit_id": "WU-04",
+      "semantic_responsibility": "DEPENDENCY_ORDERING_OPERATION_AND_INDEPENDENT_RUST_CLI",
+      "owner": "CONTEXT_ENGINE",
+      "primary_path": "src/ptsip/engines/context/",
       "implementation_scope_candidate": "src/ptsip/engines/context/",
+      "scope_paths": [
+        "src/ptsip/engines/context/"
+      ],
+      "required_files": [
+        "src/ptsip/engines/context/src/cli.rs"
+      ],
+      "required_results": [
+        "NEW_CONTEXT_OWNED_DEPENDENCY_ORDER_OPERATION_CONTRACT",
+        "OWN_CLI_RS_CREATED"
+      ],
+      "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
+      "unresolved": [
+        "NEW_CONTEXT_OPERATION_ID"
+      ],
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/context.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW",
-      "engine_cli_file": "src/ptsip/engines/context/src/cli.rs",
-      "engine_cli_creation": "REQUIRED",
-      "engine_cli_owner": "CONTEXT"
-    },
-    {
-      "id": "registry",
-      "semantic_responsibility": "ENGINE_REGISTRY_AND_REFERENCE_RELOCATION",
-      "implementation_scope_candidate": "src/ptsip/engines/contracts/engines_registries/",
-      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/registry.plan.json",
-      "materialized": false,
-      "work_unit_decision": "PENDING",
-      "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
-    },
-    {
-      "id": "distribution",
-      "semantic_responsibility": "SIX_ENGINE_COMPILE_AND_PACKAGE",
-      "implementation_scope_candidate": "src/ptsip/",
-      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/distribution.plan.json",
-      "materialized": false,
-      "work_unit_decision": "PENDING",
-      "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
-    },
-    {
-      "id": "developer-verification",
-      "semantic_responsibility": "INSTALLED_ENGINE_TEST_AND_CONTRACT_PROOF",
-      "implementation_scope_candidate": "developer/tests/engines/",
-      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/developer-verification.plan.json",
-      "materialized": false,
-      "work_unit_decision": "PENDING",
-      "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
-    },
-    {
-      "id": "go-cli",
-      "semantic_responsibility": "GO_CLI_ENTRYPOINT_AND_PYTHON_PHASEOUT",
-      "implementation_scope_candidate": "src/ptsip/CLI.go",
-      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/go-cli.plan.json",
-      "materialized": false,
-      "work_unit_decision": "PENDING",
-      "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW",
-      "engine_cli_ownership": "NONE",
-      "common_contract_cli_ownership": "NONE"
-    },
-    {
-      "id": "policy-migration",
-      "semantic_responsibility": "INSTALLED_CONTRACT_BASED_POLICY_MIGRATION",
-      "implementation_scope_candidate": "src/ptsip/migration/",
-      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/policy-migration.plan.json",
-      "materialized": false,
-      "work_unit_decision": "PENDING",
-      "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     },
     {
       "id": "storage",
-      "semantic_responsibility": "STORAGE_INDEPENDENT_ENGINE_CLI",
+      "work_unit_id": "WU-05",
+      "semantic_responsibility": "INDEPENDENT_STORAGE_ENGINE_RUST_CLI",
+      "owner": "STORAGE_ENGINE",
+      "primary_path": "src/ptsip/engines/storage/",
       "implementation_scope_candidate": "src/ptsip/engines/storage/",
-      "engine_cli_file": "src/ptsip/engines/storage/src/cli.rs",
-      "engine_cli_creation": "REQUIRED",
+      "scope_paths": [
+        "src/ptsip/engines/storage/"
+      ],
+      "required_files": [
+        "src/ptsip/engines/storage/src/cli.rs"
+      ],
+      "required_results": [
+        "OWN_CLI_RS_CREATED",
+        "STORAGE_ENGINE_REMAINS_INDEPENDENTLY_DISABLEABLE"
+      ],
+      "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/storage.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     },
     {
       "id": "execution",
-      "semantic_responsibility": "EXECUTION_INDEPENDENT_ENGINE_CLI",
+      "work_unit_id": "WU-06",
+      "semantic_responsibility": "INDEPENDENT_EXECUTION_ENGINE_RUST_CLI",
+      "owner": "EXECUTION_ENGINE",
+      "primary_path": "src/ptsip/engines/execution/",
       "implementation_scope_candidate": "src/ptsip/engines/execution/",
-      "engine_cli_file": "src/ptsip/engines/execution/src/cli.rs",
-      "engine_cli_creation": "REQUIRED",
+      "scope_paths": [
+        "src/ptsip/engines/execution/"
+      ],
+      "required_files": [
+        "src/ptsip/engines/execution/src/cli.rs"
+      ],
+      "required_results": [
+        "OWN_CLI_RS_CREATED",
+        "EXECUTION_ENGINE_REMAINS_INDEPENDENTLY_DISABLEABLE"
+      ],
+      "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/execution.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     },
     {
       "id": "projection",
-      "semantic_responsibility": "PROJECTION_INDEPENDENT_ENGINE_CLI",
+      "work_unit_id": "WU-07",
+      "semantic_responsibility": "INDEPENDENT_PROJECTION_ENGINE_RUST_CLI",
+      "owner": "PROJECTION_ENGINE",
+      "primary_path": "src/ptsip/engines/projection/",
       "implementation_scope_candidate": "src/ptsip/engines/projection/",
-      "engine_cli_file": "src/ptsip/engines/projection/src/cli.rs",
-      "engine_cli_creation": "REQUIRED",
+      "scope_paths": [
+        "src/ptsip/engines/projection/"
+      ],
+      "required_files": [
+        "src/ptsip/engines/projection/src/cli.rs"
+      ],
+      "required_results": [
+        "OWN_CLI_RS_CREATED",
+        "PROJECTION_ENGINE_REMAINS_INDEPENDENTLY_DISABLEABLE"
+      ],
+      "boundary_provenance": "PRESERVE_PREVIOUS_EXPLICIT_SIX_ENGINE_CLI_REQUIREMENT",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/projection.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
+    },
+    {
+      "id": "registry",
+      "work_unit_id": "WU-08",
+      "semantic_responsibility": "MOVE_THREE_EXISTING_ENGINE_REGISTRIES_AND_REMOVE_OLD_REGISTRY_ROOT_AS_ONE_ATOMIC_WORK_UNIT",
+      "owner": "ENGINE_REGISTRY_RELOCATION",
+      "primary_path": "src/ptsip/engines/registries/",
+      "implementation_scope_candidate": "src/ptsip/engines/registries/",
+      "scope_paths": [
+        "src/ptsip/engines/registries/",
+        "src/ptsip/engines/contracts/engines_registries/"
+      ],
+      "source_path": "src/ptsip/engines/registries/",
+      "destination_path": "src/ptsip/engines/contracts/engines_registries/",
+      "required_results": [
+        "official-static.json MOVED",
+        "official-execution.json MOVED",
+        "derived-snapshot.json REGENERATED_AND_MOVED",
+        "OLD_REGISTRIES_PATH_REMOVED_AFTER_REFERENCE_CLOSURE"
+      ],
+      "boundary_provenance": "EXPLICIT_ONE_UNIT_ATOMIC_MOVE_AND_DELETE",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/registry.plan.json",
+      "materialized": false,
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
+      "implementation_details": "PENDING",
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     },
     {
       "id": "common-contract-cli",
-      "semantic_responsibility": "GO_COMMON_CONTRACT_INDEPENDENT_CLI",
+      "work_unit_id": "WU-09",
+      "semantic_responsibility": "CREATE_INDEPENDENT_GO_COMMON_CONTRACT_CLI_AND_NEW_ROOT_ENTRYPOINT;RETIRE_OLD_CMD_MAIN",
+      "owner": "GO_COMMON_CONTRACT",
+      "primary_path": "src/ptsip/common_contract/",
       "implementation_scope_candidate": "src/ptsip/common_contract/",
-      "cli_file": "src/ptsip/common_contract/cli.go",
-      "main_file": "src/ptsip/common_contract/main.go",
-      "old_main_file": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
-      "old_main_disposition": "RETIRE_NOT_USED_FOR_TARGET",
+      "scope_paths": [
+        "src/ptsip/common_contract/"
+      ],
+      "required_files": [
+        "src/ptsip/common_contract/cli.go",
+        "src/ptsip/common_contract/main.go"
+      ],
+      "retired_file": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
+      "required_results": [
+        "NEW_CLI_GO_AND_MAIN_GO",
+        "OLD_CMD_MAIN_NOT_USED_BY_TARGET_BUILD"
+      ],
+      "boundary_provenance": "EXPLICIT_SINGLE_UNIT",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/common-contract-cli.plan.json",
       "materialized": false,
-      "work_unit_decision": "PENDING",
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
       "implementation_details": "PENDING",
-      "status": "RESERVED_FOR_USER_REVIEW"
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
+    },
+    {
+      "id": "developer-engine-verification-and-python-removal",
+      "work_unit_id": "WU-10",
+      "semantic_responsibility": "REHOME_INSTALLED_ENGINE_INSPECTION_AND_VERIFICATION_TO_DEVELOPER_TESTS_AND_DELETE_PYTHON_ENGINE_INSTALLATION_MODULE_IN_THE_SAME_WORK_UNIT",
+      "owner": "DEVELOPER_ENGINE_VERIFICATION",
+      "primary_path": "developer/tests/engines/",
+      "implementation_scope_candidate": "developer/tests/engines/",
+      "scope_paths": [
+        "developer/tests/engines/",
+        "src/ptsip/engine_installation.py",
+        "src/ptsip/cli.py"
+      ],
+      "targeted_cross_directory_refs": [
+        ".ptsip/engine/developer/Distribution/release/"
+      ],
+      "removed_file": "src/ptsip/engine_installation.py",
+      "required_results": [
+        "ACTUAL_INSTALLED_SIX_ENGINE_VERIFICATION",
+        "DEPENDENT_IMPORTS_AND_COMMAND_REFERENCES_RESOLVED",
+        "ENGINE_INSTALLATION_PY_REMOVED",
+        "NO_UNRELATED_PYTHON_CLI_REMOVAL"
+      ],
+      "boundary_provenance": "EXPLICIT_ONE_UNIT_COMBINED_REMOVAL_AND_VERIFICATION",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/developer-engine-verification-and-python-removal.plan.json",
+      "materialized": false,
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
+      "implementation_details": "PENDING",
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
+    },
+    {
+      "id": "go-cli",
+      "work_unit_id": "WU-11",
+      "semantic_responsibility": "CREATE_TOP_LEVEL_GO_CLI_AS_ONE_INDEPENDENT_WORK_UNIT_WITHOUT_REIMPLEMENTING_ENGINE_CLI",
+      "owner": "PTSIP_GO_ENTRYPOINT",
+      "primary_path": "src/ptsip/CLI.go",
+      "implementation_scope_candidate": "src/ptsip/CLI.go",
+      "scope_paths": [
+        "src/ptsip/CLI.go"
+      ],
+      "required_files": [
+        "src/ptsip/CLI.go"
+      ],
+      "required_results": [
+        "NEW_CLI_GO_CREATED",
+        "NO_CROSS_ENGINE_REQUIRED_RUNTIME_DEPENDENCIES",
+        "GO_BUILD_OWNERSHIP_PROVEN"
+      ],
+      "boundary_provenance": "EXPLICIT_SINGLE_UNIT",
+      "unresolved": [
+        "COMMAND_ROUTING_SCOPE_AND_GO_MODULE_BUILD_INTEGRATION"
+      ],
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/go-cli.plan.json",
+      "materialized": false,
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
+      "implementation_details": "PENDING",
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
+    },
+    {
+      "id": "distribution",
+      "work_unit_id": "WU-12",
+      "semantic_responsibility": "SIX_ENGINE_PRODUCT_BUILD_INSTALL_AND_PACKAGING_CLOSURE_FROM_SRC_PTSIP_ONLY",
+      "owner": "PRODUCT_DISTRIBUTION",
+      "primary_path": "src/ptsip/",
+      "implementation_scope_candidate": "src/ptsip/",
+      "scope_paths": [
+        "src/ptsip/"
+      ],
+      "excluded_paths": [
+        "src/ptsip/engines/*/src/",
+        "src/ptsip/common_contract/",
+        "src/ptsip/CLI.go"
+      ],
+      "required_results": [
+        "COMPLETE_SIX_ENGINE_PLATFORM_ARTIFACT",
+        "NO_DOT_PTSIP_DISTRIBUTION_DEPENDENCIES",
+        "NO_LEGACY_ROOT_SETUP_PYPROJECT_MANIFEST_REUSE"
+      ],
+      "boundary_provenance": "PROPOSED_COMPLETENESS_FROM_APPROVED_DISTRIBUTION_SCOPE",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/distribution.plan.json",
+      "materialized": false,
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
+      "implementation_details": "PENDING",
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
+    },
+    {
+      "id": "retired-planning-engine",
+      "work_unit_id": "WU-13",
+      "semantic_responsibility": "DELETE_RETIRED_PLANNING_ENGINE_ONLY_AFTER_MIGRATED_OPERATIONS_AND_REGISTRATION_REFERENCES_VERIFIED",
+      "owner": "PLANNING_ENGINE_RETIREMENT",
+      "primary_path": "src/ptsip/engines/planning/",
+      "implementation_scope_candidate": "src/ptsip/engines/planning/",
+      "scope_paths": [
+        "src/ptsip/engines/planning/"
+      ],
+      "required_results": [
+        "PLANNING_ENGINE_DIRECTORY_REMOVED",
+        "NO_LIVE_PLANNING_ENGINE_REFERENCES",
+        "MIGRATED_OPERATION_OWNERS_VERIFIED"
+      ],
+      "boundary_provenance": "PROPOSED_COMPLETENESS_FOR_ALREADY_CONFIRMED_RETIREMENT",
+      "removal_gate": "REQUIRED_DEPENDENCY_CLOSURE",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/retired-planning-engine.plan.json",
+      "materialized": false,
+      "work_unit_decision": "BOUNDARY_RECORDED_IMPLEMENTATION_DETAILS_PENDING",
+      "implementation_details": "PENDING",
+      "implementation_authorized": false,
+      "status": "DRAFT_REQUIRES_USER_REVIEW"
     }
   ],
   "uncertainty_boundary": {
@@ -242,5 +436,24 @@
     "cross_engine_cli_hard_dependency": "FORBIDDEN",
     "common_go_contract_dependency_for_rust_engines": "FORBIDDEN",
     "registry_directory_must_not_own_cli": true
+  },
+  "deferred_responsibilities": [
+    {
+      "id": "policy-migration",
+      "previous_candidate_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/policy-migration.plan.json",
+      "status": "DEFERRED_OUT_OF_CURRENT_WORK_UNITS",
+      "work_unit_id": null,
+      "source_root": "src/ptsip/migration/",
+      "current_migration_implementation_authorized": false
+    }
+  ],
+  "work_unit_registration": {
+    "state": "DRAFT_SCOPE_BOUNDARIES_NOT_APPROVED_PLAN",
+    "total_candidate_units": 13,
+    "execution_order_defined": false,
+    "all_units_implementation_authorized": false,
+    "number_is_identity_not_priority": true,
+    "policy_migration_work_unit_created": false,
+    "contract_first_scope": "ENGINE_AND_DISTRIBUTION_TRANSITION_NOT_POLICY_DOCUMENT_MIGRATION"
   }
 }
