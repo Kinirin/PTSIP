@@ -1,0 +1,119 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: ptsip-unified-policy/v3-candidate
+Policy_Identity:
+  id: SFP-ASSURE-0008
+  policy_kind: PTSIP_SUPPORT_FEATURE
+  root_family: ASSURE
+  title: Engine provider-consumer evidence production separation (DRAFT)
+Policy_Lifecycle:
+  status: DRAFT
+  source_ref: SRC-0004
+Policy_Authority:
+  source_refs:
+  - SRC-0005
+  - SRC-0007
+Policy_Rules:
+  rules:
+  - id: SUP_ENGINE_PROVIDER_CONSUMER_EVIDENCE_PRODUCTION
+    identity_scheme: DECLARED
+    kind: RULE
+    source_ref: SRC-0008
+    contract_bindings:
+      RA:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      RAC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+      AEC:
+        state: UNRESOLVED
+        basis_refs:
+        - SRC-0008
+Policy_Evaluation:
+  source_refs: []
+  state: UNRESOLVED
+Policy_Relationships:
+  source_refs:
+  - SRC-0009
+Policy_Content:
+  items:
+  - id: SRC-0001
+    source_pointer: /schema_version
+    value: ptsip-support-root-family-policy/v1
+  - id: SRC-0002
+    source_pointer: /policy_class
+    value: PTSIP_SUPPORT_FEATURE
+  - id: SRC-0003
+    source_pointer: /responsibility_family
+    value: ASSURE
+  - id: SRC-0004
+    source_pointer: /policy
+    value:
+      id: SFP-ASSURE-0008
+      title: Engine provider-consumer evidence production separation (DRAFT)
+      status: DRAFT
+  - id: SRC-0005
+    source_pointer: /authority_subject
+    value:
+      id: SUP_ENGINE_PROVIDER_CONSUMER_EVIDENCE_PRODUCTION
+      statement: 기능 제공자와 소비자의 증거 생성 및 연결 책임을 분리하며 ASSURE의 규범 적합성 판정 권한은 이전하지 않는다.
+  - id: SRC-0006
+    source_pointer: /exclusive_kernel
+    value:
+    - SUP_ENGINE_PROVIDER_CONSUMER_EVIDENCE_PRODUCTION
+  - id: SRC-0007
+    source_pointer: /authority_contract
+    value:
+      authority_type: ROOT_FAMILY_ASSURE
+      schema_id: ptsip.governance/root-family/assure
+      schema_version: 1
+  - id: SRC-0008
+    source_pointer: /authority_semantics/engine_provider_consumer_evidence
+    value:
+      domain: PTSIP_ENGINE
+      draft_activation: BLOCKED_PENDING_USER_REVIEW_AND_RESOLUTION
+      approved_decisions:
+        engine_interoperability_evidence_production_linkage: PROVIDER_CONSUMER_ENGINE_SPLIT_WITH_ASSURE_NORMATIVE_AUTHORITY_PRESERVED
+      invariants:
+        provider_and_consumer_evidence_roles_do_not_reassign_assure_conformance_verdict: true
+        provider_evidence_and_consumer_evidence_retain_distinct_provenance_and_applicability_context: true
+        evidence_linkage_or_engine_level_compatibility_claim_is_not_automatic_ptsip_conformance: true
+        assure_retains_normative_conformance_judgment_and_evidence_sufficiency_authority: true
+      unresolved_decisions: []
+      activation_requirements:
+        owner_decisions_all_resolved: true
+        responsibility_mapping_verified: true
+        conflicts_with_existing_active_policies_resolved: true
+        machine_contract_and_registry_validation_passed: true
+        explicit_separate_user_active_approval_required: true
+      out_of_scope:
+      - IMMEDIATE_RUNTIME_ACTIVATION
+      - EXISTING_ACTIVE_POLICY_MUTATION
+      - UNAPPROVED_DIRECTORY_NAMES
+      - IMPLICIT_POLICY_AUTHORITY_TRANSFER
+      resolved_decisions:
+      - id: ENGINE_PROVIDER_CONSUMER_INTEROPERABILITY_EVIDENCE_RESPONSIBILITY
+        selected_option: B_PROVIDER_CONSUMER_ENGINE_SPLIT
+        approval_source: USER_EXPLICIT
+        resolution_scope: EVIDENCE_PRODUCER_LINKAGE_ROLES_ONLY
+        provider_evidence: PROVIDER_CAPABILITY_CONTRACT_AND_CHANGE_SUPPORT
+        consumer_evidence: CONSUMER_DEPENDENCY_ENVIRONMENT_AND_COMPATIBILITY_VERIFICATION
+        normative_judgment_owner: EXISTING_ASSURE_UNCHANGED
+        exact_schema: NOT_DECIDED
+  - id: SRC-0009
+    source_pointer: /relations
+    value:
+      supersedes: []
+      amends: []
+      extends: []
+      depends_on: []
+  source_document:
+    path: src/policy/ASSURE/SFP-ASSURE-0008.yaml
+    sha256: 8283c9e91eadc4d5e60b488fc7f3777c0134a205c9ce95e974f5a2a107ab3b85
+Policy_Migration:
+  baseline_head: d6aa0cbbc010e04b2c6d29b636a566eed34690fe
+  source_format: ptsip-support-root-family-policy/v1
+  source_registration: INDEXED
+  contract_state: CANDIDATE
