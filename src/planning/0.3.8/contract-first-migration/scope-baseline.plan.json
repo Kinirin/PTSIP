@@ -15,7 +15,7 @@
     "implementation_approval": {
       "status": "APPROVED_WITH_UNIT_READINESS_AND_APPLICABLE_AUTHORITY",
       "source": "USER_EXPLICIT_CHAT_2026-11-13",
-      "scope": "WU-01_THROUGH_WU-11_WITH_PLANNING_DIRECTORY_REMOVAL_ABSORBED_INTO_WU-01",
+      "scope": "WU-01_THROUGH_WU-11;WU13_SOURCE_REMOVAL_ALREADY_APPLIED_AND_RECORDED_SEPARATELY",
       "does_not_authorize_policy_change": true,
       "does_not_authorize_unreviewed_scope_candidates": true,
       "does_not_authorize_release": true,
@@ -87,9 +87,9 @@
       "kind": "PLANNING",
       "source_root": "src/ptsip/engines/planning/",
       "removal_condition": "IMMEDIATE_USER_DIRECTED_REMOVE_WITHOUT_LEGACY_COMPATIBILITY_OR_HANDOFF_GATES",
-      "removal_owner": "WU-01",
-      "removal_status": "REMOVED_FROM_SOURCE_TREE_THIS_COMMIT",
-      "independent_retirement_work_unit": "NONE",
+      "removal_owner": "WU-13",
+      "removal_status": "SOURCE_TREE_ALREADY_REMOVED_COMMIT_683365c",
+      "independent_retirement_work_unit": "WU-13",
       "removal_validation": "USER_REVIEW_NO_AUTOMATED_LEGACY_PLANNING_COMPATIBILITY_OR_HANDOFF_PROOF",
       "cli_quality_evidence": "FUTURE_NEW_CLI_POSITIVE_RESPONSES_ONLY"
     },
@@ -261,7 +261,7 @@
   "work_units": {
     "state": "IMPLEMENTATION_APPROVED_SCOPE_WITH_GATES",
     "unit_index_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions",
-    "candidate_unit_count": 12,
+    "candidate_unit_count": 13,
     "approved_units": [
       "WU-01",
       "WU-02",
@@ -293,7 +293,8 @@
     "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
     "file_ownership_state": "EXACT_PATHS_REGISTERED_WITH_PLANNING_FILES_AS_WU01_REMOVAL_HISTORY",
     "proposed_unapproved_units": [
-      "WU-12"
+      "WU-12",
+      "WU-13"
     ],
     "approval_effect": "APPROVED_UNITS_MAY_IMPLEMENT_ONLY_AFTER_APPLICABLE_POLICY_AND_PLAN_READINESS_GATES",
     "implementation_order": "NOT_INFERRED_FROM_WU_ID;DERIVE_FROM_DEPENDENCIES_AND_POLICY",
@@ -310,23 +311,29 @@
     ],
     "global_engine_count_is_not_an_execution_gate": true,
     "explicit_retirement_target": "PLANNING",
-    "removal_work_unit_status": "WU-13_MERGED_INTO_WU-01_NO_SEPARATE_WORK_UNIT",
+    "removal_work_unit_status": "WU-13_INDEPENDENT_WORK_UNIT_RESTORED_SOURCE_REMOVAL_ALREADY_APPLIED",
     "applicable_policy_check": "AT_IMPLEMENTATION_CONCRETE_RULE_LEVEL;NO_ENGINE_COUNT_INFERRED_CONFLICT_GATE",
     "retired_planning_deletion": {
-      "status": "SOURCE_TREE_REMOVED_NO_LEGACY_BEHAVIOR_PROOF_REQUIRED",
+      "status": "SOURCE_TREE_ALREADY_REMOVED",
       "path": "src/ptsip/engines/planning/",
-      "owner_work_unit": "WU-01",
-      "independent_deletion_unit": null,
-      "removed_candidate_work_unit": "WU-13",
+      "owner_work_unit": "WU-13",
+      "independent_deletion_unit": "WU-13",
       "delete_entire_tree": true,
+      "historical_deleted_source_file_count": 18,
+      "source_removal_commit": "683365cbd946122c355d3184b631b9852a0a6067",
       "no_legacy_planning_compatibility_verification": true,
       "no_legacy_planning_handoff_completion_verification": true,
-      "final_check": "NO_SEPARATE_PLANNING_RETIREMENT_TEST;POSITIVE_NEW_CLI_SMOKE_IS_OWNED_BY_CLI_IMPLEMENTATION_UNITS",
-      "final_check_state": "REMOVAL_ALREADY_APPLIED;NEW_CLI_SMOKES_PENDING_THEIR_OWN_WORK_UNITS",
-      "does_not_override_other_work_units_validation": true,
-      "blocks_on_cli_creation": false,
-      "legacy_planning_cli_nonfunction_assertion": "FORBIDDEN_AS_ACCEPTANCE_EVIDENCE",
-      "user_owns_planning_handoff_verification": true
+      "no_old_planning_cli_negative_smoke": true,
+      "no_new_cli_completion_dependency": true,
+      "source_assumption": "PLANNING_DIRECTORY_ABSENT",
+      "user_owns_previous_planning_handoff_review": true,
+      "positive_cli_smoke_responsibility": [
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-11"
+      ],
+      "new_implementation_authorization": "NOT_INFERRED_FROM_SCOPE_CLARIFICATION"
     },
     "positive_cli_verification": {
       "basis": "POSITIVE_NEW_CLI_RESPONSE_NOT_RETIRED_ENGINE_NONFUNCTION",

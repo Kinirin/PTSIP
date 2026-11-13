@@ -15,14 +15,13 @@
     {
       "id": "contracts",
       "work_unit_id": "WU-01",
-      "semantic_responsibility": "OWN_NAMED_ENGINE_REGISTRATION_AND_REMOVE_RETIRED_PLANNING_SOURCE_TREE_WITHOUT_SEPARATE_DELETION_WU",
+      "semantic_responsibility": "NAMED_ENGINE_SET_REGISTRATION_METADATA_AND_OWNER_REFERENCES_WITHOUT_CENTRAL_ENGINE_CLI",
       "owner": "ENGINE_CONTRACT_OWNER",
       "primary_path": "src/ptsip/engines/contracts/",
       "implementation_scope_candidate": "src/ptsip/engines/contracts/",
       "scope_paths": [
         "src/ptsip/engines/contracts/",
-        "src/ptsip/engines/index.json",
-        "src/ptsip/engines/planning/"
+        "src/ptsip/engines/index.json"
       ],
       "excluded_paths": [
         "src/ptsip/engines/contracts/engines_registries/"
@@ -30,14 +29,13 @@
       "required_results": [
         "NAMED_ENGINE_SET_CAPABILITY_OWNER_AND_INSTALLATION_CONTRACTS",
         "INDEPENDENT_ENGINE_CONTRACT_OWNERS_PRESERVED",
-        "NO_PLANNING_RUST_SOURCE_FALLBACK",
         "CURRENT_NAMED_ENGINE_REGISTRATION_HAS_ONLY_VALID_CURRENT_SOURCE_REFERENCES"
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/contracts.plan.json",
       "materialized": false,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "SOURCE_DELETION_SUBSTEP_AUTHORIZED;FULL_WORK_UNIT_DETAILS_STILL_PENDING",
+      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
       "implementation_authorized": true,
       "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
       "owned_file_paths": [
@@ -68,43 +66,11 @@
         "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
         "src/ptsip/engines/contracts/stdio-transport.json",
         "src/ptsip/engines/contracts/work-item-bindings.json",
-        "src/ptsip/engines/index.json",
-        "src/ptsip/engines/planning/Cargo.lock",
-        "src/ptsip/engines/planning/Cargo.toml",
-        "src/ptsip/engines/planning/contract.json",
-        "src/ptsip/engines/planning/contracts/1.0.0.json",
-        "src/ptsip/engines/planning/contracts/2.0.0.json",
-        "src/ptsip/engines/planning/execution-bindings.json",
-        "src/ptsip/engines/planning/manifest.json",
-        "src/ptsip/engines/planning/runtime-contracts.json",
-        "src/ptsip/engines/planning/schemas/plan_identity.schema.json",
-        "src/ptsip/engines/planning/schemas/plan_lifecycle.schema.json",
-        "src/ptsip/engines/planning/schemas/plan_unit.schema.json",
-        "src/ptsip/engines/planning/src/impact.rs",
-        "src/ptsip/engines/planning/src/installation.rs",
-        "src/ptsip/engines/planning/src/main.rs",
-        "src/ptsip/engines/planning/src/preparation.rs",
-        "src/ptsip/engines/planning/src/source.rs",
-        "src/ptsip/engines/planning/transport.json",
-        "src/ptsip/engines/planning/version.yaml"
+        "src/ptsip/engines/index.json"
       ],
-      "owned_file_count": 46,
+      "owned_file_count": 28,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION;NO_NEW_CLI_REQUIRED_FOR_PLANNING_SOURCE_RETIREMENT",
-      "directory_retirement": {
-        "directory": "src/ptsip/engines/planning/",
-        "operation": "REMOVE_ENTIRE_SOURCE_TREE",
-        "source_state": "ALREADY_REMOVED",
-        "merged_from_work_unit": "WU-13",
-        "owned_by": "WU-01",
-        "separate_deletion_work_unit": "NOT_REQUIRED",
-        "prior_planning_compatibility_check": "NOT_REQUIRED",
-        "prior_planning_handoff_completion_check": "USER_HANDLED_NOT_AUTOMATED",
-        "old_planning_cli_nonfunction_check": "FORBIDDEN",
-        "new_cli_dependency_for_deletion": "NONE",
-        "completion_state": "SOURCE_REMOVAL_ALREADY_COMMITTED",
-        "external_evidence": "POSITIVE_NEW_CLI_SMOKE_OWNED_BY_INDEPENDENT_CLI_WORK_UNITS"
-      }
+      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
     },
     {
       "id": "discovery",
@@ -638,6 +604,71 @@
       "owned_file_count": 6,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
       "execution_gate": "USER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "retired-planning-engine",
+      "work_unit_id": "WU-13",
+      "semantic_responsibility": "REMOVE_ALL_SRC_PTSIP_ENGINES_PLANNING_SOURCE_AS_ONE_INDEPENDENT_WORK_UNIT",
+      "owner": "PLANNING_DIRECTORY_REMOVAL",
+      "primary_path": "src/ptsip/engines/planning/",
+      "implementation_scope_candidate": "src/ptsip/engines/planning/",
+      "scope_paths": [
+        "src/ptsip/engines/planning/"
+      ],
+      "required_results": [
+        "REMOVE_ALL_FILES_UNDER_SRC_PTSIP_ENGINES_PLANNING",
+        "NO_LEGACY_PLANNING_COMPATIBILITY_OR_HANDOFF_VERIFICATION"
+      ],
+      "boundary_provenance": "USER_EXPLICIT_WU13_SCOPE_CLARIFICATION",
+      "removal_gate": "NONE",
+      "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/retired-planning-engine.plan.json",
+      "materialized": false,
+      "work_unit_decision": "USER_CLARIFIED_WU13_SOURCE_ONLY;NO_NEW_IMPLEMENTATION_APPROVAL_INFERRED",
+      "implementation_details": "FULL_SOURCE_TREE_ALREADY_REMOVED;NO_LEGACY_COMPATIBILITY_OR_MIGRATION_CHECKS",
+      "implementation_authorized": false,
+      "status": "DIRECTORY_REMOVAL_APPLIED;ADDITIONAL_WORK_NOT_AUTHORIZED",
+      "owned_file_paths": [
+        "src/ptsip/engines/planning/Cargo.lock",
+        "src/ptsip/engines/planning/Cargo.toml",
+        "src/ptsip/engines/planning/contract.json",
+        "src/ptsip/engines/planning/contracts/1.0.0.json",
+        "src/ptsip/engines/planning/contracts/2.0.0.json",
+        "src/ptsip/engines/planning/execution-bindings.json",
+        "src/ptsip/engines/planning/manifest.json",
+        "src/ptsip/engines/planning/runtime-contracts.json",
+        "src/ptsip/engines/planning/schemas/plan_identity.schema.json",
+        "src/ptsip/engines/planning/schemas/plan_lifecycle.schema.json",
+        "src/ptsip/engines/planning/schemas/plan_unit.schema.json",
+        "src/ptsip/engines/planning/src/impact.rs",
+        "src/ptsip/engines/planning/src/installation.rs",
+        "src/ptsip/engines/planning/src/main.rs",
+        "src/ptsip/engines/planning/src/preparation.rs",
+        "src/ptsip/engines/planning/src/source.rs",
+        "src/ptsip/engines/planning/transport.json",
+        "src/ptsip/engines/planning/version.yaml"
+      ],
+      "owned_file_count": 18,
+      "file_ownership_review": "HISTORICAL_DELETED_PATHS_OWNED_BY_WU13",
+      "execution_gate": "SOURCE_REMOVAL_ALREADY_APPLIED;NO_LEGACY_HARD_GATE",
+      "lifecycle_note": "WU13_PRESERVED_AS_INDEPENDENT_UNIT;USER_SPECIFIED_SOURCE_ONLY_RETIREMENT;SOURCE_REMOVAL_ALREADY_APPLIED_BY_PRIOR_COMMIT",
+      "directory_retirement": {
+        "directory": "src/ptsip/engines/planning/",
+        "operation": "DELETE_ENTIRE_DIRECTORY_TREE",
+        "historical_deleted_files": 18,
+        "source_removal_commit": "683365cbd946122c355d3184b631b9852a0a6067",
+        "source_state": "ABSENT_FROM_CURRENT_HEAD",
+        "removed_source_restore": "NOT_REQUESTED",
+        "compatibility_or_handoff_validation": "USER_REVIEW_ONLY_NOT_AGENT_TEST",
+        "retired_planning_cli_failure_validation": "FORBIDDEN",
+        "automated_retirement_smoke_tests": "NONE",
+        "positive_new_cli_responses": "VALIDATED_IN_RESPECTIVE_NEW_CLI_WORK_UNITS_NOT_WU13",
+        "user_check_if_needed": [
+          "src/ptsip/CLI.go",
+          "src/ptsip/engines/context/src/cli.rs",
+          "src/ptsip/engines/validation/src/cli.rs",
+          "src/ptsip/engines/discovery/src/cli.rs"
+        ]
+      }
     }
   ],
   "uncertainty_boundary": {
@@ -740,7 +771,7 @@
   ],
   "work_unit_registration": {
     "state": "USER_IMPLEMENTATION_APPROVED_SCOPED_AND_POLICY_GATED",
-    "total_candidate_units": 12,
+    "total_candidate_units": 13,
     "execution_order_defined": false,
     "all_units_implementation_authorized": false,
     "number_is_identity_not_priority": true,
@@ -760,7 +791,8 @@
       "WU-11"
     ],
     "proposed_unapproved_work_unit_ids": [
-      "WU-12"
+      "WU-12",
+      "WU-13"
     ],
     "authority_source": "USER_EXPLICIT_CHAT_2026-11-13",
     "unauthorized_policy_resolution": "FORBIDDEN",
@@ -774,16 +806,21 @@
       "PROJECTION"
     ],
     "no_numeric_engine_count_execution_gates": true,
-    "retirement_unit_merged": {
-      "source_unit": "WU-13",
-      "destination_unit": "WU-01",
-      "reason": "USER_REQUIRES_NO_SEPARATE_DELETION_RESPONSIBILITY",
-      "implementation_auth": "EXPLICIT_DELETE_SOURCE_ONLY",
-      "previous_handoff_proof": false,
-      "cli_acceptance_required": false,
-      "source_absence_baseline": true,
-      "old_planning_compatibility_proof": "FORBIDDEN",
-      "user_handles_handoff_review": true
+    "retirement_unit_separation": {
+      "id": "WU-13",
+      "role": "SINGLE_INDEPENDENT_PLANNING_SOURCE_DIRECTORY_REMOVAL_WORK_UNIT",
+      "status": "SOURCE_REMOVAL_ALREADY_APPLIED",
+      "previous_erroneous_merge": "WU-01",
+      "original_work_unit_restored": true,
+      "old_planning_compatibility_verification": "NOT_REQUIRED",
+      "old_planning_handoff_verification": "USER_HANDLED",
+      "new_cli_smoke_ownership": [
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-11"
+      ],
+      "future_unapproved_actions": "NOT_AUTHORIZED"
     }
   },
   "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",

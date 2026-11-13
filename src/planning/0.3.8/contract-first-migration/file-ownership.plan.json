@@ -45,14 +45,17 @@
     "implementation_may_not_start_before_plan_review": true,
     "planning_directory_source_assumption": "ABSENT_NO_LEGACY_COMPARISON",
     "positive_cli_response_acceptance": "IN_NEW_CLI_WORK_UNITS_NOT_SEPARATE_REMOVAL_WORK_UNIT",
-    "negative_retired_cli_checks": "FORBIDDEN"
+    "negative_retired_cli_checks": "FORBIDDEN",
+    "planning_directory_write_owner": "WU-13",
+    "planning_deleted_paths_are_historical_only": true,
+    "retirement_must_not_be_merged_into_other_unit": true
   },
   "verification": {
     "source": "GITHUB_COMMIT_TREE_RECURSIVE_COMPLETE",
     "tree_truncated": false,
     "all_existing_paths_verified": true,
     "all_new_file_paths_confirmed_absent": true,
-    "owner_count": 12,
+    "owner_count": 13,
     "exact_file_count": 205,
     "count_per_work_unit": {
       "WU-04": 13,
@@ -61,12 +64,13 @@
       "WU-02": 24,
       "WU-06": 16,
       "WU-07": 13,
-      "WU-01": 46,
+      "WU-01": 28,
       "WU-08": 6,
       "WU-09": 22,
       "WU-10": 12,
       "WU-11": 1,
-      "WU-12": 6
+      "WU-12": 6,
+      "WU-13": 18
     }
   },
   "exact_files": [
@@ -1755,163 +1759,163 @@
     },
     {
       "path": "src/ptsip/engines/planning/Cargo.lock",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/Cargo.toml",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/contract.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/contracts/1.0.0.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/contracts/2.0.0.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/execution-bindings.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/manifest.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/runtime-contracts.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/schemas/plan_identity.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/schemas/plan_lifecycle.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/schemas/plan_unit.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/src/impact.rs",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/src/installation.rs",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/src/main.rs",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/src/preparation.rs",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/src/source.rs",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/transport.json",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     },
     {
       "path": "src/ptsip/engines/planning/version.yaml",
-      "write_owner": "WU-01",
+      "write_owner": "WU-13",
       "source_state": "REMOVED_AT_PRIOR_COMMIT_683365cbd946122c355d3184b631b9852a0a6067",
-      "planned_file_action": "ALREADY_REMOVED_AUDIT_RECORD_NOT_NEW_WORK",
-      "assignment_status": "HISTORICAL_OWNER_WU01_MERGED_WU13",
+      "planned_file_action": "ALREADY_REMOVED_HISTORY_ONLY_NO_NEW_EXECUTION",
+      "assignment_status": "USER_CLARIFIED_WU13_INDEPENDENT_PATH_OWNER",
       "assignment_evidence": "EXISTING_PLANNING_ENGINE_IMPL_AND_CONTRACTS",
       "implementation_authorized": false
     }
@@ -2134,7 +2138,8 @@
       "WU-11"
     ],
     "unapproved_work_units": [
-      "WU-12"
+      "WU-12",
+      "WU-13"
     ],
     "exact_file_ownership_authorized_only_for_approved_units": true,
     "current_revision": "737595fc6271937dde6ff9ca2086f2ff201688a3",
@@ -2155,9 +2160,8 @@
     ],
     "global_engine_count_semantics": "NO_COUNT_BASED_SCOPE_OR_COMPLETION_TEST",
     "planning_retirement_target": "PLANNING",
-    "planning_retirement_unit": "WU-01",
-    "planning_retirement_merged_from": "WU-13",
-    "planning_retirement_validation": "USER_VERIFIES_LEGACY_HANDOFF;AGENT_VERIFIES_NEW_CLI_RESPONSE_WHEN_CREATED"
+    "planning_retirement_unit": "WU-13",
+    "planning_retirement_validation": "OLD_PLANNING_COMPATIBILITY_AND_HANDOFF_USER_HANDLED;NEW_CLI_POSITIVE_SMOKE_OWNED_BY_NEW_CLI_UNITS"
   },
   "scope_notes": {
     "count_related_external_policy_text": "NOT_A_WORK_PLAN_INPUT;EXISTING_POLICIES_ARE_NOT_AMENDED_BY_THIS_PLAN",
