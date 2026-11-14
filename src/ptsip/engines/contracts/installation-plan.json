@@ -7,7 +7,6 @@
     "model": "SINGLE_PLATFORM_SPECIFIC_PTSIP_WHEEL",
     "engine_pip_dependencies": "FORBIDDEN",
     "native_component_delivery": "BUNDLED_IN_COMPLETE_TARGET_WHEEL",
-    "required_verified_engines": 7,
     "wheel_script_scheme": "WHEEL_DATA_SCRIPTS",
     "bundle_origin_record": "ptsip-engines.json",
     "bundle_origin_schema": "ptsip-bundled-engine-origins/v1",
@@ -23,7 +22,6 @@
     "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e",
     "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
     "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
-    "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
     "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
     "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0"
   ],
@@ -89,21 +87,6 @@
       "installed_is_execution_authorization": false
     },
     {
-      "engine_id": "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7",
-      "version": "0.3.2",
-      "cargo_manifest_ref": "src/ptsip/engines/planning/Cargo.toml",
-      "distribution": "PTSIP_PLATFORM_WHEEL_NATIVE_COMPONENT",
-      "build_targets": [
-        "x86_64-pc-windows-msvc",
-        "x86_64-unknown-linux-gnu",
-        "aarch64-apple-darwin"
-      ],
-      "permission_from_availability": false,
-      "installation": "INSTALLED_AS_PART_OF_PTSIP_PLATFORM_WHEEL",
-      "entrypoint": "ptsip-engine-planning",
-      "installed_is_execution_authorization": false
-    },
-    {
       "engine_id": "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671",
       "version": "0.3.2",
       "cargo_manifest_ref": "src/ptsip/engines/execution/Cargo.toml",
@@ -137,6 +120,6 @@
   "host_compatibility": "BUILD_AND_RUN_VERIFICATION_REQUIRED_PER_HOST",
   "unknown_environment": "INELIGIBLE_FAIL_CLOSED",
   "public_release": "NOT_PERFORMED",
-  "default_installation": "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_ALL_SEVEN_ENGINES",
+  "default_installation": "ONE_COMPLETE_PTSIP_PLATFORM_WHEEL_WITH_REGISTERED_COMPONENTS",
   "installation_authority": "EXPLICIT_AUTHORIZED_PACKAGE_MANAGER_TRANSACTION_AND_EXISTING_SOURCE_SUPPLY_CTRL_GATES"
 }

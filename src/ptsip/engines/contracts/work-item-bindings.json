@@ -31,7 +31,7 @@
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
         "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
-        "src/ptsip/engines/registries/official-static.json",
+        "src/ptsip/engines/contracts/engines_registries/official-static.json",
         "src/ptsip/engines/discovery/contract.json"
       ]
     },
@@ -49,7 +49,7 @@
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
         "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
-        "src/ptsip/engines/registries/derived-snapshot.json",
+        "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
         "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json"
       ]
     },
@@ -61,15 +61,14 @@
         "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP"
       ],
       "acceptance": [
-        "SEVEN_OFFICIAL_DEFAULT_AVAILABILITY_VERIFIED",
-        "REGISTERED_SEVEN_ENGINE_INDEPENDENT_PACKAGE_AUTO_INSTALL_ONLY_WITH_CURRENT_COMPATIBILITY_EVIDENCE",
+        "REGISTERED_OFFICIAL_DEFAULT_AVAILABILITY_VERIFIED",
+        "REGISTERED_ENGINE_INDEPENDENT_PACKAGE_AUTO_INSTALL_ONLY_WITH_CURRENT_COMPATIBILITY_EVIDENCE",
         "INDEPENDENT_ENGINE_VERSION_BUILD_PATCH_BOUNDARIES",
         "OFFICIAL_PACKAGE_INSTALLATION_SEPARATE_FROM_EXTERNAL_EXTENSION_INSTALLATION_AND_EXECUTION_PERMISSION"
       ],
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
-        "src/ptsip/engines/contracts/installation-plan.json",
-        "src/ptsip/engines/planning/contract.json"
+        "src/ptsip/engines/contracts/installation-plan.json"
       ]
     },
     "CONCRETE_ENGINE_TO_CAPABILITY_IMPLEMENTATION_MAP": {
@@ -82,7 +81,7 @@
         "CONTEXT_PROJECTION_OUTPUT_CONTRACT_HANDOFF"
       ],
       "acceptance": [
-        "SEVEN_OFFICIAL_RUST_ENGINE_CAPABILITY_OWNER_MAP_EXPLICIT_AND_UNAMBIGUOUS",
+        "REGISTERED_OFFICIAL_RUST_ENGINE_CAPABILITY_OWNER_MAP_EXPLICIT_AND_UNAMBIGUOUS",
         "ACTIVE_AUTHORITY_HANDOFF_ONLY_WITH_SEPARATE_APPROVAL",
         "RUST_IMPL_SOURCE_AND_CROSS_ENGINE_ISOLATION_MACHINE_VERIFIED"
       ],
@@ -193,9 +192,17 @@
       ],
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
-        "src/ptsip/engines/contracts/vpms-handoff.json",
-        "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
-        "src/ptsip/engines/contracts/vpms-scope-mapping.json"
+        "src/ptsip/engines/contracts/schemas/contract-relation.schema.json"
+      ],
+      "unresolved_deliverables": [
+        {
+          "previous_ref": "src/ptsip/engines/contracts/vpms-handoff.json",
+          "reason": "SOURCE_REMOVED_CURRENT_BINDING_UNRESOLVED"
+        },
+        {
+          "previous_ref": "src/ptsip/engines/contracts/vpms-scope-mapping.json",
+          "reason": "SOURCE_REMOVED_CURRENT_BINDING_UNRESOLVED"
+        }
       ]
     },
     "GENERIC_VALIDATION_SCHEMA_IO_PRECONDITION_CAPABILITY_CONTRACT": {
@@ -227,10 +234,20 @@
         "LEGACY_API_RETIREMENT_PENDING_SEPARATE_OWNER_APPROVAL"
       ],
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
-      "deliverable_refs": [
-        "src/ptsip/engines/contracts/vpms-handoff.json",
-        "src/ptsip/engines/contracts/vpms-scope-mapping.json",
-        "src/ptsip/engines/contracts/vpms-caller-transition-plan.json"
+      "deliverable_refs": [],
+      "unresolved_deliverables": [
+        {
+          "previous_ref": "src/ptsip/engines/contracts/vpms-handoff.json",
+          "reason": "SOURCE_REMOVED_CURRENT_BINDING_UNRESOLVED"
+        },
+        {
+          "previous_ref": "src/ptsip/engines/contracts/vpms-scope-mapping.json",
+          "reason": "SOURCE_REMOVED_CURRENT_BINDING_UNRESOLVED"
+        },
+        {
+          "previous_ref": "src/ptsip/engines/contracts/vpms-caller-transition-plan.json",
+          "reason": "SOURCE_REMOVED_CURRENT_BINDING_UNRESOLVED"
+        }
       ]
     },
     "ENGINE_COMMON_IDENTITY_EXTENSION_AND_VERSION_DEPENDENCY_MANIFEST_SHAPE": {
@@ -244,7 +261,7 @@
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
         "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
-        "src/ptsip/engines/registries/derived-snapshot.json"
+        "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json"
       ]
     },
     "ENGINE_DEPENDENCY_GRAPH_COMPATIBILITY_AND_IMPACT_RESULT_SHAPE": {
@@ -265,7 +282,7 @@
         "src/ptsip/engines/contracts/dependency-graph.json",
         "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
         "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
-        "src/ptsip/engines/planning/contract.json"
+        "src/ptsip/engines/validation/contract.json"
       ]
     },
     "ENGINE_EXTERNAL_INTEROPERABILITY_REGISTRATION_AND_DECLARED_ENTRYPOINT_SHAPE": {
@@ -283,8 +300,8 @@
       ],
       "verification": "REQUIRED_NOT_IMPLIED_BY_DECLARATION",
       "deliverable_refs": [
-        "src/ptsip/engines/registries/official-static.json",
-        "src/ptsip/engines/registries/official-execution.json",
+        "src/ptsip/engines/contracts/engines_registries/official-static.json",
+        "src/ptsip/engines/contracts/engines_registries/official-execution.json",
         "src/ptsip/engines/contracts/schemas/execution-binding.schema.json"
       ]
     }
