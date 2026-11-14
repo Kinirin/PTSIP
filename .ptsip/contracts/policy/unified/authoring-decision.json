@@ -41,6 +41,21 @@
       "candidate_contract_creation_authorized": true,
       "normative_approval_by_schema_validation": false,
       "implementation_scope": "COMMON_CONTRACT_STRUCTURE_AND_REGISTRATION_BASED_EVALUATION_PREPARATION"
+    },
+    "schema_source_management": {
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "recorded_on": "2026-11-14",
+      "selection": "B_CENTRAL_ORIGINAL_SOURCE_MANAGEMENT",
+      "canonical_schema_root": "src/ptsip/schemas/",
+      "registry_ref": "src/ptsip/schemas/config.json",
+      "scope": "SCHEMA_SOURCE_LOCATION_AND_CENTRAL_REGISTRY",
+      "statement": "Manage canonical PTSIP schema sources centrally under src/ptsip/schemas/ using config.json as the schema location and contract registry. Existing distributed schemas are reference inputs for contract review; their relocation, replacement, or retirement is not automatically authorized.",
+      "boundaries": {
+        "policy_v4_schema_structure_decided": false,
+        "schema_migration_approved": false,
+        "implementation_source_paths_approved": false,
+        "runtime_cutover_approved": false
+      }
     }
   }
 }
