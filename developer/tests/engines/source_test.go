@@ -103,7 +103,7 @@ func copyRegisteredSource(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 	idx := document(t, "src/ptsip/engines/index.json")
-	refs := []string{"src/ptsip/engines/index.json", idx["architecture_owner"].(string), idx["contract_owner"].(string)}
+	refs := []string{"src/ptsip/engines/index.json"}
 	federation := idx["federation"].(object)
 	refs = append(refs, federation["static_registry_ref"].(string), federation["execution_registry_ref"].(string), idx["transport_contract_ref"].(string))
 	for _, raw := range idx["engine_schema_refs"].(object) {
@@ -153,8 +153,15 @@ func TestSourceBoundDiscoveryRejectsStalenessAndPreservesIndependentSelection(t 
 	root := copyRegisteredSource(t)
 	input := object{"root": root, "index_ref": "src/ptsip/engines/index.json", "expected_revision": nil}
 	proof := invoke(t, binary, "DISCOVERY", "discovery.verify-registry", input, true)
-	if len(proof["registered_engines"].([]any)) != len(entries(t)) || proof["derived_authority"] != false {
-		t.Fatal("registered source closure missing", proof)
+	if len(proof["registered_engines"].([]any)) != len(entries(t)) ||
+		proof["derived_authority"] != false || proof["owner_legitimacy_asserted"] != false {
+		t.Fatal("registered source proof is incomplete or asserts authority", proof)
+	}
+	for _, raw := range proof["source_refs"].([]any) {
+		ref := raw.(object)["path"].(string)
+		if !strings.HasPrefix(ref, "src/ptsip/engines/") {
+			t.Fatal("migration registry verification read a source outside its engine fixture", ref)
+		}
 	}
 	context := entry(t, "CONTEXT")
 	contract := document(t, context["contract_ref"].(string))

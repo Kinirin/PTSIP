@@ -51,53 +51,32 @@ func digest(t *testing.T, ref string) string {
 	return hex.EncodeToString(sum[:])
 }
 
-func TestActivePolicyAndPlanReconcileDeferredEngineBoundary(t *testing.T) {
-	index := document(t, "src/policy/index.yaml")
-	for _, id := range []string{"SFP-ARCH-0004", "SFP-CNTR-0005"} {
-		found := false
-		for _, raw := range index["policies"].([]any) {
-			entry := raw.(object)
-			if entry["id"] != id {
-				continue
-			}
-			found = true
-			policy := document(t, "src/policy/"+entry["path"].(string))
-			if entry["status"] != "ACTIVE" || policy["policy"].(object)["status"] != "ACTIVE" {
-				t.Fatal("activation source/index mismatch", id)
-			}
-			unit := policy["authority_semantics"].(object)["unit_ptsip_engine_draft"].(object)
-			if unit["policy_activation"].(object)["approval_source"] != "USER_EXPLICIT" {
-				t.Fatal("test result cannot create activation approval")
-			}
-			if unit["implementation_admission"].(object)["legacy_python_implementation"] != "FORBIDDEN" {
-				t.Fatal("legacy reuse boundary lost")
-			}
+func TestContractFirstPlanScopesImplementationAndPublication(t *testing.T) {
+	const planRoot = "src/planning/0.3.8/contract-first-migration/"
+	plan := document(t, planRoot+"implementation-runbook.plan.json")
+	scope := plan["execution_scope"].(object)
+	approved := map[string]bool{}
+	for _, raw := range scope["approved_work_units"].([]any) {
+		id := raw.(string)
+		if approved[id] {
+			t.Fatal("duplicate implementation work unit", id)
 		}
-		if !found {
-			t.Fatal("unregistered current policy", id)
+		approved[id] = true
+	}
+	index := document(t, planRoot+"index.json")
+	for _, raw := range index["responsibility_partitions"].([]any) {
+		unit := raw.(object)
+		id := unit["work_unit_id"].(string)
+		if unit["implementation_authorized"] != approved[id] {
+			t.Fatal("implementation approval does not match the runbook", id)
 		}
+		delete(approved, id)
 	}
-	base := document(t, "src/policy/ARCH/SFP-ARCH-0001.yaml")["authority_semantics"].(object)["engine_plane_boundary"].(object)
-	if base["runtime_activation"] != "CURRENT_REGISTERED_CONTRACT_AND_GOV_CTRL_AUTHORIZATION_REQUIRED" {
-		t.Fatal("runtime guard not reconciled")
+	if len(approved) != 0 || scope["build_or_publish_release"] != "NOT_AUTHORIZED" {
+		t.Fatal("unresolved approved work units or unauthorized publication", approved)
 	}
-	if base["executable_source_copy_into_repository_engine_root"] != "FORBIDDEN" {
-		t.Fatal("consumer source boundary changed")
-	}
-	wu := document(t, "developer/planning/0.3.8/WU-02/WU-02.yaml")["work_unit"].(object)
-	authorization := wu["implementation_authorization"].(object)
-	if wu["approval"].(object)["approval_source"] != "USER_EXPLICIT" || authorization["authorization_source"] != "USER_EXPLICIT" || (authorization["status"] != "AUTHORIZED" && authorization["status"] != "COMPLETE") {
-		t.Fatal("plan authority must be explicit")
-	}
-	if authorization["status"] == "COMPLETE" {
-		plan := document(t, "developer/planning/0.3.8/WU-02/WU-02.yaml")
-		if len(plan["completion_evidence"].([]any)) == 0 || wu["lifecycle"].(object)["status"] != "COMPLETE" {
-			t.Fatal("completed implementation must have recorded completion evidence")
-		}
-		closeout := wu["foundation_closeout"].(object)
-		if closeout["approval_source"] != "USER_EXPLICIT" || closeout["real_consumer_activation"] != false || closeout["existing_public_api_cutover"] != false || closeout["legacy_api_retirement"] != false {
-			t.Fatal("foundation completion cannot authorize consumer activation or API retirement")
-		}
+	if scope["already_applied_not_reexecute"].([]any)[0] != "WU-13" {
+		t.Fatal("Planning retirement must be recorded as historical work")
 	}
 }
 
