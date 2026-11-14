@@ -1,0 +1,89 @@
+{
+    "$id": ,
+    "title": "Basic Structure of a Common Schema",
+    "Policy" : {
+        "path": "src/ptsip/schemas/policy/**",
+        "schema": [
+            {
+                "public-structure-policy":[
+                    {"$ref": "urn:ptsip:contract:public-structure-policy:java:v2"}, {"template_type": [{"language": "java"}, {"version": "v2"}]},
+                    {"$ref": "urn:ptsip:contract:public-structure-policy:markdown:v1"}, {"template_type": [{"language": "java"}, {"version": "v1"}]},
+                    {"$ref": "urn:ptsip:contract:public-structure-policy:yaml:v1"}, {"template_type": [{"language": "yaml"}, {"version": "v1"}]},
+                ]
+            },
+            {
+                "Policy_Identity": [
+                    {"$ref": "urn:ptsip:contract:public-structure-policy-identity:v2"}, {"version": "v2"}
+                ]
+            },
+            {
+                "Policy_lifecycle":[
+                    {"$ref": "urn:ptsip:contract:public-structure-policy-lifecycle:v2"}, {"version": "v2"}
+                ]
+            },
+            {
+                "Policy_rule":[
+                    {"$ref": "urn:ptsip:contract:public-structure-policy-rule:v2"}, {"version": "v2"}
+                ]
+            }
+        ]
+    },
+    "plan" : {
+        "path": "src/ptsip/schemas/plan/**",
+        "schema": [
+            {
+                "public-structure-plan":[
+                    {"$ref": "urn:ptsip:contract:public-structure-plan"}, {"template_type": [{"category": "default"},{"version": "v.1"}]}
+                ],
+            },
+            {
+                "public-structure-plan-lifecycle": [
+                    {"$ref": "urn:ptsip:contract:public-structure-plan-lifecycle"}, {"version": "v.1"}
+                ]
+            }
+        ]
+    },
+    "storage" : {
+        "path": "src/ptsip/schemas/storage/**",
+        "profile": [
+            {
+                "path": "src/ptsip/schemas/storage/profile/**",
+                "schema": [
+                    {
+                        "mode_profile": [{"$ref":"urn:ptsip:mode_profile"},{"version": "pp.1"}]
+                    },
+                    {
+                        "user_profile": [{"$ref":"urn:ptsip:user_profile"},{"version": "pp.1"}]
+                    },
+                ]
+            }
+        ],
+        "release": [
+            {
+                "path": "src/ptsip/schemas/storage/release/**",
+                "schema": [
+                    {"readme": }
+                ]
+            }
+        ],
+        "Responsibility-Authority": [
+            {
+                "path": "src/ptsip/schemas/storage/rbac/**",
+                "schema": [
+                    {"RA_list": [{"$ref":"urn:ptsip:ra_list"},{"version": "v.1"}]},
+                    {"rac_list": [{"$ref":"urn:ptsip:rac_list"},{"version": "v.1"}]},
+                    {"aec_list": [{"$ref":"urn:ptsip:aec_list"},{"version": "v.1"}]}
+                ]
+            }
+        ],
+        "specification": [
+            {
+                "path": "src/ptsip/schemas/storage/specification/**",
+                "schema": {
+                    "RA_list": [{"$ref":"urn:ptsip:specification"},{"version": "v.1"}
+                    ]
+                }
+            }
+        ]
+    }
+}

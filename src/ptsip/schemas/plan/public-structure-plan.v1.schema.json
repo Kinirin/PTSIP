@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:contract:public-structure-plan",
+  "version": "v.1",
+  "type": "object",
+  "required": ["file_language"],
+  "properties":{
+    "file_language": ["java","yaml", "markdown"],
+    "required": ["Plan_title", "Plan_properties", "Plan_lifecycle", "work_unit_item"],
+      "properties": {
+        "Plan_title": {"type": "String"},
+        "created_at": {
+          "type": "String",
+          "pattern": {}
+        },
+        "Plan_properties":{
+          "required": ["version","purpose"],
+          "properties": [
+            {
+              "version": {
+                "type": "object",
+                "pattern": "version_pattern"
+              },
+              "revision": {
+                "type": "object",
+                "pattern": "version_pattern"
+              },
+            },
+            {"purpose": {"type": "String"}},
+            {"plan_id": {
+              "type": "String",
+              "pattern": "plan_id_pattern"
+              }
+            },
+          ]
+        },
+        "Plan_lifecycle":{
+          "required": ["status"],
+          "properties":{
+            "status": {
+              "type": "object",
+              "$ref": "urn:ptsip:contract:public-structure-plan-lifecycle",
+            }
+          }
+        },
+        "work_unit_item":{
+          "session_name": {
+            "type": "String",
+            "minLength": 1
+          },
+          "session_id":{
+            "type": "String",
+            "required": ["pattern"],
+            "properties":{
+              "pattern":{
+                "type": "String"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "Checklist": {
+          [
+            {"session_name"},
+            {"session_id"},
+            {"is_checked"}
+          ],
+          "additionalProperties": true
+        }
+    }
+  }
+}
