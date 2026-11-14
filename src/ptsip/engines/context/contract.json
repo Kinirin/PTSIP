@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:965ee856-a9cd-4326-bfd6-d23638b9cb2c",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
   "semantic_owner": "CONTEXT",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -74,7 +74,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.0.0",
+        "contract_version": "2.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -206,11 +206,104 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.0.0",
+        "contract_version": "2.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
         "algorithm": "VERIFY_BOUND_JSON_SOURCE_AND_INLINE_CONSTRAINTS_THEN_PRESERVE_CONTEXT_CONTENT",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "context.order-dependencies",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "consumer": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "provider",
+                "consumer"
+              ],
+              "additionalProperties": false
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "nodes",
+          "edges"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "ordered_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "semantic_owner": {
+            "const": "CONTEXT"
+          }
+        },
+        "required": [
+          "ordered_ids",
+          "semantic_owner"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "ALL_EDGE_ENDPOINTS_DECLARED",
+        "UNIQUE_NODE_IDENTITIES",
+        "ACYCLIC_GRAPH"
+      ],
+      "postconditions": [
+        "EACH_PROVIDER_PRECEDES_ITS_CONSUMER",
+        "LEXICOGRAPHIC_TIE_BREAK",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "duplicate_node": "FAIL_CLOSED",
+        "unknown_endpoint": "FAIL_CLOSED",
+        "cycle": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_ORDERING_AND_INVALID_GRAPH_TESTS"
+      },
+      "compatibility": {
+        "contract_version": "2.1.0",
+        "legacy_public_api": "NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "TOPOLOGICAL_ORDER_OF_EXPLICIT_DEPENDENCIES_WITH_LEXICOGRAPHIC_TIES",
         "normative_authority_from_runtime_result": false
       }
     }
