@@ -312,7 +312,7 @@
   "resumption": "AFTER_SESSION_INTERRUPTION_READ_MAIN_HEAD_AND_EVIDENCE;CONTINUE_FROM_FIRST_UNFINISHED_APPROVED_WU_NOT_BY_NUMBER",
   "implementation_checkpoint": {
     "baseline_head": "0e11a13044049c2b3b72fde6f12b18aa6adcad5b",
-    "implementation_head": "d23d6d0fdcfdd550dfb4622a67b43a0bbb692b98",
+    "implementation_head": "3bd71bb37161aa5326608d5a76569b9325902321",
     "dependencies": {
       "WU-01": [
         "WU-02",
@@ -367,16 +367,17 @@
           "commands": [
             "Validate shared JSON schemas, declared identities and SHA256 references",
             "go -C developer/tests test ./engines/... -count=1 -run TestRegisteredManifestContractBindingAndIndependentOwnerClosure",
-            "ptsip engine <ptsip-root> <scripts-dir> context.order-dependencies"
+            "ptsip engine <ptsip-root> <scripts-dir> context.order-dependencies",
+            "Run discovery.verify-registry against the repository engine index"
           ],
-          "result": "PASS for current source schemas and 18 derived snapshot digests. The Go router loaded the relocated execution registry."
+          "result": "PASS for current source schemas and 18 derived snapshot digests. The Go router loaded the relocated execution registry. The native Discovery CLI verified the named engines and 31 engine source references."
         },
         "actions": [
           "43579870631",
-          "43579873086"
+          "43579873086",
+          "43583328507"
         ],
         "blocked": [
-          "POLICY_SOURCE_DUPLICATE_SCOPE",
           "VPMS_DELIVERABLES_ABSENT",
           "LEGACY_PACKAGING_INPUTS_OWNED_BY_WU12"
         ]
@@ -385,7 +386,7 @@
         "commits": [
           "922a9232f71ab4c2d1fbd097e702b35d028727e6",
           "ae3dc169d937e966c9196aebc0b09f058df308b7",
-          "a8e0458a6793f73b1fa547abd040b78133d898d8"
+          "6ec5e697b49265fe18f19e35597014fd34f4d61a"
         ],
         "owned_changed_files": [
           "src/ptsip/engines/discovery/README.md",
@@ -396,14 +397,14 @@
           "src/ptsip/engines/discovery/src/cli.rs",
           "src/ptsip/engines/discovery/src/environment.rs",
           "src/ptsip/engines/discovery/src/main.rs",
-          "src/ptsip/engines/discovery/src/registry.rs",
-          "src/ptsip/engines/discovery/src/source.rs",
-          "src/ptsip/engines/discovery/src/tpbg/source.rs"
+          "src/ptsip/engines/discovery/src/registry.rs"
         ],
         "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
         "operation_ids": [
           "discovery.planning",
-          "discovery.check-environment"
+          "discovery.check-environment",
+          "discovery.verify-registry",
+          "discovery.resolve"
         ],
         "contract_ref": "src/ptsip/engines/discovery/contract.json",
         "cli_protocol": "ONE_VERSIONED_JSON_REQUEST_ON_STDIN_AND_JSON_RESULT_ON_STDOUT",
@@ -414,11 +415,12 @@
             "Run the source-built engine with the typed request on stdin"
           ],
           "rust_tests_passed": 12,
-          "result": "Bound catalog selection succeeded and modified plan bytes were rejected. Policy-backed registry verification remains blocked by duplicate scope keys in SFP-ARCH-0004."
+          "result": "Bound catalog selection and the relocated registry passed. Developer tests verified source staleness rejection, independent selection, and the native discovery and invocation pipeline."
         },
         "actions": [
           "43579236393",
-          "43580054718"
+          "43580054718",
+          "43583331440"
         ]
       },
       "WU-03": {
@@ -592,16 +594,17 @@
           "commands": [
             "Validate shared JSON schemas, declared identities and SHA256 references",
             "go -C developer/tests test ./engines/... -count=1 -run TestRegisteredManifestContractBindingAndIndependentOwnerClosure",
-            "ptsip engine <ptsip-root> <scripts-dir> context.order-dependencies"
+            "ptsip engine <ptsip-root> <scripts-dir> context.order-dependencies",
+            "Run discovery.verify-registry against the repository engine index"
           ],
-          "result": "PASS for current source schemas and 18 derived snapshot digests. The Go router loaded the relocated execution registry."
+          "result": "PASS for current source schemas and 18 derived snapshot digests. The Go router loaded the relocated execution registry. The native Discovery CLI verified the named engines and 31 engine source references."
         },
         "actions": [
           "43579870631",
-          "43579873086"
+          "43579873086",
+          "43583328507"
         ],
         "blocked": [
-          "POLICY_SOURCE_DUPLICATE_SCOPE",
           "VPMS_DELIVERABLES_ABSENT",
           "LEGACY_PACKAGING_INPUTS_OWNED_BY_WU12"
         ]
@@ -637,7 +640,8 @@
       },
       "WU-10": {
         "commits": [
-          "4f62e1ddd06bac6522b4ea2907a80a7bb74c0e86"
+          "4f62e1ddd06bac6522b4ea2907a80a7bb74c0e86",
+          "3bd71bb37161aa5326608d5a76569b9325902321"
         ],
         "owned_changed_files": [
           ".ptsip/engine/developer/Distribution/release/controller/package.go",
@@ -656,13 +660,15 @@
             "go -C developer/tests test ./engines/... -count=1 -run <selected registry, diagnostic, pipeline and impact cases>",
             "python -m py_compile src/ptsip/cli.py",
             "Compile release controller and test modules with a temporary Go workspace",
-            "Run VerifyInstalledComponents on a staged install of built native binaries"
+            "Run VerifyInstalledComponents on a staged install of built native binaries",
+            "go -C developer/tests test ./engines/... -count=1 -v -run <plan, registry, diagnostics and native invocation tests>"
           ],
-          "result": "Six selected tests passed. The staged verifier accepted registered binaries and rejected modified bytes. Full suite and normal Python CLI startup are blocked."
+          "result": "Six selected tests passed. The staged verifier accepted registered binaries and rejected modified bytes. Full suite and normal Python CLI startup are blocked. Six follow-up tests passed after making the plan and registry fixtures independent of policy document reads."
         },
         "actions": [
           "43579870631",
-          "43579873086"
+          "43579873086",
+          "43583328507"
         ],
         "blocked": [
           "MISSING_PTSIP_REPOSITORY_PYTHON_MODULE",
@@ -756,17 +762,23 @@
         "mode": "release-admission-contract-check",
         "conclusion": "FAILURE",
         "detail": "Go module dependency failure and missing historical validation/projection release approval."
+      },
+      "43583328507": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43583328507",
+        "head_sha": "3bd71bb37161aa5326608d5a76569b9325902321",
+        "mode": "repository-architecture",
+        "conclusion": "FAILURE",
+        "detail": "mode-selection cannot build contract_authoring because the Go dependency entry for common_contract/source is missing. Target jobs skipped."
+      },
+      "43583331440": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43583331440",
+        "head_sha": "3bd71bb37161aa5326608d5a76569b9325902321",
+        "mode": "release-verification native discovery",
+        "conclusion": "FAILURE",
+        "detail": "mode-selection cannot build contract_authoring because the Go dependency entry for common_contract/source is missing. Target jobs skipped."
       }
     },
     "remaining": {
-      "POLICY_SOURCE_DUPLICATE_SCOPE": {
-        "source": "src/policy/ARCH/SFP-ARCH-0004.yaml",
-        "lines": [
-          367,
-          380
-        ],
-        "decision": "Resolve the duplicate scope in the governed policy before policy-backed registry verification."
-      },
       "COMMON_CONTRACT_SCHEMAS_REMOVED_AT_BASELINE": {
         "source": "src/ptsip/common_contract/registry/manifest.json",
         "removal_commit": "3961abb281cb55c1e67b1f9d2d903d93c144e230",
@@ -796,6 +808,12 @@
       }
     },
     "execution_state": "APPROVED_IN_SCOPE_IMPLEMENTATION_COMMITTED_WITH_OPEN_VERIFICATION_AND_AUTHORITY_BLOCKERS",
-    "next_executable_units": []
+    "next_executable_units": [],
+    "scope_correction": {
+      "basis": "USER_DIRECTIVE_AND_EXISTING_CONTRACT_FIRST_MIGRATION_PLANS",
+      "verification_scope": "DECLARED_ENGINE_REGISTRY_CONTRACT_AND_SOURCE_CLOSURE",
+      "derives_policy_authority": false,
+      "superseded_implementation_commit": "a8e0458a6793f73b1fa547abd040b78133d898d8"
+    }
   }
 }
