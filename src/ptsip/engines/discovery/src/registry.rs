@@ -47,13 +47,8 @@ impl Source {
                 return Err("source changed during verification".into());
             }
         }
-        let value = match relative.extension().and_then(|suffix| suffix.to_str()) {
-            Some("yaml" | "yml") if reference.starts_with("src/policy/") => {
-                crate::source::parse_yaml(&bytes)
-            }
-            _ => crate::source::parse(&bytes),
-        };
-        value.map_err(|e| format!("invalid registered source {reference}: {e}"))
+        crate::source::parse(&bytes)
+            .map_err(|e| format!("invalid registered JSON source {reference}: {e}"))
     }
 
     fn bound(&mut self, reference: &Value) -> Result<Value, String> {
@@ -120,29 +115,13 @@ pub fn verify(input: &Value, select: bool) -> Result<Value, String> {
     {
         return Err("unsupported owner index contract".into());
     }
-    for (field, id) in [
-        ("architecture_owner", "SFP-ARCH-0004"),
-        ("contract_owner", "SFP-CNTR-0005"),
-    ] {
-        let policy = source.read(string(&index, field)?)?;
-        let active = if policy["schema_version"] == "ptsip-unified-policy/v3-candidate" {
-            policy["Policy_Identity"]["policy_kind"] == "PTSIP_SUPPORT_FEATURE"
-                && policy["Policy_Identity"]["id"] == id
-                && policy["Policy_Lifecycle"]["status"] == "APPROVED.Applying"
-        } else {
-            policy["policy_class"] == "PTSIP_SUPPORT_FEATURE"
-                && policy["policy"]["id"] == id
-                && policy["policy"]["status"] == "ACTIVE"
-        };
-        if !active {
-            return Err("current Support owner unavailable".into());
-        }
-    }
     let federation = &index["federation"];
     let statics = source.read(string(federation, "static_registry_ref")?)?;
     let execution = source.read(string(federation, "execution_registry_ref")?)?;
-    if statics["owner_id"] != federation["owner_id"]
-        || execution["owner_id"] != federation["owner_id"]
+    let owner = string(federation, "owner_id")?;
+    if statics["owner_id"] != owner
+        || statics["origin"] != "OFFICIAL"
+        || execution["owner_id"] != owner
         || statics["execution_permission"] != false
         || execution["execution_permission"] != false
     {
