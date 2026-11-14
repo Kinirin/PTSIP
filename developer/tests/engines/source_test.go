@@ -30,7 +30,7 @@ func entry(t *testing.T, kind string) object {
 func native(t *testing.T, kind string) string {
 	t.Helper()
 	e := entry(t, kind)
-	// All seven independently versioned engines use the same dependency set.
+	// Independent engine builds can share compiled dependencies in tests.
 	// A shared *test-only* Cargo target directory reuses compiled dependencies
 	// across engine crates; it does not combine their binaries or releases.
 	// Cargo still verifies source freshness on every requested build.
@@ -153,7 +153,7 @@ func TestSourceBoundDiscoveryRejectsStalenessAndPreservesIndependentSelection(t 
 	root := copyRegisteredSource(t)
 	input := object{"root": root, "index_ref": "src/ptsip/engines/index.json", "expected_revision": nil}
 	proof := invoke(t, binary, "DISCOVERY", "discovery.verify-registry", input, true)
-	if len(proof["registered_engines"].([]any)) != 7 || proof["derived_authority"] != false {
+	if len(proof["registered_engines"].([]any)) != len(entries(t)) || proof["derived_authority"] != false {
 		t.Fatal("registered source closure missing", proof)
 	}
 	context := entry(t, "CONTEXT")
@@ -162,7 +162,7 @@ func TestSourceBoundDiscoveryRejectsStalenessAndPreservesIndependentSelection(t 
 	first := invoke(t, binary, "DISCOVERY", "discovery.resolve", selected, true)
 	selected["expected_revision"] = first["source_revision"]
 	// Corrupt an unrelated engine's source. Current Context selection has a proven independent closure.
-	unrelated := entry(t, "PLANNING")
+	unrelated := entry(t, "PROJECTION")
 	writeJSON(t, root, unrelated["manifest_ref"].(string), object{"bad": "source"})
 	invoke(t, binary, "DISCOVERY", "discovery.resolve", selected, true)
 	invoke(t, binary, "DISCOVERY", "discovery.verify-registry", input, false)
@@ -216,7 +216,7 @@ func TestStorageMediationRequiresBothCurrentOwnerSources(t *testing.T) {
 }
 
 func TestTypedImpactGraphUsesCurrentTwoSidedEvidenceAndScopedClosure(t *testing.T) {
-	binary := native(t, "PLANNING")
+	binary := native(t, "VALIDATION")
 	root := t.TempDir()
 	var nodes []any
 	hashes := map[string]string{}
@@ -227,33 +227,33 @@ func TestTypedImpactGraphUsesCurrentTwoSidedEvidenceAndScopedClosure(t *testing.
 	evidence := func(p, c, producer, compatibility string) object {
 		id := p + "-" + c + "-" + producer
 		path := id + ".json"
-		hash := writeJSON(t, root, path, object{"id": id, "version": "1", "provider": p, "consumer": c, "producer_id": producer, "provider_sha256": hashes[p], "consumer_sha256": hashes[c], "outcome": "PASS", "compatibility": compatibility})
+		hash := writeJSON(t, root, path, object{"id": id, "version": "1", "provider": p, "consumer": c, "producer_id": producer, "relation": "DEPENDENCY", "provider_sha256": hashes[p], "consumer_sha256": hashes[c], "outcome": "PASS", "compatibility": compatibility})
 		return object{"id": id, "version": "1", "path": path, "sha256": hash}
 	}
 	ab := object{"provider": "a", "consumer": "b", "relation": "DEPENDENCY", "provider_evidence": evidence("a", "b", "a", "COMPATIBLE"), "consumer_evidence": evidence("a", "b", "b", "COMPATIBLE")}
 	bc := object{"provider": "b", "consumer": "c", "relation": "DEPENDENCY", "provider_evidence": evidence("b", "c", "b", "COMPATIBLE"), "consumer_evidence": evidence("b", "c", "c", "COMPATIBLE")}
 	graph := object{"nodes": nodes, "edges": []any{ab, bc}}
 	input := object{"root": root, "graph_ref": "graph.json", "expected_graph_sha256": writeJSON(t, root, "graph.json", graph), "changed_id": "a"}
-	out := invoke(t, binary, "PLANNING", "planning.impact", input, true)
+	out := invoke(t, binary, "VALIDATION", "validation.planning.impact", input, true)
 	if out["status"] != "VERIFIED_COMPATIBLE_UNAFFECTED" || len(out["affected_ids"].([]any)) != 1 {
 		t.Fatal("current independent compatibility proof ignored", out)
 	}
 	ab["provider_evidence"] = evidence("a", "b", "a", "AFFECTED")
 	ab["consumer_evidence"] = evidence("a", "b", "b", "AFFECTED")
 	input["expected_graph_sha256"] = writeJSON(t, root, "graph.json", graph)
-	out = invoke(t, binary, "PLANNING", "planning.impact", input, true)
+	out = invoke(t, binary, "VALIDATION", "validation.planning.impact", input, true)
 	if out["status"] != "VERIFIED_AFFECTED" || len(out["affected_ids"].([]any)) != 2 {
 		t.Fatal("proven downstream compatibility did not bound propagation", out)
 	}
 	ab["provider_evidence"].(object)["sha256"] = strings.Repeat("0", 64)
 	input["expected_graph_sha256"] = writeJSON(t, root, "graph.json", graph)
-	out = invoke(t, binary, "PLANNING", "planning.impact", input, true)
+	out = invoke(t, binary, "VALIDATION", "validation.planning.impact", input, true)
 	if out["status"] != "UNCERTAIN_UNVERIFIED" || out["verification_eligible"] != false {
 		t.Fatal("stale evidence issued eligibility", out)
 	}
 	graph["edges"] = append(graph["edges"].([]any), object{"provider": "c", "consumer": "a", "relation": "DEPENDENCY"})
 	input["expected_graph_sha256"] = writeJSON(t, root, "graph.json", graph)
-	invoke(t, binary, "PLANNING", "planning.impact", input, false)
+	invoke(t, binary, "VALIDATION", "validation.planning.impact", input, false)
 }
 
 func TestVersionedHandoffMappingClassifiesScopeWithoutReplacingPublicAPI(t *testing.T) {
@@ -296,56 +296,6 @@ func TestIndependentValidationCompositionHasTypedClosure(t *testing.T) {
 	}
 	a["depends_on"] = []any{"b"}
 	invoke(t, binary, "VALIDATION", "validation.compose", input, false)
-}
-
-func TestInstallationSelectionNeedsAllSevenCurrentHostArtifacts(t *testing.T) {
-	binary := native(t, "PLANNING")
-	root := copyRegisteredSource(t)
-	planRef := "plan.json"
-	plan := document(t, "src/ptsip/engines/contracts/installation-plan.json")
-	hostTarget := "x86_64-unknown-linux-gnu"
-	if runtime.GOOS == "windows" {
-		hostTarget = "x86_64-pc-windows-msvc"
-	}
-	if runtime.GOOS == "darwin" {
-		hostTarget = "aarch64-apple-darwin"
-	}
-	input := object{"root": root, "plan_ref": planRef, "expected_plan_sha256": writeJSON(t, root, planRef, plan), "host_target": hostTarget, "evidence_refs": []any{}}
-	out := invoke(t, binary, "PLANNING", "planning.select-installation", input, true)
-	if out["ready"] != false || len(out["unverified_packages"].([]any)) != 7 || out["installation_authorized"] != false {
-		t.Fatal("missing host proof silently enabled installation", out)
-	}
-	var reports []any
-	for _, raw := range entries(t) {
-		e := raw.(object)
-		kind := e["kind"].(string)
-		artifact, err := os.ReadFile(native(t, kind))
-		if err != nil {
-			t.Fatal(err)
-		}
-		artifactRef := "artifacts/" + strings.ToLower(kind) + ".bin"
-		artifactPath := filepath.Join(root, filepath.FromSlash(artifactRef))
-		if err := os.MkdirAll(filepath.Dir(artifactPath), 0755); err != nil {
-			t.Fatal(err)
-		}
-		if err := os.WriteFile(artifactPath, artifact, 0644); err != nil {
-			t.Fatal(err)
-		}
-		hash := sha256.Sum256(artifact)
-		report := object{"id": "report-" + kind, "version": "1", "engine_id": e["engine_id"], "implementation_version": e["version"], "host_target": input["host_target"], "outcome": "PASS", "verification_scope": "NATIVE_TEST_BUILD_PACKAGE_STDIO_CONFORMANCE", "manifest_ref": object{"path": e["manifest_ref"], "sha256": digest(t, e["manifest_ref"].(string))}, "artifact_ref": object{"path": artifactRef, "sha256": hex.EncodeToString(hash[:])}}
-		ref := "reports/" + strings.ToLower(kind) + ".json"
-		reports = append(reports, object{"id": report["id"], "version": "1", "path": ref, "sha256": writeJSON(t, root, ref, report)})
-	}
-	input["evidence_refs"] = reports
-	out = invoke(t, binary, "PLANNING", "planning.select-installation", input, true)
-	if out["ready"] != true || len(out["selected_packages"].([]any)) != 7 || out["external_installation_performed"] != false {
-		t.Fatal("current native artifact closure not usable as a plan", out)
-	}
-	input["evidence_refs"] = reports[:6]
-	out = invoke(t, binary, "PLANNING", "planning.select-installation", input, true)
-	if out["ready"] != false {
-		t.Fatal("partial package availability claimed all seven")
-	}
 }
 
 func TestExecutionEffectObservationCannotUseStaleOrUnlinkedEvidence(t *testing.T) {

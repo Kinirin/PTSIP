@@ -36,23 +36,40 @@ func VerifyPackageJoin(root string, s release.Selection, input, platform string)
 		return receipt, err
 	}
 	check := `import importlib.metadata as metadata, sys
-from ptsip.engine_installation import inspect
+import hashlib, json, pathlib, sysconfig
 from ptsip.constants import TOOL_VERSION
 if metadata.version('PTSIP') != sys.argv[1] or TOOL_VERSION != sys.argv[2]:
  raise RuntimeError('Package and Tool versions are not independently installed')
-result = inspect()
-if not result['all_installed'] or result['execution_authorized'] or result['release_attested']:
- raise RuntimeError('pip Package omitted engines or implicitly granted authority')
-if result['distribution'] != 'SINGLE_PROJECT_PLATFORM_BUNDLES_ONLY':
- raise RuntimeError('not the integrated platform-specific PTSIP Package')
-for item in result['entries']:
+dist = metadata.distribution('PTSIP')
+package = pathlib.Path(dist.locate_file('ptsip'))
+index = json.loads((package / 'engines' / 'index.json').read_text(encoding='utf-8'))
+bundle = json.loads(dist.read_text('ptsip-engines.json'))
+scripts = pathlib.Path(sysconfig.get_path('scripts'))
+engines = index['official_engine_entries']
+origins = bundle['engines']
+if not engines or bundle['package_version'] != dist.version or bundle['execution_authorized'] is not False:
+ raise RuntimeError('Missing installed native origin evidence')
+if len(engines) != len(origins) or set(origins) != {entry['kind'].lower() for entry in engines}:
+ raise RuntimeError('Installed native inventory differs from the registered set')
+for item in engines:
+ name = 'ptsip-engine-' + item['kind'].lower()
+ executable = name + ('.exe' if sys.platform == 'win32' else '')
+ origin = origins[item['kind'].lower()]
+ binary = scripts / executable
+ if (origin['engine_id'] != item['engine_id'] or origin['engine_version'] != item['version']
+     or origin['entrypoint'] != executable or origin['execution_authorized'] is not False
+     or binary.is_symlink() or not binary.is_file()):
+  raise RuntimeError('Native origin or executable mismatch: ' + name)
+ with binary.open('rb') as source:
+  if hashlib.file_digest(source, 'sha256').hexdigest() != origin['binary_sha256']:
+   raise RuntimeError('Native executable digest mismatch: ' + name)
  try:
-  metadata.distribution('ptsip-engine-' + item['engine'].lower())
+  metadata.distribution(name)
  except metadata.PackageNotFoundError:
   pass
  else:
   raise RuntimeError('independent engine pip package still required')
-print('pip installed complete PTSIP Package with all seven hash-verified native engines')
+print('pip installed the PTSIP Package and Tool without separate engine distributions')
 `
 	c, err := release.ReadComposition(root)
 	if err != nil {

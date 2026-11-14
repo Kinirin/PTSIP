@@ -103,8 +103,9 @@ func TestActivePolicyAndPlanReconcileDeferredEngineBoundary(t *testing.T) {
 
 func TestRegisteredManifestContractBindingAndIndependentOwnerClosure(t *testing.T) {
 	all := entries(t)
-	if len(all) != 7 {
-		t.Fatal("exact seven official engines required")
+	plan := document(t, "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json")
+	for _, raw := range plan["confirmed_engine_responsibilities"].(object)["current_migration_engine_kinds"].([]any) {
+		entry(t, raw.(string))
 	}
 	seen := map[string]bool{}
 	for _, raw := range all {
@@ -171,7 +172,7 @@ func TestRegisteredManifestContractBindingAndIndependentOwnerClosure(t *testing.
 			t.Fatal("these independent initial capabilities have no undeclared engine dependency")
 		}
 	}
-	state := document(t, "src/ptsip/engines/registries/derived-snapshot.json")
+	state := document(t, "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json")
 	if err := schema(t, "derived-state", state); err != nil {
 		t.Fatal(err)
 	}
@@ -229,7 +230,7 @@ func TestDataContractsRejectAuthorityExpansionAndConflateNeitherStopNorEffect(t 
 	}
 }
 
-func TestAllSixteenWorkItemsAndCurrentPublicHandoffsHaveExplicitRoutes(t *testing.T) {
+func TestAllSixteenWorkItemsHaveResolvableDeliverablesOrExplicitGaps(t *testing.T) {
 	bindings := document(t, "src/ptsip/engines/contracts/work-item-bindings.json")["items"].(object)
 	if len(bindings) != 16 {
 		t.Fatal("sixteen approved items must remain visible")
@@ -246,20 +247,14 @@ func TestAllSixteenWorkItemsAndCurrentPublicHandoffsHaveExplicitRoutes(t *testin
 			document(t, raw.(string))
 		}
 	}
-	handoff := document(t, "src/ptsip/engines/contracts/vpms-handoff.json")
-	current := document(t, "src/vpms/contracts/index.json")["contracts"].(object)
-	if len(handoff["relations"].([]any)) != 3 {
-		t.Fatal("current VPMS identities missing")
-	}
-	for _, raw := range handoff["relations"].([]any) {
-		relation := raw.(object)
-		source := relation["source_contract"].(object)
-		if current[source["id"].(string)] == nil || source["status"] != "ACTIVE" || relation["eligible_for_cutover"] != false {
-			t.Fatal("unverified API cutover or legacy reconstruction")
+	for _, id := range []string{
+		"VALIDATION_VPMS_PROTOCOL_SELECTION_COMPOSITION_AND_RUNTIME_CONTRACT_BRIDGE",
+		"VPMS_PUBLIC_API_AND_TEST_MODE_TRANSITION_PLAN",
+	} {
+		item := bindings[id].(object)
+		if len(item["unresolved_deliverables"].([]any)) == 0 {
+			t.Fatal("missing VPMS sources must have explicit unresolved evidence", id)
 		}
-	}
-	if handoff["legacy_retirement"] != false || handoff["generic_validation_implies_vpms_protocol_equivalence"] != false {
-		t.Fatal("generic validation is not public VPMS equivalence")
 	}
 }
 
@@ -303,21 +298,22 @@ func TestNativeIndependentRustEnginePackages(t *testing.T) {
 			contract := document(t, e["contract_ref"].(string))
 			inputs := map[string]object{
 				"CONTEXT":    {"context_id": "c", "content": object{"x": 1}, "source_revision": "r"},
-				"STORAGE":    {"capability_id": "c", "operation_id": "read", "contract_version": "1", "providers": []any{object{"capability_id": "c", "provider_id": "p", "operation_id": "read", "provider_operation_id": "get", "contract_version": "1", "compatible": true, "provider_owner": "consumer"}}},
 				"VALIDATION": {"schema": object{"type": "integer"}, "instance": 1},
-				"DISCOVERY":  {"engine_id": "e", "capability_id": "c", "version": "1", "contract_id": "k", "registrations": []any{object{"engine_id": "e", "capability_id": "c", "version": "1", "contract_id": "k", "entrypoint": "exe", "origin": "CONSUMER", "current": true, "eligible": true}}},
-				"PLANNING":   {"nodes": []any{object{"id": "a", "dependencies": []any{}}}},
-				"EXECUTION":  {"attempt": object{"attempt_id": "a", "status": "FAILED", "cause": "RESOURCE_EXHAUSTION", "effect_evidence_refs": []any{}}, "effects": []any{}},
+				"EXECUTION":  {"root": t.TempDir(), "attempt": object{"attempt_id": "a", "status": "FAILED", "cause": "RESOURCE_EXHAUSTION", "effect_evidence_refs": []any{}}, "effects": []any{}},
 				"PROJECTION": {"context_id": "c", "content": object{"x": 1}, "pointers": []any{"/x"}},
 			}
+			operation := e["operations"].([]any)[0]
 			if e["kind"] == "STORAGE" {
 				inputs["STORAGE"] = storageInput(t, e, contract)
 			}
 			if e["kind"] == "DISCOVERY" {
-				inputs["DISCOVERY"] = object{"root": testrepo.Root(t), "index_ref": "src/ptsip/engines/index.json", "expected_revision": nil, "engine_id": e["engine_id"], "capability_id": contract["contract_id"], "version": e["version"], "contract_id": contract["contract_id"]}
+				root := t.TempDir()
+				plan := sourceRef(t, root, "plan.json", object{"id": "example", "version": "1"})
+				catalog := sourceRef(t, root, "catalog.json", object{"id": "catalog", "version": "1", "schema_version": "ptsip-plan-discovery-catalog/v1", "plans": []any{plan}})
+				inputs["DISCOVERY"] = object{"root": root, "catalog_ref": catalog, "plan_id": "example"}
+				operation = "discovery.planning"
 			}
-			inputs["EXECUTION"]["root"] = testrepo.Root(t)
-			request := object{"engine_id": e["engine_id"], "engine_version": e["version"], "contract_id": contract["contract_id"], "contract_version": contract["version"], "operation_id": e["operations"].([]any)[0], "input": inputs[e["kind"].(string)]}
+			request := object{"engine_id": e["engine_id"], "engine_version": e["version"], "contract_id": contract["contract_id"], "contract_version": contract["version"], "operation_id": operation, "input": inputs[e["kind"].(string)]}
 			encoded, err := json.Marshal(request)
 			if err != nil {
 				t.Fatal(err)

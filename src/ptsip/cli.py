@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import subprocess
 import sys
+import sysconfig
+from importlib import metadata
 from pathlib import Path
 
 from .adoption import apply_adoption, prepare_adoption
@@ -41,8 +45,6 @@ from .dependency_analysis import analyze_dependencies
 from .dependency_review import write_review_pack
 from .dependency_validation import validation_plan
 from .doctor import doctor
-from .engine_installation import emit_status as official_engine_installation_status
-from .engine_installation import emit_compatibility as official_engine_compatibility
 from .inspection.components import discover_component_candidates
 from .inspection.dependencies_030 import scan_dependency_edges
 from .inspection.inventory import collect_inventory
@@ -258,6 +260,74 @@ def _validate_legacy_owner_arg(classification: str, lifecycle_owner: str | None)
         )
 
 
+def official_engine_compatibility() -> tuple[dict, int]:
+    """Locate and invoke the registered Discovery diagnostic in this installation."""
+    try:
+        distribution = metadata.distribution("PTSIP")
+        metadata_files = [
+            path for path in distribution.files or ()
+            if path.name == "METADATA" and path.parent.name.endswith(".dist-info")
+        ]
+        if len(metadata_files) != 1:
+            raise ValueError("A complete installed PTSIP wheel is required")
+        distribution_root = Path(distribution.locate_file(metadata_files[0])).parent
+        package_root = Path(__file__).resolve().parent
+        scripts_root = Path(sysconfig.get_path("scripts"))
+        engine_root = package_root / "engines" / "discovery"
+        manifest = json.loads((engine_root / "manifest.json").read_text(encoding="utf-8"))
+        contract = json.loads((engine_root / "contract.json").read_text(encoding="utf-8"))
+        bindings = json.loads((engine_root / "execution-bindings.json").read_text(encoding="utf-8"))["bindings"]
+        if len(bindings) != 1:
+            raise ValueError("Ambiguous Discovery executable binding")
+        entrypoint = bindings[0]["entrypoint"]
+        if entrypoint != "ptsip-engine-discovery":
+            raise ValueError("Unexpected Discovery executable binding")
+        name = entrypoint + (".exe" if sys.platform == "win32" else "")
+        bundle = json.loads((distribution_root / "ptsip-engines.json").read_text(encoding="utf-8"))
+        origin = bundle["engines"]["discovery"]
+        binary = scripts_root / name
+        if binary.is_symlink() or not binary.is_file():
+            raise ValueError("Discovery executable is unavailable")
+        with binary.open("rb") as stream:
+            if name != origin["entrypoint"] or hashlib.file_digest(stream, "sha256").hexdigest() != origin["binary_sha256"]:
+                raise ValueError("Discovery executable does not match the installed origin")
+        identity = {
+            "engine_id": manifest["engine_id"], "engine_version": manifest["implementation_version"],
+            "contract_id": contract["contract_id"], "contract_version": contract["version"],
+        }
+        request = {
+            **identity, "operation_id": "discovery.check-environment",
+            "input": {"package_root": str(package_root), "scripts_root": str(scripts_root),
+                      "distribution_root": str(distribution_root)},
+        }
+        run = subprocess.run(
+            [str(binary)], input=json.dumps(request).encode(), capture_output=True,
+            timeout=30, check=False,
+        )
+        result = json.loads(run.stdout)
+        if not isinstance(result, dict):
+            raise ValueError("Invalid Discovery response")
+        if run.returncode or result.get("status") != "PASS":
+            raise ValueError(str(result.get("error") or "Discovery diagnosis failed"))
+        if (result.get("execution_authorized") is not False or result.get("normative_authority") is not False
+                or any(result.get(key) != value for key, value in identity.items())):
+            raise ValueError("Unexpected Discovery response identity or authority")
+        output = result["output"]
+        if output.get("schema_version") not in {
+            "ptsip-official-engine-compatibility/v1", "ptsip-official-engine-compatibility/v2",
+        }:
+            raise ValueError("Unsupported Discovery diagnostic response")
+        output["runtime"] = {"python_executable": sys.executable, "tool_version": TOOL_VERSION}
+        return output, 0 if output["status"] == "VERIFIED" else 4
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, subprocess.TimeoutExpired) as error:
+        return {
+            "schema_version": "ptsip-official-engine-compatibility-error/v1",
+            "status": "UNVERIFIED", "reason": str(error),
+            "required_action": "Use a complete PTSIP installation with registered Discovery diagnostics",
+            "execution_authorized": False, "pairwise_compatibility_guaranteed": False,
+        }, 4
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="ptsip", description="Reference development tooling for PTSIP")
     parser.add_argument("--version", action="version", version=f"PTSIP Tool {TOOL_VERSION}")
@@ -266,12 +336,10 @@ def _parser() -> argparse.ArgumentParser:
     p_spec = sub.add_parser("spec", help="Show the canonical specification binding embedded in this tool")
     p_spec.add_argument("--json", action="store_true")
 
-    p_engines = sub.add_parser("engines", help="Inspect official engine installation, capabilities and compatibility evidence")
+    p_engines = sub.add_parser("engines", help="Inspect declared compatibility of the installed official engines")
     engine_commands = p_engines.add_subparsers(dest="engine_command", required=True)
-    p_engine_status = engine_commands.add_parser("status", help="Read-only seven-engine package/entrypoint availability")
-    p_engine_status.add_argument("--json", action="store_true")
     p_engine_compatibility = engine_commands.add_parser(
-        "compatibility", help="Read-only native Discovery diagnosis of seven official engines and their invocation contracts"
+        "compatibility", help="Read-only native Discovery diagnosis of registered official engines and their invocation contracts"
     )
     p_engine_compatibility.add_argument("--json", action="store_true")
 
@@ -496,14 +564,11 @@ def main(argv: list[str] | None = None) -> int:
             _emit(current_spec_identity().as_dict(), args.json)
             return 0
         if args.command == "engines":
-            result, code = (official_engine_compatibility() if args.engine_command == "compatibility"
-                            else official_engine_installation_status())
-            if args.engine_command == "compatibility" and args.json:
-                # ASCII JSON escapes preserve localized errors even when Windows
-                # stdout uses a legacy encoding; every byte is also valid UTF-8.
+            result, code = official_engine_compatibility()
+            if args.json:
                 print(json.dumps(result, indent=2, ensure_ascii=True))
             else:
-                _emit(result, args.json)
+                _emit(result, False)
             return code
         if args.command == "doctor":
             result = doctor(args.path)

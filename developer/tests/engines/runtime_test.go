@@ -151,7 +151,7 @@ func TestNativeValidationCatalogSelectionAndAllSelectedAdapterPreflight(t *testi
 	invoke(t, binary, "VALIDATION", "validation.select-cases", input, false)
 }
 
-func TestNativeDiscoveryPlanningAndActualEngineInvocation(t *testing.T) {
+func TestNativeDiscoveryAndActualEngineInvocation(t *testing.T) {
 	root := copyRegisteredSource(t)
 	contextRef := sourceRef(t, root, "content.json", object{"schema_version": "ptsip-native-context-source/v1", "id": "native-context", "version": "1.0.0", "content": object{"ready": true}, "constraints": object{"type": "object"}})
 	invocation := registeredInvocation(t, root, "CONTEXT", "load-context", "context.load", object{"root": root, "source_ref": contextRef})
@@ -159,9 +159,6 @@ func TestNativeDiscoveryPlanningAndActualEngineInvocation(t *testing.T) {
 	registryRef := sourceRef(t, root, "invocations.json", registry)
 	input := object{"root": root, "registry_ref": registryRef, "invocation_id": "load-context"}
 	invoke(t, native(t, "DISCOVERY"), "DISCOVERY", "discovery.verify-invocation", input, true)
-	plan := object{"id": "plan", "version": "1.0.0", "steps": []any{object{"id": "load", "dependencies": []any{}, "invocation_id": "load-context"}}}
-	planRef := sourceRef(t, root, "plan.json", plan)
-	invoke(t, native(t, "PLANNING"), "PLANNING", "planning.prepare", object{"root": root, "registry_ref": registryRef, "plan_ref": planRef}, true)
 	input = merge(input, admittedAuthority(t, root, "EXECUTION", "execution.invoke", "load-context", invocation["request_ref"].(object)["sha256"], invocation["artifact_ref"].(object)["sha256"]))
 	binary := native(t, "EXECUTION")
 	output := invoke(t, binary, "EXECUTION", "execution.invoke", input, true)

@@ -139,10 +139,10 @@ func TestOfficialEngineEnvironmentDiagnostics(t *testing.T) {
 	t.Run("installed catalog does not imply compatibility", func(t *testing.T) {
 		input, _, _ := installedEnvironment(t)
 		out := invoke(t, binary, "DISCOVERY", "discovery.check-environment", input, true)
-		if out["installation_integrity"] != "VERIFIED" || out["status"] != "UNVERIFIED" || out["pairwise_compatibility_guaranteed"] != false || out["engine_count"] != float64(7) {
+		if out["installation_integrity"] != "VERIFIED" || out["status"] != "UNVERIFIED" || out["pairwise_compatibility_guaranteed"] != false || out["engine_count"] != float64(len(entries(t))) {
 			t.Fatal(out)
 		}
-		row := environmentRow(t, out, "PLANNING")
+		row := environmentRow(t, out, "DISCOVERY")
 		if len(row["operations"].([]any)) == 0 || row["transport_agreement"] != "VERIFIED" {
 			t.Fatal(row)
 		}
@@ -222,8 +222,12 @@ func TestOfficialEngineEnvironmentDiagnostics(t *testing.T) {
 				v["official_engine_entries"].([]any)[0].(object)["contract_ref"] = "src/ptsip/engines/../../escape.json"
 				writeJSON(t, pkg, "engines/index.json", v)
 			}
+			if tc == "ambiguous registration" {
+				invoke(t, binary, "DISCOVERY", "discovery.check-environment", input, false)
+				return
+			}
 			out := invoke(t, binary, "DISCOVERY", "discovery.check-environment", input, true)
-			if out["status"] != "INCOMPATIBLE" || len(out["entries"].([]any)) != 7 {
+			if out["status"] != "INCOMPATIBLE" || len(out["entries"].([]any)) != len(entries(t)) {
 				t.Fatal(out)
 			}
 			if tc == "tampered binary" {

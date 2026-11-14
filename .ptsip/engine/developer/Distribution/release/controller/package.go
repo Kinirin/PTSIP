@@ -3,18 +3,22 @@ package releasecontroller
 import (
 	"archive/zip"
 	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"go.yaml.in/yaml/v3"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"sort"
 	"strings"
 	"time"
+
+	"go.yaml.in/yaml/v3"
 )
 
 type File struct {
@@ -344,41 +348,176 @@ func InstallPackage(snapshot Snapshot, platform, python string, registered map[s
 	return VerifyInstalledComponents(snapshot, python)
 }
 
-// Python is the installation adapter only. Inventory, artifact selection and
-// completion remain governed by the Go Package controller.
+type installedOrigin struct {
+	Schema     string `json:"schema_version"`
+	ID         string `json:"engine_id"`
+	Version    string `json:"engine_version"`
+	Target     string `json:"host_target"`
+	Entrypoint string `json:"entrypoint"`
+	Digest     string `json:"binary_sha256"`
+	Source     string `json:"source_sha"`
+	Permission *bool  `json:"execution_authorized"`
+}
+
+// Python locates the selected installation. Go verifies the native bundle.
 func VerifyInstalledComponents(snapshot Snapshot, python string) error {
-	adapter := `import importlib.metadata as metadata, json, sys
-from ptsip.engine_installation import inspect
-snapshot = json.load(sys.stdin)
-status = inspect()
-if not status['all_installed'] or status['execution_authorized'] or status['release_attested']:
-    raise RuntimeError('PTSIP native engine bundle incomplete or unauthorized')
-if status['distribution'] != 'SINGLE_PROJECT_PLATFORM_BUNDLES_ONLY':
-    raise RuntimeError('official integrated PTSIP distribution required')
-rows = {row['engine'].lower(): row for row in status['entries']}
-if len(rows) != 7:
-    raise RuntimeError('incomplete native PTSIP engine inventory')
-for component in snapshot['components']:
-    if component['kind'] == 'profiles':
-        continue
-    if component['kind'] == 'engine':
-        row = rows[component['id']]
-        if row['source_sha'] != component['source_sha'] or row['installed_version'] != component['version']:
-            raise RuntimeError('installed native engine original source differs: ' + component['id'])
-    elif component['kind'] == 'tool':
-        from ptsip.constants import TOOL_VERSION
-        if TOOL_VERSION != component['version']:
-            raise RuntimeError('integrated PTSIP Tool version differs')
-print('Installed PTSIP Wheel contains seven source-bound verified native engines')
+	locate := `import importlib.metadata as m, json, pathlib, sysconfig
+from ptsip.constants import TOOL_VERSION
+d = m.distribution('PTSIP')
+files = [p for p in d.files or () if p.name == 'METADATA' and p.parent.name.endswith('.dist-info')]
+if len(files) != 1:
+    raise RuntimeError('Unambiguous installed PTSIP metadata required')
+print(json.dumps(dict(package_root=str(pathlib.Path(d.locate_file('ptsip'))),
+    metadata_root=str(pathlib.Path(d.locate_file(files[0])).parent),
+    scripts_root=sysconfig.get_path('scripts'), package_version=d.version, tool_version=TOOL_VERSION)))
 `
-	payload, err := json.Marshal(snapshot)
+	cmd := exec.Command(python, "-c", locate)
+	cmd.Stderr = os.Stderr
+	raw, err := cmd.Output()
 	if err != nil {
 		return err
 	}
-	cmd := exec.Command(python, "-c", adapter)
-	cmd.Stdin = bytes.NewReader(payload)
-	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-	return cmd.Run()
+	var location struct {
+		Package  string `json:"package_root"`
+		Metadata string `json:"metadata_root"`
+		Scripts  string `json:"scripts_root"`
+		Version  string `json:"package_version"`
+		Tool     string `json:"tool_version"`
+	}
+	if err := json.Unmarshal(raw, &location); err != nil {
+		return err
+	}
+	if !filepath.IsAbs(location.Package) || !filepath.IsAbs(location.Metadata) || !filepath.IsAbs(location.Scripts) ||
+		filepath.Dir(location.Package) != filepath.Dir(location.Metadata) || location.Version == "" {
+		return fmt.Errorf("invalid PTSIP installation location")
+	}
+	var index struct {
+		Schema  string `json:"schema_version"`
+		Entries []struct {
+			Kind    string `json:"kind"`
+			ID      string `json:"engine_id"`
+			Version string `json:"version"`
+			Binding string `json:"execution_binding_ref"`
+		} `json:"official_engine_entries"`
+	}
+	if err := ReadJSON(location.Package, "engines/index.json", &index); err != nil {
+		return err
+	}
+	var bundle struct {
+		Schema     string                     `json:"schema_version"`
+		Version    string                     `json:"package_version"`
+		Platform   string                     `json:"platform"`
+		Permission *bool                      `json:"execution_authorized"`
+		Origins    map[string]installedOrigin `json:"engines"`
+	}
+	if err := ReadJSON(location.Metadata, "ptsip-engines.json", &bundle); err != nil {
+		return err
+	}
+	platform, target, suffix := "", "", ""
+	switch runtime.GOOS + "/" + runtime.GOARCH {
+	case "windows/amd64":
+		platform, target, suffix = "windows-x64", "x86_64-pc-windows-msvc", ".exe"
+	case "linux/amd64":
+		platform, target = "linux-x64", "x86_64-unknown-linux-gnu"
+	case "darwin/arm64":
+		platform, target = "macos-arm64", "aarch64-apple-darwin"
+	default:
+		return fmt.Errorf("unsupported native Package host")
+	}
+	if index.Schema != "ptsip-official-engine-index/v1" ||
+		bundle.Schema != "ptsip-bundled-engine-origins/v1" || bundle.Version != location.Version ||
+		bundle.Platform != platform || bundle.Permission == nil || *bundle.Permission ||
+		len(index.Entries) == 0 || len(index.Entries) != len(bundle.Origins) {
+		return fmt.Errorf("inconsistent installed native engine inventory")
+	}
+	seen := make(map[string]installedOrigin)
+	ids := make(map[string]bool)
+	validSource := regexp.MustCompile(`^[a-f0-9]{40}$`)
+	for _, entry := range index.Entries {
+		key := strings.ToLower(entry.Kind)
+		origin, ok := bundle.Origins[key]
+		if !ok || key == "" || entry.ID == "" || entry.Version == "" || ids[entry.ID] || seen[key].ID != "" ||
+			origin.Schema != "ptsip-independent-wheel-origin/v1" || origin.ID != entry.ID ||
+			origin.Version != entry.Version || origin.Target != target || origin.Permission == nil ||
+			*origin.Permission || !validSource.MatchString(origin.Source) {
+			return fmt.Errorf("missing or inconsistent installed origin: %s", key)
+		}
+		ref, ok := strings.CutPrefix(entry.Binding, "src/ptsip/")
+		if !ok || !strings.HasPrefix(ref, "engines/") {
+			return fmt.Errorf("invalid installed engine binding: %s", key)
+		}
+		var binding struct {
+			Rows []struct {
+				ID         string `json:"engine_id"`
+				Version    string `json:"engine_version"`
+				Entrypoint string `json:"entrypoint"`
+				Permission *bool  `json:"permission_grant"`
+			} `json:"bindings"`
+		}
+		if err := ReadJSON(location.Package, ref, &binding); err != nil {
+			return err
+		}
+		if len(binding.Rows) != 1 {
+			return fmt.Errorf("ambiguous installed engine binding: %s", key)
+		}
+		row := binding.Rows[0]
+		if row.ID != entry.ID || row.Version != entry.Version || row.Permission == nil || *row.Permission ||
+			row.Entrypoint == "" || strings.ContainsAny(row.Entrypoint, `\/:`) ||
+			origin.Entrypoint != row.Entrypoint+suffix {
+			return fmt.Errorf("installed engine entrypoint differs: %s", key)
+		}
+		if err := verifyInstalledBinary(location.Scripts, origin); err != nil {
+			return fmt.Errorf("installed engine %s: %w", key, err)
+		}
+		seen[key] = origin
+		ids[entry.ID] = true
+	}
+	matched := make(map[string]bool)
+	for _, component := range snapshot.Components {
+		switch component.Kind {
+		case "engine":
+			origin, ok := seen[component.ID]
+			if !ok || matched[component.ID] || origin.Source != component.SourceSHA || origin.Version != component.Version {
+				return fmt.Errorf("installed native engine original source differs: %s", component.ID)
+			}
+			matched[component.ID] = true
+		case "tool":
+			if location.Tool != component.Version {
+				return fmt.Errorf("integrated PTSIP Tool version differs")
+			}
+		}
+	}
+	if len(matched) != len(seen) {
+		return fmt.Errorf("installed engine inventory differs from the Package snapshot")
+	}
+	return nil
+}
+
+func verifyInstalledBinary(scripts string, origin installedOrigin) error {
+	if origin.Entrypoint == "." || origin.Entrypoint == ".." {
+		return fmt.Errorf("invalid native executable name")
+	}
+	path := filepath.Join(scripts, origin.Entrypoint)
+	info, err := os.Lstat(path)
+	if err != nil || !info.Mode().IsRegular() {
+		return fmt.Errorf("native executable missing or is an alias")
+	}
+	if runtime.GOOS != "windows" && info.Mode().Perm()&0111 == 0 {
+		return fmt.Errorf("native executable permission is missing")
+	}
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	hash := sha256.New()
+	if _, err := io.Copy(hash, file); err != nil {
+		return err
+	}
+	if hex.EncodeToString(hash.Sum(nil)) != origin.Digest {
+		return fmt.Errorf("native executable digest differs")
+	}
+	return nil
 }
 
 func IdentityText(snapshot Snapshot, specRevision, specSource string) string {
