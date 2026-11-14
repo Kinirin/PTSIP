@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:450659b1-1e89-4138-91d3-8dcbf6d6dc1a",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
   "semantic_owner": "VALIDATION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -161,7 +161,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -342,7 +342,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -523,7 +523,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -704,7 +704,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -885,7 +885,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1124,7 +1124,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1249,7 +1249,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1343,7 +1343,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1540,7 +1540,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -1740,7 +1740,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -1901,11 +1901,273 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "4.0.1",
+        "contract_version": "4.1.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
         "algorithm": "VERIFY_ALL_SELECTED_CASE_ADAPTERS_AND_CONTRACT_INPUTS_BEFORE_ANY_INVOCATION",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.planning.impact",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "graph_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_graph_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "changed_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "root",
+          "graph_ref",
+          "expected_graph_sha256",
+          "changed_id"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "changed_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "affected_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "VERIFIED_COMPATIBLE_UNAFFECTED",
+              "VERIFIED_AFFECTED",
+              "UNCERTAIN_UNVERIFIED"
+            ]
+          },
+          "verification_eligible": {
+            "type": "boolean"
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "changed_id",
+          "affected_ids",
+          "status",
+          "verification_eligible",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXPLICIT_VERSIONED_SOURCES",
+        "KNOWN_CHANGED_ID",
+        "TYPED_DEPENDENCY_EDGES"
+      ],
+      "postconditions": [
+        "POTENTIALLY_AFFECTED_IDS_REPORTED",
+        "MISSING_OR_CONFLICTING_COMPATIBILITY_EVIDENCE_IS_UNVERIFIED"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_graph": "FAIL_CLOSED",
+        "unverified_edge": "UNCERTAIN_UNVERIFIED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_TYPED_OPERATION_AND_NEGATIVE_CASES"
+      },
+      "compatibility": {
+        "legacy_public_api": "NO_IMPLICIT_EQUIVALENCE",
+        "contract_version": "4.1.0"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_HASH_BOUND_DEPENDENCY_GRAPH_AND_REPORT_TRANSITIVE_CONSUMER_SCOPE",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "validation.planning.prepare",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "plan_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "invocation_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "root",
+          "plan_ref",
+          "invocation_refs"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "plan_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "step_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "invocation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "prepared": {
+            "const": true
+          },
+          "execution_authorized": {
+            "const": false
+          }
+        },
+        "required": [
+          "plan_ref",
+          "step_ids",
+          "invocation_ids",
+          "prepared",
+          "execution_authorized"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "PLAN_STEP_DEPENDENCIES_CLOSED",
+        "EXACT_BOUND_INVOCATION_SOURCE_FOR_EACH_REFERENCED_INVOCATION"
+      ],
+      "postconditions": [
+        "PREPARATION_STRUCTURE_VERIFIED",
+        "NO_INVOCATION_OR_RUNTIME_AUTHORITY"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_plan": "FAIL_CLOSED",
+        "missing_or_ambiguous_invocation": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_TYPED_OPERATION_AND_NEGATIVE_CASES"
+      },
+      "compatibility": {
+        "legacy_public_api": "NO_IMPLICIT_EQUIVALENCE",
+        "contract_version": "4.1.0"
+      },
+      "machine_semantics": {
+        "algorithm": "VERIFY_EXPLICIT_PLAN_STEPS_AND_BOUND_INVOCATION_IDENTITIES_WITHOUT_EXECUTION",
         "normative_authority_from_runtime_result": false
       }
     }

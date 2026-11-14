@@ -212,5 +212,224 @@
   "id": "urn:uuid:d7c9e5d6-7fae-4baf-bc25-bb1df2f8c39b",
   "version": "1.0.0",
   "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
-  "schema_version": "ptsip-engine-local-runtime-source-shapes/v1"
+  "schema_version": "ptsip-engine-local-runtime-source-shapes/v1",
+  "planning_impact_graph": {
+    "type": "object",
+    "properties": {
+      "nodes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "uniqueItems": true
+      },
+      "edges": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "minLength": 1
+            },
+            "consumer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "DEPENDENCY",
+                "COMPATIBILITY",
+                "COMPOSITION"
+              ]
+            },
+            "provider_evidence": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "consumer_evidence": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "provider",
+            "consumer",
+            "relation",
+            "provider_evidence",
+            "consumer_evidence"
+          ],
+          "additionalProperties": false
+        },
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "nodes",
+      "edges"
+    ],
+    "additionalProperties": false
+  },
+  "planning_preparation": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "steps": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dependencies": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "invocation_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "id",
+            "dependencies",
+            "invocation_id"
+          ],
+          "additionalProperties": false
+        },
+        "uniqueItems": true,
+        "minItems": 1
+      }
+    },
+    "required": [
+      "id",
+      "version",
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "planning_invocation": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "operation_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "engine_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "capability_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "contract_version": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "id",
+      "version",
+      "operation_id",
+      "engine_id",
+      "capability_id",
+      "contract_version"
+    ]
+  }
 }

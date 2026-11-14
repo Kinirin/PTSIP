@@ -183,3 +183,182 @@ impl Root {
         Ok(())
     }
 }
+
+pub mod planning {
+    use super::{schema, text, Root};
+    use serde_json::{json, Value};
+    use std::collections::{BTreeMap, BTreeSet};
+
+    pub fn impact(input: &Value) -> Result<Value, String> {
+        let mut root = Root::new(text(input, "root")?)?;
+        let (graph, digest) = root.read(text(input, "graph_ref")?)?;
+        if input["expected_graph_sha256"] != digest {
+            return Err("stale dependency graph".into());
+        }
+        schema("planning_impact_graph", &graph)?;
+        let mut nodes = BTreeMap::new();
+        for node in graph["nodes"].as_array().ok_or("nodes required")? {
+            let id = text(node, "id")?;
+            if nodes.insert(id, node).is_some() {
+                return Err("duplicate dependency node identity".into());
+            }
+            root.bound(node)?;
+        }
+        let changed = text(input, "changed_id")?;
+        if !nodes.contains_key(changed) {
+            return Err("changed node is not in graph".into());
+        }
+        let mut pairs = BTreeSet::new();
+        let mut adjacency = BTreeMap::<&str, Vec<(&str, &Value)>>::new();
+        for edge in graph["edges"].as_array().ok_or("edges required")? {
+            let provider = text(edge, "provider")?;
+            let consumer = text(edge, "consumer")?;
+            if !nodes.contains_key(provider) || !nodes.contains_key(consumer) {
+                return Err("unknown dependency endpoint".into());
+            }
+            if !pairs.insert((provider, consumer, text(edge, "relation")?)) {
+                return Err("ambiguous dependency edge".into());
+            }
+            adjacency
+                .entry(provider)
+                .or_default()
+                .push((consumer, edge));
+        }
+
+        let mut affected = BTreeSet::from([changed]);
+        let mut pending = vec![changed];
+        let mut verified = true;
+        while let Some(provider) = pending.pop() {
+            for &(consumer, edge) in adjacency.get(provider).into_iter().flatten() {
+                let provider_status = evidence(
+                    &mut root,
+                    &edge["provider_evidence"],
+                    provider,
+                    edge,
+                    nodes[provider],
+                    nodes[consumer],
+                );
+                let consumer_status = evidence(
+                    &mut root,
+                    &edge["consumer_evidence"],
+                    consumer,
+                    edge,
+                    nodes[provider],
+                    nodes[consumer],
+                );
+                match (provider_status.as_deref(), consumer_status.as_deref()) {
+                    (Some("COMPATIBLE"), Some("COMPATIBLE")) => continue,
+                    (Some("AFFECTED"), Some("AFFECTED")) => {}
+                    _ => verified = false,
+                }
+                if affected.insert(consumer) {
+                    pending.push(consumer);
+                }
+            }
+        }
+        root.finish()?;
+        let status = if !verified {
+            "UNCERTAIN_UNVERIFIED"
+        } else if affected.len() > 1 {
+            "VERIFIED_AFFECTED"
+        } else {
+            "VERIFIED_COMPATIBLE_UNAFFECTED"
+        };
+        Ok(
+            json!({"changed_id": changed, "affected_ids": affected, "status": status,
+                  "verification_eligible": verified, "execution_authorized": false}),
+        )
+    }
+
+    fn evidence(
+        root: &mut Root,
+        reference: &Value,
+        producer: &str,
+        edge: &Value,
+        provider: &Value,
+        consumer: &Value,
+    ) -> Option<String> {
+        let record = root.bound(reference).ok()?;
+        if record["provider"] != edge["provider"]
+            || record["consumer"] != edge["consumer"]
+            || record["relation"] != edge["relation"]
+            || record["producer_id"] != producer
+            || record["provider_sha256"] != provider["sha256"]
+            || record["consumer_sha256"] != consumer["sha256"]
+            || record["outcome"] != "PASS"
+        {
+            return None;
+        }
+        record["compatibility"].as_str().map(str::to_owned)
+    }
+
+    pub fn prepare(input: &Value) -> Result<Value, String> {
+        let mut root = Root::new(text(input, "root")?)?;
+        let plan = root.bound(&input["plan_ref"])?;
+        schema("planning_preparation", &plan)?;
+
+        let mut steps = BTreeMap::new();
+        let mut required = BTreeSet::new();
+        for step in plan["steps"].as_array().ok_or("steps required")? {
+            let id = text(step, "id")?;
+            if steps.insert(id, step).is_some() {
+                return Err("duplicate plan step identity".into());
+            }
+            required.insert(text(step, "invocation_id")?);
+        }
+        let mut pending = BTreeMap::new();
+        let mut dependents = BTreeMap::<&str, Vec<&str>>::new();
+        for (&id, step) in &steps {
+            let dependencies = step["dependencies"]
+                .as_array()
+                .ok_or("dependencies required")?;
+            pending.insert(id, dependencies.len());
+            for dependency in dependencies {
+                let dependency = dependency.as_str().ok_or("dependency ID required")?;
+                if !steps.contains_key(dependency) {
+                    return Err("unknown plan step dependency".into());
+                }
+                dependents.entry(dependency).or_default().push(id);
+            }
+        }
+        let mut ready: Vec<_> = pending
+            .iter()
+            .filter_map(|(&id, &count)| (count == 0).then_some(id))
+            .collect();
+        let mut visited = 0;
+        while let Some(id) = ready.pop() {
+            visited += 1;
+            for &dependent in dependents.get(id).into_iter().flatten() {
+                let count = pending.get_mut(dependent).ok_or("unknown plan step")?;
+                *count -= 1;
+                if *count == 0 {
+                    ready.push(dependent);
+                }
+            }
+        }
+        if visited != steps.len() {
+            return Err("plan step dependency cycle".into());
+        }
+
+        let mut declared = BTreeSet::new();
+        for reference in input["invocation_refs"]
+            .as_array()
+            .ok_or("invocation references required")?
+        {
+            let id = text(reference, "id")?;
+            if !required.contains(id) || !declared.insert(id) {
+                return Err("unused or ambiguous invocation reference".into());
+            }
+            let invocation = root.bound(reference)?;
+            schema("planning_invocation", &invocation)?;
+        }
+        if declared != required {
+            return Err("missing invocation reference".into());
+        }
+        root.finish()?;
+        Ok(
+            json!({"plan_ref": input["plan_ref"], "step_ids": steps.keys().collect::<Vec<_>>(),
+                  "invocation_ids": declared, "prepared": true, "execution_authorized": false}),
+        )
+    }
+}
