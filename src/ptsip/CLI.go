@@ -288,12 +288,40 @@ func listOperations(index indexDocument) error {
 	}{Schema: "ptsip-registered-operations/v1", Operations: rows})
 }
 
-const usage = "Usage: ptsip help | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass one complete versioned JSON request from stdin to the registered native CLI."
+// Check an explicit target without loading the engine registry.
+func doctor(target string) error {
+	path, err := filepath.Abs(target)
+	if err != nil {
+		return err
+	}
+	info, err := os.Stat(path)
+	if err != nil && !errors.Is(err, fs.ErrNotExist) {
+		return err
+	}
+	result := struct {
+		Schema    string `json:"schema_version"`
+		Path      string `json:"path"`
+		Exists    bool   `json:"target_exists"`
+		Directory bool   `json:"target_directory"`
+	}{Schema: "ptsip-go-doctor/v1", Path: path, Exists: info != nil, Directory: info != nil && info.IsDir()}
+	if err := json.NewEncoder(os.Stdout).Encode(result); err != nil {
+		return err
+	}
+	if !result.Directory {
+		return errors.New("doctor target is not a directory")
+	}
+	return nil
+}
+
+const usage = "Usage: ptsip help | doctor <directory> | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass one complete versioned JSON request from stdin to the registered native CLI."
 
 func run(args []string) error {
 	if len(args) == 0 || (len(args) == 1 && (args[0] == "help" || args[0] == "--help" || args[0] == "-h")) {
 		_, err := fmt.Fprintln(os.Stdout, usage)
 		return err
+	}
+	if len(args) == 2 && args[0] == "doctor" {
+		return doctor(args[1])
 	}
 	if !(len(args) == 2 && args[0] == "operations") && !(len(args) == 4 && args[0] == "engine") {
 		return errors.New(usage)
