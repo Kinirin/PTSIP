@@ -1254,7 +1254,8 @@
       "RA-name exact and RAC/AEC ID-name consistency",
       "historical profiles remain verifiable",
       "new schema package data present in built wheel",
-      "removed sources have zero remaining refs"
+      "removed sources have zero remaining refs",
+      "Same $id with different Git blob content is resolved before either copy is retired"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1277,5 +1278,17 @@
     ],
     "note": "Commands are final-phase verification only; new schema loader/registry tests are required in implementation and their exact source path awaits user approval. Do not commit log.",
     "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'"
-  }
+  },
+  "source_conflicts": [
+    {
+      "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
+      "first": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+      "first_blob_sha": "14d47e469e5f12ae65d721f64b17bdc35de861d8",
+      "second": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+      "second_blob_sha": "83eb3b06eae023f5024a853bf40572166cf0a99a",
+      "schema_id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json",
+      "resolution": "EXPLICIT_SEMANTIC_DIFF_AND_USER_SELECTION_REQUIRED",
+      "deletion_blocked": true
+    }
+  ]
 }
