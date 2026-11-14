@@ -119,6 +119,47 @@ mod tests {
         json!({"engine_id":manifest["engine_id"],"engine_version":manifest["implementation_version"],"contract_id":c["contract_id"],"contract_version":c["version"],"operation_id":operation,"input":input})
     }
     #[test]
+    fn planning_preparation_checks_bound_references() {
+        let root = std::env::temp_dir().join(format!(
+            "ptsip-planning-prepare-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&root).unwrap();
+        let write = |path: &str, value: Value| {
+            let bytes = serde_json::to_vec(&value).unwrap();
+            std::fs::write(root.join(path), &bytes).unwrap();
+            json!({"id":value["id"], "version":value["version"], "path":path,
+                   "sha256":source::hash(&bytes)})
+        };
+        let plan_ref = write(
+            "plan.json",
+            json!({"id":"test-plan","version":"1","steps":[
+                {"id":"load","dependencies":[],"invocation_id":"load-context"}
+            ]}),
+        );
+        let invocation_ref = write(
+            "invocation.json",
+            json!({"id":"load-context","version":"1","engine_id":"engine",
+                   "capability_id":"capability","contract_version":"2",
+                   "operation_id":"context.load"}),
+        );
+        let mut input = json!({"root":root,"plan_ref":plan_ref,"invocation_refs":[invocation_ref]});
+        let operation = "validation.planning.prepare";
+        let prepared = dispatch(&request(input.clone(), operation)).unwrap();
+        assert_eq!(prepared["step_ids"], json!(["load"]));
+        assert_eq!(prepared["execution_authorized"], false);
+        input["invocation_refs"] = json!([]);
+        assert_eq!(dispatch(&request(input, operation)).unwrap_err(), "missing invocation reference");
+        std::fs::remove_file(root.join("plan.json")).unwrap();
+        std::fs::remove_file(root.join("invocation.json")).unwrap();
+        std::fs::remove_dir(root).unwrap();
+    }
+
+    #[test]
     fn unknown_and_wrong_identity_fail_closed() {
         let r = request(json!({}), "UNKNOWN");
         assert!(dispatch(&r).is_err());
