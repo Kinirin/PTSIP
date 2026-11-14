@@ -309,5 +309,493 @@
     "CLAIM_RELEASE_OR_PYPI_PUBLISHED",
     "CLAIM_SUCCESS_FROM_MISSING_CLI"
   ],
-  "resumption": "AFTER_SESSION_INTERRUPTION_READ_MAIN_HEAD_AND_EVIDENCE;CONTINUE_FROM_FIRST_UNFINISHED_APPROVED_WU_NOT_BY_NUMBER"
+  "resumption": "AFTER_SESSION_INTERRUPTION_READ_MAIN_HEAD_AND_EVIDENCE;CONTINUE_FROM_FIRST_UNFINISHED_APPROVED_WU_NOT_BY_NUMBER",
+  "implementation_checkpoint": {
+    "baseline_head": "0e11a13044049c2b3b72fde6f12b18aa6adcad5b",
+    "implementation_head": "d23d6d0fdcfdd550dfb4622a67b43a0bbb692b98",
+    "dependencies": {
+      "WU-01": [
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-05",
+        "WU-06",
+        "WU-07"
+      ],
+      "WU-08": [
+        "WU-01 (same atomic source transition)"
+      ],
+      "WU-11": [
+        "WU-01",
+        "WU-08",
+        "registered engine CLIs"
+      ],
+      "WU-10": [
+        "WU-01",
+        "WU-08",
+        "WU-02",
+        "WU-11"
+      ],
+      "independent": [
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-05",
+        "WU-06",
+        "WU-07",
+        "WU-09"
+      ]
+    },
+    "units": {
+      "WU-01": {
+        "commits": [
+          "e5f4d2abd6a402cbb67dcb3e19080e5011156f96"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/contracts/capability-owner-map.json",
+          "src/ptsip/engines/contracts/dependency-graph.json",
+          "src/ptsip/engines/contracts/installation-plan.json",
+          "src/ptsip/engines/contracts/work-item-bindings.json",
+          "src/ptsip/engines/index.json"
+        ],
+        "state": "SOURCE_REGISTRATION_AND_RELOCATION_VERIFIED_FULL_CONSUMER_CLOSURE_BLOCKED",
+        "atomic_units": [
+          "WU-01",
+          "WU-08"
+        ],
+        "local": {
+          "commands": [
+            "Validate shared JSON schemas, declared identities and SHA256 references",
+            "go -C developer/tests test ./engines/... -count=1 -run TestRegisteredManifestContractBindingAndIndependentOwnerClosure",
+            "ptsip engine <ptsip-root> <scripts-dir> context.order-dependencies"
+          ],
+          "result": "PASS for current source schemas and 18 derived snapshot digests. The Go router loaded the relocated execution registry."
+        },
+        "actions": [
+          "43579870631",
+          "43579873086"
+        ],
+        "blocked": [
+          "POLICY_SOURCE_DUPLICATE_SCOPE",
+          "VPMS_DELIVERABLES_ABSENT",
+          "LEGACY_PACKAGING_INPUTS_OWNED_BY_WU12"
+        ]
+      },
+      "WU-02": {
+        "commits": [
+          "922a9232f71ab4c2d1fbd097e702b35d028727e6",
+          "ae3dc169d937e966c9196aebc0b09f058df308b7",
+          "a8e0458a6793f73b1fa547abd040b78133d898d8"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/discovery/README.md",
+          "src/ptsip/engines/discovery/contract.json",
+          "src/ptsip/engines/discovery/execution-bindings.json",
+          "src/ptsip/engines/discovery/manifest.json",
+          "src/ptsip/engines/discovery/runtime-contracts.json",
+          "src/ptsip/engines/discovery/src/cli.rs",
+          "src/ptsip/engines/discovery/src/environment.rs",
+          "src/ptsip/engines/discovery/src/main.rs",
+          "src/ptsip/engines/discovery/src/registry.rs",
+          "src/ptsip/engines/discovery/src/source.rs",
+          "src/ptsip/engines/discovery/src/tpbg/source.rs"
+        ],
+        "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
+        "operation_ids": [
+          "discovery.planning",
+          "discovery.check-environment"
+        ],
+        "contract_ref": "src/ptsip/engines/discovery/contract.json",
+        "cli_protocol": "ONE_VERSIONED_JSON_REQUEST_ON_STDIN_AND_JSON_RESULT_ON_STDOUT",
+        "local": {
+          "commands": [
+            "cargo test --locked --manifest-path src/ptsip/engines/discovery/Cargo.toml",
+            "cargo build --locked --manifest-path src/ptsip/engines/discovery/Cargo.toml",
+            "Run the source-built engine with the typed request on stdin"
+          ],
+          "rust_tests_passed": 12,
+          "result": "Bound catalog selection succeeded and modified plan bytes were rejected. Policy-backed registry verification remains blocked by duplicate scope keys in SFP-ARCH-0004."
+        },
+        "actions": [
+          "43579236393",
+          "43580054718"
+        ]
+      },
+      "WU-03": {
+        "commits": [
+          "ae7ee21f5c09f8fcff4eec0ac1f863648c347284",
+          "d23d6d0fdcfdd550dfb4622a67b43a0bbb692b98"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/validation/contract.json",
+          "src/ptsip/engines/validation/execution-bindings.json",
+          "src/ptsip/engines/validation/manifest.json",
+          "src/ptsip/engines/validation/runtime-contracts.json",
+          "src/ptsip/engines/validation/src/cli.rs",
+          "src/ptsip/engines/validation/src/main.rs",
+          "src/ptsip/engines/validation/src/source.rs"
+        ],
+        "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
+        "operation_ids": [
+          "validation.planning.impact",
+          "validation.planning.prepare"
+        ],
+        "contract_ref": "src/ptsip/engines/validation/contract.json",
+        "cli_protocol": "ONE_VERSIONED_JSON_REQUEST_ON_STDIN_AND_JSON_RESULT_ON_STDOUT",
+        "local": {
+          "commands": [
+            "cargo test --locked --manifest-path src/ptsip/engines/validation/Cargo.toml",
+            "cargo build --locked --manifest-path src/ptsip/engines/validation/Cargo.toml",
+            "Run the source-built engine with the typed request on stdin"
+          ],
+          "rust_tests_passed": 25,
+          "result": "Prepared an explicit plan, rejected missing invocation, returned a verified affected scope, and withheld eligibility for stale compatibility evidence."
+        },
+        "actions": [
+          "43580054718"
+        ]
+      },
+      "WU-04": {
+        "commits": [
+          "250d65c9991a295b1aff6045b593ad3481249ca8"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/context/contract.json",
+          "src/ptsip/engines/context/execution-bindings.json",
+          "src/ptsip/engines/context/manifest.json",
+          "src/ptsip/engines/context/src/cli.rs",
+          "src/ptsip/engines/context/src/loading.rs",
+          "src/ptsip/engines/context/src/main.rs"
+        ],
+        "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
+        "operation_ids": [
+          "context.order-dependencies"
+        ],
+        "contract_ref": "src/ptsip/engines/context/contract.json",
+        "cli_protocol": "ONE_VERSIONED_JSON_REQUEST_ON_STDIN_AND_JSON_RESULT_ON_STDOUT",
+        "local": {
+          "commands": [
+            "cargo test --locked --manifest-path src/ptsip/engines/context/Cargo.toml",
+            "cargo build --locked --manifest-path src/ptsip/engines/context/Cargo.toml",
+            "Run the source-built engine with the typed request on stdin"
+          ],
+          "rust_tests_passed": 3,
+          "result": "Returned deterministic provider-before-consumer order and rejected unknown endpoints and cycles."
+        },
+        "actions": [
+          "43579236393",
+          "43579873086"
+        ]
+      },
+      "WU-05": {
+        "commits": [
+          "910f1b6fce481aedb6f72ce865208a2dafb90f5a"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/storage/src/cli.rs",
+          "src/ptsip/engines/storage/src/main.rs"
+        ],
+        "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
+        "operation_ids": [
+          "storage.mediate"
+        ],
+        "contract_ref": "src/ptsip/engines/storage/contract.json",
+        "cli_protocol": "ONE_VERSIONED_JSON_REQUEST_ON_STDIN_AND_JSON_RESULT_ON_STDOUT",
+        "local": {
+          "commands": [
+            "cargo test --locked --manifest-path src/ptsip/engines/storage/Cargo.toml",
+            "cargo build --locked --manifest-path src/ptsip/engines/storage/Cargo.toml",
+            "Run the source-built engine with the typed request on stdin"
+          ],
+          "rust_tests_passed": 3,
+          "result": "Selected the provider with current fixture evidence and reported provider_invoked=false."
+        },
+        "actions": [
+          "43577287198",
+          "43579873086"
+        ]
+      },
+      "WU-06": {
+        "commits": [
+          "77b9352c37760930522728542a44fc47fef3c980"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/execution/src/cli.rs",
+          "src/ptsip/engines/execution/src/main.rs"
+        ],
+        "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
+        "operation_ids": [
+          "execution.assess-stop"
+        ],
+        "contract_ref": "src/ptsip/engines/execution/contract.json",
+        "cli_protocol": "ONE_VERSIONED_JSON_REQUEST_ON_STDIN_AND_JSON_RESULT_ON_STDOUT",
+        "local": {
+          "commands": [
+            "cargo test --locked --manifest-path src/ptsip/engines/execution/Cargo.toml",
+            "cargo build --locked --manifest-path src/ptsip/engines/execution/Cargo.toml",
+            "Run the source-built engine with the typed request on stdin"
+          ],
+          "rust_tests_passed": 4,
+          "result": "Acknowledgement and pending result produced stop_confirmed=false."
+        },
+        "actions": [
+          "43577287198",
+          "43579873086"
+        ]
+      },
+      "WU-07": {
+        "commits": [
+          "6e764bc38abedf82dfe29a6194404a65da23fa4c"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/projection/src/cli.rs",
+          "src/ptsip/engines/projection/src/main.rs"
+        ],
+        "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
+        "operation_ids": [
+          "projection.select"
+        ],
+        "contract_ref": "src/ptsip/engines/projection/contract.json",
+        "cli_protocol": "ONE_VERSIONED_JSON_REQUEST_ON_STDIN_AND_JSON_RESULT_ON_STDOUT",
+        "local": {
+          "commands": [
+            "cargo test --locked --manifest-path src/ptsip/engines/projection/Cargo.toml",
+            "cargo build --locked --manifest-path src/ptsip/engines/projection/Cargo.toml",
+            "Run the source-built engine with the typed request on stdin"
+          ],
+          "rust_tests_passed": 4,
+          "result": "Selected the expected value through an escaped JSON Pointer."
+        },
+        "actions": [
+          "43577287198",
+          "43579873086"
+        ]
+      },
+      "WU-08": {
+        "commits": [
+          "e5f4d2abd6a402cbb67dcb3e19080e5011156f96"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+          "src/ptsip/engines/contracts/engines_registries/official-execution.json",
+          "src/ptsip/engines/contracts/engines_registries/official-static.json",
+          "src/ptsip/engines/registries/derived-snapshot.json",
+          "src/ptsip/engines/registries/official-execution.json",
+          "src/ptsip/engines/registries/official-static.json"
+        ],
+        "state": "SOURCE_REGISTRATION_AND_RELOCATION_VERIFIED_FULL_CONSUMER_CLOSURE_BLOCKED",
+        "atomic_units": [
+          "WU-01",
+          "WU-08"
+        ],
+        "local": {
+          "commands": [
+            "Validate shared JSON schemas, declared identities and SHA256 references",
+            "go -C developer/tests test ./engines/... -count=1 -run TestRegisteredManifestContractBindingAndIndependentOwnerClosure",
+            "ptsip engine <ptsip-root> <scripts-dir> context.order-dependencies"
+          ],
+          "result": "PASS for current source schemas and 18 derived snapshot digests. The Go router loaded the relocated execution registry."
+        },
+        "actions": [
+          "43579870631",
+          "43579873086"
+        ],
+        "blocked": [
+          "POLICY_SOURCE_DUPLICATE_SCOPE",
+          "VPMS_DELIVERABLES_ABSENT",
+          "LEGACY_PACKAGING_INPUTS_OWNED_BY_WU12"
+        ]
+      },
+      "WU-09": {
+        "commits": [
+          "f05dd272bff0a854f5d5206d2c4eea1e2c36b024"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/_common_contract.py",
+          "src/ptsip/common_contract/cli.go",
+          "src/ptsip/common_contract/main.go"
+        ],
+        "state": "ROOT_SOURCE_CLI_VERIFIED_CUSTOMER_RESOURCES_AND_RETIREMENT_BLOCKED",
+        "entrypoint": "src/ptsip/common_contract",
+        "protocol_ref": "src/ptsip/common_contract/cmd/ptsip-common-contract/protocol.json",
+        "local": {
+          "commands": [
+            "go -C src/ptsip/common_contract vet ./...",
+            "go -C src/ptsip/common_contract build -mod=readonly .",
+            "go -C src/ptsip/common_contract test ./... -count=1",
+            "Send a restore-source request to the module-root binary and source-rule-units through the Python adapter"
+          ],
+          "result": "Vet, build, CLI and adapter passed. Full Go suite fails to resolve six registered schema resources. Common Contract Python selection reported 7 passed and 6 failed."
+        },
+        "actions": [
+          "43579868071"
+        ],
+        "blocked": [
+          "COMMON_CONTRACT_SCHEMAS_REMOVED_AT_BASELINE",
+          "LEGACY_BACKEND_STILL_USES_CMD_PATH"
+        ]
+      },
+      "WU-10": {
+        "commits": [
+          "4f62e1ddd06bac6522b4ea2907a80a7bb74c0e86"
+        ],
+        "owned_changed_files": [
+          ".ptsip/engine/developer/Distribution/release/controller/package.go",
+          ".ptsip/engine/developer/Distribution/release/test/package_install.go",
+          "developer/tests/engines/contracts_test.go",
+          "developer/tests/engines/environment_test.go",
+          "developer/tests/engines/runtime_test.go",
+          "developer/tests/engines/source_test.go",
+          "src/ptsip/cli.py",
+          "src/ptsip/engine_installation.py"
+        ],
+        "state": "IMPLEMENTED_TARGETED_VERIFICATION_PASS_FULL_INSTALL_AND_SUITE_BLOCKED",
+        "local": {
+          "commands": [
+            "go -C developer/tests test ./engines/... -count=1",
+            "go -C developer/tests test ./engines/... -count=1 -run <selected registry, diagnostic, pipeline and impact cases>",
+            "python -m py_compile src/ptsip/cli.py",
+            "Compile release controller and test modules with a temporary Go workspace",
+            "Run VerifyInstalledComponents on a staged install of built native binaries"
+          ],
+          "result": "Six selected tests passed. The staged verifier accepted registered binaries and rejected modified bytes. Full suite and normal Python CLI startup are blocked."
+        },
+        "actions": [
+          "43579870631",
+          "43579873086"
+        ],
+        "blocked": [
+          "MISSING_PTSIP_REPOSITORY_PYTHON_MODULE",
+          "MISSING_VPMS_INPUTS_AND_HISTORICAL_APPROVAL",
+          "NO_EXACT_WHEEL_RECEIPTS",
+          "PROFILE_REFERENCES_REMOVED_PYTHON_MODULE",
+          "DEV_RELEASE_GO_MODULE_DEPENDENCY_CLOSURE"
+        ]
+      },
+      "WU-11": {
+        "commits": [
+          "0612fbf0cfdf2b1acd6e1089e46529e2f9ec359b",
+          "7ffb85541c43b4576db81307baaa90a877e99434"
+        ],
+        "owned_changed_files": [
+          "src/ptsip/CLI.go"
+        ],
+        "state": "IMPLEMENTED_LOCAL_PASS_REMOTE_BLOCKED",
+        "commands": [
+          "ptsip doctor <directory>",
+          "ptsip operations <ptsip-root>",
+          "ptsip engine <ptsip-root> <scripts-dir> <operation-id>"
+        ],
+        "build": "go build -trimpath src/ptsip/CLI.go",
+        "local": {
+          "commands": [
+            "go test src/ptsip/CLI.go",
+            "go vet src/ptsip/CLI.go",
+            "Execute doctor, operations and the Context route"
+          ],
+          "result": "PASS. The Go source builds as a standalone standard-library command. A missing peer executable does not block Context."
+        },
+        "actions": [
+          "43579870631"
+        ]
+      }
+    },
+    "github_actions": {
+      "43577287198": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43577287198",
+        "head_sha": "6e764bc38abedf82dfe29a6194404a65da23fa4c",
+        "mode": "release-verification native storage/execution/projection",
+        "conclusion": "FAILURE",
+        "detail": "mode-selection cannot build contract_authoring: missing Go dependency entry for common_contract/source; target jobs skipped."
+      },
+      "43579236393": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43579236393",
+        "head_sha": "0612fbf0cfdf2b1acd6e1089e46529e2f9ec359b",
+        "mode": "release-verification native context/discovery/validation",
+        "conclusion": "FAILURE",
+        "detail": "mode-selection cannot build contract_authoring: missing Go dependency entry for common_contract/source; target jobs skipped."
+      },
+      "43579868071": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43579868071",
+        "head_sha": "4f62e1ddd06bac6522b4ea2907a80a7bb74c0e86",
+        "mode": "ptsip-common-contract",
+        "conclusion": "FAILURE",
+        "detail": "Windows, Ubuntu and macOS fail on registered schema resources absent from source."
+      },
+      "43579870631": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43579870631",
+        "head_sha": "4f62e1ddd06bac6522b4ea2907a80a7bb74c0e86",
+        "mode": "repository-architecture",
+        "conclusion": "FAILURE",
+        "detail": "mode-selection cannot build contract_authoring: missing Go dependency entry for common_contract/source; target jobs skipped."
+      },
+      "43579873086": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43579873086",
+        "head_sha": "4f62e1ddd06bac6522b4ea2907a80a7bb74c0e86",
+        "mode": "release-verification for named native engines",
+        "conclusion": "FAILURE",
+        "detail": "mode-selection cannot build contract_authoring: missing Go dependency entry for common_contract/source; target jobs skipped."
+      },
+      "43580054718": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43580054718",
+        "head_sha": "d23d6d0fdcfdd550dfb4622a67b43a0bbb692b98",
+        "mode": "release-verification native validation",
+        "conclusion": "FAILURE",
+        "detail": "mode-selection cannot build contract_authoring: missing Go dependency entry for common_contract/source; target jobs skipped."
+      },
+      "43580054381": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43580054381",
+        "head_sha": "d23d6d0fdcfdd550dfb4622a67b43a0bbb692b98",
+        "mode": "Policy contract guard",
+        "conclusion": "FAILURE",
+        "detail": "Go Common Contract customer resource tests fail."
+      },
+      "43580054320": {
+        "url": "https://github.com/Kinirin/PTSIP/actions/runs/43580054320",
+        "head_sha": "d23d6d0fdcfdd550dfb4622a67b43a0bbb692b98",
+        "mode": "release-admission-contract-check",
+        "conclusion": "FAILURE",
+        "detail": "Go module dependency failure and missing historical validation/projection release approval."
+      }
+    },
+    "remaining": {
+      "POLICY_SOURCE_DUPLICATE_SCOPE": {
+        "source": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+        "lines": [
+          367,
+          380
+        ],
+        "decision": "Resolve the duplicate scope in the governed policy before policy-backed registry verification."
+      },
+      "COMMON_CONTRACT_SCHEMAS_REMOVED_AT_BASELINE": {
+        "source": "src/ptsip/common_contract/registry/manifest.json",
+        "removal_commit": "3961abb281cb55c1e67b1f9d2d903d93c144e230",
+        "decision": "Confirm exact source ownership and restoration or approved versioned disposition for the six registered schema files."
+      },
+      "DEV_RELEASE_GO_MODULE_DEPENDENCY_CLOSURE": {
+        "roots": [
+          ".ptsip/engine/developer/Distribution/release/controller",
+          ".ptsip/engine/developer/Distribution/release/test"
+        ],
+        "decision": "Assign the release module manifests and checksum fixes to an authorized owner before rerunning registered CI."
+      },
+      "VPMS_DELIVERABLES_ABSENT": {
+        "source": "src/ptsip/engines/contracts/work-item-bindings.json",
+        "decision": "Resolve the missing VPMS bindings through their owner before claiming runtime handoff."
+      },
+      "WU-12": {
+        "state": "PROPOSED_NOT_AUTHORIZED",
+        "dependencies": [
+          "current registry projection and module-root Go build packaging",
+          "exact source-bound Package verification"
+        ]
+      },
+      "WU-13": {
+        "state": "SOURCE_REMOVAL_ALREADY_APPLIED",
+        "commit": "683365cbd946122c355d3184b631b9852a0a6067"
+      }
+    },
+    "execution_state": "APPROVED_IN_SCOPE_IMPLEMENTATION_COMMITTED_WITH_OPEN_VERIFICATION_AND_AUTHORITY_BLOCKERS",
+    "next_executable_units": []
+  }
 }
