@@ -47,8 +47,13 @@ impl Source {
                 return Err("source changed during verification".into());
             }
         }
-        serde_json::from_slice(&bytes)
-            .map_err(|e| format!("invalid registered JSON source {reference}: {e}"))
+        let value = match relative.extension().and_then(|suffix| suffix.to_str()) {
+            Some("yaml" | "yml") if reference.starts_with("src/policy/") => {
+                crate::source::parse_yaml(&bytes)
+            }
+            _ => crate::source::parse(&bytes),
+        };
+        value.map_err(|e| format!("invalid registered source {reference}: {e}"))
     }
 
     fn bound(&mut self, reference: &Value) -> Result<Value, String> {
@@ -120,10 +125,16 @@ pub fn verify(input: &Value, select: bool) -> Result<Value, String> {
         ("contract_owner", "SFP-CNTR-0005"),
     ] {
         let policy = source.read(string(&index, field)?)?;
-        if policy["policy_class"] != "PTSIP_SUPPORT_FEATURE"
-            || policy["policy"]["id"] != id
-            || policy["policy"]["status"] != "ACTIVE"
-        {
+        let active = if policy["schema_version"] == "ptsip-unified-policy/v3-candidate" {
+            policy["Policy_Identity"]["policy_kind"] == "PTSIP_SUPPORT_FEATURE"
+                && policy["Policy_Identity"]["id"] == id
+                && policy["Policy_Lifecycle"]["status"] == "APPROVED.Applying"
+        } else {
+            policy["policy_class"] == "PTSIP_SUPPORT_FEATURE"
+                && policy["policy"]["id"] == id
+                && policy["policy"]["status"] == "ACTIVE"
+        };
+        if !active {
             return Err("current Support owner unavailable".into());
         }
     }
