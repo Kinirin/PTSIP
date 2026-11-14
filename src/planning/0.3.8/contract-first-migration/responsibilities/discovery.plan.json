@@ -1,0 +1,85 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-02",
+  "work_unit_id": "WU-02",
+  "title": "Discovery engine operation and independent Rust CLI",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/1",
+  "sole_write_owner": "WU-02",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/1/owned_file_paths",
+  "registered_owned_file_count": 24,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/discovery/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "Discovery가 담당하는 계획 발견 기능 및 자체 CLI의 명령 수신·응답 책임 구현",
+  "work_steps": [
+    {
+      "id": "WU-02-TASK-01",
+      "instruction": "Discovery manifest/contract/runtime-contracts, main.rs, lib.rs, source.rs, registry.rs 및 TPBG 관련 입력·출력 필드를 실제 의미에 따라 분석한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-02-TASK-02",
+      "instruction": "Discovery가 소유하는 계획 발견 연산(discovery.planning)의 새 계약·실행 경로를 기존 Rust 엔진 구조에 맞게 구현한다. 이전 Planning 구현 소스를 재사용하거나 복제하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-02-TASK-03",
+      "instruction": "src/ptsip/engines/discovery/src/cli.rs를 새로 만들고 main.rs에서 연결하여 독립적으로 호출 가능한 엔진 CLI를 제공한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-02-TASK-04",
+      "instruction": "명령 이름·입출력은 Discovery가 소유하는 명시적 버전 계약에 기초해 구현 시 설계한다. 글로벌 CLI.go에 엔진 명령 처리를 이전하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-02-TASK-05",
+      "instruction": "등록부나 공통 소유권 파일 갱신은 WU-01/WU-08로 변경 요청한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-02-TASK-06",
+      "instruction": "유효 입력을 CLI에 실제 전달해 성공 응답의 의미·출력형식·종료상태를 검증한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "DISCOVERY_PLANNING_OPERATION_CONTRACT_AND_IMPLEMENTATION",
+    "OWN_CLI_RS_CREATED",
+    "OWN_CLI_RETURNS_VALID_EXPECTED_RESPONSE"
+  ],
+  "completion_acceptance": [
+    "DISCOVERY_OWNED_PLANNING_DISCOVERY_OPERATION",
+    "OWN_CLI_RS_COMPILES_AND_RUNS",
+    "CLI_POSITIVE_VALID_RESPONSE",
+    "NO_MANDATORY_OTHER_ENGINE_CLI_DEPENDENCY"
+  ],
+  "validation_instructions": [
+    "cargo test --manifest-path src/ptsip/engines/discovery/Cargo.toml",
+    "Discovery CLI 실제 명령과 유효 응답 검증(명령은 구현 계약에서 추출)"
+  ],
+  "forbidden_work": [
+    "OLD_PLANNING_CLI_NEGATIVE_TEST",
+    "LEGACY_PLANNING_HANDOFF_COMPLETION_GATE"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

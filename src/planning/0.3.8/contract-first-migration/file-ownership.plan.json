@@ -9,7 +9,7 @@
   "inspected_source_revision": "5ef70ea563392997879c8dcee93f323ad4534694",
   "inspected_source_tree": "a5ba68dc8279e56c0fda3e3471bfd59d8239297e",
   "lifecycle": {
-    "state": "IMPLEMENTATION_APPROVED_SCOPED_WITH_GATES",
+    "state": "IMPLEMENTATION_STARTED_SCOPED",
     "implementation_authorized": true,
     "policy_authority_created": false,
     "single_write_owner_per_exact_path": true,
@@ -32,7 +32,9 @@
       "WU-12"
     ],
     "approval_source": "USER_EXPLICIT_CHAT_2026-11-13",
-    "engine_scope_authority": "EXPLICIT_NAMED_MIGRATION_SET_NOT_GLOBAL_COUNT"
+    "engine_scope_authority": "EXPLICIT_NAMED_MIGRATION_SET_NOT_GLOBAL_COUNT",
+    "implementation_execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+    "code_implementation_started_by_this_plan_commit": false
   },
   "rules": {
     "physical_path_overrides_parent_directory": "ONLY_EXACTLY_REGISTERED_EXCEPTION_PATHS",
@@ -48,7 +50,10 @@
     "negative_retired_cli_checks": "FORBIDDEN",
     "planning_directory_write_owner": "WU-13",
     "planning_deleted_paths_are_historical_only": true,
-    "retirement_must_not_be_merged_into_other_unit": true
+    "retirement_must_not_be_merged_into_other_unit": true,
+    "unlisted_paths_may_be_modified": false,
+    "new_files_inside_WU_scope": "REGISTER_EXACT_PATH_AND_PROVE_WRITE_OWNER_BEFORE_MUTATION;DO_NOT_SILENTLY_EXPAND_APPROVED_SCOPE",
+    "execution_time_operation_ids": "DERIVE_IN_OWNING_WORK_UNIT_NOT_PRESTART_GATE"
   },
   "verification": {
     "source": "GITHUB_COMMIT_TREE_RECURSIVE_COMPLETE",
@@ -81,7 +86,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/Cargo.toml",
@@ -90,7 +95,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/contract.json",
@@ -99,7 +104,7 @@
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/contracts/1.0.0.json",
@@ -108,7 +113,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/execution-bindings.json",
@@ -117,7 +122,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/manifest.json",
@@ -126,7 +131,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/runtime-contracts.json",
@@ -135,7 +140,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/src/loading.rs",
@@ -144,7 +149,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/src/main.rs",
@@ -153,7 +158,7 @@
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/src/source.rs",
@@ -162,7 +167,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/transport.json",
@@ -171,7 +176,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/version.yaml",
@@ -180,7 +185,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/context/src/cli.rs",
@@ -189,7 +194,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/Cargo.lock",
@@ -198,7 +203,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/Cargo.toml",
@@ -207,7 +212,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/contract.json",
@@ -216,7 +221,7 @@
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/contracts/1.0.0.json",
@@ -225,7 +230,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/contracts/2.0.0.json",
@@ -234,7 +239,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/execution-bindings.json",
@@ -243,7 +248,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/manifest.json",
@@ -252,7 +257,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/provider-registry.json",
@@ -261,7 +266,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/runtime-contracts.json",
@@ -270,7 +275,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/src/main.rs",
@@ -279,7 +284,7 @@
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/src/native.rs",
@@ -288,7 +293,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/src/provider.rs",
@@ -297,7 +302,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/src/source.rs",
@@ -306,7 +311,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/transport.json",
@@ -315,7 +320,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/version.yaml",
@@ -324,7 +329,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/storage/src/cli.rs",
@@ -333,7 +338,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/Cargo.lock",
@@ -342,7 +347,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/Cargo.toml",
@@ -351,7 +356,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/contract.json",
@@ -360,7 +365,7 @@
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/contracts/1.0.0.json",
@@ -369,7 +374,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/contracts/2.0.0.json",
@@ -378,7 +383,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/execution-bindings.json",
@@ -387,7 +392,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/manifest.json",
@@ -396,7 +401,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/runtime-contracts.json",
@@ -405,7 +410,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/cases.rs",
@@ -414,7 +419,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/composition.rs",
@@ -423,7 +428,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/handoff.rs",
@@ -432,7 +437,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/main.rs",
@@ -441,7 +446,7 @@
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/planning/PTSIP_Public_Policy_Structure.schema.json",
@@ -450,7 +455,7 @@
       "planned_file_action": "EMPTY_EXISTING_ASSET_REVIEW_SEMANTICS_BEFORE_USE",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/planning/schemas/PTSIP_Public_Plan_Identity.schema.json",
@@ -459,7 +464,7 @@
       "planned_file_action": "EMPTY_EXISTING_ASSET_REVIEW_SEMANTICS_BEFORE_USE",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json",
@@ -468,7 +473,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json",
@@ -477,7 +482,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json",
@@ -486,7 +491,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json",
@@ -495,7 +500,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/rbac.rs",
@@ -504,7 +509,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/retrieval.rs",
@@ -513,7 +518,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/schema.rs",
@@ -522,7 +527,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/LICENSE",
@@ -531,7 +536,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/dynamicRef.json",
@@ -540,7 +545,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/ref.json",
@@ -549,7 +554,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/source.json",
@@ -558,7 +563,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_reference_tests.rs",
@@ -567,7 +572,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/source.rs",
@@ -576,7 +581,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/transport.json",
@@ -585,7 +590,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/version.yaml",
@@ -594,7 +599,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/validation/src/cli.rs",
@@ -603,7 +608,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/Cargo.lock",
@@ -612,7 +617,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/Cargo.toml",
@@ -621,7 +626,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/README.md",
@@ -630,7 +635,7 @@
       "planned_file_action": "EXISTING_SUPPORT_FILE_REVIEW_IF_IMPACTED",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/contract.json",
@@ -639,7 +644,7 @@
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/contracts/1.0.0.json",
@@ -648,7 +653,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/contracts/2.0.0.json",
@@ -657,7 +662,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/contracts/3.0.0.json",
@@ -666,7 +671,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/execution-bindings.json",
@@ -675,7 +680,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/manifest.json",
@@ -684,7 +689,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/runtime-contracts.json",
@@ -693,7 +698,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/environment.rs",
@@ -702,7 +707,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/invocation.rs",
@@ -711,7 +716,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/lib.rs",
@@ -720,7 +725,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/main.rs",
@@ -729,7 +734,7 @@
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/registry.rs",
@@ -738,7 +743,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/source.rs",
@@ -747,7 +752,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/tpbg/mod.rs",
@@ -756,7 +761,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/tpbg/source.rs",
@@ -765,7 +770,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/tests/fixtures/tpbg-f3.json",
@@ -774,7 +779,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/tests/tpbg_f3.rs",
@@ -783,7 +788,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/tpbg-f3.schema.json",
@@ -792,7 +797,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/transport.json",
@@ -801,7 +806,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/version.yaml",
@@ -810,7 +815,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/discovery/src/cli.rs",
@@ -819,7 +824,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/Cargo.lock",
@@ -828,7 +833,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/Cargo.toml",
@@ -837,7 +842,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/contract.json",
@@ -846,7 +851,7 @@
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/contracts/1.0.0.json",
@@ -855,7 +860,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/contracts/2.0.0.json",
@@ -864,7 +869,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/execution-bindings.json",
@@ -873,7 +878,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/manifest.json",
@@ -882,7 +887,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/runtime-contracts.json",
@@ -891,7 +896,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/src/authority.rs",
@@ -900,7 +905,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/src/effect.rs",
@@ -909,7 +914,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/src/invocation.rs",
@@ -918,7 +923,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/src/main.rs",
@@ -927,7 +932,7 @@
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/src/source.rs",
@@ -936,7 +941,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/transport.json",
@@ -945,7 +950,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/version.yaml",
@@ -954,7 +959,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/execution/src/cli.rs",
@@ -963,7 +968,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/Cargo.lock",
@@ -972,7 +977,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/Cargo.toml",
@@ -981,7 +986,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/contract.json",
@@ -990,7 +995,7 @@
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/contracts/1.0.0.json",
@@ -999,7 +1004,7 @@
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/execution-bindings.json",
@@ -1008,7 +1013,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/manifest.json",
@@ -1017,7 +1022,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/runtime-contracts.json",
@@ -1026,7 +1031,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/src/main.rs",
@@ -1035,7 +1040,7 @@
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/src/rendering.rs",
@@ -1044,7 +1049,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/src/source.rs",
@@ -1053,7 +1058,7 @@
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/transport.json",
@@ -1062,7 +1067,7 @@
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/version.yaml",
@@ -1071,7 +1076,7 @@
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
       "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/projection/src/cli.rs",
@@ -1080,7 +1085,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/capability-owner-map.json",
@@ -1089,7 +1094,7 @@
       "planned_file_action": "TRANSFER_PLANNING_SEMANTIC_OWNER_AND_UPDATE_NAMED_ENGINE_SET_MAP",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/context-projection-handoff.json",
@@ -1098,7 +1103,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/dependency-graph.json",
@@ -1107,7 +1112,7 @@
       "planned_file_action": "RECONCILE_STALE_PLANNING_DEPENDENCY_REFERENCES",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/installation-plan.json",
@@ -1116,7 +1121,7 @@
       "planned_file_action": "UPDATE_NAMED_ENGINE_SET_INSTALLATION_CONTRACT",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/native-runtime.json",
@@ -1125,7 +1130,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
@@ -1134,7 +1139,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
@@ -1143,7 +1148,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
@@ -1152,7 +1157,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
@@ -1161,7 +1166,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
@@ -1170,7 +1175,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
@@ -1179,7 +1184,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
@@ -1188,7 +1193,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
@@ -1197,7 +1202,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
@@ -1206,7 +1211,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
@@ -1215,7 +1220,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
@@ -1224,7 +1229,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
@@ -1233,7 +1238,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
@@ -1242,7 +1247,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
@@ -1251,7 +1256,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json",
@@ -1260,7 +1265,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
@@ -1269,7 +1274,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
@@ -1278,7 +1283,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
@@ -1287,7 +1292,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
@@ -1296,7 +1301,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
@@ -1305,7 +1310,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/stdio-transport.json",
@@ -1314,7 +1319,7 @@
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/work-item-bindings.json",
@@ -1323,7 +1328,7 @@
       "planned_file_action": "RECONCILE_LEGACY_DELIVERABLE_REFERENCES_AND_REGISTRY_MOVE",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/index.json",
@@ -1332,7 +1337,7 @@
       "planned_file_action": "REGISTER_NAMED_ENGINE_SET_OWNERS_AND_BIND_REGISTRY_PATHS",
       "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
       "assignment_evidence": "OFFICIAL_ENGINE_REGISTRY_CONTENT_VERIFIED",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/registries/official-static.json",
@@ -1341,7 +1346,7 @@
       "planned_file_action": "REMOVE_SOURCE_AFTER_DESTINATION_AND_REFERENCE_VERIFICATION",
       "assignment_status": "USER_EXPLICIT_REGISTRY_MOVE_ONE_UNIT",
       "assignment_evidence": "REGISTRY_DATA_AND_PATH_REFERENCES_VERIFIED",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/engines_registries/official-static.json",
@@ -1350,7 +1355,7 @@
       "planned_file_action": "CREATE_FROM_VERIFIED_MOVE",
       "assignment_status": "USER_EXPLICIT_REGISTRY_MOVE_ONE_UNIT",
       "assignment_evidence": "EXACT_SOURCE_REGISTRY_FILENAME_AND_DESTINATION",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/registries/official-execution.json",
@@ -1359,7 +1364,7 @@
       "planned_file_action": "REMOVE_SOURCE_AFTER_DESTINATION_AND_REFERENCE_VERIFICATION",
       "assignment_status": "USER_EXPLICIT_REGISTRY_MOVE_ONE_UNIT",
       "assignment_evidence": "REGISTRY_DATA_AND_PATH_REFERENCES_VERIFIED",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/engines_registries/official-execution.json",
@@ -1368,7 +1373,7 @@
       "planned_file_action": "CREATE_FROM_VERIFIED_MOVE",
       "assignment_status": "USER_EXPLICIT_REGISTRY_MOVE_ONE_UNIT",
       "assignment_evidence": "EXACT_SOURCE_REGISTRY_FILENAME_AND_DESTINATION",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/registries/derived-snapshot.json",
@@ -1377,7 +1382,7 @@
       "planned_file_action": "REMOVE_SOURCE_AFTER_DESTINATION_AND_REFERENCE_VERIFICATION",
       "assignment_status": "USER_EXPLICIT_REGISTRY_MOVE_ONE_UNIT",
       "assignment_evidence": "REGISTRY_DATA_AND_PATH_REFERENCES_VERIFIED",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
@@ -1386,7 +1391,7 @@
       "planned_file_action": "REGENERATE_NEW_TARGET",
       "assignment_status": "USER_EXPLICIT_REGISTRY_MOVE_ONE_UNIT",
       "assignment_evidence": "EXACT_SOURCE_REGISTRY_FILENAME_AND_DESTINATION",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
@@ -1395,7 +1400,7 @@
       "planned_file_action": "RETIRE_OLD_GO_ENTRYPOINT_AFTER_REBIND",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/cmd/ptsip-common-contract/main_test.go",
@@ -1404,7 +1409,7 @@
       "planned_file_action": "MIGRATE_GO_ENTRYPOINT_TEST_TO_NEW_ROOT",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/cmd/ptsip-common-contract/protocol.json",
@@ -1413,7 +1418,7 @@
       "planned_file_action": "CLI_PROTOCOL_LOCATION_REVIEW_NOT_ASSUMED_MOVED",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/compatibility/compatibility.go",
@@ -1422,7 +1427,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/go.mod",
@@ -1431,7 +1436,7 @@
       "planned_file_action": "PRESERVE_COMMON_GO_MODULE_BUILD_IDENTITY",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/go.sum",
@@ -1440,7 +1445,7 @@
       "planned_file_action": "PRESERVE_COMMON_GO_MODULE_BUILD_IDENTITY",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/jsondoc/json.go",
@@ -1449,7 +1454,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/registry/manifest.json",
@@ -1458,7 +1463,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/registry/registry.go",
@@ -1467,7 +1472,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/resolver/resolver.go",
@@ -1476,7 +1481,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/source/document.go",
@@ -1485,7 +1490,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/source/document_test.go",
@@ -1494,7 +1499,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/source/restore.go",
@@ -1503,7 +1508,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/source/units.go",
@@ -1512,7 +1517,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/source/verification.go",
@@ -1521,7 +1526,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/testdata/canonical_source.json",
@@ -1530,7 +1535,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/validator/rbac_conformance_test.go",
@@ -1539,7 +1544,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/validator/tpbg_conformance_test.go",
@@ -1548,7 +1553,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/validator/validator.go",
@@ -1557,7 +1562,7 @@
       "planned_file_action": "REVIEW_AND_RETAIN_EXISTING_GO_COMMON_CONTRACT_FILE",
       "assignment_status": "USER_EXPLICIT_COMMON_CONTRACT_CLI_WORK_UNIT",
       "assignment_evidence": "EXISTING_GO_MODULE_AND_SOURCE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/main.go",
@@ -1566,7 +1571,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_COMMON_GO_CLI_AND_ROOT_ENTRYPOINT",
       "assignment_evidence": "USER_REQUESTED_EXACT_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/common_contract/cli.go",
@@ -1575,7 +1580,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_COMMON_GO_CLI_AND_ROOT_ENTRYPOINT",
       "assignment_evidence": "USER_REQUESTED_EXACT_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/_common_contract.py",
@@ -1584,7 +1589,7 @@
       "planned_file_action": "REPOINT_GO_BUILD_SUBPROCESS_TO_NEW_MAIN_WITHOUT_NEW_PYTHON_CORE",
       "assignment_status": "DERIVED_REQUIRED_CALLSITE_CHANGE",
       "assignment_evidence": "LINE_33_BUILDS_LEGACY_CMD",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/contracts_test.go",
@@ -1593,7 +1598,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/environment_test.go",
@@ -1602,7 +1607,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/independent_engine_wheel_test.go",
@@ -1611,7 +1616,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/release_admission_policy_test.go",
@@ -1620,7 +1625,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/release_capabilities_test.go",
@@ -1629,7 +1634,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/runtime_test.go",
@@ -1638,7 +1643,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/source_test.go",
@@ -1647,7 +1652,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "developer/tests/engines/testdata/provider/main.go",
@@ -1656,7 +1661,7 @@
       "planned_file_action": "ADAPT_DEVELOPER_INSTALLED_ENGINE_VERIFICATION_TO_SIX_INDEPENDENT_ENGINES",
       "assignment_status": "USER_EXPLICIT_REMOVAL_VERIFICATION_SAME_UNIT",
       "assignment_evidence": "DEVELOPER_TESTS_ENGINES_SCOPE",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/engine_installation.py",
@@ -1665,7 +1670,7 @@
       "planned_file_action": "DELETE_AFTER_VERIFICATION_REPLACEMENT_AND_REFERENCES_RESOLVED",
       "assignment_status": "USER_EXPLICIT_DELETE",
       "assignment_evidence": "LEGACY_MODULE_IMPLEMENTATION",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/cli.py",
@@ -1674,7 +1679,7 @@
       "planned_file_action": "EDIT_ONLY_ENGINE_INSTALLATION_IMPORT_AND_DIAGNOSTIC_COMMANDS",
       "assignment_status": "USER_EXPLICIT_STAGED_PYTHON_CLI_RETIREMENT",
       "assignment_evidence": "LINES_44_45_AND_ENGINES_COMMAND_BRANCH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": ".ptsip/engine/developer/Distribution/release/controller/package.go",
@@ -1683,7 +1688,7 @@
       "planned_file_action": "EDIT_ONLY_INSTALLED_ENGINE_VERIFICATION_ADAPTER_CALL",
       "assignment_status": "DERIVED_REQUIRED_CALLSITE_CHANGE",
       "assignment_evidence": "VERIFY_INSTALLED_COMPONENTS_IMPORTS_ENGINE_INSTALLATION",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": ".ptsip/engine/developer/Distribution/release/test/package_install.go",
@@ -1692,7 +1697,7 @@
       "planned_file_action": "EDIT_ONLY_INSTALLED_ENGINE_VERIFICATION_ASSERTION",
       "assignment_status": "DERIVED_REQUIRED_CALLSITE_CHANGE",
       "assignment_evidence": "INLINE_PYTHON_INSPECT_IMPORT",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": "src/ptsip/CLI.go",
@@ -1701,7 +1706,7 @@
       "planned_file_action": "CREATE_REQUIRED",
       "assignment_status": "USER_EXPLICIT_SINGLE_GO_CLI_UNIT",
       "assignment_evidence": "USER_REQUESTED_EXACT_PATH",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     {
       "path": ".ptsip/engine/developer/Distribution/release/controller/package_build.go",
@@ -2142,7 +2147,7 @@
       "WU-13"
     ],
     "exact_file_ownership_authorized_only_for_approved_units": true,
-    "current_revision": "737595fc6271937dde6ff9ca2086f2ff201688a3",
+    "current_revision": "987e0339d2e4f1ebc37a4d174dee6830e0bba597",
     "out_of_scope": [
       "POLICY_MIGRATION",
       "PUBLICATION",

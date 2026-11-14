@@ -1,0 +1,94 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-10",
+  "work_unit_id": "WU-10",
+  "title": "Developer engine verification and removal of Python engine installation",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/9",
+  "sole_write_owner": "WU-10",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/9/owned_file_paths",
+  "registered_owned_file_count": 12,
+  "implementation_scope_paths": [
+    "developer/tests/engines/",
+    "src/ptsip/engine_installation.py",
+    "src/ptsip/cli.py"
+  ],
+  "excluded_paths": [],
+  "task_intent": "실제 설치 검증은 developer/tests/engines가 소유하고 Python engine_installation 모듈의 의존성을 같은 WU에서 해소",
+  "work_steps": [
+    {
+      "id": "WU-10-TASK-01",
+      "instruction": "developer/tests/engines/의 테스트별 검증 책임과 기존 설치 확인 호출을 분석한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-10-TASK-02",
+      "instruction": "src/ptsip/engine_installation.py의 실제 import·호출자·유효 명령을 추적한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-10-TASK-03",
+      "instruction": "src/ptsip/cli.py에서 해당 진단 코드로 연결되는 import와 명령 부분만 수정한다. 그 외 Python CLI 기능을 임의로 제거하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-10-TASK-04",
+      "instruction": ".ptsip/engine/developer/Distribution/release/controller/package.go 및 test/package_install.go에서 Python engine_installation 의존성을 사용하는 코드만 해소한다. 다른 배포 패키징 변경은 WU-12의 책임이다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-10-TASK-05",
+      "instruction": "실제 설치된 명시적 엔진들의 가용성 확인을 developer/tests/engines의 책임으로 정리하고 기존 테스트 입력의 구형 엔진 수량 가정을 필요한 범위에서 갱신한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-10-TASK-06",
+      "instruction": "모든 직접 의존성과 실행 경로를 정리한 후 src/ptsip/engine_installation.py를 삭제한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-10-TASK-07",
+      "instruction": "예전 Planning 기능 이전 검증이나 이전 완료 비교를 수행하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "ACTUAL_INSTALLED_NAMED_ENGINE_SET_VERIFICATION",
+    "DEPENDENT_IMPORTS_AND_COMMAND_REFERENCES_RESOLVED",
+    "ENGINE_INSTALLATION_PY_REMOVED",
+    "NO_UNRELATED_PYTHON_CLI_REMOVAL"
+  ],
+  "completion_acceptance": [
+    "PYTHON_ENGINE_INSTALLATION_FILE_REMOVED",
+    "ALL_DIRECT_CALLERS_REBOUND_OR_REMOVED",
+    "DEVELOPER_ENGINES_VERIFICATION_VALID",
+    "UNRELATED_PYTHON_CLI_FEATURES_PRESERVED"
+  ],
+  "validation_instructions": [
+    "go -C developer/tests test ./engines/... -count=1",
+    "필요한 기존 Python CLI 테스트만 변경 영향에 맞게 선택 실행"
+  ],
+  "forbidden_work": [
+    "DELETE_UNRELATED_PYTHON_CLI",
+    "TAKE_OVER_WU12_PACKAGING_RESPONSIBILITY",
+    "LEGACY_PLANNING_MIGRATION_PARITY_TEST"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

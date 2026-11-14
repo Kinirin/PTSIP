@@ -1,0 +1,87 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-08",
+  "work_unit_id": "WU-08",
+  "title": "Atomic relocation of three engine registries",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/7",
+  "sole_write_owner": "WU-08",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/7/owned_file_paths",
+  "registered_owned_file_count": 6,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/registries/",
+    "src/ptsip/engines/contracts/engines_registries/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "기존 engine registries 3개를 contracts/engines_registries/로 원자적으로 이동하고 과거 경로 정리",
+  "work_steps": [
+    {
+      "id": "WU-08-TASK-01",
+      "instruction": "registries/official-static.json, official-execution.json, derived-snapshot.json의 실제 필드와 각 소비자·생성자를 분석한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-08-TASK-02",
+      "instruction": "정적 등록부와 실행 등록부를 src/ptsip/engines/contracts/engines_registries/로 이전한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-08-TASK-03",
+      "instruction": "derived-snapshot.json은 현행 계약과 참조 관계로 재생성한 후 신규 경로에 기록한다. 단순 복사로 정당성을 대체하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-08-TASK-04",
+      "instruction": "engines/index.json 및 contracts/work-item-bindings.json 등 WU-01 소유 파일의 수정은 WU-01에게 교차 작업으로 전달한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-08-TASK-05",
+      "instruction": "WU-10 소유 테스트에 이전 경로 전제가 남으면 해당 WU로 기대값 갱신을 요청한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-08-TASK-06",
+      "instruction": "모든 현행 참조가 신규 경로를 사용하도록 정리한 다음 기존 engines/registries/ 세 파일을 삭제한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "official-static.json MOVED",
+    "official-execution.json MOVED",
+    "derived-snapshot.json REGENERATED_AND_MOVED",
+    "OLD_REGISTRIES_PATH_REMOVED_AFTER_REFERENCE_CLOSURE"
+  ],
+  "completion_acceptance": [
+    "THREE_REGISTRY_DESTINATION_FILES_PRESENT",
+    "DERIVED_SNAPSHOT_REGENERATED",
+    "CURRENT_CONSUMERS_REBOUND",
+    "OLD_REGISTRY_ROOT_REMOVED_AFTER_REFERENCE_CLOSURE"
+  ],
+  "validation_instructions": [
+    "등록부 JSON/스키마·참조 유효성 검사",
+    "변경된 실제 소비자 기반 로딩 스모크"
+  ],
+  "forbidden_work": [
+    "EDIT_WU01_OWNED_INDEX_WITH_WU08_AUTHORITY",
+    "FIXED_ENGINE_TOTAL_ASSUMPTION"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

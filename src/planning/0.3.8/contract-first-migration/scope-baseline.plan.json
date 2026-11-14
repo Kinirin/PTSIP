@@ -4,7 +4,7 @@
   "id": "PTSIP-0.3.8-CONTRACT-FIRST-MIGRATION",
   "title": "Contract-first distribution and engine responsibility migration",
   "lifecycle": {
-    "state": "IMPLEMENTATION_APPROVED",
+    "state": "IMPLEMENTATION_STARTED",
     "approval": "APPROVED_USER_EXPLICIT",
     "implementation_authorized": true,
     "publication_authorized": false,
@@ -30,7 +30,11 @@
         "PROJECTION"
       ],
       "no_count_derived_policy_resolution": true
-    }
+    },
+    "implementation_started": true,
+    "start_signal_date": "2026-11-14",
+    "code_implementation_started_by_this_plan_commit": false,
+    "implementation_execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json"
   },
   "authority_boundary": {
     "exceptional_no_new_policy_derivation": true,
@@ -109,7 +113,7 @@
     "context": {
       "root": "src/ptsip/engines/context/",
       "planned_responsibility": "DEPENDENCY_ORDERING",
-      "new_operation_id": "PENDING_DECISION"
+      "new_operation_id": "TO_BE_CREATED_BY_WU_04_DURING_IMPLEMENTATION"
     },
     "retired_operation": "planning.select-installation",
     "current_migration_engine_kinds": [
@@ -224,7 +228,7 @@
       "go_common_contract_runtime_dependency": "FORBIDDEN",
       "disabled_engine_behavior": "UNRELATED_ENGINE_CLI_MUST_REMAIN_AVAILABLE",
       "cross_engine_communication": "ONLY_VERSIONED_LANGUAGE_NEUTRAL_INTERFACE_IF_REQUIRED",
-      "implementation_authorized": false,
+      "implementation_authorized": true,
       "required_engine_kinds": [
         "CONTEXT",
         "STORAGE",
@@ -246,14 +250,14 @@
       "old_entrypoint_disposition": "RETIRE_WITH_BUILD_AND_CALLSITE_REBINDING",
       "go_package_requirement": "ROOT_MAIN_GO_AND_CLI_GO_SAME_PACKAGE",
       "rust_engine_runtime_dependency": "FORBIDDEN",
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     "top_level_go_cli_relation": {
       "file": "src/ptsip/CLI.go",
       "role": "TOP_LEVEL_COMMAND_ENTRY_AND_ENGINE_ROUTING_WITH_NON_ENGINE_FUNCTION_OWNERSHIP",
       "engine_operation_implementation": "FORBIDDEN",
       "mandatory_engine_dependency": "FORBIDDEN",
-      "details": "USER_DEFINED_ROUTING_VS_ENGINE_SEMANTICS_BOUNDARY;GO_MODULE_AND_CONCRETE_COMMAND_CATALOG_DEFERRED",
+      "details": "OWNER_APPROVED_ROUTING_ONLY_ENGINE_COMMANDS;NON_ENGINE_FUNCTIONS_IN_GO;BUILD_CONFIGURATION_DERIVED_IN_WU11_WITH_OWNERSHIP_GATE",
       "engine_command_interpretation": "FORBIDDEN_USE_ENGINE_OWNED_CLI",
       "engine_command_execution": "DELEGATE_TO_ENGINE_OWNED_CLI",
       "non_engine_command_responsibility": "TOP_LEVEL_GO_CLI",
@@ -280,7 +284,7 @@
     }
   },
   "work_units": {
-    "state": "IMPLEMENTATION_APPROVED_SCOPE_WITH_GATES",
+    "state": "IMPLEMENTATION_STARTED_APPROVED_WUS_READY",
     "unit_index_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions",
     "candidate_unit_count": 13,
     "approved_units": [
@@ -304,21 +308,15 @@
       "WU-12"
     ],
     "registration_requires": "EXPLICIT_USER_APPROVAL_RECORDED_FOR_WU_01_TO_11;NEW_SCOPE_NOT_PREAPPROVED",
-    "preconditions_for_materialization": [
-      "CONCRETE_IMPLEMENTATION_DIRECTORY",
-      "SINGLE_OWNER_RESPONSIBILITY",
-      "ACCEPTANCE_AND_VALIDATION_SCOPE",
-      "USER_PLAN_REVIEW",
-      "SPECIFIC_IMPLEMENTATION_DETAILS"
-    ],
+    "preconditions_for_materialization": [],
     "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
-    "file_ownership_state": "EXACT_PATHS_REGISTERED_WITH_PLANNING_FILES_AS_WU01_REMOVAL_HISTORY",
+    "file_ownership_state": "EXACT_REGISTERED_OWNERS_WU01_TO_WU11_APPROVED;WU12_HELD;WU13_HISTORY_ONLY",
     "proposed_unapproved_units": [
       "WU-12",
       "WU-13"
     ],
     "approval_effect": "APPROVED_UNITS_MAY_IMPLEMENT_ONLY_AFTER_APPLICABLE_POLICY_AND_PLAN_READINESS_GATES",
-    "implementation_order": "NOT_INFERRED_FROM_WU_ID;DERIVE_FROM_DEPENDENCIES_AND_POLICY",
+    "implementation_order": "DEPENDENCY_AWARE_NOT_NUMERIC;WU12_LATE_UNAPPROVED;WU13_ALREADY_REMOVED",
     "partial_execution": "UNBLOCKED_INDEPENDENT_UNITS_MAY_PROCEED;BLOCKED_UNITS_HOLD",
     "user_approval_source": "USER_EXPLICIT_CHAT_2026-11-13",
     "engine_selection_rule": "CURRENT_MIGRATION_ENGINE_KINDS_IDENTITY_SET_ONLY",
@@ -385,7 +383,14 @@
       "no_old_cli_invocation_or_negative_smoke": true,
       "no_new_operation_id_inference": true
     },
-    "retirement_validation_policy": "SOURCE_TREE_ABSENT_IS_BASELINE;NO_LEGACY_COMPATIBILITY_OR_MIGRATION_COMPLETION_VERIFICATION"
+    "retirement_validation_policy": "SOURCE_TREE_ABSENT_IS_BASELINE;NO_LEGACY_COMPATIBILITY_OR_MIGRATION_COMPLETION_VERIFICATION",
+    "implementation_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+    "work_unit_plan_materialization": "ALL_13_WU_PLANS_MATERIALIZED;ONLY_WU01_TO_WU11_SOURCE_IMPLEMENTATION_APPROVED",
+    "initial_implementation_code_state": "NOT_STARTED_IN_THIS_PLAN_COMMIT",
+    "implementation_start_condition": "USER_INVOKES_IMPLEMENTER_START_PROMPT",
+    "operation_id_decision_boundary": "IN_OWNER_WU_DURING_IMPLEMENTATION_NOT_GLOBAL_ENTRY_GATE",
+    "cli_source_creation_boundary": "NEW_CLI_GO_AND_CLI_RS_CREATED_IN_RESPONSIBLE_WU_NOT_PREREQUISITES",
+    "distribution_order_boundary": "WU12_LATE_PACKAGING_UNAPPROVED"
   },
   "immutable_out_of_scope_for_this_draft": [
     "POLICY_DOCUMENT_MUTATION",

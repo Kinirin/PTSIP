@@ -1,0 +1,89 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-04",
+  "work_unit_id": "WU-04",
+  "title": "Context dependency ordering operation and independent Rust CLI",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/3",
+  "sole_write_owner": "WU-04",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/3/owned_file_paths",
+  "registered_owned_file_count": 13,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/context/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "의존성 순서 결정은 Context가 소유하며 신규 operation ID도 이 WU에서 결정·등록",
+  "work_steps": [
+    {
+      "id": "WU-04-TASK-01",
+      "instruction": "Context 기존 contract, runtime-contracts, loading.rs, source.rs 및 호출자를 읽어 의존성 정렬 책임을 확인한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-04-TASK-02",
+      "instruction": "작업 계획에서 명시한 dependency ordering 동작의 요청·결과·실패 타입을 Context 소유 계약으로 설계한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-04-TASK-03",
+      "instruction": "NEW_CONTEXT_OPERATION_ID는 사전 차단 항목이 아니라 이 WU의 구현 단계 결정이다. 현행 operation 네이밍 계약을 검색하고 충돌 없는 새 ID를 정해 해당 계약과 코드, 등록 요청에 함께 기록한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-04-TASK-04",
+      "instruction": "src/ptsip/engines/context/src/cli.rs를 생성하고 자체 main.rs에서 직접 호출한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-04-TASK-05",
+      "instruction": "명시적 계약에 따른 유효 요청을 실행하여 정렬된 결과와 응답 타입을 검증한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-04-TASK-06",
+      "instruction": "새 operation 등록 정보의 공통 파일 수정은 WU-01에 요청한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "NEW_CONTEXT_OWNED_DEPENDENCY_ORDER_OPERATION_CONTRACT",
+    "OWN_CLI_RS_CREATED",
+    "OWN_CLI_RETURNS_VALID_EXPECTED_RESPONSE"
+  ],
+  "completion_acceptance": [
+    "DEPENDENCY_ORDERING_OPERATION_OWNED_BY_CONTEXT",
+    "NEW_OPERATION_ID_RESOLVED_AND_RECORDED_DURING_WU",
+    "OWN_CLI_RS_COMPILES_AND_RUNS",
+    "CLI_POSITIVE_VALID_RESPONSE"
+  ],
+  "validation_instructions": [
+    "cargo test --manifest-path src/ptsip/engines/context/Cargo.toml",
+    "Context CLI의 정렬 요청·응답 실제 실행"
+  ],
+  "forbidden_work": [
+    "BLOCK_WU_ONLY_BECAUSE_OPERATION_ID_WAS_PREVIOUSLY_UNDECIDED",
+    "REUSE_OLD_PLANNING_IMPLEMENTATION"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY",
+  "operation_id_decision": {
+    "state": "DECIDE_IN_THIS_WU_NOT_PRESTART_BLOCKER",
+    "method": "READ_EXISTING_OPERATION_NAMESPACES_AND_REGISTER_UNIQUE_CONTEXT_OWNER_ID"
+  }
+}

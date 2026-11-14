@@ -1,0 +1,95 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-12",
+  "work_unit_id": "WU-12",
+  "title": "Late product distribution/packaging integration (proposal only)",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "PROPOSED_NOT_AUTHORIZED",
+  "implementation_authorized": false,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/11",
+  "sole_write_owner": "WU-12",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/11/owned_file_paths",
+  "registered_owned_file_count": 6,
+  "implementation_scope_paths": [
+    "src/ptsip/"
+  ],
+  "excluded_paths": [
+    "src/ptsip/engines/",
+    "src/ptsip/common_contract/",
+    "src/ptsip/CLI.go",
+    "src/ptsip/engine_installation.py",
+    "src/ptsip/cli.py",
+    "src/ptsip/migration/"
+  ],
+  "task_intent": "모든 승인된 엔진과 CLI의 산출물이 준비된 다음 최종 빌드·설치·패키징을 수행할 별도 승인 대기 WU",
+  "work_steps": [
+    {
+      "id": "WU-12-TASK-01",
+      "instruction": "WU-01~WU-11의 필요한 빌드·CLI·등록부 산출물과 검증 증거가 준비되었는지 확인한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-12-TASK-02",
+      "instruction": "배포 소스 원천을 src/ptsip/ 내부로 한정하고 .ptsip/을 배포 소스로 참조·복사·내장하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-12-TASK-03",
+      "instruction": "새 빌드 진입 파일은 사용자 승인이 필요한 이 WU 범위에서 선정한다. 기존 루트 pyproject.toml, setup.py, MANIFEST.in, 구형 backend를 새로운 빌드의 암묵적 출처로 재사용하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-12-TASK-04",
+      "instruction": "선택된 빌드 타깃으로 산출물을 만들고 설치 후 실제 CLI·엔진 동작을 검증한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-12-TASK-05",
+      "instruction": ".github/test_modes.yaml의 등록된 검증 모드를 활용하되 .github/workflows/tooling-test.yml의 안정성을 최대한 유지한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-12-TASK-06",
+      "instruction": "release/controller/package.go는 WU-10 소유 파일이므로 필요한 변경을 해당 소유자에게 요청한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "COMPLETE_NAMED_ENGINE_SET_PLATFORM_ARTIFACT",
+    "NO_DOT_PTSIP_DISTRIBUTION_DEPENDENCIES",
+    "NO_LEGACY_ROOT_SETUP_PYPROJECT_MANIFEST_REUSE",
+    "NO_ENGINE_OR_CLI_IMPLEMENTATION_OWNERSHIP_IN_DISTRIBUTION_UNIT"
+  ],
+  "completion_acceptance": [
+    "SEPARATE_USER_APPROVAL_FOR_IMPLEMENTATION",
+    "NEW_SRC_PTSIP_OWNED_BUILD_ENTRY_SELECTED",
+    "COMPLETE_PRODUCT_ARTIFACT",
+    "INSTALLED_NEW_CLI_AND_ENGINE_RESPONSE_VALID",
+    "NO_DOT_PTSIP_SHIPPING_SOURCE"
+  ],
+  "validation_instructions": [
+    "신규 빌드 패키징 테스트",
+    "설치 아티팩트 스모크 및 필요 플랫폼 검증",
+    "정확한 새 커밋에서 GitHub Actions"
+  ],
+  "forbidden_work": [
+    "EXECUTE_BEFORE_USER_APPROVAL",
+    "REUSE_LEGACY_ROOT_BUILD_AS_TARGET_SOURCE",
+    "REDEFINE_ENGINE_OWNERSHIP",
+    "PUBLISH_PYPI_WITHOUT_AUTHORIZATION"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "SEPARATE_USER_APPROVAL_BEFORE_ANY_SOURCE_EDIT"
+  ],
+  "scope_lock": "NO_IMPLEMENTATION_UNTIL_EXPLICIT_APPROVAL",
+  "next_step": "HOLD_PENDING_USER_APPROVAL",
+  "dependency_hint": "LATE_AFTER_APPROVED_ENGINE_AND_CLI_IMPLEMENTATION_NOT_NEXT_AUTO_WU"
+}

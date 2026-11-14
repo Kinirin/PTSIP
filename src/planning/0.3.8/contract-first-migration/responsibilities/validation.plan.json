@@ -1,0 +1,85 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-03",
+  "work_unit_id": "WU-03",
+  "title": "Validation planning impact/prepare operation and independent Rust CLI",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/2",
+  "sole_write_owner": "WU-03",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/2/owned_file_paths",
+  "registered_owned_file_count": 30,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/validation/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "검증 책임을 Validation 엔진 내부로 제한하고 새 계약 기반으로 실동작 확인",
+  "work_steps": [
+    {
+      "id": "WU-03-TASK-01",
+      "instruction": "validation/의 manifest, contract, runtime-contracts, src/planning/ 및 호출자를 읽어 일반 Validation 기능과 planning impact/prepare 검증의 경계를 구분한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-03-TASK-02",
+      "instruction": "validation.planning.impact 및 validation.planning.prepare의 새 typed contract와 검증 루틴을 Validation 소유 구현으로 정의한다. 과거 Planning Rust 코드의 호환성 재현을 목표로 삼지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-03-TASK-03",
+      "instruction": "기존 길이 0인 planning 관련 schema 두 파일은 파일명으로 구조를 추론하지 말고 실제 사용처·유효 계약 근거를 확인해 필요한 작업을 결정한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-03-TASK-04",
+      "instruction": "src/ptsip/engines/validation/src/cli.rs를 생성하고 main.rs와 연결해 독립 실행되는 Validation CLI를 구성한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-03-TASK-05",
+      "instruction": "정상 요청에 대한 반환 데이터와 오류 분기를 구별하는 테스트를 만든다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-03-TASK-06",
+      "instruction": "공통 엔진 소유자 참조 갱신은 WU-01에 요청한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "VALIDATION_PLANNING_IMPACT_AND_PREPARE_NEW_TYPED_CONTRACTS",
+    "OWN_CLI_RS_CREATED",
+    "OWN_CLI_RETURNS_VALID_EXPECTED_RESPONSE"
+  ],
+  "completion_acceptance": [
+    "VALIDATION_OWNS_TYPED_IMPACT_AND_PREPARE",
+    "OWN_CLI_RS_COMPILES_AND_RUNS",
+    "CLI_POSITIVE_VALID_RESPONSE",
+    "ZERO_BYTE_SCHEMA_SEMANTICS_NOT_GUESSED"
+  ],
+  "validation_instructions": [
+    "cargo test --manifest-path src/ptsip/engines/validation/Cargo.toml",
+    "Validation CLI 실제 유효 요청·정상 응답 검증"
+  ],
+  "forbidden_work": [
+    "OLD_PLANNING_COMPATIBILITY_PARITY_TEST",
+    "CREATE_SCHEMA_CONTENT_FROM_FILENAME_ALONE"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

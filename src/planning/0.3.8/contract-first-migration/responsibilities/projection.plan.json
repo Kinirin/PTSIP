@@ -1,0 +1,79 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-07",
+  "work_unit_id": "WU-07",
+  "title": "Projection independent Rust CLI",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/6",
+  "sole_write_owner": "WU-07",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/6/owned_file_paths",
+  "registered_owned_file_count": 13,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/projection/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "Projection의 출력·투영 계약을 그대로 소유하는 독립 명령 진입점",
+  "work_steps": [
+    {
+      "id": "WU-07-TASK-01",
+      "instruction": "Projection contract, rendering.rs, source.rs, main.rs와 입력·출력 소비자를 분석한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-07-TASK-02",
+      "instruction": "src/ptsip/engines/projection/src/cli.rs를 생성하고 Projection 소유 인터페이스를 통해 출력 투영 요청을 처리한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-07-TASK-03",
+      "instruction": "기존 Projection 동작의 타입을 유지하며 Go 최상위 CLI에 렌더링 책임을 옮기지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-07-TASK-04",
+      "instruction": "다른 엔진을 끄거나 미설치해도 자체 엔진 CLI의 독립성을 유지한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-07-TASK-05",
+      "instruction": "정상 요청에 대한 기대 응답 형식·종료코드를 테스트한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "OWN_CLI_RS_CREATED",
+    "PROJECTION_ENGINE_REMAINS_INDEPENDENTLY_DISABLEABLE"
+  ],
+  "completion_acceptance": [
+    "PROJECTION_CLI_BUILDS",
+    "PROJECTION_CLI_RETURNS_VALID_RESPONSE",
+    "OWN_RENDERING_SEMANTICS_PRESERVED",
+    "INDEPENDENT_DISABLEABILITY"
+  ],
+  "validation_instructions": [
+    "cargo test --manifest-path src/ptsip/engines/projection/Cargo.toml",
+    "Projection CLI 유효 응답 스모크"
+  ],
+  "forbidden_work": [
+    "TOP_LEVEL_GO_RENDERING_IMPLEMENTATION",
+    "CROSS_ENGINE_CLI_REQUIRED_LINK"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

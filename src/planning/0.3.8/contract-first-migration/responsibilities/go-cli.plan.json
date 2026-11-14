@@ -1,0 +1,103 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-11",
+  "work_unit_id": "WU-11",
+  "title": "Top-level Go CLI routing and non-engine functionality",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/10",
+  "sole_write_owner": "WU-11",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/10/owned_file_paths",
+  "registered_owned_file_count": 1,
+  "implementation_scope_paths": [
+    "src/ptsip/CLI.go"
+  ],
+  "excluded_paths": [],
+  "task_intent": "최상위 CLI.go는 엔진 명령을 해당 Rust CLI로 전달하고 엔진 외 최상위 기능만 직접 처리",
+  "work_steps": [
+    {
+      "id": "WU-11-TASK-01",
+      "instruction": "현재 Python cli.py와 공식 엔진 계약·등록부를 읽고 최상위 명령 진입점이 실제로 소유해야 할 엔진 외 기능 및 명령의 최소 계약을 도출한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-11-TASK-02",
+      "instruction": "src/ptsip/CLI.go를 생성한다. 엔진 명령은 등록된 소유 엔진의 CLI로 입력을 전달하며 엔진 명령의 의미 해석·검증·실행을 Go 라우터에서 재구현하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-11-TASK-03",
+      "instruction": "엔진 검색·경로 선택은 현행 등록 계약에 기초하고 고정된 공식 엔진 수량이나 필수 전체 엔진 활성화를 전제하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-11-TASK-04",
+      "instruction": "엔진 이외의 명령은 상위 CLI 소유 구현으로 설계하되 기존 소유권·권한 경계를 침범하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-11-TASK-05",
+      "instruction": "Go 모듈·빌드 구성의 구체 설계는 구현 중 검토한다. 현재 WU-11 소유 파일에 없는 go.mod 등을 승인 없이 만들지 말고 필요한 변경은 파일 소유권 계획에 영향·승인 범위를 명시해 별도 경계 결정 후 반영한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-11-TASK-06",
+      "instruction": "실제 구현한 엔진 라우팅 명령과 엔진 외 명령 중 최소 하나 이상을 실행하여 기대되는 성공 응답을 확인한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-11-TASK-07",
+      "instruction": "엔진 CLI가 미설치 또는 비활성일 때 다른 엔진과 최상위 비엔진 기능을 불필요하게 차단하지 않도록 한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "NEW_CLI_GO_CREATED",
+    "NO_CROSS_ENGINE_REQUIRED_RUNTIME_DEPENDENCIES",
+    "GO_BUILD_OWNERSHIP_PROVEN",
+    "NEW_CLI_GO_REAL_COMMAND_RETURNS_VALID_RESPONSE",
+    "ENGINE_COMMANDS_ROUTED_TO_OWNING_CLI_WITHOUT_SEMANTIC_REIMPLEMENTATION",
+    "NON_ENGINE_TOP_LEVEL_FUNCTIONS_REMAIN_IN_GO_CLI_OWNERSHIP"
+  ],
+  "completion_acceptance": [
+    "SRC_PTSIP_CLI_GO_CREATED",
+    "ENGINE_COMMANDS_ROUTED_WITHOUT_ENGINE_SEMANTIC_REIMPLEMENTATION",
+    "NON_ENGINE_FUNCTIONS_OWNED_BY_GO_ENTRY",
+    "REAL_GO_COMMAND_POSITIVE_RESPONSE",
+    "GO_BUILD_CONFIGURATION_VERIFIED"
+  ],
+  "validation_instructions": [
+    "선택한 실제 Go 빌드 구성으로 컴파일 및 테스트(구성 미확정 시 명령을 사전 가정하지 않음)",
+    "Go CLI를 직접 실행하고 엔진 라우팅 정상 응답 확인",
+    "실제 최상위 비엔진 명령의 정상 응답 확인"
+  ],
+  "forbidden_work": [
+    "IMPLEMENT_ENGINE_COMMAND_SEMANTICS_IN_TOP_LEVEL_GO",
+    "ASSUME_GLOBAL_ENGINE_COUNT",
+    "SILENT_NEW_GO_MODULE_OWNERSHIP",
+    "MAKE_ALL_ENGINES_MANDATORY_RUNTIME_DEPENDENCY"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY",
+  "go_module_decision": {
+    "state": "DESIGN_AT_IMPLEMENTATION_TIME_NOT_FULL_PLAN_ENTRY_BLOCK",
+    "constraint": "DO_NOT_SILENTLY_CREATE_UNREGISTERED_GO_MOD",
+    "routing": "ENGINE_COMMANDS_PASSTHROUGH_ENGINE_CLI_SEMANTICS",
+    "non_engine_functions": "OWNED_BY_TOP_LEVEL_GO_CLI"
+  }
+}

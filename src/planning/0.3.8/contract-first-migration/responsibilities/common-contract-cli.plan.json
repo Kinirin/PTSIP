@@ -1,0 +1,90 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-09",
+  "work_unit_id": "WU-09",
+  "title": "Independent Go common contract root CLI",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/8",
+  "sole_write_owner": "WU-09",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/8/owned_file_paths",
+  "registered_owned_file_count": 22,
+  "implementation_scope_paths": [
+    "src/ptsip/common_contract/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "공통 계약 처리의 독립 Go CLI를 자체 모듈에서 구성하고 Python 호출 어댑터와 빌드 경로를 동기화",
+  "work_steps": [
+    {
+      "id": "WU-09-TASK-01",
+      "instruction": "기존 common_contract/go.mod 및 cmd/ptsip-common-contract/main.go의 operation dispatch, input/output JSON protocol과 테스트를 읽고 기능 책임을 분석한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-09-TASK-02",
+      "instruction": "src/ptsip/common_contract/cli.go와 main.go를 생성해 동일 Go package의 자체 실행 진입점으로 구성한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-09-TASK-03",
+      "instruction": "기존 lookup/validate/compatibility 및 source operations와 필요한 호출 형식을 새 엔트리로 연결하되 확인된 소비자 호환성만 보존한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-09-TASK-04",
+      "instruction": "cmd/ptsip-common-contract/protocol.json이 실제 테스트·실행에서 어떻게 사용되는지 검사한 후 위치를 정한다. 이름만 보고 임의로 이동하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-09-TASK-05",
+      "instruction": "src/ptsip/_common_contract.py가 참조하는 오래된 ./cmd/ptsip-common-contract 빌드 명령을 새 모듈 진입점에 맞게 교체한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-09-TASK-06",
+      "instruction": "old cmd/main.go는 새 빌드 경로·호출자 연결이 확인되면 목표 빌드에서 제외하고 제거·은퇴 처리를 기록한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-09-TASK-07",
+      "instruction": "다른 Rust 엔진 CLI의 필수 런타임 의존성을 이 Common Contract에 만들지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "NEW_CLI_GO_AND_MAIN_GO",
+    "OLD_CMD_MAIN_NOT_USED_BY_TARGET_BUILD"
+  ],
+  "completion_acceptance": [
+    "ROOT_GO_MAIN_AND_CLI_CREATED",
+    "EXISTING_COMMON_CONTRACT_FUNCTIONS_REACHABLE",
+    "PYTHON_ADAPTER_USES_TARGET_ENTRYPOINT",
+    "TARGET_BUILD_DOES_NOT_USE_OLD_CMD_MAIN"
+  ],
+  "validation_instructions": [
+    "go -C src/ptsip/common_contract test ./... -count=1",
+    "go -C src/ptsip/common_contract vet ./...",
+    "새 Common Contract CLI에 유효 JSON 요청을 실제 전달해 응답 확인"
+  ],
+  "forbidden_work": [
+    "MAKE_RUST_ENGINES_DEPEND_ON_COMMON_CONTRACT_RUNTIME",
+    "MOVE_PROTOCOL_FILE_WITHOUT_CONSUMER_EVIDENCE"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

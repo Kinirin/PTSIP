@@ -1,0 +1,84 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-13",
+  "work_unit_id": "WU-13",
+  "title": "Retired Planning Rust directory removal (independent WU; already applied)",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "SOURCE_REMOVAL_ALREADY_APPLIED",
+  "implementation_authorized": false,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": true,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/12",
+  "sole_write_owner": "WU-13",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/12/owned_file_paths",
+  "registered_owned_file_count": 18,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/planning/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "이전 Planning 엔진의 전체 소스 제거는 WU-13의 독립 소유권으로 기록한다. 과거 기능 이관 완료와 호환성 증명은 요구하지 않는다.",
+  "work_steps": [
+    {
+      "id": "WU-13-TASK-01",
+      "instruction": "src/ptsip/engines/planning/ 디렉터리의 전체 삭제가 이전 커밋 683365cbd946122c355d3184b631b9852a0a6067에 이미 반영된 사실을 이 WU에 귀속한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-13-TASK-02",
+      "instruction": "Planning 엔진 Rust 소스·Cargo 파일·계약 등 18개 삭제 경로는 WU-13의 이력 소유 파일로 보존한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-13-TASK-03",
+      "instruction": "원본 소스를 재생성하지 않는다. 유효한 후속 기능은 Context·Validation·Discovery 엔진 각자의 구현 WU에서 새 계약과 독립 CLI로 다룬다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-13-TASK-04",
+      "instruction": "이전 Planning 호환성·기능 이전 완료 여부는 사용자 책임으로 남기고 에이전트 자동 검증 게이트로 만들지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-13-TASK-05",
+      "instruction": "Planning CLI가 실패한다는 사실로 성공 판정을 하지 않는다. 새 CLI의 긍정 응답 테스트는 WU-02, WU-03, WU-04, WU-11에서 수행한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "REMOVE_ALL_FILES_UNDER_SRC_PTSIP_ENGINES_PLANNING",
+    "NO_LEGACY_PLANNING_COMPATIBILITY_OR_HANDOFF_VERIFICATION"
+  ],
+  "completion_acceptance": [
+    "SOURCE_REMOVAL_ALREADY_APPLIED_AT_RECORDED_COMMIT",
+    "INDEPENDENT_WU13_OWNERSHIP_PRESERVED",
+    "NO_REPEATED_SOURCE_DELETION",
+    "NO_LEGACY_COMPATIBILITY_OR_HANDOFF_TEST"
+  ],
+  "validation_instructions": [
+    "AUTOMATED_OLD_PLANNING_TEST_NOT_REQUIRED",
+    "SOURCE_REMOVAL_EVIDENCE_IS_HISTORICAL_COMMIT_NOT_NEW_CLI_NEGATIVE_ASSERTION"
+  ],
+  "forbidden_work": [
+    "MERGE_WU13_INTO_WU01",
+    "RESTORE_RETIRED_PLANNING_DIRECTORY",
+    "TEST_OLD_PLANNING_CLI_FAILURE",
+    "BLOCK_ON_LEGACY_MIGRATION_COMPLETION"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "SOURCE_REMOVAL_COMMIT_683365cbd946122c355d3184b631b9852a0a6067"
+  ],
+  "scope_lock": "HISTORY_ONLY_NO_SOURCE_REEXECUTION",
+  "next_step": "KEEP_RECORD_AND_SKIP",
+  "retroactive_source_removal": {
+    "commit": "683365cbd946122c355d3184b631b9852a0a6067",
+    "removed_exact_file_count": 18,
+    "do_not_recreate": true,
+    "legacy_handoff_verified_by_user_not_automation": true
+  }
+}

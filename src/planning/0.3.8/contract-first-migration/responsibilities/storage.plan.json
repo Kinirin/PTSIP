@@ -1,0 +1,78 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-05",
+  "work_unit_id": "WU-05",
+  "title": "Storage independent Rust CLI",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/4",
+  "sole_write_owner": "WU-05",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/4/owned_file_paths",
+  "registered_owned_file_count": 16,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/storage/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "Storage는 자기 명령과 저장 기능을 독립적으로 소유하고 다른 엔진의 활성 여부에 종속되지 않음",
+  "work_steps": [
+    {
+      "id": "WU-05-TASK-01",
+      "instruction": "Storage의 manifest, execution-bindings, runtime-contracts, main.rs, native.rs, provider.rs, source.rs 역할을 분석한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-05-TASK-02",
+      "instruction": "src/ptsip/engines/storage/src/cli.rs를 만들고 기존 Storage 기능만을 노출하는 소유 CLI를 구현한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-05-TASK-03",
+      "instruction": "독립 빌드·독립 활성화·독립 비활성화 경계를 유지한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-05-TASK-04",
+      "instruction": "공통 Go CLI 또는 타 Rust 엔진 CLI를 필수 링크·실행 의존성으로 도입하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-05-TASK-05",
+      "instruction": "Storage CLI의 유효 요청을 실제 실행하고 기대 결과를 검증한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "OWN_CLI_RS_CREATED",
+    "STORAGE_ENGINE_REMAINS_INDEPENDENTLY_DISABLEABLE"
+  ],
+  "completion_acceptance": [
+    "STORAGE_CLI_BUILDS",
+    "STORAGE_CLI_RETURNS_VALID_RESPONSE",
+    "UNRELATED_ENGINES_NOT_REQUIRED"
+  ],
+  "validation_instructions": [
+    "cargo test --manifest-path src/ptsip/engines/storage/Cargo.toml",
+    "Storage CLI 독립 실행 스모크"
+  ],
+  "forbidden_work": [
+    "CROSS_ENGINE_REQUIRED_CLI_LINK",
+    "ENGINE_OPERATION_IN_TOP_LEVEL_GO"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

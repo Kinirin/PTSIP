@@ -1,0 +1,95 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-01",
+  "work_unit_id": "WU-01",
+  "title": "Shared engine contract/reference ownership",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/0",
+  "sole_write_owner": "WU-01",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/0/owned_file_paths",
+  "registered_owned_file_count": 28,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/contracts/",
+    "src/ptsip/engines/index.json"
+  ],
+  "excluded_paths": [
+    "src/ptsip/engines/contracts/engines_registries/"
+  ],
+  "task_intent": "현행 엔진 등록 및 공통 계약의 정확한 책임자를 유지한다. Planning 엔진의 삭제 책임은 WU-13이므로 WU-01에 재배정하지 않는다.",
+  "work_steps": [
+    {
+      "id": "WU-01-TASK-01",
+      "instruction": "engines/index.json, capability-owner-map.json, work-item-bindings.json, installation-plan.json 등의 필드가 실제 어떤 데이터와 인터페이스를 소유하는지 사용처와 호출 흐름을 읽고 기록한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-01-TASK-02",
+      "instruction": "이번 작업 대상인 CONTEXT, STORAGE, VALIDATION, DISCOVERY, EXECUTION, PROJECTION의 명시적 식별자만을 마이그레이션 범위로 사용하고 전체 공식 엔진 개수를 가정하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-01-TASK-03",
+      "instruction": "기존 Planning 소스 디렉터리는 없다는 전제로 현재 등록 경로와 실제 엔진 파일이 서로 일치하도록 현행 참조를 정리한다. 기존 Planning의 기능 이관이나 호환성 완료를 증명하려 하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-01-TASK-04",
+      "instruction": "각 엔진이 제공하는 operation 계약과 소유자 정보를 읽되 엔진 내부 cli.rs 또는 엔진 구현을 WU-01에서 수정하지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-01-TASK-05",
+      "instruction": "WU-08의 registry 목적지 변경이 engines/index.json 또는 공통 계약을 요구하면 해당 변경은 WU-01 소유 파일에서 수행하고 원자적 전환 타이밍을 맞춘다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-01-TASK-06",
+      "instruction": "work-item-bindings.json이 참조하는 존재하지 않는 vpms-handoff / vpms-scope-mapping / vpms-caller-transition-plan 파일은 이름만으로 생성하지 말고 필드 역할·현행 호출 여부 확인 후 수정 방향을 결정한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-01-TASK-07",
+      "instruction": "공통 계약의 현재 소비자·등록부 해석을 검증하고, 소유자가 다른 파일의 변경은 담당 WU로 요청한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "NAMED_ENGINE_SET_CAPABILITY_OWNER_AND_INSTALLATION_CONTRACTS",
+    "INDEPENDENT_ENGINE_CONTRACT_OWNERS_PRESERVED",
+    "CURRENT_NAMED_ENGINE_REGISTRATION_HAS_ONLY_VALID_CURRENT_SOURCE_REFERENCES"
+  ],
+  "completion_acceptance": [
+    "각 현행 엔진 참조가 유효한 현재 소스로 연결된다",
+    "공통 계약 파일의 JSON/스키마 관계가 유효하다",
+    "등록부가 고정된 엔진 총수를 전제로 하지 않는다",
+    "WU-13 파일 삭제 책임을 흡수하지 않는다"
+  ],
+  "validation_instructions": [
+    "공통 계약 로딩·참조 무결성 확인",
+    "WU-10 소유 테스트 파일 변경이 필요하면 WU-10에 교차 책임 요청"
+  ],
+  "forbidden_work": [
+    "LEGACY_PLANNING_COMPATIBILITY_TEST",
+    "GLOBAL_ENGINE_COUNT_AS_COMPLETION_RULE",
+    "ENGINE_CLI_IMPLEMENTATION",
+    "CREATE_ABSENT_CONTRACTS_FROM_FILENAMES"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

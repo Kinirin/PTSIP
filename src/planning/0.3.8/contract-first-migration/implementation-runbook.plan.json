@@ -1,0 +1,313 @@
+{
+  "document_type": "PTSIP_CONTRACT_FIRST_IMPLEMENTATION_RUNBOOK",
+  "version": "1.0",
+  "id": "PTSIP-038-CONTRACT-FIRST-IMPLEMENTATION",
+  "state": "IMPLEMENTATION_STARTED",
+  "authorization_state": "IMPLEMENTATION_APPROVED_FOR_WU_01_THROUGH_WU_11",
+  "user_start_signal": "2026-11-14",
+  "reference_head_before_plan_commit": "987e0339d2e4f1ebc37a4d174dee6830e0bba597",
+  "active_branch": "main",
+  "canonical_within_this_plan": true,
+  "registered_policy_contract": false,
+  "source_of_instructions": [
+    "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json",
+    "src/planning/0.3.8/contract-first-migration/index.json",
+    "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
+    "src/planning/0.3.8/contract-first-migration/responsibilities/"
+  ],
+  "ownership_and_authority": {
+    "source_truth": "LATEST_ACTIVE_BRANCH_HEAD_AND_ACTUAL_FIELD_BEHAVIOR",
+    "policy_authority": "POLICY_GT_PLAN_GT_IMPLEMENTATION;DO_NOT_MODIFY_POLICY_IN_THIS_PLAN",
+    "scope_semantics": "NAMED_CURRENT_MIGRATION_ENGINE_IDENTITIES_NOT_GLOBAL_ENGINE_COUNT",
+    "branch": "MAIN_CURRENT_ACTIVE_NO_NEW_BRANCHES",
+    "ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
+    "start_approval": "EXPLICIT_IMPLEMENTATION_START_DIRECTIVE_2026-11-14",
+    "test_policy": "SMALLEST_RELEVANT_VALIDATION_MODE;POSITIVE_NEW_CLI_RESPONSE;NO_LEGACY_PLANNING_HANDOFF_TEST",
+    "log_policy": "WRITE_TEMP_LOG_FILES_UNTRACKED;REPORT_AND_REMOVE_AFTER_EVIDENCE_RECORD",
+    "progress_policy": "CONTINUE_NEXT_INDEPENDENT_APPROVED_WU_WITHOUT_REPEAT_APPROVAL",
+    "no_release_without_separate_auth": true
+  },
+  "execution_scope": {
+    "approved_work_units": [
+      "WU-01",
+      "WU-02",
+      "WU-03",
+      "WU-04",
+      "WU-05",
+      "WU-06",
+      "WU-07",
+      "WU-08",
+      "WU-09",
+      "WU-10",
+      "WU-11"
+    ],
+    "later_proposed_unapproved": [
+      "WU-12"
+    ],
+    "already_applied_not_reexecute": [
+      "WU-13"
+    ],
+    "migration_engine_kinds": [
+      "CONTEXT",
+      "STORAGE",
+      "VALIDATION",
+      "DISCOVERY",
+      "EXECUTION",
+      "PROJECTION"
+    ],
+    "retired_engine_kind": "PLANNING",
+    "future_new_engines": "OUTSIDE_CURRENT_MIGRATION_UNTIL_SEPARATELY_APPROVED",
+    "total_official_engine_count_constraint": "NONE",
+    "policy_document_migration": "DEFERRED",
+    "build_or_publish_release": "NOT_AUTHORIZED",
+    "source_modification_now": "NOT_PERFORMED_BY_PLAN_START_COMMIT"
+  },
+  "agent_startup_instructions": [
+    "GitHub main 최신 HEAD 확인. 작업 파일은 scope-baseline.plan.json, index.json, file-ownership.plan.json, implementation-runbook.plan.json과 각 responsibilities/*.plan.json을 이 순서로 읽는다.",
+    "HEAD에서 이미 실행된 작업·커밋·검증 증거를 재평가한다. 이전 대화와 번호 순서만으로 수행 완료 여부를 추론하지 않는다.",
+    "정책 문서 마이그레이션은 제외한다. 작업계획서는 새로운 정책을 정의하지 않지만 실제 편집 시 유효 정책의 구체적 충돌을 무시하지 않는다. 엔진 개수 차이만으로 가상의 충돌 차단을 생성하지 않는다.",
+    "각 WU의 owner scope와 exact owned_file_paths를 확인한다. 기능 의미를 파일명만으로 확정하지 말고 필드 정의·실제 호출·의존성을 읽는다.",
+    "WU-01~WU-11의 실제 전제조건을 분석하여 의존성 DAG를 도출한다. 사전 고정된 WU 번호 순서는 사용하지 않는다.",
+    "현재 작업 대상 엔진은 CONTEXT, STORAGE, VALIDATION, DISCOVERY, EXECUTION, PROJECTION 이름을 기준으로 한다. 신규 compile_sealed_rbac 책임 엔진 등 장래 확장 수를 고정하지 않는다.",
+    "계획의 미결정은 모두 구현 전 차단이 아니다. 기존 계약에 근거하여 WU 안에서 결정할 수 있는 operation ID, CLI 문법, 입력/출력, 실행 방식은 해당 WU의 구현 사양으로 도출하고 저장한다.",
+    "현재 승인된 WU를 시작하기 전에 필요시 WU 별 소유 파일·입출력·검증 범위를 정확하게 구체화한다. 승인된 책임을 바꾸거나 별도 정책을 새로 만들지 않는다.",
+    "후속 실행을 위한 체크포인트는 계획 문서에 저장하되 실제 코드 및 검증 커밋이 없는 완료·성공 표시를 만들지 않는다."
+  ],
+  "per_work_unit_transaction": [
+    {
+      "step": "SELECT",
+      "require": "APPROVED_AND_DEPENDENCIES_SATISFIED",
+      "action": "검증된 근거로 READY WU 하나를 선택한다. 독립 WU는 선행 WU가 실패하더라도 진행한다."
+    },
+    {
+      "step": "RESOLVE_DETAILS",
+      "require": "CONCRETE_FIELDS_AND_CONTRACTS",
+      "action": "소유 파일, 실제 필드의 책임, 관련 계약/호출자와 입력·출력·오류 조건을 읽고 WU 작업 세부 사항을 계획 계약에 기록한다."
+    },
+    {
+      "step": "IMPLEMENT",
+      "require": "ONLY_REGISTERED_OWNER_PATHS",
+      "action": "소유 WU의 파일만 변경하고 신규 CLI 또는 operation을 해당 WU에서 생성한다. 새 경로가 필요하면 소유권 계획의 승인 경계를 먼저 검토한다."
+    },
+    {
+      "step": "LOCAL_VERIFY",
+      "require": "SELECTED_MINIMAL_TEST_MODE_PLUS_POSITIVE_SMOKE",
+      "action": "Rust/Go/CLI 관련 실제 소스 테스트 수행. 필수 유효 명령에 정상 응답하는지 확인하고 로그를 비커밋 파일로 남긴다."
+    },
+    {
+      "step": "COMMIT",
+      "require": "LOCAL_VERIFICATION_PASSED",
+      "action": "현재 main 활성 HEAD에만 파일·WU 단위 소유권 일치하는 변경을 커밋한다. 새 브랜치를 만들지 않는다."
+    },
+    {
+      "step": "REMOTE_VERIFY",
+      "require": "RELEVANT_GITHUB_ACTIONS_WHEN_APPLICABLE",
+      "action": "변경 커밋 SHA와 연결된 정확한 GitHub Actions 결과를 확인한다. 실행 불가 시 성공으로 간주하지 않고 미검증을 기록한다."
+    },
+    {
+      "step": "CLOSE_WU",
+      "require": "EVIDENCE_AND_ACCEPTANCE_VERIFIED",
+      "action": "WU 완료 상태, 변경 파일, 명령, 로그 위치/요약, 커밋 SHA, CI 확인 결과, 후속 WU 정보를 기계 판독 형태로 기록한다."
+    },
+    {
+      "step": "CONTINUE",
+      "require": "ANY_OTHER_APPROVED_EXECUTABLE_WU",
+      "action": "완료마다 사용자 재승인을 요청하지 않고 다음 독립 WU로 진행한다. 구체적 정책 충돌·미승인 WU만 별도 보류한다."
+    }
+  ],
+  "execution_phases_are_hints_not_fixed_sort": [
+    {
+      "phase": "A",
+      "label": "CONTRACT_AND_SOURCE_DISCOVERY",
+      "candidates": [
+        "WU-01",
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-05",
+        "WU-06",
+        "WU-07",
+        "WU-09"
+      ],
+      "rule": "PARALLEL_INDEPENDENT_WU_ALLOWED;CROSS_OWNER_CHANGES_THROUGH_OWNER"
+    },
+    {
+      "phase": "B",
+      "label": "REGISTRY_AND_CLI_INTEGRATION",
+      "candidates": [
+        "WU-08",
+        "WU-11"
+      ],
+      "rule": "RUN_AFTER_REQUIRED_ENGINE_CONTRACTS_AND_CLI_INPUTS_EXIST;ITERATE_WU01_REFERENCES"
+    },
+    {
+      "phase": "C",
+      "label": "DEVELOPER_VERIFICATION_AND_PYTHON_CLEANUP",
+      "candidates": [
+        "WU-10"
+      ],
+      "rule": "RUN_AFTER_NEEDED_NEW_INSTALLED_ENGINE_REFERENCES_AND_CLI_CALLERS_AVAILABLE"
+    },
+    {
+      "phase": "D",
+      "label": "DISTRIBUTION_LATE_INTEGRATION",
+      "candidates": [
+        "WU-12"
+      ],
+      "rule": "NOT_AUTHORIZED;EXPLICIT_SEPARATE_APPROVAL_AND_PRIOR_ARTIFACT_READINESS_REQUIRED"
+    },
+    {
+      "phase": "HISTORY",
+      "label": "PLANNING_SOURCE_RETIREMENT",
+      "candidates": [
+        "WU-13"
+      ],
+      "rule": "ALREADY_APPLIED;NO_NEW_EXECUTION_OR_OLD_CLI_TEST"
+    }
+  ],
+  "technical_decision_rules": {
+    "details_to_resolve_inside_owned_wu": [
+      "NEW_CONTEXT_OPERATION_ID",
+      "SIX_ENGINE_OWNED_CLI_RS_IMPLEMENTATION",
+      "GO_COMMON_CONTRACT_CLI_AND_MAIN",
+      "COMMAND_REQUEST_RESPONSE_AND_EXIT_CODES_WITHIN_EXISTING_CONTRACTS",
+      "SELECTED_TEST_MODE_AND_ACTUAL_SMOKE_INPUT"
+    ],
+    "nonblocking_to_other_work_units": [
+      "GO_MODULE_BUILD_INTEGRATION",
+      "COMMON_CONTRACT_PROTOCOL_LOCATION",
+      "NEW_PRODUCT_BUILD_ENTRY_FILE_FOR_UNAPPROVED_WU12"
+    ],
+    "block_only_on": [
+      "CONCRETE_EFFECTIVE_POLICY_CONFLICT_WITH_EXACT_RULE_REFERENCE",
+      "UNAPPROVED_NEW_WORK_UNIT_SCOPE",
+      "CROSS_OWNER_FILE_MUTATION_WITHOUT_OWNER_ACTION",
+      "UNSUPPORTED_EXTERNAL_PERMISSION_REQUIRED",
+      "UNRESOLVED_REQUIRED_ARCHITECTURAL_AUTHORITY_NOT_DELEGATED_TO_PLAN"
+    ],
+    "on_block": "BLOCK_AFFECTED_CHANGE_ONLY;REPORT_DECISION_AND_UNBLOCKED_WUS;DO_NOT_SILENTLY_DECIDE_POLICY",
+    "go_module_boundary": "WU11_DESIGN_STEP_NOT_AUTOMATIC_SHARED_MODULE_CHOICE;NEW_FILE_OUTSIDE_APPROVED_OWNERSHIP_MUST_BE_REGISTERED_AND_AUTHORIZED_BEFORE_EDIT",
+    "no_silent_reuse_of_legacy_python_runtime": true
+  },
+  "verification_contract": {
+    "source_first": "TEST_NEW_SOURCE_AND_SOURCE_BUILD_NOT_HISTORICAL_INSTALLED_PYPI_RELEASE",
+    "mode_registry": ".github/test_modes.yaml",
+    "workflow_executor": ".github/workflows/tooling-test.yml",
+    "default_selection": "CHANGE_IMPACT_AND_REGISTERED_VERIFICATION_RESPONSIBILITY;NOT_ALWAYS_ALL",
+    "required_per_engine_cli": "BUILD_AND_RUN_ENGINE_OWN_CLI_WITH_VALID_INPUT;ASSERT_EXPECTED_SUCCESS_RESPONSE",
+    "required_positives": [
+      "WU-02:DISCOVERY_OWN_CLI",
+      "WU-03:VALIDATION_OWN_CLI",
+      "WU-04:CONTEXT_OWN_CLI",
+      "WU-11:TOP_LEVEL_GO_CLI_REAL_COMMAND"
+    ],
+    "all_other_new_cli": "EVERY_NEW_ENGINE_OR_COMMON_CONTRACT_CLI_REQUIRES_OWN_POSITIVE_SMOKE",
+    "forbidden_negative_evidence": [
+      "OLD_PLANNING_CLI_FAILS",
+      "LEGACY_PLANNING_RUNTIME_NOT_FOUND"
+    ],
+    "no_legacy_handoff_compatibility_proof": true,
+    "representative_commands": [
+      {
+        "when": "RUST_ENGINE_OWNERS",
+        "template": "cargo test --manifest-path src/ptsip/engines/<engine>/Cargo.toml",
+        "status": "EXECUTION_TEMPLATE_SUBSTITUTE_APPROVED_ENGINE_KIND"
+      },
+      {
+        "when": "WU09_GO_COMMON_CONTRACT",
+        "template": "go -C src/ptsip/common_contract test ./... -count=1",
+        "status": "EXISTING_MODULE"
+      },
+      {
+        "when": "WU10_DEVELOPER_ENGINES",
+        "template": "go -C developer/tests test ./engines/... -count=1",
+        "status": "EXISTING_MODULE"
+      },
+      {
+        "when": "GO_TOP_LEVEL_CLI",
+        "template": "GO_BUILD_AND_RUN_COMMAND_DERIVED_FROM_ACTUAL_WU11_MODULE_DESIGN",
+        "status": "NO_UNAPPROVED_COMMAND_ASSUMPTIONS"
+      }
+    ],
+    "logging_windows_powershell": {
+      "create": "$log = Join-Path $PWD '.ptsip-implementation-verification.log'",
+      "run_example": "cargo test --manifest-path src/ptsip/engines/context/Cargo.toml *>&1 | Tee-Object -FilePath $log",
+      "check": "if ($LASTEXITCODE -ne 0) { throw \"Validation failed: $LASTEXITCODE\" }",
+      "cleanup": "Remove-Item $log -Force",
+      "commit_behavior": "DO_NOT_STAGE_TEMP_LOG"
+    },
+    "remote_evidence": "GITHUB_ACTIONS_FOR_EXACT_PUSHED_COMMIT_AND_APPLICABLE_REGISTERED_MODE",
+    "completion_proof": "VALIDATED_CODE_EXECUTION_AND_SOURCE_REFS_NOT_WU_LIST_ASSERTION"
+  },
+  "cross_owner_coordination": [
+    {
+      "requester": "WU-08",
+      "owner": "WU-01",
+      "files": [
+        "src/ptsip/engines/index.json",
+        "src/ptsip/engines/contracts/work-item-bindings.json"
+      ]
+    },
+    {
+      "requester": "WU-08",
+      "owner": "WU-10",
+      "files": [
+        "developer/tests/engines/contracts_test.go"
+      ]
+    },
+    {
+      "requester": "WU-02/WU-03/WU-04",
+      "owner": "WU-01",
+      "files": [
+        "src/ptsip/engines/contracts/capability-owner-map.json"
+      ]
+    },
+    {
+      "requester": "WU-09/WU-11",
+      "owner": "WU-10",
+      "files": [
+        "src/ptsip/cli.py"
+      ]
+    },
+    {
+      "requester": "WU-10",
+      "owner": "WU-12",
+      "files": [
+        ".github/test_modes.yaml"
+      ],
+      "mode": "UNAPPROVED_WU12_MUTATION_REQUIRES_SEPARATE_APPROVAL"
+    },
+    {
+      "requester": "WU-12",
+      "owner": "WU-10",
+      "files": [
+        ".ptsip/engine/developer/Distribution/release/controller/package.go"
+      ],
+      "mode": "AFTER_SEPARATE_WU12_APPROVAL"
+    }
+  ],
+  "wudetails_ref_prefix": "src/planning/0.3.8/contract-first-migration/responsibilities/",
+  "work_unit_sequence_not_mandatory": true,
+  "execution_stop_condition": "ALL_APPROVED_EXECUTABLE_WUS_DONE_OR_ONLY_BLOCKED_WUS_REMAIN",
+  "deliverable_evidence": [
+    "CHANGED_FILES",
+    "WORK_UNIT_ID",
+    "RESULTING_OPERATION_CONTRACT",
+    "LOCAL_TEST_COMMANDS_AND_RESULTS",
+    "GIT_COMMIT_SHA",
+    "GITHUB_ACTIONS_STATUS",
+    "BLOCKED_DECISIONS_IF_ANY",
+    "NEXT_EXECUTABLE_WORK_UNITS"
+  ],
+  "prohibited": [
+    "CREATE_NEW_BRANCH",
+    "MUTATE_POLICY_DOCUMENTS_WITHOUT_EXPLICIT_SEPARATE_APPROVAL",
+    "ASSUME_SIX_IS_GLOBAL_ENGINE_TOTAL",
+    "IMPLEMENT_UNAPPROVED_WU12",
+    "REEXECUTE_WU13_REMOVAL",
+    "RUN_LEGACY_PLANNING_COMPATIBILITY_CHECK",
+    "CLAIM_RELEASE_OR_PYPI_PUBLISHED",
+    "CLAIM_SUCCESS_FROM_MISSING_CLI"
+  ],
+  "resumption": "AFTER_SESSION_INTERRUPTION_READ_MAIN_HEAD_AND_EVIDENCE;CONTINUE_FROM_FIRST_UNFINISHED_APPROVED_WU_NOT_BY_NUMBER"
+}

@@ -1,0 +1,79 @@
+{
+  "document_type": "PTSIP_IMPLEMENTATION_WORK_UNIT_PLAN",
+  "version": "1.0",
+  "id": "PTSIP-038-CFM-WU-06",
+  "work_unit_id": "WU-06",
+  "title": "Execution independent Rust CLI",
+  "instruction_language": "ko",
+  "plan_authority": "USER_APPROVED_TECHNICAL_SCOPE_NOT_POLICY_AUTHORITY",
+  "state": "READY_FOR_IMPLEMENTATION",
+  "implementation_authorized": true,
+  "code_implementation_started": false,
+  "source_removal_applied_previously": false,
+  "execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "owning_work_unit_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/5",
+  "sole_write_owner": "WU-06",
+  "owned_file_paths_ref": "src/planning/0.3.8/contract-first-migration/index.json#/responsibility_partitions/5/owned_file_paths",
+  "registered_owned_file_count": 16,
+  "implementation_scope_paths": [
+    "src/ptsip/engines/execution/"
+  ],
+  "excluded_paths": [],
+  "task_intent": "Execution 엔진 자체의 실행 책임과 CLI 책임만 구현",
+  "work_steps": [
+    {
+      "id": "WU-06-TASK-01",
+      "instruction": "Execution 계약·권한 경계, authority.rs, effect.rs, invocation.rs, main.rs의 실제 책임을 읽는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-06-TASK-02",
+      "instruction": "src/ptsip/engines/execution/src/cli.rs를 생성하고 유효 권한·요청을 엔진 소유 동작에 전달한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-06-TASK-03",
+      "instruction": "엔진 사이에 필수 런타임 결합을 만들지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-06-TASK-04",
+      "instruction": "엔진 자체의 실행 권한·실패 표면을 유지하고 최상위 Go CLI로 권한 결정을 옮기지 않는다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    },
+    {
+      "id": "WU-06-TASK-05",
+      "instruction": "유효 요청의 긍정 응답을 확인하며 별도 권한 검증이 필요하다면 해당 엔진 계약으로 확인한다.",
+      "completion_basis": "CHECK_ACTUAL_SOURCE_OR_TEST_EVIDENCE"
+    }
+  ],
+  "declared_existing_required_results": [
+    "OWN_CLI_RS_CREATED",
+    "EXECUTION_ENGINE_REMAINS_INDEPENDENTLY_DISABLEABLE"
+  ],
+  "completion_acceptance": [
+    "EXECUTION_CLI_BUILDS",
+    "EXECUTION_CLI_RETURNS_VALID_RESPONSE",
+    "AUTHORITY_STAYS_WITH_ENGINE",
+    "INDEPENDENT_DISABLEABILITY"
+  ],
+  "validation_instructions": [
+    "cargo test --manifest-path src/ptsip/engines/execution/Cargo.toml",
+    "Execution CLI 정상 요청 응답 스모크"
+  ],
+  "forbidden_work": [
+    "ENGINE_EXECUTION_AUTHORITY_IN_GO_ROUTER",
+    "REQUIRED_OTHER_ENGINE_CLI_DEPENDENCY"
+  ],
+  "coordination": "REQUEST_CHANGES_FROM_EXACT_WRITE_OWNER;DO_NOT_MUTATE_CROSS_OWNER_FILES",
+  "planning_engine_baseline": "src/ptsip/engines/planning/ ABSENT;NO_HISTORICAL_PLANNING_COMPATIBILITY_PROOF",
+  "delegated_technical_design": "RESOLVE_FROM_ACTIVE_CONTRACTS_DURING_THIS_WU_UNLESS_NEW_POLICY_AUTHORITY_REQUIRED",
+  "evidence_required": [
+    "IMPLEMENTATION_COMMIT_SHA",
+    "LOCAL_VERIFICATION_RESULT",
+    "OWNED_FILE_DIFF",
+    "CI_RESULT_IF_APPLICABLE"
+  ],
+  "scope_lock": "REGISTERED_EXACT_OWNER_SCOPE",
+  "next_step": "IMPLEMENT_WHEN_DEPENDENCIES_READY"
+}

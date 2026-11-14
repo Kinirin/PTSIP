@@ -5,7 +5,7 @@
   "root": "src/planning/0.3.8/contract-first-migration/",
   "baseline_ref": "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json",
   "planning_model": "C_RESPONSIBILITY_SPLIT",
-  "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+  "status": "IMPLEMENTATION_STARTED",
   "branch": "main",
   "reference_revision": "16affe3621fdb3995a229a1700ee0122ebc8416f",
   "separation_rule": "ONE_OWNER_PER_RESPONSIBILITY;WUS_ONLY_AFTER_BOUNDARY_AND_DETAIL_APPROVAL",
@@ -33,11 +33,11 @@
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/contracts.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/contracts/capability-owner-map.json",
         "src/ptsip/engines/contracts/context-projection-handoff.json",
@@ -69,8 +69,11 @@
         "src/ptsip/engines/index.json"
       ],
       "owned_file_count": 28,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/contracts.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "discovery",
@@ -92,11 +95,11 @@
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/discovery.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/discovery/Cargo.lock",
         "src/ptsip/engines/discovery/Cargo.toml",
@@ -124,13 +127,16 @@
         "src/ptsip/engines/discovery/src/cli.rs"
       ],
       "owned_file_count": 24,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
       "cli_response_check": {
         "file": "src/ptsip/engines/discovery/src/cli.rs",
         "pass": "EXECUTE_OWN_CLI_WITH_VALID_CONTRACT_REQUEST_AND_OBSERVE_EXPECTED_RESPONSE",
         "legacy_planning_negative_check": "FORBIDDEN"
-      }
+      },
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/discovery.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "validation",
@@ -152,11 +158,11 @@
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/validation.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/validation/Cargo.lock",
         "src/ptsip/engines/validation/Cargo.toml",
@@ -190,13 +196,16 @@
         "src/ptsip/engines/validation/src/cli.rs"
       ],
       "owned_file_count": 30,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
       "cli_response_check": {
         "file": "src/ptsip/engines/validation/src/cli.rs",
         "pass": "EXECUTE_OWN_CLI_WITH_VALID_CONTRACT_REQUEST_AND_OBSERVE_EXPECTED_RESPONSE",
         "legacy_planning_negative_check": "FORBIDDEN"
-      }
+      },
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/validation.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "context",
@@ -217,15 +226,13 @@
         "OWN_CLI_RETURNS_VALID_EXPECTED_RESPONSE"
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
-      "unresolved": [
-        "NEW_CONTEXT_OPERATION_ID"
-      ],
+      "unresolved": [],
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/context.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/context/Cargo.lock",
         "src/ptsip/engines/context/Cargo.toml",
@@ -242,13 +249,20 @@
         "src/ptsip/engines/context/src/cli.rs"
       ],
       "owned_file_count": 13,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
       "cli_response_check": {
         "file": "src/ptsip/engines/context/src/cli.rs",
         "pass": "EXECUTE_OWN_CLI_WITH_VALID_CONTRACT_REQUEST_AND_OBSERVE_EXPECTED_RESPONSE",
         "legacy_planning_negative_check": "FORBIDDEN"
-      }
+      },
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/context.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION",
+      "execution_time_decisions": [
+        "NEW_CONTEXT_OPERATION_ID"
+      ],
+      "operation_id_creation_is_implementation_task": true
     },
     {
       "id": "storage",
@@ -269,11 +283,11 @@
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/storage.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/storage/Cargo.lock",
         "src/ptsip/engines/storage/Cargo.toml",
@@ -293,8 +307,11 @@
         "src/ptsip/engines/storage/src/cli.rs"
       ],
       "owned_file_count": 16,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/storage.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "execution",
@@ -315,11 +332,11 @@
       ],
       "boundary_provenance": "EXPLICIT_PATH_SEPARATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/execution.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/execution/Cargo.lock",
         "src/ptsip/engines/execution/Cargo.toml",
@@ -339,8 +356,11 @@
         "src/ptsip/engines/execution/src/cli.rs"
       ],
       "owned_file_count": 16,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/execution.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "projection",
@@ -361,11 +381,11 @@
       ],
       "boundary_provenance": "PRESERVE_PREVIOUS_EXPLICIT_NAMED_ENGINE_CLI_REQUIREMENT",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/projection.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/projection/Cargo.lock",
         "src/ptsip/engines/projection/Cargo.toml",
@@ -382,8 +402,11 @@
         "src/ptsip/engines/projection/src/cli.rs"
       ],
       "owned_file_count": 13,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/projection.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "registry",
@@ -406,11 +429,11 @@
       ],
       "boundary_provenance": "EXPLICIT_ONE_UNIT_ATOMIC_MOVE_AND_DELETE",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/registry.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/engines/registries/official-static.json",
         "src/ptsip/engines/contracts/engines_registries/official-static.json",
@@ -420,8 +443,11 @@
         "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json"
       ],
       "owned_file_count": 6,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/registry.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "common-contract-cli",
@@ -444,11 +470,11 @@
       ],
       "boundary_provenance": "EXPLICIT_SINGLE_UNIT",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/common-contract-cli.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
         "src/ptsip/common_contract/cmd/ptsip-common-contract/main_test.go",
@@ -474,8 +500,11 @@
         "src/ptsip/_common_contract.py"
       ],
       "owned_file_count": 22,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/common-contract-cli.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "developer-engine-verification-and-python-removal",
@@ -501,11 +530,11 @@
       ],
       "boundary_provenance": "EXPLICIT_ONE_UNIT_COMBINED_REMOVAL_AND_VERIFICATION",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/developer-engine-verification-and-python-removal.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "developer/tests/engines/contracts_test.go",
         "developer/tests/engines/environment_test.go",
@@ -521,8 +550,11 @@
         ".ptsip/engine/developer/Distribution/release/test/package_install.go"
       ],
       "owned_file_count": 12,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION"
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/developer-engine-verification-and-python-removal.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION"
     },
     {
       "id": "go-cli",
@@ -546,21 +578,19 @@
         "NON_ENGINE_TOP_LEVEL_FUNCTIONS_REMAIN_IN_GO_CLI_OWNERSHIP"
       ],
       "boundary_provenance": "EXPLICIT_SINGLE_UNIT",
-      "unresolved": [
-        "GO_MODULE_BUILD_INTEGRATION"
-      ],
+      "unresolved": [],
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/go-cli.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_APPROVED_SCOPE_WITH_POLICY_AND_PLAN_GATES",
-      "implementation_details": "TOP_LEVEL_RESPONSIBILITY_DECIDED;GO_MODULE_AND_COMMAND_CATALOG_REMAIN_FOR_WU11_PLANNING",
+      "implementation_details": "MATERIALIZED_WU_EXECUTION_PLAN_WITH_TASKS_ACCEPTANCE_AND_VALIDATION",
       "implementation_authorized": true,
-      "status": "IMPLEMENTATION_APPROVED_WITH_GATES",
+      "status": "READY_FOR_IMPLEMENTATION",
       "owned_file_paths": [
         "src/ptsip/CLI.go"
       ],
       "owned_file_count": 1,
-      "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "REQUIRES_UNIT_DETAIL_AND_APPLICABLE_AUTHORITY_VALIDATION",
+      "file_ownership_review": "EXACT_PATH_OWNER_APPROVED_FOR_WU_SCOPE",
+      "execution_gate": "CHECK_REAL_DEPENDENCIES_AND_APPLICABLE_AUTHORITY_AT_IMPLEMENTATION_TIME",
       "validation_basis": "POSITIVE_NEW_CLI_EXECUTION_ONLY;NO_RETIRED_PLANNING_CLI_NEGATIVE_TEST",
       "responsibility_boundary": {
         "engine_entry": "ROUTE_ONLY",
@@ -571,7 +601,15 @@
         "go_module_integration": "UNDECIDED_SEPARATE_DESIGN",
         "extra_engine_dependency": "NOT_REQUIRED",
         "interface_stability": "USE_EXPLICIT_ENGINE_CONTRACTS_NOT_ENGINE_COUNT"
-      }
+      },
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/go-cli.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "READY_FOR_IMPLEMENTATION",
+      "execution_time_decisions": [
+        "GO_MODULE_BUILD_INTEGRATION",
+        "NON_ENGINE_COMMAND_CATALOG"
+      ],
+      "module_boundary_must_not_be_silently_approved": true
     },
     {
       "id": "distribution",
@@ -599,11 +637,11 @@
       ],
       "boundary_provenance": "PROPOSED_COMPLETENESS_FROM_APPROVED_DISTRIBUTION_SCOPE",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/distribution.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "PROPOSED_SCOPE_NOT_AUTHORIZED",
       "implementation_details": "PENDING_POLICY_COMPLIANT_PLAN_COMPLETION",
       "implementation_authorized": false,
-      "status": "PROPOSED_REVIEW_REQUIRED",
+      "status": "PROPOSED_NOT_AUTHORIZED",
       "scope_granularity": "PACKAGING_AND_INSTALLATION_ONLY;NOT_ANY_NESTED_ENGINE_OR_CLI_SEMANTICS",
       "owned_file_paths": [
         ".ptsip/engine/developer/Distribution/release/controller/package_build.go",
@@ -615,7 +653,11 @@
       ],
       "owned_file_count": 6,
       "file_ownership_review": "DRAFT_EXACT_PATH_REGISTERED_NOT_IMPLEMENTATION_AUTHORIZATION",
-      "execution_gate": "USER_APPROVAL_REQUIRED"
+      "execution_gate": "SEPARATE_USER_APPROVAL_REQUIRED",
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/distribution.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "HELD_UNAPPROVED",
+      "execution_position": "LATE_INTEGRATION_AFTER_CORE_ARTIFACTS_READY"
     },
     {
       "id": "retired-planning-engine",
@@ -634,11 +676,11 @@
       "boundary_provenance": "USER_EXPLICIT_WU13_SCOPE_CLARIFICATION",
       "removal_gate": "NONE",
       "future_plan_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/retired-planning-engine.plan.json",
-      "materialized": false,
+      "materialized": true,
       "work_unit_decision": "USER_CLARIFIED_WU13_SOURCE_ONLY;NO_NEW_IMPLEMENTATION_APPROVAL_INFERRED",
-      "implementation_details": "FULL_SOURCE_TREE_ALREADY_REMOVED;NO_LEGACY_COMPATIBILITY_OR_MIGRATION_CHECKS",
+      "implementation_details": "SOURCE_DIRECTORY_ALREADY_REMOVED_BY_PRIOR_COMMIT;NO_LEGACY_COMPATIBILITY_OR_HANDOFF_TEST",
       "implementation_authorized": false,
-      "status": "DIRECTORY_REMOVAL_APPLIED;ADDITIONAL_WORK_NOT_AUTHORIZED",
+      "status": "SOURCE_REMOVAL_ALREADY_APPLIED",
       "owned_file_paths": [
         "src/ptsip/engines/planning/Cargo.lock",
         "src/ptsip/engines/planning/Cargo.toml",
@@ -661,7 +703,7 @@
       ],
       "owned_file_count": 18,
       "file_ownership_review": "HISTORICAL_DELETED_PATHS_OWNED_BY_WU13",
-      "execution_gate": "SOURCE_REMOVAL_ALREADY_APPLIED;NO_LEGACY_HARD_GATE",
+      "execution_gate": "NO_FURTHER_WORK_REQUIRED",
       "lifecycle_note": "WU13_PRESERVED_AS_INDEPENDENT_UNIT;USER_SPECIFIED_SOURCE_ONLY_RETIREMENT;SOURCE_REMOVAL_ALREADY_APPLIED_BY_PRIOR_COMMIT",
       "directory_retirement": {
         "directory": "src/ptsip/engines/planning/",
@@ -680,7 +722,10 @@
           "src/ptsip/engines/validation/src/cli.rs",
           "src/ptsip/engines/discovery/src/cli.rs"
         ]
-      }
+      },
+      "implementation_instruction_ref": "src/planning/0.3.8/contract-first-migration/responsibilities/retired-planning-engine.plan.json",
+      "execution_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+      "execution_state": "SOURCE_REMOVAL_ALREADY_APPLIED"
     }
   ],
   "uncertainty_boundary": {
@@ -782,7 +827,7 @@
     }
   ],
   "work_unit_registration": {
-    "state": "USER_IMPLEMENTATION_APPROVED_SCOPED_AND_POLICY_GATED",
+    "state": "IMPLEMENTATION_STARTED_WU01_TO_WU11",
     "total_candidate_units": 13,
     "execution_order_defined": false,
     "all_units_implementation_authorized": false,
@@ -833,7 +878,12 @@
         "WU-11"
       ],
       "future_unapproved_actions": "NOT_AUTHORIZED"
-    }
+    },
+    "start_signal_date": "2026-11-14",
+    "work_unit_execution_order": "DEPENDENCY_AWARE_NOT_NUMERIC",
+    "last_integration_unit": "WU-12_IS_LATE_PROPOSAL_REQUIRING_SEPARATE_APPROVAL",
+    "retirement_history_unit": "WU-13_ALREADY_APPLIED_NO_REEXECUTION",
+    "wu_details_materialized_count": 13
   },
   "file_ownership_ref": "src/planning/0.3.8/contract-first-migration/file-ownership.plan.json",
   "file_ownership_state": "EXACT_PATH_CANDIDATE_OWNERSHIP_REQUIRES_USER_REVIEW",
@@ -904,5 +954,11 @@
     "user_reviewed_planning_handoff": "USER_REVIEW_ONLY_NOT_AGENT_GATE",
     "no_old_cli_invocation_or_negative_smoke": true,
     "no_new_operation_id_inference": true
-  }
+  },
+  "implementation_runbook_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
+  "implementation_started": true,
+  "code_implementation_started_by_this_plan_commit": false,
+  "execution_status": "READY_FOR_EXECUTOR_FIRST_IMPLEMENTATION_COMMIT",
+  "execution_phases_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json#/execution_phases_are_hints_not_fixed_sort",
+  "technical_decision_policy_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json#/technical_decision_rules"
 }
