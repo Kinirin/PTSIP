@@ -30,7 +30,7 @@ def _command() -> Path:
     binary = Path(temporary.name) / COMMAND
     try:
         subprocess.run(
-            ["go", "build", "-mod=readonly", "-trimpath", "-o", str(binary), "./cmd/ptsip-common-contract"],
+            ["go", "build", "-mod=readonly", "-trimpath", "-o", str(binary), "."],
             cwd=module, env=dict(os.environ, GOWORK="off", CGO_ENABLED="0"), check=True,
         )
     except (OSError, subprocess.SubprocessError) as error:
