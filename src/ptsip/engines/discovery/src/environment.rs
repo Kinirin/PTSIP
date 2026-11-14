@@ -1,26 +1,10 @@
-//! Read-only diagnostics of the seven official engines in the selected installation.
+//! Read-only diagnostics of registered official engines in the selected installation.
 //! Local source agreement is not release attestation or execution permission.
 use crate::source::{self, Root};
 use serde_json::{json, Value};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::Path;
-
-const OFFICIAL: [(&str, &str); 7] = [
-    ("CONTEXT", "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3"),
-    ("STORAGE", "urn:uuid:d2b72bd9-63e1-4816-b06e-f516f01aee2e"),
-    (
-        "VALIDATION",
-        "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
-    ),
-    ("DISCOVERY", "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50"),
-    ("PLANNING", "urn:uuid:7a19982e-90ba-4388-9da0-90f57299e7d7"),
-    ("EXECUTION", "urn:uuid:b66de0f9-c454-4dbc-b43c-a2e695184671"),
-    (
-        "PROJECTION",
-        "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
-    ),
-];
 
 fn text<'a>(v: &'a Value, key: &str) -> Result<&'a str, String> {
     source::text(v, key)
@@ -298,10 +282,29 @@ pub fn assess(input: &Value) -> Result<Value, String> {
     let metadata = distribution.bytes("METADATA", 2_097_152)?;
     let package_version = metadata_version(&metadata)?;
     let (bundle, _) = distribution.read("ptsip-engines.json")?;
-    let expected_keys: BTreeSet<_> = OFFICIAL
-        .iter()
-        .map(|(kind, _)| kind.to_lowercase())
-        .collect();
+    let (index, _) = package.read("engines/index.json")?;
+    if index["schema_version"] != "ptsip-official-engine-index/v1"
+        || index["policy_class"] != "PTSIP_SUPPORT_FEATURE"
+    {
+        return Err("official engine index required".into());
+    }
+    let entries = list(&index, "official_engine_entries")?;
+    let mut expected_keys = BTreeSet::new();
+    let mut engine_ids = BTreeSet::new();
+    for entry in entries {
+        let kind = text(entry, "kind")?;
+        if !kind
+            .bytes()
+            .all(|c| c.is_ascii_uppercase() || c.is_ascii_digit() || c == b'_')
+            || !expected_keys.insert(kind.to_lowercase())
+            || !engine_ids.insert(text(entry, "engine_id")?)
+        {
+            return Err("invalid or duplicate official engine registration".into());
+        }
+    }
+    if expected_keys.is_empty() {
+        return Err("official engine registration is empty".into());
+    }
     let keys: BTreeSet<_> = bundle["engines"]
         .as_object()
         .ok_or("official engine origins absent")?
@@ -322,34 +325,22 @@ pub fn assess(input: &Value) -> Result<Value, String> {
     {
         return Err("selected Package bundle is incomplete or host-incompatible".into());
     }
-    let (index, _) = package.read("engines/index.json")?;
-    if index["schema_version"] != "ptsip-official-engine-index/v1"
-        || list(&index, "official_engine_entries")?.len() != 7
-    {
-        return Err("exact seven-engine official index required".into());
-    }
     let mut all = BTreeMap::new();
     let mut failed = BTreeMap::new();
-    for (kind, id) in OFFICIAL {
+    for entry in entries {
+        let kind = text(entry, "kind")?;
+        let id = text(entry, "engine_id")?;
         let mut progress = json!({"engine":kind,"engine_id":id,"installation_integrity":"UNVERIFIED","contract_agreement":"UNVERIFIED","transport_agreement":"UNVERIFIED","dependency_compatibility":"UNVERIFIED","issues":[],"operations":[]});
         let mut failed_dimension = "installation_integrity";
-        let entries: Vec<_> = list(&index, "official_engine_entries")?
-            .iter()
-            .filter(|e| e["kind"] == kind && e["engine_id"] == id)
-            .collect();
-        let checked = if entries.len() == 1 {
-            inspect_engine(
-                &mut package,
-                &mut scripts,
-                &index,
-                entries[0],
-                &bundle,
-                &mut progress,
-                &mut failed_dimension,
-            )
-        } else {
-            Err("missing or ambiguous official registration".into())
-        };
+        let checked = inspect_engine(
+            &mut package,
+            &mut scripts,
+            &index,
+            entry,
+            &bundle,
+            &mut progress,
+            &mut failed_dimension,
+        );
         match checked {
             Ok(c) => {
                 all.insert(id.to_owned(), c);
@@ -363,7 +354,8 @@ pub fn assess(input: &Value) -> Result<Value, String> {
     }
     let mut rows = Vec::new();
     let mut relationships = Vec::new();
-    for (_, id) in OFFICIAL {
+    for entry in entries {
+        let id = text(entry, "engine_id")?;
         if let Some(failure) = failed.get(id) {
             rows.push(failure.clone());
             continue;
@@ -420,6 +412,6 @@ pub fn assess(input: &Value) -> Result<Value, String> {
     let incompatible =
         !failed.is_empty() || relationships.iter().any(|r| r["status"] == "INCOMPATIBLE");
     Ok(
-        json!({"schema_version":"ptsip-official-engine-compatibility/v1","scope":"SEVEN_OFFICIAL_ENGINES_DECLARED_RELATIONSHIPS_ONLY","status":if incompatible{"INCOMPATIBLE"}else if verified{"VERIFIED"}else{"UNVERIFIED"},"package_version":package_version,"host_target":target(),"package_root":package_path,"scripts_root":Path::new(text(input,"scripts_root")?),"engine_count":7,"installation_integrity":if failed.is_empty(){"VERIFIED"}else{"UNVERIFIED"},"entries":rows,"relationships":relationships,"pairwise_compatibility_guaranteed":false,"release_attested":false,"execution_authorized":false,"evidence_authentication":"LOCAL_SOURCE_AGREEMENT_ONLY"}),
+        json!({"schema_version":"ptsip-official-engine-compatibility/v2","scope":"REGISTERED_OFFICIAL_ENGINES_DECLARED_RELATIONSHIPS_ONLY","status":if incompatible{"INCOMPATIBLE"}else if verified{"VERIFIED"}else{"UNVERIFIED"},"package_version":package_version,"host_target":target(),"package_root":package_path,"scripts_root":Path::new(text(input,"scripts_root")?),"engine_count":entries.len(),"installation_integrity":if failed.is_empty(){"VERIFIED"}else{"UNVERIFIED"},"entries":rows,"relationships":relationships,"pairwise_compatibility_guaranteed":false,"release_attested":false,"execution_authorized":false,"evidence_authentication":"LOCAL_SOURCE_AGREEMENT_ONLY"}),
     )
 }

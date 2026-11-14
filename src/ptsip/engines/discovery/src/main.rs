@@ -1,13 +1,19 @@
 use ptsip_engine_discovery::source;
-use serde_json::{json, Value};
-use std::io::{self, Read};
+#[cfg(test)]
+use serde_json::json;
+use serde_json::Value;
 const CONTRACT: &str = include_str!("../contract.json");
 const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
 mod environment;
 mod invocation;
 mod registry;
+mod cli;
+
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "discovery.planning" {
+        return registry::discover_plan(input);
+    }
     if operation == "discovery.check-environment" {
         return environment::assess(input);
     }
@@ -44,7 +50,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
-        "discovery.check-environment" => "ASSESS_INSTALLED_OFFICIAL_SEVEN_ENGINE_SOURCE_TRANSPORT_AND_DECLARED_DEPENDENCY_EVIDENCE_WITHOUT_ACTIVATION",
+        "discovery.planning" => "RESOLVE_EXPLICIT_PLAN_CATALOG_AND_VERIFY_SELECTED_SOURCE_IDENTITY_VERSION_AND_DIGEST",
+        "discovery.check-environment" => "ASSESS_REGISTERED_OFFICIAL_ENGINE_SOURCE_TRANSPORT_AND_DECLARED_DEPENDENCY_EVIDENCE_WITHOUT_ACTIVATION",
         "discovery.verify-invocation" => {
             "VERIFY_REGISTERED_CURRENT_ENGINE_BINDING_REQUEST_AND_NATIVE_ARTIFACT_WITHOUT_GRANT"
         }
@@ -66,40 +73,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     Ok(output)
 }
 fn main() {
-    let args: Vec<String> = std::env::args().skip(1).collect();
-    if args == ["--manifest"] {
-        println!("{MANIFEST}");
-        return;
-    }
-    let mut bytes = Vec::new();
-    let result = if !args.is_empty() {
-        Err("unsupported invocation arguments".into())
-    } else {
-        io::stdin()
-            .take(1048577)
-            .read_to_end(&mut bytes)
-            .map_err(|e| e.to_string())
-            .and_then(|_| {
-                if bytes.len() > 1048576 {
-                    return Err("request exceeds registered byte limit".into());
-                }
-                let request = source::parse(&bytes)?;
-                dispatch(&request)
-            })
-    };
-    let manifest: Value = serde_json::from_str(MANIFEST).expect("compiled manifest must be valid");
-    let contract: Value = serde_json::from_str(CONTRACT).expect("compiled contract must be valid");
-    let (status, output, error) = match result {
-        Ok(value) => ("PASS", value, Value::Null),
-        Err(error) => ("FAIL", Value::Null, json!(error)),
-    };
-    println!(
-        "{}",
-        json!({"schema_version":"ptsip-engine-operation-result/v1","engine_id":manifest["engine_id"],"engine_version":manifest["implementation_version"],"contract_id":contract["contract_id"],"contract_version":contract["version"],"status":status,"output":output,"error":error,"normative_authority":false,"execution_authorized":false,"evidence_authentication":"NOT_PROVIDED_BY_RESULT"})
-    );
-    if status == "FAIL" {
-        std::process::exit(2);
-    }
+    cli::run();
 }
 #[cfg(test)]
 mod tests {

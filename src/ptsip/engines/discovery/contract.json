@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:6cc343f5-a3af-404e-a22f-8d57f861bb97",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
   "semantic_owner": "DISCOVERY",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -243,7 +243,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "3.2.0",
         "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
@@ -468,7 +468,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "3.2.0",
         "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
@@ -599,7 +599,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "3.2.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -636,10 +636,10 @@
         "type": "object",
         "properties": {
           "schema_version": {
-            "const": "ptsip-official-engine-compatibility/v1"
+            "const": "ptsip-official-engine-compatibility/v2"
           },
           "scope": {
-            "const": "SEVEN_OFFICIAL_ENGINES_DECLARED_RELATIONSHIPS_ONLY"
+            "const": "REGISTERED_OFFICIAL_ENGINES_DECLARED_RELATIONSHIPS_ONLY"
           },
           "status": {
             "enum": [
@@ -665,7 +665,8 @@
             "minLength": 1
           },
           "engine_count": {
-            "const": 7
+            "type": "integer",
+            "minimum": 1
           },
           "installation_integrity": {
             "enum": [
@@ -675,8 +676,7 @@
           },
           "entries": {
             "type": "array",
-            "minItems": 7,
-            "maxItems": 7,
+            "minItems": 1,
             "items": {
               "type": "object",
               "properties": {
@@ -898,7 +898,7 @@
       },
       "preconditions": [
         "EXPLICIT_SELECTED_INSTALLATION_ROOTS",
-        "OFFICIAL_SEVEN_ENGINE_IDENTITY_SET",
+        "REGISTERED_OFFICIAL_ENGINE_IDENTITY_SET",
         "NO_PATH_SEARCH_OR_EXTERNAL_ENGINE_PROBING"
       ],
       "postconditions": [
@@ -919,12 +919,129 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.1.0",
+        "contract_version": "3.2.0",
         "legacy_public_api": "PREVIOUS_OPERATIONS_PRESERVED_NEW_VERSION_EXPLICITLY_BOUND",
         "full_pairwise_guarantee": false
       },
       "machine_semantics": {
-        "algorithm": "ASSESS_INSTALLED_OFFICIAL_SEVEN_ENGINE_SOURCE_TRANSPORT_AND_DECLARED_DEPENDENCY_EVIDENCE_WITHOUT_ACTIVATION",
+        "algorithm": "ASSESS_REGISTERED_OFFICIAL_ENGINE_SOURCE_TRANSPORT_AND_DECLARED_DEPENDENCY_EVIDENCE_WITHOUT_ACTIVATION",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "discovery.planning",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalog_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "plan_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "root",
+          "catalog_ref",
+          "plan_id"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "plan_ref": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "semantic_owner": {
+            "const": "DISCOVERY"
+          }
+        },
+        "required": [
+          "plan_ref",
+          "semantic_owner"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_OWNER_RELATIVE_CATALOG_REFERENCE",
+        "EXPLICIT_PLAN_ID"
+      ],
+      "postconditions": [
+        "SELECTED_PLAN_SOURCE_IDENTITY_VERSION_AND_DIGEST_VERIFIED",
+        "NO_PLAN_CONTENT_REINTERPRETATION",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_or_duplicate_plan": "FAIL_CLOSED",
+        "stale_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_TYPED_OPERATION_AND_NEGATIVE_CASES"
+      },
+      "compatibility": {
+        "legacy_public_api": "NO_IMPLICIT_EQUIVALENCE",
+        "contract_version": "3.2.0"
+      },
+      "machine_semantics": {
+        "algorithm": "RESOLVE_EXPLICIT_PLAN_CATALOG_AND_VERIFY_SELECTED_SOURCE_IDENTITY_VERSION_AND_DIGEST",
         "normative_authority_from_runtime_result": false
       }
     }

@@ -356,3 +356,29 @@ pub fn verify(input: &Value, select: bool) -> Result<Value, String> {
         json!({"source_revision":revision,"registered_engines":registered,"source_refs":source_refs,"selected":selected,"derived_authority":false,"owner_legitimacy_asserted":false,"execution_authorized":false}),
     )
 }
+
+/// Resolve one declared plan without imposing a schema on its content.
+pub fn discover_plan(input: &Value) -> Result<Value, String> {
+    use crate::source::{self, Root};
+
+    let mut root = Root::new(source::text(input, "root")?)?;
+    let catalog = root.bound(&input["catalog_ref"])?;
+    source::schema("plan_discovery_catalog", &catalog)?;
+
+    let mut ids = BTreeSet::new();
+    let mut selected = None;
+    for plan in list(&catalog, "plans")? {
+        let id = source::text(plan, "id")?;
+        let version = source::text(plan, "version")?;
+        if !ids.insert((id, version)) {
+            return Err("duplicate plan identity and version".into());
+        }
+        if plan["id"] == input["plan_id"] && selected.replace(plan).is_some() {
+            return Err("ambiguous plan identity".into());
+        }
+    }
+    let plan = selected.ok_or("plan is absent from the selected catalog")?;
+    root.bound(plan)?;
+    root.finish()?;
+    Ok(json!({"plan_ref": plan, "semantic_owner": "DISCOVERY"}))
+}

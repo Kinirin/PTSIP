@@ -228,5 +228,60 @@
   "id": "urn:uuid:edeffe1b-55cd-481f-bc39-d8c9e7c7f648",
   "version": "1.0.0",
   "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
-  "schema_version": "ptsip-engine-local-runtime-source-shapes/v1"
+  "schema_version": "ptsip-engine-local-runtime-source-shapes/v1",
+  "plan_discovery_catalog": {
+    "type": "object",
+    "properties": {
+      "schema_version": {
+        "const": "ptsip-plan-discovery-catalog/v1"
+      },
+      "id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "plans": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "schema_version",
+      "id",
+      "version",
+      "plans"
+    ],
+    "additionalProperties": false
+  }
 }
