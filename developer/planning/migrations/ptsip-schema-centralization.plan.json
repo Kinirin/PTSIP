@@ -181,9 +181,7 @@
       "path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
       "filename": "plan-lifecycle.schema.json",
       "responsibility": "Plan lifecycle contract",
-      "sources": [
-        "src/ptsip/engines/validation/src/planning/schemas/PTSIP_Public_Plan_Identity.schema.json"
-      ],
+      "sources": [],
       "readiness": "NO_NONEMPTY_SOURCE_FOR_LIFECYCLE",
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
@@ -1078,8 +1076,8 @@
       "actions": [
         "repair malformed JSON and invalid type/properties constructs",
         "keep Checklist: {} and omit Checklist from required",
-        "do not invent Plan lifecycle missing schema contents",
-        "relocate only after exact schema validated"
+        "relocate only after exact schema validated",
+        "Plan Lifecycle: require explicit schema owner/fields before authoring; do not treat empty Plan Identity placeholder as source."
       ],
       "gate": "valid 2020-12 schemas; sample plan passes; Checklist with arbitrary scalar/array/object passes"
     },
@@ -1275,9 +1273,9 @@
       "git rev-parse HEAD 2>&1 | Tee-Object -FilePath $log",
       "python -c \"import json; json.load(open('src/ptsip/schemas/config.json', encoding='utf-8'))\" 2>&1 | Tee-Object -FilePath $log -Append",
       "python -m pytest -q src/tests/ptsip/contracts/test_unified_policy.py src/tests/ptsip/contracts/test_migrate_unified_current.py 2>&1 | Tee-Object -FilePath $log -Append",
-      "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
-      "Remove-Item $log"
+      "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append"
     ],
-    "note": "Commands are final-phase verification only; new schema loader/registry tests are required in implementation and their exact source path awaits user approval. Do not commit log."
+    "note": "Commands are final-phase verification only; new schema loader/registry tests are required in implementation and their exact source path awaits user approval. Do not commit log.",
+    "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'"
   }
 }
