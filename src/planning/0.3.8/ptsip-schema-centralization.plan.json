@@ -465,6 +465,11 @@
         "AEC_name"
       ],
       "state": "UNRESOLVED_ID_TO_NAME_CARDINALITY_AND_SOURCE_OWNERSHIP"
+    },
+    {
+      "id": "RAC-AEC-REANALYSIS",
+      "state": "PRIOR_FIELDS_REJECTED_NEW_CANDIDATES_UNAPPROVED",
+      "scope": "src/ptsip/schemas/storage/rbac/{rac-list,aec-list}.schema.json"
     }
   ],
   "target_registry": {
@@ -982,29 +987,28 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
       "filename": "aec-list.schema.json",
-      "responsibility": "AEC independent condition/GUI semantic source and Rego evaluation source. New AEC contract identity/file-resource/revision candidates are separately proposed, not approved",
+      "responsibility": "AEC List schema responsibility reanalysis: independently distinguish condition identity, human title, contract-file discovery and Rego evaluation source. Current field set unapproved.",
       "sources": [
         "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
       ],
-      "readiness": "OLD_NAMED_FIELDS_USER_APPROVED_NEW_CONTRACT_LOCATOR_NAMES_PENDING",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
-      "field_candidates": [
-        "AEC_id",
-        "AEC_name",
-        "AEC_description",
-        "AEC_purpose",
-        "value",
-        "value.source_ref",
-        "value.revision_ref",
-        "value.entrypoint",
-        "AEC_source_evidence_ref"
-      ],
-      "extra_contract_locator_candidates": [
-        "AEC_definition_contract_id",
-        "AEC_definition_file_ref",
-        "AEC_definition_revision_ref"
-      ],
-      "legacy_contract_transfer_allowed": false
+      "readiness": "ALL_PRIOR_RAC_AEC_FIELDS_REJECTED_REANALYSIS_CANDIDATES_NOT_APPROVED",
+      "decision": "SCHEMA_PATH_PROPOSED_FIELD_SET_REJECTED",
+      "field_candidates": [],
+      "extra_contract_locator_candidates": [],
+      "legacy_contract_transfer_allowed": false,
+      "proposed_field_review_status": "REJECTED_ALL_PREVIOUS_FIELDS",
+      "new_field_review_ids": [
+        "F-AEC-R001",
+        "F-AEC-R002",
+        "F-AEC-R003",
+        "F-AEC-R004",
+        "F-AEC-R005",
+        "F-AEC-R006",
+        "F-AEC-R007",
+        "F-AEC-R008",
+        "F-AEC-R009",
+        "F-AEC-R010"
+      ]
     },
     {
       "path": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
@@ -1034,29 +1038,28 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
       "filename": "rac-list.schema.json",
-      "responsibility": "RAC independent condition/GUI semantic source and Rego evaluation source. New RAC contract identity/file-resource/revision candidates are separately proposed, not approved",
+      "responsibility": "RAC List schema responsibility reanalysis: independently distinguish condition identity, human title, contract-file discovery and Rego evaluation source. Current field set unapproved.",
       "sources": [
         "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
       ],
-      "readiness": "OLD_NAMED_FIELDS_USER_APPROVED_NEW_CONTRACT_LOCATOR_NAMES_PENDING",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
-      "field_candidates": [
-        "RAC_id",
-        "RAC_name",
-        "RAC_description",
-        "RAC_purpose",
-        "value",
-        "value.source_ref",
-        "value.revision_ref",
-        "value.entrypoint",
-        "RAC_source_evidence_ref"
-      ],
-      "extra_contract_locator_candidates": [
-        "RAC_definition_contract_id",
-        "RAC_definition_file_ref",
-        "RAC_definition_revision_ref"
-      ],
-      "legacy_contract_transfer_allowed": false
+      "readiness": "ALL_PRIOR_RAC_AEC_FIELDS_REJECTED_REANALYSIS_CANDIDATES_NOT_APPROVED",
+      "decision": "SCHEMA_PATH_PROPOSED_FIELD_SET_REJECTED",
+      "field_candidates": [],
+      "extra_contract_locator_candidates": [],
+      "legacy_contract_transfer_allowed": false,
+      "proposed_field_review_status": "REJECTED_ALL_PREVIOUS_FIELDS",
+      "new_field_review_ids": [
+        "F-RAC-R001",
+        "F-RAC-R002",
+        "F-RAC-R003",
+        "F-RAC-R004",
+        "F-RAC-R005",
+        "F-RAC-R006",
+        "F-RAC-R007",
+        "F-RAC-R008",
+        "F-RAC-R009",
+        "F-RAC-R010"
+      ]
     },
     {
       "path": "src/ptsip/schemas/storage/release/readme.schema.json",
@@ -1688,7 +1691,8 @@
         "Compare RAC_name/AEC_name semantics with existing src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json and aec.pp.3.00.schema.json as read-only historical evidence; v4 does not inherit pp3 structural format",
         "Decide whether names are looked up from registered RAC/AEC Lists or repeated as RA-local display fields; when multiple IDs exist require deterministic ID/name matching without guessing singular vs array forms",
         "RA name/title mappings to RAC/AEC IDs are shown in one-line valid YAML flow sequence; keep names for GUI; reject RA_purpose/normative_effect/source_ref/revision_ref.",
-        "RAC/AEC keep previously offered title, description, purpose and evaluation source fields; each new condition definition file ID, resource reference and exact revision are independent proposed fields pending approval."
+        "ALL previous RAC/AEC List 28 field proposals explicitly rejected. Do not inherit approval-by-omission or implement them; reanalyze four independent responsibilities condition identity, title, file registry lookup, Rego source.",
+        "New F-RAC-R001..R010 and F-AEC-R001..R010 are unapproved examples, not a current target schema definition; investigate registered entry ID to resource path resolution, RA title-to-ID consistency and condition/source version meaning."
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
@@ -2123,7 +2127,8 @@
       "Plan v4 seven-state lifecycle rejects partial completion and execution from Halt.Discontinued",
       "Plan Checklist.column defaults exactly four approved columns and supports configurable >=10 columns; task_id source is .ptsip/tasks-generated tasks",
       "Policy_Rules.rules[].content.content_id[] resolves Policy_Content.items[].id with no rule source_ref, source_pointer, source_document",
-      "RAC/AEC condition contract file lookup identity and Rego original evaluation source reference are separate ownership responsibilities"
+      "RAC/AEC condition contract file lookup identity and Rego original evaluation source reference are separate ownership responsibilities",
+      "No RAC/AEC List old proposed field set is treated as approved by omission; new candidate names and full structure require user approval before schema generation"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -2168,7 +2173,11 @@
       "checklist_fixed_max_10_without_user_confirmation",
       "rejected_policy_version_revision_separate",
       "rejected_content_source_document",
-      "rego_source_ref_used_as_contract_file_identity"
+      "rego_source_ref_used_as_contract_file_identity",
+      "previous_rac_aec_field_approval_by_default",
+      "unapproved_rac_aec_reanalysis_fields_implemented",
+      "contract_registry_id_confused_with_condition_id",
+      "rego_source_ref_confused_with_contract_file_resource"
     ],
     "powershell_commands_in_order": [
       "$log = '.\\schema-centralization-validation.log'",
@@ -4153,6 +4162,11 @@
         "id": "RA_RAC_AEC_NAME_MAPPING",
         "state": "UNRESOLVED_SUBORDINATE_DESIGN",
         "value": "Decide name representation/lookup with multiple RAC_ids/AEC_ids and respective RAC/AEC List ownership; no implicit type or requiredness"
+      },
+      {
+        "id": "RAC-AEC-PREVIOUS-FIELD-SET-REJECTION",
+        "state": "USER_EXPLICIT_ALL_REJECTED",
+        "value": "F-RAC-001..014 and F-AEC-001..014 were not approved; prior assistant approval-by-default invalidated; new reanalysis candidates need user approval"
       }
     ],
     "concrete_work_plan": [
@@ -4202,11 +4216,14 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Write only new RA/RAC/AEC List schemas after name-ID binding and RAC/AEC independent contract file locator fields reviewed; RA list owns one-line title:ID relation with RA_id/RA_title/RA_description and RAC_name/AEC_name readable roles.",
+        "action": "RA List roles already discussed separately. RAC/AEC List prior field candidates were rejected in full. Reanalyze condition ID/name ownership, contract file locator, evaluation source bindings and registry kind before proposing/creating independent v4 RAC/AEC List schemas.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
           "src/ptsip/schemas/storage/rbac/aec-list.schema.json"
+        ],
+        "blocked_on": [
+          "RAC_AEC_FULL_FIELD_REPROPOSAL_USER_APPROVAL"
         ]
       },
       {
@@ -4394,12 +4411,12 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "Version 0.3.8 per-field review: approvals by exception, corrected Policy v4 and Plan, new contract locator candidates, task/checklist status automation; planning only; Lifecycle.evaluation exactly two map elements, not an append-only audit trail."
+    "last_user_direction": "RAC/AEC Lists: all previous 28 fields, including 6 added locator fields, explicitly rejected. Reanalyze condition/file/evaluation source roles and propose fresh individual candidates, no automatic approval."
   },
   "release_038_field_review": {
     "contract": "ptsip-release-038-field-decisions/v1",
     "authority": "PLAN_ONLY_NO_POLICY_OR_IMPLEMENTATION_MUTATION",
-    "approval_basis": "Unmentioned prior proposed fields accepted. Explicit rejections/replacements take precedence.",
+    "approval_basis": "Unmentioned earlier fields approved by default EXCEPT RAC/AEC Lists, which user explicitly rejected in full; only new independent reanalysis candidates can be considered after explicit review.",
     "fields": [
       {
         "id": "F-POL-001",
@@ -4654,112 +4671,134 @@
       {
         "id": "F-RAC-001",
         "name": "RAC_list",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-002",
         "name": "entries",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-003",
         "name": "RAC_id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-004",
         "name": "RAC_name",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-005",
         "name": "RAC_description",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-006",
         "name": "RAC_purpose",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-007",
         "name": "value",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-008",
         "name": "source_ref",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-009",
         "name": "revision_ref",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-010",
         "name": "entrypoint",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-011",
         "name": "RAC_source_evidence_ref",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-001",
         "name": "AEC_list",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-002",
         "name": "entries",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-003",
         "name": "AEC_id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-004",
         "name": "AEC_name",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-005",
         "name": "AEC_description",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-006",
         "name": "AEC_purpose",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-007",
         "name": "value",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-008",
         "name": "source_ref",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-009",
         "name": "revision_ref",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-010",
         "name": "entrypoint",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-011",
         "name": "AEC_source_evidence_ref",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-PLN-001",
@@ -5010,38 +5049,38 @@
       {
         "id": "F-RAC-012",
         "name": "RAC_definition_contract_id",
-        "decision": "NEW_CANDIDATE_NOT_APPROVED",
-        "note": "Independent condition contract identity; not condition item ID"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-013",
         "name": "RAC_definition_file_ref",
-        "decision": "NEW_CANDIDATE_NOT_APPROVED",
-        "note": "Actual contract-file locator, distinct from Rego source_ref"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-014",
         "name": "RAC_definition_revision_ref",
-        "decision": "NEW_CANDIDATE_NOT_APPROVED",
-        "note": "Exact contract-file revision, distinct from Rego source revision"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-012",
         "name": "AEC_definition_contract_id",
-        "decision": "NEW_CANDIDATE_NOT_APPROVED",
-        "note": "Independent condition contract identity; not condition item ID"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-013",
         "name": "AEC_definition_file_ref",
-        "decision": "NEW_CANDIDATE_NOT_APPROVED",
-        "note": "Actual contract-file locator, distinct from Rego source_ref"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-014",
         "name": "AEC_definition_revision_ref",
-        "decision": "NEW_CANDIDATE_NOT_APPROVED",
-        "note": "Exact contract-file revision, distinct from Rego source revision"
+        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-PLN-041",
@@ -5158,9 +5197,11 @@
       "linked_condition_representation": "FLOW_SEQUENCE_OF_SINGLE_PAIR_NAME_TO_ID_MAPS",
       "example": "RAC_ids: [{\"RAC title 1\": \"RAC-ID-1\"}, {\"RAC title 2\": \"RAC-ID-2\"}]",
       "exact_name_binding": "UNRESOLVED; preserve RAC_name/AEC_name semantic roles",
-      "new_contract_file_locator_fields": "F-RAC-012..014/F-AEC-012..014 PROPOSED_NOT_APPROVED",
+      "new_contract_file_locator_fields": "PRIOR_F-RAC-012..014_AND_F-AEC-012..014_REJECTED",
       "condition_file_vs_rego_source": "DISTINCT",
-      "no_reverse_policy_use": true
+      "no_reverse_policy_use": true,
+      "previous_rac_aec_list_proposals": "ALL_REJECTED_NEW_REANALYSIS_REQUIRED",
+      "preserve_applies_to": "RA_LIST_ROLE_SEMANTICS_ONLY_NOT_RAC_AEC_LIST_FIELD_SET"
     },
     "plan": {
       "identity_fields": {
@@ -5237,7 +5278,7 @@
       },
       {
         "id": "RAC_AEC_CONTRACT_LOOKUP",
-        "fields": [
+        "old_scope": [
           "F-RAC-012",
           "F-RAC-013",
           "F-RAC-014",
@@ -5245,7 +5286,9 @@
           "F-AEC-013",
           "F-AEC-014"
         ],
-        "state": "USER_REVIEW_REQUIRED"
+        "state": "PREVIOUS_6_CANDIDATES_REJECTED_REOPEN_AS_NEW_DESIGN_REVIEW",
+        "previous_correction": "All 28 prior RAC/AEC List proposals rejected",
+        "choice_required": true
       },
       {
         "id": "PLAN_STATUS_TRANSITION_GRAPH",
@@ -5294,6 +5337,266 @@
         "field": "F-POL-004",
         "state": "OFFICIAL_FIELD_APPROVED_DEVELOPER_SUBFIELD_SERIALIZATION_UNRESOLVED"
       }
-    ]
+    ],
+    "rac_aec_reanalysis": {
+      "status": "ALL_PRIOR_CANDIDATES_REJECTED_NEW_CANDIDATES_UNAPPROVED",
+      "prior_field_ids": [
+        "F-RAC-001",
+        "F-RAC-002",
+        "F-RAC-003",
+        "F-RAC-004",
+        "F-RAC-005",
+        "F-RAC-006",
+        "F-RAC-007",
+        "F-RAC-008",
+        "F-RAC-009",
+        "F-RAC-010",
+        "F-RAC-011",
+        "F-AEC-001",
+        "F-AEC-002",
+        "F-AEC-003",
+        "F-AEC-004",
+        "F-AEC-005",
+        "F-AEC-006",
+        "F-AEC-007",
+        "F-AEC-008",
+        "F-AEC-009",
+        "F-AEC-010",
+        "F-AEC-011",
+        "F-RAC-012",
+        "F-RAC-013",
+        "F-RAC-014",
+        "F-AEC-012",
+        "F-AEC-013",
+        "F-AEC-014"
+      ],
+      "fresh_field_candidates": [
+        {
+          "id": "F-RAC-R001",
+          "name": "RAC_list",
+          "role": "STRUCTURE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Top-level independent condition list boundary; name not approved"
+        },
+        {
+          "id": "F-RAC-R002",
+          "name": "items",
+          "role": "STRUCTURE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Definition records; alternative to former entries, not yet approved"
+        },
+        {
+          "id": "F-RAC-R003",
+          "name": "RAC_id",
+          "role": "IDENTITY",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "RAC condition identity used by RA RAC_ids title:ID references; does NOT identify the contract file"
+        },
+        {
+          "id": "F-RAC-R004",
+          "name": "RAC_name",
+          "role": "DISPLAY",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "RAC condition human-readable title; lookup result must correspond to RA displayed title"
+        },
+        {
+          "id": "F-RAC-R005",
+          "name": "RAC_contract_registry_entry_id",
+          "role": "CONTRACT_FILE_LOOKUP",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Separate identity of contract file registry entry: resolves entry.id -> entry.resource (and conditional revision); not equal to condition id"
+        },
+        {
+          "id": "F-RAC-R006",
+          "name": "value",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Evaluation-source reference container, independent of contract-file locator, based on historical role evidence only"
+        },
+        {
+          "id": "F-RAC-R007",
+          "name": "source_ref",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Value-side reference to the actual condition evaluation/Rego source, not the definition contract file"
+        },
+        {
+          "id": "F-RAC-R008",
+          "name": "revision_ref",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Value-side revision of evaluation source, not revision of definition contract file"
+        },
+        {
+          "id": "F-RAC-R009",
+          "name": "entrypoint",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Value-side registered evaluator entrypoint, not activation permission"
+        },
+        {
+          "id": "F-RAC-R010",
+          "name": "RAC_description",
+          "role": "DISPLAY_OPTIONAL",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Optional concise GUI condition meaning distinct from title, no redundant purpose/evidence fields"
+        },
+        {
+          "id": "F-AEC-R001",
+          "name": "AEC_list",
+          "role": "STRUCTURE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Top-level independent condition list boundary; name not approved"
+        },
+        {
+          "id": "F-AEC-R002",
+          "name": "items",
+          "role": "STRUCTURE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Definition records; alternative to former entries, not yet approved"
+        },
+        {
+          "id": "F-AEC-R003",
+          "name": "AEC_id",
+          "role": "IDENTITY",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "AEC condition identity used by RA AEC_ids title:ID references; does NOT identify the contract file"
+        },
+        {
+          "id": "F-AEC-R004",
+          "name": "AEC_name",
+          "role": "DISPLAY",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "AEC condition human-readable title; lookup result must correspond to RA displayed title"
+        },
+        {
+          "id": "F-AEC-R005",
+          "name": "AEC_contract_registry_entry_id",
+          "role": "CONTRACT_FILE_LOOKUP",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Separate identity of contract file registry entry: resolves entry.id -> entry.resource (and conditional revision); not equal to condition id"
+        },
+        {
+          "id": "F-AEC-R006",
+          "name": "value",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Evaluation-source reference container, independent of contract-file locator, based on historical role evidence only"
+        },
+        {
+          "id": "F-AEC-R007",
+          "name": "source_ref",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Value-side reference to the actual condition evaluation/Rego source, not the definition contract file"
+        },
+        {
+          "id": "F-AEC-R008",
+          "name": "revision_ref",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Value-side revision of evaluation source, not revision of definition contract file"
+        },
+        {
+          "id": "F-AEC-R009",
+          "name": "entrypoint",
+          "role": "EVALUATION_SOURCE",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Value-side registered evaluator entrypoint, not activation permission"
+        },
+        {
+          "id": "F-AEC-R010",
+          "name": "AEC_description",
+          "role": "DISPLAY_OPTIONAL",
+          "status": "PROPOSED_UNAPPROVED_REANALYSIS",
+          "reason": "Optional concise GUI condition meaning distinct from title, no redundant purpose/evidence fields"
+        }
+      ],
+      "source_evidence": [
+        {
+          "path": "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json",
+          "role": "Legacy RAC source has condition ID/title + value.source_ref/revision_ref/entrypoint; not v4 normative inheritance"
+        },
+        {
+          "path": "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json",
+          "role": "Legacy AEC source has condition ID/title + value.source_ref/revision_ref/entrypoint; not v4 normative inheritance"
+        },
+        {
+          "path": "src/ptsip/specdata/compile-sealed-rbac-registry-fields.json",
+          "role": "Existing lookup registry maps entries[].id/kind to resource and conditional revision; does not grant authorization"
+        },
+        {
+          "path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+          "role": "Approved source direction separates evaluation Rego original fields from condition name/ID and source registry; exact v4 field names/count undecided"
+        },
+        {
+          "path": "src/ptsip/engines/discovery/src/tpbg/mod.rs",
+          "role": "Current pp3 consumer resolves RAC_id/AEC_id and names, not normative v4 layout"
+        }
+      ],
+      "invariants": {
+        "condition_id_not_contract_file_id": true,
+        "contract_registry_entry_id_not_rego_source_ref": true,
+        "RA_owns_forward_links_to_RAC_AEC": true,
+        "no_reverse_policy_document_ref": true,
+        "authoritative_contract_lookup": "REGISTERED_ENTRY_RESOURCE_WITH_CONDITIONAL_REVISION",
+        "preserve_legacy_pp300_schemas": true,
+        "do_not_force_duplicate_file_path_and_lookup_id": true,
+        "no_approval_by_omission_for_rac_aec": true
+      },
+      "locator_options": [
+        {
+          "id": "L1_REGISTRY_ENTRY_ID",
+          "semantics": "List record stores one independent registration-entry ID; registry maps to contract file resource/revision",
+          "benefits": [
+            "no repeated paths",
+            "automatable resolver",
+            "portable reference"
+          ],
+          "limitations": [
+            "registry lookup required",
+            "entry identity namespace and kind matching must be specified"
+          ],
+          "recommended": true
+        },
+        {
+          "id": "L2_FILE_RESOURCE_REF",
+          "semantics": "List record stores direct contract file resource reference",
+          "benefits": [
+            "direct file location",
+            "no registry lookup"
+          ],
+          "limitations": [
+            "path changes ripple to records",
+            "duplicates existing registry resource mapping"
+          ],
+          "recommended": false
+        },
+        {
+          "id": "L3_ID_PLUS_RESOURCE",
+          "semantics": "List record carries both registry entry ID and file path",
+          "benefits": [
+            "local diagnostics without lookup"
+          ],
+          "limitations": [
+            "two authority sources need synchronization",
+            "additional validation costs"
+          ],
+          "recommended": false
+        }
+      ],
+      "outstanding": [
+        "FRESH_FIELD_NAMES",
+        "LIST_TOP_LEVEL_COLLECTION_SHAPE",
+        "REGISTERED_ID_EQUIVALENCE",
+        "REGISTERED_KIND_RAC_VS_AEC_MAPPING",
+        "FILE_REVISION_OWNER_AND_CARDINALITY",
+        "VALUE_EVALUATION_ORIGINAL_SOURCE_BINDINGS",
+        "GUI_DISPLAY_NAME_AUTHORITY",
+        "OPTIONAL_DESCRIPTION_POLICY",
+        "V4_SOURCE_CONTRACT_VERSION_ACTIVATION_NOT_AUTOMATIC"
+      ],
+      "no_schema_implementation_authority": true
+    }
   }
 }
