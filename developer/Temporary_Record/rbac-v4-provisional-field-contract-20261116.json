@@ -4,7 +4,7 @@
   "created_on": "2026-11-16",
   "owner_repository": "Kinirin/PTSIP",
   "branch": "main",
-  "authority": "REVIEW_ONLY_NO_NORMATIVE_EFFECT",
+  "authority": "USER_APPROVED_PROVISIONAL_FIELDS_REVIEW_ONLY_NO_NORMATIVE_RUNTIME_EFFECT",
   "authority_record": ".ptsip/contracts/policy/unified/authoring-decision.json",
   "rac": {
     "status": "APPROVED_PROVISIONAL_STRUCTURE_ONLY",
@@ -92,10 +92,11 @@
           "value": {}
         }
       ]
-    }
+    },
+    "approval_source": "PROJECT_OWNER_EXPLICIT_2026_11_16"
   },
   "aec": {
-    "status": "PROPOSED_PROVISIONAL_FIELDS_NOT_USER_APPROVED",
+    "status": "APPROVED_PROVISIONAL_STRUCTURE_ONLY",
     "entry_id_pattern": "^ID-AEC-[a-zA-F0-9]{16}$",
     "fields": [
       {
@@ -131,7 +132,7 @@
         "name": "AEC_list",
         "path": "$.AEC_list",
         "role": "RECORD_COLLECTION",
-        "state": "PROVISIONAL",
+        "state": "APPROVED_PROVISIONAL_NOT_FINAL",
         "requiredness": "UNRESOLVED"
       },
       {
@@ -139,7 +140,7 @@
         "name": "AEC_id",
         "path": "$.AEC_list[*].AEC_id",
         "role": "CONDITION_ID",
-        "state": "PROVISIONAL",
+        "state": "APPROVED_PROVISIONAL_NOT_FINAL",
         "requiredness": "UNRESOLVED"
       },
       {
@@ -147,7 +148,7 @@
         "name": "AEC_name",
         "path": "$.AEC_list[*].AEC_name",
         "role": "HUMAN_NAME_NOT_EVALUATION",
-        "state": "PROVISIONAL",
+        "state": "APPROVED_PROVISIONAL_NOT_FINAL",
         "requiredness": "UNRESOLVED"
       },
       {
@@ -155,7 +156,7 @@
         "name": "AEC_description",
         "path": "$.AEC_list[*].AEC_description",
         "role": "OPTIONAL_SHORT_HUMAN_DESCRIPTION_NOT_EVALUATION",
-        "state": "PROVISIONAL",
+        "state": "APPROVED_PROVISIONAL_NOT_FINAL",
         "requiredness": "OPTIONAL_CANDIDATE"
       },
       {
@@ -163,7 +164,7 @@
         "name": "value",
         "path": "$.AEC_list[*].value",
         "role": "INLINE_CONDITION_PENDING_MEANING",
-        "state": "PROVISIONAL",
+        "state": "APPROVED_PROVISIONAL_NOT_FINAL",
         "requiredness": "UNRESOLVED"
       }
     ],
@@ -180,7 +181,8 @@
           "value": {}
         }
       ]
-    }
+    },
+    "approval_source": "PROJECT_OWNER_EXPLICIT_2026_11_16"
   },
   "boundaries": {
     "policy_document_owns": [
@@ -212,6 +214,8 @@
     "evaluation_authorized": false,
     "execution_authorized": false,
     "implementation_authorized": false,
-    "final_schema_approval": false
+    "final_schema_approval": false,
+    "policy_document_sync": "PENDING_EXPLICIT_RESOLUTION_OF_ARCH_0004_V4_INLINE_VS_REGO_SOURCE_REFERENCES",
+    "provisional_field_layout_approved": true
   }
 }
