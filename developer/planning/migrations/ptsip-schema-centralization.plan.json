@@ -122,7 +122,24 @@
     "rbac_data_root": "NOT_DECIDED",
     "policy_v4_evaluation_directory": "FORBIDDEN",
     "rbac_registration_data_path": "UNRESOLVED",
-    "rbac_registration_schema_directory": "UNRESOLVED"
+    "rbac_registration_schema_directory": "UNRESOLVED",
+    "rbac_registration_schema_root": "src/ptsip/schemas/storage/registry/rbac/",
+    "rbac_ra_rac_aec_schema_root": "src/ptsip/schemas/storage/rbac/",
+    "rbac_registration_schema_file": "src/ptsip/schemas/storage/registry/rbac/rbac-registration.schema.json",
+    "rbac_registration_schema_basename_approved": false,
+    "rbac_registration_instance_root": "UNRESOLVED",
+    "rbac_usage_reference_direction": "POLICY_DOCUMENT_TO_RA_LIST_TO_RAC_AEC_LIST",
+    "ra_list_reverse_policy_usage": "FORBIDDEN",
+    "gui_accountability_cache": "DERIVED_READ_ONLY_POLICY_SOURCE_PROJECTION",
+    "ra_relation_grouped_field_candidates": [
+      "id_RA",
+      "RAC_ids",
+      "AEC_ids"
+    ],
+    "ra_relation_field_set_finalized": false,
+    "rbac_registration_field_names_finalized": false,
+    "rbac_application_subject_field": "REJECTED",
+    "rbac_gui_readable_responsibility": "REQUIRES_DETAILED_FIELD_DESIGN"
   },
   "approval_gates": [
     {
@@ -352,12 +369,9 @@
     },
     {
       "id": "RBAC-SCHEMA-SUBDOMAIN-01",
-      "scope": [
-        "src/ptsip/schemas/storage/rbac/",
-        "src/ptsip/schemas/storage/rbac/registration/",
-        "src/ptsip/schemas/storage/registry/rbac/"
-      ],
-      "state": "USER_SELECTION_REQUIRED"
+      "scope": "src/ptsip/schemas/storage/registry/rbac/",
+      "state": "S3_SELECTED_APPROVED",
+      "note": "Previously presented S1/S2/S3 directions: S3 selected, no other paths considered current."
     },
     {
       "id": "RBAC-DATA-ROOT-01",
@@ -366,7 +380,37 @@
         ".ptsip/profiles/rbac/",
         "PTSIP_HOME/decisions/<repository_fingerprint>/rbac/"
       ],
-      "state": "USER_SELECTION_REQUIRED"
+      "state": "UNRESOLVED_SEPARATE_FROM_SCHEMA_DIRECTORY",
+      "note": "Do not infer data instance root from approved schemas/storage/registry/rbac/."
+    },
+    {
+      "id": "REGISTRY-S3-RBAC-01",
+      "scope": "src/ptsip/schemas/storage/registry/rbac/",
+      "state": "USER_APPROVED_SCHEMA_DIRECTORY"
+    },
+    {
+      "id": "RA-FORWARD-ONLY-01",
+      "scope": "Policy Document -> RA-list.ptsip.yaml -> RAC/AEC lists",
+      "state": "USER_APPROVED_FORWARD_ONLY"
+    },
+    {
+      "id": "GUI-POLICY-CACHE-01",
+      "scope": "Policy Document Accountability Cache",
+      "state": "USER_APPROVED_DERIVED_ONLY_NO_RA_WRITEBACK"
+    },
+    {
+      "id": "RA-GROUPED-NAMES-01",
+      "scope": [
+        "id_RA",
+        "RAC_ids[]",
+        "AEC_ids[]"
+      ],
+      "state": "DIRECTION_SELECTED_NOT_FIELD_APPROVAL"
+    },
+    {
+      "id": "RBAC-STATUS-FIELD-GOV-01",
+      "scope": "RBAC registration record full identity/source/status/GUI field responsibilities",
+      "state": "UNRESOLVED_NO_ABBREVIATED_OR_POLICY_SUBJECT_FIELDS"
     }
   ],
   "target_registry": {
@@ -838,10 +882,10 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/ra-relation-list.schema.json",
       "filename": "ra-relation-list.schema.json",
-      "responsibility": "Separate multi-RA-to-RAC/AEC relationship contract",
+      "responsibility": "RA grouped one-to-many RAC/AEC relationship LIST contract with GUI-readable responsibility semantics; candidates id_RA RAC_ids[] AEC_ids[] not final",
       "sources": [],
-      "readiness": "RELATION_LIST_FILENAME_PROPOSED_FIELDS_UNDECIDED",
-      "decision": "LIST_NAMING_DIRECTION_APPROVED_EXACT_NAME_NOT_APPROVED"
+      "readiness": "GROUPED_RELATION_DIRECTION_CHOSEN_EXACT_FIELDS_FILENAME_AND_REQUIREDNESS_UNRESOLVED",
+      "decision": "NO_SCHEMA_FIELD_CREATION_AUTHORIZED"
     },
     {
       "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
@@ -854,12 +898,13 @@
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
     {
-      "path": "src/ptsip/schemas/storage/rbac/rbac-registration.schema.json",
+      "path": "src/ptsip/schemas/storage/registry/rbac/rbac-registration.schema.json",
       "filename": "rbac-registration.schema.json",
-      "responsibility": "Independent RBAC registration and applicability contract",
+      "responsibility": "New RBAC registration schema: dedicated registry contract domain; policy usage is sourced only from Policy documents and never stored in RA lists",
       "sources": [],
-      "readiness": "NAME_PROPOSED_PENDING_USER_APPROVAL",
-      "decision": "RESPONSIBILITY_APPROVED_FILENAME_UNRESOLVED"
+      "readiness": "SCHEMA_ROOT_APPROVED_RECORD_STRUCTURE_UNRESOLVED",
+      "decision": "USER_APPROVED_STORAGE_REGISTRY_RBAC_PATH_SCHEMA_BASENAME_STILL_PROPOSED",
+      "registration_instance_root": "UNRESOLVED"
     },
     {
       "path": "src/ptsip/schemas/storage/release/readme.schema.json",
@@ -1390,7 +1435,8 @@
         "Register all 3 version-specific historical schema resources and current pp2.00 selector; file names exact; reject pp1.00 without source",
         "Remove old src/ptsip/profiles/index.yaml sample catalog as a source of runtime schema metadata; register exact current and historical Project Profile schemas in central config.json",
         "Register Policy_Content and independent Rules.evaluation under v4 references; no Policy_Evaluation root or Evaluation/ directory",
-        "Do not register RBAC applicability or execution statuses as config.json values"
+        "Do not register RBAC applicability or execution statuses as config.json values",
+        "Register new RBAC registration schema location under storage/registry/rbac; keep RA/RAC/AEC list schema definitions under storage/rbac and keep runtime registration records out of config"
       ],
       "gate": "JSON parse PASS; unresolved records explicitly blocked, never generated",
       "priority": "ACTIVE_FOCUS_CENTRAL_CONFIG"
@@ -1478,8 +1524,10 @@
         "pp.1.00 missing from src/ptsip/profiles/history: record as blocked rather than inventing",
         "Inspect each template YAML only to preserve compatible template branch if needed; remove separate distributed template example and index entry after consumer analysis",
         "Expose current project-profile.schema.json through exact pp2.00 selected historical resource without overriding semantic version evidence",
-        "Design RA relation list row shape only after R1/R2/R3 decision; names and state must not be duplicated into relation rows unless independently justified",
-        "New RBAC registration schema path and runtime data directory are separate decisions; config.json stays schema lookup only"
+        "New RBAC registration schema path and runtime data directory are separate decisions; config.json stays schema lookup only",
+        "Use grouped machine relation direction (id_RA, RAC_ids[], AEC_ids[]) as candidates only; do not finalize field set, omit GUI semantic fields, or create relation schema before approval",
+        "No RA-list policy-document usage fields, no policy target/subject refs; only Policy Documents own their RA usage links",
+        "Registration schema definition location approved at src/ptsip/schemas/storage/registry/rbac/, but live registration data owner and state fields undecided"
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
@@ -1556,7 +1604,8 @@
         "Implement six Go operations with strict schema registry selection and fail-closed responses; do not reproduce field contracts in code",
         "Remove setup.py public profile asset projection and old history directory requirements; update MANIFEST.in and pyproject.toml to package Go binary and canonical schema resources",
         "EXCLUDE src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py from edits; existing projection errors tolerated",
-        "Go Catalog/Metadata responsibility must be implemented in src/ptsip/profile_contract/clarification/**, and public CLI integration targets existing src/ptsip/CLI.go"
+        "Go Catalog/Metadata responsibility must be implemented in src/ptsip/profile_contract/clarification/**, and public CLI integration targets existing src/ptsip/CLI.go",
+        "For future PTSIP View, derive policy accountability reverse lookup only from Policy Document RA references and current RA/RAC/AEC source records; never introduce authoritative backrefs in RA list"
       ],
       "gate": "all approved consumers resolve canonical schemas; wheel package resources verified; all six modules unused; replacement code paths approved; six retired module responsibilities have registered Go interface coverage and approved implementation locations"
     },
@@ -1902,7 +1951,12 @@
       "pp.3.00.contract.json remains byte-identical and is not used as new RBAC registration",
       "src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py remain byte-identical during v4/RBAC work",
       "Go clarification Catalog/Metadata responsibility is in src/ptsip/profile_contract/clarification/**, no new cmd/ or internal/**",
-      "All three pp.3.00 schema files remain byte-identical beside unchanged pp.3.00.contract.json while new v4 RBAC schemas are authored independently"
+      "All three pp.3.00 schema files remain byte-identical beside unchanged pp.3.00.contract.json while new v4 RBAC schemas are authored independently",
+      "RA/RAC/AEC list schema roots stay storage/rbac and independent registration contract root is storage/registry/rbac",
+      "Policy Document -> RA-list.ptsip.yaml -> RAC/AEC list is the only normative usage relationship direction",
+      "No RA/RAC/AEC registry field stores policy document usage IDs or reverse policy backreferences",
+      "GUI accountability cache derives reverse lookup from policy documents, is never normative and never writes RA list policy usage",
+      "Grouped relation field names id_RA RAC_ids AEC_ids are candidates only; GUI-readable semantic fields and types remain unresolved"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1926,7 +1980,12 @@
       "rbac_execution_status_in_config",
       "pp3_manifest_mutation",
       "python_projection_mutation",
-      "python_cli_mutation"
+      "python_cli_mutation",
+      "ra_record_reverse_policy_document_ref",
+      "rbac_registry_subject_policy_target",
+      "gui_cache_authority_source",
+      "premature_ra_relation_field_finalization",
+      "registration_schema_created_in_old_storage_rbac_root"
     ],
     "powershell_commands_in_order": [
       "$log = '.\\schema-centralization-validation.log'",
@@ -3523,7 +3582,7 @@
         "id_RA_pattern": "^R-ID-[0-9A-F]{32}$"
       },
       "rbac": {
-        "root": "src/ptsip/schemas/policy/",
+        "root": "src/ptsip/schemas/storage/rbac/",
         "schemas": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
@@ -3542,60 +3601,31 @@
         },
         "relation": {
           "independent": true,
-          "multiplicity": "MULTIPLE",
+          "multiplicity": "GROUPED_MULTI_REFERENCES_DIRECTION_ONLY",
           "proposed_filename": "src/ptsip/schemas/storage/rbac/ra-relation-list.schema.json",
           "file_name_state": "NOT_APPROVED",
-          "record_fields": "PENDING",
+          "record_fields": "NOT_FINALIZED",
           "filename_state": "PROPOSED_NAME_USER_REVIEW_REQUIRED",
-          "field_policy": "EXACT_FIELDS_UNRESOLVED; DO_NOT_DUPLICATE_RA/RAC/AEC_NAMES_WITHOUT_ROLE_REVIEW",
+          "field_policy": "GROUPED_REFERENCE_DIRECTION_SELECTED; COMPLETE_RECORD_FIELDS_NOT_DECIDED; GUI_READABLE_RESPONSIBILITY_NEEDS_ANALYSIS",
           "record_model_options": [
             {
-              "id": "R1_NORMALIZED_EDGES",
-              "declared_fields": [
-                "id_RA",
-                "target_kind",
-                "target_id"
-              ],
-              "types": {
-                "id_RA": "R-ID-32_HEX",
-                "target_kind": "RAC_OR_AEC",
-                "target_id": "REGISTERED_ID"
-              },
-              "notes": "One relation per list item; fetch names from registered RAC/AEC lists; no duplicate names",
-              "state": "PROPOSED"
-            },
-            {
-              "id": "R2_TYPED_RELATION_ROWS",
-              "declared_fields": [
-                "id_RA",
-                "RAC_id",
-                "AEC_id"
-              ],
-              "types": {
-                "id_RA": "R-ID-32_HEX",
-                "RAC_id": "IDENTIFIER_WHEN_TARGET_IS_RAC",
-                "AEC_id": "IDENTIFIER_WHEN_TARGET_IS_AEC"
-              },
-              "notes": "Separate endpoint fields, field presence/cardinality conditions need explicit rule",
-              "state": "PROPOSED"
-            },
-            {
               "id": "R3_GROUPED_RELATIONS",
-              "declared_fields": [
+              "state": "DIRECTION_SELECTED_FIELD_SET_NOT_APPROVED",
+              "candidate_names": [
                 "id_RA",
                 "RAC_ids",
                 "AEC_ids"
               ],
-              "types": {
-                "id_RA": "R-ID-32_HEX",
-                "RAC_ids": "ARRAY_OF_ID",
-                "AEC_ids": "ARRAY_OF_ID"
+              "field_types": {
+                "id_RA": "R-ID-32_HEX_CANDIDATE",
+                "RAC_ids": "ARRAY_OF_REGISTERED_RAC_ID_CANDIDATE",
+                "AEC_ids": "ARRAY_OF_REGISTERED_AEC_ID_CANDIDATE"
               },
-              "notes": "One RA grouped list, convenient for multiple refs; individual relation provenance granularity harder",
-              "state": "PROPOSED"
+              "requiredness": "UNRESOLVED",
+              "human_readability": "NOT_SUFFICIENT_ALONE_GUI_RESPONSIBILITY_DETAILS_MUST_BE_SPECIFIED"
             }
           ],
-          "recommendation": "R1_NORMALIZED_EDGES",
+          "recommendation": null,
           "excluded_redundant_fields_until_decided": [
             "RA-name",
             "RAC_name",
@@ -3603,28 +3633,55 @@
             "Rego_condition",
             "activation_state",
             "description"
-          ]
+          ],
+          "reverse_policy_usage_fields": "FORBIDDEN",
+          "source_policy_id_field": "FORBIDDEN",
+          "gui_cache": "POLICY_DOCUMENT_ACCOUNTABILITY_CACHE_DERIVED_NOT_WRITTEN_TO_RA_LIST"
         },
         "registration": {
           "separate": true,
-          "proposed_schema": "src/ptsip/schemas/storage/rbac/rbac-registration.schema.json",
-          "file_name_state": "NOT_APPROVED",
-          "registration_data_path": "PENDING",
+          "proposed_schema": "src/ptsip/schemas/storage/registry/rbac/rbac-registration.schema.json",
+          "file_name_state": "SCHEMA_ROOT_APPROVED_BASENAME_PROPOSED",
+          "registration_data_path": "UNRESOLVED",
           "config_role": "SCHEMA_LOOKUP_ONLY",
           "old_manifest": "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json",
           "old_manifest_disposition": "DO_NOT_EDIT_OR_REUSE",
           "execution_activated": false,
           "schema_directory_options": [
-            "S1_RBAC_FLAT",
-            "S2_RBAC_SUBDOMAIN",
             "S3_SHARED_STORAGE_REGISTRY"
           ],
           "record_data_location_options": [
-            "D1_DISTRIBUTED_PTSIP_RESOURCE",
-            "D2_PROJECT_REGISTRY",
-            "D3_LOCAL_RUNTIME_STATE"
+            "UNRESOLVED_INSTANCE_OWNER"
           ],
-          "state_model": "FOUR_INDEPENDENT_CONCERNS_REGISTRATION_APPLICABILITY_AUTHORIZATION_EXECUTION_DETAILS_UNDECIDED"
+          "state_model": "REGISTRATION_STATUS_DETAILS_UNRESOLVED_NO_POLICY_USAGE_TARGET_FIELDS",
+          "schema_directory": "src/ptsip/schemas/storage/registry/rbac/",
+          "schema_location_owner": "CONFIG_JSON_RESOURCE_LOOKUP_ONLY",
+          "authoritative_policy_usage_storage": "FORBIDDEN",
+          "policy_target_or_subject_fields": "REJECTED",
+          "field_design": {
+            "status": "NOT_APPROVED_FURTHER_ANALYSIS_REQUIRED",
+            "rejected_early_field_names": [
+              "registry_id",
+              "contract_id",
+              "contract_version",
+              "subject_ref",
+              "registration_ref"
+            ],
+            "rejected_design_patterns": [
+              "UNJUSTIFIED_MINIMAL_FIELD_SET",
+              "UNJUSTIFIED_FIELD_CONSOLIDATION",
+              "REGISTERING_POLICY_DOCUMENT_USAGE_IN_RA_OR_RBAC_REGISTRY"
+            ],
+            "human_readability": "GUI_READABLE_RESPONSIBILITY_DEFINITIONS_NEED_SEPARATE_ROLE_ANALYSIS",
+            "approval_required": [
+              "IDENTITY_SCOPE",
+              "LIFECYCLE_STATUS",
+              "OWNERSHIP_PROVENANCE",
+              "HUMAN_READABLE_MEANING",
+              "MACHINE_REFERENCE_GRAMMAR"
+            ],
+            "caveat": "These are responsibility dimensions, not approved field names, types or requiredness"
+          }
         },
         "version_policy": "NEW_CONTRACT_NO_PP3_COMPATIBILITY_ASSUMPTION",
         "source_contracts": [
@@ -3644,6 +3701,32 @@
           "referenced_source_action": "RETAIN_UNMODIFIED_WITH_MANIFEST",
           "why": "Deleting old files while preserving unchanged manifest would leave broken resource references",
           "new_schema_semantics": "INDEPENDENT_NEW_CENTRAL_CONTRACT_NO_PP300_COMPAT"
+        },
+        "reference_direction": {
+          "authority": "SINGLE_AUTHORITATIVE_FORWARD_LINK",
+          "path": [
+            "Policy Document Policy_Rules.rules[].id_RA",
+            "RA-list.ptsip.yaml",
+            "RAC list / AEC list"
+          ],
+          "allow_forward": [
+            "POLICY_RULE_TO_RA",
+            "RA_TO_RAC",
+            "RA_TO_AEC"
+          ],
+          "forbid_backrefs": [
+            "RA_LIST_TO_POLICY_DOCUMENT",
+            "RAC_LIST_TO_POLICY_DOCUMENT",
+            "AEC_LIST_TO_POLICY_DOCUMENT"
+          ],
+          "policy_usage_source": "POLICY_DOCUMENT_ONLY",
+          "ra_list_policy_document_usage_field": "FORBIDDEN",
+          "derived_gui_reverse_lookup_allowed": true,
+          "derived_gui_cache_name": "Policy Document Accountability Cache",
+          "cache_writeback_to_ra_list": "FORBIDDEN",
+          "gui_edit_policy_usage_origin": "POLICY_DOCUMENT",
+          "sync": "FORWARD_ONLY",
+          "effect": "RA changes do not require reverse synchronized policy document usage fields; policy references must still be validated against current registered RA/RAC/AEC records"
         }
       },
       "tests": {
@@ -3697,8 +3780,8 @@
       },
       {
         "id": "RBAC-REGISTRATION-FIELDS",
-        "state": "UNRESOLVED",
-        "value": "Separate schema and instance root; select storage owner and state categories, exact schema filename and enum pending"
+        "state": "UNRESOLVED_FIELD_RESPONSIBILITIES",
+        "value": "Reject abbreviated registry/contract ID fields, merged/minimal schema and subject target fields; requires GUI-readable semantically separated records"
       },
       {
         "id": "GO-CLI-OPERATION",
@@ -3727,18 +3810,47 @@
       },
       {
         "id": "RBAC-REGISTRATION-SCHEMA-LOCATION",
-        "state": "PROPOSED_S1_S2_S3",
-        "value": "S2_RBAC_SUBDOMAIN"
+        "state": "APPROVED",
+        "value": "S3_SHARED_STORAGE_REGISTRY"
       },
       {
         "id": "RBAC-REGISTRATION-DATA-LOCATION",
-        "state": "UNRESOLVED_D1_D2_D3",
-        "value": "NO_SILENT_SELECTION"
+        "state": "UNRESOLVED_NOT_INFERRED_FROM_S3_SCHEMA_ROOT",
+        "value": "Registration instance location and lifecycle status not decided"
       },
       {
         "id": "RA-RELATION-LIST-RECORD",
-        "state": "UNRESOLVED_R1_R2_R3",
-        "value": "NO_SILENT_SELECTION"
+        "state": "DIRECTION_DECIDED_FIELDS_NOT_FINALIZED",
+        "value": "GROUPED_ID_REFERENCES id_RA/RAC_ids[]/AEC_ids[] only as candidate names; GUI-readable details unresolved"
+      },
+      {
+        "id": "RBAC-S3-APPROVED",
+        "state": "APPROVED",
+        "value": "src/ptsip/schemas/storage/registry/rbac/"
+      },
+      {
+        "id": "FORWARD-ONLY-USAGE",
+        "state": "APPROVED",
+        "value": "Policy Document -> RA-list.ptsip.yaml -> RAC/AEC lists; no reverse policy document fields in RA/RAC/AEC"
+      },
+      {
+        "id": "GUI-CACHE-IS-DERIVED",
+        "state": "APPROVED",
+        "value": "GUI -> Policy Document Accountability Cache -> authoritative Policy Document and RA/RAC/AEC references; cache never becomes normative source"
+      },
+      {
+        "id": "GROUPED-RELATION-FIELDS",
+        "state": "DIRECTION_ONLY",
+        "value": [
+          "id_RA",
+          "RAC_ids",
+          "AEC_ids"
+        ]
+      },
+      {
+        "id": "NO-RBAC-APPLICATION-SUBJECT",
+        "state": "APPROVED_REJECTION",
+        "value": "No policy document target or applicability backreference in RA/RBAC registered source records"
       }
     ],
     "concrete_work_plan": [
@@ -3800,16 +3912,17 @@
         "dependency": [
           "PVR-04"
         ],
-        "action": "Create an independent RA multi-relationship contract and a new separate RBAC registration/activation-status contract after exact filename, fields and source versions are approved",
+        "action": "Design grouped RA relation LIST rows only after full semantic/GUI field ownership review. New RBAC registration schema belongs under schemas/storage/registry/rbac/; exact filename and instance data root remain undecided; no RA->policy document usage records.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-relation-list.schema.json",
-          "src/ptsip/schemas/storage/rbac/rbac-registration.schema.json"
+          "src/ptsip/schemas/storage/registry/rbac/rbac-registration.schema.json",
+          "GUI-readable RA/RAC/AEC responsibility semantic field matrix"
         ],
         "blocked_on": [
-          "RA-RELATION-LIST-RECORD",
-          "RBAC-REGISTRATION-SCHEMA-LOCATION",
-          "RBAC-REGISTRATION-DATA-LOCATION",
-          "RBAC-REGISTRATION-FIELDS"
+          "RA-GUI-SEMANTICS",
+          "RA-RELATION-FULL-FIELDS",
+          "RBAC-REGISTRATION-FIELDS",
+          "RBAC-REGISTRATION-INSTANCE-ROOT"
         ]
       },
       {
@@ -3818,10 +3931,12 @@
           "PVR-03",
           "PVR-05"
         ],
-        "action": "Implement deterministic Rule.id_RA -> RA -> relation -> RAC/AEC ID/name lookup and separate activation-status lookup; missing, conflicting or unregistered refs fail closed",
+        "action": "Validate strictly forward Policy_Rules.rules[].id_RA -> RA-list -> RAC_ids/AEC_ids -> registered RAC/AEC; Policy Document Accountability Cache is derived read-only for GUI, no authoritative reverse usage index in registries.",
         "outputs": [
-          "cross-registry resolver spec",
-          "negative test matrix"
+          "forward reference validator contract",
+          "read-only derived accountability cache interface (proposal only)",
+          "negative missing/mismatch/duplicate reference tests",
+          "no reverse usage field tests"
         ]
       },
       {
@@ -3881,7 +3996,7 @@
       "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json": "UNCHANGED_UNREUSED"
     },
     "directory_and_registry_decision_preview": {
-      "status": "USER_DIRECTION_REQUIRED_NO_DIRECTORY_CREATION",
+      "status": "S3_SCHEMA_DOMAIN_SELECTED_REGISTRATION_RECORD_FIELDS_AND_DATA_ROOT_UNRESOLVED",
       "config_evidence": {
         "path": "src/ptsip/schemas/config.json",
         "domain": "storage.Responsibility-Authority",
@@ -3896,37 +4011,10 @@
       },
       "schema_placement_options": [
         {
-          "id": "S1_RBAC_FLAT",
-          "direction": "RBAC_SCHEMA_FLAT",
-          "example_root": "src/ptsip/schemas/storage/rbac/",
-          "meaning": "RA/RAC/AEC/relation/registration schema contract files co-located",
-          "automation": "ONE_DIRECTORY_GLOB",
-          "ai_interoperability": "SINGLE_RECURSIVE_REGISTRY",
-          "change_scope": "SMALL",
-          "complexity": "LOW",
-          "risk": "Registry state schema ownership less visually separated"
-        },
-        {
-          "id": "S2_RBAC_SUBDOMAIN",
-          "direction": "RBAC_REGISTRATION_SUBDOMAIN",
-          "example_root": "src/ptsip/schemas/storage/rbac/registration/",
-          "meaning": "RA/RAC/AEC/relation schemas remain in RBAC root, registration status schema under registration/ child",
-          "automation": "TYPE_DISPATCH_BY_SUBPATH",
-          "ai_interoperability": "SCHEMA_ROLE_DISCOVERABLE_BY_PATH",
-          "change_scope": "MODERATE",
-          "complexity": "MODERATE",
-          "risk": "Additional directory and resource registration"
-        },
-        {
           "id": "S3_SHARED_STORAGE_REGISTRY",
-          "direction": "SHARED_STORAGE_REGISTRY_DOMAIN",
+          "status": "USER_SELECTED",
           "example_root": "src/ptsip/schemas/storage/registry/rbac/",
-          "meaning": "Separate cross-domain storage registry schema family",
-          "automation": "CENTRAL_REGISTRY_DISPATCH",
-          "ai_interoperability": "CENTRAL_DISCOVERY_WITH_EXTRA_ROUTING",
-          "change_scope": "LARGER",
-          "complexity": "HIGHER",
-          "risk": "May be premature generic registry abstraction"
+          "role": "New registration contract schema definition; RA/RAC/AEC list schema definitions remain under storage/rbac"
         }
       ],
       "recommended_schema_option": "S2_RBAC_SUBDOMAIN",
@@ -3965,47 +4053,27 @@
           "risk": "Not Git-portable without explicit evidence import/export"
         }
       ],
-      "instance_owner_decision": "UNRESOLVED: portable PTSIP default, user project declaration, or mutable local decision record have distinct authority",
+      "instance_owner_decision": "UNRESOLVED_DO_NOT_CONFLATE_SCHEMA_LOCATION_WITH_RUNTIME_DATA",
       "registration_field_categories": [
         {
-          "domain": "REGISTRATION_IDENTITY",
-          "candidates": [
-            "registry_id",
-            "contract_id",
-            "contract_version"
-          ],
-          "requiredness": "UNRESOLVED",
-          "status": "PROPOSED"
+          "domain": "REGISTRATION_RECORD_RESPONSIBILITY",
+          "state": "UNRESOLVED",
+          "issue": "User rejects abbreviated identity fields and premature aggregation of independent responsibilities"
         },
         {
-          "domain": "SOURCE_EVIDENCE",
-          "candidates": [
-            "resource_ref",
-            "source_sha256",
-            "source_revision"
-          ],
-          "requiredness": "UNRESOLVED",
-          "status": "PROPOSED"
+          "domain": "SOURCE_OWNERSHIP_AND_EVIDENCE",
+          "state": "UNRESOLVED",
+          "issue": "Ownership and evidence dimensions require explicit contract role analysis"
         },
         {
-          "domain": "APPLICABILITY_BINDING",
-          "candidates": [
-            "RA_id",
-            "subject_ref",
-            "registration_ref"
-          ],
-          "requiredness": "UNRESOLVED",
-          "status": "PROPOSED"
+          "domain": "HUMAN_GUI_READABILITY",
+          "state": "UNRESOLVED",
+          "issue": "GUI needs richer descriptions of responsibilities, not only machine IDs"
         },
         {
-          "domain": "LIFECYCLE_AND_STATUS",
-          "candidates": [
-            "registration_state",
-            "applicability_state",
-            "authorization_ref"
-          ],
-          "requiredness": "UNRESOLVED",
-          "status": "PROPOSED"
+          "domain": "REGISTRATION_LIFECYCLE",
+          "state": "UNRESOLVED",
+          "issue": "Registration is not applicability to a policy document; no policy target backreference"
         }
       ],
       "status_planes": {
@@ -4028,7 +4096,18 @@
           "path": "src/ptsip/engines/contracts/engines_registries/official-execution.json",
           "owns": "Engine execution registration, not RA/RAC/AEC rule applicability"
         }
-      ]
+      ],
+      "selected_schema_option": "S3_SHARED_STORAGE_REGISTRY",
+      "selected_schema_root": "src/ptsip/schemas/storage/registry/rbac/",
+      "schema_location_state": "APPROVED_DIRECTORY_BASENAME_PENDING",
+      "excluded_proposed_fields": [
+        "registry_id",
+        "contract_id",
+        "contract_version",
+        "subject_ref",
+        "registration_ref"
+      ],
+      "prohibit_reverse_policy_usage": true
     }
   }
 }
