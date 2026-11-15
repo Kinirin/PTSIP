@@ -315,6 +315,16 @@
       "id": "GO-CLI-MAIN-CHANGE-01",
       "scope": "src/ptsip/CLI.go",
       "state": "APPROVED_MODIFICATION_TARGET_OPERATION_DETAILS_PENDING"
+    },
+    {
+      "id": "RBAC-PP300-SCHEMA-RETENTION-01",
+      "scope": [
+        "src/ptsip/compile_sealed_rbac/ra.pp.3.00.schema.json",
+        "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json",
+        "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
+      ],
+      "state": "RETAIN_UNMODIFIED_WHILE_MANIFEST_UNCHANGED",
+      "note": "Required to avoid leaving pp.3.00.contract.json with broken references; any later retirement requires a separate policy decision."
     }
   ],
   "target_registry": {
@@ -825,8 +835,10 @@
       "source_size_bytes": 1410,
       "target_path": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
       "role": "AEC owner ID/name and source reference",
-      "gate": "REFERENCE_REVALIDATION_REQUIRED",
-      "action": "MOVE_AFTER_CONTRACT_REVIEW"
+      "gate": "PRESERVE_OLD_SCHEMA_FILE_UNCHANGED_WHILE_PP300_MANIFEST_REFERENCES_IT",
+      "action": "REVIEW_CONTRACT_MEANING_FOR_NEW_RBAC_SCHEMA_NOT_COPY_OR_DELETE_OLD_PP300",
+      "retention": "IMMUTABLE_PP300_HISTORICAL_SOURCE",
+      "migration_note": "New schema gets independent identity and RA relationship/registration semantics; old file remains because unchanged pp.3.00.contract.json still references its versioned basename"
     },
     {
       "source_path": "src/ptsip/compile_sealed_rbac/ra.pp.3.00.schema.json",
@@ -834,8 +846,10 @@
       "source_size_bytes": 1597,
       "target_path": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
       "role": "RA owner ID, RA-name, RAC and AEC links",
-      "gate": "NEW_RA_FIELDS_REVIEW",
-      "action": "RESTRUCTURE_RA_LINKS"
+      "gate": "PRESERVE_OLD_SCHEMA_FILE_UNCHANGED_WHILE_PP300_MANIFEST_REFERENCES_IT",
+      "action": "REVIEW_CONTRACT_MEANING_FOR_NEW_RBAC_SCHEMA_NOT_COPY_OR_DELETE_OLD_PP300",
+      "retention": "IMMUTABLE_PP300_HISTORICAL_SOURCE",
+      "migration_note": "New schema gets independent identity and RA relationship/registration semantics; old file remains because unchanged pp.3.00.contract.json still references its versioned basename"
     },
     {
       "source_path": "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json",
@@ -843,8 +857,10 @@
       "source_size_bytes": 1410,
       "target_path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
       "role": "RAC owner ID/name and source reference",
-      "gate": "REFERENCE_REVALIDATION_REQUIRED",
-      "action": "MOVE_AFTER_CONTRACT_REVIEW"
+      "gate": "PRESERVE_OLD_SCHEMA_FILE_UNCHANGED_WHILE_PP300_MANIFEST_REFERENCES_IT",
+      "action": "REVIEW_CONTRACT_MEANING_FOR_NEW_RBAC_SCHEMA_NOT_COPY_OR_DELETE_OLD_PP300",
+      "retention": "IMMUTABLE_PP300_HISTORICAL_SOURCE",
+      "migration_note": "New schema gets independent identity and RA relationship/registration semantics; old file remains because unchanged pp.3.00.contract.json still references its versioned basename"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
@@ -1506,7 +1522,8 @@
         "keep any unresolved source file with BLOCKED status",
         "verify old source location absent from consumers after each removal",
         "Go module source retirement is performed only by WU-14 after WU-13 acceptance; WU-08 only removes superseded schema sources verified to have zero consumers.",
-        "Do not delete any path under src/ptsip/profiles/: all 22 are retired atomically after semantic closure by WU-14; source schema files elsewhere follow their individual deletion gates"
+        "Do not delete any path under src/ptsip/profiles/: all 22 are retired atomically after semantic closure by WU-14; source schema files elsewhere follow their individual deletion gates",
+        "Do not delete src/ptsip/compile_sealed_rbac/{ra,rac,aec}.pp.3.00.schema.json: unchanged pp.3.00.contract.json still points to them. v4 schema creation is independent, not physical removal of historic pp3 contracts."
       ],
       "gate": "zero supported consumers per retired schema source, full relevant schema/package tests PASS; exempt Python callers excluded from Go/Profile v4 acceptance",
       "dependency": [
@@ -1828,7 +1845,8 @@
       "RA multiple relations are defined in a separate contract; RBAC status registration is separate from config.json",
       "pp.3.00.contract.json remains byte-identical and is not used as new RBAC registration",
       "src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py remain byte-identical during v4/RBAC work",
-      "Go clarification Catalog/Metadata responsibility is in src/ptsip/profile_contract/clarification/**, no new cmd/ or internal/**"
+      "Go clarification Catalog/Metadata responsibility is in src/ptsip/profile_contract/clarification/**, no new cmd/ or internal/**",
+      "All three pp.3.00 schema files remain byte-identical beside unchanged pp.3.00.contract.json while new v4 RBAC schemas are authored independently"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3440,7 +3458,19 @@
           "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json",
           "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
         ],
-        "permission": "SCHEMA_VALIDITY_NEVER_GRANTS_AUTHORITY"
+        "permission": "SCHEMA_VALIDITY_NEVER_GRANTS_AUTHORITY",
+        "legacy_retention": {
+          "manifest": "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json",
+          "manifest_mutation": "FORBIDDEN",
+          "referenced_sources": [
+            "src/ptsip/compile_sealed_rbac/ra.pp.3.00.schema.json",
+            "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json",
+            "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
+          ],
+          "referenced_source_action": "RETAIN_UNMODIFIED_WITH_MANIFEST",
+          "why": "Deleting old files while preserving unchanged manifest would leave broken resource references",
+          "new_schema_semantics": "INDEPENDENT_NEW_CENTRAL_CONTRACT_NO_PP300_COMPAT"
+        }
       },
       "tests": {
         "root": "src/tests/ptsip/",
@@ -3594,7 +3624,7 @@
         "dependency": [
           "PVR-07"
         ],
-        "action": "Audit consumers of old validation policy and pp3 RBAC schema separately; opt-in new v4 call sites only, do not mutate old v3 or pp3 manifest and do not silently claim backward compatibility",
+        "action": "Audit consumers of old validation policy and pp3 RBAC schema separately; opt-in new v4 call sites only, do not mutate old v3 or pp3 manifest and do not silently claim backward compatibility Preserve all three old pp3 schema files because unchanged pp.3.00.contract.json references them; no old pp3 file deletion in v4 scope.",
         "outputs": [
           "consumer routing inventory",
           "new v4 refs zero legacy dependencies"
