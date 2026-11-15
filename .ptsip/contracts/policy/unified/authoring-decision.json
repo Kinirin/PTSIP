@@ -164,7 +164,79 @@
         "multi_relation_contract_naming": "LIST_FAMILY_DIRECTION_ACKNOWLEDGED_EXACT_FILENAME_UNRESOLVED",
         "new_registration_data_root": "UNRESOLVED_USER_DECISION",
         "schema_data_plane_separation": "REQUIRED",
-        "schema_registry_purpose": "SCHEMA_ID_PATH_RESOURCE_ONLY"
+        "schema_registry_purpose": "CONTRACT_ID_AND_SCHEMA_RESOURCE_LOCATION_ONLY",
+        "registration_schema_root": "src/ptsip/schemas/storage/registry/rbac/",
+        "ra_rac_aec_structural_schema_root": "src/ptsip/schemas/storage/rbac/",
+        "registration_schema_root_source": "PROJECT_OWNER_EXPLICIT_2026_11_15",
+        "schema_registry_ref": "src/ptsip/schemas/config.json",
+        "registration_data_instance_root": "UNRESOLVED_SEPARATE_DECISION",
+        "reference_direction": {
+          "canonical": "POLICY_RULE_TO_RA_LIST_TO_RAC_AND_AEC_LIST",
+          "policy_source_path": "Policy_Rules.rules[].id_RA",
+          "ra_registry": "RA-list.ptsip.yaml",
+          "condition_registries": [
+            "RAC-list",
+            "AEC-list"
+          ],
+          "allowed_edges": [
+            "POLICY_RULE->RA",
+            "RA->RAC",
+            "RA->AEC"
+          ],
+          "forbidden_authoritative_edges": [
+            "RA->POLICY_DOCUMENT",
+            "RAC->POLICY_DOCUMENT",
+            "AEC->POLICY_DOCUMENT"
+          ],
+          "forbids_ra_policy_usage_fields": true,
+          "forbids_reverse_policy_document_indexes_in_source_registries": true,
+          "source_of_truth": "POLICY_DOCUMENT_FOR_POLICY_USAGE; REGISTRY_RECORDS_FOR_RA_RAC_AEC_DEFINITIONS",
+          "sync": "FORWARD_ONLY",
+          "gui_projection": "DERIVED_READ_ONLY_CACHE_NOT_CONTRACT_SOURCE",
+          "gui_cache_name": "Policy Document Accountability Cache",
+          "cache_provenance": "POLICY_DOCUMENT_AND_REGISTERED_RA_RAC_AEC_INPUTS",
+          "cache_can_derive_reverse_views": true,
+          "cache_must_not_write_back_policy_usage_refs_to_ra_lists": true,
+          "editing_entrypoint_for_policy_usage": "POLICY_DOCUMENT_ONLY"
+        },
+        "relation_record_design": {
+          "status": "DIRECTION_ONLY_FIELDS_NOT_APPROVED",
+          "selected_direction": "RA_GROUPED_MULTIPLE_REFERENCE_LISTS",
+          "candidate_field_names": [
+            "id_RA",
+            "RAC_ids",
+            "AEC_ids"
+          ],
+          "cardinality": "UNRESOLVED",
+          "complete_record_fields": "UNRESOLVED_REQUIRES_GUI_READABLE_RESPONSIBILITY_SEMANTICS",
+          "requiredness": "UNRESOLVED",
+          "field_role_review": "REQUIRED_BEFORE_APPROVAL",
+          "list_file_naming": "USER_PREFERENCE_LIST_FAMILY_EXACT_FILENAME_UNRESOLVED",
+          "forbidden_policy_document_reverse_fields": true
+        },
+        "registration_record_design": {
+          "status": "ABSTRACT_RESPONSIBILITY_ONLY_NO_FIELD_NAMES_APPROVED",
+          "purpose": "INDEPENDENT_REGISTRATION_WITHOUT_POLICY_USAGE_REVERSE_BINDINGS",
+          "prior_rejected_fields": [
+            "registry_id",
+            "contract_id",
+            "contract_version",
+            "subject_ref",
+            "registration_ref"
+          ],
+          "prohibit_silent_field_merging": true,
+          "prohibit_minimal_only_schema": true,
+          "prohibit_policy_subject_lookup_fields": true,
+          "descriptive_human_gui_responsibility": "REQUIRED_DESIGN_CONSIDERATION_FIELDS_NOT_SELECTED",
+          "lifecycle_state_values": "UNRESOLVED",
+          "contract_identity_fields": "UNRESOLVED"
+        },
+        "directory_boundary": {
+          "schema_source": "src/ptsip/schemas/storage/registry/rbac/",
+          "registration_instance": "UNRESOLVED",
+          "project_owned_ra_source": ".ptsip/profiles/rbac/ MAY_EXIST_FOR_LEGACY_PROJECT_DECLARATIONS_NOT_AUTOMATICALLY_NEW_V4_DATA_ROOT",
+          "no_runtime_state_inside_config": true
+        }
       },
       "implementation": {
         "priority": "POLICY_V4_THEN_RBAC_SCHEMA_LINK",
