@@ -474,8 +474,8 @@
     {
       "id": "RAC-AEC-FILE-IDENTITY-ROOT",
       "scope": "RAC/AEC List document top-level metadata",
-      "state": "REQUIRED_ROLE_APPROVED_NAMES_AND_LAYOUT_UNRESOLVED",
-      "note": "Prior candidates lacked independent file identification. Schema generation blocked until file header and registry lookup mapping decisions."
+      "state": "USER_APPROVED_EXACT_ROOT_FIELD_NAMES_METADATA_ONLY",
+      "note": "Top-level exactly file_name,file_id,format_version,file_title (in this order) for each RAC/AEC List, no File_Identity and no file_kind; list body independently unresolved; no schema implementation authorized"
     }
   ],
   "target_registry": {
@@ -997,7 +997,7 @@
       "sources": [
         "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
       ],
-      "readiness": "BLOCKED_TOP_LEVEL_LIST_FILE_IDENTITY_REQUIRED_UNDECIDED",
+      "readiness": "FILE_METADATA_ROOT_APPROVED_LIST_ITEM_FIELDS_UNRESOLVED",
       "decision": "SCHEMA_PATH_PROPOSED_FIELD_SET_REJECTED",
       "field_candidates": [],
       "extra_contract_locator_candidates": [],
@@ -1015,15 +1015,34 @@
         "F-AEC-R009",
         "F-AEC-R010"
       ],
-      "file_identity_contract": "UNAPPROVED_MUST_BE_SEPARATE_TOP_LEVEL_NOT_NESTED_IN_CONDITION_ITEM",
-      "schema_top_level": "TOP_LEVEL_FILE_IDENTITY_PLUS_LIST_STRUCTURE_PARENT_NAMES_UNRESOLVED",
+      "file_identity_contract": "FOUR_INDEPENDENT_TOP_LEVEL_METADATA_FIELDS_APPROVED_NO_PARENT",
+      "schema_top_level": {
+        "selected_metadata_order": [
+          "file_name",
+          "file_id",
+          "format_version",
+          "file_title"
+        ],
+        "metadata_field_ids": [
+          "F-AEC-H004",
+          "F-AEC-H002",
+          "F-AEC-H005",
+          "F-AEC-H006"
+        ],
+        "list_body": "AEC_list",
+        "list_body_fields_status": "UNAPPROVED_PENDING_SEPARATE_REANALYSIS",
+        "no_File_Identity": true,
+        "no_file_kind": true
+      },
       "new_file_header_candidate_ids": [
-        "F-AEC-H001",
-        "F-AEC-H002",
-        "F-AEC-H003",
         "F-AEC-H004",
+        "F-AEC-H002",
         "F-AEC-H005",
         "F-AEC-H006"
+      ],
+      "rejected_file_header_ids": [
+        "F-AEC-H001",
+        "F-AEC-H003"
       ]
     },
     {
@@ -1058,7 +1077,7 @@
       "sources": [
         "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
       ],
-      "readiness": "BLOCKED_TOP_LEVEL_LIST_FILE_IDENTITY_REQUIRED_UNDECIDED",
+      "readiness": "FILE_METADATA_ROOT_APPROVED_LIST_ITEM_FIELDS_UNRESOLVED",
       "decision": "SCHEMA_PATH_PROPOSED_FIELD_SET_REJECTED",
       "field_candidates": [],
       "extra_contract_locator_candidates": [],
@@ -1076,15 +1095,34 @@
         "F-RAC-R009",
         "F-RAC-R010"
       ],
-      "file_identity_contract": "UNAPPROVED_MUST_BE_SEPARATE_TOP_LEVEL_NOT_NESTED_IN_CONDITION_ITEM",
-      "schema_top_level": "TOP_LEVEL_FILE_IDENTITY_PLUS_LIST_STRUCTURE_PARENT_NAMES_UNRESOLVED",
+      "file_identity_contract": "FOUR_INDEPENDENT_TOP_LEVEL_METADATA_FIELDS_APPROVED_NO_PARENT",
+      "schema_top_level": {
+        "selected_metadata_order": [
+          "file_name",
+          "file_id",
+          "format_version",
+          "file_title"
+        ],
+        "metadata_field_ids": [
+          "F-RAC-H004",
+          "F-RAC-H002",
+          "F-RAC-H005",
+          "F-RAC-H006"
+        ],
+        "list_body": "RAC_list",
+        "list_body_fields_status": "UNAPPROVED_PENDING_SEPARATE_REANALYSIS",
+        "no_File_Identity": true,
+        "no_file_kind": true
+      },
       "new_file_header_candidate_ids": [
-        "F-RAC-H001",
-        "F-RAC-H002",
-        "F-RAC-H003",
         "F-RAC-H004",
+        "F-RAC-H002",
         "F-RAC-H005",
         "F-RAC-H006"
+      ],
+      "rejected_file_header_ids": [
+        "F-RAC-H001",
+        "F-RAC-H003"
       ]
     },
     {
@@ -1720,7 +1758,8 @@
         "ALL previous RAC/AEC List 28 field proposals explicitly rejected. Do not inherit approval-by-omission or implement them; reanalyze four independent responsibilities condition identity, title, file registry lookup, Rego source.",
         "New F-RAC-R001..R010 and F-AEC-R001..R010 are unapproved examples, not a current target schema definition; investigate registered entry ID to resource path resolution, RA title-to-ID consistency and condition/source version meaning.",
         "Require separately typed top-level file identity and file kind for RAC/AEC list document, not merely RAC_list/AEC_list root. Do not use RAC_id/AEC_id, pp3 ptsip profile ID, Rego source_ref or file path as implicit file ID.",
-        "Resolve machine file_id relationship to current declarative registry entries[].id -> resource and conditional revision; avoid creating dual independently managed authoritative file identifiers."
+        "Resolve machine file_id relationship to current declarative registry entries[].id -> resource and conditional revision; avoid creating dual independently managed authoritative file identifiers.",
+        "Use exactly four flat root file metadata fields in RAC/AEC List: file_name, file_id, format_version, file_title; never wrap in File_Identity or add file_kind; RAC_list/AEC_list body separately reviewed."
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
@@ -2156,7 +2195,8 @@
       "Plan Checklist.column defaults exactly four approved columns and supports configurable >=10 columns; task_id source is .ptsip/tasks-generated tasks",
       "Policy_Rules.rules[].content.content_id[] resolves Policy_Content.items[].id with no rule source_ref, source_pointer, source_document",
       "RAC/AEC condition contract file lookup identity and Rego original evaluation source reference are separate ownership responsibilities",
-      "No RAC/AEC List old proposed field set is treated as approved by omission; new candidate names and full structure require user approval before schema generation"
+      "No RAC/AEC List old proposed field set is treated as approved by omission; new candidate names and full structure require user approval before schema generation",
+      "RAC/AEC list document has direct file_name,file_id,format_version,file_title root metadata fields (no File_Identity wrapper, no file_kind); condition list body field set remains unapproved"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -2205,7 +2245,10 @@
       "previous_rac_aec_field_approval_by_default",
       "unapproved_rac_aec_reanalysis_fields_implemented",
       "contract_registry_id_confused_with_condition_id",
-      "rego_source_ref_confused_with_contract_file_resource"
+      "rego_source_ref_confused_with_contract_file_resource",
+      "RAC_AEC_File_Identity_parent_created",
+      "RAC_AEC_file_kind_root_added",
+      "RAC_AEC_file_fields_nested_in_list_items"
     ],
     "powershell_commands_in_order": [
       "$log = '.\\schema-centralization-validation.log'",
@@ -4195,6 +4238,45 @@
         "id": "RAC-AEC-PREVIOUS-FIELD-SET-REJECTION",
         "state": "USER_EXPLICIT_ALL_REJECTED",
         "value": "F-RAC-001..014 and F-AEC-001..014 were not approved; prior assistant approval-by-default invalidated; new reanalysis candidates need user approval"
+      },
+      {
+        "id": "RAC-AEC-FLAT-FILE-METADATA",
+        "state": "USER_EXPLICIT_APPROVED",
+        "value": {
+          "RAC": {
+            "field_ids": [
+              "F-RAC-H004",
+              "F-RAC-H002",
+              "F-RAC-H005",
+              "F-RAC-H006"
+            ],
+            "root_metadata_fields": [
+              "file_name",
+              "file_id",
+              "format_version",
+              "file_title"
+            ],
+            "body_fields": "UNAPPROVED"
+          },
+          "AEC": {
+            "field_ids": [
+              "F-AEC-H004",
+              "F-AEC-H002",
+              "F-AEC-H005",
+              "F-AEC-H006"
+            ],
+            "root_metadata_fields": [
+              "file_name",
+              "file_id",
+              "format_version",
+              "file_title"
+            ],
+            "body_fields": "UNAPPROVED"
+          },
+          "rejected_container": "File_Identity",
+          "excluded_field": "file_kind",
+          "scope": "FILE_METADATA_ONLY"
+        }
       }
     ],
     "concrete_work_plan": [
@@ -4244,7 +4326,7 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "RA List roles already discussed separately. RAC/AEC List prior field candidates were rejected in full. Reanalyze condition ID/name ownership, contract file locator, evaluation source bindings and registry kind before proposing/creating independent v4 RAC/AEC List schemas. A separate top-level file identity header is mandatory; field names, value patterns and chosen header layout still unapproved.",
+        "action": "RAC/AEC list file top-level metadata fields file_name,file_id,format_version,file_title are approved directly at root; no File_Identity/file_kind. Reanalyze and obtain approval for separate RAC_list/AEC_list body fields, file ID grammar, registration linkage before schema implementation.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
@@ -4252,7 +4334,8 @@
         ],
         "blocked_on": [
           "RAC_AEC_FULL_FIELD_REPROPOSAL_USER_APPROVAL",
-          "RAC_AEC_FILE_HEADER_IDENTITY_USER_DECISION"
+          "RAC_AEC_FILE_HEADER_IDENTITY_USER_DECISION",
+          "RAC_AEC_LIST_ITEM_FIELDS_AND_FILE_ID_PATTERN_UNRESOLVED"
         ]
       },
       {
@@ -4440,7 +4523,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "User correction: RAC/AEC List files need independent file-level identity at top level; list-only document root is invalid; previous 20 reanalysis fields remain unapproved."
+    "last_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
     "contract": "ptsip-release-038-field-decisions/v1",
@@ -5368,7 +5451,7 @@
       }
     ],
     "rac_aec_reanalysis": {
-      "status": "ALL_PREVIOUS_FIELDS_REJECTED; PREVIOUS_REANALYSIS_20_CANDIDATES_UNAPPROVED_INCOMPLETE",
+      "status": "FILE_IDENTITY_ROOT_APPROVED_CONDITION_BODY_FIELD_SET_REJECTED_AND_REANALYSIS_PENDING",
       "prior_field_ids": [
         "F-RAC-001",
         "F-RAC-002",
@@ -5624,17 +5707,17 @@
         "GUI_DISPLAY_NAME_AUTHORITY",
         "OPTIONAL_DESCRIPTION_POLICY",
         "V4_SOURCE_CONTRACT_VERSION_ACTIVATION_NOT_AUTOMATIC",
-        "LIST_FILE_TOP_LEVEL_IDENTITY_STRUCTURE_AND_NAMES",
         "FILE_ID_TO_REGISTRY_ENTRY_ID_MAPPING",
         "FILE_ID_FORMAT",
         "FILE_NAME_STORAGE_VS_DERIVATION",
-        "FILE_FORMAT_VERSION_OWNER"
+        "FILE_FORMAT_VERSION_OWNER",
+        "FILE_ID_FORMAT_AND_REGISTRY_BINDING_STILL_UNRESOLVED"
       ],
       "no_schema_implementation_authority": true,
       "correction": "PREVIOUS_REANALYSIS_INCOMPLETE_MISSING_TOP_LEVEL_FILE_IDENTITY",
       "file_identity_requirement": {
         "authority": "USER_EXPLICIT_REQUIREMENT",
-        "state": "REQUIRED_SEPARATE_TOP_LEVEL_FIELD_OWNER; EXACT_FIELDS_AND_PARENT_NAME_UNAPPROVED",
+        "state": "FOUR_INDEPENDENT_TOP_LEVEL_FIELDS_EXPLICITLY_APPROVED_FOR_EACH_LIST",
         "issue": "Prior RAC_list/AEC_list-only top-level structure omits identity of the list file/document itself",
         "distinguish": [
           "LIST_DOCUMENT_FILE_ID_NOT_CONDITION_ID",
@@ -5651,7 +5734,8 @@
               "ptsip",
               "RAC_list / AEC_list"
             ],
-            "note": "Reuse existing distributed ptsip header pattern but add distinct file identity semantics; not inherit pp3 profile ID"
+            "note": "Reuse existing distributed ptsip header pattern but add distinct file identity semantics; not inherit pp3 profile ID",
+            "state": "SUPERSEDED_BY_USER_FLAT_ROOT_FIELDS_NOT_CHOSEN"
           },
           {
             "id": "H2_COMMON_FILE_IDENTITY",
@@ -5659,7 +5743,8 @@
               "File_Identity",
               "RAC_list / AEC_list"
             ],
-            "note": "Explicit common file-header contract, separate from ptsip package profile metadata"
+            "note": "Explicit common file-header contract, separate from ptsip package profile metadata",
+            "state": "SUPERSEDED_BY_USER_FLAT_ROOT_FIELDS_NOT_CHOSEN"
           },
           {
             "id": "H3_KIND_SPECIFIC_FILE_IDENTITY",
@@ -5667,100 +5752,161 @@
               "RAC_File_Identity / AEC_File_Identity",
               "RAC_list / AEC_list"
             ],
-            "note": "Kind-specific header without shared contract normalization"
+            "note": "Kind-specific header without shared contract normalization",
+            "state": "SUPERSEDED_BY_USER_FLAT_ROOT_FIELDS_NOT_CHOSEN"
           }
         ],
-        "recommended_direction": "H2_COMMON_FILE_IDENTITY",
+        "recommended_direction": "SUPERSEDED_BY_USER_ROOT_FLAT_SELECTION",
         "recommendation_basis": "Separates file identity from existing ptsip profile identity; same machine grammar shared by RAC and AEC without duplicating source logic",
         "candidate_fields": [
           {
             "id": "F-RAC-H001",
-            "path": "File_Identity",
+            "path": null,
             "name": "File_Identity",
-            "status": "UNAPPROVED_PARENT_CANDIDATE",
-            "reason": "Top-level independent file metadata section, rather than only RAC_list"
+            "status": "USER_EXPLICIT_EXCLUDED_FROM_TOP_LEVEL",
+            "reason": "File_Identity parent explicitly excluded; selected file fields sit directly at root"
           },
           {
             "id": "F-RAC-H002",
-            "path": "File_Identity.file_id",
+            "path": "file_id",
             "name": "file_id",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Stable RAC list file/document identity, not RAC condition ID or registry entry ID"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "Stable RAC list file/document identity, not RAC condition ID or registry entry ID; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 2
           },
           {
             "id": "F-RAC-H003",
-            "path": "File_Identity.file_kind",
+            "path": null,
             "name": "file_kind",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Discriminator RAC_LIST; machine parser and expected schema family"
+            "status": "USER_EXPLICIT_EXCLUDED_FROM_TOP_LEVEL",
+            "reason": "file_kind is not among the four selected top-level metadata fields"
           },
           {
             "id": "F-RAC-H004",
-            "path": "File_Identity.file_name",
+            "path": "file_name",
             "name": "file_name",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Human/debug filename, not a stable ID; redundant with actual path if required"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "Human/debug filename, not a stable ID; redundant with actual path if required; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 1
           },
           {
             "id": "F-RAC-H005",
-            "path": "File_Identity.format_version",
+            "path": "format_version",
             "name": "format_version",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Version of this file's serialization contract, not PTSIP product version"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "Version of this file's serialization contract, not PTSIP product version; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 3
           },
           {
             "id": "F-RAC-H006",
-            "path": "File_Identity.file_title",
+            "path": "file_title",
             "name": "file_title",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Optional human title for entire RAC list document, distinct from each RAC_name"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "Optional human title for entire RAC list document, distinct from each RAC_name; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 4
           },
           {
             "id": "F-AEC-H001",
-            "path": "File_Identity",
+            "path": null,
             "name": "File_Identity",
-            "status": "UNAPPROVED_PARENT_CANDIDATE",
-            "reason": "Top-level independent AEC list file identity rather than only AEC_list"
+            "status": "USER_EXPLICIT_EXCLUDED_FROM_TOP_LEVEL",
+            "reason": "File_Identity parent explicitly excluded; selected file fields sit directly at root"
           },
           {
             "id": "F-AEC-H002",
-            "path": "File_Identity.file_id",
+            "path": "file_id",
             "name": "file_id",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Stable AEC list file/document identity, not AEC condition ID"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "Stable AEC list file/document identity, not AEC condition ID; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 2
           },
           {
             "id": "F-AEC-H003",
-            "path": "File_Identity.file_kind",
+            "path": null,
             "name": "file_kind",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Discriminator AEC_LIST; machine parser and family separation"
+            "status": "USER_EXPLICIT_EXCLUDED_FROM_TOP_LEVEL",
+            "reason": "file_kind is not among the four selected top-level metadata fields"
           },
           {
             "id": "F-AEC-H004",
-            "path": "File_Identity.file_name",
+            "path": "file_name",
             "name": "file_name",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Human/debug filename distinct from stable identity"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "Human/debug filename distinct from stable identity; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 1
           },
           {
             "id": "F-AEC-H005",
-            "path": "File_Identity.format_version",
+            "path": "format_version",
             "name": "format_version",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "File serialization contract version, not PTSIP distribution version"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "File serialization contract version, not PTSIP distribution version; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 3
           },
           {
             "id": "F-AEC-H006",
-            "path": "File_Identity.file_title",
+            "path": "file_title",
             "name": "file_title",
-            "status": "UNAPPROVED_FIELD_CANDIDATE",
-            "reason": "Optional human title for AEC list file, distinct from AEC_name"
+            "status": "USER_EXPLICIT_APPROVED_TOP_LEVEL",
+            "reason": "Optional human title for AEC list file, distinct from AEC_name; user selected as independent top-level field, no File_Identity parent",
+            "decision_group": "FILE_LEVEL_METADATA",
+            "top_level_order": 4
           }
         ],
         "registry_lookup_boundary": "Existing source-level registry entries id,kind,resource,revision are lookup-only. Whether file_id is equal to registry.entries[].id or resolved by another key is an independent choice, not assumed.",
         "no_policy_document_reverse_links": true,
-        "implementation_authorized": false
+        "implementation_authorized": false,
+        "selected_top_level_metadata": {
+          "RAC": {
+            "field_names": [
+              "file_name",
+              "file_id",
+              "format_version",
+              "file_title"
+            ],
+            "field_ids": [
+              "F-RAC-H004",
+              "F-RAC-H002",
+              "F-RAC-H005",
+              "F-RAC-H006"
+            ]
+          },
+          "AEC": {
+            "field_names": [
+              "file_name",
+              "file_id",
+              "format_version",
+              "file_title"
+            ],
+            "field_ids": [
+              "F-AEC-H004",
+              "F-AEC-H002",
+              "F-AEC-H005",
+              "F-AEC-H006"
+            ]
+          }
+        },
+        "exclude_parent": "File_Identity",
+        "exclude_file_kind": "file_kind",
+        "list_body_ownership": "RAC_list or AEC_list remains a separate top-level list body only; its field names and internal shape are not newly approved by this selection",
+        "naming_and_content_boundaries": {
+          "file_name": "Physical file name field, not stable identifier",
+          "file_id": "Stable document/file identifier, not condition ID",
+          "format_version": "File schema/format version, not PTSIP distribution version",
+          "file_title": "Readable title of entire RAC/AEC list file, distinct from each condition name",
+          "file_id_pattern": "UNRESOLVED",
+          "filename_integrity_rules": "UNRESOLVED",
+          "format_version_values": "UNRESOLVED",
+          "field_requiredness": "UNRESOLVED"
+        },
+        "selected_direction": "ROOT_FLAT_FILE_METADATA"
       }
     }
   }
