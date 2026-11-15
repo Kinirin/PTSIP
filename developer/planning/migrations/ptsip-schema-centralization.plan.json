@@ -128,7 +128,7 @@
     },
     {
       "id": "FIELDS-01",
-      "scope": "Policy v4 full shape including evaluation, content, rule-kind semantics",
+      "scope": "Full v4 field names/types/requiredness and independent sub-contract ownership (beyond three declared fields)",
       "state": "UNRESOLVED_BLOCK_GENERATION"
     },
     {
@@ -222,9 +222,9 @@
     },
     {
       "id": "GO-COMPAT-01",
-      "scope": "Old literal installed Python import/resource paths vs behavioral compatibility",
-      "state": "UNRESOLVED_USER_SCOPE_CHOICE",
-      "note": "Cannot guarantee both literal old path and complete source directory deletion."
+      "scope": "Untouched Python imports after full profiles source retirement",
+      "state": "KNOWN_LEGACY_FAILURES_DOCUMENTED_NO_V4_GATE",
+      "note": "Python profile_projection.py failures accepted, Python cli.py edits forbidden; no compatibility guarantee for old imports."
     },
     {
       "id": "GO-CHILD-PATH-01",
@@ -267,6 +267,54 @@
         "src/tests/ptsip/rbac_conformance.json"
       ],
       "state": "EXACT_TEST_FILENAMES_PROPOSED_AWAIT_USER_APPROVAL"
+    },
+    {
+      "id": "V4-EXACT-FILES-01",
+      "scope": [
+        "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+        "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+        "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+        "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
+      ],
+      "state": "APPROVED_BY_USER"
+    },
+    {
+      "id": "V4-NO-V3-COMPAT-01",
+      "scope": "v4 no v3 field inheritance or backwards compatibility",
+      "state": "APPROVED_BY_USER"
+    },
+    {
+      "id": "RA-SEPARATE-MULTI-REL-01",
+      "scope": "independent RA multi relationships",
+      "state": "APPROVED_DIRECTION_LEAF_PATH_UNRESOLVED"
+    },
+    {
+      "id": "RBAC-SEPARATE-STATUS-01",
+      "scope": "config schema lookup only; independent registration contract",
+      "state": "APPROVED_DIRECTION_LEAF_PATH_UNRESOLVED"
+    },
+    {
+      "id": "RBAC-OLD-MANIFEST-01",
+      "scope": "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json",
+      "state": "PRESERVE_UNCHANGED_NOT_REUSED"
+    },
+    {
+      "id": "PROFILE-GO-CLARIFICATION-01",
+      "scope": "src/ptsip/profile_contract/clarification/**",
+      "state": "GO_MODULE_DIRECTORY_APPROVED_CHILD_FILES_PENDING"
+    },
+    {
+      "id": "PYTHON-SOURCE-EXCLUSIONS-01",
+      "scope": [
+        "src/ptsip/cli.py",
+        "src/ptsip/clarification/resolution/profile_projection.py"
+      ],
+      "state": "DO_NOT_MODIFY_APPROVED"
+    },
+    {
+      "id": "GO-CLI-MAIN-CHANGE-01",
+      "scope": "src/ptsip/CLI.go",
+      "state": "APPROVED_MODIFICATION_TARGET_OPERATION_DETAILS_PENDING"
     }
   ],
   "target_registry": {
@@ -1283,26 +1331,26 @@
       "id": "WU-03",
       "name": "Policy v4 schema composition",
       "inputs": [
-        "src/ptsip/schemas/policy/public-structure-policy-java.schema.json",
-        "src/ptsip/schemas/policy/public-structure-policy-markdown.schema.json",
         "src/ptsip/schemas/policy/public-structure-policy.schema.json",
         "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
         "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
         "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
       ],
       "outputs": [
-        "policy YAML, Java, Markdown contract dispositions",
-        "identity/lifecycle/rule schemas"
+        "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+        "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+        "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+        "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
       ],
       "actions": [
-        "read src/ptsip validation policy schemas as a set",
-        "cover identity/lifecycle/rules without collapsing their distinct responsibilities",
-        "remove only the three approved v4 top-level fields",
-        "replace rule contract binding with id_RA per approved RA resolution",
-        "keep unapproved evaluation/content/other fields unresolved",
-        "no automatic Java/Markdown semantic schema where no source exists"
+        "Author NEW ptsip.policy.v4 without inheriting v3 unified or older validation field semantics",
+        "Top-level public-structure-policy.schema.json contains only machine refs to separately owned top-level field contracts",
+        "Place Identity Lifecycle Rules in their exact nested directories and filenames",
+        "Remove the three previously decided v4 top-level fields only; additional field names and validation shapes unresolved",
+        "Rule.id_RA links to RA registry and independent multi-relation contract",
+        "Do not create Java or Markdown policy schema candidates in this v4 scope"
       ],
-      "gate": "all Policy v4 fields approved; $ref closure PASS; RA id references validated",
+      "gate": "All v4 field responsibilities approved, exact refs resolve, no v3 inheritance or inline merged field schema",
       "priority": "ACTIVE_FOCUS_POLICY_V4"
     },
     {
@@ -1348,10 +1396,11 @@
         "Three-version field/diff matrix, pp1.00 missing-source block, template example retirement ledger"
       ],
       "actions": [
+        "Create separate RBAC registration contract; do not change or reuse src/ptsip/compile_sealed_rbac/pp.3.00.contract.json",
+        "Make new RA/RAC/AEC contracts independently; RA-name and four RAC/AEC id/name fields exact; multiple relationships held by an independent machine registry",
         "distinguish user/mode/project profiles",
         "preserve historical profile versions as separately selectable contract definitions",
         "repair invalid User_Profile before admission",
-        "RA-name + 4 RAC/AEC link fields; referential integrity verify",
         "no generation of missing Mode Profile from other profile by name",
         "Preserve current project-profile.schema.json as current contract only after explicit pp2.00 same-$id divergent-source resolution",
         "Hand off exact three-version Project Profile schema generation and per-version fixture validation to WU-10; WU-05 owns shared storage/RBAC responsibility review",
@@ -1431,11 +1480,11 @@
         "update only code paths approved by user",
         "verify built wheel includes all canonical schema resources",
         "Replace registered profile schema lookup hard-coded in profiles/contracts.py without retaining retired module as a production dependency",
-        "Refactor known callsites in CLI, clarification, migration, and specification domains, plus any discovered indirect callsites",
         "Prepare Go module location decision using choices A/B/C and resolve approval before writing Go sources",
         "Implement six Go operations with strict schema registry selection and fail-closed responses; do not reproduce field contracts in code",
-        "Replace exact five known src/ptsip Python consumers and inspect dynamic imports/tests/wheel before old file removal",
-        "Remove setup.py public profile asset projection and old history directory requirements; update MANIFEST.in and pyproject.toml to package Go binary and canonical schema resources"
+        "Remove setup.py public profile asset projection and old history directory requirements; update MANIFEST.in and pyproject.toml to package Go binary and canonical schema resources",
+        "EXCLUDE src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py from edits; existing projection errors tolerated",
+        "Go Catalog/Metadata responsibility must be implemented in src/ptsip/profile_contract/clarification/**, and public CLI integration targets existing src/ptsip/CLI.go"
       ],
       "gate": "all approved consumers resolve canonical schemas; wheel package resources verified; all six modules unused; replacement code paths approved; six retired module responsibilities have registered Go interface coverage and approved implementation locations"
     },
@@ -1617,12 +1666,12 @@
         "Deferred until Policy v4 + storage/rbac contract decisions and tests; do not create cmd/, internal/**, testdata/.",
         "Implement six typed operations with registry version selection and SHA validation for pp1.01 pp1.02 pp2.00; missing/unknown profile IDs fail",
         "Convert original YAML instance fixtures into JSON golden tests preserving strings and source Git blob SHA; do not mistake fixtures for JSON Schema",
-        "Wire approved Python consumers via typed Go bridge outside src/ptsip/profiles/; no hidden local Python fallback",
         "Replace old packaging and project-profile registry path dependencies on src/ptsip/profiles/",
-        "Test Go operations, Python CLI, clarification, migration and specification integration; ship independent Go binary with wheel",
-        "Run wheel source/dist admission and legacy-path usage checks before enabling source directory removal"
+        "Run wheel source/dist admission and legacy-path usage checks before enabling source directory removal",
+        "Create Go-only Catalog and Metadata calls under approved src/ptsip/profile_contract/clarification/** once child files are reviewed",
+        "Modify src/ptsip/CLI.go for future registered Go operations, never src/ptsip/cli.py; never change profile_projection.py even if it fails"
       ],
-      "gate": "Go unit tests, Python-Go integration tests, CLI/migration regression and wheel smoke pass; zero usage of retired modules",
+      "gate": "Go-only profile contract+existing CLI.go tests pass; excluded Python modules and unmodified projection are not v4 schema acceptance gates",
       "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     },
     {
@@ -1763,7 +1812,6 @@
       "pp.1.00 schema is not generated without verified original input",
       "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles",
       "Six retired Python module responsibilities are available as typed Go operations with no implicit permission grant",
-      "Existing CLI migration clarification specification Python import sites no longer import six retired modules",
       "Go implementation code paths and bridge protocol are user approved before source generation",
       "Dedicated Go source code resides under approved src/ptsip/profile_contract/ root, not common_contract/profile/",
       "All 22 tracked files in src/ptsip/profiles/ recursively removed after their per-file responsibility transition is verified",
@@ -1774,7 +1822,13 @@
       "All new profile, policy v4 and RBAC conformance tests and fixtures are placed under src/tests/ptsip/; no new testdata/ directory created",
       "No new profile_contract/internal/** tree created without user approval",
       "Central RBAC migration preserves pp3 unregistered/structure-only status and distinguishes schema, registry, cross-ref and authorization",
-      "RA source 1..N condition references and new RA 5-field record cardinality conflict resolved before code generation"
+      "RA source 1..N condition references and new RA 5-field record cardinality conflict resolved before code generation",
+      "New v4 schema root has only references to independently authored top-level field contracts; no v3 schema dependency",
+      "Policy v4 uses exactly four approved nested paths and never creates public-structure-policy-yaml.schema.json",
+      "RA multiple relations are defined in a separate contract; RBAC status registration is separate from config.json",
+      "pp.3.00.contract.json remains byte-identical and is not used as new RBAC registration",
+      "src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py remain byte-identical during v4/RBAC work",
+      "Go clarification Catalog/Metadata responsibility is in src/ptsip/profile_contract/clarification/**, no new cmd/ or internal/**"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1792,7 +1846,13 @@
       "wheel_missing_profile_contract_go_binary",
       "schema_fixture_wrong_extension",
       "missing_historical_fixture",
-      "legacy_profile_root_path_in_build"
+      "legacy_profile_root_path_in_build",
+      "v3_policy_schema_ref_in_v4",
+      "inline_merged_v4_fields",
+      "rbac_execution_status_in_config",
+      "pp3_manifest_mutation",
+      "python_projection_mutation",
+      "python_cli_mutation"
     ],
     "powershell_commands_in_order": [
       "$log = '.\\schema-centralization-validation.log'",
@@ -2258,7 +2318,7 @@
       "schema_contracts": "src/ptsip/schemas/ holds versioned or current JSON Schema and config.json only",
       "go_implementation": "src/ptsip/profile_contract/ is the independent Go module root; not a package under src/ptsip/common_contract/ or src/ptsip/engines/",
       "transport": "Dedicated Go profile-contract executable with typed JSON protocol; exact adapter and executable filenames require approval, no silent use of common_contract as authority",
-      "consumer": "Existing Python CLI/clarification/migration/specification callers must use the approved typed Go transport outside retired src/ptsip/profiles/; do not keep compatibility shim in the removed directory",
+      "consumer": "Only approved Go CLI integration through src/ptsip/CLI.go; Python cli.py and profile_projection.py are excluded, regardless of existing import errors",
       "registry": "Canonical src/ptsip/schemas/config.json selects exact schema version, path, and immutable source SHA; profile sample catalog semantics must not be silently conflated with schema registry",
       "authority": "JSON Schema validation cannot grant execution, source authority or policy approval"
     },
@@ -2602,7 +2662,8 @@
       {
         "path": "src/ptsip/cli.py",
         "replaced_import": "profiles.catalog.canonical_new_profile_path",
-        "replacement": "Typed profile.catalog.resolve over approved Go transport; no arbitrary path construction"
+        "replacement": "EXCLUDE_DO_NOT_CHANGE_USE_EXISTING_SRC_PTSIP_CLI_GO",
+        "state": "EXCLUDED"
       },
       {
         "path": "src/ptsip/clarification/resolution/profile_projection.py",
@@ -2610,7 +2671,8 @@
           "profiles.catalog",
           "profiles.metadata"
         ],
-        "replacement": "Profile catalog selection and canonical metadata from Go response; retain profile projection/serialization semantics in existing owner"
+        "replacement": "EXCLUDE_DO_NOT_CHANGE_GO_CLARIFICATION_MODULE_RESPONSIBLE",
+        "state": "EXCLUDED_KNOWN_ERRORS_TOLERATED"
       },
       {
         "path": "src/ptsip/migration/analysis/target/semantics.py",
@@ -2789,7 +2851,7 @@
       "Migrate 2 src/ptsip/profiles/profiles_schemas source schemas and 12 source YAML instance examples into schema definitions and JSON fixtures respectively",
       "Keep source example YAML evidence by immutable blob SHA and check fixture parity per pp1.01 pp1.02 pp2.00; no schema generated solely by file rename",
       "Implement six Go responsibility operations under selected independent Go module; do not extend src/ptsip/common_contract/profile/",
-      "Update Python entrypoints to typed Go bridge outside retired profile tree; ensure no dependency on removed Python package",
+      "Update approved Go CLI.go entrypoint after schema implementation; no edits to cli.py or profile_projection.py",
       "Revise schema registry, packaging, setup.py, MANIFEST.in, pyproject.toml and release admission tests to stop scanning deleted source root",
       "Validate old and new semantic outputs for version selection, rule references, local catalogs, project initialization and migration",
       "Delete all 22 files under src/ptsip/profiles/ only after full zero-consumer and built-wheel verification",
@@ -2848,7 +2910,25 @@
       "All 22 profile files, including 12 YAML examples, must be accounted for with evidence before deletion",
       "src/ptsip/clarification/resolution/profile_projection.py currently imports ...validation.profile, but src/ptsip/validation/profile.py does not exist at inspected main HEAD; verify consumer import resolution before Go parity assertions"
     ],
-    "selected_go_module_root": "src/ptsip/profile_contract/"
+    "selected_go_module_root": "src/ptsip/profile_contract/",
+    "go_clarification": {
+      "root": "src/ptsip/profile_contract/clarification/",
+      "language": "Go",
+      "responsibilities": [
+        "Catalog selection/lookup",
+        "Metadata projection/materialization"
+      ],
+      "leaf_filenames": "NOT_YET_SELECTED",
+      "new_cmd_allowed": false,
+      "new_internal_allowed": false,
+      "tests_root": "src/tests/ptsip/",
+      "existing_go_main": "src/ptsip/CLI.go",
+      "excluded_python_paths": [
+        "src/ptsip/cli.py",
+        "src/ptsip/clarification/resolution/profile_projection.py"
+      ],
+      "priority": "AFTER_POLICY_V4_RBAC"
+    }
   },
   "profile_directory_retirement": {
     "status": "APPROVED_FINAL_DISPOSITION_CONDITIONAL_IMPLEMENTATION",
@@ -3157,6 +3237,12 @@
       "problem": "Existing Python import references absent module at baseline HEAD, so it must be diagnosed as preexisting source condition; not listed as a real file to modify",
       "disposition": "DISCOVER_REAL_PROVIDER_OR_REPLACE_BROKEN_IMPORT_WITH_APPROVED_CONTRACT_ONLY_AFTER_REVIEW",
       "gate": "No misleading claim of baseline full CLI/import parity before this check passes"
+    },
+    "legacy_exceptions": {
+      "src/ptsip/cli.py": "DO_NOT_MODIFY_PYTHON_CALLS_MAY_BREAK_AFTER_REMOVAL_NO_COMPATIBILITY_CLAIM",
+      "src/ptsip/clarification/resolution/profile_projection.py": "DO_NOT_MODIFY_ERRORS_EXPLICITLY_TOLERATED",
+      "scope": "Legacy Python callers intentionally left untouched and excluded from v4/RBAC test gate",
+      "note": "Complete removal of src/ptsip/profiles can leave these imports broken; do not count their remaining references as zero, do not falsely claim full Python compatibility"
     }
   },
   "policy_v4_rbac_focus": {
@@ -3352,15 +3438,15 @@
       },
       "tests": {
         "root": "src/tests/ptsip/",
-        "path_status": "PROPOSED_FILE_NAMES_AWAIT_APPROVAL",
+        "filename_state": "PROPOSED_NEEDS_USER_REVIEW",
         "files": [
           "src/tests/ptsip/test_policy_v4_schema.py",
           "src/tests/ptsip/test_policy_ra_registry_resolution.py",
-          "src/tests/ptsip/test_rbac_cross_reference.py",
-          "src/tests/ptsip/rbac_conformance.json"
+          "src/tests/ptsip/test_rbac_cross_reference.py"
         ],
-        "existing_conformance_source": "src/ptsip/compile_sealed_rbac/testdata/conformance.json",
-        "migration": "Copy then validate all 27 source cases, migrate source file out before retiring old compile_sealed_rbac directory; do not create new testdata/ directory."
+        "legacy_fixture": "src/ptsip/compile_sealed_rbac/testdata/conformance.json",
+        "legacy_fixture_action": "PRESERVE_AS_PP300_HISTORICAL_TEST_ONLY_NOT_V4_CONFORMANCE",
+        "new_testdata_subdirectory": "FORBIDDEN"
       }
     },
     "policy_decision_gates": [
@@ -3414,10 +3500,9 @@
       {
         "id": "PVR-01",
         "dependency": [],
-        "action": "Review Policy v4 field contracts and three removed fields; decide semantic ownership before altering source",
+        "action": "Decide independent v4 field contract details and any additional top-level field contracts; never use v3 or old validation schema definitions as field basis",
         "outputs": [
-          "approved policy v4 field registry",
-          "exact typed rule/RA reference responsibility"
+          "approved full v4 field contract matrix"
         ]
       },
       {
@@ -3425,7 +3510,7 @@
         "dependency": [
           "PVR-01"
         ],
-        "action": "Repair central config registry syntax and register ptsip.policy.v4 and 3 RBAC target paths with version and immutable source basis",
+        "action": "Repair central config.json syntax and bind exact Policy v4 and RBAC schema paths/IDs ONLY; do not store RBAC activation states",
         "outputs": [
           "src/ptsip/schemas/config.json"
         ]
@@ -3436,7 +3521,7 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Generate Policy v4 YAML, Policy Identity, Policy Lifecycle, Policy Rule in four preselected files; enforce RA-ID lookup reference without granting authority",
+        "action": "Create reference-only public-structure-policy.schema.json and three nested independent Identity/Lifecycle/Rules schema files at user-selected paths; Rule uses id_RA; do not require v3 compatibility",
         "outputs": [
           "src/ptsip/schemas/policy/public-structure-policy.schema.json",
           "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
@@ -3447,9 +3532,10 @@
       {
         "id": "PVR-04",
         "dependency": [
+          "PVR-01",
           "PVR-02"
         ],
-        "action": "Migrate 3 actual src/ptsip/compile_sealed_rbac JSON Schema source contracts into storage/rbac three exact filenames; preserve source $id alias/version compat decisions",
+        "action": "Author new RA/RAC/AEC schemas from approved field contracts, independently of old pp.3.00 manifest and tuple validation behavior; keep pp.3.00.contract.json byte-identical",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
@@ -3459,53 +3545,66 @@
       {
         "id": "PVR-05",
         "dependency": [
-          "PVR-03",
           "PVR-04"
         ],
-        "action": "Specify and verify RA_id/RAC_id/AEC_id exact join between Policy Rule and 3 registries; choose cardinality and pp3 index disposition before implementation",
+        "action": "Create an independent RA multi-relationship contract and a new separate RBAC registration/activation-status contract after exact filename, fields and source versions are approved",
         "outputs": [
-          "cross-registry join contract",
-          "negative tests for unregistered IDs, mismatched registered names and duplicate records"
+          "src/ptsip/schemas/storage/rbac/ra-relations.schema.json",
+          "src/ptsip/schemas/storage/rbac/rbac-registration.schema.json"
+        ],
+        "blocked_on": [
+          "RA-RELATION-FIELDS",
+          "RBAC-REGISTRATION-FIELDS"
         ]
       },
       {
         "id": "PVR-06",
         "dependency": [
-          "PVR-04",
+          "PVR-03",
           "PVR-05"
         ],
-        "action": "Update src/ptsip/engines/discovery/src/tpbg/mod.rs and Rust/Go conformance test schema resource lookups without changing historical conformance unexpectedly",
+        "action": "Implement deterministic Rule.id_RA -> RA -> relation -> RAC/AEC ID/name lookup and separate activation-status lookup; missing, conflicting or unregistered refs fail closed",
         "outputs": [
-          "consumer change ledger",
-          "old/new structural compatibility evidence"
+          "cross-registry resolver spec",
+          "negative test matrix"
         ]
       },
       {
         "id": "PVR-07",
         "dependency": [
-          "PVR-05",
+          "PVR-03",
+          "PVR-04",
           "PVR-06"
         ],
-        "action": "After user approves exact filenames, place all new Policy v4, Policy→RA join, RBAC cross-ref tests and the 27-case legacy structural fixture directly under src/tests/ptsip/ (no testdata/). Validate both old pp3 semantics and approved new RA representation separately.",
+        "action": "Create new v4 tests/fixtures directly under src/tests/ptsip/, without new testdata/ and without porting old 27 pp.3.00 cases as v4 pass criteria",
         "outputs": [
           "src/tests/ptsip/test_policy_v4_schema.py",
           "src/tests/ptsip/test_policy_ra_registry_resolution.py",
-          "src/tests/ptsip/test_rbac_cross_reference.py",
-          "src/tests/ptsip/rbac_conformance.json"
+          "src/tests/ptsip/test_rbac_cross_reference.py"
         ]
       },
       {
         "id": "PVR-08",
         "dependency": [
-          "PVR-02",
-          "PVR-03",
-          "PVR-04",
           "PVR-07"
         ],
-        "action": "Verify references and package data then remove old 3 schema files and old registration file only when full consumer closure and approved preservation established; removal of source fixture dir is separate",
+        "action": "Audit consumers of old validation policy and pp3 RBAC schema separately; opt-in new v4 call sites only, do not mutate old v3 or pp3 manifest and do not silently claim backward compatibility",
         "outputs": [
-          "per-source deletion evidence",
-          "verified closed schema resource set"
+          "consumer routing inventory",
+          "new v4 refs zero legacy dependencies"
+        ]
+      },
+      {
+        "id": "PVR-09",
+        "dependency": [
+          "PVR-08"
+        ],
+        "action": "Integrate future approved v4/RBAC operation only through existing src/ptsip/CLI.go; no new cmd and no changes to src/ptsip/cli.py or profile_projection.py",
+        "outputs": [
+          "registered Go CLI operation mapping"
+        ],
+        "blocked_on": [
+          "GO-CLI-OPERATION"
         ]
       }
     ],
@@ -3514,6 +3613,17 @@
       "unreviewed_semantic_changes": "Do not infer that RA-key equals RA-name or that old [ID,name][] arrays equal scalar RAC_id/RAC_name fields.",
       "old_consumer_path_rewrites": "Go and Rust hardcoded src/ptsip/compile_sealed_rbac paths must be updated; do not delete schema sources until all refs and tests pass.",
       "missing_go_mod_at_src_ptsip_root": "src/ptsip/go.mod is absent; CLI.go package main exists but independent profile_contract module compilation linkage method has not been decided."
+    },
+    "code_mutation_boundaries": {
+      "src/ptsip/clarification/resolution/profile_projection.py": "DO_NOT_MODIFY_EXISTING_ERRORS_TOLERATED",
+      "src/ptsip/cli.py": "DO_NOT_MODIFY_DO_NOT_REPLACE_PYTHON_PROFILE_CALLS",
+      "src/ptsip/CLI.go": "ONLY_SELECTED_GO_CLI_ENTRYPOINT_FOR_FUTURE_INTEGRATION",
+      "src/ptsip/profile_contract/clarification/**": "GO_CATALOG_AND_METADATA_MODULE_APPROVED_DIRECTORY_LEAF_FILES_UNDECIDED",
+      "src/ptsip/profile_contract/internal/**": "DEFERRED",
+      "src/ptsip/profile_contract/cmd/**": "FORBIDDEN",
+      "src/tests/ptsip/**": "APPROVED_TEST_ROOT",
+      ".ptsip/contracts/policy/unified/Unified_Policy.schema.json": "V3_UNTOUCHED_NOT_V4_SOURCE",
+      "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json": "UNCHANGED_UNREUSED"
     }
   }
 }
