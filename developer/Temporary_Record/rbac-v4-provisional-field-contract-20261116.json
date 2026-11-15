@@ -1,0 +1,217 @@
+{
+  "format": "ptsip-rbac-v4-provisional-field-review/v1",
+  "record_type": "TEMPORARY_NON_NORMATIVE_FIELD_CONTRACT",
+  "created_on": "2026-11-16",
+  "owner_repository": "Kinirin/PTSIP",
+  "branch": "main",
+  "authority": "REVIEW_ONLY_NO_NORMATIVE_EFFECT",
+  "authority_record": ".ptsip/contracts/policy/unified/authoring-decision.json",
+  "rac": {
+    "status": "APPROVED_PROVISIONAL_STRUCTURE_ONLY",
+    "entry_id_pattern": "^ID-RAC-[a-zA-F0-9]{16}$",
+    "fields": [
+      {
+        "id": "F-RAC-H004",
+        "name": "file_name",
+        "path": "$.file_name",
+        "role": "PHYSICAL_FILE_NAME",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-RAC-H002",
+        "name": "file_id",
+        "path": "$.file_id",
+        "role": "STABLE_FILE_ID",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-RAC-H005",
+        "name": "format_version",
+        "path": "$.format_version",
+        "role": "CONTRACT_FORMAT_VERSION",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-RAC-H006",
+        "name": "file_title",
+        "path": "$.file_title",
+        "role": "HUMAN_TITLE",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-RAC-T001",
+        "name": "RAC_list",
+        "path": "$.RAC_list",
+        "role": "RECORD_COLLECTION",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      },
+      {
+        "id": "F-RAC-T002",
+        "name": "RAC_id",
+        "path": "$.RAC_list[*].RAC_id",
+        "role": "CONDITION_ID",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      },
+      {
+        "id": "F-RAC-T003",
+        "name": "RAC_name",
+        "path": "$.RAC_list[*].RAC_name",
+        "role": "HUMAN_NAME_NOT_EVALUATION",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      },
+      {
+        "id": "F-RAC-T004",
+        "name": "RAC_description",
+        "path": "$.RAC_list[*].RAC_description",
+        "role": "OPTIONAL_SHORT_HUMAN_DESCRIPTION_NOT_EVALUATION",
+        "state": "PROVISIONAL",
+        "requiredness": "OPTIONAL_CANDIDATE"
+      },
+      {
+        "id": "F-RAC-T005",
+        "name": "value",
+        "path": "$.RAC_list[*].value",
+        "role": "INLINE_CONDITION_PENDING_MEANING",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      }
+    ],
+    "specimen": {
+      "file_name": "RAC-list.ptsip.yaml",
+      "file_id": "profiles-0123456789abcdef0123456789abcdef",
+      "format_version": "v4",
+      "file_title": "RAC Conditions",
+      "RAC_list": [
+        {
+          "RAC_id": "ID-RAC-0123456789abcdef",
+          "RAC_name": "RESPONSIBILITY_ELIGIBILITY",
+          "RAC_description": "책임 할당 자격 확인",
+          "value": {}
+        }
+      ]
+    }
+  },
+  "aec": {
+    "status": "PROPOSED_PROVISIONAL_FIELDS_NOT_USER_APPROVED",
+    "entry_id_pattern": "^ID-AEC-[a-zA-F0-9]{16}$",
+    "fields": [
+      {
+        "id": "F-AEC-H004",
+        "name": "file_name",
+        "path": "$.file_name",
+        "role": "PHYSICAL_FILE_NAME",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-AEC-H002",
+        "name": "file_id",
+        "path": "$.file_id",
+        "role": "STABLE_FILE_ID",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-AEC-H005",
+        "name": "format_version",
+        "path": "$.format_version",
+        "role": "CONTRACT_FORMAT_VERSION",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-AEC-H006",
+        "name": "file_title",
+        "path": "$.file_title",
+        "role": "HUMAN_TITLE",
+        "state": "APPROVED_ROOT_METADATA"
+      },
+      {
+        "id": "F-AEC-T001",
+        "name": "AEC_list",
+        "path": "$.AEC_list",
+        "role": "RECORD_COLLECTION",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      },
+      {
+        "id": "F-AEC-T002",
+        "name": "AEC_id",
+        "path": "$.AEC_list[*].AEC_id",
+        "role": "CONDITION_ID",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      },
+      {
+        "id": "F-AEC-T003",
+        "name": "AEC_name",
+        "path": "$.AEC_list[*].AEC_name",
+        "role": "HUMAN_NAME_NOT_EVALUATION",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      },
+      {
+        "id": "F-AEC-T004",
+        "name": "AEC_description",
+        "path": "$.AEC_list[*].AEC_description",
+        "role": "OPTIONAL_SHORT_HUMAN_DESCRIPTION_NOT_EVALUATION",
+        "state": "PROVISIONAL",
+        "requiredness": "OPTIONAL_CANDIDATE"
+      },
+      {
+        "id": "F-AEC-T005",
+        "name": "value",
+        "path": "$.AEC_list[*].value",
+        "role": "INLINE_CONDITION_PENDING_MEANING",
+        "state": "PROVISIONAL",
+        "requiredness": "UNRESOLVED"
+      }
+    ],
+    "specimen": {
+      "file_name": "AEC-list.ptsip.yaml",
+      "file_id": "profiles-fedcba9876543210fedcba9876543210",
+      "format_version": "v4",
+      "file_title": "AEC Conditions",
+      "AEC_list": [
+        {
+          "AEC_id": "ID-AEC-0123456789abcdef",
+          "AEC_name": "AUTHORITY_EXERCISE_CONDITION",
+          "AEC_description": "권한 행사 조건 확인",
+          "value": {}
+        }
+      ]
+    }
+  },
+  "boundaries": {
+    "policy_document_owns": [
+      "APPLICABILITY_SCOPE",
+      "ACTION_SELECTION",
+      "TARGET_SELECTION"
+    ],
+    "ra_owns": [
+      "RAC_AEC_RELATIONSHIPS"
+    ],
+    "rac_owns": "ASSIGNMENT_CONDITIONS",
+    "aec_owns": "EXERCISE_CONDITIONS",
+    "do_not_force_identical_rac_aec_fields": true,
+    "root_file_id_pattern": "^profiles-[0-9a-f]{32}$",
+    "file_id_max_length": 41,
+    "forbid_external_value_reference_delegation": true,
+    "forbid_record_action_target_scope_fields": true,
+    "no_reverse_policy_link": true,
+    "existing_rights_evidence_ownership": "DEFERRED",
+    "value_internal_structure": "UNRESOLVED",
+    "value_empty_object": "PLACEHOLDER_ONLY_NOT_EVALUABLE",
+    "natural_language_record_fields": [
+      "*_name",
+      "*_description"
+    ],
+    "status_of_previous_rejected_fields": "STILL_REJECTED",
+    "status_of_SFP_ARCH_0004": "UNCHANGED_EFFECTIVE_POLICY",
+    "condition_authority_override": false,
+    "evaluation_authorized": false,
+    "execution_authorized": false,
+    "implementation_authorized": false,
+    "final_schema_approval": false
+  }
+}
