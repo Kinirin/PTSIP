@@ -30,7 +30,10 @@
       "temporary_record_runtime_dependency": "FORBIDDEN",
       "condition_source": "REGO_SOURCE",
       "legacy_ra_schema_inheritance": "FORBIDDEN",
-      "runtime_activation_authorized": false
+      "runtime_activation_authorized": false,
+      "condition_source_scope": "PRE_V4_EXISTING_CONTRACT_DIRECTION",
+      "v4_condition_source": "INLINE_SELF_CONTAINED_VALUE_EXPRESSION_UNRESOLVED",
+      "v4_runtime_condition_evaluation_authorized": false
     },
     "governance": {
       "statement": "KEEP_LATEST authorizes immediate staged structural migration of all policy documents in both planes and all fourteen Families. Preserve policy identity, original lifecycle and meaning; retain unresolved decisions explicitly and verify each document before and after conversion.",
@@ -60,7 +63,7 @@
     "rbac_list_record_ownership": {
       "source": "PROJECT_OWNER_EXPLICIT",
       "date": "2026-11-16",
-      "state": "APPROVED_SEMANTIC_BOUNDARIES_ONLY",
+      "state": "APPROVED_V4_PROVISIONAL_RECORD_STRUCTURE_ONLY",
       "scope": [
         "RAC-list.ptsip.yaml",
         "AEC-list.ptsip.yaml"
@@ -201,17 +204,24 @@
         "no_policy_scope_action_target_delegation": true,
         "policy_authority_document_sync": {
           "target": "src/policy/ARCH/SFP-ARCH-0004.yaml",
-          "status": "PENDING_CONFLICT_RESOLUTION",
-          "active_source_clause": "/authority_semantics/rac_aec_rego_original_contract_direction",
-          "incoming_v4_clause": "INLINE_SELF_CONTAINED_VALUE_NO_EXTERNAL_REF",
-          "conflicting_active_clause": "value.source_ref+value.revision_ref+value.entrypoint",
-          "base_revision": "cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
-          "options": [
-            "KEEP_PRIOR",
-            "KEEP_LATEST",
-            "RECONCILE"
+          "status": "APPLIED_KEEP_LATEST",
+          "resolution": "KEEP_LATEST",
+          "authority": "PROJECT_OWNER_EXPLICIT",
+          "approved_on": "2026-11-16",
+          "policy_section": "Policy_Content.items[id=SRC-0008].value",
+          "prior_policy_revision": "cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
+          "superseded_v4_reference_fields": [
+            "value.source_ref",
+            "value.revision_ref",
+            "value.entrypoint"
           ],
-          "no_silent_policy_override": true
+          "new_v4_condition_definition": "INLINE_SELF_CONTAINED_VALUE_NO_EXTERNAL_REF_DELEGATION",
+          "policy_commit": "7e5cd3d3c74f693681c56c7ec7279e358539ee2b",
+          "unaffected_rules": "PRESERVED",
+          "legacy_pp300": "UNCHANGED",
+          "evaluation_authorized": false,
+          "runtime_activation_authorized": false,
+          "implementation_authorized": false
         },
         "evaluation_authorized": false,
         "runtime_activation_authorized": false,
