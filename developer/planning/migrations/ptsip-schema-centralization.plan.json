@@ -90,7 +90,25 @@
       "PTSIP_POLICY_V4_CONTRACTS",
       "RBAC_SCHEMA_TRANSFER_AND_CROSS_REGISTRY_BINDING"
     ],
-    "profile_go_implementation_priority": "DEFERRED"
+    "profile_go_implementation_priority": "DEFERRED",
+    "policy_v4_contract_files": [
+      "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+      "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+      "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+      "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
+    ],
+    "policy_v4_composition": "ROOT_REFERENCES_INDEPENDENT_TOP_LEVEL_CONTRACTS",
+    "policy_v4_root_inline_semantics": "FORBIDDEN",
+    "policy_v4_legacy_compatibility": "NONE",
+    "policy_v4_v3_field_inheritance": "FORBIDDEN",
+    "ra_multi_relation": "SEPARATE_CONTRACT_APPROVED",
+    "rbac_config_responsibility": "SCHEMA_LOCATION_AND_ID_ONLY",
+    "rbac_status_registration": "SEPARATE_NEW_CONTRACT",
+    "rbac_pp300_contract": "PRESERVE_UNCHANGED_NO_REUSE",
+    "profile_go_clarification": "src/ptsip/profile_contract/clarification/**",
+    "python_cli_modification": "FORBIDDEN",
+    "python_projection_modification": "FORBIDDEN_ERRORS_TOLERATED",
+    "go_cli_modification_target": "src/ptsip/CLI.go"
   },
   "approval_gates": [
     {
@@ -507,60 +525,40 @@
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
     {
-      "path": "src/ptsip/schemas/policy/policy-identity.schema.json",
-      "filename": "policy-identity.schema.json",
-      "responsibility": "Policy identity fields",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json"
-      ],
-      "readiness": "MIGRATION_DESIGN",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
-      "filename": "policy-lifecycle.schema.json",
-      "responsibility": "Policy lifecycle fields",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json"
-      ],
-      "readiness": "MIGRATION_DESIGN",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/policy-rule.schema.json",
-      "filename": "policy-rule.schema.json",
-      "responsibility": "Policy rule fields",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json"
-      ],
-      "readiness": "V4_RA_REFERENCE_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/public-structure-policy-java.schema.json",
-      "filename": "public-structure-policy-java.schema.json",
-      "responsibility": "Policy Java document representation",
+      "path": "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+      "filename": "PTSIP_policy_identity.schema.json",
+      "responsibility": "Independent Policy_Identity contract",
       "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "NEW_CONTRACT_FIELDS_PENDING",
+      "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
+      "source_roles": []
     },
     {
-      "path": "src/ptsip/schemas/policy/public-structure-policy-markdown.schema.json",
-      "filename": "public-structure-policy-markdown.schema.json",
-      "responsibility": "Policy Markdown document representation",
+      "path": "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+      "filename": "PTSIP_policy_lifecycle.schema.json",
+      "responsibility": "Independent Policy_Lifecycle contract",
       "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "NEW_CONTRACT_FIELDS_PENDING",
+      "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
+      "source_roles": []
     },
     {
-      "path": "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
-      "filename": "public-structure-policy-yaml.schema.json",
-      "responsibility": "PTSIP policy structure and v4 rule reference",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json"
-      ],
-      "readiness": "V4_FIELD_DESIGN_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "path": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+      "filename": "public-structure-policy.schema.json",
+      "responsibility": "Reference-only Policy v4 structure; never embeds independent field schemas",
+      "sources": [],
+      "readiness": "NEW_CONTRACT_FIELDS_PENDING",
+      "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
+      "source_roles": []
+    },
+    {
+      "path": "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json",
+      "filename": "PTSIP_policy_rules.schema.json",
+      "responsibility": "Independent Policy_Rules contract with id_RA",
+      "sources": [],
+      "readiness": "NEW_CONTRACT_FIELDS_PENDING",
+      "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
+      "source_roles": []
     },
     {
       "path": "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
@@ -730,6 +728,14 @@
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
     {
+      "path": "src/ptsip/schemas/storage/rbac/ra-relations.schema.json",
+      "filename": "ra-relations.schema.json",
+      "responsibility": "Separate multi-RA-to-RAC/AEC relationship contract",
+      "sources": [],
+      "readiness": "NAME_PROPOSED_PENDING_USER_APPROVAL",
+      "decision": "RESPONSIBILITY_APPROVED_FILENAME_UNRESOLVED"
+    },
+    {
       "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
       "filename": "rac-list.schema.json",
       "responsibility": "RAC owner ID/name and source reference",
@@ -738,6 +744,14 @@
       ],
       "readiness": "REFERENCE_REVALIDATION_REQUIRED",
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/rbac/rbac-registration.schema.json",
+      "filename": "rbac-registration.schema.json",
+      "responsibility": "Independent RBAC registration and applicability contract",
+      "sources": [],
+      "readiness": "NAME_PROPOSED_PENDING_USER_APPROVAL",
+      "decision": "RESPONSIBILITY_APPROVED_FILENAME_UNRESOLVED"
     },
     {
       "path": "src/ptsip/schemas/storage/release/readme.schema.json",
@@ -995,37 +1009,37 @@
       "source_path": "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json",
       "source_blob_sha": "c19533e4fc51ffedbe9b7e1bc6a32dbdff642d36",
       "source_size_bytes": 960,
-      "target_path": "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
+      "target_path": null,
       "role": "PTSIP policy structure and v4 rule reference",
-      "gate": "V4_FIELD_DESIGN_REQUIRED",
-      "action": "RESTRUCTURE_WITH_OWNER_REVIEW"
+      "gate": "NO_V4_DEPENDENCY_DELETE_ONLY_AFTER_CONSUMER_AUDIT",
+      "action": "OLD_VALIDATOR_CONTRACT_NOT_A_FIELD_SOURCE_FOR_V4"
     },
     {
       "source_path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json",
       "source_blob_sha": "8fa586bb4ffe3934c53b23101cb02db6166e405c",
       "source_size_bytes": 405,
-      "target_path": "src/ptsip/schemas/policy/policy-identity.schema.json",
+      "target_path": null,
       "role": "Policy identity fields",
-      "gate": "MIGRATION_DESIGN",
-      "action": "MOVE_AFTER_CONTRACT_REVIEW"
+      "gate": "NO_V4_DEPENDENCY_DELETE_ONLY_AFTER_CONSUMER_AUDIT",
+      "action": "OLD_VALIDATOR_CONTRACT_NOT_A_FIELD_SOURCE_FOR_V4"
     },
     {
       "source_path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json",
       "source_blob_sha": "62d9a1a352656072f9b16bf5c641266563034a6b",
       "source_size_bytes": 658,
-      "target_path": "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
+      "target_path": null,
       "role": "Policy lifecycle fields",
-      "gate": "MIGRATION_DESIGN",
-      "action": "MOVE_AFTER_CONTRACT_REVIEW"
+      "gate": "NO_V4_DEPENDENCY_DELETE_ONLY_AFTER_CONSUMER_AUDIT",
+      "action": "OLD_VALIDATOR_CONTRACT_NOT_A_FIELD_SOURCE_FOR_V4"
     },
     {
       "source_path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json",
       "source_blob_sha": "79c2d0ff6c6d12edf88dd348271c673b0410c6a0",
       "source_size_bytes": 254,
-      "target_path": "src/ptsip/schemas/policy/policy-rule.schema.json",
+      "target_path": null,
       "role": "Policy rule fields",
-      "gate": "V4_RA_REFERENCE_REQUIRED",
-      "action": "RESTRUCTURE_WITH_OWNER_REVIEW"
+      "gate": "NO_V4_DEPENDENCY_DELETE_ONLY_AFTER_CONSUMER_AUDIT",
+      "action": "OLD_VALIDATOR_CONTRACT_NOT_A_FIELD_SOURCE_FOR_V4"
     },
     {
       "source_path": "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json",
@@ -1172,7 +1186,7 @@
       "resolution": "RA-name exact case/hyphen; RAC/AEC ID-name lookup cross-registry; no authority implicit from schema validity"
     },
     {
-      "target": "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
+      "target": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
       "resolution": "Only derive shared shape from src/ptsip policy schema set and explicit user v4 decisions; no .ptsip contract field copying"
     }
   ],
@@ -1203,10 +1217,10 @@
         [
           "src/ptsip/schemas/policy/public-structure-policy-java.schema.json",
           "src/ptsip/schemas/policy/public-structure-policy-markdown.schema.json",
-          "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
-          "src/ptsip/schemas/policy/policy-identity.schema.json",
-          "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
-          "src/ptsip/schemas/policy/policy-rule.schema.json",
+          "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+          "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+          "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+          "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json",
           "src/ptsip/schemas/plan/public-structure-plan.schema.json",
           "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
           "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
@@ -1271,10 +1285,10 @@
       "inputs": [
         "src/ptsip/schemas/policy/public-structure-policy-java.schema.json",
         "src/ptsip/schemas/policy/public-structure-policy-markdown.schema.json",
-        "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
-        "src/ptsip/schemas/policy/policy-identity.schema.json",
-        "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
-        "src/ptsip/schemas/policy/policy-rule.schema.json"
+        "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+        "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+        "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+        "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
       ],
       "outputs": [
         "policy YAML, Java, Markdown contract dispositions",
@@ -3146,8 +3160,8 @@
     }
   },
   "policy_v4_rbac_focus": {
-    "status": "SOURCE_ANALYSIS_COMPLETED_DESIGN_DECISIONS_REQUIRED_NO_IMPLEMENTATION_AUTHORIZED",
-    "baseline_head": "092a652c6598f82e0aabc18da19503caf031d777",
+    "status": "V4_COMPOSITION_AND_RBAC_BOUNDARIES_APPROVED_OTHER_FIELD_DETAILS_PENDING",
+    "baseline_head": "a4a941dc7384be6b08e7133e0211df55bb661c5e",
     "basis": "ONLY_SRC_PTSIP_SCHEMA_CONTRACTS_FOR_FIELD_DESIGN",
     "excluded_field_basis": [
       ".ptsip/**"
@@ -3175,7 +3189,9 @@
             "Policy_Rules"
           ],
           "state": "CANDIDATE_FIELD_REVIEW_OPEN",
-          "known_ref_problem": "Schema references candidate identity/lifecycle/rules URNs that are not the IDs declared by src/ptsip validation component schemas."
+          "known_ref_problem": "Schema references candidate identity/lifecycle/rules URNs that are not the IDs declared by src/ptsip validation component schemas.",
+          "eligible_as_v4_source": false,
+          "role": "LEGACY_VALIDATION_OWNED_NOT_V4_AUTHORITY"
         },
         {
           "source": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json",
@@ -3185,21 +3201,27 @@
             "policy_kind",
             "root_family",
             "title"
-          ]
+          ],
+          "eligible_as_v4_source": false,
+          "role": "LEGACY_VALIDATION_OWNED_NOT_V4_AUTHORITY"
         },
         {
           "source": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json",
           "id": "urn:ptsip:common_policy:lifecycle:v1",
           "fields": [
             "status"
-          ]
+          ],
+          "eligible_as_v4_source": false,
+          "role": "LEGACY_VALIDATION_OWNED_NOT_V4_AUTHORITY"
         },
         {
           "source": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json",
           "id": "urn:ptsip:common_policy:rules:v1",
           "fields": [
             "rules"
-          ]
+          ],
+          "eligible_as_v4_source": false,
+          "role": "LEGACY_VALIDATION_OWNED_NOT_V4_AUTHORITY"
         }
       ],
       "rbac": [
@@ -3260,37 +3282,73 @@
         "root": "src/ptsip/schemas/policy/",
         "key": "ptsip.policy.v4",
         "schema_files": [
-          "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
-          "src/ptsip/schemas/policy/policy-identity.schema.json",
-          "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
-          "src/ptsip/schemas/policy/policy-rule.schema.json"
+          "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+          "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+          "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+          "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
         ],
-        "optional_language_specific_paths": "Java and Markdown policy target paths were previously proposed, but their schema field source still unverified in src/ptsip and creation is deferred",
-        "full_field_inventory": "UNRESOLVED: currently verified src/ptsip schema set has 3 top-level fields only; approved v4 top-level removals known; Evaluation/Content and other semantics must be explicitly resolved from effective policy/user decisions; not inferred from .ptsip/** contracts"
+        "composition": "REFERENCE_ONLY_ROOT_AND_INDEPENDENT_SUBCONTRACTS",
+        "field_contracts": {
+          "Policy_Identity": "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+          "Policy_Lifecycle": "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+          "Policy_Rules": "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
+        },
+        "forbidden_inline_semantics": true,
+        "legacy_v3_schema": ".ptsip/contracts/policy/unified/Unified_Policy.schema.json",
+        "legacy_v3_inheritance": false,
+        "legacy_backward_compatibility": false,
+        "validation_schema_source": "NOT_USED",
+        "old_engine_policy_schemas": "NOT_USED_AS_V4_FIELD_SOURCE",
+        "removed_top_level_fields": [
+          "Policy_Authority",
+          "Policy_Relationships",
+          "Policy_Migration"
+        ],
+        "other_top_level_field_ownership": "PENDING_USER_DECISION",
+        "implementation_status": "NOT_AUTHORIZED"
       },
       "rbac": {
-        "root": "src/ptsip/schemas/storage/rbac/",
+        "root": "src/ptsip/schemas/policy/",
         "schemas": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
           "src/ptsip/schemas/storage/rbac/aec-list.schema.json"
         ],
-        "proposed_ra_v4_record": {
-          "owner_key": "<RA-ID>",
-          "properties": [
+        "ra_record": {
+          "key": "<RA-ID>",
+          "fields": [
             "RA-name",
             "RAC_id",
             "RAC_name",
             "AEC_id",
             "AEC_name"
           ],
-          "cardinality": "UNRESOLVED: new requested scalar-looking names versus existing 1..N condition tuples"
+          "types_and_cardinality": "NEEDS_SUBORDINATE_APPROVAL"
         },
-        "source_version": "pp.3.00",
-        "activation": "UNREGISTERED_STRUCTURE_ONLY",
-        "source_index_disposition": "UNRESOLVED: migration of pp.3.00.contract.json into central config.json or separate versioned manifest; not a .schema.json",
-        "name_resolution": "RA id -> RA record -> registered RAC ID/name and AEC ID/name, deterministic exact equality; missing/mismatched name or duplicate ID fails closed",
-        "permission": "No structural validation implies registration, role authorization, Rego execution or activation"
+        "relation": {
+          "independent": true,
+          "multiplicity": "MULTIPLE",
+          "proposed_filename": "src/ptsip/schemas/storage/rbac/ra-relations.schema.json",
+          "file_name_state": "NOT_APPROVED",
+          "record_fields": "PENDING"
+        },
+        "registration": {
+          "separate": true,
+          "proposed_schema": "src/ptsip/schemas/storage/rbac/rbac-registration.schema.json",
+          "file_name_state": "NOT_APPROVED",
+          "registration_data_path": "PENDING",
+          "config_role": "SCHEMA_LOOKUP_ONLY",
+          "old_manifest": "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json",
+          "old_manifest_disposition": "DO_NOT_EDIT_OR_REUSE",
+          "execution_activated": false
+        },
+        "version_policy": "NEW_CONTRACT_NO_PP3_COMPATIBILITY_ASSUMPTION",
+        "source_contracts": [
+          "src/ptsip/compile_sealed_rbac/ra.pp.3.00.schema.json",
+          "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json",
+          "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
+        ],
+        "permission": "SCHEMA_VALIDITY_NEVER_GRANTS_AUTHORITY"
       },
       "tests": {
         "root": "src/tests/ptsip/",
@@ -3307,48 +3365,49 @@
     },
     "policy_decision_gates": [
       {
-        "id": "V4-CONTENT-01",
-        "topic": "Full v4 Policy contract field ownership, beyond Identity Lifecycle Rules",
-        "state": "REQUIRES_USER_POLICY_DECISION",
-        "options": [
-          "Core-only structural contract",
-          "Full semantics embedded within unified schema",
-          "Core schema plus separately registered semantic contracts"
-        ],
-        "recommended": "Core schema plus separately registered semantic contracts to preserve complete field meaning and machine references"
+        "id": "V4-REFERENCE-ONLY",
+        "state": "APPROVED",
+        "value": "ROOT_REFERENCES_INDEPENDENT_FIELD_CONTRACTS"
       },
       {
-        "id": "RA-CARDINALITY-01",
-        "topic": "Approved five RA property names vs existing multi-condition 1..N tuple grammar",
-        "state": "REQUIRES_USER_POLICY_DECISION",
-        "options": [
-          "Strict one RAC/AEC pair per RA, break old multi-reference semantics",
-          "Preserve multi RAC/AEC conditions in canonical RA record",
-          "Keep new scalar record plus separate relation registry preserving historical 1..N"
-        ],
-        "recommended": "Preserve 1..N referential data and explicit ID/name matching; do not silently discard old multi-condition records"
+        "id": "V4-NO-LEGACY",
+        "state": "APPROVED",
+        "value": "V3_NOT_INHERITED_OR_COMPATIBLE"
       },
       {
-        "id": "RBAC-REGISTRATION-01",
-        "topic": "Central schema registry with pp.3.00 version & authorization state",
-        "state": "REQUIRES_USER_POLICY_DECISION",
-        "options": [
-          "Central config holds all version/schema lifecycle metadata",
-          "Central config locates schemas, separate RBAC contract manifest holds registered runtime lifecycle",
-          "Preserve old pp3 registry as read-only compatibility while new central registry is prepared"
-        ],
-        "recommended": "Separate registration/activation state from schema validity, regardless of chosen persistence"
+        "id": "RA-RELATIONS",
+        "state": "APPROVED",
+        "value": "SEPARATE_MULTIPLE_RELATIONS"
       },
       {
-        "id": "CLI-RBAC-OWNER-01",
-        "topic": "Whether existing CLI.go exposes v4/RBAC validator via registered existing engine or future direct integration",
-        "state": "DEFER_AFTER_SCHEMA_POLICY",
-        "options": [
-          "Schema-only validation first, no CLI contract change",
-          "Registered engine operation using current CLI routing",
-          "Direct Go profile integration through existing main after Go module decision"
-        ],
-        "recommended": "Schema-only and conformance tests first, then route through registered owner"
+        "id": "RBAC-REGISTRY-SEPARATION",
+        "state": "APPROVED",
+        "value": "CONFIG_PATHS_ONLY_SEPARATE_STATUS_REGISTRATION"
+      },
+      {
+        "id": "RBAC-PP300",
+        "state": "APPROVED",
+        "value": "UNMODIFIED_NOT_REUSED"
+      },
+      {
+        "id": "V4-FIELD-DETAIL",
+        "state": "UNRESOLVED",
+        "value": "INDEPENDENT_SUBCONTRACT_FIELDS_AND_OTHER_TOP_LEVEL_OWNERS"
+      },
+      {
+        "id": "RA-RELATION-FIELDS",
+        "state": "UNRESOLVED",
+        "value": "RELATION_ROW_GRAMMAR_AND_SCHEMA_FILENAME"
+      },
+      {
+        "id": "RBAC-REGISTRATION-FIELDS",
+        "state": "UNRESOLVED",
+        "value": "REGISTRATION_STATUS_GRAMMAR_AND_SCHEMA_FILENAME"
+      },
+      {
+        "id": "GO-CLI-OPERATION",
+        "state": "DEFERRED",
+        "value": "EXISTING_CLI_GO_OPERATION_BINDING"
       }
     ],
     "concrete_work_plan": [
@@ -3379,10 +3438,10 @@
         ],
         "action": "Generate Policy v4 YAML, Policy Identity, Policy Lifecycle, Policy Rule in four preselected files; enforce RA-ID lookup reference without granting authority",
         "outputs": [
-          "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
-          "src/ptsip/schemas/policy/policy-identity.schema.json",
-          "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
-          "src/ptsip/schemas/policy/policy-rule.schema.json"
+          "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+          "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+          "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+          "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
         ]
       },
       {
