@@ -77,9 +77,71 @@
         "independent_fields": [
           "Policy_Identity",
           "Policy_Lifecycle",
-          "Policy_Rules"
+          "Policy_Rules",
+          "Policy_Content"
         ],
-        "complete_v4_field_ownership": "UNRESOLVED_REQUIRES_SEPARATE_DECISION"
+        "complete_v4_field_ownership": "RESOLVED_FOUR_TOP_LEVEL_FIELDS",
+        "top_level_field_order": [
+          "Policy_Identity",
+          "Policy_Lifecycle",
+          "Policy_Rules",
+          "Policy_Content"
+        ],
+        "prohibited_top_level_fields": [
+          "Policy_Authority",
+          "Policy_Relationships",
+          "Policy_Migration",
+          "Policy_Evaluation"
+        ],
+        "top_level_evaluation": "FORBIDDEN",
+        "evaluation_owner": "Policy_Rules",
+        "nested_evaluation_path": "/Policy_Rules/evaluation",
+        "evaluation_schema_directory": "DO_NOT_CREATE",
+        "content_owner": "INDEPENDENT_TOP_LEVEL_FIELD_CONTRACT",
+        "content_schema_filename": "PENDING_USER_APPROVAL",
+        "content_schema_directory": "PENDING_USER_APPROVAL",
+        "field_structure": {
+          "Policy_Rules": {
+            "rules": {
+              "shape": "ARRAY_OF_RECORDS",
+              "declared_fields": [
+                "id",
+                "source_ref",
+                "id_RA"
+              ],
+              "id_RA": "R-ID-<32_UPPERCASE_HEX_DIGITS>"
+            },
+            "evaluation": {
+              "shape": "OBJECT",
+              "declared_fields": [
+                "source_refs",
+                "state"
+              ],
+              "source_refs": "ARRAY",
+              "state": "EVALUATION_STATE_VALUE_NOT_YET_SPECIFIED"
+            }
+          },
+          "Policy_Content": {
+            "items": {
+              "shape": "ARRAY_OF_RECORDS",
+              "declared_fields": [
+                "id",
+                "source_pointer",
+                "value"
+              ],
+              "value": "USER_SOURCE_PAYLOAD_UNCONSTRAINED"
+            },
+            "source_document": {
+              "shape": "OBJECT",
+              "declared_fields": [
+                "path",
+                "sha256"
+              ]
+            }
+          }
+        },
+        "requiredness": "NOT_INFERRED_FROM_EXAMPLES",
+        "redundant_natural_language_descriptions": "AVOID"
       },
       "rule_authority": {
         "rule_link": "id_RA",
@@ -98,14 +160,20 @@
         "status_registration": "SEPARATE_CONTRACT",
         "legacy_pp300_manifest": "UNCHANGED_NOT_REUSED",
         "activation_from_schema_validation": "FORBIDDEN",
-        "new_registration_contract_details": "UNRESOLVED"
+        "new_registration_contract_details": "UNRESOLVED",
+        "multi_relation_contract_naming": "LIST_FAMILY_DIRECTION_ACKNOWLEDGED_EXACT_FILENAME_UNRESOLVED",
+        "new_registration_data_root": "UNRESOLVED_USER_DECISION",
+        "schema_data_plane_separation": "REQUIRED",
+        "schema_registry_purpose": "SCHEMA_ID_PATH_RESOURCE_ONLY"
       },
       "implementation": {
         "priority": "POLICY_V4_THEN_RBAC_SCHEMA_LINK",
         "no_legacy_v3_compatibility": "REQUIRED",
         "user_project_profile_data_deletion": "FORBIDDEN",
         "activation_authorized": false,
-        "migration_implementation_authorized": false
+        "migration_implementation_authorized": false,
+        "new_evaluation_subdirectory": "FORBIDDEN",
+        "content_field_contract": "IN_SCOPE_NAME_AND_PATH_PENDING"
       }
     }
   }
