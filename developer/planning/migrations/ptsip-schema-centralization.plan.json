@@ -612,7 +612,7 @@
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
       ],
-      "historical_resource_root": "src/ptsip/schemas/storage/profile/",
+      "historical_resource_root": "src/ptsip/schemas/storage/profile/history/",
       "source_roles": [
         "VERSIONED_SCHEMA_TARGET",
         "CURRENT_INSTANCE_FIXTURE"
@@ -1267,7 +1267,7 @@
         "RA-name + 4 RAC/AEC link fields; referential integrity verify",
         "no generation of missing Mode Profile from other profile by name",
         "Preserve current project-profile.schema.json as current contract only after explicit pp2.00 same-$id divergent-source resolution",
-        "Generate and validate three explicit version-specific project-profile-pp.X.XX.schema.json contracts from each version's hybrid instance plus its corresponding existing src/ptsip/specdata JSON Schema",
+        "Hand off exact three-version Project Profile schema generation and per-version fixture validation to WU-10; WU-05 owns shared storage/RBAC responsibility review",
         "Reject direct .ptsip.yaml rename to .schema.json: profile fixtures are data, validation schemas define allowed fields and $defs",
         "pp.1.00 missing from src/ptsip/profiles/history: record as blocked rather than inventing",
         "Inspect each template YAML only to preserve compatible template branch if needed; remove separate distributed template example and index entry after consumer analysis",
@@ -1365,9 +1365,14 @@
         "delete zero-byte placeholders only if no readers or ownership remain",
         "keep any unresolved source file with BLOCKED status",
         "verify old source location absent from consumers after each removal",
-        "After all imports and public exports are replaced and tested, delete six discontinued src/ptsip/profiles Python modules in individually validated changes"
+        "Go module source retirement is performed only by WU-14 after WU-13 acceptance; WU-08 only removes superseded schema sources verified to have zero consumers."
       ],
-      "gate": "zero consumers per removed file; full smoke+schema+packaging tests pass; no imports of six retired module paths; Go replacement independent verification and Python-to-Go consumer parity PASS"
+      "gate": "zero consumers per removed file; full smoke+schema+packaging tests pass; no imports of six retired module paths; Go replacement independent verification and Python-to-Go consumer parity PASS",
+      "dependency": [
+        "WU-07",
+        "WU-10",
+        "WU-13"
+      ]
     },
     {
       "id": "WU-09",
