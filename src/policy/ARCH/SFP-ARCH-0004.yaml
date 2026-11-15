@@ -168,109 +168,29 @@ Policy_Content:
     value:
       decision_source: PROJECT_OWNER_EXPLICIT
       decision_date: '2026-11-16'
-      approval_level: RAC_AEC_V4_PROVISIONAL_CONTRACT_DIRECTION
+      approval_level: RAC_AEC_V4_CONTRACT_DIRECTION_ONLY
       scope: RAC_AEC_CONDITION_EVALUATION_SEMANTICS
-      non_evaluation_policy_authority: PRESERVE_APPROVED_POLICY_CONTRACTS
-      rac_aec_attribute_ownership: INDEPENDENT_RAC_AEC_PREFIXED_REGISTRATION
-      identity_fields_existing_approval:
-      - ID
-      - name
-      evidence_requirements_and_evaluation_criteria: SEMANTIC_RESPONSIBILITIES_SEPARATED
-      conflict_resolution:
-        selection: KEEP_LATEST
-        authority: PROJECT_OWNER_EXPLICIT
-        decision_date: '2026-11-16'
-        base_revision: cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3
-        replaced_v4_source_fields:
-        - value.source_ref
-        - value.revision_ref
-        - value.entrypoint
-        previous_evaluation_contract_original: REGO_SOURCE
-        previous_generated_expression_as_canonical: NOT_SELECTED
+      transition:
+        name: POLICY_V4_RAC_AEC_CONTRACT_STRUCTURE
+        conflict_resolution: KEEP_LATEST
         previous_external_rego_value_source_for_v4: SUPERSEDED
-        previous_policy_scope_beyond_v4: PRESERVED
-        legacy_pp300_contracts: PRESERVED_UNMODIFIED
-      rac_aec_v4_provisional_contract:
-        status: USER_APPROVED_PROVISIONAL_FIELD_STRUCTURE
-        usage: AUTHORING_AND_CONTRACT_REVIEW_ONLY
-        document_metadata:
-          ordered_fields:
-          - file_name
-          - file_id
-          - format_version
-          - file_title
-          excluded_fields:
-          - File_Identity
-          - file_kind
-          file_id_pattern: '^profiles-[0-9a-f]{32}$'
-          file_id_max_length: 41
-        policy_document_owns:
+        legacy_pp300_contracts: PRESERVE_UNMODIFIED
+        detailed_structure_authority: PLANNING_AND_PROVISIONAL_CONTRACT_RECORDS
+      ownership:
+        policy_document:
         - APPLICABILITY_SCOPE
         - ACTION_SELECTION
         - TARGET_SELECTION
-        ra_owns:
-        - RAC_AEC_FORWARD_RELATIONSHIPS
-        rac_owns: ASSIGNMENT_CONDITION_ONLY
-        aec_owns: EXERCISE_CONDITION_ONLY
-        force_identical_rac_aec_record_fields: false
-        forbid_reverse_policy_references: true
+        RA: RAC_AEC_FORWARD_RELATIONSHIPS
+        RAC: ASSIGNMENT_CONDITION_ONLY
+        AEC: EXERCISE_CONDITION_ONLY
+      contract_direction:
+        field_structure: APPROVED_PROVISIONAL_NOT_FINAL
+        rac_aec_record_structures: INDEPENDENT
         value_ownership: INLINE_SELF_CONTAINED_IN_OWN_LIST_FILE
-        external_value_file_delegation: FORBIDDEN
-        external_value_ref_fields: FORBIDDEN
-        human_fields_not_evaluation_inputs: true
-        condition_engine_expression_language: UNRESOLVED
-        value_internal_field_shape: UNRESOLVED
-        value_empty_object_placeholder: NOT_EVALUABLE
-        existing_authority_evidence_ownership: DEFERRED
-        rac_list:
-          intended_file_name: RAC-list.ptsip.yaml
-          record_id_pattern: '^ID-RAC-[a-zA-F0-9]{16}$'
-          metadata_field_ids:
-            file_name: F-RAC-H004
-            file_id: F-RAC-H002
-            format_version: F-RAC-H005
-            file_title: F-RAC-H006
-          fields:
-          - id: F-RAC-T001
-            name: RAC_list
-            role: CONDITION_RECORD_COLLECTION
-          - id: F-RAC-T002
-            name: RAC_id
-            role: CONDITION_UNIQUE_ID
-          - id: F-RAC-T003
-            name: RAC_name
-            role: HUMAN_READABLE_NAME_NOT_EVALUATION
-          - id: F-RAC-T004
-            name: RAC_description
-            role: OPTIONAL_SHORT_HUMAN_DESCRIPTION_NOT_EVALUATION
-          - id: F-RAC-T005
-            name: value
-            role: INLINE_SELF_CONTAINED_CONDITION_DEFINITION_UNRESOLVED
-        aec_list:
-          intended_file_name: AEC-list.ptsip.yaml
-          record_id_pattern: '^ID-AEC-[a-zA-F0-9]{16}$'
-          metadata_field_ids:
-            file_name: F-AEC-H004
-            file_id: F-AEC-H002
-            format_version: F-AEC-H005
-            file_title: F-AEC-H006
-          fields:
-          - id: F-AEC-T001
-            name: AEC_list
-            role: CONDITION_RECORD_COLLECTION
-          - id: F-AEC-T002
-            name: AEC_id
-            role: CONDITION_UNIQUE_ID
-          - id: F-AEC-T003
-            name: AEC_name
-            role: HUMAN_READABLE_NAME_NOT_EVALUATION
-          - id: F-AEC-T004
-            name: AEC_description
-            role: OPTIONAL_SHORT_HUMAN_DESCRIPTION_NOT_EVALUATION
-          - id: F-AEC-T005
-            name: value
-            role: INLINE_SELF_CONTAINED_CONDITION_DEFINITION_UNRESOLVED
-      machine_contract_field_names_and_count: PROVISIONAL_APPROVED_FINAL_UNRESOLVED
+        external_value_ref_delegation: FORBIDDEN
+        detailed_fields_in_policy: EXCLUDED
+        condition_evaluation_semantics: UNRESOLVED
       independent_rbac_registration_lifecycle:
         registration: RA_RAC_AEC_INDEPENDENT
         cross_contract_relation_verification: REQUIRED_BEFORE_USABLE
@@ -278,9 +198,8 @@ Policy_Content:
         registration_implies_execution_authorization: false
         relation_verification_implies_execution_authorization: false
         existing_unregistered_candidates: REMAIN_UNREGISTERED
-      evaluation_expression_structure_and_storage: UNRESOLVED
-      relation_to_existing_condition_schemas: UNDECIDED
-      implementation_and_integration: UNDECIDED
+      non_evaluation_policy_authority: PRESERVE_APPROVED_POLICY_CONTRACTS
+      evidence_requirements_and_evaluation_criteria: SEMANTIC_RESPONSIBILITIES_SEPARATED
       whole_policy_scope_beyond_rac_aec: DIRECTION_ONLY_NOT_ACTIVATED
       implementation_authorized: false
       runtime_activation_authorized: false
