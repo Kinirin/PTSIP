@@ -3775,13 +3775,13 @@
       },
       {
         "id": "RA-RELATION-FIELDS",
-        "state": "UNRESOLVED",
-        "value": "List name direction confirmed; choose normalized edge vs typed endpoint vs grouped ID arrays, exact file name pending"
+        "state": "DIRECTION_SELECTED_FIELDS_AND_GUI_SEMANTICS_UNRESOLVED",
+        "value": "Grouped id_RA + RAC_ids[] + AEC_ids[] reference direction; full record fields, descriptive responsibilities, type constraints, requiredness and exact filename still unapproved"
       },
       {
         "id": "RBAC-REGISTRATION-FIELDS",
         "state": "UNRESOLVED_FIELD_RESPONSIBILITIES",
-        "value": "Reject abbreviated registry/contract ID fields, merged/minimal schema and subject target fields; requires GUI-readable semantically separated records"
+        "value": "Separate identity, provenance, ownership, GUI readability and lifecycle responsibility review; no abbreviated registry_id/contract_id/contract_version or policy subject_ref/registration_ref inferred"
       },
       {
         "id": "GO-CLI-OPERATION",
@@ -3811,7 +3811,7 @@
       {
         "id": "RBAC-REGISTRATION-SCHEMA-LOCATION",
         "state": "APPROVED",
-        "value": "S3_SHARED_STORAGE_REGISTRY"
+        "value": "src/ptsip/schemas/storage/registry/rbac/"
       },
       {
         "id": "RBAC-REGISTRATION-DATA-LOCATION",
