@@ -139,7 +139,7 @@
       },
       {
         "step": "C04",
-        "change": "Validate uniqueness of schema key, canonical path, $id and version selector"
+        "change": "Validate uniqueness of schema key and full canonical path, exact $id plus version/revision selector. Identical leaf filenames in different history directories are allowed."
       },
       {
         "step": "C05",
@@ -148,224 +148,6 @@
     ]
   },
   "target_schemas": [
-    {
-      "path": "src/ptsip/schemas/policy/public-structure-policy-java.schema.json",
-      "filename": "public-structure-policy-java.schema.json",
-      "responsibility": "Policy Java document representation",
-      "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/public-structure-policy-markdown.schema.json",
-      "filename": "public-structure-policy-markdown.schema.json",
-      "responsibility": "Policy Markdown document representation",
-      "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
-      "filename": "public-structure-policy-yaml.schema.json",
-      "responsibility": "PTSIP policy structure and v4 rule reference",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json"
-      ],
-      "readiness": "V4_FIELD_DESIGN_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/policy-identity.schema.json",
-      "filename": "policy-identity.schema.json",
-      "responsibility": "Policy identity fields",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json"
-      ],
-      "readiness": "MIGRATION_DESIGN",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
-      "filename": "policy-lifecycle.schema.json",
-      "responsibility": "Policy lifecycle fields",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json"
-      ],
-      "readiness": "MIGRATION_DESIGN",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/policy/policy-rule.schema.json",
-      "filename": "policy-rule.schema.json",
-      "responsibility": "Policy rule fields",
-      "sources": [
-        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json"
-      ],
-      "readiness": "V4_RA_REFERENCE_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-      "filename": "public-structure-plan.schema.json",
-      "responsibility": "Plan common structure and nonprescriptive Checklist",
-      "sources": [
-        "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json"
-      ],
-      "readiness": "JSON_REPAIR_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
-      "filename": "plan-lifecycle.schema.json",
-      "responsibility": "Plan lifecycle contract",
-      "sources": [],
-      "readiness": "NO_NONEMPTY_SOURCE_FOR_LIFECYCLE",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
-      "filename": "mode-profile.schema.json",
-      "responsibility": "Mode Profile",
-      "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/profile/user-profile.schema.json",
-      "filename": "user-profile.schema.json",
-      "responsibility": "User Profile",
-      "sources": [
-        "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
-      ],
-      "readiness": "JSON_REPAIR_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/release/readme.schema.json",
-      "filename": "readme.schema.json",
-      "responsibility": "README storage/format contract",
-      "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
-      "filename": "ra-list.schema.json",
-      "responsibility": "RA owner ID, RA-name, RAC and AEC links",
-      "sources": [
-        "src/ptsip/compile_sealed_rbac/ra.pp.3.00.schema.json"
-      ],
-      "readiness": "NEW_RA_FIELDS_REVIEW",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
-      "filename": "rac-list.schema.json",
-      "responsibility": "RAC owner ID/name and source reference",
-      "sources": [
-        "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
-      ],
-      "readiness": "REFERENCE_REVALIDATION_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
-      "filename": "aec-list.schema.json",
-      "responsibility": "AEC owner ID/name and source reference",
-      "sources": [
-        "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
-      ],
-      "readiness": "REFERENCE_REVALIDATION_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/specification/specification.schema.json",
-      "filename": "specification.schema.json",
-      "responsibility": "Specification identity/binding",
-      "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-      "filename": "project-profile.schema.json",
-      "responsibility": "Project Profile registered runtime versions",
-      "sources": [
-        "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
-        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
-        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
-        "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
-        "src/ptsip/specdata/ptsip-profile.schema.json"
-      ],
-      "readiness": "HISTORY_ROOT_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
-      "decision": "ROOT_APPROVED_LEAF_NAME_PROPOSED_PROFILE_SOURCE_DIFF_BLOCKED",
-      "history_root": "src/ptsip/schemas/storage/profile/history/",
-      "history_snapshot_paths": [
-        "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
-        "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json"
-      ]
-    },
-    {
-      "path": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
-      "filename": "project-profile-candidate.schema.json",
-      "responsibility": "Unregistered Project Profile candidate",
-      "sources": [
-        "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json"
-      ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
-      "filename": "source-profile.schema.json",
-      "responsibility": "Legacy source profile family",
-      "sources": [
-        "src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json",
-        "src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json"
-      ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
-      "filename": "agent-classification.schema.json",
-      "responsibility": "Agent classification evidence",
-      "sources": [
-        "src/ptsip/specdata/ptsip-agent-classification.schema.json"
-      ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
-      "filename": "artifact-evidence.schema.json",
-      "responsibility": "Artifact evidence",
-      "sources": [
-        "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"
-      ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
-      "filename": "diagnostic.schema.json",
-      "responsibility": "Diagnostic record",
-      "sources": [
-        "src/ptsip/specdata/ptsip-diagnostic.schema.json"
-      ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
-      "filename": "normalized-evidence.schema.json",
-      "responsibility": "Normalized evidence",
-      "sources": [
-        "src/ptsip/specdata/ptsip-normalized-evidence.schema.json"
-      ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
-    },
     {
       "path": "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
       "filename": "attempt-result.schema.json",
@@ -574,6 +356,244 @@
         "src/ptsip/engines/discovery/tpbg-f3.schema.json"
       ],
       "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+      "filename": "plan-lifecycle.schema.json",
+      "responsibility": "Plan lifecycle contract",
+      "sources": [],
+      "readiness": "NO_NONEMPTY_SOURCE_FOR_LIFECYCLE",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+      "filename": "public-structure-plan.schema.json",
+      "responsibility": "Plan common structure and nonprescriptive Checklist",
+      "sources": [
+        "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json"
+      ],
+      "readiness": "JSON_REPAIR_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/policy/policy-identity.schema.json",
+      "filename": "policy-identity.schema.json",
+      "responsibility": "Policy identity fields",
+      "sources": [
+        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json"
+      ],
+      "readiness": "MIGRATION_DESIGN",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
+      "filename": "policy-lifecycle.schema.json",
+      "responsibility": "Policy lifecycle fields",
+      "sources": [
+        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json"
+      ],
+      "readiness": "MIGRATION_DESIGN",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/policy/policy-rule.schema.json",
+      "filename": "policy-rule.schema.json",
+      "responsibility": "Policy rule fields",
+      "sources": [
+        "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json"
+      ],
+      "readiness": "V4_RA_REFERENCE_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/policy/public-structure-policy-java.schema.json",
+      "filename": "public-structure-policy-java.schema.json",
+      "responsibility": "Policy Java document representation",
+      "sources": [],
+      "readiness": "NO_SRC_SCHEMA_BASIS",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/policy/public-structure-policy-markdown.schema.json",
+      "filename": "public-structure-policy-markdown.schema.json",
+      "responsibility": "Policy Markdown document representation",
+      "sources": [],
+      "readiness": "NO_SRC_SCHEMA_BASIS",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
+      "filename": "public-structure-policy-yaml.schema.json",
+      "responsibility": "PTSIP policy structure and v4 rule reference",
+      "sources": [
+        "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json"
+      ],
+      "readiness": "V4_FIELD_DESIGN_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
+      "filename": "agent-classification.schema.json",
+      "responsibility": "Agent classification evidence",
+      "sources": [
+        "src/ptsip/specdata/ptsip-agent-classification.schema.json"
+      ],
+      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
+      "filename": "artifact-evidence.schema.json",
+      "responsibility": "Artifact evidence",
+      "sources": [
+        "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"
+      ],
+      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
+      "filename": "diagnostic.schema.json",
+      "responsibility": "Diagnostic record",
+      "sources": [
+        "src/ptsip/specdata/ptsip-diagnostic.schema.json"
+      ],
+      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
+      "filename": "normalized-evidence.schema.json",
+      "responsibility": "Normalized evidence",
+      "sources": [
+        "src/ptsip/specdata/ptsip-normalized-evidence.schema.json"
+      ],
+      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
+      "filename": "project-profile.schema.json",
+      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
+      "sources": [
+        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json"
+      ],
+      "readiness": "HISTORY_ROOT_APPROVED_SNAPSHOT_SUBDIRECTORY_NAME_PENDING",
+      "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json",
+      "filename": "project-profile.schema.json",
+      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
+      "sources": [
+        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json"
+      ],
+      "readiness": "HISTORY_ROOT_APPROVED_SNAPSHOT_SUBDIRECTORY_NAME_PENDING",
+      "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
+      "filename": "mode-profile.schema.json",
+      "responsibility": "Mode Profile",
+      "sources": [],
+      "readiness": "NO_SRC_SCHEMA_BASIS",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
+      "filename": "project-profile-candidate.schema.json",
+      "responsibility": "Unregistered Project Profile candidate",
+      "sources": [
+        "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json"
+      ],
+      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "filename": "project-profile.schema.json",
+      "responsibility": "Project Profile registered runtime versions",
+      "sources": [
+        "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+        "src/ptsip/specdata/ptsip-profile.schema.json"
+      ],
+      "readiness": "HISTORY_ROOT_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
+      "decision": "ROOT_APPROVED_LEAF_NAME_PROPOSED_PROFILE_SOURCE_DIFF_BLOCKED",
+      "history_root": "src/ptsip/schemas/storage/profile/history/",
+      "history_snapshot_paths": [
+        "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
+        "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json"
+      ]
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
+      "filename": "source-profile.schema.json",
+      "responsibility": "Legacy source profile family",
+      "sources": [
+        "src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json",
+        "src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json"
+      ],
+      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/user-profile.schema.json",
+      "filename": "user-profile.schema.json",
+      "responsibility": "User Profile",
+      "sources": [
+        "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
+      ],
+      "readiness": "JSON_REPAIR_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
+      "filename": "aec-list.schema.json",
+      "responsibility": "AEC owner ID/name and source reference",
+      "sources": [
+        "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
+      ],
+      "readiness": "REFERENCE_REVALIDATION_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+      "filename": "ra-list.schema.json",
+      "responsibility": "RA owner ID, RA-name, RAC and AEC links",
+      "sources": [
+        "src/ptsip/compile_sealed_rbac/ra.pp.3.00.schema.json"
+      ],
+      "readiness": "NEW_RA_FIELDS_REVIEW",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
+      "filename": "rac-list.schema.json",
+      "responsibility": "RAC owner ID/name and source reference",
+      "sources": [
+        "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
+      ],
+      "readiness": "REFERENCE_REVALIDATION_REQUIRED",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/release/readme.schema.json",
+      "filename": "readme.schema.json",
+      "responsibility": "README storage/format contract",
+      "sources": [],
+      "readiness": "NO_SRC_SCHEMA_BASIS",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/specification/specification.schema.json",
+      "filename": "specification.schema.json",
+      "responsibility": "Specification identity/binding",
+      "sources": [],
+      "readiness": "NO_SRC_SCHEMA_BASIS",
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     }
   ],
@@ -1064,13 +1084,15 @@
           "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
           "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
           "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
-          "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json"
+          "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
+          "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
+          "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json"
         ]
       ],
       "outputs": [
         "JSON-parseable registry",
         "exact source-to-canonical-path mapping",
-        "no duplicate keys or output filenames"
+        "no duplicate contract registration keys or canonical output paths; same leaf schema filename permitted in different history directories"
       ],
       "actions": [
         "repair syntax only where meaning clear",
@@ -1299,7 +1321,7 @@
     "pass_requirements": [
       "no .ptsip source contract used",
       "44/44 exact src/ptsip source paths mapped",
-      "all target filenames versionless",
+      "all schema leaf filenames versionless; historical version/revision identifiers are not embedded into schema leaf filenames",
       "no unresolved $ref or duplicate registered $id",
       "Checklist no mandatory fields",
       "RA-name exact and RAC/AEC ID-name consistency",
