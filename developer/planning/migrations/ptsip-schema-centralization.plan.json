@@ -60,16 +60,21 @@
     "project_profile_historical_root": "src/ptsip/schemas/storage/profile/history/",
     "project_profile_historical_filenames": {
       "pp.1.01": "project-profile-pp.1.01.schema.json",
-      "pp.1.02": "project-profile-pp.1.02.schema.json"
+      "pp.1.02": "project-profile-pp.1.02.schema.json",
+      "pp.2.00": "project-profile-pp.2.00.schema.json"
     },
     "schema_filename_policy": {
       "default": "VERSIONLESS",
-      "exception": "HISTORICAL_PROJECT_PROFILE",
+      "exception": "HISTORICAL_PROJECT_PROFILE_ONLY",
       "historical_version_location": "BASENAME",
       "historical_project_profile_pattern": "project-profile-pp.<major>.<minor>.schema.json",
       "current_project_profile_basename": "project-profile.schema.json",
       "historical_directory": "history/"
-    }
+    },
+    "project_profile_source_preference": "HYBRID_VERSION_INPUT_PLUS_MATCHING_SRC_SPECData_SCHEMA",
+    "template_profile_separate_distribution": "DISCONTINUE_AFTER_CONSUMER_CHECK",
+    "project_profile_current_source": "HYBRID_PP2",
+    "profile_python_to_go": "IMPLEMENTATION_PLANNING_AUTHORIZED_SOURCE_LOCATION_UNDECIDED"
   },
   "approval_gates": [
     {
@@ -133,6 +138,27 @@
         "src/ptsip/profiles/catalog.py"
       ],
       "state": "USE_DISCONTINUATION_APPROVED_REPLACEMENT_PATHS_UNRESOLVED"
+    },
+    {
+      "id": "PROFILE-PP100-01",
+      "scope": "src/ptsip/profiles/history/pp.1.00 absent",
+      "state": "BLOCKED_MISSING_REAL_SOURCE",
+      "note": "Existing registry contains pp.0.00 LEGACY_COMPATIBILITY_ONLY but does not establish pp.1.00."
+    },
+    {
+      "id": "PROFILE-PP200-SOURCE-01",
+      "scope": "Select authoritative pp2.00 schema variant metadata/registration",
+      "state": "USER_SELECTION_REQUIRED_BEFORE_CURRENT_ALIAS_ACTIVATION"
+    },
+    {
+      "id": "PROFILE-HYBRID-01",
+      "scope": [
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+      ],
+      "state": "OUTPUT_FILENAMES_AND_HISTORY_ROOT_USER_REQUESTED",
+      "note": "Schema generation remains pending full work plan approval."
     }
   ],
   "target_registry": {
@@ -487,6 +513,53 @@
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
     {
+      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+      "filename": "project-profile-pp.1.01.schema.json",
+      "responsibility": "Historical pp.1.01 Project Profile JSON Schema validated against hybrid fixture (template compat separately checked)",
+      "sources": [
+        "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json"
+      ],
+      "readiness": "EXACT_USER_APPROVED_HISTORICAL_PATH",
+      "decision": "USER_APPROVED_EXACT_FILE_PATH",
+      "source_roles": [
+        "INSTANCE_FIXTURE",
+        "SCHEMA_DEFINITION"
+      ]
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+      "filename": "project-profile-pp.1.02.schema.json",
+      "responsibility": "Historical pp.1.02 Project Profile JSON Schema validated against hybrid fixture (template compat separately checked)",
+      "sources": [
+        "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json"
+      ],
+      "readiness": "EXACT_USER_APPROVED_HISTORICAL_PATH",
+      "decision": "USER_APPROVED_EXACT_FILE_PATH",
+      "source_roles": [
+        "INSTANCE_FIXTURE",
+        "SCHEMA_DEFINITION"
+      ]
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "filename": "project-profile-pp.2.00.schema.json",
+      "responsibility": "Immutable pp.2.00 Project Profile validation schema with hybrid version fixture",
+      "sources": [
+        "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+        "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json"
+      ],
+      "source_roles": [
+        "INSTANCE_FIXTURE",
+        "SCHEMA_REGISTERED_CURRENT",
+        "SCHEMA_VARIANT"
+      ],
+      "readiness": "HISTORY_ROOT_APPROVED_SCHEMA_SOURCE_CONFLICT_BLOCKED",
+      "decision": "EXACT_FILE_PATH_USER_REQUESTED_SOURCE_VARIANT_SELECTION_UNRESOLVED"
+    },
+    {
       "path": "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
       "filename": "mode-profile.schema.json",
       "responsibility": "Mode Profile",
@@ -505,43 +578,25 @@
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
     {
-      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-      "filename": "project-profile-pp.1.01.schema.json",
-      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
-      "sources": [
-        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json"
-      ],
-      "readiness": "EXACT_USER_APPROVED_HISTORICAL_PATH",
-      "decision": "USER_APPROVED_EXACT_FILE_PATH"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-      "filename": "project-profile-pp.1.02.schema.json",
-      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
-      "sources": [
-        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json"
-      ],
-      "readiness": "EXACT_USER_APPROVED_HISTORICAL_PATH",
-      "decision": "USER_APPROVED_EXACT_FILE_PATH"
-    },
-    {
       "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "filename": "project-profile.schema.json",
-      "responsibility": "Project Profile registered runtime versions",
+      "responsibility": "Current logical Project Profile schema selection, resolving exact registered pp.2.00 historical JSON Schema",
       "sources": [
-        "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
-        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
-        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
-        "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
-        "src/ptsip/specdata/ptsip-profile.schema.json"
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "src/ptsip/profiles/hybrid-python-package.ptsip.yaml"
       ],
-      "readiness": "HISTORICAL_PATHS_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
-      "decision": "ROOT_APPROVED_LEAF_NAME_PROPOSED_PROFILE_SOURCE_DIFF_BLOCKED",
+      "readiness": "PP200_CURRENT_ALIAS_AND_REGISTERED_SOURCE_SELECTION_UNRESOLVED",
+      "decision": "ACTIVE_SELECTOR_NOT_DUPLICATE_SCHEMA",
       "history_snapshot_paths": [
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
       ],
-      "historical_resource_root": "src/ptsip/schemas/storage/profile/"
+      "historical_resource_root": "src/ptsip/schemas/storage/profile/",
+      "source_roles": [
+        "VERSIONED_SCHEMA_TARGET",
+        "CURRENT_INSTANCE_FIXTURE"
+      ]
     },
     {
       "path": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
@@ -895,10 +950,10 @@
       "source_path": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
       "source_blob_sha": "14d47e469e5f12ae65d721f64b17bdc35de861d8",
       "source_size_bytes": 14327,
-      "target_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
       "role": "Project Profile registered runtime versions",
-      "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "HOLD_FOR_CURRENT_PROFILE_OWNER_SEMANTIC_RECONCILIATION"
+      "gate": "REGISTERED_PP200_SCHEMA_AND_CANDIDATE_PROVENANCE_RECONCILED",
+      "action": "PP200_HISTORICAL_SCHEMA_MIGRATION_BLOCKED_BY_OWNER_SOURCE_SELECTION"
     },
     {
       "source_path": "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json",
@@ -976,10 +1031,10 @@
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
       "source_blob_sha": "83eb3b06eae023f5024a853bf40572166cf0a99a",
       "source_size_bytes": 14130,
-      "target_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
       "role": "Project Profile registered runtime versions",
-      "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "HOLD_FOR_CURRENT_PROFILE_OWNER_SEMANTIC_RECONCILIATION"
+      "gate": "REGISTERED_PP200_SCHEMA_AND_CANDIDATE_PROVENANCE_RECONCILED",
+      "action": "PP200_HISTORICAL_SCHEMA_MIGRATION_BLOCKED_BY_OWNER_SOURCE_SELECTION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile.schema.json",
@@ -1100,7 +1155,8 @@
           "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
           "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-          "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
+          "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+          "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
         ]
       ],
       "outputs": [
@@ -1112,7 +1168,8 @@
         "repair syntax only where meaning clear",
         "do not guess missing $id or readme schema",
         "register approved exact resources",
-        "separate schema logical key, version and file path"
+        "separate schema logical key, version and file path",
+        "Register all 3 version-specific historical schema resources and current pp2.00 selector; file names exact; reject pp1.00 without source"
       ],
       "gate": "JSON parse PASS; unresolved records explicitly blocked, never generated"
     },
@@ -1172,11 +1229,16 @@
         "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
         "src/ptsip/schemas/storage/profile/source-profile.schema.json",
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml"
       ],
       "outputs": [
         "User, Project, Source, Candidate and RA/RAC/AEC schemas",
-        "Exact historical schema mapping: pp.1.01 -> project-profile-pp.1.01.schema.json; pp.1.02 -> project-profile-pp.1.02.schema.json, each with source SHA; current pp.2.00 conflict separately blocked"
+        "Exact historical schema mapping: pp.1.01 -> project-profile-pp.1.01.schema.json; pp.1.02 -> project-profile-pp.1.02.schema.json, each with source SHA; current pp.2.00 conflict separately blocked",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "Three-version field/diff matrix, pp1.00 missing-source block, template example retirement ledger"
       ],
       "actions": [
         "distinguish user/mode/project profiles",
@@ -1184,10 +1246,14 @@
         "repair invalid User_Profile before admission",
         "RA-name + 4 RAC/AEC link fields; referential integrity verify",
         "no generation of missing Mode Profile from other profile by name",
-        "Move pp.1.01 and pp.1.02 to their approved versioned filenames directly in src/ptsip/schemas/storage/profile/history/; verify registered contract versions and hashes before old-file removal",
-        "Preserve current project-profile.schema.json as current contract only after explicit pp2.00 same-$id divergent-source resolution"
+        "Preserve current project-profile.schema.json as current contract only after explicit pp2.00 same-$id divergent-source resolution",
+        "Generate and validate three explicit version-specific project-profile-pp.X.XX.schema.json contracts from each version's hybrid instance plus its corresponding existing src/ptsip/specdata JSON Schema",
+        "Reject direct .ptsip.yaml rename to .schema.json: profile fixtures are data, validation schemas define allowed fields and $defs",
+        "pp.1.00 missing from src/ptsip/profiles/history: record as blocked rather than inventing",
+        "Inspect each template YAML only to preserve compatible template branch if needed; remove separate distributed template example and index entry after consumer analysis",
+        "Expose current project-profile.schema.json through exact pp2.00 selected historical resource without overriding semantic version evidence"
       ],
-      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved"
+      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated"
     },
     {
       "id": "WU-06",
@@ -1297,6 +1363,47 @@
         "make all file/content preservation decisions in document-specific plan, not in policy rules"
       ],
       "gate": "per-document decision and validation evidence required; not authorized by this schema plan"
+    },
+    {
+      "id": "WU-10",
+      "name": "Project Profile three-version semantic source-to-schema derivation",
+      "dependency": [
+        "WU-01",
+        "WU-02",
+        "WU-05"
+      ],
+      "authority": "PLAN_ONLY",
+      "inputs": [
+        "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+        "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml",
+        "src/ptsip/specdata/project-profile-contracts.yaml"
+      ],
+      "outputs": [
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "per-version conformance matrix",
+        "pp1.00 missing input report"
+      ],
+      "exact_steps": [
+        "Load and hash all pp1.01, pp1.02, pp2.00 hybrid profile YAML sources; ensure parsed mappings not schemas",
+        "Load matching src/ptsip/specdata pp1.01, pp1.02, pp2.00 JSON Schema and inspect required/property/defs and validation alternatives",
+        "Preserve pp1.01 specification.family and literal include roots; preserve pp1.02 and pp2.00 Rev.0001, profile_role and symbolic roots",
+        "Validate each source hybrid against matching version source schema and newly derived versioned central schema; cross-version tests must fail when version differs",
+        "Compare pp2.00 registered schema and profile-local variant, separately record metadata/candidate lifecycle differences; user selects authoritative owner",
+        "Preserve template oneOf validator semantics where registered, but stop separately exporting template example after usages audited",
+        "Record each historical target hash/version/registered lifecycle in central config and revise active alias for pp2.00 only",
+        "Run static usage scan for old example/template YAML and retire only those proven unused after central schema and Go consumer replacement"
+      ],
+      "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure"
     }
   ],
   "observed_breakages": [
@@ -1346,7 +1453,10 @@
       "Same $id with different Git blob content is resolved before either copy is retired",
       "Historical Project Profile schemas resolve by approved versioned filenames directly under storage/profile/history/ and preserve immutable source SHA",
       "No imports of discontinued six src/ptsip/profiles Python modules after replacement",
-      "Engine schemas under approved central engine root preserve distinct engine contract semantics and history"
+      "Engine schemas under approved central engine root preserve distinct engine contract semantics and history",
+      "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
+      "pp.1.00 schema is not generated without verified original input",
+      "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1379,11 +1489,12 @@
       "second_blob_sha": "83eb3b06eae023f5024a853bf40572166cf0a99a",
       "schema_id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json",
       "resolution": "EXPLICIT_SEMANTIC_DIFF_AND_USER_SELECTION_REQUIRED",
-      "deletion_blocked": true
+      "deletion_blocked": true,
+      "note": "Inspected validation field structure matches; title and $comment differ, including candidate admission caveat. Preserve owner conflict gate until user selection."
     }
   ],
   "profile_history_migration": {
-    "state": "FLAT_HISTORICAL_FILE_PATHS_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
+    "state": "THREE_VERSION_HYBRID_INPUTS_VERIFIED_PP100_ABSENT_PP200_OWNER_CONFLICT_PENDING",
     "canonical_current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
     "responsibilities": {
       "current": "Current admitted project-profile schema only; not a concatenation of past schema contents",
@@ -1392,13 +1503,15 @@
       "candidate": "Candidate profiles remain unregistered and cannot silently become current"
     },
     "conversion_procedure": [
-      "Resolve the registered Project Profile current version from src/ptsip/specdata/project-profile-contracts.yaml",
-      "Classify each source by exact registered version and semantic content; do not merge based on filename",
-      "Create historical schemas directly under src/ptsip/schemas/storage/profile/history/ using approved project-profile-pp.1.01.schema.json and project-profile-pp.1.02.schema.json; preserve registered version and source SHA",
-      "Do not replace current project-profile.schema.json from conflicting pp.2.00 sources until the diff and authority are resolved by user",
-      "Register each history record with immutable source SHA, exact schema ID, version and lifecycle",
-      "Update version selectors and consumers to resolve exact approved current basename or versioned historical filename from registered version plus immutable source revision; never use filename alone as authority",
-      "Validate historical fixture per version and current version independently before retirement of old file"
+      "Verify src/ptsip/profiles/history/pp.1.01, pp.1.02, pp.2.00 hybrid YAML instances by exact source SHA and their matching src/ptsip/specdata Project Profile schemas",
+      "pp.1.00 missing: refuse schema creation without a real source or owner direction",
+      "Generate JSON Schema contracts under profile/history/project-profile-pp.1.01.schema.json, project-profile-pp.1.02.schema.json and project-profile-pp.2.00.schema.json; do not rename YAML instance into schema",
+      "Preserve version-specific specification.family, ptsip.revision, profile_role and path-variable behavior; preserve existing source schema branch alternatives",
+      "Do not create separate template profile schema; stop using distributed template YAML only after feature and consumer reference analysis",
+      "Keep current project-profile.schema.json as logical registered selection for pp.2.00; resolve same-$id metadata and candidate lifecycle conflict explicitly",
+      "Update src/ptsip/specdata/project-profile-contracts.yaml and central config.json with exact registered selectors and immutable source SHA",
+      "Validate all source YAML fixtures against correct central schemas independently and record negative wrong-version outcomes",
+      "Delete original YAML examples and superseded schema files only when per-file consumer count becomes zero and functionality is verified"
     ],
     "conflict": {
       "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
@@ -1409,34 +1522,25 @@
     "historical_naming": "VERSIONED_FILE_IN_HISTORY_ROOT",
     "historical_schema_files": [
       {
-        "source": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+        "source": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
+        "schema_source": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
         "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
         "registration": "SUPERSEDED",
-        "decision": "USER_APPROVED_EXACT_HISTORY_FILENAME"
+        "decision": "EXACT_USER_REQUESTED_OUTPUT_PATH"
       },
       {
-        "source": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+        "source": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
+        "schema_source": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
         "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
         "registration": "SUPERSEDED",
-        "decision": "USER_APPROVED_EXACT_HISTORY_FILENAME"
+        "decision": "EXACT_USER_REQUESTED_OUTPUT_PATH"
       },
       {
-        "source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-        "registration": "CURRENT_IN_EXISTING_REGISTRY",
-        "decision": "BLOCKED_BY_SAME_ID_DIVERGENT_SOURCE"
-      },
-      {
-        "source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-        "registration": "SOURCE_VARIANT",
-        "decision": "BLOCKED_BY_SAME_ID_DIVERGENT_SOURCE"
-      },
-      {
-        "source": "src/ptsip/specdata/ptsip-profile.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-        "registration": "GENERIC_SCHEMA_SOURCE",
-        "decision": "FIELD_AND_OWNER_COMPATIBILITY_CHECK_REQUIRED"
+        "source": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
+        "schema_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "registration": "CURRENT_REGISTERED_VERSION",
+        "decision": "PP200_SCHEMA_OWNER_SELECTION_PENDING"
       }
     ]
   },
@@ -1558,5 +1662,252 @@
       "schema data moved under central root",
       "zero unreviewed source path creation"
     ]
+  },
+  "profile_variant_analysis": {
+    "phase": "READ_ONLY_SOURCE_ANALYSIS_COMPLETE_IMPLEMENTATION_NOT_AUTHORIZED",
+    "allowed_source_root": "src/ptsip/",
+    "forbidden_contract_basis": [
+      ".ptsip/**"
+    ],
+    "historical_root": "src/ptsip/schemas/storage/profile/history/",
+    "missing_version": {
+      "version": "pp.1.00",
+      "state": "SOURCE_NOT_FOUND_IN_CURRENT_HEAD",
+      "searched_paths": [
+        "src/ptsip/profiles/history/pp.1.00",
+        "src/ptsip/profiles/**"
+      ],
+      "registry_findings": "src/ptsip/specdata/project-profile-contracts.yaml lists pp.0.00 as LEGACY_COMPATIBILITY_ONLY, pp.1.01, pp.1.02 and pp.2.00; pp.1.00 is not registered",
+      "action": "BLOCK_PP100_SCHEMA_CREATION_UNTIL_EXACT_SOURCE_AND_USER_DECISION"
+    },
+    "source_variants": [
+      {
+        "version": "pp.1.01",
+        "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+        "input_profile": {
+          "path": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
+          "source_blob_sha": "55d6d8b893ba46131b452a00aadb4eba1ff3d9ea",
+          "role": "INSTANCE_FIXTURE_NOT_SCHEMA"
+        },
+        "schema_definition": {
+          "path": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+          "source_blob_sha": "e8379e2d16f2a3c30b7c192c663fa45dc4ee7fec",
+          "role": "EXISTING_VALIDATOR_SCHEMA"
+        },
+        "other_examples": [
+          {
+            "version": "pp.1.01",
+            "path": "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
+            "blob_sha": "e374065259690865c72d66672f53bbe14dc6279d"
+          },
+          {
+            "version": "pp.1.01",
+            "path": "src/ptsip/profiles/history/pp.1.01/example.ptsip.yaml",
+            "blob_sha": "69aa1b9b42bae7c767d5e5ed3aa0d808022bd610"
+          }
+        ],
+        "interpretation": "Preserve version-specific JSON Schema semantics; hybrid YAML provides validation fixture and evidence of fields, never a schema by file extension renaming",
+        "conversion_checks": [
+          "input YAML validates against source schema",
+          "schema $defs and oneOf branch preserved per version",
+          "resulting central JSON Schema is valid draft-2020-12",
+          "original example/hybrid/template fixtures checked as applicable",
+          "schema $id and exact version selection registered",
+          "old source path retired only when zero consumers remain"
+        ]
+      },
+      {
+        "version": "pp.1.02",
+        "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "input_profile": {
+          "path": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
+          "source_blob_sha": "b3e67998fd93f1f917d28ca44998b86f28f9a3af",
+          "role": "INSTANCE_FIXTURE_NOT_SCHEMA"
+        },
+        "schema_definition": {
+          "path": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+          "source_blob_sha": "07fbfe8a5aa9dacc56f7b76e9ceaa3474c5599f2",
+          "role": "EXISTING_VALIDATOR_SCHEMA"
+        },
+        "other_examples": [
+          {
+            "version": "pp.1.02",
+            "path": "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
+            "blob_sha": "d6d6482210600c304d43410dca50c67b0fb273cf"
+          },
+          {
+            "version": "pp.1.02",
+            "path": "src/ptsip/profiles/history/pp.1.02/example.ptsip.yaml",
+            "blob_sha": "c7f502d09323db7d4388854cce89d4f3da64fc22"
+          }
+        ],
+        "interpretation": "Preserve version-specific JSON Schema semantics; hybrid YAML provides validation fixture and evidence of fields, never a schema by file extension renaming",
+        "conversion_checks": [
+          "input YAML validates against source schema",
+          "schema $defs and oneOf branch preserved per version",
+          "resulting central JSON Schema is valid draft-2020-12",
+          "original example/hybrid/template fixtures checked as applicable",
+          "schema $id and exact version selection registered",
+          "old source path retired only when zero consumers remain"
+        ]
+      },
+      {
+        "version": "pp.2.00",
+        "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "input_profile": {
+          "path": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
+          "source_blob_sha": "b1d669d44a8b5698e062923effbaef834570fc85",
+          "role": "INSTANCE_FIXTURE_NOT_SCHEMA"
+        },
+        "schema_definition": {
+          "path": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+          "source_blob_sha": "83eb3b06eae023f5024a853bf40572166cf0a99a",
+          "role": "EXISTING_VALIDATOR_SCHEMA"
+        },
+        "other_examples": [
+          {
+            "version": "pp.2.00",
+            "path": "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml",
+            "blob_sha": "4be32a5f3b8883e76f4024d1be6d6f1f8450eb82"
+          },
+          {
+            "version": "pp.2.00",
+            "path": "src/ptsip/profiles/history/pp.2.00/example.ptsip.yaml",
+            "blob_sha": "ca0d29fbfdef82cc5100cfebe5aa0e2cec6df0ec"
+          }
+        ],
+        "interpretation": "Preserve version-specific JSON Schema semantics; hybrid YAML provides validation fixture and evidence of fields, never a schema by file extension renaming",
+        "conversion_checks": [
+          "input YAML validates against source schema",
+          "schema $defs and oneOf branch preserved per version",
+          "resulting central JSON Schema is valid draft-2020-12",
+          "original example/hybrid/template fixtures checked as applicable",
+          "schema $id and exact version selection registered",
+          "old source path retired only when zero consumers remain"
+        ]
+      }
+    ],
+    "shared_fields": {
+      "ptsip": [
+        "version",
+        "revision (pp1.02+)",
+        "profile_role (pp1.02+)",
+        "specification.source",
+        "specification.revision",
+        "specification.family (pp1.01 only)"
+      ],
+      "responsibility_map": [
+        "mode: hybrid",
+        "template.id",
+        "template.revision",
+        "overrides.components[]"
+      ],
+      "component_item": [
+        "id",
+        "classification",
+        "roles[]",
+        "include[]",
+        "purpose",
+        "shipped",
+        "runtime_required",
+        "executable"
+      ],
+      "policies": [
+        "product_to_nonproduct_runtime_dependency",
+        "nonproduct_in_product_package",
+        "independent_build_resolution"
+      ],
+      "schema_only_optional_fields": [
+        "components",
+        "associated_artifacts",
+        "relationships",
+        "component_dependency_policy",
+        "$defs/responsibilityMap",
+        "$defs/hybridOverrides",
+        "$defs/component",
+        "$defs/templateRef"
+      ]
+    },
+    "version_differences": [
+      {
+        "version": "pp.1.01",
+        "revision_in_fixture": false,
+        "profile_role_in_fixture": false,
+        "specification_family": "0.3.7-draft",
+        "path_literals": [
+          "lib/**",
+          "qa/**"
+        ]
+      },
+      {
+        "version": "pp.1.02",
+        "revision_in_fixture": true,
+        "profile_role_in_fixture": true,
+        "specification_family": null,
+        "path_literals": [
+          "${PACKAGE_ROOT}/**",
+          "${PRODUCT_TEST_ROOT}/**"
+        ]
+      },
+      {
+        "version": "pp.2.00",
+        "revision_in_fixture": true,
+        "profile_role_in_fixture": true,
+        "specification_family": null,
+        "path_literals": [
+          "${PACKAGE_ROOT}/**",
+          "${PRODUCT_TEST_ROOT}/**"
+        ]
+      }
+    ],
+    "current_contract": {
+      "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "role": "CURRENT_REGISTERED_SCHEMA_SELECTOR",
+      "active_registered_version": "pp.2.00",
+      "selected_historical_target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "mechanism": "CONFIG_REGISTRY_EXACT_MAPPING_OR_REF_TO_APPROVED_PP200_SCHEMA_PENDING_ID_SELECTION",
+      "condition": "Do not copy or merge historical versions into current schema; do not invent a separate pp2 schema behavior",
+      "schema_collision": {
+        "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
+        "sources": [
+          "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+          "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json"
+        ],
+        "observed_structural_difference": "Same $id and same JSON Schema validation keyword tree in inspected files; differing title and $comment including candidate lifecycle qualification",
+        "resolution": "USER_SELECTS_REGISTERED_SEMANTIC_OWNER_BEFORE_ACTIVATION_AND_DELETION"
+      }
+    },
+    "template_disposition": {
+      "user_direction": "MERGE_TEMPLATE_VARIANT_INTO_HYBRID_CONTRACT_REVIEW_AND_STOP_SEPARATE_TEMPLATE_EXAMPLE",
+      "source_fixtures": [
+        {
+          "version": "pp.1.01",
+          "path": "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
+          "blob_sha": "e374065259690865c72d66672f53bbe14dc6279d"
+        },
+        {
+          "version": "pp.1.02",
+          "path": "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
+          "blob_sha": "d6d6482210600c304d43410dca50c67b0fb273cf"
+        },
+        {
+          "version": "pp.2.00",
+          "path": "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml",
+          "blob_sha": "4be32a5f3b8883e76f4024d1be6d6f1f8450eb82"
+        }
+      ],
+      "observation": "template fixtures use responsibility_map.mode=template and omit overrides; hybrid fixtures use mode=hybrid with overrides",
+      "plan": "Do not create separate template-profile.schema.json; retain template branch in source schema oneOf for backward validation until user authorizes semantic removal; retire distributed template YAML and src/ptsip/profiles/index.yaml template entry only after consumer and fixture verification",
+      "user_project_data_boundary": "No automatic transformation/deletion of consumer-owned *.ptsip.yaml files",
+      "stop_use_scope": "src/ptsip/profiles/** distributed example/template/hybrid files after canonical schema admission; precise individual file deletion requires consumer evidence"
+    },
+    "source_identity": "Preserve exact source blob SHA, schema $id and version selector in config registry; cannot derive validator rules solely from YAML sample",
+    "schema_file_naming": "PROJECT_PROFILE_HISTORICAL_VERSION_IN_FILENAME_ONLY",
+    "precise_outputs": [
+      "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+      "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+      "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+    ],
+    "no_schema_generated_from_pp100": true
   }
 }
