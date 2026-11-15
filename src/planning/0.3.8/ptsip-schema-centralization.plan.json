@@ -35,12 +35,24 @@
         "RA_id",
         "RA_title",
         "RAC_ids",
-        "AEC_ids"
+        "RAC_name",
+        "AEC_ids",
+        "AEC_name"
       ],
       "list_schema_owner": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
       "relations_nested_in_ra_list": true,
       "field_set_final": false,
-      "ra_id_pattern": "^R-ID-[0-9A-F]{32}$"
+      "ra_id_pattern": "^R-ID-[0-9A-F]{32}$",
+      "field_roles": {
+        "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
+        "RA_title": "Human-readable title of the RA responsibility",
+        "RAC_ids": "References to registered RAC conditions, multiple values allowed in direction",
+        "RAC_name": "Human-readable RAC title/name identifying the condition purpose; must not be discarded during ID-field migration",
+        "AEC_ids": "References to registered AEC conditions, multiple values allowed in direction",
+        "AEC_name": "Human-readable AEC title/name identifying the condition purpose; must not be discarded during ID-field migration"
+      },
+      "RAC_AEC_names_preserved": true,
+      "name_relation_resolution": "FIELD_SEMANTICS_APPROVED_CARDINALITY_AND_STORAGE_OWNERSHIP_PENDING"
     },
     "checklist": {
       "property_schema": {},
@@ -141,7 +153,9 @@
       "RA_id",
       "RA_title",
       "RAC_ids",
-      "AEC_ids"
+      "RAC_name",
+      "AEC_ids",
+      "AEC_name"
     ],
     "ra_relation_field_set_finalized": false,
     "rbac_registration_field_names_finalized": false,
@@ -151,7 +165,7 @@
     "rbac_separate_status_contract": "DEFERRED_UNTIL_DISTINCT_DUTY_PROVEN",
     "rbac_registration_schema_vs_data": "SCHEMA_LOOKUP_ONLY_NO_NEW_REGISTRATION_SCHEMA",
     "ra_id_format": "^R-ID-[0-9A-F]{32}$",
-    "ra_title_legacy_semantics": "OWNER_DIRECTED_MAPPING_FROM_COMPONENT_BINDINGS_TITLE_CONCEPT_VERIFY_SOURCE_RULE_VRULE"
+    "ra_title_legacy_semantics": "OWNER_DIRECTED_MAPPING_FROM_COMPONENT_BINDINGS_TITLE_CONCEPT_VERIFY_SOURCE_RULE_VRULE; RAC_name and AEC_name represent respective condition title/role and are not removed"
   },
   "approval_gates": [
     {
@@ -400,12 +414,29 @@
     {
       "id": "RA-NAMING-AND-RELATION-OWNERSHIP",
       "scope": "RA-list.schema.json",
-      "state": "RA_id_NAME_AND_FORMAT_APPROVED_RA_RELATION_FIELDS_CANDIDATE"
+      "state": "RA_ID_FORMAT_AND_NAME_ROLES_PRESERVED_OTHER_FIELDS_PENDING",
+      "note": "RA_title, RAC_name, AEC_name are distinct human-readable roles. RAC/AEC name ID mapping and requiredness not yet approved."
     },
     {
       "id": "LEGACY-CONDITION-ROLE-MAPPING",
       "scope": "condition_id -> RAC_ids or AEC_ids",
       "state": "BLOCKED_NO_SEMANTIC_OWNER_VERIFIED"
+    },
+    {
+      "id": "RA-RAC-AEC-NAME-FIELDS",
+      "scope": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+      "state": "USER_CONFIRMED_PRESERVE_RAC_NAME_AEC_NAME_ROLES",
+      "note": "ID arrays alone are insufficient for GUI responsibility display; exact mapping and storage shape are future decisions"
+    },
+    {
+      "id": "RA-NAME-CARDINALITY",
+      "scope": [
+        "RAC_ids",
+        "RAC_name",
+        "AEC_ids",
+        "AEC_name"
+      ],
+      "state": "UNRESOLVED_ID_TO_NAME_CARDINALITY_AND_SOURCE_OWNERSHIP"
     }
   ],
   "target_registry": {
@@ -867,10 +898,26 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
       "filename": "ra-list.schema.json",
-      "responsibility": "RA definitions and direct nested RAC/AEC relationships in one List contract; supports RA_id (R-ID 32 uppercase hex), RA_title, RAC_ids[], AEC_ids[] as candidates; GUI semantic fields not yet complete",
+      "responsibility": "RA List owns RA_id/RA_title and RAC_ids/AEC_ids grouped references while preserving human-readable RAC_name/AEC_name title/role semantics. Exact 1-to-many name mapping and storage owner remain undecided.",
       "sources": [],
-      "readiness": "NEW_V4_LIST_CONTRACT_FULL_FIELDS_UNRESOLVED_LEGACY_NOT_FIELD_BASIS",
-      "decision": "ONE_RA_LIST_OWNS_RELATIONSHIPS"
+      "readiness": "RA_REFERENCE_AND_TITLE_ROLES_PRESERVED_FIELD_TYPES_AND_NAME_CARDINALITY_UNRESOLVED",
+      "decision": "ONE_RA_LIST_OWNS_RELATIONSHIPS",
+      "field_candidates": [
+        "RA_id",
+        "RA_title",
+        "RAC_ids",
+        "RAC_name",
+        "AEC_ids",
+        "AEC_name"
+      ],
+      "field_roles": {
+        "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
+        "RA_title": "Human-readable title of the RA responsibility",
+        "RAC_ids": "References to registered RAC conditions, multiple values allowed in direction",
+        "RAC_name": "Human-readable RAC title/name identifying the condition purpose; must not be discarded during ID-field migration",
+        "AEC_ids": "References to registered AEC conditions, multiple values allowed in direction",
+        "AEC_name": "Human-readable AEC title/name identifying the condition purpose; must not be discarded during ID-field migration"
+      }
     },
     {
       "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
@@ -1318,7 +1365,7 @@
     },
     {
       "target": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
-      "resolution": "New RA List owns RA_id/RA_title and grouped RAC_ids/AEC_ids subfields; exact complete field semantics pending, legacy pp300 schema is not authoritative for v4"
+      "resolution": "RA List preserves RA_id RA_title RAC_ids RAC_name AEC_ids AEC_name roles; registered RAC/AEC List own their names, RA-side name mapping or display lookup requires separate review; no separate relation schema and no policy usage backrefs."
     },
     {
       "target": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
@@ -1490,7 +1537,7 @@
       ],
       "actions": [
         "No new rbac-registration.schema.json and no schemas/storage/registry/rbac subdirectory in current v4; preserve independent runtime authorization obligations",
-        "RA-list.schema.json owns RA_id RA_title RAC_ids[] AEC_ids[] relationship field candidates; no separate ra-relation-list.schema.json",
+        "RA-list.schema.json retains six responsibility dimensions: RA_id, RA_title, RAC_ids, RAC_name, AEC_ids, AEC_name; do not discard condition name/title fields while changing ID references",
         "distinguish user/mode/project profiles",
         "preserve historical profile versions as separately selectable contract definitions",
         "repair invalid User_Profile before admission",
@@ -1503,9 +1550,11 @@
         "Expose current project-profile.schema.json through exact pp2.00 selected historical resource without overriding semantic version evidence",
         "No RA-list policy-document usage fields, no policy target/subject refs; only Policy Documents own their RA usage links",
         "Classify legacy condition_id C-ID records by actual registered condition role before RAC_ids or AEC_ids conversion; no name-based guessing",
-        "RA_title is intended human title; previous component_bindings[*].rule observed, component_bindings.vrule not found in inspected sample; audit exact original before mapping"
+        "RA_title is intended human title; previous component_bindings[*].rule observed, component_bindings.vrule not found in inspected sample; audit exact original before mapping",
+        "Compare RAC_name/AEC_name semantics with existing src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json and aec.pp.3.00.schema.json as read-only historical evidence; v4 does not inherit pp3 structural format",
+        "Decide whether names are looked up from registered RAC/AEC Lists or repeated as RA-local display fields; when multiple IDs exist require deterministic ID/name matching without guessing singular vs array forms"
       ],
-      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated",
+      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
     },
     {
@@ -1932,7 +1981,9 @@
       "RA relation references are subfields of RA List; policy rules reference only RA_id and RA list never declares policy usage",
       "RA_id matches ^R-ID-[0-9A-F]{32}$; never generate or validate id_RA as v4 field",
       "Historical C-ID condition_id must not be silently assigned to RAC_ids vs AEC_ids without verified semantic owner",
-      "RA_title GUI readable semantics distinct from RA ID; complete responsibility field constraints require approval"
+      "RA_title GUI readable semantics distinct from RA ID; complete responsibility field constraints require approval",
+      "RAC_name and AEC_name responsibility meanings are preserved in RA List schema design and GUI projection; no schema simplification drops these semantic roles",
+      "When RA references multiple RAC_ids/AEC_ids, names must resolve deterministically to registered RAC/AEC definitions; exact field storage representation is explicitly approved before implementation"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1967,7 +2018,10 @@
       "unapproved_registry_rbac_subdir",
       "legacy_condition_id_auto_classified",
       "v4_rule_field_id_RA",
-      "RA_list_policy_reverse_usage"
+      "RA_list_policy_reverse_usage",
+      "rac_name_semantics_omitted",
+      "aec_name_semantics_omitted",
+      "ambiguous_multi_condition_id_name_binding"
     ],
     "powershell_commands_in_order": [
       "$log = '.\\schema-centralization-validation.log'",
@@ -3578,7 +3632,9 @@
             "RA_id",
             "RA_title",
             "RAC_ids",
-            "AEC_ids"
+            "RAC_name",
+            "AEC_ids",
+            "AEC_name"
           ],
           "ra_id": {
             "type": "string",
@@ -3589,10 +3645,14 @@
             "owner": "RA_LIST_RECORD",
             "field_candidates": [
               "RAC_ids",
-              "AEC_ids"
+              "RAC_name",
+              "AEC_ids",
+              "AEC_name"
             ],
             "array_multiplicity": "APPROVED_DIRECTION",
-            "relationship_requiredness": "UNRESOLVED"
+            "relationship_requiredness": "UNRESOLVED",
+            "name_cardinality": "UNRESOLVED_FOR_MULTI_REFERENCES",
+            "registered_name_owner": "RAC/AEC respective List contracts"
           },
           "ra_title": {
             "concept": "RESPONSIBILITY_HUMAN_READABLE_TITLE",
@@ -3600,7 +3660,43 @@
           },
           "complete_fields": "NOT_APPROVED",
           "requiredness": "UNRESOLVED",
-          "policy_back_reference": "FORBIDDEN"
+          "policy_back_reference": "FORBIDDEN",
+          "field_roles": {
+            "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
+            "RA_title": "Human-readable title of the RA responsibility",
+            "RAC_ids": "References to registered RAC conditions, multiple values allowed in direction",
+            "RAC_name": "Human-readable RAC title/name identifying the condition purpose; must not be discarded during ID-field migration",
+            "AEC_ids": "References to registered AEC conditions, multiple values allowed in direction",
+            "AEC_name": "Human-readable AEC title/name identifying the condition purpose; must not be discarded during ID-field migration"
+          },
+          "name_metadata": {
+            "status": "FIELD_ROLES_PRESERVED_RECORD_CARDINALITY_UNRESOLVED",
+            "candidates": [
+              "RA_id",
+              "RA_title",
+              "RAC_ids",
+              "RAC_name",
+              "AEC_ids",
+              "AEC_name"
+            ],
+            "roles": {
+              "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
+              "RA_title": "Human-readable title of the RA responsibility",
+              "RAC_ids": "References to registered RAC conditions, multiple values allowed in direction",
+              "RAC_name": "Human-readable RAC title/name identifying the condition purpose; must not be discarded during ID-field migration",
+              "AEC_ids": "References to registered AEC conditions, multiple values allowed in direction",
+              "AEC_name": "Human-readable AEC title/name identifying the condition purpose; must not be discarded during ID-field migration"
+            },
+            "parent_schema": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+            "RAC_name_source_owner": "RAC List owns registered RAC identity and name; new RA List record presentation/denormalization rule still unresolved",
+            "AEC_name_source_owner": "AEC List owns registered AEC identity and name; new RA List record presentation/denormalization rule still unresolved",
+            "multiple_references": "RAC_ids/AEC_ids may each refer to multiple registered conditions",
+            "name_alignment": "UNDECIDED: if RAC_name/AEC_name are stored in RA record, define exact 1-to-N correspondence; do not infer one shared name for multiple IDs",
+            "duplicate_data_policy": "UNDECIDED: identity source is respective RAC/AEC List; RA List may retain labeled display information only after owner/lookup semantics approved",
+            "field_requiredness": "UNRESOLVED",
+            "example_only": "DO_NOT_INFER_JSON_SCHEMA_TYPES_FOR_NAME_MULTIPLICITY",
+            "no_reverse_policy_usage": true
+          }
         },
         "relation": {
           "owner": "RA_LIST_RECORD",
@@ -3609,15 +3705,19 @@
           "separate_schema": "DO_NOT_CREATE",
           "fields_candidates": [
             "RAC_ids",
-            "AEC_ids"
+            "RAC_name",
+            "AEC_ids",
+            "AEC_name"
           ],
           "ra_identity": "RA_id",
           "ra_title": "RA_title",
           "legacy_condition_id": "C-ID type cannot be classified RAC/AEC by legacy field name alone",
           "mapping_blocker": "VERIFY_CONDITION_ID_SEMANTIC_OWNER_BEFORE_TRANSLATION",
           "field_requiredness": "UNRESOLVED",
-          "gui_semantics": "RA_TITLE_AND_RICHER_RESPONSIBILITY_FIELDS_REQUIRE_REVIEW",
-          "no_policy_backref": true
+          "gui_semantics": "RA_title plus RAC_name/AEC_name represent purpose/title of linked conditions; owner and 1-to-N mapping require explicit review",
+          "no_policy_backref": true,
+          "names_are_required_semantic_roles": true,
+          "name_binding_type": "UNRESOLVED"
         },
         "registration": {
           "schema_owner": "NO_SEPARATE_SCHEMA_IN_CURRENT_V4",
@@ -3822,6 +3922,19 @@
         "id": "RBAC-EXTRA-REGISTRATION-SCHEMA",
         "state": "NOT_REQUIRED_IN_CURRENT_V4",
         "value": "No new schema unless separately justified"
+      },
+      {
+        "id": "RA_RAC_AEC_NAME_PRESERVATION",
+        "state": "USER_EXPLICIT_ROLE_PRESERVED",
+        "value": {
+          "RAC_name": "Human-readable RAC condition title/role",
+          "AEC_name": "Human-readable AEC condition title/role"
+        }
+      },
+      {
+        "id": "RA_RAC_AEC_NAME_MAPPING",
+        "state": "UNRESOLVED_SUBORDINATE_DESIGN",
+        "value": "Decide name representation/lookup with multiple RAC_ids/AEC_ids and respective RAC/AEC List ownership; no implicit type or requiredness"
       }
     ],
     "concrete_work_plan": [
@@ -3871,7 +3984,7 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Author independent new RA/RAC/AEC List schemas. RA List records own RA_id, RA_title and internal RAC_ids/AEC_ids relationship fields; exact full GUI-readable field set remains unresolved; do not copy pp300 tuple grammar.",
+        "action": "Design independent RA/RAC/AEC List schemas preserving RA_id, RA_title, RAC_ids, RAC_name, AEC_ids, AEC_name semantic roles. RAC/AEC names are human-readable condition titles. Determine field shape and cross-list ownership without inferring types or omitting names.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
@@ -3883,15 +3996,17 @@
         "dependency": [
           "PVR-04"
         ],
-        "action": "Complete RA List internal relationship subfields, GUI-readable title/responsibility semantics, and historical condition_id C-ID classification before schema creation; no separate relation or registration schema files.",
+        "action": "Finalize RA List internal RAC_ids/RAC_name and AEC_ids/AEC_name relationships, verify registered RAC/AEC name ownership, 1-to-many ID/name matching, rich GUI-readable responsibilities, and historical condition_id binding kind before schema creation.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "RA field responsibility ownership matrix",
-          "legacy condition_id conversion classification evidence"
+          "legacy condition_id conversion classification evidence",
+          "RAC_name/AEC_name role and cardinality decision record"
         ],
         "blocked_on": [
           "RA-FULL-FIELD-OWNERSHIP",
-          "LEGACY-CONDITION-KIND-MAPPING"
+          "LEGACY-CONDITION-KIND-MAPPING",
+          "RAC_AEC_NAME_MAPPING_CARDINALITY"
         ]
       },
       {
@@ -4061,6 +4176,6 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "0.3.8 distributed product source plan, not current repository instance contract update"
+    "last_user_direction": "PTSIP 0.3.8 planning only: preserve RAC_name and AEC_name as human-readable condition title/role along with RA_id RA_title RAC_ids AEC_ids; do not implement or silently resolve one-to-many name mapping."
   }
 }
