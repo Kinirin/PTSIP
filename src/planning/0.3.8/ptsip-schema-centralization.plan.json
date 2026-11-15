@@ -1614,7 +1614,7 @@
         "PTSIP v4 top-level exactly Policy_Identity, Policy_Lifecycle, Policy_Rules, Policy_Content; top-level schema reference-only",
         "Policy_Identity title is this policy title; Policy_Category is official field and root_family/policy_kind are developer-level projections with physical shape unresolved",
         "Policy_Identity.version grammar allows 3-part, optional suffix/prefix, optional build/revision components; separate revision field prohibited",
-        "Policy_Lifecycle.status uses exact previous 13 official values; compact Policy_Lifecycle.evaluation YYMMDDDD? NO: date format YYYYMMDD plus optional description <=200 chars empty preferred",
+        "Policy_Lifecycle.status uses exactly 13 existing official values; Policy_Lifecycle.evaluation is one compact ordered two-item array of {last_changed_date: YYYYMMDD} and {description: optional natural language <=200 chars, blank preferred}; no approval reference field",
         "Rules[] own id/content.content_id[]/RA_id, no source_ref; evaluation has source_refs/state/specific evaluation_scope/evaluated_at, no evidence_refs",
         "Policy_Content.items[] owns id/value/path/sha256/revision_ref, no source_pointer or source_document; content IDs referenced from rule content_id[]",
         "Content item ID pattern pending; v3 Unified Policy and old validation schemas not inherited",
@@ -4394,7 +4394,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "Version 0.3.8 per-field review: approvals by exception, corrected Policy v4 and Plan, new contract locator candidates, task/checklist status automation; planning only"
+    "last_user_direction": "Version 0.3.8 per-field review: approvals by exception, corrected Policy v4 and Plan, new contract locator candidates, task/checklist status automation; planning only; Lifecycle.evaluation exactly two map elements, not an append-only audit trail."
   },
   "release_038_field_review": {
     "contract": "ptsip-release-038-field-decisions/v1",
@@ -5113,7 +5113,10 @@
         "description_max_length": 200,
         "description_empty_recommended": true,
         "external_approval_ref": false,
-        "layout": "UNRESOLVED_ONE_MAP_VS_TWO_MAP_ELEMENTS"
+        "layout": "ORDERED_TWO_SINGLE_FIELD_MAPS",
+        "number_of_entries": 2,
+        "no_cumulative_event_append_rule": "ONLY_LATEST_CHANGE_SNAPSHOT_NOT_AN_EVENT_LOG",
+        "subfield_names_are_candidates": true
       },
       "rule_content_ref": "Policy_Rules.rules[].content.content_id[]",
       "content_item_fields": [
@@ -5131,7 +5134,9 @@
         "Policy_Content.items[].source_pointer",
         "Policy_Content.source_document"
       ],
-      "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY_NO_WHOLE_RULE"
+      "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY_NO_WHOLE_RULE",
+      "category_physical_shape": "UNRESOLVED: official Policy_Category exists; internal developer root_family/policy_kind extraction requires separate path/serialization decision",
+      "category_official_field": "Policy_Identity.Policy_Category"
     },
     "rbac": {
       "schema_root": "src/ptsip/schemas/storage/rbac/",
@@ -5270,7 +5275,9 @@
       {
         "id": "POLICY_LIFECYCLE_EVALUATION_SHAPE",
         "field": "F-POL-033",
-        "state": "ONE_OBJECT_VS_TWO_MAP_ENTRIES_PENDING"
+        "state": "RESOLVED_TWO_SINGLE_FIELD_MAPS",
+        "layout": "[{last_changed_date: YYYYMMDD}, {description: optional_0_to_200_char_text}]",
+        "field_spelling": "PROPOSED"
       },
       {
         "id": "TASK_OUTPUT_CONTRACT",
@@ -5281,6 +5288,11 @@
         "id": "EFFECTIVE_POLICY_CONFORMANCE",
         "scope": "src/policy/**",
         "state": "VERIFY_BEFORE_IMPLEMENTATION"
+      },
+      {
+        "id": "POLICY_CATEGORY_SUBFIELDS",
+        "field": "F-POL-004",
+        "state": "OFFICIAL_FIELD_APPROVED_DEVELOPER_SUBFIELD_SERIALIZATION_UNRESOLVED"
       }
     ]
   }
