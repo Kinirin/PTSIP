@@ -167,8 +167,8 @@
     },
     {
       "id": "FIELDS-01",
-      "scope": "Full v4 field names/types/requiredness and independent sub-contract ownership (beyond three declared fields)",
-      "state": "UNRESOLVED_BLOCK_GENERATION"
+      "scope": "Policy v4 independent sub-contract field types/requiredness and complete RA List GUI semantics",
+      "state": "PARTIAL_POLICY_FIXED_SUBFIELDS_PENDING"
     },
     {
       "id": "SOURCE-01",
@@ -1436,7 +1436,8 @@
         "Policy_Content owns items[] {id,source_pointer,value} and source_document {path,sha256}",
         "Do not infer requiredness, state enum, or user source payload value type from YAML example",
         "Author Content in separately referenced contract only after Content file location approved",
-        "Preserve no v3 inheritance and RA_id uppercase 32-hex R-ID machine pattern"
+        "Preserve no v3 inheritance and RA_id uppercase 32-hex R-ID machine pattern",
+        "Rules references only RA_id; C-ID legacy condition_id is not a substitute for R-ID RA_id"
       ],
       "gate": "Four field contracts fully scoped; Content path approved; Rule evaluation nested; separate refs compile",
       "priority": "ACTIVE_FOCUS_POLICY_V4"
@@ -1893,7 +1894,7 @@
       "Schema filenames have no version except the explicitly approved historical project-profile-pp.1.01.schema.json and project-profile-pp.1.02.schema.json",
       "no unresolved $ref or duplicate registered $id",
       "Checklist no mandatory fields",
-      "RA-name exact and RAC/AEC ID-name consistency",
+      "RA_id syntax ^R-ID-[0-9A-F]{32}$, RA_title meaning, and RAC_ids/AEC_ids lookup consistency are validated in their proper owning List contracts; exact field requiredness awaits user approval",
       "historical profiles remain verifiable",
       "new schema package data present in built wheel",
       "removed sources have zero remaining refs",
