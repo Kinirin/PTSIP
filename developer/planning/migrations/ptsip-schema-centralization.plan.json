@@ -239,6 +239,16 @@
         "src/ptsip/schemas/storage/rbac/"
       ],
       "state": "ACTIVE_DESIGN_PRIORITY"
+    },
+    {
+      "id": "V4-RBAC-TEST-FILES-01",
+      "scope": [
+        "src/tests/ptsip/test_policy_v4_schema.py",
+        "src/tests/ptsip/test_policy_ra_registry_resolution.py",
+        "src/tests/ptsip/test_rbac_cross_reference.py",
+        "src/tests/ptsip/rbac_conformance.json"
+      ],
+      "state": "EXACT_TEST_FILENAMES_PROPOSED_AWAIT_USER_APPROVAL"
     }
   ],
   "target_registry": {
@@ -3281,6 +3291,18 @@
         "source_index_disposition": "UNRESOLVED: migration of pp.3.00.contract.json into central config.json or separate versioned manifest; not a .schema.json",
         "name_resolution": "RA id -> RA record -> registered RAC ID/name and AEC ID/name, deterministic exact equality; missing/mismatched name or duplicate ID fails closed",
         "permission": "No structural validation implies registration, role authorization, Rego execution or activation"
+      },
+      "tests": {
+        "root": "src/tests/ptsip/",
+        "path_status": "PROPOSED_FILE_NAMES_AWAIT_APPROVAL",
+        "files": [
+          "src/tests/ptsip/test_policy_v4_schema.py",
+          "src/tests/ptsip/test_policy_ra_registry_resolution.py",
+          "src/tests/ptsip/test_rbac_cross_reference.py",
+          "src/tests/ptsip/rbac_conformance.json"
+        ],
+        "existing_conformance_source": "src/ptsip/compile_sealed_rbac/testdata/conformance.json",
+        "migration": "Copy then validate all 27 source cases, migrate source file out before retiring old compile_sealed_rbac directory; do not create new testdata/ directory."
       }
     },
     "policy_decision_gates": [
@@ -3405,9 +3427,12 @@
           "PVR-05",
           "PVR-06"
         ],
-        "action": "Put new conformance tests under src/tests/ptsip/; port 27 old pp3 structural cases after owner review, plus v4 rule RA reference roundtrip",
+        "action": "After user approves exact filenames, place all new Policy v4, Policy→RA join, RBAC cross-ref tests and the 27-case legacy structural fixture directly under src/tests/ptsip/ (no testdata/). Validate both old pp3 semantics and approved new RA representation separately.",
         "outputs": [
-          "src/tests/ptsip/ (exact filenames pending approval)"
+          "src/tests/ptsip/test_policy_v4_schema.py",
+          "src/tests/ptsip/test_policy_ra_registry_resolution.py",
+          "src/tests/ptsip/test_rbac_cross_reference.py",
+          "src/tests/ptsip/rbac_conformance.json"
         ]
       },
       {
