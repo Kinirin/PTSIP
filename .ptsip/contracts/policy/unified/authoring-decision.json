@@ -56,6 +56,40 @@
         "implementation_source_paths_approved": false,
         "runtime_cutover_approved": false
       }
+    },
+    "rbac_list_record_ownership": {
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "date": "2026-11-16",
+      "state": "APPROVED_SEMANTIC_BOUNDARIES_ONLY",
+      "scope": [
+        "RAC-list.ptsip.yaml",
+        "AEC-list.ptsip.yaml"
+      ],
+      "file_id": {
+        "field": "file_id",
+        "pattern": "^profiles-[0-9a-f]{32}$",
+        "maxLength": 41,
+        "basis": "PATTERN_ONLY_FROM_SRC_PTSIP_PP300_PTSIP_ID"
+      },
+      "entry_id_patterns": {
+        "AEC_list": "^ID-AEC-[a-zA-F0-9]{16}$",
+        "RAC_list": "^ID-RAC-[a-zA-F0-9]{16}$"
+      },
+      "record_value": {
+        "field": "value",
+        "ownership": "INLINE_SELF_CONTAINED_IN_OWN_LIST_FILE",
+        "external_value_file_delegation": "FORBIDDEN",
+        "ref_based_value_delegation": "FORBIDDEN",
+        "distinction": "FORWARD_ID_LINKS_FROM_RA_LIST_TO_RAC_AEC_LIST_REMAIN_ALLOWED"
+      },
+      "not_authorized": [
+        "REINSTATE_PREVIOUSLY_REJECTED_RAC_AEC_FIELD_SET",
+        "INFER_ENTRY_ID_FIELD_NAMES_OR_FULL_RECORD_LAYOUT",
+        "INFER_ID_GENERATION_ALGORITHM_FROM_REGEX",
+        "MODIFY_PP300_SOURCE_SCHEMAS",
+        "IMPLEMENT_NEW_LIST_SCHEMAS"
+      ],
+      "execution_authorized": false
     }
   }
 }
