@@ -56,6 +56,57 @@
         "implementation_source_paths_approved": false,
         "runtime_cutover_approved": false
       }
+    },
+    "policy_v4_authoring": {
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "recorded_on": "2026-11-15",
+      "scope": "PTSIP_POLICY_V4_INDEPENDENT_CONTRACT",
+      "schema_key": "ptsip.policy.v4",
+      "precedence": "NEW_V4_CONTRACT_DIRECTION_WITHOUT_MUTATING_V3_CANDIDATE",
+      "v3": {
+        "status": "PRESERVE_AS_HISTORICAL_CANDIDATE",
+        "schema": ".ptsip/contracts/policy/unified/Unified_Policy.schema.json",
+        "schema_inheritance": "FORBIDDEN",
+        "compatibility_contract": "NONE",
+        "field_design_basis": "FORBIDDEN"
+      },
+      "structure": {
+        "pattern": "REFERENCE_ONLY_ROOT_PLUS_INDEPENDENT_FIELD_CONTRACTS",
+        "inline_top_level_semantic_field_definitions": "FORBIDDEN",
+        "central_schema_root": "src/ptsip/schemas/policy/",
+        "independent_fields": [
+          "Policy_Identity",
+          "Policy_Lifecycle",
+          "Policy_Rules"
+        ],
+        "complete_v4_field_ownership": "UNRESOLVED_REQUIRES_SEPARATE_DECISION"
+      },
+      "rule_authority": {
+        "rule_link": "id_RA",
+        "ra_record_fields": [
+          "RA-name",
+          "RAC_id",
+          "RAC_name",
+          "AEC_id",
+          "AEC_name"
+        ],
+        "multiple_condition_relationships": "INDEPENDENT_MACHINE_CONTRACT",
+        "authority_from_schema_validation": "FORBIDDEN"
+      },
+      "rbac": {
+        "schema_lookup_registry": "src/ptsip/schemas/config.json",
+        "status_registration": "SEPARATE_CONTRACT",
+        "legacy_pp300_manifest": "UNCHANGED_NOT_REUSED",
+        "activation_from_schema_validation": "FORBIDDEN",
+        "new_registration_contract_details": "UNRESOLVED"
+      },
+      "implementation": {
+        "priority": "POLICY_V4_THEN_RBAC_SCHEMA_LINK",
+        "no_legacy_v3_compatibility": "REQUIRED",
+        "user_project_profile_data_deletion": "FORBIDDEN",
+        "activation_authorized": false,
+        "migration_implementation_authorized": false
+      }
     }
   }
 }
