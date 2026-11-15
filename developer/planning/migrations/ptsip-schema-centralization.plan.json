@@ -80,7 +80,17 @@
     "profile_legacy_directory": "src/ptsip/profiles/",
     "profile_legacy_directory_disposition": "RETIRE_ALL_CONTENTS_RECURSIVELY_AFTER_VALIDATED_MIGRATION",
     "profile_directory_total_files": 22,
-    "profile_legacy_file_paths_permanently_retired": true
+    "profile_legacy_file_paths_permanently_retired": true,
+    "cli_main_source": "src/ptsip/CLI.go",
+    "new_cmd_directory": "DO_NOT_CREATE",
+    "new_testdata_directory": "DO_NOT_CREATE",
+    "new_test_root": "src/tests/ptsip/",
+    "go_internal_subdirectories": "DEFERRED_NOT_APPROVED",
+    "current_implementation_priority": [
+      "PTSIP_POLICY_V4_CONTRACTS",
+      "RBAC_SCHEMA_TRANSFER_AND_CROSS_REGISTRY_BINDING"
+    ],
+    "profile_go_implementation_priority": "DEFERRED"
   },
   "approval_gates": [
     {
@@ -169,7 +179,8 @@
     {
       "id": "GO-PROTOCOL-01",
       "scope": "Go CLI typed operations and Python callsite bridge",
-      "state": "NEEDS_EXPLICIT_CONTRACT_REVIEW"
+      "state": "DEFERRED_TILL_V4_RBAC",
+      "note": "Existing src/ptsip/CLI.go already owns main; adding a public cmd/ entrypoint prohibited."
     },
     {
       "id": "GO-RULE-RECORD-01",
@@ -199,21 +210,35 @@
     },
     {
       "id": "GO-CHILD-PATH-01",
+      "scope": "src/ptsip/profile_contract/",
+      "state": "DEFERRED_SUBDIRECTORY_AND_FILE_DECISIONS",
+      "note": "Do not create cmd/, testdata/ or internal/**; main src/ptsip/CLI.go is existing entry. Go subpaths considered after Policy v4 and RBAC."
+    },
+    {
+      "id": "CLI-MAIN-01",
+      "scope": "src/ptsip/CLI.go",
+      "state": "USER_SELECTED_EXISTING_ENTRY",
+      "note": "Main CLI exists and routes engine operations; v4/RBAC does not require a new cmd/."
+    },
+    {
+      "id": "TEST-ROOT-01",
+      "scope": "src/tests/ptsip/",
+      "state": "USER_SELECTED_TEST_ROOT",
+      "note": "No new testdata/ directory; place new test contracts, cases and fixtures in approved src/tests/ptsip/."
+    },
+    {
+      "id": "GO-INTERNAL-01",
+      "scope": "src/ptsip/profile_contract/internal/**",
+      "state": "DEFERRED_NOT_APPROVED"
+    },
+    {
+      "id": "PRIORITY-01",
       "scope": [
-        "src/ptsip/profile_contract/go.mod",
-        "src/ptsip/profile_contract/go.sum",
-        "src/ptsip/profile_contract/cmd/ptsip-profile-contract/main.go",
-        "src/ptsip/profile_contract/internal/protocol/protocol.go",
-        "src/ptsip/profile_contract/internal/registry/registry.go",
-        "src/ptsip/profile_contract/internal/identity/identity.go",
-        "src/ptsip/profile_contract/internal/rules/rules.go",
-        "src/ptsip/profile_contract/internal/metadata/metadata.go",
-        "src/ptsip/profile_contract/internal/transition/transition.go",
-        "src/ptsip/profile_contract/internal/catalog/catalog.go",
-        "src/ptsip/profile_contract/internal/validation/validator.go",
-        "src/ptsip/_profile_contract.py"
+        "ptsip.policy.v4",
+        "src/ptsip/schemas/policy/",
+        "src/ptsip/schemas/storage/rbac/"
       ],
-      "state": "PROPOSAL_USER_APPROVAL_REQUIRED"
+      "state": "ACTIVE_DESIGN_PRIORITY"
     }
   ],
   "target_registry": {
@@ -1227,7 +1252,8 @@
         "Register all 3 version-specific historical schema resources and current pp2.00 selector; file names exact; reject pp1.00 without source",
         "Remove old src/ptsip/profiles/index.yaml sample catalog as a source of runtime schema metadata; register exact current and historical Project Profile schemas in central config.json"
       ],
-      "gate": "JSON parse PASS; unresolved records explicitly blocked, never generated"
+      "gate": "JSON parse PASS; unresolved records explicitly blocked, never generated",
+      "priority": "ACTIVE_FOCUS_CENTRAL_CONFIG"
     },
     {
       "id": "WU-03",
@@ -1252,7 +1278,8 @@
         "keep unapproved evaluation/content/other fields unresolved",
         "no automatic Java/Markdown semantic schema where no source exists"
       ],
-      "gate": "all Policy v4 fields approved; $ref closure PASS; RA id references validated"
+      "gate": "all Policy v4 fields approved; $ref closure PASS; RA id references validated",
+      "priority": "ACTIVE_FOCUS_POLICY_V4"
     },
     {
       "id": "WU-04",
@@ -1309,7 +1336,8 @@
         "Inspect each template YAML only to preserve compatible template branch if needed; remove separate distributed template example and index entry after consumer analysis",
         "Expose current project-profile.schema.json through exact pp2.00 selected historical resource without overriding semantic version evidence"
       ],
-      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated"
+      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated",
+      "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
     },
     {
       "id": "WU-06",
@@ -1352,7 +1380,8 @@
         "no merging of engine-authority or validation schemas into policy",
         "storage/evidence/** remains pending user path approval; do not infer its approval from engine root approval"
       ],
-      "gate": "20/20 engine mappings and 1/1 discovery, 4/4 evidence have exact source contracts and schema tests"
+      "gate": "20/20 engine mappings and 1/1 discovery, 4/4 evidence have exact source contracts and schema tests",
+      "priority": "PARTIAL_ONLY_ENGINE_CONSUMER_PATHS_OTHER_SCHEMA_MIGRATION_DEFERRED"
     },
     {
       "id": "WU-07",
@@ -1470,7 +1499,7 @@
         "Preserve template oneOf validator semantics where registered, but stop separately exporting template example after usages audited",
         "Record each historical target hash/version/registered lifecycle in central config and revise active alias for pp2.00 only",
         "Run static usage scan for old example/template YAML and retire only those proven unused after central schema and Go consumer replacement",
-        "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed dedicated Go JSON golden data, preserving original Git sha evidence"
+        "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence"
       ],
       "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure"
     },
@@ -1503,7 +1532,8 @@
         "Produce a complete old API / Go operation parity matrix",
         "Classify all 22 src/ptsip/profiles files by Python, YAML sample, history fixture, profile-local schema, catalog and package marker"
       ],
-      "gate": "6/6 behavior inventoried, all actual consumers resolved; Go source paths remain uncreated"
+      "gate": "6/6 behavior inventoried, all actual consumers resolved; Go source paths remain uncreated",
+      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     },
     {
       "id": "WU-12",
@@ -1519,20 +1549,18 @@
         "new Go/Python bridge proposed"
       ],
       "outputs": [
-        "User-approved exact child Go directories and source filenames within src/ptsip/profile_contract/",
-        "typed six-operation independent Go protocol",
-        "source-only fixture testdata layout",
-        "error code contract and test matrix"
+        "Future approved Go leaf paths, after v4/RBAC",
+        "Future typed operations and CLI integration contract"
       ],
       "exact_steps": [
-        "Treat B dedicated Go module src/ptsip/profile_contract/ as approved. Do not reopen common_contract/profile or engine Go root options.",
-        "Review directory responsibilities and exact leaf files proposed under internal/{registry,identity,rules,metadata,transition,catalog,validation}, cmd/ and testdata/",
-        "Have user approve Go module source child directories and Go/Python bridge file before creating those files",
-        "Define independent JSON request/response protocol, registered schema version/sha selector, fail-closed error code contract",
-        "Ensure legacy Python namespace ptsip.profiles is not reintroduced as a compatibility shim",
-        "Define semantic compatibility scope: old version and profile data validation yes; old filesystem resource/import path cannot exist after complete deletion"
+        "Defer Go child directories until Policy v4/RBAC binding is agreed and verified",
+        "Use existing src/ptsip/CLI.go as only existing main entry; do not propose new cmd/",
+        "Use src/tests/ptsip/ for new tests and fixtures; do not create testdata/",
+        "Do not create internal/** until user approves module responsibilities, source filenames and transport",
+        "Select a Go integration boundary only after schema contract and RA identity decisions are made"
       ],
-      "gate": "Dedicated root approved; no Go source leaf creation until exact child paths and transport are approved; no silent promise of old resource-path compatibility"
+      "gate": "DEFERRED: V4/RBAC gates have priority; no cmd/ testdata/ internal/** creation",
+      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     },
     {
       "id": "WU-13",
@@ -1562,7 +1590,7 @@
         "Go executable and wheel packaging rules validated independently of old src/ptsip/profiles assets"
       ],
       "exact_steps": [
-        "Implement independent Go profile_contract module under approved child paths; do not modify or import common_contract as source of profile schema meaning without distinct approval",
+        "Deferred until Policy v4 + storage/rbac contract decisions and tests; do not create cmd/, internal/**, testdata/.",
         "Implement six typed operations with registry version selection and SHA validation for pp1.01 pp1.02 pp2.00; missing/unknown profile IDs fail",
         "Convert original YAML instance fixtures into JSON golden tests preserving strings and source Git blob SHA; do not mistake fixtures for JSON Schema",
         "Wire approved Python consumers via typed Go bridge outside src/ptsip/profiles/; no hidden local Python fallback",
@@ -1570,7 +1598,8 @@
         "Test Go operations, Python CLI, clarification, migration and specification integration; ship independent Go binary with wheel",
         "Run wheel source/dist admission and legacy-path usage checks before enabling source directory removal"
       ],
-      "gate": "Go unit tests, Python-Go integration tests, CLI/migration regression and wheel smoke pass; zero usage of retired modules"
+      "gate": "Go unit tests, Python-Go integration tests, CLI/migration regression and wheel smoke pass; zero usage of retired modules",
+      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     },
     {
       "id": "WU-14",
@@ -1612,14 +1641,15 @@
       "exact_steps": [
         "Verify 22/22 source files correspond to immutable Git blob SHA and have mapped semantic/data/function responsibility",
         "Verify Go 6-operation replacement and Python consumer import rewiring and edge-case compatibility tests",
-        "Verify 12 YAML instances transferred into JSON golden fixture evidence (not schema files), two schemas into canonical resources, sample catalog replaced/retired and package marker unused",
+        "Verify 12 YAML instances transferred into JSON fixture evidence in src/tests/ptsip/ (not schema files), two schemas into canonical resources, sample catalog replaced/retired and package marker unused",
         "Replace setup.py, MANIFEST.in, pyproject.toml, registry and release tests that require original profile root before deleting",
         "Build clean wheel and source distribution without old profiles dir; resolve source snapshots via Git sha and accepted normalized fixture testdata",
         "Delete all 22 files and their now-empty directories as one explicitly scoped retirement step, never deleting user-owned .ptsip/profiles",
         "Verify git ls-files src/ptsip/profiles has zero output; grep imports ptsip.profiles and old path references with release acceptance exceptions only after explicit review",
         "Repeat Go tests, Python CLI integration, distribution tests and github workflow verification; log evidence then remove temporary log"
       ],
-      "gate": "22/22 tracked paths removed; 0 active consumers; 6/6 Go operations verified; 12/12 YAML fixture evidence; 2/2 schemas migrated; source wheel/package checks PASS"
+      "gate": "22/22 tracked paths removed; 0 active consumers; 6/6 Go operations verified; 12/12 YAML fixture evidence; 2/2 schemas migrated; source wheel/package checks PASS",
+      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     }
   ],
   "observed_breakages": [
@@ -1715,7 +1745,12 @@
       "All 22 tracked files in src/ptsip/profiles/ recursively removed after their per-file responsibility transition is verified",
       "12 profile YAML source examples preserved as normalized JSON test fixture evidence before complete directory removal, with no schema misclassification",
       "setup.py, pyproject.toml, MANIFEST.in and release tests build/validate with no old src/ptsip/profiles directory",
-      "Old resource/import literal paths not falsely claimed backwards-compatible with full deletion; scope reviewed by user"
+      "Old resource/import literal paths not falsely claimed backwards-compatible with full deletion; scope reviewed by user",
+      "Existing src/ptsip/CLI.go remains the only existing public Go main entrypoint; no new cmd/ directory created",
+      "All new profile, policy v4 and RBAC conformance tests and fixtures are placed under src/tests/ptsip/; no new testdata/ directory created",
+      "No new profile_contract/internal/** tree created without user approval",
+      "Central RBAC migration preserves pp3 unregistered/structure-only status and distinguishes schema, registry, cross-ref and authorization",
+      "RA source 1..N condition references and new RA 5-field record cardinality conflict resolved before code generation"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1739,7 +1774,7 @@
       "$log = '.\\schema-centralization-validation.log'",
       "git rev-parse HEAD 2>&1 | Tee-Object -FilePath $log",
       "python -c \"import json; json.load(open('src/ptsip/schemas/config.json', encoding='utf-8'))\" 2>&1 | Tee-Object -FilePath $log -Append",
-      "go -C src/ptsip/profile_contract test ./... -count=1 2>&1 | Tee-Object -FilePath $log -Append",
+      "# Deferred until Go module implementation is authorized: go -C src/ptsip/profile_contract test ./... -count=1 2>&1 | Tee-Object -FilePath $log -Append",
       "python -m pytest -q src/tests/ptsip/contracts 2>&1 | Tee-Object -FilePath $log -Append",
       "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
       "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append"
@@ -2182,7 +2217,7 @@
     "no_schema_generated_from_pp100": true
   },
   "go_profile_module_migration": {
-    "status": "DEDICATED_GO_ROOT_APPROVED_LEAF_FILES_AND_INTERFACE_APPROVAL_PENDING",
+    "status": "GO_ROOT_APPROVED_IMPLEMENTATION_DEFERRED_AFTER_POLICY_V4_AND_RBAC",
     "requested_language": "GO",
     "retired_python_files": [
       "src/ptsip/profiles/identity.py",
@@ -2229,59 +2264,28 @@
         }
       ],
       "preferred_for_review": "B_DEDICATED_GO_MODULE",
-      "decision_state": "GO_ROOT_EXPLICITLY_APPROVED_INTERNAL_LAYOUT_AND_FILE_NAMES_PROPOSED_NOT_YET_APPROVED",
-      "file_name_candidates": [
-        "identity.go",
-        "rule_records.go",
-        "metadata.go",
-        "contracts.go",
-        "compatibility.go",
-        "catalog.go",
-        "profile_protocol.go",
-        "profile_contract_test.go",
-        "profile_compatibility_test.go",
-        "profile_catalog_test.go"
-      ],
+      "decision_state": "ROOT_APPROVED_SUBTREE_DEFERRED_PREFER_MAIN_CLI",
+      "file_name_candidates": [],
       "exact_go_file_paths_approved": false,
       "selected_root": "src/ptsip/profile_contract/",
       "proposed_source_layout": {
-        "status": "PROPOSED_CHILD_PATHS_NOT_AUTHORIZED_FOR_FILE_CREATION",
+        "status": "DEFERRED_DO_NOT_GENERATE_SUBDIRECTORIES_OR_FILES",
         "root": "src/ptsip/profile_contract/",
-        "files": [
-          "src/ptsip/profile_contract/go.mod",
-          "src/ptsip/profile_contract/go.sum",
-          "src/ptsip/profile_contract/cmd/ptsip-profile-contract/main.go",
-          "src/ptsip/profile_contract/internal/protocol/protocol.go",
-          "src/ptsip/profile_contract/internal/registry/registry.go",
-          "src/ptsip/profile_contract/internal/identity/identity.go",
-          "src/ptsip/profile_contract/internal/rules/rules.go",
-          "src/ptsip/profile_contract/internal/metadata/metadata.go",
-          "src/ptsip/profile_contract/internal/transition/transition.go",
-          "src/ptsip/profile_contract/internal/catalog/catalog.go",
-          "src/ptsip/profile_contract/internal/validation/validator.go",
-          "src/ptsip/_profile_contract.py"
-        ],
-        "testdata_root": "src/ptsip/profile_contract/testdata/",
-        "testdata_role": "Canonical JSON fixture snapshots of former YAML instances for parity tests only; never active schemas or user-owned profile data",
-        "tests_proposal": [
-          "src/ptsip/profile_contract/internal/identity/identity_test.go",
-          "src/ptsip/profile_contract/internal/registry/registry_test.go",
-          "src/ptsip/profile_contract/internal/transition/transition_test.go",
-          "src/ptsip/profile_contract/internal/catalog/catalog_test.go",
-          "src/ptsip/profile_contract/internal/rules/rules_test.go",
-          "src/ptsip/profile_contract/internal/metadata/metadata_test.go"
-        ],
-        "directory_responsibilities": {
-          "cmd": "Executable entrypoint for typed profile contract protocol, not source of contract meaning",
-          "internal/protocol": "Request/response envelope and stable typed error codes",
-          "internal/registry": "Central schema registration, immutable SHA validation and version selection",
-          "internal/identity": "Project Profile version/revision identity and supported operations",
-          "internal/rules": "Registered rule ID lookup, relation validation; source basis still unresolved",
-          "internal/metadata": "Specification-bound metadata/header materialization",
-          "internal/transition": "Authorized historical transition/compatibility checking",
-          "internal/catalog": "Project-local catalog selection and generated example handling",
-          "internal/validation": "Closed-schema validation, never grants runtime or policy authority",
-          "testdata": "Normalized JSON golden fixtures proving old YAML semantics after source directory retirement"
+        "main_cli": "src/ptsip/CLI.go",
+        "new_cmd_directory": "FORBIDDEN_BY_USER",
+        "test_root": "src/tests/ptsip/",
+        "new_testdata_directory": "FORBIDDEN_BY_USER",
+        "internal_directories": "HOLD_NO_CREATION",
+        "go_files": "UNDECIDED_AFTER_POLICY_V4_AND_RBAC",
+        "python_go_bridge": "PENDING_FUTURE_DECISION",
+        "current_main_cli_verified": {
+          "operations": [
+            "help",
+            "doctor",
+            "operations",
+            "engine"
+          ],
+          "note": "Existing main() is engine router; no profile operation owner registered yet. Integration must be designed without adding another public CLI entry."
         }
       }
     },
@@ -2294,8 +2298,8 @@
         "validator/validator.go",
         "source/document.go"
       ],
-      "existing_transport": "src/ptsip/common_contract/cli.go (OTHER DOMAIN; NOT THE SELECTED PROTOCOL)",
-      "python_transport_candidate": "src/ptsip/_profile_contract.py (NEW ADAPTER PATH PROPOSED)",
+      "existing_transport": "src/ptsip/CLI.go main() exists; existing common_contract CLI is independent, not selected as profile implementation ingress",
+      "python_transport_candidate": null,
       "current_protocol": "ptsip-common-contract/v1",
       "exact_protocol_extension_approved": false,
       "findings": [
@@ -2319,7 +2323,7 @@
           "require_project_profile_support",
           "require_current_project_profile_support"
         ],
-        "go_package_candidate": "internal/identity",
+        "go_package_candidate": null,
         "go_operation": "profile.identity.resolve",
         "input_contract": {
           "version": "string",
@@ -2351,9 +2355,9 @@
           "src/ptsip/migration/analysis/target/semantics.py",
           "src/ptsip/ptsip_specification/spec_identity.py"
         ],
-        "proposed_go_file": "src/ptsip/profile_contract/internal/identity/identity.go",
+        "proposed_go_file": null,
         "source_root_approved": true,
-        "go_leaf_path_status": "PENDING_USER_PATH_APPROVAL"
+        "go_leaf_path_status": "DEFERRED_NO_INTERNAL_STRUCTURE_ASSUMPTION"
       },
       {
         "python_source": "src/ptsip/profiles/rule_records.py",
@@ -2364,7 +2368,7 @@
           "discover_rule_records",
           "resolve_rule_record"
         ],
-        "go_package_candidate": "internal/rules",
+        "go_package_candidate": null,
         "go_operation": "profile.rule-record.resolve",
         "input_contract": {
           "repository_root": "string",
@@ -2394,9 +2398,9 @@
           "src/ptsip/profiles/catalog.py"
         ],
         "special_boundary": "Current Python module points to .ptsip/contracts/policy/...; new Go implementation MUST NOT use .ptsip/** as schema field basis; rule record schema source from src/ptsip remains unresolved and blocks semantics.",
-        "proposed_go_file": "src/ptsip/profile_contract/internal/rules/rules.go",
+        "proposed_go_file": null,
         "source_root_approved": true,
-        "go_leaf_path_status": "PENDING_USER_PATH_APPROVAL"
+        "go_leaf_path_status": "DEFERRED_NO_INTERNAL_STRUCTURE_ASSUMPTION"
       },
       {
         "python_source": "src/ptsip/profiles/metadata.py",
@@ -2407,7 +2411,7 @@
           "current_project_profile_ptsip_metadata",
           "current_project_profile_header_yaml"
         ],
-        "go_package_candidate": "internal/metadata",
+        "go_package_candidate": null,
         "go_operation": "profile.metadata.materialize",
         "input_contract": {
           "profile_contract_version": "string",
@@ -2434,9 +2438,9 @@
         "indirect_consumers": [
           "src/ptsip/clarification/resolution/profile_projection.py"
         ],
-        "proposed_go_file": "src/ptsip/profile_contract/internal/metadata/metadata.go",
+        "proposed_go_file": null,
         "source_root_approved": true,
-        "go_leaf_path_status": "PENDING_USER_PATH_APPROVAL"
+        "go_leaf_path_status": "DEFERRED_NO_INTERNAL_STRUCTURE_ASSUMPTION"
       },
       {
         "python_source": "src/ptsip/profiles/contracts.py",
@@ -2446,7 +2450,7 @@
           "current_runtime_project_profile_contract",
           "current_runtime_project_profile_version"
         ],
-        "go_package_candidate": "internal/registry",
+        "go_package_candidate": null,
         "go_operation": "profile.contract.select",
         "input_contract": {
           "contract_version": "string|null",
@@ -2478,9 +2482,9 @@
           "src/ptsip/profiles/identity.py"
         ],
         "special_boundary": "Current Go common_contract/registry/registry.go validates common_policy/common:plan URNs only; do not silently broaden it without contract decision. config.json is canonical source registry.",
-        "proposed_go_file": "src/ptsip/profile_contract/internal/registry/registry.go",
+        "proposed_go_file": null,
         "source_root_approved": true,
-        "go_leaf_path_status": "PENDING_USER_PATH_APPROVAL"
+        "go_leaf_path_status": "DEFERRED_NO_INTERNAL_STRUCTURE_ASSUMPTION"
       },
       {
         "python_source": "src/ptsip/profiles/compatibility.py",
@@ -2492,7 +2496,7 @@
           "current_project_profile_target",
           "require_direct_historical_transition"
         ],
-        "go_package_candidate": "internal/transition",
+        "go_package_candidate": null,
         "go_operation": "profile.compatibility.verify-transition",
         "input_contract": {
           "source_contract_version": "string",
@@ -2520,9 +2524,9 @@
         "indirect_consumers": [
           "src/ptsip/migration/execution/direct/promotion.py"
         ],
-        "proposed_go_file": "src/ptsip/profile_contract/internal/transition/transition.go",
+        "proposed_go_file": null,
         "source_root_approved": true,
-        "go_leaf_path_status": "PENDING_USER_PATH_APPROVAL"
+        "go_leaf_path_status": "DEFERRED_NO_INTERNAL_STRUCTURE_ASSUMPTION"
       },
       {
         "python_source": "src/ptsip/profiles/catalog.py",
@@ -2534,7 +2538,7 @@
           "default_catalog_payload",
           "default_catalog_text"
         ],
-        "go_package_candidate": "internal/catalog",
+        "go_package_candidate": null,
         "go_operation": "profile.catalog.resolve",
         "input_contract": {
           "repository_root": "string",
@@ -2565,9 +2569,9 @@
           "src/ptsip/clarification/resolution/profile_projection.py",
           "src/ptsip/profiles/rule_records.py"
         ],
-        "proposed_go_file": "src/ptsip/profile_contract/internal/catalog/catalog.go",
+        "proposed_go_file": null,
         "source_root_approved": true,
-        "go_leaf_path_status": "PENDING_USER_PATH_APPROVAL"
+        "go_leaf_path_status": "DEFERRED_NO_INTERNAL_STRUCTURE_ASSUMPTION"
       }
     ],
     "python_consumer_updates": [
@@ -2742,8 +2746,11 @@
       ],
       "transport": {
         "format": "JSON",
-        "execution": "STDIN_STDOUT_GO_PROCESS_CANDIDATE",
-        "discovery": "EXACT_REGISTERED_EXECUTABLE",
+        "execution": "UNDECIDED",
+        "public_entry": "src/ptsip/CLI.go",
+        "new_cmd": "FORBIDDEN",
+        "adapter": "PENDING_OWNER_DECISION",
+        "discovery": "EXPLICIT_REGISTRY_REQUIRED",
         "side_effects": "NO_REPO_MUTATION_FOR_READ_OPERATIONS"
       },
       "performance_targets": {
@@ -2754,7 +2761,7 @@
     },
     "stop_use_and_removal_workflow": [
       "Freeze 22-file source ledger and hash every file before any schema or Go conversion",
-      "Approve Go subdirectory/file paths and separate typed protocol under selected root src/ptsip/profile_contract/",
+      "After v4/RBAC decisions, approve actual Go source paths beneath selected root without cmd/ or internal/** until decided",
       "Migrate 2 src/ptsip/profiles/profiles_schemas source schemas and 12 source YAML instance examples into schema definitions and JSON fixtures respectively",
       "Keep source example YAML evidence by immutable blob SHA and check fixture parity per pp1.01 pp1.02 pp2.00; no schema generated solely by file rename",
       "Implement six Go responsibility operations under selected independent Go module; do not extend src/ptsip/common_contract/profile/",
@@ -2803,7 +2810,7 @@
         "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append",
         "Remove-Item $log"
       ],
-      "note": "All commands are post-implementation only; initialize $log and preserve/send its evidence before running Remove-Item. Preexisting test names and paths must be checked against implementation commit."
+      "note": "Future Go phase deferred; no new cmd/, no new testdata/, and no internal/** unless separately approved. New integration tests/fixtures belong to src/tests/ptsip/."
     },
     "blockers": [
       "Go module root approved; exact child source paths and protocol still require approval",
@@ -2852,10 +2859,11 @@
         "size_bytes": 5699,
         "role_group": "SIX_PYTHON_MODULES",
         "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/internal/catalog/",
+        "proposed_replacement": "src/ptsip/profile_contract/",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "ROOT_APPROVED_IMPLEMENTATION_FILENAME_UNDECIDED"
       },
       {
         "source_path": "src/ptsip/profiles/compatibility.py",
@@ -2863,10 +2871,11 @@
         "size_bytes": 6377,
         "role_group": "SIX_PYTHON_MODULES",
         "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/internal/transition/",
+        "proposed_replacement": "src/ptsip/profile_contract/",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "ROOT_APPROVED_IMPLEMENTATION_FILENAME_UNDECIDED"
       },
       {
         "source_path": "src/ptsip/profiles/contracts.py",
@@ -2874,10 +2883,11 @@
         "size_bytes": 3345,
         "role_group": "SIX_PYTHON_MODULES",
         "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/internal/registry/",
+        "proposed_replacement": "src/ptsip/profile_contract/",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "ROOT_APPROVED_IMPLEMENTATION_FILENAME_UNDECIDED"
       },
       {
         "source_path": "src/ptsip/profiles/example.ptsip.yaml",
@@ -2885,10 +2895,11 @@
         "size_bytes": 3649,
         "role_group": "CURRENT_YAML_DISTRIBUTED_EXAMPLE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/current-example.json",
+        "proposed_replacement": "src/tests/ptsip/current-example.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.01/example.ptsip.yaml",
@@ -2896,10 +2907,11 @@
         "size_bytes": 3515,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.1.01-example.json",
+        "proposed_replacement": "src/tests/ptsip/pp.1.01-example.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
@@ -2907,12 +2919,13 @@
         "size_bytes": 1039,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.1.01-hybrid-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/pp.1.01-hybrid-python-package.json",
         "secondary_refs": [
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json"
         ],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
@@ -2920,10 +2933,11 @@
         "size_bytes": 483,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.1.01-template-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/pp.1.01-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.02/example.ptsip.yaml",
@@ -2931,10 +2945,11 @@
         "size_bytes": 3649,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.1.02-example.json",
+        "proposed_replacement": "src/tests/ptsip/pp.1.02-example.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
@@ -2942,12 +2957,13 @@
         "size_bytes": 1104,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.1.02-hybrid-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/pp.1.02-hybrid-python-package.json",
         "secondary_refs": [
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
         ],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
@@ -2955,10 +2971,11 @@
         "size_bytes": 518,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.1.02-template-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/pp.1.02-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.2.00/example.ptsip.yaml",
@@ -2966,10 +2983,11 @@
         "size_bytes": 3649,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.2.00-example.json",
+        "proposed_replacement": "src/tests/ptsip/pp.2.00-example.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
@@ -2977,12 +2995,13 @@
         "size_bytes": 1104,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.2.00-hybrid-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/pp.2.00-hybrid-python-package.json",
         "secondary_refs": [
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
         ],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml",
@@ -2990,10 +3009,11 @@
         "size_bytes": 518,
         "role_group": "HISTORICAL_YAML_INSTANCE_FIXTURE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/pp.2.00-template-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/pp.2.00-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/hybrid-python-package.ptsip.yaml",
@@ -3001,10 +3021,11 @@
         "size_bytes": 1104,
         "role_group": "CURRENT_YAML_DISTRIBUTED_EXAMPLE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/current-hybrid-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/current-hybrid-python-package.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       },
       {
         "source_path": "src/ptsip/profiles/identity.py",
@@ -3012,10 +3033,11 @@
         "size_bytes": 10571,
         "role_group": "SIX_PYTHON_MODULES",
         "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/internal/identity/",
+        "proposed_replacement": "src/ptsip/profile_contract/",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "ROOT_APPROVED_IMPLEMENTATION_FILENAME_UNDECIDED"
       },
       {
         "source_path": "src/ptsip/profiles/index.yaml",
@@ -3036,10 +3058,11 @@
         "size_bytes": 1497,
         "role_group": "SIX_PYTHON_MODULES",
         "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/internal/metadata/",
+        "proposed_replacement": "src/ptsip/profile_contract/",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "ROOT_APPROVED_IMPLEMENTATION_FILENAME_UNDECIDED"
       },
       {
         "source_path": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
@@ -3069,10 +3092,11 @@
         "size_bytes": 8505,
         "role_group": "SIX_PYTHON_MODULES",
         "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/internal/rules/",
+        "proposed_replacement": "src/ptsip/profile_contract/",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "ROOT_APPROVED_IMPLEMENTATION_FILENAME_UNDECIDED"
       },
       {
         "source_path": "src/ptsip/profiles/template-python-package.ptsip.yaml",
@@ -3080,13 +3104,14 @@
         "size_bytes": 518,
         "role_group": "CURRENT_YAML_DISTRIBUTED_EXAMPLE",
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/testdata/current-template-python-package.json",
+        "proposed_replacement": "src/tests/ptsip/current-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
       }
     ],
-    "proposed_fixture_root": "src/ptsip/profile_contract/testdata/",
+    "proposed_fixture_root": "src/tests/ptsip/",
     "fixture_paths_approved": false,
     "all_removal_actions_prohibited_until": [
       "SCHEMA_GENERATION_VALIDATED",
@@ -3108,6 +3133,303 @@
       "problem": "Existing Python import references absent module at baseline HEAD, so it must be diagnosed as preexisting source condition; not listed as a real file to modify",
       "disposition": "DISCOVER_REAL_PROVIDER_OR_REPLACE_BROKEN_IMPORT_WITH_APPROVED_CONTRACT_ONLY_AFTER_REVIEW",
       "gate": "No misleading claim of baseline full CLI/import parity before this check passes"
+    }
+  },
+  "policy_v4_rbac_focus": {
+    "status": "SOURCE_ANALYSIS_COMPLETED_DESIGN_DECISIONS_REQUIRED_NO_IMPLEMENTATION_AUTHORIZED",
+    "baseline_head": "092a652c6598f82e0aabc18da19503caf031d777",
+    "basis": "ONLY_SRC_PTSIP_SCHEMA_CONTRACTS_FOR_FIELD_DESIGN",
+    "excluded_field_basis": [
+      ".ptsip/**"
+    ],
+    "runtime_owner": "src/ptsip/CLI.go",
+    "new_cli_entrypoint_policy": "DO_NOT_CREATE_CMD_DIRECTORY",
+    "test_root": "src/tests/ptsip/",
+    "new_testdata_dir_policy": "DO_NOT_CREATE",
+    "implementation_go_internal_policy": "DEFERRED",
+    "priorities": [
+      "POLICY_V4",
+      "RBAC_LINK",
+      "CONFIG_REGISTRATION",
+      "RUST_AND_GO_REFERENCE_REWIRING",
+      "TESTS"
+    ],
+    "source_evidence": {
+      "policy": [
+        {
+          "source": "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json",
+          "id": "urn:ptsip:candidate:contract:policy:public-structure:v2",
+          "fields": [
+            "Policy_Identity",
+            "Policy_Lifecycle",
+            "Policy_Rules"
+          ],
+          "state": "CANDIDATE_FIELD_REVIEW_OPEN",
+          "known_ref_problem": "Schema references candidate identity/lifecycle/rules URNs that are not the IDs declared by src/ptsip validation component schemas."
+        },
+        {
+          "source": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json",
+          "id": "urn:ptsip:common_policy:identity:v1",
+          "fields": [
+            "id",
+            "policy_kind",
+            "root_family",
+            "title"
+          ]
+        },
+        {
+          "source": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json",
+          "id": "urn:ptsip:common_policy:lifecycle:v1",
+          "fields": [
+            "status"
+          ]
+        },
+        {
+          "source": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json",
+          "id": "urn:ptsip:common_policy:rules:v1",
+          "fields": [
+            "rules"
+          ]
+        }
+      ],
+      "rbac": [
+        {
+          "source": "src/ptsip/compile_sealed_rbac/ra.pp.3.00.schema.json",
+          "id": "urn:ptsip:rbac:consumer:pp300:ra:structure:v1",
+          "shape": "responsibility_authority object keyed by RA-ID; RA-key optional; RAC_id and AEC_id required arrays of [id,name] with minItems=1"
+        },
+        {
+          "source": "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json",
+          "id": "urn:ptsip:rbac:consumer:pp300:rac:structure:v1",
+          "shape": "RAC_profile[] records RAC_id, RAC_name and optional value {source_ref, revision_ref, entrypoint}"
+        },
+        {
+          "source": "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json",
+          "id": "urn:ptsip:rbac:consumer:pp300:aec:structure:v1",
+          "shape": "AEC_profile[] records AEC_id, AEC_name and optional value {source_ref, revision_ref, entrypoint}"
+        },
+        {
+          "source": "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json",
+          "shape": "Non-schema index: scope STRUCTURE_ONLY, activation_state UNREGISTERED, authorization_permitted false, schema refs point to old versioned filenames"
+        },
+        {
+          "source": "src/ptsip/compile_sealed_rbac/testdata/conformance.json",
+          "shape": "27 conformance cases covering old pp3.00 tuple grammar. Existing source, not destination for new tests."
+        }
+      ],
+      "code_consumers": [
+        {
+          "file": "src/ptsip/engines/discovery/src/tpbg/mod.rs",
+          "responsibility": "Projection currently requires RAC_id/AEC_id nonempty arrays of ordered [ID,name] tuples. Changes to RA fields or cardinality require explicit refactor and old/current version discrimination."
+        },
+        {
+          "file": "src/ptsip/engines/validation/src/main.rs",
+          "responsibility": "Rust validation tests currently hardcode ../../compile_sealed_rbac and three versioned schema filenames."
+        },
+        {
+          "file": "src/ptsip/common_contract/validator/rbac_conformance_test.go",
+          "responsibility": "Go conformance test reads ../../compile_sealed_rbac (or PTSIP_PP300_SCHEMA_ROOT) and hardcodes versioned filenames/URNs."
+        },
+        {
+          "file": "src/ptsip/engines/validation/src/rbac.rs",
+          "responsibility": "Separate preflight reads .ptsip/contracts/compile-sealed-rbac schemas and project .ptsip/profiles/rbac; this is an existing consumer/compatibility dependency, NOT a field-definition source for new central schemas. Disposition requires explicit policy scope."
+        },
+        {
+          "file": "src/ptsip/CLI.go",
+          "responsibility": "One existing Go main/engine router, commands help doctor operations engine; no direct profile/v4 command selected."
+        }
+      ],
+      "currently_missing": [
+        "src/ptsip/schemas/policy/",
+        "src/ptsip/schemas/storage/rbac/"
+      ],
+      "config_invalid_json": true
+    },
+    "target_paths": {
+      "policy": {
+        "root": "src/ptsip/schemas/policy/",
+        "key": "ptsip.policy.v4",
+        "schema_files": [
+          "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
+          "src/ptsip/schemas/policy/policy-identity.schema.json",
+          "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
+          "src/ptsip/schemas/policy/policy-rule.schema.json"
+        ],
+        "optional_language_specific_paths": "Java and Markdown policy target paths were previously proposed, but their schema field source still unverified in src/ptsip and creation is deferred",
+        "full_field_inventory": "UNRESOLVED: currently verified src/ptsip schema set has 3 top-level fields only; approved v4 top-level removals known; Evaluation/Content and other semantics must be explicitly resolved from effective policy/user decisions; not inferred from .ptsip/** contracts"
+      },
+      "rbac": {
+        "root": "src/ptsip/schemas/storage/rbac/",
+        "schemas": [
+          "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+          "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
+          "src/ptsip/schemas/storage/rbac/aec-list.schema.json"
+        ],
+        "proposed_ra_v4_record": {
+          "owner_key": "<RA-ID>",
+          "properties": [
+            "RA-name",
+            "RAC_id",
+            "RAC_name",
+            "AEC_id",
+            "AEC_name"
+          ],
+          "cardinality": "UNRESOLVED: new requested scalar-looking names versus existing 1..N condition tuples"
+        },
+        "source_version": "pp.3.00",
+        "activation": "UNREGISTERED_STRUCTURE_ONLY",
+        "source_index_disposition": "UNRESOLVED: migration of pp.3.00.contract.json into central config.json or separate versioned manifest; not a .schema.json",
+        "name_resolution": "RA id -> RA record -> registered RAC ID/name and AEC ID/name, deterministic exact equality; missing/mismatched name or duplicate ID fails closed",
+        "permission": "No structural validation implies registration, role authorization, Rego execution or activation"
+      }
+    },
+    "policy_decision_gates": [
+      {
+        "id": "V4-CONTENT-01",
+        "topic": "Full v4 Policy contract field ownership, beyond Identity Lifecycle Rules",
+        "state": "REQUIRES_USER_POLICY_DECISION",
+        "options": [
+          "Core-only structural contract",
+          "Full semantics embedded within unified schema",
+          "Core schema plus separately registered semantic contracts"
+        ],
+        "recommended": "Core schema plus separately registered semantic contracts to preserve complete field meaning and machine references"
+      },
+      {
+        "id": "RA-CARDINALITY-01",
+        "topic": "Approved five RA property names vs existing multi-condition 1..N tuple grammar",
+        "state": "REQUIRES_USER_POLICY_DECISION",
+        "options": [
+          "Strict one RAC/AEC pair per RA, break old multi-reference semantics",
+          "Preserve multi RAC/AEC conditions in canonical RA record",
+          "Keep new scalar record plus separate relation registry preserving historical 1..N"
+        ],
+        "recommended": "Preserve 1..N referential data and explicit ID/name matching; do not silently discard old multi-condition records"
+      },
+      {
+        "id": "RBAC-REGISTRATION-01",
+        "topic": "Central schema registry with pp.3.00 version & authorization state",
+        "state": "REQUIRES_USER_POLICY_DECISION",
+        "options": [
+          "Central config holds all version/schema lifecycle metadata",
+          "Central config locates schemas, separate RBAC contract manifest holds registered runtime lifecycle",
+          "Preserve old pp3 registry as read-only compatibility while new central registry is prepared"
+        ],
+        "recommended": "Separate registration/activation state from schema validity, regardless of chosen persistence"
+      },
+      {
+        "id": "CLI-RBAC-OWNER-01",
+        "topic": "Whether existing CLI.go exposes v4/RBAC validator via registered existing engine or future direct integration",
+        "state": "DEFER_AFTER_SCHEMA_POLICY",
+        "options": [
+          "Schema-only validation first, no CLI contract change",
+          "Registered engine operation using current CLI routing",
+          "Direct Go profile integration through existing main after Go module decision"
+        ],
+        "recommended": "Schema-only and conformance tests first, then route through registered owner"
+      }
+    ],
+    "concrete_work_plan": [
+      {
+        "id": "PVR-01",
+        "dependency": [],
+        "action": "Review Policy v4 field contracts and three removed fields; decide semantic ownership before altering source",
+        "outputs": [
+          "approved policy v4 field registry",
+          "exact typed rule/RA reference responsibility"
+        ]
+      },
+      {
+        "id": "PVR-02",
+        "dependency": [
+          "PVR-01"
+        ],
+        "action": "Repair central config registry syntax and register ptsip.policy.v4 and 3 RBAC target paths with version and immutable source basis",
+        "outputs": [
+          "src/ptsip/schemas/config.json"
+        ]
+      },
+      {
+        "id": "PVR-03",
+        "dependency": [
+          "PVR-01",
+          "PVR-02"
+        ],
+        "action": "Generate Policy v4 YAML, Policy Identity, Policy Lifecycle, Policy Rule in four preselected files; enforce RA-ID lookup reference without granting authority",
+        "outputs": [
+          "src/ptsip/schemas/policy/public-structure-policy-yaml.schema.json",
+          "src/ptsip/schemas/policy/policy-identity.schema.json",
+          "src/ptsip/schemas/policy/policy-lifecycle.schema.json",
+          "src/ptsip/schemas/policy/policy-rule.schema.json"
+        ]
+      },
+      {
+        "id": "PVR-04",
+        "dependency": [
+          "PVR-02"
+        ],
+        "action": "Migrate 3 actual src/ptsip/compile_sealed_rbac JSON Schema source contracts into storage/rbac three exact filenames; preserve source $id alias/version compat decisions",
+        "outputs": [
+          "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+          "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
+          "src/ptsip/schemas/storage/rbac/aec-list.schema.json"
+        ]
+      },
+      {
+        "id": "PVR-05",
+        "dependency": [
+          "PVR-03",
+          "PVR-04"
+        ],
+        "action": "Specify and verify RA_id/RAC_id/AEC_id exact join between Policy Rule and 3 registries; choose cardinality and pp3 index disposition before implementation",
+        "outputs": [
+          "cross-registry join contract",
+          "negative tests for unregistered IDs, mismatched registered names and duplicate records"
+        ]
+      },
+      {
+        "id": "PVR-06",
+        "dependency": [
+          "PVR-04",
+          "PVR-05"
+        ],
+        "action": "Update src/ptsip/engines/discovery/src/tpbg/mod.rs and Rust/Go conformance test schema resource lookups without changing historical conformance unexpectedly",
+        "outputs": [
+          "consumer change ledger",
+          "old/new structural compatibility evidence"
+        ]
+      },
+      {
+        "id": "PVR-07",
+        "dependency": [
+          "PVR-05",
+          "PVR-06"
+        ],
+        "action": "Put new conformance tests under src/tests/ptsip/; port 27 old pp3 structural cases after owner review, plus v4 rule RA reference roundtrip",
+        "outputs": [
+          "src/tests/ptsip/ (exact filenames pending approval)"
+        ]
+      },
+      {
+        "id": "PVR-08",
+        "dependency": [
+          "PVR-02",
+          "PVR-03",
+          "PVR-04",
+          "PVR-07"
+        ],
+        "action": "Verify references and package data then remove old 3 schema files and old registration file only when full consumer closure and approved preservation established; removal of source fixture dir is separate",
+        "outputs": [
+          "per-source deletion evidence",
+          "verified closed schema resource set"
+        ]
+      }
+    ],
+    "diagnostics": {
+      "structural_only_old_pp3": "pp.3.00.contract.json explicitly UNREGISTERED and authorization_permitted=false",
+      "unreviewed_semantic_changes": "Do not infer that RA-key equals RA-name or that old [ID,name][] arrays equal scalar RAC_id/RAC_name fields.",
+      "old_consumer_path_rewrites": "Go and Rust hardcoded src/ptsip/compile_sealed_rbac paths must be updated; do not delete schema sources until all refs and tests pass.",
+      "missing_go_mod_at_src_ptsip_root": "src/ptsip/go.mod is absent; CLI.go package main exists but independent profile_contract module compilation linkage method has not been decided."
     }
   }
 }
