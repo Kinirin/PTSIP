@@ -1508,7 +1508,7 @@
         "Go module source retirement is performed only by WU-14 after WU-13 acceptance; WU-08 only removes superseded schema sources verified to have zero consumers.",
         "Do not delete any path under src/ptsip/profiles/: all 22 are retired atomically after semantic closure by WU-14; source schema files elsewhere follow their individual deletion gates"
       ],
-      "gate": "zero consumers per removed file; full smoke+schema+packaging tests pass; no imports of six retired module paths; Go replacement independent verification and Python-to-Go consumer parity PASS",
+      "gate": "zero supported consumers per retired schema source, full relevant schema/package tests PASS; exempt Python callers excluded from Go/Profile v4 acceptance",
       "dependency": [
         "WU-07",
         "WU-10",
@@ -1713,7 +1713,7 @@
       ],
       "exact_steps": [
         "Verify 22/22 source files correspond to immutable Git blob SHA and have mapped semantic/data/function responsibility",
-        "Verify Go 6-operation replacement and Python consumer import rewiring and edge-case compatibility tests",
+        "Verify 6 Go operations, supported Go CLI and authorized consumers only; do not modify or require legacy Python cli.py/profile_projection.py imports to pass",
         "Verify 12 YAML instances transferred into JSON fixture evidence in src/tests/ptsip/ (not schema files), two schemas into canonical resources, sample catalog replaced/retired and package marker unused",
         "Replace setup.py, MANIFEST.in, pyproject.toml, registry and release tests that require original profile root before deleting",
         "Build clean wheel and source distribution without old profiles dir; resolve source snapshots via Git sha and accepted normalized fixture testdata",
@@ -1721,7 +1721,7 @@
         "Verify git ls-files src/ptsip/profiles has zero output; grep imports ptsip.profiles and old path references with release acceptance exceptions only after explicit review",
         "Repeat Go tests, Python CLI integration, distribution tests and github workflow verification; log evidence then remove temporary log"
       ],
-      "gate": "22/22 tracked paths removed; 0 active consumers; 6/6 Go operations verified; 12/12 YAML fixture evidence; 2/2 schemas migrated; source wheel/package checks PASS",
+      "gate": "22/22 tracked paths removed; all supported Go/registry consumers rewired; excluded Python cli.py and profile_projection.py may fail unchanged; six Go responsibilities verified; schema and release tests PASS",
       "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     }
   ],
@@ -1806,7 +1806,7 @@
       "removed sources have zero remaining refs",
       "Same $id with different Git blob content is resolved before either copy is retired",
       "Historical Project Profile schemas resolve by approved versioned filenames directly under storage/profile/history/ and preserve immutable source SHA",
-      "No imports of discontinued six src/ptsip/profiles Python modules after replacement",
+      "No imports of retired profiles from supported replacement and Go entrypoint; two user-excluded Python modules are documented known broken references",
       "Engine schemas under approved central engine root preserve distinct engine contract semantics and history",
       "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
       "pp.1.00 schema is not generated without verified original input",
@@ -1859,7 +1859,7 @@
       "git rev-parse HEAD 2>&1 | Tee-Object -FilePath $log",
       "python -c \"import json; json.load(open('src/ptsip/schemas/config.json', encoding='utf-8'))\" 2>&1 | Tee-Object -FilePath $log -Append",
       "# Deferred until Go module implementation is authorized: go -C src/ptsip/profile_contract test ./... -count=1 2>&1 | Tee-Object -FilePath $log -Append",
-      "python -m pytest -q src/tests/ptsip/contracts 2>&1 | Tee-Object -FilePath $log -Append",
+      "python -m pytest -q src/tests/ptsip/contracts 2>&1 | Tee-Object -FilePath $log -Append # Existing tests; exclude known Python legacy failures only when explicitly scoped",
       "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
       "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append"
     ],
@@ -2025,8 +2025,6 @@
       }
     ],
     "exact_external_consumers_to_rewire": [
-      "src/ptsip/cli.py",
-      "src/ptsip/clarification/resolution/profile_projection.py",
       "src/ptsip/migration/analysis/target/semantics.py",
       "src/ptsip/migration/execution/direct/promotion.py",
       "src/ptsip/ptsip_specification/spec_identity.py"
@@ -2037,7 +2035,7 @@
       "Migrate existing two schema definitions into central src/ptsip/schemas/ targets, verifying every contract field and provenance, before deletion",
       "Analyze and retain YAML instances as JSON test fixtures and immutable source hashes; YAML data MUST NOT be renamed into JSON Schema",
       "Implement six Go responsibility operations and current/historical profile selection; catalog examples must be generated or intentionally retired, not silently equated to schema registry",
-      "Switch all Python imports, dynamic imports, packaged distribution and release-admission expectations to approved Go bridge and canonical schemas",
+      "Switch only user-approved caller paths, Go CLI routing, packaging and release-admission expectations; leave src/ptsip/cli.py and profile_projection.py unchanged even if their imports fail",
       "Update setup.py, pyproject.toml, MANIFEST.in, profile registry paths, and impacted CLI and release tests",
       "Run Go unit and Python integration parity tests, installed wheel smoke, source/build distribution completeness and no-legacy-path scans",
       "Remove all 22 files under src/ptsip/profiles/ and empty directories only when each deletion gate is satisfied",
@@ -2048,9 +2046,17 @@
       "6/6 Python module responsibilities reachable through dedicated Go profile_contract",
       "12/12 historic/current YAML source examples have replacement fixture or documented intentional no-distribution decision, without losing conformance coverage",
       "2/2 historical source schema files moved or resolved in central schemas registry",
-      "No entrypoint, package projection, installer, Go verification, or documentation binding depends on retired folder",
+      "No supported Go CLI, packaging, release gate or admitted schema consumer depends on retired folder; two explicitly excluded unmodified Python caller imports may remain broken",
       "No user project .ptsip/profiles data is deleted",
       "Profile historical pp1.01 pp1.02 pp2.00 validation and exact identity transitions remain testable"
+    ],
+    "excluded_python_paths": [
+      "src/ptsip/cli.py",
+      "src/ptsip/clarification/resolution/profile_projection.py"
+    ],
+    "known_unmodified_legacy_consumers": [
+      "src/ptsip/cli.py",
+      "src/ptsip/clarification/resolution/profile_projection.py"
     ]
   },
   "profile_variant_analysis": {
@@ -3220,15 +3226,15 @@
     "all_removal_actions_prohibited_until": [
       "SCHEMA_GENERATION_VALIDATED",
       "GO_FUNCTIONAL_PARITY",
-      "PYTHON_CALLS_SWITCHED",
+      "ONLY_APPROVED_CONSUMERS_AND_GO_CLI_ROUTED_PYTHON_EXCEPTIONS_LEFT_UNCHANGED",
       "ALL_PACKAGING_AND_RELEASE_GATES_REWIRED",
-      "NO_REFERENCES_TO_REMOVED_ROOT",
+      "NO_SUPPORTED_CONSUMER_REFS_EXCEPT_TWO_APPROVED_UNMODIFIED_PYTHON_PATHS",
       "GOLDEN_FIXTURES_VERIFIED",
       "USER_APPROVED_CHILD_SOURCE_PATHS",
       "WHEEL_SMOKE_PASS"
     ],
-    "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths; installed wheel omits ptsip/profiles assets; no import uses ptsip.profiles",
-    "warning": "Full deletion is incompatible with preserving exact legacy ptsip/profiles/*.ptsip.yaml filesystem paths or ptsip.profiles Python imports. Functional/schema compatibility is testable but literal-path compatibility is not; do not claim full backwards compatibility until migration interface scope is approved.",
+    "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths; installed supported Go CLI and wheel no longer require this folder. Do not assert all ptsip.profiles Python imports disappear because cli.py and profile_projection.py remain intentionally unchanged.",
+    "warning": "Whole folder removal intentionally breaks existing literal ptsip.profiles imports in two excluded Python files. Projection errors expressly tolerated; src/ptsip/cli.py is never edited, and compatibility is not asserted for it. User-owned .ptsip/profiles is outside deletion.",
     "user_owned_profile_out_of_scope": ".ptsip/profiles/** in consuming repositories is not a deletion target",
     "explicit_go_root_vs_src_schema": "Go implementation under src/ptsip/profile_contract/, schema contracts under src/ptsip/schemas/; do not store runtime Go code under schemas.",
     "additional_source_health": {
