@@ -165,7 +165,35 @@
     "rbac_separate_status_contract": "DEFERRED_UNTIL_DISTINCT_DUTY_PROVEN",
     "rbac_registration_schema_vs_data": "SCHEMA_LOOKUP_ONLY_NO_NEW_REGISTRATION_SCHEMA",
     "ra_id_format": "^R-ID-[0-9A-F]{32}$",
-    "ra_title_legacy_semantics": "OWNER_DIRECTED_MAPPING_FROM_COMPONENT_BINDINGS_TITLE_CONCEPT_VERIFY_SOURCE_RULE_VRULE; RAC_name and AEC_name represent respective condition title/role and are not removed"
+    "ra_title_legacy_semantics": "OWNER_DIRECTED_MAPPING_FROM_COMPONENT_BINDINGS_TITLE_CONCEPT_VERIFY_SOURCE_RULE_VRULE; RAC_name and AEC_name represent respective condition title/role and are not removed",
+    "policy_v4_category_field": "Policy_Category",
+    "policy_v4_category_internal_decomposition": [
+      "root_family",
+      "policy_kind"
+    ],
+    "policy_v4_category_internal_representation": "UNRESOLVED: official Policy_Category may be split by developer as root_family/policy_kind without approval of storage shape",
+    "policy_v4_version_field": "Policy_Identity.version",
+    "policy_v4_revision_field": "REJECTED_SEPARATE",
+    "policy_v4_rule_content_ref": "Policy_Rules.rules[].content.content_id[]",
+    "policy_v4_content_item_source": [
+      "Policy_Content.items[].path",
+      "Policy_Content.items[].sha256",
+      "Policy_Content.items[].revision_ref"
+    ],
+    "policy_v4_content_source_document": "REMOVED",
+    "policy_v4_source_pointer": "REMOVED",
+    "plan_status_owner": "Plan_lifecycle.status",
+    "plan_target_status_values": [
+      "Draft.Proposed",
+      "Draft.Under_coordination",
+      "Approval.Scheduled_implementation",
+      "Approval.Implementation_complete",
+      "Halt.Paused",
+      "Halt.Discontinued",
+      "Implementation.In_progress"
+    ],
+    "plan_task_root": ".ptsip/tasks/",
+    "plan_checklist": "TABLE_WITH_CONFIGURABLE_COLUMNS_AND_TASK_ID_SYNC"
   },
   "approval_gates": [
     {
@@ -682,7 +710,40 @@
       "responsibility": "Plan lifecycle contract",
       "sources": [],
       "readiness": "NO_NONEMPTY_SOURCE_FOR_LIFECYCLE",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
+      "new_target_contract_review": {
+        "version_revision": "Plan_properties.version.revision",
+        "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
+        "plan_id_pattern": "PENDING_USER_SELECTION",
+        "status_source": "Plan_lifecycle.status",
+        "official_proposed_states": [
+          "Draft.Proposed",
+          "Draft.Under_coordination",
+          "Approval.Scheduled_implementation",
+          "Approval.Implementation_complete",
+          "Halt.Paused",
+          "Halt.Discontinued",
+          "Implementation.In_progress"
+        ],
+        "work_unit_authority_ref": "work_unit_item[].RA_id",
+        "independent_work_unit_status": "FORBIDDEN",
+        "task_root": ".ptsip/tasks/",
+        "task_fields": [
+          "task_id",
+          "action",
+          "task_dependencies_id"
+        ],
+        "checklist_columns": [
+          "Work_sequence",
+          "work_unit_id",
+          "task_id",
+          "acceptance"
+        ],
+        "checklist_exact_max": "UNRESOLVED",
+        "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
+        "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
+        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED"
+      }
     },
     {
       "path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
@@ -692,7 +753,40 @@
         "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json"
       ],
       "readiness": "JSON_REPAIR_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
+      "new_target_contract_review": {
+        "version_revision": "Plan_properties.version.revision",
+        "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
+        "plan_id_pattern": "PENDING_USER_SELECTION",
+        "status_source": "Plan_lifecycle.status",
+        "official_proposed_states": [
+          "Draft.Proposed",
+          "Draft.Under_coordination",
+          "Approval.Scheduled_implementation",
+          "Approval.Implementation_complete",
+          "Halt.Paused",
+          "Halt.Discontinued",
+          "Implementation.In_progress"
+        ],
+        "work_unit_authority_ref": "work_unit_item[].RA_id",
+        "independent_work_unit_status": "FORBIDDEN",
+        "task_root": ".ptsip/tasks/",
+        "task_fields": [
+          "task_id",
+          "action",
+          "task_dependencies_id"
+        ],
+        "checklist_columns": [
+          "Work_sequence",
+          "work_unit_id",
+          "task_id",
+          "acceptance"
+        ],
+        "checklist_exact_max": "UNRESOLVED",
+        "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
+        "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
+        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED"
+      }
     },
     {
       "path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
@@ -888,23 +982,41 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
       "filename": "aec-list.schema.json",
-      "responsibility": "AEC owner ID/name and source reference",
+      "responsibility": "AEC independent condition/GUI semantic source and Rego evaluation source. New AEC contract identity/file-resource/revision candidates are separately proposed, not approved",
       "sources": [
         "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
       ],
-      "readiness": "REFERENCE_REVALIDATION_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "OLD_NAMED_FIELDS_USER_APPROVED_NEW_CONTRACT_LOCATOR_NAMES_PENDING",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
+      "field_candidates": [
+        "AEC_id",
+        "AEC_name",
+        "AEC_description",
+        "AEC_purpose",
+        "value",
+        "value.source_ref",
+        "value.revision_ref",
+        "value.entrypoint",
+        "AEC_source_evidence_ref"
+      ],
+      "extra_contract_locator_candidates": [
+        "AEC_definition_contract_id",
+        "AEC_definition_file_ref",
+        "AEC_definition_revision_ref"
+      ],
+      "legacy_contract_transfer_allowed": false
     },
     {
       "path": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
       "filename": "ra-list.schema.json",
-      "responsibility": "RA List owns RA_id/RA_title and RAC_ids/AEC_ids grouped references while preserving human-readable RAC_name/AEC_name title/role semantics. Exact 1-to-many name mapping and storage owner remain undecided.",
+      "responsibility": "RA List owns RA_id, RA_title, RA_description and RAC_ids/AEC_ids one-line title:ID references while preserving RAC_name/AEC_name readable role semantics; no extra purpose/status/source fields or policy reverse usage.",
       "sources": [],
-      "readiness": "RA_REFERENCE_AND_TITLE_ROLES_PRESERVED_FIELD_TYPES_AND_NAME_CARDINALITY_UNRESOLVED",
+      "readiness": "APPROVED_ROLES_RAC_AEC_TITLE_ID_MAPPING_UNRESOLVED",
       "decision": "ONE_RA_LIST_OWNS_RELATIONSHIPS",
       "field_candidates": [
         "RA_id",
         "RA_title",
+        "RA_description",
         "RAC_ids",
         "RAC_name",
         "AEC_ids",
@@ -922,12 +1034,29 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
       "filename": "rac-list.schema.json",
-      "responsibility": "RAC owner ID/name and source reference",
+      "responsibility": "RAC independent condition/GUI semantic source and Rego evaluation source. New RAC contract identity/file-resource/revision candidates are separately proposed, not approved",
       "sources": [
         "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
       ],
-      "readiness": "REFERENCE_REVALIDATION_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "OLD_NAMED_FIELDS_USER_APPROVED_NEW_CONTRACT_LOCATOR_NAMES_PENDING",
+      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
+      "field_candidates": [
+        "RAC_id",
+        "RAC_name",
+        "RAC_description",
+        "RAC_purpose",
+        "value",
+        "value.source_ref",
+        "value.revision_ref",
+        "value.entrypoint",
+        "RAC_source_evidence_ref"
+      ],
+      "extra_contract_locator_candidates": [
+        "RAC_definition_contract_id",
+        "RAC_definition_file_ref",
+        "RAC_definition_revision_ref"
+      ],
+      "legacy_contract_transfer_allowed": false
     },
     {
       "path": "src/ptsip/schemas/storage/release/readme.schema.json",
@@ -1482,13 +1611,14 @@
         "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
       ],
       "actions": [
-        "Top-level exactly Policy_Identity, Policy_Lifecycle, Policy_Rules, Policy_Content",
-        "Policy_Rules owns rules[] plus evaluation {source_refs,state}; no Policy_Evaluation root or Evaluation/ directory",
-        "Policy_Content owns items[] {id,source_pointer,value} and source_document {path,sha256}",
-        "Do not infer requiredness, state enum, or user source payload value type from YAML example",
-        "Author Content in separately referenced contract only after Content file location approved",
-        "Preserve no v3 inheritance and RA_id uppercase 32-hex R-ID machine pattern",
-        "Rules references only RA_id; C-ID legacy condition_id is not a substitute for R-ID RA_id"
+        "PTSIP v4 top-level exactly Policy_Identity, Policy_Lifecycle, Policy_Rules, Policy_Content; top-level schema reference-only",
+        "Policy_Identity title is this policy title; Policy_Category is official field and root_family/policy_kind are developer-level projections with physical shape unresolved",
+        "Policy_Identity.version grammar allows 3-part, optional suffix/prefix, optional build/revision components; separate revision field prohibited",
+        "Policy_Lifecycle.status uses exact previous 13 official values; compact Policy_Lifecycle.evaluation YYMMDDDD? NO: date format YYYYMMDD plus optional description <=200 chars empty preferred",
+        "Rules[] own id/content.content_id[]/RA_id, no source_ref; evaluation has source_refs/state/specific evaluation_scope/evaluated_at, no evidence_refs",
+        "Policy_Content.items[] owns id/value/path/sha256/revision_ref, no source_pointer or source_document; content IDs referenced from rule content_id[]",
+        "Content item ID pattern pending; v3 Unified Policy and old validation schemas not inherited",
+        "Do not implement or invent fields from unapproved Content ID scheme and other undecided schema constraints"
       ],
       "gate": "Four field contracts fully scoped; Content path approved; Rule evaluation nested; separate refs compile",
       "priority": "ACTIVE_FOCUS_POLICY_V4"
@@ -1504,12 +1634,16 @@
         "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
       ],
       "actions": [
-        "repair malformed JSON and invalid type/properties constructs",
-        "keep Checklist: {} and omit Checklist from required",
-        "relocate only after exact schema validated",
-        "Plan Lifecycle: require explicit schema owner/fields before authoring; do not treat empty Plan Identity placeholder as source."
+        "Repair invalid historical Plan v1 JSON in independent release source planning, without copying malformed types or treating it as accepted contract",
+        "Plan_title is independent of Plan_filename; approved purpose and plan_id, single version.revision under Plan_properties",
+        "Plan policy_refs hold Policy_Identity.id; work_unit_item[].RA_id binds to RA List",
+        "Plan_lifecycle.status sole plan authority; 7 statuses with USER approved transitions, machine full-completion and halt execution rules",
+        "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
+        "Tasks generate under project-owned .ptsip/tasks and contain task_id/action/task_dependencies_id, no unit-level dependency field; do not mutate .ptsip during planning",
+        "Checklist is column-driven task_id linked table, default four columns Work_sequence/work_unit_id/task_id/acceptance; PTSIP command adds columns and updates states; capacity >=10, exact max unresolved",
+        "Plan ID scheme, task file schema, checklist row storage and full transition graph pending approval; no implementation now"
       ],
-      "gate": "valid 2020-12 schemas; sample plan passes; Checklist with arbitrary scalar/array/object passes"
+      "gate": "Plan status, ID grammar, task resource ownership, checklist cardinality, and file schema constraints approved before any code; no cross-plan automatic authorization"
     },
     {
       "id": "WU-05",
@@ -1552,9 +1686,11 @@
         "Classify legacy condition_id C-ID records by actual registered condition role before RAC_ids or AEC_ids conversion; no name-based guessing",
         "RA_title is intended human title; previous component_bindings[*].rule observed, component_bindings.vrule not found in inspected sample; audit exact original before mapping",
         "Compare RAC_name/AEC_name semantics with existing src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json and aec.pp.3.00.schema.json as read-only historical evidence; v4 does not inherit pp3 structural format",
-        "Decide whether names are looked up from registered RAC/AEC Lists or repeated as RA-local display fields; when multiple IDs exist require deterministic ID/name matching without guessing singular vs array forms"
+        "Decide whether names are looked up from registered RAC/AEC Lists or repeated as RA-local display fields; when multiple IDs exist require deterministic ID/name matching without guessing singular vs array forms",
+        "RA name/title mappings to RAC/AEC IDs are shown in one-line valid YAML flow sequence; keep names for GUI; reject RA_purpose/normative_effect/source_ref/revision_ref.",
+        "RAC/AEC keep previously offered title, description, purpose and evaluation source fields; each new condition definition file ID, resource reference and exact revision are independent proposed fields pending approval."
       ],
-      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation",
+      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
     },
     {
@@ -1983,7 +2119,11 @@
       "Historical C-ID condition_id must not be silently assigned to RAC_ids vs AEC_ids without verified semantic owner",
       "RA_title GUI readable semantics distinct from RA ID; complete responsibility field constraints require approval",
       "RAC_name and AEC_name responsibility meanings are preserved in RA List schema design and GUI projection; no schema simplification drops these semantic roles",
-      "When RA references multiple RAC_ids/AEC_ids, names must resolve deterministically to registered RAC/AEC definitions; exact field storage representation is explicitly approved before implementation"
+      "When RA references multiple RAC_ids/AEC_ids, names must resolve deterministically to registered RAC/AEC definitions; exact field storage representation is explicitly approved before implementation",
+      "Plan v4 seven-state lifecycle rejects partial completion and execution from Halt.Discontinued",
+      "Plan Checklist.column defaults exactly four approved columns and supports configurable >=10 columns; task_id source is .ptsip/tasks-generated tasks",
+      "Policy_Rules.rules[].content.content_id[] resolves Policy_Content.items[].id with no rule source_ref, source_pointer, source_document",
+      "RAC/AEC condition contract file lookup identity and Rego original evaluation source reference are separate ownership responsibilities"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -2021,7 +2161,14 @@
       "RA_list_policy_reverse_usage",
       "rac_name_semantics_omitted",
       "aec_name_semantics_omitted",
-      "ambiguous_multi_condition_id_name_binding"
+      "ambiguous_multi_condition_id_name_binding",
+      "plan_unit_independent_status",
+      "plan_execution_authorized_duplicate_field",
+      "checklist_fixed_four_columns",
+      "checklist_fixed_max_10_without_user_confirmation",
+      "rejected_policy_version_revision_separate",
+      "rejected_content_source_document",
+      "rego_source_ref_used_as_contract_file_identity"
     ],
     "powershell_commands_in_order": [
       "$log = '.\\schema-centralization-validation.log'",
@@ -3581,16 +3728,17 @@
           "fields": {
             "items": [
               "id",
-              "source_pointer",
-              "value"
-            ],
-            "source_document": [
+              "value",
               "path",
-              "sha256"
+              "sha256",
+              "revision_ref"
             ]
           },
           "value_type": "UNCONSTRAINED_IN_PREVIEW",
-          "requiredness": "NOT_YET_DECIDED"
+          "requiredness": "NOT_YET_DECIDED",
+          "source_document": "REMOVED",
+          "source_pointer": "REMOVED",
+          "id_pattern": "UNRESOLVED"
         },
         "evaluation": {
           "owner": "Policy_Rules",
@@ -3602,7 +3750,17 @@
           "source_refs_type": "array",
           "state_values": "UNRESOLVED",
           "requiredness": "NOT_YET_DECIDED",
-          "separate_directory": false
+          "separate_directory": false,
+          "field_candidates": [
+            "source_refs",
+            "state",
+            "evaluation_scope",
+            "evaluated_at"
+          ],
+          "field_rejections": [
+            "evidence_refs"
+          ],
+          "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY"
         },
         "forbidden_top_level_fields": [
           "Policy_Authority",
@@ -3612,11 +3770,60 @@
         ],
         "rule_item_declared_fields": [
           "id",
-          "source_ref",
+          "content",
           "RA_id"
         ],
         "RA_id_pattern": "^R-ID-[0-9A-F]{32}$",
-        "rule_reference": "RA_id -> registered RA list record"
+        "rule_reference": "RA_id -> registered RA list record",
+        "rule_content_ref": "Policy_Rules.rules[].content.content_id[]",
+        "rule_source_ref_field": "REMOVED",
+        "rule_content_container": "content",
+        "identity_contract": {
+          "fields": [
+            "id",
+            "title",
+            "Policy_Category",
+            "version"
+          ],
+          "candidates": [
+            "title_means_THIS_POLICY_TITLE",
+            "Policy_Category_OFFICIAL",
+            "version_options_WITH_OPTIONAL_PREFIX_SUFFIX_BUILD_REVISION"
+          ],
+          "internal_category_views": [
+            "root_family",
+            "policy_kind"
+          ],
+          "internal_category_representation": "UNRESOLVED",
+          "rejected": [
+            "revision"
+          ]
+        },
+        "lifecycle_contract": {
+          "status_values": [
+            "DRAFT.Default",
+            "DRAFT.Reviewed",
+            "DRAFT.Denied",
+            "DRAFT.Pass",
+            "APPROVED.Default",
+            "APPROVED.Applying",
+            "APPROVED.Application_Problems",
+            "APPROVED.Unresolved",
+            "APPROVED.Activate",
+            "APPROVED.provisional",
+            "RETIRED.Default",
+            "RETIRED.Removable",
+            "RETIRED.Waiting"
+          ],
+          "status_reason": "APPROVED_DEFAULT",
+          "evaluation_path": "Policy_Lifecycle.evaluation",
+          "evaluation_date_format": "YYYYMMDD",
+          "evaluation_description_max_length": 200,
+          "evaluation_description_empty_preferred": true,
+          "evaluation_record_layout": "UNRESOLVED",
+          "external_log_approval_ref": "REJECTED",
+          "external_log_changed_at": "REJECTED"
+        }
       },
       "rbac": {
         "root": "src/ptsip/schemas/storage/rbac/",
@@ -3631,6 +3838,7 @@
           "field_candidates": [
             "RA_id",
             "RA_title",
+            "RA_description",
             "RAC_ids",
             "RAC_name",
             "AEC_ids",
@@ -3652,13 +3860,16 @@
             "array_multiplicity": "APPROVED_DIRECTION",
             "relationship_requiredness": "UNRESOLVED",
             "name_cardinality": "UNRESOLVED_FOR_MULTI_REFERENCES",
-            "registered_name_owner": "RAC/AEC respective List contracts"
+            "registered_name_owner": "RAC/AEC respective List contracts",
+            "one_line_format": "YAML_FLOW_SEQUENCE_SINGLE_PAIR_TITLE_ID_MAPS",
+            "name_id_pairing_owner": "RA_LIST_OWNED_RELATIONSHIP_RAC_AEC_DEFINITIONS_OWN_NAMES",
+            "canonical_name_resolution": "UNRESOLVED"
           },
           "ra_title": {
             "concept": "RESPONSIBILITY_HUMAN_READABLE_TITLE",
             "legacy_alias_semantics": "component_bindings.vrule user-stated; observed component_bindings[*].rule in legacy sample; exact mapping unresolved"
           },
-          "complete_fields": "NOT_APPROVED",
+          "complete_fields": "USER_DECIDED_ROLE_SET_NAME_ID_BINDING_UNRESOLVED",
           "requiredness": "UNRESOLVED",
           "policy_back_reference": "FORBIDDEN",
           "field_roles": {
@@ -3696,7 +3907,13 @@
             "field_requiredness": "UNRESOLVED",
             "example_only": "DO_NOT_INFER_JSON_SCHEMA_TYPES_FOR_NAME_MULTIPLICITY",
             "no_reverse_policy_usage": true
-          }
+          },
+          "rejected_fields": [
+            "RA_purpose",
+            "RA_normative_effect",
+            "RA_source_ref",
+            "RA_revision_ref"
+          ]
         },
         "relation": {
           "owner": "RA_LIST_RECORD",
@@ -3717,7 +3934,8 @@
           "gui_semantics": "RA_title plus RAC_name/AEC_name represent purpose/title of linked conditions; owner and 1-to-N mapping require explicit review",
           "no_policy_backref": true,
           "names_are_required_semantic_roles": true,
-          "name_binding_type": "UNRESOLVED"
+          "name_binding_type": "UNRESOLVED",
+          "field_cardinality": "MULTIPLE_TITLE_TO_ID_MAPS_SINGLE_LINE"
         },
         "registration": {
           "schema_owner": "NO_SEPARATE_SCHEMA_IN_CURRENT_V4",
@@ -3965,7 +4183,7 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Create reference-only root and four independently owned Policy field schema contracts, including proposed content/PTSIP_policy_content.schema.json. Rules schema owns evaluation, never create Evaluation/ directory.",
+        "action": "Define independent v4 field schemas at approved paths after schema field decisions: Policy_Category official; Policy version grammar; Lifecycle status/evaluation; Rules content.content_id[] and evaluation; Content per-item id/value/path/sha256/revision_ref. No v3 inheritance.",
         "outputs": [
           "src/ptsip/schemas/policy/public-structure-policy.schema.json",
           "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
@@ -3984,7 +4202,7 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Design independent RA/RAC/AEC List schemas preserving RA_id, RA_title, RAC_ids, RAC_name, AEC_ids, AEC_name semantic roles. RAC/AEC names are human-readable condition titles. Determine field shape and cross-list ownership without inferring types or omitting names.",
+        "action": "Write only new RA/RAC/AEC List schemas after name-ID binding and RAC/AEC independent contract file locator fields reviewed; RA list owns one-line title:ID relation with RA_id/RA_title/RA_description and RAC_name/AEC_name readable roles.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
@@ -4029,7 +4247,7 @@
           "PVR-04",
           "PVR-06"
         ],
-        "action": "Create new v4 tests/fixtures directly under src/tests/ptsip/, without new testdata/ and without porting old 27 pp.3.00 cases as v4 pass criteria",
+        "action": "Write new v4 schema and Plan/Task/Checklist cases under src/tests/ptsip/. Include 13 policy states, 7 plan states, one-way RA references, name-ID pairing, Content ID grammar, task ID synchronization, customizable checklist columns, and 0.3.8 distribution-only no .ptsip instance mutation.",
         "outputs": [
           "src/tests/ptsip/test_policy_v4_schema.py",
           "src/tests/ptsip/test_policy_ra_registry_resolution.py",
