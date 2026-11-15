@@ -84,12 +84,69 @@
       },
       "not_authorized": [
         "REINSTATE_PREVIOUSLY_REJECTED_RAC_AEC_FIELD_SET",
-        "INFER_ENTRY_ID_FIELD_NAMES_OR_FULL_RECORD_LAYOUT",
+        "INFER_ADDITIONAL_UNAPPROVED_FIELDS_OR_FINAL_RECORD_LAYOUT",
         "INFER_ID_GENERATION_ALGORITHM_FROM_REGEX",
         "MODIFY_PP300_SOURCE_SCHEMAS",
         "IMPLEMENT_NEW_LIST_SCHEMAS"
       ],
-      "execution_authorized": false
+      "execution_authorized": false,
+      "responsibility_boundaries_20261116": {
+        "source": "PROJECT_OWNER_EXPLICIT",
+        "policy_document_owns": [
+          "APPLICABILITY_SCOPE",
+          "ACTION_SELECTION",
+          "TARGET_SELECTION"
+        ],
+        "ra_owns": [
+          "RAC_AEC_FORWARD_RELATIONSHIPS"
+        ],
+        "rac_owns": "ASSIGNMENT_CONDITION_ONLY",
+        "aec_owns": "EXERCISE_CONDITION_ONLY",
+        "condition_definitions_redeclare_policy_scope_action_target": false,
+        "rac_aec_evaluation_contracts": "INDEPENDENT_NO_FORCED_IDENTICAL_FIELDS",
+        "value_internal_semantics": "UNRESOLVED",
+        "runtime_activation_authorized": false
+      },
+      "rac_provisional_field_structure": {
+        "source": "PROJECT_OWNER_EXPLICIT",
+        "date": "2026-11-16",
+        "status": "APPROVED_PROVISIONAL_STRUCTURE_ONLY_NOT_FINAL_SCHEMA",
+        "record_list": "RAC_list",
+        "fields": [
+          {
+            "id": "F-RAC-T001",
+            "name": "RAC_list",
+            "role": "CONDITION_RECORD_COLLECTION"
+          },
+          {
+            "id": "F-RAC-T002",
+            "name": "RAC_id",
+            "role": "CONDITION_UNIQUE_ID"
+          },
+          {
+            "id": "F-RAC-T003",
+            "name": "RAC_name",
+            "role": "HUMAN_READABLE_NAME_NOT_EVALUATION"
+          },
+          {
+            "id": "F-RAC-T004",
+            "name": "RAC_description",
+            "role": "OPTIONAL_SHORT_HUMAN_DESCRIPTION_NOT_EVALUATION"
+          },
+          {
+            "id": "F-RAC-T005",
+            "name": "value",
+            "role": "SELF_CONTAINED_CONDITION_DEFINITION_UNRESOLVED"
+          }
+        ],
+        "entry_id_pattern": "^ID-RAC-[a-zA-F0-9]{16}$",
+        "metadata_source": "EXISTING_APPROVED_FLAT_FOUR_ROOT_FIELDS",
+        "value_placeholder": "EMPTY_OBJECT_UNRESOLVED_NOT_EVALUABLE",
+        "external_value_delegation": "FORBIDDEN",
+        "extra_field_inference": "FORBIDDEN",
+        "final_schema_approval": false,
+        "implementation_authorized": false
+      }
     }
   }
 }
