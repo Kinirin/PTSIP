@@ -45,7 +45,20 @@
       ],
       "top_level_required": false
     },
-    "migration_order": "ONE_POLICY_DOCUMENT_AT_A_TIME"
+    "migration_order": "ONE_POLICY_DOCUMENT_AT_A_TIME",
+    "project_profile_history_root": "src/ptsip/schemas/storage/profile/history/",
+    "profile_module_use_discontinued": [
+      "src/ptsip/profiles/identity.py",
+      "src/ptsip/profiles/rule_records.py",
+      "src/ptsip/profiles/metadata.py",
+      "src/ptsip/profiles/contracts.py",
+      "src/ptsip/profiles/compatibility.py",
+      "src/ptsip/profiles/catalog.py"
+    ],
+    "engine_schema_root": "src/ptsip/schemas/engine/",
+    "engine_schema_root_approved": true,
+    "engine_historical_contract_preservation": true,
+    "schema_filenames_are_versionless_in_history": true
   },
   "approval_gates": [
     {
@@ -55,7 +68,7 @@
     },
     {
       "id": "PATH-02",
-      "scope": "Additional target schema roots storage/evidence and engine",
+      "scope": "Additional schema root storage/evidence/**",
       "state": "NEW_DIRECTORY_PROPOSAL_NEEDS_USER_APPROVAL"
     },
     {
@@ -75,13 +88,37 @@
     },
     {
       "id": "HISTORY-01",
-      "scope": "Project Profile variant preservation and candidate admission",
-      "state": "REQUIRES_SEMANTIC_COMPATIBILITY_EVIDENCE"
+      "scope": "Project Profile history root approved, per-version snapshot semantics and pp2 conflict",
+      "state": "HISTORY_ROOT_APPROVED_SEMANTIC_DIFF_UNRESOLVED"
     },
     {
       "id": "REMOVE-01",
       "scope": "All retired schema source files",
       "state": "INDIVIDUAL_DELETE_AFTER_CONSUMERS_ZERO_AND_TEST_PASS"
+    },
+    {
+      "id": "PATH-ENGINE-01",
+      "scope": "src/ptsip/schemas/engine/**",
+      "state": "APPROVED_BY_USER",
+      "note": "Root approved; leaf filename list in target_schemas remains reviewable"
+    },
+    {
+      "id": "PATH-PROFILE-HISTORY-01",
+      "scope": "src/ptsip/schemas/storage/profile/history/",
+      "state": "APPROVED_BY_USER",
+      "note": "Root approved; snapshot folder naming and same-version conflict are separately unresolved"
+    },
+    {
+      "id": "RETIRE-PROFILES-01",
+      "scope": [
+        "src/ptsip/profiles/identity.py",
+        "src/ptsip/profiles/rule_records.py",
+        "src/ptsip/profiles/metadata.py",
+        "src/ptsip/profiles/contracts.py",
+        "src/ptsip/profiles/compatibility.py",
+        "src/ptsip/profiles/catalog.py"
+      ],
+      "state": "USE_DISCONTINUATION_APPROVED_REPLACEMENT_PATHS_UNRESOLVED"
     }
   ],
   "target_registry": {
@@ -260,8 +297,13 @@
         "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
         "src/ptsip/specdata/ptsip-profile.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "HISTORY_ROOT_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
+      "decision": "ROOT_APPROVED_LEAF_NAME_PROPOSED_PROFILE_SOURCE_DIFF_BLOCKED",
+      "history_root": "src/ptsip/schemas/storage/profile/history/",
+      "history_snapshot_paths": [
+        "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
+        "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json"
+      ]
     },
     {
       "path": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
@@ -822,7 +864,7 @@
       "target_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "role": "Project Profile registered runtime versions",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "HOLD_FOR_CURRENT_PROFILE_OWNER_SEMANTIC_RECONCILIATION"
     },
     {
       "source_path": "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json",
@@ -873,19 +915,19 @@
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
       "source_blob_sha": "e8379e2d16f2a3c30b7c192c663fa45dc4ee7fec",
       "source_size_bytes": 10381,
-      "target_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "target_path": "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
       "role": "Project Profile registered runtime versions",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "SNAPSHOT_TO_PROFILE_HISTORY_AFTER_DIRECTORY_APPROVAL"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
       "source_blob_sha": "07fbfe8a5aa9dacc56f7b76e9ceaa3474c5599f2",
       "source_size_bytes": 14130,
-      "target_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "target_path": "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json",
       "role": "Project Profile registered runtime versions",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "SNAPSHOT_TO_PROFILE_HISTORY_AFTER_DIRECTORY_APPROVAL"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
@@ -903,7 +945,7 @@
       "target_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "role": "Project Profile registered runtime versions",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "HOLD_FOR_CURRENT_PROFILE_OWNER_SEMANTIC_RECONCILIATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile.schema.json",
@@ -912,7 +954,7 @@
       "target_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "role": "Project Profile registered runtime versions",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "HOLD_FOR_CURRENT_PROFILE_OWNER_SEMANTIC_RECONCILIATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json",
@@ -1092,19 +1134,23 @@
         "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
         "src/ptsip/schemas/storage/profile/project-profile.schema.json",
         "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
-        "src/ptsip/schemas/storage/profile/source-profile.schema.json"
+        "src/ptsip/schemas/storage/profile/source-profile.schema.json",
+        "src/ptsip/schemas/storage/profile/history/"
       ],
       "outputs": [
-        "User, Project, Source, Candidate and RA/RAC/AEC schemas"
+        "User, Project, Source, Candidate and RA/RAC/AEC schemas",
+        "Exact immutable profile history ledger with baseline SHA per pp.1.01 and pp.1.02 and conflict-pending pp.2.00"
       ],
       "actions": [
         "distinguish user/mode/project profiles",
         "preserve historical profile versions as separately selectable contract definitions",
         "repair invalid User_Profile before admission",
         "RA-name + 4 RAC/AEC link fields; referential integrity verify",
-        "no generation of missing Mode Profile from other profile by name"
+        "no generation of missing Mode Profile from other profile by name",
+        "Move superseded Project Profile schemas to versionless project-profile.schema.json leaf under schema/storage/profile/history/**; no overwrite of different same-version blobs",
+        "Preserve current project-profile.schema.json as current contract only after explicit pp2.00 same-$id divergent-source resolution"
       ],
-      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails"
+      "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved"
     },
     {
       "id": "WU-06",
@@ -1140,11 +1186,12 @@
         "20 engine schemas, 1 discovery schema, 4 evidence schemas"
       ],
       "actions": [
-        "only after approval for additional target root names",
+        "engine/** root approved: migrate engine contract and discovery schemas to explicitly listed central engine leaf directories; preserve previous revisions",
         "preserve engine contract fields and IDs",
         "preserve discovery graph schema definitions",
         "preserve evidence and normalized record semantics",
-        "no merging of engine-authority or validation schemas into policy"
+        "no merging of engine-authority or validation schemas into policy",
+        "storage/evidence/** remains pending user path approval; do not infer its approval from engine root approval"
       ],
       "gate": "20/20 engine mappings and 1/1 discovery, 4/4 evidence have exact source contracts and schema tests"
     },
@@ -1160,16 +1207,19 @@
       ],
       "outputs": [
         "complete old-ref to new-ref mapping",
-        "runtime/packaging functional edits"
+        "runtime/packaging functional edits",
+        "Six-file module retirement dependency graph and replacement-location approval ledger"
       ],
       "actions": [
-        "replace hard-coded version-specific path validation in profiles/contracts.py with registered resource selection",
+        "Discontinue use of six src/ptsip/profiles modules; enumerate their exact responsibilities and consumer imports, then rehome only to user-approved source paths",
         "update specdata/project-profile-contracts.yaml paths preserving historical version identities",
         "scan all repository consumers for source filenames, $id, importlib resource, runtime schema references",
         "update only code paths approved by user",
-        "verify built wheel includes all canonical schema resources"
+        "verify built wheel includes all canonical schema resources",
+        "Replace registered profile schema lookup hard-coded in profiles/contracts.py without retaining retired module as a production dependency",
+        "Refactor known callsites in CLI, clarification, migration, and specification domains, plus any discovered indirect callsites"
       ],
-      "gate": "all approved consumers resolve canonical schemas; wheel package resources verified"
+      "gate": "all approved consumers resolve canonical schemas; wheel package resources verified; all six modules unused; replacement code paths approved"
     },
     {
       "id": "WU-08",
@@ -1187,9 +1237,10 @@
         "delete each source file only after new target is semantically validated",
         "delete zero-byte placeholders only if no readers or ownership remain",
         "keep any unresolved source file with BLOCKED status",
-        "verify old source location absent from consumers after each removal"
+        "verify old source location absent from consumers after each removal",
+        "After all imports and public exports are replaced and tested, delete six discontinued src/ptsip/profiles Python modules in individually validated changes"
       ],
-      "gate": "zero consumers per removed file; full smoke+schema+packaging tests pass"
+      "gate": "zero consumers per removed file; full smoke+schema+packaging tests pass; no imports of six retired module paths"
     },
     {
       "id": "WU-09",
@@ -1255,7 +1306,10 @@
       "historical profiles remain verifiable",
       "new schema package data present in built wheel",
       "removed sources have zero remaining refs",
-      "Same $id with different Git blob content is resolved before either copy is retired"
+      "Same $id with different Git blob content is resolved before either copy is retired",
+      "Profile history snapshots retain approved version and immutable SHA with version-free .schema.json leaf names",
+      "No imports of discontinued six src/ptsip/profiles Python modules after replacement",
+      "Engine schemas under approved central engine root preserve distinct engine contract semantics and history"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1290,5 +1344,181 @@
       "resolution": "EXPLICIT_SEMANTIC_DIFF_AND_USER_SELECTION_REQUIRED",
       "deletion_blocked": true
     }
-  ]
+  ],
+  "profile_history_migration": {
+    "state": "APPROVED_HISTORY_ROOT_SUBPATH_CONVENTION_REQUIRES_USER_REVIEW",
+    "canonical_current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+    "history_root": "src/ptsip/schemas/storage/profile/history/",
+    "responsibilities": {
+      "current": "Current admitted project-profile schema only; not a concatenation of past schema contents",
+      "history": "Exact archived contract content for previously registered/superseded profile versions and revisions; never conflate versions",
+      "selector": "Registered version plus immutable source revision, not filename; the same filename may occur in different history directories",
+      "candidate": "Candidate profiles remain unregistered and cannot silently become current"
+    },
+    "proposed_versionless_snapshot_paths": [
+      {
+        "source": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
+        "registration": "SUPERSEDED",
+        "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
+      },
+      {
+        "source": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json",
+        "registration": "SUPERSEDED",
+        "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
+      },
+      {
+        "source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "registration": "CURRENT_IN_EXISTING_REGISTRY",
+        "decision": "BLOCKED_BY_SAME_ID_DIVERGENT_SOURCE"
+      },
+      {
+        "source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "registration": "SOURCE_VARIANT",
+        "decision": "BLOCKED_BY_SAME_ID_DIVERGENT_SOURCE"
+      },
+      {
+        "source": "src/ptsip/specdata/ptsip-profile.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "registration": "GENERIC_SCHEMA_SOURCE",
+        "decision": "FIELD_AND_OWNER_COMPATIBILITY_CHECK_REQUIRED"
+      }
+    ],
+    "conversion_procedure": [
+      "Resolve the registered Project Profile current version from src/ptsip/specdata/project-profile-contracts.yaml",
+      "Classify each source by exact registered version and semantic content; do not merge based on filename",
+      "Create immutable historical snapshots under approved history root with version-free leaf filename after subdirectory naming approval",
+      "Do not replace current project-profile.schema.json from conflicting pp.2.00 sources until the diff and authority are resolved by user",
+      "Register each history record with immutable source SHA, exact schema ID, version and lifecycle",
+      "Update every version-selector and consumer to resolve current or history without embedding version in schema filenames",
+      "Validate historical fixture per version and current version independently before retirement of old file"
+    ],
+    "conflict": {
+      "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
+      "state": "UNRESOLVED_BLOCK_CURRENT_PROMOTION_AND_SOURCE_DELETE"
+    },
+    "no_silent_version_flatten": true
+  },
+  "engine_schema_migration": {
+    "approved_root": "src/ptsip/schemas/engine/",
+    "root_state": "USER_APPROVED",
+    "planned_leaf_groups": [
+      "src/ptsip/schemas/engine/contracts/",
+      "src/ptsip/schemas/engine/discovery/"
+    ],
+    "historical_preservation": "Preserve old engine schema contract versions as separately addressable immutable revisions before superseding existing schema",
+    "historical_storage_subpaths": "PENDING_INDIVIDUAL_PATH_APPROVAL",
+    "files_assigned_to_engine": 21,
+    "scope": "Engine schema contracts from src/ptsip/engines/** only",
+    "compatibility": "Do not silently change engine authority, capabilities, or execution permission in schema relocation"
+  },
+  "discontinued_profile_modules": {
+    "scope": "STOP_USE_AND_RETIRE_SIX_EXISTING_PYTHON_MODULES",
+    "source_boundary": "src/ptsip/profiles/",
+    "use_discontinuation_authorized": true,
+    "deletion_gate": "Do not delete modules until verified direct and indirect consumers have been relocated to explicitly approved code paths and tests pass",
+    "replacement_code_paths": "NOT_SELECTED_REQUIRES_USER_DISCUSSION",
+    "modules": [
+      {
+        "path": "src/ptsip/profiles/identity.py",
+        "responsibilities": [
+          "Project Profile typed version identity",
+          "user and instance revision identity",
+          "contract support and transitions"
+        ],
+        "confirmed_callers": [
+          "src/ptsip/profiles/metadata.py",
+          "src/ptsip/profiles/compatibility.py",
+          "src/ptsip/migration/analysis/target/semantics.py",
+          "src/ptsip/ptsip_specification/spec_identity.py"
+        ],
+        "action": "STOP_USE_REHOME_RESPONSIBILITIES_THEN_DELETE"
+      },
+      {
+        "path": "src/ptsip/profiles/rule_records.py",
+        "responsibilities": [
+          "linked rule profile read/validate",
+          "exact registered rule ID discovery and resolution",
+          "local profile catalog dependency"
+        ],
+        "confirmed_callers": [],
+        "note": "No external import found in targeted code searches; full AST/import/use scan still required",
+        "action": "STOP_USE_VERIFY_DEAD_OR_REHOME_THEN_DELETE"
+      },
+      {
+        "path": "src/ptsip/profiles/metadata.py",
+        "responsibilities": [
+          "Project Profile metadata and serialized header"
+        ],
+        "confirmed_callers": [
+          "src/ptsip/clarification/resolution/profile_projection.py"
+        ],
+        "action": "STOP_USE_REHOME_THEN_DELETE"
+      },
+      {
+        "path": "src/ptsip/profiles/contracts.py",
+        "responsibilities": [
+          "embedded Project Profile contract registry reader",
+          "schema resource path restriction",
+          "current version selection"
+        ],
+        "confirmed_callers": [
+          "src/ptsip/profiles/identity.py"
+        ],
+        "action": "STOP_USE_REPLACE_WITH_CONFIG_REGISTRY_THEN_DELETE"
+      },
+      {
+        "path": "src/ptsip/profiles/compatibility.py",
+        "responsibilities": [
+          "historical profile compatibility bridge",
+          "direct historical transition decision"
+        ],
+        "confirmed_callers": [
+          "src/ptsip/migration/execution/direct/promotion.py"
+        ],
+        "action": "STOP_USE_REHOME_THEN_DELETE"
+      },
+      {
+        "path": "src/ptsip/profiles/catalog.py",
+        "responsibilities": [
+          "local profile catalog selection",
+          "default profile path",
+          "catalog validation"
+        ],
+        "confirmed_callers": [
+          "src/ptsip/cli.py",
+          "src/ptsip/clarification/resolution/profile_projection.py",
+          "src/ptsip/profiles/rule_records.py"
+        ],
+        "action": "STOP_USE_REHOME_THEN_DELETE"
+      }
+    ],
+    "exact_external_consumers_to_rewire": [
+      "src/ptsip/cli.py",
+      "src/ptsip/clarification/resolution/profile_projection.py",
+      "src/ptsip/migration/analysis/target/semantics.py",
+      "src/ptsip/migration/execution/direct/promotion.py",
+      "src/ptsip/ptsip_specification/spec_identity.py"
+    ],
+    "retirement_steps": [
+      "Enumerate imports, dynamic imports, exported symbols, CLI invocations, test imports, and wheel package entrypoints for each of six modules",
+      "Record per-symbol responsibility and actual consumers; identify policy-owned vs implementation-owned behavior",
+      "Agree replacement code directories and module paths with user before creating any new source",
+      "Move or rebind responsibilities without removing historical validation or live consumer functionality",
+      "Update confirmed direct consumers and indirect entrypoints; do not leave compatibility shims that still import retired modules",
+      "Execute existing unit tests, negative reference tests, CLI and build/wheel smoke",
+      "After zero imports/usages and full tests pass, remove retired source modules and repeat checks",
+      "Preserve user profile data and history files separately from obsolete Python code"
+    ],
+    "acceptance": [
+      "six existing Python modules have no active import/usage remaining",
+      "all live CLI, migration, clarification, specification, and profile features resolve approved replacements",
+      "historical Project Profile contract selection verified",
+      "schema data moved under central root",
+      "zero unreviewed source path creation"
+    ]
+  }
 }
