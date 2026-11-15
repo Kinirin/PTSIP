@@ -46,7 +46,6 @@
       "top_level_required": false
     },
     "migration_order": "ONE_POLICY_DOCUMENT_AT_A_TIME",
-    "project_profile_history_root": "src/ptsip/schemas/storage/profile/history/",
     "profile_module_use_discontinued": [
       "src/ptsip/profiles/identity.py",
       "src/ptsip/profiles/rule_records.py",
@@ -58,7 +57,18 @@
     "engine_schema_root": "src/ptsip/schemas/engine/",
     "engine_schema_root_approved": true,
     "engine_historical_contract_preservation": true,
-    "schema_filenames_are_versionless_in_history": true
+    "project_profile_historical_root": "src/ptsip/schemas/storage/profile/",
+    "project_profile_historical_filenames": {
+      "pp.1.01": "project-profile-pp.1.01.schema.json",
+      "pp.1.02": "project-profile-pp.1.02.schema.json"
+    },
+    "schema_filename_policy": {
+      "default": "VERSIONLESS",
+      "exception": "HISTORICAL_PROJECT_PROFILE",
+      "historical_version_location": "BASENAME",
+      "historical_project_profile_pattern": "project-profile-pp.<major>.<minor>.schema.json",
+      "current_project_profile_basename": "project-profile.schema.json"
+    }
   },
   "approval_gates": [
     {
@@ -88,8 +98,8 @@
     },
     {
       "id": "HISTORY-01",
-      "scope": "Project Profile history root approved, per-version snapshot semantics and pp2 conflict",
-      "state": "HISTORY_ROOT_APPROVED_SEMANTIC_DIFF_UNRESOLVED"
+      "scope": "Project Profile historical file paths approved; exact per-version schema contents and pp2.00 conflict remain separately unresolved",
+      "state": "FLAT_PATHS_APPROVED_SEMANTIC_DIFF_UNRESOLVED"
     },
     {
       "id": "REMOVE-01",
@@ -104,9 +114,12 @@
     },
     {
       "id": "PATH-PROFILE-HISTORY-01",
-      "scope": "src/ptsip/schemas/storage/profile/history/",
+      "scope": [
+        "src/ptsip/schemas/storage/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/storage/profile/project-profile-pp.1.02.schema.json"
+      ],
       "state": "APPROVED_BY_USER",
-      "note": "Root approved; snapshot folder naming and same-version conflict are separately unresolved"
+      "note": "Versioned filenames at profile root explicitly replace former history/** hierarchy; historical schema content still requires source-based validation"
     },
     {
       "id": "RETIRE-PROFILES-01",
@@ -139,7 +152,7 @@
       },
       {
         "step": "C04",
-        "change": "Validate uniqueness of schema key and full canonical path, exact $id plus version/revision selector. Identical leaf filenames in different history directories are allowed."
+        "change": "Validate uniqueness of schema key and canonical full output path, contract $id, registered version and revision; historical Profile files have distinct versioned basenames under profile/"
       },
       {
         "step": "C05",
@@ -473,26 +486,6 @@
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
     {
-      "path": "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
-      "filename": "project-profile.schema.json",
-      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
-      "sources": [
-        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json"
-      ],
-      "readiness": "HISTORY_ROOT_APPROVED_SNAPSHOT_SUBDIRECTORY_NAME_PENDING",
-      "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
-    },
-    {
-      "path": "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json",
-      "filename": "project-profile.schema.json",
-      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
-      "sources": [
-        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json"
-      ],
-      "readiness": "HISTORY_ROOT_APPROVED_SNAPSHOT_SUBDIRECTORY_NAME_PENDING",
-      "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
-    },
-    {
       "path": "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
       "filename": "mode-profile.schema.json",
       "responsibility": "Mode Profile",
@@ -511,6 +504,26 @@
       "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
     },
     {
+      "path": "src/ptsip/schemas/storage/profile/project-profile-pp.1.01.schema.json",
+      "filename": "project-profile-pp.1.01.schema.json",
+      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
+      "sources": [
+        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json"
+      ],
+      "readiness": "EXACT_USER_APPROVED_HISTORICAL_PATH",
+      "decision": "USER_APPROVED_EXACT_FILE_PATH"
+    },
+    {
+      "path": "src/ptsip/schemas/storage/profile/project-profile-pp.1.02.schema.json",
+      "filename": "project-profile-pp.1.02.schema.json",
+      "responsibility": "Immutable historical Project Profile schema snapshot for SUPERSEDED",
+      "sources": [
+        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json"
+      ],
+      "readiness": "EXACT_USER_APPROVED_HISTORICAL_PATH",
+      "decision": "USER_APPROVED_EXACT_FILE_PATH"
+    },
+    {
       "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "filename": "project-profile.schema.json",
       "responsibility": "Project Profile registered runtime versions",
@@ -521,13 +534,13 @@
         "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
         "src/ptsip/specdata/ptsip-profile.schema.json"
       ],
-      "readiness": "HISTORY_ROOT_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
+      "readiness": "HISTORICAL_PATHS_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
       "decision": "ROOT_APPROVED_LEAF_NAME_PROPOSED_PROFILE_SOURCE_DIFF_BLOCKED",
-      "history_root": "src/ptsip/schemas/storage/profile/history/",
       "history_snapshot_paths": [
-        "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
-        "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json"
-      ]
+        "src/ptsip/schemas/storage/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/storage/profile/project-profile-pp.1.02.schema.json"
+      ],
+      "historical_resource_root": "src/ptsip/schemas/storage/profile/"
     },
     {
       "path": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
@@ -935,19 +948,19 @@
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
       "source_blob_sha": "e8379e2d16f2a3c30b7c192c663fa45dc4ee7fec",
       "source_size_bytes": 10381,
-      "target_path": "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
+      "target_path": "src/ptsip/schemas/storage/profile/project-profile-pp.1.01.schema.json",
       "role": "Project Profile registered runtime versions",
-      "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "SNAPSHOT_TO_PROFILE_HISTORY_AFTER_DIRECTORY_APPROVAL"
+      "gate": "HISTORICAL_SOURCE_VERSION_AND_REVISION_VERIFIED",
+      "action": "MIGRATE_TO_APPROVED_HISTORICAL_FILENAME_AFTER_VERIFIED_SOURCE"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
       "source_blob_sha": "07fbfe8a5aa9dacc56f7b76e9ceaa3474c5599f2",
       "source_size_bytes": 14130,
-      "target_path": "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json",
+      "target_path": "src/ptsip/schemas/storage/profile/project-profile-pp.1.02.schema.json",
       "role": "Project Profile registered runtime versions",
-      "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "SNAPSHOT_TO_PROFILE_HISTORY_AFTER_DIRECTORY_APPROVAL"
+      "gate": "HISTORICAL_SOURCE_VERSION_AND_REVISION_VERIFIED",
+      "action": "MIGRATE_TO_APPROVED_HISTORICAL_FILENAME_AFTER_VERIFIED_SOURCE"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
@@ -1085,14 +1098,14 @@
           "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
           "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
           "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
-          "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
-          "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json"
+          "src/ptsip/schemas/storage/profile/project-profile-pp.1.01.schema.json",
+          "src/ptsip/schemas/storage/profile/project-profile-pp.1.02.schema.json"
         ]
       ],
       "outputs": [
         "JSON-parseable registry",
         "exact source-to-canonical-path mapping",
-        "no duplicate contract registration keys or canonical output paths; same leaf schema filename permitted in different history directories"
+        "no duplicate contract registration keys, full canonical output paths or conflicting historical version filenames"
       ],
       "actions": [
         "repair syntax only where meaning clear",
@@ -1157,11 +1170,12 @@
         "src/ptsip/schemas/storage/profile/project-profile.schema.json",
         "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
         "src/ptsip/schemas/storage/profile/source-profile.schema.json",
-        "src/ptsip/schemas/storage/profile/history/"
+        "src/ptsip/schemas/storage/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/storage/profile/project-profile-pp.1.02.schema.json"
       ],
       "outputs": [
         "User, Project, Source, Candidate and RA/RAC/AEC schemas",
-        "Exact immutable profile history ledger with baseline SHA per pp.1.01 and pp.1.02 and conflict-pending pp.2.00"
+        "Exact historical schema mapping: pp.1.01 -> project-profile-pp.1.01.schema.json; pp.1.02 -> project-profile-pp.1.02.schema.json, each with source SHA; current pp.2.00 conflict separately blocked"
       ],
       "actions": [
         "distinguish user/mode/project profiles",
@@ -1169,7 +1183,7 @@
         "repair invalid User_Profile before admission",
         "RA-name + 4 RAC/AEC link fields; referential integrity verify",
         "no generation of missing Mode Profile from other profile by name",
-        "Move superseded Project Profile schemas to versionless project-profile.schema.json leaf under schema/storage/profile/history/**; no overwrite of different same-version blobs",
+        "Move pp.1.01 and pp.1.02 to their approved versioned filenames directly in src/ptsip/schemas/storage/profile/; verify registered contract versions and hashes before old-file removal",
         "Preserve current project-profile.schema.json as current contract only after explicit pp2.00 same-$id divergent-source resolution"
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved"
@@ -1287,8 +1301,8 @@
   "observed_breakages": [
     {
       "file": "src/ptsip/profiles/contracts.py",
-      "issue": "_schema_resource checks len(parts)==2, first part schemas and filename starts ptsip-profile-pp-; incompatible with versionless central paths",
-      "required_change": "Replace with config-registered source resource selection after code path review"
+      "issue": "_schema_resource checks len(parts)==2 and a filename starting with ptsip-profile-pp-; incompatible with centralized current profile path and approved historical project-profile-pp.*.schema.json resources",
+      "required_change": "Migrate lookup to approved config registry, with exact current and historical filenames, then retire deprecated module under the six-module discontinuation plan"
     },
     {
       "file": "src/ptsip/specdata/project-profile-contracts.yaml",
@@ -1321,7 +1335,7 @@
     "pass_requirements": [
       "no .ptsip source contract used",
       "44/44 exact src/ptsip source paths mapped",
-      "all schema leaf filenames versionless; historical version/revision identifiers are not embedded into schema leaf filenames",
+      "Schema filenames have no version except the explicitly approved historical project-profile-pp.1.01.schema.json and project-profile-pp.1.02.schema.json",
       "no unresolved $ref or duplicate registered $id",
       "Checklist no mandatory fields",
       "RA-name exact and RAC/AEC ID-name consistency",
@@ -1329,7 +1343,7 @@
       "new schema package data present in built wheel",
       "removed sources have zero remaining refs",
       "Same $id with different Git blob content is resolved before either copy is retired",
-      "Profile history snapshots retain approved version and immutable SHA with version-free .schema.json leaf names",
+      "Historical Project Profile schemas resolve by approved versioned filenames directly under storage/profile/ and preserve immutable source SHA",
       "No imports of discontinued six src/ptsip/profiles Python modules after replacement",
       "Engine schemas under approved central engine root preserve distinct engine contract semantics and history"
     ],
@@ -1342,7 +1356,7 @@
       "unknown_profile_version",
       "absent_reference",
       "schema_invalid_json",
-      "versionless_path_conflict",
+      "historical_version_filename_collision",
       "schema_structure_only_not_execution_authorization"
     ],
     "powershell_commands_in_order": [
@@ -1368,27 +1382,42 @@
     }
   ],
   "profile_history_migration": {
-    "state": "APPROVED_HISTORY_ROOT_SUBPATH_CONVENTION_REQUIRES_USER_REVIEW",
+    "state": "FLAT_HISTORICAL_FILE_PATHS_APPROVED_CURRENT_SOURCE_CONFLICT_UNRESOLVED",
     "canonical_current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-    "history_root": "src/ptsip/schemas/storage/profile/history/",
     "responsibilities": {
       "current": "Current admitted project-profile schema only; not a concatenation of past schema contents",
-      "history": "Exact archived contract content for previously registered/superseded profile versions and revisions; never conflate versions",
-      "selector": "Registered version plus immutable source revision, not filename; the same filename may occur in different history directories",
+      "history": "Each archived profile contract has its own versioned filename directly under profile/; preserve exact version semantics and immutable source SHA",
+      "selector": "Select the exact registered profile contract version and immutable source revision; historical basename includes version for recognition, but filename alone does not determine authority",
       "candidate": "Candidate profiles remain unregistered and cannot silently become current"
     },
-    "proposed_versionless_snapshot_paths": [
+    "conversion_procedure": [
+      "Resolve the registered Project Profile current version from src/ptsip/specdata/project-profile-contracts.yaml",
+      "Classify each source by exact registered version and semantic content; do not merge based on filename",
+      "Create historical schemas directly under src/ptsip/schemas/storage/profile/ using approved project-profile-pp.1.01.schema.json and project-profile-pp.1.02.schema.json; preserve registered version and source SHA",
+      "Do not replace current project-profile.schema.json from conflicting pp.2.00 sources until the diff and authority are resolved by user",
+      "Register each history record with immutable source SHA, exact schema ID, version and lifecycle",
+      "Update version selectors and consumers to resolve exact approved current basename or versioned historical filename from registered version plus immutable source revision; never use filename alone as authority",
+      "Validate historical fixture per version and current version independently before retirement of old file"
+    ],
+    "conflict": {
+      "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
+      "state": "UNRESOLVED_BLOCK_CURRENT_PROMOTION_AND_SOURCE_DELETE"
+    },
+    "no_silent_version_flatten": true,
+    "history_storage_path": "src/ptsip/schemas/storage/profile/",
+    "historical_naming": "VERSIONED_FILE_IN_PROFILE_ROOT",
+    "historical_schema_files": [
       {
         "source": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/history/pp.1.01/project-profile.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/project-profile-pp.1.01.schema.json",
         "registration": "SUPERSEDED",
-        "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
+        "decision": "USER_APPROVED_EXACT_HISTORY_FILENAME"
       },
       {
         "source": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/history/pp.1.02/project-profile.schema.json",
+        "target": "src/ptsip/schemas/storage/profile/project-profile-pp.1.02.schema.json",
         "registration": "SUPERSEDED",
-        "decision": "HISTORY_DIRECTORY_NAME_PROPOSED"
+        "decision": "USER_APPROVED_EXACT_HISTORY_FILENAME"
       },
       {
         "source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
@@ -1408,21 +1437,7 @@
         "registration": "GENERIC_SCHEMA_SOURCE",
         "decision": "FIELD_AND_OWNER_COMPATIBILITY_CHECK_REQUIRED"
       }
-    ],
-    "conversion_procedure": [
-      "Resolve the registered Project Profile current version from src/ptsip/specdata/project-profile-contracts.yaml",
-      "Classify each source by exact registered version and semantic content; do not merge based on filename",
-      "Create immutable historical snapshots under approved history root with version-free leaf filename after subdirectory naming approval",
-      "Do not replace current project-profile.schema.json from conflicting pp.2.00 sources until the diff and authority are resolved by user",
-      "Register each history record with immutable source SHA, exact schema ID, version and lifecycle",
-      "Update every version-selector and consumer to resolve current or history without embedding version in schema filenames",
-      "Validate historical fixture per version and current version independently before retirement of old file"
-    ],
-    "conflict": {
-      "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
-      "state": "UNRESOLVED_BLOCK_CURRENT_PROMOTION_AND_SOURCE_DELETE"
-    },
-    "no_silent_version_flatten": true
+    ]
   },
   "engine_schema_migration": {
     "approved_root": "src/ptsip/schemas/engine/",
