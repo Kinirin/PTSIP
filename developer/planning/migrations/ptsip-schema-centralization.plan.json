@@ -1549,7 +1549,6 @@
         "src/ptsip/migration/analysis/target/semantics.py",
         "src/ptsip/migration/execution/direct/promotion.py",
         "src/ptsip/ptsip_specification/spec_identity.py",
-        "src/ptsip/validation/profile.py",
         "src/ptsip/specdata/project-profile-contracts.yaml",
         "src/ptsip/profiles/index.yaml",
         "setup.py",
@@ -2601,11 +2600,6 @@
         "replacement": "Registered selected project profile version from Go, no stale hardcoded value"
       },
       {
-        "path": "src/ptsip/validation/profile.py",
-        "replaced_import": "existing schema loading from specdata",
-        "replacement": "Read schema via canonical config registry selector after separate consumer verification; do not remove validator semantics"
-      },
-      {
         "path": "src/ptsip/specdata/project-profile-contracts.yaml",
         "replaced_import": "historical resource names",
         "replacement": "Update version->current/history schema bindings and state while retaining transitions"
@@ -2820,7 +2814,8 @@
       "Existing package-data entries do not yet include recursive src/ptsip/schemas/ resource data",
       "Current setuptools build requires src/ptsip/profiles/index.yaml, files under src/ptsip/profiles/history/**; both must be removed as build prerequisites before full folder retirement",
       "External consumers importing ptsip.profiles or reading shipped ptsip/profiles/*.ptsip.yaml cannot retain identical literal paths if directory is fully removed; compatibility scope requires user resolution",
-      "All 22 profile files, including 12 YAML examples, must be accounted for with evidence before deletion"
+      "All 22 profile files, including 12 YAML examples, must be accounted for with evidence before deletion",
+      "src/ptsip/clarification/resolution/profile_projection.py currently imports ...validation.profile, but src/ptsip/validation/profile.py does not exist at inspected main HEAD; verify consumer import resolution before Go parity assertions"
     ],
     "selected_go_module_root": "src/ptsip/profile_contract/"
   },
@@ -3106,6 +3101,13 @@
     "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths; installed wheel omits ptsip/profiles assets; no import uses ptsip.profiles",
     "warning": "Full deletion is incompatible with preserving exact legacy ptsip/profiles/*.ptsip.yaml filesystem paths or ptsip.profiles Python imports. Functional/schema compatibility is testable but literal-path compatibility is not; do not claim full backwards compatibility until migration interface scope is approved.",
     "user_owned_profile_out_of_scope": ".ptsip/profiles/** in consuming repositories is not a deletion target",
-    "explicit_go_root_vs_src_schema": "Go implementation under src/ptsip/profile_contract/, schema contracts under src/ptsip/schemas/; do not store runtime Go code under schemas."
+    "explicit_go_root_vs_src_schema": "Go implementation under src/ptsip/profile_contract/, schema contracts under src/ptsip/schemas/; do not store runtime Go code under schemas.",
+    "additional_source_health": {
+      "missing_file_reference": "src/ptsip/validation/profile.py",
+      "importer": "src/ptsip/clarification/resolution/profile_projection.py",
+      "problem": "Existing Python import references absent module at baseline HEAD, so it must be diagnosed as preexisting source condition; not listed as a real file to modify",
+      "disposition": "DISCOVER_REAL_PROVIDER_OR_REPLACE_BROKEN_IMPORT_WITH_APPROVED_CONTRACT_ONLY_AFTER_REVIEW",
+      "gate": "No misleading claim of baseline full CLI/import parity before this check passes"
+    }
   }
 }
