@@ -159,6 +159,26 @@
       ],
       "state": "OUTPUT_FILENAMES_AND_HISTORY_ROOT_USER_REQUESTED",
       "note": "Schema generation remains pending full work plan approval."
+    },
+    {
+      "id": "GO-LOCATION-01",
+      "scope": "Exact Go source directory/packages and file names for six Python module replacements",
+      "state": "USER_APPROVAL_REQUIRED_NO_SOURCE_CREATION"
+    },
+    {
+      "id": "GO-PROTOCOL-01",
+      "scope": "Go CLI typed operations and Python callsite bridge",
+      "state": "NEEDS_EXPLICIT_CONTRACT_REVIEW"
+    },
+    {
+      "id": "GO-RULE-RECORD-01",
+      "scope": "Rule-record replacement current Python .ptsip schema source; requires src/ptsip-only basis",
+      "state": "BLOCKED_UNTIL_SRC_SOURCE_FOUND_OR_NEW_USER_APPROVED_CONTRACT"
+    },
+    {
+      "id": "GO-RETIRE-01",
+      "scope": "Stop use/delete six Python modules after Go parity, caller rewiring, wheel verification",
+      "state": "USE_STOP_AUTHORIZED_DELETION_CONDITIONAL"
     }
   ],
   "target_registry": {
@@ -1311,7 +1331,8 @@
       "outputs": [
         "complete old-ref to new-ref mapping",
         "runtime/packaging functional edits",
-        "Six-file module retirement dependency graph and replacement-location approval ledger"
+        "Six-file module retirement dependency graph and replacement-location approval ledger",
+        "Go responsibility to Python module replacement map with exact typed request-response actions"
       ],
       "actions": [
         "Discontinue use of six src/ptsip/profiles modules; enumerate their exact responsibilities and consumer imports, then rehome only to user-approved source paths",
@@ -1320,9 +1341,12 @@
         "update only code paths approved by user",
         "verify built wheel includes all canonical schema resources",
         "Replace registered profile schema lookup hard-coded in profiles/contracts.py without retaining retired module as a production dependency",
-        "Refactor known callsites in CLI, clarification, migration, and specification domains, plus any discovered indirect callsites"
+        "Refactor known callsites in CLI, clarification, migration, and specification domains, plus any discovered indirect callsites",
+        "Prepare Go module location decision using choices A/B/C and resolve approval before writing Go sources",
+        "Implement six Go operations with strict schema registry selection and fail-closed responses; do not reproduce field contracts in code",
+        "Replace exact five known src/ptsip Python consumers and inspect dynamic imports/tests/wheel before old file removal"
       ],
-      "gate": "all approved consumers resolve canonical schemas; wheel package resources verified; all six modules unused; replacement code paths approved"
+      "gate": "all approved consumers resolve canonical schemas; wheel package resources verified; all six modules unused; replacement code paths approved; six retired module responsibilities have registered Go interface coverage and approved implementation locations"
     },
     {
       "id": "WU-08",
@@ -1343,7 +1367,7 @@
         "verify old source location absent from consumers after each removal",
         "After all imports and public exports are replaced and tested, delete six discontinued src/ptsip/profiles Python modules in individually validated changes"
       ],
-      "gate": "zero consumers per removed file; full smoke+schema+packaging tests pass; no imports of six retired module paths"
+      "gate": "zero consumers per removed file; full smoke+schema+packaging tests pass; no imports of six retired module paths; Go replacement independent verification and Python-to-Go consumer parity PASS"
     },
     {
       "id": "WU-09",
@@ -1404,6 +1428,130 @@
         "Run static usage scan for old example/template YAML and retire only those proven unused after central schema and Go consumer replacement"
       ],
       "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure"
+    },
+    {
+      "id": "WU-11",
+      "name": "Six Python module responsibility extraction and consumer closure",
+      "dependency": [
+        "WU-01",
+        "WU-10"
+      ],
+      "inputs": [
+        "src/ptsip/profiles/identity.py",
+        "src/ptsip/profiles/rule_records.py",
+        "src/ptsip/profiles/metadata.py",
+        "src/ptsip/profiles/contracts.py",
+        "src/ptsip/profiles/compatibility.py",
+        "src/ptsip/profiles/catalog.py"
+      ],
+      "outputs": [
+        "six-module symbol-responsibility table",
+        "actual imports across Python CLI, migration, clarification and specification",
+        "legacy rule-record src contract missing-source block"
+      ],
+      "exact_steps": [
+        "Inspect exported functions, constants, dataclasses and exceptions in all six Python files",
+        "Resolve all import sites, dynamic imports, CLI and installed package references",
+        "Link every Python public behavior to exactly one proposed Go operation, mark unsupported as blocked",
+        "Block any .ptsip schema-source usage in replacement contract design",
+        "Produce a complete old API / Go operation parity matrix"
+      ],
+      "gate": "6/6 behavior inventoried, all actual consumers resolved; Go source paths remain uncreated"
+    },
+    {
+      "id": "WU-12",
+      "name": "Go implementation architecture and typed contract approval",
+      "dependency": [
+        "WU-11",
+        "WU-02"
+      ],
+      "inputs": [
+        "existing src/ptsip/common_contract Go module",
+        "existing src/ptsip/_common_contract.py transport",
+        "new central schema config"
+      ],
+      "outputs": [
+        "approved Go source root and exact paths",
+        "typed six-operation protocol contract",
+        "error code contract and test matrix"
+      ],
+      "exact_steps": [
+        "Present A existing Go module, B independent Go module, C engine-owned Go capability as independent options",
+        "Have user explicitly approve chosen Go source directory and filenames",
+        "Define JSON operation inputs/outputs and reject all unregistered version IDs",
+        "Separate profile data validation from authorization and runtime policy approval",
+        "Select Python-to-Go bridge mechanism without placing Go implementation inside schemas directories"
+      ],
+      "gate": "No Go file creation without explicit user path approval; protocol typed contracts and owner boundaries fully approved"
+    },
+    {
+      "id": "WU-13",
+      "name": "Go profile operations build and Python consumer rewiring",
+      "dependency": [
+        "WU-12",
+        "WU-10"
+      ],
+      "inputs": [
+        "registry/registry.go",
+        "resolver/resolver.go",
+        "validator/validator.go",
+        "source/document.go",
+        "src/ptsip/cli.py",
+        "src/ptsip/clarification/resolution/profile_projection.py",
+        "src/ptsip/migration/analysis/target/semantics.py",
+        "src/ptsip/migration/execution/direct/promotion.py",
+        "src/ptsip/ptsip_specification/spec_identity.py",
+        "src/ptsip/validation/profile.py",
+        "src/ptsip/specdata/project-profile-contracts.yaml",
+        "src/ptsip/profiles/index.yaml"
+      ],
+      "outputs": [
+        "Go implementation of identity, rule records, metadata, contract selection, compatibility, catalog",
+        "Python import and API callsite replacements",
+        "wheel packaging manifest changes"
+      ],
+      "exact_steps": [
+        "Implement and test six separate responsibility contracts in approved Go package paths",
+        "Resolve schema identities through config.json with exact version/source revision and closed $ref",
+        "Use existing Go transport only after protocol extension approved",
+        "Update Python consumer callers and eliminate imports of retired six Python files",
+        "Prove compatibility matrix over pp1.01, pp1.02, pp2.00 YAML fixtures",
+        "No project mutation side effects during read-only operations"
+      ],
+      "gate": "Go unit tests, Python-Go integration tests, CLI/migration regression and wheel smoke pass; zero usage of retired modules"
+    },
+    {
+      "id": "WU-14",
+      "name": "Retire six Python modules and obsolete distributed samples",
+      "dependency": [
+        "WU-13",
+        "WU-08"
+      ],
+      "inputs": [
+        "src/ptsip/profiles/identity.py",
+        "src/ptsip/profiles/rule_records.py",
+        "src/ptsip/profiles/metadata.py",
+        "src/ptsip/profiles/contracts.py",
+        "src/ptsip/profiles/compatibility.py",
+        "src/ptsip/profiles/catalog.py",
+        "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
+        "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml"
+      ],
+      "outputs": [
+        "verified six-file Python source deletion ledger",
+        "approved no-longer-used template fixture retirement ledger",
+        "no old schema/runtime lookup dependencies"
+      ],
+      "exact_steps": [
+        "Verify no direct, indirect or dynamic imports for each of six Python modules",
+        "Verify exact Go functional parity including all public functions used by product entrypoints",
+        "Remove six Python modules after functionality migration and approval",
+        "Retire obsolete distributed template examples and catalog entry only when ownership/consumer checks pass",
+        "Keep user project .ptsip.yaml files and unrelated profile files unchanged",
+        "Verify release wheel packaging and all affected test modes after source removal"
+      ],
+      "gate": "6/6 modules retired, old consumers zero, profile schema selection correct for 3 versions, release and CI verify PASS"
     }
   ],
   "observed_breakages": [
@@ -1456,7 +1604,10 @@
       "Engine schemas under approved central engine root preserve distinct engine contract semantics and history",
       "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
       "pp.1.00 schema is not generated without verified original input",
-      "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles"
+      "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles",
+      "Six retired Python module responsibilities are available as typed Go operations with no implicit permission grant",
+      "Existing CLI migration clarification specification Python import sites no longer import six retired modules",
+      "Go implementation code paths and bridge protocol are user approved before source generation"
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -1909,5 +2060,579 @@
       "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
     ],
     "no_schema_generated_from_pp100": true
+  },
+  "go_profile_module_migration": {
+    "status": "DETAILED_PLAN_RECORDED_IMPLEMENTATION_SOURCE_PATH_PENDING_USER_APPROVAL",
+    "requested_language": "GO",
+    "retired_python_files": [
+      "src/ptsip/profiles/identity.py",
+      "src/ptsip/profiles/rule_records.py",
+      "src/ptsip/profiles/metadata.py",
+      "src/ptsip/profiles/contracts.py",
+      "src/ptsip/profiles/compatibility.py",
+      "src/ptsip/profiles/catalog.py"
+    ],
+    "behavior_policy": "Retire only six specified Python modules; preserve or intentionally replace their externally consumed behaviors. Go owns deterministic execution, Python callers may use a transport adapter but not the six retired files.",
+    "approved_discontinuation": true,
+    "source_creation_authorized": false,
+    "owner_boundary": {
+      "schema_contracts": "src/ptsip/schemas/ holds versioned or current JSON Schema and config.json only",
+      "go_implementation": "Dedicated Go implementation packages; exact source paths pending explicit owner decision",
+      "transport": "Explicit JSON request/response to Go implementation, no hidden implicit rule inference or Python reimplementation",
+      "consumer": "Existing Python CLI, clarification, migration, specification modules remain consumers until separately scoped changes",
+      "registry": "Canonical config.json selects exact schema id, version, path, immutable content SHA; no copy of .ptsip/** schema fields",
+      "authority": "JSON Schema validation cannot grant execution, source authority or policy approval"
+    },
+    "location_choices": {
+      "decision": "USER_LOCATION_APPROVAL_REQUIRED",
+      "options": [
+        {
+          "id": "A_EXISTING_GO_MODULE",
+          "description": "Extend existing Go module src/ptsip/common_contract with isolated profile responsibility packages, reuse controlled JSON transport",
+          "candidate_root": "src/ptsip/common_contract/profile/",
+          "tradeoff": "Smaller integration effort, but module boundary must prohibit profile semantics leaking into policy source logic"
+        },
+        {
+          "id": "B_DEDICATED_GO_MODULE",
+          "description": "Separate a profile domain Go module under src/ptsip, invoked through explicit typed bridge",
+          "candidate_root": "src/ptsip/profile_contract/",
+          "tradeoff": "Clear ownership and release boundary, higher initial packaging/transport setup"
+        },
+        {
+          "id": "C_ENGINE_OWNED_GO_DOMAIN",
+          "description": "Introduce profile work as independently registered engine capability under src/ptsip/engines",
+          "candidate_root": "src/ptsip/engines/profile/",
+          "tradeoff": "Strong engine capability contracts, but existing engines use Rust and new mixed-language engine packaging needs review"
+        }
+      ],
+      "preferred_for_review": "A_EXISTING_GO_MODULE",
+      "decision_state": "PROPOSAL_ONLY_NO_CODE_CREATION",
+      "file_name_candidates": [
+        "identity.go",
+        "rule_records.go",
+        "metadata.go",
+        "contracts.go",
+        "compatibility.go",
+        "catalog.go",
+        "profile_protocol.go",
+        "profile_contract_test.go",
+        "profile_compatibility_test.go",
+        "profile_catalog_test.go"
+      ],
+      "exact_go_file_paths_approved": false
+    },
+    "existing_go_capabilities": {
+      "module": "src/ptsip/common_contract/go.mod",
+      "go_version": "1.23",
+      "existing_packages": [
+        "registry/registry.go",
+        "resolver/resolver.go",
+        "validator/validator.go",
+        "source/document.go"
+      ],
+      "existing_transport": "src/ptsip/common_contract/cli.go",
+      "python_transport_candidate": "src/ptsip/_common_contract.py",
+      "current_protocol": "ptsip-common-contract/v1",
+      "exact_protocol_extension_approved": false,
+      "findings": [
+        "registry.go current URN matcher targets common_policy and common:plan; no implicit profile registry semantics",
+        "source/document.go already decodes YAML with bounded input but owns unified policy source semantics; avoid aliasing its normative responsibility",
+        "validator/validator.go uses JSON Schema draft 2020-12 and a closed loader, reusable only via explicit validated contract boundary",
+        "_common_contract.py is an existing Go process adapter, not one of the six retiring Python modules; its extension requires code path approval"
+      ]
+    },
+    "module_by_module": [
+      {
+        "python_source": "src/ptsip/profiles/identity.py",
+        "module": "identity.py",
+        "responsibility": "Profile contract identity, user revision, instance revision, typed operation support",
+        "python_exports": [
+          "ProjectProfileVersion",
+          "ProjectProfileUserRevision",
+          "ProjectProfileInstanceRevision",
+          "ProjectProfileOperation",
+          "require_project_profile_support",
+          "require_current_project_profile_support"
+        ],
+        "go_package_candidate": "profile/identity",
+        "go_operation": "profile.identity.resolve",
+        "input_contract": {
+          "version": "string",
+          "revision": "string|null",
+          "profile_role": "string|null",
+          "operation": "string|null"
+        },
+        "output_contract": {
+          "contract_version": "string",
+          "parsed_revision": "string|null",
+          "supported_operations": "array<string>",
+          "source_ref": "string",
+          "status": "enum"
+        },
+        "failure_codes": [
+          "PROFILE_VERSION_FORMAT_INVALID",
+          "PROFILE_REVISION_INVALID",
+          "PROFILE_VERSION_UNREGISTERED",
+          "OPERATION_UNSUPPORTED"
+        ],
+        "tests": [
+          "parse pp1.01 pp1.02 pp2.00",
+          "reject pp1.00 absent",
+          "reject illegal revision and unsupported operations"
+        ],
+        "indirect_consumers": [
+          "src/ptsip/profiles/metadata.py",
+          "src/ptsip/profiles/compatibility.py",
+          "src/ptsip/migration/analysis/target/semantics.py",
+          "src/ptsip/ptsip_specification/spec_identity.py"
+        ]
+      },
+      {
+        "python_source": "src/ptsip/profiles/rule_records.py",
+        "module": "rule_records.py",
+        "responsibility": "Linked rule-profile parse, exact rule-ID discovery, rule relation resolution and validation",
+        "python_exports": [
+          "load_rule_records",
+          "discover_rule_records",
+          "resolve_rule_record"
+        ],
+        "go_package_candidate": "profile/rulerecords",
+        "go_operation": "profile.rule-record.resolve",
+        "input_contract": {
+          "repository_root": "string",
+          "rule_profile_ref": "string",
+          "rule_id": "string|null",
+          "operation": "enum:LIST|RESOLVE|VALIDATE"
+        },
+        "output_contract": {
+          "rule_ids": "array<string>|null",
+          "selected_rule": "object|null",
+          "validation": "enum",
+          "evidence_refs": "array<string>"
+        },
+        "failure_codes": [
+          "RULE_PROFILE_NOT_REGISTERED",
+          "RULE_GRAPH_INVALID",
+          "RULE_ID_NOT_FOUND",
+          "RULE_SCHEMA_SOURCE_UNRESOLVED"
+        ],
+        "tests": [
+          "resolve exact ID",
+          "missing parent fail",
+          "duplicate ID fails",
+          "no fabricated rule authority"
+        ],
+        "indirect_consumers": [
+          "src/ptsip/profiles/catalog.py"
+        ],
+        "special_boundary": "Current Python module points to .ptsip/contracts/policy/...; new Go implementation MUST NOT use .ptsip/** as schema field basis; rule record schema source from src/ptsip remains unresolved and blocks semantics."
+      },
+      {
+        "python_source": "src/ptsip/profiles/metadata.py",
+        "module": "metadata.py",
+        "responsibility": "Build Project Profile metadata and serialized canonical PTSIP header from exact Specification and contract revisions",
+        "python_exports": [
+          "project_profile_ptsip_metadata",
+          "current_project_profile_ptsip_metadata",
+          "current_project_profile_header_yaml"
+        ],
+        "go_package_candidate": "profile/metadata",
+        "go_operation": "profile.metadata.materialize",
+        "input_contract": {
+          "profile_contract_version": "string",
+          "specification_source": "string",
+          "specification_revision": "string",
+          "user_revision": "string|null"
+        },
+        "output_contract": {
+          "metadata": "object",
+          "serialized_header": "string|null",
+          "schema_ref": "string",
+          "evidence_refs": "array<string>"
+        },
+        "failure_codes": [
+          "SPECIFICATION_REVISION_INVALID",
+          "PROFILE_VERSION_UNREGISTERED",
+          "METADATA_SOURCE_UNVERIFIED"
+        ],
+        "tests": [
+          "stable metadata output for pp2.00",
+          "reproducible YAML serialization",
+          "reject missing Spec source"
+        ],
+        "indirect_consumers": [
+          "src/ptsip/clarification/resolution/profile_projection.py"
+        ]
+      },
+      {
+        "python_source": "src/ptsip/profiles/contracts.py",
+        "module": "contracts.py",
+        "responsibility": "Load registered project-profile contract, version selector, resource identifier and immutable source binding",
+        "python_exports": [
+          "current_runtime_project_profile_contract",
+          "current_runtime_project_profile_version"
+        ],
+        "go_package_candidate": "profile/contracts",
+        "go_operation": "profile.contract.select",
+        "input_contract": {
+          "contract_version": "string|null",
+          "registry_path": "string",
+          "source_revision": "string|null"
+        },
+        "output_contract": {
+          "contract_id": "string",
+          "contract_version": "string",
+          "schema_resource": "string",
+          "source_sha256": "string",
+          "lifecycle": "string",
+          "operations": "array<string>"
+        },
+        "failure_codes": [
+          "REGISTRY_INVALID",
+          "PROFILE_SCHEMA_MISSING",
+          "DUPLICATE_PROFILE_VERSION",
+          "PROFILE_VERSION_UNREGISTERED",
+          "SCHEMA_ID_COLLISION"
+        ],
+        "tests": [
+          "current pp2.00 mapped to registered current selector",
+          "historical 1.01 1.02 2.00 resolution",
+          "same $id divergent pp2 variants fail until authorized",
+          "immutable schema source digest"
+        ],
+        "indirect_consumers": [
+          "src/ptsip/profiles/identity.py"
+        ],
+        "special_boundary": "Current Go common_contract/registry/registry.go validates common_policy/common:plan URNs only; do not silently broaden it without contract decision. config.json is canonical source registry."
+      },
+      {
+        "python_source": "src/ptsip/profiles/compatibility.py",
+        "module": "compatibility.py",
+        "responsibility": "Identify historical profile contracts, validate exact direct transition relation and historical target without silent intermediate materialization",
+        "python_exports": [
+          "historical_project_profile_bridge",
+          "require_historical_project_profile_bridge",
+          "current_project_profile_target",
+          "require_direct_historical_transition"
+        ],
+        "go_package_candidate": "profile/compatibility",
+        "go_operation": "profile.compatibility.verify-transition",
+        "input_contract": {
+          "source_contract_version": "string",
+          "target_contract_version": "string",
+          "declared_transition": "string|null",
+          "source_revision": "string|null"
+        },
+        "output_contract": {
+          "allowed": "boolean",
+          "transition_kind": "string|null",
+          "evidence_refs": "array<string>",
+          "intermediate_materialization_allowed": "boolean"
+        },
+        "failure_codes": [
+          "PROFILE_TRANSITION_NOT_REGISTERED",
+          "HISTORICAL_SOURCE_UNVERIFIED",
+          "PROFILE_TRANSITION_DIRECTION_INVALID"
+        ],
+        "tests": [
+          "pp1.01 -> pp1.02 semantic migration",
+          "pp1.02 -> pp2.00 identity-only",
+          "reject invented pp1.00",
+          "direct promotion without intermediate profile"
+        ],
+        "indirect_consumers": [
+          "src/ptsip/migration/execution/direct/promotion.py"
+        ]
+      },
+      {
+        "python_source": "src/ptsip/profiles/catalog.py",
+        "module": "catalog.py",
+        "responsibility": "Select and validate local profile catalog and compute canonical new profile path without unauthorized writes",
+        "python_exports": [
+          "load_local_profile_selection",
+          "canonical_new_profile_path",
+          "default_catalog_payload",
+          "default_catalog_text"
+        ],
+        "go_package_candidate": "profile/catalog",
+        "go_operation": "profile.catalog.resolve",
+        "input_contract": {
+          "repository_root": "string",
+          "requested_profile_id": "string|null",
+          "catalog_ref": "string|null"
+        },
+        "output_contract": {
+          "selected_id": "string|null",
+          "resource_path": "string|null",
+          "default_new_profile_path": "string|null",
+          "catalog_valid": "boolean"
+        },
+        "failure_codes": [
+          "CATALOG_INVALID",
+          "CATALOG_CONFLICT",
+          "PROFILE_ENTRY_NOT_FOUND",
+          "PROFILE_PATH_TRAVERSAL"
+        ],
+        "tests": [
+          "catalog current and legacy conflict fails",
+          "duplicate ID fails",
+          "traversal denied",
+          "default new path deterministic",
+          "read-only catalog lookup"
+        ],
+        "indirect_consumers": [
+          "src/ptsip/cli.py",
+          "src/ptsip/clarification/resolution/profile_projection.py",
+          "src/ptsip/profiles/rule_records.py"
+        ]
+      }
+    ],
+    "python_consumer_updates": [
+      {
+        "path": "src/ptsip/cli.py",
+        "replaced_import": "profiles.catalog.canonical_new_profile_path",
+        "replacement": "Typed profile.catalog.resolve over approved Go transport; no arbitrary path construction"
+      },
+      {
+        "path": "src/ptsip/clarification/resolution/profile_projection.py",
+        "replaced_imports": [
+          "profiles.catalog",
+          "profiles.metadata"
+        ],
+        "replacement": "Profile catalog selection and canonical metadata from Go response; retain profile projection/serialization semantics in existing owner"
+      },
+      {
+        "path": "src/ptsip/migration/analysis/target/semantics.py",
+        "replaced_import": "profiles.identity.CURRENT_PROJECT_PROFILE_VERSION",
+        "replacement": "Registered current profile version from Go contract.select; deterministic result cached per request"
+      },
+      {
+        "path": "src/ptsip/migration/execution/direct/promotion.py",
+        "replaced_import": "profiles.compatibility.require_direct_historical_transition",
+        "replacement": "Go transition decision with exact evidence, preserve promotion authorization separately"
+      },
+      {
+        "path": "src/ptsip/ptsip_specification/spec_identity.py",
+        "replaced_import": "profiles.identity.CURRENT_PROJECT_PROFILE_VERSION",
+        "replacement": "Registered selected project profile version from Go, no stale hardcoded value"
+      },
+      {
+        "path": "src/ptsip/validation/profile.py",
+        "replaced_import": "existing schema loading from specdata",
+        "replacement": "Read schema via canonical config registry selector after separate consumer verification; do not remove validator semantics"
+      },
+      {
+        "path": "src/ptsip/specdata/project-profile-contracts.yaml",
+        "replaced_import": "historical resource names",
+        "replacement": "Update version->current/history schema bindings and state while retaining transitions"
+      },
+      {
+        "path": "src/ptsip/profiles/index.yaml",
+        "replaced_import": "template-python-package example entry",
+        "replacement": "Remove separate template profile entry only after no registered source uses it"
+      }
+    ],
+    "interface_design": {
+      "protocol_selection": "PENDING",
+      "endpoint_actions": [
+        {
+          "operation_id": "profile.identity.resolve",
+          "typed_input": {
+            "version": "string",
+            "revision": "string|null",
+            "profile_role": "string|null",
+            "operation": "string|null"
+          },
+          "typed_output": {
+            "contract_version": "string",
+            "parsed_revision": "string|null",
+            "supported_operations": "array<string>",
+            "source_ref": "string",
+            "status": "enum"
+          },
+          "failure_codes": [
+            "PROFILE_VERSION_FORMAT_INVALID",
+            "PROFILE_REVISION_INVALID",
+            "PROFILE_VERSION_UNREGISTERED",
+            "OPERATION_UNSUPPORTED"
+          ]
+        },
+        {
+          "operation_id": "profile.rule-record.resolve",
+          "typed_input": {
+            "repository_root": "string",
+            "rule_profile_ref": "string",
+            "rule_id": "string|null",
+            "operation": "enum:LIST|RESOLVE|VALIDATE"
+          },
+          "typed_output": {
+            "rule_ids": "array<string>|null",
+            "selected_rule": "object|null",
+            "validation": "enum",
+            "evidence_refs": "array<string>"
+          },
+          "failure_codes": [
+            "RULE_PROFILE_NOT_REGISTERED",
+            "RULE_GRAPH_INVALID",
+            "RULE_ID_NOT_FOUND",
+            "RULE_SCHEMA_SOURCE_UNRESOLVED"
+          ]
+        },
+        {
+          "operation_id": "profile.metadata.materialize",
+          "typed_input": {
+            "profile_contract_version": "string",
+            "specification_source": "string",
+            "specification_revision": "string",
+            "user_revision": "string|null"
+          },
+          "typed_output": {
+            "metadata": "object",
+            "serialized_header": "string|null",
+            "schema_ref": "string",
+            "evidence_refs": "array<string>"
+          },
+          "failure_codes": [
+            "SPECIFICATION_REVISION_INVALID",
+            "PROFILE_VERSION_UNREGISTERED",
+            "METADATA_SOURCE_UNVERIFIED"
+          ]
+        },
+        {
+          "operation_id": "profile.contract.select",
+          "typed_input": {
+            "contract_version": "string|null",
+            "registry_path": "string",
+            "source_revision": "string|null"
+          },
+          "typed_output": {
+            "contract_id": "string",
+            "contract_version": "string",
+            "schema_resource": "string",
+            "source_sha256": "string",
+            "lifecycle": "string",
+            "operations": "array<string>"
+          },
+          "failure_codes": [
+            "REGISTRY_INVALID",
+            "PROFILE_SCHEMA_MISSING",
+            "DUPLICATE_PROFILE_VERSION",
+            "PROFILE_VERSION_UNREGISTERED",
+            "SCHEMA_ID_COLLISION"
+          ]
+        },
+        {
+          "operation_id": "profile.compatibility.verify-transition",
+          "typed_input": {
+            "source_contract_version": "string",
+            "target_contract_version": "string",
+            "declared_transition": "string|null",
+            "source_revision": "string|null"
+          },
+          "typed_output": {
+            "allowed": "boolean",
+            "transition_kind": "string|null",
+            "evidence_refs": "array<string>",
+            "intermediate_materialization_allowed": "boolean"
+          },
+          "failure_codes": [
+            "PROFILE_TRANSITION_NOT_REGISTERED",
+            "HISTORICAL_SOURCE_UNVERIFIED",
+            "PROFILE_TRANSITION_DIRECTION_INVALID"
+          ]
+        },
+        {
+          "operation_id": "profile.catalog.resolve",
+          "typed_input": {
+            "repository_root": "string",
+            "requested_profile_id": "string|null",
+            "catalog_ref": "string|null"
+          },
+          "typed_output": {
+            "selected_id": "string|null",
+            "resource_path": "string|null",
+            "default_new_profile_path": "string|null",
+            "catalog_valid": "boolean"
+          },
+          "failure_codes": [
+            "CATALOG_INVALID",
+            "CATALOG_CONFLICT",
+            "PROFILE_ENTRY_NOT_FOUND",
+            "PROFILE_PATH_TRAVERSAL"
+          ]
+        }
+      ],
+      "transport": {
+        "format": "JSON",
+        "execution": "STDIN_STDOUT_GO_PROCESS_CANDIDATE",
+        "discovery": "EXACT_REGISTERED_EXECUTABLE",
+        "side_effects": "NO_REPO_MUTATION_FOR_READ_OPERATIONS"
+      },
+      "performance_targets": {
+        "operations_with_same_registry_snapshot": "Cache exact schema resources by version and immutable SHA, invalidate on registry revision change",
+        "avoid": "Repeated Python per-call schema/role inference and per-call Go subprocess compilation"
+      },
+      "failure_semantics": "FAIL_CLOSED_UNREGISTERED_SCHEMA_MISSING_SOURCE_REVISION_OR_PERMISSION"
+    },
+    "stop_use_and_removal_workflow": [
+      "Freeze behavior inventory from six modules and enumerate imported symbol names and all direct/dynamic consumers",
+      "Assign one Go operation per former responsibility, avoid 1:1 copying of Python internals and do not duplicate schema field definitions inside Go source",
+      "Get exact Go implementation directory, package and source filenames approved by user before creation",
+      "Use src/ptsip/schemas/config.json exact schema registry for current and all 3 historical Project Profile versions",
+      "Implement Go typed request/response and strict schema/version/source digest guard, no network auto-fetch",
+      "Add deterministic tests for each operation, negative cases and stable error codes",
+      "Change five confirmed Python consumer modules to approved Go bridge (not retired modules), preserve CLI, migration, clarification behavior",
+      "Update packaging for Go binary and central JSON Schema files, test clean wheel execution on Windows and supported build environments",
+      "Perform old/new parity on historical fixtures and existing CLI/migration flow, verify no cycles/ghost imports",
+      "Remove six Python modules only after zero direct/indirect import references and green tests, then rerun full verification",
+      "Do not delete or rewrite user-owned project profiles as a consequence of stopping distribution Python modules"
+    ],
+    "tests": {
+      "unit": [
+        "Go typed version + revision parsing",
+        "schema source SHA and path injection",
+        "rule relation graph validation",
+        "metadata and YAML header determinism",
+        "transition compatibility matrix",
+        "catalog selection and traversal rejection"
+      ],
+      "integration": [
+        "Python CLI + Go transport",
+        "clarification profile projection + Go metadata",
+        "direct migration promotion + Go transition verifier",
+        "spec_identity current version Go selection",
+        "profile v1.01/v1.02/v2.00 schema conformance"
+      ],
+      "negative": [
+        "missing pp1.00 rejected",
+        "same-$id-different-lifecycle pp2 schema collision rejected until owner decision",
+        "template mode behavior not silently lost",
+        "missing registry/source or duplicate version rejects",
+        "Profile source no .ptsip schema field inference",
+        "no implicit execution permission",
+        "invalid/hijacked profile root path denied"
+      ],
+      "distribution": [
+        "wheel installs bundled Go binary",
+        "wheel includes src/ptsip/schemas/current and history JSON schemas",
+        "no old version-specific specdata schema runtime dependencies",
+        "Windows 11 Go build and tests"
+      ],
+      "local_execution_order": [
+        "$log = '.\\profile-go-migration.log'",
+        "go -C src/ptsip/common_contract test ./... -count=1 2>&1 | Tee-Object -FilePath $log -Append",
+        "python -m pytest -q src/tests/ptsip/contracts 2>&1 | Tee-Object -FilePath $log -Append",
+        "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append"
+      ],
+      "note": "Commands illustrate checks for option A after Go path and test coverage approval; do not execute before implementation. Do not commit logs; remove only after evidence has been reported."
+    },
+    "blockers": [
+      "Exact Go source/implementation location not yet approved",
+      "Go transport/protocol contract extension not yet approved",
+      "Profile rule-record schema currently sourced by retired Python from .ptsip/**, forbidden as schema field basis; require approved src/ptsip owner schema",
+      "Current pp2.00 source schema metadata conflict unresolved",
+      "Missing real pp1.00 historical source: no schema creation",
+      "Existing package-data entries do not yet include recursive src/ptsip/schemas/ resource data"
+    ]
   }
 }
