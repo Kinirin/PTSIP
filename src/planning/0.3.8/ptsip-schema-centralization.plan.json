@@ -506,14 +506,15 @@
     },
     {
       "id": "RAC-AEC-REANALYSIS",
-      "state": "PRIOR_FIELDS_REJECTED_NEW_ID_PATTERNS_AND_INLINE_VALUE_OWNERSHIP_APPROVED_OTHER_SHAPES_UNRESOLVED",
-      "scope": "src/ptsip/schemas/storage/rbac/{rac-list,aec-list}.schema.json"
+      "state": "USER_APPROVED_PROVISIONAL_BODY_FIELDS_FINAL_VALUE_SCHEMA_PENDING",
+      "scope": "src/ptsip/schemas/storage/rbac/{rac-list,aec-list}.schema.json",
+      "note": "F-RAC-T001..T005 and F-AEC-T001..T005 approved only as provisional layout; final field requiredness, value internals, and executable schema remain unresolved. Earlier rejected candidate sets stay rejected."
     },
     {
       "id": "RAC-AEC-FILE-IDENTITY-ROOT",
       "scope": "RAC/AEC List document top-level metadata",
       "state": "USER_APPROVED_EXACT_ROOT_FIELD_NAMES_METADATA_ONLY",
-      "note": "Top-level exactly file_name,file_id,format_version,file_title (in this order) for each RAC/AEC List, no File_Identity and no file_kind; list body independently unresolved; no schema implementation authorized; file_id pattern ^profiles-[0-9a-f]{32}$ maxLength 41 approved on 2026-11-16; other list body field shapes unresolved"
+      "note": "Approved four root metadata fields and file_id format persist; RAC/AEC body layout now user-approved PROVISIONAL only, final value and implementation undecided."
     },
     {
       "id": "RAC-AEC-IDENTITY-PATTERNS-20261116",
@@ -1049,7 +1050,7 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
       "filename": "aec-list.schema.json",
-      "responsibility": "AEC List schema responsibility reanalysis: independently distinguish condition identity, human title, contract-file discovery and Rego evaluation source. Current field set unapproved.",
+      "responsibility": "AEC v4 provisional list contract: approved outer record field IDs F-AEC-T001..T005; independent exercise condition structure, no policy target/action ownership, value inline. Final value semantics and schema requiredness unresolved.",
       "sources": [
         "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json"
       ],
@@ -1129,7 +1130,7 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
       "filename": "rac-list.schema.json",
-      "responsibility": "RAC List schema responsibility reanalysis: independently distinguish condition identity, human title, contract-file discovery and Rego evaluation source. Current field set unapproved.",
+      "responsibility": "RAC v4 provisional list contract: approved outer record field IDs F-RAC-T001..T005; no file/target/action scope duplication, condition value stored inline. Final value semantics and schema requiredness unresolved.",
       "sources": [
         "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
       ],
@@ -1811,9 +1812,9 @@
         "Compare RAC_name/AEC_name semantics with existing src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json and aec.pp.3.00.schema.json as read-only historical evidence; v4 does not inherit pp3 structural format",
         "Decide whether names are looked up from registered RAC/AEC Lists or repeated as RA-local display fields; when multiple IDs exist require deterministic ID/name matching without guessing singular vs array forms",
         "RA name/title mappings to RAC/AEC IDs are shown in one-line valid YAML flow sequence; keep names for GUI; reject RA_purpose/normative_effect/source_ref/revision_ref.",
-        "ALL previous RAC/AEC List 28 field proposals explicitly rejected. Do not inherit approval-by-omission or implement them; reanalyze four independent responsibilities condition identity, title, file registry lookup, Rego source.",
-        "New F-RAC-R001..R010 and F-AEC-R001..R010 are unapproved examples, not a current target schema definition; investigate registered entry ID to resource path resolution, RA title-to-ID consistency and condition/source version meaning.",
-        "Require separately typed top-level file identity and file kind for RAC/AEC list document, not merely RAC_list/AEC_list root. Do not use RAC_id/AEC_id, pp3 ptsip profile ID, Rego source_ref or file path as implicit file ID.",
+        "Keep rejected F-RAC/F-AEC-001..014 prior proposals rejected. Use explicitly approved provisional F-RAC/F-AEC-T001..T005 for design only; never infer final schema shape or field requiredness.",
+        "Treat historical F-RAC/F-AEC-R001..R010 ideas as unapproved, obsolete review-only examples; latest provisional field source is developer/Temporary_Record/rbac-v4-provisional-field-contract-20261116.json.",
+        "Use only approved four flat root fields file_name,file_id,format_version,file_title; no File_Identity or file_kind. Keep list-record ID separate from file_id; do not infer reference-based value definition.",
         "Resolve machine file_id relationship to current declarative registry entries[].id -> resource and conditional revision; avoid creating dual independently managed authoritative file identifiers.",
         "Use exactly four flat root file metadata fields in RAC/AEC List: file_name, file_id, format_version, file_title; never wrap in File_Identity or add file_kind; RAC_list/AEC_list body separately reviewed."
       ],
@@ -2251,8 +2252,8 @@
       "Plan Checklist.column defaults exactly four approved columns and supports configurable >=10 columns; task_id source is .ptsip/tasks-generated tasks",
       "Policy_Rules.rules[].content.content_id[] resolves Policy_Content.items[].id with no rule source_ref, source_pointer, source_document",
       "RAC/AEC condition contract file lookup identity and Rego original evaluation source reference are separate ownership responsibilities",
-      "No RAC/AEC List old proposed field set is treated as approved by omission; new candidate names and full structure require user approval before schema generation",
-      "RAC/AEC list document has direct file_name,file_id,format_version,file_title root metadata fields (no File_Identity wrapper, no file_kind); condition list body field set remains unapproved"
+      "Rejected prior RAC/AEC candidate sets remain rejected. Newly approved F-RAC/F-AEC-T001..T005 are PROVISIONAL authoring layout only; no final schema generation from unresolved value semantics.",
+      "RAC/AEC have approved four flat root metadata fields and approved provisional list body fields; no File_Identity/file_kind; final value internals and schema field constraints still unresolved."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3704,7 +3705,7 @@
     }
   },
   "policy_v4_rbac_focus": {
-    "status": "RA_LIST_OWNS_RELATIONS_SINGLE_RBAC_SCHEMA_ROOT_NO_EXTRA_REGISTRATION_SCHEMA",
+    "status": "APPROVED_SCOPED_POLICY_V4_CONTRACT_DESIGN",
     "baseline_head": "a4a941dc7384be6b08e7133e0211df55bb661c5e",
     "basis": "ONLY_SRC_PTSIP_SCHEMA_CONTRACTS_FOR_FIELD_DESIGN",
     "excluded_field_basis": [
@@ -4396,16 +4397,17 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "RAC/AEC list file top-level metadata fields file_name,file_id,format_version,file_title are approved directly at root; no File_Identity/file_kind. Reanalyze and obtain approval for separate RAC_list/AEC_list body fields, file ID grammar, registration linkage before schema implementation.",
+        "action": "Use approved four flat root metadata fields and independently approved provisional RAC_list/AEC_list five-field body layouts as authoring basis. Keep final schema requiredness, record value internals, evidence-owner questions and registration linkage unresolved; do not generate executable/final schemas until applicable gates are resolved.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
           "src/ptsip/schemas/storage/rbac/aec-list.schema.json"
         ],
         "blocked_on": [
-          "RAC_AEC_FULL_FIELD_REPROPOSAL_USER_APPROVAL",
-          "RAC_AEC_FILE_HEADER_IDENTITY_USER_DECISION",
-          "RAC_AEC_LIST_ITEM_FIELDS_AND_FILE_ID_PATTERN_UNRESOLVED"
+          "RAC_AEC_VALUE_INNER_CONTRACT_UNRESOLVED",
+          "RAC_AEC_FINAL_SCHEMA_REQUIREDNESS_UNRESOLVED",
+          "RBAC_REGISTRATION_LINKAGE_UNRESOLVED",
+          "RAC_AEC_EVALUATION_SEMANTICS_UNRESOLVED"
         ]
       },
       {
@@ -4527,6 +4529,106 @@
         "condition_ids": "C-ID-... cannot be classified as RAC or AEC without actual source ownership",
         "conversion_to_v4": "BLOCKED_PENDING_OWNER_ROLE_ANALYSIS"
       }
+    },
+    "scoped_design_approval": {
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "date": "2026-11-16",
+      "state": "APPROVED_FOR_SCOPED_CONTRACT_DESIGN",
+      "plan_scope": "POLICY_V4_CONTRACT_STRUCTURE_DESIGN_AND_PLAN_REFINEMENT",
+      "included_contracts": [
+        "Policy_Identity",
+        "Policy_Lifecycle",
+        "Policy_Rules",
+        "Policy_Content",
+        "RA_list",
+        "RAC_list",
+        "AEC_list"
+      ],
+      "priority": "POLICY_V4_CONTRACT_STRUCTURE",
+      "scope_path": "src/planning/0.3.8/ptsip-schema-centralization.plan.json#policy_v4_rbac_focus",
+      "previous_focus_status": "RA_LIST_OWNS_RELATIONS_SINGLE_RBAC_SCHEMA_ROOT_NO_EXTRA_REGISTRATION_SCHEMA",
+      "full_distribution_plan_status": "DRAFT_NOT_APPROVED",
+      "full_distribution_implementation_approval": false,
+      "allowed_actions": [
+        "READ_LATEST_HEAD_AND_GOVERNING_POLICY",
+        "RECONCILE_APPROVED_FIELD_ROLES_WITH_PLAN",
+        "REFINE_MACHINE_READABLE_CONTRACT_STRUCTURE_IN_PLAN",
+        "PRODUCE_FIELD_BY_FIELD_UNRESOLVED_DECISION_MATRIX",
+        "GENERATE_DETERMINISTIC_STRUCTURE_AND_VALIDATION_PROPOSALS",
+        "PREPARE_APPROVAL_READY_IMPLEMENTATION_WORK_UNITS"
+      ],
+      "forbidden_actions": [
+        "FINALIZE_PROVISIONAL_FIELDS_BY_INFERENCE",
+        "CREATE_OR_ACTIVATE_FINAL_V4_SCHEMAS_WITH_UNRESOLVED_FIELDS",
+        "MUTATE_POLICY_DOC_FOR_FIELD_LEVEL_DETAILS",
+        "MODIFY_LEGACY_PP300_SOURCE",
+        "CREATE_NEW_GIT_BRANCH",
+        "RUN_FULL_RELEASE_MIGRATION",
+        "ENABLE_POLICY_EVALUATION_OR_RUNTIME_EXECUTION"
+      ],
+      "no_policy_authority_transfer": true,
+      "no_final_field_approval": true,
+      "implementation_authorized": false,
+      "publication_authorized": false,
+      "open_gates": "REMAIN_BLOCKING_FOR_RELATED_IMPLEMENTATION"
+    },
+    "approved_provisional_rbac_snapshot": {
+      "policy_direction_source": "src/policy/ARCH/SFP-ARCH-0004.yaml#SRC-0008",
+      "authoritative_approval_record": ".ptsip/contracts/policy/unified/authoring-decision.json",
+      "detailed_field_record": "developer/Temporary_Record/rbac-v4-provisional-field-contract-20261116.json",
+      "rac": {
+        "state": "APPROVED_PROVISIONAL_NOT_FINAL",
+        "field_ids": [
+          "F-RAC-T001",
+          "F-RAC-T002",
+          "F-RAC-T003",
+          "F-RAC-T004",
+          "F-RAC-T005"
+        ]
+      },
+      "aec": {
+        "state": "APPROVED_PROVISIONAL_NOT_FINAL",
+        "field_ids": [
+          "F-AEC-T001",
+          "F-AEC-T002",
+          "F-AEC-T003",
+          "F-AEC-T004",
+          "F-AEC-T005"
+        ]
+      },
+      "approved_metadata_fields": [
+        "file_name",
+        "file_id",
+        "format_version",
+        "file_title"
+      ],
+      "root_file_id_pattern": "^profiles-[0-9a-f]{32}$",
+      "internal_record_id_patterns": {
+        "RAC": "^ID-RAC-[a-zA-F0-9]{16}$",
+        "AEC": "^ID-AEC-[a-zA-F0-9]{16}$"
+      },
+      "policy_owns": [
+        "APPLICABILITY_SCOPE",
+        "ACTION_SELECTION",
+        "TARGET_SELECTION"
+      ],
+      "ra_owns": "RAC_AEC_FORWARD_RELATIONS",
+      "rac_owns": "ASSIGNMENT_CONDITION",
+      "aec_owns": "EXERCISE_CONDITION",
+      "value_owned_inline": true,
+      "external_ref_delegation": false,
+      "rac_aec_record_structures": "INDEPENDENT_NO_FORCED_SHARED_FIELDS",
+      "condition_value_inner_semantics": "UNRESOLVED",
+      "empty_value_object": "NOT_EVALUABLE",
+      "final_schema_fields_approved": false,
+      "deprecated_old_candidate_sets": [
+        "F-RAC-001..014",
+        "F-AEC-001..014",
+        "F-RAC-R001..R010",
+        "F-AEC-R001..R010"
+      ],
+      "prior_proposals_must_not_reactivate": true,
+      "scope": "PROVISIONAL_AUTHORING_NOT_FINAL_SCHEMA_AND_NOT_RUNTIME"
     }
   },
   "policy_conflict_resolution": {
@@ -4593,7 +4695,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-16: exact file_id and RAC/AEC entry ID patterns approved; RAC/AEC records own inline value and cannot delegate value through refs; remaining record field details unresolved",
+    "last_user_direction": "2026-11-16: Policy v4 contract-structure planning prioritized; RAC/AEC outer five-field layouts approved PROVISIONAL only, details remain in plan/temporary records and not normative policy; SFP-ARCH-0004 SRC-0008 records concise direction and KEEP_LATEST; no final schema or execution authorization.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
@@ -5978,6 +6080,14 @@
           "field_requiredness": "UNRESOLVED"
         },
         "selected_direction": "ROOT_FLAT_FILE_METADATA"
+      },
+      "current_approved_v4_provisional_state": {
+        "status": "RAC_AEC_PROVISIONAL_BODY_APPROVED_NOT_FINAL",
+        "approval": "PROJECT_OWNER_EXPLICIT_2026_11_16",
+        "approval_record": "developer/Temporary_Record/rbac-v4-provisional-field-contract-20261116.json",
+        "old_fresh_field_candidates": "HISTORICAL_UNAPPROVED_NOT_ACTIVE",
+        "value_contract": "INLINE_OWN_VALUE_FINAL_DETAIL_UNRESOLVED",
+        "activation": "NOT_AUTHORIZED"
       }
     },
     "independent_decisions_2026_11_16": {
