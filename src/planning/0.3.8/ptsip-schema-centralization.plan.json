@@ -193,7 +193,45 @@
       "Implementation.In_progress"
     ],
     "plan_task_root": ".ptsip/tasks/",
-    "plan_checklist": "TABLE_WITH_CONFIGURABLE_COLUMNS_AND_TASK_ID_SYNC"
+    "plan_checklist": "TABLE_WITH_CONFIGURABLE_COLUMNS_AND_TASK_ID_SYNC",
+    "rbac_list_identity_and_value": {
+      "file_id": {
+        "field": "file_id",
+        "pattern": "^profiles-[0-9a-f]{32}$",
+        "maxLength": 41,
+        "source_pattern_only": [
+          "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json",
+          "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
+        ]
+      },
+      "entry_ids": {
+        "RAC_list": {
+          "pattern": "^ID-RAC-[a-zA-F0-9]{16}$"
+        },
+        "AEC_list": {
+          "pattern": "^ID-AEC-[a-zA-F0-9]{16}$"
+        }
+      },
+      "value": {
+        "field": "value",
+        "ownership": "INLINE_SELF_CONTAINED",
+        "value_definition_location": "SAME_RAC_OR_AEC_LIST_FILE",
+        "ref_based_external_delegation": "FORBIDDEN",
+        "external_value_file_references": "FORBIDDEN",
+        "ra_list_forward_id_references": "PRESERVED"
+      },
+      "status": "USER_APPROVED_ID_PATTERNS_AND_VALUE_OWNERSHIP_ONLY",
+      "still_unresolved": [
+        "RAC_AEC_ENTRY_FIELD_NAMES",
+        "RAC_AEC_FULL_ENTRY_SHAPE",
+        "VALUE_CONTENT_TYPES_AND_REQUIREDNESS",
+        "ID_GENERATION_ALGORITHM"
+      ],
+      "previous_rejections": "RETAIN_PREVIOUS_RAC_AEC_FIELD_SET_REJECTION",
+      "pp300": "KEEP_LEGACY_SCHEMAS_UNMODIFIED",
+      "runtime_implementation_authorized": false,
+      "policy_record": ".ptsip/contracts/policy/unified/authoring-decision.json"
+    }
   },
   "approval_gates": [
     {
@@ -468,14 +506,32 @@
     },
     {
       "id": "RAC-AEC-REANALYSIS",
-      "state": "PRIOR_FIELDS_REJECTED_NEW_CANDIDATES_UNAPPROVED",
+      "state": "PRIOR_FIELDS_REJECTED_NEW_ID_PATTERNS_AND_INLINE_VALUE_OWNERSHIP_APPROVED_OTHER_SHAPES_UNRESOLVED",
       "scope": "src/ptsip/schemas/storage/rbac/{rac-list,aec-list}.schema.json"
     },
     {
       "id": "RAC-AEC-FILE-IDENTITY-ROOT",
       "scope": "RAC/AEC List document top-level metadata",
       "state": "USER_APPROVED_EXACT_ROOT_FIELD_NAMES_METADATA_ONLY",
-      "note": "Top-level exactly file_name,file_id,format_version,file_title (in this order) for each RAC/AEC List, no File_Identity and no file_kind; list body independently unresolved; no schema implementation authorized"
+      "note": "Top-level exactly file_name,file_id,format_version,file_title (in this order) for each RAC/AEC List, no File_Identity and no file_kind; list body independently unresolved; no schema implementation authorized; file_id pattern ^profiles-[0-9a-f]{32}$ maxLength 41 approved on 2026-11-16; other list body field shapes unresolved"
+    },
+    {
+      "id": "RAC-AEC-IDENTITY-PATTERNS-20261116",
+      "scope": [
+        "RAC/AEC list root file_id",
+        "RAC/AEC record identity"
+      ],
+      "state": "USER_APPROVED_EXACT_REGEX",
+      "note": "Reuses pp3.00 ptsip.id pattern as file_id syntax only; does not reuse old pp3.00 schemas or infer identity field names or generation algorithm"
+    },
+    {
+      "id": "RAC-AEC-INLINE-VALUE-20261116",
+      "scope": [
+        "RAC-list.ptsip.yaml",
+        "AEC-list.ptsip.yaml"
+      ],
+      "state": "USER_APPROVED_INLINE_VALUE_NO_REF_DELEGATION",
+      "note": "Record-owned semantic values must be stored in the same list file; internal record layout remains unresolved. RA List forward ID links remain permitted."
     }
   ],
   "target_registry": {
@@ -4277,6 +4333,20 @@
           "excluded_field": "file_kind",
           "scope": "FILE_METADATA_ONLY"
         }
+      },
+      {
+        "id": "RAC-AEC-ID-PATTERN",
+        "state": "APPROVED_EXACT_PATTERN_ONLY",
+        "value": {
+          "file_id": "^profiles-[0-9a-f]{32}$",
+          "RAC": "^ID-RAC-[a-zA-F0-9]{16}$",
+          "AEC": "^ID-AEC-[a-zA-F0-9]{16}$"
+        }
+      },
+      {
+        "id": "RAC-AEC-VALUE-OWNERSHIP",
+        "state": "APPROVED_INLINE_ONLY_SHAPE_UNRESOLVED",
+        "value": "Own value in same RAC/AEC list file; no ref-based delegation to other files"
       }
     ],
     "concrete_work_plan": [
@@ -4523,7 +4593,8 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
+    "last_user_direction": "2026-11-16: exact file_id and RAC/AEC entry ID patterns approved; RAC/AEC records own inline value and cannot delegate value through refs; remaining record field details unresolved",
+    "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
     "contract": "ptsip-release-038-field-decisions/v1",
@@ -5908,6 +5979,44 @@
         },
         "selected_direction": "ROOT_FLAT_FILE_METADATA"
       }
+    },
+    "independent_decisions_2026_11_16": {
+      "file_id": {
+        "field": "file_id",
+        "pattern": "^profiles-[0-9a-f]{32}$",
+        "maxLength": 41,
+        "source_pattern_only": [
+          "src/ptsip/compile_sealed_rbac/aec.pp.3.00.schema.json",
+          "src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json"
+        ]
+      },
+      "entry_ids": {
+        "RAC_list": {
+          "pattern": "^ID-RAC-[a-zA-F0-9]{16}$"
+        },
+        "AEC_list": {
+          "pattern": "^ID-AEC-[a-zA-F0-9]{16}$"
+        }
+      },
+      "value": {
+        "field": "value",
+        "ownership": "INLINE_SELF_CONTAINED",
+        "value_definition_location": "SAME_RAC_OR_AEC_LIST_FILE",
+        "ref_based_external_delegation": "FORBIDDEN",
+        "external_value_file_references": "FORBIDDEN",
+        "ra_list_forward_id_references": "PRESERVED"
+      },
+      "status": "USER_APPROVED_ID_PATTERNS_AND_VALUE_OWNERSHIP_ONLY",
+      "still_unresolved": [
+        "RAC_AEC_ENTRY_FIELD_NAMES",
+        "RAC_AEC_FULL_ENTRY_SHAPE",
+        "VALUE_CONTENT_TYPES_AND_REQUIREDNESS",
+        "ID_GENERATION_ALGORITHM"
+      ],
+      "previous_rejections": "RETAIN_PREVIOUS_RAC_AEC_FIELD_SET_REJECTION",
+      "pp300": "KEEP_LEGACY_SCHEMAS_UNMODIFIED",
+      "runtime_implementation_authorized": false,
+      "policy_record": ".ptsip/contracts/policy/unified/authoring-decision.json"
     }
   }
 }
