@@ -121,7 +121,7 @@
     "policy_v4_v3_field_inheritance": "FORBIDDEN",
     "ra_multi_relation": "EMBEDDED_IN_RA_LIST",
     "rbac_config_responsibility": "SCHEMA_LOCATION_AND_ID_ONLY",
-    "rbac_status_registration": "SEPARATE_NEW_CONTRACT",
+    "rbac_status_registration": "NO_EXTRA_REGISTRATION_SCHEMA_CURRENT_V4",
     "rbac_pp300_contract": "PRESERVE_UNCHANGED_NO_REUSE",
     "profile_go_clarification": "src/ptsip/profile_contract/clarification/**",
     "python_cli_modification": "FORBIDDEN",
@@ -4176,6 +4176,894 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "PTSIP 0.3.8 planning only: preserve RAC_name and AEC_name as human-readable condition title/role along with RA_id RA_title RAC_ids AEC_ids; do not implement or silently resolve one-to-many name mapping."
+    "last_user_direction": "Version 0.3.8 per-field review: approvals by exception, corrected Policy v4 and Plan, new contract locator candidates, task/checklist status automation; planning only"
+  },
+  "release_038_field_review": {
+    "contract": "ptsip-release-038-field-decisions/v1",
+    "authority": "PLAN_ONLY_NO_POLICY_OR_IMPLEMENTATION_MUTATION",
+    "approval_basis": "Unmentioned prior proposed fields accepted. Explicit rejections/replacements take precedence.",
+    "fields": [
+      {
+        "id": "F-POL-001",
+        "name": "Policy_Identity",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-002",
+        "name": "id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-003",
+        "name": "title",
+        "decision": "APPROVED_CORRECTED",
+        "note": "Title of this policy document"
+      },
+      {
+        "id": "F-POL-004",
+        "name": "Policy_Category",
+        "decision": "APPROVED_RENAMED",
+        "note": "Official Policy_Category; internal root_family/policy_kind are developer-derived interpretations"
+      },
+      {
+        "id": "F-POL-005",
+        "name": "root_family",
+        "decision": "REPLACED_NO_FIELD",
+        "note": "root_family not separately serialized; combined official Policy_Category"
+      },
+      {
+        "id": "F-POL-006",
+        "name": "version",
+        "decision": "APPROVED_OPTIONS",
+        "note": "MAJOR.MINOR.PATCH, alpha/beta/Hotfix/rc suffixes, prefixes ver/v/Ver./V., optional Build and Build.Revision; exact grammar pending"
+      },
+      {
+        "id": "F-POL-007",
+        "name": "revision",
+        "decision": "REJECTED",
+        "note": "No separate Policy revision field"
+      },
+      {
+        "id": "F-POL-008",
+        "name": "Policy_Lifecycle",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-009",
+        "name": "status",
+        "decision": "APPROVED_ENUM",
+        "note": "Exactly 13 previous official lifecycle status values"
+      },
+      {
+        "id": "F-POL-010",
+        "name": "status_reason",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-011",
+        "name": "status_transition_ref",
+        "decision": "REJECTED",
+        "note": "Use one Policy_Lifecycle.evaluation local note, no approval ref or independent timestamp"
+      },
+      {
+        "id": "F-POL-012",
+        "name": "status_changed_at",
+        "decision": "REJECTED",
+        "note": "Use one Policy_Lifecycle.evaluation local note, no approval ref or independent timestamp"
+      },
+      {
+        "id": "F-POL-013",
+        "name": "Policy_Rules",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-014",
+        "name": "rules",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-015",
+        "name": "id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-016",
+        "name": "content_id",
+        "decision": "APPROVED_REPLACED",
+        "note": "Policy_Rules.rules[].content.content_id[] references Content item ids"
+      },
+      {
+        "id": "F-POL-017",
+        "name": "RA_id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-018",
+        "name": "evaluation",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-019",
+        "name": "source_refs",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-020",
+        "name": "state",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-021",
+        "name": "evaluation_scope",
+        "decision": "APPROVED_NARROW",
+        "note": "Concrete evaluation scope only; not whole rule default"
+      },
+      {
+        "id": "F-POL-022",
+        "name": "evidence_refs",
+        "decision": "REJECTED",
+        "note": "No additional evidence_refs"
+      },
+      {
+        "id": "F-POL-023",
+        "name": "evaluated_at",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-024",
+        "name": "Policy_Content",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-025",
+        "name": "items",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-026",
+        "name": "id",
+        "decision": "APPROVED_ID_FORMAT_PENDING",
+        "note": "Content item id source of content_id[] references; pattern to choose"
+      },
+      {
+        "id": "F-POL-027",
+        "name": "source_pointer",
+        "decision": "REJECTED",
+        "note": "No source_pointer and no source_document container"
+      },
+      {
+        "id": "F-POL-028",
+        "name": "value",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-POL-029",
+        "name": "source_document",
+        "decision": "REJECTED",
+        "note": "No source_pointer and no source_document container"
+      },
+      {
+        "id": "F-POL-030",
+        "name": "path",
+        "decision": "APPROVED_MOVED",
+        "note": "Policy_Content.items[] owns path, sha256, revision_ref individually"
+      },
+      {
+        "id": "F-POL-031",
+        "name": "sha256",
+        "decision": "APPROVED_MOVED",
+        "note": "Policy_Content.items[] owns path, sha256, revision_ref individually"
+      },
+      {
+        "id": "F-POL-032",
+        "name": "revision_ref",
+        "decision": "APPROVED_MOVED",
+        "note": "Policy_Content.items[] owns path, sha256, revision_ref individually"
+      },
+      {
+        "id": "F-RA-001",
+        "name": "RA_list",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RA-002",
+        "name": "entries",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RA-003",
+        "name": "RA_id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RA-004",
+        "name": "RA_title",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RA-005",
+        "name": "RA_description",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RA-006",
+        "name": "RA_purpose",
+        "decision": "REJECTED",
+        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+      },
+      {
+        "id": "F-RA-007",
+        "name": "RA_normative_effect",
+        "decision": "REJECTED",
+        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+      },
+      {
+        "id": "F-RA-008",
+        "name": "RAC_ids",
+        "decision": "APPROVED_ONE_LINE_FORMAT",
+        "note": "One-line YAML flow sequence of title:ID pairs, multiple members"
+      },
+      {
+        "id": "F-RA-009",
+        "name": "RAC_name",
+        "decision": "PRESERVE_NAME_ROLE_LAYOUT_PENDING",
+        "note": "Human-readable title, one-to-many title and ID pairing not yet fully specified"
+      },
+      {
+        "id": "F-RA-010",
+        "name": "AEC_ids",
+        "decision": "APPROVED_ONE_LINE_FORMAT",
+        "note": "One-line YAML flow sequence of title:ID pairs, multiple members"
+      },
+      {
+        "id": "F-RA-011",
+        "name": "AEC_name",
+        "decision": "PRESERVE_NAME_ROLE_LAYOUT_PENDING",
+        "note": "Human-readable title, one-to-many title and ID pairing not yet fully specified"
+      },
+      {
+        "id": "F-RA-012",
+        "name": "RA_source_ref",
+        "decision": "REJECTED",
+        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+      },
+      {
+        "id": "F-RA-013",
+        "name": "RA_revision_ref",
+        "decision": "REJECTED",
+        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+      },
+      {
+        "id": "F-RAC-001",
+        "name": "RAC_list",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-002",
+        "name": "entries",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-003",
+        "name": "RAC_id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-004",
+        "name": "RAC_name",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-005",
+        "name": "RAC_description",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-006",
+        "name": "RAC_purpose",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-007",
+        "name": "value",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-008",
+        "name": "source_ref",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-009",
+        "name": "revision_ref",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-010",
+        "name": "entrypoint",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-RAC-011",
+        "name": "RAC_source_evidence_ref",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-001",
+        "name": "AEC_list",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-002",
+        "name": "entries",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-003",
+        "name": "AEC_id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-004",
+        "name": "AEC_name",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-005",
+        "name": "AEC_description",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-006",
+        "name": "AEC_purpose",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-007",
+        "name": "value",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-008",
+        "name": "source_ref",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-009",
+        "name": "revision_ref",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-010",
+        "name": "entrypoint",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-AEC-011",
+        "name": "AEC_source_evidence_ref",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-001",
+        "name": "file_language",
+        "decision": "REJECTED",
+        "note": "Do not serialize file_language"
+      },
+      {
+        "id": "F-PLN-002",
+        "name": "Plan_title",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-003",
+        "name": "created_at",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-004",
+        "name": "Plan_properties",
+        "decision": "APPROVED_DOMAIN",
+        "note": "Plan_properties remains the container for purpose/plan_id and version.revision"
+      },
+      {
+        "id": "F-PLN-005",
+        "name": "version.revision",
+        "decision": "APPROVED_MERGED",
+        "note": "One version.revision key in Plan_properties, not split"
+      },
+      {
+        "id": "F-PLN-006",
+        "name": "revision",
+        "decision": "REJECTED",
+        "note": "Remove redundant Plan revision"
+      },
+      {
+        "id": "F-PLN-007",
+        "name": "purpose",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-008",
+        "name": "plan_id",
+        "decision": "APPROVED_PATTERN_PENDING",
+        "note": "Plan id pattern to choose"
+      },
+      {
+        "id": "F-PLN-009",
+        "name": "policy_refs",
+        "decision": "APPROVED_TYPED_ID_REF",
+        "note": "Link Policy_Identity.id, not policy title"
+      },
+      {
+        "id": "F-PLN-010",
+        "name": "source_repository_revision",
+        "decision": "REJECTED",
+        "note": "Rejected source_revision, target_release and delivery_scope Plan fields"
+      },
+      {
+        "id": "F-PLN-011",
+        "name": "target_release",
+        "decision": "REJECTED",
+        "note": "Rejected source_revision, target_release and delivery_scope Plan fields"
+      },
+      {
+        "id": "F-PLN-012",
+        "name": "delivery_scope",
+        "decision": "REJECTED",
+        "note": "Rejected source_revision, target_release and delivery_scope Plan fields"
+      },
+      {
+        "id": "F-PLN-013",
+        "name": "Plan_lifecycle",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-014",
+        "name": "status",
+        "decision": "APPROVED_ENUM",
+        "note": "Seven Draft/Approval/Halt/Implementation states with semantics as specified by user"
+      },
+      {
+        "id": "F-PLN-015",
+        "name": "approval_ref",
+        "decision": "REJECTED",
+        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+      },
+      {
+        "id": "F-PLN-016",
+        "name": "implementation_authorized",
+        "decision": "REJECTED",
+        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+      },
+      {
+        "id": "F-PLN-017",
+        "name": "publication_authorized",
+        "decision": "REJECTED",
+        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+      },
+      {
+        "id": "F-PLN-018",
+        "name": "blocked_reason",
+        "decision": "REJECTED",
+        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+      },
+      {
+        "id": "F-PLN-019",
+        "name": "work_unit_item",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-020",
+        "name": "work_unit_id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-021",
+        "name": "title",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-022",
+        "name": "RA_id",
+        "decision": "APPROVED_RA_LINK",
+        "note": "Plan work unit responsibility bound to RA_id"
+      },
+      {
+        "id": "F-PLN-023",
+        "name": "scope_paths",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-024",
+        "name": "excluded_paths",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-025",
+        "name": "source_refs",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-026",
+        "name": "dependencies",
+        "decision": "REJECTED",
+        "note": "No work unit dependencies field; task_dependencies_id owns task-to-task dependencies"
+      },
+      {
+        "id": "F-PLN-027",
+        "name": "tasks",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-028",
+        "name": "task_id",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-029",
+        "name": "action",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-030",
+        "name": "expected_output",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-031",
+        "name": "acceptance",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-032",
+        "name": "criteria",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-033",
+        "name": "verification_commands",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-034",
+        "name": "evidence_refs",
+        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+      },
+      {
+        "id": "F-PLN-035",
+        "name": "status",
+        "decision": "REJECTED",
+        "note": "No independent work-unit status or duplicate implementation/session fields"
+      },
+      {
+        "id": "F-PLN-036",
+        "name": "implementation_authorized",
+        "decision": "REJECTED",
+        "note": "No independent work-unit status or duplicate implementation/session fields"
+      },
+      {
+        "id": "F-PLN-037",
+        "name": "session_name",
+        "decision": "REJECTED",
+        "note": "No independent work-unit status or duplicate implementation/session fields"
+      },
+      {
+        "id": "F-PLN-038",
+        "name": "session_id",
+        "decision": "REJECTED",
+        "note": "No independent work-unit status or duplicate implementation/session fields"
+      },
+      {
+        "id": "F-PLN-039",
+        "name": "pattern",
+        "decision": "REJECTED",
+        "note": "No independent work-unit status or duplicate implementation/session fields"
+      },
+      {
+        "id": "F-PLN-040",
+        "name": "Checklist",
+        "decision": "APPROVED_TABLE",
+        "note": "Checklist configurable table with task_id sync, PTSIP column and status commands"
+      },
+      {
+        "id": "F-POL-033",
+        "name": "evaluation",
+        "decision": "APPROVED_NEW_ROLE",
+        "note": "Policy_Lifecycle.evaluation compact change history"
+      },
+      {
+        "id": "F-POL-034",
+        "name": "last_changed_date",
+        "decision": "APPROVED_NEW_ROLE",
+        "note": "YYYYMMDD last policy change date; name proposed"
+      },
+      {
+        "id": "F-POL-035",
+        "name": "description",
+        "decision": "APPROVED_NEW_ROLE",
+        "note": "Free natural language up to 200 chars, empty preferred; name proposed"
+      },
+      {
+        "id": "F-POL-036",
+        "name": "content",
+        "decision": "APPROVED_NEW_ROLE",
+        "note": "Per rule content holder for content_id[]"
+      },
+      {
+        "id": "F-RAC-012",
+        "name": "RAC_definition_contract_id",
+        "decision": "NEW_CANDIDATE_NOT_APPROVED",
+        "note": "Independent condition contract identity; not condition item ID"
+      },
+      {
+        "id": "F-RAC-013",
+        "name": "RAC_definition_file_ref",
+        "decision": "NEW_CANDIDATE_NOT_APPROVED",
+        "note": "Actual contract-file locator, distinct from Rego source_ref"
+      },
+      {
+        "id": "F-RAC-014",
+        "name": "RAC_definition_revision_ref",
+        "decision": "NEW_CANDIDATE_NOT_APPROVED",
+        "note": "Exact contract-file revision, distinct from Rego source revision"
+      },
+      {
+        "id": "F-AEC-012",
+        "name": "AEC_definition_contract_id",
+        "decision": "NEW_CANDIDATE_NOT_APPROVED",
+        "note": "Independent condition contract identity; not condition item ID"
+      },
+      {
+        "id": "F-AEC-013",
+        "name": "AEC_definition_file_ref",
+        "decision": "NEW_CANDIDATE_NOT_APPROVED",
+        "note": "Actual contract-file locator, distinct from Rego source_ref"
+      },
+      {
+        "id": "F-AEC-014",
+        "name": "AEC_definition_revision_ref",
+        "decision": "NEW_CANDIDATE_NOT_APPROVED",
+        "note": "Exact contract-file revision, distinct from Rego source revision"
+      },
+      {
+        "id": "F-PLN-041",
+        "name": "Plan_filename",
+        "decision": "NEW_NAME_PROPOSED_ROLE_REQUESTED",
+        "note": "Actual file basename distinct from Plan_title"
+      },
+      {
+        "id": "F-PLN-042",
+        "name": "task_dependencies_id",
+        "decision": "APPROVED_NEW_ROLE",
+        "note": "Per task list of prerequisite task_id values for .ptsip/tasks"
+      },
+      {
+        "id": "F-PLN-043",
+        "name": "column",
+        "decision": "APPROVED_NEW_ROLE",
+        "note": "Checklist.column[] defaults Work_sequence/work_unit_id/task_id/acceptance, custom columns and >=10 support"
+      }
+    ],
+    "policy_v4": {
+      "top_level": [
+        "Policy_Identity",
+        "Policy_Lifecycle",
+        "Policy_Rules",
+        "Policy_Content"
+      ],
+      "official_category": "Policy_Category",
+      "internal_derived": [
+        "root_family",
+        "policy_kind"
+      ],
+      "version_options": {
+        "base": "MAJOR.MINOR.PATCH",
+        "prefixes": [
+          "ver",
+          "v",
+          "Ver.",
+          "V."
+        ],
+        "suffixes": [
+          "alpha",
+          "beta",
+          "Hotfix",
+          "rc"
+        ],
+        "build_optional": true,
+        "build_revision_optional": true,
+        "exact_regex": "PENDING"
+      },
+      "lifecycle_states": [
+        "DRAFT.Default",
+        "DRAFT.Reviewed",
+        "DRAFT.Denied",
+        "DRAFT.Pass",
+        "APPROVED.Default",
+        "APPROVED.Applying",
+        "APPROVED.Application_Problems",
+        "APPROVED.Unresolved",
+        "APPROVED.Activate",
+        "APPROVED.provisional",
+        "RETIRED.Default",
+        "RETIRED.Removable",
+        "RETIRED.Waiting"
+      ],
+      "lifecycle_evaluation": {
+        "path": "Policy_Lifecycle.evaluation",
+        "date_format": "YYYYMMDD",
+        "description_max_length": 200,
+        "description_empty_recommended": true,
+        "external_approval_ref": false,
+        "layout": "UNRESOLVED_ONE_MAP_VS_TWO_MAP_ELEMENTS"
+      },
+      "rule_content_ref": "Policy_Rules.rules[].content.content_id[]",
+      "content_item_fields": [
+        "id",
+        "value",
+        "path",
+        "sha256",
+        "revision_ref"
+      ],
+      "content_id_pattern": "PENDING",
+      "removed": [
+        "Policy_Identity.revision",
+        "Policy_Rules.rules[].source_ref",
+        "Policy_Rules.evaluation.evidence_refs",
+        "Policy_Content.items[].source_pointer",
+        "Policy_Content.source_document"
+      ],
+      "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY_NO_WHOLE_RULE"
+    },
+    "rbac": {
+      "schema_root": "src/ptsip/schemas/storage/rbac/",
+      "preserve": [
+        "RA_id",
+        "RA_title",
+        "RA_description",
+        "RAC_ids",
+        "RAC_name",
+        "AEC_ids",
+        "AEC_name"
+      ],
+      "remove": [
+        "RA_purpose",
+        "RA_normative_effect",
+        "RA_source_ref",
+        "RA_revision_ref"
+      ],
+      "linked_condition_representation": "FLOW_SEQUENCE_OF_SINGLE_PAIR_NAME_TO_ID_MAPS",
+      "example": "RAC_ids: [{\"RAC title 1\": \"RAC-ID-1\"}, {\"RAC title 2\": \"RAC-ID-2\"}]",
+      "exact_name_binding": "UNRESOLVED; preserve RAC_name/AEC_name semantic roles",
+      "new_contract_file_locator_fields": "F-RAC-012..014/F-AEC-012..014 PROPOSED_NOT_APPROVED",
+      "condition_file_vs_rego_source": "DISTINCT",
+      "no_reverse_policy_use": true
+    },
+    "plan": {
+      "identity_fields": {
+        "title": "Plan_title",
+        "filename_candidate": "Plan_filename",
+        "plan_id": "Plan_properties.plan_id",
+        "version_revision": "Plan_properties.version.revision",
+        "policy_refs": "Policy_Identity.id"
+      },
+      "status_source": "Plan_lifecycle.status",
+      "statuses": [
+        "Draft.Proposed",
+        "Draft.Under_coordination",
+        "Approval.Scheduled_implementation",
+        "Approval.Implementation_complete",
+        "Halt.Paused",
+        "Halt.Discontinued",
+        "Implementation.In_progress"
+      ],
+      "status_rules": {
+        "Draft.Proposed": "NO_USER_APPROVAL",
+        "Draft.Under_coordination": "NEEDS_ANALYSIS",
+        "Approval.Scheduled_implementation": "USER_APPROVED_CAN_IMPLEMENT",
+        "Approval.Implementation_complete": "ALL_IMPLEMENTATION_COMPLETE_NOT_PARTIAL",
+        "Halt.Paused": "CAN_RESTART",
+        "Halt.Discontinued": "NO_DEPENDENTS_READ_ONLY_NO_EXECUTION",
+        "Implementation.In_progress": "USER_OR_AGENT_TRANSITION_FROM_APPROVED"
+      },
+      "auto_completion": "PTSIP_CHANGES_TO_APPROVAL_IMPLEMENTATION_COMPLETE_ONLY_AFTER_ALL_REQUIRED_COMPLETION_AND_VERIFICATION",
+      "workunit_link": "RA_id",
+      "no_workunit_status": true,
+      "task_storage": ".ptsip/tasks/",
+      "task_fields": [
+        "task_id",
+        "action",
+        "task_dependencies_id"
+      ],
+      "task_dependencies": "ID_ONLY_TASK_LEVEL_NOT_WORK_UNIT",
+      "checklist": {
+        "column_field": "Checklist.column[]",
+        "defaults": [
+          "Work_sequence",
+          "work_unit_id",
+          "task_id",
+          "acceptance"
+        ],
+        "support_at_least_columns": 10,
+        "exact_max_columns": "UNRESOLVED",
+        "add_column_command": true,
+        "change_status_command": true,
+        "task_id_sync": true
+      },
+      "plan_id_pattern": "PENDING",
+      "note": "No implementation_authorized or publication_authorized contract field, status is sole plan execution lifecycle authority"
+    },
+    "open_choices": [
+      {
+        "id": "CONTENT_ID_PATTERN",
+        "field": "F-POL-026",
+        "choices": [
+          "CT-ID-[0-9A-F]{32}",
+          "SRC-ID-[0-9A-F]{32}",
+          "<policy-id>#content/<stable-id>"
+        ]
+      },
+      {
+        "id": "PLAN_ID_PATTERN",
+        "field": "F-PLN-008",
+        "choices": [
+          "PLAN-ID-[0-9A-F]{32}",
+          "PLN-ID-[0-9A-F]{32}",
+          "PLAN-<stable-semantic-key>"
+        ]
+      },
+      {
+        "id": "RAC_AEC_CONTRACT_LOOKUP",
+        "fields": [
+          "F-RAC-012",
+          "F-RAC-013",
+          "F-RAC-014",
+          "F-AEC-012",
+          "F-AEC-013",
+          "F-AEC-014"
+        ],
+        "state": "USER_REVIEW_REQUIRED"
+      },
+      {
+        "id": "PLAN_STATUS_TRANSITION_GRAPH",
+        "field": "F-PLN-014",
+        "state": "OTHER_TRANSITIONS_NOT_YET_APPROVED"
+      },
+      {
+        "id": "CHECKLIST_MAX_COLUMNS",
+        "field": "F-PLN-043",
+        "state": "AT_LEAST_10_CONFIRMED_EXACT_MAX_UNCLEAR"
+      },
+      {
+        "id": "RA_NAME_ID_BINDING",
+        "fields": [
+          "F-RA-008",
+          "F-RA-009",
+          "F-RA-010",
+          "F-RA-011"
+        ],
+        "state": "VALID_FLOW_YAML_NAME_SOURCE_AND_COLLISION_RULE_PENDING"
+      },
+      {
+        "id": "POLICY_VERSION_LEXICAL_ORDER",
+        "field": "F-POL-006",
+        "state": "OPTIONS_APPROVED_REGEX_PENDING"
+      },
+      {
+        "id": "POLICY_LIFECYCLE_EVALUATION_SHAPE",
+        "field": "F-POL-033",
+        "state": "ONE_OBJECT_VS_TWO_MAP_ENTRIES_PENDING"
+      },
+      {
+        "id": "TASK_OUTPUT_CONTRACT",
+        "field": "F-PLN-042",
+        "state": "TASK_FILE_NAMING_AND_SYNC_PRECEDENCE_PENDING"
+      },
+      {
+        "id": "EFFECTIVE_POLICY_CONFORMANCE",
+        "scope": "src/policy/**",
+        "state": "VERIFY_BEFORE_IMPLEMENTATION"
+      }
+    ]
   }
 }
