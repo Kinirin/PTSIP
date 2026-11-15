@@ -146,6 +146,76 @@
         "extra_field_inference": "FORBIDDEN",
         "final_schema_approval": false,
         "implementation_authorized": false
+      },
+      "aec_provisional_field_structure": {
+        "source": "PROJECT_OWNER_EXPLICIT",
+        "date": "2026-11-16",
+        "status": "APPROVED_PROVISIONAL_STRUCTURE_ONLY_NOT_FINAL_SCHEMA",
+        "record_list": "AEC_list",
+        "fields": [
+          {
+            "id": "F-AEC-T001",
+            "name": "AEC_list",
+            "role": "RECORD_COLLECTION"
+          },
+          {
+            "id": "F-AEC-T002",
+            "name": "AEC_id",
+            "role": "CONDITION_ID"
+          },
+          {
+            "id": "F-AEC-T003",
+            "name": "AEC_name",
+            "role": "HUMAN_NAME_NOT_EVALUATION"
+          },
+          {
+            "id": "F-AEC-T004",
+            "name": "AEC_description",
+            "role": "OPTIONAL_SHORT_HUMAN_DESCRIPTION_NOT_EVALUATION"
+          },
+          {
+            "id": "F-AEC-T005",
+            "name": "value",
+            "role": "INLINE_CONDITION_PENDING_MEANING"
+          }
+        ],
+        "entry_id_pattern": "^ID-AEC-[a-zA-F0-9]{16}$",
+        "metadata_source": "EXISTING_APPROVED_FLAT_FOUR_ROOT_FIELDS",
+        "value_placeholder": "EMPTY_OBJECT_UNRESOLVED_NOT_EVALUABLE",
+        "external_value_delegation": "FORBIDDEN",
+        "extra_field_inference": "FORBIDDEN",
+        "existing_rights_evidence_ownership": "DEFERRED",
+        "final_schema_approval": false,
+        "implementation_authorized": false
+      },
+      "provisional_contract_authoring": {
+        "source": "PROJECT_OWNER_EXPLICIT",
+        "date": "2026-11-16",
+        "authorized_usage": "V4_FIELD_STRUCTURE_AUTHORING_AND_REVIEW_ONLY",
+        "lists": [
+          "RAC_list",
+          "AEC_list"
+        ],
+        "approval_scope": "RAC_AND_AEC_PROVISIONAL_FIELD_LAYOUT",
+        "detailed_value_semantics": "UNRESOLVED",
+        "no_policy_scope_action_target_delegation": true,
+        "policy_authority_document_sync": {
+          "target": "src/policy/ARCH/SFP-ARCH-0004.yaml",
+          "status": "PENDING_CONFLICT_RESOLUTION",
+          "active_source_clause": "/authority_semantics/rac_aec_rego_original_contract_direction",
+          "incoming_v4_clause": "INLINE_SELF_CONTAINED_VALUE_NO_EXTERNAL_REF",
+          "conflicting_active_clause": "value.source_ref+value.revision_ref+value.entrypoint",
+          "base_revision": "cdbd50563b23ad4c4e0f36acf45d4d6c3c56d8f3",
+          "options": [
+            "KEEP_PRIOR",
+            "KEEP_LATEST",
+            "RECONCILE"
+          ],
+          "no_silent_policy_override": true
+        },
+        "evaluation_authorized": false,
+        "runtime_activation_authorized": false,
+        "implementation_authorized": false
       }
     }
   }
