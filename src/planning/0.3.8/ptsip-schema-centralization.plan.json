@@ -233,7 +233,8 @@
       "runtime_implementation_authorized": false,
       "policy_record": ".ptsip/contracts/policy/unified/authoring-decision.json"
     },
-    "policy_v4_content_schema_path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
+    "policy_v4_content_schema_path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
+    "policy_v4_content_item_id_pattern": "^PC-ID-[0-9A-F]{32}$"
   },
   "approval_gates": [
     {
@@ -536,6 +537,16 @@
       ],
       "state": "USER_APPROVED_INLINE_VALUE_NO_REF_DELEGATION",
       "note": "Record-owned semantic values must be stored in the same list file; internal record layout remains unresolved. RA List forward ID links remain permitted."
+    },
+    {
+      "id": "PVR-01-CONTENT-ID-20261116",
+      "scope": [
+        "Policy_Content.items[].id",
+        "Policy_Rules.rules[].content.content_id[]"
+      ],
+      "state": "USER_APPROVED_EXACT_REGEX",
+      "pattern": "^PC-ID-[0-9A-F]{32}$",
+      "remaining": "CONTENT_FIELD_REQUIREDNESS_AND_EVALUATION_VALIDATION_CONTRACT_PENDING"
     }
   ],
   "target_registry": {
@@ -862,10 +873,10 @@
     {
       "path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
       "filename": "PTSIP_policy_content.schema.json",
-      "responsibility": "Independent Policy_Content item/source_document contract",
+      "responsibility": "Independent Policy_Content items identity/value contract and optional same-document provenance fields; rule uses Policy_Rules.rules[].content.content_id[] to reference its items. No separate rule or evidence linkage authority.",
       "sources": [],
-      "readiness": "PROPOSED_PATH_AND_SUBFIELD_REQUIREDNESS_PENDING",
-      "decision": "FOUR_TOP_LEVEL_CONTENT_APPROVED_LOCATION_NOT_YET_APPROVED"
+      "readiness": "APPROVED_PATH_AND_CONTENT_ID_PATTERN_FIELDS_AND_REQUIREDNESS_PENDING",
+      "decision": "CONTENT_SCHEMA_FILE_PATH_AND_ITEM_ID_PATTERN_APPROVED_ONLY"
     },
     {
       "path": "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
@@ -1742,7 +1753,7 @@
         "Policy_Identity title is this policy title; Policy_Category is official field and root_family/policy_kind are developer-level projections with physical shape unresolved",
         "Policy_Identity.version grammar allows 3-part, optional suffix/prefix, optional build/revision components; separate revision field prohibited",
         "Policy_Lifecycle.status uses exactly 13 existing official values; Policy_Lifecycle.evaluation is one compact ordered two-item array of {last_changed_date: YYYYMMDD} and {description: optional natural language <=200 chars, blank preferred}; no approval reference field",
-        "Rules[] own id/content.content_id[]/RA_id, no source_ref; evaluation has source_refs/state/specific evaluation_scope/evaluated_at, no evidence_refs",
+        "Rules[] own id/content.content_id[]/RA_id; Policy_Rules.evaluation supports open user-defined state, description/evaluation_scope/evaluated_at as review candidates, built-in default validation and optional filter interfaces. No source_refs or evidence_refs in evaluation; local evidence stays in its own policy document; all subfield requiredness unresolved.",
         "Policy_Content.items[] owns id/value/path/sha256/revision_ref, no source_pointer or source_document; content IDs referenced from rule content_id[]",
         "Content item ID pattern pending; v3 Unified Policy and old validation schemas not inherited",
         "Do not implement or invent fields from unapproved Content ID scheme and other undecided schema constraints"
@@ -2256,7 +2267,10 @@
       "Policy_Rules.rules[].content.content_id[] resolves Policy_Content.items[].id with no rule source_ref, source_pointer, source_document",
       "RAC/AEC condition contract file lookup identity and Rego original evaluation source reference are separate ownership responsibilities",
       "Rejected prior RAC/AEC candidate sets remain rejected. Newly approved F-RAC/F-AEC-T001..T005 are PROVISIONAL authoring layout only; no final schema generation from unresolved value semantics.",
-      "RAC/AEC have approved four flat root metadata fields and approved provisional list body fields; no File_Identity/file_kind; final value internals and schema field constraints still unresolved."
+      "RAC/AEC have approved four flat root metadata fields and approved provisional list body fields; no File_Identity/file_kind; final value internals and schema field constraints still unresolved.",
+      "Policy_Content.items[].id matches ^PC-ID-[0-9A-F]{32}$, and Policy_Rules.rules[].content.content_id[] resolves only within the same policy document; final requiredness still pending.",
+      "Policy_Rules.evaluation never requires or accepts source_refs/evidence_refs; local evidence belongs to the current policy document rather than another policy document.",
+      "Evaluation.state has no fixed status enum; a built-in generic validator must work without user-defined validators or mandatory filters, while custom states and optional filters remain allowed. Unknown semantics must not be claimed verified from structural validation."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3878,29 +3892,44 @@
           "requiredness": "NOT_YET_DECIDED",
           "source_document": "REMOVED",
           "source_pointer": "REMOVED",
-          "id_pattern": "UNRESOLVED"
+          "id_pattern": "^PC-ID-[0-9A-F]{32}$",
+          "id_pattern_status": "USER_APPROVED_EXACT_PATTERN",
+          "content_id_reference_path": "Policy_Rules.rules[].content.content_id[]",
+          "item_id_target_path": "Policy_Content.items[].id",
+          "reference_relation": "SAME_POLICY_DOCUMENT_ONLY",
+          "item_identity_vs_content_value": "ID_STABLE_VALUE_MAY_CHANGE",
+          "schema_location_approved": true
         },
         "evaluation": {
           "owner": "Policy_Rules",
           "path": "/Policy_Rules/evaluation",
           "fields": [
-            "source_refs",
             "state"
           ],
-          "source_refs_type": "array",
-          "state_values": "UNRESOLVED",
+          "state_values": "OPEN_USER_DEFINED_NO_FIXED_ENUM",
           "requiredness": "NOT_YET_DECIDED",
           "separate_directory": false,
           "field_candidates": [
-            "source_refs",
             "state",
             "evaluation_scope",
-            "evaluated_at"
+            "evaluated_at",
+            "description"
           ],
           "field_rejections": [
-            "evidence_refs"
+            "evidence_refs",
+            "source_refs",
+            "fixed_state_enum",
+            "mandatory_filter_fields"
           ],
-          "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY"
+          "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY",
+          "state_validation_direction": "BUILTIN_GENERAL_VALIDATOR_REQUIRED_NOT_USER_WRITTEN",
+          "semantic_validation_boundary": "UNKNOWN_CUSTOM_STATES_CAN_BE_STRUCTURALLY_VALID_WITHOUT_CLAIMING_SEMANTIC_CORRECTNESS",
+          "filter_usage": "OPTIONAL_ZERO_OR_MORE_NO_MANDATORY_PREDEFINED_FILTER",
+          "user_custom_evaluation_fields": "PERMITTED_FINAL_VALIDATION_EXTENSION_SHAPE_UNRESOLVED",
+          "natural_language_recording": "SUPPORTED_NOT_ALL_SEMANTICS_MUST_HAVE_MACHINE_CODE",
+          "local_evidence_rule": "EVIDENCE_ONLY_WITHIN_OWN_POLICY_DOCUMENT_NO_EXTERNAL_POLICY_SOURCE_REFS",
+          "candidate_field_status": "REVIEW_ONLY_NOT_FINAL_FIELD_CONTRACT",
+          "validation_design_status": "DIRECTION_APPROVED_MECHANISM_TO_BE_PROPOSED"
         },
         "forbidden_top_level_fields": [
           "Policy_Authority",
@@ -4166,7 +4195,7 @@
       {
         "id": "V4-FIELD-DETAIL",
         "state": "PARTIALLY_RESOLVED",
-        "value": "Four top-level fields decided; Rules evaluation nested; Content items/source_document fields declared, remaining requiredness and state vocabulary unresolved"
+        "value": "Content path and ^PC-ID-[0-9A-F]{32}$ item ID pattern approved; rule-content same-document link. Evaluation open user-defined state and built-in validator direction; detailed validation mechanics and requiredness unresolved; no source_refs."
       },
       {
         "id": "RA-RELATION-FIELDS",
@@ -4351,18 +4380,37 @@
         "id": "RAC-AEC-VALUE-OWNERSHIP",
         "state": "APPROVED_INLINE_ONLY_SHAPE_UNRESOLVED",
         "value": "Own value in same RAC/AEC list file; no ref-based delegation to other files"
+      },
+      {
+        "id": "CONTENT-ID-20261116",
+        "state": "APPROVED",
+        "value": "^PC-ID-[0-9A-F]{32}$"
+      },
+      {
+        "id": "RULES-EVALUATION-NO-SOURCE-REFS-20261116",
+        "state": "USER_EXPLICIT_REJECTION",
+        "value": "Policy_Rules.evaluation.source_refs excluded; evidence belongs in same policy document"
+      },
+      {
+        "id": "RULES-EVALUATION-OPEN-STATE-20261116",
+        "state": "USER_DIRECTION_NOT_FINAL_FIELD_SHAPE",
+        "value": "No hard-coded finite evaluation.state enumeration; built-in validator necessary; optional filters, user-defined fields, natural language supported"
       }
     ],
     "concrete_work_plan": [
       {
         "id": "PVR-01",
         "dependency": [],
-        "action": "Top-level 4 Policy fields approved. Close remaining Content contract path, Rules.evaluation state vocabulary, per-field type and requiredness; no V3 source inheritance.",
+        "action": "Top-level 4 Policy fields approved; Policy_Content schema path and Content item ID regex approved. Finish the per-field type/requiredness decisions and an extensible Policy_Rules.evaluation validation contract: open user-defined state, natural-language record, optional machine filters and built-in generic state validator; no external source_refs, no fixed state enum, no V3 source inheritance.",
         "outputs": [
           "4-field v4 structure record",
           "Content independent schema path approval",
           "Rules.evaluation value contract",
           "machine $ref closure test matrix"
+        ],
+        "blocked_on": [
+          "V4_FIELD_TYPES_AND_REQUIREDNESS_UNRESOLVED",
+          "RULES_EVALUATION_EXTENSIBLE_VALIDATION_CONTRACT_UNRESOLVED"
         ]
       },
       {
@@ -4631,6 +4679,28 @@
       ],
       "prior_proposals_must_not_reactivate": true,
       "scope": "PROVISIONAL_AUTHORING_NOT_FINAL_SCHEMA_AND_NOT_RUNTIME"
+    },
+    "pvr01_review_20261116": {
+      "record_type": "NON_NORMATIVE_PLAN_DESIGN_REVIEW",
+      "approval": {
+        "content_schema_path": "APPROVED",
+        "content_id_regex": "^PC-ID-[0-9A-F]{32}$",
+        "eliminate_evaluation_source_refs": "USER_REJECTED",
+        "evaluation_state_vocabulary": "OPEN_CUSTOM_VALUES",
+        "builtin_validator": "REQUIRED",
+        "optional_filters": "SUPPORTED"
+      },
+      "proposals_not_approved": {
+        "content_requiredness": "PER_FIELD_REVIEW_PENDING",
+        "evaluation_structural_contract": "PENDING",
+        "machine_pattern_abstraction": "BUILTIN_VALIDATION_AND_OPTIONAL_REUSABLE_FILTERS_PROPOSED",
+        "description": "CANDIDATE",
+        "evaluation_scope": "CANDIDATE",
+        "evaluated_at": "CANDIDATE",
+        "extension_fields": "SCHEMA_SHAPE_UNDECIDED",
+        "source_provenance_fields_requiredness": "PENDING"
+      },
+      "implementation_authorized": false
     }
   },
   "policy_conflict_resolution": {
@@ -4697,7 +4767,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-16: Policy_Content schema path approved at src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json. PVR-01 other choices (Content item ID grammar, per-field requiredness, Policy_Rules.evaluation representation) await user review. Contract design only; final schema implementation not approved.",
+    "last_user_direction": "2026-11-16: Policy_Content schema path and ^PC-ID-[0-9A-F]{32}$ approved, Content links remain same-document Policy_Rules.rules[].content.content_id[] -> Policy_Content.items[].id. Evaluation source_refs rejected, state open user-defined vocabulary, built-in validator required, filters optional, description/evaluation_scope/evaluated_at suitable candidates; final requiredness and extensibility shape unresolved. Work only from plan; no external policy document as implementation basis.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
@@ -4807,7 +4877,8 @@
       {
         "id": "F-POL-019",
         "name": "source_refs",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "REJECTED_FOR_POLICY_RULES_EVALUATION_BY_EXPLICIT_USER_DIRECTION",
+        "note": "User rejected Policy_Rules.evaluation.source_refs 2026-11-16. Policy evidence is recorded within the same policy document; do not reference external policy document evidence."
       },
       {
         "id": "F-POL-020",
@@ -4844,8 +4915,9 @@
       {
         "id": "F-POL-026",
         "name": "id",
-        "decision": "APPROVED_ID_FORMAT_PENDING",
-        "note": "Content item id source of content_id[] references; pattern to choose"
+        "decision": "APPROVED_EXACT_ID_PATTERN",
+        "note": "Policy_Content.items[].id matches ^PC-ID-[0-9A-F]{32}$; Policy_Rules.rules[].content.content_id[] references ID in same policy document. ID generation algorithm and per-field requiredness separate.",
+        "pattern": "^PC-ID-[0-9A-F]{32}$"
       },
       {
         "id": "F-POL-027",
@@ -5452,17 +5524,38 @@
         "sha256",
         "revision_ref"
       ],
-      "content_id_pattern": "PENDING",
+      "content_id_pattern": "^PC-ID-[0-9A-F]{32}$",
       "removed": [
         "Policy_Identity.revision",
         "Policy_Rules.rules[].source_ref",
         "Policy_Rules.evaluation.evidence_refs",
         "Policy_Content.items[].source_pointer",
-        "Policy_Content.source_document"
+        "Policy_Content.source_document",
+        "Policy_Rules.evaluation.source_refs"
       ],
       "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY_NO_WHOLE_RULE",
       "category_physical_shape": "UNRESOLVED: official Policy_Category exists; internal developer root_family/policy_kind extraction requires separate path/serialization decision",
-      "category_official_field": "Policy_Identity.Policy_Category"
+      "category_official_field": "Policy_Identity.Policy_Category",
+      "evaluation_flexibility_review_20261116": {
+        "status": "DIRECTION_ONLY_FIELDS_UNFINALIZED",
+        "state": "USER_DEFINED_OPEN_VOCABULARY",
+        "state_validator": "BUILTIN_REQUIRED_GENERIC_DEFAULT",
+        "filters": "OPTIONAL_CAN_BE_OMITTED",
+        "custom_fields": "ALLOWED_EXTENSION_APPROACH_UNRESOLVED",
+        "candidate_fields": [
+          "state",
+          "description",
+          "evaluation_scope",
+          "evaluated_at"
+        ],
+        "rejected_fields": [
+          "source_refs",
+          "evidence_refs"
+        ],
+        "local_evidence": "SAME_POLICY_DOCUMENT_ONLY",
+        "final_validation_schema": "UNRESOLVED",
+        "no_assumed_automatic_semantic_judgment_of_unknown_custom_states": true
+      }
     },
     "rbac": {
       "schema_root": "src/ptsip/schemas/storage/rbac/",
