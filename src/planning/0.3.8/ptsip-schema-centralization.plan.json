@@ -234,7 +234,8 @@
       "policy_record": ".ptsip/contracts/policy/unified/authoring-decision.json"
     },
     "policy_v4_content_schema_path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
-    "policy_v4_content_item_id_pattern": "^PC-ID-[0-9A-F]{32}$"
+    "policy_v4_content_item_id_pattern": "REVOKED_FIXED_REGEX",
+    "policy_v4_content_item_id_binding": "USER_DECLARED_SYMBOLIC_CONSTANT_EXACT_MATCH"
   },
   "approval_gates": [
     {
@@ -544,9 +545,10 @@
         "Policy_Content.items[].id",
         "Policy_Rules.rules[].content.content_id[]"
       ],
-      "state": "USER_APPROVED_EXACT_REGEX",
-      "pattern": "^PC-ID-[0-9A-F]{32}$",
-      "remaining": "CONTENT_FIELD_REQUIREDNESS_AND_EVALUATION_VALIDATION_CONTRACT_PENDING"
+      "state": "REVISED_USER_REVOKED_FIXED_REGEX",
+      "remaining": "DECLARATION_BINDING_SHAPE_AND_FIELD_REQUIREDNESS_PENDING",
+      "current_decision": "USER_DECLARED_SYMBOLIC_CONSTANT_EXACT_MATCH",
+      "old_rule": "REVOKED_NOT_EFFECTIVE"
     }
   ],
   "target_registry": {
@@ -1753,8 +1755,8 @@
         "Policy_Identity title is this policy title; Policy_Category is official field and root_family/policy_kind are developer-level projections with physical shape unresolved",
         "Policy_Identity.version grammar allows 3-part, optional suffix/prefix, optional build/revision components; separate revision field prohibited",
         "Policy_Lifecycle.status uses exactly 13 existing official values; Policy_Lifecycle.evaluation is one compact ordered two-item array of {last_changed_date: YYYYMMDD} and {description: optional natural language <=200 chars, blank preferred}; no approval reference field",
-        "Rules[] own id/content.content_id[]/RA_id; Policy_Rules.evaluation supports open user-defined state, description/evaluation_scope/evaluated_at as review candidates, built-in default validation and optional filter interfaces. No source_refs or evidence_refs in evaluation; local evidence stays in its own policy document; all subfield requiredness unresolved.",
-        "Policy_Content.items[] owns id/value/path/sha256/revision_ref, no source_pointer or source_document; content IDs referenced from rule content_id[]",
+        "Rules[] own id/content.content_id[]/RA_id. evaluation.state binds user-authored state-contract constant; PTSIP provides default reference/constant validator without fixed state enum. description/evaluation_scope/evaluated_at remain optional candidates; custom fields and filters optional. No source_refs/evidence_refs; evidence stays within current policy document.",
+        "Policy_Content.items[] owns user-declared readable id/value/path/sha256/revision_ref. Rule content_id[] resolves within same document by exact declared constant matching; no globally generated fixed Content ID pattern.",
         "Content item ID pattern pending; v3 Unified Policy and old validation schemas not inherited",
         "Do not implement or invent fields from unapproved Content ID scheme and other undecided schema constraints"
       ],
@@ -2268,9 +2270,9 @@
       "RAC/AEC condition contract file lookup identity and Rego original evaluation source reference are separate ownership responsibilities",
       "Rejected prior RAC/AEC candidate sets remain rejected. Newly approved F-RAC/F-AEC-T001..T005 are PROVISIONAL authoring layout only; no final schema generation from unresolved value semantics.",
       "RAC/AEC have approved four flat root metadata fields and approved provisional list body fields; no File_Identity/file_kind; final value internals and schema field constraints still unresolved.",
-      "Policy_Content.items[].id matches ^PC-ID-[0-9A-F]{32}$, and Policy_Rules.rules[].content.content_id[] resolves only within the same policy document; final requiredness still pending.",
+      "Policy_Content.items[].id is user-declared readable constant symbol, not fixed global regex. Policy_Rules.rules[].content.content_id[] resolves by exact equality inside its policy document; reject missing and duplicate local declarations.",
       "Policy_Rules.evaluation never requires or accepts source_refs/evidence_refs; local evidence belongs to the current policy document rather than another policy document.",
-      "Evaluation.state has no fixed status enum; a built-in generic validator must work without user-defined validators or mandatory filters, while custom states and optional filters remain allowed. Unknown semantics must not be claimed verified from structural validation."
+      "evaluation.state binds user-authored contract constants, never a global enum. PTSIP supplies generic validator for declared constant matching; optional custom filters are not required; user-defined state meaning cannot be inferred."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3892,13 +3894,19 @@
           "requiredness": "NOT_YET_DECIDED",
           "source_document": "REMOVED",
           "source_pointer": "REMOVED",
-          "id_pattern": "^PC-ID-[0-9A-F]{32}$",
-          "id_pattern_status": "USER_APPROVED_EXACT_PATTERN",
+          "id_pattern": "USER_DECLARED_NO_GLOBAL_FIXED_REGEX",
+          "id_pattern_status": "USER_REVOKED_PREVIOUS_REGEX",
           "content_id_reference_path": "Policy_Rules.rules[].content.content_id[]",
           "item_id_target_path": "Policy_Content.items[].id",
           "reference_relation": "SAME_POLICY_DOCUMENT_ONLY",
           "item_identity_vs_content_value": "ID_STABLE_VALUE_MAY_CHANGE",
-          "schema_location_approved": true
+          "schema_location_approved": true,
+          "identifier_contract_binding": "USER_DECLARED_SYMBOLIC_CONSTANT_EXACT_MATCH",
+          "identifier_semantics": "HUMAN_READABLE_DOCUMENT_LOCAL_SYMBOL",
+          "identifier_generation": "USER_DECLARED_NOT_FIXED_GENERATED_FORMAT",
+          "identifier_validation": "PTSIP_DEFAULT_LOCAL_UNIQUENESS_AND_EXACT_REFERENCE_MATCH",
+          "identifier_allowed_characters": "UNRESOLVED_NO_GLOBAL_REGEX",
+          "cross_policy_document_content_links": "NOT_AUTHORIZED_BY_LOCAL_CONTENT_ID_BINDING"
         },
         "evaluation": {
           "owner": "Policy_Rules",
@@ -3906,7 +3914,7 @@
           "fields": [
             "state"
           ],
-          "state_values": "OPEN_USER_DEFINED_NO_FIXED_ENUM",
+          "state_values": "USER_DEFINED_CONTRACT_CONSTANTS_NO_GLOBAL_ENUM",
           "requiredness": "NOT_YET_DECIDED",
           "separate_directory": false,
           "field_candidates": [
@@ -3922,14 +3930,20 @@
             "mandatory_filter_fields"
           ],
           "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY",
-          "state_validation_direction": "BUILTIN_GENERAL_VALIDATOR_REQUIRED_NOT_USER_WRITTEN",
+          "state_validation_direction": "VALIDATE_TYPE_AND_REGISTERED_USER_CONSTANT_BINDING",
           "semantic_validation_boundary": "UNKNOWN_CUSTOM_STATES_CAN_BE_STRUCTURALLY_VALID_WITHOUT_CLAIMING_SEMANTIC_CORRECTNESS",
           "filter_usage": "OPTIONAL_ZERO_OR_MORE_NO_MANDATORY_PREDEFINED_FILTER",
           "user_custom_evaluation_fields": "PERMITTED_FINAL_VALIDATION_EXTENSION_SHAPE_UNRESOLVED",
           "natural_language_recording": "SUPPORTED_NOT_ALL_SEMANTICS_MUST_HAVE_MACHINE_CODE",
-          "local_evidence_rule": "EVIDENCE_ONLY_WITHIN_OWN_POLICY_DOCUMENT_NO_EXTERNAL_POLICY_SOURCE_REFS",
+          "local_evidence_rule": "EVIDENCE_WITHIN_OWN_POLICY_DOCUMENT",
           "candidate_field_status": "REVIEW_ONLY_NOT_FINAL_FIELD_CONTRACT",
-          "validation_design_status": "DIRECTION_APPROVED_MECHANISM_TO_BE_PROPOSED"
+          "validation_design_status": "DIRECTION_APPROVED_MECHANISM_TO_BE_PROPOSED",
+          "state_contract_binding": "USER_DECLARED_CONSTANT_REFERENCE",
+          "state_validator_owner": "PTSIP_BUILTIN_NOT_USER",
+          "state_contract_location": "UNRESOLVED",
+          "state_const_value_grammar": "UNRESOLVED_HUMAN_READABLE_USER_DECLARED",
+          "state_validation_semantics": "EXACT_MATCH_ONLY_UNREGISTERED_MEANING_NOT_INFERRED",
+          "custom_filter_dependencies": "OPTIONAL_NOT_REQUIRED_FOR_BUILTIN_VALIDATOR"
         },
         "forbidden_top_level_fields": [
           "Policy_Authority",
@@ -4195,7 +4209,7 @@
       {
         "id": "V4-FIELD-DETAIL",
         "state": "PARTIALLY_RESOLVED",
-        "value": "Content path and ^PC-ID-[0-9A-F]{32}$ item ID pattern approved; rule-content same-document link. Evaluation open user-defined state and built-in validator direction; detailed validation mechanics and requiredness unresolved; no source_refs."
+        "value": "Content path approved; IDs are user-declared readable constants linked by exact match in current policy document; previous fixed regex revoked. Evaluation.state uses constants defined by user state contracts, not global enum; PTSIP builtin validator; binding shape and requiredness unresolved."
       },
       {
         "id": "RA-RELATION-FIELDS",
@@ -4383,8 +4397,8 @@
       },
       {
         "id": "CONTENT-ID-20261116",
-        "state": "APPROVED",
-        "value": "^PC-ID-[0-9A-F]{32}$"
+        "state": "SUPERSEDED_BY_USER_REVOKED_REGEX",
+        "value": "USER_DECLARED_READABLE_CONTENT_ID_CONSTANT_SAME_DOCUMENT_EXACT_MATCH"
       },
       {
         "id": "RULES-EVALUATION-NO-SOURCE-REFS-20261116",
@@ -4393,15 +4407,25 @@
       },
       {
         "id": "RULES-EVALUATION-OPEN-STATE-20261116",
-        "state": "USER_DIRECTION_NOT_FINAL_FIELD_SHAPE",
-        "value": "No hard-coded finite evaluation.state enumeration; built-in validator necessary; optional filters, user-defined fields, natural language supported"
+        "state": "USER_APPROVED_CONTRACT_CONSTANT_DIRECTION_FINAL_GRAMMAR_PENDING",
+        "value": "evaluation.state binds user-declared state contract constants; PTSIP builtin validator checks declared binding, no fixed global state enum or mandatory custom filters."
+      },
+      {
+        "id": "CONTENT-SYMBOLIC-CONST-20261116",
+        "state": "USER_APPROVED_REPLACEMENT",
+        "value": "Use human-readable user-declared Content item constants, exact matching within policy document; no global generated regex."
+      },
+      {
+        "id": "EVALUATION-STATE-CONST-20261116",
+        "state": "USER_APPROVED_DIRECTION_GRAMMAR_PENDING",
+        "value": "User contracts define state constants; evaluation.state binds to declared constant and PTSIP provides default validator; semantics, contract registration shape, optional filters still to design."
       }
     ],
     "concrete_work_plan": [
       {
         "id": "PVR-01",
         "dependency": [],
-        "action": "Top-level 4 Policy fields approved; Policy_Content schema path and Content item ID regex approved. Finish the per-field type/requiredness decisions and an extensible Policy_Rules.evaluation validation contract: open user-defined state, natural-language record, optional machine filters and built-in generic state validator; no external source_refs, no fixed state enum, no V3 source inheritance.",
+        "action": "Top-level four fields and Content schema path approved. Content IDs: user-declared human-readable symbols bound by contract constants, prior generated fixed regex revoked. Decide declaration grammar and per-field requiredness. evaluation.state: user-authored contract constants with PTSIP default validator, no global enum; natural language and user custom filters optional, evidence inside own policy document, no source_refs. No V3 inheritance.",
         "outputs": [
           "4-field v4 structure record",
           "Content independent schema path approval",
@@ -4409,8 +4433,9 @@
           "machine $ref closure test matrix"
         ],
         "blocked_on": [
+          "CONTENT_SYMBOLIC_CONSTANT_DECLARATION_AND_BINDING_SHAPE_UNRESOLVED",
           "V4_FIELD_TYPES_AND_REQUIREDNESS_UNRESOLVED",
-          "RULES_EVALUATION_EXTENSIBLE_VALIDATION_CONTRACT_UNRESOLVED"
+          "RULES_EVALUATION_STATE_CONTRACT_BINDING_AND_VALIDATOR_SHAPE_UNRESOLVED"
         ]
       },
       {
@@ -4684,11 +4709,13 @@
       "record_type": "NON_NORMATIVE_PLAN_DESIGN_REVIEW",
       "approval": {
         "content_schema_path": "APPROVED",
-        "content_id_regex": "^PC-ID-[0-9A-F]{32}$",
         "eliminate_evaluation_source_refs": "USER_REJECTED",
         "evaluation_state_vocabulary": "OPEN_CUSTOM_VALUES",
         "builtin_validator": "REQUIRED",
-        "optional_filters": "SUPPORTED"
+        "optional_filters": "SUPPORTED",
+        "content_id_mode": "USER_DECLARED_SYMBOLIC_CONSTANT",
+        "previous_content_id_regex": "REVOKED",
+        "evaluation_state_binding": "USER_DEFINED_CONTRACT_CONSTANT"
       },
       "proposals_not_approved": {
         "content_requiredness": "PER_FIELD_REVIEW_PENDING",
@@ -4698,7 +4725,10 @@
         "evaluation_scope": "CANDIDATE",
         "evaluated_at": "CANDIDATE",
         "extension_fields": "SCHEMA_SHAPE_UNDECIDED",
-        "source_provenance_fields_requiredness": "PENDING"
+        "source_provenance_fields_requiredness": "PENDING",
+        "content_symbol_declaration_grammar": "UNRESOLVED",
+        "state_contract_registration_format": "UNRESOLVED",
+        "state_contract_location": "UNRESOLVED"
       },
       "implementation_authorized": false
     }
@@ -4767,7 +4797,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-16: Policy_Content schema path and ^PC-ID-[0-9A-F]{32}$ approved, Content links remain same-document Policy_Rules.rules[].content.content_id[] -> Policy_Content.items[].id. Evaluation source_refs rejected, state open user-defined vocabulary, built-in validator required, filters optional, description/evaluation_scope/evaluated_at suitable candidates; final requiredness and extensibility shape unresolved. Work only from plan; no external policy document as implementation basis.",
+    "last_user_direction": "2026-11-16: User revoked previously approved fixed hexadecimal Content ID regex, replacing it with user-declared readable symbolic constant IDs linked within same policy document. evaluation.state uses user-authored contract constants; PTSIP builtin constant-binding validator required, no global enum, filters optional. Exact binding syntax and requiredness unresolved; plan is sole work authority.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
@@ -4915,9 +4945,8 @@
       {
         "id": "F-POL-026",
         "name": "id",
-        "decision": "APPROVED_EXACT_ID_PATTERN",
-        "note": "Policy_Content.items[].id matches ^PC-ID-[0-9A-F]{32}$; Policy_Rules.rules[].content.content_id[] references ID in same policy document. ID generation algorithm and per-field requiredness separate.",
-        "pattern": "^PC-ID-[0-9A-F]{32}$"
+        "decision": "APPROVED_USER_DECLARED_SYMBOLIC_ID_FIXED_REGEX_REVOKED",
+        "note": "Content item id is user-declared readable symbolic constant; Policy_Rules.rules[].content.content_id[] matches exact ID within current policy document; no globally generated ID pattern. Final declaration/namespace grammar unresolved."
       },
       {
         "id": "F-POL-027",
@@ -5524,7 +5553,7 @@
         "sha256",
         "revision_ref"
       ],
-      "content_id_pattern": "^PC-ID-[0-9A-F]{32}$",
+      "content_id_pattern": "REVOKED_FIXED_REGEX",
       "removed": [
         "Policy_Identity.revision",
         "Policy_Rules.rules[].source_ref",
@@ -5538,8 +5567,8 @@
       "category_official_field": "Policy_Identity.Policy_Category",
       "evaluation_flexibility_review_20261116": {
         "status": "DIRECTION_ONLY_FIELDS_UNFINALIZED",
-        "state": "USER_DEFINED_OPEN_VOCABULARY",
-        "state_validator": "BUILTIN_REQUIRED_GENERIC_DEFAULT",
+        "state": "USER_DEFINED_STATE_CONTRACT_CONSTANTS",
+        "state_validator": "PTSIP_BUILTIN_VALIDATOR_FOR_CONSTANT_BINDING",
         "filters": "OPTIONAL_CAN_BE_OMITTED",
         "custom_fields": "ALLOWED_EXTENSION_APPROACH_UNRESOLVED",
         "candidate_fields": [
@@ -5554,8 +5583,13 @@
         ],
         "local_evidence": "SAME_POLICY_DOCUMENT_ONLY",
         "final_validation_schema": "UNRESOLVED",
-        "no_assumed_automatic_semantic_judgment_of_unknown_custom_states": true
-      }
+        "no_assumed_automatic_semantic_judgment_of_unknown_custom_states": true,
+        "state_binding": "EXACT_MATCH_TO_USER_DECLARED_CONSTANT",
+        "user_authored_state_contracts": true,
+        "state_contract_storage": "UNRESOLVED",
+        "unknown_state_semantics": "NOT_AUTOMATICALLY_VERIFIED"
+      },
+      "content_id_binding": "USER_DECLARED_SYMBOLIC_CONSTANT_SAME_DOCUMENT_EXACT_MATCH"
     },
     "rbac": {
       "schema_root": "src/ptsip/schemas/storage/rbac/",
