@@ -256,7 +256,8 @@
     {
       "id": "FIELDS-01",
       "scope": "Policy v4 independent sub-contract field types/requiredness and complete RA List GUI semantics",
-      "state": "PARTIAL_POLICY_FIXED_SUBFIELDS_PENDING"
+      "state": "PARTIAL_POLICY_FIXED_SUBFIELDS_PENDING",
+      "note": "User-custom Policy_Content and Policy_Rules.evaluation subfield requiredness is intentionally unspecified (null), NOT a blocking design decision. Retain independent pending core structure, field types and RA GUI semantic concerns without forcing user custom fields."
     },
     {
       "id": "SOURCE-01",
@@ -553,13 +554,13 @@
     {
       "id": "PVR01-USER-CONTRACT-DIRECTORY-20261116",
       "scope": ".ptsip/contract/user/",
-      "state": "APPROVED_USER_PROJECT_BOOTSTRAP_DESIGN_ONLY",
+      "state": "APPROVED_USER_PROJECT_DIRECTORY_AND_ON_DEMAND_MISSING_ONLY_BOOTSTRAP_DESIGN",
       "provisioned_logical_contracts": [
         "evaluation_state",
         "policy_content_id"
       ],
       "required_owner": "PTSIP_AUTO_CREATE",
-      "note": "Future PTSIP deployment/adoption in each user's repository creates .ptsip/contract/user/ and connects two logical user-managed contracts. Filename/extension, data format, creation trigger, missing-contract behavior and exact binding grammar remain unresolved. Do not write .ptsip/** in PTSIP source repository or authorize runtime implementation."
+      "note": "PTSIP automatically creates a missing logical user contract under .ptsip/contract/user/ only when its validation is needed; existing files must never be overwritten. evaluation_state.schema.json and policy_content_id.schema.json are filename+JSON Schema format recommendations only. User custom field requiredness intentionally unspecified. Shared validator supports contract-only authoring without user-authored validator code. PTSIP source repo .ptsip/** remains unchanged."
     }
   ],
   "target_registry": {
@@ -1770,7 +1771,8 @@
         "Policy_Content.items[] owns user-declared readable id/value/path/sha256/revision_ref. Rule content_id[] resolves within same document by exact declared constant matching; no globally generated fixed Content ID pattern.",
         "Content item ID pattern pending; v3 Unified Policy and old validation schemas not inherited",
         "Do not implement or invent fields from unapproved Content ID scheme and other undecided schema constraints",
-        "For v4 contract design, integrate two PTSIP-auto-provisioned logical user contracts under adopting repository .ptsip/contract/user/: evaluation_state and policy_content_id. User owns constants/pattern declarations, PTSIP owns generic validators; no fixed enum or global ID regex. Do not create these instances in the PTSIP source repository while planning. Exact names/extensions and bootstrap trigger pending."
+        "For v4 contract design, integrate two PTSIP-auto-provisioned logical user contracts under adopting repository .ptsip/contract/user/: evaluation_state and policy_content_id. User owns constants/pattern declarations, PTSIP owns generic validators; no fixed enum or global ID regex. Do not create these instances in the PTSIP source repository while planning. Exact names/extensions and bootstrap trigger pending.",
+        "Use plan-approved on-demand creation only when user project evaluation_state/policy_content_id contract is needed and absent; never overwrite existing user contract. JSON Schema 2020-12 *.schema.json is a filename/format recommendation pending approval, not a forced choice. PTSIP generic validator and discoverability reduce per-contract validator authoring to zero; user custom subfield requiredness is null by design."
       ],
       "gate": "Four field contracts fully scoped; Content path approved; Rule evaluation nested; separate refs compile",
       "priority": "ACTIVE_FOCUS_POLICY_V4"
@@ -2284,7 +2286,10 @@
       "RAC/AEC have approved four flat root metadata fields and approved provisional list body fields; no File_Identity/file_kind; final value internals and schema field constraints still unresolved.",
       "Policy_Content.items[].id is user-declared readable constant symbol, not fixed global regex. Policy_Rules.rules[].content.content_id[] resolves by exact equality inside its policy document; reject missing and duplicate local declarations.",
       "Policy_Rules.evaluation never requires or accepts source_refs/evidence_refs; local evidence belongs to the current policy document rather than another policy document.",
-      "evaluation.state binds user-authored contract constants, never a global enum. PTSIP supplies generic validator for declared constant matching; optional custom filters are not required; user-defined state meaning cannot be inferred."
+      "evaluation.state binds user-authored contract constants, never a global enum. PTSIP supplies generic validator for declared constant matching; optional custom filters are not required; user-defined state meaning cannot be inferred.",
+      "When referenced user evaluation_state/policy_content_id contract is missing, the future PTSIP bootstrapping path creates only the missing neutral editable contract and never overwrites existing files; do not create user instances during source planning.",
+      "User-custom Policy_Content and Policy_Rules.evaluation subfield requiredness remains null by design; a generic PTSIP validator must not force a predefined required list on these user fields.",
+      "PTSIP compatibility validation can reuse supported declarative user contracts without per-contract custom code; unsupported schema dialects and unknown custom semantics are reported, never silently treated as semantically validated."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3903,7 +3908,7 @@
             ]
           },
           "value_type": "UNCONSTRAINED_IN_PREVIEW",
-          "requiredness": "NOT_YET_DECIDED",
+          "requiredness": null,
           "source_document": "REMOVED",
           "source_pointer": "REMOVED",
           "id_pattern": "USER_DECLARED_NO_GLOBAL_FIXED_REGEX",
@@ -3922,8 +3927,11 @@
           "identifier_pattern_contract_location": ".ptsip/contract/user/",
           "identifier_pattern_contract_logical_name": "policy_content_id",
           "identifier_pattern_origin": "USER_CONTRACT_DEFINED_NOT_BUILTIN_GLOBAL_REGEX",
-          "identifier_pattern_validation": "PTSIP_BUILTIN_VALIDATOR_APPLIES_USER_CONFIGURED_PATTERN_IF_DEFINED",
-          "identifier_pattern_missing_or_empty_behavior": "UNRESOLVED"
+          "identifier_pattern_validation": "PTSIP_GENERIC_VALIDATOR_APPLIES_USER_DEFINED_PATTERN_IF_PRESENT_ELSE_NO_PATTERN_CONSTRAINT",
+          "identifier_pattern_missing_or_empty_behavior": "WHEN_NEEDED_AND_MISSING_AUTOCREATE_NEUTRAL_CONTRACT; EXISTING_EMPTY_DO_NOT_OVERWRITE",
+          "custom_fields_requiredness": null,
+          "requiredness_policy": "DO_NOT_INFER_OR_REQUIRE_USER_CUSTOM_FIELDS_ABSENT_USER_OWN_CONTRACT_DECLARATION",
+          "identifier_pattern_contract_file_recommendation": "policy_content_id.schema.json"
         },
         "evaluation": {
           "owner": "Policy_Rules",
@@ -3932,7 +3940,7 @@
             "state"
           ],
           "state_values": "USER_DEFINED_CONTRACT_CONSTANTS_NO_GLOBAL_ENUM",
-          "requiredness": "NOT_YET_DECIDED",
+          "requiredness": null,
           "separate_directory": false,
           "field_candidates": [
             "state",
@@ -3947,7 +3955,7 @@
             "mandatory_filter_fields"
           ],
           "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY",
-          "state_validation_direction": "LOOKUP_USER_CONTRACT_CONSTANT_AND_VALIDATE_DECLARED_BINDING",
+          "state_validation_direction": "PTSIP_GENERIC_VALIDATOR_CHECKS_USER_CONSTANTS_WHEN_DECLARED; OTHERWISE_STRUCTURAL_ONLY_WITHOUT_SEMANTIC_PASS",
           "semantic_validation_boundary": "UNKNOWN_CUSTOM_STATES_CAN_BE_STRUCTURALLY_VALID_WITHOUT_CLAIMING_SEMANTIC_CORRECTNESS",
           "filter_usage": "OPTIONAL_ZERO_OR_MORE_NO_MANDATORY_PREDEFINED_FILTER",
           "user_custom_evaluation_fields": "PERMITTED_FINAL_VALIDATION_EXTENSION_SHAPE_UNRESOLVED",
@@ -3963,9 +3971,11 @@
           "custom_filter_dependencies": "OPTIONAL_NOT_REQUIRED_FOR_BUILTIN_VALIDATOR",
           "state_contract_logical_name": "evaluation_state",
           "state_constant_owner": "USER_CONTRACT",
-          "state_contract_file_name_and_extension": "UNRESOLVED",
-          "state_definition_format": "UNRESOLVED",
-          "state_contract_missing_or_empty_behavior": "UNRESOLVED"
+          "state_contract_file_name_and_extension": "CANDIDATE_evaluation_state.schema.json_AWAITING_APPROVAL",
+          "state_definition_format": "RECOMMENDED_JSON_SCHEMA_2020_12_NOT_FINAL",
+          "state_contract_missing_or_empty_behavior": "WHEN_NEEDED_AND_MISSING_AUTOCREATE_NEUTRAL_CONTRACT; EXISTING_EMPTY_DO_NOT_OVERWRITE",
+          "custom_fields_requiredness": null,
+          "requiredness_policy": "UNSPECIFIED_USER_CUSTOM_FIELDS_NOT_REQUIRED_BY_PTSIP_DEFAULT"
         },
         "forbidden_top_level_fields": [
           "Policy_Authority",
@@ -4454,13 +4464,36 @@
           "filenames_and_formats": "UNRESOLVED",
           "user_repo_mutation_not_now": true
         }
+      },
+      {
+        "id": "PVR01-USER-CONTRACT-ON-DEMAND-COMPAT-20261116",
+        "state": "APPROVED_DIRECTION_WITH_FORMAT_CANDIDATE_ONLY",
+        "value": {
+          "root": ".ptsip/contract/user/",
+          "bootstrap": "WHEN_NEEDED_AND_MISSING_ONLY",
+          "existing_files": "PRESERVE",
+          "default_constraints": {
+            "required": null,
+            "enum": null,
+            "pattern": null
+          },
+          "generic_validator": "PTSIP_OWNS_COMMON_VALIDATOR",
+          "user_validator_code": "NOT_REQUIRED",
+          "supported_any_contract_intent": "AUTO_DISCOVERY_AND_STANDARD_SCHEMA_COMPATIBILITY",
+          "format_candidate": "JSON_SCHEMA_2020_12",
+          "candidate_filenames": [
+            "evaluation_state.schema.json",
+            "policy_content_id.schema.json"
+          ],
+          "candidate_format_approved": false
+        }
       }
     ],
     "concrete_work_plan": [
       {
         "id": "PVR-01",
         "dependency": [],
-        "action": "Four Policy v4 top-level fields and Content schema path approved. Each adopting user repository uses PTSIP-auto-created .ptsip/contract/user/ with two user-authored contracts: evaluation_state constants for Policy_Rules.evaluation.state and policy_content_id patterns for readable Policy_Content.items[].id. PTSIP owns default validators and contract binding; Policy_Rules.rules[].content.content_id[] references locally declared IDs. Resolve contract file names/formats, initialization trigger, absent-contract behavior, binding grammar, field types/requiredness. No global fixed enum/ID regex, no source_refs, no V3 inheritance.",
+        "action": "For Policy v4, PTSIP auto-creates only missing user contracts under adopting repository .ptsip/contract/user/ at the moment evaluation_state or policy_content_id validation needs them. Preserve existing contracts; generate neutral editable declarations without fixed state enum, ID regex or required user custom fields. Recommend evaluation_state.schema.json and policy_content_id.schema.json (JSON Schema 2020-12) pending filename/format approval. PTSIP provides a common discoverable validator for user contracts, so users write contracts only, no per-contract validator. Keep same-policy Content reference linking; finish contract-binding/autodiscovery and validation-report details; no V3 schema inheritance.",
         "outputs": [
           "4-field v4 structure record",
           "Content independent schema path approval",
@@ -4470,11 +4503,12 @@
           "User evaluation-state and Policy Content ID-pattern contract binding matrix"
         ],
         "blocked_on": [
-          "USER_CONTRACT_FILENAME_FORMAT_BOOTSTRAP_TRIGGER_UNRESOLVED",
           "USER_CONTRACT_CONSTANT_PATTERN_BINDING_SYNTAX_UNRESOLVED",
-          "USER_CONTRACT_MISSING_OR_EMPTY_HANDLING_UNRESOLVED",
-          "V4_FIELD_TYPES_AND_REQUIREDNESS_UNRESOLVED",
-          "EVALUATION_STATE_BUILTIN_VALIDATOR_CONTRACT_DETAILS_UNRESOLVED"
+          "EVALUATION_STATE_BUILTIN_VALIDATOR_CONTRACT_DETAILS_UNRESOLVED",
+          "USER_CONTRACT_FILENAME_FORMAT_RECOMMENDATION_AWAITING_APPROVAL",
+          "GENERAL_CONTRACT_DISCOVERY_AND_BINDING_SCHEME_UNRESOLVED",
+          "EXISTING_EMPTY_OR_INVALID_CONTRACT_ERROR_REPORT_UNRESOLVED",
+          "V4_CORE_WIRE_TYPES_AND_REFERENCE_STRUCTURE_UNRESOLVED"
         ]
       },
       {
@@ -4760,25 +4794,30 @@
         "user_contract_logical_roles": [
           "evaluation_state",
           "policy_content_id"
-        ]
+        ],
+        "creation_trigger": "WHEN_NEEDED_AND_CONTRACT_MISSING_AUTOCREATE",
+        "existing_contracts": "NEVER_OVERWRITE",
+        "generic_user_contract_validator": "PTSIP_SUPPLIED_SHARED_ENGINE_NO_USER_VALIDATOR_CODE",
+        "user_custom_field_requiredness": "INTENTIONALLY_UNSPECIFIED"
       },
       "proposals_not_approved": {
-        "content_requiredness": "PER_FIELD_REVIEW_PENDING",
+        "content_requiredness": null,
         "evaluation_structural_contract": "PENDING",
         "machine_pattern_abstraction": "BUILTIN_VALIDATION_AND_OPTIONAL_REUSABLE_FILTERS_PROPOSED",
         "description": "CANDIDATE",
         "evaluation_scope": "CANDIDATE",
         "evaluated_at": "CANDIDATE",
         "extension_fields": "SCHEMA_SHAPE_UNDECIDED",
-        "source_provenance_fields_requiredness": "PENDING",
+        "source_provenance_fields_requiredness": null,
         "content_symbol_declaration_grammar": "UNRESOLVED",
         "state_contract_registration_format": "UNRESOLVED",
         "state_contract_location": "UNRESOLVED",
-        "user_contract_filenames_and_extensions": "UNRESOLVED",
-        "user_contract_file_formats": "UNRESOLVED",
-        "user_contract_creation_trigger": "UNRESOLVED",
+        "user_contract_filenames_and_extensions": "RECOMMEND_ONLY_evaluation_state.schema.json_AND_policy_content_id.schema.json",
+        "user_contract_file_formats": "RECOMMEND_ONLY_JSON_SCHEMA_DRAFT_2020_12",
+        "user_contract_creation_trigger": "RESOLVED_ON_DEMAND_MISSING_ONLY",
         "user_contract_binding_grammar": "UNRESOLVED",
-        "absent_or_empty_contract_semantics": "UNRESOLVED"
+        "absent_or_empty_contract_semantics": "ABSENT_AUTO_CREATE_APPROVED; EXISTING_EMPTY_VALIDATION_REPORT_DESIGN_OPEN",
+        "custom_contract_binding_discovery": "UNRESOLVED_TO_AVOID_MANUAL_VALIDATOR_REQUIREMENT"
       },
       "implementation_authorized": false
     },
@@ -4790,7 +4829,7 @@
       "deployment_target": "EACH_ADOPTING_USER_REPOSITORY",
       "directory_bootstrap_owner": "PTSIP",
       "directory_bootstrap_action": "AUTO_CREATE",
-      "filesystem_creation_trigger": "UNRESOLVED_TO_BE_SPECIFIED_IN_IMPLEMENTATION_PLAN",
+      "filesystem_creation_trigger": "ON_DEMAND_WHEN_EVALUATION_STATE_OR_POLICY_CONTENT_ID_VALIDATION_NEEDED_AND_CONTRACT_FILE_MISSING",
       "user_contract_content_owner": "USER",
       "provisioned_files": [
         {
@@ -4798,8 +4837,14 @@
           "purpose": "USER_DECLARED_EVALUATION_STATE_CONSTANTS",
           "contract_reference_consumer": "Policy_Rules.evaluation.state",
           "state_validation_owner": "PTSIP_BUILTIN",
-          "filename_and_extension": "UNRESOLVED_NOT_TO_INFER_FROM_LOGICAL_NAME",
-          "state": "LOGICAL_FILE_ROLE_APPROVED_NOT_FINAL_FILE_FORMAT"
+          "filename_and_extension": "CANDIDATE_evaluation_state.schema.json_AWAITING_USER_APPROVAL",
+          "state": "AUTO_CREATION_TRIGGER_APPROVED_FILENAME_FORMAT_CANDIDATE_ONLY",
+          "candidate_filename": "evaluation_state.schema.json",
+          "candidate_format": "JSON_SCHEMA_DRAFT_2020_12",
+          "creation_trigger": "ON_REFERENCE_NEED_WHEN_MISSING",
+          "if_present": "PRESERVE_UNCHANGED",
+          "empty_or_malformed_present_contract": "DO_NOT_OVERWRITE_VALIDATION_REPORT_REQUIRED",
+          "default_validation_semantics": "STRUCTURAL_ONLY_UNTIL_USER_DECLARATIONS_EXIST"
         },
         {
           "logical_name": "policy_content_id",
@@ -4807,8 +4852,14 @@
           "contract_reference_consumer": "Policy_Content.items[].id",
           "secondary_consumer": "Policy_Rules.rules[].content.content_id[]",
           "reference_matching": "EXACT_MATCH_WITHIN_SAME_POLICY_DOCUMENT",
-          "filename_and_extension": "UNRESOLVED_NOT_TO_INFER_FROM_LOGICAL_NAME",
-          "state": "LOGICAL_FILE_ROLE_APPROVED_NOT_FINAL_FILE_FORMAT"
+          "filename_and_extension": "CANDIDATE_policy_content_id.schema.json_AWAITING_USER_APPROVAL",
+          "state": "AUTO_CREATION_TRIGGER_APPROVED_FILENAME_FORMAT_CANDIDATE_ONLY",
+          "candidate_filename": "policy_content_id.schema.json",
+          "candidate_format": "JSON_SCHEMA_DRAFT_2020_12",
+          "creation_trigger": "ON_REFERENCE_NEED_WHEN_MISSING",
+          "if_present": "PRESERVE_UNCHANGED",
+          "empty_or_malformed_present_contract": "DO_NOT_OVERWRITE_VALIDATION_REPORT_REQUIRED",
+          "default_validation_semantics": "STRUCTURAL_ONLY_UNTIL_USER_DECLARATIONS_EXIST"
         }
       ],
       "pptsip_distribution_scope": "DEFINE_BOOTSTRAP_AND_VALIDATION_BEHAVIOR_IN_PTSIP_SOURCE_AND_PLAN",
@@ -4821,7 +4872,54 @@
       "evidence_storage": "WITHIN_OWN_POLICY_DOCUMENT_NOT_IN_ANOTHER_POLICY_DOCUMENT",
       "default_validator": "PTSIP_SUPPLIED",
       "no_user_authored_validator_required": true,
-      "execution_authorized": false
+      "execution_authorized": false,
+      "absent_contract_action": "CREATE_ONLY_MISSING_TARGET_CONTRACT_WITH_NEUTRAL_USER_EDITABLE_TEMPLATE",
+      "existing_user_contract_action": "READ_AND_VALIDATE_NO_OVERWRITE_OR_RESET",
+      "create_directory_if_missing": true,
+      "initial_contract_fields": {
+        "required": null,
+        "global_enum": null,
+        "global_pattern": null
+      },
+      "generated_template_must_not_impose_custom_requiredness": true,
+      "generated_template_must_not_impose_fixed_state_or_id_pattern": true,
+      "generic_validator": {
+        "owner": "PTSIP",
+        "goal": "AUTOMATIC_CONTRACT_COMPATIBILITY_VALIDATION_WITHOUT_PER_CONTRACT_VALIDATOR_CODE",
+        "contract_discovery": "DISCOVER_REGISTERED_USER_CONTRACTS_AND_SUPPORTED_STANDARD_SCHEMA_FILES",
+        "standard_format_recommendation": "JSON_SCHEMA_DRAFT_2020_12_NOT_YET_USER_APPROVED",
+        "candidate_discovery_glob": "*.schema.json",
+        "shared_engine": "SINGLE_REUSABLE_SCHEMA_AND_BINDING_VALIDATOR",
+        "user_writes": "CONTRACT_ONLY",
+        "user_specific_validator_scripts": "NOT_REQUIRED",
+        "extension_filters": "OPTIONAL_NOT_REQUIRED",
+        "field_requiredness_source": "USER_OWN_CONTRACT_IF_USER_SPECIFIES_IT",
+        "default_user_custom_field_requiredness": null,
+        "validation_level_separation": [
+          "CONTRACT_SYNTAX",
+          "SCHEMA_COMPATIBILITY",
+          "INSTANCE_STRUCTURE",
+          "DECLARED_CONSTANT_OR_PATTERN_MATCH",
+          "LOCAL_REFERENCE_RESOLUTION",
+          "SEMANTICS_ONLY_IF_EXPLICITLY_EXPRESSED_BY_CONTRACT"
+        ],
+        "unsupported_contract_format_behavior": "REPORT_UNSUPPORTED_OR_NEEDS_ADAPTER_NOT_SILENT_PASS",
+        "unknown_user_contract_binding": "REQUIRES_DISCOVERY_AND_TARGET_MAPPING_DESIGN",
+        "no_false_semantic_validation_claim": true,
+        "runtime_implementation_authorized": false
+      },
+      "file_format_recommendation": {
+        "status": "CANDIDATE_RECOMMENDATION_NOT_APPROVED",
+        "extension": ".schema.json",
+        "format": "JSON_SCHEMA_DRAFT_2020_12",
+        "examples": [
+          "evaluation_state.schema.json",
+          "policy_content_id.schema.json"
+        ],
+        "rationale": "STANDARD_MACHINE_READABLE_WITH_SHARED_VALIDATION_ENGINE",
+        "default_template": "NEUTRAL_NO_FIXED_ENUM_NO_FIXED_PATTERN_NO_REQUIRED_CUSTOM_FIELDS",
+        "final_name_extension_and_format_approval": false
+      }
     }
   },
   "policy_conflict_resolution": {
@@ -4888,7 +4986,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-16: PTSIP auto-creates .ptsip/contract/user/ in adopting user repositories, with two user-editable logical contracts: evaluation_state for user-defined evaluation.state constants and policy_content_id for user-defined Policy_Content ID patterns. PTSIP binds and validates them. No global fixed enum or ID regex; actual filenames, extension, schema, bootstrap trigger and missing-contract behavior unresolved. No source .ptsip/** mutation or implementation approval.",
+    "last_user_direction": "2026-11-16: For adopting user repositories, auto-create .ptsip/contract/user/ target contract only when evaluation_state or policy_content_id is needed and absent; never overwrite existing user contract. User custom fields' requiredness intentionally unspecified (null), not an open approval gate. PTSIP must provide generic automatic compatibility validation so user writes contracts only, not validators. Recommended only: evaluation_state.schema.json and policy_content_id.schema.json, JSON Schema 2020-12. Exact file/format not user approved and unknown binding/discovery details still to design. Source repo .ptsip/** and implementation authorization unchanged.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
