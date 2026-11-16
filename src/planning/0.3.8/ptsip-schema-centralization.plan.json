@@ -113,7 +113,8 @@
       "src/ptsip/schemas/policy/public-structure-policy.schema.json",
       "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
       "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
-      "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
+      "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json",
+      "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
     ],
     "policy_v4_composition": "ROOT_REFERENCES_INDEPENDENT_TOP_LEVEL_CONTRACTS",
     "policy_v4_root_inline_semantics": "FORBIDDEN",
@@ -231,7 +232,8 @@
       "pp300": "KEEP_LEGACY_SCHEMAS_UNMODIFIED",
       "runtime_implementation_authorized": false,
       "policy_record": ".ptsip/contracts/policy/unified/authoring-decision.json"
-    }
+    },
+    "policy_v4_content_schema_path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
   },
   "approval_gates": [
     {
@@ -452,7 +454,8 @@
     {
       "id": "V4-CONTENT-FILE-01",
       "scope": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
-      "state": "EXACT_FILENAME_PROPOSED_NOT_APPROVED"
+      "state": "APPROVED_BY_USER",
+      "note": "User explicitly approved exact Policy_Content schema path on 2026-11-16; this does not approve Content ID grammar, field requiredness or Rules evaluation status vocabulary."
     },
     {
       "id": "RA-FORWARD-ONLY-01",
@@ -3861,7 +3864,7 @@
         ],
         "content_contract": {
           "path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
-          "state": "PROPOSED_PATH_NOT_APPROVED",
+          "state": "APPROVED_EXACT_PATH_ONLY",
           "fields": {
             "items": [
               "id",
@@ -4197,7 +4200,7 @@
       },
       {
         "id": "CONTENT-FILE-LOCATION",
-        "state": "PROPOSED",
+        "state": "APPROVED_BY_USER",
         "value": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
       },
       {
@@ -4387,7 +4390,6 @@
           "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
         ],
         "blocked_on": [
-          "CONTENT-FILE-LOCATION",
           "V4-FIELD-DETAIL"
         ]
       },
@@ -4695,7 +4697,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-16: Policy v4 contract-structure planning prioritized; RAC/AEC outer five-field layouts approved PROVISIONAL only, details remain in plan/temporary records and not normative policy; SFP-ARCH-0004 SRC-0008 records concise direction and KEEP_LATEST; no final schema or execution authorization.",
+    "last_user_direction": "2026-11-16: Policy_Content schema path approved at src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json. PVR-01 other choices (Content item ID grammar, per-field requiredness, Policy_Rules.evaluation representation) await user review. Contract design only; final schema implementation not approved.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
