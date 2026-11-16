@@ -2,8 +2,8 @@
   "format": "ptsip-schema-centralization-migration-plan/v1",
   "plan_id": "PTSIP-038-SCHEMA-CENTRALIZATION",
   "title": "PTSIP 0.3.8 distributable source: Policy v4, RBAC and schema centralization migration plan",
-  "status": "DRAFT_NOT_APPROVED",
-  "execution_authorized": false,
+  "status": "Approval.Scheduled_implementation",
+  "execution_authorized": true,
   "baseline": {
     "repository": "Kinirin/PTSIP",
     "branch": "main",
@@ -257,7 +257,7 @@
       "id": "FIELDS-01",
       "scope": "Policy v4 independent sub-contract field types/requiredness and complete RA List GUI semantics",
       "state": "PARTIAL_POLICY_FIXED_SUBFIELDS_PENDING",
-      "note": "User-custom Policy_Content and Policy_Rules.evaluation subfield requiredness is intentionally unspecified (null), NOT a blocking design decision. Retain independent pending core structure, field types and RA GUI semantic concerns without forcing user custom fields."
+      "note": "User-custom field requiredness stays null and is NOT an implementation blocker; independently verify approved core structural and explicit user-authored constraints only. RA historical mapping semantics cannot be inferred without evidence."
     },
     {
       "id": "SOURCE-01",
@@ -554,13 +554,32 @@
     {
       "id": "PVR01-USER-CONTRACT-DIRECTORY-20261116",
       "scope": ".ptsip/contract/user/",
-      "state": "APPROVED_USER_PROJECT_DIRECTORY_AND_ON_DEMAND_MISSING_ONLY_BOOTSTRAP_DESIGN",
+      "state": "APPROVED_FOR_SCOPED_PVR_RUNTIME_BOOTSTRAP_ONLY",
       "provisioned_logical_contracts": [
         "evaluation_state",
         "policy_content_id"
       ],
       "required_owner": "PTSIP_AUTO_CREATE",
-      "note": "PTSIP automatically creates a missing logical user contract under .ptsip/contract/user/ only when its validation is needed; existing files must never be overwritten. evaluation_state.schema.json and policy_content_id.schema.json are filename+JSON Schema format recommendations only. User custom field requiredness intentionally unspecified. Shared validator supports contract-only authoring without user-authored validator code. PTSIP source repo .ptsip/** remains unchanged."
+      "note": "On-demand create requested user contract only in adopting project runtime .ptsip/contract/user/, NEVER in Kinirin/PTSIP development checkout. JSON Schema 2020-12 content approved; agent-selected .ucontract.json suffix is a technical plan convention (not explicitly user-named). PTSIP dedicated user-contract validator under src/ptsip/user_contracts/, never share other PTSIP validator. No forced custom requiredness or state enum/ID pattern."
+    },
+    {
+      "id": "PVR-CONTINUOUS-IMPLEMENTATION-20261116",
+      "scope": [
+        "PVR-01",
+        "PVR-02",
+        "PVR-03",
+        "PVR-04",
+        "PVR-05",
+        "PVR-06",
+        "PVR-07",
+        "PVR-08",
+        "PVR-09"
+      ],
+      "state": "USER_APPROVED_SCOPED_IMPLEMENTATION",
+      "branch": "main",
+      "access": "LATEST_HEAD",
+      "full_release_and_legacy_deletion": "NOT_AUTHORIZED",
+      "note": "Continuous autonomy for PVR-01..09; no external policy doc needed. Reuse no other validators; repo .ptsip is developer-only. Unknown RBAC condition identities and field semantics cannot be inferred by blanket approval."
     }
   ],
   "target_registry": {
@@ -2289,7 +2308,11 @@
       "evaluation.state binds user-authored contract constants, never a global enum. PTSIP supplies generic validator for declared constant matching; optional custom filters are not required; user-defined state meaning cannot be inferred.",
       "When referenced user evaluation_state/policy_content_id contract is missing, the future PTSIP bootstrapping path creates only the missing neutral editable contract and never overwrites existing files; do not create user instances during source planning.",
       "User-custom Policy_Content and Policy_Rules.evaluation subfield requiredness remains null by design; a generic PTSIP validator must not force a predefined required list on these user fields.",
-      "PTSIP compatibility validation can reuse supported declarative user contracts without per-contract custom code; unsupported schema dialects and unknown custom semantics are reported, never silently treated as semantically validated."
+      "PTSIP compatibility validation can reuse supported declarative user contracts without per-contract custom code; unsupported schema dialects and unknown custom semantics are reported, never silently treated as semantically validated.",
+      "No src/** distributed code/contract or package import, URI or generated schema reference can depend on the PTSIP development repository's .ptsip/**; only the adopting user project runtime may receive .ptsip/contract/user/ under its independently resolved root.",
+      "User contracts use one isolated .ucontract.json suffix, JSON Schema Draft 2020-12 content, and a dedicated PTSIP user-contract validator without reuse of validators for other PTSIP features; source implementation and neutral templates are under src/ptsip/user_contracts/.",
+      "Only absent user contract files are generated on demand in an adopting project; never generate .ptsip/contract/user/ inside the PTSIP source checkout, never copy or package repository .ptsip/** and never overwrite existing custom contracts.",
+      "The plan grants continuous PVR-01..09 implementation authority, but missing legacy role evidence and unresolved field semantics remain incomplete rather than silently approved; independently runnable scoped PVR tasks continue."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3741,7 +3764,7 @@
     }
   },
   "policy_v4_rbac_focus": {
-    "status": "APPROVED_SCOPED_POLICY_V4_CONTRACT_DESIGN",
+    "status": "APPROVED_PVR_01_TO_09_CONTINUOUS_IMPLEMENTATION",
     "baseline_head": "a4a941dc7384be6b08e7133e0211df55bb661c5e",
     "basis": "ONLY_SRC_PTSIP_SCHEMA_CONTRACTS_FOR_FIELD_DESIGN",
     "excluded_field_basis": [
@@ -3927,11 +3950,11 @@
           "identifier_pattern_contract_location": ".ptsip/contract/user/",
           "identifier_pattern_contract_logical_name": "policy_content_id",
           "identifier_pattern_origin": "USER_CONTRACT_DEFINED_NOT_BUILTIN_GLOBAL_REGEX",
-          "identifier_pattern_validation": "PTSIP_GENERIC_VALIDATOR_APPLIES_USER_DEFINED_PATTERN_IF_PRESENT_ELSE_NO_PATTERN_CONSTRAINT",
+          "identifier_pattern_validation": "DEDICATED_PTSIP_USER_CONTRACT_VALIDATOR_USES_USER_PATTERN_IF_DEFINED;EXACT_DOCUMENT_LOCAL_REFERENCE_MATCH",
           "identifier_pattern_missing_or_empty_behavior": "WHEN_NEEDED_AND_MISSING_AUTOCREATE_NEUTRAL_CONTRACT; EXISTING_EMPTY_DO_NOT_OVERWRITE",
           "custom_fields_requiredness": null,
           "requiredness_policy": "DO_NOT_INFER_OR_REQUIRE_USER_CUSTOM_FIELDS_ABSENT_USER_OWN_CONTRACT_DECLARATION",
-          "identifier_pattern_contract_file_recommendation": "policy_content_id.schema.json"
+          "identifier_pattern_contract_file_recommendation": "policy_content_id.ucontract.json"
         },
         "evaluation": {
           "owner": "Policy_Rules",
@@ -3955,7 +3978,7 @@
             "mandatory_filter_fields"
           ],
           "evaluation_scope_default": "EXPLICIT_CONCRETE_ONLY",
-          "state_validation_direction": "PTSIP_GENERIC_VALIDATOR_CHECKS_USER_CONSTANTS_WHEN_DECLARED; OTHERWISE_STRUCTURAL_ONLY_WITHOUT_SEMANTIC_PASS",
+          "state_validation_direction": "DEDICATED_PTSIP_USER_CONTRACT_VALIDATOR_READS_USER_DEFINED_CONSTANTS_ONLY",
           "semantic_validation_boundary": "UNKNOWN_CUSTOM_STATES_CAN_BE_STRUCTURALLY_VALID_WITHOUT_CLAIMING_SEMANTIC_CORRECTNESS",
           "filter_usage": "OPTIONAL_ZERO_OR_MORE_NO_MANDATORY_PREDEFINED_FILTER",
           "user_custom_evaluation_fields": "PERMITTED_FINAL_VALIDATION_EXTENSION_SHAPE_UNRESOLVED",
@@ -3971,8 +3994,8 @@
           "custom_filter_dependencies": "OPTIONAL_NOT_REQUIRED_FOR_BUILTIN_VALIDATOR",
           "state_contract_logical_name": "evaluation_state",
           "state_constant_owner": "USER_CONTRACT",
-          "state_contract_file_name_and_extension": "CANDIDATE_evaluation_state.schema.json_AWAITING_APPROVAL",
-          "state_definition_format": "RECOMMENDED_JSON_SCHEMA_2020_12_NOT_FINAL",
+          "state_contract_file_name_and_extension": "evaluation_state.ucontract.json",
+          "state_definition_format": "JSON_SCHEMA_DRAFT_2020_12_WITH_USER_DEFINED_CONSTANTS",
           "state_contract_missing_or_empty_behavior": "WHEN_NEEDED_AND_MISSING_AUTOCREATE_NEUTRAL_CONTRACT; EXISTING_EMPTY_DO_NOT_OVERWRITE",
           "custom_fields_requiredness": null,
           "requiredness_policy": "UNSPECIFIED_USER_CUSTOM_FIELDS_NOT_REQUIRED_BY_PTSIP_DEFAULT"
@@ -4240,8 +4263,8 @@
       },
       {
         "id": "V4-FIELD-DETAIL",
-        "state": "PARTIALLY_RESOLVED",
-        "value": "Content path approved; IDs are user-declared readable constants linked by exact match in current policy document; previous fixed regex revoked. Evaluation.state uses constants defined by user state contracts, not global enum; PTSIP builtin validator; binding shape and requiredness unresolved."
+        "state": "TECHNICAL_IMPLEMENTATION_ALLOWED_UNRESOLVED_FINAL_SEMANTICS_RETAINED",
+        "value": "Content path approved; IDs are user-declared readable constants linked by exact match in current policy document; previous fixed regex revoked. Evaluation.state uses constants defined by user state contracts, not global enum; PTSIP builtin validator; binding shape and requiredness unresolved.; scoped implementation may author structural shells only and must not assert final unapproved semantics."
       },
       {
         "id": "RA-RELATION-FIELDS",
@@ -4467,7 +4490,7 @@
       },
       {
         "id": "PVR01-USER-CONTRACT-ON-DEMAND-COMPAT-20261116",
-        "state": "APPROVED_DIRECTION_WITH_FORMAT_CANDIDATE_ONLY",
+        "state": "SCOPED_IMPLEMENTATION_AUTHORIZED_TECHNICAL_EXTENSION_SELECTED",
         "value": {
           "root": ".ptsip/contract/user/",
           "bootstrap": "WHEN_NEEDED_AND_MISSING_ONLY",
@@ -4480,12 +4503,15 @@
           "generic_validator": "PTSIP_OWNS_COMMON_VALIDATOR",
           "user_validator_code": "NOT_REQUIRED",
           "supported_any_contract_intent": "AUTO_DISCOVERY_AND_STANDARD_SCHEMA_COMPATIBILITY",
-          "format_candidate": "JSON_SCHEMA_2020_12",
+          "format_candidate": "JSON_SCHEMA_2020_12_USER_APPROVED",
           "candidate_filenames": [
-            "evaluation_state.schema.json",
-            "policy_content_id.schema.json"
+            "evaluation_state.ucontract.json",
+            "policy_content_id.ucontract.json"
           ],
-          "candidate_format_approved": false
+          "candidate_format_approved": true,
+          "no_development_repo_dotptsip_refs": true,
+          "validation_engine": "DEDICATED_PTSIP_USER_CONTRACTS",
+          "agent_selected_extension": ".ucontract.json"
         }
       }
     ],
@@ -4493,7 +4519,7 @@
       {
         "id": "PVR-01",
         "dependency": [],
-        "action": "For Policy v4, PTSIP auto-creates only missing user contracts under adopting repository .ptsip/contract/user/ at the moment evaluation_state or policy_content_id validation needs them. Preserve existing contracts; generate neutral editable declarations without fixed state enum, ID regex or required user custom fields. Recommend evaluation_state.schema.json and policy_content_id.schema.json (JSON Schema 2020-12) pending filename/format approval. PTSIP provides a common discoverable validator for user contracts, so users write contracts only, no per-contract validator. Keep same-policy Content reference linking; finish contract-binding/autodiscovery and validation-report details; no V3 schema inheritance.",
+        "action": "Implement PTSIP-distributed dedicated user-contract engine under src/ptsip/user_contracts/ from this plan only. JSON Schema 2020-12 content approved; agent-selected extension .ucontract.json exclusively for user contracts (not other PTSIP .schema.json features). Build templates in src/ptsip/user_contracts/templates/; when a logical user contract is needed, create ONLY missing file under adopting user project .ptsip/contract/user/ at runtime; never modify this PTSIP development repository .ptsip/. Common validator restricted to user-contract feature and no reuse of other PTSIP validators; no user-authored validator needed. Support x-ptsip-target for additional user contracts, structural-vs-semantic results, optional custom rules and zero default requiredness. Maintain within-document Content ID reference resolution.",
         "outputs": [
           "4-field v4 structure record",
           "Content independent schema path approval",
@@ -4502,13 +4528,17 @@
           "User project contract bootstrap responsibility and lookup design",
           "User evaluation-state and Policy Content ID-pattern contract binding matrix"
         ],
-        "blocked_on": [
+        "blocked_on": [],
+        "autonomous_design_tasks": [
           "USER_CONTRACT_CONSTANT_PATTERN_BINDING_SYNTAX_UNRESOLVED",
           "EVALUATION_STATE_BUILTIN_VALIDATOR_CONTRACT_DETAILS_UNRESOLVED",
           "USER_CONTRACT_FILENAME_FORMAT_RECOMMENDATION_AWAITING_APPROVAL",
           "GENERAL_CONTRACT_DISCOVERY_AND_BINDING_SCHEME_UNRESOLVED",
           "EXISTING_EMPTY_OR_INVALID_CONTRACT_ERROR_REPORT_UNRESOLVED",
-          "V4_CORE_WIRE_TYPES_AND_REFERENCE_STRUCTURE_UNRESOLVED"
+          "V4_CORE_WIRE_TYPES_AND_REFERENCE_STRUCTURE_UNRESOLVED",
+          "FINALIZE_USER_CONTRACT_EXTENSION_AS_PLAN_TECHNICAL_CONVENTION",
+          "BUILD_SEPARATE_VALIDATOR_SOURCE_AND_PACKAGED_NEUTRAL_TEMPLATES",
+          "DEFINE_INSPECTABLE_VALIDATION_RESULTS"
         ]
       },
       {
@@ -4519,7 +4549,8 @@
         "action": "Repair config.json and register only policy v4, RA-list, RAC-list, AEC-list exact schema locations; never register withdrawn relation or status schema.",
         "outputs": [
           "src/ptsip/schemas/config.json"
-        ]
+        ],
+        "note": "src/ptsip/schemas/config.json current file is not valid JSON; scoped remediation permitted; no .ptsip developer repo fallback."
       },
       {
         "id": "PVR-03",
@@ -4537,7 +4568,8 @@
         ],
         "blocked_on": [
           "V4-FIELD-DETAIL"
-        ]
+        ],
+        "note": "Build only fields whose roles are approved; no predefined user custom field requiredness and no final semantic claims for unresolved field responsibilities."
       },
       {
         "id": "PVR-04",
@@ -4556,7 +4588,8 @@
           "RAC_AEC_FINAL_SCHEMA_REQUIREDNESS_UNRESOLVED",
           "RBAC_REGISTRATION_LINKAGE_UNRESOLVED",
           "RAC_AEC_EVALUATION_SEMANTICS_UNRESOLVED"
-        ]
+        ],
+        "note": "Permitted: provisional RAC/AEC structure and tests; not permitted: finalize unresolved value semantics or evaluation authority by assumption."
       },
       {
         "id": "PVR-05",
@@ -4612,7 +4645,8 @@
         "outputs": [
           "consumer routing inventory",
           "new v4 refs zero legacy dependencies"
-        ]
+        ],
+        "note": "Never import schema/contracts from PTSIP development checkout .ptsip/**. Inventory/remediation may address src/** references by replacing with independent src/ptsip sources, without reading .ptsip contents as schema authority."
       },
       {
         "id": "PVR-09",
@@ -4625,7 +4659,8 @@
         ],
         "blocked_on": [
           "GO-CLI-OPERATION"
-        ]
+        ],
+        "note": "Dedicated user contract engine must remain distinct from all other validators; Go integration through existing src/ptsip/CLI.go only if operation proven and no unapproved cross-feature coupling."
       }
     ],
     "diagnostics": {
@@ -4681,8 +4716,8 @@
     "scoped_design_approval": {
       "source": "PROJECT_OWNER_EXPLICIT",
       "date": "2026-11-16",
-      "state": "APPROVED_FOR_SCOPED_CONTRACT_DESIGN",
-      "plan_scope": "POLICY_V4_CONTRACT_STRUCTURE_DESIGN_AND_PLAN_REFINEMENT",
+      "state": "APPROVED_PVR_IMPLEMENTATION_CONTINUOUS",
+      "plan_scope": "POLICY_V4_PVR_01_TO_09_ONLY",
       "included_contracts": [
         "Policy_Identity",
         "Policy_Lifecycle",
@@ -4698,25 +4733,33 @@
       "full_distribution_plan_status": "DRAFT_NOT_APPROVED",
       "full_distribution_implementation_approval": false,
       "allowed_actions": [
-        "READ_LATEST_HEAD_AND_GOVERNING_POLICY",
-        "RECONCILE_APPROVED_FIELD_ROLES_WITH_PLAN",
         "REFINE_MACHINE_READABLE_CONTRACT_STRUCTURE_IN_PLAN",
         "PRODUCE_FIELD_BY_FIELD_UNRESOLVED_DECISION_MATRIX",
         "GENERATE_DETERMINISTIC_STRUCTURE_AND_VALIDATION_PROPOSALS",
-        "PREPARE_APPROVAL_READY_IMPLEMENTATION_WORK_UNITS"
+        "PREPARE_APPROVAL_READY_IMPLEMENTATION_WORK_UNITS",
+        "READ_ACTIVE_PLAN_AND_SRC_ONLY",
+        "IMPLEMENT_PVR_01_TO_09_WITHIN_APPROVED_BOUNDARIES",
+        "GENERATE_V4_AND_RBAC_SCHEMAS_AND_TESTS_WHERE_ROLE_CONTRACT_IS_DETERMINATE",
+        "BUILD_SEPARATE_USER_CONTRACT_VALIDATOR",
+        "MAINTAIN_DETERMINISTIC_AUDIT_LOG_AND_CONFORMANCE_TESTS"
       ],
       "forbidden_actions": [
         "FINALIZE_PROVISIONAL_FIELDS_BY_INFERENCE",
-        "CREATE_OR_ACTIVATE_FINAL_V4_SCHEMAS_WITH_UNRESOLVED_FIELDS",
         "MUTATE_POLICY_DOC_FOR_FIELD_LEVEL_DETAILS",
         "MODIFY_LEGACY_PP300_SOURCE",
         "CREATE_NEW_GIT_BRANCH",
         "RUN_FULL_RELEASE_MIGRATION",
-        "ENABLE_POLICY_EVALUATION_OR_RUNTIME_EXECUTION"
+        "ENABLE_POLICY_EVALUATION_OR_RUNTIME_EXECUTION",
+        "CLAIM_FINAL_SEMANTICS_FOR_UNRESOLVED_CUSTOM_OR_RBAC_FIELDS",
+        "USE_DEVELOPER_REPO_DOTPTSIP_AS_DISTRIBUTED_SRC_CONTRACT_BASIS",
+        "CREATE_CONTRACT_INSTANCES_IN_PTSIP_DEV_CHECKOUT",
+        "REUSE_OTHER_PTSIP_FEATURE_VALIDATORS_FOR_USER_CONTRACTS",
+        "IMPLEMENT_ANY_WORK_UNIT_OUTSIDE_APPROVED_PVR_SCOPE",
+        "RELEASE_PUBLICATION_WITHOUT_SEPARATE_APPROVAL"
       ],
       "no_policy_authority_transfer": true,
       "no_final_field_approval": true,
-      "implementation_authorized": false,
+      "implementation_authorized": true,
       "publication_authorized": false,
       "open_gates": "REMAIN_BLOCKING_FOR_RELATED_IMPLEMENTATION"
     },
@@ -4798,7 +4841,11 @@
         "creation_trigger": "WHEN_NEEDED_AND_CONTRACT_MISSING_AUTOCREATE",
         "existing_contracts": "NEVER_OVERWRITE",
         "generic_user_contract_validator": "PTSIP_SUPPLIED_SHARED_ENGINE_NO_USER_VALIDATOR_CODE",
-        "user_custom_field_requiredness": "INTENTIONALLY_UNSPECIFIED"
+        "user_custom_field_requiredness": "INTENTIONALLY_UNSPECIFIED",
+        "user_contract_file_format": "JSON_SCHEMA_DRAFT_2020_12",
+        "validation_engine": "DEDICATED_PTSIP_USER_CONTRACT_MODULE_NOT_OTHER_FEATURE_VALIDATORS",
+        "scoped_implementation": "PVR_01_TO_09_USER_AUTHORIZED",
+        "no_dev_dotptsip_source_refs": true
       },
       "proposals_not_approved": {
         "content_requiredness": null,
@@ -4812,24 +4859,24 @@
         "content_symbol_declaration_grammar": "UNRESOLVED",
         "state_contract_registration_format": "UNRESOLVED",
         "state_contract_location": "UNRESOLVED",
-        "user_contract_filenames_and_extensions": "RECOMMEND_ONLY_evaluation_state.schema.json_AND_policy_content_id.schema.json",
-        "user_contract_file_formats": "RECOMMEND_ONLY_JSON_SCHEMA_DRAFT_2020_12",
+        "user_contract_filenames_and_extensions": "AGENT_SELECTED_TECHNICAL_CONVENTION_.ucontract.json",
+        "user_contract_file_formats": "USER_APPROVED_JSON_SCHEMA_DRAFT_2020_12",
         "user_contract_creation_trigger": "RESOLVED_ON_DEMAND_MISSING_ONLY",
-        "user_contract_binding_grammar": "UNRESOLVED",
+        "user_contract_binding_grammar": "x-ptsip-target_PLAN_LEVEL_TECHNICAL_DEFAULT",
         "absent_or_empty_contract_semantics": "ABSENT_AUTO_CREATE_APPROVED; EXISTING_EMPTY_VALIDATION_REPORT_DESIGN_OPEN",
         "custom_contract_binding_discovery": "UNRESOLVED_TO_AVOID_MANUAL_VALIDATOR_REQUIREMENT"
       },
-      "implementation_authorized": false
+      "implementation_authorized": true
     },
     "user_custom_contracts": {
-      "status": "USER_APPROVED_DIRECTORY_AND_LOGICAL_CONTRACT_ROLES_ONLY",
+      "status": "USER_CONTRACT_FORMAT_APPROVED_SEPARATE_VALIDATOR_TECHNICAL_EXTENSION_SELECTED",
       "decision_date": "2026-11-16",
       "source": "PROJECT_OWNER_EXPLICIT",
       "project_root_relative_path": ".ptsip/contract/user/",
       "deployment_target": "EACH_ADOPTING_USER_REPOSITORY",
       "directory_bootstrap_owner": "PTSIP",
       "directory_bootstrap_action": "AUTO_CREATE",
-      "filesystem_creation_trigger": "ON_DEMAND_WHEN_EVALUATION_STATE_OR_POLICY_CONTENT_ID_VALIDATION_NEEDED_AND_CONTRACT_FILE_MISSING",
+      "filesystem_creation_trigger": "ON_DEMAND_IN_ADOPTING_USER_PROJECT_ONLY_WHEN_REQUIRED_LOGICAL_CONTRACT_ABSENT",
       "user_contract_content_owner": "USER",
       "provisioned_files": [
         {
@@ -4837,11 +4884,11 @@
           "purpose": "USER_DECLARED_EVALUATION_STATE_CONSTANTS",
           "contract_reference_consumer": "Policy_Rules.evaluation.state",
           "state_validation_owner": "PTSIP_BUILTIN",
-          "filename_and_extension": "CANDIDATE_evaluation_state.schema.json_AWAITING_USER_APPROVAL",
-          "state": "AUTO_CREATION_TRIGGER_APPROVED_FILENAME_FORMAT_CANDIDATE_ONLY",
-          "candidate_filename": "evaluation_state.schema.json",
+          "filename_and_extension": "evaluation_state.ucontract.json",
+          "state": "IMPLEMENTATION_FILE_NAME_TECHNICAL_CONVENTION_SINGLE_SUFFIX",
+          "candidate_filename": "evaluation_state.ucontract.json",
           "candidate_format": "JSON_SCHEMA_DRAFT_2020_12",
-          "creation_trigger": "ON_REFERENCE_NEED_WHEN_MISSING",
+          "creation_trigger": "ON_DEMAND_MISSING_ONLY_IN_ADOPTING_USER_REPOSITORY",
           "if_present": "PRESERVE_UNCHANGED",
           "empty_or_malformed_present_contract": "DO_NOT_OVERWRITE_VALIDATION_REPORT_REQUIRED",
           "default_validation_semantics": "STRUCTURAL_ONLY_UNTIL_USER_DECLARATIONS_EXIST"
@@ -4852,18 +4899,18 @@
           "contract_reference_consumer": "Policy_Content.items[].id",
           "secondary_consumer": "Policy_Rules.rules[].content.content_id[]",
           "reference_matching": "EXACT_MATCH_WITHIN_SAME_POLICY_DOCUMENT",
-          "filename_and_extension": "CANDIDATE_policy_content_id.schema.json_AWAITING_USER_APPROVAL",
-          "state": "AUTO_CREATION_TRIGGER_APPROVED_FILENAME_FORMAT_CANDIDATE_ONLY",
-          "candidate_filename": "policy_content_id.schema.json",
+          "filename_and_extension": "policy_content_id.ucontract.json",
+          "state": "IMPLEMENTATION_FILE_NAME_TECHNICAL_CONVENTION_SINGLE_SUFFIX",
+          "candidate_filename": "policy_content_id.ucontract.json",
           "candidate_format": "JSON_SCHEMA_DRAFT_2020_12",
-          "creation_trigger": "ON_REFERENCE_NEED_WHEN_MISSING",
+          "creation_trigger": "ON_DEMAND_MISSING_ONLY_IN_ADOPTING_USER_REPOSITORY",
           "if_present": "PRESERVE_UNCHANGED",
           "empty_or_malformed_present_contract": "DO_NOT_OVERWRITE_VALIDATION_REPORT_REQUIRED",
           "default_validation_semantics": "STRUCTURAL_ONLY_UNTIL_USER_DECLARATIONS_EXIST"
         }
       ],
       "pptsip_distribution_scope": "DEFINE_BOOTSTRAP_AND_VALIDATION_BEHAVIOR_IN_PTSIP_SOURCE_AND_PLAN",
-      "in_this_ptsip_repository_dot_ptsip_mutation": "FORBIDDEN",
+      "in_this_ptsip_repository_dot_ptsip_mutation": "FORBIDDEN_ALWAYS",
       "relation_to_existing_release_scope": "USER_PROJECT_RUNTIME_BOOTSTRAP_INTENT_NOT_CURRENT_SOURCE_REPO_FILE_WRITE",
       "predefined_global_state_enum": "FORBIDDEN",
       "predefined_global_content_id_regex": "FORBIDDEN",
@@ -4872,9 +4919,9 @@
       "evidence_storage": "WITHIN_OWN_POLICY_DOCUMENT_NOT_IN_ANOTHER_POLICY_DOCUMENT",
       "default_validator": "PTSIP_SUPPLIED",
       "no_user_authored_validator_required": true,
-      "execution_authorized": false,
-      "absent_contract_action": "CREATE_ONLY_MISSING_TARGET_CONTRACT_WITH_NEUTRAL_USER_EDITABLE_TEMPLATE",
-      "existing_user_contract_action": "READ_AND_VALIDATE_NO_OVERWRITE_OR_RESET",
+      "execution_authorized": true,
+      "absent_contract_action": "BOOTSTRAP_ONLY_REQUESTED_CONTRACT_AS_NEUTRAL_JSON_SCHEMA_TEMPLATE",
+      "existing_user_contract_action": "PRESERVE_EXISTING_VALIDATE_OR_REPORT_INVALID_NEVER_OVERWRITE",
       "create_directory_if_missing": true,
       "initial_contract_fields": {
         "required": null,
@@ -4886,10 +4933,10 @@
       "generic_validator": {
         "owner": "PTSIP",
         "goal": "AUTOMATIC_CONTRACT_COMPATIBILITY_VALIDATION_WITHOUT_PER_CONTRACT_VALIDATOR_CODE",
-        "contract_discovery": "DISCOVER_REGISTERED_USER_CONTRACTS_AND_SUPPORTED_STANDARD_SCHEMA_FILES",
-        "standard_format_recommendation": "JSON_SCHEMA_DRAFT_2020_12_NOT_YET_USER_APPROVED",
-        "candidate_discovery_glob": "*.schema.json",
-        "shared_engine": "SINGLE_REUSABLE_SCHEMA_AND_BINDING_VALIDATOR",
+        "contract_discovery": "USER_CONTRACT_SUFFIX_DISCOVERY_WITH_EXPLICIT_TARGET_ANNOTATION_FOR_ADDITIONAL_CONTRACTS",
+        "standard_format_recommendation": "JSON_SCHEMA_DRAFT_2020_12_USER_APPROVED",
+        "candidate_discovery_glob": "*.ucontract.json",
+        "shared_engine": "SEPARATE_USER_CONTRACT_VALIDATOR_ONLY",
         "user_writes": "CONTRACT_ONLY",
         "user_specific_validator_scripts": "NOT_REQUIRED",
         "extension_filters": "OPTIONAL_NOT_REQUIRED",
@@ -4904,22 +4951,272 @@
           "SEMANTICS_ONLY_IF_EXPLICITLY_EXPRESSED_BY_CONTRACT"
         ],
         "unsupported_contract_format_behavior": "REPORT_UNSUPPORTED_OR_NEEDS_ADAPTER_NOT_SILENT_PASS",
-        "unknown_user_contract_binding": "REQUIRES_DISCOVERY_AND_TARGET_MAPPING_DESIGN",
+        "unknown_user_contract_binding": "REPORT_UNBOUND_IF_CUSTOM_CONTRACT_HAS_NO_TARGET_DECLARATION",
         "no_false_semantic_validation_claim": true,
-        "runtime_implementation_authorized": false
+        "runtime_implementation_authorized": true,
+        "no_cross_feature_validator_reuse": true,
+        "extension_independent_from_dialect": true,
+        "no_dev_repo_dotptsip_source_use": true
       },
       "file_format_recommendation": {
-        "status": "CANDIDATE_RECOMMENDATION_NOT_APPROVED",
-        "extension": ".schema.json",
+        "status": "JSON_SCHEMA_FORMAT_USER_APPROVED;_EXTENSION_AGENT_SELECTED_PLAN_IMPLEMENTATION_CONVENTION",
         "format": "JSON_SCHEMA_DRAFT_2020_12",
+        "extension": ".ucontract.json",
+        "suffix_rule": "EXACTLY_ONE_USER_CONTRACT_SUFFIX",
         "examples": [
-          "evaluation_state.schema.json",
-          "policy_content_id.schema.json"
+          "evaluation_state.ucontract.json",
+          "policy_content_id.ucontract.json"
         ],
-        "rationale": "STANDARD_MACHINE_READABLE_WITH_SHARED_VALIDATION_ENGINE",
-        "default_template": "NEUTRAL_NO_FIXED_ENUM_NO_FIXED_PATTERN_NO_REQUIRED_CUSTOM_FIELDS",
-        "final_name_extension_and_format_approval": false
+        "user_approved_format": true,
+        "user_explicitly_selected_extension": false,
+        "agent_selected_extension_for_unblocked_execution": true,
+        "final_name_extension_and_format_approval": "FORMAT_APPROVED_EXTENSION_PLAN_CONVENTION",
+        "clarify_extension_not_reused_validator": "EXTENSION_ALONE_NEVER_SELECTS_SHARED_VALIDATOR",
+        "deprecated_extension": ".schema.json",
+        "distribution_templates_are_source_owned": true
+      },
+      "validation_engine": {
+        "owner": "PTSIP_DISTRIBUTED_USER_CONTRACT_COMPONENT_ONLY",
+        "source_code_root": "src/ptsip/user_contracts/",
+        "packaged_template_root": "src/ptsip/user_contracts/templates/",
+        "source_contract_extensions": [
+          ".ucontract.json"
+        ],
+        "supported_schema_dialect": "JSON_SCHEMA_DRAFT_2020_12",
+        "independent_from_other_ptsip_validation_engines": true,
+        "no_import_or_routing_through_other_ptsip_validators": true,
+        "no_user_specific_validator_code_required": true,
+        "internal_common_validator_for_user_contracts_only": true,
+        "binding_mode": {
+          "known_bindings": {
+            "evaluation_state.ucontract.json": "Policy_Rules.evaluation.state",
+            "policy_content_id.ucontract.json": "Policy_Content.items[].id"
+          },
+          "custom_contract_binding_annotation": "x-ptsip-target",
+          "user_declares_target_inside_the_contract": true,
+          "no_filename_based_guessing_for_other_contracts": true,
+          "annotation_semantics": "PLAN_LEVEL_IMPLEMENTATION_PROPOSAL_NOT_A_USER_POLICY",
+          "annotation_must_identify_existing_target": true
+        },
+        "result_statuses_internal_only": [
+          "VALID",
+          "INVALID",
+          "UNCONFIGURED",
+          "UNSUPPORTED",
+          "UNBOUND"
+        ],
+        "validation_meaning": "SCHEMA_AND_DECLARED_CONSTRAINTS_ONLY_UNKNOWN_SEMANTICS_NOT_AUTO_VERIFIED",
+        "defaults": "NO_REQUIRED_USER_FIELDS_NO_GLOBAL_ID_PATTERN_NO_GLOBAL_STATE_ENUM",
+        "requiredness": null
+      },
+      "runtime_project_boundary": {
+        "developer_repo_local_dotptsip": "PRIVATE_DEVELOPER_INSTANCE_NON_DISTRIBUTABLE",
+        "runtime_user_contract_path": ".ptsip/contract/user/",
+        "runtime_root_lookup": "RESOLVE_FROM_EXPLICIT_ADOPTING_PROJECT_ROOT_NOT_PTSIP_SOURCE_REPOSITORY",
+        "no_source_dependency_on_developer_dotptsip": true,
+        "src_code_may_write_to_installed_user_project_dotptsip_only": "AT_RUNTIME_WHEN_TARGET_EXISTS_AND_REF_IS_NEEDED",
+        "never_import_src_contracts_from_repo_dotptsip": true,
+        "never_package_repo_dotptsip_contract_files": true,
+        "fail_closed_if_target_is_ptsip_development_checkout": true,
+        "no_user_repo_write_during_current_planning": true,
+        "test_isolation": "TEMPORARY_PROJECT_ROOT_ONLY_DO_NOT_TOUCH_REPO_DOTPTSIP",
+        "forbidden_dependency_examples": [
+          "src/** -> <PTSIP_DEVELOPMENT_REPO>/.ptsip/**",
+          ".ptsip/engine/developer/** -> src/ptsip/** as distributed contract source"
+        ],
+        "user_contract_instances_are_config_not_schema_source": true
       }
+    },
+    "continuous_implementation_authorization": {
+      "source": "PROJECT_OWNER_EXPLICIT",
+      "date": "2026-11-16",
+      "scope": "POLICY_V4_PVR_01_THROUGH_PVR_09_ONLY",
+      "authorized_pvr_ids": [
+        "PVR-01",
+        "PVR-02",
+        "PVR-03",
+        "PVR-04",
+        "PVR-05",
+        "PVR-06",
+        "PVR-07",
+        "PVR-08",
+        "PVR-09"
+      ],
+      "status": "Approval.Scheduled_implementation",
+      "execution_authorized": true,
+      "applies_to": "PVR_DESIGN_IMPLEMENTATION_TESTS_AND_RELATED_SUBSET_OF_WU_01_02_03_05_07",
+      "excludes": [
+        "WU_04_PLAN_SCHEMAS_OUTSIDE_PVR",
+        "WU_06_GENERAL_ENGINE_EVIDENCE",
+        "WU_08_FILE_DELETIONS",
+        "WU_09_POLICY_DOCUMENT_MIGRATION",
+        "WU_10_TO_WU_14_PROFILE_GO_MIGRATION",
+        "RELEASE_PUBLICATION",
+        "POLICY_DOCUMENT_REWRITES",
+        "USER_PROJECT_MUTATION_FROM_PTSIP_DEV_CHECKOUT"
+      ],
+      "agent_may_decide": [
+        "SCHEMA_FILE_SUFFIX_FOR_USER_CONTRACT",
+        "JSON_SCHEMA_BINDING_METADATA",
+        "VALIDATION_RESULT_SHAPE",
+        "SOURCE_PACKAGE_MODULE_PLACEMENT",
+        "DETERMINISTIC_SCHEMATIC_DETAILS_AND_TESTS_WITHIN_APPROVED_RESPONSIBILITY"
+      ],
+      "agent_must_not_infer": [
+        "UNKNOWN_LEGACY_CONDITION_OWNER",
+        "POLICY_AUTHORITY",
+        "UNAPPROVED_NEW_RAC_AEC_SEMANTIC_FIELDS",
+        "USER_DEFINED_STATE_MEANING",
+        "UNAPPROVED_SOURCE_FILE_REMOVAL"
+      ],
+      "no_external_policy_documents_required": true,
+      "plan_is_sole_authority": true,
+      "legacy_dev_dotptsip_dependency": "FORBIDDEN",
+      "package_release_authorized": false,
+      "branch_creation_authorized": false,
+      "missing_evidence_behavior": "REPORT_UNRESOLVED_AND_CONTINUE_INDEPENDENT_PVR_LANES",
+      "structural_fallback": "GENERATE_NON_NORMATIVE_INTERFACES_AND_TESTS_WITHOUT_FALSE_SEMANTIC_PASS",
+      "allow_dynamic_installed_user_project_bootstrap": true,
+      "forbid_dotptsip_creation_in_development_checkout": true,
+      "no_approval_request_for_technical_details_inside_scope": true
+    },
+    "implementation_simulation": {
+      "simulation_type": "STATIC_DEPENDENCY_AND_GATE_DRY_RUN_NO_FILES_WRITTEN_NO_CODE_EXECUTION",
+      "performed_on": "2026-11-16",
+      "plan_basis_sha": "175fed0a1d93bda7dc4a0f487d0b95e1f6168008",
+      "scope": "PVR-01_THROUGH_PVR-09",
+      "permission_check": "PASS_APPROVED",
+      "source_boundary_check": "PLAN_ENFORCED_NOT_YET_SOURCE_AUDITED",
+      "config_syntax_check": "FAIL_KNOWN_INVALID_JSON",
+      "actual_schema_presence": "PVR-03_ROOT_AND_PVR-04_RA_NOT_FOUND_ON_MAIN",
+      "schedule_policy": "CONTINUE_READY_OR_INDEPENDENT_SCOPED_PVR_TASKS;DO_NOT_FABRICATE_UNKNOWN_SEMANTICS",
+      "steps": [
+        {
+          "id": "PVR-01",
+          "depends_on": [],
+          "simulation_state": "READY_AFTER_PLAN_SYNC",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "Extension default and separate user validator now resolved within agent scope",
+          "remaining_non_permission_conditions": [
+            "Implement binding, neutral templates, result statuses and targeted tests"
+          ]
+        },
+        {
+          "id": "PVR-02",
+          "depends_on": [
+            "PVR-01"
+          ],
+          "simulation_state": "READY_AFTER_PVR-01",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "src/ptsip/schemas/config.json malformed JSON; repair is deterministic implementation",
+          "remaining_non_permission_conditions": [
+            "Parse and rewrite canonical config from approved schema targets only"
+          ]
+        },
+        {
+          "id": "PVR-03",
+          "depends_on": [
+            "PVR-01",
+            "PVR-02"
+          ],
+          "simulation_state": "PARTIAL_UNTIL_FIELD_SEMANTICS",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "Top-level and ref-only schema creation allowed; keep user custom field requiredness null",
+          "remaining_non_permission_conditions": [
+            "V4-FIELD-DETAIL: unknown core field requiredness/semantics must not be inferred as final"
+          ]
+        },
+        {
+          "id": "PVR-04",
+          "depends_on": [
+            "PVR-01",
+            "PVR-02"
+          ],
+          "simulation_state": "PARTIAL_UNTIL_RBAC_SEMANTICS",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "Create approved RA/RAC/AEC structure and provisional fixtures; not runnable evaluators",
+          "remaining_non_permission_conditions": [
+            "RAC_AEC_VALUE_INNER_CONTRACT_UNRESOLVED",
+            "RAC_AEC_EVALUATION_SEMANTICS_UNRESOLVED",
+            "RBAC_REGISTRATION_LINKAGE_UNRESOLVED"
+          ]
+        },
+        {
+          "id": "PVR-05",
+          "depends_on": [
+            "PVR-04"
+          ],
+          "simulation_state": "BLOCKED_BY_SEMANTIC_SOURCE_EVIDENCE",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "Review historical condition_id owner and name-to-ID correspondence; no guessing",
+          "remaining_non_permission_conditions": [
+            "LEGACY-CONDITION-KIND-MAPPING",
+            "RAC_AEC_NAME_MAPPING_CARDINALITY"
+          ]
+        },
+        {
+          "id": "PVR-06",
+          "depends_on": [
+            "PVR-03",
+            "PVR-05"
+          ],
+          "simulation_state": "DEPENDENCY_BLOCKED_UNTIL_PVR-03_AND_05",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "Design read-only forward lookup and negative test fixtures independently",
+          "remaining_non_permission_conditions": [
+            "PVR-05 verified RA/RAC/AEC mapping"
+          ]
+        },
+        {
+          "id": "PVR-07",
+          "depends_on": [
+            "PVR-03",
+            "PVR-04",
+            "PVR-06"
+          ],
+          "simulation_state": "DEPENDENCY_BLOCKED_UNTIL_PVR-03_04_06",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "Prepare scaffolding and isolated tests where contracts deterministic",
+          "remaining_non_permission_conditions": [
+            "PVR-03,PVR-04,PVR-06 conformance"
+          ]
+        },
+        {
+          "id": "PVR-08",
+          "depends_on": [
+            "PVR-07"
+          ],
+          "simulation_state": "DEPENDENCY_BLOCKED_UNTIL_PVR-07",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "Read-only consumer inventory may proceed",
+          "remaining_non_permission_conditions": [
+            "PVR-07 tests and zero dependency evidence"
+          ]
+        },
+        {
+          "id": "PVR-09",
+          "depends_on": [
+            "PVR-08"
+          ],
+          "simulation_state": "DEPENDENCY_BLOCKED_UNTIL_PVR-08",
+          "implementation_permission": "APPROVED_PVR_SCOPE",
+          "independent_work_while_blocked": "CLI integration design may proceed, runtime integration gated",
+          "remaining_non_permission_conditions": [
+            "GO-CLI-OPERATION",
+            "PVR-08 validated bridge"
+          ]
+        }
+      ],
+      "overall_result": "NOT_FULLY_STOP_FREE_SEMANTIC_EVIDENCE_AND_DEPENDENCY_GATES_REMAIN",
+      "detected_stop_points": [
+        "PVR-03_FINAL_FIELD_SEMANTICS",
+        "PVR-04_RBAC_VALUE_SEMANTICS",
+        "PVR-05_LEGACY_CONDITION_OWNER_AND_NAMES",
+        "PVR-06_TO_09_DEPENDENCY_CHAIN"
+      ],
+      "release_and_user_repo_write": "NOT_PERFORMED",
+      "simulation_not_real_tests": true,
+      "remediation_path": "INDEPENDENT_TECHNICAL_WORK_CONTINUES;UNRESOLVED_SEMANTICS_RECORDED_AND_RAISED_ONLY_WHEN_NONRECOVERABLE"
     }
   },
   "policy_conflict_resolution": {
@@ -4965,17 +5262,35 @@
     ],
     "out_of_scope_source_contract_bases": [
       ".ptsip/contracts/**",
-      "developer/policy/**"
+      "developer/policy/**",
+      "<PTSIP_DEVELOPER_REPOSITORY>/.ptsip/**"
     ],
     "contract_instances_from_this_repository": "NOT_AUTHORITATIVE_FOR_DISTRIBUTED_SCHEMA_FIELDS",
     "input_legacy_src_contracts": "READ_ONLY_SOURCES_FOR_MIGRATION_ANALYSIS_ONLY",
     "existing_release_plan_reference": "src/planning/0.3.8/contract-first-migration/index.json",
     "other_plan_approvals": "DO_NOT_INHERIT",
     "new_policy_file_writes": "NOT_AUTHORIZED_BY_THIS_PLAN",
-    "schema_creation_and_deletion": "BLOCKED_UNTIL_PLAN_AND_FIELD_POLICY_APPROVAL",
-    "implementation_authorized": false,
+    "schema_creation_and_deletion": "CREATE_AND_REVISE_PVR_SCOPED_NEW_V4_SCHEMAS_ALLOWED;OLD_SOURCE_DELETION_SEPARATELY_GATED",
+    "implementation_authorized": true,
     "release_publication_authorized": false,
-    "user_project_profile_mutation": false
+    "user_project_profile_mutation": false,
+    "implementation_authorization_scope": "PVR_01_TO_09_ONLY",
+    "implementation_authorization_mode": "SCOPED_CONTINUOUS_USER_APPROVAL",
+    "authorized_pvr_ids": [
+      "PVR-01",
+      "PVR-02",
+      "PVR-03",
+      "PVR-04",
+      "PVR-05",
+      "PVR-06",
+      "PVR-07",
+      "PVR-08",
+      "PVR-09"
+    ],
+    "full_038_work_units_approved": false,
+    "dedicated_user_contract_engine_root": "src/ptsip/user_contracts/",
+    "dedicated_user_contract_template_root": "src/ptsip/user_contracts/templates/",
+    "no_src_dependency_on_repo_local_dotptsip": true
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -4986,7 +5301,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-16: For adopting user repositories, auto-create .ptsip/contract/user/ target contract only when evaluation_state or policy_content_id is needed and absent; never overwrite existing user contract. User custom fields' requiredness intentionally unspecified (null), not an open approval gate. PTSIP must provide generic automatic compatibility validation so user writes contracts only, not validators. Recommended only: evaluation_state.schema.json and policy_content_id.schema.json, JSON Schema 2020-12. Exact file/format not user approved and unknown binding/discovery details still to design. Source repo .ptsip/** and implementation authorization unchanged.",
+    "last_user_direction": "2026-11-16: JSON Schema 2020-12 contract semantics approved; .schema.json suffix rejected for user contracts because PTSIP user contract validator is fully separate from other feature validators. User requested one distinct extension; technical default selected .ucontract.json by agent (not user-specified literal). PTSIP development repo .ptsip/** is private, forbidden as src/** contract/code dependency or deployment input; only adopting project runtime can create missing .ptsip/contract/user/ instances. Explicit user approval for continuous PVR-01..09 scoped implementation; full 0.3.8 profile/legacy deletion/release still gated. Static plan simulation finds genuine semantic/dependency blockers PVR-03..09; agent continues independent work without guessing.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
@@ -5757,7 +6072,7 @@
       "evaluation_flexibility_review_20261116": {
         "status": "DIRECTION_ONLY_FIELDS_UNFINALIZED",
         "state": "USER_DEFINED_STATE_CONTRACT_CONSTANTS",
-        "state_validator": "PTSIP_BUILTIN_USER_CONTRACT_CONSTANT_LOOKUP",
+        "state_validator": "DEDICATED_PTSIP_USER_CONTRACT_VALIDATOR_WITH_USER_DECLARED_CONSTANTS",
         "filters": "OPTIONAL_CAN_BE_OMITTED",
         "custom_fields": "ALLOWED_EXTENSION_APPROACH_UNRESOLVED",
         "candidate_fields": [
@@ -5771,13 +6086,14 @@
           "evidence_refs"
         ],
         "local_evidence": "SAME_POLICY_DOCUMENT_ONLY",
-        "final_validation_schema": "UNRESOLVED",
+        "final_validation_schema": "JSON_SCHEMA_2020_12_USER_FORMAT_SUPPORTED_EXTENSION_.ucontract.json",
         "no_assumed_automatic_semantic_judgment_of_unknown_custom_states": true,
         "state_binding": "EXACT_MATCH_TO_USER_DECLARED_CONSTANT",
         "user_authored_state_contracts": true,
         "state_contract_storage": ".ptsip/contract/user/",
         "unknown_state_semantics": "NOT_AUTOMATICALLY_VERIFIED",
-        "user_contract_name": "evaluation_state"
+        "user_contract_name": "evaluation_state",
+        "user_contracts_are_undeclared_until_authored": true
       },
       "content_id_binding": "USER_DECLARED_SYMBOLIC_CONSTANT_SAME_DOCUMENT_EXACT_MATCH"
     },
