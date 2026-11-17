@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:contract:public-structure-policy:v4",
+  "title": "PTSIP Policy v4",
+  "type": "object",
+  "properties": {
+    "Policy_Identity": {
+      "$ref": "urn:ptsip:contract:policy:identity:v4"
+    },
+    "Policy_Lifecycle": {
+      "$ref": "urn:ptsip:contract:policy:lifecycle:v4"
+    },
+    "Policy_Rules": {
+      "$ref": "urn:ptsip:contract:policy:rules:v4"
+    },
+    "Policy_Content": {
+      "$ref": "urn:ptsip:contract:policy:content:v4"
+    }
+  },
+  "additionalProperties": false
+}

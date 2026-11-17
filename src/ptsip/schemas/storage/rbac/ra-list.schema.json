@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:ra_list",
+  "title": "PTSIP Responsibility Authority List",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "RA_list": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "RA_id": {
+                "type": "string",
+                "pattern": "^R-ID-[0-9A-F]{32}$",
+                "maxLength": 37
+              },
+              "RA_title": {
+                "type": "string"
+              },
+              "RA_description": {
+                "type": "string"
+              },
+              "AEC_ids": {
+                "description": "References keyed by the canonical name from the AEC list.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "maxProperties": 1,
+                  "additionalProperties": { "$ref": "#/$defs/aecId" }
+                }
+              },
+              "AEC_name": {
+                "description": "Display names derived from the referenced AEC records.",
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "RAC_ids": {
+                "description": "References keyed by the canonical name from the RAC list.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "maxProperties": 1,
+                  "additionalProperties": { "$ref": "#/$defs/racId" }
+                }
+              },
+              "RAC_name": {
+                "description": "Display names derived from the referenced RAC records.",
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "aecId": {
+      "type": "string",
+      "pattern": "^ID-AEC-[a-zA-F0-9]{16}$",
+      "maxLength": 23
+    },
+    "racId": {
+      "type": "string",
+      "pattern": "^ID-RAC-[a-zA-F0-9]{16}$",
+      "maxLength": 23
+    }
+  }
+}

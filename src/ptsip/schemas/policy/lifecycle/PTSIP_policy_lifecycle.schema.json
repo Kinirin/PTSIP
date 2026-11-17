@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:contract:policy:lifecycle:v4",
+  "title": "PTSIP Policy v4 Lifecycle",
+  "type": "object",
+  "properties": {
+    "status": {
+      "enum": [
+        "DRAFT.Default",
+        "DRAFT.Reviewed",
+        "DRAFT.Denied",
+        "DRAFT.Pass",
+        "APPROVED.Default",
+        "APPROVED.Applying",
+        "APPROVED.Application_Problems",
+        "APPROVED.Unresolved",
+        "APPROVED.Activate",
+        "APPROVED.provisional",
+        "RETIRED.Default",
+        "RETIRED.Removable",
+        "RETIRED.Waiting"
+      ]
+    },
+    "status_reason": {
+      "type": "string"
+    },
+    "evaluation": {
+      "description": "The most recent change record.",
+      "type": "array",
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "type": "object",
+          "properties": {
+            "last_changed_date": {
+              "type": "string",
+              "pattern": "^[0-9]{4}(?:0[1-9]|1[0-2])(?:0[1-9]|[12][0-9]|3[01])$",
+              "maxLength": 8
+            }
+          },
+          "required": [
+            "last_changed_date"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "maxLength": 200
+            }
+          },
+          "additionalProperties": false
+        }
+      ],
+      "items": false
+    }
+  },
+  "additionalProperties": false
+}

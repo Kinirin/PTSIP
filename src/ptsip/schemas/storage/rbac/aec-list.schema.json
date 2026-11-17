@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:aec_list",
+  "title": "PTSIP Authority Exercise Condition List",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "file_name": {
+      "type": "string"
+    },
+    "file_id": {
+      "type": "string",
+      "pattern": "^profiles-[0-9a-f]{32}$",
+      "maxLength": 41
+    },
+    "format_version": {
+      "type": "string"
+    },
+    "file_title": {
+      "type": "string"
+    },
+    "AEC_list": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "AEC_id": {
+            "type": "string",
+            "pattern": "^ID-AEC-[a-zA-F0-9]{16}$",
+            "maxLength": 23
+          },
+          "AEC_name": {
+            "type": "string"
+          },
+          "AEC_description": {
+            "type": "string"
+          },
+          "value": {
+            "description": "Inline condition value with an author-defined structure."
+          }
+        }
+      }
+    }
+  }
+}

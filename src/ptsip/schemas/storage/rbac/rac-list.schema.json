@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:rac_list",
+  "title": "PTSIP Responsibility Assignment Condition List",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "file_name": {
+      "type": "string"
+    },
+    "file_id": {
+      "type": "string",
+      "pattern": "^profiles-[0-9a-f]{32}$",
+      "maxLength": 41
+    },
+    "format_version": {
+      "type": "string"
+    },
+    "file_title": {
+      "type": "string"
+    },
+    "RAC_list": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "RAC_id": {
+            "type": "string",
+            "pattern": "^ID-RAC-[a-zA-F0-9]{16}$",
+            "maxLength": 23
+          },
+          "RAC_name": {
+            "type": "string"
+          },
+          "RAC_description": {
+            "type": "string"
+          },
+          "value": {
+            "description": "Inline condition value with an author-defined structure."
+          }
+        }
+      }
+    }
+  }
+}

@@ -71,6 +71,10 @@ ptsip = [
   "specdata/compile-sealed-rbac/candidate-index.json",
   "specdata/*.yaml",
   "repository/schemas/*.json",
+  "schemas/config.json",
+  "schemas/policy/*.schema.json",
+  "schemas/policy/*/*.schema.json",
+  "schemas/storage/rbac/*.schema.json",
   "agent_contracts/*.yaml",
   "agent_contracts/schemas/*.json",
   "agent_contracts/spec/*.yaml",
@@ -78,6 +82,7 @@ ptsip = [
   "agent_contracts/vocabulary/*.yaml",
   "agent_contracts/bindings/*.yaml",
 ]
+"ptsip.user_contracts" = ["templates/*.json"]
 agent_contracts = [
   "*.yaml",
   "schemas/contracts/*.json",
