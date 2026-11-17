@@ -265,7 +265,7 @@
       "id": "FIELDS-01",
       "scope": "Policy v4 independent sub-contract field types/requiredness and complete RA List GUI semantics",
       "state": "PARTIAL_POLICY_FIXED_SUBFIELDS_PENDING",
-      "note": "User-custom field requiredness stays null and is NOT an implementation blocker; independently verify approved core structural and explicit user-authored constraints only. RA historical mapping semantics cannot be inferred without evidence."
+      "note": "Current Policy v4 only: optional version must validate if provided via official approved notation OR independent user contract under adopting project .ptsip/contract/user/; category is user-owned; Rules evaluation current confirmed fields only, future expansion deferred. RAC/AEC value internals, custom requiredness and generic evaluation semantics are deferred, not 0.3.8 blockers; RA field ownership remains user review."
     },
     {
       "id": "SOURCE-01",
@@ -1829,9 +1829,9 @@
       "actions": [
         "PTSIP v4 top-level exactly Policy_Identity, Policy_Lifecycle, Policy_Rules, Policy_Content; top-level schema reference-only",
         "Policy_Identity title names the policy; Policy_Category is a user-defined category contract (required semantic roles: category namespace and namespace definition; optional: other namespace boundaries, category responsibilities, excluded responsibilities). Developer root_family/policy_kind are presentation-only, not contract serialization or PVR-03 blockers.",
-        "Policy_Identity.version grammar allows 3-part, optional suffix/prefix, optional build/revision components; separate revision field prohibited",
+        "Policy_Identity.version is OPTIONAL. When present, validate against at least one of the supported official candidates (MAJOR.MINOR.PATCH with approved optional prefixes/suffixes/build forms) OR a user-authored independent version contract under adopting user's .ptsip/contract/user/. Absence requires no version contract; do not invent a mandatory global single regex.",
         "Policy_Lifecycle.status uses 13 existing official values; Policy_Lifecycle.evaluation currently consists of exactly two elements {last_changed_date: YYYYMMDD} (date of most recent change record) and {description: optional natural language <=200 chars} (role description). Future additions out of scope; no new third field or external approval ref.",
-        "Rules[] own id/content.content_id[]/RA_id. rules[].id uses a separate user-defined rules_patterns.json pattern contract; content.content_id[] and Policy_Content.items[].id bind to user policy_content_id.json pattern and same-document Policy_Content.items[].id; RA_id retains registered RA List's existing ^R-ID-[0-9A-F]{32}$ format and is never subject to user content ID pattern. evaluation.state uses user-authored state contract; description/evaluation_scope/evaluated_at remain candidates; no source_refs/evidence_refs.",
+        "Rules[] own id/content.content_id[]/RA_id. rules[].id uses a separate user-defined rules_patterns.json pattern contract; content.content_id[] and Policy_Content.items[].id bind to user policy_content_id.json pattern and same-document Policy_Content.items[].id; RA_id retains registered RA List's existing ^R-ID-[0-9A-F]{32}$ format and is never subject to user content ID pattern. evaluation.state uses user-authored state contract; description/evaluation_scope/evaluated_at remain candidates; no source_refs/evidence_refs. Policy_Rules.evaluation current release field set only; do not add speculative extension fields for 0.3.8.",
         "Policy_Content.items[] has exactly id and value. path/sha256/revision_ref were explicitly removed as redundant with the policy's identity and self-contained content; no source_pointer or source_document. Rule content_id[] matches same-document items[].id using user's content-ID contract.",
         "Content item ID pattern pending; v3 Unified Policy and old validation schemas not inherited",
         "Do not implement or invent fields from unapproved Content ID scheme and other undecided schema constraints",
@@ -2363,7 +2363,12 @@
       "Policy_Category is a user-authored category contract; require semantic roles category namespace and namespace definition, allow optional other namespace boundary, included responsibilities and excluded responsibilities; developer root_family/policy_kind are not policy document contract fields.",
       "Policy_Lifecycle.evaluation has exactly the two current elements last_changed_date (date of latest change record) and description (role natural language); no third field or speculative future extension.",
       "Policy_Rules.rules[].id syntax is user/environment-configurable through separate rules_patterns.json; only content.content_id[]/Policy_Content.items[].id use policy_content_id.json, while RA_id follows the existing RA List contract and cannot be overridden by these user pattern files.",
-      "Policy_Rules.rules[].id validates solely against user-defined rules_patterns.json when declared, without a global fixed rule ID regex; Policy_Rules.rules[].content.content_id[] and Policy_Content.items[].id use policy_content_id.json, and RA_id retains its existing RA List contract."
+      "Policy_Rules.rules[].id validates solely against user-defined rules_patterns.json when declared, without a global fixed rule ID regex; Policy_Rules.rules[].content.content_id[] and Policy_Content.items[].id use policy_content_id.json, and RA_id retains its existing RA List contract.",
+      "Policy_Identity.version is optional; if present it MUST satisfy at least one supported official version contract or an explicitly user-authored contract within the adopting user's .ptsip/contract/user/; do not require any version contract if version is absent.",
+      "Policy_Rules.evaluation supports only current approved field set in v0.3.8; do not infer/require new evaluation_scope/evaluated_at/description subfields from deferred future candidate lists.",
+      "RAC/AEC value internals remain user-extensible and intentionally unconstrained in v0.3.8; no invented nested value contract and no generalized semantic evaluation success claim. When agent creates a condition, its meaning and responsibility circumstances must be explained within the owning condition context.",
+      "RAC/AEC/RA links resolve by exact already-approved record IDs in their owning lists with uniqueness, existence and correct-list-type checks. Do not invent a separate RBAC registration schema or confuse file_id and record ID.",
+      "Legacy condition_id RAC/AEC classification must be evidence-based when conversion is attempted; UNKNOWN is not silently mapped and preserving historical meaning is not required for new v4. Generated ID/name pairs must match the canonical owning list record when created or linked, not be predefined."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -4040,11 +4045,11 @@
           "state_validation_direction": "DEDICATED_PTSIP_USER_CONTRACT_VALIDATOR_READS_USER_DEFINED_CONSTANTS_ONLY",
           "semantic_validation_boundary": "UNKNOWN_CUSTOM_STATES_CAN_BE_STRUCTURALLY_VALID_WITHOUT_CLAIMING_SEMANTIC_CORRECTNESS",
           "filter_usage": "OPTIONAL_ZERO_OR_MORE_NO_MANDATORY_PREDEFINED_FILTER",
-          "user_custom_evaluation_fields": "PERMITTED_FINAL_VALIDATION_EXTENSION_SHAPE_UNRESOLVED",
+          "user_custom_evaluation_fields": "USER_CONTRACT_EXTENSIONS_POSSIBLE_BUT_NOT_NEW_PTSIP_CORE_FIELDS_IN_0_3_8",
           "natural_language_recording": "SUPPORTED_NOT_ALL_SEMANTICS_MUST_HAVE_MACHINE_CODE",
           "local_evidence_rule": "EVIDENCE_WITHIN_OWN_POLICY_DOCUMENT",
-          "candidate_field_status": "REVIEW_ONLY_NOT_FINAL_FIELD_CONTRACT",
-          "validation_design_status": "DIRECTION_APPROVED_MECHANISM_TO_BE_PROPOSED",
+          "candidate_field_status": "FUTURE_VERSION_REVIEW_ONLY_NOT_REQUIRED_FOR_CURRENT_RELEASE",
+          "validation_design_status": "CURRENT_APPROVED_FIELD_ONLY_FUTURE_EXTENSION_DEFERRED",
           "state_contract_binding": "USER_DECLARED_CONSTANT_REFERENCE",
           "state_validator_owner": "PTSIP_BUILTIN_NOT_USER",
           "state_contract_location": ".ptsip/contract/user/",
@@ -4057,7 +4062,21 @@
           "state_definition_format": "JSON_SCHEMA_DRAFT_2020_12_WITH_USER_DEFINED_CONSTANTS",
           "state_contract_missing_or_empty_behavior": "WHEN_NEEDED_AND_MISSING_AUTOCREATE_NEUTRAL_CONTRACT; EXISTING_EMPTY_DO_NOT_OVERWRITE",
           "custom_fields_requiredness": null,
-          "requiredness_policy": "UNSPECIFIED_USER_CUSTOM_FIELDS_NOT_REQUIRED_BY_PTSIP_DEFAULT"
+          "requiredness_policy": "UNSPECIFIED_USER_CUSTOM_FIELDS_NOT_REQUIRED_BY_PTSIP_DEFAULT",
+          "current_release_contract": {
+            "version": "0.3.8",
+            "field_set": [
+              "state"
+            ],
+            "field_set_status": "APPROVED_ONLY_NO_NEW_SUBFIELDS",
+            "user_state_contract_file": "evaluation_state.json",
+            "natural_language_recording": "ALLOWED_WITHIN_CURRENT_USER_CONTRACT_OR_EXISTING_DOCUMENT_CONTENT",
+            "avoid_inventing_new_keys": true,
+            "extra_fields": "NOT_INTRODUCED_BY_PTSIP_IN_THIS_RELEASE",
+            "future_extension": "DEFER_TO_LATER_RELEASE",
+            "omitted_evaluation": "NO_EVALUATION_CONTRACT_REQUIRED_IF_NOT_USED",
+            "field_requiredness": null
+          }
         },
         "forbidden_top_level_fields": [
           "Policy_Authority",
@@ -4149,6 +4168,49 @@
             "no_extra_user_contract_instance_bootstrap_without_explicit_binding": true,
             "user_approval_scope": "SEMANTIC_ROLES_AND_REQUIREDNESS",
             "physical_contract_field_keys": "NOT_YET_USER_APPROVED"
+          },
+          "version_contract": {
+            "owner": "Policy_Identity.version",
+            "required": false,
+            "when_missing": "NO_VERSION_CONTRACT_NEEDED_NO_VALIDATION_ATTEMPT",
+            "when_present": "MUST_CONFORM_TO_AT_LEAST_ONE_VALIDATION_CONTRACT",
+            "accepted_contract_modes": [
+              "PTSIP_OFFICIAL_VERSION_FORMATS",
+              "USER_AUTHORED_VERSION_CONTRACT"
+            ],
+            "official_mode": {
+              "status": "ALL_PREVIOUSLY_APPROVED_CANDIDATE_FORMS_SUPPORTED",
+              "base": "MAJOR.MINOR.PATCH",
+              "prefixes": [
+                "ver",
+                "v",
+                "Ver.",
+                "V."
+              ],
+              "suffixes": [
+                "alpha",
+                "beta",
+                "Hotfix",
+                "rc"
+              ],
+              "build_optional": true,
+              "build_revision_optional": true,
+              "exact_regex": "NOT_A_POLICY_GATE_FOR_V0_3_8_IMPLEMENTATION"
+            },
+            "custom_mode": {
+              "root": ".ptsip/contract/user/",
+              "filename": "USER_SELECTED_NONFIXED",
+              "format": "JSON_SCHEMA_DRAFT_2020_12",
+              "can_create_independently": true,
+              "discovery": "PTSIP_DEDICATED_USER_CONTRACT_ENGINE",
+              "contract_is_not_required_without_version": true
+            },
+            "validation_owner": "PTSIP",
+            "source_authority": "OFFICIAL_OR_USER_AUTHORED",
+            "strict_when_present": true,
+            "no_implicit_unvalidated_free_format": true,
+            "custom_fields_not_fixed_by_ptsip": true,
+            "require_exactly_one_mode_selected": "NOT_SPECIFIED_NO_EXCLUSIVE_ONEOF_ASSUMPTION"
           }
         },
         "lifecycle_contract": {
@@ -4240,7 +4302,10 @@
             "registered_name_owner": "RAC/AEC respective List contracts",
             "one_line_format": "YAML_FLOW_SEQUENCE_SINGLE_PAIR_TITLE_ID_MAPS",
             "name_id_pairing_owner": "RA_LIST_OWNED_RELATIONSHIP_RAC_AEC_DEFINITIONS_OWN_NAMES",
-            "canonical_name_resolution": "UNRESOLVED"
+            "canonical_name_resolution": "UNRESOLVED",
+            "current_version_name_id_matching": "VALIDATE_EXACT_REGISTERED_ID_TO_OWNING_RECORD_NAME_WHEN_RECORDS_CREATED_OR_LINKED",
+            "future_id_values": "GENERATED_AT_IMPLEMENTATION_OR_USER_AUTHORING_TIME_NOT_PRESPECIFIED",
+            "unresolved_name_representation": "STILL_PENDING_RA_FIELD_OWNERSHIP_USER_REVIEW"
           },
           "ra_title": {
             "concept": "RESPONSIBILITY_HUMAN_READABLE_TITLE",
@@ -4279,7 +4344,7 @@
             "RAC_name_source_owner": "RAC List owns registered RAC identity and name; new RA List record presentation/denormalization rule still unresolved",
             "AEC_name_source_owner": "AEC List owns registered AEC identity and name; new RA List record presentation/denormalization rule still unresolved",
             "multiple_references": "RAC_ids/AEC_ids may each refer to multiple registered conditions",
-            "name_alignment": "UNDECIDED: if RAC_name/AEC_name are stored in RA record, define exact 1-to-N correspondence; do not infer one shared name for multiple IDs",
+            "name_alignment": "INVARIANT: every generated RAC/AEC reference ID is linked to exactly its registered record and canonical name; no pre-generated IDs needed; storage vs lookup ownership still requires RA user review.",
             "duplicate_data_policy": "UNDECIDED: identity source is respective RAC/AEC List; RA List may retain labeled display information only after owner/lookup semantics approved",
             "field_requiredness": "UNRESOLVED",
             "example_only": "DO_NOT_INFER_JSON_SCHEMA_TYPES_FOR_NAME_MULTIPLICITY",
@@ -4305,8 +4370,8 @@
           ],
           "ra_identity": "RA_id",
           "ra_title": "RA_title",
-          "legacy_condition_id": "C-ID type cannot be classified RAC/AEC by legacy field name alone",
-          "mapping_blocker": "VERIFY_CONDITION_ID_SEMANTIC_OWNER_BEFORE_TRANSLATION",
+          "legacy_condition_id": "ANALYZE_LEGACY_KIND_WHEN_AVAILABLE; UNKNOWN_PERMITTED; NO_FORCED_PRESERVATION_OF_LEGACY_MEANING; NEVER_GUESS_MAPPING",
+          "mapping_blocker": "LEGACY_ONLY_ANALYSIS_NOT_BARRIER_FOR_NEW_ID_BASED_REFERENCES",
           "field_requiredness": "UNRESOLVED",
           "gui_semantics": "RA_title plus RAC_name/AEC_name represent purpose/title of linked conditions; owner and 1-to-N mapping require explicit review",
           "no_policy_backref": true,
@@ -4318,13 +4383,56 @@
           "schema_owner": "NO_SEPARATE_SCHEMA_IN_CURRENT_V4",
           "schema_directory": "src/ptsip/schemas/storage/rbac/",
           "new_file": "DO_NOT_CREATE",
-          "registration_data_path": "NOT_IN_CURRENT_SCOPE",
+          "registration_data_path": "NO_NEW_REGISTRY_ARTIFACT_REQUIRED",
           "config_role": "SCHEMA_RESOURCE_LOCATION_ONLY",
           "old_manifest": "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json",
           "old_manifest_action": "PRESERVE_UNMODIFIED",
           "independent_future_status_domain": "DEFERRED_IF_ACTUAL_DUTY_SEPARATELY_PROVEN",
           "no_policy_usage_backrefs": true,
-          "reason": "No distinct registration object or lifecycle yet evidenced that is not already handled by RA/RAC/AEC list lookup or separate execution authority"
+          "reason": "No distinct registration object or lifecycle yet evidenced that is not already handled by RA/RAC/AEC list lookup or separate execution authority",
+          "current_v4_id_linkage": {
+            "strategy": "EXACT_RECORD_ID_LOOKUP_IN_OWNING_LIST",
+            "RA": {
+              "record_id": "RA_id",
+              "record_owner": "RA-list.ptsip.yaml",
+              "pattern": "^R-ID-[0-9A-F]{32}$"
+            },
+            "RAC": {
+              "record_id": "RAC_id",
+              "record_owner": "RAC-list.ptsip.yaml",
+              "pattern": "^ID-RAC-[a-zA-F0-9]{16}$"
+            },
+            "AEC": {
+              "record_id": "AEC_id",
+              "record_owner": "AEC-list.ptsip.yaml",
+              "pattern": "^ID-AEC-[a-zA-F0-9]{16}$"
+            },
+            "edges": [
+              {
+                "from": "Policy_Rules.rules[].RA_id",
+                "to": "RA-list.ptsip.yaml::RA_id"
+              },
+              {
+                "from": "RA-list.ptsip.yaml::RAC_ids[]",
+                "to": "RAC-list.ptsip.yaml::RAC_id"
+              },
+              {
+                "from": "RA-list.ptsip.yaml::AEC_ids[]",
+                "to": "AEC-list.ptsip.yaml::AEC_id"
+              }
+            ],
+            "checks": [
+              "EXACT_MATCH",
+              "UNIQUE_ID",
+              "REFERENCED_ID_EXISTS",
+              "CORRECT_LIST_TYPE"
+            ],
+            "no_extra_registration_schema": true,
+            "file_id_distinct_from_record_id": true,
+            "no_cross_reference_by_guessed_filename": true,
+            "unresolved_value_schema_not_needed_for_lookup": true
+          },
+          "current_scope": "ID_LOOKUP_WITHIN_EXISTING_RA_RAC_AEC_LISTS"
         },
         "version_policy": "NEW_CONTRACT_NO_PP3_COMPATIBILITY_ASSUMPTION",
         "source_contracts": [
@@ -4393,7 +4501,7 @@
       {
         "id": "RBAC-REGISTRY-SEPARATION",
         "state": "REOPENED_DISTINCT_STATUS_DOMAIN_ONLY",
-        "value": "config schema locations separate from authorization, but no extra registration schema required without proven independent responsibility"
+        "value": "No independent registration schema; currently approved RAC/AEC/RA record IDs are lookup keys into their owning List. File ID differs from record ID. No semantic value layout is required for ID linkage."
       },
       {
         "id": "RBAC-PP300",
@@ -4402,8 +4510,11 @@
       },
       {
         "id": "V4-FIELD-DETAIL",
-        "state": "TECHNICAL_IMPLEMENTATION_ALLOWED_UNRESOLVED_FINAL_SEMANTICS_RETAINED",
-        "value": "User clarified F-POL-004 is user category contract (two required semantic roles, three optional), F-POL-033..035 Lifecycle.evaluation two current elements, F-POL-015 rule ID flexible and Content ID pattern ONLY content_id[] (RA_id uses existing RA List pattern), F-POL-028 Content value retained and F-POL-030..032 removed. Other independent version/RBAC decisions are not silently resolved."
+        "state": "CURRENT_RELEASE_SCOPE_RESOLVED_CUSTOM_EXTENSIONS_DEFERRED",
+        "value": "V4-FIELD-DETAIL is a PLAN DECISION GATE for final subfield/validation obligations, not schema const/enum. For v0.3.8 Policy_Category is user-defined, version optional but if present MUST validate via approved official notation OR user-created contract, Policy_Rules.evaluation uses only already approved fields, and Content items only id/value. Deferred future extensibility is not an implementation blocker.",
+        "kind": "PLAN_ONLY_GATE_IDENTIFIER_NOT_RUNTIME_SCHEMA_CONSTANT",
+        "current_release_blocking": false,
+        "future_extensions": "DEFERRED"
       },
       {
         "id": "RA-RELATION-FIELDS",
@@ -4510,8 +4621,8 @@
       },
       {
         "id": "CONDITION-ID-KIND",
-        "state": "UNRESOLVED_NO_SILENT_TRANSLATION",
-        "value": "legacy condition_id C-ID field cannot be inferred as RAC_ids or AEC_ids"
+        "state": "LEGACY_ANALYSIS_REQUIRED_WHEN_APPLICABLE_NOT_NEW_V4_SCHEMA_GATE",
+        "value": "Legacy condition_id may be ambiguous RAC/AEC. Analyze actual historical records before converting; UNKNOWN is allowed and cannot be silently mapped. Preservation of legacy original meaning or responsibility is not required; new v4 registration links remain independent."
       },
       {
         "id": "RBAC-EXTRA-REGISTRATION-SCHEMA",
@@ -4528,8 +4639,8 @@
       },
       {
         "id": "RA_RAC_AEC_NAME_MAPPING",
-        "state": "UNRESOLVED_SUBORDINATE_DESIGN",
-        "value": "Decide name representation/lookup with multiple RAC_ids/AEC_ids and respective RAC/AEC List ownership; no implicit type or requiredness"
+        "state": "GENERATED_REFERENCE_INTEGRITY_OBLIGATION_RA_STORAGE_OWNER_STILL_REVIEW",
+        "value": "IDs and names are assigned when actual RAC/AEC records are generated; exact ID-to-canonical-name match MUST be validated by owning List and lookup. No need to predetermine actual IDs or names. Whether name is redundantly stored in RA vs derived from owning lists remains RA-FULL-FIELD-OWNERSHIP review."
       },
       {
         "id": "RAC-AEC-PREVIOUS-FIELD-SET-REJECTION",
@@ -4586,8 +4697,8 @@
       },
       {
         "id": "RAC-AEC-VALUE-OWNERSHIP",
-        "state": "APPROVED_INLINE_ONLY_SHAPE_UNRESOLVED",
-        "value": "Own value in same RAC/AEC list file; no ref-based delegation to other files"
+        "state": "APPROVED_INLINE_VALUE_INTERNAL_FIELDS_DEFERRED_CURRENT_VERSION",
+        "value": "RAC/AEC value remains within its owning list; internal semantic subfields intentionally not finalized for 0.3.8, no automatic evaluation semantics claimed."
       },
       {
         "id": "CONTENT-ID-20261116",
@@ -4602,7 +4713,7 @@
       {
         "id": "RULES-EVALUATION-OPEN-STATE-20261116",
         "state": "USER_APPROVED_CONTRACT_CONSTANT_DIRECTION_FINAL_GRAMMAR_PENDING",
-        "value": "evaluation.state binds user-declared state contract constants; PTSIP builtin validator checks declared binding, no fixed global state enum or mandatory custom filters."
+        "value": "Evaluation current approved field set retained (state), bound to evaluation_state.json user contract. No newly invented subfields for v0.3.8; future extension and detailed semantic evaluation deferred. No fixed global enum; evidence remains in own policy document."
       },
       {
         "id": "CONTENT-SYMBOLIC-CONST-20261116",
@@ -4717,6 +4828,244 @@
           "validator": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
           "do_not_write": "PTSIP_DEVELOPMENT_REPOSITORY_.ptsip/**"
         }
+      },
+      {
+        "id": "RELEASE038-VERSION-OPTIONAL-OFFICIAL-USER-CONTRACT-20261117",
+        "state": "USER_APPROVED_RELEASE_SCOPE",
+        "value": {
+          "owner": "Policy_Identity.version",
+          "required": false,
+          "when_missing": "NO_VERSION_CONTRACT_NEEDED_NO_VALIDATION_ATTEMPT",
+          "when_present": "MUST_CONFORM_TO_AT_LEAST_ONE_VALIDATION_CONTRACT",
+          "accepted_contract_modes": [
+            "PTSIP_OFFICIAL_VERSION_FORMATS",
+            "USER_AUTHORED_VERSION_CONTRACT"
+          ],
+          "official_mode": {
+            "status": "ALL_PREVIOUSLY_APPROVED_CANDIDATE_FORMS_SUPPORTED",
+            "base": "MAJOR.MINOR.PATCH",
+            "prefixes": [
+              "ver",
+              "v",
+              "Ver.",
+              "V."
+            ],
+            "suffixes": [
+              "alpha",
+              "beta",
+              "Hotfix",
+              "rc"
+            ],
+            "build_optional": true,
+            "build_revision_optional": true,
+            "exact_regex": "NOT_A_POLICY_GATE_FOR_V0_3_8_IMPLEMENTATION"
+          },
+          "custom_mode": {
+            "root": ".ptsip/contract/user/",
+            "filename": "USER_SELECTED_NONFIXED",
+            "format": "JSON_SCHEMA_DRAFT_2020_12",
+            "can_create_independently": true,
+            "discovery": "PTSIP_DEDICATED_USER_CONTRACT_ENGINE",
+            "contract_is_not_required_without_version": true
+          },
+          "validation_owner": "PTSIP",
+          "source_authority": "OFFICIAL_OR_USER_AUTHORED",
+          "strict_when_present": true,
+          "no_implicit_unvalidated_free_format": true,
+          "custom_fields_not_fixed_by_ptsip": true,
+          "require_exactly_one_mode_selected": "NOT_SPECIFIED_NO_EXCLUSIVE_ONEOF_ASSUMPTION"
+        }
+      },
+      {
+        "id": "RELEASE038-POLICY-RULES-EVALUATION-FREEZE-20261117",
+        "state": "USER_APPROVED_CURRENT_FIELDS_ONLY",
+        "value": {
+          "version": "0.3.8",
+          "field_set": [
+            "state"
+          ],
+          "field_set_status": "APPROVED_ONLY_NO_NEW_SUBFIELDS",
+          "user_state_contract_file": "evaluation_state.json",
+          "natural_language_recording": "ALLOWED_WITHIN_CURRENT_USER_CONTRACT_OR_EXISTING_DOCUMENT_CONTENT",
+          "avoid_inventing_new_keys": true,
+          "extra_fields": "NOT_INTRODUCED_BY_PTSIP_IN_THIS_RELEASE",
+          "future_extension": "DEFER_TO_LATER_RELEASE",
+          "omitted_evaluation": "NO_EVALUATION_CONTRACT_REQUIRED_IF_NOT_USED",
+          "field_requiredness": null
+        }
+      },
+      {
+        "id": "RELEASE038-RBAC-VALUE-SEMANTICS-DEFERRED-20261117",
+        "state": "USER_APPROVED_NO_INNER_FIELD_MANDATE",
+        "value": {
+          "release": "0.3.8",
+          "approved_root_metadata": [
+            "file_name",
+            "file_id",
+            "format_version",
+            "file_title"
+          ],
+          "approved_provisional_body_fields": [
+            "RAC_list/AEC_list",
+            "RAC_id/AEC_id",
+            "RAC_name/AEC_name",
+            "RAC_description/AEC_description",
+            "value"
+          ],
+          "value_contract": {
+            "where": "IN_OWN_RAC_OR_AEC_LIST",
+            "internal_fields": "DEFERRED_UNCONSTRAINED_IN_0_3_8",
+            "semantic_interpretation": "UNVALIDATED_UNLESS_SEPARATE_USER_CONTRACT_EXPLICITLY_PROVIDES_IT",
+            "must_not_generate_unapproved_subfields": true
+          },
+          "evaluation_semantics": {
+            "no_mandatory_prepopulated_conditions": true,
+            "if_condition_created": "CODING_AGENT_MUST_EXPLAIN_MEANING_AND_RESPONSIBLE_SITUATIONS_IN_NATURAL_LANGUAGE_IN_OWNING_CONDITION_CONTEXT",
+            "schema_fields_for_explanation": "NOT_ADDED_AUTOMATICALLY",
+            "executability": "NO_GENERAL_AUTOMATIC_SEMANTIC_VALIDATION_CLAIM"
+          },
+          "final_requiredness": "NO_NEW_PTSIP_DEFAULT_CUSTOM_VALUE_REQUIREDNESS",
+          "linkage": {
+            "strategy": "EXACT_RECORD_ID_LOOKUP_IN_OWNING_LIST",
+            "RA": {
+              "record_id": "RA_id",
+              "record_owner": "RA-list.ptsip.yaml",
+              "pattern": "^R-ID-[0-9A-F]{32}$"
+            },
+            "RAC": {
+              "record_id": "RAC_id",
+              "record_owner": "RAC-list.ptsip.yaml",
+              "pattern": "^ID-RAC-[a-zA-F0-9]{16}$"
+            },
+            "AEC": {
+              "record_id": "AEC_id",
+              "record_owner": "AEC-list.ptsip.yaml",
+              "pattern": "^ID-AEC-[a-zA-F0-9]{16}$"
+            },
+            "edges": [
+              {
+                "from": "Policy_Rules.rules[].RA_id",
+                "to": "RA-list.ptsip.yaml::RA_id"
+              },
+              {
+                "from": "RA-list.ptsip.yaml::RAC_ids[]",
+                "to": "RAC-list.ptsip.yaml::RAC_id"
+              },
+              {
+                "from": "RA-list.ptsip.yaml::AEC_ids[]",
+                "to": "AEC-list.ptsip.yaml::AEC_id"
+              }
+            ],
+            "checks": [
+              "EXACT_MATCH",
+              "UNIQUE_ID",
+              "REFERENCED_ID_EXISTS",
+              "CORRECT_LIST_TYPE"
+            ],
+            "no_extra_registration_schema": true,
+            "file_id_distinct_from_record_id": true,
+            "no_cross_reference_by_guessed_filename": true,
+            "unresolved_value_schema_not_needed_for_lookup": true
+          },
+          "legacy_mapping": {
+            "analysis": "REQUIRED_IF_MIGRATING_LEGACY_SOURCE",
+            "unknown_kind": "REPORT_UNRESOLVED_NOT_INFER_RAC_OR_AEC",
+            "preserve_legacy_definition_or_responsibility": "NOT_REQUIRED",
+            "new_v4_schema_independent_of_legacy_translation": true
+          },
+          "generated_id_to_name": {
+            "require_consistent_pairing": true,
+            "validate_on_generation_and_reference_resolution": true,
+            "preallocate_actual_identifiers": false,
+            "storage_vs_derived_display_owner": "RA-FULL-FIELD-OWNERSHIP_PENDING_USER_REVIEW"
+          }
+        }
+      },
+      {
+        "id": "RELEASE038-RBAC-LINKAGE-BY-RECORD-ID-20261117",
+        "state": "USER_APPROVED_ID_LINKAGE",
+        "value": {
+          "strategy": "EXACT_RECORD_ID_LOOKUP_IN_OWNING_LIST",
+          "RA": {
+            "record_id": "RA_id",
+            "record_owner": "RA-list.ptsip.yaml",
+            "pattern": "^R-ID-[0-9A-F]{32}$"
+          },
+          "RAC": {
+            "record_id": "RAC_id",
+            "record_owner": "RAC-list.ptsip.yaml",
+            "pattern": "^ID-RAC-[a-zA-F0-9]{16}$"
+          },
+          "AEC": {
+            "record_id": "AEC_id",
+            "record_owner": "AEC-list.ptsip.yaml",
+            "pattern": "^ID-AEC-[a-zA-F0-9]{16}$"
+          },
+          "edges": [
+            {
+              "from": "Policy_Rules.rules[].RA_id",
+              "to": "RA-list.ptsip.yaml::RA_id"
+            },
+            {
+              "from": "RA-list.ptsip.yaml::RAC_ids[]",
+              "to": "RAC-list.ptsip.yaml::RAC_id"
+            },
+            {
+              "from": "RA-list.ptsip.yaml::AEC_ids[]",
+              "to": "AEC-list.ptsip.yaml::AEC_id"
+            }
+          ],
+          "checks": [
+            "EXACT_MATCH",
+            "UNIQUE_ID",
+            "REFERENCED_ID_EXISTS",
+            "CORRECT_LIST_TYPE"
+          ],
+          "no_extra_registration_schema": true,
+          "file_id_distinct_from_record_id": true,
+          "no_cross_reference_by_guessed_filename": true,
+          "unresolved_value_schema_not_needed_for_lookup": true
+        }
+      },
+      {
+        "id": "RELEASE038-LEGACY-ANALYSIS-AND-NAME-INTEGRITY-20261117",
+        "state": "USER_APPROVED_IMPLEMENTATION_OBLIGATION",
+        "value": {
+          "legacy": {
+            "analysis": "REQUIRED_IF_MIGRATING_LEGACY_SOURCE",
+            "unknown_kind": "REPORT_UNRESOLVED_NOT_INFER_RAC_OR_AEC",
+            "preserve_legacy_definition_or_responsibility": "NOT_REQUIRED",
+            "new_v4_schema_independent_of_legacy_translation": true
+          },
+          "generated_id_to_name": {
+            "require_consistent_pairing": true,
+            "validate_on_generation_and_reference_resolution": true,
+            "preallocate_actual_identifiers": false,
+            "storage_vs_derived_display_owner": "RA-FULL-FIELD-OWNERSHIP_PENDING_USER_REVIEW"
+          }
+        }
+      },
+      {
+        "id": "RELEASE038-RA-FULL-FIELD-OWNERSHIP-REVIEW-20261117",
+        "state": "USER_REVIEW_REQUESTED_NO_POLICY_CHOICE",
+        "value": {
+          "open_gate": "RA-FULL-FIELD-OWNERSHIP",
+          "fields": [
+            "RA_id",
+            "RA_title",
+            "RA_description",
+            "RAC_ids",
+            "RAC_name",
+            "AEC_ids",
+            "AEC_name"
+          ],
+          "unresolved": [
+            "RA_NAME_CANONICAL_OWNER_VS_RA_DISPLAY_COPY",
+            "RA_DESCRIPTION_AND_MINIMUM_STRUCTURE",
+            "RA_RELATION_NAME_STORAGE_SHAPE"
+          ],
+          "keep_blocked_on_pvr5": true
+        }
       }
     ],
     "concrete_work_plan": [
@@ -4762,7 +5111,7 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Define independent v4 field schemas using user-authored Policy_Category contract (two required namespace/definition semantic roles, three optional boundary/included/excluded responsibility roles; developer root_family/policy_kind noncontract), existing official Policy version options with separately user-customizable version formatting (exact official regex remains review), current two-element Lifecycle.evaluation date-of-latest-change and natural-language role description, Rules id/content.content_id[]/RA_id with separate user-configurable rules_patterns.json ONLY for rules[].id, user-configurable policy_content_id.json ONLY for content references and items IDs, and unchanged registered RA_id format, and Content items exactly id/value. No v3 inheritance or removed Content metadata fields.",
+        "action": "Implement approved four-field Policy v4 root with user-owned Policy_Category contract, optional Policy_Identity.version that MUST validate when present against official approved formats or an independent user-authored version contract in .ptsip/contract/user/, current two-element Lifecycle.evaluation (last_changed_date and natural-language role description), and only current approved Policy_Rules.evaluation fields. Rule ID uses rules_patterns.json, Content ID uses policy_content_id.json, RA_id follows existing RA List. Policy_Content.items[] is exactly id/value. Do not implement undefined future evaluation extensions, fixed category fields, missing version mandatory rules, or v3 inheritance.",
         "outputs": [
           "src/ptsip/schemas/policy/public-structure-policy.schema.json",
           "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
@@ -4770,10 +5119,13 @@
           "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json",
           "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
         ],
-        "blocked_on": [
-          "V4-FIELD-DETAIL"
-        ],
-        "note": "Only explicitly approved structure is final. User category custom field names not imposed by developer projections; user custom requiredness remains null outside two category contract required semantic roles. Any other PVR-03 blocker status is preserved for separate review. Rule ID pattern contract responsibility and filename have explicit user approval; do not misapply content ID pattern to rules[].id or RA_id."
+        "blocked_on": [],
+        "note": "V4-FIELD-DETAIL denotes final subfield/validation review, not a runtime const; current release field scope is now explicitly resolved or deferred. Version omission is valid; version presence requires official or user contract. No new evaluation fields. Future user-defined extensions do not block this PVR.",
+        "deferred_not_blocking": [
+          "UNAPPROVED_FUTURE_POLICY_RULES_EVALUATION_FIELDS",
+          "USER_CUSTOM_POLICY_CATEGORY_PHYSICAL_NAMES",
+          "SINGLE_OFFICIAL_VERSION_REGEX_FINALIZATION"
+        ]
       },
       {
         "id": "PVR-04",
@@ -4781,26 +5133,39 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Use approved four flat root metadata fields and independently approved provisional RAC_list/AEC_list five-field body layouts as authoring basis. Keep final schema requiredness, record value internals, evidence-owner questions and registration linkage unresolved; do not generate executable/final schemas until applicable gates are resolved.",
+        "action": "For 0.3.8, create RAC/AEC/RA list structural schemas from approved metadata and provisional record fields without inventing RAC/AEC value internal schema. value stays in its owning list and its semantic internals stay open to future release. If a coding agent creates a condition, record a natural-language explanation of its meaning and responsible situations in that condition's own context, without forcing all list entries to preexist or inventing new required field names. Register and validate existing approved RAC_id/AEC_id/RA_id by exact ID lookup in owning List; no independent registration schema. No general automatic semantic evaluation claim.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
           "src/ptsip/schemas/storage/rbac/aec-list.schema.json"
         ],
-        "blocked_on": [
-          "RAC_AEC_VALUE_INNER_CONTRACT_UNRESOLVED",
-          "RAC_AEC_FINAL_SCHEMA_REQUIREDNESS_UNRESOLVED",
-          "RBAC_REGISTRATION_LINKAGE_UNRESOLVED",
-          "RAC_AEC_EVALUATION_SEMANTICS_UNRESOLVED"
-        ],
-        "note": "Permitted: provisional RAC/AEC structure and tests; not permitted: finalize unresolved value semantics or evaluation authority by assumption."
+        "blocked_on": [],
+        "note": "Value internals and generalized evaluation semantics deliberately deferred and NOT v0.3.8 schema-generation blockers; root metadata and known IDs are validated. Generated records must carry explanation of meaning/responsibility in their owning context without imposing speculative schema subfields.",
+        "deferred_not_blocking": [
+          {
+            "id": "RAC_AEC_VALUE_INNER_CONTRACT_UNRESOLVED",
+            "disposition": "DEFER_INNER_FIELDS_AND_NO_DEFAULT_CUSTOM_REQUIREDNESS"
+          },
+          {
+            "id": "RAC_AEC_FINAL_SCHEMA_REQUIREDNESS_UNRESOLVED",
+            "disposition": "DEFER_INNER_FIELDS_AND_NO_DEFAULT_CUSTOM_REQUIREDNESS"
+          },
+          {
+            "id": "RBAC_REGISTRATION_LINKAGE_UNRESOLVED",
+            "disposition": "RESOLVED_ID_LOOKUP"
+          },
+          {
+            "id": "RAC_AEC_EVALUATION_SEMANTICS_UNRESOLVED",
+            "disposition": "DEFER_GENERAL_EVALUATION_REQUIRE_AUTHOR_EXPLANATION_ON_CREATION"
+          }
+        ]
       },
       {
         "id": "PVR-05",
         "dependency": [
           "PVR-04"
         ],
-        "action": "Finalize RA List internal RAC_ids/RAC_name and AEC_ids/AEC_name relationships, verify registered RAC/AEC name ownership, 1-to-many ID/name matching, rich GUI-readable responsibilities, and historical condition_id binding kind before schema creation.",
+        "action": "Review remaining RA-FULL-FIELD-OWNERSHIP responsibility boundary with user: RA_id/RA_title/RA_description and linked RAC_ids/RAC_name/AEC_ids/AEC_name ownership, whether human-readable names are stored redundantly in RA or derived from canonical RAC/AEC Lists, and minimum structural obligations; do NOT silently decide this issue. Enforce exact ID-to-name matching when condition records are actually created or linked; do not require IDs to be predefined now. Investigate legacy condition_id RAC/AEC meaning read-only when actual conversion is needed; UNKNOWN is acceptable, no arbitrary mapping and no obligation to preserve original legacy field definition or responsibility. New v4 RA List authoring need not wait for legacy translation.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "RA field responsibility ownership matrix",
@@ -4808,10 +5173,19 @@
           "RAC_name/AEC_name role and cardinality decision record"
         ],
         "blocked_on": [
-          "RA-FULL-FIELD-OWNERSHIP",
-          "LEGACY-CONDITION-KIND-MAPPING",
-          "RAC_AEC_NAME_MAPPING_CARDINALITY"
-        ]
+          "RA-FULL-FIELD-OWNERSHIP"
+        ],
+        "deferred_or_implementation_only": [
+          {
+            "former_blocker": "LEGACY-CONDITION-KIND-MAPPING",
+            "disposition": "READ_ONLY_ANALYZE_IF_ACTUAL_MIGRATION; UNKNOWN_ALLOWED_NOT_REQUIRED_FOR_NEW_V4; NO_FORCED_LEGACY_SEMANTIC_PRESERVATION"
+          },
+          {
+            "former_blocker": "RAC_AEC_NAME_MAPPING_CARDINALITY",
+            "disposition": "GENERATION_TIME_ID_TO_CANONICAL_NAME_INTEGRITY_TEST; NO_PREALLOCATION"
+          }
+        ],
+        "note": "RA-FULL-FIELD-OWNERSHIP is explicitly awaiting user clarification; the other two historical blockers are now respectively a conditional analysis task and deterministic implementation conformance rule."
       },
       {
         "id": "PVR-06",
@@ -4824,7 +5198,8 @@
           "RA-forward-reference lookup contract",
           "missing RA or RAC/AEC negative tests",
           "derived GUI accountability cache read-only contract"
-        ]
+        ],
+        "note": "Forward-only ID reference validation can use registered RA/RAC/AEC record IDs without generalized value evaluation; final PVR-05 RA name ownership must still be reviewed, no reverse link schema."
       },
       {
         "id": "PVR-07",
@@ -4838,7 +5213,8 @@
           "src/tests/ptsip/test_policy_v4_schema.py",
           "src/tests/ptsip/test_policy_ra_registry_resolution.py",
           "src/tests/ptsip/test_rbac_cross_reference.py"
-        ]
+        ],
+        "note": "Conformance tests for 0.3.8 cover only approved current structure, ID->registered record integrity, generated ID/name pairing, optional version official-or-user mode, and authored condition explanation. Do NOT fail on deferred RAC/AEC value internals or unapproved future Policy_Rules.evaluation fields."
       },
       {
         "id": "PVR-08",
@@ -5457,6 +5833,100 @@
       "release_and_user_repo_write": "NOT_PERFORMED",
       "simulation_not_real_tests": true,
       "remediation_path": "INDEPENDENT_TECHNICAL_WORK_CONTINUES;UNRESOLVED_SEMANTICS_RECORDED_AND_RAISED_ONLY_WHEN_NONRECOVERABLE"
+    },
+    "current_version_rbac_contract_scope": {
+      "release": "0.3.8",
+      "approved_root_metadata": [
+        "file_name",
+        "file_id",
+        "format_version",
+        "file_title"
+      ],
+      "approved_provisional_body_fields": [
+        "RAC_list/AEC_list",
+        "RAC_id/AEC_id",
+        "RAC_name/AEC_name",
+        "RAC_description/AEC_description",
+        "value"
+      ],
+      "value_contract": {
+        "where": "IN_OWN_RAC_OR_AEC_LIST",
+        "internal_fields": "DEFERRED_UNCONSTRAINED_IN_0_3_8",
+        "semantic_interpretation": "UNVALIDATED_UNLESS_SEPARATE_USER_CONTRACT_EXPLICITLY_PROVIDES_IT",
+        "must_not_generate_unapproved_subfields": true
+      },
+      "evaluation_semantics": {
+        "no_mandatory_prepopulated_conditions": true,
+        "if_condition_created": "CODING_AGENT_MUST_EXPLAIN_MEANING_AND_RESPONSIBLE_SITUATIONS_IN_NATURAL_LANGUAGE_IN_OWNING_CONDITION_CONTEXT",
+        "schema_fields_for_explanation": "NOT_ADDED_AUTOMATICALLY",
+        "executability": "NO_GENERAL_AUTOMATIC_SEMANTIC_VALIDATION_CLAIM"
+      },
+      "final_requiredness": "NO_NEW_PTSIP_DEFAULT_CUSTOM_VALUE_REQUIREDNESS",
+      "linkage": {
+        "strategy": "EXACT_RECORD_ID_LOOKUP_IN_OWNING_LIST",
+        "RA": {
+          "record_id": "RA_id",
+          "record_owner": "RA-list.ptsip.yaml",
+          "pattern": "^R-ID-[0-9A-F]{32}$"
+        },
+        "RAC": {
+          "record_id": "RAC_id",
+          "record_owner": "RAC-list.ptsip.yaml",
+          "pattern": "^ID-RAC-[a-zA-F0-9]{16}$"
+        },
+        "AEC": {
+          "record_id": "AEC_id",
+          "record_owner": "AEC-list.ptsip.yaml",
+          "pattern": "^ID-AEC-[a-zA-F0-9]{16}$"
+        },
+        "edges": [
+          {
+            "from": "Policy_Rules.rules[].RA_id",
+            "to": "RA-list.ptsip.yaml::RA_id"
+          },
+          {
+            "from": "RA-list.ptsip.yaml::RAC_ids[]",
+            "to": "RAC-list.ptsip.yaml::RAC_id"
+          },
+          {
+            "from": "RA-list.ptsip.yaml::AEC_ids[]",
+            "to": "AEC-list.ptsip.yaml::AEC_id"
+          }
+        ],
+        "checks": [
+          "EXACT_MATCH",
+          "UNIQUE_ID",
+          "REFERENCED_ID_EXISTS",
+          "CORRECT_LIST_TYPE"
+        ],
+        "no_extra_registration_schema": true,
+        "file_id_distinct_from_record_id": true,
+        "no_cross_reference_by_guessed_filename": true,
+        "unresolved_value_schema_not_needed_for_lookup": true
+      },
+      "legacy_mapping": {
+        "analysis": "REQUIRED_IF_MIGRATING_LEGACY_SOURCE",
+        "unknown_kind": "REPORT_UNRESOLVED_NOT_INFER_RAC_OR_AEC",
+        "preserve_legacy_definition_or_responsibility": "NOT_REQUIRED",
+        "new_v4_schema_independent_of_legacy_translation": true
+      },
+      "generated_id_to_name": {
+        "require_consistent_pairing": true,
+        "validate_on_generation_and_reference_resolution": true,
+        "preallocate_actual_identifiers": false,
+        "storage_vs_derived_display_owner": "RA-FULL-FIELD-OWNERSHIP_PENDING_USER_REVIEW"
+      }
+    },
+    "current_release_deferrals": {
+      "policy_v4_evaluation_future_expansion": "NOT_REQUIRED_FOR_V0_3_8",
+      "rac_aec_value_internal_detail": "DEFERRED_NOT_A_V0_3_8_SCHEMA_CREATION_GATE",
+      "rac_aec_evaluation_semantics": "DEFERRED_NOT_A_V0_3_8_SCHEMA_CREATION_GATE",
+      "rac_aec_final_custom_value_requiredness": "DEFERRED_NO_DEFAULT_REQUIRED_FIELDS",
+      "rbac_linkage": "DECIDED_ID_TO_REGISTERED_LIST_RECORD",
+      "legacy_condition_translation": "READ_ONLY_ANALYSIS_IF_MIGRATING; NOT_PRESERVED_BY_DEFAULT_OR_REQUIRED_FOR_NEW_V4",
+      "rac_aec_generated_id_name_cardinality": "DETERMINISTIC_IMPLEMENTATION_CONFORMANCE_TEST_NOT_A_PREGENERATED_DATA_DECISION",
+      "ra_full_field_ownership": "USER_REQUESTED_EXPLANATION_NO_SILENT_RESOLUTION",
+      "scope": "PLAN_ONLY_NO_USER_INSTANCE_CREATION"
     }
   },
   "policy_conflict_resolution": {
@@ -5541,7 +6011,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-17: User explicitly approved an additional independent custom JSON Schema user contract file .ptsip/contract/user/rules_patterns.json, binding exclusively to Policy_Rules.rules[].id. Its responsibility is separate from policy_content_id.json (Content IDs) and RA_id (existing RA List ID grammar). PTSIP dedicated user-contract validator and missing-only runtime bootstrap apply; do not create user contract files in PTSIP developer checkout. Preserve current PVR approval, dependency and unresolved gate statuses.",
+    "last_user_direction": "2026-11-17: V4-FIELD-DETAIL is a PLAN gate (not schema const) whose current version obligations are now narrowed. Policy_Identity.version optional, but if present validate using official approved version notation(s) or an independent user-authored JSON contract under adopting .ptsip/contract/user/. No fixed custom fields or new Policy_Rules.evaluation expansion in 0.3.8; current approved field set only. RAC/AEC value internal fields and generalized evaluation semantics intentionally deferred; coding agent must explain meaning/responsibility when creating each condition in its owning context, no pre-filled list mandate. RBAC registration linkage is by approved RA/RAC/AEC record IDs in their owning lists. Legacy condition_id analysis conditional/read-only, unknown classification permitted and no forced semantic preservation. RAC/AEC name-ID exact correspondence is generation/conformance check, not up-front ID assignment. RA-FULL-FIELD-OWNERSHIP remains unresolved pending user's review, so do not silently close PVR-05. No source implementation or developer .ptsip/** mutation.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
@@ -5581,7 +6051,7 @@
         "id": "F-POL-006",
         "name": "version",
         "decision": "APPROVED_OPTIONS",
-        "note": "MAJOR.MINOR.PATCH, alpha/beta/Hotfix/rc suffixes, prefixes ver/v/Ver./V., optional Build and Build.Revision; exact grammar pending"
+        "note": "Policy_Identity.version is optional; if present MUST validate against one supported PTSIP official version notation (approved base/prefix/suffix/build candidates) OR an independent user-authored version contract under adopting project .ptsip/contract/user/. No schema required if version absent; exact official regex is implementation detail, not unresolved user policy gate."
       },
       {
         "id": "F-POL-007",
@@ -6266,7 +6736,11 @@
         ],
         "build_optional": true,
         "build_revision_optional": true,
-        "exact_regex": "PENDING"
+        "exact_regex": "ALL_APPROVED_OFFICIAL_FORMS_SUPPORTED_NO_SINGLE_REGEX_AS_VERSION_038_GATE",
+        "custom_user_contract": "ALLOWED_UNDER_.ptsip/contract/user/_AS_INDEPENDENT_JSON_SCHEMA",
+        "optional_field": true,
+        "validation_if_present": "MANDATORY_OFFICIAL_OR_USER_DEFINED_CONTRACT",
+        "none_if_absent": "NO_VERSION_CONTRACT_REQUIRED"
       },
       "lifecycle_states": [
         "DRAFT.Default",
@@ -6321,7 +6795,7 @@
       "category_physical_shape": "USER_AUTHORED_CATEGORY_CONTRACT_TWO_REQUIRED_SEMANTIC_ROLES_THREE_OPTIONAL;DEV_ROOT_FAMILY_AND_POLICY_KIND_ARE_NONCONTRACT_PROJECTIONS",
       "category_official_field": "Policy_Identity.Policy_Category",
       "evaluation_flexibility_review_20261116": {
-        "status": "DIRECTION_ONLY_FIELDS_UNFINALIZED",
+        "status": "CURRENT_APPROVED_FIELDS_FROZEN_FUTURE_EXTENSION_DEFERRED",
         "state": "USER_DEFINED_STATE_CONTRACT_CONSTANTS",
         "state_validator": "DEDICATED_PTSIP_USER_CONTRACT_VALIDATOR_WITH_USER_DECLARED_CONSTANTS",
         "filters": "OPTIONAL_CAN_BE_OMITTED",
@@ -6344,7 +6818,8 @@
         "state_contract_storage": ".ptsip/contract/user/",
         "unknown_state_semantics": "NOT_AUTOMATICALLY_VERIFIED",
         "user_contract_name": "evaluation_state",
-        "user_contracts_are_undeclared_until_authored": true
+        "user_contracts_are_undeclared_until_authored": true,
+        "candidate_fields_status": "NOT_PART_OF_CURRENT_RELEASE_MANDATORY_SCHEMA"
       },
       "content_id_binding": "USER_DECLARED_SYMBOLIC_CONSTANT_SAME_DOCUMENT_EXACT_MATCH",
       "category_contract_required_roles": [
@@ -6472,9 +6947,9 @@
           "F-AEC-013",
           "F-AEC-014"
         ],
-        "state": "PREVIOUS_6_CANDIDATES_REJECTED_REOPEN_AS_NEW_DESIGN_REVIEW",
+        "state": "DEFER_VALUE_INTERNALS_USE_ID_LINKAGE_ONLY_CURRENT_RELEASE",
         "previous_correction": "All 28 prior RAC/AEC List proposals rejected",
-        "choice_required": true
+        "choice_required": false
       },
       {
         "id": "PLAN_STATUS_TRANSITION_GRAPH",
@@ -6494,12 +6969,16 @@
           "F-RA-010",
           "F-RA-011"
         ],
-        "state": "VALID_FLOW_YAML_NAME_SOURCE_AND_COLLISION_RULE_PENDING"
+        "state": "GENERATED_ID_NAME_MATCH_REQUIRED_RA_NAME_STORAGE_REMAINS_UNRESOLVED",
+        "generation_rule": "EXACT_CANONICAL_NAME_BY_REGISTERED_ID"
       },
       {
         "id": "POLICY_VERSION_LEXICAL_ORDER",
         "field": "F-POL-006",
-        "state": "OPTIONS_APPROVED_REGEX_PENDING"
+        "state": "CURRENT_VERSION_SUPPORTED_OFFICIAL_OR_USER_CONTRACT",
+        "validation_condition": "VERSION_PRESENT_REQUIRES_OFFICIAL_OR_USER_CONTRACT; VERSION_ABSENT_NO_CONTRACT",
+        "regex_required_as_policy_decision": false,
+        "regex_must_not_block_schema": true
       },
       {
         "id": "POLICY_LIFECYCLE_EVALUATION_SHAPE",
