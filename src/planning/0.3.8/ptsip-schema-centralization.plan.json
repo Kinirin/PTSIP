@@ -494,8 +494,8 @@
     {
       "id": "RA-NAMING-AND-RELATION-OWNERSHIP",
       "scope": "RA-list.schema.json",
-      "state": "RA_ID_FORMAT_AND_NAME_ROLES_PRESERVED_OTHER_FIELDS_PENDING",
-      "note": "RA_title, RAC_name, AEC_name are distinct human-readable roles. RAC/AEC name ID mapping and requiredness not yet approved."
+      "state": "USER_APPROVED_ALL_SEVEN_FIELDS_AND_CANONICAL_RAC_AEC_NAME_OWNER",
+      "note": "RA record owns RA_id/RA_title/RA_description and grouped [AEC_ids,AEC_name], [RAC_ids,RAC_name]. RAC/AEC Lists exclusively own original condition ID/name creation. RA name fields are derived views matched by ID."
     },
     {
       "id": "LEGACY-CONDITION-ROLE-MAPPING",
@@ -505,8 +505,8 @@
     {
       "id": "RA-RAC-AEC-NAME-FIELDS",
       "scope": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
-      "state": "USER_CONFIRMED_PRESERVE_RAC_NAME_AEC_NAME_ROLES",
-      "note": "ID arrays alone are insufficient for GUI responsibility display; exact mapping and storage shape are future decisions"
+      "state": "USER_APPROVED_OWNED_RA_FIELDS_NONAUTHTORITATIVE",
+      "note": "RA owns both name view fields but cannot create/change canonical RAC/AEC condition names. Names must resolve from the own RAC/AEC list by ID."
     },
     {
       "id": "RA-NAME-CARDINALITY",
@@ -516,7 +516,8 @@
         "AEC_ids",
         "AEC_name"
       ],
-      "state": "UNRESOLVED_ID_TO_NAME_CARDINALITY_AND_SOURCE_OWNERSHIP"
+      "state": "USER_APPROVED_ONE_NAME_PER_REFERENCE_ID",
+      "note": "Multiple RAC/AEC references allowed; each RA ID/name relation pair matches exactly one owning RAC/AEC canonical list record. Creation and canonical names belong to RAC/AEC lists."
     },
     {
       "id": "RAC-AEC-REANALYSIS",
@@ -625,6 +626,31 @@
         "RA_id"
       ],
       "note": "On-demand missing-only user project bootstrap, no files created in PTSIP development checkout and no cross-feature validator reuse."
+    },
+    {
+      "id": "RA-SEVEN-FIELDS-NESTED-20261117",
+      "state": "APPROVED_BY_USER",
+      "scope": "RA-list.ptsip.yaml::RA_list.entries[]",
+      "fields": [
+        "RA_id",
+        "RA_title",
+        "RA_description",
+        "RAC_ids",
+        "RAC_name",
+        "AEC_ids",
+        "AEC_name"
+      ],
+      "grouping": [
+        "RA_id",
+        "RA_title",
+        "RA_description",
+        "[AEC_ids,AEC_name]",
+        "[RAC_ids,RAC_name]"
+      ],
+      "authoritative_name_owner": "RAC_OR_AEC_LIST_ONLY",
+      "RA_name_fields": "DERIVED_NONAUTHORITATIVE",
+      "field_requiredness": "UNCHANGED_NOT_NEWLY_DECIDED",
+      "note": "One RA record per RA_id with seven field roles, grouped AEC/RAC references and name views. RAC/AEC List alone manages canonical name creation; RA cannot become authoritative condition-name owner."
     }
   ],
   "target_registry": {
@@ -1197,7 +1223,7 @@
     {
       "path": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
       "filename": "ra-list.schema.json",
-      "responsibility": "RA List owns RA_id, RA_title, RA_description and RAC_ids/AEC_ids one-line title:ID references while preserving RAC_name/AEC_name readable role semantics; no extra purpose/status/source fields or policy reverse usage.",
+      "responsibility": "RA-list owns all seven fields for every RA_id record: RA_id RA_title RA_description [AEC_ids,AEC_name] [RAC_ids,RAC_name], with grouped references validated against canonical AEC/RAC List ID/name sources; RA never owns canonical condition name generation. One-line YAML reference name/ID pair convention maintained. No reverse policy usage fields.",
       "sources": [],
       "readiness": "APPROVED_ROLES_RAC_AEC_TITLE_ID_MAPPING_UNRESOLVED",
       "decision": "ONE_RA_LIST_OWNS_RELATIONSHIPS",
@@ -1710,7 +1736,7 @@
     },
     {
       "target": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
-      "resolution": "RA List preserves RA_id RA_title RAC_ids RAC_name AEC_ids AEC_name roles; registered RAC/AEC List own their names, RA-side name mapping or display lookup requires separate review; no separate relation schema and no policy usage backrefs."
+      "resolution": "RA List owns all seven fields per RA_id record: RA_id/RA_title/RA_description plus grouped [AEC_ids,AEC_name] and [RAC_ids,RAC_name]. RAC/AEC Lists separately own ID and canonical name creation. RA-side condition names are nonauthoritative derived presentation bound by exact registered ID/name lookup; no separate relation schema or policy reverse links."
     },
     {
       "target": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
@@ -1890,7 +1916,7 @@
       ],
       "actions": [
         "No new rbac-registration.schema.json and no schemas/storage/registry/rbac subdirectory in current v4; preserve independent runtime authorization obligations",
-        "RA-list.schema.json retains six responsibility dimensions: RA_id, RA_title, RAC_ids, RAC_name, AEC_ids, AEC_name; do not discard condition name/title fields while changing ID references",
+        "RA-list.schema.json owns exactly seven fields per RA_id record: RA_id, RA_title, RA_description, RAC_ids, RAC_name, AEC_ids, AEC_name. Group AEC_ids/AEC_name then RAC_ids/RAC_name under RA_id. RAC/AEC Lists exclusively create and manage canonical condition IDs/names; RA name fields are derived relationship displays, never authoritative names.",
         "distinguish user/mode/project profiles",
         "preserve historical profile versions as separately selectable contract definitions",
         "repair invalid User_Profile before admission",
@@ -1905,13 +1931,14 @@
         "Classify legacy condition_id C-ID records by actual registered condition role before RAC_ids or AEC_ids conversion; no name-based guessing",
         "RA_title is intended human title; previous component_bindings[*].rule observed, component_bindings.vrule not found in inspected sample; audit exact original before mapping",
         "Compare RAC_name/AEC_name semantics with existing src/ptsip/compile_sealed_rbac/rac.pp.3.00.schema.json and aec.pp.3.00.schema.json as read-only historical evidence; v4 does not inherit pp3 structural format",
-        "Decide whether names are looked up from registered RAC/AEC Lists or repeated as RA-local display fields; when multiple IDs exist require deterministic ID/name matching without guessing singular vs array forms",
+        "RAC_name/AEC_name in RA relationship groups MUST resolve by exact reference ID from RAC/AEC Lists, sole canonical name owners; ID/name mapping on creation and validation is deterministic, not a new user policy decision. No RA-owned name origin or independent name creation.",
         "RA name/title mappings to RAC/AEC IDs are shown in one-line valid YAML flow sequence; keep names for GUI; reject RA_purpose/normative_effect/source_ref/revision_ref.",
         "Keep rejected F-RAC/F-AEC-001..014 prior proposals rejected. Use explicitly approved provisional F-RAC/F-AEC-T001..T005 for design only; never infer final schema shape or field requiredness.",
         "Treat historical F-RAC/F-AEC-R001..R010 ideas as unapproved, obsolete review-only examples; latest provisional field source is developer/Temporary_Record/rbac-v4-provisional-field-contract-20261116.json.",
         "Use only approved four flat root fields file_name,file_id,format_version,file_title; no File_Identity or file_kind. Keep list-record ID separate from file_id; do not infer reference-based value definition.",
         "Resolve machine file_id relationship to current declarative registry entries[].id -> resource and conditional revision; avoid creating dual independently managed authoritative file identifiers.",
-        "Use exactly four flat root file metadata fields in RAC/AEC List: file_name, file_id, format_version, file_title; never wrap in File_Identity or add file_kind; RAC_list/AEC_list body separately reviewed."
+        "Use exactly four flat root file metadata fields in RAC/AEC List: file_name, file_id, format_version, file_title; never wrap in File_Identity or add file_kind; RAC_list/AEC_list body separately reviewed.",
+        "One RA_id entry has RA_title/RA_description and grouped [AEC_ids,AEC_name] / [RAC_ids,RAC_name] semantic structure; existing one-line YAML flow sequence for ID/name pairs remains. Do not add an eighth RA field or treat RA name displays as condition-name source of truth."
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
@@ -2306,7 +2333,7 @@
       "Schema filenames have no version except the explicitly approved historical project-profile-pp.1.01.schema.json and project-profile-pp.1.02.schema.json",
       "no unresolved $ref or duplicate registered $id",
       "Checklist no mandatory fields",
-      "RA_id syntax ^R-ID-[0-9A-F]{32}$, RA_title meaning, and RAC_ids/AEC_ids lookup consistency are validated in their proper owning List contracts; exact field requiredness awaits user approval",
+      "RA-list record per RA_id owns exactly RA_id, RA_title, RA_description, grouped AEC_ids/AEC_name and RAC_ids/RAC_name; RA ID follows ^R-ID-[0-9A-F]{32}$; names originate exclusively in RAC/AEC lists, RA views resolve to canonical names by ID. No additional default field requiredness implied.",
       "historical profiles remain verifiable",
       "new schema package data present in built wheel",
       "removed sources have zero remaining refs",
@@ -2342,7 +2369,7 @@
       "Historical C-ID condition_id must not be silently assigned to RAC_ids vs AEC_ids without verified semantic owner",
       "RA_title GUI readable semantics distinct from RA ID; complete responsibility field constraints require approval",
       "RAC_name and AEC_name responsibility meanings are preserved in RA List schema design and GUI projection; no schema simplification drops these semantic roles",
-      "When RA references multiple RAC_ids/AEC_ids, names must resolve deterministically to registered RAC/AEC definitions; exact field storage representation is explicitly approved before implementation",
+      "When RA references multiple RAC_ids/AEC_ids, each RA-side display name resolves by exact registered ID to the canonical owning RAC/AEC List name; 1:1 pairing and correct-list-type required. RA cannot author condition canonical name, and approved grouped relation structure needs no further policy decision.",
       "Plan v4 seven-state lifecycle rejects partial completion and execution from Halt.Discontinued",
       "Plan Checklist.column defaults exactly four approved columns and supports configurable >=10 columns; task_id source is .ptsip/tasks-generated tasks",
       "Policy_Rules.rules[].content.content_id[] resolves Policy_Content.items[].id with no rule source_ref, source_pointer, source_document",
@@ -2368,7 +2395,8 @@
       "Policy_Rules.evaluation supports only current approved field set in v0.3.8; do not infer/require new evaluation_scope/evaluated_at/description subfields from deferred future candidate lists.",
       "RAC/AEC value internals remain user-extensible and intentionally unconstrained in v0.3.8; no invented nested value contract and no generalized semantic evaluation success claim. When agent creates a condition, its meaning and responsibility circumstances must be explained within the owning condition context.",
       "RAC/AEC/RA links resolve by exact already-approved record IDs in their owning lists with uniqueness, existence and correct-list-type checks. Do not invent a separate RBAC registration schema or confuse file_id and record ID.",
-      "Legacy condition_id RAC/AEC classification must be evidence-based when conversion is attempted; UNKNOWN is not silently mapped and preserving historical meaning is not required for new v4. Generated ID/name pairs must match the canonical owning list record when created or linked, not be predefined."
+      "Legacy condition_id RAC/AEC classification must be evidence-based when conversion is attempted; UNKNOWN is not silently mapped and preserving historical meaning is not required for new v4. Generated ID/name pairs must match the canonical owning list record when created or linked, not be predefined.",
+      "RA List owns all seven declared fields per RA_id record including RA_description, with grouped [AEC_ids,AEC_name] and [RAC_ids,RAC_name]; RAC/AEC List solely owns creation and canonical meaning of its condition ID and name, RA display fields are nonauthoritative; no eighth field and no RA reverse policy reference."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -4291,71 +4319,159 @@
           "relationships": {
             "owner": "RA_LIST_RECORD",
             "field_candidates": [
-              "RAC_ids",
-              "RAC_name",
               "AEC_ids",
-              "AEC_name"
+              "AEC_name",
+              "RAC_ids",
+              "RAC_name"
             ],
-            "array_multiplicity": "APPROVED_DIRECTION",
+            "array_multiplicity": "MULTI_REFERENCE_GROUPS_USER_APPROVED",
             "relationship_requiredness": "UNRESOLVED",
-            "name_cardinality": "UNRESOLVED_FOR_MULTI_REFERENCES",
-            "registered_name_owner": "RAC/AEC respective List contracts",
+            "name_cardinality": "EACH_ID_CORRESPONDS_TO_ITS_CANONICAL_NAME_FROM_OWNING_LIST",
+            "registered_name_owner": "AEC_LIST_FOR_AEC_NAME_RAC_LIST_FOR_RAC_NAME",
             "one_line_format": "YAML_FLOW_SEQUENCE_SINGLE_PAIR_TITLE_ID_MAPS",
-            "name_id_pairing_owner": "RA_LIST_OWNED_RELATIONSHIP_RAC_AEC_DEFINITIONS_OWN_NAMES",
-            "canonical_name_resolution": "UNRESOLVED",
-            "current_version_name_id_matching": "VALIDATE_EXACT_REGISTERED_ID_TO_OWNING_RECORD_NAME_WHEN_RECORDS_CREATED_OR_LINKED",
+            "name_id_pairing_owner": "RA_RECORD_RELATION_GROUP_OWNS_PAIRING_AEC_AND_RAC_LIST_OWN_CANONICAL_NAMES",
+            "canonical_name_resolution": "LOOKUP_BY_EXACT_REGISTERED_ID_IN_OWNING_AEC_OR_RAC_LIST",
+            "current_version_name_id_matching": "MUST_MATCH_CANONICAL_TARGET_NAME_IN_OWNING_LIST_ON_GENERATION_AND_VALIDATION",
             "future_id_values": "GENERATED_AT_IMPLEMENTATION_OR_USER_AUTHORING_TIME_NOT_PRESPECIFIED",
-            "unresolved_name_representation": "STILL_PENDING_RA_FIELD_OWNERSHIP_USER_REVIEW"
+            "unresolved_name_representation": "RESOLVED_SEVEN_FIELDS_GROUPED_PAIRS_WITH_CANONICAL_LOOKUP"
           },
           "ra_title": {
             "concept": "RESPONSIBILITY_HUMAN_READABLE_TITLE",
             "legacy_alias_semantics": "component_bindings.vrule user-stated; observed component_bindings[*].rule in legacy sample; exact mapping unresolved"
           },
-          "complete_fields": "USER_DECIDED_ROLE_SET_NAME_ID_BINDING_UNRESOLVED",
-          "requiredness": "UNRESOLVED",
+          "complete_fields": "USER_APPROVED_ALL_SEVEN_RA_LIST_FIELDS_WITH_GROUPED_AEC_THEN_RAC_RELATIONS",
+          "requiredness": "NOT_NEWLY_DEFINED_BY_SEVEN_FIELD_OWNERSHIP",
           "policy_back_reference": "FORBIDDEN",
           "field_roles": {
-            "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
-            "RA_title": "Human-readable title of the RA responsibility",
-            "RAC_ids": "References to registered RAC conditions, multiple values allowed in direction",
-            "RAC_name": "Human-readable RAC title/name identifying the condition purpose; must not be discarded during ID-field migration",
-            "AEC_ids": "References to registered AEC conditions, multiple values allowed in direction",
-            "AEC_name": "Human-readable AEC title/name identifying the condition purpose; must not be discarded during ID-field migration"
+            "RA_id": "RA_LIST_RECORD_UNIQUE_ID",
+            "RA_title": "RA_LIST_RECORD_HUMAN_READABLE_RESPONSIBILITY_TITLE",
+            "RA_description": "RA_LIST_RECORD_NATURAL_LANGUAGE_RESPONSIBILITY_DESCRIPTION",
+            "AEC_ids": "RA_OWNED_REFERENCES_TO_CANONICAL_AEC_LIST_IDS",
+            "AEC_name": "RA_OWNED_DISPLAY_RELATION_DERIVED_FROM_AEC_LIST_CANONICAL_NAME",
+            "RAC_ids": "RA_OWNED_REFERENCES_TO_CANONICAL_RAC_LIST_IDS",
+            "RAC_name": "RA_OWNED_DISPLAY_RELATION_DERIVED_FROM_RAC_LIST_CANONICAL_NAME"
           },
           "name_metadata": {
-            "status": "FIELD_ROLES_PRESERVED_RECORD_CARDINALITY_UNRESOLVED",
+            "status": "USER_APPROVED_SEVEN_RA_FIELDS_DERIVED_NAME_VIEWS",
             "candidates": [
               "RA_id",
               "RA_title",
+              "RA_description",
               "RAC_ids",
               "RAC_name",
               "AEC_ids",
               "AEC_name"
             ],
             "roles": {
-              "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
-              "RA_title": "Human-readable title of the RA responsibility",
-              "RAC_ids": "References to registered RAC conditions, multiple values allowed in direction",
-              "RAC_name": "Human-readable RAC title/name identifying the condition purpose; must not be discarded during ID-field migration",
-              "AEC_ids": "References to registered AEC conditions, multiple values allowed in direction",
-              "AEC_name": "Human-readable AEC title/name identifying the condition purpose; must not be discarded during ID-field migration"
+              "RA_id": "RA_LIST_RECORD_UNIQUE_ID",
+              "RA_title": "RA_LIST_RECORD_HUMAN_READABLE_RESPONSIBILITY_TITLE",
+              "RA_description": "RA_LIST_RECORD_NATURAL_LANGUAGE_RESPONSIBILITY_DESCRIPTION",
+              "AEC_ids": "RA_OWNED_REFERENCES_TO_CANONICAL_AEC_LIST_IDS",
+              "AEC_name": "RA_OWNED_DISPLAY_RELATION_DERIVED_FROM_AEC_LIST_CANONICAL_NAME",
+              "RAC_ids": "RA_OWNED_REFERENCES_TO_CANONICAL_RAC_LIST_IDS",
+              "RAC_name": "RA_OWNED_DISPLAY_RELATION_DERIVED_FROM_RAC_LIST_CANONICAL_NAME"
             },
             "parent_schema": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
-            "RAC_name_source_owner": "RAC List owns registered RAC identity and name; new RA List record presentation/denormalization rule still unresolved",
-            "AEC_name_source_owner": "AEC List owns registered AEC identity and name; new RA List record presentation/denormalization rule still unresolved",
+            "RAC_name_source_owner": "RAC_LIST_CANONICAL_NAME_RA_LIST_CONTAINS_NONAUTHORITATIVE_DERIVED_VIEW",
+            "AEC_name_source_owner": "AEC_LIST_CANONICAL_NAME_RA_LIST_CONTAINS_NONAUTHORITATIVE_DERIVED_VIEW",
             "multiple_references": "RAC_ids/AEC_ids may each refer to multiple registered conditions",
-            "name_alignment": "INVARIANT: every generated RAC/AEC reference ID is linked to exactly its registered record and canonical name; no pre-generated IDs needed; storage vs lookup ownership still requires RA user review.",
-            "duplicate_data_policy": "UNDECIDED: identity source is respective RAC/AEC List; RA List may retain labeled display information only after owner/lookup semantics approved",
-            "field_requiredness": "UNRESOLVED",
-            "example_only": "DO_NOT_INFER_JSON_SCHEMA_TYPES_FOR_NAME_MULTIPLICITY",
-            "no_reverse_policy_usage": true
+            "name_alignment": "REQUIRED_1_TO_1_FOR_EACH_REFERENCED_CONDITION_ID_CANONICAL_OWNING_LIST_NAME",
+            "duplicate_data_policy": "RA_RAC_NAME_AND_AEC_NAME_ARE_DERIVED_NONAUTHORITATIVE_VIEWS_NOT_DUPLICATE_SOURCES_OF_TRUTH",
+            "field_requiredness": "NOT_NEWLY_DEFINED_BY_OWNER_DECISION",
+            "example_only": "CANONICAL_SEVEN_FIELD_NESTING_APPROVED_DATA_TYPE_DETAIL_STAYS_WITH_APPROVED_YAML_FLOW_MAP",
+            "no_reverse_policy_usage": true,
+            "display_relation_order": [
+              "AEC_ids",
+              "AEC_name",
+              "RAC_ids",
+              "RAC_name"
+            ]
           },
           "rejected_fields": [
             "RA_purpose",
             "RA_normative_effect",
             "RA_source_ref",
             "RA_revision_ref"
-          ]
+          ],
+          "fields_exactly": [
+            "RA_id",
+            "RA_title",
+            "RA_description",
+            "RAC_ids",
+            "RAC_name",
+            "AEC_ids",
+            "AEC_name"
+          ],
+          "owned_record_contract": {
+            "record_owner": "RA-list.ptsip.yaml::RA_list.entries[]",
+            "repeated_record_key": "RA_id",
+            "fields": [
+              "RA_id",
+              "RA_title",
+              "RA_description",
+              "RAC_ids",
+              "RAC_name",
+              "AEC_ids",
+              "AEC_name"
+            ],
+            "structure": [
+              {
+                "section": "RA_RECORD",
+                "fields": [
+                  "RA_id",
+                  "RA_title",
+                  "RA_description"
+                ],
+                "source_authority": "RA_LIST_RECORD"
+              },
+              {
+                "section": "AEC_RELATION_GROUP",
+                "fields": [
+                  "AEC_ids",
+                  "AEC_name"
+                ],
+                "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_AEC_LIST_CANONICAL_NAME",
+                "group_order": 1
+              },
+              {
+                "section": "RAC_RELATION_GROUP",
+                "fields": [
+                  "RAC_ids",
+                  "RAC_name"
+                ],
+                "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_RAC_LIST_CANONICAL_NAME",
+                "group_order": 2
+              }
+            ],
+            "multiplicity": "ZERO_OR_MORE_REFERENCES_PER_GROUP_SUBJECT_TO_AUTHOR_DECLARATION_NOT_NEW_REQUIREDNESS",
+            "relation_format": "ALREADY_APPROVED_ONE_LINE_YAML_FLOW_SEQUENCE_TITLE_TO_ID_PAIRS",
+            "physical_field_names": "EXACTLY_THE_SEVEN_APPROVED_NAMES_NO_EIGHTH_NAMING_FIELD",
+            "record_field_requiredness": "NOT_NEWLY_SPECIFIED_BY_THIS_OWNER_DECISION",
+            "creation_authority": {
+              "RA_RECORD_ID_TITLE_DESCRIPTION": "RA_LIST",
+              "AEC_ID_AND_CANONICAL_NAME": "AEC_LIST",
+              "RAC_ID_AND_CANONICAL_NAME": "RAC_LIST",
+              "RA_GROUP_AEC_IDS_AEC_NAME": "RA_LIST_OWNS_RELATION_VIEW_NOT_CANONICAL_AEC_NAME",
+              "RA_GROUP_RAC_IDS_RAC_NAME": "RA_LIST_OWNS_RELATION_VIEW_NOT_CANONICAL_RAC_NAME"
+            },
+            "name_source_of_truth": {
+              "AEC_name": "AEC-list.ptsip.yaml::AEC_name",
+              "RAC_name": "RAC-list.ptsip.yaml::RAC_name"
+            },
+            "ra_name_fields": "NONAUTHORITATIVE_RELATIONSHIP_PRESENTATION_DERIVED_FROM_REFERENCED_RECORDS",
+            "no_independent_RA_name_creation": true,
+            "no_RA_original_condition_definition": true,
+            "validate_when": "ON_REFERENCE_CONSTRUCTION_AND_ON_VALIDATION",
+            "validation_checks": [
+              "REFERENCE_ID_EXACT_MATCH",
+              "REFERENCE_TYPE_CORRECT",
+              "TARGET_EXISTS",
+              "TARGET_ID_UNIQUE",
+              "RA_DISPLAY_NAME_EQUALS_CANONICAL_TARGET_NAME"
+            ],
+            "approved_by": "EXPLICIT_USER_2026_11_17",
+            "not_new_files": true
+          }
         },
         "relation": {
           "owner": "RA_LIST_RECORD",
@@ -4363,21 +4479,21 @@
           "independent": false,
           "separate_schema": "DO_NOT_CREATE",
           "fields_candidates": [
-            "RAC_ids",
-            "RAC_name",
             "AEC_ids",
-            "AEC_name"
+            "AEC_name",
+            "RAC_ids",
+            "RAC_name"
           ],
           "ra_identity": "RA_id",
           "ra_title": "RA_title",
           "legacy_condition_id": "ANALYZE_LEGACY_KIND_WHEN_AVAILABLE; UNKNOWN_PERMITTED; NO_FORCED_PRESERVATION_OF_LEGACY_MEANING; NEVER_GUESS_MAPPING",
           "mapping_blocker": "LEGACY_ONLY_ANALYSIS_NOT_BARRIER_FOR_NEW_ID_BASED_REFERENCES",
-          "field_requiredness": "UNRESOLVED",
-          "gui_semantics": "RA_title plus RAC_name/AEC_name represent purpose/title of linked conditions; owner and 1-to-N mapping require explicit review",
+          "field_requiredness": "NOT_NEWLY_SPECIFIED",
+          "gui_semantics": "RA owns seven field grouped record with AEC_ids/AEC_name and RAC_ids/RAC_name derived display; each condition name canonical in AEC/RAC List; RA has no condition-name creation or authoritative identity.",
           "no_policy_backref": true,
           "names_are_required_semantic_roles": true,
-          "name_binding_type": "UNRESOLVED",
-          "field_cardinality": "MULTIPLE_TITLE_TO_ID_MAPS_SINGLE_LINE"
+          "name_binding_type": "EXACT_ID_TO_CANONICAL_NAME_RESOLUTION_AT_GENERATION_AND_READ",
+          "field_cardinality": "PER_RA_ID_RECORD_MULTI_AEC_AND_RAC_GROUPED_ID_NAME_PAIRS"
         },
         "registration": {
           "schema_owner": "NO_SEPARATE_SCHEMA_IN_CURRENT_V4",
@@ -4430,7 +4546,20 @@
             "no_extra_registration_schema": true,
             "file_id_distinct_from_record_id": true,
             "no_cross_reference_by_guessed_filename": true,
-            "unresolved_value_schema_not_needed_for_lookup": true
+            "unresolved_value_schema_not_needed_for_lookup": true,
+            "name_resolution": {
+              "canonical_name_owner": {
+                "RAC": "RAC-list.ptsip.yaml",
+                "AEC": "AEC-list.ptsip.yaml"
+              },
+              "RA_view_fields": {
+                "RAC": "RAC_name",
+                "AEC": "AEC_name"
+              },
+              "reference_requiredness": "NO_NEW_MANDATORY_REFERENCE_GROUP_REQUIREMENT",
+              "validation": "REGISTERED_ID_NAME_EXACT_MATCH",
+              "no_RA_name_generation_authority": true
+            }
           },
           "current_scope": "ID_LOOKUP_WITHIN_EXISTING_RA_RAC_AEC_LISTS"
         },
@@ -4518,8 +4647,8 @@
       },
       {
         "id": "RA-RELATION-FIELDS",
-        "state": "SCOPE_DECIDED_FIELDS_UNRESOLVED",
-        "value": "RA_list nested RA_id RA_title RAC_ids AEC_ids candidates; no separate list file; legacy condition_id mapping requires semantic analysis"
+        "state": "RESOLVED_SEVEN_FIELDS_PER_RA_ID_RECORD",
+        "value": "RA_list.entries[] record owns exactly RA_id, RA_title, RA_description, RAC_ids, RAC_name, AEC_ids, AEC_name. Structure: RA identity/title/description then [AEC_ids,AEC_name], [RAC_ids,RAC_name]. Condition ID and canonical name creation belongs to RAC/AEC Lists, not RA."
       },
       {
         "id": "RBAC-REGISTRATION-FIELDS",
@@ -4633,14 +4762,14 @@
         "id": "RA_RAC_AEC_NAME_PRESERVATION",
         "state": "USER_EXPLICIT_ROLE_PRESERVED",
         "value": {
-          "RAC_name": "Human-readable RAC condition title/role",
-          "AEC_name": "Human-readable AEC condition title/role"
+          "RAC_name": "RA_RECORD_FIELD_DERIVED_FROM_REGISTERED_RAC_LIST_CANONICAL_NAME",
+          "AEC_name": "RA_RECORD_FIELD_DERIVED_FROM_REGISTERED_AEC_LIST_CANONICAL_NAME"
         }
       },
       {
         "id": "RA_RAC_AEC_NAME_MAPPING",
-        "state": "GENERATED_REFERENCE_INTEGRITY_OBLIGATION_RA_STORAGE_OWNER_STILL_REVIEW",
-        "value": "IDs and names are assigned when actual RAC/AEC records are generated; exact ID-to-canonical-name match MUST be validated by owning List and lookup. No need to predetermine actual IDs or names. Whether name is redundantly stored in RA vs derived from owning lists remains RA-FULL-FIELD-OWNERSHIP review."
+        "state": "USER_APPROVED_CANONICAL_OWNER_AND_GROUPED_RELATIONSHIP_VIEW",
+        "value": "Each RA_id record owns grouped AEC_ids/AEC_name and RAC_ids/RAC_name relationship fields. RAC/AEC List is sole creator/source of each condition ID/canonical name. RA display names derive from exact ID lookup and must match the canonical name; no authoritative RA-side name creation."
       },
       {
         "id": "RAC-AEC-PREVIOUS-FIELD-SET-REJECTION",
@@ -5047,9 +5176,9 @@
       },
       {
         "id": "RELEASE038-RA-FULL-FIELD-OWNERSHIP-REVIEW-20261117",
-        "state": "USER_REVIEW_REQUESTED_NO_POLICY_CHOICE",
+        "state": "USER_APPROVED_AND_RESOLVED",
         "value": {
-          "open_gate": "RA-FULL-FIELD-OWNERSHIP",
+          "open_gate": "RESOLVED_RA_7_FIELDS_AND_LIST_OWNED_CANONICAL_NAMES",
           "fields": [
             "RA_id",
             "RA_title",
@@ -5059,12 +5188,98 @@
             "AEC_ids",
             "AEC_name"
           ],
-          "unresolved": [
-            "RA_NAME_CANONICAL_OWNER_VS_RA_DISPLAY_COPY",
-            "RA_DESCRIPTION_AND_MINIMUM_STRUCTURE",
-            "RA_RELATION_NAME_STORAGE_SHAPE"
-          ],
-          "keep_blocked_on_pvr5": true
+          "unresolved": [],
+          "keep_blocked_on_pvr5": false,
+          "resolution": "RA owns seven relation fields under each RA_id. Condition canonical ID/name creation remains with respective RAC/AEC List. RA names are derived nonauthoritative views paired with referenced IDs."
+        }
+      },
+      {
+        "id": "RELEASE038-RA-SEVEN-FIELDS-CANONICAL-CONDITION-OWNERSHIP-20261117",
+        "state": "USER_APPROVED_EXACT_SEVEN_FIELD_OWNER_AND_GROUPED_LAYOUT",
+        "value": {
+          "record": {
+            "record_owner": "RA-list.ptsip.yaml::RA_list.entries[]",
+            "repeated_record_key": "RA_id",
+            "fields": [
+              "RA_id",
+              "RA_title",
+              "RA_description",
+              "RAC_ids",
+              "RAC_name",
+              "AEC_ids",
+              "AEC_name"
+            ],
+            "structure": [
+              {
+                "section": "RA_RECORD",
+                "fields": [
+                  "RA_id",
+                  "RA_title",
+                  "RA_description"
+                ],
+                "source_authority": "RA_LIST_RECORD"
+              },
+              {
+                "section": "AEC_RELATION_GROUP",
+                "fields": [
+                  "AEC_ids",
+                  "AEC_name"
+                ],
+                "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_AEC_LIST_CANONICAL_NAME",
+                "group_order": 1
+              },
+              {
+                "section": "RAC_RELATION_GROUP",
+                "fields": [
+                  "RAC_ids",
+                  "RAC_name"
+                ],
+                "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_RAC_LIST_CANONICAL_NAME",
+                "group_order": 2
+              }
+            ],
+            "multiplicity": "ZERO_OR_MORE_REFERENCES_PER_GROUP_SUBJECT_TO_AUTHOR_DECLARATION_NOT_NEW_REQUIREDNESS",
+            "relation_format": "ALREADY_APPROVED_ONE_LINE_YAML_FLOW_SEQUENCE_TITLE_TO_ID_PAIRS",
+            "physical_field_names": "EXACTLY_THE_SEVEN_APPROVED_NAMES_NO_EIGHTH_NAMING_FIELD",
+            "record_field_requiredness": "NOT_NEWLY_SPECIFIED_BY_THIS_OWNER_DECISION",
+            "creation_authority": {
+              "RA_RECORD_ID_TITLE_DESCRIPTION": "RA_LIST",
+              "AEC_ID_AND_CANONICAL_NAME": "AEC_LIST",
+              "RAC_ID_AND_CANONICAL_NAME": "RAC_LIST",
+              "RA_GROUP_AEC_IDS_AEC_NAME": "RA_LIST_OWNS_RELATION_VIEW_NOT_CANONICAL_AEC_NAME",
+              "RA_GROUP_RAC_IDS_RAC_NAME": "RA_LIST_OWNS_RELATION_VIEW_NOT_CANONICAL_RAC_NAME"
+            },
+            "name_source_of_truth": {
+              "AEC_name": "AEC-list.ptsip.yaml::AEC_name",
+              "RAC_name": "RAC-list.ptsip.yaml::RAC_name"
+            },
+            "ra_name_fields": "NONAUTHORITATIVE_RELATIONSHIP_PRESENTATION_DERIVED_FROM_REFERENCED_RECORDS",
+            "no_independent_RA_name_creation": true,
+            "no_RA_original_condition_definition": true,
+            "validate_when": "ON_REFERENCE_CONSTRUCTION_AND_ON_VALIDATION",
+            "validation_checks": [
+              "REFERENCE_ID_EXACT_MATCH",
+              "REFERENCE_TYPE_CORRECT",
+              "TARGET_EXISTS",
+              "TARGET_ID_UNIQUE",
+              "RA_DISPLAY_NAME_EQUALS_CANONICAL_TARGET_NAME"
+            ],
+            "approved_by": "EXPLICIT_USER_2026_11_17",
+            "not_new_files": true
+          },
+          "ref_field_roles": {
+            "RA_id": "RA_LIST_RECORD_UNIQUE_ID",
+            "RA_title": "RA_LIST_RECORD_HUMAN_READABLE_RESPONSIBILITY_TITLE",
+            "RA_description": "RA_LIST_RECORD_NATURAL_LANGUAGE_RESPONSIBILITY_DESCRIPTION",
+            "AEC_ids": "RA_OWNED_REFERENCES_TO_CANONICAL_AEC_LIST_IDS",
+            "AEC_name": "RA_OWNED_DISPLAY_RELATION_DERIVED_FROM_AEC_LIST_CANONICAL_NAME",
+            "RAC_ids": "RA_OWNED_REFERENCES_TO_CANONICAL_RAC_LIST_IDS",
+            "RAC_name": "RA_OWNED_DISPLAY_RELATION_DERIVED_FROM_RAC_LIST_CANONICAL_NAME"
+          },
+          "name_ownership": "RAC_LIST_AND_AEC_LIST_EXCLUSIVE_CANONICAL_CREATION_AND_STORAGE",
+          "RA_authority": "RELATIONSHIP_AND_NONAUTHTORITATIVE_DISPLAY_ONLY",
+          "do_not_generate_RA_name_source": true,
+          "plan_gate_disposition": "RA-FULL-FIELD-OWNERSHIP_RESOLVED"
         }
       }
     ],
@@ -5165,16 +5380,15 @@
         "dependency": [
           "PVR-04"
         ],
-        "action": "Review remaining RA-FULL-FIELD-OWNERSHIP responsibility boundary with user: RA_id/RA_title/RA_description and linked RAC_ids/RAC_name/AEC_ids/AEC_name ownership, whether human-readable names are stored redundantly in RA or derived from canonical RAC/AEC Lists, and minimum structural obligations; do NOT silently decide this issue. Enforce exact ID-to-name matching when condition records are actually created or linked; do not require IDs to be predefined now. Investigate legacy condition_id RAC/AEC meaning read-only when actual conversion is needed; UNKNOWN is acceptable, no arbitrary mapping and no obligation to preserve original legacy field definition or responsibility. New v4 RA List authoring need not wait for legacy translation.",
+        "action": "Implement RA-list record with exactly seven owned fields under each RA_id: RA_id, RA_title, RA_description and grouped [AEC_ids,AEC_name], [RAC_ids,RAC_name] associations. RA owns grouping/relationship presentation, but RAC/AEC respective Lists exclusively create/store canonical condition IDs and names; RA name views resolve by exact registered ID and match canonical target name. Validate 1:1 ID/name correspondence for each of multiple references. Do not invent new requiredness, extra RA fields, original condition names in RA or reverse policy usage. Analyze legacy condition_id only if actual legacy conversion requires it; no guessed classification or forced semantic preservation.",
         "outputs": [
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "RA field responsibility ownership matrix",
           "legacy condition_id conversion classification evidence",
-          "RAC_name/AEC_name role and cardinality decision record"
+          "RAC_name/AEC_name role and cardinality decision record",
+          "RA seven-field nested record role contract and ID-to-canonical-name conformance tests"
         ],
-        "blocked_on": [
-          "RA-FULL-FIELD-OWNERSHIP"
-        ],
+        "blocked_on": [],
         "deferred_or_implementation_only": [
           {
             "former_blocker": "LEGACY-CONDITION-KIND-MAPPING",
@@ -5185,7 +5399,7 @@
             "disposition": "GENERATION_TIME_ID_TO_CANONICAL_NAME_INTEGRITY_TEST; NO_PREALLOCATION"
           }
         ],
-        "note": "RA-FULL-FIELD-OWNERSHIP is explicitly awaiting user clarification; the other two historical blockers are now respectively a conditional analysis task and deterministic implementation conformance rule."
+        "note": "RA-FULL-FIELD-OWNERSHIP resolved by user's 2026-11-17 exact seven-field hierarchy. PVR-05 now has no direct policy blocker; conditional legacy analysis remains and unknown legacy condition type must not be guessed."
       },
       {
         "id": "PVR-06",
@@ -5199,7 +5413,7 @@
           "missing RA or RAC/AEC negative tests",
           "derived GUI accountability cache read-only contract"
         ],
-        "note": "Forward-only ID reference validation can use registered RA/RAC/AEC record IDs without generalized value evaluation; final PVR-05 RA name ownership must still be reviewed, no reverse link schema."
+        "note": "Policy->RA->RAC/AEC forward-only lookups use RA-owned grouped ID/name relationship display; RAC/AEC Lists own canonical condition names and ID creation. PVR-05 RA ownership now approved; no RA canonical-name authority."
       },
       {
         "id": "PVR-07",
@@ -5214,7 +5428,7 @@
           "src/tests/ptsip/test_policy_ra_registry_resolution.py",
           "src/tests/ptsip/test_rbac_cross_reference.py"
         ],
-        "note": "Conformance tests for 0.3.8 cover only approved current structure, ID->registered record integrity, generated ID/name pairing, optional version official-or-user mode, and authored condition explanation. Do NOT fail on deferred RAC/AEC value internals or unapproved future Policy_Rules.evaluation fields."
+        "note": "Conformance for 0.3.8 verifies seven RA fields per RA_id, grouped AEC/RAC ID-name pairs, canonical RAC/AEC List ownership, no RA authoritative condition naming, optional version contract and approved current evaluation fields. No deferred RAC/AEC value internals required."
       },
       {
         "id": "PVR-08",
@@ -5902,7 +6116,9 @@
         "no_extra_registration_schema": true,
         "file_id_distinct_from_record_id": true,
         "no_cross_reference_by_guessed_filename": true,
-        "unresolved_value_schema_not_needed_for_lookup": true
+        "unresolved_value_schema_not_needed_for_lookup": true,
+        "canonical_condition_name_owner": "RAC_AEC_RESPECTIVE_LIST",
+        "RA_ref_name_semantics": "NONDURABLE_AUTHORITY_DERIVED_CANONICAL_NAME_BY_ID"
       },
       "legacy_mapping": {
         "analysis": "REQUIRED_IF_MIGRATING_LEGACY_SOURCE",
@@ -5914,7 +6130,78 @@
         "require_consistent_pairing": true,
         "validate_on_generation_and_reference_resolution": true,
         "preallocate_actual_identifiers": false,
-        "storage_vs_derived_display_owner": "RA-FULL-FIELD-OWNERSHIP_PENDING_USER_REVIEW"
+        "storage_vs_derived_display_owner": "RAC_AEC_LIST_CANONICAL_RA_LIST_DERIVED_DISPLAY_ONLY",
+        "ownership": "USER_APPROVED_CANONICAL_NAMES_ORIGINATE_ONLY_IN_RAC_AEC_LIST",
+        "record_nesting": {
+          "record_owner": "RA-list.ptsip.yaml::RA_list.entries[]",
+          "repeated_record_key": "RA_id",
+          "fields": [
+            "RA_id",
+            "RA_title",
+            "RA_description",
+            "RAC_ids",
+            "RAC_name",
+            "AEC_ids",
+            "AEC_name"
+          ],
+          "structure": [
+            {
+              "section": "RA_RECORD",
+              "fields": [
+                "RA_id",
+                "RA_title",
+                "RA_description"
+              ],
+              "source_authority": "RA_LIST_RECORD"
+            },
+            {
+              "section": "AEC_RELATION_GROUP",
+              "fields": [
+                "AEC_ids",
+                "AEC_name"
+              ],
+              "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_AEC_LIST_CANONICAL_NAME",
+              "group_order": 1
+            },
+            {
+              "section": "RAC_RELATION_GROUP",
+              "fields": [
+                "RAC_ids",
+                "RAC_name"
+              ],
+              "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_RAC_LIST_CANONICAL_NAME",
+              "group_order": 2
+            }
+          ],
+          "multiplicity": "ZERO_OR_MORE_REFERENCES_PER_GROUP_SUBJECT_TO_AUTHOR_DECLARATION_NOT_NEW_REQUIREDNESS",
+          "relation_format": "ALREADY_APPROVED_ONE_LINE_YAML_FLOW_SEQUENCE_TITLE_TO_ID_PAIRS",
+          "physical_field_names": "EXACTLY_THE_SEVEN_APPROVED_NAMES_NO_EIGHTH_NAMING_FIELD",
+          "record_field_requiredness": "NOT_NEWLY_SPECIFIED_BY_THIS_OWNER_DECISION",
+          "creation_authority": {
+            "RA_RECORD_ID_TITLE_DESCRIPTION": "RA_LIST",
+            "AEC_ID_AND_CANONICAL_NAME": "AEC_LIST",
+            "RAC_ID_AND_CANONICAL_NAME": "RAC_LIST",
+            "RA_GROUP_AEC_IDS_AEC_NAME": "RA_LIST_OWNS_RELATION_VIEW_NOT_CANONICAL_AEC_NAME",
+            "RA_GROUP_RAC_IDS_RAC_NAME": "RA_LIST_OWNS_RELATION_VIEW_NOT_CANONICAL_RAC_NAME"
+          },
+          "name_source_of_truth": {
+            "AEC_name": "AEC-list.ptsip.yaml::AEC_name",
+            "RAC_name": "RAC-list.ptsip.yaml::RAC_name"
+          },
+          "ra_name_fields": "NONAUTHORITATIVE_RELATIONSHIP_PRESENTATION_DERIVED_FROM_REFERENCED_RECORDS",
+          "no_independent_RA_name_creation": true,
+          "no_RA_original_condition_definition": true,
+          "validate_when": "ON_REFERENCE_CONSTRUCTION_AND_ON_VALIDATION",
+          "validation_checks": [
+            "REFERENCE_ID_EXACT_MATCH",
+            "REFERENCE_TYPE_CORRECT",
+            "TARGET_EXISTS",
+            "TARGET_ID_UNIQUE",
+            "RA_DISPLAY_NAME_EQUALS_CANONICAL_TARGET_NAME"
+          ],
+          "approved_by": "EXPLICIT_USER_2026_11_17",
+          "not_new_files": true
+        }
       }
     },
     "current_release_deferrals": {
@@ -5925,7 +6212,7 @@
       "rbac_linkage": "DECIDED_ID_TO_REGISTERED_LIST_RECORD",
       "legacy_condition_translation": "READ_ONLY_ANALYSIS_IF_MIGRATING; NOT_PRESERVED_BY_DEFAULT_OR_REQUIRED_FOR_NEW_V4",
       "rac_aec_generated_id_name_cardinality": "DETERMINISTIC_IMPLEMENTATION_CONFORMANCE_TEST_NOT_A_PREGENERATED_DATA_DECISION",
-      "ra_full_field_ownership": "USER_REQUESTED_EXPLANATION_NO_SILENT_RESOLUTION",
+      "ra_full_field_ownership": "USER_APPROVED_SEVEN_RA_FIELDS_GROUPED_AEC_RAC_CANONICAL_NAMES_OWNED_BY_RAC_AEC_LISTS",
       "scope": "PLAN_ONLY_NO_USER_INSTANCE_CREATION"
     }
   },
@@ -6011,7 +6298,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-17: V4-FIELD-DETAIL is a PLAN gate (not schema const) whose current version obligations are now narrowed. Policy_Identity.version optional, but if present validate using official approved version notation(s) or an independent user-authored JSON contract under adopting .ptsip/contract/user/. No fixed custom fields or new Policy_Rules.evaluation expansion in 0.3.8; current approved field set only. RAC/AEC value internal fields and generalized evaluation semantics intentionally deferred; coding agent must explain meaning/responsibility when creating each condition in its owning context, no pre-filled list mandate. RBAC registration linkage is by approved RA/RAC/AEC record IDs in their owning lists. Legacy condition_id analysis conditional/read-only, unknown classification permitted and no forced semantic preservation. RAC/AEC name-ID exact correspondence is generation/conformance check, not up-front ID assignment. RA-FULL-FIELD-OWNERSHIP remains unresolved pending user's review, so do not silently close PVR-05. No source implementation or developer .ptsip/** mutation.",
+    "last_user_direction": "2026-11-17: User confirms RA List record per RA_id owns all seven fields RA_id, RA_title, RA_description, RAC_ids, RAC_name, AEC_ids, AEC_name, structured RA title/description and grouped [AEC_ids,AEC_name], [RAC_ids,RAC_name]. RA owns relation fields/presentation only; RAC/AEC Lists alone own canonical condition ID/name creation and management. Every RA reference name must resolve from corresponding RAC/AEC List by exact ID; do not treat RA as canonical-name source. RA-FULL-FIELD-OWNERSHIP decision resolved and PVR-05 cleared; existing PVR-09 Go CLI gate and legacy conditional analysis preserved. No new user custom field requiredness or actual source/.ptsip changes.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
@@ -6215,17 +6502,20 @@
       {
         "id": "F-RA-003",
         "name": "RA_id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "note": "RA record unique identity under RA_list.entries[]; approved RA ID grammar unchanged."
       },
       {
         "id": "F-RA-004",
         "name": "RA_title",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "note": "RA-owned human-readable responsibility title per RA_id record."
       },
       {
         "id": "F-RA-005",
         "name": "RA_description",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "note": "RA-owned natural-language responsibility description per RA_id record, explicitly included as seventh field."
       },
       {
         "id": "F-RA-006",
@@ -6242,26 +6532,26 @@
       {
         "id": "F-RA-008",
         "name": "RAC_ids",
-        "decision": "APPROVED_ONE_LINE_FORMAT",
-        "note": "One-line YAML flow sequence of title:ID pairs, multiple members"
+        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "note": "RA-owned RAC reference group; each ID references canonical RAC List record."
       },
       {
         "id": "F-RA-009",
         "name": "RAC_name",
-        "decision": "PRESERVE_NAME_ROLE_LAYOUT_PENDING",
-        "note": "Human-readable title, one-to-many title and ID pairing not yet fully specified"
+        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "note": "RA-owned derived display field per referenced RAC ID, canonical name managed/created in RAC List, not RA."
       },
       {
         "id": "F-RA-010",
         "name": "AEC_ids",
-        "decision": "APPROVED_ONE_LINE_FORMAT",
-        "note": "One-line YAML flow sequence of title:ID pairs, multiple members"
+        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "note": "RA-owned AEC reference group; each ID references canonical AEC List record."
       },
       {
         "id": "F-RA-011",
         "name": "AEC_name",
-        "decision": "PRESERVE_NAME_ROLE_LAYOUT_PENDING",
-        "note": "Human-readable title, one-to-many title and ID pairing not yet fully specified"
+        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "note": "RA-owned derived display field per referenced AEC ID, canonical name managed/created in AEC List, not RA."
       },
       {
         "id": "F-RA-012",
@@ -6857,7 +7147,7 @@
       ],
       "linked_condition_representation": "FLOW_SEQUENCE_OF_SINGLE_PAIR_NAME_TO_ID_MAPS",
       "example": "RAC_ids: [{\"RAC title 1\": \"RAC-ID-1\"}, {\"RAC title 2\": \"RAC-ID-2\"}]",
-      "exact_name_binding": "UNRESOLVED; preserve RAC_name/AEC_name semantic roles",
+      "exact_name_binding": "APPROVED_RA_RELATION_FIELDS_DERIVED_FROM_CANONICAL_RAC_AEC_LIST_NAMES",
       "new_contract_file_locator_fields": "PRIOR_F-RAC-012..014_AND_F-AEC-012..014_REJECTED",
       "condition_file_vs_rego_source": "DISTINCT",
       "no_reverse_policy_use": true,
@@ -6969,8 +7259,38 @@
           "F-RA-010",
           "F-RA-011"
         ],
-        "state": "GENERATED_ID_NAME_MATCH_REQUIRED_RA_NAME_STORAGE_REMAINS_UNRESOLVED",
-        "generation_rule": "EXACT_CANONICAL_NAME_BY_REGISTERED_ID"
+        "state": "RESOLVED_ONE_NAME_PER_REGISTERED_ID_WITH_CANONICAL_RAC_AEC_OWNER",
+        "generation_rule": "ACTUAL_ID_NAME_PAIRS_ALLOCATED_IN_RAC_AEC_LISTS_AND_MATCHED_BY_ID_IN_RA",
+        "grouped_RA_layout": [
+          {
+            "section": "RA_RECORD",
+            "fields": [
+              "RA_id",
+              "RA_title",
+              "RA_description"
+            ],
+            "source_authority": "RA_LIST_RECORD"
+          },
+          {
+            "section": "AEC_RELATION_GROUP",
+            "fields": [
+              "AEC_ids",
+              "AEC_name"
+            ],
+            "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_AEC_LIST_CANONICAL_NAME",
+            "group_order": 1
+          },
+          {
+            "section": "RAC_RELATION_GROUP",
+            "fields": [
+              "RAC_ids",
+              "RAC_name"
+            ],
+            "pairing": "EACH_REFERENCED_ID_HAS_EXACT_MATCH_TO_RAC_LIST_CANONICAL_NAME",
+            "group_order": 2
+          }
+        ],
+        "RA_name_authority": "NONAUTHORITATIVE_RELATION_DISPLAY"
       },
       {
         "id": "POLICY_VERSION_LEXICAL_ORDER",
