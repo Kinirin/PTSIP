@@ -612,6 +612,19 @@
         "Policy_Content.items[]"
       ],
       "note": "Category five semantic roles 2 required/3 optional inside user-owned contract, no developer projection serialization. Lifecycle date and natural-language role description only. Content has id/value; no path/sha256/revision_ref. Content-ID pattern not for RA_id or rules[].id. Full PVR-03 blocker removal not approved."
+    },
+    {
+      "id": "PVR01-RULES-PATTERNS-FILE-20261117",
+      "scope": ".ptsip/contract/user/rules_patterns.json",
+      "state": "APPROVED_BY_USER",
+      "contract_owner": "USER",
+      "validator_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+      "target": "Policy_Rules.rules[].id",
+      "separate_from": [
+        "policy_content_id.json",
+        "RA_id"
+      ],
+      "note": "On-demand missing-only user project bootstrap, no files created in PTSIP development checkout and no cross-feature validator reuse."
     }
   ],
   "target_registry": {
@@ -1818,12 +1831,13 @@
         "Policy_Identity title names the policy; Policy_Category is a user-defined category contract (required semantic roles: category namespace and namespace definition; optional: other namespace boundaries, category responsibilities, excluded responsibilities). Developer root_family/policy_kind are presentation-only, not contract serialization or PVR-03 blockers.",
         "Policy_Identity.version grammar allows 3-part, optional suffix/prefix, optional build/revision components; separate revision field prohibited",
         "Policy_Lifecycle.status uses 13 existing official values; Policy_Lifecycle.evaluation currently consists of exactly two elements {last_changed_date: YYYYMMDD} (date of most recent change record) and {description: optional natural language <=200 chars} (role description). Future additions out of scope; no new third field or external approval ref.",
-        "Rules[] own id/content.content_id[]/RA_id. rules[].id accepts user/environment flexible syntax without extra PTSIP pattern contract; content.content_id[] alone binds to user policy_content_id.json pattern and same-document Policy_Content.items[].id; RA_id retains registered RA List's existing ^R-ID-[0-9A-F]{32}$ format and is never subject to user content ID pattern. evaluation.state uses user-authored state contract; description/evaluation_scope/evaluated_at remain candidates; no source_refs/evidence_refs.",
+        "Rules[] own id/content.content_id[]/RA_id. rules[].id uses a separate user-defined rules_patterns.json pattern contract; content.content_id[] and Policy_Content.items[].id bind to user policy_content_id.json pattern and same-document Policy_Content.items[].id; RA_id retains registered RA List's existing ^R-ID-[0-9A-F]{32}$ format and is never subject to user content ID pattern. evaluation.state uses user-authored state contract; description/evaluation_scope/evaluated_at remain candidates; no source_refs/evidence_refs.",
         "Policy_Content.items[] has exactly id and value. path/sha256/revision_ref were explicitly removed as redundant with the policy's identity and self-contained content; no source_pointer or source_document. Rule content_id[] matches same-document items[].id using user's content-ID contract.",
         "Content item ID pattern pending; v3 Unified Policy and old validation schemas not inherited",
         "Do not implement or invent fields from unapproved Content ID scheme and other undecided schema constraints",
         "For v4 contract design, integrate two PTSIP-auto-provisioned logical user contracts under adopting repository .ptsip/contract/user/: evaluation_state and policy_content_id. User owns constants/pattern declarations, PTSIP owns generic validators; no fixed enum or global ID regex. Do not create these instances in the PTSIP source repository while planning. Exact names/extensions and bootstrap trigger pending.",
-        "PTSIP dedicated user contract engine consumes .json JSON Schema Draft 2020-12 contracts only from adopting user project's .ptsip/contract/user/. This is separate from other PTSIP .schema.json validators. Auto-create only missing contract at runtime in adopting project, preserve existing, never mutate PTSIP development checkout .ptsip/."
+        "PTSIP dedicated user contract engine consumes .json JSON Schema Draft 2020-12 contracts only from adopting user project's .ptsip/contract/user/. This is separate from other PTSIP .schema.json validators. Auto-create only missing contract at runtime in adopting project, preserve existing, never mutate PTSIP development checkout .ptsip/.",
+        "In adopting user projects, provision missing .ptsip/contract/user/rules_patterns.json on demand through the dedicated user-contract engine; validate Policy_Rules.rules[].id only. Do not use policy_content_id.json for rule IDs or alter RA_id's existing RA List format. Never create user contract files inside this PTSIP development repository."
       ],
       "gate": "Four field contracts fully scoped; Content path approved; Rule evaluation nested; separate refs compile",
       "priority": "ACTIVE_FOCUS_POLICY_V4"
@@ -2348,7 +2362,8 @@
       "Policy_Content.items[] exposes exactly id and value; path, sha256, revision_ref, source_pointer and source_document are absent from the current v4 Content contract and shall not be reintroduced by schema generation.",
       "Policy_Category is a user-authored category contract; require semantic roles category namespace and namespace definition, allow optional other namespace boundary, included responsibilities and excluded responsibilities; developer root_family/policy_kind are not policy document contract fields.",
       "Policy_Lifecycle.evaluation has exactly the two current elements last_changed_date (date of latest change record) and description (role natural language); no third field or speculative future extension.",
-      "Policy_Rules.rules[].id syntax is user/environment-flexible; only content.content_id[]/Policy_Content.items[].id use user policy_content_id.json contract; RA_id exclusively follows registered RA-list format and cannot be overridden by Content-ID pattern."
+      "Policy_Rules.rules[].id syntax is user/environment-configurable through separate rules_patterns.json; only content.content_id[]/Policy_Content.items[].id use policy_content_id.json, while RA_id follows the existing RA List contract and cannot be overridden by these user pattern files.",
+      "Policy_Rules.rules[].id validates solely against user-defined rules_patterns.json when declared, without a global fixed rule ID regex; Policy_Rules.rules[].content.content_id[] and Policy_Content.items[].id use policy_content_id.json, and RA_id retains its existing RA List contract."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -4177,10 +4192,15 @@
           ],
           "evaluation_future_extension": "DEFERRED_NOT_IMPLEMENTED"
         },
-        "rule_id_syntax": "USER_AND_ENVIRONMENT_FLEXIBLE_NO_PTSIP_GLOBAL_FIXED_REGEX",
-        "rule_id_user_pattern_contract": "NOT_ASSIGNED_BY_THIS_DECISION",
+        "rule_id_syntax": "USER_AND_ENVIRONMENT_CONFIGURABLE_VIA_rules_patterns.json_NO_GLOBAL_FIXED_REGEX",
+        "rule_id_user_pattern_contract": "rules_patterns.json",
         "content_id_pattern_contract_scope": "Policy_Rules.rules[].content.content_id[] AND Policy_Content.items[].id ONLY",
-        "ra_id_pattern_contract_scope": "EXCLUDED_RA_ID_KEEPS_EXISTING_RA_LIST_PATTERN"
+        "ra_id_pattern_contract_scope": "EXCLUDED_FROM_rules_patterns.json_AND_policy_content_id.json_EXISTING_RA_LIST_PATTERN_APPLIES",
+        "rule_id_pattern_contract_root": ".ptsip/contract/user/",
+        "rule_id_pattern_contract_scope": "Policy_Rules.rules[].id_ONLY",
+        "rule_id_pattern_contract_owner": "USER",
+        "rule_id_pattern_validation": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR_APPLIES_USER_DEFINED_PATTERN_IF_PRESENT",
+        "rule_id_pattern_absent_contract_behavior": "AUTO_CREATE_NEUTRAL_rules_patterns.json_WHEN_NEEDED_IN_ADOPTING_PROJECT"
       },
       "rbac": {
         "root": "src/ptsip/schemas/storage/rbac/",
@@ -4676,7 +4696,26 @@
             "Policy_Rules.rules[].id",
             "Policy_Rules.rules[].RA_id"
           ],
-          "ra_existing_pattern": "^R-ID-[0-9A-F]{32}$"
+          "ra_existing_pattern": "^R-ID-[0-9A-F]{32}$",
+          "separate_rule_id_pattern_contract": "rules_patterns.json",
+          "rules_id_not_bound_to_content_id_contract": true,
+          "ra_id_not_bound_to_user_pattern_contracts": true
+        }
+      },
+      {
+        "id": "PVR01-RULES-PATTERNS-CONTRACT-20261117",
+        "state": "USER_APPROVED_EXACT_FILE_AND_RESPONSIBILITY",
+        "value": {
+          "root": ".ptsip/contract/user/",
+          "filename": "rules_patterns.json",
+          "schema_dialect": "JSON_SCHEMA_DRAFT_2020_12",
+          "target": "Policy_Rules.rules[].id",
+          "relationship_to_content_id_pattern": "SEPARATE_FILE_SEPARATE_VALIDATION_RESPONSIBILITY",
+          "content_id_pattern_file": "policy_content_id.json",
+          "ra_id_pattern": "RETAIN_EXISTING_RA_LIST_PATTERN",
+          "creation": "PTSIP_ON_DEMAND_MISSING_ONLY_IN_ADOPTING_USER_PROJECT",
+          "validator": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+          "do_not_write": "PTSIP_DEVELOPMENT_REPOSITORY_.ptsip/**"
         }
       }
     ],
@@ -4684,7 +4723,7 @@
       {
         "id": "PVR-01",
         "dependency": [],
-        "action": "Implement dedicated src/ptsip/user_contracts/ validator with JSON Schema Draft 2020-12 payloads in .json files isolated under adopting user project .ptsip/contract/user/. Package neutral templates evaluation_state.json and policy_content_id.json in src/ptsip/user_contracts/templates/. Bootstrap only missing contracts on demand into adopting projects, never the PTSIP development repository .ptsip/. Validator is dedicated to user contracts and cannot reuse other feature validators. Support user custom contracts and optional constraints with no required custom fields or global state/ID formats; Content references resolve within their policy document. Do not silently resolve unrelated blocked field decisions.",
+        "action": "Implement dedicated src/ptsip/user_contracts/ validator with JSON Schema Draft 2020-12 payloads in .json files isolated under adopting user project .ptsip/contract/user/. Package neutral templates evaluation_state.json, policy_content_id.json, and rules_patterns.json in src/ptsip/user_contracts/templates/. Bootstrap only missing contracts on demand into adopting projects, never the PTSIP development repository .ptsip/. Validator is dedicated to user contracts and cannot reuse other feature validators. Support separate rule ID pattern validation (rules_patterns.json -> Policy_Rules.rules[].id) independently of Content ID pattern validation (policy_content_id.json -> content IDs), with RA_id unaffected. Support user custom contracts and optional constraints with no required custom fields or global state/ID formats; Content references resolve within their policy document. Do not silently resolve unrelated blocked field decisions.",
         "outputs": [
           "4-field v4 structure record",
           "Content independent schema path approval",
@@ -4723,7 +4762,7 @@
           "PVR-01",
           "PVR-02"
         ],
-        "action": "Define independent v4 field schemas using user-authored Policy_Category contract (two required namespace/definition semantic roles, three optional boundary/included/excluded responsibility roles; developer root_family/policy_kind noncontract), existing official Policy version options with separately user-customizable version formatting (exact official regex remains review), current two-element Lifecycle.evaluation date-of-latest-change and natural-language role description, Rules id/content.content_id[]/RA_id with user pattern ONLY for content_id, and Content items exactly id/value. No v3 inheritance or removed Content metadata fields.",
+        "action": "Define independent v4 field schemas using user-authored Policy_Category contract (two required namespace/definition semantic roles, three optional boundary/included/excluded responsibility roles; developer root_family/policy_kind noncontract), existing official Policy version options with separately user-customizable version formatting (exact official regex remains review), current two-element Lifecycle.evaluation date-of-latest-change and natural-language role description, Rules id/content.content_id[]/RA_id with separate user-configurable rules_patterns.json ONLY for rules[].id, user-configurable policy_content_id.json ONLY for content references and items IDs, and unchanged registered RA_id format, and Content items exactly id/value. No v3 inheritance or removed Content metadata fields.",
         "outputs": [
           "src/ptsip/schemas/policy/public-structure-policy.schema.json",
           "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
@@ -4734,7 +4773,7 @@
         "blocked_on": [
           "V4-FIELD-DETAIL"
         ],
-        "note": "Only explicitly approved structure is final. User category custom field names not imposed by developer projections; user custom requiredness remains null outside two category contract required semantic roles. Any other PVR-03 blocker status is preserved for separate review."
+        "note": "Only explicitly approved structure is final. User category custom field names not imposed by developer projections; user custom requiredness remains null outside two category contract required semantic roles. Any other PVR-03 blocker status is preserved for separate review. Rule ID pattern contract responsibility and filename have explicit user approval; do not misapply content ID pattern to rules[].id or RA_id."
       },
       {
         "id": "PVR-04",
@@ -5014,8 +5053,12 @@
         "user_contract_file_extension": ".json",
         "user_contract_filenames": [
           "evaluation_state.json",
-          "policy_content_id.json"
-        ]
+          "policy_content_id.json",
+          "rules_patterns.json"
+        ],
+        "rules_id_pattern_contract": "rules_patterns.json",
+        "rules_id_contract_independent_from_content_id": true,
+        "rules_id_contract_excludes_RA_id": true
       },
       "proposals_not_approved": {
         "content_requiredness": null,
@@ -5046,7 +5089,7 @@
       "deployment_target": "EACH_ADOPTING_USER_REPOSITORY",
       "directory_bootstrap_owner": "PTSIP",
       "directory_bootstrap_action": "AUTO_CREATE",
-      "filesystem_creation_trigger": "ON_DEMAND_IN_ADOPTING_USER_PROJECT_ONLY_WHEN_REQUIRED_LOGICAL_CONTRACT_ABSENT",
+      "filesystem_creation_trigger": "ON_DEMAND_IN_ADOPTING_USER_PROJECT_ONLY_WHEN_EVALUATION_STATE_OR_POLICY_CONTENT_ID_OR_RULE_ID_PATTERN_NEEDED_AND_TARGET_FILE_ABSENT",
       "user_contract_content_owner": "USER",
       "provisioned_files": [
         {
@@ -5077,6 +5120,23 @@
           "if_present": "PRESERVE_UNCHANGED",
           "empty_or_malformed_present_contract": "DO_NOT_OVERWRITE_VALIDATION_REPORT_REQUIRED",
           "default_validation_semantics": "STRUCTURAL_ONLY_UNTIL_USER_DECLARATIONS_EXIST"
+        },
+        {
+          "logical_name": "rules_patterns",
+          "purpose": "USER_CONFIGURABLE_POLICY_RULE_ID_PATTERN_CONTRACT",
+          "contract_reference_consumer": "Policy_Rules.rules[].id",
+          "filename_and_extension": "rules_patterns.json",
+          "state": "USER_APPROVED_EXACT_NAME_JSON_SCHEMA_CONTENT",
+          "candidate_filename": "rules_patterns.json",
+          "candidate_format": "JSON_SCHEMA_DRAFT_2020_12",
+          "creation_trigger": "ON_DEMAND_MISSING_ONLY_IN_ADOPTING_USER_REPOSITORY",
+          "if_present": "PRESERVE_UNCHANGED",
+          "empty_or_malformed_present_contract": "DO_NOT_OVERWRITE_VALIDATION_REPORT_REQUIRED",
+          "default_validation_semantics": "STRUCTURAL_ONLY_UNTIL_USER_DECLARATIONS_EXIST",
+          "pattern_source": "USER_DEFINED_NO_GLOBAL_FIXED_RULE_ID_REGEX",
+          "validation_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+          "isolation": "INDEPENDENT_OF_policy_content_id.json_AND_RA_ID",
+          "no_default_user_required_fields": true
         }
       ],
       "pptsip_distribution_scope": "DEFINE_BOOTSTRAP_AND_VALIDATION_BEHAVIOR_IN_PTSIP_SOURCE_AND_PLAN",
@@ -5136,12 +5196,13 @@
         "suffix_rule": "JSON_ONLY_UNDER_USER_CONTRACT_ROOT",
         "examples": [
           "evaluation_state.json",
-          "policy_content_id.json"
+          "policy_content_id.json",
+          "rules_patterns.json"
         ],
         "user_approved_format": true,
         "user_explicitly_selected_extension": true,
         "agent_selected_extension_for_unblocked_execution": false,
-        "final_name_extension_and_format_approval": "USER_APPROVED",
+        "final_name_extension_and_format_approval": "USER_APPROVED_INCLUDING_rules_patterns.json",
         "clarify_extension_not_reused_validator": "DEDICATED_VALIDATOR_ROUTING_BY_USER_CONTRACT_ROOT_NOT_EXTENSION",
         "deprecated_extension": "SUPERSEDED_AGENT_TECHNICAL_SUFFIX",
         "distribution_templates_are_source_owned": true
@@ -5161,7 +5222,8 @@
         "binding_mode": {
           "known_bindings": {
             "evaluation_state.json": "Policy_Rules.evaluation.state",
-            "policy_content_id.json": "Policy_Content.items[].id"
+            "policy_content_id.json": "Policy_Content.items[].id",
+            "rules_patterns.json": "Policy_Rules.rules[].id"
           },
           "custom_contract_binding_annotation": "x-ptsip-target",
           "user_declares_target_inside_the_contract": true,
@@ -5196,7 +5258,13 @@
           "src/** -> <PTSIP_DEVELOPMENT_REPO>/.ptsip/**",
           ".ptsip/engine/developer/** -> src/ptsip/** as distributed contract source"
         ],
-        "user_contract_instances_are_config_not_schema_source": true
+        "user_contract_instances_are_config_not_schema_source": true,
+        "known_auto_bootstrap_logical_contracts": [
+          "evaluation_state",
+          "policy_content_id",
+          "rules_patterns"
+        ],
+        "rule_id_pattern_contract": "rules_patterns.json"
       }
     },
     "continuous_implementation_authorization": {
@@ -5473,7 +5541,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-17: F-POL-004 Policy_Category belongs to user-specific contract: required semantic roles category namespace and namespace definition, optional other namespace boundary/category responsibility/excluded responsibility. Developer root_family/policy_kind are derived presentation only. Policy_Content.items[] exactly id/value; path, sha256, revision_ref removed as redundant with Policy Identity and self-contained Content. Policy_Lifecycle.evaluation currently exactly last_changed_date (most recent change date) and description (role natural language); no third element. User/environment flexible rules[].id, but user ID pattern contract is ONLY for content_id and Policy_Content item IDs, never RA_id; existing RA List ^R-ID-[0-9A-F]{32}$ remains. Existing unrelated PVR gates/risks unchanged.",
+    "last_user_direction": "2026-11-17: User explicitly approved an additional independent custom JSON Schema user contract file .ptsip/contract/user/rules_patterns.json, binding exclusively to Policy_Rules.rules[].id. Its responsibility is separate from policy_content_id.json (Content IDs) and RA_id (existing RA List ID grammar). PTSIP dedicated user-contract validator and missing-only runtime bootstrap apply; do not create user contract files in PTSIP developer checkout. Preserve current PVR approval, dependency and unresolved gate statuses.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
@@ -5563,7 +5631,7 @@
         "id": "F-POL-015",
         "name": "id",
         "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
-        "note": "rules[].id is flexible by user/environment and not automatically bound to policy_content_id pattern contract."
+        "note": "Policy_Rules.rules[].id has user-configurable pattern in independent .ptsip/contract/user/rules_patterns.json. Never bind to policy_content_id.json or RA_id pattern; no PTSIP-global fixed rule ID regex."
       },
       {
         "id": "F-POL-016",
@@ -6289,9 +6357,10 @@
         "EXCLUDED_RESPONSIBILITIES"
       ],
       "rule_id_contract_scope": {
-        "Policy_Rules.rules[].id": "FLEXIBLE_USER_ENV_NO_ASSIGNED_CUSTOM_PATTERN_FILE",
-        "Policy_Rules.rules[].content.content_id[]": "USER_CONFIGURED_policy_content_id.json",
-        "Policy_Rules.rules[].RA_id": "EXCLUDED_FROM_USER_PATTERN_CONTRACT_USE_APPROVED_RA_ID_PATTERN"
+        "Policy_Rules.rules[].id": "USER_CONFIGURED_rules_patterns.json",
+        "Policy_Rules.rules[].content.content_id[]": "USER_CONFIGURED_policy_content_id.json_AND_SAME_DOCUMENT_REFERENCE",
+        "Policy_Content.items[].id": "USER_CONFIGURED_policy_content_id.json",
+        "Policy_Rules.rules[].RA_id": "EXCLUDED_FROM_USER_PATTERN_CONTRACTS_USE_APPROVED_RA_LIST_PATTERN"
       }
     },
     "rbac": {
