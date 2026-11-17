@@ -651,6 +651,20 @@
       "RA_name_fields": "DERIVED_NONAUTHORITATIVE",
       "field_requiredness": "UNCHANGED_NOT_NEWLY_DECIDED",
       "note": "One RA record per RA_id with seven field roles, grouped AEC/RAC references and name views. RAC/AEC List alone manages canonical name creation; RA cannot become authoritative condition-name owner."
+    },
+    {
+      "id": "PVR09-GRANULAR-OPERATION-DIRECTION-20261117",
+      "state": "USER_APPROVED_DIRECTION_ONLY",
+      "scope": "PVR-09: operation ID granularity and namespacing",
+      "approved_granularity": "DOMAIN_SUBRESPONSIBILITY_OR_VALIDATION_CONCERN",
+      "user_explicit_examples": [
+        "validation.policy.identity",
+        "validation.policy.rules",
+        "validation.rbac.ra"
+      ],
+      "canonical_owner": "REQUIRES_FOLLOWUP_REVIEW",
+      "registration_and_activation": "NOT_AUTHORIZED_BY_NAMING_APPROVAL",
+      "note": "Do not collapse Policy v4 and RBAC into only two broad operations. Prefer individually meaningful operations aligned with independently justified responsibilities. Example IDs are user-provided; all other IDs, engine ownership and typed I/O pending. Existing CLI.go stays the only public Go entrypoint."
     }
   ],
   "target_registry": {
@@ -2396,7 +2410,8 @@
       "RAC/AEC value internals remain user-extensible and intentionally unconstrained in v0.3.8; no invented nested value contract and no generalized semantic evaluation success claim. When agent creates a condition, its meaning and responsibility circumstances must be explained within the owning condition context.",
       "RAC/AEC/RA links resolve by exact already-approved record IDs in their owning lists with uniqueness, existence and correct-list-type checks. Do not invent a separate RBAC registration schema or confuse file_id and record ID.",
       "Legacy condition_id RAC/AEC classification must be evidence-based when conversion is attempted; UNKNOWN is not silently mapped and preserving historical meaning is not required for new v4. Generated ID/name pairs must match the canonical owning list record when created or linked, not be predefined.",
-      "RA List owns all seven declared fields per RA_id record including RA_description, with grouped [AEC_ids,AEC_name] and [RAC_ids,RAC_name]; RAC/AEC List solely owns creation and canonical meaning of its condition ID and name, RA display fields are nonauthoritative; no eighth field and no RA reverse policy reference."
+      "RA List owns all seven declared fields per RA_id record including RA_description, with grouped [AEC_ids,AEC_name] and [RAC_ids,RAC_name]; RAC/AEC List solely owns creation and canonical meaning of its condition ID and name, RA display fields are nonauthoritative; no eighth field and no RA reverse policy reference.",
+      "PVR-09 operation naming follows separately scoped user-approved validation.policy.identity / validation.policy.rules / validation.rbac.ra examples; no broad two-operation policy/RBAC aggregation without independent justification. Every operation must have actual responsibility, owner, typed I/O and verified registry/manifest/binding before it becomes routable. Naming approval alone does not authorize activation."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -4657,8 +4672,38 @@
       },
       {
         "id": "GO-CLI-OPERATION",
-        "state": "DEFERRED",
-        "value": "EXISTING_CLI_GO_OPERATION_BINDING"
+        "state": "USER_APPROVED_GRANULAR_ID_DIRECTION_OWNER_AND_REGISTRATION_PENDING",
+        "value": {
+          "granularity": "DOMAIN_SUBRESPONSIBILITY_OR_VALIDATION_CONCERN",
+          "direction": "C_FINE_GRAINED_INDEPENDENT_OPERATION_IDS",
+          "explicit_user_examples": [
+            "validation.policy.identity",
+            "validation.policy.rules",
+            "validation.rbac.ra"
+          ],
+          "identity_syntax_examples_meaning": "USER_APPROVED_NAMING_DIRECTION_AND_THREE_EXPLICIT_EXAMPLES_NOT_ALL_OPERATION_IDS",
+          "exact_operation_set": "NOT_YET_APPROVED_BEYOND_EXPLICIT_EXAMPLES",
+          "additional_operation_ids": "REQUIRE_INDEPENDENT_RESPONSIBILITY_AND_ID_REVIEW",
+          "semantic_engine_owner": "NOT_DECIDED_BY_validation_PREFIX_ALONE",
+          "registration": "NOT_YET_AUTHORIZED_BY_DIRECTION_ONLY",
+          "typed_input_output": "UNRESOLVED_PER_OPERATION",
+          "executable_adapter_binding": "UNRESOLVED",
+          "integration_entry": "src/ptsip/CLI.go",
+          "new_public_cmd": "FORBIDDEN",
+          "related_source_contracts": [
+            "src/ptsip/engines/index.json",
+            "src/ptsip/engines/validation/contract.json",
+            "src/ptsip/engines/validation/manifest.json",
+            "src/ptsip/engines/validation/execution-bindings.json"
+          ],
+          "source_policy_boundaries": [
+            "src/policy/CNTR/SFP-CNTR-0005.yaml",
+            "src/policy/ARCH/SFP-ARCH-0004.yaml"
+          ],
+          "activation": "NO_AUTO_ACTIVATION_OR_PERMISSION_FROM_NAMING_APPROVAL"
+        },
+        "policy_decision_scope": "ID_GRANULARITY_AND_EXPLICIT_EXAMPLES_ONLY",
+        "remaining": "COMPLETE_OPERATION_INVENTORY_RESPONSIBILITY_OWNER_TYPED_IO_ENGINE_CONTRACT_AND_REGISTERED_BINDING"
       },
       {
         "id": "V4-FOUR-ROOT-FIELDS",
@@ -5447,14 +5492,20 @@
         "dependency": [
           "PVR-08"
         ],
-        "action": "Integrate future approved v4/RBAC operation only through existing src/ptsip/CLI.go; no new cmd and no changes to src/ptsip/cli.py or profile_projection.py",
+        "action": "Use independent fine-grained operation identities grouped by actual validation responsibility, following the user-approved examples validation.policy.identity, validation.policy.rules, and validation.rbac.ra. Preserve the existing src/ptsip/CLI.go routing entrypoint. First determine independently justified complete operation IDs, per-operation responsibility and actual engine owner, typed I/O contracts, and registered capability/manifest/binding closure under effective src/policy CNTR/ARCH authority. A validation.* prefix does not itself confer VALIDATION engine ownership, registration, permission, or runnable implementation. Do not implement or register additional IDs on the basis of examples alone; do not add cmd/ or modify src/ptsip/cli.py or profile_projection.py.",
         "outputs": [
           "registered Go CLI operation mapping"
         ],
         "blocked_on": [
           "GO-CLI-OPERATION"
         ],
-        "note": "Dedicated user contract engine must remain distinct from all other validators; Go integration through existing src/ptsip/CLI.go only if operation proven and no unapproved cross-feature coupling."
+        "note": "User approved C fine-grained operation ID direction with three explicit examples, not the complete operation catalog or executing owner. Keep GO-CLI-OPERATION in blocked_on pending explicit responsibility-to-ID and binding decision. Technical details within authorized scope may then be planned from resolved contracts.",
+        "approved_operation_granularity": "DOMAIN_SUBRESPONSIBILITY_OR_VALIDATION_CONCERN",
+        "approved_operation_id_examples": [
+          "validation.policy.identity",
+          "validation.policy.rules",
+          "validation.rbac.ra"
+        ]
       }
     ],
     "diagnostics": {
@@ -6298,7 +6349,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-17: User confirms RA List record per RA_id owns all seven fields RA_id, RA_title, RA_description, RAC_ids, RAC_name, AEC_ids, AEC_name, structured RA title/description and grouped [AEC_ids,AEC_name], [RAC_ids,RAC_name]. RA owns relation fields/presentation only; RAC/AEC Lists alone own canonical condition ID/name creation and management. Every RA reference name must resolve from corresponding RAC/AEC List by exact ID; do not treat RA as canonical-name source. RA-FULL-FIELD-OWNERSHIP decision resolved and PVR-05 cleared; existing PVR-09 Go CLI gate and legacy conditional analysis preserved. No new user custom field requiredness or actual source/.ptsip changes.",
+    "last_user_direction": "2026-11-17: User explicitly selects fine-grained PVR-09 operation naming direction C, exemplified by validation.policy.identity, validation.policy.rules and validation.rbac.ra. A broad two-operation Policy/RBAC grouping was rejected in favor of independent responsibility granularity. Exact additional IDs, per-operation implementation/engine owner, typed I/O and registry/binding closure remain separate undecided obligations. Do not silently infer that validation.* means existing Rust VALIDATION engine owns the new operations. Preserve GO-CLI-OPERATION gate until those obligations are resolved; no new source/CLI/registry/policy or .ptsip mutations from this decision.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
