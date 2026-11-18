@@ -14,6 +14,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/user_contracts"
 )
 
 const engineIndex = "engines/index.json"
@@ -167,6 +169,22 @@ func bindingFor(root string, index indexDocument, entry engineEntry) (engineBind
 	return result, nil
 }
 
+func validateOperationOwners(index indexDocument) error {
+	owners := make(map[string]bool)
+	for _, entry := range index.Entries {
+		for _, operation := range entry.Operations {
+			if owners[operation] {
+				return fmt.Errorf("ambiguous operation owner: %s", operation)
+			}
+			if strings.HasPrefix(operation, "validation.") && entry.Kind != "VALIDATION" {
+				return fmt.Errorf("validation operation requires the VALIDATION engine: %s", operation)
+			}
+			owners[operation] = true
+		}
+	}
+	return nil
+}
+
 func route(root, scripts string, index indexDocument, operation string) error {
 	var selected *engineEntry
 	for _, entry := range index.Entries {
@@ -266,6 +284,11 @@ func route(root, scripts string, index indexDocument, operation string) error {
 		return errors.New("request operation differs from the selected route")
 	}
 	cmd := exec.Command(path)
+	adapter, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	cmd.Env = append(os.Environ(), "PTSIP_GO_CLI="+adapter, "PTSIP_USER_CONTRACT_ROOT="+root)
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = bytes.NewReader(raw), os.Stdout, os.Stderr
 	return cmd.Run()
 }
@@ -323,6 +346,9 @@ func run(args []string) error {
 	if len(args) == 2 && args[0] == "doctor" {
 		return doctor(args[1])
 	}
+	if len(args) == 2 && args[0] == "--user-contracts-worker" {
+		return usercontracts.RunWorker(args[1], os.Stdin, os.Stdout)
+	}
 	if !(len(args) == 2 && args[0] == "operations") && !(len(args) == 4 && args[0] == "engine") {
 		return errors.New(usage)
 	}
@@ -340,6 +366,9 @@ func run(args []string) error {
 	}
 	if index.Schema != "ptsip-official-engine-index/v1" || index.Class != "PTSIP_SUPPORT_FEATURE" {
 		return errors.New("unsupported engine index")
+	}
+	if err := validateOperationOwners(index); err != nil {
+		return err
 	}
 	if args[0] == "operations" {
 		return listOperations(index)

@@ -34,9 +34,10 @@ pub(crate) fn run() {
         Ok(value) => ("PASS", value, Value::Null),
         Err(error) => ("FAIL", Value::Null, json!(error)),
     };
+    let execution_authorized = output["execution_authorized"] == true;
     println!(
         "{}",
-        json!({"schema_version":"ptsip-engine-operation-result/v1","engine_id":manifest["engine_id"],"engine_version":manifest["implementation_version"],"contract_id":contract["contract_id"],"contract_version":contract["version"],"status":status,"output":output,"error":error,"normative_authority":false,"execution_authorized":false,"evidence_authentication":"NOT_PROVIDED_BY_RESULT"})
+        json!({"schema_version":"ptsip-engine-operation-result/v1","engine_id":manifest["engine_id"],"engine_version":manifest["implementation_version"],"contract_id":contract["contract_id"],"contract_version":contract["version"],"status":status,"output":output,"error":error,"normative_authority":false,"execution_authorized":execution_authorized,"evidence_authentication":"NOT_PROVIDED_BY_RESULT"})
     );
     if status == "FAIL" {
         std::process::exit(2);

@@ -13,8 +13,12 @@ mod source;
 use source::planning;
 mod rbac;
 mod cli;
+mod user_contracts;
 
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if user_contracts::algorithm(operation).is_some() {
+        return user_contracts::evaluate(operation, input);
+    }
     match operation {
         "validation.planning.impact" => return planning::impact(input),
         "validation.planning.prepare" => return planning::prepare(input),
@@ -97,7 +101,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         "validation.compose" => "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE",
         "validation.verify-handoff" => "VERIFY_CURRENT_VERSIONED_VPMS_RELATIONS_AND_FULL_RESPONSIBILITY_CLASSIFICATION_WITHOUT_PUBLIC_API_CUTOVER",
         "validation.verify-context-handoff" => "VERIFY_EXPLICIT_CONTEXT_SOURCE_AND_PROJECTION_OUTPUT_OWNERS_WITH_PRESERVED_PUBLIC_API",
-        _ => return Err("unsupported registered adapter operation".into()),
+        _ => user_contracts::algorithm(operation)
+            .ok_or("unsupported registered adapter operation")?,
     };
     if definition["machine_semantics"]["algorithm"] != algorithm {
         return Err("unsupported neutral module semantics".into());

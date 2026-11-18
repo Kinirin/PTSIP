@@ -2170,6 +2170,1237 @@
         "algorithm": "VERIFY_EXPLICIT_PLAN_STEPS_AND_BOUND_INVOCATION_IDENTITIES_WITHOUT_EXECUTION",
         "normative_authority_from_runtime_result": false
       }
+    },
+    {
+      "operation_id": "validation.policy.identity",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "policy": {
+            "type": "object",
+            "required": [
+              "Policy_Identity"
+            ]
+          },
+          "project_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bootstrap_user_contracts": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "policy"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "path",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "user_contracts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "targets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "enum": [
+                    "VALID",
+                    "INVALID",
+                    "UNCONFIGURED",
+                    "UNSUPPORTED",
+                    "UNBOUND"
+                  ]
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ]
+                        }
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "path",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "targets",
+                "status",
+                "issues"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ra_usage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "RA_id": {
+                  "type": "string"
+                },
+                "paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "RA_id",
+                "paths"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution_authorized": {
+            "const": true
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "user_contracts",
+          "ra_usage",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "INSTALLED_DEDICATED_USER_CONTRACT_ADAPTER"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_EXECUTION_PERMISSION"
+      ],
+      "side_effects": [
+        "CREATE_ABSENT_NEUTRAL_USER_CONTRACTS_ONLY_ON_EXPLICIT_BOOTSTRAP_IN_ADOPTING_PROJECT"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_ADOPTING_PROJECT_ROOT_AND_BOOTSTRAP_REQUEST_FOR_USER_CONTRACT_CREATION"
+      ],
+      "failure_semantics": {
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "validation_failure": "VALID_FALSE_WITH_STRUCTURED_DIAGNOSTICS",
+        "missing_adapter": "USER_CONTRACT_ADAPTER_UNAVAILABLE",
+        "adapter_failure": "USER_CONTRACT_ADAPTER_FAILED",
+        "invalid_adapter_output": "FAIL_CLOSED_OUTPUT_CONTRACT_INVALID",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "TYPED_CONTRACT_NEGATIVE_CASES_AND_INSTALLED_NATIVE_ADAPTER_EXECUTION"
+      },
+      "compatibility": {
+        "contract_version": "4.1.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VALIDATE_POLICY_V4_IDENTITY_WITH_USER_CATEGORY_AND_OPTIONAL_VERSION",
+        "normative_authority_from_runtime_result": false,
+        "implementation_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+        "RAC_AEC_value_semantics": "UNASSERTED",
+        "implementation_language": "GO",
+        "adapter_entry": "src/ptsip/CLI.go --user-contracts-worker",
+        "adapter_binding": "EXPLICIT_PARENT_GO_CLI_AND_USER_CONTRACT_ROOT",
+        "binding_environment": [
+          "PTSIP_GO_CLI",
+          "PTSIP_USER_CONTRACT_ROOT"
+        ]
+      }
+    },
+    {
+      "operation_id": "validation.policy.rules",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "policy": {
+            "type": "object",
+            "required": [
+              "Policy_Rules"
+            ]
+          },
+          "project_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bootstrap_user_contracts": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "policy"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "path",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "user_contracts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "targets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "enum": [
+                    "VALID",
+                    "INVALID",
+                    "UNCONFIGURED",
+                    "UNSUPPORTED",
+                    "UNBOUND"
+                  ]
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ]
+                        }
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "path",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "targets",
+                "status",
+                "issues"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ra_usage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "RA_id": {
+                  "type": "string"
+                },
+                "paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "RA_id",
+                "paths"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution_authorized": {
+            "const": true
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "user_contracts",
+          "ra_usage",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "INSTALLED_DEDICATED_USER_CONTRACT_ADAPTER"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_EXECUTION_PERMISSION"
+      ],
+      "side_effects": [
+        "CREATE_ABSENT_NEUTRAL_USER_CONTRACTS_ONLY_ON_EXPLICIT_BOOTSTRAP_IN_ADOPTING_PROJECT"
+      ],
+      "declared_permission_requirements": [
+        "EXPLICIT_ADOPTING_PROJECT_ROOT_AND_BOOTSTRAP_REQUEST_FOR_USER_CONTRACT_CREATION"
+      ],
+      "failure_semantics": {
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "validation_failure": "VALID_FALSE_WITH_STRUCTURED_DIAGNOSTICS",
+        "missing_adapter": "USER_CONTRACT_ADAPTER_UNAVAILABLE",
+        "adapter_failure": "USER_CONTRACT_ADAPTER_FAILED",
+        "invalid_adapter_output": "FAIL_CLOSED_OUTPUT_CONTRACT_INVALID",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "TYPED_CONTRACT_NEGATIVE_CASES_AND_INSTALLED_NATIVE_ADAPTER_EXECUTION"
+      },
+      "compatibility": {
+        "contract_version": "4.1.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VALIDATE_POLICY_V4_RULES_WITH_USER_CONTRACTS_AND_LOCAL_CONTENT_REFERENCES",
+        "normative_authority_from_runtime_result": false,
+        "implementation_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+        "RAC_AEC_value_semantics": "UNASSERTED",
+        "implementation_language": "GO",
+        "adapter_entry": "src/ptsip/CLI.go --user-contracts-worker",
+        "adapter_binding": "EXPLICIT_PARENT_GO_CLI_AND_USER_CONTRACT_ROOT",
+        "binding_environment": [
+          "PTSIP_GO_CLI",
+          "PTSIP_USER_CONTRACT_ROOT"
+        ]
+      }
+    },
+    {
+      "operation_id": "validation.rbac.ra",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "document"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "path",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "user_contracts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "targets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "enum": [
+                    "VALID",
+                    "INVALID",
+                    "UNCONFIGURED",
+                    "UNSUPPORTED",
+                    "UNBOUND"
+                  ]
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ]
+                        }
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "path",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "targets",
+                "status",
+                "issues"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ra_usage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "RA_id": {
+                  "type": "string"
+                },
+                "paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "RA_id",
+                "paths"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution_authorized": {
+            "const": true
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "user_contracts",
+          "ra_usage",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "INSTALLED_DEDICATED_USER_CONTRACT_ADAPTER"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_EXECUTION_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "validation_failure": "VALID_FALSE_WITH_STRUCTURED_DIAGNOSTICS",
+        "missing_adapter": "USER_CONTRACT_ADAPTER_UNAVAILABLE",
+        "adapter_failure": "USER_CONTRACT_ADAPTER_FAILED",
+        "invalid_adapter_output": "FAIL_CLOSED_OUTPUT_CONTRACT_INVALID",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "TYPED_CONTRACT_NEGATIVE_CASES_AND_INSTALLED_NATIVE_ADAPTER_EXECUTION"
+      },
+      "compatibility": {
+        "contract_version": "4.1.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VALIDATE_RA_SEVEN_FIELD_STRUCTURE_AND_FORWARD_RELATION_SHAPE",
+        "normative_authority_from_runtime_result": false,
+        "implementation_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+        "RAC_AEC_value_semantics": "UNASSERTED",
+        "implementation_language": "GO",
+        "adapter_entry": "src/ptsip/CLI.go --user-contracts-worker",
+        "adapter_binding": "EXPLICIT_PARENT_GO_CLI_AND_USER_CONTRACT_ROOT",
+        "binding_environment": [
+          "PTSIP_GO_CLI",
+          "PTSIP_USER_CONTRACT_ROOT"
+        ]
+      }
+    },
+    {
+      "operation_id": "validation.rbac.rac",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "document"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "path",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "user_contracts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "targets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "enum": [
+                    "VALID",
+                    "INVALID",
+                    "UNCONFIGURED",
+                    "UNSUPPORTED",
+                    "UNBOUND"
+                  ]
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ]
+                        }
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "path",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "targets",
+                "status",
+                "issues"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ra_usage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "RA_id": {
+                  "type": "string"
+                },
+                "paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "RA_id",
+                "paths"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution_authorized": {
+            "const": true
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "user_contracts",
+          "ra_usage",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "INSTALLED_DEDICATED_USER_CONTRACT_ADAPTER"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_EXECUTION_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "validation_failure": "VALID_FALSE_WITH_STRUCTURED_DIAGNOSTICS",
+        "missing_adapter": "USER_CONTRACT_ADAPTER_UNAVAILABLE",
+        "adapter_failure": "USER_CONTRACT_ADAPTER_FAILED",
+        "invalid_adapter_output": "FAIL_CLOSED_OUTPUT_CONTRACT_INVALID",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "TYPED_CONTRACT_NEGATIVE_CASES_AND_INSTALLED_NATIVE_ADAPTER_EXECUTION"
+      },
+      "compatibility": {
+        "contract_version": "4.1.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VALIDATE_RAC_LIST_STRUCTURE_AND_APPROVED_FIELDS",
+        "normative_authority_from_runtime_result": false,
+        "implementation_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+        "RAC_AEC_value_semantics": "UNASSERTED",
+        "implementation_language": "GO",
+        "adapter_entry": "src/ptsip/CLI.go --user-contracts-worker",
+        "adapter_binding": "EXPLICIT_PARENT_GO_CLI_AND_USER_CONTRACT_ROOT",
+        "binding_environment": [
+          "PTSIP_GO_CLI",
+          "PTSIP_USER_CONTRACT_ROOT"
+        ]
+      }
+    },
+    {
+      "operation_id": "validation.rbac.aec",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "document"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "path",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "user_contracts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "targets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "enum": [
+                    "VALID",
+                    "INVALID",
+                    "UNCONFIGURED",
+                    "UNSUPPORTED",
+                    "UNBOUND"
+                  ]
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ]
+                        }
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "path",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "targets",
+                "status",
+                "issues"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ra_usage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "RA_id": {
+                  "type": "string"
+                },
+                "paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "RA_id",
+                "paths"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution_authorized": {
+            "const": true
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "user_contracts",
+          "ra_usage",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "INSTALLED_DEDICATED_USER_CONTRACT_ADAPTER"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_EXECUTION_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "validation_failure": "VALID_FALSE_WITH_STRUCTURED_DIAGNOSTICS",
+        "missing_adapter": "USER_CONTRACT_ADAPTER_UNAVAILABLE",
+        "adapter_failure": "USER_CONTRACT_ADAPTER_FAILED",
+        "invalid_adapter_output": "FAIL_CLOSED_OUTPUT_CONTRACT_INVALID",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "TYPED_CONTRACT_NEGATIVE_CASES_AND_INSTALLED_NATIVE_ADAPTER_EXECUTION"
+      },
+      "compatibility": {
+        "contract_version": "4.1.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VALIDATE_AEC_LIST_STRUCTURE_AND_APPROVED_FIELDS",
+        "normative_authority_from_runtime_result": false,
+        "implementation_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+        "RAC_AEC_value_semantics": "UNASSERTED",
+        "implementation_language": "GO",
+        "adapter_entry": "src/ptsip/CLI.go --user-contracts-worker",
+        "adapter_binding": "EXPLICIT_PARENT_GO_CLI_AND_USER_CONTRACT_ROOT",
+        "binding_environment": [
+          "PTSIP_GO_CLI",
+          "PTSIP_USER_CONTRACT_ROOT"
+        ]
+      }
+    },
+    {
+      "operation_id": "validation.rbac.references",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "policy": {
+            "type": "object"
+          },
+          "ra": {
+            "type": "object"
+          },
+          "rac": {
+            "type": "object"
+          },
+          "aec": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "policy"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "path",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "user_contracts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "targets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "status": {
+                  "enum": [
+                    "VALID",
+                    "INVALID",
+                    "UNCONFIGURED",
+                    "UNSUPPORTED",
+                    "UNBOUND"
+                  ]
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ]
+                        }
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "path",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "targets",
+                "status",
+                "issues"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ra_usage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "RA_id": {
+                  "type": "string"
+                },
+                "paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "RA_id",
+                "paths"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "execution_authorized": {
+            "const": true
+          },
+          "ptsip_conformance_verdict": {
+            "const": "NOT_ASSERTED"
+          }
+        },
+        "required": [
+          "valid",
+          "diagnostics",
+          "user_contracts",
+          "ra_usage",
+          "execution_authorized",
+          "ptsip_conformance_verdict"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "INSTALLED_DEDICATED_USER_CONTRACT_ADAPTER"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_EXECUTION_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "validation_failure": "VALID_FALSE_WITH_STRUCTURED_DIAGNOSTICS",
+        "missing_adapter": "USER_CONTRACT_ADAPTER_UNAVAILABLE",
+        "adapter_failure": "USER_CONTRACT_ADAPTER_FAILED",
+        "invalid_adapter_output": "FAIL_CLOSED_OUTPUT_CONTRACT_INVALID",
+        "no_effect_inference": "FORBIDDEN"
+      },
+      "verification_evidence": {
+        "required": "TYPED_CONTRACT_NEGATIVE_CASES_AND_INSTALLED_NATIVE_ADAPTER_EXECUTION"
+      },
+      "compatibility": {
+        "contract_version": "4.1.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
+      },
+      "machine_semantics": {
+        "algorithm": "VALIDATE_POLICY_RA_RAC_AEC_FORWARD_REFERENCES_AND_CANONICAL_NAMES",
+        "normative_authority_from_runtime_result": false,
+        "implementation_owner": "PTSIP_DEDICATED_USER_CONTRACT_VALIDATOR",
+        "RAC_AEC_value_semantics": "UNASSERTED",
+        "implementation_language": "GO",
+        "adapter_entry": "src/ptsip/CLI.go --user-contracts-worker",
+        "adapter_binding": "EXPLICIT_PARENT_GO_CLI_AND_USER_CONTRACT_ROOT",
+        "binding_environment": [
+          "PTSIP_GO_CLI",
+          "PTSIP_USER_CONTRACT_ROOT"
+        ]
+      }
     }
   ]
 }

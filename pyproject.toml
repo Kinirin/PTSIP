@@ -64,6 +64,7 @@ ptsip = [
   "engines/index.json",
   "engines/*/*.json",
   "engines/contracts/*.json",
+  "engines/contracts/engines_registries/*.json",
   "engines/contracts/schemas/*.json",
   "engines/registries/*.json",
   "specdata/*.json",
@@ -75,6 +76,11 @@ ptsip = [
   "schemas/policy/*.schema.json",
   "schemas/policy/*/*.schema.json",
   "schemas/storage/rbac/*.schema.json",
+  "CLI.go",
+  "go.mod",
+  "go.sum",
+  "user_contracts/*.go",
+  "user_contracts/templates/*.json",
   "agent_contracts/*.yaml",
   "agent_contracts/schemas/*.json",
   "agent_contracts/spec/*.yaml",
@@ -82,7 +88,6 @@ ptsip = [
   "agent_contracts/vocabulary/*.yaml",
   "agent_contracts/bindings/*.yaml",
 ]
-"ptsip.user_contracts" = ["templates/*.json"]
 agent_contracts = [
   "*.yaml",
   "schemas/contracts/*.json",
