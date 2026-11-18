@@ -2542,7 +2542,7 @@
         "User selected src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json as authoritative pp2.00 schema; do not reopen this choice or merge src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json into the active schema. Verify canonical copy and remove retired duplicate after consumer replacement.",
         "Preserve template oneOf validator semantics where registered, but stop separately exporting template example after usages audited",
         "Record each historical target hash/version/registered lifecycle in central config and revise active alias for pp2.00 only",
-        "Run static usage scan for old example/template YAML and retire only those proven unused after central schema and Go consumer replacement",
+        "Run static usage scan for old example/template YAML and retire only those proven unused after registered schema and Storage Rust engine consumer replacement",
         "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence",
         "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection."
       ],
@@ -2593,7 +2593,7 @@
         "src/ptsip/engines/storage/src/",
         "existing src/ptsip/common_contract module for reference only",
         "canonical src/ptsip/schemas/config.json",
-        "new Go/Python bridge proposed",
+        "existing Storage engine native dispatch and lifecycle contract",
         "Rust replacement responsibility boundary for src/ptsip/profiles/rule_records.py"
       ],
       "outputs": [
@@ -2740,37 +2740,37 @@
     {
       "file": "setup.py",
       "issue": "_registered_public_profile_resources(), _registered_profile_baselines(), _project_public_profiles() require src/ptsip/profiles/index.yaml, current *.ptsip.yaml and history/<version> directories; will break if removed",
-      "required_change": "Remove source-profile directory assumptions, bind build projection to canonical schema config plus approved Go binary, preserve clean-build and no-stale-artifact checks"
+      "required_change": "Remove old source-profile directory assumptions; bind packaging to registered current schema resources and existing Storage Rust engine binary; preserve clean build and no-stale-artifact checks."
     },
     {
       "file": "MANIFEST.in",
       "issue": "Includes recursive src/ptsip/profiles *.ptsip.yaml and index.yaml",
-      "required_change": "Remove obsolete includes, add approved Go source/fixtures and central schema resources only when package scope validated"
+      "required_change": "Remove obsolete includes; include existing Storage Rust engine build artifacts and approved registered schema resources without creating Profile Go package assets."
     },
     {
       "file": "developer/tests/pp/public_catalog_test.go",
       "issue": "Expects 3 distributed example/template/hybrid public assets",
-      "required_change": "Test approved replacement schema registry and Go catalog semantics rather than retired src/ptsip/profiles sample catalog"
+      "required_change": "Test current registered schema selection and Rust Storage engine Catalog behavior rather than the retired src/ptsip/profiles sample catalog."
     },
     {
       "file": "developer/tests/pp/baseline_test.go",
       "issue": "Reads src/ptsip/profiles history and root fixtures; test also appears to expect pp1.02 current baseline while current embedded registry says pp2.00",
-      "required_change": "Explicitly reconcile test expectation vs registered current contract, verify Go JSON golden fixtures and historical schemas, no silent current-version choice"
+      "required_change": "Explicitly reconcile test expectation vs registered current contract, verify Storage Rust engine JSON golden fixtures and historical schemas, no silent current-version choice"
     },
     {
       "file": "src/ptsip/clarification/resolution/profile_projection.py",
       "issue": "Imports profiles.catalog and profiles.metadata, removed Python package",
-      "required_change": "Go typed profile operations adapter outside src/ptsip/profiles"
+      "required_change": "Storage Rust engine typed Profile operation and registered native request/response adapter; no independent Go Profile implementation."
     },
     {
       "file": "src/ptsip/migration/execution/direct/promotion.py",
       "issue": "Imports profiles.compatibility and direct promotion helpers",
-      "required_change": "Go transition verification plus existing mutation/permission boundary"
+      "required_change": "Storage Rust Profile transition verification with existing native mutation and permission boundaries."
     },
     {
       "file": "src/ptsip/cli.py",
       "issue": "Imports profiles.catalog and default new profile path",
-      "required_change": "Use Go catalog operation with exact path validation"
+      "required_change": "Use Rust Storage engine Catalog selection with exact path validation."
     }
   ],
   "verification": {
@@ -2793,7 +2793,7 @@
       "pp.1.00 schema is not generated without verified original input",
       "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles",
       "All six retired Python Profile responsibilities are rebuilt and conformance-tested in the existing Storage Rust engine; no independent Go Profile module is created.",
-      "Go implementation code paths and bridge protocol are user approved before source generation",
+      "Storage Rust engine profile source and registered native transport ownership comply with user-approved root and per-engine src/schemas layout; no separate Go Profile protocol or module required.",
       "All 22 tracked files in src/ptsip/profiles/ recursively removed after their per-file responsibility transition is verified",
       "12 profile YAML source examples preserved as normalized JSON test fixture evidence before complete directory removal, with no schema misclassification",
       "setup.py, pyproject.toml, MANIFEST.in and release tests build/validate with no old src/ptsip/profiles directory",
@@ -3129,7 +3129,7 @@
       "Implement all six supported Profile responsibilities (including rule-record) in existing Storage Rust engine with per-engine schema ownership and always-on background lifecycle; do not inherit developer-private schema semantics.",
       "Switch approved consumers through existing src/ptsip/CLI.go engine dispatch and update Rust Storage packaging; do not edit excluded Python cli.py or profile_projection.py.",
       "Update setup.py, pyproject.toml, MANIFEST.in, profile registry paths, and impacted CLI and release tests",
-      "Run Go unit and Python integration parity tests, installed wheel smoke, source/build distribution completeness and no-legacy-path scans",
+      "Run Storage Rust native engine tests and supported consumer integration, installed wheel smoke, distribution completeness and no-legacy-path scans. Excluded legacy Python callers are not active gates.",
       "Remove all 22 files under src/ptsip/profiles/ and empty directories only when each deletion gate is satisfied",
       "Verify source Git tree has zero remaining paths with src/ptsip/profiles/ prefix, full tests pass, and no user-owned .ptsip/profile file is touched"
     ],
@@ -3458,7 +3458,7 @@
         "git_blob_sha": "3760d101a369d1d062e46903432e389ec453c9ae",
         "size_bytes": 5699,
         "role_group": "SIX_PYTHON_MODULES",
-        "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
+        "action": "TRANSFER_SUPPORTED_RESPONSIBILITY_TO_RUST_STORAGE_ENGINE_THEN_DELETE",
         "proposed_replacement": "src/ptsip/engines/storage/src/",
         "secondary_refs": [],
         "delete_gate": "SUPPORTED_STORAGE_RUST_PROFILE_REPLACEMENT_TESTS_PASS_AND_ZERO_REQUIRED_CONSUMERS",
@@ -3471,7 +3471,7 @@
         "git_blob_sha": "8bfde3ea2a329e3eb9429072160eb077c121d8fd",
         "size_bytes": 6377,
         "role_group": "SIX_PYTHON_MODULES",
-        "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
+        "action": "TRANSFER_SUPPORTED_RESPONSIBILITY_TO_RUST_STORAGE_ENGINE_THEN_DELETE",
         "proposed_replacement": "src/ptsip/engines/storage/src/",
         "secondary_refs": [],
         "delete_gate": "SUPPORTED_STORAGE_RUST_PROFILE_REPLACEMENT_TESTS_PASS_AND_ZERO_REQUIRED_CONSUMERS",
@@ -3484,7 +3484,7 @@
         "git_blob_sha": "01a22695e7f1970034dc26cda15be06a04c59d07",
         "size_bytes": 3345,
         "role_group": "SIX_PYTHON_MODULES",
-        "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
+        "action": "TRANSFER_SUPPORTED_RESPONSIBILITY_TO_RUST_STORAGE_ENGINE_THEN_DELETE",
         "proposed_replacement": "src/ptsip/engines/storage/src/",
         "secondary_refs": [],
         "delete_gate": "SUPPORTED_STORAGE_RUST_PROFILE_REPLACEMENT_TESTS_PASS_AND_ZERO_REQUIRED_CONSUMERS",
@@ -3635,7 +3635,7 @@
         "git_blob_sha": "df05ea1788c7bac9ed6f2204b577f772e43f2be4",
         "size_bytes": 10571,
         "role_group": "SIX_PYTHON_MODULES",
-        "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
+        "action": "TRANSFER_SUPPORTED_RESPONSIBILITY_TO_RUST_STORAGE_ENGINE_THEN_DELETE",
         "proposed_replacement": "src/ptsip/engines/storage/src/",
         "secondary_refs": [],
         "delete_gate": "SUPPORTED_STORAGE_RUST_PROFILE_REPLACEMENT_TESTS_PASS_AND_ZERO_REQUIRED_CONSUMERS",
@@ -3648,7 +3648,7 @@
         "git_blob_sha": "c8d3027af88a79cd920ae073cc652f14548994f7",
         "size_bytes": 772,
         "role_group": "DISTRIBUTED_SAMPLE_CATALOG",
-        "action": "REPLACE_SAMPLE_CATALOG_WITH_REGISTERED_GO_CATALOG_SEMANTICS_THEN_DELETE",
+        "action": "REPLACE_SAMPLE_CATALOG_WITH_REGISTERED_STORAGE_RUST_CATALOG_BEHAVIOR_THEN_DELETE",
         "proposed_replacement": "src/ptsip/schemas/config.json",
         "secondary_refs": [
           "src/ptsip/specdata/project-profile-contracts.yaml"
@@ -3661,7 +3661,7 @@
         "git_blob_sha": "a51d316663b448c1393f93eff6ab99e314a8b4ed",
         "size_bytes": 1497,
         "role_group": "SIX_PYTHON_MODULES",
-        "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
+        "action": "TRANSFER_SUPPORTED_RESPONSIBILITY_TO_RUST_STORAGE_ENGINE_THEN_DELETE",
         "proposed_replacement": "src/ptsip/engines/storage/src/",
         "secondary_refs": [],
         "delete_gate": "SUPPORTED_STORAGE_RUST_PROFILE_REPLACEMENT_TESTS_PASS_AND_ZERO_REQUIRED_CONSUMERS",
@@ -3726,7 +3726,7 @@
     "all_removal_actions_prohibited_until": [
       "SCHEMA_GENERATION_VALIDATED",
       "ALL_SIX_PROFILE_RESPONSIBILITIES_REBUILT_AND_VERIFIED_IN_STORAGE_RUST_BACKGROUND_ENGINE",
-      "ONLY_APPROVED_CONSUMERS_AND_GO_CLI_ROUTED_PYTHON_EXCEPTIONS_LEFT_UNCHANGED",
+      "ONLY_SUPPORTED_REGISTERED_STORAGE_RUST_CONSUMERS_AND_NATIVE_CLI_ROUTING;EXCLUDED_PYTHON_MODULES_UNMODIFIED",
       "ALL_PACKAGING_AND_RELEASE_GATES_REWIRED",
       "NO_SUPPORTED_CONSUMER_REFS_EXCEPT_TWO_APPROVED_UNMODIFIED_PYTHON_PATHS",
       "GOLDEN_FIXTURES_VERIFIED",
@@ -3770,7 +3770,7 @@
       "POLICY_V4",
       "RBAC_LINK",
       "CONFIG_REGISTRATION",
-      "RUST_AND_GO_REFERENCE_REWIRING",
+      "RUST_ENGINE_AND_EXISTING_GO_CLI_REFERENCE_REWIRING",
       "TESTS"
     ],
     "source_evidence": {
@@ -5696,12 +5696,13 @@
       "src/ptsip/clarification/resolution/profile_projection.py": "DO_NOT_MODIFY_EXISTING_ERRORS_TOLERATED",
       "src/ptsip/cli.py": "DO_NOT_MODIFY_DO_NOT_REPLACE_PYTHON_PROFILE_CALLS",
       "src/ptsip/CLI.go": "ONLY_SELECTED_GO_CLI_ENTRYPOINT_FOR_FUTURE_INTEGRATION",
-      "src/ptsip/profile_contract/clarification/**": "GO_CATALOG_AND_METADATA_MODULE_APPROVED_DIRECTORY_LEAF_FILES_UNDECIDED",
       "src/ptsip/profile_contract/internal/**": "DEFERRED",
       "src/ptsip/profile_contract/cmd/**": "FORBIDDEN",
       "src/tests/ptsip/**": "APPROVED_TEST_ROOT",
       ".ptsip/contracts/policy/unified/Unified_Policy.schema.json": "V3_UNTOUCHED_NOT_V4_SOURCE",
-      "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json": "UNCHANGED_UNREUSED"
+      "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json": "UNCHANGED_UNREUSED",
+      "src/ptsip/engines/storage/src/**": "PROFILE_MODULE_IMPLEMENTATION_OWNED_BY_RUST_STORAGE_ENGINE_2026_11_18",
+      "src/ptsip/engines/storage/src/schemas/**": "ENGINE_LOCAL_TYPED_SCHEMA_CONTRACTS_OWNED_BY_STORAGE"
     },
     "directory_and_registry_decision_preview": {
       "status": "USER_REJECTED_ADDITIONAL_RBAC_DIRECTORY_AND_TWO_EXTRA_SCHEMA_FILES",
@@ -8746,18 +8747,18 @@
             "profiles.catalog",
             "profiles.metadata"
           ],
-          "replacement": "EXCLUDE_DO_NOT_CHANGE_GO_CLARIFICATION_MODULE_RESPONSIBLE",
+          "replacement": "EXCLUDE_DO_NOT_CHANGE_STORAGE_RUST_ENGINE_RESPONSIBLE",
           "state": "EXCLUDED_KNOWN_ERRORS_TOLERATED"
         },
         {
           "path": "src/ptsip/migration/analysis/target/semantics.py",
           "replaced_import": "profiles.identity.CURRENT_PROJECT_PROFILE_VERSION",
-          "replacement": "Registered current profile version from Go contract.select; deterministic result cached per request"
+          "replacement": "Registered current profile version from Storage Rust contract selection; deterministic result cached per request"
         },
         {
           "path": "src/ptsip/migration/execution/direct/promotion.py",
           "replaced_import": "profiles.compatibility.require_direct_historical_transition",
-          "replacement": "Go transition decision with exact evidence, preserve promotion authorization separately"
+          "replacement": "Storage Rust transition decision with exact evidence, preserve promotion authorization separately"
         },
         {
           "path": "src/ptsip/ptsip_specification/spec_identity.py",
@@ -8772,7 +8773,7 @@
         {
           "path": "src/ptsip/profiles/index.yaml",
           "replaced_import": "template-python-package example entry",
-          "replacement": "Retire sample catalog file entirely; register schema and version in config.json, preserve any required public-example behavior via approved Go operation"
+          "replacement": "Retire sample catalog file entirely; register schema and version in config.json, preserve any required public-example behavior via approved Storage Rust behavior"
         }
       ],
       "authority": "NO_PROFILE_READ_OR_VALIDATION_GRANTS_EXECUTION_PERMISSION"
