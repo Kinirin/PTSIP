@@ -654,33 +654,84 @@
     },
     {
       "id": "PVR09-GRANULAR-OPERATION-DIRECTION-20261117",
-      "state": "USER_APPROVED_DIRECTION_ONLY",
+      "state": "USER_APPROVED_EXACT_SIX_OPERATION_IDS",
       "scope": "PVR-09: operation ID granularity and namespacing",
-      "approved_granularity": "DOMAIN_SUBRESPONSIBILITY_OR_VALIDATION_CONCERN",
+      "approved_granularity": "TWO_DOMAINS_SIX_SUBDOMAIN_OPERATIONS",
       "user_explicit_examples": [
         "validation.policy.identity",
         "validation.policy.rules",
         "validation.rbac.ra"
       ],
-      "canonical_owner": "REQUIRES_FOLLOWUP_REVIEW",
-      "registration_and_activation": "NOT_AUTHORIZED_BY_NAMING_APPROVAL",
-      "note": "Do not collapse Policy v4 and RBAC into only two broad operations. Prefer individually meaningful operations aligned with independently justified responsibilities. Example IDs are user-provided; all other IDs, engine ownership and typed I/O pending. Existing CLI.go stays the only public Go entrypoint."
+      "canonical_owner": "VALIDATION",
+      "registration_and_activation": "PVR09_IMPLEMENTATION_SCOPE_APPROVED_EXECUTION_PERMISSION_SEPARATE",
+      "note": "Exactly six operations for Policy (Identity, Rules) and RBAC (ra, rac, aec, references); registration and typed I/O are PVR09 technical work, not an external policy-document dependency.",
+      "approved_operation_ids": [
+        "validation.policy.identity",
+        "validation.policy.rules",
+        "validation.rbac.ra",
+        "validation.rbac.rac",
+        "validation.rbac.aec",
+        "validation.rbac.references"
+      ],
+      "approved_domains": {
+        "Policy": [
+          "validation.policy.identity",
+          "validation.policy.rules"
+        ],
+        "RBAC": [
+          "validation.rbac.ra",
+          "validation.rbac.rac",
+          "validation.rbac.aec",
+          "validation.rbac.references"
+        ]
+      }
     },
     {
       "id": "PVR09-VALIDATION-PREFIX-OWNER-20261118",
-      "state": "USER_APPROVED_POLICY_SYNCED_TO_ACTIVE_HEAD",
+      "state": "USER_APPROVED_PLAN_LOCAL_NAMESPACE_OWNER",
       "scope": "REGISTERED_PTSIP_OPERATION_IDS",
       "prefix": "validation.",
       "required_engine": "VALIDATION",
       "prohibited_nonmatching_owner": true,
-      "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
       "does_not_approve": [
         "COMPLETE_OPERATION_ID_SET",
         "CONTRACT_AND_TYPED_IO_DESIGN",
         "REGISTRY_MANIFEST_EXECUTION_BINDINGS",
         "RUNTIME_PERMISSION_OR_ACTIVATION"
       ],
-      "note": "Name prefix encodes required official engine ownership, not independent runtime execution authority. Existing registry validation remains mandatory."
+      "note": "validation.* is owned only by VALIDATION, defined directly in this standalone plan, with no external policy-document lookup or new runtime authorization.",
+      "decision_source": "USER_EXPLICIT_IN_THIS_PLAN"
+    },
+    {
+      "id": "PVR09-OPERATION-SIX-DOMAINS-20261118",
+      "state": "USER_APPROVED_PLAN_LOCAL",
+      "scope": "PVR-09",
+      "approved_operation_ids": [
+        "validation.policy.identity",
+        "validation.policy.rules",
+        "validation.rbac.ra",
+        "validation.rbac.rac",
+        "validation.rbac.aec",
+        "validation.rbac.references"
+      ],
+      "approved_domains": {
+        "Policy": [
+          "validation.policy.identity",
+          "validation.policy.rules"
+        ],
+        "RBAC": [
+          "validation.rbac.ra",
+          "validation.rbac.rac",
+          "validation.rbac.aec",
+          "validation.rbac.references"
+        ]
+      },
+      "registered_engine_owner": "VALIDATION",
+      "external_policy_document_required": false,
+      "runtime_execution_permission": "NOT_GRANTED_BY_NAMING",
+      "implementation_dependencies": [
+        "PVR-08"
+      ]
     }
   ],
   "target_registry": {
@@ -2427,8 +2478,9 @@
       "RAC/AEC/RA links resolve by exact already-approved record IDs in their owning lists with uniqueness, existence and correct-list-type checks. Do not invent a separate RBAC registration schema or confuse file_id and record ID.",
       "Legacy condition_id RAC/AEC classification must be evidence-based when conversion is attempted; UNKNOWN is not silently mapped and preserving historical meaning is not required for new v4. Generated ID/name pairs must match the canonical owning list record when created or linked, not be predefined.",
       "RA List owns all seven declared fields per RA_id record including RA_description, with grouped [AEC_ids,AEC_name] and [RAC_ids,RAC_name]; RAC/AEC List solely owns creation and canonical meaning of its condition ID and name, RA display fields are nonauthoritative; no eighth field and no RA reverse policy reference.",
-      "PVR-09 operation naming follows separately scoped user-approved validation.policy.identity / validation.policy.rules / validation.rbac.ra examples; no broad two-operation policy/RBAC aggregation without independent justification. Every operation must have actual responsibility, owner, typed I/O and verified registry/manifest/binding before it becomes routable. Naming approval alone does not authorize activation.",
-      "All operation IDs beginning with validation. MUST resolve to a declared, uniquely registered VALIDATION engine owner; a non-VALIDATION engine using that prefix is invalid. The prefix alone grants no registration, execution, permission or semantic validation authority."
+      "PVR09 exact six operations: validation.policy.identity, validation.policy.rules, validation.rbac.ra, validation.rbac.rac, validation.rbac.aec, validation.rbac.references. Both domains are VALIDATION engine-owned and the operation mapping must pass typed I/O, capability registration and binding checks using this self-contained plan.",
+      "All operation IDs beginning with validation. MUST resolve to a declared, uniquely registered VALIDATION engine owner; a non-VALIDATION engine using that prefix is invalid. The prefix alone grants no registration, execution, permission or semantic validation authority.",
+      "PVR09 must operate without any external policy-document dependency; registered validation.* owner is VALIDATION, each operation is uniquely bound and mechanically verified, no operation identity alone grants runtime permission."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -4689,22 +4741,29 @@
       },
       {
         "id": "GO-CLI-OPERATION",
-        "state": "USER_APPROVED_GRANULAR_IDS_AND_VALIDATION_NAMESPACE_OWNER;OPERATION_SET_AND_BINDING_PENDING",
+        "state": "USER_APPROVED_SIX_OPERATIONS_SELF_CONTAINED_IMPLEMENTATION_READY",
         "value": {
-          "granularity": "DOMAIN_SUBRESPONSIBILITY_OR_VALIDATION_CONCERN",
-          "direction": "C_FINE_GRAINED_INDEPENDENT_OPERATION_IDS",
+          "granularity": "TWO_DOMAINS_SIX_SUBDOMAIN_OPERATIONS",
+          "direction": "USER_APPROVED_EXACT_POLICY_IDENTITY_RULES_AND_RBAC_RA_RAC_AEC_REFERENCES",
           "explicit_user_examples": [
             "validation.policy.identity",
             "validation.policy.rules",
             "validation.rbac.ra"
           ],
-          "identity_syntax_examples_meaning": "USER_APPROVED_NAMING_DIRECTION_AND_THREE_EXPLICIT_EXAMPLES_NOT_ALL_OPERATION_IDS",
-          "exact_operation_set": "NOT_YET_APPROVED_BEYOND_EXPLICIT_EXAMPLES",
-          "additional_operation_ids": "REQUIRE_INDEPENDENT_RESPONSIBILITY_AND_ID_REVIEW",
+          "identity_syntax_examples_meaning": "PRIOR_EXAMPLES_SUPERSEDED_BY_APPROVED_SIX_OPERATION_SET",
+          "exact_operation_set": [
+            "validation.policy.identity",
+            "validation.policy.rules",
+            "validation.rbac.ra",
+            "validation.rbac.rac",
+            "validation.rbac.aec",
+            "validation.rbac.references"
+          ],
+          "additional_operation_ids": "NOT_AUTHORIZED_BY_THIS_DECISION",
           "semantic_engine_owner": "VALIDATION_FOR_ALL_validation.*_IDS",
-          "registration": "NOT_YET_AUTHORIZED_BY_DIRECTION_ONLY",
-          "typed_input_output": "UNRESOLVED_PER_OPERATION",
-          "executable_adapter_binding": "UNRESOLVED",
+          "registration": "IMPLEMENT_AND_VERIFY_WITHIN_APPROVED_PVR09",
+          "typed_input_output": "TECHNICAL_IMPLEMENTATION_FROM_APPROVED_RESPONSIBILITIES",
+          "executable_adapter_binding": "TECHNICAL_IMPLEMENTATION_NO_EXTERNAL_POLICY_DOCUMENT_LOOKUP",
           "integration_entry": "src/ptsip/CLI.go",
           "new_public_cmd": "FORBIDDEN",
           "related_source_contracts": [
@@ -4713,23 +4772,104 @@
             "src/ptsip/engines/validation/manifest.json",
             "src/ptsip/engines/validation/execution-bindings.json"
           ],
-          "source_policy_boundaries": [
-            "src/policy/CNTR/SFP-CNTR-0005.yaml",
-            "src/policy/ARCH/SFP-ARCH-0004.yaml"
-          ],
-          "activation": "NO_AUTO_ACTIVATION_OR_PERMISSION_FROM_NAMING_APPROVAL",
+          "activation": "NO_PERMISSION_GRANTED_BY_OPERATION_ID",
           "prefix_to_engine_kind": {
             "validation.": "VALIDATION"
           },
           "prefix_rule": "OPERATION_ID_WITH_validation._PREFIX_MUST_HAVE_DECLARED_AND_VERIFIED_VALIDATION_ENGINE_OWNER",
           "non_validation_owner_must_not_use_prefix": true,
           "naming_not_authority": "PREFIX_DOES_NOT_GRANT_REGISTRATION_EXECUTION_OR_PERMISSION",
-          "namespace_policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#operation_id_namespace_owner_binding",
-          "per_operation_responsibility_owner": "VALIDATION_ENGINE_CANONICAL_CAPABILITY_OR_SUBRESPONSIBILITY_MAPPING_TO_BE_SPECIFIED",
-          "other_prefixes": "UNDECIDED"
+          "per_operation_responsibility_owner": "SIX_VALIDATION_ENGINE_OPERATIONS",
+          "other_prefixes": "UNDECIDED",
+          "approved_domains": {
+            "Policy": [
+              "validation.policy.identity",
+              "validation.policy.rules"
+            ],
+            "RBAC": [
+              "validation.rbac.ra",
+              "validation.rbac.rac",
+              "validation.rbac.aec",
+              "validation.rbac.references"
+            ]
+          },
+          "plan_local_contract": {
+            "authority": "USER_EXPLICIT_IN_THIS_PLAN",
+            "authority_source": "THIS_PLAN_ONLY",
+            "external_policy_document_required": false,
+            "domains": {
+              "Policy": [
+                "validation.policy.identity",
+                "validation.policy.rules"
+              ],
+              "RBAC": [
+                "validation.rbac.ra",
+                "validation.rbac.rac",
+                "validation.rbac.aec",
+                "validation.rbac.references"
+              ]
+            },
+            "operations": [
+              {
+                "id": "validation.policy.identity",
+                "domain": "Policy",
+                "subdomain": "Identity",
+                "responsibility": "VALIDATE_APPROVED_POLICY_IDENTITY_STRUCTURE_WITH_USER_CATEGORY_AND_OPTIONAL_VERSION_CONTRACT"
+              },
+              {
+                "id": "validation.policy.rules",
+                "domain": "Policy",
+                "subdomain": "Rules",
+                "responsibility": "VALIDATE_APPROVED_RULES_STRUCTURE_RULE_ID_STATE_CONTRACT_AND_DOCUMENT_LOCAL_CONTENT_REFERENCES"
+              },
+              {
+                "id": "validation.rbac.ra",
+                "domain": "RBAC",
+                "subdomain": "ra",
+                "responsibility": "VALIDATE_RA_SEVEN_FIELD_STRUCTURE_ID_AND_RELATION_GROUP_SHAPE"
+              },
+              {
+                "id": "validation.rbac.rac",
+                "domain": "RBAC",
+                "subdomain": "rac",
+                "responsibility": "VALIDATE_RAC_LIST_STRUCTURE_RECORD_ID_AND_APPROVED_FIELDS_ONLY"
+              },
+              {
+                "id": "validation.rbac.aec",
+                "domain": "RBAC",
+                "subdomain": "aec",
+                "responsibility": "VALIDATE_AEC_LIST_STRUCTURE_RECORD_ID_AND_APPROVED_FIELDS_ONLY"
+              },
+              {
+                "id": "validation.rbac.references",
+                "domain": "RBAC",
+                "subdomain": "references",
+                "responsibility": "VALIDATE_POLICY_RA_RAC_AEC_FORWARD_REFERENCES_ID_EXISTENCE_TYPE_UNIQUENESS_AND_CANONICAL_ID_NAME_PAIRING"
+              }
+            ],
+            "current_scope_exact_six_ids": true,
+            "additional_ids": "NOT_AUTHORIZED_BY_THIS_DECISION",
+            "prefix_to_engine_kind": {
+              "validation.": "VALIDATION"
+            },
+            "registered_owner": "VALIDATION",
+            "cli_entrypoint": "src/ptsip/CLI.go",
+            "no_new_cmd": true,
+            "registered_runtime_resources": [
+              "src/ptsip/engines/index.json",
+              "src/ptsip/engines/validation/contract.json",
+              "src/ptsip/engines/validation/manifest.json",
+              "src/ptsip/engines/validation/execution-bindings.json"
+            ],
+            "per_operation_technical_contracts": "DERIVE_TYPED_IO_PRE_POST_FAILURE_REGISTRY_MANIFEST_BINDING_AND_TESTS_FROM_APPROVED_RESPONSIBILITY_WITHIN_PVR09",
+            "permission": "UNCHANGED_EXECUTION_PERMISSION_NOT_GRANTED_BY_NAMING",
+            "user_contract_validator": "PRESERVE_src/ptsip/user_contracts/_DEDICATED_ISOLATED_OWNER",
+            "future_extensions": "NO_ADDITIONAL_POLICY_LIFECYCLE_CONTENT_OR_RBAC_OPERATIONS_IN_THIS_APPROVAL",
+            "RAC_AEC_value_internals": "DEFERRED_NO_INFERRED_SEMANTIC_FIELDS"
+          }
         },
-        "policy_decision_scope": "ID_GRANULARITY_AND_EXPLICIT_EXAMPLES_ONLY",
-        "remaining": "COMPLETE_OPERATION_INVENTORY_VALIDATION_SUBRESPONSIBILITY_TYPED_IO_REGISTERED_CAPABILITY_AND_BINDING"
+        "policy_decision_scope": "SIX_EXACT_IDS_TWO_DOMAINS_VALIDATION_ENGINE_OWNER",
+        "remaining": "TECHNICAL_TYPED_IO_REGISTRY_MANIFEST_AND_BINDING_VERIFICATION"
       },
       {
         "id": "V4-FOUR-ROOT-FIELDS",
@@ -5361,8 +5501,95 @@
           "required_registered_engine_kind": "VALIDATION",
           "not_valid_if_other_owner": true,
           "owner_binding_must_be_declared_and_machine_verified": true,
-          "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
-          "grant_execution_permission": false
+          "grant_execution_permission": false,
+          "decision_source": "USER_EXPLICIT_IN_THIS_PLAN",
+          "external_policy_reference_required": false,
+          "scope_of_approved_ids": [
+            "validation.policy.identity",
+            "validation.policy.rules",
+            "validation.rbac.ra",
+            "validation.rbac.rac",
+            "validation.rbac.aec",
+            "validation.rbac.references"
+          ]
+        }
+      },
+      {
+        "id": "PVR09-SIX-OPERATIONS-SELF-CONTAINED-20261118",
+        "state": "USER_APPROVED_EXACT_ID_SET",
+        "value": {
+          "authority": "USER_EXPLICIT_IN_THIS_PLAN",
+          "authority_source": "THIS_PLAN_ONLY",
+          "external_policy_document_required": false,
+          "domains": {
+            "Policy": [
+              "validation.policy.identity",
+              "validation.policy.rules"
+            ],
+            "RBAC": [
+              "validation.rbac.ra",
+              "validation.rbac.rac",
+              "validation.rbac.aec",
+              "validation.rbac.references"
+            ]
+          },
+          "operations": [
+            {
+              "id": "validation.policy.identity",
+              "domain": "Policy",
+              "subdomain": "Identity",
+              "responsibility": "VALIDATE_APPROVED_POLICY_IDENTITY_STRUCTURE_WITH_USER_CATEGORY_AND_OPTIONAL_VERSION_CONTRACT"
+            },
+            {
+              "id": "validation.policy.rules",
+              "domain": "Policy",
+              "subdomain": "Rules",
+              "responsibility": "VALIDATE_APPROVED_RULES_STRUCTURE_RULE_ID_STATE_CONTRACT_AND_DOCUMENT_LOCAL_CONTENT_REFERENCES"
+            },
+            {
+              "id": "validation.rbac.ra",
+              "domain": "RBAC",
+              "subdomain": "ra",
+              "responsibility": "VALIDATE_RA_SEVEN_FIELD_STRUCTURE_ID_AND_RELATION_GROUP_SHAPE"
+            },
+            {
+              "id": "validation.rbac.rac",
+              "domain": "RBAC",
+              "subdomain": "rac",
+              "responsibility": "VALIDATE_RAC_LIST_STRUCTURE_RECORD_ID_AND_APPROVED_FIELDS_ONLY"
+            },
+            {
+              "id": "validation.rbac.aec",
+              "domain": "RBAC",
+              "subdomain": "aec",
+              "responsibility": "VALIDATE_AEC_LIST_STRUCTURE_RECORD_ID_AND_APPROVED_FIELDS_ONLY"
+            },
+            {
+              "id": "validation.rbac.references",
+              "domain": "RBAC",
+              "subdomain": "references",
+              "responsibility": "VALIDATE_POLICY_RA_RAC_AEC_FORWARD_REFERENCES_ID_EXISTENCE_TYPE_UNIQUENESS_AND_CANONICAL_ID_NAME_PAIRING"
+            }
+          ],
+          "current_scope_exact_six_ids": true,
+          "additional_ids": "NOT_AUTHORIZED_BY_THIS_DECISION",
+          "prefix_to_engine_kind": {
+            "validation.": "VALIDATION"
+          },
+          "registered_owner": "VALIDATION",
+          "cli_entrypoint": "src/ptsip/CLI.go",
+          "no_new_cmd": true,
+          "registered_runtime_resources": [
+            "src/ptsip/engines/index.json",
+            "src/ptsip/engines/validation/contract.json",
+            "src/ptsip/engines/validation/manifest.json",
+            "src/ptsip/engines/validation/execution-bindings.json"
+          ],
+          "per_operation_technical_contracts": "DERIVE_TYPED_IO_PRE_POST_FAILURE_REGISTRY_MANIFEST_BINDING_AND_TESTS_FROM_APPROVED_RESPONSIBILITY_WITHIN_PVR09",
+          "permission": "UNCHANGED_EXECUTION_PERMISSION_NOT_GRANTED_BY_NAMING",
+          "user_contract_validator": "PRESERVE_src/ptsip/user_contracts/_DEDICATED_ISOLATED_OWNER",
+          "future_extensions": "NO_ADDITIONAL_POLICY_LIFECYCLE_CONTENT_OR_RBAC_OPERATIONS_IN_THIS_APPROVAL",
+          "RAC_AEC_value_internals": "DEFERRED_NO_INFERRED_SEMANTIC_FIELDS"
         }
       }
     ],
@@ -5530,24 +5757,110 @@
         "dependency": [
           "PVR-08"
         ],
-        "action": "Use independent fine-grained operation identities grouped by actual validation responsibility, following the user-approved examples validation.policy.identity, validation.policy.rules, and validation.rbac.ra. Preserve the existing src/ptsip/CLI.go routing entrypoint. First determine independently justified complete operation IDs, per-operation VALIDATION subresponsibility and explicitly verifiable engine/capability owner, typed I/O contracts, and registered capability/manifest/binding closure under effective src/policy CNTR/ARCH authority. Every validation.* operation MUST belong to the VALIDATION engine in its declared and verified registration; non-VALIDATION engines MUST NOT use that prefix. The prefix alone grants no registration, execution permission, or runtime activation. Do not implement or register additional IDs on the basis of examples alone; do not add cmd/ or modify src/ptsip/cli.py or profile_projection.py.",
+        "action": "Implement exactly six user-approved operations under two domains with the existing src/ptsip/CLI.go entrypoint: Policy -> validation.policy.identity, validation.policy.rules; RBAC -> validation.rbac.ra, validation.rbac.rac, validation.rbac.aec, validation.rbac.references. All validation.* operations MUST belong to the registered VALIDATION engine. Derive and verify each operation's typed input/output, error behavior, contract/registry/manifest/execution binding and relevant tests from the responsibilities explicitly defined IN THIS PLAN, without external policy document lookups or policy-document dependencies. Preserve dedicated src/ptsip/user_contracts/ validator boundaries; do not invent RAC/AEC value details. Do not create cmd/ or modify src/ptsip/cli.py or profile_projection.py. Operation registration must not be mistaken for execution authorization.",
         "outputs": [
           "registered Go CLI operation mapping"
         ],
-        "blocked_on": [
-          "GO-CLI-OPERATION"
-        ],
-        "note": "User approved fine-grained validation.* names and explicit invariant validation.* -> VALIDATION engine only. Exact additional ID catalog, typed I/O and registered capability/manifest/binding remain pending. GO-CLI-OPERATION stays in blocked_on for remaining independent decisions; prefix approval does not activate any operation.",
-        "approved_operation_granularity": "DOMAIN_SUBRESPONSIBILITY_OR_VALIDATION_CONCERN",
-        "approved_operation_id_examples": [
-          "validation.policy.identity",
-          "validation.policy.rules",
-          "validation.rbac.ra"
-        ],
+        "blocked_on": [],
+        "note": "GO-CLI-OPERATION resolved by user-approved exact six IDs and engine owner within this self-contained plan; no external policy-document dependency. Remaining work is authorized deterministic implementation and verification. Release authorization remains separate.",
+        "approved_operation_granularity": "TWO_DOMAINS_SIX_SUBDOMAIN_OPERATIONS",
         "namespace_engine_owner_binding": {
           "validation.": "VALIDATION"
         },
-        "name_binding_authority": "src/policy/CNTR/SFP-CNTR-0005.yaml"
+        "approved_operation_ids": [
+          "validation.policy.identity",
+          "validation.policy.rules",
+          "validation.rbac.ra",
+          "validation.rbac.rac",
+          "validation.rbac.aec",
+          "validation.rbac.references"
+        ],
+        "approved_operation_domains": {
+          "Policy": [
+            "validation.policy.identity",
+            "validation.policy.rules"
+          ],
+          "RBAC": [
+            "validation.rbac.ra",
+            "validation.rbac.rac",
+            "validation.rbac.aec",
+            "validation.rbac.references"
+          ]
+        },
+        "operation_contract": {
+          "authority": "USER_EXPLICIT_IN_THIS_PLAN",
+          "authority_source": "THIS_PLAN_ONLY",
+          "external_policy_document_required": false,
+          "domains": {
+            "Policy": [
+              "validation.policy.identity",
+              "validation.policy.rules"
+            ],
+            "RBAC": [
+              "validation.rbac.ra",
+              "validation.rbac.rac",
+              "validation.rbac.aec",
+              "validation.rbac.references"
+            ]
+          },
+          "operations": [
+            {
+              "id": "validation.policy.identity",
+              "domain": "Policy",
+              "subdomain": "Identity",
+              "responsibility": "VALIDATE_APPROVED_POLICY_IDENTITY_STRUCTURE_WITH_USER_CATEGORY_AND_OPTIONAL_VERSION_CONTRACT"
+            },
+            {
+              "id": "validation.policy.rules",
+              "domain": "Policy",
+              "subdomain": "Rules",
+              "responsibility": "VALIDATE_APPROVED_RULES_STRUCTURE_RULE_ID_STATE_CONTRACT_AND_DOCUMENT_LOCAL_CONTENT_REFERENCES"
+            },
+            {
+              "id": "validation.rbac.ra",
+              "domain": "RBAC",
+              "subdomain": "ra",
+              "responsibility": "VALIDATE_RA_SEVEN_FIELD_STRUCTURE_ID_AND_RELATION_GROUP_SHAPE"
+            },
+            {
+              "id": "validation.rbac.rac",
+              "domain": "RBAC",
+              "subdomain": "rac",
+              "responsibility": "VALIDATE_RAC_LIST_STRUCTURE_RECORD_ID_AND_APPROVED_FIELDS_ONLY"
+            },
+            {
+              "id": "validation.rbac.aec",
+              "domain": "RBAC",
+              "subdomain": "aec",
+              "responsibility": "VALIDATE_AEC_LIST_STRUCTURE_RECORD_ID_AND_APPROVED_FIELDS_ONLY"
+            },
+            {
+              "id": "validation.rbac.references",
+              "domain": "RBAC",
+              "subdomain": "references",
+              "responsibility": "VALIDATE_POLICY_RA_RAC_AEC_FORWARD_REFERENCES_ID_EXISTENCE_TYPE_UNIQUENESS_AND_CANONICAL_ID_NAME_PAIRING"
+            }
+          ],
+          "current_scope_exact_six_ids": true,
+          "additional_ids": "NOT_AUTHORIZED_BY_THIS_DECISION",
+          "prefix_to_engine_kind": {
+            "validation.": "VALIDATION"
+          },
+          "registered_owner": "VALIDATION",
+          "cli_entrypoint": "src/ptsip/CLI.go",
+          "no_new_cmd": true,
+          "registered_runtime_resources": [
+            "src/ptsip/engines/index.json",
+            "src/ptsip/engines/validation/contract.json",
+            "src/ptsip/engines/validation/manifest.json",
+            "src/ptsip/engines/validation/execution-bindings.json"
+          ],
+          "per_operation_technical_contracts": "DERIVE_TYPED_IO_PRE_POST_FAILURE_REGISTRY_MANIFEST_BINDING_AND_TESTS_FROM_APPROVED_RESPONSIBILITY_WITHIN_PVR09",
+          "permission": "UNCHANGED_EXECUTION_PERMISSION_NOT_GRANTED_BY_NAMING",
+          "user_contract_validator": "PRESERVE_src/ptsip/user_contracts/_DEDICATED_ISOLATED_OWNER",
+          "future_extensions": "NO_ADDITIONAL_POLICY_LIFECYCLE_CONTENT_OR_RBAC_OPERATIONS_IN_THIS_APPROVAL",
+          "RAC_AEC_value_internals": "DEFERRED_NO_INFERRED_SEMANTIC_FIELDS"
+        }
       }
     ],
     "diagnostics": {
@@ -6391,7 +6704,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
     "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
-    "last_user_direction": "2026-11-18: User explicitly defines validation.* operation namespace as reserved exclusively to VALIDATION engine semantic and registered ownership. Any non-VALIDATION operation MUST NOT use validation.*. This namespace-to-owner invariant is effective policy in src/policy/CNTR/SFP-CNTR-0005.yaml; matching operation ID alone does NOT grant engine registration, activation or execution authority. PVR-09 still requires complete granular operation catalog, typed IO and binding closure; keep GO-CLI-OPERATION blocked pending those separate decisions. No new operation IDs beyond user examples are approved by this direction.",
+    "last_user_direction": "2026-11-18: User approved six exact PVR09 operations split by Policy (identity, rules) and RBAC (ra, rac, aec, references), all validation.* owned by VALIDATION engine. This plan is intentionally standalone and must not reference or depend on an external policy file for PVR09. Prior PVR09 policy_ref, namespace_policy_ref, name_binding_authority, source_policy_boundaries removed. GO-CLI-OPERATION policy-decision gate resolved; registered typed I/O, manifest, binding and tests are PVR09 implementation obligations, not a new policy decision. No policy, engine implementation, developer .ptsip/, branch, or release write from this plan sync.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
   "release_038_field_review": {
