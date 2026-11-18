@@ -2343,7 +2343,7 @@
         "Resolve machine file_id relationship to current declarative registry entries[].id -> resource and conditional revision; avoid creating dual independently managed authoritative file identifiers.",
         "Use exactly four flat root file metadata fields in RAC/AEC List: file_name, file_id, format_version, file_title; never wrap in File_Identity or add file_kind; RAC_list/AEC_list body separately reviewed.",
         "One RA_id entry has RA_title/RA_description and grouped [AEC_ids,AEC_name] / [RAC_ids,RAC_name] semantic structure; existing one-line YAML flow sequence for ID/name pairs remains. Do not add an eighth RA field or treat RA name displays as condition-name source of truth.",
-        "Profile behavior is Storage Rust engine-owned and schema references must point to approved existing registered contracts; do not create the rejected src/ptsip/schemas/storage/ new-target proposals."
+        "No Profile implementation engine is preassigned. Future agent analyzes all six Python Profile module responsibilities before selecting engine owner(s); current registered Profile data schemas remain until validated consumer migration and do not justify rejected new storage schema roots."
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
@@ -2498,12 +2498,12 @@
         "delete zero-byte placeholders only if no readers or ownership remain",
         "keep any unresolved source file with BLOCKED status",
         "verify old source location absent from consumers after each removal",
-        "Retired Profile Python module removal happens in WU-14 after Storage Rust engine acceptance; WU-08 removes only retired source contracts with confirmed zero supported consumers.",
+        "Retired Profile Python module removal happens in WU-14 only after the future agent has analyzed all six modules, recorded autoapproved Rust engine owner assignments, and verified all supported replacements. WU-08 removes only unrelated superseded source contracts with zero current consumers.",
         "Do not delete any path under src/ptsip/profiles/: all 22 are retired atomically after semantic closure by WU-14; source schema files elsewhere follow their individual deletion gates",
         "Do not delete src/ptsip/compile_sealed_rbac/{ra,rac,aec}.pp.3.00.schema.json: unchanged pp.3.00.contract.json still points to them. v4 schema creation is independent, not physical removal of historic pp3 contracts.",
         "If a retired contract is only required by an obsolete validator, validate approved replacement first, isolate that validator and its old tests, then DELETE them and the obsolete contract; never archive deleted contract history."
       ],
-      "gate": "zero supported consumers per retired schema source, full relevant schema/package tests PASS; exempt Python callers excluded from Storage Rust/Profile v4 acceptance",
+      "gate": "zero supported consumers per retired schema source, full relevant schema/package tests PASS; exempt Python callers excluded from selected Rust engines/Profile v4 acceptance",
       "dependency": [
         "WU-07",
         "WU-10",
@@ -2763,12 +2763,12 @@
     {
       "file": "setup.py",
       "issue": "_registered_public_profile_resources(), _registered_profile_baselines(), _project_public_profiles() require src/ptsip/profiles/index.yaml, current *.ptsip.yaml and history/<version> directories; will break if removed",
-      "required_change": "Remove old source-profile directory assumptions; bind packaging to registered current schema resources and existing Storage Rust engine binary; preserve clean build and no-stale-artifact checks."
+      "required_change": "Remove old source-profile directory assumptions; bind packaging to registered current schema resources and actual agent-selected Rust engine binary/binaries; preserve clean build and no-stale-artifact checks."
     },
     {
       "file": "MANIFEST.in",
       "issue": "Includes recursive src/ptsip/profiles *.ptsip.yaml and index.yaml",
-      "required_change": "Remove obsolete includes; include existing Storage Rust engine build artifacts and approved registered schema resources without creating Profile Go package assets."
+      "required_change": "Remove obsolete includes; include actual agent-selected Rust engine build artifacts and approved registered schema resources without creating Profile Go package assets."
     },
     {
       "file": "developer/tests/pp/public_catalog_test.go",
@@ -2778,17 +2778,17 @@
     {
       "file": "developer/tests/pp/baseline_test.go",
       "issue": "Reads src/ptsip/profiles history and root fixtures; test also appears to expect pp1.02 current baseline while current embedded registry says pp2.00",
-      "required_change": "Explicitly reconcile test expectation vs registered current contract, verify Storage Rust engine JSON golden fixtures and historical schemas, no silent current-version choice"
+      "required_change": "Explicitly reconcile test expectation vs registered current contract, verify selected Rust engine JSON golden fixtures and historical schemas, no silent current-version choice"
     },
     {
       "file": "src/ptsip/clarification/resolution/profile_projection.py",
       "issue": "Imports profiles.catalog and profiles.metadata, removed Python package",
-      "required_change": "Storage Rust engine typed Profile operation and registered native request/response adapter; no independent Go Profile implementation."
+      "required_change": "selected native Rust engine typed Profile operation and registered native request/response adapter; no independent Go Profile implementation."
     },
     {
       "file": "src/ptsip/migration/execution/direct/promotion.py",
       "issue": "Imports profiles.compatibility and direct promotion helpers",
-      "required_change": "Storage Rust Profile transition verification with existing native mutation and permission boundaries."
+      "required_change": "selected Rust engine Profile transition verification with existing native mutation and permission boundaries."
     },
     {
       "file": "src/ptsip/cli.py",
@@ -3188,13 +3188,13 @@
     ],
     "retirement_steps": [
       "Freeze and hash every one of 22 src/ptsip/profiles/ tracked files, including 6 Python modules, 12 profile YAML examples, 2 schema files, 1 catalog and 1 __init__.py",
-      "Future-session agent analyzes all six Python Profile modules, selects evidence-based Rust engine owner(s) and paths, records autoapproved decisions, implements supported replacements and verifies all consumers before retiring old files; no module's engine is preassigned.",
+      "Another session agent inventories and analyzes actual functions, caller dependencies and registered Rust engine responsibilities for ALL SIX Python Profile modules; records selected engine owner(s), paths and evidence for each and applies user preauthorization before implementation.",
       "Migrate existing two schema definitions into central src/ptsip/schemas/ targets, verifying every contract field and provenance, before deletion",
       "Analyze and retain YAML instances as JSON test fixtures and immutable source hashes; YAML data MUST NOT be renamed into JSON Schema",
-      "Future-session agent analyzes all six Python Profile modules, selects evidence-based Rust engine owner(s) and paths, records autoapproved decisions, implements supported replacements and verifies all consumers before retiring old files; no module's engine is preassigned.",
-      "Future-session agent analyzes all six Python Profile modules, selects evidence-based Rust engine owner(s) and paths, records autoapproved decisions, implements supported replacements and verifies all consumers before retiring old files; no module's engine is preassigned.",
+      "Implement and verify each of the six supported Profile responsibilities in the Rust engine(s) selected and recorded by the future session agent; preserve current/historical schema identity and source SHA; do not copy developer-private .ptsip contract semantics.",
+      "Switch approved supported consumers through existing src/ptsip/CLI.go as a router to selected Rust engine(s); do not modify excluded src/ptsip/cli.py or profile_projection.py.",
       "Update setup.py, pyproject.toml, MANIFEST.in, profile registry paths, and impacted CLI and release tests",
-      "Future-session agent analyzes all six Python Profile modules, selects evidence-based Rust engine owner(s) and paths, records autoapproved decisions, implements supported replacements and verifies all consumers before retiring old files; no module's engine is preassigned.",
+      "Run Rust crate tests for the actual selected engine(s), native contract and inter-engine handoff tests when needed, supported consumer integration, installed wheel smoke, distribution completeness and zero-legacy-path checks; excluded Python callers are not current acceptance gates.",
       "Remove all 22 files under src/ptsip/profiles/ and empty directories only when each deletion gate is satisfied",
       "Verify source Git tree has zero remaining paths with src/ptsip/profiles/ prefix, full tests pass, and no user-owned .ptsip/profile file is touched"
     ],
@@ -5771,8 +5771,8 @@
       "src/tests/ptsip/**": "APPROVED_TEST_ROOT",
       ".ptsip/contracts/policy/unified/Unified_Policy.schema.json": "V3_UNTOUCHED_NOT_V4_SOURCE",
       "src/ptsip/compile_sealed_rbac/pp.3.00.contract.json": "UNCHANGED_UNREUSED",
-      "src/ptsip/engines/storage/src/**": "PROFILE_ENGINE_OWNER_NOT_PRESELECTED;RUST_MODULE_WRITES_REQUIRE_FUTURE_ALL_SIX_ANALYSIS",
-      "src/ptsip/engines/storage/src/schemas/**": "PER_ENGINE_SCHEMA_OWNER_RULE_ONLY;DO_NOT_ASSUME_STORAGE_IS_PROFILE_OWNER"
+      "src/ptsip/engines/**/src/**": "RUST_PROFILE_IMPLEMENTATION_OWNERS_SELECTED_ONLY_AFTER_FUTURE_AGENT_ALL_SIX_ANALYSIS;INDIVIDUAL_ENGINE_CONTRACTS_STILL_REQUIRED",
+      "src/ptsip/engines/**/src/schemas/**": "OWNER_LOCAL_NATIVE_RUST_ENGINE_SCHEMAS;ALL_ENGINES_NOT_STORAGE_ONLY"
     },
     "directory_and_registry_decision_preview": {
       "status": "USER_REJECTED_ADDITIONAL_RBAC_DIRECTORY_AND_TWO_EXTRA_SCHEMA_FILES",
