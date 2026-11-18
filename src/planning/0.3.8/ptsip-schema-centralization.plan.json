@@ -2573,7 +2573,7 @@
       "outputs": [
         "six-module symbol-responsibility table",
         "actual imports across Python CLI, migration, clarification and specification",
-        "Rule-record developer-private schema permanently excluded; independent Storage Rust schema responsibility review",
+        "Rule-record private schema excluded; separate Storage, Validation and Discovery src-owned Rust schema contracts and typed handoff review",
         "22-file full directory retirement inventory with exact Git blob hashes and proposed replacement paths",
         "Rule record retirement reason contract: developer-only .ptsip schema import AND Python runtime not Rust engine; Rust replacement responsibilities and unsupported legacy semantics excluded"
       ],
@@ -2940,7 +2940,7 @@
       "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
       "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append"
     ],
-    "note": "CURRENT_USER_DECISION_2026_11_18: Storage Rust always-on Profile ownership and per-engine src/schemas replace retired independent Go Profile proposal. Existing registered non-engine Profile/RBAC schemas are not silently removed. Earlier simulation/go notes are not active authority. SUPERSEDED: all-six-in-Storage Rule Record allocation. Effective: distributed Rust allocation per actual duties.",
+    "note": "CURRENT_USER_DECISION_2026_11_18: Five Storage Rust Profile functions and per-engine src/schemas replace retired independent Go Profile proposal. Existing registered non-engine Profile/RBAC schemas are not silently removed. Earlier simulation/go notes are not active authority. SUPERSEDED: all-six-in-Storage Rule Record allocation. Effective: distributed Rust allocation per actual duties.",
     "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'"
   },
   "source_conflicts": [
@@ -3156,7 +3156,7 @@
       "Implement five Profile Rust responsibilities in Storage; split Rule Record into Storage resource read, Validation schema/graph checks, and Discovery verified exact-ID lookup.",
       "Migrate existing two schema definitions into central src/ptsip/schemas/ targets, verifying every contract field and provenance, before deletion",
       "Analyze and retain YAML instances as JSON test fixtures and immutable source hashes; YAML data MUST NOT be renamed into JSON Schema",
-      "Implement all six supported Profile responsibilities (including rule-record) in existing Storage Rust engine with per-engine schema ownership and always-on background lifecycle; do not inherit developer-private schema semantics.",
+      "Implement five Profile functions in Rust Storage with its managed background lifecycle. Implement rule_records.py as distributed Rust stages: Storage registered source read, Validation independent schema and parent graph verification, Discovery validated exact-ID list/lookup. Each engine owns its src/schemas/**. Never copy developer-private rule schema or Python ID regex.",
       "Switch approved consumers through existing src/ptsip/CLI.go engine dispatch and update Rust Storage packaging; do not edit excluded Python cli.py or profile_projection.py.",
       "Update setup.py, pyproject.toml, MANIFEST.in, profile registry paths, and impacted CLI and release tests",
       "Run Storage Rust native engine tests and supported consumer integration, installed wheel smoke, distribution completeness and no-legacy-path scans. Excluded legacy Python callers are not active gates.",
