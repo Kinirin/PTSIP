@@ -108,7 +108,7 @@
       "PTSIP_POLICY_V4_CONTRACTS",
       "RBAC_SCHEMA_TRANSFER_AND_CROSS_REGISTRY_BINDING"
     ],
-    "profile_go_implementation_priority": "DEFERRED",
+    "profile_go_implementation_priority": "ACTUAL_DEPENDENCIES_AND_REMAINING_CHILD_PATH_PROTOCOL_DECISIONS",
     "policy_v4_contract_files": [
       "src/ptsip/schemas/policy/public-structure-policy.schema.json",
       "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
@@ -740,7 +740,7 @@
   ],
   "target_registry": {
     "file": "src/ptsip/schemas/config.json",
-    "current_valid_json": false,
+    "current_valid_json": true,
     "transform": [
       {
         "step": "C01",
@@ -762,7 +762,46 @@
         "step": "C05",
         "change": "Do not silently add engine/evidence groups until target path approvals"
       }
-    ]
+    ],
+    "registered_lifecycle": {
+      "allowed_constants": [
+        "ACTIVE",
+        "LEGACY",
+        "DEPRECATED"
+      ],
+      "definitions": {
+        "ACTIVE": {
+          "meaning": "CURRENT_STANDARD_NEW_CONTRACT_STRUCTURE",
+          "new_registration": "ALLOWED",
+          "existing_use": "ALLOWED"
+        },
+        "LEGACY": {
+          "meaning": "OLDER_CONTRACT_CLOSED_TO_NEW_REGISTRATION_WITH_EXISTING_USE_SUPPORTED",
+          "new_registration": "DENIED",
+          "existing_use": "ALLOWED"
+        },
+        "DEPRECATED": {
+          "meaning": "OLDER_CONTRACT_SCHEDULED_FOR_SUPPORT_END",
+          "notification": "MANDATORY_TRANSITION_OR_UPGRADE_NOTICE_WHEN_SELECTED",
+          "use_denial": "NOT_INFERRED_FROM_THIS_DECISION"
+        }
+      },
+      "current_assignment": {
+        "pp.2.00": "ACTIVE",
+        "other_registered_project_profile_versions": "DEPRECATED"
+      },
+      "current_alias": "SAME_ACTIVE_PP_2_00_CONTRACT",
+      "rejected_previous_constants": [
+        "SUPERSEDED",
+        "CURRENT"
+      ],
+      "implementation": {
+        "catalog_metadata": "src/ptsip/user_contracts/catalog.go",
+        "selection_result": "REGISTERED_LIFECYCLE_AND_ADMISSION_DECISION_WITH_MANDATORY_UPGRADE_NOTIFICATIONS",
+        "profile_consumer_transport": "REQUIRES_EXISTING_WU_12_13_DECISION_GATES"
+      },
+      "approval": "USER_EXPLICIT_2026_11_18"
+    }
   },
   "target_schemas": [
     {
@@ -2349,7 +2388,7 @@
         "For src/ptsip/profiles/rule_records.py do NOT translate Python implementation or its developer-private contract into Go; derive independently necessary Rust engine responsibilities from current distributable source and validate approved replacement before deletion."
       ],
       "gate": "Inventory all six Python sources for removal; five Go replacement responsibilities mapped, rule_records.py discontinued for the two explicit reasons and Rust replacement scope determined without accessing developer .ptsip as a schema source.",
-      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     },
     {
       "id": "WU-12",
@@ -2378,8 +2417,8 @@
         "Select a Go integration boundary only after schema contract and RA identity decisions are made",
         "Select Rust engine owner and module path within src/ptsip/engines/ for still-required rule-record discovery/validation; do not infer extra engine ID or operation; independently author distributable schema/contract."
       ],
-      "gate": "DEFERRED: V4/RBAC gates have priority; no cmd/ testdata/ internal/** creation",
-      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
+      "gate": "Exact Go child paths and typed Profile transport/adapter must be decided; Rust rule-record owner/path/contract must be decided before affected source creation; no new cmd/, testdata/ or internal/** without their existing approvals.",
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     },
     {
       "id": "WU-13",
@@ -2419,7 +2458,7 @@
         "Modify src/ptsip/CLI.go for future registered Go operations, never src/ptsip/cli.py; never change profile_projection.py even if it fails"
       ],
       "gate": "Five supported Go profile operations and independent Rust rule-record replacement pass, supported consumers and existing Go CLI integration pass; legacy Python validators do not remain active gates.",
-      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     },
     {
       "id": "WU-14",
@@ -2471,7 +2510,7 @@
         "The retired rule_records.py module MUST NOT be rebuilt as Go profile operation: source only Rust engine replacement under a reviewed owner with independent distributable contracts; delete obsolete Python module and associated validators after replacement passes."
       ],
       "gate": "22/22 retired paths absent; five supported Go profile responsibilities and independent Rust rule-record module tested; no obsolete Python validation gate remains; distribution and supported Rust/Go acceptance PASS.",
-      "priority": "DEFERRED_AFTER_PVR_DECISIONS"
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     }
   ],
   "observed_breakages": [
@@ -2738,21 +2777,21 @@
         "source": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
         "schema_source": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
         "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "registration": "SUPERSEDED",
+        "registration": "DEPRECATED",
         "decision": "EXACT_USER_REQUESTED_OUTPUT_PATH"
       },
       {
         "source": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
         "schema_source": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
         "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-        "registration": "SUPERSEDED",
+        "registration": "DEPRECATED",
         "decision": "EXACT_USER_REQUESTED_OUTPUT_PATH"
       },
       {
         "source": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
         "schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
         "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
-        "registration": "CURRENT_REGISTERED_VERSION",
+        "registration": "ACTIVE",
         "decision": "USER_SELECTED_AUTHORITATIVE_SCHEMA_SOURCE_2026_11_18"
       }
     ]
@@ -3165,7 +3204,7 @@
     "no_schema_generated_from_pp100": true
   },
   "go_profile_module_migration": {
-    "status": "GO_ROOT_APPROVED_IMPLEMENTATION_DEFERRED_AFTER_POLICY_V4_AND_RBAC",
+    "status": "IMPLEMENTATION_APPROVED_SUBJECT_TO_UNDECIDED_CHILD_PATHS_AND_TYPED_PROTOCOL",
     "requested_language": "GO_PROFILE_OPERATIONS_PLUS_RUST_RULE_RECORD_REPLACEMENT",
     "retired_python_files": [
       "src/ptsip/profiles/identity.py",
@@ -3177,7 +3216,7 @@
     ],
     "behavior_policy": "Retire all six Python modules; five remaining profile responsibilities are Go-owned, rule_records.py is permanently discontinued and its still-needed rule discovery/validation responsibilities are rebuilt as an independent Rust engine module using src-owned distributable contracts.",
     "approved_discontinuation": true,
-    "source_creation_authorized": false,
+    "source_creation_authorized": true,
     "owner_boundary": {
       "schema_contracts": "src/ptsip/schemas/ holds versioned or current JSON Schema and config.json only",
       "go_implementation": "src/ptsip/profile_contract/ is the independent Go module root; not a package under src/ptsip/common_contract/ or src/ptsip/engines/",
@@ -3805,7 +3844,7 @@
         "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append",
         "Remove-Item $log -ErrorAction SilentlyContinue"
       ],
-      "note": "Future Go phase deferred; no new cmd/, no new testdata/, and no internal/** unless separately approved. New integration tests/fixtures belong to src/tests/ptsip/."
+      "note": "Run decided work by actual dependencies. Remaining exact child-path and typed-contract decisions apply only to affected work. No new cmd/, testdata/ or internal/** without their existing approvals. New integration tests and fixtures belong under src/tests/ptsip/."
     },
     "blockers": [
       "Go module root approved; exact child source paths and protocol still require approval",
@@ -3856,7 +3895,12 @@
       "no_go_parity_for_this_module": true,
       "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
       "archive_removed_contract_or_validator": false
-    }
+    },
+    "source_creation_conditions": [
+      "EXACT_CHILD_PATHS_APPROVED",
+      "TYPED_CONTRACT_AND_EXECUTION_ADAPTER_DECIDED",
+      "ACTUAL_DEPENDENCIES_SATISFIED"
+    ]
   },
   "profile_directory_retirement": {
     "status": "APPROVED_FINAL_DISPOSITION_CONDITIONAL_IMPLEMENTATION",
@@ -6161,9 +6205,9 @@
     },
     "scoped_design_approval": {
       "source": "PROJECT_OWNER_EXPLICIT",
-      "date": "2026-11-16",
-      "state": "APPROVED_PVR_IMPLEMENTATION_CONTINUOUS",
-      "plan_scope": "POLICY_V4_PVR_01_TO_09_ONLY",
+      "date": "2026-11-18",
+      "state": "APPROVED_CONTINUOUS_DEPENDENCY_DRIVEN_IMPLEMENTATION",
+      "plan_scope": "WU_01_THROUGH_WU_14_WITH_EXPLICIT_DECISION_GATES",
       "included_contracts": [
         "Policy_Identity",
         "Policy_Lifecycle",
@@ -6176,15 +6220,15 @@
       "priority": "POLICY_V4_CONTRACT_STRUCTURE",
       "scope_path": "src/planning/0.3.8/ptsip-schema-centralization.plan.json#policy_v4_rbac_focus",
       "previous_focus_status": "RA_LIST_OWNS_RELATIONS_SINGLE_RBAC_SCHEMA_ROOT_NO_EXTRA_REGISTRATION_SCHEMA",
-      "full_distribution_plan_status": "DRAFT_NOT_APPROVED",
-      "full_distribution_implementation_approval": false,
+      "full_distribution_plan_status": "IMPLEMENTATION_APPROVED_WITH_UNDECIDED_CONTRACT_AND_PATH_GATES",
+      "full_distribution_implementation_approval": true,
       "allowed_actions": [
         "REFINE_MACHINE_READABLE_CONTRACT_STRUCTURE_IN_PLAN",
         "PRODUCE_FIELD_BY_FIELD_UNRESOLVED_DECISION_MATRIX",
         "GENERATE_DETERMINISTIC_STRUCTURE_AND_VALIDATION_PROPOSALS",
         "PREPARE_APPROVAL_READY_IMPLEMENTATION_WORK_UNITS",
         "READ_ACTIVE_PLAN_AND_SRC_ONLY",
-        "IMPLEMENT_PVR_01_TO_09_WITHIN_APPROVED_BOUNDARIES",
+        "IMPLEMENT_WU_01_TO_14_WITHIN_APPROVED_PATHS_DECIDED_CONTRACTS_AND_ACTUAL_DEPENDENCIES",
         "GENERATE_V4_AND_RBAC_SCHEMAS_AND_TESTS_WHERE_ROLE_CONTRACT_IS_DETERMINATE",
         "BUILD_SEPARATE_USER_CONTRACT_VALIDATOR",
         "MAINTAIN_DETERMINISTIC_AUDIT_LOG_AND_CONFORMANCE_TESTS"
@@ -6194,13 +6238,13 @@
         "MUTATE_POLICY_DOC_FOR_FIELD_LEVEL_DETAILS",
         "MODIFY_LEGACY_PP300_SOURCE",
         "CREATE_NEW_GIT_BRANCH",
-        "RUN_FULL_RELEASE_MIGRATION",
-        "ENABLE_POLICY_EVALUATION_OR_RUNTIME_EXECUTION",
+        "BYPASS_EXPLICIT_DECISION_GATES_DURING_MIGRATION",
+        "INFER_POLICY_EVALUATION_OR_EXECUTION_AUTHORITY_FROM_SCHEMA_VALIDITY",
         "CLAIM_FINAL_SEMANTICS_FOR_UNRESOLVED_CUSTOM_OR_RBAC_FIELDS",
         "USE_DEVELOPER_REPO_DOTPTSIP_AS_DISTRIBUTED_SRC_CONTRACT_BASIS",
         "CREATE_CONTRACT_INSTANCES_IN_PTSIP_DEV_CHECKOUT",
         "REUSE_OTHER_PTSIP_FEATURE_VALIDATORS_FOR_USER_CONTRACTS",
-        "IMPLEMENT_ANY_WORK_UNIT_OUTSIDE_APPROVED_PVR_SCOPE",
+        "IMPLEMENT_WORK_WITH_UNDECIDED_CONTRACTS_OR_UNAPPROVED_TARGET_PATHS",
         "RELEASE_PUBLICATION_WITHOUT_SEPARATE_APPROVAL"
       ],
       "no_policy_authority_transfer": true,
@@ -6509,8 +6553,8 @@
     },
     "continuous_implementation_authorization": {
       "source": "PROJECT_OWNER_EXPLICIT",
-      "date": "2026-11-16",
-      "scope": "POLICY_V4_PVR_01_THROUGH_PVR_09_ONLY",
+      "date": "2026-11-18",
+      "scope": "WU_01_THROUGH_WU_14_WITH_EXPLICIT_DECISION_GATES",
       "authorized_pvr_ids": [
         "PVR-01",
         "PVR-02",
@@ -6524,15 +6568,12 @@
       ],
       "status": "Approval.Scheduled_implementation",
       "execution_authorized": true,
-      "applies_to": "PVR_DESIGN_IMPLEMENTATION_TESTS_AND_RELATED_SUBSET_OF_WU_01_02_03_05_07",
+      "applies_to": "DECIDED_WORK_WITH_APPROVED_PATHS_AND_SATISFIED_ACTUAL_DEPENDENCIES",
       "excludes": [
-        "WU_04_PLAN_SCHEMAS_OUTSIDE_PVR",
-        "WU_06_GENERAL_ENGINE_EVIDENCE",
-        "WU_08_FILE_DELETIONS",
-        "WU_09_POLICY_DOCUMENT_MIGRATION",
-        "WU_10_TO_WU_14_PROFILE_GO_MIGRATION",
+        "EXPLICITLY_DENIED_OR_UNAPPROVED_TARGET_PATHS",
+        "SOURCE_CREATION_WITH_UNDECIDED_OWNER_OR_CONTRACT",
+        "POLICY_DOCUMENT_REWRITES_WITHOUT_SEPARATE_PER_DOCUMENT_APPROVAL",
         "RELEASE_PUBLICATION",
-        "POLICY_DOCUMENT_REWRITES",
         "USER_PROJECT_MUTATION_FROM_PTSIP_DEV_CHECKOUT"
       ],
       "agent_may_decide": [
@@ -6558,7 +6599,25 @@
       "structural_fallback": "GENERATE_NON_NORMATIVE_INTERFACES_AND_TESTS_WITHOUT_FALSE_SEMANTIC_PASS",
       "allow_dynamic_installed_user_project_bootstrap": true,
       "forbid_dotptsip_creation_in_development_checkout": true,
-      "no_approval_request_for_technical_details_inside_scope": true
+      "no_approval_request_for_technical_details_inside_scope": true,
+      "authorized_work_unit_ids": [
+        "WU-01",
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-05",
+        "WU-06",
+        "WU-07",
+        "WU-08",
+        "WU-09",
+        "WU-10",
+        "WU-11",
+        "WU-12",
+        "WU-13",
+        "WU-14"
+      ],
+      "execution_order": "ACTUAL_DEPENDENCIES_NOT_WORK_UNIT_NUMBER",
+      "decision_hold_scope": "AFFECTED_WORK_ONLY_CONTINUE_OTHER_APPROVED_EXECUTABLE_WORK"
     },
     "implementation_simulation": {
       "simulation_type": "STATIC_DEPENDENCY_AND_GATE_DRY_RUN_NO_FILES_WRITTEN_NO_CODE_EXECUTION",
@@ -6918,12 +6977,12 @@
     "existing_release_plan_reference": "src/planning/0.3.8/contract-first-migration/index.json",
     "other_plan_approvals": "DO_NOT_INHERIT",
     "new_policy_file_writes": "NOT_AUTHORIZED_BY_THIS_PLAN",
-    "schema_creation_and_deletion": "CREATE_AND_REVISE_PVR_SCOPED_NEW_V4_SCHEMAS_ALLOWED;OLD_SOURCE_DELETION_SEPARATELY_GATED",
+    "schema_creation_and_deletion": "CREATE_APPROVED_SCHEMA_TARGETS_WITH_DECIDED_CONTRACTS;DELETE_AFTER_VERIFIED_REPLACEMENT_AND_CONSUMER_CLOSURE",
     "implementation_authorized": true,
     "release_publication_authorized": false,
     "user_project_profile_mutation": false,
-    "implementation_authorization_scope": "PVR_01_TO_09_ONLY",
-    "implementation_authorization_mode": "SCOPED_CONTINUOUS_USER_APPROVAL",
+    "implementation_authorization_scope": "WU_01_THROUGH_WU_14_WITH_EXPLICIT_DECISION_GATES",
+    "implementation_authorization_mode": "CONTINUOUS_DEPENDENCY_DRIVEN_USER_APPROVAL",
     "authorized_pvr_ids": [
       "PVR-01",
       "PVR-02",
@@ -6935,14 +6994,32 @@
       "PVR-08",
       "PVR-09"
     ],
-    "full_038_work_units_approved": false,
+    "full_038_work_units_approved": true,
     "dedicated_user_contract_engine_root": "src/ptsip/user_contracts/",
     "dedicated_user_contract_template_root": "src/ptsip/user_contracts/templates/",
     "no_src_dependency_on_repo_local_dotptsip": true,
     "external_policy_document_dependency": false,
     "effective_execution_contract": "SELF_CONTAINED_PLAN_ONLY",
     "developer_dotptsip_contract_import": "FORBIDDEN_FOR_DISTRIBUTABLE_SOURCE",
-    "legacy_validator_retention": "FORBIDDEN_AFTER_APPROVED_REPLACEMENT_VERIFIED"
+    "legacy_validator_retention": "FORBIDDEN_AFTER_APPROVED_REPLACEMENT_VERIFIED",
+    "authorized_work_unit_ids": [
+      "WU-01",
+      "WU-02",
+      "WU-03",
+      "WU-04",
+      "WU-05",
+      "WU-06",
+      "WU-07",
+      "WU-08",
+      "WU-09",
+      "WU-10",
+      "WU-11",
+      "WU-12",
+      "WU-13",
+      "WU-14"
+    ],
+    "execution_order": "ACTUAL_DEPENDENCIES_NOT_WORK_UNIT_NUMBER",
+    "undecided_work": "HOLD_ONLY_AFFECTED_WORK_AND_CONTINUE_OTHER_EXECUTABLE_APPROVED_WORK"
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -8572,6 +8649,23 @@
       "status": "SUPERSEDED_WHEN_CONFLICTS_WITH_APPROVED_2026_11_18_DECISION_AND_CURRENT_SOURCE",
       "interpretation": "STATIC_SIMULATION_IS_HISTORICAL_DIAGNOSTIC_NOT_CURRENT_GATE",
       "current_source_validation": "REREAD_ACTIVE_HEAD;DO_NOT_REAPPLY_STALE_CONFIG_JSON_PARSE_FAILURE"
+    },
+    "continuous_execution": {
+      "authorization": "USER_EXPLICIT_WU_01_THROUGH_WU_14",
+      "work_unit_numbers": "IDENTIFIERS_ONLY_NOT_PRIORITY_OR_EXECUTION_SEQUENCE",
+      "order": "ACTUAL_DEPENDENCIES",
+      "hold": "ONLY_WORK_WITH_UNDECIDED_PLAN_CONTRACTS_OR_EXPLICITLY_UNAPPROVED_TARGET_PATHS",
+      "continue": "OTHER_EXECUTABLE_APPROVED_WORK_WITHOUT_REPEATED_APPROVAL"
+    },
+    "registered_lifecycle": {
+      "source": "USER_EXPLICIT_2026_11_18",
+      "contract": "target_registry.registered_lifecycle",
+      "allowed_constants": [
+        "ACTIVE",
+        "LEGACY",
+        "DEPRECATED"
+      ],
+      "current_project_profile": "pp.2.00_ACTIVE_ALL_OTHER_REGISTERED_PROFILE_VERSIONS_DEPRECATED"
     }
   },
   "current_release_nonblocking_contract_freedom": {

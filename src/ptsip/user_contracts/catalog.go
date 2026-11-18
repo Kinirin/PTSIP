@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/fs"
 	"net/url"
 	"os"
 	"path"
@@ -15,13 +16,110 @@ import (
 )
 
 type Validator struct {
-	Root       string
-	schemas    map[string]*jsonschema.Schema
-	documents  map[string]any
-	registered map[string]string
-	policy     map[string]any
-	official   *jsonschema.Schema
-	metaschema *jsonschema.Schema
+	Root          string
+	schemas       map[string]*jsonschema.Schema
+	documents     map[string]any
+	registered    map[string]string
+	policy        map[string]any
+	official      *jsonschema.Schema
+	metaschema    *jsonschema.Schema
+	registrations map[string]map[string]any
+}
+
+type RegisteredLifecycle string
+
+const (
+	Active     RegisteredLifecycle = "ACTIVE"
+	Legacy     RegisteredLifecycle = "LEGACY"
+	Deprecated RegisteredLifecycle = "DEPRECATED"
+)
+
+type RegistryNotice struct {
+	Code      string `json:"code"`
+	Message   string `json:"message"`
+	Mandatory bool   `json:"mandatory"`
+}
+
+type RegistrySelection struct {
+	SchemaKey           string              `json:"schema_key"`
+	Version             string              `json:"version"`
+	SchemaPath          string              `json:"schema_path"`
+	RegisteredLifecycle RegisteredLifecycle `json:"registered_lifecycle"`
+	Allowed             bool                `json:"allowed"`
+	Notifications       []RegistryNotice    `json:"notifications"`
+}
+
+func collectRegistrations(config map[string]any) (map[string]map[string]any, error) {
+	registrations := make(map[string]map[string]any)
+	var visit func(map[string]any) error
+	visit = func(group map[string]any) error {
+		for _, key := range sortedKeys(group) {
+			entry, ok := group[key].(map[string]any)
+			if !ok {
+				continue
+			}
+			if _, resource := entry["path"]; !resource {
+				if err := visit(entry); err != nil {
+					return err
+				}
+				continue
+			}
+			if _, duplicate := registrations[key]; duplicate {
+				return fmt.Errorf("duplicate schema registration: %s", key)
+			}
+			if raw, present := entry["registered_lifecycle"]; present {
+				switch raw {
+				case string(Active), string(Legacy), string(Deprecated):
+				default:
+					return fmt.Errorf("invalid registered_lifecycle for %s: expected ACTIVE, LEGACY or DEPRECATED", key)
+				}
+			}
+			registrations[key] = entry
+		}
+		return nil
+	}
+	if err := visit(config); err != nil {
+		return nil, err
+	}
+	return registrations, nil
+}
+
+// SelectRegisteredSchema reports admission and required notices for an explicit selection.
+func (v *Validator) SelectRegisteredSchema(key string, newRegistration bool) (RegistrySelection, error) {
+	entry, exists := v.registrations[key]
+	if !exists {
+		return RegistrySelection{}, fmt.Errorf("unknown schema registration: %s", key)
+	}
+	lifecycle, declared := entry["registered_lifecycle"].(string)
+	if !declared {
+		return RegistrySelection{}, fmt.Errorf("registered_lifecycle is not declared for %s", key)
+	}
+	schemaPath, _ := entry["path"].(string)
+	if !fs.ValidPath(schemaPath) || schemaPath == "." || strings.ContainsAny(schemaPath, "\\:") {
+		return RegistrySelection{}, fmt.Errorf("invalid schema registration path: %s", key)
+	}
+	version, _ := entry["version"].(string)
+	if version == "" {
+		return RegistrySelection{}, fmt.Errorf("missing schema registration version: %s", key)
+	}
+	selection := RegistrySelection{
+		SchemaKey: key, Version: version, SchemaPath: schemaPath,
+		RegisteredLifecycle: RegisteredLifecycle(lifecycle), Allowed: true,
+		Notifications: []RegistryNotice{},
+	}
+	switch selection.RegisteredLifecycle {
+	case Legacy:
+		if newRegistration {
+			selection.Allowed = false
+			return selection, fmt.Errorf("new registration is closed for LEGACY contract %s", key)
+		}
+	case Deprecated:
+		selection.Notifications = append(selection.Notifications, RegistryNotice{
+			Code: "UPGRADE_REQUIRED", Mandatory: true,
+			Message: fmt.Sprintf("Support for contract %s (%s) is scheduled to end. Upgrade is required.", key, version),
+		})
+	}
+	return selection, nil
 }
 
 type schemaNode struct {
@@ -68,9 +166,14 @@ func New(root string) (*Validator, error) {
 	if !ok {
 		return nil, errors.New("schema catalog requires storage")
 	}
+	registrations, err := collectRegistrations(config)
+	if err != nil {
+		return nil, err
+	}
 	v := &Validator{
 		Root: resolved, schemas: make(map[string]*jsonschema.Schema),
 		documents: make(map[string]any), registered: make(map[string]string),
+		registrations: registrations,
 	}
 	compiler := newCompiler()
 	v.metaschema, err = compiler.Compile(Dialect)

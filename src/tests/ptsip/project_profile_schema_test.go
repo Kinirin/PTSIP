@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/user_contracts"
 	"github.com/santhosh-tekuri/jsonschema/v6"
 	"gopkg.in/yaml.v3"
 )
@@ -22,9 +23,9 @@ type profileVersion struct {
 }
 
 var profileVersions = []profileVersion{
-	{"pp.1.01", "specdata/ptsip-profile-pp-1.01.schema.json", "storage/profile/history/project-profile-pp.1.01.schema.json", "SUPERSEDED"},
-	{"pp.1.02", "specdata/ptsip-profile-pp-1.02.schema.json", "storage/profile/history/project-profile-pp.1.02.schema.json", "SUPERSEDED"},
-	{"pp.2.00", "profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json", "storage/profile/history/project-profile-pp.2.00.schema.json", "CURRENT"},
+	{"pp.1.01", "specdata/ptsip-profile-pp-1.01.schema.json", "storage/profile/history/project-profile-pp.1.01.schema.json", "DEPRECATED"},
+	{"pp.1.02", "specdata/ptsip-profile-pp-1.02.schema.json", "storage/profile/history/project-profile-pp.1.02.schema.json", "DEPRECATED"},
+	{"pp.2.00", "profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json", "storage/profile/history/project-profile-pp.2.00.schema.json", "ACTIVE"},
 }
 
 type offlineProfileLoader struct{}
@@ -264,6 +265,9 @@ func TestProjectProfileRegistryPinsSelectedSourceAndCurrentVersion(t *testing.T)
 	if entry["$id"] != selector["$id"] || entry["version"] != "pp.2.00" || entry["path"] != "storage/profile/project-profile.schema.json" {
 		t.Fatalf("current registration differs from selector: %v", entry)
 	}
+	if entry["registered_lifecycle"] != "ACTIVE" {
+		t.Errorf("current selector must have ACTIVE lifecycle: %v", entry)
+	}
 	if expected := gitBlobSHA(t, "src/ptsip/"+profileVersions[2].source); entry["source_blob_sha"] != expected {
 		t.Errorf("current selector provenance does not use selected pp2 source: %v", entry)
 	}
@@ -283,6 +287,179 @@ func TestProjectProfileRegistryPinsSelectedSourceAndCurrentVersion(t *testing.T)
 	} {
 		if _, err := os.Stat(filepath.Join(product, "schemas", filepath.FromSlash(relative))); !os.IsNotExist(err) {
 			t.Errorf("unapproved target exists or cannot be checked: %s: %v", relative, err)
+		}
+	}
+}
+
+func TestProjectProfileRegisteredLifecycleUsesClosedEnum(t *testing.T) {
+	cases := []struct {
+		name     string
+		value    any
+		accepted bool
+	}{
+		{"active", "ACTIVE", true},
+		{"legacy", "LEGACY", true},
+		{"deprecated", "DEPRECATED", true},
+		{"retired-current", "CURRENT", false},
+		{"retired-superseded", "SUPERSEDED", false},
+		{"lowercase", "active", false},
+		{"unknown", "UNREGISTERED", false},
+		{"empty", "", false},
+		{"null", nil, false},
+		{"boolean", true, false},
+		{"number", 1, false},
+		{"array", array{"ACTIVE"}, false},
+		{"object", object{"status": "ACTIVE"}, false},
+	}
+	for _, key := range []string{"ptsip.project-profile", "ptsip.project-profile.pp.1.01"} {
+		t.Run(key, func(t *testing.T) {
+			for _, test := range cases {
+				t.Run(test.name, func(t *testing.T) {
+					root := t.TempDir()
+					schemas := filepath.Join(root, "schemas")
+					copyJSONTree(t, filepath.Join(productRoot(t), "schemas"), schemas)
+					path := filepath.Join(schemas, "config.json")
+					config := readObject(t, path)
+					profiles := config["storage"].(object)["profile"].(object)
+					profiles[key].(object)["registered_lifecycle"] = test.value
+					payload, err := json.Marshal(config)
+					if err != nil {
+						t.Fatal(err)
+					}
+					if err := os.WriteFile(path, payload, 0o644); err != nil {
+						t.Fatal(err)
+					}
+					_, err = usercontracts.New(root)
+					if (err == nil) != test.accepted {
+						t.Fatalf("registered lifecycle %v accepted=%v, want %v: %v", test.value, err == nil, test.accepted, err)
+					}
+				})
+			}
+		})
+	}
+}
+
+func TestRegisteredProfileLifecycleSelectionDecisions(t *testing.T) {
+	catalog := validator(t)
+	for _, key := range []string{"ptsip.project-profile", "ptsip.project-profile.pp.2.00"} {
+		for _, newRegistration := range []bool{false, true} {
+			selection, err := catalog.SelectRegisteredSchema(key, newRegistration)
+			if err != nil || !selection.Allowed || selection.RegisteredLifecycle != usercontracts.Active {
+				t.Fatalf("ACTIVE selection must allow existing and new use: %+v, %v", selection, err)
+			}
+			if selection.SchemaKey != key || selection.Version != "pp.2.00" || selection.SchemaPath == "" || len(selection.Notifications) != 0 {
+				t.Fatalf("ACTIVE selection lost its registration identity or emitted a notice: %+v", selection)
+			}
+		}
+	}
+	for _, version := range profileVersions[:2] {
+		key := "ptsip.project-profile." + version.version
+		for _, newRegistration := range []bool{false, true} {
+			selection, err := catalog.SelectRegisteredSchema(key, newRegistration)
+			if err != nil || !selection.Allowed || selection.RegisteredLifecycle != usercontracts.Deprecated {
+				t.Fatalf("DEPRECATED selection must remain available with an upgrade notice: %+v, %v", selection, err)
+			}
+			if selection.SchemaKey != key || selection.Version != version.version || selection.SchemaPath != version.canonical {
+				t.Fatalf("DEPRECATED selection changed the requested contract: %+v", selection)
+			}
+			if len(selection.Notifications) != 1 || selection.Notifications[0].Code != "UPGRADE_REQUIRED" ||
+				!selection.Notifications[0].Mandatory || selection.Notifications[0].Message == "" {
+				t.Fatalf("DEPRECATED selection omitted the mandatory upgrade notice: %+v", selection)
+			}
+		}
+	}
+
+	root := t.TempDir()
+	schemas := filepath.Join(root, "schemas")
+	copyJSONTree(t, filepath.Join(productRoot(t), "schemas"), schemas)
+	path := filepath.Join(schemas, "config.json")
+	config := readObject(t, path)
+	key := "ptsip.project-profile.pp.1.01"
+	config["storage"].(object)["profile"].(object)[key].(object)["registered_lifecycle"] = "LEGACY"
+	payload, err := json.Marshal(config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, payload, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	legacyCatalog, err := usercontracts.New(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	existing, err := legacyCatalog.SelectRegisteredSchema(key, false)
+	if err != nil || !existing.Allowed || existing.RegisteredLifecycle != usercontracts.Legacy || len(existing.Notifications) != 0 {
+		t.Fatalf("LEGACY existing use must remain allowed: %+v, %v", existing, err)
+	}
+	admission, err := legacyCatalog.SelectRegisteredSchema(key, true)
+	if err == nil || admission.Allowed || admission.RegisteredLifecycle != usercontracts.Legacy {
+		t.Fatalf("LEGACY new registration must be denied: %+v, %v", admission, err)
+	}
+}
+
+func TestProjectProfileLifecycleAndWorkAuthorizationFollowCurrentPlan(t *testing.T) {
+	plan := readObject(t, filepath.Join(repositoryRoot(t), "src", "planning", "0.3.8", "ptsip-schema-centralization.plan.json"))
+	lifecycle := plan["target_registry"].(object)["registered_lifecycle"].(object)
+	allowed := map[string]bool{}
+	for _, value := range lifecycle["allowed_constants"].(array) {
+		state := value.(string)
+		if allowed[state] {
+			t.Fatalf("duplicate lifecycle constant in plan: %s", state)
+		}
+		allowed[state] = true
+	}
+	if !reflect.DeepEqual(allowed, map[string]bool{"ACTIVE": true, "LEGACY": true, "DEPRECATED": true}) {
+		t.Fatalf("plan lifecycle vocabulary differs from the approved closed enum: %v", allowed)
+	}
+	assignment := lifecycle["current_assignment"].(object)
+	if assignment["pp.2.00"] != "ACTIVE" || assignment["other_registered_project_profile_versions"] != "DEPRECATED" {
+		t.Fatalf("plan assigns the wrong current or older profile lifecycle: %v", assignment)
+	}
+	definitions := lifecycle["definitions"].(object)
+	active, legacy, deprecated := definitions["ACTIVE"].(object), definitions["LEGACY"].(object), definitions["DEPRECATED"].(object)
+	if active["meaning"] != "CURRENT_STANDARD_NEW_CONTRACT_STRUCTURE" || active["new_registration"] != "ALLOWED" ||
+		legacy["new_registration"] != "DENIED" || legacy["existing_use"] != "ALLOWED" ||
+		deprecated["notification"] != "MANDATORY_TRANSITION_OR_UPGRADE_NOTICE_WHEN_SELECTED" {
+		t.Fatalf("plan lifecycle behavior differs from approved selection semantics: %v", definitions)
+	}
+	config := readObject(t, filepath.Join(productRoot(t), "schemas", "config.json"))
+	for key, value := range config["storage"].(object)["profile"].(object) {
+		entry := value.(object)
+		expected := assignment["other_registered_project_profile_versions"]
+		if entry["version"] == "pp.2.00" {
+			expected = assignment["pp.2.00"]
+		}
+		if entry["registered_lifecycle"] != expected {
+			t.Errorf("registry %s differs from the current plan lifecycle: %v", key, entry)
+		}
+	}
+	scope := plan["release_scope"].(object)
+	if scope["full_038_work_units_approved"] != true ||
+		scope["implementation_authorization_scope"] != "WU_01_THROUGH_WU_14_WITH_EXPLICIT_DECISION_GATES" ||
+		scope["execution_order"] != "ACTUAL_DEPENDENCIES_NOT_WORK_UNIT_NUMBER" {
+		t.Fatalf("plan lost continuous dependency-driven authorization: %v", scope)
+	}
+	workUnits, authorized := map[string]bool{}, map[string]bool{}
+	for _, value := range plan["work_units"].(array) {
+		id := value.(object)["id"].(string)
+		if workUnits[id] {
+			t.Fatalf("duplicate work unit: %s", id)
+		}
+		workUnits[id] = true
+	}
+	for _, value := range scope["authorized_work_unit_ids"].(array) {
+		id := value.(string)
+		if authorized[id] {
+			t.Fatalf("duplicate authorized work unit: %s", id)
+		}
+		authorized[id] = true
+	}
+	if len(workUnits) != 14 || !reflect.DeepEqual(workUnits, authorized) {
+		t.Fatalf("authorized work units differ from the complete plan: units=%v authorized=%v", workUnits, authorized)
+	}
+	for index := 1; index <= 14; index++ {
+		if !authorized[fmt.Sprintf("WU-%02d", index)] {
+			t.Errorf("approved work unit missing: WU-%02d", index)
 		}
 	}
 }
