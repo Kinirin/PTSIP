@@ -406,6 +406,18 @@ Policy_Content:
           active_shipped_operation_contract: SFP-CNTR-0001_UNCHANGED
           activation_execution_or_write_permission: NOT_GRANTED_BY_CONTRACT_DECLARATION
           detailed_schema_and_operation_shape: UNRESOLVED_CONTRACT_DESIGN
+        operation_id_namespace_owner_binding:
+          approval: USER_EXPLICIT_2026_11_18
+          scope: REGISTERED_PTSIP_OPERATION_IDS
+          prefix: validation.
+          mandatory_semantic_owner: VALIDATION
+          mandatory_registered_engine_kind: VALIDATION
+          non_validation_engine_use_of_prefix: FORBIDDEN
+          rule: PREFIX_REQUIRES_MATCHING_DECLARED_AND_VERIFIED_ENGINE_OWNER
+          prefix_alone_grants_registration_or_execution_authority: false
+          existing_engine_capability_binding_and_permission_checks: PRESERVED_REQUIRED
+          implementation_directory_or_language_owner_inference: FORBIDDEN
+          non_validation_prefix_namespaces: UNDECIDED_OUTSIDE_THIS_DECISION
         registry_namespace_authority_and_derived_discovery:
           selected_option: C_FEDERATED_AUTHORITATIVE_SOURCES_WITH_NONAUTHORITATIVE_DERIVED_DISCOVERY_INDEX
           registry_ownership: OFFICIAL_CONSUMER_EXTERNAL_EACH_RETAINS_OWN_CANONICAL_SOURCE
@@ -701,6 +713,9 @@ Policy_Content:
           provenance: USER_EXPLICIT_2026_10_26
       invariants:
         operations_require_explicit_supported_identity: true
+        validation_prefix_requires_registered_validation_engine_owner: true
+        non_validation_engine_must_not_declare_validation_prefix_operation: true
+        validation_prefix_does_not_grant_registration_or_execution_permission: true
         unavailable_or_unregistered_capability_cannot_execute: true
         arbitrary_cross_language_transport_is_not_implicit_authority: true
         runtime_selection_cannot_override_consumer_explicit_binding: true
