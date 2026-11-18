@@ -244,11 +244,11 @@
     "profile_storage_schema_root": "src/ptsip/engines/storage/src/schemas/",
     "profile_go_module": "REJECTED_NOT_REQUIRED",
     "engine_schema_owner": "ACTUAL_REGISTERED_ENGINE_NOT_CENTRAL_SHARED_ENGINE_CONTRACTS",
-    "profile_python_to_storage_rust": "FIVE_NON_RULE_RECORD_PROFILE_MODULES_ONLY;RULE_RECORD_DISTRIBUTED_RUST",
+    "profile_python_to_storage_rust": "FIVE_NON_RULE_RECORD_PROFILE_MODULES_TO_STORAGE_RUST;RULE_RECORD_ENGINE_ASSIGNMENTS_PENDING_FUTURE_AGENT_ANALYSIS",
     "profile_go_cli_modification": "EXISTING_CLI_GO_AS_ROUTER_ONLY",
     "no_new_independent_profile_go_mod": true,
-    "rule_record_owner": "STORAGE_RESOURCE_READ;VALIDATION_SCHEMA_AND_GRAPH;DISCOVERY_EXACT_ID_LOOKUP",
-    "rule_record_single_storage_engine": false,
+    "rule_record_owner": "UNDECIDED_FUTURE_SESSION_AGENT_WILL_ANALYZE_AND_SELECT_RUST_ENGINE_OWNERS",
+    "rule_record_single_storage_engine": null,
     "engine_schema_per_owner": "ALL_EXISTING_REGISTERED_RUST_ENGINES_EACH_OWN_SRC_SCHEMAS"
   },
   "approval_gates": [
@@ -349,14 +349,13 @@
       "note": "Do not introduce a new independent Go Profile process/JSON stdio bridge. Reuse registered native Storage engine transport; new operation names need existing engine contract compliance."
     },
     {
-      "id": "RULE-RECORD-DISTRIBUTED-RUST-01",
+      "id": "RULE-RECORD-RUST-OWNER-ANALYSIS-01",
       "scope": [
-        "src/ptsip/engines/storage/src/",
-        "src/ptsip/engines/validation/src/",
-        "src/ptsip/engines/discovery/src/"
+        "src/ptsip/profiles/rule_records.py",
+        "src/ptsip/engines/**/src/schemas/**"
       ],
-      "state": "ENGINE_OWNER_ALLOCATION_APPROVED_AFTER_SOURCE_ANALYSIS",
-      "note": "Storage selects/reads; Validation checks independent JSON schema, duplicate and graph relations; Discovery enumerates/resolves exact IDs on validated records. Three engine-local src/schemas; no private developer schema, new Go module or implicit engine operation ID."
+      "state": "PENDING_FUTURE_SESSION_ANALYSIS_USER_PREAUTHORIZED_DECISION_AFTER_COMPLETION",
+      "note": "Current session MUST NOT assign engine owners or module paths. Future agent reads actual functions/callers/current native Rust engine responsibilities, chooses owner(s), records evidence and assignments, then applies user preauthorization and implements. Rust mandatory; no developer .ptsip schema import."
     },
     {
       "id": "STORAGE-PROFILE-RETIRE-01",
@@ -2456,13 +2455,13 @@
         "verify built wheel includes all canonical schema resources",
         "Replace registered profile schema lookup hard-coded in profiles/contracts.py without retaining retired module as a production dependency",
         "Do not create any dedicated Profile Go module, subdirectory, go.mod or binary. Existing src/ptsip/CLI.go is a native engine router only.",
-        "Implement five Profile module responsibilities in Rust Storage and Rule Record across Storage(source read), Validation(schema/graph), Discovery(verified exact ID list/lookup), with cross-engine typed validation evidence.",
+        "Implement five non-rule-record Profile responsibilities in Rust Storage. For rule_records.py, defer selection of Rust engine owner(s) and implementation locations to future-session agent responsibility analysis; implement only after the user-preauthorized analysis result is recorded.",
         "Revise packaging to include existing Rust Storage native executable and owner-local engine schemas; remove independent Go Profile binary assumptions.",
         "EXCLUDE src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py from edits; existing projection errors tolerated",
         "Profile Catalog and Metadata responsibilities belong to Storage Rust engine submodules under src/ptsip/engines/storage/src/; no Go clarification package. Existing CLI.go remains router.",
         "PTSIP View derived accountability cache uses policy document RA_id references; RA List stores no policy usage reverse field"
       ],
-      "gate": "Five supported Profile modules route to managed background Rust Storage; Rule Record read/validate/discover stages routed to their three existing Rust engines with native typed handoffs; no separate Go module or obsolete Python validator."
+      "gate": "Five Profile Rust Storage modules and runtime routing verified; Rule Record owners/paths decided only by future-session agent analysis and recorded before affected Rust implementation/consumer migration. No separate Go Profile module or obsolete Python validator gate."
     },
     {
       "id": "WU-08",
@@ -2557,7 +2556,7 @@
     },
     {
       "id": "WU-11",
-      "name": "Six Python sources: five Storage Profile responsibilities and distributed Rust Rule Record",
+      "name": "Six legacy Python module inventory and deferred Rule Record Rust engine ownership analysis",
       "dependency": [
         "WU-01",
         "WU-10"
@@ -2573,25 +2572,25 @@
       "outputs": [
         "six-module symbol-responsibility table",
         "actual imports across Python CLI, migration, clarification and specification",
-        "Rule-record private schema excluded; separate Storage, Validation and Discovery src-owned Rust schema contracts and typed handoff review",
+        "Rule Record Rust owner and schema contract mapping explicitly deferred to future-session analysis",
         "22-file full directory retirement inventory with exact Git blob hashes and proposed replacement paths",
         "Rule record retirement reason contract: developer-only .ptsip schema import AND Python runtime not Rust engine; Rust replacement responsibilities and unsupported legacy semantics excluded"
       ],
       "exact_steps": [
         "Inspect exported functions, constants, dataclasses and exceptions in all six Python files",
         "Resolve all import sites, dynamic imports, CLI and installed package references",
-        "Map five non-rule-record APIs to Rust Storage. Split rule_records.py observed functions into Storage _linked_resource/_object_file, Validation _kind/_validate_relations and schema check, Discovery discover_rule_records/resolve_rule_record.",
+        "Map five non-rule-record Profile APIs to Rust Storage. Defer rule_records.py responsibility-to-engine mapping to another session's agent; do not preallocate functions or engine names in this plan.",
         "Block any .ptsip schema-source usage in replacement contract design",
-        "Produce six-source responsibility matrix: five Storage-only modules; one Rule Record split across three registered Rust engines with independent typed contracts.",
+        "Produce source inventory for five already-owned Storage Profile modules; leave Rule Record's exact engine owner count/function mapping to the future session's evidence-based analysis.",
         "Classify all 22 src/ptsip/profiles files by Python, YAML sample, history fixture, profile-local schema, catalog and package marker",
-        "Never translate Python private regex/schema to Rust. Implement source read at Storage, schema and graph validation at Validation, exact ID resolve at Discovery."
+        "Do not copy developer-private .ptsip Rule Record schema or Python ID pattern. Future agent must analyze required Rust responsibilities and assign correct engine(s) before implementation."
       ],
-      "gate": "Five Profile modules allocated to Storage Rust; Rule Record functions allocated to Storage/Validation/Discovery by actual responsibilities, with independent source-owned contracts.",
+      "gate": "Six retiring Python source responsibilities inventoried; five non-rule-record Profile modules assigned to Storage; Rule Record engine owner(s) NOT assigned in this session and must be selected after future-session analysis.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     },
     {
       "id": "WU-12",
-      "name": "Rust Storage Profile and distributed Rust Rule Record native interface specification",
+      "name": "Rust Profile interface planning; future-session Rule Record owner analysis and automatic approval",
       "dependency": [
         "WU-11",
         "WU-02"
@@ -2604,26 +2603,26 @@
         "Rust replacement responsibility boundary for src/ptsip/profiles/rule_records.py"
       ],
       "outputs": [
-        "Five Storage Profile capabilities typed I/O contract",
-        "Rule Record three-owner Rust typed dataflow: Storage->Validation->Discovery",
-        "Background Storage lifecycle/readiness/recovery acceptance",
-        "Per-engine src/schemas native contract ownership"
+        "Five Storage Profile Rust module typed interface",
+        "Future-session Rule Record function/consumer-to-engine responsibility analysis and recorded automatically approved owner decisions",
+        "Rule Record engine-specific source/schema paths and native typed handoffs determined only after that analysis",
+        "Storage Profile background lifecycle/readiness/recovery contract"
       ],
       "exact_steps": [
-        "Own the five non-rule-record Profile modules in Storage. Split Rule Record into Storage read, Validation schema/graph, Discovery ID lookup; do not assign full Rule Record to Storage.",
-        "Use each engine's src/schemas/** for only its own native schema; Storage read, Validation graph/schema, Discovery ID resolution. No developer .ptsip contract.",
+        "Five non-rule-record Profile modules remain Rust Storage owned. For rule_records.py, future session agent analyzes actual functions/callers and registered Rust engine contracts, then chooses actual owner engine(s) and records decision; no current-session mapping.",
+        "Each selected Rust engine owns only its assigned native schema under its own src/schemas/**; the owner(s), contracts and paths for rule_records.py are decided AFTER the future-session responsibility analysis, not in this document now.",
         "Do not create src/ptsip/profile_contract/go.mod, a separate Profile Go executable, independent Go CLI endpoint, new cmd/, new testdata/, or independent Go internal tree.",
-        "Use existing Storage, Validation and Discovery registered native transports and typed handoffs; discovery.resolve is capability resolution, NOT automatically Rule ID lookup; no silent operation ID registration.",
-        "Implement always-on Storage background lifecycle for five Profile modules and Rule source reading; Validation and Discovery use their own native Rust engine routing.",
+        "Future session agent determines Rule Record native Rust engine invocation and handoff needs from actual owner assignment; do not assume a fixed three-engine protocol or operation ID. Reuse existing approved engine contracts where applicable.",
+        "Implement always-on Storage background lifecycle for five non-rule-record Profile modules. Do not assign Rule Record runtime stage or background requirements to an engine before future responsibility analysis.",
         "Map exact current/historical registered schema versions and SHA to actual Storage Rust consumers; keep existing registered non-engine Profile history/RBAC schema locations unless separately authorized.",
         "Do not modify excluded src/ptsip/cli.py or src/ptsip/clarification/resolution/profile_projection.py."
       ],
-      "gate": "Owner split approved after analysis. Validation and Discovery Rule Record responsibilities must not be implemented as Storage-only modules; verify typed contract routing without inventing registered operation IDs.",
+      "gate": "Rule Record owner engine(s), responsibilities, paths and required native handoffs are PENDING FUTURE SESSION AGENT ANALYSIS. User authorizes the resulting evidence-based decision automatically after analysis; implementation is gated on recording the result. Five other Storage Profile modules unaffected.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     },
     {
       "id": "WU-13",
-      "name": "Five Storage Rust Profile functions and distributed Rule Record Rust implementation",
+      "name": "Five Rust Storage Profile modules and Rule Record Rust replacement after future owner analysis",
       "dependency": [
         "WU-12",
         "WU-10"
@@ -2643,22 +2642,22 @@
         "pyproject.toml"
       ],
       "outputs": [
-        "Five Storage Rust Profile functions",
-        "Rule Record Storage source read, Validation schema/graph and Discovery exact lookup Rust functions",
-        "Typed native engine handoff, source SHA and error evidence",
-        "Packaging and managed Storage background verification"
+        "Five Rust Storage Profile functions",
+        "Rule Record Rust functionality implemented in analysis-selected engine(s) only after owner decision recorded",
+        "Native typed contracts and supported consumer routing required by actual selected engine(s)",
+        "Packaging and Storage Profile background lifecycle verification"
       ],
       "exact_steps": [
-        "Implement five Profile functions in Storage Rust: identity, contracts, compatibility, catalog, metadata; Rule Record stages separately in Storage, Validation, Discovery.",
+        "Implement five Storage Rust Profile modules; implement rule_records.py in the Rust engine(s) and paths selected by future agent responsibility analysis after writing the user-preauthorized assignment into this plan.",
         "Maintain exact registered profile version selection and SHA checks for supported pp1.01, pp1.02 and pp2.00; no fabricated pp1.00 and no unapproved user-defined value fields.",
-        "Use each engine's local src/schemas/** for its native Rule Record contract; no global Storage ownership, private developer contracts or rejected central paths.",
+        "For Rule Record, use ONLY the future-session selected Rust engine(s) and their local src/schemas/** to implement actually required contracts; no present engine owner, contract shape, or path presupposed.",
         "Convert permitted retired YAML instances into replacement fixtures and validate current/historical version semantics without preserving obsolete Python modules.",
-        "Route five Profile functions to native Storage and Rule Record read/check/resolve via Storage/Validation/Discovery registered engine contracts; CLI.go remains router.",
-        "Run five Profile functions and Rule Record read stage under background Storage; use native Validation and Discovery Rust engines for graph checks and exact lookup.",
+        "Route five Profile functions to Rust Storage; route Rule Record calls according to future-session selected Rust engine owner(s) and verified registered native contracts, not predetermined multi-engine handoffs.",
+        "Run five Profile functions in managed background Rust Storage. Determine Rule Record execution and lifecycle from future-session assigned Rust engine responsibilities; do not pre-assign a stage to Storage.",
         "Update existing wheel/build/distribution to ship Storage Rust runtime and current supported schema resources; no profile-specific Go binary or go.mod.",
         "Confirm approved Rust replacement and current consumer conformance before removing legacy Python validators."
       ],
-      "gate": "Five Storage functions and three Rust Rule Record owner stages pass native contract, integration, packaging and supported consumer verification; legacy Python validators not kept.",
+      "gate": "Five Storage Rust Profile modules pass; future-session analysis-based and automatically approved Rule Record owner allocation is recorded BEFORE its implementation; selected Rust engine contract, relevant tests and package verification pass.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     },
     {
@@ -2700,17 +2699,17 @@
       ],
       "exact_steps": [
         "Check 22/22 active tree source paths are covered by approved replacement responsibility and removal scope; do not retain deleted original contract or validator content as an archive.",
-        "Verify five Profile functions in Storage Rust and Rule Record source read, schema/graph validation, exact lookup across Storage/Validation/Discovery.",
+        "Verify five Profile modules in Rust Storage; verify Rule Record replacement and consumers against the future-agent-selected Rust engine owner(s), not a predefined split.",
         "Verify 12 YAML instances transferred into JSON fixture evidence in src/tests/ptsip/ (not schema files), two schemas into canonical resources, sample catalog replaced/retired and package marker unused",
         "Replace setup.py, MANIFEST.in, pyproject.toml, registry and release tests that require original profile root before deleting",
         "Build clean wheel and source distribution without old profiles dir; resolve source snapshots via Git sha and accepted normalized fixture testdata",
         "Delete all 22 files and their now-empty directories as one explicitly scoped retirement step, never deleting user-owned .ptsip/profiles",
         "Verify git ls-files src/ptsip/profiles has zero output; grep imports ptsip.profiles and old path references with release acceptance exceptions only after explicit review",
-        "Run Storage, Validation and Discovery Rust cargo tests plus cross-engine typed integration, native CLI and wheel smoke; remove old Python validation only after accepted replacement.",
+        "Run Storage Rust tests and only the additional Rust engine crate tests and native handoff integration required by the future-session approved Rule Record assignment; remove retired Python validators after accepted replacement.",
         "Keep only current-version replacement verification; after successful replacement proof split old validation out of active verification and delete deprecated tests/validators rather than keep compatibility gates.",
-        "Rule Record MUST be split: Storage source read, Validation schema and parent graph, Discovery validated exact-ID list/resolve. Do not assign all functionality to Storage. Retain two legacy deletion reasons."
+        "For Rule Record, Rust engine owner(s), function mapping and paths are decided only by future-session agent analysis and recorded as an automatically approved decision before implementation. No fixed Storage/Validation/Discovery split; preserve the two retirement reasons."
       ],
-      "gate": "22/22 retired files absent; five Storage Profile functions and all three owner stages of Rule Record tested; Storage background runtime and typed native handoffs PASS; obsolete Python validators removed.",
+      "gate": "22/22 retired files absent; five Storage Profile modules pass; Rule Record replacement passes Rust test(s) of actual future-selected owner engine(s) and required native handoffs; background Storage Profile and wheel PASS; obsolete Python validators removed.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
     }
   ],
@@ -2800,7 +2799,7 @@
       "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
       "pp.1.00 schema is not generated without verified original input",
       "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles",
-      "Five retired Profile modules built in Storage Rust; retired rule_records.py rebuilt as three responsibilities across Storage/Validation/Discovery.",
+      "Five Profile modules run in Rust Storage; rule_records.py is built in the Rust engine(s) selected by another session's agent AFTER documented responsibility and consumer analysis.",
       "Storage Rust engine profile source and registered native transport ownership comply with user-approved root and per-engine src/schemas layout; no separate Go Profile protocol or module required.",
       "All 22 tracked files in src/ptsip/profiles/ recursively removed after their per-file responsibility transition is verified",
       "12 profile YAML source examples preserved as normalized JSON test fixture evidence before complete directory removal, with no schema misclassification",
@@ -2859,14 +2858,17 @@
       "After replacement validator acceptance, retired validators/tests are isolated and removed; their failures cannot block obsolete contract deletion, and no contract/archive for removed legacy objects is retained.",
       "Selected pp2 source is profile-local profiles_schemas file only; specdata pp2 source stops being used and is deleted after consumer migration and replacement verification.",
       "No runtime or plan execution fetches policy documents for source field authority; the plan is internally self-contained.",
-      "Five Profile modules belong to Rust Storage; Rule Record is split across Storage read, Validation graph/schema and Discovery exact lookup, each with its own typed contract and tests.",
+      "Five non-rule-record Profile modules are Storage-owned; Rule Record Rust engine owner(s) remain undecided until another agent's responsibility analysis is recorded and automatically approved.",
       "All newly migrated native engine schema contracts reside in src/ptsip/engines/<owning-engine>/src/schemas/** with owner evidence, exact contract ID/version/SHA, updated engine registry and build artifact references; no shared engine/contracts/schemas runtime dependency remains after migration.",
       "No new target schema is created in rejected schemas/engine/contracts/, schemas/engine/discovery/, schemas/plan/, schemas/storage/evidence/ or schemas/storage/ candidate locations; existing registered non-engine Profile history/RBAC schema files remain intact unless separately authorized.",
       "Rust STORAGE engine lifecycle acceptance checks background startup/readiness/liveness/recovery without granting profile or policy authority beyond registered contracts.",
       "Native engine shared schema source relocation preserves actual semantic owner and keeps old files only through supported replacement validation, then removes obsolete validators and unused contract files.",
-      "Rule Record source selection/read is Storage-owned; schema and graph conformance Validation-owned; exact registered ID discovery and lookup Discovery-owned after verified source and validation evidence.",
+      "Rule Record function-to-engine ownership MUST be determined through future agent analysis of actual source functions, native engine responsibilities and consumers before implementation; no fixed owners now.",
       "Each existing registered Rust engine owns its own src/schemas/**; pattern src/ptsip/engines/**/src/schemas/** applies independently, not just to Storage.",
-      "Rule Record old Python and validators are removed only after cross-engine native typed handoff and all three engine Rust tests pass."
+      "Rule Record retired Python and validators are removed only when Rust tests for the engine(s) chosen by future agent analysis and any required actual handoff pass.",
+      "The current session MUST NOT perform Rule Record engine responsibility analysis or preassign engines/functions/paths; another session agent MUST analyze, record owner decisions and then implement.",
+      "User preauthorizes the future agent's evidence-supported Rule Record engine responsibility assignment after analysis; current plan does not assert that assignment already exists.",
+      "The per-engine src/ptsip/engines/**/src/schemas/** rule applies independently to all registered engines, not just Storage."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -2924,23 +2926,22 @@
       "engine_schema_target_in_rejected_central_root",
       "schema_owner_inferred_from_filename",
       "runtime_engine_contract_still_references_retired_shared_schema",
-      "rule_record_all_functions_in_storage",
-      "rule_record_id_lookup_without_validation_evidence",
-      "rule_record_private_python_id_regex_copied",
-      "engine_schemas_all_under_storage"
+      "engine_schemas_all_under_storage",
+      "rule_record_engine_ownership_preassigned_before_analysis",
+      "rule_record_fixed_three_engine_split_without_future_agent_analysis",
+      "rule_record_implementation_before_future_engine_owner_selection",
+      "rule_record_private_python_id_regex_copied"
     ],
     "powershell_commands_in_order": [
       "$log = '.\\schema-centralization-validation.log'",
       "git rev-parse HEAD 2>&1 | Tee-Object -FilePath $log",
       "python -c \"import json; json.load(open('src/ptsip/schemas/config.json', encoding='utf-8'))\" 2>&1 | Tee-Object -FilePath $log -Append",
       "cargo test --manifest-path src/ptsip/engines/storage/Cargo.toml 2>&1 | Tee-Object -FilePath $log -Append",
-      "cargo test --manifest-path src/ptsip/engines/validation/Cargo.toml 2>&1 | Tee-Object -FilePath $log -Append",
-      "cargo test --manifest-path src/ptsip/engines/discovery/Cargo.toml 2>&1 | Tee-Object -FilePath $log -Append",
       "python -m pytest -q src/tests/ptsip/contracts 2>&1 | Tee-Object -FilePath $log -Append # Existing tests; exclude known Python legacy failures only when explicitly scoped",
       "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
       "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append"
     ],
-    "note": "CURRENT_USER_DECISION_2026_11_18: Five Storage Rust Profile functions and per-engine src/schemas replace retired independent Go Profile proposal. Existing registered non-engine Profile/RBAC schemas are not silently removed. Earlier simulation/go notes are not active authority. SUPERSEDED: all-six-in-Storage Rule Record allocation. Effective: distributed Rust allocation per actual duties.",
+    "note": "Profile non-rule-record Rust Storage ownership retained. Rule Record owner engine(s), source paths, contract and test scope are UNDECIDED and MUST be determined by another session's agent before implementation; prior fixed Storage/Validation/Discovery allocation is withdrawn. User auto-approves the future evidence-backed decision. Do not fabricate developer .ptsip schema fields.",
     "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'"
   },
   "source_conflicts": [
@@ -3047,8 +3048,8 @@
     "scope": "RETIRE_WHOLE_SRC_PTSIP_PROFILES_TREE_INCLUDING_SIX_PYTHON_MODULES_AND_YAML_DATA_AND_SCHEMAS",
     "source_boundary": "src/ptsip/profiles/",
     "use_discontinuation_authorized": true,
-    "deletion_gate": "FIVE_STORAGE_PROFILE_MODULES_AND_DISTRIBUTED_RULE_RECORD_THREE_ENGINE_HANDOFF_VERIFIED_THEN_OLD_VALIDATORS_SEPARATED_AND_DELETED",
-    "replacement_code_paths": "FIVE_PROFILE_STORAGE_MODULES_AT_src/ptsip/engines/storage/src/;RULE_RECORD_SPLIT_src/ptsip/engines/storage/src/|src/ptsip/engines/validation/src/|src/ptsip/engines/discovery/src/",
+    "deletion_gate": "FIVE_STORAGE_PROFILE_RUST_REPLACEMENTS_PASS;RULE_RECORD_FUTURE_AGENT_ENGINE_ASSIGNMENTS_RECORDED_AND_SELECTED_RUST_REPLACEMENTS_PASS;THEN_DELETE_OBSOLETE_VALIDATORS_AND_PYTHON",
+    "replacement_code_paths": "FIVE_PROFILE_MODULES_AT_src/ptsip/engines/storage/src/;RULE_RECORD_RUNTIME_PATHS_PENDING_FUTURE_SESSION_ENGINE_ANALYSIS",
     "modules": [
       {
         "path": "src/ptsip/profiles/identity.py",
@@ -3076,19 +3077,14 @@
         ],
         "confirmed_callers": [],
         "note": "No external import found in targeted code searches; full AST/import/use scan still required",
-        "action": "REBUILD_SPLIT_RUST_STORAGE_VALIDATION_DISCOVERY_THEN_DELETE_PYTHON",
+        "action": "DEFER_RUST_OWNER_ASSIGNMENT_TO_FUTURE_AGENT_ANALYSIS_THEN_REPLACE_AND_DELETE_PYTHON",
         "retirement_reasons": [
           "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
           "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION"
         ],
         "replacement_language": "RUST",
         "replacement_behavior_policy": "DO_NOT_CLONE_PRIVATE_DEVELOPER_RULE_ID_OR_SCHEMA_SEMANTICS",
-        "replacement_engine": "DISTRIBUTED_STORAGE_VALIDATION_DISCOVERY",
-        "replacement_owners": [
-          "STORAGE",
-          "VALIDATION",
-          "DISCOVERY"
-        ]
+        "replacement_engine": "NOT_DECIDED_USER_PREAUTHORIZED_AFTER_ANALYSIS"
       },
       {
         "path": "src/ptsip/profiles/metadata.py",
@@ -3153,10 +3149,10 @@
     ],
     "retirement_steps": [
       "Freeze and hash every one of 22 src/ptsip/profiles/ tracked files, including 6 Python modules, 12 profile YAML examples, 2 schema files, 1 catalog and 1 __init__.py",
-      "Implement five Profile Rust responsibilities in Storage; split Rule Record into Storage resource read, Validation schema/graph checks, and Discovery verified exact-ID lookup.",
+      "Future-session agent analyzes src/ptsip/profiles/rule_records.py and registered Rust engine responsibilities, records evidence-based engine assignment(s) and implementation paths, then implements approved Rust replacements before retirement; this session makes no assignment.",
       "Migrate existing two schema definitions into central src/ptsip/schemas/ targets, verifying every contract field and provenance, before deletion",
       "Analyze and retain YAML instances as JSON test fixtures and immutable source hashes; YAML data MUST NOT be renamed into JSON Schema",
-      "Implement five Profile functions in Rust Storage with its managed background lifecycle. Implement rule_records.py as distributed Rust stages: Storage registered source read, Validation independent schema and parent graph verification, Discovery validated exact-ID list/lookup. Each engine owns its src/schemas/**. Never copy developer-private rule schema or Python ID regex.",
+      "Future-session agent analyzes src/ptsip/profiles/rule_records.py and registered Rust engine responsibilities, records evidence-based engine assignment(s) and implementation paths, then implements approved Rust replacements before retirement; this session makes no assignment.",
       "Switch approved consumers through existing src/ptsip/CLI.go engine dispatch and update Rust Storage packaging; do not edit excluded Python cli.py or profile_projection.py.",
       "Update setup.py, pyproject.toml, MANIFEST.in, profile registry paths, and impacted CLI and release tests",
       "Run Storage Rust native engine tests and supported consumer integration, installed wheel smoke, distribution completeness and no-legacy-path scans. Excluded legacy Python callers are not active gates.",
@@ -3165,7 +3161,7 @@
     ],
     "acceptance": [
       "0 tracked files under src/ptsip/profiles/ after final removal (22/22 addressed individually)",
-      "Five Profile modules tested in Storage Rust; Rule Record source/graph/lookup stages tested separately in Storage/Validation/Discovery Rust and joined by typed evidence.",
+      "Five Profile modules tested in Storage Rust; Rule Record replacement and actual owner-engine tests must pass after future agent analysis and automatic owner approval.",
       "12/12 historic/current YAML source examples have replacement fixture or documented intentional no-distribution decision, without losing conformance coverage",
       "2/2 historical source schema files moved or resolved in central schemas registry",
       "No supported Go CLI, packaging, release gate or admitted schema consumer depends on retired folder; two explicitly excluded unmodified Python caller imports may remain broken",
@@ -3204,13 +3200,8 @@
       "resolved_engine": "STORAGE",
       "selected_runtime_root": "src/ptsip/engines/storage/src/",
       "selected_contract_root": "src/ptsip/engines/storage/src/schemas/",
-      "resolved_engines": [
-        "STORAGE",
-        "VALIDATION",
-        "DISCOVERY"
-      ],
-      "allocation_ref": "rule_record_distributed_rust_migration.allocations",
-      "monolithic_storage": false
+      "owner_state": "PENDING_FUTURE_SESSION_AGENT_ANALYSIS",
+      "assignment_ref": "rule_record_rust_engine_assignment"
     }
   },
   "profile_variant_analysis": {
@@ -3733,17 +3724,17 @@
         "git_blob_sha": "c2d619d3c37e014fb396b86a18a41074fc20cad9",
         "size_bytes": 8505,
         "role_group": "SIX_PYTHON_MODULES",
-        "action": "TRANSFER_RULE_RECORD_TO_THREE_RUST_ENGINES_THEN_DELETE",
-        "proposed_replacement": "STORAGE_READ_PLUS_VALIDATION_GRAPH_PLUS_DISCOVERY_LOOKUP_RUST_MODULES",
+        "action": "DEFER_RUST_OWNER_MAPPING_TO_FUTURE_AGENT_ANALYSIS_THEN_REPLACE_AND_DELETE",
+        "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "ALL_THREE_OWNER_NATIVE_RUST_TESTS_AND_TYPED_HANDOFF_PASS",
+        "delete_gate": "ACTUAL_SELECTED_RUST_ENGINE_REPLACEMENT_TESTS_AND_SUPPORTED_CONSUMER_CLOSURE_PASS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "STORAGE_ENGINE_OWNER_APPROVED_RUST_FILE_LAYOUT_DETERMINISTIC_IMPLEMENTATION",
+        "replacement_path_state": "NO_ENGINE_OR_LEAF_SELECTED;USER_PREAUTHORIZES_RESULT_AFTER_ANALYSIS",
         "retirement_reasons": [
           "DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_IMPORT_FORBIDDEN_FOR_DISTRIBUTABLE_SRC",
           "PYTHON_MODULE_IS_NOT_RUST_ENGINE_IMPLEMENTATION"
         ],
-        "replacement_owner": "STORAGE_VALIDATION_DISCOVERY"
+        "replacement_owner": "PENDING_OTHER_SESSION_AGENT_ENGINE_RESPONSIBILITY_ANALYSIS"
       },
       {
         "source_path": "src/ptsip/profiles/template-python-package.ptsip.yaml",
@@ -3762,19 +3753,19 @@
     "fixture_paths_approved": false,
     "all_removal_actions_prohibited_until": [
       "SCHEMA_GENERATION_VALIDATED",
-      "FIVE_STORAGE_PROFILE_MODULES_AND_DISTRIBUTED_RULE_RECORD_THREE_ENGINES_ACCEPTED",
+      "FIVE_STORAGE_PROFILE_MODULES_PASS_AND_FUTURE_AGENT_SELECTED_RULE_RECORD_RUST_ENGINE_OR_ENGINES_ACCEPTED",
       "ONLY_SUPPORTED_REGISTERED_STORAGE_RUST_CONSUMERS_AND_NATIVE_CLI_ROUTING;EXCLUDED_PYTHON_MODULES_UNMODIFIED",
       "ALL_PACKAGING_AND_RELEASE_GATES_REWIRED",
       "NO_SUPPORTED_CONSUMER_REFS_EXCEPT_TWO_APPROVED_UNMODIFIED_PYTHON_PATHS",
       "GOLDEN_FIXTURES_VERIFIED",
       "WHEEL_SMOKE_PASS",
       "STORAGE_RUST_BACKGROUND_LIFECYCLE_AND_ENGINE_CONTRACT_ROUTING_VERIFIED",
-      "RULE_RECORD_VALIDATION_AND_DISCOVERY_NATIVE_HANDOFF_VERIFIED"
+      "RULE_RECORD_OWNER_ANALYSIS_RECORDED_AND_AUTOMATICALLY_APPROVED_BEFORE_RUST_IMPLEMENTATION"
     ],
     "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths; supported native Storage engine profile capabilities and distribution do not depend on legacy Python files. Existing excluded Python callers are not active conformance gates.",
-    "warning": "Whole folder removal intentionally breaks existing literal ptsip.profiles imports in two excluded Python files. Projection errors expressly tolerated; src/ptsip/cli.py is never edited, and compatibility is not asserted for it. User-owned .ptsip/profiles is outside deletion. Rule Record functions are NOT all owned by Storage; see rule_record_distributed_rust_migration.",
+    "warning": "Whole folder removal intentionally breaks existing literal ptsip.profiles imports in two excluded Python files. Projection errors expressly tolerated; src/ptsip/cli.py is never edited, and compatibility is not asserted for it. User-owned .ptsip/profiles is outside deletion. Rule Record owner engine(s) will be determined in a future session; no assignment was made here.",
     "user_owned_profile_out_of_scope": ".ptsip/profiles/** in consuming repositories is not a deletion target",
-    "explicit_go_root_vs_src_schema": "NO_INDEPENDENT_GO_PROFILE_MODULE;EACH_RUST_ENGINE_OWNS_ITS_NATIVE_SRC_SCHEMAS;REGISTERED_NONENGINE_PROFILE_RBAC_SCHEMA_FILES_REMAIN",
+    "explicit_go_root_vs_src_schema": "FIVE_PROFILE_STORAGE_RUST_MODULES;RULE_RECORD_NATIVE_RUST_ENGINE_OWNER_UNDECIDED;EACH_ENGINE_OWNS_ITS_OWN_SRC_SCHEMAS;EXISTING_REGISTERED_NONENGINE_SCHEMAS_REMAIN",
     "additional_source_health": {
       "missing_file_reference": "src/ptsip/validation/profile.py",
       "importer": "src/ptsip/clarification/resolution/profile_projection.py",
@@ -6600,15 +6591,12 @@
     "no_profile_go_mod_creation": true,
     "no_unapproved_target_path_creation": true,
     "already_registered_non_engine_schemas_unaffected": true,
-    "rule_record_runtime_owners": [
-      "STORAGE",
-      "VALIDATION",
-      "DISCOVERY"
-    ],
-    "rule_record_single_storage_engine": false,
-    "profile_runtime_owner_scope": "FIVE_NON_RULE_RECORD_PROFILE_MODULES_AND_RULE_READ_STAGE_ONLY",
+    "rule_record_runtime_owners": null,
+    "rule_record_single_storage_engine": null,
+    "profile_runtime_owner_scope": "FIVE_NON_RULE_RECORD_PROFILE_MODULES_ONLY;RULE_RECORD_OWNER_UNDECIDED",
     "schema_rule_applies_to_all_engine_kinds": true,
-    "schema_rule_scope": "EACH_ENGINE_OWNS_ITS_NATIVE_SCHEMAS_NOT_ONLY_STORAGE"
+    "schema_rule_scope": "EACH_ENGINE_OWNS_ITS_NATIVE_SCHEMAS_NOT_ONLY_STORAGE",
+    "rule_record_engine_assignment": "PENDING_FUTURE_AGENT_ANALYSIS_AUTO_APPROVAL_AFTER_RECORDED_EVIDENCE"
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -6619,7 +6607,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "last_user_direction": "2026-11-18: User approved six exact PVR09 operations split by Policy (identity, rules) and RBAC (ra, rac, aec, references), all validation.* owned by VALIDATION engine. This plan is intentionally standalone and must not reference or depend on an external policy file for PVR09. Prior PVR09 policy_ref, namespace_policy_ref, name_binding_authority, source_policy_boundaries removed. GO-CLI-OPERATION policy-decision gate resolved; registered typed I/O, manifest, binding and tests are PVR09 implementation obligations, not a new policy decision. No policy, engine implementation, developer .ptsip/, branch, or release write from this plan sync.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending.",
-    "latest_user_direction": "2026-11-18: Five Profile modules run as background Rust Storage responsibilities. Rule Record original Python module is not assigned as a whole; user preapproved analysis-derived Rust owner split: Storage selects/reads source, Validation validates schema and relation graph, Discovery enumerates/resolves exact IDs. All registered Rust engines own separate src/schemas/**, NOT only Storage. No separate Go Profile module."
+    "latest_user_direction": "2026-11-18 correction: The current chat session MUST NOT analyze or assign rule_records.py functions to any Rust engine. Only record that another session's coding agent will analyze actual functions, consumers and existing engine responsibilities, determine engine owner(s), implementation paths and source-owned contracts, record the resulting decisions, then implement. User preauthorizes the future analysis-based assignment. Previous Storage/Validation/Discovery split is withdrawn. Other five Profile modules remain Storage Rust; src/ptsip/engines/**/src/schemas/** applies independently to every registered engine."
   },
   "release_038_field_review": {
     "contract": "ptsip-release-038-field-decisions/v1",
@@ -8169,16 +8157,16 @@
         "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
         "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
       ],
-      "replacement": "RUST_STORAGE_READ_PLUS_VALIDATION_SCHEMA_GRAPH_PLUS_DISCOVERY_ID_LOOKUP",
-      "runtime_source_owner_root": "PER_FUNCTION_ENGINE_RUST_SRC",
-      "selected_leaf": "PER_ENGINE_DUTY_MODULE",
+      "replacement": "RUST_ENGINE_IMPLEMENTATION_ALLOCATION_AND_LOCATION_DETERMINED_BY_FUTURE_AGENT_ANALYSIS",
+      "runtime_source_owner_root": null,
+      "selected_leaf": null,
       "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
       "no_go_parity_for_this_module": true,
       "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
       "archive_removed_contract_or_validator": false,
-      "selected_contract_owner": "src/ptsip/engines/**/src/schemas/**",
-      "resolved_engine": "MULTI_ENGINE_STORAGE_VALIDATION_DISCOVERY",
-      "allocation_ref": "rule_record_distributed_rust_migration.allocations"
+      "selected_contract_owner": null,
+      "resolved_engine": null,
+      "allocation_ref": "rule_record_rust_engine_assignment"
     },
     "unapproved_paths": {
       "decision": "REJECT_33_PROPOSED_NEW_TARGETS;ENGINE_OWNED_SCHEMAS_MUST_RESOLVE_OWNER_UNDER_ENGINES_*/SRC_SCHEMAS",
@@ -8262,21 +8250,23 @@
       "current_project_profile": "pp.2.00_ACTIVE_ALL_OTHER_REGISTERED_PROFILE_VERSIONS_DEPRECATED"
     },
     "storage_profile_and_engine_schemas_2026_11_18": {
-      "state": "CLARIFIED_BY_USER_ENGINE_SPLIT_2026_11_18",
+      "state": "CLARIFIED_2026_11_18_RULE_RECORD_OWNERS_UNDECIDED",
       "profile": {
         "engine_kind": "STORAGE",
         "owner": "src/ptsip/engines/storage/",
         "source_root": "src/ptsip/engines/storage/src/",
         "schema_root": "src/ptsip/engines/storage/src/schemas/",
         "language": "RUST",
-        "always_on_background": "STORAGE_PROFILE_FUNCTIONS;OTHER_RULE_STAGES_NATIVE_RUST_ENGINE_CALLS",
+        "always_on_background": "FIVE_NON_RULE_RECORD_PROFILE_STORAGE_FUNCTIONS;RULE_RECORD_BACKGROUND_ASSIGNMENT_NOT_DECIDED",
         "all_six_legacy_python_module_responsibilities": false,
         "no_independent_go_module": true,
         "forbidden_go_mod": "src/ptsip/profile_contract/go.mod",
-        "rule_record_engine": "STORAGE_VALIDATION_DISCOVERY_DUTY_SPLIT",
+        "rule_record_engine": "PENDING_FUTURE_SESSION_ENGINE_RESPONSIBILITY_ANALYSIS",
         "existing_go_cli": "DISPATCH_ONLY",
         "five_profile_modules_storage": true,
-        "rule_record_decision_ref": "rule_record_distributed_rust_migration"
+        "rule_record_decision_ref": "rule_record_rust_engine_assignment",
+        "rule_record_engine_decided_after_analysis": false,
+        "rule_record_automatic_approval_after_analysis": true
       },
       "engine_schemas": {
         "approved_target_pattern": "src/ptsip/engines/**/src/schemas/**",
@@ -8315,14 +8305,12 @@
       },
       "clarification": {
         "user_auto_approval": true,
-        "no_prior_single_engine_assignment": true,
-        "rule_record_analysis_completed": true,
-        "engine_owners": [
-          "STORAGE",
-          "VALIDATION",
-          "DISCOVERY"
-        ],
-        "engine_schema_pattern_applies_to": "EVERY_EXISTING_RUST_ENGINE"
+        "analysis_session": "OTHER_SESSION_AGENT",
+        "analysis_completed": false,
+        "engine_owners": null,
+        "preassigned_engine_owners": "NONE",
+        "order": "ANALYZE_ENGINE_RESPONSIBILITIES_THEN_RECORD_ASSIGNMENTS_THEN_IMPLEMENT",
+        "engine_schema_pattern_applies_to": "EVERY_REGISTERED_RUST_ENGINE_INDEPENDENTLY"
       }
     }
   },
@@ -8467,28 +8455,28 @@
     "no_go_profile_binary_dependency": true
   },
   "profile_storage_engine_migration": {
-    "status": "FIVE_STORAGE_PROFILE_FUNCTIONS_AND_DISTRIBUTED_RULE_RECORD_RUST",
+    "status": "FIVE_PROFILE_STORAGE_RUST_MODULES;RULE_RECORD_ENGINE_OWNER_PENDING_FUTURE_SESSION_ANALYSIS",
     "runtime_language": "RUST",
     "owner_kind": "STORAGE_FOR_FIVE_PROFILE_MODULES_ONLY",
     "owner_source_root": "src/ptsip/engines/storage/src/",
     "owner_contract_schema_root": "src/ptsip/engines/storage/src/schemas/",
-    "module_ownership": "FIVE_PROFILE_MODULES_STORAGE;RULE_RECORD_SPLIT_STORAGE_VALIDATION_DISCOVERY",
+    "module_ownership": "FIVE_NON_RULE_RECORD_PROFILE_MODULES_STORAGE_RUST;RULE_RECORD_RUST_ENGINE_ALLOCATION_UNDECIDED",
     "independent_go_profile_module": "PROHIBITED",
     "dedicated_go_mod": "NOT_REQUIRED_DO_NOT_CREATE_SRC_PTSIP_PROFILE_CONTRACT_GO_MOD",
     "old_go_root": "SUPERSEDED_REJECTED_NO_NEW_SOURCE",
     "background_mode": "ALWAYS_ON_STORAGE_ENGINE_RUNTIME_REQUIREMENT",
     "background_contract": {
-      "intent": "STORAGE_BACKGROUND_FIVE_PROFILE_FUNCTIONS_AND_RULE_RESOURCE_READ_STAGE;VALIDATION_AND_DISCOVERY_RUN_IN_OWN_RUST_ENGINES",
+      "intent": "FIVE_NON_RULE_RECORD_PROFILE_FUNCTIONS_OPERATE_AS_MANAGED_BACKGROUND_STORAGE_ENGINE_CAPABILITIES;RULE_RECORD_ENGINE_AND_RUNTIME_PLACEMENT_PENDING_ANALYSIS",
       "lifecycle": "INTEGRATE_WITH_EXISTING_ENGINE_HOST_ORCHESTRATION_AND_REGISTERED_NATIVE_ENGINE_ROUTING",
       "startup_and_readiness": "IMPLEMENT_AND_VERIFY_BACKGROUND_INITIALIZATION_AND_READINESS",
       "liveness_and_recovery": "IMPLEMENT_AND_VERIFY_HEALTH_CHECK_AND_FAIL_CLOSED_RESTART_RECOVERY",
-      "isolation": "NO_INDEPENDENT_GO_PROFILE_DAEMON_AND_NO_SINGLE_ENGINE_RULE_RECORD_IMPLEMENTATION",
+      "isolation": "NO_SEPARATE_GO_PROFILE_DAEMON;NO_RULE_RECORD_ENGINE_TOPOLOGY_ASSUMPTION",
       "implementation_not_yet_done": true,
       "exact_background_lifecycle_mechanism": "IMPLEMENTATION_DESIGN_SUBORDINATE_TO_EXISTING_ENGINE_CONTRACT"
     },
     "rust_source_layout": {
       "parent": "src/ptsip/engines/storage/src/",
-      "source_modules": "FIVE_PROFILE_STORAGE_MODULES_PLUS_RULE_RECORD_RESOURCE_READ_STAGE_ONLY",
+      "source_modules": "FIVE_NON_RULE_RECORD_PROFILE_STORAGE_MODULES_ONLY;RULE_RECORD_MODULE_PATHS_AFTER_FUTURE_AGENT_OWNER_ANALYSIS",
       "leaf_names": "NOT_POLICY_FIXED_DETERMINE_FROM_ACTUAL_STORAGE_CONSUMER_AND_MODULE_RELATIONS",
       "native_engine_registration": "REUSE_EXISTING_STORAGE_ENGINE_REGISTRY_AND_TRANSPORT_NO_UNAPPROVED_OPERATION_ID",
       "avoid_new_independent_engine": true
@@ -8730,11 +8718,11 @@
     ],
     "rule_records": {
       "source": "src/ptsip/profiles/rule_records.py",
-      "language": "RUST",
-      "monolithic_storage": false,
-      "allocations_ref": "rule_record_distributed_rust_migration.allocations",
+      "implementation_language": "RUST",
+      "owner_state": "PENDING_FUTURE_SESSION_AGENT_RESPONSIBILITY_ANALYSIS",
+      "assignment_ref": "rule_record_rust_engine_assignment",
       "schema_path_rule": "src/ptsip/engines/**/src/schemas/**",
-      "no_go_module": true
+      "no_independent_go_module": true
     },
     "consumers": {
       "existing_go_cli": "src/ptsip/CLI.go",
@@ -8743,7 +8731,7 @@
         "src/ptsip/cli.py",
         "src/ptsip/clarification/resolution/profile_projection.py"
       ],
-      "requested_migration": "FIVE_PROFILE_STORAGE_ROUTING_AND_RULE_RECORD_STORAGE_VALIDATION_DISCOVERY_TYPED_HANDOFF",
+      "requested_migration": "FIVE_PROFILE_STORAGE_ROUTING;RULE_RECORD_CONSUMERS_REWIRED_ONLY_AFTER_FUTURE_AGENT_OWNER_ANALYSIS",
       "former_python_callers": [
         {
           "path": "src/ptsip/cli.py",
@@ -8793,37 +8781,30 @@
       "existing_canonical_profile_versioned_schemas": "PRESERVE_EXISTING_REGISTERED_NON_ENGINE_SCHEMAS_UNLESS_SEPARATELY_AUTHORIZED_TO_MIGRATE",
       "no_schema_fields_from_developer_dotptsip": true,
       "root_identity_registry": "KEEP_EXISTING_REGISTERED_SOURCE_DIGEST_VERSION_VALIDATION",
-      "rule_record_owners": {
-        "STORAGE": "src/ptsip/engines/storage/src/schemas/",
-        "VALIDATION": "src/ptsip/engines/validation/src/schemas/",
-        "DISCOVERY": "src/ptsip/engines/discovery/src/schemas/"
-      }
+      "rule_record_schema_owner": "FUTURE_SELECTED_NATIVE_RUST_ENGINE_OR_ENGINES_EACH_SRC_SCHEMAS"
     },
     "verification": {
       "cargo_manifest": "src/ptsip/engines/storage/Cargo.toml",
       "rust_tests": [
         "FIVE_STORAGE_PROFILE_FUNCTIONS_AND_RULE_RESOURCE_READ_STAGE",
         "CURRENT_AND_HISTORIC_PROJECT_PROFILE_SCHEMA_CONFORMANCE",
-        "RULE_RECORD_VALIDATION_GRAPH_AND_DISCOVERY_EXACT_ID_TESTS",
         "REGISTERED_ENGINE_TRANSPORT_AND_TYPED_IO",
         "BACKGROUND_STORAGE_ENGINE_READINESS_HEALTH_AND_RECOVERY",
         "NO_SEPARATE_PROFILE_GO_EXECUTABLE",
-        "OLD_DIRECTORY_CONSUMER_ZERO_AND_PACKAGED_WHEEL_SMOKE"
+        "OLD_DIRECTORY_CONSUMER_ZERO_AND_PACKAGED_WHEEL_SMOKE",
+        "RULE_RECORD_ACTUAL_OWNER_RUST_TESTS_DETERMINED_AFTER_FUTURE_AGENT_ANALYSIS",
+        "RULE_RECORD_ACTUAL_NATIVE_HANDOFF_VALIDATED_IF_REQUIRED_BY_APPROVED_OWNER_ANALYSIS"
       ],
       "migration_test_root": "src/tests/ptsip/",
       "no_source_tree_go_module": true,
       "no_external_user_project_mutation": true,
       "retain_retired_validators": false,
-      "cargo_manifests": [
-        "src/ptsip/engines/storage/Cargo.toml",
-        "src/ptsip/engines/validation/Cargo.toml",
-        "src/ptsip/engines/discovery/Cargo.toml"
-      ]
+      "rule_record_crates": "DYNAMIC_FROM_FUTURE_AGENT_ENGINE_OWNER_ASSIGNMENTS"
     },
     "source_retirement": {
       "directory": "src/ptsip/profiles/",
       "count": 22,
-      "when": "AFTER_FIVE_STORAGE_PROFILE_AND_THREE_DISTRIBUTED_RULE_RECORD_STAGE_ACCEPTANCE",
+      "when": "AFTER_FIVE_STORAGE_PROFILE_ACCEPTANCE_AND_RULE_RECORD_ACTUALLY_ASSIGNED_RUST_ENGINE_OR_ENGINES_TESTED_AND_CONSUMERS_CLOSED",
       "order": "VERIFY_REPLACEMENT_SPLIT_LEGACY_VALIDATORS_DELETE_LEGACY_VALIDATORS_DELETE_RETIRED_FILES_VERIFY_DISTRIBUTION",
       "no_archive_of_deleted_contracts": true
     },
@@ -8836,103 +8817,49 @@
     ],
     "storage_profile_module_count": 5,
     "retired_legacy_module_count": 6,
-    "rule_record_owner": "STORAGE_VALIDATION_DISCOVERY_BY_FUNCTION"
+    "rule_record_owner": "PENDING_FUTURE_SESSION_AGENT_ANALYSIS"
   },
-  "rule_record_distributed_rust_migration": {
-    "state": "APPROVED_BY_USER_DELEGATED_ENGINE_RESPONSIBILITY_ANALYSIS",
-    "original_module": "src/ptsip/profiles/rule_records.py",
-    "language": "RUST",
-    "analysis_basis": [
-      "ACTUAL_LEGACY_PYTHON_FUNCTION_BODIES",
-      "CURRENT_REGISTERED_STORAGE_DISCOVERY_VALIDATION_ENGINE_CONTRACTS",
-      "ACTUAL_NATIVE_RUST_ENGINE_DISPATCH"
+  "rule_record_rust_engine_assignment": {
+    "source_module": "src/ptsip/profiles/rule_records.py",
+    "state": "PENDING_FUTURE_SESSION_AGENT_ANALYSIS",
+    "mandate": "IMPLEMENT_IN_RUST;ENGINE_OWNERSHIP_AND_IMPLEMENTATION_ALLOCATION_UNDECIDED",
+    "implementation_language": "RUST",
+    "current_session_analysis": "NOT_PERFORMED;PREVIOUS_STORAGE_VALIDATION_DISCOVERY_ALLOCATION_RETRACTED",
+    "engine_owners": null,
+    "engine_count": null,
+    "function_to_engine_assignments": [],
+    "rust_implementation_paths": [],
+    "rust_contract_paths": [],
+    "engine_owned_schema_root_pattern": "src/ptsip/engines/**/src/schemas/**",
+    "future_agent_required_sequence": [
+      "READ_ACTUAL_LEGACY_MODULE_FUNCTIONS_AND_CALLERS",
+      "READ_CURRENT_REGISTERED_RUST_ENGINE_CONTRACTS_CAPABILITIES_AND_RESPONSIBILITY_BOUNDARIES",
+      "ANALYZE_EACH_REQUIRED_FUNCTION_AND_CHOOSE_APPROPRIATE_ENGINE_OR_ENGINES_WITH_EVIDENCE",
+      "DETERMINE_ENGINE_LOCAL_RUST_IMPLEMENTATION_PATHS_AND_SRC_OWNED_TYPED_CONTRACT_PATHS",
+      "RECORD_RESOLVED_ENGINE_ASSIGNMENTS_AND_RATIONALES_IN_THIS_PLAN",
+      "APPLY_USER_PREAUTHORIZATION_TO_THE_EVIDENCE_BASED_OWNER_ALLOCATION",
+      "IMPLEMENT_AND_VERIFY_ONLY_AFTER_ASSIGNMENTS_RECORDED"
     ],
-    "user_mandate": "RUST_REQUIRED_ENGINE_OWNER_NOT_PREASSUMED;ANALYZE_THEN_AUTO_APPROVE",
-    "decision": "THREE_EXISTING_RUST_ENGINE_DUTIES_NOT_ONE_STORAGE_ENGINE",
-    "allocations": [
-      {
-        "id": "RR-STORAGE",
-        "owner": "STORAGE",
-        "functions": [
-          "_object_file",
-          "_linked_resource",
-          "load_rule_records:READ_STAGE"
-        ],
-        "responsibility": "REGISTERED_RULE_PROFILE_LINK_SELECTION_AND_BOUNDED_LOCAL_RESOURCE_READ_WITH_EXACT_SOURCE_SHA",
-        "input": "REGISTERED_LOCAL_CATALOG_AND_RULE_PROFILE_REF",
-        "output": "SOURCE_BOUND_UNVALIDATED_PAYLOAD",
-        "excludes": [
-          "RULE_GRAPH_VALIDATION",
-          "RULE_ID_RESOLUTION",
-          "NORMATIVE_AUTHORITY"
-        ],
-        "rust_source_root": "src/ptsip/engines/storage/src/",
-        "native_schema_root": "src/ptsip/engines/storage/src/schemas/",
-        "schema_policy": "src/ptsip/engines/**/src/schemas/**"
-      },
-      {
-        "id": "RR-VALIDATION",
-        "owner": "VALIDATION",
-        "functions": [
-          "_kind",
-          "_validate_relations",
-          "load_rule_records:VALIDATE_STAGE"
-        ],
-        "responsibility": "INDEPENDENT_DISTRIBUTED_JSON_SCHEMA_VALIDATION_AND_DUPLICATE_PARENT_CHILD_RELATION_GRAPH_CONSISTENCY",
-        "input": "STORAGE_SOURCE_BOUND_PAYLOAD_AND_SRC_OWNED_RULE_SCHEMA",
-        "output": "EXPLICIT_VALIDATION_EVIDENCE_AND_DIAGNOSTICS",
-        "excludes": [
-          "INFER_PRIVATE_PYTHON_RULE_ID_REGEX",
-          "CUSTOM_FIELD_REQUIREDNESS_WITHOUT_USER_CONTRACT",
-          "RESOURCE_SELECTION"
-        ],
-        "rust_source_root": "src/ptsip/engines/validation/src/",
-        "native_schema_root": "src/ptsip/engines/validation/src/schemas/",
-        "schema_policy": "src/ptsip/engines/**/src/schemas/**"
-      },
-      {
-        "id": "RR-DISCOVERY",
-        "owner": "DISCOVERY",
-        "functions": [
-          "discover_rule_records",
-          "resolve_rule_record"
-        ],
-        "responsibility": "ENUMERATE_EXACT_REGISTERED_RULE_IDS_AND_RESOLVE_EXACT_MATCH_ONLY_AFTER_VALIDATION",
-        "input": "VERIFIED_SOURCE_REF_AND_VALIDATED_RECORDS_AND_QUERY_ID",
-        "output": "EXACT_IDS_OR_RECORD_OR_UNRESOLVED_WITHOUT_AUTHORITY_GRANT",
-        "excludes": [
-          "READ_UNVERIFIED_AS_RESOLVED",
-          "IDENTITY_REWRITE",
-          "EXECUTION_PERMISSION"
-        ],
-        "rust_source_root": "src/ptsip/engines/discovery/src/",
-        "native_schema_root": "src/ptsip/engines/discovery/src/schemas/",
-        "schema_policy": "src/ptsip/engines/**/src/schemas/**"
-      }
-    ],
-    "execution_order": [
-      "STORAGE_SELECT_AND_READ_SHA_BOUND_RESOURCE",
-      "VALIDATION_VALIDATE_SCHEMA_AND_GRAPH_USING_SRC_OWNED_CONTRACT",
-      "DISCOVERY_ENUMERATE_AND_RESOLVE_EXACT_IDS_FROM_VALIDATED_RECORDS"
-    ],
-    "engine_to_engine_contract": {
-      "require": "EXPLICIT_NATIVE_TYPED_REQUEST_RESPONSE_AND_SOURCE_SHA_VALIDATION_EVIDENCE",
-      "existing_operation_semantics": "DO_NOT_REPURPOSE_DISCOVERY_RESOLVE_ENGINE_CAPABILITY_FOR_RULE_ID_WITHOUT_CONTRACT_EXTENSION",
-      "new_operation_ids": "NOT_PREAPPROVED_BY_OWNER_ALLOCATION;REQUIRE_VALID_REGISTERED_ENGINE_TYPED_CONTRACT_DECISION",
-      "no_new_engine": true,
-      "no_authority_grant": true
+    "automatic_approval": {
+      "authorized_by_user": true,
+      "applies_to": "EVIDENCE_BASED_ENGINE_ASSIGNMENTS_FROM_FUTURE_SESSION_AGENT_ANALYSIS",
+      "condition": "ANALYSIS_COMPLETE_WITH_ENGINE_RESPONSIBILITY_AND_SOURCE_CONSUMER_EVIDENCE",
+      "before_analysis": "NO_PRESELECTED_ENGINE_OR_CROSS_ENGINE_TOPOLOGY",
+      "after_analysis": "WRITE_ASSIGNED_OWNER_AND_RELEVANT_IMPLEMENTATION_LOCATIONS_TO_PLAN_THEN_IMPLEMENT",
+      "does_not_authorize": "UNRELATED_NEW_ENGINE_OR_OPERATION_SEMANTICS_OR_OTHER_USER_OWNED_CONTRACT_FIELDS"
     },
-    "prohibited": [
-      "COPY_DEVELOPER_DOTPTSIP_RULE_SCHEMA",
-      "PORT_PYTHON_PRIVATE_ID_REGEX_BY_DEFAULT",
-      "STORE_ALL_RULE_LOGIC_IN_STORAGE",
-      "ASSUME_ONE_ENGINE_SCHEMA_DIRECTORY",
-      "CREATE_INDEPENDENT_GO_PROFILE_MODULE"
+    "do_not_assume": [
+      "SINGLE_STORAGE_ENGINE_OWNER",
+      "THREE_ENGINE_STORAGE_VALIDATION_DISCOVERY_SPLIT",
+      "SPECIFIC_ENGINE_COUNT",
+      "FIXED_FUNCTION_TO_ENGINE_MAP",
+      "FIXED_INTER_ENGINE_EXECUTION_ORDER_OR_PROTOCOL",
+      "RULE_RECORD_SUBMODULE_PATH_BEFORE_ANALYSIS"
     ],
-    "deletion_reasons": [
-      "DISTRIBUTABLE_SOURCE_MUST_NOT_IMPORT_DEVELOPER_DOTPTSIP_CONTRACT_AS_FIELD_AUTHORITY",
-      "PYTHON_MODULE_CANNOT_BE_THE_RUST_ENGINE_IMPLEMENTATION"
+    "retained_retirement_reasons": [
+      "LEGACY_MODULE_REFERENCES_DEVELOPER_PRIVATE_DOTPTSIP_SCHEMA_AS_DISTRIBUTED_FIELD_SOURCE",
+      "LEGACY_MODULE_IS_PYTHON_AND_MUST_BE_REPLACED_WITH_RUST_ENGINE_IMPLEMENTATION"
     ],
-    "completion": "ALL_THREE_RUST_ENGINES_AND_CROSS_ENGINE_HANDOFF_VERIFIED_THEN_SEPARATE_DELETE_OLD_VALIDATORS_AND_RETIRED_PYTHON_MODULE"
+    "migration_gate": "NO_RULE_RECORD_IMPLEMENTATION_OR_DELETION_BEFORE_FUTURE_SESSION_ANALYSIS_AND_AUTO_APPROVED_OWNER_ASSIGNMENT;DELETION_ONLY_AFTER_ACTUAL_SELECTED_ENGINE_TESTS_AND_SUPPORTED_CONSUMERS_PASS"
   }
 }
