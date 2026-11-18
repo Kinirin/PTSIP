@@ -276,7 +276,7 @@
     },
     {
       "id": "HISTORY-01",
-      "scope": "Project Profile historical file paths inside profile/history/ approved; exact per-version schema contents and pp2.00 conflict remain separately unresolved",
+      "scope": "Project Profile historical file paths approved; pp2 source explicitly selected at src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; no longer unresolved.",
       "state": "PP200_SOURCE_SELECTED_HISTORY_PATHS_APPROVED",
       "note": "Selected pp2 source: src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; duplicate src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json is retirement target."
     },
@@ -1784,8 +1784,8 @@
       "source_size_bytes": 14327,
       "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
       "role": "Project Profile registered runtime versions",
-      "gate": "REGISTERED_PP200_SCHEMA_AND_CANDIDATE_PROVENANCE_RECONCILED",
-      "action": "PP200_HISTORICAL_SCHEMA_MIGRATION_BLOCKED_BY_OWNER_SOURCE_SELECTION"
+      "gate": "SELECTED_AUTHORITATIVE_PP200_SCHEMA_SOURCE_MIGRATE_AND_REWIRE_BEFORE_PROFILES_TREE_RETIREMENT",
+      "action": "CANONICALIZE_SELECTED_PP200_SEMANTICS_AND_REGISTER_CANONICAL_HISTORY_AND_CURRENT_ALIAS;IGNORE_RETIRED_SPECData_DUPLICATE"
     },
     {
       "source_path": "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json",
@@ -2235,7 +2235,7 @@
         "validation results"
       ],
       "outputs": [
-        "per-file delete ledger",
+        "Current source-tree absence and zero-active-consumer test results (no permanent archived legacy contract deletion ledger)",
         "exact evidence of replaced functionality"
       ],
       "actions": [
@@ -2312,7 +2312,8 @@
         "Preserve template oneOf validator semantics where registered, but stop separately exporting template example after usages audited",
         "Record each historical target hash/version/registered lifecycle in central config and revise active alias for pp2.00 only",
         "Run static usage scan for old example/template YAML and retire only those proven unused after central schema and Go consumer replacement",
-        "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence"
+        "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence",
+        "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection."
       ],
       "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure; pp2.00 source selection fixed at src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; abandoned src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json not registered or preserved."
     },
@@ -2458,7 +2459,7 @@
         "Existing CLI, migration, historical profile version and registry behavior validated without old directory"
       ],
       "exact_steps": [
-        "Verify 22/22 source files correspond to immutable Git blob SHA and have mapped semantic/data/function responsibility",
+        "Check 22/22 active tree source paths are covered by approved replacement responsibility and removal scope; do not retain deleted original contract or validator content as an archive.",
         "Verify five Go profile operations and the replacement Rust rule-record module, supported Go CLI and authorized consumers only; do not modify or require legacy Python cli.py/profile_projection.py imports to pass",
         "Verify 12 YAML instances transferred into JSON fixture evidence in src/tests/ptsip/ (not schema files), two schemas into canonical resources, sample catalog replaced/retired and package marker unused",
         "Replace setup.py, MANIFEST.in, pyproject.toml, registry and release tests that require original profile root before deleting",
@@ -2466,7 +2467,8 @@
         "Delete all 22 files and their now-empty directories as one explicitly scoped retirement step, never deleting user-owned .ptsip/profiles",
         "Verify git ls-files src/ptsip/profiles has zero output; grep imports ptsip.profiles and old path references with release acceptance exceptions only after explicit review",
         "Repeat targeted Go tests, Rust engine tests, supported CLI/distribution tests and github workflow verification; remove retired Python verifier once replacement proven; log evidence then remove temporary log",
-        "Keep only current-version replacement verification; after successful replacement proof split old validation out of active verification and delete deprecated tests/validators rather than keep compatibility gates."
+        "Keep only current-version replacement verification; after successful replacement proof split old validation out of active verification and delete deprecated tests/validators rather than keep compatibility gates.",
+        "The retired rule_records.py module MUST NOT be rebuilt as Go profile operation: source only Rust engine replacement under a reviewed owner with independent distributable contracts; delete obsolete Python module and associated validators after replacement passes."
       ],
       "gate": "22/22 retired paths absent; five supported Go profile responsibilities and independent Rust rule-record module tested; no obsolete Python validation gate remains; distribution and supported Rust/Go acceptance PASS.",
       "priority": "DEFERRED_AFTER_PVR_DECISIONS"
@@ -2703,7 +2705,7 @@
     }
   ],
   "profile_history_migration": {
-    "state": "THREE_VERSION_HYBRID_INPUTS_VERIFIED_PP100_ABSENT_PP200_OWNER_CONFLICT_PENDING",
+    "state": "THREE_VERSION_HYBRID_INPUTS_VERIFIED_PP100_ABSENT_PP200_SOURCE_SELECTED",
     "canonical_current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
     "responsibilities": {
       "current": "Current admitted project-profile schema only; not a concatenation of past schema contents",
@@ -2712,12 +2714,12 @@
       "candidate": "Candidate profiles remain unregistered and cannot silently become current"
     },
     "conversion_procedure": [
-      "Verify src/ptsip/profiles/history/pp.1.01, pp.1.02, pp.2.00 hybrid YAML instances by exact source SHA and their matching src/ptsip/specdata Project Profile schemas",
+      "Verify pp.1.01 and pp.1.02 with the registered specdata schemas and pp.2.00 with src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; never load src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json as pp2 contract source.",
       "pp.1.00 missing: refuse schema creation without a real source or owner direction",
       "Generate JSON Schema contracts under profile/history/project-profile-pp.1.01.schema.json, project-profile-pp.1.02.schema.json and project-profile-pp.2.00.schema.json; do not rename YAML instance into schema",
       "Preserve version-specific specification.family, ptsip.revision, profile_role and path-variable behavior; preserve existing source schema branch alternatives",
       "Do not create separate template profile schema; stop using distributed template YAML only after feature and consumer reference analysis",
-      "Keep current project-profile.schema.json as logical registered selection for pp.2.00; resolve same-$id metadata and candidate lifecycle conflict explicitly",
+      "Bind project-profile.schema.json current selector to canonical pp.2.00 schema derived exclusively from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; selected source metadata supersedes previous candidate-status note.",
       "Update src/ptsip/specdata/project-profile-contracts.yaml and central config.json with exact registered selectors and immutable source SHA",
       "Validate all source YAML fixtures against correct central schemas independently and record negative wrong-version outcomes",
       "Delete original YAML examples and superseded schema files only when per-file consumer count becomes zero and functionality is verified"
@@ -2748,10 +2750,10 @@
       },
       {
         "source": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
-        "schema_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+        "schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
         "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
         "registration": "CURRENT_REGISTERED_VERSION",
-        "decision": "PP200_SCHEMA_OWNER_SELECTION_PENDING"
+        "decision": "USER_SELECTED_AUTHORITATIVE_SCHEMA_SOURCE_2026_11_18"
       }
     ]
   },
@@ -2874,7 +2876,7 @@
     ],
     "acceptance": [
       "0 tracked files under src/ptsip/profiles/ after final removal (22/22 addressed individually)",
-      "6/6 Python module responsibilities reachable through dedicated Go profile_contract",
+      "Five approved Go profile responsibilities and independent Rust rule-record replacement verified, without developer-private schema import",
       "12/12 historic/current YAML source examples have replacement fixture or documented intentional no-distribution decision, without losing conformance coverage",
       "2/2 historical source schema files moved or resolved in central schemas registry",
       "No supported Go CLI, packaging, release gate or admitted schema consumer depends on retired folder; two explicitly excluded unmodified Python caller imports may remain broken",
@@ -3113,7 +3115,7 @@
       "role": "CURRENT_REGISTERED_SCHEMA_SELECTOR",
       "active_registered_version": "pp.2.00",
       "selected_historical_target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
-      "mechanism": "CONFIG_REGISTRY_EXACT_MAPPING_OR_REF_TO_APPROVED_PP200_SCHEMA_PENDING_ID_SELECTION",
+      "mechanism": "CONFIG_REGISTRY_EXACT_MAPPING_TO_CANONICAL_PP200_SELECTED_FROM_PROFILE_LOCAL_SCHEMA",
       "condition": "Do not copy or merge historical versions into current schema; do not invent a separate pp2 schema behavior",
       "schema_collision": {
         "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
@@ -3767,21 +3769,21 @@
       "unit": [
         "Go typed version + revision parsing",
         "schema source SHA and path injection",
-        "rule relation graph validation",
+        "Rust independent rule-record validation using src-owned contract; legacy private schema grammar not inherited",
         "metadata and YAML header determinism",
         "transition compatibility matrix",
         "catalog selection and traversal rejection"
       ],
       "integration": [
-        "Python CLI + Go transport",
-        "clarification profile projection + Go metadata",
+        "existing src/ptsip/CLI.go integration with five supported Go profile operations and separate Rust rule-record engine",
+        "Supported Go metadata/clarification integration; excluded legacy Python profile_projection.py is not a verification gate",
         "direct migration promotion + Go transition verifier",
         "spec_identity current version Go selection",
         "profile v1.01/v1.02/v2.00 schema conformance"
       ],
       "negative": [
         "missing pp1.00 rejected",
-        "same-$id-different-lifecycle pp2 schema collision rejected until owner decision",
+        "selected pp2 source schema derives only from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; no duplicate src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json registered",
         "template mode behavior not silently lost",
         "missing registry/source or duplicate version rejects",
         "Profile source no .ptsip schema field inference",
@@ -3796,11 +3798,12 @@
       ],
       "local_execution_order": [
         "$log = '.\\profile-go-migration.log'",
-        "go -C src/ptsip/profile_contract test ./... -count=1 2>&1 | Tee-Object -FilePath $log -Append",
+        "go -C src/ptsip test ./... -count=1 2>&1 | Tee-Object -FilePath $log -Append",
+        "cargo test --manifest-path src/ptsip/engines/validation/Cargo.toml 2>&1 | Tee-Object -FilePath $log -Append",
         "python -m pytest -q src/tests/ptsip/contracts 2>&1 | Tee-Object -FilePath $log -Append",
         "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
         "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append",
-        "Remove-Item $log"
+        "Remove-Item $log -ErrorAction SilentlyContinue"
       ],
       "note": "Future Go phase deferred; no new cmd/, no new testdata/, and no internal/** unless separately approved. New integration tests/fixtures belong to src/tests/ptsip/."
     },
@@ -4120,12 +4123,16 @@
         "git_blob_sha": "c2d619d3c37e014fb396b86a18a41074fc20cad9",
         "size_bytes": 8505,
         "role_group": "SIX_PYTHON_MODULES",
-        "action": "TRANSFER_FUNCTIONAL_RESPONSIBILITY_TO_INDEPENDENT_GO_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/profile_contract/",
+        "action": "DISCONTINUE_PYTHON_AND_PRIVATE_SCHEMA;IMPLEMENT_INDEPENDENT_RUST_REPLACEMENT_THEN_DELETE",
+        "proposed_replacement": "NEW_RUST_RULE_RECORD_MODULE_WITHIN_REVIEWED_SRC_PTSIP_ENGINES_OWNER",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "RUST_REPLACEMENT_TESTS_PASS_AND_SUPPORTED_CONSUMER_CLOSURE;REMOVE_OLD_VALIDATORS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "ROOT_APPROVED_IMPLEMENTATION_FILENAME_UNDECIDED"
+        "replacement_path_state": "RUST_ENGINE_OWNER_AND_LEAF_REVIEW_REQUIRED",
+        "retirement_reasons": [
+          "DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_IMPORT_FORBIDDEN_FOR_DISTRIBUTABLE_SRC",
+          "PYTHON_MODULE_IS_NOT_RUST_ENGINE_IMPLEMENTATION"
+        ]
       },
       {
         "source_path": "src/ptsip/profiles/template-python-package.ptsip.yaml",
@@ -4144,7 +4151,7 @@
     "fixture_paths_approved": false,
     "all_removal_actions_prohibited_until": [
       "SCHEMA_GENERATION_VALIDATED",
-      "GO_FUNCTIONAL_PARITY",
+      "FIVE_GO_PROFILE_RESPONSIBILITIES_AND_INDEPENDENT_RUST_RULE_RECORD_VERIFIED",
       "ONLY_APPROVED_CONSUMERS_AND_GO_CLI_ROUTED_PYTHON_EXCEPTIONS_LEFT_UNCHANGED",
       "ALL_PACKAGING_AND_RELEASE_GATES_REWIRED",
       "NO_SUPPORTED_CONSUMER_REFS_EXCEPT_TWO_APPROVED_UNMODIFIED_PYTHON_PATHS",
