@@ -226,8 +226,7 @@
       ],
       "previous_rejections": "RETAIN_PREVIOUS_RAC_AEC_FIELD_SET_REJECTION",
       "pp300": "KEEP_LEGACY_SCHEMAS_UNMODIFIED",
-      "runtime_implementation_authorized": false,
-      "policy_record": ".ptsip/contracts/policy/unified/authoring-decision.json"
+      "runtime_implementation_authorized": false
     },
     "policy_v4_content_schema_path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
     "policy_v4_content_item_id_pattern": "REVOKED_FIXED_REGEX",
@@ -249,12 +248,14 @@
     {
       "id": "PATH-01",
       "scope": "15 originally listed target schema exact filenames",
-      "state": "PROPOSED_NEEDS_USER_APPROVAL"
+      "state": "PROPOSED_LOCATIONS_NOT_AUTHORIZED_REVIEW_REQUIRED",
+      "note": "Previous proposed path is not accepted by default. Only individually approved exact targets may be created or registered."
     },
     {
       "id": "PATH-02",
       "scope": "Additional schema root storage/evidence/**",
-      "state": "NEW_DIRECTORY_PROPOSAL_NEEDS_USER_APPROVAL"
+      "state": "LOCATION_REJECTED_FOR_CURRENT_IMPLEMENTATION_REVIEW_REQUIRED",
+      "note": "Do not materialize/register storage/evidence/** until a newly selected location has explicit approval."
     },
     {
       "id": "PATH-03",
@@ -265,17 +266,19 @@
       "id": "FIELDS-01",
       "scope": "Policy v4 independent sub-contract field types/requiredness and complete RA List GUI semantics",
       "state": "PARTIAL_POLICY_FIXED_SUBFIELDS_PENDING",
-      "note": "Current Policy v4 only: optional version must validate if provided via official approved notation OR independent user contract under adopting project .ptsip/contract/user/; category is user-owned; Rules evaluation current confirmed fields only, future expansion deferred. RAC/AEC value internals, custom requiredness and generic evaluation semantics are deferred, not 0.3.8 blockers; RA field ownership remains user review."
+      "note": "Current Policy v4 only: optional version must validate if provided via official approved notation OR independent user contract under adopting project .ptsip/contract/user/; category is user-owned; Rules evaluation current confirmed fields only, future expansion deferred. RAC/AEC value internals, custom requiredness and generic evaluation semantics are deferred, not 0.3.8 blockers; RA field ownership remains user review. Plan ID regex/name is user-owned and not a current-version blocking requirement."
     },
     {
       "id": "SOURCE-01",
       "scope": "Java/Markdown policy, mode-profile, README, specification, plan lifecycle structural source",
-      "state": "NO_VERIFIED_SRC_SCHEMA_BASIS"
+      "state": "SOURCELESS_PROPOSED_LOCATIONS_REJECTED_REVIEW_REQUIRED",
+      "note": "No schema may be invented from absent sources or placed at previously proposed restricted paths; verify actual runtime consumer before deciding whether responsibility needs replacement or removal."
     },
     {
       "id": "HISTORY-01",
       "scope": "Project Profile historical file paths inside profile/history/ approved; exact per-version schema contents and pp2.00 conflict remain separately unresolved",
-      "state": "FLAT_PATHS_APPROVED_SEMANTIC_DIFF_UNRESOLVED"
+      "state": "PP200_SOURCE_SELECTED_HISTORY_PATHS_APPROVED",
+      "note": "Selected pp2 source: src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; duplicate src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json is retirement target."
     },
     {
       "id": "REMOVE-01",
@@ -286,7 +289,7 @@
       "id": "PATH-ENGINE-01",
       "scope": "src/ptsip/schemas/engine/**",
       "state": "APPROVED_BY_USER",
-      "note": "Root approved; leaf filename list in target_schemas remains reviewable"
+      "note": "Parent engine root is approved. Individual leaf targets from rejected/proposed set remain unapproved; root approval does not authorize exact leaf."
     },
     {
       "id": "PATH-PROFILE-HISTORY-01",
@@ -312,7 +315,8 @@
     {
       "id": "PROFILE-PP200-SOURCE-01",
       "scope": "Select authoritative pp2.00 schema variant metadata/registration",
-      "state": "USER_SELECTION_REQUIRED_BEFORE_CURRENT_ALIAS_ACTIVATION"
+      "state": "RESOLVED_AUTHORITATIVE_SOURCE_USER_SELECTED",
+      "note": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json is sole authoritative pp2 source; stop using and delete src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json after consumer closure; no archival preservation."
     },
     {
       "id": "PROFILE-HYBRID-01",
@@ -768,8 +772,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/attempt-result.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
@@ -778,8 +784,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/capability-contract.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
@@ -788,8 +796,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
@@ -798,8 +808,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/contract-relation.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
@@ -808,8 +820,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/core-manifest.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
@@ -818,8 +832,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
@@ -828,8 +844,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/derived-state.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
@@ -838,8 +856,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
@@ -848,8 +868,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/execution-binding.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
@@ -858,8 +880,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/federated-source.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
@@ -868,8 +892,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/impact-result.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
@@ -878,8 +904,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
@@ -888,8 +916,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
@@ -898,8 +928,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
@@ -908,8 +940,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
@@ -918,8 +952,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/stop-ack.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
@@ -928,8 +964,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/stop-request.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
@@ -938,8 +976,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/stop-result.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
@@ -948,8 +988,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
@@ -958,8 +1000,10 @@
       "sources": [
         "src/ptsip/engines/contracts/schemas/transport-binding.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
@@ -968,20 +1012,22 @@
       "sources": [
         "src/ptsip/engines/discovery/tpbg-f3.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
       "filename": "plan-lifecycle.schema.json",
       "responsibility": "Plan lifecycle contract",
       "sources": [],
-      "readiness": "NO_NONEMPTY_SOURCE_FOR_LIFECYCLE",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
       "new_target_contract_review": {
         "version_revision": "Plan_properties.version.revision",
         "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
-        "plan_id_pattern": "PENDING_USER_SELECTION",
+        "plan_id_pattern": "USER_OWNED_DECLARATION_NO_PTSIP_FIXED_PATTERN",
         "status_source": "Plan_lifecycle.status",
         "official_proposed_states": [
           "Draft.Proposed",
@@ -1010,7 +1056,9 @@
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
         "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
         "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED"
-      }
+      },
+      "previous_provisional_location": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
@@ -1019,12 +1067,12 @@
       "sources": [
         "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json"
       ],
-      "readiness": "JSON_REPAIR_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW",
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
       "new_target_contract_review": {
         "version_revision": "Plan_properties.version.revision",
         "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
-        "plan_id_pattern": "PENDING_USER_SELECTION",
+        "plan_id_pattern": "USER_OWNED_DECLARATION_NO_PTSIP_FIXED_PATTERN",
         "status_source": "Plan_lifecycle.status",
         "official_proposed_states": [
           "Draft.Proposed",
@@ -1053,7 +1101,9 @@
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
         "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
         "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED"
-      }
+      },
+      "previous_provisional_location": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
@@ -1106,8 +1156,10 @@
       "sources": [
         "src/ptsip/specdata/ptsip-agent-classification.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
@@ -1116,8 +1168,10 @@
       "sources": [
         "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
@@ -1126,8 +1180,10 @@
       "sources": [
         "src/ptsip/specdata/ptsip-diagnostic.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
@@ -1136,8 +1192,10 @@
       "sources": [
         "src/ptsip/specdata/ptsip-normalized-evidence.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
@@ -1191,8 +1249,10 @@
       "filename": "mode-profile.schema.json",
       "responsibility": "Mode Profile",
       "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
@@ -1201,8 +1261,10 @@
       "sources": [
         "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
@@ -1212,7 +1274,7 @@
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
         "src/ptsip/profiles/hybrid-python-package.ptsip.yaml"
       ],
-      "readiness": "PP200_CURRENT_ALIAS_AND_REGISTERED_SOURCE_SELECTION_UNRESOLVED",
+      "readiness": "PP200_SOURCE_SELECTED_USER_APPROVED",
       "decision": "ACTIVE_SELECTOR_NOT_DUPLICATE_SCHEMA",
       "history_snapshot_paths": [
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
@@ -1223,7 +1285,9 @@
       "source_roles": [
         "VERSIONED_SCHEMA_TARGET",
         "CURRENT_INSTANCE_FIXTURE"
-      ]
+      ],
+      "pp200_authoritative_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+      "pp200_retired_duplicate": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
     },
     {
       "path": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
@@ -1233,8 +1297,10 @@
         "src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json",
         "src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json"
       ],
-      "readiness": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/profile/user-profile.schema.json",
@@ -1243,8 +1309,10 @@
       "sources": [
         "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
       ],
-      "readiness": "JSON_REPAIR_REQUIRED",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/profile/user-profile.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
@@ -1386,16 +1454,20 @@
       "filename": "readme.schema.json",
       "responsibility": "README storage/format contract",
       "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/release/readme.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     },
     {
       "path": "src/ptsip/schemas/storage/specification/specification.schema.json",
       "filename": "specification.schema.json",
       "responsibility": "Specification identity/binding",
       "sources": [],
-      "readiness": "NO_SRC_SCHEMA_BASIS",
-      "decision": "PROPOSED_PATH_PENDING_USER_REVIEW"
+      "readiness": "PATH_REVIEW_REQUIRED_LOCATION_NOT_APPROVED",
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATION_NO_COPY_NO_REGISTRATION",
+      "previous_provisional_location": "src/ptsip/schemas/storage/specification/specification.schema.json",
+      "activation": "FORBIDDEN_UNAPPROVED_TARGET_PATH"
     }
   ],
   "source_migration_ledger": [
@@ -1439,7 +1511,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
       "role": "Native engine contract: attempt-result",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
@@ -1448,7 +1521,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
       "role": "Native engine contract: capability-contract",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
@@ -1457,7 +1531,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
       "role": "Native engine contract: consumer-handoff",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
@@ -1466,7 +1541,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
       "role": "Native engine contract: contract-relation",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
@@ -1475,7 +1551,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
       "role": "Native engine contract: core-manifest",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
@@ -1484,7 +1561,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
       "role": "Native engine contract: dependency-graph",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
@@ -1493,7 +1571,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
       "role": "Native engine contract: derived-state",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
@@ -1502,7 +1581,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
       "role": "Native engine contract: effect-evidence",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
@@ -1511,7 +1591,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
       "role": "Native engine contract: execution-binding",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
@@ -1520,7 +1601,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
       "role": "Native engine contract: federated-source",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
@@ -1529,7 +1611,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
       "role": "Native engine contract: impact-result",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
@@ -1538,7 +1621,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
       "role": "Native engine contract: native-invocation-registry",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
@@ -1547,7 +1631,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
       "role": "Native engine contract: registry-snapshot",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
@@ -1556,7 +1641,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
       "role": "Native engine contract: registry-verification-input",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json",
@@ -1565,7 +1651,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
       "role": "Native engine contract: runtime-authority-consumption",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
@@ -1574,7 +1661,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
       "role": "Native engine contract: stop-ack",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
@@ -1583,7 +1671,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
       "role": "Native engine contract: stop-request",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
@@ -1592,7 +1681,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
       "role": "Native engine contract: stop-result",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
@@ -1601,7 +1691,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
       "role": "Native engine contract: storage-mediation",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
@@ -1610,7 +1701,8 @@
       "target_path": "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
       "role": "Native engine contract: transport-binding",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/discovery/tpbg-f3.schema.json",
@@ -1619,7 +1711,8 @@
       "target_path": "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
       "role": "Discovery TPBG output",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/engines/validation/src/planning/PTSIP_Public_Policy_Structure.schema.json",
@@ -1682,7 +1775,8 @@
       "target_path": "src/ptsip/schemas/storage/profile/user-profile.schema.json",
       "role": "User Profile",
       "gate": "JSON_REPAIR_REQUIRED",
-      "action": "REPAIR_AND_MOVE"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
@@ -1700,7 +1794,8 @@
       "target_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
       "role": "Plan common structure and nonprescriptive Checklist",
       "gate": "JSON_REPAIR_REQUIRED",
-      "action": "REPAIR_AND_MOVE"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-agent-classification.schema.json",
@@ -1709,7 +1804,8 @@
       "target_path": "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
       "role": "Agent classification evidence",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-artifact-evidence.schema.json",
@@ -1718,7 +1814,8 @@
       "target_path": "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
       "role": "Artifact evidence",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-diagnostic.schema.json",
@@ -1727,7 +1824,8 @@
       "target_path": "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
       "role": "Diagnostic record",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-normalized-evidence.schema.json",
@@ -1736,7 +1834,8 @@
       "target_path": "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
       "role": "Normalized evidence",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
@@ -1763,7 +1862,8 @@
       "target_path": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
       "role": "Unregistered Project Profile candidate",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
@@ -1771,8 +1871,9 @@
       "source_size_bytes": 14130,
       "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
       "role": "Project Profile registered runtime versions",
-      "gate": "REGISTERED_PP200_SCHEMA_AND_CANDIDATE_PROVENANCE_RECONCILED",
-      "action": "PP200_HISTORICAL_SCHEMA_MIGRATION_BLOCKED_BY_OWNER_SOURCE_SELECTION"
+      "gate": "NO_FUTURE_USE_AS_PP2_SCHEMA_SOURCE;REMOVE_AFTER_REPLACEMENT_VALIDATION",
+      "action": "RETIRE_UNSELECTED_PP200_SCHEMA_AFTER_SELECTED_SOURCE_CANONICALIZED_AND_CONSUMER_REWIRE",
+      "retention": "DELETE_NO_HISTORICAL_CONTRACT_RECORD"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile.schema.json",
@@ -1790,7 +1891,8 @@
       "target_path": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
       "role": "Legacy source profile family",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json",
@@ -1799,7 +1901,8 @@
       "target_path": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
       "role": "Legacy source profile family",
       "gate": "NEW_REGISTRY_GROUP_APPROVAL_REQUIRED",
-      "action": "MOVE_AFTER_TARGET_PATH_APPROVAL"
+      "action": "DO_NOT_MATERIALIZE_PROPOSED_TARGET;REVIEW_RESPONSIBILITY_AND_PATH_FIRST",
+      "target_activation": "DENIED_REEVALUATE_LOCATION"
     }
   ],
   "source_relationships": [
@@ -1855,43 +1958,10 @@
           "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
           "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
           "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json",
-          "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-          "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
-          "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
-          "src/ptsip/schemas/storage/profile/user-profile.schema.json",
-          "src/ptsip/schemas/storage/release/readme.schema.json",
           "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
           "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
-          "src/ptsip/schemas/storage/specification/specification.schema.json",
           "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-          "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
-          "src/ptsip/schemas/storage/profile/source-profile.schema.json",
-          "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
-          "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
-          "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
-          "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
-          "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
-          "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
-          "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
-          "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
-          "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
-          "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
-          "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
-          "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
-          "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
-          "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
-          "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
-          "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
-          "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
-          "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
-          "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
-          "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
-          "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
-          "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
-          "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
-          "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
-          "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
@@ -1907,13 +1977,14 @@
         "do not guess missing $id or readme schema",
         "register approved exact resources",
         "separate schema logical key, version and file path",
-        "Register all 3 version-specific historical schema resources and current pp2.00 selector; file names exact; reject pp1.00 without source",
+        "Register pp1.01/pp1.02 sources and pp2.00 derived solely from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; do not register src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json; current pp2 selector points only to approved canonical target.",
         "Remove old src/ptsip/profiles/index.yaml sample catalog as a source of runtime schema metadata; register exact current and historical Project Profile schemas in central config.json",
         "Register Policy_Content and independent Rules.evaluation under v4 references; no Policy_Evaluation root or Evaluation/ directory",
         "Do not register RBAC applicability or execution statuses as config.json values",
-        "Register ONLY storage/rbac/{ra-list,rac-list,aec-list}.schema.json for current RBAC scope; no extra nested registry/rbac branch"
+        "Register ONLY storage/rbac/{ra-list,rac-list,aec-list}.schema.json for current RBAC scope; no extra nested registry/rbac branch",
+        "Never register any path whose target_schemas activation is FORBIDDEN_UNAPPROVED_TARGET_PATH; the denied candidates require independent responsibility-location re-review."
       ],
-      "gate": "JSON parse PASS; unresolved records explicitly blocked, never generated",
+      "gate": "Registry JSON parses and only approved exact target paths are registered; unapproved target paths are excluded rather than silently generated, even if their source exists.",
       "priority": "ACTIVE_FOCUS_CENTRAL_CONFIG"
     },
     {
@@ -1967,9 +2038,9 @@
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
         "Tasks generate under project-owned .ptsip/tasks and contain task_id/action/task_dependencies_id, no unit-level dependency field; do not mutate .ptsip during planning",
         "Checklist is column-driven task_id linked table, default four columns Work_sequence/work_unit_id/task_id/acceptance; PTSIP command adds columns and updates states; capacity >=10, exact max unresolved",
-        "Plan ID scheme, task file schema, checklist row storage and full transition graph pending approval; no implementation now"
+        "Plan ID format belongs to adopting user contract and MUST NOT be globally fixed; task file schema, checklist row write ownership and full transition graph remain separate review topics; do not block structural schema creation for missing user Plan ID pattern."
       ],
-      "gate": "Plan status, ID grammar, task resource ownership, checklist cardinality, and file schema constraints approved before any code; no cross-plan automatic authorization"
+      "gate": "Plan statuses and responsibility ownership verified; user-owned Plan ID pattern is not a core schema-generation gate. Actual unresolved transition/task synchronization semantics require separate review; no cross-plan automatic authorization."
     },
     {
       "id": "WU-05",
@@ -2002,7 +2073,7 @@
         "preserve historical profile versions as separately selectable contract definitions",
         "repair invalid User_Profile before admission",
         "no generation of missing Mode Profile from other profile by name",
-        "Preserve current project-profile.schema.json as current contract only after explicit pp2.00 same-$id divergent-source resolution",
+        "Expose current project-profile.schema.json only through the canonical pp2.00 resource derived from user-selected src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json.",
         "Hand off exact three-version Project Profile schema generation and per-version fixture validation to WU-10; WU-05 owns shared storage/RBAC responsibility review",
         "Reject direct .ptsip.yaml rename to .schema.json: profile fixtures are data, validation schemas define allowed fields and $defs",
         "pp.1.00 missing from src/ptsip/profiles/history: record as blocked rather than inventing",
@@ -2028,6 +2099,73 @@
       "id": "WU-06",
       "name": "Engine and evidence schemas",
       "inputs": [
+        "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
+        "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
+        "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
+        "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
+        "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
+        "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
+        "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
+        "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
+        "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
+        "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
+        "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
+        "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
+        "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
+        "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
+        "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
+        "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
+        "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
+        "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
+        "src/ptsip/engines/discovery/tpbg-f3.schema.json",
+        "src/ptsip/specdata/ptsip-agent-classification.schema.json",
+        "src/ptsip/specdata/ptsip-artifact-evidence.schema.json",
+        "src/ptsip/specdata/ptsip-diagnostic.schema.json",
+        "src/ptsip/specdata/ptsip-normalized-evidence.schema.json"
+      ],
+      "outputs": [
+        "20 engine schemas, 1 discovery schema, 4 evidence schemas"
+      ],
+      "actions": [
+        "Engine parent root approved but exact proposed leaf targets are not; inventory source and propose responsibility-owned locations before any copy or registration.",
+        "preserve engine contract fields and IDs",
+        "preserve discovery graph schema definitions",
+        "preserve evidence and normalized record semantics",
+        "no merging of engine-authority or validation schemas into policy",
+        "storage/evidence/** current proposed location is NOT approved and must not be materialized; reassess the owning responsibility and location, not silently substitute a path."
+      ],
+      "gate": "Source responsibility and exact schema identities may be inventoried. Migration to denied proposed engine/evidence leaf paths is FORBIDDEN until newly reviewed locations are approved; no missing source contract is invented.",
+      "priority": "PARTIAL_ONLY_ENGINE_CONSUMER_PATHS_OTHER_SCHEMA_MIGRATION_DEFERRED",
+      "candidate_paths_requiring_new_approval": [
+        "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
+        "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
+        "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
+        "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
+        "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
+        "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
+        "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
+        "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
+        "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
+        "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
+        "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
+        "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
+        "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
+        "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
+        "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
+        "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
+        "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
+        "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
+        "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
+        "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
+        "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
+        "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
+        "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
+        "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
+        "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json"
+      ],
+      "source_only_inputs": [
         "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
         "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
         "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
@@ -2053,20 +2191,7 @@
         "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
         "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
         "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json"
-      ],
-      "outputs": [
-        "20 engine schemas, 1 discovery schema, 4 evidence schemas"
-      ],
-      "actions": [
-        "engine/** root approved: migrate engine contract and discovery schemas to explicitly listed central engine leaf directories; preserve previous revisions",
-        "preserve engine contract fields and IDs",
-        "preserve discovery graph schema definitions",
-        "preserve evidence and normalized record semantics",
-        "no merging of engine-authority or validation schemas into policy",
-        "storage/evidence/** remains pending user path approval; do not infer its approval from engine root approval"
-      ],
-      "gate": "20/20 engine mappings and 1/1 discovery, 4/4 evidence have exact source contracts and schema tests",
-      "priority": "PARTIAL_ONLY_ENGINE_CONSUMER_PATHS_OTHER_SCHEMA_MIGRATION_DEFERRED"
+      ]
     },
     {
       "id": "WU-07",
@@ -2093,13 +2218,13 @@
         "verify built wheel includes all canonical schema resources",
         "Replace registered profile schema lookup hard-coded in profiles/contracts.py without retaining retired module as a production dependency",
         "Prepare Go module location decision using choices A/B/C and resolve approval before writing Go sources",
-        "Implement six Go operations with strict schema registry selection and fail-closed responses; do not reproduce field contracts in code",
+        "Implement five Go profile operations and one separate Rust rule-record replacement (only supported behavior) with strict schema registry selection and fail-closed responses; do not reproduce field contracts in code",
         "Remove setup.py public profile asset projection and old history directory requirements; update MANIFEST.in and pyproject.toml to package Go binary and canonical schema resources",
         "EXCLUDE src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py from edits; existing projection errors tolerated",
         "Go Catalog/Metadata responsibility must be implemented in src/ptsip/profile_contract/clarification/**, and public CLI integration targets existing src/ptsip/CLI.go",
         "PTSIP View derived accountability cache uses policy document RA_id references; RA List stores no policy usage reverse field"
       ],
-      "gate": "all approved consumers resolve canonical schemas; wheel package resources verified; all six modules unused; replacement code paths approved; six retired module responsibilities have registered Go interface coverage and approved implementation locations"
+      "gate": "All supported consumers resolve canonical contracts; no supported consumer uses retired Python profile modules. Five Go profile responsibilities and separate Rust rule-record replacement are verified; old validators are removed after replacement conformance."
     },
     {
       "id": "WU-08",
@@ -2120,7 +2245,8 @@
         "verify old source location absent from consumers after each removal",
         "Go module source retirement is performed only by WU-14 after WU-13 acceptance; WU-08 only removes superseded schema sources verified to have zero consumers.",
         "Do not delete any path under src/ptsip/profiles/: all 22 are retired atomically after semantic closure by WU-14; source schema files elsewhere follow their individual deletion gates",
-        "Do not delete src/ptsip/compile_sealed_rbac/{ra,rac,aec}.pp.3.00.schema.json: unchanged pp.3.00.contract.json still points to them. v4 schema creation is independent, not physical removal of historic pp3 contracts."
+        "Do not delete src/ptsip/compile_sealed_rbac/{ra,rac,aec}.pp.3.00.schema.json: unchanged pp.3.00.contract.json still points to them. v4 schema creation is independent, not physical removal of historic pp3 contracts.",
+        "If a retired contract is only required by an obsolete validator, validate approved replacement first, isolate that validator and its old tests, then DELETE them and the obsolete contract; never archive deleted contract history."
       ],
       "gate": "zero supported consumers per retired schema source, full relevant schema/package tests PASS; exempt Python callers excluded from Go/Profile v4 acceptance",
       "dependency": [
@@ -2179,16 +2305,16 @@
       ],
       "exact_steps": [
         "Load and hash all pp1.01, pp1.02, pp2.00 hybrid profile YAML sources; ensure parsed mappings not schemas",
-        "Load matching src/ptsip/specdata pp1.01, pp1.02, pp2.00 JSON Schema and inspect required/property/defs and validation alternatives",
+        "Load matching pp1.01 and pp1.02 src/ptsip/specdata JSON Schema and load pp2.00 only from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; inspect validation keyword structure without adopting the rejected src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json.",
         "Preserve pp1.01 specification.family and literal include roots; preserve pp1.02 and pp2.00 Rev.0001, profile_role and symbolic roots",
         "Validate each source hybrid against matching version source schema and newly derived versioned central schema; cross-version tests must fail when version differs",
-        "Compare pp2.00 registered schema and profile-local variant, separately record metadata/candidate lifecycle differences; user selects authoritative owner",
+        "User selected src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json as authoritative pp2.00 schema; do not reopen this choice or merge src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json into the active schema. Verify canonical copy and remove retired duplicate after consumer replacement.",
         "Preserve template oneOf validator semantics where registered, but stop separately exporting template example after usages audited",
         "Record each historical target hash/version/registered lifecycle in central config and revise active alias for pp2.00 only",
         "Run static usage scan for old example/template YAML and retire only those proven unused after central schema and Go consumer replacement",
         "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence"
       ],
-      "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure"
+      "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure; pp2.00 source selection fixed at src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; abandoned src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json not registered or preserved."
     },
     {
       "id": "WU-11",
@@ -2209,7 +2335,8 @@
         "six-module symbol-responsibility table",
         "actual imports across Python CLI, migration, clarification and specification",
         "legacy rule-record src contract missing-source block",
-        "22-file full directory retirement inventory with exact Git blob hashes and proposed replacement paths"
+        "22-file full directory retirement inventory with exact Git blob hashes and proposed replacement paths",
+        "Rule record retirement reason contract: developer-only .ptsip schema import AND Python runtime not Rust engine; Rust replacement responsibilities and unsupported legacy semantics excluded"
       ],
       "exact_steps": [
         "Inspect exported functions, constants, dataclasses and exceptions in all six Python files",
@@ -2217,9 +2344,10 @@
         "Link every Python public behavior to exactly one proposed Go operation, mark unsupported as blocked",
         "Block any .ptsip schema-source usage in replacement contract design",
         "Produce a complete old API / Go operation parity matrix",
-        "Classify all 22 src/ptsip/profiles files by Python, YAML sample, history fixture, profile-local schema, catalog and package marker"
+        "Classify all 22 src/ptsip/profiles files by Python, YAML sample, history fixture, profile-local schema, catalog and package marker",
+        "For src/ptsip/profiles/rule_records.py do NOT translate Python implementation or its developer-private contract into Go; derive independently necessary Rust engine responsibilities from current distributable source and validate approved replacement before deletion."
       ],
-      "gate": "6/6 behavior inventoried, all actual consumers resolved; Go source paths remain uncreated",
+      "gate": "Inventory all six Python sources for removal; five Go replacement responsibilities mapped, rule_records.py discontinued for the two explicit reasons and Rust replacement scope determined without accessing developer .ptsip as a schema source.",
       "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     },
     {
@@ -2233,18 +2361,21 @@
         "selected dedicated Go module root src/ptsip/profile_contract/",
         "existing src/ptsip/common_contract module for reference only",
         "canonical src/ptsip/schemas/config.json",
-        "new Go/Python bridge proposed"
+        "new Go/Python bridge proposed",
+        "Rust replacement responsibility boundary for src/ptsip/profiles/rule_records.py"
       ],
       "outputs": [
         "Future approved Go leaf paths, after v4/RBAC",
-        "Future typed operations and CLI integration contract"
+        "Future typed operations and CLI integration contract",
+        "Independent Rust-owned rule-record module responsibility and contract boundary, without hard-coded developer contract schema or unapproved Rust engine operation"
       ],
       "exact_steps": [
         "Defer Go child directories until Policy v4/RBAC binding is agreed and verified",
         "Use existing src/ptsip/CLI.go as only existing main entry; do not propose new cmd/",
         "Use src/tests/ptsip/ for new tests and fixtures; do not create testdata/",
         "Do not create internal/** until user approves module responsibilities, source filenames and transport",
-        "Select a Go integration boundary only after schema contract and RA identity decisions are made"
+        "Select a Go integration boundary only after schema contract and RA identity decisions are made",
+        "Select Rust engine owner and module path within src/ptsip/engines/ for still-required rule-record discovery/validation; do not infer extra engine ID or operation; independently author distributable schema/contract."
       ],
       "gate": "DEFERRED: V4/RBAC gates have priority; no cmd/ testdata/ internal/** creation",
       "priority": "DEFERRED_AFTER_PVR_DECISIONS"
@@ -2274,18 +2405,19 @@
         "Go implementation of identity, rule records, metadata, contract selection, compatibility, catalog",
         "Python import and API callsite replacements",
         "wheel packaging manifest changes",
-        "Go executable and wheel packaging rules validated independently of old src/ptsip/profiles assets"
+        "Go executable and wheel packaging rules validated independently of old src/ptsip/profiles assets",
+        "New Rust-backed rule-record responsibility verified independently of Go profile operations"
       ],
       "exact_steps": [
         "Deferred until Policy v4 + storage/rbac contract decisions and tests; do not create cmd/, internal/**, testdata/.",
-        "Implement six typed operations with registry version selection and SHA validation for pp1.01 pp1.02 pp2.00; missing/unknown profile IDs fail",
+        "Implement five Go profile typed operations; separately create and test the new Rust rule-record module under its reviewed Rust engine owner with registry version selection and SHA validation for pp1.01 pp1.02 pp2.00; missing/unknown profile IDs fail",
         "Convert original YAML instance fixtures into JSON golden tests preserving strings and source Git blob SHA; do not mistake fixtures for JSON Schema",
         "Replace old packaging and project-profile registry path dependencies on src/ptsip/profiles/",
         "Run wheel source/dist admission and legacy-path usage checks before enabling source directory removal",
         "Create Go-only Catalog and Metadata calls under approved src/ptsip/profile_contract/clarification/** once child files are reviewed",
         "Modify src/ptsip/CLI.go for future registered Go operations, never src/ptsip/cli.py; never change profile_projection.py even if it fails"
       ],
-      "gate": "Go-only profile contract+existing CLI.go tests pass; excluded Python modules and unmodified projection are not v4 schema acceptance gates",
+      "gate": "Five supported Go profile operations and independent Rust rule-record replacement pass, supported consumers and existing Go CLI integration pass; legacy Python validators do not remain active gates.",
       "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     },
     {
@@ -2320,22 +2452,23 @@
         "src/ptsip/profiles/template-python-package.ptsip.yaml"
       ],
       "outputs": [
-        "22-entry file-by-file migration and deletion evidence",
+        "Current tree absence check for all 22 retired files; no archived copy of deleted contracts, modules or obsolete validators",
         "No tracked files beneath src/ptsip/profiles/",
         "No installed wheel asset and import binding to ptsip.profiles",
         "Existing CLI, migration, historical profile version and registry behavior validated without old directory"
       ],
       "exact_steps": [
         "Verify 22/22 source files correspond to immutable Git blob SHA and have mapped semantic/data/function responsibility",
-        "Verify 6 Go operations, supported Go CLI and authorized consumers only; do not modify or require legacy Python cli.py/profile_projection.py imports to pass",
+        "Verify five Go profile operations and the replacement Rust rule-record module, supported Go CLI and authorized consumers only; do not modify or require legacy Python cli.py/profile_projection.py imports to pass",
         "Verify 12 YAML instances transferred into JSON fixture evidence in src/tests/ptsip/ (not schema files), two schemas into canonical resources, sample catalog replaced/retired and package marker unused",
         "Replace setup.py, MANIFEST.in, pyproject.toml, registry and release tests that require original profile root before deleting",
         "Build clean wheel and source distribution without old profiles dir; resolve source snapshots via Git sha and accepted normalized fixture testdata",
         "Delete all 22 files and their now-empty directories as one explicitly scoped retirement step, never deleting user-owned .ptsip/profiles",
         "Verify git ls-files src/ptsip/profiles has zero output; grep imports ptsip.profiles and old path references with release acceptance exceptions only after explicit review",
-        "Repeat Go tests, Python CLI integration, distribution tests and github workflow verification; log evidence then remove temporary log"
+        "Repeat targeted Go tests, Rust engine tests, supported CLI/distribution tests and github workflow verification; remove retired Python verifier once replacement proven; log evidence then remove temporary log",
+        "Keep only current-version replacement verification; after successful replacement proof split old validation out of active verification and delete deprecated tests/validators rather than keep compatibility gates."
       ],
-      "gate": "22/22 tracked paths removed; all supported Go/registry consumers rewired; excluded Python cli.py and profile_projection.py may fail unchanged; six Go responsibilities verified; schema and release tests PASS",
+      "gate": "22/22 retired paths absent; five supported Go profile responsibilities and independent Rust rule-record module tested; no obsolete Python validation gate remains; distribution and supported Rust/Go acceptance PASS.",
       "priority": "DEFERRED_AFTER_PVR_DECISIONS"
     }
   ],
@@ -2418,14 +2551,14 @@
       "historical profiles remain verifiable",
       "new schema package data present in built wheel",
       "removed sources have zero remaining refs",
-      "Same $id with different Git blob content is resolved before either copy is retired",
+      "pp2.00 canonical schema derives exclusively from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; rejected src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json is unregistered then deleted after validated consumer transition.",
       "Historical Project Profile schemas resolve by approved versioned filenames directly under storage/profile/history/ and preserve immutable source SHA",
       "No imports of retired profiles from supported replacement and Go entrypoint; two user-excluded Python modules are documented known broken references",
       "Engine schemas under approved central engine root preserve distinct engine contract semantics and history",
       "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
       "pp.1.00 schema is not generated without verified original input",
       "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles",
-      "Six retired Python module responsibilities are available as typed Go operations with no implicit permission grant",
+      "Five retired Python profile responsibilities are replaced by Go, and rule_records.py is retired for developer-only contract import and non-Rust runtime implementation; its needed function is rebuilt as independent Rust module.",
       "Go implementation code paths and bridge protocol are user approved before source generation",
       "Dedicated Go source code resides under approved src/ptsip/profile_contract/ root, not common_contract/profile/",
       "All 22 tracked files in src/ptsip/profiles/ recursively removed after their per-file responsibility transition is verified",
@@ -2480,7 +2613,13 @@
       "RA List owns all seven declared fields per RA_id record including RA_description, with grouped [AEC_ids,AEC_name] and [RAC_ids,RAC_name]; RAC/AEC List solely owns creation and canonical meaning of its condition ID and name, RA display fields are nonauthoritative; no eighth field and no RA reverse policy reference.",
       "PVR09 exact six operations: validation.policy.identity, validation.policy.rules, validation.rbac.ra, validation.rbac.rac, validation.rbac.aec, validation.rbac.references. Both domains are VALIDATION engine-owned and the operation mapping must pass typed I/O, capability registration and binding checks using this self-contained plan.",
       "All operation IDs beginning with validation. MUST resolve to a declared, uniquely registered VALIDATION engine owner; a non-VALIDATION engine using that prefix is invalid. The prefix alone grants no registration, execution, permission or semantic validation authority.",
-      "PVR09 must operate without any external policy-document dependency; registered validation.* owner is VALIDATION, each operation is uniquely bound and mechanically verified, no operation identity alone grants runtime permission."
+      "PVR09 must operate without any external policy-document dependency; registered validation.* owner is VALIDATION, each operation is uniquely bound and mechanically verified, no operation identity alone grants runtime permission.",
+      "All agents treat current v0.3.8 nonblocking contract freedoms as mandatory; evidence.value and RAC/AEC/Policy_Content value internals never cause field-definition stop or later-version TODO.",
+      "Plan ID format is user-owned, not a mandatory PTSIP-global regex or named contract; missing user rule is not structural-schema stop.",
+      "No unapproved WU-02/WU-06 exact target leaf from denied list is created, copied, registered or treated as approval by parent path.",
+      "After replacement validator acceptance, retired validators/tests are isolated and removed; their failures cannot block obsolete contract deletion, and no contract/archive for removed legacy objects is retained.",
+      "Selected pp2 source is profile-local profiles_schemas file only; specdata pp2 source stops being used and is deleted after consumer migration and replacement verification.",
+      "No runtime or plan execution fetches policy documents for source field authority; the plan is internally self-contained."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -2554,9 +2693,13 @@
       "second": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
       "second_blob_sha": "83eb3b06eae023f5024a853bf40572166cf0a99a",
       "schema_id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json",
-      "resolution": "EXPLICIT_SEMANTIC_DIFF_AND_USER_SELECTION_REQUIRED",
-      "deletion_blocked": true,
-      "note": "Inspected validation field structure matches; title and $comment differ, including candidate admission caveat. Preserve owner conflict gate until user selection."
+      "resolution": "USER_SELECTED_FIRST_AS_AUTHORITATIVE",
+      "deletion_blocked": false,
+      "note": "Do not merge meanings or select specdata candidate. Canonical pp2 target derives only from profiles/profiles_schemas source. Delete unselected specdata schema after replacement validation; no obsolete contract archive.",
+      "state": "RESOLVED_USER_EXPLICIT_2026_11_18",
+      "selected_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+      "retired_duplicate_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+      "deletion_condition": "AFTER_CONSUMERS_REWIRED_AND_REPLACEMENT_CONFORMANCE_PASS"
     }
   ],
   "profile_history_migration": {
@@ -2581,7 +2724,9 @@
     ],
     "conflict": {
       "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
-      "state": "UNRESOLVED_BLOCK_CURRENT_PROMOTION_AND_SOURCE_DELETE"
+      "state": "RESOLVED_SELECT_PROFILE_LOCAL_SOURCE",
+      "selected_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+      "retired_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
     },
     "no_silent_version_flatten": true,
     "history_storage_path": "src/ptsip/schemas/storage/profile/history/",
@@ -2654,7 +2799,13 @@
         ],
         "confirmed_callers": [],
         "note": "No external import found in targeted code searches; full AST/import/use scan still required",
-        "action": "STOP_USE_VERIFY_DEAD_OR_REHOME_THEN_DELETE"
+        "action": "STOP_USE_AND_DELETE_AFTER_INDEPENDENT_RUST_REPLACEMENT_VERIFIED",
+        "retirement_reasons": [
+          "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
+          "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION"
+        ],
+        "replacement_language": "RUST",
+        "replacement_behavior_policy": "DO_NOT_CLONE_PRIVATE_DEVELOPER_RULE_ID_OR_SCHEMA_SEMANTICS"
       },
       {
         "path": "src/ptsip/profiles/metadata.py",
@@ -2714,7 +2865,7 @@
       "Approve exact Go source leaf paths and interface under src/ptsip/profile_contract/; do not create any source inside retired profiles/",
       "Migrate existing two schema definitions into central src/ptsip/schemas/ targets, verifying every contract field and provenance, before deletion",
       "Analyze and retain YAML instances as JSON test fixtures and immutable source hashes; YAML data MUST NOT be renamed into JSON Schema",
-      "Implement six Go responsibility operations and current/historical profile selection; catalog examples must be generated or intentionally retired, not silently equated to schema registry",
+      "Implement five Go profile operations plus the independently validated Rust rule-record replacement and current/historical profile selection; catalog examples must be generated or intentionally retired, not silently equated to schema registry",
       "Switch only user-approved caller paths, Go CLI routing, packaging and release-admission expectations; leave src/ptsip/cli.py and profile_projection.py unchanged even if their imports fail",
       "Update setup.py, pyproject.toml, MANIFEST.in, profile registry paths, and impacted CLI and release tests",
       "Run Go unit and Python integration parity tests, installed wheel smoke, source/build distribution completeness and no-legacy-path scans",
@@ -2728,7 +2879,8 @@
       "2/2 historical source schema files moved or resolved in central schemas registry",
       "No supported Go CLI, packaging, release gate or admitted schema consumer depends on retired folder; two explicitly excluded unmodified Python caller imports may remain broken",
       "No user project .ptsip/profiles data is deleted",
-      "Profile historical pp1.01 pp1.02 pp2.00 validation and exact identity transitions remain testable"
+      "Profile historical pp1.01 pp1.02 pp2.00 validation and exact identity transitions remain testable",
+      "rule_records.py is removed for BOTH private .ptsip contract import and Python-not-Rust engine reason; independent Rust module current contract and tests must pass before removal."
     ],
     "excluded_python_paths": [
       "src/ptsip/cli.py",
@@ -2737,7 +2889,27 @@
     "known_unmodified_legacy_consumers": [
       "src/ptsip/cli.py",
       "src/ptsip/clarification/resolution/profile_projection.py"
-    ]
+    ],
+    "rule_records_retirement": {
+      "source": "src/ptsip/profiles/rule_records.py",
+      "decision": "RETIRE_PYTHON_MODULE_AND_BUILD_NEW_RUST_MODULE",
+      "reason_1": "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
+      "reason_2": "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION",
+      "observed_legacy_responsibilities": [
+        "LINKED_RULE_PROFILE_READ",
+        "RULE_SCHEMA_VALIDATION",
+        "EXACT_ID_DISCOVERY_AND_RESOLUTION",
+        "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
+        "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
+      ],
+      "replacement": "NEW_RUST_IMPLEMENTATION_WITH_INDEPENDENT_DISTRIBUTED_SRC_CONTRACTS;RETAIN_ONLY_CURRENTLY_REQUIRED_BEHAVIOR_NOT_UNAPPROVED_LEGACY_RULE_ID_GRAMMAR",
+      "runtime_source_owner_root": "src/ptsip/engines/",
+      "selected_leaf": "UNDECIDED_REVIEW_RUST_ENGINE_RESPONSIBILITY_BEFORE_SOURCE_CREATION",
+      "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
+      "no_go_parity_for_this_module": true,
+      "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
+      "archive_removed_contract_or_validator": false
+    }
   },
   "profile_variant_analysis": {
     "phase": "READ_ONLY_SOURCE_ANALYSIS_COMPLETE_IMPLEMENTATION_NOT_AUTHORIZED",
@@ -2950,8 +3122,12 @@
           "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json"
         ],
         "observed_structural_difference": "Same $id and same JSON Schema validation keyword tree in inspected files; differing title and $comment including candidate lifecycle qualification",
-        "resolution": "USER_SELECTS_REGISTERED_SEMANTIC_OWNER_BEFORE_ACTIVATION_AND_DELETION"
-      }
+        "resolution": "USER_SELECTED_PROFILE_LOCAL_SCHEMA_AS_SOLE_PP200_SOURCE",
+        "state": "RESOLVED_2026_11_18",
+        "selected_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+        "retired_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
+      },
+      "selected_schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json"
     },
     "template_disposition": {
       "user_direction": "MERGE_TEMPLATE_VARIANT_INTO_HYBRID_CONTRACT_REVIEW_AND_STOP_SEPARATE_TEMPLATE_EXAMPLE",
@@ -2988,7 +3164,7 @@
   },
   "go_profile_module_migration": {
     "status": "GO_ROOT_APPROVED_IMPLEMENTATION_DEFERRED_AFTER_POLICY_V4_AND_RBAC",
-    "requested_language": "GO",
+    "requested_language": "GO_PROFILE_OPERATIONS_PLUS_RUST_RULE_RECORD_REPLACEMENT",
     "retired_python_files": [
       "src/ptsip/profiles/identity.py",
       "src/ptsip/profiles/rule_records.py",
@@ -2997,7 +3173,7 @@
       "src/ptsip/profiles/compatibility.py",
       "src/ptsip/profiles/catalog.py"
     ],
-    "behavior_policy": "Retire entire src/ptsip/profiles/ tree after functional replacement; six Python implementations move to dedicated Go module, 12 YAML instance assets move to separately reviewed test fixture evidence, 2 schemas move to central registry, catalogue and Python package marker removed. Preserve version semantics; literal legacy resource paths cannot remain.",
+    "behavior_policy": "Retire all six Python modules; five remaining profile responsibilities are Go-owned, rule_records.py is permanently discontinued and its still-needed rule discovery/validation responsibilities are rebuilt as an independent Rust engine module using src-owned distributable contracts.",
     "approved_discontinuation": true,
     "source_creation_authorized": false,
     "owner_boundary": {
@@ -3139,7 +3315,7 @@
           "resolve_rule_record"
         ],
         "go_package_candidate": null,
-        "go_operation": "profile.rule-record.resolve",
+        "go_operation": null,
         "input_contract": {
           "repository_root": "string",
           "rule_profile_ref": "string",
@@ -3167,10 +3343,34 @@
         "indirect_consumers": [
           "src/ptsip/profiles/catalog.py"
         ],
-        "special_boundary": "Current Python module points to .ptsip/contracts/policy/...; new Go implementation MUST NOT use .ptsip/** as schema field basis; rule record schema source from src/ptsip remains unresolved and blocks semantics.",
+        "special_boundary": "DELETE: (1) imports developer-only .ptsip contract as field authority, forbidden for distributable src; (2) Python module cannot serve as Rust engine implementation. New Rust module uses independent src-owned contracts, not historical private rule schema.",
         "proposed_go_file": null,
-        "source_root_approved": true,
-        "go_leaf_path_status": "DEFERRED_NO_INTERNAL_STRUCTURE_ASSUMPTION"
+        "source_root_approved": false,
+        "go_leaf_path_status": "NOT_GO_OWNED",
+        "replacement_language": "RUST",
+        "replacement_owner": "EXISTING_RUST_ENGINE_RESPONSIBILITY_TO_REVIEW",
+        "replacement_source_root": "src/ptsip/engines/",
+        "replacement_contract": {
+          "source": "src/ptsip/profiles/rule_records.py",
+          "decision": "RETIRE_PYTHON_MODULE_AND_BUILD_NEW_RUST_MODULE",
+          "reason_1": "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
+          "reason_2": "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION",
+          "observed_legacy_responsibilities": [
+            "LINKED_RULE_PROFILE_READ",
+            "RULE_SCHEMA_VALIDATION",
+            "EXACT_ID_DISCOVERY_AND_RESOLUTION",
+            "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
+            "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
+          ],
+          "replacement": "NEW_RUST_IMPLEMENTATION_WITH_INDEPENDENT_DISTRIBUTED_SRC_CONTRACTS;RETAIN_ONLY_CURRENTLY_REQUIRED_BEHAVIOR_NOT_UNAPPROVED_LEGACY_RULE_ID_GRAMMAR",
+          "runtime_source_owner_root": "src/ptsip/engines/",
+          "selected_leaf": "UNDECIDED_REVIEW_RUST_ENGINE_RESPONSIBILITY_BEFORE_SOURCE_CREATION",
+          "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
+          "no_go_parity_for_this_module": true,
+          "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
+          "archive_removed_contract_or_validator": false
+        },
+        "go_implementation_forbidden": true
       },
       {
         "python_source": "src/ptsip/profiles/metadata.py",
@@ -3529,14 +3729,34 @@
         "operations_with_same_registry_snapshot": "Cache exact schema resources by version and immutable SHA, invalidate on registry revision change",
         "avoid": "Repeated Python per-call schema/role inference and per-call Go subprocess compilation"
       },
-      "failure_semantics": "FAIL_CLOSED_UNREGISTERED_SCHEMA_MISSING_SOURCE_REVISION_OR_PERMISSION"
+      "failure_semantics": "FAIL_CLOSED_UNREGISTERED_SCHEMA_MISSING_SOURCE_REVISION_OR_PERMISSION",
+      "rust_rule_record_boundary": {
+        "source": "src/ptsip/profiles/rule_records.py",
+        "decision": "RETIRE_PYTHON_MODULE_AND_BUILD_NEW_RUST_MODULE",
+        "reason_1": "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
+        "reason_2": "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION",
+        "observed_legacy_responsibilities": [
+          "LINKED_RULE_PROFILE_READ",
+          "RULE_SCHEMA_VALIDATION",
+          "EXACT_ID_DISCOVERY_AND_RESOLUTION",
+          "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
+          "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
+        ],
+        "replacement": "NEW_RUST_IMPLEMENTATION_WITH_INDEPENDENT_DISTRIBUTED_SRC_CONTRACTS;RETAIN_ONLY_CURRENTLY_REQUIRED_BEHAVIOR_NOT_UNAPPROVED_LEGACY_RULE_ID_GRAMMAR",
+        "runtime_source_owner_root": "src/ptsip/engines/",
+        "selected_leaf": "UNDECIDED_REVIEW_RUST_ENGINE_RESPONSIBILITY_BEFORE_SOURCE_CREATION",
+        "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
+        "no_go_parity_for_this_module": true,
+        "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
+        "archive_removed_contract_or_validator": false
+      }
     },
     "stop_use_and_removal_workflow": [
       "Freeze 22-file source ledger and hash every file before any schema or Go conversion",
       "After v4/RBAC decisions, approve actual Go source paths beneath selected root without cmd/ or internal/** until decided",
       "Migrate 2 src/ptsip/profiles/profiles_schemas source schemas and 12 source YAML instance examples into schema definitions and JSON fixtures respectively",
       "Keep source example YAML evidence by immutable blob SHA and check fixture parity per pp1.01 pp1.02 pp2.00; no schema generated solely by file rename",
-      "Implement six Go responsibility operations under selected independent Go module; do not extend src/ptsip/common_contract/profile/",
+      "Implement five Go profile operations and an independently validated Rust rule-record module under selected independent Go module; do not extend src/ptsip/common_contract/profile/",
       "Update approved Go CLI.go entrypoint after schema implementation; no edits to cli.py or profile_projection.py",
       "Revise schema registry, packaging, setup.py, MANIFEST.in, pyproject.toml and release admission tests to stop scanning deleted source root",
       "Validate old and new semantic outputs for version selection, rule references, local catalogs, project initialization and migration",
@@ -3587,14 +3807,13 @@
     "blockers": [
       "Go module root approved; exact child source paths and protocol still require approval",
       "Go transport/protocol contract extension not yet approved",
-      "Profile rule-record schema currently sourced by retired Python from .ptsip/**, forbidden as schema field basis; require approved src/ptsip owner schema",
-      "Current pp2.00 source schema metadata conflict unresolved",
       "Missing real pp1.00 historical source: no schema creation",
       "Existing package-data entries do not yet include recursive src/ptsip/schemas/ resource data",
       "Current setuptools build requires src/ptsip/profiles/index.yaml, files under src/ptsip/profiles/history/**; both must be removed as build prerequisites before full folder retirement",
       "External consumers importing ptsip.profiles or reading shipped ptsip/profiles/*.ptsip.yaml cannot retain identical literal paths if directory is fully removed; compatibility scope requires user resolution",
       "All 22 profile files, including 12 YAML examples, must be accounted for with evidence before deletion",
-      "src/ptsip/clarification/resolution/profile_projection.py currently imports ...validation.profile, but src/ptsip/validation/profile.py does not exist at inspected main HEAD; verify consumer import resolution before Go parity assertions"
+      "src/ptsip/clarification/resolution/profile_projection.py currently imports ...validation.profile, but src/ptsip/validation/profile.py does not exist at inspected main HEAD; verify consumer import resolution before Go parity assertions",
+      "Rust rule-record replacement must be independently contracted within src/ptsip/engines/; legacy developer .ptsip schema and Python implementation may not be used as implementation source."
     ],
     "selected_go_module_root": "src/ptsip/profile_contract/",
     "go_clarification": {
@@ -3614,6 +3833,26 @@
         "src/ptsip/clarification/resolution/profile_projection.py"
       ],
       "priority": "AFTER_POLICY_V4_RBAC"
+    },
+    "rule_records_retirement": {
+      "source": "src/ptsip/profiles/rule_records.py",
+      "decision": "RETIRE_PYTHON_MODULE_AND_BUILD_NEW_RUST_MODULE",
+      "reason_1": "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
+      "reason_2": "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION",
+      "observed_legacy_responsibilities": [
+        "LINKED_RULE_PROFILE_READ",
+        "RULE_SCHEMA_VALIDATION",
+        "EXACT_ID_DISCOVERY_AND_RESOLUTION",
+        "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
+        "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
+      ],
+      "replacement": "NEW_RUST_IMPLEMENTATION_WITH_INDEPENDENT_DISTRIBUTED_SRC_CONTRACTS;RETAIN_ONLY_CURRENTLY_REQUIRED_BEHAVIOR_NOT_UNAPPROVED_LEGACY_RULE_ID_GRAMMAR",
+      "runtime_source_owner_root": "src/ptsip/engines/",
+      "selected_leaf": "UNDECIDED_REVIEW_RUST_ENGINE_RESPONSIBILITY_BEFORE_SOURCE_CREATION",
+      "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
+      "no_go_parity_for_this_module": true,
+      "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
+      "archive_removed_contract_or_validator": false
     }
   },
   "profile_directory_retirement": {
@@ -5628,7 +5867,7 @@
         "outputs": [
           "src/ptsip/schemas/config.json"
         ],
-        "note": "src/ptsip/schemas/config.json current file is not valid JSON; scoped remediation permitted; no .ptsip developer repo fallback."
+        "note": "Read current main config.json before repair; previous malformed JSON report is a historical simulation and is not current gate."
       },
       {
         "id": "PVR-03",
@@ -5665,7 +5904,7 @@
           "src/ptsip/schemas/storage/rbac/aec-list.schema.json"
         ],
         "blocked_on": [],
-        "note": "Value internals and generalized evaluation semantics deliberately deferred and NOT v0.3.8 schema-generation blockers; root metadata and known IDs are validated. Generated records must carry explanation of meaning/responsibility in their owning context without imposing speculative schema subfields.",
+        "note": "Current RBAC value internals deliberately unspecified. No invented nested value contract or mandatory requiredness; current ID linkage already decided.",
         "deferred_not_blocking": [
           {
             "id": "RAC_AEC_VALUE_INNER_CONTRACT_UNRESOLVED",
@@ -5964,8 +6203,6 @@
       "open_gates": "REMAIN_BLOCKING_FOR_RELATED_IMPLEMENTATION"
     },
     "approved_provisional_rbac_snapshot": {
-      "policy_direction_source": "src/policy/ARCH/SFP-ARCH-0004.yaml#SRC-0008",
-      "authoritative_approval_record": ".ptsip/contracts/policy/unified/authoring-decision.json",
       "detailed_field_record": "developer/Temporary_Record/rbac-v4-provisional-field-contract-20261116.json",
       "rac": {
         "state": "APPROVED_PROVISIONAL_NOT_FINAL",
@@ -6452,7 +6689,9 @@
       ],
       "release_and_user_repo_write": "NOT_PERFORMED",
       "simulation_not_real_tests": true,
-      "remediation_path": "INDEPENDENT_TECHNICAL_WORK_CONTINUES;UNRESOLVED_SEMANTICS_RECORDED_AND_RAISED_ONLY_WHEN_NONRECOVERABLE"
+      "remediation_path": "INDEPENDENT_TECHNICAL_WORK_CONTINUES;UNRESOLVED_SEMANTICS_RECORDED_AND_RAISED_ONLY_WHEN_NONRECOVERABLE",
+      "current_authority": "HISTORICAL_SNAPSHOT_ONLY_SUPERSEDED_BY_CURRENT_USER_DECISIONS_AND_ACTIVE_HEAD",
+      "supersession_note": "Known stale config parse and RBAC value linkage alarms are not live stop reasons in current release. Re-evaluate against current src and approved deliberate missing fields."
     },
     "current_version_rbac_contract_scope": {
       "release": "0.3.8",
@@ -6654,7 +6893,6 @@
     "planning_root": "src/planning/0.3.8/",
     "plan_source_of_truth": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
     "implementation_source_root": "src/ptsip/",
-    "policy_authority_reference_root": "src/policy/",
     "schema_target_root": "src/ptsip/schemas/",
     "test_root": "src/tests/ptsip/",
     "out_of_scope_mutations": [
@@ -6693,7 +6931,11 @@
     "full_038_work_units_approved": false,
     "dedicated_user_contract_engine_root": "src/ptsip/user_contracts/",
     "dedicated_user_contract_template_root": "src/ptsip/user_contracts/templates/",
-    "no_src_dependency_on_repo_local_dotptsip": true
+    "no_src_dependency_on_repo_local_dotptsip": true,
+    "external_policy_document_dependency": false,
+    "effective_execution_contract": "SELF_CONTAINED_PLAN_ONLY",
+    "developer_dotptsip_contract_import": "FORBIDDEN_FOR_DISTRIBUTABLE_SOURCE",
+    "legacy_validator_retention": "FORBIDDEN_AFTER_APPROVED_REPLACEMENT_VERIFIED"
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -6702,8 +6944,6 @@
     "baseline_source_revision": "044ca6e7fdcc710ff463d9bae1f8328e58ed8299",
     "current_reference_head_at_planning": "9c71db0ac6de32d80f45b8315a23b6f2c2576735",
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
-    "policy_decision_record_in_current_project": ".ptsip/contracts/policy/unified/authoring-decision.json",
-    "policy_record_usage": "NOT_AUTHORITATIVE_FOR_THIS_PLAN; DO_NOT_MODIFY_OR_SYNC",
     "last_user_direction": "2026-11-18: User approved six exact PVR09 operations split by Policy (identity, rules) and RBAC (ra, rac, aec, references), all validation.* owned by VALIDATION engine. This plan is intentionally standalone and must not reference or depend on an external policy file for PVR09. Prior PVR09 policy_ref, namespace_policy_ref, name_binding_authority, source_policy_boundaries removed. GO-CLI-OPERATION policy-decision gate resolved; registered typed I/O, manifest, binding and tests are PVR09 implementation obligations, not a new policy decision. No policy, engine implementation, developer .ptsip/, branch, or release write from this plan sync.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending."
   },
@@ -7611,7 +7851,7 @@
         "change_status_command": true,
         "task_id_sync": true
       },
-      "plan_id_pattern": "PENDING",
+      "plan_id_pattern": "USER_OWNED_DECLARATION_NO_PTSIP_FIXED_PATTERN",
       "note": "No implementation_authorized or publication_authorized contract field, status is sole plan execution lifecycle authority"
     },
     "open_choices": [
@@ -7622,15 +7862,6 @@
           "CT-ID-[0-9A-F]{32}",
           "SRC-ID-[0-9A-F]{32}",
           "<policy-id>#content/<stable-id>"
-        ]
-      },
-      {
-        "id": "PLAN_ID_PATTERN",
-        "field": "F-PLN-008",
-        "choices": [
-          "PLAN-ID-[0-9A-F]{32}",
-          "PLN-ID-[0-9A-F]{32}",
-          "PLAN-<stable-semantic-key>"
         ]
       },
       {
@@ -7722,11 +7953,6 @@
         "id": "TASK_OUTPUT_CONTRACT",
         "field": "F-PLN-042",
         "state": "TASK_FILE_NAMING_AND_SYNC_PRECEDENCE_PENDING"
-      },
-      {
-        "id": "EFFECTIVE_POLICY_CONFORMANCE",
-        "scope": "src/policy/**",
-        "state": "VERIFY_BEFORE_IMPLEMENTATION"
       },
       {
         "id": "POLICY_CATEGORY_SUBFIELDS",
@@ -7922,10 +8148,6 @@
         {
           "path": "src/ptsip/specdata/compile-sealed-rbac-registry-fields.json",
           "role": "Existing lookup registry maps entries[].id/kind to resource and conditional revision; does not grant authorization"
-        },
-        {
-          "path": "src/policy/ARCH/SFP-ARCH-0004.yaml",
-          "role": "Approved source direction separates evaluation Rego original fields from condition name/ID and source registry; exact v4 field names/count undecided"
         },
         {
           "path": "src/ptsip/engines/discovery/src/tpbg/mod.rs",
@@ -8238,8 +8460,249 @@
       ],
       "previous_rejections": "RETAIN_PREVIOUS_RAC_AEC_FIELD_SET_REJECTION",
       "pp300": "KEEP_LEGACY_SCHEMAS_UNMODIFIED",
-      "runtime_implementation_authorized": false,
-      "policy_record": ".ptsip/contracts/policy/unified/authoring-decision.json"
+      "runtime_implementation_authorized": false
     }
+  },
+  "current_user_decisions_2026_11_18": {
+    "authority": "USER_EXPLICIT_PLAN_LOCAL_NO_EXTERNAL_POLICY_DOCUMENT",
+    "scope": "PTSIP_0_3_8_WU01_WU14",
+    "no_work_unit_number_execution_order": true,
+    "plan_id": {
+      "state": "USER_OWNED_RULE_NOT_A_PTSIP_FIXED_PATTERN",
+      "contract_name_and_location": "USER_SELECTED_UNCONSTRAINED",
+      "validator": "ONLY_VALIDATE_USER_DECLARED_ID_CONSTRAINT_IF_AVAILABLE",
+      "absent_user_pattern": "DO_NOT_INVENT_PATTERN_OR_BLOCK_STRUCTURAL_SCHEMA_CREATION",
+      "not_blocker": true
+    },
+    "pp200_source_selection": {
+      "status": "USER_SELECTED_2026_11_18",
+      "authoritative_source_schema": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+      "stop_using_source_schema": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+      "stop_use_effect": "NEVER_SELECT_AS_CURRENT_OR_HISTORICAL_PP2_SCHEMA_AFTER_CONSUMER_REBINDING",
+      "migration": "DERIVE_CANONICAL_PP2_HISTORY_SCHEMA_FROM_SELECTED_SOURCE;REWIRE_ALL_SUPPORTED_CONSUMERS;DELETE_REJECTED_DUPLICATE_AFTER_REPLACEMENT_VALIDATION",
+      "selected_original_under_retirement_root": "KEEP_AS_SOURCE_UNTIL_CANONICAL_PARITY_THEN_DELETE_WITH_SRC_PTSIP_PROFILES_TREE",
+      "no_history_of_retired_duplicate": "DELETE_WITHOUT_ARCHIVED_CONTRACT_OR_LEGACY_VALIDATOR"
+    },
+    "rule_record_retirement": {
+      "source": "src/ptsip/profiles/rule_records.py",
+      "decision": "RETIRE_PYTHON_MODULE_AND_BUILD_NEW_RUST_MODULE",
+      "reason_1": "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
+      "reason_2": "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION",
+      "observed_legacy_responsibilities": [
+        "LINKED_RULE_PROFILE_READ",
+        "RULE_SCHEMA_VALIDATION",
+        "EXACT_ID_DISCOVERY_AND_RESOLUTION",
+        "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
+        "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
+      ],
+      "replacement": "NEW_RUST_IMPLEMENTATION_WITH_INDEPENDENT_DISTRIBUTED_SRC_CONTRACTS;RETAIN_ONLY_CURRENTLY_REQUIRED_BEHAVIOR_NOT_UNAPPROVED_LEGACY_RULE_ID_GRAMMAR",
+      "runtime_source_owner_root": "src/ptsip/engines/",
+      "selected_leaf": "UNDECIDED_REVIEW_RUST_ENGINE_RESPONSIBILITY_BEFORE_SOURCE_CREATION",
+      "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
+      "no_go_parity_for_this_module": true,
+      "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
+      "archive_removed_contract_or_validator": false
+    },
+    "unapproved_paths": {
+      "decision": "REJECT_CURRENT_PROPOSED_LOCATIONS_UNTIL_RESPONSIBILITY_PATH_REVIEW",
+      "meaning": "DO_NOT_CREATE_REGISTER_COPY_REFERENCE_AS_APPROVED_TARGET_OR_DELETE_SOURCE_DUE_TO_PROPOSED_LOCATION",
+      "approved_engine_parent_only": "src/ptsip/schemas/engine/",
+      "not_approved_by_engine_parent": "ENGINE_LEAF_PATHS",
+      "denied_candidates": [
+        "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
+        "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
+        "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
+        "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
+        "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
+        "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
+        "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
+        "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
+        "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
+        "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
+        "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
+        "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
+        "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
+        "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
+        "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
+        "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
+        "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
+        "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
+        "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
+        "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
+        "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
+        "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+        "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+        "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
+        "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
+        "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
+        "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
+        "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
+        "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
+        "src/ptsip/schemas/storage/profile/source-profile.schema.json",
+        "src/ptsip/schemas/storage/profile/user-profile.schema.json",
+        "src/ptsip/schemas/storage/release/readme.schema.json",
+        "src/ptsip/schemas/storage/specification/specification.schema.json"
+      ],
+      "next_step": "REASSESS_DUTY_OWNERSHIP_AND_TARGET_LOCATION_WITH_USER;NO_SILENT_PATH_SUBSTITUTION"
+    },
+    "legacy_validation": {
+      "gate_order": [
+        "VERIFY_APPROVED_REPLACEMENT_FUNCTION_AND_ITS_TESTS",
+        "ISOLATE_RETIRED_LEGACY_VALIDATOR_AND_TEST_SCOPE",
+        "DELETE_LEGACY_VALIDATOR_AND_ITS_TESTS",
+        "VERIFY_CURRENT_TARGET_WITH_ONLY_SUPPORTED_VERIFICATION"
+      ],
+      "previous_record": "DO_NOT_PRESERVE_RETIRED_CONTRACT_OR_VALIDATOR_HISTORY",
+      "reject": "LEGACY_VALIDATOR_FAILURE_CANNOT_BLOCK_REMOVAL_AFTER_REPLACEMENT_ACCEPTANCE",
+      "only_required_tests": "SUPPORTED_CURRENT_RELEASE_RESPONSIBILITIES"
+    },
+    "no_policy_reference_execution": {
+      "scope": "THIS_PLAN_IS_SELF_CONTAINED",
+      "prohibition": "NO_REPOSITORY_POLICY_DOCUMENT_OR_DEVELOPER_DOTPTSIP_CONTRACT_LOOKUP_AS_EXECUTION_INPUT",
+      "external_policy_record": "NOT_AN_IMPLEMENTATION_GATE_OR_SOURCE_OF_FIELD_DEFINITIONS"
+    },
+    "outdated_plan_state": {
+      "status": "SUPERSEDED_WHEN_CONFLICTS_WITH_APPROVED_2026_11_18_DECISION_AND_CURRENT_SOURCE",
+      "interpretation": "STATIC_SIMULATION_IS_HISTORICAL_DIAGNOSTIC_NOT_CURRENT_GATE",
+      "current_source_validation": "REREAD_ACTIVE_HEAD;DO_NOT_REAPPLY_STALE_CONFIG_JSON_PARSE_FAILURE"
+    }
+  },
+  "current_release_nonblocking_contract_freedom": {
+    "release": "0.3.8",
+    "status": "EXPLICIT_IMPLEMENTATION_EXCLUSION_MUST_BE_APPLIED_BY_ALL_CODING_AGENTS",
+    "rules": [
+      {
+        "id": "NB-038-01",
+        "subject": "evidence.value",
+        "scope": "OPAQUE_RELEASE_VALUE_NO_INNER_FIELD_CONSTRAINT",
+        "prohibit": [
+          "REQUIRE_SUBFIELDS",
+          "STOP_BECAUSE_SUBFIELDS_UNDEFINED",
+          "ADD_TODO_FOR_FUTURE_DETAIL",
+          "INFER_FUTURE_VERSION_REQUIREMENTS"
+        ]
+      },
+      {
+        "id": "NB-038-02",
+        "subject": "Policy_Content.items[].value",
+        "scope": "ITEM_HAS_ID_AND_OPAQUE_VALUE_NO_INNER_FIELD_REQUIREMENTS",
+        "prohibit": [
+          "ADD_SPECULATIVE_VALUE_FIELDS",
+          "STOP_FOR_MISSING_VALUE_INNER_SCHEMA"
+        ]
+      },
+      {
+        "id": "NB-038-03",
+        "subject": "RAC_list[].value / AEC_list[].value",
+        "scope": "OWN_LIST_INLINE_SELF_CONTAINED_VALUE_INTERNAL_FIELDS_UNCONSTRAINED",
+        "prohibit": [
+          "REQUIRE_INNER_VALUE_FIELDS",
+          "CREATE_EXTERNAL_VALUE_CONTRACT",
+          "STOP_FOR_UNIMPLEMENTED_EVALUATION_SEMANTICS"
+        ]
+      },
+      {
+        "id": "NB-038-04",
+        "subject": "USER_DEFINED_RULE_ID_PATTERN",
+        "scope": "NO_GLOBAL_FIXED_ID_REGEX_OR_CONTRACT_FILENAME_REQUIREMENT_BEYOND_EXISTING_APPROVED_USER_RUNTIME_CONTRACTS",
+        "prohibit": [
+          "INVENT_GLOBAL_ID_REGEX",
+          "REQUIRE_USER_PREDEFINED_IDS"
+        ]
+      },
+      {
+        "id": "NB-038-05",
+        "subject": "USER_DEFINED_CONTENT_ID",
+        "scope": "EXACT_DOCUMENT_LOCAL_REFERENCE_AND_DECLARED_USER_CONTRACT_ONLY",
+        "prohibit": [
+          "INVENT_SYSTEM_CONTENT_ID_REGEX",
+          "PREALLOCATE_CUSTOM_IDS"
+        ]
+      },
+      {
+        "id": "NB-038-06",
+        "subject": "USER_DEFINED_EVALUATION_STATE",
+        "scope": "GENERIC_DECLARATIVE_CHECKS_ONLY_IF_USER_CONTRACT_EXPRESSES_THEM",
+        "prohibit": [
+          "INVENT_STATE_ENUM",
+          "INFER_USER_STATE_MEANING"
+        ]
+      },
+      {
+        "id": "NB-038-07",
+        "subject": "USER_CONTRACT_NAMES_AND_CUSTOM_SHAPES",
+        "scope": "USER_OWNED_AND_NOT_INFERRED",
+        "prohibit": [
+          "SET_MANDATORY_UNAPPROVED_CUSTOM_CONTRACT_NAME",
+          "STOP_WHEN_USER_HAS_NOT_AUTHORED_OPTIONAL_CUSTOM_CONTRACT"
+        ]
+      },
+      {
+        "id": "NB-038-08",
+        "subject": "UNAVAILABLE_PP1_00",
+        "scope": "NO_INVENTED_VERSION_OR_SCHEMA",
+        "prohibit": [
+          "REQUIRE_PP1_00",
+          "GENERATE_PP1_00_AS_REPLACEMENT_FOR_MISSING_SOURCE"
+        ]
+      },
+      {
+        "id": "NB-038-09",
+        "subject": "LEGACY_CONDITION_KIND",
+        "scope": "REVIEW_EVIDENCE_ONLY_IF_ACTUALLY_CONVERTING_LEGACY_DATA",
+        "prohibit": [
+          "INFER_RAC_VS_AEC_FROM_NAME",
+          "BLOCK_FRESH_V4_CONTRACT_DUE_TO_UNKNOWN_OLD_KIND"
+        ]
+      },
+      {
+        "id": "NB-038-10",
+        "subject": "PVR_09_SIX_VALIDATION_OPERATIONS",
+        "scope": "APPROVED_AND_ALREADY_REGISTERED_IN_CURRENT_VALIDATION_CONTRACT",
+        "prohibit": [
+          "REOPEN_OPERATION_ID_APPROVAL",
+          "INVENT_ADDITIONAL_OPERATION_IDS"
+        ]
+      },
+      {
+        "id": "NB-038-11",
+        "subject": "PLAN_ID_PATTERN",
+        "scope": "USER_DECLARED_OPTIONAL_PATTERN_NO_PTSIP_WIDE_FIXED_REGEX",
+        "prohibit": [
+          "CHOOSE_PTSIP_FIXED_PLAN_ID_REGEX",
+          "STOP_FOR_ABSENT_USER_ID_PATTERN"
+        ]
+      },
+      {
+        "id": "NB-038-12",
+        "subject": "RETIRED_UNUSED_CONTRACT_OR_VALIDATOR",
+        "scope": "REMOVE_AFTER_ACTIVE_REPLACEMENT_VERIFIED_WITHOUT_HISTORICAL_PRESERVATION",
+        "prohibit": [
+          "PRESERVE_UNUSED_CONTRACT_FOR_ARCHIVE",
+          "KEEP_OBSOLETE_VALIDATOR_AS_GATE",
+          "REQUIRE_LEGACY_COMPATIBILITY_WITH_RETIRED_IMPLEMENTATION"
+        ]
+      }
+    ],
+    "enforcement": {
+      "missing_user_custom_contract": "APPLY_EXISTING_APPROVED_ON_DEMAND_USER_PROJECT_BOOTSTRAP_IF_REQUIRED;NEVER_READ_DEV_DOTPTSIP",
+      "unset_optional_custom_semantics": "STRUCTURAL_VALIDATION_ONLY_NO_FALSE_SEMANTIC_PASS",
+      "stop_policy": "STOP_ONLY_ON_GENUINE_UNDECIDED_CURRENT_REQUIRED_RESPONSIBILITY_NOT_INTENTIONAL_EXTENSION_POINT",
+      "no_future_todo_for_evidence_value": true
+    }
+  },
+  "current_release_retirement_protocol": {
+    "type": "REPLACEMENT_FIRST_THEN_DELETE",
+    "order": [
+      "ACCEPT_APPROVED_REPLACEMENT_TESTS",
+      "SEPARATE_RETIRED_VALIDATION_FROM_CURRENT_VERIFICATION",
+      "DELETE_OBSOLETE_VALIDATOR_AND_TESTS",
+      "DELETE_UNUSED_LEGACY_CONTRACT_AND_MODULE",
+      "VERIFY_NO_REFERENCES_OR_PACKAGE_ASSETS_TO_RETIRED_PATHS"
+    ],
+    "no_legacy_archive": true,
+    "no_deletion_blocker_from_legacy_validator": true,
+    "retain_only_still_supported_historical_version_contracts": true,
+    "current_verification_owner": "SUPPORTED_RUST_AND_GO_RUNTIME_AND_DISTRIBUTION_TESTS"
   }
 }
