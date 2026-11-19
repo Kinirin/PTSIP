@@ -1437,11 +1437,10 @@
       "filename": "project-profile.schema.json",
       "responsibility": "Current logical Project Profile schema selection, resolving exact registered pp.2.00 historical JSON Schema",
       "sources": [
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
-        "src/ptsip/profiles/hybrid-python-package.ptsip.yaml"
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
       ],
-      "readiness": "PP200_SOURCE_SELECTED_USER_APPROVED",
-      "decision": "ACTIVE_SELECTOR_NOT_DUPLICATE_SCHEMA",
+      "readiness": "NEW_PP300_REDESIGN_PLAN_RECORDED_PENDING_FIELD_POLICY_RESOLUTION_AND_IMPLEMENTATION_APPROVAL",
+      "decision": "USER_EXPLICIT_NEW_OFFICIAL_PP300_CONTRACT_BASED_ON_IMMUTABLE_PP200_HISTORY;OLD_PP200_CURRENT_ALIAS_SUPERSEDED_FOR_FUTURE_WORK",
       "history_snapshot_paths": [
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
@@ -1453,7 +1452,49 @@
         "CURRENT_INSTANCE_FIXTURE"
       ],
       "pp200_authoritative_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
-      "pp200_retired_duplicate": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
+      "pp200_retired_duplicate": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+      "exact_root_schema_identity": {
+        "$id": "urn:ptsip:storage:contract:profile:official",
+        "title": "PTSIP official Current Project Profile"
+      },
+      "contract_version": "pp.3.00",
+      "component_dependency_requirement": {
+        "top_level_components": "PRESERVE_COMPONENT_COLLECTION_SEMANTIC_ROLE",
+        "old_standalone_dependency_policy": "component_dependency_policy",
+        "new_responsibility": "DEPENDENCY_DECLARATION_LOCAL_TO_COMPONENT",
+        "prohibit_unreviewed_parallel_top_level_policy": true,
+        "component_definition": "$defs.component",
+        "required_fields_exact": [
+          "id",
+          "classification",
+          "include",
+          "purpose",
+          "dependency"
+        ],
+        "dependency_field_exact": "dependency",
+        "dependency_field_type": "UNRESOLVED",
+        "legacy_default_allow_deny_and_from_to_reconciliation": "UNRESOLVED_NEEDS_SEMANTIC_REVIEW_WITHOUT_INVENTING_FIELDS",
+        "source_evidence": {
+          "legacy_component_required": [
+            "id",
+            "classification",
+            "include",
+            "purpose"
+          ],
+          "legacy_dependency_policy_required": [
+            "default"
+          ],
+          "legacy_default_domain": [
+            "allow",
+            "deny"
+          ],
+          "legacy_relation_required": [
+            "from",
+            "to"
+          ]
+        }
+      },
+      "execution_authorized": false
     },
     {
       "path": null,
@@ -2663,11 +2704,24 @@
         "Record each historical target hash/version/registered lifecycle in central config and revise active alias for pp2.00 only",
         "Run static usage scan for old example/template YAML and retire only those proven unused after registered schema and Storage Rust engine consumer replacement",
         "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence",
-        "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection."
+        "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection.",
+        "PP300 NEW USER DIRECTION (PLAN ONLY): Build a new official pp.3.00 current Project Profile contract after policy decisions using actual pp.2.00 history responsibilities, exact $id=urn:ptsip:storage:contract:profile:official and title=PTSIP official Current Project Profile; do not reuse Python Profile module fields as contract authority; merge component_dependency_policy into each required component.dependency. Keep $comment absent. Design User Profile custom contract linkage, revision compression and upgrade lineage separately; implementation requires independent future-session approval."
       ],
       "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure; pp2.00 source selection fixed at src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; abandoned src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json not registered or preserved.",
       "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED_JSON_FIXTURE_TRANSFER_BLOCKED",
-      "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. Exact JSON fixture path approval is still false; no pp.1.00 schema is required or fabricated."
+      "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. Exact JSON fixture path approval is still false; no pp.1.00 schema is required or fabricated.",
+      "pp300_followup": {
+        "status": "PENDING_CONTRACT_FIELD_POLICY_REVIEW_IMPLEMENTATION_NOT_AUTHORIZED",
+        "plan_ref": "project_profile_pp300_contract_redesign",
+        "scope": "NEW_OFFICIAL_CURRENT_PP300_SCHEMA_FROM_EXISTING_PP200_HISTORY_PLUS_COMPONENT_LOCAL_DEPENDENCY_AND_USER_REVISION_LINEAGE",
+        "source_of_field_semantics": "ACTUAL_PP200_HISTORY_SCHEMA_AND_NEW_EXPLICIT_USER_REQUIREMENTS_NOT_RETIRED_PYTHON_MODULE_SHAPES",
+        "exact_current_schema_identity": {
+          "$id": "urn:ptsip:storage:contract:profile:official",
+          "title": "PTSIP official Current Project Profile"
+        },
+        "design_change": "CURRENT_ALIAS_PAST_PP200_IS_SUPERSEDED_FOR_FUTURE_WORK_BY_PP300_CONTRACT_FIRST_DESIGN",
+        "old_pp200_work": "COMPLETED_HISTORICAL_VALIDATION_PRESERVED_NO_RETROACTIVE_SOURCE_CHANGE"
+      }
     },
     {
       "id": "WU-11",
@@ -2799,7 +2853,14 @@
           "import_pass_needed_before_deletion": false,
           "import_pass_needed_for_post_deletion_acceptance": true
         }
-      ]
+      ],
+      "pp300_contract_first_followup": {
+        "status": "BLOCKED_BY_NEW_APPROVED_PP300_FIELD_CONTRACT_AND_USER_REVISION_RELATION",
+        "contract_ref": "project_profile_pp300_contract_redesign",
+        "rule": "NEW_PP300_RUST_MODULES_DERIVED_FROM_APPROVED_CONTRACT_ONLY;LEGACY_PYTHON_MODULES_NOT_CONTRACT_INPUTS",
+        "no_implicit_existing_profile_rust_contract_reuse": true,
+        "no_impl_this_session": true
+      }
     },
     {
       "id": "WU-14",
@@ -3364,7 +3425,17 @@
         "registration": "ACTIVE",
         "decision": "USER_SELECTED_AUTHORITATIVE_SCHEMA_SOURCE_2026_11_18"
       }
-    ]
+    ],
+    "pp300_current_override": {
+      "state": "DESIGN_PLANNED_IMPLEMENTATION_NOT_AUTHORIZED",
+      "current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "current_version": "pp.3.00",
+      "historical_pp200_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "historical_pp200_integrity": "DO_NOT_MODIFY_HISTORY_SCHEMA",
+      "earlier_pp200_current_selector": "SUPERSEDED_FOR_FUTURE_CURRENT_ALIAS_AFTER_APPROVAL",
+      "registry_hashes": "UPDATE_ONLY_AFTER_NEW_SCHEMA_APPROVED_COMPILED_AND_REGISTERED",
+      "user_profile_revision_support": "REQUIRES_SEPARATE_USER_CONTRACT_RELATION_AND_REVISION_POLICY"
+    }
   },
   "engine_schema_migration": {
     "approved_root": "src/ptsip/engines/**/src/schemas/**",
@@ -7825,7 +7896,19 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "last_user_direction": "2026-11-18: User approved six exact PVR09 operations split by Policy (identity, rules) and RBAC (ra, rac, aec, references), all validation.* owned by VALIDATION engine. This plan is intentionally standalone and must not reference or depend on an external policy file for PVR09. Prior PVR09 policy_ref, namespace_policy_ref, name_binding_authority, source_policy_boundaries removed. GO-CLI-OPERATION policy-decision gate resolved; registered typed I/O, manifest, binding and tests are PVR09 implementation obligations, not a new policy decision. No policy, engine implementation, developer .ptsip/, branch, or release write from this plan sync.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending.",
-    "latest_user_direction": "2026-11-19 user explicitly selects KEEP_LATEST on conflict for retirement timing: once evidence-based Rust-native NORMAL migration import design is approved/recorded with function-to-engine assignments, typed contracts, and supported caller routing, immediately delete 22 old src/ptsip/profiles files; no need to wait for execution implementation or passing normal migration import, fixture/User_Profile targets, full distribution. Those obligations persist as post-deletion tests/decisions. Do not delete now because native import design is pending; do not modify developer private .ptsip or other plans."
+    "latest_user_direction": "2026-11-19 user explicitly selects KEEP_LATEST on conflict for retirement timing: once evidence-based Rust-native NORMAL migration import design is approved/recorded with function-to-engine assignments, typed contracts, and supported caller routing, immediately delete 22 old src/ptsip/profiles files; no need to wait for execution implementation or passing normal migration import, fixture/User_Profile targets, full distribution. Those obligations persist as post-deletion tests/decisions. Do not delete now because native import design is pending; do not modify developer private .ptsip or other plans.",
+    "user_pp300_direction_2026_11_19": {
+      "state": "PLANNING_ONLY_RECORDED",
+      "summary": "User rejected previous pp2 inline/User_Profile raw-content simulation; new official pp3 contract must preserve actual semantic roles/hierarchy without inherited Python field shapes; component-local dependency required; user customization lineage must support trace-safe revision compaction.",
+      "execution_authorized": false,
+      "change_scoped_to": [
+        "project_profile_pp300_contract_redesign",
+        "WU-10.pp300_followup",
+        "WU-13.pp300_contract_first_followup",
+        "target_schemas[current]",
+        "profile_history_migration.pp300_current_override"
+      ]
+    }
   },
   "release_038_field_review": {
     "contract": "ptsip-release-038-field-decisions/v1",
@@ -10606,5 +10689,302 @@
       "excluded_callers_mutation": "NONE_BYTE_PRESERVED",
       "legacy_python_package_discovery": "RETAINED_UNTIL_SUPPORTED_CONSUMER_CLOSURE"
     }
+  },
+  "project_profile_pp300_contract_redesign": {
+    "schema_version": "ptsip-project-profile-pp300-contract-first-plan/v1",
+    "state": "DRAFT_POLICY_DETAILS_AND_USER_AUDIT_PENDING_NO_IMPLEMENTATION",
+    "user_direction_date": "2026-11-19",
+    "work_unit_owner": "WU-10",
+    "authority": "USER_DIRECTED_PLAN_ONLY;POLICY_OVERRIDES_NOT_GRANTED_BY_PLAN",
+    "execution_authorized": false,
+    "priority_scope": "FOR_NEW_PP300_CURRENT_PROFILE_DESIGN_ONLY",
+    "prior_work_scope": "PP101_PP102_PP200_HISTORY_AND_COMPLETED_NATIVE_PROFILE_TESTS_REMAIN_HISTORICAL_EVIDENCE",
+    "supersedes_prior_current_pp200_selector_for_future_pp300_work": true,
+    "scope": {
+      "allowed_future_implementation_targets": [
+        "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/specdata/project-profile-contracts.yaml",
+        "src/ptsip/engines/**/src/profile.rs",
+        "src/ptsip/engines/**/src/schemas/**",
+        "src/tests/ptsip/**",
+        "src/ptsip/**/supported_consumer_paths_after_owner_analysis"
+      ],
+      "disallowed_plan_or_implementation_mutations": [
+        ".ptsip/**",
+        "developer/**",
+        "src/policy/**"
+      ],
+      "no_new_python_compatibility_modules": true,
+      "no_src_legacy_profile_module_dependency": true,
+      "no_unsanctioned_rust_engine_registration": true
+    },
+    "baseline": {
+      "plan_base_blob_sha": "d2e70c73677b02478cdf3a7e95a815c74159b8b8",
+      "current_schema": {
+        "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "$id": "urn:ptsip:contract:project-profile:current",
+        "state": "PP200_REMOTE_REF_WRAPPER_NOT_PP300"
+      },
+      "immutable_pp200_history": {
+        "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "$id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json",
+        "git_blob_sha": "14d47e469e5f12ae65d721f64b17bdc35de861d8"
+      },
+      "current_registry": "src/ptsip/schemas/config.json",
+      "declared_version_source": {
+        "path": "src/VERSION",
+        "profile_version": "pp.3.00"
+      },
+      "user_profile_legacy": {
+        "path": "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json",
+        "json_syntax": "INVALID",
+        "role": "READ_ONLY_LEGACY_EVIDENCE_NOT_SCHEMA_GENERATION_AUTHORITY"
+      }
+    },
+    "official_pp300": {
+      "output_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "official_version": "pp.3.00",
+      "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+      "exact_root_identity": {
+        "$id": "urn:ptsip:storage:contract:profile:official",
+        "title": "PTSIP official Current Project Profile"
+      },
+      "supersedes_selector_id": "urn:ptsip:contract:project-profile:current",
+      "design_source": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "history_contract_policy": "READ_PP200_AS_SEMANTIC_AND_HIERARCHICAL_BASELINE;DO_NOT_COPY_INVALIDATED_SCHEMA_SHAPE_BLINDLY",
+      "field_role_and_hierarchy": "PRESERVE_ACTUAL_SEMANTIC_RESPONSIBILITY_AND_HIERARCHY;EXACT_LEGACY_FIELD_NAMES_NOT_MANDATORY",
+      "required_semantic_mapping": [
+        "VERSION_IDENTITY",
+        "USER_CONTRACT_REVISION",
+        "SPECIFICATION_BINDING",
+        "COMPONENT_DECLARATION_AND_OWNERSHIP",
+        "COMPONENT_LOCAL_DEPENDENCY",
+        "ASSOCIATED_ARTIFACTS",
+        "RELATIONSHIPS",
+        "POLICY_CONSTRAINTS"
+      ],
+      "deprecated_annotation_rule": "REMOVE_ALL_$comment_KEYWORDS_FROM_NEW_PP300_SCHEMA;DO_NOT_ENCODE_LIFECYCLE_STATUS_IN_$comment",
+      "no_legacy_ref_root": "DO_NOT_REPLACE_PP300_WITH_EXTERNAL_PP200_$ref_OR_MERGE_INVALID_USER_PROFILE_AS_ACTIVE_SCHEMA",
+      "mode_policy": {
+        "currently_supported_profile_modes": 1,
+        "mode_name": "DEFAULT",
+        "example_and_template_not_independent_modes": true,
+        "legacy_explicit_hybrid_template_enum": "NOT_AUTOMATICALLY_ADMITTED_AS_THREE_PP300_MODES"
+      },
+      "components_dependency_merge": {
+        "top_level_components": "PRESERVE_COMPONENT_COLLECTION_SEMANTIC_ROLE",
+        "old_standalone_dependency_policy": "component_dependency_policy",
+        "new_responsibility": "DEPENDENCY_DECLARATION_LOCAL_TO_COMPONENT",
+        "prohibit_unreviewed_parallel_top_level_policy": true,
+        "component_definition": "$defs.component",
+        "required_fields_exact": [
+          "id",
+          "classification",
+          "include",
+          "purpose",
+          "dependency"
+        ],
+        "dependency_field_exact": "dependency",
+        "dependency_field_type": "UNRESOLVED",
+        "legacy_default_allow_deny_and_from_to_reconciliation": "UNRESOLVED_NEEDS_SEMANTIC_REVIEW_WITHOUT_INVENTING_FIELDS",
+        "source_evidence": {
+          "legacy_component_required": [
+            "id",
+            "classification",
+            "include",
+            "purpose"
+          ],
+          "legacy_dependency_policy_required": [
+            "default"
+          ],
+          "legacy_default_domain": [
+            "allow",
+            "deny"
+          ],
+          "legacy_relation_required": [
+            "from",
+            "to"
+          ]
+        }
+      },
+      "preserve_history_files": [
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+      ],
+      "registry_rule": "ACTIVATE_PP300_AFTER_SCHEMA_APPROVAL_AND_VALIDATION;MAINTAIN_EXPLICIT_PP200_HISTORICAL_SELECTOR;UPDATE_ACTIVE_ALIAS_AND_EXACT_HASH_PINS_IN_SAME_AUTHORIZED_TRANSITION"
+    },
+    "contract_first_native_module_rule": {
+      "architectural_precedence": "APPROVED_PP300_CONTRACT_THEN_NEW_RUST_ENGINE_OPERATION_AND_MODULE_DESIGN",
+      "excluded_legacy_python_sources": [
+        "src/ptsip/profiles/catalog.py",
+        "src/ptsip/profiles/compatibility.py",
+        "src/ptsip/profiles/contracts.py",
+        "src/ptsip/profiles/example.ptsip.yaml",
+        "src/ptsip/profiles/hybrid-python-package.ptsip.yaml",
+        "src/ptsip/profiles/identity.py",
+        "src/ptsip/profiles/metadata.py",
+        "src/ptsip/profiles/rule_records.py"
+      ],
+      "legacy_source_role": "DO_NOT_BASE_PP300_FIELD_DESIGN_OR_NEW_NATIVE_MODULE_API_ON_THESE_PYTHON_TOOLS_OR_EXAMPLES",
+      "implementation_decision": "SELECT_NATIVE_ENGINE_OWNERS_BY_APPROVED_FIELD_SEMANTICS_AND_REGISTERED_ENGINE_RESPONSIBILITY_ANALYSIS",
+      "test_independently": "DO_NOT_CLAIM_PP300_CONFORMANCE_FROM_PP200_OR_LEGACY_PYTHON_COMPATIBILITY_TESTS",
+      "separate_systems": "RBAC_PP300_OUTPUT_CONTRACT_VERSION_IS_NOT_BY_ITSELF_PROJECT_PROFILE_CURRENT_SCHEMA_ACTIVATION"
+    },
+    "user_profile_extension": {
+      "intended_role": "OFFICIAL_PROFILE_TO_USER_EXTENDED_OR_MODIFIED_FIELD_CONTRACT_RELATIONSHIP_AND_CHANGE_TRACEABILITY",
+      "not": "NOT_AN_ALTERNATE_PROFILE_MODE;NOT_THE_FIELD_SCHEMA_SOURCE_FOR_OFFICIAL_PP300",
+      "user_contract_location": "USER_OWNED_REPOSITORY;EXACT_CONTRACT_REGISTRATION_TARGET_AND_STORAGE_PLANE_PENDING",
+      "official_contract_immutable_for_user_changes": true,
+      "derive_and_link": "REFERENCE_ADMITTED_OFFICIAL_PP_VERSION_AND_FIELD_SEMANTICS_AND_TRACK_USER_CONTRACT_DIFFERENCES_WITHOUT_CHANGING_OFFICIAL_SCHEMA",
+      "versioning": {
+        "version": "OFFICIAL_PROFILE_CONTRACT_VERSION_REMAINS_WHILE_USER_CHANGES_FIELDS",
+        "revision": "USER_FIELD_CONTRACT_LINEAGE_REVISION",
+        "format": "Rev.####",
+        "official_base_revision": "Rev.0001",
+        "first_customized_revision": "Rev.0002",
+        "subsequent_changes": "MONOTONIC_INCREMENT_PER_ACCEPTED_CONTRACT_REVISION_UNTIL_COMPRESSION",
+        "user_upgrade_rule": "OFFICIAL_PROFILE_VERSION_UPGRADE_DOES_NOT_RESET_A_CUSTOM_CONTRACT_TO_REV_0001",
+        "upgrade_example": {
+          "from": {
+            "version": "pp.2.00",
+            "revision": "Rev.0100"
+          },
+          "to": {
+            "version": "pp.3.00",
+            "revision": "Rev.0002"
+          },
+          "required": "PRESERVE_SOURCE_VERSION_AND_REVISION_LINEAGE_LINK"
+        },
+        "revision_limit": "Rev.9999",
+        "on_exhaustion": "COMPRESS_HISTORY_NOT_CHANGE_PROFILE_VERSION",
+        "compression_invariants": [
+          "LOSSLESS_TRACKABILITY_OF_SEMANTIC_FIELD_RENAMES_AND_NESTED_CHANGE_DEPENDENCIES",
+          "PRESERVE_REQUIRED_ANCESTRY_AND_CAUSAL_ORDER",
+          "FIELD_ADDITIONS_AND_NESTED_ADDITIONS_MAY_BE_COMPRESSED",
+          "DO_NOT_REWRITE_OFFICIAL_PROFILE_VERSION_DUE_TO_REVISION_LIMIT",
+          "NO_REUSE_COLLISION_OF_COMPRESSED_REVISION_IDENTITIES_WITH_HISTORICAL_REFERENCES"
+        ],
+        "illustrative_minimums": [
+          {
+            "case": "ADDITION_ONLY_FULL_HISTORY_CAN_COLLAPSE",
+            "before": "Rev.9999",
+            "after_example": "Rev.0002",
+            "qualification": "ONLY_IF_PROVABLY_TRACEABLE_WITHOUT_REQUIRED_INTERMEDIATE_RENAME_STATES"
+          },
+          {
+            "case": "MAX_SINGLE_FIELD_TEN_RENAMES",
+            "before": "Rev.9999",
+            "min_after": "Rev.0011",
+            "qualification": "TRACK_ALL_TEN_RENAME_EDGES_AND_THE_BASE_STATE"
+          },
+          {
+            "case": "FIELD_RENAME_AND_NESTED_FIELD_CHANGE",
+            "before": "Rev.9999",
+            "min_after": "Rev.0004",
+            "qualification": "RETAIN_AT_LEAST_THREE_REQUIRED_CHANGE_STAGES_AND_BASE_STATE"
+          }
+        ],
+        "compression_policy": "MINIMIZE_RETAINED_REVISIONS_SUBJECT_TO_TRACEABILITY;NO_FIXED_ALGORITHM_AUTHORIZED",
+        "distinguish_data_edits_from_field_contract_edits": "UNRESOLVED"
+      }
+    },
+    "work_unit_sessions": {
+      "PP3-01": {
+        "role": "OFFICIAL_PP300_FIELD_RESPONSIBILITY_REVIEW",
+        "plan": "COMPARE_PP200_HISTORY_ACTUAL_FIELD_ROLES;PROPOSE_PP300_HIERARCHY_WITH_REQUIRED_LOCAL_DEPENDENCY;NO_LEGACY_PYTHON_SCHEMA_INFERENCE",
+        "result": "APPROVED_FIELD_MAP_AND_PP300_SCHEMA_DESIGN",
+        "state": "PENDING_POLICY_AUDIT"
+      },
+      "PP3-02": {
+        "role": "USER_CUSTOM_CONTRACT_LINEAGE_AND_REVISION",
+        "plan": "DEFINE_OFFICIAL_TO_USER_CONTRACT_DIFFERENCE_AND_REVISION_TRACKING_WITH_ROUNDTRIP_AND_TRACEABILITY;HANDLE_OVERFLOW_COMPRESSION",
+        "result": "APPROVED_USER_PROFILE_RELATION_REVISION_CONTRACT",
+        "state": "PENDING_POLICY_AUDIT"
+      },
+      "PP3-03": {
+        "role": "NATIVE_CONTRACT_DERIVED_MODULE_ALLOCATION",
+        "plan": "ASSIGN_REGISTERED_RUST_ENGINE_OWNERS_FROM_APPROVED_PP300_FIELD_CONTRACT;NO_PYTHON_PARITY_AS_SCHEMA_AUTHORITY",
+        "result": "FUNCTION_MODULE_CONTRACT_AND_ENGINE_OWNER_MATRIX",
+        "state": "BLOCKED_BY_PP3_01_PP3_02"
+      },
+      "PP3-04": {
+        "role": "SCHEMA_AND_RUNTIME_CONSUMER_MIGRATION_AND_ACCEPTANCE",
+        "plan": "AFTER_APPROVAL_CREATE_SCHEMA_UPDATE_HASHED_REGISTRY_CONSUMERS_AND_FOCUSED_NATIVE_TESTS;CHECK_HISTORY_PP200_UNCHANGED",
+        "result": "PP300_SCHEMA_AND_NATIVE_CONSUMER_CONFORMANCE",
+        "state": "BLOCKED_IMPLEMENTATION_NOT_AUTHORIZED"
+      }
+    },
+    "unresolved_policy_decisions": [
+      {
+        "id": "PP3-DEP-SEMANTICS",
+        "topic": "COMPONENT_LOCAL_DEPENDENCY_MODEL",
+        "purpose": "DEFINE_NEW_DEPENDENCY_PAYLOAD_AND_LEGACY_DEFAULT_ALLOW_DENY_RELATIONSHIP_SEMANTICS",
+        "responsibility_owner": "USER_CONTRACT_AUTHORITY",
+        "status": "UNRESOLVED",
+        "prohibit": "INFER_DEPENDENCY_OBJECT_FIELDS_FROM_PYTHON_OR_DEPRECATED_TOP_LEVEL_NAMES"
+      },
+      {
+        "id": "PP3-REV-TRACE",
+        "topic": "REVISION_LINEAGE_AND_COMPRESSION_PROOF",
+        "purpose": "DEFINE_MACHINE_TRACEABLE_FIELD_RENAME_AND_NESTED_CHANGE_IDENTITY_HISTORY_AND_MINIMAL_COMPACTION_PROOF",
+        "responsibility_owner": "USER_CONTRACT_AUTHORITY",
+        "status": "UNRESOLVED",
+        "prohibit": "AUTO_CHOOSE_DIFF_ALGORITHM_EVENT_FORMAT_STORAGE_LOCATION_OR_REVISION_KEY_REUSE"
+      },
+      {
+        "id": "PP3-EXT-LINK",
+        "topic": "USER_CONTRACT_EXTENDS_OFFICIAL_RELATION",
+        "purpose": "DEFINE_CUSTOM_SCHEMA_REGISTRATION_LOCATION_AND_OFFICIAL_PP3_BASE_BINDING_WITH_EXACT_VERSION_REVISION_LINEAGE",
+        "responsibility_owner": "USER_CONTRACT_AUTHORITY",
+        "status": "UNRESOLVED",
+        "prohibit": "GENERATE_A_NEW_User_Profile_SCHEMA_OR_EMBED_INVALID_LEGACY_USER_PROFILE_AS_FIELD_CONTRACT"
+      },
+      {
+        "id": "PP3-VERSION-GATE",
+        "topic": "PP300_CURRENT_ACTIVATION_AND_RBAC_SEPARATION",
+        "purpose": "CHECK_PRODUCT_POLICY_AUTHORITY_AND_INVENTORY_BEFORE_SWITCHING_ACTIVE_PP2_SELECTOR_TO_PP3",
+        "responsibility_owner": "PRODUCT_POLICY_AND_SCHEMA_REGISTRY",
+        "status": "REVIEW_REQUIRED",
+        "prohibit": "SILENT_ACTIVATION_FROM_src/VERSION_OR_RBAC_PP3_LABEL"
+      }
+    ],
+    "approval_and_execution_gates": {
+      "plan_recording": "USER_EXPLICIT_REQUEST_TO_RECORD_PLAN",
+      "policy_closure": "PENDING_REVIEW_OF_UNRESOLVED_SEMANTIC_DECISIONS",
+      "contract_field_schema_approval": "REQUIRED_IN_ANOTHER_SESSION",
+      "implementation": "NOT_AUTHORIZED_IN_THIS_SESSION",
+      "do_not_write_until_approved": [
+        "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/engines/**",
+        "src/ptsip/profiles/**",
+        "src/tests/ptsip/**",
+        ".ptsip/**"
+      ],
+      "verification_requirements": [
+        "PP300_SCHEMA_JSON_DRAFT202012_COMPILES_WITH_EXACT_APPROVED_ID_AND_TITLE_NO_COMMENT",
+        "LEGACY_PP200_HISTORY_SCHEMA_SAME_BLOB_AND_SEMANTICS",
+        "COMPONENT_REQUIRED_INCLUDES_dependency_AND_NO_UNRESOLVED_PARALLEL_TOP_LEVEL_POLICY",
+        "ALL_PP300_SCHEMA_REFS_RESOLVE_OFFLINE_WITHOUT_REMOTE_MASTER_BRANCH_REF",
+        "USER_REV_0001_RESERVED_OFFICIAL_BASE_AND_FIRST_CUSTOM_REV_0002",
+        "UPGRADE_PP200_REV_0100_TO_PP300_USER_REV_0002_RETAINS_PROVENANCE",
+        "REV9999_ADDITION_ONLY_COMPRESSION_ALLOWED_IF_LINEAGE_SAFE",
+        "TEN_FIELD_RENAME_EVENTS_REQUIRE_AT_LEAST_REV0011_RETAINED_STATES",
+        "RENAME_PLUS_NESTED_FIELD_CHANGE_REQUIRE_AT_LEAST_REV0004_RETAINED_STATES",
+        "REGISTERED_NATIVE_ENGINE_MODULES_CONFORM_TO_APPROVED_SCHEMA_WITHOUT_LEGACY_PYTHON_IMPORTS",
+        "PP200_HISTORY_AND_RBAC_PP300_INDEPENDENT_CAPABILITIES_NOT_CONFLATED",
+        "NEGATIVE_MISSING_CONTRACT_INVALID_LINEAGE_AND_VERSION_COLLISION_TESTS"
+      ]
+    },
+    "implementation_order": [
+      "RESOLVE_OPEN_SEMANTIC_POLICIES",
+      "APPROVE_PP300_CONTRACT_FIELD_MAP",
+      "APPROVE_USER_EXTENSION_REVISION_RELATION",
+      "DERIVE_RUST_NATIVE_MODULES_FROM_APPROVED_CONTRACT",
+      "IMPLEMENT_AND_VALIDATE_PP300_SCHEMA",
+      "REGISTER_ACTIVE_SELECTOR_AND_NATIVE_CONSUMERS_AFTER_EXACT_TESTS"
+    ]
   }
 }
