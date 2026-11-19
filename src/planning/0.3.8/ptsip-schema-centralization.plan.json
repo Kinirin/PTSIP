@@ -322,8 +322,8 @@
     {
       "id": "RETIRE-PROFILES-01",
       "scope": "src/ptsip/profiles/",
-      "state": "FULL_TREE_RETIREMENT_APPROVED_CONDITIONAL_IMPLEMENTATION",
-      "note": "22 tracked files including six Python sources; all six Rust engine responsibility allocations pending future-session analysis. Conditional removal only after selected replacements and consumer closure."
+      "state": "USER_APPROVED_DESIGN_TRIGGERED_IMMEDIATE_REMOVAL_PENDING_NATIVE_IMPORT_DESIGN",
+      "note": "KEEP_LATEST: Immediately delete all 22 src/ptsip/profiles tracked files after Rust-native NORMAL migration import responsibility/engine routing/typed contract design is approved and recorded. Do not require implementation or normal import PASS, fixtures, User_Profile target or formal wheel PASS before this specific deletion; all remain post-deletion obligations. No actual deletion authorized until design trigger is satisfied."
     },
     {
       "id": "PROFILE-PP100-01",
@@ -375,8 +375,8 @@
     {
       "id": "PROFILE-RUST-SIX-MODULE-RETIRE-01",
       "scope": "src/ptsip/profiles/",
-      "state": "CONDITIONAL_ALL_SIX_SELECTED_RUST_REPLACEMENTS_VERIFIED",
-      "note": "Retire 22 files only after all six Python module responsibilities and consumer paths pass tests in selected Rust engine(s)."
+      "state": "USER_APPROVED_DESIGN_TRIGGERED_IMMEDIATE_REMOVAL_PENDING_NATIVE_IMPORT_DESIGN",
+      "note": "KEEP_LATEST: Immediately delete all 22 src/ptsip/profiles tracked files after Rust-native NORMAL migration import responsibility/engine routing/typed contract design is approved and recorded. Do not require implementation or normal import PASS, fixtures, User_Profile target or formal wheel PASS before this specific deletion; all remain post-deletion obligations. No actual deletion authorized until design trigger is satisfied."
     },
     {
       "id": "PROFILE-RUST-ENGINE-PACKAGING-01",
@@ -2547,7 +2547,7 @@
         "PTSIP View derived accountability cache uses policy document RA_id references; RA List stores no policy usage reverse field",
         "Before claiming supported consumer import closure, analyze removed ptsip.repository module/function dependencies and select native Rust engine ownership based on actual function and registered engine responsibilities (Validation/Storage/Discovery/Projection are candidates, not assigned); rewire supported migration consumer imports without Python repository compatibility shims; test normal supported import."
       ],
-      "gate": "Native adapter and Profile asset proof PASS; full supported imports and formal distribution closure remain separate required gates. Missing ptsip.repository normal-import closure requires analysis-derived existing Rust engine responsibility split and native consumer rewiring, not Python compatibility recreation.",
+      "gate": "Native adapter and Profile asset proof PASS; full supported imports and formal distribution closure remain separate required gates. Missing ptsip.repository normal-import closure requires analysis-derived existing Rust engine responsibility split and native consumer rewiring, not Python compatibility recreation. Any normal import PASS requirement is post-deletion acceptance for the 22-file subtree once the Rust-native design is recorded.",
       "execution_status": "NATIVE_SUPPORTED_ADAPTERS_AND_PROFILE_ASSETS_VERIFIED_FULL_CONSUMER_DISTRIBUTION_CLOSURE_BLOCKED",
       "current_result": "Three supported native adapter function paths and bounded Profile asset staging pass. Normal migration imports remain blocked by intentionally retired ptsip.repository; remaining functionality must be assigned by actual existing Rust-engine responsibility analysis and native consumer rewiring (not Python compatibility restoration). Actual exact clean implementation commit wheel build failed at the private release backend engine inventory check.",
       "remaining_blockers": [
@@ -2564,7 +2564,11 @@
             "PROJECTION"
           ],
           "no_python_repository_compatibility": true,
-          "approval_gate": "FUNCTION_TO_ENGINE_AND_CALLER_TO_NATIVE_CONTRACT_MAPPING_RECORDED_BEFORE_IMPLEMENTATION"
+          "approval_gate": "RECORD_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_IMMEDIATE_DELETE_22;IMPLEMENT_VERIFY_IMPORT_POST_DELETE",
+          "block_deletion_before_native_design": true,
+          "block_deletion_after_native_design": false,
+          "import_pass_needed_before_deletion": false,
+          "import_pass_needed_for_post_deletion_acceptance": true
         }
       ]
     },
@@ -2771,7 +2775,7 @@
         "Update supported build distributions without creating an independent Profile Go module/binary, then replace and retire obsolete Python validators after new behavior passes.",
         "Treat removed ptsip.repository as an intentionally retired Python implementation, not a module to restore. For remaining supported migration imports, perform actual function/caller-to-Rust-engine capability analysis, record justified engine ownership and typed route(s), implement missing native responsibilities only after analysis and run normal import/integration regression; do not expand excluded Python caller modification scope."
       ],
-      "gate": "Selected Rust replacements and bounded background protocol PASS. Full normal supported consumer imports and clean-source distribution acceptance remain required before whole-tree retirement. Separate existing Rust-engine owner analysis and native caller routing for removed repository functions remain BLOCKED until normal supported migration imports pass.",
+      "gate": "Selected Rust replacements and bounded background protocol PASS. Full normal supported consumer imports and clean-source distribution acceptance remain required before whole-tree retirement. Separate existing Rust-engine owner analysis and native caller routing for removed repository functions remain BLOCKED until normal supported migration imports pass. For the 22-file subtree only, runtime consumer import PASS is post-deletion acceptance after design-triggered immediate deletion.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "SIX_NATIVE_REPLACEMENT_RESPONSIBILITIES_VERIFIED_GLOBAL_CONSUMER_AND_DISTRIBUTION_ACCEPTANCE_PARTIAL",
       "current_result": "All six supported responsibilities pass native engine/Go-router tests, including linked records, independent Validation handoff and bounded background sessions. Full normal migration import closure and formal clean-source package acceptance remain blocked; the exact clean wheel build failed at the existing private backend inventory check. The removed Python ptsip.repository import chain requires separate existing Rust-engine responsibility analysis and supported native call-site rewiring; the current passing native Profile tests do not prove this import closure.",
@@ -2789,7 +2793,11 @@
             "PROJECTION"
           ],
           "no_python_repository_compatibility": true,
-          "approval_gate": "FUNCTION_TO_ENGINE_AND_CALLER_TO_NATIVE_CONTRACT_MAPPING_RECORDED_BEFORE_IMPLEMENTATION"
+          "approval_gate": "RECORD_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_IMMEDIATE_DELETE_22;IMPLEMENT_VERIFY_IMPORT_POST_DELETE",
+          "block_deletion_before_native_design": true,
+          "block_deletion_after_native_design": false,
+          "import_pass_needed_before_deletion": false,
+          "import_pass_needed_for_post_deletion_acceptance": true
         }
       ]
     },
@@ -2831,22 +2839,18 @@
         "Existing CLI, migration, historical profile version and registry behavior validated without old directory"
       ],
       "exact_steps": [
-        "Check 22/22 active tree source paths are covered by approved replacement responsibility and removal scope; do not retain deleted original contract or validator content as an archive.",
-        "Verify all six Profile modules' Rust replacements and any required native handoffs using Rust engine owner(s) selected by the future agent's recorded analysis; do not preselect Storage or limit scope to rule_records.py.",
-        "Verify 12 YAML instances transferred into JSON fixture evidence in src/tests/ptsip/ (not schema files), two schemas into canonical resources, sample catalog replaced/retired and package marker unused",
-        "Replace setup.py, MANIFEST.in, pyproject.toml, registry and release tests that require original profile root before deleting",
-        "Build clean wheel and source distribution without old profiles dir; resolve source snapshots via Git sha and accepted normalized fixture testdata",
-        "Delete all 22 files and their now-empty directories as one explicitly scoped retirement step, never deleting user-owned .ptsip/profiles",
-        "Verify git ls-files src/ptsip/profiles has zero output; grep imports ptsip.profiles and old path references with release acceptance exceptions only after explicit review",
-        "Verify all six Profile modules' Rust replacements and any required native handoffs using Rust engine owner(s) selected by the future agent's recorded analysis; do not preselect Storage or limit scope to rule_records.py.",
-        "Keep only current-version replacement verification; after successful replacement proof split old validation out of active verification and delete deprecated tests/validators rather than keep compatibility gates.",
-        "Verify all six Profile modules' Rust replacements and any required native handoffs using Rust engine owner(s) selected by the future agent's recorded analysis; do not preselect Storage or limit scope to rule_records.py.",
-        "Keep the 22 original Profile files until normal supported migration package imports work through verified Rust engine replacements of used repository functions. The old Python ptsip.repository directory must not be recreated for compatibility, and unspecified Validation/Storage/Discovery/Projection candidate assignments are not approved."
+        "Record current active HEAD and immutable git blob SHA for all 22 src/ptsip/profiles tracked paths; do not preserve parallel legacy archive.",
+        "Verify Rust-native NORMAL migration import design includes actual removed Python repository functions, supported caller imports, evidence-derived existing Rust engine owner(s), native typed operation/contract implementation paths and routing.",
+        "On approved and recorded design trigger, immediately delete all 22 tracked src/ptsip/profiles files and now-empty directories; do not defer deletion for runtime implementation, import tests, 12 fixture exact paths, User_Profile target, or wheel/admission tests.",
+        "Preserve user-owned .ptsip/profiles; do not recreate src/ptsip/repository as a Python compatibility facade.",
+        "After deletion, complete selected Rust engine implementations and native supported caller routing, then run tests verifying normal migration imports.",
+        "After deletion, resolve fixture evidence from recorded immutable Git blobs, user-owned new target decisions, central Profile schemas, package manifests and obsolete validators; do not silently synthesize denied targets.",
+        "After deletion, verify no tracked paths under src/ptsip/profiles and execute supported consumer, history, native Rust, clean wheel/sdist, installed-smoke and available CI checks; record unresolved failures as defects rather than claiming release readiness."
       ],
-      "gate": "22/22 retired paths absent only after all six Python modules have evidence-based Rust engine owner assignments, completed and verified replacements, supported consumer closure, background runtime conformance and obsolete validator removal. Do not delete while removed Python repository functions remain unresolved in normal supported imports; distribute required functionality to evidence-selected existing Rust engines and verify supported imports.",
+      "gate": "User-approved KEEP_LATEST: once the normal migration import architecture is documented with actual function/caller-to-existing-Rust-engine ownership, native operation/contract paths and supported caller routing, remove all 22 files under src/ptsip/profiles/ immediately. This is a DESIGN trigger, NOT a runtime import PASS or package release gate. All previous verification obligations remain required after deletion. No deletion until the design is recorded.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
-      "execution_status": "BLOCKED_KEEP_ALL_22_SOURCE_FILES_PENDING_REMAINING_RETIREMENT_GATES",
-      "current_result": "All 22 legacy files remain. JSON fixture exact paths are not approved, User_Profile replacement target is unapproved, normal supported consumer imports remain blocked by intentionally retired ptsip.repository pending responsibility-based Rust engine replacement and caller rewiring, and the exact clean wheel build failed at the private release backend engine inventory check.",
+      "execution_status": "BLOCKED_PENDING_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_FOR_IMMEDIATE_22_FILE_DELETE",
+      "current_result": "22 legacy files are still present because the Rust-native normal migration import responsibility/function-to-engine/consumer routing design is not yet completed and recorded. User on 2026-11-19 approved KEEP_LATEST: delete all 22 immediately when design is recorded; do not wait for Rust runtime implementation, normal import PASS, fixture paths, User_Profile target or formal release tests. Those remain required post-deletion acceptance work.",
       "remaining_blockers": [
         {
           "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
@@ -2861,9 +2865,15 @@
             "PROJECTION"
           ],
           "no_python_repository_compatibility": true,
-          "approval_gate": "FUNCTION_TO_ENGINE_AND_CALLER_TO_NATIVE_CONTRACT_MAPPING_RECORDED_BEFORE_IMPLEMENTATION"
+          "approval_gate": "RECORD_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_IMMEDIATE_DELETE_22;IMPLEMENT_VERIFY_IMPORT_POST_DELETE",
+          "block_deletion_before_native_design": true,
+          "block_deletion_after_native_design": false,
+          "import_pass_needed_before_deletion": false,
+          "import_pass_needed_for_post_deletion_acceptance": true
         }
-      ]
+      ],
+      "delete_trigger_ref": "profile_directory_retirement.user_2026_11_19_retirement_gate_change",
+      "design_trigger_state": "PENDING_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORD"
     }
   ],
   "observed_breakages": [
@@ -3023,7 +3033,8 @@
       "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
       "The per-engine src/ptsip/engines/**/src/schemas/** rule applies independently to all registered engines, not just Storage.",
       "All six modules identity.py, contracts.py, compatibility.py, catalog.py, metadata.py, rule_records.py are equally unresolved regarding Rust owner engine(s); no module implementation starts before future-session analysis and recorded user-preauthorized decision.",
-      "Remaining normal ptsip.migration imports must be restored by function-level ownership analysis and implementations in existing registered Rust engine(s) with native typed routing for supported callers; do NOT recreate src/ptsip/repository for Python compatibility. Validation, Storage, Discovery and Projection are investigation candidates only until evidence-based allocations are recorded."
+      "Remaining normal ptsip.migration imports must be restored by function-level ownership analysis and implementations in existing registered Rust engine(s) with native typed routing for supported callers; do NOT recreate src/ptsip/repository for Python compatibility. Validation, Storage, Discovery and Projection are investigation candidates only until evidence-based allocations are recorded.",
+      "For src/ptsip/profiles 22-file retirement ONLY, user-approved design-triggered immediate deletion supersedes older pre-deletion fixture/User_Profile/native implementation/normal import/wheel test gates; verify these as post-deletion acceptance and do not claim release success before checks pass."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3276,7 +3287,14 @@
         "overall_ci_claim": "PARTIAL_PASS_WITH_EXACT_COMMIT_EVIDENCE;OVERALL_RELEASE_AND_POLICY_GUARD_NOT_PASS",
         "execution_authority": "CI_RESULTS_ARE_VERIFICATION_EVIDENCE;THE_SELF_CONTAINED_PLAN_REMAINS_THE_IMPLEMENTATION_AUTHORITY"
       }
-    }
+    },
+    "post_deletion_profile_requirements": [
+      "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_NATIVE_RUST_ENGINE_IMPLEMENTATION_VERIFIED",
+      "TWELVE_YAML_FIXTURE_REPLACEMENTS_OR_USER_APPROVED_ALTERNATE_EVIDENCE_DECIDED",
+      "USER_PROFILE_SCHEMA_FUTURE_OWNER_AND_TARGET_RESOLVED_OR_DELETED_SOURCE_DISPOSITION_RECORDED",
+      "FULL_CLEAN_WHEEL_SOURCE_DISTRIBUTION_AND_INSTALLED_SMOKE_PASS",
+      "SUPPORTED_CONSUMERS_AND_HISTORICAL_PROFILE_TESTS_PASS"
+    ]
   },
   "source_conflicts": [
     {
@@ -4000,7 +4018,7 @@
     "scope": "RETIRE_WHOLE_SRC_PTSIP_PROFILES_TREE_INCLUDING_SIX_PYTHON_MODULES_AND_YAML_DATA_AND_SCHEMAS",
     "source_boundary": "src/ptsip/profiles/",
     "use_discontinuation_authorized": true,
-    "deletion_gate": "ALL_SIX_PYTHON_MODULES_ANALYZED_AND_AUTOAPPROVED_RUST_OWNERS_RECORDED;ALL_SUPPORTED_RUST_REPLACEMENTS_AND_CONSUMER_TESTS_PASS;THEN_RETIRE_OBSOLETE_VALIDATORS_AND_PYTHON",
+    "deletion_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;DELETE_22_IMMEDIATELY_WITHOUT_WAITING_FOR_RUNTIME_IMPORT_FIXTURES_USER_PROFILE_OR_DISTRIBUTION",
     "replacement_code_paths": "EXACT_SELECTED_RUST_PATHS_RECORDED_IN_profile_rust_engine_assignment",
     "modules": [
       {
@@ -4016,7 +4034,7 @@
           "src/ptsip/migration/analysis/target/semantics.py",
           "src/ptsip/ptsip_specification/spec_identity.py"
         ],
-        "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
+        "action": "DELETE_LEGACY_PYTHON_SOURCE_IMMEDIATELY_AFTER_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORDED;RUST_NATIVE_COMPLETION_AND_VALIDATION_ARE_POST_DELETE_WORK",
         "replacement_engine": "VALIDATION",
         "replacement_language": "RUST",
         "replacement_engines": [
@@ -4034,7 +4052,7 @@
         ],
         "confirmed_callers": [],
         "note": "No external import found in targeted code searches; full AST/import/use scan still required",
-        "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
+        "action": "DELETE_LEGACY_PYTHON_SOURCE_IMMEDIATELY_AFTER_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORDED;RUST_NATIVE_COMPLETION_AND_VALIDATION_ARE_POST_DELETE_WORK",
         "retirement_reasons": [
           "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
           "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION"
@@ -4057,7 +4075,7 @@
         "confirmed_callers": [
           "src/ptsip/clarification/resolution/profile_projection.py"
         ],
-        "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
+        "action": "DELETE_LEGACY_PYTHON_SOURCE_IMMEDIATELY_AFTER_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORDED;RUST_NATIVE_COMPLETION_AND_VALIDATION_ARE_POST_DELETE_WORK",
         "replacement_engine": "PROJECTION",
         "replacement_language": "RUST",
         "replacement_engines": [
@@ -4076,7 +4094,7 @@
         "confirmed_callers": [
           "src/ptsip/profiles/identity.py"
         ],
-        "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
+        "action": "DELETE_LEGACY_PYTHON_SOURCE_IMMEDIATELY_AFTER_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORDED;RUST_NATIVE_COMPLETION_AND_VALIDATION_ARE_POST_DELETE_WORK",
         "replacement_engine": "DISCOVERY",
         "replacement_language": "RUST",
         "replacement_engines": [
@@ -4094,7 +4112,7 @@
         "confirmed_callers": [
           "src/ptsip/migration/execution/direct/promotion.py"
         ],
-        "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
+        "action": "DELETE_LEGACY_PYTHON_SOURCE_IMMEDIATELY_AFTER_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORDED;RUST_NATIVE_COMPLETION_AND_VALIDATION_ARE_POST_DELETE_WORK",
         "replacement_engine": "VALIDATION",
         "replacement_language": "RUST",
         "replacement_engines": [
@@ -4115,7 +4133,7 @@
           "src/ptsip/clarification/resolution/profile_projection.py",
           "src/ptsip/profiles/rule_records.py"
         ],
-        "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
+        "action": "DELETE_LEGACY_PYTHON_SOURCE_IMMEDIATELY_AFTER_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORDED;RUST_NATIVE_COMPLETION_AND_VALIDATION_ARE_POST_DELETE_WORK",
         "replacement_engine": "DISCOVERY",
         "replacement_language": "RUST",
         "replacement_engines": [
@@ -4131,16 +4149,13 @@
       "src/ptsip/ptsip_specification/spec_identity.py"
     ],
     "retirement_steps": [
-      "Freeze and hash every one of 22 src/ptsip/profiles/ tracked files, including 6 Python modules, 12 profile YAML examples, 2 schema files, 1 catalog and 1 __init__.py",
-      "Another session agent inventories and analyzes actual functions, caller dependencies and registered Rust engine responsibilities for ALL SIX Python Profile modules; records selected engine owner(s), paths and evidence for each and applies user preauthorization before implementation.",
-      "Migrate existing two schema definitions into central src/ptsip/schemas/ targets, verifying every contract field and provenance, before deletion",
-      "Analyze and retain YAML instances as JSON test fixtures and immutable source hashes; YAML data MUST NOT be renamed into JSON Schema",
-      "Implement and verify each of the six supported Profile responsibilities in the Rust engine(s) selected and recorded by the future session agent; preserve current/historical schema identity and source SHA; do not copy developer-private .ptsip contract semantics.",
-      "Switch approved supported consumers through existing src/ptsip/CLI.go as a router to selected Rust engine(s); do not modify excluded src/ptsip/cli.py or profile_projection.py.",
-      "Update setup.py, pyproject.toml, MANIFEST.in, profile registry paths, and impacted CLI and release tests",
-      "Run Rust crate tests for the actual selected engine(s), native contract and inter-engine handoff tests when needed, supported consumer integration, installed wheel smoke, distribution completeness and zero-legacy-path checks; excluded Python callers are not current acceptance gates.",
-      "Remove all 22 files under src/ptsip/profiles/ and empty directories only when each deletion gate is satisfied",
-      "Verify source Git tree has zero remaining paths with src/ptsip/profiles/ prefix, full tests pass, and no user-owned .ptsip/profile file is touched"
+      "Inventory all 22 tracked src/ptsip/profiles entries and record exact source git blob SHA/HEAD (already present as manifest evidence); no legacy archive.",
+      "Analyze missing ptsip.repository Python function/caller obligations versus current registered Rust engines and record actual function/owner/native typed contract/path/consumer routing and acceptance plan.",
+      "When the evidence-backed Rust-native NORMAL migration import design is approved and recorded, delete all 22 tracked src/ptsip/profiles files and now-empty directories immediately; do not wait for Rust implementation, import PASS, JSON fixture target, User_Profile target, or wheel PASS.",
+      "After deletion, implement approved missing Rust native responsibilities and rewire supported callers; preserve excluded Python caller boundaries.",
+      "After deletion, resolve historical fixture and User_Profile replacement semantics through their own decisions; recover immutable test evidence from recorded Git blobs if necessary without reintroducing retired runtime.",
+      "After deletion, run native Rust and supported consumer tests, clean wheel/source distribution/installed package acceptance and no-old-path checks; report remaining failures openly.",
+      "Do not delete user-owned .ptsip/profiles or modify developer-private .ptsip code through this product-scope plan."
     ],
     "acceptance": [
       "0 tracked files under src/ptsip/profiles/ after final removal (22/22 addressed individually)",
@@ -4150,7 +4165,7 @@
       "No supported Go CLI, packaging, release gate or admitted schema consumer depends on retired folder; two explicitly excluded unmodified Python caller imports may remain broken",
       "No user project .ptsip/profiles data is deleted",
       "Profile historical pp1.01 pp1.02 pp2.00 validation and exact identity transitions remain testable",
-      "rule_records.py is removed for BOTH private .ptsip contract import and Python-not-Rust engine reason; independent Rust module current contract and tests must pass before removal.",
+      "rule_records.py is removed for BOTH private .ptsip contract import and Python-not-Rust engine reason; independent Rust module current contract and tests must pass after immediate design-triggered removal.",
       "All six Python Profile module responsibilities tested in the future agent-selected Rust engine(s); profile capabilities meet the required managed always-on background availability without a standalone Go Profile module."
     ],
     "excluded_python_paths": [
@@ -4197,7 +4212,9 @@
       ],
       "owner_state": "ANALYZED_USER_PREAUTHORIZED",
       "assignment_ref": "profile_rust_engine_assignment.source_modules"
-    }
+    },
+    "post_deletion_acceptance_required": true,
+    "retirement_trigger_ref": "profile_directory_retirement.user_2026_11_19_retirement_gate_change"
   },
   "profile_variant_analysis": {
     "phase": "READ_ONLY_SOURCE_ANALYSIS_COMPLETE_IMPLEMENTATION_NOT_AUTHORIZED",
@@ -4473,8 +4490,10 @@
         "action": "DELETE_AFTER_ALL_IMPORTS_AND_PACKAGE_DISCOVERY_ARE_REWIRED",
         "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/catalog.py",
@@ -4484,13 +4503,15 @@
         "action": "AFTER_ALL_SIX_SOURCE_RESPONSIBILITY_ANALYSIS_MIGRATE_TO_SELECTED_RUST_ENGINE_AND_DELETE",
         "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "DISCOVERY",
         "replacement_engine_paths": [
           "src/ptsip/engines/discovery/src/profile.rs"
-        ]
+        ],
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/compatibility.py",
@@ -4500,13 +4521,15 @@
         "action": "AFTER_ALL_SIX_SOURCE_RESPONSIBILITY_ANALYSIS_MIGRATE_TO_SELECTED_RUST_ENGINE_AND_DELETE",
         "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "VALIDATION",
         "replacement_engine_paths": [
           "src/ptsip/engines/validation/src/profile.rs"
-        ]
+        ],
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/contracts.py",
@@ -4516,13 +4539,15 @@
         "action": "AFTER_ALL_SIX_SOURCE_RESPONSIBILITY_ANALYSIS_MIGRATE_TO_SELECTED_RUST_ENGINE_AND_DELETE",
         "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "DISCOVERY",
         "replacement_engine_paths": [
           "src/ptsip/engines/discovery/src/profile.rs"
-        ]
+        ],
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/example.ptsip.yaml",
@@ -4532,9 +4557,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/current-example.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.01/example.ptsip.yaml",
@@ -4544,9 +4571,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.1.01-example.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
@@ -4558,9 +4587,11 @@
         "secondary_refs": [
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json"
         ],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
@@ -4570,9 +4601,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.1.01-template-python-package.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.02/example.ptsip.yaml",
@@ -4582,9 +4615,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.1.02-example.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
@@ -4596,9 +4631,11 @@
         "secondary_refs": [
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
         ],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
@@ -4608,9 +4645,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.1.02-template-python-package.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.2.00/example.ptsip.yaml",
@@ -4620,9 +4659,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.2.00-example.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
@@ -4634,9 +4675,11 @@
         "secondary_refs": [
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
         ],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml",
@@ -4646,9 +4689,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.2.00-template-python-package.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/hybrid-python-package.ptsip.yaml",
@@ -4658,9 +4703,11 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/current-hybrid-python-package.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/identity.py",
@@ -4670,13 +4717,15 @@
         "action": "AFTER_ALL_SIX_SOURCE_RESPONSIBILITY_ANALYSIS_MIGRATE_TO_SELECTED_RUST_ENGINE_AND_DELETE",
         "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "VALIDATION",
         "replacement_engine_paths": [
           "src/ptsip/engines/validation/src/profile.rs"
-        ]
+        ],
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/index.yaml",
@@ -4688,8 +4737,10 @@
         "secondary_refs": [
           "src/ptsip/specdata/project-profile-contracts.yaml"
         ],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/metadata.py",
@@ -4699,13 +4750,15 @@
         "action": "AFTER_ALL_SIX_SOURCE_RESPONSIBILITY_ANALYSIS_MIGRATE_TO_SELECTED_RUST_ENGINE_AND_DELETE",
         "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "PROJECTION",
         "replacement_engine_paths": [
           "src/ptsip/engines/projection/src/profile.rs"
-        ]
+        ],
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
@@ -4715,8 +4768,10 @@
         "action": "MIGRATE_EXACT_SCHEMA_SEMANTICS_AND_REFS_THEN_DELETE",
         "proposed_replacement": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json",
@@ -4726,8 +4781,10 @@
         "action": "MIGRATE_EXACT_SCHEMA_SEMANTICS_AND_REFS_THEN_DELETE",
         "proposed_replacement": "src/ptsip/schemas/storage/profile/user-profile.schema.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED"
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
+        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/rule_records.py",
@@ -4737,7 +4794,7 @@
         "action": "AFTER_ALL_SIX_SOURCE_RESPONSIBILITY_ANALYSIS_MIGRATE_TO_SELECTED_RUST_ENGINE_AND_DELETE",
         "proposed_replacement": null,
         "secondary_refs": [],
-        "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "retirement_reasons": [
@@ -4748,7 +4805,9 @@
         "replacement_engine_paths": [
           "src/ptsip/engines/discovery/src/rule_records.rs",
           "src/ptsip/engines/validation/src/rule_records.rs"
-        ]
+        ],
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
       {
         "source_path": "src/ptsip/profiles/template-python-package.ptsip.yaml",
@@ -4758,25 +4817,20 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/current-template-python-package.json",
         "secondary_refs": [],
-        "delete_gate": "ZERO_CONSUMERS_AND_VERIFIED_PARITY",
+        "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED"
+        "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
+        "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
+        "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       }
     ],
     "proposed_fixture_root": "src/tests/ptsip/",
     "fixture_paths_approved": false,
     "all_removal_actions_prohibited_until": [
-      "SCHEMA_GENERATION_VALIDATED",
-      "ALL_PACKAGING_AND_RELEASE_GATES_REWIRED",
-      "NO_SUPPORTED_CONSUMER_REFS_EXCEPT_TWO_APPROVED_UNMODIFIED_PYTHON_PATHS",
-      "GOLDEN_FIXTURES_VERIFIED",
-      "WHEEL_SMOKE_PASS",
-      "ALL_SIX_PROFILE_MODULES_ENGINE_RESPONSIBILITY_ANALYSIS_AND_AUTO_APPROVED_ASSIGNMENTS_RECORDED",
-      "ALL_SELECTED_RUST_ENGINE_MODULES_NATIVE_CONTRACTS_AND_SUPPORTED_CONSUMERS_VERIFIED",
-      "SUPPORTED_MIGRATION_IMPORTS_PASS_WITHOUT_RECREATING_RETIRED_PYTHON_REPOSITORY"
+      "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN"
     ],
     "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths after ALL selected Discovery/Validation/Projection capabilities and distribution pass without legacy files. The two excluded Python callers are not current conformance gates.",
-    "warning": "Whole folder removal may leave the two explicitly excluded Python callers broken. All six Rust function allocations are analyzed and preauthorized; removal still requires complete supported consumer, fixture, schema and package gates. User-owned .ptsip/profiles is outside deletion.",
+    "warning": "User explicitly selected immediate deletion of 22 src/ptsip/profiles source files after the Rust-native normal migration import design is recorded. Existing unresolved fixtures, User_Profile target, normal imports, consumer verification and formal distribution are POST-DELETION acceptance work, not pre-deletion blockers for these 22 files. Risk: builds/imports may remain broken after deletion; immutable Git blob manifest permits source evidence without preserving active legacy implementations. Never delete adopting user project .ptsip/profiles.",
     "user_owned_profile_out_of_scope": ".ptsip/profiles/** in consuming repositories is not a deletion target",
     "explicit_go_root_vs_src_schema": "ALL_SIX_RUST_OWNER_PATHS_ANALYZED_USER_PREAUTHORIZED;NATIVE_ENGINE_SCHEMA_PATHS_SELECTED;NO_INDEPENDENT_GO_MODULE",
     "additional_source_health": {
@@ -4793,23 +4847,27 @@
       "note": "Complete removal of src/ptsip/profiles can leave these imports broken; do not count their remaining references as zero, do not falsely claim full Python compatibility"
     },
     "runtime_owner_status": "ALL_SIX_ANALYZED_SELECTED_DISCOVERY_VALIDATION_PROJECTION_NATIVE_REPLACEMENTS_VERIFIED",
-    "current_retirement_state": "BLOCKED_EXISTING_GATES_INCLUDE_NATIVE_REPOSITORY_FUNCTION_MIGRATION_IMPORT_CLOSURE",
+    "current_retirement_state": "BLOCKED_ONLY_UNTIL_NATIVE_MIGRATION_IMPORT_DESIGN_RECORDED_THEN_DELETE_22_IMMEDIATELY",
     "remaining_blockers": [
       {
         "id": "PROFILE_JSON_FIXTURE_PATHS",
         "evidence": "profile_directory_retirement.fixture_paths_approved=false",
-        "effect": "DO_NOT_CREATE_THE_TWELVE_PROPOSED_JSON_GOLDEN_FILES_OR_DELETE_SOURCE_YAML"
+        "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_PROFILE_JSON_FIXTURE_PATHS_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
+        "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
+        "status_after_user_change": "OPEN_POST_DELETION_WORK"
       },
       {
         "id": "USER_PROFILE_REPLACEMENT_TARGET",
         "evidence": "src/ptsip/schemas/storage/profile/user-profile.schema.json remains explicitly denied; old User_Profile schema has no approved replacement target",
-        "effect": "DO_NOT_CREATE_DENIED_TARGET_OR_DELETE_OLD_SCHEMA"
+        "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_USER_PROFILE_REPLACEMENT_TARGET_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
+        "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
+        "status_after_user_change": "OPEN_POST_DELETION_WORK"
       },
       {
         "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
         "evidence": "Normal supported ptsip.migration import chain still references removed src/ptsip/repository (snapshot, profile_path, profile_convergence, profile_transition), despite native adapters passing. The Python repository layer was intentionally removed for native Rust ownership, not accidentally lost.",
-        "effect": "KEEP_SUPPORTED_NORMAL_IMPORT_AND_RELATED_PROFILE_RETIREMENT_GATE_BLOCKED_UNTIL_FUNCTION_LEVEL_RUST_OWNER_ANALYSIS_AND_NATIVE_CONSUMER_REWIRING_AND_NORMAL_IMPORT_VERIFICATION;DO_NOT_RECREATE_PYTHON_REPOSITORY_FOR_COMPATIBILITY",
-        "resolution_status": "PENDING_EXISTING_RUST_ENGINE_RESPONSIBILITY_ANALYSIS_AND_SUPPORTED_CONSUMER_NATIVE_REWIRING",
+        "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_SUPPORTED_NORMAL_CONSUMER_IMPORT_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
+        "resolution_status": "PENDING_RUST_NATIVE_IMPORT_DESIGN_AS_DELETION_TRIGGER;IMPORT_PASS_POST_DELETION",
         "responsibility_policy": "REPLACE_REMOVED_PYTHON_REPOSITORY_RESPONSIBILITIES_WITH_EXISTING_REGISTERED_RUST_ENGINE_CAPABILITIES_BY_ACTUAL_RESPONSIBILITY;DO_NOT_RESTORE_LEGACY_PYTHON_COMPATIBILITY_LAYER",
         "candidate_native_engines": [
           "VALIDATION",
@@ -4865,14 +4923,63 @@
           "EVERY_SUPPORTED_MISSING_REPOSITORY_FUNCTION_HAS_EVIDENCE_BASED_EXISTING_RUST_ENGINE_OWNER_AND_TESTED_NATIVE_CONTRACT",
           "EVERY_SUPPORTED_OLD_IMPORT_CALLER_IS_REWIRED_OR_FORMALLY_EXCLUDED_UNDER_EXISTING_AUTHORITY",
           "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_RELEVANT_OPERATIONS_PASS_WITH_NO_PYTHON_REPOSITORY_REINTRODUCTION",
-          "PROFILE_DIRECTORY_RETIREMENT_RECHECKED_ONLY_AFTER_CONSUMER_IMPORT_CLOSURE"
-        ]
+          "PROFILE_DIRECTORY_RETIREMENT_RECHECKED_ONLY_AFTER_CONSUMER_IMPORT_CLOSURE",
+          "RUST_NATIVE_IMPORT_DESIGN_RECORDED_TRIGGERS_LEGACY_22_FILE_DELETION_BEFORE_NORMAL_IMPORT_PASS"
+        ],
+        "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
+        "status_after_user_change": "OPEN_POST_DELETION_WORK"
       },
       {
         "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
         "evidence": "Actual exact clean implementation commit wheel build failed at existing private release backend: incomplete or stale PTSIP engine inventory; full wheel/source distribution and installed package acceptance remain incomplete.",
-        "effect": "ASSET_STAGE_AND_NATIVE_RESULTS_DO_NOT_AUTHORIZE_WHOLE_PROFILE_TREE_RETIREMENT"
+        "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_FORMAL_DISTRIBUTION_ACCEPTANCE_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
+        "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
+        "status_after_user_change": "OPEN_POST_DELETION_WORK"
       }
+    ],
+    "user_2026_11_19_retirement_gate_change": {
+      "state": "USER_EXPLICIT_KEEP_LATEST_2026_11_19",
+      "applies_to": "src/ptsip/profiles/**",
+      "decision": "DELETE_ALL_22_LEGACY_FILES_IMMEDIATELY_AFTER_RUST_BASED_NORMAL_MIGRATION_IMPORT_DESIGN_IS_APPROVED_AND_RECORDED",
+      "trigger": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN",
+      "design_required_evidence": [
+        "ACTUAL_REMOVED_PYTHON_REPOSITORY_FUNCTIONS_AND_SUPPORTED_IMPORT_CALLERS_INVENTORIED",
+        "EACH_REQUIRED_FUNCTION_ASSIGNED_TO_EXISTING_REGISTERED_RUST_ENGINE_BY_EVIDENCE_NOT_NAME",
+        "NATIVE_IMPLEMENTATION_PATHS_TYPED_CONTRACTS_AND_ENGINE_OPERATION_HANDOFFS_RECORDED",
+        "SUPPORTED_NORMAL_MIGRATION_IMPORT_NATIVE_ROUTING_REPLACEMENT_DESIGN_RECORDED",
+        "DEPENDENCIES_AND_FOLLOWUP_VERIFICATION_TASKS_RECORDED"
+      ],
+      "assignments_status": "PENDING",
+      "on_trigger": "DELETE_22_TRACKED_FILES_IN_src/ptsip/profiles/AS_NEXT_WORK_UNIT_ACTION;DO_NOT_WAIT_FOR_RUNTIME_IMPLEMENTATION_IMPORT_PASS_FIXTURE_TARGET_OR_DISTRIBUTION_PASS",
+      "required_snapshot_before_deletion": "RECORD_EXACT_CURRENT_HEAD_AND_PER_FILE_GIT_BLOB_SHA_ALREADY_IN_MANIFEST;NO_ARCHIVE_COPY",
+      "after_deletion_acceptance": [
+        "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_NATIVE_RUST_ENGINE_IMPLEMENTATION_VERIFIED",
+        "TWELVE_YAML_FIXTURE_REPLACEMENTS_OR_USER_APPROVED_ALTERNATE_EVIDENCE_DECIDED",
+        "USER_PROFILE_SCHEMA_FUTURE_OWNER_AND_TARGET_RESOLVED_OR_DELETED_SOURCE_DISPOSITION_RECORDED",
+        "FULL_CLEAN_WHEEL_SOURCE_DISTRIBUTION_AND_INSTALLED_SMOKE_PASS",
+        "SUPPORTED_CONSUMERS_AND_HISTORICAL_PROFILE_TESTS_PASS"
+      ],
+      "post_deletion_failures": "REPORT_AS_OPEN_DEFECTS;DO_NOT_RESTORE_LEGACY_PROFILE_TREE_AUTOMATICALLY",
+      "no_python_repository_recreation": true,
+      "no_user_project_profile_deletion": true,
+      "cross_plan_and_developer_private_mutation": "FORBIDDEN",
+      "applicable_gate_priority": "THIS_SPECIFIC_USER_DECISION_OVERRIDES_PRIOR_WU14_PRE_DELETE_IMPLEMENTATION_FIXTURE_SCHEMA_CONSUMER_AND_RELEASE_GATES_ONLY_FOR_SRC_PTSIP_PROFILES_22_FILES",
+      "conflict_resolution": {
+        "alternatives": [
+          "KEEP_PRIOR",
+          "KEEP_LATEST",
+          "RECONCILE"
+        ],
+        "selected": "KEEP_LATEST",
+        "selection_source": "USER_EXPLICIT_2026_11_19"
+      }
+    },
+    "post_deletion_acceptance": [
+      "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_NATIVE_RUST_ENGINE_IMPLEMENTATION_VERIFIED",
+      "TWELVE_YAML_FIXTURE_REPLACEMENTS_OR_USER_APPROVED_ALTERNATE_EVIDENCE_DECIDED",
+      "USER_PROFILE_SCHEMA_FUTURE_OWNER_AND_TARGET_RESOLVED_OR_DELETED_SOURCE_DISPOSITION_RECORDED",
+      "FULL_CLEAN_WHEEL_SOURCE_DISTRIBUTION_AND_INSTALLED_SMOKE_PASS",
+      "SUPPORTED_CONSUMERS_AND_HISTORICAL_PROFILE_TESTS_PASS"
     ]
   },
   "policy_v4_rbac_focus": {
@@ -7632,7 +7739,7 @@
     "existing_release_plan_reference": "src/planning/0.3.8/contract-first-migration/index.json",
     "other_plan_approvals": "DO_NOT_INHERIT",
     "new_policy_file_writes": "NOT_AUTHORIZED_BY_THIS_PLAN",
-    "schema_creation_and_deletion": "CREATE_APPROVED_SCHEMA_TARGETS_WITH_DECIDED_CONTRACTS;DELETE_AFTER_VERIFIED_REPLACEMENT_AND_CONSUMER_CLOSURE",
+    "schema_creation_and_deletion": "CREATE_APPROVED_SCHEMA_TARGETS_WITH_DECIDED_CONTRACTS;DELETE_AFTER_VERIFIED_REPLACEMENT_AND_CONSUMER_CLOSURE;EXCEPTION_SRC_PTSIP_PROFILES_22_DELETE_IMMEDIATELY_AFTER_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_PER_USER_2026_11_19",
     "implementation_authorized": true,
     "release_publication_authorized": false,
     "user_project_profile_mutation": false,
@@ -7705,7 +7812,9 @@
       "src/ptsip/profiles/rule_records.py"
     ],
     "profile_rust_engine_ownership": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
-    "implementation_progress": "APPROVED_NATIVE_SCOPE_IMPLEMENTED_VERIFIED;ONLY_EXPLICIT_DECISION_OR_SOURCE_DISTRIBUTION_BLOCKERS_REMAIN"
+    "implementation_progress": "APPROVED_NATIVE_SCOPE_IMPLEMENTED_VERIFIED;ONLY_EXPLICIT_DECISION_OR_SOURCE_DISTRIBUTION_BLOCKERS_REMAIN",
+    "profile_tree_retirement_trigger": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_DELETE_22_IMMEDIATELY",
+    "profile_tree_post_delete_acceptance": "REMAINING_FIXTURE_USER_PROFILE_IMPORT_CONSUMER_AND_DISTRIBUTION_VALIDATION"
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -7716,7 +7825,7 @@
     "source_inventory_state": "LEGACY_SNAPSHOT_REQUIRES_RECHECK_BEFORE_IMPLEMENTATION",
     "last_user_direction": "2026-11-18: User approved six exact PVR09 operations split by Policy (identity, rules) and RBAC (ra, rac, aec, references), all validation.* owned by VALIDATION engine. This plan is intentionally standalone and must not reference or depend on an external policy file for PVR09. Prior PVR09 policy_ref, namespace_policy_ref, name_binding_authority, source_policy_boundaries removed. GO-CLI-OPERATION policy-decision gate resolved; registered typed I/O, manifest, binding and tests are PVR09 implementation obligations, not a new policy decision. No policy, engine implementation, developer .ptsip/, branch, or release write from this plan sync.",
     "previous_user_direction": "Explicitly approve RAC/AEC List file metadata at root only: F-RAC/F-AEC-H004(file_name),H002(file_id),H005(format_version),H006(file_title); H001 File_Identity and H003 file_kind excluded; list body remains pending.",
-    "latest_user_direction": "2026-11-18 user clarification: Deferred Rust engine responsibility analysis applies to ALL SIX Python modules identity.py, contracts.py, compatibility.py, catalog.py, metadata.py, rule_records.py. Previous five-Storage-plus-one-unassigned interpretation is REVOKED. Another session agent analyzes function/consumer/engine duties and records automatically approved owner/path decisions before implementing. This session must not analyze/assign engines. Native schema rule applies independently to every engine: src/ptsip/engines/**/src/schemas/**; Profile availability always-on and no standalone Go module remain."
+    "latest_user_direction": "2026-11-19 user explicitly selects KEEP_LATEST on conflict for retirement timing: once evidence-based Rust-native NORMAL migration import design is approved/recorded with function-to-engine assignments, typed contracts, and supported caller routing, immediately delete 22 old src/ptsip/profiles files; no need to wait for execution implementation or passing normal migration import, fixture/User_Profile targets, full distribution. Those obligations persist as post-deletion tests/decisions. Do not delete now because native import design is pending; do not modify developer private .ptsip or other plans."
   },
   "release_038_field_review": {
     "contract": "ptsip-release-038-field-decisions/v1",
@@ -9622,7 +9731,15 @@
     "retain_only_still_supported_historical_version_contracts": true,
     "current_verification_owner": "SELECTED_RUST_ENGINE_CRATES_NATIVE_ROUTING_AND_DISTRIBUTION_TESTS_AFTER_ANALYSIS",
     "runtime_replacement_owner": "RUST_ENGINE_OWNERS_SELECTED_AFTER_ALL_SIX_MODULE_ANALYSIS",
-    "no_go_profile_binary_dependency": true
+    "no_go_profile_binary_dependency": true,
+    "profile_tree_exception": {
+      "applies_to": "src/ptsip/profiles/**",
+      "user_decision": "KEEP_LATEST",
+      "trigger_ref": "profile_directory_retirement.user_2026_11_19_retirement_gate_change",
+      "scope_22_only": true,
+      "supersedes_generic_replacement_first_then_delete_for_this_subtree": true,
+      "preserve_generic_protocol_for_other_paths": true
+    }
   },
   "profile_rust_engine_assignment": {
     "state": "IMPLEMENTED_NATIVE_OPERATIONS_AND_BACKGROUND_VERIFIED_CONSUMER_DISTRIBUTION_CLOSURE_PARTIAL",
