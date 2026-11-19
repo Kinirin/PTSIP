@@ -1,0 +1,283 @@
+schema_version: "ptsip-developer-release-multisession-plan/v1"
+policy_class: "PTSIP_DEVELOPER_POLICY"
+plan_version: "0.3.8"
+integration_branch: "main"
+status: "ACTIVE"
+document_role: "SINGLE_PLAN_WITH_MULTIPLE_WORK_UNIT_SESSIONS"
+entry_index: "developer/planning/0.3.8/index.yaml"
+authority:
+  owner: "DEVELOPER_RELEASE_DISTRIBUTION"
+  allowed_plan_write:
+    - "developer/planning/0.3.8/**"
+  downstream_implementation_scope_requires_work_unit_authorization: true
+  developer_runtime_implementation_scope:
+    - ".ptsip/engine/developer/Distribution/**"
+  cross_domain_writes: "FORBIDDEN_UNLESS_EXPLICITLY_AUTHORIZED_BY_RELEVANT_DOMAIN"
+  forbidden_plan_mutation:
+    - "src/planning/**"
+    - "developer/policy/**"
+    - "src/policy/**"
+  external_reports: "READ_ONLY_FACT_EVIDENCE_NOT_WRITE_AUTHORITY"
+  no_cross_plan_file_references: true
+  implementation_authorization: "HOLD_NOT_AUTHORIZED"
+goals:
+  - "AUDIT_RELEASE_BACKEND_COMPATIBILITY_AND_NATIVE_ENGINE_INVENTORY"
+  - "PLAN_GO_RELEASE_CONTROLLER_AND_MULTI_CHANNEL_BUILD_VERIFICATION"
+  - "RETIRE_LEGACY_PYTHON_BUILD_BACKEND_ONLY_AFTER_VALID_PEP517_REPLACEMENT"
+  - "VERIFY_DENIED_USER_PROFILE_SCHEMA_TARGET_ABSENT_AND_REMOVE_AUTHORIZED_STALE_REFERENCES"
+  - "PRESERVE_INDEPENDENT_PRODUCT_CONTRACT_AND_REPOSITORY_ENGINE_OWNERSHIP_DECISIONS"
+product_evidence_read_only:
+  current_project_profile_schema: "src/ptsip/schemas/storage/profile/project-profile.schema.json"
+  source_pp200_schema: "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json"
+  observed_current_project_schema: "REMOTE_REF_ONLY_NOT_INLINE"
+  latest_user_requirement: "PROJECT_PROFILE_SCHEMA_EMBEDS_PP200_SOURCE_CONTRACT;NO_NEW_MODES_FROM_EXAMPLES_OR_TEMPLATE;ONLY_ONE_DEFAULT_MODE_SUPPORTED"
+  semantics_warning: "responsibility_map.mode_values_are_not_automatically_Mode_Profile_products;SOURCE_OWNER_MUST_REVIEW_ALLOWED_VALUES_WITH_USER_REQUIREMENT"
+  source_write_authority: "NOT_GRANTED_BY_THIS_DEVELOPER_DISTRIBUTION_PLAN"
+  removed_python_repository_layer: "INTENTIONALLY_NOT_RESTORED_FOR_LEGACY_COMPATIBILITY"
+  snapshot_engine_responsibility_candidates:
+    - "VALIDATION"
+    - "STORAGE"
+    - "DISCOVERY"
+    - "PROJECTION"
+  repository_engine_allocation: "REQUIRES_ACTUAL_SOURCE_AND_REGISTERED_NATIVE_CONTRACT_ANALYSIS_OUTSIDE_DEVELOPER_RELEASE_SCOPE"
+  python_repository_recreation_from_release_plan: "FORBIDDEN"
+planning_index_compatibility:
+  current_schema: "developer/planning/schemas/planning-index.schema.json"
+  old_schema_supports_work_unit_per_path_only: true
+  compact_index_schema_registration: "REVIEW_REQUIRED"
+  do_not_modify_policy_or_schema_silently: true
+  fail_closed_if_existing_resolver_cannot_read_compact_index: true
+work_unit_sessions:
+  WU-01:
+    id: "WU-01"
+    kind: "WORK_UNIT"
+    title: "Current release inputs and backend compatibility responsibility audit"
+    classification: "CORE/RELEASE-BLOCKING"
+    lifecycle: 
+      status: "ACTIVE"
+    approval: 
+      status: "APPROVED"
+      inherited_from: []
+      approval_source: "USER_EXPLICIT"
+    integration_branch: "main"
+    entry_baseline: "8b30aae383d5d6dbe6822cfbbfcbae9a486901d9"
+    implementation_authorization: 
+      status: "HOLD_NOT_AUTHORIZED"
+    depends_on: []
+    approval_scope: "PLAN_SCOPE_AND_CONDITIONAL_TASK_RECORD_ONLY;NOT_IMPLEMENTATION_APPROVAL"
+    responsibility: "READ_ONLY_DISTRIBUTION_INVENTORY_AND_LEGACY_CONSUMER_CLOSURE"
+    intent: "Verify currently effective Go developer distribution controller, Python PEP517 packaging consumer contract, declared release channels and version/engine inventory sources before any replacement."
+    allowed_read: 
+      - ".ptsip/engine/developer/Distribution/**"
+      - "pyproject.toml"
+      - "src/VERSION"
+      - "src/ptsip/engines/index.json"
+      - ".github/workflows/tooling-release.yml"
+      - "setup.py"
+      - "MANIFEST.in"
+      - "src/ptsip/migration/**"
+      - "src/planning/**"
+    allowed_write: 
+      - "developer/planning/0.3.8/**"
+    prohibited_write: 
+      - "src/planning/**"
+      - "developer/policy/**"
+      - "src/policy/**"
+      - "developer/planning/0.3.7/**"
+      - ".ptsip/**"
+      - "src/**"
+      - "pyproject.toml"
+      - ".github/**"
+    verified_current_facts: 
+      release_backend: ".ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py"
+      pyproject_build_backend: "ptsip_build_backend"
+      version_input: "src/VERSION"
+      native_registry_engine_count: 6
+      pyproject_toml_legacy_release_engine_count: 7
+      pyproject_extra_engine_kind: "planning"
+      clean_wheel_failure: "RuntimeError: incomplete or stale PTSIP engine inventory"
+      error_guard: "len(entries) != len(versions) OR native engine kind/version map differs from pyproject release.engines"
+      observed_github_workflow_destinations: 
+        - "github"
+        - "github-pypi"
+      npm_channel: "NOT_VERIFIED_IN_INSPECTED_GITHUB_WORKFLOW"
+      go_release_cli_note: "OLD_CLI_BOUNDARY_RETURNS_RELEASE_EXECUTION_BLOCKED;EXISTING_GO_CONTROLLER_REQUIRES_SEPARATE_INSPECTION"
+    required_audits: 
+      - "Trace every current PEP517 and developer release backend reference before retirement."
+      - "Check version meaning and compatibility for package_version, tool_version, engine versions and per-channel release revision; avoid equating unlike fields by filename."
+      - "Compare native Rust engine registry with src/VERSION and legacy pyproject engine table; classify planning entry without inventing a seventh native engine."
+      - "Inventory current GitHub, PyPI and proposed npm release routes and actual consuming build tools; report unsupported npm wiring as not verified."
+      - "Classify missing src/ptsip/repository import references as independent SRC-owned consumer closure evidence, not authorization to mutate src."
+      - "Produce machine-readable path/consumer/version/channel matrix and exact blocking conditions."
+    decisions_to_resolve: 
+      - "PYPI_PEP517_COMPATIBILITY_STRATEGY"
+      - "GO_CONTROLLER_ENTRYPOINT"
+      - "CHANNEL_VERSION_MAPPING"
+      - "REGISTERED_ENGINE_INVENTORY_OWNERSHIP"
+      - "NPM_PUBLICATION_ROUTE_IF_ACTUALLY_SUPPORTED"
+    acceptance: 
+      - "All actual release entrypoints and build-system references identified with current SHA evidence."
+      - "Legacy backend retire/keep-as-thin-adapter decision prepared without silently choosing a compatibility-breaking path."
+      - "Six native registry entries reconciled with the seven legacy pyproject entries without fabricated engine registration."
+  WU-02:
+    id: "WU-02"
+    kind: "WORK_UNIT"
+    title: "Go-owned multi-destination release orchestration and native package verification"
+    classification: "CORE/RELEASE-BLOCKING"
+    lifecycle: 
+      status: "BLOCKED"
+    approval: 
+      status: "APPROVED"
+      inherited_from: []
+      approval_source: "USER_EXPLICIT"
+    integration_branch: "main"
+    entry_baseline: "8b30aae383d5d6dbe6822cfbbfcbae9a486901d9"
+    implementation_authorization: 
+      status: "HOLD_NOT_AUTHORIZED"
+    depends_on: 
+      - "WU-01"
+    approval_scope: "PLAN_SCOPE_AND_CONDITIONAL_TASK_RECORD_ONLY;NOT_IMPLEMENTATION_APPROVAL"
+    responsibility: "GO_RELEASE_CONTROLLER_PROVENANCE_PACKAGING_AND_CHANNEL_VERIFICATION"
+    intent: "Use the real approved Go developer release controller as the orchestration owner; derive approved version fields from src/VERSION and compatible package-channel mappings, never from the legacy Python engine table alone."
+    allowed_read: 
+      - ".ptsip/engine/developer/Distribution/**"
+      - "src/VERSION"
+      - "src/ptsip/engines/index.json"
+      - "pyproject.toml"
+      - "setup.py"
+      - "MANIFEST.in"
+      - ".github/workflows/**"
+      - "src/planning/**"
+    implementation_candidates: 
+      - ".ptsip/engine/developer/Distribution/release/controller/**"
+      - ".ptsip/engine/developer/Distribution/release/verification/**"
+      - ".github/workflows/tooling-release.yml"
+      - "pyproject.toml"
+    prohibited_write: 
+      - "src/planning/**"
+      - "developer/policy/**"
+      - "src/policy/**"
+      - "developer/planning/0.3.7/**"
+    stop_conditions: 
+      - "DO_NOT_REDEFINE_SOURCE_VERSION_SEMANTICS"
+      - "DO_NOT_ASSUME_NPM_FLOW_VERIFIED_BY_GITHUB_OR_PYPI_RESULT"
+      - "DO_NOT_ADD_FAKE_PLANNING_RUST_ENGINE_FOR_LEGACY_PYPROJECT_COUNT"
+      - "DO_NOT_SKIP_PYPI_PEP517_BUILD_BACKEND_COMPATIBILITY"
+      - "DO_NOT_PUBLISH_WITHOUT_SEPARATE_RELEASE_AUTHORIZATION"
+    required_actions: 
+      - "Resolve Go controller release admission, per-destination artifact roles, version mapping and native engine registry at exact source SHA."
+      - "Implement a single machine-verifiable release graph with independent GitHub/PyPI/npm destination adapters only where each route's real contract and permissions are verified."
+      - "Use src/VERSION as the declared version source; document exact mapping to PyPI PEP440, npm SemVer and GitHub tag/revision before implementing conversions."
+      - "Ensure existing registered Rust engines and applicable Go tooling produce host-specific distributable artifacts with provenance/hash pins and no permission grant from packaging."
+      - "Execute clean-source wheel/sdist and installed wheel smoke where PyPI remains supported; independently verify GitHub and npm only after actual route discovery."
+      - "Treat src/ptsip/migration imports as separate read-only release acceptance gate and report unsupported normal import rather than claiming all-distribution PASS."
+    acceptance: 
+      - "Go developer controller resolves exact registered native engine inventory consistently with approved version contracts."
+      - "Each supported destination has separately verified artifact/build/admission contract."
+      - "No success claim unless clean-source build, installed smoke and necessary CI checks pass; failures remain explicit."
+    implementation_authorization_gate: "POST_PLAN_REVIEW_AND_WU01_DECISIONS"
+  WU-03:
+    id: "WU-03"
+    kind: "WORK_UNIT"
+    title: "Retire obsolete Python wheel backend after safe PEP517 compatibility replacement"
+    classification: "CORE/RELEASE-BLOCKING"
+    lifecycle: 
+      status: "BLOCKED"
+    approval: 
+      status: "APPROVED"
+      inherited_from: []
+      approval_source: "USER_EXPLICIT"
+    integration_branch: "main"
+    entry_baseline: "8b30aae383d5d6dbe6822cfbbfcbae9a486901d9"
+    implementation_authorization: 
+      status: "HOLD_NOT_AUTHORIZED"
+    depends_on: 
+      - "WU-01"
+      - "WU-02"
+    approval_scope: "PLAN_SCOPE_AND_CONDITIONAL_TASK_RECORD_ONLY;NOT_IMPLEMENTATION_APPROVAL"
+    responsibility: "LEGACY_BUILD_BACKEND_RETIREMENT_AND_COMPATIBILITY_CLOSURE"
+    legacy_backend: ".ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py"
+    compatibility_consumer: "pyproject.toml [build-system] build-backend and backend-path"
+    active_implementation_authority: "EXISTING_APPROVED_GO_DEVELOPER_RELEASE_CONTROLLER_AFTER_WU02"
+    rationale: 
+      - "The old Python backend reads pyproject.toml release.engines directly and fails when that table diverges from the six registered native engines."
+      - "The old Python backend owns PEP517 wheel/sdist build hooks and is therefore still a live build-system consumer, not safe to delete by age or source language alone."
+      - "Version fields exist in src/VERSION, while legacy pyproject.toml currently carries its own project/release version metadata requiring controlled reconciliation."
+    allowed_read: 
+      - ".ptsip/engine/developer/Distribution/release/**"
+      - "pyproject.toml"
+      - "src/VERSION"
+      - "src/ptsip/engines/index.json"
+      - "src/planning/**"
+    implementation_candidates: 
+      - ".ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py"
+      - ".ptsip/engine/developer/Distribution/release/controller/**"
+      - "pyproject.toml"
+      - "setup.py"
+      - "MANIFEST.in"
+    prohibited_write: 
+      - "src/planning/**"
+      - "developer/policy/**"
+      - "src/policy/**"
+      - "developer/planning/0.3.7/**"
+    required_actions: 
+      - "Enumerate all PEP517 hooks, Python and Go build-backend consumers and release workflows before removing or replacing the legacy module."
+      - "Decide legacy module retirement versus minimal PEP517 compatibility adapter from evidenced PyPI/pip consumer requirements; Go owns release orchestration, not necessarily the PEP517 shim."
+      - "Replace legacy pyproject.toml engine inventory hardcoding and duplicated release authority with approved src/VERSION/native engine registry mapping without silently changing field semantics."
+      - "If no external consumer needs Python hooks, remove obsolete backend and dangling backend-path/import references; otherwise retain only verified minimal compatibility surface."
+      - "Verify clean wheel, sdist, installed wheel and GitHub/npm destination behavior where actually supported before deleting legacy artifact."
+      - "No private policy, active release capability or downstream consumer may be removed only on assumed legacy status."
+    acceptance: 
+      - "No active packaging entrypoint targets a removed file."
+      - "No incomplete-or-stale inventory failure from inconsistent hardcoded pyproject engine declarations."
+      - "PyPI clean wheel and sdist remain verifiable when supported; Github/npm tests are not borrowed as proof for PyPI."
+      - "Legacy module is removed only after all registered consumers and hooks are replaced; any residual adapter has explicit scope and owner."
+    implementation_authorization_gate: "POST_WU02_COMPATIBILITY_PROOF_AND_USER_AUDIT"
+  WU-04:
+    id: "WU-04"
+    kind: "WORK_UNIT"
+    title: "Remove denied User_Profile schema target and stale developer-side references"
+    classification: "CORE"
+    lifecycle: 
+      status: "ACTIVE"
+    approval: 
+      status: "APPROVED"
+      inherited_from: []
+      approval_source: "USER_EXPLICIT"
+    integration_branch: "main"
+    entry_baseline: "8b30aae383d5d6dbe6822cfbbfcbae9a486901d9"
+    implementation_authorization: 
+      status: "HOLD_NOT_AUTHORIZED"
+    depends_on: []
+    approval_scope: "PLAN_SCOPE_AND_CONDITIONAL_TASK_RECORD_ONLY;NOT_IMPLEMENTATION_APPROVAL"
+    responsibility: "DENIED_TARGET_ABSENCE_AND_REFERENCE_CLEANUP_NOT_PROFILE_SEMANTIC_MIGRATION"
+    denied_target: "src/ptsip/schemas/storage/profile/user-profile.schema.json"
+    target_state_at_baseline: "NOT_FOUND_IN_MAIN"
+    user_direction: "REMOVE_THE_DENIED_TARGET_DO_NOT_RECREATE_IT"
+    legacy_source_outside_this_deletion: "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
+    allowed_read: 
+      - "src/ptsip/schemas/storage/profile/**"
+      - "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
+      - "src/ptsip/schemas/config.json"
+      - "developer/planning/**"
+      - ".ptsip/engine/developer/**"
+    potential_write_targets: 
+      - "src/ptsip/schemas/storage/profile/user-profile.schema.json"
+      - "APPROVED_DEVELOPER_OWNED_REFERENCES_TO_THIS_EXACT_DENIED_TARGET"
+    prohibited_write: 
+      - "src/planning/**"
+      - "developer/policy/**"
+      - "src/policy/**"
+      - "developer/planning/0.3.7/**"
+      - "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
+    required_actions: 
+      - "Confirm denied target's exact path existence or absence at active HEAD; currently no file exists, so do not falsely report a deletion."
+      - "If the denied target appears as a tracked file, remove it only after identifying consumers and registration authority; otherwise record VERIFIED_ABSENT and prohibit regeneration."
+      - "Audit exact references to the denied target and remove stale references only in authorized developer-owned paths; do not mutate unrelated plans or policies."
+      - "Do not select any new User_Profile schema target, infer a Storage owner, synthesize fields or delete the existing legacy User_Profile source schema from this work unit."
+      - "Keep unresolved User_Profile replacement and external consumer migration separate; escalate owner/contract decisions to their proper authority."
+    acceptance: 
+      - "git ls-files -- src/ptsip/schemas/storage/profile/user-profile.schema.json yields no tracked target."
+      - "No approved developer-owned generator or release registry can silently re-create or publish the denied target."
+      - "Existing legacy User_Profile source remains unchanged; no fabricated replacement schema is registered."
+    implementation_authorization_gate: "USER_AUDIT_BEFORE_REFERENCES_OR_ANY_SOURCE_MUTATION"
