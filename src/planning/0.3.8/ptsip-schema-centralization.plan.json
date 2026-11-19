@@ -2544,11 +2544,29 @@
         "Another session's coding agent analyzes the actual responsibilities, functions and consumers of ALL SIX src/ptsip/profiles Python modules, reads registered Rust engine contracts, assigns owner engine(s) and paths with evidence, records results under profile_rust_engine_assignment.source_modules, applies user's automatic approval and ONLY THEN implements.",
         "EXCLUDE src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py from edits; existing projection errors tolerated",
         "Another session's coding agent analyzes the actual responsibilities, functions and consumers of ALL SIX src/ptsip/profiles Python modules, reads registered Rust engine contracts, assigns owner engine(s) and paths with evidence, records results under profile_rust_engine_assignment.source_modules, applies user's automatic approval and ONLY THEN implements.",
-        "PTSIP View derived accountability cache uses policy document RA_id references; RA List stores no policy usage reverse field"
+        "PTSIP View derived accountability cache uses policy document RA_id references; RA List stores no policy usage reverse field",
+        "Before claiming supported consumer import closure, analyze removed ptsip.repository module/function dependencies and select native Rust engine ownership based on actual function and registered engine responsibilities (Validation/Storage/Discovery/Projection are candidates, not assigned); rewire supported migration consumer imports without Python repository compatibility shims; test normal supported import."
       ],
-      "gate": "Native adapter and Profile asset proof PASS; full supported imports and formal distribution closure remain separate required gates.",
+      "gate": "Native adapter and Profile asset proof PASS; full supported imports and formal distribution closure remain separate required gates. Missing ptsip.repository normal-import closure requires analysis-derived existing Rust engine responsibility split and native consumer rewiring, not Python compatibility recreation.",
       "execution_status": "NATIVE_SUPPORTED_ADAPTERS_AND_PROFILE_ASSETS_VERIFIED_FULL_CONSUMER_DISTRIBUTION_CLOSURE_BLOCKED",
-      "current_result": "Three supported native adapter function paths and bounded Profile asset staging pass. Normal migration imports are blocked by pre-existing absent ptsip.repository. Actual exact clean implementation commit wheel build failed at the private release backend engine inventory check."
+      "current_result": "Three supported native adapter function paths and bounded Profile asset staging pass. Normal migration imports remain blocked by intentionally retired ptsip.repository; remaining functionality must be assigned by actual existing Rust-engine responsibility analysis and native consumer rewiring (not Python compatibility restoration). Actual exact clean implementation commit wheel build failed at the private release backend engine inventory check.",
+      "remaining_blockers": [
+        {
+          "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
+          "status": "BLOCKED",
+          "resolution_ref": "profile_directory_retirement.remaining_blockers[SUPPORTED_NORMAL_CONSUMER_IMPORT]",
+          "requires_function_responsibility_analysis": true,
+          "selected_engines": null,
+          "existing_rust_candidates": [
+            "VALIDATION",
+            "STORAGE",
+            "DISCOVERY",
+            "PROJECTION"
+          ],
+          "no_python_repository_compatibility": true,
+          "approval_gate": "FUNCTION_TO_ENGINE_AND_CALLER_TO_NATIVE_CONTRACT_MAPPING_RECORDED_BEFORE_IMPLEMENTATION"
+        }
+      ]
     },
     {
       "id": "WU-08",
@@ -2750,12 +2768,30 @@
         "Maintain current/historical pp1.01, pp1.02, pp2.00 registered source/version/SHA checks without fabricating pp1.00.",
         "Rewire supported consumers, existing Go CLI router, registry and package assets to the actual selected Rust engines; do not edit excluded Python callers.",
         "Meet the always-on Profile background functionality requirement using the future-agent-approved engine lifecycle design; validate owner-engine tests and any required native handoffs.",
-        "Update supported build distributions without creating an independent Profile Go module/binary, then replace and retire obsolete Python validators after new behavior passes."
+        "Update supported build distributions without creating an independent Profile Go module/binary, then replace and retire obsolete Python validators after new behavior passes.",
+        "Treat removed ptsip.repository as an intentionally retired Python implementation, not a module to restore. For remaining supported migration imports, perform actual function/caller-to-Rust-engine capability analysis, record justified engine ownership and typed route(s), implement missing native responsibilities only after analysis and run normal import/integration regression; do not expand excluded Python caller modification scope."
       ],
-      "gate": "Selected Rust replacements and bounded background protocol PASS. Full normal supported consumer imports and clean-source distribution acceptance remain required before whole-tree retirement.",
+      "gate": "Selected Rust replacements and bounded background protocol PASS. Full normal supported consumer imports and clean-source distribution acceptance remain required before whole-tree retirement. Separate existing Rust-engine owner analysis and native caller routing for removed repository functions remain BLOCKED until normal supported migration imports pass.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "SIX_NATIVE_REPLACEMENT_RESPONSIBILITIES_VERIFIED_GLOBAL_CONSUMER_AND_DISTRIBUTION_ACCEPTANCE_PARTIAL",
-      "current_result": "All six supported responsibilities pass native engine/Go-router tests, including linked records, independent Validation handoff and bounded background sessions. Full normal migration import closure and formal clean-source package acceptance remain blocked; the exact clean wheel build failed at the existing private backend inventory check."
+      "current_result": "All six supported responsibilities pass native engine/Go-router tests, including linked records, independent Validation handoff and bounded background sessions. Full normal migration import closure and formal clean-source package acceptance remain blocked; the exact clean wheel build failed at the existing private backend inventory check. The removed Python ptsip.repository import chain requires separate existing Rust-engine responsibility analysis and supported native call-site rewiring; the current passing native Profile tests do not prove this import closure.",
+      "remaining_blockers": [
+        {
+          "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
+          "status": "BLOCKED",
+          "resolution_ref": "profile_directory_retirement.remaining_blockers[SUPPORTED_NORMAL_CONSUMER_IMPORT]",
+          "requires_function_responsibility_analysis": true,
+          "selected_engines": null,
+          "existing_rust_candidates": [
+            "VALIDATION",
+            "STORAGE",
+            "DISCOVERY",
+            "PROJECTION"
+          ],
+          "no_python_repository_compatibility": true,
+          "approval_gate": "FUNCTION_TO_ENGINE_AND_CALLER_TO_NATIVE_CONTRACT_MAPPING_RECORDED_BEFORE_IMPLEMENTATION"
+        }
+      ]
     },
     {
       "id": "WU-14",
@@ -2804,12 +2840,30 @@
         "Verify git ls-files src/ptsip/profiles has zero output; grep imports ptsip.profiles and old path references with release acceptance exceptions only after explicit review",
         "Verify all six Profile modules' Rust replacements and any required native handoffs using Rust engine owner(s) selected by the future agent's recorded analysis; do not preselect Storage or limit scope to rule_records.py.",
         "Keep only current-version replacement verification; after successful replacement proof split old validation out of active verification and delete deprecated tests/validators rather than keep compatibility gates.",
-        "Verify all six Profile modules' Rust replacements and any required native handoffs using Rust engine owner(s) selected by the future agent's recorded analysis; do not preselect Storage or limit scope to rule_records.py."
+        "Verify all six Profile modules' Rust replacements and any required native handoffs using Rust engine owner(s) selected by the future agent's recorded analysis; do not preselect Storage or limit scope to rule_records.py.",
+        "Keep the 22 original Profile files until normal supported migration package imports work through verified Rust engine replacements of used repository functions. The old Python ptsip.repository directory must not be recreated for compatibility, and unspecified Validation/Storage/Discovery/Projection candidate assignments are not approved."
       ],
-      "gate": "22/22 retired paths absent only after all six Python modules have evidence-based Rust engine owner assignments, completed and verified replacements, supported consumer closure, background runtime conformance and obsolete validator removal.",
+      "gate": "22/22 retired paths absent only after all six Python modules have evidence-based Rust engine owner assignments, completed and verified replacements, supported consumer closure, background runtime conformance and obsolete validator removal. Do not delete while removed Python repository functions remain unresolved in normal supported imports; distribute required functionality to evidence-selected existing Rust engines and verify supported imports.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "BLOCKED_KEEP_ALL_22_SOURCE_FILES_PENDING_REMAINING_RETIREMENT_GATES",
-      "current_result": "All 22 legacy files remain. JSON fixture exact paths are not approved, User_Profile replacement target is unapproved, normal supported consumer imports remain blocked by absent ptsip.repository, and the exact clean wheel build failed at the private release backend engine inventory check."
+      "current_result": "All 22 legacy files remain. JSON fixture exact paths are not approved, User_Profile replacement target is unapproved, normal supported consumer imports remain blocked by intentionally retired ptsip.repository pending responsibility-based Rust engine replacement and caller rewiring, and the exact clean wheel build failed at the private release backend engine inventory check.",
+      "remaining_blockers": [
+        {
+          "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
+          "status": "BLOCKED",
+          "resolution_ref": "profile_directory_retirement.remaining_blockers[SUPPORTED_NORMAL_CONSUMER_IMPORT]",
+          "requires_function_responsibility_analysis": true,
+          "selected_engines": null,
+          "existing_rust_candidates": [
+            "VALIDATION",
+            "STORAGE",
+            "DISCOVERY",
+            "PROJECTION"
+          ],
+          "no_python_repository_compatibility": true,
+          "approval_gate": "FUNCTION_TO_ENGINE_AND_CALLER_TO_NATIVE_CONTRACT_MAPPING_RECORDED_BEFORE_IMPLEMENTATION"
+        }
+      ]
     }
   ],
   "observed_breakages": [
@@ -2968,7 +3022,8 @@
       "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
       "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
       "The per-engine src/ptsip/engines/**/src/schemas/** rule applies independently to all registered engines, not just Storage.",
-      "All six modules identity.py, contracts.py, compatibility.py, catalog.py, metadata.py, rule_records.py are equally unresolved regarding Rust owner engine(s); no module implementation starts before future-session analysis and recorded user-preauthorized decision."
+      "All six modules identity.py, contracts.py, compatibility.py, catalog.py, metadata.py, rule_records.py are equally unresolved regarding Rust owner engine(s); no module implementation starts before future-session analysis and recorded user-preauthorized decision.",
+      "Remaining normal ptsip.migration imports must be restored by function-level ownership analysis and implementations in existing registered Rust engine(s) with native typed routing for supported callers; do NOT recreate src/ptsip/repository for Python compatibility. Validation, Storage, Discovery and Projection are investigation candidates only until evidence-based allocations are recorded."
     ],
     "negative_cases": [
       "duplicate_schema_id",
@@ -3034,7 +3089,11 @@
       "one_of_six_modules_omitted_from_rust_owner_analysis",
       "any_profile_engine_assigned_before_evidence",
       "five_profile_modules_assumed_storage_without_analysis",
-      "only_rule_records_py_deferred_to_future_agent"
+      "only_rule_records_py_deferred_to_future_agent",
+      "recreate_removed_python_repository_as_compatibility_layer",
+      "assign_missing_repository_functions_to_rust_engines_without_actual_contract_analysis",
+      "claim_normal_migration_import_pass_from_native_adapter_tests_alone",
+      "delete_profile_22_before_migration_supported_import_closure"
     ],
     "powershell_commands_in_order": [
       "git rev-parse HEAD",
@@ -4713,7 +4772,8 @@
       "GOLDEN_FIXTURES_VERIFIED",
       "WHEEL_SMOKE_PASS",
       "ALL_SIX_PROFILE_MODULES_ENGINE_RESPONSIBILITY_ANALYSIS_AND_AUTO_APPROVED_ASSIGNMENTS_RECORDED",
-      "ALL_SELECTED_RUST_ENGINE_MODULES_NATIVE_CONTRACTS_AND_SUPPORTED_CONSUMERS_VERIFIED"
+      "ALL_SELECTED_RUST_ENGINE_MODULES_NATIVE_CONTRACTS_AND_SUPPORTED_CONSUMERS_VERIFIED",
+      "SUPPORTED_MIGRATION_IMPORTS_PASS_WITHOUT_RECREATING_RETIRED_PYTHON_REPOSITORY"
     ],
     "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths after ALL selected Discovery/Validation/Projection capabilities and distribution pass without legacy files. The two excluded Python callers are not current conformance gates.",
     "warning": "Whole folder removal may leave the two explicitly excluded Python callers broken. All six Rust function allocations are analyzed and preauthorized; removal still requires complete supported consumer, fixture, schema and package gates. User-owned .ptsip/profiles is outside deletion.",
@@ -4733,7 +4793,7 @@
       "note": "Complete removal of src/ptsip/profiles can leave these imports broken; do not count their remaining references as zero, do not falsely claim full Python compatibility"
     },
     "runtime_owner_status": "ALL_SIX_ANALYZED_SELECTED_DISCOVERY_VALIDATION_PROJECTION_NATIVE_REPLACEMENTS_VERIFIED",
-    "current_retirement_state": "NOT_EXECUTED_22_SOURCE_FILES_RETAINED",
+    "current_retirement_state": "BLOCKED_EXISTING_GATES_INCLUDE_NATIVE_REPOSITORY_FUNCTION_MIGRATION_IMPORT_CLOSURE",
     "remaining_blockers": [
       {
         "id": "PROFILE_JSON_FIXTURE_PATHS",
@@ -4747,8 +4807,66 @@
       },
       {
         "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
-        "evidence": "Existing migration import chain depends on absent ptsip.repository",
-        "effect": "NATIVE_ADAPTER_TESTS_DO_NOT_CLAIM_FULL_NORMAL_IMPORT_CLOSURE"
+        "evidence": "Normal supported ptsip.migration import chain still references removed src/ptsip/repository (snapshot, profile_path, profile_convergence, profile_transition), despite native adapters passing. The Python repository layer was intentionally removed for native Rust ownership, not accidentally lost.",
+        "effect": "KEEP_SUPPORTED_NORMAL_IMPORT_AND_RELATED_PROFILE_RETIREMENT_GATE_BLOCKED_UNTIL_FUNCTION_LEVEL_RUST_OWNER_ANALYSIS_AND_NATIVE_CONSUMER_REWIRING_AND_NORMAL_IMPORT_VERIFICATION;DO_NOT_RECREATE_PYTHON_REPOSITORY_FOR_COMPATIBILITY",
+        "resolution_status": "PENDING_EXISTING_RUST_ENGINE_RESPONSIBILITY_ANALYSIS_AND_SUPPORTED_CONSUMER_NATIVE_REWIRING",
+        "responsibility_policy": "REPLACE_REMOVED_PYTHON_REPOSITORY_RESPONSIBILITIES_WITH_EXISTING_REGISTERED_RUST_ENGINE_CAPABILITIES_BY_ACTUAL_RESPONSIBILITY;DO_NOT_RESTORE_LEGACY_PYTHON_COMPATIBILITY_LAYER",
+        "candidate_native_engines": [
+          "VALIDATION",
+          "STORAGE",
+          "DISCOVERY",
+          "PROJECTION"
+        ],
+        "engine_assignments": null,
+        "function_allocations": [],
+        "verified_native_contract_paths": [],
+        "analysis_scope": {
+          "absent_python_package": "src/ptsip/repository/",
+          "source_boundary": "src/ptsip/migration/**",
+          "representative_missing_modules": [
+            "ptsip.repository.snapshot",
+            "ptsip.repository.profile_path",
+            "ptsip.repository.profile_convergence",
+            "ptsip.repository.profile_transition"
+          ],
+          "representative_call_sites": [
+            "src/ptsip/migration/analysis/analyzer.py",
+            "src/ptsip/migration/analysis/direct/source_projection.py",
+            "src/ptsip/migration/execution/guard/mutation.py",
+            "src/ptsip/migration/execution/authorization/binding.py",
+            "src/ptsip/migration/planning/convergence/builder.py"
+          ],
+          "observed_failure": "NORMAL_IMPORT_REQUIRES_REMOVED_PYTHON_REPOSITORY_PACKAGE",
+          "historical_intent": "REPOSITORY_PYTHON_LAYER_REMOVED_FOR_NATIVE_ENGINE_DIRECTION_WITHOUT_LEGACY_COMPATIBILITY",
+          "known_excluded_callers": [
+            "src/ptsip/cli.py",
+            "src/ptsip/clarification/resolution/profile_projection.py"
+          ]
+        },
+        "required_remediation": [
+          "INSPECT_ALL_RELEVANT_PYTHON_REPOSITORY_IMPORTS_AND_ACTUAL_USED_FUNCTION_SEMANTICS_AND_CALLER_BOUNDARIES",
+          "COMPARE_ACTUAL_FUNCTION_RESPONSIBILITIES_WITH_CURRENT_NATIVE_RUST_ENGINE_REGISTERED_CAPABILITIES_AND_TYPED_INPUT_OUTPUT",
+          "SELECT_EXISTING_NATIVE_RUST_ENGINE_OWNER_OR_OWNERS_PER_FUNCTION_WITH_EVIDENCE;CANDIDATES_NOT_FIXED",
+          "RECORD_FUNCTION_TO_ENGINE_AND_SUPPORTED_CALLER_TO_NATIVE_ROUTING_PATHS_AND_CONTRACTS_BEFORE_IMPLEMENTATION",
+          "IMPLEMENT_MISSING_FUNCTIONS_IN_SELECTED_EXISTING_RUST_ENGINES_AND_REWIRE_ONLY_AUTHORIZED_SUPPORTED_CONSUMERS",
+          "VERIFY_NATIVE_ENGINE_UNIT_AND_TYPED_CONTRACT_AND_CROSS_ENGINE_INTEGRATION_IF_APPLICABLE",
+          "VERIFY_NORMAL_PTSIP_MIGRATION_PACKAGE_IMPORTS_AND_RELEVANT_SUPPORTED_CONSUMER_CALLS_WITHOUT_PYTHON_REPOSITORY_COMPAT_SHIMS",
+          "REMEASURE_PROFILE_RETIREMENT_BLOCKER_ONLY_AFTER_SUPPORTED_CONSUMER_CLOSURE"
+        ],
+        "prohibitions": [
+          "RECREATE_LEGACY_src/ptsip/repository_FOR_IMPORT_COMPATIBILITY",
+          "ASSUME_NATIVE_OWNER_BY_ENGINE_OR_FILENAME_ONLY",
+          "AUTO_ASSIGN_ALL_FUNCTIONS_TO_STORAGE_OR_FIXED_FOUR_ENGINE_SPLIT",
+          "INVENT_UNREGISTERED_OPERATION_IDS_OR_PUBLIC_SCHEMA_FIELDS",
+          "EDIT_EXPLICITLY_EXCLUDED_PYTHON_CALLERS_WITHOUT_SEPARATE_AUTHORIZATION",
+          "MODIFY_DEVELOPER_PRIVATE_RELEASE_BACKEND_OR_DOTPTSIP_UNDER_THIS_PLAN"
+        ],
+        "acceptance": [
+          "EVERY_SUPPORTED_MISSING_REPOSITORY_FUNCTION_HAS_EVIDENCE_BASED_EXISTING_RUST_ENGINE_OWNER_AND_TESTED_NATIVE_CONTRACT",
+          "EVERY_SUPPORTED_OLD_IMPORT_CALLER_IS_REWIRED_OR_FORMALLY_EXCLUDED_UNDER_EXISTING_AUTHORITY",
+          "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_RELEVANT_OPERATIONS_PASS_WITH_NO_PYTHON_REPOSITORY_REINTRODUCTION",
+          "PROFILE_DIRECTORY_RETIREMENT_RECHECKED_ONLY_AFTER_CONSUMER_IMPORT_CLOSURE"
+        ]
       },
       {
         "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
