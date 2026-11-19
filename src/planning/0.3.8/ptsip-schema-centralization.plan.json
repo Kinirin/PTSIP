@@ -2548,7 +2548,7 @@
       ],
       "gate": "Native adapter and Profile asset proof PASS; full supported imports and formal distribution closure remain separate required gates.",
       "execution_status": "NATIVE_SUPPORTED_ADAPTERS_AND_PROFILE_ASSETS_VERIFIED_FULL_CONSUMER_DISTRIBUTION_CLOSURE_BLOCKED",
-      "current_result": "Three supported native adapter function paths and bounded Profile asset staging pass. Normal migration imports remain blocked by pre-existing absent ptsip.repository; full clean-source wheel is pending."
+      "current_result": "Three supported native adapter function paths and bounded Profile asset staging pass. Normal migration imports are blocked by pre-existing absent ptsip.repository. Actual exact clean implementation commit wheel build failed at the private release backend engine inventory check."
     },
     {
       "id": "WU-08",
@@ -2755,7 +2755,7 @@
       "gate": "Selected Rust replacements and bounded background protocol PASS. Full normal supported consumer imports and clean-source distribution acceptance remain required before whole-tree retirement.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "SIX_NATIVE_REPLACEMENT_RESPONSIBILITIES_VERIFIED_GLOBAL_CONSUMER_AND_DISTRIBUTION_ACCEPTANCE_PARTIAL",
-      "current_result": "All six supported responsibilities pass native engine/Go-router tests, including linked records and independent Validation handoff. Normal migration imports and formal clean-source package acceptance remain incomplete."
+      "current_result": "All six supported responsibilities pass native engine/Go-router tests, including linked records, independent Validation handoff and bounded background sessions. Full normal migration import closure and formal clean-source package acceptance remain blocked; the exact clean wheel build failed at the existing private backend inventory check."
     },
     {
       "id": "WU-14",
@@ -2809,7 +2809,7 @@
       "gate": "22/22 retired paths absent only after all six Python modules have evidence-based Rust engine owner assignments, completed and verified replacements, supported consumer closure, background runtime conformance and obsolete validator removal.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "BLOCKED_KEEP_ALL_22_SOURCE_FILES_PENDING_REMAINING_RETIREMENT_GATES",
-      "current_result": "All 22 legacy files remain. JSON fixture exact paths are not approved, User_Profile replacement target is unapproved, normal supported consumer import closure and full clean wheel/source distribution acceptance are not complete."
+      "current_result": "All 22 legacy files remain. JSON fixture exact paths are not approved, User_Profile replacement target is unapproved, normal supported consumer imports remain blocked by absent ptsip.repository, and the exact clean wheel build failed at the private release backend engine inventory check."
     }
   ],
   "observed_breakages": [
@@ -3052,7 +3052,7 @@
       "python -m build --wheel # Formal clean-source build; current private release-backend result is reported separately from native and asset staging checks.",
       "git ls-files src/ptsip/profiles # Whole-tree retirement remains conditional; 22 sources are intentionally present until all remaining gates pass."
     ],
-    "note": "All six Rust owner allocations, exact seven approved native Profile operations, typed contracts, caller-managed bounded background protocol, native/Go checks and isolated Profile asset staging are verified. Normal migration imports remain blocked by pre-existing absent ptsip.repository; exact JSON fixture paths, User_Profile replacement target and formal clean-source distribution acceptance still prevent entire legacy tree retirement. Unrelated policy/path decisions are unchanged.",
+    "note": "All six Rust owner allocations, seven approved native Profile operations, typed contracts, caller-managed bounded background sessions, native/Go checks and isolated Profile asset staging are verified. Exact clean implementation commit wheel build failed at the existing private release backend engine inventory check. Current remote Dependency Graph and native Projection/Validation jobs passed, while release-admission and the pre-existing Policy Contract Guard remain failed with explicitly recorded scope boundaries. No policy document or private approval was used as implementation field authority or created to repair those checks. Normal migration imports, exact JSON fixture paths and User_Profile replacement target still prevent full legacy tree retirement.",
     "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'",
     "test_implementation_language": "GO_UNDER_src/tests/ptsip;EXISTING_ENGINE_RUST_TESTS_RETAINED;NO_NEW_PYTHON_TEST_MODULES_OR_PYTEST_GATE",
     "user_override": "User explicitly replaced newly authored Python/pytest modules with Go tests; old pytest command is removed from active verification sequence.",
@@ -3124,8 +3124,16 @@
       "new_profile_runtime_permission": "REGISTRATION_AND_NATIVE_RESULTS_DO_NOT_CREATE_NORMATIVE_PERMISSION",
       "background": "EXPLICIT_CALLER_MANAGED_NATIVE_NDJSON_SESSIONS_PASS_MULTIPLE_REQUESTS_FAILURE_RECOVERY_1_MIB_FRAME_BOUND_AND_EOF_STOP;NO_AUTOSTART_OR_INSTALLED_HOST_SERVICE_CLAIM",
       "formal_clean_source_build": {
-        "state": "PENDING_FIRST_IMPLEMENTATION_COMMIT",
-        "reason": "Existing release backend requires an exact clean source or admitted sdist descriptor. Run actual formal wheel build after commit and record its result separately."
+        "state": "FAILED_EXISTING_PRIVATE_RELEASE_BACKEND_INVENTORY",
+        "command": ".venv/Scripts/python.exe -m build --wheel --no-isolation",
+        "head_sha": "44146421c3ec30c187afb8df550a1f9a91087469",
+        "source_state": "EXACT_CLEAN_HEAD_AFTER_IMPLEMENTATION_COMMIT_AND_PUSH",
+        "exit_code": 1,
+        "error": "RuntimeError: incomplete or stale PTSIP engine inventory",
+        "traceback_location": ".ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py:121",
+        "log": "C:/Users/user/AppData/Local/Temp/ptsip-profile-clean-wheel-6948eec617ac4832899a2a1ed4108ebf.log",
+        "scope_boundary": "NO_PRIVATE_RELEASE_BACKEND_OR_POLICY_DOCUMENT_READ_AS_FIELD_AUTHORITY_OR_MUTATION;NO_FALSE_WHEEL_OR_INSTALLED_DISTRIBUTION_PASS",
+        "affected_work": "FORMAL_DISTRIBUTION_ACCEPTANCE_AND_FULL_PROFILE_TREE_RETIREMENT_ONLY;VERIFIED_NATIVE_SOURCE_AND_ASSET_RESULTS_REMAIN_SEPARATE"
       },
       "policy_documents": "NO_POLICY_DOCUMENT_LOOKUP_AS_EXECUTION_INPUT_NO_POLICY_MUTATION",
       "developer_private_contracts": "NO_DISTRIBUTED_FIELD_AUTHORITY_IMPORT_NO_DOTPTSIP_MUTATION",
@@ -3137,6 +3145,77 @@
         "checked_schema_and_capability_pin_targets": 13,
         "comparison": "DECLARED_SHA256_EQUALS_WORKING_FILE_BYTES_SHA256_EQUALS_STAGED_GIT_BLOB_BYTES_SHA256",
         "normalization": "One new Discovery Rule Record schema checkout was normalized to LF and dependent native input-schema/capability/manifest/snapshot digests refreshed before the final full Go run. Typed I/O semantics are unchanged."
+      },
+      "implementation_commit": {
+        "sha": "44146421c3ec30c187afb8df550a1f9a91087469",
+        "branch": "main",
+        "pushed": true,
+        "source_state_at_formal_build": "EXACT_CLEAN_HEAD",
+        "scope": "NATIVE_IMPLEMENTATION_REGISTRY_CONSUMER_AND_PROFILE_ASSET_CHANGES"
+      },
+      "github_actions": {
+        "head_sha": "44146421c3ec30c187afb8df550a1f9a91087469",
+        "source": "AUTOMATIC_PUSH_WORKFLOW_RESULTS_READ_ONLY;NO_NEW_POLICY_EXECUTION_OR_APPROVAL_PROCEDURE",
+        "runs": [
+          {
+            "name": "Dependency Graph",
+            "run_id": 44430678942,
+            "url": "https://github.com/Kinirin/PTSIP/actions/runs/44430678942",
+            "conclusion": "SUCCESS"
+          },
+          {
+            "name": "release-admission",
+            "run_id": 44430671322,
+            "url": "https://github.com/Kinirin/PTSIP/actions/runs/44430671322",
+            "conclusion": "FAILURE",
+            "successful_native_jobs": [
+              {
+                "name": "Native contract Projection",
+                "job_id": 135246930344,
+                "url": "https://github.com/Kinirin/PTSIP/actions/runs/44430671322/job/135246930344",
+                "conclusion": "SUCCESS"
+              },
+              {
+                "name": "Native contract Validation",
+                "job_id": 135246930353,
+                "url": "https://github.com/Kinirin/PTSIP/actions/runs/44430671322/job/135246930353",
+                "conclusion": "SUCCESS"
+              }
+            ],
+            "failure_diagnostics": [
+              {
+                "scope": "contract projection",
+                "reason": "Private developer controller lacks go.sum entry for common_contract/source dependency",
+                "disposition": "PRIVATE_DEVELOPER_CONTROLLER_REPAIR_OUTSIDE_THIS_SCHEMA_IMPLEMENTATION_SCOPE"
+              },
+              {
+                "scope": "Registered contract digest / TestPostB5CapabilityVersions",
+                "reason": "Missing developer/policy/approvals/MPA-20261026-VALIDATION-PROJECTION-CAPABILITY-CONTRACT-BUMPS.yaml",
+                "disposition": "DO_NOT_READ_OR_CREATE_EXTERNAL_POLICY_APPROVAL;DO_NOT_INFER_APPROVAL_FROM_NATIVE_SUCCESS"
+              }
+            ]
+          },
+          {
+            "name": "Policy Contract Guard",
+            "run_id": 44430671418,
+            "url": "https://github.com/Kinirin/PTSIP/actions/runs/44430671418",
+            "conclusion": "FAILURE",
+            "failure_diagnostics": "Old common-contract URN resource resolution cannot find schema resources for policy identity/lifecycle/rules and plan unit/lifecycle/identity.",
+            "baseline": {
+              "head_sha": "9fc52416e65372199c0c80f1c007e62ca04826fa",
+              "run_id": 44322168350,
+              "url": "https://github.com/Kinirin/PTSIP/actions/runs/44322168350",
+              "conclusion": "FAILURE",
+              "matching_existing_tests": [
+                "TestR02ContractEntrySelectionAndUnsupportedNoTraversal",
+                "TestR01PolicyOwnerContractSemantics"
+              ]
+            },
+            "disposition": "NO_SILENT_REBINDING_OF_LEGACY_COMMON_POLICY_V1_TO_NEW_V4;NO_UNAPPROVED_PLAN_ROOT_CREATION;NO_POLICY_REWRITE_FROM_CI_DIAGNOSTIC"
+          }
+        ],
+        "overall_ci_claim": "PARTIAL_PASS_WITH_EXACT_COMMIT_EVIDENCE;OVERALL_RELEASE_AND_POLICY_GUARD_NOT_PASS",
+        "execution_authority": "CI_RESULTS_ARE_VERIFICATION_EVIDENCE;THE_SELF_CONTAINED_PLAN_REMAINS_THE_IMPLEMENTATION_AUTHORITY"
       }
     }
   },
@@ -3743,7 +3822,7 @@
       "closure_scope": "REGISTERED_ENGINE_INDEX_BINDINGS_NATIVE_RUNTIME_COMMON_CONTRACT_AND_EXISTING_TECHNICAL_TEST_CONSUMERS;HISTORICAL_PLANNING_NOT_RUNTIME",
       "exact_schema_bytes_ids_versions": "PRESERVED_FROM_RECORDED_SOURCE_GIT_BLOBS",
       "package_asset_staging": "21_OWNER_LOCAL_SCHEMAS_PRESENT_WITH_EXACT_HASHES;OLD_SHARED_SCHEMA_ASSETS_ABSENT",
-      "formal_wheel": "CLEAN_POST_COMMIT_BUILD_PENDING"
+      "formal_wheel": "ACTUAL_CLEAN_BUILD_FAILED_PRIVATE_BACKEND_ENGINE_INVENTORY;OWNER_LOCAL_ASSET_STAGING_PASS_ONLY"
     },
     "evidence_responsibility_classification": {
       "state": "READ_ONLY_FOUR_SOURCE_OWNER_CLASSIFICATIONS_COMPLETE_NEW_TARGET_DECISIONS_OPEN",
@@ -4673,7 +4752,7 @@
       },
       {
         "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
-        "evidence": "Clean post-commit wheel/source build and installed package acceptance not yet complete",
+        "evidence": "Actual exact clean implementation commit wheel build failed at existing private release backend: incomplete or stale PTSIP engine inventory; full wheel/source distribution and installed package acceptance remain incomplete.",
         "effect": "ASSET_STAGE_AND_NATIVE_RESULTS_DO_NOT_AUTHORIZE_WHOLE_PROFILE_TREE_RETIREMENT"
       }
     ]
@@ -10251,7 +10330,7 @@
       }
     },
     "package_rewiring": {
-      "state": "PROFILE_ASSET_REWIRE_VERIFIED_FORMAL_CLEAN_SOURCE_DISTRIBUTION_BUILD_PENDING",
+      "state": "PROFILE_ASSET_STAGE_VERIFIED_FORMAL_CLEAN_WHEEL_BLOCKED_BY_PRIVATE_BACKEND_INVENTORY",
       "files": [
         "setup.py",
         "pyproject.toml",
@@ -10273,7 +10352,7 @@
         "verified_schemas": 4,
         "legacy_python_package_retained": true,
         "legacy_yaml_examples_catalog_and_history_absent_from_stage": true,
-        "formal_full_wheel_result": "NOT_ASSERTED_BY_THIS_ASSET_TEST"
+        "formal_full_wheel_result": "FAIL_AT_EXACT_CLEAN_IMPLEMENTATION_COMMIT_PRIVATE_BACKEND_ENGINE_INVENTORY;ISOLATED_ASSET_STAGE_PASS_REMAINS_BOUNDED"
       }
     },
     "supported_consumer_closure": {
