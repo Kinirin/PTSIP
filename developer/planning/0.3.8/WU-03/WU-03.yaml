@@ -1,0 +1,61 @@
+schema_version: "ptsip-work-unit/v1"
+policy_class: "PTSIP_DEVELOPER_POLICY"
+plan_version: "0.3.8"
+planning_contract: "ptsip-planning/v1"
+work_unit: 
+  id: "WU-03"
+  kind: "WORK_UNIT"
+  title: "Retire obsolete Python wheel backend after safe PEP517 compatibility replacement"
+  classification: "CORE/RELEASE-BLOCKING"
+  lifecycle: 
+    status: "BLOCKED"
+  approval: 
+    status: "APPROVED"
+    inherited_from: []
+    approval_source: "USER_EXPLICIT"
+  integration_branch: "main"
+  entry_baseline: "8b30aae383d5d6dbe6822cfbbfcbae9a486901d9"
+  implementation_authorization: 
+    status: "HOLD_NOT_AUTHORIZED"
+  depends_on: 
+    - "WU-01"
+    - "WU-02"
+  approval_scope: "PLAN_SCOPE_AND_CONDITIONAL_TASK_RECORD_ONLY;NOT_IMPLEMENTATION_APPROVAL"
+  responsibility: "LEGACY_BUILD_BACKEND_RETIREMENT_AND_COMPATIBILITY_CLOSURE"
+  legacy_backend: ".ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py"
+  compatibility_consumer: "pyproject.toml [build-system] build-backend and backend-path"
+  active_implementation_authority: "EXISTING_APPROVED_GO_DEVELOPER_RELEASE_CONTROLLER_AFTER_WU02"
+  rationale: 
+    - "The old Python backend reads pyproject.toml release.engines directly and fails when that table diverges from the six registered native engines."
+    - "The old Python backend owns PEP517 wheel/sdist build hooks and is therefore still a live build-system consumer, not safe to delete by age or source language alone."
+    - "Version fields exist in src/VERSION, while legacy pyproject.toml currently carries its own project/release version metadata requiring controlled reconciliation."
+  allowed_read: 
+    - ".ptsip/engine/developer/Distribution/release/**"
+    - "pyproject.toml"
+    - "src/VERSION"
+    - "src/ptsip/engines/index.json"
+    - "src/planning/**"
+  implementation_candidates: 
+    - ".ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py"
+    - ".ptsip/engine/developer/Distribution/release/controller/**"
+    - "pyproject.toml"
+    - "setup.py"
+    - "MANIFEST.in"
+  prohibited_write: 
+    - "src/planning/**"
+    - "developer/policy/**"
+    - "src/policy/**"
+    - "developer/planning/0.3.7/**"
+  required_actions: 
+    - "Enumerate all PEP517 hooks, Python and Go build-backend consumers and release workflows before removing or replacing the legacy module."
+    - "Decide legacy module retirement versus minimal PEP517 compatibility adapter from evidenced PyPI/pip consumer requirements; Go owns release orchestration, not necessarily the PEP517 shim."
+    - "Replace legacy pyproject.toml engine inventory hardcoding and duplicated release authority with approved src/VERSION/native engine registry mapping without silently changing field semantics."
+    - "If no external consumer needs Python hooks, remove obsolete backend and dangling backend-path/import references; otherwise retain only verified minimal compatibility surface."
+    - "Verify clean wheel, sdist, installed wheel and GitHub/npm destination behavior where actually supported before deleting legacy artifact."
+    - "No private policy, active release capability or downstream consumer may be removed only on assumed legacy status."
+  acceptance: 
+    - "No active packaging entrypoint targets a removed file."
+    - "No incomplete-or-stale inventory failure from inconsistent hardcoded pyproject engine declarations."
+    - "PyPI clean wheel and sdist remain verifiable when supported; Github/npm tests are not borrowed as proof for PyPI."
+    - "Legacy module is removed only after all registered consumers and hooks are replaced; any residual adapter has explicit scope and owner."
+  implementation_authorization_gate: "POST_WU02_COMPATIBILITY_PROOF_AND_USER_AUDIT"
