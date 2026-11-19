@@ -33,7 +33,15 @@ func entries(t *testing.T) []any {
 
 func schema(t *testing.T, name string, value any) error {
 	t.Helper()
-	return testrepo.Open(testrepo.Root(t)).Validate("src/ptsip/engines/contracts/schemas/"+name+".schema.json", value)
+	refs, ok := document(t, "src/ptsip/engines/index.json")["engine_schema_refs"].(object)
+	if !ok {
+		t.Fatal("registered native engine schema references are missing")
+	}
+	ref, ok := refs[name].(string)
+	if !ok || ref == "" {
+		t.Fatal("unregistered native engine schema", name)
+	}
+	return testrepo.Open(testrepo.Root(t)).Validate(ref, value)
 }
 
 func digest(t *testing.T, ref string) string {

@@ -10,7 +10,7 @@
     "FAIL": 2
   },
   "errors_are_structured": true,
-  "multiple_requests_per_process": "FORBIDDEN",
+  "multiple_requests_per_process": "REGISTERED_NDJSON_SESSION_OPT_IN",
   "does_not_redefine_capability_semantics": true,
   "execution_permission_from_binding": false,
   "request_schema": {
@@ -109,5 +109,19 @@
         "const": "NOT_PROVIDED_BY_RESULT"
       }
     }
+  },
+  "persistent_session": {
+    "argument": "--serve",
+    "request_encoding": "ONE_UTF8_JSON_OBJECT_PER_LINE",
+    "response_encoding": "ONE_UTF8_JSON_OBJECT_PER_LINE",
+    "max_request_bytes": 1048576,
+    "shutdown": "STDIN_EOF",
+    "host_lifecycle_owner": "EXPLICIT_CALLER_PROCESS",
+    "supported_engine_kinds": [
+      "DISCOVERY",
+      "VALIDATION",
+      "PROJECTION"
+    ],
+    "automatic_activation": false
   }
 }

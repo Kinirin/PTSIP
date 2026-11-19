@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45",
-  "version": "2.0.1",
+  "version": "2.2.0",
   "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
   "semantic_owner": "PROJECTION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -80,7 +80,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.0.1",
+        "contract_version": "2.2.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -214,11 +214,260 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.0.1",
+        "contract_version": "2.2.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
         "algorithm": "VERIFY_CURRENT_CONTEXT_SNAPSHOT_AND_SOURCE_THEN_APPLY_REGISTERED_PROJECTION_FIELDS_AND_OUTPUT_SCHEMA",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "projection.profile.metadata",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "profile_contract_version": {
+            "enum": [
+              "pp.1.01",
+              "pp.1.02",
+              "pp.2.00"
+            ]
+          },
+          "specification_source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "specification_revision": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "specification_family": {
+            "type": "string",
+            "minLength": 1
+          },
+          "user_revision": {
+            "type": "string",
+            "pattern": "^Rev\\.[0-9]{4}$",
+            "not": {
+              "const": "Rev.0000"
+            }
+          },
+          "profile_role": {
+            "enum": [
+              "PROJECT",
+              "DISTRIBUTED_EXAMPLE"
+            ]
+          },
+          "schema_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "profile_contract_version",
+          "specification_source",
+          "specification_revision",
+          "schema_ref"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "profile_contract_version": {
+              "const": "pp.1.01"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "specification_family"
+          ],
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "user_revision"
+                ]
+              },
+              {
+                "required": [
+                  "profile_role"
+                ]
+              }
+            ]
+          }
+        },
+        "else": {
+          "not": {
+            "required": [
+              "specification_family"
+            ]
+          }
+        }
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "enum": [
+                  "pp.1.01",
+                  "pp.1.02",
+                  "pp.2.00"
+                ]
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^Rev\\.[0-9]{4}$",
+                "not": {
+                  "const": "Rev.0000"
+                }
+              },
+              "profile_role": {
+                "enum": [
+                  "PROJECT",
+                  "DISTRIBUTED_EXAMPLE"
+                ]
+              },
+              "specification": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}$"
+                  },
+                  "family": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "source",
+                  "revision"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "version",
+              "specification"
+            ],
+            "additionalProperties": false,
+            "if": {
+              "properties": {
+                "version": {
+                  "const": "pp.1.01"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "specification": {
+                  "required": [
+                    "family"
+                  ]
+                }
+              },
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "revision"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "profile_role"
+                    ]
+                  }
+                ]
+              }
+            },
+            "else": {
+              "required": [
+                "revision",
+                "profile_role"
+              ],
+              "properties": {
+                "specification": {
+                  "not": {
+                    "required": [
+                      "family"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "serialized_header": {
+            "type": "string",
+            "minLength": 1
+          },
+          "schema_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "metadata",
+          "serialized_header",
+          "schema_ref",
+          "evidence_refs"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine-data:projection-profile:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/projection/src/schemas/profile.schema.json#/$defs/metadata_input",
+          "sha256": "163cc88b8e0a3b2f0c9288fb7d98fb5511dcd90bf2e5cfbfca317e54d197e2f1"
+        },
+        "output_schema_ref": "src/ptsip/engines/projection/src/schemas/profile.schema.json#/$defs/metadata_output"
+      },
+      "compatibility": {
+        "contract_version": "2.2.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "PROJECT_EXPLICIT_PROFILE_AND_SPECIFICATION_METADATA_WITHOUT_SOURCE_MUTATION",
         "normative_authority_from_runtime_result": false
       }
     }

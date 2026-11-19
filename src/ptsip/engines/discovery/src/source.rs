@@ -1,4 +1,6 @@
 // Engine-owned source verification. No imports from another engine implementation.
+use saphyr::{Scalar, Yaml, YamlLoader};
+use saphyr_parser::{Event, Parser, SpannedEventReceiver};
 use serde::de::{self, MapAccess, SeqAccess, Visitor};
 use serde::{Deserialize, Deserializer};
 use serde_json::{Map, Number, Value};
@@ -101,14 +103,66 @@ pub struct Root {
     path: PathBuf,
     sources: BTreeMap<String, String>,
 }
+
+fn source_alias(metadata: &fs::Metadata) -> bool {
+    if metadata.file_type().is_symlink() {
+        return true;
+    }
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::MetadataExt;
+        // Junctions and other reparse points must not bypass owner-root binding.
+        if metadata.file_attributes() & 0x400 != 0 {
+            return true;
+        }
+    }
+    false
+}
+
 impl Root {
     pub fn new(path: &str) -> Result<Self, String> {
+        if path.is_empty() {
+            return Err("selected owner root is empty".into());
+        }
+        let supplied = Path::new(path);
+        let absolute = if supplied.is_absolute() {
+            supplied.to_owned()
+        } else {
+            std::env::current_dir()
+                .map_err(|e| e.to_string())?
+                .join(supplied)
+        };
+        let mut checked = PathBuf::new();
+        for component in absolute.components() {
+            match component {
+                Component::CurDir => continue,
+                Component::ParentDir => {
+                    checked.pop();
+                }
+                component => checked.push(component.as_os_str()),
+            }
+            // A Windows drive prefix is completed by the next root component.
+            if matches!(component, Component::Prefix(_)) {
+                continue;
+            }
+            let metadata = fs::symlink_metadata(&checked).map_err(|e| e.to_string())?;
+            if source_alias(&metadata) {
+                return Err("selected owner root contains an unregistered source alias".into());
+            }
+            if !metadata.is_dir() {
+                return Err("selected owner root must be a directory".into());
+            }
+        }
         Ok(Self {
-            path: fs::canonicalize(path).map_err(|e| e.to_string())?,
+            path: fs::canonicalize(checked).map_err(|e| e.to_string())?,
             sources: BTreeMap::new(),
         })
     }
-    pub fn path(&self, reference: &str) -> Result<PathBuf, String> {
+    fn checked_path(
+        &self,
+        reference: &str,
+        allow_missing: bool,
+    ) -> Result<Option<PathBuf>, String> {
         let relative = Path::new(reference);
         if reference.is_empty()
             || reference.contains('\\')
@@ -120,21 +174,35 @@ impl Root {
             return Err("source must be normal owner-relative path".into());
         }
         let mut path = self.path.clone();
-        for component in relative.components() {
+        let mut components = relative.components().peekable();
+        while let Some(component) = components.next() {
             path.push(component);
-            if fs::symlink_metadata(&path)
-                .map_err(|e| e.to_string())?
-                .file_type()
-                .is_symlink()
-            {
+            let metadata = match fs::symlink_metadata(&path) {
+                Ok(metadata) => metadata,
+                Err(error) if allow_missing && error.kind() == std::io::ErrorKind::NotFound => {
+                    return Ok(None)
+                }
+                Err(error) => return Err(error.to_string()),
+            };
+            if source_alias(&metadata) {
                 return Err("unregistered source alias".into());
+            }
+            if components.peek().is_some() && !metadata.is_dir() {
+                return Err("source ancestor must be a directory".into());
             }
         }
         let path = fs::canonicalize(path).map_err(|e| e.to_string())?;
         if !path.starts_with(&self.path) {
             return Err("source escapes selected owner root".into());
         }
-        Ok(path)
+        Ok(Some(path))
+    }
+    pub fn path(&self, reference: &str) -> Result<PathBuf, String> {
+        self.checked_path(reference, false)?
+            .ok_or_else(|| "source does not exist".into())
+    }
+    pub fn exists(&self, reference: &str) -> Result<bool, String> {
+        Ok(self.checked_path(reference, true)?.is_some())
     }
     pub fn bytes(&self, reference: &str, max: u64) -> Result<Vec<u8>, String> {
         let path = self.path(reference)?;
@@ -302,4 +370,71 @@ pub fn invocation(
     jsonschema::validate(&operations[0]["typed_input"], &request["input"])
         .map_err(|e| format!("native request input: {e}"))?;
     Ok((invocation, request, path))
+}
+
+// Strict bounded YAML normalization for registered Profile resources.
+pub fn parse_yaml(bytes: &[u8]) -> Result<Value, String> {
+    let text = std::str::from_utf8(bytes).map_err(|error| error.to_string())?;
+    let mut loader = YamlLoader::<Yaml>::default();
+    let mut depth = 0;
+    let mut document_started = false;
+    for event in Parser::new_from_str(text) {
+        let (mut event, span) = event.map_err(|error| error.to_string())?;
+        match &mut event {
+            Event::DocumentStart(_) => {
+                if document_started {
+                    return Err("expected one YAML document".into());
+                }
+                document_started = true;
+            }
+            Event::Alias(_) => return Err("YAML aliases are unsupported".into()),
+            Event::Scalar(_, _, anchor, _) => *anchor = 0,
+            Event::MappingStart(anchor, _) | Event::SequenceStart(anchor, _) => {
+                if depth == 128 {
+                    return Err("YAML nesting limit exceeded".into());
+                }
+                depth += 1;
+                *anchor = 0;
+            }
+            Event::MappingEnd | Event::SequenceEnd => depth -= 1,
+            _ => {}
+        }
+        loader.on_event(event, span);
+        if let Some(error) = loader.error() {
+            return Err(error.to_string());
+        }
+    }
+    let document = loader
+        .into_documents()
+        .pop()
+        .ok_or("expected one YAML document")?;
+    yaml_value(document)
+}
+
+fn yaml_value(node: Yaml<'_>) -> Result<Value, String> {
+    match node {
+        Yaml::Value(Scalar::Null) => Ok(Value::Null),
+        Yaml::Value(Scalar::Boolean(value)) => Ok(Value::Bool(value)),
+        Yaml::Value(Scalar::Integer(value)) => Ok(Value::Number(value.into())),
+        Yaml::Value(Scalar::FloatingPoint(value)) => Number::from_f64(value.into_inner())
+            .map(Value::Number)
+            .ok_or_else(|| "non-finite YAML number".into()),
+        Yaml::Value(Scalar::String(value)) => Ok(Value::String(value.into_owned())),
+        Yaml::Sequence(items) => items
+            .into_iter()
+            .map(yaml_value)
+            .collect::<Result<Vec<_>, _>>()
+            .map(Value::Array),
+        Yaml::Mapping(entries) => {
+            let mut object = Map::new();
+            for (key, value) in entries {
+                let Yaml::Value(Scalar::String(key)) = key else {
+                    return Err("YAML mapping keys must be strings".into());
+                };
+                object.insert(key.into_owned(), yaml_value(value)?);
+            }
+            Ok(Value::Object(object))
+        }
+        _ => Err("YAML node cannot be represented as JSON".into()),
+    }
 }

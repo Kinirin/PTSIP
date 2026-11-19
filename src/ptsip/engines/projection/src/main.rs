@@ -5,7 +5,11 @@ const MANIFEST: &str = include_str!("../manifest.json");
 mod rendering;
 mod cli;
 mod source;
+mod profile;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    if operation == "projection.profile.metadata" {
+        return profile::metadata(input);
+    }
     if operation == "projection.render" {
         return rendering::render(input);
     }
@@ -53,6 +57,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+"projection.profile.metadata" => "PROJECT_EXPLICIT_PROFILE_AND_SPECIFICATION_METADATA_WITHOUT_SOURCE_MUTATION",
 "projection.render" => "VERIFY_CURRENT_CONTEXT_SNAPSHOT_AND_SOURCE_THEN_APPLY_REGISTERED_PROJECTION_FIELDS_AND_OUTPUT_SCHEMA",
 
         "projection.select" => {

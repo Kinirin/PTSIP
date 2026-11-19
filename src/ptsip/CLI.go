@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
@@ -185,7 +186,7 @@ func validateOperationOwners(index indexDocument) error {
 	return nil
 }
 
-func route(root, scripts string, index indexDocument, operation string) error {
+func route(root, scripts string, index indexDocument, operation string, persistent bool) error {
 	var selected *engineEntry
 	for _, entry := range index.Entries {
 		for _, declared := range entry.Operations {
@@ -264,6 +265,29 @@ func route(root, scripts string, index indexDocument, operation string) error {
 	if err != nil || !info.Mode().IsRegular() {
 		return fmt.Errorf("%s executable unavailable in the selected directory", entry.Kind)
 	}
+	if persistent {
+		var transport struct {
+			Session struct {
+				Argument string   `json:"argument"`
+				Request  string   `json:"request_encoding"`
+				Response string   `json:"response_encoding"`
+				Kinds    []string `json:"supported_engine_kinds"`
+				Limit    int      `json:"max_request_bytes"`
+				Shutdown string   `json:"shutdown"`
+			} `json:"persistent_session"`
+		}
+		if _, err := readEngineResource(root, binding.Transport.Path, &transport); err != nil {
+			return err
+		}
+		supported := false
+		for _, kind := range transport.Session.Kinds {
+			supported = supported || kind == entry.Kind
+		}
+		if !supported || transport.Session.Argument != "--serve" || transport.Session.Request != "ONE_UTF8_JSON_OBJECT_PER_LINE" || transport.Session.Response != "ONE_UTF8_JSON_OBJECT_PER_LINE" || transport.Session.Limit != 1<<20 || transport.Session.Shutdown != "STDIN_EOF" {
+			return errors.New("engine has no registered persistent session transport")
+		}
+		return routeSession(path, root, operation)
+	}
 	// Read only the routing field. The engine owns the envelope, input and
 	// operation validation and receives the original bytes.
 	const limit = 1 << 20
@@ -291,6 +315,92 @@ func route(root, scripts string, index indexDocument, operation string) error {
 	cmd.Env = append(os.Environ(), "PTSIP_GO_CLI="+adapter, "PTSIP_USER_CONTRACT_ROOT="+root)
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = bytes.NewReader(raw), os.Stdout, os.Stderr
 	return cmd.Run()
+}
+
+// The foreground router owns its native child's lifetime. An idle session stays
+// available until stdin closes; no detached process or service is installed.
+func routeSession(path, root, operation string) error {
+	cmd := exec.Command(path, "--serve")
+	adapter, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	cmd.Env = append(os.Environ(), "PTSIP_GO_CLI="+adapter, "PTSIP_USER_CONTRACT_ROOT="+root)
+	cmd.Stderr = os.Stderr
+	input, err := cmd.StdinPipe()
+	if err != nil {
+		return err
+	}
+	output, err := cmd.StdoutPipe()
+	if err != nil {
+		return err
+	}
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+	finished := false
+	defer func() {
+		if !finished {
+			_ = input.Close()
+			_ = cmd.Process.Kill()
+			_ = cmd.Wait()
+		}
+	}()
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Buffer(make([]byte, 4096), (1<<20)+2)
+	reader := bufio.NewReader(output)
+	for scanner.Scan() {
+		raw := scanner.Bytes()
+		if len(raw) > 1<<20 {
+			return errors.New("request exceeds engine transport limit")
+		}
+		var envelope struct {
+			Operation string `json:"operation_id"`
+		}
+		if err := json.Unmarshal(raw, &envelope); err != nil {
+			return fmt.Errorf("invalid routing envelope: %w", err)
+		}
+		if envelope.Operation != operation {
+			return errors.New("request operation differs from the selected route")
+		}
+		if _, err := input.Write(append(append([]byte{}, raw...), '\n')); err != nil {
+			return err
+		}
+		// Responses are bounded independently of the incoming request budget.
+		var response []byte
+		for {
+			part, readErr := reader.ReadSlice('\n')
+			response = append(response, part...)
+			if len(response) > 8<<20 {
+				return errors.New("native session response limit exceeded")
+			}
+			if readErr == nil {
+				break
+			}
+			if readErr != bufio.ErrBufferFull {
+				return fmt.Errorf("incomplete native session response: %w", readErr)
+			}
+		}
+		if len(response) > 8<<20 || len(response) == 0 || response[len(response)-1] != '\n' {
+			return errors.New("native session response limit exceeded")
+		}
+		var result map[string]any
+		if err := json.Unmarshal(response, &result); err != nil {
+			return fmt.Errorf("invalid native session response: %w", err)
+		}
+		if _, err := os.Stdout.Write(response); err != nil {
+			return err
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+	if err := input.Close(); err != nil {
+		return err
+	}
+	err = cmd.Wait()
+	finished = true
+	return err
 }
 
 func listOperations(index indexDocument) error {
@@ -336,7 +446,7 @@ func doctor(target string) error {
 	return nil
 }
 
-const usage = "Usage: ptsip help | doctor <directory> | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass one complete versioned JSON request from stdin to the registered native CLI."
+const usage = "Usage: ptsip help | doctor <directory> | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id> | engine-serve <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass versioned JSON requests to the registered native CLI; engine-serve keeps a caller-owned JSON-lines session available until stdin EOF."
 
 func run(args []string) error {
 	if len(args) == 0 || (len(args) == 1 && (args[0] == "help" || args[0] == "--help" || args[0] == "-h")) {
@@ -349,7 +459,7 @@ func run(args []string) error {
 	if len(args) == 2 && args[0] == "--user-contracts-worker" {
 		return usercontracts.RunWorker(args[1], os.Stdin, os.Stdout)
 	}
-	if !(len(args) == 2 && args[0] == "operations") && !(len(args) == 4 && args[0] == "engine") {
+	if !(len(args) == 2 && args[0] == "operations") && !(len(args) == 4 && (args[0] == "engine" || args[0] == "engine-serve")) {
 		return errors.New(usage)
 	}
 	root, err := filepath.Abs(args[1])
@@ -377,7 +487,7 @@ func run(args []string) error {
 	if err != nil {
 		return err
 	}
-	return route(root, scripts, index, args[3])
+	return route(root, scripts, index, args[3], args[0] == "engine-serve")
 }
 
 func main() {

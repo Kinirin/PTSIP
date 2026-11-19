@@ -5,26 +5,32 @@
   "contract_owner": "src/policy/CNTR/SFP-CNTR-0005.yaml",
   "authority_role": "REGISTERED_OFFICIAL_ENGINE_CONTRACT_ROUTE",
   "engine_schema_refs": {
-    "core-manifest": "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
-    "capability-contract": "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
-    "federated-source": "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
-    "derived-state": "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
-    "transport-binding": "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
-    "attempt-result": "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
-    "effect-evidence": "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
-    "stop-request": "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
-    "stop-ack": "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
-    "stop-result": "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
-    "storage-mediation": "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
-    "consumer-handoff": "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
-    "contract-relation": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
-    "dependency-graph": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
-    "impact-result": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
-    "execution-binding": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
-    "registry-snapshot": "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
-    "registry-verification-input": "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
-    "native-invocation-registry": "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
-    "runtime-authority-consumption": "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json"
+    "core-manifest": "src/ptsip/engines/discovery/src/schemas/core-manifest.schema.json",
+    "capability-contract": "src/ptsip/engines/discovery/src/schemas/capability-contract.schema.json",
+    "federated-source": "src/ptsip/engines/discovery/src/schemas/federated-source.schema.json",
+    "derived-state": "src/ptsip/engines/discovery/src/schemas/derived-state.schema.json",
+    "transport-binding": "src/ptsip/engines/discovery/src/schemas/transport-binding.schema.json",
+    "attempt-result": "src/ptsip/engines/execution/src/schemas/attempt-result.schema.json",
+    "effect-evidence": "src/ptsip/engines/execution/src/schemas/effect-evidence.schema.json",
+    "stop-request": "src/ptsip/engines/execution/src/schemas/stop-request.schema.json",
+    "stop-ack": "src/ptsip/engines/execution/src/schemas/stop-ack.schema.json",
+    "stop-result": "src/ptsip/engines/execution/src/schemas/stop-result.schema.json",
+    "storage-mediation": "src/ptsip/engines/storage/src/schemas/storage-mediation.schema.json",
+    "consumer-handoff": "src/ptsip/engines/validation/src/schemas/consumer-handoff.schema.json",
+    "contract-relation": "src/ptsip/engines/validation/src/schemas/contract-relation.schema.json",
+    "dependency-graph": "src/ptsip/engines/validation/src/schemas/dependency-graph.schema.json",
+    "impact-result": "src/ptsip/engines/validation/src/schemas/impact-result.schema.json",
+    "execution-binding": "src/ptsip/engines/discovery/src/schemas/execution-binding.schema.json",
+    "registry-snapshot": "src/ptsip/engines/discovery/src/schemas/registry-snapshot.schema.json",
+    "registry-verification-input": "src/ptsip/engines/discovery/src/schemas/registry-verification-input.schema.json",
+    "native-invocation-registry": "src/ptsip/engines/discovery/src/schemas/native-invocation-registry.schema.json",
+    "runtime-authority-consumption": "src/ptsip/engines/execution/src/schemas/runtime-authority-consumption.schema.json",
+    "tpbg-f3": "src/ptsip/engines/discovery/src/schemas/tpbg-f3.schema.json",
+    "discovery-profile": "src/ptsip/engines/discovery/src/schemas/profile.schema.json",
+    "discovery-rule-records": "src/ptsip/engines/discovery/src/schemas/rule-records.schema.json",
+    "validation-profile": "src/ptsip/engines/validation/src/schemas/profile.schema.json",
+    "validation-rule-records": "src/ptsip/engines/validation/src/schemas/rule-records.schema.json",
+    "projection-profile": "src/ptsip/engines/projection/src/schemas/profile.schema.json"
   },
   "transport_contract_ref": "src/ptsip/engines/contracts/stdio-transport.json",
   "official_engine_entries": [
@@ -92,7 +98,10 @@
         "validation.rbac.ra",
         "validation.rbac.rac",
         "validation.rbac.aec",
-        "validation.rbac.references"
+        "validation.rbac.references",
+        "validation.profile.identity",
+        "validation.profile.transition",
+        "validation.profile.rules"
       ],
       "capability_id": "urn:uuid:450659b1-1e89-4138-91d3-8dcbf6d6dc1a",
       "previous_candidate_contract_ref": "src/ptsip/engines/validation/contracts/2.0.0.json"
@@ -112,7 +121,10 @@
         "discovery.verify-registry",
         "discovery.verify-invocation",
         "discovery.check-environment",
-        "discovery.planning"
+        "discovery.planning",
+        "discovery.profile.contract",
+        "discovery.profile.catalog",
+        "discovery.profile.rules"
       ],
       "capability_id": "urn:uuid:6cc343f5-a3af-404e-a22f-8d57f861bb97",
       "previous_candidate_contract_ref": "src/ptsip/engines/discovery/contracts/2.0.0.json"
@@ -147,7 +159,8 @@
       "version": "0.2.2",
       "operations": [
         "projection.select",
-        "projection.render"
+        "projection.render",
+        "projection.profile.metadata"
       ],
       "capability_id": "urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45",
       "previous_candidate_contract_ref": "src/ptsip/engines/projection/contracts/1.0.0.json"

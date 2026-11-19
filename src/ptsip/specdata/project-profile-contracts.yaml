@@ -2,47 +2,55 @@ schema_version: ptsip-project-profile-contract-registry/v1
 authority: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
 current: pp.2.00
 profile_source:
-  root: src/ptsip/profiles
-  catalog: src/ptsip/profiles/index.yaml
-  history_root: src/ptsip/profiles/history
-  history_distribution: SOURCE_ONLY
+  root: src/ptsip/schemas/storage/profile
+  catalog: src/ptsip/schemas/config.json
+  history_root: src/ptsip/schemas/storage/profile/history
+  history_distribution: SCHEMA_CONTRACTS
 contracts:
-  - version: pp.0.00
-    lifecycle: LEGACY_COMPATIBILITY_ONLY
-    operations:
-      - IDENTIFY
-    schema: null
-  - version: pp.1.01
-    lifecycle: SUPERSEDED
-    operations:
-      - IDENTIFY
-      - VALIDATE
-      - ANALYZE
-      - CREATE_TARGET
-    schema: schemas/ptsip-profile-pp-1.01.schema.json
-    baseline: src/ptsip/profiles/history/pp.1.01
-  - version: pp.1.02
-    lifecycle: SUPERSEDED
-    operations:
-      - IDENTIFY
-      - VALIDATE
-      - ANALYZE
-      - CREATE_TARGET
-    schema: schemas/ptsip-profile-pp-1.02.schema.json
-    baseline: src/ptsip/profiles/history/pp.1.02
-  - version: pp.2.00
-    lifecycle: CURRENT
-    operations:
-      - IDENTIFY
-      - VALIDATE
-      - ANALYZE
-      - CREATE_TARGET
-    schema: schemas/ptsip-profile-pp-2.00.schema.json
-    baseline: src/ptsip/profiles/history/pp.2.00
+- version: pp.0.00
+  lifecycle: DEPRECATED
+  operations:
+  - IDENTIFY
+  schema: null
+- version: pp.1.01
+  lifecycle: DEPRECATED
+  operations:
+  - IDENTIFY
+  - VALIDATE
+  - ANALYZE
+  - CREATE_TARGET
+  schema: schemas/storage/profile/history/project-profile-pp.1.01.schema.json
+- version: pp.1.02
+  lifecycle: DEPRECATED
+  operations:
+  - IDENTIFY
+  - VALIDATE
+  - ANALYZE
+  - CREATE_TARGET
+  schema: schemas/storage/profile/history/project-profile-pp.1.02.schema.json
+- version: pp.2.00
+  lifecycle: ACTIVE
+  operations:
+  - IDENTIFY
+  - VALIDATE
+  - ANALYZE
+  - CREATE_TARGET
+  schema: schemas/storage/profile/history/project-profile-pp.2.00.schema.json
 transitions:
-  - from: pp.1.01
-    to: pp.1.02
-    kind: SEMANTIC_MIGRATION
-  - from: pp.1.02
-    to: pp.2.00
-    kind: IDENTITY_ONLY
+- from: pp.1.01
+  to: pp.1.02
+  kind: SEMANTIC_MIGRATION
+- from: pp.1.02
+  to: pp.2.00
+  kind: IDENTITY_ONLY
+historical_bridges:
+- declared_version: 0.3.4-draft
+  specification_revision: b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
+  target_contract: pp.1.01
+  transition_kind: SEMANTIC_MIGRATION
+  legacy_target_filename: ptsip_0.3.6.yaml
+- declared_version: 0.3.6-draft
+  specification_revision: d6995ed232e845b88d8235b851e80ab54b7804ea
+  target_contract: pp.1.01
+  transition_kind: IDENTITY_ONLY
+  legacy_target_filename: ptsip_0.3.6.yaml

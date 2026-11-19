@@ -51,7 +51,10 @@
         "validation.rbac.ra",
         "validation.rbac.rac",
         "validation.rbac.aec",
-        "validation.rbac.references"
+        "validation.rbac.references",
+        "validation.profile.identity",
+        "validation.profile.transition",
+        "validation.profile.rules"
       ],
       "source_root": "src/ptsip/engines/validation",
       "legacy_owner_transfer": false
@@ -66,7 +69,10 @@
         "discovery.verify-registry",
         "discovery.verify-invocation",
         "discovery.check-environment",
-        "discovery.planning"
+        "discovery.planning",
+        "discovery.profile.contract",
+        "discovery.profile.catalog",
+        "discovery.profile.rules"
       ],
       "source_root": "src/ptsip/engines/discovery",
       "legacy_owner_transfer": false
@@ -91,7 +97,8 @@
       "implementation_ref": "src/ptsip/engines/projection/Cargo.toml",
       "operation_ids": [
         "projection.select",
-        "projection.render"
+        "projection.render",
+        "projection.profile.metadata"
       ],
       "source_root": "src/ptsip/engines/projection",
       "legacy_owner_transfer": false

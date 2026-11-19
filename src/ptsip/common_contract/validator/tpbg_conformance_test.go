@@ -29,7 +29,7 @@ func TestTPBGF3StructuralConformance(t *testing.T) {
 		return object
 	}
 
-	doc := readObject(t, filepath.Join(discovery, "tpbg-f3.schema.json"))
+	doc := readObject(t, filepath.Join(discovery, "src", "schemas", "tpbg-f3.schema.json"))
 	id, ok := doc["$id"].(string)
 	if !ok || id == "" || doc["$schema"] != validator.Draft {
 		t.Fatal("TPBG F3 must declare a schema identity and Draft 2020-12")

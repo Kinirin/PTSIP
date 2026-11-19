@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import sys
 from pathlib import Path
 from shutil import copy2, copytree, rmtree
@@ -11,9 +13,6 @@ from setuptools.command.build_py import build_py as _build_py
 
 ROOT = Path(__file__).resolve().parent
 CANONICAL_SUPPORT_POLICY = ROOT / "src" / "policy"
-CANONICAL_PUBLIC_PROFILES = ROOT / "src" / "ptsip" / "profiles"
-CANONICAL_PUBLIC_PROFILE_CATALOG = CANONICAL_PUBLIC_PROFILES / "index.yaml"
-CANONICAL_PP_CONTRACT_REGISTRY = ROOT / "registry" / "project-profile-contracts.yaml"
 CANONICAL_RBAC_SCHEMA_ROOT = ROOT / ".ptsip" / "contracts" / "compile-sealed-rbac"
 CANONICAL_RBAC_FIELDS = ROOT / "registry" / "compile-sealed-rbac-registry-fields.json"
 PP200_CANDIDATE_ASSET = "ptsip-profile-pp-2.00.candidate.schema.json"
@@ -85,127 +84,103 @@ def _project_support_policy(build_lib: Path) -> None:
     copytree(source / "registries", target / "registries")
 
 
-def _registered_public_profile_resources() -> tuple[str, ...]:
-    catalog = _load_yaml(CANONICAL_PUBLIC_PROFILE_CATALOG)
-    if catalog.get("root") != "src/ptsip/profiles":
-        raise RuntimeError("public Profile catalog root must be 'src/ptsip/profiles'")
+def _project_profile_contracts(build_lib: Path) -> None:
+    """Stage registered Profile schemas and support data from distributable source."""
+    schema_root = ROOT / "src" / "ptsip" / "schemas"
+    config_bytes = (schema_root / "config.json").read_bytes()
+    config = json.loads(config_bytes)
+    profiles = config.get("storage", {}).get("profile")
+    expected = {
+        "ptsip.project-profile": ("pp.2.00", "storage/profile/project-profile.schema.json"),
+        **{
+            f"ptsip.project-profile.{version}": (
+                version, f"storage/profile/history/project-profile-{version}.schema.json"
+            )
+            for version in ("pp.1.01", "pp.1.02", "pp.2.00")
+        },
+    }
+    if not isinstance(profiles, dict) or set(profiles) != set(expected):
+        raise RuntimeError("central Profile schema catalog must contain exactly four registered resources")
 
-    profiles = catalog.get("profiles")
-    if not isinstance(profiles, list) or not profiles:
-        raise RuntimeError("public Profile catalog must contain registered profiles")
-
-    resources: list[str] = []
-    for entry in profiles:
-        if not isinstance(entry, dict):
-            raise RuntimeError("public Profile catalog entries must be mappings")
-        resource = entry.get("resource")
+    assets: list[tuple[str, bytes]] = []
+    ids: set[str] = set()
+    selected_id = None
+    for key, (version, relative) in expected.items():
+        row = profiles[key]
+        lifecycle = "ACTIVE" if version == "pp.2.00" else "DEPRECATED"
         if (
-            not isinstance(resource, str)
-            or Path(resource).name != resource
-            or not resource.endswith(".ptsip.yaml")
+            not isinstance(row, dict)
+            or row.get("path") != relative
+            or row.get("version") != version
+            or row.get("registered_lifecycle") != lifecycle
         ):
-            raise RuntimeError(
-                f"public Profile catalog contains invalid resource identity: {resource!r}"
-            )
-        resources.append(resource)
+            raise RuntimeError(f"invalid central Profile schema registration: {key}")
+        data = (schema_root / relative).read_bytes()
+        schema = json.loads(data)
+        identity = schema.get("$id")
+        digest = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
+        if (
+            not isinstance(identity, str)
+            or not identity
+            or identity != row.get("$id")
+            or identity in ids
+            or digest != row.get("schema_sha256")
+        ):
+            raise RuntimeError(f"central Profile schema identity or immutable digest mismatch: {key}")
+        ids.add(identity)
+        if key == "ptsip.project-profile":
+            selected_id = schema.get("$ref")
+        elif schema.get("properties", {}).get("ptsip", {}).get("properties", {}).get("version", {}).get("const") != version:
+            raise RuntimeError(f"central Profile schema version mismatch: {key}")
+        assets.append((relative, data))
+    if selected_id != profiles["ptsip.project-profile.pp.2.00"]["$id"]:
+        raise RuntimeError("current Profile selector must reference the registered pp.2.00 schema")
 
-    if len(resources) != len(set(resources)):
-        raise RuntimeError("public Profile catalog resource identities must be unique")
+    support_bytes = EMBEDDED_PP_CONTRACT_REGISTRY.read_bytes()
+    support = yaml.safe_load(support_bytes)
+    if not isinstance(support, dict) or support.get("current") != "pp.2.00":
+        raise RuntimeError("distributed Profile support catalog current version mismatch")
+    contracts = support.get("contracts")
+    if not isinstance(contracts, list):
+        raise RuntimeError("distributed Profile support catalog contracts must be an array")
+    for version in ("pp.1.01", "pp.1.02", "pp.2.00"):
+        rows = [row for row in contracts if isinstance(row, dict) and row.get("version") == version]
+        registration = profiles[f"ptsip.project-profile.{version}"]
+        if (
+            len(rows) != 1
+            or rows[0].get("schema") != f"schemas/{registration['path']}"
+            or rows[0].get("lifecycle") != registration["registered_lifecycle"]
+        ):
+            raise RuntimeError(f"distributed Profile support catalog resource mismatch: {version}")
 
-    discovered = sorted(path.name for path in CANONICAL_PUBLIC_PROFILES.glob("*.ptsip.yaml"))
-    if sorted(resources) != discovered:
-        raise RuntimeError(
-            "public Profile catalog must cover canonical root *.ptsip.yaml exactly"
-        )
-    return tuple(resources)
-
-
-def _registered_profile_baselines() -> tuple[tuple[str, Path], ...]:
-    registry = _load_yaml(CANONICAL_PP_CONTRACT_REGISTRY)
-    if CANONICAL_PP_CONTRACT_REGISTRY.read_bytes() != EMBEDDED_PP_CONTRACT_REGISTRY.read_bytes():
-        raise RuntimeError(
-            "canonical and embedded Project Profile contract registries differ"
-        )
-
-    current = registry.get("current")
-    contracts = registry.get("contracts")
-    if not isinstance(current, str) or not isinstance(contracts, list):
-        raise RuntimeError("Project Profile contract registry current/contracts are invalid")
-
-    current_matches = [
-        item
-        for item in contracts
-        if isinstance(item, dict) and item.get("version") == current
-    ]
-    if len(current_matches) != 1 or current_matches[0].get("lifecycle") != "CURRENT":
-        raise RuntimeError("Project Profile registry current contract must resolve exactly once")
-
-    baselines: list[tuple[str, Path]] = []
-    for contract in contracts:
-        if not isinstance(contract, dict):
-            continue
-        version = contract.get("version")
-        baseline = contract.get("baseline")
-        if baseline is None:
-            continue
-        if not isinstance(version, str) or not isinstance(baseline, str):
-            raise RuntimeError("Project Profile baseline binding is invalid")
-        expected = f"src/ptsip/profiles/history/{version}"
-        if baseline != expected:
-            raise RuntimeError(
-                f"Project Profile baseline {baseline!r} must equal {expected!r}"
-            )
-        source = ROOT / baseline
-        if not source.is_dir():
-            raise RuntimeError(f"registered Project Profile baseline is missing: {baseline}")
-        if not any(source.glob("*.ptsip.yaml")):
-            raise RuntimeError(f"registered Project Profile baseline is empty: {baseline}")
-        baselines.append((version, source))
-
-    current_baseline = current_matches[0].get("baseline")
-    if current_baseline != f"src/ptsip/profiles/history/{current}":
-        raise RuntimeError("current Project Profile contract must bind its generation baseline")
-    return tuple(baselines)
-
-
-def _project_public_profiles(build_lib: Path) -> None:
-    resources = _registered_public_profile_resources()
-    _registered_profile_baselines()
-
-    target = build_lib / "ptsip" / "profiles"
+    target = build_lib / "ptsip" / "schemas"
     target.mkdir(parents=True, exist_ok=True)
-    # Preserve modules copied by build_py. History is source-only, including
-    # stale output left by an earlier build that shipped historical baselines.
-    history_target = target / "history"
-    if history_target.exists():
-        if not history_target.resolve().is_relative_to(build_lib.resolve()):
-            raise RuntimeError("historical build output escapes build directory")
-        rmtree(history_target)
-    for name in (
-        "profile_identity", "profile_metadata", "profile_compatibility",
-        "local_profile_catalog", "project_profile_contracts",
-    ):
-        retired = target.parent / f"{name}.py"
-        if retired.exists():
-            if not retired.resolve().is_relative_to(build_lib.resolve()):
-                raise RuntimeError("retired profile output escapes build directory")
-            retired.unlink()
-    for stale in target.glob("*.ptsip.yaml"):
-        if stale.name not in resources:
-            if not stale.resolve().is_relative_to(build_lib.resolve()):
-                raise RuntimeError("stale profile output escapes build directory")
-            stale.unlink()
+    (target / "config.json").write_bytes(config_bytes)
+    for relative, data in assets:
+        destination = target / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(data)
+    support_target = build_lib / "ptsip" / "specdata" / "project-profile-contracts.yaml"
+    support_target.parent.mkdir(parents=True, exist_ok=True)
+    support_target.write_bytes(support_bytes)
 
-    copy2(CANONICAL_PUBLIC_PROFILE_CATALOG, target / "index.yaml")
-    for resource in resources:
-        copy2(CANONICAL_PUBLIC_PROFILES / resource, target / resource)
-
-    specdata_target = build_lib / "ptsip" / "specdata"
-    specdata_target.mkdir(parents=True, exist_ok=True)
-    copy2(
-        CANONICAL_PP_CONTRACT_REGISTRY,
-        specdata_target / "project-profile-contracts.yaml",
-    )
+    # Separate YAML examples are retired distribution data. Python module
+    # discovery stays until all supported native consumers pass their own gate.
+    legacy = build_lib / "ptsip" / "profiles"
+    if legacy.exists():
+        if not legacy.resolve().is_relative_to(build_lib.resolve()):
+            raise RuntimeError("Profile build output escapes build directory")
+        stale_files = [legacy / "index.yaml", *legacy.rglob("*.ptsip.yaml")]
+        for stale in stale_files:
+            if stale.exists():
+                if not stale.resolve().is_relative_to(build_lib.resolve()):
+                    raise RuntimeError("stale Profile data escapes build directory")
+                stale.unlink()
+        history = legacy / "history"
+        if history.exists():
+            if not history.resolve().is_relative_to(build_lib.resolve()):
+                raise RuntimeError("historical Profile build output escapes build directory")
+            rmtree(history)
 
 
 def _project_rbac_contract_assets(build_lib: Path) -> None:
@@ -264,7 +239,7 @@ class build_py(_build_py):
                     raise RuntimeError("retired contract output escapes build directory")
                 stale.unlink()
         _project_support_policy(build_lib)
-        _project_public_profiles(build_lib)
+        _project_profile_contracts(build_lib)
         _project_rbac_contract_assets(build_lib)
 
 

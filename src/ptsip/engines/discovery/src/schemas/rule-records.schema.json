@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine:discovery:rule-records:v1",
+  "title": "Discovery-owned opaque rule record lookup; validation is separate",
+  "$defs": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ID": {
+                "type": "string",
+                "minLength": 1
+              },
+              "parent_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "rule_value": {}
+            },
+            "required": [
+              "ID"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "rule_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "repository_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "main_payload": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "records"
+          ],
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "repository_root"
+                ]
+              },
+              {
+                "required": [
+                  "main_payload"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "required": [
+            "repository_root"
+          ],
+          "not": {
+            "required": [
+              "records"
+            ]
+          }
+        }
+      ]
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "rule_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "record": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ID": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "parent_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "rule_value": {}
+              },
+              "required": [
+                "ID"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "DISCOVERED",
+            "RESOLVED",
+            "UNRESOLVED"
+          ]
+        },
+        "records_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "validation_verdict": {
+          "const": "NOT_ASSERTED"
+        },
+        "normative_authority": {
+          "const": false
+        },
+        "execution_authorized": {
+          "const": false
+        },
+        "identity_rewritten": {
+          "const": false
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ID": {
+                "type": "string",
+                "minLength": 1
+              },
+              "parent_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "rule_value": {}
+            },
+            "required": [
+              "ID"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "source_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "required": [
+        "rule_ids",
+        "rule_id",
+        "record",
+        "status",
+        "records_sha256",
+        "validation_verdict",
+        "normative_authority",
+        "execution_authorized",
+        "identity_rewritten",
+        "records",
+        "source_ref"
+      ],
+      "additionalProperties": false
+    },
+    "rule_profile": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ID": {
+                "type": "string",
+                "minLength": 1
+              },
+              "parent_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "rule_value": {}
+            },
+            "required": [
+              "ID"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "rules"
+      ]
+    }
+  }
+}

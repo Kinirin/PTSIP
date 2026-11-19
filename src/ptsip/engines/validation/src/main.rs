@@ -14,8 +14,16 @@ use source::planning;
 mod rbac;
 mod cli;
 mod user_contracts;
+mod profile;
+mod rule_records;
 
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    match operation {
+        "validation.profile.identity" => return profile::identity(input),
+        "validation.profile.transition" => return profile::transition(input),
+        "validation.profile.rules" => return rule_records::validate(input),
+        _ => {}
+    }
     if user_contracts::algorithm(operation).is_some() {
         return user_contracts::evaluate(operation, input);
     }
@@ -77,6 +85,9 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+        "validation.profile.identity" => "VALIDATE_EXPLICIT_SELECTED_PROFILE_IDENTITY_REVISION_AND_OPERATION_SUPPORT",
+        "validation.profile.transition" => "VERIFY_EXACT_REGISTERED_PROFILE_TRANSITION_WITHOUT_INTERMEDIATE_MATERIALIZATION",
+        "validation.profile.rules" => "VALIDATE_OPAQUE_RULE_RECORD_IDS_AND_EXPLICIT_RELATION_GRAPH",
         "validation.planning.impact" => "VERIFY_HASH_BOUND_DEPENDENCY_GRAPH_AND_REPORT_TRANSITIVE_CONSUMER_SCOPE",
         "validation.planning.prepare" => "VERIFY_EXPLICIT_PLAN_STEPS_AND_BOUND_INVOCATION_IDENTITIES_WITHOUT_EXECUTION",
 "validation.prepare-cases" => "VERIFY_CURRENT_CASE_CATALOG_REFERENCE_CLOSURE_AND_INDEPENDENT_INLINE_CASE_CONTRACTS",

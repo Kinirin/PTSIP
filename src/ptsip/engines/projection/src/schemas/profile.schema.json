@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine-data:projection-profile:v1",
+  "title": "Projection-owned native Project Profile metadata contracts",
+  "$defs": {
+    "metadata_input": {
+      "type": "object",
+      "properties": {
+        "profile_contract_version": { "enum": ["pp.1.01", "pp.1.02", "pp.2.00"] },
+        "specification_source": { "type": "string", "minLength": 1 },
+        "specification_revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "specification_family": { "type": "string", "minLength": 1 },
+        "user_revision": {
+          "type": "string",
+          "pattern": "^Rev\\.[0-9]{4}$",
+          "not": { "const": "Rev.0000" }
+        },
+        "profile_role": { "enum": ["PROJECT", "DISTRIBUTED_EXAMPLE"] },
+        "schema_ref": { "type": "string", "minLength": 1 },
+        "evidence_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      },
+      "required": ["profile_contract_version", "specification_source", "specification_revision", "schema_ref"],
+      "additionalProperties": false,
+      "if": { "properties": { "profile_contract_version": { "const": "pp.1.01" } } },
+      "then": {
+        "required": ["specification_family"],
+        "not": { "anyOf": [{ "required": ["user_revision"] }, { "required": ["profile_role"] }] }
+      },
+      "else": { "not": { "required": ["specification_family"] } }
+    },
+    "metadata_output": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "version": { "enum": ["pp.1.01", "pp.1.02", "pp.2.00"] },
+            "revision": {
+              "type": "string",
+              "pattern": "^Rev\\.[0-9]{4}$",
+              "not": { "const": "Rev.0000" }
+            },
+            "profile_role": { "enum": ["PROJECT", "DISTRIBUTED_EXAMPLE"] },
+            "specification": {
+              "type": "object",
+              "properties": {
+                "source": { "type": "string", "minLength": 1 },
+                "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+                "family": { "type": "string", "minLength": 1 }
+              },
+              "required": ["source", "revision"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["version", "specification"],
+          "additionalProperties": false,
+          "if": { "properties": { "version": { "const": "pp.1.01" } } },
+          "then": {
+            "properties": { "specification": { "required": ["family"] } },
+            "not": { "anyOf": [{ "required": ["revision"] }, { "required": ["profile_role"] }] }
+          },
+          "else": {
+            "required": ["revision", "profile_role"],
+            "properties": { "specification": { "not": { "required": ["family"] } } }
+          }
+        },
+        "serialized_header": { "type": "string", "minLength": 1 },
+        "schema_ref": { "type": "string", "minLength": 1 },
+        "evidence_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      },
+      "required": ["metadata", "serialized_header", "schema_ref", "evidence_refs"],
+      "additionalProperties": false
+    }
+  }
+}

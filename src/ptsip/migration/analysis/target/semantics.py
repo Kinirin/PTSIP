@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from ptsip.model import Classification, ResponsibilityRelationshipType
-from ptsip.profiles.identity import CURRENT_PROJECT_PROFILE_VERSION
+from ptsip.ptsip_specification.spec_identity import current_project_profile_version
 
 @dataclass(frozen=True)
 class TargetSemantics:
@@ -88,7 +88,7 @@ def default_target_semantics() -> TargetSemantics:
     """
 
     return TargetSemantics(
-        draft_version=CURRENT_PROJECT_PROFILE_VERSION,
+        draft_version=current_project_profile_version(),
         classifications=tuple(item.value for item in Classification),
         relationship_types=tuple(item.value for item in ResponsibilityRelationshipType),
     )

@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine:validation:profile",
+  "title": "Native Profile identity and exact transition I/O",
+  "$defs": {
+    "identity_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "selected_contract"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile_role": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operation": {
+          "enum": [
+            "IDENTIFY",
+            "VALIDATE",
+            "ANALYZE",
+            "MIGRATE_SOURCE",
+            "CREATE_TARGET",
+            null
+          ]
+        },
+        "filename_token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content": {
+          "type": "string"
+        },
+        "new_registration": {
+          "type": "boolean"
+        },
+        "selected_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "operations",
+            "schema_resource",
+            "lifecycle",
+            "source_sha256"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "operations": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "IDENTIFY",
+                  "VALIDATE",
+                  "ANALYZE",
+                  "MIGRATE_SOURCE",
+                  "CREATE_TARGET"
+                ]
+              }
+            },
+            "schema_resource": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lifecycle": {
+              "enum": [
+                "ACTIVE",
+                "LEGACY",
+                "DEPRECATED"
+              ]
+            },
+            "source_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "contract_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "allowed": {
+              "type": "boolean"
+            },
+            "notifications": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "code",
+                  "message",
+                  "mandatory"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "message": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "mandatory": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "identity_output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "filename_token",
+        "parsed_revision",
+        "instance_revision",
+        "profile_role",
+        "supported_operations",
+        "source_ref",
+        "source_sha256",
+        "status",
+        "notifications"
+      ],
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filename_token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parsed_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "instance_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile_role": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supported_operations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "IDENTIFY",
+              "VALIDATE",
+              "ANALYZE",
+              "MIGRATE_SOURCE",
+              "CREATE_TARGET"
+            ]
+          }
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "status": {
+          "enum": [
+            "SUPPORTED",
+            "UNSUPPORTED"
+          ]
+        },
+        "notifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message",
+              "mandatory"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mandatory": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "transition_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_contract_version",
+        "target_contract_version",
+        "transitions"
+      ],
+      "properties": {
+        "source_contract_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_contract_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "declared_transition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to",
+              "kind"
+            ],
+            "properties": {
+              "from": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "enum": [
+                  "IDENTITY_ONLY",
+                  "SEMANTIC_MIGRATION"
+                ]
+              }
+            }
+          }
+        },
+        "historical_bridges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "declared_version",
+              "specification_revision",
+              "target_contract",
+              "transition_kind"
+            ],
+            "properties": {
+              "declared_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "specification_revision": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_contract": {
+                "type": "string",
+                "minLength": 1
+              },
+              "transition_kind": {
+                "enum": [
+                  "IDENTITY_ONLY",
+                  "SEMANTIC_MIGRATION"
+                ]
+              },
+              "legacy_target_filename": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "transition_output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed",
+        "transition_kind",
+        "evidence_refs",
+        "intermediate_materialization_allowed",
+        "legacy_target_filename"
+      ],
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "transition_kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "intermediate_materialization_allowed": {
+          "const": false
+        },
+        "legacy_target_filename": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

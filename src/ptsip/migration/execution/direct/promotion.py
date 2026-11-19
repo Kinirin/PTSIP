@@ -3,7 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Mapping
 
-from ptsip.profiles.compatibility import require_direct_historical_transition
+import yaml
+
+from ptsip.ptsip_specification.spec_identity import native_profile_operation, profile_package_root
 from ptsip.repository.profile_convergence import DirectConvergenceMode, DirectConvergenceState, discover_direct_profile_convergence
 from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, profile_path_on_disk
 from ptsip.migration.execution.authorization.preconditions import _guard_matches
@@ -56,12 +58,19 @@ def build_legacy_target_identity_rewrite_plan(
         )
 
     target = state.target
-    bridge = require_direct_historical_transition(
-        target.declared_version,
-        target.specification_revision,
-        state.target_contract,
-    )
-    if bridge.legacy_target_filename != target.path:
+    registry = yaml.safe_load((profile_package_root() / "specdata" / "project-profile-contracts.yaml").read_text(encoding="utf-8"))
+    if not isinstance(registry, dict):
+        raise IdentityRewriteError("PP_RUNTIME_REGISTRY_INVALID", "Profile transition registry must be a mapping.")
+    bridge = native_profile_operation("validation.profile.transition", {
+        "source_contract_version": target.declared_version,
+        "source_revision": target.specification_revision,
+        "target_contract_version": state.target_contract.canonical,
+        "transitions": registry.get("transitions", []),
+        "historical_bridges": registry.get("historical_bridges", []),
+    })
+    if bridge.get("allowed") is not True:
+        raise IdentityRewriteError("PP_COMPAT_UNSUPPORTED_DIRECT_TARGET", "Native validation rejected the exact historical source or direct target.")
+    if bridge.get("legacy_target_filename") != target.path:
         raise IdentityRewriteError(
             "PP_LEGACY_TARGET_ALIAS_MISMATCH",
             (

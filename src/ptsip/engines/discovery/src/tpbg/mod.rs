@@ -8,7 +8,7 @@ use std::sync::OnceLock;
 
 mod source;
 
-pub const SCHEMA: &str = include_str!("../../tpbg-f3.schema.json");
+pub const SCHEMA: &str = include_str!("../schemas/tpbg-f3.schema.json");
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Source {

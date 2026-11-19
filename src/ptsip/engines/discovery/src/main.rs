@@ -8,9 +8,17 @@ const MANIFEST: &str = include_str!("../manifest.json");
 mod environment;
 mod invocation;
 mod registry;
+mod profile;
+mod rule_records;
 mod cli;
 
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    match operation {
+        "discovery.profile.contract" => return profile::contract(input),
+        "discovery.profile.catalog" => return profile::catalog(input),
+        "discovery.profile.rules" => return rule_records::resolve(input),
+        _ => {}
+    }
     if operation == "discovery.planning" {
         return registry::discover_plan(input);
     }
@@ -62,7 +70,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         "discovery.verify-registry" => {
             "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_WITHOUT_AUTHORIZATION"
         }
-        _ => return Err("unsupported registered adapter operation".into()),
+        "discovery.profile.rules" => rule_records::ALGORITHM,
+        _ => profile::algorithm(operation).ok_or("unsupported registered adapter operation")?,
     };
     if definition["machine_semantics"]["algorithm"] != algorithm {
         return Err("unsupported neutral module semantics".into());

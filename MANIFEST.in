@@ -1,8 +1,8 @@
 prune src/tests
 recursive-include src/policy *.yaml *.json
-recursive-include src/ptsip/profiles *.ptsip.yaml
-include src/ptsip/profiles/index.yaml
-include registry/project-profile-contracts.yaml
+include src/ptsip/schemas/config.json
+recursive-include src/ptsip/schemas/storage/profile *.schema.json
+include src/ptsip/specdata/project-profile-contracts.yaml
 
 recursive-include src/ptsip/engines *.json
 prune src/ptsip/engines/context/target

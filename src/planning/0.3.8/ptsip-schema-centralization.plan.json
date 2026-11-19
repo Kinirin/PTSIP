@@ -238,7 +238,7 @@
       "source_document"
     ],
     "profile_runtime_language": "RUST",
-    "profile_background_operation": "ALWAYS_ON_REQUIRED_ENGINE_ASSIGNMENT_PENDING",
+    "profile_background_operation": "CALLER_MANAGED_ALWAYS_AVAILABLE_SELECTED_RUST_ENGINE_SERVE",
     "profile_go_module": "PROHIBITED_NO_NEW_GO_MOD",
     "engine_schema_owner": "ACTUAL_REGISTERED_ENGINE_NOT_CENTRAL_SHARED_ENGINE_CONTRACTS",
     "no_new_independent_profile_go_mod": true,
@@ -252,8 +252,8 @@
       "src/ptsip/profiles/rule_records.py"
     ],
     "profile_rust_runtime_language": "RUST",
-    "profile_engine_ownership": "PENDING_OTHER_SESSION_ANALYSIS_ALL_SIX_MODULES",
-    "profile_implementation_paths": "PENDING_ANALYSIS_THEN_USER_PREAUTHORIZED_APPROVAL"
+    "profile_engine_ownership": "ANALYZED_DISCOVERY_VALIDATION_PROJECTION_USER_PREAUTHORIZATION_APPLIED",
+    "profile_implementation_paths": "EXACT_PATHS_RECORDED_IN_profile_rust_engine_assignment.source_modules"
   },
   "approval_gates": [
     {
@@ -278,8 +278,8 @@
         "src/ptsip/profiles/metadata.py",
         "src/ptsip/profiles/rule_records.py"
       ],
-      "state": "PENDING_OTHER_SESSION_ANALYSIS_AUTO_APPROVAL_AFTER_EVIDENCE",
-      "note": "All six modules require evidence-based Rust engine owner assignment by future agent. No module is assigned to Storage or any other engine in this session."
+      "state": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
+      "note": "All six source/function/caller and current registered Rust engine evidence, exact owner-local paths and user-preauthorized assignments are recorded under profile_rust_engine_assignment. No unrelated policy or denied target is approved."
     },
     {
       "id": "FIELDS-01",
@@ -350,14 +350,14 @@
     {
       "id": "PROFILE-RUST-OWNER-AUTOAPPROVAL-01",
       "scope": "profile_rust_engine_assignment.source_modules",
-      "state": "PREAUTHORIZED_AFTER_ANALYSIS_NOT_ASSIGNED",
-      "note": "Future agent inventories each module/functions/consumers, selects owning engine(s), records rationale and paths, then applies user automatic approval before implementation."
+      "state": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
+      "note": "All six source/function/caller and current registered Rust engine evidence, exact owner-local paths and user-preauthorized assignments are recorded under profile_rust_engine_assignment. No unrelated policy or denied target is approved."
     },
     {
       "id": "PROFILE-RUST-NATIVE-TRANSPORT-01",
       "scope": "EXISTING_REGISTERED_RUST_ENGINE_TRANSPORTS_AS_SELECTED_BY_FUTURE_OWNER_ANALYSIS",
-      "state": "PENDING_SELECTED_ENGINE_CONTRACT_REVIEW",
-      "note": "No Go module or new cmd. Native calls, lifecycle and cross-engine handoffs depend on actual future owner selection."
+      "state": "SEVEN_NATIVE_OPERATIONS_USER_APPROVED_TYPED_IMPLEMENTATION_AUTHORIZED",
+      "note": "Exact seven IDs and native wrappers are explicitly approved after engine responsibility analysis; existing operation semantics and permission boundaries remain. Caller-managed --serve uses existing envelope, bounded NDJSON and EOF stop."
     },
     {
       "id": "PROFILE-RUST-SIX-MODULE-OWNER-ANALYSIS-01",
@@ -369,8 +369,8 @@
         "src/ptsip/profiles/metadata.py",
         "src/ptsip/profiles/rule_records.py"
       ],
-      "state": "PENDING_OTHER_SESSION_ANALYSIS_USER_PREAUTHORIZED_AFTER_COMPLETION",
-      "note": "This gate includes identity.py, contracts.py, compatibility.py, catalog.py, metadata.py, rule_records.py equally. No current-session engine allocation for any."
+      "state": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
+      "note": "All six source/function/caller and current registered Rust engine evidence, exact owner-local paths and user-preauthorized assignments are recorded under profile_rust_engine_assignment. No unrelated policy or denied target is approved."
     },
     {
       "id": "PROFILE-RUST-SIX-MODULE-RETIRE-01",
@@ -398,8 +398,8 @@
     {
       "id": "PROFILE-RUST-CHILD-PATH-01",
       "scope": "src/ptsip/engines/**/src/schemas/**",
-      "state": "ENGINE_LEAF_PATHS_PEND_ASSIGNMENT",
-      "note": "Each module's actual engine implementation paths and native schema subpaths are selected after responsibility analysis; each engine owns its own src/schemas."
+      "state": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
+      "note": "All six source/function/caller and current registered Rust engine evidence, exact owner-local paths and user-preauthorized assignments are recorded under profile_rust_engine_assignment. No unrelated policy or denied target is approved."
     },
     {
       "id": "CLI-MAIN-01",
@@ -474,8 +474,8 @@
         "src/ptsip/profiles/catalog.py",
         "src/ptsip/profiles/metadata.py"
       ],
-      "state": "PENDING_SAME_ALL_SIX_ENGINE_ANALYSIS",
-      "note": "Catalog and Metadata are NOT automatically Storage-owned; included with all other four Python modules for future analysis."
+      "state": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
+      "note": "All six source/function/caller and current registered Rust engine evidence, exact owner-local paths and user-preauthorized assignments are recorded under profile_rust_engine_assignment. No unrelated policy or denied target is approved."
     },
     {
       "id": "PYTHON-SOURCE-EXCLUSIONS-01",
@@ -488,8 +488,8 @@
     {
       "id": "PROFILE-RUST-CLI-ROUTE-01",
       "scope": "src/ptsip/CLI.go",
-      "state": "ROUTER_ONLY_OWNER_TARGET_PENDING",
-      "note": "Existing Go CLI remains router only; Rust engine integration target is not decided before all-six ownership analysis."
+      "state": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
+      "note": "All six source/function/caller and current registered Rust engine evidence, exact owner-local paths and user-preauthorized assignments are recorded under profile_rust_engine_assignment. No unrelated policy or denied target is approved."
     },
     {
       "id": "RBAC-PP300-SCHEMA-RETENTION-01",
@@ -836,320 +836,321 @@
         "profile_consumer_transport": "REQUIRES_EXISTING_WU_12_13_DECISION_GATES"
       },
       "approval": "USER_EXPLICIT_2026_11_18"
-    }
+    },
+    "profile_schema_integrity": "profile_rust_engine_assignment.native_technical_design.profile_schema_integrity"
   },
   "target_schemas": [
     {
-      "path": null,
+      "path": "src/ptsip/engines/execution/src/schemas/attempt-result.schema.json",
       "filename": "attempt-result.schema.json",
       "responsibility": "Native engine contract: attempt-result",
       "sources": [
         "src/ptsip/engines/contracts/schemas/attempt-result.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "EXECUTION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/capability-contract.schema.json",
       "filename": "capability-contract.schema.json",
       "responsibility": "Native engine contract: capability-contract",
       "sources": [
         "src/ptsip/engines/contracts/schemas/capability-contract.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/validation/src/schemas/consumer-handoff.schema.json",
       "filename": "consumer-handoff.schema.json",
       "responsibility": "Native engine contract: consumer-handoff",
       "sources": [
         "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "VALIDATION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/validation/src/schemas/contract-relation.schema.json",
       "filename": "contract-relation.schema.json",
       "responsibility": "Native engine contract: contract-relation",
       "sources": [
         "src/ptsip/engines/contracts/schemas/contract-relation.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "VALIDATION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/core-manifest.schema.json",
       "filename": "core-manifest.schema.json",
       "responsibility": "Native engine contract: core-manifest",
       "sources": [
         "src/ptsip/engines/contracts/schemas/core-manifest.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/validation/src/schemas/dependency-graph.schema.json",
       "filename": "dependency-graph.schema.json",
       "responsibility": "Native engine contract: dependency-graph",
       "sources": [
         "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "VALIDATION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/derived-state.schema.json",
       "filename": "derived-state.schema.json",
       "responsibility": "Native engine contract: derived-state",
       "sources": [
         "src/ptsip/engines/contracts/schemas/derived-state.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/execution/src/schemas/effect-evidence.schema.json",
       "filename": "effect-evidence.schema.json",
       "responsibility": "Native engine contract: effect-evidence",
       "sources": [
         "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "EXECUTION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/execution-binding.schema.json",
       "filename": "execution-binding.schema.json",
       "responsibility": "Native engine contract: execution-binding",
       "sources": [
         "src/ptsip/engines/contracts/schemas/execution-binding.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/federated-source.schema.json",
       "filename": "federated-source.schema.json",
       "responsibility": "Native engine contract: federated-source",
       "sources": [
         "src/ptsip/engines/contracts/schemas/federated-source.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/validation/src/schemas/impact-result.schema.json",
       "filename": "impact-result.schema.json",
       "responsibility": "Native engine contract: impact-result",
       "sources": [
         "src/ptsip/engines/contracts/schemas/impact-result.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "VALIDATION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/native-invocation-registry.schema.json",
       "filename": "native-invocation-registry.schema.json",
       "responsibility": "Native engine contract: native-invocation-registry",
       "sources": [
         "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/registry-snapshot.schema.json",
       "filename": "registry-snapshot.schema.json",
       "responsibility": "Native engine contract: registry-snapshot",
       "sources": [
         "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/registry-verification-input.schema.json",
       "filename": "registry-verification-input.schema.json",
       "responsibility": "Native engine contract: registry-verification-input",
       "sources": [
         "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/execution/src/schemas/runtime-authority-consumption.schema.json",
       "filename": "runtime-authority-consumption.schema.json",
       "responsibility": "Native engine contract: runtime-authority-consumption",
       "sources": [
         "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "EXECUTION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/execution/src/schemas/stop-ack.schema.json",
       "filename": "stop-ack.schema.json",
       "responsibility": "Native engine contract: stop-ack",
       "sources": [
         "src/ptsip/engines/contracts/schemas/stop-ack.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "EXECUTION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/execution/src/schemas/stop-request.schema.json",
       "filename": "stop-request.schema.json",
       "responsibility": "Native engine contract: stop-request",
       "sources": [
         "src/ptsip/engines/contracts/schemas/stop-request.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "EXECUTION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/execution/src/schemas/stop-result.schema.json",
       "filename": "stop-result.schema.json",
       "responsibility": "Native engine contract: stop-result",
       "sources": [
         "src/ptsip/engines/contracts/schemas/stop-result.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "EXECUTION",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/storage/src/schemas/storage-mediation.schema.json",
       "filename": "storage-mediation.schema.json",
       "responsibility": "Native engine contract: storage-mediation",
       "sources": [
         "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "STORAGE",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/transport-binding.schema.json",
       "filename": "transport-binding.schema.json",
       "responsibility": "Native engine contract: transport-binding",
       "sources": [
         "src/ptsip/engines/contracts/schemas/transport-binding.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_SEMANTIC_MAPPING_PENDING_NO_CENTRAL_TARGET",
-      "decision": "OWNER_LOCAL_ENGINE_SCHEMA_PATTERN_APPROVED;ENGINE_OWNER_ID_REQUIRES_EVIDENCE",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "schema_owner": "PENDING_ACTUAL_REGISTERED_ENGINE_CONTRACT_AND_CONSUMER_RESOLUTION",
+      "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/engines/discovery/src/schemas/tpbg-f3.schema.json",
       "filename": "tpbg-output.schema.json",
       "responsibility": "Discovery TPBG output",
       "sources": [
         "src/ptsip/engines/discovery/tpbg-f3.schema.json"
       ],
-      "readiness": "ENGINE_OWNER_APPROVED_EXACT_LEAF_IMPLEMENTATION_PENDING",
-      "decision": "DISCOVERY_ENGINE_OWNER_AND_SOURCE_SUBTREE_APPROVED;EXACT_LEAF_BY_MIGRATION_IMPLEMENTATION",
+      "readiness": "OWNER_EVIDENCE_RECORDED_EXACT_TARGET_SELECTED",
+      "decision": "APPROVED_OWNER_LOCAL_PATTERN_WITH_EVIDENCE_BASED_EXACT_TARGET",
       "previous_provisional_location": "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
-      "activation": "ALLOWED_AFTER_OWNER_EVIDENCE_AND_REPLACEMENT_VALIDATION",
+      "activation": "AUTHORIZED_AFTER_TARGET_CONFORMANCE_BEFORE_REFERENCE_SWITCH",
       "path_pattern": "src/ptsip/engines/discovery/src/schemas/**",
       "schema_owner": "DISCOVERY",
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
@@ -1297,12 +1298,15 @@
       "sources": [
         "src/ptsip/specdata/ptsip-agent-classification.schema.json"
       ],
-      "readiness": "OWNER_AND_NONCENTRAL_PATH_REVIEW_REQUIRED",
+      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
       "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
       "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
+      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "semantic_feature_owner": "EXPLICIT_AGENT_DECISION_EVIDENCE_FEATURE",
+      "registered_rust_engine_owner": null,
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
     },
     {
       "path": null,
@@ -1311,12 +1315,15 @@
       "sources": [
         "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"
       ],
-      "readiness": "OWNER_AND_NONCENTRAL_PATH_REVIEW_REQUIRED",
+      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
       "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
       "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
+      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "semantic_feature_owner": "EXPLICIT_ARTIFACT_EVIDENCE_AND_SIDECAR_BINDING_FEATURE",
+      "registered_rust_engine_owner": null,
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
     },
     {
       "path": null,
@@ -1325,12 +1332,15 @@
       "sources": [
         "src/ptsip/specdata/ptsip-diagnostic.schema.json"
       ],
-      "readiness": "OWNER_AND_NONCENTRAL_PATH_REVIEW_REQUIRED",
+      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
       "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
       "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
+      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "semantic_feature_owner": "CONFORMANCE_DIAGNOSTIC_EMISSION_AND_AUDIT_FEATURE",
+      "registered_rust_engine_owner": null,
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
     },
     {
       "path": null,
@@ -1339,12 +1349,15 @@
       "sources": [
         "src/ptsip/specdata/ptsip-normalized-evidence.schema.json"
       ],
-      "readiness": "OWNER_AND_NONCENTRAL_PATH_REVIEW_REQUIRED",
+      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
       "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
       "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
+      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "semantic_feature_owner": "EVIDENCE_NORMALIZATION_DATACLASS_FEATURE",
+      "registered_rust_engine_owner": null,
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
     },
     {
       "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
@@ -1669,274 +1682,316 @@
       "source_path": "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
       "source_blob_sha": "8d61b7f072f48167b6a6ffa3f82517fb4624155f",
       "source_size_bytes": 1639,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/execution/src/schemas/attempt-result.schema.json",
       "role": "Native engine contract: attempt-result",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "EXECUTION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
       "source_blob_sha": "94fff60b4c8da3d55973083183a7bc94dedaea25",
       "source_size_bytes": 2264,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/capability-contract.schema.json",
       "role": "Native engine contract: capability-contract",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
       "source_blob_sha": "3b860f84ae80c6b2445ec6405a29be569f99325e",
       "source_size_bytes": 2733,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/validation/src/schemas/consumer-handoff.schema.json",
       "role": "Native engine contract: consumer-handoff",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "VALIDATION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
       "source_blob_sha": "7b84e4a382ae6bf661557a7289639309c28fcc8a",
       "source_size_bytes": 2480,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/validation/src/schemas/contract-relation.schema.json",
       "role": "Native engine contract: contract-relation",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "VALIDATION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
       "source_blob_sha": "5c502f0a31d7a0203c1a276b7f8afb662097048a",
       "source_size_bytes": 3267,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/core-manifest.schema.json",
       "role": "Native engine contract: core-manifest",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
       "source_blob_sha": "5d1637876c637c35c9ec28bc1f794e5e09ce529a",
       "source_size_bytes": 3028,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/validation/src/schemas/dependency-graph.schema.json",
       "role": "Native engine contract: dependency-graph",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "VALIDATION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
       "source_blob_sha": "9cd63ff3b78ebb79e3403ec777632a4e8fb47eaa",
       "source_size_bytes": 1295,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/derived-state.schema.json",
       "role": "Native engine contract: derived-state",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
       "source_blob_sha": "97a3320c35d5962872df4ea286071ef42637e436",
       "source_size_bytes": 1136,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/execution/src/schemas/effect-evidence.schema.json",
       "role": "Native engine contract: effect-evidence",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "EXECUTION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
       "source_blob_sha": "d388e50fa9bfefb7de51f41a46d358233a7aa71d",
       "source_size_bytes": 1436,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/execution-binding.schema.json",
       "role": "Native engine contract: execution-binding",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
       "source_blob_sha": "c88283ebf60dc38999a0e2101a64a003590bd2ce",
       "source_size_bytes": 1963,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/federated-source.schema.json",
       "role": "Native engine contract: federated-source",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
       "source_blob_sha": "b8248d4c69c1235862ce326b9e825fb728673972",
       "source_size_bytes": 1137,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/validation/src/schemas/impact-result.schema.json",
       "role": "Native engine contract: impact-result",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "VALIDATION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
       "source_blob_sha": "430b6f3746d88fabe00d4324d8b2655ea0108e48",
       "source_size_bytes": 4972,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/native-invocation-registry.schema.json",
       "role": "Native engine contract: native-invocation-registry",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
       "source_blob_sha": "6667c10d42696a43865388d5d4fb34a14ff07fed",
       "source_size_bytes": 3752,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/registry-snapshot.schema.json",
       "role": "Native engine contract: registry-snapshot",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
       "source_blob_sha": "fbaabab9f03dccf4b8c3b8e4ac6df9fb4ba14800",
       "source_size_bytes": 606,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/registry-verification-input.schema.json",
       "role": "Native engine contract: registry-verification-input",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json",
       "source_blob_sha": "0fa93693641bc83494cf5d1a31438978a86856b6",
       "source_size_bytes": 2395,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/execution/src/schemas/runtime-authority-consumption.schema.json",
       "role": "Native engine contract: runtime-authority-consumption",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "EXECUTION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
       "source_blob_sha": "08217c3c7c1710d4e049656d91c6b8e72e361b74",
       "source_size_bytes": 502,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/execution/src/schemas/stop-ack.schema.json",
       "role": "Native engine contract: stop-ack",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "EXECUTION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
       "source_blob_sha": "d87f18ea7e69a89ad873c6b05959c6e28cd9baaa",
       "source_size_bytes": 477,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/execution/src/schemas/stop-request.schema.json",
       "role": "Native engine contract: stop-request",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "EXECUTION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
       "source_blob_sha": "2063bee0378b9ea2cc50a3e29fd670647a0311f4",
       "source_size_bytes": 1237,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/execution/src/schemas/stop-result.schema.json",
       "role": "Native engine contract: stop-result",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "EXECUTION",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
       "source_blob_sha": "abd8fc34d4f4f2130d9b2a3a3c6b76a96019d20b",
       "source_size_bytes": 1474,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/storage/src/schemas/storage-mediation.schema.json",
       "role": "Native engine contract: storage-mediation",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "STORAGE",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
       "source_blob_sha": "63928e868e9347b0eea76b0a598a322cb929f43a",
       "source_size_bytes": 944,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/transport-binding.schema.json",
       "role": "Native engine contract: transport-binding",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
       "target_owner": "DETERMINE_FROM_REGISTERED_ENGINE_CONTRACT_AND_CURRENT_CONSUMERS",
-      "target_pattern": "src/ptsip/engines/**/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/**/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/discovery/tpbg-f3.schema.json",
       "source_blob_sha": "cf9528ede798dce1d9eb15bfecc35184f50b2da9",
       "source_size_bytes": 6181,
-      "target_path": null,
+      "target_path": "src/ptsip/engines/discovery/src/schemas/tpbg-f3.schema.json",
       "role": "Discovery TPBG output",
       "gate": "NO_CENTRAL_ENGINE_SCHEMA_TARGET;RUNTIME_SCHEMA_REFERENCE_AND_PACKAGE_TESTS_REQUIRED",
       "action": "MIGRATE_NATIVE_ENGINE_SCHEMA_INTO_OWNING_ENGINE_SRC_SCHEMAS_AFTER_OWNER_PARITY_AND_CONSUMER_REWRITE",
       "target_activation": "DENIED_REEVALUATE_LOCATION",
       "previous_provisional_target": "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
       "target_owner": "DISCOVERY",
-      "target_pattern": "src/ptsip/engines/discovery/src/schemas/**"
+      "target_pattern": "src/ptsip/engines/discovery/src/schemas/**",
+      "owner_engine": "DISCOVERY",
+      "owner_assignment_ref": "engine_schema_migration.ownership_assignments"
     },
     {
       "source_path": "src/ptsip/engines/validation/src/planning/PTSIP_Public_Policy_Structure.schema.json",
@@ -2195,7 +2250,9 @@
         "parse each schema; record invalid and empty",
         "enumerate actual source refs, consumers, build packaging refs"
       ],
-      "gate": "44/44 account for; 0 unclassified; no write to source"
+      "gate": "44/44 account for; 0 unclassified; no write to source",
+      "execution_status": "SOURCE_EVIDENCE_INVENTORY_RETAINED_NATIVE_RELOCATION_CLASSIFIED",
+      "current_result": "Original source blob inventory retained; all 21 native source schemas now have exact owner/path/ID/SHA allocation. Current retired paths use immutable Git source evidence."
     },
     {
       "id": "WU-02",
@@ -2238,7 +2295,9 @@
         "Preserve already registered non-engine Profile history and RBAC schema resources; existing paths are not evidence authorizing new rejected central subdirectories."
       ],
       "gate": "Registry JSON parses and only approved exact target paths are registered; unapproved target paths are excluded rather than silently generated, even if their source exists.",
-      "priority": "ACTIVE_FOCUS_CENTRAL_CONFIG"
+      "priority": "ACTIVE_FOCUS_CENTRAL_CONFIG",
+      "execution_status": "APPROVED_REGISTRY_SCOPE_IMPLEMENTED_VERIFIED",
+      "current_result": "Approved Policy/RBAC/Profile resources and 21 native owner-local schema routes are implemented; denied targets remain absent."
     },
     {
       "id": "WU-03",
@@ -2271,7 +2330,9 @@
         "In adopting user projects, provision missing .ptsip/contract/user/rules_patterns.json on demand through the dedicated user-contract engine; validate Policy_Rules.rules[].id only. Do not use policy_content_id.json for rule IDs or alter RA_id's existing RA List format. Never create user contract files inside this PTSIP development repository."
       ],
       "gate": "Four field contracts fully scoped; Content path approved; Rule evaluation nested; separate refs compile",
-      "priority": "ACTIVE_FOCUS_POLICY_V4"
+      "priority": "ACTIVE_FOCUS_POLICY_V4",
+      "execution_status": "POLICY_V4_APPROVED_STRUCTURE_IMPLEMENTED_VERIFIED",
+      "current_result": "Existing approved four-field Policy v4 and user-contract behavior passed current Go regression/native validation checks."
     },
     {
       "id": "WU-04",
@@ -2292,7 +2353,9 @@
         "Checklist is column-driven task_id linked table, default four columns Work_sequence/work_unit_id/task_id/acceptance; PTSIP command adds columns and updates states; capacity >=10, exact max unresolved",
         "Plan ID format belongs to adopting user contract and MUST NOT be globally fixed; task file schema, checklist row write ownership and full transition graph remain separate review topics; do not block structural schema creation for missing user Plan ID pattern."
       ],
-      "gate": "Plan statuses and responsibility ownership verified; user-owned Plan ID pattern is not a core schema-generation gate. Actual unresolved transition/task synchronization semantics require separate review; no cross-plan automatic authorization. Nonexistent src/ptsip/schemas/plan/ destination remains forbidden; preserve existing read-only source until replacement is chosen."
+      "gate": "Plan statuses and responsibility ownership verified; user-owned Plan ID pattern is not a core schema-generation gate. Actual unresolved transition/task synchronization semantics require separate review; no cross-plan automatic authorization. Nonexistent src/ptsip/schemas/plan/ destination remains forbidden; preserve existing read-only source until replacement is chosen.",
+      "execution_status": "BLOCKED_EXPLICIT_PLAN_TARGET_AND_TASK_TRANSITION_OWNERSHIP_DECISIONS",
+      "current_result": "Plan target locations remain rejected; full task/checklist ownership and lifecycle transition semantics require their own decision. Missing user Plan ID pattern is not a blocker."
     },
     {
       "id": "WU-05",
@@ -2346,7 +2409,9 @@
         "No Profile implementation engine is preassigned. Future agent analyzes all six Python Profile module responsibilities before selecting engine owner(s); current registered Profile data schemas remain until validated consumer migration and do not justify rejected new storage schema roots."
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
-      "priority": "ACTIVE_FOCUS_STORAGE_RBAC"
+      "priority": "ACTIVE_FOCUS_STORAGE_RBAC",
+      "execution_status": "APPROVED_PROJECT_PROFILE_AND_RBAC_SCOPE_VERIFIED_OTHER_VARIANTS_BLOCKED",
+      "current_result": "Three current RBAC contracts and registered Project Profile resources are verified; User/Mode/Source/Candidate target paths and unresolved source responsibilities remain outside approved creation scope."
     },
     {
       "id": "WU-06",
@@ -2446,7 +2511,9 @@
         "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
         "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
         "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json"
-      ]
+      ],
+      "execution_status": "NATIVE_21_COMPLETE_EVIDENCE_4_CLASSIFIED_TARGET_REVIEW_OPEN",
+      "current_result": "All 21 native schemas moved with IDs/bytes/hash evidence, active consumers rewired and old copies removed. Four Evidence schemas remain non-native source contracts with unapproved new target locations."
     },
     {
       "id": "WU-07",
@@ -2479,7 +2546,9 @@
         "Another session's coding agent analyzes the actual responsibilities, functions and consumers of ALL SIX src/ptsip/profiles Python modules, reads registered Rust engine contracts, assigns owner engine(s) and paths with evidence, records results under profile_rust_engine_assignment.source_modules, applies user's automatic approval and ONLY THEN implements.",
         "PTSIP View derived accountability cache uses policy document RA_id references; RA List stores no policy usage reverse field"
       ],
-      "gate": "No Profile Python module among the six has an approved engine owner yet; rewire supported callers only after other-session analysis, recorded automatically approved assignment, and native Rust replacement conformance."
+      "gate": "Native adapter and Profile asset proof PASS; full supported imports and formal distribution closure remain separate required gates.",
+      "execution_status": "NATIVE_SUPPORTED_ADAPTERS_AND_PROFILE_ASSETS_VERIFIED_FULL_CONSUMER_DISTRIBUTION_CLOSURE_BLOCKED",
+      "current_result": "Three supported native adapter function paths and bounded Profile asset staging pass. Normal migration imports remain blocked by pre-existing absent ptsip.repository; full clean-source wheel is pending."
     },
     {
       "id": "WU-08",
@@ -2508,7 +2577,9 @@
         "WU-07",
         "WU-10",
         "WU-13"
-      ]
+      ],
+      "execution_status": "NATIVE_SOURCE_REMOVAL_VERIFIED_OTHER_LEGACY_DELETIONS_BLOCKED_BY_REPLACEMENT_AND_CONSUMERS",
+      "current_result": "21 superseded native source copies were removed by the verified WU06 relocation. Other source deletion requires approved replacement, zero supported consumers and its own package acceptance."
     },
     {
       "id": "WU-09",
@@ -2527,7 +2598,9 @@
         "do not run bulk policy document rewrite",
         "make all file/content preservation decisions in document-specific plan, not in policy rules"
       ],
-      "gate": "per-document decision and validation evidence required; not authorized by this schema plan"
+      "gate": "per-document decision and validation evidence required; not authorized by this schema plan",
+      "execution_status": "NOT_AUTHORIZED_POLICY_DOCUMENT_SPECIFIC_DECISIONS_REQUIRED",
+      "current_result": "This schema plan does not authorize policy-document rewrites; no policy document was read as execution field authority or modified."
     },
     {
       "id": "WU-10",
@@ -2570,7 +2643,9 @@
         "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence",
         "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection."
       ],
-      "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure; pp2.00 source selection fixed at src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; abandoned src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json not registered or preserved."
+      "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure; pp2.00 source selection fixed at src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; abandoned src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json not registered or preserved.",
+      "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED_JSON_FIXTURE_TRANSFER_BLOCKED",
+      "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. Exact JSON fixture path approval is still false; no pp.1.00 schema is required or fabricated."
     },
     {
       "id": "WU-11",
@@ -2602,8 +2677,10 @@
         "Inventory all 22 src/ptsip/profiles files and track existing Python imports, YAML fixtures, schema resources and packaging consumers.",
         "Do not derive distributable fields from developer-only .ptsip contracts; preserve prior special Rule Record retirement reasons without narrowing analysis scope."
       ],
-      "gate": "ALL SIX modules analyzed by another session agent and assigned to evidence-supported Rust engine(s) only AFTER completing source and engine contract review; user autoapproves that recorded result.",
-      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
+      "gate": "SATISFIED_BY_profile_rust_engine_assignment_SOURCE_CALLER_ENGINE_CONTRACT_EVIDENCE_AND_USER_PREAUTHORIZATION",
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
+      "execution_status": "COMPLETE_ALL_SIX_FUNCTION_CALLER_ENGINE_ANALYSIS_AND_AUTOAPPROVAL_RECORDED",
+      "current_result": "All six modules have actual source/caller/engine-contract evidence and recorded function-to-engine allocations; user preauthorization was applied before implementation."
     },
     {
       "id": "WU-12",
@@ -2634,8 +2711,10 @@
         "Do not create src/ptsip/profile_contract/go.mod or a standalone Profile Go executable; existing src/ptsip/CLI.go remains a router.",
         "Preserve existing registered current/history Profile/RBAC data-schema paths unless separately authorized; excluded Python files remain unmodified."
       ],
-      "gate": "Engine owner(s), exact Rust paths, native contract and background placement decisions for all six remain PENDING until the future agent's source/consumer/engine responsibility analysis is completed and recorded as autoapproved.",
-      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
+      "gate": "Owner/path decisions analyzed and preauthorized; exact seven native operations explicitly approved. Implement closed typed contracts and selected-engine caller-managed background protocol, then validate.",
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
+      "execution_status": "COMPLETE_SEVEN_NATIVE_CONTRACTS_OWNER_PATHS_AND_BACKGROUND_DESIGN_VERIFIED",
+      "current_result": "Exact seven approved Profile operation contracts, selected Rust module/schema paths and caller-managed bounded --serve design are implemented and tested."
     },
     {
       "id": "WU-13",
@@ -2673,8 +2752,10 @@
         "Meet the always-on Profile background functionality requirement using the future-agent-approved engine lifecycle design; validate owner-engine tests and any required native handoffs.",
         "Update supported build distributions without creating an independent Profile Go module/binary, then replace and retire obsolete Python validators after new behavior passes."
       ],
-      "gate": "Six owner assignments and paths recorded after future-agent analysis; Rust implementation, native engine tests, background availability, consumer rewiring and package checks all PASS.",
-      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
+      "gate": "Selected Rust replacements and bounded background protocol PASS. Full normal supported consumer imports and clean-source distribution acceptance remain required before whole-tree retirement.",
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
+      "execution_status": "SIX_NATIVE_REPLACEMENT_RESPONSIBILITIES_VERIFIED_GLOBAL_CONSUMER_AND_DISTRIBUTION_ACCEPTANCE_PARTIAL",
+      "current_result": "All six supported responsibilities pass native engine/Go-router tests, including linked records and independent Validation handoff. Normal migration imports and formal clean-source package acceptance remain incomplete."
     },
     {
       "id": "WU-14",
@@ -2726,7 +2807,9 @@
         "Verify all six Profile modules' Rust replacements and any required native handoffs using Rust engine owner(s) selected by the future agent's recorded analysis; do not preselect Storage or limit scope to rule_records.py."
       ],
       "gate": "22/22 retired paths absent only after all six Python modules have evidence-based Rust engine owner assignments, completed and verified replacements, supported consumer closure, background runtime conformance and obsolete validator removal.",
-      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES"
+      "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
+      "execution_status": "BLOCKED_KEEP_ALL_22_SOURCE_FILES_PENDING_REMAINING_RETIREMENT_GATES",
+      "current_result": "All 22 legacy files remain. JSON fixture exact paths are not approved, User_Profile replacement target is unapproved, normal supported consumer import closure and full clean wheel/source distribution acceptance are not complete."
     }
   ],
   "observed_breakages": [
@@ -2801,7 +2884,7 @@
     "pass_requirements": [
       "no .ptsip source contract used",
       "44/44 exact src/ptsip source paths mapped",
-      "Schema filenames have no version except the explicitly approved historical project-profile-pp.1.01.schema.json and project-profile-pp.1.02.schema.json",
+      "Schema filenames have no version except the explicitly approved historical project-profile-pp.1.01.schema.json, project-profile-pp.1.02.schema.json and project-profile-pp.2.00.schema.json",
       "no unresolved $ref or duplicate registered $id",
       "Checklist no mandatory fields",
       "RA-list record per RA_id owns exactly RA_id, RA_title, RA_description, grouped AEC_ids/AEC_name and RAC_ids/RAC_name; RA ID follows ^R-ID-[0-9A-F]{32}$; names originate exclusively in RAC/AEC lists, RA views resolve to canonical names by ID. No additional default field requiredness implied.",
@@ -2811,7 +2894,7 @@
       "pp2.00 canonical schema derives exclusively from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; rejected src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json is unregistered then deleted after validated consumer transition.",
       "Historical Project Profile schemas resolve by approved versioned filenames directly under storage/profile/history/ and preserve immutable source SHA",
       "No imports of retired profiles from supported replacement and Go entrypoint; two user-excluded Python modules are documented known broken references",
-      "Engine schemas under approved central engine root preserve distinct engine contract semantics and history",
+      "Engine schemas reside in each evidence-selected native engine src/schemas/** with preserved schema IDs, versions, immutable source hashes and current registered consumer references; no new central shared engine schema root is created",
       "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
       "pp.1.00 schema is not generated without verified original input",
       "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles",
@@ -2954,16 +3037,108 @@
       "only_rule_records_py_deferred_to_future_agent"
     ],
     "powershell_commands_in_order": [
-      "$log = '.\\schema-centralization-validation.log'",
-      "git rev-parse HEAD 2>&1 | Tee-Object -FilePath $log",
-      "python -c \"import json; json.load(open('src/ptsip/schemas/config.json', encoding='utf-8'))\" 2>&1 | Tee-Object -FilePath $log -Append",
-      "# After future agent analysis and recorded approval, run cargo test for EVERY selected Rust engine Cargo.toml; append 2>&1 | Tee-Object -FilePath $log -Append",
-      "python -m pytest -q src/tests/ptsip/contracts 2>&1 | Tee-Object -FilePath $log -Append # Existing tests; exclude known Python legacy failures only when explicitly scoped",
-      "python -m build --wheel 2>&1 | Tee-Object -FilePath $log -Append",
-      "git ls-files src/ptsip/profiles 2>&1 | Tee-Object -FilePath $log -Append"
+      "git rev-parse HEAD",
+      "go -C src/ptsip test ./...",
+      "go -C src/tests/ptsip test -json -count=1 ./...",
+      "go -C src/ptsip vet ./...",
+      "go -C src/tests/ptsip vet ./...",
+      "cargo test --locked --manifest-path src/ptsip/engines/context/Cargo.toml",
+      "cargo test --locked --manifest-path src/ptsip/engines/storage/Cargo.toml",
+      "cargo test --locked --manifest-path src/ptsip/engines/validation/Cargo.toml",
+      "cargo test --locked --manifest-path src/ptsip/engines/discovery/Cargo.toml",
+      "cargo test --locked --manifest-path src/ptsip/engines/execution/Cargo.toml",
+      "cargo test --locked --manifest-path src/ptsip/engines/projection/Cargo.toml",
+      "go -C src/ptsip/common_contract test ./validator -run TestTPBGF3StructuralConformance -count=1",
+      "python -m build --wheel # Formal clean-source build; current private release-backend result is reported separately from native and asset staging checks.",
+      "git ls-files src/ptsip/profiles # Whole-tree retirement remains conditional; 22 sources are intentionally present until all remaining gates pass."
     ],
-    "note": "This plan currently has NO engine owner assignment for ANY of six Python Profile modules. Another session agent must analyze all six and current Rust engine contracts, then record autoapproved owner/path decisions before implementation. Rust language, always-on capability requirement, no independent Go module and per-engine src/schemas rule are retained.",
-    "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'"
+    "note": "All six Rust owner allocations, exact seven approved native Profile operations, typed contracts, caller-managed bounded background protocol, native/Go checks and isolated Profile asset staging are verified. Normal migration imports remain blocked by pre-existing absent ptsip.repository; exact JSON fixture paths, User_Profile replacement target and formal clean-source distribution acceptance still prevent entire legacy tree retirement. Unrelated policy/path decisions are unchanged.",
+    "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'",
+    "test_implementation_language": "GO_UNDER_src/tests/ptsip;EXISTING_ENGINE_RUST_TESTS_RETAINED;NO_NEW_PYTHON_TEST_MODULES_OR_PYTEST_GATE",
+    "user_override": "User explicitly replaced newly authored Python/pytest modules with Go tests; old pytest command is removed from active verification sequence.",
+    "current_execution_result_2026_11_19": {
+      "source_base_commit": "9fc52416e65372199c0c80f1c007e62ca04826fa",
+      "verification_scope": "CURRENT_CHANGED_PRODUCTION_SOURCE_AND_REGISTERED_NATIVE_CONTRACTS",
+      "go_full": {
+        "command": "go -C src/tests/ptsip test -json -count=1 ./...",
+        "result": "PASS",
+        "passed_test_and_subtest_events": 244,
+        "top_level_tests": 55,
+        "failures": 0,
+        "skips": 1,
+        "skip_reason": "TestBootstrapRejectsUserRootAliases requires Windows symlink creation privilege",
+        "package_seconds": 94.455,
+        "log": "C:/Users/user/AppData/Local/Temp/ptsip-profile-final-go-a2de2a1aa9a643b2846f110e78bcc28f.jsonl",
+        "earlier_run": {
+          "passed_test_and_subtest_events": 244,
+          "top_level_tests": 55,
+          "failures": 0,
+          "skips": 1,
+          "package_seconds": 95.098,
+          "log": "C:/Users/user/AppData/Local/Temp/ptsip-profile-go-bdecd231e5f14257ac4f22af13e433e9.jsonl"
+        },
+        "proof": "FINAL_PRODUCTION_SOURCE_AND_CANONICAL_STAGED_BYTE_PINS;FRESH_NATIVE_PACKAGE_BUILDS"
+      },
+      "go_vet": {
+        "modules": [
+          "src/ptsip",
+          "src/tests/ptsip"
+        ],
+        "result": "PASS"
+      },
+      "native_rust": {
+        "command": "cargo clean --manifest-path <each engine Cargo.toml> -p <owned engine package>; cargo test --locked --manifest-path <same Cargo.toml>",
+        "result": "PASS",
+        "tests": 54,
+        "per_engine": {
+          "CONTEXT": 3,
+          "STORAGE": 3,
+          "VALIDATION": 28,
+          "DISCOVERY": 12,
+          "EXECUTION": 4,
+          "PROJECTION": 4
+        },
+        "fresh_package_build": "Explicit owned-package clean prevents pre-existing future artifact timestamps from reusing stale binaries."
+      },
+      "profile_package_assets": {
+        "command": "go -C src/tests/ptsip test -count=1 -run ^TestProfileCanonicalPackageAssets$ -v ./...",
+        "result": "PASS",
+        "scope": "STANDARD_DECLARED_SETTUPTOOLS_STAGE_PLUS_ACTUAL_ISOLATED_PROFILE_HOOK;FOUR_SCHEMAS_CONFIG_SUPPORT_CATALOG_PRESERVED;LEGACY_PYTHON_CODE_RETAINED"
+      },
+      "technical_engine_contract_consumer": {
+        "path": "developer/tests/engines/contracts_test.go",
+        "result": "PASS",
+        "seconds": 1.205,
+        "scope": "EXISTING_GO_TECHNICAL_SCHEMA_RESOLUTION_ONLY_NO_POLICY_SOURCE_OR_AUTHORITY_CHANGE"
+      },
+      "common_tpbg_structural": {
+        "result": "PASS",
+        "seconds": 1.097
+      },
+      "post_suite_native_runtime_reference_check": {
+        "result": "PASS",
+        "seconds": 4.913,
+        "scope": "ADDED_ESCAPED_WINDOWS_NATIVE_RUNTIME_REFERENCE_CHECK_AND_FOCUSED_WU06_SOURCE_IMMUTABILITY"
+      },
+      "pvr09_six_operations_execution_authorized": "EXISTING_SIX_SUCCESSFUL_PVR_RESULTS_REMAIN_TRUE;NO_REGRESSION_FROM_NEW_PROFILE_OPERATIONS",
+      "new_profile_runtime_permission": "REGISTRATION_AND_NATIVE_RESULTS_DO_NOT_CREATE_NORMATIVE_PERMISSION",
+      "background": "EXPLICIT_CALLER_MANAGED_NATIVE_NDJSON_SESSIONS_PASS_MULTIPLE_REQUESTS_FAILURE_RECOVERY_1_MIB_FRAME_BOUND_AND_EOF_STOP;NO_AUTOSTART_OR_INSTALLED_HOST_SERVICE_CLAIM",
+      "formal_clean_source_build": {
+        "state": "PENDING_FIRST_IMPLEMENTATION_COMMIT",
+        "reason": "Existing release backend requires an exact clean source or admitted sdist descriptor. Run actual formal wheel build after commit and record its result separately."
+      },
+      "policy_documents": "NO_POLICY_DOCUMENT_LOOKUP_AS_EXECUTION_INPUT_NO_POLICY_MUTATION",
+      "developer_private_contracts": "NO_DISTRIBUTED_FIELD_AUTHORITY_IMPORT_NO_DOTPTSIP_MUTATION",
+      "branch": "main;NO_NEW_BRANCH",
+      "legacy_profile_source_deletion": "NOT_EXECUTED_ALL_22_FILES_RETAINED",
+      "evidence_four_review": "READ_ONLY_SOURCE_PRODUCER_VALIDATOR_CONSUMER_CLASSIFICATION_COMPLETE;NO_NATIVE_ENGINE_ASSIGNMENT_OR_NEW_TARGET_APPROVAL_INFERRED;NO_NORMALIZED_SCHEMA_RUNTIME_VALIDATION_CLAIM",
+      "staged_source_pin_integrity": {
+        "result": "PASS",
+        "checked_schema_and_capability_pin_targets": 13,
+        "comparison": "DECLARED_SHA256_EQUALS_WORKING_FILE_BYTES_SHA256_EQUALS_STAGED_GIT_BLOB_BYTES_SHA256",
+        "normalization": "One new Discovery Rule Record schema checkout was normalized to LF and dependent native input-schema/capability/manifest/snapshot digests refreshed before the final full Go run. Typed I/O semantics are unchanged."
+      }
+    }
   },
   "source_conflicts": [
     {
@@ -3063,14 +3238,632 @@
         "src/ptsip/engines/projection/src/schemas/"
       ]
     },
-    "schema_admission": "CONTRACT_ID_VERSION_SOURCE_SHA_REF_AND_DISTRIBUTION_VALIDATION_BEFORE_SWITCH"
+    "schema_admission": "CONTRACT_ID_VERSION_SOURCE_SHA_REF_AND_DISTRIBUTION_VALIDATION_BEFORE_SWITCH",
+    "ownership_assignments": [
+      {
+        "source": "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
+        "owner_engine": "EXECUTION",
+        "target": "src/ptsip/engines/execution/src/schemas/attempt-result.schema.json",
+        "schema_id": "urn:ptsip:engine-data:attempt-result:v1",
+        "source_blob_sha": "8d61b7f072f48167b6a6ffa3f82517fb4624155f",
+        "source_sha256": "5455b1e7daa69bfa9d24f8f6d4bd24d7399733e958e29b4ee5ea60843f5ad496",
+        "version": "v1",
+        "owner_evidence": "Execution main.rs assesses attempts/effects/stop acknowledgements/results, invocation.rs emits stop records, and authority.rs consumes runtime authority; schemas describe execution-owned behavior and evidence.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/execution/src/main.rs",
+            "git_blob_sha": "556da718731cb4da2b5d88f1aeb29482226e1f78",
+            "sha256": "04b137172446fa470dfd4780b84deb02fb8d02e3178b4d882d88e99546e9065f"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/invocation.rs",
+            "git_blob_sha": "4733a910efd9aee3ba5a70fa62a871e41c4675ce",
+            "sha256": "667d8d53e6ba9a12b5a0b8834b8481b290ee5cd5b4584b4a5eff9e389916a930"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/authority.rs",
+            "git_blob_sha": "12e70874fd50176c83ac5e50129bb6d0827663f5",
+            "sha256": "c12359d616a37b73a7a8efa07189e9071bed09769552627d1cdd8540d7461847"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/capability-contract.schema.json",
+        "schema_id": "urn:ptsip:engine-data:capability-contract:v1",
+        "source_blob_sha": "94fff60b4c8da3d55973083183a7bc94dedaea25",
+        "source_sha256": "1ce1a7ed30a0324c12d3ec761522fec6588357bee2adfc2581d3594b7b3adbee",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
+        "owner_engine": "VALIDATION",
+        "target": "src/ptsip/engines/validation/src/schemas/consumer-handoff.schema.json",
+        "schema_id": "urn:ptsip:engine-data:consumer-handoff:v1",
+        "source_blob_sha": "3b860f84ae80c6b2445ec6405a29be569f99325e",
+        "source_sha256": "87eef413dda485453e78f0dabe6ef891dd5618d12ee739f6669d9560ae77c62e",
+        "version": "v1",
+        "owner_evidence": "Validation handoff.rs verifies consumer/contract relations and source.rs and the registered validation.planning.impact operation check dependency graph and impact results; these files express relation/cardinality and validation-owned results.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/validation/src/handoff.rs",
+            "git_blob_sha": "6ad14ad306bcbf65cf49d407579682ce2eed9304",
+            "sha256": "47c2bcae3e9e4605209d15f3e51c451a9afb9c12a1297881153913e2cc677471"
+          },
+          {
+            "path": "src/ptsip/engines/validation/src/source.rs",
+            "git_blob_sha": "7163f13031b8ef5a321481dd13ee0e13aaa01b25",
+            "sha256": "3b80b7478d5aa490395a2392cb222920324bb846878f7b37a2582d2aac8e17aa"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
+        "owner_engine": "VALIDATION",
+        "target": "src/ptsip/engines/validation/src/schemas/contract-relation.schema.json",
+        "schema_id": "urn:ptsip:engine-data:contract-relation:v1",
+        "source_blob_sha": "7b84e4a382ae6bf661557a7289639309c28fcc8a",
+        "source_sha256": "ba9b3e41c44d8f80421a02f48171f87fed938df13506dc98bcb2b7ad7da2f0ed",
+        "version": "v1",
+        "owner_evidence": "Validation handoff.rs verifies consumer/contract relations and source.rs and the registered validation.planning.impact operation check dependency graph and impact results; these files express relation/cardinality and validation-owned results.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/validation/src/handoff.rs",
+            "git_blob_sha": "6ad14ad306bcbf65cf49d407579682ce2eed9304",
+            "sha256": "47c2bcae3e9e4605209d15f3e51c451a9afb9c12a1297881153913e2cc677471"
+          },
+          {
+            "path": "src/ptsip/engines/validation/src/source.rs",
+            "git_blob_sha": "7163f13031b8ef5a321481dd13ee0e13aaa01b25",
+            "sha256": "3b80b7478d5aa490395a2392cb222920324bb846878f7b37a2582d2aac8e17aa"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/core-manifest.schema.json",
+        "schema_id": "urn:ptsip:engine-data:core-manifest:v1",
+        "source_blob_sha": "5c502f0a31d7a0203c1a276b7f8afb662097048a",
+        "source_sha256": "9f8932c6e13f767f24bfdb04d71da67392e5d0b93300c83aeabab0de313e54ee",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
+        "owner_engine": "VALIDATION",
+        "target": "src/ptsip/engines/validation/src/schemas/dependency-graph.schema.json",
+        "schema_id": "urn:ptsip:engine-data:dependency-graph:v1",
+        "source_blob_sha": "5d1637876c637c35c9ec28bc1f794e5e09ce529a",
+        "source_sha256": "8aa4be8d07711bb1baae744e075524048e1282fc940526a6038448e8e63b2f53",
+        "version": "v1",
+        "owner_evidence": "Validation handoff.rs verifies consumer/contract relations and source.rs and the registered validation.planning.impact operation check dependency graph and impact results; these files express relation/cardinality and validation-owned results.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/validation/src/handoff.rs",
+            "git_blob_sha": "6ad14ad306bcbf65cf49d407579682ce2eed9304",
+            "sha256": "47c2bcae3e9e4605209d15f3e51c451a9afb9c12a1297881153913e2cc677471"
+          },
+          {
+            "path": "src/ptsip/engines/validation/src/source.rs",
+            "git_blob_sha": "7163f13031b8ef5a321481dd13ee0e13aaa01b25",
+            "sha256": "3b80b7478d5aa490395a2392cb222920324bb846878f7b37a2582d2aac8e17aa"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/derived-state.schema.json",
+        "schema_id": "urn:ptsip:engine-data:derived-state:v1",
+        "source_blob_sha": "9cd63ff3b78ebb79e3403ec777632a4e8fb47eaa",
+        "source_sha256": "2e2bb03941e06a114ff3277e5c48b92fda9337a1bd171d6ddfcdbee8a541d704",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
+        "owner_engine": "EXECUTION",
+        "target": "src/ptsip/engines/execution/src/schemas/effect-evidence.schema.json",
+        "schema_id": "urn:ptsip:engine-data:effect-evidence:v1",
+        "source_blob_sha": "97a3320c35d5962872df4ea286071ef42637e436",
+        "source_sha256": "27fdf7bca528aacf49ac09a300af1ef34cd5a5d7a23f0950a9ffda554c1865fb",
+        "version": "v1",
+        "owner_evidence": "Execution main.rs assesses attempts/effects/stop acknowledgements/results, invocation.rs emits stop records, and authority.rs consumes runtime authority; schemas describe execution-owned behavior and evidence.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/execution/src/main.rs",
+            "git_blob_sha": "556da718731cb4da2b5d88f1aeb29482226e1f78",
+            "sha256": "04b137172446fa470dfd4780b84deb02fb8d02e3178b4d882d88e99546e9065f"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/invocation.rs",
+            "git_blob_sha": "4733a910efd9aee3ba5a70fa62a871e41c4675ce",
+            "sha256": "667d8d53e6ba9a12b5a0b8834b8481b290ee5cd5b4584b4a5eff9e389916a930"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/authority.rs",
+            "git_blob_sha": "12e70874fd50176c83ac5e50129bb6d0827663f5",
+            "sha256": "c12359d616a37b73a7a8efa07189e9071bed09769552627d1cdd8540d7461847"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/execution-binding.schema.json",
+        "schema_id": "urn:ptsip:engine-data:execution-binding:v1",
+        "source_blob_sha": "d388e50fa9bfefb7de51f41a46d358233a7aa71d",
+        "source_sha256": "4dd06bbbe29a0b645a8ba7cfb666e3f2a4a8c55101c7f1fa56392de3f70e3c38",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/federated-source.schema.json",
+        "schema_id": "urn:ptsip:engine-data:federated-source:v1",
+        "source_blob_sha": "c88283ebf60dc38999a0e2101a64a003590bd2ce",
+        "source_sha256": "8617197d7e7ba6d41ea565d4a568a2d4c31a25b18e81a9a4b688f473293834cf",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
+        "owner_engine": "VALIDATION",
+        "target": "src/ptsip/engines/validation/src/schemas/impact-result.schema.json",
+        "schema_id": "urn:ptsip:engine-data:impact-result:v1",
+        "source_blob_sha": "b8248d4c69c1235862ce326b9e825fb728673972",
+        "source_sha256": "f9d989ee23cbd852e4eaca090148507fccbd6a65d8893ea83065545e91b54f5f",
+        "version": "v1",
+        "owner_evidence": "Validation handoff.rs verifies consumer/contract relations and source.rs and the registered validation.planning.impact operation check dependency graph and impact results; these files express relation/cardinality and validation-owned results.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/validation/src/handoff.rs",
+            "git_blob_sha": "6ad14ad306bcbf65cf49d407579682ce2eed9304",
+            "sha256": "47c2bcae3e9e4605209d15f3e51c451a9afb9c12a1297881153913e2cc677471"
+          },
+          {
+            "path": "src/ptsip/engines/validation/src/source.rs",
+            "git_blob_sha": "7163f13031b8ef5a321481dd13ee0e13aaa01b25",
+            "sha256": "3b80b7478d5aa490395a2392cb222920324bb846878f7b37a2582d2aac8e17aa"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/native-invocation-registry.schema.json",
+        "schema_id": "urn:ptsip:engine-data:native-invocation-registry:v1",
+        "source_blob_sha": "430b6f3746d88fabe00d4324d8b2655ea0108e48",
+        "source_sha256": "813e22968b630202a8a899320befccb53708830b02d83ce596fa6bd38c3cbb89",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/registry-snapshot.schema.json",
+        "schema_id": "urn:ptsip:engine-data:registry-snapshot:v1",
+        "source_blob_sha": "6667c10d42696a43865388d5d4fb34a14ff07fed",
+        "source_sha256": "f15d6852d96593bc618e4d7dfa3bde6310206c706d417c2e10fdaa88c383d716",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/registry-verification-input.schema.json",
+        "schema_id": "urn:ptsip:engine-data:registry-verification-input:v1",
+        "source_blob_sha": "fbaabab9f03dccf4b8c3b8e4ac6df9fb4ba14800",
+        "source_sha256": "d2673dad8dfc82252e0ffa06d9c244cb78a524b0aa2eff10612eaeb4ba57c569",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json",
+        "owner_engine": "EXECUTION",
+        "target": "src/ptsip/engines/execution/src/schemas/runtime-authority-consumption.schema.json",
+        "schema_id": "urn:ptsip:engine-data:runtime-authority-consumption:v1",
+        "source_blob_sha": "0fa93693641bc83494cf5d1a31438978a86856b6",
+        "source_sha256": "c784d1774f1f269ea3b612f65cbff80b34b0b492a9a1c6b92fd4499c048e6948",
+        "version": "v1",
+        "owner_evidence": "Execution main.rs assesses attempts/effects/stop acknowledgements/results, invocation.rs emits stop records, and authority.rs consumes runtime authority; schemas describe execution-owned behavior and evidence.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/execution/src/main.rs",
+            "git_blob_sha": "556da718731cb4da2b5d88f1aeb29482226e1f78",
+            "sha256": "04b137172446fa470dfd4780b84deb02fb8d02e3178b4d882d88e99546e9065f"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/invocation.rs",
+            "git_blob_sha": "4733a910efd9aee3ba5a70fa62a871e41c4675ce",
+            "sha256": "667d8d53e6ba9a12b5a0b8834b8481b290ee5cd5b4584b4a5eff9e389916a930"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/authority.rs",
+            "git_blob_sha": "12e70874fd50176c83ac5e50129bb6d0827663f5",
+            "sha256": "c12359d616a37b73a7a8efa07189e9071bed09769552627d1cdd8540d7461847"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
+        "owner_engine": "EXECUTION",
+        "target": "src/ptsip/engines/execution/src/schemas/stop-ack.schema.json",
+        "schema_id": "urn:ptsip:engine-data:stop-ack:v1",
+        "source_blob_sha": "08217c3c7c1710d4e049656d91c6b8e72e361b74",
+        "source_sha256": "9f06ca92d235d414303dd3c8d310a364d6b7cd5fd497d869b9f8228800e6a1af",
+        "version": "v1",
+        "owner_evidence": "Execution main.rs assesses attempts/effects/stop acknowledgements/results, invocation.rs emits stop records, and authority.rs consumes runtime authority; schemas describe execution-owned behavior and evidence.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/execution/src/main.rs",
+            "git_blob_sha": "556da718731cb4da2b5d88f1aeb29482226e1f78",
+            "sha256": "04b137172446fa470dfd4780b84deb02fb8d02e3178b4d882d88e99546e9065f"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/invocation.rs",
+            "git_blob_sha": "4733a910efd9aee3ba5a70fa62a871e41c4675ce",
+            "sha256": "667d8d53e6ba9a12b5a0b8834b8481b290ee5cd5b4584b4a5eff9e389916a930"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/authority.rs",
+            "git_blob_sha": "12e70874fd50176c83ac5e50129bb6d0827663f5",
+            "sha256": "c12359d616a37b73a7a8efa07189e9071bed09769552627d1cdd8540d7461847"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
+        "owner_engine": "EXECUTION",
+        "target": "src/ptsip/engines/execution/src/schemas/stop-request.schema.json",
+        "schema_id": "urn:ptsip:engine-data:stop-request:v1",
+        "source_blob_sha": "d87f18ea7e69a89ad873c6b05959c6e28cd9baaa",
+        "source_sha256": "036c0de05b205030b6fce06aaff849913f0aecc93421ddf0854f411a37c868e1",
+        "version": "v1",
+        "owner_evidence": "Execution main.rs assesses attempts/effects/stop acknowledgements/results, invocation.rs emits stop records, and authority.rs consumes runtime authority; schemas describe execution-owned behavior and evidence.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/execution/src/main.rs",
+            "git_blob_sha": "556da718731cb4da2b5d88f1aeb29482226e1f78",
+            "sha256": "04b137172446fa470dfd4780b84deb02fb8d02e3178b4d882d88e99546e9065f"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/invocation.rs",
+            "git_blob_sha": "4733a910efd9aee3ba5a70fa62a871e41c4675ce",
+            "sha256": "667d8d53e6ba9a12b5a0b8834b8481b290ee5cd5b4584b4a5eff9e389916a930"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/authority.rs",
+            "git_blob_sha": "12e70874fd50176c83ac5e50129bb6d0827663f5",
+            "sha256": "c12359d616a37b73a7a8efa07189e9071bed09769552627d1cdd8540d7461847"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
+        "owner_engine": "EXECUTION",
+        "target": "src/ptsip/engines/execution/src/schemas/stop-result.schema.json",
+        "schema_id": "urn:ptsip:engine-data:stop-result:v1",
+        "source_blob_sha": "2063bee0378b9ea2cc50a3e29fd670647a0311f4",
+        "source_sha256": "87cc948d882c423bad79fbac13bcf427df50825515d36652c8874f56aca5fecd",
+        "version": "v1",
+        "owner_evidence": "Execution main.rs assesses attempts/effects/stop acknowledgements/results, invocation.rs emits stop records, and authority.rs consumes runtime authority; schemas describe execution-owned behavior and evidence.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/execution/src/main.rs",
+            "git_blob_sha": "556da718731cb4da2b5d88f1aeb29482226e1f78",
+            "sha256": "04b137172446fa470dfd4780b84deb02fb8d02e3178b4d882d88e99546e9065f"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/invocation.rs",
+            "git_blob_sha": "4733a910efd9aee3ba5a70fa62a871e41c4675ce",
+            "sha256": "667d8d53e6ba9a12b5a0b8834b8481b290ee5cd5b4584b4a5eff9e389916a930"
+          },
+          {
+            "path": "src/ptsip/engines/execution/src/authority.rs",
+            "git_blob_sha": "12e70874fd50176c83ac5e50129bb6d0827663f5",
+            "sha256": "c12359d616a37b73a7a8efa07189e9071bed09769552627d1cdd8540d7461847"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
+        "owner_engine": "STORAGE",
+        "target": "src/ptsip/engines/storage/src/schemas/storage-mediation.schema.json",
+        "schema_id": "urn:ptsip:engine-data:storage-mediation:v1",
+        "source_blob_sha": "abd8fc34d4f4f2130d9b2a3a3c6b76a96019d20b",
+        "source_sha256": "7ed4b943e692c3698a2064fec44d7ce7484a123bfce9780c8a5d7b713d4d58d8",
+        "version": "v1",
+        "owner_evidence": "Storage provider.rs/native.rs verify provider mediation behavior; storage-mediation schema describes Storage-owned provider selection rather than arbitrary Profile ownership.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/storage/src/provider.rs",
+            "git_blob_sha": "2f398d3f0df18f8194c19f49af47e0fd4cf5285f",
+            "sha256": "64068f17d1bc73f320af777c3d099a72e1cbf58d8af256eef51eb2d81d041725"
+          },
+          {
+            "path": "src/ptsip/engines/storage/src/native.rs",
+            "git_blob_sha": "4caff2f1826e456b1c0700bed74c4329620dbfd7",
+            "sha256": "4ea38a9ed24a77ac3e7161634944441c859a64c71d18a05523051612b663498d"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/discovery/tpbg-f3.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/tpbg-f3.schema.json",
+        "schema_id": "urn:ptsip:discovery:tpbg:f3:output:draft",
+        "source_blob_sha": "cf9528ede798dce1d9eb15bfecc35184f50b2da9",
+        "source_sha256": "4aeab606e1f6c114231f8b5eff9b3bbf6a98b602918f585d8174a42ddb162a2f",
+        "version": "draft",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      },
+      {
+        "source": "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
+        "owner_engine": "DISCOVERY",
+        "target": "src/ptsip/engines/discovery/src/schemas/transport-binding.schema.json",
+        "schema_id": "urn:ptsip:engine-data:transport-binding:v1",
+        "source_blob_sha": "63928e868e9347b0eea76b0a598a322cb929f43a",
+        "source_sha256": "3b4dccb29cea7c52f36c76e1a735545a6967ec7f721748f97caa13a9f58a37a2",
+        "version": "v1",
+        "owner_evidence": "Discovery registry.rs verifies exact manifests/capability/execution bindings and source.rs verifies invocation registration; source closure and snapshot ownership are Discovery responsibilities. TPBG typed graph is produced by Discovery.",
+        "implementation_evidence": [
+          {
+            "path": "src/ptsip/engines/discovery/src/registry.rs",
+            "git_blob_sha": "5bfec465d3e40e34445ba36a8245915db9cd436e",
+            "sha256": "baa97bbe3f1e0fc1741daa2a3cc75fa5e20ffa94f1098ccad2731047ba751c77"
+          },
+          {
+            "path": "src/ptsip/engines/discovery/src/source.rs",
+            "git_blob_sha": "3d105bbe07b6cc968320b31be07e2ec9aa2cfa3e",
+            "sha256": "083f5b3b1654b0ae54ba9ece52d3ee8bfb2197136079e09fd1693c34f740e258"
+          }
+        ]
+      }
+    ],
+    "ownership_state": "ALL_21_ANALYZED_USER_APPROVED_OWNER_LOCAL_PATTERN_TARGETS_SELECTED",
+    "analysis_head": "9fc52416e65372199c0c80f1c007e62ca04826fa",
+    "analysis_rule": "Preserve source Git blob bytes/schema IDs/versions; update registered references after conformance; delete old shared sources only after zero supported consumers and package proof.",
+    "state": "NATIVE_21_RELOCATED_REGISTERED_CONSUMERS_REWIRED_OLD_SOURCES_REMOVED_CONFORMANCE_PASS",
+    "active_source_retirement": {
+      "retired_schema_count": 21,
+      "source_shared_schema_runtime_dependency": "ZERO_ACTIVE_TECHNICAL_REFERENCES_AFTER_REWIRE",
+      "closure_scope": "REGISTERED_ENGINE_INDEX_BINDINGS_NATIVE_RUNTIME_COMMON_CONTRACT_AND_EXISTING_TECHNICAL_TEST_CONSUMERS;HISTORICAL_PLANNING_NOT_RUNTIME",
+      "exact_schema_bytes_ids_versions": "PRESERVED_FROM_RECORDED_SOURCE_GIT_BLOBS",
+      "package_asset_staging": "21_OWNER_LOCAL_SCHEMAS_PRESENT_WITH_EXACT_HASHES;OLD_SHARED_SCHEMA_ASSETS_ABSENT",
+      "formal_wheel": "CLEAN_POST_COMMIT_BUILD_PENDING"
+    },
+    "evidence_responsibility_classification": {
+      "state": "READ_ONLY_FOUR_SOURCE_OWNER_CLASSIFICATIONS_COMPLETE_NEW_TARGET_DECISIONS_OPEN",
+      "search_scope": [
+        "src/ptsip technical .py/.go/.rs source",
+        "src/tests technical .py/.go/.rs source"
+      ],
+      "no_policy_or_private_contract_authority": true,
+      "rows": [
+        {
+          "source": "src/ptsip/specdata/ptsip-agent-classification.schema.json",
+          "schema_id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-agent-classification.schema.json",
+          "source_blob_sha": "de563f3ff3ef86e3c9610a6d88387a6a254be61a",
+          "source_sha256": "441eab15fd316a327afd84ee8dd622202fd443ba8ef442018488e83ed16d21a3",
+          "classification": "NON_NATIVE_EXISTING_PYTHON_FEATURE_SOURCE",
+          "semantic_feature_owner": "EXPLICIT_AGENT_DECISION_EVIDENCE_FEATURE",
+          "registered_rust_engine_owner": null,
+          "producers": [
+            "External explicit agent-decision evidence input"
+          ],
+          "validators": [
+            "src/ptsip/review_evidence.py:_agent_schema:107",
+            "src/ptsip/review_evidence.py:load_agent_decisions:112;Draft202012Validator:115;iter_errors:122",
+            "src/ptsip/review_evidence.py:evaluate_agent_decisions:132"
+          ],
+          "consumers": [
+            "src/ptsip/conformance_engine.py:220-221",
+            "src/ptsip/evidence/adapters.py:agent_decision_facts:326"
+          ],
+          "runtime_scope_note": "Existing Python evidence schema validation; no direct registered Rust schema route or native engine consumer was found in bounded src/ptsip and src/tests technical references.",
+          "target_path": null,
+          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
+          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+        },
+        {
+          "source": "src/ptsip/specdata/ptsip-artifact-evidence.schema.json",
+          "schema_id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-artifact-evidence.schema.json",
+          "source_blob_sha": "953bb7ca93b9eee61f220faedc0a5cc88ff4e944",
+          "source_sha256": "b08fd9c2a86a765a0ffc6f6cc0080d609e0503a9f1740e70f192cc3c967eff84",
+          "classification": "NON_NATIVE_EXISTING_PYTHON_FEATURE_SOURCE",
+          "semantic_feature_owner": "EXPLICIT_ARTIFACT_EVIDENCE_AND_SIDECAR_BINDING_FEATURE",
+          "registered_rust_engine_owner": null,
+          "producers": [
+            "External explicit artifact evidence input"
+          ],
+          "validators": [
+            "src/ptsip/artifact_evidence.py:_schema:57",
+            "src/ptsip/artifact_evidence.py:load_artifact_evidence:94;Draft202012Validator:101;iter_errors:123",
+            "src/ptsip/artifact_evidence.py:sidecar_binding_issue:62"
+          ],
+          "consumers": [
+            "src/ptsip/conformance.py:377;_evaluate_artifacts:239",
+            "src/ptsip/evidence/adapters.py:artifact_facts:260"
+          ],
+          "runtime_scope_note": "Existing Python artifact evidence/sidecar checks; no native engine ownership is implied by the evidence filename.",
+          "target_path": null,
+          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
+          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+        },
+        {
+          "source": "src/ptsip/specdata/ptsip-diagnostic.schema.json",
+          "schema_id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-diagnostic.schema.json",
+          "source_blob_sha": "ecddd1b6ef0a5dd7c8b80fa3d1b79032e297401d",
+          "source_sha256": "34bd99da13b495bb4ea791aa7f1e49a3e97c96c5adb327d2b770d7e4f4465ca5",
+          "classification": "NON_NATIVE_EXISTING_PYTHON_FEATURE_SOURCE",
+          "semantic_feature_owner": "CONFORMANCE_DIAGNOSTIC_EMISSION_AND_AUDIT_FEATURE",
+          "registered_rust_engine_owner": null,
+          "producers": [
+            "src/ptsip/conformance.py:_diagnostic:44;ptsip-diagnostic/v1:56",
+            "src/ptsip/conformance.py:_finding_diagnostic:105"
+          ],
+          "validators": [
+            "src/ptsip/conformance_audit.py:_diagnostic_validator:23",
+            "src/ptsip/conformance_audit.py:audit_conformance_report:29;iter_errors:43"
+          ],
+          "consumers": [
+            "src/ptsip/conformance_engine.py:360,391"
+          ],
+          "runtime_scope_note": "Python conformance emits diagnostics and its audit validates the diagnostic schema. This is separate from registered Validation engine native contract ownership.",
+          "target_path": null,
+          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
+          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+        },
+        {
+          "source": "src/ptsip/specdata/ptsip-normalized-evidence.schema.json",
+          "schema_id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-normalized-evidence.schema.json",
+          "source_blob_sha": "474016c5f54bae85b17cd59701a30fee32e7e983",
+          "source_sha256": "3e1c0636fb9a36fce91f2a07ab56af191032b804153db0bfb04430ee2c344d59",
+          "classification": "NON_NATIVE_EXISTING_PYTHON_FEATURE_SOURCE",
+          "semantic_feature_owner": "EVIDENCE_NORMALIZATION_DATACLASS_FEATURE",
+          "registered_rust_engine_owner": null,
+          "producers": [
+            "src/ptsip/evidence/normalization.py:normalize_facts:74;NormalizedEvidenceSet:168",
+            "src/ptsip/evidence/contract.py:NormalizedEvidenceSet:201;content_payload:212;deterministic_digest:221;as_dict:225"
+          ],
+          "validators": [],
+          "consumers": [
+            "src/ptsip/evidence/adapters.py:normalize_ptsip_evidence:433",
+            "src/ptsip/migration/analysis/analyzer.py:33",
+            "src/ptsip/migration/analysis/source/binding_validation.py:22",
+            "src/ptsip/migration/analysis/source/evidence_correlation.py:21",
+            "src/ptsip/migration/analysis/direct/convergence.py:16",
+            "src/ptsip/remediation/domain/model.py:90-97"
+          ],
+          "runtime_scope_note": "The current normalization contract is a Python dataclass and deterministic payload/digest. No direct runtime JSON Schema loader for this schema was found; classification does not claim runtime JSON Schema validation PASS.",
+          "target_path": null,
+          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
+          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+        }
+      ],
+      "no_inferred_storage_owner": true,
+      "no_new_target_created": true
+    }
   },
   "discontinued_profile_modules": {
     "scope": "RETIRE_WHOLE_SRC_PTSIP_PROFILES_TREE_INCLUDING_SIX_PYTHON_MODULES_AND_YAML_DATA_AND_SCHEMAS",
     "source_boundary": "src/ptsip/profiles/",
     "use_discontinuation_authorized": true,
     "deletion_gate": "ALL_SIX_PYTHON_MODULES_ANALYZED_AND_AUTOAPPROVED_RUST_OWNERS_RECORDED;ALL_SUPPORTED_RUST_REPLACEMENTS_AND_CONSUMER_TESTS_PASS;THEN_RETIRE_OBSOLETE_VALIDATORS_AND_PYTHON",
-    "replacement_code_paths": "ALL_SIX_RUST_ENGINE_SOURCE_PATHS_PENDING_OTHER_SESSION_ANALYSIS",
+    "replacement_code_paths": "EXACT_SELECTED_RUST_PATHS_RECORDED_IN_profile_rust_engine_assignment",
     "modules": [
       {
         "path": "src/ptsip/profiles/identity.py",
@@ -3086,10 +3879,12 @@
           "src/ptsip/ptsip_specification/spec_identity.py"
         ],
         "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
-        "replacement_engine": null,
+        "replacement_engine": "VALIDATION",
         "replacement_language": "RUST",
-        "replacement_engines": [],
-        "owner_status": "PENDING_OTHER_SESSION_AGENT_ANALYSIS",
+        "replacement_engines": [
+          "VALIDATION"
+        ],
+        "owner_status": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
         "replacement_assignment_ref": "profile_rust_engine_assignment.source_modules"
       },
       {
@@ -3108,9 +3903,12 @@
         ],
         "replacement_language": "RUST",
         "replacement_behavior_policy": "DO_NOT_CLONE_PRIVATE_DEVELOPER_RULE_ID_OR_SCHEMA_SEMANTICS",
-        "replacement_engine": null,
-        "replacement_engines": [],
-        "owner_status": "PENDING_OTHER_SESSION_AGENT_ANALYSIS",
+        "replacement_engine": "DISCOVERY",
+        "replacement_engines": [
+          "DISCOVERY",
+          "VALIDATION"
+        ],
+        "owner_status": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
         "replacement_assignment_ref": "profile_rust_engine_assignment.source_modules"
       },
       {
@@ -3122,10 +3920,12 @@
           "src/ptsip/clarification/resolution/profile_projection.py"
         ],
         "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
-        "replacement_engine": null,
+        "replacement_engine": "PROJECTION",
         "replacement_language": "RUST",
-        "replacement_engines": [],
-        "owner_status": "PENDING_OTHER_SESSION_AGENT_ANALYSIS",
+        "replacement_engines": [
+          "PROJECTION"
+        ],
+        "owner_status": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
         "replacement_assignment_ref": "profile_rust_engine_assignment.source_modules"
       },
       {
@@ -3139,10 +3939,12 @@
           "src/ptsip/profiles/identity.py"
         ],
         "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
-        "replacement_engine": null,
+        "replacement_engine": "DISCOVERY",
         "replacement_language": "RUST",
-        "replacement_engines": [],
-        "owner_status": "PENDING_OTHER_SESSION_AGENT_ANALYSIS",
+        "replacement_engines": [
+          "DISCOVERY"
+        ],
+        "owner_status": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
         "replacement_assignment_ref": "profile_rust_engine_assignment.source_modules"
       },
       {
@@ -3155,10 +3957,12 @@
           "src/ptsip/migration/execution/direct/promotion.py"
         ],
         "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
-        "replacement_engine": null,
+        "replacement_engine": "VALIDATION",
         "replacement_language": "RUST",
-        "replacement_engines": [],
-        "owner_status": "PENDING_OTHER_SESSION_AGENT_ANALYSIS",
+        "replacement_engines": [
+          "VALIDATION"
+        ],
+        "owner_status": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
         "replacement_assignment_ref": "profile_rust_engine_assignment.source_modules"
       },
       {
@@ -3174,10 +3978,12 @@
           "src/ptsip/profiles/rule_records.py"
         ],
         "action": "ANALYZE_FUNCTIONS_AND_CALLERS_SELECT_RUST_ENGINE_OWNER_AND_PATH_AUTOAPPROVE_AFTER_ANALYSIS_IMPLEMENT_VERIFY_THEN_RETIRE",
-        "replacement_engine": null,
+        "replacement_engine": "DISCOVERY",
         "replacement_language": "RUST",
-        "replacement_engines": [],
-        "owner_status": "PENDING_OTHER_SESSION_AGENT_ANALYSIS",
+        "replacement_engines": [
+          "DISCOVERY"
+        ],
+        "owner_status": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
         "replacement_assignment_ref": "profile_rust_engine_assignment.source_modules"
       }
     ],
@@ -3231,15 +4037,27 @@
       ],
       "replacement": "NEW_RUST_IMPLEMENTATION_WITH_INDEPENDENT_DISTRIBUTED_SRC_CONTRACTS;RETAIN_ONLY_CURRENTLY_REQUIRED_BEHAVIOR_NOT_UNAPPROVED_LEGACY_RULE_ID_GRAMMAR",
       "runtime_source_owner_root": "src/ptsip/engines/",
-      "selected_leaf": "UNDECIDED_REVIEW_RUST_ENGINE_RESPONSIBILITY_BEFORE_SOURCE_CREATION",
+      "selected_leaf": [
+        "src/ptsip/engines/discovery/src/rule_records.rs",
+        "src/ptsip/engines/validation/src/rule_records.rs"
+      ],
       "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
       "no_go_parity_for_this_module": true,
       "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
       "archive_removed_contract_or_validator": false,
-      "resolved_engine": null,
-      "selected_runtime_root": null,
-      "selected_contract_root": null,
-      "owner_state": "SAME_PENDING_ANALYSIS_AS_OTHER_FIVE_MODULES",
+      "resolved_engine": [
+        "DISCOVERY",
+        "VALIDATION"
+      ],
+      "selected_runtime_root": [
+        "src/ptsip/engines/discovery/src/",
+        "src/ptsip/engines/validation/src/"
+      ],
+      "selected_contract_root": [
+        "src/ptsip/engines/discovery/src/schemas/",
+        "src/ptsip/engines/validation/src/schemas/"
+      ],
+      "owner_state": "ANALYZED_USER_PREAUTHORIZED",
       "assignment_ref": "profile_rust_engine_assignment.source_modules"
     }
   },
@@ -3530,9 +4348,11 @@
         "secondary_refs": [],
         "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "PENDING_FUTURE_SESSION_ANALYSIS_USER_PREAUTHORIZED_AFTER_EVIDENCE",
-        "replacement_owner": null,
-        "replacement_engine_paths": []
+        "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
+        "replacement_owner": "DISCOVERY",
+        "replacement_engine_paths": [
+          "src/ptsip/engines/discovery/src/profile.rs"
+        ]
       },
       {
         "source_path": "src/ptsip/profiles/compatibility.py",
@@ -3544,9 +4364,11 @@
         "secondary_refs": [],
         "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "PENDING_FUTURE_SESSION_ANALYSIS_USER_PREAUTHORIZED_AFTER_EVIDENCE",
-        "replacement_owner": null,
-        "replacement_engine_paths": []
+        "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
+        "replacement_owner": "VALIDATION",
+        "replacement_engine_paths": [
+          "src/ptsip/engines/validation/src/profile.rs"
+        ]
       },
       {
         "source_path": "src/ptsip/profiles/contracts.py",
@@ -3558,9 +4380,11 @@
         "secondary_refs": [],
         "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "PENDING_FUTURE_SESSION_ANALYSIS_USER_PREAUTHORIZED_AFTER_EVIDENCE",
-        "replacement_owner": null,
-        "replacement_engine_paths": []
+        "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
+        "replacement_owner": "DISCOVERY",
+        "replacement_engine_paths": [
+          "src/ptsip/engines/discovery/src/profile.rs"
+        ]
       },
       {
         "source_path": "src/ptsip/profiles/example.ptsip.yaml",
@@ -3710,9 +4534,11 @@
         "secondary_refs": [],
         "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "PENDING_FUTURE_SESSION_ANALYSIS_USER_PREAUTHORIZED_AFTER_EVIDENCE",
-        "replacement_owner": null,
-        "replacement_engine_paths": []
+        "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
+        "replacement_owner": "VALIDATION",
+        "replacement_engine_paths": [
+          "src/ptsip/engines/validation/src/profile.rs"
+        ]
       },
       {
         "source_path": "src/ptsip/profiles/index.yaml",
@@ -3737,9 +4563,11 @@
         "secondary_refs": [],
         "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "PENDING_FUTURE_SESSION_ANALYSIS_USER_PREAUTHORIZED_AFTER_EVIDENCE",
-        "replacement_owner": null,
-        "replacement_engine_paths": []
+        "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
+        "replacement_owner": "PROJECTION",
+        "replacement_engine_paths": [
+          "src/ptsip/engines/projection/src/profile.rs"
+        ]
       },
       {
         "source_path": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
@@ -3773,13 +4601,16 @@
         "secondary_refs": [],
         "delete_gate": "SELECTED_RUST_ENGINE_REPLACEMENT_AND_ALL_SUPPORTED_CONSUMER_CLOSURE_PASS",
         "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
-        "replacement_path_state": "PENDING_FUTURE_SESSION_ANALYSIS_USER_PREAUTHORIZED_AFTER_EVIDENCE",
+        "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "retirement_reasons": [
           "DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_IMPORT_FORBIDDEN_FOR_DISTRIBUTABLE_SRC",
           "PYTHON_MODULE_IS_NOT_RUST_ENGINE_IMPLEMENTATION"
         ],
-        "replacement_owner": null,
-        "replacement_engine_paths": []
+        "replacement_owner": "DISCOVERY",
+        "replacement_engine_paths": [
+          "src/ptsip/engines/discovery/src/rule_records.rs",
+          "src/ptsip/engines/validation/src/rule_records.rs"
+        ]
       },
       {
         "source_path": "src/ptsip/profiles/template-python-package.ptsip.yaml",
@@ -3805,10 +4636,10 @@
       "ALL_SIX_PROFILE_MODULES_ENGINE_RESPONSIBILITY_ANALYSIS_AND_AUTO_APPROVED_ASSIGNMENTS_RECORDED",
       "ALL_SELECTED_RUST_ENGINE_MODULES_NATIVE_CONTRACTS_AND_SUPPORTED_CONSUMERS_VERIFIED"
     ],
-    "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths; supported native Storage engine profile capabilities and distribution do not depend on legacy Python files. Existing excluded Python callers are not active conformance gates.",
-    "warning": "Whole folder removal intentionally breaks existing literal ptsip.profiles imports in two excluded Python files. Projection errors expressly tolerated; src/ptsip/cli.py is never edited, and compatibility is not asserted for it. User-owned .ptsip/profiles is outside deletion. All six Python module Rust engine owners are deferred to a future-session agent, with no preassignment.",
+    "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths after ALL selected Discovery/Validation/Projection capabilities and distribution pass without legacy files. The two excluded Python callers are not current conformance gates.",
+    "warning": "Whole folder removal may leave the two explicitly excluded Python callers broken. All six Rust function allocations are analyzed and preauthorized; removal still requires complete supported consumer, fixture, schema and package gates. User-owned .ptsip/profiles is outside deletion.",
     "user_owned_profile_out_of_scope": ".ptsip/profiles/** in consuming repositories is not a deletion target",
-    "explicit_go_root_vs_src_schema": "ALL_SIX_PROFILE_RUST_OWNERS_AND_RUST_SOURCE_PATHS_PENDING_ANALYSIS;EACH_REGISTERED_ENGINE_OWNS_ITS_NATIVE_SRC_SCHEMAS;NO_INDEPENDENT_GO_MODULE",
+    "explicit_go_root_vs_src_schema": "ALL_SIX_RUST_OWNER_PATHS_ANALYZED_USER_PREAUTHORIZED;NATIVE_ENGINE_SCHEMA_PATHS_SELECTED;NO_INDEPENDENT_GO_MODULE",
     "additional_source_health": {
       "missing_file_reference": "src/ptsip/validation/profile.py",
       "importer": "src/ptsip/clarification/resolution/profile_projection.py",
@@ -3822,7 +4653,30 @@
       "scope": "Legacy Python callers intentionally left untouched and excluded from v4/RBAC test gate",
       "note": "Complete removal of src/ptsip/profiles can leave these imports broken; do not count their remaining references as zero, do not falsely claim full Python compatibility"
     },
-    "runtime_owner_status": "ALL_SIX_PYTHON_MODULES_PENDING_OTHER_SESSION_AGENT_ANALYSIS"
+    "runtime_owner_status": "ALL_SIX_ANALYZED_SELECTED_DISCOVERY_VALIDATION_PROJECTION_NATIVE_REPLACEMENTS_VERIFIED",
+    "current_retirement_state": "NOT_EXECUTED_22_SOURCE_FILES_RETAINED",
+    "remaining_blockers": [
+      {
+        "id": "PROFILE_JSON_FIXTURE_PATHS",
+        "evidence": "profile_directory_retirement.fixture_paths_approved=false",
+        "effect": "DO_NOT_CREATE_THE_TWELVE_PROPOSED_JSON_GOLDEN_FILES_OR_DELETE_SOURCE_YAML"
+      },
+      {
+        "id": "USER_PROFILE_REPLACEMENT_TARGET",
+        "evidence": "src/ptsip/schemas/storage/profile/user-profile.schema.json remains explicitly denied; old User_Profile schema has no approved replacement target",
+        "effect": "DO_NOT_CREATE_DENIED_TARGET_OR_DELETE_OLD_SCHEMA"
+      },
+      {
+        "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
+        "evidence": "Existing migration import chain depends on absent ptsip.repository",
+        "effect": "NATIVE_ADAPTER_TESTS_DO_NOT_CLAIM_FULL_NORMAL_IMPORT_CLOSURE"
+      },
+      {
+        "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
+        "evidence": "Clean post-commit wheel/source build and installed package acceptance not yet complete",
+        "effect": "ASSET_STAGE_AND_NATIVE_RESULTS_DO_NOT_AUTHORIZE_WHOLE_PROFILE_TREE_RETIREMENT"
+      }
+    ]
   },
   "policy_v4_rbac_focus": {
     "status": "APPROVED_PVR_01_TO_09_CONTINUOUS_IMPLEMENTATION",
@@ -6625,16 +7479,23 @@
     "execution_order": "ACTUAL_DEPENDENCIES_NOT_WORK_UNIT_NUMBER",
     "undecided_work": "HOLD_ONLY_AFFECTED_WORK_AND_CONTINUE_OTHER_EXECUTABLE_APPROVED_WORK",
     "engine_owned_schema_root": "src/ptsip/engines/**/src/schemas/**",
-    "profile_runtime_owner": null,
+    "profile_runtime_owner": [
+      "DISCOVERY",
+      "VALIDATION",
+      "PROJECTION"
+    ],
     "profile_runtime_language": "RUST",
-    "profile_background_lifecycle": "ALWAYS_ON_REQUIRED_OWNER_AND_MECHANISM_DETERMINED_AFTER_ANALYSIS",
+    "profile_background_lifecycle": "CALLER_MANAGED_SELECTED_ENGINE_NDJSON_SERVE_EXPLICIT_START_EOF_STOP",
     "profile_independent_go_module": false,
     "no_profile_go_mod_creation": true,
     "no_unapproved_target_path_creation": true,
     "already_registered_non_engine_schemas_unaffected": true,
-    "rule_record_runtime_owners": null,
+    "rule_record_runtime_owners": [
+      "DISCOVERY",
+      "VALIDATION"
+    ],
     "rule_record_single_storage_engine": null,
-    "profile_runtime_owner_scope": "ALL_SIX_PROFILE_PYTHON_MODULES_OWNER_UNDECIDED",
+    "profile_runtime_owner_scope": "ALL_SIX_FUNCTION_ALLOCATIONS_RECORDED_AFTER_SOURCE_CALLER_ENGINE_ANALYSIS",
     "schema_rule_applies_to_all_engine_kinds": true,
     "schema_rule_scope": "EACH_ENGINE_OWNS_ITS_NATIVE_SCHEMAS_NOT_ONLY_STORAGE",
     "rule_record_engine_assignment": "INCLUDED_IN_ALL_SIX_MODULE_OWNER_ANALYSIS",
@@ -6646,7 +7507,8 @@
       "src/ptsip/profiles/metadata.py",
       "src/ptsip/profiles/rule_records.py"
     ],
-    "profile_rust_engine_ownership": "PENDING_OTHER_SESSION_ANALYSIS_ALL_SIX_AUTO_APPROVAL_AFTER_EVIDENCE"
+    "profile_rust_engine_ownership": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
+    "implementation_progress": "APPROVED_NATIVE_SCOPE_IMPLEMENTED_VERIFIED;ONLY_EXPLICIT_DECISION_OR_SOURCE_DISTRIBUTION_BLOCKERS_REMAIN"
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -8207,15 +9069,27 @@
         "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
         "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
       ],
-      "replacement": "RUST_ENGINE_ALLOCATION_AFTER_OTHER_SESSION_AGENT_ANALYSIS_AS_ONE_OF_SIX_MODULES",
-      "runtime_source_owner_root": null,
-      "selected_leaf": null,
+      "replacement": "ANALYZED_TWO_OWNER_RUST_REPLACEMENT_USER_PREAUTHORIZED",
+      "runtime_source_owner_root": [
+        "src/ptsip/engines/discovery/src/",
+        "src/ptsip/engines/validation/src/"
+      ],
+      "selected_leaf": [
+        "src/ptsip/engines/discovery/src/rule_records.rs",
+        "src/ptsip/engines/validation/src/rule_records.rs"
+      ],
       "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
       "no_go_parity_for_this_module": true,
       "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
       "archive_removed_contract_or_validator": false,
-      "selected_contract_owner": null,
-      "resolved_engine": null,
+      "selected_contract_owner": [
+        "DISCOVERY",
+        "VALIDATION"
+      ],
+      "resolved_engine": [
+        "DISCOVERY",
+        "VALIDATION"
+      ],
       "allocation_ref": "profile_rust_engine_assignment.source_modules",
       "owner_analysis_scope": "ALL_SIX_PYTHON_MODULES_INCLUDING_RULE_RECORD"
     },
@@ -8367,7 +9241,7 @@
       "clarification": {
         "source": "USER_EXPLICIT_CORRECTION_ALL_SIX_2026_11_18",
         "session": "OTHER_SESSION_AGENT",
-        "engine_owner_analysis_completed": false,
+        "engine_owner_analysis_completed": true,
         "user_preapproval_after_analysis": true,
         "all_six_modules_in_scope": [
           "src/ptsip/profiles/identity.py",
@@ -8378,8 +9252,14 @@
           "src/ptsip/profiles/rule_records.py"
         ],
         "preassigned_engines": null,
-        "next_step": "ANALYZE_RESPONSIBILITIES_AND_RECORD_USER_PREAUTHORIZED_ASSIGNMENTS_BEFORE_IMPLEMENTATION",
-        "schema_pattern": "EACH_REGISTERED_RUST_ENGINE_OWN_SRC_SCHEMAS"
+        "next_step": "IMPLEMENT_RECORDED_USER_PREAUTHORIZED_ALLOCATION_AND_EXPLICITLY_APPROVED_SEVEN_NATIVE_OPERATIONS",
+        "schema_pattern": "EACH_REGISTERED_RUST_ENGINE_OWN_SRC_SCHEMAS",
+        "assigned_engines": [
+          "DISCOVERY",
+          "VALIDATION",
+          "PROJECTION"
+        ],
+        "result_ref": "profile_rust_engine_assignment"
       }
     },
     "profile_all_six_rust_migration_2026_11_18": {
@@ -8393,15 +9273,18 @@
         "src/ptsip/profiles/rule_records.py"
       ],
       "implementation_language": "RUST",
-      "engine_ownership": "UNDECIDED_FOR_ALL_SIX",
-      "analysis_actor": "OTHER_SESSION_AGENT",
+      "engine_ownership": "ANALYZED_DISCOVERY_VALIDATION_PROJECTION",
+      "analysis_actor": "CURRENT_IMPLEMENTATION_SESSION_AGENT_TEAM",
       "decision_condition": "ANALYSIS_COMPLETED_WITH_FUNCTION_CALLER_ENGINE_RESPONSIBILITY_EVIDENCE",
       "user_automatic_approval": true,
       "result_record_path": "profile_rust_engine_assignment.source_modules",
-      "implementation_gate": "ANALYSIS_AND_APPROVAL_RESULT_RECORDED",
+      "implementation_gate": "ANALYSIS_AND_APPROVAL_RECORDED_NATIVE_IMPLEMENTATION_AND_VERIFICATION_REQUIRED",
       "background_requirement": "ALWAYS_ON_PROFILE_CAPABILITIES",
       "engine_schema_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "no_independent_go_module": true
+      "no_independent_go_module": true,
+      "analysis_completed": true,
+      "user_preapproval_applied": true,
+      "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision"
     }
   },
   "current_release_nonblocking_contract_freedom": {
@@ -8545,7 +9428,7 @@
     "no_go_profile_binary_dependency": true
   },
   "profile_rust_engine_assignment": {
-    "state": "PENDING_OTHER_SESSION_AGENT_RESPONSIBILITY_ANALYSIS",
+    "state": "IMPLEMENTED_NATIVE_OPERATIONS_AND_BACKGROUND_VERIFIED_CONSUMER_DISTRIBUTION_CLOSURE_PARTIAL",
     "scope": "ALL_SIX_SRC_PTSIP_PROFILES_PYTHON_MODULES",
     "source_module_count": 6,
     "implementation_language": "RUST",
@@ -8553,11 +9436,31 @@
       {
         "legacy_source": "src/ptsip/profiles/identity.py",
         "required_language": "RUST",
-        "analysis_status": "PENDING_OTHER_SESSION_AGENT",
-        "owner_engine": null,
-        "engine_allocations": [],
-        "rust_implementation_paths": [],
-        "engine_owned_schema_paths": [],
+        "analysis_status": "COMPLETE_EVIDENCE_RECORDED",
+        "owner_engine": "VALIDATION",
+        "engine_allocations": [
+          {
+            "owner_engine": "VALIDATION",
+            "functions": [
+              "ProjectProfileVersion.parse/from_filename_token/canonical/filename_token",
+              "ProjectProfileUserRevision.parse/next",
+              "ProjectProfileInstanceRevision.from_content",
+              "project_profile_support",
+              "require_project_profile_support",
+              "require_current_project_profile_support"
+            ],
+            "rust_implementation_path": "src/ptsip/engines/validation/src/profile.rs",
+            "engine_owned_schema_path": "src/ptsip/engines/validation/src/schemas/profile.schema.json",
+            "responsibility_evidence": "Typed identity/revision validity and supported operation admission are Validation checks. Current contract selection remains an explicit Discovery input; Validation does not author registry state.",
+            "existing_engine_contract_evidence_ref": "profile_rust_engine_assignment.registered_engine_contract_evidence.VALIDATION"
+          }
+        ],
+        "rust_implementation_paths": [
+          "src/ptsip/engines/validation/src/profile.rs"
+        ],
+        "engine_owned_schema_paths": [
+          "src/ptsip/engines/validation/src/schemas/profile.schema.json"
+        ],
         "observed_legacy_responsibilities": "Profile contract identity, user revision, instance revision, typed operation support",
         "observed_legacy_exports": [
           "ProjectProfileVersion",
@@ -8589,16 +9492,73 @@
           "status": "enum"
         },
         "analysis_rule": "VERIFY_ACTUAL_FUNCTION_BEHAVIOR_CALLERS_NATIVE_RUST_ENGINE_RESPONSIBILITY_AND_CONTRACT_BEFORE_ASSIGNMENT;NO_FILENAME_ONLY_OWNERSHIP_INFERENCE",
-        "implementation_gate": "ANALYZE_THEN_RECORD_EVIDENCE_AND_ALLOCATIONS_THEN_APPLY_USER_PREAUTHORIZATION_THEN_IMPLEMENT"
+        "implementation_gate": "OWNER_PATH_ANALYSIS_COMPLETE_USER_PREAUTHORIZATION_APPLIED_NATIVE_TESTS_REQUIRED",
+        "source_evidence": {
+          "path": "src/ptsip/profiles/identity.py",
+          "git_blob_sha": "df05ea1788c7bac9ed6f2204b577f772e43f2be4",
+          "sha256": "05e608321bf5cfac6f0dd91d95a50548fc84eebbca75aec57a6ae55020af73cd"
+        },
+        "caller_evidence": [
+          {
+            "path": "src/ptsip/profiles/metadata.py",
+            "git_blob_sha": "a51d316663b448c1393f93eff6ab99e314a8b4ed",
+            "sha256": "b3b72e48032da8dabd034d5ef24fe278e82915da48e894319194d83eed5c6242"
+          },
+          {
+            "path": "src/ptsip/profiles/compatibility.py",
+            "git_blob_sha": "8bfde3ea2a329e3eb9429072160eb077c121d8fd",
+            "sha256": "355d5609653790a331f839fdf4f34d2aa6d3afba2c62c9b18b5892d5d13a9a06"
+          },
+          {
+            "path": "src/ptsip/migration/analysis/target/semantics.py",
+            "git_blob_sha": "1b18abbf39bacb705f56cc117f706abc921d5614",
+            "sha256": "f83413952dd27e2c5ae7f4681882f1807bcad130e67a12e724687b0c33e7f779"
+          },
+          {
+            "path": "src/ptsip/ptsip_specification/spec_identity.py",
+            "git_blob_sha": "1f01d33b680dc462a1be6f73a7a9a54b3823a857",
+            "sha256": "716829fde2d8e1216e2e2f1b21b3b73f8fe1a3a40cea45fd1ff8b840d4c6a80f"
+          }
+        ],
+        "user_preapproval_applied": true,
+        "caller_evidence_note": "ptsip_specification/spec_identity.py contains a pre-existing wrong relative .profiles.identity import; migration target/semantics.py contains the actual absolute legacy import. Both supported paths require explicit native replacement routing.",
+        "approved_native_operation_ids": [
+          "validation.profile.identity"
+        ],
+        "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision",
+        "implementation_status": "SELECTED_RUST_FUNCTIONS_IMPLEMENTED_NATIVE_GO_CONFORMANCE_PASS",
+        "retirement_status": "LEGACY_SOURCE_PRESENT_PENDING_GLOBAL_FIXTURE_USER_PROFILE_CONSUMER_AND_DISTRIBUTION_GATES",
+        "registered_native_operation_ids": [
+          "validation.profile.identity"
+        ],
+        "legacy_candidate_action_disposition": "OLDER_PROFILE_PREFIX_CANDIDATES_NOT_REGISTERED;ONLY_EXPLICITLY_APPROVED_ENGINE_PREFIXED_IDS_ARE_ACTIVE"
       },
       {
         "legacy_source": "src/ptsip/profiles/contracts.py",
         "required_language": "RUST",
-        "analysis_status": "PENDING_OTHER_SESSION_AGENT",
-        "owner_engine": null,
-        "engine_allocations": [],
-        "rust_implementation_paths": [],
-        "engine_owned_schema_paths": [],
+        "analysis_status": "COMPLETE_EVIDENCE_RECORDED",
+        "owner_engine": "DISCOVERY",
+        "engine_allocations": [
+          {
+            "owner_engine": "DISCOVERY",
+            "functions": [
+              "current_runtime_project_profile_contract",
+              "current_runtime_project_profile_version",
+              "_embedded_registry_payload",
+              "_schema_resource"
+            ],
+            "rust_implementation_path": "src/ptsip/engines/discovery/src/profile.rs",
+            "engine_owned_schema_path": "src/ptsip/engines/discovery/src/schemas/profile.schema.json",
+            "responsibility_evidence": "Existing Discovery verifies current owner-source hash closure and resolves exact registered identities; replace legacy package-path restrictions with canonical central registry resource selection and immutable schema identity/hash verification.",
+            "existing_engine_contract_evidence_ref": "profile_rust_engine_assignment.registered_engine_contract_evidence.DISCOVERY"
+          }
+        ],
+        "rust_implementation_paths": [
+          "src/ptsip/engines/discovery/src/profile.rs"
+        ],
+        "engine_owned_schema_paths": [
+          "src/ptsip/engines/discovery/src/schemas/profile.schema.json"
+        ],
         "observed_legacy_responsibilities": "Load registered project-profile contract, version selector, resource identifier and immutable source binding",
         "observed_legacy_exports": [
           "current_runtime_project_profile_contract",
@@ -8623,16 +9583,58 @@
           "operations": "array<string>"
         },
         "analysis_rule": "VERIFY_ACTUAL_FUNCTION_BEHAVIOR_CALLERS_NATIVE_RUST_ENGINE_RESPONSIBILITY_AND_CONTRACT_BEFORE_ASSIGNMENT;NO_FILENAME_ONLY_OWNERSHIP_INFERENCE",
-        "implementation_gate": "ANALYZE_THEN_RECORD_EVIDENCE_AND_ALLOCATIONS_THEN_APPLY_USER_PREAUTHORIZATION_THEN_IMPLEMENT"
+        "implementation_gate": "OWNER_PATH_ANALYSIS_COMPLETE_USER_PREAUTHORIZATION_APPLIED_NATIVE_TESTS_REQUIRED",
+        "source_evidence": {
+          "path": "src/ptsip/profiles/contracts.py",
+          "git_blob_sha": "01a22695e7f1970034dc26cda15be06a04c59d07",
+          "sha256": "87c411aac09f98bcaae3c9d06c11ec42711b9640a13ffab953578f7f76afb945"
+        },
+        "caller_evidence": [
+          {
+            "path": "src/ptsip/profiles/identity.py",
+            "git_blob_sha": "df05ea1788c7bac9ed6f2204b577f772e43f2be4",
+            "sha256": "05e608321bf5cfac6f0dd91d95a50548fc84eebbca75aec57a6ae55020af73cd"
+          }
+        ],
+        "user_preapproval_applied": true,
+        "approved_native_operation_ids": [
+          "discovery.profile.contract"
+        ],
+        "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision",
+        "implementation_status": "SELECTED_RUST_FUNCTIONS_IMPLEMENTED_NATIVE_GO_CONFORMANCE_PASS",
+        "retirement_status": "LEGACY_SOURCE_PRESENT_PENDING_GLOBAL_FIXTURE_USER_PROFILE_CONSUMER_AND_DISTRIBUTION_GATES",
+        "registered_native_operation_ids": [
+          "discovery.profile.contract"
+        ],
+        "legacy_candidate_action_disposition": "OLDER_PROFILE_PREFIX_CANDIDATES_NOT_REGISTERED;ONLY_EXPLICITLY_APPROVED_ENGINE_PREFIXED_IDS_ARE_ACTIVE"
       },
       {
         "legacy_source": "src/ptsip/profiles/compatibility.py",
         "required_language": "RUST",
-        "analysis_status": "PENDING_OTHER_SESSION_AGENT",
-        "owner_engine": null,
-        "engine_allocations": [],
-        "rust_implementation_paths": [],
-        "engine_owned_schema_paths": [],
+        "analysis_status": "COMPLETE_EVIDENCE_RECORDED",
+        "owner_engine": "VALIDATION",
+        "engine_allocations": [
+          {
+            "owner_engine": "VALIDATION",
+            "functions": [
+              "historical_project_profile_bridges",
+              "historical_project_profile_bridge",
+              "require_historical_project_profile_bridge",
+              "current_project_profile_target",
+              "require_direct_historical_transition"
+            ],
+            "rust_implementation_path": "src/ptsip/engines/validation/src/profile.rs",
+            "engine_owned_schema_path": "src/ptsip/engines/validation/src/schemas/profile.schema.json",
+            "responsibility_evidence": "Direct transition and exact source/target revision checks are Validation relation checks. No execution, migration writes, inferred transition edge or intermediate materialization is granted.",
+            "existing_engine_contract_evidence_ref": "profile_rust_engine_assignment.registered_engine_contract_evidence.VALIDATION"
+          }
+        ],
+        "rust_implementation_paths": [
+          "src/ptsip/engines/validation/src/profile.rs"
+        ],
+        "engine_owned_schema_paths": [
+          "src/ptsip/engines/validation/src/schemas/profile.schema.json"
+        ],
         "observed_legacy_responsibilities": "Identify historical profile contracts, validate exact direct transition relation and historical target without silent intermediate materialization",
         "observed_legacy_exports": [
           "historical_project_profile_bridge",
@@ -8658,16 +9660,57 @@
           "intermediate_materialization_allowed": "boolean"
         },
         "analysis_rule": "VERIFY_ACTUAL_FUNCTION_BEHAVIOR_CALLERS_NATIVE_RUST_ENGINE_RESPONSIBILITY_AND_CONTRACT_BEFORE_ASSIGNMENT;NO_FILENAME_ONLY_OWNERSHIP_INFERENCE",
-        "implementation_gate": "ANALYZE_THEN_RECORD_EVIDENCE_AND_ALLOCATIONS_THEN_APPLY_USER_PREAUTHORIZATION_THEN_IMPLEMENT"
+        "implementation_gate": "OWNER_PATH_ANALYSIS_COMPLETE_USER_PREAUTHORIZATION_APPLIED_NATIVE_TESTS_REQUIRED",
+        "source_evidence": {
+          "path": "src/ptsip/profiles/compatibility.py",
+          "git_blob_sha": "8bfde3ea2a329e3eb9429072160eb077c121d8fd",
+          "sha256": "355d5609653790a331f839fdf4f34d2aa6d3afba2c62c9b18b5892d5d13a9a06"
+        },
+        "caller_evidence": [
+          {
+            "path": "src/ptsip/migration/execution/direct/promotion.py",
+            "git_blob_sha": "2dee4b7fba1019316ab6a7431f5f5a99b46deaa0",
+            "sha256": "76b21eeaca6eba140b21745d4a25a8a5087a2ba70ca102b65008d257176fe7d0"
+          }
+        ],
+        "user_preapproval_applied": true,
+        "approved_native_operation_ids": [
+          "validation.profile.transition"
+        ],
+        "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision",
+        "implementation_status": "SELECTED_RUST_FUNCTIONS_IMPLEMENTED_NATIVE_GO_CONFORMANCE_PASS",
+        "retirement_status": "LEGACY_SOURCE_PRESENT_PENDING_GLOBAL_FIXTURE_USER_PROFILE_CONSUMER_AND_DISTRIBUTION_GATES",
+        "registered_native_operation_ids": [
+          "validation.profile.transition"
+        ],
+        "legacy_candidate_action_disposition": "OLDER_PROFILE_PREFIX_CANDIDATES_NOT_REGISTERED;ONLY_EXPLICITLY_APPROVED_ENGINE_PREFIXED_IDS_ARE_ACTIVE"
       },
       {
         "legacy_source": "src/ptsip/profiles/catalog.py",
         "required_language": "RUST",
-        "analysis_status": "PENDING_OTHER_SESSION_AGENT",
-        "owner_engine": null,
-        "engine_allocations": [],
-        "rust_implementation_paths": [],
-        "engine_owned_schema_paths": [],
+        "analysis_status": "COMPLETE_EVIDENCE_RECORDED",
+        "owner_engine": "DISCOVERY",
+        "engine_allocations": [
+          {
+            "owner_engine": "DISCOVERY",
+            "functions": [
+              "load_local_profile_selection",
+              "canonical_new_profile_path",
+              "default_catalog_payload",
+              "default_catalog_text"
+            ],
+            "rust_implementation_path": "src/ptsip/engines/discovery/src/profile.rs",
+            "engine_owned_schema_path": "src/ptsip/engines/discovery/src/schemas/profile.schema.json",
+            "responsibility_evidence": "Catalog identity/resource selection follows Discovery exact-registered lookup. Selection and canonical new-path calculation are read-only and do not grant Storage provider invocation or project mutation.",
+            "existing_engine_contract_evidence_ref": "profile_rust_engine_assignment.registered_engine_contract_evidence.DISCOVERY"
+          }
+        ],
+        "rust_implementation_paths": [
+          "src/ptsip/engines/discovery/src/profile.rs"
+        ],
+        "engine_owned_schema_paths": [
+          "src/ptsip/engines/discovery/src/schemas/profile.schema.json"
+        ],
         "observed_legacy_responsibilities": "Select and validate local profile catalog and compute canonical new profile path without unauthorized writes",
         "observed_legacy_exports": [
           "load_local_profile_selection",
@@ -8694,16 +9737,66 @@
           "catalog_valid": "boolean"
         },
         "analysis_rule": "VERIFY_ACTUAL_FUNCTION_BEHAVIOR_CALLERS_NATIVE_RUST_ENGINE_RESPONSIBILITY_AND_CONTRACT_BEFORE_ASSIGNMENT;NO_FILENAME_ONLY_OWNERSHIP_INFERENCE",
-        "implementation_gate": "ANALYZE_THEN_RECORD_EVIDENCE_AND_ALLOCATIONS_THEN_APPLY_USER_PREAUTHORIZATION_THEN_IMPLEMENT"
+        "implementation_gate": "OWNER_PATH_ANALYSIS_COMPLETE_USER_PREAUTHORIZATION_APPLIED_NATIVE_TESTS_REQUIRED",
+        "source_evidence": {
+          "path": "src/ptsip/profiles/catalog.py",
+          "git_blob_sha": "3760d101a369d1d062e46903432e389ec453c9ae",
+          "sha256": "5327a9b4739b89e9f1ab8147ba71b01e26bca17db33607312be3bfdb04b86437"
+        },
+        "caller_evidence": [
+          {
+            "path": "src/ptsip/cli.py",
+            "git_blob_sha": "3b2d8f90e17bc9ad175357159cee72a273b927aa",
+            "sha256": "90b6d40e6bbd836b93752225e5aedd81656b0fc14d88553c1800256616539fc9"
+          },
+          {
+            "path": "src/ptsip/clarification/resolution/profile_projection.py",
+            "git_blob_sha": "f04152d6d6836eee6ee01b5ffc60a6c19efbd312",
+            "sha256": "656dce2b3a08e1cad7ea6eb11e1f88e235063f4c3703fee61d6d91510a197460"
+          },
+          {
+            "path": "src/ptsip/profiles/rule_records.py",
+            "git_blob_sha": "c2d619d3c37e014fb396b86a18a41074fc20cad9",
+            "sha256": "4d623be92d8bf4eed373c8f9e114d87359dd7812a182653ba764957b60af4663"
+          }
+        ],
+        "user_preapproval_applied": true,
+        "approved_native_operation_ids": [
+          "discovery.profile.catalog"
+        ],
+        "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision",
+        "implementation_status": "SELECTED_RUST_FUNCTIONS_IMPLEMENTED_NATIVE_GO_CONFORMANCE_PASS",
+        "retirement_status": "LEGACY_SOURCE_PRESENT_PENDING_GLOBAL_FIXTURE_USER_PROFILE_CONSUMER_AND_DISTRIBUTION_GATES",
+        "registered_native_operation_ids": [
+          "discovery.profile.catalog"
+        ],
+        "legacy_candidate_action_disposition": "OLDER_PROFILE_PREFIX_CANDIDATES_NOT_REGISTERED;ONLY_EXPLICITLY_APPROVED_ENGINE_PREFIXED_IDS_ARE_ACTIVE"
       },
       {
         "legacy_source": "src/ptsip/profiles/metadata.py",
         "required_language": "RUST",
-        "analysis_status": "PENDING_OTHER_SESSION_AGENT",
-        "owner_engine": null,
-        "engine_allocations": [],
-        "rust_implementation_paths": [],
-        "engine_owned_schema_paths": [],
+        "analysis_status": "COMPLETE_EVIDENCE_RECORDED",
+        "owner_engine": "PROJECTION",
+        "engine_allocations": [
+          {
+            "owner_engine": "PROJECTION",
+            "functions": [
+              "project_profile_ptsip_metadata",
+              "current_project_profile_ptsip_metadata",
+              "current_project_profile_header_yaml"
+            ],
+            "rust_implementation_path": "src/ptsip/engines/projection/src/profile.rs",
+            "engine_owned_schema_path": "src/ptsip/engines/projection/src/schemas/profile.schema.json",
+            "responsibility_evidence": "Metadata and serialized header derive presentation from explicit contract/specification/revision inputs. Existing Projection selects and renders without source mutation; it does not select contracts, validate policy semantics or author Specification identity.",
+            "existing_engine_contract_evidence_ref": "profile_rust_engine_assignment.registered_engine_contract_evidence.PROJECTION"
+          }
+        ],
+        "rust_implementation_paths": [
+          "src/ptsip/engines/projection/src/profile.rs"
+        ],
+        "engine_owned_schema_paths": [
+          "src/ptsip/engines/projection/src/schemas/profile.schema.json"
+        ],
         "observed_legacy_responsibilities": "Build Project Profile metadata and serialized canonical PTSIP header from exact Specification and contract revisions",
         "observed_legacy_exports": [
           "project_profile_ptsip_metadata",
@@ -8728,29 +9821,108 @@
           "evidence_refs": "array<string>"
         },
         "analysis_rule": "VERIFY_ACTUAL_FUNCTION_BEHAVIOR_CALLERS_NATIVE_RUST_ENGINE_RESPONSIBILITY_AND_CONTRACT_BEFORE_ASSIGNMENT;NO_FILENAME_ONLY_OWNERSHIP_INFERENCE",
-        "implementation_gate": "ANALYZE_THEN_RECORD_EVIDENCE_AND_ALLOCATIONS_THEN_APPLY_USER_PREAUTHORIZATION_THEN_IMPLEMENT"
+        "implementation_gate": "OWNER_PATH_ANALYSIS_COMPLETE_USER_PREAUTHORIZATION_APPLIED_NATIVE_TESTS_REQUIRED",
+        "source_evidence": {
+          "path": "src/ptsip/profiles/metadata.py",
+          "git_blob_sha": "a51d316663b448c1393f93eff6ab99e314a8b4ed",
+          "sha256": "b3b72e48032da8dabd034d5ef24fe278e82915da48e894319194d83eed5c6242"
+        },
+        "caller_evidence": [
+          {
+            "path": "src/ptsip/clarification/resolution/profile_projection.py",
+            "git_blob_sha": "f04152d6d6836eee6ee01b5ffc60a6c19efbd312",
+            "sha256": "656dce2b3a08e1cad7ea6eb11e1f88e235063f4c3703fee61d6d91510a197460"
+          }
+        ],
+        "user_preapproval_applied": true,
+        "approved_native_operation_ids": [
+          "projection.profile.metadata"
+        ],
+        "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision",
+        "implementation_status": "SELECTED_RUST_FUNCTIONS_IMPLEMENTED_NATIVE_GO_CONFORMANCE_PASS",
+        "retirement_status": "LEGACY_SOURCE_PRESENT_PENDING_GLOBAL_FIXTURE_USER_PROFILE_CONSUMER_AND_DISTRIBUTION_GATES",
+        "registered_native_operation_ids": [
+          "projection.profile.metadata"
+        ],
+        "legacy_candidate_action_disposition": "OLDER_PROFILE_PREFIX_CANDIDATES_NOT_REGISTERED;ONLY_EXPLICITLY_APPROVED_ENGINE_PREFIXED_IDS_ARE_ACTIVE"
       },
       {
         "legacy_source": "src/ptsip/profiles/rule_records.py",
         "required_language": "RUST",
-        "analysis_status": "PENDING_OTHER_SESSION_AGENT",
-        "owner_engine": null,
-        "engine_allocations": [],
-        "rust_implementation_paths": [],
-        "engine_owned_schema_paths": [],
+        "analysis_status": "COMPLETE_EVIDENCE_RECORDED",
+        "owner_engine": "DISCOVERY",
+        "engine_allocations": [
+          {
+            "owner_engine": "DISCOVERY",
+            "functions": [
+              "load_rule_records",
+              "discover_rule_records",
+              "resolve_rule_record",
+              "_linked_resource",
+              "_object_file"
+            ],
+            "rust_implementation_path": "src/ptsip/engines/discovery/src/rule_records.rs",
+            "engine_owned_schema_path": "src/ptsip/engines/discovery/src/schemas/rule-records.schema.json",
+            "responsibility_evidence": "Read caller-selected linked rule resources, enumerate and resolve exact opaque IDs; reject duplicate/ambiguous lookup and traversal. Do not widen discovery.resolve engine/capability semantics or import private contracts.",
+            "existing_engine_contract_evidence_ref": "profile_rust_engine_assignment.registered_engine_contract_evidence.DISCOVERY"
+          },
+          {
+            "owner_engine": "VALIDATION",
+            "functions": [
+              "_validate_relations"
+            ],
+            "rust_implementation_path": "src/ptsip/engines/validation/src/rule_records.rs",
+            "engine_owned_schema_path": "src/ptsip/engines/validation/src/schemas/rule-records.schema.json",
+            "responsibility_evidence": "Validate explicit record shape, duplicate IDs, parent/root existence and graph consistency as independent structural checks. Rule IDs remain opaque caller-owned strings; private _kind prefix/depth grammar is not inherited and opaque value internals are not constrained.",
+            "existing_engine_contract_evidence_ref": "profile_rust_engine_assignment.registered_engine_contract_evidence.VALIDATION"
+          }
+        ],
+        "rust_implementation_paths": [
+          "src/ptsip/engines/discovery/src/rule_records.rs",
+          "src/ptsip/engines/validation/src/rule_records.rs"
+        ],
+        "engine_owned_schema_paths": [
+          "src/ptsip/engines/discovery/src/schemas/rule-records.schema.json",
+          "src/ptsip/engines/validation/src/schemas/rule-records.schema.json"
+        ],
         "observed_legacy_responsibilities": [
           "linked rule profile read/validate",
           "exact registered rule ID discovery and resolution",
           "local profile catalog dependency"
         ],
-        "observed_legacy_exports": [],
+        "observed_legacy_exports": [
+          "load_rule_records",
+          "discover_rule_records",
+          "resolve_rule_record"
+        ],
         "observed_callers": [],
         "candidate_semantic_action": null,
         "candidate_semantic_action_registered": false,
         "existing_input_contract_review": null,
         "existing_output_contract_review": null,
         "analysis_rule": "VERIFY_ACTUAL_FUNCTION_BEHAVIOR_CALLERS_NATIVE_RUST_ENGINE_RESPONSIBILITY_AND_CONTRACT_BEFORE_ASSIGNMENT;NO_FILENAME_ONLY_OWNERSHIP_INFERENCE",
-        "implementation_gate": "ANALYZE_THEN_RECORD_EVIDENCE_AND_ALLOCATIONS_THEN_APPLY_USER_PREAUTHORIZATION_THEN_IMPLEMENT"
+        "implementation_gate": "OWNER_PATH_ANALYSIS_COMPLETE_USER_PREAUTHORIZATION_APPLIED_NATIVE_TESTS_REQUIRED",
+        "source_evidence": {
+          "path": "src/ptsip/profiles/rule_records.py",
+          "git_blob_sha": "c2d619d3c37e014fb396b86a18a41074fc20cad9",
+          "sha256": "4d623be92d8bf4eed373c8f9e114d87359dd7812a182653ba764957b60af4663"
+        },
+        "caller_evidence": [],
+        "user_preapproval_applied": true,
+        "approved_native_operation_ids": [
+          "discovery.profile.rules",
+          "validation.profile.rules"
+        ],
+        "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision",
+        "linked_read_implementation": "discovery.profile.rules ROOT_BRANCH_AND_EXPLICIT_SELECTED_MAIN_PAYLOAD_WITH_REGISTERED_LOCAL_CATALOG",
+        "native_schema_no_private_grammar": true,
+        "implementation_status": "SELECTED_RUST_FUNCTIONS_IMPLEMENTED_NATIVE_GO_CONFORMANCE_PASS",
+        "retirement_status": "LEGACY_SOURCE_PRESENT_PENDING_GLOBAL_FIXTURE_USER_PROFILE_CONSUMER_AND_DISTRIBUTION_GATES",
+        "registered_native_operation_ids": [
+          "discovery.profile.rules",
+          "validation.profile.rules"
+        ],
+        "legacy_candidate_action_disposition": "OLDER_PROFILE_PREFIX_CANDIDATES_NOT_REGISTERED;ONLY_EXPLICITLY_APPROVED_ENGINE_PREFIXED_IDS_ARE_ACTIVE"
       }
     ],
     "no_preselected_engine_count": true,
@@ -8763,8 +9935,22 @@
     "no_go_mod": "src/ptsip/profile_contract/go.mod",
     "runtime_requirement": {
       "profile_function_availability": "ALWAYS_ON_BACKGROUND_OPERATION_REQUIRED",
-      "implementation_engine_host_and_lifecycle": "DETERMINE_AFTER_ACTUAL_ENGINE_OWNER_ANALYSIS",
-      "do_not_assume": "STORAGE_ENGINE_OR_SINGLE_DAEMON_OWNS_ALL_PROFILE_CAPABILITIES"
+      "implementation_engine_host_and_lifecycle": "CALLER_MANAGED_SELECTED_ENGINE_STDIO_SERVE_LOOP",
+      "do_not_assume": "STORAGE_ENGINE_OR_SINGLE_DAEMON_OWNS_ALL_PROFILE_CAPABILITIES",
+      "selected_engines": [
+        "DISCOVERY",
+        "VALIDATION",
+        "PROJECTION"
+      ],
+      "mechanism": {
+        "argument": "--serve",
+        "framing": "ONE_NATIVE_IDENTITY_ENVELOPE_PER_NDJSON_LINE",
+        "maximum_request_bytes": 1048576,
+        "lifetime": "CALLER_OWNS_PROCESS;EOF_SHUTDOWN",
+        "activation": "EXPLICIT_CALLER_START_ONLY_NO_AUTOMATIC_HOST_SERVICE",
+        "failure": "INVALID_REQUEST_RETURNS_TYPED_FAILURE_WITHOUT_WIDENING_REGISTERED_OPERATIONS",
+        "availability_claim": "VERIFIED_CALLER_MANAGED_MULTI_REQUEST_NATIVE_SESSION_WITH_1_MIB_FRAME_LIMIT_AND_EOF_STOP;NO_AUTOMATIC_HOST_SERVICE_ACTIVATION"
+      }
     },
     "other_session_agent_task": [
       "READ_AND_INVENTORY_ALL_SIX_PYTHON_MODULES_AND_ACTUAL_CALLERS",
@@ -8782,7 +9968,9 @@
       "not_immediate": "NO_ENGINE_ASSIGNMENT_APPROVED_BEFORE_ANALYSIS",
       "independent_policy_changes": "NOT_AUTHORIZED",
       "after_analysis": "SYNC_APPROVED_ASSIGNMENTS_TO_ACTIVE_PLAN_BEFORE_IMPLEMENTING",
-      "no_branch_creation": true
+      "no_branch_creation": true,
+      "state": "APPLIED_AFTER_EVIDENCE_2026_11_18",
+      "operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision"
     },
     "retirement_rule": {
       "source_directory": "src/ptsip/profiles/",
@@ -8794,6 +9982,315 @@
         "LEGACY_RULE_RECORD_PYTHON_MODULE_IS_NOT_RUST_ENGINE_CODE"
       ],
       "delete_legacy_validators": "AFTER_ACCEPTED_REPLACEMENT_NO_ARCHIVE"
+    },
+    "analysis_head": "9fc52416e65372199c0c80f1c007e62ca04826fa",
+    "analysis_evidence_scope": "ALL_SIX_LEGACY_FUNCTIONS_ACTUAL_CALLERS_AND_CURRENT_REGISTERED_RUST_ENGINE_CONTRACTS",
+    "registered_engine_contract_evidence": {
+      "VALIDATION": {
+        "path": "src/ptsip/engines/validation/contract.json",
+        "git_blob_sha": "3a0fba9b3986a877988b8b3b27b6088ea41d4c56",
+        "sha256": "5ef48cb3479cca19ab3423d4eaecb1179b8bd74ea21451e80c4d44b0fc9d8f0b",
+        "engine_id": "urn:uuid:44258a79-af23-4ce9-94c9-6d23de29bd21",
+        "contract_id": "urn:uuid:450659b1-1e89-4138-91d3-8dcbf6d6dc1a",
+        "contract_version": "4.1.0",
+        "current_registered_operations": [
+          {
+            "id": "validation.contract",
+            "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
+          },
+          {
+            "id": "validation.schema",
+            "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
+          },
+          {
+            "id": "validation.typed-io",
+            "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
+          },
+          {
+            "id": "validation.precondition",
+            "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
+          },
+          {
+            "id": "validation.case",
+            "algorithm": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION"
+          },
+          {
+            "id": "validation.compose",
+            "algorithm": "EXPLICIT_OPTIONAL_INDEPENDENT_VALIDATION_CHECK_DAG_WITHOUT_IMPLICIT_VPMS_EQUIVALENCE"
+          },
+          {
+            "id": "validation.verify-handoff",
+            "algorithm": "VERIFY_CURRENT_VERSIONED_VPMS_RELATIONS_AND_FULL_RESPONSIBILITY_CLASSIFICATION_WITHOUT_PUBLIC_API_CUTOVER"
+          },
+          {
+            "id": "validation.verify-context-handoff",
+            "algorithm": "VERIFY_EXPLICIT_CONTEXT_SOURCE_AND_PROJECTION_OUTPUT_OWNERS_WITH_PRESERVED_PUBLIC_API"
+          },
+          {
+            "id": "validation.prepare-cases",
+            "algorithm": "VERIFY_CURRENT_CASE_CATALOG_REFERENCE_CLOSURE_AND_INDEPENDENT_INLINE_CASE_CONTRACTS"
+          },
+          {
+            "id": "validation.select-cases",
+            "algorithm": "SELECT_EXPLICIT_CASE_IDS_OR_CURRENT_REGISTERED_SELECTOR_WITH_NO_EXECUTION"
+          },
+          {
+            "id": "validation.prepare-composition",
+            "algorithm": "VERIFY_ALL_SELECTED_CASE_ADAPTERS_AND_CONTRACT_INPUTS_BEFORE_ANY_INVOCATION"
+          },
+          {
+            "id": "validation.planning.impact",
+            "algorithm": "VERIFY_HASH_BOUND_DEPENDENCY_GRAPH_AND_REPORT_TRANSITIVE_CONSUMER_SCOPE"
+          },
+          {
+            "id": "validation.planning.prepare",
+            "algorithm": "VERIFY_EXPLICIT_PLAN_STEPS_AND_BOUND_INVOCATION_IDENTITIES_WITHOUT_EXECUTION"
+          },
+          {
+            "id": "validation.policy.identity",
+            "algorithm": "VALIDATE_POLICY_V4_IDENTITY_WITH_USER_CATEGORY_AND_OPTIONAL_VERSION"
+          },
+          {
+            "id": "validation.policy.rules",
+            "algorithm": "VALIDATE_POLICY_V4_RULES_WITH_USER_CONTRACTS_AND_LOCAL_CONTENT_REFERENCES"
+          },
+          {
+            "id": "validation.rbac.ra",
+            "algorithm": "VALIDATE_RA_SEVEN_FIELD_STRUCTURE_AND_FORWARD_RELATION_SHAPE"
+          },
+          {
+            "id": "validation.rbac.rac",
+            "algorithm": "VALIDATE_RAC_LIST_STRUCTURE_AND_APPROVED_FIELDS"
+          },
+          {
+            "id": "validation.rbac.aec",
+            "algorithm": "VALIDATE_AEC_LIST_STRUCTURE_AND_APPROVED_FIELDS"
+          },
+          {
+            "id": "validation.rbac.references",
+            "algorithm": "VALIDATE_POLICY_RA_RAC_AEC_FORWARD_REFERENCES_AND_CANONICAL_NAMES"
+          }
+        ]
+      },
+      "DISCOVERY": {
+        "path": "src/ptsip/engines/discovery/contract.json",
+        "git_blob_sha": "366904805d90b519c43bcb28352f0c620225107d",
+        "sha256": "e303b1beb5fe38e9b85f337433ea30b4222d4552149c467d7603563bdd6c7784",
+        "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
+        "contract_id": "urn:uuid:6cc343f5-a3af-404e-a22f-8d57f861bb97",
+        "contract_version": "3.2.0",
+        "current_registered_operations": [
+          {
+            "id": "discovery.resolve",
+            "algorithm": "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_THEN_EXACT_REGISTERED_CAPABILITY"
+          },
+          {
+            "id": "discovery.verify-registry",
+            "algorithm": "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_WITHOUT_AUTHORIZATION"
+          },
+          {
+            "id": "discovery.verify-invocation",
+            "algorithm": "VERIFY_REGISTERED_CURRENT_ENGINE_BINDING_REQUEST_AND_NATIVE_ARTIFACT_WITHOUT_GRANT"
+          },
+          {
+            "id": "discovery.check-environment",
+            "algorithm": "ASSESS_REGISTERED_OFFICIAL_ENGINE_SOURCE_TRANSPORT_AND_DECLARED_DEPENDENCY_EVIDENCE_WITHOUT_ACTIVATION"
+          },
+          {
+            "id": "discovery.planning",
+            "algorithm": "RESOLVE_EXPLICIT_PLAN_CATALOG_AND_VERIFY_SELECTED_SOURCE_IDENTITY_VERSION_AND_DIGEST"
+          }
+        ]
+      },
+      "PROJECTION": {
+        "path": "src/ptsip/engines/projection/contract.json",
+        "git_blob_sha": "a3531783a0cfc7f3c48318d754f72005969cf207",
+        "sha256": "0c6fbf5785c9f0c74729d5b5af25d05170295a54fcef0d303b882468462dbc36",
+        "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
+        "contract_id": "urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45",
+        "contract_version": "2.0.1",
+        "current_registered_operations": [
+          {
+            "id": "projection.select",
+            "algorithm": "EXPLICIT_JSON_POINTER_SELECTION_WITHOUT_SOURCE_MUTATION_OR_LEGACY_OUTPUT_PARITY"
+          },
+          {
+            "id": "projection.render",
+            "algorithm": "VERIFY_CURRENT_CONTEXT_SNAPSHOT_AND_SOURCE_THEN_APPLY_REGISTERED_PROJECTION_FIELDS_AND_OUTPUT_SCHEMA"
+          }
+        ]
+      }
+    },
+    "native_operation_decision": {
+      "state": "APPROVED_USER_EXPLICIT_IMPLEMENTED_AND_NATIVE_VERIFIED",
+      "basis": "USER_APPROVED_SEVEN_IDS_AND_NATIVE_CONTRACTS_IN_CURRENT_SESSION_AFTER_OWNER_ANALYSIS",
+      "operations": [
+        {
+          "operation_id": "discovery.profile.contract",
+          "owner_engine": "DISCOVERY",
+          "responsibility": "Select exact central registered Profile contract with identity/lifecycle/hash evidence",
+          "registration_status": "REGISTERED_TYPED_CONTRACT_BINDING_MANIFEST_NATIVE_GO_ROUTER_TESTS_PASS"
+        },
+        {
+          "operation_id": "discovery.profile.catalog",
+          "owner_engine": "DISCOVERY",
+          "responsibility": "Resolve caller-selected local Profile catalog and canonical new resource path without writes",
+          "registration_status": "REGISTERED_TYPED_CONTRACT_BINDING_MANIFEST_NATIVE_GO_ROUTER_TESTS_PASS"
+        },
+        {
+          "operation_id": "discovery.profile.rules",
+          "owner_engine": "DISCOVERY",
+          "responsibility": "Enumerate or exact-ID resolve caller-selected linked Rule Records",
+          "registration_status": "REGISTERED_TYPED_CONTRACT_BINDING_MANIFEST_NATIVE_GO_ROUTER_TESTS_PASS"
+        },
+        {
+          "operation_id": "validation.profile.identity",
+          "owner_engine": "VALIDATION",
+          "responsibility": "Validate typed Profile contract/user/instance revision and supported operations",
+          "registration_status": "REGISTERED_TYPED_CONTRACT_BINDING_MANIFEST_NATIVE_GO_ROUTER_TESTS_PASS"
+        },
+        {
+          "operation_id": "validation.profile.transition",
+          "owner_engine": "VALIDATION",
+          "responsibility": "Validate explicitly declared direct historical Profile transition without execution",
+          "registration_status": "REGISTERED_TYPED_CONTRACT_BINDING_MANIFEST_NATIVE_GO_ROUTER_TESTS_PASS"
+        },
+        {
+          "operation_id": "validation.profile.rules",
+          "owner_engine": "VALIDATION",
+          "responsibility": "Validate Rule Record IDs and declared parent/root graph using opaque identifiers",
+          "registration_status": "REGISTERED_TYPED_CONTRACT_BINDING_MANIFEST_NATIVE_GO_ROUTER_TESTS_PASS"
+        },
+        {
+          "operation_id": "projection.profile.metadata",
+          "owner_engine": "PROJECTION",
+          "responsibility": "Project explicit Profile and Specification identity into metadata and safely serialized YAML header",
+          "registration_status": "REGISTERED_TYPED_CONTRACT_BINDING_MANIFEST_NATIVE_GO_ROUTER_TESTS_PASS"
+        }
+      ],
+      "technical_contract_design": "CLOSED_TYPED_WRAPPERS_FROM_APPROVED_RESPONSIBILITIES;NO_NEW_VALUE_INTERNAL_FIELDS;NO_PRIVATE_SCHEMA_AUTHORITY",
+      "execution_permission_from_registration": false,
+      "existing_operation_semantics": "PRESERVE_NO_IMPLICIT_PROFILE_BRANCH_IN_EXISTING_OPERATIONS"
+    },
+    "no_preselected_engine_count_meaning": "NO_PREASSIGNMENT_BEFORE_ANALYSIS;CURRENT_ASSIGNMENT_RECORDED_FROM_EVIDENCE_ABOVE",
+    "no_preselected_engine_owner_meaning": "NO_PREASSIGNMENT_BEFORE_ANALYSIS;CURRENT_ASSIGNMENT_RECORDED_FROM_EVIDENCE_ABOVE",
+    "no_preselected_module_to_engine_mapping_meaning": "NO_PREASSIGNMENT_BEFORE_ANALYSIS;CURRENT_ASSIGNMENT_RECORDED_FROM_EVIDENCE_ABOVE",
+    "no_preselected_rust_leaf_paths_meaning": "NO_PREASSIGNMENT_BEFORE_ANALYSIS;CURRENT_ASSIGNMENT_RECORDED_FROM_EVIDENCE_ABOVE",
+    "no_preselected_inter_engine_topology_meaning": "NO_PREASSIGNMENT_BEFORE_ANALYSIS;CURRENT_ASSIGNMENT_RECORDED_FROM_EVIDENCE_ABOVE",
+    "native_typed_contracts": {
+      "discovery.profile.contract": {
+        "path": "src/ptsip/engines/discovery/src/schemas/profile.schema.json",
+        "input": "#/$defs/contract_input",
+        "output": "#/$defs/contract_output"
+      },
+      "discovery.profile.catalog": {
+        "path": "src/ptsip/engines/discovery/src/schemas/profile.schema.json",
+        "input": "#/$defs/catalog_input",
+        "output": "#/$defs/catalog_output"
+      },
+      "discovery.profile.rules": {
+        "path": "src/ptsip/engines/discovery/src/schemas/rule-records.schema.json",
+        "input": "#/$defs/input",
+        "output": "#/$defs/output"
+      },
+      "validation.profile.identity": {
+        "path": "src/ptsip/engines/validation/src/schemas/profile.schema.json",
+        "input": "#/$defs/identity_input",
+        "output": "#/$defs/identity_output"
+      },
+      "validation.profile.transition": {
+        "path": "src/ptsip/engines/validation/src/schemas/profile.schema.json",
+        "input": "#/$defs/transition_input",
+        "output": "#/$defs/transition_output"
+      },
+      "validation.profile.rules": {
+        "path": "src/ptsip/engines/validation/src/schemas/rule-records.schema.json",
+        "input": "#/$defs/input",
+        "output": "#/$defs/output"
+      },
+      "projection.profile.metadata": {
+        "path": "src/ptsip/engines/projection/src/schemas/profile.schema.json",
+        "input": "#/$defs/metadata_input",
+        "output": "#/$defs/metadata_output"
+      }
+    },
+    "native_technical_design": {
+      "approval": "OWNER_ASSIGNMENT_PREAUTHORIZATION_AND_EXPLICIT_SEVEN_NATIVE_OPERATION_CONTRACT_APPROVAL_APPLIED",
+      "profile_schema_integrity": {
+        "registry": "src/ptsip/schemas/config.json storage.profile existing four rows",
+        "technical_metadata_field": "schema_sha256",
+        "meaning": "SHA256_OF_CANONICAL_GIT_BLOB_BYTES_FOR_THE_REGISTERED_SCHEMA_RESOURCE",
+        "runtime_comparison": "NORMALIZE_CHECKOUT_CRLF_TO_LF_THEN_COMPARE_SCHEMA_SHA256_BEFORE_SELECTION;VERIFY_CURRENT_ALIAS_AND_VERSIONED_RESOURCE",
+        "raw_source_sha256_output": "ACTUAL_READ_BYTES_SHA256_REMAINS_THE_OUTPUT_SOURCE_DIGEST",
+        "original_pins": "PRESERVE_EXISTING_SOURCE_BLOB_SHA_AND_SCHEMA_BLOB_SHA_WITHOUT_REASSIGNING_SOURCE_AUTHORITY",
+        "scope": "RESOURCE_INTEGRITY_METADATA_ONLY_NO_PROFILE_BUSINESS_FIELD_OR_USER_DATA_MUTATION"
+      },
+      "catalog_resolution": {
+        "default": "USE_EXISTING_CANONICAL_INDEX_JSON_OR_LEGACY_INDEX_YAML;FAIL_ON_CONFLICT",
+        "missing": "RETURN_UNSELECTED_CATALOG_VALID_FALSE_ONLY_FOR_GENUINELY_MISSING_CATALOG",
+        "aliases_or_inaccessible_sources": "FAIL_WITH_DIAGNOSTIC_EVEN_IF_FINAL_CATALOG_LEAF_IS_ABSENT",
+        "mutation": "NONE;NO_AUTOMATIC_CATALOG_OR_PROFILE_CREATION"
+      },
+      "rule_record_read_and_handoff": {
+        "operation": "discovery.profile.rules",
+        "input_branches": "EXACTLY_ONE_OF_EXPLICIT_INLINE_RECORDS_OR_REPOSITORY_ROOT_WITH_OPTIONAL_MAIN_PAYLOAD",
+        "optional_exact_lookup": "rule_id",
+        "linked_source": "SELECTED_PROJECT_PROFILE_ptsip.rule_profile_EQUALS_rules.ptsip.yaml;EXACT_UNIQUE_LOCAL_CATALOG_rules_ID_AND_RESOURCE_PAIR",
+        "absent_link": "EMPTY_RECORDS_AND_NULL_SOURCE_REF",
+        "distributed_wrapper": "OBJECT_WITH_rules_ARRAY;OPAQUE_RECORD_VALUES_AND_IDS;NO_DEVELOPER_PRIVATE_SCHEMA_OR_PREFIX_GRAMMAR",
+        "output_handoff": "ORIGINAL_RECORDS_AND_NULLABLE_SOURCE_REF_WITH_THE_SAME_RECORDS_SHA256_USED_FOR_INLINE_LOOKUP",
+        "division": "DISCOVERY_OWNS_READING_EXACT_LOOKUP_AND_UNAMBIGUOUS_WRAPPER;VALIDATION_OWNS_DUPLICATE_PARENT_ROOT_GRAPH_CHECKS",
+        "validation_verdict": "NOT_ASSERTED_BY_DISCOVERY",
+        "no_new_operation_id": true
+      },
+      "metadata_projection": {
+        "input": "EXPLICIT_PROFILE_CONTRACT_VERSION_SCHEMA_REF_AND_SPECIFICATION_SOURCE_REVISION;CALLER_FAMILY_REQUIRED_ONLY_FOR_PP101;OPTIONAL_USER_REVISION_AND_ROLE_FOR_PP102_PP200",
+        "legacy_defaults": "Rev.0001_AND_PROJECT_FOR_PP102_PP200_AS_ORIGINAL_HELPER",
+        "header": "SAFELY_QUOTED_JSON_FLOW_VALID_YAML_WITH_NO_SOURCE_MUTATION",
+        "validation": "INDEPENDENT_NATIVE_VALIDATION_SCHEMA_CHECK_OF_THE_EXACT_SELECTED_ptsip_FIELD_CONTRACT;NO_GENERAL_POLICY_OR_EXECUTION_AUTHORITY"
+      }
+    },
+    "package_rewiring": {
+      "state": "PROFILE_ASSET_REWIRE_VERIFIED_FORMAL_CLEAN_SOURCE_DISTRIBUTION_BUILD_PENDING",
+      "files": [
+        "setup.py",
+        "pyproject.toml",
+        "MANIFEST.in"
+      ],
+      "projection_function": "_project_profile_contracts",
+      "responsibility": "VALIDATE_AND_STAGE_FOUR_REGISTERED_CENTRAL_PROFILE_SCHEMAS_CONFIG_AND_DISTRIBUTED_SUPPORT_CATALOG",
+      "source": "CENTRAL_CONFIG_AND_EXISTING_src_ptsip_specdata_PROJECT_PROFILE_CONTRACTS_ONLY",
+      "retire_from_distribution": "SEPARATE_LEGACY_YAML_EXAMPLES_AND_SAMPLE_INDEX_AND_HISTORY_BASELINES;NO_ARCHIVE",
+      "legacy_python_code": "KEEP_PACKAGE_DISCOVERY_UNTIL_SUPPORTED_CONSUMER_CLOSURE;NO_FULL_PROFILE_TREE_RETIREMENT_FROM_THIS_STEP",
+      "unrelated_hooks": "KEEP_SUPPORT_POLICY_AND_LEGACY_RBAC_BUILD_HOOKS_UNCHANGED_OUTSIDE_THIS_SCOPE",
+      "verification": "GO_TEST_RUNS_ACTUAL_PROFILE_PROJECTION_FUNCTION_IN_ISOLATION_AND_CHECKS_ASSETS;FORMAL_FULL_WHEEL_GATE_REMAINS_SEPARATE",
+      "verification_result": {
+        "command": "go -C src/tests/ptsip test -count=1 -run ^TestProfileCanonicalPackageAssets$ -v ./...",
+        "result": "PASS",
+        "test_seconds": 5.66,
+        "package_seconds": 6.713,
+        "scope": "STANDARD_DECLARED_SETTUPTOOLS_ASSET_STAGE_AND_ACTUAL_PROFILE_HOOK_ISOLATED_FROM_OTHER_BUILD_HOOKS",
+        "verified_schemas": 4,
+        "legacy_python_package_retained": true,
+        "legacy_yaml_examples_catalog_and_history_absent_from_stage": true,
+        "formal_full_wheel_result": "NOT_ASSERTED_BY_THIS_ASSET_TEST"
+      }
+    },
+    "supported_consumer_closure": {
+      "native_adapter_functions": "IMPLEMENTED_AND_TESTED_IN_THREE_EXISTING_SUPPORTED_CALLER_FILES_WITHOUT_NEW_PYTHON_MODULE",
+      "files": [
+        "src/ptsip/migration/analysis/target/semantics.py",
+        "src/ptsip/migration/execution/direct/promotion.py",
+        "src/ptsip/ptsip_specification/spec_identity.py"
+      ],
+      "normal_import_state": "BLOCKED_BY_PREEXISTING_ABSENT_ptsip.repository_DEPENDENCY",
+      "native_adapter_proof_scope": "EXERCISES_REAL_INSTALLED_GO_ROUTER_AND_SELECTED_NATIVE_OPERATIONS_WITHOUT_CLAIMING_FULL_NORMAL_MIGRATION_IMPORT_SUCCESS",
+      "excluded_callers": [
+        "src/ptsip/cli.py",
+        "src/ptsip/clarification/resolution/profile_projection.py"
+      ],
+      "excluded_callers_mutation": "NONE_BYTE_PRESERVED",
+      "legacy_python_package_discovery": "RETAINED_UNTIL_SUPPORTED_CONSUMER_CLOSURE"
     }
   }
 }
