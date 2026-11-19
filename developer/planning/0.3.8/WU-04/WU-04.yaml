@@ -1,0 +1,52 @@
+schema_version: "ptsip-work-unit/v1"
+policy_class: "PTSIP_DEVELOPER_POLICY"
+plan_version: "0.3.8"
+planning_contract: "ptsip-planning/v1"
+work_unit: 
+  id: "WU-04"
+  kind: "WORK_UNIT"
+  title: "Remove denied User_Profile schema target and stale developer-side references"
+  classification: "CORE"
+  lifecycle: 
+    status: "ACTIVE"
+  approval: 
+    status: "APPROVED"
+    inherited_from: []
+    approval_source: "USER_EXPLICIT"
+  integration_branch: "main"
+  entry_baseline: "8b30aae383d5d6dbe6822cfbbfcbae9a486901d9"
+  implementation_authorization: 
+    status: "HOLD_NOT_AUTHORIZED"
+  depends_on: []
+  approval_scope: "PLAN_SCOPE_AND_CONDITIONAL_TASK_RECORD_ONLY;NOT_IMPLEMENTATION_APPROVAL"
+  responsibility: "DENIED_TARGET_ABSENCE_AND_REFERENCE_CLEANUP_NOT_PROFILE_SEMANTIC_MIGRATION"
+  denied_target: "src/ptsip/schemas/storage/profile/user-profile.schema.json"
+  target_state_at_baseline: "NOT_FOUND_IN_MAIN"
+  user_direction: "REMOVE_THE_DENIED_TARGET_DO_NOT_RECREATE_IT"
+  legacy_source_outside_this_deletion: "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
+  allowed_read: 
+    - "src/ptsip/schemas/storage/profile/**"
+    - "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
+    - "src/ptsip/schemas/config.json"
+    - "developer/planning/**"
+    - ".ptsip/engine/developer/**"
+  potential_write_targets: 
+    - "src/ptsip/schemas/storage/profile/user-profile.schema.json"
+    - "APPROVED_DEVELOPER_OWNED_REFERENCES_TO_THIS_EXACT_DENIED_TARGET"
+  prohibited_write: 
+    - "src/planning/**"
+    - "developer/policy/**"
+    - "src/policy/**"
+    - "developer/planning/0.3.7/**"
+    - "src/ptsip/profiles/profiles_schemas/User_Profile.schema.json"
+  required_actions: 
+    - "Confirm denied target's exact path existence or absence at active HEAD; currently no file exists, so do not falsely report a deletion."
+    - "If the denied target appears as a tracked file, remove it only after identifying consumers and registration authority; otherwise record VERIFIED_ABSENT and prohibit regeneration."
+    - "Audit exact references to the denied target and remove stale references only in authorized developer-owned paths; do not mutate unrelated plans or policies."
+    - "Do not select any new User_Profile schema target, infer a Storage owner, synthesize fields or delete the existing legacy User_Profile source schema from this work unit."
+    - "Keep unresolved User_Profile replacement and external consumer migration separate; escalate owner/contract decisions to their proper authority."
+  acceptance: 
+    - "git ls-files -- src/ptsip/schemas/storage/profile/user-profile.schema.json yields no tracked target."
+    - "No approved developer-owned generator or release registry can silently re-create or publish the denied target."
+    - "Existing legacy User_Profile source remains unchanged; no fabricated replacement schema is registered."
+  implementation_authorization_gate: "USER_AUDIT_BEFORE_REFERENCES_OR_ANY_SOURCE_MUTATION"
