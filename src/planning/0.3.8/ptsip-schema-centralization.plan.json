@@ -322,8 +322,8 @@
     {
       "id": "RETIRE-PROFILES-01",
       "scope": "src/ptsip/profiles/",
-      "state": "USER_APPROVED_DESIGN_TRIGGERED_IMMEDIATE_REMOVAL_PENDING_NATIVE_IMPORT_DESIGN",
-      "note": "KEEP_LATEST: Immediately delete all 22 src/ptsip/profiles tracked files after Rust-native NORMAL migration import responsibility/engine routing/typed contract design is approved and recorded. Do not require implementation or normal import PASS, fixtures, User_Profile target or formal wheel PASS before this specific deletion; all remain post-deletion obligations. No actual deletion authorized until design trigger is satisfied."
+      "state": "DESIGN_TRIGGER_SATISFIED_22_FILES_DELETED_POST_DELETION_ACCEPTANCE_PENDING",
+      "note": "KEEP_LATEST user-approved native design-trigger removal executed for all 22 tracked src/ptsip/profiles files; immutable Git blob SHAs retained in removal_manifest. Native operations, supported imports, fixture/User_Profile decisions and distribution acceptance remain open. No unrelated source/policy mutation permitted."
     },
     {
       "id": "PROFILE-PP100-01",
@@ -375,8 +375,8 @@
     {
       "id": "PROFILE-RUST-SIX-MODULE-RETIRE-01",
       "scope": "src/ptsip/profiles/",
-      "state": "USER_APPROVED_DESIGN_TRIGGERED_IMMEDIATE_REMOVAL_PENDING_NATIVE_IMPORT_DESIGN",
-      "note": "KEEP_LATEST: Immediately delete all 22 src/ptsip/profiles tracked files after Rust-native NORMAL migration import responsibility/engine routing/typed contract design is approved and recorded. Do not require implementation or normal import PASS, fixtures, User_Profile target or formal wheel PASS before this specific deletion; all remain post-deletion obligations. No actual deletion authorized until design trigger is satisfied."
+      "state": "DESIGN_TRIGGER_SATISFIED_22_FILES_DELETED_POST_DELETION_ACCEPTANCE_PENDING",
+      "note": "KEEP_LATEST user-approved native design-trigger removal executed for all 22 tracked src/ptsip/profiles files; immutable Git blob SHAs retained in removal_manifest. Native operations, supported imports, fixture/User_Profile decisions and distribution acceptance remain open. No unrelated source/policy mutation permitted."
     },
     {
       "id": "PROFILE-RUST-ENGINE-PACKAGING-01",
@@ -2926,7 +2926,7 @@
     },
     {
       "id": "WU-14",
-      "name": "Remove all 22 legacy src/ptsip/profiles files after all-six Rust replacement acceptance",
+      "name": "Remove all 22 legacy src/ptsip/profiles files after approved Rust-native import design",
       "dependency": [],
       "inputs": [
         "src/ptsip/profiles/__init__.py",
@@ -2967,10 +2967,10 @@
         "After deletion, resolve fixture evidence from recorded immutable Git blobs, user-owned new target decisions, central Profile schemas, package manifests and obsolete validators; do not silently synthesize denied targets.",
         "After deletion, verify no tracked paths under src/ptsip/profiles and execute supported consumer, history, native Rust, clean wheel/sdist, installed-smoke and available CI checks; record unresolved failures as defects rather than claiming release readiness."
       ],
-      "gate": "Approved native design trigger SATISFIED: all-six-engine analysis and exact seven Context/Discovery/Validation operations and typed I/O field roles have user approval. Immediately delete all 22 tracked src/ptsip/profiles files as next implementation action, preserving Git blob evidence. Native runtime implementation/import tests, fixtures, User Profile extension and formal distribution validation are post-deletion acceptance tasks. Do not claim deletion or normal import PASS until executed and verified.",
+      "gate": "Approved and recorded Rust-native NORMAL migration import design SATISFIED (2026-11-20). Resulting commit deletes all 22 tracked src/ptsip/profiles files and updates this plan atomically. Native runtime registration/implementation, caller rewiring, normal migration import, fixtures, User_Profile and formal distribution conformance are post-deletion obligations, not satisfied by source removal.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
-      "execution_status": "IMMEDIATE_22_FILE_RETIREMENT_READY_NATIVE_DESIGN_USER_APPROVED_NOT_EXECUTED",
-      "current_result": "Repository Rust-native function/engine routing design and exact seven typed I/O operations were user approved on 2026-11-20. 22-file design-trigger deletion is now due but not yet executed in this plan-only update. Post-delete native implementation, caller rewiring and normal import, fixtures and distribution verification remain outstanding.",
+      "execution_status": "LEGACY_22_FILE_DELETION_VERIFIED_POST_DELETION_ACCEPTANCE_PENDING",
+      "current_result": "The 22 tracked legacy src/ptsip/profiles files were deleted from main in the same atomic commit as this plan status change. Their exact pre-deletion paths, sizes and immutable Git blob SHAs remain in the removal_manifest. The design-triggered removal is complete; seven approved native Rust operations, supported consumer import rewiring, fixture/User_Profile decisions, and clean distribution tests remain open post-deletion acceptance work. Do not mark overall WU-14 or release acceptance complete.",
       "remaining_blockers": [
         {
           "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
@@ -4619,7 +4619,7 @@
     "no_schema_generated_from_pp100": true
   },
   "profile_directory_retirement": {
-    "status": "APPROVED_FINAL_DISPOSITION_CONDITIONAL_IMPLEMENTATION",
+    "status": "LEGACY_22_FILE_REMOVAL_VERIFIED_POST_DELETION_ACCEPTANCE_PENDING",
     "directory": "src/ptsip/profiles/",
     "user_direction": "RETIRE_ALL_FILES_AND_DIRECTORY",
     "original_head": "0cb9745113ca87de4c59924b9ac8d4f62d1fc21d",
@@ -4642,7 +4642,7 @@
         "proposed_replacement": null,
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
@@ -4655,7 +4655,7 @@
         "proposed_replacement": null,
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "DISCOVERY",
         "replacement_engine_paths": [
@@ -4673,7 +4673,7 @@
         "proposed_replacement": null,
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "VALIDATION",
         "replacement_engine_paths": [
@@ -4691,7 +4691,7 @@
         "proposed_replacement": null,
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "DISCOVERY",
         "replacement_engine_paths": [
@@ -4709,7 +4709,7 @@
         "proposed_replacement": "src/tests/ptsip/current-example.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4723,7 +4723,7 @@
         "proposed_replacement": "src/tests/ptsip/pp.1.01-example.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4739,7 +4739,7 @@
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json"
         ],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4753,7 +4753,7 @@
         "proposed_replacement": "src/tests/ptsip/pp.1.01-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4767,7 +4767,7 @@
         "proposed_replacement": "src/tests/ptsip/pp.1.02-example.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4783,7 +4783,7 @@
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
         ],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4797,7 +4797,7 @@
         "proposed_replacement": "src/tests/ptsip/pp.1.02-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4811,7 +4811,7 @@
         "proposed_replacement": "src/tests/ptsip/pp.2.00-example.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4827,7 +4827,7 @@
           "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
         ],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4841,7 +4841,7 @@
         "proposed_replacement": "src/tests/ptsip/pp.2.00-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4855,7 +4855,7 @@
         "proposed_replacement": "src/tests/ptsip/current-hybrid-python-package.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4869,7 +4869,7 @@
         "proposed_replacement": null,
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "VALIDATION",
         "replacement_engine_paths": [
@@ -4889,7 +4889,7 @@
           "src/ptsip/specdata/project-profile-contracts.yaml"
         ],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
@@ -4902,7 +4902,7 @@
         "proposed_replacement": null,
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "replacement_owner": "PROJECTION",
         "replacement_engine_paths": [
@@ -4920,7 +4920,7 @@
         "proposed_replacement": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
@@ -4933,7 +4933,7 @@
         "proposed_replacement": "src/ptsip/schemas/storage/profile/user-profile.schema.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
       },
@@ -4946,7 +4946,7 @@
         "proposed_replacement": null,
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "ANALYZED_USER_PREAUTHORIZED",
         "retirement_reasons": [
           "DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_IMPORT_FORBIDDEN_FOR_DISTRIBUTABLE_SRC",
@@ -4969,7 +4969,7 @@
         "proposed_replacement": "src/tests/ptsip/current-template-python-package.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
-        "state": "SOURCE_PRESENT_DELETE_NOT_EXECUTED",
+        "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
         "replacement_path_state": "TEST_ROOT_APPROVED_EXACT_FIXTURE_FILENAME_PROPOSED",
         "retirement_scope": "USER_2026_11_19_DESIGN_TRIGGER_OVERRIDE",
         "action_after_user_change": "DELETE_IMMEDIATELY_ON_NATIVE_IMPORT_DESIGN_TRIGGER;OTHER_REPLACEMENT_ACCEPTANCE_AFTER_DELETE"
@@ -4980,8 +4980,8 @@
     "all_removal_actions_prohibited_until": [
       "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN"
     ],
-    "subtree_absence_test": "git ls-files src/ptsip/profiles returns zero tracked paths after ALL selected Discovery/Validation/Projection capabilities and distribution pass without legacy files. The two excluded Python callers are not current conformance gates.",
-    "warning": "User explicitly selected immediate deletion of 22 src/ptsip/profiles source files after the Rust-native normal migration import design is recorded. Existing unresolved fixtures, User_Profile target, normal imports, consumer verification and formal distribution are POST-DELETION acceptance work, not pre-deletion blockers for these 22 files. Risk: builds/imports may remain broken after deletion; immutable Git blob manifest permits source evidence without preserving active legacy implementations. Never delete adopting user project .ptsip/profiles.",
+    "subtree_absence_test": "In the resulting Git commit verify zero tracked blobs with path prefix src/ptsip/profiles/; this source deletion check is independent from later Rust native, import, fixture, User_Profile and wheel/sdist conformance checks.",
+    "warning": "All 22 legacy src/ptsip/profiles files have been deleted by the approved design-trigger exception, with immutable Git blob SHA evidence retained only in this manifest and Git history. Native implementations, normal migration imports, selected Python callers, fixtures, User_Profile target and distribution may remain broken or incomplete and MUST be validated as separate post-deletion work. Do not restore or archive the old tree automatically and never touch a user's .ptsip/profiles.",
     "user_owned_profile_out_of_scope": ".ptsip/profiles/** in consuming repositories is not a deletion target",
     "explicit_go_root_vs_src_schema": "ALL_SIX_RUST_OWNER_PATHS_ANALYZED_USER_PREAUTHORIZED;NATIVE_ENGINE_SCHEMA_PATHS_SELECTED;NO_INDEPENDENT_GO_MODULE",
     "additional_source_health": {
@@ -4998,7 +4998,7 @@
       "note": "Complete removal of src/ptsip/profiles can leave these imports broken; do not count their remaining references as zero, do not falsely claim full Python compatibility"
     },
     "runtime_owner_status": "ALL_SIX_ANALYZED_SELECTED_DISCOVERY_VALIDATION_PROJECTION_NATIVE_REPLACEMENTS_VERIFIED",
-    "current_retirement_state": "DESIGN_GATE_SATISFIED_IMMEDIATE_22_FILE_DELETION_DUE_NOT_YET_EXECUTED",
+    "current_retirement_state": "DESIGN_TRIGGER_SATISFIED_22_TRACKED_LEGACY_FILES_DELETED_POST_DELETION_ACCEPTANCE_OPEN",
     "remaining_blockers": [
       {
         "id": "PROFILE_JSON_FIXTURE_PATHS",
@@ -5181,10 +5181,10 @@
       ],
       "native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
       "deletion_trigger_satisfied": true,
-      "remaining_design_approval": "NONE_APPROVED_USER_2026_11_20;DELETION_NOT_YET_EXECUTED",
+      "remaining_design_approval": "NONE_APPROVED_USER_2026_11_20;DESIGN_TRIGGER_DELETION_EXECUTED",
       "trigger_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval",
-      "actual_deletion_executed": false,
-      "next_action": "DELETE_ALL_22_TRACKED_SRC_PTSIP_PROFILES_FILES_IMMEDIATELY_PER_USER_APPROVED_DESIGN_GATE;IMPLEMENT_AND_VERIFY_NATIVE_OPERATIONS_AFTER_DELETION"
+      "actual_deletion_executed": true,
+      "next_action": "IMPLEMENT_APPROVED_SEVEN_NATIVE_OPERATIONS_AND_REWIRE_SUPPORTED_CALLERS;VERIFY_NORMAL_MIGRATION_IMPORTS;RESOLVE_FIXTURES_USER_PROFILE_AND_DISTRIBUTION_ACCEPTANCE"
     },
     "post_deletion_acceptance": [
       "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_NATIVE_RUST_ENGINE_IMPLEMENTATION_VERIFIED",
@@ -5192,7 +5192,19 @@
       "USER_PROFILE_SCHEMA_FUTURE_OWNER_AND_TARGET_RESOLVED_OR_DELETED_SOURCE_DISPOSITION_RECORDED",
       "FULL_CLEAN_WHEEL_SOURCE_DISTRIBUTION_AND_INSTALLED_SMOKE_PASS",
       "SUPPORTED_CONSUMERS_AND_HISTORICAL_PROFILE_TESTS_PASS"
-    ]
+    ],
+    "deletion_execution": {
+      "status": "COMMITTED_WITH_SOURCE_DELETION",
+      "source_branch": "main",
+      "pre_deletion_head": "bf631923810b38c86bca25c70c2a8720ffcf8456",
+      "pre_deletion_tree": "b239054c2d7c142f81b056752a4cf6c4d3d7c429",
+      "deleted_tracked_file_count": 22,
+      "manifest_blob_sha_match_count": 22,
+      "path_scope": "src/ptsip/profiles/",
+      "deletion_proof": "RESULTING_COMMIT_TREE_CONTAINS_NO_BLOBS_UNDER_PATH_SCOPE",
+      "immutable_blob_evidence_ref": "profile_directory_retirement.removal_manifest[].git_blob_sha",
+      "post_deletion_acceptance": "OPEN"
+    }
   },
   "policy_v4_rbac_focus": {
     "status": "APPROVED_PVR_01_TO_09_CONTINUOUS_IMPLEMENTATION",
