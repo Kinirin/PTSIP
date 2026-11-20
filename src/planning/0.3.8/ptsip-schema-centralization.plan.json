@@ -2603,18 +2603,23 @@
         "EXCLUDE src/ptsip/cli.py and src/ptsip/clarification/resolution/profile_projection.py from edits; existing projection errors tolerated",
         "Another session's coding agent analyzes the actual responsibilities, functions and consumers of ALL SIX src/ptsip/profiles Python modules, reads registered Rust engine contracts, assigns owner engine(s) and paths with evidence, records results under profile_rust_engine_assignment.source_modules, applies user's automatic approval and ONLY THEN implements.",
         "PTSIP View derived accountability cache uses policy document RA_id references; RA List stores no policy usage reverse field",
-        "Before claiming supported consumer import closure, analyze removed ptsip.repository module/function dependencies and select native Rust engine ownership based on actual function and registered engine responsibilities (Validation/Storage/Discovery/Projection are candidates, not assigned); rewire supported migration consumer imports without Python repository compatibility shims; test normal supported import."
+        "Before claiming supported consumer import closure, analyze removed ptsip.repository module/function dependencies and select native Rust engine ownership based on actual function and registered engine responsibilities (Validation/Storage/Discovery/Projection are candidates, not assigned); rewire supported migration consumer imports without Python repository compatibility shims; test normal supported import.",
+        "User-approved 2026-11-20: register exactly context.repository.snapshot; discovery.repository.inspect; discovery.profile.candidates; validation.repository.snapshot; validation.profile.path; validation.profile.transition-state; validation.profile.convergence with typed I/O contracts scoped to the recorded native_operations fields and the selected Rust engine-local schemas. No Storage, Execution or Projection Repository operation; do not invent eighth ID."
       ],
-      "gate": "Native adapter and Profile asset proof PASS; full supported imports and formal distribution closure remain separate required gates. Missing ptsip.repository normal-import closure requires analysis-derived existing Rust engine responsibility split and native consumer rewiring, not Python compatibility recreation. Any normal import PASS requirement is post-deletion acceptance for the 22-file subtree once the Rust-native design is recorded.",
-      "execution_status": "NATIVE_SUPPORTED_ADAPTERS_AND_PROFILE_ASSETS_VERIFIED_FULL_CONSUMER_DISTRIBUTION_CLOSURE_BLOCKED",
+      "gate": "Repository ownership and exact seven Context/Discovery/Validation operation IDs and existing plan typed I/O design are USER APPROVED; no missing user decision for their registration. Supported migration consumer rewiring/native registration/normal import PASS remain IMPLEMENTATION tests. 22-file deletion is not blocked by those post-deletion tests.",
+      "execution_status": "REPOSITORY_NATIVE_SEVEN_OPS_APPROVED_REGISTRATION_IMPLEMENTATION_PENDING",
       "current_result": "Three supported native adapter function paths and bounded Profile asset staging pass. Normal migration imports remain blocked by intentionally retired ptsip.repository; remaining functionality must be assigned by actual existing Rust-engine responsibility analysis and native consumer rewiring (not Python compatibility restoration). Actual exact clean implementation commit wheel build failed at the private release backend engine inventory check.",
       "remaining_blockers": [
         {
           "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
-          "status": "BLOCKED",
+          "status": "DESIGN_APPROVED_IMPLEMENTATION_PENDING",
           "resolution_ref": "profile_directory_retirement.remaining_blockers[SUPPORTED_NORMAL_CONSUMER_IMPORT]",
-          "requires_function_responsibility_analysis": true,
-          "selected_engines": null,
+          "requires_function_responsibility_analysis": false,
+          "selected_engines": [
+            "CONTEXT",
+            "DISCOVERY",
+            "VALIDATION"
+          ],
           "existing_rust_candidates": [
             "VALIDATION",
             "STORAGE",
@@ -2622,15 +2627,27 @@
             "PROJECTION"
           ],
           "no_python_repository_compatibility": true,
-          "approval_gate": "RECORD_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_IMMEDIATE_DELETE_22;IMPLEMENT_VERIFY_IMPORT_POST_DELETE",
-          "block_deletion_before_native_design": true,
+          "approval_gate": "SATISFIED_USER_2026_11_20;NATIVE_REGISTER_AND_CALLER_REWIRE_AND_NORMAL_IMPORT_TESTS_POST_DELETE",
+          "block_deletion_before_native_design": false,
           "block_deletion_after_native_design": false,
           "import_pass_needed_before_deletion": false,
-          "import_pass_needed_for_post_deletion_acceptance": true
+          "import_pass_needed_for_post_deletion_acceptance": true,
+          "approved_operation_ids": [
+            "context.repository.snapshot",
+            "discovery.repository.inspect",
+            "discovery.profile.candidates",
+            "validation.repository.snapshot",
+            "validation.profile.path",
+            "validation.profile.transition-state",
+            "validation.profile.convergence"
+          ],
+          "native_registration_approved": true,
+          "typed_io_contract_approved": true
         }
       ],
       "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
-      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL"
+      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL",
+      "repository_native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval"
     },
     {
       "id": "WU-08",
@@ -2846,19 +2863,24 @@
         "Rewire supported consumers, existing Go CLI router, registry and package assets to the actual selected Rust engines; do not edit excluded Python callers.",
         "Meet the always-on Profile background functionality requirement using the future-agent-approved engine lifecycle design; validate owner-engine tests and any required native handoffs.",
         "Update supported build distributions without creating an independent Profile Go module/binary, then replace and retire obsolete Python validators after new behavior passes.",
-        "Treat removed ptsip.repository as an intentionally retired Python implementation, not a module to restore. For remaining supported migration imports, perform actual function/caller-to-Rust-engine capability analysis, record justified engine ownership and typed route(s), implement missing native responsibilities only after analysis and run normal import/integration regression; do not expand excluded Python caller modification scope."
+        "Treat removed ptsip.repository as an intentionally retired Python implementation, not a module to restore. For remaining supported migration imports, perform actual function/caller-to-Rust-engine capability analysis, record justified engine ownership and typed route(s), implement missing native responsibilities only after analysis and run normal import/integration regression; do not expand excluded Python caller modification scope.",
+        "Implement and register the user-approved seven Repository native operations in the analyzed Context/Discovery/Validation Rust modules and engine-local typed contracts; preserve exact input/output roles from repository_native_import_design.native_operations; rewire only supported migration/source_compat callers; execute end-to-end normal import tests without legacy ptsip.repository."
       ],
-      "gate": "Selected Rust replacements and bounded background protocol PASS. Full normal supported consumer imports and clean-source distribution acceptance remain required before whole-tree retirement. Separate existing Rust-engine owner analysis and native caller routing for removed repository functions remain BLOCKED until normal supported migration imports pass. For the 22-file subtree only, runtime consumer import PASS is post-deletion acceptance after design-triggered immediate deletion.",
+      "gate": "Existing six native Profile replacements remain validated. Separate normal migration Repository import: the seven native Context/Discovery/Validation operation IDs, typed I/O field roles, and selected owner assignments are USER APPROVED for registration/implementation. Normal import test and wheel acceptance are post-design implementation obligations; new official pp.3.00 core implementation remains authorized independently of user extension revision lineage.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
-      "execution_status": "SIX_NATIVE_REPLACEMENT_RESPONSIBILITIES_VERIFIED_GLOBAL_CONSUMER_AND_DISTRIBUTION_ACCEPTANCE_PARTIAL",
+      "execution_status": "SIX_PROFILE_NATIVE_REPLACEMENTS_VERIFIED_REPOSITORY_SEVEN_NATIVE_OPS_IMPLEMENTATION_AUTHORIZED_PENDING",
       "current_result": "All six supported responsibilities pass native engine/Go-router tests, including linked records, independent Validation handoff and bounded background sessions. Full normal migration import closure and formal clean-source package acceptance remain blocked; the exact clean wheel build failed at the existing private backend inventory check. The removed Python ptsip.repository import chain requires separate existing Rust-engine responsibility analysis and supported native call-site rewiring; the current passing native Profile tests do not prove this import closure.",
       "remaining_blockers": [
         {
           "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
-          "status": "BLOCKED",
+          "status": "DESIGN_APPROVED_IMPLEMENTATION_PENDING",
           "resolution_ref": "profile_directory_retirement.remaining_blockers[SUPPORTED_NORMAL_CONSUMER_IMPORT]",
-          "requires_function_responsibility_analysis": true,
-          "selected_engines": null,
+          "requires_function_responsibility_analysis": false,
+          "selected_engines": [
+            "CONTEXT",
+            "DISCOVERY",
+            "VALIDATION"
+          ],
           "existing_rust_candidates": [
             "VALIDATION",
             "STORAGE",
@@ -2866,30 +2888,41 @@
             "PROJECTION"
           ],
           "no_python_repository_compatibility": true,
-          "approval_gate": "RECORD_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_IMMEDIATE_DELETE_22;IMPLEMENT_VERIFY_IMPORT_POST_DELETE",
-          "block_deletion_before_native_design": true,
+          "approval_gate": "SATISFIED_USER_2026_11_20;NATIVE_REGISTER_AND_CALLER_REWIRE_AND_NORMAL_IMPORT_TESTS_POST_DELETE",
+          "block_deletion_before_native_design": false,
           "block_deletion_after_native_design": false,
           "import_pass_needed_before_deletion": false,
-          "import_pass_needed_for_post_deletion_acceptance": true
+          "import_pass_needed_for_post_deletion_acceptance": true,
+          "approved_operation_ids": [
+            "context.repository.snapshot",
+            "discovery.repository.inspect",
+            "discovery.profile.candidates",
+            "validation.repository.snapshot",
+            "validation.profile.path",
+            "validation.profile.transition-state",
+            "validation.profile.convergence"
+          ],
+          "native_registration_approved": true,
+          "typed_io_contract_approved": true
         }
       ],
       "pp300_contract_first_followup": {
-        "status": "BLOCKED_BY_NEW_APPROVED_PP300_FIELD_CONTRACT_AND_USER_REVISION_RELATION",
+        "status": "OFFICIAL_PP300_CORE_IMPLEMENTATION_AUTHORIZED_USER_EXTENSION_LINEAGE_INDEPENDENT_PENDING",
         "contract_ref": "project_profile_pp300_contract_redesign",
         "rule": "NEW_PP300_RUST_MODULES_DERIVED_FROM_APPROVED_CONTRACT_ONLY;LEGACY_PYTHON_MODULES_NOT_CONTRACT_INPUTS",
         "no_implicit_existing_profile_rust_contract_reuse": true,
-        "no_impl_this_session": true
+        "no_impl_this_session": false,
+        "official_core_implementation_authorized": true,
+        "custom_lineage_implementation_authorized": false
       },
       "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
-      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL"
+      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL",
+      "repository_native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval"
     },
     {
       "id": "WU-14",
       "name": "Remove all 22 legacy src/ptsip/profiles files after all-six Rust replacement acceptance",
-      "dependency": [
-        "WU-13",
-        "WU-08"
-      ],
+      "dependency": [],
       "inputs": [
         "src/ptsip/profiles/__init__.py",
         "src/ptsip/profiles/catalog.py",
@@ -2929,17 +2962,21 @@
         "After deletion, resolve fixture evidence from recorded immutable Git blobs, user-owned new target decisions, central Profile schemas, package manifests and obsolete validators; do not silently synthesize denied targets.",
         "After deletion, verify no tracked paths under src/ptsip/profiles and execute supported consumer, history, native Rust, clean wheel/sdist, installed-smoke and available CI checks; record unresolved failures as defects rather than claiming release readiness."
       ],
-      "gate": "User-approved KEEP_LATEST: once the normal migration import architecture is documented with actual function/caller-to-existing-Rust-engine ownership, native operation/contract paths and supported caller routing, remove all 22 files under src/ptsip/profiles/ immediately. This is a DESIGN trigger, NOT a runtime import PASS or package release gate. All previous verification obligations remain required after deletion. No deletion until the design is recorded.",
+      "gate": "Approved native design trigger SATISFIED: all-six-engine analysis and exact seven Context/Discovery/Validation operations and typed I/O field roles have user approval. Immediately delete all 22 tracked src/ptsip/profiles files as next implementation action, preserving Git blob evidence. Native runtime implementation/import tests, fixtures, User Profile extension and formal distribution validation are post-deletion acceptance tasks. Do not claim deletion or normal import PASS until executed and verified.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
-      "execution_status": "BLOCKED_PENDING_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_FOR_IMMEDIATE_22_FILE_DELETE",
-      "current_result": "22 legacy files are still present because the Rust-native normal migration import responsibility/function-to-engine/consumer routing design is not yet completed and recorded. User on 2026-11-19 approved KEEP_LATEST: delete all 22 immediately when design is recorded; do not wait for Rust runtime implementation, normal import PASS, fixture paths, User_Profile target or formal release tests. Those remain required post-deletion acceptance work.",
+      "execution_status": "IMMEDIATE_22_FILE_RETIREMENT_READY_NATIVE_DESIGN_USER_APPROVED_NOT_EXECUTED",
+      "current_result": "Repository Rust-native function/engine routing design and exact seven typed I/O operations were user approved on 2026-11-20. 22-file design-trigger deletion is now due but not yet executed in this plan-only update. Post-delete native implementation, caller rewiring and normal import, fixtures and distribution verification remain outstanding.",
       "remaining_blockers": [
         {
           "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
-          "status": "BLOCKED",
+          "status": "DESIGN_APPROVED_IMPLEMENTATION_PENDING",
           "resolution_ref": "profile_directory_retirement.remaining_blockers[SUPPORTED_NORMAL_CONSUMER_IMPORT]",
-          "requires_function_responsibility_analysis": true,
-          "selected_engines": null,
+          "requires_function_responsibility_analysis": false,
+          "selected_engines": [
+            "CONTEXT",
+            "DISCOVERY",
+            "VALIDATION"
+          ],
           "existing_rust_candidates": [
             "VALIDATION",
             "STORAGE",
@@ -2947,17 +2984,38 @@
             "PROJECTION"
           ],
           "no_python_repository_compatibility": true,
-          "approval_gate": "RECORD_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_IMMEDIATE_DELETE_22;IMPLEMENT_VERIFY_IMPORT_POST_DELETE",
-          "block_deletion_before_native_design": true,
+          "approval_gate": "SATISFIED_USER_2026_11_20;NATIVE_REGISTER_AND_CALLER_REWIRE_AND_NORMAL_IMPORT_TESTS_POST_DELETE",
+          "block_deletion_before_native_design": false,
           "block_deletion_after_native_design": false,
           "import_pass_needed_before_deletion": false,
-          "import_pass_needed_for_post_deletion_acceptance": true
+          "import_pass_needed_for_post_deletion_acceptance": true,
+          "approved_operation_ids": [
+            "context.repository.snapshot",
+            "discovery.repository.inspect",
+            "discovery.profile.candidates",
+            "validation.repository.snapshot",
+            "validation.profile.path",
+            "validation.profile.transition-state",
+            "validation.profile.convergence"
+          ],
+          "native_registration_approved": true,
+          "typed_io_contract_approved": true
         }
       ],
       "delete_trigger_ref": "profile_directory_retirement.user_2026_11_19_retirement_gate_change",
-      "design_trigger_state": "EVIDENCE_RECORDED_PENDING_NATIVE_OPERATION_DESIGN_USER_APPROVAL;DELETE22_AS_NEXT_ACTION_WHEN_APPROVED",
+      "design_trigger_state": "SATISFIED_USER_APPROVED_NATIVE_DESIGN_2026_11_20",
       "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
-      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL"
+      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL",
+      "repository_native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval",
+      "pre_deletion_trigger_dependencies": [],
+      "post_deletion_acceptance_dependencies": [
+        "WU-13",
+        "WU-08"
+      ],
+      "historical_dependency_before_design_gate_approval": [
+        "WU-13",
+        "WU-08"
+      ]
     }
   ],
   "observed_breakages": [
@@ -4935,7 +4993,7 @@
       "note": "Complete removal of src/ptsip/profiles can leave these imports broken; do not count their remaining references as zero, do not falsely claim full Python compatibility"
     },
     "runtime_owner_status": "ALL_SIX_ANALYZED_SELECTED_DISCOVERY_VALIDATION_PROJECTION_NATIVE_REPLACEMENTS_VERIFIED",
-    "current_retirement_state": "BLOCKED_ONLY_UNTIL_NATIVE_MIGRATION_IMPORT_DESIGN_RECORDED_THEN_DELETE_22_IMMEDIATELY",
+    "current_retirement_state": "DESIGN_GATE_SATISFIED_IMMEDIATE_22_FILE_DELETION_DUE_NOT_YET_EXECUTED",
     "remaining_blockers": [
       {
         "id": "PROFILE_JSON_FIXTURE_PATHS",
@@ -4955,7 +5013,7 @@
         "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
         "evidence": "Normal supported ptsip.migration import chain still references removed src/ptsip/repository (snapshot, profile_path, profile_convergence, profile_transition), despite native adapters passing. The Python repository layer was intentionally removed for native Rust ownership, not accidentally lost.",
         "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_SUPPORTED_NORMAL_CONSUMER_IMPORT_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
-        "resolution_status": "ALL_ENGINE_SOURCE_CALLER_FUNCTION_DESIGN_RECORDED;NATIVE_OPERATION_USER_APPROVAL_PENDING",
+        "resolution_status": "SEVEN_NATIVE_OPERATION_IDS_AND_TYPED_IO_APPROVED_BY_USER;IMPLEMENTATION_AND_NORMAL_IMPORT_VERIFICATION_PENDING",
         "responsibility_policy": "REPLACE_REMOVED_PYTHON_REPOSITORY_RESPONSIBILITIES_WITH_EXISTING_REGISTERED_RUST_ENGINE_CAPABILITIES_BY_ACTUAL_RESPONSIBILITY;DO_NOT_RESTORE_LEGACY_PYTHON_COMPATIBILITY_LAYER",
         "candidate_native_engines": [
           "CONTEXT",
@@ -5025,7 +5083,44 @@
         "engine_analysis_scope": "ALL_SIX_CURRENT_REGISTERED_NATIVE_ENGINES_ANALYZED_WITH_SELECTION_AND_EXCLUSION_RATIONALE;TASK_NOT_REGISTERED",
         "function_allocation_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.function_allocations",
         "proposed_native_contract_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.native_operations",
-        "design_evidence_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design"
+        "design_evidence_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
+        "native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval",
+        "selected_engines": [
+          "CONTEXT",
+          "DISCOVERY",
+          "VALIDATION"
+        ],
+        "approved_native_operations": [
+          {
+            "owner": "CONTEXT",
+            "operation_id": "context.repository.snapshot"
+          },
+          {
+            "owner": "DISCOVERY",
+            "operation_id": "discovery.repository.inspect"
+          },
+          {
+            "owner": "DISCOVERY",
+            "operation_id": "discovery.profile.candidates"
+          },
+          {
+            "owner": "VALIDATION",
+            "operation_id": "validation.repository.snapshot"
+          },
+          {
+            "owner": "VALIDATION",
+            "operation_id": "validation.profile.path"
+          },
+          {
+            "owner": "VALIDATION",
+            "operation_id": "validation.profile.transition-state"
+          },
+          {
+            "owner": "VALIDATION",
+            "operation_id": "validation.profile.convergence"
+          }
+        ],
+        "remaining_implementation_blocker": "NOT_CONTRACT_DECISION;NATIVE_CODE_REGISTRATION_CONSUMER_REWIRING_AND_TESTS_PENDING"
       },
       {
         "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
@@ -5047,7 +5142,7 @@
         "SUPPORTED_NORMAL_MIGRATION_IMPORT_NATIVE_ROUTING_REPLACEMENT_DESIGN_RECORDED",
         "DEPENDENCIES_AND_FOLLOWUP_VERIFICATION_TASKS_RECORDED"
       ],
-      "assignments_status": "ANALYZED_AND_RECORDED_NATIVE_OPERATION_APPROVAL_PENDING",
+      "assignments_status": "EVIDENCE_ANALYZED_AND_SEVEN_NATIVE_TYPED_CONTRACTS_USER_APPROVED",
       "on_trigger": "DELETE_22_TRACKED_FILES_IN_src/ptsip/profiles/AS_NEXT_WORK_UNIT_ACTION;DO_NOT_WAIT_FOR_RUNTIME_IMPLEMENTATION_IMPORT_PASS_FIXTURE_TARGET_OR_DISTRIBUTION_PASS",
       "required_snapshot_before_deletion": "RECORD_EXACT_CURRENT_HEAD_AND_PER_FILE_GIT_BLOB_SHA_ALREADY_IN_MANIFEST;NO_ARCHIVE_COPY",
       "after_deletion_acceptance": [
@@ -5080,8 +5175,11 @@
         "PROJECTION"
       ],
       "native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
-      "deletion_trigger_satisfied": false,
-      "remaining_design_approval": "SEVEN_PROPOSED_NATIVE_OPERATION_IDS_AND_TYPED_CONTRACTS_REQUIRE_USER_DECISION;NO_SILENT_REGISTRATION"
+      "deletion_trigger_satisfied": true,
+      "remaining_design_approval": "NONE_APPROVED_USER_2026_11_20;DELETION_NOT_YET_EXECUTED",
+      "trigger_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval",
+      "actual_deletion_executed": false,
+      "next_action": "DELETE_ALL_22_TRACKED_SRC_PTSIP_PROFILES_FILES_IMMEDIATELY_PER_USER_APPROVED_DESIGN_GATE;IMPLEMENT_AND_VERIFY_NATIVE_OPERATIONS_AFTER_DELETION"
     },
     "post_deletion_acceptance": [
       "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_NATIVE_RUST_ENGINE_IMPLEMENTATION_VERIFIED",
@@ -7960,7 +8058,38 @@
         "WU-13.pp300_contract_first_followup",
         "target_schemas[current]",
         "profile_history_migration.pp300_current_override"
-      ]
+      ],
+      "superseded_implementation_authorization_state_by": "project_profile_pp300_contract_redesign.official_core_implementation_continuation"
+    },
+    "user_repository_seven_native_ops_2026_11_20": {
+      "approval": "USER_EXPLICIT",
+      "scope": "SEVEN_NATIVE_OPERATION_IDS_AND_EXISTING_RECORDED_TYPED_INPUT_OUTPUT_CONTRACT_IMPLEMENTATION_AND_REGISTRATION",
+      "owners": {
+        "CONTEXT": [
+          "context.repository.snapshot"
+        ],
+        "DISCOVERY": [
+          "discovery.repository.inspect",
+          "discovery.profile.candidates"
+        ],
+        "VALIDATION": [
+          "validation.repository.snapshot",
+          "validation.profile.path",
+          "validation.profile.transition-state",
+          "validation.profile.convergence"
+        ]
+      },
+      "all_six_engines_analyzed": true,
+      "excluded_new_repository_owners": [
+        "STORAGE",
+        "EXECUTION",
+        "PROJECTION"
+      ],
+      "implementation_authorized": true,
+      "physical_implementation_performed": false,
+      "official_pp300_core_continues": true,
+      "user_custom_profile_lineage_scope": "NOT_ADDITIONALLY_AUTHORIZED",
+      "full_22_profile_deletion_gate": "SATISFIED_ACTION_DUE_NOT_PERFORMED"
     }
   },
   "release_038_field_review": {
@@ -10742,7 +10871,7 @@
       "excluded_callers_mutation": "NONE_BYTE_PRESERVED",
       "legacy_python_package_discovery": "RETAINED_UNTIL_SUPPORTED_CONSUMER_CLOSURE",
       "repository_native_import_design": {
-        "state": "EVIDENCE_BASED_OWNER_PATH_DESIGN_PROPOSED_NATIVE_OPERATION_USER_APPROVAL_PENDING",
+        "state": "USER_EXPLICIT_SEVEN_NATIVE_OPERATIONS_AND_TYPED_IO_APPROVED_IMPLEMENTATION_AUTHORIZED",
         "analysis_head": "41401996",
         "historical_source_ref": "3961abb2^",
         "registered_native_engine_count": 6,
@@ -12491,7 +12620,12 @@
             "schema_defs": [
               "snapshot_input",
               "snapshot_output"
-            ]
+            ],
+            "approval": "USER_APPROVED_2026_11_20",
+            "implementation_authorized": true,
+            "typed_io_contract_approval": "APPROVED_EXISTING_PLANNED_INPUT_OUTPUT_FIELD_ROLES",
+            "runtime_registration": "PENDING_IMPLEMENTATION",
+            "schema_owner_root": "src/ptsip/engines/context/src/schemas/"
           },
           {
             "operation_id": "discovery.repository.inspect",
@@ -12514,7 +12648,12 @@
             "schema_defs": [
               "inspect_input",
               "inspect_output"
-            ]
+            ],
+            "approval": "USER_APPROVED_2026_11_20",
+            "implementation_authorized": true,
+            "typed_io_contract_approval": "APPROVED_EXISTING_PLANNED_INPUT_OUTPUT_FIELD_ROLES",
+            "runtime_registration": "PENDING_IMPLEMENTATION",
+            "schema_owner_root": "src/ptsip/engines/discovery/src/schemas/"
           },
           {
             "operation_id": "discovery.profile.candidates",
@@ -12540,7 +12679,12 @@
             "schema_defs": [
               "input",
               "output"
-            ]
+            ],
+            "approval": "USER_APPROVED_2026_11_20",
+            "implementation_authorized": true,
+            "typed_io_contract_approval": "APPROVED_EXISTING_PLANNED_INPUT_OUTPUT_FIELD_ROLES",
+            "runtime_registration": "PENDING_IMPLEMENTATION",
+            "schema_owner_root": "src/ptsip/engines/discovery/src/schemas/"
           },
           {
             "operation_id": "validation.repository.snapshot",
@@ -12553,7 +12697,12 @@
               "status",
               "stable",
               "reasons"
-            ]
+            ],
+            "approval": "USER_APPROVED_2026_11_20",
+            "implementation_authorized": true,
+            "typed_io_contract_approval": "APPROVED_EXISTING_PLANNED_INPUT_OUTPUT_FIELD_ROLES",
+            "runtime_registration": "PENDING_IMPLEMENTATION",
+            "schema_owner_root": "src/ptsip/engines/validation/src/schemas/"
           },
           {
             "operation_id": "validation.profile.path",
@@ -12565,7 +12714,12 @@
             "output_fields": [
               "normalized_path",
               "path_on_disk"
-            ]
+            ],
+            "approval": "USER_APPROVED_2026_11_20",
+            "implementation_authorized": true,
+            "typed_io_contract_approval": "APPROVED_EXISTING_PLANNED_INPUT_OUTPUT_FIELD_ROLES",
+            "runtime_registration": "PENDING_IMPLEMENTATION",
+            "schema_owner_root": "src/ptsip/engines/validation/src/schemas/"
           },
           {
             "operation_id": "validation.profile.transition-state",
@@ -12581,7 +12735,12 @@
               "state",
               "diagnostics"
             ],
-            "typed_factory_note": "Any required DraftVersion parsing must be a declared branch of native typed contract or removed from supported callers; no Python semantic parser restoration."
+            "typed_factory_note": "Any required DraftVersion parsing must be a declared branch of native typed contract or removed from supported callers; no Python semantic parser restoration.",
+            "approval": "USER_APPROVED_2026_11_20",
+            "implementation_authorized": true,
+            "typed_io_contract_approval": "APPROVED_EXISTING_PLANNED_INPUT_OUTPUT_FIELD_ROLES",
+            "runtime_registration": "PENDING_IMPLEMENTATION",
+            "schema_owner_root": "src/ptsip/engines/validation/src/schemas/"
           },
           {
             "operation_id": "validation.profile.convergence",
@@ -12598,10 +12757,15 @@
               "valid",
               "state",
               "diagnostics"
-            ]
+            ],
+            "approval": "USER_APPROVED_2026_11_20",
+            "implementation_authorized": true,
+            "typed_io_contract_approval": "APPROVED_EXISTING_PLANNED_INPUT_OUTPUT_FIELD_ROLES",
+            "runtime_registration": "PENDING_IMPLEMENTATION",
+            "schema_owner_root": "src/ptsip/engines/validation/src/schemas/"
           }
         ],
-        "native_operation_registration_status": "UNREGISTERED_PENDING_USER_APPROVAL",
+        "native_operation_registration_status": "USER_APPROVED_REGISTRATION_AND_IMPLEMENTATION;NOT_YET_REGISTERED_IN_RUNTIME",
         "routing_design": "Existing spec_identity.py native bridge generalized for approved closed Repository operation IDs; business functions live in selected Rust engines. Existing Python migration/source_compat consumers use declared native response DTOs and typed data only. No new Python module or ptsip.repository package. No fake packages or import bypass in acceptance.",
         "normal_import_acceptance": "Python normal import ptsip.migration plus actual source_compat and migration native calls through installed Go CLI, with no legacy repository shim and no sys.modules substitution.",
         "verification_followups": [
@@ -12611,7 +12775,79 @@
           "cross-engine current observation to validation and actual supported normal imports",
           "native engine tests + Go integration tests under src/tests/ptsip",
           "recorded approved native design triggers immediate22-source deletion; remaining implementation/import/package tests follow deletion"
-        ]
+        ],
+        "approval": {
+          "status": "APPROVED",
+          "source": "USER_EXPLICIT_2026_11_20",
+          "scope": "EXACT_SEVEN_OPERATION_IDS_OWNERS_AND_EXISTING_PLAN_NATIVE_TYPED_IO_DESIGN_ONLY",
+          "implementation_authorized": true,
+          "registration_authorized": true,
+          "registered_in_runtime": false,
+          "separate_execution_permission": "NOT_GRANTED_BY_REGISTRATION_OR_OPERATION_ID",
+          "external_policy_lookup_required": false,
+          "selection_basis": "ALL_SIX_REGISTERED_ENGINES_FUNCTION_AND_CALLER_ANALYSIS_ALREADY_RECORDED_IN_THIS_PLAN",
+          "approved_operation_ids_by_owner": {
+            "CONTEXT": [
+              "context.repository.snapshot"
+            ],
+            "DISCOVERY": [
+              "discovery.repository.inspect",
+              "discovery.profile.candidates"
+            ],
+            "VALIDATION": [
+              "validation.repository.snapshot",
+              "validation.profile.path",
+              "validation.profile.transition-state",
+              "validation.profile.convergence"
+            ]
+          },
+          "excluded_engine_assignment": [
+            "STORAGE",
+            "EXECUTION",
+            "PROJECTION"
+          ],
+          "additional_operation_ids": "NOT_AUTHORIZED_BY_THIS_APPROVAL",
+          "source_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
+          "native_contract_shape_basis": "THIS_PLAN_NATIVE_OPERATIONS_INPUT_FIELDS_OUTPUT_FIELDS_SCHEMA_DEFS_AND_RECORDED_LEGACY_FUNCTION_ALLOCATION",
+          "new_contract_field_inference": "PROHIBITED_IF_NOT_DERIVABLE_FROM_APPROVED_INPUT_OUTPUT_ROLES_AND_EXISTING_REGISTERED_ENGINE_CONTRACTS",
+          "approved_native_owner_roots": {
+            "CONTEXT": "src/ptsip/engines/context/",
+            "DISCOVERY": "src/ptsip/engines/discovery/",
+            "VALIDATION": "src/ptsip/engines/validation/"
+          },
+          "required_registration_resources_by_owner": [
+            "src/ptsip/engines/<owner>/contract.json",
+            "src/ptsip/engines/<owner>/manifest.json",
+            "src/ptsip/engines/<owner>/execution-bindings.json",
+            "src/ptsip/engines/<owner>/src/schemas/**",
+            "src/ptsip/engines/index.json"
+          ],
+          "technical_implementation_scope": [
+            "WRITE_TYPED_INPUT_OUTPUT_SCHEMAS_WITH_EXISTING_APPROVED_FIELD_ROLES",
+            "IMPLEMENT_SELECTED_NATIVE_RUST_MODULES_AND_TRANSPORT_ROUTING",
+            "REGISTER_EXACT_SEVEN_OP_IDS_WITH_MATCHING_NATIVE_ENGINE_OWNER_CAPABILITY_AND_BINDINGS",
+            "VERIFY_HASH_AND_VERSION_REFERENCES_MANIFEST_BINDING_REGISTRY",
+            "REWIRE_AUTHORIZED_SUPPORTED_MIGRATION_AND_SOURCE_COMPAT_CALLERS_TO_NATIVE_OPS",
+            "TEST_ACTUAL_GIT_NON_GIT_AND_NEGATIVE_SCHEMA_BINDING_PATH_AND_TRANSITION_BEHAVIOR",
+            "TEST_NORMAL_SUPPORTED_IMPORTS_NO_PYTHON_REPOSITORY_COMPAT_SHIM"
+          ],
+          "runtime_state": "DESIGN_APPROVED_IMPLEMENTATION_NOT_PERFORMED_BY_THIS_PLAN_EDIT",
+          "user_profile_pp300": "OFFICIAL_CORE_IMPLEMENTATION_CONTINUES_IN_PARALLEL_WITH_USER_EXTENSION_LINEAGE_UNRESOLVED"
+        },
+        "selected_owners": [
+          "CONTEXT",
+          "DISCOVERY",
+          "VALIDATION"
+        ],
+        "unselected_owners": [
+          "STORAGE",
+          "EXECUTION",
+          "PROJECTION"
+        ],
+        "design_approval": "APPROVED_USER_EXPLICIT_2026_11_20",
+        "rust_implementation_authorized": true,
+        "contract_registration_authorized": true,
+        "implementation_evidence_status": "PENDING_NATIVE_CONTRACT_AND_RUNTIME_TESTS_NOT_CLAIMED_COMPLETE"
       }
     }
   },
@@ -12977,6 +13213,16 @@
       "dependency": "REUSE_ACTUAL_COMPONENT_DEPENDENCY_POLICY_FIELD_CONTRACT_UNDER_REQUIRED_COMPONENT_dependency",
       "evidence": "NO_FOUR_STANDALONE_EVIDENCE_SCHEMA_MIGRATION_REQUIRED;ADD_ONLY_NECESSARY_FIELDS_TO_EXISTING_CONTRACTS",
       "repository_analysis": "ALL_CURRENT_REGISTERED_NATIVE_ENGINES;NO_FIXED_FOUR_ENGINE_SPLIT_OR_NEW_ENGINE_KIND"
+    },
+    "official_core_implementation_continuation": {
+      "state": "AUTHORIZED_CONTINUE",
+      "approval_source": "EXISTING_USER_APPROVED_OFFICIAL_PP300_CORE_AS_RECONFIRMED_2026_11_20",
+      "implementation_authorized": true,
+      "independent_from_repository_operation_approval": true,
+      "schema_target": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+      "implementation_scope": "OFFICIAL_CORE_SCHEMA_REGISTRY_AND_NATIVE_CONSUMER",
+      "user_extension_revision_lineage_scope": "UNRESOLVED_UNCHANGED_NOT_SILENTLY_APPROVED",
+      "note": "Do not return to policy audit gate or re-block approved official core work because of Repository operation registration."
     }
   }
 }
