@@ -2408,11 +2408,13 @@
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
         "User-owned .ptsip/tasks/index.yaml is YAML high-level short todo category table of contents. Task items: id, Title, Keyword, status object, $ref to leaf Task file, Last_Modified_Date. Full id includes TASK/8-digit-date/six uppercase/eight alphanumeric; file basename uses date+six-uppercase prefix only. No task purpose inference from filename; exact regex, ref encoding and filename collisions remain separate decisions.",
         "Checklist maintains approved default four columns and task_id association; index task status is separate from Plan_lifecycle.status. User chose four Task status labels (대기/활성/일시정지/완료); exact object serialization and transitions, completion author, linked-task activation and Checklist synchronization remain undecided.",
-        "Plan ID is user-owned and no fixed core regex required. Plan schema registered target still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work."
+        "Plan ID is user-owned and no fixed core regex required. Plan schema registered target still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work.",
+        "The Plan record may remain Approval.Scheduled_implementation while actual implementation is externally observed as Approval.In_progress; neither self-observation nor missing document write must create an eighth status or block authorized work.",
+        "Scope Task status-object transitions, completion writer, dependent-task synchronization, leaf $ref binding and timestamp parser as separate Task-index slice decisions; do not convert them into cross-WU blockers or infer execution authorization from Task filename."
       ],
       "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target, remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency.",
       "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_FOUR_TASK_LABELS_APPROVED_TRANSITIONS_AND_SYNC_OPEN",
-      "current_result": "Plan Approval.In_progress is observed runtime rather than mandatory persisted status; user-repository task index.yaml is short todo category index with task item field roles. Four Task labels (대기/활성/일시정지/완료) selected. Completion ownership, task synchronization and remaining transitions unresolved; no Task schema, index or leaf files created.",
+      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract"
     },
     {
@@ -8053,7 +8055,17 @@
       ],
       "current_pp200_only_instruction_superseded": true,
       "no_external_policy_audit": true
-    }
+    },
+    "source_runtime_language_boundary": "RUST_ENGINES_WITH_GO_CLI_AND_GO_TOOLING_AS_APPLICABLE; NO_PYTHON_ENGINE_SUBSTITUTION",
+    "cross_repository_contract_boundary": "SRC_PTSIP_MUST_NOT_IMPORT_OR_RESOLVE_THIS_DEVELOPER_REPOSITORY_DOTPTSIP; USE_DISTRIBUTABLE_SRC_PTSIP_OWNED_CONTRACTS_AND_USER_PROJECT_EXTENSIONS",
+    "implementation_blocker_simulation_exclusions": [
+      "INCOMPLETE_PREDECESSOR_DEPENDENCY_WORK",
+      "INTENTIONALLY_OPAQUE_EVIDENCE_VALUE_AND_OTHER_APPROVED_VALUE_CONTAINERS",
+      "USER_OWNED_CONTRACT_NAMES_SHAPES_AND_CUSTOM_ID_PATTERNS",
+      "INTENTIONALLY_ABSENT_NONREQUIRED_FIELDS",
+      "RETIRED_VALIDATORS_OR_ARCHIVE_RETAINED_ONLY_TO_BLOCK_DELETION",
+      "WU_IDENTIFIER_NUMERIC_ORDER"
+    ]
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -8109,7 +8121,7 @@
       "full_22_profile_deletion_gate": "SATISFIED_ACTION_DUE_NOT_PERFORMED"
     },
     "user_wu04_state_task_index_2026_11_20": {
-      "status": "USER_APPROVED_PLAN_DIRECTION_AND_FOUR_TASK_STATUS_LABELS_RECORDED_OPEN_TRANSITIONS_AND_SYNC",
+      "status": "USER_APPROVED_PLAN_OBSERVED_PROGRESS_AND_FOUR_TASK_LABELS; UNDECIDED_SYNC_BOUNDED_TO_TASK_SLICE",
       "approved_scope": [
         "RENAME_APPROVAL_IN_PROGRESS",
         "KEEP_SCHEDULED_DOCUMENT_BASE_WHEN_OBSERVED_WORKING",
@@ -8127,7 +8139,8 @@
         "PLAN_SCHEMA_TARGET_AND_OTHER_TRANSITIONS"
       ],
       "plan_contract_ref": "wu04_observed_execution_and_task_index_contract",
-      "source_mutation": "THIS_PLAN_ONLY"
+      "source_mutation": "THIS_PLAN_ONLY",
+      "scope_correction": "EXECUTION_BLOCKER_SIMULATION_EXCLUDES_UNFINISHED_PREDECESSORS_AND_INTENTIONALLY_UNDEFINED_USER_OWNED_OR_OPAQUE_CONTRACT_FIELDS"
     }
   },
   "release_038_field_review": {
@@ -10036,7 +10049,12 @@
       "missing_user_custom_contract": "APPLY_EXISTING_APPROVED_ON_DEMAND_USER_PROJECT_BOOTSTRAP_IF_REQUIRED;NEVER_READ_DEV_DOTPTSIP",
       "unset_optional_custom_semantics": "STRUCTURAL_VALIDATION_ONLY_NO_FALSE_SEMANTIC_PASS",
       "stop_policy": "STOP_ONLY_ON_GENUINE_UNDECIDED_CURRENT_REQUIRED_RESPONSIBILITY_NOT_INTENTIONAL_EXTENSION_POINT",
-      "no_future_todo_for_evidence_value": true
+      "no_future_todo_for_evidence_value": true,
+      "simulation_scope": "CHECK_ONLY_CURRENT_0_3_8_IMPLEMENTATION_CONTRACT_UNDECIDEDNESS; EXCLUDE_INCOMPLETE_PREDECESSOR_WORK_AND_WU_NUMERIC_ORDER",
+      "intentionally_absent_inner_fields": "NOT_A_BLOCKER_NOT_A_DEFECT_NOT_A_FUTURE_TODO",
+      "user_owned_contract_identity": "UNSPECIFIED_USER_NAMES_AND_USER_CONTRACT_SHAPES_ARE_DESIGN_FREEDOM_NOT_A_BLOCKER",
+      "actual_blocker_condition": "ONLY_WHEN_CURRENTLY_AUTHORIZED_TARGET_REQUIRES_UNDECIDED_NON_OPTIONAL_SEMANTIC_AUTHORITY_OR_CONTRACT_AND_NO_EXISTING_CONTRACT_CAN_RESOLVE_IT",
+      "blocker_effect": "HALT_AFFECTED_SLICE_ONLY_AND_ALLOW_OTHER_APPROVED_INDEPENDENT_WU_WORK"
     }
   },
   "current_release_retirement_protocol": {
@@ -10061,7 +10079,8 @@
       "scope_22_only": true,
       "supersedes_generic_replacement_first_then_delete_for_this_subtree": true,
       "preserve_generic_protocol_for_other_paths": true
-    }
+    },
+    "obsolete_validator_blocker_resolution": "REPLACE_CURRENT_VERIFICATION_AND_DELETE_RETIRED_VALIDATOR_OLD_TESTS_AND_UNUSED_CONTRACT_WITHOUT_CUSTOM_HISTORICAL_ARCHIVE"
   },
   "profile_rust_engine_assignment": {
     "state": "IMPLEMENTED_NATIVE_OPERATIONS_AND_BACKGROUND_VERIFIED_CONSUMER_DISTRIBUTION_CLOSURE_PARTIAL",
@@ -13285,7 +13304,7 @@
   "wu04_observed_execution_and_task_index_contract": {
     "schema_version": "ptsip-wu04-task-index-plan/v1",
     "approved_by_user": "EXPLICIT_2026_11_20",
-    "record_state": "PLAN_SEMANTICS_AND_FOUR_TASK_LABELS_RECORDED; TRANSITIONS_COMPLETION_WRITER_AND_SYNC_UNRESOLVED",
+    "record_state": "PLAN_STATE_OBSERVATION_AND_FOUR_TASK_LABELS_APPROVED; TASK_STATUS_OBJECT_TRANSITIONS_COMPLETION_WRITER_AND_SYNC_DETAILS_NOT_DECIDED",
     "execution_order": "ACTUAL_DEPENDENCIES_NOT_WU_NUMBER",
     "plan_lifecycle": {
       "corrected_status": {
@@ -13312,7 +13331,11 @@
         "missing_in_progress_write_means_execution_blocked": false,
         "no_extra_lifecycle_enum": true,
         "no_independent_plan_or_workunit_approval_field": true,
-        "observation_alone_grants_new_permission": false
+        "observation_alone_grants_new_permission": false,
+        "agent_self_view": "AGENT_PERFORMING_WORK_KNOWS_ITS_ACTION_BUT_DOES_NOT_NEED_TO_PERSIST_THIRD_PARTY_APPROVAL_IN_PROGRESS_OBSERVATION",
+        "status_semantic_existence_independent_of_document_write": true,
+        "implementation_may_proceed_while_persisted_scheduled": true,
+        "approval_in_progress_observational_role": "IN_PROGRESS_IS_VALID_OBSERVED_OR_MEMORY_STATE_WHEN_ACTUAL_IMPLEMENTATION_IS_OCCURRING; NOT_AN_EXTRA_EXECUTION_APPROVAL"
       },
       "pause_resume": {
         "approved_document_before_execution": "Approval.Scheduled_implementation",
@@ -13324,7 +13347,8 @@
         "no_implicit_resume_from_discontinued": true,
         "pause_resume_authorizer": "UNRESOLVED",
         "other_transition_graph": "UNRESOLVED",
-        "no_new_status_values": true
+        "no_new_status_values": true,
+        "pause_writes_are_plan_state_changes_not_proof_of_runtime_activity": true
       },
       "completion": "Approval.Implementation_complete_REQUIRES_ALL_REQUIRED_WORK_AND_VERIFICATION_PASSED",
       "task_index_status_independent": true
@@ -13466,29 +13490,40 @@
         ],
         "decision_source": "USER_EXPLICIT_2026_11_20_TASK_STATUS_DIRECTION",
         "scope": "FOUR_LOGICAL_STATES_APPROVED; EXACT_STATUS_OBJECT_SHAPE_AND_STATE_TRANSITIONS_UNRESOLVED",
-        "execution_permission": "ONLY_ACTIVE_ELIGIBLE_FOR_TASK_EXECUTION; OTHER_LABELS_NOT_EXECUTABLE; ACTIVE_ALONE_NOT_AN_APPROVAL_SUBSTITUTE"
+        "execution_permission": "ONLY_ACTIVE_ELIGIBLE_FOR_TASK_EXECUTION; OTHER_LABELS_NOT_EXECUTABLE; ACTIVE_ALONE_NOT_AN_APPROVAL_SUBSTITUTE",
+        "conceptual_roles": {
+          "대기": "REGISTERED_NOT_ELIGIBLE_TO_EXECUTE",
+          "활성": "TASK_ELIGIBILITY_CANDIDATE_NOT_A_SUBSTITUTE_FOR_OTHER_REQUIRED_AUTHORIZATION",
+          "일시정지": "EXECUTION_SUSPENDED_RESUME_NOT_AUTOMATIC",
+          "완료": "COMPLETION_REPORTED; AUTHORITATIVE_WRITER_AND_EVIDENCE_UNRESOLVED"
+        }
       },
       "remaining_decision_gates": [
         {
           "id": "TASK-INDEX-STATUS",
-          "question": "FOUR_USER_LABELS_DECIDED; TRANSITION_RULES_AND_STATUS_CHANGE_AUTHORITY_UNRESOLVED"
+          "question": "FOUR_USER_LABELS_DECIDED; TRANSITION_RULES_AND_STATUS_CHANGE_AUTHORITY_UNRESOLVED",
+          "blocking_scope": "ONLY_THE_DEPENDENT_TASK_INDEX_REGISTRATION_OR_EXECUTION_SLICE; NOT_UNRELATED_APPROVED_WU01_WU14_WORK"
         },
         {
           "id": "TASK-INDEX-COMPLETION",
-          "question": "WHO_WRITES_COMPLETION_FACT_AND_WHAT_IS_AUTHORITATIVE_VS_CHECKLIST"
+          "question": "WHO_WRITES_COMPLETION_FACT_AND_WHAT_IS_AUTHORITATIVE_VS_CHECKLIST",
+          "blocking_scope": "ONLY_THE_DEPENDENT_TASK_INDEX_REGISTRATION_OR_EXECUTION_SLICE; NOT_UNRELATED_APPROVED_WU01_WU14_WORK"
         },
         {
           "id": "TASK-INDEX-ID-COLLISION",
           "question": "EXACT_ID_REGEX_AND_PREFIX_FILENAME_COLLISION_BEHAVIOR_DEFERRED_NONBLOCKING",
-          "blocking": false
+          "blocking": false,
+          "blocking_scope": "NONE_FOR_0_3_8_IMPLEMENTATION"
         },
         {
           "id": "TASK-INDEX-REF",
-          "question": "INDEX_ID_ARRAY_YAML_SHAPE_AND_TASK_FILE_REF_ENCODING"
+          "question": "INDEX_ID_ARRAY_YAML_SHAPE_AND_TASK_FILE_REF_ENCODING",
+          "blocking_scope": "ONLY_THE_DEPENDENT_TASK_INDEX_REGISTRATION_OR_EXECUTION_SLICE; NOT_UNRELATED_APPROVED_WU01_WU14_WORK"
         },
         {
           "id": "TASK-INDEX-TIME",
-          "question": "TIMESTAMP_FORMAT_TIMEZONE_AND_WRITER"
+          "question": "TIMESTAMP_FORMAT_TIMEZONE_AND_WRITER",
+          "blocking_scope": "ONLY_THE_DEPENDENT_TASK_INDEX_REGISTRATION_OR_EXECUTION_SLICE; NOT_UNRELATED_APPROVED_WU01_WU14_WORK"
         }
       ],
       "implementation_bounds": {
@@ -13498,7 +13533,25 @@
         "task_index_schema_created": false,
         "no_executable_tasks_until_status_decided": false,
         "no_external_policy_document_dependency": true,
-        "status_selection_does_not_create_schema_or_activate_task_execution": true
+        "status_selection_does_not_create_schema_or_activate_task_execution": true,
+        "not_user_approved": "NO_DEFAULT_STATE_TRANSITION_GRAPH_NO_COMPLETION_WRITER_NO_DEPENDENT_TASK_AUTO_ACTIVATION_NO_TASK_SCHEMA_CREATION"
+      },
+      "index_compactness": {
+        "purpose": "SHORT_USER_DEFINED_TODO_CATEGORY_DIRECTORY_NOT_LONG_WORK_DESCRIPTION_OR_IMPLEMENTATION_PLAN",
+        "entry_role": "SEARCH_AND_CALL_REFERENCE_ONLY",
+        "filename_semantics": "OPAQUE_PREFIX_IDENTIFIER_NOT_A_TASK_PURPOSE",
+        "details_owned_by": "REFERENCED_TASK_LEAF_NOT_INDEX"
+      },
+      "task_synchronization_boundary": {
+        "authoring_origin": "PLAN_TASK_ASSOCIATIONS_REVIEWED_FOR_USER_TASK_INDEX_ENTRY",
+        "target": "<USER_REPOSITORY>/.ptsip/tasks/index.yaml",
+        "index_permission_owner": "TASK_ITEM_STATUS_OBJECT_USER_EDITABLE_NOT_PLAN_LIFECYCLE",
+        "plan_status_relation": "SEPARATE_PLAN_LIFECYCLE_AND_TASK_EXECUTION_ELIGIBILITY",
+        "completion_fact_writer": "UNRESOLVED_DO_NOT_INFER_FROM_AGENT_OBSERVATION",
+        "linked_tasks": "TASK_LEVEL_REFERENCES_ALLOWED; EFFECT_OF_COMPLETION_ON_DEPENDENTS_UNRESOLVED",
+        "mapping_and_writer": "UNRESOLVED_DO_NOT_WRITE_EXECUTABLE_BINDING_BY_GUESSING",
+        "no_task_engine_activation_from_plan_text": true,
+        "unrelated_approved_work_can_continue": true
       }
     },
     "no_implementation_or_policy_mutation": true
