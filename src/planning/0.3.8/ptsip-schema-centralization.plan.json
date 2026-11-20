@@ -790,7 +790,13 @@
         "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
       ],
       "state": "USER_APPROVED_EXACT_PATHS_ONLY",
-      "note": "Product Plan schema domain owns the Plan structure and lifecycle schema definitions under src/ptsip/schemas/plan/. Both exact creation paths approved; does not authorize other schemas/plan filenames, infer field definitions, activate Task Engine, or select config.json plan registration identity/topology."
+      "note": "Product Plan schema domain owns the Plan structure and lifecycle schema definitions under src/ptsip/schemas/plan/. Both exact creation paths approved; does not authorize other schemas/plan filenames, infer field definitions, activate Task Engine, or select config.json plan registration identity/topology. Subsequent user decision selects registration topology C with Identity/Lifecycle/Unit responsibility groups, without authorizing additional new files."
+    },
+    {
+      "id": "PLAN-REGISTRY-TOPOLOGY-20261120",
+      "scope": "src/ptsip/schemas/config.json::plan",
+      "state": "USER_APPROVED_OPTION_C_RESPONSIBILITY_GROUPED_REGISTRY",
+      "note": "Three explicit responsibility domains: Plan Identity, Plan Lifecycle, Plan Unit. Exact hierarchical keys, file mapping, schema identities, versions, and whether new files beyond the two earlier approved targets are required remain separate decisions. config.json remains unchanged at {} until those decisions; do not activate unresolved entries."
     }
   ],
   "target_registry": {
@@ -816,6 +822,10 @@
       {
         "step": "C05",
         "change": "Do not silently add engine/evidence groups until target path approvals"
+      },
+      {
+        "step": "C06",
+        "change": "User approved option C for plan: responsibility-grouped hierarchical registration across Plan Identity, Plan Lifecycle, and Plan Unit. Define per-domain owner and exact resource mapping before adding keys/$id/version to config.json. Do not derive number of required physical schema files from number of responsibility groups."
       }
     ],
     "registered_lifecycle": {
@@ -859,13 +869,13 @@
     },
     "profile_schema_integrity": "profile_rust_engine_assignment.native_technical_design.profile_schema_integrity",
     "plan_registration_review_2026_11_20": {
-      "state": "USER_DECISION_PENDING_NO_REGISTRY_MUTATION",
+      "state": "USER_APPROVED_RESPONSIBILITY_GROUPED_REGISTRY;FIELD_AND_RESOURCE_BINDING_UNRESOLVED",
       "product_owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
       "approved_exact_targets": [
         "plan/public-structure-plan.schema.json",
         "plan/plan-lifecycle.schema.json"
       ],
-      "existing_config_plan": "EMPTY_OBJECT",
+      "existing_config_plan": "EMPTY_OBJECT;PRESERVED_UNTIL_REGISTRATION_KEYS_AND_SCHEMA_BINDINGS_AUTHORIZED",
       "alternatives": [
         {
           "id": "A",
@@ -883,14 +893,33 @@
           "meaning": "Plan structure and lifecycle each registered inside an explicitly separated responsibility grouping"
         }
       ],
-      "recommendation": "A_FOR_DIRECT_DISCOVERY_AND_DETERMINISTIC_SCHEMA_SELECTION_WITH_LOWEST_REGISTRY_TOPOLOGY_COST;USER_AUTHORITY_REQUIRED",
       "not_approved": [
-        "REGISTRY_OPTION_SELECTION",
         "FINAL_REGISTRY_KEYS",
+        "PLAN_IDENTITY_AND_PLAN_UNIT_FILE_CREATION_OR_PATHS",
         "FINAL_SCHEMA_$IDS",
         "FINAL_SCHEMA_VERSION_VALUES",
         "CONFIG_JSON_MUTATION",
-        "SCHEMA_IMPLEMENTATION"
+        "SCHEMA_IMPLEMENTATION",
+        "REGISTRY_BINDING_TO_UNCREATED_ARTIFACTS"
+      ],
+      "selected_option": "C",
+      "selected_direction": "RESPONSIBILITY_GROUPED_REGISTRY",
+      "decision_authority": "USER_EXPLICIT_2026_11_20",
+      "approved_responsibility_groups": [
+        "Plan Identity",
+        "Plan Lifecycle",
+        "Plan Unit"
+      ],
+      "approved_purpose": "REGISTER_PLAN_CONTRACTS_BY_DISTINCT_IDENTITY_LIFECYCLE_UNIT_RESPONSIBILITIES_WITHOUT_FLATTENING_ALL_UNDER_SINGLE_UNTYPED_PLAN_ENTRY",
+      "registration_structure": "HIERARCHICAL_PLAN_DOMAIN_BY_RESPONSIBILITY_APPROVED",
+      "schema_file_count": "NOT_DECIDED;TWO_EXISTING_EXACT_TARGET_PATH_APPROVALS_NOT_EXPANDED",
+      "previous_alternative_recommendation": "A_REJECTED_IN_FAVOR_OF_USER_SELECTED_C",
+      "remaining_decision_domains": [
+        "SUBDOMAIN_TO_PHYSICAL_SCHEMA_OWNERSHIP_AND_COMPOSITION",
+        "FINAL_HIERARCHICAL_REGISTRY_KEYS",
+        "SCHEMA_RESOURCE_IDS_AND_VERSIONS",
+        "RESOURCE_REGISTRATION_ACTIVATION_ON_EXISTING_FILE_VALIDITY",
+        "SCHEMA_CONTRACT_CONTENT_AND_REFERENCES"
       ]
     }
   },
@@ -1216,7 +1245,7 @@
       "responsibility": "Plan lifecycle contract",
       "sources": [],
       "readiness": "USER_APPROVED_EXACT_NON_ENGINE_PLAN_SCHEMA_PATH_2026_11_20;SCHEMA_IMPLEMENTATION_PENDING",
-      "decision": "APPROVED_EXACT_PATH_ONLY;REGISTER_PLAN_CONFIG_MAPPING_SEPARATELY_AFTER_USER_DECISION",
+      "decision": "APPROVED_EXACT_PATH;HIERARCHICAL_PLAN_REGISTRY_OPTION_C_APPROVED;EXACT_RESOURCE_MAPPING_PENDING",
       "new_target_contract_review": {
         "version_revision": "Plan_properties.version.revision",
         "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
@@ -1248,7 +1277,7 @@
         "checklist_exact_max": "UNRESOLVED",
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
         "current_schema_file": "NO_APPROVED_SOURCE_SCHEMA;CREATE_ONLY_FROM_DECIDED_PLAN_LIFECYCLE_FIELDS",
-        "approval_scope": "EXACT_FINAL_SCHEMA_CREATION_PATH_APPROVED;CONTENT_AND_CONFIG_REGISTRATION_REMAIN_INDEPENDENT",
+        "approval_scope": "EXACT_FINAL_SCHEMA_CREATION_PATH_AND_RESPONSIBILITY_GROUPED_REGISTRY_DIRECTION_APPROVED;SCHEMA_CONTENT_AND_REGISTERED_RESOURCE_MAPPING_PENDING",
         "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
         "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
@@ -1265,7 +1294,7 @@
         "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json"
       ],
       "readiness": "USER_APPROVED_EXACT_NON_ENGINE_PLAN_SCHEMA_PATH_2026_11_20;SCHEMA_IMPLEMENTATION_PENDING",
-      "decision": "APPROVED_EXACT_PATH_ONLY;REGISTER_PLAN_CONFIG_MAPPING_SEPARATELY_AFTER_USER_DECISION",
+      "decision": "APPROVED_EXACT_PATH;HIERARCHICAL_PLAN_REGISTRY_OPTION_C_APPROVED;EXACT_RESOURCE_MAPPING_PENDING",
       "new_target_contract_review": {
         "version_revision": "Plan_properties.version.revision",
         "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
@@ -1297,7 +1326,7 @@
         "checklist_exact_max": "UNRESOLVED",
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
         "current_schema_file": "LEGACY_V1_MALFORMED_SOURCE_REQUIRES_VALID_REPLACEMENT",
-        "approval_scope": "EXACT_FINAL_SCHEMA_CREATION_PATH_APPROVED;CONTENT_AND_CONFIG_REGISTRATION_REMAIN_INDEPENDENT",
+        "approval_scope": "EXACT_FINAL_SCHEMA_CREATION_PATH_AND_RESPONSIBILITY_GROUPED_REGISTRY_DIRECTION_APPROVED;SCHEMA_CONTENT_AND_REGISTERED_RESOURCE_MAPPING_PENDING",
         "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
         "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
@@ -2455,7 +2484,7 @@
       "outputs": [
         "src/ptsip/schemas/plan/public-structure-plan.schema.json",
         "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
-        "Plan structure/lifecycle independently owned under src/ptsip/schemas/plan/; schema implementation and config.json plan entry decision remain separate"
+        "Plan structure/lifecycle exact schema paths approved; config.json::plan responsibility hierarchy C (Identity/Lifecycle/Unit) approved; exact resource mapping and schema implementation pending"
       ],
       "actions": [
         "Repair invalid historical Plan v1 JSON in independent release source planning, without copying malformed types or treating it as accepted contract",
@@ -2465,15 +2494,16 @@
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
         "User-owned .ptsip/tasks/index.yaml is YAML high-level short todo category table of contents. Task items: id, Title, Keyword, status object, $ref to leaf Task file, Last_Modified_Date. Full id includes TASK/8-digit-date/six uppercase/eight alphanumeric; file basename uses date+six-uppercase prefix only. No task purpose inference from filename; exact regex, ref encoding and filename collisions remain separate decisions.",
         "Checklist maintains approved default four columns and task_id association; index task status is separate from Plan_lifecycle.status. User chose four Task status labels (대기/활성/일시정지/완료); exact object serialization and transitions, completion author, linked-task activation and Checklist synchronization remain undecided.",
-        "Plan ID is user-owned and no fixed core regex required. Plan structure/lifecycle exact physical target paths approved; config.json plan registration strategy still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work.",
+        "Plan ID is user-owned and no fixed core regex required. Plan structure/lifecycle exact physical target paths approved; config.json plan registration strategy C (responsibility-grouped) approved; exact nested keys/resource bindings still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work.",
         "The Plan record may remain Approval.Scheduled_implementation while actual implementation is externally observed as Approval.In_progress; neither self-observation nor missing document write must create an eighth status or block authorized work.",
         "Scope Task status-object transitions, completion writer, dependent-task synchronization, leaf $ref binding and timestamp parser as separate Task-index slice decisions; do not convert them into cross-WU blockers or infer execution authorization from Task filename.",
         "User 2026-11-20 approves exactly two product Plan schema targets src/ptsip/schemas/plan/public-structure-plan.schema.json and src/ptsip/schemas/plan/plan-lifecycle.schema.json, neither under native Rust engine src/schemas nor developer .ptsip; historical blanket denial of schemas/plan/ is superseded only for these two paths.",
-        "Do not select flat/nested/root-only registry shape, assign new mandatory plan schema registration keys/$id/version, write config.json plan entries, or claim schema implementation completed before user selects registry approach."
+        "Responsibility-grouped hierarchical Plan registry is explicitly user-selected option C; do not invent nested registry keys/$id/version or write config.json until detailed mapping and schema existence/validity decisions. Plan Identity/Lifecycle/Unit are distinct responsibility groups, not automatic approval of three new schema files.",
+        "User explicitly selected C on 2026-11-20: config.json::plan must maintain responsibilities for Plan Identity, Plan Lifecycle, and Plan Unit rather than assume two currently uncreated schema targets imply only two registration concepts. First resolve each responsibility group's contract ownership and mapping, then nested key/resource identity choices; two previously approved target schema paths remain the only authorized new files."
       ],
-      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; plan config registration shape pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency.",
+      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; responsibility-grouped config registration C APPROVED (Identity/Lifecycle/Unit), exact group-to-schema mapping and entry identities pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency.",
       "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_FOUR_TASK_LABELS_APPROVED_TRANSITIONS_AND_SYNC_OPEN",
-      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; actual schema files and config.json plan registration are not yet implemented. Plan registry strategy awaits independent user selection.",
+      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; actual schema files and config.json plan registration are not yet implemented. User selected hierarchical responsibility-grouped registry C with Plan Identity, Plan Lifecycle, and Plan Unit. Exact schema ownership grouping, registry keys, $id/version, and config.json mutation remain pending.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract"
     },
     {
@@ -8195,7 +8225,7 @@
         "COMPLETION_WRITER_AND_DEPENDENT_TASK_SYNC",
         "EXACT_PREFIX_FILENAME_COLLISION_HANDLING_DEFERRED_NONBLOCKING",
         "EXACT_REF_ENCODING_AND_TIMESTAMP",
-        "PLAN_CONFIG_REGISTRATION_AND_OTHER_TRANSITIONS;PLAN_EXACT_TARGET_PATHS_RESOLVED_2026_11_20"
+        "PLAN_CONFIG_HIERARCHICAL_KEYS_RESOURCE_BINDINGS_AND_OTHER_TRANSITIONS;OPTION_C_IDENTITY_LIFECYCLE_UNIT_APPROVED_2026_11_20"
       ],
       "plan_contract_ref": "wu04_observed_execution_and_task_index_contract",
       "source_mutation": "THIS_PLAN_ONLY",
@@ -13625,10 +13655,35 @@
     ],
     "owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
     "historical_prior_denials": "CURRENT_USER_DECISIONS_2026_11_18_ARE_HISTORICAL_AND_EXCEPTED_ONLY_FOR_TWO_APPROVED_TARGETS",
-    "plan_config_registration": "UNRESOLVED_USER_CHOICE",
+    "plan_config_registration": "USER_APPROVED_OPTION_C_RESPONSIBILITY_GROUPED;IDENTITY_LIFECYCLE_UNIT;EXACT_RESOURCE_MAPPING_UNRESOLVED",
     "config_json_mutation": false,
     "schema_creation_or_update": false,
     "task_engine_activation": false,
     "approval_does_not_depend_on_external_policy_documents": true
+  },
+  "current_user_decisions_2026_11_20_plan_registry_topology": {
+    "authority": "USER_EXPLICIT_2026_11_20",
+    "scope": "WU-04_CONFIG_PLAN_REGISTRATION_TOPOLOGY",
+    "selection": "C_RESPONSIBILITY_GROUPED_REGISTRY",
+    "responsibility_domains": [
+      "Plan Identity",
+      "Plan Lifecycle",
+      "Plan Unit"
+    ],
+    "prior_recommendation": "A_NOT_SELECTED",
+    "physical_schema_paths_already_approved": [
+      "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+      "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
+    ],
+    "no_new_schema_file_count_inferred": true,
+    "no_extra_schema_path_authorized": true,
+    "exact_group_contract_fields": "UNDECIDED",
+    "exact_group_to_file_bindings": "UNDECIDED",
+    "nested_registry_key_names": "UNDECIDED",
+    "resource_ids_versions": "UNDECIDED",
+    "config_json_current_state": "plan:{}",
+    "config_json_change_authorized": false,
+    "schema_creation_authorized_by_this_decision": false,
+    "status": "DIRECTION_APPROVED_SUBORDINATE_CONTRACT_DECISIONS_PENDING"
   }
 }
