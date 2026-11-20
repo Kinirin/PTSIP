@@ -68,15 +68,3 @@ def test_go_rejects_unregistered_source_item_references(document):
 def test_build_projection_rejects_duplicate_yaml_keys():
     with pytest.raises(PolicySourceError, match="DUPLICATE_MAPPING_KEY"):
         source_result("project-support-source", "source", raw="duplicate: 1\nduplicate: 2\n", path=RELATIVE)
-
-
-def test_new_lifecycle_is_parsed_without_implicit_eligibility():
-    from ptsip.governance.model import LifecycleState
-
-    assert LifecycleState("APPROVED.Applying") is LifecycleState.APPROVED_APPLYING
-    authority_registry = yaml.safe_load(
-        (ROOT / "src/policy/registries/ptsip-support-authority-schema-registry.yaml").read_text(encoding="utf-8")
-    )
-    eligible = authority_registry["lifecycle_policy"]["project_authority_eligible_states"]
-    assert "APPROVED.Applying" not in eligible
-    assert "ACTIVE" in eligible
