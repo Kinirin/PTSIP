@@ -253,14 +253,25 @@
     ],
     "profile_rust_runtime_language": "RUST",
     "profile_engine_ownership": "ANALYZED_DISCOVERY_VALIDATION_PROJECTION_USER_PREAUTHORIZATION_APPLIED",
-    "profile_implementation_paths": "EXACT_PATHS_RECORDED_IN_profile_rust_engine_assignment.source_modules"
+    "profile_implementation_paths": "EXACT_PATHS_RECORDED_IN_profile_rust_engine_assignment.source_modules",
+    "plan_schema_2026_11_20": {
+      "authority": "USER_EXPLICIT_EXACT_FINAL_CREATION_PATH_APPROVAL",
+      "owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
+      "structure_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+      "lifecycle_path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+      "exception_scope": "ONLY_THESE_TWO_PATHS_SUPERSEDE_2026_11_18_BLANKET_PATH_DENIAL",
+      "registry_root": "src/ptsip/schemas/config.json::plan",
+      "registry_topology": "USER_SELECTION_PENDING",
+      "no_external_policy_dependency": true,
+      "implementation_status": "PLANNING_RECORD_ONLY_SCHEMA_AND_CONFIG_UNCHANGED"
+    }
   },
   "approval_gates": [
     {
       "id": "PATH-01",
       "scope": "15 originally listed target schema exact filenames",
       "state": "PROPOSED_LOCATIONS_NOT_AUTHORIZED_REVIEW_REQUIRED",
-      "note": "Denied central targets remain forbidden. Existing registered non-engine schema files are not deleted by this path policy; native engine contracts must reside under src/ptsip/engines/**/src/schemas/**"
+      "note": "Denied central targets remain forbidden. Existing registered non-engine schema files are not deleted by this path policy; native engine contracts must reside under src/ptsip/engines/**/src/schemas/** Exception explicitly authorized 2026-11-20: only src/ptsip/schemas/plan/{public-structure-plan.schema.json,plan-lifecycle.schema.json}; other rejected target paths remain denied."
     },
     {
       "id": "PATH-02",
@@ -291,7 +302,7 @@
       "id": "SOURCE-01",
       "scope": "Java/Markdown policy, mode-profile, README, specification, plan lifecycle structural source",
       "state": "SOURCELESS_PROPOSED_LOCATIONS_REJECTED_REVIEW_REQUIRED",
-      "note": "Do not invent sourceless Plan/README/Mode/Profile/Specification contracts or assign them to Storage by path alone. Engine contracts only after owning engine determined; approved native source root is src/ptsip/engines/<owner>/src/schemas/."
+      "note": "Do not invent sourceless Plan/README/Mode/Profile/Specification contracts or assign them to Storage by path alone. Engine contracts only after owning engine determined; approved native source root is src/ptsip/engines/<owner>/src/schemas/. Plan structure/lifecycle owner and exact path exception resolved by user on 2026-11-20; source-derived field semantics and config registration remain separate."
     },
     {
       "id": "HISTORY-01",
@@ -771,6 +782,15 @@
       "implementation_dependencies": [
         "PVR-08"
       ]
+    },
+    {
+      "id": "PLAN-SCHEMA-TARGETS-20261120",
+      "scope": [
+        "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+        "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
+      ],
+      "state": "USER_APPROVED_EXACT_PATHS_ONLY",
+      "note": "Product Plan schema domain owns the Plan structure and lifecycle schema definitions under src/ptsip/schemas/plan/. Both exact creation paths approved; does not authorize other schemas/plan filenames, infer field definitions, activate Task Engine, or select config.json plan registration identity/topology."
     }
   ],
   "target_registry": {
@@ -837,7 +857,42 @@
       },
       "approval": "USER_LATEST_EXPLICIT_2026_11_19_SUPERSEDES_PP200_ONLY_CURRENT_ASSIGNMENT"
     },
-    "profile_schema_integrity": "profile_rust_engine_assignment.native_technical_design.profile_schema_integrity"
+    "profile_schema_integrity": "profile_rust_engine_assignment.native_technical_design.profile_schema_integrity",
+    "plan_registration_review_2026_11_20": {
+      "state": "USER_DECISION_PENDING_NO_REGISTRY_MUTATION",
+      "product_owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
+      "approved_exact_targets": [
+        "plan/public-structure-plan.schema.json",
+        "plan/plan-lifecycle.schema.json"
+      ],
+      "existing_config_plan": "EMPTY_OBJECT",
+      "alternatives": [
+        {
+          "id": "A",
+          "direction": "TWO_INDEPENDENT_REGISTERED_CONTRACTS",
+          "meaning": "Plan structure and Plan lifecycle independently discoverable by logical resource reference"
+        },
+        {
+          "id": "B",
+          "direction": "ONE_REGISTERED_ROOT_WITH_INTERNAL_REFERENCE",
+          "meaning": "Only Plan root has top-level registration; lifecycle is resolved by structure schema reference"
+        },
+        {
+          "id": "C",
+          "direction": "RESPONSIBILITY_GROUPED_REGISTRY",
+          "meaning": "Plan structure and lifecycle each registered inside an explicitly separated responsibility grouping"
+        }
+      ],
+      "recommendation": "A_FOR_DIRECT_DISCOVERY_AND_DETERMINISTIC_SCHEMA_SELECTION_WITH_LOWEST_REGISTRY_TOPOLOGY_COST;USER_AUTHORITY_REQUIRED",
+      "not_approved": [
+        "REGISTRY_OPTION_SELECTION",
+        "FINAL_REGISTRY_KEYS",
+        "FINAL_SCHEMA_$IDS",
+        "FINAL_SCHEMA_VERSION_VALUES",
+        "CONFIG_JSON_MUTATION",
+        "SCHEMA_IMPLEMENTATION"
+      ]
+    }
   },
   "target_schemas": [
     {
@@ -1156,12 +1211,12 @@
       "ownership_rule": "ENGINE_THAT_AUTHORS_OR_PROVIDES_SEMANTIC_BEHAVIOR_MUST_OWN_SCHEMA;NOT_SHARED_CONTRACTS_DIR"
     },
     {
-      "path": null,
+      "path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
       "filename": "plan-lifecycle.schema.json",
       "responsibility": "Plan lifecycle contract",
       "sources": [],
-      "readiness": "OWNER_AND_NONCENTRAL_PATH_REVIEW_REQUIRED",
-      "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
+      "readiness": "USER_APPROVED_EXACT_NON_ENGINE_PLAN_SCHEMA_PATH_2026_11_20;SCHEMA_IMPLEMENTATION_PENDING",
+      "decision": "APPROVED_EXACT_PATH_ONLY;REGISTER_PLAN_CONFIG_MAPPING_SEPARATELY_AFTER_USER_DECISION",
       "new_target_contract_review": {
         "version_revision": "Plan_properties.version.revision",
         "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
@@ -1192,25 +1247,25 @@
         ],
         "checklist_exact_max": "UNRESOLVED",
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
-        "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
-        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED",
+        "current_schema_file": "NO_APPROVED_SOURCE_SCHEMA;CREATE_ONLY_FROM_DECIDED_PLAN_LIFECYCLE_FIELDS",
+        "approval_scope": "EXACT_FINAL_SCHEMA_CREATION_PATH_APPROVED;CONTENT_AND_CONFIG_REGISTRATION_REMAIN_INDEPENDENT",
         "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
         "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
       "previous_provisional_location": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
-      "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
-      "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
+      "activation": "PATH_APPROVED_SCHEMA_NOT_YET_CREATED_OR_REGISTERED",
+      "path_pattern": "src/ptsip/schemas/plan/",
+      "schema_owner": "PRODUCT_PLAN_SCHEMA_DOMAIN_NOT_RUST_ENGINE_OR_STORAGE"
     },
     {
-      "path": null,
+      "path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
       "filename": "public-structure-plan.schema.json",
       "responsibility": "Plan common structure and nonprescriptive Checklist",
       "sources": [
         "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json"
       ],
-      "readiness": "OWNER_AND_NONCENTRAL_PATH_REVIEW_REQUIRED",
-      "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
+      "readiness": "USER_APPROVED_EXACT_NON_ENGINE_PLAN_SCHEMA_PATH_2026_11_20;SCHEMA_IMPLEMENTATION_PENDING",
+      "decision": "APPROVED_EXACT_PATH_ONLY;REGISTER_PLAN_CONFIG_MAPPING_SEPARATELY_AFTER_USER_DECISION",
       "new_target_contract_review": {
         "version_revision": "Plan_properties.version.revision",
         "plan_filename": "Plan_filename PROPOSED_NAME_ROLE_APPROVED",
@@ -1241,15 +1296,15 @@
         ],
         "checklist_exact_max": "UNRESOLVED",
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
-        "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
-        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED",
+        "current_schema_file": "LEGACY_V1_MALFORMED_SOURCE_REQUIRES_VALID_REPLACEMENT",
+        "approval_scope": "EXACT_FINAL_SCHEMA_CREATION_PATH_APPROVED;CONTENT_AND_CONFIG_REGISTRATION_REMAIN_INDEPENDENT",
         "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
         "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
       "previous_provisional_location": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-      "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
-      "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
+      "activation": "PATH_APPROVED_SCHEMA_NOT_YET_CREATED_OR_REGISTERED",
+      "path_pattern": "src/ptsip/schemas/plan/",
+      "schema_owner": "PRODUCT_PLAN_SCHEMA_DOMAIN_NOT_RUST_ENGINE_OR_STORAGE"
     },
     {
       "path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
@@ -2130,14 +2185,14 @@
       "source_path": "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json",
       "source_blob_sha": "9ff28da93fc1f51927e8c39ccd80978144c1639f",
       "source_size_bytes": 1913,
-      "target_path": null,
+      "target_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
       "role": "Plan common structure and nonprescriptive Checklist",
-      "gate": "PATH_REVIEW_NOT_COMPLETED_NO_SCHEMA_GENERATION",
-      "action": "NO_MOVE_TO_REJECTED_CENTRAL_PATH;SOURCE_ONLY_UNTIL_DUTY_OWNER_AND_TARGET_APPROVED",
-      "target_activation": "DENIED_REEVALUATE_LOCATION",
+      "gate": "IMPLEMENT_APPROVED_PLAN_FIELD_RESPONSIBILITIES_AS_VALID_SCHEMA;REGISTER_ONLY_AFTER_USER_CONFIG_MAPPING_DECISION;VERIFY_CONSUMERS_BEFORE_RETIRING_LEGACY_V1",
+      "action": "CREATE_VALID_NEW_PLAN_STRUCTURE_SCHEMA_AT_APPROVED_PATH;MALFORMED_V1_SOURCE_IS_NOT_VALIDATED_AS_CANONICAL_CONTRACT",
+      "target_activation": "EXACT_PATH_USER_APPROVED_2026_11_20_NOT_YET_CREATED",
       "previous_provisional_target": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-      "target_owner": "UNRESOLVED_NON_ENGINE_OWNER",
-      "target_pattern": null
+      "target_owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
+      "target_pattern": "src/ptsip/schemas/plan/"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-agent-classification.schema.json",
@@ -2398,7 +2453,9 @@
         "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json"
       ],
       "outputs": [
-        "Plan structure/lifecycle schema source and consumers reviewed; rejected central Plan target remains uncreated until owner and target are authorized"
+        "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+        "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+        "Plan structure/lifecycle independently owned under src/ptsip/schemas/plan/; schema implementation and config.json plan entry decision remain separate"
       ],
       "actions": [
         "Repair invalid historical Plan v1 JSON in independent release source planning, without copying malformed types or treating it as accepted contract",
@@ -2408,13 +2465,15 @@
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
         "User-owned .ptsip/tasks/index.yaml is YAML high-level short todo category table of contents. Task items: id, Title, Keyword, status object, $ref to leaf Task file, Last_Modified_Date. Full id includes TASK/8-digit-date/six uppercase/eight alphanumeric; file basename uses date+six-uppercase prefix only. No task purpose inference from filename; exact regex, ref encoding and filename collisions remain separate decisions.",
         "Checklist maintains approved default four columns and task_id association; index task status is separate from Plan_lifecycle.status. User chose four Task status labels (대기/활성/일시정지/완료); exact object serialization and transitions, completion author, linked-task activation and Checklist synchronization remain undecided.",
-        "Plan ID is user-owned and no fixed core regex required. Plan schema registered target still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work.",
+        "Plan ID is user-owned and no fixed core regex required. Plan structure/lifecycle exact physical target paths approved; config.json plan registration strategy still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work.",
         "The Plan record may remain Approval.Scheduled_implementation while actual implementation is externally observed as Approval.In_progress; neither self-observation nor missing document write must create an eighth status or block authorized work.",
-        "Scope Task status-object transitions, completion writer, dependent-task synchronization, leaf $ref binding and timestamp parser as separate Task-index slice decisions; do not convert them into cross-WU blockers or infer execution authorization from Task filename."
+        "Scope Task status-object transitions, completion writer, dependent-task synchronization, leaf $ref binding and timestamp parser as separate Task-index slice decisions; do not convert them into cross-WU blockers or infer execution authorization from Task filename.",
+        "User 2026-11-20 approves exactly two product Plan schema targets src/ptsip/schemas/plan/public-structure-plan.schema.json and src/ptsip/schemas/plan/plan-lifecycle.schema.json, neither under native Rust engine src/schemas nor developer .ptsip; historical blanket denial of schemas/plan/ is superseded only for these two paths.",
+        "Do not select flat/nested/root-only registry shape, assign new mandatory plan schema registration keys/$id/version, write config.json plan entries, or claim schema implementation completed before user selects registry approach."
       ],
-      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target, remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency.",
+      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; plan config registration shape pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency.",
       "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_FOUR_TASK_LABELS_APPROVED_TRANSITIONS_AND_SYNC_OPEN",
-      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated.",
+      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; actual schema files and config.json plan registration are not yet implemented. Plan registry strategy awaits independent user selection.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract"
     },
     {
@@ -3170,7 +3229,7 @@
       "Selected pp2 source is profile-local profiles_schemas file only; specdata pp2 source stops being used and is deleted after consumer migration and replacement verification.",
       "No runtime or plan execution fetches policy documents for source field authority; the plan is internally self-contained.",
       "All newly migrated native engine schema contracts reside in src/ptsip/engines/<owning-engine>/src/schemas/** with owner evidence, exact contract ID/version/SHA, updated engine registry and build artifact references; no shared engine/contracts/schemas runtime dependency remains after migration.",
-      "No new target schema is created in rejected schemas/engine/contracts/, schemas/engine/discovery/, schemas/plan/, schemas/storage/evidence/ or schemas/storage/ candidate locations; existing registered non-engine Profile history/RBAC schema files remain intact unless separately authorized.",
+      "No new target schema is created in rejected schemas/engine/contracts/, schemas/engine/discovery/, schemas/storage/evidence/, or other unapproved candidate locations. Exception: only src/ptsip/schemas/plan/public-structure-plan.schema.json and src/ptsip/schemas/plan/plan-lifecycle.schema.json are newly approved exact Plan schema targets; do not generalize approval to the rest of schemas/plan/. Existing registered non-engine Profile history/RBAC schema files remain intact unless separately authorized.",
       "Native engine shared schema source relocation preserves actual semantic owner and keeps old files only through supported replacement validation, then removes obsolete validators and unused contract files.",
       "Each existing registered Rust engine owns its own src/schemas/**; pattern src/ptsip/engines/**/src/schemas/** applies independently, not just to Storage.",
       "The per-engine src/ptsip/engines/**/src/schemas/** rule applies independently to all registered engines, not just Storage.",
@@ -8136,7 +8195,7 @@
         "COMPLETION_WRITER_AND_DEPENDENT_TASK_SYNC",
         "EXACT_PREFIX_FILENAME_COLLISION_HANDLING_DEFERRED_NONBLOCKING",
         "EXACT_REF_ENCODING_AND_TIMESTAMP",
-        "PLAN_SCHEMA_TARGET_AND_OTHER_TRANSITIONS"
+        "PLAN_CONFIG_REGISTRATION_AND_OTHER_TRANSITIONS;PLAN_EXACT_TARGET_PATHS_RESOLVED_2026_11_20"
       ],
       "plan_contract_ref": "wu04_observed_execution_and_task_index_contract",
       "source_mutation": "THIS_PLAN_ONLY",
@@ -13555,5 +13614,21 @@
       }
     },
     "no_implementation_or_policy_mutation": true
+  },
+  "current_user_decisions_2026_11_20_plan_schema_paths": {
+    "authority": "USER_EXPLICIT_2026_11_20",
+    "scope": "WU-04_B-02_SCHEMA_OWNERSHIP_AND_PATHS",
+    "decision": "APPROVE_TWO_EXACT_PLAN_SCHEMA_TARGET_PATHS",
+    "overrides_prior_denial_only_for": [
+      "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+      "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
+    ],
+    "owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
+    "historical_prior_denials": "CURRENT_USER_DECISIONS_2026_11_18_ARE_HISTORICAL_AND_EXCEPTED_ONLY_FOR_TWO_APPROVED_TARGETS",
+    "plan_config_registration": "UNRESOLVED_USER_CHOICE",
+    "config_json_mutation": false,
+    "schema_creation_or_update": false,
+    "task_engine_activation": false,
+    "approval_does_not_depend_on_external_policy_documents": true
   }
 }
