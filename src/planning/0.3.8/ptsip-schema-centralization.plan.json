@@ -2407,12 +2407,12 @@
         "Use exactly seven Plan statuses, with Approval.In_progress replacing Implementation.In_progress. Persist Approval.Scheduled_implementation as approved base even when active coding is observed; Approval.In_progress is a third-party/PTSIP engine observation, optional to write. On authorized resume from Halt.Paused, persist Approval.Scheduled_implementation; other transitions still require separate decisions.",
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
         "User-owned .ptsip/tasks/index.yaml is YAML high-level short todo category table of contents. Task items: id, Title, Keyword, status object, $ref to leaf Task file, Last_Modified_Date. Full id includes TASK/8-digit-date/six uppercase/eight alphanumeric; file basename uses date+six-uppercase prefix only. No task purpose inference from filename; exact regex, ref encoding and filename collisions remain separate decisions.",
-        "Checklist maintains approved default four columns and task_id association; index task status is separate from Plan_lifecycle.status. Do not infer completion author, linked-task activation or Checklist status synchronization until user approves index status and evidence owner.",
-        "Plan ID is user-owned and no fixed core regex required. Plan schema registered target still pending; exact full transition graph (beyond observed progress and authorized pause resume target), task index status values, completion ownership, task file collisions/refs and timestamp validation are independent explicit decision gates. Continue approved independent work."
+        "Checklist maintains approved default four columns and task_id association; index task status is separate from Plan_lifecycle.status. User chose four Task status labels (대기/활성/일시정지/완료); exact object serialization and transitions, completion author, linked-task activation and Checklist synchronization remain undecided.",
+        "Plan ID is user-owned and no fixed core regex required. Plan schema registered target still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work."
       ],
-      "gate": "Seven Plan statuses corrected, observed Approval.In_progress is optional document persistence, scheduled approval remains effective while actual work runs, and authorized resumption writes Approval.Scheduled_implementation. User .ptsip/tasks/index.yaml location and roles established. Plan schema target, full transitions, task index status/permissions, completion writer and synchronization, prefix collisions and reference encoding remain unresolved. Only affected implementation blocked; no external policy dependency.",
-      "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_TASK_INDEX_ROLES_APPROVED_STATUS_AND_SYNC_OPEN",
-      "current_result": "Plan.status Approval.In_progress is observed runtime not mandatory persisted; task index.yaml with user-defined brief categories and task reference item roles recorded. No status vocabulary selected, no task schema or task files created.",
+      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target, remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency.",
+      "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_FOUR_TASK_LABELS_APPROVED_TRANSITIONS_AND_SYNC_OPEN",
+      "current_result": "Plan Approval.In_progress is observed runtime rather than mandatory persisted status; user-repository task index.yaml is short todo category index with task item field roles. Four Task labels (대기/활성/일시정지/완료) selected. Completion ownership, task synchronization and remaining transitions unresolved; no Task schema, index or leaf files created.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract"
     },
     {
@@ -8097,18 +8097,20 @@
       "full_22_profile_deletion_gate": "SATISFIED_ACTION_DUE_NOT_PERFORMED"
     },
     "user_wu04_state_task_index_2026_11_20": {
-      "status": "USER_APPROVED_PLAN_DIRECTION_RECORDED_OPEN_TASK_INDEX_STATUS_CHOICE",
+      "status": "USER_APPROVED_PLAN_DIRECTION_AND_FOUR_TASK_STATUS_LABELS_RECORDED_OPEN_TRANSITIONS_AND_SYNC",
       "approved_scope": [
         "RENAME_APPROVAL_IN_PROGRESS",
         "KEEP_SCHEDULED_DOCUMENT_BASE_WHEN_OBSERVED_WORKING",
         "AUTHORIZED_RESUME_PERSISTS_SCHEDULED",
         "USER_TASK_INDEX_YAML_PATH",
-        "HIGH_LEVEL_TOC_AND_TASK_ITEM_FIELDS_ID_PREFIX"
+        "HIGH_LEVEL_TOC_AND_TASK_ITEM_FIELDS_ID_PREFIX",
+        "FOUR_TASK_INDEX_STATUS_LABELS_WAITING_ACTIVE_PAUSED_COMPLETED",
+        "PREFIX_FILENAME_COLLISION_ACCEPTED_AS_NONBLOCKING_LOW_PRIORITY"
       ],
       "unresolved_scope": [
-        "INDEX_STATUS_VALUES",
+        "INDEX_STATUS_TRANSITIONS_AND_CHANGE_AUTHORITY",
         "COMPLETION_WRITER_AND_DEPENDENT_TASK_SYNC",
-        "PREFIX_FILENAME_COLLISION",
+        "EXACT_PREFIX_FILENAME_COLLISION_HANDLING_DEFERRED_NONBLOCKING",
         "EXACT_REF_ENCODING_AND_TIMESTAMP",
         "PLAN_SCHEMA_TARGET_AND_OTHER_TRANSITIONS"
       ],
@@ -9025,7 +9027,12 @@
       "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
       "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index",
       "task_index_path": ".ptsip/tasks/index.yaml",
-      "task_index_status_values": "UNRESOLVED",
+      "task_index_status_values": [
+        "대기",
+        "활성",
+        "일시정지",
+        "완료"
+      ],
       "task_index_field_roles": [
         "id",
         "Title",
@@ -9134,7 +9141,7 @@
       {
         "id": "TASK_OUTPUT_CONTRACT",
         "field": "F-PLN-042",
-        "state": "INDEX_YAML_PATH_AND_ITEM_ROLES_RECORDED;STATUS_VOCABULARY_AND_COMPLETION_SYNC_AND_TASK_FILENAME_COLLISION_UNRESOLVED",
+        "state": "INDEX_YAML_PATH_ITEM_ROLES_AND_FOUR_STATUS_LABELS_RECORDED; TRANSITIONS_COMPLETION_SYNC_AND_REF_ENCODING_UNRESOLVED; PREFIX_COLLISION_NONBLOCKING",
         "contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
       {
@@ -13266,7 +13273,7 @@
   "wu04_observed_execution_and_task_index_contract": {
     "schema_version": "ptsip-wu04-task-index-plan/v1",
     "approved_by_user": "EXPLICIT_2026_11_20",
-    "record_state": "PLAN_SEMANTICS_RECORDED_TASK_INDEX_STATUS_AND_COMPLETION_RULES_UNRESOLVED",
+    "record_state": "PLAN_SEMANTICS_AND_FOUR_TASK_LABELS_RECORDED; TRANSITIONS_COMPLETION_WRITER_AND_SYNC_UNRESOLVED",
     "execution_order": "ACTUAL_DEPENDENCIES_NOT_WU_NUMBER",
     "plan_lifecycle": {
       "corrected_status": {
@@ -13348,7 +13355,13 @@
         "status": {
           "type": "object",
           "role": "HUMAN_EDITABLE_AGENT_EXECUTION_PERMISSION_AND_COMPLETION_DEPENDENCY_STATUS",
-          "approved_values": null
+          "approved_values": [
+            "대기",
+            "활성",
+            "일시정지",
+            "완료"
+          ],
+          "value_serialization": "UNRESOLVED_LOGICAL_LABELS_ONLY_STATUS_OBJECT_FIELD_SHAPE_NOT_YET_FIXED"
         },
         "$ref": {
           "type": "string",
@@ -13370,8 +13383,14 @@
         "purpose": "NO_TASK_SEMANTIC_INFERENCE_FROM_FILENAME",
         "task_leaf_extension": "UNRESOLVED;INDEX_YAML_ONLY_APPROVED",
         "collision_issue": "DIFFERENT_FULL_IDS_CAN_MAP_TO_SAME_DATE_SIX_LETTER_FILENAME_PREFIX",
-        "collision_policy": "UNRESOLVED_NO_OVERWRITE_OR_AUTORENAME",
-        "exact_regex": "UNRESOLVED_USER_PATTERNS_ARE_ILLUSTRATIVE_NOT_FORMALIZED"
+        "collision_policy": "LOW_PRIORITY_RISK_ACCEPTED; NO_NEW_FILE_SHARING_OR_ID_RESTRICTION_RULE; EXACT_COLLISION_HANDLING_UNRESOLVED",
+        "exact_regex": "UNRESOLVED_USER_PATTERNS_ARE_ILLUSTRATIVE_NOT_FORMALIZED",
+        "collision_risk_assessment": {
+          "user_direction": "DO_NOT_TREAT_RARE_PREFIX_COLLISION_AS_A_BLOCKER_OR_GROW_ID_SPACE",
+          "same_date_specific_pair_match_probability": "1/308915776",
+          "caveat": "MULTIPLE_GENERATIONS_INCREASE_AGGREGATE_COLLISION_PROBABILITY",
+          "overwrite_or_shared_file_behavior": "NOT_AUTHORIZED"
+        }
       },
       "status_decision": {
         "requirement": "SHORT_USER_EDITABLE_ACTIVE_OR_INACTIVE_STATUS_DETERMINES_WHETHER_AGENT_CAN_EXECUTE_REFERENCED_TASK",
@@ -13409,7 +13428,7 @@
               "MORE_STATUSES",
               "PAUSE_RESUME_PERMISSIONS_NEED_APPROVAL"
             ],
-            "selected": false
+            "selected": true
           },
           {
             "id": "C",
@@ -13425,12 +13444,22 @@
             ],
             "selected": false
           }
-        ]
+        ],
+        "selected_option": "B",
+        "approved_user_labels": [
+          "대기",
+          "활성",
+          "일시정지",
+          "완료"
+        ],
+        "decision_source": "USER_EXPLICIT_2026_11_20_TASK_STATUS_DIRECTION",
+        "scope": "FOUR_LOGICAL_STATES_APPROVED; EXACT_STATUS_OBJECT_SHAPE_AND_STATE_TRANSITIONS_UNRESOLVED",
+        "execution_permission": "ONLY_ACTIVE_ELIGIBLE_FOR_TASK_EXECUTION; OTHER_LABELS_NOT_EXECUTABLE; ACTIVE_ALONE_NOT_AN_APPROVAL_SUBSTITUTE"
       },
       "remaining_decision_gates": [
         {
           "id": "TASK-INDEX-STATUS",
-          "question": "SIMPLE_STATUS_VOCABULARY_AND_EXECUTION_PERMISSION_TRANSITIONS"
+          "question": "FOUR_USER_LABELS_DECIDED; TRANSITION_RULES_AND_STATUS_CHANGE_AUTHORITY_UNRESOLVED"
         },
         {
           "id": "TASK-INDEX-COMPLETION",
@@ -13438,7 +13467,8 @@
         },
         {
           "id": "TASK-INDEX-ID-COLLISION",
-          "question": "CANONICAL_ID_REGEX_AND_PREFIX_ONLY_FILENAME_COLLISION"
+          "question": "EXACT_ID_REGEX_AND_PREFIX_FILENAME_COLLISION_BEHAVIOR_DEFERRED_NONBLOCKING",
+          "blocking": false
         },
         {
           "id": "TASK-INDEX-REF",
@@ -13450,12 +13480,13 @@
         }
       ],
       "implementation_bounds": {
-        "approved": "PLAN_DIRECTION_AND_INDEX_FILE_LOCATION_ONLY",
+        "approved": "PLAN_DIRECTION_INDEX_FILE_LOCATION_AND_FOUR_LOGICAL_STATUS_LABELS_ONLY",
         "index_file_created": false,
         "task_files_created": false,
         "task_index_schema_created": false,
-        "no_executable_tasks_until_status_decided": true,
-        "no_external_policy_document_dependency": true
+        "no_executable_tasks_until_status_decided": false,
+        "no_external_policy_document_dependency": true,
+        "status_selection_does_not_create_schema_or_activate_task_execution": true
       }
     },
     "no_implementation_or_policy_mutation": true
