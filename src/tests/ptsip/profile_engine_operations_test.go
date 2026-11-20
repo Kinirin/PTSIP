@@ -128,7 +128,7 @@ func runProfileOperation(t *testing.T, kind, operation string, input object) (ob
 
 func TestDiscoveryProfileNative(t *testing.T) {
 	installed := installedProfileRuntime(t, "discovery")
-	for _, version := range []string{"pp.1.01", "pp.1.02", "pp.2.00"} {
+	for _, version := range []string{"pp.1.01", "pp.1.02", "pp.2.00", "pp.3.00"} {
 		t.Run(version, func(t *testing.T) {
 			response, err := runProfileOperation(t, "discovery", "discovery.profile.contract", object{"root": installed.packageRoot, "contract_version": version})
 			if err != nil || response["status"] != "PASS" {
@@ -138,7 +138,7 @@ func TestDiscoveryProfileNative(t *testing.T) {
 			if selected["version"] != version || selected["allowed"] != true {
 				t.Fatalf("incorrect selection: %v", selected)
 			}
-			if version == "pp.2.00" {
+			if version == "pp.3.00" {
 				if selected["lifecycle"] != "ACTIVE" || len(selected["notifications"].(array)) != 0 {
 					t.Fatal(selected)
 				}
@@ -160,7 +160,7 @@ func TestDiscoveryProfileNative(t *testing.T) {
 		}
 	}
 	response, err := runProfileOperation(t, "discovery", "discovery.profile.contract", object{"root": installed.packageRoot})
-	if err != nil || response["output"].(object)["version"] != "pp.2.00" {
+	if err != nil || response["output"].(object)["version"] != "pp.3.00" {
 		t.Fatalf("current selector failed: %v %v", response, err)
 	}
 	root := t.TempDir()

@@ -131,8 +131,8 @@ print(json.dumps({"identity":identity,"semantics":semantics,"transition":transit
 	if err := json.Unmarshal(output, &result); err != nil {
 		t.Fatalf("consumer output is invalid JSON: %v\n%s", err, output)
 	}
-	if result["identity"].(map[string]any)["project_profile_contract_version"] != "pp.2.00" ||
-		result["semantics"].(map[string]any)["draft_version"] != "pp.2.00" ||
+	if result["identity"].(map[string]any)["project_profile_contract_version"] != "pp.3.00" ||
+		result["semantics"].(map[string]any)["draft_version"] != "pp.3.00" ||
 		result["transition"].(map[string]any)["allowed"] != true || result["rejected_relative"] != true {
 		t.Fatalf("native consumer result mismatch: %#v", result)
 	}

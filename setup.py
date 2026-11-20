@@ -91,7 +91,7 @@ def _project_profile_contracts(build_lib: Path) -> None:
     config = json.loads(config_bytes)
     profiles = config.get("storage", {}).get("profile")
     expected = {
-        "ptsip.project-profile": ("pp.2.00", "storage/profile/project-profile.schema.json"),
+        "ptsip.project-profile": ("pp.3.00", "storage/profile/project-profile.schema.json"),
         **{
             f"ptsip.project-profile.{version}": (
                 version, f"storage/profile/history/project-profile-{version}.schema.json"
@@ -107,7 +107,7 @@ def _project_profile_contracts(build_lib: Path) -> None:
     selected_id = None
     for key, (version, relative) in expected.items():
         row = profiles[key]
-        lifecycle = "ACTIVE" if version == "pp.2.00" else "DEPRECATED"
+        lifecycle = "ACTIVE" if key == "ptsip.project-profile" else "DEPRECATED"
         if (
             not isinstance(row, dict)
             or row.get("path") != relative
@@ -129,23 +129,25 @@ def _project_profile_contracts(build_lib: Path) -> None:
             raise RuntimeError(f"central Profile schema identity or immutable digest mismatch: {key}")
         ids.add(identity)
         if key == "ptsip.project-profile":
-            selected_id = schema.get("$ref")
-        elif schema.get("properties", {}).get("ptsip", {}).get("properties", {}).get("version", {}).get("const") != version:
+            selected_id = identity
+            if schema.get("$ref") is not None:
+                raise RuntimeError("official current Profile must be a direct schema")
+        if schema.get("properties", {}).get("ptsip", {}).get("properties", {}).get("version", {}).get("const") != version:
             raise RuntimeError(f"central Profile schema version mismatch: {key}")
         assets.append((relative, data))
-    if selected_id != profiles["ptsip.project-profile.pp.2.00"]["$id"]:
-        raise RuntimeError("current Profile selector must reference the registered pp.2.00 schema")
+    if selected_id != "urn:ptsip:storage:contract:profile:official":
+        raise RuntimeError("current Profile must use the approved official schema identity")
 
     support_bytes = EMBEDDED_PP_CONTRACT_REGISTRY.read_bytes()
     support = yaml.safe_load(support_bytes)
-    if not isinstance(support, dict) or support.get("current") != "pp.2.00":
+    if not isinstance(support, dict) or support.get("current") != "pp.3.00":
         raise RuntimeError("distributed Profile support catalog current version mismatch")
     contracts = support.get("contracts")
     if not isinstance(contracts, list):
         raise RuntimeError("distributed Profile support catalog contracts must be an array")
-    for version in ("pp.1.01", "pp.1.02", "pp.2.00"):
+    for version in ("pp.1.01", "pp.1.02", "pp.2.00", "pp.3.00"):
         rows = [row for row in contracts if isinstance(row, dict) and row.get("version") == version]
-        registration = profiles[f"ptsip.project-profile.{version}"]
+        registration = profiles["ptsip.project-profile"] if version == "pp.3.00" else profiles[f"ptsip.project-profile.{version}"]
         if (
             len(rows) != 1
             or rows[0].get("schema") != f"schemas/{registration['path']}"

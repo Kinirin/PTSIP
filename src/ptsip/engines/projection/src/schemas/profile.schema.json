@@ -6,7 +6,7 @@
     "metadata_input": {
       "type": "object",
       "properties": {
-        "profile_contract_version": { "enum": ["pp.1.01", "pp.1.02", "pp.2.00"] },
+        "profile_contract_version": { "enum": ["pp.1.01", "pp.1.02", "pp.2.00", "pp.3.00"] },
         "specification_source": { "type": "string", "minLength": 1 },
         "specification_revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
         "specification_family": { "type": "string", "minLength": 1 },
@@ -34,7 +34,7 @@
         "metadata": {
           "type": "object",
           "properties": {
-            "version": { "enum": ["pp.1.01", "pp.1.02", "pp.2.00"] },
+            "version": { "enum": ["pp.1.01", "pp.1.02", "pp.2.00", "pp.3.00"] },
             "revision": {
               "type": "string",
               "pattern": "^Rev\\.[0-9]{4}$",

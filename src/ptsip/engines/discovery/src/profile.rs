@@ -34,10 +34,17 @@ pub fn contract(input: &Value) -> Result<Value, String> {
             .as_str()
             .ok_or("current Profile version required")?,
     };
+    let current = profiles
+        .get("ptsip.project-profile")
+        .ok_or("current Profile registration required")?;
     let key = format!("ptsip.project-profile.{version}");
-    let registration = profiles
-        .get(&key)
-        .ok_or("unknown registered Profile version")?;
+    let registration = if current["version"] == version {
+        current
+    } else {
+        profiles
+            .get(&key)
+            .ok_or("unknown registered Profile version")?
+    };
     if registration["version"] != version {
         return Err("Profile registration version mismatch".into());
     }
@@ -53,18 +60,9 @@ pub fn contract(input: &Value) -> Result<Value, String> {
     if schema.pointer("/properties/ptsip/properties/version/const") != Some(&json!(version)) {
         return Err("Profile schema resource version mismatch".into());
     }
-    if current_selection {
-        let alias = &profiles["ptsip.project-profile"];
-        let alias_path = format!("schemas/{}", source::text(alias, "path")?);
-        let (selector, _) = registered_schema(&mut root, alias, &alias_path)?;
-        if alias["registered_lifecycle"] != "ACTIVE"
-            || lifecycle != "ACTIVE"
-            || selector["$id"] != alias["$id"]
-            || selector["$ref"] != schema["$id"]
-        {
-            return Err(
-                "current Profile selector does not bind the active canonical resource".into(),
-            );
+    if current_selection || current["version"] == version {
+        if lifecycle != "ACTIVE" || schema.get("$ref").is_some() {
+            return Err("current Profile must be an active direct official schema".into());
         }
     }
     if let Some(expected) = input.get("source_revision").filter(|v| !v.is_null()) {

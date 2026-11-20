@@ -1,6 +1,415 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:ptsip:contract:project-profile:current",
-  "title": "PTSIP Current Project Profile",
-  "$ref": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json"
+  "$id": "urn:ptsip:storage:contract:profile:official",
+  "title": "PTSIP official Current Project Profile",
+  "type": "object",
+  "required": [
+    "ptsip",
+    "responsibility_map",
+    "policies",
+    "components"
+  ],
+  "properties": {
+    "ptsip": {
+      "type": "object",
+      "required": [
+        "version",
+        "revision",
+        "profile_role",
+        "specification"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "pp.3.00",
+          "description": "Canonical Project Profile contract identity."
+        },
+        "specification": {
+          "type": "object",
+          "required": [
+            "source",
+            "revision"
+          ],
+          "properties": {
+            "source": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Absolute Specification source identity; Tool support is evaluated independently through Specification capability authority."
+            },
+            "revision": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$",
+              "description": "Immutable Specification Git revision. This identity is independent from ptsip.revision, which is user-owned Project Profile lineage."
+            }
+          },
+          "additionalProperties": false
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^Rev\\.(?:000[1-9]|00[1-9][0-9]|0[1-9][0-9]{2}|[1-9][0-9]{3})$",
+          "description": "User-owned field-contract lineage revision within an official Project Profile version. Rev.0001 is the official base; customized contracts begin at Rev.0002."
+        },
+        "profile_role": {
+          "enum": [
+            "PROJECT",
+            "DISTRIBUTED_EXAMPLE"
+          ],
+          "description": "PROJECT is repository authority. DISTRIBUTED_EXAMPLE is non-authoritative and requires project-path materialization before use."
+        },
+        "rule_profile": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*\\.ptsip\\.yaml$",
+          "description": "Optional, repository-local non-authoritative rule record profile linked from the selected Project Profile."
+        }
+      },
+      "additionalProperties": false
+    },
+    "responsibility_map": {
+      "$ref": "#/$defs/responsibilityMap"
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "associated_artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/associatedArtifact"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    },
+    "policies": {
+      "type": "object",
+      "required": [
+        "product_to_nonproduct_runtime_dependency",
+        "nonproduct_in_product_package",
+        "independent_build_resolution"
+      ],
+      "properties": {
+        "product_to_nonproduct_runtime_dependency": {
+          "const": "deny"
+        },
+        "nonproduct_in_product_package": {
+          "const": "deny"
+        },
+        "independent_build_resolution": {
+          "const": "required"
+        },
+        "shared_executable_cross_lifecycle": {
+          "const": "deny"
+        },
+        "neutral_contract_sharing": {
+          "enum": [
+            "allow",
+            "deny"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "selectorList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "responsibilityMap": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "const": "DEFAULT"
+        }
+      },
+      "additionalProperties": false
+    },
+    "component": {
+      "type": "object",
+      "required": [
+        "id",
+        "classification",
+        "include",
+        "purpose",
+        "dependency"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "classification": {
+          "enum": [
+            "PRODUCT",
+            "DEVELOPMENT_TOOLING",
+            "DELIVERY",
+            "OPERATIONS",
+            "NEUTRAL_CONTRACT"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "IMPLEMENTATION",
+              "VERIFICATION",
+              "AUTOMATION",
+              "CONFIGURATION",
+              "DOCUMENTATION",
+              "GOVERNANCE"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "include": {
+          "$ref": "#/$defs/selectorList"
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shipped": {
+          "type": "boolean",
+          "description": "Whether the component is shipped as part of Product distribution scope."
+        },
+        "runtime_required": {
+          "type": "boolean",
+          "description": "Whether Product runtime operation requires this component as implementation."
+        },
+        "executable": {
+          "type": "boolean"
+        },
+        "release_owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compatibility_owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "consumers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "Legacy-compatible descriptive metadata; not a typed Responsibility Map edge."
+        },
+        "analysis_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "Analysis metadata; not a typed Responsibility Map edge."
+        },
+        "dependency": {
+          "$ref": "#/$defs/componentDependencyPolicy"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "enum": [
+                  "DEVELOPMENT_TOOLING",
+                  "DELIVERY",
+                  "OPERATIONS"
+                ]
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "shipped": {
+                "const": false
+              },
+              "runtime_required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "NEUTRAL_CONTRACT"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "required": [
+              "executable"
+            ],
+            "properties": {
+              "executable": {
+                "const": false
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "associatedArtifact": {
+      "type": "object",
+      "required": [
+        "id",
+        "anchor",
+        "include",
+        "purpose"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "anchor": {
+          "$ref": "#/$defs/id"
+        },
+        "include": {
+          "$ref": "#/$defs/selectorList"
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "relationship": {
+      "type": "object",
+      "required": [
+        "id",
+        "from",
+        "to",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "IMPORTS",
+            "LINKS",
+            "LOADS",
+            "INVOKES",
+            "READS",
+            "GENERATES",
+            "BUILDS",
+            "PACKAGES",
+            "PUBLISHES",
+            "DEPLOYS",
+            "VERIFIES",
+            "MANAGES",
+            "DOCUMENTS",
+            "SPECIFIES",
+            "GOVERNS"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "componentDependencyPolicy": {
+      "type": "object",
+      "required": [
+        "default"
+      ],
+      "properties": {
+        "default": {
+          "enum": [
+            "allow",
+            "deny"
+          ]
+        },
+        "allow": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentDependencyRelation"
+          }
+        },
+        "deny": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentDependencyRelation"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "componentDependencyRelation": {
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
 }

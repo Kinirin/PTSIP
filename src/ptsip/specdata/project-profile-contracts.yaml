@@ -1,6 +1,6 @@
 schema_version: ptsip-project-profile-contract-registry/v1
 authority: PTSIP_PROJECT_PROFILE_CONTRACT_IDENTITY
-current: pp.2.00
+current: pp.3.00
 profile_source:
   root: src/ptsip/schemas/storage/profile
   catalog: src/ptsip/schemas/config.json
@@ -29,13 +29,21 @@ contracts:
   - CREATE_TARGET
   schema: schemas/storage/profile/history/project-profile-pp.1.02.schema.json
 - version: pp.2.00
-  lifecycle: ACTIVE
+  lifecycle: DEPRECATED
   operations:
   - IDENTIFY
   - VALIDATE
   - ANALYZE
   - CREATE_TARGET
   schema: schemas/storage/profile/history/project-profile-pp.2.00.schema.json
+- version: pp.3.00
+  lifecycle: ACTIVE
+  operations:
+  - IDENTIFY
+  - VALIDATE
+  - ANALYZE
+  - CREATE_TARGET
+  schema: schemas/storage/profile/project-profile.schema.json
 transitions:
 - from: pp.1.01
   to: pp.1.02

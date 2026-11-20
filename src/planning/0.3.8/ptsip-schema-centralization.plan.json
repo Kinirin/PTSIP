@@ -91,7 +91,7 @@
     },
     "project_profile_source_preference": "HYBRID_VERSION_INPUT_PLUS_MATCHING_SRC_SPECData_SCHEMA",
     "template_profile_separate_distribution": "DISCONTINUE_AFTER_CONSUMER_CHECK",
-    "project_profile_current_source": "HYBRID_PP2",
+    "project_profile_current_source": "OFFICIAL_PP300_CONTRACT_FROM_IMMUTABLE_PP200_HISTORY_RESPONSIBILITIES",
     "profile_legacy_directory": "src/ptsip/profiles/",
     "profile_legacy_directory_disposition": "RETIRE_ALL_CONTENTS_RECURSIVELY_AFTER_VALIDATED_MIGRATION",
     "profile_directory_total_files": 22,
@@ -265,8 +265,8 @@
     {
       "id": "PATH-02",
       "scope": "src/ptsip/schemas/storage/evidence/**",
-      "state": "REJECTED_NO_NEW_STORAGE_EVIDENCE_ROOT",
-      "note": "Evidence schema ownership must be determined from actual consumers; do not create at rejected centralized root."
+      "state": "NO_STANDALONE_EVIDENCE_MIGRATION_REQUIRED_USER_LATEST",
+      "note": "Rejected new root remains uncreated; necessary evidence fields may be incorporated into actual existing owner contracts after consumer analysis. Existing source files are not blindly deleted."
     },
     {
       "id": "PROFILE-ALL-SIX-RUST-ANALYSIS-01",
@@ -822,10 +822,10 @@
         }
       },
       "current_assignment": {
-        "pp.2.00": "ACTIVE",
+        "pp.3.00": "ACTIVE",
         "other_registered_project_profile_versions": "DEPRECATED"
       },
-      "current_alias": "SAME_ACTIVE_PP_2_00_CONTRACT",
+      "current_alias": "DIRECT_ACTIVE_OFFICIAL_PP_3_00_RESOURCE_NOT_A_PP200_REFERENCE_WRAPPER",
       "rejected_previous_constants": [
         "SUPERSEDED",
         "CURRENT"
@@ -835,7 +835,7 @@
         "selection_result": "REGISTERED_LIFECYCLE_AND_ADMISSION_DECISION_WITH_MANDATORY_UPGRADE_NOTIFICATIONS",
         "profile_consumer_transport": "REQUIRES_EXISTING_WU_12_13_DECISION_GATES"
       },
-      "approval": "USER_EXPLICIT_2026_11_18"
+      "approval": "USER_LATEST_EXPLICIT_2026_11_19_SUPERSEDES_PP200_ONLY_CURRENT_ASSIGNMENT"
     },
     "profile_schema_integrity": "profile_rust_engine_assignment.native_technical_design.profile_schema_integrity"
   },
@@ -1298,15 +1298,16 @@
       "sources": [
         "src/ptsip/specdata/ptsip-agent-classification.schema.json"
       ],
-      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
-      "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
+      "readiness": "STANDALONE_MIGRATION_NOT_REQUIRED_BY_USER_LATEST",
+      "decision": "USE_NECESSARY_FIELDS_IN_EXISTING_CONTRACTS_AFTER_ACTUAL_CONSUMER_ANALYSIS",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
-      "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
+      "activation": "NO_NEW_STANDALONE_TARGET_REQUIRED_OR_CREATED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "schema_owner": "EXISTING_FEATURE_CONSUMERS_PRESERVED_UNTIL_REPLACED_OR_UNUSED",
       "semantic_feature_owner": "EXPLICIT_AGENT_DECISION_EVIDENCE_FEATURE",
       "registered_rust_engine_owner": null,
-      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification",
+      "blind_source_deletion_authorized": false
     },
     {
       "path": null,
@@ -1315,15 +1316,16 @@
       "sources": [
         "src/ptsip/specdata/ptsip-artifact-evidence.schema.json"
       ],
-      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
-      "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
+      "readiness": "STANDALONE_MIGRATION_NOT_REQUIRED_BY_USER_LATEST",
+      "decision": "USE_NECESSARY_FIELDS_IN_EXISTING_CONTRACTS_AFTER_ACTUAL_CONSUMER_ANALYSIS",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
-      "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
+      "activation": "NO_NEW_STANDALONE_TARGET_REQUIRED_OR_CREATED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "schema_owner": "EXISTING_FEATURE_CONSUMERS_PRESERVED_UNTIL_REPLACED_OR_UNUSED",
       "semantic_feature_owner": "EXPLICIT_ARTIFACT_EVIDENCE_AND_SIDECAR_BINDING_FEATURE",
       "registered_rust_engine_owner": null,
-      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification",
+      "blind_source_deletion_authorized": false
     },
     {
       "path": null,
@@ -1332,15 +1334,16 @@
       "sources": [
         "src/ptsip/specdata/ptsip-diagnostic.schema.json"
       ],
-      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
-      "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
+      "readiness": "STANDALONE_MIGRATION_NOT_REQUIRED_BY_USER_LATEST",
+      "decision": "USE_NECESSARY_FIELDS_IN_EXISTING_CONTRACTS_AFTER_ACTUAL_CONSUMER_ANALYSIS",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
-      "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
+      "activation": "NO_NEW_STANDALONE_TARGET_REQUIRED_OR_CREATED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "schema_owner": "EXISTING_FEATURE_CONSUMERS_PRESERVED_UNTIL_REPLACED_OR_UNUSED",
       "semantic_feature_owner": "CONFORMANCE_DIAGNOSTIC_EMISSION_AND_AUDIT_FEATURE",
       "registered_rust_engine_owner": null,
-      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification",
+      "blind_source_deletion_authorized": false
     },
     {
       "path": null,
@@ -1349,15 +1352,16 @@
       "sources": [
         "src/ptsip/specdata/ptsip-normalized-evidence.schema.json"
       ],
-      "readiness": "NON_NATIVE_FEATURE_RESPONSIBILITY_CLASSIFIED_NEW_TARGET_UNAPPROVED",
-      "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
+      "readiness": "STANDALONE_MIGRATION_NOT_REQUIRED_BY_USER_LATEST",
+      "decision": "USE_NECESSARY_FIELDS_IN_EXISTING_CONTRACTS_AFTER_ACTUAL_CONSUMER_ANALYSIS",
       "previous_provisional_location": "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
-      "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
+      "activation": "NO_NEW_STANDALONE_TARGET_REQUIRED_OR_CREATED",
       "path_pattern": null,
-      "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION",
+      "schema_owner": "EXISTING_FEATURE_CONSUMERS_PRESERVED_UNTIL_REPLACED_OR_UNUSED",
       "semantic_feature_owner": "EVIDENCE_NORMALIZATION_DATACLASS_FEATURE",
       "registered_rust_engine_owner": null,
-      "classification_ref": "engine_schema_migration.evidence_responsibility_classification"
+      "classification_ref": "engine_schema_migration.evidence_responsibility_classification",
+      "blind_source_deletion_authorized": false
     },
     {
       "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
@@ -1435,11 +1439,11 @@
     {
       "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "filename": "project-profile.schema.json",
-      "responsibility": "Current logical Project Profile schema selection, resolving exact registered pp.2.00 historical JSON Schema",
+      "responsibility": "Official current pp.3.00 Project Profile independent schema with component-local dependency and DEFAULT mode",
       "sources": [
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
       ],
-      "readiness": "NEW_PP300_REDESIGN_PLAN_RECORDED_PENDING_FIELD_POLICY_RESOLUTION_AND_IMPLEMENTATION_APPROVAL",
+      "readiness": "OFFICIAL_CORE_SCHEMA_IMPLEMENTATION_AUTHORIZED_USER_LATEST",
       "decision": "USER_EXPLICIT_NEW_OFFICIAL_PP300_CONTRACT_BASED_ON_IMMUTABLE_PP200_HISTORY;OLD_PP200_CURRENT_ALIAS_SUPERSEDED_FOR_FUTURE_WORK",
       "history_snapshot_paths": [
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
@@ -1472,8 +1476,8 @@
           "dependency"
         ],
         "dependency_field_exact": "dependency",
-        "dependency_field_type": "UNRESOLVED",
-        "legacy_default_allow_deny_and_from_to_reconciliation": "UNRESOLVED_NEEDS_SEMANTIC_REVIEW_WITHOUT_INVENTING_FIELDS",
+        "dependency_field_type": "object",
+        "legacy_default_allow_deny_and_from_to_reconciliation": "EXACT_EXISTING_FIELD_CONTRACT_REUSED;NO_NEW_FROM_EQUALS_COMPONENT_OWNER_OR_OTHER_UNAPPROVED_CONSTRAINT",
         "source_evidence": {
           "legacy_component_required": [
             "id",
@@ -1492,9 +1496,17 @@
             "from",
             "to"
           ]
+        },
+        "source_contract": {
+          "schema_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+          "field_pointer": "/properties/component_dependency_policy",
+          "definition_pointer": "/$defs/componentDependencyPolicy",
+          "relation_definition_pointer": "/$defs/componentDependencyRelation",
+          "reuse": "COPY_VALIDATION_KEYWORDS_AND_LOCAL_REFERENCE_CLOSURE_FROM_THESE_DEFINITIONS;REMOVE_$comment_IN_NEW_PP300_ONLY",
+          "semantics": "KEEP_default_allow_deny_AND_RELATION_from_to_STRUCTURE;NO_PRIVATE_PYTHON_SOURCE_OR_EXTERNAL_POLICY"
         }
       },
-      "execution_authorized": false
+      "execution_authorized": true
     },
     {
       "path": null,
@@ -2429,12 +2441,12 @@
         "preserve historical profile versions as separately selectable contract definitions",
         "repair invalid User_Profile before admission",
         "no generation of missing Mode Profile from other profile by name",
-        "Expose current project-profile.schema.json only through the canonical pp2.00 resource derived from user-selected src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json.",
+        "Preserve canonical pp.2.00 historical contract and expose the new direct official pp.3.00 current schema after the current authorized contract-first transition.",
         "Hand off exact three-version Project Profile schema generation and per-version fixture validation to WU-10; WU-05 owns shared storage/RBAC responsibility review",
         "Reject direct .ptsip.yaml rename to .schema.json: profile fixtures are data, validation schemas define allowed fields and $defs",
         "pp.1.00 missing from src/ptsip/profiles/history: record as blocked rather than inventing",
         "Inspect each template YAML only to preserve compatible template branch if needed; remove separate distributed template example and index entry after consumer analysis",
-        "Expose current project-profile.schema.json through exact pp2.00 selected historical resource without overriding semantic version evidence",
+        "Preserve canonical pp.2.00 historical contract and expose the new direct official pp.3.00 current schema after the current authorized contract-first transition.",
         "No RA-list policy-document usage fields, no policy target/subject refs; only Policy Documents own their RA usage links",
         "Classify legacy condition_id C-ID records by actual registered condition role before RAC_ids or AEC_ids conversion; no name-based guessing",
         "RA_title is intended human title; previous component_bindings[*].rule observed, component_bindings.vrule not found in inspected sample; audit exact original before mapping",
@@ -2456,7 +2468,7 @@
     },
     {
       "id": "WU-06",
-      "name": "Engine-owned Rust schema relocation and Evidence owner review",
+      "name": "Engine-owned Rust schema relocation; optional Evidence needs in existing contracts",
       "inputs": [
         "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
         "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
@@ -2486,7 +2498,7 @@
       ],
       "outputs": [
         "21 owner-local native engine schemas (including 1 Discovery) after semantic owner mapping",
-        "4 Evidence responsibility classifications and target review; no rejected central Evidence path materialization"
+        "Evidence standalone migration retired from current required work; actual required fields are handled in existing contracts only."
       ],
       "actions": [
         "Inventory native schema contract definitions from src/ptsip/engines/contracts/schemas/ and Discovery TPBG source without treating existing source path as final target.",
@@ -2497,7 +2509,7 @@
         "Retain original engine shared source schemas as read-only input until every registered consumer points to validated owner-local schema; remove unused sources and obsolete validators after replacement test pass.",
         "Do not create schemas/engine/contracts, schemas/engine/discovery, schemas/plan, schemas/storage/evidence, or new schemas/storage target roots."
       ],
-      "gate": "Only per-owner native engine src/schemas paths are allowed for newly migrated engine contracts. Shared sources removed after current registry/engine consumers and Rust/package tests pass. Evidence target path remains unapproved until actual owner review. Global pattern applies individually to all registered engines, not just Storage.",
+      "gate": "Native 21 owner-local engine schema migration remains verified; no four-standalone-Evidence target or migration requirement. Actual existing-contract field additions must follow consumer needs and supported validation.",
       "priority": "PARTIAL_ONLY_ENGINE_CONSUMER_PATHS_OTHER_SCHEMA_MIGRATION_DEFERRED",
       "candidate_paths_requiring_new_approval": [
         "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
@@ -2554,7 +2566,12 @@
         "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json"
       ],
       "execution_status": "NATIVE_21_COMPLETE_EVIDENCE_4_CLASSIFIED_TARGET_REVIEW_OPEN",
-      "current_result": "All 21 native schemas moved with IDs/bytes/hash evidence, active consumers rewired and old copies removed. Four Evidence schemas remain non-native source contracts with unapproved new target locations."
+      "current_result": "All 21 native schemas moved with IDs/bytes/hash evidence, active consumers rewired and old copies removed. Four Evidence schemas remain non-native source contracts with unapproved new target locations.",
+      "evidence_user_override": {
+        "standalone_four_schema_migration": "NOT_REQUIRED",
+        "strategy": "ADD_NECESSARY_FIELDS_TO_EXISTING_ACTUAL_OWNER_CONTRACTS_ONLY",
+        "do_not_invent_new_targets_or_blindly_delete_current_consumers": true
+      }
     },
     {
       "id": "WU-07",
@@ -2611,7 +2628,9 @@
           "import_pass_needed_before_deletion": false,
           "import_pass_needed_for_post_deletion_acceptance": true
         }
-      ]
+      ],
+      "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
+      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL"
     },
     {
       "id": "WU-08",
@@ -2667,7 +2686,7 @@
     },
     {
       "id": "WU-10",
-      "name": "Project Profile three-version semantic source-to-schema derivation",
+      "name": "Historical Project Profile preservation and official pp.3.00 contract-first implementation",
       "dependency": [
         "WU-01",
         "WU-02",
@@ -2701,19 +2720,19 @@
         "Validate each source hybrid against matching version source schema and newly derived versioned central schema; cross-version tests must fail when version differs",
         "User selected src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json as authoritative pp2.00 schema; do not reopen this choice or merge src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json into the active schema. Verify canonical copy and remove retired duplicate after consumer replacement.",
         "Preserve template oneOf validator semantics where registered, but stop separately exporting template example after usages audited",
-        "Record each historical target hash/version/registered lifecycle in central config and revise active alias for pp2.00 only",
+        "Preserve pp1.01/pp1.02/pp2.00 historical registration and activate a direct official pp.3.00 current resource with exact identity and hashes.",
         "Run static usage scan for old example/template YAML and retire only those proven unused after registered schema and Storage Rust engine consumer replacement",
         "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence",
         "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection.",
-        "PP300 NEW USER DIRECTION (PLAN ONLY): Build a new official pp.3.00 current Project Profile contract after policy decisions using actual pp.2.00 history responsibilities, exact $id=urn:ptsip:storage:contract:profile:official and title=PTSIP official Current Project Profile; do not reuse Python Profile module fields as contract authority; merge component_dependency_policy into each required component.dependency. Keep $comment absent. Design User Profile custom contract linkage, revision compression and upgrade lineage separately; implementation requires independent future-session approval."
+        "CURRENT USER AUTHORIZED: implement official pp.3.00 core from immutable pp.2.00 history field responsibilities, required component.dependency using exact existing component_dependency_policy contract, DEFAULT mode only and no $comment. User extension/lineage/compression unresolved details remain independent."
       ],
-      "acceptance": "Three versioned exact paths and current alias validated; no unsupported pp1.00; no implicit template permission change; no source YAML deletion before reference closure; pp2.00 source selection fixed at src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; abandoned src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json not registered or preserved.",
+      "acceptance": "Historical pp.1.01/pp.1.02/pp.2.00 exact schema blobs and selectors remain unchanged; new direct official pp.3.00 core and native version support pass focused independent conformance. No pp.1.00 source fabricated. WU14 latest design-trigger exception controls removal of the 22 legacy Profile files; fixture and distribution obligations continue after deletion.",
       "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED_JSON_FIXTURE_TRANSFER_BLOCKED",
       "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. Exact JSON fixture path approval is still false; no pp.1.00 schema is required or fabricated.",
       "pp300_followup": {
-        "status": "PENDING_CONTRACT_FIELD_POLICY_REVIEW_IMPLEMENTATION_NOT_AUTHORIZED",
+        "status": "OFFICIAL_CORE_IMPLEMENTATION_AUTHORIZED_BY_LATEST_USER",
         "plan_ref": "project_profile_pp300_contract_redesign",
-        "scope": "NEW_OFFICIAL_CURRENT_PP300_SCHEMA_FROM_EXISTING_PP200_HISTORY_PLUS_COMPONENT_LOCAL_DEPENDENCY_AND_USER_REVISION_LINEAGE",
+        "scope": "OFFICIAL_PP300_CORE_AND_NATIVE_VERSION_SUPPORT;CUSTOM_USER_EXTENSION_LINEAGE_SEPARATE_PENDING",
         "source_of_field_semantics": "ACTUAL_PP200_HISTORY_SCHEMA_AND_NEW_EXPLICIT_USER_REQUIREMENTS_NOT_RETIRED_PYTHON_MODULE_SHAPES",
         "exact_current_schema_identity": {
           "$id": "urn:ptsip:storage:contract:profile:official",
@@ -2823,7 +2842,7 @@
         "Another session's coding agent analyzes the actual responsibilities, functions and consumers of ALL SIX src/ptsip/profiles Python modules, reads registered Rust engine contracts, assigns owner engine(s) and paths with evidence, records results under profile_rust_engine_assignment.source_modules, applies user's automatic approval and ONLY THEN implements.",
         "Implement supported functionality of identity.py, contracts.py, compatibility.py, catalog.py, metadata.py and rule_records.py in evidence-selected registered Rust engine(s) without assuming a one-to-one module/engine mapping.",
         "Use only the owning Rust engine's src/schemas/** for native contracts; no developer .ptsip schema fields, private Rule ID regex inference or rejected central schema targets.",
-        "Maintain current/historical pp1.01, pp1.02, pp2.00 registered source/version/SHA checks without fabricating pp1.00.",
+        "Maintain historical pp.1.01/pp.1.02/pp.2.00 immutable schema/version/SHA checks and admitted current pp.3.00 core support without fabricating pp.1.00.",
         "Rewire supported consumers, existing Go CLI router, registry and package assets to the actual selected Rust engines; do not edit excluded Python callers.",
         "Meet the always-on Profile background functionality requirement using the future-agent-approved engine lifecycle design; validate owner-engine tests and any required native handoffs.",
         "Update supported build distributions without creating an independent Profile Go module/binary, then replace and retire obsolete Python validators after new behavior passes.",
@@ -2860,7 +2879,9 @@
         "rule": "NEW_PP300_RUST_MODULES_DERIVED_FROM_APPROVED_CONTRACT_ONLY;LEGACY_PYTHON_MODULES_NOT_CONTRACT_INPUTS",
         "no_implicit_existing_profile_rust_contract_reuse": true,
         "no_impl_this_session": true
-      }
+      },
+      "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
+      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL"
     },
     {
       "id": "WU-14",
@@ -2934,7 +2955,9 @@
         }
       ],
       "delete_trigger_ref": "profile_directory_retirement.user_2026_11_19_retirement_gate_change",
-      "design_trigger_state": "PENDING_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_RECORD"
+      "design_trigger_state": "EVIDENCE_RECORDED_PENDING_NATIVE_OPERATION_DESIGN_USER_APPROVAL;DELETE22_AS_NEXT_ACTION_WHEN_APPROVED",
+      "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
+      "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL"
     }
   ],
   "observed_breakages": [
@@ -3023,10 +3046,9 @@
       "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
       "pp.1.00 schema is not generated without verified original input",
       "Hybrid YAML is never treated as a JSON Schema by suffix-only rename; template distributed example retirement does not delete user project profiles",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
+      "Existing six Profile source responsibilities have recorded native engine allocations and baseline verification; new Repository responsibilities require all-current-engine function/caller analysis and admitted native contracts. No private Python or policy schema authority is inherited.",
       "All 22 tracked files in src/ptsip/profiles/ recursively removed after their per-file responsibility transition is verified",
-      "12 profile YAML source examples preserved as normalized JSON test fixture evidence before complete directory removal, with no schema misclassification",
+      "After design-triggered deletion, resolve 12 original Profile YAML fixture declarations through approved JSON paths or explicitly admitted alternate immutable Git evidence; never misclassify instance data as schema.",
       "setup.py, pyproject.toml, MANIFEST.in and release tests build/validate with no old src/ptsip/profiles directory",
       "Old resource/import literal paths not falsely claimed backwards-compatible with full deletion; scope reviewed by user",
       "Existing src/ptsip/CLI.go remains the only existing public Go main entrypoint; no new cmd/ directory created",
@@ -3082,19 +3104,12 @@
       "After replacement validator acceptance, retired validators/tests are isolated and removed; their failures cannot block obsolete contract deletion, and no contract/archive for removed legacy objects is retained.",
       "Selected pp2 source is profile-local profiles_schemas file only; specdata pp2 source stops being used and is deleted after consumer migration and replacement verification.",
       "No runtime or plan execution fetches policy documents for source field authority; the plan is internally self-contained.",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
       "All newly migrated native engine schema contracts reside in src/ptsip/engines/<owning-engine>/src/schemas/** with owner evidence, exact contract ID/version/SHA, updated engine registry and build artifact references; no shared engine/contracts/schemas runtime dependency remains after migration.",
       "No new target schema is created in rejected schemas/engine/contracts/, schemas/engine/discovery/, schemas/plan/, schemas/storage/evidence/ or schemas/storage/ candidate locations; existing registered non-engine Profile history/RBAC schema files remain intact unless separately authorized.",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
       "Native engine shared schema source relocation preserves actual semantic owner and keeps old files only through supported replacement validation, then removes obsolete validators and unused contract files.",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
       "Each existing registered Rust engine owns its own src/schemas/**; pattern src/ptsip/engines/**/src/schemas/** applies independently, not just to Storage.",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
-      "All six src/ptsip/profiles Python modules require another session agent's documented function/consumer and Rust engine responsibility analysis, owner/path selection and recorded user-preauthorized assignment before implementation; actual selected Rust engine tests and always-on background conformance are required.",
       "The per-engine src/ptsip/engines/**/src/schemas/** rule applies independently to all registered engines, not just Storage.",
-      "All six modules identity.py, contracts.py, compatibility.py, catalog.py, metadata.py, rule_records.py are equally unresolved regarding Rust owner engine(s); no module implementation starts before future-session analysis and recorded user-preauthorized decision.",
-      "Remaining normal ptsip.migration imports must be restored by function-level ownership analysis and implementations in existing registered Rust engine(s) with native typed routing for supported callers; do NOT recreate src/ptsip/repository for Python compatibility. Validation, Storage, Discovery and Projection are investigation candidates only until evidence-based allocations are recorded.",
+      "Remaining normal ptsip.migration imports require function-level owner analysis across ALL current registered native engines and typed caller rewiring; no Python Repository recreation, fixed four-engine split, or inferred TASK registration.",
       "For src/ptsip/profiles 22-file retirement ONLY, user-approved design-triggered immediate deletion supersedes older pre-deletion fixture/User_Profile/native implementation/normal import/wheel test gates; verify these as post-deletion acceptance and do not claim release success before checks pass."
     ],
     "negative_cases": [
@@ -3183,7 +3198,7 @@
       "python -m build --wheel # Formal clean-source build; current private release-backend result is reported separately from native and asset staging checks.",
       "git ls-files src/ptsip/profiles # Whole-tree retirement remains conditional; 22 sources are intentionally present until all remaining gates pass."
     ],
-    "note": "All six Rust owner allocations, seven approved native Profile operations, typed contracts, caller-managed bounded background sessions, native/Go checks and isolated Profile asset staging are verified. Exact clean implementation commit wheel build failed at the existing private release backend engine inventory check. Current remote Dependency Graph and native Projection/Validation jobs passed, while release-admission and the pre-existing Policy Contract Guard remain failed with explicitly recorded scope boundaries. No policy document or private approval was used as implementation field authority or created to repair those checks. Normal migration imports, exact JSON fixture paths and User_Profile replacement target still prevent full legacy tree retirement.",
+    "note": "Latest user authorizes the official pp.3.00 core from immutable pp.2.00 field responsibilities and exact component_dependency_policy field contract, with DEFAULT mode and direct current resource. Separate user-extension lineage/event/compression details remain unresolved only for those features. All six registered native engines are included in Repository responsibility analysis; evidence-backed native operation design is recorded awaiting its own explicit ID/contract decision. Once that design is approved, delete the 22 legacy Profile files immediately; fixture/User_Profile/import/distribution checks are post-deletion obligations. Four standalone Evidence schema migrations are not required. Preserve actual prior test/build/CI results as historical verification, not new authority or policy audit requirements.",
     "log_cleanup_after_evidence_review": "Remove-Item '.\\schema-centralization-validation.log'",
     "test_implementation_language": "GO_UNDER_src/tests/ptsip;EXISTING_ENGINE_RUST_TESTS_RETAINED;NO_NEW_PYTHON_TEST_MODULES_OR_PYTEST_GATE",
     "user_override": "User explicitly replaced newly authored Python/pytest modules with Go tests; old pytest command is removed from active verification sequence.",
@@ -3375,7 +3390,7 @@
     }
   ],
   "profile_history_migration": {
-    "state": "THREE_VERSION_HYBRID_INPUTS_VERIFIED_PP100_ABSENT_PP200_SOURCE_SELECTED",
+    "state": "HISTORICAL_PP101_PP102_PP200_PRESERVED;DIRECT_OFFICIAL_PP300_CORE_TRANSITION_AUTHORIZED",
     "canonical_current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
     "responsibilities": {
       "current": "Current admitted project-profile schema only; not a concatenation of past schema contents",
@@ -3389,10 +3404,10 @@
       "Generate JSON Schema contracts under profile/history/project-profile-pp.1.01.schema.json, project-profile-pp.1.02.schema.json and project-profile-pp.2.00.schema.json; do not rename YAML instance into schema",
       "Preserve version-specific specification.family, ptsip.revision, profile_role and path-variable behavior; preserve existing source schema branch alternatives",
       "Do not create separate template profile schema; stop using distributed template YAML only after feature and consumer reference analysis",
-      "Bind project-profile.schema.json current selector to canonical pp.2.00 schema derived exclusively from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; selected source metadata supersedes previous candidate-status note.",
+      "CURRENT USER OVERRIDE: replace the former pp.2.00 reference-only current selector with direct official pp.3.00 core schema while preserving exact pp.2.00 historical resource and hash.",
       "Update src/ptsip/specdata/project-profile-contracts.yaml and central config.json with exact registered selectors and immutable source SHA",
       "Validate all source YAML fixtures against correct central schemas independently and record negative wrong-version outcomes",
-      "Delete original YAML examples and superseded schema files only when per-file consumer count becomes zero and functionality is verified"
+      "For the 22 legacy src/ptsip/profiles files, obey the latest recorded native migration import DESIGN deletion trigger; supported fixtures, historical checks and distribution remain post-deletion obligations."
     ],
     "conflict": {
       "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
@@ -3422,19 +3437,19 @@
         "source": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
         "schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
         "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
-        "registration": "ACTIVE",
+        "registration": "DEPRECATED",
         "decision": "USER_SELECTED_AUTHORITATIVE_SCHEMA_SOURCE_2026_11_18"
       }
     ],
     "pp300_current_override": {
-      "state": "DESIGN_PLANNED_IMPLEMENTATION_NOT_AUTHORIZED",
+      "state": "OFFICIAL_CORE_IMPLEMENTATION_AUTHORIZED_CURRENT_USER",
       "current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "current_version": "pp.3.00",
       "historical_pp200_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
       "historical_pp200_integrity": "DO_NOT_MODIFY_HISTORY_SCHEMA",
-      "earlier_pp200_current_selector": "SUPERSEDED_FOR_FUTURE_CURRENT_ALIAS_AFTER_APPROVAL",
+      "earlier_pp200_current_selector": "SUPERSEDED_BY_CURRENT_EXPLICIT_USER_DIRECTION",
       "registry_hashes": "UPDATE_ONLY_AFTER_NEW_SCHEMA_APPROVED_COMPILED_AND_REGISTERED",
-      "user_profile_revision_support": "REQUIRES_SEPARATE_USER_CONTRACT_RELATION_AND_REVISION_POLICY"
+      "user_profile_revision_support": "OFFICIAL_BASE_REV0001_AND_REV0001_TO9999_SYNTAX_APPROVED;CUSTOM_RELATION_EVENT_FORMAT_AND_COMPRESSION_SEPARATE_PENDING"
     }
   },
   "engine_schema_migration": {
@@ -3973,7 +3988,7 @@
       "formal_wheel": "ACTUAL_CLEAN_BUILD_FAILED_PRIVATE_BACKEND_ENGINE_INVENTORY;OWNER_LOCAL_ASSET_STAGING_PASS_ONLY"
     },
     "evidence_responsibility_classification": {
-      "state": "READ_ONLY_FOUR_SOURCE_OWNER_CLASSIFICATIONS_COMPLETE_NEW_TARGET_DECISIONS_OPEN",
+      "state": "EXISTING_SOURCE_CONSUMERS_CLASSIFIED;STANDALONE_FOUR_SCHEMA_MIGRATION_NOT_REQUIRED_BY_LATEST_USER",
       "search_scope": [
         "src/ptsip technical .py/.go/.rs source",
         "src/tests technical .py/.go/.rs source"
@@ -4002,8 +4017,8 @@
           ],
           "runtime_scope_note": "Existing Python evidence schema validation; no direct registered Rust schema route or native engine consumer was found in bounded src/ptsip and src/tests technical references.",
           "target_path": null,
-          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
-          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+          "target_approval": "NEW_STANDALONE_TARGET_NOT_REQUIRED_OR_CREATED",
+          "existing_source_disposition": "DO_NOT_BLINDLY_DELETE_STILL_CONSUMED_SOURCE;REPLACE_NECESSARY_FIELDS_VIA_EXISTING_CONTRACTS_WHEN_IN_SCOPE"
         },
         {
           "source": "src/ptsip/specdata/ptsip-artifact-evidence.schema.json",
@@ -4027,8 +4042,8 @@
           ],
           "runtime_scope_note": "Existing Python artifact evidence/sidecar checks; no native engine ownership is implied by the evidence filename.",
           "target_path": null,
-          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
-          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+          "target_approval": "NEW_STANDALONE_TARGET_NOT_REQUIRED_OR_CREATED",
+          "existing_source_disposition": "DO_NOT_BLINDLY_DELETE_STILL_CONSUMED_SOURCE;REPLACE_NECESSARY_FIELDS_VIA_EXISTING_CONTRACTS_WHEN_IN_SCOPE"
         },
         {
           "source": "src/ptsip/specdata/ptsip-diagnostic.schema.json",
@@ -4051,8 +4066,8 @@
           ],
           "runtime_scope_note": "Python conformance emits diagnostics and its audit validates the diagnostic schema. This is separate from registered Validation engine native contract ownership.",
           "target_path": null,
-          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
-          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+          "target_approval": "NEW_STANDALONE_TARGET_NOT_REQUIRED_OR_CREATED",
+          "existing_source_disposition": "DO_NOT_BLINDLY_DELETE_STILL_CONSUMED_SOURCE;REPLACE_NECESSARY_FIELDS_VIA_EXISTING_CONTRACTS_WHEN_IN_SCOPE"
         },
         {
           "source": "src/ptsip/specdata/ptsip-normalized-evidence.schema.json",
@@ -4077,12 +4092,13 @@
           ],
           "runtime_scope_note": "The current normalization contract is a Python dataclass and deterministic payload/digest. No direct runtime JSON Schema loader for this schema was found; classification does not claim runtime JSON Schema validation PASS.",
           "target_path": null,
-          "target_approval": "UNAPPROVED_NEW_LOCATION_REVIEW_REQUIRED;NO_COPY_OR_REGISTRATION_FROM_CLASSIFICATION",
-          "existing_source_disposition": "KEEP_CURRENT_SOURCE_UNTIL_INDEPENDENT_TARGET_OR_RETIREMENT_DECISION"
+          "target_approval": "NEW_STANDALONE_TARGET_NOT_REQUIRED_OR_CREATED",
+          "existing_source_disposition": "DO_NOT_BLINDLY_DELETE_STILL_CONSUMED_SOURCE;REPLACE_NECESSARY_FIELDS_VIA_EXISTING_CONTRACTS_WHEN_IN_SCOPE"
         }
       ],
       "no_inferred_storage_owner": true,
-      "no_new_target_created": true
+      "no_new_target_created": true,
+      "latest_strategy": "ADD_NECESSARY_FIELDS_TO_EXISTING_OWNER_CONTRACTS_AFTER_ACTUAL_CONSUMER_NEEDS;NO_NEW_STANDALONE_TARGET_REQUIRED"
     }
   },
   "discontinued_profile_modules": {
@@ -4288,7 +4304,7 @@
     "retirement_trigger_ref": "profile_directory_retirement.user_2026_11_19_retirement_gate_change"
   },
   "profile_variant_analysis": {
-    "phase": "READ_ONLY_SOURCE_ANALYSIS_COMPLETE_IMPLEMENTATION_NOT_AUTHORIZED",
+    "phase": "HISTORICAL_SOURCE_ANALYSIS_RETAINED;CURRENT_PP300_CORE_IMPLEMENTATION_AUTHORIZED",
     "allowed_source_root": "src/ptsip/",
     "forbidden_contract_basis": [
       ".ptsip/**"
@@ -4486,11 +4502,11 @@
     ],
     "current_contract": {
       "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-      "role": "CURRENT_REGISTERED_SCHEMA_SELECTOR",
-      "active_registered_version": "pp.2.00",
-      "selected_historical_target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
-      "mechanism": "CONFIG_REGISTRY_EXACT_MAPPING_TO_CANONICAL_PP200_SELECTED_FROM_PROFILE_LOCAL_SCHEMA",
-      "condition": "Do not copy or merge historical versions into current schema; do not invent a separate pp2 schema behavior",
+      "role": "DIRECT_OFFICIAL_CURRENT_PP300_CONTRACT",
+      "active_registered_version": "pp.3.00",
+      "selected_historical_target": null,
+      "mechanism": "FOUR_UNIQUE_RESOURCES_DIRECT_PP300_CURRENT_PLUS_EXPLICIT_PP101_PP102_PP200_HISTORIES",
+      "condition": "Approved latest user direction: implement independent official pp.3.00 from actual pp.2.00 field responsibilities; preserve immutable historical schemas, no remote pp.2.00 $ref current alias.",
       "schema_collision": {
         "id": "PROFILE_PP200_SAME_ID_DIFFERENT_BYTES",
         "sources": [
@@ -4503,7 +4519,8 @@
         "selected_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
         "retired_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
       },
-      "selected_schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json"
+      "selected_schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+      "design_source": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
     },
     "template_disposition": {
       "user_direction": "MERGE_TEMPLATE_VARIANT_INTO_HYBRID_CONTRACT_REVIEW_AND_STOP_SEPARATE_TEMPLATE_EXAMPLE",
@@ -4938,15 +4955,21 @@
         "id": "SUPPORTED_NORMAL_CONSUMER_IMPORT",
         "evidence": "Normal supported ptsip.migration import chain still references removed src/ptsip/repository (snapshot, profile_path, profile_convergence, profile_transition), despite native adapters passing. The Python repository layer was intentionally removed for native Rust ownership, not accidentally lost.",
         "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_SUPPORTED_NORMAL_CONSUMER_IMPORT_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
-        "resolution_status": "PENDING_RUST_NATIVE_IMPORT_DESIGN_AS_DELETION_TRIGGER;IMPORT_PASS_POST_DELETION",
+        "resolution_status": "ALL_ENGINE_SOURCE_CALLER_FUNCTION_DESIGN_RECORDED;NATIVE_OPERATION_USER_APPROVAL_PENDING",
         "responsibility_policy": "REPLACE_REMOVED_PYTHON_REPOSITORY_RESPONSIBILITIES_WITH_EXISTING_REGISTERED_RUST_ENGINE_CAPABILITIES_BY_ACTUAL_RESPONSIBILITY;DO_NOT_RESTORE_LEGACY_PYTHON_COMPATIBILITY_LAYER",
         "candidate_native_engines": [
-          "VALIDATION",
+          "CONTEXT",
           "STORAGE",
+          "VALIDATION",
           "DISCOVERY",
+          "EXECUTION",
           "PROJECTION"
         ],
-        "engine_assignments": null,
+        "engine_assignments": [
+          "CONTEXT",
+          "DISCOVERY",
+          "VALIDATION"
+        ],
         "function_allocations": [],
         "verified_native_contract_paths": [],
         "analysis_scope": {
@@ -4998,7 +5021,11 @@
           "RUST_NATIVE_IMPORT_DESIGN_RECORDED_TRIGGERS_LEGACY_22_FILE_DELETION_BEFORE_NORMAL_IMPORT_PASS"
         ],
         "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
-        "status_after_user_change": "OPEN_POST_DELETION_WORK"
+        "status_after_user_change": "OPEN_POST_DELETION_WORK",
+        "engine_analysis_scope": "ALL_SIX_CURRENT_REGISTERED_NATIVE_ENGINES_ANALYZED_WITH_SELECTION_AND_EXCLUSION_RATIONALE;TASK_NOT_REGISTERED",
+        "function_allocation_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.function_allocations",
+        "proposed_native_contract_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.native_operations",
+        "design_evidence_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design"
       },
       {
         "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
@@ -5020,7 +5047,7 @@
         "SUPPORTED_NORMAL_MIGRATION_IMPORT_NATIVE_ROUTING_REPLACEMENT_DESIGN_RECORDED",
         "DEPENDENCIES_AND_FOLLOWUP_VERIFICATION_TASKS_RECORDED"
       ],
-      "assignments_status": "PENDING",
+      "assignments_status": "ANALYZED_AND_RECORDED_NATIVE_OPERATION_APPROVAL_PENDING",
       "on_trigger": "DELETE_22_TRACKED_FILES_IN_src/ptsip/profiles/AS_NEXT_WORK_UNIT_ACTION;DO_NOT_WAIT_FOR_RUNTIME_IMPLEMENTATION_IMPORT_PASS_FIXTURE_TARGET_OR_DISTRIBUTION_PASS",
       "required_snapshot_before_deletion": "RECORD_EXACT_CURRENT_HEAD_AND_PER_FILE_GIT_BLOB_SHA_ALREADY_IN_MANIFEST;NO_ARCHIVE_COPY",
       "after_deletion_acceptance": [
@@ -5043,7 +5070,18 @@
         ],
         "selected": "KEEP_LATEST",
         "selection_source": "USER_EXPLICIT_2026_11_19"
-      }
+      },
+      "engine_analysis_scope": [
+        "CONTEXT",
+        "STORAGE",
+        "VALIDATION",
+        "DISCOVERY",
+        "EXECUTION",
+        "PROJECTION"
+      ],
+      "native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
+      "deletion_trigger_satisfied": false,
+      "remaining_design_approval": "SEVEN_PROPOSED_NATIVE_OPERATION_IDS_AND_TYPED_CONTRACTS_REQUIRE_USER_DECISION;NO_SILENT_REGISTRATION"
     },
     "post_deletion_acceptance": [
       "NORMAL_SUPPORTED_MIGRATION_IMPORT_AND_NATIVE_RUST_ENGINE_IMPLEMENTATION_VERIFIED",
@@ -7885,7 +7923,22 @@
     "profile_rust_engine_ownership": "ANALYZED_USER_PREAUTHORIZATION_APPLIED",
     "implementation_progress": "APPROVED_NATIVE_SCOPE_IMPLEMENTED_VERIFIED;ONLY_EXPLICIT_DECISION_OR_SOURCE_DISTRIBUTION_BLOCKERS_REMAIN",
     "profile_tree_retirement_trigger": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN_THEN_DELETE_22_IMMEDIATELY",
-    "profile_tree_post_delete_acceptance": "REMAINING_FIXTURE_USER_PROFILE_IMPORT_CONSUMER_AND_DISTRIBUTION_VALIDATION"
+    "profile_tree_post_delete_acceptance": "REMAINING_FIXTURE_USER_PROFILE_IMPORT_CONSUMER_AND_DISTRIBUTION_VALIDATION",
+    "latest_user_2026_11_19_scope": {
+      "official_pp300_core_authorized": true,
+      "component_dependency_field_contract": "EXACT_EXISTING_COMPONENT_DEPENDENCY_POLICY",
+      "four_standalone_evidence_schema_migration_required": false,
+      "repository_native_engine_analysis": [
+        "CONTEXT",
+        "STORAGE",
+        "VALIDATION",
+        "DISCOVERY",
+        "EXECUTION",
+        "PROJECTION"
+      ],
+      "current_pp200_only_instruction_superseded": true,
+      "no_external_policy_audit": true
+    }
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -9561,7 +9614,7 @@
         "LEGACY",
         "DEPRECATED"
       ],
-      "current_project_profile": "pp.2.00_ACTIVE_ALL_OTHER_REGISTERED_PROFILE_VERSIONS_DEPRECATED"
+      "current_project_profile": "pp.3.00_ACTIVE_ALL_REGISTERED_HISTORICAL_PROFILE_VERSIONS_DEPRECATED;PRIOR_PP200_ONLY_ASSIGNMENT_SUPERSEDED"
     },
     "storage_profile_and_engine_schemas_2026_11_18": {
       "state": "SUPERSEDED_PROFILE_ENGINE_OWNER_ASSIGNMENTS_BY_USER_2026_11_18",
@@ -10680,23 +10733,1895 @@
         "src/ptsip/migration/execution/direct/promotion.py",
         "src/ptsip/ptsip_specification/spec_identity.py"
       ],
-      "normal_import_state": "BLOCKED_BY_PREEXISTING_ABSENT_ptsip.repository_DEPENDENCY",
+      "normal_import_state": "ALL_REGISTERED_ENGINE_FUNCTION_CALLER_DESIGN_RECORDED;NEW_NATIVE_OPERATION_APPROVAL_PENDING_BEFORE_ROUTING_IMPLEMENTATION",
       "native_adapter_proof_scope": "EXERCISES_REAL_INSTALLED_GO_ROUTER_AND_SELECTED_NATIVE_OPERATIONS_WITHOUT_CLAIMING_FULL_NORMAL_MIGRATION_IMPORT_SUCCESS",
       "excluded_callers": [
         "src/ptsip/cli.py",
         "src/ptsip/clarification/resolution/profile_projection.py"
       ],
       "excluded_callers_mutation": "NONE_BYTE_PRESERVED",
-      "legacy_python_package_discovery": "RETAINED_UNTIL_SUPPORTED_CONSUMER_CLOSURE"
+      "legacy_python_package_discovery": "RETAINED_UNTIL_SUPPORTED_CONSUMER_CLOSURE",
+      "repository_native_import_design": {
+        "state": "EVIDENCE_BASED_OWNER_PATH_DESIGN_PROPOSED_NATIVE_OPERATION_USER_APPROVAL_PENDING",
+        "analysis_head": "41401996",
+        "historical_source_ref": "3961abb2^",
+        "registered_native_engine_count": 6,
+        "engine_scope": "ALL_ACTUAL_REGISTERED_NATIVE_ENGINES",
+        "task_engine_observation": "NO_TASK_ENTRY_IN_PRODUCT_NATIVE_INDEX;DO_NOT_INFER_REGISTRATION_FROM_RESERVED_NAMESPACE",
+        "engines_considered": [
+          {
+            "engine": "CONTEXT",
+            "selected": true,
+            "existing_operations": [
+              "context.snapshot",
+              "context.load"
+            ],
+            "evidence": "Registered source content/revision preservation; repository snapshot capture observes current Git status and tracked bytes without deciding compatibility.",
+            "new_modules": [
+              "src/ptsip/engines/context/src/repository.rs"
+            ],
+            "new_schemas": [
+              "src/ptsip/engines/context/src/schemas/repository.schema.json"
+            ]
+          },
+          {
+            "engine": "DISCOVERY",
+            "selected": true,
+            "existing_operations": [
+              "discovery.resolve",
+              "discovery.profile.catalog",
+              "discovery.profile.rules"
+            ],
+            "evidence": "Current contracts already select exact registered resources and bounded local sources. Git repository identity, tracked/non-Git inventory, remote parsing and Profile candidate reads are discovery observations; no transition verdict.",
+            "new_modules": [
+              "src/ptsip/engines/discovery/src/repository.rs",
+              "src/ptsip/engines/discovery/src/profile_candidates.rs"
+            ],
+            "new_schemas": [
+              "src/ptsip/engines/discovery/src/schemas/repository.schema.json",
+              "src/ptsip/engines/discovery/src/schemas/profile-candidates.schema.json"
+            ]
+          },
+          {
+            "engine": "VALIDATION",
+            "selected": true,
+            "existing_operations": [
+              "validation.profile.identity",
+              "validation.profile.transition",
+              "validation.planning.prepare"
+            ],
+            "evidence": "Typed identity/explicit edge/current snapshot validity are predicates over explicit observations; normalize/contain path and classify explicit candidate uniqueness/final point without mutations.",
+            "new_modules": [
+              "src/ptsip/engines/validation/src/repository.rs",
+              "src/ptsip/engines/validation/src/profile_path.rs",
+              "src/ptsip/engines/validation/src/profile_state.rs"
+            ],
+            "new_schemas": [
+              "src/ptsip/engines/validation/src/schemas/repository.schema.json",
+              "src/ptsip/engines/validation/src/schemas/profile-path.schema.json",
+              "src/ptsip/engines/validation/src/schemas/profile-state.schema.json"
+            ]
+          },
+          {
+            "engine": "STORAGE",
+            "selected": false,
+            "existing_operations": [
+              "storage.mediate",
+              "storage.invoke"
+            ],
+            "evidence": "Existing owner mediates registered storage providers and invokes admitted provider operations. The missing repository functions perform observation, validation and path calculation, not registered provider persistence. Do not assign by filename."
+          },
+          {
+            "engine": "EXECUTION",
+            "selected": false,
+            "existing_operations": [
+              "execution.invoke",
+              "execution.assess-attempt",
+              "execution.assess-stop"
+            ],
+            "evidence": "Existing owner consumes authority and invokes registered effectful artifacts. Fixed read-only Git source observation is not new permission issuance or an effectful migration. Existing migration mutation operations remain separate."
+          },
+          {
+            "engine": "PROJECTION",
+            "selected": false,
+            "existing_operations": [
+              "projection.select",
+              "projection.render",
+              "projection.profile.metadata"
+            ],
+            "evidence": "Existing projection can serialize/select explicit native observation content. Retired bind_decision_id/default index text have only excluded or retiring callers; no new business-owning projection capability is required for normal migration import."
+          }
+        ],
+        "legacy_source_inventory": {
+          "snapshot": {
+            "source": "src/ptsip/repository/snapshot.py",
+            "evidence_ref": "3961abb2^:src/ptsip/repository/snapshot.py",
+            "git_blob_sha": "27348381579292a62fe2d6a769c00ecdb43eb92c",
+            "sha256": "745d24e58d0ec3cfe1ee788390b244074c6374176a3a8c40e7f9758750a33895",
+            "public_symbols": [
+              {
+                "name": "RepositorySnapshot",
+                "line": 12,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "SnapshotComparison",
+                "line": 26,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "git_tracked_files",
+                "line": 45,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "repository_files",
+                "line": 78,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "capture_snapshot",
+                "line": 114,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "compare_snapshots",
+                "line": 156,
+                "kind": "FunctionDef"
+              }
+            ]
+          },
+          "discover": {
+            "source": "src/ptsip/repository/discover.py",
+            "evidence_ref": "3961abb2^:src/ptsip/repository/discover.py",
+            "git_blob_sha": "2d01a24bd016b5b38da7afa3f7b568edb303731f",
+            "sha256": "50e18dbfe38b76fe5086e2c67b88d293139ffc6717bd109e0218aea1290d54a1",
+            "public_symbols": [
+              {
+                "name": "RepositoryInfo",
+                "line": 11,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "discover_repository",
+                "line": 35,
+                "kind": "FunctionDef"
+              }
+            ]
+          },
+          "remote": {
+            "source": "src/ptsip/repository/remote.py",
+            "evidence_ref": "3961abb2^:src/ptsip/repository/remote.py",
+            "git_blob_sha": "da5c835c36d79c4ad022687d0dadc8120d2bcc0d",
+            "sha256": "dd6b1a871b588fdd49608d68f4228b8a11eeacaa9b9294719ebeb3387ff919d6",
+            "public_symbols": [
+              {
+                "name": "RepositoryRemote",
+                "line": 9,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "parse_remote",
+                "line": 25,
+                "kind": "FunctionDef"
+              }
+            ]
+          },
+          "namespace": {
+            "source": "src/ptsip/repository/namespace.py",
+            "evidence_ref": "3961abb2^:src/ptsip/repository/namespace.py",
+            "git_blob_sha": "188b197381946605bbc71b5a3eb86ede5d09928c",
+            "sha256": "46e809ec2f41a4f5ae47224e0826a24906a80da25723de73c0bd05de2416bef4",
+            "public_symbols": [
+              {
+                "name": "RepositoryNamespaceError",
+                "line": 17,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "validate_repository_index_payload",
+                "line": 33,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "load_repository_index",
+                "line": 52,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "default_repository_index_payload",
+                "line": 69,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "default_repository_index_text",
+                "line": 81,
+                "kind": "FunctionDef"
+              }
+            ]
+          },
+          "profile_path": {
+            "source": "src/ptsip/repository/profile_path.py",
+            "evidence_ref": "3961abb2^:src/ptsip/repository/profile_path.py",
+            "git_blob_sha": "61cc2f902991254e67b91494d6e5ffee4042db94",
+            "sha256": "935551d3dd788e8ad81ed7ab98c4c0ccfe7ac9790137f76eaea51aff1e494408",
+            "public_symbols": [
+              {
+                "name": "normalize_profile_path",
+                "line": 11,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "selected_profile_path",
+                "line": 40,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "profile_path_on_disk",
+                "line": 79,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "bind_decision_id",
+                "line": 90,
+                "kind": "FunctionDef"
+              }
+            ]
+          },
+          "profile_transition": {
+            "source": "src/ptsip/repository/profile_transition.py",
+            "evidence_ref": "3961abb2^:src/ptsip/repository/profile_transition.py",
+            "git_blob_sha": "3f8a286dd3af0502365346f815acf0952f5f9a2c",
+            "sha256": "837bc8fb47559a4600c222d6f540214b239db677ac41f04c3d515d1656dcf47a",
+            "public_symbols": [
+              {
+                "name": "DraftVersion",
+                "line": 20,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "TransitionDiagnostic",
+                "line": 44,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "ProfileGenerationIdentity",
+                "line": 54,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "TransitionSnapshot",
+                "line": 70,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "ProfileTransitionState",
+                "line": 84,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "ProfileTransitionDiscovery",
+                "line": 104,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "discover_profile_transition",
+                "line": 243,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "validate_transition_snapshot",
+                "line": 347,
+                "kind": "FunctionDef"
+              }
+            ]
+          },
+          "profile_convergence": {
+            "source": "src/ptsip/repository/profile_convergence.py",
+            "evidence_ref": "3961abb2^:src/ptsip/repository/profile_convergence.py",
+            "git_blob_sha": "a9ef07f2ac94465a9f8c57ae70f9ebe737d8b4cb",
+            "sha256": "8010957d37147ec349c880c9d8d840fc2aa6dcb6405e40b3565d942beca66112",
+            "public_symbols": [
+              {
+                "name": "DirectConvergenceMode",
+                "line": 27,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "ConvergenceDiagnostic",
+                "line": 34,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "ConvergenceProfileBinding",
+                "line": 44,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "DirectConvergenceState",
+                "line": 64,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "DirectConvergenceDiscovery",
+                "line": 97,
+                "kind": "ClassDef"
+              },
+              {
+                "name": "discover_direct_profile_convergence",
+                "line": 297,
+                "kind": "FunctionDef"
+              },
+              {
+                "name": "validate_direct_convergence_snapshot",
+                "line": 382,
+                "kind": "FunctionDef"
+              }
+            ]
+          }
+        },
+        "current_import_inventory": [
+          {
+            "caller": "src/ptsip/adoption.py",
+            "line": 19,
+            "legacy_module": "discover",
+            "names": [
+              "RepositoryInfo",
+              "discover_repository"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/adoption.py",
+            "line": 20,
+            "legacy_module": "snapshot",
+            "names": [
+              "RepositorySnapshot",
+              "SnapshotComparison",
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/artifact_evidence.py",
+            "line": 12,
+            "legacy_module": "discover",
+            "names": [
+              "RepositoryInfo"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/artifact_evidence.py",
+            "line": 13,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/cli.py",
+            "line": 54,
+            "legacy_module": "discover",
+            "names": [
+              "RepositoryInfo",
+              "discover_repository"
+            ],
+            "excluded": true,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/cli.py",
+            "line": 55,
+            "legacy_module": "profile_path",
+            "names": [
+              "bind_decision_id",
+              "normalize_profile_path",
+              "profile_path_on_disk",
+              "selected_profile_path"
+            ],
+            "excluded": true,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/cli.py",
+            "line": 61,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": true,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/conformance.py",
+            "line": 17,
+            "legacy_module": "discover",
+            "names": [
+              "discover_repository"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/conformance.py",
+            "line": 18,
+            "legacy_module": "snapshot",
+            "names": [
+              "RepositorySnapshot",
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/conformance_engine.py",
+            "line": 22,
+            "legacy_module": "discover",
+            "names": [
+              "discover_repository"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/conformance_engine.py",
+            "line": 23,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/dependency_analysis.py",
+            "line": 19,
+            "legacy_module": "discover",
+            "names": [
+              "discover_repository"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/dependency_analysis.py",
+            "line": 20,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots",
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/dependency_review.py",
+            "line": 10,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "git_tracked_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/dependency_validation.py",
+            "line": 10,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/lifecycle_evidence.py",
+            "line": 9,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/proposed_component.py",
+            "line": 8,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/review_evidence.py",
+            "line": 20,
+            "legacy_module": "discover",
+            "names": [
+              "RepositoryInfo"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/review_evidence.py",
+            "line": 21,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/topology.py",
+            "line": 15,
+            "legacy_module": "discover",
+            "names": [
+              "discover_repository"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/topology.py",
+            "line": 16,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/app/github_authority.py",
+            "line": 18,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "normalize_profile_path"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/app/github_reconciliation.py",
+            "line": 23,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path",
+              "profile_path_on_disk",
+              "selected_profile_path"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/app/github_reconciliation.py",
+            "line": 24,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/app/store.py",
+            "line": 12,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/clarification/generator.py",
+            "line": 9,
+            "legacy_module": "discover",
+            "names": [
+              "RepositoryInfo",
+              "discover_repository"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/clarification/generator.py",
+            "line": 10,
+            "legacy_module": "snapshot",
+            "names": [
+              "RepositorySnapshot",
+              "SnapshotComparison",
+              "capture_snapshot",
+              "compare_snapshots",
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/inspection/candidate_evidence.py",
+            "line": 11,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/inspection/candidate_evidence.py",
+            "line": 12,
+            "legacy_module": "profile_transition",
+            "names": [
+              "ProfileGenerationIdentity",
+              "ProfileTransitionState",
+              "discover_profile_transition",
+              "validate_transition_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/inspection/candidate_evidence.py",
+            "line": 18,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/inspection/dependencies.py",
+            "line": 23,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/inspection/dependencies_030.py",
+            "line": 5,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/inspection/inventory.py",
+            "line": 9,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/pilot/runner.py",
+            "line": 14,
+            "legacy_module": "discover",
+            "names": [
+              "discover_repository"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/pilot/runner.py",
+            "line": 15,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/profiles/catalog.py",
+            "line": 10,
+            "legacy_module": "namespace",
+            "names": [
+              "REPOSITORY_INDEX",
+              "RepositoryNamespaceError",
+              "load_repository_index"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": true
+          },
+          {
+            "caller": "src/ptsip/source_compat/reader.py",
+            "line": 11,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/source_compat/reader.py",
+            "line": 12,
+            "legacy_module": "profile_transition",
+            "names": [
+              "ProfileGenerationIdentity"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/analyzer.py",
+            "line": 6,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots",
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/recovery.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/planning/convergence/builder.py",
+            "line": 5,
+            "legacy_module": "profile_transition",
+            "names": [
+              "DraftVersion",
+              "ProfileTransitionState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/planning/direct/builder.py",
+            "line": 3,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/authorization/binding.py",
+            "line": 7,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/authorization/preconditions.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/authorization/preconditions.py",
+            "line": 6,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_plan.py",
+            "line": 7,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_plan.py",
+            "line": 8,
+            "legacy_module": "snapshot",
+            "names": [
+              "RepositorySnapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_rewrite.py",
+            "line": 14,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_rewrite.py",
+            "line": 15,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/promotion.py",
+            "line": 9,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState",
+              "discover_direct_profile_convergence"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/promotion.py",
+            "line": 10,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/verification.py",
+            "line": 5,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "discover_direct_profile_convergence"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/verification.py",
+            "line": 6,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/guard/mutation.py",
+            "line": 9,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/guard/mutation.py",
+            "line": 10,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/guard/repository_snapshot.py",
+            "line": 5,
+            "legacy_module": "snapshot",
+            "names": [
+              "RepositorySnapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/asynchronous.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/delta.py",
+            "line": 10,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/finalization.py",
+            "line": 6,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/finalization.py",
+            "line": 7,
+            "legacy_module": "profile_transition",
+            "names": [
+              "discover_profile_transition"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/mutation.py",
+            "line": 6,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/preparation.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/preparation.py",
+            "line": 6,
+            "legacy_module": "profile_transition",
+            "names": [
+              "discover_profile_transition"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/verification.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/verification.py",
+            "line": 6,
+            "legacy_module": "profile_transition",
+            "names": [
+              "discover_profile_transition"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/convergence.py",
+            "line": 6,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState",
+              "validate_direct_convergence_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/result.py",
+            "line": 7,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/source_projection.py",
+            "line": 5,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/source_projection.py",
+            "line": 6,
+            "legacy_module": "profile_transition",
+            "names": [
+              "DraftVersion",
+              "ProfileGenerationIdentity"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/target_projection.py",
+            "line": 9,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/target_projection.py",
+            "line": 10,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/source/binding_validation.py",
+            "line": 7,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/clarification/resolution/profile_projection.py",
+            "line": 16,
+            "legacy_module": "namespace",
+            "names": [
+              "REPOSITORY_INDEX",
+              "default_repository_index_text",
+              "load_repository_index"
+            ],
+            "excluded": true,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/clarification/transports/github_issue.py",
+            "line": 10,
+            "legacy_module": "remote",
+            "names": [
+              "RepositoryRemote"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          }
+        ],
+        "global_import_statements": 74,
+        "global_caller_files": 48,
+        "normal_migration_import_callers": [
+          {
+            "caller": "src/ptsip/source_compat/reader.py",
+            "line": 11,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/source_compat/reader.py",
+            "line": 12,
+            "legacy_module": "profile_transition",
+            "names": [
+              "ProfileGenerationIdentity"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/analyzer.py",
+            "line": 6,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots",
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/recovery.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/planning/convergence/builder.py",
+            "line": 5,
+            "legacy_module": "profile_transition",
+            "names": [
+              "DraftVersion",
+              "ProfileTransitionState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/planning/direct/builder.py",
+            "line": 3,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/authorization/binding.py",
+            "line": 7,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/authorization/preconditions.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/authorization/preconditions.py",
+            "line": 6,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_plan.py",
+            "line": 7,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_plan.py",
+            "line": 8,
+            "legacy_module": "snapshot",
+            "names": [
+              "RepositorySnapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_rewrite.py",
+            "line": 14,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/identity_rewrite.py",
+            "line": 15,
+            "legacy_module": "snapshot",
+            "names": [
+              "capture_snapshot",
+              "compare_snapshots"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/promotion.py",
+            "line": 9,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState",
+              "discover_direct_profile_convergence"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/promotion.py",
+            "line": 10,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/verification.py",
+            "line": 5,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "discover_direct_profile_convergence"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/direct/verification.py",
+            "line": 6,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/guard/mutation.py",
+            "line": 9,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/guard/mutation.py",
+            "line": 10,
+            "legacy_module": "snapshot",
+            "names": [
+              "repository_files"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/guard/repository_snapshot.py",
+            "line": 5,
+            "legacy_module": "snapshot",
+            "names": [
+              "RepositorySnapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/asynchronous.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/delta.py",
+            "line": 10,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/finalization.py",
+            "line": 6,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/mutation/finalization.py",
+            "line": 7,
+            "legacy_module": "profile_transition",
+            "names": [
+              "discover_profile_transition"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/mutation.py",
+            "line": 6,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/preparation.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/preparation.py",
+            "line": 6,
+            "legacy_module": "profile_transition",
+            "names": [
+              "discover_profile_transition"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/verification.py",
+            "line": 5,
+            "legacy_module": "profile_path",
+            "names": [
+              "DEFAULT_PROFILE_PATH",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/execution/promotion/verification.py",
+            "line": 6,
+            "legacy_module": "profile_transition",
+            "names": [
+              "discover_profile_transition"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/convergence.py",
+            "line": 6,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode",
+              "DirectConvergenceState",
+              "validate_direct_convergence_snapshot"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/result.py",
+            "line": 7,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceMode"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/source_projection.py",
+            "line": 5,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/source_projection.py",
+            "line": 6,
+            "legacy_module": "profile_transition",
+            "names": [
+              "DraftVersion",
+              "ProfileGenerationIdentity"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/target_projection.py",
+            "line": 9,
+            "legacy_module": "profile_convergence",
+            "names": [
+              "DirectConvergenceState"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/direct/target_projection.py",
+            "line": 10,
+            "legacy_module": "profile_path",
+            "names": [
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          },
+          {
+            "caller": "src/ptsip/migration/analysis/source/binding_validation.py",
+            "line": 7,
+            "legacy_module": "profile_path",
+            "names": [
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "excluded": false,
+            "retiring_profile_tree": false
+          }
+        ],
+        "normal_migration_caller_file_count": 24,
+        "function_allocations": [
+          {
+            "legacy_module": "src/ptsip/repository/snapshot.py",
+            "functions": [
+              "git_tracked_files",
+              "repository_files"
+            ],
+            "owner_engines": [
+              "DISCOVERY"
+            ],
+            "native_operation_ids": [
+              "discovery.repository.inspect"
+            ],
+            "rationale": "Read-only sorted source inventory; no classification/permission inference"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/snapshot.py",
+            "functions": [
+              "RepositorySnapshot",
+              "capture_snapshot"
+            ],
+            "owner_engines": [
+              "CONTEXT"
+            ],
+            "native_operation_ids": [
+              "context.repository.snapshot"
+            ],
+            "rationale": "Native context observation and declared wire fields, including current Git and content fingerprints"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/snapshot.py",
+            "functions": [
+              "SnapshotComparison",
+              "compare_snapshots"
+            ],
+            "owner_engines": [
+              "VALIDATION"
+            ],
+            "native_operation_ids": [
+              "validation.repository.snapshot"
+            ],
+            "rationale": "Exact before/after facts and incomplete observation reject stability"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/discover.py",
+            "functions": [
+              "RepositoryInfo",
+              "discover_repository"
+            ],
+            "owner_engines": [
+              "DISCOVERY"
+            ],
+            "native_operation_ids": [
+              "discovery.repository.inspect"
+            ],
+            "rationale": "Read Git root/head/branch/dirty and explicitly registered origin metadata without networking"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/remote.py",
+            "functions": [
+              "RepositoryRemote",
+              "parse_remote"
+            ],
+            "owner_engines": [
+              "DISCOVERY"
+            ],
+            "native_operation_ids": [
+              "discovery.repository.inspect"
+            ],
+            "rationale": "Parse observed origin URL as data; unknown provider stays unspecified"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/profile_path.py",
+            "functions": [
+              "normalize_profile_path",
+              "profile_path_on_disk"
+            ],
+            "owner_engines": [
+              "VALIDATION"
+            ],
+            "native_operation_ids": [
+              "validation.profile.path"
+            ],
+            "rationale": "Lexical repository-relative normalization and owner root containment; no write"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/profile_path.py",
+            "functions": [
+              "selected_profile_path"
+            ],
+            "owner_engines": [
+              "DISCOVERY",
+              "VALIDATION"
+            ],
+            "native_operation_ids": [
+              "discovery.profile.catalog",
+              "validation.profile.path"
+            ],
+            "rationale": "Resolve explicit/default source via existing catalog, then normalize/bind the selected path"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/profile_path.py",
+            "functions": [
+              "bind_decision_id"
+            ],
+            "owner_engines": [
+              "PROJECTION"
+            ],
+            "native_operation_ids": [],
+            "rationale": "Only actual import caller is excluded cli.py; no restored compatibility API or new operation required"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/namespace.py",
+            "functions": [
+              "validate_repository_index_payload"
+            ],
+            "owner_engines": [
+              "VALIDATION"
+            ],
+            "native_operation_ids": [],
+            "rationale": "Only retiring profiles/catalog.py/excluded profile_projection imports this module; no normal migration caller. Do not reconstruct private source schema or add namespace contract"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/namespace.py",
+            "functions": [
+              "load_repository_index"
+            ],
+            "owner_engines": [
+              "DISCOVERY"
+            ],
+            "native_operation_ids": [],
+            "rationale": "Same excluded/retiring callers; data lookup responsibility considered without a new required operation"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/namespace.py",
+            "functions": [
+              "default_repository_index_payload",
+              "default_repository_index_text"
+            ],
+            "owner_engines": [
+              "PROJECTION"
+            ],
+            "native_operation_ids": [],
+            "rationale": "Same excluded/retiring callers; no legacy namespace recreation for import compatibility"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/profile_transition.py",
+            "functions": [
+              "DraftVersion",
+              "ProfileGenerationIdentity",
+              "TransitionDiagnostic",
+              "TransitionSnapshot",
+              "ProfileTransitionState",
+              "ProfileTransitionDiscovery",
+              "discover_profile_transition"
+            ],
+            "owner_engines": [
+              "DISCOVERY",
+              "CONTEXT",
+              "VALIDATION"
+            ],
+            "native_operation_ids": [
+              "discovery.profile.candidates",
+              "context.repository.snapshot",
+              "validation.profile.transition-state"
+            ],
+            "rationale": "Read/hash candidate files, observe repository, then classify explicit identity/uniqueness/order constraints. Legacy draft filename grammar is not current pp3 lineage authority"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/profile_transition.py",
+            "functions": [
+              "validate_transition_snapshot"
+            ],
+            "owner_engines": [
+              "CONTEXT",
+              "VALIDATION"
+            ],
+            "native_operation_ids": [
+              "context.repository.snapshot",
+              "validation.repository.snapshot",
+              "validation.profile.transition-state"
+            ],
+            "rationale": "Reobserve actual repository/content and compare current bindings; no reuse from self-reported flags"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/profile_convergence.py",
+            "functions": [
+              "DirectConvergenceMode",
+              "ConvergenceDiagnostic",
+              "ConvergenceProfileBinding",
+              "DirectConvergenceState",
+              "DirectConvergenceDiscovery",
+              "discover_direct_profile_convergence"
+            ],
+            "owner_engines": [
+              "DISCOVERY",
+              "CONTEXT",
+              "VALIDATION"
+            ],
+            "native_operation_ids": [
+              "discovery.profile.candidates",
+              "context.repository.snapshot",
+              "validation.profile.convergence"
+            ],
+            "rationale": "Separate file observations from exact declared current/transition/alias classification; do not infer pp3 edges or temporary filenames"
+          },
+          {
+            "legacy_module": "src/ptsip/repository/profile_convergence.py",
+            "functions": [
+              "validate_direct_convergence_snapshot"
+            ],
+            "owner_engines": [
+              "CONTEXT",
+              "VALIDATION"
+            ],
+            "native_operation_ids": [
+              "context.repository.snapshot",
+              "validation.repository.snapshot",
+              "validation.profile.convergence"
+            ],
+            "rationale": "Reobserve facts and validate exact source/target bindings; full normal caller tests required"
+          }
+        ],
+        "native_operations": [
+          {
+            "operation_id": "context.repository.snapshot",
+            "owner": "CONTEXT",
+            "input_fields": [
+              "root"
+            ],
+            "output_fields": [
+              "captured_at",
+              "is_git",
+              "head",
+              "status_fingerprint",
+              "tracked_content_fingerprint",
+              "tracked_files",
+              "observation_errors"
+            ],
+            "schema_defs": [
+              "snapshot_input",
+              "snapshot_output"
+            ]
+          },
+          {
+            "operation_id": "discovery.repository.inspect",
+            "owner": "DISCOVERY",
+            "input_fields": [
+              "path"
+            ],
+            "output_fields": [
+              "requested_path",
+              "root",
+              "is_git",
+              "commit",
+              "branch",
+              "dirty",
+              "remote",
+              "file_mode",
+              "files",
+              "observation_errors"
+            ],
+            "schema_defs": [
+              "inspect_input",
+              "inspect_output"
+            ]
+          },
+          {
+            "operation_id": "discovery.profile.candidates",
+            "owner": "DISCOVERY",
+            "input_fields": [
+              "root",
+              "source_path?",
+              "candidate_paths?"
+            ],
+            "output_fields": [
+              "source",
+              "candidates",
+              "diagnostics"
+            ],
+            "binding_fields": [
+              "path",
+              "declared_version",
+              "specification_revision",
+              "specification_source",
+              "content_sha256",
+              "temporary"
+            ],
+            "schema_defs": [
+              "input",
+              "output"
+            ]
+          },
+          {
+            "operation_id": "validation.repository.snapshot",
+            "owner": "VALIDATION",
+            "input_fields": [
+              "before",
+              "after"
+            ],
+            "output_fields": [
+              "status",
+              "stable",
+              "reasons"
+            ]
+          },
+          {
+            "operation_id": "validation.profile.path",
+            "owner": "VALIDATION",
+            "input_fields": [
+              "root",
+              "path?"
+            ],
+            "output_fields": [
+              "normalized_path",
+              "path_on_disk"
+            ]
+          },
+          {
+            "operation_id": "validation.profile.transition-state",
+            "owner": "VALIDATION",
+            "input_fields": [
+              "source",
+              "candidates",
+              "snapshot",
+              "root"
+            ],
+            "output_fields": [
+              "valid",
+              "state",
+              "diagnostics"
+            ],
+            "typed_factory_note": "Any required DraftVersion parsing must be a declared branch of native typed contract or removed from supported callers; no Python semantic parser restoration."
+          },
+          {
+            "operation_id": "validation.profile.convergence",
+            "owner": "VALIDATION",
+            "input_fields": [
+              "source",
+              "candidates",
+              "selected_contract",
+              "transitions",
+              "historical_bridges",
+              "snapshot"
+            ],
+            "output_fields": [
+              "valid",
+              "state",
+              "diagnostics"
+            ]
+          }
+        ],
+        "native_operation_registration_status": "UNREGISTERED_PENDING_USER_APPROVAL",
+        "routing_design": "Existing spec_identity.py native bridge generalized for approved closed Repository operation IDs; business functions live in selected Rust engines. Existing Python migration/source_compat consumers use declared native response DTOs and typed data only. No new Python module or ptsip.repository package. No fake packages or import bypass in acceptance.",
+        "normal_import_acceptance": "Python normal import ptsip.migration plus actual source_compat and migration native calls through installed Go CLI, with no legacy repository shim and no sys.modules substitution.",
+        "verification_followups": [
+          "real Git and non-Git inventory/snapshot, status/content/HEAD changes/incomplete observation",
+          "safe relative path/root alias escape rejection",
+          "source/candidate malformed YAML, duplicate identities, declared direct edges, no inferred intermediate migrations",
+          "cross-engine current observation to validation and actual supported normal imports",
+          "native engine tests + Go integration tests under src/tests/ptsip",
+          "recorded approved native design triggers immediate22-source deletion; remaining implementation/import/package tests follow deletion"
+        ]
+      }
     }
   },
   "project_profile_pp300_contract_redesign": {
     "schema_version": "ptsip-project-profile-pp300-contract-first-plan/v1",
-    "state": "DRAFT_POLICY_DETAILS_AND_USER_AUDIT_PENDING_NO_IMPLEMENTATION",
+    "state": "OFFICIAL_CORE_IMPLEMENTATION_AUTHORIZED_USER_LATEST;USER_EXTENSION_LINEAGE_SEPARATE_UNRESOLVED",
     "user_direction_date": "2026-11-19",
     "work_unit_owner": "WU-10",
-    "authority": "USER_DIRECTED_PLAN_ONLY;POLICY_OVERRIDES_NOT_GRANTED_BY_PLAN",
-    "execution_authorized": false,
+    "authority": "USER_LATEST_EXPLICIT_IMPLEMENTATION_DIRECTION_WITH_SELF_CONTAINED_PLAN_ONLY;NO_EXTERNAL_POLICY_AUDIT",
+    "execution_authorized": true,
     "priority_scope": "FOR_NEW_PP300_CURRENT_PROFILE_DESIGN_ONLY",
     "prior_work_scope": "PP101_PP102_PP200_HISTORY_AND_COMPLETED_NATIVE_PROFILE_TESTS_REMAIN_HISTORICAL_EVIDENCE",
     "supersedes_prior_current_pp200_selector_for_future_pp300_work": true,
@@ -10786,8 +12711,8 @@
           "dependency"
         ],
         "dependency_field_exact": "dependency",
-        "dependency_field_type": "UNRESOLVED",
-        "legacy_default_allow_deny_and_from_to_reconciliation": "UNRESOLVED_NEEDS_SEMANTIC_REVIEW_WITHOUT_INVENTING_FIELDS",
+        "dependency_field_type": "object",
+        "legacy_default_allow_deny_and_from_to_reconciliation": "EXACT_EXISTING_FIELD_CONTRACT_REUSED;NO_NEW_FROM_EQUALS_COMPONENT_OWNER_OR_OTHER_UNAPPROVED_CONSTRAINT",
         "source_evidence": {
           "legacy_component_required": [
             "id",
@@ -10806,6 +12731,14 @@
             "from",
             "to"
           ]
+        },
+        "source_contract": {
+          "schema_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+          "field_pointer": "/properties/component_dependency_policy",
+          "definition_pointer": "/$defs/componentDependencyPolicy",
+          "relation_definition_pointer": "/$defs/componentDependencyRelation",
+          "reuse": "COPY_VALIDATION_KEYWORDS_AND_LOCAL_REFERENCE_CLOSURE_FROM_THESE_DEFINITIONS;REMOVE_$comment_IN_NEW_PP300_ONLY",
+          "semantics": "KEEP_default_allow_deny_AND_RELATION_from_to_STRUCTURE;NO_PRIVATE_PYTHON_SOURCE_OR_EXTERNAL_POLICY"
         }
       },
       "preserve_history_files": [
@@ -10813,10 +12746,46 @@
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
       ],
-      "registry_rule": "ACTIVATE_PP300_AFTER_SCHEMA_APPROVAL_AND_VALIDATION;MAINTAIN_EXPLICIT_PP200_HISTORICAL_SELECTOR;UPDATE_ACTIVE_ALIAS_AND_EXACT_HASH_PINS_IN_SAME_AUTHORIZED_TRANSITION"
+      "registry_rule": "ACTIVATE_DIRECT_OFFICIAL_PP300_CURRENT_RESOURCE_AFTER_CORE_SCHEMA_AND_FOCUSED_NATIVE_CONFORMANCE;PRESERVE_EXPLICIT_PP101_PP102_PP200_HISTORY_AND_EXACT_HASH_PINS",
+      "registry_shape": {
+        "total_profile_resources": 4,
+        "current_key": "ptsip.project-profile",
+        "current_version": "pp.3.00",
+        "current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+        "current_resource_is": "DIRECT_OFFICIAL_SCHEMA_NOT_PP200_$ref_ALIAS",
+        "historical_version_keys": [
+          "ptsip.project-profile.pp.1.01",
+          "ptsip.project-profile.pp.1.02",
+          "ptsip.project-profile.pp.2.00"
+        ],
+        "no_duplicate_version_key_for_current_resource": true,
+        "pp300_history_copy": "NOT_REQUIRED_OR_AUTHORIZED_BY_THIS_TRANSITION"
+      },
+      "official_base_revision": {
+        "field": "ptsip.revision",
+        "meaning": "OFFICIAL_BASE_OR_USER_FIELD_CONTRACT_LINEAGE_REVISION",
+        "official_base": "Rev.0001",
+        "format": "Rev.####",
+        "supported_range": "Rev.0001_THROUGH_Rev.9999",
+        "new_schema_pattern": "^Rev\\.(?:000[1-9]|00[1-9][0-9]|0[1-9][0-9]{2}|[1-9][0-9]{3})$",
+        "historical_schema_bytes": "UNCHANGED",
+        "no_unresolved_lineage_algorithm_inferred": true
+      },
+      "default_mode_root": {
+        "responsibility_map": "CLOSED_OBJECT_WITH_mode_CONST_DEFAULT",
+        "required_root_fields": [
+          "ptsip",
+          "responsibility_map",
+          "policies",
+          "components"
+        ],
+        "source": "PP200_REQUIRED_PTSIP_RESPONSIBILITY_MAP_POLICIES_AND_EXPLICIT_COMPONENT_COLLECTION_REQUIREMENT",
+        "optional_root_responsibilities": "PRESERVE_EXISTING_ASSOCIATED_ARTIFACT_AND_RELATIONSHIP_ROLES_FROM_PP200",
+        "standalone_component_dependency_policy": "ABSENT_FROM_NEW_ROOT;NEST_EXISTING_FIELD_CONTRACT_IN_EACH_COMPONENT_dependency"
+      }
     },
     "contract_first_native_module_rule": {
-      "architectural_precedence": "APPROVED_PP300_CONTRACT_THEN_NEW_RUST_ENGINE_OPERATION_AND_MODULE_DESIGN",
+      "architectural_precedence": "APPROVED_OFFICIAL_PP300_CORE_THEN_NATIVE_OWNER_DERIVED_IMPLEMENTATION;USER_CUSTOM_EXTENSION_AND_COMPRESSION_PENDING_INDEPENDENTLY",
       "excluded_legacy_python_sources": [
         "src/ptsip/profiles/catalog.py",
         "src/ptsip/profiles/compatibility.py",
@@ -10888,42 +12857,44 @@
         ],
         "compression_policy": "MINIMIZE_RETAINED_REVISIONS_SUBJECT_TO_TRACEABILITY;NO_FIXED_ALGORITHM_AUTHORIZED",
         "distinguish_data_edits_from_field_contract_edits": "UNRESOLVED"
-      }
+      },
+      "implementation_scope": "SEPARATE_PENDING_RELATION_AND_LINEAGE_CONTRACT;DOES_NOT_BLOCK_OFFICIAL_PP300_CORE_SCHEMA_OR_VERSION_SUPPORT"
     },
     "work_unit_sessions": {
       "PP3-01": {
         "role": "OFFICIAL_PP300_FIELD_RESPONSIBILITY_REVIEW",
-        "plan": "COMPARE_PP200_HISTORY_ACTUAL_FIELD_ROLES;PROPOSE_PP300_HIERARCHY_WITH_REQUIRED_LOCAL_DEPENDENCY;NO_LEGACY_PYTHON_SCHEMA_INFERENCE",
+        "plan": "IMPLEMENT_EXACT_OFFICIAL_PP300_ID_TITLE_DEFAULT_MODE_AND_PP200_RESPONSIBILITY_MAPPING_WITH_REQUIRED_COMPONENT_LOCAL_DEPENDENCY_CONTRACT_REUSE",
         "result": "APPROVED_FIELD_MAP_AND_PP300_SCHEMA_DESIGN",
-        "state": "PENDING_POLICY_AUDIT"
+        "state": "CORE_FIELD_CONTRACT_APPROVED_USER_LATEST_IMPLEMENTATION_AUTHORIZED"
       },
       "PP3-02": {
         "role": "USER_CUSTOM_CONTRACT_LINEAGE_AND_REVISION",
         "plan": "DEFINE_OFFICIAL_TO_USER_CONTRACT_DIFFERENCE_AND_REVISION_TRACKING_WITH_ROUNDTRIP_AND_TRACEABILITY;HANDLE_OVERFLOW_COMPRESSION",
         "result": "APPROVED_USER_PROFILE_RELATION_REVISION_CONTRACT",
-        "state": "PENDING_POLICY_AUDIT"
+        "state": "USER_EXTENSION_AND_LINEAGE_FORMAT_UNRESOLVED_INDEPENDENT_SCOPE"
       },
       "PP3-03": {
         "role": "NATIVE_CONTRACT_DERIVED_MODULE_ALLOCATION",
         "plan": "ASSIGN_REGISTERED_RUST_ENGINE_OWNERS_FROM_APPROVED_PP300_FIELD_CONTRACT;NO_PYTHON_PARITY_AS_SCHEMA_AUTHORITY",
         "result": "FUNCTION_MODULE_CONTRACT_AND_ENGINE_OWNER_MATRIX",
-        "state": "BLOCKED_BY_PP3_01_PP3_02"
+        "state": "OFFICIAL_CORE_NATIVE_OWNER_ANALYSIS_AND_IMPLEMENTATION_AUTHORIZED;CUSTOM_LINEAGE_MODULES_WAIT_OWN_CONTRACT"
       },
       "PP3-04": {
         "role": "SCHEMA_AND_RUNTIME_CONSUMER_MIGRATION_AND_ACCEPTANCE",
         "plan": "AFTER_APPROVAL_CREATE_SCHEMA_UPDATE_HASHED_REGISTRY_CONSUMERS_AND_FOCUSED_NATIVE_TESTS;CHECK_HISTORY_PP200_UNCHANGED",
         "result": "PP300_SCHEMA_AND_NATIVE_CONSUMER_CONFORMANCE",
-        "state": "BLOCKED_IMPLEMENTATION_NOT_AUTHORIZED"
+        "state": "OFFICIAL_CORE_SCHEMA_AND_NATIVE_CONSUMER_IMPLEMENTATION_AUTHORIZED"
       }
     },
     "unresolved_policy_decisions": [
       {
         "id": "PP3-DEP-SEMANTICS",
         "topic": "COMPONENT_LOCAL_DEPENDENCY_MODEL",
-        "purpose": "DEFINE_NEW_DEPENDENCY_PAYLOAD_AND_LEGACY_DEFAULT_ALLOW_DENY_RELATIONSHIP_SEMANTICS",
-        "responsibility_owner": "USER_CONTRACT_AUTHORITY",
-        "status": "UNRESOLVED",
-        "prohibit": "INFER_DEPENDENCY_OBJECT_FIELDS_FROM_PYTHON_OR_DEPRECATED_TOP_LEVEL_NAMES"
+        "purpose": "APPLY_EXACT_EXISTING_COMPONENT_DEPENDENCY_POLICY_FIELD_CONTRACT_LOCALLY_WITHOUT_ADDED_OWNER_EQUALITY",
+        "responsibility_owner": "CURRENT_USER_EXPLICIT_CONTRACT_DIRECTION",
+        "status": "RESOLVED_USER_LATEST_REUSE_EXISTING_FIELD_CONTRACT",
+        "prohibit": "INFER_DEPENDENCY_OBJECT_FIELDS_FROM_PYTHON_OR_DEPRECATED_TOP_LEVEL_NAMES",
+        "resolution": "REUSE_COMPONENT_DEPENDENCY_POLICY_AND_RELATION_DEFINITIONS_WITHOUT_EXTRA_OWNER_EQUALITY_CONSTRAINT"
       },
       {
         "id": "PP3-REV-TRACE",
@@ -10931,7 +12902,8 @@
         "purpose": "DEFINE_MACHINE_TRACEABLE_FIELD_RENAME_AND_NESTED_CHANGE_IDENTITY_HISTORY_AND_MINIMAL_COMPACTION_PROOF",
         "responsibility_owner": "USER_CONTRACT_AUTHORITY",
         "status": "UNRESOLVED",
-        "prohibit": "AUTO_CHOOSE_DIFF_ALGORITHM_EVENT_FORMAT_STORAGE_LOCATION_OR_REVISION_KEY_REUSE"
+        "prohibit": "AUTO_CHOOSE_DIFF_ALGORITHM_EVENT_FORMAT_STORAGE_LOCATION_OR_REVISION_KEY_REUSE",
+        "official_core_blocker": false
       },
       {
         "id": "PP3-EXT-LINK",
@@ -10939,29 +12911,29 @@
         "purpose": "DEFINE_CUSTOM_SCHEMA_REGISTRATION_LOCATION_AND_OFFICIAL_PP3_BASE_BINDING_WITH_EXACT_VERSION_REVISION_LINEAGE",
         "responsibility_owner": "USER_CONTRACT_AUTHORITY",
         "status": "UNRESOLVED",
-        "prohibit": "GENERATE_A_NEW_User_Profile_SCHEMA_OR_EMBED_INVALID_LEGACY_USER_PROFILE_AS_FIELD_CONTRACT"
+        "prohibit": "GENERATE_A_NEW_User_Profile_SCHEMA_OR_EMBED_INVALID_LEGACY_USER_PROFILE_AS_FIELD_CONTRACT",
+        "official_core_blocker": false
       },
       {
         "id": "PP3-VERSION-GATE",
         "topic": "PP300_CURRENT_ACTIVATION_AND_RBAC_SEPARATION",
-        "purpose": "CHECK_PRODUCT_POLICY_AUTHORITY_AND_INVENTORY_BEFORE_SWITCHING_ACTIVE_PP2_SELECTOR_TO_PP3",
-        "responsibility_owner": "PRODUCT_POLICY_AND_SCHEMA_REGISTRY",
-        "status": "REVIEW_REQUIRED",
-        "prohibit": "SILENT_ACTIVATION_FROM_src/VERSION_OR_RBAC_PP3_LABEL"
+        "purpose": "VERIFY_APPROVED_OFFICIAL_CORE_AND_CURRENT_REGISTRY_HASH_TRANSITION_WHILE_PRESERVING_PP200_HISTORY",
+        "responsibility_owner": "CURRENT_USER_EXPLICIT_PP300_ACTIVATION_DIRECTION_AND_SCHEMA_REGISTRY",
+        "status": "RESOLVED_USER_LATEST_OFFICIAL_PP300_ACTIVATION_AUTHORIZED_AFTER_CORE_TESTS",
+        "prohibit": "SILENT_ACTIVATION_FROM_src/VERSION_OR_RBAC_PP3_LABEL",
+        "resolution": "PP300_CURRENT_DIRECT_OFFICIAL_RESOURCE;PP200_HISTORY_UNCHANGED;RBAC_PP300_REMAINS_INDEPENDENT"
       }
     ],
     "approval_and_execution_gates": {
       "plan_recording": "USER_EXPLICIT_REQUEST_TO_RECORD_PLAN",
-      "policy_closure": "PENDING_REVIEW_OF_UNRESOLVED_SEMANTIC_DECISIONS",
-      "contract_field_schema_approval": "REQUIRED_IN_ANOTHER_SESSION",
-      "implementation": "NOT_AUTHORIZED_IN_THIS_SESSION",
+      "policy_closure": "NO_EXTERNAL_POLICY_AUDIT;ONLY_EXPLICIT_UNRESOLVED_USER_EXTENSION_OR_LINEAGE_DETAILS_REMAIN_FOR_THOSE_FEATURES",
+      "contract_field_schema_approval": "OFFICIAL_CORE_APPROVED_BY_CURRENT_USER;EXTENSION_LINEAGE_SEPARATE",
+      "implementation": "OFFICIAL_PP300_CORE_SCHEMA_REGISTRY_AND_NATIVE_CONSUMERS_AUTHORIZED",
       "do_not_write_until_approved": [
-        "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-        "src/ptsip/schemas/config.json",
-        "src/ptsip/engines/**",
-        "src/ptsip/profiles/**",
-        "src/tests/ptsip/**",
-        ".ptsip/**"
+        ".ptsip/**",
+        "developer/**",
+        "src/policy/**",
+        "UNRESOLVED_USER_EXTENSION_REGISTRATION_EVENT_FORMAT_OR_COMPRESSION_ALGORITHM"
       ],
       "verification_requirements": [
         "PP300_SCHEMA_JSON_DRAFT202012_COMPILES_WITH_EXACT_APPROVED_ID_AND_TITLE_NO_COMMENT",
@@ -10976,15 +12948,35 @@
         "REGISTERED_NATIVE_ENGINE_MODULES_CONFORM_TO_APPROVED_SCHEMA_WITHOUT_LEGACY_PYTHON_IMPORTS",
         "PP200_HISTORY_AND_RBAC_PP300_INDEPENDENT_CAPABILITIES_NOT_CONFLATED",
         "NEGATIVE_MISSING_CONTRACT_INVALID_LINEAGE_AND_VERSION_COLLISION_TESTS"
-      ]
+      ],
+      "official_core_verification_requirements": [
+        "PP300_SCHEMA_DRAFT202012_WITH_EXACT_APPROVED_ID_TITLE_AND_NO_$comment",
+        "DEFAULT_MODE_ONLY_AND_REQUIRED_COMPONENT_FIELDS_ID_CLASSIFICATION_INCLUDE_PURPOSE_DEPENDENCY",
+        "COMPONENT_DEPENDENCY_POLICY_VALIDATION_STRUCTURE_REUSED_WITH_LOCAL_REFERENCE_CLOSURE_NO_EXTRA_OWNER_EQUALITY",
+        "PP101_PP102_PP200_HISTORICAL_SCHEMA_BLOBS_UNCHANGED",
+        "FOUR_UNIQUE_REGISTRY_RESOURCES_DIRECT_PP300_CURRENT_AND_THREE_HISTORIES_WITH_MATCHING_HASH_PINS",
+        "CURRENT_NATIVE_SELECTION_AND_METADATA_SUPPORT_PP300_WITHOUT_LEGACY_PYTHON_SCHEMA_AUTHORITY",
+        "PP200_AND_OTHER_HISTORICAL_RESOURCES_REMAIN_EXPLICITLY_SELECTABLE",
+        "CORE_TESTS_DO_NOT_ASSERT_UNIMPLEMENTED_USER_EXTENSION_LINEAGE_OR_COMPRESSION"
+      ],
+      "verification_requirements_scope": "USER_EXTENSION_REVISION_UPGRADE_COMPRESSION_ITEMS_APPLY_WHEN_THAT_SEPARATE_CONTRACT_IS_RESOLVED;NOT_OFFICIAL_CORE_ADMISSION_GATES"
     },
     "implementation_order": [
-      "RESOLVE_OPEN_SEMANTIC_POLICIES",
-      "APPROVE_PP300_CONTRACT_FIELD_MAP",
-      "APPROVE_USER_EXTENSION_REVISION_RELATION",
-      "DERIVE_RUST_NATIVE_MODULES_FROM_APPROVED_CONTRACT",
-      "IMPLEMENT_AND_VALIDATE_PP300_SCHEMA",
-      "REGISTER_ACTIVE_SELECTOR_AND_NATIVE_CONSUMERS_AFTER_EXACT_TESTS"
-    ]
+      "RECORD_LATEST_OFFICIAL_CORE_FIELD_CONTRACT_AND_AUTHORIZATION",
+      "IMPLEMENT_OFFICIAL_PP300_SCHEMA_WITH_EXISTING_DEPENDENCY_FIELD_CONTRACT",
+      "UPDATE_CURRENT_DIRECT_RESOURCE_AND_NATIVE_CONSUMERS_ATOMICALLY_AFTER_FOCUSED_TESTS",
+      "PRESERVE_PP200_HISTORY_AND_TEST_CORE_INDEPENDENTLY",
+      "CONTINUE_REPOSITORY_ALL_ENGINE_RESPONSIBILITY_DESIGN_AND_NATIVE_CALLER_REWIRING",
+      "HOLD_ONLY_USER_EXTENSION_EVENT_REGISTRATION_AND_COMPRESSION_DETAILS_UNTIL_DECIDED"
+    ],
+    "latest_user_direction": {
+      "date": "2026-11-19",
+      "source": "CURRENT_USER_EXPLICIT_RESUME_AND_CLARIFICATION",
+      "official_pp300": "CREATE_NEW_OFFICIAL_CURRENT_CONTRACT_FROM_PP200_HISTORY_FIELD_RESPONSIBILITIES",
+      "superseded": "PRIOR_PP200_ONLY_CURRENT_ASSIGNMENT_AND_PP300_PLAN_ONLY_IMPLEMENTATION_HOLD",
+      "dependency": "REUSE_ACTUAL_COMPONENT_DEPENDENCY_POLICY_FIELD_CONTRACT_UNDER_REQUIRED_COMPONENT_dependency",
+      "evidence": "NO_FOUR_STANDALONE_EVIDENCE_SCHEMA_MIGRATION_REQUIRED;ADD_ONLY_NECESSARY_FIELDS_TO_EXISTING_CONTRACTS",
+      "repository_analysis": "ALL_CURRENT_REGISTERED_NATIVE_ENGINES;NO_FIXED_FOUR_ENGINE_SPLIT_OR_NEW_ENGINE_KIND"
+    }
   }
 }
