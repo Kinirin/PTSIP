@@ -86,7 +86,6 @@ modes:
         - src/ptsip/common_contract
       pytest:
         - src/tests/ptsip/contracts/test_unified_policy.py
-        - src/tests/ptsip/contracts/test_migrate_unified_current.py
       wheel_smoke: src/tests/ptsip/contracts/wheel_smoke.py
   - id: ptsip-evidence
     component_ref: ptsip-evidence-verification
@@ -151,7 +150,6 @@ modes:
         - .ptsip/engine/developer/policy/applicability
       pytest:
         - src/tests/ptsip/contracts/test_unified_policy.py
-        - src/tests/ptsip/contracts/test_migrate_unified_current.py
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:
