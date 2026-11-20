@@ -178,10 +178,10 @@
       "Draft.Proposed",
       "Draft.Under_coordination",
       "Approval.Scheduled_implementation",
+      "Approval.In_progress",
       "Approval.Implementation_complete",
       "Halt.Paused",
-      "Halt.Discontinued",
-      "Implementation.In_progress"
+      "Halt.Discontinued"
     ],
     "plan_task_root": ".ptsip/tasks/",
     "plan_checklist": "TABLE_WITH_CONFIGURABLE_COLUMNS_AND_TASK_ID_SYNC",
@@ -1171,10 +1171,10 @@
           "Draft.Proposed",
           "Draft.Under_coordination",
           "Approval.Scheduled_implementation",
+          "Approval.In_progress",
           "Approval.Implementation_complete",
           "Halt.Paused",
-          "Halt.Discontinued",
-          "Implementation.In_progress"
+          "Halt.Discontinued"
         ],
         "work_unit_authority_ref": "work_unit_item[].RA_id",
         "independent_work_unit_status": "FORBIDDEN",
@@ -1193,7 +1193,9 @@
         "checklist_exact_max": "UNRESOLVED",
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
         "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
-        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED"
+        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED",
+        "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
+        "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
       "previous_provisional_location": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
       "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
@@ -1218,10 +1220,10 @@
           "Draft.Proposed",
           "Draft.Under_coordination",
           "Approval.Scheduled_implementation",
+          "Approval.In_progress",
           "Approval.Implementation_complete",
           "Halt.Paused",
-          "Halt.Discontinued",
-          "Implementation.In_progress"
+          "Halt.Discontinued"
         ],
         "work_unit_authority_ref": "work_unit_item[].RA_id",
         "independent_work_unit_status": "FORBIDDEN",
@@ -1240,7 +1242,9 @@
         "checklist_exact_max": "UNRESOLVED",
         "status_and_checklist_commands": "IMPLEMENTATION_REQUIRED_AFTER_PLAN_APPROVAL",
         "current_schema_file": "MALFORMED_LEGACY_CANNOT_BE_USED_AS_APPROVED_TARGET",
-        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED"
+        "approval_scope": "PLANNING_ONLY_NOT_SCHEMA_CREATED",
+        "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
+        "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
       "previous_provisional_location": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
       "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
@@ -2400,15 +2404,16 @@
         "Repair invalid historical Plan v1 JSON in independent release source planning, without copying malformed types or treating it as accepted contract",
         "Plan_title is independent of Plan_filename; approved purpose and plan_id, single version.revision under Plan_properties",
         "Plan policy_refs hold Policy_Identity.id; work_unit_item[].RA_id binds to RA List",
-        "Plan_lifecycle.status sole plan authority; 7 statuses with USER approved transitions, machine full-completion and halt execution rules",
+        "Use exactly seven Plan statuses, with Approval.In_progress replacing Implementation.In_progress. Persist Approval.Scheduled_implementation as approved base even when active coding is observed; Approval.In_progress is a third-party/PTSIP engine observation, optional to write. On authorized resume from Halt.Paused, persist Approval.Scheduled_implementation; other transitions still require separate decisions.",
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
-        "Tasks generate under project-owned .ptsip/tasks and contain task_id/action/task_dependencies_id, no unit-level dependency field; do not mutate .ptsip during planning",
-        "Checklist is column-driven task_id linked table, default four columns Work_sequence/work_unit_id/task_id/acceptance; PTSIP command adds columns and updates states; capacity >=10, exact max unresolved",
-        "Plan ID format belongs to adopting user contract and MUST NOT be globally fixed; task file schema, checklist row write ownership and full transition graph remain separate review topics; do not block structural schema creation for missing user Plan ID pattern."
+        "User-owned .ptsip/tasks/index.yaml is YAML high-level short todo category table of contents. Task items: id, Title, Keyword, status object, $ref to leaf Task file, Last_Modified_Date. Full id includes TASK/8-digit-date/six uppercase/eight alphanumeric; file basename uses date+six-uppercase prefix only. No task purpose inference from filename; exact regex, ref encoding and filename collisions remain separate decisions.",
+        "Checklist maintains approved default four columns and task_id association; index task status is separate from Plan_lifecycle.status. Do not infer completion author, linked-task activation or Checklist status synchronization until user approves index status and evidence owner.",
+        "Plan ID is user-owned and no fixed core regex required. Plan schema registered target still pending; exact full transition graph (beyond observed progress and authorized pause resume target), task index status values, completion ownership, task file collisions/refs and timestamp validation are independent explicit decision gates. Continue approved independent work."
       ],
-      "gate": "Plan statuses and responsibility ownership verified; user-owned Plan ID pattern is not a core schema-generation gate. Actual unresolved transition/task synchronization semantics require separate review; no cross-plan automatic authorization. Nonexistent src/ptsip/schemas/plan/ destination remains forbidden; preserve existing read-only source until replacement is chosen.",
-      "execution_status": "BLOCKED_EXPLICIT_PLAN_TARGET_AND_TASK_TRANSITION_OWNERSHIP_DECISIONS",
-      "current_result": "Plan target locations remain rejected; full task/checklist ownership and lifecycle transition semantics require their own decision. Missing user Plan ID pattern is not a blocker."
+      "gate": "Seven Plan statuses corrected, observed Approval.In_progress is optional document persistence, scheduled approval remains effective while actual work runs, and authorized resumption writes Approval.Scheduled_implementation. User .ptsip/tasks/index.yaml location and roles established. Plan schema target, full transitions, task index status/permissions, completion writer and synchronization, prefix collisions and reference encoding remain unresolved. Only affected implementation blocked; no external policy dependency.",
+      "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_TASK_INDEX_ROLES_APPROVED_STATUS_AND_SYNC_OPEN",
+      "current_result": "Plan.status Approval.In_progress is observed runtime not mandatory persisted; task index.yaml with user-defined brief categories and task reference item roles recorded. No status vocabulary selected, no task schema or task files created.",
+      "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract"
     },
     {
       "id": "WU-05",
@@ -8090,6 +8095,25 @@
       "official_pp300_core_continues": true,
       "user_custom_profile_lineage_scope": "NOT_ADDITIONALLY_AUTHORIZED",
       "full_22_profile_deletion_gate": "SATISFIED_ACTION_DUE_NOT_PERFORMED"
+    },
+    "user_wu04_state_task_index_2026_11_20": {
+      "status": "USER_APPROVED_PLAN_DIRECTION_RECORDED_OPEN_TASK_INDEX_STATUS_CHOICE",
+      "approved_scope": [
+        "RENAME_APPROVAL_IN_PROGRESS",
+        "KEEP_SCHEDULED_DOCUMENT_BASE_WHEN_OBSERVED_WORKING",
+        "AUTHORIZED_RESUME_PERSISTS_SCHEDULED",
+        "USER_TASK_INDEX_YAML_PATH",
+        "HIGH_LEVEL_TOC_AND_TASK_ITEM_FIELDS_ID_PREFIX"
+      ],
+      "unresolved_scope": [
+        "INDEX_STATUS_VALUES",
+        "COMPLETION_WRITER_AND_DEPENDENT_TASK_SYNC",
+        "PREFIX_FILENAME_COLLISION",
+        "EXACT_REF_ENCODING_AND_TIMESTAMP",
+        "PLAN_SCHEMA_TARGET_AND_OTHER_TRANSITIONS"
+      ],
+      "plan_contract_ref": "wu04_observed_execution_and_task_index_contract",
+      "source_mutation": "THIS_PLAN_ONLY"
     }
   },
   "release_038_field_review": {
@@ -8566,7 +8590,7 @@
         "id": "F-PLN-014",
         "name": "status",
         "decision": "APPROVED_ENUM",
-        "note": "Seven Draft/Approval/Halt/Implementation states with semantics as specified by user"
+        "note": "SEVEN_STATES_WITH_APPROVAL_IN_PROGRESS_REPLACING_OLD_IMPLEMENTATION_PREFIX;IN_PROGRESS_OBSERVED_RUNTIME_OPTIONAL_TO_PERSIST;DOCUMENT_REMAINS_SCHEDULED_DURING_IMPLEMENTATION;PAUSE_RESUME_DOCUMENT_TO_SCHEDULED"
       },
       {
         "id": "F-PLN-015",
@@ -8780,13 +8804,13 @@
         "id": "F-PLN-042",
         "name": "task_dependencies_id",
         "decision": "APPROVED_NEW_ROLE",
-        "note": "Per task list of prerequisite task_id values for .ptsip/tasks"
+        "note": "Per task list of prerequisite task_id; USER_TASK_INDEX_REF_LINK_AND_COMPLETION_STATUS_WRITER_SEPARATELY_UNRESOLVED"
       },
       {
         "id": "F-PLN-043",
         "name": "column",
         "decision": "APPROVED_NEW_ROLE",
-        "note": "Checklist.column[] defaults Work_sequence/work_unit_id/task_id/acceptance, custom columns and >=10 support"
+        "note": "Checklist.column[] defaults and extension remain; no authorized INDEX_STATUS_TO_CHECKLIST_WRITE_PRECEDENCE"
       }
     ],
     "policy_v4": {
@@ -8958,19 +8982,19 @@
         "Draft.Proposed",
         "Draft.Under_coordination",
         "Approval.Scheduled_implementation",
+        "Approval.In_progress",
         "Approval.Implementation_complete",
         "Halt.Paused",
-        "Halt.Discontinued",
-        "Implementation.In_progress"
+        "Halt.Discontinued"
       ],
       "status_rules": {
         "Draft.Proposed": "NO_USER_APPROVAL",
         "Draft.Under_coordination": "NEEDS_ANALYSIS",
-        "Approval.Scheduled_implementation": "USER_APPROVED_CAN_IMPLEMENT",
+        "Approval.Scheduled_implementation": "PERSISTED_USER_APPROVED_EXECUTION_ELIGIBLE_BASE;ACTUAL_WORK_ALLOWED_WITHOUT_WRITING_IN_PROGRESS",
         "Approval.Implementation_complete": "ALL_IMPLEMENTATION_COMPLETE_NOT_PARTIAL",
-        "Halt.Paused": "CAN_RESTART",
+        "Halt.Paused": "PERSISTED_EXECUTION_PAUSE;ON_AUTHORIZED_RESUME_DOCUMENT_RETURNS_TO_APPROVAL_SCHEDULED_IMPLEMENTATION",
         "Halt.Discontinued": "NO_DEPENDENTS_READ_ONLY_NO_EXECUTION",
-        "Implementation.In_progress": "USER_OR_AGENT_TRANSITION_FROM_APPROVED"
+        "Approval.In_progress": "OBSERVED_RUNTIME_EXECUTION_BY_THIRD_PARTY_OR_ENGINE;DOCUMENT_PERSISTENCE_OPTIONAL_NOT_SELF_ASSERTED_PRECONDITION"
       },
       "auto_completion": "PTSIP_CHANGES_TO_APPROVAL_IMPLEMENTATION_COMPLETE_ONLY_AFTER_ALL_REQUIRED_COMPLETION_AND_VERIFICATION",
       "workunit_link": "RA_id",
@@ -8997,7 +9021,19 @@
         "task_id_sync": true
       },
       "plan_id_pattern": "USER_OWNED_DECLARATION_NO_PTSIP_FIXED_PATTERN",
-      "note": "No implementation_authorized or publication_authorized contract field, status is sole plan execution lifecycle authority"
+      "note": "No implementation_authorized or publication_authorized contract field, status is sole plan execution lifecycle authority",
+      "observed_progress_contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle",
+      "task_index_contract_ref": "wu04_observed_execution_and_task_index_contract.task_index",
+      "task_index_path": ".ptsip/tasks/index.yaml",
+      "task_index_status_values": "UNRESOLVED",
+      "task_index_field_roles": [
+        "id",
+        "Title",
+        "Keyword",
+        "status",
+        "$ref",
+        "Last_Modified_Date"
+      ]
     },
     "open_choices": [
       {
@@ -9026,7 +9062,8 @@
       {
         "id": "PLAN_STATUS_TRANSITION_GRAPH",
         "field": "F-PLN-014",
-        "state": "OTHER_TRANSITIONS_NOT_YET_APPROVED"
+        "state": "SEVEN_VALUES_CORRECTED_OBSERVER_VS_DOCUMENT_RESOLVED;ON_AUTHORIZED_RESUME_DOCUMENT_SCHEDULED;OTHER_TRANSITIONS_UNRESOLVED",
+        "contract_ref": "wu04_observed_execution_and_task_index_contract.plan_lifecycle"
       },
       {
         "id": "CHECKLIST_MAX_COLUMNS",
@@ -9097,7 +9134,8 @@
       {
         "id": "TASK_OUTPUT_CONTRACT",
         "field": "F-PLN-042",
-        "state": "TASK_FILE_NAMING_AND_SYNC_PRECEDENCE_PENDING"
+        "state": "INDEX_YAML_PATH_AND_ITEM_ROLES_RECORDED;STATUS_VOCABULARY_AND_COMPLETION_SYNC_AND_TASK_FILENAME_COLLISION_UNRESOLVED",
+        "contract_ref": "wu04_observed_execution_and_task_index_contract.task_index"
       },
       {
         "id": "POLICY_CATEGORY_SUBFIELDS",
@@ -13224,5 +13262,202 @@
       "user_extension_revision_lineage_scope": "UNRESOLVED_UNCHANGED_NOT_SILENTLY_APPROVED",
       "note": "Do not return to policy audit gate or re-block approved official core work because of Repository operation registration."
     }
+  },
+  "wu04_observed_execution_and_task_index_contract": {
+    "schema_version": "ptsip-wu04-task-index-plan/v1",
+    "approved_by_user": "EXPLICIT_2026_11_20",
+    "record_state": "PLAN_SEMANTICS_RECORDED_TASK_INDEX_STATUS_AND_COMPLETION_RULES_UNRESOLVED",
+    "execution_order": "ACTUAL_DEPENDENCIES_NOT_WU_NUMBER",
+    "plan_lifecycle": {
+      "corrected_status": {
+        "old": "Implementation.In_progress",
+        "new": "Approval.In_progress",
+        "new_state_added": false
+      },
+      "canonical_statuses": [
+        "Draft.Proposed",
+        "Draft.Under_coordination",
+        "Approval.Scheduled_implementation",
+        "Approval.In_progress",
+        "Approval.Implementation_complete",
+        "Halt.Paused",
+        "Halt.Discontinued"
+      ],
+      "authoritative_document_field": "Plan_lifecycle.status",
+      "persisted_vs_observed": {
+        "Approval.Scheduled_implementation": "PERSISTED_USER_APPROVED_EXECUTION_ELIGIBLE_BASE_MAY_REMAIN_WRITTEN_DURING_REAL_EXECUTION",
+        "Approval.In_progress": "EXISTS_AS_RUNTIME_OBSERVATION_STATUS_NOT_REQUIRED_TO_WRITE_BACK_TO_PLAN",
+        "third_party_observation": "EVIDENCE_OF_ACTUAL_EXECUTING_AGENT_ACTION_CAN_CONSTITUTE_IN_PROGRESS",
+        "self_observation": "AGENT_CANNOT_CLAIM_THIRD_PARTY_INDEPENDENT_OBSERVATION_FROM_ITS_OWN_DECLARE_ONLY",
+        "ptsip_engine_observation": "MAY_OPTIONALLY_PERSIST_APPROVAL_IN_PROGRESS_WITH_VERIFIABLE_EXECUTION_OBSERVATION",
+        "missing_in_progress_write_means_execution_blocked": false,
+        "no_extra_lifecycle_enum": true,
+        "no_independent_plan_or_workunit_approval_field": true,
+        "observation_alone_grants_new_permission": false
+      },
+      "pause_resume": {
+        "approved_document_before_execution": "Approval.Scheduled_implementation",
+        "paused_written_state": "Halt.Paused",
+        "paused_execution_allowed": false,
+        "authorized_resume_written_state": "Approval.Scheduled_implementation",
+        "activity_observed_after_resume": "Approval.In_progress",
+        "observed_in_progress_never_required_for_resume": true,
+        "no_implicit_resume_from_discontinued": true,
+        "pause_resume_authorizer": "UNRESOLVED",
+        "other_transition_graph": "UNRESOLVED",
+        "no_new_status_values": true
+      },
+      "completion": "Approval.Implementation_complete_REQUIRES_ALL_REQUIRED_WORK_AND_VERIFICATION_PASSED",
+      "task_index_status_independent": true
+    },
+    "task_index": {
+      "owner_root": "<USER_REPOSITORY>/.ptsip/tasks/",
+      "toc_file": "<USER_REPOSITORY>/.ptsip/tasks/index.yaml",
+      "toc_file_format": "YAML",
+      "responsibility": "USER_AUTHORED_HIGH_LEVEL_TODO_CATEGORY_INDEX_NOT_DETAILED_TASK_PROCEDURE",
+      "category_description": "SHORT_ONLY",
+      "user_categories_allowed": true,
+      "task_item_count": "MULTIPLE",
+      "user_item_notation": "id.[]",
+      "item_fields": {
+        "id": {
+          "role": "FULL_TASK_ID",
+          "type": "string",
+          "logical_parts": [
+            "TASK",
+            "EFFECTIVE_DATE_YYYYMMDD_8_DIGITS",
+            "SIX_ASCII_UPPERCASE",
+            "EIGHT_ALPHANUMERIC_SUFFIX"
+          ],
+          "user_example": "TASK-YYYYMMDD-ABCDEF-a1B2c3D4",
+          "exact_regex": "UNRESOLVED_EXAMPLE_NOT_CANONICAL"
+        },
+        "Title": {
+          "type": "string",
+          "role": "SHORT_HUMAN_TITLE"
+        },
+        "Keyword": {
+          "type": "string",
+          "minLength": 1,
+          "role": "SEARCH_MAIN_TASK_KEYWORD",
+          "writers": [
+            "USER",
+            "AGENT"
+          ]
+        },
+        "status": {
+          "type": "object",
+          "role": "HUMAN_EDITABLE_AGENT_EXECUTION_PERMISSION_AND_COMPLETION_DEPENDENCY_STATUS",
+          "approved_values": null
+        },
+        "$ref": {
+          "type": "string",
+          "role": "CALL_REFERENCE_TO_REFERENCED_TASK_FILE_IN_USER_TASKS_ROOT",
+          "serialization": "UNRESOLVED_SCHEMA_REF_SEMANTICS_NOT_ASSUMED"
+        },
+        "Last_Modified_Date": {
+          "type": "string",
+          "user_format": "YYYY-MM-DD/hh:mm:ss",
+          "role": "RECORD_LAST_MODIFICATION",
+          "exact_timezone_and_parser": "UNRESOLVED"
+        }
+      },
+      "item_identity_and_file": {
+        "full_id_example_pattern": "^TASK-{Effective Date: YYYYMMDD(8글자)}-[A-Z]{6}-[a-zA-Z0-9]{8}*$",
+        "filename_example_pattern": "^TASK-{Effective Date: YYYYMMDD(8글자)}-[A-Z]{6}*$",
+        "basename_from_id": "TASK_PLUS_EIGHT_DIGIT_DATE_PLUS_SIX_UPPERCASE_PREFIX_ONLY",
+        "basename_example": "TASK-YYYYMMDD-ABCDEF",
+        "purpose": "NO_TASK_SEMANTIC_INFERENCE_FROM_FILENAME",
+        "task_leaf_extension": "UNRESOLVED;INDEX_YAML_ONLY_APPROVED",
+        "collision_issue": "DIFFERENT_FULL_IDS_CAN_MAP_TO_SAME_DATE_SIX_LETTER_FILENAME_PREFIX",
+        "collision_policy": "UNRESOLVED_NO_OVERWRITE_OR_AUTORENAME",
+        "exact_regex": "UNRESOLVED_USER_PATTERNS_ARE_ILLUSTRATIVE_NOT_FORMALIZED"
+      },
+      "status_decision": {
+        "requirement": "SHORT_USER_EDITABLE_ACTIVE_OR_INACTIVE_STATUS_DETERMINES_WHETHER_AGENT_CAN_EXECUTE_REFERENCED_TASK",
+        "missing_unknown_status": "NO_EXECUTION_AUTHORITY_FAIL_CLOSED",
+        "completion_fact_writer": "UNRESOLVED",
+        "completion_authoritative_data": "UNRESOLVED",
+        "linkage_to_other_tasks": "MUST_PRESERVE_EXISTING_TASK_dependencies_id_TASK_LEVEL_REFERENCES;STATUS_EFFECT_ON_DEPENDENTS_UNRESOLVED",
+        "plan_lifecycle_is_separate": true,
+        "checklist_conflict_precedence": "UNRESOLVED",
+        "no_implicit_active_default": true,
+        "options": [
+          {
+            "id": "A",
+            "direction": "MINIMUM_THREE_PHASE",
+            "meaning": "SIMPLE_INACTIVE_ACTIVE_FINISHED",
+            "benefits": [
+              "FEWEST_USER_EDITABLE_STATES",
+              "SMALL_AUTOMATION_BRANCHING"
+            ],
+            "limitations": [
+              "PAUSE_VS_WAIT_NOT_DISTINGUISHED",
+              "COMPLETION_EVIDENCE_WRITER_STILL_PENDING"
+            ],
+            "selected": false
+          },
+          {
+            "id": "B",
+            "direction": "EXPLICIT_PAUSE_LIFECYCLE",
+            "meaning": "WAITING_ACTIVE_PAUSED_FINISHED",
+            "benefits": [
+              "TASK_PAUSE_IS_VISIBLE",
+              "EXECUTION_ELIGIBILITY_EASILY_DISTINGUISHED"
+            ],
+            "limitations": [
+              "MORE_STATUSES",
+              "PAUSE_RESUME_PERMISSIONS_NEED_APPROVAL"
+            ],
+            "selected": false
+          },
+          {
+            "id": "C",
+            "direction": "PERMISSION_FIRST",
+            "meaning": "DISABLED_ENABLED_CLOSED_WITH_COMPLETION_EVIDENCE_SEPARATE",
+            "benefits": [
+              "EXECUTION_GATE_VERY_SIMPLE",
+              "CLOSED_ACCESS_EXPLICIT"
+            ],
+            "limitations": [
+              "CLOSED_DOES_NOT_PROVE_COMPLETION",
+              "EXTERNAL_COMPLETION_SOURCE_NEEDS_DECISION"
+            ],
+            "selected": false
+          }
+        ]
+      },
+      "remaining_decision_gates": [
+        {
+          "id": "TASK-INDEX-STATUS",
+          "question": "SIMPLE_STATUS_VOCABULARY_AND_EXECUTION_PERMISSION_TRANSITIONS"
+        },
+        {
+          "id": "TASK-INDEX-COMPLETION",
+          "question": "WHO_WRITES_COMPLETION_FACT_AND_WHAT_IS_AUTHORITATIVE_VS_CHECKLIST"
+        },
+        {
+          "id": "TASK-INDEX-ID-COLLISION",
+          "question": "CANONICAL_ID_REGEX_AND_PREFIX_ONLY_FILENAME_COLLISION"
+        },
+        {
+          "id": "TASK-INDEX-REF",
+          "question": "INDEX_ID_ARRAY_YAML_SHAPE_AND_TASK_FILE_REF_ENCODING"
+        },
+        {
+          "id": "TASK-INDEX-TIME",
+          "question": "TIMESTAMP_FORMAT_TIMEZONE_AND_WRITER"
+        }
+      ],
+      "implementation_bounds": {
+        "approved": "PLAN_DIRECTION_AND_INDEX_FILE_LOCATION_ONLY",
+        "index_file_created": false,
+        "task_files_created": false,
+        "task_index_schema_created": false,
+        "no_executable_tasks_until_status_decided": true,
+        "no_external_policy_document_dependency": true
+      }
+    },
+    "no_implementation_or_policy_mutation": true
   }
 }
