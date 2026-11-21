@@ -1,11 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "PTSIP Plan Unit — draft",
-  "$comment": "WU-04_DRAFT_DIAGNOSTIC_ONLY; NOT RELEASE AUTHORIZED. User-approved value[] is optional with JSON Schema items:{} and ZERO PTSIP-defined inner properties/required child fields; do not publish named item-field examples. Work Unit ID regex, other required fields and final $id/version/ref bindings remain unresolved.",
+  "$comment": "WU-04_DRAFT_DIAGNOSTIC_ONLY; NOT RELEASE AUTHORIZED. User-approved value[] is optional with JSON Schema items:{} and ZERO PTSIP-defined inner properties/required child fields; do not publish named item-field examples. Work Unit ID regex user-approved ^WU-[A-Z]{2}-[0-9]{3}$; other required fields and final $id/version/ref bindings remain unresolved.",
   "type": "object",
   "properties": {
     "work_unit_id": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^WU-[A-Z]{2}-[0-9]{3}$"
     },
     "title": {
       "type": "string"
