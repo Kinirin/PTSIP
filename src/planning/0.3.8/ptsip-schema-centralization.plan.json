@@ -1438,45 +1438,74 @@
       "path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
       "filename": "PTSIP_policy_content.schema.json",
       "responsibility": "Independent Policy_Content.items[] with exactly id and value; same-document Policy_Rules.rules[].content.content_id[] resolves item id. No path, sha256, revision_ref, source_pointer or source_document; identity owns metadata.",
-      "sources": [],
+      "sources": [
+        "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
+      ],
       "readiness": "APPROVED_CONTENT_ITEM_FIELD_SET_ID_AND_VALUE_ONLY_USER_CUSTOM_REQUIREDNESS_NULL",
-      "decision": "USER_EXPLICIT_CONTENT_REDUCTION_ID_VALUE_ONLY"
+      "decision": "USER_EXPLICIT_CONTENT_REDUCTION_ID_VALUE_ONLY",
+      "source_roles": [
+        "CURRENT_CANONICAL_V4_INDEPENDENT_CONTRACT"
+      ]
     },
     {
       "path": "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
       "filename": "PTSIP_policy_identity.schema.json",
       "responsibility": "Independent Policy_Identity contract",
-      "sources": [],
+      "sources": [
+        "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json"
+      ],
       "readiness": "NEW_CONTRACT_FIELDS_PENDING",
       "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
-      "source_roles": []
+      "source_roles": [
+        "CURRENT_CANONICAL_V4_INDEPENDENT_CONTRACT"
+      ]
     },
     {
       "path": "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
       "filename": "PTSIP_policy_lifecycle.schema.json",
       "responsibility": "Independent Policy_Lifecycle contract",
-      "sources": [],
+      "sources": [
+        "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json"
+      ],
       "readiness": "NEW_CONTRACT_FIELDS_PENDING",
       "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
-      "source_roles": []
+      "source_roles": [
+        "CURRENT_CANONICAL_V4_INDEPENDENT_CONTRACT"
+      ]
     },
     {
       "path": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
       "filename": "public-structure-policy.schema.json",
       "responsibility": "Reference-only Policy v4 structure; never embeds independent field schemas",
-      "sources": [],
+      "sources": [
+        "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+        "src/ptsip/schemas/policy/identity/PTSIP_policy_identity.schema.json",
+        "src/ptsip/schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json",
+        "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json",
+        "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json"
+      ],
       "readiness": "NEW_CONTRACT_FIELDS_PENDING",
       "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
-      "source_roles": []
+      "source_roles": [
+        "CURRENT_CANONICAL_V4_REFERENCE_ONLY_ROOT",
+        "REFERENCED_V4_IDENTITY_CONTRACT",
+        "REFERENCED_V4_LIFECYCLE_CONTRACT",
+        "REFERENCED_V4_RULES_CONTRACT",
+        "REFERENCED_V4_CONTENT_CONTRACT"
+      ]
     },
     {
       "path": "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json",
       "filename": "PTSIP_policy_rules.schema.json",
       "responsibility": "Independent Policy_Rules contract references RA using RA_id; regex ^R-ID-[0-9A-F]{32}$",
-      "sources": [],
+      "sources": [
+        "src/ptsip/schemas/policy/rules/PTSIP_policy_rules.schema.json"
+      ],
       "readiness": "NEW_CONTRACT_FIELDS_PENDING",
       "decision": "EXACT_USER_APPROVED_V4_NEW_CONTRACT_NOT_LEGACY_MIGRATION",
-      "source_roles": []
+      "source_roles": [
+        "CURRENT_CANONICAL_V4_INDEPENDENT_CONTRACT"
+      ]
     },
     {
       "path": null,
