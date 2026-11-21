@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PTSIP Plan Unit — draft",
+  "$comment": "WU-04_PATH_SCAFFOLD_ONLY; NOT_REGISTERED_OR_RELEASE_AUTHORIZED. Required-field sets, final $id/version and cross-schema $ref bindings remain undecided.",
+  "type": "object",
+  "properties": {
+    "work_unit_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "RA_id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "project_specific": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "planid": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "planid"
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

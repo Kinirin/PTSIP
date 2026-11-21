@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PTSIP Plan Document Structure — draft",
+  "$comment": "WU-04_PATH_SCAFFOLD_ONLY; NOT_REGISTERED_OR_RELEASE_AUTHORIZED. Required-field sets, final $id/version and cross-schema $ref bindings remain undecided.",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "contract_vision": {
+      "type": "string"
+    },
+    "contract_revision": {},
+    "policy_refs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {}
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PTSIP Plan Lifecycle — draft",
+  "$comment": "WU-04_PATH_SCAFFOLD_ONLY; NOT_REGISTERED_OR_RELEASE_AUTHORIZED. Required-field sets, final $id/version and cross-schema $ref bindings remain undecided.",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "Draft.Proposed",
+        "Draft.Under_coordination",
+        "Approval.Scheduled_implementation",
+        "Approval.In_progress",
+        "Approval.Implementation_complete",
+        "Halt.Paused",
+        "Halt.Discontinued"
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "status"
+  ]
+}

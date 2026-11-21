@@ -2610,9 +2610,32 @@
         "Record three user-supplied regex patterns losslessly; two escaped asterisks require trailing literal '*', and project_specific.planid pattern is invalid (quantifier repetition). Do not autocorrect regex, infer mandatory trailing star, or gate other non-affected WU work. Offer exact corrected candidates for user choice."
       ],
       "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; responsibility-grouped config registration C APPROVED (Identity/Lifecycle/Unit), full separation of Identity/Lifecycle/Unit APPROVED; all four exact schema target paths APPROVED; Plan Identity/Unit required field responsibilities, public-root-to-contract references and config registration identities pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency. User 2026-11-21 field ownership/layout direction and required field roles recorded in wu04_user_field_design_2026_11_21. Three exact regex strings not activated pending parse/intended-star decision, last-change/contract-revision double encoding and policy reference tuple second component remain unresolved. Effective policy is not overwritten.",
-      "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_FOUR_TASK_LABELS_APPROVED_TRANSITIONS_AND_SYNC_OPEN",
-      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; actual schema files and config.json plan registration are not yet implemented. User selected hierarchical responsibility-grouped registry C with Plan Identity, Plan Lifecycle, and Plan Unit. Exact schema ownership grouping, registry keys, $id/version, and config.json mutation remain pending. User 2026-11-20 explicitly approved full independent separation for Plan Identity/Lifecycle/Unit under C. Lifecycle and public Plan root target paths stay approved; Identity/Unit file paths, mapping keys and contents remain pending; config.json unchanged. User 2026-11-21 approved new Identity and Unit exact paths. YAML-only new/rewrite, unilateral policy-source references, contract provenance/customization, CLI extensibility, Policy-like revision compression and graded required-field strength are recorded as discussion premises, not materialized schema constraints. Path casing conflict with existing customer contracts directory remains unresolved. User 2026-11-21 proposed a root/Identity/Lifecycle/Unit field ownership layout and stronger Identity, lighter extensible Unit/project_specific planid refs; plan-only record contains precise user raw regex and explicit unresolved syntax gate. No YAML or JSON schema files created.",
-      "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract"
+      "execution_status": "FOUR_SEPARATE_SCHEMA_PATH_SCAFFOLDS_CREATED_DESIGN_AND_REGISTRATION_OPEN",
+      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; all four exact path scaffolds now exist, while config.json plan registration remains unimplemented. User selected hierarchical responsibility-grouped registry C with Plan Identity, Plan Lifecycle, and Plan Unit. Exact schema ownership grouping, registry keys, $id/version, and config.json mutation remain pending. User 2026-11-20 explicitly approved full independent separation for Plan Identity/Lifecycle/Unit under C. Lifecycle and public Plan root target paths stay approved; Identity/Unit file paths, mapping keys and contents remain pending; config.json unchanged. User 2026-11-21 approved new Identity and Unit exact paths. YAML-only new/rewrite, unilateral policy-source references, contract provenance/customization, CLI extensibility, Policy-like revision compression and graded required-field strength are recorded as discussion premises, not materialized schema constraints. Path casing conflict with existing customer contracts directory remains unresolved. User 2026-11-21 proposed a root/Identity/Lifecycle/Unit field ownership layout and stronger Identity, lighter extensible Unit/project_specific planid refs; plan-only record contains precise user raw regex and explicit unresolved syntax gate. Four draft JSON Schema scaffolds created; required fields, regex, $id, $ref and registration are not finalized.",
+      "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract",
+      "schema_path_scaffold_execution": {
+        "state": "FOUR_SEPARATE_PATH_SCAFFOLDS_CREATED_NOT_REGISTERED",
+        "legacy_retired": "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json",
+        "targets": [
+          "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+          "src/ptsip/schemas/plan/plan-identity.schema.json",
+          "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+          "src/ptsip/schemas/plan/plan-unit.schema.json"
+        ],
+        "responsibility_boundaries": {
+          "public_root": "DOCUMENT_ROOT",
+          "identity": "PLAN_IDENTITY_AND_DOCUMENT_REVISION",
+          "lifecycle": "PLAN_LIFECYCLE",
+          "unit": "WORK_UNIT_STRUCTURE"
+        },
+        "schema_format": "JSON_SCHEMA_DRAFT_2020_12",
+        "content_maturity": "PARTIAL_APPROVED_FIELD_ROLES_ONLY",
+        "required_field_regex_ref_and_id_unresolved": true,
+        "registry_config_unchanged": true,
+        "common_contract_manifest_unchanged": true,
+        "runtime_activation": "NOT_AUTHORIZED",
+        "gate": "FIELD_CONTENT_ID_VERSION_REF_AND_REGISTRY_BINDING_PENDING"
+      }
     },
     {
       "id": "WU-05",
@@ -14041,5 +14064,28 @@
       "USER_OVERRIDE_SCOPE_COMPATIBILITY_WITH_EFFECTIVE_SFP_CNTR_0009"
     ],
     "approval_boundary": "PLAN_FIELD_DIRECTION_RECORDED_NOT_SCHEMA_IMPLEMENTATION_NOT_EFFECTIVE_POLICY_OVERRIDE"
+  },
+  "wu04_schema_scaffold_execution": {
+    "state": "FOUR_SEPARATE_PATH_SCAFFOLDS_CREATED_NOT_REGISTERED",
+    "legacy_retired": "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json",
+    "targets": [
+      "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+      "src/ptsip/schemas/plan/plan-identity.schema.json",
+      "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+      "src/ptsip/schemas/plan/plan-unit.schema.json"
+    ],
+    "responsibility_boundaries": {
+      "public_root": "DOCUMENT_ROOT",
+      "identity": "PLAN_IDENTITY_AND_DOCUMENT_REVISION",
+      "lifecycle": "PLAN_LIFECYCLE",
+      "unit": "WORK_UNIT_STRUCTURE"
+    },
+    "schema_format": "JSON_SCHEMA_DRAFT_2020_12",
+    "content_maturity": "PARTIAL_APPROVED_FIELD_ROLES_ONLY",
+    "required_field_regex_ref_and_id_unresolved": true,
+    "registry_config_unchanged": true,
+    "common_contract_manifest_unchanged": true,
+    "runtime_activation": "NOT_AUTHORIZED",
+    "gate": "FIELD_CONTENT_ID_VERSION_REF_AND_REGISTRY_BINDING_PENDING"
   }
 }
