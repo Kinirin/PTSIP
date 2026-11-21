@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "PTSIP Plan Unit — draft",
-  "$comment": "WU-04_PATH_SCAFFOLD_ONLY; NOT_REGISTERED_OR_RELEASE_AUTHORIZED. Required-field sets, final $id/version and cross-schema $ref bindings remain undecided.",
+  "$comment": "WU-04_DRAFT_DIAGNOSTIC_ONLY; NOT RELEASE AUTHORIZED. Work Unit structure has one work_unit_id, title/RA_id/task_id preserved, optional value[] with no PTSIP-imposed required item fields. Work unit ID regex, other required fields and final $id/version/ref bindings remain unresolved.",
   "type": "object",
   "properties": {
     "work_unit_id": {
@@ -19,23 +19,9 @@
         "type": "string"
       }
     },
-    "project_specific": {
+    "value": {
       "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "planid": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "planid"
-        ],
-        "additionalProperties": true
-      }
+      "items": {}
     }
   },
   "additionalProperties": true
