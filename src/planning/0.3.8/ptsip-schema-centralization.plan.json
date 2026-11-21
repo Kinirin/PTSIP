@@ -8587,700 +8587,732 @@
     }
   },
   "release_038_field_review": {
-    "contract": "ptsip-release-038-field-decisions/v1",
+    "contract": "ptsip-release-038-field-decisions/v2",
     "authority": "PLAN_ONLY_NO_POLICY_OR_IMPLEMENTATION_MUTATION",
     "approval_basis": "Unmentioned earlier fields approved by default EXCEPT RAC/AEC Lists, which user explicitly rejected in full; only new independent reanalysis candidates can be considered after explicit review.",
     "fields": [
       {
         "id": "F-POL-001",
         "name": "Policy_Identity",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-002",
         "name": "id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-003",
         "name": "title",
-        "decision": "APPROVED_CORRECTED",
-        "note": "Title of this policy document"
+        "status": "APPROVED_CORRECTED",
+        "decision": "Title of this policy document"
       },
       {
         "id": "F-POL-004",
         "name": "Policy_Category",
-        "decision": "APPROVED_RENAMED",
-        "note": "Policy_Category is user-defined contract, not serialized from developer root_family/policy_kind. Two required semantic roles: category namespace and namespace definition. Three optional: other namespace boundaries, included responsibilities, excluded responsibilities. Physical field names belong to user contract."
+        "status": "APPROVED_RENAMED",
+        "decision": "Policy_Category is user-defined contract, not serialized from developer root_family/policy_kind. Two required semantic roles: category namespace and namespace definition. Three optional: other namespace boundaries, included responsibilities, excluded responsibilities. Physical field names belong to user contract."
       },
       {
         "id": "F-POL-005",
         "name": "root_family",
-        "decision": "REPLACED_NO_FIELD",
-        "note": "root_family not separately serialized; combined official Policy_Category"
+        "status": "REPLACED_NO_FIELD",
+        "decision": "root_family not separately serialized; combined official Policy_Category"
       },
       {
         "id": "F-POL-006",
         "name": "version",
-        "decision": "APPROVED_OPTIONS",
-        "note": "Policy_Identity.version is optional; if present MUST validate against one supported PTSIP official version notation (approved base/prefix/suffix/build candidates) OR an independent user-authored version contract under adopting project .ptsip/contract/user/. No schema required if version absent; exact official regex is implementation detail, not unresolved user policy gate."
+        "status": "APPROVED_OPTIONS",
+        "decision": "Policy_Identity.version is optional; if present MUST validate against one supported PTSIP official version notation (approved base/prefix/suffix/build candidates) OR an independent user-authored version contract under adopting project .ptsip/contract/user/. No schema required if version absent; exact official regex is implementation detail, not unresolved user policy gate."
       },
       {
         "id": "F-POL-007",
         "name": "revision",
-        "decision": "REJECTED",
-        "note": "No separate Policy revision field"
+        "status": "REJECTED",
+        "decision": "No separate Policy revision field"
       },
       {
         "id": "F-POL-008",
         "name": "Policy_Lifecycle",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-009",
         "name": "status",
-        "decision": "APPROVED_ENUM",
-        "note": "Exactly 13 previous official lifecycle status values"
+        "status": "APPROVED_ENUM",
+        "decision": "Exactly 13 previous official lifecycle status values"
       },
       {
         "id": "F-POL-010",
         "name": "status_reason",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-011",
         "name": "status_transition_ref",
-        "decision": "REJECTED",
-        "note": "Use one Policy_Lifecycle.evaluation local note, no approval ref or independent timestamp"
+        "status": "REJECTED",
+        "decision": "Use one Policy_Lifecycle.evaluation local note, no approval ref or independent timestamp"
       },
       {
         "id": "F-POL-012",
         "name": "status_changed_at",
-        "decision": "REJECTED",
-        "note": "Use one Policy_Lifecycle.evaluation local note, no approval ref or independent timestamp"
+        "status": "REJECTED",
+        "decision": "Use one Policy_Lifecycle.evaluation local note, no approval ref or independent timestamp"
       },
       {
         "id": "F-POL-013",
         "name": "Policy_Rules",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-014",
         "name": "rules",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-015",
         "name": "id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
-        "note": "Policy_Rules.rules[].id has user-configurable pattern in independent .ptsip/contract/user/rules_patterns.json. Never bind to policy_content_id.json or RA_id pattern; no PTSIP-global fixed rule ID regex."
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": "Policy_Rules.rules[].id has user-configurable pattern in independent .ptsip/contract/user/rules_patterns.json. Never bind to policy_content_id.json or RA_id pattern; no PTSIP-global fixed rule ID regex."
       },
       {
         "id": "F-POL-016",
         "name": "content_id",
-        "decision": "APPROVED_REPLACED",
-        "note": "Only content_id[] uses user-configured policy_content_id.json pattern and resolves Policy_Content.items[].id in same policy document."
+        "status": "APPROVED_REPLACED",
+        "decision": "Only content_id[] uses user-configured policy_content_id.json pattern and resolves Policy_Content.items[].id in same policy document."
       },
       {
         "id": "F-POL-017",
         "name": "RA_id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
-        "note": "RA_id is NOT bound to policy_content_id user contract. Keep registered RA-list RA_id and its existing ^R-ID-[0-9A-F]{32}$ format."
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": "RA_id is NOT bound to policy_content_id user contract. Keep registered RA-list RA_id and its existing ^R-ID-[0-9A-F]{32}$ format."
       },
       {
         "id": "F-POL-018",
         "name": "evaluation",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-019",
         "name": "source_refs",
-        "decision": "REJECTED_FOR_POLICY_RULES_EVALUATION_BY_EXPLICIT_USER_DIRECTION",
-        "note": "User rejected Policy_Rules.evaluation.source_refs 2026-11-16. Policy evidence is recorded within the same policy document; do not reference external policy document evidence."
+        "status": "REJECTED_FOR_POLICY_RULES_EVALUATION_BY_EXPLICIT_USER_DIRECTION",
+        "decision": "User rejected Policy_Rules.evaluation.source_refs 2026-11-16. Policy evidence is recorded within the same policy document; do not reference external policy document evidence."
       },
       {
         "id": "F-POL-020",
         "name": "state",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-021",
         "name": "evaluation_scope",
-        "decision": "APPROVED_NARROW",
-        "note": "Concrete evaluation scope only; not whole rule default"
+        "status": "APPROVED_NARROW",
+        "decision": "Concrete evaluation scope only; not whole rule default"
       },
       {
         "id": "F-POL-022",
         "name": "evidence_refs",
-        "decision": "REJECTED",
-        "note": "No additional evidence_refs"
+        "status": "REJECTED",
+        "decision": "No additional evidence_refs"
       },
       {
         "id": "F-POL-023",
         "name": "evaluated_at",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-024",
         "name": "Policy_Content",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-025",
         "name": "items",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-026",
         "name": "id",
-        "decision": "APPROVED_USER_DECLARED_SYMBOLIC_ID_FIXED_REGEX_REVOKED",
-        "note": "Content item id is user-declared readable symbolic constant; Policy_Rules.rules[].content.content_id[] matches exact ID within current policy document; no globally generated ID pattern. Final declaration/namespace grammar unresolved."
+        "status": "APPROVED_USER_DECLARED_SYMBOLIC_ID_FIXED_REGEX_REVOKED",
+        "decision": "Content item id is user-declared readable symbolic constant; Policy_Rules.rules[].content.content_id[] matches exact ID within current policy document; no globally generated ID pattern. Final declaration/namespace grammar unresolved."
       },
       {
         "id": "F-POL-027",
         "name": "source_pointer",
-        "decision": "REJECTED",
-        "note": "No source_pointer and no source_document container"
+        "status": "REJECTED",
+        "decision": "No source_pointer and no source_document container"
       },
       {
         "id": "F-POL-028",
         "name": "value",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-POL-029",
         "name": "source_document",
-        "decision": "REJECTED",
-        "note": "No source_pointer and no source_document container"
+        "status": "REJECTED",
+        "decision": "No source_pointer and no source_document container"
       },
       {
         "id": "F-POL-030",
         "name": "path",
-        "decision": "REMOVED_BY_EXPLICIT_USER_DECISION",
-        "note": "Removed from Policy_Content.items[] because content lives within own policy document and source/provenance fields overlap policy identity. No replacement required in Content record; maintain historical ledger only.",
-        "previous_decision": "APPROVED_MOVED"
+        "status": "REMOVED_BY_EXPLICIT_USER_DECISION",
+        "decision": "Removed from Policy_Content.items[] because content lives within own policy document and source/provenance fields overlap policy identity. No replacement required in Content record; maintain historical ledger only.",
+        "previous_status": "APPROVED_MOVED"
       },
       {
         "id": "F-POL-031",
         "name": "sha256",
-        "decision": "REMOVED_BY_EXPLICIT_USER_DECISION",
-        "note": "Removed from Policy_Content.items[] because content lives within own policy document and source/provenance fields overlap policy identity. No replacement required in Content record; maintain historical ledger only.",
-        "previous_decision": "APPROVED_MOVED"
+        "status": "REMOVED_BY_EXPLICIT_USER_DECISION",
+        "decision": "Removed from Policy_Content.items[] because content lives within own policy document and source/provenance fields overlap policy identity. No replacement required in Content record; maintain historical ledger only.",
+        "previous_status": "APPROVED_MOVED"
       },
       {
         "id": "F-POL-032",
         "name": "revision_ref",
-        "decision": "REMOVED_BY_EXPLICIT_USER_DECISION",
-        "note": "Removed from Policy_Content.items[] because content lives within own policy document and source/provenance fields overlap policy identity. No replacement required in Content record; maintain historical ledger only.",
-        "previous_decision": "APPROVED_MOVED"
+        "status": "REMOVED_BY_EXPLICIT_USER_DECISION",
+        "decision": "Removed from Policy_Content.items[] because content lives within own policy document and source/provenance fields overlap policy identity. No replacement required in Content record; maintain historical ledger only.",
+        "previous_status": "APPROVED_MOVED"
       },
       {
         "id": "F-RA-001",
         "name": "RA_list",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-RA-002",
         "name": "entries",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-RA-003",
         "name": "RA_id",
-        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
-        "note": "RA record unique identity under RA_list.entries[]; approved RA ID grammar unchanged."
+        "status": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "decision": "RA record unique identity under RA_list.entries[]; approved RA ID grammar unchanged."
       },
       {
         "id": "F-RA-004",
         "name": "RA_title",
-        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
-        "note": "RA-owned human-readable responsibility title per RA_id record."
+        "status": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "decision": "RA-owned human-readable responsibility title per RA_id record."
       },
       {
         "id": "F-RA-005",
         "name": "RA_description",
-        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
-        "note": "RA-owned natural-language responsibility description per RA_id record, explicitly included as seventh field."
+        "status": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "decision": "RA-owned natural-language responsibility description per RA_id record, explicitly included as seventh field."
       },
       {
         "id": "F-RA-006",
         "name": "RA_purpose",
-        "decision": "REJECTED",
-        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+        "status": "REJECTED",
+        "decision": "Rejected excess natural language, normative effect or RA source revision fields"
       },
       {
         "id": "F-RA-007",
         "name": "RA_normative_effect",
-        "decision": "REJECTED",
-        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+        "status": "REJECTED",
+        "decision": "Rejected excess natural language, normative effect or RA source revision fields"
       },
       {
         "id": "F-RA-008",
         "name": "RAC_ids",
-        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
-        "note": "RA-owned RAC reference group; each ID references canonical RAC List record."
+        "status": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "decision": "RA-owned RAC reference group; each ID references canonical RAC List record."
       },
       {
         "id": "F-RA-009",
         "name": "RAC_name",
-        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
-        "note": "RA-owned derived display field per referenced RAC ID, canonical name managed/created in RAC List, not RA."
+        "status": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "decision": "RA-owned derived display field per referenced RAC ID, canonical name managed/created in RAC List, not RA."
       },
       {
         "id": "F-RA-010",
         "name": "AEC_ids",
-        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
-        "note": "RA-owned AEC reference group; each ID references canonical AEC List record."
+        "status": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "decision": "RA-owned AEC reference group; each ID references canonical AEC List record."
       },
       {
         "id": "F-RA-011",
         "name": "AEC_name",
-        "decision": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
-        "note": "RA-owned derived display field per referenced AEC ID, canonical name managed/created in AEC List, not RA."
+        "status": "APPROVED_FIELD_ROLE_IN_RA_SEVEN_FIELD_RECORD",
+        "decision": "RA-owned derived display field per referenced AEC ID, canonical name managed/created in AEC List, not RA."
       },
       {
         "id": "F-RA-012",
         "name": "RA_source_ref",
-        "decision": "REJECTED",
-        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+        "status": "REJECTED",
+        "decision": "Rejected excess natural language, normative effect or RA source revision fields"
       },
       {
         "id": "F-RA-013",
         "name": "RA_revision_ref",
-        "decision": "REJECTED",
-        "note": "Rejected excess natural language, normative effect or RA source revision fields"
+        "status": "REJECTED",
+        "decision": "Rejected excess natural language, normative effect or RA source revision fields"
       },
       {
         "id": "F-RAC-001",
         "name": "RAC_list",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-002",
         "name": "entries",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-003",
         "name": "RAC_id",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-004",
         "name": "RAC_name",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-005",
         "name": "RAC_description",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-006",
         "name": "RAC_purpose",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-007",
         "name": "value",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-008",
         "name": "source_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-009",
         "name": "revision_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-010",
         "name": "entrypoint",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-011",
         "name": "RAC_source_evidence_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-001",
         "name": "AEC_list",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-002",
         "name": "entries",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-003",
         "name": "AEC_id",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-004",
         "name": "AEC_name",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-005",
         "name": "AEC_description",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-006",
         "name": "AEC_purpose",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-007",
         "name": "value",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-008",
         "name": "source_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-009",
         "name": "revision_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-010",
         "name": "entrypoint",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-011",
         "name": "AEC_source_evidence_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-PLN-001",
         "name": "file_language",
-        "decision": "REJECTED",
-        "note": "Do not serialize file_language"
+        "status": "REJECTED",
+        "decision": "Do not serialize file_language"
       },
       {
         "id": "F-PLN-002",
         "name": "Plan_title",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-003",
         "name": "created_at",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-004",
         "name": "Plan_properties",
-        "decision": "APPROVED_DOMAIN",
-        "note": "Plan_properties remains the container for purpose/plan_id and version.revision"
+        "status": "APPROVED_DOMAIN",
+        "decision": "Plan_properties remains the container for purpose/plan_id and version.revision"
       },
       {
         "id": "F-PLN-005",
         "name": "version.revision",
-        "decision": "APPROVED_MERGED",
-        "note": "One version.revision key in Plan_properties, not split"
+        "status": "APPROVED_MERGED",
+        "decision": "One version.revision key in Plan_properties, not split"
       },
       {
         "id": "F-PLN-006",
         "name": "revision",
-        "decision": "REJECTED",
-        "note": "Remove redundant Plan revision"
+        "status": "REJECTED",
+        "decision": "Remove redundant Plan revision"
       },
       {
         "id": "F-PLN-007",
         "name": "purpose",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-008",
         "name": "plan_id",
-        "decision": "APPROVED_PATTERN_PENDING",
-        "note": "Plan id pattern to choose"
+        "status": "APPROVED_PATTERN_PENDING",
+        "decision": "Plan id pattern to choose"
       },
       {
         "id": "F-PLN-009",
         "name": "policy_refs",
-        "decision": "APPROVED_TYPED_ID_REF",
-        "note": "Link Policy_Identity.id, not policy title"
+        "status": "APPROVED_TYPED_ID_REF",
+        "decision": "Link Policy_Identity.id, not policy title"
       },
       {
         "id": "F-PLN-010",
         "name": "source_repository_revision",
-        "decision": "REJECTED",
-        "note": "Rejected source_revision, target_release and delivery_scope Plan fields"
+        "status": "REJECTED",
+        "decision": "Rejected source_revision, target_release and delivery_scope Plan fields"
       },
       {
         "id": "F-PLN-011",
         "name": "target_release",
-        "decision": "REJECTED",
-        "note": "Rejected source_revision, target_release and delivery_scope Plan fields"
+        "status": "REJECTED",
+        "decision": "Rejected source_revision, target_release and delivery_scope Plan fields"
       },
       {
         "id": "F-PLN-012",
         "name": "delivery_scope",
-        "decision": "REJECTED",
-        "note": "Rejected source_revision, target_release and delivery_scope Plan fields"
+        "status": "REJECTED",
+        "decision": "Rejected source_revision, target_release and delivery_scope Plan fields"
       },
       {
         "id": "F-PLN-013",
         "name": "Plan_lifecycle",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-014",
         "name": "status",
-        "decision": "APPROVED_ENUM",
-        "note": "SEVEN_STATES_WITH_APPROVAL_IN_PROGRESS_REPLACING_OLD_IMPLEMENTATION_PREFIX;IN_PROGRESS_OBSERVED_RUNTIME_OPTIONAL_TO_PERSIST;DOCUMENT_REMAINS_SCHEDULED_DURING_IMPLEMENTATION;PAUSE_RESUME_DOCUMENT_TO_SCHEDULED"
+        "status": "APPROVED_ENUM",
+        "decision": "SEVEN_STATES_WITH_APPROVAL_IN_PROGRESS_REPLACING_OLD_IMPLEMENTATION_PREFIX;IN_PROGRESS_OBSERVED_RUNTIME_OPTIONAL_TO_PERSIST;DOCUMENT_REMAINS_SCHEDULED_DURING_IMPLEMENTATION;PAUSE_RESUME_DOCUMENT_TO_SCHEDULED"
       },
       {
         "id": "F-PLN-015",
         "name": "approval_ref",
-        "decision": "REJECTED",
-        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+        "status": "REJECTED",
+        "decision": "Reject independent lifecycle approval, authorization, publication and hold reason"
       },
       {
         "id": "F-PLN-016",
         "name": "implementation_authorized",
-        "decision": "REJECTED",
-        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+        "status": "REJECTED",
+        "decision": "Reject independent lifecycle approval, authorization, publication and hold reason"
       },
       {
         "id": "F-PLN-017",
         "name": "publication_authorized",
-        "decision": "REJECTED",
-        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+        "status": "REJECTED",
+        "decision": "Reject independent lifecycle approval, authorization, publication and hold reason"
       },
       {
         "id": "F-PLN-018",
         "name": "blocked_reason",
-        "decision": "REJECTED",
-        "note": "Reject independent lifecycle approval, authorization, publication and hold reason"
+        "status": "REJECTED",
+        "decision": "Reject independent lifecycle approval, authorization, publication and hold reason"
       },
       {
         "id": "F-PLN-019",
         "name": "work_unit_item",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-020",
         "name": "work_unit_id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-021",
         "name": "title",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-022",
         "name": "RA_id",
-        "decision": "APPROVED_RA_LINK",
-        "note": "Plan work unit responsibility bound to RA_id"
+        "status": "APPROVED_RA_LINK",
+        "decision": "Plan work unit responsibility bound to RA_id"
       },
       {
         "id": "F-PLN-023",
         "name": "scope_paths",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-024",
         "name": "excluded_paths",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-025",
         "name": "source_refs",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-026",
         "name": "dependencies",
-        "decision": "REJECTED",
-        "note": "No work unit dependencies field; task_dependencies_id owns task-to-task dependencies"
+        "status": "REJECTED",
+        "decision": "No work unit dependencies field; task_dependencies_id owns task-to-task dependencies"
       },
       {
         "id": "F-PLN-027",
         "name": "tasks",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-028",
         "name": "task_id",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-029",
         "name": "action",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-030",
         "name": "expected_output",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-031",
         "name": "acceptance",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-032",
         "name": "criteria",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-033",
         "name": "verification_commands",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-034",
         "name": "evidence_refs",
-        "decision": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY"
+        "status": "APPROVED_BY_DEFAULT_SUBJECT_TO_EFFECTIVE_POLICY",
+        "decision": null
       },
       {
         "id": "F-PLN-035",
         "name": "status",
-        "decision": "REJECTED",
-        "note": "No independent work-unit status or duplicate implementation/session fields"
+        "status": "REJECTED",
+        "decision": "No independent work-unit status or duplicate implementation/session fields"
       },
       {
         "id": "F-PLN-036",
         "name": "implementation_authorized",
-        "decision": "REJECTED",
-        "note": "No independent work-unit status or duplicate implementation/session fields"
+        "status": "REJECTED",
+        "decision": "No independent work-unit status or duplicate implementation/session fields"
       },
       {
         "id": "F-PLN-037",
         "name": "session_name",
-        "decision": "REJECTED",
-        "note": "No independent work-unit status or duplicate implementation/session fields"
+        "status": "REJECTED",
+        "decision": "No independent work-unit status or duplicate implementation/session fields"
       },
       {
         "id": "F-PLN-038",
         "name": "session_id",
-        "decision": "REJECTED",
-        "note": "No independent work-unit status or duplicate implementation/session fields"
+        "status": "REJECTED",
+        "decision": "No independent work-unit status or duplicate implementation/session fields"
       },
       {
         "id": "F-PLN-039",
         "name": "pattern",
-        "decision": "REJECTED",
-        "note": "No independent work-unit status or duplicate implementation/session fields"
+        "status": "REJECTED",
+        "decision": "No independent work-unit status or duplicate implementation/session fields"
       },
       {
         "id": "F-PLN-040",
         "name": "Checklist",
-        "decision": "APPROVED_TABLE",
-        "note": "Checklist configurable table with task_id sync, PTSIP column and status commands"
+        "status": "APPROVED_TABLE",
+        "decision": "Checklist configurable table with task_id sync, PTSIP column and status commands"
       },
       {
         "id": "F-POL-033",
         "name": "evaluation",
-        "decision": "APPROVED_NEW_ROLE",
-        "note": "Current Policy_Lifecycle.evaluation contains exactly two elements: latest change date and role natural-language description; no third field or future extension now."
+        "status": "APPROVED_NEW_ROLE",
+        "decision": "Current Policy_Lifecycle.evaluation contains exactly two elements: latest change date and role natural-language description; no third field or future extension now."
       },
       {
         "id": "F-POL-034",
         "name": "last_changed_date",
-        "decision": "APPROVED_NEW_ROLE",
-        "note": "last_changed_date: YYYYMMDD expresses date of most recent change record, not a separate event log."
+        "status": "APPROVED_NEW_ROLE",
+        "decision": "last_changed_date: YYYYMMDD expresses date of most recent change record, not a separate event log."
       },
       {
         "id": "F-POL-035",
         "name": "description",
-        "decision": "APPROVED_NEW_ROLE",
-        "note": "description: natural-language description of role; optional text up to 200 chars per existing plan; do not expand further in current implementation."
+        "status": "APPROVED_NEW_ROLE",
+        "decision": "description: natural-language description of role; optional text up to 200 chars per existing plan; do not expand further in current implementation."
       },
       {
         "id": "F-POL-036",
         "name": "content",
-        "decision": "APPROVED_NEW_ROLE",
-        "note": "Per rule content holder for content_id[]"
+        "status": "APPROVED_NEW_ROLE",
+        "decision": "Per rule content holder for content_id[]"
       },
       {
         "id": "F-RAC-012",
         "name": "RAC_definition_contract_id",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-013",
         "name": "RAC_definition_file_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-RAC-014",
         "name": "RAC_definition_revision_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-012",
         "name": "AEC_definition_contract_id",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-013",
         "name": "AEC_definition_file_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-AEC-014",
         "name": "AEC_definition_revision_ref",
-        "decision": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
-        "note": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
+        "status": "REJECTED_FULL_PRIOR_RAC_AEC_PROPOSAL",
+        "decision": "User explicitly rejected the entire prior RAC/AEC List candidate set, including old candidate names and new contract locator fields. Reanalyze independently; do not carry forward approval by omission."
       },
       {
         "id": "F-PLN-041",
         "name": "Plan_filename",
-        "decision": "NEW_NAME_PROPOSED_ROLE_REQUESTED",
-        "note": "Actual file basename distinct from Plan_title"
+        "status": "NEW_NAME_PROPOSED_ROLE_REQUESTED",
+        "decision": "Actual file basename distinct from Plan_title"
       },
       {
         "id": "F-PLN-042",
         "name": "task_dependencies_id",
-        "decision": "APPROVED_NEW_ROLE",
-        "note": "Per task list of prerequisite task_id; USER_TASK_INDEX_REF_LINK_AND_COMPLETION_STATUS_WRITER_SEPARATELY_UNRESOLVED"
+        "status": "APPROVED_NEW_ROLE",
+        "decision": "Per task list of prerequisite task_id; USER_TASK_INDEX_REF_LINK_AND_COMPLETION_STATUS_WRITER_SEPARATELY_UNRESOLVED"
       },
       {
         "id": "F-PLN-043",
         "name": "column",
-        "decision": "APPROVED_NEW_ROLE",
-        "note": "Checklist.column[] defaults and extension remain; no authorized INDEX_STATUS_TO_CHECKLIST_WRITE_PRECEDENCE"
+        "status": "APPROVED_NEW_ROLE",
+        "decision": "Checklist.column[] defaults and extension remain; no authorized INDEX_STATUS_TO_CHECKLIST_WRITE_PRECEDENCE"
       }
     ],
     "policy_v4": {
