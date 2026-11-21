@@ -812,6 +812,17 @@
       ],
       "state": "USER_APPROVED_EXACT_PATHS_SEPARATE_CONTRACTS",
       "note": "Four Plan resources now have approved exact physical paths: public root, Identity, Lifecycle, Unit. No schema file creation, config.json registration, field-value or custom Plan repository path policy mutation authorized by this path decision."
+    },
+    {
+      "id": "WU04-FIELD-OWNERSHIP-20261121",
+      "scope": [
+        "Plan_Identity",
+        "public-structure-plan",
+        "Plan_lifecycle",
+        "work_unit_item"
+      ],
+      "state": "USER_AUTHORIZED_PLAN_DESIGN_RECORDED_REGEX_AND_POLICY_SEMANTICS_PENDING",
+      "note": "Recorded user-specific field allocations and requirements in wu04_user_field_design_2026_11_21; historical Plan_properties structure is superseded only in newer plan direction. Literal regex strings retained; do not silently normalize invalid or ambiguous patterns, overwrite higher policy, create schema or change config.json."
     }
   ],
   "target_registry": {
@@ -2578,13 +2589,13 @@
       ],
       "actions": [
         "Repair invalid historical Plan v1 JSON in independent release source planning, without copying malformed types or treating it as accepted contract",
-        "Plan_title is independent of Plan_filename; approved purpose and plan_id, single version.revision under Plan_properties",
-        "Plan policy_refs hold Policy_Identity.id; work_unit_item[].RA_id binds to RA List",
+        "Historical WU-04 Plan_title / Plan_properties plan_id,purpose,version.revision placement is superseded by user 2026-11-21 direction: Plan_Identity owns plan_id and Plan DOCUMENT revision; public Plan root owns title,purpose and contract_vision/contract_revision metadata. Preserve old decision in historical ledger for audit; exact mandatory fields/regex semantics require gates.",
+        "Plan public-root policy_refs hold Policy_Identity.id plus mandatory second yet-undefined item in each ref tuple; work_unit_item[].RA_id continues to bind RA List. Do not invent second reference component.",
         "Use exactly seven Plan statuses, with Approval.In_progress replacing Implementation.In_progress. Persist Approval.Scheduled_implementation as approved base even when active coding is observed; Approval.In_progress is a third-party/PTSIP engine observation, optional to write. On authorized resume from Halt.Paused, persist Approval.Scheduled_implementation; other transitions still require separate decisions.",
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
         "User-owned .ptsip/tasks/index.yaml is YAML high-level short todo category table of contents. Task items: id, Title, Keyword, status object, $ref to leaf Task file, Last_Modified_Date. Full id includes TASK/8-digit-date/six uppercase/eight alphanumeric; file basename uses date+six-uppercase prefix only. No task purpose inference from filename; exact regex, ref encoding and filename collisions remain separate decisions.",
         "Checklist maintains approved default four columns and task_id association; index task status is separate from Plan_lifecycle.status. User chose four Task status labels (대기/활성/일시정지/완료); exact object serialization and transitions, completion author, linked-task activation and Checklist synchronization remain undecided.",
-        "Plan ID is user-owned and no fixed core regex required. Plan structure/lifecycle exact physical target paths approved; config.json plan registration strategy C (responsibility-grouped) approved; exact nested keys/resource bindings still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work.",
+        "Previous no-fixed-Plan-ID-pattern decision is historically superseded by user's proposed opaque plan-sn 4-alphanumeric reference ID; literal trailing asterisk ambiguity must be resolved before enforcement. Plan structure/lifecycle exact physical target paths approved; config.json plan registration strategy C (responsibility-grouped) approved; exact nested keys/resource bindings still pending; full transition graph (beyond observed progress and authorized pause resume target), Task status mutation authority, completion ownership, Task refs and timestamp validation are independent decision gates. User accepts prefix-only filename collision as low-priority nonblocking risk; no overwrite, file-sharing or ID-restriction rule was approved. Continue approved independent work.",
         "The Plan record may remain Approval.Scheduled_implementation while actual implementation is externally observed as Approval.In_progress; neither self-observation nor missing document write must create an eighth status or block authorized work.",
         "Scope Task status-object transitions, completion writer, dependent-task synchronization, leaf $ref binding and timestamp parser as separate Task-index slice decisions; do not convert them into cross-WU blockers or infer execution authorization from Task filename.",
         "User 2026-11-20 approves exactly two product Plan schema targets src/ptsip/schemas/plan/public-structure-plan.schema.json and src/ptsip/schemas/plan/plan-lifecycle.schema.json, neither under native Rust engine src/schemas nor developer .ptsip; historical blanket denial of schemas/plan/ is superseded only for these two paths.",
@@ -2593,11 +2604,14 @@
         "User explicitly selected full separation (option 2 under C): Plan Identity, Plan Lifecycle, and Plan Unit must be independently maintained, independently addressable schema contracts; public-structure-plan.schema.json is the independent Plan document/root structure contract and must not collapse those three responsibilities into a single common contract. Do not assign Plan Unit an independent lifecycle status; existing prior Plan lifecycle and unit-status decisions still apply.",
         "User 2026-11-21 approved exact paths src/ptsip/schemas/plan/plan-identity.schema.json and src/ptsip/schemas/plan/plan-unit.schema.json, completing four independent Plan schema physical target path approvals; no schema resources or config.json entries are yet created.",
         "User-stated Plan format/customization premises guide subsequent contract policy decision: YAML for newly created or rewritten Plan with legacy format exception; Plan self-references source Policy identities without reverse requirement; contract version/revision/SHA provenance; user-custom contracts copied rather than editing installed package; CLI-validator extensibility; custom contract stable official version with revision-level changes and Policy-analog compression bounds. Do not invent mandatory fields, hashing algorithm, compression numbers, or enforce a conflicting consumer path before policy reconciliation.",
-        "Plan Identity: stronger PTSIP-owned minimum identifying structure; Plan Unit: lighter official core, with user-specific fields and layout preserved. Exact required fields MUST be discussed separately before schema creation; examples in chat are not binding policy."
+        "Plan Identity: stronger PTSIP-owned minimum identifying structure; Plan Unit: lighter official core, with user-specific fields and layout preserved. Exact required fields MUST be discussed separately before schema creation; examples in chat are not binding policy.",
+        "User 2026-11-21 structural field direction: Plan_Identity.plan_id is non-semantic reference ID with user-written raw regex; Plan_Identity.revision is [PL.001, YYYYMMDD] for document revision/date (not contract revision). Plan root owns title,purpose,contract_vision (spelling intentional),contract_revision,policy_refs[id, extra-pending]. No new document_version or mandatory applied_contract.id.",
+        "Plan_lifecycle MUST carry existing seven-state status plus a required lifecycle last-change field (name/format undecided); Plan document revision last change date has separate meaning. Work_unit_item work_unit_id requires shared random two-letter uppercase code per same plan with three digit suffix; direct work_unit_item.task_id[] keys to user .ptsip/tasks; work_unit_item.project_specific[] records require planid[] migrated atomic-plan references while other custom fields remain user-owned.",
+        "Record three user-supplied regex patterns losslessly; two escaped asterisks require trailing literal '*', and project_specific.planid pattern is invalid (quantifier repetition). Do not autocorrect regex, infer mandatory trailing star, or gate other non-affected WU work. Offer exact corrected candidates for user choice."
       ],
-      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; responsibility-grouped config registration C APPROVED (Identity/Lifecycle/Unit), full separation of Identity/Lifecycle/Unit APPROVED; all four exact schema target paths APPROVED; Plan Identity/Unit required field responsibilities, public-root-to-contract references and config registration identities pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency.",
+      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; responsibility-grouped config registration C APPROVED (Identity/Lifecycle/Unit), full separation of Identity/Lifecycle/Unit APPROVED; all four exact schema target paths APPROVED; Plan Identity/Unit required field responsibilities, public-root-to-contract references and config registration identities pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency. User 2026-11-21 field ownership/layout direction and required field roles recorded in wu04_user_field_design_2026_11_21. Three exact regex strings not activated pending parse/intended-star decision, last-change/contract-revision double encoding and policy reference tuple second component remain unresolved. Effective policy is not overwritten.",
       "execution_status": "PARTIAL_WU04_PLAN_OBSERVED_STATUS_AND_FOUR_TASK_LABELS_APPROVED_TRANSITIONS_AND_SYNC_OPEN",
-      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; actual schema files and config.json plan registration are not yet implemented. User selected hierarchical responsibility-grouped registry C with Plan Identity, Plan Lifecycle, and Plan Unit. Exact schema ownership grouping, registry keys, $id/version, and config.json mutation remain pending. User 2026-11-20 explicitly approved full independent separation for Plan Identity/Lifecycle/Unit under C. Lifecycle and public Plan root target paths stay approved; Identity/Unit file paths, mapping keys and contents remain pending; config.json unchanged. User 2026-11-21 approved new Identity and Unit exact paths. YAML-only new/rewrite, unilateral policy-source references, contract provenance/customization, CLI extensibility, Policy-like revision compression and graded required-field strength are recorded as discussion premises, not materialized schema constraints. Path casing conflict with existing customer contracts directory remains unresolved.",
+      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; actual schema files and config.json plan registration are not yet implemented. User selected hierarchical responsibility-grouped registry C with Plan Identity, Plan Lifecycle, and Plan Unit. Exact schema ownership grouping, registry keys, $id/version, and config.json mutation remain pending. User 2026-11-20 explicitly approved full independent separation for Plan Identity/Lifecycle/Unit under C. Lifecycle and public Plan root target paths stay approved; Identity/Unit file paths, mapping keys and contents remain pending; config.json unchanged. User 2026-11-21 approved new Identity and Unit exact paths. YAML-only new/rewrite, unilateral policy-source references, contract provenance/customization, CLI extensibility, Policy-like revision compression and graded required-field strength are recorded as discussion premises, not materialized schema constraints. Path casing conflict with existing customer contracts directory remains unresolved. User 2026-11-21 proposed a root/Identity/Lifecycle/Unit field ownership layout and stronger Identity, lighter extensible Unit/project_specific planid refs; plan-only record contains precise user raw regex and explicit unresolved syntax gate. No YAML or JSON schema files created.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract"
     },
     {
@@ -9248,7 +9262,9 @@
         "status",
         "$ref",
         "Last_Modified_Date"
-      ]
+      ],
+      "latest_user_field_ownership_ref": "wu04_user_field_design_2026_11_21",
+      "history_status": "HISTORICAL_DECISIONS_SUPERSEDED_WHERE_EXPLICITLY_LISTED_IN_LATEST_USER_FIELD_OWNERSHIP;KEEP_FOR_TRACE"
     },
     "open_choices": [
       {
@@ -13827,8 +13843,203 @@
     "custom_contract_revision": "VERSION_FIXED_REVISION_CHANGE;COMPRESSION_BOUND_NOT_DEFINED;AUTHORITATIVE_POLICY_CHECK_PENDING",
     "current_schema_files_created": false,
     "current_config_changed": false,
-    "exact_identity_fields": "UNDECIDED_PREVIEW_ONLY",
+    "exact_identity_fields": "LATEST_USER_FIELD_DIRECTION_RECORDED_REFER_TO_wu04_user_field_design_2026_11_21;REGEX_SYNTAX_AND_FIELD_SEMANTICS_OPEN",
     "scope": "RECORD_APPROVED_PATHS_AND_PROPOSED_POLICY_PREMISES;DO_NOT_SILENTLY_OVERRIDE_EXISTING_POLICY",
     "plan_self_contained": true
+  },
+  "wu04_user_field_design_2026_11_21": {
+    "id": "WU04-20261121-FIELD-OWNERSHIP-REVISION",
+    "scope": "NEW_OR_REWRITTEN_PLAN_YAML_SCHEMA_FIELD_OWNERSHIP_ONLY",
+    "user_authority": "USER_EXPLICIT_PLAN_DESIGN_RECORD_2026_11_21",
+    "authority_level": "PLAN_BELOW_EFFECTIVE_POLICY",
+    "schema_targets": {
+      "public_root": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+      "identity": "src/ptsip/schemas/plan/plan-identity.schema.json",
+      "lifecycle": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+      "unit": "src/ptsip/schemas/plan/plan-unit.schema.json"
+    },
+    "schema_owner_boundaries": {
+      "Plan_Identity": {
+        "fields": {
+          "plan_id": {
+            "role": "OPAQUE_NON_SEMANTIC_REFERENCE_ID",
+            "required": "USER_PROPOSED_REQUIRED",
+            "format": "^plan-sn-[a-zA-Z0-9]{4}\\*$",
+            "regex_status": "UNRESOLVED_AMBIGUOUS_TRAILING_LITERAL_ASTERISK"
+          },
+          "revision": {
+            "role": "PLAN_DOCUMENT_MODIFICATION_COUNT_AND_LAST_CHANGE_DATE_NOT_SCHEMA_REVISION",
+            "required": "USER_PROPOSED_REQUIRED",
+            "type": "TWO_ELEMENT_SEQUENCE",
+            "example": [
+              "PL.001",
+              "20261121"
+            ],
+            "item_meanings": [
+              "PLAN_REVISION_COUNTER",
+              "YYYYMMDD_LAST_MODIFIED_DATE"
+            ],
+            "field_value_format": "ARRAY_EXACT_DATE_PARSER_AND_COUNTER_ROLLOVER_UNDECIDED"
+          }
+        },
+        "forbidden_ownership": [
+          "title",
+          "purpose",
+          "document_version",
+          "applied_contract.id"
+        ],
+        "user_customization": "IDENTITY_REQUIRED_CORE_STRONGER_THAN_UNIT;ADDITIONAL_USER_FIELDS_UNDECIDED_WITHOUT_SILENT_PROHIBITION"
+      },
+      "public-structure-plan": {
+        "root_fields": {
+          "title": {
+            "role": "PLAN_HUMAN_READABLE_TITLE",
+            "required": "TO_BE_RESOLVED"
+          },
+          "purpose": {
+            "role": "PLAN_PURPOSE",
+            "required": "TO_BE_RESOLVED"
+          },
+          "contract_vision": {
+            "role": "APPLIED_PLAN_CONTRACT_VERSION_AND_REVISION_TAG",
+            "required": "USER_PROPOSED_REQUIRED",
+            "literal_key": "contract_vision",
+            "example": "ver.1.00/Rev.0001",
+            "spelling": "USER_EXPLICIT_NOT_SILENTLY_RENAMED_TO_CONTRACT_VERSION"
+          },
+          "contract_revision": {
+            "role": "APPLIED_PLAN_CONTRACT_REVISION_METADATA",
+            "required": "USER_PROPOSED_FIELD",
+            "exact_value_and_relationship_to_embedded_rev": "UNDECIDED_DUPLICATION_RISK"
+          },
+          "policy_refs": {
+            "role": "DECLARED_PLAN_TO_POLICY_SOURCE_REFS",
+            "required": "USER_PROPOSED_REQUIRED",
+            "each_item": "TWO_PART_SEQUENCE",
+            "provisional_form": [
+              "policy_id",
+              "ADDITIONAL_REFERENCE_DATA_UNDECIDED"
+            ],
+            "reverse_policy_ref_required": false,
+            "identity_source": "Policy_Identity.id"
+          }
+        },
+        "contract_sha": {
+          "role": "APPLIED_CONTRACT_SHA_PROVENANCE_FROM_PREVIOUS_USER_PREMISE",
+          "exact_field_name": "UNDECIDED",
+          "required_role": true
+        },
+        "rejected_identity_for_contract": "NO_applied_contract.id_MANDATORY_FIELD",
+        "note": "Root structure owns title, purpose, applied contract metadata and policy refs; exact requiredness of title/purpose and policy ref second component still require own field-level authorization"
+      },
+      "Plan_lifecycle": {
+        "status": {
+          "required": true,
+          "enum_source": "EXISTING_APPROVED_SEVEN_PLAN_STATES"
+        },
+        "last_modified": {
+          "required": true,
+          "exact_field_name": "UNDECIDED",
+          "format": "UNDECIDED",
+          "scope": "LIFECYCLE_STATUS_LAST_CHANGE_NOT_PLAN_IDENTITY_MODIFICATION_DATE"
+        },
+        "forbidden_inference": "NO_NEW_WORK_UNIT_LIFECYCLE_OR_EXTRA_PLAN_STATUS_CREATED"
+      },
+      "work_unit_item": {
+        "work_unit_id": {
+          "required": true,
+          "format": "^WU-[A-Z]{2}-[0-9]{3}\\*$",
+          "role": "OPAQUE_NON_SEMANTIC_REFERENCE_ID",
+          "prefix_two_uppercase_letters": "RANDOMLY_GENERATED_SHARED_BY_ALL_UNITS_WITHIN_SAME_PLAN",
+          "suffix_digits": 3,
+          "regex_status": "UNRESOLVED_TRAILING_LITERAL_ASTERISK",
+          "not_to_rewrite_this_MIGRATION_PLAN_WU_01_14": true
+        },
+        "title": {
+          "historical": "IN_PRIOR_REVIEW_NOT_REJECTED_BY_CURRENT_REQUEST",
+          "requiredness": "DO_NOT_INFER_FROM_CURRENT_MESSAGE"
+        },
+        "RA_id": {
+          "historical": "IN_PRIOR_REVIEW_NOT_REJECTED_BY_CURRENT_REQUEST",
+          "requiredness": "DO_NOT_INFER_FROM_CURRENT_MESSAGE"
+        },
+        "task_id": {
+          "required": true,
+          "type": "ARRAY_OF_TASK_IDS",
+          "role": "DIRECT_INDEX_LOOKUP_KEY_TO_CONSUMER_TASKS",
+          "target_root": "<USER_REPOSITORY>/.ptsip/tasks",
+          "lookup": "ID_TO_TASK_REGISTRY_OR_FILE_SEMANTICS_NEED_BINDING_NO_FILENAME_INFERENCE",
+          "duplicate_of_old_nested_tasks": "MUST_NOT_SILENTLY_DECLARE_CANONICAL_OR_REMOVE_PRIOR_TASK_LIST"
+        },
+        "project_specific": {
+          "required": "USER_REQUIRES_SECTION_WITH_MANDATORY_PLANID_FOR_EACH_RECORD",
+          "type": "ARRAY_OF_CUSTOM_RECORDS",
+          "each_item": {
+            "planid": {
+              "required": true,
+              "type": "ARRAY",
+              "role": "MIGRATED_ATOMIC_PLAN_REFERENCES",
+              "format": "^plan-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}*$",
+              "regex_status": "SYNTAX_INVALID_AS_WRITTEN"
+            },
+            "other_fields": "USER_CONTROLLED_UNRESTRICTED_EXCEPT_VERIFIED_CORE_SEMANTICS"
+          },
+          "scope": "WORK_UNIT_CUSTOM_RECORDS_ONLY"
+        }
+      }
+    },
+    "pattern_decisions": {
+      "Plan_Identity.plan_id": {
+        "user_literal_pattern": "^plan-sn-[a-zA-Z0-9]{4}\\*$",
+        "validation": "SYNTACTICALLY_VALID_BUT_LITERAL_ASTERISK_AMBIGUOUS",
+        "observed_effect": "TRAILING_LITERAL_ASTERISK_REQUIRED",
+        "candidate_if_unintentional_asterisk": "^plan-sn-[a-zA-Z0-9]{4}$",
+        "effective_regex": "USER_CLARIFICATION_REQUIRED_DO_NOT_ENFORCE",
+        "role_approved": true
+      },
+      "work_unit_item[].work_unit_id": {
+        "user_literal_pattern": "^WU-[A-Z]{2}-[0-9]{3}\\*$",
+        "validation": "SYNTACTICALLY_VALID_BUT_LITERAL_ASTERISK_AMBIGUOUS",
+        "observed_effect": "TRAILING_LITERAL_ASTERISK_REQUIRED",
+        "candidate_if_unintentional_asterisk": "^WU-[A-Z]{2}-[0-9]{3}$",
+        "effective_regex": "USER_CLARIFICATION_REQUIRED_DO_NOT_ENFORCE",
+        "role_approved": true
+      },
+      "work_unit_item[].project_specific[].planid[]": {
+        "user_literal_pattern": "^plan-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}*$",
+        "validation": "INVALID_REGEX_SYNTAX",
+        "observed_effect": "REGEX_PARSE_ERROR_NOTHING_TO_REPEAT",
+        "candidate_if_unintentional_asterisk": "^plan-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}$",
+        "effective_regex": "USER_CLARIFICATION_REQUIRED_DO_NOT_ENFORCE",
+        "role_approved": true
+      }
+    },
+    "previous_plan_decision_interaction": {
+      "superseded_field_placement": [
+        "Plan_properties.plan_id -> Plan_Identity.plan_id",
+        "Plan_properties.version.revision -> separate Plan_Identity.revision (document change) and public-root contract_vision / contract_revision (schema contract)",
+        "Plan_properties.purpose -> public-root purpose",
+        "Prior plan_id USER_OWNED_NO_FIXED_PATTERN -> new strong Plan Identity reference ID proposed pattern (regex syntax clarification pending)",
+        "policy_refs id-only -> id plus additional yet-undecided reference attributes",
+        "work_unit_item.tasks[].task_id -> direct work_unit_item.task_id[] added; existing nested task source-of-truth NOT decided"
+      ],
+      "historical_field_review_preserved": true,
+      "needs_policy_authority_check": [
+        "SFP-CNTR-0009 permits user-owned custom Plan schemas and forbids silently imposing official schema on all consumer projects",
+        "SFP-CNTR-0009 prohibits semantic weakening without compatibility proof"
+      ],
+      "legacy_migration_plan_work_unit_handles_unchanged": true
+    },
+    "open_gates": [
+      "FIX_OR_EXPLICITLY_CONFIRM_RAW_REGEX_ASTERISK_MEANING_PER_ID_PATTERN",
+      "CONTRACT_VISION_EMBEDDED_REV_VS_SEPARATE_CONTRACT_REVISION_AUTHORITY",
+      "POLICY_REFS_SECOND_ITEM_CONTRACT_SHAPE",
+      "LIFECYCLE_LAST_CHANGED_FIELD_NAME_FORMAT",
+      "PLAN_IDENTITY_REVISION_COUNTER_AND_DATE_SERIALIZATION",
+      "PLAN_TASK_ID_LOOKUP_LINK_TO_TASK_INDEX_AND_NESTED_TASK_AUTHORITY",
+      "PROJECT_SPECIFIC_CUSTOM_RECORDS_MINIMUM_AND_MIGRATION_REF_CHECK",
+      "USER_OVERRIDE_SCOPE_COMPATIBILITY_WITH_EFFECTIVE_SFP_CNTR_0009"
+    ],
+    "approval_boundary": "PLAN_FIELD_DIRECTION_RECORDED_NOT_SCHEMA_IMPLEMENTATION_NOT_EFFECTIVE_POLICY_OVERRIDE"
   }
 }
