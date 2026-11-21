@@ -3162,7 +3162,10 @@
         "Current tree absence check for all 22 retired files; no archived copy of deleted contracts, modules or obsolete validators",
         "No tracked files beneath src/ptsip/profiles/",
         "No installed wheel asset and import binding to ptsip.profiles",
-        "Existing CLI, migration, historical profile version and registry behavior validated without old directory"
+        "Existing CLI, migration, historical profile version and registry behavior validated without old directory",
+        "WU-14 follow-up source-to-consumer graph recorded before any replacement migration module paths are approved",
+        "Go src/build/ product distribution verified before setup.py retirement, with no build/runtime dependency on developer-private .ptsip contracts",
+        "Explicit pp.2.00 to pp.3.00 supported-field mapping with before/after trace and separate unsupported-user-field migration diagnostics"
       ],
       "exact_steps": [
         "Record current active HEAD and immutable git blob SHA for all 22 src/ptsip/profiles tracked paths; do not preserve parallel legacy archive.",
@@ -3171,13 +3174,47 @@
         "Preserve user-owned .ptsip/profiles; do not recreate src/ptsip/repository as a Python compatibility facade.",
         "After deletion, complete selected Rust engine implementations and native supported caller routing, then run tests verifying normal migration imports.",
         "After deletion, resolve fixture evidence from recorded immutable Git blobs, user-owned new target decisions, central Profile schemas, package manifests and obsolete validators; do not silently synthesize denied targets.",
-        "After deletion, verify no tracked paths under src/ptsip/profiles and execute supported consumer, history, native Rust, clean wheel/sdist, installed-smoke and available CI checks; record unresolved failures as defects rather than claiming release readiness."
+        "After deletion, verify no tracked paths under src/ptsip/profiles and execute supported consumer, history, native Rust, clean wheel/sdist, installed-smoke and available CI checks; record unresolved failures as defects rather than claiming release readiness.",
+        "WU-14 follow-up: trace and register real upstream consumer call graph for five legacy migration analysis/execution files before selecting replacement native owner, operation IDs or leaf file paths; reject importing deleted ptsip.validation or recreating legacy validation facades.",
+        "WU-14 follow-up: implement a Go-owned product distribution builder under src/build/ independent of developer-private .ptsip contracts; retire setup.py and its developer-private build backend after clean wheel/sdist and installed consumer parity, without deciding unapproved Go leaf paths in planning.",
+        "WU-14 follow-up: migrate pp.2.00 to pp.3.00 by explicit field/contract reference mapping and machine-readable change trace for supported fields and recognized user extensions; report unsupported custom field structures for independent migration without silent data loss or enforced user contract names."
       ],
       "gate": "Approved and recorded Rust-native NORMAL migration import design SATISFIED (2026-11-20). Resulting commit deletes all 22 tracked src/ptsip/profiles files and updates this plan atomically. Native runtime registration/implementation, caller rewiring, normal migration import, fixtures, User_Profile and formal distribution conformance are post-deletion obligations, not satisfied by source removal.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "LEGACY_22_FILE_DELETION_AND_NATIVE_IMPORT_ACCEPTANCE_VERIFIED_REMAINING_GATES_OPEN",
       "current_result": "Prior removal of all 22 legacy Profile sources was confirmed by Git inventory. Seven native operations and scoped normal consumer imports passed. The Profile build-stage test passed with both retired Python packages absent. Fixture or alternate evidence decisions, User_Profile disposition, and full distribution acceptance remain open.",
-      "remaining_blockers": [],
+      "remaining_blockers": [
+        {
+          "id": "LEGACY_VALIDATION_CONSUMER_CLOSURE",
+          "kind": "OWNER_DECISION_AFTER_STATIC_AND_DYNAMIC_CALLER_INSPECTION",
+          "state": "OPEN_REPLACEMENT_PATH_NOT_PREAPPROVED"
+        },
+        {
+          "id": "GO_BUILD_CUTOVER",
+          "kind": "IMPLEMENTATION_AND_DISTRIBUTION_VERIFICATION",
+          "state": "OPEN_GO_SRC_BUILD_NOT_IMPLEMENTED"
+        },
+        {
+          "id": "PP200_PP300_EXPLICIT_FIELD_MAP",
+          "kind": "SUPPORTED_FIELD_SEMANTIC_MAPPING_AND_TESTING",
+          "state": "OPEN_DETAILED_MAP_NOT_SILENTLY_ASSUMED"
+        },
+        {
+          "id": "PROFILE_JSON_FIXTURE_PATHS_OR_ALTERNATIVE_EVIDENCE",
+          "kind": "POST_DELETION_ACCEPTANCE",
+          "state": "OPEN"
+        },
+        {
+          "id": "USER_PROFILE_SOURCE_DISPOSITION",
+          "kind": "POST_DELETION_ACCEPTANCE",
+          "state": "OPEN_USER_DEFINED_CONTRACT_NAMES_NOT_A_DECISION_GATE"
+        },
+        {
+          "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
+          "kind": "CLEAN_BUILD_AND_EXTERNAL_INSTALL_GATE",
+          "state": "OPEN_YAML_DUPLICATE_KEY_AND_OTHER_INDEPENDENT_BUILD_DEFECTS"
+        }
+      ],
       "delete_trigger_ref": "profile_directory_retirement.user_2026_11_19_retirement_gate_change",
       "design_trigger_state": "SATISFIED_USER_APPROVED_NATIVE_DESIGN_2026_11_20",
       "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
@@ -3191,7 +3228,152 @@
       "historical_dependency_before_design_gate_approval": [
         "WU-13",
         "WU-08"
-      ]
+      ],
+      "followup_user_decisions_2026_11_21": {
+        "authority": "USER_EXPLICIT_DIRECT_WU14_PLAN_INSTRUCTION",
+        "scope": "WU-14_POST_DELETION_ONLY",
+        "plan_external_policy_dependency": "NONE;DO_NOT_READ_OR_PRIORITIZE_SFP_ARCH_0001_AS_WU14_IMPLEMENTATION_CONTRACT",
+        "current_baseline_head": "b9ffe4caf40e138d2e9d43c7833b484e6d957d13",
+        "yaml_duplicate_key": {
+          "status": "KNOWN_SOURCE_DEFECT_SEPARATE_FROM_WU14_CONTRACT_DECISIONS",
+          "location": "src/policy/ARCH/SFP-ARCH-0001.yaml",
+          "keys": [
+            "policy_rule_id_R_ID_direction",
+            "policy_rule_id_resolution",
+            "existing_policy_rule_id_mutation_authorized"
+          ],
+          "existing_latest_declared_choice": "KEEP_LATEST_USER_EXPLICIT_MANUAL_TRANSITION",
+          "interpretation": "LATEST_USER_APPROVED_CANONICAL_R_ID_DIRECTION_WITH_EXPLICIT_MANUAL_OLD_TO_NEW_ID_MAPPING_AND_REFERENCE_VALIDATION;NEVER_AUTOMATIC_REWRITE",
+          "duplicate_key_resolution_in_this_wu": "DO_NOT_MUTATE_POLICY_FILE;DO_NOT_INFER_LAST_KEY_WINS;REQUIRE_VALID_BUILD_INPUT_FOR_RELEASE_ACCEPTANCE"
+        },
+        "removed_ptsip_validation_call_graph": {
+          "status": "UPSTREAM_CALL_SITES_TRACED_REPLACEMENT_PATH_AND_NATIVE_OWNER_NOT_APPROVED",
+          "source_of_observation": "CURRENT_MAIN_SOURCE_STATIC_IMPORT_AND_CALL_INSPECTION",
+          "public_analysis_entry": "src/ptsip/migration/analysis/direct/convergence.py::analyze_direct_profile_convergence",
+          "analysis_dispatch": "src/ptsip/migration/analysis/analyzer.py::analyze_source_migration",
+          "callers": [
+            {
+              "module": "src/ptsip/migration/analysis/source/repository_resolution.py",
+              "callable": "_resolve_repository",
+              "called_from": "src/ptsip/migration/analysis/analyzer.py:74",
+              "retired_dependency": "ptsip.validation.components",
+              "callsites": [
+                24,
+                31,
+                48
+              ],
+              "responsibility": "RESOLVE_SOURCE_DECLARATION_SELECTORS_AGAINST_REPOSITORY_PATHS_WITH_SPECIFICITY_AND_AMBIGUITY"
+            },
+            {
+              "module": "src/ptsip/migration/analysis/source/evidence_correlation.py",
+              "callable": "_evidence_for_path",
+              "called_from": "src/ptsip/migration/analysis/analyzer.py:82,119",
+              "retired_dependency": "ptsip.validation.components",
+              "callsites": [
+                21
+              ],
+              "responsibility": "CORRELATE_NORMALIZED_EVIDENCE_WITH_EXACT_NORMALIZED_SOURCE_PATH"
+            },
+            {
+              "module": "src/ptsip/migration/analysis/source/projection.py",
+              "callable": "_project_source",
+              "called_from": "src/ptsip/migration/analysis/analyzer.py:54",
+              "retired_dependency": "ptsip.validation.components;ptsip.validation.templates",
+              "callsites": [
+                159,
+                200
+              ],
+              "responsibility": "PROJECT_HISTORICAL_SOURCE_BOUNDARIES_AND_MATERIALIZE_SUPPORTED_TEMPLATE_TO_DECLARATIVE_SOURCE_STATE"
+            },
+            {
+              "module": "src/ptsip/migration/analysis/target/compatibility.py",
+              "callable": "_target_compatibility",
+              "called_from": "src/ptsip/migration/analysis/analyzer.py:83",
+              "retired_dependency": "ptsip.validation.components",
+              "callsites": [
+                25
+              ],
+              "responsibility": "MATCH_SOURCE_PATH_TO_TARGET_COMPONENT_OR_ARTIFACT_AND_REPORT_AMBIGUOUS_OR_INCOMPATIBLE_OWNERSHIP"
+            },
+            {
+              "module": "src/ptsip/migration/execution/direct/identity_rewrite.py",
+              "callable": "execute_identity_rewrite",
+              "public_exports": [
+                "src/ptsip/migration/execution/direct/__init__.py",
+                "src/ptsip/migration/__init__.py"
+              ],
+              "verified_runtime_invoker": null,
+              "retired_dependency": "ptsip.validation.profile",
+              "callsites": [
+                240,
+                291
+              ],
+              "responsibility": "POST_WRITE_PROFILE_VALIDATION_AND_ROLLBACK_ON_FAILURE_AFTER_AUTHORIZED_IDENTITY_REWRITE"
+            }
+          ],
+          "upstream_indirect_chain": "analyze_direct_profile_convergence -> analyze_source_migration -> four analysis modules; identity_rewrite is separately exported for execution",
+          "replacement_implementation_path": null,
+          "replacement_native_engine_owner": null,
+          "final_support_scope": "USER_REVIEW_AFTER_COMPLETE_CALLER_AND_CONSUMER_CLOSURE",
+          "forbidden_actions": [
+            "RECREATE_RETIRED_PYTHON_VALIDATION_AS_COMPATIBILITY_SHIM",
+            "SILENTLY_REPLACE_WITH_UNRELATED_VALIDATOR",
+            "REMOVE_POST_WRITE_VERIFICATION_BEFORE_EQUIVALENT_VALIDATED_HANDOFF",
+            "REGISTER_NEW_NATIVE_OPERATION_WITHOUT_FURTHER_APPROVAL"
+          ],
+          "no_legacy_archival": true
+        },
+        "go_build_replacement": {
+          "status": "USER_APPROVED_DIRECTION_IMPLEMENTATION_AND_CUTOVER_PENDING",
+          "future_module_responsibility_root": "src/build/",
+          "implementation_language": "GO",
+          "responsibility": "PRODUCT_DISTRIBUTION_BUILD_AND_SOURCE_ASSET_ASSEMBLY_INDEPENDENT_OF_DEVELOPER_PRIVATE_CONTRACTS",
+          "packaging_targets": [
+            "WHEEL",
+            "SDIST",
+            "ISOLATED_INSTALLED_SMOKE"
+          ],
+          "setup_py_disposition": "RETIRE_AND_DELETE_AFTER_GO_BUILDER_AND_DISTRIBUTION_FRONTEND_REPLACEMENT_PASSES_CLEAN_BUILD_AND_INSTALLED_CONSUMER_VERIFICATION",
+          "existing_backend_disposition": "REPLACE_LEGACY_DEVELOPER_PRIVATE_BUILD_BACKEND_DEPENDENCE_DURING_GO_CUTOVER",
+          "prohibited_dependency": ".ptsip/**_DEVELOPER_CONTRACTS_AS_BUILD_INPUT_OR_RUNTIME_SOURCE",
+          "allowed_authority_root": "src/ptsip/**_PRODUCT_OWNED_CONTRACTS_AND_REGISTERED_NATIVE_ENGINE_ASSETS",
+          "current_paths_to_rewire": [
+            "setup.py",
+            "pyproject.toml",
+            "MANIFEST.in"
+          ],
+          "new_leaf_paths_and_go_module_layout": "NOT_SELECTED",
+          "no_implementation_in_this_change": true
+        },
+        "pp200_to_pp300_field_migration": {
+          "status": "USER_APPROVED_SUPPORT_DIRECTION_DETAILED_FIELD_MAP_AND_EDGE_CONTRACT_PENDING",
+          "source_contract": "pp.2.00",
+          "target_contract": "pp.3.00",
+          "mode": "SUPPORTED_FIELDS_CAN_BE_MAPPED_AND_MIGRATED_WITH_EXPLICIT_CHANGE_TRACE",
+          "supported_user_extensions": "MIGRATE_WHEN_THEIR_DECLARED_FIELD_SEMANTICS_AND_BINDINGS_ARE_RECOGNIZED_AND_MAPPING_IS_EXPLICIT",
+          "user_defined_contracts": "DO_NOT_FORCE_NAMES_OR_SCHEMA_FIELDS;PRESERVE_REFERENCE_BINDINGS_AND_USER_OWNERSHIP_WHERE_SUPPORTED",
+          "unsupported_custom_field_shapes": "REQUIRE_INDEPENDENT_MIGRATION;PROVIDE_EXPLICIT_UNMAPPED_REPORT;DO_NOT_SILENTLY_DELETE_REWRITE_OR_CLAIM_FULL_MIGRATION",
+          "migration_evidence": "EXPLICIT_FIELD_ORIGIN_TO_TARGET_MAPPING_AND_BEFORE_AFTER_CHANGE_TRACE",
+          "direct_transition_registration": "PENDING_PROVEN_TRANSITION_SEMANTICS_AND_SEPARATE_APPROVAL;DO_NOT_INFER_FROM_EXISTENCE_OF_PP300_SCHEMA",
+          "field_mapping_values": "NOT_PREDETERMINED_IN_THIS_DECISION",
+          "user_profile_custom_contract_exact_path": "NOT_PREDETERMINED",
+          "no_implementation_in_this_change": true
+        },
+        "acceptance_boundary": {
+          "prior_legacy_source_deletion": "VERIFIED_RETAIN_EXISTING_RESULT",
+          "existing_native_seven_operations": "VERIFIED_ONLY_FOR_RECORDED_SCOPE_NOT_PROOF_OF_LEGACY_VALIDATION_PARITY",
+          "remaining_requirements": [
+            "CLOSE_VERIFIED_LEGACY_VALIDATION_CONSUMER_GRAPH",
+            "IMPLEMENT_AND_TEST_GO_PRODUCT_BUILD_WITHOUT_DOTPTSIP_PRIVATE_CONTRACTS",
+            "VERIFY_FIELD_MAPPING_AND_UNSUPPORTED_CUSTOM_MIGRATION_DIAGNOSTICS",
+            "REVALIDATE_TWELVE_HISTORICAL_FIXTURE_EVIDENCE_OR_APPROVED_ALTERNATIVE",
+            "RESOLVE_USER_PROFILE_SOURCE_DISPOSITION_WITHOUT_FIXED_USER_CONTRACT_NAME",
+            "PASS_CLEAN_WHEEL_SDIST_AND_EXTERNAL_INSTALLED_SMOKE"
+          ],
+          "source_implementation_mutation": "NOT_PART_OF_THIS_PLANNING_EDIT",
+          "plan_dependency_scope": "WU14_ONLY_NO_CHANGES_TO_WU01_THROUGH_WU13"
+        }
+      }
     }
   ],
   "observed_breakages": [
