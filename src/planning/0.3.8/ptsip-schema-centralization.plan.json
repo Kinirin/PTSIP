@@ -3234,7 +3234,7 @@
         {
           "id": "GO_BUILD_CUTOVER",
           "kind": "IMPLEMENTATION_AND_DISTRIBUTION_VERIFICATION",
-          "state": "OPEN_GO_SRC_BUILD_NOT_IMPLEMENTED"
+          "state": "GO_PRODUCT_SOURCE_ASSEMBLY_VERIFIED;PRODUCT_OWNED_WHEEL_INPUTS_FRONTEND_AND_INSTALLED_PARITY_OPEN"
         },
         {
           "id": "PP200_PP300_EXPLICIT_FIELD_MAP",
@@ -3564,6 +3564,24 @@
           "TARGET_LINEAGE_VALUE_AND_SPECIFICATION_BINDING",
           "SEPARATE_APPROVAL_FOR_DIRECT_TRANSITION_REGISTRATION"
         ]
+      },
+      "go_product_build_evidence_2026_11_22": {
+        "state": "PRODUCT_SOURCE_ASSEMBLY_IMPLEMENTED_CUTOVER_OPEN",
+        "root": "src/build/",
+        "verified": [
+          "IMMUTABLE_GIT_HEAD_INVENTORY_AND_ENGINE_SOURCE_PINS",
+          "OFFICIAL_AND_HISTORICAL_PROFILE_IDS_AND_DIGESTS",
+          "REPRODUCIBLE_PRODUCT_ONLY_CANDIDATE_SOURCE_ARCHIVE",
+          "STALE_INPUT_AND_OVERWRITE_REJECTION"
+        ],
+        "tests": "TestGoProductDistribution; go -C src/build vet ./...",
+        "blocked_inputs": [
+          "PRODUCT_OWNED_PEP517_FRONTEND",
+          "PRODUCT_OWNED_SUPPORT_POLICY_PROJECTION",
+          "PRODUCT_OWNED_RBAC_CANDIDATE_INDEX"
+        ],
+        "formal_wheel_sdist_installed_parity": "OPEN;CANDIDATE_SOURCE_ARCHIVE_IS_NOT_INSTALLABLE_SDIST_PROOF",
+        "legacy_frontend_retirement": "AFTER_VERIFIED_CUTOVER"
       }
     }
   ],
