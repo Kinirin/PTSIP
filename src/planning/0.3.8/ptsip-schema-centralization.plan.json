@@ -3628,8 +3628,27 @@
       "common_tpbg_structural": "PASS",
       "profile_build_stage": "PASS_FOUR_REGISTERED_SCHEMAS_AND_BOTH_RETIRED_PACKAGE_OUTPUTS_ABSENT",
       "technical_engine_contract_consumer": "PASS_FOCUSED_MANIFEST_CONTRACT_BINDING_OWNER_AND_DATA_CONSTRAINT_CHECKS",
-      "formal_clean_source_distribution": "PENDING_EXACT_CLEAN_IMPLEMENTATION_COMMIT_BUILD",
-      "github_actions": "PENDING_EXACT_IMPLEMENTATION_COMMIT_RUN",
+      "formal_clean_source_distribution": {
+        "verified_source_sha": "56c94884048acaad743c90cc533094d97640fe24",
+        "wheel": "FAILED_STALE_PLANNING_ENTRY_MISMATCH_WITH_SIX_REGISTERED_NATIVE_ENGINES",
+        "sdist": "PASS_TEN_SCHEMA_ASSETS_VERIFIED_RETIRED_PYTHON_SOURCES_ABSENT",
+        "repair": "REMOVE_ONLY_STALE_PLANNING_ROW_FROM_CURRENT_PACKAGING_COMPOSITION;ALL_SIX_VERSIONS_MATCH_INDEX_AND_CARGO",
+        "followup": "VERIFY_WHEEL_AND_SDIST_ON_CLEAN_PACKAGING_FIX_COMMIT"
+      },
+      "github_actions": {
+        "verified_source_sha": "56c94884048acaad743c90cc533094d97640fe24",
+        "policy_contract_guard": {
+          "run": 44900400131,
+          "result": "FAIL_DUPLICATE_MAPPING_KEY_POLICY_RULE_ID_R_ID_DIRECTION_ALSO_FAILED_AT_BASELINE"
+        },
+        "release_admission_contract_check": {
+          "run": 44900400176,
+          "native_validation": "PASS",
+          "native_projection": "PASS",
+          "registered_digest_job": "FAIL_MISSING_HISTORIC_DEVELOPER_APPROVAL",
+          "publication_admission_compile": "FAIL_MISSING_PRIVATE_CONTROLLER_GO_SUM_ENTRY"
+        }
+      },
       "native_rust": {
         "result": "PASS",
         "tests": 54,
@@ -5236,7 +5255,7 @@
       },
       {
         "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
-        "evidence": "Actual exact clean implementation commit wheel build failed at existing private release backend: incomplete or stale PTSIP engine inventory; full wheel/source distribution and installed package acceptance remain incomplete.",
+        "evidence": "Exact clean source distribution built and packaged schemas verified at 56c94884. Wheel failed the old Planning inventory entry; product packaging inventory was reconciled to the six registered native engines and awaits clean re-verification. Installed package smoke remains open.",
         "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_FORMAL_DISTRIBUTION_ACCEPTANCE_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
         "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
         "status_after_user_change": "OPEN_POST_DELETION_WORK"
