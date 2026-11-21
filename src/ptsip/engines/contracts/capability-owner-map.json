@@ -59,7 +59,8 @@
         "validation.repository.snapshot",
         "validation.profile.path",
         "validation.profile.transition-state",
-        "validation.profile.convergence"
+        "validation.profile.convergence",
+        "validation.profile.identity-rewrite"
       ],
       "source_root": "src/ptsip/engines/validation",
       "legacy_owner_transfer": false
@@ -105,7 +106,10 @@
       "operation_ids": [
         "projection.select",
         "projection.render",
-        "projection.profile.metadata"
+        "projection.profile.metadata",
+        "projection.migration.source",
+        "projection.migration.coverage",
+        "projection.migration.compatibility"
       ],
       "source_root": "src/ptsip/engines/projection",
       "legacy_owner_transfer": false

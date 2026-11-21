@@ -3,8 +3,9 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from enum import StrEnum
 
-from ptsip.source_compat.model import SourceGenerationBinding
+from ptsip.source_compat.model import SourceFamily, SourceGenerationBinding
 from ptsip.migration.analysis.findings.architecture import ArchitectureFinding
 from ptsip.migration.analysis.issue import MigrationAnalysisIssue
 from ptsip.migration.analysis.findings.lifecycle import LifecycleFinding
@@ -14,7 +15,75 @@ from ptsip.migration.analysis.findings.work_requirements import (
     RequiredWorkElement,
     SourceMigrationCompletion,
 )
-from ptsip.migration.analysis.source.projection import AmbiguousSourceElement
+
+class SourceProjectionKind(StrEnum):
+    COMPONENT = "COMPONENT"
+    ASSOCIATED_ARTIFACT = "ASSOCIATED_ARTIFACT"
+    BOUNDARY = "BOUNDARY"
+
+
+class RepositoryResolutionKind(StrEnum):
+    AMBIGUOUS_SOURCE_ELEMENT = "AMBIGUOUS_SOURCE_ELEMENT"
+
+
+@dataclass(frozen=True)
+class SourceCoverageProjection:
+    declaration_id: str
+    kind: SourceProjectionKind
+    source_classification: str | None
+    include: tuple[str, ...]
+    exclude: tuple[str, ...]
+    purpose: str
+    source_pointer: str
+    source_family: SourceFamily
+    origin: str
+
+    @classmethod
+    def from_native(cls, row: dict[str, object]) -> SourceCoverageProjection:
+        return cls(**{
+            **row,
+            "kind": SourceProjectionKind(row["kind"]),
+            "include": tuple(row["include"]),
+            "exclude": tuple(row["exclude"]),
+            "source_family": SourceFamily(row["source_family"]),
+        })
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "declaration_id": self.declaration_id,
+            "kind": self.kind.value,
+            "source_classification": self.source_classification,
+            "include": list(self.include),
+            "exclude": list(self.exclude),
+            "purpose": self.purpose,
+            "source_pointer": self.source_pointer,
+            "source_family": self.source_family.value,
+            "origin": self.origin,
+        }
+
+
+@dataclass(frozen=True)
+class AmbiguousSourceElement:
+    path: str
+    coverages: tuple[SourceCoverageProjection, ...]
+    selectors: tuple[str, ...]
+    kind: RepositoryResolutionKind = RepositoryResolutionKind.AMBIGUOUS_SOURCE_ELEMENT
+
+    @classmethod
+    def from_native(cls, row: dict[str, object]) -> AmbiguousSourceElement:
+        return cls(
+            row["path"],
+            tuple(SourceCoverageProjection.from_native(item) for item in row["coverages"]),
+            tuple(row["selectors"]),
+        )
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "kind": self.kind.value,
+            "path": self.path,
+            "coverages": [item.as_dict() for item in self.coverages],
+            "selectors": list(self.selectors),
+        }
 
 @dataclass(frozen=True)
 class MigrationAnalysis:

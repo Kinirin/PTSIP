@@ -15,14 +15,17 @@ mod rbac;
 mod cli;
 mod user_contracts;
 mod profile;
+mod profile_identity_rewrite;
 mod profile_path;
 mod profile_state;
+mod profile_yaml;
 mod repository;
 mod rule_records;
 
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     match operation {
         "validation.profile.identity" => return profile::identity(input),
+        "validation.profile.identity-rewrite" => return profile_identity_rewrite::verify(input),
         "validation.profile.transition" => return profile::transition(input),
         "validation.profile.rules" => return rule_records::validate(input),
         "validation.profile.path" => return profile_path::resolve(input),
@@ -93,6 +96,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
         "validation.profile.identity" => "VALIDATE_EXPLICIT_SELECTED_PROFILE_IDENTITY_REVISION_AND_OPERATION_SUPPORT",
+        "validation.profile.identity-rewrite" => profile_identity_rewrite::ALGORITHM,
         "validation.profile.transition" => "VERIFY_EXACT_REGISTERED_PROFILE_TRANSITION_WITHOUT_INTERMEDIATE_MATERIALIZATION",
         "validation.profile.rules" => "VALIDATE_OPAQUE_RULE_RECORD_IDS_AND_EXPLICIT_RELATION_GRAPH",
         "validation.profile.path" => profile_path::ALGORITHM,

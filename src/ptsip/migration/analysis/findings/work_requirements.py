@@ -3,8 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import StrEnum
 
-from ptsip.migration.analysis.source.evidence_correlation import EvidenceCorrelation
-from ptsip.migration.analysis.target.compatibility import TargetCompatibility
+class TargetCompatibility(StrEnum):
+    NOT_EVALUATED = "NOT_EVALUATED"
+    ALREADY_SATISFIED = "ALREADY_SATISFIED"
+    COMPATIBLE_TARGET_STATE = "COMPATIBLE_TARGET_STATE"
+    CONFLICTING_TARGET_STATE = "CONFLICTING_TARGET_STATE"
+    TARGET_REVIEW_REQUIRED = "TARGET_REVIEW_REQUIRED"
 
 class ObligationCategory(StrEnum):
     REQUIRED = "REQUIRED"
@@ -18,7 +22,6 @@ class RequiredWorkElement:
     source_declaration_id: str
     source_classification: str | None
     selector: str
-    evidence: EvidenceCorrelation
     target_status: TargetCompatibility
     resolved: bool
 
@@ -34,7 +37,6 @@ class RequiredWorkElement:
             "source_declaration_id": self.source_declaration_id,
             "source_classification": self.source_classification,
             "selector": self.selector,
-            "evidence": self.evidence.as_dict(),
             "target_status": self.target_status.value,
             "resolved": self.resolved,
         }
@@ -65,7 +67,6 @@ class RemovalMigrationElement:
 class AsynchronousWorkTarget:
     id: str
     path: str
-    evidence: EvidenceCorrelation
 
     @property
     def category(self) -> ObligationCategory:
@@ -76,7 +77,6 @@ class AsynchronousWorkTarget:
             "id": self.id,
             "category": self.category.value,
             "path": self.path,
-            "evidence": self.evidence.as_dict(),
         }
 
 @dataclass(frozen=True)

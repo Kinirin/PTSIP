@@ -104,10 +104,10 @@ def target_state_from_mapping(payload: dict[str, object]) -> TargetArchitectureS
         raise ValueError("Target state requires Project Profile contract identity and immutable specification revision.")
 
     responsibility_map = payload.get("responsibility_map")
-    if not isinstance(responsibility_map, dict) or responsibility_map.get("mode") != "explicit":
+    expected_mode = "DEFAULT" if version == "pp.3.00" else "explicit"
+    if not isinstance(responsibility_map, dict) or responsibility_map.get("mode") != expected_mode:
         raise ValueError(
-            "WU-05 target-state mapping accepts explicit target state only; "
-            "template/hybrid target materialization belongs to the target-contract runtime boundary."
+            f"Target-state mapping for {version} requires responsibility_map.mode {expected_mode!r}."
         )
 
     components = tuple(

@@ -1,0 +1,161 @@
+[
+  {
+    "id": "python-package-library",
+    "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b",
+    "map": {
+      "components": [
+        {
+          "id": "package",
+          "classification": "PRODUCT",
+          "roles": [
+            "IMPLEMENTATION"
+          ],
+          "include": [
+            "src/**"
+          ],
+          "purpose": "python_package_library_implementation",
+          "shipped": true,
+          "runtime_required": true,
+          "executable": true
+        },
+        {
+          "id": "package-tests",
+          "classification": "PRODUCT",
+          "roles": [
+            "VERIFICATION"
+          ],
+          "include": [
+            "tests/**"
+          ],
+          "purpose": "product_owned_package_verification",
+          "shipped": false,
+          "runtime_required": false,
+          "executable": true
+        }
+      ],
+      "relationships": [
+        {
+          "id": "package-tests-verify-package",
+          "from": "package-tests",
+          "to": "package",
+          "type": "VERIFIES"
+        }
+      ]
+    }
+  },
+  {
+    "id": "python-cli-application",
+    "revision": "sha256:fce170879bb5afcbd768ce473e6782ce05b50655eb93c7d84c4464e3d079b572",
+    "map": {
+      "components": [
+        {
+          "id": "application",
+          "classification": "PRODUCT",
+          "roles": [
+            "IMPLEMENTATION"
+          ],
+          "include": [
+            "src/**"
+          ],
+          "purpose": "python_cli_application_implementation",
+          "shipped": true,
+          "runtime_required": true,
+          "executable": true
+        },
+        {
+          "id": "application-tests",
+          "classification": "PRODUCT",
+          "roles": [
+            "VERIFICATION"
+          ],
+          "include": [
+            "tests/**"
+          ],
+          "purpose": "product_owned_application_verification",
+          "shipped": false,
+          "runtime_required": false,
+          "executable": true
+        }
+      ],
+      "relationships": [
+        {
+          "id": "application-tests-verify-application",
+          "from": "application-tests",
+          "to": "application",
+          "type": "VERIFIES"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mixed-product-development-delivery",
+    "revision": "sha256:ae45cb5674c0e9e87259ca629317d8c47420d55a1609b7b065ec6b1b2d515692",
+    "map": {
+      "components": [
+        {
+          "id": "product",
+          "classification": "PRODUCT",
+          "roles": [
+            "IMPLEMENTATION"
+          ],
+          "include": [
+            "src/**"
+          ],
+          "purpose": "product_implementation",
+          "shipped": true,
+          "runtime_required": true,
+          "executable": true
+        },
+        {
+          "id": "development-verification",
+          "classification": "DEVELOPMENT_TOOLING",
+          "roles": [
+            "VERIFICATION",
+            "AUTOMATION"
+          ],
+          "include": [
+            "tests/**"
+          ],
+          "purpose": "reusable_development_verification",
+          "shipped": false,
+          "runtime_required": false,
+          "executable": true
+        },
+        {
+          "id": "delivery",
+          "classification": "DELIVERY",
+          "roles": [
+            "AUTOMATION"
+          ],
+          "include": [
+            ".github/workflows/release.yml"
+          ],
+          "purpose": "release_delivery_automation",
+          "shipped": false,
+          "runtime_required": false,
+          "executable": true
+        }
+      ],
+      "relationships": [
+        {
+          "id": "development-verification-verifies-product",
+          "from": "development-verification",
+          "to": "product",
+          "type": "VERIFIES"
+        },
+        {
+          "id": "delivery-builds-product",
+          "from": "delivery",
+          "to": "product",
+          "type": "BUILDS"
+        },
+        {
+          "id": "delivery-publishes-product",
+          "from": "delivery",
+          "to": "product",
+          "type": "PUBLISHES"
+        }
+      ]
+    }
+  }
+]

@@ -1,6 +1,6 @@
 from .analysis import (
     AmbiguousSourceElement, ArchitectureFinding, ArchitectureFindingKind, AsynchronousWorkTarget,
-    DirectConvergenceAnalysis, DirectConvergenceAnalysisIssue, EvidenceCorrelation, LifecycleFinding,
+    DirectConvergenceAnalysis, DirectConvergenceAnalysisIssue, LifecycleFinding,
     LifecycleFindingKind, MigrationAnalysis, MigrationAnalysisIssue, ObligationCategory,
     RemovalMigrationElement, RequiredWorkElement, SourceCoverageProjection, SourceMigrationCompletion,
     SourceProjectionKind, TargetArchitectureState, TargetAssociatedArtifact, TargetCompatibility,
@@ -69,7 +69,6 @@ __all__ = [
     "DirectConvergenceAnalysis",
     "DirectConvergenceAnalysisIssue",
     "DirectFinalPointReference",
-    "EvidenceCorrelation",
     "ExecutionPhase",
     "ExecutionPreview",
     "ExecutionState",

@@ -3,29 +3,44 @@ from __future__ import annotations
 from pathlib import Path
 
 from ptsip.evidence.contract import NormalizedEvidenceSet
-from ptsip.ptsip_specification.spec_identity import capture_snapshot, compare_snapshots, repository_files
+from ptsip.ptsip_specification.spec_identity import capture_snapshot, compare_snapshots, native_profile_operation, repository_files
 from ptsip.source_compat.model import CompatibilitySourceProfile
 from ptsip.migration.analysis.findings.architecture import ArchitectureFinding, ArchitectureFindingKind
-from ptsip.migration.analysis.findings.lifecycle import LifecycleFinding
+from ptsip.migration.analysis.findings.lifecycle import LifecycleFinding, LifecycleFindingKind
 from ptsip.migration.analysis.findings.work_requirements import (
     AsynchronousWorkTarget,
     RemovalMigrationElement,
     RequiredWorkElement,
     SourceMigrationCompletion,
+    TargetCompatibility,
 )
 from ptsip.migration.analysis.issue import MigrationAnalysisIssue
-from ptsip.migration.analysis.result import MigrationAnalysis
+from ptsip.migration.analysis.result import AmbiguousSourceElement, MigrationAnalysis, SourceProjectionKind
 from ptsip.migration.analysis.source.binding_validation import _validate_evidence_context, _validate_source_binding
-from ptsip.migration.analysis.source.evidence_correlation import _evidence_for_path
-from ptsip.migration.analysis.source.projection import SourceProjectionKind, _project_source
-from ptsip.migration.analysis.source.repository_resolution import _resolve_repository
-from ptsip.migration.analysis.target.compatibility import TargetCompatibility, _target_compatibility
 from ptsip.migration.analysis.target.relationship_findings import _relationship_findings
 from ptsip.migration.analysis.target.semantics import (
     TargetArchitectureState,
     TargetSemantics,
     default_target_semantics,
 )
+
+def _project_source(profile: CompatibilitySourceProfile) -> dict[str, object]:
+    def declaration(item) -> dict[str, object]:
+        return {"id": item.id, "include": list(item.include), "exclude": list(item.exclude),
+                "purpose": item.purpose, "source_pointer": item.location.pointer}
+
+    semantics = profile.family_semantics.as_dict()
+    if semantics["kind"] == "V034":
+        semantics["boundaries"] = [
+            {"source_classification": item.source_classification, "roots": list(item.roots),
+             "source_pointer": item.location.pointer} for item in profile.family_semantics.boundaries
+        ]
+    return native_profile_operation("projection.migration.source", {
+        "family": profile.family.value, "family_semantics": semantics,
+        "components": [{**declaration(item), "source_classification": item.source_classification} for item in profile.components],
+        "associated_artifacts": [declaration(item) for item in profile.associated_artifacts],
+        "relationships": [{"id": item.id, "from": item.source, "to": item.target, "type": item.relationship_type} for item in profile.relationships],
+    })
 
 def analyze_source_migration(
     repository_root: str | Path,
@@ -51,9 +66,10 @@ def analyze_source_migration(
 
     issues.extend(_validate_source_binding(root, source_profile))
     issues.extend(_validate_evidence_context(source_profile, evidence, before))
-    projected, projection_issues = _project_source(source_profile)
+    projected = _project_source(source_profile)
+    projection_issues = [MigrationAnalysisIssue(**item) for item in projected["issues"]]
     issues.extend(projection_issues)
-    if projected is None:
+    if projection_issues:
         return MigrationAnalysis(
             source_generation=source_profile.generation,
             repository_head=before.head,
@@ -71,59 +87,60 @@ def analyze_source_migration(
 
     _mode, paths, path_errors = repository_files(root)
     issues.extend(MigrationAnalysisIssue("REPOSITORY_FILE_SCAN_ERROR", message) for message in path_errors)
-    resolution = _resolve_repository(paths, projected)
+    resolution = native_profile_operation("projection.migration.coverage", {"paths": paths, "coverages": projected["coverages"]})
+    compatibility = native_profile_operation("projection.migration.compatibility", {
+        "existing": resolution["existing"], "target": target_state.as_dict() if target_state else None,
+        "classifications": list(semantics.classifications),
+    })
+    by_path = {item["path"]: item for item in compatibility["results"]}
     required: list[RequiredWorkElement] = []
     removals: list[RemovalMigrationElement] = []
     async_targets: list[AsynchronousWorkTarget] = []
     lifecycle_findings: list[LifecycleFinding] = []
     architecture_findings: list[ArchitectureFinding] = []
 
-    for item in resolution.existing:
-        correlation = _evidence_for_path(evidence, item.path)
-        target_status, lifecycle = _target_compatibility(item, target_state, semantics)
+    for item in resolution["existing"]:
+        path = item["path"]
+        coverage = item["coverage"]
+        result = by_path[path]
+        target_status = TargetCompatibility(result["target_status"])
+        lifecycle = result["lifecycle"]
         if lifecycle is not None:
-            lifecycle_findings.append(lifecycle)
+            lifecycle_findings.append(LifecycleFinding(**{**lifecycle, "kind": LifecycleFindingKind(lifecycle["kind"])}))
         resolved = target_status in {TargetCompatibility.ALREADY_SATISFIED, TargetCompatibility.COMPATIBLE_TARGET_STATE}
         required.append(
             RequiredWorkElement(
-                f"required:{item.path}",
-                item.path,
-                item.coverage.declaration_id,
-                item.coverage.source_classification,
-                item.selector,
-                correlation,
+                f"required:{path}", path, coverage["declaration_id"],
+                coverage["source_classification"], item["selector"],
                 target_status,
                 resolved,
             )
         )
-        if correlation.conflict_ids:
-            architecture_findings.append(ArchitectureFinding(item.path, ArchitectureFindingKind.EVIDENCE_CONFLICT, "Normalized evidence contains incompatible assertions for this repository element.", correlation.conflict_ids))
-        if correlation.incomplete_channels:
-            architecture_findings.append(ArchitectureFinding(item.path, ArchitectureFindingKind.EVIDENCE_INCOMPLETE, "One or more evidence channels were not analyzed successfully.", correlation.semantic_ids))
-        if item.coverage.kind == SourceProjectionKind.ASSOCIATED_ARTIFACT and target_state is not None and target_status == TargetCompatibility.TARGET_REVIEW_REQUIRED:
-            architecture_findings.append(ArchitectureFinding(item.path, ArchitectureFindingKind.MISSING_ASSOCIATED_ARTIFACT, "Required source associated-artifact scope is not provably preserved as an associated artifact in accepted target state.", correlation.semantic_ids))
+        if coverage["kind"] == SourceProjectionKind.ASSOCIATED_ARTIFACT and target_state is not None and target_status == TargetCompatibility.TARGET_REVIEW_REQUIRED:
+            architecture_findings.append(ArchitectureFinding(path, ArchitectureFindingKind.MISSING_ASSOCIATED_ARTIFACT, "Required source associated-artifact scope is not provably preserved as an associated artifact in accepted target state."))
 
-    for item in resolution.removed:
+    for item in resolution["removed"]:
+        element_id = item["element_id"]
+        coverage = item["coverage"]
         removals.append(
             RemovalMigrationElement(
-                f"removal:{item.element_id}",
-                item.coverage.declaration_id,
-                item.coverage.source_classification,
-                item.selector,
+                f"removal:{element_id}", coverage["declaration_id"],
+                coverage["source_classification"], item["selector"],
                 "Source declaration selector currently resolves to no repository element; it is not copied forward solely for historical preservation.",
             )
         )
-        architecture_findings.append(ArchitectureFinding(item.element_id, ArchitectureFindingKind.STALE_SOURCE_DECLARATION, "Source selector has no current repository match."))
+        architecture_findings.append(ArchitectureFinding(element_id, ArchitectureFindingKind.STALE_SOURCE_DECLARATION, "Source selector has no current repository match."))
 
-    for item in resolution.uncovered:
-        correlation = _evidence_for_path(evidence, item.path)
-        async_targets.append(AsynchronousWorkTarget(f"async:{item.path}", item.path, correlation))
-        architecture_findings.append(ArchitectureFinding(item.path, ArchitectureFindingKind.NEW_REPOSITORY_CANDIDATE, "Current repository element is outside the source profile's active coverage and is non-blocking asynchronous work.", correlation.semantic_ids))
+    for item in resolution["uncovered"]:
+        path = item["path"]
+        async_targets.append(AsynchronousWorkTarget(f"async:{path}", path))
+        architecture_findings.append(ArchitectureFinding(path, ArchitectureFindingKind.NEW_REPOSITORY_CANDIDATE, "Current repository element is outside the source profile's active coverage and is non-blocking asynchronous work."))
 
-    for item in resolution.ambiguous:
+    ambiguous = tuple(AmbiguousSourceElement.from_native(item) for item in resolution["ambiguous"])
+    for item in ambiguous:
         architecture_findings.append(ArchitectureFinding(item.path, ArchitectureFindingKind.AMBIGUOUS_SOURCE_COVERAGE, "Repository element matches multiple source declarations at the controlling specificity; obligation taxonomy is fail-closed."))
 
-    architecture_findings.extend(_relationship_findings(projected, target_state))
+    architecture_findings.extend(_relationship_findings(tuple(tuple(item) for item in projected["relationship_semantics"]), target_state))
     after = capture_snapshot(root)
     comparison = compare_snapshots(before, after)
     if not comparison.stable:
@@ -151,7 +168,7 @@ def analyze_source_migration(
         tuple(required),
         tuple(removals),
         tuple(async_targets),
-        resolution.ambiguous,
+        ambiguous,
         tuple(lifecycle_findings),
         tuple(architecture_findings),
         tuple(issues),

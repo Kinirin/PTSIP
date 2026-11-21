@@ -434,7 +434,11 @@ func TestProjectProfileLifecycleAndWorkAuthorizationFollowCurrentPlan(t *testing
 func TestProjectProfileTargetsFollowApprovedPlanPaths(t *testing.T) {
 	root := repositoryRoot(t)
 	plan := readObject(t, filepath.Join(root, "src", "planning", "0.3.8", "ptsip-schema-centralization.plan.json"))
-	decisions := plan["current_user_decisions_2026_11_18"].(object)
+	director := plan["current_user_decisions"].(object)["Director_Decision"].(object)
+	decisions, found := director["decisions_0001"].(object)
+	if !found {
+		t.Fatal("Profile path decision is missing from Director_Decision.decisions_0001")
+	}
 	denied := map[string]bool{}
 	for _, candidate := range decisions["unapproved_paths"].(object)["denied_candidates"].(array) {
 		denied[candidate.(string)] = true

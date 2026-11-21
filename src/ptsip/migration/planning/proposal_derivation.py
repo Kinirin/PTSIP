@@ -90,22 +90,6 @@ def derive_source_proposals(
                     ),
                 )
             )
-        elif finding.kind in {
-            ArchitectureFindingKind.EVIDENCE_CONFLICT,
-            ArchitectureFindingKind.EVIDENCE_INCOMPLETE,
-        }:
-            unresolved.append(
-                UnresolvedBundle.build(
-                    source_generation=analysis.source_generation,
-                    analysis_digest=analysis.deterministic_digest,
-                    subject_ids=(finding.subject_id,),
-                    purpose=(ProposalPurpose.ADVISORY,),
-                    question=(
-                        f"{finding.kind.value} remains reviewable evidence context and is not architecture authority."
-                    ),
-                )
-            )
-
     requested = set(requested_async_ids)
     known_async = {item.id for item in analysis.async_targets}
     for item in sorted(requested - known_async):

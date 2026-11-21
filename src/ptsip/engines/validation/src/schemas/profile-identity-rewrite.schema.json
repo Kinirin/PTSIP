@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine:validation:profile-identity-rewrite:v1",
+  "title": "Profile identity rewrite validation operation",
+  "$defs": {
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "captured_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "is_git": {
+          "type": "boolean"
+        },
+        "head": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status_fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "tracked_content_fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "tracked_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observation_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "captured_at",
+        "is_git",
+        "head",
+        "status_fingerprint",
+        "tracked_content_fingerprint",
+        "tracked_files",
+        "observation_errors"
+      ],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "PP_IDENTITY_ONLY_REWRITE"
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_declared_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_contract": {
+          "type": "string",
+          "minLength": 1
+        },
+        "specification_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "specification_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository_snapshot": {
+          "$ref": "#/$defs/snapshot"
+        }
+      },
+      "required": [
+        "kind",
+        "source_path",
+        "source_sha256",
+        "source_declared_version",
+        "target_contract",
+        "specification_family",
+        "specification_revision",
+        "repository_snapshot"
+      ],
+      "additionalProperties": false
+    },
+    "input": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "root": {
+              "type": "string",
+              "minLength": 1
+            },
+            "package_root": {
+              "type": "string",
+              "minLength": 1
+            },
+            "plan": {
+              "$ref": "#/$defs/plan"
+            },
+            "before_content": {
+              "type": "string",
+              "minLength": 1
+            },
+            "after_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "phase": {
+              "const": "PROPOSED"
+            },
+            "after_content": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "root",
+            "package_root",
+            "plan",
+            "before_content",
+            "after_sha256",
+            "phase",
+            "after_content"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "root": {
+              "type": "string",
+              "minLength": 1
+            },
+            "package_root": {
+              "type": "string",
+              "minLength": 1
+            },
+            "plan": {
+              "$ref": "#/$defs/plan"
+            },
+            "before_content": {
+              "type": "string",
+              "minLength": 1
+            },
+            "after_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "phase": {
+              "const": "POST_WRITE"
+            }
+          },
+          "required": [
+            "root",
+            "package_root",
+            "plan",
+            "before_content",
+            "after_sha256",
+            "phase"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "observed_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "valid",
+        "errors",
+        "warnings",
+        "observed_sha256"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

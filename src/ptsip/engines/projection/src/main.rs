@@ -6,7 +6,14 @@ mod rendering;
 mod cli;
 mod source;
 mod profile;
+mod migration;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
+    match operation {
+        "projection.migration.source" => return migration::project_source(input),
+        "projection.migration.coverage" => return migration::project_coverage(input),
+        "projection.migration.compatibility" => return migration::project_compatibility(input),
+        _ => {}
+    }
     if operation == "projection.profile.metadata" {
         return profile::metadata(input);
     }
@@ -57,6 +64,9 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+        "projection.migration.source" => migration::SOURCE,
+        "projection.migration.coverage" => migration::COVERAGE,
+        "projection.migration.compatibility" => migration::COMPATIBILITY,
 "projection.profile.metadata" => "PROJECT_EXPLICIT_PROFILE_AND_SPECIFICATION_METADATA_WITHOUT_SOURCE_MUTATION",
 "projection.render" => "VERIFY_CURRENT_CONTEXT_SNAPSHOT_AND_SOURCE_THEN_APPLY_REGISTERED_PROJECTION_FIELDS_AND_OUTPUT_SCHEMA",
 

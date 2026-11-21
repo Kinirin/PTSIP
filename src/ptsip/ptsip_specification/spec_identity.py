@@ -22,6 +22,8 @@ _PROFILE_OPERATIONS = frozenset({
     "context.repository.snapshot", "discovery.repository.inspect", "discovery.profile.candidates",
     "validation.repository.snapshot", "validation.profile.path", "validation.profile.transition-state",
     "validation.profile.convergence",
+    "projection.migration.source", "projection.migration.coverage",
+    "projection.migration.compatibility",
 })
 
 

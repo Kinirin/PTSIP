@@ -1,0 +1,762 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine:projection:migration:v1",
+  "title": "Native historical Profile migration projection contracts",
+  "$defs": {
+    "component_declaration": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "source_pointer": {
+          "type": "string"
+        },
+        "source_classification": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "include",
+        "exclude",
+        "purpose",
+        "source_pointer",
+        "source_classification"
+      ],
+      "additionalProperties": false
+    },
+    "artifact_declaration": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "source_pointer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "include",
+        "exclude",
+        "purpose",
+        "source_pointer"
+      ],
+      "additionalProperties": false
+    },
+    "relationship": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "from",
+        "to",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "semantics": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "V034"
+            },
+            "declaration_form": {
+              "enum": [
+                "COMPONENTS",
+                "BOUNDARIES"
+              ]
+            },
+            "boundaries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_classification": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "roots": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "source_pointer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source_classification",
+                  "roots",
+                  "source_pointer"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "kind",
+            "declaration_form",
+            "boundaries"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "V036"
+            },
+            "responsibility_map_mode": {
+              "enum": [
+                "explicit",
+                "template",
+                "hybrid"
+              ]
+            },
+            "template_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "template_revision": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "remove_component_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "remove_associated_artifact_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "remove_relationship_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "kind",
+            "responsibility_map_mode",
+            "template_id",
+            "template_revision",
+            "remove_component_ids",
+            "remove_associated_artifact_ids",
+            "remove_relationship_ids"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "source_input": {
+      "type": "object",
+      "properties": {
+        "family": {
+          "enum": [
+            "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+            "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+          ]
+        },
+        "family_semantics": {
+          "$ref": "#/$defs/semantics"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/component_declaration"
+          }
+        },
+        "associated_artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_declaration"
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relationship"
+          }
+        }
+      },
+      "required": [
+        "family",
+        "family_semantics",
+        "components",
+        "associated_artifacts",
+        "relationships"
+      ],
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "declaration_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "COMPONENT",
+            "ASSOCIATED_ARTIFACT",
+            "BOUNDARY"
+          ]
+        },
+        "source_classification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "source_pointer": {
+          "type": "string"
+        },
+        "source_family": {
+          "enum": [
+            "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+            "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+          ]
+        },
+        "origin": {
+          "enum": [
+            "SOURCE_COMPONENT",
+            "SOURCE_BOUNDARY",
+            "PROJECT_EXPLICIT",
+            "PROJECT_OVERRIDE",
+            "TEMPLATE_EFFECTIVE"
+          ]
+        }
+      },
+      "required": [
+        "declaration_id",
+        "kind",
+        "source_classification",
+        "include",
+        "exclude",
+        "purpose",
+        "source_pointer",
+        "source_family",
+        "origin"
+      ],
+      "additionalProperties": false
+    },
+    "source_output": {
+      "type": "object",
+      "properties": {
+        "coverages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/coverage"
+          }
+        },
+        "relationship_semantics": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ],
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1
+              },
+              "subject_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "subject_id"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "coverages",
+        "relationship_semantics",
+        "issues"
+      ],
+      "additionalProperties": false
+    },
+    "coverage_input": {
+      "type": "object",
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/coverage"
+          }
+        }
+      },
+      "required": [
+        "paths",
+        "coverages"
+      ],
+      "additionalProperties": false
+    },
+    "existing": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "EXISTING_SOURCE_ELEMENT"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage": {
+          "$ref": "#/$defs/coverage"
+        },
+        "selector": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "path",
+        "coverage",
+        "selector"
+      ],
+      "additionalProperties": false
+    },
+    "removed": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "REMOVED_SOURCE_ELEMENT"
+        },
+        "element_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage": {
+          "$ref": "#/$defs/coverage"
+        },
+        "selector": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "element_id",
+        "coverage",
+        "selector"
+      ],
+      "additionalProperties": false
+    },
+    "uncovered": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "UNCOVERED_REPOSITORY_ELEMENT"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "kind",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "ambiguous": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "AMBIGUOUS_SOURCE_ELEMENT"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/coverage"
+          }
+        },
+        "selectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "path",
+        "coverages",
+        "selectors"
+      ],
+      "additionalProperties": false
+    },
+    "coverage_output": {
+      "type": "object",
+      "properties": {
+        "existing": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/existing"
+          }
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/removed"
+          }
+        },
+        "uncovered": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uncovered"
+          }
+        },
+        "ambiguous": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ambiguous"
+          }
+        }
+      },
+      "required": [
+        "existing",
+        "removed",
+        "uncovered",
+        "ambiguous"
+      ],
+      "additionalProperties": false
+    },
+    "target_state": {
+      "type": "object",
+      "properties": {
+        "draft_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "specification_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "classification": {
+                "type": "string",
+                "minLength": 1
+              },
+              "include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "exclude": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "classification",
+              "include",
+              "exclude"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "associated_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "anchor": {
+                "type": "string"
+              },
+              "include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "exclude": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "anchor",
+              "include",
+              "exclude"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relationship"
+          }
+        }
+      },
+      "required": [
+        "draft_version",
+        "specification_revision",
+        "components",
+        "associated_artifacts",
+        "relationships"
+      ],
+      "additionalProperties": false
+    },
+    "compatibility_input": {
+      "type": "object",
+      "properties": {
+        "existing": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/existing"
+          }
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/target_state"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "existing",
+        "target",
+        "classifications"
+      ],
+      "additionalProperties": false
+    },
+    "lifecycle": {
+      "type": "object",
+      "properties": {
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "EXACT_SEMANTIC_PRESERVATION",
+            "HISTORICAL_TOOLCHAIN_AMBIGUITY",
+            "POSSIBLE_LIFECYCLE_SEPARATION",
+            "TARGET_REVIEW_REQUIRED"
+          ]
+        },
+        "source_classification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_classification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "subject_id",
+        "kind",
+        "source_classification",
+        "target_classification",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "compatibility_output": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_status": {
+                "enum": [
+                  "NOT_EVALUATED",
+                  "ALREADY_SATISFIED",
+                  "COMPATIBLE_TARGET_STATE",
+                  "CONFLICTING_TARGET_STATE",
+                  "TARGET_REVIEW_REQUIRED"
+                ]
+              },
+              "lifecycle": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/lifecycle"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "target_status",
+              "lifecycle"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "results"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

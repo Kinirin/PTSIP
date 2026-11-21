@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
   "semantic_owner": "PROJECTION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -80,7 +80,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.3.0",
+        "contract_version": "2.4.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -214,7 +214,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.3.0",
+        "contract_version": "2.4.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -465,11 +465,1211 @@
         "output_schema_ref": "src/ptsip/engines/projection/src/schemas/profile.schema.json#/$defs/metadata_output"
       },
       "compatibility": {
-        "contract_version": "2.3.0",
+        "contract_version": "2.4.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "PROJECT_EXPLICIT_PROFILE_AND_SPECIFICATION_METADATA_WITHOUT_SOURCE_MUTATION",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "projection.migration.source",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "family": {
+            "enum": [
+              "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+              "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+            ]
+          },
+          "family_semantics": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "V034"
+                  },
+                  "declaration_form": {
+                    "enum": [
+                      "COMPONENTS",
+                      "BOUNDARIES"
+                    ]
+                  },
+                  "boundaries": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_classification": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "roots": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "source_pointer": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "source_classification",
+                        "roots",
+                        "source_pointer"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "kind",
+                  "declaration_form",
+                  "boundaries"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "V036"
+                  },
+                  "responsibility_map_mode": {
+                    "enum": [
+                      "explicit",
+                      "template",
+                      "hybrid"
+                    ]
+                  },
+                  "template_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "template_revision": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "remove_component_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "remove_associated_artifact_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "remove_relationship_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "kind",
+                  "responsibility_map_mode",
+                  "template_id",
+                  "template_revision",
+                  "remove_component_ids",
+                  "remove_associated_artifact_ids",
+                  "remove_relationship_ids"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "components": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "include": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "exclude": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "source_pointer": {
+                  "type": "string"
+                },
+                "source_classification": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "include",
+                "exclude",
+                "purpose",
+                "source_pointer",
+                "source_classification"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "associated_artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "include": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "exclude": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "source_pointer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "include",
+                "exclude",
+                "purpose",
+                "source_pointer"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "from": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "to": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "from",
+                "to",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "family",
+          "family_semantics",
+          "components",
+          "associated_artifacts",
+          "relationships"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "coverages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "declaration_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "enum": [
+                    "COMPONENT",
+                    "ASSOCIATED_ARTIFACT",
+                    "BOUNDARY"
+                  ]
+                },
+                "source_classification": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "include": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "exclude": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "source_pointer": {
+                  "type": "string"
+                },
+                "source_family": {
+                  "enum": [
+                    "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+                    "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+                  ]
+                },
+                "origin": {
+                  "enum": [
+                    "SOURCE_COMPONENT",
+                    "SOURCE_BOUNDARY",
+                    "PROJECT_EXPLICIT",
+                    "PROJECT_OVERRIDE",
+                    "TEMPLATE_EFFECTIVE"
+                  ]
+                }
+              },
+              "required": [
+                "declaration_id",
+                "kind",
+                "source_classification",
+                "include",
+                "exclude",
+                "purpose",
+                "source_pointer",
+                "source_family",
+                "origin"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "relationship_semantics": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ],
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "subject_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "subject_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "coverages",
+          "relationship_semantics",
+          "issues"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine:projection:migration:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/source_input",
+          "sha256": "2239e67afd681758a2ee6350b639ebaa470d552f295b1ae179dfcd75da0c3d39"
+        },
+        "output_schema_ref": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/source_output"
+      },
+      "compatibility": {
+        "contract_version": "2.4.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "PROJECT_HISTORICAL_PROFILE_SOURCE_DECLARATIONS",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "projection.migration.coverage",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "coverages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "declaration_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "enum": [
+                    "COMPONENT",
+                    "ASSOCIATED_ARTIFACT",
+                    "BOUNDARY"
+                  ]
+                },
+                "source_classification": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "include": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "exclude": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "source_pointer": {
+                  "type": "string"
+                },
+                "source_family": {
+                  "enum": [
+                    "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+                    "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+                  ]
+                },
+                "origin": {
+                  "enum": [
+                    "SOURCE_COMPONENT",
+                    "SOURCE_BOUNDARY",
+                    "PROJECT_EXPLICIT",
+                    "PROJECT_OVERRIDE",
+                    "TEMPLATE_EFFECTIVE"
+                  ]
+                }
+              },
+              "required": [
+                "declaration_id",
+                "kind",
+                "source_classification",
+                "include",
+                "exclude",
+                "purpose",
+                "source_pointer",
+                "source_family",
+                "origin"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "paths",
+          "coverages"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "existing": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "EXISTING_SOURCE_ELEMENT"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "coverage": {
+                  "type": "object",
+                  "properties": {
+                    "declaration_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "kind": {
+                      "enum": [
+                        "COMPONENT",
+                        "ASSOCIATED_ARTIFACT",
+                        "BOUNDARY"
+                      ]
+                    },
+                    "source_classification": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "purpose": {
+                      "type": "string"
+                    },
+                    "source_pointer": {
+                      "type": "string"
+                    },
+                    "source_family": {
+                      "enum": [
+                        "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+                        "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+                      ]
+                    },
+                    "origin": {
+                      "enum": [
+                        "SOURCE_COMPONENT",
+                        "SOURCE_BOUNDARY",
+                        "PROJECT_EXPLICIT",
+                        "PROJECT_OVERRIDE",
+                        "TEMPLATE_EFFECTIVE"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "declaration_id",
+                    "kind",
+                    "source_classification",
+                    "include",
+                    "exclude",
+                    "purpose",
+                    "source_pointer",
+                    "source_family",
+                    "origin"
+                  ],
+                  "additionalProperties": false
+                },
+                "selector": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "path",
+                "coverage",
+                "selector"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "removed": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "REMOVED_SOURCE_ELEMENT"
+                },
+                "element_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "coverage": {
+                  "type": "object",
+                  "properties": {
+                    "declaration_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "kind": {
+                      "enum": [
+                        "COMPONENT",
+                        "ASSOCIATED_ARTIFACT",
+                        "BOUNDARY"
+                      ]
+                    },
+                    "source_classification": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "purpose": {
+                      "type": "string"
+                    },
+                    "source_pointer": {
+                      "type": "string"
+                    },
+                    "source_family": {
+                      "enum": [
+                        "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+                        "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+                      ]
+                    },
+                    "origin": {
+                      "enum": [
+                        "SOURCE_COMPONENT",
+                        "SOURCE_BOUNDARY",
+                        "PROJECT_EXPLICIT",
+                        "PROJECT_OVERRIDE",
+                        "TEMPLATE_EFFECTIVE"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "declaration_id",
+                    "kind",
+                    "source_classification",
+                    "include",
+                    "exclude",
+                    "purpose",
+                    "source_pointer",
+                    "source_family",
+                    "origin"
+                  ],
+                  "additionalProperties": false
+                },
+                "selector": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "element_id",
+                "coverage",
+                "selector"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "uncovered": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "UNCOVERED_REPOSITORY_ELEMENT"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "kind",
+                "path"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ambiguous": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "AMBIGUOUS_SOURCE_ELEMENT"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "coverages": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "declaration_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "kind": {
+                        "enum": [
+                          "COMPONENT",
+                          "ASSOCIATED_ARTIFACT",
+                          "BOUNDARY"
+                        ]
+                      },
+                      "source_classification": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "include": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "exclude": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "purpose": {
+                        "type": "string"
+                      },
+                      "source_pointer": {
+                        "type": "string"
+                      },
+                      "source_family": {
+                        "enum": [
+                          "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+                          "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+                        ]
+                      },
+                      "origin": {
+                        "enum": [
+                          "SOURCE_COMPONENT",
+                          "SOURCE_BOUNDARY",
+                          "PROJECT_EXPLICIT",
+                          "PROJECT_OVERRIDE",
+                          "TEMPLATE_EFFECTIVE"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "declaration_id",
+                      "kind",
+                      "source_classification",
+                      "include",
+                      "exclude",
+                      "purpose",
+                      "source_pointer",
+                      "source_family",
+                      "origin"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "selectors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "kind",
+                "path",
+                "coverages",
+                "selectors"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "existing",
+          "removed",
+          "uncovered",
+          "ambiguous"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine:projection:migration:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/coverage_input",
+          "sha256": "2239e67afd681758a2ee6350b639ebaa470d552f295b1ae179dfcd75da0c3d39"
+        },
+        "output_schema_ref": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/coverage_output"
+      },
+      "compatibility": {
+        "contract_version": "2.4.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "PROJECT_REPOSITORY_COVERAGE_AND_AMBIGUITY",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "projection.migration.compatibility",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "existing": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "EXISTING_SOURCE_ELEMENT"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "coverage": {
+                  "type": "object",
+                  "properties": {
+                    "declaration_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "kind": {
+                      "enum": [
+                        "COMPONENT",
+                        "ASSOCIATED_ARTIFACT",
+                        "BOUNDARY"
+                      ]
+                    },
+                    "source_classification": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "purpose": {
+                      "type": "string"
+                    },
+                    "source_pointer": {
+                      "type": "string"
+                    },
+                    "source_family": {
+                      "enum": [
+                        "TOOL_0.3.5_PROFILE_0.3.4_DRAFT",
+                        "TOOL_0.3.6_PROFILE_0.3.6_DRAFT"
+                      ]
+                    },
+                    "origin": {
+                      "enum": [
+                        "SOURCE_COMPONENT",
+                        "SOURCE_BOUNDARY",
+                        "PROJECT_EXPLICIT",
+                        "PROJECT_OVERRIDE",
+                        "TEMPLATE_EFFECTIVE"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "declaration_id",
+                    "kind",
+                    "source_classification",
+                    "include",
+                    "exclude",
+                    "purpose",
+                    "source_pointer",
+                    "source_family",
+                    "origin"
+                  ],
+                  "additionalProperties": false
+                },
+                "selector": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "path",
+                "coverage",
+                "selector"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "draft_version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "specification_revision": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "components": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "classification": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "include": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "exclude": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "classification",
+                        "include",
+                        "exclude"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "associated_artifacts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "anchor": {
+                          "type": "string"
+                        },
+                        "include": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "exclude": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "anchor",
+                        "include",
+                        "exclude"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "relationships": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "from": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "to": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "type": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "from",
+                        "to",
+                        "type"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "draft_version",
+                  "specification_revision",
+                  "components",
+                  "associated_artifacts",
+                  "relationships"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "classifications": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "existing",
+          "target",
+          "classifications"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "target_status": {
+                  "enum": [
+                    "NOT_EVALUATED",
+                    "ALREADY_SATISFIED",
+                    "COMPATIBLE_TARGET_STATE",
+                    "CONFLICTING_TARGET_STATE",
+                    "TARGET_REVIEW_REQUIRED"
+                  ]
+                },
+                "lifecycle": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "subject_id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "kind": {
+                          "enum": [
+                            "EXACT_SEMANTIC_PRESERVATION",
+                            "HISTORICAL_TOOLCHAIN_AMBIGUITY",
+                            "POSSIBLE_LIFECYCLE_SEPARATION",
+                            "TARGET_REVIEW_REQUIRED"
+                          ]
+                        },
+                        "source_classification": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "target_classification": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "rationale": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "subject_id",
+                        "kind",
+                        "source_classification",
+                        "target_classification",
+                        "rationale"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "path",
+                "target_status",
+                "lifecycle"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "results"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION",
+        "NO_PROJECT_MUTATION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine:projection:migration:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/compatibility_input",
+          "sha256": "2239e67afd681758a2ee6350b639ebaa470d552f295b1ae179dfcd75da0c3d39"
+        },
+        "output_schema_ref": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/compatibility_output"
+      },
+      "compatibility": {
+        "contract_version": "2.4.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "PROJECT_TARGET_COMPATIBILITY_BY_OWNER_AND_PATH",
         "normative_authority_from_runtime_result": false
       }
     }

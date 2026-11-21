@@ -36,7 +36,9 @@
     "discovery-profile-candidates": "src/ptsip/engines/discovery/src/schemas/profile-candidates.schema.json",
     "validation-repository": "src/ptsip/engines/validation/src/schemas/repository.schema.json",
     "validation-profile-path": "src/ptsip/engines/validation/src/schemas/profile-path.schema.json",
-    "validation-profile-state": "src/ptsip/engines/validation/src/schemas/profile-state.schema.json"
+    "validation-profile-state": "src/ptsip/engines/validation/src/schemas/profile-state.schema.json",
+    "projection-migration": "src/ptsip/engines/projection/src/schemas/migration.schema.json",
+    "validation-profile-identity-rewrite": "src/ptsip/engines/validation/src/schemas/profile-identity-rewrite.schema.json"
   },
   "transport_contract_ref": "src/ptsip/engines/contracts/stdio-transport.json",
   "official_engine_entries": [
@@ -112,7 +114,8 @@
         "validation.repository.snapshot",
         "validation.profile.path",
         "validation.profile.transition-state",
-        "validation.profile.convergence"
+        "validation.profile.convergence",
+        "validation.profile.identity-rewrite"
       ],
       "capability_id": "urn:uuid:450659b1-1e89-4138-91d3-8dcbf6d6dc1a",
       "previous_candidate_contract_ref": "src/ptsip/engines/validation/contracts/2.0.0.json"
@@ -173,7 +176,10 @@
       "operations": [
         "projection.select",
         "projection.render",
-        "projection.profile.metadata"
+        "projection.profile.metadata",
+        "projection.migration.source",
+        "projection.migration.coverage",
+        "projection.migration.compatibility"
       ],
       "capability_id": "urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45",
       "previous_candidate_contract_ref": "src/ptsip/engines/projection/contracts/1.0.0.json"
