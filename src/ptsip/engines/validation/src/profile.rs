@@ -3,6 +3,8 @@ use serde_json::{json, Value};
 use std::collections::BTreeSet;
 
 const SCHEMA: &str = include_str!("schemas/profile.schema.json");
+const STATE_SCHEMA: &str = include_str!("schemas/profile-state.schema.json");
+const TRANSITION_CATALOG: &[u8] = include_bytes!("../profile-transitions.json");
 
 pub(crate) fn check(schema: &str, definition: &str, value: &Value) -> Result<(), String> {
     let schema: Value = serde_json::from_str(schema).map_err(|e| e.to_string())?;
@@ -114,16 +116,31 @@ pub fn identity(input: &Value) -> Result<Value, String> {
     Ok(output)
 }
 
-/// Match exactly one supplied registry edge or an evidence-bound historical source.
-/// No transitive closure or intermediate Profile is materialized.
+pub(crate) fn owned_transition_catalog() -> Result<Value, String> {
+    let catalog = source::parse(TRANSITION_CATALOG)?;
+    let mut schema = source::parse(STATE_SCHEMA.as_bytes())?;
+    schema["$ref"] = json!("#/$defs/transition_catalog");
+    jsonschema::validate(&schema, &catalog)
+        .map_err(|error| format!("Profile transition catalog: {error}"))?;
+    Ok(catalog)
+}
+
+/// Match a direct edge or a historical bridge from the engine catalog or explicit input.
 pub fn transition(input: &Value) -> Result<Value, String> {
     check(SCHEMA, "transition_input", input)?;
+    let owned_catalog;
+    let catalog = if input.get("transitions").is_some() {
+        input
+    } else {
+        owned_catalog = owned_transition_catalog()?;
+        &owned_catalog
+    };
     let source_version = source::text(input, "source_contract_version")?;
     let target_version = source::text(input, "target_contract_version")?;
     version(target_version, false)?;
     let mut edges = BTreeSet::new();
     let mut kind: Option<String> = None;
-    for edge in input["transitions"]
+    for edge in catalog["transitions"]
         .as_array()
         .ok_or("transition registry required")?
     {
@@ -141,7 +158,7 @@ pub fn transition(input: &Value) -> Result<Value, String> {
     let mut historic_keys = BTreeSet::new();
     let mut legacy_target_filename = Value::Null;
     let mut evidence_refs = Vec::new();
-    if let Some(bridges) = input.get("historical_bridges").and_then(Value::as_array) {
+    if let Some(bridges) = catalog.get("historical_bridges").and_then(Value::as_array) {
         for bridge in bridges {
             let declared = source::text(bridge, "declared_version")?;
             let revision = source::text(bridge, "specification_revision")?;

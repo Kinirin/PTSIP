@@ -395,7 +395,8 @@
         "setup.py",
         "MANIFEST.in",
         "pyproject.toml",
-        "src/ptsip/specdata/project-profile-contracts.yaml"
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json"
       ],
       "state": "REQUIRED_AFTER_ACTUAL_SELECTED_RUST_ENGINES_KNOWN",
       "note": "Package selected Rust engine artifacts and schemas; no profile_contract Go module/binary. Do not assume Storage engine owns all Profile functions."
@@ -2853,7 +2854,9 @@
       "name": "All-six Python Profile consumer rewiring after future Rust engine responsibility analysis",
       "inputs": [
         "src/ptsip/profiles/contracts.py",
-        "src/ptsip/specdata/project-profile-contracts.yaml",
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json",
         "src/ptsip/engines/contracts/",
         "src/ptsip/engines/validation/src/schema.rs",
         "pyproject.toml"
@@ -2867,7 +2870,7 @@
       ],
       "actions": [
         "Discontinue use of six src/ptsip/profiles modules; enumerate their exact responsibilities and consumer imports, then rehome only to user-approved source paths",
-        "update specdata/project-profile-contracts.yaml paths preserving historical version identities",
+        "Preserve exact Profile identity, paths, lifecycle and original schema digests in schemas/config.json; maintain version support under Discovery and direct edges and historical bridges under Validation.",
         "scan all repository consumers for source filenames, $id, importlib resource, runtime schema references",
         "update only code paths approved by user",
         "verify built wheel includes all canonical schema resources",
@@ -2883,7 +2886,7 @@
       ],
       "gate": "Repository ownership and exact seven Context/Discovery/Validation operation IDs and existing plan typed I/O design are USER APPROVED; no missing user decision for their registration. Supported migration consumer rewiring/native registration/normal import PASS remain IMPLEMENTATION tests. 22-file deletion is not blocked by those post-deletion tests.",
       "execution_status": "SEVEN_REPOSITORY_OPERATIONS_REGISTERED_AND_SCOPED_NORMAL_CONSUMER_VERIFIED",
-      "current_result": "Context, Discovery and Validation now own the seven approved Repository operations and six typed schema resources. The authorized 24-file Repository import closure uses the existing Go router and Rust engines. Normal imports and actual supported consumer calls passed.",
+      "current_result": "Context, Discovery and Validation now own the seven approved Repository operations and six typed schema resources. The authorized 24-file Repository import closure uses the existing Go router and Rust engines. Normal imports and actual supported consumer calls passed. Distributed Profile sources now follow the user-approved central, Discovery and Validation ownership split.",
       "remaining_blockers": [],
       "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
       "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL",
@@ -2960,7 +2963,9 @@
         "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
         "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
         "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml",
-        "src/ptsip/specdata/project-profile-contracts.yaml"
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json"
       ],
       "outputs": [
         "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
@@ -3083,7 +3088,8 @@
         "src/ptsip/migration/analysis/target/semantics.py",
         "src/ptsip/migration/execution/direct/promotion.py",
         "src/ptsip/ptsip_specification/spec_identity.py",
-        "src/ptsip/specdata/project-profile-contracts.yaml",
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json",
         "src/ptsip/profiles/index.yaml",
         "setup.py",
         "MANIFEST.in",
@@ -3109,7 +3115,7 @@
       "gate": "Existing six native Profile replacements remain validated. Separate normal migration Repository import: the seven native Context/Discovery/Validation operation IDs, typed I/O field roles, and selected owner assignments are USER APPROVED for registration/implementation. Normal import test and wheel acceptance are post-design implementation obligations; new official pp.3.00 core implementation remains authorized independently of user extension revision lineage.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "PROFILE_AND_APPROVED_REPOSITORY_NATIVE_RUNTIME_VERIFIED",
-      "current_result": "The earlier native Profile behavior and all seven approved Repository operations passed through the real Go router, including Git and filesystem observation, binding, path resolution, snapshot comparison, and registered transition checks.",
+      "current_result": "The earlier native Profile behavior and all seven approved Repository operations passed through the real Go router, including Git and filesystem observation, binding, path resolution, snapshot comparison, and registered transition checks. Validation resolves the registered pre-existing transition catalog for product calls; explicit tables remain supported input evidence under the same operation IDs.",
       "remaining_blockers": [],
       "pp300_contract_first_followup": {
         "status": "OFFICIAL_PP300_CORE_IMPLEMENTATION_AUTHORIZED_USER_EXTENSION_LINEAGE_INDEPENDENT_PENDING",
@@ -3197,7 +3203,8 @@
     {
       "file": "src/ptsip/specdata/project-profile-contracts.yaml",
       "issue": "Registry explicitly points to schemas/ptsip-profile-pp-*.schema.json",
-      "required_change": "Map historical version IDs to central resource and verified version selectors"
+      "required_change": "Map historical version IDs to central resource and verified version selectors",
+      "current_disposition": "HISTORICAL_OBSERVATION_RESOLVED_BY_CENTRAL_SCHEMA_AND_ENGINE_OWNERSHIP_SPLIT"
     },
     {
       "file": "pyproject.toml",
@@ -3720,7 +3727,7 @@
       "Preserve version-specific specification.family, ptsip.revision, profile_role and path-variable behavior; preserve existing source schema branch alternatives",
       "Do not create separate template profile schema; stop using distributed template YAML only after feature and consumer reference analysis",
       "CURRENT USER OVERRIDE: replace the former pp.2.00 reference-only current selector with direct official pp.3.00 core schema while preserving exact pp.2.00 historical resource and hash.",
-      "Update src/ptsip/specdata/project-profile-contracts.yaml and central config.json with exact registered selectors and immutable source SHA",
+      "Update central config.json with exact schema selectors and immutable source SHA; keep separately approved operation support and transition data under its Discovery and Validation owners.",
       "Validate all source YAML fixtures against correct central schemas independently and record negative wrong-version outcomes",
       "For the 22 legacy src/ptsip/profiles files, obey the latest recorded native migration import DESIGN deletion trigger; supported fixtures, historical checks and distribution remain post-deletion obligations."
     ],
@@ -4632,7 +4639,7 @@
         "src/ptsip/profiles/history/pp.1.00",
         "src/ptsip/profiles/**"
       ],
-      "registry_findings": "src/ptsip/specdata/project-profile-contracts.yaml lists pp.0.00 as LEGACY_COMPATIBILITY_ONLY, pp.1.01, pp.1.02 and pp.2.00; pp.1.00 is not registered",
+      "registry_findings": "Historical src/ptsip/specdata/project-profile-contracts.yaml contained identify-only pp.0.00 and older registered versions; current schema identities are in src/ptsip/schemas/config.json and operations are in src/ptsip/engines/discovery/profile-support.json. No pp.1.00 is registered.",
       "action": "BLOCK_PP100_SCHEMA_CREATION_UNTIL_EXACT_SOURCE_AND_USER_DECISION"
     },
     "source_variants": [
@@ -11063,8 +11070,12 @@
         "MANIFEST.in"
       ],
       "projection_function": "_project_profile_contracts",
-      "responsibility": "VALIDATE_AND_STAGE_FOUR_REGISTERED_CENTRAL_PROFILE_SCHEMAS_CONFIG_AND_DISTRIBUTED_SUPPORT_CATALOG",
-      "source": "CENTRAL_CONFIG_AND_EXISTING_src_ptsip_specdata_PROJECT_PROFILE_CONTRACTS_ONLY",
+      "responsibility": "VALIDATE_AND_STAGE_FOUR_REGISTERED_CENTRAL_PROFILE_SCHEMAS;PACKAGE_EXISTING_ENGINE_OWNED_JSON_ASSETS",
+      "source": [
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json"
+      ],
       "retire_from_distribution": "SEPARATE_LEGACY_YAML_EXAMPLES_AND_SAMPLE_INDEX_AND_HISTORY_BASELINES;NO_ARCHIVE",
       "legacy_python_code": "TRACKED_PACKAGES_ABSENT;INCREMENTAL_PROFILE_AND_REPOSITORY_OUTPUT_PRUNED",
       "unrelated_hooks": "KEEP_SUPPORT_POLICY_AND_LEGACY_RBAC_BUILD_HOOKS_UNCHANGED_OUTSIDE_THIS_SCOPE",
@@ -11085,9 +11096,14 @@
         "verified_schemas": 4,
         "retired_package_output_absent": [
           "ptsip/profiles",
-          "ptsip/repository"
+          "ptsip/repository",
+          "ptsip/specdata/project-profile-contracts.yaml"
         ],
-        "formal_distribution_scope": "INDEPENDENT_CLEAN_WHEEL_SDIST_AND_INSTALLED_SMOKE_GATE"
+        "formal_distribution_scope": "INDEPENDENT_CLEAN_WHEEL_SDIST_AND_INSTALLED_SMOKE_GATE",
+        "runtime_assets": [
+          "src/ptsip/engines/discovery/profile-support.json",
+          "src/ptsip/engines/validation/profile-transitions.json"
+        ]
       }
     },
     "supported_consumer_closure": {
@@ -13166,7 +13182,8 @@
       "allowed_future_implementation_targets": [
         "src/ptsip/schemas/storage/profile/project-profile.schema.json",
         "src/ptsip/schemas/config.json",
-        "src/ptsip/specdata/project-profile-contracts.yaml",
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json",
         "src/ptsip/engines/**/src/profile.rs",
         "src/ptsip/engines/**/src/schemas/**",
         "src/tests/ptsip/**",
@@ -13524,6 +13541,59 @@
       "implementation_scope": "OFFICIAL_CORE_SCHEMA_REGISTRY_AND_NATIVE_CONSUMER",
       "user_extension_revision_lineage_scope": "UNRESOLVED_UNCHANGED_NOT_SILENTLY_APPROVED",
       "note": "Do not return to policy audit gate or re-block approved official core work because of Repository operation registration."
+    },
+    "runtime_source_ownership_2026_11_21": {
+      "authority": "USER_EXPLICIT_2026_11_21_PROFILE_RUNTIME_SOURCE_SPLIT",
+      "source_before_separation": "src/ptsip/specdata/project-profile-contracts.yaml",
+      "schema_registration": {
+        "source": "src/ptsip/schemas/config.json",
+        "responsibilities": [
+          "OFFICIAL_AND_HISTORICAL_PROFILE_VERSION",
+          "SCHEMA_ID_AND_PATH",
+          "REGISTERED_LIFECYCLE",
+          "SCHEMA_SHA256"
+        ]
+      },
+      "discovery": {
+        "source": "src/ptsip/engines/discovery/profile-support.json",
+        "responsibilities": [
+          "VERSION_SUPPORT_OPERATIONS"
+        ],
+        "operation": "discovery.profile.contract",
+        "capability_contract_version": "3.6.0"
+      },
+      "validation": {
+        "source": "src/ptsip/engines/validation/profile-transitions.json",
+        "responsibilities": [
+          "EXACT_DIRECT_TRANSITIONS",
+          "REVISION_BOUND_HISTORICAL_BRIDGES"
+        ],
+        "operations": [
+          "validation.profile.transition",
+          "validation.profile.convergence"
+        ],
+        "capability_contract_version": "4.4.0"
+      },
+      "selection": "DISCOVERY_READS_SCHEMA_REGISTRATION_AND_ITS_SUPPORT_SOURCE;VALIDATION_LOADS_ITS_EMBEDDED_REGISTRY_FOR_PRODUCT_CALLS_WITHOUT_EXPLICIT_TABLES",
+      "explicit_input": "EXISTING_EXPLICIT_TABLE_INPUTS_RETAINED;EXPLICIT_EMPTY_TABLES_REMAIN_EMPTY;PARTIAL_CONVERGENCE_TABLES_ARE_INVALID",
+      "historical_compatibility": "EXISTING_FIVE_SUPPORT_ROWS_TWO_DIRECT_EDGES_TWO_BRIDGES_PRESERVED;PP_0_00_IDENTIFY_ONLY_WITHOUT_A_SCHEMA;NO_PP_2_00_TO_PP_3_00_DIRECT_EDGE",
+      "package_projection": "ENGINE_JSON_ASSETS_IN_EXISTING_PACKAGE_DATA;CENTRAL_SCHEMA_PROJECTION_OWNS_FOUR_SCHEMAS;RETIRED_YAML_PRUNED_ONLY_FROM_INCREMENTAL_BUILD_OUTPUT",
+      "operation_id_changes": [],
+      "implementation_state": "IMPLEMENTED_AND_VERIFIED_BY_NATIVE_ROUTER_AND_PACKAGE_STAGING",
+      "verification": {
+        "base_commit": "92bf885c334309632a85ffdd659ad630127291d1",
+        "go_top_level_tests_passed": 60,
+        "go_test_and_subtest_pass_events": 275,
+        "go_failures": 0,
+        "go_skips": 2,
+        "go_skip_reason": "Windows symlink creation privilege unavailable",
+        "rust_tests_passed": 54,
+        "go_vet": "PASS_PRODUCT_AND_CONTRACT_TEST_MODULES",
+        "raw_capability_and_schema_pin_checks": "PASS",
+        "old_catalog_projection_comparison": "PASS_FIVE_SUPPORT_ARRAYS_TWO_DIRECT_EDGES_TWO_HISTORICAL_BRIDGES",
+        "source_assets_in_own_cargo_packages": "PASS",
+        "standard_staged_package": "PASS_NEW_ENGINE_ASSETS_AND_FOUR_SCHEMAS_WITH_OLD_YAML_ABSENT"
+      }
     }
   },
   "wu04_observed_execution_and_task_index_contract": {

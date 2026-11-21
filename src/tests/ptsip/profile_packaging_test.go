@@ -57,10 +57,13 @@ legacy = target / "ptsip" / "profiles"
 repository = target / "ptsip" / "repository"
 repository.mkdir(exist_ok=True)
 (repository / "snapshot.py").write_text("# stale build output\n", encoding="utf-8")
+catalog = target / "ptsip" / "specdata" / "project-profile-contracts.yaml"
+catalog.parent.mkdir(parents=True, exist_ok=True)
+catalog.write_text("stale: true\n", encoding="utf-8")
 
 setup_path = root / "setup.py"
 tree = ast.parse(setup_path.read_text(encoding="utf-8"), filename=str(setup_path))
-names = {"ROOT", "EMBEDDED_PP_CONTRACT_REGISTRY"}
+names = {"ROOT"}
 selected = [node for node in tree.body if
             isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id in names for t in node.targets)
             or isinstance(node, ast.FunctionDef) and node.name == "_project_profile_contracts"]
@@ -89,12 +92,12 @@ print("profile package assets staged")
 			}
 		})
 	}
-	for _, relative := range []string{"schemas/config.json", "specdata/project-profile-contracts.yaml"} {
+	for _, relative := range []string{"schemas/config.json", discoveryProfileSupport, "engines/validation/profile-transitions.json"} {
 		if fileHash(t, filepath.Join(product, filepath.FromSlash(relative))) != fileHash(t, filepath.Join(target, "ptsip", filepath.FromSlash(relative))) {
 			t.Fatalf("package projection changed or prematurely removed %s", relative)
 		}
 	}
-	for _, retired := range []string{"profiles", "repository"} {
+	for _, retired := range []string{"profiles", "repository", "specdata/project-profile-contracts.yaml"} {
 		if _, err := os.Stat(filepath.Join(target, "ptsip", filepath.FromSlash(retired))); !os.IsNotExist(err) {
 			t.Fatalf("retired package output remains or cannot be checked: %s: %v", retired, err)
 		}

@@ -3,6 +3,8 @@ use ptsip_engine_discovery::source::{self, Root};
 use serde_json::{json, Value};
 use std::collections::BTreeSet;
 
+const PROFILE_SUPPORT: &str = "engines/discovery/profile-support.json";
+
 pub fn algorithm(operation: &str) -> Option<&'static str> {
     match operation {
         "discovery.profile.contract" => {
@@ -70,25 +72,11 @@ pub fn contract(input: &Value) -> Result<Value, String> {
             return Err("Profile source revision mismatch".into());
         }
     }
-    // Operation support and exact transition data are distributed source data,
-    // never reconstructed from a tool version or an external policy document.
-    let registry_bytes = root.bytes("specdata/project-profile-contracts.yaml", 2_097_152)?;
-    let support = source::parse_yaml(&registry_bytes)?;
-    let matches: Vec<_> = support["contracts"]
-        .as_array()
-        .ok_or("Profile support catalog required")?
-        .iter()
-        .filter(|row| row["version"] == version)
-        .collect();
-    if matches.len() != 1 {
-        return Err("Profile support selection missing or ambiguous".into());
-    }
-    if matches[0]["schema"] != relative || matches[0]["lifecycle"] != lifecycle {
-        return Err("Profile support data disagrees with the central registration".into());
-    }
-    let operations = matches[0]["operations"]
-        .as_array()
-        .ok_or("Profile operations required")?;
+    let (support, _) = root.read(PROFILE_SUPPORT)?;
+    let operations = support
+        .get(version)
+        .and_then(Value::as_array)
+        .ok_or("Profile support operations missing for registered version")?;
     let mut unique = BTreeSet::new();
     for operation in operations {
         let operation = operation
@@ -116,11 +104,6 @@ pub fn contract(input: &Value) -> Result<Value, String> {
     } else {
         json!([])
     };
-    if source::hash(&root.bytes("specdata/project-profile-contracts.yaml", 2_097_152)?)
-        != source::hash(&registry_bytes)
-    {
-        return Err("Profile support source changed during selection".into());
-    }
     root.finish()?;
     Ok(
         json!({"contract_id":schema["$id"],"version":version,"schema_resource":relative,

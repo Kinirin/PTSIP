@@ -238,7 +238,14 @@ pub fn convergence(input: &Value) -> Result<Value, String> {
             "intermediate_profiles":[],"snapshot":input["snapshot"]})));
     }
 
-    let bridges = input["historical_bridges"]
+    let owned_catalog;
+    let catalog = if input.get("transitions").is_some() {
+        input
+    } else {
+        owned_catalog = profile::owned_transition_catalog()?;
+        &owned_catalog
+    };
+    let bridges = catalog["historical_bridges"]
         .as_array()
         .ok_or("historical bridges required")?;
     // The older direct-edge validator consumes the edge fields. Compatibility
@@ -255,7 +262,7 @@ pub fn convergence(input: &Value) -> Result<Value, String> {
         .collect();
     let transition = profile::transition(&json!({"source_contract_version":declared,
         "source_revision":source["specification_revision"],"target_contract_version":version,
-        "transitions":input["transitions"],"historical_bridges":edges}))?;
+        "transitions":catalog["transitions"],"historical_bridges":edges}))?;
     if transition["allowed"] != true {
         return Ok(invalid(vec![issue(
             "PP_CONVERGENCE_UNSUPPORTED_SOURCE_TARGET",

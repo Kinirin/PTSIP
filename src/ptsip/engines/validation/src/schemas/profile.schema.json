@@ -233,8 +233,7 @@
       "additionalProperties": false,
       "required": [
         "source_contract_version",
-        "target_contract_version",
-        "transitions"
+        "target_contract_version"
       ],
       "properties": {
         "source_contract_version": {
@@ -324,6 +323,11 @@
             }
           }
         }
+      },
+      "dependentRequired": {
+        "historical_bridges": [
+          "transitions"
+        ]
       }
     },
     "transition_output": {

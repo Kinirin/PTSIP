@@ -174,7 +174,7 @@ func TestRepositoryNativeProfileBindings(t *testing.T) {
 	writeRepositoryFixture(t, root, "ptsip.yaml", source("pp.2.00"))
 	observed = repositoryOperation(t, "discovery", "discovery.profile.candidates", object{"root": root, "candidate_paths": array{}})
 	convergence := object{"source": observed["source"], "candidates": array{}, "snapshot": repositoryOperation(t, "context", "context.repository.snapshot", object{"root": root}),
-		"selected_contract": selected, "transitions": array{object{"from": "pp.1.02", "to": "pp.2.00", "kind": "IDENTITY_ONLY"}}, "historical_bridges": array{}}
+		"selected_contract": selected}
 	state = repositoryOperation(t, "validation", "validation.profile.convergence", convergence)
 	if state["valid"] != false || state["diagnostics"].(array)[0].(object)["code"] != "PP_CONVERGENCE_UNSUPPORTED_SOURCE_TARGET" {
 		t.Fatalf("unregistered pp.2.00 to pp.3.00 transition accepted: %v", state)
@@ -187,5 +187,15 @@ func TestRepositoryNativeProfileBindings(t *testing.T) {
 	state = repositoryOperation(t, "validation", "validation.profile.convergence", convergence)
 	if state["valid"] != true || state["state"].(object)["mode"] != "IDENTITY_ONLY" {
 		t.Fatalf("declared exact transition was not resolved: %v", state)
+	}
+	convergence["transitions"] = array{}
+	result, err := runProfileOperation(t, "validation", "validation.profile.convergence", convergence)
+	if err == nil || result["status"] != "FAIL" {
+		t.Fatalf("partial explicit transition evidence accepted: %v %v", result, err)
+	}
+	convergence["historical_bridges"] = array{}
+	state = repositoryOperation(t, "validation", "validation.profile.convergence", convergence)
+	if state["valid"] != false {
+		t.Fatalf("explicit empty evidence was replaced with the engine catalog: %v", state)
 	}
 }

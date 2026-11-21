@@ -53,19 +53,32 @@ func discoverySourceFailure(t *testing.T, operation string, input object, diagno
 	}
 }
 
+const discoveryProfileSupport = "engines/discovery/profile-support.json"
+
 func copyDiscoverySelectionSources(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 	copyJSONTree(t, filepath.Join(productRoot(t), "schemas"), filepath.Join(root, "schemas"))
-	support, err := os.ReadFile(filepath.Join(productRoot(t), "specdata", "project-profile-contracts.yaml"))
+	support, err := os.ReadFile(filepath.Join(productRoot(t), filepath.FromSlash(discoveryProfileSupport)))
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeDiscoverySource(t, root, "specdata/project-profile-contracts.yaml", support)
+	writeDiscoverySource(t, root, discoveryProfileSupport, support)
 	return root
 }
 
 func TestDiscoveryProfileSourceIntegrity(t *testing.T) {
+	t.Run("engine_owned_support_controls_operations", func(t *testing.T) {
+		root := copyDiscoverySelectionSources(t)
+		writeDiscoveryJSON(t, root, discoveryProfileSupport, object{"pp.3.00": array{"IDENTIFY"}})
+		output := discoverySourceOutput(t, "discovery.profile.contract", object{"root": root})
+		operations := output["operations"].(array)
+		if output["version"] != "pp.3.00" || output["lifecycle"] != "ACTIVE" || len(operations) != 1 || operations[0] != "IDENTIFY" {
+			t.Fatalf("separate registrations did not determine their own fields: %v", output)
+		}
+		writeDiscoverySource(t, root, discoveryProfileSupport, []byte(`{"pp.3.00":["IDENTIFY"],"pp.3.00":["VALIDATE"]}`))
+		discoverySourceFailure(t, "discovery.profile.contract", object{"root": root}, "duplicate")
+	})
 	for _, tc := range []struct {
 		name, schema, version string
 	}{

@@ -128,6 +128,20 @@ func TestNativeProfileValidationResponsibilities(t *testing.T) {
 			t.Fatalf("declared transition mismatch was accepted: %#v", output)
 		}
 	})
+	t.Run("engine_catalog_is_selected_for_omitted_tables", func(t *testing.T) {
+		input := object{"source_contract_version": "pp.1.02", "target_contract_version": "pp.2.00"}
+		output := nativeProfileOutput(t, "validation.profile.transition", input)
+		if output["allowed"] != true || output["transition_kind"] != "IDENTITY_ONLY" {
+			t.Fatalf("engine-owned direct transition was not selected: %#v", output)
+		}
+		input["transitions"] = array{}
+		if output := nativeProfileOutput(t, "validation.profile.transition", input); output["allowed"] != false {
+			t.Fatalf("explicit empty evidence was replaced with the engine catalog: %#v", output)
+		}
+		delete(input, "transitions")
+		input["historical_bridges"] = array{}
+		nativeProfileFailure(t, "validation.profile.transition", input)
+	})
 	t.Run("historical_transition_requires_exact_revision", func(t *testing.T) {
 		revision := strings.Repeat("b", 40)
 		input := object{

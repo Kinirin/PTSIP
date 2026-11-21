@@ -1,0 +1,32 @@
+{
+  "transitions": [
+    {
+      "from": "pp.1.01",
+      "to": "pp.1.02",
+      "kind": "SEMANTIC_MIGRATION"
+    },
+    {
+      "from": "pp.1.02",
+      "to": "pp.2.00",
+      "kind": "IDENTITY_ONLY"
+    }
+  ],
+  "historical_bridges": [
+    {
+      "declared_version": "0.3.4-draft",
+      "specification_revision": "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e",
+      "compatibility_contract": "pp.0.00",
+      "target_contract": "pp.1.01",
+      "transition_kind": "SEMANTIC_MIGRATION",
+      "legacy_target_filename": "ptsip_0.3.6.yaml"
+    },
+    {
+      "declared_version": "0.3.6-draft",
+      "specification_revision": "d6995ed232e845b88d8235b851e80ab54b7804ea",
+      "compatibility_contract": "pp.1.01",
+      "target_contract": "pp.1.01",
+      "transition_kind": "IDENTITY_ONLY",
+      "legacy_target_filename": "ptsip_0.3.6.yaml"
+    }
+  ]
+}

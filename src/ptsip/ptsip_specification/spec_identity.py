@@ -382,24 +382,12 @@ def discover_profile_transition(root: str | Path) -> ProfileDiscovery:
     return ProfileDiscovery(result["valid"], state, tuple(ProfileDiagnostic(**item) for item in result["diagnostics"]))
 
 
-def profile_transition_catalog() -> dict[str, object]:
-    import yaml
-
-    raw = (profile_package_root() / "specdata" / "project-profile-contracts.yaml").read_bytes()
-    catalog = yaml.safe_load(raw)
-    if not isinstance(catalog, dict) or not isinstance(catalog.get("transitions"), list) or not isinstance(catalog.get("historical_bridges"), list):
-        raise ProfileNativeError("Distributed Profile transition catalog must contain declared transition and bridge arrays.")
-    return catalog
-
-
 def discover_direct_profile_convergence(root: str | Path) -> ProfileDiscovery:
     observed, snapshot, diagnostics = _observe_profiles(root)
     if diagnostics:
         return ProfileDiscovery(False, None, diagnostics)
-    catalog = profile_transition_catalog()
     result = native_profile_operation("validation.profile.convergence", {
         **observed, "snapshot": snapshot.as_dict(), "selected_contract": current_project_profile_contract(),
-        "transitions": catalog["transitions"], "historical_bridges": catalog["historical_bridges"],
     })
     state = DirectConvergenceState.from_native(result["state"]) if result["valid"] else None
     return ProfileDiscovery(result["valid"], state, tuple(ProfileDiagnostic(**item) for item in result["diagnostics"]))

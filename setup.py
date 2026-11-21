@@ -33,9 +33,6 @@ RBAC_DRAFT_SCHEMA_FILES = (
     "activation.candidate.schema.json",
 )
 RBAC_CANDIDATE_INDEX = "candidate-index.json"
-EMBEDDED_PP_CONTRACT_REGISTRY = (
-    ROOT / "src" / "ptsip" / "specdata" / "project-profile-contracts.yaml"
-)
 
 
 def _load_yaml(path: Path) -> dict[str, object]:
@@ -85,7 +82,7 @@ def _project_support_policy(build_lib: Path) -> None:
 
 
 def _project_profile_contracts(build_lib: Path) -> None:
-    """Stage registered Profile schemas and support data from distributable source."""
+    """Stage registered Profile schemas from the central schema catalog."""
     schema_root = ROOT / "src" / "ptsip" / "schemas"
     config_bytes = (schema_root / "config.json").read_bytes()
     config = json.loads(config_bytes)
@@ -138,23 +135,6 @@ def _project_profile_contracts(build_lib: Path) -> None:
     if selected_id != "urn:ptsip:storage:contract:profile:official":
         raise RuntimeError("current Profile must use the approved official schema identity")
 
-    support_bytes = EMBEDDED_PP_CONTRACT_REGISTRY.read_bytes()
-    support = yaml.safe_load(support_bytes)
-    if not isinstance(support, dict) or support.get("current") != "pp.3.00":
-        raise RuntimeError("distributed Profile support catalog current version mismatch")
-    contracts = support.get("contracts")
-    if not isinstance(contracts, list):
-        raise RuntimeError("distributed Profile support catalog contracts must be an array")
-    for version in ("pp.1.01", "pp.1.02", "pp.2.00", "pp.3.00"):
-        rows = [row for row in contracts if isinstance(row, dict) and row.get("version") == version]
-        registration = profiles["ptsip.project-profile"] if version == "pp.3.00" else profiles[f"ptsip.project-profile.{version}"]
-        if (
-            len(rows) != 1
-            or rows[0].get("schema") != f"schemas/{registration['path']}"
-            or rows[0].get("lifecycle") != registration["registered_lifecycle"]
-        ):
-            raise RuntimeError(f"distributed Profile support catalog resource mismatch: {version}")
-
     target = build_lib / "ptsip" / "schemas"
     target.mkdir(parents=True, exist_ok=True)
     (target / "config.json").write_bytes(config_bytes)
@@ -162,11 +142,7 @@ def _project_profile_contracts(build_lib: Path) -> None:
         destination = target / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_bytes(data)
-    support_target = build_lib / "ptsip" / "specdata" / "project-profile-contracts.yaml"
-    support_target.parent.mkdir(parents=True, exist_ok=True)
-    support_target.write_bytes(support_bytes)
-
-    # Incremental build staging can still contain the retired Python packages.
+    # Incremental build staging can still contain the retired packages and catalog.
     package_build_root = build_lib.resolve() / "ptsip"
     for name in ("profiles", "repository"):
         legacy = build_lib / "ptsip" / name
@@ -174,6 +150,10 @@ def _project_profile_contracts(build_lib: Path) -> None:
             raise RuntimeError("Retired Profile or Repository build output is an alias")
         if legacy.exists():
             rmtree(legacy)
+    catalog = build_lib / "ptsip" / "specdata" / "project-profile-contracts.yaml"
+    if catalog.is_symlink() or catalog.resolve() != package_build_root / "specdata" / catalog.name:
+        raise RuntimeError("Retired Profile catalog build output is an alias")
+    catalog.unlink(missing_ok=True)
 
 
 def _project_rbac_contract_assets(build_lib: Path) -> None:

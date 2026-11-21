@@ -10,7 +10,6 @@ from ptsip.ptsip_specification.spec_identity import (
     discover_direct_profile_convergence,
     native_profile_operation,
     profile_path_on_disk,
-    profile_transition_catalog,
 )
 from ptsip.migration.execution.authorization.preconditions import _guard_matches
 from ptsip.migration.execution.direct.identity_plan import IdentityRewriteError, IdentityRewritePlan
@@ -62,16 +61,10 @@ def build_legacy_target_identity_rewrite_plan(
         )
 
     target = state.target
-    registry = profile_transition_catalog()
     bridge = native_profile_operation("validation.profile.transition", {
         "source_contract_version": target.declared_version,
         "source_revision": target.specification_revision,
         "target_contract_version": state.target_contract.canonical,
-        "transitions": registry["transitions"],
-        "historical_bridges": [
-            {key: value for key, value in row.items() if key != "compatibility_contract"}
-            for row in registry["historical_bridges"]
-        ],
     })
     if bridge.get("allowed") is not True:
         raise IdentityRewriteError("PP_COMPAT_UNSUPPORTED_DIRECT_TARGET", "Native validation rejected the exact historical source or direct target.")

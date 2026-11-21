@@ -661,11 +661,17 @@
         "source",
         "candidates",
         "selected_contract",
-        "transitions",
-        "historical_bridges",
         "snapshot"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "dependentRequired": {
+        "transitions": [
+          "historical_bridges"
+        ],
+        "historical_bridges": [
+          "transitions"
+        ]
+      }
     },
     "convergence_output": {
       "oneOf": [
@@ -718,6 +724,31 @@
           "additionalProperties": false
         }
       ]
+    },
+    "transition_catalog": {
+      "type": "object",
+      "required": [
+        "transitions",
+        "historical_bridges"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/registered_transition"
+          }
+        },
+        "historical_bridges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/historical_bridge",
+            "required": [
+              "compatibility_contract"
+            ]
+          }
+        }
+      }
     }
   }
 }

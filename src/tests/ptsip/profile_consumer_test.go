@@ -9,8 +9,6 @@ import (
 	"runtime"
 	"testing"
 	"time"
-
-	"gopkg.in/yaml.v3"
 )
 
 func profileConsumerPython(t *testing.T) string {
@@ -55,28 +53,10 @@ func TestProfileNativeConsumerBridgeAndLazyIdentity(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	registryData, err := os.ReadFile(filepath.Join(productRoot(t), "specdata", "project-profile-contracts.yaml"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	var registry object
-	if err := yaml.Unmarshal(registryData, &registry); err != nil {
-		t.Fatal(err)
-	}
-	bridges, ok := registry["historical_bridges"].([]any)
-	if !ok || len(bridges) == 0 {
-		t.Fatal("distributed historical bridge evidence is required")
-	}
-	bridge := bridges[0].(map[string]any)
-	for _, row := range bridges {
-		delete(row.(object), "compatibility_contract")
-	}
 	transition := object{
-		"source_contract_version": bridge["declared_version"],
-		"source_revision":         bridge["specification_revision"],
-		"target_contract_version": bridge["target_contract"],
-		"transitions":             registry["transitions"],
-		"historical_bridges":      bridges,
+		"source_contract_version": "0.3.4-draft",
+		"source_revision":         "b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e",
+		"target_contract_version": "pp.1.01",
 	}
 	transitionJSON, err := json.Marshal(transition)
 	if err != nil {

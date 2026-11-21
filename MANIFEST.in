@@ -2,7 +2,6 @@ prune src/tests
 recursive-include src/policy *.yaml *.json
 include src/ptsip/schemas/config.json
 recursive-include src/ptsip/schemas/storage/profile *.schema.json
-include src/ptsip/specdata/project-profile-contracts.yaml
 
 recursive-include src/ptsip/engines *.json
 recursive-include .ptsip/contracts/compile-sealed-rbac *.schema.json
