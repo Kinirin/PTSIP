@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ptsip.repository.profile_path import profile_path_on_disk
-from ptsip.repository.snapshot import capture_snapshot
+from ptsip.ptsip_specification.spec_identity import profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import capture_snapshot
 from ptsip.migration.execution.authorization.binding import BoundExecutionPlan
 from ptsip.migration.execution.authorization.proof import AuthorizedExecutionPlan
 from ptsip.migration.execution.error import ExecutionStateError

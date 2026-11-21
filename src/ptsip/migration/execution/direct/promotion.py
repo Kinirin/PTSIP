@@ -3,11 +3,15 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Mapping
 
-import yaml
-
-from ptsip.ptsip_specification.spec_identity import native_profile_operation, profile_package_root
-from ptsip.repository.profile_convergence import DirectConvergenceMode, DirectConvergenceState, discover_direct_profile_convergence
-from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import (
+    DEFAULT_PROFILE_PATH,
+    DirectConvergenceMode,
+    DirectConvergenceState,
+    discover_direct_profile_convergence,
+    native_profile_operation,
+    profile_path_on_disk,
+    profile_transition_catalog,
+)
 from ptsip.migration.execution.authorization.preconditions import _guard_matches
 from ptsip.migration.execution.direct.identity_plan import IdentityRewriteError, IdentityRewritePlan
 from ptsip.migration.execution.error import ExecutionStateError
@@ -58,15 +62,16 @@ def build_legacy_target_identity_rewrite_plan(
         )
 
     target = state.target
-    registry = yaml.safe_load((profile_package_root() / "specdata" / "project-profile-contracts.yaml").read_text(encoding="utf-8"))
-    if not isinstance(registry, dict):
-        raise IdentityRewriteError("PP_RUNTIME_REGISTRY_INVALID", "Profile transition registry must be a mapping.")
+    registry = profile_transition_catalog()
     bridge = native_profile_operation("validation.profile.transition", {
         "source_contract_version": target.declared_version,
         "source_revision": target.specification_revision,
         "target_contract_version": state.target_contract.canonical,
-        "transitions": registry.get("transitions", []),
-        "historical_bridges": registry.get("historical_bridges", []),
+        "transitions": registry["transitions"],
+        "historical_bridges": [
+            {key: value for key, value in row.items() if key != "compatibility_contract"}
+            for row in registry["historical_bridges"]
+        ],
     })
     if bridge.get("allowed") is not True:
         raise IdentityRewriteError("PP_COMPAT_UNSUPPORTED_DIRECT_TARGET", "Native validation rejected the exact historical source or direct target.")

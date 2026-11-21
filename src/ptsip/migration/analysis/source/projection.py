@@ -4,8 +4,6 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from ptsip.source_compat.model import CompatibilitySourceProfile, SourceFamily, V034SourceSemantics, V036SourceSemantics, thaw_json
-from ptsip.validation.components import normalize_selector
-from ptsip.validation.templates import TemplateMaterializationError, materialize_profile
 from ptsip.migration.analysis.issue import MigrationAnalysisIssue
 
 class SourceProjectionKind(StrEnum):
@@ -158,6 +156,8 @@ def _project_source(profile: CompatibilitySourceProfile) -> tuple[_ProjectedSour
             for item in profile.components
         ]
         if semantics.declaration_form == "BOUNDARIES":
+            from ptsip.validation.components import normalize_selector
+
             for boundary in semantics.boundaries:
                 for index, root in enumerate(boundary.roots):
                     normalized = normalize_selector(root)
@@ -197,6 +197,8 @@ def _project_source(profile: CompatibilitySourceProfile) -> tuple[_ProjectedSour
     payload = thaw_json(profile.raw_payload)
     if not isinstance(payload, dict):
         return None, (MigrationAnalysisIssue("SOURCE_PAYLOAD_INVALID", "Compatibility source raw payload is not a mapping."),)
+    from ptsip.validation.templates import TemplateMaterializationError, materialize_profile
+
     try:
         resolved = materialize_profile(payload)
     except TemplateMaterializationError as exc:

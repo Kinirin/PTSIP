@@ -166,23 +166,14 @@ def _project_profile_contracts(build_lib: Path) -> None:
     support_target.parent.mkdir(parents=True, exist_ok=True)
     support_target.write_bytes(support_bytes)
 
-    # Separate YAML examples are retired distribution data. Python module
-    # discovery stays until all supported native consumers pass their own gate.
-    legacy = build_lib / "ptsip" / "profiles"
-    if legacy.exists():
-        if not legacy.resolve().is_relative_to(build_lib.resolve()):
-            raise RuntimeError("Profile build output escapes build directory")
-        stale_files = [legacy / "index.yaml", *legacy.rglob("*.ptsip.yaml")]
-        for stale in stale_files:
-            if stale.exists():
-                if not stale.resolve().is_relative_to(build_lib.resolve()):
-                    raise RuntimeError("stale Profile data escapes build directory")
-                stale.unlink()
-        history = legacy / "history"
-        if history.exists():
-            if not history.resolve().is_relative_to(build_lib.resolve()):
-                raise RuntimeError("historical Profile build output escapes build directory")
-            rmtree(history)
+    # Incremental build staging can still contain the retired Python packages.
+    package_build_root = build_lib.resolve() / "ptsip"
+    for name in ("profiles", "repository"):
+        legacy = build_lib / "ptsip" / name
+        if legacy.is_symlink() or legacy.resolve() != package_build_root / name:
+            raise RuntimeError("Retired Profile or Repository build output is an alias")
+        if legacy.exists():
+            rmtree(legacy)
 
 
 def _project_rbac_contract_assets(build_lib: Path) -> None:

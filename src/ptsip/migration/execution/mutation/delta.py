@@ -7,7 +7,7 @@ from typing import Mapping
 
 import yaml
 
-from ptsip.repository.profile_path import profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import profile_path_on_disk
 from ptsip.migration.execution.authorization.preconditions import _guard_matches
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import _sha256_bytes

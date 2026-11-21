@@ -284,7 +284,22 @@ func TestProfileBackgroundSessions(t *testing.T) {
 func TestProfileOperationRegistrationAndSourceClosure(t *testing.T) {
 	root := repositoryRoot(t)
 	index := readObject(t, filepath.Join(productRoot(t), "engines", "index.json"))
-	wanted := map[string]string{"discovery.profile.contract": "DISCOVERY", "discovery.profile.catalog": "DISCOVERY", "discovery.profile.rules": "DISCOVERY", "validation.profile.identity": "VALIDATION", "validation.profile.transition": "VALIDATION", "validation.profile.rules": "VALIDATION", "projection.profile.metadata": "PROJECTION"}
+	wanted := map[string]string{
+		"discovery.profile.contract":          "DISCOVERY",
+		"discovery.profile.catalog":           "DISCOVERY",
+		"discovery.profile.rules":             "DISCOVERY",
+		"validation.profile.identity":         "VALIDATION",
+		"validation.profile.transition":       "VALIDATION",
+		"validation.profile.rules":            "VALIDATION",
+		"projection.profile.metadata":         "PROJECTION",
+		"context.repository.snapshot":         "CONTEXT",
+		"discovery.repository.inspect":        "DISCOVERY",
+		"discovery.profile.candidates":        "DISCOVERY",
+		"validation.repository.snapshot":      "VALIDATION",
+		"validation.profile.path":             "VALIDATION",
+		"validation.profile.transition-state": "VALIDATION",
+		"validation.profile.convergence":      "VALIDATION",
+	}
 	seen := map[string]string{}
 	for _, raw := range index["official_engine_entries"].(array) {
 		entry := raw.(object)
@@ -325,14 +340,15 @@ func TestProfileOperationRegistrationAndSourceClosure(t *testing.T) {
 			if schema["$id"] != ref["id"] {
 				t.Fatalf("%s native schema identity mismatch", id)
 			}
-			if !reflect.DeepEqual(schema["$defs"].(object)[fragment], op["typed_input"]) {
+			defs := schema["$defs"].(object)
+			if !reflect.DeepEqual(expandNativeDefinition(t, defs, defs[fragment]), op["typed_input"]) {
 				t.Fatalf("%s input differs from its registered engine-owned definition", id)
 			}
 			outPath, outDef, ok := strings.Cut(evidence["output_schema_ref"].(string), "#/$defs/")
 			if !ok || outPath != path {
 				t.Fatal(evidence)
 			}
-			if !reflect.DeepEqual(schema["$defs"].(object)[outDef], op["typed_output"]) {
+			if !reflect.DeepEqual(expandNativeDefinition(t, defs, defs[outDef]), op["typed_output"]) {
 				t.Fatalf("%s output differs from its registered engine-owned definition", id)
 			}
 		}
@@ -361,5 +377,33 @@ func TestProfileOperationRegistrationAndSourceClosure(t *testing.T) {
 	digest := sha256.Sum256(canonical)
 	if hex.EncodeToString(digest[:]) != snapshot["snapshot_revision"] {
 		t.Fatal("snapshot revision does not identify its current registered source references")
+	}
+}
+
+func expandNativeDefinition(t *testing.T, defs object, value any) any {
+	t.Helper()
+	switch value := value.(type) {
+	case object:
+		if raw, ok := value["$ref"].(string); ok {
+			name, local := strings.CutPrefix(raw, "#/$defs/")
+			definition, exists := defs[name]
+			if !local || !exists || len(value) != 1 {
+				t.Fatalf("invalid native definition reference %v", value)
+			}
+			return expandNativeDefinition(t, defs, definition)
+		}
+		expanded := make(object, len(value))
+		for name, child := range value {
+			expanded[name] = expandNativeDefinition(t, defs, child)
+		}
+		return expanded
+	case array:
+		expanded := make(array, len(value))
+		for index, child := range value {
+			expanded[index] = expandNativeDefinition(t, defs, child)
+		}
+		return expanded
+	default:
+		return value
 	}
 }

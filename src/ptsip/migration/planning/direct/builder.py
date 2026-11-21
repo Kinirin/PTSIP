@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ptsip.repository.profile_convergence import DirectConvergenceMode, DirectConvergenceState
+from ptsip.ptsip_specification.spec_identity import DirectConvergenceMode, DirectConvergenceState
 from ptsip.migration.analysis.direct.result import DirectConvergenceAnalysis
 from ptsip.migration.planning.convergence.final_state import FinalPointKind, FinalPointStateSnapshot
 from ptsip.migration.planning.convergence.reconciliation import (

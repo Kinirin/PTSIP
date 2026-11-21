@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:6cc343f5-a3af-404e-a22f-8d57f861bb97",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "engine_id": "urn:uuid:e51f2248-0db7-4f5c-aa4b-e278a133bc50",
   "semantic_owner": "DISCOVERY",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -243,7 +243,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.4.0",
+        "contract_version": "3.5.0",
         "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
@@ -468,7 +468,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.4.0",
+        "contract_version": "3.5.0",
         "previous_contract": "CANDIDATE_ONLY_INPUT_FLAGS_NOT_REGISTRATION_EVIDENCE",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
@@ -599,7 +599,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.4.0",
+        "contract_version": "3.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -919,7 +919,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "3.4.0",
+        "contract_version": "3.5.0",
         "legacy_public_api": "PREVIOUS_OPERATIONS_PRESERVED_NEW_VERSION_EXPLICITLY_BOUND",
         "full_pairwise_guarantee": false
       },
@@ -1038,7 +1038,7 @@
       },
       "compatibility": {
         "legacy_public_api": "NO_IMPLICIT_EQUIVALENCE",
-        "contract_version": "3.4.0"
+        "contract_version": "3.5.0"
       },
       "machine_semantics": {
         "algorithm": "RESOLVE_EXPLICIT_PLAN_CATALOG_AND_VERIFY_SELECTED_SOURCE_IDENTITY_VERSION_AND_DIGEST",
@@ -1189,7 +1189,7 @@
         "output_schema_ref": "src/ptsip/engines/discovery/src/schemas/profile.schema.json#/$defs/contract_output"
       },
       "compatibility": {
-        "contract_version": "3.4.0",
+        "contract_version": "3.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1291,7 +1291,7 @@
         "output_schema_ref": "src/ptsip/engines/discovery/src/schemas/profile.schema.json#/$defs/catalog_output"
       },
       "compatibility": {
-        "contract_version": "3.4.0",
+        "contract_version": "3.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1519,11 +1519,376 @@
         "output_schema_ref": "src/ptsip/engines/discovery/src/schemas/rule-records.schema.json#/$defs/output"
       },
       "compatibility": {
-        "contract_version": "3.4.0",
+        "contract_version": "3.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "DISCOVER_OPAQUE_RULE_IDS_AND_RESOLVE_EXACT_RECORD_WITHOUT_AUTHORITY",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "discovery.repository.inspect",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "requested_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "is_git": {
+            "type": "boolean"
+          },
+          "commit": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "branch": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "dirty": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "remote": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "origin"
+                  },
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "host": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1
+                  },
+                  "provider": {
+                    "enum": [
+                      "github",
+                      null
+                    ]
+                  },
+                  "repository": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "name",
+                  "url",
+                  "host",
+                  "provider",
+                  "repository"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "file_mode": {
+            "enum": [
+              "git-tracked",
+              "filesystem"
+            ]
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "observation_errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "requested_path",
+          "root",
+          "is_git",
+          "commit",
+          "branch",
+          "dirty",
+          "remote",
+          "file_mode",
+          "files",
+          "observation_errors"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine:discovery:repository:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/discovery/src/schemas/repository.schema.json#/$defs/inspect_input",
+          "sha256": "b27c99c49b50ceb0744af750459b6672f19125c79b5a4bc6e685187eb566eba4"
+        },
+        "output_schema_ref": "src/ptsip/engines/discovery/src/schemas/repository.schema.json#/$defs/inspect_output"
+      },
+      "compatibility": {
+        "contract_version": "3.5.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "DISCOVER_EXPLICIT_REPOSITORY_IDENTITY_REMOTE_AND_SORTED_SOURCE_INVENTORY",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "discovery.profile.candidates",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_path": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "candidate_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "root"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "declared_version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "specification_revision": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "specification_source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1
+                  },
+                  "content_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "temporary": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "path",
+                  "declared_version",
+                  "specification_revision",
+                  "specification_source",
+                  "content_sha256",
+                  "temporary"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "declared_version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "specification_revision": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "specification_source": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "temporary": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "path",
+                "declared_version",
+                "specification_revision",
+                "specification_source",
+                "content_sha256",
+                "temporary"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "path"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "source",
+          "candidates",
+          "diagnostics"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine:discovery:profile-candidates:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/discovery/src/schemas/profile-candidates.schema.json#/$defs/input",
+          "sha256": "caead6d2b5ceaf75eff1adc820a106a523aec33fbb6cb05927622f685fe8cb0e"
+        },
+        "output_schema_ref": "src/ptsip/engines/discovery/src/schemas/profile-candidates.schema.json#/$defs/output"
+      },
+      "compatibility": {
+        "contract_version": "3.5.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "READ_EXPLICIT_PROFILE_BINDINGS_AND_CONTENT_HASHES_WITHOUT_LINEAGE_INFERENCE",
         "normative_authority_from_runtime_result": false
       }
     }

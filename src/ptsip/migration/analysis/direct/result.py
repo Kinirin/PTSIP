@@ -4,7 +4,7 @@ import hashlib
 import json
 from dataclasses import dataclass
 
-from ptsip.repository.profile_convergence import DirectConvergenceMode
+from ptsip.ptsip_specification.spec_identity import DirectConvergenceMode
 from ptsip.migration.analysis.result import MigrationAnalysis
 
 @dataclass(frozen=True)

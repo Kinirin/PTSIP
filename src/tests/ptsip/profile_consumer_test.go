@@ -40,27 +40,23 @@ func profileConsumerPython(t *testing.T) string {
 
 func TestProfileNativeConsumerBridgeAndLazyIdentity(t *testing.T) {
 	installed := installedProfileRuntime(t, "discovery")
-	validation := installedProfileRuntime(t, "validation")
 	suffix := ""
 	if runtime.GOOS == "windows" {
 		suffix = ".exe"
 	}
-	validationName := "ptsip-engine-validation" + suffix
-	data, err := os.ReadFile(filepath.Join(validation.scripts, validationName))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(filepath.Join(installed.scripts, validationName), data, 0o755); err != nil {
-		t.Fatal(err)
+	for _, kind := range []string{"context", "validation"} {
+		owner := installedProfileRuntime(t, kind)
+		name := "ptsip-engine-" + kind + suffix
+		data, err := os.ReadFile(filepath.Join(owner.scripts, name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(installed.scripts, name), data, 0o755); err != nil {
+			t.Fatal(err)
+		}
 	}
 	registryData, err := os.ReadFile(filepath.Join(productRoot(t), "specdata", "project-profile-contracts.yaml"))
 	if err != nil {
-		t.Fatal(err)
-	}
-	if err := os.MkdirAll(filepath.Join(installed.packageRoot, "specdata"), 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(filepath.Join(installed.packageRoot, "specdata", "project-profile-contracts.yaml"), registryData, 0o644); err != nil {
 		t.Fatal(err)
 	}
 	var registry object
@@ -72,6 +68,9 @@ func TestProfileNativeConsumerBridgeAndLazyIdentity(t *testing.T) {
 		t.Fatal("distributed historical bridge evidence is required")
 	}
 	bridge := bridges[0].(map[string]any)
+	for _, row := range bridges {
+		delete(row.(object), "compatibility_contract")
+	}
 	transition := object{
 		"source_contract_version": bridge["declared_version"],
 		"source_revision":         bridge["specification_revision"],
@@ -83,20 +82,30 @@ func TestProfileNativeConsumerBridgeAndLazyIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	script := `import importlib, importlib.util, json, os, pathlib, sys
-from ptsip.ptsip_specification.spec_identity import (ProfileNativeError, SpecIdentity,
-    current_spec_identity, native_profile_operation)
-# Import is lazy; only constructing the default identity enters native Discovery.
-identity = current_spec_identity().as_dict()
-source = pathlib.Path(os.environ["PTSIP_TEST_PRODUCT_ROOT"]) / "migration/analysis/target/semantics.py"
-spec = importlib.util.spec_from_file_location("ptsip_native_target_semantics", source)
-module = importlib.util.module_from_spec(spec)
-sys.modules[spec.name] = module
-spec.loader.exec_module(module)
-semantics = module.default_target_semantics().as_dict()
-transition = native_profile_operation("validation.profile.transition", json.loads(os.environ["PTSIP_TEST_TRANSITION"]))
+	root := repositoryFixture(t)
+	writeRepositoryFixture(t, root, "ptsip.yaml", `ptsip:
+  version: 0.3.4-draft
+  specification:
+    source: https://github.com/Kinirin/PTSIP
+    revision: b5b17dd16667cc1afaf1d23054b6e5dd773e3f5e
+policies:
+  product_to_toolchain_runtime_dependency: deny
+  toolchain_in_product_package: deny
+  independent_build_resolution: required
+components:
+  - id: application
+    classification: PRODUCT
+    include: [src]
+    purpose: example
+`)
+	script := `import json, os, pathlib, sys
+from ptsip.ptsip_specification.spec_identity import (ProfileNativeError, current_spec_identity,
+    discover_direct_profile_convergence, discover_profile_transition, native_profile_operation)
 configured = os.environ["PTSIP_GO_CLI"]
 os.environ["PTSIP_GO_CLI"] = "relative-ptsip-go"
+from ptsip.migration import analyze_direct_profile_convergence, default_target_semantics
+from ptsip.migration.execution.direct.promotion import build_legacy_target_identity_rewrite_plan
+from ptsip.source_compat import read_source_profile
 try:
     current_spec_identity()
 except ProfileNativeError:
@@ -105,23 +114,35 @@ else:
     rejected_relative = False
 finally:
     os.environ["PTSIP_GO_CLI"] = configured
-try:
-    importlib.import_module("ptsip.migration.execution.direct.promotion")
-except ModuleNotFoundError as exc:
-    promotion_import_blocker = exc.name
-else:
-    promotion_import_blocker = None
+identity = current_spec_identity().as_dict()
+semantics = default_target_semantics().as_dict()
+transition = native_profile_operation("validation.profile.transition", json.loads(os.environ["PTSIP_TEST_TRANSITION"]))
+root = pathlib.Path(sys.argv[1])
+legacy = discover_profile_transition(root)
+assert legacy.valid, legacy.as_dict()
+source = read_source_profile(root, legacy.state.canonical_source)
+assert source.profile is not None and not source.issues, source
+assert source.profile.components[0].id == "application"
+profile = root / "ptsip.yaml"
+profile.write_text("ptsip:\n  version: pp.3.00\n  specification:\n    revision: " + "a" * 40 + "\n", encoding="utf-8")
+current = discover_direct_profile_convergence(root)
+assert current.valid, current.as_dict()
+analysis = analyze_direct_profile_convergence(root, current.state)
+assert analysis.valid, analysis.as_dict()
+profile.write_text(profile.read_text(encoding="utf-8") + "# changed after observation\n", encoding="utf-8")
+stale = analyze_direct_profile_convergence(root, current.state)
+assert not stale.valid and stale.issues[0].code == "STALE_DIRECT_CONVERGENCE_SNAPSHOT", stale.as_dict()
 print(json.dumps({"identity":identity,"semantics":semantics,"transition":transition,
-    "rejected_relative":rejected_relative,"promotion_import_blocker":promotion_import_blocker}, ensure_ascii=True))
+    "rejected_relative":rejected_relative,"mode":analysis.mode.value}, ensure_ascii=True))
 `
 	ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, profileConsumerPython(t), "-c", script)
+	cmd := exec.CommandContext(ctx, profileConsumerPython(t), "-c", script, root)
 	cmd.Env = append(os.Environ(),
 		"PYTHONPATH="+filepath.Dir(productRoot(t)), "PYTHONNOUSERSITE=1", "PYTHONDONTWRITEBYTECODE=1",
 		"PTSIP_GO_CLI="+installed.cli, "PTSIP_ENGINE_SCRIPTS="+installed.scripts,
 		"PTSIP_PROFILE_PACKAGE_ROOT="+installed.packageRoot,
-		"PTSIP_TEST_PRODUCT_ROOT="+productRoot(t), "PTSIP_TEST_TRANSITION="+string(transitionJSON),
+		"PTSIP_TEST_TRANSITION="+string(transitionJSON),
 	)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -133,10 +154,7 @@ print(json.dumps({"identity":identity,"semantics":semantics,"transition":transit
 	}
 	if result["identity"].(map[string]any)["project_profile_contract_version"] != "pp.3.00" ||
 		result["semantics"].(map[string]any)["draft_version"] != "pp.3.00" ||
-		result["transition"].(map[string]any)["allowed"] != true || result["rejected_relative"] != true {
+		result["transition"].(map[string]any)["allowed"] != true || result["rejected_relative"] != true || result["mode"] != "CURRENT" {
 		t.Fatalf("native consumer result mismatch: %#v", result)
-	}
-	if blocker := result["promotion_import_blocker"]; blocker != nil {
-		t.Logf("Normal migration package import remains independently blocked by absent %v; actual target-semantics file was exercised through importlib without replacement modules.", blocker)
 	}
 }

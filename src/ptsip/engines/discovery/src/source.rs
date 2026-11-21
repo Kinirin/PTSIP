@@ -120,6 +120,10 @@ fn source_alias(metadata: &fs::Metadata) -> bool {
 }
 
 impl Root {
+    pub fn directory(&self) -> &Path {
+        &self.path
+    }
+
     pub fn new(path: &str) -> Result<Self, String> {
         if path.is_empty() {
             return Err("selected owner root is empty".into());

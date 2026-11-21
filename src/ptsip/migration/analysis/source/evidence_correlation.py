@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from ptsip.evidence.contract import EvidenceChannelStatus, EvidenceRecordStatus, NormalizedEvidenceSet
-from ptsip.validation.components import normalize_selector
 
 @dataclass(frozen=True)
 class EvidenceCorrelation:
@@ -19,6 +18,8 @@ class EvidenceCorrelation:
         }
 
 def _evidence_for_path(evidence: NormalizedEvidenceSet, path: str) -> EvidenceCorrelation:
+    from ptsip.validation.components import normalize_selector
+
     semantic_ids: set[str] = set()
     conflict_ids: set[str] = set()
     normalized_path = normalize_selector(path)

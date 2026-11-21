@@ -6,8 +6,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from ptsip.repository.profile_path import normalize_profile_path
-from ptsip.repository.snapshot import repository_files
+from ptsip.ptsip_specification.spec_identity import normalize_profile_path, repository_files
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.repository_snapshot import RepositorySnapshotExpectation
 
@@ -40,7 +39,7 @@ def _git(root: Path, *args: str) -> tuple[int, bytes]:
     return process.returncode, process.stdout
 
 def _controlled_pathspecs(paths: tuple[str, ...]) -> list[str]:
-    return [f":(exclude){normalize_profile_path(item)}" for item in sorted(set(paths))]
+    return [f":(exclude,literal){item}" for item in sorted(set(paths))]
 
 def _fingerprint_paths(root: Path, paths: list[str]) -> str:
     digest = hashlib.sha256()
@@ -62,7 +61,7 @@ def _fingerprint_paths(root: Path, paths: list[str]) -> str:
 
 def capture_mutation_guard(repository_root: str | Path, controlled_paths: tuple[str, ...]) -> MutationGuardExpectation:
     root = Path(repository_root).expanduser().resolve()
-    controlled = tuple(normalize_profile_path(item) for item in controlled_paths)
+    controlled = tuple(normalize_profile_path(root, item) for item in controlled_paths)
     code, _ = _git(root, "rev-parse", "--is-inside-work-tree")
     if code == 0:
         head_code, head_raw = _git(root, "rev-parse", "HEAD")
@@ -95,7 +94,7 @@ def capture_mutation_guard(repository_root: str | Path, controlled_paths: tuple[
     if errors:
         raise ExecutionStateError("Unable to capture filesystem mutation guard: " + "; ".join(errors))
     controlled_set = set(controlled)
-    selected = [item for item in paths if normalize_profile_path(item) not in controlled_set]
+    selected = [item for item in paths if item not in controlled_set]
     return MutationGuardExpectation(
         head=None,
         status_fingerprint=hashlib.sha256(b"<non-git>").hexdigest(),

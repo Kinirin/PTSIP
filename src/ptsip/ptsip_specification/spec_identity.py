@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+from enum import StrEnum
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -18,6 +19,9 @@ _PROFILE_OPERATIONS = frozenset({
     "discovery.profile.contract", "discovery.profile.catalog", "discovery.profile.rules",
     "validation.profile.identity", "validation.profile.transition", "validation.profile.rules",
     "projection.profile.metadata",
+    "context.repository.snapshot", "discovery.repository.inspect", "discovery.profile.candidates",
+    "validation.repository.snapshot", "validation.profile.path", "validation.profile.transition-state",
+    "validation.profile.convergence",
 })
 
 
@@ -63,7 +67,7 @@ def _native_resource(root: Path, reference: str) -> dict[str, object]:
 
 
 def native_profile_operation(operation: str, payload: dict[str, object]) -> dict[str, object]:
-    """Prepare the registered envelope and route through the installed Go CLI."""
+    """Route a registered Profile or Repository operation through the installed Go CLI."""
     if operation not in _PROFILE_OPERATIONS:
         raise ProfileNativeError("Unsupported native Profile operation.")
     try:
@@ -147,3 +151,269 @@ class SpecIdentity:
 
 def current_spec_identity() -> SpecIdentity:
     return SpecIdentity()
+
+
+DEFAULT_PROFILE_PATH = "ptsip.yaml"
+
+
+@dataclass(frozen=True)
+class RepositorySnapshot:
+    captured_at: str
+    is_git: bool
+    head: str | None
+    status_fingerprint: str
+    tracked_content_fingerprint: str
+    tracked_files: int
+    observation_errors: tuple[str, ...]
+
+    @classmethod
+    def from_native(cls, value: dict) -> RepositorySnapshot:
+        return cls(**{**value, "observation_errors": tuple(value["observation_errors"])})
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class SnapshotComparison:
+    status: str
+    stable: bool
+    reasons: tuple[str, ...]
+
+
+def capture_snapshot(root: str | Path) -> RepositorySnapshot:
+    value = native_profile_operation("context.repository.snapshot", {"root": str(Path(root).expanduser())})
+    return RepositorySnapshot.from_native(value)
+
+
+def compare_snapshots(before: RepositorySnapshot, after: RepositorySnapshot) -> SnapshotComparison:
+    value = native_profile_operation("validation.repository.snapshot", {"before": before.as_dict(), "after": after.as_dict()})
+    return SnapshotComparison(value["status"], value["stable"], tuple(value["reasons"]))
+
+
+def repository_files(root: str | Path) -> tuple[str, list[str], list[str]]:
+    value = native_profile_operation("discovery.repository.inspect", {"path": str(Path(root).expanduser())})
+    return value["file_mode"], value["files"], value["observation_errors"]
+
+
+def _profile_path(root: str | Path, value: object | None) -> dict[str, object]:
+    try:
+        return native_profile_operation("validation.profile.path", {
+            "root": str(Path(root).expanduser()), "path": None if value is None else str(value),
+        })
+    except ProfileNativeError as exc:
+        raise ValueError(str(exc)) from exc
+
+
+def normalize_profile_path(root: str | Path, value: object | None) -> str:
+    return _profile_path(root, value)["normalized_path"]
+
+
+def profile_path_on_disk(root: str | Path, value: object | None) -> Path:
+    return Path(_profile_path(root, value)["path_on_disk"])
+
+
+@dataclass(frozen=True)
+class DraftVersion:
+    major: int
+    minor: int
+    micro: int
+    semantic: str
+    draft_label: str
+
+    @classmethod
+    def from_draft_label(cls, value: object) -> DraftVersion | None:
+        if not isinstance(value, str) or not value.strip():
+            return None
+        result = native_profile_operation("validation.profile.transition-state", {
+            "source": {"declared_version": value}, "candidates": [], "snapshot": None, "root": None,
+        })
+        return cls(**result["state"]) if result["valid"] else None
+
+
+@dataclass(frozen=True)
+class ProfileBinding:
+    path: str
+    declared_version: str
+    specification_revision: str
+    specification_source: str | None
+    content_sha256: str
+    temporary: bool
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class ProfileGenerationIdentity(ProfileBinding):
+    version: DraftVersion
+
+    @classmethod
+    def from_native(cls, value: dict) -> ProfileGenerationIdentity:
+        return cls(**{**value, "version": DraftVersion(**value["version"])})
+
+    def as_dict(self) -> dict[str, object]:
+        return {**asdict(self), "version": self.version.semantic}
+
+
+@dataclass(frozen=True)
+class ProfileDiagnostic:
+    code: str
+    message: str
+    path: str | None = None
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class TransitionSnapshot:
+    repository_root: str
+    repository: RepositorySnapshot
+    profiles: tuple[ProfileGenerationIdentity, ...]
+
+    def as_dict(self) -> dict[str, object]:
+        return {"repository_root": self.repository_root, "repository": self.repository.as_dict(),
+                "profiles": [profile.as_dict() for profile in self.profiles]}
+
+
+@dataclass(frozen=True)
+class ProfileTransitionState:
+    mode: str
+    canonical_source: ProfileGenerationIdentity
+    temporary_profiles: tuple[ProfileGenerationIdentity, ...]
+    final_point: ProfileGenerationIdentity | None
+    ordered_sources: tuple[ProfileGenerationIdentity, ...]
+    snapshot: TransitionSnapshot
+
+    @classmethod
+    def from_native(cls, value: dict) -> ProfileTransitionState:
+        snapshot = value["snapshot"]
+        generation = ProfileGenerationIdentity.from_native
+        return cls(value["mode"], generation(value["canonical_source"]),
+                   tuple(map(generation, value["temporary_profiles"])),
+                   generation(value["final_point"]) if value["final_point"] else None,
+                   tuple(map(generation, value["ordered_sources"])),
+                   TransitionSnapshot(snapshot["repository_root"], RepositorySnapshot.from_native(snapshot["repository"]),
+                                      tuple(map(generation, snapshot["profiles"]))))
+
+    def as_dict(self) -> dict[str, object]:
+        return {"mode": self.mode, "canonical_source": self.canonical_source.as_dict(),
+                "temporary_profiles": [profile.as_dict() for profile in self.temporary_profiles],
+                "final_point": self.final_point.as_dict() if self.final_point else None,
+                "ordered_sources": [profile.as_dict() for profile in self.ordered_sources],
+                "snapshot": self.snapshot.as_dict()}
+
+
+class DirectConvergenceMode(StrEnum):
+    CURRENT = "CURRENT"
+    IDENTITY_ONLY = "IDENTITY_ONLY"
+    DIRECT_SEMANTIC_MIGRATION = "DIRECT_SEMANTIC_MIGRATION"
+
+
+@dataclass(frozen=True)
+class SelectedProfileVersion:
+    canonical: str
+
+
+@dataclass(frozen=True)
+class DirectConvergenceState:
+    mode: DirectConvergenceMode
+    source: ProfileBinding
+    source_compatibility_contract: SelectedProfileVersion
+    target_contract: SelectedProfileVersion
+    transition_kind: str | None
+    target_path: str
+    target: ProfileBinding | None
+    target_is_legacy_alias: bool
+    requires_temporary_target: bool
+    intermediate_profiles: tuple[object, ...]
+    snapshot: RepositorySnapshot
+
+    @classmethod
+    def from_native(cls, value: dict) -> DirectConvergenceState:
+        return cls(**{
+            **value, "mode": DirectConvergenceMode(value["mode"]),
+            "source": ProfileBinding(**value["source"]),
+            "source_compatibility_contract": SelectedProfileVersion(value["source_compatibility_contract"]),
+            "target_contract": SelectedProfileVersion(value["target_contract"]),
+            "target": ProfileBinding(**value["target"]) if value["target"] else None,
+            "intermediate_profiles": tuple(value["intermediate_profiles"]),
+            "snapshot": RepositorySnapshot.from_native(value["snapshot"]),
+        })
+
+    def as_dict(self) -> dict[str, object]:
+        return {**asdict(self), "mode": self.mode.value,
+                "source_compatibility_contract": self.source_compatibility_contract.canonical,
+                "target_contract": self.target_contract.canonical}
+
+
+@dataclass(frozen=True)
+class ProfileDiscovery:
+    valid: bool
+    state: ProfileTransitionState | DirectConvergenceState | None
+    diagnostics: tuple[ProfileDiagnostic, ...]
+
+    def as_dict(self) -> dict[str, object]:
+        return {"valid": self.valid, "state": self.state.as_dict() if self.state else None,
+                "diagnostics": [item.as_dict() for item in self.diagnostics]}
+
+
+def _observe_profiles(root: str | Path, **selection: object) -> tuple[dict, RepositorySnapshot, tuple[ProfileDiagnostic, ...]]:
+    before = capture_snapshot(root)
+    observed = native_profile_operation("discovery.profile.candidates", {
+        "root": str(Path(root).expanduser()), **selection,
+    })
+    after = capture_snapshot(root)
+    comparison = compare_snapshots(before, after)
+    diagnostics = tuple(ProfileDiagnostic(**item) for item in observed["diagnostics"])
+    diagnostics += tuple(ProfileDiagnostic("REPOSITORY_OBSERVATION_CHANGED", reason) for reason in comparison.reasons)
+    return {"source": observed["source"], "candidates": observed["candidates"]}, after, diagnostics
+
+
+def discover_profile_transition(root: str | Path) -> ProfileDiscovery:
+    observed, snapshot, diagnostics = _observe_profiles(root)
+    if diagnostics:
+        return ProfileDiscovery(False, None, diagnostics)
+    result = native_profile_operation("validation.profile.transition-state", {
+        **observed, "snapshot": snapshot.as_dict(), "root": str(Path(root).expanduser()),
+    })
+    state = ProfileTransitionState.from_native(result["state"]) if result["valid"] else None
+    return ProfileDiscovery(result["valid"], state, tuple(ProfileDiagnostic(**item) for item in result["diagnostics"]))
+
+
+def profile_transition_catalog() -> dict[str, object]:
+    import yaml
+
+    raw = (profile_package_root() / "specdata" / "project-profile-contracts.yaml").read_bytes()
+    catalog = yaml.safe_load(raw)
+    if not isinstance(catalog, dict) or not isinstance(catalog.get("transitions"), list) or not isinstance(catalog.get("historical_bridges"), list):
+        raise ProfileNativeError("Distributed Profile transition catalog must contain declared transition and bridge arrays.")
+    return catalog
+
+
+def discover_direct_profile_convergence(root: str | Path) -> ProfileDiscovery:
+    observed, snapshot, diagnostics = _observe_profiles(root)
+    if diagnostics:
+        return ProfileDiscovery(False, None, diagnostics)
+    catalog = profile_transition_catalog()
+    result = native_profile_operation("validation.profile.convergence", {
+        **observed, "snapshot": snapshot.as_dict(), "selected_contract": current_project_profile_contract(),
+        "transitions": catalog["transitions"], "historical_bridges": catalog["historical_bridges"],
+    })
+    state = DirectConvergenceState.from_native(result["state"]) if result["valid"] else None
+    return ProfileDiscovery(result["valid"], state, tuple(ProfileDiagnostic(**item) for item in result["diagnostics"]))
+
+
+def validate_direct_convergence_snapshot(root: str | Path, state: DirectConvergenceState) -> tuple[ProfileDiagnostic, ...]:
+    target_paths = [state.target.path] if state.target else []
+    observed, snapshot, diagnostics = _observe_profiles(root, source_path=state.source.path, candidate_paths=target_paths)
+    reasons = list(compare_snapshots(state.snapshot, snapshot).reasons)
+    reasons.extend(item.message for item in diagnostics)
+    if observed["source"] != state.source.as_dict():
+        reasons.append(f"{state.source.path}: Profile binding changed")
+    if state.target and observed["candidates"] != [state.target.as_dict()]:
+        reasons.append(f"{state.target.path}: Profile binding changed")
+    if reasons:
+        return (ProfileDiagnostic("STALE_DIRECT_CONVERGENCE_SNAPSHOT", "; ".join(dict.fromkeys(reasons))),)
+    return ()

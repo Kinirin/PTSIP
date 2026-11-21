@@ -11,9 +11,7 @@ from typing import Protocol
 
 import yaml
 
-from ptsip.repository.profile_path import profile_path_on_disk
-from ptsip.repository.snapshot import capture_snapshot, compare_snapshots
-from ptsip.validation.profile import validate_profile
+from ptsip.ptsip_specification.spec_identity import capture_snapshot, compare_snapshots, profile_path_on_disk
 from ptsip.migration.execution.direct.identity_plan import (
     IdentityRewriteAuthorization,
     IdentityRewriteError,
@@ -239,6 +237,8 @@ def execute_identity_rewrite(
     *,
     authority_store: AuthorityRevisionStore | None = None,
 ) -> IdentityRewriteResult:
+    from ptsip.validation.profile import validate_profile
+
     if authorization.plan_digest != plan.deterministic_digest:
         raise IdentityRewriteError(
             "PP_IDENTITY_REWRITE_AUTHORIZATION_STALE",

@@ -8,8 +8,7 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
-from ..repository.profile_path import normalize_profile_path, profile_path_on_disk
-from ..repository.profile_transition import ProfileGenerationIdentity
+from ptsip.ptsip_specification.spec_identity import ProfileGenerationIdentity, profile_path_on_disk
 from .model import (
     CompatibilitySourceProfile,
     SourceAssociatedArtifact,
@@ -259,8 +258,7 @@ def _parse_v036(payload: dict[str, object], generation: ProfileGenerationIdentit
 def read_source_profile(repository_root: str | Path, generation: ProfileGenerationIdentity) -> SourceReadResult:
     root = Path(repository_root).expanduser().resolve()
     try:
-        normalized = normalize_profile_path(generation.path)
-        path = profile_path_on_disk(root, normalized)
+        path = profile_path_on_disk(root, generation.path)
     except ValueError as exc:
         return SourceReadResult(None, (_issue("SOURCE_PATH_ERROR", str(exc), generation),))
 
@@ -327,7 +325,7 @@ def validate_source_read_binding(repository_root: str | Path, result: SourceRead
     binding = result.profile.generation
     root = Path(repository_root).expanduser().resolve()
     try:
-        path = profile_path_on_disk(root, normalize_profile_path(binding.profile_path))
+        path = profile_path_on_disk(root, binding.profile_path)
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
     except (OSError, ValueError) as exc:
         return (SourceReadIssue("SOURCE_BINDING_INVALID", str(exc), binding.profile_path),)

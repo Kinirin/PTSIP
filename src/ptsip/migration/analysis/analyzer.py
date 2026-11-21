@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from ptsip.evidence.contract import NormalizedEvidenceSet
-from ptsip.repository.snapshot import capture_snapshot, compare_snapshots, repository_files
+from ptsip.ptsip_specification.spec_identity import capture_snapshot, compare_snapshots, repository_files
 from ptsip.source_compat.model import CompatibilitySourceProfile
 from ptsip.migration.analysis.findings.architecture import ArchitectureFinding, ArchitectureFindingKind
 from ptsip.migration.analysis.findings.lifecycle import LifecycleFinding

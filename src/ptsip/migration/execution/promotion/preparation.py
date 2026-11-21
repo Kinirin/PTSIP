@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, normalize_profile_path, profile_path_on_disk
-from ptsip.repository.profile_transition import discover_profile_transition
+from ptsip.ptsip_specification.spec_identity import DEFAULT_PROFILE_PATH, normalize_profile_path, profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import discover_profile_transition
 from ptsip.migration.execution.authorization.preconditions import _guard_matches
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import _sha256_file
@@ -23,7 +23,7 @@ def prepare_promotion(
     root = Path(repository_root).expanduser().resolve()
     verified = _completed_verified(canonical.completed)
     bound = verified.authorized.bound
-    if normalize_profile_path(verified.source.source_path) != DEFAULT_PROFILE_PATH:
+    if normalize_profile_path(root, verified.source.source_path) != DEFAULT_PROFILE_PATH:
         raise ExecutionStateError("Promotion requires completed canonical source state.")
     if verified.source_index != len(bound.sources) - 1:
         raise ExecutionStateError("Canonical source is not the final WU-06 source.")

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine:validation:repository:v1",
+  "title": "Validation of before and after Repository observations",
+  "$defs": {
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "is_git": {
+          "type": "boolean"
+        },
+        "head": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status_fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "tracked_content_fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "tracked_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observation_errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "captured_at",
+        "is_git",
+        "head",
+        "status_fingerprint",
+        "tracked_content_fingerprint",
+        "tracked_files",
+        "observation_errors"
+      ],
+      "additionalProperties": false
+    },
+    "compare_input": {
+      "type": "object",
+      "properties": {
+        "before": {
+          "$ref": "#/$defs/snapshot"
+        },
+        "after": {
+          "$ref": "#/$defs/snapshot"
+        }
+      },
+      "required": [
+        "before",
+        "after"
+      ],
+      "additionalProperties": false
+    },
+    "compare_output": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "STABLE"
+            },
+            "stable": {
+              "const": true
+            },
+            "reasons": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "status",
+            "stable",
+            "reasons"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "INVALIDATED"
+            },
+            "stable": {
+              "const": false
+            },
+            "reasons": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "status",
+            "stable",
+            "reasons"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

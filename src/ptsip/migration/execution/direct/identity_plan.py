@@ -4,8 +4,8 @@ import hashlib
 import json
 from dataclasses import dataclass
 
-from ptsip.repository.profile_convergence import DirectConvergenceMode, DirectConvergenceState
-from ptsip.repository.snapshot import RepositorySnapshot
+from ptsip.ptsip_specification.spec_identity import DirectConvergenceMode, DirectConvergenceState
+from ptsip.ptsip_specification.spec_identity import RepositorySnapshot
 
 class IdentityRewriteError(RuntimeError):
     def __init__(self, code: str, message: str) -> None:

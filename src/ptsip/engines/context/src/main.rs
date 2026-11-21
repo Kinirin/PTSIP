@@ -4,6 +4,7 @@ const TRANSPORT: &str = include_str!("../transport.json");
 const MANIFEST: &str = include_str!("../manifest.json");
 mod cli;
 mod loading;
+mod repository;
 mod source;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     if operation == "context.order-dependencies" {
@@ -11,6 +12,9 @@ fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     }
     if operation == "context.load" {
         return loading::load(input);
+    }
+    if operation == "context.repository.snapshot" {
+        return repository::snapshot(input);
     }
     Ok(
         json!({"context_id":input["context_id"],"content":input["content"],"source_revision":input["source_revision"],"semantic_owner":"CONTEXT"}),
@@ -49,6 +53,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
 
         "context.order-dependencies" => "TOPOLOGICAL_ORDER_OF_EXPLICIT_DEPENDENCIES_WITH_LEXICOGRAPHIC_TIES",
         "context.snapshot" => "SNAPSHOT_EXPLICIT_SOURCE_WITHOUT_REINTERPRETATION",
+        "context.repository.snapshot" => repository::ALGORITHM,
         _ => return Err("unsupported registered adapter operation".into()),
     };
     if definition["machine_semantics"]["algorithm"] != algorithm {

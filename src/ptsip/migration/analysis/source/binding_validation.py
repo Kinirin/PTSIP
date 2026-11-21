@@ -4,14 +4,14 @@ import hashlib
 from pathlib import Path
 
 from ptsip.evidence.contract import NormalizedEvidenceSet
-from ptsip.repository.profile_path import normalize_profile_path, profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import profile_path_on_disk
 from ptsip.source_compat.model import CompatibilitySourceProfile
 from ptsip.migration.analysis.issue import MigrationAnalysisIssue
 
 def _validate_source_binding(repository_root: Path, profile: CompatibilitySourceProfile) -> tuple[MigrationAnalysisIssue, ...]:
     binding = profile.generation
     try:
-        path = profile_path_on_disk(repository_root, normalize_profile_path(binding.profile_path))
+        path = profile_path_on_disk(repository_root, binding.profile_path)
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
     except (OSError, ValueError) as exc:
         return (MigrationAnalysisIssue("SOURCE_BINDING_INVALID", f"Unable to validate WU-04 source binding: {exc}"),)

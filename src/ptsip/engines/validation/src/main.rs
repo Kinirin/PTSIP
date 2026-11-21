@@ -15,6 +15,9 @@ mod rbac;
 mod cli;
 mod user_contracts;
 mod profile;
+mod profile_path;
+mod profile_state;
+mod repository;
 mod rule_records;
 
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
@@ -22,6 +25,10 @@ fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
         "validation.profile.identity" => return profile::identity(input),
         "validation.profile.transition" => return profile::transition(input),
         "validation.profile.rules" => return rule_records::validate(input),
+        "validation.profile.path" => return profile_path::resolve(input),
+        "validation.profile.transition-state" => return profile_state::transition_state(input),
+        "validation.profile.convergence" => return profile_state::convergence(input),
+        "validation.repository.snapshot" => return repository::compare(input),
         _ => {}
     }
     if user_contracts::algorithm(operation).is_some() {
@@ -88,6 +95,10 @@ fn dispatch(request: &Value) -> Result<Value, String> {
         "validation.profile.identity" => "VALIDATE_EXPLICIT_SELECTED_PROFILE_IDENTITY_REVISION_AND_OPERATION_SUPPORT",
         "validation.profile.transition" => "VERIFY_EXACT_REGISTERED_PROFILE_TRANSITION_WITHOUT_INTERMEDIATE_MATERIALIZATION",
         "validation.profile.rules" => "VALIDATE_OPAQUE_RULE_RECORD_IDS_AND_EXPLICIT_RELATION_GRAPH",
+        "validation.profile.path" => profile_path::ALGORITHM,
+        "validation.profile.transition-state" => profile_state::TRANSITION,
+        "validation.profile.convergence" => profile_state::CONVERGENCE,
+        "validation.repository.snapshot" => repository::ALGORITHM,
         "validation.planning.impact" => "VERIFY_HASH_BOUND_DEPENDENCY_GRAPH_AND_REPORT_TRANSITIVE_CONSUMER_SCOPE",
         "validation.planning.prepare" => "VERIFY_EXPLICIT_PLAN_STEPS_AND_BOUND_INVOCATION_IDENTITIES_WITHOUT_EXECUTION",
 "validation.prepare-cases" => "VERIFY_CURRENT_CASE_CATALOG_REFERENCE_CLOSURE_AND_INDEPENDENT_INLINE_CASE_CONTRACTS",

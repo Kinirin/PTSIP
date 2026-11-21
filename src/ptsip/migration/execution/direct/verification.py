@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ptsip.repository.profile_convergence import DirectConvergenceMode, discover_direct_profile_convergence
-from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import DirectConvergenceMode, discover_direct_profile_convergence
+from ptsip.ptsip_specification.spec_identity import DEFAULT_PROFILE_PATH, profile_path_on_disk
 from ptsip.migration.execution.authorization.preconditions import _guard_matches
 from ptsip.migration.execution.direct.promotion import _direct_plan_profile_contract, _payload_profile_contract
 from ptsip.migration.execution.error import ExecutionStateError

@@ -53,6 +53,10 @@ legacy = target / "ptsip" / "profiles"
 (legacy / "history" / "old" / "example.ptsip.yaml").write_text("stale: true\n", encoding="utf-8")
 (legacy / "example.ptsip.yaml").write_text("stale: true\n", encoding="utf-8")
 (legacy / "index.yaml").write_text("stale: true\n", encoding="utf-8")
+(legacy / "identity.py").write_text("# stale build output\n", encoding="utf-8")
+repository = target / "ptsip" / "repository"
+repository.mkdir(exist_ok=True)
+(repository / "snapshot.py").write_text("# stale build output\n", encoding="utf-8")
 
 setup_path = root / "setup.py"
 tree = ast.parse(setup_path.read_text(encoding="utf-8"), filename=str(setup_path))
@@ -85,14 +89,14 @@ print("profile package assets staged")
 			}
 		})
 	}
-	for _, relative := range []string{"schemas/config.json", "specdata/project-profile-contracts.yaml", "profiles/identity.py"} {
+	for _, relative := range []string{"schemas/config.json", "specdata/project-profile-contracts.yaml"} {
 		if fileHash(t, filepath.Join(product, filepath.FromSlash(relative))) != fileHash(t, filepath.Join(target, "ptsip", filepath.FromSlash(relative))) {
 			t.Fatalf("package projection changed or prematurely removed %s", relative)
 		}
 	}
-	for _, retired := range []string{"profiles/index.yaml", "profiles/example.ptsip.yaml", "profiles/history"} {
+	for _, retired := range []string{"profiles", "repository"} {
 		if _, err := os.Stat(filepath.Join(target, "ptsip", filepath.FromSlash(retired))); !os.IsNotExist(err) {
-			t.Fatalf("retired example/catalog distribution data remains or cannot be checked: %s: %v", retired, err)
+			t.Fatalf("retired package output remains or cannot be checked: %s: %v", retired, err)
 		}
 	}
 }

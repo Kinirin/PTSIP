@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, normalize_profile_path, profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import DEFAULT_PROFILE_PATH, normalize_profile_path, profile_path_on_disk
 from ptsip.migration.execution.authorization.binding import BoundExecutionPlan
 from ptsip.migration.execution.authorization.preconditions import _guard_matches
 from ptsip.migration.execution.error import ExecutionStateError
@@ -66,7 +66,7 @@ def inspect_recovery(
             if source_path.exists():
                 reasons.append(f"source reappeared after removal checkpoint: {source.source_path}")
             continue
-        if normalize_profile_path(source.source_path) == DEFAULT_PROFILE_PATH and latest.phase in promoted_phases:
+        if normalize_profile_path(root, source.source_path) == DEFAULT_PROFILE_PATH and latest.phase in promoted_phases:
             continue
         if not source_path.is_file():
             reasons.append(f"source disappeared without removal checkpoint: {source.source_path}")

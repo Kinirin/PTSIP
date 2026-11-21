@@ -3,8 +3,8 @@ from __future__ import annotations
 from ptsip.migration.execution.state.phase import ExecutionPhase
 from pathlib import Path
 
-from ptsip.repository.profile_path import DEFAULT_PROFILE_PATH, normalize_profile_path, profile_path_on_disk
-from ptsip.repository.profile_transition import discover_profile_transition
+from ptsip.ptsip_specification.spec_identity import DEFAULT_PROFILE_PATH, normalize_profile_path, profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import discover_profile_transition
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import _sha256_file
 from ptsip.migration.execution.ledger.store import CheckpointLedger
@@ -57,7 +57,7 @@ def finalize_source(
     source_path = profile_path_on_disk(root, source.source_path)
     if not source_path.is_file() or _sha256_file(source_path) != source.source_content_sha256:
         raise ExecutionStateError("Source changed before completion finalization.")
-    if normalize_profile_path(source.source_path) == DEFAULT_PROFILE_PATH:
+    if normalize_profile_path(root, source.source_path) == DEFAULT_PROFILE_PATH:
         result = CanonicalSourceComplete(completed)
         ledger.append(
             phase=ExecutionPhase.CANONICAL_SOURCE_COMPLETE,

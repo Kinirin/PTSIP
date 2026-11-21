@@ -9,6 +9,8 @@ mod environment;
 mod invocation;
 mod registry;
 mod profile;
+mod profile_candidates;
+mod repository;
 mod rule_records;
 mod cli;
 
@@ -17,6 +19,8 @@ fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
         "discovery.profile.contract" => return profile::contract(input),
         "discovery.profile.catalog" => return profile::catalog(input),
         "discovery.profile.rules" => return rule_records::resolve(input),
+        "discovery.profile.candidates" => return profile_candidates::discover(input),
+        "discovery.repository.inspect" => return repository::inspect(input),
         _ => {}
     }
     if operation == "discovery.planning" {
@@ -71,6 +75,8 @@ fn dispatch(request: &Value) -> Result<Value, String> {
             "VERIFY_CURRENT_OWNER_SOURCE_HASH_CLOSURE_WITHOUT_AUTHORIZATION"
         }
         "discovery.profile.rules" => rule_records::ALGORITHM,
+        "discovery.profile.candidates" => profile_candidates::ALGORITHM,
+        "discovery.repository.inspect" => repository::ALGORITHM,
         _ => profile::algorithm(operation).ok_or("unsupported registered adapter operation")?,
     };
     if definition["machine_semantics"]["algorithm"] != algorithm {

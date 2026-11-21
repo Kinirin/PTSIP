@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from ptsip.repository.profile_transition import DraftVersion, ProfileTransitionState
+from ptsip.ptsip_specification.spec_identity import DraftVersion, ProfileTransitionState
 from ptsip.migration.analysis.result import MigrationAnalysis
 from ptsip.migration.planning.convergence.final_state import (
     FinalPointKind,

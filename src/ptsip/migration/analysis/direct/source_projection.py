@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ptsip.repository.profile_convergence import DirectConvergenceState
-from ptsip.repository.profile_transition import DraftVersion, ProfileGenerationIdentity
+from ptsip.ptsip_specification.spec_identity import DirectConvergenceState
+from ptsip.ptsip_specification.spec_identity import DraftVersion, ProfileGenerationIdentity
 from ptsip.source_compat import CompatibilitySourceProfile, read_source_profile
 from ptsip.migration.analysis.direct.result import DirectConvergenceAnalysisIssue
 

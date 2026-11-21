@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterable
 
-from ptsip.validation.components import normalize_selector, selector_matches_path, selector_specificity
 from ptsip.migration.analysis.source.projection import (
     AmbiguousSourceElement,
     ExistingSourceElement,
@@ -22,11 +21,15 @@ class _RepositoryResolution:
     ambiguous: tuple[AmbiguousSourceElement, ...]
 
 def _boundary_matches(path: str, root: str) -> bool:
+    from ptsip.validation.components import normalize_selector
+
     path = normalize_selector(path)
     root = normalize_selector(root)
     return path == root or path.startswith(root + "/")
 
 def _coverage_match(path: str, coverage: SourceCoverageProjection) -> tuple[tuple[int, int, int, int], str] | None:
+    from ptsip.validation.components import normalize_selector, selector_matches_path, selector_specificity
+
     if coverage.kind == SourceProjectionKind.BOUNDARY:
         root = coverage.include[0] if coverage.include else ""
         if not root or not _boundary_matches(path, root):
@@ -42,6 +45,8 @@ def _coverage_match(path: str, coverage: SourceCoverageProjection) -> tuple[tupl
     return selector_specificity(best), normalize_selector(best)
 
 def _resolve_repository(paths: Iterable[str], source: _ProjectedSourceArchitecture) -> _RepositoryResolution:
+    from ptsip.validation.components import normalize_selector
+
     existing: list[ExistingSourceElement] = []
     uncovered: list[UncoveredRepositoryElement] = []
     ambiguous: list[AmbiguousSourceElement] = []

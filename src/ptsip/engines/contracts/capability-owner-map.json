@@ -10,7 +10,8 @@
       "operation_ids": [
         "context.snapshot",
         "context.load",
-        "context.order-dependencies"
+        "context.order-dependencies",
+        "context.repository.snapshot"
       ],
       "source_root": "src/ptsip/engines/context",
       "legacy_owner_transfer": false
@@ -54,7 +55,11 @@
         "validation.rbac.references",
         "validation.profile.identity",
         "validation.profile.transition",
-        "validation.profile.rules"
+        "validation.profile.rules",
+        "validation.repository.snapshot",
+        "validation.profile.path",
+        "validation.profile.transition-state",
+        "validation.profile.convergence"
       ],
       "source_root": "src/ptsip/engines/validation",
       "legacy_owner_transfer": false
@@ -72,7 +77,9 @@
         "discovery.planning",
         "discovery.profile.contract",
         "discovery.profile.catalog",
-        "discovery.profile.rules"
+        "discovery.profile.rules",
+        "discovery.repository.inspect",
+        "discovery.profile.candidates"
       ],
       "source_root": "src/ptsip/engines/discovery",
       "legacy_owner_transfer": false

@@ -6,8 +6,8 @@ from pathlib import Path
 import yaml
 
 from ptsip.model import Classification, ResponsibilityRelationshipType
-from ptsip.repository.profile_convergence import DirectConvergenceState
-from ptsip.repository.profile_path import profile_path_on_disk
+from ptsip.ptsip_specification.spec_identity import DirectConvergenceState
+from ptsip.ptsip_specification.spec_identity import profile_path_on_disk
 from ptsip.migration.analysis.direct.result import DirectConvergenceAnalysisIssue
 from ptsip.migration.analysis.target.semantics import TargetArchitectureState, TargetSemantics, target_state_from_mapping
 

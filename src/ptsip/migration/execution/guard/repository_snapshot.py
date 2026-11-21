@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ptsip.repository.snapshot import RepositorySnapshot
+from ptsip.ptsip_specification.spec_identity import RepositorySnapshot
 from ptsip.migration.analysis.result import MigrationAnalysis
 
 @dataclass(frozen=True)

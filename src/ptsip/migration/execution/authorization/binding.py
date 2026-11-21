@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
-from ptsip.repository.snapshot import capture_snapshot
+from ptsip.ptsip_specification.spec_identity import capture_snapshot
 from ptsip.migration.analysis.result import MigrationAnalysis
 from ptsip.migration.execution.error import ExecutionStateError
 from ptsip.migration.execution.guard.mutation import MutationGuardExpectation, capture_mutation_guard

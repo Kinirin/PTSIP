@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:965ee856-a9cd-4326-bfd6-d23638b9cb2c",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "engine_id": "urn:uuid:0ca335ff-48b2-4358-99e4-3eeb48e94af3",
   "semantic_owner": "CONTEXT",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -74,7 +74,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.1.0",
+        "contract_version": "2.2.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -206,7 +206,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.1.0",
+        "contract_version": "2.2.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -299,11 +299,113 @@
         "required": "NATIVE_RUST_ORDERING_AND_INVALID_GRAPH_TESTS"
       },
       "compatibility": {
-        "contract_version": "2.1.0",
+        "contract_version": "2.2.0",
         "legacy_public_api": "NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "TOPOLOGICAL_ORDER_OF_EXPLICIT_DEPENDENCIES_WITH_LEXICOGRAPHIC_TIES",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "context.repository.snapshot",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "root"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "is_git": {
+            "type": "boolean"
+          },
+          "head": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status_fingerprint": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "tracked_content_fingerprint": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "tracked_files": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "observation_errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "captured_at",
+          "is_git",
+          "head",
+          "status_fingerprint",
+          "tracked_content_fingerprint",
+          "tracked_files",
+          "observation_errors"
+        ],
+        "additionalProperties": false
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine:context:repository:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/context/src/schemas/repository.schema.json#/$defs/snapshot_input",
+          "sha256": "4cace84237c3225b7d1ec9ea0c2923bbf078863e505dc1e7f43c8a7bbbed9b37"
+        },
+        "output_schema_ref": "src/ptsip/engines/context/src/schemas/repository.schema.json#/$defs/snapshot_output"
+      },
+      "compatibility": {
+        "contract_version": "2.2.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "OBSERVE_EXPLICIT_REPOSITORY_GIT_STATUS_AND_TRACKED_CONTENT_WITHOUT_MUTATION",
         "normative_authority_from_runtime_result": false
       }
     }

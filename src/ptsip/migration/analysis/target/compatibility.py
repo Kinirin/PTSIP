@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import StrEnum
 
-from ptsip.validation.components import selector_matches_path, selector_specificity
 from ptsip.migration.analysis.findings.lifecycle import LifecycleFinding, LifecycleFindingKind
 from ptsip.migration.analysis.source.projection import ExistingSourceElement, SourceProjectionKind
 from ptsip.migration.analysis.target.semantics import TargetArchitectureState, TargetSemantics
@@ -23,6 +22,8 @@ class _TargetOwner:
     selector: str
 
 def _target_match(path: str, target: TargetArchitectureState) -> tuple[_TargetOwner | None, bool]:
+    from ptsip.validation.components import selector_matches_path, selector_specificity
+
     component_matches: list[tuple[tuple[int, int, int, int], _TargetOwner]] = []
     for item in target.components:
         if any(selector_matches_path(path, selector) for selector in item.exclude):

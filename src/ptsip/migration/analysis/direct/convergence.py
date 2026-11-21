@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from ptsip.evidence.contract import NormalizedEvidenceSet
-from ptsip.repository.profile_convergence import DirectConvergenceMode, DirectConvergenceState, validate_direct_convergence_snapshot
+from ptsip.ptsip_specification.spec_identity import DirectConvergenceMode, DirectConvergenceState, validate_direct_convergence_snapshot
 from ptsip.migration.analysis.analyzer import analyze_source_migration
 from ptsip.migration.analysis.direct.result import DirectConvergenceAnalysis, DirectConvergenceAnalysisIssue
 from ptsip.migration.analysis.direct.source_projection import _read_historical_source
