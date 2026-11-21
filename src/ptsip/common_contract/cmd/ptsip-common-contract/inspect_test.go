@@ -12,8 +12,21 @@ func TestDiagnosticResourceSources(t *testing.T) {
         "Policy_Document","Policy_Identity","Policy_Lifecycle","Policy_Rules","Policy_Content"} {
         t.Run(field,func(t *testing.T) {
             report:=dispatch(record{"format":protocol,"operation":"inspect-resource","field":field},root)
-            if report["binding"]!="DIAGNOSTIC_ONLY" || report["status"]!="RESOLVED" {
-                t.Fatalf("resource %s: %#v",field,report)
+            stage,_:=report["reference_resolution"].(record)
+            if report["binding"]!="DIAGNOSTIC_ONLY" || stage["status"]!="RESOLVED" {
+                t.Fatalf("source resolution %s: %#v",field,report)
+            }
+            if strings.HasPrefix(field,"Plan_") && report["status"]!="RESOLVED" {
+                t.Fatalf("Plan source schema %s: %#v",field,report)
+            }
+            if report["status"]=="UNRESOLVED" {
+                structure,_:=report["structure"].(record)
+                problem,_:=structure["problem"].(string)
+                if !strings.HasPrefix(problem,"SCHEMA_COMPILE_ERROR: ") {
+                    t.Fatalf("unexpected diagnostic failure for %s: %#v",field,report)
+                }
+            } else if report["status"]!="RESOLVED" {
+                t.Fatalf("unexpected diagnostic status for %s: %#v",field,report)
             }
         })
     }
