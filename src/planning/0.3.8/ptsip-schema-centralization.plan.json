@@ -4,6 +4,10 @@
   "title": "PTSIP 0.3.8 distributable source: Policy v4, RBAC and schema centralization migration plan",
   "status": "Approval.Scheduled_implementation",
   "execution_authorized": true,
+  "plan_version": "0.3.8",
+  "plan_path": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
+  "artifact_type": "PTSIP_DISTRIBUTION_CHANGE_PLAN",
+  "authority": "PLAN_ONLY_NOT_POLICY_OR_IMPLEMENTATION",
   "baseline": {
     "repository": "Kinirin/PTSIP",
     "branch": "main",
@@ -8379,10 +8383,6 @@
     "implementation_permission": false,
     "record_role": "PLAN_DISCUSSION_HISTORY_ONLY_NOT_POLICY_MUTATION_AUTHORITY"
   },
-  "plan_version": "0.3.8",
-  "plan_path": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
-  "artifact_type": "PTSIP_DISTRIBUTION_CHANGE_PLAN",
-  "authority": "PLAN_ONLY_NOT_POLICY_OR_IMPLEMENTATION",
   "release_scope": {
     "product": "PTSIP",
     "version": "0.3.8",
@@ -10157,256 +10157,6 @@
       "previous_rejections": "RETAIN_PREVIOUS_RAC_AEC_FIELD_SET_REJECTION",
       "pp300": "KEEP_LEGACY_SCHEMAS_UNMODIFIED",
       "runtime_implementation_authorized": false
-    }
-  },
-  "current_user_decisions_2026_11_18": {
-    "authority": "USER_EXPLICIT_PLAN_LOCAL_NO_EXTERNAL_POLICY_DOCUMENT",
-    "scope": "PTSIP_0_3_8_WU01_WU14",
-    "no_work_unit_number_execution_order": true,
-    "plan_id": {
-      "state": "USER_OWNED_RULE_NOT_A_PTSIP_FIXED_PATTERN",
-      "contract_name_and_location": "USER_SELECTED_UNCONSTRAINED",
-      "validator": "ONLY_VALIDATE_USER_DECLARED_ID_CONSTRAINT_IF_AVAILABLE",
-      "absent_user_pattern": "DO_NOT_INVENT_PATTERN_OR_BLOCK_STRUCTURAL_SCHEMA_CREATION",
-      "not_blocker": true
-    },
-    "pp200_source_selection": {
-      "status": "USER_SELECTED_2026_11_18",
-      "authoritative_source_schema": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
-      "stop_using_source_schema": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
-      "stop_use_effect": "NEVER_SELECT_AS_CURRENT_OR_HISTORICAL_PP2_SCHEMA_AFTER_CONSUMER_REBINDING",
-      "migration": "DERIVE_CANONICAL_PP2_HISTORY_SCHEMA_FROM_SELECTED_SOURCE;REWIRE_ALL_SUPPORTED_CONSUMERS;DELETE_REJECTED_DUPLICATE_AFTER_REPLACEMENT_VALIDATION",
-      "selected_original_under_retirement_root": "KEEP_AS_SOURCE_UNTIL_CANONICAL_PARITY_THEN_DELETE_WITH_SRC_PTSIP_PROFILES_TREE",
-      "no_history_of_retired_duplicate": "DELETE_WITHOUT_ARCHIVED_CONTRACT_OR_LEGACY_VALIDATOR"
-    },
-    "rule_record_retirement": {
-      "source": "src/ptsip/profiles/rule_records.py",
-      "decision": "RETIRE_PYTHON_MODULE_AND_BUILD_NEW_RUST_MODULE",
-      "reason_1": "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
-      "reason_2": "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION",
-      "observed_legacy_responsibilities": [
-        "LINKED_RULE_PROFILE_READ",
-        "RULE_SCHEMA_VALIDATION",
-        "EXACT_ID_DISCOVERY_AND_RESOLUTION",
-        "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
-        "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
-      ],
-      "replacement": "ANALYZED_TWO_OWNER_RUST_REPLACEMENT_USER_PREAUTHORIZED",
-      "runtime_source_owner_root": [
-        "src/ptsip/engines/discovery/src/",
-        "src/ptsip/engines/validation/src/"
-      ],
-      "selected_leaf": [
-        "src/ptsip/engines/discovery/src/rule_records.rs",
-        "src/ptsip/engines/validation/src/rule_records.rs"
-      ],
-      "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
-      "no_go_parity_for_this_module": true,
-      "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
-      "archive_removed_contract_or_validator": false,
-      "selected_contract_owner": [
-        "DISCOVERY",
-        "VALIDATION"
-      ],
-      "resolved_engine": [
-        "DISCOVERY",
-        "VALIDATION"
-      ],
-      "allocation_ref": "profile_rust_engine_assignment.source_modules",
-      "owner_analysis_scope": "ALL_SIX_PYTHON_MODULES_INCLUDING_RULE_RECORD"
-    },
-    "unapproved_paths": {
-      "decision": "REJECT_33_PROPOSED_NEW_TARGETS;ENGINE_OWNED_SCHEMAS_MUST_RESOLVE_OWNER_UNDER_ENGINES_*/SRC_SCHEMAS",
-      "meaning": "DO_NOT_CREATE_REGISTER_COPY_REFERENCE_AS_APPROVED_TARGET_OR_DELETE_SOURCE_DUE_TO_PROPOSED_LOCATION",
-      "approved_engine_parent_only": "src/ptsip/engines/**/src/schemas/**",
-      "not_approved_by_engine_parent": "ENGINE_OWNER_OR_EXACT_LEAF_NOT_AUTOMATICALLY_ASSIGNED",
-      "denied_candidates": [
-        "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
-        "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
-        "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
-        "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
-        "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
-        "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
-        "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
-        "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
-        "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
-        "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
-        "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
-        "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
-        "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
-        "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
-        "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
-        "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
-        "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
-        "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
-        "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
-        "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
-        "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
-        "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
-        "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-        "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
-        "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
-        "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
-        "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
-        "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
-        "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
-        "src/ptsip/schemas/storage/profile/source-profile.schema.json",
-        "src/ptsip/schemas/storage/profile/user-profile.schema.json",
-        "src/ptsip/schemas/storage/release/readme.schema.json",
-        "src/ptsip/schemas/storage/specification/specification.schema.json"
-      ],
-      "next_step": "CLASSIFY_21_ENGINE_SCHEMAS_BY_EXISTING_REGISTERED_ENGINE_CONSUMER_AND_OWNER;PLAN_EVIDENCE_NONENGINE_CONTRACTS_REQUIRE_INDEPENDENT_LOCATION_REVIEW",
-      "existing_registered_storage_exception": "CURRENT_PROFILE_HISTORY_AND_RBAC_ARE_PRESENT_AND_NOT_DELETED_OR_RELOCATED_BY_THIS_DECISION"
-    },
-    "legacy_validation": {
-      "gate_order": [
-        "VERIFY_APPROVED_REPLACEMENT_FUNCTION_AND_ITS_TESTS",
-        "ISOLATE_RETIRED_LEGACY_VALIDATOR_AND_TEST_SCOPE",
-        "DELETE_LEGACY_VALIDATOR_AND_ITS_TESTS",
-        "VERIFY_CURRENT_TARGET_WITH_ONLY_SUPPORTED_VERIFICATION"
-      ],
-      "previous_record": "DO_NOT_PRESERVE_RETIRED_CONTRACT_OR_VALIDATOR_HISTORY",
-      "reject": "LEGACY_VALIDATOR_FAILURE_CANNOT_BLOCK_REMOVAL_AFTER_REPLACEMENT_ACCEPTANCE",
-      "only_required_tests": "SUPPORTED_CURRENT_RELEASE_RESPONSIBILITIES"
-    },
-    "no_policy_reference_execution": {
-      "scope": "THIS_PLAN_IS_SELF_CONTAINED",
-      "prohibition": "NO_REPOSITORY_POLICY_DOCUMENT_OR_DEVELOPER_DOTPTSIP_CONTRACT_LOOKUP_AS_EXECUTION_INPUT",
-      "external_policy_record": "NOT_AN_IMPLEMENTATION_GATE_OR_SOURCE_OF_FIELD_DEFINITIONS"
-    },
-    "outdated_plan_state": {
-      "status": "SUPERSEDED_WHEN_CONFLICTS_WITH_APPROVED_2026_11_18_DECISION_AND_CURRENT_SOURCE",
-      "interpretation": "STATIC_SIMULATION_IS_HISTORICAL_DIAGNOSTIC_NOT_CURRENT_GATE",
-      "current_source_validation": "REREAD_ACTIVE_HEAD;DO_NOT_REAPPLY_STALE_CONFIG_JSON_PARSE_FAILURE"
-    },
-    "continuous_execution": {
-      "authorization": "USER_EXPLICIT_WU_01_THROUGH_WU_14",
-      "work_unit_numbers": "IDENTIFIERS_ONLY_NOT_PRIORITY_OR_EXECUTION_SEQUENCE",
-      "order": "ACTUAL_DEPENDENCIES",
-      "hold": "ONLY_WORK_WITH_UNDECIDED_PLAN_CONTRACTS_OR_EXPLICITLY_UNAPPROVED_TARGET_PATHS",
-      "continue": "OTHER_EXECUTABLE_APPROVED_WORK_WITHOUT_REPEATED_APPROVAL"
-    },
-    "registered_lifecycle": {
-      "source": "USER_EXPLICIT_2026_11_18",
-      "contract": "target_registry.registered_lifecycle",
-      "allowed_constants": [
-        "ACTIVE",
-        "LEGACY",
-        "DEPRECATED"
-      ],
-      "current_project_profile": "pp.3.00_ACTIVE_ALL_REGISTERED_HISTORICAL_PROFILE_VERSIONS_DEPRECATED;PRIOR_PP200_ONLY_ASSIGNMENT_SUPERSEDED"
-    },
-    "storage_profile_and_engine_schemas_2026_11_18": {
-      "state": "SUPERSEDED_PROFILE_ENGINE_OWNER_ASSIGNMENTS_BY_USER_2026_11_18",
-      "profile": {
-        "engine_kind": null,
-        "owner": null,
-        "source_root": null,
-        "schema_root": null,
-        "language": "RUST",
-        "always_on_background": "REQUIRED_PROFILE_CAPABILITY_AVAILABILITY_OWNERSHIP_PENDING",
-        "all_six_legacy_python_module_responsibilities": false,
-        "no_independent_go_module": true,
-        "forbidden_go_mod": "src/ptsip/profile_contract/go.mod",
-        "rule_record_engine": null,
-        "existing_go_cli": "DISPATCH_ONLY",
-        "five_profile_modules_storage": false,
-        "rule_record_decision_ref": "profile_rust_engine_assignment",
-        "rule_record_engine_decided_after_analysis": false,
-        "rule_record_automatic_approval_after_analysis": true,
-        "all_six_modules_in_analysis": true,
-        "analysis_scope": [
-          "src/ptsip/profiles/identity.py",
-          "src/ptsip/profiles/contracts.py",
-          "src/ptsip/profiles/compatibility.py",
-          "src/ptsip/profiles/catalog.py",
-          "src/ptsip/profiles/metadata.py",
-          "src/ptsip/profiles/rule_records.py"
-        ],
-        "auto_approve_all_six_responsibility_assignment_after_evidence": true
-      },
-      "engine_schemas": {
-        "approved_target_pattern": "src/ptsip/engines/**/src/schemas/**",
-        "owner_resolution": "EACH_CURRENT_REGISTERED_ENGINE_OWNS_ITS_OWN_SCHEMAS_BY_ACTUAL_SEMANTIC_RESPONSIBILITY",
-        "source_engine_shared_contract_dir": "src/ptsip/engines/contracts/schemas/",
-        "source_dir_role": "READ_ONLY_MIGRATION_INPUT_UNTIL_CONSUMERS_REWIRED",
-        "no_new_legacy_shared_contract_dir": true,
-        "no_new_central_engine_contract_directory": true,
-        "no_unapproved_engine_owner_assignment": true,
-        "target_leaf_selection": "AFTER_CONTRACT_AND_CONSUMER_OWNER_ANALYSIS",
-        "mutable_existing_registry_references": "UPDATE_ONLY_AFTER_APPROVED_TARGET_EXISTS_AND_CONFORMANCE_PASS",
-        "not_storage_only": true,
-        "pattern_interpretation": "EACH_RUST_ENGINE_OWNS_ITS_OWN_SRC_SCHEMAS",
-        "illustrative_engine_roots": [
-          "src/ptsip/engines/storage/src/schemas/",
-          "src/ptsip/engines/validation/src/schemas/",
-          "src/ptsip/engines/discovery/src/schemas/",
-          "src/ptsip/engines/context/src/schemas/",
-          "src/ptsip/engines/execution/src/schemas/",
-          "src/ptsip/engines/projection/src/schemas/"
-        ]
-      },
-      "rejected_absent_roots": [
-        "src/ptsip/schemas/engine/contracts/",
-        "src/ptsip/schemas/engine/discovery/",
-        "src/ptsip/schemas/plan/",
-        "src/ptsip/schemas/storage/evidence/",
-        "src/ptsip/schemas/storage/"
-      ],
-      "interpretation": {
-        "no_create_under_denied_roots": true,
-        "non_engine_plan_and_evidence": "OWNER_NOT_AUTOMATICALLY_STORAGE_OR_ENGINE;DEFER_NEW_TARGET_UNTIL_REAL_CONSUMER_OWNER_RESOLUTION",
-        "already_existing_storage_contracts": "KEEP_CURRENT_REGISTERED_PROFILE_AND_RBAC_SCHEMA_FILES;NOT_SILENTLY_DELETE_OR_RELOCATE_FROM_THIS_APPROVAL",
-        "no_new_storage_contract_root": "DO_NOT_CREATE_NEW_PROPOSED_STORAGE_SCHEMAS_FROM_DENIED_LOCATIONS",
-        "no_implicit_relocation_of_policy_v4_or_existing_registered_profile_history": true
-      },
-      "clarification": {
-        "source": "USER_EXPLICIT_CORRECTION_ALL_SIX_2026_11_18",
-        "session": "OTHER_SESSION_AGENT",
-        "engine_owner_analysis_completed": true,
-        "user_preapproval_after_analysis": true,
-        "all_six_modules_in_scope": [
-          "src/ptsip/profiles/identity.py",
-          "src/ptsip/profiles/contracts.py",
-          "src/ptsip/profiles/compatibility.py",
-          "src/ptsip/profiles/catalog.py",
-          "src/ptsip/profiles/metadata.py",
-          "src/ptsip/profiles/rule_records.py"
-        ],
-        "preassigned_engines": null,
-        "next_step": "IMPLEMENT_RECORDED_USER_PREAUTHORIZED_ALLOCATION_AND_EXPLICITLY_APPROVED_SEVEN_NATIVE_OPERATIONS",
-        "schema_pattern": "EACH_REGISTERED_RUST_ENGINE_OWN_SRC_SCHEMAS",
-        "assigned_engines": [
-          "DISCOVERY",
-          "VALIDATION",
-          "PROJECTION"
-        ],
-        "result_ref": "profile_rust_engine_assignment"
-      }
-    },
-    "profile_all_six_rust_migration_2026_11_18": {
-      "authority": "USER_EXPLICIT_OVERRIDE_OF_PREASSIGNED_STORAGE_OWNERSHIP",
-      "approval_scope": [
-        "src/ptsip/profiles/identity.py",
-        "src/ptsip/profiles/contracts.py",
-        "src/ptsip/profiles/compatibility.py",
-        "src/ptsip/profiles/catalog.py",
-        "src/ptsip/profiles/metadata.py",
-        "src/ptsip/profiles/rule_records.py"
-      ],
-      "implementation_language": "RUST",
-      "engine_ownership": "ANALYZED_DISCOVERY_VALIDATION_PROJECTION",
-      "analysis_actor": "CURRENT_IMPLEMENTATION_SESSION_AGENT_TEAM",
-      "decision_condition": "ANALYSIS_COMPLETED_WITH_FUNCTION_CALLER_ENGINE_RESPONSIBILITY_EVIDENCE",
-      "user_automatic_approval": true,
-      "result_record_path": "profile_rust_engine_assignment.source_modules",
-      "implementation_gate": "ANALYSIS_AND_APPROVAL_RECORDED_NATIVE_IMPLEMENTATION_AND_VERIFICATION_REQUIRED",
-      "background_requirement": "ALWAYS_ON_PROFILE_CAPABILITIES",
-      "engine_schema_pattern": "src/ptsip/engines/**/src/schemas/**",
-      "no_independent_go_module": true,
-      "analysis_completed": true,
-      "user_preapproval_applied": true,
-      "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision"
     }
   },
   "current_release_nonblocking_contract_freedom": {
@@ -14175,98 +13925,6 @@
     },
     "no_implementation_or_policy_mutation": true
   },
-  "current_user_decisions_2026_11_20_plan_schema_paths": {
-    "authority": "USER_EXPLICIT_2026_11_20",
-    "scope": "WU-04_B-02_SCHEMA_OWNERSHIP_AND_PATHS",
-    "decision": "APPROVE_TWO_EXACT_PLAN_SCHEMA_TARGET_PATHS",
-    "overrides_prior_denial_only_for": [
-      "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-      "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
-    ],
-    "owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
-    "historical_prior_denials": "CURRENT_USER_DECISIONS_2026_11_18_ARE_HISTORICAL_AND_EXCEPTED_ONLY_FOR_TWO_APPROVED_TARGETS",
-    "plan_config_registration": "USER_APPROVED_OPTION_C_FULLY_SEPARATED_IDENTITY_LIFECYCLE_UNIT;IDENTITY_UNIT_PATHS_AND_REGISTRY_KEYS_PENDING",
-    "config_json_mutation": false,
-    "schema_creation_or_update": false,
-    "task_engine_activation": false,
-    "approval_does_not_depend_on_external_policy_documents": true
-  },
-  "current_user_decisions_2026_11_20_plan_registry_topology": {
-    "authority": "USER_EXPLICIT_2026_11_20",
-    "scope": "WU-04_CONFIG_PLAN_REGISTRATION_TOPOLOGY",
-    "selection": "C_RESPONSIBILITY_GROUPED_AND_FULLY_SEPARATED_CONTRACTS",
-    "responsibility_domains": [
-      "Plan Identity",
-      "Plan Lifecycle",
-      "Plan Unit"
-    ],
-    "prior_recommendation": "A_NOT_SELECTED",
-    "physical_schema_paths_already_approved": [
-      "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-      "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
-    ],
-    "no_new_schema_file_count_inferred": false,
-    "no_extra_schema_path_authorized": true,
-    "exact_group_contract_fields": "UNDECIDED",
-    "exact_group_to_file_bindings": "LIFECYCLE_APPROVED;IDENTITY_AND_UNIT_INDEPENDENCE_APPROVED_TARGET_PATHS_UNDECIDED",
-    "nested_registry_key_names": "UNDECIDED",
-    "resource_ids_versions": "UNDECIDED",
-    "config_json_current_state": "plan:{}",
-    "config_json_change_authorized": false,
-    "schema_creation_authorized_by_this_decision": false,
-    "status": "FULL_SEPARATION_APPROVED;EXACT_PATHS_AND_BINDINGS_PENDING",
-    "separation_level": "THREE_INDEPENDENT_PHYSICAL_SCHEMA_CONTRACTS",
-    "identity_schema_path": "UNDECIDED",
-    "lifecycle_schema_path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
-    "unit_schema_path": "UNDECIDED",
-    "public_structure_schema_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json"
-  },
-  "current_user_decisions_2026_11_20_plan_contract_full_separation": {
-    "authority": "USER_EXPLICIT_2026_11_20",
-    "selection": "OPTION_2_FULLY_SEPARATED_SCHEMA_CONTRACTS_WITHIN_APPROVED_C_REGISTRY",
-    "separate_contracts": [
-      "Plan Identity",
-      "Plan Lifecycle",
-      "Plan Unit"
-    ],
-    "document_root_contract": "Plan public structure",
-    "identity_contract_path": "src/ptsip/schemas/plan/plan-identity.schema.json",
-    "lifecycle_contract_path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
-    "unit_contract_path": "src/ptsip/schemas/plan/plan-unit.schema.json",
-    "root_contract_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
-    "registry_hierarchy": "C_ALREADY_APPROVED",
-    "no_merged_identity_or_unit_into_root": true,
-    "no_new_unit_status": true,
-    "remaining_approval": [
-      "REGISTRY_KEY_AND_RESOURCE_META",
-      "REFERENCE_BINDINGS",
-      "IDENTITY_UNIT_MINIMUM_FIELDS_AND_CUSTOM_EXTENSION_BOUNDARY"
-    ],
-    "mutation_scope": "PLAN_ONLY;NO_SCHEMA_FILE_OR_CONFIG_JSON_MUTATION",
-    "status": "FOUR_EXACT_TARGET_PATHS_APPROVED;FIELDS_AND_REGISTRY_BINDING_PENDING"
-  },
-  "current_user_decisions_2026_11_21_plan_paths_and_field_premises": {
-    "authority": "USER_EXPLICIT_2026_11_21",
-    "selected_files": [
-      "src/ptsip/schemas/plan/plan-identity.schema.json",
-      "src/ptsip/schemas/plan/plan-unit.schema.json"
-    ],
-    "identity_minimum_constraints": "STRONG_REQUIRED_OFFICIAL_IDENTITY_FIELDS_TO_BE_DECIDED",
-    "unit_minimum_constraints": "WEAK_REQUIRED_OFFICIAL_UNIT_FIELDS_TO_BE_DECIDED",
-    "custom_user_fields_and_layout": "RESERVED_CUSTOMER_FREEDOM",
-    "user_format_intent": "YAML_MANDATORY_NEW_OR_REWRITTEN_WITH_EXISTING_LEGACY_EXCEPTION",
-    "self_policy_sources": "PLAN_TO_POLICY_REQUIRED;POLICY_TO_PLAN_NOT_REQUIRED",
-    "custom_contract_provenance": "VERSION_REVISION_SHA_REQUIRED;EXACT_FIELDPATH_UNDECIDED",
-    "official_contract_mutation": "FORBIDDEN_EDIT_INSTALL_PACKAGE_IN_PLACE",
-    "customer_custom_contract_directory": "DOT_PTSIP_CONTRACTS_LOWERCASE_PLANS_REQUESTED;POLICY_CONFLICT_RESOLUTION_PENDING",
-    "validator_cli_extension": "REQUIRED_BY_USER;EXACT_INTERFACE_UNDECIDED",
-    "custom_contract_revision": "VERSION_FIXED_REVISION_CHANGE;COMPRESSION_BOUND_NOT_DEFINED;AUTHORITATIVE_POLICY_CHECK_PENDING",
-    "current_schema_files_created": false,
-    "current_config_changed": false,
-    "exact_identity_fields": "LATEST_USER_FIELD_DIRECTION_RECORDED_REFER_TO_wu04_user_field_design_2026_11_21;REGEX_SYNTAX_AND_FIELD_SEMANTICS_OPEN",
-    "scope": "RECORD_APPROVED_PATHS_AND_PROPOSED_POLICY_PREMISES;DO_NOT_SILENTLY_OVERRIDE_EXISTING_POLICY",
-    "plan_self_contained": true
-  },
   "wu04_user_field_design_2026_11_21": {
     "id": "WU04-20261121-FIELD-OWNERSHIP-REVISION",
     "scope": "NEW_OR_REWRITTEN_PLAN_YAML_SCHEMA_FIELD_OWNERSHIP_ONLY",
@@ -14560,30 +14218,393 @@
     "runtime_activation": "DIAGNOSTIC_ONLY",
     "gate": "FINAL_SCHEMA_IDS_VERSIONS_REFS_PENDING"
   },
-  "current_user_decisions_2026_11_21_work_unit_value": {
-    "authority": "USER_EXPLICIT_2026_11_21",
-    "design": "ONE_WORK_UNIT_ID_AND_OPTIONAL_USER_VALUE_ARRAY",
-    "identity_fields_per_unit": [
-      "work_unit_id"
-    ],
-    "core_fields_preserved": [
-      "title",
-      "RA_id",
-      "task_id"
-    ],
-    "value_type": "array",
-    "value_item_required_fields": [],
-    "dynamic_plan_id_key_required": false,
-    "project_specific_wrapper_required": false,
-    "multiple_work_units_in_plan_allowed": true,
-    "schema_target": "src/ptsip/schemas/plan/plan-unit.schema.json",
-    "regex_work_unit_id": "^WU-[A-Z]{2}-[0-9]{3}$",
-    "effective_boundary": "PLAN_UNIT_USER_EXTENSION_NON_PRESCRIPTIVE",
-    "prior_dynamic_plan_key_record": "HISTORICAL_SUPERSEDED",
-    "value_item_named_fields_official": [],
-    "value_preview": "value: []",
-    "value_child_field_examples_allowed_in_default_preview": false,
-    "value_child_field_validation": "PTSIP_DEFAULT_NONE;USER_CUSTOM_CONTRACT_OWNED",
-    "status": "USER_APPROVED_NO_PTSIP_REQUIRED_OR_NAMED_INNER_FIELDS"
+  "current_user_decisions": {
+    "Director_Decision": {
+      "decisions_0001": {
+        "decisions_date" : "2026-11-18",
+        "authority": "USER_EXPLICIT_PLAN_LOCAL_NO_EXTERNAL_POLICY_DOCUMENT",
+        "scope": "PTSIP_0_3_8_WU01_WU14",
+        "state": "USER_OWNED_RULE_NOT_A_PTSIP_FIXED_PATTERN",
+        "decision": {
+          "contract_name_and_location": "USER_SELECTED_UNCONSTRAINED",
+          "validator": "ONLY_VALIDATE_USER_DECLARED_ID_CONSTRAINT_IF_AVAILABLE",
+          "absent_user_pattern": "DO_NOT_INVENT_PATTERN_OR_BLOCK_STRUCTURAL_SCHEMA_CREATION",
+          "not_blocker": true
+        },
+        "pp200_source_selection": {
+          "status": "USER_SELECTED_2026_11_18",
+          "authoritative_source_schema": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
+          "stop_using_source_schema": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+          "stop_use_effect": "NEVER_SELECT_AS_CURRENT_OR_HISTORICAL_PP2_SCHEMA_AFTER_CONSUMER_REBINDING",
+          "migration": "DERIVE_CANONICAL_PP2_HISTORY_SCHEMA_FROM_SELECTED_SOURCE;REWIRE_ALL_SUPPORTED_CONSUMERS;DELETE_REJECTED_DUPLICATE_AFTER_REPLACEMENT_VALIDATION",
+          "selected_original_under_retirement_root": "KEEP_AS_SOURCE_UNTIL_CANONICAL_PARITY_THEN_DELETE_WITH_SRC_PTSIP_PROFILES_TREE",
+          "no_history_of_retired_duplicate": "DELETE_WITHOUT_ARCHIVED_CONTRACT_OR_LEGACY_VALIDATOR"
+        },
+        "rule_record_retirement": {
+          "source": "src/ptsip/profiles/rule_records.py",
+          "decision": "RETIRE_PYTHON_MODULE_AND_BUILD_NEW_RUST_MODULE",
+          "reason_1": "LEGACY_MODULE_IMPORTS_DEVELOPER_PRIVATE_DOTPTSIP_CONTRACT_AS_SCHEMA_SOURCE;DISTRIBUTED_SRC_MUST_OWN_ITS_CONTRACT_INDEPENDENTLY",
+          "reason_2": "LEGACY_MODULE_IS_PYTHON;PTSIP_ENGINE_IMPLEMENTATION_AND_BUILD_IS_RUST;PYTHON_MODULE_IS_NOT_A_RUST_ENGINE_IMPLEMENTATION",
+          "observed_legacy_responsibilities": [
+            "LINKED_RULE_PROFILE_READ",
+            "RULE_SCHEMA_VALIDATION",
+            "EXACT_ID_DISCOVERY_AND_RESOLUTION",
+            "PARENT_CHILD_GRANDCHILD_GRAPH_CHECK",
+            "READ_ONLY_RESULT_WITHOUT_AUTHORITY_GRANT"
+          ],
+          "replacement": "ANALYZED_TWO_OWNER_RUST_REPLACEMENT_USER_PREAUTHORIZED",
+          "runtime_source_owner_root": [
+            "src/ptsip/engines/discovery/src/",
+            "src/ptsip/engines/validation/src/"
+          ],
+          "selected_leaf": [
+            "src/ptsip/engines/discovery/src/rule_records.rs",
+            "src/ptsip/engines/validation/src/rule_records.rs"
+          ],
+          "supported_engine_rule": "DO_NOT_CREATE_NEW_ENGINE_KIND_OR_OPERATION_ID_BY_INFERENCE",
+          "no_go_parity_for_this_module": true,
+          "delete_gate": "VALIDATE_INDEPENDENT_RUST_REPLACEMENT_AND_SUPPORTED_CONSUMER_CLOSURE_THEN_REMOVE_LEGACY_MODULE_AND_LEGACY_VALIDATORS",
+          "archive_removed_contract_or_validator": false,
+          "selected_contract_owner": [
+            "DISCOVERY",
+            "VALIDATION"
+          ],
+          "resolved_engine": [
+            "DISCOVERY",
+            "VALIDATION"
+          ],
+          "allocation_ref": "profile_rust_engine_assignment.source_modules",
+          "owner_analysis_scope": "ALL_SIX_PYTHON_MODULES_INCLUDING_RULE_RECORD"
+        },
+        "unapproved_paths": {
+          "decision": "REJECT_33_PROPOSED_NEW_TARGETS;ENGINE_OWNED_SCHEMAS_MUST_RESOLVE_OWNER_UNDER_ENGINES_*/SRC_SCHEMAS",
+          "meaning": "DO_NOT_CREATE_REGISTER_COPY_REFERENCE_AS_APPROVED_TARGET_OR_DELETE_SOURCE_DUE_TO_PROPOSED_LOCATION",
+          "approved_engine_parent_only": "src/ptsip/engines/**/src/schemas/**",
+          "not_approved_by_engine_parent": "ENGINE_OWNER_OR_EXACT_LEAF_NOT_AUTOMATICALLY_ASSIGNED",
+          "denied_candidates": [
+            "src/ptsip/schemas/engine/contracts/attempt-result.schema.json",
+            "src/ptsip/schemas/engine/contracts/capability-contract.schema.json",
+            "src/ptsip/schemas/engine/contracts/consumer-handoff.schema.json",
+            "src/ptsip/schemas/engine/contracts/contract-relation.schema.json",
+            "src/ptsip/schemas/engine/contracts/core-manifest.schema.json",
+            "src/ptsip/schemas/engine/contracts/dependency-graph.schema.json",
+            "src/ptsip/schemas/engine/contracts/derived-state.schema.json",
+            "src/ptsip/schemas/engine/contracts/effect-evidence.schema.json",
+            "src/ptsip/schemas/engine/contracts/execution-binding.schema.json",
+            "src/ptsip/schemas/engine/contracts/federated-source.schema.json",
+            "src/ptsip/schemas/engine/contracts/impact-result.schema.json",
+            "src/ptsip/schemas/engine/contracts/native-invocation-registry.schema.json",
+            "src/ptsip/schemas/engine/contracts/registry-snapshot.schema.json",
+            "src/ptsip/schemas/engine/contracts/registry-verification-input.schema.json",
+            "src/ptsip/schemas/engine/contracts/runtime-authority-consumption.schema.json",
+            "src/ptsip/schemas/engine/contracts/stop-ack.schema.json",
+            "src/ptsip/schemas/engine/contracts/stop-request.schema.json",
+            "src/ptsip/schemas/engine/contracts/stop-result.schema.json",
+            "src/ptsip/schemas/engine/contracts/storage-mediation.schema.json",
+            "src/ptsip/schemas/engine/contracts/transport-binding.schema.json",
+            "src/ptsip/schemas/engine/discovery/tpbg-output.schema.json",
+            "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+            "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+            "src/ptsip/schemas/storage/evidence/agent-classification.schema.json",
+            "src/ptsip/schemas/storage/evidence/artifact-evidence.schema.json",
+            "src/ptsip/schemas/storage/evidence/diagnostic.schema.json",
+            "src/ptsip/schemas/storage/evidence/normalized-evidence.schema.json",
+            "src/ptsip/schemas/storage/profile/mode-profile.schema.json",
+            "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
+            "src/ptsip/schemas/storage/profile/source-profile.schema.json",
+            "src/ptsip/schemas/storage/profile/user-profile.schema.json",
+            "src/ptsip/schemas/storage/release/readme.schema.json",
+            "src/ptsip/schemas/storage/specification/specification.schema.json"
+          ],
+          "next_step": "CLASSIFY_21_ENGINE_SCHEMAS_BY_EXISTING_REGISTERED_ENGINE_CONSUMER_AND_OWNER;PLAN_EVIDENCE_NONENGINE_CONTRACTS_REQUIRE_INDEPENDENT_LOCATION_REVIEW",
+          "existing_registered_storage_exception": "CURRENT_PROFILE_HISTORY_AND_RBAC_ARE_PRESENT_AND_NOT_DELETED_OR_RELOCATED_BY_THIS_DECISION"
+        },
+        "legacy_validation": {
+          "gate_order": [
+            "VERIFY_APPROVED_REPLACEMENT_FUNCTION_AND_ITS_TESTS",
+            "ISOLATE_RETIRED_LEGACY_VALIDATOR_AND_TEST_SCOPE",
+            "DELETE_LEGACY_VALIDATOR_AND_ITS_TESTS",
+            "VERIFY_CURRENT_TARGET_WITH_ONLY_SUPPORTED_VERIFICATION"
+          ],
+          "previous_record": "DO_NOT_PRESERVE_RETIRED_CONTRACT_OR_VALIDATOR_HISTORY",
+          "reject": "LEGACY_VALIDATOR_FAILURE_CANNOT_BLOCK_REMOVAL_AFTER_REPLACEMENT_ACCEPTANCE",
+          "only_required_tests": "SUPPORTED_CURRENT_RELEASE_RESPONSIBILITIES"
+        },
+        "no_policy_reference_execution": {
+          "scope": "THIS_PLAN_IS_SELF_CONTAINED",
+          "prohibition": "NO_REPOSITORY_POLICY_DOCUMENT_OR_DEVELOPER_DOTPTSIP_CONTRACT_LOOKUP_AS_EXECUTION_INPUT",
+          "external_policy_record": "NOT_AN_IMPLEMENTATION_GATE_OR_SOURCE_OF_FIELD_DEFINITIONS"
+        },
+        "outdated_plan_state": {
+          "status": "SUPERSEDED_WHEN_CONFLICTS_WITH_APPROVED_2026_11_18_DECISION_AND_CURRENT_SOURCE",
+          "interpretation": "STATIC_SIMULATION_IS_HISTORICAL_DIAGNOSTIC_NOT_CURRENT_GATE",
+          "current_source_validation": "REREAD_ACTIVE_HEAD;DO_NOT_REAPPLY_STALE_CONFIG_JSON_PARSE_FAILURE"
+        },
+        "continuous_execution": {
+          "authorization": "USER_EXPLICIT_WU_01_THROUGH_WU_14",
+          "work_unit_numbers": "IDENTIFIERS_ONLY_NOT_PRIORITY_OR_EXECUTION_SEQUENCE",
+          "order": "ACTUAL_DEPENDENCIES",
+          "hold": "ONLY_WORK_WITH_UNDECIDED_PLAN_CONTRACTS_OR_EXPLICITLY_UNAPPROVED_TARGET_PATHS",
+          "continue": "OTHER_EXECUTABLE_APPROVED_WORK_WITHOUT_REPEATED_APPROVAL"
+        },
+        "registered_lifecycle": {
+          "source": "USER_EXPLICIT_2026_11_18",
+          "contract": "target_registry.registered_lifecycle",
+          "allowed_constants": [
+            "ACTIVE",
+            "LEGACY",
+            "DEPRECATED"
+          ],
+          "current_project_profile": "pp.3.00_ACTIVE_ALL_REGISTERED_HISTORICAL_PROFILE_VERSIONS_DEPRECATED;PRIOR_PP200_ONLY_ASSIGNMENT_SUPERSEDED"
+        },
+        "storage_profile_and_engine_schemas_2026_11_18": {
+          "state": "SUPERSEDED_PROFILE_ENGINE_OWNER_ASSIGNMENTS_BY_USER_2026_11_18",
+          "profile": {
+            "engine_kind": null,
+            "owner": null,
+            "source_root": null,
+            "schema_root": null,
+            "language": "RUST",
+            "always_on_background": "REQUIRED_PROFILE_CAPABILITY_AVAILABILITY_OWNERSHIP_PENDING",
+            "all_six_legacy_python_module_responsibilities": false,
+            "no_independent_go_module": true,
+            "forbidden_go_mod": "src/ptsip/profile_contract/go.mod",
+            "rule_record_engine": null,
+            "existing_go_cli": "DISPATCH_ONLY",
+            "five_profile_modules_storage": false,
+            "rule_record_decision_ref": "profile_rust_engine_assignment",
+            "rule_record_engine_decided_after_analysis": false,
+            "rule_record_automatic_approval_after_analysis": true,
+            "all_six_modules_in_analysis": true,
+            "analysis_scope": [
+              "src/ptsip/profiles/identity.py",
+              "src/ptsip/profiles/contracts.py",
+              "src/ptsip/profiles/compatibility.py",
+              "src/ptsip/profiles/catalog.py",
+              "src/ptsip/profiles/metadata.py",
+              "src/ptsip/profiles/rule_records.py"
+            ],
+            "auto_approve_all_six_responsibility_assignment_after_evidence": true
+          },
+          "engine_schemas": {
+            "approved_target_pattern": "src/ptsip/engines/**/src/schemas/**",
+            "owner_resolution": "EACH_CURRENT_REGISTERED_ENGINE_OWNS_ITS_OWN_SCHEMAS_BY_ACTUAL_SEMANTIC_RESPONSIBILITY",
+            "source_engine_shared_contract_dir": "src/ptsip/engines/contracts/schemas/",
+            "source_dir_role": "READ_ONLY_MIGRATION_INPUT_UNTIL_CONSUMERS_REWIRED",
+            "no_new_legacy_shared_contract_dir": true,
+            "no_new_central_engine_contract_directory": true,
+            "no_unapproved_engine_owner_assignment": true,
+            "target_leaf_selection": "AFTER_CONTRACT_AND_CONSUMER_OWNER_ANALYSIS",
+            "mutable_existing_registry_references": "UPDATE_ONLY_AFTER_APPROVED_TARGET_EXISTS_AND_CONFORMANCE_PASS",
+            "not_storage_only": true,
+            "pattern_interpretation": "EACH_RUST_ENGINE_OWNS_ITS_OWN_SRC_SCHEMAS",
+            "illustrative_engine_roots": [
+              "src/ptsip/engines/storage/src/schemas/",
+              "src/ptsip/engines/validation/src/schemas/",
+              "src/ptsip/engines/discovery/src/schemas/",
+              "src/ptsip/engines/context/src/schemas/",
+              "src/ptsip/engines/execution/src/schemas/",
+              "src/ptsip/engines/projection/src/schemas/"
+            ]
+          },
+          "rejected_absent_roots": [
+            "src/ptsip/schemas/engine/contracts/",
+            "src/ptsip/schemas/engine/discovery/",
+            "src/ptsip/schemas/plan/",
+            "src/ptsip/schemas/storage/evidence/",
+            "src/ptsip/schemas/storage/"
+          ],
+          "interpretation": {
+            "no_create_under_denied_roots": true,
+            "non_engine_plan_and_evidence": "OWNER_NOT_AUTOMATICALLY_STORAGE_OR_ENGINE;DEFER_NEW_TARGET_UNTIL_REAL_CONSUMER_OWNER_RESOLUTION",
+            "already_existing_storage_contracts": "KEEP_CURRENT_REGISTERED_PROFILE_AND_RBAC_SCHEMA_FILES;NOT_SILENTLY_DELETE_OR_RELOCATE_FROM_THIS_APPROVAL",
+            "no_new_storage_contract_root": "DO_NOT_CREATE_NEW_PROPOSED_STORAGE_SCHEMAS_FROM_DENIED_LOCATIONS",
+            "no_implicit_relocation_of_policy_v4_or_existing_registered_profile_history": true
+          },
+          "clarification": {
+            "source": "USER_EXPLICIT_CORRECTION_ALL_SIX_2026_11_18",
+            "session": "OTHER_SESSION_AGENT",
+            "engine_owner_analysis_completed": true,
+            "user_preapproval_after_analysis": true,
+            "all_six_modules_in_scope": [
+              "src/ptsip/profiles/identity.py",
+              "src/ptsip/profiles/contracts.py",
+              "src/ptsip/profiles/compatibility.py",
+              "src/ptsip/profiles/catalog.py",
+              "src/ptsip/profiles/metadata.py",
+              "src/ptsip/profiles/rule_records.py"
+            ],
+            "preassigned_engines": null,
+            "next_step": "IMPLEMENT_RECORDED_USER_PREAUTHORIZED_ALLOCATION_AND_EXPLICITLY_APPROVED_SEVEN_NATIVE_OPERATIONS",
+            "schema_pattern": "EACH_REGISTERED_RUST_ENGINE_OWN_SRC_SCHEMAS",
+            "assigned_engines": [
+              "DISCOVERY",
+              "VALIDATION",
+              "PROJECTION"
+            ],
+            "result_ref": "profile_rust_engine_assignment"
+          }
+        },
+        "profile_all_six_rust_migration_2026_11_18": {
+          "authority": "USER_EXPLICIT_OVERRIDE_OF_PREASSIGNED_STORAGE_OWNERSHIP",
+          "approval_scope": [
+            "src/ptsip/profiles/identity.py",
+            "src/ptsip/profiles/contracts.py",
+            "src/ptsip/profiles/compatibility.py",
+            "src/ptsip/profiles/catalog.py",
+            "src/ptsip/profiles/metadata.py",
+            "src/ptsip/profiles/rule_records.py"
+          ],
+          "implementation_language": "RUST",
+          "engine_ownership": "ANALYZED_DISCOVERY_VALIDATION_PROJECTION",
+          "analysis_actor": "CURRENT_IMPLEMENTATION_SESSION_AGENT_TEAM",
+          "decision_condition": "ANALYSIS_COMPLETED_WITH_FUNCTION_CALLER_ENGINE_RESPONSIBILITY_EVIDENCE",
+          "user_automatic_approval": true,
+          "result_record_path": "profile_rust_engine_assignment.source_modules",
+          "implementation_gate": "ANALYSIS_AND_APPROVAL_RECORDED_NATIVE_IMPLEMENTATION_AND_VERIFICATION_REQUIRED",
+          "background_requirement": "ALWAYS_ON_PROFILE_CAPABILITIES",
+          "engine_schema_pattern": "src/ptsip/engines/**/src/schemas/**",
+          "no_independent_go_module": true,
+          "analysis_completed": true,
+          "user_preapproval_applied": true,
+          "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision"
+        }
+      },
+      "decisions_0002":{
+        "decisions_date" : "2026-11-20",
+        "authority": "USER_EXPLICIT_2026_11_20",
+        "scope": "WU-04_B-02_SCHEMA_OWNERSHIP_AND_PATHS",
+        "state": null,
+        "decision": "APPROVE_TWO_EXACT_PLAN_SCHEMA_TARGET_PATHS",
+        "overrides_prior_denial_only_for": [
+          "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+          "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
+        ],
+        "owner": "PRODUCT_PLAN_SCHEMA_DOMAIN",
+        "historical_prior_denials": "CURRENT_USER_DECISIONS_2026_11_18_ARE_HISTORICAL_AND_EXCEPTED_ONLY_FOR_TWO_APPROVED_TARGETS",
+        "plan_config_registration": "USER_APPROVED_OPTION_C_FULLY_SEPARATED_IDENTITY_LIFECYCLE_UNIT;IDENTITY_UNIT_PATHS_AND_REGISTRY_KEYS_PENDING",
+        "config_json_mutation": false,
+        "schema_creation_or_update": false,
+        "task_engine_activation": false,
+        "approval_does_not_depend_on_external_policy_documents": true
+      },
+      "decisions_0003":{
+        "decisions_date" : "2026-11-20",
+        "authority": "USER_EXPLICIT_2026_11_20",
+        "status": "FULL_SEPARATION_APPROVED;EXACT_PATHS_AND_BINDINGS_PENDING",
+        "scope": "WU-04_CONFIG_PLAN_REGISTRATION_TOPOLOGY",
+        "decision": {
+          "selection": "C_RESPONSIBILITY_GROUPED_AND_FULLY_SEPARATED_CONTRACTS",
+          "responsibility_domains": [
+            "Plan Identity",
+            "Plan Lifecycle",
+            "Plan Unit"
+          ],
+          "prior_recommendation": "A_NOT_SELECTED",
+          "physical_schema_paths_already_approved": [
+            "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+            "src/ptsip/schemas/plan/plan-lifecycle.schema.json"
+          ],
+          "no_new_schema_file_count_inferred": false,
+          "no_extra_schema_path_authorized": true,
+          "exact_group_contract_fields": "UNDECIDED",
+          "exact_group_to_file_bindings": "LIFECYCLE_APPROVED;IDENTITY_AND_UNIT_INDEPENDENCE_APPROVED_TARGET_PATHS_UNDECIDED",
+          "nested_registry_key_names": "UNDECIDED",
+          "resource_ids_versions": "UNDECIDED",
+          "config_json_current_state": "plan:{}",
+          "config_json_change_authorized": false,
+          "schema_creation_authorized_by_this_decision": false,
+          "separation_level": "THREE_INDEPENDENT_PHYSICAL_SCHEMA_CONTRACTS",
+          "identity_schema_path": "UNDECIDED",
+          "lifecycle_schema_path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+          "unit_schema_path": "UNDECIDED",
+          "public_structure_schema_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json"
+        }
+      },
+      "decisions_0004":{
+        "decisions_date" : "2026-11-20",
+        "authority": "USER_EXPLICIT_2026_11_20",
+        "title": "plan_contract_full_separation",
+        "status": "FOUR_EXACT_TARGET_PATHS_APPROVED;FIELDS_AND_REGISTRY_BINDING_PENDING",
+        "decision": {
+          "selection": "OPTION_2_FULLY_SEPARATED_SCHEMA_CONTRACTS_WITHIN_APPROVED_C_REGISTRY",
+          "separate_contracts": [
+            "Plan Identity",
+            "Plan Lifecycle",
+            "Plan Unit"
+          ],
+          "document_root_contract": "Plan public structure",
+          "identity_contract_path": "src/ptsip/schemas/plan/plan-identity.schema.json",
+          "lifecycle_contract_path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+          "unit_contract_path": "src/ptsip/schemas/plan/plan-unit.schema.json",
+          "root_contract_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+          "registry_hierarchy": "C_ALREADY_APPROVED",
+          "no_merged_identity_or_unit_into_root": true,
+          "no_new_unit_status": true,
+          "remaining_approval": [
+            "REGISTRY_KEY_AND_RESOURCE_META",
+            "REFERENCE_BINDINGS",
+            "IDENTITY_UNIT_MINIMUM_FIELDS_AND_CUSTOM_EXTENSION_BOUNDARY"
+          ],
+          "mutation_scope": "PLAN_ONLY;NO_SCHEMA_FILE_OR_CONFIG_JSON_MUTATION",
+        }
+      },
+      "decisions_0005":{
+        "decisions_date" : "2026-11-21",
+        "authority": "USER_EXPLICIT_2026_11_21",
+        "scope": "RECORD_APPROVED_PATHS_AND_PROPOSED_POLICY_PREMISES;DO_NOT_SILENTLY_OVERRIDE_EXISTING_POLICY",
+        "title": "plan_paths_and_field_premises",
+        "decision": {
+          "selected_files": [
+            "src/ptsip/schemas/plan/plan-identity.schema.json",
+            "src/ptsip/schemas/plan/plan-unit.schema.json"
+          ],
+          "identity_minimum_constraints": "STRONG_REQUIRED_OFFICIAL_IDENTITY_FIELDS_TO_BE_DECIDED",
+          "unit_minimum_constraints": "WEAK_REQUIRED_OFFICIAL_UNIT_FIELDS_TO_BE_DECIDED",
+          "custom_user_fields_and_layout": "RESERVED_CUSTOMER_FREEDOM",
+          "user_format_intent": "YAML_MANDATORY_NEW_OR_REWRITTEN_WITH_EXISTING_LEGACY_EXCEPTION",
+          "self_policy_sources": "PLAN_TO_POLICY_REQUIRED;POLICY_TO_PLAN_NOT_REQUIRED",
+          "custom_contract_provenance": "VERSION_REVISION_SHA_REQUIRED;EXACT_FIELDPATH_UNDECIDED",
+          "official_contract_mutation": "FORBIDDEN_EDIT_INSTALL_PACKAGE_IN_PLACE",
+          "customer_custom_contract_directory": "DOT_PTSIP_CONTRACTS_LOWERCASE_PLANS_REQUESTED;POLICY_CONFLICT_RESOLUTION_PENDING",
+          "validator_cli_extension": "REQUIRED_BY_USER;EXACT_INTERFACE_UNDECIDED",
+          "custom_contract_revision": "VERSION_FIXED_REVISION_CHANGE;COMPRESSION_BOUND_NOT_DEFINED;AUTHORITATIVE_POLICY_CHECK_PENDING",
+          "current_schema_files_created": false,
+          "current_config_changed": false,
+          "exact_identity_fields": "LATEST_USER_FIELD_DIRECTION_RECORDED_REFER_TO_wu04_user_field_design_2026_11_21;REGEX_SYNTAX_AND_FIELD_SEMANTICS_OPEN",
+          "plan_self_contained": true
+        }
+      },
+      "decisions_0006":{
+        "decisions_date" : "2026-11-21",
+        "authority": "USER_EXPLICIT_2026_11_21",
+        "title": "plan_unit_work_unit_id_and_value_array",
+        "decision": {
+          "design": "ONE_WORK_UNIT_ID_AND_OPTIONAL_USER_VALUE_ARRAY",
+          "identity_fields_per_unit": [
+            "work_unit_id"
+          ],
+          "core_fields_preserved": [
+            "title",
+            "RA_id",
+            "task_id"
+          ],
+          "value_type": "array",
+          "value_item_required_fields": [],
+          "dynamic_plan_id_key_required": false,
+          "project_specific_wrapper_required": false,
+          "multiple_work_units_in_plan_allowed": true,
+          "schema_target": "src/ptsip/schemas/plan/plan-unit.schema.json",
+          "regex_work_unit_id": "^WU-[A-Z]{2}-[0-9]{3}$",
+          "effective_boundary": "PLAN_UNIT_USER_EXTENSION_NON_PRESCRIPTIVE",
+          "prior_dynamic_plan_key_record": "HISTORICAL_SUPERSEDED",
+          "value_item_named_fields_official": [],
+          "value_preview": "value: []",
+          "value_child_field_examples_allowed_in_default_preview": false,
+          "value_child_field_validation": "PTSIP_DEFAULT_NONE;USER_CUSTOM_CONTRACT_OWNED",
+          "status": "USER_APPROVED_NO_PTSIP_REQUIRED_OR_NAMED_INNER_FIELDS"
+        }
+      }
+    }
   }
 }
