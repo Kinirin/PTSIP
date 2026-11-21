@@ -12,6 +12,7 @@ import (
 
 	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/user_contracts"
 	"github.com/santhosh-tekuri/jsonschema/v6"
+	"gopkg.in/yaml.v3"
 )
 
 type profileVersion struct {
@@ -118,6 +119,66 @@ func TestProjectProfileHistoricalContractSelection(t *testing.T) {
 	}
 	if err := current.Validate(officialPP300Instance()); err != nil {
 		t.Fatalf("current pp.3.00 declaration rejected: %v", err)
+	}
+}
+
+func TestProjectProfileRecordedFixtureEvidence(t *testing.T) {
+	root := repositoryRoot(t)
+	plan := readObject(t, filepath.Join(root, "src", "planning", "0.3.8", "ptsip-schema-centralization.plan.json"))
+	retirement := plan["profile_directory_retirement"].(object)
+	original := retirement["original_head"].(string)
+	git := func(args ...string) ([]byte, error) {
+		command := exec.Command("git", args...)
+		command.Dir = root
+		return command.Output()
+	}
+	if _, err := git("cat-file", "-e", original+"^{commit}"); err != nil {
+		shallow, shallowErr := git("rev-parse", "--is-shallow-repository")
+		if shallowErr == nil && strings.TrimSpace(string(shallow)) == "true" {
+			t.Skip("recorded fixture source commit is outside this shallow checkout")
+		}
+		t.Fatalf("recorded fixture source commit %s is unavailable: %v", original, err)
+	}
+	_, contracts := profileSchemaCompiler(t)
+	checked := 0
+	for _, row := range retirement["removal_manifest"].(array) {
+		fixture := row.(object)
+		group := fixture["role_group"]
+		if group != "HISTORICAL_YAML_INSTANCE_FIXTURE" && group != "CURRENT_YAML_DISTRIBUTED_EXAMPLE" {
+			continue
+		}
+		checked++
+		path := fixture["source_path"].(string)
+		t.Run(path, func(t *testing.T) {
+			blob := fixture["git_blob_sha"].(string)
+			resolved, err := git("rev-parse", "--verify", original+":"+path)
+			if err != nil || strings.TrimSpace(string(resolved)) != blob {
+				t.Fatalf("recorded fixture does not bind the original Git path: %s: %v", resolved, err)
+			}
+			raw, err := git("cat-file", "blob", blob)
+			if err != nil || float64(len(raw)) != fixture["size_bytes"] {
+				t.Fatalf("recorded fixture blob unavailable or size differs: %d: %v", len(raw), err)
+			}
+			var instance object
+			if err := yaml.Unmarshal(raw, &instance); err != nil {
+				t.Fatal(err)
+			}
+			identity, ok := instance["ptsip"].(object)
+			if !ok {
+				t.Fatal("fixture is missing its Profile identity object")
+			}
+			version, _ := identity["version"].(string)
+			contract := contracts[version]
+			if contract == nil {
+				t.Fatalf("fixture has no registered historical schema: %q", version)
+			}
+			if err := contract.Validate(instance); err != nil {
+				t.Fatalf("fixture differs from its registered %s schema: %v", version, err)
+			}
+		})
+	}
+	if checked != 12 {
+		t.Fatalf("expected 12 recorded Profile fixtures, found %d", checked)
 	}
 }
 

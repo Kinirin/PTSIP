@@ -3239,17 +3239,17 @@
         {
           "id": "PP200_PP300_EXPLICIT_FIELD_MAP",
           "kind": "SUPPORTED_FIELD_SEMANTIC_MAPPING_AND_TESTING",
-          "state": "OPEN_DETAILED_MAP_NOT_SILENTLY_ASSUMED"
+          "state": "COMMON_FIELD_CONTRACTS_AND_STRUCTURAL_DELTAS_RECORDED;DEPENDENCY_ALLOCATION_LINEAGE_AND_EDGE_APPROVAL_OPEN"
         },
         {
           "id": "PROFILE_JSON_FIXTURE_PATHS_OR_ALTERNATIVE_EVIDENCE",
           "kind": "POST_DELETION_ACCEPTANCE",
-          "state": "OPEN"
+          "state": "TWELVE_EXISTING_GIT_FIXTURES_REVALIDATED;EXACT_DISTRIBUTABLE_JSON_PATHS_NOT_AUTHORIZED"
         },
         {
           "id": "USER_PROFILE_SOURCE_DISPOSITION",
           "kind": "POST_DELETION_ACCEPTANCE",
-          "state": "OPEN_USER_DEFINED_CONTRACT_NAMES_NOT_A_DECISION_GATE"
+          "state": "DELETED_SOURCE_DISPOSITION_RECORDED;CUSTOM_LINEAGE_OPEN_INDEPENDENTLY"
         },
         {
           "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
@@ -3487,6 +3487,83 @@
             "AUTHORIZED_PROFILE_REWRITE_POST_VALIDATION_AND_ROLLBACK_TESTS_PASS"
           ]
         }
+      },
+      "post_deletion_fixture_evidence_2026_11_22": {
+        "state": "ALL_TWELVE_SOURCE_BLOBS_AND_HISTORICAL_SCHEMA_SELECTION_VERIFIED",
+        "source_commit": "0cb9745113ca87de4c59924b9ac8d4f62d1fc21d",
+        "go_test": "TestProjectProfileRecordedFixtureEvidence",
+        "verified_count": 12,
+        "evidence_form": "EXISTING_GIT_OBJECTS_NO_SOURCE_RESTORE",
+        "fixture_distribution": "EXACT_JSON_FIXTURE_DESTINATIONS_UNAPPROVED"
+      },
+      "retired_user_profile_source_disposition_2026_11_22": {
+        "state": "DELETED_SOURCE_IDENTIFIED_WITHOUT_SUPPORTED_PRODUCT_REFERENCE_OR_REGISTERED_REPLACEMENT",
+        "previous_blob": "f7e6d0ae051c7274da35b1c98e5753130d7d93c8",
+        "strict_json_source_error": "Illegal trailing comma before end of object at 19:10",
+        "reserved_target": "REMAINS_DENIED",
+        "user_location_and_contract_name": "USER_OWNED_NOT_A_PRODUCT_REQUIREMENT",
+        "official_custom_lineage_storage_and_runtime": "INDEPENDENT_EXISTING_DECISION_GATE"
+      },
+      "pp200_pp300_field_comparison_2026_11_22": {
+        "state": "STRUCTURAL_CORRESPONDENCE_RECORDED_NO_TRANSITION_REGISTERED",
+        "source_contract": {
+          "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+          "id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json"
+        },
+        "target_contract": {
+          "path": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
+          "id": "urn:ptsip:storage:contract:profile:official"
+        },
+        "same_contract_fields": [
+          "/associated_artifacts",
+          "/relationships",
+          "/policies",
+          "/ptsip/specification",
+          "/ptsip/profile_role",
+          "/ptsip/rule_profile",
+          "/components/*/id",
+          "/components/*/classification",
+          "/components/*/roles",
+          "/components/*/include",
+          "/components/*/exclude",
+          "/components/*/purpose",
+          "/components/*/shipped",
+          "/components/*/runtime_required",
+          "/components/*/executable",
+          "/components/*/release_owner",
+          "/components/*/compatibility_owner",
+          "/components/*/manifests",
+          "/components/*/consumers",
+          "/components/*/analysis_inputs"
+        ],
+        "structural_changes": [
+          {
+            "from": "/ptsip/version",
+            "to": "/ptsip/version",
+            "change": "pp.2.00 to pp.3.00 only in an approved migration"
+          },
+          {
+            "from": "/responsibility_map/mode",
+            "to": "/responsibility_map/mode",
+            "change": "explicit to DEFAULT candidate only for fully materialized supported declarations; template and hybrid require established projection and explicit lossless handling"
+          },
+          {
+            "from": "/component_dependency_policy",
+            "to": "/components/*/dependency",
+            "change": "Reuse field contract; do not derive scope, global default distribution, per-edge ownership or fallback for an absent rule from parallel schema structure"
+          },
+          {
+            "from": "/ptsip/revision",
+            "to": "/ptsip/revision",
+            "change": "Source generation and target field lineage have different semantics and zero revision constraints; preserve provenance and require explicit lineage handling"
+          }
+        ],
+        "retained_decisions": [
+          "COMPONENT_DEPENDENCY_DEFAULT_AND_RELATION_ALLOCATION",
+          "TEMPLATE_HYBRID_AND_CUSTOM_FIELD_BINDINGS_IF_UNMAPPED",
+          "TARGET_LINEAGE_VALUE_AND_SPECIFICATION_BINDING",
+          "SEPARATE_APPROVAL_FOR_DIRECT_TRANSITION_REGISTRATION"
+        ]
       }
     }
   ],
@@ -14280,7 +14357,7 @@
       "decisions_0001": {
         "title": null,
         "status": null,
-        "decisions_date" : "2026-11-18",
+        "decisions_date": "2026-11-18",
         "authority": "USER_EXPLICIT_PLAN_LOCAL_NO_EXTERNAL_POLICY_DOCUMENT",
         "scope": "PTSIP_0_3_8_WU01_WU14",
         "state": "USER_OWNED_RULE_NOT_A_PTSIP_FIXED_PATTERN",
@@ -14529,10 +14606,10 @@
           "native_operation_decision_ref": "profile_rust_engine_assignment.native_operation_decision"
         }
       },
-      "decisions_0002":{
+      "decisions_0002": {
         "title": null,
         "status": null,
-        "decisions_date" : "2026-11-20",
+        "decisions_date": "2026-11-20",
         "authority": "USER_EXPLICIT_2026_11_20",
         "scope": "WU-04_B-02_SCHEMA_OWNERSHIP_AND_PATHS",
         "state": null,
@@ -14549,9 +14626,9 @@
         "task_engine_activation": false,
         "approval_does_not_depend_on_external_policy_documents": true
       },
-      "decisions_0003":{
+      "decisions_0003": {
         "title": null,
-        "decisions_date" : "2026-11-20",
+        "decisions_date": "2026-11-20",
         "authority": "USER_EXPLICIT_2026_11_20",
         "status": "FULL_SEPARATION_APPROVED;EXACT_PATHS_AND_BINDINGS_PENDING",
         "scope": "WU-04_CONFIG_PLAN_REGISTRATION_TOPOLOGY",
@@ -14583,9 +14660,9 @@
           "public_structure_schema_path": "src/ptsip/schemas/plan/public-structure-plan.schema.json"
         }
       },
-      "decisions_0004":{
+      "decisions_0004": {
         "scope": null,
-        "decisions_date" : "2026-11-20",
+        "decisions_date": "2026-11-20",
         "authority": "USER_EXPLICIT_2026_11_20",
         "title": "plan_contract_full_separation",
         "status": "FOUR_EXACT_TARGET_PATHS_APPROVED;FIELDS_AND_REGISTRY_BINDING_PENDING",
@@ -14612,9 +14689,9 @@
           "mutation_scope": "PLAN_ONLY;NO_SCHEMA_FILE_OR_CONFIG_JSON_MUTATION"
         }
       },
-      "decisions_0005":{
+      "decisions_0005": {
         "status": null,
-        "decisions_date" : "2026-11-21",
+        "decisions_date": "2026-11-21",
         "authority": "USER_EXPLICIT_2026_11_21",
         "scope": "RECORD_APPROVED_PATHS_AND_PROPOSED_POLICY_PREMISES;DO_NOT_SILENTLY_OVERRIDE_EXISTING_POLICY",
         "title": "plan_paths_and_field_premises",
@@ -14639,10 +14716,10 @@
           "plan_self_contained": true
         }
       },
-      "decisions_0006":{
+      "decisions_0006": {
         "scope": null,
         "status": null,
-        "decisions_date" : "2026-11-21",
+        "decisions_date": "2026-11-21",
         "authority": "USER_EXPLICIT_2026_11_21",
         "title": "plan_unit_work_unit_id_and_value_array",
         "decision": {
