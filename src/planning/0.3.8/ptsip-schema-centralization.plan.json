@@ -14219,6 +14219,63 @@
     "gate": "FINAL_SCHEMA_IDS_VERSIONS_REFS_PENDING"
   },
   "current_user_decisions": {
+    "common_field_responsibilities": {
+      "applies_to": "Director_Decision.decisions_[0-9]{4}",
+      "fields": {
+        "decisions_date": {
+          "owns": "DATE_OF_USER_DECISION",
+          "excludes": [
+            "DOCUMENT_MODIFICATION_DATE",
+            "IMPLEMENTATION_COMPLETION_DATE"
+          ]
+        },
+        "authority": {
+          "owns": "SOURCE_OF_DECISION_AUTHORITY",
+          "excludes": [
+            "APPROVAL_CONDITIONS",
+            "EXTERNAL_POLICY_REFERENCE_PROHIBITIONS"
+          ]
+        },
+        "title": {
+          "owns": "DECISION_SUBJECT",
+          "excludes": [
+            "APPROVAL_RESULT",
+            "IMPLEMENTATION_INSTRUCTIONS"
+          ]
+        },
+        "scope": {
+          "owns": "APPLICABLE_TARGET_OR_RESPONSIBILITY_DOMAIN",
+          "excludes": [
+            "PROHIBITIONS",
+            "UNRESOLVED_ITEMS"
+          ]
+        },
+        "status": {
+          "owns": "DECISION_RECORD_APPROVAL_HOLD_REJECTION_AT_RECORD_TIME",
+          "excludes": [
+            "INDIVIDUAL_FIELD_VALUE",
+            "IMPLEMENTATION_RESULT",
+            "CURRENT_EFFECTIVE_STATE_AFTER_LATER_DECISIONS"
+          ]
+        },
+        "decision": {
+          "owns": [
+            "SELECTED_OUTCOME",
+            "CONDITIONS",
+            "EXCEPTIONS",
+            "CONSTRAINTS",
+            "UNRESOLVED_ITEMS"
+          ],
+          "excludes": [
+            "DECISION_DATE",
+            "AUTHORITY_SOURCE",
+            "DECISION_SUBJECT",
+            "APPLICABLE_TARGET"
+          ]
+        }
+      },
+      "null_semantics": "NOT_RECORDED_DO_NOT_INFER"
+    },
     "Director_Decision": {
       "decisions_0001": {
         "title": null,
