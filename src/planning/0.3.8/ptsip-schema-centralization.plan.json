@@ -848,6 +848,12 @@
       "scope": "work_unit_item[].value[]",
       "state": "USER_APPROVED_FINAL_VALUE_NO_INNER_FIELDS",
       "note": "Official PTSIP schema shall use unconstrained array items and no named inner properties or required child fields. Canonical preview only value: []. Preserves consumer-owned separate custom contracts; not a decision about unit root required fields."
+    },
+    {
+      "id": "WU04-WORK-UNIT-ID-PATTERN-20261121",
+      "scope": "work_unit_item[].work_unit_id",
+      "state": "USER_APPROVED_EXACT_REGEX",
+      "note": "Accidental trailing escaped asterisk corrected. ^WU-[A-Z]{2}-[0-9]{3}$; exactly one scalar ID per Work Unit, same two-letter uppercase random prefix within Plan, three numeric suffix. No dynamic migrated plan-ID key or value[] inner requirements."
     }
   ],
   "target_registry": {
@@ -2662,18 +2668,19 @@
         "Plan Identity: stronger PTSIP-owned minimum identifying structure; Plan Unit: lighter official core, with user-specific fields and layout preserved. Exact required fields MUST be discussed separately before schema creation; examples in chat are not binding policy.",
         "User 2026-11-21 structural field direction: Plan_Identity.plan_id is non-semantic reference ID with user-written raw regex; Plan_Identity.revision is [PL.001, YYYYMMDD] for document revision/date (not contract revision). Plan root owns title,purpose,single contract_vision (embedded version/revision; spelling intentional),policy_refs[id, extra-pending]. No parallel contract_revision. No new document_version or mandatory applied_contract.id.",
         "Plan_lifecycle MUST carry existing seven-state status plus a required lifecycle last-change field (name/format undecided); Plan document revision last change date has separate meaning. Work_unit_item work_unit_id requires shared random two-letter uppercase code per same plan with three digit suffix; direct work_unit_item.task_id[] keys to user .ptsip/tasks; work_unit_item entries directly use dynamic migrated plan-id keys (e.g. plan-J3K4-L5M6-N7P8) mapping to user-owned data; no project_specific[] wrapper and no planid[] field.",
-        "Record three user-supplied regex patterns losslessly; remaining work_unit_id escaped asterisk requires trailing literal '*', and the dynamic migrated plan-id KEY pattern from prior planid field is invalid (quantifier repetition). Do not autocorrect regex, infer mandatory trailing star, or gate other non-affected WU work. Offer exact corrected candidates for user choice.",
+        "Historical invalid/ambiguous ID regex notes are superseded for active Plan Identity and Work Unit IDs by explicit user approvals. work_unit_id exact ^WU-[A-Z]{2}-[0-9]{3}$; retired dynamic migrated Plan-key regex is not an active contract or decision gate.",
         "User 2026-11-21 correction supersedes duplicate contract_revision: Public Structure emits only contract_vision: 'ver.1.00/Rev.0001'; contract SHA remains independent unresolved provenance role. Plan Identity plan_id uses raw user regex ^plan-[a-zA-Z0-9]{4}\\*$ (not plan-sn), but do not enforce a trailing literal '*' until clarified.",
         "Task IDs in work_unit_item.task_id are hyphen-delimited and serialized as YAML flow sequence, e.g. task_id: [\"TASK-20261121-QWERTY-A1B2C3D4\"]. Task index full ID presentation must align; do not alter filename or low-level ID authority without mapping verification.",
         "Replace work_unit_item.project_specific[].planid[] with dynamic project Plan-id mapping keys directly on each work_unit_item entry, e.g. \"plan-J3K4-L5M6-N7P8\": {checks: [...]}. Each dynamic key identifies an atomic migrated Plan, and the value holds user-authored arbitrary content. This is NOT a nested project_specific[] array, and the raw prior planid regex is invalid pending fix.",
         "User 2026-11-21 explicitly confirms Plan_Identity.plan_id regex ^plan-[a-zA-Z0-9]{4}$; accept exactly four ASCII alphanumeric after plan-, no trailing '*'. This approves only Plan Identity ID regex, not work_unit_id or migrated dynamic Plan keys.",
         "User correction on 2026-11-21 supersedes all earlier WU04 dynamic migrated Plan-ID-key and project_specific[] requirements. Each work_unit_item contains one work_unit_id (not one global Work Unit for entire Plan), and optional value[] array for arbitrary user-authored content; PTSIP core imposes ZERO required child fields or mandatory project Plan IDs inside value.",
-        "Preserve existing work_unit_item.title, RA_id and direct task_id[] responsibilities; no new required fields added for user-owned value[], and no pattern validation on abandoned migrated Plan-ID mapping key. Distinct work_unit_id regex ambiguity remains pending user decision.",
-        "User 2026-11-21 explicitly approves value[] as a free-form optional array; PTSIP MUST NOT define any named item subfield, require any nested item field, or show example subfield names as though canonical. Canonical YAML preview contains only value: [] with no inner keys. Consumer-defined extension contract maintains separate authority to validate its own data."
+        "Preserve existing work_unit_item.title, RA_id and direct task_id[] responsibilities; no new required fields added for user-owned value[], and no pattern validation on abandoned migrated Plan-ID mapping key. The work_unit_id exact ^WU-[A-Z]{2}-[0-9]{3}$ pattern is approved; no pending asterisk ambiguity.",
+        "User 2026-11-21 explicitly approves value[] as a free-form optional array; PTSIP MUST NOT define any named item subfield, require any nested item field, or show example subfield names as though canonical. Canonical YAML preview contains only value: [] with no inner keys. Consumer-defined extension contract maintains separate authority to validate its own data.",
+        "User 2026-11-21 explicitly corrected the accidental trailing escaped asterisk in work_unit_item.work_unit_id and approved ^WU-[A-Z]{2}-[0-9]{3}$. Apply only to new Work Unit schema validation, preserving one scalar ID per unit and a shared two-letter uppercase prefix per Plan. Do not rewrite historical migration-plan WU-01..WU-14 IDs."
       ],
-      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; responsibility-grouped config registration C APPROVED (Identity/Lifecycle/Unit), full separation of Identity/Lifecycle/Unit APPROVED; all four exact schema target paths APPROVED; Plan Identity/Unit required field responsibilities, public-root-to-contract references and config registration identities pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency. User 2026-11-21 field ownership/layout direction and required field roles recorded in wu04_user_field_design_2026_11_21. Three exact regex strings not activated pending parse/intended-star decision, last-change/contract-revision double encoding and policy reference tuple second component remain unresolved. Effective policy is not overwritten. User correction replaces duplicate contract_revision with only contract_vision; plan-sn becomes plan-; Task IDs use hyphens and YAML flow arrays; migrated Plan IDs are direct dynamic work-unit YAML mapping keys with user-controlled values. Exact regex parse/star meaning and dynamic-key schema validation pending; no runtime contract registration changed. Plan Identity plan_id regex resolved explicitly as ^plan-[a-zA-Z0-9]{4}$; only other ID patterns still need clarification. Latest user WU-04 correction removes mandatory Plan-ID dynamic key and project_specific[], replacing with optional value[] user-controlled records (zero required child fields), one work_unit_id per unit. Earlier dynamic-key requirements retained as superseded history only. User explicitly approves value[] no inner named fields and no required item fields in PTSIP default Plan Unit contract; preview uses value: [] only.",
+      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; responsibility-grouped config registration C APPROVED (Identity/Lifecycle/Unit), full separation of Identity/Lifecycle/Unit APPROVED; all four exact schema target paths APPROVED; Plan Identity/Unit required field responsibilities, public-root-to-contract references and config registration identities pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency. User 2026-11-21 field ownership/layout direction and required field roles recorded in wu04_user_field_design_2026_11_21. Historical regex ambiguity is now resolved for active Plan Identity and Work Unit IDs, last-change/contract-revision double encoding and policy reference tuple second component remain unresolved. Effective policy is not overwritten. User correction replaces duplicate contract_revision with only contract_vision; plan-sn becomes plan-; Task IDs use hyphens and YAML flow arrays; migrated Plan IDs are direct dynamic work-unit YAML mapping keys with user-controlled values. Plan Identity and Work Unit ID regexes are approved; retired dynamic Plan-key schema validation is not applicable; no runtime contract registration changed. Plan Identity plan_id regex resolved explicitly as ^plan-[a-zA-Z0-9]{4}$; Work Unit ID is explicitly approved and retired Plan dynamic-key patterns are not applicable. Latest user WU-04 correction removes mandatory Plan-ID dynamic key and project_specific[], replacing with optional value[] user-controlled records (zero required child fields), one work_unit_id per unit. Earlier dynamic-key requirements retained as superseded history only. User explicitly approves value[] no inner named fields and no required item fields in PTSIP default Plan Unit contract; preview uses value: [] only.",
       "execution_status": "FOUR_PLAN_SCHEMAS_PATH_CONNECTED_DIAGNOSTICS_ONLY",
-      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; all four exact path scaffolds now exist, while config.json plan registration remains unimplemented. User selected hierarchical responsibility-grouped registry C with Plan Identity, Plan Lifecycle, and Plan Unit. Exact schema ownership grouping, registry keys, $id/version, and config.json mutation remain pending. User 2026-11-20 explicitly approved full independent separation for Plan Identity/Lifecycle/Unit under C. Lifecycle and public Plan root target paths stay approved; Identity/Unit file paths, mapping keys and contents remain pending; config.json unchanged. User 2026-11-21 approved new Identity and Unit exact paths. YAML-only new/rewrite, unilateral policy-source references, contract provenance/customization, CLI extensibility, Policy-like revision compression and graded required-field strength are recorded as discussion premises, not materialized schema constraints. Path casing conflict with existing customer contracts directory remains unresolved. User 2026-11-21 proposed a root/Identity/Lifecycle/Unit field ownership layout and stronger Identity, lighter extensible Unit/project_specific planid refs; plan-only record contains precise user raw regex and explicit unresolved syntax gate. Four draft JSON Schema scaffolds created; required fields, regex, $id, $ref and registration are not finalized. Latest user correction overrides preview-driven duplicate fields, slash task ID syntax and project_specific array: use single contract_vision, plan- reference IDs, hyphenated task_id flow sequences and dynamic plan-id YAML keys. Previously created scaffold schemas remain draft and are not silently treated as updated official contracts. User approved Plan_Identity.plan_id exact ^plan-[a-zA-Z0-9]{4}$; draft Identity schema may enforce this pattern without altering other unresolved field contracts. User superseded migrated Plan ID-key branch: one work_unit_id per unit, optional value[] with no PTSIP-imposed item fields. Draft unit schema aligned; dependent registration and unapproved regex remain open. User approved optional freeform value[] with zero PTSIP named child fields or required inner fields, and requested no inner-field preview examples. Draft unit schema items:{} still maintains this. The current public-document diagnostic draft declares only contract_vision for the combined contract version/revision; the separate contract_revision property declaration was removed.",
+      "current_result": "Plan seven-state lifecycle and observable In_progress semantics recorded. Task index.yaml is user-defined short category ToC; Task item fields and four user-editable status labels approved. Task object serialization, completion authorship, linked-task activation and precise references/timestamps remain Task-index-slice open questions only; no new Task Engine activated. User 2026-11-20 approved exact two Plan schema creation paths. Both are non-engine product Plan contracts; all four exact path scaffolds now exist, while config.json plan registration remains unimplemented. User selected hierarchical responsibility-grouped registry C with Plan Identity, Plan Lifecycle, and Plan Unit. Exact schema ownership grouping, registry keys, $id/version, and config.json mutation remain pending. User 2026-11-20 explicitly approved full independent separation for Plan Identity/Lifecycle/Unit under C. Lifecycle and public Plan root target paths stay approved; Identity/Unit file paths, mapping keys and contents remain pending; config.json unchanged. User 2026-11-21 approved new Identity and Unit exact paths. YAML-only new/rewrite, unilateral policy-source references, contract provenance/customization, CLI extensibility, Policy-like revision compression and graded required-field strength are recorded as discussion premises, not materialized schema constraints. Path casing conflict with existing customer contracts directory remains unresolved. User 2026-11-21 proposed a root/Identity/Lifecycle/Unit field ownership layout and stronger Identity, lighter extensible Unit/project_specific planid refs; plan-only record contains precise user raw regex and explicit unresolved syntax gate. Four draft JSON Schema scaffolds created; required fields, regex, $id, $ref and registration are not finalized. Latest user correction overrides preview-driven duplicate fields, slash task ID syntax and project_specific array: use single contract_vision, plan- reference IDs, hyphenated task_id flow sequences and dynamic plan-id YAML keys. Previously created scaffold schemas remain draft and are not silently treated as updated official contracts. User approved Plan_Identity.plan_id exact ^plan-[a-zA-Z0-9]{4}$; draft Identity schema may enforce this pattern without altering other unresolved field contracts. User superseded migrated Plan ID-key branch: one work_unit_id per unit, optional value[] with no PTSIP-imposed item fields. Draft unit schema aligned; dependent registration and other open fields remain; Work Unit ID regex approved. User approved optional freeform value[] with zero PTSIP named child fields or required inner fields, and requested no inner-field preview examples. Draft unit schema items:{} still maintains this. The current public-document diagnostic draft declares only contract_vision for the combined contract version/revision; the separate contract_revision property declaration was removed. User 2026-11-21 approved ^WU-[A-Z]{2}-[0-9]{3}$; draft Plan Unit schema now checks this exact regex without changing value[] or activation.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract",
       "schema_path_scaffold_execution": {
         "state": "FOUR_SEPARATE_PATH_SCAFFOLDS_CREATED_NOT_REGISTERED",
@@ -14330,15 +14337,15 @@
       "work_unit_item": {
         "work_unit_id": {
           "required": true,
-          "format": "^WU-[A-Z]{2}-[0-9]{3}\\*$",
+          "format": "^WU-[A-Z]{2}-[0-9]{3}$",
           "role": "OPAQUE_NON_SEMANTIC_REFERENCE_ID",
           "prefix_two_uppercase_letters": "RANDOMLY_GENERATED_SHARED_BY_ALL_UNITS_WITHIN_SAME_PLAN",
           "suffix_digits": 3,
-          "regex_status": "UNRESOLVED_TRAILING_LITERAL_ASTERISK",
+          "regex_status": "USER_APPROVED_EXACT_PATTERN_NO_LITERAL_ASTERISK",
           "not_to_rewrite_this_MIGRATION_PLAN_WU_01_14": true,
           "cardinality": "ONE_SCALAR_PER_WORK_UNIT_ITEM",
           "not_global_single_work_unit": true,
-          "exact_pattern_still_pending": true
+          "exact_pattern_still_pending": false
         },
         "title": {
           "historical": "IN_PRIOR_REVIEW_NOT_REJECTED_BY_CURRENT_REQUEST",
@@ -14393,12 +14400,14 @@
         "approval": "USER_EXPLICIT_2026_11_21"
       },
       "work_unit_item[].work_unit_id": {
-        "user_literal_pattern": "^WU-[A-Z]{2}-[0-9]{3}\\*$",
-        "validation": "SYNTACTICALLY_VALID_BUT_LITERAL_ASTERISK_AMBIGUOUS",
-        "observed_effect": "TRAILING_LITERAL_ASTERISK_REQUIRED",
+        "user_literal_pattern": "^WU-[A-Z]{2}-[0-9]{3}$",
+        "validation": "VALID_REGEX_APPROVED",
+        "observed_effect": "MATCHES_EXACTLY_WU_TWO_UPPERCASE_THREE_DIGITS_NO_TRAILING_ASTERISK",
         "candidate_if_unintentional_asterisk": "^WU-[A-Z]{2}-[0-9]{3}$",
-        "effective_regex": "USER_CLARIFICATION_REQUIRED_DO_NOT_ENFORCE",
-        "role_approved": true
+        "effective_regex": "^WU-[A-Z]{2}-[0-9]{3}$",
+        "role_approved": true,
+        "previous_user_literal_pattern": "^WU-[A-Z]{2}-[0-9]{3}\\*$",
+        "approval": "USER_EXPLICIT_2026_11_21"
       }
     },
     "previous_plan_decision_interaction": {
@@ -14423,7 +14432,6 @@
       "legacy_migration_plan_work_unit_handles_unchanged": true
     },
     "open_gates": [
-      "FIX_OR_EXPLICITLY_CONFIRM_REMAINING_WORK_UNIT_AND_DYNAMIC_PLAN_KEY_PATTERNS",
       "POLICY_REFS_SECOND_ITEM_CONTRACT_SHAPE",
       "LIFECYCLE_LAST_CHANGED_FIELD_NAME_FORMAT",
       "PLAN_IDENTITY_REVISION_COUNTER_AND_DATE_SERIALIZATION",
@@ -14479,12 +14487,22 @@
       "value_item_required_fields": [],
       "user_format_and_fields": "USER_OWNED_UNRESTRICTED",
       "no_atomic_plan_id_key_required": true,
-      "work_unit_id_regex": "STILL_UNRESOLVED_SEPARATE_GATE",
+      "work_unit_id_regex": "^WU-[A-Z]{2}-[0-9]{3}$",
       "scope": "PLAN_AND_DRAFT_UNIT_SCHEMA_ONLY",
       "value_item_named_fields": [],
       "default_preview": "value: []",
       "user_internal_fields_in_example": "OMITTED_TO_AVOID_FALSE_MANDATORY_FIELD_INFERENCE",
       "status": "EXPLICIT_USER_APPROVAL_FINAL_VALUE_BOUNDARY"
+    },
+    "work_unit_id_exact_pattern_approval_2026_11_21": {
+      "authority": "USER_EXPLICIT",
+      "scope": "work_unit_item[].work_unit_id",
+      "previous_regex": "^WU-[A-Z]{2}-[0-9]{3}\\*$",
+      "approved_regex": "^WU-[A-Z]{2}-[0-9]{3}$",
+      "maintain_single_scalar_id_per_item": true,
+      "maintain_plan_common_two_letter_prefix": true,
+      "no_retroactive_rewrite_of_legacy_wu_01_to_14": true,
+      "dynamic_migrated_plan_key_not_applicable": true
     }
   },
   "wu04_schema_scaffold_execution": {
@@ -14527,7 +14545,7 @@
     "project_specific_wrapper_required": false,
     "multiple_work_units_in_plan_allowed": true,
     "schema_target": "src/ptsip/schemas/plan/plan-unit.schema.json",
-    "regex_work_unit_id": "UNRESOLVED_UNCHANGED",
+    "regex_work_unit_id": "^WU-[A-Z]{2}-[0-9]{3}$",
     "effective_boundary": "PLAN_UNIT_USER_EXTENSION_NON_PRESCRIPTIVE",
     "prior_dynamic_plan_key_record": "HISTORICAL_SUPERSEDED",
     "value_item_named_fields_official": [],
