@@ -3633,7 +3633,14 @@
         "wheel": "FAILED_STALE_PLANNING_ENTRY_MISMATCH_WITH_SIX_REGISTERED_NATIVE_ENGINES",
         "sdist": "PASS_TEN_SCHEMA_ASSETS_VERIFIED_RETIRED_PYTHON_SOURCES_ABSENT",
         "repair": "REMOVE_ONLY_STALE_PLANNING_ROW_FROM_CURRENT_PACKAGING_COMPOSITION;ALL_SIX_VERSIONS_MATCH_INDEX_AND_CARGO",
-        "followup": "VERIFY_WHEEL_AND_SDIST_ON_CLEAN_PACKAGING_FIX_COMMIT"
+        "followup": "VERIFY_WHEEL_AND_SDIST_ON_CLEAN_PACKAGING_FIX_COMMIT",
+        "clean_packaging_retry": {
+          "sha": "e4d8bfe5fa9384227c705270ddab8dd3192eec26",
+          "inventory": "PASS_SIX_REGISTERED_ENGINES",
+          "wheel": "FAIL_EXISTING_SUPPORT_POLICY_DUPLICATE_MAPPING_KEY_policy_rule_id_R_ID_direction",
+          "sdist": "PASS_BUILD;GENERATED_NATIVE_TARGET_FILES_DETECTED_IN_TAR",
+          "next_manifest_correction": "MOVE_EXISTING_TARGET_PRUNES_AFTER_RECURSIVE_ENGINE_INCLUDES"
+        }
       },
       "github_actions": {
         "verified_source_sha": "56c94884048acaad743c90cc533094d97640fe24",
@@ -3647,6 +3654,12 @@
           "native_projection": "PASS",
           "registered_digest_job": "FAIL_MISSING_HISTORIC_DEVELOPER_APPROVAL",
           "publication_admission_compile": "FAIL_MISSING_PRIVATE_CONTROLLER_GO_SUM_ENTRY"
+        },
+        "packaging_retry": {
+          "sha": "e4d8bfe5fa9384227c705270ddab8dd3192eec26",
+          "policy_contract_guard": 44900629854,
+          "release_admission_contract_check": 44900629863,
+          "result": "SAME_BLOCKERS_AS_IMPLEMENTATION_COMMIT;NATIVE_VALIDATION_AND_PROJECTION_PASS"
         }
       },
       "native_rust": {
@@ -5255,7 +5268,7 @@
       },
       {
         "id": "FORMAL_DISTRIBUTION_ACCEPTANCE",
-        "evidence": "Exact clean source distribution built and packaged schemas verified at 56c94884. Wheel failed the old Planning inventory entry; product packaging inventory was reconciled to the six registered native engines and awaits clean re-verification. Installed package smoke remains open.",
+        "evidence": "Clean e4d8bfe5 build confirmed engine inventory alignment. Wheel then failed on existing Support Policy YAML with DUPLICATE_MAPPING_KEY: policy_rule_id_R_ID_direction. Source distribution builds; manifest exclusion of generated engine target files is applied as a packaging correction. Installed wheel smoke remains blocked pending a usable wheel.",
         "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_FORMAL_DISTRIBUTION_ACCEPTANCE_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
         "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
         "status_after_user_change": "OPEN_POST_DELETION_WORK"

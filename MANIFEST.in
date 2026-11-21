@@ -5,12 +5,6 @@ recursive-include src/ptsip/schemas/storage/profile *.schema.json
 include src/ptsip/specdata/project-profile-contracts.yaml
 
 recursive-include src/ptsip/engines *.json
-prune src/ptsip/engines/context/target
-prune src/ptsip/engines/storage/target
-prune src/ptsip/engines/validation/target
-prune src/ptsip/engines/discovery/target
-prune src/ptsip/engines/execution/target
-prune src/ptsip/engines/projection/target
 recursive-include .ptsip/contracts/compile-sealed-rbac *.schema.json
 recursive-include src/ptsip/specdata/compile-sealed-rbac *.schema.json
 include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
@@ -22,5 +16,11 @@ include src/ptsip/specdata/compile-sealed-rbac/candidate-index.json
 include .ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py
 include ptsip-build-source.json
 recursive-include src/ptsip/engines Cargo.toml Cargo.lock *.rs *.yaml
+prune src/ptsip/engines/context/target
+prune src/ptsip/engines/storage/target
+prune src/ptsip/engines/validation/target
+prune src/ptsip/engines/discovery/target
+prune src/ptsip/engines/execution/target
+prune src/ptsip/engines/projection/target
 recursive-include src/ptsip/common_contract *.go *.json go.mod go.sum
 recursive-include src/ptsip/compile_sealed_rbac *.json
