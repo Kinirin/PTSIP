@@ -38,7 +38,8 @@
     "validation-profile-path": "src/ptsip/engines/validation/src/schemas/profile-path.schema.json",
     "validation-profile-state": "src/ptsip/engines/validation/src/schemas/profile-state.schema.json",
     "projection-migration": "src/ptsip/engines/projection/src/schemas/migration.schema.json",
-    "validation-profile-identity-rewrite": "src/ptsip/engines/validation/src/schemas/profile-identity-rewrite.schema.json"
+    "validation-profile-identity-rewrite": "src/ptsip/engines/validation/src/schemas/profile-identity-rewrite.schema.json",
+    "projection-pp200-to-pp300": "src/ptsip/engines/projection/src/schemas/pp200-to-pp300.schema.json"
   },
   "transport_contract_ref": "src/ptsip/engines/contracts/stdio-transport.json",
   "official_engine_entries": [
@@ -179,7 +180,8 @@
         "projection.profile.metadata",
         "projection.migration.source",
         "projection.migration.coverage",
-        "projection.migration.compatibility"
+        "projection.migration.compatibility",
+        "projection.migration.pp200-to-pp300"
       ],
       "capability_id": "urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45",
       "previous_candidate_contract_ref": "src/ptsip/engines/projection/contracts/1.0.0.json"

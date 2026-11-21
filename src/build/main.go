@@ -50,8 +50,5 @@ func run(args []string, stdout, stderr io.Writer) (int, error) {
 	if err := encoder.Encode(report); err != nil {
 		return 1, err
 	}
-	if args[0] == "check" && len(report.WheelInputBlockers) != 0 {
-		return 1, nil
-	}
 	return 0, nil
 }

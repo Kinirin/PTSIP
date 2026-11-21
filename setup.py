@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from shutil import copy2, copytree, rmtree
 
 import yaml
@@ -13,26 +13,7 @@ from setuptools.command.build_py import build_py as _build_py
 
 ROOT = Path(__file__).resolve().parent
 CANONICAL_SUPPORT_POLICY = ROOT / "src" / "policy"
-CANONICAL_RBAC_SCHEMA_ROOT = ROOT / ".ptsip" / "contracts" / "compile-sealed-rbac"
-CANONICAL_RBAC_FIELDS = ROOT / "registry" / "compile-sealed-rbac-registry-fields.json"
 PP200_CANDIDATE_ASSET = "ptsip-profile-pp-2.00.candidate.schema.json"
-RBAC_SCHEMA_FILES = (
-    "responsibility.schema.json", "condition-atom.schema.json",
-    "permission-atom.schema.json", "binding.schema.json",
-    "sealed-contract.schema.json", "activation.schema.json",
-)
-# Draft validation input: independently packaged, never counted as an approved
-# sixth-schema contract or registered as an executable RBAC capability.
-RBAC_DRAFT_SCHEMA_FILES = (
-    "central-registry.draft.schema.json",
-    "responsibility.candidate.schema.json",
-    "condition-atom.candidate.schema.json",
-    "permission-atom.candidate.schema.json",
-    "binding.candidate.schema.json",
-    "sealed-contract.candidate.schema.json",
-    "activation.candidate.schema.json",
-)
-RBAC_CANDIDATE_INDEX = "candidate-index.json"
 
 
 def _load_yaml(path: Path) -> dict[str, object]:
@@ -157,44 +138,65 @@ def _project_profile_contracts(build_lib: Path) -> None:
 
 
 def _project_rbac_contract_assets(build_lib: Path) -> None:
-    """Package approved RBAC identities; incomplete schema scaffolds stay fail-closed."""
-    embedded_src = ROOT / "src" / "ptsip" / "specdata"
-    target = build_lib / "ptsip" / "specdata"
-    target.mkdir(parents=True, exist_ok=True)
-    packaged_fields = embedded_src / "compile-sealed-rbac-registry-fields.json"
-    if not CANONICAL_RBAC_FIELDS.is_file() or not packaged_fields.is_file():
-        raise RuntimeError("canonical and embedded RBAC field requirements are missing")
-    if CANONICAL_RBAC_FIELDS.read_bytes() != packaged_fields.read_bytes():
-        raise RuntimeError("canonical and embedded RBAC field requirements diverged")
-    copy2(CANONICAL_RBAC_FIELDS, target / packaged_fields.name)
+    """Stage the three product RBAC structure schemas selected by config.json."""
+    schema_root = ROOT / "src" / "ptsip" / "schemas"
+    config_bytes = (schema_root / "config.json").read_bytes()
+    registrations = json.loads(config_bytes).get("storage", {}).get("Responsibility-Authority")
+    if not isinstance(registrations, dict) or set(registrations) != {"RA_list", "RAC_list", "AEC_list"}:
+        raise RuntimeError("central RBAC catalog must register RA_list, RAC_list and AEC_list")
+
+    assets: dict[PurePosixPath, bytes] = {}
+    identities: set[str] = set()
+    rbac_root = PurePosixPath("storage/rbac")
+    for key, entry in registrations.items():
+        if not isinstance(entry, dict):
+            raise RuntimeError(f"invalid central RBAC schema registration: {key}")
+        identity, relative, version = (entry.get(name) for name in ("$id", "path", "version"))
+        if not all(isinstance(value, str) and value for value in (identity, relative, version)):
+            raise RuntimeError(f"incomplete central RBAC schema registration: {key}")
+        path = PurePosixPath(relative)
+        if (
+            path.parent != rbac_root or path.as_posix() != relative
+            or not path.name.endswith(".schema.json") or "\\" in relative or ":" in relative
+            or path in assets or identity in identities
+        ):
+            raise RuntimeError(f"invalid or repeated registered RBAC schema path or identity: {key}")
+        source = schema_root.joinpath(*path.parts)
+        if source.resolve() != schema_root.resolve().joinpath(*path.parts):
+            raise RuntimeError(f"registered RBAC schema is an alias: {key}")
+        data = source.read_bytes()
+        schema = json.loads(data)
+        if not isinstance(schema, dict) or schema.get("$id") != identity:
+            raise RuntimeError(f"central RBAC schema identity mismatch: {key}")
+        assets[path] = data
+        identities.add(identity)
+
+    package_root = build_lib / "ptsip"
+    stale = package_root / "specdata" / "compile-sealed-rbac"
+    if stale.resolve() != build_lib.resolve() / "ptsip" / "specdata" / stale.name or stale.is_symlink():
+        raise RuntimeError("retired RBAC build output is an alias")
+    if stale.exists():
+        rmtree(stale)
+
+    target = package_root / "schemas"
+    target.joinpath(*rbac_root.parts).mkdir(parents=True, exist_ok=True)
+    (target / "config.json").write_bytes(config_bytes)
+    for path, data in assets.items():
+        target.joinpath(*path.parts).write_bytes(data)
+
+
+def _project_profile_candidate(build_lib: Path) -> None:
     # This opt-in package asset retains its draft role after retirement of the
     # byte-identical root schemas/ copy. It is not a profile validation source.
-    candidate = embedded_src / PP200_CANDIDATE_ASSET
+    candidate = ROOT / "src" / "ptsip" / "specdata" / PP200_CANDIDATE_ASSET
     if not candidate.is_file():
         raise RuntimeError("pp.2.00 candidate profile schema is missing")
     comment = _load_yaml(candidate).get("$comment")
     if not isinstance(comment, str) or not comment.startswith("DRAFT_NON_NORMATIVE:"):
         raise RuntimeError("packaged pp.2.00 profile schema candidate must remain non-normative")
+    target = build_lib / "ptsip" / "specdata"
+    target.mkdir(parents=True, exist_ok=True)
     copy2(candidate, target / candidate.name)
-    index_source = CANONICAL_RBAC_SCHEMA_ROOT / RBAC_CANDIDATE_INDEX
-    index_embedded = embedded_src / "compile-sealed-rbac" / RBAC_CANDIDATE_INDEX
-    if not index_source.is_file() or not index_embedded.is_file():
-        raise RuntimeError("RBAC candidate index missing")
-    if index_source.read_bytes() != index_embedded.read_bytes():
-        raise RuntimeError("canonical/embedded RBAC candidate index mismatch")
-    index_dest = target / "compile-sealed-rbac" / RBAC_CANDIDATE_INDEX
-    index_dest.parent.mkdir(parents=True, exist_ok=True)
-    copy2(index_source, index_dest)
-    for name in (*RBAC_SCHEMA_FILES, *RBAC_DRAFT_SCHEMA_FILES):
-        source = CANONICAL_RBAC_SCHEMA_ROOT / name
-        embedded = embedded_src / "compile-sealed-rbac" / name
-        if not source.is_file() or not embedded.is_file():
-            raise RuntimeError(f"RBAC schema asset missing: {name}")
-        if source.read_bytes() != embedded.read_bytes():
-            raise RuntimeError(f"canonical/embedded RBAC schema mismatch: {name}")
-        destination = target / "compile-sealed-rbac" / name
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        copy2(source, destination)
 
 
 class build_py(_build_py):
@@ -214,6 +216,7 @@ class build_py(_build_py):
         _project_support_policy(build_lib)
         _project_profile_contracts(build_lib)
         _project_rbac_contract_assets(build_lib)
+        _project_profile_candidate(build_lib)
 
 
 setup(cmdclass={"build_py": build_py})

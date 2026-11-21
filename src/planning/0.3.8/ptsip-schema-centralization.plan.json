@@ -3234,12 +3234,12 @@
         {
           "id": "GO_BUILD_CUTOVER",
           "kind": "IMPLEMENTATION_AND_DISTRIBUTION_VERIFICATION",
-          "state": "GO_PRODUCT_SOURCE_ASSEMBLY_VERIFIED;PRODUCT_OWNED_WHEEL_INPUTS_FRONTEND_AND_INSTALLED_PARITY_OPEN"
+          "state": "RELEASE_VERIFICATION_OWNERSHIP_SEPARATED_AND_CANONICAL_RBAC_SELECTED;PRODUCT_WHEEL_FRONTEND_SUPPORT_POLICY_AND_INSTALLED_PARITY_OPEN"
         },
         {
           "id": "PP200_PP300_EXPLICIT_FIELD_MAP",
           "kind": "SUPPORTED_FIELD_SEMANTIC_MAPPING_AND_TESTING",
-          "state": "COMMON_FIELD_CONTRACTS_AND_STRUCTURAL_DELTAS_RECORDED;DEPENDENCY_ALLOCATION_LINEAGE_AND_EDGE_APPROVAL_OPEN"
+          "state": "OFFICIAL_BASE_EXPLICIT_AND_PINNED_TEMPLATE_HYBRID_DISTRIBUTION_VERIFIED;CUSTOM_LINEAGE_AND_DIRECT_ACTIVATION_OPEN"
         },
         {
           "id": "PROFILE_JSON_FIXTURE_PATHS_OR_ALTERNATIVE_EVIDENCE",
@@ -3617,6 +3617,61 @@
           "unresolved": "Bind admitted owner and actor to the exact operation, invocation, request and artifact through the existing native Execution authority contract.",
           "effect_and_rollback_acceptance": "OPEN;FINAL_PYTHON_IDENTITY_REWRITE_SOURCE_RETAINED_PENDING_EQUIVALENT_VERIFIED_HANDOFF"
         }
+      },
+      "distribution_ownership_update_2026_11_22": {
+        "authority": "USER_EXPLICIT_2026_11_22",
+        "product_builder": "src/build/",
+        "verifier": "src/tests/build/",
+        "release_contract": {
+          "path": ".ptsip/contracts/release/build-verification.json",
+          "authority": "USER_DIRECT_SEPARATE_AUTHORIZATION_OUTSIDE_THIS_PLAN",
+          "routing": ".ptsip/contracts/release/index.json#build_verification_ref"
+        },
+        "rbac_source": {
+          "catalog": "src/ptsip/schemas/config.json",
+          "selector": "storage.Responsibility-Authority",
+          "keys": [
+            "RA_list",
+            "RAC_list",
+            "AEC_list"
+          ],
+          "root": "src/ptsip/schemas/storage/rbac/"
+        },
+        "rbac_developer_candidate": {
+          "path": ".ptsip/contracts/compile-sealed-rbac/candidate-index.json",
+          "package_dependency": "REMOVED",
+          "distribution": "EXCLUDED"
+        },
+        "phase_evidence": [
+          "PREBUILD_INPUT_CHECK",
+          "SDIST_AND_WHEEL_CONTENT_AND_SOURCE_BINDING",
+          "TEMPORARY_INSTALLATION_SMOKE_IF_WHEEL_EXISTS"
+        ],
+        "verification": "GO_BUILD_VERIFIER_TESTS_VERIFY_IMMUTABLE_SOURCE_BINDING_SDIST_WHEEL_RECORD_RBAC_CANDIDATE_EXCLUSION_AND_MISSING_ROUTER_DIAGNOSTICS",
+        "legacy_wheel_remaining": "SUPPORT_POLICY_SOURCE_DUPLICATE_MAPPING_KEY;EXISTING_PRIVATE_BACKEND_PTSIP_GO_WHEEL_PACKAGING_STEP_MISSING"
+      },
+      "pp200_pp300_field_mapping_2026_11_22": {
+        "authority": "USER_EXPLICIT_SEMANTIC_PRESERVATION_AND_FIELD_DISTRIBUTION_DECISION",
+        "operation": "projection.migration.pp200-to-pp300",
+        "contract": "src/ptsip/engines/projection/src/schemas/pp200-to-pp300.schema.json",
+        "capability_contract_version": "2.5.0",
+        "admitted_input": "EXPLICIT_OR_EXACT_PINNED_TEMPLATE_AND_HYBRID_PP200_SOURCE_WITH_FULLY_MAPPED_REGISTERED_FIELDS_AND_OFFICIAL_BASE_REVISION",
+        "fields": {
+          "canonical_version": "pp.2.00 -> pp.3.00",
+          "responsibility_map.mode": "Convert explicit or a source materialized from the exact registered historical template to DEFAULT. Preserve whole-row stable-ID replacements, typed removals and original declaration order.",
+          "component_dependency_policy.default": "Copy to each component dependency.default; absence means allow with no exception for the component-specific policy only.",
+          "component_dependency_policy.allow_deny": "Place each declared pair once under the component identified by from. Preserve the pair IDs, list and effective default. Reject missing endpoints, duplicate or conflicting declarations.",
+          "other_fields": "Preserve supported component and associated artifact fields, relationship identities, specification and rule_profile references, lifecycle metadata and independent mandatory policies."
+        },
+        "absent_policy_evidence": {
+          "source_revision": "e782886ea8a751f69d37645203dae2756e305c47",
+          "technical_source": "src/ptsip/validation/rules.py::evaluate_component_dependency_policy",
+          "observation": "The legacy evaluator reports no component dependency violation when the whole policy is absent. Optional absence is valid in the immutable pp.2.00 schema."
+        },
+        "evidence": "RFC_6901_SOURCE_AND_TARGET_PATHS_WITH_BEFORE_AFTER_FOR_CHANGED_OR_DISTRIBUTED_FIELDS",
+        "unmapped": "SOURCE_PATH_AND_REASON_FOR_UNKNOWN_TEMPLATE_BINDINGS_CUSTOM_FIELDS_UNRESOLVED_LINEAGE_AND_AMBIGUOUS_OR_INVALID_SOURCE",
+        "release_transition_registration": "SEPARATE_EXISTING_DIRECT_TRANSITION_AND_MUTATION_GATE_OPEN",
+        "verification": "GO_NATIVE_ROUTER_TESTS_VERIFY_ACTUAL_RECORDED_PP200_BLOBS_IN_EXPLICIT_TEMPLATE_AND_HYBRID_MODES_AND_INDEPENDENT_SCHEMA_VALIDATION"
       }
     }
   ],

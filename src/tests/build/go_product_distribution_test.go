@@ -1,4 +1,4 @@
-package contracts_test
+package main
 
 import (
 	"archive/tar"
@@ -16,7 +16,7 @@ import (
 )
 
 func TestGoProductDistribution(t *testing.T) {
-	root := repositoryRoot(t)
+	root := buildRepositoryRoot(t)
 	workspace := t.TempDir()
 	binary := filepath.Join(workspace, "ptsip-build")
 	if runtime.GOOS == "windows" {
@@ -135,6 +135,15 @@ func TestGoProductDistribution(t *testing.T) {
 			t.Fatalf("invalid source produced output: %v", err)
 		}
 	})
+}
+
+func buildRepositoryRoot(t *testing.T) string {
+	t.Helper()
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("cannot locate the build verification module")
+	}
+	return filepath.Clean(filepath.Join(filepath.Dir(filename), "..", "..", ".."))
 }
 
 func distributionGit(t *testing.T, root string, args ...string) string {

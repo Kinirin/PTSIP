@@ -2,14 +2,13 @@ prune src/tests
 recursive-include src/policy *.yaml *.json
 include src/ptsip/schemas/config.json
 recursive-include src/ptsip/schemas/storage/profile *.schema.json
+recursive-include src/ptsip/schemas/storage/rbac *.schema.json
 
 recursive-include src/ptsip/engines *.json
-recursive-include .ptsip/contracts/compile-sealed-rbac *.schema.json
-recursive-include src/ptsip/specdata/compile-sealed-rbac *.schema.json
+prune .ptsip/contracts/compile-sealed-rbac
+prune src/ptsip/specdata/compile-sealed-rbac
 include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
 include src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json
-include .ptsip/contracts/compile-sealed-rbac/candidate-index.json
-include src/ptsip/specdata/compile-sealed-rbac/candidate-index.json
 
 # Only the current developer release module owns b5-derived PEP517 source builds.
 include .ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py

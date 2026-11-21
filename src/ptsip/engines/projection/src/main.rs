@@ -6,9 +6,11 @@ mod rendering;
 mod cli;
 mod source;
 mod profile;
+mod profile_conversion;
 mod migration;
 fn evaluate(operation: &str, input: &Value) -> Result<Value, String> {
     match operation {
+        "projection.migration.pp200-to-pp300" => return profile_conversion::project(input),
         "projection.migration.source" => return migration::project_source(input),
         "projection.migration.coverage" => return migration::project_coverage(input),
         "projection.migration.compatibility" => return migration::project_compatibility(input),
@@ -64,6 +66,7 @@ fn dispatch(request: &Value) -> Result<Value, String> {
     jsonschema::validate(&definition["typed_input"], &request["input"])
         .map_err(|e| e.to_string())?;
     let algorithm = match operation {
+        "projection.migration.pp200-to-pp300" => profile_conversion::ALGORITHM,
         "projection.migration.source" => migration::SOURCE,
         "projection.migration.coverage" => migration::COVERAGE,
         "projection.migration.compatibility" => migration::COMPATIBILITY,

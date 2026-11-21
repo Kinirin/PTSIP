@@ -59,38 +59,41 @@ fn indexed(values: &[Value]) -> Result<BTreeMap<&str, &Value>, String> {
     Ok(index)
 }
 
-fn merged<'a>(
+pub(crate) fn merge_template_rows<'a>(
     base: &'a [Value],
     replacements: &'a [Value],
     removals: &[Value],
 ) -> Result<Vec<(&'a Value, &'static str)>, String> {
-    let base = indexed(base)?;
+    let base_ids = indexed(base)?;
     let overrides = indexed(replacements)?;
     let mut removed = BTreeSet::new();
     for id in strings(removals) {
-        if !removed.insert(id) || !base.contains_key(id) || overrides.contains_key(id) {
+        if !removed.insert(id) || !base_ids.contains_key(id) || overrides.contains_key(id) {
             return Err(format!("Hybrid removal must be unique, name a template declaration, and have no matching override: {id:?}"));
         }
     }
-    Ok(base
-        .into_iter()
-        .filter(|(id, _)| !removed.contains(id) && !overrides.contains_key(id))
-        .map(|(_, row)| (row, "TEMPLATE_EFFECTIVE"))
-        .chain(
-            overrides
-                .values()
-                .copied()
-                .map(|row| (row, "PROJECT_OVERRIDE")),
-        )
-        .collect())
+    let mut result = Vec::new();
+    for row in base {
+        let id = text(row, "id")?;
+        if !removed.contains(id) {
+            result.push(match overrides.get(id) {
+                Some(replacement) => (*replacement, "PROJECT_OVERRIDE"),
+                None => (row, "TEMPLATE_EFFECTIVE"),
+            });
+        }
+    }
+    for replacement in replacements {
+        if !base_ids.contains_key(text(replacement, "id")?) {
+            result.push((replacement, "PROJECT_OVERRIDE"));
+        }
+    }
+    Ok(result)
 }
 
-fn materialize_template(
-    input: &Value,
-    semantics: &Value,
-    coverages: &mut Vec<Value>,
-    relations: &mut Vec<Value>,
-) -> Result<(), String> {
+pub(crate) fn resolve_historical_template(
+    template_id: &Value,
+    template_revision: &Value,
+) -> Result<Value, String> {
     let catalog = parse(TEMPLATE_CATALOG)?;
     let selected = catalog
         .as_array()
@@ -106,16 +109,22 @@ fn materialize_template(
                 "Embedded template revision is invalid: {id}@{revision}"
             ));
         }
-        if semantics["template_id"] == id && semantics["template_revision"] == revision {
-            template = Some(&row["map"]);
+        if *template_id == id && *template_revision == revision {
+            template = Some(row["map"].clone());
         }
     }
-    let template = template.ok_or_else(|| {
-        format!(
-            "No admitted template matches {}@{}",
-            semantics["template_id"], semantics["template_revision"]
-        )
-    })?;
+    template
+        .ok_or_else(|| format!("No admitted template matches {template_id}@{template_revision}"))
+}
+
+fn materialize_template(
+    input: &Value,
+    semantics: &Value,
+    coverages: &mut Vec<Value>,
+    relations: &mut Vec<Value>,
+) -> Result<(), String> {
+    let template =
+        resolve_historical_template(&semantics["template_id"], &semantics["template_revision"])?;
     let hybrid = semantics["responsibility_map_mode"] == "hybrid";
     for (key, removal_key, kind) in [
         ("components", "remove_component_ids", COMPONENT),
@@ -132,7 +141,7 @@ fn materialize_template(
         } else {
             &[]
         };
-        for (row, origin) in merged(rows(template, key), replacements, removals)? {
+        for (row, origin) in merge_template_rows(rows(&template, key), replacements, removals)? {
             if key == "relationships" {
                 relations.push(json!([row["from"], row["to"], row["type"]]));
             } else {

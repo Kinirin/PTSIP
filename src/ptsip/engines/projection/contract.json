@@ -1,6 +1,6 @@
 {
   "contract_id": "urn:uuid:6a4077b3-184f-4975-bb6b-425c02584d45",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "engine_id": "urn:uuid:befe7a8f-786c-4851-babe-8a154a2324d0",
   "semantic_owner": "PROJECTION",
   "authority_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
@@ -80,7 +80,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.4.0",
+        "contract_version": "2.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -214,7 +214,7 @@
         "conformance_owner": "SFP-ASSURE-0001_NOT_THIS_ENGINE"
       },
       "compatibility": {
-        "contract_version": "2.4.0",
+        "contract_version": "2.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_CUTOVER"
       },
       "machine_semantics": {
@@ -465,7 +465,7 @@
         "output_schema_ref": "src/ptsip/engines/projection/src/schemas/profile.schema.json#/$defs/metadata_output"
       },
       "compatibility": {
-        "contract_version": "2.4.0",
+        "contract_version": "2.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -870,7 +870,7 @@
         "output_schema_ref": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/source_output"
       },
       "compatibility": {
-        "contract_version": "2.4.0",
+        "contract_version": "2.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1307,7 +1307,7 @@
         "output_schema_ref": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/coverage_output"
       },
       "compatibility": {
-        "contract_version": "2.4.0",
+        "contract_version": "2.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
@@ -1665,11 +1665,185 @@
         "output_schema_ref": "src/ptsip/engines/projection/src/schemas/migration.schema.json#/$defs/compatibility_output"
       },
       "compatibility": {
-        "contract_version": "2.4.0",
+        "contract_version": "2.5.0",
         "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
       },
       "machine_semantics": {
         "algorithm": "PROJECT_TARGET_COMPATIBILITY_BY_OWNER_AND_PATH",
+        "normative_authority_from_runtime_result": false
+      }
+    },
+    {
+      "operation_id": "projection.migration.pp200-to-pp300",
+      "typed_input": {
+        "type": "object",
+        "properties": {
+          "package_root": {
+            "type": "string",
+            "minLength": 1
+          },
+          "profile": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "package_root",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "typed_output": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "PROJECTED",
+              "UNMAPPED"
+            ]
+          },
+          "target_profile": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source_path": {
+                  "type": "string",
+                  "pattern": "^/"
+                },
+                "target_path": {
+                  "type": "string",
+                  "pattern": "^/"
+                },
+                "before": {},
+                "after": {}
+              },
+              "required": [
+                "source_path",
+                "target_path",
+                "before",
+                "after"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "unmapped": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source_path": {
+                  "type": "string",
+                  "pattern": "^(/|$)"
+                },
+                "code": {
+                  "enum": [
+                    "SOURCE_STRUCTURE_INVALID",
+                    "UNSUPPORTED_SOURCE_FIELD",
+                    "RESPONSIBILITY_MAP_UNMAPPED",
+                    "LINEAGE_UNMAPPED",
+                    "DEPENDENCY_DEFAULT_UNMAPPED",
+                    "REFERENCE_UNRESOLVED",
+                    "IDENTITY_AMBIGUOUS",
+                    "DEPENDENCY_RELATION_DUPLICATE",
+                    "DEPENDENCY_RELATION_CONFLICT",
+                    "TARGET_STRUCTURE_INVALID"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "source_path",
+                "code",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "status",
+          "target_profile",
+          "changes",
+          "unmapped"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "status": {
+              "const": "PROJECTED"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "target_profile": {
+              "type": "object"
+            },
+            "changes": {
+              "minItems": 1
+            },
+            "unmapped": {
+              "maxItems": 0
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "target_profile": {
+              "type": "null"
+            },
+            "changes": {
+              "maxItems": 0
+            },
+            "unmapped": {
+              "minItems": 1
+            }
+          }
+        }
+      },
+      "preconditions": [
+        "EXACT_CURRENT_ENGINE_CAPABILITY_CONTRACT_VERSION",
+        "SCHEMA_VALID_INPUT",
+        "EXPLICIT_CALLER_SELECTED_PACKAGE_ROOT",
+        "REGISTERED_PROFILE_SCHEMA_IDENTITY_AND_SHA256_VERIFICATION"
+      ],
+      "postconditions": [
+        "SCHEMA_VALID_OUTPUT",
+        "NO_PROJECT_MUTATION",
+        "NO_NEW_NORMATIVE_AUTHORITY_OR_PERMISSION"
+      ],
+      "side_effects": [],
+      "declared_permission_requirements": [],
+      "failure_semantics": {
+        "unknown_operation": "UNSUPPORTED_OPERATION",
+        "invalid_input": "INPUT_CONTRACT_INVALID",
+        "missing_or_ambiguous_source": "FAIL_CLOSED"
+      },
+      "verification_evidence": {
+        "required": "NATIVE_RUST_AND_GO_INSTALLED_ROUTER_CONFORMANCE",
+        "input_schema_ref": {
+          "id": "urn:ptsip:engine:projection:pp200-to-pp300:v1",
+          "version": "1.0.0",
+          "path": "src/ptsip/engines/projection/src/schemas/pp200-to-pp300.schema.json#/$defs/input",
+          "sha256": "371a0b5259559c61521ec67a087f3fb24ab417e0baeea19648a9d7200646d04f"
+        },
+        "output_schema_ref": "src/ptsip/engines/projection/src/schemas/pp200-to-pp300.schema.json#/$defs/output"
+      },
+      "compatibility": {
+        "contract_version": "2.5.0",
+        "legacy_public_api": "UNCHANGED_NO_IMPLICIT_EQUIVALENCE"
+      },
+      "machine_semantics": {
+        "algorithm": "PROJECT_PROFILE_PP200_TO_PP300_SEMANTIC_FIELDS",
         "normative_authority_from_runtime_result": false
       }
     }

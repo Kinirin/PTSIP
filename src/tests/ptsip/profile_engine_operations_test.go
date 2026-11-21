@@ -285,6 +285,7 @@ func TestProfileOperationRegistrationAndSourceClosure(t *testing.T) {
 		"projection.migration.source":         "PROJECTION",
 		"projection.migration.coverage":       "PROJECTION",
 		"projection.migration.compatibility":  "PROJECTION",
+		"projection.migration.pp200-to-pp300": "PROJECTION",
 		"validation.profile.identity-rewrite": "VALIDATION",
 		"context.repository.snapshot":         "CONTEXT",
 		"discovery.repository.inspect":        "DISCOVERY",

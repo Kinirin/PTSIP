@@ -23,19 +23,13 @@ const (
 	engineRelations = engineRoot + "validation/profile-transitions.json"
 )
 
-type wheelInputBlocker struct {
-	Path   string `json:"path"`
-	Reason string `json:"reason"`
-}
-
 type buildReport struct {
-	SourceRevision     string              `json:"source_revision"`
-	ProductFiles       int                 `json:"product_files"`
-	EngineKinds        []string            `json:"engine_kinds"`
-	ProfileVersions    []string            `json:"profile_versions"`
-	ActiveProfile      string              `json:"active_profile"`
-	WheelInputBlockers []wheelInputBlocker `json:"wheel_input_blockers"`
-	SourceArchive      string              `json:"product_source_archive,omitempty"`
+	SourceRevision  string   `json:"source_revision"`
+	ProductFiles    int      `json:"product_files"`
+	EngineKinds     []string `json:"engine_kinds"`
+	ProfileVersions []string `json:"profile_versions"`
+	ActiveProfile   string   `json:"active_profile"`
+	SourceArchive   string   `json:"product_source_archive,omitempty"`
 }
 
 type fileReference struct {
@@ -95,12 +89,11 @@ func inspect(source productSource) (buildReport, error) {
 		return buildReport{}, err
 	}
 	return buildReport{
-		SourceRevision:     source.Revision,
-		ProductFiles:       len(source.Files),
-		EngineKinds:        engines,
-		ProfileVersions:    profiles,
-		ActiveProfile:      active,
-		WheelInputBlockers: checkWheelInputs(source),
+		SourceRevision:  source.Revision,
+		ProductFiles:    len(source.Files),
+		EngineKinds:     engines,
+		ProfileVersions: profiles,
+		ActiveProfile:   active,
 	}, nil
 }
 
@@ -216,31 +209,4 @@ func inspectProfiles(source productSource) ([]string, string, error) {
 	}
 	slices.Sort(versions)
 	return versions, active, nil
-}
-
-func checkWheelInputs(source productSource) []wheelInputBlocker {
-	blockers := make([]wheelInputBlocker, 0)
-	// The currently configured frontend references .ptsip; inspect only the
-	// public build-system declaration, without importing its backend.
-	metadata := source.Files["pyproject.toml"].Data
-	if len(metadata) == 0 {
-		blockers = append(blockers, wheelInputBlocker{"pyproject.toml", "product distribution frontend is missing"})
-	} else if _, section, found := strings.Cut(string(metadata), "[build-system]"); found {
-		section, _, _ = strings.Cut(section, "\n[")
-		for _, line := range strings.Split(section, "\n") {
-			if strings.HasPrefix(strings.TrimSpace(line), "backend-path") && strings.Contains(line, ".ptsip/") {
-				blockers = append(blockers, wheelInputBlocker{"pyproject.toml", "active wheel frontend is outside the product-owned source archive"})
-				break
-			}
-		}
-	}
-	for _, expected := range []wheelInputBlocker{
-		{productRoot + "support/policy/index.yaml", "packaged Support Policy projection required by the existing distribution is absent"},
-		{productRoot + "specdata/compile-sealed-rbac/candidate-index.json", "packaged RBAC candidate index required by the existing distribution is absent"},
-	} {
-		if _, ok := source.Files[expected.Path]; !ok {
-			blockers = append(blockers, expected)
-		}
-	}
-	return blockers
 }

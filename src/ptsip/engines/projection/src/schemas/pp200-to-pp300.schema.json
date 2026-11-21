@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:engine:projection:pp200-to-pp300:v1",
+  "title": "Projection-owned pp.2.00 to pp.3.00 field mapping",
+  "$defs": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "package_root": {"type": "string", "minLength": 1},
+        "profile": {"type": "object"}
+      },
+      "required": ["package_root", "profile"],
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "status": {"enum": ["PROJECTED", "UNMAPPED"]},
+        "target_profile": {"type": ["object", "null"]},
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_path": {"type": "string", "pattern": "^/"},
+              "target_path": {"type": "string", "pattern": "^/"},
+              "before": {},
+              "after": {}
+            },
+            "required": ["source_path", "target_path", "before", "after"],
+            "additionalProperties": false
+          }
+        },
+        "unmapped": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_path": {"type": "string", "pattern": "^(/|$)"},
+              "code": {
+                "enum": [
+                  "SOURCE_STRUCTURE_INVALID",
+                  "UNSUPPORTED_SOURCE_FIELD",
+                  "RESPONSIBILITY_MAP_UNMAPPED",
+                  "LINEAGE_UNMAPPED",
+                  "DEPENDENCY_DEFAULT_UNMAPPED",
+                  "REFERENCE_UNRESOLVED",
+                  "IDENTITY_AMBIGUOUS",
+                  "DEPENDENCY_RELATION_DUPLICATE",
+                  "DEPENDENCY_RELATION_CONFLICT",
+                  "TARGET_STRUCTURE_INVALID"
+                ]
+              },
+              "reason": {"type": "string", "minLength": 1}
+            },
+            "required": ["source_path", "code", "reason"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["status", "target_profile", "changes", "unmapped"],
+      "additionalProperties": false,
+      "if": {"properties": {"status": {"const": "PROJECTED"}}},
+      "then": {
+        "properties": {
+          "target_profile": {"type": "object"},
+          "changes": {"minItems": 1},
+          "unmapped": {"maxItems": 0}
+        }
+      },
+      "else": {
+        "properties": {
+          "target_profile": {"type": "null"},
+          "changes": {"maxItems": 0},
+          "unmapped": {"minItems": 1}
+        }
+      }
+    }
+  }
+}
