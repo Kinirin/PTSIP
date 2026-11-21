@@ -11,6 +11,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
@@ -30,17 +31,23 @@ type Entry struct {
 	Semantics map[string]string `json:"semantics"`
 }
 
+type Diagnostic struct {
+    Field string `json:"field"`
+    Resource string `json:"resource"`
+}
 type catalog struct {
-	Format    string  `json:"format"`
-	Revision  string  `json:"revision"`
-	Contracts []Entry `json:"contracts"`
+    Format string `json:"format"`
+    Revision string `json:"revision"`
+    Contracts []Entry `json:"contracts"`
+    Diagnostics []Diagnostic `json:"diagnostics,omitempty"`
 }
 
 type Registry struct {
-	root     string
-	entries  map[string]Entry
-	Revision string
-	Digest   string
+    root string
+    entries map[string]Entry
+    diagnostics map[string]Diagnostic
+    Revision string
+    Digest string
 }
 
 func Open(root, expectedDigest string) (*Registry, error) {
@@ -70,7 +77,7 @@ func Open(root, expectedDigest string) (*Registry, error) {
 	if data.Format != "ptsip-common-contract-registry/v1" || data.Revision == "" || len(data.Contracts) == 0 {
 		return nil, fmt.Errorf("INVALID_REGISTRY")
 	}
-	r := &Registry{root: root, entries: make(map[string]Entry), Revision: data.Revision, Digest: digest}
+	r := &Registry{root: root, entries: make(map[string]Entry), diagnostics: make(map[string]Diagnostic), Revision: data.Revision, Digest: digest}
 	resources := make(map[string]bool)
 	fields := make(map[string]bool)
 	for _, entry := range data.Contracts {
@@ -89,9 +96,39 @@ func Open(root, expectedDigest string) (*Registry, error) {
 		resources[resourceKey] = true
 		fields[fieldVersion] = true
 	}
+	seen := map[string]bool{}
+    for _, d := range data.Diagnostics {
+        if d.Field == "" || !(strings.HasPrefix(d.Resource,"schemas/plan/") || strings.HasPrefix(d.Resource,"schemas/policy/")) ||
+            !fs.ValidPath(d.Resource) || path.Clean(d.Resource) != d.Resource || !strings.HasSuffix(d.Resource,".schema.json") {
+            return nil, fmt.Errorf("INVALID_DIAGNOSTIC_RESOURCE: %s",d.Resource)
+        }
+        if _, exists := r.diagnostics[d.Field]; exists || seen[strings.ToLower(d.Resource)] {
+            return nil, fmt.Errorf("AMBIGUOUS_DIAGNOSTIC_RESOURCE: %s",d.Field)
+        }
+        r.diagnostics[d.Field] = d
+        seen[strings.ToLower(d.Resource)] = true
+    }
 	return r, nil
 }
-
+func (r *Registry) DiagnosticFields() []string {
+    result := make([]string,0,len(r.diagnostics))
+    for field := range r.diagnostics { result = append(result,field) }
+    sort.Strings(result)
+    return result
+}
+// InspectDiagnostic reads a declared package schema path but never grants
+// official schema registration or a versioned contract identity.
+func (r *Registry) InspectDiagnostic(field string) (Diagnostic,map[string]any,error) {
+    entry,ok := r.diagnostics[field]
+    if !ok {return Diagnostic{},nil,fmt.Errorf("UNREGISTERED_DIAGNOSTIC_FIELD: %s",field)}
+    raw,err := readResource(filepath.Dir(r.root),entry.Resource)
+    if err!=nil {return entry,nil,err}
+    value,err := jsondoc.Decode(raw)
+    if err!=nil {return entry,nil,fmt.Errorf("SCHEMA_JSON_INVALID: %w",err)}
+    doc,ok := value.(map[string]any)
+    if !ok {return entry,nil,fmt.Errorf("SCHEMA_ROOT_NOT_OBJECT: %s",entry.Resource)}
+    return entry,doc,nil
+}
 func (r *Registry) Schema(id string) (Entry, map[string]any, error) {
 	entry, ok := r.entries[id]
 	if !ok {

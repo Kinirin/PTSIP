@@ -6,7 +6,24 @@
       "path": "policy/public-structure-policy.schema.json"
     }
   },
-  "plan": {},
+  "plan": {
+    "document": {
+      "path": "plan/public-structure-plan.schema.json",
+      "diagnostic_only": true
+    },
+    "identity": {
+      "path": "plan/plan-identity.schema.json",
+      "diagnostic_only": true
+    },
+    "lifecycle": {
+      "path": "plan/plan-lifecycle.schema.json",
+      "diagnostic_only": true
+    },
+    "unit": {
+      "path": "plan/plan-unit.schema.json",
+      "diagnostic_only": true
+    }
+  },
   "storage": {
     "profile": {
       "ptsip.project-profile": {

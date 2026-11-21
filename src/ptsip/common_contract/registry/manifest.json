@@ -68,5 +68,43 @@
         "": "urn:ptsip:common:plan:identity:v1#meaning"
       }
     }
+  ],
+  "diagnostics": [
+    {
+      "field": "Plan_Document",
+      "resource": "schemas/plan/public-structure-plan.schema.json"
+    },
+    {
+      "field": "Plan_Identity",
+      "resource": "schemas/plan/plan-identity.schema.json"
+    },
+    {
+      "field": "Plan_Lifecycle",
+      "resource": "schemas/plan/plan-lifecycle.schema.json"
+    },
+    {
+      "field": "Plan_Unit",
+      "resource": "schemas/plan/plan-unit.schema.json"
+    },
+    {
+      "field": "Policy_Document",
+      "resource": "schemas/policy/public-structure-policy.schema.json"
+    },
+    {
+      "field": "Policy_Identity",
+      "resource": "schemas/policy/identity/PTSIP_policy_identity.schema.json"
+    },
+    {
+      "field": "Policy_Lifecycle",
+      "resource": "schemas/policy/lifecycle/PTSIP_policy_lifecycle.schema.json"
+    },
+    {
+      "field": "Policy_Rules",
+      "resource": "schemas/policy/rules/PTSIP_policy_rules.schema.json"
+    },
+    {
+      "field": "Policy_Content",
+      "resource": "schemas/policy/content/PTSIP_policy_content.schema.json"
+    }
   ]
 }

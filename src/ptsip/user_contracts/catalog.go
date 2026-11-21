@@ -58,6 +58,9 @@ func collectRegistrations(config map[string]any) (map[string]map[string]any, err
 			if !ok {
 				continue
 			}
+			if entry["diagnostic_only"] == true {
+                continue
+            }
 			if _, resource := entry["path"]; !resource {
 				if err := visit(entry); err != nil {
 					return err
@@ -232,6 +235,9 @@ func New(root string) (*Validator, error) {
 			if !ok {
 				return nil, fmt.Errorf("invalid schema registration: %s", key)
 			}
+			if entry["diagnostic_only"] == true {
+                continue
+            }
 			if _, duplicate := v.registered[key]; duplicate {
 				return nil, fmt.Errorf("duplicate schema registration: %s", key)
 			}

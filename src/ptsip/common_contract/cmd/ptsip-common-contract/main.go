@@ -6,7 +6,9 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"maps"
 	"os"
+	"strings"
 	"path/filepath"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/compatibility"
@@ -59,11 +61,73 @@ func dispatch(request record, root string) record {
 			return record{"status": "INVALID", "problem": err.Error()}
 		}
 		return contractOperation(request, root, op)
+	case "inspect-resource":
+        if err := checkInspectRequest(request); err!=nil { return record{"status":"INVALID","problem":err.Error()} }
+        return inspectResource(request,root)
 	case "restore-source", "project-support-source", "source-rule-units", "validate-unified":
 		return sourceOperation(request, op)
 	default:
 		return record{"status": "INVALID", "problem": "UNKNOWN_OPERATION"}
 	}
+}
+
+func checkInspectRequest(request record) error {
+    if source.String(request["field"])=="" {return fmt.Errorf("DIAGNOSTIC_FIELD_REQUIRED")}
+    for key := range request {
+        switch key {
+        case "format","operation","field","instance":
+        default: return fmt.Errorf("UNEXPECTED_REQUEST_FIELD")
+        }
+    }
+    return nil
+}
+func inspectResource(request record,root string) record {
+    result := record{"status":"UNRESOLVED","binding":"DIAGNOSTIC_ONLY",
+        "reference_resolution":record{"status":"UNRESOLVED"},"structure":record{"status":"NOT_REQUESTED"}}
+    if root=="" {
+        executable,err:=os.Executable()
+        if err==nil {executable,err=filepath.EvalSymlinks(executable)}
+        if err!=nil {result["reference_resolution"]=record{"status":"UNRESOLVED","problem":err.Error()};return result}
+        root=filepath.Dir(executable)
+    }
+    r,err:=registry.Open(root,registryDigest)
+    if err!=nil {result["reference_resolution"]=record{"status":"UNRESOLVED","problem":err.Error()};return result}
+    field:=source.String(request["field"])
+    entry,schema,err:=r.InspectDiagnostic(field)
+    if err!=nil {result["reference_resolution"]=record{"status":"UNRESOLVED","problem":err.Error()};return result}
+    result["field"]=field
+    result["resource"]=entry.Resource
+    result["schema"]=schema
+    result["reference_resolution"]=record{"status":"RESOLVED","resource":entry.Resource}
+    id:=source.String(schema["$id"])
+    if id=="" {
+        id="urn:ptsip:inspection:"+strings.ToLower(field)
+        schema=maps.Clone(schema)
+        schema["$id"]=id
+    }
+    docs:=map[string]map[string]any{id:schema}
+    // Allow $ref to other declared sources without making them official bindings.
+    for _,other:=range r.DiagnosticFields() {
+        if other==field {continue}
+        _,related,err:=r.InspectDiagnostic(other)
+        if err!=nil {continue}
+        if relatedID:=source.String(related["$id"]);relatedID!="" {docs[relatedID]=related}
+    }
+    compiled,err:=validator.Compile(resolver.Graph{Root:id,Docs:docs})
+    if err!=nil {
+        result["structure"]=record{"status":"UNRESOLVED","problem":"SCHEMA_COMPILE_ERROR: "+err.Error()}
+        return result
+    }
+    result["status"]="RESOLVED"
+    result["structure"]=record{"status":"VALID"}
+    if instance,present:=request["instance"];present {
+        result["status"]="VALID"
+        if err:=compiled.Validate(instance);err!=nil {
+            result["status"]="INVALID"
+            result["structure"]=record{"status":"INVALID","problem":err.Error()}
+        }
+    }
+    return result
 }
 
 func checkContractRequest(request record, op string) error {
