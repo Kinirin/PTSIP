@@ -9,17 +9,14 @@
   "inspected_source_revision": "5ef70ea563392997879c8dcee93f323ad4534694",
   "inspected_source_tree": "a5ba68dc8279e56c0fda3e3471bfd59d8239297e",
   "lifecycle": {
-    "state": "IMPLEMENTATION_STARTED_SCOPED",
-    "implementation_authorized": true,
+    "state": "RETIRED_LEGACY_FILE_OWNERSHIP_NON_EXECUTABLE",
+    "implementation_authorized": false,
     "policy_authority_created": false,
     "single_write_owner_per_exact_path": true,
     "unlisted_paths_may_be_modified": false,
     "work_unit_numbers_are_not_execution_order": true,
     "implementation_approval_scope": [
-      "WU-01",
       "WU-02",
-      "WU-03",
-      "WU-04",
       "WU-05",
       "WU-06",
       "WU-07",
@@ -34,7 +31,15 @@
     "approval_source": "USER_EXPLICIT_CHAT_2026-11-13",
     "engine_scope_authority": "EXPLICIT_NAMED_MIGRATION_SET_NOT_GLOBAL_COUNT",
     "implementation_execution_ref": "src/planning/0.3.8/contract-first-migration/implementation-runbook.plan.json",
-    "code_implementation_started_by_this_plan_commit": false
+    "code_implementation_started_by_this_plan_commit": false,
+    "active_ownership_authority": false,
+    "withdrawn_work_units": [
+      "WU-01",
+      "WU-03",
+      "WU-04"
+    ],
+    "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+    "retained_original_approvals_as_historical_evidence_only": true
   },
   "rules": {
     "physical_path_overrides_parent_directory": "ONLY_EXACTLY_REGISTERED_EXCEPTION_PATHS",
@@ -76,125 +81,176 @@
       "WU-11": 1,
       "WU-12": 6,
       "WU-13": 18
-    }
+    },
+    "historical_baseline_only": true,
+    "current_write_authority_verified": false,
+    "current_executable_ownership_claim": false,
+    "withdrawn_work_units": [
+      "WU-01",
+      "WU-03",
+      "WU-04"
+    ],
+    "original_counts_are_historical": true,
+    "prior_dependency_graph_acceptance": "INVALIDATED_FOR_CURRENT_VERSION_SOURCE_OWNERSHIP",
+    "dependency_graph_reassessment_signal": "SIX_CURRENT_MANIFESTS_AND_SIX_CURRENT_EXECUTION_BINDINGS_CHANGE",
+    "derived_snapshot_previous_plan_acceptance": "RETIRED_LEGACY_VERIFICATION_NOT_CURRENT_GATE"
   },
   "exact_files": [
     {
       "path": "src/ptsip/engines/context/Cargo.lock",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/context/Cargo.toml",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/context/contract.json",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/context/contracts/1.0.0.json",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/context/execution-bindings.json",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/context/manifest.json",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/context/runtime-contracts.json",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/context/src/loading.rs",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/context/src/main.rs",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/context/src/source.rs",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/context/transport.json",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/context/version.yaml",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/context/src/cli.rs",
-      "write_owner": "WU-04",
+      "write_owner": null,
       "source_state": "NOT_YET_CREATED",
       "planned_file_action": "CREATE_REQUIRED",
-      "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-04",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/storage/Cargo.lock",
@@ -342,273 +398,363 @@
     },
     {
       "path": "src/ptsip/engines/validation/Cargo.lock",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/validation/Cargo.toml",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/validation/contract.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_VERSIONED_CAPABILITY_CONTRACT",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/validation/contracts/1.0.0.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/contracts/2.0.0.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "HISTORICAL_ENGINE_CONTRACT_REVIEW_NO_IMPLICIT_COMPATIBILITY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/execution-bindings.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/validation/manifest.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/validation/runtime-contracts.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/cases.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/composition.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/handoff.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/main.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REFACTOR_ENTRYPOINT_TO_OWN_CLI",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/planning/PTSIP_Public_Policy_Structure.schema.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "EMPTY_EXISTING_ASSET_REVIEW_SEMANTICS_BEFORE_USE",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/planning/schemas/PTSIP_Public_Plan_Identity.schema.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "EMPTY_EXISTING_ASSET_REVIEW_SEMANTICS_BEFORE_USE",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/PTSIP_Public_Policy_Structure.schema.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_identity.schema.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_lifecycle.schema.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/policy/schemas/PTSIP_Public_policy_rules.schema.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/rbac.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/retrieval.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/schema.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/LICENSE",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/dynamicRef.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/ref.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_fixtures/source.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/schema_reference_tests.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/src/source.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REVIEW_AND_UPDATE_ENGINE_LOCAL_ONLY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/transport.json",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_IDENTITY_OR_TRANSPORT_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/validation/version.yaml",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "ENGINE_LOCAL_BUILD_AND_VERSION_BOUNDARY",
-      "assignment_status": "EXPLICIT_ENGINE_DIRECTORY_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "TREE_AND_ENGINE_CONTRACT_OR_SOURCE",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/validation/src/cli.rs",
-      "write_owner": "WU-03",
+      "write_owner": null,
       "source_state": "NOT_YET_CREATED",
       "planned_file_action": "CREATE_REQUIRED",
-      "assignment_status": "USER_EXPLICIT_SIX_INDEPENDENT_ENGINE_CLIS",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "USER_APPROVED_CLI_SOURCE_PATH",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-03",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/discovery/Cargo.lock",
@@ -1089,255 +1235,339 @@
     },
     {
       "path": "src/ptsip/engines/contracts/capability-owner-map.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "TRANSFER_PLANNING_SEMANTIC_OWNER_AND_UPDATE_NAMED_ENGINE_SET_MAP",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/context-projection-handoff.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/dependency-graph.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "RECONCILE_STALE_PLANNING_DEPENDENCY_REFERENCES",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/installation-plan.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "UPDATE_NAMED_ENGINE_SET_INSTALLATION_CONTRACT",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/native-runtime.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/attempt-result.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/capability-contract.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/consumer-handoff.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/contract-relation.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/core-manifest.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/dependency-graph.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/derived-state.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/effect-evidence.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/execution-binding.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/federated-source.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/impact-result.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/native-invocation-registry.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/registry-snapshot.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/registry-verification-input.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/runtime-authority-consumption.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/stop-ack.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/stop-request.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/stop-result.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/storage-mediation.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/schemas/transport-binding.schema.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/stdio-transport.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "CROSS_ENGINE_CONTRACT_REFERENCE_REVIEW",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/contracts/work-item-bindings.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "RECONCILE_LEGACY_DELIVERABLE_REFERENCES_AND_REGISTRY_MOVE",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
     },
     {
       "path": "src/ptsip/engines/index.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "REGISTER_NAMED_ENGINE_SET_OWNERS_AND_BIND_REGISTRY_PATHS",
-      "assignment_status": "EXPLICIT_ENGINE_CONTRACTS_OWNER",
+      "assignment_status": "WITHDRAWN_LEGACY_VERSION_OWNERSHIP",
       "assignment_evidence": "OFFICIAL_ENGINE_REGISTRY_CONTENT_VERIFIED",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-01",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/registries/official-static.json",
@@ -1928,41 +2158,54 @@
   "cross_unit_read_only_references": [
     {
       "path": "src/ptsip/engines/index.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "read_only_dependents": [
         "WU-02",
         "WU-08",
         "WU-10",
         "WU-12"
       ],
-      "notes": "Registry move requests changes; WU-01 applies them"
+      "notes": "Registry move requests changes; WU-01 applies them",
+      "historical_write_owner": "WU-01",
+      "legacy_reference_retired": true,
+      "current_write_authority_from_this_document": false,
+      "version_scope_successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json"
     },
     {
       "path": "src/ptsip/engines/contracts/work-item-bindings.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "read_only_dependents": [
         "WU-08"
       ],
-      "notes": "Existing relative links to old registry root and retired engine are in contract owner's file"
+      "notes": "Existing relative links to old registry root and retired engine are in contract owner's file",
+      "historical_write_owner": "WU-01",
+      "legacy_reference_retired": true,
+      "current_write_authority_from_this_document": false
     },
     {
       "path": "src/ptsip/engines/contracts/capability-owner-map.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "read_only_dependents": [
         "WU-02",
         "WU-03",
         "WU-04"
       ],
-      "notes": "Engine owners provide operation contracts; WU-01 records central owner reference"
+      "notes": "Engine owners provide operation contracts; WU-01 records central owner reference",
+      "historical_write_owner": "WU-01",
+      "legacy_reference_retired": true,
+      "current_write_authority_from_this_document": false
     },
     {
       "path": "src/ptsip/engines/contracts/installation-plan.json",
-      "write_owner": "WU-01",
+      "write_owner": null,
       "read_only_dependents": [
         "WU-10",
         "WU-12"
       ],
-      "notes": "Named migration engine set recorded by WU-01, distribution consumes verified contract"
+      "notes": "Named migration engine set recorded by WU-01, distribution consumes verified contract",
+      "historical_write_owner": "WU-01",
+      "legacy_reference_retired": true,
+      "current_write_authority_from_this_document": false
     },
     {
       "path": "src/ptsip/cli.py",
@@ -1994,10 +2237,12 @@
       "path": "developer/tests/engines/contracts_test.go",
       "write_owner": "WU-10",
       "read_only_dependents": [
-        "WU-01",
         "WU-08"
       ],
-      "notes": "Registry moves affect test expectations; WU-08 must request changes from WU-10"
+      "notes": "Registry moves affect test expectations; WU-08 must request changes from WU-10",
+      "withdrawn_dependents": [
+        "WU-01"
+      ]
     },
     {
       "path": ".github/test_modes.yaml",
@@ -2072,7 +2317,9 @@
         "src/ptsip/engines/contracts/vpms-scope-mapping.json",
         "src/ptsip/engines/contracts/vpms-caller-transition-plan.json"
       ],
-      "reason": "Referenced from existing work-item-bindings.json but absent at inspected HEAD; do not create by name inference"
+      "reason": "Referenced from existing work-item-bindings.json but absent at inspected HEAD; do not create by name inference",
+      "legacy_work_unit_withdrawn": true,
+      "current_approval_claim": false
     },
     {
       "id": "EMPTY_VALIDATION_PLANNING_ASSETS",
@@ -2081,7 +2328,9 @@
         "src/ptsip/engines/validation/src/planning/PTSIP_Public_Policy_Structure.schema.json",
         "src/ptsip/engines/validation/src/planning/schemas/PTSIP_Public_Plan_Identity.schema.json"
       ],
-      "reason": "Existing files are empty; filename does not establish their semantics"
+      "reason": "Existing files are empty; filename does not establish their semantics",
+      "legacy_work_unit_withdrawn": true,
+      "current_approval_claim": false
     },
     {
       "id": "POLICY_MIGRATION_EXCLUDED",
@@ -2109,7 +2358,9 @@
       "reason": "Live indexes and consumer references must point to existing intended engine sources. This is ordinary source correctness, not evidence of old Planning compatibility or completed legacy handoff.",
       "no_legacy_planning_compatibility_verification": true,
       "no_handoff_completion_verification": true,
-      "not_a_blocker_for_planning_source_removal": true
+      "not_a_blocker_for_planning_source_removal": true,
+      "legacy_work_unit_withdrawn": true,
+      "current_approval_claim": false
     },
     {
       "id": "NEW_CLI_POSITIVE_SMOKE_PENDING_NEW_IMPLEMENTATION",
@@ -2125,15 +2376,14 @@
         "TOP_LEVEL_GO",
         "OWNED_RUST_CLI_TRIO"
       ],
-      "no_old_planning_cli_check": true
+      "no_old_planning_cli_check": true,
+      "legacy_work_unit_withdrawn": true,
+      "current_approval_claim": false
     }
   ],
   "approval_boundary": {
     "approved_work_units": [
-      "WU-01",
       "WU-02",
-      "WU-03",
-      "WU-04",
       "WU-05",
       "WU-06",
       "WU-07",
@@ -2166,7 +2416,14 @@
     "global_engine_count_semantics": "NO_COUNT_BASED_SCOPE_OR_COMPLETION_TEST",
     "planning_retirement_target": "PLANNING",
     "planning_retirement_unit": "WU-13",
-    "planning_retirement_validation": "OLD_PLANNING_COMPATIBILITY_AND_HANDOFF_USER_HANDLED;NEW_CLI_POSITIVE_SMOKE_OWNED_BY_NEW_CLI_UNITS"
+    "planning_retirement_validation": "OLD_PLANNING_COMPATIBILITY_AND_HANDOFF_USER_HANDLED;NEW_CLI_POSITIVE_SMOKE_OWNED_BY_NEW_CLI_UNITS",
+    "current_write_authority_from_this_legacy_document": false,
+    "withdrawn_work_units": [
+      "WU-01",
+      "WU-03",
+      "WU-04"
+    ],
+    "historical_approval_only": true
   },
   "scope_notes": {
     "count_related_external_policy_text": "NOT_A_WORK_PLAN_INPUT;EXISTING_POLICIES_ARE_NOT_AMENDED_BY_THIS_PLAN",
@@ -2183,7 +2440,33 @@
     "cross_unit_reconciliation_required_when_semantics_change": true,
     "retired_engine_no_compatibility_or_handoff_proof": true,
     "planning_directory_absence_is_expected": true,
-    "planning_directory_cleanup_is_under": "WU-01"
+    "planning_directory_cleanup_is_under": "LEGACY_WU01_ASSIGNMENT_WITHDRAWN_NOT_REALLOCATED",
+    "current_legacy_file_ownership_authority": false,
+    "withdrawn_work_units": [
+      "WU-01",
+      "WU-03",
+      "WU-04"
+    ]
   },
-  "positive_cli_verification_ref": "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json#/work_units/positive_cli_verification"
+  "positive_cli_verification_ref": "src/planning/0.3.8/contract-first-migration/scope-baseline.plan.json#/work_units/positive_cli_verification",
+  "retirement": {
+    "status": "USER_WITHDRAWN_LEGACY_OWNERSHIP_RECORD",
+    "date": "2026-11-22",
+    "affected_work_units": [
+      "WU-01",
+      "WU-03",
+      "WU-04"
+    ],
+    "successor_version_change_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json",
+    "current_write_authority": "NONE_FROM_THIS_DOCUMENT",
+    "historical_rows_preserved": true,
+    "version_scoped_row_count": 13,
+    "non_version_work_withdrawn_without_new_owner": 58,
+    "other_work_unit_approvals": "UNCHANGED_OUTSIDE_THIS_DOCUMENT",
+    "dependency_graph_earlier_verification": "INVALIDATED",
+    "dependency_graph_change_notice": "SIX_MANIFESTS_AND_SIX_BINDINGS_ONLY_NO_GRAPH_PLAN_REWRITE",
+    "derived_snapshot_prior_acceptance": "INVALIDATED_AS_LEGACY_PLAN_EVIDENCE",
+    "existing_runtime_integrity_checks": "NOT_REMOVED_OR_OVERRIDDEN_BY_PLAN_RETIREMENT",
+    "implementation_authorized_by_this_retirement": false
+  }
 }
