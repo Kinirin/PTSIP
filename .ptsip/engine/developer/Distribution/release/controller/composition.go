@@ -251,15 +251,12 @@ func VerifyCompositionProjections(root string, c Composition, contract Contract)
 	if err := verifyProfileProjection(root, c.Profile); err != nil {
 		return err
 	}
-	constants, err := os.ReadFile(filepath.Join(root, "src/ptsip/constants.py"))
+	versions, err := ReadSourceVersions(root)
 	if err != nil {
 		return err
 	}
-	for name, expected := range map[string]string{"TOOL_VERSION": c.Tool, "SPEC_SOURCE": c.SpecSource, "SPEC_REVISION": c.SpecRevision} {
-		match := regexp.MustCompile(`(?m)^` + name + `\s*=\s*"([^"]+)"`).FindSubmatch(constants)
-		if len(match) != 2 || string(match[1]) != expected {
-			return fmt.Errorf("runtime identity projection differs: %s", name)
-		}
+	if c.Tool != versions.ToolVersion {
+		return fmt.Errorf("Tool projection differs from src/VERSION")
 	}
 	return nil
 }

@@ -5,20 +5,17 @@ from pathlib import Path
 
 import yaml
 
-from ptsip.model import Classification, ResponsibilityRelationshipType
 from ptsip.ptsip_specification.spec_identity import DirectConvergenceState
 from ptsip.ptsip_specification.spec_identity import profile_path_on_disk
 from ptsip.migration.analysis.direct.result import DirectConvergenceAnalysisIssue
-from ptsip.migration.analysis.target.semantics import TargetArchitectureState, TargetSemantics, target_state_from_mapping
+from ptsip.migration.analysis.target.semantics import (
+    TargetArchitectureState, TargetSemantics, registered_target_semantics, target_state_from_mapping,
+)
 
 def current_pp_target_semantics(state: DirectConvergenceState) -> TargetSemantics:
     """Project the WU-09 PP target identity into the existing WU-05 semantic vocabulary."""
 
-    return TargetSemantics(
-        draft_version=state.target_contract.canonical,
-        classifications=tuple(item.value for item in Classification),
-        relationship_types=tuple(item.value for item in ResponsibilityRelationshipType),
-    )
+    return registered_target_semantics(state.target_contract.canonical)
 
 def _project_existing_target_state(
     repository_root: Path,

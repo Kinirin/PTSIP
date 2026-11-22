@@ -40,14 +40,7 @@ Specification = "https://github.com/Kinirin/PTSIP"
 Issues = "https://github.com/Kinirin/PTSIP/issues"
 
 [project.scripts]
-ptsip = "ptsip.cli:main"
 ptsip-app = "ptsip.app.server:main"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["ptsip*", "vpms*", "agent_contracts*"]
-exclude = ["tests*"]
-namespaces = false
 
 [tool.setuptools.package-data]
 vpms = [
@@ -57,6 +50,8 @@ vpms = [
 ptsip = [
   "common_contract/registry/manifest.json",
   "common_contract/cmd/ptsip-common-contract/protocol.json",
+  "common_contract/user_contracts/*.go",
+  "common_contract/user_contracts/templates/*.json",
   "engines/index.json",
   "engines/*/*.json",
   "engines/contracts/*.json",
@@ -75,8 +70,6 @@ ptsip = [
   "CLI.go",
   "go.mod",
   "go.sum",
-  "user_contracts/*.go",
-  "user_contracts/templates/*.json",
   "agent_contracts/*.yaml",
   "agent_contracts/schemas/*.json",
   "agent_contracts/spec/*.yaml",

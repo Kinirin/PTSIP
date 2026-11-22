@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ptsip.model import Classification, ResponsibilityRelationshipType
-from ptsip.ptsip_specification.spec_identity import current_project_profile_version
+from ptsip.ptsip_specification.spec_identity import _native_resource, current_project_profile_version, profile_package_root
 
 @dataclass(frozen=True)
 class TargetSemantics:
@@ -87,10 +86,19 @@ def default_target_semantics() -> TargetSemantics:
     must not be derived from the Tool version or Specification family label.
     """
 
+    return registered_target_semantics(current_project_profile_version())
+
+
+def registered_target_semantics(version: str) -> TargetSemantics:
+    root = profile_package_root()
+    catalog = _native_resource(root, "schemas/config.json")
+    registration = catalog["storage"]["profile"]["ptsip.project-profile"]
+    schema = _native_resource(root / "schemas", registration["path"])
+    definitions = schema["$defs"]
     return TargetSemantics(
-        draft_version=current_project_profile_version(),
-        classifications=tuple(item.value for item in Classification),
-        relationship_types=tuple(item.value for item in ResponsibilityRelationshipType),
+        draft_version=version,
+        classifications=tuple(definitions["component"]["properties"]["classification"]["enum"]),
+        relationship_types=tuple(definitions["relationship"]["properties"]["type"]["enum"]),
     )
 
 def target_state_from_mapping(payload: dict[str, object]) -> TargetArchitectureState:

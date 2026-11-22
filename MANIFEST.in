@@ -1,4 +1,5 @@
 prune src/tests
+include src/VERSION
 recursive-include src/policy *.yaml *.json
 include src/ptsip/schemas/config.json
 recursive-include src/ptsip/schemas/storage/profile *.schema.json
@@ -11,7 +12,7 @@ include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
 include src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json
 
 # PEP 517 delegates wheel assembly to the product Go builder.
-include src/build/ptsip_pep517.py src/build/go.mod
+include src/build/ptsip_pep517.py src/build/go.mod src/build/go.sum
 recursive-include src/build *.go
 include ptsip-build-source.json
 recursive-include src/ptsip/engines Cargo.toml Cargo.lock *.rs *.yaml

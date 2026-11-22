@@ -180,6 +180,7 @@ func TestBuildArtifactVerification(t *testing.T) {
 		"ptsip/common_contract/ptsip-common-contract": common,
 		scripts + "ptsip-engine-validation":           engine,
 		scripts + "ptsip-go":                          []byte("router fixture binary"),
+		scripts + "ptsip":                             []byte("router fixture binary"),
 		dist + ".dist-info/METADATA":                  []byte("Name: PTSIP\nVersion: 1.0.0\n"),
 		dist + ".dist-info/WHEEL":                     []byte("Wheel-Version: 1.0\n"),
 	}
@@ -210,6 +211,11 @@ func TestBuildArtifactVerification(t *testing.T) {
 		t.Fatalf("wheel with retired RBAC assets was accepted: %v", err)
 	}
 	delete(payload, "ptsip/compile_sealed_rbac/pp.3.00.contract.json")
+	payload["ptsip/cli.py"] = []byte("retired CLI")
+	if err := check(zipFixture(t, payload, record, "")); err == nil || !strings.Contains(err.Error(), "excluded wheel member") {
+		t.Fatalf("wheel with a retired Python module was accepted: %v", err)
+	}
+	delete(payload, "ptsip/cli.py")
 	if err := check(zipFixture(t, payload, record, scripts+"ptsip-engine-validation")); err == nil {
 		t.Fatal("wheel with tampered engine bytes passed RECORD verification")
 	}

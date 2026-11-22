@@ -7,7 +7,7 @@ from typing import Iterable
 
 import yaml
 
-from ..model import DependencyPhase, EvidenceProvenance
+from ..evidence.contract import DependencyPhase, EvidenceProvenance
 from ..repository.profile_path import normalize_profile_path, profile_path_on_disk
 from ..repository.profile_transition import (
     ProfileGenerationIdentity,

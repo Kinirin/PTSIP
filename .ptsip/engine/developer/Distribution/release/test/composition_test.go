@@ -41,6 +41,11 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 	if err := release.VerifyCompositionProjections(root, c, contract); err != nil {
 		t.Fatal(err)
 	}
+	wrongTool := c
+	wrongTool.Tool = "T.99.0.0"
+	if err := release.VerifyCompositionProjections(root, wrongTool, contract); err == nil || !strings.Contains(err.Error(), "Tool projection differs from src/VERSION") {
+		t.Fatalf("Tool projection from a different source version was accepted: %v", err)
+	}
 	c.Engines["context"] = "99.0.0"
 	if err := release.VerifyCompositionProjections(root, c, contract); err == nil {
 		t.Fatal("stale distributed engine projection admitted")

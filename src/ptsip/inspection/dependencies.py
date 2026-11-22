@@ -12,7 +12,7 @@ from pathlib import Path
 
 import yaml
 
-from ..model import (
+from ..evidence.contract import (
     DependencyEdge,
     DependencyPhase,
     EdgeType,
@@ -20,8 +20,7 @@ from ..model import (
     EvidenceProvenance,
     ResolutionStatus,
 )
-from ..repository.snapshot import repository_files
-from ..dependency_cache import EvidenceCache
+from ..ptsip_specification.spec_identity import repository_files
 from .python_resolution import PythonResolver, dynamic_targets
 
 _REQUIREMENT_NAME_RE = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)")
@@ -454,18 +453,11 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
     adapters: set[str] = set()
     declared_python_dependencies, declaration_issues = _declared_python_dependencies(root)
     issues.extend(declaration_issues)
-    cache = EvidenceCache(root, paths)
     python_resolver = PythonResolver(root, paths)
     for rel in paths:
         suffix = Path(rel).suffix.lower()
         if suffix == ".py":
-            def compute():
-                found, found_issues = _python_edges(root, rel, declared_python_dependencies, python_resolver)
-                return {"edges": [edge.as_dict() for edge in found],
-                        "issues": [issue.as_dict() for issue in found_issues]}
-            cached = cache.get("python-edges", rel, compute, _valid_cached_python_scan)
-            found = [_cached_edge(item) for item in cached["edges"]]
-            found_issues = [DependencyScanIssue(**item) for item in cached["issues"]]
+            found, found_issues = _python_edges(root, rel, declared_python_dependencies, python_resolver)
             adapters.add("python")
         elif suffix == ".csproj":
             found, found_issues = _csproj_edges(root, rel)
@@ -478,25 +470,4 @@ def scan_dependency_edges(root: str | Path) -> DependencyScan:
         edges.extend(found)
         issues.extend(found_issues)
     edges.sort(key=lambda item: (item.source, item.line or 0, item.target, item.evidence_id))
-    return DependencyScan(tuple(edges), tuple(issues), tuple(sorted(adapters)), dict(cache.stats))
-
-
-def _cached_edge(item):
-    return DependencyEdge(**{**item, "edge_type": EdgeType(item["edge_type"]),
-                            "phase": DependencyPhase(item["phase"]),
-                            "resolution": ResolutionStatus(item["resolution"]),
-                            "target_scope": EvidenceNodeScope(item["target_scope"]),
-                            "provenance": EvidenceProvenance(item["provenance"])})
-
-
-def _valid_cached_python_scan(value):
-    try:
-        if not isinstance(value["edges"], list) or not isinstance(value["issues"], list):
-            return False
-        for item in value["edges"]:
-            _cached_edge(item)
-        for item in value["issues"]:
-            DependencyScanIssue(**item)
-        return True
-    except (ValueError, KeyError, TypeError):
-        return False
+    return DependencyScan(tuple(edges), tuple(issues), tuple(sorted(adapters)))

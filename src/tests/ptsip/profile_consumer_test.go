@@ -80,6 +80,11 @@ components:
 `)
 	writeRepositoryFixture(t, root, "src/example.txt", "covered source")
 	script := `import json, os, pathlib, sys
+from importlib.machinery import PathFinder
+from importlib.util import module_from_spec
+package = PathFinder.find_spec("ptsip", [sys.argv[2]])
+assert package is not None and package.origin is None, "expected the checkout's namespace package"
+sys.modules["ptsip"] = module_from_spec(package)
 from ptsip.evidence.contract import EvidenceEvaluationContext, NormalizedEvidenceSet, SnapshotBinding, SourceGenerationBinding
 from ptsip.ptsip_specification.spec_identity import (ProfileNativeError, current_spec_identity,
     capture_snapshot, discover_direct_profile_convergence, discover_profile_transition, native_profile_operation)
@@ -134,7 +139,7 @@ print(json.dumps({"identity":identity,"semantics":semantics,"transition":transit
 `
 	ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, profileConsumerPython(t), "-c", script, root)
+	cmd := exec.CommandContext(ctx, profileConsumerPython(t), "-c", script, root, filepath.Dir(productRoot(t)))
 	cmd.Env = append(os.Environ(),
 		"PYTHONPATH="+filepath.Dir(productRoot(t)), "PYTHONNOUSERSITE=1", "PYTHONDONTWRITEBYTECODE=1",
 		"PTSIP_GO_CLI="+installed.cli, "PTSIP_ENGINE_SCRIPTS="+installed.scripts,

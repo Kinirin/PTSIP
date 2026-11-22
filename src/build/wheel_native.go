@@ -14,10 +14,12 @@ import (
 	"strings"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
+	"github.com/pelletier/go-toml/v2"
 )
 
 var macOSArm64Tag = regexp.MustCompile("^macosx_[0-9]+_[0-9]+_arm64$")
 var engineKindPattern = regexp.MustCompile("^[a-z]+$")
+var toolVersionPattern = regexp.MustCompile(`^T\.[0-9]+\.[0-9]+\.[0-9]+(?:\.[A-Za-z0-9]+)*$`)
 
 type wheelHost struct {
 	tag, platform, target, extension string
@@ -125,16 +127,32 @@ func (b nativeWheelBuilder) addGo(files wheelContents, distribution string) erro
 	if err != nil {
 		return err
 	}
-	router := "ptsip-go" + b.host.extension
-	command = filepath.Join(b.stage, router)
-	if err := b.goBinary("src/ptsip", command, "."); err != nil {
+	versionSource, err := os.ReadFile(filepath.Join(b.root, "src", "VERSION"))
+	if err != nil {
+		return err
+	}
+	if !bytes.Equal(files["ptsip/VERSION"].data, versionSource) {
+		return fmt.Errorf("staged VERSION differs from the source")
+	}
+	var versions struct {
+		Tool string `toml:"tool_version"`
+	}
+	if err := toml.Unmarshal(versionSource, &versions); err != nil || !toolVersionPattern.MatchString(versions.Tool) {
+		return fmt.Errorf("invalid Tool version in src/VERSION")
+	}
+	command = filepath.Join(b.stage, "ptsip"+b.host.extension)
+	if err := b.goBinary("src/ptsip", command, ".", "-ldflags", "-X main.toolVersion="+versions.Tool); err != nil {
 		return fmt.Errorf("build PTSIP Go router: %w", err)
 	}
 	binary, err = os.ReadFile(command)
 	if err != nil {
 		return err
 	}
-	return files.add(distribution+".data/scripts/"+router, binary, true)
+	scripts := distribution + ".data/scripts/"
+	if err := files.add(scripts+"ptsip"+b.host.extension, binary, true); err != nil {
+		return err
+	}
+	return files.add(scripts+"ptsip-go"+b.host.extension, binary, true)
 }
 
 type engineOrigin struct {

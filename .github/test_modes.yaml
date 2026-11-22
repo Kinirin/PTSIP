@@ -84,8 +84,6 @@ modes:
     execution:
       go:
         - src/ptsip/common_contract
-      pytest:
-        - src/tests/ptsip/contracts/test_unified_policy.py
       wheel_smoke: src/tests/ptsip/contracts/wheel_smoke.py
   - id: ptsip-evidence
     component_ref: ptsip-evidence-verification
@@ -136,9 +134,8 @@ modes:
     component_ref: ptsip-contract-verification
     execution:
       go:
-        - src/tests/ptsip/contracts
+        - src/ptsip/common_contract
       pytest:
-        - src/tests/ptsip/contracts
         - src/tests/ptsip/agent_contracts/test_contract_plane.py
         - src/tests/ptsip/agent_contracts/test_operation_loading.py
         - src/tests/ptsip/governance/test_contracts.py
@@ -148,8 +145,7 @@ modes:
       go:
         - .ptsip/engine/developer/policy/verification
         - .ptsip/engine/developer/policy/applicability
-      pytest:
-        - src/tests/ptsip/contracts/test_unified_policy.py
+        - src/ptsip/common_contract
   - id: repository-architecture
     component_ref: repository-architecture-verification
     execution:

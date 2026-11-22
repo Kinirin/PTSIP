@@ -37,9 +37,8 @@ func VerifyPackageJoin(root string, s release.Selection, input, platform string)
 	}
 	check := `import importlib.metadata as metadata, sys
 import hashlib, json, pathlib, sysconfig
-from ptsip.constants import TOOL_VERSION
-if metadata.version('PTSIP') != sys.argv[1] or TOOL_VERSION != sys.argv[2]:
- raise RuntimeError('Package and Tool versions are not independently installed')
+if metadata.version('PTSIP') != sys.argv[1]:
+ raise RuntimeError('Installed Package version differs')
 dist = metadata.distribution('PTSIP')
 package = pathlib.Path(dist.locate_file('ptsip'))
 index = json.loads((package / 'engines' / 'index.json').read_text(encoding='utf-8'))
@@ -69,14 +68,17 @@ for item in engines:
   pass
  else:
   raise RuntimeError('independent engine pip package still required')
-print('pip installed the PTSIP Package and Tool without separate engine distributions')
+print('pip installed the PTSIP Package without separate engine distributions')
 `
 	c, err := release.ReadComposition(root)
 	if err != nil {
 		return receipt, err
 	}
-	if err := command(root, nil, python, "-c", check, c.PackagePyPI, c.Tool); err != nil {
+	if err := command(root, nil, python, "-c", check, c.PackagePyPI); err != nil {
 		return receipt, fmt.Errorf("complete pip Package verification failed: %w", err)
+	}
+	if err := release.VerifyInstalledTool(filepath.Dir(python), c.Tool); err != nil {
+		return receipt, err
 	}
 	// Native binaries must match the exact original component snapshot, not
 	// merely be present inside the current Python environment.

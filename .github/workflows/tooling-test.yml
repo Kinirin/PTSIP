@@ -38,17 +38,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install verification tools
-        run: python -m pip install --disable-pip-version-check 'build>=1.2,<2' 'pytest>=8,<10' 'PyYAML>=6,<7' 'jsonschema>=4,<5'
+        run: python -m pip install --disable-pip-version-check 'build>=1.2,<2' 'PyYAML>=6,<7' 'jsonschema>=4,<5'
         shell: bash
       - name: Execute registered common contract checks
         shell: bash
-        env:
-          PYTHONPATH: src
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/common-contract-evidence"
           python - <<'PY'
-          import os, subprocess, sys
+          import os, subprocess
           from pathlib import Path
           import yaml
 
@@ -60,7 +58,6 @@ jobs:
               with (evidence / 'go-test.jsonl').open('ab') as report:
                   subprocess.run(['go', '-C', module, 'test', './...', '-count=1', '-json'], stdout=report, check=True)
               subprocess.run(['go', '-C', module, 'vet', './...'], check=True)
-          subprocess.run([sys.executable, '-m', 'pytest', '-q', *execution['pytest']], check=True)
           PY
       - name: Rebuild from sdist and verify isolated installed wheel
         shell: bash
@@ -122,6 +119,7 @@ jobs:
           PTSIP_TEST_PACKAGE_VERSION: '0.3.8b5'
         run: |
           set -euo pipefail
+          go -C src/ptsip/common_contract test ./cmd/ptsip-common-contract -run '^TestUnifiedPolicySource' -count=1
           go -C .ptsip/engine/developer test ./policy/verification/... -count=1
           go -C .ptsip/engine/developer test ./policy/test -count=1
           go -C .ptsip/engine/developer test ./internal/contractentry -count=1

@@ -7,8 +7,7 @@ import os
 from pathlib import Path, PurePosixPath
 import subprocess
 import sysconfig
-
-from ..constants import SPEC_ACRONYM, SPEC_NAME, SPEC_REVISION, SPEC_SOURCE, SPEC_VERSION, TOOL_VERSION
+import tomllib
 
 
 class ProfileNativeError(RuntimeError):
@@ -137,14 +136,26 @@ def current_project_profile_version() -> str:
     return version
 
 
+def current_tool_version() -> str:
+    package = Path(__file__).resolve().parents[1]
+    source = package / "VERSION"
+    if not source.is_file() and (package.parent / "VERSION").is_file():
+        source = package.parent / "VERSION"
+    with source.open("rb") as stream:
+        version = tomllib.load(stream).get("tool_version")
+    if not isinstance(version, str) or not version:
+        raise ProfileNativeError("Tool version is missing in VERSION.")
+    return version
+
+
 @dataclass(frozen=True)
 class SpecIdentity:
-    name: str = SPEC_NAME
-    acronym: str = SPEC_ACRONYM
-    version: str = SPEC_VERSION
-    source: str = SPEC_SOURCE
-    revision: str = SPEC_REVISION
-    tool_version: str = TOOL_VERSION
+    name: str = "Primary Lifecycle Ownership and Responsibility Isolation Policy"
+    acronym: str = "PTSIP"
+    version: str = "0.3.7-draft"
+    source: str = "https://github.com/Kinirin/PTSIP"
+    revision: str = "3c47816770d194ae42f98faedc911d980db0e62a"
+    tool_version: str = field(default_factory=current_tool_version)
     project_profile_contract_version: str = field(default_factory=current_project_profile_version)
 
     def as_dict(self) -> dict[str, str]:

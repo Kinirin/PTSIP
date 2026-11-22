@@ -1,20 +1,23 @@
 package engines_test
 
 import (
+	"bytes"
+	"encoding/json"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/Kinirin/PTSIP/developer/tests/internal/testrepo"
 )
 
-func installedEnvironment(t *testing.T) (object, string, string) {
+func installedEnvironment(t *testing.T, pathParts ...string) (object, string, string) {
 	t.Helper()
 	registered := copyRegisteredSource(t)
-	root := t.TempDir()
+	root := filepath.Join(append([]string{t.TempDir()}, pathParts...)...)
 	packageRoot := filepath.Join(root, "site", "ptsip")
 	distribution := filepath.Join(root, "site", "ptsip-0.3.8b6.dist-info")
 	scripts := filepath.Join(root, "scripts")
@@ -81,25 +84,66 @@ func installedEnvironment(t *testing.T) (object, string, string) {
 }
 
 func TestOfficialEngineCompatibilityCLIEncoding(t *testing.T) {
+	const localized = "파일 누락 🚀"
+	const operation = "discovery.check-environment"
+	input, packageRoot, scripts := installedEnvironment(t, localized)
+	engine := discoveryBinary(t)
+	suffix := ""
+	if runtime.GOOS == "windows" {
+		suffix = ".exe"
+	}
+	engineName := "ptsip-engine-discovery" + suffix
+	data, err := os.ReadFile(engine)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(scripts, engineName), data, 0755); err != nil {
+		t.Fatal(err)
+	}
+	distribution := input["distribution_root"].(string)
+	const originRef = "ptsip-engines.json"
+	data, err = os.ReadFile(filepath.Join(distribution, originRef))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var origin object
+	if err := json.Unmarshal(data, &origin); err != nil {
+		t.Fatal(err)
+	}
+	origin["engines"].(object)["discovery"].(object)["binary_sha256"] = fileHash(t, scripts, engineName)
+	writeJSON(t, distribution, originRef, origin)
+
 	root := testrepo.Root(t)
-	code := `import contextlib, io, json
-from ptsip import cli
-report={'schema_version':'ptsip-official-engine-compatibility-error/v1','status':'UNVERIFIED','reason':'파일 누락 🚀','execution_authorized':False}
-cli.official_engine_compatibility=lambda: (report,4)
-buffer=io.BytesIO()
-stream=io.TextIOWrapper(buffer,encoding='cp949')
-with contextlib.redirect_stdout(stream):
- assert cli.main(['engines','compatibility','--json'])==4
-stream.flush()
-raw=buffer.getvalue()
-assert json.loads(raw.decode('utf-8'))==report
-print('Legacy-console JSON roundtrip PASS')
-`
-	cmd := exec.Command("python", "-c", code)
-	cmd.Dir = root
-	cmd.Env = append(os.Environ(), "PYTHONPATH="+filepath.Join(root, "src"), "PYTHONIOENCODING=cp949")
-	if output, err := cmd.CombinedOutput(); err != nil {
-		t.Fatalf("diagnostic JSON must survive Windows legacy encodings: %v\n%s", err, output)
+	cli := filepath.Join(t.TempDir(), "ptsip"+suffix)
+	build := exec.Command("go", "-C", filepath.Join(root, "src", "ptsip"), "build", "-mod=readonly", "-o", cli, ".")
+	if output, err := build.CombinedOutput(); err != nil {
+		t.Fatalf("build Go CLI: %v\n%s", err, output)
+	}
+	e := entry(t, "DISCOVERY")
+	c := document(t, e["contract_ref"].(string))
+	request := object{"engine_id": e["engine_id"], "engine_version": e["version"], "contract_id": c["contract_id"], "contract_version": c["version"], "operation_id": operation, "input": input}
+	encoded, err := json.Marshal(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cmd := exec.Command(cli, "engine", packageRoot, scripts, operation)
+	cmd.Stdin = bytes.NewReader(encoded)
+	raw, err := cmd.Output()
+	if err != nil {
+		if processErr, ok := err.(*exec.ExitError); ok {
+			t.Fatalf("dispatch native diagnostic: %v\n%s\n%s", err, raw, processErr.Stderr)
+		}
+		t.Fatal(err)
+	}
+	var report object
+	if !utf8.Valid(raw) || json.Unmarshal(raw, &report) != nil {
+		t.Fatalf("diagnostic is not UTF-8 JSON: %q", raw)
+	}
+	output, _ := report["output"].(object)
+	rootPath, _ := output["package_root"].(string)
+	if report["status"] != "PASS" || output["status"] != "UNVERIFIED" || output["installation_integrity"] != "VERIFIED" ||
+		report["execution_authorized"] != false || !strings.Contains(rootPath, localized) {
+		t.Fatalf("localized diagnostic did not survive routing: %s", raw)
 	}
 }
 
@@ -131,11 +175,17 @@ func addEnvironmentDependency(t *testing.T, packageRoot string, version string, 
 	writeJSON(t, packageRoot, "engines/context/manifest.json", m)
 }
 
-func TestOfficialEngineEnvironmentDiagnostics(t *testing.T) {
+func discoveryBinary(t *testing.T) string {
+	t.Helper()
 	binary := os.Getenv("PTSIP_TEST_DISCOVERY_BINARY")
 	if binary == "" {
-		binary = native(t, "DISCOVERY")
+		return native(t, "DISCOVERY")
 	}
+	return binary
+}
+
+func TestOfficialEngineEnvironmentDiagnostics(t *testing.T) {
+	binary := discoveryBinary(t)
 	t.Run("installed catalog does not imply compatibility", func(t *testing.T) {
 		input, _, _ := installedEnvironment(t)
 		out := invoke(t, binary, "DISCOVERY", "discovery.check-environment", input, true)

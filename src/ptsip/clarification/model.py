@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-from ..model import DecisionStatus
+from ..inspection.components import DecisionStatus
 
 
 FIELD_ORDER = ("classification", "purpose", "shipped", "runtime_required", "executable")

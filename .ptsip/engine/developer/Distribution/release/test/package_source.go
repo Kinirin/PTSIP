@@ -56,7 +56,10 @@ print('Complete source distribution contains the exact source, Rust crates and l
 	if err := command(dir, nil, python, "-m", "pip", "install", "--disable-pip-version-check", source); err != nil {
 		return release.File{}, fmt.Errorf("source Package installation failed: %w", err)
 	}
-	if err := command(dir, nil, python, "-c", check, version, tool); err != nil {
+	if err := command(dir, nil, python, "-c", check, version); err != nil {
+		return release.File{}, err
+	}
+	if err := release.VerifyInstalledTool(filepath.Dir(python), tool); err != nil {
 		return release.File{}, err
 	}
 	b, err := os.ReadFile(source)

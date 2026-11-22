@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/user_contracts"
+	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/common_contract/user_contracts"
 	"github.com/santhosh-tekuri/jsonschema/v6"
 	"gopkg.in/yaml.v3"
 )

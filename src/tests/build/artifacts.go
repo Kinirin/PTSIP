@@ -87,6 +87,9 @@ func verifySDist(file io.Reader, revision string, rules sdistRules, assets regis
 		if excluded(member, rules.ExcludedPrefixes) {
 			return fmt.Errorf("excluded entry in sdist: %s", name)
 		}
+		if path.Dir(member) == "src/ptsip" && strings.HasSuffix(member, ".py") {
+			return fmt.Errorf("excluded root Python module in sdist: %s", name)
+		}
 		if entry.Typeflag == tar.TypeDir {
 			continue
 		}
@@ -147,7 +150,8 @@ func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildCo
 	originPath := ""
 	for _, entry := range archive.File {
 		name := strings.TrimSuffix(entry.Name, "/")
-		if !safePath(name) || excluded(name, contract.Wheel.ExcludedPrefixes) || strings.Contains("/"+name+"/", "/.ptsip/") {
+		if !safePath(name) || excluded(name, contract.Wheel.ExcludedPrefixes) || strings.Contains("/"+name+"/", "/.ptsip/") ||
+			(path.Dir(name) == "ptsip" && strings.HasSuffix(name, ".py")) {
 			return fmt.Errorf("unsafe or excluded wheel member: %s", entry.Name)
 		}
 		if entry.FileInfo().IsDir() {
@@ -293,8 +297,12 @@ func verifyWheelOrigins(members map[string]*zip.File, digests map[string]string,
 		common.Binary != "ptsip-common-contract"+extension || common.Digest == "" || common.Digest != digests[path.Join(path.Dir(rules.CommonContractOrigin), common.Binary)] {
 		return errors.New("wheel common-contract binary origin does not bind the registered source and binary")
 	}
-	if digests[scripts+rules.GoEntrypoint+extension] == "" {
+	router := digests[scripts+rules.GoEntrypoint+extension]
+	if router == "" {
 		return fmt.Errorf("wheel Go router binary is missing: %s", rules.GoEntrypoint+extension)
+	}
+	if digests[scripts+"ptsip"+extension] != router {
+		return errors.New("wheel native ptsip command does not match the Go router")
 	}
 	return nil
 }

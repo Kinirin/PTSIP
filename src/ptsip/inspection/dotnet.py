@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
 
-from ..model import (
+from ..evidence.contract import (
     DependencyEdge,
     DependencyPhase,
     EdgeType,

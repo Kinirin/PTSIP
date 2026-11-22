@@ -10,7 +10,8 @@ import yaml
 from ..inspection.components import discover_component_candidates
 from ..inspection.dependencies_030 import scan_dependency_edges
 from ..inspection.inventory import collect_inventory
-from ..model import Classification, DecisionStatus
+from ..inspection.components import DecisionStatus
+from ..migration.analysis.target.semantics import default_target_semantics
 from ..repository.discover import discover_repository
 from ..repository.snapshot import capture_snapshot, compare_snapshots
 from ..spec_identity import current_spec_identity
@@ -150,7 +151,7 @@ def run_pilot(path: str | Path = ".", report_path: str | Path | None = None) -> 
         },
         "classification": {
             "status": "DECLARATION_AVAILABLE" if declared_partition else "EVIDENCE_ONLY",
-            "allowed_classifications": [item.value for item in Classification],
+            "allowed_classifications": list(default_target_semantics().classifications),
             "decision_statuses": [item.value for item in DecisionStatus],
             "note": "UNKNOWN is a decision status, not a fourth PTSIP architecture classification.",
         },

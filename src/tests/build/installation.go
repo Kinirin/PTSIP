@@ -15,16 +15,18 @@ import (
 
 const installedSmoke = `
 import hashlib
-from importlib import metadata, resources
+from importlib import metadata
 import json
 from pathlib import Path
+import subprocess
 import sys
 import sysconfig
+import tomllib
 
 request = json.loads(sys.argv[1])
-package = resources.files(request["package"])
-root = Path(str(package)).resolve()
+root = (Path(sysconfig.get_path("purelib")) / request["package"]).resolve()
 assert root.is_relative_to(Path(sys.prefix).resolve()), "product resolved outside the temporary environment"
+assert not list(root.glob("*.py")), "retired root Python modules in installed package"
 for name, expected in request["assets"].items():
     data = root.joinpath(name).read_bytes()
     if name not in request["exact_asset_digests"]:
@@ -33,6 +35,10 @@ for name, expected in request["assets"].items():
 scripts = Path(sysconfig.get_path("scripts"))
 suffix = ".exe" if sys.platform == "win32" else ""
 assert scripts.joinpath(request["router"] + suffix).is_file(), "installed Go router is missing"
+with root.joinpath("VERSION").open("rb") as stream:
+    tool_version = tomllib.load(stream)["tool_version"]
+version = subprocess.check_output([str(scripts / ("ptsip" + suffix)), "--version"], text=True, timeout=10).strip()
+assert version == f"PTSIP Tool {tool_version}", "installed Tool version differs from packaged VERSION"
 bundle = json.loads(metadata.distribution(request["package"]).read_text("ptsip-engines.json"))
 assert set(bundle["engines"]) == set(request["engines"]), "installed native inventory differs from the release source"
 for kind, origin in bundle["engines"].items():

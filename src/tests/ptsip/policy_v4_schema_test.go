@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/user_contracts"
+	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/common_contract/user_contracts"
 )
 
 type object = map[string]any

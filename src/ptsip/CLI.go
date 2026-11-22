@@ -16,11 +16,13 @@ import (
 	"runtime"
 	"strings"
 
-	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/user_contracts"
+	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/common_contract/user_contracts"
 )
 
 const engineIndex = "engines/index.json"
 const transportID = "urn:ptsip:engine-transport:json-stdio:v1"
+
+var toolVersion string
 
 type engineEntry struct {
 	Kind       string   `json:"kind"`
@@ -446,11 +448,18 @@ func doctor(target string) error {
 	return nil
 }
 
-const usage = "Usage: ptsip help | doctor <directory> | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id> | engine-serve <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass versioned JSON requests to the registered native CLI; engine-serve keeps a caller-owned JSON-lines session available until stdin EOF."
+const usage = "Usage: ptsip help | --version | doctor <directory> | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id> | engine-serve <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass versioned JSON requests to the registered native CLI; engine-serve keeps a caller-owned JSON-lines session available until stdin EOF."
 
 func run(args []string) error {
 	if len(args) == 0 || (len(args) == 1 && (args[0] == "help" || args[0] == "--help" || args[0] == "-h")) {
 		_, err := fmt.Fprintln(os.Stdout, usage)
+		return err
+	}
+	if len(args) == 1 && args[0] == "--version" {
+		if toolVersion == "" {
+			return errors.New("Tool version is not embedded in this build")
+		}
+		_, err := fmt.Fprintln(os.Stdout, "PTSIP Tool", toolVersion)
 		return err
 	}
 	if len(args) == 2 && args[0] == "doctor" {

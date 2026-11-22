@@ -32,13 +32,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install registered validation runtime
-        run: python -m pip install --disable-pip-version-check 'PTSIP==0.3.8b5' 'PyYAML==6.0.3' 'pytest>=8,<10'
+        run: python -m pip install --disable-pip-version-check 'PTSIP==0.3.8b5' 'PyYAML==6.0.3'
       - name: Test shared Go contracts and current policy source integrity
-        env:
-          PYTHONPATH: src
-        run: |
-          go -C src/ptsip/common_contract test ./... -count=1
-          python -m pytest -q src/tests/ptsip/contracts/test_unified_policy.py
+        run: go -C src/ptsip/common_contract test ./... -count=1
       - name: Check read-only per-rule RA RAC AEC applicability registration
         shell: bash
         run: |

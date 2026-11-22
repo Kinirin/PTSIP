@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import hashlib
 import json
-import sys
+import os
+import subprocess
 from pathlib import Path, PurePosixPath
 from shutil import copy2, copytree, rmtree
+from tempfile import TemporaryDirectory
 
 import yaml
-from setuptools import setup
+from setuptools import find_packages, setup
 from setuptools.command.build_py import build_py as _build_py
 
 
@@ -41,25 +43,27 @@ def _project_support_policy(build_lib: Path) -> None:
     sfp_files = sorted(source.rglob("SFP-*.yaml"))
     if not sfp_files:
         raise RuntimeError("canonical Support Policy source contains no SFP records")
-    # Setuptools can invoke this in a Git-less sdist with no installed PTSIP.
-    sys.path.insert(0, str(ROOT / "src"))
-    try:
-        from ptsip._common_contract import PolicySourceError, source_result
-    finally:
-        sys.path.pop(0)
-    for path in sfp_files:
-        relative = path.relative_to(source)
-        destination = policy_target / relative
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            projected = source_result("project-support-source", "source", raw=path.read_bytes().decode("utf-8-sig"),
-                                      path=relative.as_posix())
-        except PolicySourceError as error:
-            raise RuntimeError(f"Support Policy source {relative.as_posix()}: {error}") from error
-        if projected is not None:
-            destination.write_text(yaml.safe_dump(projected, allow_unicode=True, sort_keys=False), encoding="utf-8")
-        else:
-            copy2(path, destination)
+    with TemporaryDirectory(prefix="ptsip-policy-source-") as temporary:
+        command = Path(temporary) / ("ptsip-common-contract.exe" if os.name == "nt" else "ptsip-common-contract")
+        module = ROOT / "src" / "ptsip" / "common_contract"
+        subprocess.run(["go", "build", "-mod=readonly", "-trimpath", "-o", str(command), "./cmd/ptsip-common-contract"],
+                       cwd=module, env=dict(os.environ, GOWORK="off", CGO_ENABLED="0"), check=True)
+        for path in sfp_files:
+            relative = path.relative_to(source)
+            destination = policy_target / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            request = {"format": "ptsip-common-contract/v1", "operation": "project-support-source",
+                       "raw": path.read_bytes().decode("utf-8-sig"), "path": relative.as_posix()}
+            result = subprocess.run([str(command)], input=json.dumps(request).encode("ascii"),
+                                    capture_output=True, timeout=90, check=True)
+            report = json.loads(result.stdout)
+            if report.get("format") != request["format"] or report.get("status") != "VALID" or "source" not in report:
+                raise RuntimeError(f"Support Policy source {relative.as_posix()}: {report.get('problem', 'invalid response')}")
+            projected = report["source"]
+            if projected is not None:
+                destination.write_text(yaml.safe_dump(projected, allow_unicode=True, sort_keys=False), encoding="utf-8")
+            else:
+                copy2(path, destination)
 
     copytree(source / "schemas", target / "schemas")
     copytree(source / "registries", target / "registries")
@@ -208,6 +212,10 @@ class build_py(_build_py):
     def run(self) -> None:
         super().run()
         build_lib = Path(self.build_lib)
+        package = build_lib / "ptsip"
+        for stale in package.glob("*.py"):
+            if not (ROOT / "src" / "ptsip" / stale.name).is_file():
+                stale.unlink()
         # Incremental builds can retain the replaced Python feature from an
         # earlier checkout even though it is absent from the source package.
         for name in ("unified.py", "__init__.py"):
@@ -220,6 +228,9 @@ class build_py(_build_py):
         _project_profile_contracts(build_lib)
         _project_rbac_contract_assets(build_lib)
         _project_profile_candidate(build_lib)
+        copy2(ROOT / "src" / "VERSION", package / "VERSION")
 
 
-setup(cmdclass={"build_py": build_py})
+packages = ["ptsip", *(f"ptsip.{pkg}" for pkg in find_packages("src/ptsip")),
+            *find_packages("src", include=("vpms*", "agent_contracts*"))]
+setup(packages=packages, package_dir={"": "src"}, cmdclass={"build_py": build_py})

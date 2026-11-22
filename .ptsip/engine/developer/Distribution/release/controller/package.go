@@ -362,14 +362,13 @@ type installedOrigin struct {
 // Python locates the selected installation. Go verifies the native bundle.
 func VerifyInstalledComponents(snapshot Snapshot, python string) error {
 	locate := `import importlib.metadata as m, json, pathlib, sysconfig
-from ptsip.constants import TOOL_VERSION
 d = m.distribution('PTSIP')
 files = [p for p in d.files or () if p.name == 'METADATA' and p.parent.name.endswith('.dist-info')]
 if len(files) != 1:
     raise RuntimeError('Unambiguous installed PTSIP metadata required')
 print(json.dumps(dict(package_root=str(pathlib.Path(d.locate_file('ptsip'))),
     metadata_root=str(pathlib.Path(d.locate_file(files[0])).parent),
-    scripts_root=sysconfig.get_path('scripts'), package_version=d.version, tool_version=TOOL_VERSION)))
+    scripts_root=sysconfig.get_path('scripts'), package_version=d.version)))
 `
 	cmd := exec.Command(python, "-c", locate)
 	cmd.Stderr = os.Stderr
@@ -382,7 +381,6 @@ print(json.dumps(dict(package_root=str(pathlib.Path(d.locate_file('ptsip'))),
 		Metadata string `json:"metadata_root"`
 		Scripts  string `json:"scripts_root"`
 		Version  string `json:"package_version"`
-		Tool     string `json:"tool_version"`
 	}
 	if err := json.Unmarshal(raw, &location); err != nil {
 		return err
@@ -482,13 +480,38 @@ print(json.dumps(dict(package_root=str(pathlib.Path(d.locate_file('ptsip'))),
 			}
 			matched[component.ID] = true
 		case "tool":
-			if location.Tool != component.Version {
-				return fmt.Errorf("integrated PTSIP Tool version differs")
+			if err := VerifyInstalledTool(location.Scripts, component.Version); err != nil {
+				return err
 			}
 		}
 	}
 	if len(matched) != len(seen) {
 		return fmt.Errorf("installed engine inventory differs from the Package snapshot")
+	}
+	return nil
+}
+
+// VerifyInstalledTool checks the executable from the selected installation.
+func VerifyInstalledTool(scripts, version string) error {
+	name := "ptsip"
+	if runtime.GOOS == "windows" {
+		name += ".exe"
+	}
+	if !filepath.IsAbs(scripts) || version == "" {
+		return fmt.Errorf("installed PTSIP Tool location or expected version is missing")
+	}
+	executable := filepath.Join(scripts, name)
+	info, err := os.Lstat(executable)
+	if err != nil || !info.Mode().IsRegular() {
+		return fmt.Errorf("installed PTSIP Tool executable is missing or is an alias: %s", name)
+	}
+	cmd := exec.Command(executable, "--version")
+	output, err := cmd.Output()
+	if err != nil {
+		return fmt.Errorf("read installed PTSIP Tool version: %w", err)
+	}
+	if strings.TrimSpace(string(output)) != "PTSIP Tool "+version {
+		return fmt.Errorf("integrated PTSIP Tool version differs: got %q, want %q", strings.TrimSpace(string(output)), version)
 	}
 	return nil
 }

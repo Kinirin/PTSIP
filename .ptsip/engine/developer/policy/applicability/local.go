@@ -202,9 +202,10 @@ func RunLocal(root string, skipTests bool) (LocalReport, error) {
             report.Status = "FAIL"
             return report, err
         }
-        if err := runLogged(root, filepath.Join(logDir,"pytest.stdout.log"),
-            filepath.Join(logDir,"pytest.stderr.log"), "python", "-m", "pytest", "-q",
-            "src/tests/ptsip/contracts/test_unified_policy.py"); err != nil {
+        commonModule := filepath.Join(root, "src", "ptsip", "common_contract")
+        if err := runLogged(root, filepath.Join(logDir,"common-contract-test.stdout.log"),
+            filepath.Join(logDir,"common-contract-test.stderr.log"), "go", "-C", commonModule,
+            "test", "./cmd/ptsip-common-contract", "-run", "^TestUnifiedPolicySource", "-count=1"); err != nil {
             report.Status = "FAIL"
             return report, err
         }

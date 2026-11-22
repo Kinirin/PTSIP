@@ -1,18 +1,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
-from ..artifact_evidence import ArtifactEvidenceLoad
 from ..inspection.candidate_evidence import CandidateDiscoveryResult
 from ..inspection.dependencies import DependencyScan
-from ..model import EvidenceProvenance, ResolutionStatus
-from ..review_evidence import AgentDecisionLoad, ExternalEvidenceLoad
 from ..validation.components import AMBIGUOUS, UNCOVERED, CandidateCoverage, resolve_candidate_coverage
 from .contract import (
     EvidenceChannel,
     EvidenceChannelStatus,
     EvidenceEvaluationContext,
     EvidenceNormalizationIssue,
+    EvidenceProvenance,
+    ResolutionStatus,
     SourceGenerationBinding,
     canonical_json,
 )
@@ -205,7 +205,7 @@ def _external_origin(edge) -> tuple[str | None, str | None, str | None]:
 
 
 def external_dependency_facts(
-    loaded: ExternalEvidenceLoad,
+    loaded: Any,
 ) -> tuple[list[EvidenceFact], EvidenceChannel, list[EvidenceNormalizationIssue]]:
     facts: list[EvidenceFact] = []
     for edge in loaded.edges:
@@ -258,7 +258,7 @@ def _artifact_derivation(value: object) -> object:
 
 
 def artifact_facts(
-    loaded: ArtifactEvidenceLoad,
+    loaded: Any,
 ) -> tuple[list[EvidenceFact], EvidenceChannel, list[EvidenceNormalizationIssue]]:
     facts: list[EvidenceFact] = []
     for document in loaded.documents:
@@ -324,7 +324,7 @@ def artifact_facts(
 
 
 def agent_decision_facts(
-    loaded: AgentDecisionLoad,
+    loaded: Any,
 ) -> tuple[list[EvidenceFact], EvidenceChannel, list[EvidenceNormalizationIssue]]:
     facts: list[EvidenceFact] = []
     for document in loaded.documents:
@@ -434,9 +434,9 @@ def normalize_ptsip_evidence(
     candidate_result: CandidateDiscoveryResult,
     *,
     dependencies: DependencyScan | None = None,
-    external_evidence: ExternalEvidenceLoad | None = None,
-    artifact_evidence: ArtifactEvidenceLoad | None = None,
-    agent_decisions: AgentDecisionLoad | None = None,
+    external_evidence: Any | None = None,
+    artifact_evidence: Any | None = None,
+    agent_decisions: Any | None = None,
     components: list[dict[str, object]] | None = None,
     associated_artifacts: list[dict[str, object]] | None = None,
 ):

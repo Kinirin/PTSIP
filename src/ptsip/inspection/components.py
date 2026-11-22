@@ -4,9 +4,16 @@ import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from ..model import DecisionStatus
+from enum import StrEnum
 from .dependencies import DependencyScan
 from .inventory import Inventory
+
+
+class DecisionStatus(StrEnum):
+    RESOLVED = "RESOLVED"
+    UNKNOWN = "UNKNOWN"
+    CONFLICT = "CONFLICT"
+    INCOMPLETE = "INCOMPLETE"
 
 
 @dataclass(frozen=True)
