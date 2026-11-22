@@ -459,9 +459,17 @@ Policy_Content:
           synchronization_executor: GITHUB_ACTIONS
           synchronization_action: SYNC_VERSION_AND_COMMIT_CHANGED_DERIVED_TRACKED_SOURCES
           build_executor: GITHUB_ACTIONS
-          build_source_revision: COMMITTED_POST_SYNC_SOURCE_REVISION
-          build_precondition: CLEAN_GIT_CHECKOUT_AFTER_SYNC_COMMIT
-          required_order: LOCAL_VERSION_COMMIT_PUSH_THEN_ACTION_SYNC_THEN_ACTION_SYNC_COMMIT_THEN_ACTION_WHEEL_BUILD
+          build_source_revision: FINAL_VERIFIED_COMMITTED_POST_SYNC_SOURCE_REVISION
+          build_precondition: CLEAN_GIT_CHECKOUT_AT_FINAL_VERIFIED_SOURCE_REVISION
+          required_order: LOCAL_VERSION_COMMIT_PUSH_THEN_ACTION_SYNC_THEN_ACTION_SYNC_COMMIT_THEN_ASYNC_SNAPSHOT_REGENERATION_AND_VERIFICATION_THEN_FINAL_COMMITTED_SOURCE_VERIFICATION_THEN_ACTION_WHEEL_BUILD
+          asynchronous_snapshot_responsibility: INDEPENDENT_DERIVED_ARTIFACT_JOB_NOT_INLINE_VERSION_SYNC
+          snapshot_completion_gate: REQUIRED_BEFORE_WHEEL_BUILD
+          final_source_verification_gate: REQUIRED_BEFORE_WHEEL_BUILD
+          final_source_identity: EXACT_VERIFIED_COMMITTED_SOURCE_REVISION_INCLUDING_REQUIRED_CURRENT_SNAPSHOT
+          final_source_revision_relation: DESCENDANT_OR_SAME_OF_COMMITTED_SYNC_REVISION
+          build_revision_identity: EXACT_MATCH_FINAL_VERIFIED_SOURCE_REVISION
+          incomplete_stale_or_unverified_snapshot: FAIL_CLOSED_NO_WHEEL_BUILD
+          dependency_graph_verification: EXISTING_APPLICABLE_INDEPENDENT_REQUIREMENTS_PRESERVED
           local_source_sync: USER_INITIATED_EXISTING_GIT_PULL_FROM_REMOTE_REPOSITORY
           local_automatic_pull: NOT_REQUIRED
           local_source_sync_extra_delivery_mechanism: NOT_REQUIRED
