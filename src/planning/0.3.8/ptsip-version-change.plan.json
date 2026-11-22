@@ -503,16 +503,12 @@
     "USER_DIRECTED_CANONICAL_NATIVE_WHEEL_CHAIN_SRC_VERSION_TO_ENGINE_INDEX_TO_SRC_BUILD_WHEEL_GO_TO_NATIVE_ENGINE_WHEEL",
     "LEGACY_INSTALLATION_PLAN_NOT_INTERMEDIATE_VERSION_AUTHORITY_REQUIRED_VERIFICATION_PRESERVED_UNTIL_CONSUMER_CLOSURE",
     "LEGACY_RELEASE_COMPOSITION_CONTRACT_REPLACED_BY_NEW_OWNER_APPROVED_MACHINE_CONTRACT_WITHOUT_IMPLICIT_POLICY_OR_GATE_RETIREMENT",
-    "BASELINE_GO_TEST_AND_CARGO_METADATA_RESULTS_ARE_NOT_PROOF_OF_NATIVE_WHEEL_BUILD_OR_DISTRIBUTION_PASS"
+    "BASELINE_GO_TEST_AND_CARGO_METADATA_RESULTS_ARE_NOT_PROOF_OF_NATIVE_WHEEL_BUILD_OR_DISTRIBUTION_PASS",
+    "GITHUB_ACTIONS_SYNC_OUTPUT_MUST_BE_COMMITTED_BEFORE_WHEEL_BUILD_AND_WHEEL_BUILD_SOURCE_REVISION_MUST_EQUAL_POST_SYNC_COMMIT",
+    "GITHUB_ACTIONS_BUILD_CHECKOUT_MUST_BE_CLEAN_WITHOUT_BYPASSING_EXISTING_BUILD_REVISION_GATE",
+    "LOCAL_HANDOFF_AFTER_WHEEL_BUILD_REQUIRED_DELIVERY_MECHANISM_PLAN_DEFINED"
   ],
   "unresolved_policy_gates": [
-    {
-      "id": "UP-01",
-      "topic": "SYNC_AND_CLEAN_BUILD_SOURCE_BOUNDARY",
-      "issue": "SYNCHRONIZER_EDITS_TRACKED_SOURCE_BUT_NATIVE_WHEEL_REQUIRES_CLEAN_GIT_CHECKOUT",
-      "decision": "UNRESOLVED",
-      "implementation_blocking": true
-    },
     {
       "id": "UP-02",
       "topic": "SINGLE_VERSION_SOURCE_SECTION_SEMANTICS",
@@ -540,8 +536,23 @@
       "id": "UP-05",
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
       "issue": "COMBINED_TRIGGER_PRECEDENCE_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
-      "decision": "UNRESOLVED",
-      "implementation_blocking": true
+      "decision": "PARTIALLY_RESOLVED_REMAINING_CASES_OPEN",
+      "implementation_blocking": true,
+      "resolved_case": {
+        "case_id": "CONTRACT_AND_ENGINE_FUNCTION_CHANGE",
+        "scope": "SAME_LOCAL_COMMIT_CHANGE_SET",
+        "version_component": "MINOR",
+        "minor_delta": 1,
+        "patch_reset_to": 0,
+        "requires_explicit_src_version_edit": true,
+        "automatic_increment": "FORBIDDEN",
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/approved_combined_trigger_cases/CONTRACT_AND_ENGINE_FUNCTION_CHANGE"
+      },
+      "remaining_unresolved": [
+        "OTHER_COMBINED_TRIGGER_PRECEDENCE",
+        "BREAKING_CONTRACT_CHANGE_CLASSIFICATION",
+        "RESPONSIBILITY_REMOVAL_CLASSIFICATION"
+      ]
     },
     {
       "id": "UP-06",
@@ -717,6 +728,31 @@
     ],
     "legacy_release_composition_replacement_pending_owner_design": true,
     "vc_10_latest_user_direction": "WITHDRAW_PREVIOUS_DIGEST_AND_FRESHNESS_REMOVAL_REGENERATE_AND_VERIFY_BEFORE_CONSUMPTION",
-    "vc_10_prior_policy_violation": "RESOLVED_WITHOUT_POLICY_CHANGE"
-  }
+    "vc_10_prior_policy_violation": "RESOLVED_WITHOUT_POLICY_CHANGE",
+    "up_01_user_approved_sync_build_boundary": "LOCAL_SRC_VERSION_COMMIT_PUSH_TO_ACTION_SYNC_COMMIT_TO_ACTION_CLEAN_SOURCE_WHEEL_BUILD_TO_LOCAL_HANDOFF",
+    "up_05_user_approved_combined_case": "CONTRACT_AND_ENGINE_FUNCTION_IN_SAME_LOCAL_COMMIT_MINOR_PLUS_ONE_PATCH_RESET_ZERO_EXPLICIT_VERSION_SOURCE_EDIT",
+    "up_05_outstanding": "OTHER_COMBINED_CASES_BREAKING_CONTRACT_CHANGE_AND_RESPONSIBILITY_REMOVAL",
+    "policy_sync_commit": "245bedd442255f35f9a46682e6c5bf11221bb186"
+  },
+  "resolved_policy_gates": [
+    {
+      "id": "UP-01",
+      "topic": "SYNC_AND_CLEAN_BUILD_SOURCE_BOUNDARY",
+      "decision": "RESOLVED_BY_USER_POLICY_DIRECTION",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_version_sync_clean_build_handoff",
+      "approved_order": [
+        "LOCAL_SRC_VERSION_EDIT_COMMIT_AND_PUSH",
+        "GITHUB_ACTIONS_SYNC_VERSION",
+        "GITHUB_ACTIONS_COMMIT_CHANGED_DERIVED_TRACKED_SOURCES",
+        "GITHUB_ACTIONS_WHEEL_BUILD_FROM_COMMITTED_POST_SYNC_CLEAN_SOURCE",
+        "LOCAL_HANDOFF_AFTER_WHEEL_BUILD"
+      ],
+      "build_requires_clean_source": true,
+      "build_commit_must_equal_post_sync_commit": true,
+      "local_handoff_required": true,
+      "local_handoff_delivery_mechanism": "PLAN_LEVEL_DEFINITION_REQUIRED_NO_DIRECT_GITHUB_TO_LOCAL_PUSH_ASSUMED",
+      "workflow_implementation": "NOT_YET_AUTHORIZED",
+      "implementation_blocking": false
+    }
+  ]
 }
