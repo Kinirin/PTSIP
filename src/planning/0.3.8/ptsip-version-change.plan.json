@@ -3,7 +3,7 @@
   "document_type": "PTSIP_VERSION_CHANGE_PLAN",
   "plan_id": "PTSIP-0.3.8-VERSION-CHANGE",
   "plan_path": "src/planning/0.3.8/ptsip-version-change.plan.json",
-  "status": "DRAFT_PENDING_POLICY_CLOSURE_AND_USER_PLAN_APPROVAL",
+  "status": "DRAFT_POLICY_VIOLATION_BLOCKED",
   "authority": {
     "level": "PLAN",
     "precedence": "EFFECTIVE_POLICY_OVER_PLAN",
@@ -17,7 +17,12 @@
     "complete_plan_approval": false,
     "implementation_authorized": false,
     "publication_authorized": false,
-    "policy_change_authorized_by_this_plan": false
+    "policy_change_authorized_by_this_plan": false,
+    "policy_amendment_forbidden": true,
+    "conflicting_requirement_ids": [
+      "VC-10"
+    ],
+    "effective_policy_precedence": "POLICY_WINS_PLAN_DOES_NOT_AUTHORIZE_POLICY_REWRITE"
   },
   "baseline": {
     "repository": "Kinirin/PTSIP",
@@ -218,22 +223,25 @@
     },
     {
       "id": "VC-10",
-      "status": "USER_DIRECTED",
+      "status": "POLICY_VIOLATION_BLOCKED",
       "responsibility": "PREVIOUS_DERIVED_SNAPSHOT_ACCEPTANCE_DISPOSITION",
-      "direction": "RETIRE_LEGACY_DERIVED_SNAPSHOT_SHA256_COMPARISON_AND_RELATED_FRESHNESS_REQUIREMENT_NO_REPLACEMENT",
+      "direction": "BLOCKED_BY_EFFECTIVE_SFP_CNTR_0005_POLICY_NO_REMOVAL",
       "prior_plan_verification_as_completion_authority": "INVALIDATED",
       "snapshot_implementation_completion_claim": "NOT_ASSUMED",
-      "currently_executable_source_digest_checks": "REMOVE_ONLY_LEGACY_DERIVED_SNAPSHOT_SOURCE_REF_SHA256_IN_SRC_BUILD_INVENTORY",
-      "scope_limitation": "BUILD_LEGACY_DERIVED_SNAPSHOT_ONLY_NOT_INDEPENDENT_CONTRACT_TRANSPORT_PROFILE_OR_WHEEL_RECORD_CHECKS",
+      "currently_executable_source_digest_checks": "PRESERVE_UNCHANGED_UNTIL_SEPARATELY_APPROVED_POLICY_CHANGE",
+      "scope_limitation": "PLAN_CANNOT_RETIRE_ACTIVE_SNAPSHOT_FRESHNESS_OR_SOURCE_DIGEST_VERIFICATION",
       "invent_new_derived_snapshot_work_unit": "FORBIDDEN",
-      "legacy_snapshot_freshness_requirement": "RETIRED_AS_USER_APPROVED_KEEP_LATEST",
+      "legacy_snapshot_freshness_requirement": "EFFECTIVE_POLICY_REQUIRES_FRESHNESS",
       "implementation_target": "src/build/inventory.go#inspectEngines",
-      "retain_snapshot_as_authority": "FORBIDDEN",
+      "retain_snapshot_as_authority": "NONAUTHORITATIVE_WITH_REQUIRED_VERIFICATION",
       "independent_registered_source_presence": "PRESERVE",
       "authorization": {
-        "source": "USER_EXPLICIT_CHAT_2026_11_22",
-        "scope": "REMOVE_LEGACY_SNAPSHOT_SHA256_AND_FRESHNESS_CHECKS_ONLY"
-      }
+        "status": "REJECTED_BY_HIGHER_POLICY_AUTHORITY",
+        "decision_source": "USER_EXPLICIT_CHAT_2026_11_22",
+        "policy_change_authorized": false,
+        "implementation_authorized": false
+      },
+      "requested_disposition": "RETIRE_LEGACY_DERIVED_SNAPSHOT_SHA256_COMPARISON_AND_RELATED_FRESHNESS_REQUIREMENT_NO_REPLACEMENT"
     },
     {
       "id": "VC-11",
@@ -352,9 +360,9 @@
     "BEFORE_MUTATING_CURRENT_SCHEMA_OR_ENGINE_CONTRACT_VERSION_PRESERVE_ORIGINAL_IN_IMMUTABLE_HISTORY",
     "PRIOR_DEPENDENCY_GRAPH_ACCEPTANCE_IS_NOT_USED_AS_VERSION_CHANGE_SUCCESS_EVIDENCE",
     "RETIRED_DERIVED_SNAPSHOT_PLAN_ACCEPTANCE_IS_NOT_REUSED_AS_IMPLEMENTATION_AUTHORITY",
-    "LEGACY_DERIVED_SNAPSHOT_SHA256_FRESHNESS_NOT_REQUIRED_FOR_BUILD_SOURCE_ADMISSION",
-    "BUILD_VERIFICATION_MUST_NOT_REQUIRE_STALE_SNAPSHOT_SOURCE_HASH_TO_MATCH_CURRENT_MANIFEST_OR_BINDING",
-    "INDEPENDENT_CONTRACT_TRANSPORT_PROFILE_AND_WHEEL_RECORD_HASH_CHECKS_UNCHANGED"
+    "INDEPENDENT_CONTRACT_TRANSPORT_PROFILE_AND_WHEEL_RECORD_HASH_CHECKS_UNCHANGED",
+    "NONAUTHORITATIVE_DERIVED_SNAPSHOT_REGENERATED_WITH_FRESH_SOURCE_DIGESTS",
+    "EFFECTIVE_SFP_CNTR_0005_SNAPSHOT_SOURCE_HASH_AND_FRESHNESS_VERIFICATION_REMAINS_REQUIRED"
   ],
   "unresolved_policy_gates": [
     {
@@ -401,12 +409,37 @@
     "implementation_permitted_now": false,
     "no_branch_creation": true,
     "simulations_must_not_mutate_canonical_version_values": true,
-    "status_note": "INITIAL_USER_RULE_CAPTURE_ONLY; NOT A FULLY APPROVED EXECUTION PLAN",
+    "status_note": "PLAN_BLOCKED_BY_HIGHER_POLICY; CURRENT_BUILD_HASH_CHECKS_RESTORED",
     "scoped_legacy_snapshot_sha_removal_authorization": {
-      "authorized": true,
+      "authorized": false,
+      "status": "VOID_POLICY_CONFLICT",
       "source": "USER_EXPLICIT_CHAT_2026_11_22",
-      "scope": "SRC_BUILD_INVENTORY_LEGACY_SNAPSHOT_FRESHNESS_AND_DIRECTLY_AFFECTED_TESTS_ONLY",
+      "policy_authority": "SFP-CNTR-0005",
+      "scope": "LEGACY_DERIVED_SNAPSHOT_SOURCE_SHA256_AND_FRESHNESS",
       "other_implementation": "REQUIRES_NORMAL_PLAN_APPROVAL"
     }
+  },
+  "policy_violation": {
+    "status": "ACTIVE_UNRESOLVED_POLICY_VIOLATION",
+    "classification": "PLAN_EXCEEDS_POLICY_AUTHORITY",
+    "id": "PV-001",
+    "affected_requirement_ids": [
+      "VC-10"
+    ],
+    "proposed_action": "REMOVE_LEGACY_DERIVED_SNAPSHOT_SHA256_AND_FRESHNESS_REQUIREMENT",
+    "effective_policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+    "effective_policy_source_item": "SRC-0010",
+    "effective_rule": "engine_core_extension_snapshot_manifest_direction",
+    "conflicting_constraints": [
+      "derived_snapshot: MACHINE_VERIFIED_NONAUTHORITATIVE_CURRENT_REFERENCES_AND_COMPARABLE_DISCOVERY_VIEW",
+      "snapshot_validity: REQUIRE_CURRENT_SOURCE_IDENTITY_VERSION_CONTRACT_DEPENDENCY_AND_PROOF_FRESHNESS",
+      "stale_invalid_unverifiable_required_reference: FAIL_CLOSED_AFFECTED_DISCOVERY_OR_ELIGIBILITY_NO_AUTOMATIC_AUTHORITY",
+      "engine_common_identity_extension_snapshot_is_derived_non_authoritative_and_version_verified: true"
+    ],
+    "resolution": "KEEP_EFFECTIVE_POLICY_AND_BLOCK_CONFLICTING_PLAN",
+    "policy_mutation": "FORBIDDEN_BY_USER",
+    "implementation": "STOPPED_AND_EARLIER_PATCH_REVERTED",
+    "unrelated_plan_requirements": "PRESERVED_NOT_IMPLICITLY_APPROVED",
+    "approval_source": "USER_EXPLICIT_CHAT_2026_11_22"
   }
 }
