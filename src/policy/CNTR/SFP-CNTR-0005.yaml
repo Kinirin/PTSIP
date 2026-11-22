@@ -660,7 +660,7 @@ Policy_Content:
           registry_ci_mutation: NOT_AUTHORIZED_BY_THIS_DIRECTION
           runtime_or_implementation_activation: APPROVED_PLAN_IMPLEMENTATION_WITH_MACHINE_VERIFICATION_REQUIRED
         engine_core_extension_snapshot_manifest_direction:
-          decision: C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_VERIFIED_DERIVED_SNAPSHOT
+          decision: C_COMMON_CORE_MANIFEST_SEPARATE_VERSIONED_EXTENSION_MANIFESTS_NONAUTHORITATIVE_LEGACY_SNAPSHOT
           approval_source: USER_EXPLICIT
           decision_date: '2026-10-12'
           common_core_owner: CANONICAL_REGISTERED_ENGINE_IDENTITY_AND_ORIGIN
@@ -672,11 +672,21 @@ Policy_Content:
           - CAPABILITY_CONTRACT_AND_COMPATIBILITY_REFERENCES
           engine_extension_contract: INDEPENDENT_VERSIONED_REFERENCED_ENGINE_OWNED_MACHINE_CONTRACT
           dependency_declaration: EXPLICIT_VERSIONED_ENGINE_CAPABILITY_CONTRACT_DEPENDENCY_REFERENCE
-          derived_snapshot: MACHINE_VERIFIED_NONAUTHORITATIVE_CURRENT_REFERENCES_AND_COMPARABLE_DISCOVERY_VIEW
+          derived_snapshot: OPTIONAL_LEGACY_NONAUTHORITATIVE_VIEW_NO_DIGEST_OR_FRESHNESS_VERIFICATION
           derived_snapshot_canonical_source: REGISTERED_FEDERATED_OWNER_CORE_AND_EXTENSION_MANIFESTS
           derived_snapshot_write_or_authority: NONE
-          snapshot_validity: REQUIRE_CURRENT_SOURCE_IDENTITY_VERSION_CONTRACT_DEPENDENCY_AND_PROOF_FRESHNESS
-          stale_invalid_unverifiable_required_reference: FAIL_CLOSED_AFFECTED_DISCOVERY_OR_ELIGIBILITY_NO_AUTOMATIC_AUTHORITY
+          legacy_snapshot_verification_retirement:
+            conflict_resolution: KEEP_LATEST
+            approval_source: USER_EXPLICIT_CHAT_2026_11_22
+            supersedes_prior_snapshot_freshness_requirement: true
+            snapshot_sha256_comparison_in_build: REMOVE
+            snapshot_source_freshness_requirement: RETIRED
+            snapshot_dependency_proof_freshness_requirement: RETIRED_FOR_LEGACY_SNAPSHOT_ONLY
+            scope: SRC_PTSIP_ENGINES_CONTRACTS_ENGINES_REGISTRIES_DERIVED_SNAPSHOT_JSON
+            other_proof_source_hash_and_wheel_record_integrity: PRESERVED_UNCHANGED
+            independent_registered_contract_and_execution_authorization_checks: PRESERVED_UNCHANGED
+          snapshot_validity: NO_SOURCE_DIGEST_OR_FRESHNESS_GATE_FOR_LEGACY_DERIVED_SNAPSHOT
+          stale_invalid_unverifiable_required_reference: LEGACY_SNAPSHOT_REFERENCE_NOT_A_BUILD_OR_ELIGIBILITY_GATE
           common_core_flexibility: ENGINE_EXTENSIONS_CANNOT_REDEFINE_COMMON_IDENTITY_OTHER_ENGINE_SEMANTICS_OR_ACTIVE_CONTRACT
           version_independence: ENGINE_IMPLEMENTATION_VERSION_INDEPENDENT_OF_PTSIP_TOOL_SCHEMA_AND_EXTENSION_CONTRACT_VERSIONS
           implementation_build_environment_and_evidence_details: MAY_LIVE_IN_VERSIONED_MACHINE_RESOLVABLE_REFERENCED_CONTRACTS
@@ -970,7 +980,10 @@ Policy_Content:
         generic_validation_vpms_case_result_cannot_impersonate_ptsip_assure_conformance: true
         vpms_test_mode_transition_must_use_explicit_current_caller_capability_profile_responsibility_mapping: true
         vpms_test_mode_mapping_or_adapter_handoff_must_not_retire_current_api_without_separate_owner_approval: true
-        engine_common_identity_extension_snapshot_is_derived_non_authoritative_and_version_verified: true
+        engine_common_identity_extension_snapshot_is_derived_non_authoritative_and_version_verified: false
+        legacy_derived_snapshot_sha256_and_freshness_checks_retired: true
+        legacy_derived_snapshot_must_not_gate_product_source_build: true
+        other_canonical_engine_manifest_contract_binding_and_execution_authority_checks_unchanged: true
         engine_extension_manifest_cannot_override_canonical_engine_identity_or_other_engine_contracts: true
         engine_dependency_impact_verdict_requires_fresh_declared_graph_and_applicable_provider_consumer_evidence: true
         unknown_impact_or_compatibility_must_not_count_as_verified_unaffected: true
