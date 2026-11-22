@@ -93,11 +93,16 @@
       "status": "USER_DIRECTED",
       "responsibility": "VERSION_SYNC_CONTROLLER_SCOPE_REFORM",
       "target": ".ptsip/engine/developer/Distribution/release/controller/version_sync.go",
-      "direction": "EXTEND_FROM_PARTIAL_VERSION_PROJECTIONS_TO_EXPLICITLY_REGISTERED_ENGINE_SCHEMA_CONTRACT_CARGO_AND_REQUIRED_DERIVED_REFERENCE_FIELDS",
+      "direction": "EXTEND_VERSION_SYNC_FOR_EXPLICIT_CURRENT_ENGINE_SCHEMA_CONTRACT_CARGO_AND_DIRECT_VERSION_PROJECTIONS_ONLY",
       "source_authority": "src/VERSION",
       "reverse_authority": "FORBIDDEN",
       "field_mapping": "MACHINE_DECLARED_BY_OWNER_SEMANTICS_NOT_BY_VERSION_FIELD_NAME_INFERENCE",
-      "historical_version_rewrite": "FORBIDDEN"
+      "historical_version_rewrite": "FORBIDDEN",
+      "async_artifacts_not_direct_sync_targets": [
+        "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+        "src/ptsip/engines/contracts/dependency-graph.json"
+      ],
+      "async_artifact_relation": "EMIT_VERSION_SOURCE_CHANGE_NOTICE_NOT_SAME_TRANSACTION_RECOMPUTATION"
     },
     {
       "id": "VC-03",
@@ -241,7 +246,10 @@
         "policy_change_authorized": false,
         "implementation_authorized": false
       },
-      "requested_disposition": "RETIRE_LEGACY_DERIVED_SNAPSHOT_SHA256_COMPARISON_AND_RELATED_FRESHNESS_REQUIREMENT_NO_REPLACEMENT"
+      "requested_disposition": "RETIRE_LEGACY_DERIVED_SNAPSHOT_SHA256_COMPARISON_AND_RELATED_FRESHNESS_REQUIREMENT_NO_REPLACEMENT",
+      "async_artifact_job_owner_plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+      "async_artifact_relation": "SEPARATE_ASYNCHRONOUS_WORK_HANDOFF_NOT_VERSION_SYNC_COMPLETION",
+      "policy_violation_scope": "REQUEST_TO_REMOVE_SHA256_AND_FRESHNESS_VERIFICATION_ONLY_NOT_ASYNC_JOB_OWNERSHIP_TRANSFER"
     },
     {
       "id": "VC-11",
@@ -262,9 +270,11 @@
         ],
         "payload_kind": "SOURCE_VERSION_IDENTITY_MIGRATION_NOTIFICATION"
       },
-      "dependency_graph_mutation_by_this_requirement": "NOT_AUTHORIZED",
+      "dependency_graph_mutation_by_this_requirement": "INDEPENDENT_ASYNC_FOLLOWUP_WORK_OWNED_BY_THIS_PLAN_NOT_INLINE_VERSION_SYNC",
       "contract_first_migration_other_plan_files": "UNCHANGED",
-      "graph_runtime_integrity_checks": "NOT_SILENTLY_DISABLED"
+      "graph_runtime_integrity_checks": "NOT_SILENTLY_DISABLED",
+      "work_handoff": "ON_CURRENT_MANIFEST_AND_BINDING_CHANGE_NOTIFICATION",
+      "version_sync_job_must_update_graph": false
     },
     {
       "id": "VC-12",
@@ -314,7 +324,13 @@
     {
       "root": "src/ptsip/engines/contracts/",
       "owner_role": "CAPABILITY_REGISTRY_AND_DEPENDENCY_REFERENCES",
-      "restriction": "NO_INDEPENDENT_CURRENT_ENGINE_VERSION_DECLARATION_AUTHORITY"
+      "restriction": "NO_INDEPENDENT_CURRENT_ENGINE_VERSION_DECLARATION_AUTHORITY",
+      "async_followup_job_ownership": "OWNED_BY_THIS_PLAN_NOT_BY_VERSION_SYNC_EXECUTOR",
+      "async_followup_targets": [
+        "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+        "src/ptsip/engines/contracts/dependency-graph.json"
+      ],
+      "producer_relation": "RECEIVES_MANIFEST_BINDING_VERSION_CHANGE_NOTICE"
     },
     {
       "root": "src/ptsip/schemas/",
@@ -361,7 +377,7 @@
     "PRIOR_DEPENDENCY_GRAPH_ACCEPTANCE_IS_NOT_USED_AS_VERSION_CHANGE_SUCCESS_EVIDENCE",
     "RETIRED_DERIVED_SNAPSHOT_PLAN_ACCEPTANCE_IS_NOT_REUSED_AS_IMPLEMENTATION_AUTHORITY",
     "INDEPENDENT_CONTRACT_TRANSPORT_PROFILE_AND_WHEEL_RECORD_HASH_CHECKS_UNCHANGED",
-    "NONAUTHORITATIVE_DERIVED_SNAPSHOT_REGENERATED_WITH_FRESH_SOURCE_DIGESTS",
+    "ASYNC_DERIVED_SNAPSHOT_JOB_MUST_SATISFY_EFFECTIVE_POLICY_FRESHNESS_WHEN_CONSUMED_NOT_AS_VERSION_SYNC_INLINE_UPDATE",
     "EFFECTIVE_SFP_CNTR_0005_SNAPSHOT_SOURCE_HASH_AND_FRESHNESS_VERIFICATION_REMAINS_REQUIRED"
   ],
   "unresolved_policy_gates": [
@@ -440,6 +456,63 @@
     "policy_mutation": "FORBIDDEN_BY_USER",
     "implementation": "STOPPED_AND_EARLIER_PATCH_REVERTED",
     "unrelated_plan_requirements": "PRESERVED_NOT_IMPLICITLY_APPROVED",
-    "approval_source": "USER_EXPLICIT_CHAT_2026_11_22"
+    "approval_source": "USER_EXPLICIT_CHAT_2026_11_22",
+    "scope_note": "THE_SHA256_OR_FRESHNESS_REMOVAL_REQUEST_IS_BLOCKED; INDEPENDENT_ASYNC_ARTIFACT_TASK_HANDOFF_IS_NOT_THE_VIOLATION"
+  },
+  "async_followup_work": {
+    "schema_version": "ptsip-version-change-async-work/v1",
+    "interpretation_source": "USER_EXPLICIT_CHAT_2026_11_22",
+    "task_owner_plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+    "execution_model": "INDEPENDENT_NON_SYNCHRONIZING_ASYNC_WORK",
+    "version_sync_pipeline_does_not_mutate_followup_artifacts": true,
+    "input_notice": {
+      "producer_requirement_ids": [
+        "VC-01",
+        "VC-02"
+      ],
+      "changed_current_manifests": 6,
+      "changed_current_execution_bindings": 6,
+      "engine_ids": [
+        "context",
+        "storage",
+        "validation",
+        "discovery",
+        "execution",
+        "projection"
+      ],
+      "source_version_authority": "src/VERSION",
+      "notification_only": true
+    },
+    "jobs": [
+      {
+        "id": "VC-ASYNC-01",
+        "artifact": "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+        "owner_plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+        "execution": "INDEPENDENT_ASYNCHRONOUS",
+        "state": "PLANNED_NOT_EXECUTED",
+        "previous_validation_evidence": "INVALIDATED_LEGACY_PLAN_ACCEPTANCE",
+        "no_implicit_inline_sync": true,
+        "completion_evidence": "POLICY_COMPLIANT_SNAPSHOT_VERIFICATION_WHEN_CONSUMED",
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+        "sha256_and_freshness_obligation": "PRESERVED_UNCHANGED"
+      },
+      {
+        "id": "VC-ASYNC-02",
+        "artifact": "src/ptsip/engines/contracts/dependency-graph.json",
+        "owner_plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+        "execution": "INDEPENDENT_ASYNCHRONOUS",
+        "state": "PLANNED_NOT_EXECUTED",
+        "previous_validation_evidence": "INVALIDATED_LEGACY_PLAN_ACCEPTANCE",
+        "no_implicit_inline_sync": true,
+        "completion_evidence": "POLICY_COMPLIANT_GRAPH_REFERENCE_VERIFICATION_WHEN_CONSUMED",
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+        "dependency_source_evidence_requirement": "PRESERVED_UNCHANGED"
+      }
+    ],
+    "execution_order": "NOT_ASSUMED",
+    "completion_rule": "EACH_ASYNC_JOB_HAS_OWN_ACCEPTANCE_EVIDENCE_NOT_A_VERSION_SYNC_FIELD_PROJECTION",
+    "admission_rule": "EXISTING_EFFECTIVE_POLICY_AND_CONSUMER_GATES_REMAIN_APPLICABLE",
+    "validation_bypass": "FORBIDDEN",
+    "legacy_plan_retirement_does_not_revoke_effective_policy": true
   }
 }
