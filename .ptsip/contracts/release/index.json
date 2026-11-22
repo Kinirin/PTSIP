@@ -31,14 +31,27 @@
         ".ptsip/contracts/compile-sealed-rbac/",
         ".ptsip/contracts/release/",
         "src/ptsip/compile_sealed_rbac/",
-        "src/ptsip/specdata/compile-sealed-rbac/"
+        "src/ptsip/schemas/storage/profile/history/",
+        "src/ptsip/specdata/compile-sealed-rbac/",
+        "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
+        "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
       ]
     },
     "wheel": {
       "engine_origin_suffix": ".dist-info/ptsip-engines.json",
       "common_contract_origin": "ptsip/common_contract/origin.json",
       "go_entrypoint": "ptsip-go",
-      "excluded_prefixes": ["ptsip/compile_sealed_rbac/", "ptsip/specdata/compile-sealed-rbac/"]
+      "excluded_prefixes": [
+        "ptsip/compile_sealed_rbac/",
+        "ptsip/schemas/storage/profile/history/",
+        "ptsip/specdata/compile-sealed-rbac/",
+        "ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+        "ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+        "ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
+        "ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
+      ]
     },
     "installation": {
       "environment": "TEMPORARY_VENV",

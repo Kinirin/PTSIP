@@ -82,7 +82,7 @@ func TestDiscoveryProfileSourceIntegrity(t *testing.T) {
 	for _, tc := range []struct {
 		name, schema, version string
 	}{
-		{"versioned_resource", "storage/profile/history/project-profile-pp.2.00.schema.json", "pp.2.00"},
+		{"versioned_resource", "history/profile/project-profile-pp.2.00.schema.json", "pp.2.00"},
 		{"current_alias", "storage/profile/project-profile.schema.json", ""},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -101,7 +101,7 @@ func TestDiscoveryProfileSourceIntegrity(t *testing.T) {
 	}
 	t.Run("checkout_line_endings_preserve_canonical_pin_and_report_raw_hash", func(t *testing.T) {
 		root := copyDiscoverySelectionSources(t)
-		relative := "schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+		relative := "schemas/history/profile/project-profile-pp.2.00.schema.json"
 		original, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(relative)))
 		if err != nil {
 			t.Fatal(err)

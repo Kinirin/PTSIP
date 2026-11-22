@@ -91,7 +91,7 @@ func TestNativeProfileIdentityRewriteVerification(t *testing.T) {
 			}
 			corruptPackage := canonical(t.TempDir())
 			copyJSONTree(t, filepath.Join(packageRoot, "schemas"), filepath.Join(corruptPackage, "schemas"))
-			schemaPath := filepath.Join(corruptPackage, "schemas", "storage", "profile", "history", "project-profile-"+edge.to+".schema.json")
+			schemaPath := filepath.Join(corruptPackage, "schemas", "history", "profile", "project-profile-"+edge.to+".schema.json")
 			originalSchema, err := os.ReadFile(schemaPath)
 			if err != nil {
 				t.Fatal(err)

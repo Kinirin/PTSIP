@@ -85,7 +85,7 @@ func TestProjectionProfileMetadataNative(t *testing.T) {
 				input["profile_role"] = "DISTRIBUTED_EXAMPLE"
 			}
 			output = projectedProfileMetadata(t, input)
-			canonicalPath := filepath.Join(productRoot(t), "schemas", "storage", "profile", "history", "project-profile-"+version+".schema.json")
+			canonicalPath := filepath.Join(productRoot(t), "schemas", "history", "profile", "project-profile-"+version+".schema.json")
 			if version == "pp.3.00" {
 				canonicalPath = filepath.Join(productRoot(t), "schemas", "storage", "profile", "project-profile.schema.json")
 			}

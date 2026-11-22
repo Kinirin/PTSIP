@@ -164,6 +164,36 @@ func TestProfileVerifierUsesRegisteredSchemaStorage(t *testing.T) {
 	t.Fatal("fixture requires historical schema registrations")
 }
 
+func TestProfileVerifierRejectsRegistrationOutsideLifecycleDirectory(t *testing.T) {
+	for _, test := range []struct {
+		name       string
+		selector   string
+		directory  string
+		diagnostic string
+	}{
+		{"active in history", "ptsip.project-profile", "history/profile/", "outside storage/profile"},
+		{"deprecated in active storage", "ptsip.project-profile.pp.2.00", "storage/profile/history/", "outside history/profile"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			root, active, _ := profileFixture(t)
+			registrations, _, err := release.ReadProfileRegistrations(root)
+			if err != nil {
+				t.Fatal(err)
+			}
+			ref := registrations[test.selector].Path
+			if ref == "" {
+				t.Fatalf("missing Profile registration: %s", test.selector)
+			}
+			rewriteProfileFixture(t, root, profileRegistryPath, func(source string) string {
+				return strings.Replace(source, ref, test.directory+filepath.Base(ref), 1)
+			})
+			if err := VerifyProjectProfiles(root, active); err == nil || !strings.Contains(err.Error(), test.diagnostic) {
+				t.Fatalf("wrong Profile lifecycle directory: %v", err)
+			}
+		})
+	}
+}
+
 func TestProfileVerifierRejectsAuthorityRouteDrift(t *testing.T) {
 	for _, field := range []string{"publication_authorized", "consumer_contract_authority", "legacy_fallback"} {
 		t.Run(field, func(t *testing.T) {

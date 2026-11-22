@@ -526,15 +526,6 @@
       "implementation_blocking": true
     },
     {
-      "id": "UP-04",
-      "topic": "HISTORICAL_PROFILE_SCHEMA_DIRECTORY_PLAN_CONFLICT",
-      "issue": "OLDER_APPROVED_SCHEMA_CENTRALIZATION_PLAN_NAMES_STORAGE_PROFILE_HISTORY_WHILE_USER_SELECTED_SCHEMAS_HISTORY_PROFILE",
-      "prior_plan_ref": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
-      "selected_user_direction": "src/ptsip/schemas/history/profile/",
-      "decision": "RECONCILIATION_REQUIRED_BEFORE_IMPLEMENTATION",
-      "implementation_blocking": true
-    },
-    {
       "id": "UP-05",
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
       "issue": "COMBINED_TRIGGER_PRECEDENCE_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
@@ -770,6 +761,20 @@
       "snapshot_job_complete_before_build": true,
       "snapshot_sha256_and_freshness_verification_before_build": true,
       "build_if_snapshot_stale_unverifiable": "FORBIDDEN_FAIL_CLOSED"
+    },
+    {
+      "id": "UP-04",
+      "topic": "HISTORICAL_PROFILE_SCHEMA_DIRECTORY_PLAN_CONFLICT",
+      "decision": "RESOLVED_BY_EXPLICIT_USER_PATH_SELECTION",
+      "decision_ref": "src/planning/0.3.8/ptsip-schema-centralization.plan.json#/current_user_decisions/Director_Decision/decisions_0007",
+      "previous_history_root": "src/ptsip/schemas/storage/profile/history/",
+      "selected_user_direction": "src/ptsip/schemas/history/profile/",
+      "candidate_path": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+      "preserve_schema_bytes_ids_and_registered_lifecycle": true,
+      "candidate_registration_authorized": false,
+      "rejected_pp200_duplicate_disposition": "KEEP_RETIRED",
+      "implementation_blocking": false,
+      "approval_scope": "PROFILE_HISTORY_AND_EXISTING_CANDIDATE_RELOCATION_ONLY"
     }
   ]
 }

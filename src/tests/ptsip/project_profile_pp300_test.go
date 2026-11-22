@@ -87,7 +87,7 @@ func TestOfficialPP300ContractAndDependencySource(t *testing.T) {
 	if component["properties"].(object)["dependency"].(object)["$ref"] != "#/$defs/componentDependencyPolicy" {
 		t.Fatal("component dependency does not use the actual field contract")
 	}
-	history := readObject(t, filepath.Join(productRoot(t), "schemas", "storage", "profile", "history", "project-profile-pp.2.00.schema.json"))
+	history := readObject(t, filepath.Join(productRoot(t), "schemas", "history", "profile", "project-profile-pp.2.00.schema.json"))
 	for _, name := range []string{"componentDependencyPolicy", "componentDependencyRelation"} {
 		if !reflect.DeepEqual(definitions[name], history["$defs"].(object)[name]) {
 			t.Fatalf("%s changed instead of reusing the declared dependency field contract", name)
@@ -98,7 +98,7 @@ func TestOfficialPP300ContractAndDependencySource(t *testing.T) {
 		"pp.1.02": "07fbfe8a5aa9dacc56f7b76e9ceaa3474c5599f2",
 		"pp.2.00": "14d47e469e5f12ae65d721f64b17bdc35de861d8",
 	} {
-		path := "src/ptsip/schemas/storage/profile/history/project-profile-" + name + ".schema.json"
+		path := "src/ptsip/schemas/history/profile/project-profile-" + name + ".schema.json"
 		if actual := gitWorkingBlobSHA(t, path); actual != expected {
 			t.Fatalf("historical contract %s changed: got %s, want %s", name, actual, expected)
 		}

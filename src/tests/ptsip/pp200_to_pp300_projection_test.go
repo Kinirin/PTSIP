@@ -199,7 +199,7 @@ func TestPP200ToPP300Projection(t *testing.T) {
 
 	t.Run("tampered_registered_target_is_rejected", func(t *testing.T) {
 		candidateRoot := t.TempDir()
-		for _, rel := range []string{"schemas/config.json", "schemas/storage/profile/history/project-profile-pp.2.00.schema.json", "schemas/storage/profile/project-profile.schema.json"} {
+		for _, rel := range []string{"schemas/config.json", "schemas/history/profile/project-profile-pp.2.00.schema.json", "schemas/storage/profile/project-profile.schema.json"} {
 			raw, err := os.ReadFile(filepath.Join(packageRoot, filepath.FromSlash(rel)))
 			if err != nil {
 				t.Fatal(err)

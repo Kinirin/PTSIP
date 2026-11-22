@@ -74,6 +74,7 @@ func TestGoProductDistribution(t *testing.T) {
 			parts := strings.Split(name, "/")
 			engineBuildOutput := len(parts) >= 5 && strings.HasPrefix(name, "src/ptsip/engines/") && parts[4] == "target"
 			if !valid || strings.Contains("/"+name, "/.ptsip/") || engineBuildOutput || strings.HasPrefix(name, "src/policy/") ||
+				retiredPythonMember(strings.TrimPrefix(name, "src/")) ||
 				strings.HasPrefix(name, "src/ptsip/compile_sealed_rbac/") || entries[name] {
 				t.Fatalf("unexpected product archive entry %q", entry.Name)
 			}
@@ -81,6 +82,13 @@ func TestGoProductDistribution(t *testing.T) {
 		}
 		for _, name := range []string{
 			"src/ptsip/schemas/config.json",
+			"src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+			"src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+			"src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
+			"src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+			"src/ptsip/clarification/answer.go",
+			"src/ptsip/evidence/normalization.go",
+			"src/ptsip/inspection/inventory.go",
 			"src/ptsip/engines/index.json",
 			"src/ptsip/engines/discovery/profile-support.json",
 			"src/ptsip/engines/validation/profile-transitions.json",

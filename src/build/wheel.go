@@ -117,7 +117,7 @@ func readBaseWheel(base string) (wheelContents, string, error) {
 			strings.ContainsAny(name, "\\:\r\n") || !item.Mode().IsRegular() {
 			return nil, "", fmt.Errorf("unsupported base wheel member %q", name)
 		}
-		if retiredWheelMember(name) {
+		if retiredProductMember(name) {
 			continue
 		}
 		folded := strings.ToLower(name)

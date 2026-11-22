@@ -35,16 +35,21 @@ fn target_schema(package: &str, target: &str) -> Result<(Value, String, Vec<u8>)
     let mut matches = data["storage"]["profile"]
         .as_object()
         .ok_or("registered Profile schema catalog required")?
-        .values()
-        .filter(|entry| entry["version"] == target);
-    let registration = matches
+        .iter()
+        .filter(|(_, entry)| entry["version"] == target);
+    let (selector, registration) = matches
         .next()
         .ok_or("unregistered target Profile contract")?;
     if matches.next().is_some() {
         return Err("ambiguous target Profile schema registration".into());
     }
     let path = source::text(registration, "path")?;
-    if !path.starts_with("storage/profile/") {
+    let expected_path = if selector == "ptsip.project-profile" {
+        "storage/profile/project-profile.schema.json".to_owned()
+    } else {
+        format!("history/profile/project-profile-{target}.schema.json")
+    };
+    if path != expected_path {
         return Err("target does not resolve to a registered Profile schema path".into());
     }
     let relative = format!("schemas/{path}");

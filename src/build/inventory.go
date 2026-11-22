@@ -53,6 +53,14 @@ type profileRegistration struct {
 	Lifecycle string `json:"registered_lifecycle"`
 }
 
+func registeredProfilePath(selector string, row profileRegistration) bool {
+	if selector == "ptsip.project-profile" {
+		return row.Path == "storage/profile/project-profile.schema.json"
+	}
+	return path.Dir(row.Path) == "history/profile" && path.Clean(row.Path) == row.Path &&
+		path.Base(row.Path) == "project-profile-"+row.Version+".schema.json"
+}
+
 func (source productSource) decode(name string, value any) error {
 	file, ok := source.Files[name]
 	if !ok {
@@ -180,7 +188,7 @@ func inspectProfiles(source productSource) ([]string, string, error) {
 		if row.ID == "" || row.Version == "" || slices.Contains(versions, row.Version) || ids[row.ID] {
 			return nil, "", fmt.Errorf("invalid or repeated profile registration %s", selector)
 		}
-		if !strings.HasPrefix(row.Path, "storage/profile/") || path.Clean(row.Path) != row.Path {
+		if !registeredProfilePath(selector, row) {
 			return nil, "", fmt.Errorf("profile registration %s escapes its schema root", selector)
 		}
 		name := schemaRoot + row.Path
@@ -200,6 +208,8 @@ func inspectProfiles(source productSource) ([]string, string, error) {
 				return nil, "", fmt.Errorf("official profile %s must be an active direct schema", name)
 			}
 			active = row.Version
+		} else if row.Lifecycle != "DEPRECATED" {
+			return nil, "", fmt.Errorf("historical Profile %s must be registered as DEPRECATED", selector)
 		}
 		ids[row.ID] = true
 		versions = append(versions, row.Version)

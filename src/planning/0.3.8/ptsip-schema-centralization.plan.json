@@ -79,7 +79,7 @@
     "engine_schema_root": "src/ptsip/engines/**/src/schemas/**",
     "engine_schema_root_approved": true,
     "engine_historical_contract_preservation": "ONLY_STILL_SUPPORTED_VERSIONS;RETIRED_VALIDATORS_AND_UNUSED_CONTRACTS_DELETE_AFTER_REPLACEMENT_PASS",
-    "project_profile_historical_root": "src/ptsip/schemas/storage/profile/history/",
+    "project_profile_historical_root": "src/ptsip/schemas/history/profile/",
     "project_profile_historical_filenames": {
       "pp.1.01": "project-profile-pp.1.01.schema.json",
       "pp.1.02": "project-profile-pp.1.02.schema.json",
@@ -328,11 +328,13 @@
     {
       "id": "PATH-PROFILE-HISTORY-01",
       "scope": [
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
+        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
       ],
       "state": "APPROVED_BY_USER",
-      "note": "Both historical schemas use versioned leaf filenames directly in profile/history/. No per-version subdirectories."
+      "note": "The three registered historical schemas and the preserved unregistered candidate keep their existing leaf filenames directly in schemas/history/profile/. Preserve schema bytes, IDs and registered lifecycle."
     },
     {
       "id": "RETIRE-PROFILES-01",
@@ -355,9 +357,9 @@
     {
       "id": "PROFILE-HYBRID-01",
       "scope": [
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
       ],
       "state": "OUTPUT_FILENAMES_AND_HISTORY_ROOT_USER_REQUESTED",
       "note": "Schema generation remains pending full work plan approval."
@@ -1590,7 +1592,7 @@
       "blind_source_deletion_authorized": false
     },
     {
-      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+      "path": "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
       "filename": "project-profile-pp.1.01.schema.json",
       "responsibility": "Historical pp.1.01 Project Profile JSON Schema validated against hybrid fixture (template compat separately checked)",
       "sources": [
@@ -1605,7 +1607,7 @@
       ]
     },
     {
-      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+      "path": "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
       "filename": "project-profile-pp.1.02.schema.json",
       "responsibility": "Historical pp.1.02 Project Profile JSON Schema validated against hybrid fixture (template compat separately checked)",
       "sources": [
@@ -1620,21 +1622,20 @@
       ]
     },
     {
-      "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "path": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
       "filename": "project-profile-pp.2.00.schema.json",
       "responsibility": "Immutable pp.2.00 Project Profile validation schema with hybrid version fixture",
       "sources": [
         "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
-        "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
         "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json"
       ],
       "source_roles": [
         "INSTANCE_FIXTURE",
-        "SCHEMA_REGISTERED_CURRENT",
-        "SCHEMA_VARIANT"
+        "SELECTED_ORIGINAL_SCHEMA_DEFINITION"
       ],
-      "readiness": "HISTORY_ROOT_APPROVED_SCHEMA_SOURCE_CONFLICT_BLOCKED",
-      "decision": "EXACT_FILE_PATH_USER_REQUESTED_SOURCE_VARIANT_SELECTION_UNRESOLVED"
+      "rejected_duplicate": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+      "readiness": "EXACT_USER_APPROVED_HISTORICAL_PATH",
+      "decision": "PRESERVE_SELECTED_ORIGINAL_SCHEMA_AND_REGISTERED_DEPRECATED_LIFECYCLE"
     },
     {
       "path": null,
@@ -1649,17 +1650,17 @@
       "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
     },
     {
-      "path": null,
-      "filename": "project-profile-candidate.schema.json",
+      "path": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+      "filename": "ptsip-profile-pp-2.00.candidate.schema.json",
       "responsibility": "Unregistered Project Profile candidate",
       "sources": [
         "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json"
       ],
-      "readiness": "OWNER_AND_NONCENTRAL_PATH_REVIEW_REQUIRED",
-      "decision": "REJECT_NONEXISTENT_CENTRAL_TARGET;NO_AUTOMATIC_ENGINE_OR_STORAGE_ASSIGNMENT",
+      "readiness": "EXACT_HISTORICAL_RELOCATION_PATH_USER_APPROVED",
+      "decision": "RELOCATE_EXISTING_CANDIDATE_BYTES_WITHOUT_REGISTRATION_OR_PROMOTION",
       "previous_provisional_location": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
-      "activation": "FORBIDDEN_UNTIL_OWNER_AND_EXACT_TARGET_APPROVED",
-      "path_pattern": null,
+      "activation": "UNREGISTERED_HISTORICAL_DRAFT_ONLY",
+      "path_pattern": "src/ptsip/schemas/history/profile/",
       "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
     },
     {
@@ -1667,16 +1668,16 @@
       "filename": "project-profile.schema.json",
       "responsibility": "Official current pp.3.00 Project Profile independent schema with component-local dependency and DEFAULT mode",
       "sources": [
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+        "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
       ],
       "readiness": "OFFICIAL_CORE_SCHEMA_IMPLEMENTATION_AUTHORIZED_USER_LATEST",
       "decision": "USER_EXPLICIT_NEW_OFFICIAL_PP300_CONTRACT_BASED_ON_IMMUTABLE_PP200_HISTORY;OLD_PP200_CURRENT_ALIAS_SUPERSEDED_FOR_FUTURE_WORK",
       "history_snapshot_paths": [
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
       ],
-      "historical_resource_root": "src/ptsip/schemas/storage/profile/history/",
+      "historical_resource_root": "src/ptsip/schemas/history/profile/",
       "source_roles": [
         "VERSIONED_SCHEMA_TARGET",
         "CURRENT_INSTANCE_FIXTURE"
@@ -1724,7 +1725,7 @@
           ]
         },
         "source_contract": {
-          "schema_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+          "schema_path": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
           "field_pointer": "/properties/component_dependency_policy",
           "definition_pointer": "/$defs/componentDependencyPolicy",
           "relation_definition_pointer": "/$defs/componentDependencyRelation",
@@ -2369,10 +2370,10 @@
       "source_path": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
       "source_blob_sha": "14d47e469e5f12ae65d721f64b17bdc35de861d8",
       "source_size_bytes": 14327,
-      "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "target_path": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
       "role": "Project Profile registered runtime versions",
-      "gate": "SELECTED_AUTHORITATIVE_PP200_SCHEMA_SOURCE_MIGRATE_AND_REWIRE_BEFORE_PROFILES_TREE_RETIREMENT",
-      "action": "CANONICALIZE_SELECTED_PP200_SEMANTICS_AND_REGISTER_CANONICAL_HISTORY_AND_CURRENT_ALIAS;IGNORE_RETIRED_SPECData_DUPLICATE"
+      "gate": "PRESERVE_SELECTED_AUTHORITATIVE_PP200_SCHEMA_BYTES",
+      "action": "RELOCATE_EXISTING_REGISTERED_PP200_HISTORY_WITH_SAME_ID_DIGEST_AND_LIFECYCLE"
     },
     {
       "source_path": "src/ptsip/schemas/plan/public-structure-plan.v1.schema.json",
@@ -2443,7 +2444,7 @@
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
       "source_blob_sha": "e8379e2d16f2a3c30b7c192c663fa45dc4ee7fec",
       "source_size_bytes": 10381,
-      "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+      "target_path": "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
       "role": "Project Profile registered runtime versions",
       "gate": "HISTORICAL_SOURCE_VERSION_AND_REVISION_VERIFIED",
       "action": "MIGRATE_TO_APPROVED_HISTORICAL_FILENAME_AFTER_VERIFIED_SOURCE"
@@ -2452,7 +2453,7 @@
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
       "source_blob_sha": "07fbfe8a5aa9dacc56f7b76e9ceaa3474c5599f2",
       "source_size_bytes": 14130,
-      "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+      "target_path": "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
       "role": "Project Profile registered runtime versions",
       "gate": "HISTORICAL_SOURCE_VERSION_AND_REVISION_VERIFIED",
       "action": "MIGRATE_TO_APPROVED_HISTORICAL_FILENAME_AFTER_VERIFIED_SOURCE"
@@ -2461,21 +2462,22 @@
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
       "source_blob_sha": "e9fba283d16d521a037658899cf7066c5769a2eb",
       "source_size_bytes": 15626,
-      "target_path": null,
+      "target_path": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
       "role": "Unregistered Project Profile candidate",
-      "gate": "PATH_REVIEW_NOT_COMPLETED_NO_SCHEMA_GENERATION",
-      "action": "NO_MOVE_TO_REJECTED_CENTRAL_PATH;SOURCE_ONLY_UNTIL_DUTY_OWNER_AND_TARGET_APPROVED",
-      "target_activation": "DENIED_REEVALUATE_LOCATION",
+      "gate": "EXACT_BYTE_PRESERVING_PATH_RELOCATION_APPROVED",
+      "action": "RELOCATE_WITH_EXISTING_BASENAME_AND_REWIRE_PACKAGING_CONSUMERS",
+      "target_activation": "UNREGISTERED_HISTORICAL_DRAFT_ONLY",
       "previous_provisional_target": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
       "target_owner": "UNRESOLVED_NON_ENGINE_OWNER",
-      "target_pattern": null
+      "target_pattern": "src/ptsip/schemas/history/profile/"
     },
     {
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
       "source_blob_sha": "83eb3b06eae023f5024a853bf40572166cf0a99a",
       "source_size_bytes": 14130,
-      "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
-      "role": "Project Profile registered runtime versions",
+      "target_path": null,
+      "canonical_replacement": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
+      "role": "Rejected pp.2.00 duplicate",
       "gate": "NO_FUTURE_USE_AS_PP2_SCHEMA_SOURCE;REMOVE_AFTER_REPLACEMENT_VALIDATION",
       "action": "RETIRE_UNSELECTED_PP200_SCHEMA_AFTER_SELECTED_SOURCE_CANONICALIZED_AND_CONSUMER_REWIRE",
       "retention": "DELETE_NO_HISTORICAL_CONTRACT_RECORD"
@@ -2522,8 +2524,8 @@
       "resolution": "Keep pp.1.01, pp.1.02, pp.2.00 registered behavior independent; verified version dispatch only, no blind flatten or oneOf"
     },
     {
-      "target": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
-      "resolution": "Candidate never silently promoted to current"
+      "target": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+      "resolution": "Preserve the candidate's bytes for historical reference. It remains unregistered."
     },
     {
       "target": "src/ptsip/schemas/storage/profile/source-profile.schema.json",
@@ -2575,9 +2577,9 @@
           "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
           "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
           "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-          "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-          "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-          "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+          "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+          "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+          "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
         ]
       ],
       "outputs": [
@@ -2590,7 +2592,7 @@
         "do not guess missing $id or readme schema",
         "register approved exact resources",
         "separate schema logical key, version and file path",
-        "Register pp1.01/pp1.02 sources and pp2.00 derived solely from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; do not register src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json; current pp2 selector points only to approved canonical target.",
+        "Resolve pp.1.01, pp.1.02 and pp.2.00 through their canonical history paths; preserve the selected original pp.2.00 schema bytes. The current selector points to official pp.3.00.",
         "Remove old src/ptsip/profiles/index.yaml sample catalog as a source of runtime schema metadata; register exact current and historical Project Profile schemas in central config.json",
         "Register Policy_Content and independent Rules.evaluation under v4 references; no Policy_Evaluation root or Evaluation/ directory",
         "Do not register RBAC applicability or execution statuses as config.json values",
@@ -2736,10 +2738,10 @@
         "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
         "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
         "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-        "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
+        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
         "src/ptsip/schemas/storage/profile/source-profile.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
         "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
         "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
         "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml"
@@ -2747,7 +2749,7 @@
       "outputs": [
         "User, Project, Source, Candidate and RA/RAC/AEC schemas",
         "Exact historical schema mapping: pp.1.01 -> project-profile-pp.1.01.schema.json; pp.1.02 -> project-profile-pp.1.02.schema.json, each with source SHA; current pp.2.00 conflict separately blocked",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
         "Three-version field/diff matrix, pp1.00 missing-source block, template example retirement ledger"
       ],
       "actions": [
@@ -2960,8 +2962,8 @@
         "WU-10",
         "WU-13"
       ],
-      "execution_status": "NATIVE_SOURCE_REMOVAL_VERIFIED_OTHER_LEGACY_DELETIONS_BLOCKED_BY_REPLACEMENT_AND_CONSUMERS",
-      "current_result": "21 superseded native source copies were removed by the verified WU06 relocation. Other source deletion requires approved replacement, zero supported consumers and its own package acceptance."
+      "execution_status": "NATIVE_AND_PROFILE_SOURCE_RETIREMENTS_VERIFIED_OTHER_DELETIONS_GATED",
+      "current_result": "21 superseded native source copies were removed by the verified WU06 relocation. UP-04 relocated the three existing registered Profile history schemas and the unregistered pp.2.00 candidate to schemas/history/profile/ with unchanged bytes. The two superseded history copies and the rejected pp.2.00 duplicate under specdata were removed after checking current consumers and the selected registered schemas. Remaining source deletion requires approved replacement, zero supported consumers and its own package acceptance."
     },
     {
       "id": "WU-09",
@@ -3008,9 +3010,9 @@
         "src/ptsip/engines/validation/profile-transitions.json"
       ],
       "outputs": [
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
         "src/ptsip/schemas/storage/profile/project-profile.schema.json",
         "per-version conformance matrix",
         "pp1.00 missing input report"
@@ -3028,7 +3030,7 @@
         "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection.",
         "CURRENT USER AUTHORIZED: implement official pp.3.00 core from immutable pp.2.00 history field responsibilities, required component.dependency using exact existing component_dependency_policy contract, DEFAULT mode only and no $comment. User extension/lineage/compression unresolved details remain independent."
       ],
-      "acceptance": "Historical pp.1.01/pp.1.02/pp.2.00 exact schema blobs and selectors remain unchanged; new direct official pp.3.00 core and native version support pass focused independent conformance. No pp.1.00 source fabricated. WU14 latest design-trigger exception controls removal of the 22 legacy Profile files; fixture and distribution obligations continue after deletion.",
+      "acceptance": "Historical pp.1.01/pp.1.02/pp.2.00 exact schema blobs, IDs and version selectors remain unchanged with lookup paths under schemas/history/profile/. New direct official pp.3.00 core and native version support pass focused independent conformance. No pp.1.00 source fabricated. WU14 latest design-trigger exception controls removal of the 22 legacy Profile files; fixture and distribution obligations continue after deletion.",
       "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED_JSON_FIXTURE_TRANSFER_BLOCKED",
       "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. Exact JSON fixture path approval is still false; no pp.1.00 schema is required or fabricated.",
       "pp300_followup": {
@@ -3507,7 +3509,7 @@
       "pp200_pp300_field_comparison_2026_11_22": {
         "state": "STRUCTURAL_CORRESPONDENCE_RECORDED_NO_TRANSITION_REGISTERED",
         "source_contract": {
-          "path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+          "path": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
           "id": "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.schema.json"
         },
         "target_contract": {
@@ -3748,7 +3750,7 @@
     "pass_requirements": [
       "no .ptsip source contract used",
       "44/44 exact src/ptsip source paths mapped",
-      "Schema filenames have no version except the explicitly approved historical project-profile-pp.1.01.schema.json, project-profile-pp.1.02.schema.json and project-profile-pp.2.00.schema.json",
+      "Historical Profile exceptions preserve the three versioned registered filenames and the existing unregistered draft filename under schemas/history/profile/",
       "no unresolved $ref or duplicate registered $id",
       "Checklist no mandatory fields",
       "RA-list record per RA_id owns exactly RA_id, RA_title, RA_description, grouped AEC_ids/AEC_name and RAC_ids/RAC_name; RA ID follows ^R-ID-[0-9A-F]{32}$; names originate exclusively in RAC/AEC lists, RA views resolve to canonical names by ID. No additional default field requiredness implied.",
@@ -3756,7 +3758,7 @@
       "new schema package data present in built wheel",
       "removed sources have zero remaining refs",
       "pp2.00 canonical schema derives exclusively from src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; rejected src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json is unregistered then deleted after validated consumer transition.",
-      "Historical Project Profile schemas resolve by approved versioned filenames directly under storage/profile/history/ and preserve immutable source SHA",
+      "Historical Project Profile schemas resolve by approved versioned filenames directly under schemas/history/profile/ and preserve immutable source SHA",
       "No imports of retired profiles from supported replacement and Go entrypoint; two user-excluded Python modules are documented known broken references",
       "Engine schemas reside in each evidence-selected native engine src/schemas/** with preserved schema IDs, versions, immutable source hashes and current registered consumer references; no new central shared engine schema root is created",
       "Three versioned Project Profile historical schema resources pp.1.01 pp.1.02 pp.2.00 have independent hybrid YAML conformance results and exact source SHA",
@@ -4197,14 +4199,14 @@
     "canonical_current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
     "responsibilities": {
       "current": "Current admitted project-profile schema only; not a concatenation of past schema contents",
-      "history": "Each archived profile contract has its own versioned filename directly under profile/history/; preserve exact version semantics and immutable source SHA.",
+      "history": "Each archived profile contract has its own versioned filename directly under schemas/history/profile/; preserve exact version semantics and immutable source SHA.",
       "selector": "Select the exact registered profile contract version and immutable source revision; historical basename includes version for recognition, but filename alone does not determine authority",
       "candidate": "Candidate profiles remain unregistered and cannot silently become current"
     },
     "conversion_procedure": [
-      "Verify pp.1.01 and pp.1.02 with the registered specdata schemas and pp.2.00 with src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json; never load src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json as pp2 contract source.",
+      "Verify pp.1.01, pp.1.02 and pp.2.00 with their canonical registered history schemas and immutable digests. The original selected sources remain recorded as Git provenance. Keep the rejected pp.2.00 duplicate retired.",
       "pp.1.00 missing: refuse schema creation without a real source or owner direction",
-      "Generate JSON Schema contracts under profile/history/project-profile-pp.1.01.schema.json, project-profile-pp.1.02.schema.json and project-profile-pp.2.00.schema.json; do not rename YAML instance into schema",
+      "Preserve the three existing JSON Schemas under schemas/history/profile/ with their original filenames and bytes; use independent YAML instance fixtures for testing",
       "Preserve version-specific specification.family, ptsip.revision, profile_role and path-variable behavior; preserve existing source schema branch alternatives",
       "Do not create separate template profile schema; stop using distributed template YAML only after feature and consumer reference analysis",
       "CURRENT USER OVERRIDE: replace the former pp.2.00 reference-only current selector with direct official pp.3.00 core schema while preserving exact pp.2.00 historical resource and hash.",
@@ -4219,27 +4221,28 @@
       "retired_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
     },
     "no_silent_version_flatten": true,
-    "history_storage_path": "src/ptsip/schemas/storage/profile/history/",
+    "history_storage_path": "src/ptsip/schemas/history/profile/",
+    "history_location_decision_ref": "current_user_decisions.Director_Decision.decisions_0007",
     "historical_naming": "VERSIONED_FILE_IN_HISTORY_ROOT",
     "historical_schema_files": [
       {
         "source": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
         "schema_source": "src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+        "target": "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
         "registration": "DEPRECATED",
         "decision": "EXACT_USER_REQUESTED_OUTPUT_PATH"
       },
       {
         "source": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
         "schema_source": "src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "target": "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
         "registration": "DEPRECATED",
         "decision": "EXACT_USER_REQUESTED_OUTPUT_PATH"
       },
       {
         "source": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
         "schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
-        "target": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "target": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
         "registration": "DEPRECATED",
         "decision": "USER_SELECTED_AUTHORITATIVE_SCHEMA_SOURCE_2026_11_18"
       }
@@ -4248,7 +4251,7 @@
       "state": "OFFICIAL_CORE_IMPLEMENTATION_AUTHORIZED_CURRENT_USER",
       "current_resource": "src/ptsip/schemas/storage/profile/project-profile.schema.json",
       "current_version": "pp.3.00",
-      "historical_pp200_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "historical_pp200_path": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
       "historical_pp200_integrity": "DO_NOT_MODIFY_HISTORY_SCHEMA",
       "earlier_pp200_current_selector": "SUPERSEDED_BY_CURRENT_EXPLICIT_USER_DIRECTION",
       "registry_hashes": "UPDATE_ONLY_AFTER_NEW_SCHEMA_APPROVED_COMPILED_AND_REGISTERED",
@@ -5112,7 +5115,7 @@
     "forbidden_contract_basis": [
       ".ptsip/**"
     ],
-    "historical_root": "src/ptsip/schemas/storage/profile/history/",
+    "historical_root": "src/ptsip/schemas/history/profile/",
     "missing_version": {
       "version": "pp.1.00",
       "state": "SOURCE_NOT_FOUND_IN_CURRENT_HEAD",
@@ -5126,7 +5129,7 @@
     "source_variants": [
       {
         "version": "pp.1.01",
-        "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
+        "target_path": "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
         "input_profile": {
           "path": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
           "source_blob_sha": "55d6d8b893ba46131b452a00aadb4eba1ff3d9ea",
@@ -5161,7 +5164,7 @@
       },
       {
         "version": "pp.1.02",
-        "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
+        "target_path": "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
         "input_profile": {
           "path": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
           "source_blob_sha": "b3e67998fd93f1f917d28ca44998b86f28f9a3af",
@@ -5196,7 +5199,7 @@
       },
       {
         "version": "pp.2.00",
-        "target_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "target_path": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
         "input_profile": {
           "path": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
           "source_blob_sha": "b1d669d44a8b5698e062923effbaef834570fc85",
@@ -5323,7 +5326,7 @@
         "retired_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json"
       },
       "selected_schema_source": "src/ptsip/profiles/profiles_schemas/ptsip-profile-pp-2.00.schema.json",
-      "design_source": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+      "design_source": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
     },
     "template_disposition": {
       "user_direction": "MERGE_TEMPLATE_VARIANT_INTO_HYBRID_CONTRACT_REVIEW_AND_STOP_SEPARATE_TEMPLATE_EXAMPLE",
@@ -5352,9 +5355,9 @@
     "source_identity": "Preserve exact source blob SHA, schema $id and version selector in config registry; cannot derive validator rules solely from YAML sample",
     "schema_file_naming": "PROJECT_PROFILE_HISTORICAL_VERSION_IN_FILENAME_ONLY",
     "precise_outputs": [
-      "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-      "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-      "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+      "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+      "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+      "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
     ],
     "no_schema_generated_from_pp100": true
   },
@@ -5476,7 +5479,7 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.1.01-hybrid-python-package.json",
         "secondary_refs": [
-          "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json"
+          "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json"
         ],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
@@ -5520,7 +5523,7 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.1.02-hybrid-python-package.json",
         "secondary_refs": [
-          "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json"
+          "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json"
         ],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
@@ -5564,7 +5567,7 @@
         "action": "RETAIN_HASHED_SOURCE_EVIDENCE_AND_CONVERT_INSTANCE_TO_JSON_GOLDEN_FIXTURE_THEN_DELETE",
         "proposed_replacement": "src/tests/ptsip/pp.2.00-hybrid-python-package.json",
         "secondary_refs": [
-          "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+          "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
         ],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
@@ -5657,7 +5660,7 @@
         "size_bytes": 14327,
         "role_group": "VALIDATOR_SCHEMAS",
         "action": "MIGRATE_EXACT_SCHEMA_SEMANTICS_AND_REFS_THEN_DELETE",
-        "proposed_replacement": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+        "proposed_replacement": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
         "secondary_refs": [],
         "delete_gate": "APPROVED_RECORDED_RUST_NATIVE_NORMAL_MIGRATION_IMPORT_DESIGN;IMMEDIATE_ALL_22_DELETE",
         "state": "DELETED_VERIFIED_BY_COMMIT_TREE",
@@ -13489,7 +13492,7 @@
         "title": "PTSIP official Current Project Profile"
       },
       "supersedes_selector_id": "urn:ptsip:contract:project-profile:current",
-      "design_source": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+      "design_source": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
       "history_contract_policy": "READ_PP200_AS_SEMANTIC_AND_HIERARCHICAL_BASELINE;DO_NOT_COPY_INVALIDATED_SCHEMA_SHAPE_BLINDLY",
       "field_role_and_hierarchy": "PRESERVE_ACTUAL_SEMANTIC_RESPONSIBILITY_AND_HIERARCHY;EXACT_LEGACY_FIELD_NAMES_NOT_MANDATORY",
       "required_semantic_mapping": [
@@ -13546,7 +13549,7 @@
           ]
         },
         "source_contract": {
-          "schema_path": "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+          "schema_path": "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
           "field_pointer": "/properties/component_dependency_policy",
           "definition_pointer": "/$defs/componentDependencyPolicy",
           "relation_definition_pointer": "/$defs/componentDependencyRelation",
@@ -13555,9 +13558,9 @@
         }
       },
       "preserve_history_files": [
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.01.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.1.02.schema.json",
-        "src/ptsip/schemas/storage/profile/history/project-profile-pp.2.00.schema.json"
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+        "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
       ],
       "registry_rule": "ACTIVATE_DIRECT_OFFICIAL_PP300_CURRENT_RESOURCE_AFTER_CORE_SCHEMA_AND_FOCUSED_NATIVE_CONFORMANCE;PRESERVE_EXPLICIT_PP101_PP102_PP200_HISTORY_AND_EXACT_HASH_PINS",
       "registry_shape": {
@@ -14854,6 +14857,29 @@
           "value_child_field_examples_allowed_in_default_preview": false,
           "value_child_field_validation": "PTSIP_DEFAULT_NONE;USER_CUSTOM_CONTRACT_OWNED",
           "status": "USER_APPROVED_NO_PTSIP_REQUIRED_OR_NAMED_INNER_FIELDS"
+        }
+      },
+      "decisions_0007": {
+        "decisions_date": "2026-11-23",
+        "authority": "USER_EXPLICIT",
+        "title": "project_profile_history_path",
+        "scope": "UP-04_PROFILE_HISTORY_AND_EXISTING_CANDIDATE_RELOCATION",
+        "status": "APPROVED",
+        "decision": {
+          "previous_history_root": "src/ptsip/schemas/storage/profile/history/",
+          "history_root": "src/ptsip/schemas/history/profile/",
+          "registered_history_paths": [
+            "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
+            "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
+            "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
+          ],
+          "candidate_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
+          "candidate_target": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+          "candidate_disposition": "PRESERVE_AS_UNREGISTERED_HISTORICAL_DRAFT",
+          "rejected_pp200_duplicate": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
+          "rejected_pp200_disposition": "KEEP_RETIRED",
+          "preserve_schema_bytes_ids_and_registered_lifecycle": true,
+          "current_official_profile_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json"
         }
       }
     }

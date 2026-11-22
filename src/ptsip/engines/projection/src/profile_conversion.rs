@@ -30,7 +30,12 @@ pub fn project(input: &Value) -> Result<Value, String> {
 
 fn profile_schema(root: &mut Root, registration: &Value, version: &str) -> Result<Value, String> {
     let path = source::text(registration, "path")?;
-    if registration["version"] != version || !path.starts_with("storage/profile/") {
+    let expected_path = match version {
+        SOURCE_VERSION => "history/profile/project-profile-pp.2.00.schema.json",
+        TARGET_VERSION => "storage/profile/project-profile.schema.json",
+        _ => return Err(format!("unsupported Profile schema version {version}")),
+    };
+    if registration["version"] != version || path != expected_path {
         return Err(format!("invalid registered Profile resource for {version}"));
     }
     let path = format!("schemas/{path}");

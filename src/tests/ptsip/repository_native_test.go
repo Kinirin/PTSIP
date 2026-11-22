@@ -1,6 +1,7 @@
 package contracts_test
 
 import (
+	"encoding/json"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -8,6 +9,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Kinirin/PTSIP/src/ptsip/inspection"
 )
 
 func repositoryFixture(t *testing.T) string {
@@ -112,6 +115,52 @@ func valuesAsStrings(values array) []string {
 		result[index] = value.(string)
 	}
 	return result
+}
+
+func TestRepositoryInventoryProjection(t *testing.T) {
+	root := repositoryFixture(t)
+	for _, name := range []string{
+		".gitignore", "README", "go.mod", "examples/requirements-dev.in", "src/project/config.json",
+		"src/project/tool.schema.JSON", "src/project/contracts/types.yaml", "tests/test.go", "tools/setup.cfg",
+	} {
+		writeRepositoryFixture(t, root, name, "fixture")
+	}
+	observed := repositoryOperation(t, "discovery", "discovery.repository.inspect", object{"path": root})
+	encode := func() json.RawMessage {
+		t.Helper()
+		output, err := json.Marshal(observed)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return output
+	}
+	inventory, err := inspection.ProjectInventory(encode())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if inventory.ScanMode != "filesystem" || inventory.ObservedFiles != 9 || inventory.Directories != 6 || len(inventory.ObservationErrors) != 0 {
+		t.Fatalf("Discovery files were not projected correctly: %+v", inventory)
+	}
+	if !reflect.DeepEqual(inventory.Manifests, []string{"go.mod", "tools/setup.cfg"}) ||
+		!reflect.DeepEqual(inventory.RequirementsFiles, []string{"examples/requirements-dev.in"}) ||
+		!reflect.DeepEqual(inventory.SchemaCandidates, []string{"src/project/contracts/types.yaml", "src/project/tool.schema.JSON"}) ||
+		!reflect.DeepEqual(inventory.TestRoots, []string{"tests"}) ||
+		!reflect.DeepEqual(inventory.ToolLikeRoots, []string{"tools"}) ||
+		!reflect.DeepEqual(inventory.SDKLikeRoots, []string{"src"}) ||
+		inventory.TopLevelExtensions["<none>"] != 2 || inventory.TopLevelExtensions[".json"] != 2 {
+		t.Fatalf("unexpected inventory classification: %+v", inventory)
+	}
+	observed["observation_errors"] = array{"source path is unavailable"}
+	incomplete, err := inspection.ProjectInventory(encode())
+	if err != nil || !reflect.DeepEqual(incomplete.ObservationErrors, []string{"source path is unavailable"}) {
+		t.Fatalf("partial observation lost its diagnostic: %+v, %v", incomplete, err)
+	}
+	for _, invalid := range []array{{"../outside.txt"}, {"dir/a.txt", "dir/a.txt"}} {
+		observed["files"] = invalid
+		if _, err := inspection.ProjectInventory(encode()); err == nil {
+			t.Fatalf("invalid Discovery file paths accepted: %v", invalid)
+		}
+	}
 }
 
 func TestRepositoryNativeProfileBindings(t *testing.T) {

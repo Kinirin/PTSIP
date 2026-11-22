@@ -12,7 +12,7 @@ func validationSelectedProfile() object {
 	return object{
 		"contract_id": "urn:profile:test", "version": "pp.2.00",
 		"operations":      []any{"IDENTIFY", "VALIDATE", "ANALYZE", "CREATE_TARGET"},
-		"schema_resource": "schemas/storage/profile/history/project-profile-pp.2.00.schema.json",
+		"schema_resource": "schemas/history/profile/project-profile-pp.2.00.schema.json",
 		"source_sha256":   strings.Repeat("a", 64), "lifecycle": "ACTIVE", "allowed": true,
 		"notifications": []any{},
 	}

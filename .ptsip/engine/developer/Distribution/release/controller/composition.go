@@ -3,6 +3,7 @@ package releasecontroller
 import (
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -38,21 +39,27 @@ func ReadProfileRegistrations(root string) (map[string]ProfileRegistration, stri
 	for selector, row := range config.Storage.Profile {
 		if !sourceProfileVersionPattern.MatchString(row.Version) || seenVersions[row.Version] ||
 			row.ID == "" || seenIDs[row.ID] || seenPaths[row.Path] ||
-			!strings.HasPrefix(row.Path, "storage/profile/") || !strings.HasSuffix(row.Path, ".schema.json") ||
+			!strings.HasSuffix(row.Path, ".schema.json") ||
 			!digestPattern.MatchString(row.Digest) {
 			return nil, "", fmt.Errorf("invalid Profile registration: %s", selector)
 		}
-		if _, err := SafePath(root, row.Path); err != nil {
+		if _, err := SafePath(filepath.Join(root, "src", "ptsip", "schemas"), row.Path); err != nil {
 			return nil, "", fmt.Errorf("invalid Profile registration path: %w", err)
 		}
 		seenVersions[row.Version], seenIDs[row.ID], seenPaths[row.Path] = true, true, true
 		switch row.Lifecycle {
 		case "ACTIVE":
+			if path.Dir(row.Path) != "storage/profile" {
+				return nil, "", fmt.Errorf("active Profile registration is outside storage/profile: %s", selector)
+			}
 			if active != "" {
 				return nil, "", fmt.Errorf("multiple active Profile registrations")
 			}
 			active = row.Version
 		case "LEGACY", "DEPRECATED":
+			if path.Dir(row.Path) != "history/profile" {
+				return nil, "", fmt.Errorf("historical Profile registration is outside history/profile: %s", selector)
+			}
 		default:
 			return nil, "", fmt.Errorf("invalid Profile registration lifecycle: %s", selector)
 		}

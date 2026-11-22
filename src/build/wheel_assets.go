@@ -15,16 +15,19 @@ import (
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/source"
 )
 
-func retiredWheelMember(name string) bool {
-	if path.Dir(name) == "ptsip" && strings.HasSuffix(name, ".py") {
+func retiredProductMember(name string) bool {
+	if strings.HasPrefix(name, "ptsip/") && strings.HasSuffix(name, ".py") {
 		return true
 	}
 	switch name {
-	case "ptsip/ptsip_specification/spec_identity.py", "ptsip/ptsip_specification/specification_binding.py",
-		"ptsip/specdata/project-profile-contracts.yaml":
+	case "ptsip/specdata/project-profile-contracts.yaml",
+		"ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
+		"ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
+		"ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
+		"ptsip/specdata/ptsip-profile-pp-2.00.schema.json":
 		return true
 	}
-	for _, root := range []string{"migration", "profiles", "repository", "policy_contracts", "compile_sealed_rbac", "specdata/compile-sealed-rbac"} {
+	for _, root := range []string{"migration", "profiles", "repository", "policy_contracts", "compile_sealed_rbac", "specdata/compile-sealed-rbac", "schemas/storage/profile/history"} {
 		if strings.HasPrefix(name, "ptsip/"+root+"/") {
 			return true
 		}
@@ -45,7 +48,7 @@ func stageWheelAssets(root string, files wheelContents) error {
 	if err := stageStorageSchemas(root, files); err != nil {
 		return err
 	}
-	const candidate = "ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json"
+	const candidate = "ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
 	candidateBytes, err := readAsset(root, "src/"+candidate)
 	if err != nil {
 		return err
@@ -112,11 +115,8 @@ func stageStorageSchemas(root string, files wheelContents) error {
 		return err
 	}
 	for selector, binding := range catalog.Storage.Profile {
-		if !strings.HasPrefix(binding.Path, "storage/profile/") || !source.Relative(binding.Path) {
+		if !registeredProfilePath(selector, binding) {
 			return fmt.Errorf("profile registration escapes its schema root: %s", binding.Path)
-		}
-		if selector != "ptsip.project-profile" && binding.Lifecycle != "DEPRECATED" {
-			return fmt.Errorf("historical Profile %s must be registered as DEPRECATED", selector)
 		}
 		name := schemaRoot + binding.Path
 		data, err := readAsset(root, name)

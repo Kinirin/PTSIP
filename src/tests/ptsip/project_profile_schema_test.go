@@ -23,9 +23,9 @@ type profileVersion struct {
 }
 
 var profileVersions = []profileVersion{
-	{"pp.1.01", "storage/profile/history/project-profile-pp.1.01.schema.json", "DEPRECATED", "e8379e2d16f2a3c30b7c192c663fa45dc4ee7fec"},
-	{"pp.1.02", "storage/profile/history/project-profile-pp.1.02.schema.json", "DEPRECATED", "07fbfe8a5aa9dacc56f7b76e9ceaa3474c5599f2"},
-	{"pp.2.00", "storage/profile/history/project-profile-pp.2.00.schema.json", "DEPRECATED", "14d47e469e5f12ae65d721f64b17bdc35de861d8"},
+	{"pp.1.01", "history/profile/project-profile-pp.1.01.schema.json", "DEPRECATED", "e8379e2d16f2a3c30b7c192c663fa45dc4ee7fec"},
+	{"pp.1.02", "history/profile/project-profile-pp.1.02.schema.json", "DEPRECATED", "07fbfe8a5aa9dacc56f7b76e9ceaa3474c5599f2"},
+	{"pp.2.00", "history/profile/project-profile-pp.2.00.schema.json", "DEPRECATED", "14d47e469e5f12ae65d721f64b17bdc35de861d8"},
 }
 
 type offlineProfileLoader struct{}
@@ -70,9 +70,27 @@ func TestProjectProfileHistoricalContractsRetainImmutableIdentity(t *testing.T) 
 			if canonical["$id"] != expectedID || canonical["$schema"] != dialect {
 				t.Fatalf("historical schema identity/dialect changed: %v", canonical)
 			}
+			oldPath := filepath.Join(productRoot(t), "schemas", "storage", "profile", "history", filepath.Base(version.canonical))
+			if _, err := os.Lstat(oldPath); !os.IsNotExist(err) {
+				t.Fatalf("former Profile schema location still exists or cannot be checked: %s: %v", oldPath, err)
+			}
 		})
 	}
 	profileSchemaCompiler(t)
+	const candidate = "history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
+	const candidateBlob = "e9fba283d16d521a037658899cf7066c5769a2eb"
+	if actual := gitWorkingBlobSHA(t, "src/ptsip/schemas/"+candidate); actual != candidateBlob {
+		t.Fatalf("historical Profile candidate changed: got %s want %s", actual, candidateBlob)
+	}
+	schema := readObject(t, filepath.Join(productRoot(t), "schemas", filepath.FromSlash(candidate)))
+	comment, _ := schema["$comment"].(string)
+	if !strings.HasPrefix(comment, "DRAFT_NON_NORMATIVE:") {
+		t.Fatalf("historical Profile candidate lost its draft status: %q", comment)
+	}
+	oldCandidate := filepath.Join(productRoot(t), "specdata", filepath.Base(candidate))
+	if _, err := os.Lstat(oldCandidate); !os.IsNotExist(err) {
+		t.Fatalf("former Profile candidate location still exists or cannot be checked: %s: %v", oldCandidate, err)
+	}
 }
 
 // A fresh declaration from the retained field contract, not archived legacy YAML.
@@ -249,7 +267,7 @@ func TestProjectProfileRegistryPinsSelectedSourceAndCurrentVersion(t *testing.T)
 		}
 	}
 	for _, relative := range []string{
-		"storage/profile/history/project-profile-pp.1.00.schema.json", "storage/profile/project-profile-candidate.schema.json",
+		"history/profile/project-profile-pp.1.00.schema.json", "storage/profile/project-profile-candidate.schema.json",
 		"storage/profile/mode-profile.schema.json", "storage/profile/user-profile.schema.json", "storage/profile/source-profile.schema.json",
 	} {
 		if _, err := os.Stat(filepath.Join(product, "schemas", filepath.FromSlash(relative))); !os.IsNotExist(err) {

@@ -196,10 +196,8 @@ func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildCo
 }
 
 func retiredPythonMember(name string) bool {
-	return (path.Dir(name) == "ptsip" && strings.HasSuffix(name, ".py")) ||
-		strings.HasPrefix(name, "ptsip/migration/") || name == "ptsip/migration" ||
-		name == "ptsip/ptsip_specification/spec_identity.py" ||
-		name == "ptsip/ptsip_specification/specification_binding.py"
+	return (strings.HasPrefix(name, "ptsip/") && strings.HasSuffix(name, ".py")) ||
+		strings.HasPrefix(name, "ptsip/migration/") || name == "ptsip/migration"
 }
 
 func verifyRecord(members map[string]*zip.File, recordPath string) (map[string]string, error) {
