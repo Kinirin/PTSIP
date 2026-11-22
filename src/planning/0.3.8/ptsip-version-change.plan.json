@@ -3,7 +3,7 @@
   "document_type": "PTSIP_VERSION_CHANGE_PLAN",
   "plan_id": "PTSIP-0.3.8-VERSION-CHANGE",
   "plan_path": "src/planning/0.3.8/ptsip-version-change.plan.json",
-  "status": "DRAFT_POLICY_VIOLATION_BLOCKED",
+  "status": "DRAFT_POLICY_GATES_OPEN",
   "authority": {
     "level": "PLAN",
     "precedence": "EFFECTIVE_POLICY_OVER_PLAN",
@@ -19,10 +19,11 @@
     "publication_authorized": false,
     "policy_change_authorized_by_this_plan": false,
     "policy_amendment_forbidden": true,
-    "conflicting_requirement_ids": [
+    "conflicting_requirement_ids": [],
+    "effective_policy_precedence": "POLICY_WINS_PLAN_DOES_NOT_AUTHORIZE_POLICY_REWRITE",
+    "resolved_conflicting_requirement_ids": [
       "VC-10"
-    ],
-    "effective_policy_precedence": "POLICY_WINS_PLAN_DOES_NOT_AUTHORIZE_POLICY_REWRITE"
+    ]
   },
   "baseline": {
     "repository": "Kinirin/PTSIP",
@@ -301,28 +302,39 @@
     },
     {
       "id": "VC-10",
-      "status": "POLICY_VIOLATION_BLOCKED",
-      "responsibility": "PREVIOUS_DERIVED_SNAPSHOT_ACCEPTANCE_DISPOSITION",
-      "direction": "BLOCKED_BY_EFFECTIVE_SFP_CNTR_0005_POLICY_NO_REMOVAL",
+      "status": "USER_DIRECTED_POLICY_ALIGNED_PLAN_REVISION",
+      "responsibility": "DERIVED_SNAPSHOT_REGENERATION_VALIDATION_AND_CONSUMPTION_GATE",
+      "direction": "REGENERATE_FRESH_DERIVED_SNAPSHOT_FROM_CURRENT_REGISTERED_ENGINE_SOURCES_AND_VERIFY_CURRENT_SOURCE_MATCH_BEFORE_CONSUMPTION",
       "prior_plan_verification_as_completion_authority": "INVALIDATED",
       "snapshot_implementation_completion_claim": "NOT_ASSUMED",
-      "currently_executable_source_digest_checks": "PRESERVE_UNCHANGED_UNTIL_SEPARATELY_APPROVED_POLICY_CHANGE",
-      "scope_limitation": "PLAN_CANNOT_RETIRE_ACTIVE_SNAPSHOT_FRESHNESS_OR_SOURCE_DIGEST_VERIFICATION",
+      "currently_executable_source_digest_checks": "PRESERVE_AND_REQUIRE_CURRENT_SOURCE_SHA256_VERIFICATION",
+      "scope_limitation": "DERIVED_SNAPSHOT_REMAINS_NONAUTHORITATIVE_AND_REQUIRED_SOURCE_FRESHNESS_VERIFICATION_CANNOT_BE_BYPASSED",
       "invent_new_derived_snapshot_work_unit": "FORBIDDEN",
-      "legacy_snapshot_freshness_requirement": "EFFECTIVE_POLICY_REQUIRES_FRESHNESS",
+      "legacy_snapshot_freshness_requirement": "REQUIRED_PRESERVED",
       "implementation_target": "src/build/inventory.go#inspectEngines",
       "retain_snapshot_as_authority": "NONAUTHORITATIVE_WITH_REQUIRED_VERIFICATION",
       "independent_registered_source_presence": "PRESERVE",
       "authorization": {
-        "status": "REJECTED_BY_HIGHER_POLICY_AUTHORITY",
+        "status": "USER_DIRECTED_PLAN_REVISION_POLICY_ALIGNED",
         "decision_source": "USER_EXPLICIT_CHAT_2026_11_22",
         "policy_change_authorized": false,
         "implementation_authorized": false
       },
-      "requested_disposition": "RETIRE_LEGACY_DERIVED_SNAPSHOT_SHA256_COMPARISON_AND_RELATED_FRESHNESS_REQUIREMENT_NO_REPLACEMENT",
+      "requested_disposition": "GENERATE_FRESH_DERIVED_SNAPSHOT_AND_VERIFY_SOURCE_IDENTITY_SHA256_CONTRACT_DEPENDENCY_AND_FRESHNESS_BEFORE_CONSUMPTION",
       "async_artifact_job_owner_plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
       "async_artifact_relation": "SEPARATE_ASYNCHRONOUS_WORK_HANDOFF_NOT_VERSION_SYNC_COMPLETION",
-      "policy_violation_scope": "REQUEST_TO_REMOVE_SHA256_AND_FRESHNESS_VERIFICATION_ONLY_NOT_ASYNC_JOB_OWNERSHIP_TRANSFER"
+      "policy_violation_scope": "PREVIOUS_SHA256_AND_FRESHNESS_REMOVAL_REQUEST_WITHDRAWN_NO_ACTIVE_VC_10_POLICY_CONFLICT",
+      "withdrawn_prior_request": "RETIRE_LEGACY_DERIVED_SNAPSHOT_SHA256_COMPARISON_AND_RELATED_FRESHNESS_REQUIREMENT_NO_REPLACEMENT",
+      "acceptance_contract": {
+        "source_change_trigger": "CURRENT_REGISTERED_ENGINE_MANIFEST_OR_EXECUTION_BINDING_CHANGE_NOTICE_FROM_VC_01_VC_02",
+        "snapshot_generation": "REGENERATE_FROM_CURRENT_REGISTERED_FEDERATED_OWNER_MANIFEST_CONTRACT_AND_BINDING_SOURCES",
+        "snapshot_authority": "NONAUTHORITATIVE_DERIVED_VIEW",
+        "verification": "VERIFY_ALL_REQUIRED_SOURCE_REFERENCES_EXIST_AND_MATCH_CURRENT_SOURCE_IDENTITY_VERSION_CONTRACT_DEPENDENCY_AND_SHA256_PROOF_FRESHNESS",
+        "consumption_admission": "ALLOW_ONLY_AFTER_FRESH_GENERATED_SNAPSHOT_AND_CURRENT_REFERENCED_SOURCES_VERIFY_SUCCESSFULLY",
+        "failure_disposition": "FAIL_CLOSED_AFFECTED_DISCOVERY_OR_ELIGIBILITY_IF_STALE_INVALID_OR_UNVERIFIABLE",
+        "completion_evidence": "INDEPENDENT_ASYNC_JOB_GENERATION_AND_MACHINE_VERIFICATION_EVIDENCE_REQUIRED",
+        "inline_version_sync_snapshot_mutation": "FORBIDDEN_SEPARATE_ASYNC_JOB"
+      }
     },
     {
       "id": "VC-11",
@@ -546,24 +558,24 @@
     "implementation_permitted_now": false,
     "no_branch_creation": true,
     "simulations_must_not_mutate_canonical_version_values": true,
-    "status_note": "PLAN_BLOCKED_BY_HIGHER_POLICY; CURRENT_BUILD_HASH_CHECKS_RESTORED",
+    "status_note": "VC_10_PRIOR_POLICY_VIOLATION_RESOLVED_BY_USER_PLAN_REVISION_REMAINING_POLICY_GATES_AND_FULL_PLAN_APPROVAL_REQUIRED",
     "scoped_legacy_snapshot_sha_removal_authorization": {
       "authorized": false,
-      "status": "VOID_POLICY_CONFLICT",
-      "source": "USER_EXPLICIT_CHAT_2026_11_22",
+      "status": "USER_WITHDRAWN_NOT_AUTHORIZED",
+      "source": "USER_EXPLICIT_CHAT_2026_11_22_CURRENT_REVISION",
       "policy_authority": "SFP-CNTR-0005",
       "scope": "LEGACY_DERIVED_SNAPSHOT_SOURCE_SHA256_AND_FRESHNESS",
       "other_implementation": "REQUIRES_NORMAL_PLAN_APPROVAL"
     }
   },
   "policy_violation": {
-    "status": "ACTIVE_UNRESOLVED_POLICY_VIOLATION",
-    "classification": "PLAN_EXCEEDS_POLICY_AUTHORITY",
+    "status": "RESOLVED_BY_USER_WITHDRAWAL_AND_PLAN_REVISION",
+    "classification": "HISTORICAL_PLAN_EXCEEDED_POLICY_AUTHORITY",
     "id": "PV-001",
     "affected_requirement_ids": [
       "VC-10"
     ],
-    "proposed_action": "REMOVE_LEGACY_DERIVED_SNAPSHOT_SHA256_AND_FRESHNESS_REQUIREMENT",
+    "proposed_action": "WITHDRAWN_REMOVE_LEGACY_DERIVED_SNAPSHOT_SHA256_AND_FRESHNESS_REQUIREMENT",
     "effective_policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
     "effective_policy_source_item": "SRC-0010",
     "effective_rule": "engine_core_extension_snapshot_manifest_direction",
@@ -573,12 +585,14 @@
       "stale_invalid_unverifiable_required_reference: FAIL_CLOSED_AFFECTED_DISCOVERY_OR_ELIGIBILITY_NO_AUTOMATIC_AUTHORITY",
       "engine_common_identity_extension_snapshot_is_derived_non_authoritative_and_version_verified: true"
     ],
-    "resolution": "KEEP_EFFECTIVE_POLICY_AND_BLOCK_CONFLICTING_PLAN",
+    "resolution": "KEEP_EFFECTIVE_POLICY_REVISE_VC_10_TO_REGENERATE_AND_VERIFY_BEFORE_CONSUMPTION",
     "policy_mutation": "FORBIDDEN_BY_USER",
-    "implementation": "STOPPED_AND_EARLIER_PATCH_REVERTED",
+    "implementation": "NOT_AUTHORIZED_PREVIOUS_REMOVAL_PATCH_REVERTED",
     "unrelated_plan_requirements": "PRESERVED_NOT_IMPLICITLY_APPROVED",
     "approval_source": "USER_EXPLICIT_CHAT_2026_11_22",
-    "scope_note": "THE_SHA256_OR_FRESHNESS_REMOVAL_REQUEST_IS_BLOCKED; INDEPENDENT_ASYNC_ARTIFACT_TASK_HANDOFF_IS_NOT_THE_VIOLATION"
+    "scope_note": "PREVIOUS_SHA256_AND_FRESHNESS_REMOVAL_REQUEST_WITHDRAWN_BY_USER; INDEPENDENT_ASYNC_SNAPSHOT_JOB_PRESERVED_AND_VERIFICATION_REQUIRED",
+    "active_conflict": false,
+    "superseding_requirement": "VC-10"
   },
   "async_followup_work": {
     "schema_version": "ptsip-version-change-async-work/v1",
@@ -615,7 +629,11 @@
         "no_implicit_inline_sync": true,
         "completion_evidence": "POLICY_COMPLIANT_SNAPSHOT_VERIFICATION_WHEN_CONSUMED",
         "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
-        "sha256_and_freshness_obligation": "PRESERVED_UNCHANGED"
+        "sha256_and_freshness_obligation": "PRESERVED_UNCHANGED",
+        "generation_requirement": "REGENERATE_CURRENT_SNAPSHOT_AFTER_REGISTERED_SOURCE_VERSION_CHANGE_NOTICE",
+        "source_verification_requirement": "CHECK_CURRENT_REGISTERED_SOURCE_REFERENCES_IDENTITY_VERSION_CONTRACT_DEPENDENCY_SHA256_AND_FRESHNESS",
+        "consumption_gate": "REQUIRE_SUCCESSFUL_CURRENT_SNAPSHOT_GENERATION_AND_SOURCE_VERIFICATION_BEFORE_USE",
+        "stale_or_unverifiable": "FAIL_CLOSED_AFFECTED_DISCOVERY_OR_ELIGIBILITY"
       },
       {
         "id": "VC-ASYNC-02",
@@ -632,7 +650,7 @@
     ],
     "execution_order": "NOT_ASSUMED",
     "completion_rule": "EACH_ASYNC_JOB_HAS_OWN_ACCEPTANCE_EVIDENCE_NOT_A_VERSION_SYNC_FIELD_PROJECTION",
-    "admission_rule": "EXISTING_EFFECTIVE_POLICY_AND_CONSUMER_GATES_REMAIN_APPLICABLE",
+    "admission_rule": "EFFECTIVE_POLICY_REQUIRES_FRESH_GENERATED_SNAPSHOT_AND_CURRENT_SOURCE_VERIFICATION_BEFORE_CONSUMPTION",
     "validation_bypass": "FORBIDDEN",
     "legacy_plan_retirement_does_not_revoke_effective_policy": true
   },
@@ -697,6 +715,8 @@
       "engines",
       "schemas"
     ],
-    "legacy_release_composition_replacement_pending_owner_design": true
+    "legacy_release_composition_replacement_pending_owner_design": true,
+    "vc_10_latest_user_direction": "WITHDRAW_PREVIOUS_DIGEST_AND_FRESHNESS_REMOVAL_REGENERATE_AND_VERIFY_BEFORE_CONSUMPTION",
+    "vc_10_prior_policy_violation": "RESOLVED_WITHOUT_POLICY_CHANGE"
   }
 }
