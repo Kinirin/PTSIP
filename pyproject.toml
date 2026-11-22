@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=77.0.3", "PyYAML>=6.0,<7"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "ptsip_pep517"
 backend-path = ["src/build"]
 
@@ -41,6 +41,12 @@ Issues = "https://github.com/Kinirin/PTSIP/issues"
 
 [project.scripts]
 ptsip-app = "ptsip.app.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ptsip", "ptsip.*", "vpms", "vpms.*", "agent_contracts", "agent_contracts.*"]
+exclude = ["ptsip.migration*", "ptsip.ptsip_specification*", "ptsip.common_contract*", "ptsip.engines*", "ptsip.schemas*", "ptsip.specdata*"]
+namespaces = true
 
 [tool.setuptools.package-data]
 vpms = [

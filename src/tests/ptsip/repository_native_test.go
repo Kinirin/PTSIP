@@ -179,6 +179,21 @@ func TestRepositoryNativeProfileBindings(t *testing.T) {
 	if state["valid"] != false || state["diagnostics"].(array)[0].(object)["code"] != "PP_CONVERGENCE_UNSUPPORTED_SOURCE_TARGET" {
 		t.Fatalf("unregistered pp.2.00 to pp.3.00 transition accepted: %v", state)
 	}
+	currentProfile := source("pp.3.00")
+	writeRepositoryFixture(t, root, "ptsip.yaml", currentProfile)
+	observed = repositoryOperation(t, "discovery", "discovery.profile.candidates", object{"root": root, "candidate_paths": array{}})
+	currentSnapshot := repositoryOperation(t, "context", "context.repository.snapshot", object{"root": root})
+	convergence["source"], convergence["snapshot"] = observed["source"], currentSnapshot
+	state = repositoryOperation(t, "validation", "validation.profile.convergence", convergence)
+	if state["valid"] != true || state["state"].(object)["mode"] != "CURRENT" {
+		t.Fatalf("current Profile was not recognized by native convergence: %v", state)
+	}
+	writeRepositoryFixture(t, root, "ptsip.yaml", currentProfile+"# changed after observation\n")
+	after := repositoryOperation(t, "context", "context.repository.snapshot", object{"root": root})
+	compared := repositoryOperation(t, "validation", "validation.repository.snapshot", object{"before": currentSnapshot, "after": after})
+	if compared["stable"] != false || currentSnapshot["tracked_content_fingerprint"] == after["tracked_content_fingerprint"] {
+		t.Fatalf("changed Profile left its previous convergence evidence valid: %v", compared)
+	}
 	oldTarget := repositoryOperation(t, "discovery", "discovery.profile.contract", object{"root": installedProfileRuntime(t, "discovery").packageRoot, "contract_version": "pp.2.00"})
 	writeRepositoryFixture(t, root, "ptsip.yaml", source("pp.1.02"))
 	observed = repositoryOperation(t, "discovery", "discovery.profile.candidates", object{"root": root, "candidate_paths": array{}})

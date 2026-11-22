@@ -1,4 +1,6 @@
 prune src/tests
+prune src/ptsip/migration
+exclude src/ptsip/ptsip_specification/spec_identity.py src/ptsip/ptsip_specification/specification_binding.py
 include src/VERSION
 recursive-include src/policy *.yaml *.json
 include src/ptsip/schemas/config.json

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 }
 
 func run(args []string, stdout, stderr io.Writer) (int, error) {
-	const usage = "usage: ptsip-build check|source|revision|wheel -root <source>"
+	const usage = "usage: ptsip-build check|source|revision|assets|wheel -root <source>"
 	if len(args) == 0 {
 		return 2, fmt.Errorf("%s", usage)
 	}
@@ -34,6 +35,26 @@ func run(args []string, stdout, stderr io.Writer) (int, error) {
 		return 2, fmt.Errorf("%s", usage)
 	}
 	switch args[0] {
+	case "assets":
+		if *base != "" || *output != "" || *platformTag != "" {
+			return 2, fmt.Errorf("%s", usage)
+		}
+		resolved, err := filepath.Abs(*root)
+		if err != nil {
+			return 1, err
+		}
+		files := wheelContents{}
+		if err := stageWheelAssets(resolved, files); err != nil {
+			return 1, err
+		}
+		digests := make(map[string]string, len(files))
+		for name, file := range files {
+			digests[name] = wheelDigest(file.data)
+		}
+		if err := json.NewEncoder(stdout).Encode(digests); err != nil {
+			return 1, err
+		}
+		return 0, nil
 	case "revision":
 		if *base != "" || *output != "" || *platformTag != "" {
 			return 2, fmt.Errorf("%s", usage)

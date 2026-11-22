@@ -114,9 +114,11 @@ func readBaseWheel(base string) (wheelContents, string, error) {
 	for _, item := range wheel.File {
 		name := item.Name
 		if name == "." || name == ".." || path.Clean(name) != name || path.IsAbs(name) || strings.HasPrefix(name, "../") ||
-			strings.ContainsAny(name, "\\:\r\n") || !item.Mode().IsRegular() ||
-			strings.HasPrefix(name, "ptsip/policy_contracts/") || strings.HasPrefix(name, "ptsip/compile_sealed_rbac/") {
+			strings.ContainsAny(name, "\\:\r\n") || !item.Mode().IsRegular() {
 			return nil, "", fmt.Errorf("unsupported base wheel member %q", name)
+		}
+		if retiredWheelMember(name) {
+			continue
 		}
 		folded := strings.ToLower(name)
 		if seen[folded] {
@@ -166,6 +168,9 @@ func buildWheel(root, base, output, platformTag string, progress io.Writer) (str
 	}
 	files, distribution, err := readBaseWheel(base)
 	if err != nil {
+		return "", err
+	}
+	if err := stageWheelAssets(root, files); err != nil {
 		return "", err
 	}
 	stage, err := os.MkdirTemp("", "ptsip-wheel-native-")

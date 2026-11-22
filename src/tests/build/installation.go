@@ -34,7 +34,8 @@ for name, expected in request["assets"].items():
     assert hashlib.sha256(data).hexdigest() == expected, name
 scripts = Path(sysconfig.get_path("scripts"))
 suffix = ".exe" if sys.platform == "win32" else ""
-assert scripts.joinpath(request["router"] + suffix).is_file(), "installed Go router is missing"
+router = scripts / (request["router"] + suffix)
+assert router.is_file(), "installed Go router is missing"
 with root.joinpath("VERSION").open("rb") as stream:
     tool_version = tomllib.load(stream)["tool_version"]
 version = subprocess.check_output([str(scripts / ("ptsip" + suffix)), "--version"], text=True, timeout=10).strip()
@@ -47,10 +48,33 @@ for kind, origin in bundle["engines"].items():
 common_path = root.joinpath(request["common_origin"])
 common = json.loads(common_path.read_bytes())
 assert hashlib.sha256(common_path.with_name(common["binary"]).read_bytes()).hexdigest() == common["binary_sha256"]
-from ptsip.migration import analyze_source_migration
-from ptsip.ptsip_specification.spec_identity import current_project_profile_version
-assert callable(analyze_source_migration)
-assert current_project_profile_version() == request["profile"], "installed Profile routing differs from registered current version"
+for retired in (
+    "ptsip_specification/spec_identity.py", "ptsip_specification/specification_binding.py",
+    "migration/__init__.py", "migration/analysis", "migration/execution", "migration/planning", "migration/proposal",
+):
+    assert not root.joinpath(retired).exists(), f"retired Python path is present: {retired}"
+index = json.loads(root.joinpath("engines/index.json").read_bytes())
+operation = "discovery.profile.contract"
+matches = [entry for entry in index["official_engine_entries"]
+           if entry["kind"] == "DISCOVERY" and operation in entry["operations"]]
+assert len(matches) == 1, "installed engine index does not uniquely register Profile discovery"
+discovery = matches[0]
+source_prefix = Path("src") / request["package"]
+contract = json.loads(root.joinpath(Path(discovery["contract_ref"]).relative_to(source_prefix)).read_bytes())
+manifest = json.loads(root.joinpath(Path(discovery["manifest_ref"]).relative_to(source_prefix)).read_bytes())
+assert manifest["engine_id"] == discovery["engine_id"] == contract["engine_id"]
+assert manifest["implementation_version"] == discovery["version"]
+profile_request = {
+    "engine_id": discovery["engine_id"], "engine_version": discovery["version"],
+    "contract_id": contract["contract_id"], "contract_version": contract["version"],
+    "operation_id": operation, "input": {"root": str(root)},
+}
+completed = subprocess.run([str(router), "engine", str(root), str(scripts), operation],
+                           input=json.dumps(profile_request), encoding="utf-8", capture_output=True, timeout=15)
+assert completed.returncode == 0, f"Profile discovery failed: {completed.stderr} {completed.stdout}"
+profile = json.loads(completed.stdout)
+assert profile["status"] == "PASS" and profile["output"]["allowed"] is True, profile
+assert profile["output"]["version"] == request["profile"], "installed Profile routing differs from registered current version"
 `
 
 func verifyInstalled(file io.ReadSeeker, artifact, python, wheelhouse string, contract buildContract, assets registeredAssets, digest string) error {

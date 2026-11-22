@@ -95,8 +95,8 @@ func TestProfileDistributionRejectsHistoryCodeAndTraversal(t *testing.T) {
 }
 
 func TestToolDistinguishesProductTargetNamespaceFromRustBuildOutput(t *testing.T) {
-	if forbiddenToolMember("ptsip/migration/analysis/target/semantics.py") {
-		t.Fatal("existing product API namespace rejected as Cargo output")
+	if forbiddenToolMember("ptsip/resources/target/contract.json") {
+		t.Fatal("product resource namespace rejected as Cargo output")
 	}
 	for _, name := range []string{"ptsip/engines/context/target/release/binary", "ptsip/profiles/history/pp.1.01/example.ptsip.yaml", "ptsip/engines/context/binary.exe"} {
 		if !forbiddenToolMember(name) {

@@ -127,13 +127,7 @@ func (b nativeWheelBuilder) addGo(files wheelContents, distribution string) erro
 	if err != nil {
 		return err
 	}
-	versionSource, err := os.ReadFile(filepath.Join(b.root, "src", "VERSION"))
-	if err != nil {
-		return err
-	}
-	if !bytes.Equal(files["ptsip/VERSION"].data, versionSource) {
-		return fmt.Errorf("staged VERSION differs from the source")
-	}
+	versionSource := files["ptsip/VERSION"].data
 	var versions struct {
 		Tool string `toml:"tool_version"`
 	}

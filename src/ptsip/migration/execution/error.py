@@ -1,2 +1,0 @@
-class ExecutionStateError(RuntimeError):
-    pass

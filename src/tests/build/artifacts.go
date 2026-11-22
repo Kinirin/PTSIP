@@ -87,8 +87,8 @@ func verifySDist(file io.Reader, revision string, rules sdistRules, assets regis
 		if excluded(member, rules.ExcludedPrefixes) {
 			return fmt.Errorf("excluded entry in sdist: %s", name)
 		}
-		if path.Dir(member) == "src/ptsip" && strings.HasSuffix(member, ".py") {
-			return fmt.Errorf("excluded root Python module in sdist: %s", name)
+		if member == "setup.py" || retiredPythonMember(strings.TrimPrefix(member, "src/")) {
+			return fmt.Errorf("excluded Python implementation in sdist: %s", name)
 		}
 		if entry.Typeflag == tar.TypeDir {
 			continue
@@ -151,7 +151,7 @@ func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildCo
 	for _, entry := range archive.File {
 		name := strings.TrimSuffix(entry.Name, "/")
 		if !safePath(name) || excluded(name, contract.Wheel.ExcludedPrefixes) || strings.Contains("/"+name+"/", "/.ptsip/") ||
-			(path.Dir(name) == "ptsip" && strings.HasSuffix(name, ".py")) {
+			retiredPythonMember(name) {
 			return fmt.Errorf("unsafe or excluded wheel member: %s", entry.Name)
 		}
 		if entry.FileInfo().IsDir() {
@@ -193,6 +193,13 @@ func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildCo
 		}
 	}
 	return verifyWheelOrigins(members, digests, originPath, revision, contract.Wheel, assets)
+}
+
+func retiredPythonMember(name string) bool {
+	return (path.Dir(name) == "ptsip" && strings.HasSuffix(name, ".py")) ||
+		strings.HasPrefix(name, "ptsip/migration/") || name == "ptsip/migration" ||
+		name == "ptsip/ptsip_specification/spec_identity.py" ||
+		name == "ptsip/ptsip_specification/specification_binding.py"
 }
 
 func verifyRecord(members map[string]*zip.File, recordPath string) (map[string]string, error) {
