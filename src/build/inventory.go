@@ -18,6 +18,7 @@ const (
 	engineRoot      = productRoot + "engines/"
 	schemaRoot      = productRoot + "schemas/"
 	engineIndex     = engineRoot + "index.json"
+	engineSnapshot  = engineRoot + "contracts/engines_registries/derived-snapshot.json"
 	engineSupport   = engineRoot + "discovery/profile-support.json"
 	engineRelations = engineRoot + "validation/profile-transitions.json"
 )
@@ -29,6 +30,11 @@ type buildReport struct {
 	ProfileVersions []string `json:"profile_versions"`
 	ActiveProfile   string   `json:"active_profile"`
 	SourceArchive   string   `json:"product_source_archive,omitempty"`
+}
+
+type fileReference struct {
+	Path   string `json:"path"`
+	SHA256 string `json:"sha256"`
 }
 
 type engineEntry struct {
@@ -57,6 +63,18 @@ func (source productSource) decode(name string, value any) error {
 	}
 	if err := json.Unmarshal(file.Data, value); err != nil {
 		return fmt.Errorf("%s: %w", name, err)
+	}
+	return nil
+}
+
+func (source productSource) verifyDigest(name, expected string) error {
+	file, ok := source.Files[name]
+	if !ok {
+		return fmt.Errorf("missing registered product file %s", name)
+	}
+	digest := sha256.Sum256(file.Data)
+	if hex.EncodeToString(digest[:]) != expected {
+		return fmt.Errorf("registered SHA-256 mismatch for %s", name)
 	}
 	return nil
 }
@@ -91,18 +109,30 @@ func inspectEngines(source productSource) ([]string, error) {
 	if len(index.Entries) == 0 {
 		return nil, fmt.Errorf("no official engines registered in %s", engineIndex)
 	}
+	var snapshot struct {
+		SourceRefs []fileReference `json:"source_refs"`
+	}
+	if err := source.decode(engineSnapshot, &snapshot); err != nil {
+		return nil, err
+	}
+	verified := make(map[string]bool, len(snapshot.SourceRefs))
+	for _, ref := range snapshot.SourceRefs {
+		if !strings.HasPrefix(ref.Path, engineRoot) || verified[ref.Path] {
+			return nil, fmt.Errorf("invalid engine snapshot source %q", ref.Path)
+		}
+		if err := source.verifyDigest(ref.Path, ref.SHA256); err != nil {
+			return nil, err
+		}
+		verified[ref.Path] = true
+	}
 	var kinds []string
 	for _, entry := range index.Entries {
 		if entry.Kind == "" || slices.Contains(kinds, entry.Kind) {
 			return nil, fmt.Errorf("empty or repeated official engine kind %q", entry.Kind)
 		}
 		for _, name := range []string{entry.Manifest, entry.Contract, entry.Bindings} {
-			if !strings.HasPrefix(name, engineRoot) || path.Clean(name) != name {
-				return nil, fmt.Errorf("invalid engine %s registered source %q", entry.Kind, name)
-			}
-			file, ok := source.Files[name]
-			if !ok || len(file.Data) == 0 {
-				return nil, fmt.Errorf("missing engine %s registered source %s", entry.Kind, name)
+			if !verified[name] {
+				return nil, fmt.Errorf("engine %s source %q has no verified snapshot binding", entry.Kind, name)
 			}
 		}
 		if !strings.HasPrefix(entry.CargoFile, engineRoot) {
