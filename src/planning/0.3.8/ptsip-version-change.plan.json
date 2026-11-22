@@ -99,9 +99,14 @@
       "status": "USER_DIRECTED",
       "responsibility": "NATIVE_WHEEL_ENGINE_VERSION_SOURCE",
       "target": "src/build/wheel_native.go",
-      "direction": "READ_SELECTED_ENGINE_VERSION_FROM_SRC_VERSION_INSTEAD_OF_ENGINE_INDEX",
+      "direction": "READ_ENGINE_VERSION_FROM_SRC_VERSION_NOT_INDEX_AND_DERIVE_PACKAGE_WHEEL_IDENTITY_AND_METADATA_FROM_CANONICAL_SOURCE",
       "index_role": "DERIVED_REGISTRATION_AND_ROUTING_NOT_VERSION_AUTHORITY",
-      "compiled_identity": "INHERITS_SRC_VERSION_AT_BUILD_TIME"
+      "compiled_identity": "INHERITS_SRC_VERSION_AT_BUILD_TIME",
+      "version_source": "src/VERSION",
+      "package_wheel_name_version_source": "src/VERSION#package",
+      "package_wheel_metadata_version_source": "src/VERSION#package",
+      "package_version_projection": "DERIVED_NOT_INDEPENDENT_FROM_PYPROJECT",
+      "distribution_inputs": "MUST_USE_CANONICAL_PACKAGE_VERSION_WITH_ALLOWED_PLATFORM_SPECIFIC_TAGS"
     },
     {
       "id": "VC-04",
@@ -138,7 +143,15 @@
         "schemas"
       ],
       "must_not_assign_new_default_versions": true,
-      "format_authority": "src/VERSION"
+      "format_authority": "src/VERSION",
+      "dependent_consumers_to_migrate": [
+        ".ptsip/engine/developer/Distribution/release/controller/version_sync.go",
+        ".ptsip/engine/developer/Distribution/release/controller/composition.go",
+        ".ptsip/engine/developer/Distribution/release/version/versiondiff.go",
+        "src/build/wheel_native.go",
+        "src/build/inventory.go"
+      ],
+      "old_layout_dependency_handling": "UPDATE_CONSUMERS_WITH_SECTIONED_SOURCE_PARSE_OR_APPROVED_RETIREMENT_ONLY"
     },
     {
       "id": "VC-06",
@@ -165,6 +178,100 @@
       "no_test_driven_version_bump": true,
       "no_artificial_patch_change": true,
       "future_semantic_bump_policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/update_triggers"
+    },
+    {
+      "id": "VC-08",
+      "status": "USER_DIRECTED",
+      "responsibility": "PACKAGE_WHEEL_NAME_METADATA_AND_NATIVE_BUILD_VERSION_ORIGIN",
+      "source": "src/VERSION#package",
+      "scope": "COMPLETE_PACKAGE_DISTRIBUTION_IDENTITY_NOT_ONLY_ENGINE_VERSION",
+      "required_targets": [
+        "src/build/wheel_native.go",
+        "src/build/wheel.go",
+        "src/build/ptsip_pep517.py",
+        "WHEEL_FILENAME",
+        "DIST_INFO_METADATA_VERSION",
+        "WHEEL_DISTRIBUTION_VERSION_PROJECTION"
+      ],
+      "current_base_wheel_metadata_authority": "FORBIDDEN_AS_INDEPENDENT_SOURCE",
+      "output_identity_rule": "PACKAGE_WHEEL_FILENAME_AND_METADATA_AGREE_WITH_CANONICAL_PACKAGE_VERSION",
+      "python_platform_only_restriction": "FORBIDDEN",
+      "preserve_platform_compatible_wheel_tagging": true,
+      "other_metadata_semantics": "POLICY_GATED"
+    },
+    {
+      "id": "VC-09",
+      "status": "USER_DIRECTED",
+      "responsibility": "VERSION_LAYOUT_CONSUMER_CLOSURE",
+      "source": "src/VERSION",
+      "target_files": [
+        ".ptsip/engine/developer/Distribution/release/controller/version_sync.go",
+        ".ptsip/engine/developer/Distribution/release/controller/composition.go",
+        ".ptsip/engine/developer/Distribution/release/version/versiondiff.go",
+        "src/build/wheel_native.go",
+        "src/build/inventory.go"
+      ],
+      "direction": "CHANGE_ALL_IN_SCOPE_OLD_VERSION_LAYOUT_READERS_TO_APPROVED_SECTIONED_SOURCE",
+      "remove_legacy_derived_version_authority": true,
+      "legacy_tool_lifecycle": "CHECK_EFFECTIVE_POLICY_BEFORE_REWRITING_OR_RETAINING",
+      "simulation_or_test_version_bump": "FORBIDDEN"
+    },
+    {
+      "id": "VC-10",
+      "status": "USER_DIRECTED",
+      "responsibility": "PREVIOUS_DERIVED_SNAPSHOT_ACCEPTANCE_DISPOSITION",
+      "direction": "DO_NOT_CARRY_FORWARD_RETIRED_LEGACY_PLAN_N04_ACCEPTANCE_AS_NEW_VERSION_PLAN_GATE",
+      "prior_plan_verification_as_completion_authority": "INVALIDATED",
+      "snapshot_implementation_completion_claim": "NOT_ASSUMED",
+      "currently_executable_source_digest_checks": "NOT_SILENTLY_DISABLED",
+      "scope_limitation": "APPLIES_TO_PLAN_VERIFICATION_AUTHORITY_NOT_TO_VALID_RUNTIME_INTEGRITY_CONSTRAINTS",
+      "invent_new_derived_snapshot_work_unit": "FORBIDDEN"
+    },
+    {
+      "id": "VC-11",
+      "status": "USER_DIRECTED",
+      "responsibility": "DEPENDENCY_GRAPH_OLD_VALIDATION_REPLACED_BY_VERSION_CHANGE_NOTICE",
+      "asset": "src/ptsip/engines/contracts/dependency-graph.json",
+      "old_validation_result": "INVALIDATED_BY_VERSION_SOURCE_AUTHORITY_TRANSFER",
+      "notice_only": {
+        "changed_manifest_count": 6,
+        "changed_binding_count": 6,
+        "affected_engine_ids": [
+          "context",
+          "storage",
+          "validation",
+          "discovery",
+          "execution",
+          "projection"
+        ],
+        "payload_kind": "SOURCE_VERSION_IDENTITY_MIGRATION_NOTIFICATION"
+      },
+      "dependency_graph_mutation_by_this_requirement": "NOT_AUTHORIZED",
+      "contract_first_migration_other_plan_files": "UNCHANGED",
+      "graph_runtime_integrity_checks": "NOT_SILENTLY_DISABLED"
+    },
+    {
+      "id": "VC-12",
+      "status": "USER_DIRECTED",
+      "responsibility": "AUTOMATED_PRECHANGE_SCHEMA_AND_ENGINE_CONTRACT_HISTORY_PRESERVATION",
+      "canonical_version_input": "src/VERSION",
+      "history_root": "src/ptsip/schemas/history/",
+      "history_generation_contract_owner": "src/ptsip/ptsip_specification/",
+      "history_generation_contract_implementation": "REQUIRED",
+      "sync_trigger": "APPROVED_SOURCE_VERSION_CHANGE_REQUIRING_CURRENT_SCHEMA_OR_ENGINE_CONTRACT_VERSION_UPDATE",
+      "trigger_point": "BEFORE_OVERWRITE_OF_CURRENT_SCHEMA_CONST_OR_CURRENT_ENGINE_CONTRACT_VERSION_FIELD",
+      "subject_domains": [
+        "CURRENT_SCHEMA_CONTRACTS",
+        "CURRENT_OFFICIAL_ENGINE_CAPABILITY_CONTRACTS"
+      ],
+      "semantics": "CAPTURE_PRIOR_CURRENT_CONTRACT_AS_VERSION_IDENTIFIED_IMMUTABLE_HISTORY_BEFORE_CURRENT_PROJECTION_CHANGE",
+      "generation": "SYNCHRONIZED_WITH_CANONICAL_VERSION_PROJECTION",
+      "historical_identity_integrity": "PRESERVE_ORIGINAL_VERSION_IDS_DIGEST_AND_CONTENT",
+      "history_conflict": "FAIL_IF_EXISTING_HISTORY_VERSION_HAS_DIFFERENT_SEMANTIC_CONTENT",
+      "historical_field_rewrite": "FORBIDDEN",
+      "first_unification_no_schema_contract_version_change": "DO_NOT_GENERATE_SYNTHETIC_HISTORY_OR_ARTIFICIAL_PATCH",
+      "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED",
+      "engine_historical_legacy_archive_deletion": "NOT_AUTHORIZED"
     }
   ],
   "directory_responsibilities": [
@@ -201,12 +308,21 @@
     {
       "root": "src/ptsip/schemas/history/",
       "owner_role": "IMMUTABLE_HISTORICAL_SCHEMA_IDENTITY_AND_LOOKUP",
-      "restriction": "NO_CURRENT_VERSION_SYNCHRONIZATION"
+      "restriction": "NO_CURRENT_VERSION_SYNCHRONIZATION",
+      "allowed_history_subjects": [
+        "PROJECT_SCHEMA_CONTRACTS",
+        "OFFICIAL_ENGINE_CONTRACTS"
+      ],
+      "creation_trigger": "CURRENT_VERSION_CHANGE_BEFORE_OVERWRITE",
+      "immutable_on_existing": true
     },
     {
       "root": "src/ptsip/ptsip_specification/",
       "owner_role": "RUNTIME_VERSION_INFORMATION_ACCESS_DIRECTION",
-      "state": "GO_MODULE_BOUNDARY_NOT_YET_CONFIRMED"
+      "state": "GO_MODULE_BOUNDARY_NOT_YET_CONFIRMED",
+      "contract_history_rule_generation": "OWNS_SYNC_TRIGGERED_HISTORICAL_SCHEMA_AND_ENGINE_CONTRACT_MATERIALIZATION_RULES",
+      "history_output_root": "src/ptsip/schemas/history/",
+      "sync_orchestration": "COOPERATES_WITH_VERSION_SYNC_OWNER_WITHOUT_REDEFINING_SRC_VERSION_AUTHORITY"
     },
     {
       "root": "pyproject.toml",
@@ -218,12 +334,17 @@
     "BUILD_REVISION_CLEAN_GIT_SOURCE_GATE_MUST_NOT_BE_SILENTLY_BYPASSED",
     "ENGINE_INDEX_MANIFEST_BINDING_CONTRACT_IDENTITY_MATCHES_VERSION_SOURCE",
     "CARGO_BUILD_LOCKED_AND_CARGO_METADATA_AGREE_WITH_VERSION_SOURCE",
-    "CAPABILITY_REFERENCE_SHA256_AND_DEPENDENCY_GRAPH_REFRESHED_WHERE_SOURCE_BYTES_CHANGE",
+    "CHANGED_ACTIVE_CAPABILITY_REFERENCES_MUST_REMAIN_VALID_WITHOUT_REUSING_RETIRED_DEPENDENCY_GRAPH_VERIFICATION",
     "NONAUTHORITATIVE_DERIVED_SNAPSHOT_REGENERATED_WITH_FRESH_SOURCE_DIGESTS",
     "NO_AUTOMATIC_CHANGE_TO_TRANSPORT_EXTENSION_OR_HISTORICAL_VERSION_FIELDS_BY_NAME_ONLY",
     "INSTALLED_EXECUTABLE_VERSION_INFORMATION_MATCHES_RELEASED_SOURCE_COMPOSITION",
     "RELEASE_AND_TEST_VALIDATION_KEEP_REQUIRED_GITHUB_ACTIONS_AND_MAPPED_TEST_MODES",
-    "PYPROJECT_PACKAGE_DATA_REMOVAL_DOES_NOT_SILENTLY_DELETE_REQUIRED_DISTRIBUTED_CONTRACTS"
+    "PYPROJECT_PACKAGE_DATA_REMOVAL_DOES_NOT_SILENTLY_DELETE_REQUIRED_DISTRIBUTED_CONTRACTS",
+    "PACKAGE_WHEEL_FILENAME_AND_DISTRIBUTION_METADATA_MATCH_SRC_VERSION_PACKAGE",
+    "ALL_FIVE_EXPLICIT_LEGACY_VERSION_CONSUMERS_SUPPORT_APPROVED_SOURCE_LAYOUT",
+    "BEFORE_MUTATING_CURRENT_SCHEMA_OR_ENGINE_CONTRACT_VERSION_PRESERVE_ORIGINAL_IN_IMMUTABLE_HISTORY",
+    "PRIOR_DEPENDENCY_GRAPH_ACCEPTANCE_IS_NOT_USED_AS_VERSION_CHANGE_SUCCESS_EVIDENCE",
+    "RETIRED_DERIVED_SNAPSHOT_PLAN_ACCEPTANCE_IS_NOT_REUSED_AS_IMPLEMENTATION_AUTHORITY"
   ],
   "unresolved_policy_gates": [
     {
