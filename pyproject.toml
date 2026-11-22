@@ -1,11 +1,11 @@
 [build-system]
 requires = ["setuptools>=77.0.3", "PyYAML>=6.0,<7"]
-build-backend = "ptsip_build_backend"
-backend-path = [".ptsip/engine/developer/Distribution/release/backend"]
+build-backend = "ptsip_pep517"
+backend-path = ["src/build"]
 
 [project]
 name = "PTSIP"
-version = "0.3.8-b7"
+version = "0.3.8"
 description = "Reference tooling for primary lifecycle ownership and responsibility isolation"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -57,9 +57,6 @@ vpms = [
 ptsip = [
   "common_contract/registry/manifest.json",
   "common_contract/cmd/ptsip-common-contract/protocol.json",
-  "common_contract/schemas/*.schema.json",
-  "compile_sealed_rbac/*.contract.json",
-  "compile_sealed_rbac/*.schema.json",
   "engines/index.json",
   "engines/*/*.json",
   "engines/contracts/*.json",
@@ -130,10 +127,10 @@ ptsip = ["common_contract/*.go", "common_contract/go.mod", "common_contract/go.s
 schema_version = "ptsip-current-composition/v2"
 package_base = "0.3.8"
 package_revision = 0
-package_state = "b7"
+package_state = ""
 tool_version_ref = "tool.ptsip.release.tool_version"
-tool_version = "T.0.3.8.b2"
-profile_version = "pp.2.00"
+tool_version = "T.0.3.8.b3"
+profile_version = "pp.3.00"
 specification_source = "https://github.com/Kinirin/PTSIP"
 spec_revision = "3c47816770d194ae42f98faedc911d980db0e62a"
 

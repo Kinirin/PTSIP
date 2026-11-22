@@ -15,7 +15,11 @@ import (
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
 )
 
-const releaseRoot = ".ptsip/contracts/release/"
+const (
+	releaseRoot                = ".ptsip/contracts/release/"
+	releaseIndex               = releaseRoot + "index.json"
+	buildVerificationReference = releaseIndex + "#build_verification"
+)
 
 type sourceRules struct {
 	ProductPrefix          string   `json:"product_prefix"`
@@ -144,19 +148,18 @@ func digestReader(reader io.Reader) (string, error) {
 
 func loadContract(source gitSource) (buildContract, string, string, error) {
 	var index struct {
-		Version string `json:"schema_version"`
-		Build   string `json:"build_verification_ref"`
+		Version string          `json:"schema_version"`
+		Build   json.RawMessage `json:"build_verification"`
 	}
 	var contract buildContract
-	if _, err := source.decode(releaseRoot+"index.json", &index); err != nil {
+	if _, err := source.decode(releaseIndex, &index); err != nil {
 		return contract, "", "", err
 	}
-	if index.Version != "ptsip-release-contract-index/v2" || !strings.HasPrefix(index.Build, releaseRoot) {
-		return contract, "", "", fmt.Errorf("registered build verification contract is missing or outside the release plane")
+	if index.Version != "ptsip-release-contract-index/v2" || len(index.Build) == 0 {
+		return contract, "", "", fmt.Errorf("registered build verification contract is missing from %s", releaseIndex)
 	}
-	raw, err := source.decode(index.Build, &contract)
-	if err != nil {
-		return contract, "", "", err
+	if err := decode(index.Build, &contract); err != nil {
+		return contract, "", "", fmt.Errorf("invalid owner contract %s: %w", buildVerificationReference, err)
 	}
 	if contract.Version != "ptsip-build-verification/v1" || contract.Root != "src/tests/build" || contract.SourceBinding != "EXACT_GIT_HEAD" ||
 		contract.PublicationAuthorized == nil || *contract.PublicationAuthorized || contract.Installation.Activation == nil || *contract.Installation.Activation ||
@@ -164,9 +167,9 @@ func loadContract(source gitSource) (buildContract, string, string, error) {
 		!strings.HasSuffix(contract.Source.ProductPrefix, "/") || len(contract.Source.SchemaGroups) == 0 || !safePath(contract.Prebuild.Frontend) ||
 		!safePath(contract.SDist.SourceDescriptor) || !safePath(contract.Wheel.CommonContractOrigin) || path.Base(contract.Wheel.GoEntrypoint) != contract.Wheel.GoEntrypoint ||
 		!safePath(contract.Wheel.GoEntrypoint) || !strings.HasPrefix(contract.Wheel.EngineOriginSuffix, ".dist-info/") {
-		return contract, "", "", fmt.Errorf("invalid or unsafe build-verification owner contract %s", index.Build)
+		return contract, "", "", fmt.Errorf("invalid or unsafe build-verification owner contract %s", buildVerificationReference)
 	}
-	return contract, index.Build, sha(raw), nil
+	return contract, buildVerificationReference, sha(index.Build), nil
 }
 
 type engineEntry struct {
@@ -178,6 +181,7 @@ type engineEntry struct {
 type registeredAssets struct {
 	productPrefix        string
 	digests              map[string]string
+	exactDigestPaths     map[string]bool
 	engines              map[string]engineEntry
 	activeProfile        string
 	commonRegistryDigest string
@@ -287,31 +291,56 @@ func loadAssets(source gitSource, rules sourceRules) (registeredAssets, error) {
 			return assets, fmt.Errorf("registered engine asset digest mismatch: %s", pin.Path)
 		}
 	}
-	var common struct {
-		Contracts []struct {
-			Resource string `json:"resource"`
-			Digest   string `json:"sha256"`
-		} `json:"contracts"`
+	err := assets.loadCommonAssets(source, rules.CommonRegistry)
+	return assets, err
+}
+
+func (assets *registeredAssets) loadCommonAssets(source gitSource, registry string) error {
+	if !strings.HasPrefix(registry, assets.productPrefix) {
+		return fmt.Errorf("common-contract registry outside product root: %s", registry)
 	}
-	registryBytes, err := read(rules.CommonRegistry, &common)
+	type resource struct {
+		Path   string `json:"resource"`
+		Digest string `json:"sha256"`
+	}
+	var common struct {
+		Format      string     `json:"format"`
+		Revision    string     `json:"revision"`
+		Contracts   []resource `json:"contracts"`
+		Diagnostics []resource `json:"diagnostics"`
+	}
+	registryBytes, err := source.decode(registry, &common)
 	if err != nil {
-		return assets, err
+		return err
+	}
+	if common.Format != "ptsip-common-contract-registry/v1" || common.Revision != "v2" || len(common.Contracts) == 0 || len(common.Diagnostics) == 0 {
+		return fmt.Errorf("common-contract registry must declare v2 contracts and diagnostics: %s", registry)
 	}
 	assets.commonRegistryDigest = sha(registryBytes)
-	for _, contract := range common.Contracts {
-		if !safePath(contract.Resource) || !strings.HasPrefix(contract.Resource, "common_contract/") {
-			return assets, fmt.Errorf("invalid common-contract resource: %s", contract.Resource)
+	assets.digests[registry] = assets.commonRegistryDigest
+	assets.exactDigestPaths = map[string]bool{registry: true}
+	for _, row := range append(common.Contracts, common.Diagnostics...) {
+		if !safePath(row.Path) || !(strings.HasPrefix(row.Path, "schemas/policy/") || strings.HasPrefix(row.Path, "schemas/plan/")) {
+			return fmt.Errorf("invalid common-contract resource: %s", row.Path)
+		}
+		name := assets.productPrefix + row.Path
+		if assets.exactDigestPaths[name] {
+			if assets.digests[name] != row.Digest {
+				return fmt.Errorf("conflicting common-contract resource digests: %s", row.Path)
+			}
+			continue
 		}
 		var document map[string]any
-		raw, err := read(rules.ProductPrefix+contract.Resource, &document)
+		raw, err := source.decode(name, &document)
 		if err != nil {
-			return assets, err
+			return err
 		}
-		if sha(raw) != contract.Digest {
-			return assets, fmt.Errorf("common-contract resource digest mismatch: %s", contract.Resource)
+		if document == nil || sha(raw) != row.Digest {
+			return fmt.Errorf("common-contract resource digest mismatch: %s", row.Path)
 		}
+		assets.digests[name], assets.exactDigestPaths[name] = row.Digest, true
 	}
-	return assets, nil
+	return nil
 }
 
 func prebuildProblems(source gitSource, contract buildContract) []string {
@@ -328,8 +357,8 @@ func prebuildProblems(source gitSource, contract buildContract) []string {
 		}
 	}
 	for _, name := range contract.Prebuild.RequiredFiles {
-		if !strings.HasPrefix(name, contract.Source.ProductPrefix) {
-			problems = append(problems, "wheel input outside the product source: "+name)
+		if !strings.HasPrefix(name, contract.Source.ProductPrefix) && !strings.HasPrefix(name, "src/build/") && !strings.HasPrefix(name, "src/policy/") {
+			problems = append(problems, "wheel input outside the product and canonical projection roots: "+name)
 		} else if _, err := source.read(name); err != nil {
 			problems = append(problems, err.Error())
 		}

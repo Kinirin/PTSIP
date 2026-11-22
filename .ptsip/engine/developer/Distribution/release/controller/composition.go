@@ -8,8 +8,71 @@ import (
 	"strings"
 
 	"github.com/pelletier/go-toml/v2"
-	"go.yaml.in/yaml/v3"
 )
+
+const ProfileConfigPath = "src/ptsip/schemas/config.json"
+
+type ProfileRegistration struct {
+	ID        string `json:"$id"`
+	Version   string `json:"version"`
+	Path      string `json:"path"`
+	Digest    string `json:"schema_sha256"`
+	Lifecycle string `json:"registered_lifecycle"`
+}
+
+// ReadProfileRegistrations selects the current contract from the product registry.
+func ReadProfileRegistrations(root string) (map[string]ProfileRegistration, string, error) {
+	var config struct {
+		Storage struct {
+			Profile map[string]ProfileRegistration `json:"profile"`
+		} `json:"storage"`
+	}
+	if err := ReadJSON(root, ProfileConfigPath, &config); err != nil {
+		return nil, "", fmt.Errorf("read Profile registrations: %w", err)
+	}
+	seenVersions := map[string]bool{}
+	seenIDs := map[string]bool{}
+	seenPaths := map[string]bool{}
+	active := ""
+	digestPattern := regexp.MustCompile(`^[0-9a-f]{64}$`)
+	for selector, row := range config.Storage.Profile {
+		if !sourceProfileVersionPattern.MatchString(row.Version) || seenVersions[row.Version] ||
+			row.ID == "" || seenIDs[row.ID] || seenPaths[row.Path] ||
+			!strings.HasPrefix(row.Path, "storage/profile/") || !strings.HasSuffix(row.Path, ".schema.json") ||
+			!digestPattern.MatchString(row.Digest) {
+			return nil, "", fmt.Errorf("invalid Profile registration: %s", selector)
+		}
+		if _, err := SafePath(root, row.Path); err != nil {
+			return nil, "", fmt.Errorf("invalid Profile registration path: %w", err)
+		}
+		seenVersions[row.Version], seenIDs[row.ID], seenPaths[row.Path] = true, true, true
+		switch row.Lifecycle {
+		case "ACTIVE":
+			if active != "" {
+				return nil, "", fmt.Errorf("multiple active Profile registrations")
+			}
+			active = row.Version
+		case "LEGACY", "DEPRECATED":
+		default:
+			return nil, "", fmt.Errorf("invalid Profile registration lifecycle: %s", selector)
+		}
+	}
+	if active == "" {
+		return nil, "", fmt.Errorf("active Profile registration is missing")
+	}
+	return config.Storage.Profile, active, nil
+}
+
+func verifyProfileProjection(root, expected string) error {
+	_, active, err := ReadProfileRegistrations(root)
+	if err != nil {
+		return err
+	}
+	if active != expected {
+		return fmt.Errorf("Profile current projection differs: declared %s, registered %s", expected, active)
+	}
+	return nil
+}
 
 type PublishedDeclaration struct {
 	Identity string `toml:"identity"`
@@ -182,21 +245,11 @@ func VerifyCompositionProjections(root string, c Composition, contract Contract)
 		}
 		seen[id] = true
 	}
-	var registry struct {
-		Current string `yaml:"current"`
+	if contract.ProfileRegistry != ProfileConfigPath {
+		return fmt.Errorf("unregistered Profile registry: %s", contract.ProfileRegistry)
 	}
-	for _, ref := range []string{contract.ProfileRegistry, "src/ptsip/specdata/project-profile-contracts.yaml"} {
-		p, err := SafePath(root, ref)
-		if err != nil {
-			return err
-		}
-		b, err := os.ReadFile(p)
-		if err != nil {
-			return err
-		}
-		if yaml.Unmarshal(b, &registry) != nil || registry.Current != c.Profile {
-			return fmt.Errorf("Profile current projection differs: %s", ref)
-		}
+	if err := verifyProfileProjection(root, c.Profile); err != nil {
+		return err
 	}
 	constants, err := os.ReadFile(filepath.Join(root, "src/ptsip/constants.py"))
 	if err != nil {

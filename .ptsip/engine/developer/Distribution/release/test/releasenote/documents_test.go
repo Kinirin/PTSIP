@@ -54,6 +54,9 @@ func documentationVersions(changed bool) string {
 	}
 	text := fmt.Sprintf("[package]\npackage_version = %q\n[tool]\ntool_version = %q\n[profile]\nprofile_version = %q\n[engines]\n", pkg, tool, profile)
 	for _, engine := range []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"} {
+		if engine == "planning" && changed {
+			continue
+		}
 		version := "1.0.0"
 		if engine == "validation" {
 			version = validation
@@ -68,7 +71,7 @@ func documentationFixture(t *testing.T, changed bool) (string, string, string) {
 	root := t.TempDir()
 	paths := []string{"README.md", "docs/translated/index.yaml", documentation.WorkflowPath,
 		".ptsip/contracts/release/Platform/Common/versions_different.json", ".ptsip/contracts/schemas/release/versions_different.schema.json",
-		"docs/validation-schema-references.md", "src/ptsip/profiles/index.yaml", "src/ptsip/engines/validation/contract.json", "src/ptsip/engines/contracts/installation-plan.json"}
+		"docs/validation-schema-references.md", "src/ptsip/schemas/config.json", "src/ptsip/engines/validation/contract.json", "src/ptsip/engines/contracts/installation-plan.json"}
 	for _, schema := range []string{"Basic_Formatting_readme", "engine_Formatting_readme", "profile_Formatting_readme", "tool_Formatting_readme", "readme-translation-path", "readme-translation-registry"} {
 		paths = append(paths, documentation.SchemaRoot+schema+".schema.json")
 	}

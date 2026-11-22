@@ -73,7 +73,8 @@ func TestGoProductDistribution(t *testing.T) {
 			name, valid := strings.CutPrefix(entry.Name, "ptsip-product-source/")
 			parts := strings.Split(name, "/")
 			engineBuildOutput := len(parts) >= 5 && strings.HasPrefix(name, "src/ptsip/engines/") && parts[4] == "target"
-			if !valid || strings.Contains("/"+name, "/.ptsip/") || engineBuildOutput || strings.HasPrefix(name, "src/policy/") || entries[name] {
+			if !valid || strings.Contains("/"+name, "/.ptsip/") || engineBuildOutput || strings.HasPrefix(name, "src/policy/") ||
+				strings.HasPrefix(name, "src/ptsip/compile_sealed_rbac/") || entries[name] {
 				t.Fatalf("unexpected product archive entry %q", entry.Name)
 			}
 			entries[name] = true

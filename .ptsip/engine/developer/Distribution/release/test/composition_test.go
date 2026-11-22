@@ -16,8 +16,15 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 		t.Fatal(err)
 	}
 	c, err := release.ParseComposition(data)
-	if err != nil || c.Tool == "" || c.Profile != "pp.2.00" || len(c.Engines) != 7 {
-		t.Fatalf("canonical declaration: %v", err)
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := release.ReadSourceVersions(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if c.Tool != source.ToolVersion || c.Profile != source.ProfileVersion || len(c.Engines) != len(source.Engines) {
+		t.Fatalf("canonical declaration diverges: %+v", c)
 	}
 	noDeclaration := strings.Split(string(data), "[tool.ptsip.release]")[0]
 	if _, err := release.ParseComposition([]byte(noDeclaration)); err == nil {
@@ -29,6 +36,9 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 	}
 	var contract release.Contract
 	if err := release.ReadJSON(root, release.ContractPath, &contract); err != nil {
+		t.Fatal(err)
+	}
+	if err := release.VerifyCompositionProjections(root, c, contract); err != nil {
 		t.Fatal(err)
 	}
 	c.Engines["context"] = "99.0.0"

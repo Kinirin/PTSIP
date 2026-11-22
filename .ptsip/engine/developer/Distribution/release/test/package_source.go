@@ -29,9 +29,10 @@ with tarfile.open(sys.argv[1]) as archive:
  prefix='ptsip-'+sys.argv[2]+'/'
  names=set(archive.getnames())
  config=tomllib.loads(archive.extractfile(prefix+'pyproject.toml').read().decode())
- assert config['build-system']['build-backend']=='ptsip_build_backend'
- assert config['build-system']['backend-path']==['.ptsip/engine/developer/Distribution/release/backend']
- assert prefix+'.ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py' in names
+ assert config['build-system']['build-backend']=='ptsip_pep517'
+ assert config['build-system']['backend-path']==['src/build']
+ for owner_input in ('ptsip_pep517.py','go.mod','main.go','wheel.go','wheel_native.go'):
+  assert prefix+'src/build/'+owner_input in names, owner_input
  assert not any(x.startswith('ptsip-engine-') for x in config['project']['dependencies'])
  descriptor=json.load(archive.extractfile(prefix+'ptsip-build-source.json'))
  assert descriptor['source_sha']==sys.argv[3]

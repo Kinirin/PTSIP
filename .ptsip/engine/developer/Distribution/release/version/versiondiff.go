@@ -121,11 +121,19 @@ func sourceVersions(data []byte)(map[string]string,bool,error) {
   if _,present:=result[key];present{return nil,false,fmt.Errorf("duplicate VERSION key")}
   result[key]=m[2]
  }
- if len(result)!=3+len(engineIDs) || !packageVersionRE.MatchString(result["package"]) ||
+ // Historical declarations can contain Planning. The current product inventory
+ // has the six remaining engines, while archived sources remain readable.
+ expectedCount := 3 + len(engineIDs) - 1
+ if _, historical := result["engine.planning"]; historical { expectedCount++ }
+ if len(result)!=expectedCount || !packageVersionRE.MatchString(result["package"]) ||
     !toolVersionRE.MatchString(result["tool"]) || !profileVersionRE.MatchString(result["profile"]){
   return nil,false,fmt.Errorf("invalid or incomplete VERSION")
  }
- for _,id:=range engineIDs {if !engineVersionRE.MatchString(result["engine."+id]){return nil,false,fmt.Errorf("invalid engine version %s",id)}}
+ for _,id:=range engineIDs {
+  version, present := result["engine."+id]
+  if id == "planning" && !present {continue}
+  if !engineVersionRE.MatchString(version){return nil,false,fmt.Errorf("invalid engine version %s",id)}
+ }
  return result,!sectioned,nil
 }
 func diffComponent(path string)string{
@@ -164,6 +172,7 @@ func AnalyzeVersionsDifferent(root,base,head string)(VersionDiffReport,error){
   path:=string(raw)
   if !strings.HasPrefix(path,"src/ptsip/")||strings.ContainsAny(path,"\r\n"){return report,fmt.Errorf("invalid changed path")}
   component:=diffComponent(path)
+  if component == "engine.planning" && values[component] == "" {continue}
   entry:=entries[component]
   if entry==nil {entry=&VersionDiffEntry{Component:component,Current:values[component]};entries[component]=entry}
   entry.Paths=append(entry.Paths,path)

@@ -18,7 +18,6 @@ context = "0.2.2"
 storage = "0.3.2"
 validation = "0.3.4"
 discovery = "0.3.3"
-planning = "0.3.2"
 execution = "0.3.2"
 projection = "0.2.2"
 `
@@ -40,7 +39,6 @@ context = "0.2.2"
 storage = "0.3.2"
 validation = "0.3.4"
 discovery = "0.3.3"
-planning = "0.3.2"
 execution = "0.3.2"
 projection = "0.2.2"
 
@@ -50,7 +48,7 @@ identity = "0.3.8.fa660a"
 
 var versionsForFixture = map[string]string{
 	"context": "0.2.2", "storage": "0.3.2", "validation": "0.3.4",
-	"discovery": "0.3.3", "planning": "0.3.2",
+	"discovery": "0.3.3",
 	"execution": "0.3.2", "projection": "0.2.2",
 }
 
@@ -65,8 +63,13 @@ func writeVersionFixture(t *testing.T, source, project string) string {
 	}
 	write("src/VERSION", source)
 	write("pyproject.toml", project)
-	write("src/ptsip/specdata/project-profile-contracts.yaml",
-		"schema_version: ptsip-project-profile-contract-registry/v1\ncurrent: pp.2.00\ncontracts:\n  - version: pp.1.02\n")
+	write(ProfileConfigPath, `{"storage":{"profile":{"ptsip.project-profile":{
+		"$id":"urn:ptsip:storage:contract:profile:official",
+		"version":"pp.2.00",
+		"path":"storage/profile/project-profile.schema.json",
+		"schema_sha256":"53420b98df6e9acb379ef35a88d4280b064fd3e8e2184925b2b4d607d743c6ad",
+		"registered_lifecycle":"ACTIVE"
+	}}}}`)
 	entries := []map[string]string{}
 	for _, id := range officialEngineIDs {
 		v := versionsForFixture[id]
@@ -91,7 +94,7 @@ func TestSyncPackageVersionFromSource(t *testing.T) {
 	result, err := SyncPackageVersion(root, false)
 	if err != nil || !result.Changed || result.Status != "SYNCED" || result.Version != "0.3.8-b7" ||
 		result.ToolVersion != "T.0.3.8.b2" || result.ProfileVersion != "pp.2.00" ||
-		result.Previous != "0.3.8b6" || len(result.CheckedFiles) != 10 {
+		result.Previous != "0.3.8b6" || len(result.CheckedFiles) != 9 {
 		t.Fatalf("invalid full sync: %+v, %v", result, err)
 	}
 	if !reflect.DeepEqual(result.ChangedFiles, []string{"pyproject.toml"}) {
@@ -120,12 +123,21 @@ func TestFullCanonicalSourceProjectsIndependentVersions(t *testing.T) {
 		`storage = "0.3.2"`, `storage = "0.3.3"`,
 	).Replace(canonicalVersionFixture)
 	root := writeVersionFixture(t, source, versionSyncFixture)
+	registryPath := filepath.Join(root, filepath.FromSlash(ProfileConfigPath))
+	registeredBefore, err := os.ReadFile(registryPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	registered := strings.Replace(string(registeredBefore), "pp.2.00", "pp.2.01", 1)
+	if err := os.WriteFile(registryPath, []byte(registered), 0644); err != nil {
+		t.Fatal(err)
+	}
 	result, err := SyncPackageVersion(root, false)
 	if err != nil { t.Fatal(err) }
 	if result.Engines["storage"] != "0.3.3" || result.Engines["context"] != "0.2.2" {
 		t.Fatalf("unrelated engine implicitly changed: %+v", result.Engines)
 	}
-	expected := []string{"pyproject.toml", "src/ptsip/engines/index.json", "src/ptsip/specdata/project-profile-contracts.yaml", "src/ptsip/engines/storage/version.yaml"}
+	expected := []string{"pyproject.toml", "src/ptsip/engines/index.json", "src/ptsip/engines/storage/version.yaml"}
 	if !reflect.DeepEqual(result.ChangedFiles, expected) {
 		t.Fatalf("wrong projection targets: got %v, want %v", result.ChangedFiles, expected)
 	}
@@ -135,6 +147,10 @@ func TestFullCanonicalSourceProjectsIndependentVersions(t *testing.T) {
 	}
 	if result, err = SyncPackageVersion(root, true); err != nil || result.Changed {
 		t.Fatalf("complete composition check failed: %+v %v", result, err)
+	}
+	registeredAfter, err := os.ReadFile(registryPath)
+	if err != nil || string(registeredAfter) != registered {
+		t.Fatalf("version sync changed the Profile registry: %v", err)
 	}
 }
 
@@ -199,13 +215,13 @@ func TestPublicationEvidenceAuthorityVersionProjectionSuite(t *testing.T) {
 	t.Run("invalid_target", TestVersionSyncRejectsAmbiguousProjectFields)
 	t.Run("crlf", TestVersionSyncPreservesCRLFAndSupportsStableRelease)
 	t.Run("yaml_crlf", TestVersionSyncYAMLCRLF)
-	t.Run("ambiguous_yaml_crlf", TestVersionSyncRejectsAmbiguousCRLFCurrent)
+	t.Run("ambiguous_or_different_active_profile", TestVersionSyncRejectsUnregisteredActiveProfile)
 }
 
 
 func TestVersionSyncYAMLCRLF(t *testing.T) {
 	root := writeVersionFixture(t, canonicalVersionFixture, versionSyncFixture)
-	paths := []string{"src/ptsip/specdata/project-profile-contracts.yaml"}
+	var paths []string
 	for _, id := range officialEngineIDs {
 		paths = append(paths, "src/ptsip/engines/"+id+"/version.yaml")
 	}
@@ -215,9 +231,6 @@ func TestVersionSyncYAMLCRLF(t *testing.T) {
 		data, err := os.ReadFile(path)
 		if err != nil { t.Fatal(err) }
 		withCRLF := strings.ReplaceAll(string(data), "\n", "\r\n")
-		if ref == "src/ptsip/specdata/project-profile-contracts.yaml" {
-			withCRLF = strings.Replace(withCRLF, "current: pp.2.00\r\n", "current: pp.2.00 # active profile\r\n", 1)
-		}
 		if ref == "src/ptsip/engines/storage/version.yaml" {
 			withCRLF = strings.Replace(withCRLF, "version: 0.3.2\r\n", "version: 0.3.2 # storage version\r\n", 1)
 		}
@@ -237,23 +250,18 @@ func TestVersionSyncYAMLCRLF(t *testing.T) {
 	if result, err = SyncPackageVersion(root, true); err != nil || result.Changed || result.Status != "IN_SYNC" {
 		t.Fatalf("CRLF check-version must succeed: %+v %v", result, err)
 	}
-	updatedSource := strings.NewReplacer(
-		"profile_version = \"pp.2.00\"", "profile_version = \"pp.2.01\"",
-		"storage = \"0.3.2\"", "storage = \"0.3.3\"",
-	).Replace(canonicalVersionFixture)
+	updatedSource := strings.Replace(canonicalVersionFixture, `storage = "0.3.2"`, `storage = "0.3.3"`, 1)
 	if err := os.WriteFile(filepath.Join(root, "src", "VERSION"), []byte(updatedSource), 0644); err != nil { t.Fatal(err) }
 	result, err = SyncPackageVersion(root, false)
 	if err != nil { t.Fatal(err) }
 	expected := []string{
 		"pyproject.toml", "src/ptsip/engines/index.json",
-		"src/ptsip/specdata/project-profile-contracts.yaml",
 		"src/ptsip/engines/storage/version.yaml",
 	}
 	if !reflect.DeepEqual(result.ChangedFiles, expected) {
 		t.Fatalf("CRLF projection changed wrong paths: got %v, want %v", result.ChangedFiles, expected)
 	}
 	for ref, expectedLine := range map[string]string{
-		"src/ptsip/specdata/project-profile-contracts.yaml": "current: pp.2.01 # active profile\r\n",
 		"src/ptsip/engines/storage/version.yaml": "version: 0.3.3 # storage version\r\n",
 	} {
 		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(ref)))
@@ -267,14 +275,13 @@ func TestVersionSyncYAMLCRLF(t *testing.T) {
 	}
 }
 
-func TestVersionSyncRejectsAmbiguousCRLFCurrent(t *testing.T) {
-	root := writeVersionFixture(t, canonicalVersionFixture, versionSyncFixture)
-	p := filepath.Join(root, "src/ptsip/specdata/project-profile-contracts.yaml")
-	if err := os.WriteFile(p, []byte("current: pp.2.00\r\ncurrent: pp.2.00\r\n"), 0644); err != nil { t.Fatal(err) }
+func TestVersionSyncRejectsUnregisteredActiveProfile(t *testing.T) {
+	source := strings.Replace(canonicalVersionFixture, `profile_version = "pp.2.00"`, `profile_version = "pp.2.01"`, 1)
+	root := writeVersionFixture(t, source, versionSyncFixture)
 	before, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
 	if err != nil { t.Fatal(err) }
-	if _, err := SyncPackageVersion(root, false); err == nil || !strings.Contains(err.Error(), "ambiguous current") {
-		t.Fatalf("duplicate current field must fail closed: %v", err)
+	if _, err := SyncPackageVersion(root, false); err == nil || !strings.Contains(err.Error(), "Profile current projection differs") {
+		t.Fatalf("unregistered active Profile must fail closed: %v", err)
 	}
 	after, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
 	if err != nil || string(before) != string(after) {

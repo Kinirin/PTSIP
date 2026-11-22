@@ -13,6 +13,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/releasenote"
 	"go.yaml.in/yaml/v3"
 )
 
@@ -183,6 +184,13 @@ func Select(root, targets, optional string) (Selection, error) {
 		note, ok := contract.Notes[c.Kind].(string)
 		if !ok {
 			return result, fmt.Errorf("component release-note route missing")
+		}
+		if c.Kind == "tool" && strings.Contains(note, "{filename_version}") {
+			filenameVersion, err := releasenote.ToolFilenameVersion(c.Version)
+			if err != nil {
+				return result, err
+			}
+			note = strings.ReplaceAll(note, "{filename_version}", filenameVersion)
 		}
 		note = strings.ReplaceAll(note, "{engine}", c.ID)
 		c.Note = strings.ReplaceAll(note, "{version}", c.Version)

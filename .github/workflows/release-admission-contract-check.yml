@@ -10,11 +10,15 @@ on:
       - 'developer/tests/engines/**'
       - '.ptsip/engine/developer/policy/verification/**'
       - '.ptsip/engine/developer/Distribution/release/**'
-      - 'src/ptsip/profiles/**'
+      - 'src/build/**'
+      - 'src/tests/build/**'
+      - 'src/ptsip/schemas/**'
+      - 'src/ptsip/common_contract/**'
       - 'src/ptsip/specdata/**'
       - 'src/VERSION'
       - '.github/test_modes.yaml'
       - 'pyproject.toml'
+      - 'MANIFEST.in'
       - '.ptsip/engine/developer/main.go'
       - '.github/verification-retirement.json'
       - '.github/workflows/tooling-release.yml'
@@ -31,6 +35,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-go@v6
         with:
           go-version-file: .ptsip/engine/developer/Distribution/release/controller/go.mod
@@ -74,14 +79,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer/Distribution/release/controller test ./... -count=1
-          go -C .ptsip/engine/developer/Distribution/release/test test ./... -count=1
-          go -C .ptsip/engine/developer/Distribution/release/verification/engine test ./... -count=1
+          go -C .ptsip/engine/developer/Distribution/release/controller test -mod=readonly ./... -count=1
+          go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly ./... -count=1
+          go -C .ptsip/engine/developer/Distribution/release/verification/engine test -mod=readonly ./... -count=1
       - name: Verify current Package and Profile native contracts
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer/Distribution/release/verification/profile test ./... -count=1
+          go -C .ptsip/engine/developer/Distribution/release/verification/profile test -mod=readonly ./... -count=1
       - name: Verify unresolved publication authority fails closed
         shell: bash
         run: |
@@ -136,11 +141,13 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: developer/tests/go.mod
-      - name: Verify new capability identities and all native source digests
+      - name: Verify current capability identities and native source digests
         shell: bash
         run: |
           set -euo pipefail
-          go -C developer/tests test ./engines -run '^(TestRegisteredManifestContractBindingAndIndependentOwnerClosure|TestPostB5CapabilityVersions|TestWithdrawnCTRLReleaseAdmissionPolicyAbsent)$' -count=1
+          go -C developer/tests test ./engines -run '^(TestRegisteredManifestContractBindingAndIndependentOwnerClosure|TestWithdrawnCTRLReleaseAdmissionPolicyAbsent)$' -count=1
+          go -C src/ptsip/common_contract test -mod=readonly ./... -count=1
+          go -C src/tests/build test -mod=readonly ./... -count=1
   native-engine-contract-smoke:
     name: "Native contract / ${{ matrix.engine }}"
     runs-on: ubuntu-24.04

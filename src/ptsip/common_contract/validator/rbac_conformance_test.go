@@ -2,6 +2,7 @@ package validator_test
 
 import (
 	"os"
+	"path"
 	"path/filepath"
 	"testing"
 
@@ -10,12 +11,8 @@ import (
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/validator"
 )
 
-func TestRBACProfileStructuralConformance(t *testing.T) {
-	root := filepath.Join("..", "..", "compile_sealed_rbac")
-	schemaRoot := os.Getenv("PTSIP_PP300_SCHEMA_ROOT")
-	if schemaRoot == "" {
-		schemaRoot = root
-	}
+func TestRegisteredRBACStructuralConformance(t *testing.T) {
+	schemaRoot := filepath.Join("..", "..", "schemas")
 	read := func(path string) any {
 		t.Helper()
 		raw, err := os.ReadFile(path)
@@ -29,13 +26,22 @@ func TestRBACProfileStructuralConformance(t *testing.T) {
 		return value
 	}
 
-	// Compile each schema with only its explicitly selected local resource.
-	// This checks structural parity without registering or activating a contract.
+	config, _ := read(filepath.Join(schemaRoot, "config.json")).(map[string]any)
+	storage, _ := config["storage"].(map[string]any)
+	registrations, _ := storage["Responsibility-Authority"].(map[string]any)
+	if len(registrations) != 3 {
+		t.Fatalf("expected three RBAC structure registrations, got %v", registrations)
+	}
+	// Compile each declared RBAC schema with only its selected local resource.
 	checks := make(map[string]func(any) error)
-	for _, role := range []string{"ra", "rac", "aec"} {
-		name := role + ".pp.3.00.schema.json"
-		id := "urn:ptsip:rbac:consumer:pp300:" + role + ":structure:v1"
-		doc, ok := read(filepath.Join(schemaRoot, name)).(map[string]any)
+	for _, key := range []string{"RA_list", "RAC_list", "AEC_list"} {
+		row, _ := registrations[key].(map[string]any)
+		name, _ := row["path"].(string)
+		id, _ := row["$id"].(string)
+		if id == "" || path.Dir(name) != "storage/rbac" || path.Clean(name) != name {
+			t.Fatalf("invalid RBAC structure registration %s: %v", key, row)
+		}
+		doc, ok := read(filepath.Join(schemaRoot, filepath.FromSlash(name))).(map[string]any)
 		if !ok {
 			t.Fatalf("%s must contain a schema object", name)
 		}
@@ -49,10 +55,10 @@ func TestRBACProfileStructuralConformance(t *testing.T) {
 		if err != nil {
 			t.Fatalf("compile %s: %v", name, err)
 		}
-		checks[name] = compiled.Validate
+		checks[key] = compiled.Validate
 	}
 
-	cases, ok := read(filepath.Join(root, "testdata", "conformance.json")).([]any)
+	cases, ok := read(filepath.Join("..", "..", "..", "tests", "ptsip", "rbac-list-conformance.json")).([]any)
 	if !ok || len(cases) == 0 {
 		t.Fatal("conformance fixtures must be a nonempty array")
 	}
@@ -62,8 +68,8 @@ func TestRBACProfileStructuralConformance(t *testing.T) {
 			t.Fatalf("invalid conformance fixture: %#v", value)
 		}
 		name, _ := fixture["name"].(string)
-		file, _ := fixture["schema"].(string)
-		validate := checks[file]
+		registration, _ := fixture["registration"].(string)
+		validate := checks[registration]
 		want, hasExpected := fixture["valid"].(bool)
 		instance, hasInstance := fixture["instance"]
 		if name == "" || validate == nil || !hasExpected || !hasInstance {
@@ -72,7 +78,7 @@ func TestRBACProfileStructuralConformance(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			err := validate(instance)
 			if valid := err == nil; valid != want {
-				t.Errorf("%s validity = %t, want %t (error: %v)", file, valid, want, err)
+				t.Errorf("%s validity = %t, want %t (error: %v)", registration, valid, want, err)
 			}
 		})
 	}

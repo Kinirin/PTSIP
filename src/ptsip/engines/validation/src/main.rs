@@ -230,9 +230,8 @@ mod tests {
     }
 
     #[test]
-    fn validates_shared_pp300_rbac_conformance_cases() {
-        let root =
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../compile_sealed_rbac");
+    fn validates_shared_registered_rbac_conformance_cases() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../schemas");
         let read_json = |relative: &str| -> Value {
             let path = root.join(relative);
             let bytes = std::fs::read(&path)
@@ -240,26 +239,37 @@ mod tests {
             source::parse(&bytes)
                 .unwrap_or_else(|error| panic!("invalid JSON in {}: {error}", path.display()))
         };
-        let schemas = [
-            "ra.pp.3.00.schema.json",
-            "rac.pp.3.00.schema.json",
-            "aec.pp.3.00.schema.json",
-        ]
-        .map(|filename| (filename, read_json(filename)));
-        let fixture = read_json("testdata/conformance.json");
+        let config = read_json("config.json");
+        let registrations = config["storage"]["Responsibility-Authority"]
+            .as_object()
+            .expect("central RBAC structure registrations required");
+        assert_eq!(registrations.len(), 3);
+        let schemas = ["RA_list", "RAC_list", "AEC_list"].map(|key| {
+            let row = &registrations[key];
+            let relative = row["path"].as_str().expect("registered schema path");
+            let filename = relative
+                .strip_prefix("storage/rbac/")
+                .expect("registered RBAC schema must be under storage/rbac");
+            assert!(filename.ends_with(".schema.json") && !filename.contains(['/', '\\', ':']));
+            let schema = read_json(relative);
+            assert_eq!(schema["$id"], row["$id"]);
+            assert_eq!(schema["$schema"], "https://json-schema.org/draft/2020-12/schema");
+            (key, schema)
+        });
+        let fixture = read_json("../../tests/ptsip/rbac-list-conformance.json");
         let cases = fixture
             .as_array()
             .expect("conformance cases must be an array");
         assert!(!cases.is_empty(), "conformance cases must not be empty");
         for case in cases {
             let name = case["name"].as_str().expect("case name must be a string");
-            let schema_name = case["schema"]
+            let registration = case["registration"]
                 .as_str()
-                .expect("schema name must be a string");
+                .expect("schema registration must be a string");
             let (_, schema) = schemas
                 .iter()
-                .find(|(filename, _)| *filename == schema_name)
-                .unwrap_or_else(|| panic!("{name}: unknown schema {schema_name}"));
+                .find(|(key, _)| *key == registration)
+                .unwrap_or_else(|| panic!("{name}: unknown registration {registration}"));
             let instance = case.get("instance").expect("case instance is required");
             let expected = case["valid"]
                 .as_bool()

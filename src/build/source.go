@@ -44,6 +44,9 @@ func productPath(name string) bool {
 	if !strings.HasPrefix(name, "src/ptsip/") {
 		return false
 	}
+	if strings.HasPrefix(name, "src/ptsip/compile_sealed_rbac/") {
+		return false
+	}
 	if len(parts) >= 5 && parts[2] == "engines" && parts[4] == "target" {
 		return false
 	}
@@ -90,7 +93,7 @@ func loadGitSource(root string) (productSource, error) {
 	if strings.TrimSpace(string(build)) == "src/build" {
 		arguments = append(arguments, "src/build")
 	}
-	archive, err := runGit(root, arguments...)
+	archive, err := runGit(root, append(arguments, ":(exclude)src/ptsip/compile_sealed_rbac")...)
 	if err != nil {
 		return productSource{}, err
 	}

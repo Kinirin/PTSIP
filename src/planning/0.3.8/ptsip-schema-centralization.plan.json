@@ -3623,9 +3623,9 @@
         "product_builder": "src/build/",
         "verifier": "src/tests/build/",
         "release_contract": {
-          "path": ".ptsip/contracts/release/build-verification.json",
+          "path": ".ptsip/contracts/release/index.json",
           "authority": "USER_DIRECT_SEPARATE_AUTHORIZATION_OUTSIDE_THIS_PLAN",
-          "routing": ".ptsip/contracts/release/index.json#build_verification_ref"
+          "routing": ".ptsip/contracts/release/index.json#build_verification"
         },
         "rbac_source": {
           "catalog": "src/ptsip/schemas/config.json",

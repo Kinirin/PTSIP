@@ -94,6 +94,10 @@ func TestRegisteredManifestContractBindingAndIndependentOwnerClosure(t *testing.
 	for _, raw := range plan["confirmed_engine_responsibilities"].(object)["current_migration_engine_kinds"].([]any) {
 		entry(t, raw.(string))
 	}
+	expectedAlgorithms := map[string]string{
+		"validation.contract": "INDEPENDENT_JSON_SCHEMA_VALIDATION_WITH_SCOPED_REFERENCE_RESOLUTION",
+		"projection.select":   "EXPLICIT_JSON_POINTER_SELECTION_WITHOUT_SOURCE_MUTATION_OR_LEGACY_OUTPUT_PARITY",
+	}
 	seen := map[string]bool{}
 	for _, raw := range all {
 		e := raw.(object)
@@ -109,32 +113,66 @@ func TestRegisteredManifestContractBindingAndIndependentOwnerClosure(t *testing.
 		if manifest["engine_id"] != id || manifest["origin"] != "OFFICIAL" {
 			t.Fatal("explicit identity/origin mismatch")
 		}
-		contract := document(t, e["contract_ref"].(string))
+		if manifest["implementation_version"] != e["version"] {
+			t.Fatalf("%s: manifest version %v does not match registry version %v", id, manifest["implementation_version"], e["version"])
+		}
+		contractPath := e["contract_ref"].(string)
+		contract := document(t, contractPath)
 		if err := schema(t, "capability-contract", contract); err != nil {
 			t.Fatal(err)
 		}
-		if contract["engine_id"] != id || contract["semantic_owner"] != e["kind"] || contract["execution_permission_from_declaration"] != false {
+		if contract["engine_id"] != id || contract["contract_id"] != e["capability_id"] || contract["semantic_owner"] != e["kind"] || contract["execution_permission_from_declaration"] != false {
 			t.Fatal("contract owner/permission boundary")
 		}
-		for _, value := range manifest["capabilities"].([]any) {
+		capabilities := manifest["capabilities"].([]any)
+		if len(capabilities) == 0 {
+			t.Fatalf("%s: manifest does not bind registered contract %s", id, contractPath)
+		}
+		contractDigest := digest(t, contractPath)
+		for _, value := range capabilities {
 			ref := value.(object)
-			if ref["id"] != contract["contract_id"] || ref["sha256"] != digest(t, ref["path"].(string)) {
-				t.Fatal("stale or wrong manifest contract binding")
+			if ref["id"] != contract["contract_id"] || ref["version"] != contract["version"] || ref["path"] != contractPath || ref["sha256"] != contractDigest {
+				t.Fatalf("%s: stale or wrong manifest binding for %s", id, contractPath)
 			}
+		}
+		registeredOperations := map[string]bool{}
+		for _, value := range e["operations"].([]any) {
+			operationID := value.(string)
+			if registeredOperations[operationID] {
+				t.Fatalf("%s: duplicate registered operation %s", id, operationID)
+			}
+			registeredOperations[operationID] = true
 		}
 		for _, value := range contract["operations"].([]any) {
 			op := value.(object)
+			operationID := op["operation_id"].(string)
+			if !registeredOperations[operationID] {
+				t.Fatalf("%s: unregistered or duplicate contract operation %s", id, operationID)
+			}
+			delete(registeredOperations, operationID)
 			for _, field := range []string{"typed_input", "typed_output", "preconditions", "postconditions", "side_effects", "declared_permission_requirements", "failure_semantics", "verification_evidence", "compatibility", "machine_semantics"} {
 				if op[field] == nil {
 					t.Fatal("incomplete independent operation contract", field)
 				}
 			}
+			if version := op["compatibility"].(object)["contract_version"]; version != contract["version"] {
+				t.Fatalf("%s: operation contract version %v does not match %v", operationID, version, contract["version"])
+			}
+			if algorithm, mustMatch := expectedAlgorithms[operationID]; mustMatch {
+				if actual := op["machine_semantics"].(object)["algorithm"]; actual != algorithm {
+					t.Fatalf("%s: algorithm %v does not match %s", operationID, actual, algorithm)
+				}
+				delete(expectedAlgorithms, operationID)
+			}
+		}
+		if len(registeredOperations) > 0 {
+			t.Fatalf("%s: registered operations missing from contract: %v", id, registeredOperations)
 		}
 		binding := document(t, e["execution_binding_ref"].(string))["bindings"].([]any)[0].(object)
 		if err := schema(t, "execution-binding", binding); err != nil {
 			t.Fatal(err)
 		}
-		if binding["engine_id"] != id || binding["capability_id"] != contract["contract_id"] || binding["contract_version"] != contract["version"] {
+		if binding["engine_id"] != id || binding["engine_version"] != e["version"] || binding["capability_id"] != contract["contract_id"] || binding["contract_version"] != contract["version"] {
 			t.Fatal("entry binding is not exact")
 		}
 		transport := binding["transport_ref"].(object)
@@ -158,6 +196,9 @@ func TestRegisteredManifestContractBindingAndIndependentOwnerClosure(t *testing.
 		if len(manifest["dependencies"].([]any)) != 0 {
 			t.Fatal("these independent initial capabilities have no undeclared engine dependency")
 		}
+	}
+	if len(expectedAlgorithms) > 0 {
+		t.Fatalf("required native operations missing from current contracts: %v", expectedAlgorithms)
 	}
 	state := document(t, "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json")
 	if err := schema(t, "derived-state", state); err != nil {

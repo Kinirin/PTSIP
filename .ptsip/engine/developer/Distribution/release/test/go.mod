@@ -20,4 +20,12 @@ replace github.com/Kinirin/PTSIP/.ptsip/engine/developer => ../../..
 
 require github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/profile v0.0.0
 
+require (
+	github.com/Kinirin/PTSIP/src/ptsip/common_contract v0.0.0 // indirect
+	github.com/dlclark/regexp2 v1.11.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
 replace github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/profile => ../verification/profile
+
+replace github.com/Kinirin/PTSIP/src/ptsip/common_contract => ../../../../../../src/ptsip/common_contract

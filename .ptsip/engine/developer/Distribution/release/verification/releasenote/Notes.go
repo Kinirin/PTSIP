@@ -3,8 +3,10 @@ package releasenote
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -39,6 +41,17 @@ func kindOf(component string) string {
 	return component
 }
 
+func ToolFilenameVersion(identity string) (string, error) {
+	parts := regexp.MustCompile(`^(T\.[0-9]+\.[0-9]+\.[0-9]+)(?:\.((?:a|b|rc)[1-9][0-9]*))?$`).FindStringSubmatch(identity)
+	if parts == nil {
+		return "", fmt.Errorf("INVALID_TOOL_NOTE_VERSION")
+	}
+	if parts[2] == "" {
+		return parts[1], nil
+	}
+	return parts[1] + "-" + parts[2], nil
+}
+
 func (c *Catalog) ArchivePath(note Note) (string, error) {
 	if note.Kind != kindOf(note.Change.Component) {
 		return "", fmt.Errorf("NOTE_COMPONENT_KIND_MISMATCH")
@@ -49,13 +62,10 @@ func (c *Catalog) ArchivePath(note Note) (string, error) {
 	}
 	filenameVersion := note.Change.Version
 	if note.Kind == "tool" {
-		parts := regexp.MustCompile(`^(T\.[0-9]+\.[0-9]+\.[0-9]+)(?:\.((?:a|b|rc)[1-9][0-9]*))?$`).FindStringSubmatch(note.Change.Version)
-		if parts == nil {
-			return "", fmt.Errorf("INVALID_TOOL_NOTE_VERSION")
-		}
-		filenameVersion = parts[1]
-		if parts[2] != "" {
-			filenameVersion += "-" + parts[2]
+		var err error
+		filenameVersion, err = ToolFilenameVersion(note.Change.Version)
+		if err != nil {
+			return "", err
 		}
 	}
 	path := strings.NewReplacer("{engine}", strings.TrimPrefix(note.Change.Component, "engine."), "{version}", note.Change.Version, "{filename_version}", filenameVersion).Replace(route.Path)
@@ -66,6 +76,10 @@ func (c *Catalog) ArchivePath(note Note) (string, error) {
 }
 
 func (c *Catalog) CheckNote(note Note, validate authoring.Validator) error {
+	return c.checkNote(note, validate, false)
+}
+
+func (c *Catalog) checkNote(note Note, validate authoring.Validator, archived bool) error {
 	id := "urn:ptsip:docs:format:" + note.Kind + "-readme:v1"
 	if note.Kind == "package" {
 		id = BasicID + "#/$defs/ReleaseNote"
@@ -90,14 +104,32 @@ func (c *Catalog) CheckNote(note Note, validate authoring.Validator) error {
 		if strings.HasPrefix(link.Path, "docs/translated/") {
 			return fmt.Errorf("ARCHIVE_DOCUMENTATION_MUST_REFERENCE_ORIGINAL")
 		}
-		if _, err := authoring.LocalFile(c.Root, link.Path); err != nil {
-			return err
-		}
 		if strings.ContainsAny(link.Title, "\r\n[]") || strings.ContainsAny(link.Path, "()") {
 			return fmt.Errorf("INVALID_DOCUMENTATION_LINK")
 		}
+		if _, err := authoring.LocalFile(c.Root, link.Path); err != nil {
+			if !archived || !errors.Is(err, os.ErrNotExist) || !archivedRegularFile(c.Root, note.Head, link.Path) {
+				return err
+			}
+		}
 	}
 	return nil
+}
+
+func archivedRegularFile(root, head, reference string) bool {
+	if !regexp.MustCompile(`^[0-9a-f]{40}$`).MatchString(head) {
+		return false
+	}
+	cmd := exec.Command("git", "--literal-pathspecs", "ls-tree", "--full-tree", "-z", head, "--", reference)
+	cmd.Dir = root
+	result, err := cmd.Output()
+	if err != nil {
+		return false
+	}
+	metadata, name, ok := bytes.Cut(result, []byte{'\t'})
+	fields := bytes.Fields(metadata)
+	return ok && string(name) == reference+"\x00" && len(fields) == 3 &&
+		(string(fields[0]) == "100644" || string(fields[0]) == "100755") && string(fields[1]) == "blob"
 }
 
 func (c *Catalog) RenderNote(note Note) ([]byte, error) {
@@ -125,6 +157,21 @@ func (c *Catalog) RenderNote(note Note) ([]byte, error) {
 	return []byte(out.String()), nil
 }
 
+func DecodeMetadata(raw []byte) (Note, []byte, error) {
+	line, body, delimiter := bytes.Cut(raw, []byte{'\n'})
+	line = bytes.TrimSuffix(line, []byte{'\r'})
+	metadata, prefix := bytes.CutPrefix(line, []byte(NotePrefix))
+	metadata, suffix := bytes.CutSuffix(metadata, []byte(" -->"))
+	var note Note
+	if !delimiter || !prefix || !suffix {
+		return note, nil, fmt.Errorf("NOTE_METADATA_INVALID")
+	}
+	if err := json.Unmarshal(metadata, &note); err != nil {
+		return note, nil, err
+	}
+	return note, bytes.TrimLeft(body, "\r\n"), nil
+}
+
 func (c *Catalog) CheckArchive(validate authoring.Validator) (int, error) {
 	count := 0
 	root := filepath.Join(c.Root, filepath.FromSlash(c.Workflow.Archive.Root))
@@ -148,15 +195,11 @@ func (c *Catalog) CheckArchive(validate authoring.Validator) (int, error) {
 		if !bytes.HasPrefix(raw, []byte(NotePrefix)) {
 			return nil
 		} // Preserved historical formats.
-		line, _, _ := bytes.Cut(raw, []byte{'\n'})
-		if !bytes.HasSuffix(line, []byte(" -->")) {
-			return fmt.Errorf("NOTE_METADATA_INVALID")
-		}
-		var note Note
-		if err := json.Unmarshal(line[len(NotePrefix):len(line)-4], &note); err != nil {
+		note, _, err := DecodeMetadata(raw)
+		if err != nil {
 			return err
 		}
-		if err := c.CheckNote(note, validate); err != nil {
+		if err := c.checkNote(note, validate, true); err != nil {
 			return err
 		}
 		path, err := c.ArchivePath(note)

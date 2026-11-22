@@ -26,7 +26,10 @@ package = resources.files(request["package"])
 root = Path(str(package)).resolve()
 assert root.is_relative_to(Path(sys.prefix).resolve()), "product resolved outside the temporary environment"
 for name, expected in request["assets"].items():
-    assert hashlib.sha256(root.joinpath(name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == expected, name
+    data = root.joinpath(name).read_bytes()
+    if name not in request["exact_asset_digests"]:
+        data = data.replace(b"\r\n", b"\n")
+    assert hashlib.sha256(data).hexdigest() == expected, name
 scripts = Path(sysconfig.get_path("scripts"))
 suffix = ".exe" if sys.platform == "win32" else ""
 assert scripts.joinpath(request["router"] + suffix).is_file(), "installed Go router is missing"
@@ -121,16 +124,22 @@ func verifyInstalled(file io.ReadSeeker, artifact, python, wheelhouse string, co
 		return err
 	}
 	assetDigests := map[string]string{}
+	exactAssetDigests := map[string]bool{}
 	for name, digest := range assets.digests {
-		assetDigests[strings.TrimPrefix(name, assets.productPrefix)] = digest
+		relative := strings.TrimPrefix(name, assets.productPrefix)
+		assetDigests[relative] = digest
+		if assets.exactDigestPaths[name] {
+			exactAssetDigests[relative] = true
+		}
 	}
 	options, err := json.Marshal(map[string]any{
-		"package":       contract.Installation.Package,
-		"profile":       assets.activeProfile,
-		"assets":        assetDigests,
-		"engines":       assets.engines,
-		"router":        contract.Wheel.GoEntrypoint,
-		"common_origin": strings.TrimPrefix(contract.Wheel.CommonContractOrigin, contract.Installation.Package+"/"),
+		"package":             contract.Installation.Package,
+		"profile":             assets.activeProfile,
+		"assets":              assetDigests,
+		"exact_asset_digests": exactAssetDigests,
+		"engines":             assets.engines,
+		"router":              contract.Wheel.GoEntrypoint,
+		"common_origin":       strings.TrimPrefix(contract.Wheel.CommonContractOrigin, contract.Installation.Package+"/"),
 	})
 	if err != nil {
 		return err

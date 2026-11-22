@@ -32,7 +32,7 @@ func verifyRouting(root string) error {
 	}
 	if index.Schema != "ptsip-release-profile-verification/v1" || index.Lifecycle != "TEMPORARY_REPLACEABLE" || !index.Replacement || index.Scope != "STRUCTURE_ONLY_SOURCE_SNAPSHOT" || index.Authority != "NONE" ||
 		index.Consumer == nil || *index.Consumer || index.Publication == nil || *index.Publication || index.Legacy == nil || *index.Legacy ||
-		index.Snapshot != profileContractPath || index.Schemas != ".ptsip/contracts/schemas/release/profile/" || index.Projection != profileProjectionPath {
+		index.Snapshot != profileContractPath || index.Schemas != profileStorageRoot || index.Projection != profileRegistryPath {
 		return fmt.Errorf("PROFILE_VERIFICATION_ROUTING_INVALID")
 	}
 	return nil

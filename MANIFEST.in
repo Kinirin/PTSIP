@@ -10,8 +10,9 @@ prune src/ptsip/specdata/compile-sealed-rbac
 include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
 include src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json
 
-# Only the current developer release module owns b5-derived PEP517 source builds.
-include .ptsip/engine/developer/Distribution/release/backend/ptsip_build_backend.py
+# PEP 517 delegates wheel assembly to the product Go builder.
+include src/build/ptsip_pep517.py src/build/go.mod
+recursive-include src/build *.go
 include ptsip-build-source.json
 recursive-include src/ptsip/engines Cargo.toml Cargo.lock *.rs *.yaml
 prune src/ptsip/engines/context/target
@@ -21,4 +22,4 @@ prune src/ptsip/engines/discovery/target
 prune src/ptsip/engines/execution/target
 prune src/ptsip/engines/projection/target
 recursive-include src/ptsip/common_contract *.go *.json go.mod go.sum
-recursive-include src/ptsip/compile_sealed_rbac *.json
+prune src/ptsip/compile_sealed_rbac

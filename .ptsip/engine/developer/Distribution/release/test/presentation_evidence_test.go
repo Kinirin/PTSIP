@@ -64,14 +64,16 @@ func TestReleasePresentationUsesPackageTitleAndOrderedTypedSections(t *testing.T
 		t.Fatal("release identity projection differs from requested template")
 	}
 	previous := -1
-	for _, heading := range []string{"# PTSIP Release\n", "# PTSIP Tool\n", "# Project Profile pp.2.00\n", "# PTSIP Engine\n"} {
+	for _, heading := range []string{"# PTSIP Release\n", "# PTSIP Tool\n", "# Project Profile " + composition.Profile + "\n", "# PTSIP Engine\n"} {
 		pos := strings.Index(body, heading)
 		if pos <= previous {
 			t.Fatalf("section order differs: %s", heading)
 		}
 		previous = pos
 	}
-	if strings.Count(body, "### Purpose\n") != 8 || strings.Count(body, "Engine ID:") != 7 || strings.Count(body, "Capability:") != 7 {
+	engineCount := len(composition.Engines)
+	if strings.Count(body, "### Purpose\n") != engineCount || strings.Count(body, "Engine ID:") != engineCount ||
+		strings.Count(body, "Capability:") != engineCount || strings.Contains(body, "ptsip-release-note:v1") {
 		t.Fatal("engine note contracts missing or profile headings not nested correctly")
 	}
 	if strings.Contains(body, "## context ") {

@@ -48,6 +48,13 @@ func canonicalJSONDigest(data []byte) string {
 	return sha(bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n")))
 }
 
+func (assets registeredAssets) digestFor(name string, data []byte) string {
+	if assets.exactDigestPaths[name] {
+		return sha(data)
+	}
+	return canonicalJSONDigest(data)
+}
+
 func verifySDist(file io.Reader, revision string, rules sdistRules, assets registeredAssets) error {
 	compressed, err := gzip.NewReader(file)
 	if err != nil {
@@ -102,7 +109,7 @@ func verifySDist(file io.Reader, revision string, rules sdistRules, assets regis
 		}
 		if expected, isAsset := assets.digests[member]; isAsset {
 			raw, err := readMetadata(archive)
-			if err != nil || canonicalJSONDigest(raw) != expected {
+			if err != nil || assets.digestFor(member, raw) != expected {
 				return fmt.Errorf("sdist asset digest mismatch: %s", member)
 			}
 		}
@@ -177,7 +184,7 @@ func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildCo
 			return fmt.Errorf("required registered wheel asset missing: %s", name)
 		}
 		raw, err := zipMetadata(member)
-		if err != nil || canonicalJSONDigest(raw) != expected {
+		if err != nil || assets.digestFor(reference, raw) != expected {
 			return fmt.Errorf("wheel registered asset digest mismatch: %s", name)
 		}
 	}

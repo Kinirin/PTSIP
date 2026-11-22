@@ -5,7 +5,7 @@
   "mode_registry": ".github/test_modes.yaml",
   "test_contract": ".ptsip/contracts/release/Platform/Common/verification-contract.json",
   "engine_registry": "src/ptsip/engines/index.json",
-  "profile_registry": ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
+  "profile_registry": "src/ptsip/schemas/config.json",
   "canonical_current_composition": {
     "owner_ref": "developer/policy/INFO/MPD-INFO-0005.yaml#rules.independent_release_versioning",
     "file": "src/VERSION",
@@ -37,7 +37,7 @@
       "role": "DERIVED_PROJECTION_ONLY"
     },
     "source_format": "TOML_WITHOUT_EXTENSION",
-    "version_authority_scope": "PACKAGE_TOOL_PROFILE_ALL_SEVEN_REGISTERED_ENGINES",
+    "version_authority_scope": "PACKAGE_TOOL_PROFILE_ALL_REGISTERED_ENGINES",
     "projection_role_of_pyproject": "DERIVED_NOT_CANONICAL",
     "tool_version_source": "src/VERSION#tool_version",
     "profile_version_source": "src/VERSION#profile_version",
@@ -45,8 +45,7 @@
     "version_projection_paths": [
       "pyproject.toml",
       "src/ptsip/engines/index.json",
-      "src/ptsip/engines/{engine_id}/version.yaml",
-      "src/ptsip/specdata/project-profile-contracts.yaml"
+      "src/ptsip/engines/{engine_id}/version.yaml"
     ],
     "component_version_changes": "EXPLICIT_SOURCE_EDIT_ONLY_NO_AUTO_INCREMENT",
     "engine_version_change": "FUNCTIONAL_CHANGE_ONLY",
@@ -54,7 +53,7 @@
     "plane_owner": "DEVELOPER_POLICY_INFO",
     "previous_pyproject_canonical_owner_rule": "SUPERSEDED_BY_PROJECT_OWNER_APPROVAL"
   },
-  "default_engine_count": 7,
+  "default_engine_count": 6,
   "package_request": {
     "workflow_input": "release_type",
     "default": "PTSIP_PACKAGE",
@@ -131,7 +130,7 @@
     "changed_producer_same_version": "FAIL_REQUIRES_EXPLICIT_NEW_COMPONENT_VERSION"
   },
   "notes": {
-    "tool": "docs/releasenote/tool/{version}.md",
+    "tool": "docs/releasenote/tool/{filename_version}.md",
     "profiles": "docs/releasenote/project-profile/{version}.md",
     "engine": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md",
     "package": "docs/releasenote/PTSIP_Package/{version}.md",

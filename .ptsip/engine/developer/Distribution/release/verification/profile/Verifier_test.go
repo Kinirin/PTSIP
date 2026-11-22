@@ -9,7 +9,9 @@ import (
 	release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller"
 )
 
-func profileFixture(t *testing.T) string {
+const profileRoutePath = ".ptsip/contracts/release/Platform/Common/profile/index.json"
+
+func profileFixture(t *testing.T) (string, string, release.ProfileRegistration) {
 	t.Helper()
 	source, target := repoRoot(t), t.TempDir()
 	copyFile := func(path string) {
@@ -26,40 +28,20 @@ func profileFixture(t *testing.T) string {
 			t.Fatal(err)
 		}
 	}
-	for _, path := range []string{
-		profileContractPath,
-		".ptsip/contracts/release/Platform/Common/profile/index.json",
-		profileProjectionPath,
-		profileSourcePath + "/index.yaml",
-		".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-1.01.schema.json",
-		".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-1.02.schema.json",
-		".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-2.00.schema.json",
-	} {
-		copyFile(path)
-	}
-	base := filepath.Join(source, filepath.FromSlash(profileSourcePath))
-	err := filepath.WalkDir(base, func(path string, entry os.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if entry.IsDir() || !strings.HasSuffix(path, ".ptsip.yaml") {
-			return nil
-		}
-		relative, err := filepath.Rel(source, path)
-		if err != nil {
-			return err
-		}
-		copyFile(filepath.ToSlash(relative))
-		return nil
-	})
+	copyFile(profileRoutePath)
+	copyFile(profileRegistryPath)
+	registrations, current, err := release.ReadProfileRegistrations(target)
 	if err != nil {
 		t.Fatal(err)
 	}
-	// The retired developer policy/schema and its CLI are intentionally absent.
-	if _, err := os.Stat(filepath.Join(target, "developer", "policy", "schemas", "root-family-policy.schema.json")); !os.IsNotExist(err) {
-		t.Fatal("native Profile fixture must not contain retired schema")
+	var active release.ProfileRegistration
+	for _, row := range registrations {
+		copyFile(profileStorageRoot + row.Path)
+		if row.Version == current {
+			active = row
+		}
 	}
-	return target
+	return target, current, active
 }
 
 func rewriteProfileFixture(t *testing.T, root, path string, edit func(string) string) {
@@ -89,69 +71,48 @@ func TestNativeProfileVerifierAdmitsCurrentRepository(t *testing.T) {
 	}
 }
 
-func TestNativeProfileVerifierNeedsNoRetiredDeveloperPolicy(t *testing.T) {
-	root := profileFixture(t)
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err != nil {
-		t.Fatalf("native verifier depended on retired developer-policy tooling: %v", err)
+func TestNativeProfileVerifierNeedsNoHistoricalReleaseAssets(t *testing.T) {
+	root, active, _ := profileFixture(t)
+	if err := VerifyProjectProfiles(root, active); err != nil {
+		t.Fatalf("native verifier required unregistered Profile assets: %v", err)
 	}
-}
-
-func TestNativeProfileVerifierRejectsRegistryProjectionDrift(t *testing.T) {
-	root := profileFixture(t)
-	rewriteProfileFixture(t, root, profileProjectionPath, func(s string) string {
-		return strings.Replace(s, "current: pp.2.00", "current: pp.9.99", 1)
-	})
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
-		t.Fatal("embedded registry drift admitted")
+	for _, name := range []string{"registry", "schemas", "developer", profileContractPath} {
+		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(name))); !os.IsNotExist(err) {
+			t.Fatalf("fixture has a retired source %s", name)
+		}
 	}
 }
 
 func TestNativeProfileVerifierRejectsReleaseVersionMismatch(t *testing.T) {
-	if err := VerifyProjectProfiles(profileFixture(t), "pp.9.99"); err == nil {
-		t.Fatal("wrong selected release version admitted")
+	root, _, _ := profileFixture(t)
+	if err := VerifyProjectProfiles(root, "pp.9.99"); err == nil || !strings.Contains(err.Error(), "PROFILE_RELEASE_VERSION_MISMATCH") {
+		t.Fatalf("wrong selected release version: %v", err)
 	}
 }
 
-func TestNativeProfileVerifierRejectsCatalogModeDrift(t *testing.T) {
-	root := profileFixture(t)
-	rewriteProfileFixture(t, root, profileSourcePath+"/index.yaml", func(s string) string {
-		return strings.Replace(s, "responsibility_mode: explicit", "responsibility_mode: hybrid", 1)
+func TestNativeProfileVerifierRejectsRegisteredSchemaDigestDrift(t *testing.T) {
+	root, active, registration := profileFixture(t)
+	rewriteProfileFixture(t, root, profileStorageRoot+registration.Path, func(s string) string {
+		return s + "\n"
 	})
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
-		t.Fatal("catalog vs profile responsibility mode drift admitted")
+	if err := VerifyProjectProfiles(root, active); err == nil || !strings.Contains(err.Error(), "PROFILE_SCHEMA_DIGEST_MISMATCH") {
+		t.Fatalf("altered registered schema bytes: %v", err)
 	}
 }
 
-func TestNativeProfileVerifierRejectsImmutableBaselineChange(t *testing.T) {
-	root := profileFixture(t)
-	rewriteProfileFixture(t, root, profileSourcePath+"/example.ptsip.yaml", func(s string) string {
-		return strings.Replace(s, "revision: \"Rev.0001\"", "revision: \"Rev.0002\"", 1)
+func TestNativeProfileVerifierRejectsMalformedPinnedSchema(t *testing.T) {
+	root, active, registration := profileFixture(t)
+	var digest string
+	rewriteProfileFixture(t, root, profileStorageRoot+registration.Path, func(s string) string {
+		changed := strings.Replace(s, `"type": "object"`, `"type": "invalid-type"`, 1)
+		digest = release.Digest([]byte(strings.ReplaceAll(changed, "\r\n", "\n")))
+		return changed
 	})
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
-		t.Fatal("current Profile differed from immutable baseline")
-	}
-}
-
-func TestNativeProfileVerifierRejectsUncatalogedResource(t *testing.T) {
-	root := profileFixture(t)
-	p := filepath.Join(root, filepath.FromSlash(profileSourcePath), "rogue.ptsip.yaml")
-	if err := os.WriteFile(p, []byte("ptsip: {}\n"), 0644); err != nil {
-		t.Fatal(err)
-	}
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
-		t.Fatal("undeclared Profile distribution resource admitted")
-	}
-}
-
-func TestNativeProfileVerifierRejectsMalformedProfileEvenWithMatchingBaseline(t *testing.T) {
-	root := profileFixture(t)
-	rewrite := func(s string) string {
-		return strings.Replace(s, "revision: \"Rev.0001\"", "revision: \"invalid\"", 1)
-	}
-	rewriteProfileFixture(t, root, profileSourcePath+"/example.ptsip.yaml", rewrite)
-	rewriteProfileFixture(t, root, profileSourcePath+"/history/pp.2.00/example.ptsip.yaml", rewrite)
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
-		t.Fatal("invalid Profile passed because it matched baseline")
+	rewriteProfileFixture(t, root, profileRegistryPath, func(s string) string {
+		return strings.Replace(s, registration.Digest, digest, 1)
+	})
+	if err := VerifyProjectProfiles(root, active); err == nil || !strings.Contains(err.Error(), "PROFILE_SCHEMA_INVALID") {
+		t.Fatalf("invalid schema with a matching digest: %v", err)
 	}
 }
 
@@ -183,33 +144,35 @@ func repoRoot(t *testing.T) string {
 	return root
 }
 
-func TestProfileVerifierUsesCurrentSchemaStorageWithoutRootFallback(t *testing.T) {
-	root := profileFixture(t)
-	for _, retired := range []string{"registry", "schemas", "developer"} {
-		if _, err := os.Stat(filepath.Join(root, retired)); !os.IsNotExist(err) {
-			t.Fatalf("fixture has retired root %s", retired)
+func TestProfileVerifierUsesRegisteredSchemaStorage(t *testing.T) {
+	root, active, _ := profileFixture(t)
+	registrations, _, err := release.ReadProfileRegistrations(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, registration := range registrations {
+		if registration.Version != active {
+			if err := os.Remove(filepath.Join(root, filepath.FromSlash(profileStorageRoot+registration.Path))); err != nil {
+				t.Fatal(err)
+			}
+			if err := VerifyProjectProfiles(root, active); err == nil || !strings.Contains(err.Error(), "PROFILE_SCHEMA_MISSING") {
+				t.Fatalf("missing registered historical schema: %v", err)
+			}
+			return
 		}
 	}
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.Remove(filepath.Join(root, ".ptsip/contracts/schemas/release/profile/ptsip-profile-pp-2.00.schema.json")); err != nil {
-		t.Fatal(err)
-	}
-	if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
-		t.Fatal("missing current schema accepted")
-	}
+	t.Fatal("fixture requires historical schema registrations")
 }
 
 func TestProfileVerifierRejectsAuthorityRouteDrift(t *testing.T) {
 	for _, field := range []string{"publication_authorized", "consumer_contract_authority", "legacy_fallback"} {
 		t.Run(field, func(t *testing.T) {
-			root := profileFixture(t)
-			rewriteProfileFixture(t, root, ".ptsip/contracts/release/Platform/Common/profile/index.json", func(s string) string {
+			root, active, _ := profileFixture(t)
+			rewriteProfileFixture(t, root, profileRoutePath, func(s string) string {
 				return strings.Replace(s, `"`+field+`": false`, `"`+field+`": true`, 1)
 			})
-			if err := VerifyProjectProfiles(root, "pp.2.00"); err == nil {
-				t.Fatal("forged route accepted")
+			if err := VerifyProjectProfiles(root, active); err == nil || !strings.Contains(err.Error(), "PROFILE_VERIFICATION_ROUTING_INVALID") {
+				t.Fatalf("forged route: %v", err)
 			}
 		})
 	}

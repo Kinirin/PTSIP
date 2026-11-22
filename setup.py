@@ -44,15 +44,18 @@ def _project_support_policy(build_lib: Path) -> None:
     # Setuptools can invoke this in a Git-less sdist with no installed PTSIP.
     sys.path.insert(0, str(ROOT / "src"))
     try:
-        from ptsip._common_contract import source_result
+        from ptsip._common_contract import PolicySourceError, source_result
     finally:
         sys.path.pop(0)
     for path in sfp_files:
         relative = path.relative_to(source)
         destination = policy_target / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
-        projected = source_result("project-support-source", "source", raw=path.read_bytes().decode("utf-8-sig"),
-                                  path=relative.as_posix())
+        try:
+            projected = source_result("project-support-source", "source", raw=path.read_bytes().decode("utf-8-sig"),
+                                      path=relative.as_posix())
+        except PolicySourceError as error:
+            raise RuntimeError(f"Support Policy source {relative.as_posix()}: {error}") from error
         if projected is not None:
             destination.write_text(yaml.safe_dump(projected, allow_unicode=True, sort_keys=False), encoding="utf-8")
         else:

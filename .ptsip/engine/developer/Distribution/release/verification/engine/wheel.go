@@ -33,6 +33,7 @@ type engine struct {
 	Manifest string `json:"manifest_ref"`
 	Binding  string `json:"execution_binding_ref"`
 }
+
 // nativeComponent supplies build identity, never public pip distribution policy.
 type nativeComponent struct {
 	ID         string   `json:"engine_id"`
@@ -54,7 +55,7 @@ var hosts = map[string]host{
 }
 var sourcePattern = regexp.MustCompile(`^[0-9a-f]{40}$`)
 var versionPattern = regexp.MustCompile(`^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$`)
-var kinds = []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"}
+var kinds = []string{"context", "storage", "validation", "discovery", "execution", "projection"}
 
 func inside(root, ref string) (string, error) {
 	if ref == "" || ref == "." || ref == ".." || path.IsAbs(ref) || filepath.IsAbs(ref) || strings.ContainsAny(ref, "\\:") || path.Clean(ref) != ref || strings.HasPrefix(ref, "../") {
@@ -125,6 +126,7 @@ func Build(root string, opts Options) (Result, error) {
 		return Result{}, fmt.Errorf("unsupported official engine build target")
 	}
 	var index struct {
+		Schema  string   `json:"schema_version"`
 		Entries []engine `json:"official_engine_entries"`
 	}
 	var plan struct {
@@ -141,29 +143,29 @@ func Build(root string, opts Options) (Result, error) {
 	}
 	// Intermediate verification owns native source/identity/target only.
 	// Consumer distribution is checked at the complete PTSIP Wheel join.
-	if len(index.Entries) != 7 || len(plan.Components) != 7 ||
-		plan.Schema != "ptsip-engine-installation-plan/v2" ||
+	if index.Schema != "ptsip-official-engine-index/v1" || plan.Schema != "ptsip-engine-installation-plan/v2" ||
 		plan.Selection != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL" {
-		return Result{}, fmt.Errorf("exact seven registered native component identities required")
+		return Result{}, fmt.Errorf("official engine index or native installation plan has an invalid contract identity")
 	}
-	ids := map[string]bool{}
+	if len(index.Entries) == 0 || len(plan.Components) != len(index.Entries) || len(plan.DefaultIDs) != len(index.Entries) {
+		return Result{}, fmt.Errorf("official engine index, native components and defaults must agree")
+	}
+	ids := map[string]engine{}
 	registeredKinds := map[string]bool{}
 	components := map[string]nativeComponent{}
 	var selected engine
-	matches := 0
 	for _, e := range index.Entries {
 		kind := strings.ToLower(e.Kind)
 		if !has(kinds, kind) || registeredKinds[kind] {
 			return Result{}, fmt.Errorf("unregistered or duplicate engine kind")
 		}
 		registeredKinds[kind] = true
-		if e.ID == "" || ids[e.ID] {
-			return Result{}, fmt.Errorf("duplicate official engine identity")
+		if _, exists := ids[e.ID]; e.ID == "" || exists {
+			return Result{}, fmt.Errorf("missing or duplicate official engine identity")
 		}
-		ids[e.ID] = true
+		ids[e.ID] = e
 		if strings.EqualFold(e.Kind, opts.Kind) {
 			selected = e
-			matches++
 		}
 	}
 	for _, component := range plan.Components {
@@ -173,33 +175,32 @@ func Build(root string, opts Options) (Result, error) {
 		if _, exists := components[component.ID]; exists {
 			return Result{}, fmt.Errorf("duplicate registered native component identity")
 		}
-		if !ids[component.ID] {
+		entry, exists := ids[component.ID]
+		if !exists {
 			return Result{}, fmt.Errorf("native registry and component identity contract differ")
+		}
+		if !versionPattern.MatchString(entry.Version) || component.Version != entry.Version ||
+			component.Entrypoint != "ptsip-engine-"+strings.ToLower(entry.Kind) ||
+			component.Permission == nil || *component.Permission ||
+			component.Authorized == nil || *component.Authorized {
+			return Result{}, fmt.Errorf("native component identity or nonauthority contract mismatch: %s", component.ID)
 		}
 		components[component.ID] = component
 	}
-	if len(plan.DefaultIDs) != 7 {
-		return Result{}, fmt.Errorf("exact seven default native component identities required")
-	}
 	defaults := map[string]bool{}
 	for _, id := range plan.DefaultIDs {
-		if id == "" || defaults[id] || !ids[id] {
+		if _, registered := ids[id]; defaults[id] || !registered {
 			return Result{}, fmt.Errorf("default native component registry is incomplete or duplicated")
 		}
 		defaults[id] = true
 	}
-	if matches != 1 {
-		return Result{}, fmt.Errorf("engine kind not registered exactly once")
+	if selected.ID == "" {
+		return Result{}, fmt.Errorf("engine kind not registered in the official catalog")
 	}
 	kind := strings.ToLower(selected.Kind)
 	entrypoint := "ptsip-engine-" + kind
-	component := components[selected.ID]
-	if !versionPattern.MatchString(selected.Version) ||
-		component.Version != selected.Version || component.Entrypoint != entrypoint ||
-		!has(component.Targets, opts.Target) ||
-		component.Permission == nil || *component.Permission ||
-		component.Authorized == nil || *component.Authorized {
-		return Result{}, fmt.Errorf("native component identity, host or nonauthority contract mismatch")
+	if !has(components[selected.ID].Targets, opts.Target) {
+		return Result{}, fmt.Errorf("native component does not declare host target: %s", opts.Target)
 	}
 	var manifest struct {
 		ID      string `json:"engine_id"`

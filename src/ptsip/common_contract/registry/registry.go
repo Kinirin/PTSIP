@@ -19,7 +19,7 @@ import (
 
 const Manifest = "registry/manifest.json"
 
-var urn = regexp.MustCompile(`^urn:ptsip:(common_policy|common:plan):[a-z][a-z_]*:v[1-9][0-9]*$`)
+var urn = regexp.MustCompile(`^urn:ptsip:contract:(public-structure-policy|policy:[a-z][a-z_-]*):v[1-9][0-9]*$`)
 var sha = regexp.MustCompile(`^[a-f0-9]{64}$`)
 
 type Entry struct {
@@ -32,22 +32,23 @@ type Entry struct {
 }
 
 type Diagnostic struct {
-    Field string `json:"field"`
-    Resource string `json:"resource"`
+	Field    string `json:"field"`
+	Resource string `json:"resource"`
+	SHA256   string `json:"sha256"`
 }
 type catalog struct {
-    Format string `json:"format"`
-    Revision string `json:"revision"`
-    Contracts []Entry `json:"contracts"`
-    Diagnostics []Diagnostic `json:"diagnostics,omitempty"`
+	Format      string       `json:"format"`
+	Revision    string       `json:"revision"`
+	Contracts   []Entry      `json:"contracts"`
+	Diagnostics []Diagnostic `json:"diagnostics,omitempty"`
 }
 
 type Registry struct {
-    root string
-    entries map[string]Entry
-    diagnostics map[string]Diagnostic
-    Revision string
-    Digest string
+	root        string
+	entries     map[string]Entry
+	diagnostics map[string]Diagnostic
+	Revision    string
+	Digest      string
 }
 
 func Open(root, expectedDigest string) (*Registry, error) {
@@ -83,8 +84,7 @@ func Open(root, expectedDigest string) (*Registry, error) {
 	for _, entry := range data.Contracts {
 		if !urn.MatchString(entry.URN) || !strings.HasSuffix(entry.URN, ":"+entry.Version) ||
 			entry.Version == "" || entry.Field == "" || !sha.MatchString(entry.SHA256) || entry.Semantics[""] == "" ||
-			!strings.HasPrefix(entry.Resource, "common_contract/schemas/") || !fs.ValidPath(entry.Resource) ||
-			!strings.HasSuffix(entry.Resource, ".schema.json") || path.Clean(entry.Resource) != entry.Resource {
+			!schemaPath(entry.Resource, "schemas/policy/") {
 			return nil, fmt.Errorf("INVALID_REGISTRY_ENTRY: %s", entry.URN)
 		}
 		fieldVersion := entry.Field + "/" + entry.Version
@@ -97,49 +97,63 @@ func Open(root, expectedDigest string) (*Registry, error) {
 		fields[fieldVersion] = true
 	}
 	seen := map[string]bool{}
-    for _, d := range data.Diagnostics {
-        if d.Field == "" || !(strings.HasPrefix(d.Resource,"schemas/plan/") || strings.HasPrefix(d.Resource,"schemas/policy/")) ||
-            !fs.ValidPath(d.Resource) || path.Clean(d.Resource) != d.Resource || !strings.HasSuffix(d.Resource,".schema.json") {
-            return nil, fmt.Errorf("INVALID_DIAGNOSTIC_RESOURCE: %s",d.Resource)
-        }
-        if _, exists := r.diagnostics[d.Field]; exists || seen[strings.ToLower(d.Resource)] {
-            return nil, fmt.Errorf("AMBIGUOUS_DIAGNOSTIC_RESOURCE: %s",d.Field)
-        }
-        r.diagnostics[d.Field] = d
-        seen[strings.ToLower(d.Resource)] = true
-    }
+	for _, d := range data.Diagnostics {
+		if d.Field == "" || !sha.MatchString(d.SHA256) ||
+			!(schemaPath(d.Resource, "schemas/plan/") || schemaPath(d.Resource, "schemas/policy/")) {
+			return nil, fmt.Errorf("INVALID_DIAGNOSTIC_RESOURCE: %s", d.Resource)
+		}
+		if _, exists := r.diagnostics[d.Field]; exists || seen[strings.ToLower(d.Resource)] {
+			return nil, fmt.Errorf("AMBIGUOUS_DIAGNOSTIC_RESOURCE: %s", d.Field)
+		}
+		r.diagnostics[d.Field] = d
+		seen[strings.ToLower(d.Resource)] = true
+	}
 	return r, nil
 }
-func (r *Registry) DiagnosticFields() []string {
-    result := make([]string,0,len(r.diagnostics))
-    for field := range r.diagnostics { result = append(result,field) }
-    sort.Strings(result)
-    return result
+
+func schemaPath(resource, prefix string) bool {
+	return strings.HasPrefix(resource, prefix) && fs.ValidPath(resource) &&
+		path.Clean(resource) == resource && strings.HasSuffix(resource, ".schema.json") &&
+		!strings.ContainsAny(resource, "\\:")
 }
+func (r *Registry) DiagnosticFields() []string {
+	result := make([]string, 0, len(r.diagnostics))
+	for field := range r.diagnostics {
+		result = append(result, field)
+	}
+	sort.Strings(result)
+	return result
+}
+
 // InspectDiagnostic reads a declared package schema path but never grants
 // official schema registration or a versioned contract identity.
-func (r *Registry) InspectDiagnostic(field string) (Diagnostic,map[string]any,error) {
-    entry,ok := r.diagnostics[field]
-    if !ok {return Diagnostic{},nil,fmt.Errorf("UNREGISTERED_DIAGNOSTIC_FIELD: %s",field)}
-    raw,err := readResource(filepath.Dir(r.root),entry.Resource)
-    if err!=nil {return entry,nil,err}
-    value,err := jsondoc.Decode(raw)
-    if err!=nil {return entry,nil,fmt.Errorf("SCHEMA_JSON_INVALID: %w",err)}
-    doc,ok := value.(map[string]any)
-    if !ok {return entry,nil,fmt.Errorf("SCHEMA_ROOT_NOT_OBJECT: %s",entry.Resource)}
-    return entry,doc,nil
+func (r *Registry) InspectDiagnostic(field string) (Diagnostic, map[string]any, error) {
+	entry, ok := r.diagnostics[field]
+	if !ok {
+		return Diagnostic{}, nil, fmt.Errorf("UNREGISTERED_DIAGNOSTIC_FIELD: %s", field)
+	}
+	raw, err := r.readSchema(entry.Resource, entry.SHA256)
+	if err != nil {
+		return entry, nil, err
+	}
+	value, err := jsondoc.Decode(raw)
+	if err != nil {
+		return entry, nil, fmt.Errorf("SCHEMA_JSON_INVALID: %w", err)
+	}
+	doc, ok := value.(map[string]any)
+	if !ok {
+		return entry, nil, fmt.Errorf("SCHEMA_ROOT_NOT_OBJECT: %s", entry.Resource)
+	}
+	return entry, doc, nil
 }
 func (r *Registry) Schema(id string) (Entry, map[string]any, error) {
 	entry, ok := r.entries[id]
 	if !ok {
 		return Entry{}, nil, fmt.Errorf("UNREGISTERED_URN: %s", id)
 	}
-	raw, err := readResource(r.root, strings.TrimPrefix(entry.Resource, "common_contract/"))
+	raw, err := r.readSchema(entry.Resource, entry.SHA256)
 	if err != nil {
 		return Entry{}, nil, err
-	}
-	if fmt.Sprintf("%x", sha256.Sum256(raw)) != entry.SHA256 {
-		return Entry{}, nil, fmt.Errorf("STALE_SCHEMA: %s", entry.Resource)
 	}
 	value, err := jsondoc.Decode(raw)
 	if err != nil {
@@ -151,6 +165,17 @@ func (r *Registry) Schema(id string) (Entry, map[string]any, error) {
 	}
 	entry.Semantics = maps.Clone(entry.Semantics)
 	return entry, schema, nil
+}
+
+func (r *Registry) readSchema(resource, expectedDigest string) ([]byte, error) {
+	raw, err := readResource(filepath.Dir(r.root), resource)
+	if err != nil {
+		return nil, err
+	}
+	if fmt.Sprintf("%x", sha256.Sum256(raw)) != expectedDigest {
+		return nil, fmt.Errorf("STALE_SCHEMA: %s", resource)
+	}
+	return raw, nil
 }
 
 func readResource(root, relative string) ([]byte, error) {

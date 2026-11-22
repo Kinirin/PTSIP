@@ -1,0 +1,139 @@
+[
+  {
+    "name": "accept canonical RA presentation and name-keyed condition references",
+    "registration": "RA_list",
+    "valid": true,
+    "instance": {
+      "RA_list": {
+        "entries": [{
+          "RA_id": "R-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "RA_title": "Review requests",
+          "RA_description": "Review a request after assignment.",
+          "RAC_ids": [{"Assigned reviewer": "ID-RAC-aaaaaaaaaaaaaaaa"}],
+          "RAC_name": ["Assigned reviewer"],
+          "AEC_ids": [{"Review enabled": "ID-AEC-BBBBBBBBBBBBBBBB"}],
+          "AEC_name": ["Review enabled"]
+        }]
+      }
+    }
+  },
+  {
+    "name": "accept RA without linked conditions",
+    "registration": "RA_list",
+    "valid": true,
+    "instance": {"RA_list": {"entries": [{"RA_id": "R-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}]}}
+  },
+  {
+    "name": "accept empty RA references",
+    "registration": "RA_list",
+    "valid": true,
+    "instance": {"RA_list": {"entries": [{"RA_id": "R-ID-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "RAC_ids": [], "AEC_ids": []}]}}
+  },
+  {
+    "name": "reject legacy authority root",
+    "registration": "RA_list",
+    "valid": false,
+    "instance": {"responsibility_authority": {}}
+  },
+  {
+    "name": "reject lowercase characters in RA identity",
+    "registration": "RA_list",
+    "valid": false,
+    "instance": {"RA_list": {"entries": [{"RA_id": "R-ID-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]}}
+  },
+  {
+    "name": "reject legacy ordered tuple reference",
+    "registration": "RA_list",
+    "valid": false,
+    "instance": {"RA_list": {"entries": [{"RAC_ids": [["ID-RAC-aaaaaaaaaaaaaaaa", "Assigned reviewer"]]}]}}
+  },
+  {
+    "name": "reject AEC ID in an RAC reference",
+    "registration": "RA_list",
+    "valid": false,
+    "instance": {"RA_list": {"entries": [{"RAC_ids": [{"Review enabled": "ID-AEC-BBBBBBBBBBBBBBBB"}]}]}}
+  },
+  {
+    "name": "reject more than one condition reference in a named entry",
+    "registration": "RA_list",
+    "valid": false,
+    "instance": {"RA_list": {"entries": [{"AEC_ids": [{"First": "ID-AEC-BBBBBBBBBBBBBBBB", "Second": "ID-AEC-cccccccccccccccc"}]}]}}
+  },
+  {
+    "name": "reject reverse policy ownership in RA records",
+    "registration": "RA_list",
+    "valid": false,
+    "instance": {"RA_list": {"entries": [{"policy_usage": []}]}}
+  },
+  {
+    "name": "accept RAC metadata and an author-defined value",
+    "registration": "RAC_list",
+    "valid": true,
+    "instance": {
+      "file_name": "RAC-list.ptsip.yaml",
+      "file_id": "profiles-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "format_version": "v.1",
+      "file_title": "Assignment conditions",
+      "RAC_list": [{
+        "RAC_id": "ID-RAC-aaaaaaaaaaaaaaaa",
+        "RAC_name": "Assigned reviewer",
+        "RAC_description": "Reviewer is assigned to the request.",
+        "value": {"source_ref": 2, "custom": [false, null]}
+      }]
+    }
+  },
+  {
+    "name": "accept a condition list with no records",
+    "registration": "RAC_list",
+    "valid": true,
+    "instance": {"RAC_list": []}
+  },
+  {
+    "name": "reject legacy RAC profile list",
+    "registration": "RAC_list",
+    "valid": false,
+    "instance": {"RAC_profile": []}
+  },
+  {
+    "name": "reject a record ID in the RAC file ID field",
+    "registration": "RAC_list",
+    "valid": false,
+    "instance": {"file_id": "ID-RAC-aaaaaaaaaaaaaaaa", "RAC_list": []}
+  },
+  {
+    "name": "reject an external reference field on a RAC record",
+    "registration": "RAC_list",
+    "valid": false,
+    "instance": {"RAC_list": [{"RAC_id": "ID-RAC-aaaaaaaaaaaaaaaa", "source_ref": "other.json"}]}
+  },
+  {
+    "name": "accept AEC with an author-defined array value",
+    "registration": "AEC_list",
+    "valid": true,
+    "instance": {"AEC_list": [{"AEC_id": "ID-AEC-BBBBBBBBBBBBBBBB", "AEC_name": "Review enabled", "value": ["project value", {"limit": null}]}]}
+  },
+  {
+    "name": "accept false and null AEC values",
+    "registration": "AEC_list",
+    "valid": true,
+    "instance": {"AEC_list": [{"AEC_id": "ID-AEC-BBBBBBBBBBBBBBBB", "value": false}, {"AEC_id": "ID-AEC-cccccccccccccccc", "value": null}]}
+  },
+  {
+    "name": "reject legacy AEC profile list",
+    "registration": "AEC_list",
+    "valid": false,
+    "instance": {"AEC_profile": []}
+  },
+  {
+    "name": "reject a RAC ID in an AEC record",
+    "registration": "AEC_list",
+    "valid": false,
+    "instance": {"AEC_list": [{"AEC_id": "ID-RAC-aaaaaaaaaaaaaaaa"}]}
+  },
+  {
+    "name": "reject unregistered fields on an AEC record",
+    "registration": "AEC_list",
+    "valid": false,
+    "instance": {"AEC_list": [{"AEC_id": "ID-AEC-BBBBBBBBBBBBBBBB", "entrypoint": "legacy-entry"}]}
+  }
+]

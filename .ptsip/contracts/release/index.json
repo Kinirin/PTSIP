@@ -4,7 +4,48 @@
   "validator_name": "release-admission-check",
   "engine_entry": ".ptsip/engine/developer/main.go",
   "verifier_root": ".ptsip/engine/developer/Distribution/release/",
-  "build_verification_ref": ".ptsip/contracts/release/build-verification.json",
+  "build_verification": {
+    "schema_version": "ptsip-build-verification/v1",
+    "verifier_root": "src/tests/build",
+    "source_binding": "EXACT_GIT_HEAD",
+    "publication_authorized": false,
+    "source": {
+      "product_prefix": "src/ptsip/",
+      "schema_config": "src/ptsip/schemas/config.json",
+      "schema_groups": ["profile", "Responsibility-Authority"],
+      "engine_index": "src/ptsip/engines/index.json",
+      "engine_snapshot": "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+      "engine_runtime_resources": [
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json"
+      ],
+      "common_contract_registry": "src/ptsip/common_contract/registry/manifest.json"
+    },
+    "prebuild": {
+      "frontend": "pyproject.toml",
+      "required_product_inputs": ["src/build/ptsip_pep517.py", "src/policy/index.yaml"]
+    },
+    "sdist": {
+      "source_descriptor": "ptsip-build-source.json",
+      "excluded_prefixes": [
+        ".ptsip/contracts/compile-sealed-rbac/",
+        ".ptsip/contracts/release/",
+        "src/ptsip/compile_sealed_rbac/",
+        "src/ptsip/specdata/compile-sealed-rbac/"
+      ]
+    },
+    "wheel": {
+      "engine_origin_suffix": ".dist-info/ptsip-engines.json",
+      "common_contract_origin": "ptsip/common_contract/origin.json",
+      "go_entrypoint": "ptsip-go",
+      "excluded_prefixes": ["ptsip/compile_sealed_rbac/", "ptsip/specdata/compile-sealed-rbac/"]
+    },
+    "installation": {
+      "environment": "TEMPORARY_VENV",
+      "smoke_package": "ptsip",
+      "runtime_activation_authorized": false
+    }
+  },
   "contract_authority": "NONE",
   "normative_policy_activation": "UNRESOLVED",
   "publication_authorized": false,

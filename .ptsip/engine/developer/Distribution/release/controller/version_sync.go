@@ -19,7 +19,7 @@ var sourceToolVersionPattern = regexp.MustCompile(`^T\.(?:0|[1-9][0-9]*)\.(?:0|[
 var sourceProfileVersionPattern = regexp.MustCompile(`^pp\.[0-9]+\.[0-9]+$`)
 var tomlSectionPattern = regexp.MustCompile(`^[ \t]*\[([^\[\]\r\n]+)\][ \t]*(?:#.*)?$`)
 
-var officialEngineIDs = []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"}
+var officialEngineIDs = []string{"context", "storage", "validation", "discovery", "execution", "projection"}
 
 type VersionSource struct {
 	PackageVersion string            `toml:"package_version" json:"package_version"`
@@ -70,7 +70,7 @@ func ReadSourceVersions(root string) (VersionSource, error) {
 		return version, fmt.Errorf("invalid src/VERSION Tool or Profile version")
 	}
 	if len(version.Engines) != len(officialEngineIDs) {
-		return version, fmt.Errorf("src/VERSION must declare all seven official Engines exactly once")
+		return version, fmt.Errorf("src/VERSION must declare all %d official Engines exactly once", len(officialEngineIDs))
 	}
 	for _, id := range officialEngineIDs {
 		if !sourceEngineVersionPattern.MatchString(version.Engines[id]) {
@@ -270,9 +270,10 @@ func SyncPackageVersion(root string, checkOnly bool) (PackageVersionSyncResult, 
 		return after, err
 	}); err != nil { return result, err }
 	if err := stage("src/ptsip/engines/index.json", func(b []byte) ([]byte, error) { return projectEngineIndex(b, source) }); err != nil { return result, err }
-	if err := stage("src/ptsip/specdata/project-profile-contracts.yaml", func(b []byte) ([]byte, error) {
-		return projectSingleLine(b, "current", source.ProfileVersion)
-	}); err != nil { return result, err }
+	if err := verifyProfileProjection(root, source.ProfileVersion); err != nil {
+		return result, err
+	}
+	result.CheckedFiles = append(result.CheckedFiles, ProfileConfigPath)
 	for _, id := range officialEngineIDs {
 		id := id
 		err := stage("src/ptsip/engines/"+id+"/version.yaml", func(b []byte) ([]byte, error) {

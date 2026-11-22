@@ -1,10 +1,13 @@
 package releasecontroller
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"sort"
 	"strings"
+
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/releasenote"
 )
 
 const PresentationPath = ".ptsip/contracts/release/Platform/GitHub/release-presentation.json"
@@ -52,6 +55,18 @@ func ReleasePresentation(root string, s Selection, snapshot Snapshot) (string, s
 		b, err := os.ReadFile(p)
 		if err != nil {
 			return "", "", err
+		}
+		if bytes.HasPrefix(b, []byte(releasenote.NotePrefix)) {
+			note, markdown, err := releasenote.DecodeMetadata(b)
+			if err != nil {
+				return "", "", fmt.Errorf("%s: %w", c.Note, err)
+			}
+			expectedKind := strings.TrimSuffix(c.Kind, "s")
+			if note.Schema != "ptsip-release-note/v1" || note.Language != "en" ||
+				note.Kind != expectedKind || note.Change.Component != expectedKind || note.Change.Version != c.Version {
+				return "", "", fmt.Errorf("component note identity differs: %s", c.Note)
+			}
+			b = markdown
 		}
 		lines := strings.Split(strings.ReplaceAll(string(b), "\r\n", "\n"), "\n")
 		if len(lines) == 0 || !strings.HasPrefix(lines[0], "# ") {
