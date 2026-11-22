@@ -425,7 +425,18 @@ Policy_Content:
           combined_trigger_precedence: UNRESOLVED_POLICY
           breaking_contract_change_classification: UNRESOLVED_POLICY
           responsibility_removal_classification: UNRESOLVED_POLICY
-          initial_cutover_number_selection: UNRESOLVED_POLICY
+          initial_cutover_number_selection: EXISTING_CURRENT_OFFICIAL_ENGINE_CONTRACT_JSON_VERSION_PER_ENGINE
+          initial_cutover_selection_authority: USER_EXPLICIT_CHAT_2026_11_22
+          initial_cutover_reference_revision: 964e52cbf930e3436bcd58c1e50838ec973b9d1a
+          initial_cutover_contract_version_baseline:
+            context: 2.2.0
+            storage: 3.0.0
+            validation: 4.5.0
+            discovery: 3.6.0
+            execution: 3.0.0
+            projection: 2.5.0
+          initial_cutover_authority_rule: COPY_CONTRACT_BASELINE_TO_SRC_VERSION_THEN_SYNC_DERIVED_ENGINE_FIELDS
+          initial_cutover_does_not_infer_semantic_or_compatibility_APPROVAL: true
           historical_contract_version_identity: IMMUTABLE_PRESERVED
           independent_capability_semantic_ownership: PRESERVED
           contract_compatibility_and_dependency_evidence: PRESERVED_REQUIRED
