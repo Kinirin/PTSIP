@@ -1,0 +1,276 @@
+{
+  "format": "ptsip-version-change-plan/v1-draft",
+  "document_type": "PTSIP_VERSION_CHANGE_PLAN",
+  "plan_id": "PTSIP-0.3.8-VERSION-CHANGE",
+  "plan_path": "src/planning/0.3.8/ptsip-version-change.plan.json",
+  "status": "DRAFT_PENDING_POLICY_CLOSURE_AND_USER_PLAN_APPROVAL",
+  "authority": {
+    "level": "PLAN",
+    "precedence": "EFFECTIVE_POLICY_OVER_PLAN",
+    "policy_refs": [
+      "src/policy/CNTR/SFP-CNTR-0005.yaml",
+      "src/policy/ARCH/SFP-ARCH-0004.yaml"
+    ],
+    "approved_engine_contract_cutover_direction": "KEEP_LATEST",
+    "user_direction_source": "CHAT_2026-11-22",
+    "initial_rules_recorded": true,
+    "complete_plan_approval": false,
+    "implementation_authorized": false,
+    "publication_authorized": false,
+    "policy_change_authorized_by_this_plan": false
+  },
+  "baseline": {
+    "repository": "Kinirin/PTSIP",
+    "branch": "main",
+    "source_commit": "93cbbbdbb3bb50b26a2acf9b7065f4ba1e60c8c1",
+    "current_version_source": "src/VERSION",
+    "initial_cutover_source": "EXISTING_CURRENT_ENGINE_CONTRACT_JSON_VERSION",
+    "six_official_engines": {
+      "context": {
+        "current_implementation": "0.2.2",
+        "current_contract": "2.2.0",
+        "target_unified": "2.2.0"
+      },
+      "storage": {
+        "current_implementation": "0.3.2",
+        "current_contract": "3.0.0",
+        "target_unified": "3.0.0"
+      },
+      "validation": {
+        "current_implementation": "0.3.4",
+        "current_contract": "4.5.0",
+        "target_unified": "4.5.0"
+      },
+      "discovery": {
+        "current_implementation": "0.3.3",
+        "current_contract": "3.6.0",
+        "target_unified": "3.6.0"
+      },
+      "execution": {
+        "current_implementation": "0.3.2",
+        "current_contract": "3.0.0",
+        "target_unified": "3.0.0"
+      },
+      "projection": {
+        "current_implementation": "0.2.2",
+        "current_contract": "2.5.0",
+        "target_unified": "2.5.0"
+      }
+    }
+  },
+  "user_directed_requirements": [
+    {
+      "id": "VC-01",
+      "status": "USER_DIRECTED",
+      "responsibility": "OFFICIAL_ENGINE_VERSION_CUTOVER",
+      "source_of_target_value": "src/ptsip/engines/{engine}/contract.json#/version",
+      "canonical_authority_after_cutover": "src/VERSION#engines.{engine}",
+      "targets": [
+        "src/VERSION#engines.{engine}",
+        "src/ptsip/engines/index.json#official_engine_entries[{engine}].version",
+        "src/ptsip/engines/{engine}/manifest.json#/implementation_version",
+        "src/ptsip/engines/{engine}/execution-bindings.json#/bindings[*]/engine_version"
+      ],
+      "contract_version_binding": "EXISTING_CONTRACT_VERSION_EXACT_EQUALITY",
+      "existing_contract_version_mutation_during_initial_cutover": "FORBIDDEN",
+      "historical_contract_mutation": "FORBIDDEN",
+      "engine_scope": [
+        "context",
+        "storage",
+        "validation",
+        "discovery",
+        "execution",
+        "projection"
+      ]
+    },
+    {
+      "id": "VC-02",
+      "status": "USER_DIRECTED",
+      "responsibility": "VERSION_SYNC_CONTROLLER_SCOPE_REFORM",
+      "target": " .ptsip/engine/developer/Distribution/release/controller/version_sync.go",
+      "target_normalized": ".ptsip/engine/developer/Distribution/release/controller/version_sync.go",
+      "direction": "EXTEND_FROM_PARTIAL_VERSION_PROJECTIONS_TO_EXPLICITLY_REGISTERED_ENGINE_SCHEMA_CONTRACT_CARGO_AND_REQUIRED_DERIVED_REFERENCE_FIELDS",
+      "source_authority": "src/VERSION",
+      "reverse_authority": "FORBIDDEN",
+      "field_mapping": "MACHINE_DECLARED_BY_OWNER_SEMANTICS_NOT_BY_VERSION_FIELD_NAME_INFERENCE",
+      "historical_version_rewrite": "FORBIDDEN"
+    },
+    {
+      "id": "VC-03",
+      "status": "USER_DIRECTED",
+      "responsibility": "NATIVE_WHEEL_ENGINE_VERSION_SOURCE",
+      "target": "src/build/wheel_native.go",
+      "direction": "READ_SELECTED_ENGINE_VERSION_FROM_SRC_VERSION_INSTEAD_OF_ENGINE_INDEX",
+      "index_role": "DERIVED_REGISTRATION_AND_ROUTING_NOT_VERSION_AUTHORITY",
+      "compiled_identity": "INHERITS_SRC_VERSION_AT_BUILD_TIME"
+    },
+    {
+      "id": "VC-04",
+      "status": "USER_DIRECTED",
+      "responsibility": "RUST_CRATE_VERSION_CONVERGENCE",
+      "engine_scoped_paths": [
+        "src/ptsip/engines/{engine}/Cargo.toml",
+        "src/ptsip/engines/{engine}/Cargo.lock"
+      ],
+      "direction": "UPDATE_CARGO_TOML_AND_CARGO_LOCK_TOGETHER_FOR_ALL_SIX_ENGINES",
+      "canonical_authority": "src/VERSION#engines.{engine}",
+      "cargo_lock_role": "CARGO_DERIVED_LOCKFILE_NOT_VERSION_AUTHORITY",
+      "unrelated_dependency_version_change": "NOT_AUTHORIZED"
+    },
+    {
+      "id": "VC-05",
+      "status": "USER_DIRECTED",
+      "responsibility": "VERSION_SOURCE_PARSER_SECTION_SUPPORT",
+      "target": ".ptsip/engine/developer/Distribution/release/controller/version_sync.go#ReadSourceVersions",
+      "direction": "SUPPORT_SECTIONED_SRC_VERSION_LAYOUT",
+      "required_sections": [
+        "package",
+        "tool",
+        "RBAC",
+        "common_contract",
+        "engines",
+        "schemas"
+      ],
+      "profile_independent_version_disposition": "PREVIOUSLY_DIRECTED_RETIRE_INDEPENDENT_PROFILE_VERSION_BUT_SCHEMA_VERSION_OWNER_MAPPING_PENDING",
+      "undecided_field_meanings": [
+        "tool",
+        "RBAC",
+        "common_contract",
+        "schemas"
+      ],
+      "must_not_assign_new_default_versions": true,
+      "format_authority": "src/VERSION"
+    },
+    {
+      "id": "VC-06",
+      "status": "USER_DIRECTED",
+      "responsibility": "REMOVE_LEGACY_PYPROJECT_PACKAGE_DATA_AND_SOURCE_AUTHORITY",
+      "target": "pyproject.toml",
+      "delete_package_data_tables": [
+        "tool.setuptools.package-data",
+        "tool.setuptools.exclude-package-data"
+      ],
+      "other_related_legacy_package_data": "REMOVE_WHEN_IDENTIFIED_AND_PROVEN_LEGACY",
+      "pyproject_as_version_authority": "FORBIDDEN",
+      "pyproject_as_preexisting_canonical_composition_source": "FORBIDDEN",
+      "distribution_scope": "NOT_PYPI_ONLY",
+      "non_version_packaging_metadata_disposition": "POLICY_GATED_NOT_IMPLICITLY_REMOVED",
+      "replacement_asset_inclusion_and_distribution_readiness": "UNRESOLVED_POLICY_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "id": "VC-07",
+      "status": "USER_DIRECTED",
+      "responsibility": "SIMULATION_AND_CUTOVER_VERSION_NUMBER_PRESERVATION",
+      "direction": "DO_NOT_ARTIFICIALLY_INCREMENT_OR_DECREMENT_PATCH_FOR_SIMULATION_TEST_OR_MIGRATION",
+      "target_versions": "BASELINE_EXISTING_CONTRACT_VERSION_VALUES",
+      "no_test_driven_version_bump": true,
+      "no_artificial_patch_change": true,
+      "future_semantic_bump_policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/update_triggers"
+    }
+  ],
+  "directory_responsibilities": [
+    {
+      "root": "src/",
+      "owner_role": "CANONICAL_CURRENT_VERSION_VALUES",
+      "rule": "SRC_VERSION_ONLY"
+    },
+    {
+      "root": "src/build/",
+      "owner_role": "NATIVE_PRODUCT_BUILD_AND_BUILD_TIME_VERSION_CONSUMPTION",
+      "required_ref": "src/VERSION"
+    },
+    {
+      "root": ".ptsip/engine/developer/Distribution/release/controller/",
+      "owner_role": "DEVELOPER_VERSION_SOURCE_PARSER_AND_DERIVED_FIELD_SYNCHRONIZER",
+      "restriction": "NO_VERSION_AUTHORITY_CREATION"
+    },
+    {
+      "root": "src/ptsip/engines/{engine}/",
+      "owner_role": "INDEPENDENT_RUST_ENGINE_SEMANTICS_AND_BUILD_ARTIFACTS",
+      "restriction": "VERSION_VALUE_DERIVED_FROM_SRC_VERSION"
+    },
+    {
+      "root": "src/ptsip/engines/contracts/",
+      "owner_role": "CAPABILITY_REGISTRY_AND_DEPENDENCY_REFERENCES",
+      "restriction": "NO_INDEPENDENT_CURRENT_ENGINE_VERSION_DECLARATION_AUTHORITY"
+    },
+    {
+      "root": "src/ptsip/schemas/",
+      "owner_role": "CURRENT_SCHEMA_CONTRACTS_AND_LOOKUP",
+      "restriction": "CURRENT_VERSION_VALUE_DERIVED_WHEN_EXPLICITLY_MAPPED"
+    },
+    {
+      "root": "src/ptsip/schemas/history/",
+      "owner_role": "IMMUTABLE_HISTORICAL_SCHEMA_IDENTITY_AND_LOOKUP",
+      "restriction": "NO_CURRENT_VERSION_SYNCHRONIZATION"
+    },
+    {
+      "root": "src/ptsip/ptsip_specification/",
+      "owner_role": "RUNTIME_VERSION_INFORMATION_ACCESS_DIRECTION",
+      "state": "GO_MODULE_BOUNDARY_NOT_YET_CONFIRMED"
+    },
+    {
+      "root": "pyproject.toml",
+      "owner_role": "LEGACY_PYPI_PACKAGING_METADATA_PENDING_RETIREMENT",
+      "restriction": "NOT_CANONICAL_VERSION_AUTHORITY"
+    }
+  ],
+  "known_verification_obligations": [
+    "BUILD_REVISION_CLEAN_GIT_SOURCE_GATE_MUST_NOT_BE_SILENTLY_BYPASSED",
+    "ENGINE_INDEX_MANIFEST_BINDING_CONTRACT_IDENTITY_MATCHES_VERSION_SOURCE",
+    "CARGO_BUILD_LOCKED_AND_CARGO_METADATA_AGREE_WITH_VERSION_SOURCE",
+    "CAPABILITY_REFERENCE_SHA256_AND_DEPENDENCY_GRAPH_REFRESHED_WHERE_SOURCE_BYTES_CHANGE",
+    "NONAUTHORITATIVE_DERIVED_SNAPSHOT_REGENERATED_WITH_FRESH_SOURCE_DIGESTS",
+    "NO_AUTOMATIC_CHANGE_TO_TRANSPORT_EXTENSION_OR_HISTORICAL_VERSION_FIELDS_BY_NAME_ONLY",
+    "INSTALLED_EXECUTABLE_VERSION_INFORMATION_MATCHES_RELEASED_SOURCE_COMPOSITION",
+    "RELEASE_AND_TEST_VALIDATION_KEEP_REQUIRED_GITHUB_ACTIONS_AND_MAPPED_TEST_MODES",
+    "PYPROJECT_PACKAGE_DATA_REMOVAL_DOES_NOT_SILENTLY_DELETE_REQUIRED_DISTRIBUTED_CONTRACTS"
+  ],
+  "unresolved_policy_gates": [
+    {
+      "id": "UP-01",
+      "topic": "SYNC_AND_CLEAN_BUILD_SOURCE_BOUNDARY",
+      "issue": "SYNCHRONIZER_EDITS_TRACKED_SOURCE_BUT_NATIVE_WHEEL_REQUIRES_CLEAN_GIT_CHECKOUT",
+      "decision": "UNRESOLVED",
+      "implementation_blocking": true
+    },
+    {
+      "id": "UP-02",
+      "topic": "SINGLE_VERSION_SOURCE_SECTION_SEMANTICS",
+      "issue": "TOOL_RBAC_COMMON_CONTRACT_SCHEMA_VALUE_FIELD_SEMANTICS_AND_REQUIREDNESS_NOT_FULLY_APPROVED",
+      "decision": "UNRESOLVED",
+      "implementation_blocking": true
+    },
+    {
+      "id": "UP-03",
+      "topic": "REPLACEMENT_DISTRIBUTION_AND_PACKAGE_DATA",
+      "issue": "DELETING_SETuptools_PACKAGE_DATA_WHILE_SOURCE_WHEEL_STILL_STAGES_PYTHON_ASSETS_REQUIRES_NEW_ASSET_DELIVERY_BOUNDARY",
+      "decision": "UNRESOLVED",
+      "implementation_blocking": true
+    },
+    {
+      "id": "UP-04",
+      "topic": "HISTORICAL_PROFILE_SCHEMA_DIRECTORY_PLAN_CONFLICT",
+      "issue": "OLDER_APPROVED_SCHEMA_CENTRALIZATION_PLAN_NAMES_STORAGE_PROFILE_HISTORY_WHILE_USER_SELECTED_SCHEMAS_HISTORY_PROFILE",
+      "prior_plan_ref": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
+      "selected_user_direction": "src/ptsip/schemas/history/profile/",
+      "decision": "RECONCILIATION_REQUIRED_BEFORE_IMPLEMENTATION",
+      "implementation_blocking": true
+    },
+    {
+      "id": "UP-05",
+      "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
+      "issue": "COMBINED_TRIGGER_PRECEDENCE_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
+      "decision": "UNRESOLVED",
+      "implementation_blocking": true
+    }
+  ],
+  "execution_gate": {
+    "policy_closure_required": true,
+    "user_audited_full_plan_approval_required": true,
+    "implementation_permitted_now": false,
+    "no_branch_creation": true,
+    "simulations_must_not_mutate_canonical_version_values": true,
+    "status_note": "INITIAL_USER_RULE_CAPTURE_ONLY; NOT A FULLY APPROVED EXECUTION PLAN"
+  }
+}
