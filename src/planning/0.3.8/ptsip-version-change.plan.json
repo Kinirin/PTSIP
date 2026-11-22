@@ -108,15 +108,33 @@
       "id": "VC-03",
       "status": "USER_DIRECTED",
       "responsibility": "NATIVE_WHEEL_ENGINE_VERSION_SOURCE",
-      "target": "src/build/wheel_native.go",
-      "direction": "READ_ENGINE_VERSION_FROM_SRC_VERSION_NOT_INDEX_AND_DERIVE_PACKAGE_WHEEL_IDENTITY_AND_METADATA_FROM_CANONICAL_SOURCE",
-      "index_role": "DERIVED_REGISTRATION_AND_ROUTING_NOT_VERSION_AUTHORITY",
+      "target": "src/build/wheel.go",
+      "direction": "SRC_VERSION_CANONICAL_VALUES_PROJECT_TO_ENGINE_INDEX_THEN_SRC_BUILD_WHEEL_GO_ASSEMBLES_NATIVE_ENGINE_WHEEL",
+      "index_role": "DERIVED_ENGINE_REGISTRATION_ROUTING_AND_VERSION_BINDING_NOT_INDEPENDENT_VERSION_AUTHORITY",
       "compiled_identity": "INHERITS_SRC_VERSION_AT_BUILD_TIME",
       "version_source": "src/VERSION",
       "package_wheel_name_version_source": "src/VERSION#package",
       "package_wheel_metadata_version_source": "src/VERSION#package",
       "package_version_projection": "DERIVED_NOT_INDEPENDENT_FROM_PYPROJECT",
-      "distribution_inputs": "MUST_USE_CANONICAL_PACKAGE_VERSION_WITH_ALLOWED_PLATFORM_SPECIFIC_TAGS"
+      "distribution_inputs": "MUST_USE_CANONICAL_PACKAGE_VERSION_WITH_ALLOWED_PLATFORM_SPECIFIC_TAGS",
+      "canonical_build_flow": [
+        "src/VERSION",
+        "src/ptsip/engines/index.json",
+        "src/build/wheel.go",
+        "NATIVE_ENGINE_WHEEL"
+      ],
+      "flow_classification": "USER_DIRECTED_TARGET_RESPONSIBILITY_CHAIN_NOT_CLAIM_OF_EXISTING_PHYSICAL_CALL_GRAPH",
+      "version_authority": "src/VERSION",
+      "native_assembly_implementation": "src/build/wheel_native.go",
+      "native_assembly_role": "SUBORDINATE_IMPLEMENTATION_CALLED_FROM_SRC_BUILD_WHEEL_GO",
+      "legacy_installation_plan_relation": {
+        "path": "src/ptsip/engines/contracts/installation-plan.json",
+        "present_code_consumer": ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go",
+        "target_canonical_flow_member": false,
+        "current_verification_disposition": "PRESERVE_EXISTING_REQUIRED_VALIDATION_UNTIL_POLICY_COMPLIANT_REPLACEMENT_OR_REBINDING_VERIFIED",
+        "no_independent_version_authority": true,
+        "conversion_or_retirement_requires": "EXPLICIT_OWNER_POLICY_AND_CONSUMER_CLOSURE"
+      }
     },
     {
       "id": "VC-04",
@@ -136,7 +154,7 @@
       "status": "USER_DIRECTED",
       "responsibility": "VERSION_SOURCE_PARSER_SECTION_SUPPORT",
       "target": ".ptsip/engine/developer/Distribution/release/controller/version_sync.go#ReadSourceVersions",
-      "direction": "SUPPORT_SECTIONED_SRC_VERSION_LAYOUT",
+      "direction": "REPLACE_READSOURCEVERSIONS_ALLOWED_LAYOUT_WITH_EXPLICIT_SIX_SECTION_SRC_VERSION_CONTRACT_AND_MIGRATE_DEPENDENTS",
       "required_sections": [
         "package",
         "tool",
@@ -161,7 +179,44 @@
         "src/build/wheel_native.go",
         "src/build/inventory.go"
       ],
-      "old_layout_dependency_handling": "UPDATE_CONSUMERS_WITH_SECTIONED_SOURCE_PARSE_OR_APPROVED_RETIREMENT_ONLY"
+      "old_layout_dependency_handling": "UPDATE_CONSUMERS_WITH_SECTIONED_SOURCE_PARSE_OR_APPROVED_RETIREMENT_ONLY",
+      "parser_change": {
+        "path": ".ptsip/engine/developer/Distribution/release/controller/version_sync.go",
+        "function": "ReadSourceVersions",
+        "operation": "REPLACE_LEGACY_ALLOWED_TOP_LEVEL_KEYS_AND_PROFILE_SECTION_ASSUMPTIONS_WITH_SIX_DECLARED_SECTIONS",
+        "allow_sections": [
+          "package",
+          "tool",
+          "RBAC",
+          "common_contract",
+          "engines",
+          "schemas"
+        ],
+        "reject_undeclared_sections": true,
+        "field_meaning_and_requiredness": "MUST_USE_APPROVED_OWNER_SEMANTICS_NOT_NAME_BASED_INFERENCE",
+        "profile_lifecycle": "NO_INDEPENDENT_PROFILE_VERSION_DEFAULT_OR_IMPLICIT_REASSIGNMENT"
+      },
+      "versiondiff_parser_change": {
+        "path": ".ptsip/engine/developer/Distribution/release/version/versiondiff.go",
+        "function": "sourceVersions",
+        "operation": "EXTEND_EXISTING_SECTION_ALLOWLIST",
+        "newly_allowed_sections": [
+          "RBAC",
+          "common_contract",
+          "schemas"
+        ],
+        "resulting_allowed_sections": [
+          "package",
+          "tool",
+          "RBAC",
+          "common_contract",
+          "engines",
+          "schemas"
+        ],
+        "engine_inventory_policy": "PRESERVE_OFFICIAL_ENGINE_SET_AND_LEGACY_HISTORICAL_READ_BOUNDARY_UNTIL_APPROVED_CHANGE",
+        "reject_undeclared_sections": true,
+        "field_meaning_and_requiredness": "UP-02_REMAINS_BLOCKING"
+      }
     },
     {
       "id": "VC-06",
@@ -224,7 +279,25 @@
       "direction": "CHANGE_ALL_IN_SCOPE_OLD_VERSION_LAYOUT_READERS_TO_APPROVED_SECTIONED_SOURCE",
       "remove_legacy_derived_version_authority": true,
       "legacy_tool_lifecycle": "CHECK_EFFECTIVE_POLICY_BEFORE_REWRITING_OR_RETAINING",
-      "simulation_or_test_version_bump": "FORBIDDEN"
+      "simulation_or_test_version_bump": "FORBIDDEN",
+      "additional_discovered_active_consumers": [
+        {
+          "path": "src/ptsip/engines/contracts/installation-plan.json",
+          "role": "LEGACY_ENGINE_VERSION_PROJECTION_IN_AUXILIARY_VERIFICATION_CONTRACT",
+          "disposition": "REVIEW_CONSUMER_CLOSURE_WITHOUT_MAKING_IT_PART_OF_CANONICAL_BUILD_FLOW"
+        },
+        {
+          "path": ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go",
+          "role": "CURRENT_AUXILIARY_NATIVE_COMPONENT_VERIFIER",
+          "disposition": "PRESERVE_REQUIRED_NATIVE_VERIFICATION_AND_REBIND_TO_CANONICAL_DERIVED_INDEX_SEMANTICS"
+        },
+        {
+          "path": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
+          "role": "USER_CLASSIFIED_TEMPORARY_LEGACY_RELEASE_COMPOSITION_CONTRACT",
+          "disposition": "REPLACE_WITH_NEW_OWNER_APPROVED_MACHINE_CONTRACT_NOT_BLIND_FIELD_PATCH"
+        }
+      ],
+      "consumer_discovery_requirement": "EXACT_PATH_AND_SEMANTIC_OWNER_INVENTORY_BEFORE_RETIRING_LEGACY_VERSION_LAYOUT_READERS"
     },
     {
       "id": "VC-10",
@@ -298,6 +371,35 @@
       "first_unification_no_schema_contract_version_change": "DO_NOT_GENERATE_SYNTHETIC_HISTORY_OR_ARTIFICIAL_PATCH",
       "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED",
       "engine_historical_legacy_archive_deletion": "NOT_AUTHORIZED"
+    },
+    {
+      "id": "VC-13",
+      "status": "USER_DIRECTED_REPLACEMENT_REQUIRED_POLICY_GATED",
+      "responsibility": "REPLACE_TEMPORARY_LEGACY_RELEASE_COMPOSITION_CONTRACT",
+      "current_legacy_contract": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
+      "legacy_classification": "USER_IDENTIFIED_TEMPORARY_LEGACY_NOT_RELIABLE_NEW_VERSION_PIPELINE_AUTHORITY",
+      "direction": "DESIGN_AND_CREATE_NEW_MACHINE_READABLE_RELEASE_COMPOSITION_CONTRACT_FROM_CURRENT_APPROVED_OWNER_SEMANTICS_NOT_LEGACY_CLONE",
+      "replacement_contract_path": "UNRESOLVED_OWNER_DEFINED_PATH",
+      "replacement_contract_schema": "UNRESOLVED_OWNER_DEFINED_INTERFACE",
+      "authoritative_source": "src/VERSION",
+      "source_to_native_wheel_flow": [
+        "src/VERSION",
+        "src/ptsip/engines/index.json",
+        "src/build/wheel.go",
+        "NATIVE_ENGINE_WHEEL"
+      ],
+      "required_responsibilities": [
+        "CANONICAL_SOURCE_BINDING",
+        "DERIVED_INDEX_BINDING",
+        "NATIVE_WHEEL_SOURCE_AND_ARTIFACT_IDENTITY",
+        "EXPLICIT_VERIFICATION_GATE_REFERENCES",
+        "FAIL_CLOSED_ON_MISMATCH"
+      ],
+      "retire_old_contract_after": "MACHINE_VERIFIED_NEW_CONTRACT_CONSUMERS_MIGRATED_AND_APPLICABLE_POLICY_AUTHORITY_RESOLVED",
+      "existing_release_checks": "PRESERVE_REQUIRED_GATES_NO_SILENT_BYPASS",
+      "current_legacy_contract_not_proof_of_new_pipeline_correctness": true,
+      "policy_modification_authorized": false,
+      "implementation_authorized": false
     }
   ],
   "directory_responsibilities": [
@@ -360,6 +462,12 @@
       "root": "pyproject.toml",
       "owner_role": "LEGACY_PYPI_PACKAGING_METADATA_PENDING_RETIREMENT",
       "restriction": "NOT_CANONICAL_VERSION_AUTHORITY"
+    },
+    {
+      "root": ".ptsip/contracts/release/Platform/Common/",
+      "owner_role": "EXISTING_RELEASE_COMPOSITION_INTERFACE_CONSUMERS_PENDING_APPROVED_REPLACEMENT",
+      "restriction": "DO_NOT_TREAT_LEGACY_COMPOSITION_CONTRACT_AS_CANONICAL_VERSION_AUTHORITY_OR_DISABLE_REQUIRED_CHECKS_WITHOUT_VERIFIED_REPLACEMENT",
+      "replacement_path_status": "UNRESOLVED_NO_DIRECTORY_OR_CONTRACT_ID_PRESELECTED"
     }
   ],
   "known_verification_obligations": [
@@ -378,7 +486,12 @@
     "RETIRED_DERIVED_SNAPSHOT_PLAN_ACCEPTANCE_IS_NOT_REUSED_AS_IMPLEMENTATION_AUTHORITY",
     "INDEPENDENT_CONTRACT_TRANSPORT_PROFILE_AND_WHEEL_RECORD_HASH_CHECKS_UNCHANGED",
     "ASYNC_DERIVED_SNAPSHOT_JOB_MUST_SATISFY_EFFECTIVE_POLICY_FRESHNESS_WHEN_CONSUMED_NOT_AS_VERSION_SYNC_INLINE_UPDATE",
-    "EFFECTIVE_SFP_CNTR_0005_SNAPSHOT_SOURCE_HASH_AND_FRESHNESS_VERIFICATION_REMAINS_REQUIRED"
+    "EFFECTIVE_SFP_CNTR_0005_SNAPSHOT_SOURCE_HASH_AND_FRESHNESS_VERIFICATION_REMAINS_REQUIRED",
+    "READSOURCEVERSIONS_AND_VERSIONDIFF_ACCEPT_EXACT_DECLARED_SECTIONS_PACKAGE_TOOL_RBAC_COMMON_CONTRACT_ENGINES_SCHEMAS",
+    "USER_DIRECTED_CANONICAL_NATIVE_WHEEL_CHAIN_SRC_VERSION_TO_ENGINE_INDEX_TO_SRC_BUILD_WHEEL_GO_TO_NATIVE_ENGINE_WHEEL",
+    "LEGACY_INSTALLATION_PLAN_NOT_INTERMEDIATE_VERSION_AUTHORITY_REQUIRED_VERIFICATION_PRESERVED_UNTIL_CONSUMER_CLOSURE",
+    "LEGACY_RELEASE_COMPOSITION_CONTRACT_REPLACED_BY_NEW_OWNER_APPROVED_MACHINE_CONTRACT_WITHOUT_IMPLICIT_POLICY_OR_GATE_RETIREMENT",
+    "BASELINE_GO_TEST_AND_CARGO_METADATA_RESULTS_ARE_NOT_PROOF_OF_NATIVE_WHEEL_BUILD_OR_DISTRIBUTION_PASS"
   ],
   "unresolved_policy_gates": [
     {
@@ -416,6 +529,14 @@
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
       "issue": "COMBINED_TRIGGER_PRECEDENCE_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
       "decision": "UNRESOLVED",
+      "implementation_blocking": true
+    },
+    {
+      "id": "UP-06",
+      "topic": "NEW_RELEASE_COMPOSITION_CONTRACT_AUTHORITY_AND_CONSUMER_MIGRATION",
+      "issue": "USER_DIRECTED_REPLACEMENT_OF_TEMPORARY_LEGACY_COMPOSITION_CONTRACT_REQUIRES_OWNER_APPROVED_NEW_MACHINE_INTERFACE_PATH_AND_VERIFIED_CONSUMER_TRANSITION",
+      "prior_contract": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
+      "decision": "REPLACEMENT_DIRECTION_RECORDED_CONTRACT_DESIGN_AND_POLICY_RECONCILIATION_UNRESOLVED",
       "implementation_blocking": true
     }
   ],
@@ -514,5 +635,68 @@
     "admission_rule": "EXISTING_EFFECTIVE_POLICY_AND_CONSUMER_GATES_REMAIN_APPLICABLE",
     "validation_bypass": "FORBIDDEN",
     "legacy_plan_retirement_does_not_revoke_effective_policy": true
+  },
+  "prechange_validation_evidence": {
+    "source": "USER_ATTACHED_PTSIP_VERSION_CHANGE_CHECK_LOG_2026_11_22",
+    "repository": "Kinirin/PTSIP",
+    "source_head": "913d0a908be940781463edc46cfa89c311e66b8f",
+    "user_worktree_status": {
+      "untracked_paths": [
+        "developer/planning/memo.md"
+      ],
+      "clean_checkout_verified": false
+    },
+    "go_release_controller_test": {
+      "status": "PASS",
+      "duration_seconds": 4.902,
+      "command": "go -C .ptsip/engine/developer/Distribution/release/controller test ./... -count=1"
+    },
+    "go_product_builder_test": {
+      "status": "NO_TEST_FILES",
+      "command": "go -C src/build test ./... -count=1",
+      "does_not_prove_wheel_build": true
+    },
+    "cargo_metadata_locked": {
+      "status": "PASS",
+      "scope": [
+        "context",
+        "storage",
+        "validation",
+        "discovery",
+        "execution",
+        "projection"
+      ],
+      "versions": {
+        "context": "0.2.2",
+        "storage": "0.3.2",
+        "validation": "0.3.4",
+        "discovery": "0.3.3",
+        "execution": "0.3.2",
+        "projection": "0.2.2"
+      },
+      "does_not_prove_compilation_or_distribution": true
+    },
+    "no_repository_mutation_during_validation": true,
+    "full_plan_approval_or_implementation_evidence": false
+  },
+  "simulation_revision_notes": {
+    "interpretation": "USER_AUTHORIZED_PLAN_CHANGE_ONLY_POLICY_AND_IMPLEMENTATION_UNCHANGED",
+    "requested_change_source": "USER_EXPLICIT_CHAT_2026_11_22",
+    "canonical_build_flow": [
+      "src/VERSION",
+      "src/ptsip/engines/index.json",
+      "src/build/wheel.go",
+      "NATIVE_ENGINE_WHEEL"
+    ],
+    "immediate_code_implementation": false,
+    "user_requested_allowlist": [
+      "package",
+      "tool",
+      "RBAC",
+      "common_contract",
+      "engines",
+      "schemas"
+    ],
+    "legacy_release_composition_replacement_pending_owner_design": true
   }
 }
