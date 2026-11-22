@@ -398,7 +398,7 @@ Policy_Content:
           - COMPATIBILITY
           declared_operation_fields: EACH_DECLARED_OPERATION_TIED_TO_TYPED_IO_PRE_POST_SIDE_EFFECT_PERMISSION_FAILURE_EVIDENCE_COMPATIBILITY
           normative_ownership: CAPABILITY_PROVIDER_SINGLE_DECLARED_SEMANTIC_OWNER
-          contract_version: EACH_CAPABILITY_HAS_INDEPENDENT_MACHINE_VERIFIABLE_CONTRACT_VERSION_AND_COMPATIBILITY_EVIDENCE
+          contract_version: EACH_OFFICIAL_ENGINE_CURRENT_CAPABILITY_CONTRACT_JSON_VERSION_EXACTLY_BOUND_TO_SRC_VERSION_ENGINE_IMPLEMENTATION_VERSION_WITH_INDEPENDENT_COMPATIBILITY_EVIDENCE
           independent_contract: MUST_NOT_INFER_SEMANTICS_FROM_ANOTHER_CAPABILITY_IMPLEMENTATION_OR_OPERATION
           engine_identity: REUSE_REGISTERED_COMMON_ENGINE_IDENTITY_REFERENCE_WITHOUT_MERGING_CAPABILITY_SEMANTICS
           allowed_shared_machine_meta_schema: VALIDATION_VOCABULARY_AND_IDENTITY_REFERENCES_ONLY_NOT_SHARED_CAPABILITY_SEMANTIC_OWNER
@@ -406,6 +406,32 @@ Policy_Content:
           active_shipped_operation_contract: SFP-CNTR-0001_UNCHANGED
           activation_execution_or_write_permission: NOT_GRANTED_BY_CONTRACT_DECLARATION
           detailed_schema_and_operation_shape: UNRESOLVED_CONTRACT_DESIGN
+        official_engine_version_identity_unification:
+          conflict_resolution: KEEP_LATEST
+          approval_source: USER_EXPLICIT_CHAT_2026_11_22
+          replaced_prior_rule: INDEPENDENT_CURRENT_CAPABILITY_CONTRACT_JSON_VERSION_FROM_ENGINE_IMPLEMENTATION_VERSION
+          scope: REGISTERED_OFFICIAL_ENGINE_CURRENT_CONTRACT_JSON_AND_ENGINE_IMPLEMENTATION_VERSION
+          canonical_version_source: src/VERSION#engines
+          version_authority: SRC_VERSION_ONLY
+          engine_contract_version_relation: EXACT_EQUALITY_PER_REGISTERED_ENGINE
+          field_binding: EXPLICIT_MACHINE_VERIFIED_OWNER_AND_FIELD_MAPPING_REQUIRED
+          current_engine_contract_version: DERIVED_NO_INDEPENDENT_VERSION_AUTHORITY
+          cargo_and_runtime_version_projections: DERIVED_NO_INDEPENDENT_VERSION_AUTHORITY
+          source_version_increment: EXPLICIT_SOURCE_CHANGE_ONLY_NO_AUTOMATIC_INCREMENT
+          update_triggers:
+            CONTRACT_ONLY_CHANGE: PATCH
+            ENGINE_FUNCTION_CHANGE: MINOR
+            NEW_DOMAIN_RESPONSIBILITY_ADDITION: MAJOR
+          combined_trigger_precedence: UNRESOLVED_POLICY
+          breaking_contract_change_classification: UNRESOLVED_POLICY
+          responsibility_removal_classification: UNRESOLVED_POLICY
+          initial_cutover_number_selection: UNRESOLVED_POLICY
+          historical_contract_version_identity: IMMUTABLE_PRESERVED
+          independent_capability_semantic_ownership: PRESERVED
+          contract_compatibility_and_dependency_evidence: PRESERVED_REQUIRED
+          registration_and_execution_authorization: UNCHANGED
+          active_component_version_values: UNCHANGED_BY_THIS_POLICY_RECORD
+          implementation_and_release_authorization: NOT_GRANTED
         operation_id_namespace_owner_binding:
           approval: USER_EXPLICIT_2026_11_18
           scope: REGISTERED_PTSIP_OPERATION_IDS
@@ -558,7 +584,7 @@ Policy_Content:
             VPMS_CASE_SELECTION: urn:uuid:e6707543-f052-4035-bb86-166701e06362
             VPMS_EXECUTION_COMPOSITION: urn:uuid:32058048-9342-4514-9754-2a4b25a79b06
           new_capability_owner: SINGLE_OFFICIAL_RUST_VALIDATION_ENGINE
-          new_capability_model: INDEPENDENT_VERSIONED_CAPABILITY_CONTRACTS
+          new_capability_model: ENGINE_VERSION_BOUND_SEMANTICALLY_INDEPENDENT_CAPABILITY_CONTRACTS
           allowed_mapping_cardinalities:
           - ONE_TO_ONE
           - ONE_TO_MANY
@@ -579,7 +605,7 @@ Policy_Content:
           approval_source: USER_EXPLICIT
           decision_date: '2026-10-11'
           owner: SINGLE_OFFICIAL_RUST_VALIDATION_ENGINE
-          capability_granularity: INDEPENDENT_VERSIONED_COMPLETE_CAPABILITY_CONTRACT
+          capability_granularity: ENGINE_VERSION_BOUND_COMPLETE_SEMANTICALLY_INDEPENDENT_CAPABILITY_CONTRACT
           generic_responsibility_set:
           - CONTRACT_VALIDATION
           - SCHEMA_VALIDATION
@@ -897,7 +923,11 @@ Policy_Content:
         transport_independence_never_waives_current_ctrl_permission_or_registration_gate: true
         active_0_3_8_registered_cli_scope_is_not_generalized_by_draft_transport_policy: true
         official_rust_engine_transport_implementations_must_remain_independent: true
-        capability_contracts_are_complete_independently_versioned_normative_units: true
+        capability_contracts_are_complete_engine_version_bound_normative_units: true
+        official_engine_current_contract_json_version_equals_src_version_engine_version: true
+        official_engine_current_contract_json_has_no_independent_version_change_authority: true
+        engine_version_bump_contract_only_patch_function_minor_new_domain_major: true
+        historical_contract_identities_and_compatibility_evidence_remain_preserved: true
         capability_operation_semantics_cannot_be_inferred_from_other_capabilities: true
         common_engine_identity_schema_does_not_merge_capability_contract_owners: true
         registry_discovery_index_cannot_be_canonical_registration_or_namespace_source: true
