@@ -200,11 +200,11 @@ func TestFamilyRulesStorageRejectsUnroutedMisplacedFiles(t *testing.T) {
 	for _, relative := range approvedSchemaPaths {
 		writeSchemaFixture(t, root, relative)
 	}
-	good := ".ptsip/contracts/policy/Rules/GOV_rules.json"
+	good := ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json"
 	writeSchemaFixture(t, root, good)
 	_, prior := schemaFiles(root)
 	if len(prior) != 0 {
-		t.Fatalf("canonical Family rules schema rejected: %v", prior)
+		t.Fatalf("canonical Family selection rejected: %v", prior)
 	}
 	for _, tc := range []struct{ path, diagnosticFile, problem string }{
 		{".ptsip/contracts/policy/Policy_Rules/root-family/GOV_rules.schema.json",

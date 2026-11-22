@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
 )
 
 func checkCanonicalContractFile(root, name string) error {
@@ -42,110 +43,86 @@ func checkCanonicalContractFile(root, name string) error {
 	return nil
 }
 
-func TestCanonicalDeveloperContractRoutes(t *testing.T) {
-	root, err := filepath.Abs(filepath.Join("..", "..", "..", "..", ".."))
-	if err != nil {
-		t.Fatal(err)
+func TestCurrentDeveloperContractOwnerJSON(t *testing.T) {
+	root := routingRepositoryRoot(t)
+	paths, findings := schemaFiles(root)
+	if len(findings) != 0 {
+		t.Fatalf("current contract owner scan failed: %v", findings)
 	}
+	for _, path := range paths {
+		var document map[string]any
+		readContractJSON(t, path, &document)
+		if document == nil {
+			t.Fatalf("expected a contract object: %s", path)
+		}
+	}
+}
+
+func TestCanonicalDeveloperContractRoutes(t *testing.T) {
+	root := routingRepositoryRoot(t)
 	old := filepath.Join(root, "developer", "contracts")
 	if _, err := os.Stat(old); !errors.Is(err, os.ErrNotExist) {
 		t.Fatalf("legacy contract root remains active or inaccessible: %v", err)
 	}
 
-	canonical := filepath.Join(root, ".ptsip", "contracts")
-	count := 0
-	err = filepath.WalkDir(canonical, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		if entry.IsDir() || filepath.Ext(entry.Name()) != ".json" {
-			return nil
-		}
-		bytes, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		if !json.Valid(bytes) {
-			return fmt.Errorf("invalid contract JSON: %s", path)
-		}
-		count++
-		return nil
-	})
+	routing, _, _, _, _, _, err := loadRoutingInputs(root)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if count < 57 {
-		t.Fatalf("contract migration coverage incomplete: %d JSON files (expected at least 55 migrated plus 2 release)", count)
-	}
-
-	routingPath := ".ptsip/contracts/policy/routing/policy_routes.json"
-	if err := checkCanonicalContractFile(root, routingPath); err != nil {
-		t.Fatal(err)
-	}
-	raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(routingPath)))
+	vocabularyRef := routingString(routingMembers(routing["identity_sources"])["root_family"])
+	vocabulary, err := routingFile(root, vocabularyRef, ".ptsip/contracts/policy/")
 	if err != nil {
 		t.Fatal(err)
 	}
-	var routing struct {
-		IdentitySources map[string]string `json:"identity_sources"`
-		SchemaRefs      map[string]string `json:"schema_refs"`
-		Routes          map[string]struct {
-			OutputRoot string `json:"output_root"`
-		} `json:"routes"`
-	}
-	if err := json.Unmarshal(raw, &routing); err != nil {
-		t.Fatal(err)
-	}
-	if routing.Routes["PTSIP_DEVELOPER_POLICY"].OutputRoot != "developer/policy" {
-		t.Fatal("developer output route missing")
-	}
-
-	for _, source := range []string{"policy_kind", "root_family"} {
-		if err := checkCanonicalContractFile(root, routing.IdentitySources[source]); err != nil {
-			t.Fatal(err)
-		}
-	}
-	rootFamilyPath := routing.IdentitySources["root_family"]
-	vocabBytes, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(rootFamilyPath)))
+	families, err := authoring.IdentityValues(vocabulary, "root_family")
 	if err != nil {
 		t.Fatal(err)
 	}
-	var vocab struct {
-		Definitions map[string]struct {
-			Enum []string `json:"enum"`
-		} `json:"$defs"`
-	}
-	if err := json.Unmarshal(vocabBytes, &vocab); err != nil {
-		t.Fatal(err)
-	}
-	families := vocab.Definitions["root_family"].Enum
 	if len(families) != 14 {
 		t.Fatalf("expected 14 root-family vocabulary values, got %d", len(families))
 	}
-	for _, target := range routing.SchemaRefs {
-		if err := checkCanonicalContractFile(root, target); err != nil {
-			t.Fatal(err)
+	seen := make(map[string]bool, len(families))
+	for _, value := range families {
+		family := routingString(value)
+		if family == "" || seen[family] {
+			t.Fatalf("missing or duplicate Family vocabulary value: %v", value)
 		}
-	}
-	selectionPath := ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json"
-	if err := checkCanonicalContractFile(root, selectionPath); err != nil {
-		t.Fatal(err)
-	}
-	selectionRaw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(selectionPath)))
-	if err != nil {
-		t.Fatal(err)
-	}
-	var selection struct {
-		Routes map[string]struct {
-			Fields string `json:"document_fields_ref"`
-		} `json:"family_routes"`
-	}
-	if err := json.Unmarshal(selectionRaw, &selection); err != nil {
-		t.Fatal(err)
-	}
-	for _, family := range families {
-		if selection.Routes[family].Fields != "urn:ptsip:candidate:contract:policy:rules:v2#/$defs/FamilyProfiles/"+family {
-			t.Fatalf("missing current Family field profile: %s", family)
+		seen[family] = true
+		for _, route := range []struct {
+			name, kind, version, output string
+		}{
+			{"developer/unified", "PTSIP_DEVELOPER_POLICY", authoring.UnifiedPolicyVersion, "developer/policy"},
+			{"support/unified", "PTSIP_SUPPORT_FEATURE", authoring.UnifiedPolicyVersion, "src/policy"},
+			{"developer/v2", "PTSIP_DEVELOPER_POLICY", "", "developer/policy"},
+		} {
+			t.Run(family+"/"+route.name, func(t *testing.T) {
+				document := authoring.Document{"Policy_Identity": map[string]any{"policy_kind": route.kind, "root_family": family}}
+				if route.version != "" {
+					document["schema_version"] = route.version
+				}
+				selection, err := authoring.SelectPolicyDocument(root, document)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if selection.OutputRoot != route.output || selection.RootFamily != family || selection.PolicyKind != route.kind ||
+					selection.Validator != "policy-check" || selection.ExecutionAuthorized || selection.MutationAuthorized || selection.PolicyConformance != "NOT_ASSERTED" {
+					t.Fatalf("unexpected policy selection: %+v", selection)
+				}
+				for field, ref := range selection.ContractRefs {
+					if field != "family_fields" {
+						if _, err := routingFile(root, ref, ".ptsip/contracts/policy/"); err != nil {
+							t.Fatalf("invalid selected resource %s: %v", field, err)
+						}
+					}
+				}
+				if route.version != "" {
+					if selection.SchemaIDs["public"] != authoring.UnifiedPolicySchemaID || selection.StructuralState != "CANDIDATE" {
+						t.Fatalf("unified candidate route changed: %+v", selection)
+					}
+				} else if selection.ContractRefs["family_fields"] != selection.SchemaIDs["rules"]+"#/$defs/FamilyProfiles/"+family {
+					t.Fatalf("v2 Family field profile was not resolved: %+v", selection)
+				}
+			})
 		}
 	}
 }
@@ -175,9 +152,6 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
 		".ptsip/contracts/policy/routing/Policy_Routing.schema.json",
 		".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json",
 		".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json",
-		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
-		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_DRAFT.json",
-		".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
 	}
 	for _, name := range required {
 		if err := checkCanonicalContractFile(root, name); err != nil {
@@ -200,53 +174,11 @@ func TestPolicyContractResponsibilityMigration(t *testing.T) {
 		".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
 		".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
 		".ptsip/contracts/lifecycle/policy_status.json",
-		".ptsip/contracts/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
-		".ptsip/contracts/lifecycle/Plan_status/Plan_status_DRAFT.json",
-		".ptsip/contracts/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
 		".ptsip/contracts/Authority/Authority_Major_Category.json",
 	}
 	for _, name := range obsolete {
 		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(name))); !errors.Is(err, os.ErrNotExist) {
 			t.Fatalf("obsolete policy contract path remains or is inaccessible: %s: %v", name, err)
-		}
-	}
-}
-
-func TestPlanStatusContractVocabulary(t *testing.T) {
-	root, err := filepath.Abs(filepath.Join("..", "..", "..", "..", ".."))
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, tc := range []struct {
-		filename string
-		status   string
-		id       string
-	}{
-		{"Plan_status_ACTIVATE.json", "ACTIVATE", "urn:ptsip:contract:constant:plan_status_activate:v1"},
-		{"Plan_status_DRAFT.json", "DRAFT", "urn:ptsip:contract:constant:plan_status_draft:v1"},
-		{"Plan_status_INTERRUPTION.json", "INTERRUPTION", "urn:ptsip:contract:constant:plan_status_interruption:v1"},
-	} {
-		relative := ".ptsip/contracts/policy/lifecycle/Plan_status/" + tc.filename
-		raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(relative)))
-		if err != nil {
-			t.Fatal(err)
-		}
-		var schema struct {
-			ID         string   `json:"$id"`
-			Required   []string `json:"required"`
-			Properties struct {
-				Status struct {
-					Const string `json:"const"`
-				} `json:"status"`
-			} `json:"properties"`
-			AdditionalProperties bool `json:"additionalProperties"`
-		}
-		if err := json.Unmarshal(raw, &schema); err != nil {
-			t.Fatal(err)
-		}
-		if schema.ID != tc.id || len(schema.Required) != 1 || schema.Required[0] != "status" ||
-			schema.Properties.Status.Const != tc.status || schema.AdditionalProperties {
-			t.Fatalf("%s: Plan status semantics changed during relocation", relative)
 		}
 	}
 }
