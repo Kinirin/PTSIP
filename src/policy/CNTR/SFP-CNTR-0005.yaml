@@ -461,9 +461,10 @@ Policy_Content:
           build_executor: GITHUB_ACTIONS
           build_source_revision: COMMITTED_POST_SYNC_SOURCE_REVISION
           build_precondition: CLEAN_GIT_CHECKOUT_AFTER_SYNC_COMMIT
-          required_order: LOCAL_VERSION_COMMIT_PUSH_THEN_ACTION_SYNC_THEN_ACTION_SYNC_COMMIT_THEN_ACTION_WHEEL_BUILD_THEN_LOCAL_HANDOFF
-          local_handoff: REQUIRED_AFTER_WHEEL_BUILD
-          local_handoff_delivery_mechanism: PLAN_DEFINED_NO_DIRECT_GITHUB_TO_LOCAL_PUSH_ASSUMED
+          required_order: LOCAL_VERSION_COMMIT_PUSH_THEN_ACTION_SYNC_THEN_ACTION_SYNC_COMMIT_THEN_ACTION_WHEEL_BUILD
+          local_source_sync: USER_INITIATED_EXISTING_GIT_PULL_FROM_REMOTE_REPOSITORY
+          local_automatic_pull: NOT_REQUIRED
+          local_source_sync_extra_delivery_mechanism: NOT_REQUIRED
           existing_build_verification: PRESERVE
           source_version_increment: EXPLICIT_SOURCE_CHANGE_ONLY_NO_AUTOMATIC_INCREMENT
           repository_branch_creation_authority: UNCHANGED
