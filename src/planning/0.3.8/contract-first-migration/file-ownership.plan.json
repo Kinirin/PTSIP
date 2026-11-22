@@ -1262,12 +1262,14 @@
       "write_owner": null,
       "source_state": "EXISTS_IN_BASELINE",
       "planned_file_action": "RECONCILE_STALE_PLANNING_DEPENDENCY_REFERENCES",
-      "assignment_status": "WITHDRAWN_LEGACY_NONVERSION_WORK_NOT_TRANSFERRED",
+      "assignment_status": "LEGACY_TASK_TRANSFERRED_TO_INDEPENDENT_ASYNC_VERSION_CHANGE_JOB",
       "assignment_evidence": "CONTENT_REFERENCE_REVIEW",
       "implementation_authorized": false,
       "historical_write_owner": "WU-01",
       "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22",
-      "successor_ownership": "UNASSIGNED_BY_THIS_VERSION_CHANGE"
+      "successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json",
+      "successor_job_id": "VC-ASYNC-02",
+      "execution_model": "INDEPENDENT_ASYNCHRONOUS_NOT_INLINE_VERSION_SYNC"
     },
     {
       "path": "src/ptsip/engines/contracts/installation-plan.json",
@@ -1616,12 +1618,17 @@
     },
     {
       "path": "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
-      "write_owner": "WU-08",
+      "write_owner": null,
       "source_state": "NOT_YET_CREATED",
       "planned_file_action": "REGENERATE_NEW_TARGET",
-      "assignment_status": "USER_EXPLICIT_REGISTRY_MOVE_ONE_UNIT",
+      "assignment_status": "LEGACY_TASK_TRANSFERRED_TO_INDEPENDENT_ASYNC_VERSION_CHANGE_JOB",
       "assignment_evidence": "EXACT_SOURCE_REGISTRY_FILENAME_AND_DESTINATION",
-      "implementation_authorized": true
+      "implementation_authorized": false,
+      "historical_write_owner": "WU-08",
+      "successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json",
+      "successor_job_id": "VC-ASYNC-01",
+      "execution_model": "INDEPENDENT_ASYNCHRONOUS_NOT_INLINE_VERSION_SYNC",
+      "withdrawal_source": "USER_EXPLICIT_CHAT_2026_11_22"
     },
     {
       "path": "src/ptsip/common_contract/cmd/ptsip-common-contract/main.go",
@@ -2461,12 +2468,29 @@
     "current_write_authority": "NONE_FROM_THIS_DOCUMENT",
     "historical_rows_preserved": true,
     "version_scoped_row_count": 13,
-    "non_version_work_withdrawn_without_new_owner": 58,
-    "other_work_unit_approvals": "UNCHANGED_OUTSIDE_THIS_DOCUMENT",
+    "non_version_work_withdrawn_without_new_owner": 57,
+    "other_work_unit_approvals": "UNCHANGED_EXCEPT_EXACT_SNAPSHOT_TASK_TRANSFER",
     "dependency_graph_earlier_verification": "INVALIDATED",
     "dependency_graph_change_notice": "SIX_MANIFESTS_AND_SIX_BINDINGS_ONLY_NO_GRAPH_PLAN_REWRITE",
     "derived_snapshot_prior_acceptance": "INVALIDATED_AS_LEGACY_PLAN_EVIDENCE",
     "existing_runtime_integrity_checks": "NOT_REMOVED_OR_OVERRIDDEN_BY_PLAN_RETIREMENT",
-    "implementation_authorized_by_this_retirement": false
+    "implementation_authorized_by_this_retirement": false,
+    "individual_async_task_transfers": [
+      {
+        "artifact": "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+        "prior_task_owner": "WU-08",
+        "successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json",
+        "job_id": "VC-ASYNC-01",
+        "sync_pipeline_direct_update": false
+      },
+      {
+        "artifact": "src/ptsip/engines/contracts/dependency-graph.json",
+        "prior_task_owner": "WU-01",
+        "successor_plan_ref": "src/planning/0.3.8/ptsip-version-change.plan.json",
+        "job_id": "VC-ASYNC-02",
+        "sync_pipeline_direct_update": false
+      }
+    ],
+    "no_policy_verification_waiver_by_async_transfer": true
   }
 }
