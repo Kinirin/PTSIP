@@ -3,7 +3,7 @@
   "document_type": "PTSIP_VERSION_CHANGE_PLAN",
   "plan_id": "PTSIP-0.3.8-VERSION-CHANGE",
   "plan_path": "src/planning/0.3.8/ptsip-version-change.plan.json",
-  "status": "DRAFT_POLICY_GATES_OPEN",
+  "status": "DESIGN_DECISIONS_RECORDED_IMPLEMENTATION_APPROVAL_PENDING",
   "authority": {
     "level": "PLAN",
     "precedence": "EFFECTIVE_POLICY_OVER_PLAN",
@@ -13,6 +13,13 @@
     ],
     "approved_engine_contract_cutover_direction": "KEEP_LATEST",
     "user_direction_source": "CHAT_2026-11-22",
+    "delegated_decision_scope": [
+      "UP-02_VERSION_SECTION_OWNER_BINDINGS",
+      "UP-03_ASSET_DELIVERY_DESIGN",
+      "UP-05_SUPPORTED_AND_BLOCKED_CHANGE_CLASSIFICATIONS",
+      "UP-06_RELEASE_COMPOSITION_DESIGN",
+      "FULL_PLAN_APPROVAL_CONDITIONS"
+    ],
     "initial_rules_recorded": true,
     "complete_plan_approval": false,
     "implementation_authorized": false,
@@ -164,13 +171,8 @@
         "engines",
         "schemas"
       ],
-      "profile_independent_version_disposition": "PREVIOUSLY_DIRECTED_RETIRE_INDEPENDENT_PROFILE_VERSION_BUT_SCHEMA_VERSION_OWNER_MAPPING_PENDING",
-      "undecided_field_meanings": [
-        "tool",
-        "RBAC",
-        "common_contract",
-        "schemas"
-      ],
+      "profile_independent_version_disposition": "RETIRE_PROFILE_VERSION;CURRENT_PROFILE_VERSION_IS_SCHEMAS_PTSIP_PROJECT_PROFILE_ONLY",
+      "section_contract_ref": "#/approved_implementation_design/version_source",
       "must_not_assign_new_default_versions": true,
       "format_authority": "src/VERSION",
       "dependent_consumers_to_migrate": [
@@ -216,7 +218,7 @@
         ],
         "engine_inventory_policy": "PRESERVE_OFFICIAL_ENGINE_SET_AND_LEGACY_HISTORICAL_READ_BOUNDARY_UNTIL_APPROVED_CHANGE",
         "reject_undeclared_sections": true,
-        "field_meaning_and_requiredness": "UP-02_REMAINS_BLOCKING"
+        "field_meaning_and_requiredness": "USE_EXACT_UP-02_OWNER_MAPPING;READ_LEGACY_LAYOUT_ONLY_FOR_EXPLICIT_HISTORICAL_REVISION"
       }
     },
     {
@@ -232,8 +234,9 @@
       "pyproject_as_version_authority": "FORBIDDEN",
       "pyproject_as_preexisting_canonical_composition_source": "FORBIDDEN",
       "distribution_scope": "NOT_PYPI_ONLY",
-      "non_version_packaging_metadata_disposition": "POLICY_GATED_NOT_IMPLICITLY_REMOVED",
-      "replacement_asset_inclusion_and_distribution_readiness": "UNRESOLVED_POLICY_BEFORE_IMPLEMENTATION"
+      "non_version_packaging_metadata_disposition": "PRESERVE_NON_VERSION_BUILD_AND_DISTRIBUTION_METADATA_IN_CURRENT_CONSUMER_FORMAT_UNTIL_VERIFIED_REPLACEMENT",
+      "replacement_asset_inclusion_and_distribution_readiness": "GO_ASSET_CLOSURE_AND_SOURCE_ARCHIVE_PARITY_REQUIRED_BEFORE_REMOVAL",
+      "asset_delivery_design_ref": "#/approved_implementation_design/asset_delivery"
     },
     {
       "id": "VC-07",
@@ -388,13 +391,14 @@
     },
     {
       "id": "VC-13",
-      "status": "USER_DIRECTED_REPLACEMENT_REQUIRED_POLICY_GATED",
+      "status": "DELEGATED_REPLACEMENT_DESIGN_SELECTED_IMPLEMENTATION_GATED",
       "responsibility": "REPLACE_TEMPORARY_LEGACY_RELEASE_COMPOSITION_CONTRACT",
       "current_legacy_contract": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
       "legacy_classification": "USER_IDENTIFIED_TEMPORARY_LEGACY_NOT_RELIABLE_NEW_VERSION_PIPELINE_AUTHORITY",
       "direction": "DESIGN_AND_CREATE_NEW_MACHINE_READABLE_RELEASE_COMPOSITION_CONTRACT_FROM_CURRENT_APPROVED_OWNER_SEMANTICS_NOT_LEGACY_CLONE",
-      "replacement_contract_path": "UNRESOLVED_OWNER_DEFINED_PATH",
-      "replacement_contract_schema": "UNRESOLVED_OWNER_DEFINED_INTERFACE",
+      "replacement_contract_path": ".ptsip/contracts/release/Platform/Common/source-composition.json",
+      "replacement_contract_schema": ".ptsip/contracts/schemas/release/source-composition.schema.json",
+      "replacement_contract_design_ref": "#/approved_implementation_design/release_composition",
       "authoritative_source": "src/VERSION",
       "source_to_native_wheel_flow": [
         "src/VERSION",
@@ -474,14 +478,14 @@
     },
     {
       "root": "pyproject.toml",
-      "owner_role": "LEGACY_PYPI_PACKAGING_METADATA_PENDING_RETIREMENT",
+      "owner_role": "PYTHON_FRONTEND_AND_NON_VERSION_PACKAGE_METADATA",
       "restriction": "NOT_CANONICAL_VERSION_AUTHORITY"
     },
     {
       "root": ".ptsip/contracts/release/Platform/Common/",
-      "owner_role": "EXISTING_RELEASE_COMPOSITION_INTERFACE_CONSUMERS_PENDING_APPROVED_REPLACEMENT",
+      "owner_role": "RELEASE_COMPOSITION_CONTRACT_AND_EXISTING_GATES",
       "restriction": "DO_NOT_TREAT_LEGACY_COMPOSITION_CONTRACT_AS_CANONICAL_VERSION_AUTHORITY_OR_DISABLE_REQUIRED_CHECKS_WITHOUT_VERIFIED_REPLACEMENT",
-      "replacement_path_status": "UNRESOLVED_NO_DIRECTORY_OR_CONTRACT_ID_PRESELECTED"
+      "replacement_path_status": "EXACT_CONTRACT_PATH_SELECTED_CONSUMER_MIGRATION_PENDING"
     }
   ],
   "known_verification_obligations": [
@@ -510,27 +514,132 @@
     "GITHUB_ACTIONS_BUILD_CHECKOUT_MUST_BE_CLEAN_WITHOUT_BYPASSING_EXISTING_BUILD_REVISION_GATE",
     "WHEEL_BUILD_MUST_NOT_START_UNTIL_DERIVED_SNAPSHOT_IS_REGENERATED_AND_SOURCE_IDENTITY_VERSION_CONTRACT_DEPENDENCY_SHA256_AND_FRESHNESS_VERIFIED"
   ],
+  "approved_implementation_design": {
+    "scope": "DELEGATED_PLAN_DESIGN_ONLY",
+    "version_source": {
+      "path": "src/VERSION",
+      "format": "STRICT_TOML",
+      "layout": "EXACTLY_SIX_CASE_SENSITIVE_TABLES_WITH_EXACT_REQUIRED_STRING_KEYS",
+      "no_aliases_optional_defaults_or_unregistered_keys": true,
+      "initial_values_policy": "COPY_REGISTERED_CURRENT_OWNER_VALUES;ONLY_INITIAL_ENGINE_VERSION_UNIFICATION_CHANGES_EXISTING_IMPLEMENTATION_VERSIONS",
+      "sections": {
+        "package": {
+          "meaning": "Native PTSIP Package distribution identity. Output names and metadata use its deterministic platform-format representation.",
+          "keys": {"version": "0.3.8"},
+          "initial_value_ref": "src/VERSION#package_version",
+          "format": "PRESERVE_CURRENT_PACKAGE_VERSION_GRAMMAR"
+        },
+        "tool": {
+          "meaning": "PTSIP Tool runtime identity, projected into the Go executable. It does not own the Package version.",
+          "keys": {"version": "T.0.3.8.b3"},
+          "initial_value_ref": "src/VERSION#tool_version",
+          "format": "PRESERVE_CURRENT_TOOL_VERSION_GRAMMAR"
+        },
+        "RBAC": {
+          "meaning": "Versions of the three registered RA/RAC/AEC structural contracts, with no separate RBAC release version.",
+          "keys": {"RA_list": "v.1", "RAC_list": "v.1", "AEC_list": "v.1"},
+          "initial_value_ref": "src/ptsip/schemas/config.json#/storage/Responsibility-Authority/{key}/version",
+          "format": "PRESERVE_EXACT_REGISTERED_RBAC_VERSION_SPELLING"
+        },
+        "common_contract": {
+          "meaning": "Revision of the Common Contract registry manifest. Its individual contract versions remain in their separately owned schema bindings.",
+          "keys": {"registry_revision": "v2"},
+          "initial_value_ref": "src/ptsip/common_contract/registry/manifest.json#/revision",
+          "format": "PRESERVE_EXACT_REGISTERED_MANIFEST_REVISION_SPELLING"
+        },
+        "engines": {
+          "meaning": "Current version per official engine, with exact identity equality across its implementation and current capability contract.",
+          "keys": {"context": "2.2.0", "storage": "3.0.0", "validation": "4.5.0", "discovery": "3.6.0", "execution": "3.0.0", "projection": "2.5.0"},
+          "initial_value_ref": "src/ptsip/engines/{key}/contract.json#/version",
+          "format": "PRESERVE_CURRENT_ENGINE_NUMERIC_SEMVER_GRAMMAR"
+        },
+        "schemas": {
+          "meaning": "Versions of the non-RBAC current product schema resources listed here. Use quoted canonical config keys in TOML.",
+          "keys": {"ptsip.policy.v4": "v4", "ptsip.project-profile": "pp.3.00"},
+          "initial_value_refs": {
+            "ptsip.policy.v4": "src/ptsip/schemas/config.json#/Policy/ptsip.policy.v4/version",
+            "ptsip.project-profile": "src/ptsip/schemas/config.json#/storage/profile/ptsip.project-profile/version"
+          },
+          "excluded": ["DIAGNOSTIC_PLAN_SCHEMAS", "DEPRECATED_PROFILE_HISTORY", "UNREGISTERED_PROFILE_CANDIDATE", "ENGINE_LOCAL_SCHEMAS_WITH_NO_DECLARED_CUTOVER_BINDING", "POLICY_SUBSCHEMAS_WITHOUT_INDEPENDENT_VERSION_AUTHORITY"]
+        }
+      },
+      "initial_projection_rules": [
+        "Engine contract version is already the approved baseline; verify exact equality and leave its bytes unchanged on initial cutover.",
+        "Project six engine versions into the index, current manifest implementation_version, binding engine_version, engine-local version.yaml, and that engine's own Cargo package row in Cargo.toml and Cargo.lock.",
+        "Verify current RBAC, Common Contract and schema version equality with their explicit registered owners; leave their existing bytes unchanged on initial cutover.",
+        "Resolve current Profile from the registered schema key. No standalone Profile version or fallback.",
+        "Read historical Git revisions with their historical parser only; reject the historical shape as the current source after cutover.",
+        "Use the exact declared owner mapping for future updates. Fail before writing on missing, ambiguous or incompatible owner mapping or inability to preserve the original schema and reference closure."
+      ]
+    },
+    "asset_delivery": {
+      "owner": "src/build",
+      "wheel_assembler": "src/build/wheel.go",
+      "asset_staging": "src/build/wheel_assets.go",
+      "contract_and_verifier": ".ptsip/contracts/release/index.json#/build_verification",
+      "source_archive_inputs": "Exact tracked source allowlist containing approved builder inputs, Go source/modules/embedded assets and Rust sources/locked dependencies plus the same runtime asset reference closure used for the wheel.",
+      "binary_build_inputs": "Git-bound source archive or checked-out source of the exact verified final revision; archive verification preserves the source binding.",
+      "asset_inventory": [
+        "src/VERSION",
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/common_contract/registry/manifest.json",
+        "src/ptsip/engines/index.json",
+        "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+        "src/ptsip/engines/contracts/dependency-graph.json",
+        "src/ptsip/engines/discovery/profile-support.json",
+        "src/ptsip/engines/validation/profile-transitions.json",
+        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+        "src/ptsip/common_contract/user_contracts/templates/",
+        "src/policy/index.yaml"
+      ],
+      "closure_rule": "Follow exact registered schema, engine manifest, capability, binding, transport, registry and owner-projected Support Policy references, including registered immutable Profile history. Include separately required installed resources by exact verifier and live consumer evidence. Reject missing, ambiguous, stale, unverified, developer-private, or out-of-root members.",
+      "frontend_role": "PEP 517 transport and retained package metadata only. Materialize its package version from src/VERSION; verify wheel name, dist-info path, METADATA and RECORD against the builder's same source and fail on disagreement.",
+      "remove_tables_after": "Machine-proven replacement archive and installed runtime coverage of all required previous consumers, with explicit retirement records for unnecessary members.",
+      "preserve_package_history_semantics": "Integrated product distribution and auxiliary Profile or Tool packages keep their distinct declared inventories; do not widen standalone delivery or activation.",
+      "retire_legacy_specdata_when": "Honor the schema-centralization plan's per-asset consumer closure. Keep the withdrawn duplicate retired and preserve unresolved sources until verified replacement or authorized retirement."
+    },
+    "release_composition": {
+      "owner_route": ".ptsip/contracts/release/index.json#platforms[Common].contracts.composition",
+      "contract_path": ".ptsip/contracts/release/Platform/Common/source-composition.json",
+      "schema_path": ".ptsip/contracts/schemas/release/source-composition.schema.json",
+      "schema_version": "ptsip-release-source-composition/v1",
+      "authority": "RELEASE_VERIFICATION_CONTRACT; NO_POLICY_PUBLICATION_OR_EXECUTION_AUTHORITY",
+      "retired_policy_reference": "MPD-INFO-0005 has lifecycle RETIRED. Do not copy its pyproject version authority into the replacement.",
+      "required_contract_records": {
+        "version_source": "Exact src/VERSION path and owner-bound section mapping for package, tool, RBAC, common_contract, engines and schemas.",
+        "registered_sources": "Exact engine index, schema config and Common Contract registry refs. Assert identity, versions, digest and current source requirements at selection.",
+        "build_projection": "Exact native builder/assembly paths, actual target platform, package name/version, compiled engine versions, component SHA-256 and RECORD.",
+        "verification_gates": "Existing build, verification boundary, mode registry, release admission and artifact identity checks. Bind independent snapshot and applicable dependency graph verification to exact final source SHA.",
+        "artifact_receipt": "Exact final committed source SHA, verified snapshot digest, component inventory, wheel filename, platform and SHA-256. Fail closed on absent, stale or mismatching evidence.",
+        "publication_boundary": "Verify and preserve immutable published state and package registry receipts. This contract grants no runtime activation or publication."
+      },
+      "current_consumer_cutover": [
+        ".ptsip/contracts/release/index.json",
+        ".ptsip/contracts/release/Platform/Common/Common_validation.json",
+        ".ptsip/contracts/release/Platform/Common/verification-contract.json",
+        ".ptsip/contracts/release/Platform/Common/migration-inventory.json",
+        ".ptsip/engine/developer/Distribution/release/controller/composition.go",
+        ".ptsip/engine/developer/Distribution/release/controller/selection.go",
+        ".ptsip/engine/developer/Distribution/release/verification/boundary/Platform.go",
+        ".ptsip/engine/developer/Distribution/release/test/runner.go",
+        ".ptsip/engine/developer/Distribution/release/state/release-availability.json",
+        ".github/workflows/release-admission-contract-check.yml"
+      ],
+      "release_state_migration": "Preserve independently installed or published original-source composition and digest evidence via the existing release-state registry. Rebind active version readers and publication-state readers/writers to their registered owners before removing pyproject composition tables or the retired contract.",
+      "acceptance": "Update registered routing, controller and workflow checks together. Prove replacement fixture validation and selection, exact version/source binding, negative mismatch cases, historical read-only behavior, and zero live callers before contractual retirement."
+    }
+  },
   "unresolved_policy_gates": [
-    {
-      "id": "UP-02",
-      "topic": "SINGLE_VERSION_SOURCE_SECTION_SEMANTICS",
-      "issue": "TOOL_RBAC_COMMON_CONTRACT_SCHEMA_VALUE_FIELD_SEMANTICS_AND_REQUIREDNESS_NOT_FULLY_APPROVED",
-      "decision": "UNRESOLVED",
-      "implementation_blocking": true
-    },
-    {
-      "id": "UP-03",
-      "topic": "REPLACEMENT_DISTRIBUTION_AND_PACKAGE_DATA",
-      "issue": "DELETING_SETUPTOOLS_PACKAGE_DATA_WHILE_SOURCE_WHEEL_STILL_STAGES_PYTHON_ASSETS_REQUIRES_NEW_ASSET_DELIVERY_BOUNDARY",
-      "decision": "UNRESOLVED",
-      "implementation_blocking": true
-    },
     {
       "id": "UP-05",
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
       "issue": "COMBINED_TRIGGER_PRECEDENCE_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
-      "decision": "PARTIALLY_RESOLVED_REMAINING_CASES_OPEN",
-      "implementation_blocking": true,
+      "decision": "BLOCK_UNDECIDED_CHANGE_CASES_AND_EXCLUDE_THEM_FROM_INITIAL_CUTOVER",
+      "implementation_blocking": false,
+      "blocking_scope": "FUTURE_BREAKING_REMOVAL_OR_UNAPPROVED_COMBINED_VERSION_CHANGE",
+      "initial_cutover_rule": "COPY_THE_SIX_APPROVED_CURRENT_CONTRACT_VERSIONS_WITHOUT_TREATING_THE_IDENTITY_PROJECTION_AS_A_SEMANTIC_CHANGE",
+      "single_trigger_cases": {"CONTRACT_ONLY_CHANGE": "PATCH", "ENGINE_FUNCTION_CHANGE": "MINOR", "NEW_DOMAIN_RESPONSIBILITY_ADDITION": "MAJOR"},
+      "unresolved_case_result": "FAIL_CLOSED_WITHOUT_VERSION_INCREMENT_OR_MUTATION;REQUIRES_EFFECTIVE_POLICY_DECISION",
       "resolved_case": {
         "case_id": "CONTRACT_AND_ENGINE_FUNCTION_CHANGE",
         "scope": "SAME_LOCAL_COMMIT_CHANGE_SET",
@@ -546,14 +655,6 @@
         "BREAKING_CONTRACT_CHANGE_CLASSIFICATION",
         "RESPONSIBILITY_REMOVAL_CLASSIFICATION"
       ]
-    },
-    {
-      "id": "UP-06",
-      "topic": "NEW_RELEASE_COMPOSITION_CONTRACT_AUTHORITY_AND_CONSUMER_MIGRATION",
-      "issue": "USER_DIRECTED_REPLACEMENT_OF_TEMPORARY_LEGACY_COMPOSITION_CONTRACT_REQUIRES_OWNER_APPROVED_NEW_MACHINE_INTERFACE_PATH_AND_VERIFIED_CONSUMER_TRANSITION",
-      "prior_contract": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
-      "decision": "REPLACEMENT_DIRECTION_RECORDED_CONTRACT_DESIGN_AND_POLICY_RECONCILIATION_UNRESOLVED",
-      "implementation_blocking": true
     }
   ],
   "execution_gate": {
@@ -562,7 +663,24 @@
     "implementation_permitted_now": false,
     "no_branch_creation": true,
     "simulations_must_not_mutate_canonical_version_values": true,
-    "status_note": "VC_10_PRIOR_POLICY_VIOLATION_RESOLVED_BY_USER_PLAN_REVISION_REMAINING_POLICY_GATES_AND_FULL_PLAN_APPROVAL_REQUIRED",
+    "status_note": "DELEGATED_DESIGN_DECISIONS_AND_APPROVAL_CONDITIONS_RECORDED;FULL_INITIAL_CUTOVER_APPROVAL_NOT_YET_RECORDED",
+    "full_plan_approval_conditions": {
+      "scope": "VC_01_THROUGH_VC_13_INITIAL_CUTOVER_WITH_APPROVED_EXISTING_VERSION_VALUES_AND_NO_PUBLICATION",
+      "before_implementation": [
+        "Review the exact initial section values and owner mappings against the six current registered Engine contracts, schema config and Common Contract registry.",
+        "Review the existing asset and release consumer inventory including standalone verification, preserving registered paths, evidence and existing gates.",
+        "Confirm no active policy conflict in the selected initial scope. Leave future unsupported UP-05 cases blocked.",
+        "Record the audited plan revision, approved scope and implementation authorization explicitly. The decision delegation itself does not record this approval."
+      ],
+      "after_implementation_before_cutover": [
+        "Pass strict TOML shape, valid and invalid version cases and historical-read tests.",
+        "Pass deterministic sync checks for manifest, binding, Cargo, index and version metadata. Verify canonical contract and existing history bytes are preserved.",
+        "Validate the new release composition route and all affected consumers, with no loss of verification or publication evidence.",
+        "Prove required artifact member and digest parity via registered build verification before removing legacy package-data tables."
+      ],
+      "operational_sequence": "Use resolved UP-01 and VC-10. Complete the independent snapshot job and final exact clean source verification before building the wheel. Keep dependency graph verification as a separate job and publication subject to its own authorization.",
+      "no_unverified_claims": "A design decision, local simulation, historical acceptance, source-only test or staged implementation does not admit production use or release."
+    },
     "scoped_legacy_snapshot_sha_removal_authorization": {
       "authorized": false,
       "status": "USER_WITHDRAWN_NOT_AUTHORIZED",
@@ -724,7 +842,8 @@
       "engines",
       "schemas"
     ],
-    "legacy_release_composition_replacement_pending_owner_design": true,
+    "legacy_release_composition_replacement_pending_owner_design": false,
+    "legacy_release_composition_replacement_pending_implementation": true,
     "vc_10_latest_user_direction": "WITHDRAW_PREVIOUS_DIGEST_AND_FRESHNESS_REMOVAL_REGENERATE_AND_VERIFY_BEFORE_CONSUMPTION",
     "vc_10_prior_policy_violation": "RESOLVED_WITHOUT_POLICY_CHANGE",
     "up_01_user_approved_sync_build_boundary": "LOCAL_SRC_VERSION_COMMIT_PUSH_TO_ACTION_SYNC_COMMIT_TO_ACTION_CLEAN_SOURCE_WHEEL_BUILD",
@@ -775,6 +894,29 @@
       "rejected_pp200_duplicate_disposition": "KEEP_RETIRED",
       "implementation_blocking": false,
       "approval_scope": "PROFILE_HISTORY_AND_EXISTING_CANDIDATE_RELOCATION_ONLY"
+    },
+    {
+      "id": "UP-02",
+      "topic": "SINGLE_VERSION_SOURCE_SECTION_SEMANTICS",
+      "decision": "RESOLVED_BY_DELEGATED_OWNER_BINDING_DESIGN",
+      "design_ref": "#/approved_implementation_design/version_source",
+      "implementation_blocking": false
+    },
+    {
+      "id": "UP-03",
+      "topic": "REPLACEMENT_DISTRIBUTION_AND_PACKAGE_DATA",
+      "decision": "RESOLVED_BY_DELEGATED_GO_ASSET_DELIVERY_DESIGN",
+      "design_ref": "#/approved_implementation_design/asset_delivery",
+      "implementation_blocking": false,
+      "legacy_package_data_retirement_requires_verified_consumer_parity": true
+    },
+    {
+      "id": "UP-06",
+      "topic": "NEW_RELEASE_COMPOSITION_AUTHORITY_AND_CONSUMER_MIGRATION",
+      "decision": "RESOLVED_BY_DELEGATED_COMPOSITION_INTERFACE_DESIGN",
+      "design_ref": "#/approved_implementation_design/release_composition",
+      "implementation_blocking": false,
+      "legacy_contract_retirement_requires_verified_consumer_cutover": true
     }
   ]
 }
