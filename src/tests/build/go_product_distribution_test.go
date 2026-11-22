@@ -15,6 +15,29 @@ import (
 	"testing"
 )
 
+func TestBuildVerifierProfileSchemaPaths(t *testing.T) {
+	const (
+		active  = "storage/profile/project-profile.schema.json"
+		history = "history/profile/project-profile-pp.2.00.schema.json"
+		draft   = "history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
+	)
+	for _, test := range []struct {
+		selector, path, version, lifecycle string
+		valid                              bool
+	}{
+		{"ptsip.project-profile", active, "pp.3.00", "ACTIVE", true},
+		{"ptsip.project-profile", history, "pp.2.00", "ACTIVE", false},
+		{"ptsip.project-profile.pp.2.00", active, "pp.2.00", "DEPRECATED", false},
+		{"ptsip.project-profile.pp.2.00", history, "pp.2.00", "DEPRECATED", true},
+		{"ptsip.project-profile.pp.2.00", history, "pp.1.02", "DEPRECATED", false},
+		{"ptsip.project-profile.pp.2.00", draft, "pp.2.00", "DEPRECATED", false},
+	} {
+		if got := schemaRegistrationPath("profile", test.selector, test.path, test.version, test.lifecycle); got != test.valid {
+			t.Errorf("registration %s at %s valid = %v, want %v", test.selector, test.path, got, test.valid)
+		}
+	}
+}
+
 func TestGoProductDistribution(t *testing.T) {
 	root := buildRepositoryRoot(t)
 	workspace := t.TempDir()

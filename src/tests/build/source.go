@@ -217,7 +217,8 @@ func loadAssets(source gitSource, rules sourceRules) (registeredAssets, error) {
 			return assets, fmt.Errorf("required storage schema group missing: %s", group)
 		}
 		for selector, entry := range config.Storage[group] {
-			if !safePath(entry.Path) || !strings.HasPrefix(entry.Path, "storage/") || entry.ID == "" || entry.Version == "" || seenIDs[entry.ID] {
+			if !safePath(entry.Path) || !schemaRegistrationPath(group, selector, entry.Path, entry.Version, entry.Lifecycle) ||
+				entry.ID == "" || entry.Version == "" || seenIDs[entry.ID] {
 				return assets, fmt.Errorf("invalid schema registration %s/%s", group, selector)
 			}
 			seenIDs[entry.ID] = true
@@ -293,6 +294,17 @@ func loadAssets(source gitSource, rules sourceRules) (registeredAssets, error) {
 	}
 	err := assets.loadCommonAssets(source, rules.CommonRegistry)
 	return assets, err
+}
+
+func schemaRegistrationPath(group, selector, name, version, lifecycle string) bool {
+	if group != "profile" {
+		return strings.HasPrefix(name, "storage/")
+	}
+	if selector == "ptsip.project-profile" {
+		return lifecycle == "ACTIVE" && name == "storage/profile/project-profile.schema.json"
+	}
+	return lifecycle == "DEPRECATED" && path.Dir(name) == "history/profile" &&
+		path.Base(name) == "project-profile-"+version+".schema.json"
 }
 
 func (assets *registeredAssets) loadCommonAssets(source gitSource, registry string) error {
