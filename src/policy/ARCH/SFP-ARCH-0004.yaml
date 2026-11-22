@@ -360,12 +360,13 @@ Policy_Content:
         official_engine_implementation_language_scope: SIX_OFFICIAL_ENGINES_ONLY
         official_engine_language_neutral_contract: PRESERVED
         consumer_user_external_engine_language_policy: UNCHANGED
-        official_engine_legacy_python_implementation_boundary:
+        legacy_python_transition_scope:
+          consumer_interface_retirement: CONSUMER_PROFILE_SETUP_CLI_RBAC_MIGRATION_FUNCTIONS_IN_APPROVED_PLAN
+          official_engine_implementation: SIX_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
         consumer_python_public_interface_retirement_20261109:
           decision_source: USER_EXPLICIT_2026_11_09
           conflict_resolution: KEEP_LATEST_WITH_VERIFIED_HANDOFF_PRESERVED
           user_authorization: APPROVED
-          scope: CONSUMER_PROFILE_SETUP_CLI_RBAC_MIGRATION_FUNCTIONS_IN_APPROVED_PLAN
           replacement: DIRECT_RUST_AND_GO_IMPLEMENTATION
           python_compatibility_adapter_as_new_core: FORBIDDEN
           old_python_implementation_reuse_by_official_engine: FORBIDDEN
@@ -378,7 +379,7 @@ Policy_Content:
           - REMOVE_OBSOLETE_PYTHON_FUNCTIONS_AT_AUTHORIZED_CUTOVER
           unrelated_legacy_interfaces: PREVIOUS_AUTHORITY_UNCHANGED
           physical_removal_now_requested: PLAN_SCOPE_NOT_IMMEDIATE_SOURCE_DELETION
-          scope: SIX_OFFICIAL_RUST_ENGINE_IMPLEMENTATIONS_ONLY
+        official_engine_legacy_python_implementation_boundary:
           prohibited_source: EXISTING_LEGACY_PTSIP_PYTHON_IMPLEMENTATION
           prohibition: ALL_LEGACY_PYTHON_IMPLEMENTATION_RELOCATION_REUSE_AND_SHARING_FORBIDDEN
           prohibited_operations:
@@ -1361,7 +1362,7 @@ Policy_Content:
         scope: ENGINE_EXTERNAL_INTEROPERABILITY_MACHINE_CONTRACT_AUTHORITY
   source_document:
     path: src/policy/ARCH/SFP-ARCH-0004.yaml
-    sha256: b70feac07a120f8f7298a4839d478838f4d409fe7fc997ee7892bc1c8272ef4b
+    sha256: 48f7695a60d26d47c1b86ff9409898a0eaceb6337ce82aca86c08c4e177fe960
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: ptsip-support-root-family-policy/v1
