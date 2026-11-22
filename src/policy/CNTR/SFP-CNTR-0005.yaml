@@ -423,6 +423,15 @@ Policy_Content:
             ENGINE_FUNCTION_CHANGE: MINOR
             NEW_DOMAIN_RESPONSIBILITY_ADDITION: MAJOR
           combined_trigger_precedence: UNRESOLVED_POLICY
+          approved_combined_trigger_cases:
+            CONTRACT_AND_ENGINE_FUNCTION_CHANGE:
+              classification: MINOR
+              increment: MINOR_PLUS_ONE
+              reset_patch_to: 0
+              trigger_scope: SAME_LOCAL_COMMIT_CHANGE_SET
+              source_edit_authority: EXPLICIT_SRC_VERSION_CHANGE_NO_AUTOMATIC_INCREMENT
+              decision_source: USER_EXPLICIT_CHAT_2026_11_22
+          other_combined_trigger_cases: UNRESOLVED_POLICY
           breaking_contract_change_classification: UNRESOLVED_POLICY
           responsibility_removal_classification: UNRESOLVED_POLICY
           initial_cutover_number_selection: EXISTING_CURRENT_OFFICIAL_ENGINE_CONTRACT_JSON_VERSION_PER_ENGINE
@@ -443,6 +452,22 @@ Policy_Content:
           registration_and_execution_authorization: UNCHANGED
           active_component_version_values: UNCHANGED_BY_THIS_POLICY_RECORD
           implementation_and_release_authorization: NOT_GRANTED
+        official_version_sync_clean_build_handoff:
+          decision_source: USER_EXPLICIT_CHAT_2026_11_22
+          trigger: LOCAL_SRC_VERSION_EDIT_COMMIT_AND_PUSH
+          version_authority: src/VERSION
+          synchronization_executor: GITHUB_ACTIONS
+          synchronization_action: SYNC_VERSION_AND_COMMIT_CHANGED_DERIVED_TRACKED_SOURCES
+          build_executor: GITHUB_ACTIONS
+          build_source_revision: COMMITTED_POST_SYNC_SOURCE_REVISION
+          build_precondition: CLEAN_GIT_CHECKOUT_AFTER_SYNC_COMMIT
+          required_order: LOCAL_VERSION_COMMIT_PUSH_THEN_ACTION_SYNC_THEN_ACTION_SYNC_COMMIT_THEN_ACTION_WHEEL_BUILD_THEN_LOCAL_HANDOFF
+          local_handoff: REQUIRED_AFTER_WHEEL_BUILD
+          local_handoff_delivery_mechanism: PLAN_DEFINED_NO_DIRECT_GITHUB_TO_LOCAL_PUSH_ASSUMED
+          existing_build_verification: PRESERVE
+          source_version_increment: EXPLICIT_SOURCE_CHANGE_ONLY_NO_AUTOMATIC_INCREMENT
+          repository_branch_creation_authority: UNCHANGED
+          workflow_implementation_authorization: NOT_GRANTED_BY_POLICY_RECORD
         operation_id_namespace_owner_binding:
           approval: USER_EXPLICIT_2026_11_18
           scope: REGISTERED_PTSIP_OPERATION_IDS
