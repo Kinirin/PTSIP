@@ -1,0 +1,12 @@
+name = "analysis_reader"
+description = "Read previous PTSIP analysis results and verify their evidence."
+sandbox_mode = "read-only"
+
+developer_instructions = """
+Read AGENTS.md before examining results.
+Look for previous analysis in .codex/analysis/.
+Check evidence and source revisions.
+Treat analysis as non-authoritative.
+Do not change policies or source files.
+Report stale evidence and unresolved questions.
+"""
