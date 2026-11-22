@@ -105,7 +105,7 @@ func TestGoProductDistribution(t *testing.T) {
 			t.Fatalf("nested checkout was accepted: %v %s", err, output)
 		}
 	})
-	t.Run("missing_registered_engine_source_blocks_output", func(t *testing.T) {
+	t.Run("stale_engine_pin_blocks_output", func(t *testing.T) {
 		checkout := t.TempDir()
 		distributionGit(t, checkout, "init", "--template=")
 		for name, payload := range map[string]string{
@@ -113,7 +113,7 @@ func TestGoProductDistribution(t *testing.T) {
 			"pyproject.toml":                             "[project]\nname='test'\n",
 			"License-Authority/LICENSE.md":               "test\n",
 			"src/VERSION":                                "test\n",
-			"src/ptsip/engines/index.json":               `{"official_engine_entries":[{"kind":"PROJECTION","manifest_ref":"src/ptsip/engines/projection/manifest.json","contract_ref":"src/ptsip/engines/projection/contract.json","execution_binding_ref":"src/ptsip/engines/projection/execution-bindings.json","cargo_manifest_ref":"src/ptsip/engines/projection/Cargo.toml"}]}`,
+			"src/ptsip/engines/index.json":               `{"official_engine_entries":[{"kind":"PROJECTION"}]}`,
 			"src/ptsip/engines/projection/manifest.json": `{"implementation_version":"test"}`,
 			"src/ptsip/engines/contracts/engines_registries/derived-snapshot.json": `{"source_refs":[{"path":"src/ptsip/engines/projection/manifest.json","sha256":"` + strings.Repeat("0", 64) + `"}]}`,
 		} {
@@ -129,8 +129,8 @@ func TestGoProductDistribution(t *testing.T) {
 		distributionGit(t, checkout, "commit", "-m", "source fixture")
 		destination := filepath.Join(workspace, "invalid.tar.gz")
 		output, err := exec.Command(binary, "source", "-root", checkout, "-output", destination).CombinedOutput()
-		if err == nil || !strings.Contains(string(output), "missing engine PROJECTION registered source src/ptsip/engines/projection/contract.json") {
-			t.Fatalf("missing registered source accepted: %v %s", err, output)
+		if err == nil || !strings.Contains(string(output), "registered SHA-256 mismatch for src/ptsip/engines/projection/manifest.json") {
+			t.Fatalf("stale source accepted: %v %s", err, output)
 		}
 		if _, err := os.Stat(destination); !errors.Is(err, os.ErrNotExist) {
 			t.Fatalf("invalid source produced output: %v", err)
