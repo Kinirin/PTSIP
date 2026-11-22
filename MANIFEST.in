@@ -12,13 +12,21 @@ recursive-include src/ptsip/engines *.json
 prune .ptsip/contracts/compile-sealed-rbac
 prune src/ptsip/specdata/compile-sealed-rbac
 include src/ptsip/specdata/compile-sealed-rbac-registry-fields.json
+include src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json
+include src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json
 exclude src/ptsip/specdata/ptsip-profile-pp-1.01.schema.json
 exclude src/ptsip/specdata/ptsip-profile-pp-1.02.schema.json
 exclude src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json
 exclude src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json
 recursive-include src/ptsip/clarification *.go
+recursive-include src/ptsip/app *.go
 recursive-include src/ptsip/evidence *.go
 recursive-include src/ptsip/inspection *.go
+recursive-include src/ptsip/internal *.go
+recursive-include src/ptsip/pilot *.go
+recursive-include src/ptsip/remediation *.go
+recursive-include src/ptsip/source_compat *.go
+include src/ptsip/pilot_cli.go
 
 # PEP 517 delegates wheel assembly to the product Go builder.
 include src/build/ptsip_pep517.py src/build/go.mod src/build/go.sum

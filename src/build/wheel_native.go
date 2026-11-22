@@ -146,7 +146,19 @@ func (b nativeWheelBuilder) addGo(files wheelContents, distribution string) erro
 	if err := files.add(scripts+"ptsip"+b.host.extension, binary, true); err != nil {
 		return err
 	}
-	return files.add(scripts+"ptsip-go"+b.host.extension, binary, true)
+	if err := files.add(scripts+"ptsip-go"+b.host.extension, binary, true); err != nil {
+		return err
+	}
+	app := "ptsip-app" + b.host.extension
+	command = filepath.Join(b.stage, app)
+	if err := b.goBinary("src/ptsip", command, "./app/cmd/ptsip-app", "-ldflags", "-X main.toolVersion="+versions.Tool); err != nil {
+		return fmt.Errorf("build PTSIP App: %w", err)
+	}
+	binary, err = os.ReadFile(command)
+	if err != nil {
+		return err
+	}
+	return files.add(scripts+app, binary, true)
 }
 
 type engineOrigin struct {

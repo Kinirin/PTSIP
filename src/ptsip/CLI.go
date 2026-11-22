@@ -448,7 +448,7 @@ func doctor(target string) error {
 	return nil
 }
 
-const usage = "Usage: ptsip help | --version | doctor <directory> | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id> | engine-serve <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass versioned JSON requests to the registered native CLI; engine-serve keeps a caller-owned JSON-lines session available until stdin EOF."
+const usage = "Usage: ptsip help | --version | doctor <directory> | pilot [path] [--report file] | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id> | engine-serve <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass versioned JSON requests to the registered native CLI; engine-serve keeps a caller-owned JSON-lines session available until stdin EOF."
 
 func run(args []string) error {
 	if len(args) == 0 || (len(args) == 1 && (args[0] == "help" || args[0] == "--help" || args[0] == "-h")) {
@@ -467,6 +467,9 @@ func run(args []string) error {
 	}
 	if len(args) == 2 && args[0] == "--user-contracts-worker" {
 		return usercontracts.RunWorker(args[1], os.Stdin, os.Stdout)
+	}
+	if args[0] == "pilot" {
+		return runPilot(args[1:])
 	}
 	if !(len(args) == 2 && args[0] == "operations") && !(len(args) == 4 && (args[0] == "engine" || args[0] == "engine-serve")) {
 		return errors.New(usage)
@@ -504,6 +507,9 @@ func main() {
 		var childExit *exec.ExitError
 		if errors.As(err, &childExit) && childExit.ExitCode() >= 0 {
 			os.Exit(childExit.ExitCode())
+		}
+		if errors.Is(err, errPilotSnapshotChanged) {
+			os.Exit(4)
 		}
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)

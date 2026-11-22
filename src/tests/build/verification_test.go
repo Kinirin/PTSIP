@@ -180,6 +180,7 @@ func TestBuildArtifactVerification(t *testing.T) {
 		"ptsip/common_contract/ptsip-common-contract": common,
 		scripts + "ptsip-engine-validation":           engine,
 		scripts + "ptsip-go":                          []byte("router fixture binary"),
+		scripts + "ptsip-app":                         []byte("app fixture binary"),
 		scripts + "ptsip":                             []byte("router fixture binary"),
 		dist + ".dist-info/METADATA":                  []byte("Name: PTSIP\nVersion: 1.0.0\n"),
 		dist + ".dist-info/WHEEL":                     []byte("Wheel-Version: 1.0\n"),

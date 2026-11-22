@@ -11,17 +11,17 @@ import (
 )
 
 type Inventory struct {
-	ScanMode           string
-	ObservedFiles      int
-	Directories        int
-	Manifests          []string
-	RequirementsFiles  []string
-	SchemaCandidates   []string
-	TestRoots          []string
-	ToolLikeRoots      []string
-	SDKLikeRoots       []string
-	TopLevelExtensions map[string]int
-	ObservationErrors  []string
+	ScanMode           string         `json:"scan_mode"`
+	ObservedFiles      int            `json:"observed_files"`
+	Directories        int            `json:"directories"`
+	Manifests          []string       `json:"manifests"`
+	RequirementsFiles  []string       `json:"requirements_files"`
+	SchemaCandidates   []string       `json:"schema_candidates"`
+	TestRoots          []string       `json:"test_roots"`
+	ToolLikeRoots      []string       `json:"tool_like_roots"`
+	SDKLikeRoots       []string       `json:"sdk_like_roots"`
+	TopLevelExtensions map[string]int `json:"top_level_extensions"`
+	ObservationErrors  []string       `json:"observation_errors"`
 }
 
 var manifestNames = []string{

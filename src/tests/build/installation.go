@@ -26,7 +26,7 @@ import tomllib
 request = json.loads(sys.argv[1])
 root = (Path(sysconfig.get_path("purelib")) / request["package"]).resolve()
 assert root.is_relative_to(Path(sys.prefix).resolve()), "product resolved outside the temporary environment"
-assert not list(root.glob("*.py")), "retired root Python modules in installed package"
+assert not list(root.rglob("*.py")), "retired Python implementation in installed package"
 for name, expected in request["assets"].items():
     data = root.joinpath(name).read_bytes()
     if name not in request["exact_asset_digests"]:
@@ -40,6 +40,8 @@ with root.joinpath("VERSION").open("rb") as stream:
     tool_version = tomllib.load(stream)["tool_version"]
 version = subprocess.check_output([str(scripts / ("ptsip" + suffix)), "--version"], text=True, timeout=10).strip()
 assert version == f"PTSIP Tool {tool_version}", "installed Tool version differs from packaged VERSION"
+app_version = subprocess.check_output([str(scripts / ("ptsip-app" + suffix)), "--version"], text=True, timeout=10).strip()
+assert app_version == f"PTSIP App {tool_version}", "installed App version differs from packaged VERSION"
 bundle = json.loads(metadata.distribution(request["package"]).read_text("ptsip-engines.json"))
 assert set(bundle["engines"]) == set(request["engines"]), "installed native inventory differs from the release source"
 for kind, origin in bundle["engines"].items():

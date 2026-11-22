@@ -12,6 +12,12 @@ import (
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
 )
 
+// CanonicalJSON serializes deterministic JSON for contracts bound to evidence.
+func CanonicalJSON(value any) (string, error) { return canonicalJSON(value) }
+
+// StableDigest hashes the canonical evidence JSON representation of value.
+func StableDigest(value any) (string, error) { return digestJSON(value) }
+
 // Evidence v1 hashes compact, key-sorted UTF-8 JSON. This encoding is part of
 // evidence identity, including the distinction between integer and float values.
 func canonicalJSON(value any) (string, error) {

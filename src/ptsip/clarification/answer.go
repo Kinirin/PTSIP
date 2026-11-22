@@ -10,6 +10,7 @@ import (
 )
 
 const AnswerFormat = "ptsip-clarification-answer/v2"
+const historicalAnswerFormat = "ptsip-clarification-answer/v1"
 
 var answerBlock = regexp.MustCompile("(?is)```(?:ya?ml)?\\s*\\n(.*?)```")
 
@@ -30,24 +31,59 @@ type Resolution struct {
 // ParseAnswer accepts standalone YAML or the latest matching YAML block in an
 // issue answer. Parsed facts do not authorize a Profile change.
 func ParseAnswer(text string) (Answer, error) {
+	document, err := findAnswerDocument(text, AnswerFormat)
+	if err != nil {
+		return Answer{}, err
+	}
+	return decodeAnswer(document)
+}
+
+// ParseHistoricalAnswer covers previously issued v1 requests with their
+// original lifecycle condition.
+func ParseHistoricalAnswer(text string) (Answer, error) {
+	document, err := findAnswerDocument(text, historicalAnswerFormat)
+	if err != nil {
+		return Answer{}, err
+	}
+	decision := source.Object(document["decision"])
+	owner, ok := decision["lifecycle_owner"].(string)
+	if !ok {
+		return Answer{}, fmt.Errorf("historical answer requires a lifecycle_owner")
+	}
+	delete(decision, "lifecycle_owner")
+	answer, err := decodeAnswer(document)
+	if err != nil {
+		return Answer{}, err
+	}
+	expected := answer.Classification
+	if expected == "NEUTRAL_CONTRACT" {
+		expected = "INDEPENDENT"
+	}
+	if strings.ToUpper(strings.TrimSpace(owner)) != expected || !answer.Validate().Valid {
+		return Answer{}, fmt.Errorf("historical lifecycle_owner conflicts with classification")
+	}
+	return answer, nil
+}
+
+func findAnswerDocument(text, format string) (source.Document, error) {
 	if len(text) > source.MaxBytes {
-		return Answer{}, fmt.Errorf("clarification answer exceeds size limit")
+		return nil, fmt.Errorf("clarification answer exceeds size limit")
 	}
 	matches := answerBlock.FindAllStringSubmatch(text, -1)
 	for i := len(matches) - 1; i >= 0; i-- {
-		if document := answerDocument(matches[i][1]); document != nil {
-			return decodeAnswer(document)
+		if document := answerDocument(matches[i][1], format); document != nil {
+			return document, nil
 		}
 	}
-	if document := answerDocument(text); document != nil {
-		return decodeAnswer(document)
+	if document := answerDocument(text, format); document != nil {
+		return document, nil
 	}
-	return Answer{}, fmt.Errorf("no structured clarification answer with format %q", AnswerFormat)
+	return nil, fmt.Errorf("no structured clarification answer with format %q", format)
 }
 
-func answerDocument(text string) source.Document {
+func answerDocument(text, format string) source.Document {
 	document, err := source.Decode([]byte(text))
-	if err != nil || document["format"] != AnswerFormat {
+	if err != nil || document["format"] != format {
 		return nil
 	}
 	return document

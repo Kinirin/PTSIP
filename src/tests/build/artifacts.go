@@ -309,5 +309,8 @@ func verifyWheelOrigins(members map[string]*zip.File, digests map[string]string,
 	if digests[scripts+"ptsip"+extension] != router {
 		return errors.New("wheel native ptsip command does not match the Go router")
 	}
+	if digests[scripts+"ptsip-app"+extension] == "" {
+		return errors.New("wheel native ptsip-app command is missing")
+	}
 	return nil
 }
