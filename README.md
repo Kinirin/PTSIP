@@ -343,7 +343,7 @@ Release PREPARE and PUBLISH are independent, exact-source-verification phases in
 Release summaries and detailed technical documents are recorded separately.
 
 - [Engine interfaces and capabilities](src/ptsip/engines/index.json)
-- [Project Profile contracts and adoption](src/ptsip/profiles/index.yaml)
+- [Registered Project Profile contracts](src/ptsip/schemas/config.json)
 - [Schema reference validation](docs/validation-schema-references.md)
 - [Documentation formatting and archive contract](.ptsip/contracts/release/Platform/Common/releasenote.json)
 

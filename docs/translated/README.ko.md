@@ -515,10 +515,10 @@ PREPARE 및 PUBLISH는 독립적으로, 정확한 자원 검증 단계 [`.github
 
 릴리스 요약과 상세 기술 문서는 별도로 기록합니다.
 
-<!-- ptsip-readme-i18n: 328c53f3408172287cbe874d9f4407879b5e8a8202e17f4e159980a49be02fac -->
+<!-- ptsip-readme-i18n: c922241690dc9e68fb7213cb1099d84ce78e1d956ae248dd1527d31117771140 -->
 
 - [엔진 인터페이스 및 기능](../../src/ptsip/engines/index.json)
-- [Project Profile 계약 및 채택](../../src/ptsip/profiles/index.yaml)
+- [등록된 Project Profile 계약](../../src/ptsip/schemas/config.json)
 - [Schema 참고 검증](../validation-schema-references.md)
 - [문서 포맷 및 아카이브 계약](../../.ptsip/contracts/release/Platform/Common/releasenote.json)
 
