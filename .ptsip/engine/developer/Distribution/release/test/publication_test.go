@@ -84,10 +84,7 @@ func TestDuplicateSourceCarriersFailWithoutMutation(t *testing.T) {
 
 func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T) {
 	root := t.TempDir()
-	contract, err := os.ReadFile(filepath.Join(repoRoot(t), release.ContractPath))
-	if err != nil {
-		t.Fatal(err)
-	}
+	copyCompositionContract(t, root)
 	write := func(ref, text string) {
 		t.Helper()
 		p := filepath.Join(root, filepath.FromSlash(ref))
@@ -98,7 +95,6 @@ func TestEngineReuseSeparatesArtifactProducerFromPublicationRouting(t *testing.T
 			t.Fatal(err)
 		}
 	}
-	write(release.ContractPath, string(contract))
 	producer := ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go"
 	publisher := ".ptsip/engine/developer/Distribution/release/verification/engine/publication_bundle.go"
 	write(producer, "producer-v1")

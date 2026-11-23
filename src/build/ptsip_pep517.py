@@ -20,7 +20,8 @@ def _builder(operation, *args):
 
 
 def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
-    _builder("revision")
+    _builder("wheel-ready")
+    _builder("assets")
     with TemporaryDirectory(prefix="ptsip-wheel-base-") as base:
         filename = setuptools.build_wheel(base, config_settings, metadata_directory)
         return _builder("wheel", "-base", str(Path(base) / filename),

@@ -33,6 +33,9 @@ func main() {
 	resumeID := f.Int64("release-id", 0, "existing verified-source GitHub release ID")
 	destination := f.String("destination", "github-pypi", "registered publication destination")
 	inputRef := f.String("input", ".artifacts/release/verified", "original verified artifacts")
+	wheel := f.String("wheel", "", "native source-bound wheel")
+	receipt := f.String("receipt", "", "native wheel receipt from installed verification")
+	engineProof := f.String("engine-proof", "", "independent engine source verification receipt")
 	f.Parse(os.Args[2:])
 	// Publication commands are reachable only through the independent CTRL
 	// normative admission gate. No legacy developer policy resolver fallback.
@@ -41,6 +44,8 @@ func main() {
 	switch command {
 	case "sync-version", "check-version":
 		value, err = release.SyncPackageVersion(*root, command == "check-version")
+	case "verify-native-wheel-receipt":
+		value, err = release.VerifyNativeWheelReceipt(*root, *wheel, *receipt, *engineProof)
 	case "admit-policy":
 		err = release.AdmitCTRLPublicationPolicy(*root)
 		if err == nil {

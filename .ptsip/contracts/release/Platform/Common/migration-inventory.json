@@ -23,6 +23,12 @@
     ".ptsip/contracts/release/Platform/GitHub/release-presentation.json",
     ".ptsip/contracts/release/Platform/Common/verification-contract.json"
   ],
+  "source_composition_cutover": {
+    "registered_contract": ".ptsip/contracts/release/Platform/Common/source-composition.json",
+    "schema": ".ptsip/contracts/schemas/release/source-composition.schema.json",
+    "historical_contract": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
+    "historical_use": "READ_ONLY_EVIDENCE"
+  },
   "relocated_implementation_state": [
     ".ptsip/engine/developer/Distribution/release/state/package-registry.json",
     ".ptsip/engine/developer/Distribution/release/state/release-availability.json"

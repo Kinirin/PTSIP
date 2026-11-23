@@ -184,6 +184,7 @@ type registeredAssets struct {
 	exactDigestPaths     map[string]bool
 	engines              map[string]engineEntry
 	activeProfile        string
+	activeProfilePath    string
 	commonRegistryDigest string
 }
 
@@ -238,6 +239,7 @@ func loadAssets(source gitSource, rules sourceRules) (registeredAssets, error) {
 					return assets, fmt.Errorf("more than one active Profile registration")
 				}
 				assets.activeProfile = entry.Version
+				assets.activeProfilePath = strings.TrimPrefix(name, rules.ProductPrefix)
 			}
 		}
 	}

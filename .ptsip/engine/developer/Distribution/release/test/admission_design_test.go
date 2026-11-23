@@ -2,10 +2,11 @@ package releasetest
 
 import (
 	"encoding/json"
-	release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release"
 	"os"
 	"path/filepath"
 	"testing"
+
+	release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release"
 )
 
 func releaseBoundaryFixture(t *testing.T) string {
@@ -33,6 +34,7 @@ func releaseBoundaryFixture(t *testing.T) string {
 	if err != nil {
 		t.Fatal(err)
 	}
+	copyCompositionContract(t, root)
 	return root
 }
 func TestReleaseStructureCheckHasNoLegacyApprovalDependency(t *testing.T) {

@@ -53,11 +53,7 @@ func TestUnchangedToolReuseIgnoresPublicationMetadataButRejectsRuntimeChange(t *
 			t.Fatal(err)
 		}
 	}
-	contract, err := os.ReadFile(filepath.Join(repoRoot(t), release.ContractPath))
-	if err != nil {
-		t.Fatal(err)
-	}
-	write(release.ContractPath, string(contract))
+	copyCompositionContract(t, root)
 	project := "[project]\nversion=\"0.3.8b1\"\n[tool.ptsip.release]\npackage_base=\"0.3.8\"\n"
 	write("pyproject.toml", project)
 	write("src/runtime.go", "original")

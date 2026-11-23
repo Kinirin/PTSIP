@@ -1,0 +1,225 @@
+name: engine-version-sync
+
+on:
+  push:
+    branches: [main]
+    paths: [src/VERSION]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ptsip-engine-version-sync-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.project.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/Distribution/release/controller/go.mod
+      - name: Commit deterministic version projections
+        id: project
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$GITHUB_SHA"
+
+          controller=.ptsip/engine/developer/Distribution/release/controller
+          go -C "$controller" run -mod=readonly ./cmd/ptsip-release sync-version -root "$GITHUB_WORKSPACE"
+          go -C "$controller" run -mod=readonly ./cmd/ptsip-release check-version -root "$GITHUB_WORKSPACE"
+
+          git diff --name-only -z > "$RUNNER_TEMP/version-projections"
+          while IFS= read -r -d '' file; do
+            if ! [[ "$file" = pyproject.toml || "$file" = src/ptsip/engines/index.json ||
+                "$file" =~ ^src/ptsip/engines/(context|storage|validation|discovery|execution|projection)/(manifest\.json|execution-bindings\.json|version\.yaml|Cargo\.toml|Cargo\.lock)$ ]]; then
+              printf 'Unexpected version projection: %s\n' "$file" >&2
+              exit 1
+            fi
+            git add -- "$file"
+          done < "$RUNNER_TEMP/version-projections"
+          if ! git diff --cached --quiet; then
+            git diff --cached --check
+            git -c user.name=github-actions -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
+              commit -m "Project approved PTSIP source versions"
+            test -z "$(git status --porcelain)"
+            git push origin HEAD:refs/heads/main
+          fi
+          test -z "$(git status --porcelain)"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  snapshot:
+    name: VC-ASYNC-01 engine snapshot
+    needs: sync
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.sync.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: src/build/go.mod
+      - name: Regenerate snapshot from committed registrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C src/build run -mod=readonly . engine-snapshot -root "$GITHUB_WORKSPACE" \
+            > "$RUNNER_TEMP/derived-snapshot.json"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: engine-snapshot
+          path: ${{ runner.temp }}/derived-snapshot.json
+          if-no-files-found: error
+
+  graph:
+    name: VC-ASYNC-02 dependency graph
+    needs: sync
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.sync.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: src/build/go.mod
+      - name: Regenerate graph from committed declarations
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C src/build run -mod=readonly . engine-dependency-graph -root "$GITHUB_WORKSPACE" \
+            > "$RUNNER_TEMP/dependency-graph.json"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: engine-dependency-graph
+          path: ${{ runner.temp }}/dependency-graph.json
+          if-no-files-found: error
+
+  verify:
+    name: Commit and verify exact final source
+    needs: [sync, snapshot, graph]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.verify.outputs.sha }}
+    env:
+      SYNC_SHA: ${{ needs.sync.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.sync.outputs.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/Distribution/release/controller/go.mod
+      - uses: actions/download-artifact@v8
+        with:
+          name: engine-snapshot
+          path: ${{ runner.temp }}/engine-snapshot
+      - uses: actions/download-artifact@v8
+        with:
+          name: engine-dependency-graph
+          path: ${{ runner.temp }}/engine-dependency-graph
+      - name: Verify projections on the committed source
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SYNC_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$SYNC_SHA"
+          test -z "$(git status --porcelain)"
+          snapshot=src/ptsip/engines/contracts/engines_registries/derived-snapshot.json
+          graph=src/ptsip/engines/contracts/dependency-graph.json
+          cp "$RUNNER_TEMP/engine-snapshot/derived-snapshot.json" "$snapshot"
+          cp "$RUNNER_TEMP/engine-dependency-graph/dependency-graph.json" "$graph"
+          git add -- "$snapshot" "$graph"
+          if ! git diff --cached --quiet; then
+            git diff --cached --check
+            git -c user.name=github-actions -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
+              commit -m "Refresh independently generated PTSIP engine sources"
+          fi
+          test -z "$(git status --porcelain)"
+          final_sha="$(git rev-parse HEAD)"
+          controller=.ptsip/engine/developer/Distribution/release/controller
+          go -C "$controller" run -mod=readonly ./cmd/ptsip-release check-version -root "$GITHUB_WORKSPACE"
+          go -C src/build run -mod=readonly . verify-engine-derived -root "$GITHUB_WORKSPACE" -sync-sha "$SYNC_SHA" \
+            > "$RUNNER_TEMP/engine-source-verification.json"
+          go -C src/tests/build run -mod=readonly . -root "$GITHUB_WORKSPACE" -stage prebuild
+          test "$(git rev-parse HEAD)" = "$final_sha"
+          test -z "$(git status --porcelain)"
+          if [[ "$final_sha" != "$SYNC_SHA" ]]; then
+            git push origin HEAD:refs/heads/main
+          fi
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$final_sha"
+          echo "sha=$final_sha" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: engine-source-verification
+          path: ${{ runner.temp }}/engine-source-verification.json
+          if-no-files-found: error
+
+  wheel:
+    name: Build wheel from the verified source
+    needs: [sync, verify]
+    runs-on: ubuntu-24.04
+    env:
+      PTSIP_VERIFIED_ENGINE_SOURCE_SHA: ${{ needs.verify.outputs.sha }}
+      PTSIP_ENGINE_VERSION_SYNC_SHA: ${{ needs.sync.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.verify.outputs.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: src/build/go.mod
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v8
+        with:
+          name: engine-source-verification
+          path: ${{ runner.temp }}/engine-proof
+      - name: Check the exact source and build
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PTSIP_VERIFIED_ENGINE_SOURCE_SHA"
+          go -C src/build run -mod=readonly . wheel-ready -root "$GITHUB_WORKSPACE"
+          go -C src/build run -mod=readonly . assets -root "$GITHUB_WORKSPACE" \
+            > "$RUNNER_TEMP/wheel-asset-digests.json"
+          python -m pip install --disable-pip-version-check 'build>=1.2,<2'
+          python -m build --wheel --outdir "$RUNNER_TEMP/ptsip-wheel"
+          wheels=("$RUNNER_TEMP/ptsip-wheel/"*.whl)
+          test "${#wheels[@]}" -eq 1
+          test -f "${wheels[0]}"
+          go -C src/tests/build run -mod=readonly . -root "$GITHUB_WORKSPACE" -stage wheel -artifact "${wheels[0]}"
+          go -C src/tests/build run -mod=readonly . -root "$GITHUB_WORKSPACE" -stage installed \
+            -artifact "${wheels[0]}" -python "$(command -v python)" \
+            -receipt "$RUNNER_TEMP/native-wheel-receipt.json"
+          go -C .ptsip/engine/developer/Distribution/release/controller run -mod=readonly ./cmd/ptsip-release \
+            verify-native-wheel-receipt -root "$GITHUB_WORKSPACE" -wheel "${wheels[0]}" \
+            -receipt "$RUNNER_TEMP/native-wheel-receipt.json" \
+            -engine-proof "$RUNNER_TEMP/engine-proof/engine-source-verification.json"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: verified-native-wheel
+          path: |
+            ${{ runner.temp }}/ptsip-wheel/*.whl
+            ${{ runner.temp }}/native-wheel-receipt.json
+          if-no-files-found: error

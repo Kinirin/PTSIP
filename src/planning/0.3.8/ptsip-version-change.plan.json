@@ -3,7 +3,7 @@
   "document_type": "PTSIP_VERSION_CHANGE_PLAN",
   "plan_id": "PTSIP-0.3.8-VERSION-CHANGE",
   "plan_path": "src/planning/0.3.8/ptsip-version-change.plan.json",
-  "status": "DESIGN_DECISIONS_RECORDED_IMPLEMENTATION_APPROVAL_PENDING",
+  "status": "INITIAL_CUTOVER_IMPLEMENTATION_AUTHORIZED",
   "authority": {
     "level": "PLAN",
     "precedence": "EFFECTIVE_POLICY_OVER_PLAN",
@@ -391,7 +391,7 @@
     },
     {
       "id": "VC-13",
-      "status": "DELEGATED_REPLACEMENT_DESIGN_SELECTED_IMPLEMENTATION_GATED",
+      "status": "REPLACEMENT_IMPLEMENTATION_AUTHORIZED",
       "responsibility": "REPLACE_TEMPORARY_LEGACY_RELEASE_COMPOSITION_CONTRACT",
       "current_legacy_contract": ".ptsip/contracts/release/Platform/Common/composition-contract.json",
       "legacy_classification": "USER_IDENTIFIED_TEMPORARY_LEGACY_NOT_RELIABLE_NEW_VERSION_PIPELINE_AUTHORITY",
@@ -588,7 +588,7 @@
         "src/ptsip/engines/contracts/dependency-graph.json",
         "src/ptsip/engines/discovery/profile-support.json",
         "src/ptsip/engines/validation/profile-transitions.json",
-        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json",
         "src/ptsip/common_contract/user_contracts/templates/",
         "src/policy/index.yaml"
       ],
@@ -684,13 +684,14 @@
     "implementation_permitted_now": true,
     "no_branch_creation": true,
     "simulations_must_not_mutate_canonical_version_values": true,
-    "status_note": "OWNER_REQUESTED_FULL_PLAN_APPROVAL;EFFECTIVE_AUTHORIZATION_AWAITS_POLICY_CONFLICT_RESOLUTION_AND_EXISTING_PREIMPLEMENTATION_AUDIT_GATES",
+    "status_note": "OWNER_APPROVED_INITIAL_CUTOVER_IMPLEMENTATION;EXACT_SOURCE_AND_ARTIFACT_VERIFICATION_GATES_REMAIN",
     "owner_approval_intent_record": {
       "source": "USER_EXPLICIT_CHAT_2026_11_23",
       "requested_scope": "ALL_VC_01_THROUGH_VC_13_IN_THIS_VERSION_CHANGE_PLAN",
-      "status": "REQUEST_RECORDED_NOT_YET_EFFECTIVE",
+      "status": "INITIAL_CUTOVER_APPROVED",
+      "audited_plan_revision": "2dd2dba329dac9898db630689087429fca9b8c57",
       "not_authorization_for": ["UNRELATED_REPOSITORY_PLANS", "PUBLICATION", "BREAKING_PROOF_REMOVAL", "OFFICIAL_ENGINE_SET_CHANGE"],
-      "reasons_not_finalized": ["BREAKING_CONTRACT_EXISTING_POLICY_CONFLICT", "OFFICIAL_ENGINE_REMOVAL_EXISTING_POLICY_CONFLICT", "REQUIRED_PREIMPLEMENTATION_AUDIT_NOT_VERIFIED"]
+      "remaining_future_conflicts": ["BREAKING_CONTRACT_EXISTING_POLICY_CONFLICT", "OFFICIAL_ENGINE_REMOVAL_EXISTING_POLICY_CONFLICT"]
     },
     "full_plan_approval_conditions": {
       "scope": "VC_01_THROUGH_VC_13_INITIAL_CUTOVER_WITH_APPROVED_EXISTING_VERSION_VALUES_AND_NO_PUBLICATION",
@@ -715,7 +716,7 @@
       "source": "USER_EXPLICIT_CHAT_2026_11_22_CURRENT_REVISION",
       "policy_authority": "SFP-CNTR-0005",
       "scope": "LEGACY_DERIVED_SNAPSHOT_SOURCE_SHA256_AND_FRESHNESS",
-      "other_implementation": "REQUIRES_NORMAL_PLAN_APPROVAL"
+      "effective_implementation": "PRESERVE_SNAPSHOT_SHA256_AND_FRESHNESS_AS_REQUIRED_BY_VC_10_AND_SFP_CNTR_0005"
     }
   },
   "policy_violation": {
@@ -898,7 +899,7 @@
         "GITHUB_ACTIONS_WHEEL_BUILD_FROM_EXACT_FINAL_VERIFIED_CLEAN_SOURCE_REVISION"
       ],
       "build_requires_clean_source": true,
-      "workflow_implementation": "NOT_YET_AUTHORIZED",
+      "workflow_implementation": "AUTHORIZED_BY_OWNER_INITIAL_CUTOVER_APPROVAL",
       "implementation_blocking": false,
       "local_source_sync": "USER_INITIATED_EXISTING_GIT_PULL_FROM_REMOTE_REPOSITORY",
       "local_automatic_pull": "NOT_REQUIRED",

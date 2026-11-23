@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
 	"github.com/Kinirin/PTSIP/src/ptsip/inspection"
 	"github.com/Kinirin/PTSIP/src/ptsip/pilot"
 	sourcecompat "github.com/Kinirin/PTSIP/src/ptsip/source_compat"
@@ -151,20 +152,11 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 			}
 		}
 	}
-	versions, err := os.ReadFile(filepath.Join(productRoot(t), "..", "VERSION"))
+	versions, err := versionsource.Read(filepath.Join(productRoot(t), "..", ".."))
 	if err != nil {
 		t.Fatal(err)
 	}
-	var toolVersion string
-	for _, line := range strings.Split(string(versions), "\n") {
-		if _, err := fmt.Sscanf(strings.TrimSpace(line), "tool_version = %q", &toolVersion); err == nil {
-			break
-		}
-	}
-	if toolVersion == "" {
-		t.Fatal("canonical VERSION did not declare a Tool version")
-	}
-	buildCommand(t, "go", "-C", productRoot(t), "build", "-ldflags", "-X main.toolVersion="+toolVersion, "-o", cli, ".")
+	buildCommand(t, "go", "-C", productRoot(t), "build", "-ldflags", "-X main.toolVersion="+versions.ToolVersion, "-o", cli, ".")
 	root := repositoryFixture(t)
 	state := repositoryFixture(t)
 	t.Setenv("PTSIP_HOME", state)
@@ -174,7 +166,7 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 	writeRepositoryFixture(t, root, "src/script.py", "match value:\n    case None:\n        import sys\n")
 	writeRepositoryFixture(t, root, "tools/test.txt", "fixture")
 	result, err := pilot.OpenInstalled(cli, packageRoot, scripts).Run(context.Background(), root)
-	if err != nil || result.Format != "ptsip-pilot-report/v2" || result.Tool["version"] != toolVersion || !result.Snapshot.Comparison.Stable || result.NonIntrusion.Status != "VERIFIED_NO_OBSERVED_CHANGE" {
+	if err != nil || result.Format != "ptsip-pilot-report/v2" || result.Tool["version"] != versions.ToolVersion || !result.Snapshot.Comparison.Stable || result.NonIntrusion.Status != "VERIFIED_NO_OBSERVED_CHANGE" {
 		t.Fatalf("read-only Pilot failed: %+v, %v", result, err)
 	}
 	if result.Profile == nil || !result.Profile.Valid || len(result.Components.DeclaredPartition) == 0 || len(result.Components.Candidates) != 2 ||

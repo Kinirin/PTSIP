@@ -43,6 +43,17 @@ func fixture(t *testing.T) string {
 	}); err != nil {
 		t.Fatal(err)
 	}
+	schema := filepath.Join(root, CompositionSchema)
+	raw, err := os.ReadFile(filepath.Join(source, CompositionSchema))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Dir(schema), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(schema, raw, 0644); err != nil {
+		t.Fatal(err)
+	}
 	return root
 }
 
@@ -66,6 +77,76 @@ func TestCurrentBoundaryNeedsNoRetiredRoots(t *testing.T) {
 		if _, err := os.Stat(filepath.Join(root, retired)); !os.IsNotExist(err) {
 			t.Fatalf("fixture contains retired root: %s", retired)
 		}
+	}
+}
+
+func TestSourceCompositionRejectsAmbiguousOrRetiredAuthority(t *testing.T) {
+	tests := []struct {
+		name string
+		file string
+		from string
+		to   string
+	}{
+		{"old-route", releaseIndexPath, CompositionPath, historicalCompositionPath},
+		{"duplicate-route", releaseIndexPath, "\"platform\": \"Common\",", "\"platform\": \"Common\", \"platform\": \"Common\","},
+		{"fallback-source", CompositionPath, "\"file\": \"src/VERSION\"", "\"file\": \"pyproject.toml\""},
+		{"publication-grant", CompositionPath, "\"publication_authorized\": false", "\"publication_authorized\": true"},
+		{"stale-source-binding", CompositionPath, "EXACT_FINAL_COMMITTED_SHA", "ANY_CHECKOUT"},
+		{"missing-receipt-digest", CompositionPath, "\"wheel_sha256\"", "\"filename\""},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root := fixture(t)
+			file := filepath.Join(root, test.file)
+			raw, err := os.ReadFile(file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			mutated := strings.Replace(string(raw), test.from, test.to, 1)
+			if mutated == string(raw) {
+				t.Fatal("fixture was not mutated")
+			}
+			if err := os.WriteFile(file, []byte(mutated), 0644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := ReadSourceComposition(root); err == nil {
+				t.Fatal("invalid source composition was admitted")
+			}
+		})
+	}
+}
+
+func TestSourceCompositionValidatesNativeWheelReceipt(t *testing.T) {
+	root := fixture(t)
+	digest := strings.Repeat("a", 64)
+	receipt := map[string]any{
+		"source_sha": strings.Repeat("a", 40), "verified_snapshot_sha256": digest, "wheel_sha256": digest,
+		"filename": "ptsip-0.3.8-py3-none-linux_x86_64.whl", "platform": "linux-x64",
+		"components": map[string]any{
+			"tool":     map[string]string{"version": "T.0.3.8", "sha256": digest},
+			"profiles": map[string]string{"version": "pp.3.00", "sha256": digest},
+			"context":  map[string]string{"version": "2.2.0", "sha256": digest},
+		},
+	}
+	encode := func() []byte {
+		t.Helper()
+		raw, err := json.Marshal(receipt)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return raw
+	}
+	if err := ValidateNativeWheelReceipt(root, encode()); err != nil {
+		t.Fatal(err)
+	}
+	receipt["publication_authorized"] = false
+	if err := ValidateNativeWheelReceipt(root, encode()); err == nil {
+		t.Fatal("receipt schema admitted an unregistered publication field")
+	}
+	delete(receipt, "publication_authorized")
+	receipt["verified_snapshot_sha256"] = "present"
+	if err := ValidateNativeWheelReceipt(root, encode()); err == nil {
+		t.Fatal("receipt schema did not enforce the SHA-256 format")
 	}
 }
 

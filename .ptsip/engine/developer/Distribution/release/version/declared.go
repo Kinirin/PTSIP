@@ -3,6 +3,9 @@ package version
 import (
 	"fmt"
 	"sort"
+	"strings"
+
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
 )
 
 // DeclaredVersionChange is a comparison of existing version declarations.
@@ -22,8 +25,35 @@ func VersionsAtCommit(root, revision string) (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	values, _, err := sourceVersions(raw)
-	return values, err
+	values, currentErr := currentVersions(raw)
+	if currentErr == nil {
+		return values, nil
+	}
+	checkout, err := gitVersion(root, "rev-parse", "HEAD")
+	if err != nil {
+		return nil, err
+	}
+	head := strings.TrimSpace(string(checkout))
+	if revision == head {
+		return nil, currentErr
+	}
+	if _, err := gitVersion(root, "merge-base", "--is-ancestor", revision, head); err != nil {
+		return nil, fmt.Errorf("HISTORICAL_VERSION_ANCESTOR_REQUIRED: %w", err)
+	}
+	return historicalVersions(raw)
+}
+
+func currentVersions(raw []byte) (map[string]string, error) {
+	versions, err := versionsource.Parse(raw)
+	if err != nil {
+		return nil, err
+	}
+	// These are the component routes registered for the current release notes.
+	values := map[string]string{"package": versions.PackageVersion, "tool": versions.ToolVersion, "profile": versions.ProfileVersion}
+	for id, value := range versions.Engines {
+		values["engine."+id] = value
+	}
+	return values, nil
 }
 
 func DeclaredChanges(root, base, head string) (VersionDiffReport, []DeclaredVersionChange, error) {
@@ -50,11 +80,12 @@ func DeclaredChanges(root, base, head string) (VersionDiffReport, []DeclaredVers
 	sort.Strings(components)
 	changes := make([]DeclaredVersionChange, 0)
 	for _, component := range components {
-		if current[component] == previous[component] {
+		prior, exists := previous[component]
+		if !exists || current[component] == prior {
 			continue
 		}
-		paths := append([]string{"src/VERSION"}, files[component]...)
-		changes = append(changes, DeclaredVersionChange{Component: component, Previous: previous[component], Version: current[component], Files: paths})
+		paths := append([]string{versionsSource}, files[component]...)
+		changes = append(changes, DeclaredVersionChange{Component: component, Previous: prior, Version: current[component], Files: paths})
 	}
 	return report, changes, nil
 }

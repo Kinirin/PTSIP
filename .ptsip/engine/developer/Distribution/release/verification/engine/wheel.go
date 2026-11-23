@@ -18,6 +18,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
 )
 
 type Options struct{ Kind, Target, Binary, Output, SourceSHA string }
@@ -37,7 +39,6 @@ type engine struct {
 // nativeComponent supplies build identity, never public pip distribution policy.
 type nativeComponent struct {
 	ID         string   `json:"engine_id"`
-	Version    string   `json:"version"`
 	Entrypoint string   `json:"entrypoint"`
 	Targets    []string `json:"build_targets"`
 	Permission *bool    `json:"permission_from_availability"`
@@ -141,13 +142,17 @@ func Build(root string, opts Options) (Result, error) {
 	if err = document(root, "src/ptsip/engines/contracts/installation-plan.json", &plan); err != nil {
 		return Result{}, err
 	}
+	versions, err := versionsource.Read(root)
+	if err != nil {
+		return Result{}, err
+	}
 	// Intermediate verification owns native source/identity/target only.
 	// Consumer distribution is checked at the complete PTSIP Wheel join.
 	if index.Schema != "ptsip-official-engine-index/v1" || plan.Schema != "ptsip-engine-installation-plan/v2" ||
 		plan.Selection != "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL" {
 		return Result{}, fmt.Errorf("official engine index or native installation plan has an invalid contract identity")
 	}
-	if len(index.Entries) == 0 || len(plan.Components) != len(index.Entries) || len(plan.DefaultIDs) != len(index.Entries) {
+	if len(index.Entries) != len(versions.Engines) || len(plan.Components) != len(index.Entries) || len(plan.DefaultIDs) != len(index.Entries) {
 		return Result{}, fmt.Errorf("official engine index, native components and defaults must agree")
 	}
 	ids := map[string]engine{}
@@ -158,6 +163,9 @@ func Build(root string, opts Options) (Result, error) {
 		kind := strings.ToLower(e.Kind)
 		if !has(kinds, kind) || registeredKinds[kind] {
 			return Result{}, fmt.Errorf("unregistered or duplicate engine kind")
+		}
+		if !versionPattern.MatchString(e.Version) || e.Version != versions.Engines[kind] {
+			return Result{}, fmt.Errorf("engine index version differs from src/VERSION: %s", kind)
 		}
 		registeredKinds[kind] = true
 		if _, exists := ids[e.ID]; e.ID == "" || exists {
@@ -179,8 +187,7 @@ func Build(root string, opts Options) (Result, error) {
 		if !exists {
 			return Result{}, fmt.Errorf("native registry and component identity contract differ")
 		}
-		if !versionPattern.MatchString(entry.Version) || component.Version != entry.Version ||
-			component.Entrypoint != "ptsip-engine-"+strings.ToLower(entry.Kind) ||
+		if component.Entrypoint != "ptsip-engine-"+strings.ToLower(entry.Kind) ||
 			component.Permission == nil || *component.Permission ||
 			component.Authorized == nil || *component.Authorized {
 			return Result{}, fmt.Errorf("native component identity or nonauthority contract mismatch: %s", component.ID)

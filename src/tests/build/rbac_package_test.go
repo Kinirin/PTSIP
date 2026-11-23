@@ -51,7 +51,7 @@ func TestGoStagesRegisteredRBACWithoutDeveloperContracts(t *testing.T) {
 		}
 	}
 	expected["ptsip/VERSION"] = sha(copyAsset("src/VERSION"))
-	const candidate = "ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
+	const candidate = "ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json"
 	expected[candidate] = sha(copyAsset("src/" + candidate))
 	stage("src/policy/index.yaml", []byte("schema_version: fixture\n"))
 	stage("src/policy/ARCH/SFP-fixture.yaml", []byte("schema_version: fixture\n"))

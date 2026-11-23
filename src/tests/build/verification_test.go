@@ -197,7 +197,7 @@ func TestBuildArtifactVerification(t *testing.T) {
 		}},
 	})
 	check := func(raw []byte) error {
-		return verifyWheel(bytes.NewReader(raw), int64(len(raw)), revision, rules, assets)
+		return verifyWheel(bytes.NewReader(raw), int64(len(raw)), revision, rules, assets, nil)
 	}
 	if err := check(zipFixture(t, payload, record, "")); err != nil {
 		t.Fatal(err)

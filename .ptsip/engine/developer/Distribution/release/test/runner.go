@@ -154,7 +154,7 @@ func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract
 		contract.Workflow != ".github/workflows/tooling-test.yml" ||
 		contract.ModeRegistry != ".github/test_modes.yaml" ||
 		contract.TestRoot != ".ptsip/engine/developer/Distribution/release/test/" ||
-		contract.Production != ".ptsip/contracts/release/Platform/Common/composition-contract.json" ||
+		contract.Production != release.ContractPath ||
 		contract.Publication == nil || *contract.Publication ||
 		len(contract.Required) != 2 ||
 		contract.Required[0] != "windows-x64" ||

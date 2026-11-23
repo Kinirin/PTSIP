@@ -89,15 +89,15 @@
           "const": "src/ptsip/"
         },
         "profile_prefix": {
-          "const": "src/ptsip/profiles/"
+          "const": "src/ptsip/schemas/storage/profile/"
         },
         "engine_prefix": {
           "const": "src/ptsip/engines/"
         },
         "engine_ids": {
           "type": "array",
-          "minItems": 7,
-          "maxItems": 7,
+          "minItems": 6,
+          "maxItems": 6,
           "uniqueItems": true,
           "items": {
             "enum": [
@@ -105,7 +105,6 @@
               "storage",
               "validation",
               "discovery",
-              "planning",
               "execution",
               "projection"
             ]

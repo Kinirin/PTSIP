@@ -141,7 +141,12 @@ func zipMetadata(member *zip.File) ([]byte, error) {
 	return readMetadata(reader)
 }
 
-func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildContract, assets registeredAssets) error {
+type verifiedWheel struct {
+	platform string
+	digests  map[string]string
+}
+
+func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildContract, assets registeredAssets, evidence *verifiedWheel) error {
 	archive, err := zip.NewReader(file, size)
 	if err != nil {
 		return err
@@ -192,7 +197,7 @@ func verifyWheel(file io.ReaderAt, size int64, revision string, contract buildCo
 			return fmt.Errorf("wheel registered asset digest mismatch: %s", name)
 		}
 	}
-	return verifyWheelOrigins(members, digests, originPath, revision, contract.Wheel, assets)
+	return verifyWheelOrigins(members, digests, originPath, revision, contract.Wheel, assets, evidence)
 }
 
 func retiredPythonMember(name string) bool {
@@ -247,7 +252,7 @@ func verifyRecord(members map[string]*zip.File, recordPath string) (map[string]s
 	return digests, nil
 }
 
-func verifyWheelOrigins(members map[string]*zip.File, digests map[string]string, originPath, revision string, rules wheelRules, assets registeredAssets) error {
+func verifyWheelOrigins(members map[string]*zip.File, digests map[string]string, originPath, revision string, rules wheelRules, assets registeredAssets, evidence *verifiedWheel) error {
 	var bundle struct {
 		Version             string `json:"schema_version"`
 		Platform            string `json:"platform"`
@@ -311,6 +316,9 @@ func verifyWheelOrigins(members map[string]*zip.File, digests map[string]string,
 	}
 	if digests[scripts+"ptsip-app"+extension] == "" {
 		return errors.New("wheel native ptsip-app command is missing")
+	}
+	if evidence != nil {
+		*evidence = verifiedWheel{platform: bundle.Platform, digests: digests}
 	}
 	return nil
 }

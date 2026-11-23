@@ -4,7 +4,10 @@ go 1.23
 
 require gopkg.in/yaml.v3 v3.0.1
 
-require github.com/Kinirin/PTSIP/src/ptsip/common_contract v0.0.0
+require (
+	github.com/Kinirin/PTSIP/src/ptsip/common_contract v0.0.0
+	github.com/pelletier/go-toml/v2 v2.4.3
+)
 
 require (
 	github.com/dlclark/regexp2 v1.11.0 // indirect

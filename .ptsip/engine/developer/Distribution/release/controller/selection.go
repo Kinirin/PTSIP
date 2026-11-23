@@ -13,11 +13,12 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/boundary"
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/releasenote"
 	"go.yaml.in/yaml/v3"
 )
 
-const ContractPath = ".ptsip/contracts/release/Platform/Common/composition-contract.json"
+const ContractPath = boundary.CompositionPath
 
 type Component struct {
 	ID      string `json:"id"`
@@ -43,13 +44,40 @@ type MatrixEntry struct {
 	Runner    string `json:"runner"`
 }
 type Contract struct {
-	Schema          string         `json:"schema_version"`
-	PackageBase     string         `json:"package_base"`
-	EngineRegistry  string         `json:"engine_registry"`
-	ProfileRegistry string         `json:"profile_registry"`
-	Required        []string       `json:"required_platforms"`
-	Optional        []string       `json:"optional_platforms"`
-	Notes           map[string]any `json:"notes"`
+	Schema  string `json:"schema_version"`
+	Sources struct {
+		EngineRegistry string `json:"engine_index"`
+		SchemaConfig   string `json:"schema_config"`
+	} `json:"registered_sources"`
+	Specification struct {
+		Source   string `json:"source"`
+		Revision string `json:"revision"`
+	} `json:"specification"`
+	Verification struct {
+		Snapshot string `json:"independent_engine_snapshot"`
+		Graph    string `json:"dependency_graph"`
+	} `json:"verification_gates"`
+	Publication struct {
+		Registry string `json:"state_registry"`
+	} `json:"publication_boundary"`
+	Required       []string                    `json:"required_platforms"`
+	Optional       []string                    `json:"optional_platforms"`
+	Notes          map[string]string           `json:"notes"`
+	EngineReuse    producerBoundary            `json:"engine_reuse"`
+	ComponentReuse map[string]producerBoundary `json:"component_reuse"`
+}
+
+type producerBoundary struct {
+	Paths []string `json:"source_boundaries"`
+}
+
+func ReadContract(root string) (Contract, error) {
+	var contract Contract
+	data, err := boundary.ReadSourceComposition(root)
+	if err != nil {
+		return contract, err
+	}
+	return contract, json.Unmarshal(data, &contract)
 }
 
 func ReadJSON(root, ref string, out any) error {
@@ -123,22 +151,19 @@ func Classify(tool, profiles bool, engines int, full bool) (string, error) {
 
 func Select(root, targets, optional string) (Selection, error) {
 	var result Selection
-	var contract Contract
-	if err := ReadJSON(root, ContractPath, &contract); err != nil {
+	contract, err := ReadContract(root)
+	if err != nil {
 		return result, err
-	}
-	if contract.Schema != "ptsip-release-composition/v1" || len(contract.Required) != 2 {
-		return result, fmt.Errorf("unadmitted composition contract")
 	}
 	head, err := Run(root, "git", "rev-parse", "HEAD")
 	if err != nil {
 		return result, err
 	}
-	result = Selection{Schema: "ptsip-release-selection/v2", SourceSHA: strings.TrimSpace(string(head)), Platforms: append([]string{}, contract.Required...), PackageBase: contract.PackageBase, Components: []Component{}}
+	result = Selection{Schema: "ptsip-release-selection/v2", SourceSHA: strings.TrimSpace(string(head)), Platforms: append([]string{}, contract.Required...), Components: []Component{}}
 	if !regexp.MustCompile(`^[0-9a-f]{40}$`).MatchString(result.SourceSHA) {
 		return result, fmt.Errorf("exact source SHA required")
 	}
-	composition, err := ReadComposition(root)
+	composition, err := readComposition(root, contract)
 	if err != nil {
 		return result, err
 	}
@@ -181,7 +206,7 @@ func Select(root, targets, optional string) (Selection, error) {
 			return result, fmt.Errorf("duplicate release selection: %s", c.ID)
 		}
 		seen[c.ID] = true
-		note, ok := contract.Notes[c.Kind].(string)
+		note, ok := contract.Notes[c.Kind]
 		if !ok {
 			return result, fmt.Errorf("component release-note route missing")
 		}
@@ -276,8 +301,8 @@ func ValidateSelection(root string, s Selection) error {
 		}
 	}
 	optional := []string{}
-	var contract Contract
-	if err := ReadJSON(root, ContractPath, &contract); err != nil {
+	contract, err := ReadContract(root)
+	if err != nil {
 		return err
 	}
 	for _, p := range s.Platforms {

@@ -1,0 +1,139 @@
+{
+  "$schema": "urn:ptsip:release:source-composition:v1",
+  "schema_version": "ptsip-release-source-composition/v1",
+  "scope": "STRUCTURAL_RELEASE_VERIFICATION",
+  "version_source": {
+    "file": "src/VERSION",
+    "sections": {
+      "package": {
+        "section": "package",
+        "version_key": "version"
+      },
+      "tool": {
+        "section": "tool",
+        "version_key": "version"
+      },
+      "RBAC": {
+        "section": "RBAC",
+        "version_keys": [
+          "RA_list",
+          "RAC_list",
+          "AEC_list"
+        ]
+      },
+      "common_contract": {
+        "section": "common_contract",
+        "version_key": "registry_revision"
+      },
+      "engines": {
+        "section": "engines",
+        "key_owner": "src/ptsip/engines/index.json"
+      },
+      "schemas": {
+        "section": "schemas",
+        "key_owner": "src/ptsip/schemas/config.json"
+      }
+    }
+  },
+  "registered_sources": {
+    "engine_index": "src/ptsip/engines/index.json",
+    "schema_config": "src/ptsip/schemas/config.json",
+    "common_contract_registry": "src/ptsip/common_contract/registry/manifest.json"
+  },
+  "specification": {
+    "source": "https://github.com/Kinirin/PTSIP",
+    "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+  },
+  "build_projection": {
+    "entrypoint": "src/build/main.go",
+    "wheel_assembly": "src/build/wheel.go",
+    "asset_staging": "src/build/wheel_assets.go",
+    "native_staging": "src/build/wheel_native.go",
+    "platform": "ACTUAL_BUILD_TARGET",
+    "package_name": "PTSIP",
+    "package_version": "src/VERSION#package.version",
+    "compiled_engine_inventory": ".dist-info/ptsip-engines.json",
+    "component_digest": "SHA256",
+    "wheel_record": ".dist-info/RECORD"
+  },
+  "verification_gates": {
+    "build_verification": ".ptsip/contracts/release/index.json#/build_verification",
+    "mode_registry": ".github/test_modes.yaml",
+    "verification_boundary": ".ptsip/contracts/release/Platform/Common/verification-boundary.json",
+    "verification_contract": ".ptsip/contracts/release/Platform/Common/verification-contract.json",
+    "admission": ".ptsip/contracts/release/Platform/Common/admission.json",
+    "artifact_identity": "REQUIRED_SHA256",
+    "independent_engine_snapshot": "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json",
+    "dependency_graph": "src/ptsip/engines/contracts/dependency-graph.json",
+    "source_binding": "EXACT_FINAL_COMMITTED_SHA"
+  },
+  "artifact_receipt": {
+    "required_evidence": [
+      "source_sha",
+      "verified_snapshot_sha256",
+      "components",
+      "filename",
+      "platform",
+      "wheel_sha256"
+    ],
+    "source_binding": "EXACT_FINAL_COMMITTED_SHA",
+    "failure": "ABSENT_STALE_OR_MISMATCH"
+  },
+  "publication_boundary": {
+    "state_registry": ".ptsip/engine/developer/Distribution/release/state/package-registry.json",
+    "publication_evidence": ".ptsip/contracts/release/Platform/GitHub/publication-evidence.json",
+    "admission": ".ptsip/contracts/release/Platform/Common/admission.json",
+    "history": "IMMUTABLE_ORIGINAL_SOURCE_AND_ARTIFACT_DIGESTS",
+    "publication_authorized": false,
+    "runtime_activation_authorized": false
+  },
+  "required_platforms": [
+    "windows-x64",
+    "linux-x64"
+  ],
+  "optional_platforms": [
+    "macos-arm64"
+  ],
+  "notes": {
+    "tool": "docs/releasenote/tool/{filename_version}.md",
+    "profiles": "docs/releasenote/project-profile/{version}.md",
+    "engine": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md",
+    "package": "docs/releasenote/PTSIP_Package/{version}.md"
+  },
+  "engine_reuse": {
+    "source_boundaries": [
+      "src/ptsip/engines/{engine}",
+      "src/ptsip/engines/contracts",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/linux_abi.go",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/go.mod",
+      ".ptsip/engine/developer/Distribution/release/verification/engine/go.sum",
+      "License-Authority"
+    ]
+  },
+  "component_reuse": {
+    "tool": {
+      "source_boundaries": [
+        "src",
+        ".ptsip/contracts/release/Platform/Common/profile",
+        ".ptsip/contracts/schemas/release/profile",
+        "License-Authority",
+        "README.md",
+        ".ptsip/engine/developer/Distribution/release/test/tool.go",
+        ".ptsip/engine/developer/Distribution/release/test/runner.go"
+      ]
+    },
+    "profiles": {
+      "source_boundaries": [
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/schemas/storage/profile",
+        "src/ptsip/schemas/history/profile",
+        "src/ptsip/profiles",
+        ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
+        ".ptsip/contracts/release/Platform/Common/profile/index.json",
+        ".ptsip/contracts/schemas/release/profile",
+        ".ptsip/engine/developer/Distribution/release/verification/profile"
+      ]
+    }
+  }
+}

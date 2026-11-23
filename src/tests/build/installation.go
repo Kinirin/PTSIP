@@ -37,7 +37,7 @@ suffix = ".exe" if sys.platform == "win32" else ""
 router = scripts / (request["router"] + suffix)
 assert router.is_file(), "installed Go router is missing"
 with root.joinpath("VERSION").open("rb") as stream:
-    tool_version = tomllib.load(stream)["tool_version"]
+    tool_version = tomllib.load(stream)["tool"]["version"]
 version = subprocess.check_output([str(scripts / ("ptsip" + suffix)), "--version"], text=True, timeout=10).strip()
 assert version == f"PTSIP Tool {tool_version}", "installed Tool version differs from packaged VERSION"
 app_version = subprocess.check_output([str(scripts / ("ptsip-app" + suffix)), "--version"], text=True, timeout=10).strip()

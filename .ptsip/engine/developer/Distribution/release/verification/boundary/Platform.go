@@ -30,7 +30,7 @@ func expectedPlatforms() map[string]platformRoute {
 	files := map[string]map[string]string{
 		"Common": {
 			"admission":                   "admission.json",
-			"composition":                 "composition-contract.json",
+			"composition":                 "source-composition.json",
 			"migration_inventory":         "migration-inventory.json",
 			"package_installation":        "package-installation-contract.json",
 			"release":                     "release-contract.json",
@@ -118,7 +118,7 @@ func strictJSON(raw []byte, target any) error {
 }
 
 func checkPlatforms(root string) error {
-	filename, err := authoring.LocalFile(root, ".ptsip/contracts/release/index.json")
+	filename, err := authoring.LocalFile(root, releaseIndexPath)
 	if err != nil {
 		return err
 	}
@@ -172,6 +172,12 @@ func checkPlatforms(root string) error {
 		}
 		allowedFiles[route.Validation] = true
 	}
+	// The old file remains evidence until its retirement conditions are met.
+	// No active platform route can select it.
+	if _, err := authoring.LocalFile(root, historicalCompositionPath); err != nil {
+		return err
+	}
+	allowedFiles[historicalCompositionPath] = true
 	return filepath.WalkDir(filepath.Join(root, filepath.FromSlash(platformRoot)), func(path string, entry os.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr

@@ -77,7 +77,7 @@ func TestProjectProfileHistoricalContractsRetainImmutableIdentity(t *testing.T) 
 		})
 	}
 	profileSchemaCompiler(t)
-	const candidate = "history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
+	const candidate = "history/profile/ptsip-profile-pp-2.00.schema.json"
 	const candidateBlob = "e9fba283d16d521a037658899cf7066c5769a2eb"
 	if actual := gitWorkingBlobSHA(t, "src/ptsip/schemas/"+candidate); actual != candidateBlob {
 		t.Fatalf("historical Profile candidate changed: got %s want %s", actual, candidateBlob)
@@ -87,9 +87,26 @@ func TestProjectProfileHistoricalContractsRetainImmutableIdentity(t *testing.T) 
 	if !strings.HasPrefix(comment, "DRAFT_NON_NORMATIVE:") {
 		t.Fatalf("historical Profile candidate lost its draft status: %q", comment)
 	}
-	oldCandidate := filepath.Join(productRoot(t), "specdata", filepath.Base(candidate))
-	if _, err := os.Lstat(oldCandidate); !os.IsNotExist(err) {
-		t.Fatalf("former Profile candidate location still exists or cannot be checked: %s: %v", oldCandidate, err)
+	const candidateID = "https://raw.githubusercontent.com/Kinirin/PTSIP/main/schemas/ptsip-profile-pp-2.00.candidate.schema.json"
+	if schema["$id"] != candidateID {
+		t.Fatalf("historical Profile candidate identity changed: %v", schema["$id"])
+	}
+	config := readObject(t, filepath.Join(productRoot(t), "schemas", "config.json"))
+	for key, registration := range config["storage"].(object)["profile"].(object) {
+		row := registration.(object)
+		if row["path"] == candidate || row["$id"] == candidateID {
+			t.Fatalf("historical Profile candidate unexpectedly registered as %s", key)
+		}
+	}
+	for _, relative := range []string{
+		"schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+		"specdata/ptsip-profile-pp-2.00.candidate.schema.json",
+		"specdata/ptsip-profile-pp-2.00.schema.json",
+	} {
+		oldPath := filepath.Join(productRoot(t), filepath.FromSlash(relative))
+		if _, err := os.Lstat(oldPath); !os.IsNotExist(err) {
+			t.Fatalf("retired Profile schema location still exists or cannot be checked: %s: %v", oldPath, err)
+		}
 	}
 }
 

@@ -84,8 +84,17 @@ jobs:
           for item in m['migrated_source_files']:
               assert not (root/item['from']).exists(), item['from']
               assert (root/item['to']).is_file(), item['to']
-          composition = json.loads((root/'.ptsip/contracts/release/Platform/Common/composition-contract.json').read_text())
-          assert composition['test_contract'] == '.ptsip/contracts/release/Platform/Common/verification-contract.json'
+          with (root/'.ptsip/contracts/release/index.json').open() as stream:
+              release = json.load(stream)
+          common, = (route for route in release['platforms'] if route['platform'] == 'Common')
+          cutover = m['source_composition_cutover']
+          assert common['contracts']['composition'] == cutover['registered_contract']
+          assert cutover['historical_contract'] != cutover['registered_contract']
+          composition = json.loads((root/cutover['registered_contract']).read_text())
+          schema = json.loads((root/cutover['schema']).read_text())
+          assert schema['$id'] == composition['$schema']
+          assert composition['verification_gates']['verification_contract'] == common['contracts']['verification']
+          assert composition['publication_boundary']['publication_authorized'] is False
           for contract in m['derived_legacy_contracts']:
               assert (root/contract).is_file(), contract
           print('Legacy Go source relocation and contract references verified; publication authority not asserted.')

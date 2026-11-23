@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/mail"
 	"os"
 	"path"
 	"path/filepath"
@@ -21,6 +22,7 @@ import (
 	"time"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
 )
 
 const buildDescriptor = "ptsip-build-source.json"
@@ -162,12 +164,22 @@ func buildWheel(root, base, output, platformTag string, progress io.Writer) (str
 	if err != nil {
 		return "", err
 	}
+	if err := verifyEngineWheelSource(root, revision); err != nil {
+		return "", err
+	}
+	versions, err := versionsource.Read(root)
+	if err != nil {
+		return "", err
+	}
 	host, err := currentWheelHost(platformTag)
 	if err != nil {
 		return "", err
 	}
 	files, distribution, err := readBaseWheel(base)
 	if err != nil {
+		return "", err
+	}
+	if err := checkWheelVersion(files, distribution, versions); err != nil {
 		return "", err
 	}
 	if err := stageWheelAssets(root, files); err != nil {
@@ -180,10 +192,10 @@ func buildWheel(root, base, output, platformTag string, progress io.Writer) (str
 	defer os.RemoveAll(stage)
 
 	builder := nativeWheelBuilder{root: root, revision: revision, host: host, stage: stage, progress: progress}
-	if err := builder.addGo(files, distribution); err != nil {
+	if err := builder.addGo(files, distribution, versions.ToolVersion); err != nil {
 		return "", err
 	}
-	if err := builder.addEngines(files, distribution); err != nil {
+	if err := builder.addEngines(files, distribution, versions.Engines); err != nil {
 		return "", err
 	}
 	info := distribution + ".dist-info/"
@@ -196,6 +208,31 @@ func buildWheel(root, base, output, platformTag string, progress io.Writer) (str
 		return "", err
 	}
 	return name, nil
+}
+
+func checkWheelVersion(files wheelContents, distribution string, versions versionsource.Versions) error {
+	want := versions.DistributionVersion()
+	if distribution != "ptsip-"+want {
+		return fmt.Errorf("base wheel distribution %q differs from canonical Package version %s", distribution, want)
+	}
+	info := distribution + ".dist-info/"
+	metadata, err := mail.ReadMessage(bytes.NewReader(files[info+"METADATA"].data))
+	if err != nil {
+		return fmt.Errorf("read base wheel metadata: %w", err)
+	}
+	if actual := metadata.Header["Version"]; len(actual) != 1 || actual[0] != want {
+		return fmt.Errorf("base wheel METADATA Version differs from canonical Package version %s", want)
+	}
+	if names := metadata.Header["Name"]; len(names) != 1 || !strings.EqualFold(names[0], "PTSIP") {
+		return errors.New("base wheel METADATA Name does not identify PTSIP")
+	}
+	for member := range files {
+		top, _, _ := strings.Cut(member, "/")
+		if strings.HasSuffix(top, ".dist-info") && top+"/" != info {
+			return fmt.Errorf("base wheel contains foreign dist-info %s", top)
+		}
+	}
+	return nil
 }
 
 func wheelDigest(raw []byte) string {

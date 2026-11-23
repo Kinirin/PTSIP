@@ -33,6 +33,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 	artifact := flags.String("artifact", "", "sdist or wheel file")
 	python := flags.String("python", "", "absolute Python path for isolated installed verification")
 	wheelhouse := flags.String("wheelhouse", "", "optional local dependency wheels for offline installed verification")
+	receipt := flags.String("receipt", "", "write an exact-source native Wheel receipt after installed verification")
 	if err := flags.Parse(args); errors.Is(err, flag.ErrHelp) {
 		return 0
 	} else if err != nil {
@@ -40,14 +41,14 @@ func run(args []string, stdout, stderr io.Writer) int {
 	}
 	validStage := *stage == "prebuild" || *stage == "sdist" || *stage == "wheel" || *stage == "installed"
 	if !validStage || flags.NArg() != 0 || (*stage == "prebuild") == (*artifact != "") ||
-		(*stage == "installed") != (*python != "") || (*stage != "installed" && *wheelhouse != "") {
+		(*stage == "installed") != (*python != "") || (*stage != "installed" && (*wheelhouse != "" || *receipt != "")) {
 		fmt.Fprintln(stderr, "Select a verification stage and supply its artifact and Python inputs as required.")
 		flags.PrintDefaults()
 		return 2
 	}
 
 	result := report{Stage: *stage, Status: "FAIL"}
-	if err := verify(*root, *artifact, *python, *wheelhouse, &result); err != nil {
+	if err := verify(*root, *artifact, *python, *wheelhouse, *receipt, &result); err != nil {
 		result.Problems = append(result.Problems, err.Error())
 	}
 	encoder := json.NewEncoder(stdout)
@@ -62,7 +63,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 	return 1
 }
 
-func verify(root, artifact, python, wheelhouse string, result *report) error {
+func verify(root, artifact, python, wheelhouse, receipt string, result *report) error {
 	source, err := openSource(root)
 	if err != nil {
 		return err
@@ -85,6 +86,7 @@ func verify(root, artifact, python, wheelhouse string, result *report) error {
 			return nil
 		}
 	} else {
+		var wheel verifiedWheel
 		file, err := os.Open(artifact)
 		if err != nil {
 			return err
@@ -106,7 +108,7 @@ func verify(root, artifact, python, wheelhouse string, result *report) error {
 				return err
 			}
 		} else {
-			if err := verifyWheel(file, info.Size(), source.revision, contract, assets); err != nil {
+			if err := verifyWheel(file, info.Size(), source.revision, contract, assets, &wheel); err != nil {
 				return err
 			}
 			if result.Stage == "installed" {
@@ -121,6 +123,11 @@ func verify(root, artifact, python, wheelhouse string, result *report) error {
 		after, err := digestReader(file)
 		if err != nil || after != result.ArtifactSHA256 {
 			return errors.New("artifact changed during verification")
+		}
+		if receipt != "" {
+			if err := writeNativeReceipt(receipt, artifact, source, assets, wheel, after); err != nil {
+				return err
+			}
 		}
 	}
 	result.Status = "PASS"

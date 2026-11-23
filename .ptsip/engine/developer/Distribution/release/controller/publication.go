@@ -127,12 +127,12 @@ func Carriers() ([]Carrier, error) {
 // Registry assets on published source carriers persist composition history.
 // Draft assets and the source being prepared are never a baseline authority.
 func PublishedRegistry(root, ref, excludeSource string) (Registry, error) {
-	var registry Registry
-	if err := ReadJSON(root, ref, &registry); err != nil {
+	registry, err := readPackageState(root, ref)
+	if err != nil {
 		return registry, err
 	}
-	if ref != ".ptsip/engine/developer/Distribution/release/state/package-registry.json" {
-		return registry, ValidateRegistry(registry)
+	if ref != packageRegistryPath {
+		return registry, nil
 	}
 	rows, err := Carriers()
 	if err != nil {
@@ -171,19 +171,15 @@ func PublishedRegistry(root, ref, excludeSource string) (Registry, error) {
 }
 
 func EngineSourceChanges(root, origin, target, id string) (string, error) {
-	var contract struct {
-		Reuse struct {
-			Boundaries []string `json:"source_boundaries"`
-		} `json:"engine_reuse"`
-	}
-	if err := ReadJSON(root, ContractPath, &contract); err != nil {
+	contract, err := ReadContract(root)
+	if err != nil {
 		return "", err
 	}
 	args := []string{"git", "diff", "--name-only", origin, target, "--"}
-	if len(contract.Reuse.Boundaries) == 0 {
+	if len(contract.EngineReuse.Paths) == 0 {
 		return "", fmt.Errorf("engine reuse source contract missing")
 	}
-	for _, ref := range contract.Reuse.Boundaries {
+	for _, ref := range contract.EngineReuse.Paths {
 		ref = strings.ReplaceAll(ref, "{engine}", id)
 		if _, err := SafePath(root, ref); err != nil {
 			return "", err
@@ -583,15 +579,12 @@ func RecordPackage(root string, s Selection, output string) error {
 		return err
 	}
 	selected, err := ResolvePackage(registry, m.Snapshot.Version)
-	if err != nil || selected.Digest != m.Snapshot.Digest {
+	if err != nil || selected.Digest != m.Snapshot.Digest || selected.SourceSHA != s.SourceSHA {
 		return fmt.Errorf("published Package record differs")
 	}
 	// Only these two derived records are written; policy and component versions
 	// remain owned by their source contracts.
-	if err = WriteJSON(filepath.Join(root, ".ptsip/engine/developer/Distribution/release/state/package-registry.json"), registry); err != nil {
-		return err
-	}
-	if err = RecordPublishedDeclaration(root, m.Snapshot); err != nil {
+	if err = WriteJSON(filepath.Join(root, packageRegistryPath), registry); err != nil {
 		return err
 	}
 	noteRef := "docs/releasenote/PTSIP_Package/" + m.Snapshot.Version + ".md"
@@ -602,7 +595,7 @@ func RecordPackage(root string, s Selection, output string) error {
 	if err = os.WriteFile(p, noteBytes, 0644); err != nil {
 		return err
 	}
-	if _, err = Run(root, "git", "add", "--", ".ptsip/engine/developer/Distribution/release/state/package-registry.json", noteRef, "pyproject.toml"); err != nil {
+	if _, err = Run(root, "git", "add", "--", packageRegistryPath, noteRef); err != nil {
 		return err
 	}
 	delta, err := Run(root, "git", "diff", "--cached", "--name-only")

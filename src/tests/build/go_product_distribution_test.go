@@ -19,7 +19,7 @@ func TestBuildVerifierProfileSchemaPaths(t *testing.T) {
 	const (
 		active  = "storage/profile/project-profile.schema.json"
 		history = "history/profile/project-profile-pp.2.00.schema.json"
-		draft   = "history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
+		draft   = "history/profile/ptsip-profile-pp-2.00.schema.json"
 	)
 	for _, test := range []struct {
 		selector, path, version, lifecycle string
@@ -108,7 +108,7 @@ func TestGoProductDistribution(t *testing.T) {
 			"src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
 			"src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
 			"src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
-			"src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+			"src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json",
 			"src/ptsip/clarification/answer.go",
 			"src/ptsip/app/cmd/ptsip-app/main.go",
 			"src/ptsip/app/store.go",
@@ -147,29 +147,34 @@ func TestGoProductDistribution(t *testing.T) {
 	})
 	t.Run("stale_engine_pin_blocks_output", func(t *testing.T) {
 		checkout := t.TempDir()
-		distributionGit(t, checkout, "init", "--template=")
-		for name, payload := range map[string]string{
-			"README.md":                                  "test\n",
-			"pyproject.toml":                             "[project]\nname='test'\n",
-			"License-Authority/LICENSE.md":               "test\n",
-			"src/VERSION":                                "test\n",
-			"src/ptsip/engines/index.json":               `{"official_engine_entries":[{"kind":"PROJECTION"}]}`,
-			"src/ptsip/engines/projection/manifest.json": `{"implementation_version":"test"}`,
-			"src/ptsip/engines/contracts/engines_registries/derived-snapshot.json": `{"source_refs":[{"path":"src/ptsip/engines/projection/manifest.json","sha256":"` + strings.Repeat("0", 64) + `"}]}`,
-		} {
-			file := filepath.Join(checkout, filepath.FromSlash(name))
-			if err := os.MkdirAll(filepath.Dir(file), 0o755); err != nil {
-				t.Fatal(err)
-			}
-			if err := os.WriteFile(file, []byte(payload), 0o644); err != nil {
-				t.Fatal(err)
-			}
+		distributionGit(t, root, "clone", "--shared", "--quiet", "--", root, checkout)
+		const snapshotRef = "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json"
+		snapshotPath := filepath.Join(checkout, filepath.FromSlash(snapshotRef))
+		raw, err := os.ReadFile(snapshotPath)
+		if err != nil {
+			t.Fatal(err)
 		}
-		distributionGit(t, checkout, "add", "--", ".")
-		distributionGit(t, checkout, "commit", "-m", "source fixture")
+		var snapshot map[string]any
+		if err := json.Unmarshal(raw, &snapshot); err != nil {
+			t.Fatal(err)
+		}
+		refs, ok := snapshot["source_refs"].([]any)
+		if !ok || len(refs) == 0 {
+			t.Fatal("current snapshot has no source refs")
+		}
+		refs[0].(map[string]any)["sha256"] = strings.Repeat("0", 64)
+		payload, err := json.Marshal(snapshot)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(snapshotPath, payload, 0o644); err != nil {
+			t.Fatal(err)
+		}
+		distributionGit(t, checkout, "add", "--", snapshotRef)
+		distributionGit(t, checkout, "commit", "-m", "source fixture with a stale snapshot digest")
 		destination := filepath.Join(workspace, "invalid.tar.gz")
 		output, err := exec.Command(binary, "source", "-root", checkout, "-output", destination).CombinedOutput()
-		if err == nil || !strings.Contains(string(output), "registered SHA-256 mismatch for src/ptsip/engines/projection/manifest.json") {
+		if err == nil || !strings.Contains(string(output), "stale derived engine document "+snapshotRef) {
 			t.Fatalf("stale source accepted: %v %s", err, output)
 		}
 		if _, err := os.Stat(destination); !errors.Is(err, os.ErrNotExist) {

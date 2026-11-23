@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller"
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/boundary"
 )
 
 func repoRoot(t *testing.T) string {
@@ -19,12 +20,30 @@ func repoRoot(t *testing.T) string {
 	}
 	// The release test module lives at .ptsip/engine/developer/Distribution/release/test.
 	// Five parent traversals reach the repository root, not its .ptsip folder.
-	for _, ref := range []string{"pyproject.toml", ".ptsip/contracts/release/Platform/Common/composition-contract.json", "License-Authority/LICENSE.md"} {
+	for _, ref := range []string{"pyproject.toml", release.ContractPath, "License-Authority/LICENSE.md"} {
 		if _, err := os.Stat(filepath.Join(p, filepath.FromSlash(ref))); err != nil {
 			t.Fatalf("release test repository root missing %s: %v", ref, err)
 		}
 	}
 	return p
+}
+
+func copyCompositionContract(t *testing.T, fixture string) {
+	t.Helper()
+	root := repoRoot(t)
+	for _, ref := range []string{".ptsip/contracts/release/index.json", release.ContractPath, boundary.CompositionSchema} {
+		raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(ref)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		target := filepath.Join(fixture, filepath.FromSlash(ref))
+		if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(target, raw, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
 }
 
 func TestRegisteredSelectionRejectsAliasesAndTamper(t *testing.T) {

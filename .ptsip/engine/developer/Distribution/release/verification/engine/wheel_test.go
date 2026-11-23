@@ -38,7 +38,7 @@ func fixture(t *testing.T, target string) (string, Options) {
 		manifest := "src/ptsip/engines/" + kind + "/manifest.json"
 		binding := "src/ptsip/engines/" + kind + "/execution-bindings.json"
 		entries = append(entries, map[string]any{"kind": strings.ToUpper(kind), "engine_id": id, "version": "0.2.0", "manifest_ref": manifest, "execution_binding_ref": binding})
-		components = append(components, map[string]any{"engine_id": id, "version": "0.2.0", "entrypoint": "ptsip-engine-" + kind, "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
+		components = append(components, map[string]any{"engine_id": id, "version": "0.1.0", "entrypoint": "ptsip-engine-" + kind, "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
 		defaultIDs = append(defaultIDs, id)
 		writeFixture(t, root, manifest, map[string]any{"engine_id": id, "implementation_version": "0.2.0"})
 		writeFixture(t, root, "src/ptsip/engines/"+kind+"/version.yaml", map[string]any{"schema_version": "ptsip-engine-version/v1", "engine": kind, "version": "0.2.0"})
@@ -54,6 +54,30 @@ func fixture(t *testing.T, target string) (string, Options) {
 		"default_available_engine_ids": defaultIDs,
 		"components":                   components,
 	})
+	if err := os.WriteFile(filepath.Join(root, "src", "VERSION"), []byte(`
+[package]
+version = "0.3.8"
+[tool]
+version = "T.0.3.8.b3"
+[RBAC]
+RA_list = "v.1"
+RAC_list = "v.1"
+AEC_list = "v.1"
+[common_contract]
+registry_revision = "v2"
+[engines]
+context = "0.2.0"
+storage = "0.2.0"
+validation = "0.2.0"
+discovery = "0.2.0"
+execution = "0.2.0"
+projection = "0.2.0"
+[schemas]
+"ptsip.policy.v4" = "v4"
+"ptsip.project-profile" = "pp.3.00"
+`), 0644); err != nil {
+		t.Fatal(err)
+	}
 	license := filepath.Join(root, "License-Authority", "LICENSE.md")
 	if err := os.MkdirAll(filepath.Dir(license), 0755); err != nil {
 		t.Fatal(err)
@@ -224,7 +248,7 @@ func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
 				if err := os.WriteFile(opts.Binary, bytes.Repeat([]byte("X"), 300), 0755); err != nil {
 					t.Fatal(err)
 				}
-			case "contract", "missing_boolean", "wrong_version", "nonselected_version", "missing_permission", "incomplete_components", "foreign_component", "wrong_schema", "duplicate_defaults", "incomplete_defaults":
+			case "contract", "missing_boolean", "missing_permission", "incomplete_components", "foreign_component", "wrong_schema", "duplicate_defaults", "incomplete_defaults":
 				var p map[string]any
 				if err := document(root, "src/ptsip/engines/contracts/installation-plan.json", &p); err != nil {
 					t.Fatal(err)
@@ -236,10 +260,6 @@ func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
 					row["entrypoint"] = "ptsip-engine-wrong"
 				case "missing_boolean":
 					delete(row, "installed_is_execution_authorization")
-				case "wrong_version":
-					row["version"] = "9.0.0"
-				case "nonselected_version":
-					components[1].(map[string]any)["version"] = "9.0.0"
 				case "missing_permission":
 					delete(row, "permission_from_availability")
 				case "incomplete_components":
@@ -255,7 +275,7 @@ func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
 					p["default_available_engine_ids"] = defaults[:len(defaults)-1]
 				}
 				writeFixture(t, root, "src/ptsip/engines/contracts/installation-plan.json", p)
-			case "reference", "duplicate", "wrong_index_schema":
+			case "reference", "duplicate", "wrong_index_schema", "wrong_version", "nonselected_version":
 				var index map[string]any
 				if err := document(root, "src/ptsip/engines/index.json", &index); err != nil {
 					t.Fatal(err)
@@ -268,6 +288,10 @@ func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
 					rows[1] = rows[0]
 				case "wrong_index_schema":
 					index["schema_version"] = "ptsip-official-engine-index/v2"
+				case "wrong_version":
+					rows[0].(map[string]any)["version"] = "9.0.0"
+				case "nonselected_version":
+					rows[1].(map[string]any)["version"] = "9.0.0"
 				}
 				writeFixture(t, root, "src/ptsip/engines/index.json", index)
 			}

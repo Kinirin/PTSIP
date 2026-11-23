@@ -1,6 +1,8 @@
 package releasetest
 
 import (
+	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,11 +13,7 @@ import (
 
 func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 	root := repoRoot(t)
-	data, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	c, err := release.ParseComposition(data)
+	c, err := release.ReadComposition(root)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,16 +24,8 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 	if c.Tool != source.ToolVersion || c.Profile != source.ProfileVersion || len(c.Engines) != len(source.Engines) {
 		t.Fatalf("canonical declaration diverges: %+v", c)
 	}
-	noDeclaration := strings.Split(string(data), "[tool.ptsip.release]")[0]
-	if _, err := release.ParseComposition([]byte(noDeclaration)); err == nil {
-		t.Fatal("missing canonical declaration used legacy fallback")
-	}
-	duplicate := strings.Replace(string(data), "profile_version =", "tool_version = \"0.3.8a5\"\nprofile_version =", 1)
-	if _, err := release.ParseComposition([]byte(duplicate)); err == nil {
-		t.Fatal("duplicate Tool declaration authority admitted")
-	}
-	var contract release.Contract
-	if err := release.ReadJSON(root, release.ContractPath, &contract); err != nil {
+	contract, err := release.ReadContract(root)
+	if err != nil {
 		t.Fatal(err)
 	}
 	if err := release.VerifyCompositionProjections(root, c, contract); err != nil {
@@ -52,36 +42,58 @@ func TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback(t *testing.T) {
 	}
 }
 
-func TestPublishedDeclarationDoesNotRewriteCurrentVersions(t *testing.T) {
+func TestCurrentCompositionPreservesOriginalPublishedState(t *testing.T) {
 	root := repoRoot(t)
-	data, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
+	contract, err := release.ReadContract(root)
 	if err != nil {
 		t.Fatal(err)
 	}
-	before, err := release.ParseComposition(data)
+	state := filepath.Join(root, filepath.FromSlash(contract.Publication.Registry))
+	before, err := os.ReadFile(state)
 	if err != nil {
 		t.Fatal(err)
+	}
+	var registry release.Registry
+	if err := json.Unmarshal(before, &registry); err != nil {
+		t.Fatal(err)
+	}
+	if registry.Latest == nil {
+		t.Fatal("registered Package history has no latest snapshot")
+	}
+	snapshot, err := release.ResolvePackage(registry, *registry.Latest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	c, err := release.ReadComposition(root)
+	if err != nil || c.Published == nil || c.Published.Source != snapshot.SourceSHA ||
+		c.Published.Identity != snapshot.Version || c.Published.Digest != snapshot.Digest ||
+		c.Published.Tag != "ptsip-release-"+snapshot.SourceSHA {
+		t.Fatalf("original source publication receipt differs: %+v (%v)", c.Published, err)
+	}
+	after, err := os.ReadFile(state)
+	if err != nil || !bytes.Equal(before, after) {
+		t.Fatal("viewing composition altered original published evidence")
+	}
+}
+
+func TestHistoricalCompositionIsExplicitReadOnly(t *testing.T) {
+	data, err := os.ReadFile(filepath.Join(repoRoot(t), "pyproject.toml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := release.ParseComposition(data); err != nil {
+		t.Fatal(err)
+	}
+	duplicate := strings.Replace(string(data), "profile_version =", "tool_version = \"0.3.8a5\"\nprofile_version =", 1)
+	if _, err := release.ParseComposition([]byte(duplicate)); err == nil {
+		t.Fatal("historical parser admitted an ambiguous Tool declaration")
 	}
 	fixture := t.TempDir()
 	if err := os.WriteFile(filepath.Join(fixture, "pyproject.toml"), data, 0644); err != nil {
 		t.Fatal(err)
 	}
-	s := release.Snapshot{Version: "0.3.8.abcdef", Digest: "abcdef" + strings.Repeat("a", 58), SourceSHA: strings.Repeat("b", 40)}
-	if err := release.RecordPublishedDeclaration(fixture, s); err != nil {
-		t.Fatal(err)
-	}
-	c, err := release.ReadComposition(fixture)
-	if err != nil || c.Tool != before.Tool || c.Engines["context"] != before.Engines["context"] || c.Published == nil || c.Published.Source != s.SourceSHA {
-		t.Fatalf("publication record replaced current composition: %v", err)
-	}
-	if err := release.RecordPublishedDeclaration(fixture, s); err != nil {
-		t.Fatal(err)
-	}
-	after, err := os.ReadFile(filepath.Join(fixture, "pyproject.toml"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if strings.Count(string(after), "[tool.ptsip.release.published]") != 1 {
-		t.Fatal("publication retry duplicated declaration")
+	copyCompositionContract(t, fixture)
+	if _, err := release.ReadComposition(fixture); err == nil || !strings.Contains(err.Error(), "src/VERSION") {
+		t.Fatalf("missing src/VERSION used historical fallback: %v", err)
 	}
 }

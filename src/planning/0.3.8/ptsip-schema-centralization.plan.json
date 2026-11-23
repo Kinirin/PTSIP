@@ -38,6 +38,7 @@
       "field_candidates": [
         "RA_id",
         "RA_title",
+        "RA_description",
         "RAC_ids",
         "RAC_name",
         "AEC_ids",
@@ -50,13 +51,14 @@
       "field_roles": {
         "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
         "RA_title": "Human-readable title of the RA responsibility",
+        "RA_description": "Human-readable description of the RA responsibility",
         "RAC_ids": "References to registered RAC conditions, multiple values allowed in direction",
         "RAC_name": "Human-readable RAC title/name identifying the condition purpose; must not be discarded during ID-field migration",
         "AEC_ids": "References to registered AEC conditions, multiple values allowed in direction",
         "AEC_name": "Human-readable AEC title/name identifying the condition purpose; must not be discarded during ID-field migration"
       },
       "RAC_AEC_names_preserved": true,
-      "name_relation_resolution": "FIELD_SEMANTICS_APPROVED_CARDINALITY_AND_STORAGE_OWNERSHIP_PENDING"
+      "name_relation_resolution": "RA_NAMES_ARE_DERIVED_FROM_OWNING_RAC_AEC_LISTS_ONE_NAME_PER_ID"
     },
     "checklist": {
       "property_schema": {},
@@ -151,6 +153,7 @@
     "ra_relation_grouped_field_candidates": [
       "RA_id",
       "RA_title",
+      "RA_description",
       "RAC_ids",
       "RAC_name",
       "AEC_ids",
@@ -167,7 +170,7 @@
     "ra_title_legacy_semantics": "OWNER_DIRECTED_MAPPING_FROM_COMPONENT_BINDINGS_TITLE_CONCEPT_VERIFY_SOURCE_RULE_VRULE; RAC_name and AEC_name represent respective condition title/role and are not removed",
     "policy_v4_category_field": "Policy_Category",
     "policy_v4_category_internal_decomposition": [
-      "namespace",
+      "namespace"
     ],
     "policy_v4_category_internal_representation": "DEVELOPER_VIEWS_ONLY_NOT_SERIALIZED_IN_USER_POLICY_CATEGORY_CONTRACT",
     "policy_v4_version_field": "Policy_Identity.version",
@@ -330,10 +333,10 @@
         "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
         "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
         "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json",
-        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
+        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json"
       ],
       "state": "APPROVED_BY_USER",
-      "note": "The three registered historical schemas and the preserved unregistered candidate keep their existing leaf filenames directly in schemas/history/profile/. Preserve schema bytes, IDs and registered lifecycle."
+      "note": "The three registered historical schemas keep their existing leaf filenames directly in schemas/history/profile/. The resolved UP-04 path names the unregistered candidate ptsip-profile-pp-2.00.schema.json. Preserve schema bytes, IDs and registered lifecycle."
     },
     {
       "id": "RETIRE-PROFILES-01",
@@ -1649,8 +1652,8 @@
       "schema_owner": "PENDING_NON_ENGINE_CONSUMER_AUTHORITY_CLASSIFICATION"
     },
     {
-      "path": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
-      "filename": "ptsip-profile-pp-2.00.candidate.schema.json",
+      "path": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json",
+      "filename": "ptsip-profile-pp-2.00.schema.json",
       "responsibility": "Unregistered Project Profile candidate",
       "sources": [
         "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json"
@@ -2461,10 +2464,10 @@
       "source_path": "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
       "source_blob_sha": "e9fba283d16d521a037658899cf7066c5769a2eb",
       "source_size_bytes": 15626,
-      "target_path": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+      "target_path": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json",
       "role": "Unregistered Project Profile candidate",
       "gate": "EXACT_BYTE_PRESERVING_PATH_RELOCATION_APPROVED",
-      "action": "RELOCATE_WITH_EXISTING_BASENAME_AND_REWIRE_PACKAGING_CONSUMERS",
+      "action": "RELOCATE_EXISTING_UNREGISTERED_CANDIDATE_TO_RESOLVED_UP04_BASENAME_AND_REWIRE_PACKAGING_CONSUMERS",
       "target_activation": "UNREGISTERED_HISTORICAL_DRAFT_ONLY",
       "previous_provisional_target": "src/ptsip/schemas/storage/profile/project-profile-candidate.schema.json",
       "target_owner": "UNRESOLVED_NON_ENGINE_OWNER",
@@ -2523,7 +2526,7 @@
       "resolution": "Keep pp.1.01, pp.1.02, pp.2.00 registered behavior independent; verified version dispatch only, no blind flatten or oneOf"
     },
     {
-      "target": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+      "target": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json",
       "resolution": "Preserve the candidate's bytes for historical reference. It remains unregistered."
     },
     {
@@ -2737,7 +2740,7 @@
         "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
         "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
         "src/ptsip/schemas/storage/profile/project-profile.schema.json",
-        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+        "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json",
         "src/ptsip/schemas/storage/profile/source-profile.schema.json",
         "src/ptsip/schemas/history/profile/project-profile-pp.1.01.schema.json",
         "src/ptsip/schemas/history/profile/project-profile-pp.1.02.schema.json",
@@ -2781,7 +2784,7 @@
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC",
       "execution_status": "APPROVED_PROJECT_PROFILE_AND_RBAC_SCOPE_VERIFIED_OTHER_VARIANTS_BLOCKED",
-      "current_result": "Three current RBAC contracts and registered Project Profile resources are verified; User/Mode/Source/Candidate target paths and unresolved source responsibilities remain outside approved creation scope."
+      "current_result": "Three current structural RBAC contracts and registered Project Profile resources are verified. The existing unregistered pp.2.00 candidate has its specific UP-04 relocation approval; new User/Mode/Source/Candidate target contracts and unresolved source responsibilities remain outside approved creation scope."
     },
     {
       "id": "WU-06",
@@ -2962,7 +2965,7 @@
         "WU-13"
       ],
       "execution_status": "NATIVE_AND_PROFILE_SOURCE_RETIREMENTS_VERIFIED_OTHER_DELETIONS_GATED",
-      "current_result": "21 superseded native source copies were removed by the verified WU06 relocation. UP-04 relocated the three existing registered Profile history schemas and the unregistered pp.2.00 candidate to schemas/history/profile/ with unchanged bytes. The two superseded history copies and the rejected pp.2.00 duplicate under specdata were removed after checking current consumers and the selected registered schemas. Remaining source deletion requires approved replacement, zero supported consumers and its own package acceptance."
+      "current_result": "21 superseded native source copies were removed by the verified WU06 relocation. UP-04 relocated the three existing registered Profile history schemas and the unregistered pp.2.00 candidate to schemas/history/profile/ with unchanged bytes. Its resolved candidate basename is ptsip-profile-pp-2.00.schema.json. The two superseded history copies and the rejected pp.2.00 duplicate under specdata were removed after checking current consumers and the selected registered schemas. Remaining source deletion requires approved replacement, zero supported consumers and its own package acceptance."
     },
     {
       "id": "WU-09",
@@ -14873,7 +14876,7 @@
             "src/ptsip/schemas/history/profile/project-profile-pp.2.00.schema.json"
           ],
           "candidate_source": "src/ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
-          "candidate_target": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
+          "candidate_target": "src/ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json",
           "candidate_disposition": "PRESERVE_AS_UNREGISTERED_HISTORICAL_DRAFT",
           "rejected_pp200_duplicate": "src/ptsip/specdata/ptsip-profile-pp-2.00.schema.json",
           "rejected_pp200_disposition": "KEEP_RETIRED",

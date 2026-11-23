@@ -14,12 +14,10 @@ import (
 	"strings"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
-	"github.com/pelletier/go-toml/v2"
 )
 
 var macOSArm64Tag = regexp.MustCompile("^macosx_[0-9]+_[0-9]+_arm64$")
 var engineKindPattern = regexp.MustCompile("^[a-z]+$")
-var toolVersionPattern = regexp.MustCompile(`^T\.[0-9]+\.[0-9]+\.[0-9]+(?:\.[A-Za-z0-9]+)*$`)
 
 type wheelHost struct {
 	tag, platform, target, extension string
@@ -67,7 +65,7 @@ func jsonAsset(files wheelContents, name string, document any) error {
 	return files.add(name, append(raw, '\n'), false)
 }
 
-func (b nativeWheelBuilder) addGo(files wheelContents, distribution string) error {
+func (b nativeWheelBuilder) addGo(files wheelContents, distribution, toolVersion string) error {
 	const manifest = "common_contract/registry/manifest.json"
 	pathOnDisk := filepath.Join(b.root, "src", "ptsip", filepath.FromSlash(manifest))
 	raw, err := os.ReadFile(pathOnDisk)
@@ -127,15 +125,8 @@ func (b nativeWheelBuilder) addGo(files wheelContents, distribution string) erro
 	if err != nil {
 		return err
 	}
-	versionSource := files["ptsip/VERSION"].data
-	var versions struct {
-		Tool string `toml:"tool_version"`
-	}
-	if err := toml.Unmarshal(versionSource, &versions); err != nil || !toolVersionPattern.MatchString(versions.Tool) {
-		return fmt.Errorf("invalid Tool version in src/VERSION")
-	}
 	command = filepath.Join(b.stage, "ptsip"+b.host.extension)
-	if err := b.goBinary("src/ptsip", command, ".", "-ldflags", "-X main.toolVersion="+versions.Tool); err != nil {
+	if err := b.goBinary("src/ptsip", command, ".", "-ldflags", "-X main.toolVersion="+toolVersion); err != nil {
 		return fmt.Errorf("build PTSIP Go router: %w", err)
 	}
 	binary, err = os.ReadFile(command)
@@ -151,7 +142,7 @@ func (b nativeWheelBuilder) addGo(files wheelContents, distribution string) erro
 	}
 	app := "ptsip-app" + b.host.extension
 	command = filepath.Join(b.stage, app)
-	if err := b.goBinary("src/ptsip", command, "./app/cmd/ptsip-app", "-ldflags", "-X main.toolVersion="+versions.Tool); err != nil {
+	if err := b.goBinary("src/ptsip", command, "./app/cmd/ptsip-app", "-ldflags", "-X main.toolVersion="+toolVersion); err != nil {
 		return fmt.Errorf("build PTSIP App: %w", err)
 	}
 	binary, err = os.ReadFile(command)
@@ -172,7 +163,7 @@ type engineOrigin struct {
 	ExecutionAuthorized bool   `json:"execution_authorized"`
 }
 
-func (b nativeWheelBuilder) addEngines(files wheelContents, distribution string) error {
+func (b nativeWheelBuilder) addEngines(files wheelContents, distribution string, versions map[string]string) error {
 	var index struct {
 		Entries []struct {
 			engineEntry
@@ -183,15 +174,15 @@ func (b nativeWheelBuilder) addEngines(files wheelContents, distribution string)
 	if err := readJSON(filepath.Join(b.root, filepath.FromSlash(engineIndex)), &index); err != nil {
 		return err
 	}
-	if len(index.Entries) == 0 {
-		return fmt.Errorf("no official Rust engines registered")
+	if len(index.Entries) != len(versions) {
+		return fmt.Errorf("official Rust engine inventory differs from src/VERSION")
 	}
 	origins := make(map[string]engineOrigin, len(index.Entries))
 	stage := filepath.Join(b.stage, "cargo")
 	for _, engine := range index.Entries {
 		kind := strings.ToLower(engine.Kind)
 		if !engineKindPattern.MatchString(kind) || engine.CargoFile != engineRoot+kind+"/Cargo.toml" ||
-			engine.ID == "" || engine.Version == "" {
+			engine.ID == "" || engine.Version == "" || engine.Version != versions[kind] {
 			return fmt.Errorf("invalid Rust engine registration %q", engine.Kind)
 		}
 		if _, exists := origins[kind]; exists {

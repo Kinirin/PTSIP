@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller"
 )
 
 func testOnlyRouteFixture(t *testing.T) (string, TestContract) {
@@ -30,7 +32,7 @@ func testOnlyRouteFixture(t *testing.T) (string, TestContract) {
 		Workflow:     ".github/workflows/tooling-test.yml",
 		ModeRegistry: ".github/test_modes.yaml",
 		TestRoot:     ".ptsip/engine/developer/Distribution/release/test/",
-		Production:   ".ptsip/contracts/release/Platform/Common/composition-contract.json",
+		Production:   release.ContractPath,
 		Publication:  &no,
 		Boundary:     ".ptsip/contracts/release/Platform/Common/verification-boundary.json",
 		Required:     []string{"windows-x64", "linux-x64"},

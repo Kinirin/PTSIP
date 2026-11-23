@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"path"
 	"slices"
-	"strings"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
 )
@@ -32,17 +31,16 @@ type buildReport struct {
 	SourceArchive   string   `json:"product_source_archive,omitempty"`
 }
 
-type fileReference struct {
-	Path   string `json:"path"`
-	SHA256 string `json:"sha256"`
-}
-
 type engineEntry struct {
-	Kind      string `json:"kind"`
-	Manifest  string `json:"manifest_ref"`
-	Contract  string `json:"contract_ref"`
-	Bindings  string `json:"execution_binding_ref"`
-	CargoFile string `json:"cargo_manifest_ref"`
+	Kind       string   `json:"kind"`
+	ID         string   `json:"engine_id"`
+	Version    string   `json:"version"`
+	Capability string   `json:"capability_id"`
+	Operations []string `json:"operations"`
+	Manifest   string   `json:"manifest_ref"`
+	Contract   string   `json:"contract_ref"`
+	Bindings   string   `json:"execution_binding_ref"`
+	CargoFile  string   `json:"cargo_manifest_ref"`
 }
 
 type profileRegistration struct {
@@ -75,18 +73,6 @@ func (source productSource) decode(name string, value any) error {
 	return nil
 }
 
-func (source productSource) verifyDigest(name, expected string) error {
-	file, ok := source.Files[name]
-	if !ok {
-		return fmt.Errorf("missing registered product file %s", name)
-	}
-	digest := sha256.Sum256(file.Data)
-	if hex.EncodeToString(digest[:]) != expected {
-		return fmt.Errorf("registered SHA-256 mismatch for %s", name)
-	}
-	return nil
-}
-
 func inspect(source productSource) (buildReport, error) {
 	engines, err := inspectEngines(source)
 	if err != nil {
@@ -106,44 +92,30 @@ func inspect(source productSource) (buildReport, error) {
 }
 
 func inspectEngines(source productSource) ([]string, error) {
-	var index struct {
-		Entries   []engineEntry     `json:"official_engine_entries"`
-		Schemas   map[string]string `json:"engine_schema_refs"`
-		Transport string            `json:"transport_contract_ref"`
-	}
-	if err := source.decode(engineIndex, &index); err != nil {
+	index, engines, refs, err := registeredEngineSources(source)
+	if err != nil {
 		return nil, err
 	}
-	if len(index.Entries) == 0 {
-		return nil, fmt.Errorf("no official engines registered in %s", engineIndex)
-	}
-	var snapshot struct {
-		SourceRefs []fileReference `json:"source_refs"`
-	}
-	if err := source.decode(engineSnapshot, &snapshot); err != nil {
+	if err := verifyEngineVersions(source, index.Entries); err != nil {
 		return nil, err
 	}
-	verified := make(map[string]bool, len(snapshot.SourceRefs))
-	for _, ref := range snapshot.SourceRefs {
-		if !strings.HasPrefix(ref.Path, engineRoot) || verified[ref.Path] {
-			return nil, fmt.Errorf("invalid engine snapshot source %q", ref.Path)
-		}
-		if err := source.verifyDigest(ref.Path, ref.SHA256); err != nil {
-			return nil, err
-		}
-		verified[ref.Path] = true
+	snapshot, err := deriveEngineSnapshot(refs)
+	if err != nil {
+		return nil, err
+	}
+	if err := verifyDerivedDocument(source, engineSnapshot, snapshot); err != nil {
+		return nil, err
+	}
+	graph, err := deriveEngineGraph(source, engines)
+	if err != nil {
+		return nil, err
+	}
+	if err := verifyDerivedDocument(source, engineGraph, graph); err != nil {
+		return nil, err
 	}
 	var kinds []string
 	for _, entry := range index.Entries {
-		if entry.Kind == "" || slices.Contains(kinds, entry.Kind) {
-			return nil, fmt.Errorf("empty or repeated official engine kind %q", entry.Kind)
-		}
-		for _, name := range []string{entry.Manifest, entry.Contract, entry.Bindings} {
-			if !verified[name] {
-				return nil, fmt.Errorf("engine %s source %q has no verified snapshot binding", entry.Kind, name)
-			}
-		}
-		if !strings.HasPrefix(entry.CargoFile, engineRoot) {
+		if !engineSourcePath(entry.CargoFile) {
 			return nil, fmt.Errorf("engine %s Cargo manifest escapes product engines", entry.Kind)
 		}
 		if _, ok := source.Files[entry.CargoFile]; !ok {
@@ -157,7 +129,7 @@ func inspectEngines(source productSource) ([]string, error) {
 	}
 	slices.Sort(paths)
 	for _, name := range paths {
-		if !strings.HasPrefix(name, engineRoot) {
+		if !engineSourcePath(name) {
 			return nil, fmt.Errorf("registered engine asset escapes product engines: %q", name)
 		}
 		var asset map[string]json.RawMessage

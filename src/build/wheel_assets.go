@@ -24,6 +24,7 @@ func retiredProductMember(name string) bool {
 		"ptsip/specdata/ptsip-profile-pp-1.01.schema.json",
 		"ptsip/specdata/ptsip-profile-pp-1.02.schema.json",
 		"ptsip/specdata/ptsip-profile-pp-2.00.candidate.schema.json",
+		"ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json",
 		"ptsip/specdata/ptsip-profile-pp-2.00.schema.json":
 		return true
 	}
@@ -48,7 +49,7 @@ func stageWheelAssets(root string, files wheelContents) error {
 	if err := stageStorageSchemas(root, files); err != nil {
 		return err
 	}
-	const candidate = "ptsip/schemas/history/profile/ptsip-profile-pp-2.00.candidate.schema.json"
+	const candidate = "ptsip/schemas/history/profile/ptsip-profile-pp-2.00.schema.json"
 	candidateBytes, err := readAsset(root, "src/"+candidate)
 	if err != nil {
 		return err

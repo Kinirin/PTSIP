@@ -1,6 +1,8 @@
 package releasecontroller
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path"
@@ -8,10 +10,14 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/boundary"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
 	"github.com/pelletier/go-toml/v2"
 )
 
 const ProfileConfigPath = "src/ptsip/schemas/config.json"
+const packageRegistryPath = ".ptsip/engine/developer/Distribution/release/state/package-registry.json"
 
 type ProfileRegistration struct {
 	ID        string `json:"$id"`
@@ -71,12 +77,32 @@ func ReadProfileRegistrations(root string) (map[string]ProfileRegistration, stri
 }
 
 func verifyProfileProjection(root, expected string) error {
-	_, active, err := ReadProfileRegistrations(root)
+	registrations, active, err := ReadProfileRegistrations(root)
 	if err != nil {
 		return err
 	}
 	if active != expected {
 		return fmt.Errorf("Profile current projection differs: declared %s, registered %s", expected, active)
+	}
+	row := registrations[versionsource.ProfileKey]
+	file, err := SafePath(filepath.Join(root, "src", "ptsip", "schemas"), row.Path)
+	if err != nil {
+		return err
+	}
+	raw, err := os.ReadFile(file)
+	if err != nil {
+		return err
+	}
+	if Digest(bytes.ReplaceAll(raw, []byte("\r\n"), []byte("\n"))) != row.Digest {
+		return fmt.Errorf("Profile current schema digest differs: %s", row.Path)
+	}
+	value, err := jsondoc.Decode(raw)
+	if err != nil {
+		return err
+	}
+	schema, _ := value.(map[string]any)
+	if schema["$id"] != row.ID {
+		return fmt.Errorf("Profile current schema identity differs: %s", row.Path)
 	}
 	return nil
 }
@@ -104,6 +130,8 @@ type Composition struct {
 	PackagePyPI     string                `toml:"-"`
 }
 
+// ParseComposition decodes original pyproject composition data for historical
+// source inspection.
 func ParseComposition(data []byte) (Composition, error) {
 	var document struct {
 		Project struct {
@@ -192,53 +220,119 @@ func ParseComposition(data []byte) (Composition, error) {
 }
 
 func ReadComposition(root string) (Composition, error) {
-	b, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
+	contract, err := ReadContract(root)
 	if err != nil {
 		return Composition{}, err
 	}
-	composition, err := ParseComposition(b)
+	return readComposition(root, contract)
+}
+
+func readComposition(root string, contract Contract) (Composition, error) {
+	versions, err := ReadSourceVersions(root)
 	if err != nil {
 		return Composition{}, err
 	}
-	// When the repository has adopted src/VERSION, fail on stale projections
-	// instead of accepting an outdated pyproject version for release.
-	if _, err := os.Stat(filepath.Join(root, "src", "VERSION")); err == nil {
-		if _, err := SyncPackageVersion(root, true); err != nil {
+	base, state, ok := versionsource.PackageParts(versions.PackageVersion)
+	if !ok {
+		return Composition{}, fmt.Errorf("invalid Package source version")
+	}
+	if contract.Publication.Registry != packageRegistryPath {
+		return Composition{}, fmt.Errorf("unregistered Package state registry")
+	}
+	registry, err := readPackageState(root, contract.Publication.Registry)
+	if err != nil {
+		return Composition{}, err
+	}
+	composition := Composition{
+		Schema: contract.Schema, PackageBase: base, PackageState: state,
+		ToolRef: versionsource.Path + "#tool.version", Tool: versions.ToolVersion,
+		Profile: versions.ProfileVersion, Engines: versions.Engines,
+		SpecSource: contract.Specification.Source, SpecRevision: contract.Specification.Revision,
+		PackagePyPI: versions.DistributionVersion(),
+	}
+	if registry.Latest != nil {
+		snapshot, err := ResolvePackage(registry, *registry.Latest)
+		if err != nil {
 			return Composition{}, err
 		}
-	} else if !os.IsNotExist(err) {
-		return Composition{}, err
+		composition.Published = &PublishedDeclaration{
+			Identity: snapshot.Version, Digest: snapshot.Digest, Source: snapshot.SourceSHA,
+			Tag: "ptsip-release-" + snapshot.SourceSHA,
+		}
 	}
 	return composition, nil
 }
 
+func readPackageState(root, ref string) (Registry, error) {
+	file, err := SafePath(root, ref)
+	if err != nil {
+		return Registry{}, err
+	}
+	raw, err := os.ReadFile(file)
+	if err != nil {
+		return Registry{}, err
+	}
+	if _, err := jsondoc.Decode(raw); err != nil {
+		return Registry{}, err
+	}
+	var registry Registry
+	if err := json.Unmarshal(raw, &registry); err != nil {
+		return Registry{}, err
+	}
+	return registry, ValidateRegistry(registry)
+}
+
 func VerifyCompositionProjections(root string, c Composition, contract Contract) error {
-	if c.Schema == "ptsip-current-composition/v2" {
-		data, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
-		if err != nil {
-			return err
-		}
-		var project struct {
-			Project struct {
-				Dependencies []string `toml:"dependencies"`
-			} `toml:"project"`
-		}
-		if err := toml.Unmarshal(data, &project); err != nil {
-			return err
-		}
-		for _, dep := range project.Project.Dependencies {
-			// A single PTSIP host Wheel must not silently depend on
-			// another independently distributed official native engine.
-			normalized := strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(dep, "_", "-"), ".", "-"))
-			if strings.HasPrefix(normalized, "ptsip-engine-") {
-				return fmt.Errorf("integrated PTSIP Wheel must not require separate engine pip packages")
-			}
+	if c.Schema != boundary.CompositionVersion || contract.Schema != boundary.CompositionVersion ||
+		contract.Sources.EngineRegistry != currentEngineIndex || contract.Sources.SchemaConfig != ProfileConfigPath {
+		return fmt.Errorf("unregistered release composition or source inventory")
+	}
+	versions, err := ReadSourceVersions(root)
+	if err != nil {
+		return err
+	}
+	base, state, _ := versionsource.PackageParts(versions.PackageVersion)
+	if c.PackageBase != base || c.PackageState != state || c.PackageRevision != 0 || c.PackagePyPI != versions.DistributionVersion() {
+		return fmt.Errorf("Package projection differs from src/VERSION")
+	}
+	if c.Tool != versions.ToolVersion {
+		return fmt.Errorf("Tool projection differs from src/VERSION")
+	}
+	if c.Profile != versions.ProfileVersion {
+		return fmt.Errorf("Profile projection differs from src/VERSION")
+	}
+	if err := verifyProfileProjection(root, c.Profile); err != nil {
+		return err
+	}
+	if _, err := SyncPackageVersion(root, true); err != nil {
+		return err
+	}
+	data, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
+	if err != nil {
+		return err
+	}
+	var project struct {
+		Project struct {
+			Name         string   `toml:"name"`
+			Dependencies []string `toml:"dependencies"`
+		} `toml:"project"`
+	}
+	if err := toml.Unmarshal(data, &project); err != nil {
+		return err
+	}
+	if project.Project.Name != "PTSIP" {
+		return fmt.Errorf("integrated Package project name differs from source composition")
+	}
+	for _, dep := range project.Project.Dependencies {
+		normalized := strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(dep, "_", "-"), ".", "-"))
+		if strings.HasPrefix(normalized, "ptsip-engine-") {
+			return fmt.Errorf("integrated PTSIP Wheel must not require separate engine pip packages")
 		}
 	}
 	var index struct {
 		Entries []struct{ Kind, Version string } `json:"official_engine_entries"`
 	}
-	if err := ReadJSON(root, contract.EngineRegistry, &index); err != nil {
+	if err := ReadJSON(root, contract.Sources.EngineRegistry, &index); err != nil {
 		return err
 	}
 	if len(index.Entries) != len(c.Engines) {
@@ -247,52 +341,10 @@ func VerifyCompositionProjections(root string, c Composition, contract Contract)
 	seen := map[string]bool{}
 	for _, e := range index.Entries {
 		id := strings.ToLower(e.Kind)
-		if seen[id] || c.Engines[id] == "" || c.Engines[id] != e.Version {
+		if seen[id] || c.Engines[id] == "" || c.Engines[id] != e.Version || c.Engines[id] != versions.Engines[id] {
 			return fmt.Errorf("engine index projection differs: %s", id)
 		}
 		seen[id] = true
 	}
-	if contract.ProfileRegistry != ProfileConfigPath {
-		return fmt.Errorf("unregistered Profile registry: %s", contract.ProfileRegistry)
-	}
-	if err := verifyProfileProjection(root, c.Profile); err != nil {
-		return err
-	}
-	versions, err := ReadSourceVersions(root)
-	if err != nil {
-		return err
-	}
-	if c.Tool != versions.ToolVersion {
-		return fmt.Errorf("Tool projection differs from src/VERSION")
-	}
 	return nil
-}
-
-// Publication records describe the observed original source snapshot, not the
-// source of the subsequent metadata commit. This avoids a self-referential hash.
-func RecordPublishedDeclaration(root string, s Snapshot) error {
-	p := filepath.Join(root, "pyproject.toml")
-	b, err := os.ReadFile(p)
-	if err != nil {
-		return err
-	}
-	c, err := ParseComposition(b)
-	if err != nil {
-		return err
-	}
-	if c.PackageBase != strings.TrimSuffix(s.Version, "."+s.Digest[:6]) {
-		return fmt.Errorf("published Package numeric base differs from canonical declaration")
-	}
-	text := string(b)
-	section := regexp.MustCompile(`(?ms)^\[tool\.ptsip\.release\.published\][^\[]*`)
-	text = section.ReplaceAllString(text, "")
-	block := fmt.Sprintf("\n[tool.ptsip.release.published]\nidentity = %q\ncomposition_sha256 = %q\nsource_sha = %q\nrelease_tag = %q\n", s.Version, s.Digest, s.SourceSHA, "ptsip-release-"+s.SourceSHA)
-	if c.PackagePyPI != "" {
-		block += fmt.Sprintf("pypi_version = %q\n", c.PackagePyPI)
-	}
-	text = strings.TrimRight(text, "\r\n") + "\n" + block
-	if _, err := ParseComposition([]byte(text)); err != nil {
-		return err
-	}
-	return os.WriteFile(p, []byte(text), 0644)
 }

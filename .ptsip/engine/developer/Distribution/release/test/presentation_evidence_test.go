@@ -48,15 +48,57 @@ func TestReleasePresentationUsesPackageTitleAndOrderedTypedSections(t *testing.T
 	if err != nil {
 		t.Fatal(err)
 	}
-	snapshot := release.Snapshot{Version: "0.3.8.42d9e6"}
-	for _, c := range s.Components {
-		snapshot.Components = append(snapshot.Components, release.PublishedComponent{ID: c.ID, Kind: c.Kind, Version: c.Version})
-	}
-	title, body, err := release.ReleasePresentation(root, s, snapshot)
+	composition, err := release.ReadComposition(root)
 	if err != nil {
 		t.Fatal(err)
 	}
-	composition, err := release.ReadComposition(root)
+	// Presentation receives admitted note files in production. Keep exact,
+	// source-selected versions here while testing formatting independently of
+	// release-note authoring and admission.
+	fixture := t.TempDir()
+	write := func(ref string, data []byte) {
+		t.Helper()
+		p := filepath.Join(fixture, filepath.FromSlash(ref))
+		if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(p, data, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	const engineIndex = "src/ptsip/engines/index.json"
+	for _, ref := range []string{release.PresentationPath, engineIndex} {
+		raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(ref)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		write(ref, raw)
+	}
+	var index struct {
+		Engines []struct {
+			Kind       string `json:"kind"`
+			ID         string `json:"engine_id"`
+			Capability string `json:"capability_id"`
+		} `json:"official_engine_entries"`
+	}
+	if err := release.ReadJSON(fixture, engineIndex, &index); err != nil {
+		t.Fatal(err)
+	}
+	snapshot := release.Snapshot{Version: "0.3.8.42d9e6"}
+	for _, c := range s.Components {
+		snapshot.Components = append(snapshot.Components, release.PublishedComponent{ID: c.ID, Kind: c.Kind, Version: c.Version})
+		note := "# " + c.ID + "\n\n## Changes\n\nFixture release note.\n"
+		if c.Kind == "engine" {
+			for _, e := range index.Engines {
+				if strings.EqualFold(e.Kind, c.ID) {
+					note = fmt.Sprintf("# %s\n\nEngine ID: `%s`\n\nCapability: `%s`\n\n### Purpose\n\nFixture purpose.\n\n### Contract changes\n\nFixture change.\n", c.ID, e.ID, e.Capability)
+					break
+				}
+			}
+		}
+		write(c.Note, []byte(note))
+	}
+	title, body, err := release.ReleasePresentation(fixture, s, snapshot)
 	if err != nil {
 		t.Fatal(err)
 	}

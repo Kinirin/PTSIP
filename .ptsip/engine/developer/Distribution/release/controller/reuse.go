@@ -12,21 +12,16 @@ import (
 )
 
 func ComponentSourceChanges(root, kind, origin, target string) (string, error) {
-	var contract struct {
-		Reuse map[string]json.RawMessage `json:"component_reuse"`
-	}
-	if err := ReadJSON(root, ContractPath, &contract); err != nil {
+	contract, err := ReadContract(root)
+	if err != nil {
 		return "", err
 	}
-	raw, ok := contract.Reuse[kind]
-	var rule struct {
-		Boundaries []string `json:"source_boundaries"`
-	}
-	if !ok || json.Unmarshal(raw, &rule) != nil || len(rule.Boundaries) == 0 {
+	rule, ok := contract.ComponentReuse[kind]
+	if !ok || len(rule.Paths) == 0 {
 		return "", fmt.Errorf("component producer boundary missing: %s", kind)
 	}
 	args := []string{"git", "diff", "--name-only", origin, target, "--"}
-	for _, ref := range rule.Boundaries {
+	for _, ref := range rule.Paths {
 		if _, err := SafePath(root, ref); err != nil {
 			return "", err
 		}

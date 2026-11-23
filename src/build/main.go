@@ -18,7 +18,7 @@ func main() {
 }
 
 func run(args []string, stdout, stderr io.Writer) (int, error) {
-	const usage = "usage: ptsip-build check|source|revision|assets|wheel -root <source>"
+	const usage = "usage: ptsip-build check|source|revision|assets|wheel|wheel-ready|engine-snapshot|engine-dependency-graph|verify-engine-derived -root <source>"
 	if len(args) == 0 {
 		return 2, fmt.Errorf("%s", usage)
 	}
@@ -28,13 +28,22 @@ func run(args []string, stdout, stderr io.Writer) (int, error) {
 	output := flags.String("output", "", "destination archive or wheel directory")
 	base := flags.String("base", "", "wheel containing the staged Python package and metadata")
 	platformTag := flags.String("platform-tag", "", "Python platform tag of the build host")
+	syncSHA := flags.String("sync-sha", "", "exact preceding engine version sync commit")
 	if err := flags.Parse(args[1:]); err != nil {
 		return 2, err
 	}
-	if flags.NArg() != 0 {
+	if flags.NArg() != 0 || (args[0] != "verify-engine-derived" && *syncSHA != "") {
 		return 2, fmt.Errorf("%s", usage)
 	}
 	switch args[0] {
+	case "engine-snapshot", "engine-dependency-graph", "verify-engine-derived", "wheel-ready":
+		if *base != "" || *output != "" || *platformTag != "" {
+			return 2, fmt.Errorf("%s", usage)
+		}
+		if err := runEngineDerived(args[0], *root, *syncSHA, stdout); err != nil {
+			return 1, err
+		}
+		return 0, nil
 	case "assets":
 		if *base != "" || *output != "" || *platformTag != "" {
 			return 2, fmt.Errorf("%s", usage)

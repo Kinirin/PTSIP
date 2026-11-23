@@ -1,0 +1,525 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ptsip:release:source-composition:v1",
+  "title": "PTSIP release source composition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "scope",
+    "version_source",
+    "registered_sources",
+    "specification",
+    "build_projection",
+    "verification_gates",
+    "artifact_receipt",
+    "publication_boundary",
+    "required_platforms",
+    "optional_platforms",
+    "notes",
+    "engine_reuse",
+    "component_reuse"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "urn:ptsip:release:source-composition:v1"
+    },
+    "schema_version": {
+      "const": "ptsip-release-source-composition/v1"
+    },
+    "scope": {
+      "const": "STRUCTURAL_RELEASE_VERIFICATION"
+    },
+    "version_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "sections"
+      ],
+      "properties": {
+        "file": {
+          "const": "src/VERSION"
+        },
+        "sections": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "package",
+            "tool",
+            "RBAC",
+            "common_contract",
+            "engines",
+            "schemas"
+          ],
+          "properties": {
+            "package": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "section",
+                "version_key"
+              ],
+              "properties": {
+                "section": {
+                  "const": "package"
+                },
+                "version_key": {
+                  "const": "version"
+                }
+              }
+            },
+            "tool": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "section",
+                "version_key"
+              ],
+              "properties": {
+                "section": {
+                  "const": "tool"
+                },
+                "version_key": {
+                  "const": "version"
+                }
+              }
+            },
+            "RBAC": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "section",
+                "version_keys"
+              ],
+              "properties": {
+                "section": {
+                  "const": "RBAC"
+                },
+                "version_keys": {
+                  "const": [
+                    "RA_list",
+                    "RAC_list",
+                    "AEC_list"
+                  ]
+                }
+              }
+            },
+            "common_contract": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "section",
+                "version_key"
+              ],
+              "properties": {
+                "section": {
+                  "const": "common_contract"
+                },
+                "version_key": {
+                  "const": "registry_revision"
+                }
+              }
+            },
+            "engines": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "section",
+                "key_owner"
+              ],
+              "properties": {
+                "section": {
+                  "const": "engines"
+                },
+                "key_owner": {
+                  "const": "src/ptsip/engines/index.json"
+                }
+              }
+            },
+            "schemas": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "section",
+                "key_owner"
+              ],
+              "properties": {
+                "section": {
+                  "const": "schemas"
+                },
+                "key_owner": {
+                  "const": "src/ptsip/schemas/config.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "registered_sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine_index",
+        "schema_config",
+        "common_contract_registry"
+      ],
+      "properties": {
+        "engine_index": {
+          "const": "src/ptsip/engines/index.json"
+        },
+        "schema_config": {
+          "const": "src/ptsip/schemas/config.json"
+        },
+        "common_contract_registry": {
+          "const": "src/ptsip/common_contract/registry/manifest.json"
+        }
+      }
+    },
+    "specification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "revision"
+      ],
+      "properties": {
+        "source": {
+          "const": "https://github.com/Kinirin/PTSIP"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "build_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entrypoint",
+        "wheel_assembly",
+        "asset_staging",
+        "native_staging",
+        "platform",
+        "package_name",
+        "package_version",
+        "compiled_engine_inventory",
+        "component_digest",
+        "wheel_record"
+      ],
+      "properties": {
+        "entrypoint": {
+          "const": "src/build/main.go"
+        },
+        "wheel_assembly": {
+          "const": "src/build/wheel.go"
+        },
+        "asset_staging": {
+          "const": "src/build/wheel_assets.go"
+        },
+        "native_staging": {
+          "const": "src/build/wheel_native.go"
+        },
+        "platform": {
+          "const": "ACTUAL_BUILD_TARGET"
+        },
+        "package_name": {
+          "const": "PTSIP"
+        },
+        "package_version": {
+          "const": "src/VERSION#package.version"
+        },
+        "compiled_engine_inventory": {
+          "const": ".dist-info/ptsip-engines.json"
+        },
+        "component_digest": {
+          "const": "SHA256"
+        },
+        "wheel_record": {
+          "const": ".dist-info/RECORD"
+        }
+      }
+    },
+    "verification_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "build_verification",
+        "mode_registry",
+        "verification_boundary",
+        "verification_contract",
+        "admission",
+        "artifact_identity",
+        "independent_engine_snapshot",
+        "dependency_graph",
+        "source_binding"
+      ],
+      "properties": {
+        "build_verification": {
+          "const": ".ptsip/contracts/release/index.json#/build_verification"
+        },
+        "mode_registry": {
+          "const": ".github/test_modes.yaml"
+        },
+        "verification_boundary": {
+          "const": ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
+        },
+        "verification_contract": {
+          "const": ".ptsip/contracts/release/Platform/Common/verification-contract.json"
+        },
+        "admission": {
+          "const": ".ptsip/contracts/release/Platform/Common/admission.json"
+        },
+        "artifact_identity": {
+          "const": "REQUIRED_SHA256"
+        },
+        "independent_engine_snapshot": {
+          "const": "src/ptsip/engines/contracts/engines_registries/derived-snapshot.json"
+        },
+        "dependency_graph": {
+          "const": "src/ptsip/engines/contracts/dependency-graph.json"
+        },
+        "source_binding": {
+          "const": "EXACT_FINAL_COMMITTED_SHA"
+        }
+      }
+    },
+    "artifact_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_evidence",
+        "source_binding",
+        "failure"
+      ],
+      "properties": {
+        "required_evidence": {
+          "const": [
+            "source_sha",
+            "verified_snapshot_sha256",
+            "components",
+            "filename",
+            "platform",
+            "wheel_sha256"
+          ]
+        },
+        "source_binding": {
+          "const": "EXACT_FINAL_COMMITTED_SHA"
+        },
+        "failure": {
+          "const": "ABSENT_STALE_OR_MISMATCH"
+        }
+      }
+    },
+    "publication_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state_registry",
+        "publication_evidence",
+        "admission",
+        "history",
+        "publication_authorized",
+        "runtime_activation_authorized"
+      ],
+      "properties": {
+        "state_registry": {
+          "const": ".ptsip/engine/developer/Distribution/release/state/package-registry.json"
+        },
+        "publication_evidence": {
+          "const": ".ptsip/contracts/release/Platform/GitHub/publication-evidence.json"
+        },
+        "admission": {
+          "const": ".ptsip/contracts/release/Platform/Common/admission.json"
+        },
+        "history": {
+          "const": "IMMUTABLE_ORIGINAL_SOURCE_AND_ARTIFACT_DIGESTS"
+        },
+        "publication_authorized": {
+          "const": false
+        },
+        "runtime_activation_authorized": {
+          "const": false
+        }
+      }
+    },
+    "required_platforms": {
+      "const": [
+        "windows-x64",
+        "linux-x64"
+      ]
+    },
+    "optional_platforms": {
+      "const": [
+        "macos-arm64"
+      ]
+    },
+    "notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool",
+        "profiles",
+        "engine",
+        "package"
+      ],
+      "properties": {
+        "tool": {
+          "const": "docs/releasenote/tool/{filename_version}.md"
+        },
+        "profiles": {
+          "const": "docs/releasenote/project-profile/{version}.md"
+        },
+        "engine": {
+          "const": "docs/releasenote/engine/{engine}/{engine}-engine-{version}.md"
+        },
+        "package": {
+          "const": "docs/releasenote/PTSIP_Package/{version}.md"
+        }
+      }
+    },
+    "engine_reuse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_boundaries"
+      ],
+      "properties": {
+        "source_boundaries": {
+          "const": [
+            "src/ptsip/engines/{engine}",
+            "src/ptsip/engines/contracts",
+            ".ptsip/engine/developer/Distribution/release/verification/engine/wheel.go",
+            ".ptsip/engine/developer/Distribution/release/verification/engine/linux_abi.go",
+            ".ptsip/engine/developer/Distribution/release/verification/engine/go.mod",
+            ".ptsip/engine/developer/Distribution/release/verification/engine/go.sum",
+            "License-Authority"
+          ]
+        }
+      }
+    },
+    "component_reuse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool",
+        "profiles"
+      ],
+      "properties": {
+        "tool": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_boundaries"
+          ],
+          "properties": {
+            "source_boundaries": {
+              "const": [
+                "src",
+                ".ptsip/contracts/release/Platform/Common/profile",
+                ".ptsip/contracts/schemas/release/profile",
+                "License-Authority",
+                "README.md",
+                ".ptsip/engine/developer/Distribution/release/test/tool.go",
+                ".ptsip/engine/developer/Distribution/release/test/runner.go"
+              ]
+            }
+          }
+        },
+        "profiles": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_boundaries"
+          ],
+          "properties": {
+            "source_boundaries": {
+              "const": [
+                "src/ptsip/schemas/config.json",
+                "src/ptsip/schemas/storage/profile",
+                "src/ptsip/schemas/history/profile",
+                "src/ptsip/profiles",
+                ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
+                ".ptsip/contracts/release/Platform/Common/profile/index.json",
+                ".ptsip/contracts/schemas/release/profile",
+                ".ptsip/engine/developer/Distribution/release/verification/profile"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "artifactReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_sha",
+        "verified_snapshot_sha256",
+        "components",
+        "filename",
+        "platform",
+        "wheel_sha256"
+      ],
+      "properties": {
+        "source_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "verified_snapshot_sha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "components": {
+          "type": "object",
+          "minProperties": 3,
+          "required": [
+            "tool",
+            "profiles"
+          ],
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "version",
+              "sha256"
+            ],
+            "properties": {
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "$ref": "#/$defs/digest"
+              }
+            }
+          }
+        },
+        "filename": {
+          "type": "string",
+          "pattern": "^[^/\\\\]+\\.whl$"
+        },
+        "platform": {
+          "enum": [
+            "windows-x64",
+            "linux-x64",
+            "macos-arm64"
+          ]
+        },
+        "wheel_sha256": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

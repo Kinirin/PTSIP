@@ -94,6 +94,10 @@ func Run(root string) (any, int) {
 		report["problem"] = err.Error()
 		return report, 2
 	}
+	if _, err := ReadSourceComposition(root); err != nil {
+		report["problem"] = err.Error()
+		return report, 2
+	}
 	report["status"] = "CONTRACT_STRUCTURE_VALID"
 	return report, 0
 }

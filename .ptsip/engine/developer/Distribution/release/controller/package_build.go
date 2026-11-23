@@ -71,7 +71,7 @@ func BuildSourceVerificationPackageReceipt(root string, s Selection, input, outp
 		return PackageReceipt{}, err
 	}
 	if c.PackagePyPI == "" || c.PackageBase != s.PackageBase {
-		return PackageReceipt{}, fmt.Errorf("source-bound Package selection differs from current composition v2")
+		return PackageReceipt{}, fmt.Errorf("source-bound Package selection differs from the registered source composition")
 	}
 	components, locations, err := Gather(root, s, input)
 	if err != nil {
