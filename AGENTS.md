@@ -28,6 +28,14 @@ During the transition to generated projection, this checked-in file is limited t
 routing contract below. Do not expand it with policy or state semantics that belong in a canonical
 machine plane.
 
+## Project agents
+
+Use the checked-in [Codex project agents](.codex/agents/README.md) by their stable names when
+delegating their registered specialties. Define new reusable PTSIP agents there and store
+shareable results in the [project analysis directory](.codex/analysis/project-agents/README.md)
+with the producing agent ID, source revision, and verifiable evidence. These files are
+collaboration guidance and evidence for the assigned task.
+
 ## Local observation-learning handoff (non-normative)
 
 For coding-agent requests about user-judgment observations, activity/decision patterns,

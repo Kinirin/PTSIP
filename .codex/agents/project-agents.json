@@ -1,0 +1,174 @@
+{
+  "project": "Kinirin/PTSIP",
+  "registration": "codex-project-agents",
+  "agents": [
+    {
+      "agent_id": "policy_contract",
+      "historical_display_name": "Socrates",
+      "historical_task_name": "policy_contract",
+      "role": "worker",
+      "definition": ".codex/agents/policy_contract.toml",
+      "description": "Implement and verify approved Policy v4 schema and caller changes."
+    },
+    {
+      "agent_id": "rbac_contract",
+      "historical_display_name": "Schrodinger",
+      "historical_task_name": "rbac_contract",
+      "role": "worker",
+      "definition": ".codex/agents/rbac_contract.toml",
+      "description": "Implement and verify the canonical RA, RAC and AEC storage schemas."
+    },
+    {
+      "agent_id": "review",
+      "historical_display_name": "Kuhn",
+      "historical_task_name": "review",
+      "role": "explorer",
+      "definition": ".codex/agents/review.toml",
+      "description": "Review the current PTSIP contract migration diff for regressions and scope drift."
+    },
+    {
+      "agent_id": "profile_analysis",
+      "historical_display_name": "Kepler",
+      "historical_task_name": "profile_analysis",
+      "role": "explorer",
+      "definition": ".codex/agents/profile_analysis.toml",
+      "description": "Trace Profile lifecycle, version registration, history and consumer selection."
+    },
+    {
+      "agent_id": "engine_analysis",
+      "historical_display_name": "Rawls",
+      "historical_task_name": "engine_analysis",
+      "role": "explorer",
+      "definition": ".codex/agents/engine_analysis.toml",
+      "description": "Analyze all registered PTSIP engines to place candidate responsibilities."
+    },
+    {
+      "agent_id": "plan_review",
+      "historical_display_name": "Galileo",
+      "historical_task_name": "plan_review",
+      "role": "explorer",
+      "definition": ".codex/agents/plan_review.toml",
+      "description": "Audit migration plan scope, dependencies and implementation authorization."
+    },
+    {
+      "agent_id": "pp300_design",
+      "historical_display_name": "Pasteur",
+      "historical_task_name": "pp300_design",
+      "role": "explorer",
+      "definition": ".codex/agents/pp300_design.toml",
+      "description": "Design the approved official pp.3.00 Profile schema and dependency shape."
+    },
+    {
+      "agent_id": "repository_design",
+      "historical_display_name": "Nietzsche",
+      "historical_task_name": "repository_design",
+      "role": "explorer",
+      "definition": ".codex/agents/repository_design.toml",
+      "description": "Design Repository capability placement and native operation contracts."
+    },
+    {
+      "agent_id": "plan_scope",
+      "historical_display_name": "Faraday",
+      "historical_task_name": "plan_scope",
+      "role": "explorer",
+      "definition": ".codex/agents/plan_scope.toml",
+      "description": "Reconcile multiple plan revisions and validate the authorized migration scope."
+    },
+    {
+      "agent_id": "projection_transfer",
+      "historical_display_name": "Boole",
+      "historical_task_name": "projection_transfer",
+      "role": "worker",
+      "definition": ".codex/agents/projection_transfer.toml",
+      "description": "Transfer approved Profile and Repository metadata projection to Rust Projection."
+    },
+    {
+      "agent_id": "go_distribution",
+      "historical_display_name": "Tesla",
+      "historical_task_name": "go_distribution",
+      "role": "worker",
+      "definition": ".codex/agents/go_distribution.toml",
+      "description": "Implement Go product build, package assets and distribution verification changes."
+    },
+    {
+      "agent_id": "execution_transfer",
+      "historical_display_name": "Pauli",
+      "historical_task_name": "execution_transfer",
+      "role": "worker",
+      "definition": ".codex/agents/execution_transfer.toml",
+      "description": "Transfer approved orchestration responsibilities to Rust Execution and Go callers."
+    },
+    {
+      "agent_id": "pp_semantic_migration",
+      "historical_display_name": "Mill",
+      "historical_task_name": "pp_semantic_migration",
+      "role": "worker",
+      "definition": ".codex/agents/pp_semantic_migration.toml",
+      "description": "Preserve pp.2.00 meaning when implementing approved pp.3.00 field mappings."
+    },
+    {
+      "agent_id": "rbac_package_cutover",
+      "historical_display_name": "Volta",
+      "historical_task_name": "rbac_package_cutover",
+      "role": "worker",
+      "definition": ".codex/agents/rbac_package_cutover.toml",
+      "description": "Migrate packaged RBAC assets to the registered storage RBAC schemas."
+    },
+    {
+      "agent_id": "release_build_verifier",
+      "historical_display_name": "Ramanujan",
+      "historical_task_name": "release_build_verifier",
+      "role": "worker",
+      "definition": ".codex/agents/release_build_verifier.toml",
+      "description": "Implement Go build verification and exact-source artifact evidence."
+    },
+    {
+      "agent_id": "policy_shape",
+      "historical_display_name": "James",
+      "historical_task_name": "policy_shape",
+      "role": "explorer",
+      "definition": ".codex/agents/policy_shape.toml",
+      "description": "Analyze active policy structure and strict schema/fixture coverage."
+    },
+    {
+      "agent_id": "approval_trace",
+      "historical_display_name": "Carson",
+      "historical_task_name": "approval_trace",
+      "role": "explorer",
+      "definition": ".codex/agents/approval_trace.toml",
+      "description": "Trace current change approval or blocking conditions to their source."
+    },
+    {
+      "agent_id": "release_go_sum",
+      "historical_display_name": "Noether",
+      "historical_task_name": "release_go_sum",
+      "role": "worker",
+      "definition": ".codex/agents/release_go_sum.toml",
+      "description": "Repair release controller Go module dependencies using actual imports."
+    },
+    {
+      "agent_id": "version_gate",
+      "historical_display_name": "Herschel",
+      "historical_task_name": "version_gate",
+      "role": "explorer",
+      "definition": ".codex/agents/version_gate.toml",
+      "description": "Audit the single src/VERSION source and exact-SHA cutover gates."
+    },
+    {
+      "agent_id": "specdata_native",
+      "historical_display_name": "Pascal",
+      "historical_task_name": "specdata_native",
+      "role": "worker",
+      "definition": ".codex/agents/specdata_native.toml",
+      "description": "Remove stale specdata consumers and route approved assets to native owners."
+    },
+    {
+      "agent_id": "go_retirement",
+      "historical_display_name": "Maxwell",
+      "historical_task_name": "go_retirement",
+      "role": "worker",
+      "definition": ".codex/agents/go_retirement.toml",
+      "description": "Complete approved Go migration and retire Python product implementations."
+    }
+  ]
+}
