@@ -100,7 +100,7 @@ type Report struct {
 	NonIntrusion   NonIntrusion                  `json:"non_intrusion"`
 	Inventory      inspection.Inventory          `json:"inventory"`
 	Components     ComponentEvidence             `json:"components"`
-	Dependencies   Procedure                     `json:"dependencies"`
+	Dependencies   inspection.DependencyScan     `json:"dependencies"`
 	Artifacts      Procedure                     `json:"artifacts"`
 	Classification Classification                `json:"classification"`
 	Profile        *ProfileEvidence              `json:"profile"`
@@ -146,6 +146,10 @@ func (r Runner) Run(ctx context.Context, path string) (Report, error) {
 		return report, err
 	}
 	report.Inventory = inventory
+	report.Dependencies, err = inspection.ObserveDependencies(where.Root, report.Repository)
+	if err != nil {
+		return report, err
+	}
 	var observed struct {
 		Source      *sourcecompat.ObservedBinding `json:"source"`
 		Diagnostics []struct {
@@ -166,8 +170,10 @@ func (r Runner) Run(ctx context.Context, path string) (Report, error) {
 	}
 	report.Classification = Classification{Status: "EVIDENCE_ONLY", AllowedClassifications: classifications(activeSchema),
 		DecisionStatuses: []inspection.DecisionStatus{inspection.Resolved, inspection.Unknown, inspection.Conflict, inspection.Incomplete}}
-	report.Components = ComponentEvidence{Status: "CANDIDATES_ONLY", Candidates: inspection.DiscoverComponentCandidates(inventory, nil)}
-	unavailable := BoundaryEvaluation{Status: "BLOCKED", Reason: "NO_PROFILE"}
+	report.Components = ComponentEvidence{Status: "CANDIDATES_ONLY",
+		Candidates: inspection.DiscoverComponentCandidates(inventory, report.Dependencies.CandidateAnchors())}
+	unavailable := BoundaryEvaluation{Status: "BLOCKED", Reason: "NO_PROFILE",
+		DependencyCoverageComplete: report.Dependencies.CoverageComplete}
 	if observed.Source != nil {
 		profile, coverage, err := r.assessProfile(ctx, where.Root, *observed.Source, report.Repository)
 		if err != nil {
@@ -176,7 +182,7 @@ func (r Runner) Run(ctx context.Context, path string) (Report, error) {
 		report.Profile = &profile
 		unavailable.Reason = "PROFILE_INVALID"
 		if profile.Valid {
-			unavailable.Reason = "DEPENDENCY_EVIDENCE_UNAVAILABLE"
+			unavailable.Reason = "DECLARED_BOUNDARY_EVALUATOR_UNAVAILABLE"
 			report.Classification.Status = "DECLARATION_AVAILABLE"
 			if coverage != nil {
 				report.Components.Status = "DECLARED_AND_CANDIDATES"
@@ -210,7 +216,6 @@ func (r Runner) Run(ctx context.Context, path string) (Report, error) {
 	report.Specification = Specification{Name: "PTSIP", Version: active.Version, Revision: active.Digest, Source: sourcecompat.SpecificationSource}
 	report.NonIntrusion = NonIntrusion{Status: report.observationStatus(), AnalysisReadOnlyByDesign: true,
 		Methods: []string{"git-head-before-after", "git-status-fingerprint-before-after", "tracked-content-fingerprint-before-after"}}
-	report.Dependencies = Procedure{Status: "NOT_INSPECTED", Reason: "no supported dependency observations"}
 	report.Artifacts = Procedure{Status: "NOT_INSPECTED", Reason: "no explicit Product Artifact evidence"}
 	report.Evaluation = map[string]BoundaryEvaluation{"declared_dependency_boundaries": unavailable}
 	report.Findings = []any{}

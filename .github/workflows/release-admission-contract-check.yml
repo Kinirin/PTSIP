@@ -7,11 +7,26 @@ on:
       - '.ptsip/contracts/**'
       - '.ptsip/engine/developer/Distribution/release/verification/admission/**'
       - 'src/ptsip/engines/**'
+      - 'src/ptsip/app/**'
+      - 'src/ptsip/evidence/**'
+      - 'src/ptsip/inspection/**'
+      - 'src/ptsip/internal/**'
+      - 'src/ptsip/pilot/**'
+      - 'src/ptsip/remediation/**'
+      - 'src/ptsip/source_compat/**'
+      - 'src/ptsip/CLI.go'
+      - 'src/ptsip/pilot_cli.go'
+      - 'src/ptsip/go.mod'
+      - 'src/ptsip/go.sum'
       - 'developer/tests/engines/**'
       - '.ptsip/engine/developer/policy/verification/**'
       - '.ptsip/engine/developer/Distribution/release/**'
       - 'src/build/**'
       - 'src/tests/build/**'
+      - 'src/tests/ptsip/dependency*_test.go'
+      - 'src/tests/ptsip/app_control_plane_test.go'
+      - 'src/tests/ptsip/go_source_compat_pilot_test.go'
+      - 'src/tests/ptsip/remediation_test.go'
       - 'src/ptsip/schemas/**'
       - 'src/ptsip/common_contract/**'
       - 'src/ptsip/specdata/**'
@@ -114,6 +129,12 @@ jobs:
       - name: Test all Developer schema contracts and fourteen Family routes
         shell: bash
         run: go -C .ptsip/engine/developer test ./policy/verification -count=1 -v
+      - name: Test Go decision, remediation and dependency evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          go -C src/ptsip test -mod=readonly ./app/... -count=1
+          go -C src/tests/ptsip test -mod=readonly . -count=1 -run '^Test(GoApp|Remediation|Dependency)'
       - name: Check temporary machine contract structure
         shell: bash
         run: |

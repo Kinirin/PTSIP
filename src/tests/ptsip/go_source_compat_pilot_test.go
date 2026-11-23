@@ -170,6 +170,7 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 	t.Setenv("PTSIP_HOME", state)
 	writeRepositoryFixture(t, root, "ptsip.yaml", frozenProfile034())
 	writeRepositoryFixture(t, root, "src/go.mod", "module example/project\n")
+	writeRepositoryFixture(t, root, "src/main.go", "package main\nimport \"fmt\"\n")
 	writeRepositoryFixture(t, root, "tools/test.txt", "fixture")
 	result, err := pilot.OpenInstalled(cli, packageRoot, scripts).Run(context.Background(), root)
 	if err != nil || result.Format != "ptsip-pilot-report/v2" || result.Tool["version"] != toolVersion || !result.Snapshot.Comparison.Stable || result.NonIntrusion.Status != "VERIFIED_NO_OBSERVED_CHANGE" {
@@ -179,8 +180,11 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 		result.Components.Candidates[0].DecisionStatus != inspection.Unknown || result.Components.Candidates[0].Classification != nil {
 		t.Fatalf("historical data was not separated from evidence candidates: %+v", result)
 	}
-	if result.Evaluation["declared_dependency_boundaries"].Reason != "DEPENDENCY_EVIDENCE_UNAVAILABLE" || result.Conformance.Status != "NOT_EVALUATED" {
-		t.Fatalf("missing dependency evidence asserted a verdict: %+v", result)
+	boundary := result.Evaluation["declared_dependency_boundaries"]
+	if !result.Dependencies.CoverageComplete || len(result.Dependencies.Edges) != 1 ||
+		result.Dependencies.Edges[0].Target != "fmt" || boundary.Reason != "DECLARED_BOUNDARY_EVALUATOR_UNAVAILABLE" ||
+		boundary.Status != "BLOCKED" || result.Conformance.Status != "NOT_EVALUATED" {
+		t.Fatalf("Pilot must report dependency observations without asserting a boundary verdict: %+v", result)
 	}
 	if entries, err := os.ReadDir(state); err != nil || len(entries) != 0 {
 		t.Fatalf("Run created report state before an explicit write: %v %v", entries, err)
@@ -209,16 +213,20 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 		t.Fatalf("installed Pilot CLI failed: %v %s", err, output)
 	}
 	var response struct {
-		Format      string                  `json:"format"`
-		Path        string                  `json:"report_path"`
-		Conformance struct{ Status string } `json:"conformance"`
-		Profile     *pilot.ProfileEvidence  `json:"profile"`
+		Format       string                    `json:"format"`
+		Path         string                    `json:"report_path"`
+		Conformance  struct{ Status string }   `json:"conformance"`
+		Profile      *pilot.ProfileEvidence    `json:"profile"`
+		Dependencies inspection.DependencyScan `json:"dependencies"`
 	}
 	if err := json.Unmarshal(output, &response); err != nil || response.Format != result.Format || response.Path != destination || response.Conformance.Status != "NOT_EVALUATED" {
 		t.Fatalf("Pilot CLI did not expose the written evidence report: %s %v", output, err)
 	}
 	if response.Profile == nil || !response.Profile.Valid || response.Profile.Version != "pp.3.00" {
 		t.Fatalf("Pilot CLI did not use the registered current Profile contract: %s", output)
+	}
+	if len(response.Dependencies.Edges) != 1 || response.Dependencies.Edges[0].Target != "fmt" {
+		t.Fatalf("Pilot CLI did not report the Go dependency observation: %s", output)
 	}
 	if _, err := os.Stat(destination); err != nil {
 		t.Fatal(err)
