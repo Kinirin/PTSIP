@@ -422,7 +422,7 @@ Policy_Content:
             CONTRACT_ONLY_CHANGE: PATCH
             ENGINE_FUNCTION_CHANGE: MINOR
             NEW_DOMAIN_RESPONSIBILITY_ADDITION: MAJOR
-          combined_trigger_precedence: UNRESOLVED_POLICY
+          combined_trigger_precedence: USER_CONFIRMED_EXACT_TARGET_VERSION_FOR_UNDECIDED_COMBINATIONS
           approved_combined_trigger_cases:
             CONTRACT_AND_ENGINE_FUNCTION_CHANGE:
               classification: MINOR
@@ -431,7 +431,17 @@ Policy_Content:
               trigger_scope: SAME_LOCAL_COMMIT_CHANGE_SET
               source_edit_authority: EXPLICIT_SRC_VERSION_CHANGE_NO_AUTOMATIC_INCREMENT
               decision_source: USER_EXPLICIT_CHAT_2026_11_22
-          other_combined_trigger_cases: UNRESOLVED_POLICY
+          other_combined_trigger_cases: USER_EXPLICIT_EXACT_VERSION_CONFIRMATION_REQUIRED
+          combined_trigger_confirmation:
+            applies_to: MULTIPLE_VERSION_CHANGE_REASONS_IN_SAME_CHANGE_SET
+            user_confirmation: REQUIRED_FOR_EXACT_TARGET_VERSION_BEFORE_SOURCE_CHANGE
+            preserve_already_approved_case_classification: true
+            canonical_source: src/VERSION#engines
+            automatic_version_increment: FORBIDDEN
+            reject_missing_confirmation: true
+            validated_against_effective_version_contract: true
+            does_not_grant_breaking_contract_or_retirement_exception: true
+            decision_source: USER_EXPLICIT_CHAT_2026_11_23
           breaking_contract_change_classification: UNRESOLVED_POLICY
           responsibility_removal_classification: UNRESOLVED_POLICY
           initial_cutover_number_selection: EXISTING_CURRENT_OFFICIAL_ENGINE_CONTRACT_JSON_VERSION_PER_ENGINE
