@@ -18,7 +18,7 @@ func TestDependencyObservationUsesDiscoveryAndDoesNotFillCoverage(t *testing.T) 
 		"cmd/main_test.go":        "package main\nimport \"testing\"\n",
 		"internal/model/model.go": "package model\n",
 		"not-observed/file.go":    "package notobserved\n",
-		"old.py":                  "import invisible\n",
+		"unsupported.rs":          "use invisible::symbol;\n",
 	}
 	var paths []string
 	for name, source := range files {
@@ -41,7 +41,7 @@ func TestDependencyObservationUsesDiscoveryAndDoesNotFillCoverage(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	if report.CoverageComplete || len(report.Issues) != 1 || report.Issues[0].Path != "old.py" ||
+	if report.CoverageComplete || len(report.Issues) != 1 || report.Issues[0].Path != "unsupported.rs" ||
 		!slices.Equal(report.Adapters, []string{"go-source"}) || report.EdgeCount != 5 {
 		t.Fatalf("incomplete or unexpected evidence: %+v", report)
 	}

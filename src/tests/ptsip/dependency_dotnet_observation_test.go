@@ -1,11 +1,13 @@
 package contracts_test
 
 import (
+	"encoding/binary"
 	"encoding/json"
 	"reflect"
 	"slices"
 	"strings"
 	"testing"
+	"unicode/utf16"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/inspection"
 )
@@ -32,12 +34,16 @@ func observeDotNetFixture(t *testing.T, fixtures map[string]string, ignored stri
 }
 
 func TestDependencyDotNetUsesDeclaredProjectIdentity(t *testing.T) {
+	utf16Project := []byte{0xff, 0xfe}
+	for _, unit := range utf16.Encode([]rune(`<?xml version="1.0" encoding="utf-16"?><Project><PropertyGroup><AssemblyName>Library</AssemblyName></PropertyGroup></Project>`)) {
+		utf16Project = binary.LittleEndian.AppendUint16(utf16Project, unit)
+	}
 	scan := observeDotNetFixture(t, map[string]string{
 		"src/app/App.csproj": `<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup><RootNamespace>App</RootNamespace></PropertyGroup>
   <ItemGroup><ProjectReference Include="..\lib\Library.csproj"/><PackageReference Include="NUnit.Framework"/></ItemGroup>
 </Project>`,
-		"src/lib/Library.csproj": `<Project><PropertyGroup><AssemblyName>Library</AssemblyName></PropertyGroup></Project>`,
+		"src/lib/Library.csproj": string(utf16Project),
 		"src/other/Loose.csproj": `<Project><PropertyGroup><RootNamespace>LocalOnly</RootNamespace></PropertyGroup></Project>`,
 		"src/app/tests/Example.cs": `global using Alias = global::Library.Tools;
 using static Library.Extensions; using System.Text;

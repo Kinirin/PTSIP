@@ -85,14 +85,14 @@ func ObserveDependencies(root string, discovered json.RawMessage) (DependencySca
 	}
 	for _, name := range c.paths {
 		switch suffix := strings.ToLower(path.Ext(name)); suffix {
-		case ".py", ".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".java",
+		case ".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".java",
 			".kt", ".kts", ".php", ".rb", ".rs", ".scala", ".swift":
 			result.Issues = append(result.Issues, DependencyIssue{"source-coverage", name, "dependency adapter unavailable for " + suffix})
 		}
 	}
 	seenEdges := map[string]bool{}
 	for _, scanner := range []func(dependencyContext) ([]DependencyEdge, []DependencyIssue, []string){
-		scanGo, scanDotNet, scanJavaScript, scanWorkflows,
+		scanGo, scanDotNet, scanJavaScript, scanPython, scanWorkflows,
 	} {
 		edges, issues, adapters := scanner(c)
 		result.Issues = append(result.Issues, issues...)

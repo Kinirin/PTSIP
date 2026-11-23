@@ -171,6 +171,7 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 	writeRepositoryFixture(t, root, "ptsip.yaml", frozenProfile034())
 	writeRepositoryFixture(t, root, "src/go.mod", "module example/project\n")
 	writeRepositoryFixture(t, root, "src/main.go", "package main\nimport \"fmt\"\n")
+	writeRepositoryFixture(t, root, "src/script.py", "match value:\n    case None:\n        import sys\n")
 	writeRepositoryFixture(t, root, "tools/test.txt", "fixture")
 	result, err := pilot.OpenInstalled(cli, packageRoot, scripts).Run(context.Background(), root)
 	if err != nil || result.Format != "ptsip-pilot-report/v2" || result.Tool["version"] != toolVersion || !result.Snapshot.Comparison.Stable || result.NonIntrusion.Status != "VERIFIED_NO_OBSERVED_CHANGE" {
@@ -181,8 +182,9 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 		t.Fatalf("historical data was not separated from evidence candidates: %+v", result)
 	}
 	boundary := result.Evaluation["declared_dependency_boundaries"]
-	if !result.Dependencies.CoverageComplete || len(result.Dependencies.Edges) != 1 ||
-		result.Dependencies.Edges[0].Target != "fmt" || boundary.Reason != "DECLARED_BOUNDARY_EVALUATOR_UNAVAILABLE" ||
+	if !result.Dependencies.CoverageComplete || len(result.Dependencies.Edges) != 2 ||
+		result.Dependencies.Edges[0].Target != "fmt" || result.Dependencies.Edges[1].Target != "sys" ||
+		boundary.Reason != "DECLARED_BOUNDARY_EVALUATOR_UNAVAILABLE" ||
 		boundary.Status != "BLOCKED" || result.Conformance.Status != "NOT_EVALUATED" {
 		t.Fatalf("Pilot must report dependency observations without asserting a boundary verdict: %+v", result)
 	}
@@ -225,8 +227,8 @@ func TestGoPilotReportsObservedStateBeforeAnExplicitWrite(t *testing.T) {
 	if response.Profile == nil || !response.Profile.Valid || response.Profile.Version != "pp.3.00" {
 		t.Fatalf("Pilot CLI did not use the registered current Profile contract: %s", output)
 	}
-	if len(response.Dependencies.Edges) != 1 || response.Dependencies.Edges[0].Target != "fmt" {
-		t.Fatalf("Pilot CLI did not report the Go dependency observation: %s", output)
+	if len(response.Dependencies.Edges) != 2 || response.Dependencies.Edges[0].Target != "fmt" || response.Dependencies.Edges[1].Target != "sys" {
+		t.Fatalf("Pilot CLI did not report both dependency observations: %s", output)
 	}
 	if _, err := os.Stat(destination); err != nil {
 		t.Fatal(err)

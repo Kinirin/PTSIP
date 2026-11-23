@@ -4,6 +4,8 @@ go 1.23.0
 
 require (
 	github.com/Kinirin/PTSIP/src/ptsip/common_contract v0.0.0
+	github.com/odvcencio/gotreesitter v0.58.0
+	github.com/pelletier/go-toml/v2 v2.4.3
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 	golang.org/x/mod v0.25.0
 	golang.org/x/text v0.14.0
@@ -15,6 +17,7 @@ require (
 	github.com/dlclark/regexp2 v1.11.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
