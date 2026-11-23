@@ -3677,6 +3677,76 @@
         "release_transition_registration": "SEPARATE_EXISTING_DIRECT_TRANSITION_AND_MUTATION_GATE_OPEN",
         "verification": "GO_NATIVE_ROUTER_TESTS_VERIFY_ACTUAL_RECORDED_PP200_BLOBS_IN_EXPLICIT_TEMPLATE_AND_HYBRID_MODES_AND_INDEPENDENT_SCHEMA_VALIDATION"
       }
+    },
+    {
+      "id": "WU-15",
+      "name": "Go Unified Policy Authoring: synchronize existing policy content and source_document.sha256 on authorized updates",
+      "authority": "USER_REQUESTED_PLAN_AMENDMENT_2026_11_23;PLAN_ONLY_NOT_POLICY_MUTATION_APPROVAL",
+      "scope": "DEVELOPER_GO_AUTHORING_FOLLOWUP_SEPARATE_FROM_PRODUCT_POLICY_V4_SCHEMA_CENTRALIZATION",
+      "scope_boundary": {
+        "target_policy_format": "ptsip-unified-policy/v3-candidate",
+        "target_policy_planes": [
+          "developer/policy/**",
+          "src/policy/**"
+        ],
+        "target_field": "Policy_Content.source_document.sha256",
+        "original_schema_centralization_scope": "PRESERVE_BASELINE_SRC_PTSIP_ONLY_AND_EXCLUDED_SOURCE_DOMAINS;THIS_IS_A_SEPARATE_DEVELOPER_TOOLING_WORK_UNIT_NOT_A_SCHEMA_SOURCE_MIGRATION",
+        "product_policy_v4": "UNCHANGED;DO_NOT_ADD_source_document_OR_source_pointer_TO_ptsip.policy.v4",
+        "unrelated_normative_policy_changes": "NOT_AUTHORIZED",
+        "changed_py_replacement": "SEPARATE_GO_ONLY_VERIFICATION_MIGRATION_NOT_IMPLEMENTED_BY_THIS_WORK_UNIT"
+      },
+      "dependency": [],
+      "inputs": [
+        ".ptsip/engine/developer/internal/contract_authoring/CLI.go::runUnifiedAuthoring,ReadDocument,WriteDocument",
+        ".ptsip/engine/developer/internal/contract_authoring/Authoring.go::CheckUnifiedDocument",
+        ".ptsip/engine/developer/internal/contract_authoring/Selection.go::SelectPolicyDocument",
+        "src/ptsip/common_contract/source/document.go::Digest",
+        "src/ptsip/common_contract/source/restore.go::Restore",
+        "src/ptsip/common_contract/source/verification.go::Verifier.Check",
+        ".ptsip/contracts/policy/unified/Unified_Policy.schema.json",
+        "current effective developer policy and explicitly authorized policy-change input"
+      ],
+      "outputs": [
+        "Go Authoring supports a separate explicit update operation for existing registered Unified Policy documents; existing create/check behavior remains unchanged",
+        "Authorized policy content change and its regenerated canonical source SHA-256 are materialized as one atomic file update with stale-input protection",
+        "Independent Go source-integrity/identity/lifecycle/rule-reference validation of the updated policy before commit and after materialization",
+        "Go regression evidence for both policy planes and the SOURCE_DIGEST_MISMATCH recurrence scenario; no Python helper added"
+      ],
+      "exact_steps": [
+        "Resolve exact document, declared policy identity, policy kind, Family, selected Unified Policy contract, applicable current governance and authorized change scope; do not infer mutation authority from valid schema, plan status, or path name.",
+        "Preserve check as read-only and generate/create as non-overwriting. Add an explicit existing-policy update path to the current Go contract_authoring boundary rather than changing WriteDocument's O_EXCL creation semantics.",
+        "Require an exact baseline revision or content precondition and explicit authorization for the proposed policy-content delta; reject unauthorized direct rewrites, cross-plane output paths, conflicting authority and stale concurrent input.",
+        "Share the existing Go canonical source reconstruction and source.Digest implementation: derive source from Policy_Content.items without treating the old stored digest as the new value; avoid raw YAML file hashing, duplicate digest algorithms and Python computation.",
+        "For a previously valid baseline, apply only the authorized policy delta, regenerate Policy_Content.source_document.sha256 from the reconstructed content, and validate the complete resulting Unified Policy with the existing registered verifier; reject invalid source pointers, incomplete rules, changed identity/lifecycle without authorization, and invalid bindings.",
+        "Write the approved content and computed digest together using an atomic, crash-conscious, same-directory replacement that works on Windows 11 and CI; preserve unrelated fields and report exactly which policy fields and source digest changed.",
+        "Reread the written policy and independently verify current SHA-256, source reconstruction, declared references, and unchanged unauthorized fields; fail closed and preserve or safely recover the prior valid file when materialization or readback validation fails.",
+        "Handle already-mismatched historical policies through a separately authorized, evidence-backed repair/reconciliation path; never silently accept a preexisting SOURCE_DIGEST_MISMATCH, never rewrite an unapproved policy solely to make CI green, and do not bypass source integrity verification.",
+        "Add Go tests for create versus update, successful same-document mutation plus digest synchronization, no-op stability, repeated updates, both policy planes, stale base revision, concurrent file changes, unauthorized deltas, partial/failed writes, and repair authorization boundary.",
+        "Run developer Go authoring and common source contract tests plus the registered policy check against updated fixtures. Treat Go-only replacement of changed.py in policy-contract-guard.yml as a separate verification-migration responsibility, not as the digest authoring implementation."
+      ],
+      "acceptance": [
+        "Authorized changes to an existing Unified Policy can be performed through Go Authoring without manual source_document.sha256 editing.",
+        "The persisted SHA-256 exactly matches the existing source.Digest canonical digest for the reconstructed Policy_Content.items source and remains independently verifiable after readback.",
+        "When content is changed and the corresponding digest is stale, SOURCE_DIGEST_MISMATCH is still rejected by read-only verification; an update is accepted only through the explicit authorized mutation path.",
+        "No policy-body-only write, digest-only write, silent auto-rehash of unapproved content, or partial replacement is reported as successful.",
+        "Existing new-file create semantics, both policy planes, policy authority boundaries, and product Policy v4 source_document removal remain unchanged.",
+        "Go tests demonstrate that changes like the 2026-11-22 SFP-CNTR-0005 update are synchronized when made through authorized Go Authoring; historical mismatches are not silently normalized."
+      ],
+      "negative_cases": [
+        "SOURCE_DIGEST_MISMATCH_ON_UNAUTHORIZED_OR_READ_ONLY_PATH",
+        "PREEXISTING_STALE_DIGEST_WITHOUT_EXPLICIT_REPAIR_APPROVAL",
+        "UNAUTHORIZED_POLICY_SEMANTIC_CHANGE",
+        "POLICY_IDENTITY_OR_LIFECYCLE_CHANGED_OUTSIDE_AUTHORIZED_DELTA",
+        "DUPLICATE_OR_OVERLAPPING_SOURCE_POINTER",
+        "INCOMPLETE_POLICY_RULE_SOURCE_BINDING",
+        "CROSS_PLANE_POLICY_TARGET",
+        "STALE_BASE_OR_CONCURRENT_MODIFICATION",
+        "WRITE_FAILURE_OR_READBACK_MISMATCH"
+      ],
+      "gate": "PLAN_WORK_UNIT_RECORDED_ONLY;USER_AUDIT_AND_FULL_PLAN_APPROVAL_REQUIRED_FOR_NEW_WU_15;EFFECTIVE_DEVELOPER_POLICY_GOVERNS_MUTATION;HISTORICAL_MISMATCH_REPAIR_REQUIRES_SEPARATE_AUTHORIZATION",
+      "implementation_authorized": false,
+      "execution_status": "PLANNED_PENDING_USER_PLAN_AUDIT_NOT_IMPLEMENTED",
+      "current_result": "2026-11-23: existing Go runUnifiedAuthoring validates supplied digest before writing, and WriteDocument does not update existing files; no persistent authorized content+digest synchronization is implemented in the current authoring path."
     }
   ],
   "observed_breakages": [
