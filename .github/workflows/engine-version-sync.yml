@@ -38,7 +38,8 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$GITHUB_SHA"
 
           controller=.ptsip/engine/developer/Distribution/release/controller
-          go -C "$controller" run -mod=readonly ./cmd/ptsip-release sync-version -root "$GITHUB_WORKSPACE"
+          go -C "$controller" run -mod=readonly ./cmd/ptsip-release sync-version -root "$GITHUB_WORKSPACE" \
+            | tee "$RUNNER_TEMP/version-sync.json"
           go -C "$controller" run -mod=readonly ./cmd/ptsip-release check-version -root "$GITHUB_WORKSPACE"
 
           git diff --name-only -z > "$RUNNER_TEMP/version-projections"
@@ -59,6 +60,11 @@ jobs:
           fi
           test -z "$(git status --porcelain)"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: engine-version-projections
+          path: ${{ runner.temp }}/version-sync.json
+          if-no-files-found: error
 
   snapshot:
     name: VC-ASYNC-01 engine snapshot

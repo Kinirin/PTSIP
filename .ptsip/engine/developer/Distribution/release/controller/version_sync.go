@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 
@@ -22,19 +23,27 @@ var officialEngineIDs = versionsource.EngineIDs()
 type VersionSource = versionsource.Versions
 
 type PackageVersionSyncResult struct {
-	Source           string            `json:"source"`
-	Target           string            `json:"target"`
-	Version          string            `json:"version"`
-	Previous         string            `json:"previous_version"`
-	ToolVersion      string            `json:"tool_version"`
-	ProfileVersion   string            `json:"profile_version"`
-	Engines          map[string]string `json:"engines"`
-	ChangedFiles     []string          `json:"changed_files"`
-	CheckedFiles     []string          `json:"checked_files"`
-	Changed          bool              `json:"changed"`
-	Status           string            `json:"status"`
-	ChangedManifests []string          `json:"changed_manifests"`
-	ChangedBindings  []string          `json:"changed_bindings"`
+	Source           string             `json:"source"`
+	Target           string             `json:"target"`
+	Version          string             `json:"version"`
+	Previous         string             `json:"previous_version"`
+	ToolVersion      string             `json:"tool_version"`
+	ProfileVersion   string             `json:"profile_version"`
+	Engines          map[string]string  `json:"engines"`
+	ChangedFiles     []string           `json:"changed_files"`
+	CheckedFiles     []string           `json:"checked_files"`
+	Changed          bool               `json:"changed"`
+	Status           string             `json:"status"`
+	ChangedManifests []string           `json:"changed_manifests"`
+	ChangedBindings  []string           `json:"changed_bindings"`
+	Notice           *VersionSyncNotice `json:"notice,omitempty"`
+}
+
+type VersionSyncNotice struct {
+	ChangedManifestCount int      `json:"changed_manifest_count"`
+	ChangedBindingCount  int      `json:"changed_binding_count"`
+	AffectedEngineIDs    []string `json:"affected_engine_ids"`
+	PayloadKind          string   `json:"payload_kind"`
 }
 
 func replaceProjection(path string, data []byte, mode os.FileMode) error {
@@ -322,6 +331,20 @@ func SyncPackageVersion(root string, checkOnly bool) (PackageVersionSyncResult, 
 		return result, err
 	}
 	result.Status = "SYNCED"
+	if len(result.ChangedManifests)+len(result.ChangedBindings) != 0 {
+		notice := &VersionSyncNotice{
+			ChangedManifestCount: len(result.ChangedManifests),
+			ChangedBindingCount:  len(result.ChangedBindings),
+			PayloadKind:          "SOURCE_VERSION_IDENTITY_MIGRATION_NOTIFICATION",
+		}
+		for _, entry := range entries {
+			if slices.Contains(result.ChangedManifests, entry.Manifest) ||
+				slices.Contains(result.ChangedBindings, entry.Bindings) {
+				notice.AffectedEngineIDs = append(notice.AffectedEngineIDs, strings.ToLower(entry.Kind))
+			}
+		}
+		result.Notice = notice
+	}
 	return result, nil
 }
 

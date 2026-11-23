@@ -182,6 +182,10 @@ func TestFullCanonicalSourceProjectsIndependentVersions(t *testing.T) {
 	if !reflect.DeepEqual(result.ChangedFiles, expected) {
 		t.Fatalf("wrong projection targets: got %v, want %v", result.ChangedFiles, expected)
 	}
+	wantNotice := &VersionSyncNotice{1, 1, []string{"storage"}, "SOURCE_VERSION_IDENTITY_MIGRATION_NOTIFICATION"}
+	if !reflect.DeepEqual(result.Notice, wantNotice) {
+		t.Fatalf("incorrect version-change notice: %+v", result.Notice)
+	}
 	project, _ := os.ReadFile(filepath.Join(root, "pyproject.toml"))
 	for _, needle := range []string{`tool_version = "T.0.3.9"`, `profile_version = "pp.2.01"`, `storage = "0.3.3"`, `context = "0.2.2"`} {
 		if !strings.Contains(string(project), needle) {

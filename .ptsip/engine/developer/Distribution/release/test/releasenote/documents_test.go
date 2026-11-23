@@ -52,11 +52,22 @@ func documentationVersions(changed bool) string {
 	if changed {
 		tool, profile, pkg, validation = "T.1.0.0.b2", "pp.1.01", "1.0.1", "1.1.0"
 	}
-	text := fmt.Sprintf("[package]\npackage_version = %q\n[tool]\ntool_version = %q\n[profile]\nprofile_version = %q\n[engines]\n", pkg, tool, profile)
-	for _, engine := range []string{"context", "storage", "validation", "discovery", "planning", "execution", "projection"} {
-		if engine == "planning" && changed {
-			continue
-		}
+	text := fmt.Sprintf(`[package]
+version = %q
+[tool]
+version = %q
+[RBAC]
+RA_list = "v.1"
+RAC_list = "v.1"
+AEC_list = "v.1"
+[common_contract]
+registry_revision = "v2"
+[schemas]
+"ptsip.policy.v4" = "v4"
+"ptsip.project-profile" = %q
+[engines]
+`, pkg, tool, profile)
+	for _, engine := range []string{"context", "storage", "validation", "discovery", "execution", "projection"} {
 		version := "1.0.0"
 		if engine == "validation" {
 			version = validation
