@@ -634,7 +634,7 @@
       "id": "UP-05",
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
       "issue": "COMBINED_TRIGGER_PRECEDENCE_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
-      "decision": "BLOCK_UNDECIDED_CHANGE_CASES_AND_EXCLUDE_THEM_FROM_INITIAL_CUTOVER",
+      "decision": "USER_CONFIRMED_COMBINED_VERSION_DIRECTION;BREAKING_AND_RETIREMENT_CONFLICTS_AWAIT_USER_RESOLUTION",
       "implementation_blocking": false,
       "blocking_scope": "FUTURE_BREAKING_REMOVAL_OR_UNAPPROVED_COMBINED_VERSION_CHANGE",
       "initial_cutover_rule": "COPY_THE_SIX_APPROVED_CURRENT_CONTRACT_VERSIONS_WITHOUT_TREATING_THE_IDENTITY_PROJECTION_AS_A_SEMANTIC_CHANGE",
@@ -650,10 +650,31 @@
         "automatic_increment": "FORBIDDEN",
         "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/approved_combined_trigger_cases/CONTRACT_AND_ENGINE_FUNCTION_CHANGE"
       },
+      "owner_confirmed_combined_version_rule": {
+        "status": "POLICY_SYNCHRONIZED",
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/combined_trigger_confirmation",
+        "rule": "EXACT_TARGET_VERSION_REQUIRES_USER_CONFIRMATION_BEFORE_SOURCE_CHANGE;NO_AUTOMATIC_INCREMENT",
+        "prior_approved_combined_case": "PRESERVED_UNCHANGED",
+        "source": "USER_EXPLICIT_CHAT_2026_11_23"
+      },
+      "incoming_policy_directions_not_yet_effective": {
+        "breaking_contract": {
+          "owner_confirmation_before_switch": true,
+          "history": "PRESERVE_PRIOR_CONTRACT_WITH_VERSION_DISAMBIGUATED_NAME_AND_TRANSITION_PROCEDURE",
+          "user_requested_exemption": "NO_MANDATORY_OLD_CONTRACT_DEPENDENCY_LINKAGE_OR_DEDICATED_VERIFICATION_IMPLEMENTATION",
+          "conflict_with_effective_policy": "EXISTING_DEPENDENCY_COMPATIBILITY_AND_VERIFIED_HANDOFF_REQUIREMENTS;REQUIRES_EXPLICIT_CONFLICT_CHOICE"
+        },
+        "retired_engine": {
+          "compatibility_legacy": "PRESERVE_UNTIL_VERSION_SPECIFIC_OWNER_PLAN_EXCLUDES_FROM_PACKAGE",
+          "retired_engine_semantics": "FROZEN_IMPLEMENTATION_AND_VERSION;NO_NEW_RESPONSIBILITY_OR_NEW_DEPENDENCY;NEW_ENGINE_OWNS_FUTURE_CHANGES",
+          "temporary_duplicate_responsibility": "USER_REQUESTED",
+          "version_field_removal": "ELIGIBLE_AFTER_ALL_RESPONSIBILITIES_HAVE_REPLACEMENTS_AND_REMOVAL_DECISION",
+          "conflict_with_effective_policy": "MANDATORY_SIX_OFFICIAL_ENGINES_AND_POLICY_OWNED_OFFICIAL_SET;REQUIRES_EXPLICIT_CONFLICT_CHOICE"
+        }
+      },
       "remaining_unresolved": [
-        "OTHER_COMBINED_TRIGGER_PRECEDENCE",
-        "BREAKING_CONTRACT_CHANGE_CLASSIFICATION",
-        "RESPONSIBILITY_REMOVAL_CLASSIFICATION"
+        "BREAKING_CONTRACT_CHANGE_CLASSIFICATION_AND_PROOF_BOUNDARY",
+        "RESPONSIBILITY_REMOVAL_AND_OFFICIAL_ENGINE_SET_AUTHORITY"
       ]
     }
   ],
@@ -663,7 +684,14 @@
     "implementation_permitted_now": false,
     "no_branch_creation": true,
     "simulations_must_not_mutate_canonical_version_values": true,
-    "status_note": "DELEGATED_DESIGN_DECISIONS_AND_APPROVAL_CONDITIONS_RECORDED;FULL_INITIAL_CUTOVER_APPROVAL_NOT_YET_RECORDED",
+    "status_note": "OWNER_REQUESTED_FULL_PLAN_APPROVAL;EFFECTIVE_AUTHORIZATION_AWAITS_POLICY_CONFLICT_RESOLUTION_AND_EXISTING_PREIMPLEMENTATION_AUDIT_GATES",
+    "owner_approval_intent_record": {
+      "source": "USER_EXPLICIT_CHAT_2026_11_23",
+      "requested_scope": "ALL_VC_01_THROUGH_VC_13_IN_THIS_VERSION_CHANGE_PLAN",
+      "status": "REQUEST_RECORDED_NOT_YET_EFFECTIVE",
+      "not_authorization_for": ["UNRELATED_REPOSITORY_PLANS", "PUBLICATION", "BREAKING_PROOF_REMOVAL", "OFFICIAL_ENGINE_SET_CHANGE"],
+      "reasons_not_finalized": ["BREAKING_CONTRACT_EXISTING_POLICY_CONFLICT", "OFFICIAL_ENGINE_REMOVAL_EXISTING_POLICY_CONFLICT", "REQUIRED_PREIMPLEMENTATION_AUDIT_NOT_VERIFIED"]
+    },
     "full_plan_approval_conditions": {
       "scope": "VC_01_THROUGH_VC_13_INITIAL_CUTOVER_WITH_APPROVED_EXISTING_VERSION_VALUES_AND_NO_PUBLICATION",
       "before_implementation": [
