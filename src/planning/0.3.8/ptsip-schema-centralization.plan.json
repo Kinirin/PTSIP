@@ -45,7 +45,7 @@
       ],
       "list_schema_owner": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
       "relations_nested_in_ra_list": true,
-      "field_set_final": false,
+      "field_set_final": true,
       "ra_id_pattern": "^R-ID-[0-9A-F]{32}$",
       "field_roles": {
         "RA_id": "Unique Responsibility Authority identifier with R-ID uppercase 32-hex pattern",
@@ -156,8 +156,8 @@
       "AEC_ids",
       "AEC_name"
     ],
-    "ra_relation_field_set_finalized": false,
-    "rbac_registration_field_names_finalized": false,
+    "ra_relation_field_set_finalized": true,
+    "rbac_registration_field_names_finalized": true,
     "rbac_application_subject_field": "REJECTED",
     "rbac_gui_readable_responsibility": "REQUIRES_DETAILED_FIELD_DESIGN",
     "policy_v4_rule_ra_ref": "Policy_Rules.rules[].RA_id",
@@ -167,8 +167,7 @@
     "ra_title_legacy_semantics": "OWNER_DIRECTED_MAPPING_FROM_COMPONENT_BINDINGS_TITLE_CONCEPT_VERIFY_SOURCE_RULE_VRULE; RAC_name and AEC_name represent respective condition title/role and are not removed",
     "policy_v4_category_field": "Policy_Category",
     "policy_v4_category_internal_decomposition": [
-      "root_family",
-      "policy_kind"
+      "namespace",
     ],
     "policy_v4_category_internal_representation": "DEVELOPER_VIEWS_ONLY_NOT_SERIALIZED_IN_USER_POLICY_CATEGORY_CONTRACT",
     "policy_v4_version_field": "Policy_Identity.version",
@@ -224,7 +223,7 @@
       ],
       "previous_rejections": "RETAIN_PREVIOUS_RAC_AEC_FIELD_SET_REJECTION",
       "pp300": "KEEP_LEGACY_SCHEMAS_UNMODIFIED",
-      "runtime_implementation_authorized": false
+      "runtime_implementation_authorized": true
     },
     "policy_v4_content_schema_path": "src/ptsip/schemas/policy/content/PTSIP_policy_content.schema.json",
     "policy_v4_content_item_id_pattern": "REVOKED_FIXED_REGEX",
