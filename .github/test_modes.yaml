@@ -143,8 +143,9 @@ modes:
     component_ref: developer-contract-schema-verification
     execution:
       go:
-        - .ptsip/engine/developer/policy/verification
-        - .ptsip/engine/developer/policy/applicability
+        - developer/tests/policy/verification
+        - developer/tests/policy/applicability
+        - developer/tests/policy/contract
         - src/ptsip/common_contract
   - id: repository-architecture
     component_ref: repository-architecture-verification

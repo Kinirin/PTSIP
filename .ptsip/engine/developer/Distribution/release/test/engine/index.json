@@ -8,7 +8,7 @@
   "domain": "Distribution",
   "component": "test-engine",
   "state": "INTEGRATION_SUITE",
-  "test_module": ".ptsip/engine/developer/Distribution/release/test",
-  "command": "go test ./...",
+  "test_module": "developer/tests",
+  "command": "go test -mod=readonly ./distribution/release/test/...",
   "category_extraction": "PENDING"
 }

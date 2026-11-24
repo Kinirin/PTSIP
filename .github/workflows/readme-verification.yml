@@ -16,6 +16,7 @@ on:
       - .github/workflows/readme-translation.yml
       - .github/workflows/readme-verification.yml
       - .ptsip/engine/developer/Distribution/release/test/releasenote/**
+      - developer/tests/distribution/release/test/releasenote/**
   pull_request:
     paths:
       - README.md
@@ -30,6 +31,7 @@ on:
       - .github/workflows/readme-translation.yml
       - .github/workflows/readme-verification.yml
       - .ptsip/engine/developer/Distribution/release/test/releasenote/**
+      - developer/tests/distribution/release/test/releasenote/**
   workflow_dispatch:
 
 permissions:
@@ -47,9 +49,11 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: .ptsip/engine/developer/Distribution/release/test/go.mod
-          cache-dependency-path: .ptsip/engine/developer/Distribution/release/test/go.sum
+          cache-dependency-path: |
+            .ptsip/engine/developer/Distribution/release/test/go.sum
+            developer/tests/go.sum
       - name: Run Go regression tests
-        run: go -C .ptsip/engine/developer/Distribution/release/test test ./releasenote
+        run: go -C developer/tests test -mod=readonly ./distribution/release/test/releasenote -count=1
       - name: Verify English formatting, classification, and archive contracts
         run: go -C .ptsip/engine/developer/Distribution/release/test run ./releasenote --root ../../../../../.. --action documentation-check
       - name: Verify registered translations without mutation

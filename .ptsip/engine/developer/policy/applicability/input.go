@@ -14,7 +14,7 @@ import (
     "strings"
     "time"
 
-    authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
+    "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/check"
     "gopkg.in/yaml.v3"
 )
 
@@ -81,7 +81,8 @@ func rejectYAMLConflicts(node *yaml.Node) error {
     return nil
 }
 
-func parseSnapshotDocument(raw []byte) (map[string]any, error) {
+// DecodeSnapshotDocument decodes an observed YAML mapping for applicability.
+func DecodeSnapshotDocument(raw []byte) (map[string]any, error) {
     if len(raw) > 16*1024*1024 { return nil, fmt.Errorf("POLICY_DOCUMENT_TOO_LARGE") }
     var node yaml.Node
     if err := yaml.Unmarshal(raw, &node); err != nil {
@@ -152,7 +153,7 @@ func CaptureInput(root string) (Input, error) {
         }
         raw, err := gitOutput(absolute, "show", "--no-textconv", head+":"+rel)
         if err != nil { return nil, err }
-        return parseSnapshotDocument(raw)
+        return DecodeSnapshotDocument(raw)
     }
     unifiedIndex, err := read(".ptsip/contracts/policy/unified/index.json")
     if err != nil { return out, err }
@@ -229,7 +230,7 @@ func CaptureInput(root string) (Input, error) {
                 return out, fmt.Errorf("POLICY_SOURCE_PATH_MISMATCH: %s", rel)
             }
             // Use the existing registered unified source-integrity verifier.
-            if _, err := authoring.CheckUnifiedDocument(absolute, authoring.Document(doc)); err != nil {
+            if _, err := check.CheckUnifiedDocument(absolute, doc); err != nil {
                 return out, fmt.Errorf("SOURCE_POLICY_CONTRACT_INVALID: %s: %w", rel, err)
             }
             var rules []Rule

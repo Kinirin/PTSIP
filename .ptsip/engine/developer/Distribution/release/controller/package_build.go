@@ -7,20 +7,20 @@ import (
 )
 
 type PackageReceipt struct {
-	Schema    string   `json:"schema_version"`
-	Source    string   `json:"source_sha"`
-	Selection string   `json:"selection_sha256"`
-	Platform  string   `json:"platform"`
-	PyPI      string   `json:"pypi_version"`
-	Snapshot  Snapshot `json:"package"`
-	Wheel     File     `json:"wheel"`
-	SourceDist *File   `json:"source_distribution,omitempty"`
-	Status    string   `json:"status"`
+	Schema     string   `json:"schema_version"`
+	Source     string   `json:"source_sha"`
+	Selection  string   `json:"selection_sha256"`
+	Platform   string   `json:"platform"`
+	PyPI       string   `json:"pypi_version"`
+	Snapshot   Snapshot `json:"package"`
+	Wheel      File     `json:"wheel"`
+	SourceDist *File    `json:"source_distribution,omitempty"`
+	Status     string   `json:"status"`
 }
 
-// sourceBoundVerificationSnapshot is never a published registry projection.
+// SourceBoundVerificationSnapshot produces a non-publishing Package test snapshot.
 // Every component must be present and tied to the selected source SHA.
-func sourceBoundVerificationSnapshot(s Selection, components []PublishedComponent, engines map[string]string) (Snapshot, error) {
+func SourceBoundVerificationSnapshot(s Selection, components []PublishedComponent, engines map[string]string) (Snapshot, error) {
 	if s.Type != "PTSIP_PACKAGE" || s.SourceSHA == "" || s.PackageBase == "" ||
 		len(s.Components) != len(components) {
 		return Snapshot{}, fmt.Errorf("source-bound Package selection is incomplete")
@@ -80,7 +80,7 @@ func BuildSourceVerificationPackageReceipt(root string, s Selection, input, outp
 	// The test-only receipt must not resolve immutable published assets or
 	// treat historical component versions as test admission authority.
 	// Gather already authenticates every source/selection/host/file digest.
-	snapshot, err := sourceBoundVerificationSnapshot(s, components, c.Engines)
+	snapshot, err := SourceBoundVerificationSnapshot(s, components, c.Engines)
 	if err != nil {
 		return PackageReceipt{}, err
 	}

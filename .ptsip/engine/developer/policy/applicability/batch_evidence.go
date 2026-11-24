@@ -89,7 +89,7 @@ func (r *BatchEvidenceResolver) document(revision, rel string) (map[string]any, 
 	if err != nil {
 		return nil, err
 	}
-	doc, err := parseSnapshotDocument(raw)
+	doc, err := DecodeSnapshotDocument(raw)
 	if err != nil {
 		return nil, fmt.Errorf("BATCH_INVALID_SOURCE_DOCUMENT: %s: %w", key, err)
 	}

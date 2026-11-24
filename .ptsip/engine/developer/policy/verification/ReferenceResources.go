@@ -27,9 +27,9 @@ const policyVersionPath = ".ptsip/contracts/policy/Policy_lifecycle/version/Poli
 const policyStatusVocabularyPath = ".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json"
 const policyStatusVocabularyID = "urn:ptsip:candidate:contract:policy:status:v1"
 
-// approvedResource reads exactly a file already in the approved-schema set.
+// ReadApprovedSchemaResource reads exactly a file already in the approved-schema set.
 // It does not search arbitrary paths or fetch URIs from the network.
-func approvedResource(root, relative string) (map[string]any, error) {
+func ReadApprovedSchemaResource(root, relative string) (map[string]any, error) {
 	allowed := false
 	for _, path := range approvedSchemaPaths {
 		if path == relative {
@@ -55,9 +55,9 @@ func approvedResource(root, relative string) (map[string]any, error) {
 	return doc, nil
 }
 
-// verifySharedStatusLifecycleRefs checks the one registered vocabulary source.
+// ResolveStatusVocabulary checks the one registered vocabulary source.
 // The installed VALIDATION engine resolves the original schema, not an enum projection.
-func verifySharedStatusLifecycleRefs(root string, schema map[string]any) ([]any, error) {
+func ResolveStatusVocabulary(root string, schema map[string]any) ([]any, error) {
 	props, ok := schema["properties"].(map[string]any)
 	if !ok {
 		return nil, fmt.Errorf("SHARED_STATUS_PROPERTIES_MISSING")
@@ -108,29 +108,32 @@ func verifySharedStatusLifecycleRefs(root string, schema map[string]any) ([]any,
 	return []any{source}, nil
 }
 
-// probeApprovedFlatPolicyStatus checks the current shared status record shape
-// through the installed VALIDATION engine. It never grants policy conformance.
-func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
+// ProbePolicyStatus checks the current shared status record shape through the
+// supplied Validation engine. Its result cannot grant policy conformance.
+func ProbePolicyStatus(root string, validate func(any, any, []any) (bool, error)) StatusProbe {
 	report := StatusProbe{Status: "UNRESOLVED", SchemaPath: publicPolicyStatusPath}
 	fail := func(err error) StatusProbe { report.Problem = err.Error(); return report }
-	schema, err := approvedResource(root, publicPolicyStatusPath)
+	schema, err := ReadApprovedSchemaResource(root, publicPolicyStatusPath)
 	if err != nil {
 		return fail(err)
 	}
 	if schema["$id"] != "urn:ptsip:policy:Status:v2" {
 		return fail(fmt.Errorf("SHARED_STATUS_SCHEMA_ID_MISMATCH"))
 	}
-	resources, err := verifySharedStatusLifecycleRefs(root, schema)
+	resources, err := ResolveStatusVocabulary(root, schema)
 	if err != nil {
 		return fail(err)
 	}
 	report.LifecycleVocabularyLinked = true
+	if validate == nil {
+		return fail(fmt.Errorf("INSTALLED_VALIDATION_REQUIRED"))
+	}
 	positive := map[string]any{
 		"Policy_Status_Schema_ver": "2",
 		"status":                   "APPROVED.Applying",
 		"contract":                 "urn:ptsip:contract:policy:gov:responsibility:orchestration",
 	}
-	valid, err := nativeValidate(e, schema, positive, resources)
+	valid, err := validate(schema, positive, resources)
 	if err != nil {
 		return fail(err)
 	}
@@ -141,7 +144,7 @@ func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
 			"status":                   value,
 			"contract":                 "urn:ptsip:contract:policy:gov:responsibility:orchestration",
 		}
-		familyValid, familyErr := nativeValidate(e, schema, instance, resources)
+		familyValid, familyErr := validate(schema, instance, resources)
 		if familyErr != nil {
 			return fail(familyErr)
 		}
@@ -153,7 +156,7 @@ func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
 		"status":   "APPROVED.Applying",
 		"contract": "urn:ptsip:contract:policy:gov:responsibility:orchestration",
 	}
-	accepted, err := nativeValidate(e, schema, missingVersion, resources)
+	accepted, err := validate(schema, missingVersion, resources)
 	if err != nil {
 		return fail(err)
 	}
@@ -167,7 +170,7 @@ func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
 			"contract":  "urn:ptsip:contract:policy:gov:responsibility:orchestration",
 		},
 	}
-	accepted, err = nativeValidate(e, schema, legacy, resources)
+	accepted, err = validate(schema, legacy, resources)
 	if err != nil {
 		return fail(err)
 	}
@@ -178,7 +181,7 @@ func probeApprovedFlatPolicyStatus(root string, e Engine) StatusProbe {
 		"status":                   "APPROVED.NotDeclared",
 		"contract":                 "urn:ptsip:contract:policy:gov:responsibility:orchestration",
 	}
-	accepted, err = nativeValidate(e, schema, invalidStatus, resources)
+	accepted, err = validate(schema, invalidStatus, resources)
 	if err != nil {
 		return fail(err)
 	}

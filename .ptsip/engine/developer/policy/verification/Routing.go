@@ -11,7 +11,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/entry"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/user_contracts"
 )
 
 const policyRoutingData = ".ptsip/contracts/policy/routing/policy_routes.json"
@@ -27,6 +28,22 @@ type RoutingProbe struct {
 	IdentitySources   []string `json:"identity_sources"`
 	PolicyConformance string   `json:"policy_conformance"`
 	Problem           string   `json:"problem,omitempty"`
+}
+
+// RoutingInputs contains the local resources bound to the registered routing
+// contract. It is consumed by the native probe after read-only resolution.
+type RoutingInputs struct {
+	Data             map[string]any
+	Schema           map[string]any
+	Resources        []any
+	RegisteredRoutes int
+	SchemaReferences int
+	IdentitySources  []string
+}
+
+func ResolveRoutingInputs(root string) (RoutingInputs, error) {
+	data, schema, resources, routes, references, identities, err := loadRoutingInputs(root)
+	return RoutingInputs{data, schema, resources, routes, references, identities}, err
 }
 
 // routingFile accepts only repository-relative files below the explicitly
@@ -104,7 +121,7 @@ func loadRoutingInputs(root string) (map[string]any, map[string]any, []any, int,
 		if routingString(sources[key]) != policyIdentityVocabulary {
 			return nil, nil, nil, 0, 0, nil, fmt.Errorf("ROUTING_IDENTITY_SOURCE_MISMATCH: %s", key)
 		}
-		values, err := contract_authoring.IdentityValues(identity, key)
+		values, err := entry.IdentityValues(identity, key)
 		if err != nil {
 			return nil, nil, nil, 0, 0, nil, err
 		}
@@ -196,15 +213,15 @@ func probePolicyRouting(root string, e Engine) RoutingProbe {
 		Status: "UNRESOLVED", RoutingPath: policyRoutingData,
 		SchemaPath: policyRoutingSchema, PolicyConformance: "NOT_ASSERTED",
 	}
-	routing, schema, resources, routes, refs, identities, err := loadRoutingInputs(root)
+	inputs, err := ResolveRoutingInputs(root)
 	if err != nil {
 		p.Problem = err.Error()
 		return p
 	}
-	p.RegisteredRoutes = routes
-	p.SchemaReferences = refs
-	p.IdentitySources = identities
-	valid, err := nativeValidate(e, schema, routing, resources)
+	p.RegisteredRoutes = inputs.RegisteredRoutes
+	p.SchemaReferences = inputs.SchemaReferences
+	p.IdentitySources = inputs.IdentitySources
+	valid, err := nativeValidate(e, inputs.Schema, inputs.Data, inputs.Resources)
 	if err != nil {
 		p.Problem = err.Error()
 		return p
@@ -214,16 +231,9 @@ func probePolicyRouting(root string, e Engine) RoutingProbe {
 		return p
 	}
 
-	// Independent RBAC resources remain mandatory. Do not reload retired
-	// v7 Family policy schemas just to check authorization contracts.
-	rbac, err := contract_authoring.LoadResponsibilities(root)
-	if err != nil {
-		p.Problem = err.Error()
-		return p
-	}
-	if err := rbac.CheckContracts(func(schema, instance any, resources []any) (bool, error) {
-		return nativeValidate(e, schema, instance, resources)
-	}); err != nil {
+	// Compile the registered RA/RAC/AEC structures through the product catalog.
+	// Responsibility-Authority decisions use their dedicated validator.
+	if _, err := usercontracts.New(filepath.Join(root, "src", "ptsip")); err != nil {
 		p.Problem = err.Error()
 		return p
 	}

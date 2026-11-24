@@ -266,31 +266,18 @@ func readRegisteredEngine(source productSource, entry engineEntry, transportPath
 			return bad(fmt.Errorf("extension belongs to another engine: %s", extension.Path))
 		}
 	}
-	var bindings struct {
-		Entries []struct {
-			ID              string          `json:"binding_id"`
-			EngineID        string          `json:"engine_id"`
-			EngineVersion   string          `json:"engine_version"`
-			Capability      string          `json:"capability_id"`
-			ContractVersion string          `json:"contract_version"`
-			Entrypoint      string          `json:"entrypoint"`
-			Transport       engineSourceRef `json:"transport_ref"`
-			Permission      *bool           `json:"permission_grant"`
-		} `json:"bindings"`
-	}
+	var bindings versionsource.EngineBindings
 	if err := decodeEngineSource(source, entry.Bindings, &bindings); err != nil {
 		return bad(err)
 	}
-	if len(bindings.Entries) != 1 {
-		return bad(fmt.Errorf("missing or ambiguous execution binding"))
+	binding, err := bindings.Select(entry.ID, entry.Version, contract.ID, contract.Version)
+	if err != nil {
+		return bad(err)
 	}
-	binding := bindings.Entries[0]
-	if binding.EngineID != entry.ID || binding.EngineVersion != entry.Version || binding.Capability != contract.ID ||
-		binding.ContractVersion != contract.Version || !declaresNoPermission(binding.Permission) ||
-		binding.Entrypoint == "" || binding.Transport.Path != transportPath {
+	if binding.Transport.Path != transportPath {
 		return bad(fmt.Errorf("execution binding differs from registered implementation, contract or transport"))
 	}
-	if _, err := verifyEngineReference(source, binding.Transport); err != nil {
+	if _, err := verifyEngineReference(source, engineSourceRef(binding.Transport)); err != nil {
 		return bad(err)
 	}
 	manifestRef, err := engineReference(source, entry.Manifest, manifest.ID, manifest.Version)

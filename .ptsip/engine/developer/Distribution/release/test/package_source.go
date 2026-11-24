@@ -11,7 +11,7 @@ import (
 // The source distribution is built once on the required Linux host, then rebuilt
 // and installed in a fresh environment with no local native wheel candidates.
 func verifySourcePackage(root string, s release.Selection, output, check, version, tool string) (release.File, error) {
-	stage, cleanup, err := toolSource(root, s.SourceSHA)
+	stage, cleanup, err := StageToolSource(root, s.SourceSHA)
 	if err != nil {
 		return release.File{}, err
 	}

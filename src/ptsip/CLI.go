@@ -17,6 +17,7 @@ import (
 	"strings"
 
 	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/common_contract/user_contracts"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
 )
 
 const engineIndex = "engines/index.json"
@@ -51,16 +52,6 @@ type sourceRef struct {
 	Version string `json:"version"`
 	Path    string `json:"path"`
 	SHA256  string `json:"sha256"`
-}
-
-type engineBinding struct {
-	EngineID        string    `json:"engine_id"`
-	EngineVersion   string    `json:"engine_version"`
-	CapabilityID    string    `json:"capability_id"`
-	ContractVersion string    `json:"contract_version"`
-	Entrypoint      string    `json:"entrypoint"`
-	Transport       sourceRef `json:"transport_ref"`
-	Permission      *bool     `json:"permission_grant"`
 }
 
 func readDocument[T any](root, relative string, dst *T) (string, error) {
@@ -108,7 +99,7 @@ func readEngineResource[T any](root, reference string, dst *T) (string, error) {
 	return readDocument(root, relative, dst)
 }
 
-func bindingFor(root string, index indexDocument, entry engineEntry) (engineBinding, error) {
+func bindingFor(root string, index indexDocument, entry engineEntry, contractVersion string) (versionsource.EngineBinding, error) {
 	var registry struct {
 		Owner      string `json:"owner_id"`
 		Permission *bool  `json:"execution_permission"`
@@ -117,7 +108,7 @@ func bindingFor(root string, index indexDocument, entry engineEntry) (engineBind
 			Ref      string `json:"binding_ref"`
 		} `json:"bindings"`
 	}
-	var result engineBinding
+	var result versionsource.EngineBinding
 	if _, err := readEngineResource(root, index.Federation.Execution, &registry); err != nil {
 		return result, err
 	}
@@ -136,19 +127,15 @@ func bindingFor(root string, index indexDocument, entry engineEntry) (engineBind
 	if count != 1 {
 		return result, errors.New("missing or ambiguous execution registration")
 	}
-	var file struct {
-		Bindings []engineBinding `json:"bindings"`
-	}
+	var file versionsource.EngineBindings
 	if _, err := readEngineResource(root, entry.Binding, &file); err != nil {
 		return result, err
 	}
-	if len(file.Bindings) != 1 {
-		return result, errors.New("missing or ambiguous native binding")
+	result, err := file.Select(entry.ID, entry.Version, entry.Capability, contractVersion)
+	if err != nil {
+		return result, err
 	}
-	result = file.Bindings[0]
-	if result.EngineID != entry.ID || result.EngineVersion != entry.Version ||
-		result.CapabilityID != entry.Capability || result.ContractVersion == "" ||
-		result.Permission == nil || *result.Permission || result.Transport.Path != index.Transport {
+	if result.Transport.Path != index.Transport {
 		return result, errors.New("inconsistent native binding")
 	}
 	var transport struct {
@@ -208,10 +195,6 @@ func route(root, scripts string, index indexDocument, operation string, persiste
 	if entry.ID == "" || entry.Version == "" || entry.Kind == "" || entry.Capability == "" {
 		return errors.New("incomplete engine identity")
 	}
-	binding, err := bindingFor(root, index, entry)
-	if err != nil {
-		return err
-	}
 	var contract struct {
 		ID         string `json:"contract_id"`
 		Engine     string `json:"engine_id"`
@@ -232,8 +215,12 @@ func route(root, scripts string, index indexDocument, operation string, persiste
 		}
 	}
 	if contract.ID != entry.Capability || contract.Engine != entry.ID || contract.Owner != entry.Kind ||
-		contract.Version != binding.ContractVersion || count != 1 {
+		contract.Version == "" || count != 1 {
 		return errors.New("operation does not resolve to the bound engine contract")
+	}
+	binding, err := bindingFor(root, index, entry, contract.Version)
+	if err != nil {
+		return err
 	}
 	var manifest struct {
 		ID           string      `json:"engine_id"`

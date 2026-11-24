@@ -6,7 +6,7 @@ on:
       - '.github/workflows/policy-cleanup-verification.yml'
       - '.github/test_modes.yaml'
       - '.ptsip/contracts/policy/routing/verification_exclusions.json'
-      - '.ptsip/engine/developer/policy/verification/VerificationExclusions_test.go'
+      - 'developer/tests/policy/verification/**'
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,4 +20,4 @@ jobs:
           go-version-file: .ptsip/engine/developer/go.mod
       - name: Verify current policy exclusion contract and required gates
         run: |
-          go -C .ptsip/engine/developer test ./policy/verification -run '^TestPolicyVerificationExclusions$' -count=1
+          go -C developer/tests test -mod=readonly ./policy/verification -run '^TestPolicyVerificationExclusions$' -count=1

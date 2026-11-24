@@ -1,6 +1,6 @@
 package rules
 
-import authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
+import authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/authoring"
 
 func Check(root string, document authoring.Document, validate authoring.Validator) error {
 	catalog, err := Load(root, validate)

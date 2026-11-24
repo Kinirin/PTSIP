@@ -1,0 +1,326 @@
+package enginewheel_test
+
+import (
+	"archive/zip"
+	"bytes"
+	"encoding/csv"
+	"encoding/json"
+	. "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/engine"
+	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+// These values describe the expected wheel filenames and signatures of the
+// fixture targets. Treat the names as expected output from the assembler.
+var fixtureHosts = map[string]struct {
+	Platform, Suffix string
+	Magic            [][]byte
+}{
+	"x86_64-pc-windows-msvc":   {"win_amd64", ".exe", [][]byte{[]byte("MZ")}},
+	"x86_64-unknown-linux-gnu": {"manylinux_2_39_x86_64", "", [][]byte{[]byte("\x7fELF")}},
+	"aarch64-apple-darwin":     {"macosx_11_0_arm64", "", [][]byte{{0xcf, 0xfa, 0xed, 0xfe}}},
+}
+
+func readFixture(root, ref string, value any) error {
+	raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(ref)))
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(raw, value)
+}
+
+func writeFixture(t *testing.T, root, ref string, value any) {
+	t.Helper()
+	p := filepath.Join(root, filepath.FromSlash(ref))
+	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+		t.Fatal(err)
+	}
+	data, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(p, data, 0644); err != nil {
+		t.Fatal(err)
+	}
+}
+func fixture(t *testing.T, target string) (string, Options) {
+	t.Helper()
+	root := t.TempDir()
+	entries := []map[string]any{}
+	components := []map[string]any{}
+	defaultIDs := []string{}
+	for _, kind := range []string{"context", "storage", "validation", "discovery", "execution", "projection"} {
+		id := "fixture-" + kind
+		manifest := "src/ptsip/engines/" + kind + "/manifest.json"
+		binding := "src/ptsip/engines/" + kind + "/execution-bindings.json"
+		entries = append(entries, map[string]any{"kind": strings.ToUpper(kind), "engine_id": id, "version": "0.2.0", "manifest_ref": manifest, "execution_binding_ref": binding})
+		components = append(components, map[string]any{"engine_id": id, "version": "0.1.0", "entrypoint": "ptsip-engine-" + kind, "build_targets": []string{target}, "permission_from_availability": false, "installed_is_execution_authorization": false})
+		defaultIDs = append(defaultIDs, id)
+		writeFixture(t, root, manifest, map[string]any{"engine_id": id, "implementation_version": "0.2.0"})
+		writeFixture(t, root, "src/ptsip/engines/"+kind+"/version.yaml", map[string]any{"schema_version": "ptsip-engine-version/v1", "engine": kind, "version": "0.2.0"})
+		writeFixture(t, root, binding, map[string]any{"bindings": []map[string]any{{"engine_id": id, "engine_version": "0.2.0", "entrypoint": "ptsip-engine-" + kind}}})
+	}
+	writeFixture(t, root, "src/ptsip/engines/index.json", map[string]any{
+		"schema_version":          "ptsip-official-engine-index/v1",
+		"official_engine_entries": entries,
+	})
+	writeFixture(t, root, "src/ptsip/engines/contracts/installation-plan.json", map[string]any{
+		"schema_version":               "ptsip-engine-installation-plan/v2",
+		"selection":                    "REGISTERED_NATIVE_COMPONENTS_FOR_ONE_PTSIP_PLATFORM_WHEEL",
+		"default_available_engine_ids": defaultIDs,
+		"components":                   components,
+	})
+	if err := os.WriteFile(filepath.Join(root, "src", "VERSION"), []byte(`
+[package]
+version = "0.3.8"
+[tool]
+version = "T.0.3.8.b3"
+[RBAC]
+RA_list = "v.1"
+RAC_list = "v.1"
+AEC_list = "v.1"
+[common_contract]
+registry_revision = "v2"
+[engines]
+context = "0.2.0"
+storage = "0.2.0"
+validation = "0.2.0"
+discovery = "0.2.0"
+execution = "0.2.0"
+projection = "0.2.0"
+[schemas]
+"ptsip.policy.v4" = "v4"
+"ptsip.project-profile" = "pp.3.00"
+`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	license := filepath.Join(root, "License-Authority", "LICENSE.md")
+	if err := os.MkdirAll(filepath.Dir(license), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(license, []byte("fixture license"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	h := fixtureHosts[target]
+	binary := filepath.Join(root, "ptsip-engine-context"+h.Suffix)
+	if err := os.WriteFile(binary, append(append([]byte{}, h.Magic[0]...), bytes.Repeat([]byte("X"), 300)...), 0755); err != nil {
+		t.Fatal(err)
+	}
+	for _, args := range [][]string{{"init", "-q"}, {"add", "--all"}, {"-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=", "commit", "-q", "-m", "Fixture"}} {
+		cmd := exec.Command("git", append([]string{"-C", root}, args...)...)
+		if data, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("fixture source commit failed: %v: %s", err, data)
+		}
+	}
+	source, err := exec.Command("git", "-C", root, "rev-parse", "HEAD").Output()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return root, Options{Kind: "context", Target: target, Binary: binary, Output: filepath.Join(root, "wheelhouse"), SourceSHA: strings.TrimSpace(string(source))}
+}
+func TestNativeComponentArtifactForEveryDeclaredPlatform(t *testing.T) {
+	for target := range fixtureHosts {
+		t.Run(target, func(t *testing.T) {
+			root, opts := fixture(t, target)
+			result, err := Build(root, opts)
+			if err != nil {
+				t.Fatal(err)
+			}
+			archive, err := zip.OpenReader(result.Wheel)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer archive.Close()
+			if len(archive.File) != 6 {
+				t.Fatal("wheel must contain one binary and its five metadata files")
+			}
+			names := map[string]bool{}
+			scripts := 0
+			var record []byte
+			for _, file := range archive.File {
+				names[file.Name] = true
+				if strings.Contains(file.Name, "/scripts/") {
+					scripts++
+					if !strings.HasSuffix(file.Name, "ptsip-engine-context"+fixtureHosts[target].Suffix) || file.Mode()&0111 == 0 {
+						t.Fatal("wrong selected executable or mode")
+					}
+				}
+				if strings.HasSuffix(file.Name, "/RECORD") {
+					r, err := file.Open()
+					if err != nil {
+						t.Fatal(err)
+					}
+					record, err = io.ReadAll(r)
+					r.Close()
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+			}
+			rows, err := csv.NewReader(bytes.NewReader(record)).ReadAll()
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(rows) != len(names) || scripts != 1 {
+				t.Fatal("native component archive membership mismatch")
+			}
+			for _, row := range rows {
+				if !names[row[0]] {
+					t.Fatal("RECORD names an unregistered member")
+				}
+			}
+			data, err := os.ReadFile(result.Receipt)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var receipt map[string]any
+			if err = json.Unmarshal(data, &receipt); err != nil {
+				t.Fatal(err)
+			}
+			if receipt["install_authorized"] != false || receipt["runtime_authorized"] != false || receipt["release_verification"] != "NOT_PERFORMED_BY_ASSEMBLER" {
+				t.Fatal("assembler created authority")
+			}
+			first, err := os.ReadFile(result.Wheel)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err = Build(root, opts); err != nil {
+				t.Fatal(err)
+			}
+			second, _ := os.ReadFile(result.Wheel)
+			if !bytes.Equal(first, second) {
+				t.Fatal("same source composition produced unstable wheel bytes")
+			}
+		})
+	}
+}
+
+// Intermediate producers are not consumer installers. Packaging policy
+// fields belong to the complete PTSIP Wheel join, not native preflight.
+func TestNativeArtifactBuildDoesNotRequireConsumerDistributionMetadata(t *testing.T) {
+	root, opts := fixture(t, "x86_64-unknown-linux-gnu")
+	var plan map[string]any
+	if err := readFixture(root, "src/ptsip/engines/contracts/installation-plan.json", &plan); err != nil {
+		t.Fatal(err)
+	}
+	if _, exists := plan["distribution"]; exists {
+		t.Fatal("native-only test fixture must not declare consumer distribution")
+	}
+	if _, exists := plan["default_installation"]; exists {
+		t.Fatal("native-only test fixture must not declare pip installation")
+	}
+	if _, err := Build(root, opts); err != nil {
+		t.Fatalf("native artifact build improperly depends on consumer distribution: %v", err)
+	}
+}
+
+func TestWheelUsesCanonicalLicenseBlobDespiteWorktreeLineEndings(t *testing.T) {
+	root, opts := fixture(t, "x86_64-pc-windows-msvc")
+	if err := os.WriteFile(filepath.Join(root, "License-Authority/LICENSE.md"), []byte("fixture license\r\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	result, err := Build(root, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	archive, err := zip.OpenReader(result.Wheel)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer archive.Close()
+	found := false
+	for _, file := range archive.File {
+		if strings.HasSuffix(file.Name, "/licenses/LICENSE.md") {
+			r, err := file.Open()
+			if err != nil {
+				t.Fatal(err)
+			}
+			data, err := io.ReadAll(r)
+			r.Close()
+			if err != nil || string(data) != "fixture license" {
+				t.Fatalf("worktree replaced canonical license blob: %q, %v", data, err)
+			}
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("canonical license missing from wheel")
+	}
+}
+func TestAssemblerRejectsUnregisteredSourcesBeforeWriting(t *testing.T) {
+	for _, defect := range []string{"sha", "target", "kind", "retired_kind", "binary", "contract", "reference", "duplicate", "missing_boolean", "wrong_version", "nonselected_version", "missing_permission", "incomplete_components", "foreign_component", "wrong_schema", "wrong_index_schema", "duplicate_defaults", "incomplete_defaults"} {
+		t.Run(defect, func(t *testing.T) {
+			root, opts := fixture(t, "x86_64-unknown-linux-gnu")
+			switch defect {
+			case "sha":
+				opts.SourceSHA = "unknown"
+			case "target":
+				opts.Target = "aarch64-unknown-linux-gnu"
+			case "kind":
+				opts.Kind = "unregistered"
+			case "retired_kind":
+				opts.Kind = "planning"
+			case "binary":
+				if err := os.WriteFile(opts.Binary, bytes.Repeat([]byte("X"), 300), 0755); err != nil {
+					t.Fatal(err)
+				}
+			case "contract", "missing_boolean", "missing_permission", "incomplete_components", "foreign_component", "wrong_schema", "duplicate_defaults", "incomplete_defaults":
+				var p map[string]any
+				if err := readFixture(root, "src/ptsip/engines/contracts/installation-plan.json", &p); err != nil {
+					t.Fatal(err)
+				}
+				components := p["components"].([]any)
+				row := components[0].(map[string]any)
+				switch defect {
+				case "contract":
+					row["entrypoint"] = "ptsip-engine-wrong"
+				case "missing_boolean":
+					delete(row, "installed_is_execution_authorization")
+				case "missing_permission":
+					delete(row, "permission_from_availability")
+				case "incomplete_components":
+					p["components"] = components[:len(components)-1]
+				case "foreign_component":
+					components[1].(map[string]any)["engine_id"] = "fixture-unregistered"
+				case "wrong_schema":
+					p["schema_version"] = "ptsip-engine-installation-plan/v1"
+				case "duplicate_defaults":
+					p["default_available_engine_ids"].([]any)[1] = p["default_available_engine_ids"].([]any)[0]
+				case "incomplete_defaults":
+					defaults := p["default_available_engine_ids"].([]any)
+					p["default_available_engine_ids"] = defaults[:len(defaults)-1]
+				}
+				writeFixture(t, root, "src/ptsip/engines/contracts/installation-plan.json", p)
+			case "reference", "duplicate", "wrong_index_schema", "wrong_version", "nonselected_version":
+				var index map[string]any
+				if err := readFixture(root, "src/ptsip/engines/index.json", &index); err != nil {
+					t.Fatal(err)
+				}
+				rows := index["official_engine_entries"].([]any)
+				switch defect {
+				case "reference":
+					rows[0].(map[string]any)["manifest_ref"] = "../foreign.json"
+				case "duplicate":
+					rows[1] = rows[0]
+				case "wrong_index_schema":
+					index["schema_version"] = "ptsip-official-engine-index/v2"
+				case "wrong_version":
+					rows[0].(map[string]any)["version"] = "9.0.0"
+				case "nonselected_version":
+					rows[1].(map[string]any)["version"] = "9.0.0"
+				}
+				writeFixture(t, root, "src/ptsip/engines/index.json", index)
+			}
+			if _, err := Build(root, opts); err == nil {
+				t.Fatal("untrusted assembly accepted", defect)
+			}
+			if _, err := os.Stat(opts.Output); !os.IsNotExist(err) {
+				t.Fatal("rejected input wrote an artifact", err)
+			}
+		})
+	}
+}

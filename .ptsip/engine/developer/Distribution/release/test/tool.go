@@ -14,7 +14,8 @@ import (
 	release "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller"
 )
 
-func toolSource(root, source string) (string, func(), error) {
+// StageToolSource materializes the exact Git source used to verify a Tool artifact.
+func StageToolSource(root, source string) (string, func(), error) {
 	dir, err := os.MkdirTemp("", "ptsip-tool-source-")
 	if err != nil {
 		return "", func() {}, err
@@ -121,6 +122,39 @@ func verifyTool(root, out, version, source string) error {
 	if wheel == "" {
 		return fmt.Errorf("Tool wheel missing")
 	}
+	if err := VerifyToolWheelContents(root, wheel, version, source); err != nil {
+		return err
+	}
+	env, err := os.MkdirTemp("", "ptsip-tool-consumer-")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(env)
+	if err = command(root, nil, "python", "-m", "venv", env); err != nil {
+		return err
+	}
+	python, cli := filepath.Join(env, "bin/python"), filepath.Join(env, "bin/ptsip")
+	if runtime.GOOS == "windows" {
+		python = filepath.Join(env, "Scripts/python.exe")
+		cli = filepath.Join(env, "Scripts/ptsip.exe")
+	}
+	if err = command(root, nil, python, "-m", "pip", "install", "--disable-pip-version-check", wheel); err != nil {
+		return err
+	}
+	data, err := release.Run(env, cli, "--version")
+	if err != nil {
+		return err
+	}
+	if !strings.Contains(string(data), version) {
+		return fmt.Errorf("installed CLI version differs")
+	}
+	_, err = release.Run(env, cli, "spec")
+	return err
+}
+
+// VerifyToolWheelContents checks the pinned license and Tool metadata and
+// rejects unapproved build output before installing the Wheel.
+func VerifyToolWheelContents(root, wheel, version, source string) error {
 	r, err := zip.OpenReader(wheel)
 	if err != nil {
 		return err
@@ -155,31 +189,7 @@ func verifyTool(root, out, version, source string) error {
 	if !foundMetadata || !foundLicense {
 		return fmt.Errorf("Tool metadata or canonical license bytes differ (metadata=%t license=%t)", foundMetadata, foundLicense)
 	}
-	env, err := os.MkdirTemp("", "ptsip-tool-consumer-")
-	if err != nil {
-		return err
-	}
-	defer os.RemoveAll(env)
-	if err = command(root, nil, "python", "-m", "venv", env); err != nil {
-		return err
-	}
-	python, cli := filepath.Join(env, "bin/python"), filepath.Join(env, "bin/ptsip")
-	if runtime.GOOS == "windows" {
-		python = filepath.Join(env, "Scripts/python.exe")
-		cli = filepath.Join(env, "Scripts/ptsip.exe")
-	}
-	if err = command(root, nil, python, "-m", "pip", "install", "--disable-pip-version-check", wheel); err != nil {
-		return err
-	}
-	data, err := release.Run(env, cli, "--version")
-	if err != nil {
-		return err
-	}
-	if !strings.Contains(string(data), version) {
-		return fmt.Errorf("installed CLI version differs")
-	}
-	_, err = release.Run(env, cli, "spec")
-	return err
+	return nil
 }
 
 func forbiddenToolMember(name string) bool {

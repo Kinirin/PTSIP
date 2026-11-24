@@ -48,12 +48,14 @@ func requireFreshMain(opts PublicationOptions) error {
 	return nil
 }
 
-type pypiFile struct {
+// PyPIPublishedFile is the filename and digest returned by the PyPI release API.
+type PyPIPublishedFile struct {
 	Filename string
 	Digests  struct{ SHA256 string }
 }
 
-func checkPyPIFiles(bundle PublicationBundle, files []pypiFile) (map[string]string, error) {
+// MatchPublishedPyPIFiles verifies which admitted artifact bytes already exist.
+func MatchPublishedPyPIFiles(bundle PublicationBundle, files []PyPIPublishedFile) (map[string]string, error) {
 	existing := map[string]string{}
 	for _, file := range files {
 		if !has(bundle.Wheels, file.Filename) || existing[file.Filename] != "" || bundle.Files[file.Filename] != file.Digests.SHA256 {
@@ -78,12 +80,12 @@ func pypiFiles(bundle PublicationBundle) (map[string]string, error) {
 		return nil, fmt.Errorf("PyPI version read returned HTTP %d", resp.StatusCode)
 	}
 	var release struct {
-		URLs []pypiFile `json:"urls"`
+		URLs []PyPIPublishedFile `json:"urls"`
 	}
 	if err := json.NewDecoder(io.LimitReader(resp.Body, 2<<20)).Decode(&release); err != nil {
 		return nil, err
 	}
-	return checkPyPIFiles(bundle, release.URLs)
+	return MatchPublishedPyPIFiles(bundle, release.URLs)
 }
 
 func PreparePublication(root string, opts PublicationOptions, token string) (PublicationBundle, error) {
@@ -106,7 +108,7 @@ func PreparePublication(root string, opts PublicationOptions, token string) (Pub
 	if err := requireFreshMain(opts); err != nil {
 		return PublicationBundle{}, err
 	}
-	bundle, err := validatePublicationBundle(root, opts)
+	bundle, err := ValidatePublicationBundle(root, opts)
 	if err != nil {
 		return PublicationBundle{}, err
 	}

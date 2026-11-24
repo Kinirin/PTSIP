@@ -113,7 +113,7 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 		return result, fmt.Errorf("verification contract not admitted")
 	}
 	// The current contract permits source-bound test evidence only.
-	if err := verifyNonNormativeTestRoute(root, contractRef, contract); err != nil {
+	if err := CheckEvidenceRoute(root, contractRef, contract); err != nil {
 		return result, err
 	}
 	result.PolicyAuthority = "NOT_ASSERTED"
@@ -141,9 +141,9 @@ func Plan(root, mode, targets, optional string) (Execution, error) {
 	return result, err
 }
 
-// Only the registered read-only route may run until normative authority
-// exists. Every missing, changed or publication-granting input fails closed.
-func verifyNonNormativeTestRoute(root, contractRef string, contract TestContract) error {
+// CheckEvidenceRoute validates the contract for non-publishing release verification.
+// Every missing, changed or publication-granting input fails closed.
+func CheckEvidenceRoute(root, contractRef string, contract TestContract) error {
 	if contract.Boundary != boundary.Path {
 		return fmt.Errorf("verification boundary binding missing")
 	}
@@ -194,7 +194,7 @@ func command(root string, environment []string, argv ...string) error {
 }
 
 func Validate(root string) error {
-	return command(root, nil, "go", "-C", ".ptsip/engine/developer/Distribution/release/test", "test", "./...")
+	return command(root, nil, "go", "-C", "developer/tests", "test", "-mod=readonly", "./distribution/release/test/...")
 }
 
 func Execute(root string, selection release.Selection, id, platform string) (Receipt, error) {
@@ -270,7 +270,7 @@ func Execute(root string, selection release.Selection, id, platform string) (Rec
 			}
 		}
 	case "tool":
-		stage, cleanup, err := toolSource(root, selection.SourceSHA)
+		stage, cleanup, err := StageToolSource(root, selection.SourceSHA)
 		if err != nil {
 			return result, err
 		}

@@ -34,7 +34,39 @@ func tokens(pointer string) ([]string, error) {
 	return parts, nil
 }
 
+// Restore reconstructs the original source and requires its recorded digest.
 func Restore(doc Document) (Document, error) {
+	restored, err := reconstruct(doc)
+	if err != nil {
+		return nil, err
+	}
+	content := Object(doc["Policy_Content"])
+	expected := String(Object(content["source_document"])["sha256"])
+	if !digestPattern.MatchString(expected) {
+		return nil, fmt.Errorf("SOURCE_DIGEST_REQUIRED")
+	}
+	actual, err := Digest(restored)
+	if err != nil {
+		return nil, err
+	}
+	if actual != expected {
+		return nil, fmt.Errorf("SOURCE_DIGEST_MISMATCH")
+	}
+	return restored, nil
+}
+
+// ReconstructedDigest computes the canonical digest of a proposed source
+// partition. Callers authorizing a change must still verify the baseline and
+// the complete resulting policy independently with Restore or Verifier.Check.
+func ReconstructedDigest(doc Document) (string, error) {
+	restored, err := reconstruct(doc)
+	if err != nil {
+		return "", err
+	}
+	return Digest(restored)
+}
+
+func reconstruct(doc Document) (Document, error) {
 	if doc["schema_version"] != Version {
 		return nil, fmt.Errorf("UNSUPPORTED_UNIFIED_POLICY_VERSION")
 	}
@@ -89,17 +121,6 @@ func Restore(doc Document) (Document, error) {
 	restored := Object(value)
 	if restored == nil {
 		return nil, fmt.Errorf("RESTORED_SOURCE_MUST_BE_OBJECT")
-	}
-	expected := String(Object(content["source_document"])["sha256"])
-	if !digestPattern.MatchString(expected) {
-		return nil, fmt.Errorf("SOURCE_DIGEST_REQUIRED")
-	}
-	actual, err := Digest(restored)
-	if err != nil {
-		return nil, err
-	}
-	if actual != expected {
-		return nil, fmt.Errorf("SOURCE_DIGEST_MISMATCH")
 	}
 	return restored, nil
 }

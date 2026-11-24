@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	contractentry "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/entry"
 	"os"
 	"sort"
 	"strings"
@@ -45,7 +46,7 @@ func Check(root string, document authoring.Document, validate authoring.Validato
 	if stringValue(refs["public"]) != publicID || stringValue(refs["rules"]) != rulesID {
 		return fmt.Errorf("V2_SCHEMA_REGISTRATION_MISMATCH")
 	}
-	selection, err := authoring.SelectPolicyDocument(root, document)
+	selection, err := contractentry.SelectPolicyDocument(root, document)
 	if err != nil {
 		return err
 	}
@@ -62,7 +63,7 @@ func Check(root string, document authoring.Document, validate authoring.Validato
 			continue
 		}
 		id, p := stringValue(entry["schema_id"]), stringValue(entry["path"])
-		if err := authoring.CheckPolicyContractPath(p); err != nil {
+		if err := contractentry.CheckPolicyContractPath(p); err != nil {
 			return err
 		}
 		if id == "" || p == "" || known[id] {
@@ -86,7 +87,7 @@ func Check(root string, document authoring.Document, validate authoring.Validato
 	for _, id := range names {
 		entry := object(external[id])
 		p, expected := stringValue(entry["path"]), stringValue(entry["sha256"])
-		if err := authoring.CheckPolicyContractPath(p); err != nil {
+		if err := contractentry.CheckPolicyContractPath(p); err != nil {
 			return err
 		}
 		if known[id] || p == "" || len(expected) != 64 {

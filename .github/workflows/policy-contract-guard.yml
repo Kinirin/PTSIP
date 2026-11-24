@@ -33,13 +33,13 @@ jobs:
           python-version: '3.12'
       - name: Install registered validation runtime
         run: python -m pip install --disable-pip-version-check 'PTSIP==0.3.8b5' 'PyYAML==6.0.3'
-      - name: Test shared Go contracts and current policy source integrity
-        run: go -C src/ptsip/common_contract test ./... -count=1
+      - name: Guard Developer Go test locations
+        run: go -C developer/tests test -mod=readonly ./workflows -run '^TestDeveloperGoTest(Location|RelocationLedger)$' -count=1
       - name: Check read-only per-rule RA RAC AEC applicability registration
         shell: bash
         run: |
           set -euo pipefail
-          go -C .ptsip/engine/developer test ./policy/applicability/... -count=1
+          go -C developer/tests test -mod=readonly ./policy/applicability/... -count=1
           go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --snapshot --root "$GITHUB_WORKSPACE" > "$RUNNER_TEMP/policy-applicability-input.json"
           go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --input "$RUNNER_TEMP/policy-applicability-input.json" --output "$RUNNER_TEMP/policy-applicability-result.json" --summary
       - name: Retain machine-readable applicability assessment evidence
@@ -50,7 +50,7 @@ jobs:
           if-no-files-found: error
       - name: Test shared selection, authoring and review paths
         run: |
-          go -C .ptsip/engine/developer test ./internal/contractentry ./internal/contract_authoring ./policy/verification/... ./policy/review/... -count=1
+          go -C developer/tests test -mod=readonly ./policy/contract/... ./policy/verification/... ./policy/review/... ./responsibility_authority -count=1
           python -m unittest discover -s .ptsip/engine/developer/policy/verification -p changed_test.py
           python -m unittest discover -s .ptsip/engine/developer/policy/review -p workflow_test.py
       - name: Reject retired contract writes and validate changed policies
@@ -67,3 +67,6 @@ jobs:
           set -euo pipefail
           go -C .ptsip/engine/developer run ./policy/applicability/cmd/policy-applicability --local --skip-tests > "$RUNNER_TEMP/policy-applicability-local.json"
           test -s "$RUNNER_TEMP/policy-applicability-local.json"
+      - name: Test shared Go contracts and current policy source integrity
+        if: ${{ !cancelled() }}
+        run: go -C src/ptsip/common_contract test ./... -count=1

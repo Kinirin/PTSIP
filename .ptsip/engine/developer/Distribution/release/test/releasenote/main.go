@@ -373,7 +373,7 @@ func main() {
     flag.Parse()
     if *action == "documentation-check" || *action == "documentation-generate" || *action == "documentation-preview" {
         operation := strings.TrimPrefix(*action,"documentation-")
-        report,code := documentation.Run(*root,operation,*base,*head,*input,documentationValidator)
+        report,code := documentation.Run(*root,operation,*base,*head,*input,documentation.ValidateLocal)
         encoder := json.NewEncoder(os.Stdout)
         encoder.SetIndent("","  ")
         if err := encoder.Encode(report); err != nil { fmt.Fprintln(os.Stderr,err);os.Exit(2) }

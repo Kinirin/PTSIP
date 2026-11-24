@@ -3,11 +3,9 @@
 package contract_authoring
 
 import (
-	"bytes"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/entry"
 	"os"
 	"path"
 	"path/filepath"
@@ -18,13 +16,13 @@ import (
 type Document = map[string]any
 type Validator func(schema, instance any, resources []any) (bool, error)
 
-const BoundaryPath = ".ptsip/contracts/policy/boundary.json"
-const IdentityVocabularyPath = ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"
-const IdentityVocabularyID = "urn:ptsip:identity:policy:v1"
+const BoundaryPath = entry.BoundaryPath
+const IdentityVocabularyPath = entry.IdentityVocabularyPath
+const IdentityVocabularyID = entry.IdentityVocabularyID
 const FamilySource = IdentityVocabularyPath
-const FamilyDirectory = ".ptsip/contracts/policy/Policy_Rules"
+const FamilyDirectory = entry.FamilyDirectory
 const FamilySchema = ".ptsip/contracts/policy/Policy_Rules/Contract_Types.schema.json"
-const CommonSchema = ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json"
+const CommonSchema = entry.CommonSchema
 const ProfilePath = ".ptsip/profiles/Responsibility-Authority-list.yaml"
 const DefinitionsPath = ".ptsip/contracts/Responsibility-Authority/Responsibility-Authority.json"
 const RBACSchemaRoot = ".ptsip/contracts/compile-sealed-rbac/"
@@ -85,7 +83,7 @@ func LocalFile(root, relative string) (string, error) {
 	return current, nil
 }
 
-func readJSON(root, relative string) (Document, error) {
+func ReadJSON(root, relative string) (Document, error) {
 	file, err := LocalFile(root, relative)
 	if err != nil {
 		return nil, err
@@ -99,169 +97,6 @@ func readJSON(root, relative string) (Document, error) {
 		return nil, fmt.Errorf("INVALID_CONTRACT_JSON: %s: %v", relative, err)
 	}
 	return doc, nil
-}
-
-// IdentityValues reads one named vocabulary from the unified identity contract.
-// It performs no policy approval or name-based Family inference.
-func IdentityValues(document Document, name string) ([]any, error) {
-	if document["$id"] != IdentityVocabularyID {
-		return nil, fmt.Errorf("IDENTITY_VOCABULARY_ID_MISMATCH")
-	}
-	if name != "policy_kind" && name != "root_family" {
-		return nil, fmt.Errorf("UNKNOWN_IDENTITY_VOCABULARY: %s", name)
-	}
-	definition := object(object(document["$defs"])[name])
-	values, ok := definition["enum"].([]any)
-	if definition["type"] != "string" || !ok || len(values) == 0 {
-		return nil, fmt.Errorf("EMPTY_IDENTITY_VOCABULARY: %s", name)
-	}
-	seen := map[string]bool{}
-	for _, value := range values {
-		text := stringValue(value)
-		if text == "" || seen[text] {
-			return nil, fmt.Errorf("INVALID_IDENTITY_VOCABULARY: %s", name)
-		}
-		seen[text] = true
-	}
-	return values, nil
-}
-
-// Load exposes the v2 schema catalog for explicit legacy contract checks.
-// Unified candidate authoring resolves its own registered entry before this
-// loader. Historical Rules/ data is never an authoring fallback.
-func Load(root string) (*Catalog, error) {
-	absolute, err := filepath.Abs(root)
-	if err != nil {
-		return nil, err
-	}
-	boundary, err := readJSON(absolute, BoundaryPath)
-	if err != nil {
-		return nil, err
-	}
-	if boundary["domain"] != "policy" || object(boundary["namespaces"])["rules"] != "Policy_Rules/" {
-		return nil, fmt.Errorf("POLICY_RULES_BOUNDARY_INVALID")
-	}
-	binding := object(boundary["rules_binding"])
-	for key, expected := range map[string]string{
-		"family_source": FamilySource, "directory": FamilyDirectory,
-		"contract_schema": FamilySchema, "selection_schema": CommonSchema,
-		"family_selection":       FamilyDirectory + "/Family_Selection.json",
-		"responsibility_profile": ProfilePath, "responsibility_contract": DefinitionsPath,
-	} {
-		if binding[key] != expected {
-			return nil, fmt.Errorf("RULES_BINDING_MISMATCH: %s", key)
-		}
-	}
-	c, err := LoadResponsibilities(absolute)
-	if err != nil {
-		return nil, err
-	}
-	vocabulary, err := readJSON(absolute, FamilySource)
-	if err != nil {
-		return nil, err
-	}
-	values, err := IdentityValues(vocabulary, "root_family")
-	if err != nil {
-		return nil, err
-	}
-	registry, err := readJSON(absolute, ".ptsip/contracts/policy/candidate.index.json")
-	if err != nil {
-		return nil, err
-	}
-	if registry["active_registration"] != true || registry["active_policy_cutover"] != "STRUCTURE_V2_ACTIVE" {
-		return nil, fmt.Errorf("V2_POLICY_STRUCTURE_NOT_ACTIVE")
-	}
-	known := map[string]bool{}
-	for _, raw := range c.Resources {
-		known[stringValue(object(raw)["$id"])] = true
-	}
-	add := func(file, id string) error {
-		if err := CheckPolicyContractPath(file); err != nil {
-			return err
-		}
-		doc, err := readJSON(absolute, file)
-		if err != nil {
-			return err
-		}
-		if doc["$id"] != id {
-			return fmt.Errorf("SCHEMA_ID_MISMATCH: %s", file)
-		}
-		if !known[id] {
-			c.Resources = append(c.Resources, doc)
-			known[id] = true
-		}
-		if id == "urn:ptsip:candidate:contract:policy:public-structure:v2" {
-			c.Common = doc
-		}
-		return nil
-	}
-	artifacts, ok := registry["artifacts"].([]any)
-	if !ok {
-		return nil, fmt.Errorf("V2_SCHEMA_ARTIFACTS_MISSING")
-	}
-	for _, raw := range artifacts {
-		item := object(raw)
-		if item["kind"] == "SCHEMA" {
-			file, id := stringValue(item["path"]), stringValue(item["schema_id"])
-			if !strings.HasPrefix(file, ".ptsip/contracts/policy/") || id == "" {
-				return nil, fmt.Errorf("V2_SCHEMA_OUTSIDE_POLICY_CONTRACT_ROOT")
-			}
-			if err := add(file, id); err != nil {
-				return nil, err
-			}
-		}
-	}
-	for id, raw := range object(registry["external_resources"]) {
-		item := object(raw)
-		file := stringValue(item["path"])
-		if !strings.HasPrefix(file, ".ptsip/contracts/policy/") && !strings.HasPrefix(file, RBACSchemaRoot) {
-			return nil, fmt.Errorf("RETIRED_OR_UNREGISTERED_CONTRACT_ROOT: %s", file)
-		}
-		name, err := LocalFile(absolute, file)
-		if err != nil {
-			return nil, err
-		}
-		data, err := os.ReadFile(name)
-		if err != nil {
-			return nil, err
-		}
-		digest := sha256.Sum256(bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n")))
-		if hex.EncodeToString(digest[:]) != stringValue(item["sha256"]) {
-			return nil, fmt.Errorf("V2_EXTERNAL_RESOURCE_DIGEST_MISMATCH: %s", id)
-		}
-		if err := add(file, id); err != nil {
-			return nil, err
-		}
-	}
-	if c.Common == nil {
-		return nil, fmt.Errorf("V2_PUBLIC_SCHEMA_UNRESOLVED")
-	}
-	selection, err := readJSON(absolute, FamilyDirectory+"/Family_Selection.json")
-	if err != nil {
-		return nil, err
-	}
-	if selection["active"] != true || selection["selection_basis"] != "DECLARED_POLICY_IDENTITY_ROOT_FAMILY" {
-		return nil, fmt.Errorf("V2_FAMILY_SELECTION_INACTIVE")
-	}
-	routes := object(selection["family_routes"])
-	for _, raw := range values {
-		family := stringValue(raw)
-		selected, err := SelectPolicy(absolute, "PTSIP_DEVELOPER_POLICY", family)
-		if err != nil {
-			return nil, err
-		}
-		route := object(routes[family])
-		ref := selected.ContractRefs["family_fields"]
-		if route["rules_schema_ref"] != commonID || route["document_fields_ref"] != ref {
-			return nil, fmt.Errorf("V2_FAMILY_RULE_SCHEMA_MISMATCH: %s", family)
-		}
-		c.Families = append(c.Families, family)
-		c.Contracts[family] = Document{"$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "urn:ptsip:policy:family-fields:" + family + ":v1", "$ref": ref}
-	}
-	if len(routes) != len(c.Families) {
-		return nil, fmt.Errorf("V2_FAMILY_ROUTE_COUNT_MISMATCH")
-	}
-	return c, nil
 }
 
 // LoadResponsibilities has no policy-family or policy-lifecycle dependency.
@@ -288,7 +123,7 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		{AuthorizationDecisionSchemaPath, "urn:ptsip:rbac:authorization-decision:v1", &c.AuthorizationDecisionShape},
 	}
 	for _, resource := range resources {
-		doc, err := readJSON(absolute, resource.file)
+		doc, err := ReadJSON(absolute, resource.file)
 		if err != nil {
 			return nil, err
 		}
@@ -300,15 +135,15 @@ func LoadResponsibilities(root string) (*Catalog, error) {
 		}
 		c.Resources = append(c.Resources, doc)
 	}
-	c.Definitions, err = readJSON(absolute, DefinitionsPath)
+	c.Definitions, err = ReadJSON(absolute, DefinitionsPath)
 	if err != nil {
 		return nil, err
 	}
-	c.Authorizations, err = readJSON(absolute, AuthorizationDataPath)
+	c.Authorizations, err = ReadJSON(absolute, AuthorizationDataPath)
 	if err != nil {
 		return nil, err
 	}
-	c.AuthorizationDecision, err = readJSON(absolute, AuthorizationDecisionDataPath)
+	c.AuthorizationDecision, err = ReadJSON(absolute, AuthorizationDecisionDataPath)
 	if err != nil {
 		return nil, err
 	}
@@ -347,13 +182,6 @@ func (c *Catalog) CheckContracts(v Validator) error {
 	}
 	if _, _, err := c.definitionIDs(); err != nil {
 		return err
-	}
-	for _, family := range c.Families {
-		// Compile exact current Family profile references. Probe validity is not
-		// policy fulfillment, approval or a generation template.
-		if _, err := v(c.Contracts[family], Document{}, c.Resources); err != nil {
-			return fmt.Errorf("INVALID_FAMILY_STRUCTURE: %s: %w", family, err)
-		}
 	}
 	return nil
 }
@@ -502,4 +330,9 @@ func keys(doc Document) []string {
 	}
 	sort.Strings(result)
 	return result
+}
+
+// ValidatePolicySchema delegates v2 validation to the registered catalog resources.
+func (c *Catalog) ValidatePolicySchema(v Validator, doc Document) error {
+	return c.validate(v, c.Common, doc, "policy document")
 }

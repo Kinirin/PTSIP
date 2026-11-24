@@ -9,7 +9,10 @@ on:
       - .ptsip/engine/developer/Distribution/index.json
       - .ptsip/engine/developer/index.json
       - .ptsip/engine/developer/main.go
-      - .ptsip/engine/developer/main_test.go
+      - developer/tests/distribution/branch/**
+      - developer/tests/module/**
+      - developer/tests/go.mod
+      - developer/tests/go.sum
       - .ptsip/engine/developer/go.mod
       - .ptsip/engine/developer/go.sum
   pull_request:
@@ -19,7 +22,10 @@ on:
       - .ptsip/engine/developer/Distribution/index.json
       - .ptsip/engine/developer/index.json
       - .ptsip/engine/developer/main.go
-      - .ptsip/engine/developer/main_test.go
+      - developer/tests/distribution/branch/**
+      - developer/tests/module/**
+      - developer/tests/go.mod
+      - developer/tests/go.sum
       - .ptsip/engine/developer/go.mod
       - .ptsip/engine/developer/go.sum
   workflow_dispatch:
@@ -40,12 +46,12 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: .ptsip/engine/developer/go.mod
-          cache-dependency-path: .ptsip/engine/developer/go.sum
+          cache-dependency-path: developer/tests/go.sum
       - name: Test independent branch implementation and HTTP boundary
-        run: go -C .ptsip/engine/developer test ./Distribution/branch/... -count=1
+        run: go -C developer/tests test -mod=readonly ./distribution/branch/... -count=1
       - name: Vet the independent branch implementation
         run: go -C .ptsip/engine/developer vet ./Distribution/branch/...
       - name: Verify module index registration
-        run: go -C .ptsip/engine/developer test . -run '^TestModuleIndexesAndEntrypointStayInSync$' -count=1
+        run: go -C developer/tests test -mod=readonly ./module -run '^TestModuleIndexesAndEntrypointStayInSync$' -count=1
       - name: Check current branch contract
         run: go -C .ptsip/engine/developer run . --validator branch-check --root ../../..

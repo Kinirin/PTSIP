@@ -197,6 +197,45 @@ func Run(root string) (Report, int) {
 		return report, 2
 	}
 	report.PackageVersion = e.PackageVersion
+	corpusReady := inspectCorpus(root, &report, func(doc any) error { return nativeCheck(e, doc) })
+	// Status shape and routing probes independently use the installed engine.
+	// Full policy document conformance remains outside this validator.
+	if corpusReady {
+		probe := ProbePolicyStatus(root, func(schema, instance any, resources []any) (bool, error) {
+			return nativeValidate(e, schema, instance, resources)
+		})
+		report.StatusProbe = &probe
+		if probe.Status != "PASS" {
+			report.Failed++
+		}
+		routing := probePolicyRouting(root, e)
+		report.RoutingProbe = &routing
+		if routing.Status != "PASS" {
+			report.Failed++
+			report.Findings = append(report.Findings, Finding{File: policyRoutingData, Status: "FAIL", Problem: routing.Problem})
+		}
+	}
+	if report.Failed == 0 {
+		report.Status = "LIMITED_CHECK_PASS"
+		return report, 0
+	}
+	return report, 2
+}
+
+// InspectCorpus reports the local schema-corpus checks available without an
+// installed engine. Policy and full JSON Schema conformance remain unasserted.
+func InspectCorpus(root string) Report {
+	report := Report{Status: "FAIL", Scope: "LIMITED_SCHEMA_JSON_CHECK",
+		Engine: "DEVELOPER_GO", PolicyConformance: "NOT_ASSERTED",
+		FullJSONSchemaConformance: "NOT_ASSERTED", Findings: []Finding{}}
+	inspectCorpus(root, &report, nil)
+	if report.Failed == 0 {
+		report.Status = "LIMITED_CHECK_PASS"
+	}
+	return report
+}
+
+func inspectCorpus(root string, report *Report, checkDocument func(any) error) bool {
 	paths, problems := schemaFiles(root)
 	report.Failed += len(problems)
 	report.Findings = append(report.Findings, problems...)
@@ -245,8 +284,8 @@ func Run(root string) (Report, int) {
 			collectRefs(obj, &f.UnverifiedRefs)
 			sort.Strings(f.UnverifiedRefs)
 			report.UnverifiedReferences += len(f.UnverifiedRefs)
-			if f.Status != "FAIL" {
-				if error := nativeCheck(e, doc); error != nil {
+			if f.Status != "FAIL" && checkDocument != nil {
+				if error := checkDocument(doc); error != nil {
 					f.Status = "FAIL"
 					f.Problem = error.Error()
 				}
@@ -257,27 +296,5 @@ func Run(root string) (Report, int) {
 		}
 		report.Findings = append(report.Findings, f)
 	}
-	// Status shape probe is independent of the limited document-shape scan.
-	// It checks the flat shared Policy_Status schema through the installed engine.
-	// Full policy document conformance remains outside this validator.
-	if len(problems) == 0 {
-		probe := probeApprovedFlatPolicyStatus(root, e)
-		report.StatusProbe = &probe
-		if probe.Status != "PASS" {
-			report.Failed++
-		}
-		routing := probePolicyRouting(root, e)
-		report.RoutingProbe = &routing
-		if routing.Status != "PASS" {
-			report.Failed++
-			report.Findings = append(report.Findings, Finding{File: policyRoutingData, Status: "FAIL", Problem: routing.Problem})
-		}
-	}
-	if report.Failed == 0 {
-		report.Status = "LIMITED_CHECK_PASS"
-	}
-	if report.Failed > 0 {
-		return report, 2
-	}
-	return report, 0
+	return len(problems) == 0
 }

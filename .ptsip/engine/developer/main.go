@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -17,9 +18,11 @@ import (
 	releasenote "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/releasenote"
 	release_version "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/version"
 	responsibilityauthority "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Responsibility-Authority/verification"
-	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
-	contractentry "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractentry"
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/layout"
+	contract_authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/authoring"
+	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/check"
+	contractentry "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/entry"
+	policy_update "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/update"
 	schema_check "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/verification"
 )
 
@@ -75,7 +78,7 @@ var validators = map[string]Validator{
 func main() {
 	root := flag.String("root", ".", "repository root")
 	selected := flag.String("validator", "schema-check", "registered developer validator")
-	operation := flag.String("operation", "check", "authoring: check, generate, describe; release-version-diff: preview, check, apply; release-documentation: check, preview, generate")
+	operation := flag.String("operation", "check", "authoring: check, generate, describe, update; release-version-diff: preview, check, apply; release-documentation: check, preview, generate")
 	family := flag.String("family", "", "explicit Root Family for policy-rules generation or description")
 	input := flag.String("input", "", "repository-relative JSON/YAML input, or - for stdin")
 	dryRun := flag.Bool("dry-run", false, "resolve contract entry without invoking validation")
@@ -116,7 +119,7 @@ func main() {
 			emit(map[string]any{"status": "SELECTED_NOT_EXECUTED", "selection": selection, "execution_authorized": false, "mutation_authorized": false})
 			return
 		}
-		verified, code := schema_check.RunDocument(absolute, selection.Validator, selection.Target)
+		verified, code := check.RunDocument(absolute, selection.Validator, selection.Target, schema_check.InstalledValidator)
 		status := "CHECK_COMPLETED"
 		if code != 0 {
 			status = "CHECK_FAILED"
@@ -146,11 +149,22 @@ func main() {
 			emit(map[string]any{"status": "FAIL", "problem": "POLICY_VERIFICATION_REQUIRES_CHECK_WITH_INPUT", "execution_authorized": false})
 			os.Exit(2)
 		}
-		report, code := schema_check.RunDocument(*root, *selected, *input)
+		report, code := check.RunDocument(*root, *selected, *input, schema_check.InstalledValidator)
 		emit(report)
 		os.Exit(code)
 	}
 	if *selected == "policy-rules" || *selected == "responsibility-authority" {
+		if *selected == "policy-rules" && *operation == "update" {
+			if *family != "" || *output != "" || *target != "" || *dryRun {
+				emit(map[string]any{"status": "FAIL", "problem": "POLICY_UPDATE_REQUIRES_BOUND_REQUEST_ONLY", "execution_authorized": false})
+				os.Exit(2)
+			}
+			// This standalone CLI has no registered trusted approval provider.
+			// Trusted owner integrations call update.Run with their own verifier.
+			report, code := policy_update.Run(context.Background(), *root, *input, nil)
+			emit(report)
+			os.Exit(code)
+		}
 		// Candidate authoring uses the shared repository verifier. Initialize
 		// the installed v2 validator only when a legacy/profile check needs it.
 		var installed contract_authoring.Validator

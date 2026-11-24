@@ -14,6 +14,7 @@ on:
       - .ptsip/engine/developer/Distribution/release/version/**
       - .github/workflows/readme-translation.yml
       - .ptsip/engine/developer/Distribution/release/test/releasenote/**
+      - developer/tests/distribution/release/test/releasenote/**
       - .github/workflows/readme-verification.yml
       - docs/translated/index.yaml
   workflow_dispatch:
@@ -46,12 +47,14 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: .ptsip/engine/developer/Distribution/release/test/go.mod
-          cache-dependency-path: .ptsip/engine/developer/Distribution/release/test/go.sum
+          cache-dependency-path: |
+            .ptsip/engine/developer/Distribution/release/test/go.sum
+            developer/tests/go.sum
 
       - name: Verify README translation controller independently
         shell: pwsh
         run: |
-          go -C .ptsip/engine/developer/Distribution/release/test test ./releasenote
+          go -C developer/tests test -mod=readonly ./distribution/release/test/releasenote -count=1
           if ($LASTEXITCODE -ne 0) { throw 'Independent Go README translation regression failed.' }
 
       - name: Build registered-language translator

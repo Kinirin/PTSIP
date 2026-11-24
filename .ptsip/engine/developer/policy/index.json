@@ -8,6 +8,30 @@
   "domain": "policy",
   "components": [
     {
+      "id": "contract-entry",
+      "root": "contract/entry",
+      "state": "IMPLEMENTED",
+      "implementation": "contract/entry/Selection.go"
+    },
+    {
+      "id": "contract-check",
+      "root": "contract/check",
+      "state": "IMPLEMENTED",
+      "implementation": "contract/check/Document.go"
+    },
+    {
+      "id": "contract-authoring",
+      "root": "contract/authoring",
+      "state": "IMPLEMENTED",
+      "implementation": "contract/authoring/CLI.go"
+    },
+    {
+      "id": "contract-update",
+      "root": "contract/update",
+      "state": "IMPLEMENTED",
+      "implementation": "contract/update/Update.go"
+    },
+    {
       "id": "identity",
       "root": "verification/identity",
       "state": "STRUCTURE_ONLY",
@@ -37,12 +61,6 @@
       "root": "verification",
       "state": "STRUCTURE_ONLY",
       "implementation": "verification/Finding.go"
-    },
-    {
-      "id": "test",
-      "root": "test",
-      "state": "IMPLEMENTED",
-      "implementation": "test/Verifier_test.go"
     },
     {
       "id": "contract-applicability-assessment",

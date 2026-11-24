@@ -17,17 +17,23 @@ type GateOptions struct {
 	Repository, SourceSHA, Kind string
 	RunID                       int64
 }
-type gateRun struct {
+
+// WorkflowRunEvidence identifies the exact workflow that produced the observations.
+type WorkflowRunEvidence struct {
 	ID      int64  `json:"id"`
 	HeadSHA string `json:"head_sha"`
 	Event   string `json:"event"`
 	Path    string `json:"path"`
 }
-type gateJob struct {
+
+// WorkflowJobEvidence records job and step conclusions for the selected run.
+type WorkflowJobEvidence struct {
 	Name, Status, Conclusion string
 	Steps                    []struct{ Name, Conclusion string }
 }
-type gateArtifact struct {
+
+// WorkflowArtifactEvidence binds each retained artifact to its producing run.
+type WorkflowArtifactEvidence struct {
 	Name        string
 	Expired     bool
 	Size        int64 `json:"size_in_bytes"`
@@ -46,7 +52,9 @@ type GateResult struct {
 	PublicationAuthorized   bool     `json:"publication_authorized"`
 }
 
-func validateGate(opts GateOptions, run gateRun, jobs []gateJob, artifacts []gateArtifact) (GateResult, error) {
+// ValidateWorkflowEvidence checks an observed engine verification matrix and its
+// artifacts against the selected source. Gate uses it after fetching evidence.
+func ValidateWorkflowEvidence(opts GateOptions, run WorkflowRunEvidence, jobs []WorkflowJobEvidence, artifacts []WorkflowArtifactEvidence) (GateResult, error) {
 	if !sourcePattern.MatchString(opts.SourceSHA) || opts.RunID <= 0 || run.ID != opts.RunID || run.HeadSHA != opts.SourceSHA || run.Event != "workflow_dispatch" || run.Path != ".github/workflows/tooling-release.yml" {
 		return GateResult{}, fmt.Errorf("workflow/source identity mismatch")
 	}
@@ -164,14 +172,14 @@ func Gate(root string, opts GateOptions, token string) (GateResult, error) {
 		}
 		return json.NewDecoder(io.LimitReader(resp.Body, 10<<20)).Decode(out)
 	}
-	var run gateRun
+	var run WorkflowRunEvidence
 	if err := get("", &run); err != nil {
 		return GateResult{}, err
 	}
-	jobs := []gateJob{}
-	artifacts := []gateArtifact{}
+	jobs := []WorkflowJobEvidence{}
+	artifacts := []WorkflowArtifactEvidence{}
 	for page := 1; ; page++ {
-		var result struct{ Jobs []gateJob }
+		var result struct{ Jobs []WorkflowJobEvidence }
 		if err := get("/jobs?filter=latest&per_page=100&page="+strconv.Itoa(page), &result); err != nil {
 			return GateResult{}, err
 		}
@@ -181,7 +189,7 @@ func Gate(root string, opts GateOptions, token string) (GateResult, error) {
 		}
 	}
 	for page := 1; ; page++ {
-		var result struct{ Artifacts []gateArtifact }
+		var result struct{ Artifacts []WorkflowArtifactEvidence }
 		if err := get("/artifacts?per_page=100&page="+strconv.Itoa(page), &result); err != nil {
 			return GateResult{}, err
 		}
@@ -190,5 +198,5 @@ func Gate(root string, opts GateOptions, token string) (GateResult, error) {
 			break
 		}
 	}
-	return validateGate(opts, run, jobs, artifacts)
+	return ValidateWorkflowEvidence(opts, run, jobs, artifacts)
 }

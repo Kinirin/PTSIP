@@ -1,4 +1,8 @@
-# Current contract authoring entry
+# Shared document and responsibility helpers
+
+The [developer policy contract module](../../policy/contract/README.md) owns
+current policy selection, verification, creation, and approved updates. This
+package shares document I/O and the Responsibility-Authority profile helpers.
 
 The repository-local entry is `.ptsip/index.json` → `.ptsip/contracts/index.json`.
 Policy selection follows `policy/boundary.json`, `policy/routing/policy_routes.json`,

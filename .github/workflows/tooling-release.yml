@@ -55,7 +55,7 @@ jobs:
         run: |
           set -euo pipefail
           test -f .github/test_modes.json
-          go -C .ptsip/engine/developer test ./release -count=1
+          go -C developer/tests test -mod=readonly ./distribution/release/test -run '^TestReleaseStructure' -count=1
           go -C .ptsip/engine/developer run . --validator release-admission-check --root "$GITHUB_WORKSPACE"
       - name: Admit the effective CTRL normative release policy (fail closed)
         shell: bash

@@ -126,20 +126,19 @@ fn inspect_engine(
     }
     let (bindings, _) = read(package, text(entry, "execution_binding_ref")?)?;
     let bs = list(&bindings, "bindings")?;
-    if bs.len() != 1 {
-        return Err("ambiguous native entrypoint binding".into());
+    for row in bs {
+        schema(package, index, "execution-binding", row)?;
     }
-    let b = &bs[0];
-    schema(package, index, "execution-binding", b)?;
+    let b = crate::registry::select_execution_binding(
+        bs,
+        id,
+        version,
+        text(&contract, "contract_id")?,
+        text(&contract, "version")?,
+    )?;
     let executable = format!("ptsip-engine-{name}");
-    if b["engine_id"] != id
-        || b["engine_version"] != version
-        || b["capability_id"] != contract["contract_id"]
-        || b["contract_version"] != contract["version"]
-        || b["entrypoint"] != executable
-        || b["permission_grant"] != false
-    {
-        return Err("native binding identity, version or permission boundary differs".into());
+    if b["entrypoint"] != executable {
+        return Err("native binding entrypoint differs".into());
     }
     *failed_dimension = "transport_agreement";
     let transport = bound(package, &b["transport_ref"])?;

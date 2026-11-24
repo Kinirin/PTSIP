@@ -75,7 +75,7 @@ aliases. The Go selector itself does not depend on Python; the existing
 ```powershell
 go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/ARCH/MPD-ARCH-0001.yaml --dry-run
 go -C .ptsip/engine/developer run . --validator contract-entry --root ../../.. --target developer/policy/ARCH/MPD-ARCH-0001.yaml
-go -C .ptsip/engine/developer test ./internal/contractentry -count=1
+go -C developer/tests test ./policy/contract/entry -count=1
 ```
 
 Other current domain validators retain their explicit commands. `src/policy/**`

@@ -148,8 +148,8 @@ Local checks, from the repository root:
 
 ```powershell
 $env:PTSIP_PYTHON = (Resolve-Path .venv/Scripts/python.exe).Path
-go -C .ptsip/engine/developer test ./policy/review/... ./internal/contractentry -count=1
-go -C .ptsip/engine/developer vet ./policy/review/... ./internal/contractentry
+go -C developer/tests test ./policy/review ./policy/contract/entry -count=1
+go -C .ptsip/engine/developer vet ./policy/review/... ./policy/contract/entry
 & .venv/Scripts/python.exe -m unittest discover -s .ptsip/engine/developer/policy/review -p workflow_test.py -v
 ```
 

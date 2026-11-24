@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	authoring "github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contract_authoring"
-	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/internal/contractentry"
+	contractentry "github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/entry"
 )
 
 const Format = "ptsip-non-normative-policy-review/v1"
@@ -24,11 +24,11 @@ type Finding struct {
 }
 
 type Target struct {
-	Path             string                   `json:"path"`
-	Document         any                      `json:"document"`
-	Selection        *contractentry.Selection `json:"selection,omitempty"`
-	SelectionProblem string                   `json:"selection_problem,omitempty"`
-	FieldFindings    []Finding                `json:"field_findings"`
+	Path             string                         `json:"path"`
+	Document         any                            `json:"document"`
+	Selection        *contractentry.PolicySelection `json:"selection,omitempty"`
+	SelectionProblem string                         `json:"selection_problem,omitempty"`
+	FieldFindings    []Finding                      `json:"field_findings"`
 }
 
 type Source struct {
@@ -216,7 +216,7 @@ func Build(root string, targets, sources []string) (Packet, error) {
 					return packet, err
 				}
 			}
-			if authoring.IsUnifiedPolicy(doc) {
+			if contractentry.IsUnifiedPolicy(doc) {
 				schema, err := read(selection.ContractRefs["public_schema"])
 				if err != nil {
 					return packet, err
@@ -252,7 +252,7 @@ func Build(root string, targets, sources []string) (Packet, error) {
 					continue
 				}
 				ref, _ := item["path"].(string)
-				if err := authoring.CheckPolicyContractPath(ref); err != nil {
+				if err := contractentry.CheckPolicyContractPath(ref); err != nil {
 					return packet, err
 				}
 				if err := record(ref); err != nil {
@@ -263,7 +263,7 @@ func Build(root string, targets, sources []string) (Packet, error) {
 			for _, raw := range external {
 				item, _ := raw.(map[string]any)
 				ref, _ := item["path"].(string)
-				if err := authoring.CheckPolicyContractPath(ref); err != nil {
+				if err := contractentry.CheckPolicyContractPath(ref); err != nil {
 					return packet, err
 				}
 				if err := record(ref); err != nil {

@@ -18,7 +18,9 @@ import (
 
 const PublicationContract = boundary.Path
 
-func validateCanonicalVersion(root, kind, projected string) error {
+// ValidateCanonicalEngineVersion checks the registered engine version metadata
+// for the expected owner and projection.
+func ValidateCanonicalEngineVersion(root, kind, projected string) error {
 	p, err := inside(root, "src/ptsip/engines/"+kind+"/version.yaml")
 	if err != nil {
 		return err
@@ -57,7 +59,9 @@ func AdmitPublication(root string) error { return boundary.RequirePublication(ro
 
 // Reconstruct each wheel with the current registered assembler and its embedded
 // binary. Byte equality covers membership, metadata, RECORD, license and origin.
-func validatePublicationBundle(root string, opts PublicationOptions) (PublicationBundle, error) {
+// ValidatePublicationBundle checks exact-source wheel files and receipt
+// evidence before publication preparation.
+func ValidatePublicationBundle(root string, opts PublicationOptions) (PublicationBundle, error) {
 	var bundle PublicationBundle
 	if !has(kinds, opts.Kind) || !sourcePattern.MatchString(opts.SourceSHA) || opts.RunID <= 0 {
 		return bundle, fmt.Errorf("one registered engine and exact verification source/run are required")
@@ -81,7 +85,7 @@ func validatePublicationBundle(root string, opts PublicationOptions) (Publicatio
 	if selected.ID == "" || !versionPattern.MatchString(selected.Version) {
 		return bundle, fmt.Errorf("engine identity/version is not registered")
 	}
-	if err := validateCanonicalVersion(root, opts.Kind, selected.Version); err != nil {
+	if err := ValidateCanonicalEngineVersion(root, opts.Kind, selected.Version); err != nil {
 		return bundle, err
 	}
 	var catalog struct {

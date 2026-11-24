@@ -1,0 +1,1879 @@
+{
+  "format": "ptsip-developer-go-test-relocation-ledger/v1",
+  "plan_id": "DEV-038-DOT-PTSIP-GO-TEST-RELOCATION",
+  "work_unit": "WU-16",
+  "baseline_head": "ef32c3257cf938d72b27d17f80a3a712ae7a2561",
+  "acceptance": {
+    "tracked_location": "go -C developer/tests test -mod=readonly ./workflows -run '^TestDeveloperGoTest(Location|RelocationLedger)$' -count=1",
+    "independent_suite": "go -C developer/tests test -mod=readonly ./distribution/... ./module ./policy/applicability/... ./policy/contract/... ./policy/review/... ./policy/verification/... ./responsibility_authority -count=1"
+  },
+  "files": [
+    {
+      "source": ".ptsip/engine/developer/Distribution/branch/cli_test.go",
+      "target": "developer/tests/distribution/branch/cli_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "branch",
+      "responsibility": "distribution/branch",
+      "test_identifiers": [
+        "TestBranchCLIContractAndClosedArguments",
+        "TestStandaloneBranchCLIWorksWithoutLegacyDirectories"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Distribution/branch -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/branch -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/branch/control_test.go",
+      "target": "developer/tests/distribution/branch/control_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "branch",
+      "responsibility": "distribution/branch",
+      "test_identifiers": [
+        "TestBranchQueriesAndPaginationUseOnlyReadTransport",
+        "TestBranchMutationsAreStoppedBeforeAnyNetworkCall",
+        "TestBranchUnknownOperationsAndMalformedResponsesFailClosed"
+      ],
+      "helpers": [
+        "RoundTrip",
+        "reply"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Distribution/branch -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/branch -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/branch/guard_test.go",
+      "target": "developer/tests/distribution/branch/guard_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "branch",
+      "responsibility": "distribution/branch",
+      "test_identifiers": [
+        "TestBranchGuardWithoutLegacyPolicyTrees",
+        "TestBranchClassificationAndTransitionCannotRestoreRetiredAuthority",
+        "TestBranchContractCannotSelfAuthorizeMutation"
+      ],
+      "helpers": [
+        "moduleRoot",
+        "contractFixture",
+        "errorCode"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Distribution/branch -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/branch -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/controller/ctrl_admission_test.go",
+      "target": "developer/tests/distribution/release/controller/ctrl_admission_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/controller",
+      "source_package": "releasecontroller",
+      "responsibility": "distribution/release/controller",
+      "test_identifiers": [
+        "TestCTRLPublicationGateDoesNotLoadLegacyAuthority"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/controller test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/controller -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/controller/native_wheel_receipt_test.go",
+      "target": "developer/tests/distribution/release/controller/native_wheel_receipt_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/controller",
+      "source_package": "releasecontroller",
+      "responsibility": "distribution/release/controller",
+      "test_identifiers": [
+        "TestNativeWheelReceiptArchiveBinding",
+        "TestNativeWheelReceiptEngineProofUsesCommittedBytes"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "storage/profile/project-profile.schema.json",
+        "-py3-none-linux_x86_64.whl",
+        "ptsip-engines.json",
+        "snapshot.json",
+        "graph.json",
+        "proof.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/controller test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/controller -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/controller/package_build_test.go",
+      "target": "developer/tests/distribution/release/controller/package_build_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/controller",
+      "source_package": "releasecontroller",
+      "responsibility": "distribution/release/controller",
+      "test_identifiers": [
+        "TestSourceBoundVerificationSnapshotAllowsChangedSourceForNonpublishingTests",
+        "TestSourceBoundVerificationSnapshotRejectsForgedOrIncompleteEvidence"
+      ],
+      "helpers": [
+        "sourceBoundJoinFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/controller test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/controller -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/controller/post_b5_versions_test.go",
+      "target": "developer/tests/distribution/release/controller/post_b5_versions_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/controller",
+      "source_package": "releasecontroller",
+      "responsibility": "distribution/release/controller",
+      "test_identifiers": [
+        "TestCurrentEngineVersionsAndProjectionsWithoutApprovalRegistry"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/controller test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/controller -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/controller/shipping_admission_test.go",
+      "target": "developer/tests/distribution/release/controller/shipping_admission_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/controller",
+      "source_package": "releasecontroller",
+      "responsibility": "distribution/release/controller",
+      "test_identifiers": [
+        "TestPublicationEvidenceAuthorityBlocksWithdrawnPolicy",
+        "TestAdmitShippingHasNoRetiredPolicyRuntimePath"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/controller test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/controller -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/controller/version_sync_test.go",
+      "target": "developer/tests/distribution/release/controller/version_sync_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/controller",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/controller",
+      "source_package": "releasecontroller",
+      "responsibility": "distribution/release/controller",
+      "test_identifiers": [
+        "TestSyncPackageVersionFromSource",
+        "TestFullCanonicalSourceProjectsIndependentVersions",
+        "TestVersionSyncRejectsInvalidOrMissingSource",
+        "TestVersionSyncRejectsAmbiguousProjectFields",
+        "TestVersionSyncPreservesCRLFAndSupportsStableRelease",
+        "TestPublicationEvidenceAuthorityRequiresCanonicalVersionProjection",
+        "TestPublicationEvidenceAuthorityVersionProjectionSuite",
+        "TestVersionSyncYAMLCRLF",
+        "TestVersionSyncRejectsUnregisteredActiveProfile"
+      ],
+      "helpers": [
+        "writeVersionFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "pyproject.toml",
+        "src/ptsip/common_contract/registry/manifest.json",
+        "storage/profile/project-profile.schema.json",
+        "contract.json",
+        "manifest.json",
+        "execution-bindings.json",
+        "Cargo.toml",
+        "version.yaml",
+        "src/ptsip/engines/index.json",
+        "src/ptsip/engines/storage/manifest.json",
+        "src/ptsip/engines/storage/execution-bindings.json",
+        "src/ptsip/engines/storage/version.yaml",
+        "src/ptsip/engines/storage/Cargo.toml",
+        "/version.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/controller test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/controller -count=1",
+      "baseline_verification": {
+        "pass": 9,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/admission_design_test.go",
+      "target": "developer/tests/distribution/release/test/admission_design_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestReleaseStructureCheckHasNoLegacyApprovalDependency",
+        "TestReleaseStructureRejectsMissingAndForgedContracts"
+      ],
+      "helpers": [
+        "releaseBoundaryFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/Platform/Common/verification-boundary.json",
+        "index.json",
+        "Platform/Common/verification-boundary.json",
+        "Platform/Common/release_validation.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/admission_test.go",
+      "target": "developer/tests/distribution/release/test/admission_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestRegisteredSelectionRejectsAliasesAndTamper",
+        "TestCanonicalMachineOutputExcludesSuccessfulProcessDiagnostics",
+        "TestProfileDistributionRejectsHistoryCodeAndTraversal",
+        "TestToolDistinguishesProductTargetNamespaceFromRustBuildOutput",
+        "TestToolMetadataHeadersAcceptLFAndCRLFWithoutWeakeningVersionMatch",
+        "TestToolBuildStagePreservesPinnedGitLicenseBytes",
+        "TestPackageTamperAndIncompleteInstallationFailBeforeAdapter",
+        "TestReceiptJoinRejectsMissingHostWrongSelectionAndCorruptFile"
+      ],
+      "helpers": [
+        "repoRoot",
+        "copyCompositionContract",
+        "archive"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "pyproject.toml",
+        ".ptsip/contracts/release/index.json",
+        "src/ptsip/profiles/index.yaml",
+        "src/ptsip/profiles/example.ptsip.yaml",
+        ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
+        "src/ptsip/profiles/history/old.ptsip.yaml",
+        "src/ptsip/profiles/../escape.ptsip.yaml",
+        "ptsip/resources/target/contract.json",
+        "ptsip/profiles/history/pp.1.01/example.ptsip.yaml",
+        "engine.whl",
+        "https://example.invalid/engine.whl",
+        ".whl",
+        "test-receipt.json",
+        "verified/linux-x64/linux-x64.whl"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 8,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/composition_test.go",
+      "target": "developer/tests/distribution/release/test/composition_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestCanonicalCompositionHasOneToolValueAndNoLegacyFallback",
+        "TestCurrentCompositionPreservesOriginalPublishedState",
+        "TestHistoricalCompositionIsExplicitReadOnly"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "pyproject.toml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/contracts_test.go",
+      "target": "developer/tests/distribution/release/test/contracts_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestEveryAdmittedReleaseType",
+        "TestRequiredWindowsLinuxAndOptionalMacMatrix",
+        "TestPackageRefreshLatestPinAndCollision"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "context.whl",
+        "https://example.invalid/context.whl"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/lightweight_package_contract_test.go",
+      "target": "developer/tests/distribution/release/test/lightweight_package_contract_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestLightweightSDistManifestTracksRegisteredProfiles"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/package_admission_test.go",
+      "target": "developer/tests/distribution/release/test/package_admission_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestPackageAdmissionRequiresEachNativeHostAndVerifiedSource",
+        "TestCompletePackagePublicationTargetsOnlyPTSIPDespiteIntermediateEngineFiles"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "package-receipt.json",
+        ".ptsip/contracts/release/Platform/PyPI/pypi-publishers.json",
+        "pypi-publishers.json",
+        "engine.whl",
+        "ptsip.whl"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/package_bundle_test.go",
+      "target": "developer/tests/distribution/release/test/package_bundle_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestCompleteHostBundles",
+        "TestRejectsIncompleteAndUnadmittedInputs",
+        "TestRejectsCorruptNativeMetadataEvenWithMatchingArchiveDigest"
+      ],
+      "helpers": [
+        "bundleTestArchive",
+        "bundleTestContents",
+        "makePackageBundleFixture",
+        "build"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".dist-info/ptsip-origin.json",
+        ".whl",
+        "ptsip/engines/index.json",
+        "src/ptsip/profiles/index.yaml",
+        "src/ptsip/profiles/main.ptsip.yaml",
+        ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/package_completeness_test.go",
+      "target": "developer/tests/distribution/release/test/package_completeness_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestPackageRequestExpandsAllAndCannotDowngradeForCredentials",
+        "TestUnchangedToolReuseIgnoresPublicationMetadataButRejectsRuntimeChange",
+        "TestPackageExactInventoryRejectsMissingAndSubstituteEngine"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "pyproject.toml",
+        ".github/workflows/tooling-release.yml",
+        ".whl"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/package_wheel_test.go",
+      "target": "developer/tests/distribution/release/test/package_wheel_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestPipPackageHasEveryMandatoryEngineAndProfilePayload"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".whl",
+        "src/ptsip/profiles/index.yaml",
+        "src/ptsip/profiles/example.ptsip.yaml",
+        ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
+        "ptsip/profiles/index.yaml",
+        "ptsip/package-composition.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/platform_contract_test.go",
+      "target": "developer/tests/distribution/release/test/platform_contract_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestPlatformRoutingSchemasMatchCurrentCatalog",
+        "TestPlatformReleaseContractRetainsItsSchema",
+        "TestProfileArchiveMigrationPreservesHistoricalData",
+        "TestReleaseRootContainsOnlyPlatformEntry"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/index.json",
+        "release-contract_validation.json",
+        "release-contract.json",
+        ".ptsip/contracts/release/Platform/Common/profile/project-profile-contracts.yaml",
+        ".ptsip/contracts/release/profile/project-profile-contracts.yaml",
+        "src/ptsip/profiles/index.yaml",
+        "src/ptsip/profiles/main.ptsip.yaml",
+        "@project-profile-contracts.yaml",
+        "index.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 4,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/presentation_evidence_test.go",
+      "target": "developer/tests/distribution/release/test/presentation_evidence_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestAutomaticVerificationRejectsDifferentSHAAndSelection",
+        "TestReleasePresentationUsesPackageTitleAndOrderedTypedSections",
+        "TestReissueBoundaryRejectsProducerAndVersionChanges"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".github/workflows/tooling-test.yml",
+        "src/ptsip/engines/index.json",
+        "pyproject.toml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/publication_test.go",
+      "target": "developer/tests/distribution/release/test/publication_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestNewDraftUsesReturnedIDWithoutRediscoveringItInList",
+        "TestDraftResumeRejectsWrongSourceAndPreservesExistingAssets",
+        "TestDuplicateSourceCarriersFailWithoutMutation",
+        "TestEngineReuseSeparatesArtifactProducerFromPublicationRouting",
+        "TestProjectTokenScopeAllowsPackageAndRejectsStandaloneProjects"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "original.whl"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 5,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/pypi_archive_test.go",
+      "target": "developer/tests/distribution/release/test/pypi_archive_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestPyPIArchiveRemovesDescriptorsAndPreservesEveryMember",
+        "TestFreshEngineArchiveLinksNormalizedWheelToOriginalBinaryReceipt"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "engine.dist-info/ptsip-origin.json",
+        "ptsip_engine_context-0.2.1-py3-none-linux_x86_64.whl",
+        ".receipt.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/releasenote/documents_test.go",
+      "target": "developer/tests/distribution/release/test/releasenote/documents_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "main",
+      "responsibility": "distribution/release/test/releasenote",
+      "test_identifiers": [
+        "TestDeclaredChangesGenerateFourClassifiedEnglishArchives",
+        "TestSourceChangesWithoutDeclaredVersionChangesDoNotWriteDocuments",
+        "TestArchiveConflictAndConcurrentReadmeEditPreserveEveryExistingFile",
+        "TestFormattingAndRegistryContractsRejectWrongOrderAndLanguage"
+      ],
+      "helpers": [
+        "documentationRepository",
+        "copyDocumentationFile",
+        "documentationGit",
+        "documentationVersions",
+        "documentationFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "docs/translated/index.yaml",
+        ".ptsip/contracts/release/Platform/Common/versions_different.json",
+        ".ptsip/contracts/schemas/release/versions_different.schema.json",
+        "src/ptsip/schemas/config.json",
+        "src/ptsip/engines/validation/contract.json",
+        "src/ptsip/engines/contracts/installation-plan.json",
+        ".schema.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly ./releasenote -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test/releasenote -count=1",
+      "baseline_verification": {
+        "pass": 4,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/releasenote/main_test.go",
+      "target": "developer/tests/distribution/release/test/releasenote/main_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "main",
+      "responsibility": "distribution/release/test/releasenote",
+      "test_identifiers": [
+        "TestRegistryLanguagesAreDataNotCode",
+        "TestUnsafeRegistryTargetFailsClosed",
+        "TestLinkEquivalenceUsesResolvedTarget",
+        "TestFencedBlocksAndMemory",
+        "TestCodeTokensMustBePreserved"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/schemas/release/releasenote/readme-translation-path.schema.json",
+        ".ptsip/contracts/schemas/release/releasenote/readme-translation-registry.schema.json",
+        "index.yaml",
+        "docs/translated/index.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly ./releasenote -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test/releasenote -count=1",
+      "baseline_verification": {
+        "pass": 5,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/releasenote/verification_test.go",
+      "target": "developer/tests/distribution/release/test/releasenote/verification_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "main",
+      "responsibility": "distribution/release/test/releasenote",
+      "test_identifiers": [
+        "TestIndependentVerifierDetectsFreshnessWithoutMutation",
+        "TestVerifierRejectsSymlinkEscape",
+        "TestApplyPreparesAllLanguagesBeforeMutation",
+        "TestApplyChangesOnlyRegisteredTargetsAndIsIdempotent"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly ./releasenote -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test/releasenote -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [
+          "TestVerifierRejectsSymlinkEscape",
+          "TestApplyPreparesAllLanguagesBeforeMutation",
+          "TestApplyChangesOnlyRegisteredTargetsAndIsIdempotent"
+        ],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/tool/versiondiff_test.go",
+      "target": "developer/tests/distribution/release/test/tool/versiondiff_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "tool_test",
+      "responsibility": "distribution/release/test/tool",
+      "test_identifiers": [
+        "TestVersionsDifferentPreviewDestination",
+        "TestVersionsDifferentPreviewAndTamper",
+        "TestVersionsDifferentPolicyOnlyNoBump",
+        "TestVersionsDifferentApplyRequiresExplicitSelection",
+        "TestVersionsDifferentReadsHistoricalDeclarationsOnlyAtAnExactEarlierCommit",
+        "TestVersionsDifferentEditsOnlyTheRegisteredProfileVersion",
+        "TestVersionsDifferentRejectsFakeHeadAndNoSourceChange",
+        "TestVersionsDifferentDeveloperMainEntrypoint"
+      ],
+      "helpers": [
+        "gitForVersionTest",
+        "fixtureWrite",
+        "versionTestRepo",
+        "versionTestRepoWithVersions"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/Platform/Common/versions_different.json",
+        "developer/policy/unrelated.yaml",
+        "src/ptsip/schemas/storage/profile/project-profile.schema.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly ./tool -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test/tool -count=1",
+      "baseline_verification": {
+        "pass": 8,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/test/verification_route_test.go",
+      "target": "developer/tests/distribution/release/test/verification_route_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/test",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/test",
+      "source_package": "releasetest",
+      "responsibility": "distribution/release/test",
+      "test_identifiers": [
+        "TestReadOnlyVerificationRouteRequiresRegisteredContracts",
+        "TestReadOnlyVerificationRouteFailsClosedOnPublicationOrMissingEvidence",
+        "TestDeclaredVerificationSelectionNeverAssertsPolicyOrPublishing"
+      ],
+      "helpers": [
+        "testOnlyRouteFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/Platform/Common/verification-boundary.json",
+        "admission.json",
+        ".github/workflows/tooling-test.yml",
+        ".github/test_modes.yaml",
+        ".ptsip/contracts/release/Platform/Common/verification-contract.json",
+        ".github/checks/release/test/verification-contract.json",
+        ".github/workflows/tooling-release.yml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/test test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/test -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/admission/Verifier_test.go",
+      "target": "developer/tests/distribution/release/verification/admission/Verifier_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "ctrl_admission",
+      "responsibility": "distribution/release/verification/admission",
+      "test_identifiers": [
+        "TestPublicationAdmissionIsUnverifiedWithCurrentVerificationContract"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/Platform/Common/verification-boundary.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Distribution/release/verification/admission -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/admission -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/boundary/Contract_test.go",
+      "target": "developer/tests/distribution/release/verification/boundary/Contract_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "boundary",
+      "responsibility": "distribution/release/verification/boundary",
+      "test_identifiers": [
+        "TestCurrentBoundaryNeedsNoRetiredRoots",
+        "TestSourceCompositionRejectsAmbiguousOrRetiredAuthority",
+        "TestSourceCompositionValidatesNativeWheelReceipt",
+        "TestBoundaryRejectsAuthorityWaiversAndInventoryDrift",
+        "TestBoundaryRejectsMissingAndTrailingData",
+        "TestReleaseRuntimeHasNoRetiredAuthorityInput",
+        "TestStructureCheckRejectsReroutedAndPublishingIndexes"
+      ],
+      "helpers": [
+        "fixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "pyproject.toml\\",
+        "ptsip-0.3.8-py3-none-linux_x86_64.whl",
+        ".ptsip/contracts/release/index.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Distribution/release/verification/boundary -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/boundary -count=1",
+      "baseline_verification": {
+        "pass": 7,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/boundary/Platform_test.go",
+      "target": "developer/tests/distribution/release/verification/boundary/Platform_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "boundary",
+      "responsibility": "distribution/release/verification/boundary",
+      "test_identifiers": [
+        "TestPlatformCatalogRoutesOnlyCurrentDistributionServices",
+        "TestPlatformCatalogRejectsMissingUnknownAndReroutedRecords",
+        "TestPlatformResourcesCannotBeMissingOrReplacedByOldRootFiles",
+        "TestPlatformCatalogRejectsUnregisteredFilesAndDirectories",
+        "TestPlatformRoutingSchemaMustPreserveItsDeclaredBinding"
+      ],
+      "helpers": [
+        "rewritePlatformIndex"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/index.json",
+        "GitHub/GitHub_validation.json",
+        "Common/new.json",
+        ".ptsip/contracts/release/admission.json",
+        "GitHub/publication-evidence.json",
+        "PyPI/PyPI_validation.json",
+        "Common/profile/project-profile-contracts.yaml",
+        ".json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Distribution/release/verification/boundary -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/boundary -count=1",
+      "baseline_verification": {
+        "pass": 5,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/engine/admission_test.go",
+      "target": "developer/tests/distribution/release/verification/engine/admission_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_package": "enginewheel",
+      "responsibility": "distribution/release/verification/engine",
+      "test_identifiers": [
+        "TestLocalVerificationDoesNotGrantPublication"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/verification/engine test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/engine -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/engine/gate_test.go",
+      "target": "developer/tests/distribution/release/verification/engine/gate_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_package": "enginewheel",
+      "responsibility": "distribution/release/verification/engine",
+      "test_identifiers": [
+        "TestEngineGateAllAndSelectedMatrix",
+        "TestEngineGateFailsClosedOnIncompleteOrUnrelatedEvidence",
+        "TestGateGitHubWireFormat"
+      ],
+      "helpers": [
+        "gateFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".github/workflows/tooling-release.yml",
+        ".github/workflows/other.yml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/verification/engine test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/engine -count=1",
+      "baseline_verification": {
+        "pass": 3,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/engine/publication_test.go",
+      "target": "developer/tests/distribution/release/verification/engine/publication_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_package": "enginewheel",
+      "responsibility": "distribution/release/verification/engine",
+      "test_identifiers": [
+        "TestPyPIReuseRequiresExactPublishedFileDigests",
+        "TestPublicationRejectsMissingPlatformsAndUnregisteredComponents",
+        "TestLinuxABIRejectsOtherExecutableFormats",
+        "TestCanonicalVersionOwnerIsRequiredBeforePublication"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "windows.whl",
+        "linux.whl",
+        "macos.whl",
+        "other.whl",
+        "src/ptsip/engines/context/version.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/verification/engine test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/engine -count=1",
+      "baseline_verification": {
+        "pass": 4,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/engine/wheel_test.go",
+      "target": "developer/tests/distribution/release/verification/engine/wheel_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/verification/engine",
+      "source_package": "enginewheel",
+      "responsibility": "distribution/release/verification/engine",
+      "test_identifiers": [
+        "TestNativeComponentArtifactForEveryDeclaredPlatform",
+        "TestNativeArtifactBuildDoesNotRequireConsumerDistributionMetadata",
+        "TestWheelUsesCanonicalLicenseBlobDespiteWorktreeLineEndings",
+        "TestAssemblerRejectsUnregisteredSourcesBeforeWriting"
+      ],
+      "helpers": [
+        "writeFixture",
+        "fixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "/manifest.json",
+        "/execution-bindings.json",
+        "/version.yaml",
+        "src/ptsip/engines/index.json",
+        "src/ptsip/engines/contracts/installation-plan.json",
+        "../foreign.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/verification/engine test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/engine -count=1",
+      "baseline_verification": {
+        "pass": 4,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/profile/Verifier_test.go",
+      "target": "developer/tests/distribution/release/verification/profile/Verifier_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer/Distribution/release/verification/profile",
+      "source_module_root": ".ptsip/engine/developer/Distribution/release/verification/profile",
+      "source_package": "profileverify",
+      "responsibility": "distribution/release/verification/profile",
+      "test_identifiers": [
+        "TestNativeProfileVerifierAdmitsCurrentRepository",
+        "TestNativeProfileVerifierNeedsNoHistoricalReleaseAssets",
+        "TestNativeProfileVerifierRejectsReleaseVersionMismatch",
+        "TestNativeProfileVerifierRejectsRegisteredSchemaDigestDrift",
+        "TestNativeProfileVerifierRejectsMalformedPinnedSchema",
+        "TestNativeProfileExecutionNeverReentersRetiredDeveloperVerifier",
+        "TestProfileVerifierUsesRegisteredSchemaStorage",
+        "TestProfileVerifierRejectsRegistrationOutsideLifecycleDirectory",
+        "TestProfileVerifierRejectsAuthorityRouteDrift"
+      ],
+      "helpers": [
+        "profileFixture",
+        "rewriteProfileFixture",
+        "repoRoot"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/release/Platform/Common/profile/index.json",
+        ".github/test_modes.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer/Distribution/release/verification/profile test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/profile -count=1",
+      "baseline_verification": {
+        "pass": 9,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Distribution/release/verification/releasenote/Native_test.go",
+      "target": "developer/tests/distribution/release/verification/releasenote/Native_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "releasenote_test",
+      "responsibility": "distribution/release/verification/releasenote",
+      "test_identifiers": [
+        "TestFormattingContractsThroughInstalledNativeValidation"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Distribution/release/verification/releasenote -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./distribution/release/verification/releasenote -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/Responsibility-Authority/test/Verifier_test.go",
+      "target": "developer/tests/responsibility_authority/Verifier_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "responsibilityauthority_test",
+      "responsibility": "responsibility_authority",
+      "test_identifiers": [
+        "TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "Conditions_exercise/Condition.schema.json",
+        "authority/Operational_Authority.schema.json",
+        "responsibility/Responsibility.schema.json",
+        "Responsibilities_List.schema.json",
+        "Responsibility_Authority_Contract.schema.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./Responsibility-Authority/test -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./responsibility_authority -count=1",
+      "baseline_verification": {
+        "pass": 0,
+        "fails": [
+          "TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree"
+        ],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/internal/contract_authoring/Authoring_test.go",
+      "target": "developer/tests/policy/contract/authoring/Authoring_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "contract_authoring_test",
+      "responsibility": "policy/contract/authoring",
+      "test_identifiers": [
+        "TestRegisteredContractsAndAllFourteenSelections",
+        "TestConditionalDefaultsAndInvalidSelections",
+        "TestProfileReferencesTypesAndExtensibleFields",
+        "TestPolicyRulesAuthoringRejectsLegacyFourBlocks",
+        "TestPolicyRulesAuthoringPropagatesPublicSchemaRejection",
+        "TestNoOverwriteAndInvalidPaths",
+        "TestCurrentPoliciesValidateThroughRegisteredPublicSchema",
+        "TestGenerationCLILeavesDefaultAndFailureUnwritten",
+        "TestAuthoringAndDirectValidationRequireLiveRegisteredSelection",
+        "TestPolicyAuthoringReportsSelectionAndRejectsContractOutput"
+      ],
+      "helpers": [
+        "repository",
+        "nativeCatalog",
+        "doc",
+        "policyFixture",
+        "copyDocument",
+        "profileFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+        "developer/policy/GOV/MPD-GOV-0001.yaml",
+        "output.json",
+        "../outside.json",
+        "a/../b.json",
+        "a\\\\b.json",
+        "a:b.json",
+        "/absolute.json",
+        "duplicate.yaml",
+        ".json",
+        ".yaml",
+        ".yml",
+        "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+        "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+        "developer/policy/CHANGE/MPD-CHANGE-0007.yaml",
+        "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+        "must-not-exist-authoring-test.json",
+        ".ptsip/index.json",
+        ".ptsip/contracts/index.json",
+        ".ptsip/engine/developer/index.json",
+        ".ptsip/contracts/policy/boundary.json",
+        ".ptsip/contracts/policy/routing/policy_routes.json",
+        ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
+        ".ptsip/contracts/policy/candidate.index.json",
+        ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
+        ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+        ".ptsip/contracts/policy/Rules/ARCH_rules.json",
+        ".ptsip/contracts/policy/Rules/must-not-be-generated.json",
+        ".ptsip/contracts/policy/rules/ARCH_rules.json",
+        ".ptsip\\contracts\\policy\\Rules\\ARCH_rules.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./internal/contract_authoring -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/contract/authoring -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [
+          "TestRegisteredContractsAndAllFourteenSelections",
+          "TestConditionalDefaultsAndInvalidSelections",
+          "TestProfileReferencesTypesAndExtensibleFields",
+          "TestPolicyRulesAuthoringRejectsLegacyFourBlocks",
+          "TestPolicyRulesAuthoringPropagatesPublicSchemaRejection",
+          "TestCurrentPoliciesValidateThroughRegisteredPublicSchema",
+          "TestGenerationCLILeavesDefaultAndFailureUnwritten",
+          "TestAuthoringAndDirectValidationRequireLiveRegisteredSelection",
+          "TestPolicyAuthoringReportsSelectionAndRejectsContractOutput"
+        ],
+        "skips": [],
+        "unexecuted": []
+      },
+      "retired_test_replacements": {
+        "TestProfileReferencesTypesAndExtensibleFields": {
+          "target": "developer/tests/policy/contract/authoring/ComponentBindings_test.go",
+          "test": "TestUnregisteredDeveloperProfileCannotCreateOrGrantAuthority",
+          "reason": "The developer profile definition and legacy local generation route depended on retired contracts. The registered CLI refuses to generate or grant authority without a current owner."
+        }
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/internal/contract_authoring/ComponentBindings_test.go",
+      "target": "developer/tests/policy/contract/authoring/ComponentBindings_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "contract_authoring_test",
+      "responsibility": "policy/contract/authoring",
+      "test_identifiers": [
+        "TestRIdKeyedRuleBindingsAndNoComponentMetadata",
+        "TestInvalidRIdBindingsAreRejected",
+        "TestRetiredComponentProjectionDoesNotGrantAuthority"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./internal/contract_authoring -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/contract/authoring -count=1",
+      "baseline_verification": {
+        "pass": 0,
+        "fails": [
+          "TestRIdKeyedRuleBindingsAndNoComponentMetadata",
+          "TestInvalidRIdBindingsAreRejected",
+          "TestRetiredComponentProjectionDoesNotGrantAuthority"
+        ],
+        "skips": [],
+        "unexecuted": []
+      },
+      "retired_test_replacements": {
+        "TestRIdKeyedRuleBindingsAndNoComponentMetadata": {
+          "target": "developer/tests/responsibility_authority/Verifier_test.go",
+          "test": "TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree",
+          "reason": "Current RA identity and reference structure comes from the product catalog under schemas/storage/rbac. The current schema accepts valid names and references and rejects retired ownership fields."
+        },
+        "TestInvalidRIdBindingsAreRejected": {
+          "target": "developer/tests/responsibility_authority/Verifier_test.go",
+          "test": "TestResponsibilityAuthoringNeedsNoPolicyOrLegacyTree",
+          "reason": "Current RA rejection cases exercise invalid identifiers, malformed and foreign condition references and retired ownership fields using the registered schema."
+        },
+        "TestRetiredComponentProjectionDoesNotGrantAuthority": {
+          "target": "developer/tests/policy/contract/authoring/ComponentBindings_test.go",
+          "test": "TestUnregisteredDeveloperProfileCannotCreateOrGrantAuthority",
+          "reason": "Current CLI rejects check, generation and lookup on the unregistered developer profile without calling validation or creating output."
+        }
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/internal/contractentry/Entry_test.go",
+      "target": "developer/tests/policy/contract/entry/Entry_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "contractentry",
+      "responsibility": "policy/contract/entry",
+      "test_identifiers": [
+        "TestPolicySelectionIgnoresUnrelatedMissingReleaseContract",
+        "TestMissingSelectedContractFailsClosed",
+        "TestUnknownAndMismatchedIdentityFailClosed",
+        "TestWrongDomainAndTraversalFailClosed",
+        "TestAuthorityEscalationFailsClosed",
+        "TestInactiveV2RegistryFailsClosed",
+        "TestUnifiedIdentitySourceFailsClosed",
+        "TestRetiredRouteAndUnresolvedSelectedProfileNeverFallBack",
+        "TestRegisteredSchemaIDsCannotRedirectSelectedPathsOrRegisterRetiredRules"
+      ],
+      "helpers": [
+        "fixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/index.json",
+        "contracts/index.json",
+        ".ptsip/contracts/index.json",
+        "policy/boundary.json",
+        "release/Platform/Common/releasenote.json",
+        ".ptsip/engine/developer/index.json",
+        "policy/index.json",
+        ".ptsip/contracts/policy/boundary.json",
+        ".ptsip/contracts/policy/routing/policy_routes.json",
+        ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
+        ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+        ".ptsip/profiles/Responsibility-Authority-list.yaml",
+        ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+        ".ptsip/contracts/policy/candidate.index.json",
+        ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
+        "developer/policy/GOV/MPD-GOV-0006.yaml",
+        "../outside.yaml",
+        "developer/policy/GOV/../../GOV/MPD-GOV-0006.yaml",
+        "src/policy/ARCH/SFP-ARCH-0005.yaml",
+        ".ptsip/contracts/policy/Rules/GOV_rules.json",
+        ".ptsip/contracts/policy/other-public.schema.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./internal/contractentry -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/contract/entry -count=1",
+      "baseline_verification": {
+        "pass": 9,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/main_test.go",
+      "target": "developer/tests/module/main_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "main",
+      "responsibility": "module",
+      "test_identifiers": [
+        "TestModuleIndexesAndEntrypointStayInSync",
+        "TestLayoutRejectsMissingOrAuthorityGrantingIndex"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "index.json",
+        ".ptsip/engine/developer/index.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly . -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./module -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/applicability/assess_test.go",
+      "target": "developer/tests/policy/applicability/assess_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "applicability",
+      "responsibility": "policy/applicability",
+      "test_identifiers": [
+        "TestAssessExplicitEvidenceAndNoRuntimeGrant",
+        "TestMigratedDefinitionReferenceIsNotConsumption",
+        "TestFailClosedOnSourceAndRegistryConflicts",
+        "TestRetiredPolicyIsNotPromoted",
+        "TestBindingRequiresOwnRuleSource"
+      ],
+      "helpers": [
+        "fixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "/owner.json",
+        "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+        ".ptsip/contracts/compile-sealed-rbac/aec/owner.json",
+        ".ptsip/contracts/compile-sealed-rbac/aec/other.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/applicability -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/applicability -count=1",
+      "baseline_verification": {
+        "pass": 5,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/applicability/input_test.go",
+      "target": "developer/tests/policy/applicability/input_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "applicability",
+      "responsibility": "policy/applicability",
+      "test_identifiers": [
+        "TestRequireSourceSnapshot",
+        "TestStrictGoYAMLInput"
+      ],
+      "helpers": [
+        "gitFixture"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "index.yaml",
+        "candidate.jsonl",
+        "src/policy/index.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/applicability -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/applicability -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/applicability/local_test.go",
+      "target": "developer/tests/policy/applicability/local_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "applicability",
+      "responsibility": "policy/applicability",
+      "test_identifiers": [
+        "TestBuildTriageStableAndNonAuthoritative"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+        "src/policy/GOV/SFP-GOV-0001.yaml",
+        "developer/policy/ARCH/MPD-ARCH-0002.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/applicability -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/applicability -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/review/Review_test.go",
+      "target": "developer/tests/policy/review/Review_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "review",
+      "responsibility": "policy/review",
+      "test_identifiers": [
+        "TestExactPointer",
+        "TestInventoryFindsUndeclaredFieldsEvenWhenSchemaAllowsThem",
+        "TestInventoryDoesNotClaimToInspectOpenOrConditionalObjects",
+        "TestSnapshotRejectsChangedBytesAndEscapingPaths",
+        "TestBuildPreservesUnresolvedTargetAndOnlySelectedSourceSection",
+        "TestCurrentUnifiedReviewResolvesCandidateAndKeepsHistoryExplicit"
+      ],
+      "helpers": [
+        "write"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "source.yaml",
+        "folder/../source.yaml",
+        ".ptsip/index.json",
+        "contracts/index.json",
+        ".ptsip/contracts/index.json",
+        "policy/boundary.json",
+        ".ptsip/engine/developer/index.json",
+        "policy/index.json",
+        ".ptsip/contracts/policy/boundary.json",
+        ".ptsip/contracts/policy/routing/policy_routes.json",
+        "developer/policy/RECORD/legacy.yaml",
+        "legacy.yaml",
+        "legacy.yaml#/rules/selected",
+        "legacy.yaml#",
+        "legacy.yaml#/rules/missing",
+        "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+        ".ptsip/contracts/policy/Rules/RECORD_rules.json#/$id",
+        ".ptsip/contracts/policy/unified/Unified_Policy.schema.json",
+        ".ptsip/contracts/policy/unified/index.json",
+        ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/review -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/review -count=1",
+      "baseline_verification": {
+        "pass": 5,
+        "fails": [
+          "TestCurrentUnifiedReviewResolvesCandidateAndKeepsHistoryExplicit"
+        ],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/test/Verifier_test.go",
+      "target": "developer/tests/policy/contract/check/Verifier_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "policy_test",
+      "responsibility": "policy/contract/check",
+      "test_identifiers": [
+        "TestIdentityHasNoLifecycleRulesOrLegacyDependency",
+        "TestLifecycleChecksOnlyDeclaredStatusVocabulary",
+        "TestV2PolicyChecksSharedStructureAndRejectsMissingRules"
+      ],
+      "helpers": [
+        "repository",
+        "native",
+        "isolated"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+        ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
+        ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json",
+        ".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json",
+        ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_DRAFT.json",
+        ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_ACTIVATE.json",
+        ".ptsip/contracts/policy/lifecycle/Plan_status/Plan_status_INTERRUPTION.json",
+        "developer/policy/ARCH/MPD-ARCH-0001.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/test -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/contract/check -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [
+          "TestLifecycleChecksOnlyDeclaredStatusVocabulary"
+        ],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/ContractLocation_test.go",
+      "target": "developer/tests/policy/verification/ContractLocation_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "schema_check",
+      "responsibility": "policy/verification",
+      "test_identifiers": [
+        "TestCurrentDeveloperContractOwnerJSON",
+        "TestCanonicalDeveloperContractRoutes",
+        "TestCanonicalContractReferenceRejectsUnsafeOrMissing",
+        "TestPolicyContractResponsibilityMigration",
+        "TestLegacyPolicyAuthorityModelRemoved",
+        "TestIdentityVersionPatternDelegatesToLifecycleOwner",
+        "TestCanonicalPolicySchemaGroupAndSeparation"
+      ],
+      "helpers": [
+        "checkCanonicalContractFile"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "developer/contracts/identity/root_family.json",
+        ".ptsip/contracts/../outside.json",
+        ".ptsip/contracts/missing.json",
+        "/absolute/contract.json",
+        ".ptsip/contracts/policy/boundary.json",
+        ".ptsip/contracts/policy/Policy_Identity/Public_Policy_Identity.json",
+        ".ptsip/contracts/policy/routing/policy_routes.json",
+        ".ptsip/contracts/policy/routing/Policy_Routing.schema.json",
+        ".ptsip/contracts/policy/Policy_lifecycle/status/Policy_status.json",
+        ".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_DRAFT.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_APPROVED.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_status/Policy_status_RETIRED.json",
+        ".ptsip/contracts/policy/identity/policy_kind.json",
+        ".ptsip/contracts/policy/identity/root_family.json",
+        ".ptsip/contracts/policy/lifecycle/Policy_version/Policy_version.schema.json",
+        ".ptsip/contracts/identity/policy_kind.json",
+        ".ptsip/contracts/identity/root_family.json",
+        ".ptsip/contracts/routing/policy_routes.json",
+        ".ptsip/contracts/schemas/Policy_Identity/Routing/Policy_Routing.schema.json",
+        ".ptsip/contracts/schemas/Policy_Identity/Policy_Identity_version.schema.json",
+        ".ptsip/contracts/lifecycle/Policy_status/Policy_status_APPROVED.json",
+        ".ptsip/contracts/lifecycle/Policy_version/Policy_version.schema.json",
+        ".ptsip/contracts/lifecycle/policy_status.json",
+        ".ptsip/contracts/Authority/Authority_Major_Category.json",
+        "developer/policy/OPS/MPD-OPS-0002.yaml",
+        "developer/policy/INFO/MPD-INFO-0006.yaml",
+        "developer/policy/ARCH/MPD-ARCH-0004.yaml",
+        "developer/policy/REAL/MPD-REAL-0007.yaml",
+        "developer/policy/CNTR/MPD-CNTR-0006.yaml",
+        "developer/policy/CTRL/MPD-CTRL-0002.yaml",
+        "developer/policy/RISK/MPD-RISK-0002.yaml",
+        "developer/policy/NORM/MPD-NORM-0002.yaml",
+        "developer/policy/SUPPLY/MPD-SUPPLY-0002.yaml",
+        "developer/policy/ASSURE/MPD-ASSURE-0005.yaml",
+        "developer/policy/INTENT/MPD-INTENT-0002.yaml",
+        "developer/policy/CHANGE/MPD-CHANGE-0005.yaml",
+        "developer/policy/RECORD/MPD-RECORD-0001.yaml",
+        "developer/policy/RECORD/MPD-RECORD-0002.yaml",
+        "developer/policy/RECORD/MPD-RECORD-0003.yaml",
+        "developer/policy/RECORD/MPD-RECORD-0004.yaml",
+        ".ptsip/engine/developer/policy/index.json",
+        ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+        ".ptsip/contracts/policy/Policy_Identity/PTSIP_Policy_Identity.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/Contract_Types.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/rule_record.schema.json",
+        ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification -count=1",
+      "baseline_verification": {
+        "pass": 7,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/Finding_test.go",
+      "target": "developer/tests/policy/verification/Finding_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "schema_check",
+      "responsibility": "policy/verification",
+      "test_identifiers": [
+        "TestSchemaFilesIncludeApprovedPolicyVersionAndStatus",
+        "TestMissingPolicyVersionSchemaFailsClosed",
+        "TestMissingCurrentPolicySchemaRootFailsClosed",
+        "TestSchemaFilesExcludeStoppedContractRoots",
+        "TestSchemaScanSeparatesJSONDataFromSchemas",
+        "TestApprovedRBACScaffoldsRemainFailClosed",
+        "TestFamilyRulesStorageRejectsUnroutedMisplacedFiles",
+        "TestPolicyRulesArchiveDirectoryIsForbidden"
+      ],
+      "helpers": [
+        "writeSchemaFixture",
+        "writeOtherCurrentSchemaFixtures"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/schemas/release/scan-fixture.schema.json",
+        ".ptsip/contracts/compile-sealed-rbac/scan-fixture.schema.json",
+        ".ptsip/contracts/policy/Policy_lifecycle/version/Policy_version.json",
+        ".ptsip/contracts/schemas/Policy/PTSIP_Public_Structure.schema.json",
+        ".ptsip/contracts/schemas/Policy/Policy_Rules/abortively/GOV_rules.schema.json",
+        ".ptsip/contracts/schemas/compile-sealed-rbac/responsibility.schema.json",
+        ".ptsip/contracts/compile-sealed-rbac/candidate-index.json",
+        ".ptsip/contracts/policy/Policy_Rules/root-family/ARCH_rules.schemas.json",
+        ".ptsip/contracts/compile-sealed-rbac/binding.schema.json",
+        "candidate-index.json",
+        ".ptsip/contracts/compile-sealed-rbac/activation.schema.json",
+        ".ptsip/contracts/policy/Policy_lifecycle/Public_Policy_Status.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json",
+        ".ptsip/contracts/policy/Policy_Rules/root-family/GOV_rules.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/GOV_rules.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/abortively/GOV_rules.schema.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification -count=1",
+      "baseline_verification": {
+        "pass": 8,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/ProductContracts_test.go",
+      "target": "developer/tests/policy/verification/ProductContracts_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "schema_check",
+      "responsibility": "policy/verification",
+      "test_identifiers": [
+        "TestRegisteredRBACListsMatchSharedConformanceVectors",
+        "TestPlanDraftDiagnosticBindingsAndVocabulary"
+      ],
+      "helpers": [
+        "readContractJSON"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "config.json",
+        "rbac-list-conformance.json",
+        "storage/rbac/ra-list.schema.json",
+        "storage/rbac/rac-list.schema.json",
+        "storage/rbac/aec-list.schema.json",
+        "plan/public-structure-plan.schema.json",
+        "plan/plan-identity.schema.json",
+        "plan/plan-lifecycle.schema.json",
+        "plan/plan-unit.schema.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/ReferenceResources_test.go",
+      "target": "developer/tests/policy/verification/ReferenceResources_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "schema_check",
+      "responsibility": "policy/verification",
+      "test_identifiers": [
+        "TestApprovedResourceReadsOnlyExplicitApprovalPaths",
+        "TestApprovedResourceRejectsMissingIDAndMalformed",
+        "TestApprovedFlatStatusProbeMissingResourcesIsUnresolved",
+        "TestSharedStatusReferencesMatchLifecycleContract",
+        "TestStatusSourceUpdatesNeedNoPublicSchemaEdit",
+        "TestStatusSourceMissingAndLegacyFormatFailClosed"
+      ],
+      "helpers": [
+        "statusTestRoot",
+        "statusTestSchema",
+        "statusTestSources"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification -count=1",
+      "baseline_verification": {
+        "pass": 6,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/Routing_test.go",
+      "target": "developer/tests/policy/verification/Routing_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "schema_check",
+      "responsibility": "policy/verification",
+      "test_identifiers": [
+        "TestPolicyRoutingContractInputs",
+        "TestPolicyRoutingCannotUseRetiredOrUnsafePaths",
+        "TestPolicyRoutingRejectsRetiredBinding",
+        "TestPolicyRoutingRequiresBoundSchemaFile",
+        "TestV2PublicPolicySelectedWithoutV7Fallback",
+        "TestGOVPolicyDocumentsUseCandidateRootAndPreserveLifecycle",
+        "TestV2FamilySelectionSharesRulesAndDoesNotGrantAuthority"
+      ],
+      "helpers": [
+        "routingRepositoryRoot"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/routing/policy_routes.json",
+        ".ptsip/contracts/policy/routing/../identity/policy_kind.json",
+        ".ptsip/contracts/policy/routing/nonexistent.json",
+        ".ptsip/contracts/policy/routing/../../outside.json",
+        ".ptsip/contracts/policy/routing\\\\policy_routes.json",
+        "boundary.json",
+        ".ptsip/contracts/policy/routing/Policy_Routing.schema.json",
+        ".ptsip/contracts/policy/routing/policy_routes.json",
+        ".ptsip/contracts/policy/PTSIP_Public_Policy_Structure.schema.json",
+        ".ptsip/contracts/policy/Policy_Rules/Public_Policy_Rules.schema.json",
+        ".yaml",
+        ".ptsip/contracts/policy/Policy_Rules/Family_Selection.json"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification -count=1",
+      "baseline_verification": {
+        "pass": 7,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/VerificationExclusions_test.go",
+      "target": "developer/tests/policy/verification/VerificationExclusions_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "schema_check",
+      "responsibility": "policy/verification",
+      "test_identifiers": [
+        "TestPolicyVerificationExclusions"
+      ],
+      "helpers": [],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "verification_exclusions.json",
+        "developer/policy/policy-resolver-contract.yaml",
+        "developer/policy/MPD-BOUND-0001.yaml",
+        "developer/policy/source-application-review.yaml",
+        "policy-cleanup-verification.yml",
+        "developer/policy/*/*.yaml",
+        "test_modes.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification -count=1",
+      "baseline_verification": {
+        "pass": 1,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/v2/IndexedReferences_test.go",
+      "target": "developer/tests/policy/verification/v2/IndexedReferences_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "v2_test",
+      "responsibility": "policy/verification/v2",
+      "test_identifiers": [
+        "TestChange0001RegisteredV2SelectionAndStructure",
+        "TestChange0001IndexedReferenceCounterexamples",
+        "TestRequirementIDsReplaceResponsibilityReferences",
+        "TestGovRequiredFieldsAndLocalRuleSources",
+        "TestIndexedV2CrossPolicyRegression",
+        "TestAuthorityReferencesStayInOwningContract",
+        "TestAllFamilyReviewDimensions"
+      ],
+      "helpers": [
+        "indexedCopy",
+        "indexedContract"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        "developer/policy/CHANGE/MPD-CHANGE-0001.yaml",
+        "developer/policy/GOV/MPD-GOV-0001.yaml",
+        "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+        "developer/policy/ARCH/MPD-ARCH-0002.yaml",
+        "developer/policy/CHANGE/MPD-CHANGE-0007.yaml",
+        "developer/policy/RECORD/MPD-RECORD-0001.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification/v2 -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification/v2 -count=1",
+      "baseline_verification": {
+        "pass": 7,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    },
+    {
+      "source": ".ptsip/engine/developer/policy/verification/v2/Verifier_test.go",
+      "target": "developer/tests/policy/verification/v2/Verifier_test.go",
+      "source_module": "github.com/Kinirin/PTSIP/.ptsip/engine/developer",
+      "source_module_root": ".ptsip/engine/developer",
+      "source_package": "v2_test",
+      "responsibility": "policy/verification/v2",
+      "test_identifiers": [
+        "TestV2RejectsInactiveRegistry",
+        "TestV2RegisteredPolicyAndLegacyRejection"
+      ],
+      "helpers": [
+        "repoRoot",
+        "readSourcePolicy"
+      ],
+      "build_constraints": [],
+      "fixture_path_literals": [
+        ".ptsip/contracts/policy/candidate.index.json",
+        "developer/policy/ARCH/MPD-ARCH-0001.yaml",
+        "developer/policy/GOV/MPD-GOV-0006.yaml"
+      ],
+      "baseline_command": "go -C .ptsip/engine/developer test -mod=readonly ./policy/verification/v2 -count=1",
+      "destination_command": "go -C developer/tests test -mod=readonly ./policy/verification/v2 -count=1",
+      "baseline_verification": {
+        "pass": 2,
+        "fails": [],
+        "skips": [],
+        "unexecuted": []
+      }
+    }
+  ],
+  "baseline_verification": {
+    "host": "windows/amd64",
+    "command": "go -C <source_module_root> test -mod=readonly -count=1 -json ./...",
+    "result": {
+      "pass": 188,
+      "fail": 15,
+      "skip": 3,
+      "unexecuted": 0
+    },
+    "preexisting_failures": [
+      "Developer Responsibility-Authority contract root retired",
+      "Developer Plan_status contract path retired",
+      "Legacy RECORD rules resource path retired"
+    ]
+  },
+  "destination_verification": {
+    "host": "windows/amd64",
+    "packages_passed": 20,
+    "tests_passed": 206,
+    "tests_failed": 0,
+    "inherited_windows_skips": [
+      "TestVerifierRejectsSymlinkEscape",
+      "TestApplyPreparesAllLanguagesBeforeMutation",
+      "TestApplyChangesOnlyRegisteredTargetsAndIsIdempotent"
+    ],
+    "retired_tests_replaced": 4
+  }
+}

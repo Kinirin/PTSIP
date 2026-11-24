@@ -436,8 +436,8 @@ func TestProjectProfileLifecycleAndWorkAuthorizationFollowCurrentPlan(t *testing
 		}
 	}
 	scope := plan["release_scope"].(object)
-	if scope["full_038_work_units_approved"] != true ||
-		scope["implementation_authorization_scope"] != "WU_01_THROUGH_WU_14_WITH_EXPLICIT_DECISION_GATES" ||
+	if scope["full_038_work_units_approved"] != true || scope["implementation_authorized"] != true ||
+		scope["implementation_authorization_scope"] != "WU_01_THROUGH_WU_14;ALL_IN_SCOPE_POLICY_COMPLIANT_IMPLEMENTATION_APPROVED;PRESERVE_ACTION_SPECIFIC_GATES" ||
 		scope["execution_order"] != "ACTUAL_DEPENDENCIES_NOT_WORK_UNIT_NUMBER" {
 		t.Fatalf("plan lost continuous dependency-driven authorization: %v", scope)
 	}

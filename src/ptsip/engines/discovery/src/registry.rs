@@ -4,6 +4,77 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Component, Path, PathBuf};
 
+pub(crate) fn select_execution_binding<'a>(
+    rows: &'a [Value],
+    engine: &str,
+    implementation: &str,
+    capability: &str,
+    contract: &str,
+) -> Result<&'a Value, String> {
+    let mut identities = BTreeSet::new();
+    let mut combinations = BTreeSet::new();
+    let mut selected = None;
+    for row in rows {
+        let identity = string(row, "binding_id")?;
+        let version = string(row, "engine_version")?;
+        let capability_id = string(row, "capability_id")?;
+        let contract_version = string(row, "contract_version")?;
+        let version_parts: Vec<_> = version.split('.').collect();
+        if row["engine_id"] != engine
+            || row["permission_grant"] != false
+            || version_parts.len() != 3
+            || !version_parts.iter().all(|part| {
+                !part.is_empty()
+                    && part.bytes().all(|b| b.is_ascii_digit())
+                    && (part.len() == 1 || !part.starts_with('0'))
+            })
+        {
+            return Err(format!(
+                "invalid execution compatibility binding {identity}"
+            ));
+        }
+        let key = (version, capability_id, contract_version);
+        if !identities.insert(identity) || !combinations.insert(key) {
+            return Err(format!(
+                "ambiguous execution compatibility binding {identity}"
+            ));
+        }
+        if key == (implementation, capability, contract) {
+            selected = Some(row);
+        }
+    }
+    selected.ok_or_else(|| format!("no execution compatibility binding for {engine} {implementation} and {capability} {contract}"))
+}
+
+#[cfg(test)]
+mod binding_tests {
+    use super::*;
+
+    #[test]
+    fn selects_the_exact_engine_and_contract_versions() {
+        let row = |id, engine_version, contract_version| {
+            json!({"binding_id": id, "engine_id": "engine", "engine_version": engine_version,
+                "capability_id": "capability", "contract_version": contract_version, "permission_grant": false})
+        };
+        let mut bindings = vec![
+            row("prior", "1.0.0", "7.0.0"),
+            row("current", "1.1.0", "7.0.0"),
+        ];
+        assert_eq!(
+            select_execution_binding(&bindings, "engine", "1.1.0", "capability", "7.0.0").unwrap()
+                ["binding_id"],
+            "current"
+        );
+        assert!(
+            select_execution_binding(&bindings, "engine", "1.1.0", "capability", "8.0.0").is_err()
+        );
+        bindings.push(row("duplicate", "1.1.0", "7.0.0"));
+        assert!(
+            select_execution_binding(&bindings, "engine", "1.1.0", "capability", "7.0.0").is_err()
+        );
+    }
+}
+
 // An explicit owner source is the input trust boundary. This verifier proves
 // current bytes and declared relationships, never owner legitimacy or grants.
 struct Source {
@@ -257,19 +328,16 @@ pub fn verify(input: &Value, select: bool) -> Result<Value, String> {
             }
             let bindings = source.read(string(routes[0], "binding_ref")?)?;
             let values = list(&bindings, "bindings")?;
-            if values.len() != 1 {
-                return Err("ambiguous capability invocation binding".into());
+            for value in values {
+                source.schema(&index, "execution-binding", value)?;
             }
-            let binding = &values[0];
-            source.schema(&index, "execution-binding", binding)?;
-            if binding["engine_id"] != entry["engine_id"]
-                || binding["engine_version"] != manifest["implementation_version"]
-                || binding["capability_id"] != contract["contract_id"]
-                || binding["contract_version"] != contract["version"]
-                || binding["permission_grant"] != false
-            {
-                return Err("stale capability invocation binding".into());
-            }
+            let binding = select_execution_binding(
+                values,
+                string(entry, "engine_id")?,
+                string(&manifest, "implementation_version")?,
+                string(&contract, "contract_id")?,
+                string(&contract, "version")?,
+            )?;
             source.bound(&binding["transport_ref"])?;
             endpoint = binding["entrypoint"].clone();
         }

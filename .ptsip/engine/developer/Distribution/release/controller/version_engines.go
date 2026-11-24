@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
 	"github.com/pelletier/go-toml/v2"
 	"go.yaml.in/yaml/v3"
 )
@@ -157,8 +158,8 @@ func stageEngine(root string, stage stageVersion, entry syncEngineEntry, version
 	if err := verifiedJSON(rawContract, &contract); err != nil {
 		return err
 	}
-	if contract.ID != entry.Cap || contract.Engine != entry.Engine || contract.Version != version {
-		return fmt.Errorf("current contract does not confirm %s version %s and its owner; no version projection applied", id, version)
+	if contract.ID != entry.Cap || contract.Engine != entry.Engine || contract.Version == "" {
+		return fmt.Errorf("current contract does not identify its owner for %s", id)
 	}
 	hash := sha256.Sum256(bytes.ReplaceAll(rawContract, []byte("\r\n"), []byte("\n")))
 	if err := stage(entry.Manifest, func(data []byte) ([]byte, error) {
@@ -176,7 +177,7 @@ func stageEngine(root string, stage stageVersion, entry syncEngineEntry, version
 			return nil, err
 		}
 		if manifest.Engine != entry.Engine || manifest.Origin != "OFFICIAL" || len(manifest.Cap) != 1 ||
-			manifest.Cap[0].ID != entry.Cap || manifest.Cap[0].Version != version ||
+			manifest.Cap[0].ID != entry.Cap || manifest.Cap[0].Version != contract.Version ||
 			manifest.Cap[0].Path != entry.Contract || manifest.Cap[0].Hash != fmt.Sprintf("%x", hash) {
 			return nil, fmt.Errorf("official manifest does not pin the registered engine contract")
 		}
@@ -185,32 +186,16 @@ func stageEngine(root string, stage stageVersion, entry syncEngineEntry, version
 		return err
 	}
 	if err := stage(entry.Bindings, func(data []byte) ([]byte, error) {
-		var document struct {
-			Bindings []json.RawMessage `json:"bindings"`
-		}
+		var document versionsource.EngineBindings
 		if err := verifiedJSON(data, &document); err != nil {
 			return nil, err
 		}
-		if len(document.Bindings) != 1 {
-			return nil, fmt.Errorf("ambiguous official execution binding")
-		}
-		raw := document.Bindings[0]
-		var binding struct {
-			Engine   string `json:"engine_id"`
-			Cap      string `json:"capability_id"`
-			Contract string `json:"contract_version"`
-		}
-		if err := json.Unmarshal(raw, &binding); err != nil {
+		if _, err := document.Select(entry.Engine, version, entry.Cap, contract.Version); err != nil {
 			return nil, err
 		}
-		if binding.Engine != entry.Engine || binding.Cap != entry.Cap || binding.Contract != version || bytes.Count(data, raw) != 1 {
-			return nil, fmt.Errorf("execution binding does not select the official engine contract")
-		}
-		updated, err := projectJSONField(raw, "engine_version", version)
-		if err != nil {
-			return nil, err
-		}
-		return bytes.Replace(data, raw, updated, 1), nil
+		// Compatibility rows are declarations of the engine owner. Even a
+		// confirmed version does not create or replace a compatibility row.
+		return data, nil
 	}); err != nil {
 		return err
 	}

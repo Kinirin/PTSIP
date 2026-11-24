@@ -195,7 +195,7 @@ func RunLocal(root string, skipTests bool) (LocalReport, error) {
     }
 
     if !skipTests {
-        moduleRoot := filepath.Join(root, ".ptsip", "engine", "developer")
+        moduleRoot := filepath.Join(root, "developer", "tests")
         if err := runLogged(root, filepath.Join(logDir,"go-test.stdout.log"),
             filepath.Join(logDir,"go-test.stderr.log"), "go",
             "-C", moduleRoot, "test", "./policy/applicability", "-count=1"); err != nil {
