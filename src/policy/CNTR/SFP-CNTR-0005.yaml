@@ -155,7 +155,7 @@ Policy_Content:
         contract_permission_declaration_is_grant: false
         engine_version_independence: PER_ENGINE_FROM_PTSIP_TOOL_AND_SCHEMA_VERSION
         official_distribution: INTEGRATED_USER_INSTALL_PACKAGE_WITH_INDEPENDENT_COMPONENTS
-        mandatory_official_engine_availability: ALL_SIX_BY_DEFAULT
+        mandatory_official_engine_availability: CURRENT_OWNER_POLICY_APPROVED_OFFICIAL_SET_BY_DEFAULT
         registry_topology: FEDERATED_OFFICIAL_CONSUMER_EXTERNAL_OWNERSHIP_PRESERVED
         resolver_selection: HONOR_EXPLICIT_CHOICE_OR_MACHINE_RESOLVE_WITH_APPROVED_CONTRACTS
         engine_override: CONTROLLED_CAPABILITY_LEVEL_SUBSTITUTION
@@ -170,6 +170,21 @@ Policy_Content:
         revocation_result_contract_boundary: STOP_CAUSE_AND_ATTEMPT_STATUS_SEPARATE_FROM_WORK_EFFECT
         storage_engine_semantic_boundary: CONTRACT_MEDIATION_WITH_INDEPENDENT_STORAGE_PROVIDER_OWNERSHIP
         context_projection_responsibility_direction: B_PROJECTION_INDEPENDENT_NORMATIVE_OUTPUT_AND_TRANSFORMATION_OWNER
+        profile_write_approval_evidence_20261124:
+          decision_source: USER_EXPLICIT_CHAT_2026_11_24
+          scope: NATIVE_PROFILE_WRITE_APPROVAL_EVIDENCE
+          evidence_producer: PROJECTION
+          evidence_discovery: DISCOVERY
+          evidence_suitability_evaluation: VALIDATION
+          evidence_consumer_and_authorized_write_executor: EXECUTION
+          evidence_transfer: PROJECTION_TO_EXECUTION
+          evidence_creation_is_new_approval_or_permission_grant: false
+          approval_source: EXISTING_ADMITTED_OWNER_AUTHORITY
+          exact_request_authority_binding: REQUIRED
+          execution_final_authority_checks: PRESERVED
+          missing_or_invalid_evidence: FAIL_CLOSED
+          typed_operation_and_transport_details: PLAN_DERIVED_CONTRACT
+          grants_new_profile_write_authority: false
         validation_vpms_responsibility_direction: SINGLE_CANONICAL_VALIDATION_ENGINE_WITH_VPMS_RESPONSIBILITY_IN_SCOPE
         validation_generic_contract_scope: SCHEMA_IO_PRECONDITIONS_AND_VERIFICATION_CASES
         validation_vpms_interface_migration_policy: STAGED_NEW_VALIDATION_CONTRACT_VERIFIED_BEFORE_LEGACY_COMPATIBILITY_RETIREMENT
@@ -442,8 +457,8 @@ Policy_Content:
             validated_against_effective_version_contract: true
             does_not_grant_breaking_contract_or_retirement_exception: true
             decision_source: USER_EXPLICIT_CHAT_2026_11_23
-          breaking_contract_change_classification: UNRESOLVED_POLICY
-          responsibility_removal_classification: UNRESOLVED_POLICY
+          breaking_contract_change_classification: UNRESOLVED_EXACT_VERSION_CLASSIFICATION
+          responsibility_removal_classification: UNRESOLVED_EXACT_VERSION_CLASSIFICATION
           initial_cutover_number_selection: EXISTING_CURRENT_OFFICIAL_ENGINE_CONTRACT_JSON_VERSION_PER_ENGINE
           initial_cutover_selection_authority: USER_EXPLICIT_CHAT_2026_11_22
           initial_cutover_reference_revision: 964e52cbf930e3436bcd58c1e50838ec973b9d1a
@@ -458,7 +473,27 @@ Policy_Content:
           initial_cutover_does_not_infer_semantic_or_compatibility_APPROVAL: true
           historical_contract_version_identity: IMMUTABLE_PRESERVED
           independent_capability_semantic_ownership: PRESERVED
-          contract_compatibility_and_dependency_evidence: PRESERVED_REQUIRED
+          contract_compatibility_and_dependency_evidence: CONTRACT_SPECIFIC_FOR_BREAKING_VERSION_CHANGE;OTHER_EFFECTIVE_OBLIGATIONS_PRESERVED
+          breaking_contract_change_requirements_20261124:
+            decision_source: USER_EXPLICIT_CHAT_2026_11_24
+            conflict_resolution: CONTRACT_SPECIFIC_OPTIONAL_REQUIREMENTS
+            scope: BREAKING_CONTRACT_VERSION_CHANGE_REQUIREMENT_SELECTION
+            uniform_old_dependency_compatibility_requirement: false
+            uniform_verified_responsibility_handoff_requirement: false
+            requirements_selection: PER_AFFECTED_CONTRACT_EXPLICIT_DECISION
+            existing_specific_active_contract_obligations: PRESERVED_UNTIL_EXPLICITLY_RECONCILED
+            unsupported_compatibility_claim: FORBIDDEN
+            prior_contract_history_preservation: REQUIRED
+            exact_target_version: OWNER_CONFIRMED_BEFORE_SOURCE_CHANGE
+            automatic_version_increment: FORBIDDEN
+          official_engine_retirement_20261124:
+            decision_source: USER_EXPLICIT_CHAT_2026_11_24
+            conflict_resolution: KEEP_LATEST
+            authority_ref: SFP-ARCH-0004#official_engine_retirement_policy_20261124
+            removal_allowed_after_all_responsibilities_transferred: true
+            specific_retirement_scope: OWNER_APPROVAL_REQUIRED
+            current_engine_set_change_authorized: false
+            version_classification: UNRESOLVED_EXACT_VERSION_CLASSIFICATION
           registration_and_execution_authorization: UNCHANGED
           active_component_version_values: UNCHANGED_BY_THIS_POLICY_RECORD
           implementation_and_release_authorization: NOT_GRANTED
@@ -541,7 +576,7 @@ Policy_Content:
           - VERSIONED_DEPENDENCY_GRAPH
           - VERIFIABLE_SOURCE_AND_EVIDENCE
           selection_algorithm: PLAN_DERIVED_NO_NEW_POLICY_HEURISTIC
-          six_official_engines_default_availability: PRESERVED
+          six_official_engines_default_availability: CURRENT_APPROVED_SET_PRESERVED_UNTIL_OWNER_APPROVED_RETIREMENT
           no_installation_authority_from_availability_declaration: true
           installation: ONLY_AFTER_APPLICABLE_EXISTING_SOURCE_PERMISSION_SUPPLY_AND_CTRL_GATES
           active_0_3_8_external_extension_automatic_installation: NOT_AUTHORIZED_SFP_CNTR_0007
