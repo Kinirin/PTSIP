@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../.ptsip/contracts/policy/unified/Unified_Policy.schema.json
+schema_version: "ptsip-unified-policy/v3-candidate"
+Policy_Identity:
+  id: "MPD-ASSURE-0006"
+  policy_kind: "PTSIP_DEVELOPER_POLICY"
+  root_family: "ASSURE"
+  title: "Developer tool test source location"
+Policy_Lifecycle:
+  status: "APPROVED.Default"
+  source_ref: "SRC-0002"
+Policy_Authority:
+  source_refs: []
+Policy_Rules:
+  rules:
+    - id: "R-ID-8E5ABD45FB714C0380160C3D28A0C5FB"
+      identity_scheme: "DECLARED"
+      kind: "RULE"
+      source_ref: "SRC-0003"
+      contract_bindings:
+        RA:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0003"
+        RAC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0003"
+        AEC:
+          state: "UNRESOLVED"
+          basis_refs:
+            - "SRC-0003"
+Policy_Evaluation:
+  source_refs: []
+  state: "UNRESOLVED"
+Policy_Relationships:
+  source_refs: []
+Policy_Content:
+  items:
+    - id: "SRC-0001"
+      source_pointer: "/Policy_Identity"
+      value:
+        id: "MPD-ASSURE-0006"
+        policy_kind: "PTSIP_DEVELOPER_POLICY"
+        root_family: "ASSURE"
+        title: "Developer tool test source location"
+    - id: "SRC-0002"
+      source_pointer: "/Policy_Lifecycle"
+      value:
+        status: "APPROVED.Default"
+    - id: "SRC-0003"
+      source_pointer: "/Policy_Rules/Definition/0"
+      value:
+        id: "R-ID-8E5ABD45FB714C0380160C3D28A0C5FB"
+        rule: "DEVELOPER_TOOL_TEST_LOCATION"
+        decision_source: "USER_EXPLICIT_2026_11_24"
+        scope:
+          feature_path_glob: ".ptsip/**"
+        required:
+          test_source_root: "developer/tests/"
+          new_test_source_path_glob: "developer/tests/**"
+        forbidden:
+          test_source_path_glob: ".ptsip/**"
+          go_test_file_path_glob: ".ptsip/engine/developer/**/*_test.go"
+        boundary:
+          product_test_scope: "UNCHANGED"
+          test_behavior_and_required_coverage: "PRESERVE"
+  source_document:
+    path: "developer/policy/ASSURE/MPD-ASSURE-0006.yaml"
+    sha256: "1a6ca19b4bde5b0230a0b5f059ac95000771fcd41beadc2a3c95a996e475c78c"
+Policy_Migration:
+  baseline_head: "3af9362f20d463c12154b2f2c5ae595def3c0f47"
+  source_format: "NEW_USER_APPROVED_POLICY"
+  source_registration: "INDEXED"
+  contract_state: "CANDIDATE"
