@@ -5,10 +5,10 @@
   "plan_version": "0.3.8",
   "plan_path": "developer/planning/0.3.8/developer-test-module-relocation.plan.json",
   "integration_branch": "main",
-  "status": "DRAFT_PENDING_USER_AUDIT",
+  "status": "Approval.Scheduled_implementation",
   "artifact_type": "DEVELOPER_TEST_RELOCATION_PLAN",
   "authority": "PLAN_ONLY_NOT_POLICY_OR_IMPLEMENTATION",
-  "implementation_authorized": false,
+  "implementation_authorized": true,
   "policy_refs": [
     {
       "policy_id": "MPD-ASSURE-0006",
@@ -31,8 +31,8 @@
       "id": "WU-16",
       "name": "Inventory, migrate and rewire existing .ptsip Go tests",
       "dependency": [],
-      "implementation_authorized": false,
-      "execution_status": "PLANNED_PENDING_USER_PLAN_AUDIT_NOT_IMPLEMENTED",
+      "implementation_authorized": true,
+      "execution_status": "IMPLEMENTATION_AUTHORIZED_NOT_STARTED",
       "exact_steps": [
         "At current HEAD use tracked Git inventory to enumerate every .ptsip/**/*_test.go, including nested Go modules; record original test package, owning feature, Go module, Test/Benchmark/Fuzz/Example identifiers, fixtures, helpers, build tags, existing invocations and current verification status. Do not infer the count or owner from filenames.",
         "Assign each file and test case to the corresponding feature responsibility under developer/tests/; create an exact source-to-target migration ledger with collision detection. Coordinate policy/contract/check, update, entry and authoring tests with the Go Authoring plan, without duplicate implementation or tests.",
@@ -61,7 +61,16 @@
         "SKIPPED_REQUIRED_TEST",
         "TEST_FILE_REMAINS_UNDER_DOT_PTSIP"
       ],
-      "gate": "USER_AUDIT_AND_FULL_PLAN_APPROVAL_REQUIRED;NO_IMPLEMENTATION_AUTHORIZED"
+      "gate": "USER_AUDIT_AND_FULL_PLAN_APPROVAL_SATISFIED;EFFECTIVE_POLICY_CONFORMANCE_REQUIRED",
+      "approval": {
+        "status": "APPROVED",
+        "approval_source": "USER_EXPLICIT",
+        "approved_on": "2026-11-24",
+        "scope": "FULL_RECORDED_PLAN_IMPLEMENTATION",
+        "approved_plan_blob_sha": "afef69e84179cba5d93b15a2caa80142ba371f3a",
+        "implementation_started": false,
+        "policy_mutation_authorized": false
+      }
     }
   ],
   "related_plans": [
@@ -84,5 +93,14 @@
     "resolver_compatibility": "NOT_VERIFIED",
     "revision": "04",
     "index_commit": "e51b7789616ff9a016e37319a8e00c5d3dea8a97"
+  },
+  "approval": {
+    "status": "APPROVED",
+    "approval_source": "USER_EXPLICIT",
+    "approved_on": "2026-11-24",
+    "scope": "FULL_RECORDED_PLAN_IMPLEMENTATION",
+    "approved_plan_blob_sha": "afef69e84179cba5d93b15a2caa80142ba371f3a",
+    "implementation_started": false,
+    "policy_mutation_authorized": false
   }
 }
