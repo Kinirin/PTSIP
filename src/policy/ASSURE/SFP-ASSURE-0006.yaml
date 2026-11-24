@@ -14,9 +14,9 @@ Policy_Authority:
   - SRC-0007
 Policy_Rules:
   rules:
-  - id: SUP_ENGINE_SIMULATION_OPERATIONAL_EVIDENCE_CLASSIFICATION
-    identity_scheme: DECLARED
-    kind: RULE
+  - id: SFP-ASSURE-0006#/authority_semantics/engine_simulation_operational_evidence
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
     source_ref: SRC-0008
     contract_bindings:
       RA:
