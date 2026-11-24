@@ -884,6 +884,14 @@
       "decision_ref": "current_user_decisions/Director_Decision/decisions_0010",
       "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/profile_write_approval_evidence_20261124",
       "note": "No independent authority grant; implementation and verification of exact native binding remain pending."
+    },
+    {
+      "id": "WU04-REFERENCE-VERSION-REVISION-20261124",
+      "scope": "WU-04_AND_AFFECTED_SCHEMA_CONTRACTS",
+      "state": "USER_APPROVED_POLICY_SYNCHRONIZED_PLAN_REASSESSMENT_PENDING",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+      "note": "Combined contract_vision superseded; independent Schema versions and explicit null completion date approved. Exact locator, field placement, shared version contract shape and still-open reference/field semantics remain."
     }
   ],
   "target_registry": {
@@ -2680,7 +2688,7 @@
       ],
       "actions": [
         "Repair invalid historical Plan v1 JSON in independent release source planning, without copying malformed types or treating it as accepted contract",
-        "Historical WU-04 Plan_title / Plan_properties plan_id,purpose,version.revision placement is superseded by user 2026-11-21 direction: Plan_Identity owns plan_id and Plan DOCUMENT revision; public Plan root owns title,purpose and a single contract_vision with embedded version/revision; standalone contract_revision removed. Preserve old decision in historical ledger for audit; exact mandatory fields/regex semantics require gates.",
+        "[HISTORICAL_SUPERSEDED_FOR_COMBINED_CONTRACT_VISION_ONLY_BY_DECISIONS_0011] Historical WU-04 Plan_title / Plan_properties plan_id,purpose,version.revision placement is superseded by user 2026-11-21 direction: Plan_Identity owns plan_id and Plan DOCUMENT revision; public Plan root owns title,purpose and a single contract_vision with embedded version/revision; standalone contract_revision removed. Preserve old decision in historical ledger for audit; exact mandatory fields/regex semantics require gates.",
         "Plan public-root policy_refs hold Policy_Identity.id plus mandatory second yet-undefined item in each ref tuple; work_unit_item[].RA_id continues to bind RA List. Do not invent second reference component.",
         "Use exactly seven Plan statuses, with Approval.In_progress replacing Implementation.In_progress. Persist Approval.Scheduled_implementation as approved base even when active coding is observed; Approval.In_progress is a third-party/PTSIP engine observation, optional to write. On authorized resume from Halt.Paused, persist Approval.Scheduled_implementation; other transitions still require separate decisions.",
         "No independent plan implementation_authorized/publication_authorized/approval_ref/blocked_reason fields and no unit status/session fields",
@@ -2696,10 +2704,10 @@
         "User 2026-11-21 approved exact paths src/ptsip/schemas/plan/plan-identity.schema.json and src/ptsip/schemas/plan/plan-unit.schema.json, completing four independent Plan schema physical target path approvals; no schema resources or config.json entries are yet created.",
         "User-stated Plan format/customization premises guide subsequent contract policy decision: YAML for newly created or rewritten Plan with legacy format exception; Plan self-references source Policy identities without reverse requirement; contract version/revision/SHA provenance; user-custom contracts copied rather than editing installed package; CLI-validator extensibility; custom contract stable official version with revision-level changes and Policy-analog compression bounds. Do not invent mandatory fields, hashing algorithm, compression numbers, or enforce a conflicting consumer path before policy reconciliation.",
         "Plan Identity: stronger PTSIP-owned minimum identifying structure; Plan Unit: lighter official core, with user-specific fields and layout preserved. Exact required fields MUST be discussed separately before schema creation; examples in chat are not binding policy.",
-        "User 2026-11-21 structural field direction: Plan_Identity.plan_id is non-semantic reference ID with user-written raw regex; Plan_Identity.revision is [PL.001, YYYYMMDD] for document revision/date (not contract revision). Plan root owns title,purpose,single contract_vision (embedded version/revision; spelling intentional),policy_refs[id, extra-pending]. No parallel contract_revision. No new document_version or mandatory applied_contract.id.",
+        "[HISTORICAL_SUPERSEDED_FOR_COMBINED_CONTRACT_VISION_ONLY_BY_DECISIONS_0011] User 2026-11-21 structural field direction: Plan_Identity.plan_id is non-semantic reference ID with user-written raw regex; Plan_Identity.revision is [PL.001, YYYYMMDD] for document revision/date (not contract revision). Plan root owns title,purpose,single contract_vision (embedded version/revision; spelling intentional),policy_refs[id, extra-pending]. No parallel contract_revision. No new document_version or mandatory applied_contract.id.",
         "Plan_lifecycle MUST carry existing seven-state status plus a required lifecycle last-change field (name/format undecided); Plan document revision last change date has separate meaning. Work_unit_item work_unit_id requires shared random two-letter uppercase code per same plan with three digit suffix; direct work_unit_item.task_id[] keys to user .ptsip/tasks; work_unit_item entries directly use dynamic migrated plan-id keys (e.g. plan-J3K4-L5M6-N7P8) mapping to user-owned data; no project_specific[] wrapper and no planid[] field.",
         "Historical invalid/ambiguous ID regex notes are superseded for active Plan Identity and Work Unit IDs by explicit user approvals. work_unit_id exact ^WU-[A-Z]{2}-[0-9]{3}$; retired dynamic migrated Plan-key regex is not an active contract or decision gate.",
-        "User 2026-11-21 correction supersedes duplicate contract_revision: Public Structure emits only contract_vision: 'ver.1.00/Rev.0001'; contract SHA remains independent unresolved provenance role. Plan Identity plan_id uses raw user regex ^plan-[a-zA-Z0-9]{4}\\*$ (not plan-sn), but do not enforce a trailing literal '*' until clarified.",
+        "[HISTORICAL_SUPERSEDED_FOR_COMBINED_CONTRACT_VISION_ONLY_BY_DECISIONS_0011] User 2026-11-21 correction supersedes duplicate contract_revision: Public Structure emits only contract_vision: 'ver.1.00/Rev.0001'; contract SHA remains independent unresolved provenance role. Plan Identity plan_id uses raw user regex ^plan-[a-zA-Z0-9]{4}\\*$ (not plan-sn), but do not enforce a trailing literal '*' until clarified.",
         "Task IDs in work_unit_item.task_id are hyphen-delimited and serialized as YAML flow sequence, e.g. task_id: [\"TASK-20261121-QWERTY-A1B2C3D4\"]. Task index full ID presentation must align; do not alter filename or low-level ID authority without mapping verification.",
         "Replace work_unit_item.project_specific[].planid[] with dynamic project Plan-id mapping keys directly on each work_unit_item entry, e.g. \"plan-J3K4-L5M6-N7P8\": {checks: [...]}. Each dynamic key identifies an atomic migrated Plan, and the value holds user-authored arbitrary content. This is NOT a nested project_specific[] array, and the raw prior planid regex is invalid pending fix.",
         "User 2026-11-21 explicitly confirms Plan_Identity.plan_id regex ^plan-[a-zA-Z0-9]{4}$; accept exactly four ASCII alphanumeric after plan-, no trailing '*'. This approves only Plan Identity ID regex, not work_unit_id or migrated dynamic Plan keys.",
@@ -2749,13 +2757,13 @@
         "official_ids_assigned": false,
         "official_registration": false,
         "semantic_constraints_unchanged": true,
-        "gate": "USER_IDS_VERSIONS_AND_ROOT_ONLY_REGISTRY_DIRECTION_APPROVED;EXACT_REF_AND_FIELD_INTERPRETATION_PENDING;DIAGNOSTIC_BINDING_UNCHANGED"
+        "gate": "USER_IDS_VERSIONS_ROOT_ONLY_REGISTRY_APPROVED;REFERENCE_LOCATORS_AND_VERSION_FIELD_DESIGN_REASSESSMENT_PENDING"
       },
       "latest_user_contract_decision": {
-        "decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
-        "state": "SCHEMA_IDS_INITIAL_VERSIONS_ROOT_ONLY_REGISTRY_AND_FIELD_RESPONSIBILITIES_APPROVED",
-        "actual_schema_state": "EXISTING_DIAGNOSTIC_SCAFFOLDS_UNCHANGED",
-        "remaining": "SEE_DECISION_PENDING_INTERPRETATION"
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
+        "prior_id_registry_decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
+        "state": "REFERENCE_POLICY_AND_VERSION_OWNERSHIP_REVISED;PLAN_DESIGN_REASSESSMENT_PENDING",
+        "actual_schema_state": "EXISTING_DIAGNOSTIC_SCAFFOLDS_UNCHANGED"
       }
     },
     {
@@ -14218,7 +14226,8 @@
             "example": "ver.1.00/Rev.0001",
             "spelling": "USER_EXPLICIT_NOT_SILENTLY_RENAMED_TO_CONTRACT_VERSION",
             "embedded_revision_is_sufficient": true,
-            "no_parallel_contract_revision_field": true
+            "no_parallel_contract_revision_field": true,
+            "lifecycle": "SUPERSEDED_BY_20261124_SEPARATE_SCHEMA_AND_USER_VERSION"
           },
           "policy_refs": {
             "role": "DECLARED_PLAN_TO_POLICY_SOURCE_REFS",
@@ -14360,9 +14369,11 @@
       "PLAN_IDENTITY_REVISION_COUNTER_AND_DATE_SERIALIZATION",
       "PLAN_TASK_ID_LOOKUP_LINK_TO_TASK_INDEX_AND_NESTED_TASK_AUTHORITY",
       "USER_OVERRIDE_SCOPE_COMPATIBILITY_WITH_EFFECTIVE_SFP_CNTR_0009",
-      "CONTRACT_VISION_COMBINED_REVISION_VALUE_FORMAT_CHECK_ONLY",
       "TASK_HYPHEN_ID_SCOPE_INDEX_REGISTRY_CONFIRMATION",
-      "VALUE_ARRAY_USER_CONTRACT_EXTERNAL_VALIDATOR_BOUNDARY_NOT_YET_IMPLEMENTED"
+      "VALUE_ARRAY_USER_CONTRACT_EXTERNAL_VALIDATOR_BOUNDARY_NOT_YET_IMPLEMENTED",
+      "PLAN_SCHEMA_VERSION_FIELD_LOCATION_AND_USER_REVISION_FIELD_MAPPING",
+      "SHARED_USER_VERSION_CONTRACT_REQUIRED_POLICY_PLAN_SECTIONS_EXACT_SHAPE",
+      "REFERENCE_LOCATOR_REASSESSMENT_UNDER_NEW_POLICY"
     ],
     "approval_boundary": "PLAN_FIELD_DIRECTION_RECORDED_NOT_SCHEMA_IMPLEMENTATION_NOT_EFFECTIVE_POLICY_OVERRIDE",
     "current_user_corrections_2026_11_21": {
@@ -14426,7 +14437,8 @@
       "maintain_plan_common_two_letter_prefix": true,
       "no_retroactive_rewrite_of_legacy_wu_01_to_14": true,
       "dynamic_migrated_plan_key_not_applicable": true
-    }
+    },
+    "latest_effective_decision_ref": "current_user_decisions/Director_Decision/decisions_0011"
   },
   "wu04_schema_scaffold_execution": {
     "state": "FOUR_SEPARATE_PATH_SCAFFOLDS_CREATED_NOT_REGISTERED",
@@ -14449,7 +14461,7 @@
     "registry_config_unchanged": false,
     "common_contract_manifest_unchanged": false,
     "runtime_activation": "DIAGNOSTIC_ONLY",
-    "gate": "LATEST_USER_CONTRACT_DIRECTION_APPROVED;EXACT_REF_AND_FIELD_INTERPRETATION_PENDING;NO_IMPLEMENTATION_IN_DECISION_RECORD"
+    "gate": "USER_IDS_VERSIONS_ROOT_ONLY_REGISTRY_APPROVED;REFERENCE_LOCATORS_AND_VERSION_FIELD_DESIGN_REASSESSMENT_PENDING"
   },
   "current_user_decisions": {
     "common_field_responsibilities": {
@@ -15007,14 +15019,15 @@
             "exact_instance_path_and_tuple_serialization": "DO_NOT_INFER"
           },
           "pending_interpretation": [
-            "EXACT_JSON_SCHEMA_REF_ENCODING_AND_LOCAL_RESOURCE_RESOLUTION_WITHOUT_INDEPENDENT_CONFIG_ENTRIES",
             "MEANING_OF_RULES_ITEMS_ID_IN_CHILD_SCHEMA_REFERENCE_VERSUS_DIRECT_PUBLIC_ROOT_REFERENCE",
             "EXACT_POLICY_RULE_INSTANCE_PATH_AND_REFERENCE_SERIALIZATION",
             "WORK_UNIT_CONTAINER_CARDINALITY_AND_WORK_UNIT_ID_FIELD_MIGRATION_FROM_PRIOR_DRAFT",
             "DATE_FIELD_FORMAT_REQUIREDNESS_AND_STATUS_TRANSITION_AUTHORITY",
-            "PRESERVE_APPROVED_ID_PATTERNS_AND_FREE_FORM_VALUE_ITEMS;DO_NOT_INFER_NEW_REQUIREDNESS"
+            "PRESERVE_APPROVED_ID_PATTERNS_AND_FREE_FORM_VALUE_ITEMS;DO_NOT_INFER_NEW_REQUIREDNESS",
+            "REASSESS_CHILD_REFERENCE_LOCATOR_UNDER_SELECTIVE_MIGRATION_POLICY"
           ],
-          "implementation_scope": "DECISION_RECORD_ONLY;NO_SCHEMA_OR_CONFIG_MUTATION_IN_THIS_EDIT;NO_NEW_RELEASE_OR_RUNTIME_ACTIVATION_AUTHORITY"
+          "implementation_scope": "DECISION_RECORD_ONLY;NO_SCHEMA_OR_CONFIG_MUTATION_IN_THIS_EDIT;NO_NEW_RELEASE_OR_RUNTIME_ACTIVATION_AUTHORITY",
+          "latest_superseding_decision_ref": "current_user_decisions/Director_Decision/decisions_0011"
         }
       },
       "decisions_0009": {
@@ -15049,6 +15062,73 @@
           "implementation_contract": "EXACT_OWNER_ACTOR_OPERATION_INVOCATION_REQUEST_ARTIFACT_AND_CURRENT_AUTHORITY_BINDING_PENDING",
           "verification": "NATIVE_WRITE_AND_ROLLBACK_HANDOFF_PENDING",
           "existing_final_execution_authority_checks": "PRESERVED"
+        }
+      },
+      "decisions_0011": {
+        "decisions_date": "2026-11-24",
+        "authority": "USER_EXPLICIT",
+        "title": "Selective schema reference migration, separate schema and user versions, lifecycle null",
+        "scope": "WU-04_AND_AFFECTED_SCHEMA_CONTRACTS",
+        "status": "APPROVED",
+        "decision": {
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+          "reference_policy": {
+            "default": "CONTRACT_ID",
+            "internal_preferred": "INLINE_DEFINITION",
+            "internal_mandatory_replacement": [
+              "DYNAMIC_REFERENCE",
+              "METADATA"
+            ],
+            "internal_target_forms": [
+              "INLINE_DEFINITION",
+              "ANCHOR_REFERENCE"
+            ],
+            "external_mandatory_replacement": [
+              "METADATA",
+              "FULL_ID_SEARCH",
+              "FILE_PATH_PLUS_POINTER",
+              "FILE_PATH_ONLY",
+              "HASH_REFERENCE"
+            ],
+            "external_target": "FILE_PATH_PLUS_ANCHOR_REFERENCE",
+            "other_existing_forms": "PRESERVE",
+            "plan_root_child_reference_design": "REASSESS;DISTINGUISH_IDENTITY_FROM_LOCATOR;DO_NOT_INFER_NEW_ANCHOR_NAMES"
+          },
+          "version": {
+            "old_contract_vision": "SUPERSEDED",
+            "official_schema_field": "SchemaVersion",
+            "policy_field_location": "Policy_Identity",
+            "initial": "SCH.1.00",
+            "user_version_field": "Version",
+            "user_version_declared_pattern": "Ver.[0-9]",
+            "user_revision": "USER_REPOSITORY_CONTRACT_DEFINED",
+            "user_version_contract_file_count": 1,
+            "required_sections": [
+              "policy",
+              "plan"
+            ],
+            "null_allowed": true,
+            "shared_regex_allowed": true,
+            "merge_sections": false,
+            "subordinate_schema_versions": "INDEPENDENT",
+            "plan_field_location_and_exact_user_revision_mapping": "UNRESOLVED",
+            "exact_regex_and_contract_file_path": "UNRESOLVED"
+          },
+          "lifecycle": {
+            "completion_date": null,
+            "unrecorded_serialization": "EXPLICIT_NULL",
+            "date_format": "UNRESOLVED"
+          },
+          "preserve": [
+            "APPROVED_FOUR_PLAN_SCHEMA_IDS_AND_PATHS",
+            "ROOT_ONLY_CONFIG_REGISTRATION",
+            "APPROVED_ID_PATTERNS",
+            "APPROVED_SEVEN_LIFECYCLE_STATES",
+            "OPTIONAL_USER_OWNED_VALUE_ARRAY",
+            "POLICY_RULE_REFERENCE_DECISION_STILL_OPEN",
+            "EXISTING_HISTORICAL_CONTRACT_BYTES"
+          ],
+          "implementation": "NOT_PERFORMED;EXISTING_PLAN_AND_SCHEMA_DESIGN_REASSESSMENT_REQUIRED"
         }
       }
     }
