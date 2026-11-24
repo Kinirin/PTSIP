@@ -74,9 +74,9 @@
   "user_directed_requirements": [
     {
       "id": "VC-01",
-      "status": "USER_DIRECTED",
+      "status": "REASSESS_UNDER_NEW_EFFECTIVE_POLICY",
       "responsibility": "OFFICIAL_ENGINE_VERSION_CUTOVER",
-      "source_of_target_value": "src/ptsip/engines/{engine}/contract.json#/version",
+      "source_of_target_value": "EXISTING_SRC_VERSION_ENGINE_VALUE;INITIAL_CUTOVER_BASELINE_HISTORICAL_ONLY",
       "canonical_authority_after_cutover": "src/VERSION#engines.{engine}",
       "targets": [
         "src/VERSION#engines.{engine}",
@@ -84,7 +84,7 @@
         "src/ptsip/engines/{engine}/manifest.json#/implementation_version",
         "src/ptsip/engines/{engine}/execution-bindings.json#/bindings[*]/engine_version"
       ],
-      "contract_version_binding": "EXISTING_CONTRACT_VERSION_EXACT_EQUALITY",
+      "contract_version_binding": "INDEPENDENT_CONTRACT_VERSION_EXPLICIT_ENGINE_COMPATIBILITY",
       "existing_contract_version_mutation_during_initial_cutover": "FORBIDDEN",
       "historical_contract_mutation": "FORBIDDEN",
       "engine_scope": [
@@ -94,14 +94,15 @@
         "discovery",
         "execution",
         "projection"
-      ]
+      ],
+      "current_contract_root": "src/schemas/engines/"
     },
     {
       "id": "VC-02",
-      "status": "USER_DIRECTED",
+      "status": "REASSESS_UNDER_NEW_EFFECTIVE_POLICY",
       "responsibility": "VERSION_SYNC_CONTROLLER_SCOPE_REFORM",
       "target": ".ptsip/engine/developer/Distribution/release/controller/version_sync.go",
-      "direction": "EXTEND_VERSION_SYNC_FOR_EXPLICIT_CURRENT_ENGINE_SCHEMA_CONTRACT_CARGO_AND_DIRECT_VERSION_PROJECTIONS_ONLY",
+      "direction": "SYNC_EXPLICIT_OWNER_BOUND_VERSIONS_ONLY;NO_ENGINE_VERSION_TO_CONTRACT_VERSION_EQUALITY",
       "source_authority": "src/VERSION",
       "reverse_authority": "FORBIDDEN",
       "field_mapping": "MACHINE_DECLARED_BY_OWNER_SEMANTICS_NOT_BY_VERSION_FIELD_NAME_INFERENCE",
@@ -369,22 +370,22 @@
     {
       "id": "VC-12",
       "status": "USER_DIRECTED",
-      "responsibility": "AUTOMATED_PRECHANGE_SCHEMA_AND_ENGINE_CONTRACT_HISTORY_PRESERVATION",
+      "responsibility": "PUBLICATION_BOUND_CHANGED_CONTRACT_HISTORY_PRESERVATION",
       "canonical_version_input": "src/VERSION",
       "history_root": "src/ptsip/schemas/history/",
       "history_generation_contract_owner": "src/ptsip/ptsip_specification/",
       "history_generation_contract_implementation": "REQUIRED",
-      "sync_trigger": "APPROVED_SOURCE_VERSION_CHANGE_REQUIRING_CURRENT_SCHEMA_OR_ENGINE_CONTRACT_VERSION_UPDATE",
-      "trigger_point": "BEFORE_OVERWRITE_OF_CURRENT_SCHEMA_CONST_OR_CURRENT_ENGINE_CONTRACT_VERSION_FIELD",
+      "sync_trigger": "DISTRIBUTION_PLATFORM_PUBLICATION_COMPLETED",
+      "trigger_point": "AFTER_CONFIRMED_PLATFORM_PUBLICATION_NOT_WORKFLOW_COMPLETION",
       "subject_domains": [
         "CURRENT_SCHEMA_CONTRACTS",
         "CURRENT_OFFICIAL_ENGINE_CAPABILITY_CONTRACTS"
       ],
-      "semantics": "CAPTURE_PRIOR_CURRENT_CONTRACT_AS_VERSION_IDENTIFIED_IMMUTABLE_HISTORY_BEFORE_CURRENT_PROJECTION_CHANGE",
-      "generation": "SYNCHRONIZED_WITH_CANONICAL_VERSION_PROJECTION",
-      "historical_identity_integrity": "PRESERVE_ORIGINAL_VERSION_IDS_DIGEST_AND_CONTENT",
+      "semantics": "PRESERVE_ONLY_CHANGED_ACTUALLY_PUBLISHED_CONTRACTS",
+      "generation": "PUBLICATION_EVIDENCE_BOUND",
+      "historical_identity_integrity": "PRESERVE_ORIGINAL_PUBLISHED_ID_VERSION_AND_DIGEST_EVIDENCE;NEW_HISTORY_ID_VERSION_DISAMBIGUATED",
       "history_conflict": "FAIL_IF_EXISTING_HISTORY_VERSION_HAS_DIFFERENT_SEMANTIC_CONTENT",
-      "historical_field_rewrite": "FORBIDDEN",
+      "historical_field_rewrite": "FORBIDDEN_AFTER_NEW_ARCHIVE_CREATION",
       "first_unification_no_schema_contract_version_change": "DO_NOT_GENERATE_SYNTHETIC_HISTORY_OR_ARTIFICIAL_PATCH",
       "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED;APPROVED_DOMAIN_ROOTS_RECORDED_20261124;EXACT_RESOURCE_MAPPING_PENDING",
       "engine_historical_legacy_archive_deletion": "NOT_AUTHORIZED",
@@ -407,6 +408,31 @@
         "history_generation_owner": "src/ptsip/ptsip_specification/",
         "immutable_history": "PRESERVED",
         "creates_or_moves_files": false
+      },
+      "prior_history_trigger": {
+        "sync_trigger": "APPROVED_SOURCE_VERSION_CHANGE_REQUIRING_CURRENT_SCHEMA_OR_ENGINE_CONTRACT_VERSION_UPDATE",
+        "trigger_point": "BEFORE_OVERWRITE_OF_CURRENT_SCHEMA_CONST_OR_CURRENT_ENGINE_CONTRACT_VERSION_FIELD",
+        "semantics": "CAPTURE_PRIOR_CURRENT_CONTRACT_AS_VERSION_IDENTIFIED_IMMUTABLE_HISTORY_BEFORE_CURRENT_PROJECTION_CHANGE",
+        "historical_identity_integrity": "PRESERVE_ORIGINAL_VERSION_IDS_DIGEST_AND_CONTENT",
+        "status": "SUPERSEDED_FOR_NEW_HISTORY"
+      },
+      "publication_history_policy": {
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+        "ordinary_increment": "ONCE_PER_PUBLICATION_INTERVAL",
+        "field_compatibility_break": "MAJOR_ONCE_PER_PUBLICATION_INTERVAL",
+        "after_major": "MAJOR_AND_MINOR_FIXED_UNTIL_NEXT_PUBLICATION",
+        "repeated_edits": "NO_REPEATED_INCREMENT",
+        "patch_after_major_and_patch_to_minor_promotion": "UNRESOLVED_IF_NEEDED",
+        "example": {
+          "original_id": "urn:ptsip:contract:plan:unit",
+          "version": "SCH.1.00",
+          "history_id": "urn:ptsip:contract:plan:unit:1_00"
+        },
+        "exact_resource_mapping": "PLAN_DERIVED_IF_UNAMBIGUOUS;NON_EXAMPLE_ID_ENCODING_AND_REFERENCE_CLOSURE_REVIEW",
+        "engine_contract_root": "src/schemas/engines/",
+        "engine_contract_root_path": "USER_LITERAL_NOT_NORMALIZED_TO_SRC_PTSIP",
+        "history_root": "src/ptsip/schemas/history/",
+        "existing_history": "NO_REWRITE"
       }
     },
     {
@@ -485,14 +511,14 @@
         "PROJECT_SCHEMA_CONTRACTS",
         "OFFICIAL_ENGINE_CONTRACTS"
       ],
-      "creation_trigger": "CURRENT_VERSION_CHANGE_BEFORE_OVERWRITE",
+      "creation_trigger": "DISTRIBUTION_PLATFORM_PUBLICATION_COMPLETED_CHANGED_CONTRACTS_ONLY",
       "immutable_on_existing": true
     },
     {
       "root": "src/ptsip/ptsip_specification/",
       "owner_role": "RUNTIME_VERSION_INFORMATION_ACCESS_DIRECTION",
       "state": "GO_MODULE_BOUNDARY_NOT_YET_CONFIRMED",
-      "contract_history_rule_generation": "OWNS_SYNC_TRIGGERED_HISTORICAL_SCHEMA_AND_ENGINE_CONTRACT_MATERIALIZATION_RULES",
+      "contract_history_rule_generation": "OWNS_PUBLICATION_EVIDENCE_BOUND_HISTORY_MATERIALIZATION_RULES",
       "history_output_root": "src/ptsip/schemas/history/",
       "sync_orchestration": "COOPERATES_WITH_VERSION_SYNC_OWNER_WITHOUT_REDEFINING_SRC_VERSION_AUTHORITY"
     },
@@ -506,6 +532,14 @@
       "owner_role": "RELEASE_COMPOSITION_CONTRACT_AND_EXISTING_GATES",
       "restriction": "DO_NOT_TREAT_LEGACY_COMPOSITION_CONTRACT_AS_CANONICAL_VERSION_AUTHORITY_OR_DISABLE_REQUIRED_CHECKS_WITHOUT_VERIFIED_REPLACEMENT",
       "replacement_path_status": "EXACT_CONTRACT_PATH_SELECTED_CONSUMER_MIGRATION_PENDING"
+    },
+    {
+      "root": "src/schemas/engines/",
+      "owner_role": "CURRENT_ENGINE_CONTRACT_STORAGE",
+      "authority": "USER_EXPLICIT_20261124",
+      "engine_semantic_owner": "RESPECTIVE_ENGINE",
+      "version": "INDEPENDENT_FROM_ENGINE_IMPLEMENTATION",
+      "migration": "EXISTING_ENGINE_LOCAL_CONTRACTS_REASSESS_NO_PHYSICAL_MOVE"
     }
   ],
   "known_verification_obligations": [
@@ -578,7 +612,7 @@
           "format": "PRESERVE_EXACT_REGISTERED_MANIFEST_REVISION_SPELLING"
         },
         "engines": {
-          "meaning": "Current version per official engine, with exact identity equality across its implementation and current capability contract.",
+          "meaning": "Current independent Engine implementation version; contract compatibility explicit, no version equality requirement",
           "keys": {
             "context": "2.2.0",
             "storage": "3.0.0",
@@ -587,7 +621,7 @@
             "execution": "3.0.0",
             "projection": "2.5.0"
           },
-          "initial_value_ref": "src/ptsip/engines/{key}/contract.json#/version",
+          "initial_value_ref": "HISTORICAL_INITIAL_CUTOVER_ONLY;CURRENT_SRC_VERSION_ENGINE_VALUES_PRESERVED",
           "format": "PRESERVE_CURRENT_ENGINE_NUMERIC_SEMVER_GRAMMAR"
         },
         "schemas": {
@@ -610,13 +644,14 @@
         }
       },
       "initial_projection_rules": [
-        "Engine contract version is already the approved baseline; verify exact equality and leave its bytes unchanged on initial cutover.",
+        "Historical initial cutover equality no longer governs future sync; preserve current contract and Engine versions independently.",
         "Project six engine versions into the index, current manifest implementation_version, binding engine_version, engine-local version.yaml, and that engine's own Cargo package row in Cargo.toml and Cargo.lock.",
         "Verify current RBAC, Common Contract and schema version equality with their explicit registered owners; leave their existing bytes unchanged on initial cutover.",
         "Resolve current Profile from the registered schema key. No standalone Profile version or fallback.",
         "Read historical Git revisions with their historical parser only; reject the historical shape as the current source after cutover.",
         "Use the exact declared owner mapping for future updates. Fail before writing on missing, ambiguous or incompatible owner mapping or inability to preserve the original schema and reference closure."
-      ]
+      ],
+      "contract_version_source_mapping": "UNRESOLVED_EXACT_OWNER_BINDING;DO_NOT_INFER_FROM_ENGINE_VERSION"
     },
     "asset_delivery": {
       "owner": "src/build",
@@ -679,10 +714,10 @@
     {
       "id": "UP-05",
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
-      "issue": "FULL_RETIREMENT_FINAL_VERSION_AND_UNCLASSIFIED_OVERLAPPING_TRIGGERS_REMAIN",
-      "decision": "USER_APPROVED_REVISED_ENGINE_CLASSIFICATION_AND_REQUIREMENTS_NULL_SEMANTICS;POLICY_SYNCHRONIZED",
+      "issue": "CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_AND_PUBLICATION_VERSION_EDGE_CASES_REMAIN",
+      "decision": "USER_APPROVED_COMBINED_TRIGGER_PRECEDENCE_STANDALONE_DELETION_AND_FINAL_ENGINE_VERSION_FREEZE",
       "implementation_blocking": false,
-      "blocking_scope": "FUTURE_UNCLASSIFIED_OVERLAPPING_TRIGGERS_OR_FULL_RETIREMENT_VERSION_OR_UNAPPROVED_SPECIFIC_RETIREMENT",
+      "blocking_scope": "FUTURE_UNAPPROVED_SPECIFIC_RETIREMENT_OR_UNRESOLVED_CONTRACT_SPECIFIC_REQUIREMENT_OR_PUBLICATION_EDGE_CASE",
       "initial_cutover_rule": "COPY_THE_SIX_APPROVED_CURRENT_CONTRACT_VERSIONS_WITHOUT_TREATING_THE_IDENTITY_PROJECTION_AS_A_SEMANTIC_CHANGE",
       "single_trigger_cases": {
         "CONTRACT_ONLY_CHANGE": "PATCH",
@@ -695,7 +730,9 @@
         "EXISTING_RESPONSIBILITY_EXPANSION_OR_REDUCTION_WITH_CODE_SOURCE_CHANGE": "PATCH",
         "EXISTING_RESPONSIBILITY_EXPANSION_OR_REDUCTION_WITHOUT_CODE_SOURCE_CHANGE": "NO_INCREMENT",
         "RESPONSIBILITY_COMPATIBILITY_BREAK": "MAJOR",
-        "FUNCTION_COMPATIBILITY_BREAK": "MINOR"
+        "FUNCTION_COMPATIBILITY_BREAK": "MINOR",
+        "STANDALONE_RESPONSIBILITY_DELETION": "PATCH",
+        "FULL_ENGINE_REMOVAL": "FREEZE_FINAL_VERSION"
       },
       "unresolved_case_result": "FAIL_CLOSED_WITHOUT_VERSION_INCREMENT_OR_MUTATION;REQUIRES_EFFECTIVE_POLICY_DECISION",
       "resolved_case": {
@@ -707,13 +744,13 @@
         "requires_explicit_src_version_edit": true,
         "automatic_increment": "FORBIDDEN",
         "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/approved_combined_trigger_cases/CONTRACT_AND_ENGINE_FUNCTION_CHANGE",
-        "status": "PRIOR_GENERAL_FUNCTION_CHANGE_CLASSIFICATION_SUPERSEDED;REASSESS_USING_EXISTING_VS_NEW_FUNCTION"
+        "status": "SUPERSEDED_BY_MAX_APPLICABLE_CLASSIFICATION"
       },
       "owner_confirmed_combined_version_rule": {
         "status": "POLICY_SYNCHRONIZED",
         "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/combined_trigger_confirmation",
         "rule": "EXACT_TARGET_VERSION_REQUIRES_USER_CONFIRMATION_BEFORE_SOURCE_CHANGE;NO_AUTOMATIC_INCREMENT",
-        "prior_approved_combined_case": "REASSESS_UNDER_20261124_FUNCTION_DISTINCTION;EXACT_USER_CONFIRMATION_PRESERVED",
+        "prior_approved_combined_case": "REPLACED_BY_MAJOR_THEN_MINOR_THEN_PATCH",
         "source": "USER_EXPLICIT_CHAT_2026_11_23"
       },
       "incoming_policy_directions_not_yet_effective": {
@@ -732,10 +769,9 @@
         }
       },
       "remaining_unresolved": [
-        "FULL_REMOVED_ENGINE_FINAL_VERSION_IF_NEEDED",
-        "STANDALONE_RESPONSIBILITY_DELETION_NOT_TRANSFER_OR_REDUCTION",
-        "OVERLAPPING_TRIGGER_PRECEDENCE_IF_NOT_EXPLICIT",
-        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
+        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED",
+        "PUBLICATION_INTERVAL_EDGE_CASES_IF_NEEDED",
+        "ENGINE_CONTRACT_VERSION_SOURCE_BINDING_AND_COMPATIBILITY_MAPPING"
       ],
       "resolved_policy_directions_20261124": {
         "breaking_contract": {
@@ -756,7 +792,7 @@
             "src/policy/ARCH/SFP-ARCH-0004.yaml",
             "src/policy/CNTR/SFP-CNTR-0005.yaml"
           ],
-          "exact_version_classification": "TRANSFER_OUT_AND_IN_MINOR;FULL_RETIREMENT_FINAL_VERSION_UNRESOLVED"
+          "exact_version_classification": "TRANSFER_OUT_AND_IN_MINOR;FULL_RETIREMENT_FREEZE_FINAL_VERSION;STANDALONE_DELETION_PATCH"
         }
       },
       "incoming_policy_directions_not_yet_effective_status": "HISTORICAL_PROPOSALS_SUPERSEDED_BY_RESOLVED_POLICY_DIRECTIONS_20261124_FOR_APPROVED_SCOPE_ONLY",
@@ -776,7 +812,41 @@
         "exact_target_confirmation": "PRESERVED",
         "schema_version_management": "INDEPENDENT_PER_SUBORDINATE_SCHEMA",
         "schema_version_policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
-        "plan_schema_source_binding": "REASSESS_ON_FORMAL_REGISTRATION;NO_VERSION_VALUES_CHANGED"
+        "plan_schema_source_binding": "REASSESS_ON_FORMAL_REGISTRATION;NO_VERSION_VALUES_CHANGED",
+        "latest_resolution": {
+          "policy_refs": [
+            "src/policy/CNTR/SFP-CNTR-0005.yaml",
+            "src/policy/CNTR/SFP-CNTR-0009.yaml"
+          ],
+          "engine_contract_version_relation": "INDEPENDENT",
+          "full_engine_removal": "FREEZE_FINAL_VERSION",
+          "standalone_deletion": "PATCH",
+          "combined_trigger_precedence": "MAJOR_THEN_MINOR_THEN_PATCH",
+          "contract_history": "PUBLICATION_PLATFORM_COMPLETION"
+        }
+      },
+      "combined_trigger_precedence": {
+        "order": [
+          "MAJOR",
+          "MINOR",
+          "PATCH"
+        ],
+        "MAJOR": {
+          "major_delta": 1,
+          "minor_reset": 0,
+          "patch_reset": 0
+        },
+        "MINOR": {
+          "major_delta": 0,
+          "minor_delta": 1,
+          "patch_reset": 0
+        },
+        "PATCH": {
+          "major_delta": 0,
+          "minor_delta": 0,
+          "patch_delta": 1
+        },
+        "exact_target_confirmation": "PRESERVED"
       }
     }
   ],
@@ -799,10 +869,9 @@
         "OFFICIAL_ENGINE_SET_CHANGE"
       ],
       "remaining_future_conflicts": [
-        "FULL_REMOVED_ENGINE_FINAL_VERSION_IF_NEEDED",
-        "STANDALONE_RESPONSIBILITY_DELETION_NOT_TRANSFER_OR_REDUCTION",
-        "OVERLAPPING_TRIGGER_PRECEDENCE_IF_NOT_EXPLICIT",
-        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
+        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED",
+        "PUBLICATION_INTERVAL_EDGE_CASES_IF_NEEDED",
+        "ENGINE_CONTRACT_VERSION_SOURCE_BINDING_AND_COMPATIBILITY_MAPPING"
       ]
     },
     "full_plan_approval_conditions": {
@@ -1086,6 +1155,21 @@
         "STANDALONE_RESPONSIBILITY_DELETION_NOT_TRANSFER_OR_REDUCTION",
         "OVERLAPPING_TRIGGER_PRECEDENCE_IF_NOT_EXPLICIT",
         "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
+      ]
+    },
+    {
+      "id": "UP-05-FINAL-CLASSIFICATION-20261124",
+      "topic": "COMBINED_VERSION_PRECEDENCE_AND_ENGINE_RETIREMENT",
+      "decision": "MAJOR_THEN_MINOR_THEN_PATCH;FINAL_ENGINE_FREEZE;STANDALONE_DELETION_PATCH",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml"
+    },
+    {
+      "id": "VC-12-PUBLICATION-HISTORY-20261124",
+      "topic": "PUBLICATION_BOUND_HISTORY_AND_INDEPENDENT_CONTRACT_VERSION",
+      "decision": "CHANGED_PUBLISHED_CONTRACTS_ONLY;VERSION_DISAMBIGUATED_HISTORY_ID;ENGINE_CONTRACT_VERSION_INDEPENDENT",
+      "policy_refs": [
+        "src/policy/CNTR/SFP-CNTR-0005.yaml",
+        "src/policy/CNTR/SFP-CNTR-0009.yaml"
       ]
     }
   ]
