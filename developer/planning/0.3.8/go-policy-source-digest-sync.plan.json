@@ -5,10 +5,10 @@
   "plan_version": "0.3.8",
   "plan_path": "developer/planning/0.3.8/go-policy-source-digest-sync.plan.json",
   "integration_branch": "main",
-  "status": "DRAFT_PENDING_USER_AUDIT",
+  "status": "Approval.Scheduled_implementation",
   "artifact_type": "DEVELOPER_POLICY_AUTHORING_CHANGE_PLAN",
   "authority": "PLAN_ONLY_NOT_POLICY_OR_IMPLEMENTATION",
-  "implementation_authorized": false,
+  "implementation_authorized": true,
   "origin": {
     "relocation_authorization": "USER_EXPLICIT_REQUEST_2026_11_23",
     "withdrawn_location": "src/planning/0.3.8/ptsip-schema-centralization.plan.json#/work_units/WU-15",
@@ -132,10 +132,19 @@
         "NEW_TEST_FILE_UNDER_DOT_PTSIP",
         "STALE_GO_PACKAGE_IMPORT_OR_CLI_ROUTE"
       ],
-      "gate": "INDEPENDENT_DEVELOPER_PLAN_REQUIRES_AUDIT_AND_EFFECTIVE_POLICY_RESOLUTION_BEFORE_IMPLEMENTATION;EXISTING_RELEASE_SINGLE_PLAN_ENTRY_PRESERVED;HISTORICAL_DIGEST_REPAIR_REQUIRES_SEPARATE_AUTHORIZATION",
-      "implementation_authorized": false,
-      "execution_status": "PLANNED_PENDING_USER_PLAN_AUDIT_NOT_IMPLEMENTED",
-      "current_result": "2026-11-23: existing Go runUnifiedAuthoring validates supplied digest before writing, and WriteDocument does not update existing files; no persistent authorized content+digest synchronization is implemented in the current authoring path."
+      "gate": "USER_PLAN_AUDIT_AND_FULL_APPROVAL_SATISFIED;EFFECTIVE_POLICY_CONFORMANCE_REQUIRED;EXISTING_RELEASE_SINGLE_PLAN_ENTRY_PRESERVED;HISTORICAL_DIGEST_REPAIR_REQUIRES_SEPARATE_AUTHORIZATION",
+      "implementation_authorized": true,
+      "execution_status": "IMPLEMENTATION_AUTHORIZED_NOT_STARTED",
+      "current_result": "2026-11-23: existing Go runUnifiedAuthoring validates supplied digest before writing, and WriteDocument does not update existing files; no persistent authorized content+digest synchronization is implemented in the current authoring path.",
+      "approval": {
+        "status": "APPROVED",
+        "approval_source": "USER_EXPLICIT",
+        "approved_on": "2026-11-24",
+        "scope": "FULL_RECORDED_PLAN_IMPLEMENTATION",
+        "approved_plan_blob_sha": "d776c5dbf93e47f3268364ae9ac325044646eea1",
+        "implementation_started": false,
+        "policy_mutation_authorized": false
+      }
     }
   ],
   "acceptance": {
@@ -166,7 +175,7 @@
   },
   "planning_gates": {
     "registration": "USER_EXPLICIT_INDEPENDENT_PLAN_INDEX_REGISTRATION_COMPLETE;EXISTING_RELEASE_ENTRY_PRESERVED;AUTOMATED_RESOLVER_COMPATIBILITY_NOT_VERIFIED",
-    "implementation": "REQUIRES_USER_PLAN_AUDIT_AND_FULL_APPROVAL_AND_EFFECTIVE_POLICY_CONFORMANCE",
+    "implementation": "USER_PLAN_AUDIT_AND_FULL_APPROVAL_SATISFIED;EFFECTIVE_POLICY_CONFORMANCE_REQUIRED",
     "historical_policy_digest_repair": "REQUIRES_SEPARATE_USER_AUTHORIZATION",
     "workflow_python_to_go": "SEPARATE_FOLLOW_UP_SCOPE",
     "test_location": "developer/policy/ASSURE/MPD-ASSURE-0006.yaml",
@@ -235,5 +244,14 @@
       "forbidden_new_go_tests": ".ptsip/engine/developer/**/*_test.go",
       "existing_go_test_relocation_plan": "developer/planning/0.3.8/developer-test-module-relocation.plan.json"
     }
+  },
+  "approval": {
+    "status": "APPROVED",
+    "approval_source": "USER_EXPLICIT",
+    "approved_on": "2026-11-24",
+    "scope": "FULL_RECORDED_PLAN_IMPLEMENTATION",
+    "approved_plan_blob_sha": "d776c5dbf93e47f3268364ae9ac325044646eea1",
+    "implementation_started": false,
+    "policy_mutation_authorized": false
   }
 }
