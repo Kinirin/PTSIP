@@ -434,7 +434,20 @@ Policy_Content:
           current_engine_contract_version: INDEPENDENT_FROM_ENGINE_IMPLEMENTATION_VERSION
           engine_contract_version_only_changes_when_contract_changes: true
           engine_only_version_change_must_not_change_contract_version: true
-          contract_version_authority_mapping: UNRESOLVED_EXACT_SOURCE_KEY
+          contract_version_authority_mapping: SRC_VERSION_SCHEMAS_ONLY_FOR_SCHEMA_VERSION_DECLARATIONS
+          independent_engine_contract_version_src_version_entry: FORBIDDEN
+          independent_engine_contract_version_owner: RESPECTIVE_CONTRACT
+          existing_engine_implementation_version_source: PRESERVED
+          engine_contract_compatibility_binding_20261124:
+            decision_source: USER_EXPLICIT_CHAT_2026_11_24
+            owner: RESPECTIVE_ENGINE_IMPLEMENTATION
+            file: src/ptsip/engines/{engine}/execution-bindings.json
+            lookup_key: ENGINE_VERSION
+            compatible_contracts: EXPLICIT_LIST_PER_ENGINE_VERSION
+            compatibility_inference_from_equal_version: FORBIDDEN
+            declaration_is_execution_permission: false
+            exact_list_item_schema_and_migration: PLAN_DERIVED_CONTRACT
+            derived_registry_must_not_redefine_compatibility: true
           current_engine_contract_storage_root: src/schemas/engines/
           previous_engine_local_contract_location: MIGRATION_REVIEW_REQUIRED
           engine_contract_storage_root_literal_user_path: true
@@ -456,6 +469,20 @@ Policy_Content:
             RESPONSIBILITY_COMPATIBILITY_BREAK: MAJOR
             FUNCTION_COMPATIBILITY_BREAK: MINOR
           combined_trigger_precedence: MAJOR_THEN_MINOR_THEN_PATCH
+          publication_interval_version_policy_20261124:
+            decision_source: USER_EXPLICIT_CHAT_2026_11_24
+            scope: ENGINE_IMPLEMENTATION_VERSIONS
+            interval_boundary: DISTRIBUTION_PLATFORM_PUBLICATION_COMPLETED
+            workflow_completion_is_publication: false
+            version_baseline: LAST_PUBLISHED_VERSION
+            repeated_same_or_lower_class_change: NO_INCREMENT
+            patch_to_minor_promotion: REQUIRED_ON_NEW_MINOR_TRIGGER
+            minor_or_patch_to_major_promotion: REQUIRED_ON_NEW_MAJOR_TRIGGER
+            promotion_calculation: HIGHEST_APPLICABLE_CLASS_FROM_LAST_PUBLISHED_BASELINE
+            after_major_increase: ALL_COMPONENTS_FIXED_UNTIL_NEXT_PUBLICATION
+            final_retired_engine_version: FREEZE_NO_INCREMENT
+            existing_exact_target_approval: PRESERVED
+            state_persistence_and_publication_evidence: PLAN_DERIVED_CONTRACT
           combined_trigger_arithmetic:
             MAJOR: {major_delta: 1, minor_reset: 0, patch_reset: 0}
             MINOR: {major_delta: 0, minor_delta: 1, patch_reset: 0}
