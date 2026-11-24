@@ -228,6 +228,71 @@ Policy_Content:
           policy_schema_semantic_owner: "GO_COMMON_CONTRACT"
           legacy_go_plan_resource_preserved_until_verified_handoff: true
           plan_runtime_binding_unresolved_until_verified_registration: true
+        schema_reference_resolution_20261124:
+          decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
+          conflict_resolution: "KEEP_LATEST_FOR_SELECTED_REFERENCE_FORMS"
+          default_contract_identity_reference: "CONTRACT_ID"
+          scope: "SCHEMA_CONTRACT_REFERENCE_AUTHORING_AND_PLAN_MIGRATION"
+          internal:
+            preferred: "INLINE_DEFINITION"
+            mandatory_replacement_source_forms:
+              - "DYNAMIC_REFERENCE"
+              - "METADATA"
+            replacement_forms:
+              - "INLINE_DEFINITION"
+              - "ANCHOR_REFERENCE"
+            other_existing_forms: "PRESERVE_NO_IMMEDIATE_MIGRATION_REQUIRED"
+          external_file:
+            replacement_form: "FILE_PATH_PLUS_ANCHOR_REFERENCE"
+            mandatory_replacement_source_forms:
+              - "METADATA"
+              - "FULL_ID_SEARCH"
+              - "FILE_PATH_PLUS_POINTER"
+              - "FILE_PATH_ONLY"
+              - "HASH_REFERENCE"
+            other_existing_forms: "PRESERVE"
+          contract_id_identity_preserved: true
+          reference_locator_does_not_grant_authority: true
+          exact_version_owner_and_provenance_obligations: "PRESERVED"
+          hash_as_integrity_evidence_not_hash_reference: "PRESERVED"
+          runtime_resolver_feature_support: "NOT_REMOVED_BY_AUTHORING_POLICY"
+          installed_runtime_source_boundary: "PRESERVED"
+          unresolved_or_semantically_non_equivalent_replacement: "NO_SILENT_REWRITE;ESCALATE_AFFECTED_CONTRACT"
+          plan_reference_design: "REASSESS_UNDER_THIS_POLICY"
+        schema_and_user_document_version_20261124:
+          decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
+          conflict_resolution: "KEEP_LATEST_SEPARATE_SCHEMA_AND_USER_VERSION"
+          schema_version_owner: "PTSIP"
+          user_version_and_revision_owner: "CONSUMER_REPOSITORY_CONTRACT"
+          schema_version_field: "SchemaVersion"
+          policy_schema_version_field_location: "Policy_Identity"
+          initial_schema_version: "SCH.1.00"
+          user_version_field: "Version"
+          user_version_declared_pattern: "Ver.[0-9]"
+          exact_regex_anchoring_digit_count_and_dot_escaping: "UNRESOLVED"
+          user_revision_format: "USER_REPOSITORY_CONTRACT_DEFINED"
+          combined_plan_contract_vision: "SUPERSEDED_BY_SEPARATE_RESPONSIBILITIES"
+          user_version_contract:
+            file_count: 1
+            separate_required_sections:
+              - "policy"
+              - "plan"
+            both_sections_required: true
+            null_allowed: true
+            shared_regex_value_allowed: true
+            merge_sections: false
+            exact_path_and_section_serialization: "UNRESOLVED"
+          subordinate_schema_version_management: "INDEPENDENT_PER_SCHEMA"
+          plan_schema_version_field_location: "UNRESOLVED"
+          existing_plan_document_revision_role: "PRESERVED_PENDING_EXACT_USER_REVISION_FIELD_MAPPING"
+          official_schema_version_binding_and_registry_migration: "PLAN_DERIVED_CONTRACT"
+        plan_lifecycle_completion_date_20261124:
+          decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
+          field: "completion_date"
+          unrecorded_value: null
+          unrecorded_serialization: "EXPLICIT_JSON_YAML_NULL_NOT_EMPTY_STRING"
+          date_format: "UNRESOLVED"
+          status_transition_authority: "UNCHANGED"
     -
       id: "SRC-0007"
       source_pointer: "/Policy_Rules/contracts/0/rules/2"
