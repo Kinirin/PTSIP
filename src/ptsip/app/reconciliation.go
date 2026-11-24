@@ -1,7 +1,9 @@
 package app
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -82,6 +84,14 @@ func (c *Coordinator) Reconcile(ctx context.Context, input ReconciliationInput, 
 				profileConflict = true
 				break
 			}
+			authorityRevision := text(row, "authority_revision")
+			decisionID := text(record, "id")
+			authorityRecord, err := json.Marshal(record)
+			if err != nil || authorityRevision == "" {
+				row["status"], row["message"] = "DECISION_ERROR", "resolved decision authority could not be bound to the selected Profile"
+				invalidDecision = true
+				break
+			}
 			if err := local.VerifySnapshot(ctx); err != nil {
 				result := finish("STALE_EVIDENCE", 8)
 				result["message"] = err.Error()
@@ -103,12 +113,19 @@ func (c *Coordinator) Reconcile(ctx context.Context, input ReconciliationInput, 
 					result["message"] = err.Error()
 					return result, nil
 				}
+				head, current, err := c.read(ctx, decisionID)
+				currentRecord, encodeErr := json.Marshal(current)
+				if err != nil || encodeErr != nil || head != authorityRevision || !bytes.Equal(currentRecord, authorityRecord) {
+					result := finish("STALE_EVIDENCE", 8)
+					result["message"] = "decision authority changed or could not be verified before Profile application"
+					return result, nil
+				}
 				if err := prepared.Apply(ctx); err != nil {
 					result := finish("STALE_EVIDENCE", 8)
 					result["message"] = err.Error()
 					return result, nil
 				}
-				applied, err := c.Application(ctx, Object{"decision_id": record["id"], "status": "LOCAL_APPLIED",
+				applied, err := c.Application(ctx, Object{"decision_id": decisionID, "status": "LOCAL_APPLIED",
 					"profile_path": profile, "applied_revision": input.Revision})
 				if err != nil {
 					return nil, err

@@ -209,6 +209,10 @@ func contractOperation(request record, root, op string) record {
 			result["structure"] = record{"status": "INVALID", "problem": err.Error()}
 		}
 	case "compatibility":
+		if len(entry.Semantics) == 0 {
+			result["semantics"] = record{"status": "UNRESOLVED", "problem": "CONTRACT_SEMANTICS_NOT_REGISTERED"}
+			return result
+		}
 		compare(request, r, entry, base, result)
 	}
 	return result

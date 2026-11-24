@@ -199,10 +199,68 @@ func TestGoAppAuthorityAndMissingProfileWriter(t *testing.T) {
 	}
 }
 
-type snapshotFixture struct{ checks, writes int }
+func TestGoAppRechecksDecisionAuthorityBeforeProfileApplication(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		change func(*authorityFixture)
+	}{
+		{name: "current"},
+		{name: "different revision", change: func(f *authorityFixture) { f.head += "-new" }},
+		{name: "changed decision", change: func(f *authorityFixture) { f.record["resolved_by"] = "different-actor" }},
+		{name: "withdrawn decision", change: func(f *authorityFixture) { f.record = nil }},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			ctx := context.Background()
+			store := &authorityFixture{head: "head"}
+			client, err := app.NewCoordinator("owner/repository", store)
+			if err != nil {
+				t.Fatal(err)
+			}
+			request := app.Object{"include": []any{"src/run"}}
+			_, err = client.Gate(ctx, app.Object{
+				"repository": "owner/repository", "id": "clarification", "component_id": "run",
+				"branch": "main", "subject_revision": "source", "request": request,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			answer := app.Object{"classification": "PRODUCT", "purpose": "Run", "shipped": true, "runtime_required": true, "executable": true}
+			resolved, err := client.Resolve(ctx, app.Object{"decision_id": store.record["id"], "answer": answer})
+			if err != nil || resolved["accepted"] != true {
+				t.Fatalf("resolve authority: %v, %v", resolved, err)
+			}
+			input := app.ReconciliationInput{
+				Repository: "owner/repository", Branch: "main", Revision: "source", ProfilePath: "ptsip.yaml",
+				Scopes: []app.ReconciliationScope{{ComponentID: "run", Request: request}},
+			}
+			writer := &snapshotFixture{onCheck: func(check int) error {
+				if check == 2 && test.change != nil {
+					test.change(store)
+				}
+				return nil
+			}}
+			result, err := client.Reconcile(ctx, input, writer)
+			wantStatus, wantWrites := "RESOLVED", 1
+			if test.change != nil {
+				wantStatus, wantWrites = "STALE_EVIDENCE", 0
+			}
+			if err != nil || result["status"] != wantStatus || writer.writes != wantWrites || store.writes != 2 {
+				t.Fatalf("status %v, Profile writes %d, authority writes %d, error %v", result["status"], writer.writes, store.writes, err)
+			}
+		})
+	}
+}
+
+type snapshotFixture struct {
+	checks, writes int
+	onCheck        func(int) error
+}
 
 func (s *snapshotFixture) VerifySnapshot(context.Context) error {
 	s.checks++
+	if s.onCheck != nil {
+		return s.onCheck(s.checks)
+	}
 	if s.checks > 1 {
 		return errors.New("reference changed after preparation")
 	}

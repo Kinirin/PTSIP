@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "PTSIP Plan Document Structure — draft",
-  "$comment": "WU-04_PATH_SCAFFOLD_ONLY; NOT_REGISTERED_OR_RELEASE_AUTHORIZED. Required-field sets, final $id/version and cross-schema $ref bindings remain undecided.",
+  "$id": "urn:ptsip:contract:plan:public-structure",
+  "version": "SCH.1.00",
+  "title": "PTSIP Plan Document Structure",
   "type": "object",
   "properties": {
     "title": {
@@ -10,10 +11,27 @@
     "purpose": {
       "type": "string"
     },
-    "contract_vision": {
-      "type": "string"
+    "SchemaVersion": {
+      "const": "SCH.1.00"
     },
+    "Plan_Identity": {
+      "$ref": "urn:ptsip:contract:plan:identity"
+    },
+    "Plan_lifecycle": {
+      "$ref": "urn:ptsip:contract:plan:lifecycle"
+    },
+    "work_unit_item": {
+      "type": "array",
+      "items": { "$ref": "urn:ptsip:contract:plan:unit" }
+    },
+    "contract_vision": false,
+    "contract_revision": false,
+    "approval_ref": false,
+    "implementation_authorized": false,
+    "publication_authorized": false,
+    "blocked_reason": false,
     "policy_refs": {
+      "description": "Each reference identifies a Policy document and a rule owned by that document. The final rule reference encoding remains undecided.",
       "type": "array",
       "items": {
         "type": "array",
@@ -28,5 +46,6 @@
       }
     }
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "required": ["SchemaVersion"]
 }

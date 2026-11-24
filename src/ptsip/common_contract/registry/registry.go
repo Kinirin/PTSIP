@@ -18,6 +18,21 @@ import (
 )
 
 const Manifest = "registry/manifest.json"
+const PlanDocumentURN = "urn:ptsip:contract:plan:public-structure"
+
+type PlanDependency struct {
+	Field    string
+	URN      string
+	Resource string
+}
+
+func PlanDependencies() []PlanDependency {
+	return []PlanDependency{
+		{"Plan_Identity", "urn:ptsip:contract:plan:identity", "schemas/plan/plan-identity.schema.json"},
+		{"Plan_Lifecycle", "urn:ptsip:contract:plan:lifecycle", "schemas/plan/plan-lifecycle.schema.json"},
+		{"Plan_Unit", "urn:ptsip:contract:plan:unit", "schemas/plan/plan-unit.schema.json"},
+	}
+}
 
 var urn = regexp.MustCompile(`^urn:ptsip:contract:(public-structure-policy|policy:[a-z][a-z_-]*):v[1-9][0-9]*$`)
 var sha = regexp.MustCompile(`^[a-f0-9]{64}$`)
@@ -82,9 +97,11 @@ func Open(root, expectedDigest string) (*Registry, error) {
 	resources := make(map[string]bool)
 	fields := make(map[string]bool)
 	for _, entry := range data.Contracts {
-		if !urn.MatchString(entry.URN) || !strings.HasSuffix(entry.URN, ":"+entry.Version) ||
-			entry.Version == "" || entry.Field == "" || !sha.MatchString(entry.SHA256) || entry.Semantics[""] == "" ||
-			!schemaPath(entry.Resource, "schemas/policy/") {
+		planRoot := entry.URN == PlanDocumentURN && entry.Field == "Plan_Document" &&
+			entry.Resource == "schemas/plan/public-structure-plan.schema.json" && len(entry.Semantics) == 0
+		policy := urn.MatchString(entry.URN) && strings.HasSuffix(entry.URN, ":"+entry.Version) &&
+			entry.Semantics[""] != "" && schemaPath(entry.Resource, "schemas/policy/")
+		if entry.Version == "" || entry.Field == "" || !sha.MatchString(entry.SHA256) || !(planRoot || policy) {
 			return nil, fmt.Errorf("INVALID_REGISTRY_ENTRY: %s", entry.URN)
 		}
 		fieldVersion := entry.Field + "/" + entry.Version
@@ -163,8 +180,39 @@ func (r *Registry) Schema(id string) (Entry, map[string]any, error) {
 	if !ok || schema["$id"] != id {
 		return Entry{}, nil, fmt.Errorf("SCHEMA_ID_MISMATCH: %s", id)
 	}
+	if id == PlanDocumentURN {
+		properties, _ := schema["properties"].(map[string]any)
+		version, _ := properties["SchemaVersion"].(map[string]any)
+		if schema["version"] != entry.Version || version["const"] != entry.Version {
+			return Entry{}, nil, fmt.Errorf("SCHEMA_VERSION_MISMATCH: %s", id)
+		}
+	}
 	entry.Semantics = maps.Clone(entry.Semantics)
 	return entry, schema, nil
+}
+
+// Reference resolves the three Plan child contracts only through the public
+// Plan root. A child has its own identity and version but no public entry.
+func (r *Registry) Reference(root, id string) (map[string]any, error) {
+	if root == PlanDocumentURN {
+		for _, dependency := range PlanDependencies() {
+			if id != dependency.URN {
+				continue
+			}
+			entry, schema, err := r.InspectDiagnostic(dependency.Field)
+			if err != nil {
+				return nil, err
+			}
+			version, _ := schema["version"].(string)
+			if entry.Resource != dependency.Resource || schema["$id"] != id || version == "" {
+				return nil, fmt.Errorf("PLAN_SCHEMA_DEPENDENCY_MISMATCH: %s", id)
+			}
+			return schema, nil
+		}
+		return nil, fmt.Errorf("UNREGISTERED_PLAN_SCHEMA_DEPENDENCY: %s", id)
+	}
+	_, schema, err := r.Schema(id)
+	return schema, err
 }
 
 func (r *Registry) readSchema(resource, expectedDigest string) ([]byte, error) {

@@ -7,21 +7,10 @@
     }
   },
   "plan": {
-    "document": {
-      "path": "plan/public-structure-plan.schema.json",
-      "diagnostic_only": true
-    },
-    "identity": {
-      "path": "plan/plan-identity.schema.json",
-      "diagnostic_only": true
-    },
-    "lifecycle": {
-      "path": "plan/plan-lifecycle.schema.json",
-      "diagnostic_only": true
-    },
-    "unit": {
-      "path": "plan/plan-unit.schema.json",
-      "diagnostic_only": true
+    "urn:ptsip:contract:plan:public-structure": {
+      "$id": "urn:ptsip:contract:plan:public-structure",
+      "version": "SCH.1.00",
+      "path": "plan/public-structure-plan.schema.json"
     }
   },
   "storage": {

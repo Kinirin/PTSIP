@@ -9,6 +9,8 @@ import (
 	"sort"
 	"sync"
 	"testing"
+
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/registry"
 )
 
 func rulePolicy() object {
@@ -21,14 +23,16 @@ func rulePolicy() object {
 	}
 }
 
-func TestCentralRegistryContainsOnlyFourCurrentContracts(t *testing.T) {
+func TestCentralRegistryRegistersPlanRootWithoutItsChildren(t *testing.T) {
 	config := readObject(t, filepath.Join(productRoot(t), "schemas", "config.json"))
 	if len(config) != 3 || config["Policy"] == nil || config["plan"] == nil || config["storage"] == nil {
 		t.Fatalf("unexpected central registry groups: %v", config)
 	}
 	policies := config["Policy"].(object)
+	plans := config["plan"].(object)
 	storage := config["storage"].(object)["Responsibility-Authority"].(object)
-	if len(policies) != 1 || policies["ptsip.policy.v4"] == nil || len(storage) != 3 {
+	if len(policies) != 1 || policies["ptsip.policy.v4"] == nil || len(storage) != 3 ||
+		len(plans) != 1 || plans[registry.PlanDocumentURN] == nil {
 		t.Fatalf("unexpected current contract registrations: %v", config)
 	}
 	for _, key := range []string{"RA_list", "RAC_list", "AEC_list"} {
@@ -38,7 +42,24 @@ func TestCentralRegistryContainsOnlyFourCurrentContracts(t *testing.T) {
 			t.Errorf("resource identity differs for %s", key)
 		}
 	}
-	validator(t)
+	plan := plans[registry.PlanDocumentURN].(object)
+	if plan["$id"] != registry.PlanDocumentURN || plan["version"] != "SCH.1.00" ||
+		plan["path"] != "plan/public-structure-plan.schema.json" {
+		t.Fatalf("unexpected Plan root: %v", plan)
+	}
+	v := validator(t)
+	identity := object{"plan_id": "plan-A123"}
+	instance := object{
+		"SchemaVersion": "SCH.1.00", "Plan_Identity": identity,
+		"Plan_lifecycle": object{"status": "Draft.Proposed", "completion_date": nil},
+	}
+	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) != 0 {
+		t.Fatalf("valid Plan rejected: %+v", issues)
+	}
+	identity["plan_id"] = "plan-AA"
+	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) == 0 {
+		t.Fatal("Plan registration failed to validate the Identity child")
+	}
 }
 
 func TestUserIDAndStateContractsAreIndependent(t *testing.T) {

@@ -122,8 +122,15 @@ func TestGoProductDistribution(t *testing.T) {
 			"src/ptsip/specdata/ptsip-source-profile-0.3.4.schema.json",
 			"src/ptsip/specdata/ptsip-source-profile-0.3.6.schema.json",
 			"src/ptsip/engines/index.json",
+			"src/ptsip/engines/contracts/dependency-graph.json",
 			"src/ptsip/engines/discovery/profile-support.json",
+			"src/ptsip/engines/discovery/src/schemas/profile.schema.json",
 			"src/ptsip/engines/validation/profile-transitions.json",
+			"src/ptsip/engines/validation/runtime-contracts.json",
+			"src/ptsip/common_contract/registry/manifest.json",
+			"src/ptsip/common_contract/cmd/ptsip-common-contract/protocol.json",
+			"src/ptsip/common_contract/user_contracts/templates/policy_content_id.json",
+			"src/ptsip/schemas/plan/public-structure-plan.schema.json",
 		} {
 			if !entries[name] {
 				t.Errorf("required product asset missing from archive: %s", name)
@@ -143,6 +150,21 @@ func TestGoProductDistribution(t *testing.T) {
 		output, err := exec.Command(binary, "check", "-root", filepath.Join(root, "src")).CombinedOutput()
 		if err == nil || !strings.Contains(string(output), "root must select the checkout") {
 			t.Fatalf("nested checkout was accepted: %v %s", err, output)
+		}
+	})
+	t.Run("missing_registered_runtime_schema_blocks_archive", func(t *testing.T) {
+		checkout := t.TempDir()
+		distributionGit(t, root, "clone", "--shared", "--quiet", "--", root, checkout)
+		const resource = "src/ptsip/schemas/plan/plan-unit.schema.json"
+		distributionGit(t, checkout, "rm", "--", resource)
+		distributionGit(t, checkout, "commit", "-m", "source fixture missing registered runtime schema")
+		destination := filepath.Join(workspace, "missing-schema.tar.gz")
+		output, err := exec.Command(binary, "source", "-root", checkout, "-output", destination).CombinedOutput()
+		if err == nil || !strings.Contains(string(output), "invalid Common Contract path or digest: schemas/plan/plan-unit.schema.json") {
+			t.Fatalf("incomplete runtime closure accepted: %v %s", err, output)
+		}
+		if _, err := os.Stat(destination); !errors.Is(err, os.ErrNotExist) {
+			t.Fatalf("incomplete source produced output: %v", err)
 		}
 	})
 	t.Run("stale_engine_pin_blocks_output", func(t *testing.T) {

@@ -182,6 +182,16 @@ func buildWheel(root, base, output, platformTag string, progress io.Writer) (str
 	if err := checkWheelVersion(files, distribution, versions); err != nil {
 		return "", err
 	}
+	source, err := loadGitSource(root)
+	if err != nil {
+		return "", err
+	}
+	if source.Revision != revision {
+		return "", errors.New("source HEAD changed before Wheel staging")
+	}
+	if err := stageRegisteredProductAssets(source, files); err != nil {
+		return "", err
+	}
 	if err := stageWheelAssets(root, files); err != nil {
 		return "", err
 	}
@@ -197,6 +207,9 @@ func buildWheel(root, base, output, platformTag string, progress io.Writer) (str
 	}
 	if err := builder.addEngines(files, distribution, versions.Engines); err != nil {
 		return "", err
+	}
+	if current, err := buildRevision(root); err != nil || current != revision {
+		return "", errors.Join(errors.New("source changed during Wheel assembly"), err)
 	}
 	info := distribution + ".dist-info/"
 	metadata := fmt.Sprintf("Wheel-Version: 1.0\nGenerator: ptsip-source-build/2\nRoot-Is-Purelib: false\nTag: py3-none-%s\n", host.tag)

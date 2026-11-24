@@ -42,7 +42,8 @@ func Resolve(r *registry.Registry, id string, extension map[string]any) (registr
 		visiting[key] = true
 		doc, found := g.Docs[resource]
 		if !found {
-			_, doc, err = r.Schema(resource)
+			var err error
+			doc, err = r.Reference(id, resource)
 			if err != nil {
 				return err
 			}

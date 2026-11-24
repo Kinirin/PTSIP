@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "PTSIP Plan Identity — draft",
-  "$comment": "WU-04_PATH_SCAFFOLD_ONLY; NOT RELEASE AUTHORIZED. Plan Identity plan_id exact pattern user-approved ^plan-[a-zA-Z0-9]{4}$. Remaining required sets, final $id/version and cross-schema $ref bindings remain undecided.",
+  "$id": "urn:ptsip:contract:plan:identity",
+  "version": "SCH.1.00",
+  "title": "PTSIP Plan Identity",
   "type": "object",
   "properties": {
     "plan_id": {
@@ -9,18 +10,9 @@
       "pattern": "^plan-[a-zA-Z0-9]{4}$"
     },
     "revision": {
-      "type": "array",
-      "prefixItems": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "string"
-        }
-      ],
-      "minItems": 2,
-      "maxItems": 2
+      "description": "User-owned Plan document revision. PTSIP does not interpret or update this field."
     }
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "required": ["plan_id"]
 }

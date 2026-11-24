@@ -104,6 +104,9 @@ func run(args []string, stdout, stderr io.Writer) (int, error) {
 		return 1, err
 	}
 	if args[0] == "source" {
+		if err := stageRegisteredProductAssets(source, wheelContents{}); err != nil {
+			return 1, err
+		}
 		if err := writeSourceArchive(source, *output); err != nil {
 			return 1, err
 		}

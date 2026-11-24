@@ -12,6 +12,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/registry"
 	"github.com/santhosh-tekuri/jsonschema/v6"
 )
 
@@ -254,7 +255,28 @@ func New(root string) (*Validator, error) {
 			if entry["$id"] != object["$id"] {
 				return nil, fmt.Errorf("schema resource ID mismatch: %s", key)
 			}
+			if key == registry.PlanDocumentURN {
+				fields, _ := object["properties"].(map[string]any)
+				versionField, _ := fields["SchemaVersion"].(map[string]any)
+				if object["$id"] != key || object["version"] != version || versionField["const"] != version {
+					return nil, fmt.Errorf("Plan schema registration version or identity mismatch: %s", key)
+				}
+			}
 			v.registered[key] = document.URI
+		}
+	}
+	if _, registered := v.registered[registry.PlanDocumentURN]; registered {
+		for _, dependency := range registry.PlanDependencies() {
+			relative := strings.TrimPrefix(dependency.Resource, "schemas/")
+			document, err := load(relative)
+			if err != nil {
+				return nil, err
+			}
+			child := document.Value.(map[string]any)
+			version, _ := child["version"].(string)
+			if child["$id"] != dependency.URN || version == "" {
+				return nil, fmt.Errorf("Plan schema dependency mismatch: %s", dependency.URN)
+			}
 		}
 	}
 	for _, relative := range []string{
@@ -271,7 +293,11 @@ func New(root string) (*Validator, error) {
 	if err != nil {
 		return nil, err
 	}
-	for _, key := range []string{PolicyKey, "RA_list", "RAC_list", "AEC_list"} {
+	keys := []string{PolicyKey, "RA_list", "RAC_list", "AEC_list"}
+	if _, registered := v.registered[registry.PlanDocumentURN]; registered {
+		keys = append(keys, registry.PlanDocumentURN)
+	}
+	for _, key := range keys {
 		uri, ok := v.registered[key]
 		if !ok {
 			return nil, fmt.Errorf("missing required schema registration: %s", key)

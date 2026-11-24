@@ -1,19 +1,15 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
-
-	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
 )
 
 var macOSArm64Tag = regexp.MustCompile("^macosx_[0-9]+_[0-9]+_arm64$")
@@ -66,43 +62,10 @@ func jsonAsset(files wheelContents, name string, document any) error {
 }
 
 func (b nativeWheelBuilder) addGo(files wheelContents, distribution, toolVersion string) error {
-	const manifest = "common_contract/registry/manifest.json"
-	pathOnDisk := filepath.Join(b.root, "src", "ptsip", filepath.FromSlash(manifest))
-	raw, err := os.ReadFile(pathOnDisk)
-	if err != nil {
-		return err
-	}
-	if !bytes.Equal(files["ptsip/"+manifest].data, raw) {
-		return fmt.Errorf("staged Common Contract registry differs from source")
-	}
-	if _, err := jsondoc.Decode(raw); err != nil {
-		return fmt.Errorf("read Common Contract registry: %w", err)
-	}
-	type asset struct {
-		Resource string `json:"resource"`
-		SHA256   string `json:"sha256"`
-	}
-	var registry struct {
-		Revision    string  `json:"revision"`
-		Contracts   []asset `json:"contracts"`
-		Diagnostics []asset `json:"diagnostics"`
-	}
+	raw := files[strings.TrimPrefix(commonManifestPath, "src/")].data
+	var registry commonWheelRegistry
 	if err := json.Unmarshal(raw, &registry); err != nil {
 		return err
-	}
-	if registry.Revision == "" || len(registry.Contracts) == 0 || len(registry.Diagnostics) == 0 {
-		return fmt.Errorf("incomplete Common Contract registry")
-	}
-	for _, entry := range append(registry.Contracts, registry.Diagnostics...) {
-		if path.Clean(entry.Resource) != entry.Resource ||
-			!(strings.HasPrefix(entry.Resource, "schemas/policy/") || strings.HasPrefix(entry.Resource, "schemas/plan/")) ||
-			!strings.HasSuffix(entry.Resource, ".schema.json") || strings.ContainsAny(entry.Resource, "\\:") {
-			return fmt.Errorf("unsupported Common Contract resource %q", entry.Resource)
-		}
-		member := "ptsip/" + entry.Resource
-		if data, ok := files[member]; !ok || wheelDigest(data.data) != entry.SHA256 {
-			return fmt.Errorf("staged Common Contract resource absent or different: %s", member)
-		}
 	}
 	digest := wheelDigest(raw)
 	common := "ptsip-common-contract" + b.host.extension
