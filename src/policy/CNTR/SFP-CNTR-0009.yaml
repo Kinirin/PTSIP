@@ -281,11 +281,53 @@ Policy_Content:
             null_allowed: true
             shared_regex_value_allowed: true
             merge_sections: false
-            exact_path_and_section_serialization: "UNRESOLVED"
+            path: ".ptsip/contract/user/Version_Contract_Structure.json"
+            path_base: "CONSUMER_REPOSITORY_ROOT"
+            initial_section_values:
+              policy: null
+              plan: null
+            edit_authority: "USER_DIRECT_DEFINITION_OR_EDIT"
+            version_options:
+              base: "MAJOR.MINOR.PATCH"
+              prefixes: ["ver", "v", "Ver.", "V."]
+              suffixes: ["alpha", "beta", "Hotfix", "rc"]
+            options_role: "RECOMMENDATIONS_NOT_MANDATORY_REGEX"
+            section_custom_shape: "USER_DEFINED"
           subordinate_schema_version_management: "INDEPENDENT_PER_SCHEMA"
-          plan_schema_version_field_location: "UNRESOLVED"
-          existing_plan_document_revision_role: "PRESERVED_PENDING_EXACT_USER_REVISION_FIELD_MAPPING"
+          plan_schema_version_field_location: "PUBLIC_STRUCTURE_PLAN_ROOT"
+          plan_schema_version_lifecycle_field: false
+          existing_plan_document_revision_role: "USER_ONLY_NOT_USED_BY_PTSIP"
+          ptsip_revision_counter_or_update_authority: false
+          policy_rule_reference_ownership:
+            policy_id: "TOP_LEVEL_POLICY_DOCUMENT_ID"
+            rule_id: "RULE_ID_WITHIN_OWNING_POLICY_ID"
+            rule_reference_purpose: "BIND_DETAILED_POLICY_BASIS"
+            reference_scope: "POLICY_ID_AND_OWNED_RULE_ID"
+            exact_reference_serialization: "PRESERVE_EXISTING_APPROVED_TWO_PART_DIRECTION;FINAL_FIELD_CONTRACT_PENDING"
           official_schema_version_binding_and_registry_migration: "PLAN_DERIVED_CONTRACT"
+        schema_publication_history_20261124:
+          decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
+          conflict_resolution: "KEEP_LATEST_PUBLICATION_BOUND_HISTORY"
+          history_root: "src/ptsip/schemas/history/"
+          history_subjects: "ONLY_CHANGED_CONTRACTS"
+          history_capture_trigger: "DISTRIBUTION_PLATFORM_PUBLICATION_COMPLETED"
+          workflow_completion_is_publication: false
+          capture_source: "ACTUALLY_PUBLISHED_CONTRACT_REVISION"
+          ordinary_version_increase: "ONCE_AFTER_PREVIOUS_PUBLICATION_UNTIL_NEXT_PUBLICATION"
+          repeated_edits_before_next_publication: "NO_REPEATED_VERSION_INCREASE"
+          field_compatibility_break: "MAJOR_ONCE_PER_PUBLICATION_INTERVAL"
+          after_major_increase: "MAJOR_AND_MINOR_FIXED_UNTIL_NEXT_PUBLICATION"
+          exact_patch_behavior_after_major_and_patch_to_minor_promotion: "UNRESOLVED_IF_REQUIRED"
+          contract_version_grammar_mapping: "EXPLICIT_PER_CONTRACT;NO_INFERRED_SCHEMA_NUMBER_FORMAT"
+          archive_identity: "ADD_VERSION_DISAMBIGUATOR_AT_NEW_HISTORY_CREATION"
+          example_current_id: "urn:ptsip:contract:plan:unit"
+          example_version: "SCH.1.00"
+          example_history_id: "urn:ptsip:contract:plan:unit:1_00"
+          duplicate_id_result: "FAIL"
+          original_published_identity_and_digest_evidence: "PRESERVE_SEPARATELY"
+          existing_history_rewrite: "FORBIDDEN"
+          archived_reference_closure_and_non_example_id_encoding: "PLAN_DERIVED_IF_UNAMBIGUOUS_OTHERWISE_UNRESOLVED"
+          publication_evidence_and_exact_resource_mapping: "PLAN_DERIVED_CONTRACT"
         plan_lifecycle_completion_date_20261124:
           decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
           field: "completion_date"
