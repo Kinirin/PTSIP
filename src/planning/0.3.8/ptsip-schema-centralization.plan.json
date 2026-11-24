@@ -862,6 +862,20 @@
       "scope": "work_unit_item[].work_unit_id",
       "state": "USER_APPROVED_EXACT_REGEX",
       "note": "Accidental trailing escaped asterisk corrected. ^WU-[A-Z]{2}-[0-9]{3}$; exactly one scalar ID per Work Unit, same two-letter uppercase random prefix within Plan, three numeric suffix. No dynamic migrated plan-ID key or value[] inner requirements."
+    },
+    {
+      "id": "WU04-CONTRACT-DIRECTION-20261124",
+      "scope": "WU-04",
+      "state": "USER_APPROVED_IDS_VERSIONS_ROOT_ONLY_REGISTRY_AND_FIELD_RESPONSIBILITIES",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
+      "note": "Supersedes earlier independent child config entry direction; historical records remain. Exact reference encoding and unresolved field semantics remain separate; diagnostic bindings unchanged."
+    },
+    {
+      "id": "WU10-FIXTURE-ROOT-20261124",
+      "scope": "WU-10_WU-14",
+      "state": "USER_APPROVED_SRC_TESTS_ROOT",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0009",
+      "note": "Root approved; no invented leaf names or materialization. Existing exact-path false flag refers only to leaf paths."
     }
   ],
   "target_registry": {
@@ -2727,7 +2741,13 @@
         "official_ids_assigned": false,
         "official_registration": false,
         "semantic_constraints_unchanged": true,
-        "gate": "FINAL_SCHEMA_IDS_VERSIONS_AND_REFS_USER_DECISION"
+        "gate": "USER_IDS_VERSIONS_AND_ROOT_ONLY_REGISTRY_DIRECTION_APPROVED;EXACT_REF_AND_FIELD_INTERPRETATION_PENDING;DIAGNOSTIC_BINDING_UNCHANGED"
+      },
+      "latest_user_contract_decision": {
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
+        "state": "SCHEMA_IDS_INITIAL_VERSIONS_ROOT_ONLY_REGISTRY_AND_FIELD_RESPONSIBILITIES_APPROVED",
+        "actual_schema_state": "EXISTING_DIAGNOSTIC_SCAFFOLDS_UNCHANGED",
+        "remaining": "SEE_DECISION_PENDING_INTERPRETATION"
       }
     },
     {
@@ -3034,7 +3054,7 @@
       ],
       "acceptance": "Historical pp.1.01/pp.1.02/pp.2.00 exact schema blobs, IDs and version selectors remain unchanged with lookup paths under schemas/history/profile/. New direct official pp.3.00 core and native version support pass focused independent conformance. No pp.1.00 source fabricated. WU14 latest design-trigger exception controls removal of the 22 legacy Profile files; fixture and distribution obligations continue after deletion.",
       "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED_JSON_FIXTURE_TRANSFER_BLOCKED",
-      "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. Exact JSON fixture path approval is still false; no pp.1.00 schema is required or fabricated.",
+      "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. User approved src/tests/ JSON fixture root on 2026-11-24; exact leaf allocation and materialization remain pending. No pp.1.00 schema is required or fabricated.",
       "pp300_followup": {
         "status": "OFFICIAL_CORE_IMPLEMENTATION_AUTHORIZED_BY_LATEST_USER",
         "plan_ref": "project_profile_pp300_contract_redesign",
@@ -3046,6 +3066,13 @@
         },
         "design_change": "CURRENT_ALIAS_PAST_PP200_IS_SUPERSEDED_FOR_FUTURE_WORK_BY_PP300_CONTRACT_FIRST_DESIGN",
         "old_pp200_work": "COMPLETED_HISTORICAL_VALIDATION_PRESERVED_NO_RETROACTIVE_SOURCE_CHANGE"
+      },
+      "latest_fixture_decision": {
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0009",
+        "root": "src/tests/",
+        "root_approved": true,
+        "exact_leaf_paths_approved": false,
+        "materialized": false
       }
     },
     {
@@ -3248,7 +3275,7 @@
         {
           "id": "PROFILE_JSON_FIXTURE_PATHS_OR_ALTERNATIVE_EVIDENCE",
           "kind": "POST_DELETION_ACCEPTANCE",
-          "state": "TWELVE_EXISTING_GIT_FIXTURES_REVALIDATED;EXACT_DISTRIBUTABLE_JSON_PATHS_NOT_AUTHORIZED"
+          "state": "TWELVE_EXISTING_GIT_FIXTURES_REVALIDATED;SRC_TESTS_ROOT_APPROVED;LEAF_ALLOCATION_AND_MATERIALIZATION_PENDING"
         },
         {
           "id": "USER_PROFILE_SOURCE_DISPOSITION",
@@ -5747,10 +5774,10 @@
     "remaining_blockers": [
       {
         "id": "PROFILE_JSON_FIXTURE_PATHS",
-        "evidence": "profile_directory_retirement.fixture_paths_approved=false",
+        "evidence": "User approved src/tests/ root; exact leaf paths and materialization remain pending; see current_user_decisions/Director_Decision/decisions_0009",
         "effect": "DO_NOT_BLOCK_22_FILE_REMOVAL_AFTER_APPROVED_NATIVE_IMPORT_DESIGN;CONTINUE_ORIGINAL_PROFILE_JSON_FIXTURE_PATHS_REMEDIATION_AND_VALIDATION_AFTER_DELETION",
         "gate_role": "POST_DELETION_ACCEPTANCE_NOT_A_PRE_DELETION_BLOCKER",
-        "status_after_user_change": "OPEN_POST_DELETION_WORK"
+        "status_after_user_change": "ROOT_APPROVED_LEAF_ALLOCATION_AND_VERIFICATION_PENDING"
       },
       {
         "id": "USER_PROFILE_REPLACEMENT_TARGET",
@@ -5843,7 +5870,10 @@
       "registered_native_operations": 7,
       "legacy_python_package_sources_tracked": 0,
       "legacy_validation_dependencies": "Legacy semantic source and target analysis still refer to absent ptsip.validation.components and ptsip.validation.templates. Legacy identity-rewrite execution still requires ptsip.validation.profile before writing. These are outside the seven operation contracts."
-    }
+    },
+    "approved_fixture_root": "src/tests/",
+    "fixture_root_approved": true,
+    "latest_fixture_decision_ref": "current_user_decisions/Director_Decision/decisions_0009"
   },
   "policy_v4_rbac_focus": {
     "status": "APPROVED_PVR_01_TO_09_CONTINUOUS_IMPLEMENTATION",
@@ -14406,7 +14436,7 @@
     "registry_config_unchanged": false,
     "common_contract_manifest_unchanged": false,
     "runtime_activation": "DIAGNOSTIC_ONLY",
-    "gate": "FINAL_SCHEMA_IDS_VERSIONS_REFS_PENDING"
+    "gate": "LATEST_USER_CONTRACT_DIRECTION_APPROVED;EXACT_REF_AND_FIELD_INTERPRETATION_PENDING;NO_IMPLEMENTATION_IN_DECISION_RECORD"
   },
   "current_user_decisions": {
     "common_field_responsibilities": {
@@ -14882,6 +14912,111 @@
           "rejected_pp200_disposition": "KEEP_RETIRED",
           "preserve_schema_bytes_ids_and_registered_lifecycle": true,
           "current_official_profile_path": "src/ptsip/schemas/storage/profile/project-profile.schema.json"
+        }
+      },
+      "decisions_0008": {
+        "decisions_date": "2026-11-24",
+        "authority": "USER_EXPLICIT",
+        "title": "WU-04 Plan schema identity, version, root-only registry and reference responsibilities",
+        "scope": "WU-04",
+        "status": "APPROVED",
+        "decision": {
+          "schema_resources": [
+            {
+              "path": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+              "$id": "urn:ptsip:contract:plan:public-structure",
+              "version": "SCH.1.00",
+              "schema_reference": "DIRECT_REFERENCE_TO_PLAN_UNIT_LIFECYCLE_IDENTITY",
+              "registry_binding": "$id",
+              "policy_reference": "rules.items.id",
+              "field_contract": [
+                "plan-unit",
+                "plan-lifecycle",
+                "plan-identity"
+              ]
+            },
+            {
+              "path": "src/ptsip/schemas/plan/plan-lifecycle.schema.json",
+              "$id": "urn:ptsip:contract:plan:lifecycle",
+              "version": "SCH.1.00",
+              "schema_reference": "rules.items.id",
+              "registry_binding": null,
+              "policy_reference": null,
+              "field_contract": [
+                "status",
+                "Creation_date",
+                "completion_date",
+                "last_modified_date"
+              ]
+            },
+            {
+              "path": "src/ptsip/schemas/plan/plan-unit.schema.json",
+              "$id": "urn:ptsip:contract:plan:unit",
+              "version": "SCH.1.00",
+              "schema_reference": "rules.items.id",
+              "registry_binding": null,
+              "policy_reference": null,
+              "field_contract": [
+                "work_unit",
+                "work_unit.id",
+                "work_unit.title",
+                "work_unit.RA_id",
+                "work_unit.task_id",
+                "work_unit.value[]"
+              ]
+            },
+            {
+              "path": "src/ptsip/schemas/plan/plan-identity.schema.json",
+              "$id": "urn:ptsip:contract:plan:identity",
+              "version": "SCH.1.00",
+              "schema_reference": "rules.items.id",
+              "registry_binding": null,
+              "policy_reference": null,
+              "field_contract": [
+                "plan_id",
+                "revision"
+              ]
+            }
+          ],
+          "registry": {
+            "path": "src/ptsip/schemas/config.json",
+            "registered_resource": "urn:ptsip:contract:plan:public-structure",
+            "independent_child_config_entries": false,
+            "child_resolution": "DIRECT_FROM_PUBLIC_STRUCTURE_PLAN",
+            "preserve_four_independent_schema_resources": true
+          },
+          "prior_plan_registry_direction": "SUPERSEDED_FOR_CENTRAL_CONFIG_ENTRY_TOPOLOGY_ONLY;PRESERVE_INDEPENDENT_CONTRACT_RESPONSIBILITIES",
+          "field_direction": "USER_DECLARED_FIELD_CONTRACTS_RECORDED_EXACTLY;PRESERVE_UNRELATED_APPROVED_SEMANTICS",
+          "policy_reference": {
+            "declared_target": "rules.items.id",
+            "owner": "PUBLIC_STRUCTURE_PLAN",
+            "prior_policy_id_reference": "PRESERVE_UNLESS_EXPLICITLY_CHANGED",
+            "exact_instance_path_and_tuple_serialization": "DO_NOT_INFER"
+          },
+          "pending_interpretation": [
+            "EXACT_JSON_SCHEMA_REF_ENCODING_AND_LOCAL_RESOURCE_RESOLUTION_WITHOUT_INDEPENDENT_CONFIG_ENTRIES",
+            "MEANING_OF_RULES_ITEMS_ID_IN_CHILD_SCHEMA_REFERENCE_VERSUS_DIRECT_PUBLIC_ROOT_REFERENCE",
+            "EXACT_POLICY_RULE_INSTANCE_PATH_AND_REFERENCE_SERIALIZATION",
+            "WORK_UNIT_CONTAINER_CARDINALITY_AND_WORK_UNIT_ID_FIELD_MIGRATION_FROM_PRIOR_DRAFT",
+            "DATE_FIELD_FORMAT_REQUIREDNESS_AND_STATUS_TRANSITION_AUTHORITY",
+            "PRESERVE_APPROVED_ID_PATTERNS_AND_FREE_FORM_VALUE_ITEMS;DO_NOT_INFER_NEW_REQUIREDNESS"
+          ],
+          "implementation_scope": "DECISION_RECORD_ONLY;NO_SCHEMA_OR_CONFIG_MUTATION_IN_THIS_EDIT;NO_NEW_RELEASE_OR_RUNTIME_ACTIVATION_AUTHORITY"
+        }
+      },
+      "decisions_0009": {
+        "decisions_date": "2026-11-24",
+        "authority": "USER_EXPLICIT",
+        "title": "WU-10 JSON fixture root",
+        "scope": "WU-10_AND_WU-14_SHARED_HISTORICAL_PROFILE_FIXTURE_ACCEPTANCE",
+        "status": "APPROVED",
+        "decision": {
+          "fixture_root": "src/tests/",
+          "data_kind": "JSON_TEST_FIXTURE_NOT_SCHEMA",
+          "exact_leaf_paths": "NOT_SPECIFIED_BY_THIS_ROOT_APPROVAL",
+          "preserve_twelve_verified_immutable_git_source_evidence": true,
+          "do_not_restore_retired_profile_tree": true,
+          "implementation_scope": "ROOT_APPROVAL_ONLY;MATERIALIZATION_AND_VALIDATION_PENDING"
         }
       }
     }
