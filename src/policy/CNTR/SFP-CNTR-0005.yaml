@@ -435,14 +435,23 @@ Policy_Content:
           source_version_increment: EXPLICIT_SOURCE_CHANGE_ONLY_NO_AUTOMATIC_INCREMENT
           update_triggers:
             CONTRACT_ONLY_CHANGE: PATCH
-            ENGINE_FUNCTION_CHANGE: MINOR
-            NEW_DOMAIN_RESPONSIBILITY_ADDITION: MAJOR
+            EXISTING_ENGINE_FUNCTION_CHANGE: PATCH
+            NEW_ENGINE_FUNCTION_ADDITION: MINOR
+            RESPONSIBILITY_TRANSFER_OUT: MINOR
+            RESPONSIBILITY_TRANSFER_IN: MINOR
+            NEW_DOMAIN_RESPONSIBILITY_ADDITION_WITH_RELATED_CONTRACT_CREATED: MINOR
+            NEW_DOMAIN_RESPONSIBILITY_DECLARATION_WITHOUT_RELATED_CONTRACT: NO_INCREMENT
+            EXISTING_RESPONSIBILITY_EXPANSION_OR_REDUCTION_WITH_CODE_SOURCE_CHANGE: PATCH
+            EXISTING_RESPONSIBILITY_EXPANSION_OR_REDUCTION_WITHOUT_CODE_SOURCE_CHANGE: NO_INCREMENT
+            RESPONSIBILITY_COMPATIBILITY_BREAK: MAJOR
+            FUNCTION_COMPATIBILITY_BREAK: MINOR
           combined_trigger_precedence: USER_CONFIRMED_EXACT_TARGET_VERSION_FOR_UNDECIDED_COMBINATIONS
           approved_combined_trigger_cases:
             CONTRACT_AND_ENGINE_FUNCTION_CHANGE:
-              classification: MINOR
-              increment: MINOR_PLUS_ONE
-              reset_patch_to: 0
+              classification: REASSESS_UNDER_20261124_FUNCTION_CHANGE_DISTINCTION
+              prior_classification: MINOR
+              prior_increment: MINOR_PLUS_ONE
+              prior_reset_patch_to: 0
               trigger_scope: SAME_LOCAL_COMMIT_CHANGE_SET
               source_edit_authority: EXPLICIT_SRC_VERSION_CHANGE_NO_AUTOMATIC_INCREMENT
               decision_source: USER_EXPLICIT_CHAT_2026_11_22
@@ -457,8 +466,26 @@ Policy_Content:
             validated_against_effective_version_contract: true
             does_not_grant_breaking_contract_or_retirement_exception: true
             decision_source: USER_EXPLICIT_CHAT_2026_11_23
-          breaking_contract_change_classification: UNRESOLVED_EXACT_VERSION_CLASSIFICATION
-          responsibility_removal_classification: UNRESOLVED_EXACT_VERSION_CLASSIFICATION
+          breaking_contract_change_classification: RESPONSIBILITY_COMPATIBILITY_BREAK_MAJOR_FUNCTION_COMPATIBILITY_BREAK_MINOR
+          responsibility_removal_classification: TRANSFER_OUT_MINOR_EXISTING_RESPONSIBILITY_REDUCTION_WITH_CODE_PATCH;FULL_RETIREMENT_FINAL_VERSION_UNRESOLVED
+          version_classification_20261124:
+            decision_source: USER_EXPLICIT_CHAT_2026_11_24
+            conflict_resolution: KEEP_LATEST
+            scope: OFFICIAL_ENGINE_VERSION_CHANGE_CLASSIFICATION
+            existing_function_change: PATCH
+            new_function_addition: MINOR
+            responsibility_transfer: BOTH_SOURCE_AND_RECEIVING_ENGINE_MINOR
+            genuinely_new_responsibility: MINOR_ONLY_ON_RELATED_CONTRACT_CREATION
+            existing_responsibility_change: EXPANSION_OR_REDUCTION_NOT_TRANSFER
+            responsibility_change_code_source_changed: PATCH
+            responsibility_change_code_source_not_changed: NO_INCREMENT
+            breaking_responsibility_compatibility: MAJOR
+            breaking_function_compatibility: MINOR
+            full_engine_removal_final_version: UNRESOLVED
+            standalone_responsibility_deletion_not_transfer_or_reduction: UNRESOLVED
+            mixed_trigger_exact_version_confirmation: PRESERVED_REQUIRED
+            overlapping_breaking_and_nonbreaking_trigger_precedence: UNRESOLVED_IF_NOT_ALREADY_EXPLICIT
+            compatibility_classification_evidence_contract: PLAN_DERIVED
           initial_cutover_number_selection: EXISTING_CURRENT_OFFICIAL_ENGINE_CONTRACT_JSON_VERSION_PER_ENGINE
           initial_cutover_selection_authority: USER_EXPLICIT_CHAT_2026_11_22
           initial_cutover_reference_revision: 964e52cbf930e3436bcd58c1e50838ec973b9d1a
@@ -481,6 +508,14 @@ Policy_Content:
             uniform_old_dependency_compatibility_requirement: false
             uniform_verified_responsibility_handoff_requirement: false
             requirements_selection: PER_AFFECTED_CONTRACT_EXPLICIT_DECISION
+            requirements_selection_state_20261124:
+              decision_source: USER_EXPLICIT_CHAT_2026_11_24
+              missing_field_or_empty_array: MISSING_REQUIREMENTS_SELECTION
+              explicit_null: NO_REQUIREMENTS_SELECTED_BY_DECISION
+              nonempty_array: DECLARED_REQUIREMENTS
+              missing_is_not_equivalent_to_no_requirements: true
+              literal_string_null_is_not_json_yaml_null: true
+              mandatory_independent_policy_obligations: PRESERVED
             existing_specific_active_contract_obligations: PRESERVED_UNTIL_EXPLICITLY_RECONCILED
             unsupported_compatibility_claim: FORBIDDEN
             prior_contract_history_preservation: REQUIRED
@@ -493,7 +528,7 @@ Policy_Content:
             removal_allowed_after_all_responsibilities_transferred: true
             specific_retirement_scope: OWNER_APPROVAL_REQUIRED
             current_engine_set_change_authorized: false
-            version_classification: UNRESOLVED_EXACT_VERSION_CLASSIFICATION
+            version_classification: RESPONSIBILITY_TRANSFER_MINOR_PER_AFFECTED_ENGINE;FULL_RETIREMENT_FINAL_VERSION_UNRESOLVED
           registration_and_execution_authorization: UNCHANGED
           active_component_version_values: UNCHANGED_BY_THIS_POLICY_RECORD
           implementation_and_release_authorization: NOT_GRANTED
@@ -1016,7 +1051,8 @@ Policy_Content:
         capability_contracts_are_complete_engine_version_bound_normative_units: true
         official_engine_current_contract_json_version_equals_src_version_engine_version: true
         official_engine_current_contract_json_has_no_independent_version_change_authority: true
-        engine_version_bump_contract_only_patch_function_minor_new_domain_major: true
+        engine_version_bump_contract_only_patch_function_minor_new_domain_major: false
+        engine_version_bump_uses_version_classification_20261124: true
         historical_contract_identities_and_compatibility_evidence_remain_preserved: true
         capability_operation_semantics_cannot_be_inferred_from_other_capabilities: true
         common_engine_identity_schema_does_not_merge_capability_contract_owners: true
