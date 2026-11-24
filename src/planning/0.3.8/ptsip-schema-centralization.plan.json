@@ -2599,7 +2599,14 @@
       ],
       "gate": "44/44 account for; 0 unclassified; no write to source",
       "execution_status": "SOURCE_EVIDENCE_INVENTORY_RETAINED_NATIVE_RELOCATION_CLASSIFIED",
-      "current_result": "Original source blob inventory retained; all 21 native source schemas now have exact owner/path/ID/SHA allocation. Current retired paths use immutable Git source evidence."
+      "current_result": "Original source blob inventory retained; all 21 native source schemas now have exact owner/path/ID/SHA allocation. Current retired paths use immutable Git source evidence.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-02",
@@ -2644,7 +2651,14 @@
       "gate": "Registry JSON parses and only approved exact target paths are registered; unapproved target paths are excluded rather than silently generated, even if their source exists.",
       "priority": "ACTIVE_FOCUS_CENTRAL_CONFIG",
       "execution_status": "APPROVED_REGISTRY_SCOPE_IMPLEMENTED_VERIFIED",
-      "current_result": "Approved Policy/RBAC/Profile resources and 21 native owner-local schema routes are implemented; denied targets remain absent."
+      "current_result": "Approved Policy/RBAC/Profile resources and 21 native owner-local schema routes are implemented; denied targets remain absent.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-03",
@@ -2679,7 +2693,14 @@
       "gate": "Four field contracts fully scoped; Content path approved; Rule evaluation nested; separate refs compile",
       "priority": "ACTIVE_FOCUS_POLICY_V4",
       "execution_status": "POLICY_V4_APPROVED_STRUCTURE_IMPLEMENTED_VERIFIED",
-      "current_result": "Existing approved four-field Policy v4 and user-contract behavior passed current Go regression/native validation checks."
+      "current_result": "Existing approved four-field Policy v4 and user-contract behavior passed current Go regression/native validation checks.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-04",
@@ -2773,6 +2794,13 @@
         "prior_id_registry_decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
         "state": "POLICY_RULE_SCOPE_PLAN_SCHEMA_VERSION_LOCATION_USER_CONTRACT_PATH_AND_USER_ONLY_REVISION_APPROVED",
         "actual_schema_state": "EXISTING_DIAGNOSTIC_SCAFFOLDS_UNCHANGED"
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
       }
     },
     {
@@ -2829,7 +2857,14 @@
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC",
       "execution_status": "APPROVED_PROJECT_PROFILE_AND_RBAC_SCOPE_VERIFIED_OTHER_VARIANTS_BLOCKED",
-      "current_result": "Three current structural RBAC contracts and registered Project Profile resources are verified. The existing unregistered pp.2.00 candidate has its specific UP-04 relocation approval; new User/Mode/Source/Candidate target contracts and unresolved source responsibilities remain outside approved creation scope."
+      "current_result": "Three current structural RBAC contracts and registered Project Profile resources are verified. The existing unregistered pp.2.00 candidate has its specific UP-04 relocation approval; new User/Mode/Source/Candidate target contracts and unresolved source responsibilities remain outside approved creation scope.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-06",
@@ -2936,6 +2971,13 @@
         "standalone_four_schema_migration": "NOT_REQUIRED",
         "strategy": "ADD_NECESSARY_FIELDS_TO_EXISTING_ACTUAL_OWNER_CONTRACTS_ONLY",
         "do_not_invent_new_targets_or_blindly_delete_current_consumers": true
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
       }
     },
     {
@@ -2979,7 +3021,14 @@
       "remaining_blockers": [],
       "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
       "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL",
-      "repository_native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval"
+      "repository_native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-08",
@@ -3010,7 +3059,14 @@
         "WU-13"
       ],
       "execution_status": "NATIVE_AND_PROFILE_SOURCE_RETIREMENTS_VERIFIED_OTHER_DELETIONS_GATED",
-      "current_result": "21 superseded native source copies were removed by the verified WU06 relocation. UP-04 relocated the three existing registered Profile history schemas and the unregistered pp.2.00 candidate to schemas/history/profile/ with unchanged bytes. Its resolved candidate basename is ptsip-profile-pp-2.00.schema.json. The two superseded history copies and the rejected pp.2.00 duplicate under specdata were removed after checking current consumers and the selected registered schemas. Remaining source deletion requires approved replacement, zero supported consumers and its own package acceptance."
+      "current_result": "21 superseded native source copies were removed by the verified WU06 relocation. UP-04 relocated the three existing registered Profile history schemas and the unregistered pp.2.00 candidate to schemas/history/profile/ with unchanged bytes. Its resolved candidate basename is ptsip-profile-pp-2.00.schema.json. The two superseded history copies and the rejected pp.2.00 duplicate under specdata were removed after checking current consumers and the selected registered schemas. Remaining source deletion requires approved replacement, zero supported consumers and its own package acceptance.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-09",
@@ -3031,7 +3087,14 @@
       ],
       "gate": "per-document decision and validation evidence required; not authorized by this schema plan",
       "execution_status": "NOT_AUTHORIZED_POLICY_DOCUMENT_SPECIFIC_DECISIONS_REQUIRED",
-      "current_result": "This schema plan does not authorize policy-document rewrites; no policy document was read as execution field authority or modified."
+      "current_result": "This schema plan does not authorize policy-document rewrites; no policy document was read as execution field authority or modified.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "IN_SCOPE_DOCUMENT_SPECIFIC_PLAN_PREPARATION_ONLY;POLICY_MUTATION_NOT_AUTHORIZED",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-10",
@@ -3098,6 +3161,13 @@
         "root_approved": true,
         "exact_leaf_paths_approved": false,
         "materialized": false
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
       }
     },
     {
@@ -3133,7 +3203,14 @@
       "gate": "SATISFIED_BY_profile_rust_engine_assignment_SOURCE_CALLER_ENGINE_CONTRACT_EVIDENCE_AND_USER_PREAUTHORIZATION",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "COMPLETE_ALL_SIX_FUNCTION_CALLER_ENGINE_ANALYSIS_AND_AUTOAPPROVAL_RECORDED",
-      "current_result": "All six modules have actual source/caller/engine-contract evidence and recorded function-to-engine allocations; user preauthorization was applied before implementation."
+      "current_result": "All six modules have actual source/caller/engine-contract evidence and recorded function-to-engine allocations; user preauthorization was applied before implementation.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-12",
@@ -3167,7 +3244,14 @@
       "gate": "Owner/path decisions analyzed and preauthorized; exact seven native operations explicitly approved. Implement closed typed contracts and selected-engine caller-managed background protocol, then validate.",
       "priority": "DEPENDENCY_DRIVEN_EXECUTION_WITH_REMAINING_EXPLICIT_DECISION_GATES",
       "execution_status": "COMPLETE_SEVEN_NATIVE_CONTRACTS_OWNER_PATHS_AND_BACKGROUND_DESIGN_VERIFIED",
-      "current_result": "Exact seven approved Profile operation contracts, selected Rust module/schema paths and caller-managed bounded --serve design are implemented and tested."
+      "current_result": "Exact seven approved Profile operation contracts, selected Rust module/schema paths and caller-managed bounded --serve design are implemented and tested.",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-13",
@@ -3224,7 +3308,14 @@
       },
       "repository_native_design_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design",
       "repository_analysis_result": "ALL_SIX_NATIVE_ENGINES_REVIEWED;74_GLOBAL_IMPORT_STATEMENTS_48_FILES;NORMAL_MIGRATION_CLOSURE_24_FILES;SEVEN_NATIVE_OPERATIONS_PROPOSED_PENDING_USER_APPROVAL",
-      "repository_native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval"
+      "repository_native_operation_approval_ref": "profile_rust_engine_assignment.supported_consumer_closure.repository_native_import_design.approval",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
+      }
     },
     {
       "id": "WU-14",
@@ -3733,6 +3824,13 @@
         "decision_ref": "current_user_decisions/Director_Decision/decisions_0010",
         "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/profile_write_approval_evidence_20261124",
         "state": "EVIDENCE_OWNERSHIP_APPROVED_NATIVE_HANDOFF_IMPLEMENTATION_PENDING"
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_execution_status": true,
+        "preserve_action_specific_gates": true,
+        "approval_ref": "release_scope/implementation_approval_20261124"
       }
     }
   ],
@@ -8662,7 +8760,7 @@
     "implementation_authorized": true,
     "release_publication_authorized": false,
     "user_project_profile_mutation": false,
-    "implementation_authorization_scope": "WU_01_THROUGH_WU_14_WITH_EXPLICIT_DECISION_GATES",
+    "implementation_authorization_scope": "WU_01_THROUGH_WU_14;ALL_IN_SCOPE_POLICY_COMPLIANT_IMPLEMENTATION_APPROVED;PRESERVE_ACTION_SPECIFIC_GATES",
     "implementation_authorization_mode": "CONTINUOUS_DEPENDENCY_DRIVEN_USER_APPROVAL",
     "authorized_pvr_ids": [
       "PVR-01",
@@ -8758,7 +8856,48 @@
       "INTENTIONALLY_ABSENT_NONREQUIRED_FIELDS",
       "RETIRED_VALIDATORS_OR_ARCHIVE_RETAINED_ONLY_TO_BLOCK_DELETION",
       "WU_IDENTIFIER_NUMERIC_ORDER"
-    ]
+    ],
+    "implementation_approval_20261124": {
+      "source": "USER_EXPLICIT_CHAT_2026_11_24",
+      "state": "IMPLEMENTATION_APPROVED",
+      "approval_scope": "ALL_IN_SCOPE_WORK_ITEMS_OF_THIS_PLAN",
+      "base_revision": "09f61af1c8ac5d5d9b100ff757c931528482ac92",
+      "policy_precedence": "EFFECTIVE_POLICY_OVER_PLAN",
+      "unresolved_policy_or_contract_specific_decisions": "HOLD_AFFECTED_ACTION_ONLY_UNTIL_RESOLVED",
+      "verification_required": true,
+      "execution_evidence_status": "UNCHANGED",
+      "publication_authorized_by_this_decision": false,
+      "policy_mutation_authorized_by_this_decision": false,
+      "branch_creation_authorized": false,
+      "work_unit_ids": [
+        "WU-01",
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-05",
+        "WU-06",
+        "WU-07",
+        "WU-08",
+        "WU-09",
+        "WU-10",
+        "WU-11",
+        "WU-12",
+        "WU-13",
+        "WU-14"
+      ],
+      "pvr_ids": [
+        "PVR-01",
+        "PVR-02",
+        "PVR-03",
+        "PVR-04",
+        "PVR-05",
+        "PVR-06",
+        "PVR-07",
+        "PVR-08",
+        "PVR-09"
+      ],
+      "wu09_boundary": "DOCUMENT_SPECIFIC_PLAN_PREPARATION_APPROVED;ACTUAL_POLICY_DOCUMENT_MUTATION_REQUIRES_SEPARATE_EFFECTIVE_POLICY_AUTHORITY"
+    }
   },
   "planning_provenance": {
     "inherited_analysis_path": "developer/planning/migrations/ptsip-schema-centralization.plan.json",
@@ -15197,6 +15336,54 @@
             "ptsip_counter_and_update": false
           },
           "implementation": "NOT_PERFORMED"
+        }
+      },
+      "decisions_0013": {
+        "decisions_date": "2026-11-24",
+        "authority": "USER_EXPLICIT",
+        "title": "Full Schema Centralization Plan implementation approval",
+        "scope": "WU-01_THROUGH_WU-14_AND_EXISTING_PVR_SCOPE",
+        "status": "APPROVED",
+        "decision": {
+          "source": "USER_EXPLICIT_CHAT_2026_11_24",
+          "state": "IMPLEMENTATION_APPROVED",
+          "approval_scope": "ALL_IN_SCOPE_WORK_ITEMS_OF_THIS_PLAN",
+          "base_revision": "09f61af1c8ac5d5d9b100ff757c931528482ac92",
+          "policy_precedence": "EFFECTIVE_POLICY_OVER_PLAN",
+          "unresolved_policy_or_contract_specific_decisions": "HOLD_AFFECTED_ACTION_ONLY_UNTIL_RESOLVED",
+          "verification_required": true,
+          "execution_evidence_status": "UNCHANGED",
+          "publication_authorized_by_this_decision": false,
+          "policy_mutation_authorized_by_this_decision": false,
+          "branch_creation_authorized": false,
+          "work_unit_ids": [
+            "WU-01",
+            "WU-02",
+            "WU-03",
+            "WU-04",
+            "WU-05",
+            "WU-06",
+            "WU-07",
+            "WU-08",
+            "WU-09",
+            "WU-10",
+            "WU-11",
+            "WU-12",
+            "WU-13",
+            "WU-14"
+          ],
+          "pvr_ids": [
+            "PVR-01",
+            "PVR-02",
+            "PVR-03",
+            "PVR-04",
+            "PVR-05",
+            "PVR-06",
+            "PVR-07",
+            "PVR-08",
+            "PVR-09"
+          ],
+          "wu09_boundary": "DOCUMENT_SPECIFIC_PLAN_PREPARATION_APPROVED;ACTUAL_POLICY_DOCUMENT_MUTATION_REQUIRES_SEPARATE_EFFECTIVE_POLICY_AUTHORITY"
         }
       }
     }
