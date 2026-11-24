@@ -26,7 +26,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-go@v6
         with:
-          go-version-file: .ptsip/engine/developer/go.mod
+          go-version-file: developer/tests/go.mod
           cache: false
       - uses: actions/setup-python@v6
         with:

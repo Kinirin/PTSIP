@@ -17,7 +17,8 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v6
         with:
-          go-version-file: .ptsip/engine/developer/go.mod
+          go-version-file: developer/tests/go.mod
+          cache-dependency-path: developer/tests/go.sum
       - name: Verify current policy exclusion contract and required gates
         run: |
           go -C developer/tests test -mod=readonly ./policy/verification -run '^TestPolicyVerificationExclusions$' -count=1

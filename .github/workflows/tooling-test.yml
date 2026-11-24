@@ -123,7 +123,8 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-go@v6
         with:
-          go-version-file: .ptsip/engine/developer/go.mod
+          go-version-file: developer/tests/go.mod
+          cache-dependency-path: developer/tests/go.sum
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
