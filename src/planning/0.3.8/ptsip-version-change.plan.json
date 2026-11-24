@@ -386,8 +386,28 @@
       "history_conflict": "FAIL_IF_EXISTING_HISTORY_VERSION_HAS_DIFFERENT_SEMANTIC_CONTENT",
       "historical_field_rewrite": "FORBIDDEN",
       "first_unification_no_schema_contract_version_change": "DO_NOT_GENERATE_SYNTHETIC_HISTORY_OR_ARTIFICIAL_PATCH",
-      "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED",
-      "engine_historical_legacy_archive_deletion": "NOT_AUTHORIZED"
+      "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED;APPROVED_DOMAIN_ROOTS_RECORDED_20261124;EXACT_RESOURCE_MAPPING_PENDING",
+      "engine_historical_legacy_archive_deletion": "NOT_AUTHORIZED",
+      "approved_history_directory_mapping_20261124": {
+        "source": "USER_EXPLICIT_CHAT_2026_11_24",
+        "root": "src/ptsip/schemas/history/",
+        "schema_domains": {
+          "profile": "src/ptsip/schemas/history/profile/",
+          "policy": "src/ptsip/schemas/history/policy/",
+          "plan": "src/ptsip/schemas/history/plan/"
+        },
+        "engine_history_root": "src/ptsip/schemas/history/engines/",
+        "explicit_engine_domains": {
+          "validation": "src/ptsip/schemas/history/engines/validation/",
+          "execution": "src/ptsip/schemas/history/engines/execution/",
+          "projection": "src/ptsip/schemas/history/engines/projection/"
+        },
+        "other_engine_leaf_directories": "NOT_INDIVIDUALLY_SPECIFIED",
+        "mapping_state": "DIRECTORY_DOMAIN_MAPPING_APPROVED;EXACT_CURRENT_RESOURCE_ID_TO_HISTORY_LEAF_AND_FILENAME_BINDINGS_PENDING",
+        "history_generation_owner": "src/ptsip/ptsip_specification/",
+        "immutable_history": "PRESERVED",
+        "creates_or_moves_files": false
+      }
     },
     {
       "id": "VC-13",
@@ -525,42 +545,68 @@
       "sections": {
         "package": {
           "meaning": "Native PTSIP Package distribution identity. Output names and metadata use its deterministic platform-format representation.",
-          "keys": {"version": "0.3.8"},
+          "keys": {
+            "version": "0.3.8"
+          },
           "initial_value_ref": "src/VERSION#package_version",
           "format": "PRESERVE_CURRENT_PACKAGE_VERSION_GRAMMAR"
         },
         "tool": {
           "meaning": "PTSIP Tool runtime identity, projected into the Go executable. It does not own the Package version.",
-          "keys": {"version": "T.0.3.8.b3"},
+          "keys": {
+            "version": "T.0.3.8.b3"
+          },
           "initial_value_ref": "src/VERSION#tool_version",
           "format": "PRESERVE_CURRENT_TOOL_VERSION_GRAMMAR"
         },
         "RBAC": {
           "meaning": "Versions of the three registered RA/RAC/AEC structural contracts, with no separate RBAC release version.",
-          "keys": {"RA_list": "v.1", "RAC_list": "v.1", "AEC_list": "v.1"},
+          "keys": {
+            "RA_list": "v.1",
+            "RAC_list": "v.1",
+            "AEC_list": "v.1"
+          },
           "initial_value_ref": "src/ptsip/schemas/config.json#/storage/Responsibility-Authority/{key}/version",
           "format": "PRESERVE_EXACT_REGISTERED_RBAC_VERSION_SPELLING"
         },
         "common_contract": {
           "meaning": "Revision of the Common Contract registry manifest. Its individual contract versions remain in their separately owned schema bindings.",
-          "keys": {"registry_revision": "v2"},
+          "keys": {
+            "registry_revision": "v2"
+          },
           "initial_value_ref": "src/ptsip/common_contract/registry/manifest.json#/revision",
           "format": "PRESERVE_EXACT_REGISTERED_MANIFEST_REVISION_SPELLING"
         },
         "engines": {
           "meaning": "Current version per official engine, with exact identity equality across its implementation and current capability contract.",
-          "keys": {"context": "2.2.0", "storage": "3.0.0", "validation": "4.5.0", "discovery": "3.6.0", "execution": "3.0.0", "projection": "2.5.0"},
+          "keys": {
+            "context": "2.2.0",
+            "storage": "3.0.0",
+            "validation": "4.5.0",
+            "discovery": "3.6.0",
+            "execution": "3.0.0",
+            "projection": "2.5.0"
+          },
           "initial_value_ref": "src/ptsip/engines/{key}/contract.json#/version",
           "format": "PRESERVE_CURRENT_ENGINE_NUMERIC_SEMVER_GRAMMAR"
         },
         "schemas": {
           "meaning": "Versions of the non-RBAC current product schema resources listed here. Use quoted canonical config keys in TOML.",
-          "keys": {"ptsip.policy.v4": "v4", "ptsip.project-profile": "pp.3.00"},
+          "keys": {
+            "ptsip.policy.v4": "v4",
+            "ptsip.project-profile": "pp.3.00"
+          },
           "initial_value_refs": {
             "ptsip.policy.v4": "src/ptsip/schemas/config.json#/Policy/ptsip.policy.v4/version",
             "ptsip.project-profile": "src/ptsip/schemas/config.json#/storage/profile/ptsip.project-profile/version"
           },
-          "excluded": ["DIAGNOSTIC_PLAN_SCHEMAS", "DEPRECATED_PROFILE_HISTORY", "UNREGISTERED_PROFILE_CANDIDATE", "ENGINE_LOCAL_SCHEMAS_WITH_NO_DECLARED_CUTOVER_BINDING", "POLICY_SUBSCHEMAS_WITHOUT_INDEPENDENT_VERSION_AUTHORITY"]
+          "excluded": [
+            "DIAGNOSTIC_PLAN_SCHEMAS",
+            "DEPRECATED_PROFILE_HISTORY",
+            "UNREGISTERED_PROFILE_CANDIDATE",
+            "ENGINE_LOCAL_SCHEMAS_WITH_NO_DECLARED_CUTOVER_BINDING",
+            "POLICY_SUBSCHEMAS_WITHOUT_INDEPENDENT_VERSION_AUTHORITY"
+          ]
         }
       },
       "initial_projection_rules": [
@@ -633,12 +679,16 @@
     {
       "id": "UP-05",
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
-      "issue": "COMBINED_TRIGGER_PRECEDENCE_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
-      "decision": "USER_CONFIRMED_COMBINED_VERSION_DIRECTION;BREAKING_AND_RETIREMENT_CONFLICTS_AWAIT_USER_RESOLUTION",
+      "issue": "EXACT_VERSION_CLASSIFICATION_FOR_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
+      "decision": "USER_CONFIRMED_CONTRACT_SPECIFIC_REQUIREMENTS_AND_CONDITIONAL_ENGINE_RETIREMENT;EXACT_VERSION_CLASSIFICATION_PENDING",
       "implementation_blocking": false,
-      "blocking_scope": "FUTURE_BREAKING_REMOVAL_OR_UNAPPROVED_COMBINED_VERSION_CHANGE",
+      "blocking_scope": "FUTURE_UNCLASSIFIED_BREAKING_OR_REMOVAL_VERSION_CHANGE_OR_UNAPPROVED_SPECIFIC_RETIREMENT",
       "initial_cutover_rule": "COPY_THE_SIX_APPROVED_CURRENT_CONTRACT_VERSIONS_WITHOUT_TREATING_THE_IDENTITY_PROJECTION_AS_A_SEMANTIC_CHANGE",
-      "single_trigger_cases": {"CONTRACT_ONLY_CHANGE": "PATCH", "ENGINE_FUNCTION_CHANGE": "MINOR", "NEW_DOMAIN_RESPONSIBILITY_ADDITION": "MAJOR"},
+      "single_trigger_cases": {
+        "CONTRACT_ONLY_CHANGE": "PATCH",
+        "ENGINE_FUNCTION_CHANGE": "MINOR",
+        "NEW_DOMAIN_RESPONSIBILITY_ADDITION": "MAJOR"
+      },
       "unresolved_case_result": "FAIL_CLOSED_WITHOUT_VERSION_INCREMENT_OR_MUTATION;REQUIRES_EFFECTIVE_POLICY_DECISION",
       "resolved_case": {
         "case_id": "CONTRACT_AND_ENGINE_FUNCTION_CHANGE",
@@ -673,9 +723,33 @@
         }
       },
       "remaining_unresolved": [
-        "BREAKING_CONTRACT_CHANGE_CLASSIFICATION_AND_PROOF_BOUNDARY",
-        "RESPONSIBILITY_REMOVAL_AND_OFFICIAL_ENGINE_SET_AUTHORITY"
-      ]
+        "EXACT_BREAKING_CONTRACT_VERSION_CLASSIFICATION",
+        "EXACT_RESPONSIBILITY_REMOVAL_VERSION_CLASSIFICATION",
+        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
+      ],
+      "resolved_policy_directions_20261124": {
+        "breaking_contract": {
+          "source": "USER_EXPLICIT_CHAT_2026_11_24",
+          "state": "POLICY_SYNCHRONIZED_CONTRACT_SPECIFIC_REQUIREMENTS",
+          "requirements": "OLD_DEPENDENCY_COMPATIBILITY_AND_VERIFIED_HANDOFF_NOT_UNIVERSALLY_MANDATORY;SELECT_PER_AFFECTED_CONTRACT",
+          "specific_active_contract_obligations": "PRESERVED_UNTIL_EXPLICIT_RECONCILIATION",
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+          "exact_version_classification": "UNRESOLVED"
+        },
+        "official_engine_removal": {
+          "source": "USER_EXPLICIT_CHAT_2026_11_24",
+          "conflict_resolution": "KEEP_LATEST",
+          "state": "POLICY_SYNCHRONIZED",
+          "removal_allowed_after_all_responsibilities_transferred": true,
+          "specific_engine_removal": "REQUIRES_OWNER_APPROVED_RETIREMENT_SCOPE",
+          "policy_refs": [
+            "src/policy/ARCH/SFP-ARCH-0004.yaml",
+            "src/policy/CNTR/SFP-CNTR-0005.yaml"
+          ],
+          "exact_version_classification": "UNRESOLVED"
+        }
+      },
+      "incoming_policy_directions_not_yet_effective_status": "HISTORICAL_PROPOSALS_SUPERSEDED_BY_RESOLVED_POLICY_DIRECTIONS_20261124_FOR_APPROVED_SCOPE_ONLY"
     }
   ],
   "execution_gate": {
@@ -690,8 +764,16 @@
       "requested_scope": "ALL_VC_01_THROUGH_VC_13_IN_THIS_VERSION_CHANGE_PLAN",
       "status": "INITIAL_CUTOVER_APPROVED",
       "audited_plan_revision": "2dd2dba329dac9898db630689087429fca9b8c57",
-      "not_authorization_for": ["UNRELATED_REPOSITORY_PLANS", "PUBLICATION", "BREAKING_PROOF_REMOVAL", "OFFICIAL_ENGINE_SET_CHANGE"],
-      "remaining_future_conflicts": ["BREAKING_CONTRACT_EXISTING_POLICY_CONFLICT", "OFFICIAL_ENGINE_REMOVAL_EXISTING_POLICY_CONFLICT"]
+      "not_authorization_for": [
+        "UNRELATED_REPOSITORY_PLANS",
+        "PUBLICATION",
+        "BREAKING_PROOF_REMOVAL",
+        "OFFICIAL_ENGINE_SET_CHANGE"
+      ],
+      "remaining_future_conflicts": [
+        "EXACT_VERSION_CLASSIFICATION_FOR_BREAKING_AND_RESPONSIBILITY_REMOVAL",
+        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENTS_IF_NOT_YET_DECIDED"
+      ]
     },
     "full_plan_approval_conditions": {
       "scope": "VC_01_THROUGH_VC_13_INITIAL_CUTOVER_WITH_APPROVED_EXISTING_VERSION_VALUES_AND_NO_PUBLICATION",
@@ -946,6 +1028,23 @@
       "design_ref": "#/approved_implementation_design/release_composition",
       "implementation_blocking": false,
       "legacy_contract_retirement_requires_verified_consumer_cutover": true
+    },
+    {
+      "id": "UP-05-A-REQUIREMENTS-20261124",
+      "topic": "BREAKING_CONTRACT_CHANGE_REQUIREMENT_SELECTION",
+      "decision": "CONTRACT_SPECIFIC_OPTIONAL_REQUIREMENTS",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+      "classification": "UNRESOLVED_EXACT_VERSION_CLASSIFICATION"
+    },
+    {
+      "id": "UP-05-B-RETIREMENT-20261124",
+      "topic": "OFFICIAL_ENGINE_RETIREMENT_ELIGIBILITY",
+      "decision": "KEEP_LATEST_ALLOW_AFTER_ALL_RESPONSIBILITIES_TRANSFERRED",
+      "policy_refs": [
+        "src/policy/ARCH/SFP-ARCH-0004.yaml",
+        "src/policy/CNTR/SFP-CNTR-0005.yaml"
+      ],
+      "classification": "UNRESOLVED_EXACT_VERSION_CLASSIFICATION"
     }
   ]
 }
