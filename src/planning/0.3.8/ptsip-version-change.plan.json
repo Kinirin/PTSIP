@@ -679,15 +679,23 @@
     {
       "id": "UP-05",
       "topic": "COMBINED_VERSION_CHANGE_CLASSIFICATION",
-      "issue": "EXACT_VERSION_CLASSIFICATION_FOR_BREAKING_CHANGE_AND_RESPONSIBILITY_REMOVAL_NOT_YET_DECIDED",
-      "decision": "USER_CONFIRMED_CONTRACT_SPECIFIC_REQUIREMENTS_AND_CONDITIONAL_ENGINE_RETIREMENT;EXACT_VERSION_CLASSIFICATION_PENDING",
+      "issue": "FULL_RETIREMENT_FINAL_VERSION_AND_UNCLASSIFIED_OVERLAPPING_TRIGGERS_REMAIN",
+      "decision": "USER_APPROVED_REVISED_ENGINE_CLASSIFICATION_AND_REQUIREMENTS_NULL_SEMANTICS;POLICY_SYNCHRONIZED",
       "implementation_blocking": false,
-      "blocking_scope": "FUTURE_UNCLASSIFIED_BREAKING_OR_REMOVAL_VERSION_CHANGE_OR_UNAPPROVED_SPECIFIC_RETIREMENT",
+      "blocking_scope": "FUTURE_UNCLASSIFIED_OVERLAPPING_TRIGGERS_OR_FULL_RETIREMENT_VERSION_OR_UNAPPROVED_SPECIFIC_RETIREMENT",
       "initial_cutover_rule": "COPY_THE_SIX_APPROVED_CURRENT_CONTRACT_VERSIONS_WITHOUT_TREATING_THE_IDENTITY_PROJECTION_AS_A_SEMANTIC_CHANGE",
       "single_trigger_cases": {
         "CONTRACT_ONLY_CHANGE": "PATCH",
-        "ENGINE_FUNCTION_CHANGE": "MINOR",
-        "NEW_DOMAIN_RESPONSIBILITY_ADDITION": "MAJOR"
+        "EXISTING_ENGINE_FUNCTION_CHANGE": "PATCH",
+        "NEW_ENGINE_FUNCTION_ADDITION": "MINOR",
+        "RESPONSIBILITY_TRANSFER_OUT": "MINOR",
+        "RESPONSIBILITY_TRANSFER_IN": "MINOR",
+        "NEW_DOMAIN_RESPONSIBILITY_ADDITION_WITH_RELATED_CONTRACT_CREATED": "MINOR",
+        "NEW_DOMAIN_RESPONSIBILITY_DECLARATION_WITHOUT_RELATED_CONTRACT": "NO_INCREMENT",
+        "EXISTING_RESPONSIBILITY_EXPANSION_OR_REDUCTION_WITH_CODE_SOURCE_CHANGE": "PATCH",
+        "EXISTING_RESPONSIBILITY_EXPANSION_OR_REDUCTION_WITHOUT_CODE_SOURCE_CHANGE": "NO_INCREMENT",
+        "RESPONSIBILITY_COMPATIBILITY_BREAK": "MAJOR",
+        "FUNCTION_COMPATIBILITY_BREAK": "MINOR"
       },
       "unresolved_case_result": "FAIL_CLOSED_WITHOUT_VERSION_INCREMENT_OR_MUTATION;REQUIRES_EFFECTIVE_POLICY_DECISION",
       "resolved_case": {
@@ -698,13 +706,14 @@
         "patch_reset_to": 0,
         "requires_explicit_src_version_edit": true,
         "automatic_increment": "FORBIDDEN",
-        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/approved_combined_trigger_cases/CONTRACT_AND_ENGINE_FUNCTION_CHANGE"
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/approved_combined_trigger_cases/CONTRACT_AND_ENGINE_FUNCTION_CHANGE",
+        "status": "PRIOR_GENERAL_FUNCTION_CHANGE_CLASSIFICATION_SUPERSEDED;REASSESS_USING_EXISTING_VS_NEW_FUNCTION"
       },
       "owner_confirmed_combined_version_rule": {
         "status": "POLICY_SYNCHRONIZED",
         "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/combined_trigger_confirmation",
         "rule": "EXACT_TARGET_VERSION_REQUIRES_USER_CONFIRMATION_BEFORE_SOURCE_CHANGE;NO_AUTOMATIC_INCREMENT",
-        "prior_approved_combined_case": "PRESERVED_UNCHANGED",
+        "prior_approved_combined_case": "REASSESS_UNDER_20261124_FUNCTION_DISTINCTION;EXACT_USER_CONFIRMATION_PRESERVED",
         "source": "USER_EXPLICIT_CHAT_2026_11_23"
       },
       "incoming_policy_directions_not_yet_effective": {
@@ -723,8 +732,9 @@
         }
       },
       "remaining_unresolved": [
-        "EXACT_BREAKING_CONTRACT_VERSION_CLASSIFICATION",
-        "EXACT_RESPONSIBILITY_REMOVAL_VERSION_CLASSIFICATION",
+        "FULL_REMOVED_ENGINE_FINAL_VERSION_IF_NEEDED",
+        "STANDALONE_RESPONSIBILITY_DELETION_NOT_TRANSFER_OR_REDUCTION",
+        "OVERLAPPING_TRIGGER_PRECEDENCE_IF_NOT_EXPLICIT",
         "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
       ],
       "resolved_policy_directions_20261124": {
@@ -734,7 +744,7 @@
           "requirements": "OLD_DEPENDENCY_COMPATIBILITY_AND_VERIFIED_HANDOFF_NOT_UNIVERSALLY_MANDATORY;SELECT_PER_AFFECTED_CONTRACT",
           "specific_active_contract_obligations": "PRESERVED_UNTIL_EXPLICIT_RECONCILIATION",
           "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
-          "exact_version_classification": "UNRESOLVED"
+          "exact_version_classification": "RESPONSIBILITY_COMPATIBILITY_BREAK_MAJOR_FUNCTION_COMPATIBILITY_BREAK_MINOR"
         },
         "official_engine_removal": {
           "source": "USER_EXPLICIT_CHAT_2026_11_24",
@@ -746,10 +756,28 @@
             "src/policy/ARCH/SFP-ARCH-0004.yaml",
             "src/policy/CNTR/SFP-CNTR-0005.yaml"
           ],
-          "exact_version_classification": "UNRESOLVED"
+          "exact_version_classification": "TRANSFER_OUT_AND_IN_MINOR;FULL_RETIREMENT_FINAL_VERSION_UNRESOLVED"
         }
       },
-      "incoming_policy_directions_not_yet_effective_status": "HISTORICAL_PROPOSALS_SUPERSEDED_BY_RESOLVED_POLICY_DIRECTIONS_20261124_FOR_APPROVED_SCOPE_ONLY"
+      "incoming_policy_directions_not_yet_effective_status": "HISTORICAL_PROPOSALS_SUPERSEDED_BY_RESOLVED_POLICY_DIRECTIONS_20261124_FOR_APPROVED_SCOPE_ONLY",
+      "prior_single_trigger_cases": {
+        "CONTRACT_ONLY_CHANGE": "PATCH",
+        "ENGINE_FUNCTION_CHANGE": "MINOR",
+        "NEW_DOMAIN_RESPONSIBILITY_ADDITION": "MAJOR"
+      },
+      "latest_version_policy": {
+        "source": "USER_EXPLICIT_CHAT_2026_11_24",
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+        "requirements_selection": {
+          "missing_field_or_empty_array": "MISSING",
+          "explicit_null": "NO_REQUIREMENTS",
+          "nonempty_array": "DECLARED_REQUIREMENTS"
+        },
+        "exact_target_confirmation": "PRESERVED",
+        "schema_version_management": "INDEPENDENT_PER_SUBORDINATE_SCHEMA",
+        "schema_version_policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+        "plan_schema_source_binding": "REASSESS_ON_FORMAL_REGISTRATION;NO_VERSION_VALUES_CHANGED"
+      }
     }
   ],
   "execution_gate": {
@@ -771,8 +799,10 @@
         "OFFICIAL_ENGINE_SET_CHANGE"
       ],
       "remaining_future_conflicts": [
-        "EXACT_VERSION_CLASSIFICATION_FOR_BREAKING_AND_RESPONSIBILITY_REMOVAL",
-        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENTS_IF_NOT_YET_DECIDED"
+        "FULL_REMOVED_ENGINE_FINAL_VERSION_IF_NEEDED",
+        "STANDALONE_RESPONSIBILITY_DELETION_NOT_TRANSFER_OR_REDUCTION",
+        "OVERLAPPING_TRIGGER_PRECEDENCE_IF_NOT_EXPLICIT",
+        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
       ]
     },
     "full_plan_approval_conditions": {
@@ -1034,7 +1064,7 @@
       "topic": "BREAKING_CONTRACT_CHANGE_REQUIREMENT_SELECTION",
       "decision": "CONTRACT_SPECIFIC_OPTIONAL_REQUIREMENTS",
       "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
-      "classification": "UNRESOLVED_EXACT_VERSION_CLASSIFICATION"
+      "classification": "SUPERSEDED_BY_UP-05-ENGINE-VERSION-CLASSIFICATION-20261124"
     },
     {
       "id": "UP-05-B-RETIREMENT-20261124",
@@ -1044,7 +1074,19 @@
         "src/policy/ARCH/SFP-ARCH-0004.yaml",
         "src/policy/CNTR/SFP-CNTR-0005.yaml"
       ],
-      "classification": "UNRESOLVED_EXACT_VERSION_CLASSIFICATION"
+      "classification": "TRANSFER_MINOR;FINAL_REMOVED_ENGINE_VERSION_UNRESOLVED"
+    },
+    {
+      "id": "UP-05-ENGINE-VERSION-CLASSIFICATION-20261124",
+      "topic": "ENGINE_VERSION_CLASSIFICATION_AND_REQUIREMENTS_STATE",
+      "decision": "USER_APPROVED_REVISED_TRIGGER_CLASSIFICATION_AND_EXPLICIT_NULL_REQUIREMENTS",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml",
+      "unresolved": [
+        "FULL_REMOVED_ENGINE_FINAL_VERSION_IF_NEEDED",
+        "STANDALONE_RESPONSIBILITY_DELETION_NOT_TRANSFER_OR_REDUCTION",
+        "OVERLAPPING_TRIGGER_PRECEDENCE_IF_NOT_EXPLICIT",
+        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
+      ]
     }
   ]
 }
