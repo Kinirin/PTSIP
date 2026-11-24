@@ -16,14 +16,23 @@
     "scope_reason": "src/planning/0.3.8/ptsip-schema-centralization.plan.json excludes .ptsip/** work",
     "original_product_plan_change": "REMOVE_WU_15_RESTORE_ORIGINAL",
     "developer_plan_index": "developer/planning/0.3.8/index.yaml",
-    "registration_state": "INDEPENDENT_UNINDEXED_DRAFT;NO_IMPLICIT_EXPANSION_OF_RELEASE_SINGLE_PLAN_INDEX",
+    "registration_state": "INDEPENDENT_DRAFT_REGISTERED_IN_VERSION_INDEX;RELEASE_SINGLE_PLAN_ENTRY_PRESERVED;RESOLVER_COMPATIBILITY_NOT_VERIFIED",
     "forbidden_implicit_changes": [
       "developer/planning/0.3.8/index.yaml",
       "developer/planning/0.3.8/0.3.8_dev_last.yaml",
       "developer/policy/**",
       "src/policy/**",
       "src/planning/**"
-    ]
+    ],
+    "index_registration": {
+      "authority": "USER_EXPLICIT_2026_11_24",
+      "index": "developer/planning/0.3.8/index.yaml",
+      "section": "independent_plans",
+      "revision": "03",
+      "index_commit": "079ccbf5406d767e49dc7bb335d0389175759fb9",
+      "resolver_compatibility": "NOT_VERIFIED",
+      "implementation_authorized": false
+    }
   },
   "responsibility_boundaries": {
     "authoring_mutation_owner": ".ptsip/engine/developer/internal/contract_authoring/",
@@ -100,7 +109,7 @@
         "STALE_BASE_OR_CONCURRENT_MODIFICATION",
         "WRITE_FAILURE_OR_READBACK_MISMATCH"
       ],
-      "gate": "NEW_INDEPENDENT_DEVELOPER_PLAN_REQUIRES_AUDIT_AND_EFFECTIVE_POLICY_RESOLUTION_BEFORE_IMPLEMENTATION;EXISTING_RELEASE_SINGLE_PLAN_INDEX_NOT_MODIFIED;HISTORICAL_DIGEST_REPAIR_REQUIRES_SEPARATE_AUTHORIZATION",
+      "gate": "INDEPENDENT_DEVELOPER_PLAN_REQUIRES_AUDIT_AND_EFFECTIVE_POLICY_RESOLUTION_BEFORE_IMPLEMENTATION;EXISTING_RELEASE_SINGLE_PLAN_ENTRY_PRESERVED;HISTORICAL_DIGEST_REPAIR_REQUIRES_SEPARATE_AUTHORIZATION",
       "implementation_authorized": false,
       "execution_status": "PLANNED_PENDING_USER_PLAN_AUDIT_NOT_IMPLEMENTED",
       "current_result": "2026-11-23: existing Go runUnifiedAuthoring validates supplied digest before writing, and WriteDocument does not update existing files; no persistent authorized content+digest synchronization is implemented in the current authoring path."
@@ -129,7 +138,7 @@
     "implementation_status": "NOT_STARTED"
   },
   "planning_gates": {
-    "registration": "EXISTING_DEVELOPER_RELEASE_INDEX_DOES_NOT_REGISTER_THIS_STANDALONE_PLAN;NO_UNAUTHORIZED_INDEX_MUTATION",
+    "registration": "USER_EXPLICIT_INDEPENDENT_PLAN_INDEX_REGISTRATION_COMPLETE;EXISTING_RELEASE_ENTRY_PRESERVED;AUTOMATED_RESOLVER_COMPATIBILITY_NOT_VERIFIED",
     "implementation": "REQUIRES_USER_PLAN_AUDIT_AND_FULL_APPROVAL_AND_EFFECTIVE_POLICY_CONFORMANCE",
     "historical_policy_digest_repair": "REQUIRES_SEPARATE_USER_AUTHORIZATION",
     "workflow_python_to_go": "SEPARATE_FOLLOW_UP_SCOPE"
