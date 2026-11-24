@@ -876,6 +876,14 @@
       "state": "USER_APPROVED_SRC_TESTS_ROOT",
       "decision_ref": "current_user_decisions/Director_Decision/decisions_0009",
       "note": "Root approved; no invented leaf names or materialization. Existing exact-path false flag refers only to leaf paths."
+    },
+    {
+      "id": "WU14-APPROVAL-EVIDENCE-OWNERSHIP-20261124",
+      "scope": "WU-14",
+      "state": "USER_APPROVED_NATIVE_EVIDENCE_OWNER_BOUNDARIES",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0010",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/profile_write_approval_evidence_20261124",
+      "note": "No independent authority grant; implementation and verification of exact native binding remain pending."
     }
   ],
   "target_registry": {
@@ -3260,7 +3268,7 @@
         {
           "id": "LEGACY_VALIDATION_CONSUMER_CLOSURE",
           "kind": "APPROVED_NATIVE_ENGINE_RESPONSIBILITY_TRANSFER_AND_PYTHON_CONSUMER_REWIRE",
-          "state": "THREE_PROJECTION_OPERATIONS_AND_READ_ONLY_VALIDATION_VERIFIED;NATIVE_WRITE_ADMISSION_AND_FINAL_PYTHON_FILE_RETIREMENT_OPEN"
+          "state": "THREE_PROJECTION_OPERATIONS_AND_READ_ONLY_VALIDATION_VERIFIED;EVIDENCE_OWNERSHIP_APPROVED;NATIVE_WRITE_BINDING_AND_FINAL_PYTHON_FILE_RETIREMENT_OPEN"
         },
         {
           "id": "GO_BUILD_CUTOVER",
@@ -3642,10 +3650,10 @@
           "src/ptsip/migration/analysis/target/compatibility.py"
         ],
         "execution_write_handoff": {
-          "state": "BLOCKED_MISSING_NATIVE_ADMISSION_PRODUCER_FOR_PROFILE_REWRITE",
+          "state": "NATIVE_ADMISSION_PRODUCER_OWNER_APPROVED;TYPED_BINDING_IMPLEMENTATION_AND_VERIFICATION_PENDING",
           "current_caller_contract": "IdentityRewriteAuthorization verifies a caller-computable plan digest and authority revision; AuthorityRevisionStore.ensure_head supplies revision equality only.",
           "native_requirement_evidence": "src/ptsip/engines/execution/src/authority.rs",
-          "unresolved": "Bind admitted owner and actor to the exact operation, invocation, request and artifact through the existing native Execution authority contract.",
+          "unresolved": "Implement Projection production of exact native approval evidence from existing admitted owner authority; Discovery lookup, Validation suitability evaluation, Projection-to-Execution transfer, and existing Execution authority checks. Exact request binding and safe rollback remain to be verified.",
           "effect_and_rollback_acceptance": "OPEN;FINAL_PYTHON_IDENTITY_REWRITE_SOURCE_RETAINED_PENDING_EQUIVALENT_VERIFIED_HANDOFF"
         }
       },
@@ -3703,6 +3711,11 @@
         "unmapped": "SOURCE_PATH_AND_REASON_FOR_UNKNOWN_TEMPLATE_BINDINGS_CUSTOM_FIELDS_UNRESOLVED_LINEAGE_AND_AMBIGUOUS_OR_INVALID_SOURCE",
         "release_transition_registration": "SEPARATE_EXISTING_DIRECT_TRANSITION_AND_MUTATION_GATE_OPEN",
         "verification": "GO_NATIVE_ROUTER_TESTS_VERIFY_ACTUAL_RECORDED_PP200_BLOBS_IN_EXPLICIT_TEMPLATE_AND_HYBRID_MODES_AND_INDEPENDENT_SCHEMA_VALIDATION"
+      },
+      "latest_native_admission_decision": {
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0010",
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/profile_write_approval_evidence_20261124",
+        "state": "EVIDENCE_OWNERSHIP_APPROVED_NATIVE_HANDOFF_IMPLEMENTATION_PENDING"
       }
     }
   ],
@@ -15017,6 +15030,25 @@
           "preserve_twelve_verified_immutable_git_source_evidence": true,
           "do_not_restore_retired_profile_tree": true,
           "implementation_scope": "ROOT_APPROVAL_ONLY;MATERIALIZATION_AND_VALIDATION_PENDING"
+        }
+      },
+      "decisions_0010": {
+        "decisions_date": "2026-11-24",
+        "authority": "USER_EXPLICIT",
+        "title": "WU-14 native Profile write approval evidence ownership",
+        "scope": "WU-14",
+        "status": "APPROVED",
+        "decision": {
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/profile_write_approval_evidence_20261124",
+          "evidence_producer": "PROJECTION",
+          "evidence_discovery": "DISCOVERY",
+          "evidence_suitability_evaluation": "VALIDATION",
+          "evidence_consumer_and_write_executor": "EXECUTION",
+          "evidence_transfer": "PROJECTION_TO_EXECUTION",
+          "new_approval_or_permission_grant": false,
+          "implementation_contract": "EXACT_OWNER_ACTOR_OPERATION_INVOCATION_REQUEST_ARTIFACT_AND_CURRENT_AUTHORITY_BINDING_PENDING",
+          "verification": "NATIVE_WRITE_AND_ROLLBACK_HANDOFF_PENDING",
+          "existing_final_execution_authority_checks": "PRESERVED"
         }
       }
     }
