@@ -32,21 +32,26 @@
       "index_commit": "079ccbf5406d767e49dc7bb335d0389175759fb9",
       "resolver_compatibility": "NOT_VERIFIED",
       "implementation_authorized": false
-    }
+    },
+    "user_module_layout_authorization": "USER_EXPLICIT_2026_11_24"
   },
   "responsibility_boundaries": {
-    "authoring_mutation_owner": ".ptsip/engine/developer/internal/contract_authoring/",
+    "authoring_mutation_owner": ".ptsip/engine/developer/policy/contract/update/",
     "canonical_digest_algorithm_owner": "src/ptsip/common_contract/source/",
-    "independent_verification_owner": ".ptsip/engine/developer/policy/verification/",
+    "independent_verification_owner": ".ptsip/engine/developer/policy/contract/check/",
     "workflow_owner": ".github/workflows/policy-contract-guard.yml",
     "current_work_unit": "Go Authoring content+digest synchronization; no CI transport migration",
     "explicit_exclusion": "PRODUCT_ptsip.policy.v4_DOES_NOT_CONTAIN_source_document",
-    "no_approval_from_digest": "DIGEST_MATCH_DOES_NOT_CONFER_POLICY_AUTHORITY"
+    "no_approval_from_digest": "DIGEST_MATCH_DOES_NOT_CONFER_POLICY_AUTHORITY",
+    "authoring_create_owner": ".ptsip/engine/developer/policy/contract/authoring/",
+    "contract_entry_owner": ".ptsip/engine/developer/policy/contract/entry/",
+    "test_source_root": "developer/tests/",
+    "test_location_policy": "developer/policy/ASSURE/MPD-ASSURE-0006.yaml#R-ID-8E5ABD45FB714C0380160C3D28A0C5FB"
   },
   "work_units": [
     {
       "id": "WU-15",
-      "name": "Go Unified Policy Authoring: synchronize existing policy content and source_document.sha256 on authorized updates",
+      "name": "Go policy contract module reorganization and authorized policy content/digest update",
       "authority": "USER_REQUESTED_DEVELOPER_PLAN_RELOCATION_2026_11_23;PLAN_ONLY_NOT_POLICY_MUTATION_APPROVAL",
       "scope": "DEVELOPER_GO_UNIFIED_POLICY_AUTHORING_AND_DIGEST_SYNC;NOT_PRODUCT_SCHEMA_CENTRALIZATION",
       "scope_boundary": {
@@ -59,7 +64,16 @@
         "original_schema_centralization_scope": "EXCLUDED_FROM_SRC_SCHEMA_CENTRALIZATION;NO_NEW_WORK_UNIT_OR_SOURCE_CHANGE_UNDER_src/planning/0.3.8/ptsip-schema-centralization.plan.json",
         "product_policy_v4": "UNCHANGED;DO_NOT_ADD_source_document_OR_source_pointer_TO_ptsip.policy.v4",
         "unrelated_normative_policy_changes": "NOT_AUTHORIZED",
-        "changed_py_replacement": "SEPARATE_GO_ONLY_VERIFICATION_MIGRATION_NOT_IMPLEMENTED_BY_THIS_WORK_UNIT"
+        "changed_py_replacement": "SEPARATE_GO_ONLY_VERIFICATION_MIGRATION_NOT_IMPLEMENTED_BY_THIS_WORK_UNIT",
+        "target_module_root": ".ptsip/engine/developer/policy/contract/",
+        "required_module_paths": [
+          ".ptsip/engine/developer/policy/contract/check/",
+          ".ptsip/engine/developer/policy/contract/update/",
+          ".ptsip/engine/developer/policy/contract/entry/",
+          ".ptsip/engine/developer/policy/contract/authoring/"
+        ],
+        "test_source_location_policy": "developer/policy/ASSURE/MPD-ASSURE-0006.yaml",
+        "new_test_root": "developer/tests/"
       },
       "dependency": [],
       "inputs": [
@@ -73,22 +87,27 @@
         "current effective developer policy and explicitly authorized policy-change input"
       ],
       "outputs": [
+        "Move existing policy contract selection, check and create responsibilities to policy/contract/entry, check and authoring; implement new update package at policy/contract/update. Rewire existing CLI and consumers to the new Go packages.",
         "Go Authoring supports a separate explicit update operation for existing registered Unified Policy documents; existing create/check behavior remains unchanged",
         "Authorized policy content change and its regenerated canonical source SHA-256 are materialized as one atomic file update with stale-input protection",
         "Independent Go source-integrity/identity/lifecycle/rule-reference validation of the updated policy before commit and after materialization",
-        "Go regression evidence for both policy planes and the SOURCE_DIGEST_MISMATCH recurrence scenario; no Python helper added"
+        "Go regression evidence for both policy planes and the SOURCE_DIGEST_MISMATCH recurrence scenario; no Python helper added",
+        "New tests for all four policy contract responsibilities are authored under developer/tests/policy/contract/ only; existing tests are relocated in the separately derived plan."
       ],
       "exact_steps": [
+        "Inventory Go packages, exported and unexported functions, CLI entrypoints, actual callers, indexes, workflows and tests of existing contract authoring/entry/check modules; determine ownership from actual behavior, not filenames. Keep non-policy responsibility/profile behavior separate.",
         "Resolve exact document, declared policy identity, policy kind, Family, selected Unified Policy contract, applicable current governance and authorized change scope; do not infer mutation authority from valid schema, plan status, or path name.",
-        "Preserve check as read-only and generate/create as non-overwriting. Add an explicit existing-policy update path to the current Go contract_authoring boundary rather than changing WriteDocument's O_EXCL creation semantics.",
+        "Relocate existing policy contract responsibilities to the four exact user-selected directories. entry owns selection; check owns read-only validation; authoring owns non-overwriting creation and serialization; update is the new explicit existing-document mutation and digest-sync owner. Avoid duplicate implementation, import cycles and reverse dependencies from common source to developer tooling.",
+        "Preserve check as read-only and generate/create as non-overwriting. Add an explicit existing-policy update path in policy/contract/update rather than changing WriteDocument's O_EXCL creation semantics.",
         "Require an exact baseline revision or content precondition and explicit authorization for the proposed policy-content delta; reject unauthorized direct rewrites, cross-plane output paths, conflicting authority and stale concurrent input.",
         "Share the existing Go canonical source reconstruction and source.Digest implementation: derive source from Policy_Content.items without treating the old stored digest as the new value; avoid raw YAML file hashing, duplicate digest algorithms and Python computation.",
         "For a previously valid baseline, apply only the authorized policy delta, regenerate Policy_Content.source_document.sha256 from the reconstructed content, and validate the complete resulting Unified Policy with the existing registered verifier; reject invalid source pointers, incomplete rules, changed identity/lifecycle without authorization, and invalid bindings.",
         "Write the approved content and computed digest together using an atomic, crash-conscious, same-directory replacement that works on Windows 11 and CI; preserve unrelated fields and report exactly which policy fields and source digest changed.",
         "Reread the written policy and independently verify current SHA-256, source reconstruction, declared references, and unchanged unauthorized fields; fail closed and preserve or safely recover the prior valid file when materialization or readback validation fails.",
         "Handle already-mismatched historical policies through a separately authorized, evidence-backed repair/reconciliation path; never silently accept a preexisting SOURCE_DIGEST_MISMATCH, never rewrite an unapproved policy solely to make CI green, and do not bypass source integrity verification.",
-        "Add Go tests for create versus update, successful same-document mutation plus digest synchronization, no-op stability, repeated updates, both policy planes, stale base revision, concurrent file changes, unauthorized deltas, partial/failed writes, and repair authorization boundary.",
-        "Run developer Go authoring and common source contract tests plus the registered policy check against updated fixtures. Treat Go-only replacement of changed.py in policy-contract-guard.yml as a separate verification-migration responsibility, not as the digest authoring implementation."
+        "Add Go tests under developer/tests/policy/contract/ (not under .ptsip) for create versus update, successful same-document mutation plus digest synchronization, no-op stability, repeated updates, both policy planes, stale base revision, concurrent file changes, unauthorized deltas, partial/failed writes, and repair authorization boundary.",
+        "Run developer Go authoring and common source contract tests plus the registered policy check against updated fixtures. Treat Go-only replacement of changed.py in policy-contract-guard.yml as a separate verification-migration responsibility, not as the digest authoring implementation.",
+        "Update .ptsip/engine/developer/main.go and applicable developer package indexes, imports and Go command routes to the new ownership locations; validate Responsibility-Authority and all other real callers, and retire old policy-specific paths only after consumer and regression equivalence. Rewire affected test execution with developer/tests and coordinate existing test relocation without duplicating tests."
       ],
       "acceptance": [
         "Authorized changes to an existing Unified Policy can be performed through Go Authoring without manual source_document.sha256 editing.",
@@ -96,7 +115,8 @@
         "When content is changed and the corresponding digest is stale, SOURCE_DIGEST_MISMATCH is still rejected by read-only verification; an update is accepted only through the explicit authorized mutation path.",
         "No policy-body-only write, digest-only write, silent auto-rehash of unapproved content, or partial replacement is reported as successful.",
         "Existing new-file create semantics, both policy planes, policy authority boundaries, and product Policy v4 source_document removal remain unchanged.",
-        "Go tests demonstrate that changes like the 2026-11-22 SFP-CNTR-0005 update are synchronized when made through authorized Go Authoring; historical mismatches are not silently normalized."
+        "Go tests demonstrate that changes like the 2026-11-22 SFP-CNTR-0005 update are synchronized when made through authorized Go Authoring; historical mismatches are not silently normalized.",
+        "Four user-selected Go package locations exist and each owns its specified responsibility; no new _test.go under .ptsip; no stale active imports to retired policy-specific implementations."
       ],
       "negative_cases": [
         "SOURCE_DIGEST_MISMATCH_ON_UNAUTHORIZED_OR_READ_ONLY_PATH",
@@ -107,7 +127,10 @@
         "INCOMPLETE_POLICY_RULE_SOURCE_BINDING",
         "CROSS_PLANE_POLICY_TARGET",
         "STALE_BASE_OR_CONCURRENT_MODIFICATION",
-        "WRITE_FAILURE_OR_READBACK_MISMATCH"
+        "WRITE_FAILURE_OR_READBACK_MISMATCH",
+        "DUPLICATE_OR_MISROUTED_CONTRACT_RESPONSIBILITY",
+        "NEW_TEST_FILE_UNDER_DOT_PTSIP",
+        "STALE_GO_PACKAGE_IMPORT_OR_CLI_ROUTE"
       ],
       "gate": "INDEPENDENT_DEVELOPER_PLAN_REQUIRES_AUDIT_AND_EFFECTIVE_POLICY_RESOLUTION_BEFORE_IMPLEMENTATION;EXISTING_RELEASE_SINGLE_PLAN_ENTRY_PRESERVED;HISTORICAL_DIGEST_REPAIR_REQUIRES_SEPARATE_AUTHORIZATION",
       "implementation_authorized": false,
@@ -122,7 +145,8 @@
       "When content is changed and the corresponding digest is stale, SOURCE_DIGEST_MISMATCH is still rejected by read-only verification; an update is accepted only through the explicit authorized mutation path.",
       "No policy-body-only write, digest-only write, silent auto-rehash of unapproved content, or partial replacement is reported as successful.",
       "Existing new-file create semantics, both policy planes, policy authority boundaries, and product Policy v4 source_document removal remain unchanged.",
-      "Go tests demonstrate that changes like the 2026-11-22 SFP-CNTR-0005 update are synchronized when made through authorized Go Authoring; historical mismatches are not silently normalized."
+      "Go tests demonstrate that changes like the 2026-11-22 SFP-CNTR-0005 update are synchronized when made through authorized Go Authoring; historical mismatches are not silently normalized.",
+      "Four user-selected Go package locations exist and each owns its specified responsibility; no new _test.go under .ptsip; no stale active imports to retired policy-specific implementations."
     ],
     "negative": [
       "SOURCE_DIGEST_MISMATCH_ON_UNAUTHORIZED_OR_READ_ONLY_PATH",
@@ -133,7 +157,10 @@
       "INCOMPLETE_POLICY_RULE_SOURCE_BINDING",
       "CROSS_PLANE_POLICY_TARGET",
       "STALE_BASE_OR_CONCURRENT_MODIFICATION",
-      "WRITE_FAILURE_OR_READBACK_MISMATCH"
+      "WRITE_FAILURE_OR_READBACK_MISMATCH",
+      "DUPLICATE_OR_MISROUTED_CONTRACT_RESPONSIBILITY",
+      "NEW_TEST_FILE_UNDER_DOT_PTSIP",
+      "STALE_GO_PACKAGE_IMPORT_OR_CLI_ROUTE"
     ],
     "implementation_status": "NOT_STARTED"
   },
@@ -141,6 +168,72 @@
     "registration": "USER_EXPLICIT_INDEPENDENT_PLAN_INDEX_REGISTRATION_COMPLETE;EXISTING_RELEASE_ENTRY_PRESERVED;AUTOMATED_RESOLVER_COMPATIBILITY_NOT_VERIFIED",
     "implementation": "REQUIRES_USER_PLAN_AUDIT_AND_FULL_APPROVAL_AND_EFFECTIVE_POLICY_CONFORMANCE",
     "historical_policy_digest_repair": "REQUIRES_SEPARATE_USER_AUTHORIZATION",
-    "workflow_python_to_go": "SEPARATE_FOLLOW_UP_SCOPE"
+    "workflow_python_to_go": "SEPARATE_FOLLOW_UP_SCOPE",
+    "test_location": "developer/policy/ASSURE/MPD-ASSURE-0006.yaml",
+    "test_relocation": "developer/planning/0.3.8/developer-test-module-relocation.plan.json"
+  },
+  "module_layout": {
+    "root": ".ptsip/engine/developer/policy/contract/",
+    "components": [
+      {
+        "path": ".ptsip/engine/developer/policy/contract/check/",
+        "responsibility": "READ_ONLY_POLICY_CONTRACT_VERIFICATION",
+        "existing_sources": [
+          ".ptsip/engine/developer/policy/verification/Document.go",
+          ".ptsip/engine/developer/internal/contract_authoring/Authoring.go::CheckUnifiedDocument"
+        ],
+        "mutation_authorized": false
+      },
+      {
+        "path": ".ptsip/engine/developer/policy/contract/update/",
+        "responsibility": "AUTHORIZED_EXISTING_POLICY_MUTATION_AND_CANONICAL_DIGEST_ATOMIC_SYNC",
+        "state": "NEW_IMPLEMENTATION",
+        "dependency_owners": [
+          "entry",
+          "check",
+          "src/ptsip/common_contract/source"
+        ]
+      },
+      {
+        "path": ".ptsip/engine/developer/policy/contract/entry/",
+        "responsibility": "REGISTERED_POLICY_CONTRACT_SELECTION_AND_ROUTING",
+        "existing_sources": [
+          ".ptsip/engine/developer/internal/contractentry/",
+          ".ptsip/engine/developer/internal/contract_authoring/Selection.go"
+        ]
+      },
+      {
+        "path": ".ptsip/engine/developer/policy/contract/authoring/",
+        "responsibility": "POLICY_CREATION_AND_SERIALIZATION_NON_OVERWRITING",
+        "existing_sources": [
+          ".ptsip/engine/developer/internal/contract_authoring/CLI.go",
+          ".ptsip/engine/developer/internal/contract_authoring/Authoring.go"
+        ]
+      }
+    ],
+    "migration_method": "ANALYZE_ACTUAL_SYMBOLS_AND_CONSUMERS_BEFORE_MOVING;ONE_OWNER_PER_RESPONSIBILITY;NO_PARALLEL_LEGACY_POLICY_CONTRACT_IMPLEMENTATION",
+    "cli_entrypoint": ".ptsip/engine/developer/main.go",
+    "update_flow": [
+      "entry",
+      "update",
+      "check",
+      "update_atomic_write",
+      "check_readback"
+    ],
+    "preserve_common_digest_owner": "src/ptsip/common_contract/source/",
+    "preserve_separate_domains": [
+      "policy/applicability",
+      "policy/review",
+      "non-policy plan-status responsibility",
+      "Responsibility-Authority"
+    ],
+    "legacy_changed_py": "SEPARATE_EXISTING_GO_VERIFICATION_TRANSPORT_MIGRATION;DO_NOT_REACTIVATE_PYTHON_OR_USE_AS_DIGEST_UPDATE_OWNER",
+    "test_source_location": {
+      "policy_ref": "developer/policy/ASSURE/MPD-ASSURE-0006.yaml",
+      "required_root": "developer/tests/",
+      "suggested_responsibility_subtree": "developer/tests/policy/contract/",
+      "forbidden_new_go_tests": ".ptsip/engine/developer/**/*_test.go",
+      "existing_go_test_relocation_plan": "developer/planning/0.3.8/developer-test-module-relocation.plan.json"
+    }
   }
 }
