@@ -3,7 +3,7 @@
   "document_type": "PTSIP_VERSION_CHANGE_PLAN",
   "plan_id": "PTSIP-0.3.8-VERSION-CHANGE",
   "plan_path": "src/planning/0.3.8/ptsip-version-change.plan.json",
-  "status": "INITIAL_CUTOVER_IMPLEMENTATION_AUTHORIZED",
+  "status": "Approval.Scheduled_implementation",
   "authority": {
     "level": "PLAN",
     "precedence": "EFFECTIVE_POLICY_OVER_PLAN",
@@ -23,14 +23,42 @@
     "initial_rules_recorded": true,
     "complete_plan_approval": true,
     "implementation_authorized": true,
-    "publication_authorized": true,
+    "publication_authorized": false,
     "policy_change_authorized_by_this_plan": false,
     "policy_amendment_forbidden": true,
     "conflicting_requirement_ids": [],
     "effective_policy_precedence": "POLICY_WINS_PLAN_DOES_NOT_AUTHORIZE_POLICY_REWRITE",
     "resolved_conflicting_requirement_ids": [
       "VC-10"
-    ]
+    ],
+    "latest_implementation_approval": {
+      "source": "USER_EXPLICIT_CHAT_2026_11_24",
+      "state": "IMPLEMENTATION_APPROVED",
+      "approval_scope": "ALL_IN_SCOPE_WORK_ITEMS_OF_THIS_PLAN",
+      "base_revision": "09f61af1c8ac5d5d9b100ff757c931528482ac92",
+      "policy_precedence": "EFFECTIVE_POLICY_OVER_PLAN",
+      "unresolved_policy_or_contract_specific_decisions": "HOLD_AFFECTED_ACTION_ONLY_UNTIL_RESOLVED",
+      "verification_required": true,
+      "execution_evidence_status": "UNCHANGED",
+      "publication_authorized_by_this_decision": false,
+      "policy_mutation_authorized_by_this_decision": false,
+      "branch_creation_authorized": false,
+      "requirement_ids": [
+        "VC-01",
+        "VC-02",
+        "VC-03",
+        "VC-04",
+        "VC-05",
+        "VC-06",
+        "VC-07",
+        "VC-08",
+        "VC-09",
+        "VC-10",
+        "VC-11",
+        "VC-12",
+        "VC-13"
+      ]
+    }
   },
   "baseline": {
     "repository": "Kinirin/PTSIP",
@@ -103,6 +131,12 @@
         "value": "EXPLICIT_COMPATIBLE_CONTRACT_LIST",
         "exact_list_schema": "PLAN_DERIVED",
         "permission_grant": false
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
       }
     },
     {
@@ -133,6 +167,12 @@
         "after_major": "ALL_COMPONENTS_FIXED_UNTIL_NEXT_PUBLICATION",
         "calculation": "HIGHEST_APPLICABLE_CLASS_FROM_LAST_PUBLISHED_BASELINE",
         "exact_target_approval": "PRESERVED"
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
       }
     },
     {
@@ -165,6 +205,12 @@
         "current_verification_disposition": "PRESERVE_EXISTING_REQUIRED_VALIDATION_UNTIL_POLICY_COMPLIANT_REPLACEMENT_OR_REBINDING_VERIFIED",
         "no_independent_version_authority": true,
         "conversion_or_retirement_requires": "EXPLICIT_OWNER_POLICY_AND_CONSUMER_CLOSURE"
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
       }
     },
     {
@@ -178,7 +224,13 @@
       "direction": "UPDATE_CARGO_TOML_AND_CARGO_LOCK_TOGETHER_FOR_ALL_SIX_ENGINES",
       "canonical_authority": "src/VERSION#engines.{engine}",
       "cargo_lock_role": "CARGO_DERIVED_LOCKFILE_NOT_VERSION_AUTHORITY",
-      "unrelated_dependency_version_change": "NOT_AUTHORIZED"
+      "unrelated_dependency_version_change": "NOT_AUTHORIZED",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
+      }
     },
     {
       "id": "VC-05",
@@ -242,6 +294,12 @@
         "engine_inventory_policy": "PRESERVE_OFFICIAL_ENGINE_SET_AND_LEGACY_HISTORICAL_READ_BOUNDARY_UNTIL_APPROVED_CHANGE",
         "reject_undeclared_sections": true,
         "field_meaning_and_requiredness": "USE_EXACT_UP-02_OWNER_MAPPING;READ_LEGACY_LAYOUT_ONLY_FOR_EXPLICIT_HISTORICAL_REVISION"
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
       }
     },
     {
@@ -259,7 +317,13 @@
       "distribution_scope": "NOT_PYPI_ONLY",
       "non_version_packaging_metadata_disposition": "PRESERVE_NON_VERSION_BUILD_AND_DISTRIBUTION_METADATA_IN_CURRENT_CONSUMER_FORMAT_UNTIL_VERIFIED_REPLACEMENT",
       "replacement_asset_inclusion_and_distribution_readiness": "GO_ASSET_CLOSURE_AND_SOURCE_ARCHIVE_PARITY_REQUIRED_BEFORE_REMOVAL",
-      "asset_delivery_design_ref": "#/approved_implementation_design/asset_delivery"
+      "asset_delivery_design_ref": "#/approved_implementation_design/asset_delivery",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
+      }
     },
     {
       "id": "VC-07",
@@ -269,7 +333,13 @@
       "target_versions": "BASELINE_EXISTING_CONTRACT_VERSION_VALUES",
       "no_test_driven_version_bump": true,
       "no_artificial_patch_change": true,
-      "future_semantic_bump_policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/update_triggers"
+      "future_semantic_bump_policy_ref": "src/policy/CNTR/SFP-CNTR-0005.yaml#/authority_semantics/unit_ptsip_engine_draft/approved_decisions/official_engine_version_identity_unification/update_triggers",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
+      }
     },
     {
       "id": "VC-08",
@@ -289,7 +359,13 @@
       "output_identity_rule": "PACKAGE_WHEEL_FILENAME_AND_METADATA_AGREE_WITH_CANONICAL_PACKAGE_VERSION",
       "python_platform_only_restriction": "FORBIDDEN",
       "preserve_platform_compatible_wheel_tagging": true,
-      "other_metadata_semantics": "POLICY_GATED"
+      "other_metadata_semantics": "POLICY_GATED",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
+      }
     },
     {
       "id": "VC-09",
@@ -324,7 +400,13 @@
           "disposition": "REPLACE_WITH_NEW_OWNER_APPROVED_MACHINE_CONTRACT_NOT_BLIND_FIELD_PATCH"
         }
       ],
-      "consumer_discovery_requirement": "EXACT_PATH_AND_SEMANTIC_OWNER_INVENTORY_BEFORE_RETIRING_LEGACY_VERSION_LAYOUT_READERS"
+      "consumer_discovery_requirement": "EXACT_PATH_AND_SEMANTIC_OWNER_INVENTORY_BEFORE_RETIRING_LEGACY_VERSION_LAYOUT_READERS",
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
+      }
     },
     {
       "id": "VC-10",
@@ -362,6 +444,12 @@
         "inline_version_sync_snapshot_mutation": "FORBIDDEN_SEPARATE_ASYNC_JOB",
         "wheel_build_gate": "WAIT_FOR_INDEPENDENT_ASYNC_SNAPSHOT_REGENERATION_AND_CURRENT_SOURCE_VERIFICATION_THEN_BUILD_FROM_EXACT_FINAL_COMMITTED_VERIFIED_SOURCE_REVISION",
         "build_before_snapshot_completion": "FORBIDDEN"
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
       }
     },
     {
@@ -387,7 +475,13 @@
       "contract_first_migration_other_plan_files": "UNCHANGED",
       "graph_runtime_integrity_checks": "NOT_SILENTLY_DISABLED",
       "work_handoff": "ON_CURRENT_MANIFEST_AND_BINDING_CHANGE_NOTIFICATION",
-      "version_sync_job_must_update_graph": false
+      "version_sync_job_must_update_graph": false,
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
+      }
     },
     {
       "id": "VC-12",
@@ -475,6 +569,12 @@
           "condition": "UNCHANGED_RESOLUTION_TARGET_AND_ANCHOR",
           "legacy_or_relocated_refs": "VERIFY_EXACT_TARGET;NO_SILENT_SEMANTIC_CHANGE"
         }
+      },
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
       }
     },
     {
@@ -505,7 +605,13 @@
       "existing_release_checks": "PRESERVE_REQUIRED_GATES_NO_SILENT_BYPASS",
       "current_legacy_contract_not_proof_of_new_pipeline_correctness": true,
       "policy_modification_authorized": false,
-      "implementation_authorized": true
+      "implementation_authorized": true,
+      "implementation_approval": {
+        "state": "APPROVED",
+        "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
+        "preserve_design_reconciliation_and_verification": true,
+        "approval_ref": "authority/latest_implementation_approval"
+      }
     }
   ],
   "directory_responsibilities": [
@@ -927,24 +1033,34 @@
     "implementation_permitted_now": true,
     "no_branch_creation": true,
     "simulations_must_not_mutate_canonical_version_values": true,
-    "status_note": "OWNER_APPROVED_INITIAL_CUTOVER_IMPLEMENTATION;EXACT_SOURCE_AND_ARTIFACT_VERIFICATION_GATES_REMAIN",
+    "status_note": "OWNER_APPROVED_ALL_VC_01_THROUGH_VC_13_IMPLEMENTATION_UNDER_LATEST_EFFECTIVE_POLICY;RECONCILE_SUPERSEDED_DESIGN_BEFORE_AFFECTED_IMPLEMENTATION;ALL_VERIFICATION_AND_SEPARATE_PUBLICATION_GATES_PRESERVED",
     "owner_approval_intent_record": {
-      "source": "USER_EXPLICIT_CHAT_2026_11_23",
+      "source": "USER_EXPLICIT_CHAT_2026_11_24",
+      "state": "IMPLEMENTATION_APPROVED",
+      "approval_scope": "ALL_IN_SCOPE_WORK_ITEMS_OF_THIS_PLAN",
+      "base_revision": "09f61af1c8ac5d5d9b100ff757c931528482ac92",
+      "policy_precedence": "EFFECTIVE_POLICY_OVER_PLAN",
+      "unresolved_policy_or_contract_specific_decisions": "HOLD_AFFECTED_ACTION_ONLY_UNTIL_RESOLVED",
+      "verification_required": true,
+      "execution_evidence_status": "UNCHANGED",
+      "publication_authorized_by_this_decision": false,
+      "policy_mutation_authorized_by_this_decision": false,
+      "branch_creation_authorized": false,
       "requested_scope": "ALL_VC_01_THROUGH_VC_13_IN_THIS_VERSION_CHANGE_PLAN",
-      "status": "INITIAL_CUTOVER_APPROVED",
-      "audited_plan_revision": "2dd2dba329dac9898db630689087429fca9b8c57",
+      "status": "FULL_PLAN_IMPLEMENTATION_APPROVED",
       "not_authorization_for": [
         "UNRELATED_REPOSITORY_PLANS",
         "PUBLICATION",
         "BREAKING_PROOF_REMOVAL",
-        "OFFICIAL_ENGINE_SET_CHANGE"
+        "UNAPPROVED_SPECIFIC_OFFICIAL_ENGINE_SET_CHANGE",
+        "POLICY_MUTATION"
       ],
       "remaining_future_conflicts": [
         "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
       ]
     },
     "full_plan_approval_conditions": {
-      "scope": "VC_01_THROUGH_VC_13_INITIAL_CUTOVER_WITH_APPROVED_EXISTING_VERSION_VALUES_AND_NO_PUBLICATION",
+      "scope": "VC_01_THROUGH_VC_13_UNDER_LATEST_EFFECTIVE_POLICY;IMPLEMENTATION_ONLY_NO_PUBLICATION",
       "before_implementation": [
         "Review the exact initial section values and owner mappings against the six current registered Engine contracts, schema config and Common Contract registry.",
         "Review the existing asset and release consumer inventory including standalone verification, preserving registered paths, evidence and existing gates.",
@@ -967,6 +1083,21 @@
       "policy_authority": "SFP-CNTR-0005",
       "scope": "LEGACY_DERIVED_SNAPSHOT_SOURCE_SHA256_AND_FRESHNESS",
       "effective_implementation": "PRESERVE_SNAPSHOT_SHA256_AND_FRESHNESS_AS_REQUIRED_BY_VC_10_AND_SFP_CNTR_0005"
+    },
+    "prior_owner_approval_intent_record": {
+      "source": "USER_EXPLICIT_CHAT_2026_11_23",
+      "requested_scope": "ALL_VC_01_THROUGH_VC_13_IN_THIS_VERSION_CHANGE_PLAN",
+      "status": "INITIAL_CUTOVER_APPROVED",
+      "audited_plan_revision": "2dd2dba329dac9898db630689087429fca9b8c57",
+      "not_authorization_for": [
+        "UNRELATED_REPOSITORY_PLANS",
+        "PUBLICATION",
+        "BREAKING_PROOF_REMOVAL",
+        "OFFICIAL_ENGINE_SET_CHANGE"
+      ],
+      "remaining_future_conflicts": [
+        "AFFECTED_CONTRACT_SPECIFIC_REQUIREMENT_SELECTION_WHEN_NEEDED"
+      ]
     }
   },
   "policy_violation": {
