@@ -413,7 +413,7 @@ Policy_Content:
           - COMPATIBILITY
           declared_operation_fields: EACH_DECLARED_OPERATION_TIED_TO_TYPED_IO_PRE_POST_SIDE_EFFECT_PERMISSION_FAILURE_EVIDENCE_COMPATIBILITY
           normative_ownership: CAPABILITY_PROVIDER_SINGLE_DECLARED_SEMANTIC_OWNER
-          contract_version: EACH_OFFICIAL_ENGINE_CURRENT_CAPABILITY_CONTRACT_JSON_VERSION_EXACTLY_BOUND_TO_SRC_VERSION_ENGINE_IMPLEMENTATION_VERSION_WITH_INDEPENDENT_COMPATIBILITY_EVIDENCE
+          contract_version: INDEPENDENT_CONTRACT_VERSION_WITH_EXPLICIT_ENGINE_COMPATIBILITY_BINDING
           independent_contract: MUST_NOT_INFER_SEMANTICS_FROM_ANOTHER_CAPABILITY_IMPLEMENTATION_OR_OPERATION
           engine_identity: REUSE_REGISTERED_COMMON_ENGINE_IDENTITY_REFERENCE_WITHOUT_MERGING_CAPABILITY_SEMANTICS
           allowed_shared_machine_meta_schema: VALIDATION_VOCABULARY_AND_IDENTITY_REFERENCES_ONLY_NOT_SHARED_CAPABILITY_SEMANTIC_OWNER
@@ -428,13 +428,23 @@ Policy_Content:
           scope: REGISTERED_OFFICIAL_ENGINE_CURRENT_CONTRACT_JSON_AND_ENGINE_IMPLEMENTATION_VERSION
           canonical_version_source: src/VERSION#engines
           version_authority: SRC_VERSION_ONLY
-          engine_contract_version_relation: EXACT_EQUALITY_PER_REGISTERED_ENGINE
+          engine_contract_version_relation: INDEPENDENT_VERSIONS_EXPLICIT_COMPATIBILITY_RELATION
+          prior_exact_equality_policy: SUPERSEDED_BY_USER_EXPLICIT_20261124
           field_binding: EXPLICIT_MACHINE_VERIFIED_OWNER_AND_FIELD_MAPPING_REQUIRED
-          current_engine_contract_version: DERIVED_NO_INDEPENDENT_VERSION_AUTHORITY
+          current_engine_contract_version: INDEPENDENT_FROM_ENGINE_IMPLEMENTATION_VERSION
+          engine_contract_version_only_changes_when_contract_changes: true
+          engine_only_version_change_must_not_change_contract_version: true
+          contract_version_authority_mapping: UNRESOLVED_EXACT_SOURCE_KEY
+          current_engine_contract_storage_root: src/schemas/engines/
+          previous_engine_local_contract_location: MIGRATION_REVIEW_REQUIRED
+          engine_contract_storage_root_literal_user_path: true
+          physical_package_binding_and_directory_migration: PLAN_DERIVED_CONTRACT
           cargo_and_runtime_version_projections: DERIVED_NO_INDEPENDENT_VERSION_AUTHORITY
           source_version_increment: EXPLICIT_SOURCE_CHANGE_ONLY_NO_AUTOMATIC_INCREMENT
           update_triggers:
             CONTRACT_ONLY_CHANGE: PATCH
+            STANDALONE_RESPONSIBILITY_DELETION: PATCH
+            FULL_ENGINE_REMOVAL: FREEZE_FINAL_VERSION
             EXISTING_ENGINE_FUNCTION_CHANGE: PATCH
             NEW_ENGINE_FUNCTION_ADDITION: MINOR
             RESPONSIBILITY_TRANSFER_OUT: MINOR
@@ -445,17 +455,21 @@ Policy_Content:
             EXISTING_RESPONSIBILITY_EXPANSION_OR_REDUCTION_WITHOUT_CODE_SOURCE_CHANGE: NO_INCREMENT
             RESPONSIBILITY_COMPATIBILITY_BREAK: MAJOR
             FUNCTION_COMPATIBILITY_BREAK: MINOR
-          combined_trigger_precedence: USER_CONFIRMED_EXACT_TARGET_VERSION_FOR_UNDECIDED_COMBINATIONS
+          combined_trigger_precedence: MAJOR_THEN_MINOR_THEN_PATCH
+          combined_trigger_arithmetic:
+            MAJOR: {major_delta: 1, minor_reset: 0, patch_reset: 0}
+            MINOR: {major_delta: 0, minor_delta: 1, patch_reset: 0}
+            PATCH: {major_delta: 0, minor_delta: 0, patch_delta: 1}
           approved_combined_trigger_cases:
             CONTRACT_AND_ENGINE_FUNCTION_CHANGE:
-              classification: REASSESS_UNDER_20261124_FUNCTION_CHANGE_DISTINCTION
+              classification: MAX_OF_APPLICABLE_CLASSIFICATIONS
               prior_classification: MINOR
               prior_increment: MINOR_PLUS_ONE
               prior_reset_patch_to: 0
               trigger_scope: SAME_LOCAL_COMMIT_CHANGE_SET
               source_edit_authority: EXPLICIT_SRC_VERSION_CHANGE_NO_AUTOMATIC_INCREMENT
               decision_source: USER_EXPLICIT_CHAT_2026_11_22
-          other_combined_trigger_cases: USER_EXPLICIT_EXACT_VERSION_CONFIRMATION_REQUIRED
+          other_combined_trigger_cases: HIGHEST_APPLICABLE_CLASSIFICATION_WITH_EXISTING_EXACT_VERSION_CONFIRMATION
           combined_trigger_confirmation:
             applies_to: MULTIPLE_VERSION_CHANGE_REASONS_IN_SAME_CHANGE_SET
             user_confirmation: REQUIRED_FOR_EXACT_TARGET_VERSION_BEFORE_SOURCE_CHANGE
@@ -467,7 +481,7 @@ Policy_Content:
             does_not_grant_breaking_contract_or_retirement_exception: true
             decision_source: USER_EXPLICIT_CHAT_2026_11_23
           breaking_contract_change_classification: RESPONSIBILITY_COMPATIBILITY_BREAK_MAJOR_FUNCTION_COMPATIBILITY_BREAK_MINOR
-          responsibility_removal_classification: TRANSFER_OUT_MINOR_EXISTING_RESPONSIBILITY_REDUCTION_WITH_CODE_PATCH;FULL_RETIREMENT_FINAL_VERSION_UNRESOLVED
+          responsibility_removal_classification: TRANSFER_OUT_MINOR_STANDALONE_DELETION_PATCH_FULL_RETIREMENT_FREEZE
           version_classification_20261124:
             decision_source: USER_EXPLICIT_CHAT_2026_11_24
             conflict_resolution: KEEP_LATEST
@@ -481,10 +495,10 @@ Policy_Content:
             responsibility_change_code_source_not_changed: NO_INCREMENT
             breaking_responsibility_compatibility: MAJOR
             breaking_function_compatibility: MINOR
-            full_engine_removal_final_version: UNRESOLVED
-            standalone_responsibility_deletion_not_transfer_or_reduction: UNRESOLVED
+            full_engine_removal_final_version: FREEZE_LAST_VERSION_NO_INCREMENT
+            standalone_responsibility_deletion_not_transfer_or_reduction: PATCH
             mixed_trigger_exact_version_confirmation: PRESERVED_REQUIRED
-            overlapping_breaking_and_nonbreaking_trigger_precedence: UNRESOLVED_IF_NOT_ALREADY_EXPLICIT
+            overlapping_breaking_and_nonbreaking_trigger_precedence: MAJOR_THEN_MINOR_THEN_PATCH
             compatibility_classification_evidence_contract: PLAN_DERIVED
           initial_cutover_number_selection: EXISTING_CURRENT_OFFICIAL_ENGINE_CONTRACT_JSON_VERSION_PER_ENGINE
           initial_cutover_selection_authority: USER_EXPLICIT_CHAT_2026_11_22
@@ -496,9 +510,10 @@ Policy_Content:
             discovery: 3.6.0
             execution: 3.0.0
             projection: 2.5.0
-          initial_cutover_authority_rule: COPY_CONTRACT_BASELINE_TO_SRC_VERSION_THEN_SYNC_DERIVED_ENGINE_FIELDS
+          initial_cutover_authority_rule: HISTORICAL_INITIAL_CUTOVER_ONLY_NO_FUTURE_EQUALITY_ENFORCEMENT
           initial_cutover_does_not_infer_semantic_or_compatibility_APPROVAL: true
-          historical_contract_version_identity: IMMUTABLE_PRESERVED
+          historical_contract_version_identity: PRESERVE_VERSION_AND_ORIGINAL_PROVENANCE_NEW_ARCHIVE_ID_VERSION_DISAMBIGUATED
+          contract_history_publication_policy_ref: SFP-CNTR-0009#schema_publication_history_20261124
           independent_capability_semantic_ownership: PRESERVED
           contract_compatibility_and_dependency_evidence: CONTRACT_SPECIFIC_FOR_BREAKING_VERSION_CHANGE;OTHER_EFFECTIVE_OBLIGATIONS_PRESERVED
           breaking_contract_change_requirements_20261124:
@@ -528,7 +543,7 @@ Policy_Content:
             removal_allowed_after_all_responsibilities_transferred: true
             specific_retirement_scope: OWNER_APPROVAL_REQUIRED
             current_engine_set_change_authorized: false
-            version_classification: RESPONSIBILITY_TRANSFER_MINOR_PER_AFFECTED_ENGINE;FULL_RETIREMENT_FINAL_VERSION_UNRESOLVED
+            version_classification: RESPONSIBILITY_TRANSFER_MINOR_PER_AFFECTED_ENGINE;FULL_RETIREMENT_FREEZE_FINAL_VERSION
           registration_and_execution_authorization: UNCHANGED
           active_component_version_values: UNCHANGED_BY_THIS_POLICY_RECORD
           implementation_and_release_authorization: NOT_GRANTED
@@ -1049,8 +1064,9 @@ Policy_Content:
         active_0_3_8_registered_cli_scope_is_not_generalized_by_draft_transport_policy: true
         official_rust_engine_transport_implementations_must_remain_independent: true
         capability_contracts_are_complete_engine_version_bound_normative_units: true
-        official_engine_current_contract_json_version_equals_src_version_engine_version: true
-        official_engine_current_contract_json_has_no_independent_version_change_authority: true
+        official_engine_current_contract_json_version_equals_src_version_engine_version: false
+        official_engine_current_contract_json_has_no_independent_version_change_authority: false
+        engine_and_contract_versions_require_explicit_compatibility_not_equality: true
         engine_version_bump_contract_only_patch_function_minor_new_domain_major: false
         engine_version_bump_uses_version_classification_20261124: true
         historical_contract_identities_and_compatibility_evidence_remain_preserved: true
