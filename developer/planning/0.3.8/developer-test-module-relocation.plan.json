@@ -1,0 +1,86 @@
+{
+  "format": "ptsip-developer-go-test-relocation-plan/v1",
+  "plan_id": "DEV-038-DOT-PTSIP-GO-TEST-RELOCATION",
+  "title": "Relocate existing .ptsip Go tests to developer/tests",
+  "plan_version": "0.3.8",
+  "plan_path": "developer/planning/0.3.8/developer-test-module-relocation.plan.json",
+  "integration_branch": "main",
+  "status": "DRAFT_PENDING_USER_AUDIT",
+  "artifact_type": "DEVELOPER_TEST_RELOCATION_PLAN",
+  "authority": "PLAN_ONLY_NOT_POLICY_OR_IMPLEMENTATION",
+  "implementation_authorized": false,
+  "policy_refs": [
+    {
+      "policy_id": "MPD-ASSURE-0006",
+      "rule_id": "R-ID-8E5ABD45FB714C0380160C3D28A0C5FB",
+      "path": "developer/policy/ASSURE/MPD-ASSURE-0006.yaml",
+      "scope": "DEVELOPER_TOOL_TEST_LOCATION"
+    }
+  ],
+  "scope": {
+    "source_glob": ".ptsip/**/*_test.go",
+    "required_destination_root": "developer/tests/",
+    "priority": "ALL_EXISTING_TRACKED_GO_TEST_FILES_UNDER_DOT_PTSIP",
+    "product_tests": "UNCHANGED",
+    "existing_non_go_tests": "OUTSIDE_THIS_GO_RELOCATION_PLAN;NEW_TEST_SOURCE_LOCATION_POLICY_STILL_APPLIES",
+    "implementation_sources": "PRESERVE_EXCEPT_NECESSARY_TESTABLE_BOUNDARIES_AND_CALLER_WIRING",
+    "no_test_coverage_reduction": true
+  },
+  "work_units": [
+    {
+      "id": "WU-16",
+      "name": "Inventory, migrate and rewire existing .ptsip Go tests",
+      "dependency": [],
+      "implementation_authorized": false,
+      "execution_status": "PLANNED_PENDING_USER_PLAN_AUDIT_NOT_IMPLEMENTED",
+      "exact_steps": [
+        "At current HEAD use tracked Git inventory to enumerate every .ptsip/**/*_test.go, including nested Go modules; record original test package, owning feature, Go module, Test/Benchmark/Fuzz/Example identifiers, fixtures, helpers, build tags, existing invocations and current verification status. Do not infer the count or owner from filenames.",
+        "Assign each file and test case to the corresponding feature responsibility under developer/tests/; create an exact source-to-target migration ledger with collision detection. Coordinate policy/contract/check, update, entry and authoring tests with the Go Authoring plan, without duplicate implementation or tests.",
+        "Inspect developer/tests/go.mod and existing test helpers and nested module boundaries. Resolve imports/replace directives and transitive dependencies without importing an inaccessible Go internal package; use exported behavior or CLI integration tests, refactor narrowly scoped testable boundaries only when necessary, and do not expose private internals merely to copy white-box tests.",
+        "Preserve all test assertions, negative cases, fixture content, setup and cleanup, build tags, package-level helper behavior and platform-specific paths; adjust fixture root discovery and temporary checkout paths. Do not copy production logic to tests to bypass integration.",
+        "Identify and update actual Go test consumers: .github/test_modes.yaml where applicable, tooling-test.yml only where necessary, policy-contract-guard.yml, policy review/applicability local runners, release verification workflows, and developer module indexes; preserve required test selection, parallelism and retired-source exclusions. Do not revive retired tests by directory-wide blanket selection or remove live checks.",
+        "Move files to the selected developer/tests responsibility subtrees; remove original _test.go only with equivalent replacement and verified execution; avoid stale duplicate test registrations and retain independent product tests under src/tests unchanged.",
+        "Run targeted Go tests at new ownership paths, then the relevant independent CI jobs and a tracked-file absence guard for .ptsip/**/*_test.go. Compare before/after named tests, assertion coverage and execution routing; report missing or skipped required tests as failures.",
+        "Record machine-readable migration ledger, commands, test evidence, remaining blockers and exact HEAD; keep transient logs out of Git and remove after review."
+      ],
+      "acceptance": [
+        "Every tracked Go test under .ptsip is accounted for by an equivalent test at developer/tests; no tracked .ptsip/**/*_test.go remains.",
+        "No new tests for .ptsip functionality are authored outside developer/tests.",
+        "Go internal access and module dependencies compile on the supported Windows and CI environments; no arbitrary public exposure.",
+        "All currently required test behavior, fixtures, negative cases and actual workflow invocations are preserved and verified.",
+        "Existing retired test scope remains retired; product tests and unrelated policies remain unchanged.",
+        "Machine-readable test-location guard rejects new _test.go under .ptsip/engine/developer and detects any regression to old test roots."
+      ],
+      "negative_cases": [
+        "UNACCOUNTED_SOURCE_TEST",
+        "DUPLICATE_TARGET_OR_TEST_ID",
+        "INACCESSIBLE_GO_INTERNAL_IMPORT",
+        "MISSING_FIXTURE_OR_ASSERTION",
+        "RETIRED_TEST_REACTIVATION",
+        "STALE_WORKFLOW_TEST_ROUTE",
+        "SKIPPED_REQUIRED_TEST",
+        "TEST_FILE_REMAINS_UNDER_DOT_PTSIP"
+      ],
+      "gate": "USER_AUDIT_AND_FULL_PLAN_APPROVAL_REQUIRED;NO_IMPLEMENTATION_AUTHORIZED"
+    }
+  ],
+  "related_plans": [
+    {
+      "path": "developer/planning/0.3.8/go-policy-source-digest-sync.plan.json",
+      "relationship": "COORDINATE_POLICY_CONTRACT_TEST_DESTINATIONS;INDEPENDENT_PLAN_NO_IMPLICIT_EXECUTION_AUTHORITY"
+    }
+  ],
+  "verification": {
+    "language": "GO",
+    "test_root": "developer/tests/",
+    "baseline_inventory": "git ls-files with path and suffix matching under .ptsip/",
+    "execution": "TARGETED_GO_TESTS_AND_REGISTERED_CI_VERIFICATION_MODES;EXACT_COMMANDS_DERIVED_FROM_CURRENT_MODULE_INVENTORY",
+    "logs": "UNTRACKED_LOCAL_LOGS_ONLY;REMOVE_AFTER_REVIEW"
+  },
+  "registration": {
+    "index": "developer/planning/0.3.8/index.yaml",
+    "section": "independent_plans",
+    "state": "PENDING_INDEX_REGISTRATION",
+    "resolver_compatibility": "NOT_VERIFIED"
+  }
+}
