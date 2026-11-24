@@ -317,7 +317,12 @@ Policy_Content:
           repeated_edits_before_next_publication: "NO_REPEATED_VERSION_INCREASE"
           field_compatibility_break: "MAJOR_ONCE_PER_PUBLICATION_INTERVAL"
           after_major_increase: "MAJOR_AND_MINOR_FIXED_UNTIL_NEXT_PUBLICATION"
-          exact_patch_behavior_after_major_and_patch_to_minor_promotion: "UNRESOLVED_IF_REQUIRED"
+          patch_to_minor_promotion: "REQUIRED_ON_NEW_MINOR_TRIGGER"
+          after_major_patch_increase: "FORBIDDEN_UNTIL_NEXT_PUBLICATION"
+          after_major_increase_all_components: "FIXED_UNTIL_NEXT_PUBLICATION"
+          repeated_same_or_lower_class_change: "NO_INCREMENT"
+          promotion_calculation: "HIGHEST_APPLICABLE_CLASS_FROM_LAST_PUBLISHED_BASELINE"
+          engine_implementation_versions_same_publication_interval_rule: true
           contract_version_grammar_mapping: "EXPLICIT_PER_CONTRACT;NO_INFERRED_SCHEMA_NUMBER_FORMAT"
           archive_identity: "ADD_VERSION_DISAMBIGUATOR_AT_NEW_HISTORY_CREATION"
           example_current_id: "urn:ptsip:contract:plan:unit"
@@ -326,7 +331,14 @@ Policy_Content:
           duplicate_id_result: "FAIL"
           original_published_identity_and_digest_evidence: "PRESERVE_SEPARATELY"
           existing_history_rewrite: "FORBIDDEN"
-          archived_reference_closure_and_non_example_id_encoding: "PLAN_DERIVED_IF_UNAMBIGUOUS_OTHERWISE_UNRESOLVED"
+          archived_reference_identity_change:
+            decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
+            external_reference_form: "FILE_PATH_PLUS_ANCHOR_REFERENCE"
+            archive_id_change_requires_reference_rewrite_by_itself: false
+            applicable_scope: "PATH_ANCHOR_REFERENCES_WITH_UNCHANGED_RESOLUTION_TARGET"
+            anchor_and_exact_historical_target_resolution: "PRESERVE_AND_VERIFY"
+            legacy_id_dependent_or_relocated_reference: "VERIFY_EXISTING_POLICY;NO_SILENT_SEMANTIC_CHANGE"
+          non_example_archive_id_encoding: "PLAN_DERIVED_IF_UNAMBIGUOUS_OTHERWISE_UNRESOLVED"
           publication_evidence_and_exact_resource_mapping: "PLAN_DERIVED_CONTRACT"
         plan_lifecycle_completion_date_20261124:
           decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
