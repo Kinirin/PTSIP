@@ -459,7 +459,7 @@ Policy_Content:
           combined_trigger_confirmation:
             applies_to: MULTIPLE_VERSION_CHANGE_REASONS_IN_SAME_CHANGE_SET
             user_confirmation: REQUIRED_FOR_EXACT_TARGET_VERSION_BEFORE_SOURCE_CHANGE
-            preserve_already_approved_case_classification: true
+            preserve_already_approved_case_classification: ONLY_WHERE_NOT_SUPERSEDED_BY_20261124_FUNCTION_DISTINCTION
             canonical_source: src/VERSION#engines
             automatic_version_increment: FORBIDDEN
             reject_missing_confirmation: true
