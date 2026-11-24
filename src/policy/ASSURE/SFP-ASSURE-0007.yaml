@@ -14,9 +14,9 @@ Policy_Authority:
   - SRC-0007
 Policy_Rules:
   rules:
-  - id: SUP_ENGINE_MULTI_OBJECTIVE_FITNESS_COMPARISON
-    identity_scheme: DECLARED
-    kind: RULE
+  - id: SFP-ASSURE-0007#/authority_semantics/engine_multi_objective_performance
+    identity_scheme: SOURCE_COORDINATE
+    kind: SEMANTIC_UNIT
     source_ref: SRC-0008
     contract_bindings:
       RA:
