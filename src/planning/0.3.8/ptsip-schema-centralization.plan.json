@@ -892,6 +892,14 @@
       "decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
       "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
       "note": "Combined contract_vision superseded; independent Schema versions and explicit null completion date approved. Exact locator, field placement, shared version contract shape and still-open reference/field semantics remain."
+    },
+    {
+      "id": "WU04-USER-VERSION-POLICY-RULE-SCOPE-20261124",
+      "scope": "WU-04",
+      "state": "USER_APPROVED_POLICY_SYNCHRONIZED",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0012",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+      "note": "Policy ID scopes Rule ID; Plan SchemaVersion root, user-only Revision and consumer version contract path/initial null values approved. No schema mutation or user file creation."
     }
   ],
   "target_registry": {
@@ -2760,9 +2768,10 @@
         "gate": "USER_IDS_VERSIONS_ROOT_ONLY_REGISTRY_APPROVED;REFERENCE_LOCATORS_AND_VERSION_FIELD_DESIGN_REASSESSMENT_PENDING"
       },
       "latest_user_contract_decision": {
-        "decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0012",
+        "prior_reference_version_decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
         "prior_id_registry_decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
-        "state": "REFERENCE_POLICY_AND_VERSION_OWNERSHIP_REVISED;PLAN_DESIGN_REASSESSMENT_PENDING",
+        "state": "POLICY_RULE_SCOPE_PLAN_SCHEMA_VERSION_LOCATION_USER_CONTRACT_PATH_AND_USER_ONLY_REVISION_APPROVED",
         "actual_schema_state": "EXISTING_DIAGNOSTIC_SCAFFOLDS_UNCHANGED"
       }
     },
@@ -14198,7 +14207,8 @@
               "PLAN_REVISION_COUNTER",
               "YYYYMMDD_LAST_MODIFIED_DATE"
             ],
-            "field_value_format": "ARRAY_EXACT_DATE_PARSER_AND_COUNTER_ROLLOVER_UNDECIDED"
+            "field_value_format": "ARRAY_EXACT_DATE_PARSER_AND_COUNTER_ROLLOVER_UNDECIDED",
+            "lifecycle": "SUPERSEDED_FOR_PTSIP_CONSUMPTION_USER_ONLY_20261124"
           }
         },
         "forbidden_ownership": [
@@ -14364,16 +14374,14 @@
       "legacy_migration_plan_work_unit_handles_unchanged": true
     },
     "open_gates": [
-      "POLICY_REFS_SECOND_ITEM_CONTRACT_SHAPE",
       "LIFECYCLE_LAST_CHANGED_FIELD_NAME_FORMAT",
-      "PLAN_IDENTITY_REVISION_COUNTER_AND_DATE_SERIALIZATION",
       "PLAN_TASK_ID_LOOKUP_LINK_TO_TASK_INDEX_AND_NESTED_TASK_AUTHORITY",
       "USER_OVERRIDE_SCOPE_COMPATIBILITY_WITH_EFFECTIVE_SFP_CNTR_0009",
       "TASK_HYPHEN_ID_SCOPE_INDEX_REGISTRY_CONFIRMATION",
       "VALUE_ARRAY_USER_CONTRACT_EXTERNAL_VALIDATOR_BOUNDARY_NOT_YET_IMPLEMENTED",
-      "PLAN_SCHEMA_VERSION_FIELD_LOCATION_AND_USER_REVISION_FIELD_MAPPING",
-      "SHARED_USER_VERSION_CONTRACT_REQUIRED_POLICY_PLAN_SECTIONS_EXACT_SHAPE",
-      "REFERENCE_LOCATOR_REASSESSMENT_UNDER_NEW_POLICY"
+      "REFERENCE_LOCATOR_REASSESSMENT_UNDER_NEW_POLICY",
+      "USER_VERSION_CONTRACT_CUSTOM_SECTIONS_NOT_DEFINED_BY_PTSIP",
+      "FINAL_POLICY_RULE_PAIR_SERIALIZATION_IF_NOT_ALREADY_DERIVABLE"
     ],
     "approval_boundary": "PLAN_FIELD_DIRECTION_RECORDED_NOT_SCHEMA_IMPLEMENTATION_NOT_EFFECTIVE_POLICY_OVERRIDE",
     "current_user_corrections_2026_11_21": {
@@ -14438,7 +14446,7 @@
       "no_retroactive_rewrite_of_legacy_wu_01_to_14": true,
       "dynamic_migrated_plan_key_not_applicable": true
     },
-    "latest_effective_decision_ref": "current_user_decisions/Director_Decision/decisions_0011"
+    "latest_effective_decision_ref": "current_user_decisions/Director_Decision/decisions_0012"
   },
   "wu04_schema_scaffold_execution": {
     "state": "FOUR_SEPARATE_PATH_SCAFFOLDS_CREATED_NOT_REGISTERED",
@@ -15016,15 +15024,16 @@
             "declared_target": "rules.items.id",
             "owner": "PUBLIC_STRUCTURE_PLAN",
             "prior_policy_id_reference": "PRESERVE_UNLESS_EXPLICITLY_CHANGED",
-            "exact_instance_path_and_tuple_serialization": "DO_NOT_INFER"
+            "exact_instance_path_and_tuple_serialization": "DO_NOT_INFER",
+            "latest_scope_decision_ref": "current_user_decisions/Director_Decision/decisions_0012"
           },
           "pending_interpretation": [
             "MEANING_OF_RULES_ITEMS_ID_IN_CHILD_SCHEMA_REFERENCE_VERSUS_DIRECT_PUBLIC_ROOT_REFERENCE",
-            "EXACT_POLICY_RULE_INSTANCE_PATH_AND_REFERENCE_SERIALIZATION",
             "WORK_UNIT_CONTAINER_CARDINALITY_AND_WORK_UNIT_ID_FIELD_MIGRATION_FROM_PRIOR_DRAFT",
             "DATE_FIELD_FORMAT_REQUIREDNESS_AND_STATUS_TRANSITION_AUTHORITY",
             "PRESERVE_APPROVED_ID_PATTERNS_AND_FREE_FORM_VALUE_ITEMS;DO_NOT_INFER_NEW_REQUIREDNESS",
-            "REASSESS_CHILD_REFERENCE_LOCATOR_UNDER_SELECTIVE_MIGRATION_POLICY"
+            "REASSESS_CHILD_REFERENCE_LOCATOR_UNDER_SELECTIVE_MIGRATION_POLICY",
+            "FINAL_POLICY_RULE_PAIR_SERIALIZATION_AND_REVISION_PROVENANCE_IF_NEEDED"
           ],
           "implementation_scope": "DECISION_RECORD_ONLY;NO_SCHEMA_OR_CONFIG_MUTATION_IN_THIS_EDIT;NO_NEW_RELEASE_OR_RUNTIME_ACTIVATION_AUTHORITY",
           "latest_superseding_decision_ref": "current_user_decisions/Director_Decision/decisions_0011"
@@ -15128,7 +15137,66 @@
             "POLICY_RULE_REFERENCE_DECISION_STILL_OPEN",
             "EXISTING_HISTORICAL_CONTRACT_BYTES"
           ],
-          "implementation": "NOT_PERFORMED;EXISTING_PLAN_AND_SCHEMA_DESIGN_REASSESSMENT_REQUIRED"
+          "implementation": "NOT_PERFORMED;EXISTING_PLAN_AND_SCHEMA_DESIGN_REASSESSMENT_REQUIRED",
+          "latest_superseding_decision_ref": "current_user_decisions/Director_Decision/decisions_0012"
+        }
+      },
+      "decisions_0012": {
+        "decisions_date": "2026-11-24",
+        "authority": "USER_EXPLICIT",
+        "title": "Policy scoped rule reference, Plan schema version placement and user version contract",
+        "scope": "WU-04",
+        "status": "APPROVED",
+        "decision": {
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+          "policy_reference": {
+            "policy_id": "TOP_LEVEL_POLICY_DOCUMENT_ID",
+            "rule_id": "RULE_ID_WITHIN_OWNING_POLICY_ID",
+            "purpose": "BIND_DETAILED_POLICY_BASIS",
+            "prior_two_part_direction": "PRESERVED",
+            "exact_final_serialization": "NOT_NEWLY_SPECIFIED"
+          },
+          "plan_schema_version": {
+            "field": "SchemaVersion",
+            "owner": "public-structure-plan.schema.json",
+            "not_owner": "plan-lifecycle.schema.json",
+            "initial": "SCH.1.00"
+          },
+          "user_version_contract": {
+            "path": ".ptsip/contract/user/Version_Contract_Structure.json",
+            "path_base": "CONSUMER_REPOSITORY_ROOT",
+            "required_sections": [
+              "policy",
+              "plan"
+            ],
+            "initial_section_values": {
+              "policy": null,
+              "plan": null
+            },
+            "custom_definition_owner": "USER",
+            "version_options": {
+              "base": "MAJOR.MINOR.PATCH",
+              "prefixes": [
+                "ver",
+                "v",
+                "Ver.",
+                "V."
+              ],
+              "suffixes": [
+                "alpha",
+                "beta",
+                "Hotfix",
+                "rc"
+              ]
+            },
+            "options_role": "RECOMMENDATIONS_NOT_MANDATORY_REGEX"
+          },
+          "plan_revision": {
+            "owner": "USER",
+            "ptsip_consumption": false,
+            "ptsip_counter_and_update": false
+          },
+          "implementation": "NOT_PERFORMED"
         }
       }
     }
