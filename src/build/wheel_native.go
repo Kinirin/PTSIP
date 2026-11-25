@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"debug/macho"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,7 +14,7 @@ import (
 	"strings"
 )
 
-var macOSArm64Tag = regexp.MustCompile("^macosx_[0-9]+_[0-9]+_arm64$")
+var macOSBuildTag = regexp.MustCompile("^macosx_[0-9]+_[0-9]+_(arm64|universal2)$")
 var engineKindPattern = regexp.MustCompile("^[a-z]+$")
 
 type wheelHost struct {
@@ -30,11 +32,69 @@ func currentWheelHost(tag string) (wheelHost, error) {
 			return wheelHost{tag, "linux-x64", "x86_64-unknown-linux-gnu", ""}, nil
 		}
 	case "darwin/arm64":
-		if macOSArm64Tag.MatchString(tag) {
-			return wheelHost{tag, "macos-arm64", "aarch64-apple-darwin", ""}, nil
+		if macOSBuildTag.MatchString(tag) {
+			return wheelHost{"", "macos-arm64", "aarch64-apple-darwin", ""}, nil
 		}
 	}
 	return wheelHost{}, fmt.Errorf("unsupported wheel host %s/%s for tag %q", runtime.GOOS, runtime.GOARCH, tag)
+}
+
+func macOSWheelTag(files wheelContents) (string, error) {
+	var minimum uint32
+	for name, file := range files {
+		if file.mode&0o111 == 0 {
+			continue
+		}
+		version, err := macOSExecutableMinimum(file.data)
+		if err != nil {
+			return "", fmt.Errorf("macOS wheel member %s: %w", name, err)
+		}
+		minimum = max(minimum, version)
+	}
+	if minimum == 0 {
+		return "", fmt.Errorf("macOS Wheel has no native executable")
+	}
+	major := minimum >> 16
+	// macOS 11 and later installer tags use a major version with minor 0.
+	if minimum&0xffff != 0 {
+		major++
+	}
+	return fmt.Sprintf("macosx_%d_0_arm64", major), nil
+}
+
+func macOSExecutableMinimum(data []byte) (uint32, error) {
+	const (
+		versionMinMacOS = 0x24 // LC_VERSION_MIN_MACOSX
+		buildVersion    = 0x32 // LC_BUILD_VERSION
+		macOS           = 1    // PLATFORM_MACOS
+	)
+	file, err := macho.NewFile(bytes.NewReader(data))
+	if err != nil {
+		return 0, fmt.Errorf("read Mach-O executable: %w", err)
+	}
+	if file.Cpu != macho.CpuArm64 || file.Type != macho.TypeExec {
+		return 0, fmt.Errorf("expected a native arm64 executable")
+	}
+	var minimum uint32
+	for _, load := range file.Loads {
+		raw := load.Raw()
+		switch file.ByteOrder.Uint32(raw) {
+		case versionMinMacOS:
+			if len(raw) < 16 {
+				return 0, fmt.Errorf("truncated macOS minimum-version command")
+			}
+			minimum = max(minimum, file.ByteOrder.Uint32(raw[8:]))
+		case buildVersion:
+			if len(raw) < 24 || file.ByteOrder.Uint32(raw[8:]) != macOS {
+				return 0, fmt.Errorf("invalid macOS build-version command")
+			}
+			minimum = max(minimum, file.ByteOrder.Uint32(raw[12:]))
+		}
+	}
+	if minimum>>16 < 11 {
+		return 0, fmt.Errorf("missing or invalid arm64 macOS deployment target")
+	}
+	return minimum, nil
 }
 
 type nativeWheelBuilder struct {

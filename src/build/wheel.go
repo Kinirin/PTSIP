@@ -208,6 +208,12 @@ func buildWheel(root, base, output, platformTag string, progress io.Writer) (str
 	if err := builder.addEngines(files, distribution, versions.Engines); err != nil {
 		return "", err
 	}
+	if host.platform == "macos-arm64" {
+		host.tag, err = macOSWheelTag(files)
+		if err != nil {
+			return "", err
+		}
+	}
 	if current, err := buildRevision(root); err != nil || current != revision {
 		return "", errors.Join(errors.New("source changed during Wheel assembly"), err)
 	}
