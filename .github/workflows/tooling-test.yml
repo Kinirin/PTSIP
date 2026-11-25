@@ -15,19 +15,121 @@ on:
         type: string
         default: ''
       engine_verification_run:
-        description: Engine version synchronization run that verified this exact source (for ptsip-common-contract)
+        description: Engine version sync run that verified the committed sync lineage (for ptsip-common-contract)
         type: string
         default: ''
 permissions:
   contents: read
 jobs:
+  current-engine-derivation:
+    name: "Current engine source / ${{ matrix.derivation }}"
+    if: ${{ inputs.mode == 'ptsip-common-contract' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        derivation: [engine-snapshot, engine-dependency-graph]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: src/build/go.mod
+          cache-dependency-path: src/build/go.sum
+      - name: Generate from the exact committed source
+        env:
+          DERIVATION: ${{ matrix.derivation }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          go -C src/build run -mod=readonly . "$DERIVATION" -root "$GITHUB_WORKSPACE" \
+            > "$RUNNER_TEMP/$DERIVATION.json"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.derivation }}
+          path: ${{ runner.temp }}/${{ matrix.derivation }}.json
+          if-no-files-found: error
+
+  current-engine-proof:
+    name: Verify exact committed engine source
+    needs: current-engine-derivation
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .ptsip/engine/developer/Distribution/release/controller/go.mod
+          cache-dependency-path: .ptsip/engine/developer/Distribution/release/controller/go.sum
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: engine-*
+          path: ${{ runner.temp }}/current-engine-derivation
+          merge-multiple: true
+      - name: Verify sync lineage and both current derivations
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ENGINE_VERIFICATION_RUN: ${{ inputs.engine_verification_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          [[ "$ENGINE_VERIFICATION_RUN" =~ ^[0-9]+$ ]]
+          endpoint="repos/$GITHUB_REPOSITORY/actions/runs/$ENGINE_VERIFICATION_RUN"
+          gh api "$endpoint" > "$RUNNER_TEMP/prior-engine-run.json"
+          jq -e --arg repo "$GITHUB_REPOSITORY" '
+            .path == ".github/workflows/engine-version-sync.yml" and
+            .event == "push" and .head_branch == "main" and .status == "completed" and
+            .repository.full_name == $repo and .head_repository.full_name == $repo
+          ' "$RUNNER_TEMP/prior-engine-run.json" >/dev/null
+          gh api "$endpoint/jobs?filter=latest&per_page=100" | jq -e '
+            [.jobs[] | select(.conclusion == "success") | .name] |
+            index("sync") != null and index("Commit and verify exact final source") != null
+          ' >/dev/null
+
+          prior="$RUNNER_TEMP/prior-engine-proof"
+          gh run download "$ENGINE_VERIFICATION_RUN" --repo "$GITHUB_REPOSITORY" \
+            --name engine-source-verification --dir "$prior"
+          seed="$prior/engine-source-verification.json"
+          sync_sha="$(jq -er '.sync_sha | select(test("^[0-9a-f]{40}$"))' "$seed")"
+          prior_sha="$(jq -er '.source_sha | select(test("^[0-9a-f]{40}$"))' "$seed")"
+          trigger_sha="$(jq -er '.head_sha | select(test("^[0-9a-f]{40}$"))' "$RUNNER_TEMP/prior-engine-run.json")"
+          git merge-base --is-ancestor "$trigger_sha" "$sync_sha"
+          git merge-base --is-ancestor "$sync_sha" "$prior_sha"
+          git merge-base --is-ancestor "$prior_sha" "$GITHUB_SHA"
+
+          derived="$RUNNER_TEMP/current-engine-derivation"
+          cmp src/ptsip/engines/contracts/engines_registries/derived-snapshot.json "$derived/engine-snapshot.json"
+          cmp src/ptsip/engines/contracts/dependency-graph.json "$derived/engine-dependency-graph.json"
+          controller=.ptsip/engine/developer/Distribution/release/controller
+          go -C "$controller" run -mod=readonly ./cmd/ptsip-release check-version -root "$GITHUB_WORKSPACE"
+          go -C src/build run -mod=readonly . verify-engine-derived -root "$GITHUB_WORKSPACE" -sync-sha "$sync_sha" \
+            > "$RUNNER_TEMP/engine-source-verification.json"
+          go -C src/tests/build run -mod=readonly . -root "$GITHUB_WORKSPACE" -stage prebuild
+      - uses: actions/upload-artifact@v7
+        with:
+          name: current-engine-source-verification
+          path: ${{ runner.temp }}/engine-source-verification.json
+          if-no-files-found: error
+
   ptsip-common-contract:
     name: "Customer common contracts / ${{ matrix.runner }}"
-    if: ${{ inputs.mode == 'ptsip-common-contract' }}
+    needs: current-engine-proof
     runs-on: ${{ matrix.runner }}
-    permissions:
-      contents: read
-      actions: read
+    env:
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
     timeout-minutes: 35
     strategy:
       fail-fast: false
@@ -38,10 +140,17 @@ jobs:
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-go@v6
         with:
-          go-version-file: src/ptsip/common_contract/go.mod
-          cache-dependency-path: src/ptsip/common_contract/go.sum
+          go-version-file: .ptsip/engine/developer/Distribution/release/controller/go.mod
+          cache-dependency-path: |
+            src/ptsip/common_contract/go.sum
+            .ptsip/engine/developer/Distribution/release/controller/go.sum
+      - uses: actions/download-artifact@v8
+        with:
+          name: current-engine-source-verification
+          path: ${{ runner.temp }}/common-contract-engine-proof
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -69,16 +178,10 @@ jobs:
           PY
       - name: Verify source archive and exact-source installed Wheel
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ENGINE_VERIFICATION_RUN: ${{ inputs.engine_verification_run }}
         run: |
           set -euo pipefail
-          proof="$RUNNER_TEMP/common-contract-engine-proof"
           test "$GITHUB_REF" = refs/heads/main
-          [[ "$ENGINE_VERIFICATION_RUN" =~ ^[0-9]+$ ]]
-          gh run download "$ENGINE_VERIFICATION_RUN" --name engine-source-verification --dir "$proof"
-          proof_file="$proof/engine-source-verification.json"
+          proof_file="$RUNNER_TEMP/common-contract-engine-proof/engine-source-verification.json"
           export PTSIP_VERIFIED_ENGINE_SOURCE_SHA="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["source_sha"])' "$proof_file")"
           export PTSIP_ENGINE_VERSION_SYNC_SHA="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["sync_sha"])' "$proof_file")"
           test "$PTSIP_VERIFIED_ENGINE_SOURCE_SHA" = "$GITHUB_SHA"
@@ -94,6 +197,8 @@ jobs:
           python -m build --wheel --outdir "$dist"
           wheels=("$dist/"*.whl)
           test "${#wheels[@]}" -eq 1 && test -f "${wheels[0]}"
+          go -C src/tests/build run -mod=readonly . -root "$GITHUB_WORKSPACE" -stage wheel \
+            -artifact "${wheels[0]}" > "$evidence/wheel.json"
           interpreter="$(python -c 'import sys; print(sys.executable)')"
           go -C src/tests/build run -mod=readonly . -root "$GITHUB_WORKSPACE" -stage installed \
             -artifact "${wheels[0]}" -python "$interpreter" -receipt "$evidence/native-wheel-receipt.json" \
@@ -106,6 +211,14 @@ jobs:
         with:
           name: common-contract-${{ matrix.runner }}-${{ github.sha }}
           path: ${{ runner.temp }}/common-contract-evidence
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v7
+        with:
+          name: verified-native-wheel-${{ matrix.runner }}
+          path: |
+            ${{ runner.temp }}/common-contract-dist/*.whl
+            ${{ runner.temp }}/common-contract-dist/*.tar.gz
+            ${{ runner.temp }}/common-contract-evidence/native-wheel-receipt.json
           if-no-files-found: error
 
   developer-schema-contracts:
