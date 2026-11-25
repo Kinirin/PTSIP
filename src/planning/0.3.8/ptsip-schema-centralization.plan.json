@@ -270,6 +270,79 @@
       "registry_topology": "USER_SELECTION_PENDING",
       "no_external_policy_dependency": true,
       "implementation_status": "PLANNING_RECORD_ONLY_SCHEMA_AND_CONFIG_UNCHANGED"
+    },
+    "latest_schema_version_partition_20261125": {
+      "policy_binding": {
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+        "rule_id": "SFP-CNTR-0009/R-02",
+        "source_item": "SRC-0006",
+        "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
+        "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
+      },
+      "canonical_version_source": "src/VERSION#schemas",
+      "schema_targets": [
+        {
+          "key": "ptsip.policy.v4",
+          "version": "SCH.1.00",
+          "schema": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+          "catalog_pointer": "/Policy/ptsip.policy.v4",
+          "unit": "WU-03"
+        },
+        {
+          "key": "urn:ptsip:contract:plan:public-structure",
+          "version": "SCH.1.00",
+          "schema": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+          "catalog_pointer": "/plan/urn:ptsip:contract:plan:public-structure",
+          "unit": "WU-04"
+        },
+        {
+          "key": "RA_list",
+          "version": "SCH.1.00",
+          "schema": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+          "catalog_pointer": "/storage/Responsibility-Authority/RA_list",
+          "unit": "WU-05"
+        },
+        {
+          "key": "RAC_list",
+          "version": "SCH.1.00",
+          "schema": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
+          "catalog_pointer": "/storage/Responsibility-Authority/RAC_list",
+          "unit": "WU-05"
+        },
+        {
+          "key": "AEC_list",
+          "version": "SCH.1.00",
+          "schema": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
+          "catalog_pointer": "/storage/Responsibility-Authority/AEC_list",
+          "unit": "WU-05"
+        }
+      ],
+      "independent_rbac_system_version": "src/VERSION#RBAC.version",
+      "initial_rbac_system_version": "ver.1.0",
+      "rbac_version_is_schema_version": false,
+      "profile_version": "pp.3.00",
+      "version_plan_coordination": {
+        "plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+        "requirements": [
+          "VC-02",
+          "VC-05",
+          "VC-07",
+          "VC-09",
+          "VC-12"
+        ],
+        "external_plan_write": false,
+        "coordinated_cutover_required": true
+      },
+      "revision_gate": {
+        "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
+        "implementation_authorized_for_new_revision": false,
+        "prior_approval_preserved_for_unchanged_scope": true,
+        "publication_authorized": false
+      },
+      "previous_policy_v4_version_value": "v4",
+      "prior_rbac_schema_versions": "v.1",
+      "supersedes": "PRIOR_SCHEMA_VERSION_VALUES_ONLY;IDENTITIES_AND_UNRELATED_APPROVED_CONTRACT_SEMANTICS_PRESERVED",
+      "no_new_rbac_instance_field_authority": true
     }
   },
   "approval_gates": [
@@ -2658,6 +2731,85 @@
         "preserve_execution_status": true,
         "preserve_action_specific_gates": true,
         "approval_ref": "release_scope/implementation_approval_20261124"
+      },
+      "latest_schema_version_policy_work_20261125": {
+        "policy_binding": {
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+          "rule_id": "SFP-CNTR-0009/R-02",
+          "source_item": "SRC-0006",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
+          "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
+        },
+        "canonical_version_source": "src/VERSION#schemas",
+        "schema_targets": [
+          {
+            "key": "ptsip.policy.v4",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+            "catalog_pointer": "/Policy/ptsip.policy.v4",
+            "unit": "WU-03"
+          },
+          {
+            "key": "urn:ptsip:contract:plan:public-structure",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+            "catalog_pointer": "/plan/urn:ptsip:contract:plan:public-structure",
+            "unit": "WU-04"
+          },
+          {
+            "key": "RA_list",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+            "catalog_pointer": "/storage/Responsibility-Authority/RA_list",
+            "unit": "WU-05"
+          },
+          {
+            "key": "RAC_list",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
+            "catalog_pointer": "/storage/Responsibility-Authority/RAC_list",
+            "unit": "WU-05"
+          },
+          {
+            "key": "AEC_list",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
+            "catalog_pointer": "/storage/Responsibility-Authority/AEC_list",
+            "unit": "WU-05"
+          }
+        ],
+        "independent_rbac_system_version": "src/VERSION#RBAC.version",
+        "initial_rbac_system_version": "ver.1.0",
+        "rbac_version_is_schema_version": false,
+        "profile_version": "pp.3.00",
+        "version_plan_coordination": {
+          "plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+          "requirements": [
+            "VC-02",
+            "VC-05",
+            "VC-07",
+            "VC-09",
+            "VC-12"
+          ],
+          "external_plan_write": false,
+          "coordinated_cutover_required": true
+        },
+        "revision_gate": {
+          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
+          "implementation_authorized_for_new_revision": false,
+          "prior_approval_preserved_for_unchanged_scope": true,
+          "publication_authorized": false
+        },
+        "actions": [
+          "Synchronize schemas/config.json versions for the five approved resources and preserve exact IDs, keys, paths, root-only Plan registration and unaffected Profile/history registration. Config is a projection of canonical src/VERSION; do not add independent RBAC system version as a schema registration.",
+          "Reconcile all affected Common Contract registry manifest records, including diagnostic and active entries, exact schema SHA-256, resource bindings and consumer lookup. Update only affected registered rows; validate complete resolver closure and package assets. Do not rename IDs or infer compatibility from equal version strings.",
+          "Coordinate changes with the version plan parser and VERSION cutover so no committed intermediate state fails current source, registry or Wheel verification."
+        ],
+        "acceptance": [
+          "Policy-compliant version metadata and registry values match approved source",
+          "No unauthorized schema semantic changes or history rewrites",
+          "All affected exact-source, registered conformance and installed Wheel tests pass"
+        ]
       }
     },
     {
@@ -2700,6 +2852,56 @@
         "preserve_execution_status": true,
         "preserve_action_specific_gates": true,
         "approval_ref": "release_scope/implementation_approval_20261124"
+      },
+      "latest_schema_version_policy_work_20261125": {
+        "policy_binding": {
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+          "rule_id": "SFP-CNTR-0009/R-02",
+          "source_item": "SRC-0006",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
+          "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
+        },
+        "canonical_version_source": "src/VERSION#schemas",
+        "schema_targets": [
+          {
+            "key": "ptsip.policy.v4",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+            "catalog_pointer": "/Policy/ptsip.policy.v4",
+            "unit": "WU-03"
+          }
+        ],
+        "independent_rbac_system_version": "src/VERSION#RBAC.version",
+        "initial_rbac_system_version": "ver.1.0",
+        "rbac_version_is_schema_version": false,
+        "profile_version": "pp.3.00",
+        "version_plan_coordination": {
+          "plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+          "requirements": [
+            "VC-02",
+            "VC-05",
+            "VC-07",
+            "VC-09",
+            "VC-12"
+          ],
+          "external_plan_write": false,
+          "coordinated_cutover_required": true
+        },
+        "revision_gate": {
+          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
+          "implementation_authorized_for_new_revision": false,
+          "prior_approval_preserved_for_unchanged_scope": true,
+          "publication_authorized": false
+        },
+        "actions": [
+          "Bind the public Policy schema registration and schema-resource version to SCH.1.00. Implement the already approved SchemaVersion field inside Policy_Identity, distinct from user Version; use exact approved field rules and preserve unrelated approved semantics.",
+          "Audit identity and legacy version consumers before changing user-version fields; preserve existing identifiers and resource paths unless separately authorized. Do not impose undecided user-version rules or invent subordinate schema version authority. Reconcile registry hashes and regression tests."
+        ],
+        "acceptance": [
+          "Policy-compliant version metadata and registry values match approved source",
+          "No unauthorized schema semantic changes or history rewrites",
+          "All affected exact-source, registered conformance and installed Wheel tests pass"
+        ]
       }
     },
     {
@@ -2801,6 +3003,55 @@
         "preserve_execution_status": true,
         "preserve_action_specific_gates": true,
         "approval_ref": "release_scope/implementation_approval_20261124"
+      },
+      "latest_schema_version_policy_work_20261125": {
+        "policy_binding": {
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+          "rule_id": "SFP-CNTR-0009/R-02",
+          "source_item": "SRC-0006",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
+          "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
+        },
+        "canonical_version_source": "src/VERSION#schemas",
+        "schema_targets": [
+          {
+            "key": "urn:ptsip:contract:plan:public-structure",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+            "catalog_pointer": "/plan/urn:ptsip:contract:plan:public-structure",
+            "unit": "WU-04"
+          }
+        ],
+        "independent_rbac_system_version": "src/VERSION#RBAC.version",
+        "initial_rbac_system_version": "ver.1.0",
+        "rbac_version_is_schema_version": false,
+        "profile_version": "pp.3.00",
+        "version_plan_coordination": {
+          "plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+          "requirements": [
+            "VC-02",
+            "VC-05",
+            "VC-07",
+            "VC-09",
+            "VC-12"
+          ],
+          "external_plan_write": false,
+          "coordinated_cutover_required": true
+        },
+        "revision_gate": {
+          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
+          "implementation_authorized_for_new_revision": false,
+          "prior_approval_preserved_for_unchanged_scope": true,
+          "publication_authorized": false
+        },
+        "actions": [
+          "Ensure Plan public structure schema version and SchemaVersion const are SCH.1.00, matching src/VERSION and config/manifest. Preserve approved Plan child schema identities, separate responsibilities and root-only config registration. Verify installed Common Contract lookup and no accidental lifecycle SchemaVersion field."
+        ],
+        "acceptance": [
+          "Policy-compliant version metadata and registry values match approved source",
+          "No unauthorized schema semantic changes or history rewrites",
+          "All affected exact-source, registered conformance and installed Wheel tests pass"
+        ]
       }
     },
     {
@@ -2864,6 +3115,70 @@
         "preserve_execution_status": true,
         "preserve_action_specific_gates": true,
         "approval_ref": "release_scope/implementation_approval_20261124"
+      },
+      "latest_schema_version_policy_work_20261125": {
+        "policy_binding": {
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+          "rule_id": "SFP-CNTR-0009/R-02",
+          "source_item": "SRC-0006",
+          "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
+          "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
+        },
+        "canonical_version_source": "src/VERSION#schemas",
+        "schema_targets": [
+          {
+            "key": "RA_list",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+            "catalog_pointer": "/storage/Responsibility-Authority/RA_list",
+            "unit": "WU-05"
+          },
+          {
+            "key": "RAC_list",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
+            "catalog_pointer": "/storage/Responsibility-Authority/RAC_list",
+            "unit": "WU-05"
+          },
+          {
+            "key": "AEC_list",
+            "version": "SCH.1.00",
+            "schema": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
+            "catalog_pointer": "/storage/Responsibility-Authority/AEC_list",
+            "unit": "WU-05"
+          }
+        ],
+        "independent_rbac_system_version": "src/VERSION#RBAC.version",
+        "initial_rbac_system_version": "ver.1.0",
+        "rbac_version_is_schema_version": false,
+        "profile_version": "pp.3.00",
+        "version_plan_coordination": {
+          "plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+          "requirements": [
+            "VC-02",
+            "VC-05",
+            "VC-07",
+            "VC-09",
+            "VC-12"
+          ],
+          "external_plan_write": false,
+          "coordinated_cutover_required": true
+        },
+        "revision_gate": {
+          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
+          "implementation_authorized_for_new_revision": false,
+          "prior_approval_preserved_for_unchanged_scope": true,
+          "publication_authorized": false
+        },
+        "actions": [
+          "Set schema-resource version metadata and config registration for each RA/RAC/AEC list to SCH.1.00 independently of RBAC system version. Preserve existing approved list field structure and record semantics; do not reinterpret existing instance format_version as SchemaVersion or add a new instance field without separate authority.",
+          "Test all three schema versions, Go/Rust structural and cross-reference conformance, installed schema availability, and rejection of schema version mismatch. Communicate changes to version-plan RBAC classification: new fields/ordinary changes Minor; no automatic Major; implementation of system version authority belongs to version plan, not this schema work unit."
+        ],
+        "acceptance": [
+          "Policy-compliant version metadata and registry values match approved source",
+          "No unauthorized schema semantic changes or history rewrites",
+          "All affected exact-source, registered conformance and installed Wheel tests pass"
+        ]
       }
     },
     {
@@ -8897,6 +9212,28 @@
         "PVR-09"
       ],
       "wu09_boundary": "DOCUMENT_SPECIFIC_PLAN_PREPARATION_APPROVED;ACTUAL_POLICY_DOCUMENT_MUTATION_REQUIRES_SEPARATE_EFFECTIVE_POLICY_AUTHORITY"
+    },
+    "latest_schema_version_revision_gate_20261125": {
+      "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
+      "implementation_authorized_for_new_revision": false,
+      "prior_approval_preserved_for_unchanged_scope": true,
+      "publication_authorized": false,
+      "scope": [
+        "WU-02",
+        "WU-03",
+        "WU-04",
+        "WU-05"
+      ],
+      "policy_binding": {
+        "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+        "rule_id": "SFP-CNTR-0009/R-02",
+        "source_item": "SRC-0006",
+        "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
+        "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
+      },
+      "design_ref": "current_user_decisions/Director_Decision/decisions_0014",
+      "existing_approval_20261124": "PRESERVED_UNCHANGED_SCOPE",
+      "no_implementation_performed": true
     }
   },
   "planning_provenance": {
@@ -15384,6 +15721,96 @@
             "PVR-09"
           ],
           "wu09_boundary": "DOCUMENT_SPECIFIC_PLAN_PREPARATION_APPROVED;ACTUAL_POLICY_DOCUMENT_MUTATION_REQUIRES_SEPARATE_EFFECTIVE_POLICY_AUTHORITY"
+        }
+      },
+      "decisions_0014": {
+        "decisions_date": "2026-11-25",
+        "authority": "USER_EXPLICIT",
+        "title": "RBAC system version and independently registered schema version cutover",
+        "scope": "WU-02_WU-03_WU-04_WU-05",
+        "status": "APPROVED_POLICY_DIRECTION",
+        "decision": {
+          "policy_binding": {
+            "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+            "rule_id": "SFP-CNTR-0009/R-02",
+            "source_item": "SRC-0006",
+            "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
+            "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
+          },
+          "canonical_version_source": "src/VERSION#schemas",
+          "schema_targets": [
+            {
+              "key": "ptsip.policy.v4",
+              "version": "SCH.1.00",
+              "schema": "src/ptsip/schemas/policy/public-structure-policy.schema.json",
+              "catalog_pointer": "/Policy/ptsip.policy.v4",
+              "unit": "WU-03"
+            },
+            {
+              "key": "urn:ptsip:contract:plan:public-structure",
+              "version": "SCH.1.00",
+              "schema": "src/ptsip/schemas/plan/public-structure-plan.schema.json",
+              "catalog_pointer": "/plan/urn:ptsip:contract:plan:public-structure",
+              "unit": "WU-04"
+            },
+            {
+              "key": "RA_list",
+              "version": "SCH.1.00",
+              "schema": "src/ptsip/schemas/storage/rbac/ra-list.schema.json",
+              "catalog_pointer": "/storage/Responsibility-Authority/RA_list",
+              "unit": "WU-05"
+            },
+            {
+              "key": "RAC_list",
+              "version": "SCH.1.00",
+              "schema": "src/ptsip/schemas/storage/rbac/rac-list.schema.json",
+              "catalog_pointer": "/storage/Responsibility-Authority/RAC_list",
+              "unit": "WU-05"
+            },
+            {
+              "key": "AEC_list",
+              "version": "SCH.1.00",
+              "schema": "src/ptsip/schemas/storage/rbac/aec-list.schema.json",
+              "catalog_pointer": "/storage/Responsibility-Authority/AEC_list",
+              "unit": "WU-05"
+            }
+          ],
+          "independent_rbac_system_version": "src/VERSION#RBAC.version",
+          "initial_rbac_system_version": "ver.1.0",
+          "rbac_version_is_schema_version": false,
+          "profile_version": "pp.3.00",
+          "version_plan_coordination": {
+            "plan": "src/planning/0.3.8/ptsip-version-change.plan.json",
+            "requirements": [
+              "VC-02",
+              "VC-05",
+              "VC-07",
+              "VC-09",
+              "VC-12"
+            ],
+            "external_plan_write": false,
+            "coordinated_cutover_required": true
+          },
+          "revision_gate": {
+            "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
+            "implementation_authorized_for_new_revision": false,
+            "prior_approval_preserved_for_unchanged_scope": true,
+            "publication_authorized": false
+          },
+          "minor": {
+            "new_field_in_any_of": [
+              "RA_list",
+              "RAC_list",
+              "AEC_list"
+            ],
+            "ordinary_rbac_changes": "MINOR"
+          },
+          "major": {
+            "qualifying_change": "SUBSTANTIAL_CHANGE_TO_RBAC_INFERENCE_FUNCTIONALITY",
+            "increase_authority": "USER_DIRECT_DECISION_AND_INCREMENT_ONLY",
+            "automatic_increment": false
+          },
+          "implementation": "PLAN_REVISION_ONLY;NO_IMPLEMENTATION_OR_PUBLICATION"
         }
       }
     }
