@@ -305,6 +305,31 @@ Policy_Content:
             reference_scope: "POLICY_ID_AND_OWNED_RULE_ID"
             exact_reference_serialization: "PRESERVE_EXISTING_APPROVED_TWO_PART_DIRECTION;FINAL_FIELD_CONTRACT_PENDING"
           official_schema_version_binding_and_registry_migration: "PLAN_DERIVED_CONTRACT"
+        canonical_version_source_partition_20261125:
+          decision_source: "USER_EXPLICIT_CHAT_2026_11_25"
+          scope: "SRC_VERSION_SYSTEM_AND_SCHEMA_VERSION_RESPONSIBILITIES"
+          canonical_source: "src/VERSION"
+          rbac_system:
+            section: "RBAC"
+            key: "version"
+            meaning: "RBAC_SYSTEM_VERSION_NOT_SCHEMA_CONTRACT_VERSION"
+            format: "ver.{major}.{minor}"
+            initial: "ver.1.0"
+            schema_version_keys_in_rbac_section: false
+            version_change_criteria: "UNRESOLVED_SEPARATE_POLICY"
+          schemas:
+            section: "schemas"
+            meaning: "CURRENT_REGISTERED_SCHEMA_VERSIONS"
+            initial_versions:
+              "ptsip.policy.v4": "SCH.1.00"
+              "urn:ptsip:contract:plan:public-structure": "SCH.1.00"
+              "RA_list": "SCH.1.00"
+              "RAC_list": "SCH.1.00"
+              "AEC_list": "SCH.1.00"
+              "ptsip.project-profile": "pp.3.00"
+            independent_schema_version_ownership: true
+          supersedes: "PRIOR_PLAN_RBAC_SECTION_PER_LIST_VERSION_AND_NO_INDEPENDENT_SYSTEM_VERSION"
+          unrelated_version_authorities: "PRESERVED"
         schema_publication_history_20261124:
           decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
           conflict_resolution: "KEEP_LATEST_PUBLICATION_BOUND_HISTORY"
@@ -459,7 +484,7 @@ Policy_Content:
           no_release_or_deployment_authority_implied: true
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "436c8ef2959700e4309c77c2e88b0c2bb7ad785d48e8624b645824ef2e9ee112"
+    sha256: "b3afaa4a11ef6ab08344193616ccd3bd0d3d82fe53e54749c56423da0ccc0a8e"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
