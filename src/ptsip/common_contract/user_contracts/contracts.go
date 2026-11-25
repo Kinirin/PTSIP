@@ -16,6 +16,8 @@ import (
 //go:embed templates/*.json
 var templates embed.FS
 
+const versionContractTemplate = "Version_Contract_Structure.json"
+
 var standardBindings = map[string][]string{
 	"evaluation_state.json":  {"Policy_Rules.evaluation.state"},
 	"policy_content_id.json": {"Policy_Content.items[].id", "Policy_Rules.rules[].content.content_id[]"},
@@ -241,17 +243,48 @@ func createTemplate(filename string) error {
 	return nil
 }
 
-func readUserSchema(filename string) (any, error) {
+func ensureTemplate(filename string) error {
+	if _, err := os.Lstat(filename); !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+	return createTemplate(filename)
+}
+
+// BootstrapVersionContract provisions the shared version settings in an explicit adopting project.
+// A previously created file belongs to the project and is preserved byte for byte.
+func BootstrapVersionContract(projectRoot string) error {
+	if projectRoot == "" {
+		return errors.New("bootstrapping requires an explicit adopting project root")
+	}
+	root, err := contractRoot(projectRoot)
+	if err != nil {
+		return err
+	}
+	filename := filepath.Join(root, versionContractTemplate)
+	if err := ensureTemplate(filename); err != nil {
+		return err
+	}
+	return checkUserContractFile(filename)
+}
+
+func checkUserContractFile(filename string) error {
 	info, err := os.Lstat(filename)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	resolved, err := filepath.EvalSymlinks(filename)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 || !samePath(filename, resolved) {
-		return nil, errors.New("contract must be a regular file under the user contract root")
+		return errors.New("contract must be a regular file under the user contract root")
+	}
+	return nil
+}
+
+func readUserSchema(filename string) (any, error) {
+	if err := checkUserContractFile(filename); err != nil {
+		return nil, err
 	}
 	return readJSON(filename, true)
 }
@@ -320,12 +353,7 @@ func (v *Validator) ValidateUserContracts(policy map[string]any, projectRoot str
 	}
 	if bootstrap {
 		for _, name := range sortedKeys(required) {
-			filename := filepath.Join(root, name)
-			if _, err := os.Lstat(filename); errors.Is(err, os.ErrNotExist) {
-				if err := createTemplate(filename); err != nil {
-					return nil, err
-				}
-			} else if err != nil {
+			if err := ensureTemplate(filepath.Join(root, name)); err != nil {
 				return nil, err
 			}
 		}
@@ -337,7 +365,9 @@ func (v *Validator) ValidateUserContracts(policy map[string]any, projectRoot str
 			return nil, err
 		}
 		for _, entry := range entries {
-			if strings.HasSuffix(entry.Name(), ".json") {
+			// The version template carries user settings for Policy and Plan.
+			// Only independent JSON Schema documents participate in this scan.
+			if strings.HasSuffix(entry.Name(), ".json") && !samePath(entry.Name(), versionContractTemplate) {
 				paths[entry.Name()] = filepath.Join(root, entry.Name())
 			}
 		}

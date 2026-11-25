@@ -263,7 +263,7 @@ func TestOmittedVersionAndCategoryDoNotCreateContracts(t *testing.T) {
 	v := validator(t)
 	project := t.TempDir()
 	assertValid(t, evaluate(t, v, "validation.policy.identity", object{
-		"policy": object{"Policy_Identity": object{"title": "Example"}}, "project_root": project, "bootstrap_user_contracts": true,
+		"policy": object{"Policy_Identity": object{"title": "Example"}}, "project_root": project,
 	}))
 	if _, err := os.Stat(filepath.Join(project, ".ptsip")); !os.IsNotExist(err) {
 		t.Fatalf("unused contracts must not be created: %v", err)
@@ -275,6 +275,58 @@ func TestOmittedVersionAndCategoryDoNotCreateContracts(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(project, ".ptsip")); !os.IsNotExist(err) {
 		t.Fatal("category must not acquire an invented default contract")
+	}
+}
+
+func TestVersionContractBootstrapProvidesUserOwnedDefaults(t *testing.T) {
+	v := validator(t)
+	project := t.TempDir()
+	identity := object{"title": "Example"}
+	input := object{
+		"policy": object{"Policy_Identity": identity}, "project_root": project, "bootstrap_user_contracts": true,
+	}
+	result := evaluate(t, v, "validation.policy.identity", input)
+	assertValid(t, result)
+	if len(result.UserContracts) != 0 {
+		t.Fatalf("the shared version settings must not be validated as a field schema: %+v", result.UserContracts)
+	}
+	const name = "Version_Contract_Structure.json"
+	filename := filepath.Join(contractRoot(project), name)
+	want := object{
+		"policy": nil, "plan": nil,
+		"version_options": object{
+			"base": "MAJOR.MINOR.PATCH", "prefixes": array{"ver", "v", "Ver.", "V."},
+			"suffixes": array{"alpha", "beta", "Hotfix", "rc"},
+		},
+	}
+	if actual := readObject(t, filename); !reflect.DeepEqual(actual, want) {
+		t.Fatalf("unexpected shared version template: %v", actual)
+	}
+	entries, err := os.ReadDir(contractRoot(project))
+	if err != nil || len(entries) != 1 || entries[0].Name() != name {
+		t.Fatalf("unexpected user contract files: %v, %v", entries, err)
+	}
+
+	authored := []byte("{ \"policy\": null, \"plan\": { \"revision\": \"winter\" } }\n")
+	if err := os.WriteFile(filename, authored, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	identity["version"] = "v1.2.3"
+	assertValid(t, evaluate(t, v, "validation.policy.identity", input))
+	if actual, err := os.ReadFile(filename); err != nil || string(actual) != string(authored) {
+		t.Fatalf("authored version settings were changed: %q, %v", actual, err)
+	}
+
+	conflict := t.TempDir()
+	directory := filepath.Join(contractRoot(conflict), name)
+	if err := os.MkdirAll(directory, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := usercontracts.BootstrapVersionContract(conflict); err == nil {
+		t.Fatal("bootstrapping accepted a directory as the version settings file")
+	}
+	if info, err := os.Stat(directory); err != nil || !info.IsDir() {
+		t.Fatalf("bootstrapping replaced the directory: %v", err)
 	}
 }
 

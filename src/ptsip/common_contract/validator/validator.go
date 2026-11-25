@@ -7,6 +7,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/registry"
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/resolver"
 	"github.com/dlclark/regexp2"
 	"github.com/santhosh-tekuri/jsonschema/v6"
@@ -59,4 +60,47 @@ func Compile(g resolver.Graph) (*jsonschema.Schema, error) {
 		}
 	}
 	return c.Compile(g.Root)
+}
+
+// ValidateInstance validates the structure and any registered document-level constraints.
+func ValidateInstance(urn string, schema *jsonschema.Schema, instance any) error {
+	if err := schema.Validate(instance); err != nil {
+		return err
+	}
+	if urn == registry.PlanDocumentURN {
+		if err := CheckPlanWorkUnitPrefixes(instance); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+type PlanWorkUnitPrefixError struct {
+	Index int
+}
+
+func (err *PlanWorkUnitPrefixError) Error() string {
+	return fmt.Sprintf("work_unit_item[%d].work_unit_id must use the same two-letter prefix as the first work unit", err.Index)
+}
+
+// CheckPlanWorkUnitPrefixes compares IDs after a Plan passes schema validation.
+func CheckPlanWorkUnitPrefixes(instance any) *PlanWorkUnitPrefixError {
+	const prefixStart = len("WU-")
+	const prefixEnd = prefixStart + 2
+	document, _ := instance.(map[string]any)
+	units, _ := document["work_unit_item"].([]any)
+	var prefix string
+	for index, raw := range units {
+		unit, _ := raw.(map[string]any)
+		id, _ := unit["work_unit_id"].(string)
+		if len(id) < prefixEnd {
+			continue
+		}
+		if prefix == "" {
+			prefix = id[prefixStart:prefixEnd]
+		} else if id[prefixStart:prefixEnd] != prefix {
+			return &PlanWorkUnitPrefixError{Index: index}
+		}
+	}
+	return nil
 }

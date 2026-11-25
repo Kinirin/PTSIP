@@ -56,6 +56,15 @@ func TestCentralRegistryRegistersPlanRootWithoutItsChildren(t *testing.T) {
 	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) != 0 {
 		t.Fatalf("valid Plan rejected: %+v", issues)
 	}
+	instance["work_unit_item"] = array{
+		object{"work_unit_id": "WU-AB-001", "task_id": array{}},
+		object{"work_unit_id": "WU-CD-002", "task_id": array{}},
+	}
+	wantPath := []any{"work_unit_item", 1, "work_unit_id"}
+	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) != 1 || !reflect.DeepEqual(issues[0].Path, wantPath) {
+		t.Fatalf("expected mixed-prefix work unit diagnostic at %v: %+v", wantPath, issues)
+	}
+	delete(instance, "work_unit_item")
 	identity["plan_id"] = "plan-AA"
 	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) == 0 {
 		t.Fatal("Plan registration failed to validate the Identity child")

@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/registry"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/validator"
 	"github.com/santhosh-tekuri/jsonschema/v6"
 )
 
@@ -323,7 +324,15 @@ func (v *Validator) StructureIssues(key string, instance any) []Issue {
 	if !ok {
 		return []Issue{{Code: "SCHEMA", Path: []any{}, Message: "Unknown schema registration: " + key}}
 	}
-	return validationIssues(schema, instance, "SCHEMA", nil)
+	issues := validationIssues(schema, instance, "SCHEMA", nil)
+	if len(issues) == 0 && key == registry.PlanDocumentURN {
+		if err := validator.CheckPlanWorkUnitPrefixes(instance); err != nil {
+			issues = append(issues, Issue{
+				Code: "SCHEMA", Path: []any{"work_unit_item", err.Index, "work_unit_id"}, Message: err.Error(),
+			})
+		}
+	}
+	return issues
 }
 
 func (v *Validator) OfficialVersionValid(value any) bool {

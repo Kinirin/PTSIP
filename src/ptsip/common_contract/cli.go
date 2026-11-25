@@ -140,7 +140,7 @@ func contractOperation(request record, root, op string) record {
 		}
 		result["status"] = "VALID"
 		result["structure"] = record{"status": "VALID"}
-		if err := schema.Validate(instance); err != nil {
+		if err := validator.ValidateInstance(entry.URN, schema, instance); err != nil {
 			result["status"] = "INVALID"
 			result["structure"] = record{"status": "INVALID", "problem": err.Error()}
 		}

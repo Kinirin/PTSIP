@@ -284,6 +284,24 @@ func TestRegisteredOperationsThroughGoRustAndSameGoWorker(t *testing.T) {
 			t.Fatal("authored contract was overwritten")
 		}
 	})
+	t.Run("bootstrap-shared-version-settings-before-first-version", func(t *testing.T) {
+		project := t.TempDir()
+		input := object{
+			"policy":       object{"Policy_Identity": object{"title": "New policy"}},
+			"project_root": project, "bootstrap_user_contracts": true,
+		}
+		response, stderr, code := invoke(t, installed, "validation.policy.identity", input)
+		if code != 0 {
+			t.Fatalf("explicit version settings bootstrap failed: %s, %v", stderr, response)
+		}
+		outputOf(t, response, true)
+		settings := readObject(t, filepath.Join(contractRoot(project), "Version_Contract_Structure.json"))
+		for _, section := range []string{"policy", "plan"} {
+			if value, present := settings[section]; !present || value != nil {
+				t.Fatalf("expected an unconfigured %s section: %v", section, settings)
+			}
+		}
+	})
 	t.Run("explicit-same-go-cli-binding", func(t *testing.T) {
 		response, stderr, code := invoke(t, installed, registeredOperations[0], operationInput(t, registeredOperations[0]),
 			"PTSIP_GO_CLI="+filepath.Join(t.TempDir(), "missing-cli"), "PTSIP_USER_CONTRACT_ROOT="+t.TempDir(),

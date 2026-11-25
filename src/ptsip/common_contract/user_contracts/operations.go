@@ -100,6 +100,11 @@ func (v *Validator) policyOperation(field string, input map[string]any) (Result,
 	}
 	projectRoot, _ := input["project_root"].(string)
 	bootstrap, _ := input["bootstrap_user_contracts"].(bool)
+	if field == "Policy_Identity" && bootstrap {
+		if err := BootstrapVersionContract(projectRoot); err != nil {
+			return Result{}, err
+		}
+	}
 	contracts, err := v.ValidateUserContracts(policy, projectRoot, bootstrap, prefixes)
 	if err != nil {
 		return Result{}, err

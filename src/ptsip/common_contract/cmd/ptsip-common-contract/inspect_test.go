@@ -73,6 +73,7 @@ func TestCanonicalPlanContractValidatesIndependentFields(t *testing.T) {
 		{"empty completion date", func(_, _, lifecycle, _ record) { lifecycle["completion_date"] = "" }},
 		{"independent approval field", func(_, _, lifecycle, _ record) { lifecycle["approval_ref"] = "example" }},
 		{"invalid work unit ID", func(_, _, _, unit record) { unit["work_unit_id"] = "WU-aa-007" }},
+		{"mixed work unit prefix", func(_, _, _, unit record) { unit["work_unit_id"] = "WU-CD-007" }},
 		{"non-array work unit value", func(_, _, _, unit record) { unit["value"] = "user data" }},
 		{"work unit session", func(_, _, _, unit record) { unit["session_id"] = "example" }},
 	} {
@@ -82,7 +83,8 @@ func TestCanonicalPlanContractValidatesIndependentFields(t *testing.T) {
 			unit := record{"work_unit_id": "WU-AB-007", "task_id": []any{}, "value": []any{nil, "free-form", true}}
 			doc := record{
 				"SchemaVersion": "SCH.1.00", "Plan_Identity": identity,
-				"Plan_lifecycle": lifecycle, "work_unit_item": []any{unit},
+				"Plan_lifecycle": lifecycle,
+				"work_unit_item": []any{record{"work_unit_id": "WU-AB-000", "task_id": []any{}}, unit},
 			}
 			expected := "VALID"
 			if tc.change != nil {
