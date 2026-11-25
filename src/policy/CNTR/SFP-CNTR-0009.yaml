@@ -316,7 +316,18 @@ Policy_Content:
             format: "ver.{major}.{minor}"
             initial: "ver.1.0"
             schema_version_keys_in_rbac_section: false
-            version_change_criteria: "UNRESOLVED_SEPARATE_POLICY"
+            version_change_criteria:
+              decision_source: "USER_EXPLICIT_CHAT_2026_11_25"
+              minor:
+                new_field_in_any_of: ["RA_list", "RAC_list", "AEC_list"]
+                ordinary_rbac_changes: "MINOR"
+              major:
+                qualifying_change: "SUBSTANTIAL_CHANGE_TO_RBAC_INFERENCE_FUNCTIONALITY"
+                increase_authority: "USER_DIRECT_DECISION_AND_INCREMENT_ONLY"
+                automatic_increment: false
+                otherwise: "PRESERVE"
+              scope: "RBAC_SYSTEM_VERSION_ONLY"
+              schema_version_change_rules: "INDEPENDENT_PRESERVED"
           schemas:
             section: "schemas"
             meaning: "CURRENT_REGISTERED_SCHEMA_VERSIONS"
@@ -484,7 +495,7 @@ Policy_Content:
           no_release_or_deployment_authority_implied: true
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "b3afaa4a11ef6ab08344193616ccd3bd0d3d82fe53e54749c56423da0ccc0a8e"
+    sha256: "ade3ba5badf2444742b3850e876d24333f3da703759c45d1f10d748b150b8482"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
