@@ -32,7 +32,8 @@
       "name": "Inventory, migrate and rewire existing .ptsip Go tests",
       "dependency": [],
       "implementation_authorized": true,
-      "execution_status": "IMPLEMENTATION_AUTHORIZED_NOT_STARTED",
+      "execution_status": "COMPLETE",
+      "current_result": "4197722d7688e7796b7365596b963d4dc4cbc180 moved the Go developer tests and rewired their GitHub Actions consumers. developer/tests/testdata/dot-ptsip-go-test-relocation.json maps 54 original source files at ef32c3257cf938d72b27d17f80a3a712ae7a2561 and records the original Windows verification of 20 packages and 206 passing tests, with three inherited Windows-only skips. At 77510354ecbd3935ca604c658f2069ce02520f5a, zero tracked *_test.go files remain under .ptsip. GitHub Actions run 45592468175 passed the location and relocation ledger tests. Run 45603704911 passed the developer-schema-contracts job on Windows and Ubuntu, including the relocated Go verification, contract, and review tests. Run 45604081446 passed the Ubuntu release-admission job that executes ./distribution/release/test/..., covering the three releasenote cases skipped by the Windows test code. The broader Windows developer/tests ./... command still has setup failures from missing developer/automation imports in the preexisting planning and policy/binding packages, neither of which is a destination in the relocation ledger.",
       "exact_steps": [
         "At current HEAD use tracked Git inventory to enumerate every .ptsip/**/*_test.go, including nested Go modules; record original test package, owning feature, Go module, Test/Benchmark/Fuzz/Example identifiers, fixtures, helpers, build tags, existing invocations and current verification status. Do not infer the count or owner from filenames.",
         "Assign each file and test case to the corresponding feature responsibility under developer/tests/; create an exact source-to-target migration ledger with collision detection. Coordinate policy/contract/check, update, entry and authoring tests with the Go Authoring plan, without duplicate implementation or tests.",
@@ -68,7 +69,7 @@
         "approved_on": "2026-11-24",
         "scope": "FULL_RECORDED_PLAN_IMPLEMENTATION",
         "approved_plan_blob_sha": "afef69e84179cba5d93b15a2caa80142ba371f3a",
-        "implementation_started": false,
+        "implementation_started": true,
         "policy_mutation_authorized": false
       }
     }
@@ -100,7 +101,7 @@
     "approved_on": "2026-11-24",
     "scope": "FULL_RECORDED_PLAN_IMPLEMENTATION",
     "approved_plan_blob_sha": "afef69e84179cba5d93b15a2caa80142ba371f3a",
-    "implementation_started": false,
+    "implementation_started": true,
     "policy_mutation_authorized": false
   }
 }
