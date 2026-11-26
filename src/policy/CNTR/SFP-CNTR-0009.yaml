@@ -361,6 +361,22 @@ Policy_Content:
           decision_source: "USER_EXPLICIT_CHAT_2026_11_24"
           conflict_resolution: "KEEP_LATEST_PUBLICATION_BOUND_HISTORY"
           history_root: "src/ptsip/schemas/history/"
+          approved_history_domains_20261126:
+            decision_source: "USER_EXPLICIT_CHAT_2026_11_26"
+            schema_domains:
+              profile: "src/ptsip/schemas/history/profile/"
+              policy: "src/ptsip/schemas/history/policy/"
+              plan: "src/ptsip/schemas/history/plan/"
+              rbac: "src/ptsip/schemas/history/rbac/"
+            engine_domains:
+              context: "src/ptsip/schemas/history/engines/context/"
+              storage: "src/ptsip/schemas/history/engines/storage/"
+              validation: "src/ptsip/schemas/history/engines/validation/"
+              discovery: "src/ptsip/schemas/history/engines/discovery/"
+              execution: "src/ptsip/schemas/history/engines/execution/"
+              projection: "src/ptsip/schemas/history/engines/projection/"
+            resource_and_evidence_leaf_mapping: "PLAN_DERIVED_CONTRACT"
+            existing_history_immutability: "PRESERVED"
           history_subjects: "ONLY_CHANGED_CONTRACTS"
           history_capture_trigger: "DISTRIBUTION_PLATFORM_PUBLICATION_COMPLETED"
           workflow_completion_is_publication: false
@@ -516,7 +532,7 @@ Policy_Content:
           no_release_or_deployment_authority_implied: true
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "4fbbb1908d214e0d2149407115e37267b0cd66d04355034496e8a36460749e8e"
+    sha256: "c134091bbf55de666915f30aff024bc457833b9310ef8d52f7111e5540095c6b"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
